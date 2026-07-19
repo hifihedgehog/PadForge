@@ -2321,7 +2321,6 @@
   <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>再添加一个反向键对。</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>反向键对中的第一个键。</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>反向键对中的第二个键。</value></data>
-  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>同时反向输入</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>先按下的键持续优先，直到它被松开。</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>先按优先</value></data>
   <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>最近按下的键优先。松开它时会重新按下仍被按住的反向键。</value></data>
@@ -2331,10 +2330,9 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>两个键均原样通过。</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>关闭</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>移除此键对。</value></data>
-  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>重置同时反向输入</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同时按下 (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同时反向输入 (SOCD)</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>解决此插槽虚拟控制器输出上同时按住的按钮对。当一对按钮同时按下时，所选规则决定游戏看到哪个输入。</value></data>
-  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>重置同时按下</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>重置同时反向输入</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>模式</value></data>
   <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>按住的按钮对如何解决。应用于插槽的最终合成输出，因此物理、映射和宏输入都会被同样处理。</value></data>
   <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>重置模式</value></data>
@@ -2352,6 +2350,9 @@
   <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>再添加一个按钮对。</value></data>
   <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>移除此按钮对。</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>解决反向键对的两个键被同时按住的冲突，类似 Snap Tap。应用于此插槽的虚拟键盘输出。</value></data>
+  <data name="Pad_Kbm_Socd_Card_Desc" xml:space="preserve"><value>解决此插槽虚拟键盘输出上同时按住的按键对，类似 Snap Tap。当一对按键同时按下时，所选规则决定游戏看到哪个输入。</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>按键对</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>规则处理的按键对。每对独立跟踪。</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>指南键 LED</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>电池电量</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>亮度</value></data>

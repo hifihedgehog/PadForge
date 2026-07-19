@@ -2343,7 +2343,6 @@
   <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>Aggiunge un'altra coppia di tasti opposti.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Primo tasto della coppia opposta.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Secondo tasto della coppia opposta.</value></data>
-  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Direzioni opposte simultanee</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>La pressione più vecchia continua a vincere finché non viene rilasciata.</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>Vince il primo</value></data>
   <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>La pressione più recente vince. Al rilascio viene ripremuto il tasto opposto ancora tenuto.</value></data>
@@ -2353,10 +2352,9 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>Entrambi i tasti passano invariati.</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Disattivato</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Rimuove questa coppia di tasti.</value></data>
-  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Ripristina direzioni opposte simultanee</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Pressione simultanea (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Direzioni cardinali opposte simultanee (SOCD)</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Risolve le coppie di pulsanti tenute premute insieme sull&apos;uscita del controller virtuale di questo slot. Quando entrambi i pulsanti di una coppia sono premuti, la regola scelta decide quale pressione vede il gioco.</value></data>
-  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Reimposta pressione simultanea</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Reimposta direzioni cardinali opposte simultanee</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modalità</value></data>
   <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>Come si risolve una coppia tenuta premuta. Si applica all&apos;uscita finale combinata dello slot, quindi le pressioni fisiche, mappate e da macro vengono pulite allo stesso modo.</value></data>
   <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>Reimposta modalità</value></data>
@@ -2374,6 +2372,9 @@
   <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>Aggiunge un&apos;altra coppia di pulsanti.</value></data>
   <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Rimuove questa coppia di pulsanti.</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Risolve il caso in cui entrambi i tasti di una coppia opposta sono tenuti premuti insieme, come Snap Tap. Si applica all'output di tastiera virtuale di questo slot.</value></data>
+  <data name="Pad_Kbm_Socd_Card_Desc" xml:space="preserve"><value>Risolve le coppie di tasti tenute premute insieme sull'output di tastiera virtuale di questo slot, come Snap Tap. Quando entrambi i tasti di una coppia sono premuti, la regola scelta decide quale pressione vede il gioco.</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>Coppie di tasti</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>Le coppie di tasti che la regola pulisce. Ogni coppia è tracciata separatamente.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED del pulsante Guida</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Livello batteria</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Luminosità</value></data>

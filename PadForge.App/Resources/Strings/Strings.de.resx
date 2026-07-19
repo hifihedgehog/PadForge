@@ -2321,7 +2321,6 @@
   <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>Fügt ein weiteres gegensätzliches Tastenpaar hinzu.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Erste Taste des gegensätzlichen Paars.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Zweite Taste des gegensätzlichen Paars.</value></data>
-  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Gleichzeitige entgegengesetzte Richtungen</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>Der frühere Tastendruck gewinnt weiter, bis er losgelassen wird.</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>Erste gewinnt</value></data>
   <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>Der jüngste Tastendruck gewinnt. Beim Loslassen wird die noch gehaltene Gegentaste erneut gedrückt.</value></data>
@@ -2331,10 +2330,9 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>Beide Tasten werden unverändert durchgereicht.</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Aus</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Entfernt dieses Tastenpaar.</value></data>
-  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Gleichzeitige entgegengesetzte Richtungen zurücksetzen</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Gleichzeitiges Drücken (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Gleichzeitige entgegengesetzte Kardinalrichtungen (SOCD)</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Löst gleichzeitig gehaltene Tastenpaare auf der virtuellen Controller-Ausgabe dieses Slots auf. Sind beide Tasten eines Paars gedrückt, entscheidet die gewählte Regel, welchen Druck das Spiel sieht.</value></data>
-  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gleichzeitiges Drücken zurücksetzen</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gleichzeitige entgegengesetzte Kardinalrichtungen zurücksetzen</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>Wie ein gehaltenes Paar aufgelöst wird. Gilt für die endgültige kombinierte Ausgabe des Slots, sodass physische, zugeordnete und Makro-Drücke gleichermaßen bereinigt werden.</value></data>
   <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>Modus zurücksetzen</value></data>
@@ -2352,6 +2350,9 @@
   <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>Fügt ein weiteres Tastenpaar hinzu.</value></data>
   <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Entfernt dieses Tastenpaar.</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Löst das gleichzeitige Halten beider Tasten eines gegensätzlichen Paars auf, wie Snap Tap. Gilt für die virtuelle Tastaturausgabe dieses Slots.</value></data>
+  <data name="Pad_Kbm_Socd_Card_Desc" xml:space="preserve"><value>Löst gleichzeitig gehaltene Tastenpaare auf der virtuellen Tastaturausgabe dieses Slots auf, wie Snap Tap. Sind beide Tasten eines Paars gedrückt, entscheidet die gewählte Regel, welchen Druck das Spiel sieht.</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>Tastenpaare</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>Die Tastenpaare, die die Regel bereinigt. Jedes Paar wird für sich verfolgt.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide-Tasten-LED</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Akkustand</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Helligkeit</value></data>

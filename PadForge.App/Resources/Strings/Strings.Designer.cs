@@ -1016,8 +1016,10 @@ public class Strings : INotifyPropertyChanged
     public string Pad_MidiStartNoteTooltip => Get("Pad_MidiStartNoteTooltip");
     public string Pad_MidiVelocity => Get("Pad_MidiVelocity");
     public string Pad_MidiVelocityTooltip => Get("Pad_MidiVelocityTooltip");
-    public string Pad_Kbm_Socd_Label => Get("Pad_Kbm_Socd_Label");
     public string Pad_Kbm_Socd_Tooltip => Get("Pad_Kbm_Socd_Tooltip");
+    public string Pad_Kbm_Socd_Card_Desc => Get("Pad_Kbm_Socd_Card_Desc");
+    public string Pad_Kbm_Socd_Pairs_Label => Get("Pad_Kbm_Socd_Pairs_Label");
+    public string Pad_Kbm_Socd_Pairs_Tooltip => Get("Pad_Kbm_Socd_Pairs_Tooltip");
     public string Pad_Kbm_Socd_Mode_Off_Name => Get("Pad_Kbm_Socd_Mode_Off_Name");
     public string Pad_Kbm_Socd_Mode_Off_Description => Get("Pad_Kbm_Socd_Mode_Off_Description");
     public string Pad_Kbm_Socd_Mode_LastWins_Name => Get("Pad_Kbm_Socd_Mode_LastWins_Name");
@@ -1031,7 +1033,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Kbm_Socd_RemovePair_Tooltip => Get("Pad_Kbm_Socd_RemovePair_Tooltip");
     public string Pad_Kbm_Socd_KeyA_Tooltip => Get("Pad_Kbm_Socd_KeyA_Tooltip");
     public string Pad_Kbm_Socd_KeyB_Tooltip => Get("Pad_Kbm_Socd_KeyB_Tooltip");
-    public string Pad_Kbm_Socd_Reset => Get("Pad_Kbm_Socd_Reset");
     public string Pad_Socd_Card_Header => Get("Pad_Socd_Card_Header");
     public string Pad_Socd_Card_Desc => Get("Pad_Socd_Card_Desc");
     public string Pad_Socd_ResetCard_Tooltip => Get("Pad_Socd_ResetCard_Tooltip");

@@ -2321,7 +2321,6 @@
   <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>Ajoute une autre paire de touches opposées.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Première touche de la paire opposée.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Seconde touche de la paire opposée.</value></data>
-  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Directions opposées simultanées</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>L'appui le plus ancien continue de gagner jusqu'à son relâchement.</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>La première gagne</value></data>
   <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>L'appui le plus récent gagne. Son relâchement réappuie la touche opposée encore maintenue.</value></data>
@@ -2331,10 +2330,9 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>Les deux touches passent sans modification.</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Désactivé</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Retire cette paire de touches.</value></data>
-  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Réinitialiser les directions opposées simultanées</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Appui simultané (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Directions cardinales opposées simultanées (SOCD)</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Résout les paires de boutons maintenues en même temps sur la sortie de la manette virtuelle de cet emplacement. Quand les deux boutons d&apos;une paire sont enfoncés, la règle choisie décide quel appui le jeu voit.</value></data>
-  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser l&apos;appui simultané</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser les directions cardinales opposées simultanées</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>Comment une paire maintenue se résout. S&apos;applique à la sortie finale combinée de l&apos;emplacement, donc les appuis physiques, mappés et de macro sont tous nettoyés.</value></data>
   <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>Réinitialiser le mode</value></data>
@@ -2352,6 +2350,9 @@
   <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>Ajoute une autre paire de boutons.</value></data>
   <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Retire cette paire de boutons.</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Résout le maintien simultané des deux touches d'une paire opposée, comme Snap Tap. S'applique à la sortie clavier virtuel de ce slot.</value></data>
+  <data name="Pad_Kbm_Socd_Card_Desc" xml:space="preserve"><value>Résout les paires de touches maintenues en même temps sur la sortie clavier virtuel de cet emplacement, comme Snap Tap. Quand les deux touches d'une paire sont enfoncées, la règle choisie décide quel appui le jeu voit.</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>Paires de touches</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>Les paires de touches que la règle nettoie. Chaque paire est suivie séparément.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED du bouton Guide</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Niveau de batterie</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Luminosité</value></data>

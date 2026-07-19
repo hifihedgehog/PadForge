@@ -2321,7 +2321,6 @@
   <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>반대 방향 키 쌍을 하나 더 추가합니다.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>반대 방향 쌍의 첫 번째 키.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>반대 방향 쌍의 두 번째 키.</value></data>
-  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>동시 반대 방향 입력</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>먼저 누른 키가 놓을 때까지 계속 우선합니다.</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>먼저 누른 키 우선</value></data>
   <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>가장 최근에 누른 키가 우선합니다. 놓으면 아직 눌려 있는 반대 키가 다시 눌립니다.</value></data>
@@ -2331,10 +2330,9 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>두 키 모두 그대로 통과합니다.</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>끔</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>이 키 쌍을 제거합니다.</value></data>
-  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>동시 반대 방향 입력 재설정</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>동시 누름 (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>동시 반대 방향 입력 (SOCD)</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>이 슬롯의 가상 컨트롤러 출력에서 동시에 눌린 버튼 쌍을 해결합니다. 쌍의 두 버튼이 모두 눌려 있으면 선택한 규칙이 게임에 보일 입력을 결정합니다.</value></data>
-  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>동시 누름 재설정</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>동시 반대 방향 입력 재설정</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>모드</value></data>
   <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>누르고 있는 쌍을 해결하는 방식. 슬롯의 최종 결합 출력에 적용되므로 물리, 매핑, 매크로 입력이 모두 동일하게 정리됩니다.</value></data>
   <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>모드 재설정</value></data>
@@ -2352,6 +2350,9 @@
   <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>버튼 쌍을 하나 더 추가합니다.</value></data>
   <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>이 버튼 쌍을 제거합니다.</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>반대 방향 쌍의 두 키가 동시에 눌린 상황을 Snap Tap처럼 해결합니다. 이 슬롯의 가상 키보드 출력에 적용됩니다.</value></data>
+  <data name="Pad_Kbm_Socd_Card_Desc" xml:space="preserve"><value>이 슬롯의 가상 키보드 출력에서 동시에 눌린 키 쌍을 Snap Tap처럼 해결합니다. 쌍의 두 키가 모두 눌려 있으면 선택한 규칙이 게임에 보일 입력을 결정합니다.</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>키 쌍</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>규칙이 정리하는 키 쌍입니다. 각 쌍은 개별적으로 추적됩니다.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>가이드 버튼 LED</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>배터리 잔량</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>밝기</value></data>

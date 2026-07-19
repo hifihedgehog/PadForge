@@ -2321,7 +2321,6 @@
   <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>対向するキーペアをもう 1 組追加します。</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>対向ペアの 1 つ目のキー。</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>対向ペアの 2 つ目のキー。</value></data>
-  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>同時反対方向入力</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>先に押したキーが、離されるまで勝ち続けます。</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>先押し優先</value></data>
   <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>最後に押したキーが勝ちます。離すと、まだ押されている反対側のキーが再び押されます。</value></data>
@@ -2331,10 +2330,9 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>両方のキーがそのまま通過します。</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>オフ</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>このキーペアを削除します。</value></data>
-  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>同時反対方向入力をリセット</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同時押し (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同時反対方向入力 (SOCD)</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>このスロットの仮想コントローラー出力で、同時に押されたボタンペアを解決します。ペアの両方が押されているとき、選んだルールがゲームに見せる入力を決めます。</value></data>
-  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>同時押しをリセット</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>同時反対方向入力をリセット</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>モード</value></data>
   <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>押しっぱなしのペアをどう解決するか。スロットの最終的な合成出力に適用されるため、物理・マッピング・マクロの入力がすべて等しく処理されます。</value></data>
   <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>モードをリセット</value></data>
@@ -2352,6 +2350,9 @@
   <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>ボタンペアをもう一つ追加します。</value></data>
   <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>このボタンペアを削除します。</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>対向ペアの両方のキーが同時に押されたときの競合を Snap Tap のように解決します。このスロットの仮想キーボード出力に適用されます。</value></data>
+  <data name="Pad_Kbm_Socd_Card_Desc" xml:space="preserve"><value>このスロットの仮想キーボード出力で、同時に押されたキーペアを Snap Tap のように解決します。ペアの両方が押されているとき、選んだルールがゲームに見せる入力を決めます。</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>キーペア</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>ルールが処理するキーペア。各ペアは個別に追跡されます。</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>ガイドボタン LED</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>バッテリー残量</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>明るさ</value></data>

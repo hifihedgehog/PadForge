@@ -5186,11 +5186,18 @@ namespace PadForge.ViewModels
 
         /// <summary>Slot-type gate for the SOCD card. It shapes the slot's
         /// virtual controller BUTTON output, so KeyboardMouse (its own
-        /// Snap Tap bar) and MIDI (no button surface) hide it.</summary>
+        /// KbmConfig-bound twin card below) and MIDI (no button surface)
+        /// hide it.</summary>
         public bool SocdCardVisible =>
             _outputType is VirtualControllerType.Xbox
             or VirtualControllerType.PlayStation
             or VirtualControllerType.Extended;
+
+        /// <summary>Gate for the KBM twin of the SOCD card: same card
+        /// face, bound to KbmConfig (key pairs on the virtual keyboard
+        /// output, #205). Mutually exclusive with SocdCardVisible.</summary>
+        public bool KbmSocdCardVisible =>
+            _outputType == VirtualControllerType.KeyboardMouse;
 
         /// <summary>True when the slot's pairs use the flat raw-index
         /// grammar ("12:13"). Mirrors the engine gate exactly: Step 5
@@ -5357,6 +5364,7 @@ namespace PadForge.ViewModels
             }
             OnPropertyChanged(nameof(SocdMode));
             OnPropertyChanged(nameof(SocdCardVisible));
+            OnPropertyChanged(nameof(KbmSocdCardVisible));
             OnPropertyChanged(nameof(SocdUsesExtendedIndices));
             OnPropertyChanged(nameof(AvailableSlotSocdModes));
             OnPropertyChanged(nameof(SocdButtonOptions));

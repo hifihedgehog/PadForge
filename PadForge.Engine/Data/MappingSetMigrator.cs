@@ -230,7 +230,8 @@ namespace PadForge.Engine.Data
             if (rest.StartsWith("Axis", StringComparison.Ordinal)
                 || rest.StartsWith("Btn", StringComparison.Ordinal)
                 || rest.StartsWith("Pov", StringComparison.Ordinal)
-                || rest.StartsWith("Stick", StringComparison.Ordinal))
+                || rest.StartsWith("Stick", StringComparison.Ordinal)
+                || rest.StartsWith("Trigger", StringComparison.Ordinal))
                 return "Raw" + rest;
             return token;
         }
@@ -266,9 +267,13 @@ namespace PadForge.Engine.Data
                 foreach (var e in entries)
                 {
                     if (e == null || string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
-                    string target = e.Key.EndsWith("Neg", StringComparison.Ordinal)
-                        ? e.Key.Substring(0, e.Key.Length - 3)
-                        : e.Key;
+                    // Pre-rename saves still carry legacy array keys here
+                    // (the array only re-flushes on save); normalize before
+                    // the new-grammar filter or their rows silently drop.
+                    string key = NormalizeRawToken(e.Key);
+                    string target = key.EndsWith("Neg", StringComparison.Ordinal)
+                        ? key.Substring(0, key.Length - 3)
+                        : key;
                     if (!RawTargetKey.IsMatch(target)) continue;
                     if (seen.Add(target)) targets.Add(target);
                 }

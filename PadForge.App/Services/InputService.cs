@@ -4363,10 +4363,10 @@ namespace PadForge.Services
                 {
                     if (trig.Index < 2) continue;
                     int g = trig.Index;
-                    ps.SetRawMapping($"ExtendedTrigger{g}Dz", trig.DeadZone.ToString(ic));
-                    ps.SetRawMapping($"ExtendedTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
-                    ps.SetRawMapping($"ExtendedTrigger{g}Mr", trig.MaxRange.ToString(ic));
-                    ps.SetRawMapping($"ExtendedTrigger{g}Curve", trig.SensitivityCurve);
+                    ps.SetRawMapping($"RawTrigger{g}Dz", trig.DeadZone.ToString(ic));
+                    ps.SetRawMapping($"RawTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
+                    ps.SetRawMapping($"RawTrigger{g}Mr", trig.MaxRange.ToString(ic));
+                    ps.SetRawMapping($"RawTrigger{g}Curve", trig.SensitivityCurve);
                 }
             }
 
@@ -4444,7 +4444,7 @@ namespace PadForge.Services
                         }
                     }
 
-                    if (target.StartsWith("Extended", StringComparison.Ordinal))
+                    if (target.StartsWith("Raw", StringComparison.Ordinal))
                     {
                         owningPs.SetRawMapping(target, mapping.SourceDescriptor ?? string.Empty);
                         if (mapping.NegSettingName != null)
@@ -4761,10 +4761,10 @@ namespace PadForge.Services
             {
                 if (trig.Index < 2) continue;
                 int g = trig.Index;
-                trig.DeadZone = TryParseDouble(ps.GetRawMapping($"ExtendedTrigger{g}Dz"), 0);
-                trig.AntiDeadZone = TryParseDouble(ps.GetRawMapping($"ExtendedTrigger{g}Adz"), 0);
-                trig.MaxRange = TryParseDouble(ps.GetRawMapping($"ExtendedTrigger{g}Mr"), 100);
-                string trigCurve = ps.GetRawMapping($"ExtendedTrigger{g}Curve");
+                trig.DeadZone = TryParseDouble(ps.GetRawMapping($"RawTrigger{g}Dz"), 0);
+                trig.AntiDeadZone = TryParseDouble(ps.GetRawMapping($"RawTrigger{g}Adz"), 0);
+                trig.MaxRange = TryParseDouble(ps.GetRawMapping($"RawTrigger{g}Mr"), 100);
+                string trigCurve = ps.GetRawMapping($"RawTrigger{g}Curve");
                 trig.SensitivityCurve = string.IsNullOrEmpty(trigCurve) ? "0,0;1,1" : trigCurve;
             }
 

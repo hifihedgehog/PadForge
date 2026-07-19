@@ -1356,7 +1356,7 @@ namespace PadForge.Common.Input
         /// reads as released. There's no "negative trigger" to push the
         /// value below released, unlike a stick's left/right pair.</para>
         /// </summary>
-        private static short MapToExtendedTriggerAxis(CustomInputState state, string posDescriptor, string negDescriptor,
+        private static short MapToRawTriggerAxis(CustomInputState state, string posDescriptor, string negDescriptor,
             string deviceGuid, int slotIndex)
         {
             if (string.IsNullOrWhiteSpace(negDescriptor))
@@ -1867,7 +1867,7 @@ namespace PadForge.Common.Input
                     string posDesc = ps.GetRawMapping(axisKey);
                     string negDesc = ps.GetRawMapping(CachedName(ref _extAxisNegNames, i, "RawAxis", "Neg"));
                     raw.Axes[i] = isTrigger
-                        ? MapToExtendedTriggerAxis(state, posDesc, negDesc, thisDeviceGuid, slotIndex)
+                        ? MapToRawTriggerAxis(state, posDesc, negDesc, thisDeviceGuid, slotIndex)
                         : MapToThumbAxisWithNeg(state, posDesc, negDesc, thisDeviceGuid, slotIndex);
                 }
             }

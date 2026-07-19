@@ -5328,6 +5328,22 @@ namespace PadForge.ViewModels
             get
             {
                 var s = Strings.Instance;
+                if (_outputType == VirtualControllerType.Nintendo)
+                {
+                    // Lettered pickers over the raw-index grammar (the
+                    // engine parses "6:7"): Value is the index STRING so
+                    // Serialize's name branch emits the raw pair intact,
+                    // Display is the same lettering the mapping grid uses.
+                    var opts = new GyroLabeledOption[MacroButtonNames.NintendoLetteredButtonCount];
+                    for (int i = 0; i < opts.Length; i++)
+                    {
+                        int idx = i;
+                        opts[i] = new GyroLabeledOption(
+                            () => MacroButtonNames.RawButtonLabel(ProfileId, idx + 1),
+                            idx.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                    }
+                    return opts;
+                }
                 bool ps = _outputType == VirtualControllerType.PlayStation;
                 return new[]
                 {
@@ -5415,6 +5431,18 @@ namespace PadForge.ViewModels
                             if (!int.TryParse(a, out int ia) || !int.TryParse(b, out int ib)
                                 || ia is < 0 or > 127 || ib is < 0 or > 127)
                             { _socdPreservedTokens.Add(token); continue; }
+                            if (_outputType == VirtualControllerType.Nintendo
+                                && ia < MacroButtonNames.NintendoLetteredButtonCount
+                                && ib < MacroButtonNames.NintendoLetteredButtonCount)
+                            {
+                                // Lettered picker row over the same raw
+                                // grammar; indices past the lettered range
+                                // keep the numeric editor below.
+                                SocdPairItems.Add(new SlotSocdPairItem(this,
+                                    ia.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                                    ib.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+                                continue;
+                            }
                             SocdPairItems.Add(new SlotSocdPairItem(this, ia, ib));
                         }
                         else
@@ -5452,7 +5480,9 @@ namespace PadForge.ViewModels
         public RelayCommand AddSocdPairCommand =>
             _addSocdPairCommand ??= new RelayCommand(() =>
             {
-                SocdPairItems.Add(SocdUsesRawIndices
+                SocdPairItems.Add(_outputType == VirtualControllerType.Nintendo
+                    ? new SlotSocdPairItem(this, "0", "1")
+                    : SocdUsesRawIndices
                     ? new SlotSocdPairItem(this, 0, 1)
                     : new SlotSocdPairItem(this, "DPadLeft", "DPadRight"));
                 OnSocdPairEdited();

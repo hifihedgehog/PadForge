@@ -306,7 +306,16 @@ namespace PadForge.Views
             // hides both Sticks and Triggers because its mapping surface is
             // CC + note, not stick/trigger.
             TabSticks.Visibility = isMidi ? Visibility.Collapsed : Visibility.Visible;
-            TabTriggers.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
+            // Raw-surface slots whose profile declares no analog triggers
+            // (the Switch Pro's ZL/ZR are digital buttons) have nothing
+            // for the Triggers tab to show; hide it like the other
+            // no-surface gates instead of presenting an empty tab.
+            bool rawNoTriggers = DataContext is PadViewModel tvm
+                && tvm.OutputType is Engine.VirtualControllerType.Extended
+                    or Engine.VirtualControllerType.Nintendo
+                && (tvm.ExtendedConfig?.TriggerCount ?? 0) == 0;
+            TabTriggers.Visibility = (isMidi || isKbm || rawNoTriggers)
+                ? Visibility.Collapsed : Visibility.Visible;
 
             // Flick Stick tuning card (#225): keyboard/mouse slots only.
             // The flick output is relative mouse movement, so the

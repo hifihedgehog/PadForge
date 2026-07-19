@@ -277,6 +277,26 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void BuildFromLegacy_NormalizesLegacyArrayKeysIntoRows()
+        {
+            // Pre-rename saves carry legacy keys in the serialized ARRAY
+            // (the dict only rebuilds keys on first read); the migrator
+            // lane must normalize before its new-grammar filter or the
+            // rows silently drop on upgrade.
+            var ps = new PadSetting
+            {
+                RawMappingEntries = new[]
+                {
+                    new RawMappingEntry { Key = "ExtendedBtn5", Value = "Button 5" },
+                },
+            };
+            var ms = MappingSetMigrator.BuildFromLegacy(0,
+                new (string, PadSetting, bool)[] { (System.Guid.NewGuid().ToString(), ps, true) });
+            Assert.Contains(ms.Rows, r => r?.Target == "RawBtn5"
+                && r.Sources?.Count > 0 && r.Sources[0].Descriptor == "Button 5");
+        }
+
+        [Fact]
         public void PadSettingJson_RoundTripsNintendoRawMappings()
         {
             var ps = new PadSetting();

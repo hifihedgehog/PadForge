@@ -4564,7 +4564,7 @@ namespace PadForge
             var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
 
             // Total active slots is the binding constraint (MaxPads = 16
-            // across all five groups). When the global total is at the cap
+            // across all six groups). When the global total is at the cap
             // every "Add" button disables uniformly. Per-type counts are
             // kept for the at-capacity tooltip text.
             int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;

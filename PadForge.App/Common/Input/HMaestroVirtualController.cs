@@ -61,6 +61,9 @@ namespace PadForge.Common.Input
         private const ushort SonyVid = 0x054C;
         private const ushort DualSensePid = 0x0CE6;
         private const ushort DualSenseEdgePid = 0x0DF2;
+        // Nintendo family: the virtual Switch Pro (HM v1.3.18, HM#33)
+        // decodes its rumble outputs onto OutputDecoded like Sony.
+        private const ushort NintendoVid = 0x057E;
 
         private bool IsDualSenseVirtual =>
             _profile.VendorId == SonyVid
@@ -666,6 +669,10 @@ namespace PadForge.Common.Input
         /// float range HMGamepadState expects.
         /// </summary>
         public void SubmitExtendedRawState(ExtendedRawState raw, int sticks, int triggers)
+            => SubmitExtendedRawState(raw, sticks, triggers, default);
+
+        public void SubmitExtendedRawState(ExtendedRawState raw, int sticks, int triggers,
+            in PadForge.Services.MotionSnapshot motion)
         {
             if (_controller == null) return;
             TickFfb();
@@ -773,6 +780,22 @@ namespace PadForge.Common.Input
                 Hat = hat,
             };
 
+            // IMU channel (HM v1.3.18, HM#33): MotionSnapshot is already
+            // g / deg/s in the SDL sensor frame, and the SDK's field docs
+            // direct SDL-reading consumers to submit those values
+            // VERBATIM (the per-profile packer owns the wire frame and
+            // scale, so the vector round-trips bit-consistent to SDL on
+            // the client). Zeroes when the slot maps no motion source.
+            if (motion.HasMotion)
+            {
+                state.AccelGX = motion.AccelX;
+                state.AccelGY = motion.AccelY;
+                state.AccelGZ = motion.AccelZ;
+                state.GyroDpsX = motion.GyroPitch;
+                state.GyroDpsY = motion.GyroYaw;
+                state.GyroDpsZ = motion.GyroRoll;
+            }
+
             _controller.SubmitState(state);
         }
 
@@ -868,6 +891,18 @@ namespace PadForge.Common.Input
                         && vfObj is byte validFlag0
                         && (validFlag0 & motorMask) != 0)
                     {
+                        System.Threading.Volatile.Write(ref _inboundRumblePack,
+                            Engine.Common.LfeOutputState.Pack(
+                                (ushort)(left * 257), (ushort)(right * 257), 0, 0));
+                    }
+                    else if (_profile.VendorId == NintendoVid)
+                    {
+                        // Switch Pro (HM v1.3.18): the driver decodes the
+                        // 0x01/0x10 rumble outputs itself and only emits
+                        // the motor fields for genuine rumble frames, and
+                        // this wire has no validFlag/CRC to gate on. Same
+                        // provenance as the motors above: game-authored
+                        // only, so the #236 pack rides directly.
                         System.Threading.Volatile.Write(ref _inboundRumblePack,
                             Engine.Common.LfeOutputState.Pack(
                                 (ushort)(left * 257), (ushort)(right * 257), 0, 0));

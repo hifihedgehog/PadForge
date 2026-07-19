@@ -408,11 +408,13 @@ namespace PadForge.Engine.Data
         {
             if (ms == null || devices == null || devices.Count == 0) return;
 
-            // Sony-class only. slotType integer encoding matches the
-            // VirtualControllerType enum's underlying values (PlayStation=1).
-            // Encoded as int here so PadForge.Engine.Data doesn't need a
+            // Motion-capable slot families only. slotType integer encoding
+            // matches the VirtualControllerType enum's underlying values
+            // (PlayStation=1, Nintendo=5; the virtual Switch Pro gained a
+            // real IMU surface in HIDMaestro v1.3.18, HM#33). Encoded as
+            // int here so PadForge.Engine.Data doesn't need a
             // back-reference to PadForge.Engine for the enum type.
-            if (slotType != 1) return;
+            if (slotType != 1 && slotType != 5) return;
 
             EnsureMotionRowForSensor(ms, MotionGyroTarget,  MotionGyroSourceDescriptor,
                 devices, dev => dev.HasGyro);

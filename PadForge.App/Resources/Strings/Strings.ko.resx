@@ -2733,7 +2733,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>베이스 셰이커</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>이 가상 컨트롤러가 받는 게임 진동과 포스 피드백을 저주파 톤으로 바꿔 베이스 셰이커와 서브우퍼용 오디오 출력으로 보냅니다.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>진동을 오디오로</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 4 / DualSense 및 레이싱 휠 같은 포스 피드백 지원 Extended 가상 컨트롤러에서 동작합니다. 오디오 출력에는 게임 피드백만 전달됩니다. 매크로와 테스트 진동은 컨트롤러에 남습니다.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 4 / DualSense, Nintendo Switch Pro 및 레이싱 휠 같은 포스 피드백 지원 Extended 가상 컨트롤러에서 동작합니다. 오디오 출력에는 게임 피드백만 전달됩니다. 매크로와 테스트 진동은 컨트롤러에 남습니다.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>진동을 오디오로 재설정</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>진동을 오디오 출력으로 보내기</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>이 가상 컨트롤러의 게임 진동과 포스 피드백을 선택한 오디오 출력에서 저주파 톤으로 재생합니다. 꺼도 모든 설정은 유지됩니다.</value></data>

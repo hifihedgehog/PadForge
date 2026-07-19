@@ -470,9 +470,11 @@ namespace PadForge.Services
                 // MotionGyro / MotionAccel descriptor fields so the
                 // mapping-table MappingItem (which reads via PadSetting
                 // reflection) shows the right source name for the
-                // row. Sony-class only — non-Sony slots have no
-                // MotionRow and clear the fields.
-                bool isSony = slotType == Engine.VirtualControllerType.PlayStation;
+                // row. Motion-capable families only (PlayStation, and
+                // Nintendo since HM v1.3.18's virtual Switch Pro IMU) —
+                // other slots have no MotionRow and clear the fields.
+                bool isSony = slotType is Engine.VirtualControllerType.PlayStation
+                    or Engine.VirtualControllerType.Nintendo;
                 foreach (var us in userSettingsSnapshot)
                 {
                     if (us == null || us.MapTo != slot) continue;

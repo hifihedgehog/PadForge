@@ -1486,6 +1486,44 @@ def _add_trigger_base_entries(results):
     return out
 
 
+def _hit_polygons(overlay_path, _cache={}):
+    """Trace the overlay's opaque region into simplified polygons for
+    per-pixel hit-testing (the view clips the hover/click rectangle to
+    this geometry, so a control only answers where its art shows).
+
+    The mask is dilated a few native pixels first so thin strokes (the
+    ZL/ZR arcs, D-pad arrow outlines) keep a comfortable grab margin
+    while still hugging the visible art. Points are emitted normalized
+    to the image so the view scales them to the rendered entry size.
+    Returns "x,y x,y ...;x,y ..." (one group per polygon) or None.
+    """
+    if overlay_path in _cache:
+        return _cache[overlay_path]
+    ov = cv2.imread(overlay_path, cv2.IMREAD_UNCHANGED)
+    if ov is None or ov.ndim < 3 or ov.shape[2] < 4:
+        _cache[overlay_path] = None
+        return None
+    h, w = ov.shape[:2]
+    mask = (ov[:, :, 3] > 25).astype(np.uint8)
+    k = max(7, int(round(min(w, h) * 0.06)))
+    if k % 2 == 0:
+        k += 1
+    mask = cv2.dilate(mask, np.ones((k, k), np.uint8))
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    polys = []
+    for c in contours:
+        if cv2.contourArea(c) < 30:
+            continue
+        eps = 0.004 * cv2.arcLength(c, True)
+        c = cv2.approxPolyDP(c, eps, True).reshape(-1, 2)
+        if len(c) < 3:
+            continue
+        polys.append(" ".join("%.4f,%.4f" % (px / w, py / h) for px, py in c))
+    result = ";".join(polys) if polys else None
+    _cache[overlay_path] = result
+    return result
+
+
 def generate_csharp(layouts, output_path):
     """Generate C# source file with overlay position data."""
     lines = [
@@ -1494,11 +1532,13 @@ def generate_csharp(layouts, output_path):
         "",
         "public enum OverlayElementType { Button, Trigger, TriggerBase, StickRing, StickClick, FaceButtonGroup, Touchpad }",
         "",
-        "public record OverlayElement(string ImageFile, string TargetName, OverlayElementType ElementType, double X, double Y, double Width, double Height);",
+        "public record OverlayElement(string ImageFile, string TargetName, OverlayElementType ElementType, double X, double Y, double Width, double Height, string HitPath = null);",
         "",
     ]
 
     def emit(class_name, data, base_path, stick_travel):
+        folder = base_path.split("/")[1]
+        ov_dir = os.path.join(MODELS_DIR, folder)
         lines.append(f"public static class {class_name}")
         lines.append("{")
         lines.append(f"    public const int BaseWidth = {data['base_width']};")
@@ -1509,7 +1549,11 @@ def generate_csharp(layouts, output_path):
         lines.append("    public static readonly OverlayElement[] Overlays =")
         lines.append("    {")
         for fn, target, etype, x, y, w, h in data["results"]:
-            lines.append(f'        new("{fn}", "{target}", OverlayElementType.{etype}, {x}, {y}, {w}, {h}),')
+            hit = _hit_polygons(os.path.join(ov_dir, fn)) if fn and etype not in ("TriggerBase",) else None
+            if hit:
+                lines.append(f'        new("{fn}", "{target}", OverlayElementType.{etype}, {x}, {y}, {w}, {h}, "{hit}"),')
+            else:
+                lines.append(f'        new("{fn}", "{target}", OverlayElementType.{etype}, {x}, {y}, {w}, {h}),')
         lines.append("    };")
         lines.append("}")
 

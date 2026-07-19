@@ -275,6 +275,13 @@ namespace PadForge.Views
                     Cursor = Cursors.Hand,
                     Tag = ov.TargetName,
                 };
+                // Per-pixel hit zone: the generator traces each overlay's
+                // opaque region into polygons, and UIElement.Clip bounds
+                // hit-testing as well as rendering, so hover/click only
+                // fire where the art actually shows (a trigger's thin arc,
+                // not the empty box around it).
+                if (!string.IsNullOrEmpty(ov.HitPath))
+                    hitRect.Clip = BuildHitGeometry(ov.HitPath, ov.Width, ov.Height);
                 Canvas.SetLeft(hitRect, ov.X);
                 Canvas.SetTop(hitRect, ov.Y);
                 Panel.SetZIndex(hitRect, 10);
@@ -418,6 +425,34 @@ namespace PadForge.Views
             double cy = _touchpadOverlay.Y + normY * _touchpadOverlay.Height;
             Canvas.SetLeft(dot, cx - dot.Width / 2);
             Canvas.SetTop(dot, cy - dot.Height / 2);
+        }
+
+        /// <summary>Builds the hit-zone clip from the generator's normalized
+        /// polygon groups ("x,y x,y ...;x,y ..."), scaled to the rendered
+        /// entry size. Culture-invariant parse; frozen for sharing.</summary>
+        private static Geometry BuildHitGeometry(string hitPath, double w, double h)
+        {
+            var sg = new StreamGeometry { FillRule = FillRule.Nonzero };
+            using (var ctx = sg.Open())
+            {
+                foreach (var poly in hitPath.Split(';'))
+                {
+                    var pts = poly.Split(' ');
+                    Point Parse(string t)
+                    {
+                        int c = t.IndexOf(',');
+                        return new Point(
+                            double.Parse(t.Substring(0, c), System.Globalization.CultureInfo.InvariantCulture) * w,
+                            double.Parse(t.Substring(c + 1), System.Globalization.CultureInfo.InvariantCulture) * h);
+                    }
+                    if (pts.Length < 3) continue;
+                    ctx.BeginFigure(Parse(pts[0]), isFilled: true, isClosed: true);
+                    for (int i = 1; i < pts.Length; i++)
+                        ctx.LineTo(Parse(pts[i]), isStroked: false, isSmoothJoin: false);
+                }
+            }
+            sg.Freeze();
+            return sg;
         }
 
         private static Image CreateImage(string resourcePath, double x, double y, double w, double h)

@@ -2921,10 +2921,10 @@ namespace PadForge.Services
                 {
                     if (trig.Index < 2) continue;
                     int g = trig.Index;
-                    trig.DeadZone = TryParseDouble(ps.GetRawMapping($"ExtendedTrigger{g}Dz"), 0);
-                    trig.AntiDeadZone = TryParseDouble(ps.GetRawMapping($"ExtendedTrigger{g}Adz"), 0);
-                    trig.MaxRange = TryParseDouble(ps.GetRawMapping($"ExtendedTrigger{g}Mr"), 100);
-                    string trigCurve = ps.GetRawMapping($"ExtendedTrigger{g}Curve");
+                    trig.DeadZone = TryParseDouble(ps.GetRawMapping($"RawTrigger{g}Dz"), 0);
+                    trig.AntiDeadZone = TryParseDouble(ps.GetRawMapping($"RawTrigger{g}Adz"), 0);
+                    trig.MaxRange = TryParseDouble(ps.GetRawMapping($"RawTrigger{g}Mr"), 100);
+                    string trigCurve = ps.GetRawMapping($"RawTrigger{g}Curve");
                     trig.SensitivityCurve = string.IsNullOrEmpty(trigCurve) ? "0,0;1,1" : trigCurve;
                 }
 
@@ -4410,10 +4410,10 @@ namespace PadForge.Services
                     {
                         if (trig.Index < 2) continue;
                         int g = trig.Index;
-                        ps.SetRawMapping($"ExtendedTrigger{g}Dz", trig.DeadZone.ToString(ic));
-                        ps.SetRawMapping($"ExtendedTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
-                        ps.SetRawMapping($"ExtendedTrigger{g}Mr", trig.MaxRange.ToString(ic));
-                        ps.SetRawMapping($"ExtendedTrigger{g}Curve", trig.SensitivityCurve);
+                        ps.SetRawMapping($"RawTrigger{g}Dz", trig.DeadZone.ToString(ic));
+                        ps.SetRawMapping($"RawTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
+                        ps.SetRawMapping($"RawTrigger{g}Mr", trig.MaxRange.ToString(ic));
+                        ps.SetRawMapping($"RawTrigger{g}Curve", trig.SensitivityCurve);
                     }
 
                     // Write mapping descriptors and per-mapping deadzones.
@@ -4789,8 +4789,8 @@ namespace PadForge.Services
             if (ps == null || string.IsNullOrEmpty(propertyName))
                 return;
 
-            // Extended custom mappings use dictionary-based storage
-            if (propertyName.StartsWith("Extended", StringComparison.Ordinal))
+            // Raw-surface mappings use dictionary-based storage.
+            if (propertyName.StartsWith("Raw", StringComparison.Ordinal))
             {
                 ps.SetRawMapping(propertyName, value ?? string.Empty);
                 return;

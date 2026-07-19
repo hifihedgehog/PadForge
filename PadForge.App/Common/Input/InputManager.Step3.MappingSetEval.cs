@@ -2679,7 +2679,7 @@ namespace PadForge.Common.Input
             if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = 1f - combined;
 
             // [0..+1] → signed short with short.MinValue = 0% (matches the
-            // legacy MapToExtendedTriggerAxis convention).
+            // legacy MapToRawTriggerAxis convention).
             int ushortVal = (int)(combined * 65535f);
             if (ushortVal < 0) ushortVal = 0;
             if (ushortVal > 65535) ushortVal = 65535;

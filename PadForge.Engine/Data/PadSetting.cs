@@ -783,33 +783,43 @@ namespace PadForge.Engine.Data
         public string GetRawMapping(string key)
         {
             EnsureRawMappingDict();
-            return _rawMappingDict.TryGetValue(key, out var val) ? val : "";
+            // Under the lock: the poll thread reads (Step 3 raw eval) while
+            // the UI thread writes (grid edits, tuning saves); a plain
+            // Dictionary corrupts under concurrent read+write.
+            lock (_rawDictLock)
+                return _rawMappingDict.TryGetValue(key, out var val) ? val : "";
         }
 
-        /// <summary>Sets an Extended mapping value by key.</summary>
+        /// <summary>Sets a raw-surface mapping value by key.</summary>
         public void SetRawMapping(string key, string value)
         {
             EnsureRawMappingDict();
-            if (string.IsNullOrEmpty(value))
-                _rawMappingDict.Remove(key);
-            else
-                _rawMappingDict[key] = value;
+            lock (_rawDictLock)
+            {
+                if (string.IsNullOrEmpty(value))
+                    _rawMappingDict.Remove(key);
+                else
+                    _rawMappingDict[key] = value;
+            }
         }
 
         /// <summary>Flushes the Extended mapping dict back to the serializable array.</summary>
         public void FlushRawMappings()
         {
             if (_rawMappingDict == null) return; // Not initialized — array is canonical.
-            if (_rawMappingDict.Count == 0)
+            lock (_rawDictLock)
             {
-                RawMappingEntries = null;
-                return;
+                if (_rawMappingDict.Count == 0)
+                {
+                    RawMappingEntries = null;
+                    return;
+                }
+                var entries = new RawMappingEntry[_rawMappingDict.Count];
+                int i = 0;
+                foreach (var kvp in _rawMappingDict)
+                    entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                RawMappingEntries = entries;
             }
-            var entries = new RawMappingEntry[_rawMappingDict.Count];
-            int i = 0;
-            foreach (var kvp in _rawMappingDict)
-                entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
-            RawMappingEntries = entries;
         }
 
         private readonly object _rawDictLock = new();
@@ -1637,7 +1647,7 @@ namespace PadForge.Engine.Data
                 return true;
             if (k.StartsWith("RawStick", StringComparison.Ordinal))
                 return true;
-            if (k.StartsWith("ExtendedTrigger", StringComparison.Ordinal)
+            if (k.StartsWith("RawTrigger", StringComparison.Ordinal)
                 && (k.EndsWith("Dz", StringComparison.Ordinal) || k.EndsWith("Adz", StringComparison.Ordinal)
                     || k.EndsWith("Mr", StringComparison.Ordinal) || k.EndsWith("Curve", StringComparison.Ordinal)))
                 return true;
@@ -2089,7 +2099,17 @@ namespace PadForge.Engine.Data
                     if (kvp.Key.StartsWith("__"))
                     {
                         if (kvp.Key == "__ExtendedMappings")
-                            ps.RawMappingEntries = DeserializeMappingArray(kvp.Value);
+                        {
+                            // Clipboard JSON from a pre-rename build carries
+                            // legacy raw keys; normalize on entry so the
+                            // translated-copy reads see current grammar.
+                            var arr = DeserializeMappingArray(kvp.Value);
+                            if (arr != null)
+                                foreach (var e in arr)
+                                    if (e != null && !string.IsNullOrEmpty(e.Key))
+                                        e.Key = MappingSetMigrator.NormalizeRawToken(e.Key);
+                            ps.RawMappingEntries = arr;
+                        }
                         else if (kvp.Key == "__MidiMappings")
                             ps.MidiMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__KbmMappings")

@@ -687,7 +687,7 @@ namespace PadForge.Common.Input
             // because raw.Axes is already centered on signed zero for
             // sticks (per ExtendedSlotConfig's signed-short convention)
             // and on short.MinValue for triggers (per
-            // MapToExtendedTriggerAxis's released-rest contract).
+            // MapToRawTriggerAxis's released-rest contract).
             float ToHmRange(short v) => (v + 32768f) / 65535f;
 
             // Replicate ExtendedSlotConfig.ComputeAxisLayout. Interleaved

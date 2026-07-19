@@ -803,6 +803,22 @@ namespace PadForge.Common.Input
                     continue;
                 }
 
+                // Slot deleted or disabled with NO live VC: the destroy
+                // path above never runs (vc is null), but the
+                // Initializing/create-failed latches may still be armed
+                // (failed create, or the slot went away mid-create).
+                // Left set, the flag paints an eternal flashing
+                // "Initializing" on the dead card, and CreateSlot's
+                // pad-index reuse hands both latches to the next slot
+                // born at this index.
+                if (vc == null
+                    && (!SettingsManager.SlotCreated[padIndex]
+                        || !SettingsManager.SlotEnabled[padIndex]))
+                {
+                    _slotInitializing[padIndex] = false;
+                    _createFailed[padIndex] = false;
+                }
+
                 bool slotActive = IsSlotActive(padIndex);
 
                 if (slotActive)
@@ -812,8 +828,21 @@ namespace PadForge.Common.Input
 
                     if (vc == null)
                     {
-                        anyNeedsCreate = true;
-                        if (!_slotInitializing[padIndex]) BeginInitializing(padIndex);
+                        if (_createFailed[padIndex])
+                        {
+                            // Creation is latched off after a failed HM
+                            // create; Pass 2 will not retry until a
+                            // user-driven change clears the latch.
+                            // Re-arming Initializing here painted an
+                            // eternal flashing "Initializing" for a VC
+                            // that will never arrive. Show rest instead.
+                            _slotInitializing[padIndex] = false;
+                        }
+                        else
+                        {
+                            anyNeedsCreate = true;
+                            if (!_slotInitializing[padIndex]) BeginInitializing(padIndex);
+                        }
                     }
                 }
                 else if (vc != null

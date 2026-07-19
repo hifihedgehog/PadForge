@@ -1032,7 +1032,12 @@ namespace PadForge.Engine.Data
                     foreach (var e in MappingDeadZoneEntries)
                     {
                         if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
-                            dict[e.Key] = e.Value;
+                            // Legacy raw-surface keys ("ExtendedBtn7"-style,
+                            // pre-rename saves) normalize to the current
+                            // "Raw*" grammar on first read, matching
+                            // EnsureRawMappingDict. Non-raw keys
+                            // ("ButtonA") pass through unchanged.
+                            dict[MappingSetMigrator.NormalizeRawToken(e.Key)] = e.Value;
                     }
                 }
                 _mappingDeadZoneDict = dict;
@@ -1098,7 +1103,9 @@ namespace PadForge.Engine.Data
                     foreach (var e in MappingBidirectionalEntries)
                     {
                         if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
-                            dict[e.Key] = e.Value;
+                            // Same legacy-key normalization as the
+                            // dead-zone dict above.
+                            dict[MappingSetMigrator.NormalizeRawToken(e.Key)] = e.Value;
                     }
                 }
                 _mappingBidirectionalDict = dict;
@@ -2115,7 +2122,7 @@ namespace PadForge.Engine.Data
                         else if (kvp.Key == "__KbmMappings")
                             ps.KbmMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__MappingDeadZones")
-                            ps.MappingDeadZoneEntries = DeserializeMappingArray(kvp.Value);
+                            ps.MappingDeadZoneEntries = NormalizeRawKeys(DeserializeMappingArray(kvp.Value));
                         else if (kvp.Key == "__MultiSourceRows")
                         {
                             try
@@ -2137,7 +2144,7 @@ namespace PadForge.Engine.Data
                             catch { /* malformed — paste falls back to device-scoped or single-source */ }
                         }
                         else if (kvp.Key == "__MappingBidirectional")
-                            ps.MappingBidirectionalEntries = DeserializeMappingArray(kvp.Value);
+                            ps.MappingBidirectionalEntries = NormalizeRawKeys(DeserializeMappingArray(kvp.Value));
                         else if (kvp.Key == "__TouchpadSettings")
                         {
                             try
@@ -2186,6 +2193,19 @@ namespace PadForge.Engine.Data
             {
                 return null;
             }
+        }
+
+        /// <summary>Normalizes legacy "Extended*" raw-surface keys in a
+        /// clipboard-deserialized entry array to the current "Raw*"
+        /// grammar. Pre-rename copies paste correctly; current-grammar
+        /// keys pass through unchanged.</summary>
+        private static RawMappingEntry[] NormalizeRawKeys(RawMappingEntry[] arr)
+        {
+            if (arr != null)
+                foreach (var e in arr)
+                    if (e != null && !string.IsNullOrEmpty(e.Key))
+                        e.Key = MappingSetMigrator.NormalizeRawToken(e.Key);
+            return arr;
         }
 
         private static RawMappingEntry[] DeserializeMappingArray(string json)

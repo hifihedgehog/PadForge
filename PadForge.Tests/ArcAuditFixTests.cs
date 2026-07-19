@@ -50,7 +50,7 @@ namespace PadForge.Tests
 
             // Trigger channel at rest = short.MinValue. The yield must NOT
             // read that as physical deflection; the macro asserts.
-            var raw = ExtendedRawState.Create(8, 32, 1);
+            var raw = RawHidState.Create(8, 32, 1);
             raw.Buttons[0] = 1;
             raw.Axes[2] = short.MinValue;
             im.EvaluateSlotMacrosExtended(ref raw, macros);
@@ -64,7 +64,7 @@ namespace PadForge.Tests
             var macros = new[] { ExtendedHoldMacro(yield: true) };
 
             // A genuine physical pull (well past the rest point) yields.
-            var raw = ExtendedRawState.Create(8, 32, 1);
+            var raw = RawHidState.Create(8, 32, 1);
             raw.Buttons[0] = 1;
             raw.Axes[2] = 0;   // half pull in the signed word frame
             im.EvaluateSlotMacrosExtended(ref raw, macros);
@@ -96,7 +96,7 @@ namespace PadForge.Tests
             });
             var macros = new[] { m };
 
-            var raw = ExtendedRawState.Create(8, 32, 1);
+            var raw = RawHidState.Create(8, 32, 1);
             raw.Buttons[0] = 1;
             raw.Axes[2] = short.MinValue;   // rest
             im.EvaluateSlotMacrosExtended(ref raw, macros);
@@ -105,7 +105,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ExtendedStickAxisAdd_KeepsThePlainSignedFrame()
+        public void RawStickAxisAdd_KeepsThePlainSignedFrame()
         {
             var im = new InputManager();
             var m = new MacroItem
@@ -127,7 +127,7 @@ namespace PadForge.Tests
             });
             var macros = new[] { m };
 
-            var raw = ExtendedRawState.Create(8, 32, 1);
+            var raw = RawHidState.Create(8, 32, 1);
             raw.Buttons[0] = 1;
             raw.Axes[0] = 20000;
             im.EvaluateSlotMacrosExtended(ref raw, macros);

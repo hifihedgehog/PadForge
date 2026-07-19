@@ -509,9 +509,9 @@ namespace PadForge.Tests
             Assert.Empty(im._desiredLatchedMouseButtons);
         }
 
-        private static ExtendedRawState RawState(uint pressedWord0)
+        private static RawHidState RawState(uint pressedWord0)
         {
-            var raw = ExtendedRawState.Create(8, 32, 1);
+            var raw = RawHidState.Create(8, 32, 1);
             raw.Buttons[0] = pressedWord0;
             return raw;
         }

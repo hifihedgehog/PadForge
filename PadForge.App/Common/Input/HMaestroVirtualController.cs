@@ -105,7 +105,7 @@ namespace PadForge.Common.Input
         private HMAxis _axLeftTriggerField, _axRightTriggerField;
 
         // Per-call axes scratch dict, allocated once and reused across
-        // every SubmitGamepadState / SubmitExtendedRawState frame to
+        // every SubmitGamepadState / SubmitRawHidState frame to
         // keep the 1 kHz hot path allocation-free. HMGamepadState.Axes
         // is a Dictionary<HMAxis, float>; the encoder consumes the dict
         // by key lookup and is fine with reused references.
@@ -113,7 +113,7 @@ namespace PadForge.Common.Input
 
         // Idle dedup state for the plain SubmitGamepadState path (in
         // practice Xbox slots: every Extended slot is custom and uses
-        // SubmitExtendedRawState, and Sony rides the extended overload).
+        // SubmitRawHidState, and Sony rides the extended overload).
         // See the contract note at the skip site.
         //
         // 16 ms, NOT longer: the GIP companion's stale watchdog counts
@@ -647,7 +647,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Submit an ExtendedRawState (produced by the Extended dynamic
+        /// Submit an RawHidState (produced by the Extended dynamic
         /// mapping path) directly to HIDMaestro. Covers the full HMGamepadState
         /// surface — 6 axes, 13 buttons, and a hat — without going through
         /// the XInput Gamepad intermediate, so Touchpad/Share buttons and
@@ -661,17 +661,17 @@ namespace PadForge.Common.Input
         /// (3, 4) for right-stick X/Y silently dropped Stick 2 Y for every
         /// 0-trigger or 1-trigger profile.
         ///
-        /// ExtendedRawState.Axes is in HID convention per Step 3
+        /// RawHidState.Axes is in HID convention per Step 3
         /// (positive = down/right), matching HMGamepadState's internal
         /// convention, so no Y negation needed — pass signed short
         /// straight through as a normalized float. Triggers in the raw
         /// state are signed short centered at 0; convert to the 0..1
         /// float range HMGamepadState expects.
         /// </summary>
-        public void SubmitExtendedRawState(ExtendedRawState raw, int sticks, int triggers)
-            => SubmitExtendedRawState(raw, sticks, triggers, default);
+        public void SubmitRawHidState(RawHidState raw, int sticks, int triggers)
+            => SubmitRawHidState(raw, sticks, triggers, default);
 
-        public void SubmitExtendedRawState(ExtendedRawState raw, int sticks, int triggers,
+        public void SubmitRawHidState(RawHidState raw, int sticks, int triggers,
             in PadForge.Services.MotionSnapshot motion)
         {
             if (_controller == null) return;

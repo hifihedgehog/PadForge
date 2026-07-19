@@ -661,30 +661,30 @@ namespace PadForge.Common.Input
                     // gamepad semantics. SDL button indices are positional
                     // (0=south 1=east 2=west 3=north), and switch-pro raw
                     // indices letter B0 A1 Y2 X3 (see NintendoExtendedLabel),
-                    // so index N maps straight to ExtendedBtnN and the
+                    // so index N maps straight to RawBtnN and the
                     // letters land Xbox A on Switch B, Xbox X on Switch Y.
                     // Sticks: the profile has no analog triggers, so
                     // ComputeAxisLayout packs LX LY RX RY at 0-3. Physical
                     // trigger PULLS press the digital ZL/ZR buttons through
                     // the standard axis-as-button coercion.
-                    if (HasAxis(0)) ps.SetExtendedMapping("ExtendedAxis0", "Axis 0");
-                    if (HasAxis(1)) ps.SetExtendedMapping("ExtendedAxis1", "Axis 1");
-                    if (HasAxis(3)) ps.SetExtendedMapping("ExtendedAxis2", "Axis 3");
-                    if (HasAxis(4)) ps.SetExtendedMapping("ExtendedAxis3", "Axis 4");
+                    if (HasAxis(0)) ps.SetRawMapping("RawAxis0", "Axis 0");
+                    if (HasAxis(1)) ps.SetRawMapping("RawAxis1", "Axis 1");
+                    if (HasAxis(3)) ps.SetRawMapping("RawAxis2", "Axis 3");
+                    if (HasAxis(4)) ps.SetRawMapping("RawAxis3", "Axis 4");
 
-                    if (HasButton(0)) ps.SetExtendedMapping("ExtendedBtn0", "Button 0");   // south → B
-                    if (HasButton(1)) ps.SetExtendedMapping("ExtendedBtn1", "Button 1");   // east  → A
-                    if (HasButton(2)) ps.SetExtendedMapping("ExtendedBtn2", "Button 2");   // west  → Y
-                    if (HasButton(3)) ps.SetExtendedMapping("ExtendedBtn3", "Button 3");   // north → X
-                    if (HasButton(4)) ps.SetExtendedMapping("ExtendedBtn4", "Button 4");   // LB → L
-                    if (HasButton(5)) ps.SetExtendedMapping("ExtendedBtn5", "Button 5");   // RB → R
-                    if (HasAxis(2)) ps.SetExtendedMapping("ExtendedBtn6", "Axis 2");       // LT pull → ZL
-                    if (HasAxis(5)) ps.SetExtendedMapping("ExtendedBtn7", "Axis 5");       // RT pull → ZR
-                    if (HasButton(6)) ps.SetExtendedMapping("ExtendedBtn8", "Button 6");   // Back → Minus
-                    if (HasButton(7)) ps.SetExtendedMapping("ExtendedBtn9", "Button 7");   // Start → Plus
-                    if (HasButton(8)) ps.SetExtendedMapping("ExtendedBtn10", "Button 8");  // LS click
-                    if (HasButton(9)) ps.SetExtendedMapping("ExtendedBtn11", "Button 9");  // RS click
-                    if (HasButton(10)) ps.SetExtendedMapping("ExtendedBtn12", "Button 10"); // Guide → Home
+                    if (HasButton(0)) ps.SetRawMapping("RawBtn0", "Button 0");   // south → B
+                    if (HasButton(1)) ps.SetRawMapping("RawBtn1", "Button 1");   // east  → A
+                    if (HasButton(2)) ps.SetRawMapping("RawBtn2", "Button 2");   // west  → Y
+                    if (HasButton(3)) ps.SetRawMapping("RawBtn3", "Button 3");   // north → X
+                    if (HasButton(4)) ps.SetRawMapping("RawBtn4", "Button 4");   // LB → L
+                    if (HasButton(5)) ps.SetRawMapping("RawBtn5", "Button 5");   // RB → R
+                    if (HasAxis(2)) ps.SetRawMapping("RawBtn6", "Axis 2");       // LT pull → ZL
+                    if (HasAxis(5)) ps.SetRawMapping("RawBtn7", "Axis 5");       // RT pull → ZR
+                    if (HasButton(6)) ps.SetRawMapping("RawBtn8", "Button 6");   // Back → Minus
+                    if (HasButton(7)) ps.SetRawMapping("RawBtn9", "Button 7");   // Start → Plus
+                    if (HasButton(8)) ps.SetRawMapping("RawBtn10", "Button 8");  // LS click
+                    if (HasButton(9)) ps.SetRawMapping("RawBtn11", "Button 9");  // RS click
+                    if (HasButton(10)) ps.SetRawMapping("RawBtn12", "Button 10"); // Guide → Home
                     // Misc1 (Xbox Share / DualSense Mic / Switch Capture,
                     // SDL index 11) → Capture, gated on the device
                     // actually exposing it like the Xbox Share automap.
@@ -692,16 +692,16 @@ namespace PadForge.Common.Input
                         && ud.DeviceObjects.Any(o => o != null
                             && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
                             && o.InputIndex == 11);
-                    if (hasCaptureSource) ps.SetExtendedMapping("ExtendedBtn13", "Button 11");
+                    if (hasCaptureSource) ps.SetRawMapping("RawBtn13", "Button 11");
 
                     if (HasHat())
                     {
-                        ps.SetExtendedMapping("ExtendedPov0Up", "POV 0 Up");
-                        ps.SetExtendedMapping("ExtendedPov0Down", "POV 0 Down");
-                        ps.SetExtendedMapping("ExtendedPov0Left", "POV 0 Left");
-                        ps.SetExtendedMapping("ExtendedPov0Right", "POV 0 Right");
+                        ps.SetRawMapping("RawPov0Up", "POV 0 Up");
+                        ps.SetRawMapping("RawPov0Down", "POV 0 Down");
+                        ps.SetRawMapping("RawPov0Left", "POV 0 Left");
+                        ps.SetRawMapping("RawPov0Right", "POV 0 Right");
                     }
-                    ps.FlushExtendedMappings();
+                    ps.FlushRawMappings();
                 }
                 else
                 {

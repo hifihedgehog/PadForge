@@ -368,7 +368,7 @@ namespace PadForge.Services
                     var sel = capturedPad.SelectedMappedDevice;
                     if (sel == null || sel.InstanceGuid == Guid.Empty) return;
                     var ps = SettingsManager.FindSettingByInstanceGuidAndSlot(sel.InstanceGuid, capturedPad.PadIndex)?.GetPadSetting();
-                    if (ps != null) capturedPad.LoadSteeringConfigItems(key => ps.GetExtendedMapping(key));
+                    if (ps != null) capturedPad.LoadSteeringConfigItems(key => ps.GetRawMapping(key));
                 };
             }
 
@@ -2057,9 +2057,9 @@ namespace PadForge.Services
                 padVm.UpdateFromEngineState(gp, vibration, selectedDeviceVibration);
                 padVm.UpdateFromTouchpadState(_inputManager.CombinedTouchpadStates[i]);
 
-                // For custom Extended slots, also push the combined ExtendedRawState.
+                // For custom Extended slots, also push the combined RawHidState.
                 if (_inputManager.SlotRawHidSurface[i])
-                    padVm.UpdateFromExtendedRawState(_inputManager.CombinedExtendedRawStates[i]);
+                    padVm.UpdateFromRawHidState(_inputManager.CombinedRawHidStates[i]);
 
                 // For MIDI slots, push the combined MidiRawState.
                 if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.Midi)
@@ -2089,7 +2089,7 @@ namespace PadForge.Services
                     {
                         var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
                         if (_inputManager.SlotRawHidSurface[i] && us != null)
-                            padVm.UpdateFromExtendedDeviceState(us.ExtendedRawOutputState);
+                            padVm.UpdateFromRawDeviceState(us.RawHidOutputState);
                         else
                         {
                             // Per-device Sticks/Triggers preview reads the
@@ -2111,7 +2111,7 @@ namespace PadForge.Services
                         // No device selected: fall back to combined for the
                         // stick/trigger tabs so they aren't stuck on stale
                         // per-device data from a previous selection.
-                        padVm.UpdateFromExtendedDeviceState(_inputManager.CombinedExtendedRawStates[i]);
+                        padVm.UpdateFromRawDeviceState(_inputManager.CombinedRawHidStates[i]);
                     }
                     else
                     {
@@ -3628,7 +3628,7 @@ namespace PadForge.Services
             // For every VC type we pull from the engine's combined
             // output for that type:
             //   Xbox / PlayStation → CombinedOutputStates  (Gamepad)
-            //   Extended           → CombinedExtendedRawStates
+            //   Extended           → CombinedRawHidStates
             //   KbM                → CombinedKbmRawStates
             //   MIDI               → CombinedMidiRawStates
             // The legacy per-device read on the slot's selected device
@@ -3789,11 +3789,11 @@ namespace PadForge.Services
             if (outputType is VirtualControllerType.Extended
                 or VirtualControllerType.Nintendo)
             {
-                var ext = _inputManager.CombinedExtendedRawStates[padIndex];
-                // ExtendedAxis{N} / ExtendedAxis{N}Neg
-                if (target.StartsWith("ExtendedAxis", StringComparison.Ordinal))
+                var ext = _inputManager.CombinedRawHidStates[padIndex];
+                // RawAxis{N} / RawAxis{N}Neg
+                if (target.StartsWith("RawAxis", StringComparison.Ordinal))
                 {
-                    string rest = target.Substring("ExtendedAxis".Length);
+                    string rest = target.Substring("RawAxis".Length);
                     if (rest.EndsWith("Neg", StringComparison.Ordinal))
                         rest = rest.Substring(0, rest.Length - 3);
                     if (int.TryParse(rest, out int axisIdx) && ext.Axes != null
@@ -3801,14 +3801,14 @@ namespace PadForge.Services
                         return ext.Axes[axisIdx];
                     return null;
                 }
-                // ExtendedBtn{N}
-                if (target.StartsWith("ExtendedBtn", StringComparison.Ordinal)
-                    && int.TryParse(target.Substring("ExtendedBtn".Length), out int btn))
+                // RawBtn{N}
+                if (target.StartsWith("RawBtn", StringComparison.Ordinal)
+                    && int.TryParse(target.Substring("RawBtn".Length), out int btn))
                     return ext.IsButtonPressed(btn) ? 1 : 0;
-                // ExtendedPov{N}Up/Down/Left/Right
-                if (target.StartsWith("ExtendedPov", StringComparison.Ordinal))
+                // RawPov{N}Up/Down/Left/Right
+                if (target.StartsWith("RawPov", StringComparison.Ordinal))
                 {
-                    string rest = target.Substring("ExtendedPov".Length);
+                    string rest = target.Substring("RawPov".Length);
                     int dirIdx = -1;
                     string dir = "";
                     foreach (var d in new[] { "Up", "Down", "Left", "Right" })
@@ -4068,7 +4068,7 @@ namespace PadForge.Services
             bool customize = padVm.OutputType == VirtualControllerType.Extended && cfg.Customize;
 
             // Layout counts must always flow through — Step 3 reads them to
-            // populate ExtendedRawState's axes/buttons/POVs from the
+            // populate RawHidState's axes/buttons/POVs from the
             // per-mapping targets. Zeroing them when Customize is off would
             // silently drop every mapped button/axis for a non-customized
             // Extended slot because Step 3's population loops are bounded by
@@ -4273,9 +4273,9 @@ namespace PadForge.Services
             // SettingsService.UpdatePadSettingsFromViewModels. Absent here,
             // a device-dropdown switch clobbered them with the previous
             // device's values (audit lens 1m, F2).
-            ps.SetExtendedMapping("MotionSteerInner", padVm.MotionSteerInnerDz.ToString(ic));
-            ps.SetExtendedMapping("MotionSteerOuter", padVm.MotionSteerOuterDz.ToString(ic));
-            ps.SetExtendedMapping("MotionSteerOrient", padVm.MotionSteerOrient);
+            ps.SetRawMapping("MotionSteerInner", padVm.MotionSteerInnerDz.ToString(ic));
+            ps.SetRawMapping("MotionSteerOuter", padVm.MotionSteerOuterDz.ToString(ic));
+            ps.SetRawMapping("MotionSteerOrient", padVm.MotionSteerOrient);
 
             // Flick Stick card tuning (#225), same extended-mapping bag and
             // the same device-switch clobber rationale.
@@ -4326,12 +4326,12 @@ namespace PadForge.Services
                 {
                     int g = stick.Index;
                     if (g < 0) continue;
-                    ps.SetExtendedMapping($"Stick{g}SteerKind", stick.SteeringKind);
-                    ps.SetExtendedMapping($"Stick{g}SteerWindRange", stick.WindRangeDeg.ToString(ic));
-                    ps.SetExtendedMapping($"Stick{g}SteerWindPower", stick.WindPower.ToString(ic));
-                    ps.SetExtendedMapping($"Stick{g}SteerWindUnwind", stick.WindUnwindRate.ToString(ic));
-                    ps.SetExtendedMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
-                    ps.SetExtendedMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
+                    ps.SetRawMapping($"Stick{g}SteerKind", stick.SteeringKind);
+                    ps.SetRawMapping($"Stick{g}SteerWindRange", stick.WindRangeDeg.ToString(ic));
+                    ps.SetRawMapping($"Stick{g}SteerWindPower", stick.WindPower.ToString(ic));
+                    ps.SetRawMapping($"Stick{g}SteerWindUnwind", stick.WindUnwindRate.ToString(ic));
+                    ps.SetRawMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
+                    ps.SetRawMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
                 }
 
                 // Extended custom stick/trigger tuning for indices 2+, mirroring
@@ -4344,29 +4344,29 @@ namespace PadForge.Services
                 {
                     if (stick.Index < 2) continue;
                     int g = stick.Index;
-                    ps.SetExtendedMapping($"ExtendedStick{g}DzShape", ((int)stick.DeadZoneShape).ToString());
-                    ps.SetExtendedMapping($"ExtendedStick{g}DzX", stick.DeadZoneX.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedStick{g}DzY", stick.DeadZoneY.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedStick{g}AdzX", stick.AntiDeadZoneX.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedStick{g}AdzY", stick.AntiDeadZoneY.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedStick{g}Linear", stick.Linear.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedStick{g}CurveX", stick.SensitivityCurveX);
-                    ps.SetExtendedMapping($"ExtendedStick{g}CurveY", stick.SensitivityCurveY);
-                    ps.SetExtendedMapping($"ExtendedStick{g}CofX", stick.CenterOffsetX.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedStick{g}CofY", stick.CenterOffsetY.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedStick{g}MrX", stick.MaxRangeX.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedStick{g}MrY", stick.MaxRangeY.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedStick{g}MrXN", stick.MaxRangeXNeg.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedStick{g}MrYN", stick.MaxRangeYNeg.ToString(ic));
+                    ps.SetRawMapping($"RawStick{g}DzShape", ((int)stick.DeadZoneShape).ToString());
+                    ps.SetRawMapping($"RawStick{g}DzX", stick.DeadZoneX.ToString(ic));
+                    ps.SetRawMapping($"RawStick{g}DzY", stick.DeadZoneY.ToString(ic));
+                    ps.SetRawMapping($"RawStick{g}AdzX", stick.AntiDeadZoneX.ToString(ic));
+                    ps.SetRawMapping($"RawStick{g}AdzY", stick.AntiDeadZoneY.ToString(ic));
+                    ps.SetRawMapping($"RawStick{g}Linear", stick.Linear.ToString(ic));
+                    ps.SetRawMapping($"RawStick{g}CurveX", stick.SensitivityCurveX);
+                    ps.SetRawMapping($"RawStick{g}CurveY", stick.SensitivityCurveY);
+                    ps.SetRawMapping($"RawStick{g}CofX", stick.CenterOffsetX.ToString(ic));
+                    ps.SetRawMapping($"RawStick{g}CofY", stick.CenterOffsetY.ToString(ic));
+                    ps.SetRawMapping($"RawStick{g}MrX", stick.MaxRangeX.ToString(ic));
+                    ps.SetRawMapping($"RawStick{g}MrY", stick.MaxRangeY.ToString(ic));
+                    ps.SetRawMapping($"RawStick{g}MrXN", stick.MaxRangeXNeg.ToString(ic));
+                    ps.SetRawMapping($"RawStick{g}MrYN", stick.MaxRangeYNeg.ToString(ic));
                 }
                 foreach (var trig in padVm.TriggerConfigs)
                 {
                     if (trig.Index < 2) continue;
                     int g = trig.Index;
-                    ps.SetExtendedMapping($"ExtendedTrigger{g}Dz", trig.DeadZone.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedTrigger{g}Mr", trig.MaxRange.ToString(ic));
-                    ps.SetExtendedMapping($"ExtendedTrigger{g}Curve", trig.SensitivityCurve);
+                    ps.SetRawMapping($"ExtendedTrigger{g}Dz", trig.DeadZone.ToString(ic));
+                    ps.SetRawMapping($"ExtendedTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
+                    ps.SetRawMapping($"ExtendedTrigger{g}Mr", trig.MaxRange.ToString(ic));
+                    ps.SetRawMapping($"ExtendedTrigger{g}Curve", trig.SensitivityCurve);
                 }
             }
 
@@ -4446,9 +4446,9 @@ namespace PadForge.Services
 
                     if (target.StartsWith("Extended", StringComparison.Ordinal))
                     {
-                        owningPs.SetExtendedMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                        owningPs.SetRawMapping(target, mapping.SourceDescriptor ?? string.Empty);
                         if (mapping.NegSettingName != null)
-                            owningPs.SetExtendedMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
+                            owningPs.SetRawMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
                     }
                     else if (target.StartsWith("Midi", StringComparison.Ordinal))
                     {
@@ -4570,9 +4570,9 @@ namespace PadForge.Services
             // SettingsService.LoadPadSettings. Absent here, switching the
             // assigned-device dropdown kept the previous device's values in
             // the VM (audit lens 1m, F2).
-            padVm.MotionSteerInnerDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerInner"), 15);
-            padVm.MotionSteerOuterDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerOuter"), 135);
-            padVm.SetMotionSteerOrient(ps.GetExtendedMapping("MotionSteerOrient"));
+            padVm.MotionSteerInnerDz = TryParseDouble(ps.GetRawMapping("MotionSteerInner"), 15);
+            padVm.MotionSteerOuterDz = TryParseDouble(ps.GetRawMapping("MotionSteerOuter"), 135);
+            padVm.SetMotionSteerOrient(ps.GetRawMapping("MotionSteerOrient"));
 
             // Flick Stick card tuning (#225), mirroring the startup load in
             // SettingsService.LoadPadSettings (import-seed included).
@@ -4738,33 +4738,33 @@ namespace PadForge.Services
             {
                 if (stick.Index < 2) continue;
                 int g = stick.Index;
-                stick.DeadZoneShape = Common.Input.InputManager.ParseDeadZoneShape(ps.GetExtendedMapping($"ExtendedStick{g}DzShape"));
-                stick.DeadZoneX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}DzX"), 0);
-                stick.DeadZoneY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}DzY"), 0);
-                stick.AntiDeadZoneX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}AdzX"), 0);
-                stick.AntiDeadZoneY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}AdzY"), 0);
-                stick.Linear = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}Linear"), 0);
-                // GetExtendedMapping returns "" (never null) for a missing
+                stick.DeadZoneShape = Common.Input.InputManager.ParseDeadZoneShape(ps.GetRawMapping($"RawStick{g}DzShape"));
+                stick.DeadZoneX = TryParseDouble(ps.GetRawMapping($"RawStick{g}DzX"), 0);
+                stick.DeadZoneY = TryParseDouble(ps.GetRawMapping($"RawStick{g}DzY"), 0);
+                stick.AntiDeadZoneX = TryParseDouble(ps.GetRawMapping($"RawStick{g}AdzX"), 0);
+                stick.AntiDeadZoneY = TryParseDouble(ps.GetRawMapping($"RawStick{g}AdzY"), 0);
+                stick.Linear = TryParseDouble(ps.GetRawMapping($"RawStick{g}Linear"), 0);
+                // GetRawMapping returns "" (never null) for a missing
                 // key, so a bare ?? default never fires (audit G4).
-                string curveX = ps.GetExtendedMapping($"ExtendedStick{g}CurveX");
-                string curveY = ps.GetExtendedMapping($"ExtendedStick{g}CurveY");
+                string curveX = ps.GetRawMapping($"RawStick{g}CurveX");
+                string curveY = ps.GetRawMapping($"RawStick{g}CurveY");
                 stick.SensitivityCurveX = string.IsNullOrEmpty(curveX) ? "0,0;1,1" : curveX;
                 stick.SensitivityCurveY = string.IsNullOrEmpty(curveY) ? "0,0;1,1" : curveY;
-                stick.CenterOffsetX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}CofX"), 0);
-                stick.CenterOffsetY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}CofY"), 0);
-                stick.MaxRangeX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrX"), 100);
-                stick.MaxRangeY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrY"), 100);
-                stick.MaxRangeXNeg = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrXN"), stick.MaxRangeX);
-                stick.MaxRangeYNeg = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrYN"), stick.MaxRangeY);
+                stick.CenterOffsetX = TryParseDouble(ps.GetRawMapping($"RawStick{g}CofX"), 0);
+                stick.CenterOffsetY = TryParseDouble(ps.GetRawMapping($"RawStick{g}CofY"), 0);
+                stick.MaxRangeX = TryParseDouble(ps.GetRawMapping($"RawStick{g}MrX"), 100);
+                stick.MaxRangeY = TryParseDouble(ps.GetRawMapping($"RawStick{g}MrY"), 100);
+                stick.MaxRangeXNeg = TryParseDouble(ps.GetRawMapping($"RawStick{g}MrXN"), stick.MaxRangeX);
+                stick.MaxRangeYNeg = TryParseDouble(ps.GetRawMapping($"RawStick{g}MrYN"), stick.MaxRangeY);
             }
             foreach (var trig in padVm.TriggerConfigs)
             {
                 if (trig.Index < 2) continue;
                 int g = trig.Index;
-                trig.DeadZone = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Dz"), 0);
-                trig.AntiDeadZone = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Adz"), 0);
-                trig.MaxRange = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Mr"), 100);
-                string trigCurve = ps.GetExtendedMapping($"ExtendedTrigger{g}Curve");
+                trig.DeadZone = TryParseDouble(ps.GetRawMapping($"ExtendedTrigger{g}Dz"), 0);
+                trig.AntiDeadZone = TryParseDouble(ps.GetRawMapping($"ExtendedTrigger{g}Adz"), 0);
+                trig.MaxRange = TryParseDouble(ps.GetRawMapping($"ExtendedTrigger{g}Mr"), 100);
+                string trigCurve = ps.GetRawMapping($"ExtendedTrigger{g}Curve");
                 trig.SensitivityCurve = string.IsNullOrEmpty(trigCurve) ? "0,0;1,1" : trigCurve;
             }
 
@@ -4772,7 +4772,7 @@ namespace PadForge.Services
             // sticks (guarded, no dirty). Routes startup selection, device switch, preset/
             // paste, and profile switch through one place so the card always shows the
             // selected device's wheel config.
-            padVm.LoadSteeringConfigItems(key => ps.GetExtendedMapping(key));
+            padVm.LoadSteeringConfigItems(key => ps.GetRawMapping(key));
 
             // Per-device tuning load is done; mapping descriptors are
             // per-VC and intentionally NOT refreshed here. The Mappings
@@ -5787,6 +5787,11 @@ namespace PadForge.Services
         public static Engine.Data.MappingSet CloneMappingSetDeep(Engine.Data.MappingSet src)
         {
             if (src == null) return null;
+            // Profile-apply lane of the raw-grammar migration: profiles
+            // saved before the rename carry legacy targets; the source
+            // normalizes in place (idempotent) so the clone below copies
+            // current grammar.
+            PadForge.Engine.Data.MappingSetMigrator.NormalizeRawSurfaceTargets(src);
             var copy = new Engine.Data.MappingSet
             {
                 // Workshop-import ownership survives profile snapshot / apply
@@ -10624,7 +10629,7 @@ namespace PadForge.Services
             else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered)
             {
                 // Custom Extended: capture current frame's buttons (not accumulated).
-                var rawState = _inputManager.CombinedExtendedRawStates[_recordingPadIndex];
+                var rawState = _inputManager.CombinedRawHidStates[_recordingPadIndex];
                 if (rawState.Buttons != null && _recordedCustomButtons != null)
                 {
                     bool anyPressed = false;
@@ -10639,7 +10644,7 @@ namespace PadForge.Services
                 {
                     var parts = new List<string>();
                     if (_recordedCustomButtons != null && _recordedCustomButtons.Any(w => w != 0))
-                        parts.Add(MacroButtonNames.FormatCustomButtons(_recordedCustomButtons, _recordingMacro.ExtendedProfileId));
+                        parts.Add(MacroButtonNames.FormatCustomButtons(_recordedCustomButtons, _recordingMacro.RawProfileId));
                     foreach (var ax in _recordedAxisTargets)
                         parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
                     _recordingMacro.RecordingLiveText = parts.Count > 0
@@ -10658,7 +10663,7 @@ namespace PadForge.Services
                 {
                     var parts = new List<string>();
                     if (_recordedButtons != 0)
-                        parts.Add(MacroButtonNames.FormatButtons(_recordedButtons, _recordingMacro.ButtonStyle, _recordingMacro.ExtendedProfileId));
+                        parts.Add(MacroButtonNames.FormatButtons(_recordedButtons, _recordingMacro.ButtonStyle, _recordingMacro.RawProfileId));
                     foreach (var ax in _recordedAxisTargets)
                         parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
                     _recordingMacro.RecordingLiveText = parts.Count > 0
@@ -10707,7 +10712,7 @@ namespace PadForge.Services
             else if (style == MacroButtonStyle.Numbered)
             {
                 // Extended raw state path.
-                var rawState = _inputManager.CombinedExtendedRawStates[padIndex];
+                var rawState = _inputManager.CombinedRawHidStates[padIndex];
                 MacroAxisTarget[] axes = {
                     MacroAxisTarget.LeftStickX, MacroAxisTarget.LeftStickY,
                     MacroAxisTarget.RightStickX, MacroAxisTarget.RightStickY,

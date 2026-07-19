@@ -131,7 +131,7 @@ namespace PadForge.Tests
             var macros = new[] { macro };
 
             state.Buttons[12] = true;
-            var raw = ExtendedRawState.Create(8, 32, 1);
+            var raw = RawHidState.Create(8, 32, 1);
             im.EvaluateSlotMacrosExtended(ref raw, macros);
 
             Assert.True(macro.Actions[0].VcToggleLatched);
@@ -209,7 +209,7 @@ namespace PadForge.Tests
 
                 // Extended path: fresh macro, same descriptor entry.
                 var macroExt = MacroWithEntries(AnyDeviceEntry("Gyro Pitch"));
-                var raw = ExtendedRawState.Create(8, 32, 1);
+                var raw = RawHidState.Create(8, 32, 1);
                 im.EvaluateSlotMacrosExtended(ref raw, new[] { macroExt });
                 Assert.True(macroExt.Actions[0].VcToggleLatched);
             }

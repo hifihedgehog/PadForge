@@ -49,7 +49,7 @@ namespace PadForge.Common.Input
                     if (slotCount == 0)
                     {
                         CombinedOutputStates[padIndex].Clear();
-                        if (isExtended) CombinedExtendedRawStates[padIndex].Clear();
+                        if (isExtended) CombinedRawHidStates[padIndex].Clear();
                         if (isMidi) CombinedMidiRawStates[padIndex].Clear();
                         if (isKbm) CombinedKbmRawStates[padIndex].Clear();
                         if (isDs4) CombinedTouchpadStates[padIndex] = default;
@@ -60,7 +60,7 @@ namespace PadForge.Common.Input
                     {
                         // Single device — no combination needed, direct copy.
                         CombinedOutputStates[padIndex] = _padIndexBuffer[0].OutputState;
-                        if (isExtended) CombinedExtendedRawStates[padIndex] = _padIndexBuffer[0].ExtendedRawOutputState;
+                        if (isExtended) CombinedRawHidStates[padIndex] = _padIndexBuffer[0].RawHidOutputState;
                         if (isMidi) CombinedMidiRawStates[padIndex] = _padIndexBuffer[0].MidiRawOutputState;
                         if (isKbm) CombinedKbmRawStates[padIndex] = _padIndexBuffer[0].KbmRawOutputState;
                         if (isDs4)
@@ -87,7 +87,7 @@ namespace PadForge.Common.Input
 
                     // Multiple devices — merge all states.
                     var combined = new Gamepad();
-                    ExtendedRawState combinedRaw = default;
+                    RawHidState combinedRaw = default;
                     bool firstRaw = true;
                     MidiRawState combinedMidi = default;
                     bool firstMidi = true;
@@ -105,12 +105,12 @@ namespace PadForge.Common.Input
 
                         if (isExtended)
                         {
-                            var rawState = us.ExtendedRawOutputState;
+                            var rawState = us.RawHidOutputState;
                             // An offline assigned device never had Step 3
                             // populate its raw state — all arrays null. If it
                             // lands first in the buffer and seeds the combine,
                             // every later merge silently no-ops against the
-                            // null destination (MergeExtendedRaw's null guards)
+                            // null destination (MergeRawHid's null guards)
                             // and the slot's combined output dies while each
                             // online device's own state stays live. Skip
                             // never-populated states entirely.
@@ -129,8 +129,8 @@ namespace PadForge.Common.Input
                                 // distinguish trigger slots from stick slots
                                 // and use the right comparison rule per slot
                                 // (pressed-wins for triggers, magnitude-wins
-                                // for sticks). See MergeExtendedRaw docstring.
-                                MergeExtendedRaw(ref combinedRaw, ref rawState, SlotCustomLayouts[padIndex]);
+                                // for sticks). See MergeRawHid docstring.
+                                MergeRawHid(ref combinedRaw, ref rawState, SlotCustomLayouts[padIndex]);
                             }
                         }
 
@@ -162,7 +162,7 @@ namespace PadForge.Common.Input
                     }
 
                     CombinedOutputStates[padIndex] = combined;
-                    if (isExtended) CombinedExtendedRawStates[padIndex] = combinedRaw;
+                    if (isExtended) CombinedRawHidStates[padIndex] = combinedRaw;
                     if (isMidi) CombinedMidiRawStates[padIndex] = combinedMidi;
                     if (isKbm) CombinedKbmRawStates[padIndex] = combinedKbm;
 
@@ -238,11 +238,11 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// <summary>
-        /// Merges a source ExtendedRawState into a destination, layout-aware
+        /// Merges a source RawHidState into a destination, layout-aware
         /// so stick axes and trigger axes use different comparison rules.
         /// Buttons: OR. POVs: first non-centered.
         ///
-        /// <para><b>Why per-axis-type rules.</b> ExtendedRawState stores both
+        /// <para><b>Why per-axis-type rules.</b> RawHidState stores both
         /// stick axes and trigger axes in the same <c>Axes</c> array, with
         /// values centered at different points:</para>
         ///
@@ -267,14 +267,14 @@ namespace PadForge.Common.Input
         /// magnitude-wins to every axis index. When two devices were
         /// mapped to the same Custom Extended slot — e.g. a joystick whose
         /// auto-mapped Axis 5 (LT) sat at released <c>-32768</c> and a
-        /// keyboard key mapped to <c>ExtendedAxis2</c> that the user
+        /// keyboard key mapped to <c>RawAxis2</c> that the user
         /// pressed — the merge picked the joystick's released
         /// <c>-32768</c> (magnitude <c>32768</c>) over the keyboard's
         /// pressed <c>+32767</c> (magnitude <c>32767</c>). The wire-side
         /// trigger appeared stuck at 0% no matter how hard the user hit
         /// the keyboard key. Joystick-button-to-trigger and
         /// joystick-axis-to-trigger paths happened to work because only
-        /// one device populated <c>ExtendedAxis2</c> in those cases, so
+        /// one device populated <c>RawAxis2</c> in those cases, so
         /// no race occurred.</para>
         ///
         /// <para><b>Layout-aware indexing.</b> Trigger axis indices are
@@ -288,9 +288,9 @@ namespace PadForge.Common.Input
         /// caller (<c>CombineOutputStates</c>) reads it from
         /// <c>SlotCustomLayouts[padIndex]</c>.</para>
         /// </summary>
-        private static void MergeExtendedRaw(
-            ref ExtendedRawState dest,
-            ref ExtendedRawState src,
+        private static void MergeRawHid(
+            ref RawHidState dest,
+            ref RawHidState src,
             CustomControllerLayout layout)
         {
             if (src.Axes != null && dest.Axes != null)

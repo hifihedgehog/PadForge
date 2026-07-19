@@ -132,7 +132,7 @@ namespace PadForge.ViewModels
         /// <summary>Raw button count of the Extended slot's custom layout
         /// (bounds the numbered picker), mirroring the macro editor's
         /// CustomButtonCount source.</summary>
-        public int ExtendedButtonCount
+        public int RawButtonCount
         {
             get => _extendedButtonCount;
             set
@@ -155,7 +155,7 @@ namespace PadForge.ViewModels
         /// the owning PadViewModel beside ButtonStyle (#215). Re-letters
         /// the numbered picker on Switch Pro profiles; the 1-based value
         /// space is untouched.</summary>
-        public string ExtendedProfileId
+        public string RawProfileId
         {
             get => _extendedProfileId;
             set
@@ -1239,12 +1239,12 @@ namespace PadForge.ViewModels
                 {
                     // 0 buttons = empty picker (axis-only Extended layout).
                     // Switch Pro profiles letter each number (#215).
-                    int count = Math.Clamp(_owner.ExtendedButtonCount, 0, 128);
+                    int count = Math.Clamp(_owner.RawButtonCount, 0, 128);
                     for (int n = 1; n <= count; n++)
                         list.Add(new MenuIntOption
                         {
                             Value = n,
-                            Label = MacroButtonNames.ExtendedButtonLabel(_owner.ExtendedProfileId, n),
+                            Label = MacroButtonNames.RawButtonLabel(_owner.RawProfileId, n),
                         });
                 }
                 else

@@ -1355,7 +1355,7 @@ namespace PadForge.ViewModels
                         {
                             int idx = i;
                             yield return new MacroTriggerInputItem(
-                                MacroButtonNames.ExtendedButtonShortLabel(_extendedProfileId, idx + 1),
+                                MacroButtonNames.RawButtonShortLabel(_extendedProfileId, idx + 1),
                                 new RelayCommand(() => RemoveLegacyCustomButton(idx)));
                         }
                     }
@@ -1619,7 +1619,7 @@ namespace PadForge.ViewModels
         /// the mask / index value spaces are untouched.
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
-        public string ExtendedProfileId
+        public string RawProfileId
         {
             get => _extendedProfileId;
             set
@@ -1630,7 +1630,7 @@ namespace PadForge.ViewModels
                     _outputChannelOptions = null;
                     OnPropertyChanged(nameof(OutputChannelOptions));
                     foreach (var action in Actions)
-                        action.ExtendedProfileId = value;
+                        action.RawProfileId = value;
                 }
             }
         }
@@ -2329,7 +2329,7 @@ namespace PadForge.ViewModels
         public RelayCommand AddActionCommand =>
             _addActionCommand ??= new RelayCommand(() =>
             {
-                var action = new MacroAction { Type = MacroActionType.ButtonPress, ButtonStyle = _buttonStyle, CustomButtonCount = _customButtonCount, ExtendedProfileId = _extendedProfileId };
+                var action = new MacroAction { Type = MacroActionType.ButtonPress, ButtonStyle = _buttonStyle, CustomButtonCount = _customButtonCount, RawProfileId = _extendedProfileId };
                 Actions.Add(action);
                 SelectedAction = action;
             });
@@ -2356,7 +2356,7 @@ namespace PadForge.ViewModels
                 var clone = SettingsService.BuildMacroAction(SettingsService.BuildActionData(_selectedAction));
                 clone.ButtonStyle = _buttonStyle;
                 clone.CustomButtonCount = _customButtonCount;
-                clone.ExtendedProfileId = _extendedProfileId;
+                clone.RawProfileId = _extendedProfileId;
                 int idx = Actions.IndexOf(_selectedAction);
                 if (idx < 0) Actions.Add(clone); else Actions.Insert(idx + 1, clone);
                 SelectedAction = clone;
@@ -2963,7 +2963,7 @@ namespace PadForge.ViewModels
         /// on Switch Pro profiles; display-only.
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
-        public string ExtendedProfileId
+        public string RawProfileId
         {
             get => _extendedProfileId;
             set
@@ -3130,7 +3130,7 @@ namespace PadForge.ViewModels
                         // config, lettered per profile on Switch Pro (#215).
                         var list = new List<GamepadButtonOption>();
                         for (int i = 0; i < _customButtonCount; i++)
-                            list.Add(new GamepadButtonOption(this, MacroButtonNames.ExtendedButtonShortLabel(_extendedProfileId, i + 1), customIndex: i));
+                            list.Add(new GamepadButtonOption(this, MacroButtonNames.RawButtonShortLabel(_extendedProfileId, i + 1), customIndex: i));
                         _buttonOptions = list.AsReadOnly();
                     }
                     else
@@ -6315,17 +6315,17 @@ namespace PadForge.ViewModels
                 case MacroButtonStyle.Numbered:
                     return channel switch
                     {
-                        MacroOutputChannel.A     => MacroButtonNames.ExtendedButtonLabel(profileId, 1),
-                        MacroOutputChannel.B     => MacroButtonNames.ExtendedButtonLabel(profileId, 2),
-                        MacroOutputChannel.X     => MacroButtonNames.ExtendedButtonLabel(profileId, 3),
-                        MacroOutputChannel.Y     => MacroButtonNames.ExtendedButtonLabel(profileId, 4),
-                        MacroOutputChannel.LB    => MacroButtonNames.ExtendedButtonLabel(profileId, 5),
-                        MacroOutputChannel.RB    => MacroButtonNames.ExtendedButtonLabel(profileId, 6),
-                        MacroOutputChannel.Back  => MacroButtonNames.ExtendedButtonLabel(profileId, 7),
-                        MacroOutputChannel.Start => MacroButtonNames.ExtendedButtonLabel(profileId, 8),
-                        MacroOutputChannel.LS    => MacroButtonNames.ExtendedButtonLabel(profileId, 9),
-                        MacroOutputChannel.RS    => MacroButtonNames.ExtendedButtonLabel(profileId, 10),
-                        MacroOutputChannel.Guide => MacroButtonNames.ExtendedButtonLabel(profileId, 11),
+                        MacroOutputChannel.A     => MacroButtonNames.RawButtonLabel(profileId, 1),
+                        MacroOutputChannel.B     => MacroButtonNames.RawButtonLabel(profileId, 2),
+                        MacroOutputChannel.X     => MacroButtonNames.RawButtonLabel(profileId, 3),
+                        MacroOutputChannel.Y     => MacroButtonNames.RawButtonLabel(profileId, 4),
+                        MacroOutputChannel.LB    => MacroButtonNames.RawButtonLabel(profileId, 5),
+                        MacroOutputChannel.RB    => MacroButtonNames.RawButtonLabel(profileId, 6),
+                        MacroOutputChannel.Back  => MacroButtonNames.RawButtonLabel(profileId, 7),
+                        MacroOutputChannel.Start => MacroButtonNames.RawButtonLabel(profileId, 8),
+                        MacroOutputChannel.LS    => MacroButtonNames.RawButtonLabel(profileId, 9),
+                        MacroOutputChannel.RS    => MacroButtonNames.RawButtonLabel(profileId, 10),
+                        MacroOutputChannel.Guide => MacroButtonNames.RawButtonLabel(profileId, 11),
                         MacroOutputChannel.LT    => s.Btn_LeftTrigger,
                         MacroOutputChannel.RT    => s.Btn_RightTrigger,
                         _ => channel.ToString()
@@ -6440,7 +6440,7 @@ namespace PadForge.ViewModels
                 int word = i / 32;
                 int bit = i % 32;
                 if (word < words.Length && (words[word] & (uint)(1 << bit)) != 0)
-                    parts.Add(ExtendedButtonShortLabel(profileId, i + 1));
+                    parts.Add(RawButtonShortLabel(profileId, i + 1));
             }
             return parts.Count > 0 ? string.Join(" + ", parts) : Strings.Instance.Macro_None;
         }
@@ -6451,7 +6451,7 @@ namespace PadForge.ViewModels
         /// HIDMaestro profile drives the layout. Xbox-style "A B X Y" labels
         /// belong on Xbox slots, DualShock labels on PlayStation slots.
         /// Switch Pro profiles keep the Numbered value space and re-letter
-        /// the labels per raw index (see <see cref="ExtendedButtonLabel"/>).
+        /// the labels per raw index (see <see cref="RawButtonLabel"/>).
         /// </summary>
         public static MacroButtonStyle DeriveStyle(VirtualControllerType outputType) => outputType switch
         {
@@ -6510,16 +6510,16 @@ namespace PadForge.ViewModels
         /// <summary>Label for the 1-based Extended button N under the given
         /// profile: Nintendo lettering on Switch Pro profiles, the "Button
         /// {N}" format otherwise. The long-form twin of
-        /// <see cref="ExtendedButtonShortLabel"/> (mapping grid, menu cell
+        /// <see cref="RawButtonShortLabel"/> (mapping grid, menu cell
         /// picker, output-channel dropdown).</summary>
-        public static string ExtendedButtonLabel(string profileId, int number) =>
+        public static string RawButtonLabel(string profileId, int number) =>
             (IsNintendoLetteredProfile(profileId) ? NintendoExtendedLabel(number - 1) : null)
             ?? string.Format(Strings.Instance.Extended_Button_Format, number);
 
-        /// <summary>Compact-label twin of <see cref="ExtendedButtonLabel"/>
+        /// <summary>Compact-label twin of <see cref="RawButtonLabel"/>
         /// ("Btn {N}" fallback) for the macro trigger chips and button
         /// checkbox grid.</summary>
-        public static string ExtendedButtonShortLabel(string profileId, int number) =>
+        public static string RawButtonShortLabel(string profileId, int number) =>
             (IsNintendoLetteredProfile(profileId) ? NintendoExtendedLabel(number - 1) : null)
             ?? string.Format(Strings.Instance.Macro_Btn_Format, number);
 
@@ -6553,7 +6553,7 @@ namespace PadForge.ViewModels
         private static (string Label, ushort Flag)[] BuildNumberedDefs(string profileId)
         {
             var s = Strings.Instance;
-            string L(int n) => ExtendedButtonShortLabel(profileId, n);
+            string L(int n) => RawButtonShortLabel(profileId, n);
             return new (string, ushort)[]
             {
                 (L(1), 0x1000), (L(2), 0x2000),

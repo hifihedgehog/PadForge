@@ -1227,7 +1227,7 @@ namespace PadForge.Services
             if (target is "LeftThumbAxisX" or "RightThumbAxisX"
                        or "LeftThumbAxisY" or "RightThumbAxisY") return false;
             if (target == "LeftTrigger" || target == "RightTrigger") return false;
-            if (target.StartsWith("ExtendedAxis", StringComparison.Ordinal)) return false;
+            if (target.StartsWith("RawAxis", StringComparison.Ordinal)) return false;
             if (target.StartsWith("KbmMouse", StringComparison.Ordinal)
                 || target.StartsWith("KbmScroll", StringComparison.Ordinal)) return false;
             return true;
@@ -1245,7 +1245,7 @@ namespace PadForge.Services
                 return negRecording ? axisPositive : !axisPositive;
 
             // Extended bidirectional stick axes (HasNegDirection): same logic as gamepad sticks.
-            if (target.StartsWith("ExtendedAxis", StringComparison.Ordinal) && mapping.HasNegDirection)
+            if (target.StartsWith("RawAxis", StringComparison.Ordinal) && mapping.HasNegDirection)
                 return negRecording ? axisPositive : !axisPositive;
 
             // KBM bidirectional axes: never auto-invert. The full analog axis
@@ -1262,7 +1262,7 @@ namespace PadForge.Services
                 return !axisPositive;
 
             // Extended trigger axes (unidirectional, no neg direction): same as gamepad triggers.
-            if (target.StartsWith("ExtendedAxis", StringComparison.Ordinal))
+            if (target.StartsWith("RawAxis", StringComparison.Ordinal))
                 return !axisPositive;
 
             // All other targets (buttons, d-pad, etc.): invert when the user pushed

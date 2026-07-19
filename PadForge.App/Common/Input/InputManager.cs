@@ -110,7 +110,7 @@ namespace PadForge.Common.Input
         /// Combined Extended raw output states for custom Extended slots.
         /// Written by Step 4 (background thread), read by Step 5.
         /// </summary>
-        public ExtendedRawState[] CombinedExtendedRawStates { get; } = new ExtendedRawState[MaxPads];
+        public RawHidState[] CombinedRawHidStates { get; } = new RawHidState[MaxPads];
 
         /// <summary>
         /// Combined MIDI raw output states for MIDI slots.

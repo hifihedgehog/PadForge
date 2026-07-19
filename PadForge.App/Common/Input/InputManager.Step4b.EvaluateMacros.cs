@@ -285,7 +285,7 @@ namespace PadForge.Common.Input
                 try
                 {
                     if (SlotRawHidSurface[i])
-                        EvaluateSlotMacrosExtended(ref CombinedExtendedRawStates[i], macros);
+                        EvaluateSlotMacrosExtended(ref CombinedRawHidStates[i], macros);
                     else
                         EvaluateSlotMacros(ref CombinedOutputStates[i], macros);
                 }
@@ -991,7 +991,7 @@ namespace PadForge.Common.Input
         /// <summary>Same as <see cref="EvaluateCustomExpressionTrigger"/> but for
         /// the Extended (custom controller) path. OutputController-bound variables
         /// resolve to 0 because there is no Xbox-shape gamepad on this code path.</summary>
-        private bool EvaluateCustomExpressionTriggerExtended(MacroItem macro, in ExtendedRawState raw)
+        private bool EvaluateCustomExpressionTriggerExtended(MacroItem macro, in RawHidState raw)
         {
             var compiled = macro.TriggerExpressionCompiled;
             if (compiled == null || !compiled.IsValid) return false;
@@ -1046,7 +1046,7 @@ namespace PadForge.Common.Input
         /// <summary>Same as <see cref="ReadExpressionVariable"/> but the
         /// OutputController arm reads 0 because Extended slots have no Xbox-shape
         /// combined state.</summary>
-        private float ReadExpressionVariableRaw(MacroExpressionVariable v, in ExtendedRawState raw, int slotIndex)
+        private float ReadExpressionVariableRaw(MacroExpressionVariable v, in RawHidState raw, int slotIndex)
         {
             if (v == null || !v.IsBound) return 0f;
             if (v.Source == MacroTriggerSource.OutputController) return 0f;
@@ -3136,12 +3136,12 @@ namespace PadForge.Common.Input
 
         // ─────────────────────────────────────────────
         //  Custom Extended macro evaluation
-        //  Mirrors EvaluateSlotMacros but operates on ExtendedRawState
+        //  Mirrors EvaluateSlotMacros but operates on RawHidState
         //  with uint[] button words instead of ushort Gamepad.Buttons.
         // ─────────────────────────────────────────────
 
         // Internal for the PadForge.Tests dispatch pins.
-        internal void EvaluateSlotMacrosExtended(ref ExtendedRawState raw, MacroItem[] macros)
+        internal void EvaluateSlotMacrosExtended(ref RawHidState raw, MacroItem[] macros)
         {
             for (int k = 0; k < 6; k++)
                 _preMacroRawAxes[k] = raw.Axes != null && k < raw.Axes.Length ? raw.Axes[k] : (short)0;
@@ -3360,7 +3360,7 @@ namespace PadForge.Common.Input
         /// wave 1b): latched ToggleVcButton targets OR their wide button words
         /// into the raw state, latched ToggleKey actions contribute to the
         /// frame's desired latched-key set.</summary>
-        private void ApplyMacroLatchesRaw(ref ExtendedRawState raw, MacroItem macro)
+        private void ApplyMacroLatchesRaw(ref RawHidState raw, MacroItem macro)
         {
             var actions = macro.Actions;
             for (int i = 0; i < actions.Count; i++)
@@ -3424,7 +3424,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Checks whether all custom trigger buttons are currently pressed in the raw state.
         /// </summary>
-        private static bool CheckCustomButtonTrigger(in ExtendedRawState raw, MacroItem macro)
+        private static bool CheckCustomButtonTrigger(in RawHidState raw, MacroItem macro)
         {
             var tw = macro.TriggerCustomButtonWords;
             if (raw.Buttons == null) return false;
@@ -3440,10 +3440,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Executes macro actions against a ExtendedRawState (custom Extended button words).
+        /// Executes macro actions against a RawHidState (custom Extended button words).
         /// Same parallel-continuous pattern as ExecuteMacroActions.
         /// </summary>
-        private void ExecuteMacroActionsExtended(ref ExtendedRawState raw, MacroItem macro)
+        private void ExecuteMacroActionsExtended(ref RawHidState raw, MacroItem macro)
         {
             // 1. Always run ALL continuous actions every frame.
             for (int i = 0; i < macro.Actions.Count; i++)
@@ -3502,7 +3502,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Executes a single continuous action for Extended raw state.</summary>
-        private void ExecuteSingleActionRaw(ref ExtendedRawState raw, MacroAction action)
+        private void ExecuteSingleActionRaw(ref RawHidState raw, MacroAction action)
         {
             bool useDevice = action.AxisSource == MacroAxisSource.InputDevice;
             switch (action.Type)
@@ -3578,7 +3578,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Executes a sequential action for Extended raw state.</summary>
-        private void ExecuteSequentialActionRaw(ref ExtendedRawState raw, MacroItem macro, MacroAction action)
+        private void ExecuteSequentialActionRaw(ref RawHidState raw, MacroItem macro, MacroAction action)
         {
             double actionElapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
 
@@ -3949,7 +3949,7 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Applies an AxisSet action to a ExtendedRawState.</summary>
+        /// <summary>Applies an AxisSet action to a RawHidState.</summary>
         /// <summary>The one canonical MacroAxisTarget → Extended word-array
         /// index map (LX0 LY1 LT2 RX3 RY4 RT5). Every raw-path axis write
         /// and the #237 yield gates resolve through this so the map can
@@ -3965,7 +3965,7 @@ namespace PadForge.Common.Input
             _ => -1
         };
 
-        private static void ApplyAxisActionRaw(ref ExtendedRawState raw, MacroAction action)
+        private static void ApplyAxisActionRaw(ref RawHidState raw, MacroAction action)
         {
             int axisIndex = MacroAxisTargetToRawIndex(action.AxisTarget);
             if (axisIndex >= 0 && axisIndex < raw.Axes.Length)
@@ -3976,7 +3976,7 @@ namespace PadForge.Common.Input
         /// (#237): signed addition in the word-array frame, clamped. The
         /// Extended axis frame is -32768..32767 on every index, so no
         /// trigger rescale applies (the AxisHold raw-twin rationale).</summary>
-        private static void ApplyAxisAddActionRaw(ref ExtendedRawState raw, MacroAction action)
+        private static void ApplyAxisAddActionRaw(ref RawHidState raw, MacroAction action)
         {
             int axisIndex = MacroAxisTargetToRawIndex(action.AxisTarget);
             if (axisIndex < 0 || axisIndex >= raw.Axes.Length) return;
@@ -4164,10 +4164,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Reads the current value of a source axis from a ExtendedRawState
+        /// Reads the current value of a source axis from a RawHidState
         /// and returns it as a 0.0–1.0 float suitable for volume.
         /// </summary>
-        internal static float ReadAxisAsVolumeRaw(in ExtendedRawState raw, MacroAxisTarget target)
+        internal static float ReadAxisAsVolumeRaw(in RawHidState raw, MacroAxisTarget target)
         {
             int axisIndex = target switch
             {
@@ -4390,7 +4390,7 @@ namespace PadForge.Common.Input
             _ => 0f
         };
 
-        private static float ReadAxisAsMouseRaw(in ExtendedRawState raw, MacroAxisTarget target)
+        private static float ReadAxisAsMouseRaw(in RawHidState raw, MacroAxisTarget target)
         {
             int axisIndex = target switch
             {

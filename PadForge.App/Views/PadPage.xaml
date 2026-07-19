@@ -806,11 +806,11 @@
                 <!-- Row 4: Layout override (Sticks / Triggers / POVs / Buttons) -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,8,0,0"
                             IsEnabled="{Binding IsChecked, ElementName=ExtendedCustomizeChk}">
-                    <TextBlock Text="{Binding Pad_ExtendedSticks, Source={x:Static strings:Strings.Instance}}"
+                    <TextBlock Text="{Binding Pad_RawSticks, Source={x:Static strings:Strings.Instance}}"
                                VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="ExtendedStickCountBox" Width="40" VerticalAlignment="Center"
-                             AutomationProperties.AutomationId="ExtendedStickCountBox"
+                    <TextBox x:Name="RawStickCountBox" Width="40" VerticalAlignment="Center"
+                             AutomationProperties.AutomationId="RawStickCountBox"
                              TextAlignment="Center" Text="2"
                              LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
 
@@ -825,16 +825,16 @@
                     <TextBlock Text="{Binding Pad_ExtendedPOVs, Source={x:Static strings:Strings.Instance}}"
                                VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="ExtendedPovCountBox" Width="40" VerticalAlignment="Center"
-                             AutomationProperties.AutomationId="ExtendedPovCountBox"
+                    <TextBox x:Name="RawPovCountBox" Width="40" VerticalAlignment="Center"
+                             AutomationProperties.AutomationId="RawPovCountBox"
                              TextAlignment="Center" Text="1"
                              LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
 
                     <TextBlock Text="{Binding Pad_ExtendedButtons, Source={x:Static strings:Strings.Instance}}"
                                VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="ExtendedButtonCountBox" Width="72" VerticalAlignment="Center"
-                             AutomationProperties.AutomationId="ExtendedButtonCountBox"
+                    <TextBox x:Name="RawButtonCountBox" Width="72" VerticalAlignment="Center"
+                             AutomationProperties.AutomationId="RawButtonCountBox"
                              TextAlignment="Center" Text="11"
                              LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
 

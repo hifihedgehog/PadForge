@@ -24,7 +24,7 @@ namespace PadForge.Engine.Data
         public static MappingSlot GetPosition(string propertyName, VirtualControllerType type, bool isExtended)
         {
             if (type is VirtualControllerType.Extended or VirtualControllerType.Nintendo && isExtended)
-                return GetExtendedPosition(propertyName);
+                return GetRawSurfacePosition(propertyName);
             if (type == VirtualControllerType.Midi)
                 return GetMidiPosition(propertyName);
             if (type == VirtualControllerType.KeyboardMouse)
@@ -39,7 +39,7 @@ namespace PadForge.Engine.Data
         public static string GetPropertyName(MappingSlot slot, VirtualControllerType type, bool isExtended)
         {
             if (type is VirtualControllerType.Extended or VirtualControllerType.Nintendo && isExtended)
-                return GetExtendedPropertyName(slot);
+                return GetRawSurfacePropertyName(slot);
             if (type == VirtualControllerType.Midi)
                 return GetMidiPropertyName(slot);
             if (type == VirtualControllerType.KeyboardMouse)
@@ -104,28 +104,28 @@ namespace PadForge.Engine.Data
         //  Extended Custom
         // ─────────────────────────────────────────────
 
-        private static MappingSlot GetExtendedPosition(string name)
+        private static MappingSlot GetRawSurfacePosition(string name)
         {
             if (name == null) return null;
 
-            const int BtnPrefixLen = 11;   // "ExtendedBtn"
-            const int AxisPrefixLen = 12;  // "ExtendedAxis"
-            const int NegSuffixLen = 3;    // "Neg"
+            const int BtnPrefixLen = 6;   // "RawBtn"
+            const int AxisPrefixLen = 7;  // "RawAxis"
+            const int NegSuffixLen = 3;   // "Neg"
 
-            if (name.StartsWith("ExtendedBtn") && int.TryParse(name.AsSpan(BtnPrefixLen), out int btnIdx))
+            if (name.StartsWith("RawBtn") && int.TryParse(name.AsSpan(BtnPrefixLen), out int btnIdx))
                 return new(ControlCategory.Button, btnIdx);
 
-            if (name.StartsWith("ExtendedAxis") && name.EndsWith("Neg"))
+            if (name.StartsWith("RawAxis") && name.EndsWith("Neg"))
             {
                 if (int.TryParse(name.AsSpan(AxisPrefixLen, name.Length - AxisPrefixLen - NegSuffixLen), out int axNegIdx))
                     return new(ControlCategory.AxisNeg, axNegIdx);
             }
 
-            if (name.StartsWith("ExtendedAxis") && int.TryParse(name.AsSpan(AxisPrefixLen), out int axIdx))
+            if (name.StartsWith("RawAxis") && int.TryParse(name.AsSpan(AxisPrefixLen), out int axIdx))
                 return new(ControlCategory.Axis, axIdx);
 
-            // ExtendedPov0Up, ExtendedPov0Down PadSetting keys, etc. — only POV 0 maps to D-Pad
-            if (name.StartsWith("ExtendedPov0"))
+            // RawPov0Up, RawPov0Down PadSetting keys, etc. — only POV 0 maps to D-Pad
+            if (name.StartsWith("RawPov0"))
             {
                 if (name.EndsWith("Up")) return new(ControlCategory.DPad, 0);
                 if (name.EndsWith("Down")) return new(ControlCategory.DPad, 1);
@@ -136,17 +136,17 @@ namespace PadForge.Engine.Data
             return null;
         }
 
-        private static string GetExtendedPropertyName(MappingSlot slot) => slot.Category switch
+        private static string GetRawSurfacePropertyName(MappingSlot slot) => slot.Category switch
         {
-            ControlCategory.Button  => $"ExtendedBtn{slot.Position}",
-            ControlCategory.Axis    => $"ExtendedAxis{slot.Position}",
-            ControlCategory.AxisNeg => $"ExtendedAxis{slot.Position}Neg",
+            ControlCategory.Button  => $"RawBtn{slot.Position}",
+            ControlCategory.Axis    => $"RawAxis{slot.Position}",
+            ControlCategory.AxisNeg => $"RawAxis{slot.Position}Neg",
             ControlCategory.DPad    => slot.Position switch
             {
-                0 => "ExtendedPov0Up",
-                1 => "ExtendedPov0Down",
-                2 => "ExtendedPov0Left",
-                3 => "ExtendedPov0Right",
+                0 => "RawPov0Up",
+                1 => "RawPov0Down",
+                2 => "RawPov0Left",
+                3 => "RawPov0Right",
                 _ => null
             },
             _ => null

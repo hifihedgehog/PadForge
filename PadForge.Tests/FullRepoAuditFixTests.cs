@@ -156,7 +156,7 @@ namespace PadForge.Tests
             // 20% pull from rest: -32768 + 0.20*65536 = -19661. Between the
             // correct 12.5% boundary (8192) and the buggy 25% one (16384):
             // the yield must trip here.
-            var raw = ExtendedRawState.Create(8, 32, 1);
+            var raw = RawHidState.Create(8, 32, 1);
             raw.Buttons[0] = 1;
             raw.Axes[2] = -19661;
             im.EvaluateSlotMacrosExtended(ref raw, macros);

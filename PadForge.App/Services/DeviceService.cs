@@ -589,18 +589,18 @@ namespace PadForge.Services
             // in the Extended mapping dictionary, which the string-property
             // reflection walk below cannot see. Merge missing keys first,
             // same fill-empty semantics: user-authored entries win.
-            var freshExt = freshPs.ExtendedMappingEntries;
+            var freshExt = freshPs.RawMappingEntries;
             if (freshExt != null)
             {
                 bool extChanged = false;
                 foreach (var entry in freshExt)
                 {
                     if (entry == null || string.IsNullOrEmpty(entry.Key)) continue;
-                    if (!string.IsNullOrEmpty(existingPs.GetExtendedMapping(entry.Key))) continue;
-                    existingPs.SetExtendedMapping(entry.Key, entry.Value);
+                    if (!string.IsNullOrEmpty(existingPs.GetRawMapping(entry.Key))) continue;
+                    existingPs.SetRawMapping(entry.Key, entry.Value);
                     extChanged = true;
                 }
-                if (extChanged) existingPs.FlushExtendedMappings();
+                if (extChanged) existingPs.FlushRawMappings();
             }
 
             // Walk every copyable string mapping property and fill empty

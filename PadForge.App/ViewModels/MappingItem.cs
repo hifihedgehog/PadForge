@@ -207,7 +207,7 @@ namespace PadForge.ViewModels
             {
                 var t = TargetSettingName ?? "";
                 if (t.Contains("ThumbAxis", StringComparison.Ordinal)
-                    || t.StartsWith("ExtendedAxis", StringComparison.Ordinal)
+                    || t.StartsWith("RawAxis", StringComparison.Ordinal)
                     || t.StartsWith("KbmMouse", StringComparison.Ordinal)
                     || t.StartsWith("KbmScroll", StringComparison.Ordinal)
                     || t.StartsWith("MidiCC", StringComparison.Ordinal))
@@ -1195,7 +1195,7 @@ namespace PadForge.ViewModels
 
                 // Check target is a discrete (button-type) output, not an axis.
                 var t = TargetSettingName;
-                if (t.Contains("ThumbAxis") || t.StartsWith("ExtendedAxis")
+                if (t.Contains("ThumbAxis") || t.StartsWith("RawAxis")
                     || t.StartsWith("KbmMouse") || t.StartsWith("KbmScroll")
                     || t.StartsWith("MidiCC"))
                     return false;
@@ -1567,7 +1567,7 @@ namespace PadForge.ViewModels
         public bool IsTriggerTarget =>
             string.Equals(TargetSettingName, "LeftTrigger", StringComparison.Ordinal)
          || string.Equals(TargetSettingName, "RightTrigger", StringComparison.Ordinal)
-         || ((TargetSettingName?.StartsWith("ExtendedAxis", StringComparison.Ordinal) ?? false)
+         || ((TargetSettingName?.StartsWith("RawAxis", StringComparison.Ordinal) ?? false)
              && Category == MappingCategory.Triggers);
 
         /// <summary>Gates the Stick Trim settings strip (#155), same
@@ -1876,7 +1876,7 @@ namespace PadForge.ViewModels
             bool isAxis =
                    t.Contains("ThumbAxis", StringComparison.Ordinal)
                 || t == "LeftTrigger" || t == "RightTrigger"
-                || t.StartsWith("ExtendedAxis", StringComparison.Ordinal)
+                || t.StartsWith("RawAxis", StringComparison.Ordinal)
                 || t.StartsWith("KbmMouse", StringComparison.Ordinal)
                 || t.StartsWith("KbmScroll", StringComparison.Ordinal)
                 || t.StartsWith("MidiCC", StringComparison.Ordinal)

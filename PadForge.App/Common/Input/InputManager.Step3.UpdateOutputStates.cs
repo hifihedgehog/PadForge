@@ -141,7 +141,7 @@ namespace PadForge.Common.Input
                         SlotRawHidSurface[slot])
                     {
                         var cfg = SlotCustomLayouts[slot];
-                        us.ExtendedRawOutputState = MapInputToExtendedRaw(
+                        us.RawHidOutputState = MapInputToExtendedRaw(
                             ud.InputState, ps, cfg, ms, deviceGuidStr, slot);
                     }
 
@@ -1318,7 +1318,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Maps a Custom Extended trigger-axis input descriptor pair to a
         /// signed short suitable for a trigger slot in
-        /// <see cref="ExtendedRawState.Axes"/>. The companion to
+        /// <see cref="RawHidState.Axes"/>. The companion to
         /// <see cref="MapToThumbAxisWithNeg"/> for the trigger half of the
         /// dispatch in <see cref="MapInputToExtendedRaw"/>.
         ///
@@ -1831,15 +1831,15 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Maps a CustomInputState to a ExtendedRawState using the PadSetting's Extended
+        /// Maps a CustomInputState to a RawHidState using the PadSetting's Extended
         /// dictionary-based mappings. Used for custom Extended configurations with
         /// arbitrary numbers of axes, buttons, and POVs.
         /// </summary>
-        private static ExtendedRawState MapInputToExtendedRaw(CustomInputState state, PadSetting ps,
+        private static RawHidState MapInputToExtendedRaw(CustomInputState state, PadSetting ps,
             CustomControllerLayout cfg,
             MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
         {
-            var raw = ExtendedRawState.Create(cfg.Axes, cfg.Buttons, cfg.Povs);
+            var raw = RawHidState.Create(cfg.Axes, cfg.Buttons, cfg.Povs);
             raw.Clear(); // POVs need to start centered
             int vgt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
 
@@ -1853,19 +1853,19 @@ namespace PadForge.Common.Input
             // type so an unmapped trigger doesn't sit at 50% on the wire.
             for (int i = 0; i < cfg.Axes && i < raw.Axes.Length; i++)
             {
-                string axisKey = CachedName(ref _extAxisNames, i, "ExtendedAxis");
+                string axisKey = CachedName(ref _extAxisNames, i, "RawAxis");
                 bool isTrigger = cfg.IsTriggerSlot(i);
                 short axisValue;
                 if (isTrigger
-                    ? TryEvaluateMappingSetExtendedTrigger(state, mappingSet, thisDeviceGuid, slotIndex, axisKey, out axisValue)
+                    ? TryEvaluateMappingSetRawTrigger(state, mappingSet, thisDeviceGuid, slotIndex, axisKey, out axisValue)
                     : TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid, slotIndex, axisKey, out axisValue))
                 {
                     raw.Axes[i] = axisValue;
                 }
                 else
                 {
-                    string posDesc = ps.GetExtendedMapping(axisKey);
-                    string negDesc = ps.GetExtendedMapping(CachedName(ref _extAxisNegNames, i, "ExtendedAxis", "Neg"));
+                    string posDesc = ps.GetRawMapping(axisKey);
+                    string negDesc = ps.GetRawMapping(CachedName(ref _extAxisNegNames, i, "RawAxis", "Neg"));
                     raw.Axes[i] = isTrigger
                         ? MapToExtendedTriggerAxis(state, posDesc, negDesc, thisDeviceGuid, slotIndex)
                         : MapToThumbAxisWithNeg(state, posDesc, negDesc, thisDeviceGuid, slotIndex);
@@ -1875,7 +1875,7 @@ namespace PadForge.Common.Input
             // ── Buttons ──
             for (int i = 0; i < cfg.Buttons; i++)
             {
-                string key = CachedName(ref _extBtnNames, i, "ExtendedBtn");
+                string key = CachedName(ref _extBtnNames, i, "RawBtn");
                 bool pressed;
                 if (TryEvaluateMappingSetButton(state, mappingSet, thisDeviceGuid,
                         slotIndex, key, vgt, out pressed))
@@ -1884,7 +1884,7 @@ namespace PadForge.Common.Input
                 }
                 else
                 {
-                    string desc = ps.GetExtendedMapping(key);
+                    string desc = ps.GetRawMapping(key);
                     if (MapToButtonPressed(state, desc, thisDeviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), vgt, ps.GetMappingBidirectional(key) == "1"))
                         raw.SetButton(i, true);
                 }
@@ -1893,14 +1893,14 @@ namespace PadForge.Common.Input
             // ── POVs ──
             for (int p = 0; p < cfg.Povs && p < raw.Povs.Length; p++)
             {
-                string upKey = CachedName(ref _extPovUpNames, p, "ExtendedPov", "Up"),
-                       downKey = CachedName(ref _extPovDownNames, p, "ExtendedPov", "Down");
-                string leftKey = CachedName(ref _extPovLeftNames, p, "ExtendedPov", "Left"),
-                       rightKey = CachedName(ref _extPovRightNames, p, "ExtendedPov", "Right");
-                bool up = EvalExtendedDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, upKey, vgt);
-                bool down = EvalExtendedDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, downKey, vgt);
-                bool left = EvalExtendedDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, leftKey, vgt);
-                bool right = EvalExtendedDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, rightKey, vgt);
+                string upKey = CachedName(ref _extPovUpNames, p, "RawPov", "Up"),
+                       downKey = CachedName(ref _extPovDownNames, p, "RawPov", "Down");
+                string leftKey = CachedName(ref _extPovLeftNames, p, "RawPov", "Left"),
+                       rightKey = CachedName(ref _extPovRightNames, p, "RawPov", "Right");
+                bool up = EvalRawDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, upKey, vgt);
+                bool down = EvalRawDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, downKey, vgt);
+                bool left = EvalRawDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, leftKey, vgt);
+                bool right = EvalRawDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, rightKey, vgt);
 
                 raw.Povs[p] = DirectionToContinuousPov(up, down, left, right);
             }
@@ -1964,20 +1964,20 @@ namespace PadForge.Common.Input
                         // Extended dictionary (key order documented at
                         // ExtStickKeys).
                         var sk = ExtStickKeys(g);
-                        dzShape = ParseDeadZoneShape(ps.GetExtendedMapping(sk[0]));
-                        dzX = TryParseDoubleStatic(ps.GetExtendedMapping(sk[1]), 0);
-                        dzY = TryParseDoubleStatic(ps.GetExtendedMapping(sk[2]), 0);
-                        adzX = TryParseDoubleStatic(ps.GetExtendedMapping(sk[3]), 0);
-                        adzY = TryParseDoubleStatic(ps.GetExtendedMapping(sk[4]), 0);
-                        lin = TryParseDoubleStatic(ps.GetExtendedMapping(sk[5]), 0);
-                        lutX = Common.CurveLut.GetOrBuild(ps.GetExtendedMapping(sk[6]));
-                        lutY = Common.CurveLut.GetOrBuild(ps.GetExtendedMapping(sk[7]));
-                        cofX = TryParseDoubleStatic(ps.GetExtendedMapping(sk[8]), 0);
-                        cofY = TryParseDoubleStatic(ps.GetExtendedMapping(sk[9]), 0);
-                        mrX = TryParseDoubleStatic(ps.GetExtendedMapping(sk[10]), 100);
-                        mrY = TryParseDoubleStatic(ps.GetExtendedMapping(sk[11]), 100);
-                        mrXN = TryParseDoubleStatic(ps.GetExtendedMapping(sk[12]), mrX);
-                        mrYN = TryParseDoubleStatic(ps.GetExtendedMapping(sk[13]), mrY);
+                        dzShape = ParseDeadZoneShape(ps.GetRawMapping(sk[0]));
+                        dzX = TryParseDoubleStatic(ps.GetRawMapping(sk[1]), 0);
+                        dzY = TryParseDoubleStatic(ps.GetRawMapping(sk[2]), 0);
+                        adzX = TryParseDoubleStatic(ps.GetRawMapping(sk[3]), 0);
+                        adzY = TryParseDoubleStatic(ps.GetRawMapping(sk[4]), 0);
+                        lin = TryParseDoubleStatic(ps.GetRawMapping(sk[5]), 0);
+                        lutX = Common.CurveLut.GetOrBuild(ps.GetRawMapping(sk[6]));
+                        lutY = Common.CurveLut.GetOrBuild(ps.GetRawMapping(sk[7]));
+                        cofX = TryParseDoubleStatic(ps.GetRawMapping(sk[8]), 0);
+                        cofY = TryParseDoubleStatic(ps.GetRawMapping(sk[9]), 0);
+                        mrX = TryParseDoubleStatic(ps.GetRawMapping(sk[10]), 100);
+                        mrY = TryParseDoubleStatic(ps.GetRawMapping(sk[11]), 100);
+                        mrXN = TryParseDoubleStatic(ps.GetRawMapping(sk[12]), mrX);
+                        mrYN = TryParseDoubleStatic(ps.GetRawMapping(sk[13]), mrY);
                         break;
                 }
                 raw.Axes[xi] = ApplyCenterOffset(raw.Axes[xi], cofX);
@@ -2016,10 +2016,10 @@ namespace PadForge.Common.Input
                         // Custom Extended triggers 2+: read from Extended
                         // dictionary (key order documented at ExtTriggerKeys).
                         var tk = ExtTriggerKeys(g);
-                        dz = TryParseDoubleStatic(ps.GetExtendedMapping(tk[0]), 0);
-                        adz = TryParseDoubleStatic(ps.GetExtendedMapping(tk[1]), 0);
-                        maxR = TryParseDoubleStatic(ps.GetExtendedMapping(tk[2]), 100);
-                        tlut = Common.CurveLut.GetOrBuild(ps.GetExtendedMapping(tk[3]));
+                        dz = TryParseDoubleStatic(ps.GetRawMapping(tk[0]), 0);
+                        adz = TryParseDoubleStatic(ps.GetRawMapping(tk[1]), 0);
+                        maxR = TryParseDoubleStatic(ps.GetRawMapping(tk[2]), 100);
+                        tlut = Common.CurveLut.GetOrBuild(ps.GetRawMapping(tk[3]));
                         break;
                 }
                 // Triggers use signed short in raw path; convert to unsigned 16-bit range,
@@ -2035,14 +2035,14 @@ namespace PadForge.Common.Input
 
         /// <summary>Evaluates one Extended POV-direction button, preferring
         /// the per-VC MappingSet row when present.</summary>
-        private static bool EvalExtendedDirection(CustomInputState state, PadSetting ps,
+        private static bool EvalRawDirection(CustomInputState state, PadSetting ps,
             MappingSet mappingSet, string thisDeviceGuid, int slotIndex,
             string key, int globalThreshold)
         {
             if (TryEvaluateMappingSetButton(state, mappingSet, thisDeviceGuid,
                     slotIndex, key, globalThreshold, out bool pressed))
                 return pressed;
-            return MapToButtonPressed(state, ps.GetExtendedMapping(key),
+            return MapToButtonPressed(state, ps.GetRawMapping(key),
                 thisDeviceGuid, slotIndex,
                 TryParseIntStatic(ps.GetMappingDeadZone(key), 0), globalThreshold,
                 ps.GetMappingBidirectional(key) == "1");
@@ -2130,7 +2130,7 @@ namespace PadForge.Common.Input
 
         // ── Interpolated-key name tables (audit 1n) ──
         // The mapping dictionaries are keyed by a closed, index-driven
-        // vocabulary ("KbmKey41", "ExtendedAxis3", "MidiCC7", ...).
+        // vocabulary ("KbmKey41", "RawAxis3", "MidiCC7", ...).
         // Interpolating those keys per poll allocated ~100k strings/s of
         // gen0 on the poll thread; these tables cache each name on first
         // use. Poll-thread only, like the mappers that read them.
@@ -2173,7 +2173,7 @@ namespace PadForge.Common.Input
             System.Array.Copy(t, grown, t.Length);
             for (int i = t.Length; i < grown.Length; i++)
             {
-                string p = "ExtendedStick" + i.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                string p = "RawStick" + i.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 grown[i] = new[]
                 {
                     p + "DzShape", p + "DzX", p + "DzY", p + "AdzX", p + "AdzY",

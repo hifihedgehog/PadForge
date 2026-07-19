@@ -147,7 +147,7 @@ namespace PadForge.Engine.Data
         /// Written by the background thread, read by Step 4.
         /// </summary>
         [XmlIgnore]
-        public ExtendedRawState ExtendedRawOutputState { get; set; }
+        public RawHidState RawHidOutputState { get; set; }
 
         /// <summary>
         /// The mapped MIDI raw output state computed in Step 3 for MIDI slots.

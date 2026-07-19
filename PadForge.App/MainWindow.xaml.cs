@@ -4727,7 +4727,7 @@ namespace PadForge
                 MinWidth = 0,
                 Cursor = extendedDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
             };
-            System.Windows.Automation.AutomationProperties.SetAutomationId(extendedBtn, "AddExtendedBtn");
+            System.Windows.Automation.AutomationProperties.SetAutomationId(extendedBtn, "AddRawBtn");
             extendedBtn.Click += (s, e) =>
             {
                 if (extendedDisabled) return;
@@ -5964,7 +5964,7 @@ namespace PadForge
 
                     // Y axes: record neg (up in game) first due to NegateAxis inversion.
                     // For standard gamepad: TargetSettingName contains "AxisY".
-                    // For Extended custom sticks: TargetSettingName is "ExtendedAxisN" — check label for "Y".
+                    // For Extended custom sticks: TargetSettingName is "RawAxisN" — check label for "Y".
                     //
                     // negRecording=true on Y axes is what makes ShouldAutoInvert
                     // return axisPositive (instead of !axisPositive) so an UP

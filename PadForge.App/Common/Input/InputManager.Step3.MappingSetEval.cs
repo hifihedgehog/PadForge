@@ -1973,7 +1973,7 @@ namespace PadForge.Common.Input
         private static bool TargetIsBipolarAxis(string target)
             => target == "LeftThumbAxisX" || target == "LeftThumbAxisY"
             || target == "RightThumbAxisX" || target == "RightThumbAxisY"
-            || (target != null && target.StartsWith("ExtendedAxis", System.StringComparison.Ordinal));
+            || (target != null && target.StartsWith("RawAxis", System.StringComparison.Ordinal));
 
         /// <summary>Snapshots row.Sources into the thread-local pooled
         /// buffer. The save path mutates row.Sources without locking;
@@ -2625,7 +2625,7 @@ namespace PadForge.Common.Input
         /// in the same signed-short representation the Extended raw path
         /// uses: short.MinValue = released (0%), short.MaxValue = fully
         /// pressed (100%). Returns <c>false</c> when no row exists.</summary>
-        public static bool TryEvaluateMappingSetExtendedTrigger(
+        public static bool TryEvaluateMappingSetRawTrigger(
             CustomInputState state, MappingSet mappingSet, string thisDeviceGuid,
             int slotIndex, string targetName,
             out short value)

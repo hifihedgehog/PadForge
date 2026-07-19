@@ -351,21 +351,21 @@ namespace PadForge.Tests
             });
             var macros = new[] { m };
 
-            var raw = ExtendedRawState.Create(8, 32, 1);
+            var raw = RawHidState.Create(8, 32, 1);
             raw.Buttons[0] = 1;
             raw.Axes[0] = 20000;
             im.EvaluateSlotMacrosExtended(ref raw, macros);
             Assert.Equal(4000, raw.Axes[0]);            // additive, word frame
 
-            raw = ExtendedRawState.Create(8, 32, 1);
+            raw = RawHidState.Create(8, 32, 1);
             raw.Buttons[0] = 1;
             im.EvaluateSlotMacrosExtended(ref raw, macros);  // break parks
             Assert.False(m.IsExecuting);
             Assert.Equal(2, m.ComboResumeIndex);
 
-            raw = ExtendedRawState.Create(8, 32, 1);    // release
+            raw = RawHidState.Create(8, 32, 1);    // release
             im.EvaluateSlotMacrosExtended(ref raw, macros);
-            raw = ExtendedRawState.Create(8, 32, 1);    // press 2: part two
+            raw = RawHidState.Create(8, 32, 1);    // press 2: part two
             raw.Buttons[0] = 1;
             im.EvaluateSlotMacrosExtended(ref raw, macros);
             Assert.Equal(5000, raw.Axes[0]);

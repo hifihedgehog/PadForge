@@ -153,7 +153,7 @@ namespace PadForge.Views
 
         private void OnVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(PadViewModel.ExtendedOutputSnapshot))
+            if (e.PropertyName == nameof(PadViewModel.RawHidOutputSnapshot))
             {
                 _dirty = true;
                 return;
@@ -377,9 +377,9 @@ namespace PadForge.Views
                 double cy = pos.Y - StickSize / 2;
                 string target;
                 if (Math.Abs(cx) > Math.Abs(cy))
-                    target = cx > 0 ? $"ExtendedAxis{axisXIdx}" : $"ExtendedAxis{axisXIdx}Neg";
+                    target = cx > 0 ? $"RawAxis{axisXIdx}" : $"RawAxis{axisXIdx}Neg";
                 else
-                    target = cy > 0 ? $"ExtendedAxis{axisYIdx}" : $"ExtendedAxis{axisYIdx}Neg";
+                    target = cy > 0 ? $"RawAxis{axisYIdx}" : $"RawAxis{axisYIdx}Neg";
                 ControllerElementRecordRequested?.Invoke(this, target);
             };
 
@@ -451,7 +451,7 @@ namespace PadForge.Views
             // Click-to-record
             bg.MouseLeftButtonDown += (s, e) =>
             {
-                ControllerElementRecordRequested?.Invoke(this, $"ExtendedAxis{axisIdx}");
+                ControllerElementRecordRequested?.Invoke(this, $"RawAxis{axisIdx}");
             };
 
             return new TriggerWidget
@@ -557,7 +557,7 @@ namespace PadForge.Views
                     dir = cx > 0 ? "Right" : "Left";
                 else
                     dir = cy > 0 ? "Down" : "Up";
-                ControllerElementRecordRequested?.Invoke(this, $"ExtendedPov{index}{dir}");
+                ControllerElementRecordRequested?.Invoke(this, $"RawPov{index}{dir}");
                 e.Handled = true;
             };
 
@@ -622,7 +622,7 @@ namespace PadForge.Views
 
             circle.MouseLeftButtonDown += (s, e) =>
             {
-                ControllerElementRecordRequested?.Invoke(this, $"ExtendedBtn{index}");
+                ControllerElementRecordRequested?.Invoke(this, $"RawBtn{index}");
             };
 
             return new ButtonWidget { ButtonIndex = index, Circle = circle };
@@ -668,13 +668,13 @@ namespace PadForge.Views
             // Strip "Neg" suffix for matching
             string baseTarget = t.EndsWith("Neg", StringComparison.Ordinal) ? t[..^3] : t;
 
-            // Check sticks (match ExtendedAxisN where N is either X or Y index)
+            // Check sticks (match RawAxisN where N is either X or Y index)
             foreach (var w in _stickWidgets)
             {
-                if (baseTarget == $"ExtendedAxis{w.AxisXIndex}" || baseTarget == $"ExtendedAxis{w.AxisYIndex}")
+                if (baseTarget == $"RawAxis{w.AxisXIndex}" || baseTarget == $"RawAxis{w.AxisYIndex}")
                 {
                     bool isNeg = t.EndsWith("Neg", StringComparison.Ordinal);
-                    bool isX = baseTarget == $"ExtendedAxis{w.AxisXIndex}";
+                    bool isX = baseTarget == $"RawAxis{w.AxisXIndex}";
                     // Determine arrow angle: right=90, left=270, up=0, down=180
                     // Y: Neg = up (top of stick in WPF), non-Neg = down (bottom)
                     double angle;
@@ -703,7 +703,7 @@ namespace PadForge.Views
             // flash until the user pressed the source.
             foreach (var w in _triggerWidgets)
             {
-                if (baseTarget == $"ExtendedAxis{w.AxisIndex}")
+                if (baseTarget == $"RawAxis{w.AxisIndex}")
                 {
                     if (highlight) w.Background.Stroke = FlashBrush;
                     else w.Background.SetResourceReference(Shape.StrokeProperty, DimKey);
@@ -715,7 +715,7 @@ namespace PadForge.Views
             // Check buttons
             foreach (var w in _buttonWidgets)
             {
-                if (t == $"ExtendedBtn{w.ButtonIndex}")
+                if (t == $"RawBtn{w.ButtonIndex}")
                 {
                     if (highlight) w.Circle.Stroke = FlashBrush;
                     else w.Circle.SetResourceReference(Shape.StrokeProperty, DimKey);
@@ -724,10 +724,10 @@ namespace PadForge.Views
                 }
             }
 
-            // Check POVs (match ExtendedPov{N}Up/Down/Left/Right)
+            // Check POVs (match RawPov{N}Up/Down/Left/Right)
             foreach (var w in _povWidgets)
             {
-                if (t.StartsWith($"ExtendedPov{w.PovIndex}", StringComparison.Ordinal))
+                if (t.StartsWith($"RawPov{w.PovIndex}", StringComparison.Ordinal))
                 {
                     if (highlight) w.Arrow.Fill = FlashBrush;
                     else w.Arrow.SetResourceReference(Shape.FillProperty, AccentKey);
@@ -736,7 +736,7 @@ namespace PadForge.Views
                     // actually perceptible against a centered POV.
                     w.Arrow.Visibility = highlight ? Visibility.Visible : Visibility.Collapsed;
                     // Show arrow pointing in the target direction
-                    string dir = t.Substring($"ExtendedPov{w.PovIndex}".Length);
+                    string dir = t.Substring($"RawPov{w.PovIndex}".Length);
                     double angle = dir switch
                     {
                         "Up" => 0,
@@ -766,7 +766,7 @@ namespace PadForge.Views
             if (!_dirty || _vm == null || !_layoutBuilt) return;
             _dirty = false;
 
-            var raw = _vm.ExtendedOutputSnapshot;
+            var raw = _vm.RawHidOutputSnapshot;
 
             // Update sticks
             foreach (var w in _stickWidgets)
@@ -807,7 +807,7 @@ namespace PadForge.Views
             foreach (var w in _povWidgets)
             {
                 if (w.Outer.IsMouseOver) continue;
-                if (_flashTarget != null && _flashTarget.StartsWith($"ExtendedPov{w.PovIndex}", StringComparison.Ordinal)) continue;
+                if (_flashTarget != null && _flashTarget.StartsWith($"RawPov{w.PovIndex}", StringComparison.Ordinal)) continue;
 
                 int povValue = -1;
                 if (raw.Povs != null && w.PovIndex < raw.Povs.Length)

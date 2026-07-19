@@ -6481,6 +6481,13 @@ namespace PadForge.ViewModels
         /// fall back to the numbered format). Index order matches the
         /// switch-pro HID descriptor: face 0-3, bumpers 4-5, ZL/ZR 6-7,
         /// Minus/Plus 8-9, stick clicks 10-11, Home 12, Capture 13.</summary>
+        /// <summary>Count of role-mapped (lettered) buttons on the
+        /// switch-pro profile family: indices 0-13. The descriptor
+        /// declares 18 (the last four are the Joy-Con rail SL/SR bits),
+        /// but the SDK packer only emits role-mapped buttons, so
+        /// anything past this count is dead wire on the virtual pad.</summary>
+        public const int NintendoLetteredButtonCount = 14;
+
         public static string NintendoExtendedLabel(int index) => index switch
         {
             0 => "B",

@@ -792,9 +792,16 @@ namespace PadForge.Common.Input
                     continue;
                 // Same cross-device resolution the per-target evaluators use:
                 // the source's own DeviceGuid wins; empty = this pass's device.
-                var devState = string.IsNullOrEmpty(src.DeviceGuid)
-                    ? state
-                    : (LookupDeviceState(src.DeviceGuid) ?? state);
+                CustomInputState devState;
+                if (string.IsNullOrEmpty(src.DeviceGuid))
+                    devState = state;
+                else
+                {
+                    devState = LookupDeviceState(src.DeviceGuid);
+                    // Offline-contributes-zero: don't tick flick state
+                    // from another device's axes.
+                    if (devState == null) continue;
+                }
                 counts += runtime.TickFlickStick(slotIndex, "KbmMouseX", i, src, devState,
                     dt, _stickTrimFrameSeq);
             }

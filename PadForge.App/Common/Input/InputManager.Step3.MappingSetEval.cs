@@ -985,7 +985,9 @@ namespace PadForge.Common.Input
                         if (!string.IsNullOrEmpty(act.CyclePrevDeviceGuid)
                             && !string.Equals(act.CyclePrevDeviceGuid, act.DeviceGuid, System.StringComparison.OrdinalIgnoreCase))
                         {
-                            prevState = LookupDeviceState(act.CyclePrevDeviceGuid) ?? state;
+                            // Offline prev device reads rest (false), never
+                            // the current pass's state (wrong device).
+                            prevState = LookupDeviceState(act.CyclePrevDeviceGuid) ?? OfflinePinnedRestState;
                             prevGuid = act.CyclePrevDeviceGuid;
                         }
                         // Device guid + slot ride along like the chord second
@@ -1132,7 +1134,9 @@ namespace PadForge.Common.Input
                         && !string.Equals(act.ChordSecondDeviceGuid, act.DeviceGuid,
                             System.StringComparison.OrdinalIgnoreCase))
                     {
-                        secondState = LookupDeviceState(act.ChordSecondDeviceGuid) ?? state;
+                        // Offline second device reads rest (false), never
+                        // the current pass's state (wrong device).
+                        secondState = LookupDeviceState(act.ChordSecondDeviceGuid) ?? OfflinePinnedRestState;
                         secondGuid = act.ChordSecondDeviceGuid;
                     }
                     bool b = SourceKindRuntimeReadButtonLikeBool(secondState, act.ChordSecondDescriptor, secondGuid, slotIndex);
@@ -1910,6 +1914,12 @@ namespace PadForge.Common.Input
             _devStateMemoActive = false;
         }
 
+        // All-rest state for offline-pinned BOOL-LIKE reads (buttons read
+        // false). Never hand this to an AXIS read: zeroed unsigned axes
+        // decode as full-negative deflection, which is the exact poison
+        // the offline-contributes-zero fixes remove. Read-only by contract.
+        private static readonly CustomInputState OfflinePinnedRestState = new();
+
         private static CustomInputState LookupDeviceState(string deviceGuid)
         {
             if (string.IsNullOrEmpty(deviceGuid)) return null;
@@ -2424,9 +2434,21 @@ namespace PadForge.Common.Input
             // wins, not necessarily the device we're currently processing).
             var src = FirstContributingSource(row);
             if (src == null) return false;
-            var devState = string.IsNullOrEmpty(src.DeviceGuid)
-                ? state
-                : (LookupDeviceState(src.DeviceGuid) ?? state);
+            CustomInputState devState;
+            if (string.IsNullOrEmpty(src.DeviceGuid))
+                devState = state;
+            else
+            {
+                devState = LookupDeviceState(src.DeviceGuid);
+                // Offline-contributes-zero contract: a source PINNED to a
+                // device that is not online contributes REST. Falling back
+                // to the CURRENT pass's state evaluated another device's
+                // row against this device's input (a keyboard's zeroed
+                // unsigned axes read as full-negative deflection, the
+                // off-center-at-rest report). The row still owns the
+                // target, so return true with the rest value.
+                if (devState == null) return true;
+            }
             value = SourceEvaluator.EvaluateForButtonTarget(
                 devState, src, globalAxisToButtonThreshold,
                 slotIndex, targetName, 0, slotRuntime, dt,
@@ -2472,9 +2494,17 @@ namespace PadForge.Common.Input
             {
                 var src = FirstContributingSource(row);
                 if (src == null) return false;
-                var devState = string.IsNullOrEmpty(src.DeviceGuid)
-                    ? state
-                    : (LookupDeviceState(src.DeviceGuid) ?? state);
+                CustomInputState devState;
+                if (string.IsNullOrEmpty(src.DeviceGuid))
+                    devState = state;
+                else
+                {
+                    devState = LookupDeviceState(src.DeviceGuid);
+                    // Offline-contributes-zero (see the button branch):
+                    // rest for a bipolar axis is centered 0, which the
+                    // caller's pre-initialized value already holds.
+                    if (devState == null) return true;
+                }
                 combined = ClampBipolar(SourceEvaluator.EvaluateForBipolarAxisTarget(
                     devState, src, slotIndex, targetName, 0, slotRuntime, dt,
                     evaluatedDeviceGuid: thisDeviceGuid));
@@ -2543,9 +2573,17 @@ namespace PadForge.Common.Input
                 if (IsRowModifierSource(src)) continue;
                 if (src == null) { values.Add(0f); flags.Add(0f); continue; }
 
-                var devState = string.IsNullOrEmpty(src.DeviceGuid)
-                    ? state
-                    : (LookupDeviceState(src.DeviceGuid) ?? state);
+                CustomInputState devState;
+                if (string.IsNullOrEmpty(src.DeviceGuid))
+                    devState = state;
+                else
+                {
+                    devState = LookupDeviceState(src.DeviceGuid);
+                    // Offline-contributes-zero: a pinned source whose
+                    // device is offline contributes centered/inactive,
+                    // never an evaluation against the wrong device.
+                    if (devState == null) { values.Add(0f); flags.Add(0f); continue; }
+                }
 
                 // "Active" = currently contributing useful data.
                 bool isActive;
@@ -2668,9 +2706,16 @@ namespace PadForge.Common.Input
             {
                 var src = FirstContributingSource(row);
                 if (src == null) return false;
-                var devState = string.IsNullOrEmpty(src.DeviceGuid)
-                    ? state
-                    : (LookupDeviceState(src.DeviceGuid) ?? state);
+                CustomInputState devState;
+                if (string.IsNullOrEmpty(src.DeviceGuid))
+                    devState = state;
+                else
+                {
+                    devState = LookupDeviceState(src.DeviceGuid);
+                    // Offline-contributes-zero: trigger rest is released
+                    // (the caller's pre-initialized value).
+                    if (devState == null) return true;
+                }
                 combined = ClampUnipolar(SourceEvaluator.EvaluateForTriggerTarget(
                     devState, src, slotIndex, targetName, 0, slotRuntime, dt,
                     evaluatedDeviceGuid: thisDeviceGuid));

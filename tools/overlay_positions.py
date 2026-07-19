@@ -1364,7 +1364,18 @@ def process_xbox_series():
 
 
 def process_switchpro():
-    """Extract Nintendo Switch Pro Controller overlay positions."""
+    """Extract Nintendo Switch Pro Controller overlay positions.
+
+    This pack's press overlays are authored ~1.55x oversized relative to
+    the base render (content == canvas, no padding), so every element is
+    fit_overlay_to_bbox-sized to its SVG label's bbox, the same posture
+    as Xbox One / Series. The SVG labels sit ON the controls (unlike
+    DS4's text-anchored labels), so the fitted geometry is authoritative
+    and no composite refinement pass is needed. ZL/ZR keep the Trigger
+    typing (the digital preview bridge drives the fill 0/1, so a press
+    shows the full highlight); their rest art lives in the base render,
+    so no TriggerBase pair is needed.
+    """
     svg_path = os.path.join(ASSET_PACK,
         "Nintendo Switch Controller Images", "Switch Pro Controller",
         "Default Theme", "Theme SVG", "Switch Pro Controller VSCView.svg")
@@ -1375,60 +1386,53 @@ def process_switchpro():
     base = cv2.imread(os.path.join(MODELS_DIR, "SWITCHPRO", "NSwitchPro_base.png"), cv2.IMREAD_UNCHANGED)
     base_w, base_h = base.shape[1], base.shape[0]
 
-    # This SVG is authored in mm (viewBox 0 0 419.127 304.546) while the
-    # base PNG is 1485x1079; px-per-mm comes from the width ratio. The
-    # press overlays ship on the same canvas scale as the base (like DS4),
-    # so native PNG sizes are kept and only positions are refined.
+    # SVG is authored in mm (viewBox 0 0 419.127 304.546); px-per-mm from
+    # the width ratio against the 1485x1079 base.
     vb = [float(v) for v in root.get("viewBox").split()]
     scale = base_w / vb[2]
 
     ov_dir = os.path.join(MODELS_DIR, "SWITCHPRO")
     results = []
 
-    def add(svg_label, filename, target, elem_type):
+    def add(svg_label, filename, target, elem_type, fit_scale=1.0):
         bbox = get_element_pixel_bbox(root, svg_label, scale)
         if bbox is None:
             print(f"  MISS: {svg_label}")
             return None
-        pos = center_overlay_on_bbox(bbox, os.path.join(ov_dir, filename))
+        pos = fit_overlay_to_bbox(bbox, os.path.join(ov_dir, filename), scale=fit_scale)
         results.append((filename, target, elem_type, pos[0], pos[1], pos[2], pos[3]))
         print(f"  {target:20s} ({svg_label:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
         return bbox
 
     print("Parsing Switch Pro SVG elements...")
 
-    # Face buttons: one shared cap overlay at each lettered position.
-    # Nintendo layout (A east, B south, X north, Y west); targets follow
-    # the LETTERS so the preview highlight matches the printed cap.
+    # Face buttons: one shared cap overlay fitted to each lettered
+    # position. Nintendo layout (A east, B south, X north, Y west);
+    # targets follow the LETTERS so the highlight matches the cap.
     add("A Button", "NSwitchPro_FaceButton.png", "ButtonA", "Button")
     add("B Button", "NSwitchPro_FaceButton.png", "ButtonB", "Button")
     add("X Button", "NSwitchPro_FaceButton.png", "ButtonX", "Button")
     add("Y Button", "NSwitchPro_FaceButton.png", "ButtonY", "Button")
 
-    # D-pad: this SVG labels only the full cross group. Seed each arrow at
-    # its quadrant center and let composite refinement snap it to the
-    # actual arm (each arrow PNG is directional, so matching is unambiguous).
+    # D-pad: only the full cross group is labeled. Same edge-anchored
+    # quadrant sub-rects as the Xbox One / Series flow.
     dpad_bbox = get_element_pixel_bbox(root, "D-PAD", scale)
     if dpad_bbox:
         dx, dy, dw, dh = dpad_bbox
-        for direction, fn, target, cx, cy in [
-            ("Up",    "NSwitchPro_D-PAD_Up.png",    "DPadUp",    dx + dw / 2,    dy + dh * 0.25),
-            ("Down",  "NSwitchPro_D-PAD_Down.png",  "DPadDown",  dx + dw / 2,    dy + dh * 0.75),
-            ("Left",  "NSwitchPro_D-PAD_Left.png",  "DPadLeft",  dx + dw * 0.25, dy + dh / 2),
-            ("Right", "NSwitchPro_D-PAD_Right.png", "DPadRight", dx + dw * 0.75, dy + dh / 2),
+        half_w, half_h = dw / 2.0, dh / 2.0
+        for direction, fn, target, sub in [
+            ("Up",    "NSwitchPro_D-PAD_Up.png",    "DPadUp",    (dx, dy, dw, half_h)),
+            ("Down",  "NSwitchPro_D-PAD_Down.png",  "DPadDown",  (dx, dy + dh - half_h, dw, half_h)),
+            ("Left",  "NSwitchPro_D-PAD_Left.png",  "DPadLeft",  (dx, dy, half_w, dh)),
+            ("Right", "NSwitchPro_D-PAD_Right.png", "DPadRight", (dx + dw - half_w, dy, half_w, dh)),
         ]:
-            ov = cv2.imread(os.path.join(ov_dir, fn), cv2.IMREAD_UNCHANGED)
-            if ov is None:
-                print(f"  MISS: {fn}")
-                continue
-            w, h = ov.shape[1], ov.shape[0]
-            x, y = round(cx - w / 2), round(cy - h / 2)
-            results.append((fn, target, "Button", x, y, w, h))
-            print(f"  {target:20s} ({'D-PAD ' + direction:20s}) -> ({x:4d}, {y:4d}) {w:4d}x{h:3d}")
+            pos = fit_overlay_to_bbox(sub, os.path.join(ov_dir, fn))
+            results.append((fn, target, "Button", pos[0], pos[1], pos[2], pos[3]))
+            print(f"  {target:20s} ({'D-PAD ' + direction:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
 
-    # Bumpers + digital triggers (individually labeled in this SVG).
-    # ZL/ZR are digital on the hardware; Trigger typing reuses the fill
-    # rendering, driven 0/1 by the preview bridge.
+    # Bumpers + digital triggers: individually labeled in this SVG, so a
+    # direct fit lands each on its visible shape. ZL/ZR light on press
+    # like the bumpers (digital hardware, rest art lives in the base).
     add("L Bumper", "NSwitchPro_L_Bumper.png", "LeftShoulder", "Button")
     add("R Bumper", "NSwitchPro_R_Bumper.png", "RightShoulder", "Button")
     add("ZL Trigger", "NSwitchPro_ZL.png", "LeftTrigger", "Trigger")
@@ -1440,20 +1444,18 @@ def process_switchpro():
     add("Home", "NSwitchPro_HomeButton.png", "ButtonGuide", "Button")
     add("Capture", "NSwitchPro_CaptureButton.png", "ButtonShare", "Button")
 
-    # Sticks + click highlights at the same wells.
+    # Sticks: the face images are authored at base scale and the fit is
+    # a no-op; the click highlight is oversized and fits down to the
+    # stick well like the DS4 post-pass clamps its click overlay.
     add("Left Joystick", "NSwitchPro_LeftStick.png", "LeftThumbRing", "StickRing")
     add("Right Joystick", "NSwitchPro_RightStick.png", "RightThumbRing", "StickRing")
     for lbl, target in [("Left Joystick", "LeftThumbButton"),
                         ("Right Joystick", "RightThumbButton")]:
         bbox = get_element_pixel_bbox(root, lbl, scale)
         if bbox:
-            pos = center_overlay_on_bbox(bbox, os.path.join(ov_dir, "NSwitchPro_AnalogStickClick.png"))
+            pos = fit_overlay_to_bbox(bbox, os.path.join(ov_dir, "NSwitchPro_AnalogStickClick.png"))
             results.append(("NSwitchPro_AnalogStickClick.png", target, "StickClick", pos[0], pos[1], pos[2], pos[3]))
             print(f"  {target:20s} ({lbl:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
-
-    composite_path = os.path.join(ov_dir, "Switch Pro Controller Overlay.png")
-    print("\nRefining Switch Pro positions via alpha-channel template matching...")
-    results = refine_with_composite(composite_path, results, search_radius=60)
 
     return {"base_width": base_w, "base_height": base_h, "results": results}
 

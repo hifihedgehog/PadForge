@@ -752,8 +752,10 @@
   <data name="Pad_MidiStartNoteTooltip" xml:space="preserve"><value>First MIDI note number (0-127, 60 = Middle C). Higher values reduce max Note Count.</value></data>
   <data name="Pad_MidiVelocity" xml:space="preserve"><value>Velocity</value></data>
   <data name="Pad_MidiVelocityTooltip" xml:space="preserve"><value>Note-on velocity (0-127). How hard virtual keys are pressed.</value></data>
-  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Simultaneous Opposite Directions</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Resolves both keys of an opposing pair being held at once, like Snap Tap. Applies to this slot's virtual keyboard output.</value></data>
+  <data name="Pad_Kbm_Socd_Card_Desc" xml:space="preserve"><value>Resolves paired keys held at the same time on this slot's virtual keyboard output, like Snap Tap. When both keys of a pair are down, the chosen rule decides which press the game sees.</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>Key Pairs</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>The key pairs the rule cleans. Each pair is tracked on its own.</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Off</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>Both keys pass through unchanged.</value></data>
   <data name="Pad_Kbm_Socd_Mode_LastWins_Name" xml:space="preserve"><value>Last Wins (Snap Tap)</value></data>
@@ -767,10 +769,9 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Removes this key pair.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>First key of the opposing pair.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Second key of the opposing pair.</value></data>
-  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Reset Simultaneous Opposite Directions</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Simultaneous Press (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Simultaneous Opposite Cardinal Directions (SOCD)</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resolves paired buttons held at the same time on this slot&apos;s virtual controller output. When both buttons of a pair are down, the chosen rule decides which press the game sees.</value></data>
-  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Reset Simultaneous Press</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Reset Simultaneous Opposite Cardinal Directions</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>How a held pair resolves. Applies to the slot&apos;s final combined output, so physical, mapped, and macro presses are all cleaned.</value></data>
   <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>Reset Mode</value></data>

@@ -2341,7 +2341,6 @@
   <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>Voegt nog een tegengesteld toetsenpaar toe.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Eerste toets van het tegengestelde paar.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Tweede toets van het tegengestelde paar.</value></data>
-  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Gelijktijdige tegengestelde richtingen</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>De eerdere druk blijft winnen totdat die wordt losgelaten.</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>Eerste wint</value></data>
   <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>De meest recente druk wint. Bij loslaten wordt de nog ingedrukte tegenovergestelde toets opnieuw ingedrukt.</value></data>
@@ -2351,10 +2350,9 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>Beide toetsen gaan ongewijzigd door.</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Uit</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Verwijdert dit toetsenpaar.</value></data>
-  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Gelijktijdige tegengestelde richtingen resetten</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Gelijktijdig indrukken (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Gelijktijdige tegengestelde hoofdrichtingen (SOCD)</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Lost knoppenparen op die tegelijk worden vastgehouden op de virtuele-controlleruitvoer van dit slot. Wanneer beide knoppen van een paar zijn ingedrukt, bepaalt de gekozen regel welke druk het spel ziet.</value></data>
-  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gelijktijdig indrukken herstellen</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gelijktijdige tegengestelde hoofdrichtingen herstellen</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>Hoe een vastgehouden paar wordt opgelost. Geldt voor de uiteindelijke gecombineerde uitvoer van het slot, dus fysieke, toegewezen en macro-drukken worden allemaal opgeschoond.</value></data>
   <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>Modus herstellen</value></data>
@@ -2372,6 +2370,9 @@
   <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>Voegt nog een knoppenpaar toe.</value></data>
   <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Verwijdert dit knoppenpaar.</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Lost het tegelijk ingedrukt houden van beide toetsen van een tegengesteld paar op, zoals Snap Tap. Geldt voor de virtuele toetsenborduitvoer van deze slot.</value></data>
+  <data name="Pad_Kbm_Socd_Card_Desc" xml:space="preserve"><value>Lost toetsenparen op die tegelijk worden vastgehouden op de virtuele toetsenborduitvoer van dit slot, zoals Snap Tap. Wanneer beide toetsen van een paar zijn ingedrukt, bepaalt de gekozen regel welke druk het spel ziet.</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>Toetsenparen</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>De toetsenparen die de regel opschoont. Elk paar wordt apart gevolgd.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide-knop-LED</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Batterijniveau</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Helderheid</value></data>

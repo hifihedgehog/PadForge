@@ -2321,7 +2321,6 @@
   <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>Adiciona outro par de teclas opostas.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Primeira tecla do par oposto.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Segunda tecla do par oposto.</value></data>
-  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Direções Opostas Simultâneas</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>A pressão mais antiga continua vencendo até ser solta.</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>Primeira Vence</value></data>
   <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>A pressão mais recente vence. Ao soltá-la, a tecla oposta ainda pressionada é pressionada de novo.</value></data>
@@ -2331,10 +2330,9 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>As duas teclas passam sem alteração.</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Desativado</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Remove este par de teclas.</value></data>
-  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Redefinir Direções Opostas Simultâneas</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Pressão Simultânea (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Direções Cardeais Opostas Simultâneas (SOCD)</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resolve pares de botões mantidos ao mesmo tempo na saída do controle virtual deste slot. Quando os dois botões de um par estão pressionados, a regra escolhida decide qual pressão o jogo vê.</value></data>
-  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Redefinir Pressão Simultânea</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Redefinir Direções Cardeais Opostas Simultâneas</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modo</value></data>
   <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>Como um par mantido é resolvido. Aplica-se à saída final combinada do slot, então pressões físicas, mapeadas e de macro são todas limpas.</value></data>
   <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>Redefinir Modo</value></data>
@@ -2352,6 +2350,9 @@
   <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>Adiciona outro par de botões.</value></data>
   <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Remove este par de botões.</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Resolve quando as duas teclas de um par oposto são seguradas ao mesmo tempo, como o Snap Tap. Aplica-se à saída de teclado virtual deste slot.</value></data>
+  <data name="Pad_Kbm_Socd_Card_Desc" xml:space="preserve"><value>Resolve pares de teclas mantidos ao mesmo tempo na saída de teclado virtual deste slot, como o Snap Tap. Quando as duas teclas de um par estão pressionadas, a regra escolhida decide qual pressão o jogo vê.</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>Pares de Teclas</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>Os pares de teclas que a regra limpa. Cada par é acompanhado separadamente.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED do Botão Guia</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Nível de Bateria</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Brilho</value></data>

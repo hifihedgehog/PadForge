@@ -126,6 +126,20 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void LetteredButtonCount_CapsTheDeadRailBits()
+        {
+            // The switch-pro descriptor declares 18 buttons; only the
+            // role-mapped 14 reach the wire through the SDK packer.
+            Assert.Equal(14, MacroButtonNames.NintendoLetteredButtonCount);
+            // Every lettered index resolves; the first past the cap
+            // falls back to the numbered format.
+            for (int i = 0; i < MacroButtonNames.NintendoLetteredButtonCount; i++)
+                Assert.NotNull(MacroButtonNames.NintendoExtendedLabel(i));
+            Assert.Null(MacroButtonNames.NintendoExtendedLabel(
+                MacroButtonNames.NintendoLetteredButtonCount));
+        }
+
+        [Fact]
         public void PadSettingJson_RoundTripsNintendoRawMappings()
         {
             var ps = new PadSetting();

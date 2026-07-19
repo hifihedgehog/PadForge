@@ -274,7 +274,16 @@ namespace PadForge.ViewModels
             _extendedConfig.ThumbstickCount = profile.StickCount;
             _extendedConfig.TriggerCount = profile.TriggerCount;
             _extendedConfig.PovCount = profile.HasHat ? 1 : 0;
-            _extendedConfig.ButtonCount = profile.ButtonCount;
+            int buttons = profile.ButtonCount;
+            // switch-pro descriptors declare 18 buttons, but 15-18 are
+            // the Joy-Con rail SL/SR bits with no role in the profile
+            // layout, and the SDK packer only emits role-mapped buttons.
+            // Rows past the lettered 14 would map input onto dead wire,
+            // so the whole surface (grid, SOCD, macros, Step 3 bounds)
+            // clamps here at the sync seam.
+            if (MacroButtonNames.IsNintendoLetteredProfile(profile.Id))
+                buttons = System.Math.Min(buttons, MacroButtonNames.NintendoLetteredButtonCount);
+            _extendedConfig.ButtonCount = buttons;
         }
 
         /// <summary>
@@ -1914,6 +1923,18 @@ namespace PadForge.ViewModels
                 Mappings.Add(new MappingItem($"{label} Down", $"ExtendedPov{i}Down", MappingCategory.DPad));
                 Mappings.Add(new MappingItem($"{label} Left", $"ExtendedPov{i}Left", MappingCategory.DPad));
                 Mappings.Add(new MappingItem($"{label} Right", $"ExtendedPov{i}Right", MappingCategory.DPad));
+            }
+
+            // Motion passthrough (HM v1.3.18, HM#33): the virtual Switch
+            // Pro streams a real IMU, so Nintendo slots surface the same
+            // two source-picker rows the PlayStation grid carries.
+            // Auto-created on assignment for sensor-capable devices via
+            // EnsureMotionRows; the engine resolves them through the
+            // MappingSet motion rows, not the raw target grammar.
+            if (_outputType == VirtualControllerType.Nintendo)
+            {
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionGyro,  "MotionGyro",  MappingCategory.Motion));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionAccel, "MotionAccel", MappingCategory.Motion));
             }
         }
 

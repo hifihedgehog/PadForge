@@ -1440,6 +1440,20 @@ def process_switchpro():
     # also matches the physical stacking (bumper in front of trigger).
     add("ZL Trigger", "NSwitchPro_ZL.png", "LeftTrigger", "Trigger")
     add("ZR Trigger", "NSwitchPro_ZR.png", "RightTrigger", "Trigger")
+
+    # Rest-state trigger silhouettes, the Xbox TriggerBase pattern: the
+    # shipped base render is the pack's trigger-LESS template variant,
+    # so without these the ZL/ZR nubs don't exist at rest and a press
+    # lights a floating arc. The art is the pixel difference between
+    # the pack's with-triggers and without-triggers templates (see
+    # tools note in the repo history), cropped at base-canvas
+    # registration, so position is exact and no fitting applies. The
+    # view renders TriggerBase at Z 0, BEHIND the body render, so the
+    # silhouette peeks above the shoulder line exactly like Xbox / DS4.
+    results.append(("NSwitchPro_ZL_Rest.png", "LeftTriggerBase", "TriggerBase", 200, 0, 278, 100))
+    print(f"  {'LeftTriggerBase':20s} ({'template diff':20s}) -> ( 200,    0)  278x100")
+    results.append(("NSwitchPro_ZR_Rest.png", "RightTriggerBase", "TriggerBase", 1007, 0, 276, 100))
+    print(f"  {'RightTriggerBase':20s} ({'template diff':20s}) -> (1007,    0)  276x100")
     add("L Bumper", "NSwitchPro_L_Bumper.png", "LeftShoulder", "Button")
     add("R Bumper", "NSwitchPro_R_Bumper.png", "RightShoulder", "Button")
 

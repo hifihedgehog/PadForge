@@ -2788,7 +2788,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Routes the game rumble and force feedback this virtual controller receives to an audio output as low-frequency tones for bass shakers and subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble to Audio</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Works with Xbox, DualShock 4 / DualSense, and Extended virtual controllers with force feedback, such as racing wheels. Only game feedback plays through the audio output. Macro and test rumble stay on the controller.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Works with Xbox, DualShock 4 / DualSense, and Nintendo Switch Pro virtual controllers, plus Extended virtual controllers with force feedback, such as racing wheels. Only game feedback plays through the audio output. Macro and test rumble stay on the controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Reset Rumble to Audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Route rumble to an audio output</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Plays the game rumble and force feedback this virtual controller receives as low-frequency tones on the selected audio output. Turning it off keeps every setting.</value></data>

@@ -4908,7 +4908,11 @@ namespace PadForge.ViewModels
             get
             {
                 if (_outputType is VirtualControllerType.Xbox
-                    or VirtualControllerType.PlayStation)
+                    or VirtualControllerType.PlayStation
+                    // Nintendo: HM v1.3.18 decodes the virtual Switch
+                    // Pro's rumble outputs onto the OutputDecoded lane
+                    // (HM#33), so the slot has a real feedback source.
+                    or VirtualControllerType.Nintendo)
                     return true;
                 if (_outputType != VirtualControllerType.Extended)
                     return false;

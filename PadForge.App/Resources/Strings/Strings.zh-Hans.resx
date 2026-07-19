@@ -2733,7 +2733,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音振动器</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>将此虚拟手柄收到的游戏振动和力反馈转换为低频音，输出到音频设备，用于低音振动器和低音炮。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振动转音频</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>适用于 Xbox、DualShock 4 / DualSense 以及支持力反馈的扩展虚拟手柄（例如赛车方向盘）。仅游戏反馈会进入音频输出。宏振动和测试振动仍留在手柄上。</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>适用于 Xbox、DualShock 4 / DualSense、Nintendo Switch Pro 以及支持力反馈的扩展虚拟手柄（例如赛车方向盘）。仅游戏反馈会进入音频输出。宏振动和测试振动仍留在手柄上。</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>重置振动转音频</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>将振动发送到音频输出</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>把此虚拟手柄的游戏振动和力反馈在所选音频输出上以低频音播放。关闭后所有设置保持不变。</value></data>

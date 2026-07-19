@@ -2733,7 +2733,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Route la vibration et le retour de force de jeu reçus par cette manette virtuelle vers une sortie audio sous forme de sons basse fréquence pour bass shakers et caissons de basses.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibration vers audio</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Fonctionne avec les manettes virtuelles Xbox, DualShock 4 / DualSense et les manettes virtuelles Étendu à retour de force, comme les volants de course. Seul le retour du jeu passe par la sortie audio. Les vibrations de macro et de test restent sur la manette.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Fonctionne avec les manettes virtuelles Xbox, DualShock 4 / DualSense et Nintendo Switch Pro, ainsi que les manettes virtuelles Étendu à retour de force, comme les volants de course. Seul le retour du jeu passe par la sortie audio. Les vibrations de macro et de test restent sur la manette.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser la vibration vers audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Router la vibration vers une sortie audio</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Joue la vibration et le retour de force de jeu de cette manette virtuelle sous forme de sons basse fréquence sur la sortie audio choisie. La désactivation conserve tous les réglages.</value></data>

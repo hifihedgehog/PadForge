@@ -1299,7 +1299,12 @@ namespace PadForge.Common.Input
                             hmExt.SubmitExtendedRawState(
                                 CombinedExtendedRawStates[padIndex],
                                 layout.Sticks,
-                                layout.Triggers);
+                                layout.Triggers,
+                                // IMU channel (HM v1.3.18): the slot's
+                                // aggregated motion snapshot rides beside
+                                // the raw surface. HasMotion=false (no
+                                // motion rows mapped) submits zeroes.
+                                MotionSnapshots[padIndex]);
                         }
                         else
                         {

@@ -97,6 +97,34 @@ namespace PadForge.Tests
                 MappingTranslation.GetLayoutLabel(VirtualControllerType.Nintendo, isExtended: true));
         }
 
+        // ── HM v1.3.18 (HM#33): the virtual Switch Pro gained a real
+        //    IMU surface, so Nintendo joined the motion-capable set ──
+
+        [Fact]
+        public void EnsureMotionRows_TreatsNintendoAsMotionCapable()
+        {
+            var devices = new (string DeviceGuid, bool HasGyro, bool HasAccel)[]
+            {
+                (System.Guid.NewGuid().ToString(), true, true),
+            };
+
+            var nintendo = new MappingSet();
+            MappingSetMigrator.EnsureMotionRows(nintendo,
+                (int)VirtualControllerType.Nintendo, devices);
+            Assert.Contains(nintendo.Rows,
+                r => r?.Target == MappingSetMigrator.MotionGyroTarget);
+            Assert.Contains(nintendo.Rows,
+                r => r?.Target == MappingSetMigrator.MotionAccelTarget);
+
+            // The gate stays closed for the families without a motion
+            // surface (Extended raw slots have none).
+            var extended = new MappingSet();
+            MappingSetMigrator.EnsureMotionRows(extended,
+                (int)VirtualControllerType.Extended, devices);
+            Assert.DoesNotContain(extended.Rows,
+                r => r?.Target == MappingSetMigrator.MotionGyroTarget);
+        }
+
         [Fact]
         public void PadSettingJson_RoundTripsNintendoRawMappings()
         {

@@ -2755,7 +2755,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Instrada la vibrazione e il force feedback di gioco ricevuti da questo controller virtuale verso un'uscita audio come toni a bassa frequenza per bass shaker e subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrazione in audio</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funziona con i controller virtuali Xbox, DualShock 4 / DualSense e con i controller virtuali Esteso con force feedback, come i volanti da corsa. Solo il feedback di gioco passa dall'uscita audio. La vibrazione di macro e di prova resta sul controller.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funziona con i controller virtuali Xbox, DualShock 4 / DualSense e Nintendo Switch Pro, oltre ai controller virtuali Esteso con force feedback, come i volanti da corsa. Solo il feedback di gioco passa dall'uscita audio. La vibrazione di macro e di prova resta sul controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Reimposta vibrazione in audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Invia la vibrazione a un'uscita audio</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Riproduce la vibrazione e il force feedback di gioco di questo controller virtuale come toni a bassa frequenza sull'uscita audio scelta. Disattivandola le impostazioni restano salvate.</value></data>

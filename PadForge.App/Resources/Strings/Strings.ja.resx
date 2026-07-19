@@ -2733,7 +2733,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>バスシェイカー</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>この仮想コントローラーが受け取るゲームの振動とフォースフィードバックを、バスシェイカーやサブウーファー向けの低周波トーンとしてオーディオ出力へ送ります。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振動をオーディオへ</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox、DualShock 4 / DualSense、およびレーシングホイールなどフォースフィードバック対応の Extended 仮想コントローラーで動作します。オーディオ出力に流れるのはゲームのフィードバックのみです。マクロやテストの振動はコントローラー側に残ります。</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox、DualShock 4 / DualSense、Nintendo Switch Pro、およびレーシングホイールなどフォースフィードバック対応の Extended 仮想コントローラーで動作します。オーディオ出力に流れるのはゲームのフィードバックのみです。マクロやテストの振動はコントローラー側に残ります。</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>「振動をオーディオへ」をリセット</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>振動をオーディオ出力へ送る</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>この仮想コントローラーのゲーム振動とフォースフィードバックを、選んだオーディオ出力で低周波トーンとして再生します。オフにしても設定はすべて保持されます。</value></data>

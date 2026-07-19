@@ -727,14 +727,17 @@ namespace PadForge.Common.Input
                     ps.TouchpadClick = "Touchpad 0 Click";
                 }
 
-                // Motion passthrough auto-mapping for PlayStation output +
-                // sensor-capable device. The bundled-source descriptor
+                // Motion passthrough auto-mapping for motion-capable
+                // output families (PlayStation; Nintendo since the virtual
+                // Switch Pro's IMU surface, HM v1.3.18) + sensor-capable
+                // device. The bundled-source descriptor
                 // markers ("Motion Gyro" / "Motion Accel") flag this
                 // device as contributing its sensor stream to the
                 // slot's motion channel. EnsureMotionRows mirrors the
                 // marker into the per-slot MappingSet so the engine
                 // sees the row.
-                if (outputType == Engine.VirtualControllerType.PlayStation)
+                if (outputType is Engine.VirtualControllerType.PlayStation
+                    or Engine.VirtualControllerType.Nintendo)
                 {
                     if (ud.HasGyro)  ps.MotionGyro  = "Motion Gyro";
                     if (ud.HasAccel) ps.MotionAccel = "Motion Accel";

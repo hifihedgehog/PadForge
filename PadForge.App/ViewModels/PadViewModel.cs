@@ -1896,6 +1896,47 @@ namespace PadForge.ViewModels
 
             cfg.ComputeAxisLayout(out var stickAxisX, out var stickAxisY, out var triggerAxis);
 
+            if (_outputType == VirtualControllerType.Nintendo)
+            {
+                // Nintendo rows mirror the Xbox / PlayStation tables'
+                // arrangement (owner direction 2026-07-19): analogous
+                // controls in analogous positions. Face diamond first in
+                // POSITIONAL order (south, east, west, north = B A Y X,
+                // which is also raw index order), then bumpers, the
+                // Minus/Plus pair where Back/Start sit, Home where Guide
+                // sits, Capture where the Series Share row sits, stick
+                // clicks, D-pad, then ZL/ZR in the trigger rows'
+                // position (digital buttons on this wire), then the
+                // stick axes with the same labels the gamepad grids use.
+                void AddBtn(int i) => Mappings.Add(new MappingItem(
+                    MacroButtonNames.RawButtonLabel(ProfileId, i + 1), $"RawBtn{i}", MappingCategory.Buttons));
+
+                AddBtn(0); AddBtn(1); AddBtn(2); AddBtn(3);   // B A Y X
+                AddBtn(4); AddBtn(5);                          // L R
+                AddBtn(8); AddBtn(9);                          // Minus Plus
+                AddBtn(12);                                    // Home
+                AddBtn(13);                                    // Capture
+                AddBtn(10); AddBtn(11);                        // stick clicks
+
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadUp, "RawPov0Up", MappingCategory.DPad));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadDown, "RawPov0Down", MappingCategory.DPad));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadLeft, "RawPov0Left", MappingCategory.DPad));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadRight, "RawPov0Right", MappingCategory.DPad));
+
+                AddBtn(6); AddBtn(7);                          // ZL ZR
+
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickX, "RawAxis0", MappingCategory.LeftStick, "RawAxis0Neg"));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickY, "RawAxis1", MappingCategory.LeftStick, "RawAxis1Neg"));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickX, "RawAxis2", MappingCategory.RightStick, "RawAxis2Neg"));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickY, "RawAxis3", MappingCategory.RightStick, "RawAxis3Neg"));
+
+                // Motion passthrough, same tail position as the
+                // PlayStation grid.
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionGyro,  "MotionGyro",  MappingCategory.Motion));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionAccel, "MotionAccel", MappingCategory.Motion));
+                return;
+            }
+
             // Stick axes (paired)
             for (int i = 0; i < stickCount; i++)
             {
@@ -1925,17 +1966,6 @@ namespace PadForge.ViewModels
                 Mappings.Add(new MappingItem($"{label} Right", $"RawPov{i}Right", MappingCategory.DPad));
             }
 
-            // Motion passthrough (HM v1.3.18, HM#33): the virtual Switch
-            // Pro streams a real IMU, so Nintendo slots surface the same
-            // two source-picker rows the PlayStation grid carries.
-            // Auto-created on assignment for sensor-capable devices via
-            // EnsureMotionRows; the engine resolves them through the
-            // MappingSet motion rows, not the raw target grammar.
-            if (_outputType == VirtualControllerType.Nintendo)
-            {
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionGyro,  "MotionGyro",  MappingCategory.Motion));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionAccel, "MotionAccel", MappingCategory.Motion));
-            }
         }
 
         // ═══════════════════════════════════════════════

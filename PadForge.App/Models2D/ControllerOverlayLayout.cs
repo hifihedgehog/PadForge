@@ -14,16 +14,16 @@ public static class Xbox360Layout
 
     public static readonly OverlayElement[] Overlays =
     {
+        new("XB360_LeftTrigger_Active.png", "LeftTrigger", OverlayElementType.Trigger, 280, 0, 137, 144),
+        new("XB360_LeftTrigger.png", "LeftTriggerBase", OverlayElementType.TriggerBase, 280, 0, 137, 144),
+        new("XB360_RightTrigger_Active.png", "RightTrigger", OverlayElementType.Trigger, 1153, 2, 137, 141),
+        new("XB360_RightTrigger.png", "RightTriggerBase", OverlayElementType.TriggerBase, 1153, 2, 137, 141),
         new("XB360_A_Button.png", "ButtonA", OverlayElementType.Button, 1178, 528, 127, 106),
         new("XB360_B_Button.png", "ButtonB", OverlayElementType.Button, 1312, 415, 122, 115),
         new("XB360_X_Button.png", "ButtonX", OverlayElementType.Button, 1058, 423, 126, 113),
         new("XB360_Y_Button.png", "ButtonY", OverlayElementType.Button, 1190, 314, 129, 118),
         new("XB360_LeftBumper_Active.png", "LeftShoulder", OverlayElementType.Button, 138, 134, 312, 141),
         new("XB360_RightBumper_Active.png", "RightShoulder", OverlayElementType.Button, 1125, 131, 285, 141),
-        new("XB360_LeftTrigger_Active.png", "LeftTrigger", OverlayElementType.Trigger, 280, 0, 137, 144),
-        new("XB360_LeftTrigger.png", "LeftTriggerBase", OverlayElementType.TriggerBase, 280, 0, 137, 144),
-        new("XB360_RightTrigger_Active.png", "RightTrigger", OverlayElementType.Trigger, 1153, 2, 137, 141),
-        new("XB360_RightTrigger.png", "RightTriggerBase", OverlayElementType.TriggerBase, 1153, 2, 137, 141),
         new("XB360_BackButton.png", "ButtonBack", OverlayElementType.Button, 557, 452, 92, 65),
         new("XB360_StartButton.png", "ButtonStart", OverlayElementType.Button, 899, 452, 92, 65),
         new("XB360_GuideButton.png", "ButtonGuide", OverlayElementType.Button, 689, 414, 171, 139),
@@ -47,6 +47,10 @@ public static class DS4Layout
 
     public static readonly OverlayElement[] Overlays =
     {
+        new("DS4_L2-Active.png", "LeftTrigger", OverlayElementType.Trigger, 217, 0, 164, 94),
+        new("DS4_L2.png", "LeftTriggerBase", OverlayElementType.TriggerBase, 217, 0, 164, 94),
+        new("DS4_R2-Active.png", "RightTrigger", OverlayElementType.Trigger, 1085, 0, 164, 94),
+        new("DS4_R2.png", "RightTriggerBase", OverlayElementType.TriggerBase, 1085, 0, 164, 94),
         new("DS4_Face_Button.png", "ButtonA", OverlayElementType.Button, 1124, 445, 99, 90),
         new("DS4_Face_Button.png", "ButtonB", OverlayElementType.Button, 1230, 355, 99, 90),
         new("DS4_Face_Button.png", "ButtonX", OverlayElementType.Button, 1022, 354, 99, 90),
@@ -57,10 +61,6 @@ public static class DS4Layout
         new("DS4_D-PAD_Right.png", "DPadRight", OverlayElementType.Button, 308, 361, 101, 78),
         new("DS4_L1-Active.png", "LeftShoulder", OverlayElementType.Button, 190, 71, 199, 99),
         new("DS4_R1-Active.png", "RightShoulder", OverlayElementType.Button, 1076, 70, 199, 99),
-        new("DS4_L2-Active.png", "LeftTrigger", OverlayElementType.Trigger, 217, 0, 164, 94),
-        new("DS4_L2.png", "LeftTriggerBase", OverlayElementType.TriggerBase, 217, 0, 164, 94),
-        new("DS4_R2-Active.png", "RightTrigger", OverlayElementType.Trigger, 1085, 0, 164, 94),
-        new("DS4_R2.png", "RightTriggerBase", OverlayElementType.TriggerBase, 1085, 0, 164, 94),
         new("DS4_OptionsShare_Button.png", "ButtonBack", OverlayElementType.Button, 416, 229, 53, 85),
         new("DS4_OptionsShare_Button.png", "ButtonStart", OverlayElementType.Button, 996, 229, 53, 85),
         new("DS4_Home_Button.png", "ButtonGuide", OverlayElementType.Button, 688, 519, 87, 60),
@@ -82,6 +82,10 @@ public static class DualSenseLayout
 
     public static readonly OverlayElement[] Overlays =
     {
+        new("DualSense_L2-Active.png", "LeftTrigger", OverlayElementType.Trigger, 170, 1, 201, 152),
+        new("DualSense_L2.png", "LeftTriggerBase", OverlayElementType.TriggerBase, 170, 1, 201, 152),
+        new("DualSense_R2-Active.png", "RightTrigger", OverlayElementType.Trigger, 1098, 0, 197, 149),
+        new("DualSense_R2.png", "RightTriggerBase", OverlayElementType.TriggerBase, 1098, 0, 197, 149),
         new("DualSense_Cross.png", "ButtonA", OverlayElementType.Button, 1154, 478, 97, 84),
         new("DualSense_Circle.png", "ButtonB", OverlayElementType.Button, 1268, 380, 98, 93),
         new("DualSense_Square.png", "ButtonX", OverlayElementType.Button, 1046, 386, 99, 89),
@@ -92,10 +96,6 @@ public static class DualSenseLayout
         new("DualSense_D-PAD_Right.png", "DPadRight", OverlayElementType.Button, 282, 390, 105, 80),
         new("DualSense_L1-Active.png", "LeftShoulder", OverlayElementType.Button, 156, 85, 210, 124),
         new("DualSense_R1-Active.png", "RightShoulder", OverlayElementType.Button, 1100, 85, 210, 124),
-        new("DualSense_L2-Active.png", "LeftTrigger", OverlayElementType.Trigger, 170, 1, 201, 152),
-        new("DualSense_L2.png", "LeftTriggerBase", OverlayElementType.TriggerBase, 170, 1, 201, 152),
-        new("DualSense_R2-Active.png", "RightTrigger", OverlayElementType.Trigger, 1098, 0, 197, 149),
-        new("DualSense_R2.png", "RightTriggerBase", OverlayElementType.TriggerBase, 1098, 0, 197, 149),
         new("DualSense_Create_Button.png", "ButtonBack", OverlayElementType.Button, 354, 258, 47, 63),
         new("DualSense_Option_Button.png", "ButtonStart", OverlayElementType.Button, 1068, 258, 47, 63),
         new("DualSense_Home_Button.png", "ButtonGuide", OverlayElementType.Button, 690, 547, 93, 51),
@@ -117,16 +117,16 @@ public static class XboxOneSLayout
 
     public static readonly OverlayElement[] Overlays =
     {
+        new("XB1_LeftTrigger_Active.png", "LeftTrigger", OverlayElementType.Trigger, 188, 1, 206, 188),
+        new("XB1_LeftTrigger.png", "LeftTriggerBase", OverlayElementType.TriggerBase, 188, 1, 206, 188),
+        new("XB1_RightTrigger_Active.png", "RightTrigger", OverlayElementType.Trigger, 1150, 0, 208, 189),
+        new("XB1_RightTrigger.png", "RightTriggerBase", OverlayElementType.TriggerBase, 1150, 0, 208, 189),
         new("XB1_A_Button.png", "ButtonA", OverlayElementType.Button, 1145, 534, 115, 107),
         new("XB1_B_Button.png", "ButtonB", OverlayElementType.Button, 1270, 426, 114, 107),
         new("XB1_X_Button.png", "ButtonX", OverlayElementType.Button, 1032, 439, 119, 108),
         new("XB1_Y_Button.png", "ButtonY", OverlayElementType.Button, 1158, 333, 118, 110),
         new("XB1_LeftBumper_Active.png", "LeftShoulder", OverlayElementType.Button, 161, 119, 378, 146),
         new("XB1_RightBumper_Active.png", "RightShoulder", OverlayElementType.Button, 1006, 120, 378, 145),
-        new("XB1_LeftTrigger_Active.png", "LeftTrigger", OverlayElementType.Trigger, 188, 1, 206, 188),
-        new("XB1_LeftTrigger.png", "LeftTriggerBase", OverlayElementType.TriggerBase, 188, 1, 206, 188),
-        new("XB1_RightTrigger_Active.png", "RightTrigger", OverlayElementType.Trigger, 1150, 0, 208, 189),
-        new("XB1_RightTrigger.png", "RightTriggerBase", OverlayElementType.TriggerBase, 1150, 0, 208, 189),
         new("XB1_MenuButton.png", "ButtonStart", OverlayElementType.Button, 856, 460, 75, 70),
         new("XB1_ViewButton.png", "ButtonBack", OverlayElementType.Button, 610, 460, 75, 70),
         new("XB1_HomeButton.png", "ButtonGuide", OverlayElementType.Button, 708, 276, 124, 117),
@@ -150,16 +150,16 @@ public static class XboxSeriesXLayout
 
     public static readonly OverlayElement[] Overlays =
     {
+        new("XBSeries_LeftTrigger_Active.png", "LeftTrigger", OverlayElementType.Trigger, 222, 0, 166, 129),
+        new("XBSeries_LeftTrigger.png", "LeftTriggerBase", OverlayElementType.TriggerBase, 222, 0, 166, 129),
+        new("XBSeries_RightTrigger_Active.png", "RightTrigger", OverlayElementType.Trigger, 1134, 0, 164, 114),
+        new("XBSeries_RightTrigger.png", "RightTriggerBase", OverlayElementType.TriggerBase, 1134, 0, 164, 114),
         new("XBSeries_A_Button.png", "ButtonA", OverlayElementType.Button, 1122, 461, 109, 106),
         new("XBSeries_B_Button.png", "ButtonB", OverlayElementType.Button, 1230, 353, 112, 107),
         new("XBSeries_X_Button.png", "ButtonX", OverlayElementType.Button, 1013, 364, 114, 108),
         new("XBSeries_Y_Button.png", "ButtonY", OverlayElementType.Button, 1123, 256, 118, 110),
         new("XBSeries_LeftBumper_Active.png", "LeftShoulder", OverlayElementType.Button, 190, 59, 360, 124),
         new("XBSeries_RightBumper_Active.png", "RightShoulder", OverlayElementType.Button, 983, 59, 360, 123),
-        new("XBSeries_LeftTrigger_Active.png", "LeftTrigger", OverlayElementType.Trigger, 222, 0, 166, 129),
-        new("XBSeries_LeftTrigger.png", "LeftTriggerBase", OverlayElementType.TriggerBase, 222, 0, 166, 129),
-        new("XBSeries_RightTrigger_Active.png", "RightTrigger", OverlayElementType.Trigger, 1134, 0, 164, 114),
-        new("XBSeries_RightTrigger.png", "RightTriggerBase", OverlayElementType.TriggerBase, 1134, 0, 164, 114),
         new("XBSeries_MenuButton.png", "ButtonStart", OverlayElementType.Button, 846, 385, 76, 70),
         new("XBSeries_ViewButton.png", "ButtonBack", OverlayElementType.Button, 612, 385, 76, 70),
         new("XBSeries_HomeButton.png", "ButtonGuide", OverlayElementType.Button, 701, 204, 132, 125),
@@ -184,6 +184,8 @@ public static class SwitchProLayout
 
     public static readonly OverlayElement[] Overlays =
     {
+        new("NSwitchPro_ZL.png", "LeftTrigger", OverlayElementType.Trigger, 221, 4, 237, 94),
+        new("NSwitchPro_ZR.png", "RightTrigger", OverlayElementType.Trigger, 1026, 4, 237, 94),
         new("NSwitchPro_FaceButton.png", "ButtonA", OverlayElementType.Button, 1196, 292, 105, 106),
         new("NSwitchPro_FaceButton.png", "ButtonB", OverlayElementType.Button, 1080, 392, 105, 106),
         new("NSwitchPro_FaceButton.png", "ButtonX", OverlayElementType.Button, 1080, 190, 105, 106),
@@ -194,8 +196,6 @@ public static class SwitchProLayout
         new("NSwitchPro_D-PAD_Right.png", "DPadRight", OverlayElementType.Button, 516, 508, 110, 83),
         new("NSwitchPro_L_Bumper.png", "LeftShoulder", OverlayElementType.Button, 176, 35, 346, 121),
         new("NSwitchPro_R_Bumper.png", "RightShoulder", OverlayElementType.Button, 961, 35, 346, 121),
-        new("NSwitchPro_ZL.png", "LeftTrigger", OverlayElementType.Trigger, 221, 4, 237, 94),
-        new("NSwitchPro_ZR.png", "RightTrigger", OverlayElementType.Trigger, 1026, 4, 237, 94),
         new("NSwitchPro_Plus-MinusButton.png", "ButtonBack", OverlayElementType.Button, 527, 199, 67, 68),
         new("NSwitchPro_Plus-MinusButton.png", "ButtonStart", OverlayElementType.Button, 892, 200, 64, 65),
         new("NSwitchPro_HomeButton.png", "ButtonGuide", OverlayElementType.Button, 800, 297, 92, 93),

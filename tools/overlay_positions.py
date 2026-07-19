@@ -1430,13 +1430,18 @@ def process_switchpro():
             results.append((fn, target, "Button", pos[0], pos[1], pos[2], pos[3]))
             print(f"  {target:20s} ({'D-PAD ' + direction:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
 
-    # Bumpers + digital triggers: individually labeled in this SVG, so a
-    # direct fit lands each on its visible shape. ZL/ZR light on press
-    # like the bumpers (digital hardware, rest art lives in the base).
-    add("L Bumper", "NSwitchPro_L_Bumper.png", "LeftShoulder", "Button")
-    add("R Bumper", "NSwitchPro_R_Bumper.png", "RightShoulder", "Button")
+    # Digital triggers BEFORE bumpers, deliberately: the ZL/ZR SVG
+    # bboxes run ~60 px down behind the bumper wings (most of the nub
+    # is hidden), and the view's hover/click rectangles resolve to the
+    # LAST-added overlay in an overlap. Bumpers added after the
+    # triggers win the shared band, so a cursor below the visible
+    # trigger arc highlights the bumper, and the trigger only answers
+    # above the bumper's top edge where its arc actually shows. This
+    # also matches the physical stacking (bumper in front of trigger).
     add("ZL Trigger", "NSwitchPro_ZL.png", "LeftTrigger", "Trigger")
     add("ZR Trigger", "NSwitchPro_ZR.png", "RightTrigger", "Trigger")
+    add("L Bumper", "NSwitchPro_L_Bumper.png", "LeftShoulder", "Button")
+    add("R Bumper", "NSwitchPro_R_Bumper.png", "RightShoulder", "Button")
 
     # System cluster: Minus/Plus share one overlay; Home and Capture own.
     add("Minus", "NSwitchPro_Plus-MinusButton.png", "ButtonBack", "Button")
@@ -1549,6 +1554,21 @@ def main():
     # position/size.
     for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data]:
         data["results"] = _add_trigger_base_entries(data["results"])
+
+    # Hit-test precedence: the view's hover/click rectangles resolve to
+    # the LAST-added overlay in an overlap, and every layout's trigger
+    # bbox runs 10-70 px down behind its bumper (the lower part of the
+    # trigger art is hidden by the body). With triggers emitted after
+    # bumpers, a cursor well below the visible trigger arc highlighted
+    # the trigger instead of the bumper (reported on Switch Pro,
+    # measured on all six layouts). Stable-move Trigger + TriggerBase
+    # entries to the front so bumpers win the shared band; visual
+    # stacking is unaffected (Z-indices are explicit in the view).
+    for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data]:
+        rs = data["results"]
+        trig = [r for r in rs if r[2] in ("Trigger", "TriggerBase")]
+        rest = [r for r in rs if r[2] not in ("Trigger", "TriggerBase")]
+        data["results"] = trig + rest
 
     # Sanity checks
     for name, data in [("Xbox 360", xbox_data), ("DS4", ds4_data),

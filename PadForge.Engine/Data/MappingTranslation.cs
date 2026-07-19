@@ -23,7 +23,7 @@ namespace PadForge.Engine.Data
         /// </summary>
         public static MappingSlot GetPosition(string propertyName, VirtualControllerType type, bool isExtended)
         {
-            if (type == VirtualControllerType.Extended && isExtended)
+            if (type is VirtualControllerType.Extended or VirtualControllerType.Nintendo && isExtended)
                 return GetExtendedPosition(propertyName);
             if (type == VirtualControllerType.Midi)
                 return GetMidiPosition(propertyName);
@@ -38,7 +38,7 @@ namespace PadForge.Engine.Data
         /// </summary>
         public static string GetPropertyName(MappingSlot slot, VirtualControllerType type, bool isExtended)
         {
-            if (type == VirtualControllerType.Extended && isExtended)
+            if (type is VirtualControllerType.Extended or VirtualControllerType.Nintendo && isExtended)
                 return GetExtendedPropertyName(slot);
             if (type == VirtualControllerType.Midi)
                 return GetMidiPropertyName(slot);
@@ -296,7 +296,7 @@ namespace PadForge.Engine.Data
 
         private static LayoutKind GetLayoutKind(VirtualControllerType type, bool isExtended)
         {
-            if (type == VirtualControllerType.Extended && isExtended)
+            if (type is VirtualControllerType.Extended or VirtualControllerType.Nintendo && isExtended)
                 return LayoutKind.Extended;
             if (type == VirtualControllerType.Midi)
                 return LayoutKind.Midi;
@@ -312,7 +312,8 @@ namespace PadForge.Engine.Data
         {
             return GetLayoutKind(type, isExtended) switch
             {
-                LayoutKind.Extended => "Extended",
+                LayoutKind.Extended => type == VirtualControllerType.Nintendo
+                    ? "Nintendo" : "Extended",
                 LayoutKind.Midi       => "MIDI",
                 LayoutKind.Kbm        => "KB+M",
                 _ => type switch

@@ -394,6 +394,9 @@
                                         <DataTrigger Binding="{Binding OutputType}" Value="PlayStation">
                                             <Setter Property="Source" Value="{StaticResource DS4ControllerIcon}"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding OutputType}" Value="Nintendo">
+                                            <Setter Property="Source" Value="{StaticResource NintendoControllerIcon}"/>
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding OutputType}" Value="Extended">
                                             <Setter Property="Source" Value="{StaticResource ExtendedControllerIcon}"/>
                                         </DataTrigger>

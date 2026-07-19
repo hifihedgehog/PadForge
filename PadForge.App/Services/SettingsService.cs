@@ -1836,7 +1836,8 @@ namespace PadForge.Services
                 appSettings.PlayStationSlotOrder,
                 appSettings.ExtendedSlotOrder,
                 appSettings.KeyboardMouseSlotOrder,
-                appSettings.MidiSlotOrder);
+                appSettings.MidiSlotOrder,
+                appSettings.NintendoSlotOrder);
 
             ApplyExtendedConfigs(appSettings.ExtendedConfigs);
             ApplyDeviceSlotConfigs(appSettings.DeviceSlotConfigs);
@@ -3007,11 +3008,13 @@ namespace PadForge.Services
 
             // Set after actions are populated so propagation reaches all of them.
             var style = MacroButtonNames.DeriveStyle(outputType);
-            int btnCount = (outputType == VirtualControllerType.Extended ? extendedButtonCount : null) ?? 11;
+            int btnCount = (outputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo ? extendedButtonCount : null) ?? 11;
             macro.CustomButtonCount = btnCount;
             macro.ButtonStyle = style;
             macro.ExtendedProfileId =
-                outputType == VirtualControllerType.Extended ? extendedProfileId : null;
+                outputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo ? extendedProfileId : null;
             foreach (var action in macro.Actions)
                 action.CustomButtonCount = btnCount;
 
@@ -3259,7 +3262,8 @@ namespace PadForge.Services
                     active.PlayStationSlotOrder,
                     active.ExtendedSlotOrder,
                     active.KeyboardMouseSlotOrder,
-                    active.MidiSlotOrder);
+                    active.MidiSlotOrder,
+                    active.NintendoSlotOrder);
 
                 // Now that SlotCreated and OutputType are restored, apply Extended/MIDI/device
                 // configs from the profile's own snapshot.
@@ -3372,6 +3376,7 @@ namespace PadForge.Services
             profile.Macros = BuildMacroData();
             profile.XboxSlotOrder          = SettingsManager.XboxSlotOrder.ToArray();
             profile.PlayStationSlotOrder   = SettingsManager.PlayStationSlotOrder.ToArray();
+            profile.NintendoSlotOrder      = SettingsManager.NintendoSlotOrder.ToArray();
             profile.ExtendedSlotOrder      = SettingsManager.ExtendedSlotOrder.ToArray();
             profile.KeyboardMouseSlotOrder = SettingsManager.KeyboardMouseSlotOrder.ToArray();
             profile.MidiSlotOrder          = SettingsManager.MidiSlotOrder.ToArray();
@@ -3758,6 +3763,7 @@ namespace PadForge.Services
                 KbmConfigs = isDefault ? BuildKbmConfigs() : defaultSnap.KbmConfigs,
                 XboxSlotOrder          = isDefault ? SettingsManager.XboxSlotOrder.ToArray()          : defaultSnap.XboxSlotOrder,
                 PlayStationSlotOrder   = isDefault ? SettingsManager.PlayStationSlotOrder.ToArray()   : defaultSnap.PlayStationSlotOrder,
+                NintendoSlotOrder      = isDefault ? SettingsManager.NintendoSlotOrder.ToArray()      : defaultSnap.NintendoSlotOrder,
                 ExtendedSlotOrder      = isDefault ? SettingsManager.ExtendedSlotOrder.ToArray()      : defaultSnap.ExtendedSlotOrder,
                 KeyboardMouseSlotOrder = isDefault ? SettingsManager.KeyboardMouseSlotOrder.ToArray() : defaultSnap.KeyboardMouseSlotOrder,
                 MidiSlotOrder          = isDefault ? SettingsManager.MidiSlotOrder.ToArray()          : defaultSnap.MidiSlotOrder,
@@ -5075,6 +5081,10 @@ namespace PadForge.Services
         [XmlArrayItem("PadIndex")]
         public int[] PlayStationSlotOrder { get; set; }
 
+        [XmlArray("NintendoSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] NintendoSlotOrder { get; set; }
+
         [XmlArray("ExtendedSlotOrder")]
         [XmlArrayItem("PadIndex")]
         public int[] ExtendedSlotOrder { get; set; }
@@ -5843,6 +5853,10 @@ namespace PadForge.Services
         [XmlArray("ProfilePlayStationSlotOrder")]
         [XmlArrayItem("PadIndex")]
         public int[] PlayStationSlotOrder { get; set; }
+
+        [XmlArray("ProfileNintendoSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] NintendoSlotOrder { get; set; }
 
         [XmlArray("ProfileExtendedSlotOrder")]
         [XmlArrayItem("PadIndex")]

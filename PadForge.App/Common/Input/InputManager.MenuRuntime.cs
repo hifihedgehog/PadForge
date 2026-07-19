@@ -549,7 +549,7 @@ namespace PadForge.Common.Input
             {
                 var menus = sets[slot]?.Menus;
                 if (menus == null || menus.Count == 0) continue;
-                bool extended = SlotExtendedIsCustom[slot];
+                bool extended = SlotRawHidSurface[slot];
                 uint[] extButtons = extended ? CombinedExtendedRawStates[slot].Buttons : null;
                 ushort orMask = 0;
 

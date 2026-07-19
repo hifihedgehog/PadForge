@@ -6457,6 +6457,10 @@ namespace PadForge.ViewModels
         {
             VirtualControllerType.PlayStation => MacroButtonStyle.DualShock4,
             VirtualControllerType.Extended    => MacroButtonStyle.Numbered,
+            // Nintendo rides the Numbered value space and re-letters per
+            // raw index through the switch-pro profile (#215), exactly
+            // like an Extended slot holding that profile.
+            VirtualControllerType.Nintendo    => MacroButtonStyle.Numbered,
             _                                 => MacroButtonStyle.Xbox360
         };
 

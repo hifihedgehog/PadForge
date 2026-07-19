@@ -136,8 +136,9 @@ namespace PadForge.Common.Input
                     // For custom Extended slots, also produce the raw Extended output state.
                     int slot = slotIndex;
                     if (slot >= 0 && slot < MaxPads &&
-                        SlotControllerTypes[slot] == VirtualControllerType.Extended &&
-                        SlotExtendedIsCustom[slot])
+                        SlotControllerTypes[slot] is VirtualControllerType.Extended
+                            or VirtualControllerType.Nintendo &&
+                        SlotRawHidSurface[slot])
                     {
                         var cfg = SlotCustomLayouts[slot];
                         us.ExtendedRawOutputState = MapInputToExtendedRaw(

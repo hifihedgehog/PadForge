@@ -69,6 +69,9 @@ namespace PadForge.Common.Input
         /// <summary>Maximum number of Extended virtual controllers (Extended driver limit).</summary>
         public const int MaxExtendedSlots = 16;
 
+        /// <summary>Maximum number of Nintendo virtual controllers.</summary>
+        public const int MaxNintendoSlots = InputManager.MaxPads;
+
         /// <summary>Maximum number of MIDI virtual controllers.</summary>
         public const int MaxMidiSlots = InputManager.MaxPads;
 
@@ -102,6 +105,7 @@ namespace PadForge.Common.Input
         /// </summary>
         public static List<int> XboxSlotOrder { get; set; } = new();
         public static List<int> PlayStationSlotOrder { get; set; } = new();
+        public static List<int> NintendoSlotOrder { get; set; } = new();
         public static List<int> ExtendedSlotOrder { get; set; } = new();
         public static List<int> KeyboardMouseSlotOrder { get; set; } = new();
         public static List<int> MidiSlotOrder { get; set; } = new();
@@ -206,6 +210,7 @@ namespace PadForge.Common.Input
             {
                 Engine.VirtualControllerType.Xbox     => XboxSlotOrder,
                 Engine.VirtualControllerType.PlayStation   => PlayStationSlotOrder,
+                Engine.VirtualControllerType.Nintendo      => NintendoSlotOrder,
                 Engine.VirtualControllerType.Extended      => ExtendedSlotOrder,
                 Engine.VirtualControllerType.KeyboardMouse => KeyboardMouseSlotOrder,
                 Engine.VirtualControllerType.Midi          => MidiSlotOrder,
@@ -301,10 +306,12 @@ namespace PadForge.Common.Input
                 int[] persistedPlayStation = null,
                 int[] persistedExtended = null,
                 int[] persistedKbm = null,
-                int[] persistedMidi = null)
+                int[] persistedMidi = null,
+                int[] persistedNintendo = null)
             {
                 Reconcile(XboxSlotOrder,          persistedXbox,        slotType, Engine.VirtualControllerType.Xbox);
                 Reconcile(PlayStationSlotOrder,   persistedPlayStation, slotType, Engine.VirtualControllerType.PlayStation);
+                Reconcile(NintendoSlotOrder,      persistedNintendo,    slotType, Engine.VirtualControllerType.Nintendo);
                 Reconcile(ExtendedSlotOrder,      persistedExtended,    slotType, Engine.VirtualControllerType.Extended);
                 Reconcile(KeyboardMouseSlotOrder, persistedKbm,         slotType, Engine.VirtualControllerType.KeyboardMouse);
                 Reconcile(MidiSlotOrder,          persistedMidi,        slotType, Engine.VirtualControllerType.Midi);

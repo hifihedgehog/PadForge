@@ -246,7 +246,7 @@ namespace PadForge.Common.Input
         /// preset gamepad pipeline (Xbox / PlayStation category) that maps
         /// through the Gamepad struct.
         /// </summary>
-        internal bool[] SlotExtendedIsCustom { get; } = new bool[MaxPads];
+        internal bool[] SlotRawHidSurface { get; } = new bool[MaxPads];
 
         /// <summary>
         /// Per-slot flag: true if the user has toggled the Customize master
@@ -993,6 +993,7 @@ namespace PadForge.Common.Input
                         var slotType = SlotControllerTypes[padIndex];
                         if ((slotType == VirtualControllerType.Xbox
                              || slotType == VirtualControllerType.PlayStation
+                             || slotType == VirtualControllerType.Nintendo
                              || slotType == VirtualControllerType.Extended)
                             && !IsSlotActive(padIndex))
                             continue;
@@ -1019,6 +1020,7 @@ namespace PadForge.Common.Input
 
                         bool isHmSlot = slotType == VirtualControllerType.Xbox
                                      || slotType == VirtualControllerType.PlayStation
+                                     || slotType == VirtualControllerType.Nintendo
                                      || slotType == VirtualControllerType.Extended;
 
                         if (isHmSlot)
@@ -1274,8 +1276,9 @@ namespace PadForge.Common.Input
                             // releases anything held) instead of its mapped state.
                             kbmVc.SubmitKbmState(IsSlotRestricted(padIndex) ? default : CombinedKbmRawStates[padIndex]);
                         }
-                        else if (SlotControllerTypes[padIndex] == VirtualControllerType.Extended
-                                 && SlotExtendedIsCustom[padIndex]
+                        else if (SlotControllerTypes[padIndex] is VirtualControllerType.Extended
+                                     or VirtualControllerType.Nintendo
+                                 && SlotRawHidSurface[padIndex]
                                  && vc is HMaestroVirtualController hmExt)
                         {
                             // Extended with dynamic profile layout: mappings live
@@ -1540,6 +1543,9 @@ namespace PadForge.Common.Input
         // inheritance default (logitech-f710) would have new users pick
         // up Logitech VID/PID surprise-unexpectedly.
         public const string DefaultExtendedProfileId = HMaestroProfileCatalog.CustomProfileId;
+        /// <summary>The Nintendo category's only profile for now (owner
+        /// call 2026-07-18). Matches HMaestroProfileCatalog.IsNintendoProfile.</summary>
+        public const string DefaultNintendoProfileId = "switch-pro";
 
         /// <summary>
         /// Returns the default HIDMaestro profile slug for a given VC category,
@@ -1554,6 +1560,7 @@ namespace PadForge.Common.Input
             VirtualControllerType.Xbox => DefaultXboxProfileId,
             VirtualControllerType.PlayStation => DefaultPlayStationProfileId,
             VirtualControllerType.Extended => DefaultExtendedProfileId,
+            VirtualControllerType.Nintendo => DefaultNintendoProfileId,
             _ => null
         };
 
@@ -1562,9 +1569,10 @@ namespace PadForge.Common.Input
             var controllerType = SlotControllerTypes[padIndex];
 
             // MIDI and KeyboardMouse stay on their dedicated implementations.
-            // Xbox / PlayStation / Extended now route through HIDMaestro.
+            // Xbox / PlayStation / Nintendo / Extended route through HIDMaestro.
             if (controllerType == VirtualControllerType.Xbox
                 || controllerType == VirtualControllerType.PlayStation
+                || controllerType == VirtualControllerType.Nintendo
                 || controllerType == VirtualControllerType.Extended)
             {
                 EnsureHMaestroContext();
@@ -1589,6 +1597,7 @@ namespace PadForge.Common.Input
                     VirtualControllerType.Xbox => CreateHMaestroController(VirtualControllerType.Xbox, profileId, padIndex),
                     VirtualControllerType.PlayStation => CreateHMaestroController(VirtualControllerType.PlayStation, profileId, padIndex),
                     VirtualControllerType.Extended => CreateHMaestroController(VirtualControllerType.Extended, profileId, padIndex),
+                    VirtualControllerType.Nintendo => CreateHMaestroController(VirtualControllerType.Nintendo, profileId, padIndex),
                     VirtualControllerType.Midi => CreateMidiController(padIndex),
                     VirtualControllerType.KeyboardMouse => new KeyboardMouseVirtualController(padIndex),
                     _ => null
@@ -1956,6 +1965,7 @@ namespace PadForge.Common.Input
         {
             if (groupType != VirtualControllerType.Xbox
                 && groupType != VirtualControllerType.PlayStation
+                && groupType != VirtualControllerType.Nintendo
                 && groupType != VirtualControllerType.Extended)
                 return;
 
@@ -2116,6 +2126,7 @@ namespace PadForge.Common.Input
             {
                 VirtualControllerType.Xbox,
                 VirtualControllerType.PlayStation,
+                VirtualControllerType.Nintendo,
                 VirtualControllerType.Extended,
             };
 

@@ -284,7 +284,7 @@ namespace PadForge.Common.Input
                 _currentMacroSlotRestricted = IsSlotRestricted(i) || AnyMacroTriggerRestricted(macros);
                 try
                 {
-                    if (SlotExtendedIsCustom[i])
+                    if (SlotRawHidSurface[i])
                         EvaluateSlotMacrosExtended(ref CombinedExtendedRawStates[i], macros);
                     else
                         EvaluateSlotMacros(ref CombinedOutputStates[i], macros);

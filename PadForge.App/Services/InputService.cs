@@ -2058,7 +2058,7 @@ namespace PadForge.Services
                 padVm.UpdateFromTouchpadState(_inputManager.CombinedTouchpadStates[i]);
 
                 // For custom Extended slots, also push the combined ExtendedRawState.
-                if (_inputManager.SlotExtendedIsCustom[i])
+                if (_inputManager.SlotRawHidSurface[i])
                     padVm.UpdateFromExtendedRawState(_inputManager.CombinedExtendedRawStates[i]);
 
                 // For MIDI slots, push the combined MidiRawState.
@@ -2088,7 +2088,7 @@ namespace PadForge.Services
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                     {
                         var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
-                        if (_inputManager.SlotExtendedIsCustom[i] && us != null)
+                        if (_inputManager.SlotRawHidSurface[i] && us != null)
                             padVm.UpdateFromExtendedDeviceState(us.ExtendedRawOutputState);
                         else
                         {
@@ -2106,7 +2106,7 @@ namespace PadForge.Services
                             padVm.UpdateDeviceState(BuildPerDeviceSticksFromInputState(selected.InstanceGuid, us));
                         }
                     }
-                    else if (_inputManager.SlotExtendedIsCustom[i])
+                    else if (_inputManager.SlotRawHidSurface[i])
                     {
                         // No device selected: fall back to combined for the
                         // stick/trigger tabs so they aren't stuck on stale
@@ -2492,7 +2492,7 @@ namespace PadForge.Services
                     : Strings.Instance.Common_Idle;
             }
 
-            int xboxCount = 0, playstationCount = 0, extendedCount = 0, midiCount = 0, globalCount = 0;
+            int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, globalCount = 0;
             foreach (var slot in dash.SlotSummaries)
             {
                 globalCount++;
@@ -2515,6 +2515,10 @@ namespace PadForge.Services
                     case VirtualControllerType.Midi:
                         midiCount++;
                         slot.TypeInstanceLabel = midiCount.ToString();
+                        break;
+                    case VirtualControllerType.Nintendo:
+                        nintendoCount++;
+                        slot.TypeInstanceLabel = nintendoCount.ToString();
                         break;
                     default:
                         xboxCount++;
@@ -3780,9 +3784,10 @@ namespace PadForge.Services
                 };
             }
 
-            // Extended (game controller of arbitrary shape) — Axes /
-            // Buttons / POVs of customizable count.
-            if (outputType == VirtualControllerType.Extended)
+            // Extended / Nintendo (raw-surface controller). Axes /
+            // Buttons / POVs per the active profile's layout.
+            if (outputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo)
             {
                 var ext = _inputManager.CombinedExtendedRawStates[padIndex];
                 // ExtendedAxis{N} / ExtendedAxis{N}Neg
@@ -4078,10 +4083,15 @@ namespace PadForge.Services
                 Sticks = cfg.ThumbstickCount,
                 Triggers = cfg.TriggerCount
             };
-            // Extended always produces raw HID axes/buttons per the active
-            // HIDMaestro profile; the gate is OutputType alone.
-            _inputManager.SlotExtendedIsCustom[slotIndex] =
-                padVm.OutputType == VirtualControllerType.Extended;
+            // Extended and Nintendo always produce raw HID axes/buttons per
+            // the active HIDMaestro profile; the gate is OutputType alone.
+            // This flag IS the raw data path: Step 3 production, Step 4
+            // combine, Step 5 SubmitExtendedState, and the UI raw push all
+            // key on it. Nintendo rides it with the switch-pro profile and
+            // no Customize surface (customize above stays Extended-only).
+            _inputManager.SlotRawHidSurface[slotIndex] =
+                padVm.OutputType is VirtualControllerType.Extended
+                    or VirtualControllerType.Nintendo;
 
             // The Customize flag gates only the override-producing paths
             // (custom HMProfile build, OEM name override). When off we still
@@ -6836,6 +6846,7 @@ namespace PadForge.Services
         {
             if (slotType != VirtualControllerType.Xbox
                 && slotType != VirtualControllerType.PlayStation
+                && slotType != VirtualControllerType.Nintendo
                 && slotType != VirtualControllerType.Extended)
             {
                 return;
@@ -6869,6 +6880,7 @@ namespace PadForge.Services
             if (oldPosition < 0) return;
             if (deletedType != VirtualControllerType.Xbox
                 && deletedType != VirtualControllerType.PlayStation
+                && deletedType != VirtualControllerType.Nintendo
                 && deletedType != VirtualControllerType.Extended)
             {
                 return;
@@ -10827,6 +10839,7 @@ namespace PadForge.Services
                 Macros = _settingsService?.BuildMacroData(),
                 XboxSlotOrder          = SettingsManager.XboxSlotOrder.ToArray(),
                 PlayStationSlotOrder   = SettingsManager.PlayStationSlotOrder.ToArray(),
+                NintendoSlotOrder      = SettingsManager.NintendoSlotOrder.ToArray(),
                 ExtendedSlotOrder      = SettingsManager.ExtendedSlotOrder.ToArray(),
                 KeyboardMouseSlotOrder = SettingsManager.KeyboardMouseSlotOrder.ToArray(),
                 MidiSlotOrder          = SettingsManager.MidiSlotOrder.ToArray(),
@@ -11099,6 +11112,7 @@ namespace PadForge.Services
             }
             RemapSlotOrder(p.XboxSlotOrder, oldToNew);
             RemapSlotOrder(p.PlayStationSlotOrder, oldToNew);
+            RemapSlotOrder(p.NintendoSlotOrder, oldToNew);
             RemapSlotOrder(p.ExtendedSlotOrder, oldToNew);
             RemapSlotOrder(p.KeyboardMouseSlotOrder, oldToNew);
             RemapSlotOrder(p.MidiSlotOrder, oldToNew);
@@ -11591,7 +11605,8 @@ namespace PadForge.Services
                 profile.PlayStationSlotOrder,
                 profile.ExtendedSlotOrder,
                 profile.KeyboardMouseSlotOrder,
-                profile.MidiSlotOrder);
+                profile.MidiSlotOrder,
+                profile.NintendoSlotOrder);
 
             // ── Apply Extended/MIDI configurations ──
             if (profile.ExtendedConfigs != null)
@@ -11892,6 +11907,7 @@ namespace PadForge.Services
                     profile.Macros = snapshot.Macros;
                     profile.XboxSlotOrder          = snapshot.XboxSlotOrder;
                     profile.PlayStationSlotOrder   = snapshot.PlayStationSlotOrder;
+                    profile.NintendoSlotOrder      = snapshot.NintendoSlotOrder;
                     profile.ExtendedSlotOrder      = snapshot.ExtendedSlotOrder;
                     profile.KeyboardMouseSlotOrder = snapshot.KeyboardMouseSlotOrder;
                     profile.MidiSlotOrder          = snapshot.MidiSlotOrder;

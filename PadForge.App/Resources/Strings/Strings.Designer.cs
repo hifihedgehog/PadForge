@@ -171,6 +171,7 @@ public class Strings : INotifyPropertyChanged
     public string Common_PadForge => Get("Common_PadForge");
     public string ControllerType_Xbox => Get("ControllerType_Xbox");
     public string ControllerType_PlayStation => Get("ControllerType_PlayStation");
+    public string ControllerType_Nintendo => Get("ControllerType_Nintendo");
     public string ControllerType_Extended => Get("ControllerType_Extended");
     public string ControllerType_KeyboardMouse => Get("ControllerType_KeyboardMouse");
     public string ControllerType_MIDI => Get("ControllerType_MIDI");
@@ -192,6 +193,7 @@ public class Strings : INotifyPropertyChanged
     public string Main_ControllersOffline => Get("Main_ControllersOffline");
     public string Main_Xbox_Max_Format => Get("Main_Xbox_Max_Format");
     public string Main_PlayStation_Max_Format => Get("Main_PlayStation_Max_Format");
+    public string Main_Nintendo_Max_Format => Get("Main_Nintendo_Max_Format");
     public string Main_Extended_Max_Format => Get("Main_Extended_Max_Format");
     public string Main_KBM_Max_Format => Get("Main_KBM_Max_Format");
     public string Main_MIDI_RequiresMidiServices => Get("Main_MIDI_RequiresMidiServices");

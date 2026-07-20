@@ -29,7 +29,9 @@ namespace PadForge.Converters
             var vertical = new RectangleGeometry(new Rect(100 - w / 2, 0, w, 200));
             var horizontal = new RectangleGeometry(new Rect(0, 100 - h / 2, 200, h));
 
-            return new CombinedGeometry(GeometryCombineMode.Union, vertical, horizontal);
+            var combined = new CombinedGeometry(GeometryCombineMode.Union, vertical, horizontal);
+            combined.Freeze(); // render-thread-friendly
+            return combined;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

@@ -277,6 +277,13 @@ namespace PadForge.Common.Input
             }
         }
 
+        // Pooled per-tick snapshot (poll thread is the sole caller): the
+        // old shape deep-cloned TWICE per 1 kHz read (base clone + return
+        // clone). The base republish was redundant: every read rewrites
+        // ALL CcUp/CcDown stamps from the pulse machine's own state, so
+        // event writers never depended on the stamped base.
+        private PadForge.Engine.PooledInputStatePair _statePool;
+
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
             lock (_stateLock)
@@ -284,7 +291,8 @@ namespace PadForge.Common.Input
                 // Advance the encoder pulse machine and stamp the momentary
                 // CcUp/CcDown button states into the snapshot.
                 long now = Environment.TickCount64;
-                var s = _state.Clone();
+                var s = _statePool.Next();
+                _state.CopyInto(s);
                 for (int i = 0; i < _pulsePending.Length; i++)
                 {
                     bool pressed = false;
@@ -315,8 +323,7 @@ namespace PadForge.Common.Input
                     if ((i & 1) == 0) s.Midi.CcUp[cc] = pressed;
                     else s.Midi.CcDown[cc] = pressed;
                 }
-                _state = s;
-                return s.Clone();
+                return s;
             }
         }
 

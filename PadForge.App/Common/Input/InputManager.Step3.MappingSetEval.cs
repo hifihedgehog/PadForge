@@ -563,6 +563,12 @@ namespace PadForge.Common.Input
                 new(System.StringComparer.Ordinal);
             public readonly List<int> Stack = new();
             public string CustomLayer = "";   // v2 Custom mode current layer (overrides stack when non-empty)
+            // Bumped (under SyncRoot) on every Stack/CustomLayer mutation.
+            // GetEngagedLayerMask's memo keys on it so the ~110 per-target
+            // row lookups per KBM device pass skip the lock while the
+            // engaged state is unchanged, with EXACT invalidation (no
+            // one-tick staleness on activator edges).
+            public int Version;
 
             /// <summary>Sync lock guarding <see cref="Stack"/> and
             /// <see cref="CustomLayer"/> against cross-thread reads (UI
@@ -619,6 +625,7 @@ namespace PadForge.Common.Input
                     // CycleIndex is read/written under SyncRoot in the Cycle
                     // case (alongside CustomLayer), so clear it under the lock.
                     System.Array.Clear(CycleIndex, 0, CycleIndex.Length);
+                    Version++;
                 }
             }
 
@@ -723,28 +730,85 @@ namespace PadForge.Common.Input
         /// stack (or the Custom-mode layer override when set). Used by
         /// the v3 visual overlay to display the live layer state without
         /// having to thread state across the polling-thread boundary.</summary>
+        /// <summary>Immutable memo of one resolved mask. The KBM/Extended
+        /// path resolves the mask once per TARGET (~110 lock round-trips
+        /// per device pass at 1 kHz); the engaged state changes at human
+        /// cadence. Validity = same MappingSet identity + same runtime
+        /// <see cref="ShiftRuntime.Version"/>, and (for stack outcomes)
+        /// the winning activator object and its LayerMask string are
+        /// reference-unchanged, so an in-place activator edit in the UI
+        /// invalidates without needing a Version bump.</summary>
+        private sealed class EngagedMaskMemo
+        {
+            public MappingSet Set;
+            public int Version;
+            public int ActivatorIdx = -1;     // -1: CustomLayer/Base outcome
+            public ShiftActivator Activator;
+            public string MaskSource;         // Activator.LayerMask ref at compute
+            public string Mask;
+        }
+        private static readonly EngagedMaskMemo[] _engagedMaskMemos = new EngagedMaskMemo[MaxPads];
+
         public static string GetEngagedLayerMask(int slotIndex, MappingSet mappingSet)
         {
             if (slotIndex < 0 || slotIndex >= _shiftRuntime.Length) return "Base";
             var rt = _shiftRuntime[slotIndex];
             if (rt == null) return "Base";
 
+            // Lock-free fast path while nothing changed. Version is only
+            // written under SyncRoot; a torn read is impossible for an int
+            // and a stale read merely falls through to the locked path.
+            var memo = System.Threading.Volatile.Read(ref _engagedMaskMemos[slotIndex]);
+            if (memo != null
+                && ReferenceEquals(memo.Set, mappingSet)
+                && memo.Version == System.Threading.Volatile.Read(ref rt.Version))
+            {
+                if (memo.ActivatorIdx < 0) return memo.Mask;
+                var acts = mappingSet?.ShiftActivators;
+                if (acts != null && memo.ActivatorIdx < acts.Count
+                    && ReferenceEquals(acts[memo.ActivatorIdx], memo.Activator)
+                    && ReferenceEquals(memo.Activator?.LayerMask, memo.MaskSource))
+                    return memo.Mask;
+            }
+
             // Snapshot under the runtime's lock so the polling thread's
             // concurrent Stack / CustomLayer mutations can't trip the
             // indexer with a stale Count.
             string customLayer;
             int idx;
+            int version;
             lock (rt.SyncRoot)
             {
                 customLayer = rt.CustomLayer;
                 idx = rt.Stack.Count > 0 ? rt.Stack[rt.Stack.Count - 1] : -1;
+                version = rt.Version;
             }
 
-            if (!string.IsNullOrEmpty(customLayer)) return customLayer;
-            var activators = mappingSet?.ShiftActivators;
-            if (activators == null) return "Base";
-            if (idx < 0 || idx >= activators.Count) return "Base";
-            return activators[idx]?.LayerMask ?? "Base";
+            string mask;
+            var fresh = new EngagedMaskMemo { Set = mappingSet, Version = version };
+            if (!string.IsNullOrEmpty(customLayer))
+            {
+                mask = customLayer;
+            }
+            else
+            {
+                var activators = mappingSet?.ShiftActivators;
+                if (activators == null || idx < 0 || idx >= activators.Count)
+                {
+                    mask = "Base";
+                }
+                else
+                {
+                    var act = activators[idx];
+                    mask = act?.LayerMask ?? "Base";
+                    fresh.ActivatorIdx = idx;
+                    fresh.Activator = act;
+                    fresh.MaskSource = act?.LayerMask;
+                }
+            }
+            fresh.Mask = mask;
+            System.Threading.Volatile.Write(ref _engagedMaskMemos[slotIndex], fresh);
+            return mask;
         }
 
         /// <summary>Resolves the active shift-layer mask for a slot.
@@ -965,8 +1029,11 @@ namespace PadForge.Common.Input
                         if (!string.IsNullOrEmpty(own))
                         {
                             lock (rt.SyncRoot)
+                            {
                                 rt.CustomLayer = string.Equals(rt.CustomLayer, own, System.StringComparison.Ordinal)
                                     ? "" : own;
+                                rt.Version++;
+                            }
                         }
                     }
                     break;
@@ -1030,6 +1097,7 @@ namespace PadForge.Common.Input
                                 pos = PadForge.Engine.Common.ShiftCycleStepper.Step(pos, n, previous: true, wrap, includeBase);
                             rt.CycleIndex[actIdx] = pos;
                             rt.CustomLayer = pos == 0 ? "" : layers[pos - 1];
+                            rt.Version++;
                         }
                     }
 
@@ -1199,11 +1267,15 @@ namespace PadForge.Common.Input
                     // doesn't churn the stack, but a release+re-press moves
                     // it to the top so the most-recently-engaged wins.
                     if (existing < 0)
+                    {
                         rt.Stack.Add(actIdx);
+                        rt.Version++;
+                    }
                 }
                 else if (existing >= 0)
                 {
                     rt.Stack.RemoveAt(existing);
+                    rt.Version++;
                 }
             }
         }

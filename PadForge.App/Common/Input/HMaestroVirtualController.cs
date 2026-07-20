@@ -428,6 +428,10 @@ namespace PadForge.Common.Input
         public void SubmitRawReport(ReadOnlySpan<byte> report)
         {
             if (_controller == null) return;
+            // Every per-tick Submit path ticks FFB (see TickFfb doc). This
+            // is the ONLY submit on USB Sony slots now that Step 5 skips
+            // the redundant extended leg when a packer exists.
+            TickFfb();
             _controller.SubmitRawReport(report);
         }
 
@@ -682,11 +686,83 @@ namespace PadForge.Common.Input
         public void SubmitRawHidState(RawHidState raw, int sticks, int triggers)
             => SubmitRawHidState(raw, sticks, triggers, default);
 
+        // Last-submitted raw frame for the idle dedup (content compare on
+        // the pooled arrays; shapes are stable per layout).
+        private short[] _lastRawAxes;
+        private uint[] _lastRawButtons;
+        private int[] _lastRawPovs;
+        private bool _lastRawHadMotion;
+        private long _lastRawSubmitTick;
+        private bool _hasRawSubmitted;
+
+        private bool RawFrameUnchanged(in RawHidState raw)
+        {
+            static bool EqS(short[] a, short[] b)
+            {
+                if (a == null || b == null || a.Length != b.Length) return false;
+                for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+                return true;
+            }
+            if (_lastRawButtons == null || raw.Buttons == null
+                || _lastRawButtons.Length != raw.Buttons.Length) return false;
+            for (int i = 0; i < raw.Buttons.Length; i++)
+                if (raw.Buttons[i] != _lastRawButtons[i]) return false;
+            if (_lastRawPovs == null || raw.Povs == null
+                || _lastRawPovs.Length != raw.Povs.Length) return false;
+            for (int i = 0; i < raw.Povs.Length; i++)
+                if (raw.Povs[i] != _lastRawPovs[i]) return false;
+            return EqS(raw.Axes, _lastRawAxes);
+        }
+
+        private void StoreRawFrame(in RawHidState raw, bool hadMotion, long tick)
+        {
+            static void CopyS(short[] src, ref short[] dst)
+            {
+                if (src == null) { dst = null; return; }
+                if (dst == null || dst.Length != src.Length) dst = new short[src.Length];
+                System.Array.Copy(src, dst, src.Length);
+            }
+            CopyS(raw.Axes, ref _lastRawAxes);
+            if (raw.Buttons != null)
+            {
+                if (_lastRawButtons == null || _lastRawButtons.Length != raw.Buttons.Length)
+                    _lastRawButtons = new uint[raw.Buttons.Length];
+                System.Array.Copy(raw.Buttons, _lastRawButtons, raw.Buttons.Length);
+            }
+            else _lastRawButtons = null;
+            if (raw.Povs != null)
+            {
+                if (_lastRawPovs == null || _lastRawPovs.Length != raw.Povs.Length)
+                    _lastRawPovs = new int[raw.Povs.Length];
+                System.Array.Copy(raw.Povs, _lastRawPovs, raw.Povs.Length);
+            }
+            else _lastRawPovs = null;
+            _lastRawHadMotion = hadMotion;
+            _lastRawSubmitTick = tick;
+            _hasRawSubmitted = true;
+        }
+
         public void SubmitRawHidState(RawHidState raw, int sticks, int triggers,
             in PadForge.Services.MotionSnapshot motion)
         {
             if (_controller == null) return;
             TickFfb();
+
+            // Idle dedup, the EXACT basic-path shape (16 ms keepalive):
+            // identical frame within the window skips the seqlock publish +
+            // SetEvent. driver.c bounds how long SeqNo may sit still (500 ms
+            // wait-timeout recycle; 250 stale WAKES recycle), and the 16 ms
+            // keepalive republishes well inside both. Motion frames never
+            // dedup: SensorTimestamp must advance for downstream fusion.
+            long nowRawTick = Environment.TickCount64;
+            if (_hasRawSubmitted
+                && !motion.HasMotion && !_lastRawHadMotion
+                && nowRawTick - _lastRawSubmitTick < SubmitKeepaliveMs
+                && RawFrameUnchanged(in raw))
+            {
+                return;
+            }
+            StoreRawFrame(in raw, motion.HasMotion, nowRawTick);
 
             short Ax(int i) => (raw.Axes != null && i >= 0 && i < raw.Axes.Length) ? raw.Axes[i] : (short)0;
 

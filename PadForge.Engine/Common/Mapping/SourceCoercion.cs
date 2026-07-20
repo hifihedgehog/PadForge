@@ -940,7 +940,7 @@ namespace PadForge.Engine.Common.Mapping
                 // through TouchpadButton classification today since the
                 // axis readers special-case them by descriptor pattern
                 // rather than enum tag.
-                var tpParts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var tpParts = SplitTokensCached(s);
                 if (tpParts.Length >= 3
                     && tpParts[2].Equals("Pointer", StringComparison.Ordinal))
                     return SourceType.TouchpadPointer;
@@ -987,7 +987,7 @@ namespace PadForge.Engine.Common.Mapping
             if (IsRumbleDescriptor(s))
                 return SourceType.Rumble;
 
-            string[] parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = SplitTokensCached(s);
             if (parts.Length < 2) return SourceType.Unmapped;
 
             return parts[0].ToLowerInvariant() switch
@@ -1189,7 +1189,7 @@ namespace PadForge.Engine.Common.Mapping
             kind = '\0';
             index = -1;
             if (string.IsNullOrEmpty(descriptor)) return false;
-            var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = SplitTokensCached(descriptor);
             if (parts.Length < 2 || !parts[0].Equals("Midi", StringComparison.Ordinal))
                 return false;
             if (parts[1].Equals("Note", StringComparison.Ordinal) && parts.Length >= 3
@@ -1233,7 +1233,7 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (string.IsNullOrEmpty(descriptor)) return false;
             if (!descriptor.StartsWith("Touchpad ", StringComparison.Ordinal)) return false;
-            var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = SplitTokensCached(descriptor);
             return parts.Length >= 3
                 && !parts[2].Equals("Click", StringComparison.Ordinal)
                 && !parts[2].Equals("Finger", StringComparison.Ordinal)
@@ -1261,7 +1261,7 @@ namespace PadForge.Engine.Common.Mapping
             itemIndex = -1;
             if (string.IsNullOrEmpty(descriptor)) return false;
             if (!descriptor.StartsWith("Menu ", StringComparison.Ordinal)) return false;
-            var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = SplitTokensCached(descriptor);
             return parts.Length == 4
                 && parts[2].Equals("Item", StringComparison.Ordinal)
                 && int.TryParse(parts[1], out menuId)
@@ -1314,7 +1314,7 @@ namespace PadForge.Engine.Common.Mapping
             gestureName = null;
             if (string.IsNullOrEmpty(descriptor)) return false;
             if (!descriptor.StartsWith("Touchpad ", StringComparison.Ordinal)) return false;
-            var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = SplitTokensCached(descriptor);
             if (parts.Length < 3) return false;
             if (!int.TryParse(parts[1], out padIdx)) return false;
             if (parts[2].Equals("Click", StringComparison.Ordinal)) return false;
@@ -1749,18 +1749,38 @@ namespace PadForge.Engine.Common.Mapping
         {
             padIdx = -1; half = TouchpadHalfNone;
             if (string.IsNullOrEmpty(descriptor)) return false;
+            // Full-result memo: the parse Trims and Substrings before its
+            // Split, so the shared token cache can't serve it; the whole
+            // parse is a pure function of the descriptor string.
+            if (!s_flickTouchpadCache.TryGetValue(descriptor, out var hit))
+            {
+                hit = ParseFlickStickTouchpadUncached(descriptor);
+                if (s_flickTouchpadCache.Count < TypeIndexCacheCap)
+                    s_flickTouchpadCache[descriptor] = hit;
+            }
+            padIdx = hit.PadIdx;
+            half = hit.Half;
+            return hit.Ok;
+        }
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, (int PadIdx, int Half, bool Ok)>
+            s_flickTouchpadCache = new(StringComparer.Ordinal);
+
+        private static (int PadIdx, int Half, bool Ok) ParseFlickStickTouchpadUncached(string descriptor)
+        {
+            int padIdx = -1; int half = TouchpadHalfNone;
             string s = descriptor.Trim();
-            if (!s.StartsWith(FlickStickTouchpadPrefix, StringComparison.OrdinalIgnoreCase)) return false;
+            if (!s.StartsWith(FlickStickTouchpadPrefix, StringComparison.OrdinalIgnoreCase)) return (padIdx, half, false);
             string tail = s.Substring(FlickStickTouchpadPrefix.Length).Trim();
             string[] parts = tail.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length != 1 && parts.Length != 2) return false;
-            if (!int.TryParse(parts[0], out padIdx) || padIdx < 0) return false;
+            if (parts.Length != 1 && parts.Length != 2) return (padIdx, half, false);
+            if (!int.TryParse(parts[0], out padIdx) || padIdx < 0) return (padIdx, half, false);
             if (parts.Length == 2)
             {
                 half = ParseTouchpadHalf(parts[1]);
-                return half == TouchpadHalfLeft || half == TouchpadHalfRight;
+                return (padIdx, half, half == TouchpadHalfLeft || half == TouchpadHalfRight);
             }
-            return true;
+            return (padIdx, half, true);
         }
 
         /// <summary>The touch-surface flick read: the finger 0 centered
@@ -1871,6 +1891,10 @@ namespace PadForge.Engine.Common.Mapping
                 return (-1, -1);
             static int AxisIndex(string d)
             {
+                // Plain Split on purpose: this runs from the static field
+                // initializers above, BEFORE s_splitCache (declared later
+                // in the file) is constructed. Routing it through the
+                // token cache faulted the type initializer.
                 var parts = d.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 return parts.Length >= 2
                     && int.TryParse(parts[1], out int idx)
@@ -3468,6 +3492,26 @@ namespace PadForge.Engine.Common.Mapping
         // stop being remembered. Index parsing is invariant so the memoized
         // result cannot depend on whichever culture parsed it first.
         private const int TypeIndexCacheCap = 4096;
+
+        // Shared token-split memo: every descriptor-family reader opens
+        // with the identical space-Split of an immutable descriptor
+        // string, at source-per-tick rate. No reader writes into the
+        // token array (verified across this file and the Step3 legacy
+        // parser), so one cached array safely serves them all. Keyed by
+        // string VALUE, so a freshly-built canonical string still hits.
+        // Same cap rationale as the type-index cache above.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, string[]> s_splitCache =
+            new(StringComparer.Ordinal);
+
+        public static string[] SplitTokensCached(string s)
+        {
+            if (!s_splitCache.TryGetValue(s, out var parts))
+            {
+                parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (s_splitCache.Count < TypeIndexCacheCap) s_splitCache[s] = parts;
+            }
+            return parts;
+        }
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, (SourceType T, int Index, string PovDir, bool Ok)>
             s_typeIndexCache = new(StringComparer.Ordinal);
 
@@ -3547,7 +3591,7 @@ namespace PadForge.Engine.Common.Mapping
         public static bool ReadTouchpadBool(CustomInputState state, string descriptor)
         {
             if (state == null || string.IsNullOrEmpty(descriptor)) return false;
-            string[] parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = SplitTokensCached(descriptor);
             if (parts.Length < 3) return false;
             if (!int.TryParse(parts[1], out int padIdx)) return false;
 
@@ -3978,7 +4022,7 @@ namespace PadForge.Engine.Common.Mapping
             out int padIdx, out int fingerIdx, out int axisOffset, out int half)
         {
             padIdx = 0; fingerIdx = 0; axisOffset = -1; half = TouchpadHalfNone;
-            string[] parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = SplitTokensCached(descriptor);
             // Expected: "Touchpad N Finger M X|Y|Pressure" (5 parts) or
             // "Touchpad N Finger M X|Y Left|Right" (6 parts).
             if (parts.Length != 5 && parts.Length != 6) return false;
@@ -4207,7 +4251,7 @@ namespace PadForge.Engine.Common.Mapping
             out int padIdx, out int fingerIdx, out int half)
         {
             padIdx = 0; fingerIdx = 0; half = TouchpadHalfNone;
-            string[] parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = SplitTokensCached(descriptor);
             if (parts.Length != 5 && parts.Length != 6) return false;
             if (!parts[0].Equals("Touchpad", StringComparison.Ordinal)) return false;
             if (!int.TryParse(parts[1], out padIdx)) return false;
@@ -4302,7 +4346,7 @@ namespace PadForge.Engine.Common.Mapping
             // at all. Splitting them just to fail the parts[0] check below
             // allocated a string[] on the 1 kHz path for every such config.
             if (!descriptor.StartsWith("Touchpad ", StringComparison.Ordinal)) return false;
-            string[] parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = SplitTokensCached(descriptor);
             if (parts.Length != 4 && parts.Length != 5) return false;
             if (!parts[0].Equals("Touchpad", StringComparison.Ordinal)) return false;
             if (!int.TryParse(parts[1], out padIdx)) return false;

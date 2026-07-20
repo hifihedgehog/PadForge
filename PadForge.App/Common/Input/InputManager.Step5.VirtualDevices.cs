@@ -1383,12 +1383,24 @@ namespace PadForge.Common.Input
                             if (SlotControllerTypes[padIndex] == VirtualControllerType.PlayStation
                                 && vc is HMaestroVirtualController hmExtState)
                             {
-                                hmExtState.SubmitGamepadState(
-                                    gpOut,
-                                    CombinedTouchpadStates[padIndex],
-                                    MotionSnapshots[padIndex],
-                                    pctByte,
-                                    BatteryCharging[padIndex]);
+                                // USB Sony (a raw packer exists): skip this
+                                // leg. The raw report below is the
+                                // authoritative full-layout frame, the
+                                // driver's worker consumes only the LATEST
+                                // frame per event wake (driver.c
+                                // SharedInputWorkerProc), and the extended
+                                // frame's touchpad/IMU fields are consumed
+                                // only by armed-BT codecs USB profiles never
+                                // arm. Publishing both was two seqlock
+                                // writes + two kernel SetEvents per tick.
+                                // SubmitRawReport ticks FFB itself now.
+                                if (SonyReportPackers.ForProfile(hmExtState.ProfileId) == null)
+                                    hmExtState.SubmitGamepadState(
+                                        gpOut,
+                                        CombinedTouchpadStates[padIndex],
+                                        MotionSnapshots[padIndex],
+                                        pctByte,
+                                        BatteryCharging[padIndex]);
                             }
                             else
                             {

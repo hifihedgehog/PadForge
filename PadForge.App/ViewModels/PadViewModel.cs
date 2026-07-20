@@ -6153,6 +6153,16 @@ namespace PadForge.ViewModels
 
         public void UpdateFromEngineState(Gamepad gp, Engine.Vibration vibration, Engine.Vibration selectedDeviceVibration = null)
         {
+            // Nintendo slots: the gamepad surface is EMPTY by design (all
+            // input rides the raw surface) and UpdateNintendoPreviewFromRaw
+            // owns every gamepad-shaped preview property. Writing them from
+            // the empty surface here stomped the bridge's values on every
+            // tick the raw change-detect skipped, bouncing a held button's
+            // preview at analog-jitter cadence (#215 preview flicker). The
+            // vibration section below stays: the motor bars are fed by the
+            // feedback lane, not the raw bridge.
+            if (_outputType != VirtualControllerType.Nintendo)
+            {
             ButtonA = gp.IsButtonPressed(Gamepad.A);
             ButtonB = gp.IsButtonPressed(Gamepad.B);
             ButtonX = gp.IsButtonPressed(Gamepad.X);
@@ -6183,6 +6193,7 @@ namespace PadForge.ViewModels
             ThumbLY = 1.0 - ((gp.ThumbLY - (double)short.MinValue) / 65535.0);
             ThumbRX = (gp.ThumbRX - (double)short.MinValue) / 65535.0;
             ThumbRY = 1.0 - ((gp.ThumbRY - (double)short.MinValue) / 65535.0);
+            }
 
             if (vibration != null)
             {
@@ -6740,6 +6751,18 @@ namespace PadForge.ViewModels
             RawThumbLY = FlipY(Ax(1));
             RawThumbRX = Ax(2);
             RawThumbRY = FlipY(Ax(3));
+
+            // Normalized stick + raw trigger displays: with the engine-state
+            // stomp gone (see UpdateFromEngineState), this bridge is the sole
+            // writer of the whole preview surface for Nintendo slots. Same
+            // formulas as the engine writer, applied to the flipped axes.
+            static double NormAx(short v) => (v - (double)short.MinValue) / 65535.0;
+            ThumbLX = NormAx(Ax(0));
+            ThumbLY = 1.0 - NormAx(FlipY(Ax(1)));
+            ThumbRX = NormAx(Ax(2));
+            ThumbRY = 1.0 - NormAx(FlipY(Ax(3)));
+            RawLeftTrigger = (ushort)(raw.IsButtonPressed(6) ? 65535 : 0);
+            RawRightTrigger = (ushort)(raw.IsButtonPressed(7) ? 65535 : 0);
         }
 
         /// <summary>

@@ -762,7 +762,20 @@ namespace PadForge.Common.Input
             {
                 return;
             }
-            StoreRawFrame(in raw, motion.HasMotion, nowRawTick);
+            if (motion.HasMotion)
+            {
+                // While motion streams, dedup can never fire (the next
+                // frame's gate sees _lastRawHadMotion). Skip the three
+                // array copies; only the flags matter. The first frame
+                // AFTER motion clears re-stores a full frame below.
+                _lastRawHadMotion = true;
+                _lastRawSubmitTick = nowRawTick;
+                _hasRawSubmitted = true;
+            }
+            else
+            {
+                StoreRawFrame(in raw, hadMotion: false, nowRawTick);
+            }
 
             short Ax(int i) => (raw.Axes != null && i >= 0 && i < raw.Axes.Length) ? raw.Axes[i] : (short)0;
 

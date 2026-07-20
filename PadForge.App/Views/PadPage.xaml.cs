@@ -948,7 +948,12 @@ namespace PadForge.Views
                 {
                     Interval = TimeSpan.FromMilliseconds(100),
                 };
-                _bassShakerMeterTimer.Tick += (s, e) => UpdateBassShakerMeters();
+                _bassShakerMeterTimer.Tick += (s, e) =>
+                {
+                    // Iconic gate: the tab flag does not flip on minimize.
+                    if (PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
+                    UpdateBassShakerMeters();
+                };
             }
             _bassShakerMeterTimer.Start();
             // Immediate paint so the status line never shows a 100 ms blank.

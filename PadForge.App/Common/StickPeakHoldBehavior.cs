@@ -93,6 +93,8 @@ namespace PadForge.Common
 
         private static void Step(Canvas canvas, PeakState s, bool animate)
         {
+            // Iconic gate: element IsVisible stays true while minimized.
+            if (PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             if (canvas.DataContext is not StickConfigItem stick) return;
 
             // OUT deflection in plot space (LiveX/LiveY are 0..1, center 0.5).

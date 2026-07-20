@@ -498,7 +498,8 @@ namespace PadForge.Views
         {
             // Retained-page guard (see ControllerModelView.OnRendering): skip
             // all per-frame work while hidden, including the theme check.
-            if (!IsVisible) return;
+            // Iconic gate: IsVisible stays TRUE while minimized.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             // Rebuild on theme change.
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_layoutBuilt && _lastTheme != currentTheme) { _lastTheme = currentTheme; RebuildLayout(); }

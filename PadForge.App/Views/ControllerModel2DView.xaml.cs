@@ -488,7 +488,10 @@ namespace PadForge.Views
             // Retained-page guard (see ControllerModelView.OnRendering): skip
             // the overlay repaint while hidden; _dirty catches up on the first
             // visible frame.
-            if (!IsVisible) return;
+            // Iconic gate: IsVisible stays TRUE while the window is
+            // minimized, so without this the overlay repainted per display
+            // frame while nothing could render (the marquee mechanism).
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             if (!_dirty || _vm == null || _loadedModel == null)
                 return;
             _dirty = false;

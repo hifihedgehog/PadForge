@@ -642,7 +642,8 @@ namespace PadForge.Views
             // Visibility first (mirrors KBMPreviewView): the theme probe
             // ran per frame against a hidden canvas on the retained page.
             // The first visible frame catches a pending theme change.
-            if (!IsVisible) return;
+            // Iconic gate: IsVisible stays TRUE while minimized.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
 
             // Rebuild on theme change.
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
@@ -659,7 +660,7 @@ namespace PadForge.Views
                 // collapsed — the control stays bound (it's a persistent
                 // singleton), so without this the loop would run every frame
                 // against a hidden canvas.
-                if (!IsVisible) return;
+                if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
 
                 var midi = _inputSource?.Invoke();
                 long now = Environment.TickCount64;
@@ -713,7 +714,7 @@ namespace PadForge.Views
             // Retained-page guard for the OUTPUT path, mirroring the input
             // path's guard above: skip the repaint while the hosting page is
             // hidden. _dirty stays set for the first visible frame.
-            if (!IsVisible) return;
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             if (!_dirty || _vm == null) return;
             _dirty = false;
 

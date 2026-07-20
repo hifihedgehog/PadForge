@@ -95,6 +95,9 @@ namespace PadForge.Common
             state.Timer = new DispatcherTimer(DispatcherPriority.Render) { Interval = TimeSpan.FromMilliseconds(16) };
             state.Timer.Tick += (_, _) =>
             {
+                // Iconic gate: element IsVisible stays true while the window
+                // is minimized, so the visibility start/stop never fires.
+                if (PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
                 if (canvas.DataContext is not StickConfigItem stick) return;
                 StepSignal(state.Raw, stick.RawPosX, stick.RawPosY);
                 StepSignal(state.Out, stick.LiveX, stick.LiveY);

@@ -2064,7 +2064,14 @@ namespace PadForge.Services
             }
 
             // ── Update Pad ViewModels ──
-            for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
+            // Display-mirror lane: every write below feeds bindings and the
+            // per-frame preview views, none of which can render while the
+            // window is minimized (the gameplay overlays ride their own
+            // lanes further down). Shadow-array change detection inside the
+            // UpdateFrom* mirrors guarantees a full refresh on the first
+            // tick after restore.
+            bool skipPadVmMirrors = PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized;
+            for (int i = 0; !skipPadVmMirrors && i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
                 var gp = _inputManager.CombinedOutputStates[i];
@@ -2191,9 +2198,16 @@ namespace PadForge.Services
                             // reference: the parse + Format re-ran per tick
                             // for a label that changes on recalibration only.
                             string ts = ps?.GyroCalibratedAtUtc;
-                            if (!ReferenceEquals(_gyroBiasMemo[i].LabelSrc, ts))
+                            // The format/never strings swap identity on a
+                            // live language switch; keying on them keeps
+                            // the label in the CURRENT language without a
+                            // CultureChanged hook.
+                            string neverStr = Strings.Instance.Settings_GyroNeverCalibrated;
+                            if (!ReferenceEquals(_gyroBiasMemo[i].LabelSrc, ts)
+                                || !ReferenceEquals(_gyroBiasMemo[i].LabelCultureSrc, neverStr))
                             {
                                 _gyroBiasMemo[i].LabelSrc = ts;
+                                _gyroBiasMemo[i].LabelCultureSrc = neverStr;
                                 _gyroBiasMemo[i].Label =
                                     (string.IsNullOrEmpty(ts) ||
                                      !DateTime.TryParse(ts, System.Globalization.CultureInfo.InvariantCulture,
@@ -2245,13 +2259,15 @@ namespace PadForge.Services
             UpdateMenuOverlayWindow();
 
             // ── Update Devices page (only if visible) ──
-            if (IsDevicesPageVisible)
+            // Nav-tag visibility does not flip on minimize; gate on the
+            // probe so the 30 Hz repaint stops while iconic.
+            if (IsDevicesPageVisible && !PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized)
             {
                 UpdateDevicesRawState();
             }
 
             // ── Update mapping row live values (only if a Pad page is visible) ──
-            if (IsPadPageVisible)
+            if (IsPadPageVisible && !PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized)
             {
                 UpdateMappingLiveValues();
             }
@@ -4088,7 +4104,7 @@ namespace PadForge.Services
 
         private struct GyroUiMemo
         {
-            public string PitchSrc, YawSrc, RollSrc, LabelSrc, Label;
+            public string PitchSrc, YawSrc, RollSrc, LabelSrc, LabelCultureSrc, Label;
             public float Pitch, Yaw, Roll;
         }
         private readonly GyroUiMemo[] _gyroBiasMemo = new GyroUiMemo[InputManager.MaxPads];

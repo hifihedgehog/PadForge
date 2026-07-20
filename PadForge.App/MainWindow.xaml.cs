@@ -68,6 +68,13 @@ namespace PadForge
         private MappingItem _pendingNegMapping;
         /// <summary>Saved positive descriptor while recording the negative direction.</summary>
         private string _savedPosDescriptor;
+        /// <summary>Set when the neg-first quadrant chain starts its second
+        /// (positive) phase. PromoteNegDescriptorToExtraSource empties
+        /// NegSourceDescriptor at the end of phase one, so the normal-path
+        /// "neg isn't already mapped" emptiness check would re-prompt for the
+        /// direction that was just recorded. The flag marks the row whose
+        /// chain is already complete; consumed by the next completion.</summary>
+        private MappingItem _negChainCompletedMapping;
 
         // #111 single-button recording for a non-Direct primary kind. The one
         // row Record button records the kind's own inputs. Ramp / Incremental
@@ -1468,7 +1475,10 @@ namespace PadForge
 
                         // Start recording — result will go to SourceDescriptor via normal path.
                         // Neutralize baseline so the previous POV/button press doesn't block detection.
+                        // Mark the chain so the pos completion doesn't re-prompt
+                        // for the neg that phase one just promoted into extras.
                         _savedPosDescriptor = null;
+                        _negChainCompletedMapping = negMapping;
                         _recorderService.StartRecording(negMapping, activePad.PadIndex, deviceGuid, neutralizeBaseline: true);
                         return;
                     }
@@ -1499,6 +1509,8 @@ namespace PadForge
                 }
 
                 // ── Normal recording ──
+                bool negChainDone = ReferenceEquals(result.Mapping, _negChainCompletedMapping);
+                _negChainCompletedMapping = null;
                 var rgNormal = ResolveGuidFor(result.Mapping);
                 if (rgNormal != Guid.Empty)
                     InputService.ResolveDisplayText(result.Mapping, rgNormal);
@@ -1508,7 +1520,8 @@ namespace PadForge
                 // auto-prompt for neg direction (but only if neg isn't already mapped — avoids
                 // re-prompting after a neg-quadrant click that already auto-prompted for pos).
                 if (result.Type != MapType.Axis && result.Mapping.HasNegDirection
-                    && string.IsNullOrEmpty(result.Mapping.NegSourceDescriptor))
+                    && string.IsNullOrEmpty(result.Mapping.NegSourceDescriptor)
+                    && !negChainDone)
                 {
                     // Save the positive descriptor before the recorder overwrites it.
                     _savedPosDescriptor = result.Mapping.SourceDescriptor;
@@ -1564,6 +1577,7 @@ namespace PadForge
                     _pendingNegMapping.SourceDescriptor = _savedPosDescriptor;
                 _pendingNegMapping = null;
                 _savedPosDescriptor = null;
+                _negChainCompletedMapping = null;
 
                 var activePad = _viewModel.SelectedPad;
                 if (activePad != null)
@@ -1595,6 +1609,9 @@ namespace PadForge
             {
                 var padVm = _viewModel.SelectedPad;
                 if (padVm == null) return;
+
+                // Any new click abandons a half-finished quadrant chain.
+                _negChainCompletedMapping = null;
 
                 // Toggle: if already recording this element, cancel.
                 if (padVm.CurrentRecordingTarget == targetName)
@@ -1696,6 +1713,7 @@ namespace PadForge
                         && (mapping.TargetSettingName.Contains("AxisY")
                             || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
                     bool isYFirstPhase = isYAxis && !capturedPad.MapAllRecordingNeg;
+                    _negChainCompletedMapping = null;
                     if (isYFirstPhase)
                         _pendingNegMapping = mapping;
 

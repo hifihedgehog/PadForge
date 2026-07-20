@@ -2153,18 +2153,40 @@ namespace PadForge.Common.Input
         /// complete before starting a new creation, so the preempted slots'
         /// kernel resources are fully released before any rebuild kicks off.
         /// </summary>
+        private static readonly VirtualControllerType[] s_hmSubgroups =
+        {
+            VirtualControllerType.Xbox,
+            VirtualControllerType.PlayStation,
+            VirtualControllerType.Nintendo,
+            VirtualControllerType.Extended,
+        };
+
         private bool ApplyAscendingIndexPreemption()
         {
             bool displacedAny = false;
-            var hmSubgroups = new[]
-            {
-                VirtualControllerType.Xbox,
-                VirtualControllerType.PlayStation,
-                VirtualControllerType.Nintendo,
-                VirtualControllerType.Extended,
-            };
 
-            foreach (var subgroup in hmSubgroups)
+            // Lock-free pre-gate: the per-subgroup order snapshots below
+            // clone under OrderSync every call, and this runs every poll
+            // tick. A VC-less created+enabled un-latched slot is a
+            // necessary condition for any preemption decision, so the
+            // steady state (every slot settled) skips the snapshots
+            // entirely. Decisions are unchanged: the full walk still
+            // applies IsSlotActive and ordering when the gate passes.
+            bool anyCandidate = false;
+            for (int i = 0; i < MaxPads; i++)
+            {
+                if (_virtualControllers[i] == null
+                    && SettingsManager.SlotCreated[i]
+                    && SettingsManager.SlotEnabled[i]
+                    && !_createFailed[i])
+                {
+                    anyCandidate = true;
+                    break;
+                }
+            }
+            if (!anyCandidate) return false;
+
+            foreach (var subgroup in s_hmSubgroups)
             {
                 var orderList = SettingsManager.SlotOrders.GetOrderSnapshotFor(subgroup);
 

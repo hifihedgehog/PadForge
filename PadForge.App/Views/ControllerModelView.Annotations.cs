@@ -950,6 +950,10 @@ namespace PadForge.Views
         {
             if (!_annotationsEnabled || _vm == null || _currentModel == null)
                 return;
+            // Retained visibility-toggled page: keep the 6.7 Hz projection
+            // off hidden surfaces. Chips recompute from live state each
+            // tick, so the first visible tick catches up.
+            if (!IsVisible) return;
 
             if (!_annotationDragHidden)
                 ReprojectAnnotations();

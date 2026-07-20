@@ -471,6 +471,11 @@ namespace PadForge.Common.Input
                 if (!IsMenuDefinitionAnyDevice(slotIndex, menuId)) return false;
             }
 
+            // No live contexts (no menus open anywhere): skip the
+            // enumerator allocation — this runs per direct-bound item
+            // per 1 kHz tick.
+            if (MenuContexts.IsEmpty) return false;
+
             foreach (var kv in MenuContexts)
             {
                 if (kv.Key.Slot != slotIndex || kv.Key.MenuId != menuId) continue;
@@ -489,6 +494,7 @@ namespace PadForge.Common.Input
         private bool IsMenuItemFiredByUnrestricted(
             int slotIndex, int menuId, int itemIndex, Guid[] restrictedDevices)
         {
+            if (MenuContexts.IsEmpty) return false;
             long nowMs = Environment.TickCount64;
             foreach (var kv in MenuContexts)
             {

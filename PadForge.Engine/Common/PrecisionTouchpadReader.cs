@@ -763,10 +763,15 @@ namespace PadForge.Engine
         /// per-call ushort[8] stack scratch is plenty: a digitizer
         /// link collection's button page typically holds tip-switch +
         /// in-range + confidence at most.</summary>
+        // Reused scratch: ReadTipSwitch runs per contact per report on
+        // the single raw-input message thread (~125-250 Hz x contacts
+        // while a finger is down), so the per-call array was steady churn.
+        private static readonly ushort[] s_tipUsageScratch = new ushort[8];
+
         private static bool ReadTipSwitch(IntPtr preparsed, IntPtr report,
             uint reportLength, ushort linkCollection)
         {
-            var usageList = new ushort[8];
+            var usageList = s_tipUsageScratch;
             uint length = (uint)usageList.Length;
             uint hr = HidP_GetUsages(HidP_Input, HID_USAGE_PAGE_DIGITIZER,
                 linkCollection, usageList, ref length, preparsed, report, reportLength);
@@ -775,6 +780,10 @@ namespace PadForge.Engine
                 if (usageList[i] == HID_USAGE_DIGITIZER_TIP_SWITCH) return true;
             return false;
         }
+
+        // Reused per-report contact scratch (single raw-input thread;
+        // fully consumed into FrameBuf* before return).
+        private readonly List<(float x, float y, int id)> _fingersScratch = new();
 
         private void ParseTouchpadReport(IntPtr hDevice, IntPtr preparsed, IntPtr report, uint reportLength,
             HIDP_VALUE_CAPS[] valueCaps, (int logMinX, int logMaxX, int logMinY, int logMaxY) ranges)
@@ -794,7 +803,8 @@ namespace PadForge.Engine
             // hardware caps a single report at 2 contacts; we read up
             // to PtpMaxFingers defensively in case a parallel-mode
             // device packs all fingers into one report.
-            var fingers = new List<(float x, float y, int id)>();
+            var fingers = _fingersScratch;
+            fingers.Clear();
 
             foreach (var vc in valueCaps)
             {

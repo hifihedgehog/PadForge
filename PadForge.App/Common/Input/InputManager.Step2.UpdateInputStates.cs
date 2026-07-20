@@ -663,8 +663,11 @@ namespace PadForge.Common.Input
             // motors. ud.DevicePath is the openable HID interface path.
             if (isVendorFfb)
             {
-                int overallGain = int.TryParse(firstPadSetting?.ForceOverall, out int g)
-                    ? System.Math.Clamp(g, 0, 100) : 100;
+                // Memoized parse (Step 3's capped invariant cache): these
+                // strings change only on user edit but parsed per wheel
+                // per 1 kHz tick.
+                int overallGain = System.Math.Clamp(
+                    TryParseIntStatic(firstPadSetting?.ForceOverall, 100), 0, 100);
                 if (isFanatecPedal)
                 {
                     byte brake    = (byte)(combinedL >> 8); // XInput left  -> brake
@@ -692,7 +695,7 @@ namespace PadForge.Common.Input
                     // autocenter and ftec_set_range's f5 disables its stock spring, so
                     // Fanatec centering is a per-frame software spring (slot 1); Logitech
                     // and Thrustmaster use their firmware spring in the one-shot below.
-                    int desAc = int.TryParse(firstPadSetting.AutoCenterStrength, out int acp) ? System.Math.Clamp(acp, 0, 100) : 0;
+                    int desAc = System.Math.Clamp(TryParseIntStatic(firstPadSetting.AutoCenterStrength, 0), 0, 100);
                     int acMag = desAc * 0xffff / 100; // 0..100% -> 0..0xffff
                     // Skip the HID write when the force/condition is identical to last poll —
                     // the wheel holds it, so re-sending is pure per-poll churn (the 1000->500 Hz
@@ -713,8 +716,8 @@ namespace PadForge.Common.Input
                     // vendor writers' stateful upload/play caches must stay on the owner.
                     if (RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath))
                     {
-                        int peerRange = int.TryParse(firstPadSetting.RotationRange, out int prg)
-                            ? System.Math.Clamp(prg, 40, 2520) : 900;
+                        int peerRange = System.Math.Clamp(
+                            TryParseIntStatic(firstPadSetting.RotationRange, 900), 40, 2520);
                         bool ledsOn = firstPadSetting.WheelRpmLeds == "1";
                         int ledMask = 0;
                         if (ledsOn)
@@ -785,7 +788,7 @@ namespace PadForge.Common.Input
 
                     // Wheel settings (rotation range + auto-center) — one-shot,
                     // re-sent only when the persisted value changes.
-                    int desRange = int.TryParse(firstPadSetting.RotationRange, out int rg) ? System.Math.Clamp(rg, 40, 2520) : 900; // per-wheel max enforced in each writer's WriteRange
+                    int desRange = System.Math.Clamp(TryParseIntStatic(firstPadSetting.RotationRange, 900), 40, 2520); // per-wheel max enforced in each writer's WriteRange
                     if (!_appliedWheelSettings.TryGetValue(ud.DevicePath, out var prevWs) || prevWs.range != desRange || prevWs.ac != desAc)
                     {
                         bool applied;
@@ -928,24 +931,27 @@ namespace PadForge.Common.Input
             {
                 if (mainSet && triggerSet) break;
                 Guid selected = SelectedDeviceGuids[padIndex];
-                var slotSettings = settings.FindByPadIndex(padIndex);
-                if (slotSettings == null || slotSettings.Count == 0) continue;
+                // Buffer overload: the List-returning FindByPadIndex
+                // allocates per call and this loop runs per slot per
+                // 1 kHz tick while audio features are enabled.
+                int slotCount = settings.FindByPadIndex(padIndex, _instanceGuidBuffer);
+                if (slotCount == 0) continue;
                 // Prefer SelectedMappedDevice's PadSetting (matches the
                 // tab the user is editing); fall back to the first
                 // mapped device on the slot.
                 PadSetting ps = null;
                 if (selected != Guid.Empty)
                 {
-                    for (int i = 0; i < slotSettings.Count; i++)
+                    for (int i = 0; i < slotCount; i++)
                     {
-                        if (slotSettings[i].InstanceGuid == selected)
+                        if (_instanceGuidBuffer[i].InstanceGuid == selected)
                         {
-                            ps = slotSettings[i].GetPadSetting();
+                            ps = _instanceGuidBuffer[i].GetPadSetting();
                             break;
                         }
                     }
                 }
-                if (ps == null) ps = slotSettings[0].GetPadSetting();
+                if (ps == null) ps = _instanceGuidBuffer[0].GetPadSetting();
                 if (ps == null) continue;
 
                 if (!mainSet && ps.AudioRumbleEnabled == "1")

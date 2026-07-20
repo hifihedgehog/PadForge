@@ -891,6 +891,8 @@ namespace PadForge.Common.Input
         /// that drops on a read hiccup never comes back and a freshly-plugged one
         /// never appears until an app restart re-enumerates from scratch.
         /// </summary>
+        private long _lastUiJoystickUpdateTicks;
+
         public void PumpSdlEvents()
         {
             if (!_sdlInitialized)
@@ -910,10 +912,24 @@ namespace PadForge.Common.Input
             long tsPump = Stopwatch.GetTimestamp();
             SDL_PumpEvents();
             long tsUpd = Stopwatch.GetTimestamp();
-            SDL_UpdateJoysticks();
-            long tsEnd = Stopwatch.GetTimestamp();
+            // The joystick update here exists ONLY for enumeration (new
+            // devices materialize on the init thread; state reads happen
+            // on the poll thread every tick). It shares SDL's joystick
+            // lock with that 1 kHz caller, and the diag harvest showed
+            // the two convoying (paired ~100 ms "STALL poll sdl=" /
+            // "STALL uipump" lines). 500 ms keeps hot-plug appearance
+            // sub-second while cutting the convoy exposure 5x. The pump
+            // above stays at the timer's 100 ms so WM_DEVICECHANGE
+            // dispatch stays prompt.
+            long updMs = 0;
+            long nowTicks = Stopwatch.GetTimestamp();
+            if (nowTicks - _lastUiJoystickUpdateTicks >= Stopwatch.Frequency / 2)
+            {
+                _lastUiJoystickUpdateTicks = nowTicks;
+                SDL_UpdateJoysticks();
+                updMs = (Stopwatch.GetTimestamp() - tsUpd) * 1000 / Stopwatch.Frequency;
+            }
             long pumpMs = (tsUpd - tsPump) * 1000 / Stopwatch.Frequency;
-            long updMs = (tsEnd - tsUpd) * 1000 / Stopwatch.Frequency;
             if (pumpMs >= 25 || updMs >= 25)
                 Engine.SdlDiagLog.WriteLine($"STALL uipump pump={pumpMs}ms upd={updMs}ms");
         }
@@ -2464,7 +2480,7 @@ namespace PadForge.Common.Input
                     if (src == null) continue;
                     if (!SourceCoercion.IsMotionDescriptor(src.Descriptor)) continue;
                     if (string.IsNullOrEmpty(src.DeviceGuid)) continue;
-                    if (!Guid.TryParse(src.DeviceGuid, out var guid)) continue;
+                    if (!TryParseGuidCached(src.DeviceGuid, out var guid)) continue;
                     var ud = FindOnlineDeviceByInstanceGuid(guid);
                     if (ud == null || !ud.IsOnline || ud.Device == null) continue;
                     if (ud.InputState == null) continue;

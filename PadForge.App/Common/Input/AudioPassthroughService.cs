@@ -1386,12 +1386,20 @@ namespace PadForge.Common.Input
                 long next = DateTime.UtcNow.Ticks + cadTicks;
                 var me = Thread.CurrentThread;
 
+                // Reused scratch: the LINQ Where().ToList() pair allocated
+                // an enumerator + list ~94 times a second on this
+                // Highest-priority thread even with a stable sink set.
+                var btSinks = new List<Sink>();
+                var peerSinks = new List<Sink>();
+                var minusOne = new IntPtr(-1);
                 while (_running && ReferenceEquals(_btThread, me))
                 {
-                    List<Sink> btSinks;
+                    btSinks.Clear();
                     lock (_lock)
-                        btSinks = _sinks.Values.Where(s => s.IsBt && !s.TransportFailed && s.BtHandle != new IntPtr(-1)
-                                                        && !VendorAudioTestActive_NoLock(s.DeviceGuid)).ToList();
+                        foreach (var s in _sinks.Values)
+                            if (s.IsBt && !s.TransportFailed && s.BtHandle != minusOne
+                                && !VendorAudioTestActive_NoLock(s.DeviceGuid))
+                                btSinks.Add(s);
 
                     foreach (var s in btSinks)
                     {
@@ -1458,9 +1466,11 @@ namespace PadForge.Common.Input
                     // silence included — at the same 48 kHz pull as the BT lanes, so
                     // the owner's ring stays primed and the next sound starts gapless;
                     // the owner's own idle gate rests the radio when the audio is silent.
-                    List<Sink> peerSinks;
-                    lock (_lock)
-                        peerSinks = _running ? _sinks.Values.Where(s => s.IsPeer).ToList() : new List<Sink>();
+                    peerSinks.Clear();
+                    if (_running)
+                        lock (_lock)
+                            foreach (var s in _sinks.Values)
+                                if (s.IsPeer) peerSinks.Add(s);
                     foreach (var s in peerSinks)
                     {
                         try { ShipPeerAudioTick(s, pull); }

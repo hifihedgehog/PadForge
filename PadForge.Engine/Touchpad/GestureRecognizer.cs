@@ -426,12 +426,31 @@ namespace PadForge.Engine.Touchpad
         /// <summary>Fires <c>Touchpad N LongPress</c> when a single
         /// finger has been down for at least the configured threshold
         /// and the path stayed within the max-motion bound.</summary>
+        private static string[] s_longPressKeys = new string[4];
+        private static string LongPressKey(int padIdx)
+        {
+            var keys = s_longPressKeys;
+            if ((uint)padIdx < (uint)keys.Length && keys[padIdx] != null)
+                return keys[padIdx];
+            string key = $"Touchpad {padIdx} LongPress";
+            if ((uint)padIdx >= (uint)keys.Length)
+            {
+                var grown = new string[padIdx + 1];
+                System.Array.Copy(keys, grown, keys.Length);
+                s_longPressKeys = keys = grown;
+            }
+            keys[padIdx] = key;
+            return key;
+        }
+
         private static void DetectLongPress(int padIdx,
             TouchpadGestureContext ctx, TouchpadInputState pad,
             TouchpadGestureSettings settings, long nowMs)
         {
             if (ctx.FingerPaths.Count != 1) return;
-            string key = $"Touchpad {padIdx} LongPress";
+            // Cached per pad: the interpolation allocated a string every
+            // ~1 kHz frame a single finger was touching.
+            string key = LongPressKey(padIdx);
             // One-shot per gesture: skip if already fired this gesture
             // (LastTapPosition is repurposed as a "fired LongPress this
             // session" sentinel via the X-coord).

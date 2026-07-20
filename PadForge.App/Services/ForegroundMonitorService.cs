@@ -105,6 +105,16 @@ namespace PadForge.Services
             _overrideProfileId = currentProfileId;
         }
 
+        // (hwnd, pid) of the last resolved foreground window. Foreground
+        // changes are human-rate; the expensive process query (a full PID
+        // snapshot inside GetProcessById plus a module enumeration inside
+        // MainModule, ~1-2 KB of allocs) ran at 30 Hz on the UI thread
+        // before the exe-path dedup could fire because the dedup needs
+        // the path. Two near-free syscalls now gate it.
+        private static IntPtr _lastFgHwnd;
+        private static uint _lastFgPid;
+        private static string _lastFgPath;
+
         private static string GetForegroundExePath()
         {
             try
@@ -117,8 +127,25 @@ namespace PadForge.Services
                 if (pid == 0)
                     return null;
 
-                using var proc = Process.GetProcessById((int)pid);
-                return proc.MainModule?.FileName;
+                if (hwnd == _lastFgHwnd && pid == _lastFgPid)
+                    return _lastFgPath;
+
+                string path;
+                try
+                {
+                    using var proc = Process.GetProcessById((int)pid);
+                    path = proc.MainModule?.FileName;
+                }
+                catch
+                {
+                    // Elevated / protected target: cache the null so the
+                    // failing open isn't retried 30x a second either.
+                    path = null;
+                }
+                _lastFgHwnd = hwnd;
+                _lastFgPid = pid;
+                _lastFgPath = path;
+                return path;
             }
             catch
             {

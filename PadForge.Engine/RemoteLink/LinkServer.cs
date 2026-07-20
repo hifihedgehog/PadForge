@@ -249,9 +249,13 @@ namespace PadForge.Engine.RemoteLink
         /// <summary>Seal and send one exposed local device's state to every peer consuming it.</summary>
         public void PushLocalFrame(byte slot, CustomInputState state, CustomInputStateCodec.Caps caps, ulong timestampUs)
         {
-            byte[] payload = CustomInputStateCodec.Encode(state, caps);
             LinkPeerConnection[] conns;
             lock (_lock) conns = _connections.ToArray();
+            // Snapshot BEFORE encoding: with zero peers the encode (two
+            // allocations per call at 125 Hz per shared device) was pure
+            // waste.
+            if (conns.Length == 0) return;
+            byte[] payload = CustomInputStateCodec.Encode(state, caps);
             foreach (var c in conns)
             {
                 var ep = c.PeerUdpEndpoint;
@@ -562,11 +566,14 @@ namespace PadForge.Engine.RemoteLink
         public void PushDeviceList(IReadOnlyList<RemotePeerDeviceInfo> devices)
         {
             if (devices == null) return;
+            LinkPeerConnection[] conns;
+            lock (_lock) conns = _connections.ToArray();
+            // No peers: skip the ~KB device-list encode that otherwise
+            // ran every 2 s push with nobody to receive it.
+            if (conns.Length == 0) return;
             byte[] payload;
             try { payload = LinkConnection.EncodeDeviceList(devices); }
             catch (Exception ex) { DiagLastError = "devlist-enc: " + ex.Message; return; }
-            LinkPeerConnection[] conns;
-            lock (_lock) conns = _connections.ToArray();
             ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
             foreach (var c in conns)
             {

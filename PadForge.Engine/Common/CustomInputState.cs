@@ -199,34 +199,103 @@ namespace PadForge.Engine
         public CustomInputState Clone()
         {
             var clone = new CustomInputState();
-            Array.Copy(Axis, clone.Axis, MaxAxis);
-            Array.Copy(Sliders, clone.Sliders, MaxSliders);
-            Array.Copy(Povs, clone.Povs, MaxPovs);
-            Array.Copy(Buttons, clone.Buttons, MaxButtons);
-            Array.Copy(Gyro, clone.Gyro, 3);
-            Array.Copy(Accel, clone.Accel, 3);
-            Array.Copy(AccelAux, clone.AccelAux, 3);
-            if (Touchpads != null)
-            {
-                clone.Touchpads = new TouchpadInputState[Touchpads.Length];
-                for (int i = 0; i < Touchpads.Length; i++)
-                    clone.Touchpads[i] = Touchpads[i]?.Clone();
-            }
-            if (CapSense != null)
-            {
-                clone.CapSense = new bool[CapSense.Length];
-                Array.Copy(CapSense, clone.CapSense, CapSense.Length);
-            }
-            clone.Midi = Midi?.Clone();
-            clone.Ir = Ir; // value type copy (X/Y/Detected)
-            clone.JoyConIrIntensity = JoyConIrIntensity;
-            clone.JoyCon2MouseDX = JoyCon2MouseDX;
-            clone.JoyCon2MouseDY = JoyCon2MouseDY;
-            clone.MouseRawDX = MouseRawDX;
-            clone.MouseRawDY = MouseRawDY;
-            clone.BatteryPercent = BatteryPercent;
-            clone.BatteryCharging = BatteryCharging;
+            CopyInto(clone);
             return clone;
+        }
+
+        /// <summary>Deep-copies this state into <paramref name="dst"/>,
+        /// reallocating nested Touchpads/CapSense/Midi only on a shape
+        /// change. Clone delegates here so the class has exactly ONE
+        /// full-field mirror (guarded by a reflection round-trip test:
+        /// a field added to the class without joining this copy fails
+        /// CustomInputStateMirrorTests the day it lands).</summary>
+        public void CopyInto(CustomInputState dst)
+        {
+            Array.Copy(Axis, dst.Axis, MaxAxis);
+            Array.Copy(Sliders, dst.Sliders, MaxSliders);
+            Array.Copy(Povs, dst.Povs, MaxPovs);
+            Array.Copy(Buttons, dst.Buttons, MaxButtons);
+            Array.Copy(Gyro, dst.Gyro, 3);
+            Array.Copy(Accel, dst.Accel, 3);
+            Array.Copy(AccelAux, dst.AccelAux, 3);
+            if (Touchpads == null)
+            {
+                dst.Touchpads = null;
+            }
+            else
+            {
+                if (dst.Touchpads == null || dst.Touchpads.Length != Touchpads.Length)
+                    dst.Touchpads = new TouchpadInputState[Touchpads.Length];
+                for (int i = 0; i < Touchpads.Length; i++)
+                {
+                    var src = Touchpads[i];
+                    if (src == null) { dst.Touchpads[i] = null; continue; }
+                    dst.Touchpads[i] ??= new TouchpadInputState(src.MaxFingers);
+                    src.CopyInto(dst.Touchpads[i]);
+                }
+            }
+            if (CapSense == null)
+            {
+                dst.CapSense = null;
+            }
+            else
+            {
+                if (dst.CapSense == null || dst.CapSense.Length != CapSense.Length)
+                    dst.CapSense = new bool[CapSense.Length];
+                Array.Copy(CapSense, dst.CapSense, CapSense.Length);
+            }
+            if (Midi == null)
+            {
+                dst.Midi = null;
+            }
+            else
+            {
+                dst.Midi ??= new MidiInputState();
+                Midi.CopyInto(dst.Midi);
+            }
+            dst.Ir = Ir; // value type copy (X/Y/Detected)
+            dst.JoyConIrIntensity = JoyConIrIntensity;
+            dst.JoyCon2MouseDX = JoyCon2MouseDX;
+            dst.JoyCon2MouseDY = JoyCon2MouseDY;
+            dst.MouseRawDX = MouseRawDX;
+            dst.MouseRawDY = MouseRawDY;
+            dst.BatteryPercent = BatteryPercent;
+            dst.BatteryCharging = BatteryCharging;
+        }
+
+        /// <summary>Returns this instance to the exact fresh-constructed
+        /// state WITHOUT dropping nested allocations (Touchpads / CapSense
+        /// arrays keep their device-open shape and are cleared in place).
+        /// Buffer-reuse support: a pooled state that passes through this is
+        /// semantically identical to <c>new CustomInputState()</c> plus the
+        /// wrapper's open-time shape setup, so read paths that rely on
+        /// fresh-zero fields (early-returning decoders, capability-gated
+        /// writes) stay correct. Guarded by the same reflection mirror
+        /// test as <see cref="CopyInto"/>.</summary>
+        public void ResetForReuse()
+        {
+            Array.Clear(Axis, 0, MaxAxis);
+            Array.Clear(Sliders, 0, MaxSliders);
+            Array.Clear(Buttons, 0, MaxButtons);
+            Array.Clear(Gyro, 0, 3);
+            Array.Clear(Accel, 0, 3);
+            Array.Clear(AccelAux, 0, 3);
+            for (int i = 0; i < Povs.Length; i++)
+                Povs[i] = -1;
+            if (Touchpads != null)
+                for (int i = 0; i < Touchpads.Length; i++)
+                    Touchpads[i]?.ResetForReuse();
+            if (CapSense != null)
+                Array.Clear(CapSense, 0, CapSense.Length);
+            Midi?.ResetForReuse();
+            Ir = default;
+            JoyConIrIntensity = 0f;
+            JoyCon2MouseDX = 0f;
+            JoyCon2MouseDY = 0f;
+            MouseRawDX = 0;
+            MouseRawDY = 0;
+            BatteryPercent = -1;
+            BatteryCharging = false;
         }
 
         // ─────────────────────────────────────────────
@@ -286,6 +355,27 @@ namespace PadForge.Engine
     /// <see cref="Detected"/> is true. When no dot is seen this frame the producer
     /// clears <see cref="Detected"/> and every consumer reads the source as centered
     /// for that frame (X/Y are not carried over; the state is rebuilt each tick).</summary>
+    /// <summary>Two-instance CustomInputState pool for per-tick device
+    /// reads (single reader thread per wrapper by contract). Two buffers
+    /// because the published instance must survive exactly one tick
+    /// (the OldInputState idle compare); no consumer retains it longer
+    /// (retainer footprint, perf audit 2026-07-20). Next() hands back the
+    /// spare restored to exact fresh-construction semantics.</summary>
+    public struct PooledInputStatePair
+    {
+        private CustomInputState _a, _b;
+        private bool _useB;
+
+        public CustomInputState Next()
+        {
+            var s = _useB ? (_b ??= new CustomInputState())
+                          : (_a ??= new CustomInputState());
+            _useB = !_useB;
+            s.ResetForReuse();
+            return s;
+        }
+    }
+
     public struct WiiIrState
     {
         public float X;

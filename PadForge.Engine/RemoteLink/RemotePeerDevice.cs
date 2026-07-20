@@ -237,9 +237,19 @@ namespace PadForge.Engine.RemoteLink
                 // registered peer device doesn't flap offline while it waits.
                 if (_everReceived && (_nowTicks() - _lastFrameTicks) > _staleTicks)
                     return null;
-                return _currentState.Clone();
+                // Copy into the caller-facing pooled pair instead of a
+                // fresh Clone per 1 kHz poll. Under _stateLock because the
+                // receive thread swaps _currentState/_back mid-copy
+                // otherwise. The null-on-stale contract above is unchanged.
+                var dst = _statePool.Next();
+                _currentState.CopyInto(dst);
+                return dst;
             }
         }
+
+        // Pooled per-tick output (poll thread is the sole GetCurrentState
+        // caller once the UI reads ud.InputState instead).
+        private PadForge.Engine.PooledInputStatePair _statePool;
 
         public void SetConnected(bool connected) => _connected = connected;
 

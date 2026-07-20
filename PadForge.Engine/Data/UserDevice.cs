@@ -294,6 +294,14 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public CustomInputState InputState { get; set; }
 
+        /// <summary>Monotonic publish counter, incremented by Step 2 each
+        /// time <see cref="InputState"/> is republished. Consumers that
+        /// dedup "have I folded this state yet" compare THIS, not the
+        /// reference: with pooled state buffers a reference can recur
+        /// with fresh content, so identity no longer proves sameness.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public long InputStateSeq;
+
         /// <summary>Last tick (Environment.TickCount64) this device's input was
         /// non-idle, for the #162 idle disconnect countdown. Written only by the
         /// polling thread (Step 2). 0 = not yet tracked this connection.</summary>

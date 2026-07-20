@@ -114,6 +114,7 @@ namespace PadForge.Services
         {
             private readonly object _sync = new();
             private CustomInputState _lastSeen;
+            private long _lastSeenSeq = -1;
             private long _dx, _dy, _scroll;
             private double _jc2dx, _jc2dy;
             private int _polls;
@@ -121,13 +122,17 @@ namespace PadForge.Services
             /// <summary>Poll thread: fold one fresh snapshot in. The reference
             /// guard makes re-observing the same snapshot (idle mode, offline
             /// device) a no-op so a delta is never double-counted.</summary>
-            public void Accumulate(CustomInputState s, bool isMouse)
+            public void Accumulate(CustomInputState s, long seq, bool isMouse)
             {
                 if (s == null) return;
                 lock (_sync)
                 {
-                    if (ReferenceEquals(_lastSeen, s)) return;
+                    // Publish-seq dedup: with pooled buffers the same
+                    // reference can recur carrying fresh content, so the
+                    // old identity check alone could skip a real republish.
+                    if (ReferenceEquals(_lastSeen, s) && seq == _lastSeenSeq) return;
                     _lastSeen = s;
+                    _lastSeenSeq = seq;
                     _polls++;
                     if (isMouse)
                     {
@@ -5391,13 +5396,13 @@ namespace PadForge.Services
                     // Deck / SC original). Single-pad devices keep the
                     // bare gesture name to avoid label clutter.
                     int numPads = 1;
-                    try
                     {
-                        var st = udi.Device?.GetCurrentState();
+                        // Published snapshot, not Device.GetCurrentState
+                        // (pooled-buffer sole-reader contract).
+                        var st = udi.InputState;
                         if (st?.Touchpads != null && st.Touchpads.Length > 0)
                             numPads = st.Touchpads.Length;
                     }
-                    catch { /* numPads stays 1 */ }
                     bool multiPad = numPads > 1;
                     var si = PadForge.Resources.Strings.Strings.Instance;
 
@@ -7781,7 +7786,7 @@ namespace PadForge.Services
                 var e = exposed[i];
                 var s = e.ud?.InputState;
                 if (s == null) continue;
-                try { e.acc.Accumulate(s, e.source is PadForge.Engine.SdlMouseWrapper); }
+                try { e.acc.Accumulate(s, e.ud.InputStateSeq, e.source is PadForge.Engine.SdlMouseWrapper); }
                 catch { /* teardown race: never disturb the poll loop */ }
             }
         }

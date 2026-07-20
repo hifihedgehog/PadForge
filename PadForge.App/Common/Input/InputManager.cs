@@ -2146,7 +2146,12 @@ namespace PadForge.Common.Input
                     var tickHandler = RecordingTick;
                     if (tickHandler != null)
                     {
-                        try { tickHandler(pad); }
+                        // Clone: the dialog marshals via Dispatcher.
+                        // BeginInvoke, so the reference sits in the queue
+                        // while the pooled buffer underneath keeps being
+                        // rewritten. Only allocates while the recorder
+                        // dialog is actively capturing.
+                        try { tickHandler(pad.Clone()); }
                         catch { /* dialog teardown can race — ignore */ }
                     }
                     continue;

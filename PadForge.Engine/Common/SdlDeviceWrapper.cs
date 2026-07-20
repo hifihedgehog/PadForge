@@ -568,6 +568,16 @@ namespace PadForge.Engine
             if (Joystick == IntPtr.Zero)
                 return null;
 
+            // Bulk snapshot (fork SDL#16): one native crossing fills every
+            // field the getter sequence below reads, coherently. Scoped to
+            // this call tree (the poll loop is the sole caller). ForceRaw
+            // and joystick-only devices keep the classic per-call path, as
+            // does stock SDL via the probe fallback.
+            _bulkValid = !forceRaw && GameController != IntPtr.Zero
+                && SDL_TryGetGamepadBulkState(GameController, out _bulk);
+            if (_bulkValid && !_bulkParityChecked)
+                VerifyBulkParityOnce();
+
             // A physically detached handle still "reads" — SDL returns signed 0
             // for every axis, which the unsigned conversion turns into 32768
             // (center). For a wheel pedal mapped as an inverted trigger that
@@ -577,7 +587,7 @@ namespace PadForge.Engine
             // new SDL instance), so refuse the read; Step 2 treats null as a
             // failed read and marks the device offline, keeping the last GOOD
             // input state.
-            if (!SDL_JoystickConnected(Joystick))
+            if (_bulkValid ? _bulk.connected == 0 : !SDL_JoystickConnected(Joystick))
                 return null;
 
             // When the device is opened as a Gamepad, use the gamepad API to read
@@ -630,8 +640,8 @@ namespace PadForge.Engine
 
         private void ReadJoyCon2Mouse(CustomInputState state)
         {
-            ushort curX = (ushort)SDL_GetJoystickAxis(Joystick, 6);
-            ushort curY = (ushort)SDL_GetJoystickAxis(Joystick, 7);
+            ushort curX = (ushort)ReadRawAxis(6);
+            ushort curY = (ushort)ReadRawAxis(7);
             // All-zero counters = optical stream not active yet (jc2mouse's
             // _optical_active idiom, driver.py:594-595; ReadIrPointer carries
             // the same all-zero guard). Without this, the one-time priming
@@ -669,7 +679,7 @@ namespace PadForge.Engine
         // (never posted by the fork) to 0.
         private void ReadJoyConIr(CustomInputState state)
         {
-            short raw = SDL_GetJoystickAxis(Joystick, 6);
+            short raw = ReadRawAxis(6);
             state.JoyConIrIntensity = raw <= 0 ? 0f : raw / 32767f;
         }
 
@@ -683,10 +693,10 @@ namespace PadForge.Engine
         private void ReadIrPointer(CustomInputState state)
         {
             var (x, y, detected) = ComputeIrAim(
-                SDL_GetJoystickAxis(Joystick, 6),
-                SDL_GetJoystickAxis(Joystick, 7),
-                SDL_GetJoystickAxis(Joystick, 8),
-                SDL_GetJoystickAxis(Joystick, 9));
+                ReadRawAxis(6),
+                ReadRawAxis(7),
+                ReadRawAxis(8),
+                ReadRawAxis(9));
 
             if (!detected)
             {
@@ -775,6 +785,123 @@ namespace PadForge.Engine
 
         private CustomInputState NextPooledState() => _statePool.Next();
 
+        // ── Bulk-snapshot facade (fork SDL#16) ──
+        // Every reader below goes through these: when the snapshot is
+        // valid they read the coherent copy, otherwise they make the
+        // classic per-call crossing. Parity contract: the fork fills the
+        // snapshot by calling the same public getters under one lock
+        // hold, so each branch returns the identical value.
+        private SDL_GamepadBulkState _bulk;
+        private bool _bulkValid;
+        private bool _bulkParityChecked;
+
+        private short ReadGamepadAxis(int axis)
+        {
+            if (!_bulkValid || axis < 0 || axis >= 6)
+                return SDL_GetGamepadAxis(GameController, axis);
+            unsafe { fixed (short* a = _bulk.axes) return a[axis]; }
+        }
+
+        private bool ReadGamepadButton(int sdlButton)
+            => _bulkValid && sdlButton >= 0 && sdlButton < 32
+                ? (_bulk.buttons & (1u << sdlButton)) != 0
+                : SDL_GetGamepadButton(GameController, sdlButton);
+
+        private short ReadRawAxis(int index)
+        {
+            if (!_bulkValid || index < 0 || index >= 16)
+                return SDL_GetJoystickAxis(Joystick, index);
+            if (index >= _bulk.num_raw_axes) return 0; // getter parity: out-of-range reads 0
+            unsafe { fixed (short* a = _bulk.raw_axes) return a[index]; }
+        }
+
+        private bool ReadRawButton(int index)
+            => _bulkValid && index >= 0 && index < 32
+                ? (_bulk.raw_buttons & (1u << index)) != 0
+                : SDL_GetJoystickButton(Joystick, index);
+
+        private bool ReadCapSense(int channel)
+            => _bulkValid && channel >= 0 && channel < 32
+                ? (_bulk.capsense & (1u << channel)) != 0
+                : SDL_GetGamepadCapSense(GameController, channel);
+
+        private void ReadSensorData(int sensorType, float[] dest)
+        {
+            if (!_bulkValid)
+            {
+                SDL_GetGamepadSensorData(GameController, sensorType, dest, 3);
+                return;
+            }
+            unsafe
+            {
+                if (sensorType == SDL_SENSOR_GYRO)
+                    fixed (float* v = _bulk.gyro) { dest[0] = v[0]; dest[1] = v[1]; dest[2] = v[2]; }
+                else if (sensorType == SDL_SENSOR_ACCEL)
+                    fixed (float* v = _bulk.accel) { dest[0] = v[0]; dest[1] = v[1]; dest[2] = v[2]; }
+                else if (sensorType == SDL_SENSOR_ACCEL_L)
+                    fixed (float* v = _bulk.accel_l) { dest[0] = v[0]; dest[1] = v[1]; dest[2] = v[2]; }
+                else
+                    SDL_GetGamepadSensorData(GameController, sensorType, dest, 3);
+            }
+        }
+
+        private bool ReadTouchpadFinger(int pad, int finger,
+            out bool down, out float x, out float y, out float pressure)
+        {
+            // The snapshot carries touchpad 0's two slots; anything wider
+            // (a third finger slot, a second pad) keeps the classic call.
+            if (_bulkValid && pad == 0 && finger < 2)
+            {
+                if (finger >= _bulk.num_fingers)
+                {
+                    down = false; x = 0; y = 0; pressure = 0;
+                    return false; // getter parity: absent slot fails the call
+                }
+                var fs = finger == 0 ? _bulk.finger0 : _bulk.finger1;
+                down = fs.down != 0;
+                x = fs.x; y = fs.y; pressure = fs.pressure;
+                return true;
+            }
+            return SDL_GetGamepadTouchpadFinger(GameController, pad, finger,
+                out down, out x, out y, out pressure);
+        }
+
+        /// <summary>One-shot per device: the issue's requested on-hardware
+        /// A/B. Re-reads the classic getter sequence right after the
+        /// snapshot and compares: discrete fields exactly, analog fields
+        /// within a jitter tolerance (the two reads are microseconds apart
+        /// on a live device). Logs one line either way so the harvest
+        /// shows the path engaged.</summary>
+        private void VerifyBulkParityOnce()
+        {
+            _bulkParityChecked = true;
+            int diffs = 0;
+            var detail = new System.Text.StringBuilder();
+            for (int a = 0; a < 6; a++)
+            {
+                short direct = SDL_GetGamepadAxis(GameController, a);
+                short bulk = ReadGamepadAxis(a);
+                if (System.Math.Abs(direct - bulk) > 512)
+                { diffs++; detail.Append($" axis{a}={bulk}/{direct}"); }
+            }
+            for (int b = 0; b < 21; b++)
+            {
+                bool direct = SDL_GetGamepadButton(GameController, b);
+                if (direct != ReadGamepadButton(b))
+                { diffs++; detail.Append($" btn{b}"); }
+            }
+            if (_capSenseChannels != null)
+                for (int c = 0; c < SDL_GAMEPAD_CAPSENSE_COUNT; c++)
+                {
+                    if (!_capSenseChannels[c]) continue;
+                    if (SDL_GetGamepadCapSense(GameController, c) != ReadCapSense(c))
+                    { diffs++; detail.Append($" cap{c}"); }
+                }
+            SdlDiagLog.WriteLine(diffs == 0
+                ? $"SDL bulk state active ({Name}): parity OK, rawAxes={_bulk.num_raw_axes} fingers={_bulk.num_fingers}"
+                : $"SDL bulk state PARITY DIVERGENCE ({Name}):{detail}");
+        }
+
         private CustomInputState GetGamepadState()
         {
             var state = NextPooledState();
@@ -785,10 +912,10 @@ namespace PadForge.Engine
             //   SDL gamepad axis enum       = LX(0), LY(1), RX(2), RY(3), LT(4), RT(5)
 
             // Stick axes: signed -32768..32767 → unsigned 0..65535
-            short lx = SDL_GetGamepadAxis(GameController, SDL_GAMEPAD_AXIS_LEFTX);
-            short ly = SDL_GetGamepadAxis(GameController, SDL_GAMEPAD_AXIS_LEFTY);
-            short rx = SDL_GetGamepadAxis(GameController, SDL_GAMEPAD_AXIS_RIGHTX);
-            short ry = SDL_GetGamepadAxis(GameController, SDL_GAMEPAD_AXIS_RIGHTY);
+            short lx = ReadGamepadAxis(SDL_GAMEPAD_AXIS_LEFTX);
+            short ly = ReadGamepadAxis(SDL_GAMEPAD_AXIS_LEFTY);
+            short rx = ReadGamepadAxis(SDL_GAMEPAD_AXIS_RIGHTX);
+            short ry = ReadGamepadAxis(SDL_GAMEPAD_AXIS_RIGHTY);
 
             state.Axis[0] = (ushort)(lx - short.MinValue);  // LX
             state.Axis[1] = (ushort)(ly - short.MinValue);  // LY
@@ -797,8 +924,8 @@ namespace PadForge.Engine
 
             // Trigger axes: gamepad API returns 0..32767 (0=released, 32767=full).
             // Scale to 0..65535 unsigned to match the convention used by the mapping pipeline.
-            short lt = SDL_GetGamepadAxis(GameController, SDL_GAMEPAD_AXIS_LEFT_TRIGGER);
-            short rt = SDL_GetGamepadAxis(GameController, SDL_GAMEPAD_AXIS_RIGHT_TRIGGER);
+            short lt = ReadGamepadAxis(SDL_GAMEPAD_AXIS_LEFT_TRIGGER);
+            short rt = ReadGamepadAxis(SDL_GAMEPAD_AXIS_RIGHT_TRIGGER);
             state.Axis[2] = (int)(lt * 65535L / 32767);     // LT
             state.Axis[5] = (int)(rt * 65535L / 32767);     // RT
 
@@ -815,24 +942,24 @@ namespace PadForge.Engine
             {
                 int extraCount = Math.Min(RawAxisCount, CustomInputState.MaxAxis);
                 for (int i = 6; i < extraCount; i++)
-                    state.Axis[i] = (ushort)(SDL_GetJoystickAxis(Joystick, i) - short.MinValue);
+                    state.Axis[i] = (ushort)(ReadRawAxis(i) - short.MinValue);
             }
 
             // --- Buttons ---
             // Reorder from SDL gamepad button enum to the auto-mapping layout:
             //   [0]=A(South), [1]=B(East), [2]=X(West), [3]=Y(North),
             //   [4]=LB, [5]=RB, [6]=Back, [7]=Start, [8]=LS, [9]=RS, [10]=Guide
-            state.Buttons[0] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_SOUTH);
-            state.Buttons[1] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_EAST);
-            state.Buttons[2] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_WEST);
-            state.Buttons[3] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_NORTH);
-            state.Buttons[4] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_LEFT_SHOULDER);
-            state.Buttons[5] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER);
-            state.Buttons[6] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_BACK);
-            state.Buttons[7] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_START);
-            state.Buttons[8] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_LEFT_STICK);
-            state.Buttons[9] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_STICK);
-            state.Buttons[10] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_GUIDE);
+            state.Buttons[0] = ReadGamepadButton( SDL_GAMEPAD_BUTTON_SOUTH);
+            state.Buttons[1] = ReadGamepadButton( SDL_GAMEPAD_BUTTON_EAST);
+            state.Buttons[2] = ReadGamepadButton( SDL_GAMEPAD_BUTTON_WEST);
+            state.Buttons[3] = ReadGamepadButton( SDL_GAMEPAD_BUTTON_NORTH);
+            state.Buttons[4] = ReadGamepadButton( SDL_GAMEPAD_BUTTON_LEFT_SHOULDER);
+            state.Buttons[5] = ReadGamepadButton( SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER);
+            state.Buttons[6] = ReadGamepadButton( SDL_GAMEPAD_BUTTON_BACK);
+            state.Buttons[7] = ReadGamepadButton( SDL_GAMEPAD_BUTTON_START);
+            state.Buttons[8] = ReadGamepadButton( SDL_GAMEPAD_BUTTON_LEFT_STICK);
+            state.Buttons[9] = ReadGamepadButton( SDL_GAMEPAD_BUTTON_RIGHT_STICK);
+            state.Buttons[10] = ReadGamepadButton( SDL_GAMEPAD_BUTTON_GUIDE);
 
             // Suppress Guide when Back+Start are both pressed — Windows/XInput
             // synthesizes a Guide button press from this combo when the app has focus.
@@ -857,7 +984,7 @@ namespace PadForge.Engine
             {
                 if (pos == 16) continue;
                 if (extPresent != null && !extPresent[pos]) continue;
-                state.Buttons[pos] = SDL_GetGamepadButton(GameController, GamepadButtonForPosition(pos));
+                state.Buttons[pos] = ReadGamepadButton( GamepadButtonForPosition(pos));
             }
 
             // --- Extra raw buttons ---
@@ -872,24 +999,24 @@ namespace PadForge.Engine
             {
                 if (_mappedRawButtonIndices != null && _mappedRawButtonIndices.Contains(i))
                     continue;
-                state.Buttons[i] = SDL_GetJoystickButton(Joystick, i);
+                state.Buttons[i] = ReadRawButton(i);
             }
 
             // --- D-pad → POV[0] ---
             // Synthesize a POV hat from the four D-pad buttons.
-            bool up = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_DPAD_UP);
-            bool down = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_DPAD_DOWN);
-            bool left = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_DPAD_LEFT);
-            bool right = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
+            bool up = ReadGamepadButton( SDL_GAMEPAD_BUTTON_DPAD_UP);
+            bool down = ReadGamepadButton( SDL_GAMEPAD_BUTTON_DPAD_DOWN);
+            bool left = ReadGamepadButton( SDL_GAMEPAD_BUTTON_DPAD_LEFT);
+            bool right = ReadGamepadButton( SDL_GAMEPAD_BUTTON_DPAD_RIGHT);
             state.Povs[0] = DpadToCentidegrees(up, down, left, right);
 
             // --- Sensors (gyro / accelerometer) ---
             if (HasGyro)
-                SDL_GetGamepadSensorData(GameController, SDL_SENSOR_GYRO, state.Gyro, 3);
+                ReadSensorData(SDL_SENSOR_GYRO, state.Gyro);
             if (HasAccel)
-                SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL, state.Accel, 3);
+                ReadSensorData(SDL_SENSOR_ACCEL, state.Accel);
             if (HasAccelAux)
-                SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL_L, state.AccelAux, 3);
+                ReadSensorData(SDL_SENSOR_ACCEL_L, state.AccelAux);
 
             // --- Capsense (stick-top / grip touch, fork API) ---
             if (_capSenseChannels != null)
@@ -899,7 +1026,7 @@ namespace PadForge.Engine
                 for (int c = 0; c < SDL_GAMEPAD_CAPSENSE_COUNT; c++)
                 {
                     if (_capSenseChannels[c])
-                        state.CapSense[c] = SDL_GetGamepadCapSense(GameController, c);
+                        state.CapSense[c] = ReadCapSense(c);
                 }
             }
 
@@ -919,7 +1046,7 @@ namespace PadForge.Engine
                     var currIds = _padCurrentContactIds[p];
                     for (int f = 0; f < nf; f++)
                     {
-                        if (SDL_GetGamepadTouchpadFinger(GameController, p, f,
+                        if (ReadTouchpadFinger(p, f,
                                 out bool fDown, out float fx, out float fy, out float fp))
                         {
                             tp.FingerX[f] = fx;
@@ -947,7 +1074,7 @@ namespace PadForge.Engine
                     // touchpad-click-as-button recipe; map them here too.
                     if (p == 0)
                     {
-                        primaryClick = SDL_GetGamepadButton(GameController,
+                        primaryClick = ReadGamepadButton(
                             SDL_GAMEPAD_BUTTON_TOUCHPAD);
                         tp.Clicked = primaryClick;
                     }
@@ -1103,7 +1230,7 @@ namespace PadForge.Engine
                 state.Buttons.Length);
             for (int i = 0; i < btnCount; i++)
             {
-                state.Buttons[i] = SDL_GetJoystickButton(Joystick, i);
+                state.Buttons[i] = ReadRawButton(i);
             }
 
             return state;

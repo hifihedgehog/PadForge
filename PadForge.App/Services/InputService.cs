@@ -646,8 +646,44 @@ namespace PadForge.Services
                 if (_inputManager == null) return ((byte)0, (byte)0);
                 if (_inputManager.OutputsQuiesced) return ((byte)0, (byte)0);
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return ((byte)0, (byte)0);
+                // Cross-slot merge (owner facts, 2026-07-20): the dispatcher
+                // writes a multi-slot pad from ONE owner slot, and rumble
+                // from ANY of its assigned slots must still reach it. Take
+                // the per-motor max across every slot this device maps to,
+                // mirroring the input side's one-device-feeds-many-VCs
+                // philosophy. Single-slot devices reduce to the old read.
                 var raw = _inputManager.VibrationStates[padIndex];
                 if (raw == null) return ((byte)0, (byte)0);
+                if (deviceGuid != Guid.Empty)
+                {
+                    var settingsForMerge = SettingsManager.UserSettings;
+                    if (settingsForMerge != null)
+                    {
+                        Engine.Vibration merged = raw;
+                        lock (settingsForMerge.SyncRoot)
+                        {
+                            foreach (var usM in settingsForMerge.Items)
+                            {
+                                if (usM == null || usM.InstanceGuid != deviceGuid) continue;
+                                int slotM = usM.MapTo;
+                                if (slotM < 0 || slotM >= InputManager.MaxPads || slotM == padIndex) continue;
+                                var other = _inputManager.VibrationStates[slotM];
+                                if (other == null) continue;
+                                if (other.LeftMotorSpeed > merged.LeftMotorSpeed
+                                    || other.RightMotorSpeed > merged.RightMotorSpeed)
+                                {
+                                    var m = new Engine.Vibration
+                                    {
+                                        LeftMotorSpeed = System.Math.Max(merged.LeftMotorSpeed, other.LeftMotorSpeed),
+                                        RightMotorSpeed = System.Math.Max(merged.RightMotorSpeed, other.RightMotorSpeed),
+                                    };
+                                    merged = m;
+                                }
+                            }
+                        }
+                        raw = merged;
+                    }
+                }
 
                 PadSetting devicePs = null;
                 var settings = SettingsManager.UserSettings;

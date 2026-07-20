@@ -567,6 +567,32 @@ namespace PadForge.Common.Input
         /// kick the timer on or off so audio-rumble / game-rumble onset
         /// without an animated lightbar still produces dispatcher writes,
         /// and a slot that drops both stays parked.</summary>
+        /// <summary>Single-writer ownership for a physical pad that feeds
+        /// several slots (owner facts, 2026-07-20): each slot runs its own
+        /// dispatcher instance, and N slots writing one pad interleave
+        /// reports and break its rumble continuity. The LOWEST slot index
+        /// with a live dispatcher among the device's assignments owns every
+        /// write to it; the other slots' dispatchers skip the device. Their
+        /// rumble still reaches the pad through the owner's cross-slot
+        /// merge in the rumble providers.</summary>
+        private static int OwnerSlotForDevice(Guid instanceGuid, int fallbackSlot)
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null || instanceGuid == Guid.Empty) return fallbackSlot;
+            int owner = fallbackSlot;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                {
+                    if (us == null || us.InstanceGuid != instanceGuid) continue;
+                    if (us.MapTo < 0) continue;
+                    if (us.MapTo < owner && _instances.ContainsKey(us.MapTo))
+                        owner = us.MapTo;
+                }
+            }
+            return owner;
+        }
+
         public static void OnPollingTick(int padIndex, bool slotHasGameRumble, bool slotHasAudioRumbleEnabled)
         {
             if (_instances.TryGetValue(padIndex, out var d))
@@ -1250,6 +1276,10 @@ namespace PadForge.Common.Input
                 foreach (var ud in devices.Items)
                 {
                     if (ud == null) continue;
+
+                    // Single-writer ownership (see OwnerSlotForDevice).
+                    if (OwnerSlotForDevice(ud.InstanceGuid, _padIndex) != _padIndex)
+                        continue;
 
                     bool isDs5 = ud.VendorId == SonyVid &&
                                  (ud.ProdId == PidStandard || ud.ProdId == PidEdge);

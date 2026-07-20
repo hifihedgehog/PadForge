@@ -35,6 +35,13 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly Dictionary<uint, SdlDeviceWrapper> _openedSdlInstanceIds = new Dictionary<uint, SdlDeviceWrapper>();
 
+        // SDL instance IDs identified as OUR OWN HM virtuals and rejected
+        // by the self-readback guard; kept so each enumeration pass skips
+        // them instead of re-opening and re-probing every 2 s. Cleared
+        // implicitly on process restart; SDL instance IDs are unique per
+        // connection so a REAL device never inherits a suppressed id.
+        private readonly HashSet<uint> _suppressedSelfVirtualIds = new();
+
         /// <summary>
         /// First-observed tick (UTC) per SDL instance ID for which the
         /// device has either vanished from SDL_GetJoysticks or reported
@@ -116,6 +123,11 @@ namespace PadForge.Common.Input
                     if (_openedSdlInstanceIds.ContainsKey(instanceId))
                         continue;
 
+                    // Previously rejected self-virtual: don't reopen it on
+                    // every enumeration pass.
+                    if (_suppressedSelfVirtualIds.Contains(instanceId))
+                        continue;
+
                     // Open the device by instance ID. The SDL3 fork already
                     // dropped HIDMaestro HIDs from hid_enumerate and any HM-
                     // only XInput slot from SDL_XINPUT_JoystickDetect, so
@@ -123,6 +135,31 @@ namespace PadForge.Common.Input
                     var wrapper = new SdlDeviceWrapper();
                     if (!wrapper.Open(instanceId))
                     {
+                        wrapper.Dispose();
+                        continue;
+                    }
+
+                    // Self-readback guard (2026-07-20): PadForge must NEVER
+                    // open its own HM virtuals. The fork-side enumeration
+                    // filter and the cloak both exist, but a driver upgrade
+                    // recreates the virtual devnodes with fresh instance
+                    // paths and can slip past both (observed live: the SDL
+                    // switch driver then FIGHTS the virtual Switch Pro's
+                    // protocol responder, cyclically resetting its inputs
+                    // and interleaving rumble). The driver stamps every
+                    // virtual's serial "HM-CTL-<n>" and its device path
+                    // contains HIDMAESTRO, either of which identifies it
+                    // regardless of cloak state.
+                    bool selfVirtual =
+                        (wrapper.SerialNumber != null
+                         && wrapper.SerialNumber.StartsWith("HM-CTL-", StringComparison.Ordinal))
+                        || (wrapper.DevicePath != null
+                            && wrapper.DevicePath.IndexOf("HIDMAESTRO", StringComparison.OrdinalIgnoreCase) >= 0);
+                    if (selfVirtual)
+                    {
+                        Engine.SdlDiagLog.WriteLine(
+                            $"DEV self-virtual suppressed SDL#{instanceId} {wrapper.VendorId:X4}:{wrapper.ProductId:X4} serial={wrapper.SerialNumber}");
+                        _suppressedSelfVirtualIds.Add(instanceId);
                         wrapper.Dispose();
                         continue;
                     }

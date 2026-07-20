@@ -399,7 +399,8 @@ namespace PadForge.Views
             // visibility on the same rectangle, and writing here every render
             // frame would race with it.
             bool flashClaimsTouchpad = _flashTarget == "TouchpadClick";
-            if (_hoverTarget != "Touchpad" && !flashClaimsTouchpad)
+            if (_hoverTarget != "Touchpad" && _hoverTarget != "TouchpadClick"
+                && !flashClaimsTouchpad)
             {
                 _touchpadClickHighlight.Visibility = _vm.TouchpadClickPressed
                     ? Visibility.Visible : Visibility.Collapsed;
@@ -628,8 +629,7 @@ namespace PadForge.Views
 
         private void HitArea_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (sender is Rectangle rect && rect.Tag is string target &&
-                _overlayImages.TryGetValue(target, out var img))
+            if (sender is Rectangle rect && rect.Tag is string target)
             {
                 _elementTypes.TryGetValue(target, out var elemType);
 
@@ -639,16 +639,25 @@ namespace PadForge.Views
 
                 if (_flashTarget == target) return;
 
-                // Touchpad has no per-element overlay image (zone is rendered
-                // by the click highlight rectangle in BuildTouchpadPreview).
-                // Show that rectangle at low opacity for the hover affordance.
-                if (elemType == OverlayElementType.Touchpad && _touchpadClickHighlight != null)
+                // Touchpad family has no per-element overlay image (the zone
+                // is rendered by the click highlight rectangle from
+                // BuildTouchpadPreview), and the click strip's hit rect
+                // extends above the pad surface, so both targets show that
+                // rectangle at low opacity for the hover affordance. This
+                // must run before the overlay-image lookup: the strip has no
+                // image, and bailing there left its exclusive band with a
+                // hand cursor and no highlight.
+                if ((elemType == OverlayElementType.Touchpad || target == "TouchpadClick")
+                    && _touchpadClickHighlight != null)
                 {
                     _hoverTarget = target;
                     _touchpadClickHighlight.Visibility = Visibility.Visible;
                     _touchpadClickHighlight.Opacity = 0.4;
                     return;
                 }
+
+                if (!_overlayImages.TryGetValue(target, out var img))
+                    return;
 
                 _hoverTarget = target;
                 img.Visibility = Visibility.Visible;

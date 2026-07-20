@@ -7,14 +7,14 @@ namespace PadForge.Common.Input
     /// <summary>
     /// Shared raw-HID output-report write, used by the per-vendor wheel/pedal
     /// FFB writers (Logitech / Fanatec / Thrustmaster). Overlapped
-    /// <c>CreateFileW</c> + <c>WriteFile</c>, matching <see cref="SonyEffectWriter"/>'s
+    /// <c>CreateFileW</c> + <c>WriteFile</c>, matching <see cref="PlayStationEffectWriter"/>'s
     /// proven plumbing (hidapi-equivalent flags). Bypasses SDL3 so the vendor
     /// custom HID protocols reach the device.
     /// </summary>
     internal static class RawHidOutput
     {
         /// <summary>Per-path cached device handle + manual-reset event
-        /// (the SonyEffectWriter CachedIo shape). Fanatec pedal rumble
+        /// (the PlayStationEffectWriter CachedIo shape). Fanatec pedal rumble
         /// writes at up to poll rate, and the old open-per-write shape
         /// paid CreateFile + CreateEvent + two CloseHandle per frame.
         /// FALLBACK-SAFE: any cached-handle failure closes the cache and
@@ -110,7 +110,7 @@ namespace PadForge.Common.Input
             // Pin held until every path below has passed its unbounded
             // GetOverlappedResult (or established no I/O is pending), so
             // the kernel never reads a moved buffer mid-write
-            // (SonyEffectWriter.WriteRaw pattern).
+            // (PlayStationEffectWriter.WriteRaw pattern).
             var pin = GCHandle.Alloc(outBuf, GCHandleType.Pinned);
             try
             {
@@ -125,7 +125,7 @@ namespace PadForge.Common.Input
                         // CancelIo only REQUESTS abort; `ol` is a stack local
                         // and `outBuf` unpins in the finally, so block until
                         // the cancelled I/O actually completes before
-                        // unwinding (SonyEffectWriter drain).
+                        // unwinding (PlayStationEffectWriter drain).
                         CancelIo(handle);
                         GetOverlappedResult(handle, ref ol, out _, true);
                         return false;
@@ -303,7 +303,7 @@ namespace PadForge.Common.Input
         [DllImport("kernel32.dll", SetLastError = true)]
         // IntPtr buffer, not byte[]: the marshaler's automatic pin ends when
         // WriteFile returns ERROR_IO_PENDING, leaving the kernel reading a
-        // movable managed array for the pending window (SonyEffectWriter has
+        // movable managed array for the pending window (PlayStationEffectWriter has
         // the same declaration for the same reason).
         private static extern bool WriteFile(
             IntPtr hFile, IntPtr lpBuffer, uint nNumberOfBytesToWrite,

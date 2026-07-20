@@ -27,7 +27,7 @@ namespace PadForge.Common.Input
     /// cleanly and we report failure rather than writing into a dead
     /// handle.</para>
     /// </summary>
-    internal static class SonyEffectWriter
+    internal static class PlayStationEffectWriter
     {
         private const uint GENERIC_WRITE         = 0x40000000u;
         private const uint GENERIC_READ          = 0x80000000u;
@@ -192,69 +192,42 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Per-path cached device handle + manual-reset event.
-        /// The per-write open+event+close cycle cost ~1 ms per dispatch at
-        /// 30 Hz per animated pad (the dispatcher's own budget comment).
-        /// FALLBACK-SAFE by construction: any failure on the cached handle
-        /// closes it and re-runs the exact legacy open-write path for the
-        /// same write, so a stale handle (sleep, replug) costs one retry,
-        /// never a lost write beyond what the legacy path would lose. The
-        /// per-entry gate serializes same-path writers (dispatch timers vs
-        /// Static-mode PropertyChanged dispatch), which HID report
-        /// atomicity previously provided implicitly.</summary>
-        private sealed class CachedIo
-        {
-            public IntPtr Handle;
-            public IntPtr Event;
-            public readonly object Gate = new();
-        }
-        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, CachedIo> s_ioCache =
-            new(StringComparer.OrdinalIgnoreCase);
 
         private static bool WriteRaw(string devicePath, byte[] buf)
         {
-            var io = s_ioCache.GetOrAdd(devicePath, _ => new CachedIo());
-            lock (io.Gate)
+
+            // Open-per-write, the pre-2026-07-20 shape, RESTORED after a
+            // field regression: a held-open Bluetooth HID handle made
+            // DualSense rumble discontinuous (regression confirmed on
+            // hardware the same day the per-path cache shipped; the
+            // radio's link management does not keep a parked handle
+            // write-ready the way a freshly opened one is). hidapi (which
+            // OpenRGB uses) opens with FILE_FLAG_OVERLAPPED,
+            // GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ |
+            // FILE_SHARE_WRITE per write. Match that exactly. Do NOT
+            // re-cache this handle without a Bluetooth hardware pass.
+            IntPtr handle = CreateFileW(
+                devicePath,
+                GENERIC_READ | GENERIC_WRITE,
+                FILE_SHARE_READ | FILE_SHARE_WRITE,
+                IntPtr.Zero,
+                OPEN_EXISTING,
+                FILE_FLAG_OVERLAPPED,
+                IntPtr.Zero);
+
+            if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
+
+            try
             {
-                if (io.Handle != IntPtr.Zero)
-                {
-                    if (WriteOnHandle(io.Handle, io.Event, buf)) return true;
-                    // Stale handle: drop the cache and fall through to the
-                    // legacy path for THIS write.
-                    CloseHandle(io.Event);
-                    CloseHandle(io.Handle);
-                    io.Handle = IntPtr.Zero;
-                    io.Event = IntPtr.Zero;
-                }
-
-                // hidapi (which OpenRGB uses) opens with FILE_FLAG_OVERLAPPED,
-                // GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE.
-                // Match that exactly.
-                IntPtr handle = CreateFileW(
-                    devicePath,
-                    GENERIC_READ | GENERIC_WRITE,
-                    FILE_SHARE_READ | FILE_SHARE_WRITE,
-                    IntPtr.Zero,
-                    OPEN_EXISTING,
-                    FILE_FLAG_OVERLAPPED,
-                    IntPtr.Zero);
-
-                if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
-
                 IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
-                if (ev == IntPtr.Zero) { CloseHandle(handle); return false; }
-
-                bool ok = WriteOnHandle(handle, ev, buf);
-                if (ok)
+                if (ev == IntPtr.Zero) return false;
+                try
                 {
-                    io.Handle = handle;
-                    io.Event = ev;
-                    return true;
+                    return WriteOnHandle(handle, ev, buf);
                 }
-                CloseHandle(ev);
-                CloseHandle(handle);
-                return false;
+                finally { CloseHandle(ev); }
             }
+            finally { CloseHandle(handle); }
         }
 
         private static bool WriteOnHandle(IntPtr handle, IntPtr ev, byte[] buf)

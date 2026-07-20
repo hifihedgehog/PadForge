@@ -236,7 +236,8 @@ namespace PadForge.Views
             // per-frame handler keeps firing after navigating away. Skip the
             // widget rewrite while hidden (same guard as MidiPreviewView's
             // input path); the next visible frame repaints from live state.
-            if (!IsVisible) return;
+            // Iconic gate: IsVisible stays TRUE while minimized.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             // Rebuild on theme change.
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_lastTheme != currentTheme) BuildMouse();

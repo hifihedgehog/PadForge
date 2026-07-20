@@ -774,7 +774,8 @@ namespace PadForge.Views
             // page is visibility-toggled, not unloaded, so skip the repaint
             // while hidden. _dirty stays set, so the first visible frame
             // catches up.
-            if (!IsVisible) return;
+            // Iconic gate: IsVisible stays TRUE while minimized.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             if (!_dirty || _vm == null || !_layoutBuilt) return;
             _dirty = false;
 

@@ -238,6 +238,12 @@ namespace PadForge.Views
             if (_currentModel?.ModelName == needed && _currentModelShareEnabled == wantShare)
                 return;
 
+            // Model rebuild: drop retained per-thumb transform entries.
+            // They key on the OUTGOING model's Model3DGroups, so without
+            // this every profile/output switch leaked the old model's
+            // transform graphs for the view's lifetime.
+            _stickTransforms3D.Clear();
+
             // Clear arrow from old model before switching
             RemoveArrow();
 
@@ -427,7 +433,8 @@ namespace PadForge.Views
             // while completely invisible, burning the render thread on every
             // page of the app. _dirty stays set; the first visible frame
             // catches up.
-            if (!IsVisible) return;
+            // Iconic gate: IsVisible stays TRUE while minimized.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             if (!_dirty || _vm == null || _currentModel == null)
                 return;
             _dirty = false;
@@ -1740,6 +1747,7 @@ namespace PadForge.Views
             TeardownAnnotations();
             _currentModel?.Dispose();
             _currentModel = null;
+            _stickTransforms3D.Clear();
             _vm = null;
         }
     }

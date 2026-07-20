@@ -1420,8 +1420,13 @@ namespace PadForge.Common.Input
                                     // does not retain a reference.
                                     int pct = BatteryPercents[padIndex];
                                     byte battery = pct < 0 ? (byte)100 : (byte)Math.Clamp(pct, 0, 100);
+                                    // gpOut, not CombinedOutputStates: the
+                                    // raw frame must carry the same touch-
+                                    // click OR and button-SOCD cleaning the
+                                    // extended leg applied, since it is the
+                                    // sole submission on USB Sony slots.
                                     packer(
-                                        CombinedOutputStates[padIndex],
+                                        gpOut,
                                         CombinedTouchpadStates[padIndex],
                                         MotionSnapshots[padIndex],
                                         battery,

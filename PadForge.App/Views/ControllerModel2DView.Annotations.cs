@@ -867,8 +867,9 @@ namespace PadForge.Views
                 return;
             // Retained visibility-toggled page: keep the 6.7 Hz chip work
             // off hidden surfaces. Chips recompute from live state each
-            // tick, so the first visible tick catches up.
-            if (!IsVisible) return;
+            // tick, so the first visible tick catches up. Iconic gate:
+            // IsVisible stays TRUE while minimized.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
 
             var now = DateTime.UtcNow;
             foreach (var chip in _annotationChips)

@@ -86,7 +86,10 @@ namespace PadForge.Common.Input
                     if (ud.IsTouchpad && ud.Device == null && _ptpReader != null && _ptpReader.IsAvailable)
                     {
                         // Precision Touchpad (no SDL wrapper).
-                        newState = new CustomInputState();
+                        // Pooled per-device pair (the last per-tick
+                        // constructor the allocation trace showed after the
+                        // wrapper pooling landed).
+                        newState = ud.PtpStatePool.Next();
                         if (ud.InstanceGuid == PtpMergedGuid)
                             _ptpReader.ReadInto(newState); // merged: first device
                         else
@@ -368,6 +371,19 @@ namespace PadForge.Common.Input
             // countdown instead of hammering the radio every second.
             ud.LastActiveTick = now;
 
+            FireIdleDisconnect(ud);
+        }
+
+        /// <summary>The capturing tail of the idle-disconnect countdown,
+        /// extracted so the closure's display class allocates only when a
+        /// disconnect actually fires. Inside the caller the captured
+        /// locals sat in the method-body scope, so Roslyn allocated the
+        /// display class at METHOD ENTRY, per device per ~1 kHz tick,
+        /// even though every call early-returned at the 1 Hz gate
+        /// (dotnet-trace AllocationTick: ~675 KB/s, the process's single
+        /// largest allocator post-pooling).</summary>
+        private static void FireIdleDisconnect(UserDevice ud)
+        {
             ushort vid = ud.VendorId, pid = ud.ProdId;
             string path = ud.DevicePath, serial = ud.SerialNumber ?? string.Empty;
             string[] bthIds = ud.HidHideInstanceIds?.ToArray();

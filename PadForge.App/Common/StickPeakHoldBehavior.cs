@@ -142,10 +142,24 @@ namespace PadForge.Common
             WriteReadout(canvas, 0);
         }
 
+        // 0..100 percent strings, built once: the readout re-formatted
+        // the same value at 60 Hz while a stick held its peak.
+        private static readonly string[] s_pctStrings = BuildPctStrings();
+        private static string[] BuildPctStrings()
+        {
+            var arr = new string[101];
+            for (int i = 0; i <= 100; i++)
+                arr[i] = i.ToString(CultureInfo.InvariantCulture) + "%";
+            return arr;
+        }
+
         private static void WriteReadout(Canvas canvas, double mag)
         {
             if (GetReadout(canvas) is TextBlock tb)
-                tb.Text = ((int)Math.Round(mag * 100)).ToString(CultureInfo.InvariantCulture) + "%";
+            {
+                int pct = Math.Clamp((int)Math.Round(mag * 100), 0, 100);
+                tb.Text = s_pctStrings[pct];
+            }
         }
     }
 }

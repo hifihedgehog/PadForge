@@ -21,6 +21,8 @@ namespace PadForge.Common.Input
     {
         private readonly HMContext _ctx;
         private readonly HMProfile _profile;
+        private readonly System.Collections.Generic.IReadOnlyList<HIDMaestro.HMSimpleStick> _cachedProfileSticks;
+        private readonly System.Collections.Generic.IReadOnlyList<HIDMaestro.HMSimpleTrigger> _cachedProfileTriggers;
         private readonly VirtualControllerType _type;
         private HMController _controller;
         private HMaestroFfbDecoder _ffbDecoder;
@@ -192,7 +194,16 @@ namespace PadForge.Common.Input
             // Mirror targets: the trigger rows' own wire-field keys, None
             // when they coincide with the canonical position (Sony, where
             // the axisMap already lands the role on the wire field).
-            var profTriggers = _profile.Triggers;
+            // Ctor-cached layout lists: HMProfile.Sticks/Triggers are
+            // computed properties that allocate a fresh List plus record
+            // instances per ACCESS (the SDK caches them internally for the
+            // same reason, HMController.cs "audit 1n"), and the raw submit
+            // path read both per 1 kHz tick (~115 KB/s in the allocation
+            // trace). Layout is immutable per profile.
+            _cachedProfileSticks = _profile.Sticks;
+            _cachedProfileTriggers = _profile.Triggers;
+
+            var profTriggers = _cachedProfileTriggers;
             _axLeftTriggerField  = (profTriggers != null && profTriggers.Count > 0)
                 ? profTriggers[0].Axis : HMAxis.None;
             _axRightTriggerField = (profTriggers != null && profTriggers.Count > 1)
@@ -752,8 +763,8 @@ namespace PadForge.Common.Input
             // stick X and stick Y use the same plain ToHmRange shift,
             // no additional Y inversion vs. the basic SubmitGamepadState
             // path's XInput→HID flip.
-            var profileSticks = _profile.Sticks;
-            var profileTriggers = _profile.Triggers;
+            var profileSticks = _cachedProfileSticks;
+            var profileTriggers = _cachedProfileTriggers;
             _axesScratch.Clear();
             int sticksToWrite = System.Math.Min(sticks, profileSticks.Count);
             for (int s = 0; s < sticksToWrite; s++)

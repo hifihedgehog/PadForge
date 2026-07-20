@@ -191,13 +191,12 @@ namespace PadForge.Services
             _slotConnected[slot] = connected;
             _slotHasMotion[slot] = snapshot.HasMotion;
 
-            // Cheap early-out BEFORE GetSubscribers, which allocates a List and
-            // a HashSet and takes the subscription lock on every call. This runs
-            // on the 1 kHz poll thread once per DSU slot, so with the server on
-            // and no client attached the old order burned ~8,000 allocations and
-            // ~4,000 lock acquisitions a second to learn there was nobody to
-            // send to. The state writes above must stay unconditional: they feed
-            // the ControllerInfo replies a client reads BEFORE it subscribes.
+            // Cheap early-out BEFORE GetSubscribers, which takes the
+            // subscription lock on every call (its collections are reused
+            // scratch since the 2026-07 perf passes, but the lock and the
+            // expiry scan remain). The state writes above must stay
+            // unconditional: they feed the ControllerInfo replies a client
+            // reads BEFORE it subscribes.
             if (_subCount == 0)
                 return;
 

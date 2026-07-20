@@ -1734,9 +1734,18 @@ namespace PadForge.Common.Input
         // tolerance as the prior SnapshotRows + scan.
         [System.ThreadStatic] private static MappingRow[] _rowsSnapshotBuf;
         [System.ThreadStatic] private static MappingSource[] _sourcesSnapshotBuf;
-        [System.ThreadStatic] private static Dictionary<string, MappingRow> _baseRowIndex;
-        [System.ThreadStatic] private static MappingSet _baseRowIndexFor;
-        [System.ThreadStatic] private static int _baseRowIndexCount;
+        /// <summary>Per-MappingSet base-row index (weak-keyed so replaced
+        /// sets collect). The prior single-entry thread-static cache
+        /// thrashed a full rebuild per device pass whenever two or more
+        /// non-gamepad slots interleaved in UserSettings order.</summary>
+        private sealed class BaseRowCache
+        {
+            public int Count = -1;
+            public readonly Dictionary<string, MappingRow> Rows =
+                new(64, System.StringComparer.Ordinal);
+        }
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<MappingSet, BaseRowCache>
+            s_baseRowCaches = new();
 
         private static bool SourceMatchesDevice(MappingSource src, string thisDeviceGuid)
         {
@@ -2276,14 +2285,11 @@ namespace PadForge.Common.Input
             if (rows == null) return null;
 
             int currentCount = rows.Count;
-            if (_baseRowIndex == null
-                || _baseRowIndexFor != mappingSet
-                || _baseRowIndexCount != currentCount)
+            var cache = s_baseRowCaches.GetOrCreateValue(mappingSet);
+            if (cache.Count != currentCount)
             {
-                if (_baseRowIndex == null)
-                    _baseRowIndex = new Dictionary<string, MappingRow>(64, System.StringComparer.Ordinal);
-                else
-                    _baseRowIndex.Clear();
+                var baseRows = cache.Rows;
+                baseRows.Clear();
 
                 // Defensive read: rows.Count can shrink mid-iteration if the
                 // save path is mutating. Bound by the captured count AND
@@ -2296,14 +2302,13 @@ namespace PadForge.Common.Input
                     if (!string.Equals(r.LayerMask ?? "Base", "Base", System.StringComparison.Ordinal)) continue;
                     string target = r.Target;
                     if (string.IsNullOrEmpty(target)) continue;
-                    _baseRowIndex[target] = r;
+                    baseRows[target] = r;
                 }
 
-                _baseRowIndexFor = mappingSet;
-                _baseRowIndexCount = currentCount;
+                cache.Count = currentCount;
             }
 
-            return _baseRowIndex.TryGetValue(targetName, out var row) ? row : null;
+            return cache.Rows.TryGetValue(targetName, out var row) ? row : null;
         }
 
         /// <summary>Resolves the mapping row that should drive

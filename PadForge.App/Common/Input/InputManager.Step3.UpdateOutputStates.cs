@@ -141,8 +141,16 @@ namespace PadForge.Common.Input
                         SlotRawHidSurface[slot])
                     {
                         var cfg = SlotCustomLayouts[slot];
-                        us.RawHidOutputState = MapInputToExtendedRaw(
+                        // Build into the poll-owned scratch, publish a fresh
+                        // instance only on content change: published arrays
+                        // are read cross-thread by the UI (Combined aliases
+                        // them), so they must stay immutable after publish.
+                        // Idle slots allocate nothing.
+                        EnsureRawShape(ref us.RawHidScratch, cfg);
+                        MapInputToExtendedRaw(ref us.RawHidScratch,
                             ud.InputState, ps, cfg, ms, deviceGuidStr, slot);
+                        if (!RawContentEquals(in us.RawHidScratch, us.RawHidOutputState))
+                            us.RawHidOutputState = RawCopyOf(in us.RawHidScratch);
                     }
 
                     // For MIDI slots, produce the raw MIDI output state.
@@ -151,9 +159,20 @@ namespace PadForge.Common.Input
                     {
                         var mc = _midiConfigs[slot];
                         if (mc != null)
-                            us.MidiRawOutputState = MapInputToMidiRaw(
+                        {
+                            // Same scratch/publish-on-change contract as the
+                            // Extended raw map above.
+                            EnsureMidiShape(ref us.MidiRawScratch, mc.CcCount, mc.NoteCount);
+                            MapInputToMidiRaw(ref us.MidiRawScratch,
                                 ud.InputState, ps, mc.CcCount, mc.NoteCount,
                                 ms, deviceGuidStr, slot);
+                            if (!MidiContentEquals(in us.MidiRawScratch, us.MidiRawOutputState))
+                                us.MidiRawOutputState = new MidiRawState
+                                {
+                                    CcValues = (byte[])us.MidiRawScratch.CcValues.Clone(),
+                                    Notes = (bool[])us.MidiRawScratch.Notes.Clone(),
+                                };
+                        }
                     }
 
                     // For KeyboardMouse slots, produce the raw KBM output state.
@@ -1835,11 +1854,53 @@ namespace PadForge.Common.Input
         /// dictionary-based mappings. Used for custom Extended configurations with
         /// arbitrary numbers of axes, buttons, and POVs.
         /// </summary>
-        private static RawHidState MapInputToExtendedRaw(CustomInputState state, PadSetting ps,
+        /// <summary>Ensures the scratch state's arrays match the layout
+        /// shape (reallocates only on a layout edit).</summary>
+        private static void EnsureRawShape(ref RawHidState raw, CustomControllerLayout cfg)
+        {
+            int nAxes = Math.Min(cfg.Axes, 8);
+            int nBtnWords = (Math.Min(cfg.Buttons, 128) + 31) / 32;
+            int nPovs = Math.Min(cfg.Povs, 4);
+            if (raw.Axes == null || raw.Axes.Length != nAxes) raw.Axes = new short[nAxes];
+            if (raw.Buttons == null || raw.Buttons.Length != nBtnWords) raw.Buttons = new uint[nBtnWords];
+            if (raw.Povs == null || raw.Povs.Length != nPovs) raw.Povs = new int[nPovs];
+            if (raw.HardwareAxes == null || raw.HardwareAxes.Length != nAxes) raw.HardwareAxes = new short[nAxes];
+        }
+
+        private static bool RawContentEquals(in RawHidState a, RawHidState b)
+        {
+            static bool Eq(short[] x, short[] y)
+            {
+                if (x == null || y == null || x.Length != y.Length) return false;
+                for (int i = 0; i < x.Length; i++) if (x[i] != y[i]) return false;
+                return true;
+            }
+            if (b.Axes == null && b.Buttons == null && b.Povs == null) return false;
+            if (!Eq(a.Axes, b.Axes) || !Eq(a.HardwareAxes, b.HardwareAxes)) return false;
+            if (a.Buttons == null || b.Buttons == null || a.Buttons.Length != b.Buttons.Length) return false;
+            for (int i = 0; i < a.Buttons.Length; i++) if (a.Buttons[i] != b.Buttons[i]) return false;
+            if (a.Povs == null || b.Povs == null || a.Povs.Length != b.Povs.Length) return false;
+            for (int i = 0; i < a.Povs.Length; i++) if (a.Povs[i] != b.Povs[i]) return false;
+            return true;
+        }
+
+        private static RawHidState RawCopyOf(in RawHidState src)
+        {
+            var dst = new RawHidState
+            {
+                Axes = (short[])src.Axes.Clone(),
+                Buttons = (uint[])src.Buttons.Clone(),
+                Povs = (int[])src.Povs.Clone(),
+                HardwareAxes = (short[])src.HardwareAxes.Clone(),
+            };
+            return dst;
+        }
+
+        private static void MapInputToExtendedRaw(ref RawHidState raw,
+            CustomInputState state, PadSetting ps,
             CustomControllerLayout cfg,
             MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
         {
-            var raw = RawHidState.Create(cfg.Axes, cfg.Buttons, cfg.Povs);
             raw.Clear(); // POVs need to start centered
             int vgt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
 
@@ -1906,8 +1967,9 @@ namespace PadForge.Common.Input
             }
 
             // Pre-tuning frame for calibration capture / preview cold dot:
-            // everything below mutates raw.Axes in place.
-            raw.HardwareAxes = (short[])raw.Axes.Clone();
+            // everything below mutates raw.Axes in place. Copy into the
+            // scratch's own buffer (EnsureRawShape sized it).
+            Array.Copy(raw.Axes, raw.HardwareAxes, raw.Axes.Length);
 
             // ── Deadzones ──
             // Apply stick/trigger deadzones using the same axis layout as
@@ -2030,7 +2092,6 @@ namespace PadForge.Common.Input
                 raw.Axes[ti] = (short)(asUshort + short.MinValue);
             }
 
-            return raw;
         }
 
         /// <summary>Evaluates one Extended POV-direction button, preferring
@@ -2073,11 +2134,26 @@ namespace PadForge.Common.Input
         /// mappings. CC values are mapped from signed axis range to 0-127 MIDI range.
         /// Notes are mapped as boolean on/off.
         /// </summary>
-        private static MidiRawState MapInputToMidiRaw(CustomInputState state, PadSetting ps,
+        private static void EnsureMidiShape(ref MidiRawState raw, int ccCount, int noteCount)
+        {
+            if (raw.CcValues == null || raw.CcValues.Length != ccCount) raw.CcValues = new byte[ccCount];
+            if (raw.Notes == null || raw.Notes.Length != noteCount) raw.Notes = new bool[noteCount];
+        }
+
+        private static bool MidiContentEquals(in MidiRawState a, MidiRawState b)
+        {
+            if (b.CcValues == null || b.Notes == null) return false;
+            if (a.CcValues.Length != b.CcValues.Length || a.Notes.Length != b.Notes.Length) return false;
+            for (int i = 0; i < a.CcValues.Length; i++) if (a.CcValues[i] != b.CcValues[i]) return false;
+            for (int i = 0; i < a.Notes.Length; i++) if (a.Notes[i] != b.Notes[i]) return false;
+            return true;
+        }
+
+        private static void MapInputToMidiRaw(ref MidiRawState raw,
+            CustomInputState state, PadSetting ps,
             int ccCount, int noteCount,
             MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
         {
-            var raw = MidiRawState.Create(ccCount, noteCount);
             raw.Clear();
             int mgt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
 
@@ -2114,7 +2190,6 @@ namespace PadForge.Common.Input
                 raw.Notes[i] = pressed;
             }
 
-            return raw;
         }
 
         // ─────────────────────────────────────────────

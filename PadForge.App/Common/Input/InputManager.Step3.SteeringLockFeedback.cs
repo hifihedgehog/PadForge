@@ -160,7 +160,13 @@ namespace PadForge.Common.Input
         private void FireSteeringSpeakerTone(int slotIndex) { /* #83 */ }
 
         private static int ParsePositiveInt(string s, int dflt)
-            => int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v) && v >= 0 ? v : dflt;
+        {
+            // Memoized via Step 3's capped invariant cache; these settings
+            // strings are parsed per device per 1 kHz tick while any
+            // steering-lock channel is enabled.
+            int v = TryParseIntStatic(s, int.MinValue);
+            return v >= 0 ? v : dflt;
+        }
 
         private static MacroLightbarColorSource ParseSteeringColorSource(string s)
             => Enum.TryParse<MacroLightbarColorSource>(s, out var v) ? v : MacroLightbarColorSource.Fixed;

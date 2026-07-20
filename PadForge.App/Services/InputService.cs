@@ -179,6 +179,21 @@ namespace PadForge.Services
                     _polls = 0;
                 }
             }
+
+            /// <summary>Zero-peer stream tick: reset the sums without the
+            /// clone/encode DrainInto path needs. Keeps the accumulator
+            /// from growing unbounded while nobody receives, so the first
+            /// frame after a peer connects carries fresh motion, not a
+            /// backlog jump.</summary>
+            public void Discard()
+            {
+                lock (_sync)
+                {
+                    _dx = 0; _dy = 0; _scroll = 0;
+                    _jc2dx = 0; _jc2dy = 0;
+                    _polls = 0;
+                }
+            }
         }
         // Stable link slot per shared device id (#138 live device sync) — a device keeps
         // its slot while shared, so a device hot-plugged after connect routes by a slot
@@ -3984,6 +3999,8 @@ namespace PadForge.Services
         /// Called at 30Hz on the UI thread. String reference writes are atomic in .NET.
         /// </summary>
         private bool _lastAudioRumbleAnyEnabled;
+        private readonly Guid[] _lastSyncedSettingsGuid = new Guid[InputManager.MaxPads];
+        private readonly PadSetting[] _lastSyncedPadSetting = new PadSetting[InputManager.MaxPads];
 
         private void SyncViewModelToPadSettings()
         {
@@ -4021,7 +4038,25 @@ namespace PadForge.Services
                     continue;
                 }
 
-                SaveViewModelToPadSetting(padVm, selected.InstanceGuid, syncMappings: false);
+                // Dirty-gated: idle pads raise no PropertyChanged (every
+                // VM write is equality-guarded), so the ~80 ToString
+                // writes in the sync run only after a real VM change, a
+                // selected-device switch, or a fresh PadSetting instance
+                // (device re-add rebuilds the setting object and must be
+                // re-stamped even though the VM raised nothing). Clear
+                // BEFORE the sync so an edit landing mid-sync re-arms.
+                var syncUs = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
+                var syncPs = syncUs?.GetPadSetting();
+                if (i < _lastSyncedSettingsGuid.Length
+                    && (padVm.SettingsSyncDirty
+                        || _lastSyncedSettingsGuid[i] != selected.InstanceGuid
+                        || !ReferenceEquals(_lastSyncedPadSetting[i], syncPs)))
+                {
+                    padVm.SettingsSyncDirty = false;
+                    _lastSyncedSettingsGuid[i] = selected.InstanceGuid;
+                    _lastSyncedPadSetting[i] = syncPs;
+                    SaveViewModelToPadSetting(padVm, selected.InstanceGuid, syncMappings: false);
+                }
 
                 // Mirror SelectedMappedDevice to the polling thread so
                 // ComputeFinalVibrationStates can read the user's selected
@@ -7763,6 +7798,15 @@ namespace PadForge.Services
                 var exposed = _remoteLinkExposedSnapshot;
                 if (exposed.Length == 0) return;
 
+                // Zero peers: skip the per-device Clone (7+ arrays) +
+                // encode churn at 125 Hz. Discard keeps the delta sums
+                // bounded so a later connect starts clean.
+                if (!server.HasConnections)
+                {
+                    foreach (var e in exposed) e.acc.Discard();
+                    return;
+                }
+
                 ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
                 foreach (var e in exposed)
                 {
@@ -9642,7 +9686,16 @@ namespace PadForge.Services
 
             lock (SettingsManager.UserDevices.SyncRoot)
             {
-                return devices.FirstOrDefault(d => d.InstanceGuid == instanceGuid);
+                // Plain loop: FirstOrDefault allocates a closure +
+                // delegate + enumerator per call inside the lock, and
+                // this is the ButtonHeldProvider body, invoked per
+                // engage-descriptor read per 1 kHz tick.
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    var d = devices[i];
+                    if (d != null && d.InstanceGuid == instanceGuid) return d;
+                }
+                return null;
             }
         }
 

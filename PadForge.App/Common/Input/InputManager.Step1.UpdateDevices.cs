@@ -462,6 +462,22 @@ namespace PadForge.Common.Input
         /// Finds a UserDevice by its instance GUID.
         /// Uses a manual loop to avoid LINQ closure allocations in the hot path.
         /// </summary>
+        /// <summary>Capped memo for config Guid strings parsed on the
+        /// 1 kHz path (motion-source resolution). Same policy as the
+        /// tuning parse memos.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, Guid>
+            s_guidParseCache = new(System.StringComparer.Ordinal);
+
+        internal static bool TryParseGuidCached(string text, out Guid guid)
+        {
+            if (string.IsNullOrEmpty(text)) { guid = Guid.Empty; return false; }
+            if (s_guidParseCache.TryGetValue(text, out guid)) return guid != Guid.Empty;
+            bool ok = Guid.TryParse(text, out guid);
+            if (s_guidParseCache.Count < 4096)
+                s_guidParseCache[text] = ok ? guid : Guid.Empty;
+            return ok;
+        }
+
         private UserDevice FindOnlineDeviceByInstanceGuid(Guid instanceGuid)
         {
             var devices = SettingsManager.UserDevices?.Items;

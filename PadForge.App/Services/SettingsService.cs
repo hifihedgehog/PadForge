@@ -25,6 +25,12 @@ namespace PadForge.Services
     /// </summary>
     public class SettingsService
     {
+        // Hoisted: the XmlSerializer(Type) ctor is cache-backed but still
+        // does a lookup + small alloc per call; one instance serves every
+        // save/load (XmlSerializer is thread-safe for Serialize/Deserialize).
+        private static readonly System.Xml.Serialization.XmlSerializer s_settingsSerializer =
+            new(typeof(SettingsFileData));
+
         // ─────────────────────────────────────────────
         //  Constants
         // ─────────────────────────────────────────────
@@ -229,7 +235,7 @@ namespace PadForge.Services
             try
             {
                 SettingsFileData data;
-                var serializer = new XmlSerializer(typeof(SettingsFileData));
+                var serializer = s_settingsSerializer;
 
                 using (var stream = File.OpenRead(filePath))
                 {
@@ -3580,7 +3586,7 @@ namespace PadForge.Services
                 // embedded-null device name sneaking past the sanitizer)
                 // into catastrophic settings loss at whatever byte was last
                 // flushed (issue #53).
-                var serializer = new XmlSerializer(typeof(SettingsFileData));
+                var serializer = s_settingsSerializer;
                 string dir = Path.GetDirectoryName(filePath);
                 if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                     Directory.CreateDirectory(dir);

@@ -561,6 +561,8 @@ namespace PadForge.Views
                 e.Handled = true;
             };
 
+            var rotate = new RotateTransform(0, PovSize / 2, PovSize / 2);
+            arrowCanvas.RenderTransform = rotate;
             return new PovWidget
             {
                 PovIndex = index,
@@ -568,7 +570,9 @@ namespace PadForge.Views
                 ArrowCanvas = arrowCanvas,
                 Outer = outer,
                 CenterX = x + PovSize / 2,
-                CenterY = y + PovSize / 2
+                CenterY = y + PovSize / 2,
+                Rotate = rotate,
+                FlashPrefix = $"RawPov{index}"
             };
         }
 
@@ -643,6 +647,12 @@ namespace PadForge.Views
 
             // Reset previous flash element
             ApplyFlashState(false);
+
+            // Invalidate the transition gates: the flash stomped fills,
+            // visibility, and angles, and with change-detected snapshots
+            // an idle pad may never get another dirty frame to repaint.
+            foreach (var w in _povWidgets) w.LastPov = int.MinValue;
+            foreach (var w in _buttonWidgets) w.LastPressed = -1;
 
             _flashTarget = target;
 
@@ -745,8 +755,10 @@ namespace PadForge.Views
                         "Left" => 270,
                         _ => 0
                     };
-                    w.ArrowCanvas.RenderTransform = new RotateTransform(angle,
-                        PovSize / 2, PovSize / 2);
+                    // Mutate the retained transform: replacing
+                    // RenderTransform would orphan the repaint loop's
+                    // w.Rotate binding.
+                    w.Rotate.Angle = angle;
                     return;
                 }
             }
@@ -807,29 +819,38 @@ namespace PadForge.Views
             foreach (var w in _povWidgets)
             {
                 if (w.Outer.IsMouseOver) continue;
-                if (_flashTarget != null && _flashTarget.StartsWith($"RawPov{w.PovIndex}", StringComparison.Ordinal)) continue;
+                if (_flashTarget != null && _flashTarget.StartsWith(w.FlashPrefix, StringComparison.Ordinal)) continue;
 
                 int povValue = -1;
                 if (raw.Povs != null && w.PovIndex < raw.Povs.Length)
                     povValue = raw.Povs[w.PovIndex];
 
-                if (povValue < 0 || povValue > 36000)
+                bool engaged = povValue >= 0 && povValue <= 36000;
+                bool wasEngaged = w.LastPov >= 0 && w.LastPov <= 36000;
+                if (povValue == w.LastPov) continue;
+                w.LastPov = povValue;
+
+                if (!engaged)
                 {
                     w.Arrow.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     w.Arrow.Visibility = Visibility.Visible;
-                    w.Arrow.SetResourceReference(Shape.FillProperty, AccentKey);
-                    w.ArrowCanvas.RenderTransform = new RotateTransform(povValue / 100.0,
-                        PovSize / 2, PovSize / 2);
+                    if (!wasEngaged)
+                        w.Arrow.SetResourceReference(Shape.FillProperty, AccentKey);
+                    w.Rotate.Angle = povValue / 100.0;
                 }
             }
 
-            // Update buttons
+            // Update buttons (transition-only: SetResourceReference installs
+            // and re-resolves a resource expression on every call).
             foreach (var w in _buttonWidgets)
             {
                 bool pressed = raw.IsButtonPressed(w.ButtonIndex);
+                int p = pressed ? 1 : 0;
+                if (p == w.LastPressed) continue;
+                w.LastPressed = p;
                 w.Circle.SetResourceReference(Shape.FillProperty, pressed ? AccentKey : BgKey);
                 // Pressed ring blooms ember (#175). Unpressed: none.
                 SetGlow(w.Circle, pressed ? EmberGlow : null);
@@ -880,19 +901,31 @@ namespace PadForge.Views
             public double X, Y;
         }
 
-        private struct PovWidget
+        private sealed class PovWidget
         {
             public int PovIndex;
             public Polygon Arrow;
             public Canvas ArrowCanvas;
             public Ellipse Outer;
             public double CenterX, CenterY;
+            /// <summary>Retained transform, mutated per change (a fresh
+            /// RotateTransform per repaint frame was pure churn).</summary>
+            public RotateTransform Rotate;
+            /// <summary>Prebuilt "RawPovN" flash prefix (the interpolation
+            /// allocated per POV per repaint while a flash was active).</summary>
+            public string FlashPrefix;
+            /// <summary>Last painted POV value; int.MinValue = unknown.
+            /// SetResourceReference re-resolves the key on every call with
+            /// no equality short-circuit, so paint only on transitions.</summary>
+            public int LastPov = int.MinValue;
         }
 
-        private struct ButtonWidget
+        private sealed class ButtonWidget
         {
             public int ButtonIndex;
             public Ellipse Circle;
+            /// <summary>-1 unknown, else 0/1: transition-only repaint.</summary>
+            public int LastPressed = -1;
         }
     }
 }

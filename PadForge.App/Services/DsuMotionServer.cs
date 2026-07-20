@@ -410,6 +410,8 @@ namespace PadForge.Services
         //  Pad data packet building
         // ─────────────────────────────────────────────
 
+        private byte[] _padPacketScratch;
+
         private byte[] BuildPadDataPacket(int slot, MotionSnapshot snapshot, bool connected)
         {
             // Pad data payload layout (offsets relative to start of payload, after msg type):
@@ -443,7 +445,13 @@ namespace PadForge.Services
             // Total payload: 4 (msg type) + 80 = 84 bytes
 
             const int payloadSize = 84;
-            byte[] packet = new byte[HeaderSize + payloadSize];
+            // Reused scratch: BroadcastMotion is poll-thread-only and the
+            // SendTo below completes before the next call, so one buffer
+            // serves every slot. Every byte is (re)written per call:
+            // WriteHeader + the fixed-layout payload stores below, and the
+            // final Array.Clear covers reserved tail bytes.
+            byte[] packet = _padPacketScratch ??= new byte[HeaderSize + payloadSize];
+            System.Array.Clear(packet, 0, packet.Length);
             WriteHeader(packet, payloadSize, MsgTypePadData);
 
             int o = HeaderSize + 4; // offset after message type
@@ -512,10 +520,19 @@ namespace PadForge.Services
         //  Subscription management
         // ─────────────────────────────────────────────
 
+        // Poll-thread-only scratch (single caller by contract, see
+        // BroadcastMotion): reused across calls so the steady state with a
+        // client attached allocates nothing. The returned list is valid
+        // until the next GetSubscribers call.
+        private readonly List<EndPoint> _subScratch = new();
+        private readonly HashSet<EndPoint> _subSeenScratch = new();
+
         private List<EndPoint> GetSubscribers(int slot)
         {
-            var result = new List<EndPoint>();
-            var seen = new HashSet<EndPoint>();
+            var result = _subScratch;
+            result.Clear();
+            var seen = _subSeenScratch;
+            seen.Clear();
             long now = Stopwatch.GetTimestamp();
             long timeoutTicks = Stopwatch.Frequency * ClientTimeoutMs / 1000;
             List<(EndPoint, int)> expired = null;

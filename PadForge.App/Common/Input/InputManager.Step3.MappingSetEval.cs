@@ -648,8 +648,8 @@ namespace PadForge.Common.Input
         // Recomputed at the bottom of each ResolveActiveLayerMask call.
         // Read by IsSourceSuppressedPostpone from the row evaluator
         // loops in Step 3.
-        private static readonly System.Collections.Generic.HashSet<string>[]
-            _suppressedSourcesBySlot = new System.Collections.Generic.HashSet<string>[MaxPads];
+        private static readonly System.Collections.Generic.HashSet<(string Guid, string Desc)>[]
+            _suppressedSourcesBySlot = new System.Collections.Generic.HashSet<(string Guid, string Desc)>[MaxPads];
 
         /// <summary>Returns true when the (slot, deviceGuid, descriptor)
         /// tuple matches a currently-engaging activator that has
@@ -664,8 +664,10 @@ namespace PadForge.Common.Input
             var set = _suppressedSourcesBySlot[slotIndex];
             if (set == null || set.Count == 0) return false;
             // Key shape mirrors the population loop below.
-            string key = (deviceGuid ?? "") + "|" + CanonicalPostponeDescriptor(descriptor);
-            return set.Contains(key);
+            // Tuple key: no per-call string concat on the 1 kHz path
+            // (this runs per source per row per tick while an activator
+            // is held). Both member strings already exist.
+            return set.Contains((deviceGuid ?? "", CanonicalPostponeDescriptor(descriptor)));
         }
 
         /// <summary>Folds a "Gamepad ..." alias to the canonical per-device
@@ -675,6 +677,18 @@ namespace PadForge.Common.Input
         /// differently ("Gamepad ButtonBack" vs "Button 6"). Non-alias
         /// descriptors pass through unchanged, with no allocation, because
         /// this runs per row per frame on the poll thread.</summary>
+        private sealed class PostponeKeyComparer
+            : System.Collections.Generic.IEqualityComparer<(string Guid, string Desc)>
+        {
+            public static readonly PostponeKeyComparer Instance = new();
+            public bool Equals((string Guid, string Desc) x, (string Guid, string Desc) y) =>
+                string.Equals(x.Guid, y.Guid, System.StringComparison.OrdinalIgnoreCase)
+                && string.Equals(x.Desc, y.Desc, System.StringComparison.OrdinalIgnoreCase);
+            public int GetHashCode((string Guid, string Desc) k) =>
+                System.StringComparer.OrdinalIgnoreCase.GetHashCode(k.Guid ?? "")
+                ^ (System.StringComparer.OrdinalIgnoreCase.GetHashCode(k.Desc ?? "") * 397);
+        }
+
         private static string CanonicalPostponeDescriptor(string descriptor)
         {
             if (SourceCoercion.IsGamepadAliasDescriptor(descriptor))
@@ -778,7 +792,7 @@ namespace PadForge.Common.Input
             var suppressed = _suppressedSourcesBySlot[slotIndex];
             if (suppressed == null)
                 _suppressedSourcesBySlot[slotIndex] = suppressed =
-                    new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+                    new System.Collections.Generic.HashSet<(string Guid, string Desc)>(PostponeKeyComparer.Instance);
             suppressed.Clear();
             for (int i = 0; i < activators.Count; i++)
             {
@@ -791,18 +805,18 @@ namespace PadForge.Common.Input
                 if (string.Equals(a.Mode, "Cycle", System.StringComparison.Ordinal))
                 {
                     if (rt.WasDown[i] && !string.IsNullOrEmpty(a.Descriptor))
-                        suppressed.Add((a.DeviceGuid ?? "") + "|" + CanonicalPostponeDescriptor(a.Descriptor));
+                        suppressed.Add((a.DeviceGuid ?? "", CanonicalPostponeDescriptor(a.Descriptor)));
                     if (rt.CyclePrevWasDown[i] && !string.IsNullOrEmpty(a.CyclePrevDescriptor))
-                        suppressed.Add((a.CyclePrevDeviceGuid ?? "") + "|" + CanonicalPostponeDescriptor(a.CyclePrevDescriptor));
+                        suppressed.Add((a.CyclePrevDeviceGuid ?? "", CanonicalPostponeDescriptor(a.CyclePrevDescriptor)));
                     continue;
                 }
                 if (!rt.WasDown[i]) continue;
                 if (!string.IsNullOrEmpty(a.Descriptor))
-                    suppressed.Add((a.DeviceGuid ?? "") + "|" + CanonicalPostponeDescriptor(a.Descriptor));
+                    suppressed.Add((a.DeviceGuid ?? "", CanonicalPostponeDescriptor(a.Descriptor)));
                 if (string.Equals(a.Kind, "Chord", System.StringComparison.Ordinal)
                     && !string.IsNullOrEmpty(a.ChordSecondDescriptor))
                 {
-                    suppressed.Add((a.ChordSecondDeviceGuid ?? "") + "|" + CanonicalPostponeDescriptor(a.ChordSecondDescriptor));
+                    suppressed.Add((a.ChordSecondDeviceGuid ?? "", CanonicalPostponeDescriptor(a.ChordSecondDescriptor)));
                 }
             }
 
@@ -2810,25 +2824,76 @@ namespace PadForge.Common.Input
             if (right) gp.SetButton(Gamepad.DPAD_RIGHT, true);
         }
 
+        /// <summary>Per-source memo of the four synthetic POV-direction
+        /// sources. The Split + interpolated descriptor + MappingSource
+        /// allocations otherwise run 4x per combined-DPad source per 1 kHz
+        /// tick. Keyed on the source instance; revalidates the fields the
+        /// synths were built from so an in-place edit rebuilds them.</summary>
+        private sealed class PovSynthCache
+        {
+            public string Descriptor;
+            public string DeviceGuid;
+            public bool Invert;
+            public bool HalfAxis;
+            public int DeadZone;
+            public MappingSource Up, Down, Left, Right;
+        }
+
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<MappingSource, PovSynthCache>
+            s_povSynthCache = new();
+
         private static bool EvalPovBool(CustomInputState state, MappingSource src, string direction)
         {
-            // Build a POV-direction descriptor on the fly: original
-            // descriptor is "POV N" (no direction); we tack on the
-            // direction we're testing.
+            // Build (once) a POV-direction descriptor: original descriptor
+            // is "POV N" (no direction); we tack on the direction under test.
             var s = (src.Descriptor ?? "").Trim();
             if (string.IsNullOrEmpty(s)) return false;
-            var parts = s.Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length < 2 || !parts[0].Equals("POV", System.StringComparison.OrdinalIgnoreCase))
-                return false;
-            var synth = new MappingSource
+
+            var cache = s_povSynthCache.GetOrCreateValue(src);
+            if (!string.Equals(cache.Descriptor, s, System.StringComparison.Ordinal)
+                || !string.Equals(cache.DeviceGuid, src.DeviceGuid, System.StringComparison.Ordinal)
+                || cache.Invert != src.Invert
+                || cache.HalfAxis != src.HalfAxis
+                || cache.DeadZone != src.DeadZone)
             {
-                Kind = "Direct",
-                DeviceGuid = src.DeviceGuid,
-                Descriptor = $"POV {parts[1]} {direction}",
-                Invert = src.Invert,
-                HalfAxis = src.HalfAxis,
-                DeadZone = src.DeadZone,
+                var parts = s.Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+                bool isPov = parts.Length >= 2
+                    && parts[0].Equals("POV", System.StringComparison.OrdinalIgnoreCase);
+                cache.Descriptor = s;
+                cache.DeviceGuid = src.DeviceGuid;
+                cache.Invert = src.Invert;
+                cache.HalfAxis = src.HalfAxis;
+                cache.DeadZone = src.DeadZone;
+                if (!isPov)
+                {
+                    cache.Up = cache.Down = cache.Left = cache.Right = null;
+                }
+                else
+                {
+                    MappingSource Synth(string dir) => new()
+                    {
+                        Kind = "Direct",
+                        DeviceGuid = src.DeviceGuid,
+                        Descriptor = $"POV {parts[1]} {dir}",
+                        Invert = src.Invert,
+                        HalfAxis = src.HalfAxis,
+                        DeadZone = src.DeadZone,
+                    };
+                    cache.Up = Synth("Up");
+                    cache.Down = Synth("Down");
+                    cache.Left = Synth("Left");
+                    cache.Right = Synth("Right");
+                }
+            }
+
+            var synth = direction switch
+            {
+                "Up" => cache.Up,
+                "Down" => cache.Down,
+                "Left" => cache.Left,
+                _ => cache.Right,
             };
+            if (synth == null) return false;
             return SourceCoercion.EvaluateForButtonTarget(state, synth, 50);
         }
 

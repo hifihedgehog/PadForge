@@ -262,6 +262,21 @@ namespace PadForge.Common.Input
 
             string[] newStatus = new string[MaxSlots];
 
+            // Nothing wanted and nothing playing: skip the COM enumerator
+            // + default-endpoint query this 5 s pass otherwise pays for
+            // an empty reconcile.
+            if (desired.Count == 0)
+            {
+                bool anyPlayers;
+                lock (_lock) anyPlayers = _players.Count > 0;
+                if (!anyPlayers)
+                {
+                    for (int i = 0; i < MaxSlots; i++)
+                        Volatile.Write(ref _slotStatus[i], newStatus[i]);
+                    return;
+                }
+            }
+
             // 2. Resolve endpoints. "" = system default render endpoint;
             //    anything else must match an ACTIVE endpoint by ID or the
             //    slot fails closed for this pass.

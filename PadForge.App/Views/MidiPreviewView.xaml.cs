@@ -573,7 +573,8 @@ namespace PadForge.Views
                 IsBlack = isBlack,
                 Rect = rect,
                 NormalBrush = normalBrush,
-                PressedBrush = pressedBrush
+                PressedBrush = pressedBrush,
+                FlashName = $"MidiNote{noteIndex}"
             };
         }
 
@@ -624,7 +625,7 @@ namespace PadForge.Views
             // Check piano keys
             foreach (var w in _keyWidgets)
             {
-                if (_flashTarget == $"MidiNote{w.NoteIndex}")
+                if (_flashTarget == w.FlashName)
                 {
                     w.Rect.Fill = highlight ? FlashBrush : w.NormalBrush;
                     return;
@@ -638,6 +639,11 @@ namespace PadForge.Views
 
         private void OnRendering(object sender, EventArgs e)
         {
+            // Visibility first (mirrors KBMPreviewView): the theme probe
+            // ran per frame against a hidden canvas on the retained page.
+            // The first visible frame catches a pending theme change.
+            if (!IsVisible) return;
+
             // Rebuild on theme change.
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_layoutBuilt && _lastTheme != currentTheme) RebuildLayout();
@@ -730,7 +736,7 @@ namespace PadForge.Views
             // Update piano keys (skip the flashing key during recording).
             foreach (var w in _keyWidgets)
             {
-                if (_flashTarget == $"MidiNote{w.NoteIndex}" && _flashOn)
+                if (_flashTarget == w.FlashName && _flashOn)
                     continue; // Don't overwrite flash highlight
 
                 bool pressed = raw.Notes != null && w.NoteIndex < raw.Notes.Length && raw.Notes[w.NoteIndex];
@@ -782,6 +788,9 @@ namespace PadForge.Views
             public Rectangle Rect;
             public Brush NormalBrush;
             public Brush PressedBrush;
+            /// <summary>Prebuilt "MidiNoteN": the flash compare
+            /// interpolated a string per key per rendered frame.</summary>
+            public string FlashName;
         }
     }
 }

@@ -43,10 +43,20 @@ namespace PadForge.ViewModels
     /// </summary>
     public partial class PadViewModel : ViewModelBase
     {
+        /// <summary>Set by any PropertyChanged on this VM; cleared by
+        /// InputService after SyncViewModelToPadSettings pushes the VM
+        /// into the selected device's PadSetting. Idle pads (no engine
+        /// feed changes, no user edits) raise nothing because every VM
+        /// write is SetProperty equality-guarded, so the 30 Hz sync's
+        /// ~80 string formats per pad skip entirely. Starts true so the
+        /// first tick always syncs. UI-thread only.</summary>
+        internal bool SettingsSyncDirty = true;
+
         public PadViewModel(int padIndex)
         {
             PadIndex = padIndex;
             _slotNumber = padIndex + 1;
+            PropertyChanged += (_, __) => SettingsSyncDirty = true;
             Title = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
             SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
             _extendedConfig.PropertyChanged += OnExtendedConfigPropertyChanged;
@@ -6608,8 +6618,71 @@ namespace PadForge.ViewModels
         /// <see cref="UpdateFromEngineState"/> (combined, schematic) and
         /// <see cref="UpdateDeviceState"/> (per-device, stick tab).
         /// </summary>
+        // UI-side shadow of the last published raw snapshot. An idle
+        // slot's combined output is byte-identical every tick, and the
+        // unconditional raise re-armed a full schematic repaint at 30 Hz
+        // (the preview views dirty on exactly this property name).
+        // Identical content paints identical pixels, so skipping the
+        // raise changes nothing visually.
+        private short[] _lastRawAxes, _lastRawHwAxes;
+        private uint[] _lastRawButtons;
+        private int[] _lastRawPovs;
+        private bool _hasLastRawSnapshot;
+
+        private static bool ArrEq(short[] a, short[] b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+            return true;
+        }
+        private static bool ArrEq(uint[] a, uint[] b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+            return true;
+        }
+        private static bool ArrEq(int[] a, int[] b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+            return true;
+        }
+        private static void ShadowCopy(short[] src, ref short[] dst)
+        {
+            if (src == null) { dst = null; return; }
+            if (dst == null || dst.Length != src.Length) dst = new short[src.Length];
+            System.Array.Copy(src, dst, src.Length);
+        }
+        private static void ShadowCopy(uint[] src, ref uint[] dst)
+        {
+            if (src == null) { dst = null; return; }
+            if (dst == null || dst.Length != src.Length) dst = new uint[src.Length];
+            System.Array.Copy(src, dst, src.Length);
+        }
+        private static void ShadowCopy(int[] src, ref int[] dst)
+        {
+            if (src == null) { dst = null; return; }
+            if (dst == null || dst.Length != src.Length) dst = new int[src.Length];
+            System.Array.Copy(src, dst, src.Length);
+        }
+
         public void UpdateFromRawHidState(RawHidState raw)
         {
+            if (_hasLastRawSnapshot
+                && ArrEq(raw.Axes, _lastRawAxes)
+                && ArrEq(raw.HardwareAxes, _lastRawHwAxes)
+                && ArrEq(raw.Buttons, _lastRawButtons)
+                && ArrEq(raw.Povs, _lastRawPovs))
+                return;
+            ShadowCopy(raw.Axes, ref _lastRawAxes);
+            ShadowCopy(raw.HardwareAxes, ref _lastRawHwAxes);
+            ShadowCopy(raw.Buttons, ref _lastRawButtons);
+            ShadowCopy(raw.Povs, ref _lastRawPovs);
+            _hasLastRawSnapshot = true;
+
             RawHidOutputSnapshot = raw;
             OnPropertyChanged(nameof(RawHidOutputSnapshot));
 
@@ -6743,8 +6816,50 @@ namespace PadForge.ViewModels
 
         public MidiRawState MidiOutputSnapshot { get; private set; }
 
+        // Same change-detect as the raw snapshot: identical MIDI output
+        // repaints identical pixels, so skip the raise (and the ~256-key
+        // preview repaint it re-arms).
+        private byte[] _lastMidiCc;
+        private bool[] _lastMidiNotes;
+        private bool _hasLastMidiSnapshot;
+
+        private static bool ArrEq(byte[] a, byte[] b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+            return true;
+        }
+        private static bool ArrEq(bool[] a, bool[] b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+            return true;
+        }
+
         public void UpdateFromMidiRawState(MidiRawState raw)
         {
+            if (_hasLastMidiSnapshot
+                && ArrEq(raw.CcValues, _lastMidiCc)
+                && ArrEq(raw.Notes, _lastMidiNotes))
+                return;
+            if (raw.CcValues == null) _lastMidiCc = null;
+            else
+            {
+                if (_lastMidiCc == null || _lastMidiCc.Length != raw.CcValues.Length)
+                    _lastMidiCc = new byte[raw.CcValues.Length];
+                System.Array.Copy(raw.CcValues, _lastMidiCc, raw.CcValues.Length);
+            }
+            if (raw.Notes == null) _lastMidiNotes = null;
+            else
+            {
+                if (_lastMidiNotes == null || _lastMidiNotes.Length != raw.Notes.Length)
+                    _lastMidiNotes = new bool[raw.Notes.Length];
+                System.Array.Copy(raw.Notes, _lastMidiNotes, raw.Notes.Length);
+            }
+            _hasLastMidiSnapshot = true;
+
             MidiOutputSnapshot = raw;
             OnPropertyChanged(nameof(MidiOutputSnapshot));
         }

@@ -865,6 +865,10 @@ namespace PadForge.Views
         {
             if (!_annotationsEnabled || _vm == null)
                 return;
+            // Retained visibility-toggled page: keep the 6.7 Hz chip work
+            // off hidden surfaces. Chips recompute from live state each
+            // tick, so the first visible tick catches up.
+            if (!IsVisible) return;
 
             var now = DateTime.UtcNow;
             foreach (var chip in _annotationChips)

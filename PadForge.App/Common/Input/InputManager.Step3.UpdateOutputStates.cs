@@ -1084,27 +1084,19 @@ namespace PadForge.Common.Input
             // Centidegrees: 0=Up, 4500=UpRight, 9000=Right, 13500=DownRight,
             // 18000=Down, 22500=DownLeft, 27000=Left, 31500=UpLeft.
             // Cardinals use ±67.5° tolerance; diagonals use ±22.5° (exact sector).
-            switch (direction.ToLowerInvariant())
-            {
-                case "up":
-                    return povValue >= 29250 || povValue <= 6750;
-                case "right":
-                    return povValue >= 2250 && povValue <= 15750;
-                case "down":
-                    return povValue >= 11250 && povValue <= 24750;
-                case "left":
-                    return povValue >= 20250 && povValue <= 33750;
-                case "upright":
-                    return povValue >= 2250 && povValue <= 6750;
-                case "downright":
-                    return povValue >= 11250 && povValue <= 15750;
-                case "downleft":
-                    return povValue >= 20250 && povValue <= 24750;
-                case "upleft":
-                    return povValue >= 29250 && povValue <= 33750;
-                default:
-                    return false;
-            }
+            // OrdinalIgnoreCase compares: ToLowerInvariant allocated a
+            // string per call on the 1 kHz path (4x per combined-DPad
+            // config per device per tick).
+            const System.StringComparison IC = System.StringComparison.OrdinalIgnoreCase;
+            if (direction.Equals("up", IC)) return povValue >= 29250 || povValue <= 6750;
+            if (direction.Equals("right", IC)) return povValue >= 2250 && povValue <= 15750;
+            if (direction.Equals("down", IC)) return povValue >= 11250 && povValue <= 24750;
+            if (direction.Equals("left", IC)) return povValue >= 20250 && povValue <= 33750;
+            if (direction.Equals("upright", IC)) return povValue >= 2250 && povValue <= 6750;
+            if (direction.Equals("downright", IC)) return povValue >= 11250 && povValue <= 15750;
+            if (direction.Equals("downleft", IC)) return povValue >= 20250 && povValue <= 24750;
+            if (direction.Equals("upleft", IC)) return povValue >= 29250 && povValue <= 33750;
+            return false;
         }
 
         // ─────────────────────────────────────────────
@@ -1451,19 +1443,12 @@ namespace PadForge.Common.Input
 
             bool active = IsPovDirectionActive(povValue, direction);
 
-            switch (direction.ToLowerInvariant())
-            {
-                case "up":
-                case "left":
-                    return active ? 0 : 32767;
-
-                case "down":
-                case "right":
-                    return active ? 65535 : 32767;
-
-                default:
-                    return 32767;
-            }
+            const System.StringComparison IC = System.StringComparison.OrdinalIgnoreCase;
+            if (direction.Equals("up", IC) || direction.Equals("left", IC))
+                return active ? 0 : 32767;
+            if (direction.Equals("down", IC) || direction.Equals("right", IC))
+                return active ? 65535 : 32767;
+            return 32767;
         }
 
         // ─────────────────────────────────────────────
@@ -1679,10 +1664,18 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Parses a DeadZoneShape from a string. Returns ScaledRadial for null/empty/invalid.
         /// </summary>
+        private static readonly int s_maxDeadZoneShape =
+            System.Linq.Enumerable.Max(
+                (int[])Enum.GetValues(typeof(DeadZoneShape)));
+
         internal static DeadZoneShape ParseDeadZoneShape(string value)
         {
             if (string.IsNullOrEmpty(value)) return DeadZoneShape.ScaledRadial;
-            if (int.TryParse(value, out int v) && Enum.IsDefined(typeof(DeadZoneShape), v))
+            // Range check instead of non-generic Enum.IsDefined, which
+            // boxes the int per call on the tuning path (per device per
+            // 1 kHz tick).
+            if (int.TryParse(value, out int v)
+                && v >= 0 && v <= s_maxDeadZoneShape)
                 return (DeadZoneShape)v;
             return DeadZoneShape.ScaledRadial;
         }

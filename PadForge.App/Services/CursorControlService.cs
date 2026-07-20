@@ -86,16 +86,38 @@ namespace PadForge.Services
         /// while the engine is not running.</summary>
         internal static CursorControlService Active { get; private set; }
 
+        /// <summary>TickCount64 of the last MouseCursorProvider read.
+        /// 0 until something actually maps a Mouse Position source, so a
+        /// fresh engine start idles immediately.</summary>
+        private long _lastProviderReadMs;
+
+        /// <summary>Ticks with no provider read after which the sampler
+        /// idles. The first read after an idle stretch sees at most one
+        /// stale sample (the next 5 ms tick refreshes), which matches
+        /// the documented torn-pair tolerance.</summary>
+        private const long ProviderIdleMs = 2000;
+
         public CursorControlService()
         {
             Active = this;
-            SourceCoercion.MouseCursorProvider = () => (_normX, _normY);
+            SourceCoercion.MouseCursorProvider = () =>
+            {
+                System.Threading.Volatile.Write(ref _lastProviderReadMs, Environment.TickCount64);
+                return (_normX, _normY);
+            };
             _timer = new Timer(_ => Tick(), null, 0, SampleIntervalMs);
         }
 
         private void Tick()
         {
             if (_disposed) return;
+            // Demand gate: the 200 Hz monitor+cursor syscalls ran forever
+            // even when no mapping consumed Mouse Position. Pin/clamp
+            // enforcement must keep running while engaged regardless of
+            // reads, so the gate only closes when neither is active.
+            if (!_isPinned && !_isClamped
+                && Environment.TickCount64 - System.Threading.Volatile.Read(ref _lastProviderReadMs) > ProviderIdleMs)
+                return;
             if (!TryGetPrimaryRect(out RECT r)) return;
 
             // Enforce the cursor-write contracts before sampling so the published

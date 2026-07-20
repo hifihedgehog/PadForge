@@ -91,13 +91,25 @@ namespace PadForge.Engine
         private static bool IsEnabled(string s)
             => s == "1" || string.Equals(s, "true", StringComparison.OrdinalIgnoreCase);
 
+        // Memoized: ConstantForceX/Y change only on user edit, but this
+        // parses per device per slot per 1 kHz tick while constant force
+        // is enabled. Same capped-invariant policy as the Step 3 tuning
+        // parse memos.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, double>
+            s_normCache = new(StringComparer.Ordinal);
+
         private static double ParseNorm(string s)
         {
             if (string.IsNullOrEmpty(s)) return 0.0;
-            if (!double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out double v))
-                return 0.0;
-            if (double.IsNaN(v) || double.IsInfinity(v)) return 0.0;
-            return Math.Clamp(v, -1.0, 1.0);
+            if (s_normCache.TryGetValue(s, out double cached)) return cached;
+            double result;
+            if (!double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out double v)
+                || double.IsNaN(v) || double.IsInfinity(v))
+                result = 0.0;
+            else
+                result = Math.Clamp(v, -1.0, 1.0);
+            if (s_normCache.Count < 4096) s_normCache[s] = result;
+            return result;
         }
     }
 }

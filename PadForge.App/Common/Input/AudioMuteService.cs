@@ -150,16 +150,30 @@ namespace PadForge.Common.Input
             {
                 // Drop subscriptions that haven't been touched in 30 s so
                 // an MMDevice reference doesn't outlive the consumer.
-                var stale = _lastTouchTicks
-                    .Where(kv => (now - kv.Value) >= StaleSubscriptionMs)
-                    .Select(kv => kv.Key).ToList();
-                foreach (var id in stale)
+                List<string> stale = null;
+                foreach (var kv in _lastTouchTicks)
+                    if ((now - kv.Value) >= StaleSubscriptionMs)
+                        (stale ??= new List<string>()).Add(kv.Key);
+                if (stale != null)
+                    foreach (var id in stale)
+                    {
+                        _lastTouchTicks.Remove(id);
+                        _muteCache.Remove(id);
+                        if (_devices.Remove(id, out var staleDev)) staleDev?.Dispose();
+                    }
+
+                // Empty subscription set: stop ticking entirely. The next
+                // FollowDeviceMute query re-arms via EnsurePollTimer, so
+                // this 4 Hz timer no longer runs forever (with per-tick
+                // LINQ) after its first-ever use.
+                if (_lastTouchTicks.Count == 0)
                 {
-                    _lastTouchTicks.Remove(id);
-                    _muteCache.Remove(id);
-                    if (_devices.Remove(id, out var staleDev)) staleDev?.Dispose();
+                    _pollTimer?.Dispose();
+                    _pollTimer = null;
+                    return;
                 }
-                active = _lastTouchTicks.Keys.ToArray();
+                active = new string[_lastTouchTicks.Count];
+                _lastTouchTicks.Keys.CopyTo(active, 0);
             }
 
             foreach (var id in active)

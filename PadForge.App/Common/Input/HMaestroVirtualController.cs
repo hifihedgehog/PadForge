@@ -695,6 +695,11 @@ namespace PadForge.Common.Input
         private long _lastRawSubmitTick;
         private bool _hasRawSubmitted;
 
+        // PADFORGE_NO_RAWDEDUP=1 disables the raw idle dedup at launch
+        // (regression bisect switch).
+        private static readonly bool s_noRawDedup =
+            System.Environment.GetEnvironmentVariable("PADFORGE_NO_RAWDEDUP") == "1";
+
         private bool RawFrameUnchanged(in RawHidState raw)
         {
             static bool EqS(short[] a, short[] b)
@@ -755,7 +760,8 @@ namespace PadForge.Common.Input
             // keepalive republishes well inside both. Motion frames never
             // dedup: SensorTimestamp must advance for downstream fusion.
             long nowRawTick = Environment.TickCount64;
-            if (_hasRawSubmitted
+            if (!s_noRawDedup
+                && _hasRawSubmitted
                 && !motion.HasMotion && !_lastRawHadMotion
                 && nowRawTick - _lastRawSubmitTick < SubmitKeepaliveMs
                 && RawFrameUnchanged(in raw))
@@ -899,6 +905,7 @@ namespace PadForge.Common.Input
             _controller.SubmitState(state);
         }
 
+
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
         {
             FeedbackPadIndex = padIndex;
@@ -962,6 +969,7 @@ namespace PadForge.Common.Input
                     vibrationStates[idx].LeftMotorSpeed  = (ushort)(left  * 257);
                     vibrationStates[idx].RightMotorSpeed = (ushort)(right * 257);
 
+
                     // Inbound pack (#236): the Sony motor bytes are only
                     // TRUSTED behind the full validity gate. The codec
                     // inserts leftMotor/rightMotor unconditionally (report
@@ -1022,7 +1030,7 @@ namespace PadForge.Common.Input
                     // player) verbatim for the grace window, while still
                     // animating subsystems the writer didn't touch.
                     // For a remote DualSense this merged output is forwarded at the
-                    // SonyEffectWriter chokepoint (issue #138), not here.
+                    // PlayStationEffectWriter chokepoint (issue #138), not here.
                     UserEffectsDispatcher.NotifyExternalSubsystems(idx, effectPayload);
                 }
             };

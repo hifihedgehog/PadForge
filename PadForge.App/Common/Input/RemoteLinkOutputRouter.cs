@@ -53,7 +53,7 @@ namespace PadForge.Common.Input
         // rumble commands), so exactly one source may feed the hardware. The lease
         // arbitrates with zero new protocol: a relayed output frame IS the claim.
         // OnRemoteOutputReceived stamps the LOCAL device path here per frame; while the
-        // stamp is fresh the owner's local output chokepoints (SonyEffectWriter / Step2)
+        // stamp is fresh the owner's local output chokepoints (PlayStationEffectWriter / Step2)
         // skip their writes, so the inbound relay is the sole writer. A fight needs both
         // sides active at once, but an active remote keeps the stamp fresh — so the remote
         // wins while active and the local pipeline resumes only after the remote falls

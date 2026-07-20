@@ -7,7 +7,7 @@ namespace PadForge.Common
     /// dossier LINK row and the slot-card transport glyph ask one question,
     /// "is this device linked over Bluetooth?", and both must answer from
     /// the fields the engine actually holds (DevicePath plus VID/PID).
-    /// Distinct from <c>SonyEffectWriter.IsBluetoothPath</c>, which gates
+    /// Distinct from <c>PlayStationEffectWriter.IsBluetoothPath</c>, which gates
     /// Sony OUTPUT-report framing (CRC footers) and the #162 disconnect
     /// lanes. That predicate stays untouched by design.
     /// </summary>

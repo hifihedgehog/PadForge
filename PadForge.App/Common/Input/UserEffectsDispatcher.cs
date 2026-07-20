@@ -1234,7 +1234,7 @@ namespace PadForge.Common.Input
             if (guids.Count == 0) return;
 
             // Payloads are built under the device lock and written after it.
-            // SonyEffectWriter.Write does CreateFileW + WriteFile with a 1000 ms
+            // PlayStationEffectWriter.Write does CreateFileW + WriteFile with a 1000 ms
             // wait and then an untimed completion drain, and the ~1 kHz poll
             // thread needs this same lock every cycle to read input. Writing
             // under it meant one animated pad (a 33 ms timer) held the poll
@@ -1282,12 +1282,12 @@ namespace PadForge.Common.Input
 
                     string path = ud.DevicePath;
                     if (string.IsNullOrEmpty(path)) continue;
-                    bool isBluetooth = SonyEffectWriter.IsBluetoothPath(path);
+                    bool isBluetooth = PlayStationEffectWriter.IsBluetoothPath(path);
 
                     // Resolve the HM profile whose extendedOutputReport spec
                     // describes this device's wire format. The synthesizer
                     // emits semantic fields (rightMotor / leftMotor /
-                    // lightbar / triggers / ...); SonyEffectWriter feeds them
+                    // lightbar / triggers / ...); PlayStationEffectWriter feeds them
                     // through HMOutputEncoder to produce the on-wire bytes
                     // including BT framing and CRC32 footer where the spec
                     // declares them.
@@ -1494,7 +1494,7 @@ namespace PadForge.Common.Input
                         // SDL_RumbleJoystick calls the SDL path carries the
                         // audio-mixed rumble bytes from
                         // ForceFeedbackState.SetDeviceForces. Two writers,
-                        // same device: per SonyEffectWriter's docstring,
+                        // same device: per PlayStationEffectWriter's docstring,
                         // "the firmware applies whichever WriteFile lands
                         // most recently."
                         //
@@ -1560,7 +1560,7 @@ namespace PadForge.Common.Input
                         //     valid_flag1 bit 7 (AUDIO_CONTROL2_ENABLE); value
                         //     3 per dualsensectl's reference snippet. Without
                         //     it the speaker tops out well below what the PS5
-                        //     drives it to. Encoded by SonyEffectWriter's
+                        //     drives it to. Encoded by PlayStationEffectWriter's
                         //     audioControl2 poke (the HM profile doesn't
                         //     declare the byte).
                         // When routing switches away, restore the headphone
@@ -1624,7 +1624,7 @@ namespace PadForge.Common.Input
                         if (s_lastWriteSeq.TryGetValue(w.Path, out var last) && last > w.Seq)
                             continue;
                         s_lastWriteSeq[w.Path] = w.Seq;
-                        SonyEffectWriter.Write(w.Path, w.Profile, w.Fields);
+                        PlayStationEffectWriter.Write(w.Path, w.Profile, w.Fields);
                     }
                     catch
                     {

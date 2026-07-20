@@ -4262,7 +4262,27 @@ namespace PadForge.Common.Input
             if (dx == 0 && dy == 0) return;
             Interlocked.Add(ref _pendingMouseDx, dx);
             Interlocked.Add(ref _pendingMouseDy, dy);
+            SignalMouseWork();
         }
+
+        /// <summary>Wakes the parked injector on the FIRST delta after an
+        /// idle period. The armed flag keeps the steady 1 kHz accumulate
+        /// path syscall-free: while the injector is actively batching, the
+        /// flag stays 1 and no kernel Set fires.</summary>
+        internal static int MouseWorkArmed;
+        internal static readonly System.Threading.AutoResetEvent MouseWorkSignal = new(false);
+
+        private static void SignalMouseWork()
+        {
+            if (Interlocked.CompareExchange(ref MouseWorkArmed, 1, 0) == 0)
+                MouseWorkSignal.Set();
+        }
+
+        internal static bool HasPendingMouseInput()
+            => System.Threading.Volatile.Read(ref _pendingMouseDx) != 0
+            || System.Threading.Volatile.Read(ref _pendingMouseDy) != 0
+            || System.Threading.Volatile.Read(ref _pendingScroll) != 0
+            || System.Threading.Volatile.Read(ref _pendingScrollH) != 0;
 
         /// <summary>Injector thread only: drain the accumulated mouse move + scroll
         /// deltas and inject them off the poll thread. Every MouseMove / MouseScroll
@@ -4270,8 +4290,9 @@ namespace PadForge.Common.Input
         /// SendInput syscall runs here on its own cadence instead of N times per poll
         /// on the rate-holding thread. Reuses one INPUT[] (no per-flush alloc).
         /// Single-threaded (the injector loop), so the shared buffer is safe.</summary>
-        internal static void FlushPendingMouseInput()
+        internal static bool FlushPendingMouseInput()
         {
+            bool injectedAny = false;
             int dx = Interlocked.Exchange(ref _pendingMouseDx, 0);
             int dy = Interlocked.Exchange(ref _pendingMouseDy, 0);
             if (dx != 0 || dy != 0)
@@ -4282,6 +4303,7 @@ namespace PadForge.Common.Input
                     u = new InputUnion { mi = new MOUSEINPUT { dx = dx, dy = dy, dwFlags = MOUSEEVENTF_MOVE } }
                 };
                 SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
+                injectedAny = true;
             }
 
             int scroll = Interlocked.Exchange(ref _pendingScroll, 0);
@@ -4293,6 +4315,7 @@ namespace PadForge.Common.Input
                     u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)scroll, dwFlags = MOUSEEVENTF_WHEEL } }
                 };
                 SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
+                injectedAny = true;
             }
 
             int scrollH = Interlocked.Exchange(ref _pendingScrollH, 0);
@@ -4304,7 +4327,9 @@ namespace PadForge.Common.Input
                     u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)scrollH, dwFlags = MOUSEEVENTF_HWHEEL } }
                 };
                 SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
+                injectedAny = true;
             }
+            return injectedAny;
         }
 
         private static void SendMouseButtonInput(MacroMouseButton button, bool down)
@@ -4348,6 +4373,7 @@ namespace PadForge.Common.Input
         {
             if (amount == 0) return;
             Interlocked.Add(ref _pendingScroll, amount);
+            SignalMouseWork();
         }
 
         /// <summary>Horizontal-scroll twin of
@@ -4357,6 +4383,7 @@ namespace PadForge.Common.Input
         {
             if (amount == 0) return;
             Interlocked.Add(ref _pendingScrollH, amount);
+            SignalMouseWork();
         }
 
         /// <summary>Test pin (v15 MouseWheelTap): drains both pending

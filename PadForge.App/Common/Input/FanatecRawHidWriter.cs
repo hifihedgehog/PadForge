@@ -94,12 +94,19 @@ namespace PadForge.Common.Input
 
         /// <summary>Pedal rumble. throttle/brake each 0..255. Report ID 0x01,
         /// payload <c>F8 09 01 04 [throttle] [brake] 00</c>.</summary>
+        // Poll thread is the sole caller (Step 2 ApplyForceFeedback), and
+        // RawHidOutput.Write copies/pins under its per-path gate, so one
+        // scratch avoids an 8-byte allocation at pedal-rumble rate.
+        private static readonly byte[] s_pedalScratch =
+            { 0x01, 0xF8, 0x09, 0x01, 0x04, 0x00, 0x00, 0x00 };
+
         public static bool WritePedalRumble(string devicePath, byte throttle, byte brake)
         {
             // Report ID 0x01 is byte[0] of the report (per the Fanatec descriptor),
             // not a prepended placeholder — the 8-byte buffer is the report.
-            byte[] report = { 0x01, 0xF8, 0x09, 0x01, 0x04, throttle, brake, 0x00 };
-            return RawHidOutput.Write(devicePath, report);
+            s_pedalScratch[5] = throttle;
+            s_pedalScratch[6] = brake;
+            return RawHidOutput.Write(devicePath, s_pedalScratch);
         }
 
         // ─────────────────────────────────────────────

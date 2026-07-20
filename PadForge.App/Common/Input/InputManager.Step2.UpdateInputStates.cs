@@ -1250,9 +1250,9 @@ namespace PadForge.Common.Input
             bool swap = false;
             if (ps != null)
             {
-                overallGain = Math.Clamp(TryParseInt(ps.ImpulseOverallGain, 100), 0, 100);
-                leftGain = Math.Clamp(TryParseInt(ps.ImpulseLeftStrength, 100), 0, 100);
-                rightGain = Math.Clamp(TryParseInt(ps.ImpulseRightStrength, 100), 0, 100);
+                overallGain = Math.Clamp(TryParseIntStatic(ps.ImpulseOverallGain, 100), 0, 100);
+                leftGain = Math.Clamp(TryParseIntStatic(ps.ImpulseLeftStrength, 100), 0, 100);
+                rightGain = Math.Clamp(TryParseIntStatic(ps.ImpulseRightStrength, 100), 0, 100);
                 swap = TryParseBool(ps.ImpulseSwapTriggers);
             }
             double sL = baseL * (leftGain / 100.0) * (overallGain / 100.0);
@@ -1295,9 +1295,9 @@ namespace PadForge.Common.Input
             bool swap = false;
             if (ps != null)
             {
-                overallGain = Math.Clamp(TryParseInt(ps.ForceOverall, 100), 0, 100);
-                leftGain = Math.Clamp(TryParseInt(ps.LeftMotorStrength, 100), 0, 100);
-                rightGain = Math.Clamp(TryParseInt(ps.RightMotorStrength, 100), 0, 100);
+                overallGain = Math.Clamp(TryParseIntStatic(ps.ForceOverall, 100), 0, 100);
+                leftGain = Math.Clamp(TryParseIntStatic(ps.LeftMotorStrength, 100), 0, 100);
+                rightGain = Math.Clamp(TryParseIntStatic(ps.RightMotorStrength, 100), 0, 100);
                 swap = TryParseBool(ps.ForceSwapMotor);
             }
             double sL = baseL * (leftGain / 100.0) * (overallGain / 100.0);

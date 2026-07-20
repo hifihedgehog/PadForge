@@ -449,7 +449,7 @@ namespace PadForge.Common.Input
             // A null element makes Apply a no-op; returning here keeps the
             // pack write below from re-publishing a stale computed pair.
             if (vibs[idx] == null) return;
-            _ffbDecoder.Apply(vibs[idx]);
+            _ffbDecoder.ApplyIfDue(vibs[idx]);
 
             // Inbound pack (#236, owner directive: EVERY feedback source we
             // support is an LFE source): the PID / vendor FFB lane feeds

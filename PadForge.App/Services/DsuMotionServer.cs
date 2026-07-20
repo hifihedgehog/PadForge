@@ -200,6 +200,13 @@ namespace PadForge.Services
             if (_subCount == 0)
                 return;
 
+            // Slot-mask early-out: with one client subscribed to one slot,
+            // the other 15 per-tick GetSubscribers calls were pure lock +
+            // dictionary walks.
+            if (!_anyAllSlotSubs
+                && (System.Threading.Volatile.Read(ref _slotSubMask) & (1 << slot)) == 0)
+                return;
+
             // Only broadcast if there are subscribers.
             var endpoints = GetSubscribers(slot);
             if (endpoints.Count == 0)
@@ -374,7 +381,25 @@ namespace PadForge.Services
         /// early-outs on. MUST be called inside <c>lock (_subscriptions)</c>
         /// after any mutation of either subscription dictionary.</summary>
         private void RecountSubscribers()
-            => _subCount = _subscriptions.Count + _allSlotSubscriptions.Count;
+        {
+            _subCount = _subscriptions.Count + _allSlotSubscriptions.Count;
+            // Per-slot mask, same consistency contract as _subCount (both
+            // recomputed at every mutation under the subscription lock).
+            // A stale-high bit self-heals: the slot's next GetSubscribers
+            // prunes and recounts. A bit is never stale-low for a live
+            // subscriber because subscribe recounts before the next tick.
+            int mask = 0;
+            foreach (var kvp in _subscriptions)
+            {
+                int slot = kvp.Key.Item2;
+                if (slot >= 0 && slot < 32) mask |= 1 << slot;
+            }
+            _anyAllSlotSubs = _allSlotSubscriptions.Count > 0;
+            System.Threading.Volatile.Write(ref _slotSubMask, mask);
+        }
+
+        private int _slotSubMask;
+        private volatile bool _anyAllSlotSubs;
 
         private void SendControllerInfo(int slot, EndPoint sender)
         {

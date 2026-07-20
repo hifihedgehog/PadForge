@@ -13,6 +13,23 @@ namespace PadForge.Common.Input
     /// </summary>
     internal static class RawHidOutput
     {
+        /// <summary>Per-path cached device handle + manual-reset event
+        /// (the SonyEffectWriter CachedIo shape). Fanatec pedal rumble
+        /// writes at up to poll rate, and the old open-per-write shape
+        /// paid CreateFile + CreateEvent + two CloseHandle per frame.
+        /// FALLBACK-SAFE: any cached-handle failure closes the cache and
+        /// re-runs the exact legacy open-write for the SAME write. The
+        /// per-entry gate serializes same-path writers.</summary>
+        private sealed class CachedIo
+        {
+            public IntPtr Handle;
+            public IntPtr Event;
+            public byte[] Sized;   // per-path resize scratch (serialized by Gate)
+            public readonly object Gate = new();
+        }
+        private static readonly ConcurrentDictionary<string, CachedIo> s_ioCache =
+            new(StringComparer.OrdinalIgnoreCase);
+
         /// <summary>Writes a raw output report (caller includes the leading
         /// report-ID byte). Returns false on open or write failure.</summary>
         public static bool Write(string devicePath, byte[] buf)
@@ -20,58 +37,103 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(devicePath) || buf == null || buf.Length == 0)
                 return false;
 
-            IntPtr handle = CreateFileW(
-                devicePath,
-                GENERIC_READ | GENERIC_WRITE,
-                FILE_SHARE_READ | FILE_SHARE_WRITE,
-                IntPtr.Zero,
-                OPEN_EXISTING,
-                FILE_FLAG_OVERLAPPED,
-                IntPtr.Zero);
+            var io = s_ioCache.GetOrAdd(devicePath, _ => new CachedIo());
+            lock (io.Gate)
+            {
+                if (io.Handle != IntPtr.Zero)
+                {
+                    byte[] cachedBuf = SizeForCached(io, devicePath, buf);
+                    if (WriteOnHandle(io.Handle, io.Event, cachedBuf)) return true;
+                    // Stale handle (sleep, replug): drop the cache and fall
+                    // through to the legacy path for THIS write.
+                    CloseHandle(io.Event);
+                    CloseHandle(io.Handle);
+                    io.Handle = IntPtr.Zero;
+                    io.Event = IntPtr.Zero;
+                }
 
-            if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
+                IntPtr handle = CreateFileW(
+                    devicePath,
+                    GENERIC_READ | GENERIC_WRITE,
+                    FILE_SHARE_READ | FILE_SHARE_WRITE,
+                    IntPtr.Zero,
+                    OPEN_EXISTING,
+                    FILE_FLAG_OVERLAPPED,
+                    IntPtr.Zero);
 
-            // Windows HID requires the write buffer to be exactly the collection's
-            // OutputReportByteLength. The per-vendor writers build the logical
-            // report (report-ID byte + command bytes); pad/clamp it to the device's
-            // actual length here. Without this, a wheel whose output reports are
-            // longer than the command rejects every write with ERROR_INVALID_PARAMETER
-            // (e.g. the G29 joystick collection wants 17 bytes; the lg4ff command is 8).
-            byte[] outBuf = ResizeForDevice(devicePath, handle, buf);
+                if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
 
+                // Windows HID requires the write buffer to be exactly the collection's
+                // OutputReportByteLength. The per-vendor writers build the logical
+                // report (report-ID byte + command bytes); pad/clamp it to the device's
+                // actual length here. Without this, a wheel whose output reports are
+                // longer than the command rejects every write with ERROR_INVALID_PARAMETER
+                // (e.g. the G29 joystick collection wants 17 bytes; the lg4ff command is 8).
+                byte[] outBuf = ResizeForDevice(devicePath, handle, buf);
+
+                IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
+                if (ev == IntPtr.Zero) { CloseHandle(handle); return false; }
+
+                bool ok = WriteOnHandle(handle, ev, outBuf);
+                if (ok)
+                {
+                    io.Handle = handle;
+                    io.Event = ev;
+                    return true;
+                }
+                CloseHandle(ev);
+                CloseHandle(handle);
+                return false;
+            }
+        }
+
+        /// <summary>Pads <paramref name="buf"/> to the cached path's known
+        /// OutputReportByteLength using the per-path scratch, zeroing the
+        /// pad tail each call (same zero-pad contract as ResizeForDevice).
+        /// Falls back to buf as-is when no length is cached, matching the
+        /// legacy path's behavior for caps-query-unavailable devices.</summary>
+        private static byte[] SizeForCached(CachedIo io, string devicePath, byte[] buf)
+        {
+            if (!_outLen.TryGetValue(devicePath, out int need) || need <= 0 || need <= buf.Length)
+                return buf;
+            if (io.Sized == null || io.Sized.Length != need)
+                io.Sized = new byte[need];
+            Array.Copy(buf, 0, io.Sized, 0, buf.Length);
+            Array.Clear(io.Sized, buf.Length, need - buf.Length);
+            return io.Sized;
+        }
+
+        private static bool WriteOnHandle(IntPtr handle, IntPtr ev, byte[] outBuf)
+        {
+            // Manual-reset event: clear before reuse.
+            ResetEvent(ev);
+            // Pin held until every path below has passed its unbounded
+            // GetOverlappedResult (or established no I/O is pending), so
+            // the kernel never reads a moved buffer mid-write
+            // (SonyEffectWriter.WriteRaw pattern).
+            var pin = GCHandle.Alloc(outBuf, GCHandleType.Pinned);
             try
             {
-                IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
-                if (ev == IntPtr.Zero) return false;
-                // Pin held until every path below has passed its unbounded
-                // GetOverlappedResult (or established no I/O is pending), so
-                // the kernel never reads a moved buffer mid-write
-                // (SonyEffectWriter.WriteRaw pattern).
-                var pin = GCHandle.Alloc(outBuf, GCHandleType.Pinned);
-                try
+                var ol = new OVERLAPPED { hEvent = ev };
+                bool ok = WriteFile(handle, pin.AddrOfPinnedObject(), (uint)outBuf.Length, IntPtr.Zero, ref ol);
+                if (!ok)
                 {
-                    var ol = new OVERLAPPED { hEvent = ev };
-                    bool ok = WriteFile(handle, pin.AddrOfPinnedObject(), (uint)outBuf.Length, IntPtr.Zero, ref ol);
-                    if (!ok)
+                    int err = Marshal.GetLastWin32Error();
+                    if (err != ERROR_IO_PENDING) return false;
+                    if (WaitForSingleObject(ev, 1000) != WAIT_OBJECT_0)
                     {
-                        int err = Marshal.GetLastWin32Error();
-                        if (err != ERROR_IO_PENDING) return false;
-                        if (WaitForSingleObject(ev, 1000) != WAIT_OBJECT_0)
-                        {
-                            // CancelIo only REQUESTS abort; `ol` is a stack local
-                            // and `outBuf` unpins in the finally, so block until
-                            // the cancelled I/O actually completes before
-                            // unwinding (SonyEffectWriter drain).
-                            CancelIo(handle);
-                            GetOverlappedResult(handle, ref ol, out _, true);
-                            return false;
-                        }
+                        // CancelIo only REQUESTS abort; `ol` is a stack local
+                        // and `outBuf` unpins in the finally, so block until
+                        // the cancelled I/O actually completes before
+                        // unwinding (SonyEffectWriter drain).
+                        CancelIo(handle);
+                        GetOverlappedResult(handle, ref ol, out _, true);
+                        return false;
                     }
-                    return GetOverlappedResult(handle, ref ol, out _, true);
                 }
-                finally { pin.Free(); CloseHandle(ev); }
+                return GetOverlappedResult(handle, ref ol, out _, true);
             }
-            finally { CloseHandle(handle); }
+            finally { pin.Free(); }
         }
 
         /// <summary>Sends a feature report (caller includes the leading
@@ -157,6 +219,16 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(devicePath)) return;
             _outLen.TryRemove(devicePath, out _);
             _featLen.TryRemove(devicePath, out _);
+            if (s_ioCache.TryRemove(devicePath, out var io))
+            {
+                lock (io.Gate)
+                {
+                    if (io.Event != IntPtr.Zero) CloseHandle(io.Event);
+                    if (io.Handle != IntPtr.Zero) CloseHandle(io.Handle);
+                    io.Handle = IntPtr.Zero;
+                    io.Event = IntPtr.Zero;
+                }
+            }
         }
 
         private static int QueryFeatureLen(string devicePath, IntPtr handle)
@@ -249,6 +321,9 @@ namespace PadForge.Common.Input
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern IntPtr CreateEventW(IntPtr lpEventAttributes, bool bManualReset, bool bInitialState, string lpName);
+
+        [DllImport("kernel32.dll")]
+        private static extern bool ResetEvent(IntPtr hEvent);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool CloseHandle(IntPtr hObject);

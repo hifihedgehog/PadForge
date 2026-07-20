@@ -23,6 +23,10 @@ namespace PadForge.Common.Input
         /// gamepad state to <see cref="RetrievedOutputStates"/> for UI display.
         /// Only populates slots that have an active virtual controller.
         /// </summary>
+        // Per-slot one-shot: true once a VC-less slot's retrieved state
+        // has been zeroed; reset whenever the slot publishes real state.
+        private readonly bool[] _retrievedCleared = new bool[MaxPads];
+
         private void RetrieveOutputStates()
         {
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
@@ -40,12 +44,16 @@ namespace PadForge.Common.Input
                         // consumer ignores it for slots that don't.
                         if (SlotControllerTypes[padIndex] == VirtualControllerType.PlayStation)
                             RetrievedTouchpadStates[padIndex] = CombinedTouchpadStates[padIndex];
+                        _retrievedCleared[padIndex] = false;
                     }
-                    else
+                    else if (!_retrievedCleared[padIndex])
                     {
+                        // Transition-only: re-zeroing already-zero state was
+                        // 15 struct clears per tick on a one-slot config.
                         RetrievedOutputStates[padIndex].Clear();
                         RetrievedKbmRawStates[padIndex].Clear();
                         RetrievedTouchpadStates[padIndex] = default;
+                        _retrievedCleared[padIndex] = true;
                     }
                 }
                 catch (Exception ex)

@@ -1019,8 +1019,21 @@ namespace PadForge.Common.Input
         {
             while (_running)
             {
-                FlushPendingMouseInput();
-                Thread.Sleep(2);
+                bool injected = FlushPendingMouseInput();
+                if (injected)
+                {
+                    // Active: keep the 2 ms batch cadence so SendInput
+                    // stays coalesced exactly as before.
+                    Thread.Sleep(2);
+                    continue;
+                }
+                // Idle: park until the first accumulated delta signals.
+                // Disarm-then-recheck prevents the lost-wakeup race; the
+                // timeout is a safety net only.
+                System.Threading.Interlocked.Exchange(ref MouseWorkArmed, 0);
+                if (HasPendingMouseInput())
+                    continue;
+                MouseWorkSignal.WaitOne(500);
             }
             FlushPendingMouseInput(); // drain any final delta on shutdown
         }
@@ -1057,6 +1070,7 @@ namespace PadForge.Common.Input
 
             if (_mouseInjectorThread != null && _mouseInjectorThread.IsAlive)
             {
+                MouseWorkSignal.Set(); // unpark an idle injector for the join
                 _mouseInjectorThread.Join(timeout: TimeSpan.FromSeconds(1));
                 _mouseInjectorThread = null;
             }
@@ -1362,6 +1376,10 @@ namespace PadForge.Common.Input
                             if (SetWaitableTimerEx(hTimer, ref dueTime, 0,
                                 IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, 0))
                                 WaitForSingleObject(hTimer, INFINITE);
+                            else
+                                // Arm failure would otherwise fall through
+                                // to a FULL-remaining busy spin (~a core).
+                                Thread.Sleep(1);
                         }
                     }
                     else if (remaining > spinThresholdTicks && mmTimerEvent != null)
@@ -2321,6 +2339,29 @@ namespace PadForge.Common.Input
         /// the engine walks each row's sources in order every tick and
         /// the first online one wins.</para>
         /// </summary>
+        // F5g gate state (poll thread only).
+        private readonly object[] _motionRowsSetRef = new object[MaxPads];
+        private readonly long[] _motionRowsCheckedTick = new long[MaxPads];
+        private readonly bool[] _motionHasGyroRow = new bool[MaxPads];
+        private readonly bool[] _motionHasAccelRow = new bool[MaxPads];
+
+        /// <summary>Permissive row-presence scan: true when ANY row names
+        /// the target, regardless of sources/online state, so the gate can
+        /// only skip walks that provably return null.</summary>
+        private static bool HasRowForTarget(PadForge.Engine.Data.MappingSet ms, string target)
+        {
+            var rows = ms?.Rows;
+            if (rows == null) return false;
+            int count = rows.Count;
+            for (int i = 0; i < count && i < rows.Count; i++)
+            {
+                var r = rows[i];
+                if (r != null && string.Equals(r.Target, target, System.StringComparison.Ordinal))
+                    return true;
+            }
+            return false;
+        }
+
         private void UpdateMotionSnapshots()
         {
             var settings = SettingsManager.UserSettings;
@@ -2392,10 +2433,28 @@ namespace PadForge.Common.Input
                     && padIndex < SettingsManager.SlotMappingSets.Length)
                     ? SettingsManager.SlotMappingSets[padIndex] : null;
 
-                var gyroSrc  = ResolveMotionSource(ms, MappingSetMigrator.MotionGyroTarget,
-                    requireGyro: true);
-                var accelSrc = ResolveMotionSource(ms, MappingSetMigrator.MotionAccelTarget,
-                    requireGyro: false);
+                // 250 ms row-presence gate (engage-lane cadence): slots
+                // whose MappingSet has no motion rows at all (every
+                // non-Sony slot) skip both per-tick row walks. Permissive
+                // scan (target match only), so a row that exists but is
+                // offline keeps the per-tick failover walk it always had.
+                // A set-reference change re-scans immediately.
+                long nowMotionTick = Environment.TickCount64;
+                if (!ReferenceEquals(_motionRowsSetRef[padIndex], ms)
+                    || nowMotionTick - _motionRowsCheckedTick[padIndex] >= 250)
+                {
+                    _motionRowsSetRef[padIndex] = ms;
+                    _motionRowsCheckedTick[padIndex] = nowMotionTick;
+                    _motionHasGyroRow[padIndex] = HasRowForTarget(ms, MappingSetMigrator.MotionGyroTarget);
+                    _motionHasAccelRow[padIndex] = HasRowForTarget(ms, MappingSetMigrator.MotionAccelTarget);
+                }
+
+                var gyroSrc = _motionHasGyroRow[padIndex]
+                    ? ResolveMotionSource(ms, MappingSetMigrator.MotionGyroTarget, requireGyro: true)
+                    : default;
+                var accelSrc = _motionHasAccelRow[padIndex]
+                    ? ResolveMotionSource(ms, MappingSetMigrator.MotionAccelTarget, requireGyro: false)
+                    : default;
 
                 if (gyroSrc.Ud == null && accelSrc.Ud == null)
                 {

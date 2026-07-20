@@ -909,6 +909,7 @@ namespace PadForge.Engine
                 int numPads = _padFingerCounts.Length;
                 if (state.Touchpads == null || state.Touchpads.Length != numPads)
                     state.Touchpads = new TouchpadInputState[numPads];
+                bool primaryClick = false;
                 for (int p = 0; p < numPads; p++)
                 {
                     int nf = _padFingerCounts[p];
@@ -945,8 +946,11 @@ namespace PadForge.Engine
                     // additional pad clicks through MISC2..MISC6 per the
                     // touchpad-click-as-button recipe; map them here too.
                     if (p == 0)
-                        tp.Clicked = SDL_GetGamepadButton(GameController,
+                    {
+                        primaryClick = SDL_GetGamepadButton(GameController,
                             SDL_GAMEPAD_BUTTON_TOUCHPAD);
+                        tp.Clicked = primaryClick;
+                    }
                     else if (p == 1 && state.Buttons.Length > 17)
                         tp.Clicked = state.Buttons[17]; // MISC2 — second pad click
                     state.Touchpads[p] = tp;
@@ -956,8 +960,9 @@ namespace PadForge.Engine
                 // the gamepad button so existing readers (Touchpad 0 Click
                 // descriptor, virtual-DualSense output) continue to work
                 // unchanged.
-                state.Buttons[16] = SDL_GetGamepadButton(GameController,
-                    SDL_GAMEPAD_BUTTON_TOUCHPAD);
+                // Same value the p==0 branch just read; one SDL crossing
+                // and both readers see one coherent click sample.
+                state.Buttons[16] = primaryClick;
             }
 
             // --- Battery (refresh ~once per 5s; battery doesn't change at poll rate) ---

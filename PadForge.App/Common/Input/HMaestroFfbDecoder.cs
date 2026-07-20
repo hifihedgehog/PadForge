@@ -148,6 +148,7 @@ namespace PadForge.Common.Input
         /// dictionary.</summary>
         public void OnHidFeature(byte reportId, ReadOnlySpan<byte> data)
         {
+            _applyDirty = true;
             if (_controller == null) return;
             if (reportId != HMaestroFfbDescriptor.OutputReportId.SetEffect) return;
             if (data.Length < 1) return;
@@ -200,6 +201,7 @@ namespace PadForge.Common.Input
 
         public void OnHidOutput(byte reportId, ReadOnlySpan<byte> data)
         {
+            _applyDirty = true;
             try
             {
                 lock (_lock)
@@ -253,9 +255,34 @@ namespace PadForge.Common.Input
 
         /// <summary>Aggregate running effects into the supplied Vibration.
         /// Mirrors the v2 ApplyMotorOutput polar-split + dominant-effect-passthrough.</summary>
+        // Recompute gate: game packets mark dirty (OnHidFeature/OnHidOutput
+        // mutate effect state), and finite-duration effects need one apply
+        // at their earliest expiry. Between those points, re-running Apply
+        // recomputed the identical projection under the lock at poll rate.
+        // x64: aligned long reads/writes are atomic; Volatile pairs the
+        // publish with the poll-thread read.
+        private volatile bool _applyDirty = true;
+        private long _nextExpiryTick;   // 0 = none pending
+
+        /// <summary>Poll-tick entry: runs the full Apply only when effect
+        /// state changed or a finite effect's expiry is due. Skipping is
+        /// byte-identical: vib retains the last computed values and
+        /// LastComputedMotors is unchanged.</summary>
+        public void ApplyIfDue(Vibration vib)
+        {
+            if (!_applyDirty)
+            {
+                long exp = System.Threading.Volatile.Read(ref _nextExpiryTick);
+                if (exp == 0 || Environment.TickCount64 < exp) return;
+            }
+            Apply(vib);
+        }
+
         public void Apply(Vibration vib)
         {
             if (vib == null) return;
+            _applyDirty = false;
+            long earliestExpiry = 0;
 
             double leftSum = 0, rightSum = 0;
             uint dominantType = 0;
@@ -282,12 +309,15 @@ namespace PadForge.Common.Input
                     if (es.Duration != 0 && es.Duration != 0xFFFF && es.LoopCount != 0xFF)
                     {
                         long totalMs = (long)es.Duration * Math.Max((byte)1, es.LoopCount);
-                        if (Environment.TickCount64 - es.StartTicks >= totalMs)
+                        long expiresAt = es.StartTicks + totalMs;
+                        if (Environment.TickCount64 >= expiresAt)
                         {
                             es.Running = false;
                             anyExpired = true;
                             continue;
                         }
+                        if (earliestExpiry == 0 || expiresAt < earliestExpiry)
+                            earliestExpiry = expiresAt;
                     }
 
                     double absMag = Math.Abs(es.Magnitude);
@@ -385,6 +415,7 @@ namespace PadForge.Common.Input
                     vib.ConditionAxisCount = 0;
                 }
 
+                System.Threading.Volatile.Write(ref _nextExpiryTick, earliestExpiry);
                 if (anyExpired && !AnyEffectRunningLocked())
                 {
                     _stateFlags &= ~PidStateFlags.EffectPlaying;

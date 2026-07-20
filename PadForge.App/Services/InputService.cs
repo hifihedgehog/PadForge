@@ -2074,6 +2074,11 @@ namespace PadForge.Services
             for (int i = 0; !skipPadVmMirrors && i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
+                // Telemetry-mirror scope: every write below is live display
+                // state, not a setting; see SuppressSettingsDirty.
+                padVm.SuppressSettingsDirty = true;
+                try
+                {
                 var gp = _inputManager.CombinedOutputStates[i];
                 // Two meter feeds:
                 //   FinalVibrationStates           → preview-tab bar (slot max)
@@ -2097,6 +2102,12 @@ namespace PadForge.Services
                     padVm.KbmOutputSnapshot = _inputManager.CombinedKbmRawStates[i];
 
                 // Per-device state for stick/trigger tab previews.
+                // Pad-page gate: these transforms and the gyro readouts
+                // below feed ONLY the Pad page's tabs; when no Pad page is
+                // showing, skip them (the next visible tick refreshes at
+                // 30 Hz). Mirrors the UpdateMappingLiveValues gate.
+                if (IsPadPageVisible)
+                {
                 if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.KeyboardMouse)
                 {
                     // Feed PRE-deadzone KBM values so ProcessStickForPreview applies the
@@ -2219,6 +2230,9 @@ namespace PadForge.Services
                         }
                     }
                 }
+                }
+                }
+                finally { padVm.SuppressSettingsDirty = false; }
             }
 
             // ── gravity low-pass for Player/World Space gyro ──

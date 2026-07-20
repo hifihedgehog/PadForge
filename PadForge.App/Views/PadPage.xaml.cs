@@ -419,13 +419,14 @@ namespace PadForge.Views
                         // = 2 (Triton); original Steam Controller = 3.
                         if (hasTouchpad)
                         {
-                            try
-                            {
-                                var st = ud.Device?.GetCurrentState();
-                                numTouchpads = st?.Touchpads?.Length ?? 1;
-                                if (numTouchpads <= 0) numTouchpads = 1;
-                            }
-                            catch { numTouchpads = 1; }
+                            // Published snapshot, never Device.GetCurrentState:
+                            // the poll thread is the sole reader of the pooled
+                            // wrapper buffers, and a UI-thread read would be a
+                            // second writer into them.
+                            var st = ud.InputState;
+                            numTouchpads = st?.Touchpads?.Length
+                                ?? (ud.CapTouchpadCount > 0 ? ud.CapTouchpadCount : 1);
+                            if (numTouchpads <= 0) numTouchpads = 1;
                         }
 
                         if (ud.VendorId == 0x054C)

@@ -760,9 +760,24 @@ namespace PadForge.Engine
         ///            [6]=Back, [7]=Start, [8]=LS, [9]=RS, [10]=Guide
         ///   POV[0]: D-pad synthesized from gamepad D-pad buttons.
         /// </summary>
+        // ── Pooled state buffers (perf audit 2026-07-20) ──
+        // Two per-wrapper CustomInputState instances, alternated per read.
+        // Retainer footprint (agents, this audit): the published instance
+        // must stay intact for exactly one tick (ud.OldInputState's idle
+        // compare) and no consumer holds it longer, so two buffers
+        // suffice. ResetForReuse restores exact fresh-construction
+        // semantics (reflection-guarded by CustomInputStateMirrorTests),
+        // so decoders that rely on fresh-zero fields stay correct.
+        // Cross-thread preview readers may observe mixed-adjacent-tick
+        // values while a buffer is rewritten, the same acceptance
+        // GyroCalibratorService and TouchpadOverlayDevice document.
+        private PooledInputStatePair _statePool;
+
+        private CustomInputState NextPooledState() => _statePool.Next();
+
         private CustomInputState GetGamepadState()
         {
-            var state = new CustomInputState();
+            var state = NextPooledState();
 
             // --- Axes ---
             // Read standardized gamepad axes and reorder to match the auto-mapping layout:
@@ -880,7 +895,8 @@ namespace PadForge.Engine
             // --- Capsense (stick-top / grip touch, fork API) ---
             if (_capSenseChannels != null)
             {
-                state.CapSense = new bool[SDL_GAMEPAD_CAPSENSE_COUNT];
+                if (state.CapSense == null || state.CapSense.Length != SDL_GAMEPAD_CAPSENSE_COUNT)
+                    state.CapSense = new bool[SDL_GAMEPAD_CAPSENSE_COUNT];
                 for (int c = 0; c < SDL_GAMEPAD_CAPSENSE_COUNT; c++)
                 {
                     if (_capSenseChannels[c])
@@ -892,11 +908,14 @@ namespace PadForge.Engine
             if (HasTouchpad && _padFingerCounts != null)
             {
                 int numPads = _padFingerCounts.Length;
-                state.Touchpads = new TouchpadInputState[numPads];
+                if (state.Touchpads == null || state.Touchpads.Length != numPads)
+                    state.Touchpads = new TouchpadInputState[numPads];
                 for (int p = 0; p < numPads; p++)
                 {
                     int nf = _padFingerCounts[p];
-                    var tp = new TouchpadInputState(nf);
+                    var tp = state.Touchpads[p];
+                    if (tp == null || tp.MaxFingers != nf)
+                        tp = new TouchpadInputState(nf);
                     var currIds = _padCurrentContactIds[p];
                     for (int f = 0; f < nf; f++)
                     {
@@ -1027,7 +1046,7 @@ namespace PadForge.Engine
         /// </summary>
         private CustomInputState GetJoystickState()
         {
-            var state = new CustomInputState();
+            var state = NextPooledState();
 
             // --- Axes ---
             // Raw joystick mode reads every axis the device actually exposes, not

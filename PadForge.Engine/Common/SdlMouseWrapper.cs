@@ -118,9 +118,12 @@ namespace PadForge.Engine
         /// <summary>Pre-allocated buffer for mouse button reads.</summary>
         private readonly bool[] _mouseButtonBuffer = new bool[5];
 
+        // Pooled per-tick state (poll thread is the sole caller).
+        private PooledInputStatePair _statePool;
+
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
-            var state = new CustomInputState();
+            var state = _statePool.Next();
 
             // _rawInputHandle is kept up-to-date by Step 1. When PTP claims the
             // trackpad's mouse collection, Step 1 redirects all mouse wrappers to

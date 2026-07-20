@@ -1455,9 +1455,9 @@ namespace PadForge.Common
                 // the Steam Controller 2026 reports 1 finger per pad, DualSense 2.
                 // Emitting a fixed two-finger block produced a dead "finger 2" on
                 // single-finger pads, so gate each finger on the actual count.
-                CustomInputState tpState = null;
-                try { tpState = ud.Device?.GetCurrentState(); }
-                catch { /* defensive: live read failure -> persisted counts */ }
+                // Published snapshot (see the sole-reader pooling contract);
+                // persisted Cap* counts remain the fallback.
+                CustomInputState tpState = ud.InputState;
 
                 int numPads = (tpState?.Touchpads != null && tpState.Touchpads.Length > 0)
                     ? tpState.Touchpads.Length
@@ -1762,9 +1762,8 @@ namespace PadForge.Common
                 : 2;
             int[] perPadFingers = new int[numPads];
             for (int i = 0; i < numPads; i++) perPadFingers[i] = fallbackFingers;
-            try
             {
-                var state = ud.Device?.GetCurrentState();
+                var state = ud.InputState;
                 if (state?.Touchpads != null && state.Touchpads.Length > 0)
                 {
                     numPads = state.Touchpads.Length;
@@ -1773,7 +1772,6 @@ namespace PadForge.Common
                         perPadFingers[p] = state.Touchpads[p]?.MaxFingers ?? 0;
                 }
             }
-            catch { /* defensive: pad-discovery failures fall back to defaults */ }
 
             // Multi-pad devices (Steam Controller 2026 / Steam Deck /
             // original Steam Controller) need a per-pad disambiguator

@@ -117,6 +117,7 @@ namespace PadForge.Common.Input
 
                     // Atomic reference swap — safe for cross-thread reading.
                     ud.InputState = newState;
+                    ud.InputStateSeq++;
 
                     // Idle disconnect countdown (#162). Tracks last activity at
                     // poll rate, checks the countdown ~1 Hz, and hands the

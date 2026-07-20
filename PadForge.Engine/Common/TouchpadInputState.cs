@@ -69,16 +69,52 @@ namespace PadForge.Engine
         public TouchpadInputState Clone()
         {
             var c = new TouchpadInputState(MaxFingers);
-            c.Clicked = Clicked;
+            CopyInto(c);
+            return c;
+        }
+
+        /// <summary>Deep-copies this pad's state into <paramref name="dst"/>,
+        /// reallocating its finger arrays only on a shape change. The single
+        /// field list shared with <see cref="Clone"/> (which delegates here)
+        /// keeps the two mirrors from drifting.</summary>
+        public void CopyInto(TouchpadInputState dst)
+        {
+            if (dst.MaxFingers != MaxFingers)
+            {
+                dst.MaxFingers = MaxFingers;
+                dst.FingerX = new float[MaxFingers];
+                dst.FingerY = new float[MaxFingers];
+                dst.FingerPressure = new float[MaxFingers];
+                dst.FingerDown = new bool[MaxFingers];
+                dst.FingerContactId = new int[MaxFingers];
+            }
+            dst.Clicked = Clicked;
             if (MaxFingers > 0)
             {
-                Array.Copy(FingerX, c.FingerX, MaxFingers);
-                Array.Copy(FingerY, c.FingerY, MaxFingers);
-                Array.Copy(FingerPressure, c.FingerPressure, MaxFingers);
-                Array.Copy(FingerDown, c.FingerDown, MaxFingers);
-                Array.Copy(FingerContactId, c.FingerContactId, MaxFingers);
+                Array.Copy(FingerX, dst.FingerX, MaxFingers);
+                Array.Copy(FingerY, dst.FingerY, MaxFingers);
+                Array.Copy(FingerPressure, dst.FingerPressure, MaxFingers);
+                Array.Copy(FingerDown, dst.FingerDown, MaxFingers);
+                Array.Copy(FingerContactId, dst.FingerContactId, MaxFingers);
             }
-            return c;
+        }
+
+        /// <summary>Returns this pad to the fresh-constructed state without
+        /// dropping its arrays (buffer-reuse support).</summary>
+        public void ResetForReuse()
+        {
+            Clicked = false;
+            if (MaxFingers > 0)
+            {
+                Array.Clear(FingerX, 0, MaxFingers);
+                Array.Clear(FingerY, 0, MaxFingers);
+                Array.Clear(FingerPressure, 0, MaxFingers);
+                Array.Clear(FingerDown, 0, MaxFingers);
+                // -1 = unassigned, matching the ctor: 0 is a VALID HID
+                // contact id, so a zeroed reset would alias finger 0.
+                for (int i = 0; i < MaxFingers; i++)
+                    FingerContactId[i] = -1;
+            }
         }
     }
 }

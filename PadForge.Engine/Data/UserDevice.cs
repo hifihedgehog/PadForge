@@ -302,6 +302,13 @@ namespace PadForge.Engine.Data
         [System.Xml.Serialization.XmlIgnore]
         public long InputStateSeq;
 
+        /// <summary>Pooled state pair for the PTP touchpad read path,
+        /// which builds states outside any device wrapper (Step 2's
+        /// hDevice branch). Same two-buffer publish contract as the
+        /// wrapper pools.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public PadForge.Engine.PooledInputStatePair PtpStatePool;
+
         /// <summary>Last tick (Environment.TickCount64) this device's input was
         /// non-idle, for the #162 idle disconnect countdown. Written only by the
         /// polling thread (Step 2). 0 = not yet tracked this connection.</summary>

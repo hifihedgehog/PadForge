@@ -3360,6 +3360,9 @@ namespace PadForge
             private readonly Visual _root;
             private readonly System.Windows.Media.Color _color;
             private readonly double _radius, _borderThickness, _pad;
+            private System.Windows.Media.SolidColorBrush _padBrush;
+            private System.Windows.Media.Pen _borderPen;
+            private static T Frozen<T>(T f) where T : System.Windows.Freezable { f.Freeze(); return (T)(object)f; }
             private readonly Func<bool> _shouldRender;
             private EventHandler _onLayout;
 
@@ -3411,14 +3414,23 @@ namespace PadForge
                 // Near-invisible padding rect (alpha 1): widens the adorner's drawn-content
                 // bounds so the DropShadowEffect's blur is not clipped to the border rect.
                 // It casts a negligible shadow of its own.
-                dc.DrawRectangle(new System.Windows.Media.SolidColorBrush(
-                    System.Windows.Media.Color.FromArgb(1, _color.R, _color.G, _color.B)), null,
+                // Frozen, hoisted resources: color and thickness are
+                // ctor-fixed, and LayoutUpdated re-renders this adorner on
+                // every dispatcher layout pass while a pill wears the glow.
+                _padBrush ??= Frozen(new System.Windows.Media.SolidColorBrush(
+                    System.Windows.Media.Color.FromArgb(1, _color.R, _color.G, _color.B)));
+                if (_borderPen == null)
+                {
+                    _borderPen = new System.Windows.Media.Pen(
+                        Frozen(new System.Windows.Media.SolidColorBrush(_color)), _borderThickness);
+                    _borderPen.Freeze();
+                }
+                dc.DrawRectangle(_padBrush, null,
                     new Rect(tl.X - _pad, tl.Y - _pad, w + 2 * _pad, h + 2 * _pad));
 
                 // The ember border: outlines the pill and is the source the effect blooms.
                 double t = _borderThickness / 2;
-                dc.DrawRoundedRectangle(null,
-                    new System.Windows.Media.Pen(new System.Windows.Media.SolidColorBrush(_color), _borderThickness),
+                dc.DrawRoundedRectangle(null, _borderPen,
                     new Rect(tl.X + t, tl.Y + t, w - _borderThickness, h - _borderThickness),
                     _radius, _radius);
             }

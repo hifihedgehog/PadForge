@@ -2154,9 +2154,26 @@ namespace PadForge.Services
                             const double MsToG    = 1.0 / 9.80665;
                             var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
                             var ps = us?.GetPadSetting();
-                            float bp = ps != null ? TryParseFloatPs(ps.GyroBiasPitch, 0f) : 0f;
-                            float by = ps != null ? TryParseFloatPs(ps.GyroBiasYaw,   0f) : 0f;
-                            float br = ps != null ? TryParseFloatPs(ps.GyroBiasRoll,  0f) : 0f;
+                            // Bias memo: parse only when the source string
+                            // references change (settings strings are
+                            // replaced, never mutated), instead of three
+                            // invariant parses per motion pad per tick.
+                            ref var biasMemo = ref _gyroBiasMemo[i];
+                            string bpS = ps?.GyroBiasPitch, byS = ps?.GyroBiasYaw, brS = ps?.GyroBiasRoll;
+                            if (!ReferenceEquals(biasMemo.PitchSrc, bpS)
+                                || !ReferenceEquals(biasMemo.YawSrc, byS)
+                                || !ReferenceEquals(biasMemo.RollSrc, brS))
+                            {
+                                biasMemo.PitchSrc = bpS;
+                                biasMemo.YawSrc = byS;
+                                biasMemo.RollSrc = brS;
+                                biasMemo.Pitch = TryParseFloatPs(bpS, 0f);
+                                biasMemo.Yaw = TryParseFloatPs(byS, 0f);
+                                biasMemo.Roll = TryParseFloatPs(brS, 0f);
+                            }
+                            float bp = biasMemo.Pitch;
+                            float by = biasMemo.Yaw;
+                            float br = biasMemo.Roll;
                             var st = ud.InputState;
                             if (st != null && ud.HasGyro && st.Gyro != null && st.Gyro.Length >= 3)
                             {
@@ -2170,17 +2187,21 @@ namespace PadForge.Services
                                 padVm.AccelLiveY = st.Accel[1] * MsToG;
                                 padVm.AccelLiveZ = st.Accel[2] * MsToG;
                             }
+                            // Label memo keyed on the timestamp string
+                            // reference: the parse + Format re-ran per tick
+                            // for a label that changes on recalibration only.
                             string ts = ps?.GyroCalibratedAtUtc;
-                            if (string.IsNullOrEmpty(ts) ||
-                                !DateTime.TryParse(ts, System.Globalization.CultureInfo.InvariantCulture,
-                                                   System.Globalization.DateTimeStyles.RoundtripKind, out var when))
+                            if (!ReferenceEquals(_gyroBiasMemo[i].LabelSrc, ts))
                             {
-                                padVm.GyroCalibrationLabel = Strings.Instance.Settings_GyroNeverCalibrated;
+                                _gyroBiasMemo[i].LabelSrc = ts;
+                                _gyroBiasMemo[i].Label =
+                                    (string.IsNullOrEmpty(ts) ||
+                                     !DateTime.TryParse(ts, System.Globalization.CultureInfo.InvariantCulture,
+                                                        System.Globalization.DateTimeStyles.RoundtripKind, out var when))
+                                    ? Strings.Instance.Settings_GyroNeverCalibrated
+                                    : string.Format(Strings.Instance.Settings_GyroLastCalibrated_Format, when.ToLocalTime());
                             }
-                            else
-                            {
-                                padVm.GyroCalibrationLabel = string.Format(Strings.Instance.Settings_GyroLastCalibrated_Format, when.ToLocalTime());
-                            }
+                            padVm.GyroCalibrationLabel = _gyroBiasMemo[i].Label;
                         }
                     }
                 }
@@ -2526,23 +2547,23 @@ namespace PadForge.Services
                 {
                     case VirtualControllerType.PlayStation:
                         playstationCount++;
-                        slot.TypeInstanceLabel = playstationCount.ToString();
+                        slot.TypeInstanceLabel = LiveValueString(playstationCount);
                         break;
                     case VirtualControllerType.Extended:
                         extendedCount++;
-                        slot.TypeInstanceLabel = extendedCount.ToString();
+                        slot.TypeInstanceLabel = LiveValueString(extendedCount);
                         break;
                     case VirtualControllerType.Midi:
                         midiCount++;
-                        slot.TypeInstanceLabel = midiCount.ToString();
+                        slot.TypeInstanceLabel = LiveValueString(midiCount);
                         break;
                     case VirtualControllerType.Nintendo:
                         nintendoCount++;
-                        slot.TypeInstanceLabel = nintendoCount.ToString();
+                        slot.TypeInstanceLabel = LiveValueString(nintendoCount);
                         break;
                     default:
                         xboxCount++;
-                        slot.TypeInstanceLabel = xboxCount.ToString();
+                        slot.TypeInstanceLabel = LiveValueString(xboxCount);
                         break;
                 }
             }
@@ -3675,20 +3696,48 @@ namespace PadForge.Services
                 // MotionSnapshot. Gyro in deg/s, accel in g.
                 if (target == MappingSetMigrator.MotionGyroTarget)
                 {
-                    mapping.CurrentValueText = snap.HasMotion
-                        ? string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                            "P:{0,4:F0}° Y:{1,4:F0}° R:{2,4:F0}°",
-                            snap.GyroPitch, snap.GyroYaw, snap.GyroRoll)
-                        : string.Empty;
+                    // Format only when the ROUNDED display values change:
+                    // the params array + boxing + string ran per tick on
+                    // sensor noise that rounds to the same degrees.
+                    if (!snap.HasMotion)
+                    {
+                        mapping.CurrentValueText = string.Empty;
+                    }
+                    else
+                    {
+                        int rp = (int)System.Math.Round(snap.GyroPitch);
+                        int ry = (int)System.Math.Round(snap.GyroYaw);
+                        int rr = (int)System.Math.Round(snap.GyroRoll);
+                        ref var memo = ref _motionRowMemo[padIndex];
+                        if (memo.GyroText == null || rp != memo.P || ry != memo.Y || rr != memo.R)
+                        {
+                            memo.P = rp; memo.Y = ry; memo.R = rr;
+                            memo.GyroText = string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                                "P:{0,4:F0}° Y:{1,4:F0}° R:{2,4:F0}°",
+                                snap.GyroPitch, snap.GyroYaw, snap.GyroRoll);
+                        }
+                        mapping.CurrentValueText = memo.GyroText;
+                    }
                     mapping.IsInputActive = false;
                     continue;
                 }
                 if (target == MappingSetMigrator.MotionAccelTarget)
                 {
-                    mapping.CurrentValueText = snap.HasMotion
-                        ? string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                    // Same rounded-display memo as the gyro row (0.01 g grain).
+                    int qx = (int)System.Math.Round(snap.AccelX * 100);
+                    int qy = (int)System.Math.Round(snap.AccelY * 100);
+                    int qz = (int)System.Math.Round(snap.AccelZ * 100);
+                    ref var amemo = ref _motionRowMemo[padIndex];
+                    if (snap.HasMotion
+                        && (amemo.AccelText == null || qx != amemo.AX || qy != amemo.AY || qz != amemo.AZ))
+                    {
+                        amemo.AX = qx; amemo.AY = qy; amemo.AZ = qz;
+                        amemo.AccelText = string.Format(System.Globalization.CultureInfo.InvariantCulture,
                             "X:{0,5:+0.00;-0.00}g Y:{1,5:+0.00;-0.00}g Z:{2,5:+0.00;-0.00}g",
-                            snap.AccelX, snap.AccelY, snap.AccelZ)
+                            snap.AccelX, snap.AccelY, snap.AccelZ);
+                    }
+                    mapping.CurrentValueText = snap.HasMotion
+                        ? amemo.AccelText
                         : string.Empty;
                     mapping.IsInputActive = false;
                     continue;
@@ -3700,7 +3749,7 @@ namespace PadForge.Services
 
                 if (combined.HasValue)
                 {
-                    mapping.CurrentValueText = combined.Value.ToString();
+                    mapping.CurrentValueText = LiveValueString(combined.Value);
                     // Rowfire (#175): discrete targets fire on any nonzero,
                     // axes need a deadband so resting sticks stay dark.
                     mapping.IsInputActive = mapping.IsTargetDiscrete
@@ -3716,7 +3765,7 @@ namespace PadForge.Services
                     continue;
                 }
                 int fallbackValue = ReadMappedValue(fallbackState, mapping.SourceDescriptor);
-                mapping.CurrentValueText = fallbackValue.ToString();
+                mapping.CurrentValueText = LiveValueString(fallbackValue);
                 mapping.IsInputActive = mapping.IsTargetDiscrete
                     ? fallbackValue != 0
                     : Math.Abs(fallbackValue) > 1500;
@@ -3831,7 +3880,7 @@ namespace PadForge.Services
                     string rest = target.Substring("RawPov".Length);
                     int dirIdx = -1;
                     string dir = "";
-                    foreach (var d in new[] { "Up", "Down", "Left", "Right" })
+                    foreach (var d in s_povDirections)
                     {
                         if (rest.EndsWith(d, StringComparison.Ordinal))
                         { dir = d; dirIdx = rest.Length - d.Length; break; }
@@ -4003,6 +4052,47 @@ namespace PadForge.Services
         /// directly to PadSetting objects so the engine picks them up immediately.
         /// Called at 30Hz on the UI thread. String reference writes are atomic in .NET.
         /// </summary>
+        /// <summary>Cached strings for the mapping grid's live-value
+        /// column. The 30 Hz refresh called int.ToString per row per tick
+        /// even when the value repeats; MappingItem's setter already stops
+        /// PropertyChanged on same-string, but the allocation happened
+        /// first. Covers the full observed range lazily, capped.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, string> s_liveValueStrings = new();
+        /// <summary>Memoized Guid.ToString for the per-tick preview feeds
+        /// (device guids are a small stable set).</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, string> s_guidStrings = new();
+        private static string GuidString(Guid g)
+        {
+            if (s_guidStrings.TryGetValue(g, out var cached)) return cached;
+            string str = g.ToString();
+            if (s_guidStrings.Count < 512) s_guidStrings[g] = str;
+            return str;
+        }
+
+        private static string LiveValueString(int v)
+        {
+            if (s_liveValueStrings.TryGetValue(v, out var cached)) return cached;
+            string str = v.ToString();
+            if (s_liveValueStrings.Count < 8192) s_liveValueStrings[v] = str;
+            return str;
+        }
+
+        private static readonly string[] s_povDirections = { "Up", "Down", "Left", "Right" };
+
+        private struct MotionRowMemo
+        {
+            public int P, Y, R, AX, AY, AZ;
+            public string GyroText, AccelText;
+        }
+        private readonly MotionRowMemo[] _motionRowMemo = new MotionRowMemo[InputManager.MaxPads];
+
+        private struct GyroUiMemo
+        {
+            public string PitchSrc, YawSrc, RollSrc, LabelSrc, Label;
+            public float Pitch, Yaw, Roll;
+        }
+        private readonly GyroUiMemo[] _gyroBiasMemo = new GyroUiMemo[InputManager.MaxPads];
+
         private bool _lastAudioRumbleAnyEnabled;
         private readonly Guid[] _lastSyncedSettingsGuid = new Guid[InputManager.MaxPads];
         private readonly PadSetting[] _lastSyncedPadSetting = new PadSetting[InputManager.MaxPads];
@@ -12434,7 +12524,7 @@ namespace PadForge.Services
                     ? SettingsManager.SlotMappingSets[us.MapTo] : null;
                 if (ms != null && devState != null)
                 {
-                    string g = instanceGuid.ToString();
+                    string g = GuidString(instanceGuid); // memoized: constant per device, was a fresh 36-char string per pad per tick
                     gp.LeftTrigger  = InputManager.EvaluatePerDeviceTriggerPreview(devState, ms, g, "LeftTrigger",  us.MapTo);
                     gp.RightTrigger = InputManager.EvaluatePerDeviceTriggerPreview(devState, ms, g, "RightTrigger", us.MapTo);
                 }
@@ -12461,7 +12551,7 @@ namespace PadForge.Services
                 int slot = us.MapTo;
                 MappingSet ms = (slot >= 0 && slot < SettingsManager.SlotMappingSets.Length)
                     ? SettingsManager.SlotMappingSets[slot] : null;
-                string mouseGuid = instanceGuid.ToString();
+                string mouseGuid = GuidString(instanceGuid);
                 gp.ThumbLX = MouseCursorStickValue(ms, "LeftThumbAxisX", mouseGuid);
                 gp.ThumbLY = MouseCursorStickValue(ms, "LeftThumbAxisY", mouseGuid);
                 gp.ThumbRX = MouseCursorStickValue(ms, "RightThumbAxisX", mouseGuid);

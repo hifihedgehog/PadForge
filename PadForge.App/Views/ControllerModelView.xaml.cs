@@ -196,7 +196,22 @@ namespace PadForge.Views
                 return;
             }
 
-            // Any controller state property — mark dirty for next render frame
+            // High-churn readout properties the 3D render never consumes
+            // (gyro noise re-armed the full refresh every tick while the
+            // preview was visible with a motion pad at rest).
+            switch (e.PropertyName)
+            {
+                case nameof(PadViewModel.GyroLiveRatePitch):
+                case nameof(PadViewModel.GyroLiveRateYaw):
+                case nameof(PadViewModel.GyroLiveRateRoll):
+                case nameof(PadViewModel.AccelLiveX):
+                case nameof(PadViewModel.AccelLiveY):
+                case nameof(PadViewModel.AccelLiveZ):
+                    return;
+            }
+
+            // Any other controller state property marks dirty for the
+            // next render frame.
             _dirty = true;
         }
 
@@ -541,7 +556,7 @@ namespace PadForge.Views
                           && _currentModel.HighlightMaterials.TryGetValue(thumbRing, out var hlMat))
                 {
                     float factor = Math.Max(Math.Abs(normX), Math.Abs(normY));
-                    geo.Material = GradientHighlight(defMat, hlMat, factor);
+                    geo.Material = GradientHighlight(geo, defMat, hlMat, factor);
                 }
                 else if (_currentModel.DefaultMaterials.TryGetValue(thumbRing, out var def))
                 {
@@ -553,20 +568,40 @@ namespace PadForge.Views
             float angleX = maxAngleDeg * normX;
             float angleY = -maxAngleDeg * normY;
 
-            var rotX = new RotateTransform3D(
-                new AxisAngleRotation3D(new Vector3D(0, 0, 1), angleX),
-                new Point3D(rotationPoint.X, rotationPoint.Y, rotationPoint.Z));
-            var rotY = new RotateTransform3D(
-                new AxisAngleRotation3D(new Vector3D(1, 0, 0), angleY),
-                new Point3D(rotationPoint.X, rotationPoint.Y, rotationPoint.Z));
-
-            var group = new Transform3DGroup();
-            group.Children.Add(rotX);
-            group.Children.Add(rotY);
-
-            thumbRing.Transform = group;
-            if (thumb != null) thumb.Transform = group;
+            // Retained per-stick transform: allocating the 5-object
+            // transform graph per dirty frame was pure churn. Mutate the
+            // two angles instead; skip when unchanged.
+            if (!_stickTransforms3D.TryGetValue(thumbRing, out var st))
+            {
+                var ax = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 0);
+                var ay = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 0);
+                var group = new Transform3DGroup();
+                group.Children.Add(new RotateTransform3D(ax,
+                    new Point3D(rotationPoint.X, rotationPoint.Y, rotationPoint.Z)));
+                group.Children.Add(new RotateTransform3D(ay,
+                    new Point3D(rotationPoint.X, rotationPoint.Y, rotationPoint.Z)));
+                st = (group, ax, ay, float.NaN, float.NaN);
+                _stickTransforms3D[thumbRing] = st;
+                thumbRing.Transform = group;
+                if (thumb != null) thumb.Transform = group;
+            }
+            if (st.lastX != angleX || st.lastY != angleY)
+            {
+                st.ax.Angle = angleX;
+                st.ay.Angle = angleY;
+                _stickTransforms3D[thumbRing] = (st.group, st.ax, st.ay, angleX, angleY);
+                // Reassert in case the model was rebuilt around the cache.
+                if (!ReferenceEquals(thumbRing.Transform, st.group))
+                {
+                    thumbRing.Transform = st.group;
+                    if (thumb != null) thumb.Transform = st.group;
+                }
+            }
         }
+
+        private readonly System.Collections.Generic.Dictionary<Model3DGroup,
+            (Transform3DGroup group, AxisAngleRotation3D ax, AxisAngleRotation3D ay, float lastX, float lastY)>
+            _stickTransforms3D = new();
 
         // ─────────────────────────────────────────────
         //  Trigger rotation + gradient (adapted from HC UpdateShoulderButtons)
@@ -592,7 +627,7 @@ namespace PadForge.Views
                 if (value > 0 && _currentModel.DefaultMaterials.TryGetValue(triggerModel, out var defMat)
                               && _currentModel.HighlightMaterials.TryGetValue(triggerModel, out var hlMat))
                 {
-                    geo.Material = GradientHighlight(defMat, hlMat, value);
+                    geo.Material = GradientHighlight(geo, defMat, hlMat, value);
                 }
                 else if (_currentModel.DefaultMaterials.TryGetValue(triggerModel, out var def))
                 {
@@ -615,7 +650,17 @@ namespace PadForge.Views
         //  Gradient color interpolation (from HC)
         // ─────────────────────────────────────────────
 
-        private static DiffuseMaterial GradientHighlight(Material defaultMaterial, Material highlightMaterial, float factor)
+        // Per-element retained highlight material (keyed weakly on the
+        // GeometryModel3D so rebuilt models collect): the per-frame
+        // DiffuseMaterial + SolidColorBrush pair was allocated for every
+        // deflected stick / pulled trigger every dirty frame. The brush we
+        // own is never frozen, so mutating its Color is the supported
+        // dependent-animation shape.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
+            s_highlightMaterials = new();
+
+        private static DiffuseMaterial GradientHighlight(GeometryModel3D owner,
+            Material defaultMaterial, Material highlightMaterial, float factor)
         {
             factor = Math.Clamp(factor, 0f, 1f);
             // Cast-proof (#175 regression fix): a themed material may carry a
@@ -629,7 +674,10 @@ namespace PadForge.Views
             byte g = (byte)(startColor.G * (1 - factor) + endColor.G * factor);
             byte b = (byte)(startColor.B * (1 - factor) + endColor.B * factor);
 
-            return new DiffuseMaterial(new SolidColorBrush(Color.FromArgb(a, r, g, b)));
+            var mat = s_highlightMaterials.GetValue(owner,
+                _ => new DiffuseMaterial(new SolidColorBrush()));
+            ((SolidColorBrush)mat.Brush).Color = Color.FromArgb(a, r, g, b);
+            return mat;
         }
 
         private static Color BrushColor(Brush brush) => brush switch

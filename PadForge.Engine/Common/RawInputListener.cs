@@ -306,6 +306,13 @@ namespace PadForge.Engine
 
         /// <summary>Per-keyboard key state arrays, keyed by hDevice.</summary>
         private static readonly ConcurrentDictionary<IntPtr, bool[]> _keyboardStates = new();
+        /// <summary>Values snapshot for the per-poll aggregate merge:
+        /// ConcurrentDictionary's enumerator is a class, so the foreach in
+        /// GetKeyboardState allocated one per poll per aggregate reader
+        /// (~200 KB/s in the allocation trace). Rebuilt on device add
+        /// (GetOrAdd miss); device removal never shrinks these maps at
+        /// runtime, matching the dictionary's own lifetime.</summary>
+        private static volatile bool[][] _keyboardStatesValues = Array.Empty<bool[]>();
 
         /// <summary>Per-mouse state, keyed by hDevice.</summary>
         private static readonly ConcurrentDictionary<IntPtr, MouseDeviceState> _mouseStates = new();
@@ -329,6 +336,8 @@ namespace PadForge.Engine
         /// edges), so each report rebuilds the device's array from scratch.
         /// Getting this wrong latches every press forever.</summary>
         private static readonly ConcurrentDictionary<IntPtr, bool[]> _consumerStates = new();
+        /// <summary>Same aggregate-merge snapshot as _keyboardStatesValues.</summary>
+        private static volatile bool[][] _consumerStatesValues = Array.Empty<bool[]>();
 
         /// <summary>Per-handle preparsed HID data for HidP_GetUsages, fetched
         /// once on first report (mirrors PrecisionTouchpadReader's cache).
@@ -394,8 +403,10 @@ namespace PadForge.Engine
             _thread = null;
 
             _keyboardStates.Clear();
+            _keyboardStatesValues = Array.Empty<bool[]>();
             _mouseStates.Clear();
             _consumerStates.Clear();
+            _consumerStatesValues = Array.Empty<bool[]>();
             _consumerMaxUsages.Clear();
             _isConsumerHandle.Clear();
             // Free the preparsed buffers ONLY when the pump thread confirmed
@@ -960,9 +971,10 @@ namespace PadForge.Engine
 
             if (hDevice == AggregateConsumerHandle)
             {
-                foreach (var kvp in _consumerStates)
+                var states = _consumerStatesValues;
+                for (int k = 0; k < states.Length; k++)
                 {
-                    bool[] state = kvp.Value;
+                    bool[] state = states[k];
                     int m = Math.Min(n, state.Length);
                     for (int i = 0; i < m; i++)
                     {
@@ -989,9 +1001,10 @@ namespace PadForge.Engine
             if (hDevice == AggregateKeyboardHandle)
             {
                 // Merge all keyboard states: any key down on any device → true.
-                foreach (var kvp in _keyboardStates)
+                var states = _keyboardStatesValues;
+                for (int k = 0; k < states.Length; k++)
                 {
-                    bool[] state = kvp.Value;
+                    bool[] state = states[k];
                     for (int i = 0; i < n; i++)
                     {
                         if (state[i])
@@ -1234,6 +1247,8 @@ namespace PadForge.Engine
                         bool isDown = (kb.Flags & RI_KEY_BREAK) == 0;
                         bool isE0 = (kb.Flags & RI_KEY_E0) != 0;
                         bool[] state = _keyboardStates.GetOrAdd(hDevice, _ => new bool[256]);
+                        if (_keyboardStatesValues.Length != _keyboardStates.Count)
+                            _keyboardStatesValues = System.Linq.Enumerable.ToArray(_keyboardStates.Values);
 
                         // Translate generic modifier VKeys to left/right specific
                         // codes using hardcoded scan code + E0 flag lookup.
@@ -1351,6 +1366,8 @@ namespace PadForge.Engine
 
             bool[] state = _consumerStates.GetOrAdd(
                 hDevice, _ => new bool[ConsumerUsageTable.TotalSlots]);
+            if (_consumerStatesValues.Length != _consumerStates.Count)
+                _consumerStatesValues = System.Linq.Enumerable.ToArray(_consumerStates.Values);
 
             // Size the scratch buffer to what HidP says this collection can
             // report at once (min 64), so an oversized frame is parsed, not

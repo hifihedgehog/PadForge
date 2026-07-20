@@ -845,21 +845,20 @@ namespace PadForge.Engine
             // into POV[0] above). SDL_GetGamepadButton returns false on
             // devices that lack a given button, so this is harmless on a
             // plain Xbox 360 / DualShock 4.
-            state.Buttons[11] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC1);
-            state.Buttons[12] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1);
-            state.Buttons[13] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_LEFT_PADDLE1);
-            state.Buttons[14] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2);
-            state.Buttons[15] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_LEFT_PADDLE2);
-
-            // Buttons[16] is reserved for SDL_GAMEPAD_BUTTON_TOUCHPAD; written
-            // by the touchpad section below when HasTouchpad is true. Stays
-            // false on non-touchpad devices.
-
-            state.Buttons[17] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC2);
-            state.Buttons[18] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC3);
-            state.Buttons[19] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC4);
-            state.Buttons[20] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC5);
-            state.Buttons[21] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC6);
+            // Extended positions 11-21, gated by the open-time presence
+            // probe: reading an absent position returned constant false at
+            // ~10 crossings per pad per tick. ResetForReuse zeroed the
+            // buttons, so skipping absent positions is bit-identical.
+            // Position 16 is reserved for SDL_GAMEPAD_BUTTON_TOUCHPAD;
+            // written by the touchpad section below when HasTouchpad is
+            // true, false otherwise.
+            var extPresent = _extButtonPresent;
+            for (int pos = 11; pos <= 21; pos++)
+            {
+                if (pos == 16) continue;
+                if (extPresent != null && !extPresent[pos]) continue;
+                state.Buttons[pos] = SDL_GetGamepadButton(GameController, GamepadButtonForPosition(pos));
+            }
 
             // --- Extra raw buttons ---
             // Append raw joystick buttons beyond the 22 standardized gamepad
@@ -1824,6 +1823,10 @@ namespace PadForge.Engine
         /// (matches <see cref="GetGamepadState"/>'s passthrough loop).
         /// Non-gamepad devices get a dense 0..NumButtons-1 list.
         /// </summary>
+        /// <summary>Open-time presence of extended positions 11-21 (from
+        /// the SDL_GamepadHasButton probe); null before the probe runs.</summary>
+        private bool[] _extButtonPresent;
+
         private int[] ComputeSupportedButtonIndices()
         {
             int max = Math.Min(NumButtons, CustomInputState.MaxButtons);
@@ -1834,11 +1837,15 @@ namespace PadForge.Engine
                 for (int i = 0; i < 11 && i < max; i++)
                     list.Add(i);
 
+                _extButtonPresent = new bool[22];
                 for (int i = 11; i <= 21 && i < max; i++)
                 {
                     int sdlButton = GamepadButtonForPosition(i);
                     if (sdlButton >= 0 && SDL_GamepadHasButton(GameController, sdlButton))
+                    {
                         list.Add(i);
+                        _extButtonPresent[i] = true;
+                    }
                 }
 
                 int rawCount = Math.Min(RawButtonCount, CustomInputState.MaxButtons);

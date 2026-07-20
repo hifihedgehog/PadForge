@@ -2574,7 +2574,7 @@ namespace PadForge.Common.Input
         private static extern IntPtr CreateWaitableTimerExW(
             IntPtr lpTimerAttributes, IntPtr lpTimerName, uint dwFlags, uint dwDesiredAccess);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32.dll", SetLastError = false)]
         private static extern bool SetWaitableTimerEx(
             IntPtr hTimer, ref long lpDueTime, int lPeriod,
             IntPtr pfnCompletionRoutine, IntPtr lpArgToCompletionRoutine,

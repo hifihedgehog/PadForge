@@ -94,7 +94,22 @@ namespace PadForge.Views
             }
 
             var menu = snap.Menu;
-            string sig = GeometrySig(menu);
+            // The sig exists to detect IN-PLACE menu mutation (config edits
+            // while displayed). Rebuilding the StringBuilder+string per
+            // 30 Hz tick was steady churn during gameplay menus; a 250 ms
+            // recheck keeps mutation detection while cutting it 8x. A menu
+            // REFERENCE change still rebuilds immediately.
+            long sigNow = Environment.TickCount64;
+            string sig;
+            if (!ReferenceEquals(menu, _menu) || sigNow - _sigCheckedTick >= 250)
+            {
+                sig = GeometrySig(menu);
+                _sigCheckedTick = sigNow;
+            }
+            else
+            {
+                sig = _geometrySig;
+            }
             if (!ReferenceEquals(menu, _menu) || sig != _geometrySig)
             {
                 _menu = menu;
@@ -115,6 +130,8 @@ namespace PadForge.Views
 
             SetHovered(snap.HoveredIndex);
         }
+
+        private long _sigCheckedTick;
 
         private static string GeometrySig(MenuDefinitionEntry m)
         {

@@ -483,6 +483,25 @@ namespace PadForge.Common.Input
             return result;
         }
 
+        /// <summary>'|' OR-descriptor split memo: legacy composed
+        /// descriptors re-split per poll on un-resaved configs. Parts are
+        /// pre-trimmed (every consumer immediately Trim()ed the raw
+        /// parts); empties are KEPT so "A||B" evaluates the same three
+        /// legs it always has. Same cap discipline as the descriptor
+        /// cache above.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<
+            string, string[]> _pipePartsCache = new();
+
+        private static string[] PipePartsCached(string descriptor)
+        {
+            if (_pipePartsCache.TryGetValue(descriptor, out var parts)) return parts;
+            parts = descriptor.Split('|');
+            for (int i = 0; i < parts.Length; i++) parts[i] = parts[i].Trim();
+            if (_pipePartsCache.Count < DescriptorCacheCap)
+                _pipePartsCache[descriptor] = parts;
+            return parts;
+        }
+
         private static MappingDescriptor ParseDescriptorCore(string descriptor)
         {
             var result = new MappingDescriptor();
@@ -576,9 +595,9 @@ namespace PadForge.Common.Input
             // Support multiple descriptors separated by '|' (OR logic).
             if (descriptor.Contains('|'))
             {
-                foreach (string part in descriptor.Split('|'))
+                foreach (string part in PipePartsCached(descriptor))
                 {
-                    if (MapToButtonPressedSingle(state, part.Trim(), deviceGuid, slotIndex, deadZonePercent, globalThresholdPercent, bidirectional))
+                    if (MapToButtonPressedSingle(state, part, deviceGuid, slotIndex, deadZonePercent, globalThresholdPercent, bidirectional))
                         return true;
                 }
                 return false;
@@ -1134,9 +1153,9 @@ namespace PadForge.Common.Input
             // Support multiple descriptors separated by '|'.
             if (descriptor.Contains('|'))
             {
-                foreach (string part in descriptor.Split('|'))
+                foreach (string part in PipePartsCached(descriptor))
                 {
-                    MapDPadFromPovSingle(state, part.Trim(), ref gp);
+                    MapDPadFromPovSingle(state, part, ref gp);
                 }
                 return;
             }
@@ -1190,9 +1209,9 @@ namespace PadForge.Common.Input
             if (descriptor.Contains('|'))
             {
                 ushort best = 0;
-                foreach (string part in descriptor.Split('|'))
+                foreach (string part in PipePartsCached(descriptor))
                 {
-                    ushort val = MapToTriggerSingle(state, part.Trim());
+                    ushort val = MapToTriggerSingle(state, part);
                     if (val > best)
                         best = val;
                 }
@@ -1264,9 +1283,9 @@ namespace PadForge.Common.Input
             if (descriptor.Contains('|'))
             {
                 short best = 0;
-                foreach (string part in descriptor.Split('|'))
+                foreach (string part in PipePartsCached(descriptor))
                 {
-                    short val = MapToThumbAxisSingle(state, part.Trim(), deviceGuid, slotIndex);
+                    short val = MapToThumbAxisSingle(state, part, deviceGuid, slotIndex);
                     if (Math.Abs(val) > Math.Abs(best))
                         best = val;
                 }
@@ -2873,7 +2892,7 @@ namespace PadForge.Common.Input
             {
                 // Try a "Touchpad N Finger M X|Y" parse; default to the
                 // expected slot (physicalFingerIdx, X or Y).
-                var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var parts = PadForge.Engine.Common.Mapping.SourceCoercion.SplitTokensCached(descriptor);
                 int padIdx = 0;
                 int fingerIdx = physicalFingerIdx;
                 int axisOffset = isY ? 1 : 0;

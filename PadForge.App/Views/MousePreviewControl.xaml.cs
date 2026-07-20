@@ -225,6 +225,10 @@ namespace PadForge.Views
             MouseCanvas.Height = mH + 6;
         }
 
+        // Retained scroll-arrow transforms (a fresh ScaleTransform per
+        // rendered frame while scrolling was Freezable churn).
+        private ScaleTransform _scrollUpScale, _scrollDownScale;
+
         private void OnRendering(object sender, EventArgs e)
         {
             if (!_built) return;
@@ -278,7 +282,9 @@ namespace PadForge.Views
             {
                 _scrollUpArrow.Fill = AccentBrush;
                 _scrollUpArrow.Opacity = 0.3 + 0.7 * absScroll;
-                _scrollUpArrow.RenderTransform = new ScaleTransform(1.0 + 0.4 * absScroll, 1.0 + 0.4 * absScroll, MC, 7);
+                _scrollUpScale ??= new ScaleTransform(1, 1, MC, 7);
+                _scrollUpScale.ScaleX = _scrollUpScale.ScaleY = 1.0 + 0.4 * absScroll;
+                _scrollUpArrow.RenderTransform = _scrollUpScale;
                 SetGlow(_scrollUpArrow, EmberGlowSmall);
                 _scrollDownArrow.Fill = DimBrush;
                 _scrollDownArrow.Opacity = 1.0;
@@ -289,7 +295,9 @@ namespace PadForge.Views
             {
                 _scrollDownArrow.Fill = AccentBrush;
                 _scrollDownArrow.Opacity = 0.3 + 0.7 * absScroll;
-                _scrollDownArrow.RenderTransform = new ScaleTransform(1.0 + 0.4 * absScroll, 1.0 + 0.4 * absScroll, MC, swBotConst - 7);
+                _scrollDownScale ??= new ScaleTransform(1, 1, MC, swBotConst - 7);
+                _scrollDownScale.ScaleX = _scrollDownScale.ScaleY = 1.0 + 0.4 * absScroll;
+                _scrollDownArrow.RenderTransform = _scrollDownScale;
                 SetGlow(_scrollDownArrow, EmberGlowSmall);
                 _scrollUpArrow.Fill = DimBrush;
                 _scrollUpArrow.Opacity = 1.0;

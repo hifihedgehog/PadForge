@@ -85,6 +85,9 @@ namespace PadForge.Common.Input
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliseconds);
 
+        [DllImport("kernel32.dll")]
+        private static extern bool ResetEvent(IntPtr hEvent);
+
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern IntPtr CreateEventW(IntPtr lpEventAttributes, bool bManualReset, bool bInitialState, string lpName);
 
@@ -189,64 +192,107 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Per-path cached device handle + manual-reset event.
+        /// The per-write open+event+close cycle cost ~1 ms per dispatch at
+        /// 30 Hz per animated pad (the dispatcher's own budget comment).
+        /// FALLBACK-SAFE by construction: any failure on the cached handle
+        /// closes it and re-runs the exact legacy open-write path for the
+        /// same write, so a stale handle (sleep, replug) costs one retry,
+        /// never a lost write beyond what the legacy path would lose. The
+        /// per-entry gate serializes same-path writers (dispatch timers vs
+        /// Static-mode PropertyChanged dispatch), which HID report
+        /// atomicity previously provided implicitly.</summary>
+        private sealed class CachedIo
+        {
+            public IntPtr Handle;
+            public IntPtr Event;
+            public readonly object Gate = new();
+        }
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, CachedIo> s_ioCache =
+            new(StringComparer.OrdinalIgnoreCase);
+
         private static bool WriteRaw(string devicePath, byte[] buf)
         {
-            // hidapi (which OpenRGB uses) opens with FILE_FLAG_OVERLAPPED,
-            // GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE.
-            // Match that exactly.
-            IntPtr handle = CreateFileW(
-                devicePath,
-                GENERIC_READ | GENERIC_WRITE,
-                FILE_SHARE_READ | FILE_SHARE_WRITE,
-                IntPtr.Zero,
-                OPEN_EXISTING,
-                FILE_FLAG_OVERLAPPED,
-                IntPtr.Zero);
+            var io = s_ioCache.GetOrAdd(devicePath, _ => new CachedIo());
+            lock (io.Gate)
+            {
+                if (io.Handle != IntPtr.Zero)
+                {
+                    if (WriteOnHandle(io.Handle, io.Event, buf)) return true;
+                    // Stale handle: drop the cache and fall through to the
+                    // legacy path for THIS write.
+                    CloseHandle(io.Event);
+                    CloseHandle(io.Handle);
+                    io.Handle = IntPtr.Zero;
+                    io.Event = IntPtr.Zero;
+                }
 
-            if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
+                // hidapi (which OpenRGB uses) opens with FILE_FLAG_OVERLAPPED,
+                // GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE.
+                // Match that exactly.
+                IntPtr handle = CreateFileW(
+                    devicePath,
+                    GENERIC_READ | GENERIC_WRITE,
+                    FILE_SHARE_READ | FILE_SHARE_WRITE,
+                    IntPtr.Zero,
+                    OPEN_EXISTING,
+                    FILE_FLAG_OVERLAPPED,
+                    IntPtr.Zero);
 
+                if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
+
+                IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
+                if (ev == IntPtr.Zero) { CloseHandle(handle); return false; }
+
+                bool ok = WriteOnHandle(handle, ev, buf);
+                if (ok)
+                {
+                    io.Handle = handle;
+                    io.Event = ev;
+                    return true;
+                }
+                CloseHandle(ev);
+                CloseHandle(handle);
+                return false;
+            }
+        }
+
+        private static bool WriteOnHandle(IntPtr handle, IntPtr ev, byte[] buf)
+        {
+            // Manual-reset event: clear before reuse.
+            ResetEvent(ev);
+
+            // Pin held until every path below has passed its unbounded
+            // GetOverlappedResult (or established no I/O is pending), so
+            // the kernel never reads a moved buffer mid-write.
+            var pin = GCHandle.Alloc(buf, GCHandleType.Pinned);
             try
             {
-                IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
-                if (ev == IntPtr.Zero) return false;
-
-                // Pin held until every path below has passed its unbounded
-                // GetOverlappedResult (or established no I/O is pending), so
-                // the kernel never reads a moved buffer mid-write.
-                var pin = GCHandle.Alloc(buf, GCHandleType.Pinned);
-                try
+                var ol = new OVERLAPPED { hEvent = ev };
+                bool ok = WriteFile(handle, pin.AddrOfPinnedObject(), (uint)buf.Length, IntPtr.Zero, ref ol);
+                if (!ok)
                 {
-                    var ol = new OVERLAPPED { hEvent = ev };
-                    bool ok = WriteFile(handle, pin.AddrOfPinnedObject(), (uint)buf.Length, IntPtr.Zero, ref ol);
-                    if (!ok)
+                    int err = Marshal.GetLastWin32Error();
+                    if (err != ERROR_IO_PENDING) return false;
+                    if (WaitForSingleObject(ev, 1000) != WAIT_OBJECT_0)
                     {
-                        int err = Marshal.GetLastWin32Error();
-                        if (err != ERROR_IO_PENDING) return false;
-                        if (WaitForSingleObject(ev, 1000) != WAIT_OBJECT_0)
-                        {
-                            // Timed out. CancelIo only REQUESTS abort; the write can
-                            // still be in flight, and `ol` is a stack local while `buf`
-                            // is pinned only until the finally below. Block until
-                            // the cancelled I/O actually completes before unwinding, or
-                            // the kernel writes completion status into freed stack
-                            // memory / reads an unpinned buffer (the sibling drain in
-                            // HapticToneService.OverlappedWrite exists for this reason).
-                            CancelIo(handle);
-                            GetOverlappedResult(handle, ref ol, out _, true);
-                            return false;
-                        }
+                        // Timed out. CancelIo only REQUESTS abort; the write can
+                        // still be in flight, and `ol` is a stack local while `buf`
+                        // is pinned only until the finally below. Block until
+                        // the cancelled I/O actually completes before unwinding, or
+                        // the kernel writes completion status into freed stack
+                        // memory / reads an unpinned buffer (the sibling drain in
+                        // HapticToneService.OverlappedWrite exists for this reason).
+                        CancelIo(handle);
+                        GetOverlappedResult(handle, ref ol, out _, true);
+                        return false;
                     }
-                    return GetOverlappedResult(handle, ref ol, out _, true);
                 }
-                finally
-                {
-                    pin.Free();
-                    CloseHandle(ev);
-                }
+                return GetOverlappedResult(handle, ref ol, out _, true);
             }
             finally
             {
-                CloseHandle(handle);
+                pin.Free();
             }
         }
     }

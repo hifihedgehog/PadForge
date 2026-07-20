@@ -24,14 +24,17 @@ namespace PadForge.Converters
         {
             if (value is double v && parameter is string paramStr)
             {
-                var parts = paramStr.Split(',');
-                if (parts.Length >= 1 &&
-                    double.TryParse(parts[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out double dim))
+                // Parameter memo (the sibling NormToCanvasConverter shape):
+                // XAML uses a handful of literal parameter strings.
+                if (!s_paramCache.TryGetValue(paramStr, out var prm))
                 {
-                    double dotSize = 14;
-                    if (parts.Length >= 2 &&
-                        double.TryParse(parts[1].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out double ds))
-                        dotSize = ds;
+                    prm = ParseParam(paramStr);
+                    if (s_paramCache.Count < 64) s_paramCache[paramStr] = prm;
+                }
+                if (prm.valid)
+                {
+                    double dim = prm.dimension;
+                    double dotSize = prm.dotSize;
 
                     if (v < -1) v = -1;
                     if (v > 1) v = 1;
@@ -42,6 +45,23 @@ namespace PadForge.Converters
                 }
             }
             return 0.0;
+        }
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, (bool valid, double dimension, double dotSize)> s_paramCache = new();
+
+        private static (bool valid, double dimension, double dotSize) ParseParam(string paramStr)
+        {
+            var parts = paramStr.Split(',');
+            if (parts.Length >= 1 &&
+                double.TryParse(parts[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out double dim))
+            {
+                double dotSize = 14;
+                if (parts.Length >= 2 &&
+                    double.TryParse(parts[1].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out double ds))
+                    dotSize = ds;
+                return (true, dim, dotSize);
+            }
+            return (false, 0, 0);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -65,10 +65,6 @@ namespace PadForge.Common.Input
             if (!XboxControllerIdentity.IsImpulseTriggerDevice(ud.VendorId, ud.ProdId))
                 return false;
 
-            string interfacePath = ResolveInterfacePath(ud);
-            if (string.IsNullOrEmpty(interfacePath))
-                return false;
-
             // SDL3 HIDAPI scales 16-bit → 0..100 via `/ 655`. Match that.
             byte lt = (byte)Math.Min(100, leftTrigger16 / 655);
             byte rt = (byte)Math.Min(100, rightTrigger16 / 655);
@@ -81,12 +77,58 @@ namespace PadForge.Common.Input
             // its OWN bus-bypassing HIDAPI path, but that requires Steam
             // Xbox Extended Feature Driver and is not what we are doing
             // here. Stock XUSB driver accepts the 9-byte shape on the
-            // XUSB interface — verified by X1nput.
-            byte[] buf = new byte[] { 0x03, 0x0F, lt, rt, lm, rm, 0xFF, 0x00, 0xEB };
+            // XUSB interface (verified by X1nput). Scratch reuse: the poll
+            // thread is the sole caller (Step 2 ApplyForceFeedback).
+            var buf = s_reportScratch;
+            buf[2] = lt; buf[3] = rt; buf[4] = lm; buf[5] = rm;
 
-            (bool ok, _) = WriteRawDiag(interfacePath, buf);
-            return ok;
+            // Cached resolved path + persistent handle: the per-change
+            // ResolveInterfacePath ran a full SetupDi interface sweep plus
+            // probe opens, and WriteRawDiag re-opened the device, at game
+            // rumble-update rate on the poll thread. FALLBACK-SAFE: any
+            // cached-handle write failure drops the cache and re-runs the
+            // exact legacy resolve+open+write for this same call.
+            if (s_targets.TryGetValue(ud.DevicePath, out var cached))
+            {
+                if (cached.Handle != null && !cached.Handle.IsInvalid && !cached.Handle.IsClosed
+                    && WriteFile(cached.Handle, buf, (uint)buf.Length, out _, IntPtr.Zero))
+                    return true;
+                cached.Handle?.Dispose();
+                s_targets.Remove(ud.DevicePath);
+            }
+
+            string interfacePath = ResolveInterfacePath(ud);
+            if (string.IsNullOrEmpty(interfacePath))
+                return false;
+
+            var handle = CreateFileSafe(
+                interfacePath,
+                GENERIC_READ | GENERIC_WRITE,
+                FILE_SHARE_READ | FILE_SHARE_WRITE,
+                0); // synchronous open, matching X1nput
+            if (handle.IsInvalid)
+                return false;
+
+            bool ok = WriteFile(handle, buf, (uint)buf.Length, out _, IntPtr.Zero);
+            if (ok)
+            {
+                s_targets[ud.DevicePath] = new CachedTarget { InterfacePath = interfacePath, Handle = handle };
+                return true;
+            }
+            handle.Dispose();
+            return false;
         }
+
+        private sealed class CachedTarget
+        {
+            public string InterfacePath;
+            public Microsoft.Win32.SafeHandles.SafeFileHandle Handle;
+        }
+        // Poll thread is the sole caller, so a plain dictionary suffices.
+        private static readonly System.Collections.Generic.Dictionary<string, CachedTarget> s_targets =
+            new(StringComparer.OrdinalIgnoreCase);
+        private static readonly byte[] s_reportScratch =
+            { 0x03, 0x0F, 0, 0, 0, 0, 0xFF, 0x00, 0xEB };
 
         // ─────────────────────────────────────────────
         //  HID interface enumeration

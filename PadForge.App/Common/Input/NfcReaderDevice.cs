@@ -180,12 +180,18 @@ namespace PadForge.Common.Input
             }
         }
 
+        // Pooled per-tick snapshot (see MidiInputDevice: the old shape
+        // cloned twice per read and the base republish was redundant since
+        // every read rewrites the pulse buttons from _pulseUntil).
+        private PadForge.Engine.PooledInputStatePair _statePool;
+
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
             lock (_stateLock)
             {
                 long now = Environment.TickCount64;
-                var s = _state.Clone();
+                var s = _statePool.Next();
+                _state.CopyInto(s);
                 for (int b = 0; b < _pulseUntil.Length; b++)
                 {
                     long until = _pulseUntil[b];
@@ -198,8 +204,7 @@ namespace PadForge.Common.Input
                     if (!pressed) _pulseUntil[b] = 0;
                     s.Buttons[b] = pressed;
                 }
-                _state = s;
-                return s.Clone();
+                return s;
             }
         }
 

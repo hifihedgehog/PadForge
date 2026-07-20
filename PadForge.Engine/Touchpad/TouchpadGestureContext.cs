@@ -137,6 +137,12 @@ namespace PadForge.Engine.Touchpad
         /// them; see the comment in GestureRecognizer.Update.</summary>
         public HashSet<string> FiredGesturesThisFrame = new HashSet<string>();
 
+        /// <summary>True while the context is known clean (set by the
+        /// recognizer's disabled path after its one-shot Reset, cleared on
+        /// any enabled-path tick) so the disabled branch skips per-tick
+        /// re-clearing.</summary>
+        public bool IsCleanReset;
+
         public void Reset()
         {
             State = GestureState.Idle;

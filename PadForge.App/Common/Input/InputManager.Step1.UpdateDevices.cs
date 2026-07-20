@@ -1305,10 +1305,17 @@ namespace PadForge.Common.Input
         {
             lock (_restrictedLock)
             {
-                if (restricted) _restrictedDevices.Add(instanceGuid);
-                else _restrictedDevices.Remove(instanceGuid);
+                bool changed = restricted
+                    ? _restrictedDevices.Add(instanceGuid)
+                    : _restrictedDevices.Remove(instanceGuid);
+                if (changed) _restrictedSnapshotCache = null;
             }
         }
+
+        // Rebuilt only when the set changes: while a Remote Link
+        // gamepad-only restriction was active, the old shape allocated a
+        // Guid[] per poll tick (menu walk + per-macro-slot checks).
+        private Guid[] _restrictedSnapshotCache;
 
         /// <summary>Snapshot of restricted device GUIDs, or null when none (early-out).</summary>
         private Guid[] RestrictedSnapshot()
@@ -1316,8 +1323,11 @@ namespace PadForge.Common.Input
             lock (_restrictedLock)
             {
                 if (_restrictedDevices.Count == 0) return null;
+                var cached = _restrictedSnapshotCache;
+                if (cached != null) return cached;
                 var a = new Guid[_restrictedDevices.Count];
                 _restrictedDevices.CopyTo(a);
+                _restrictedSnapshotCache = a;
                 return a;
             }
         }

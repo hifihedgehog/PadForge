@@ -52,11 +52,18 @@ namespace PadForge.ViewModels
         /// first tick always syncs. UI-thread only.</summary>
         internal bool SettingsSyncDirty = true;
 
+        /// <summary>Set by InputService around its 30 Hz telemetry-mirror
+        /// block (live sticks/gyro/meters): those writes are display state,
+        /// not settings, and without this every frame of controller motion
+        /// re-armed the full ~80-format settings serialization. UI-thread
+        /// only, always cleared in a finally.</summary>
+        internal bool SuppressSettingsDirty;
+
         public PadViewModel(int padIndex)
         {
             PadIndex = padIndex;
             _slotNumber = padIndex + 1;
-            PropertyChanged += (_, __) => SettingsSyncDirty = true;
+            PropertyChanged += (_, __) => { if (!SuppressSettingsDirty) SettingsSyncDirty = true; };
             Title = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
             SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
             _extendedConfig.PropertyChanged += OnExtendedConfigPropertyChanged;

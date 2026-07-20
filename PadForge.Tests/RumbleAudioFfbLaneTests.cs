@@ -15,6 +15,56 @@ namespace PadForge.Tests
     /// </summary>
     public class RumbleAudioFfbLaneTests
     {
+        // ── ApplyIfDue gate: packet-dirty applies, clean skips, finite
+        //    durations expire without new packets ──
+
+        [Fact]
+        public void ApplyIfDue_AppliesWhenPacketDirty_SkipsWhenClean()
+        {
+            var dec = new HMaestroFfbDecoder(null);
+            dec.OnHidOutput(0x11, new byte[] { 1, 0x01, 0xFF, 0xFF });
+            dec.OnHidOutput(0x15, new byte[] { 1, 0x10, 0x27 });
+            dec.OnHidOutput(0x1A, new byte[] { 1, 1, 1 });
+
+            var vib = new Vibration();
+            dec.ApplyIfDue(vib);
+            Assert.NotEqual((ushort)0, vib.LeftMotorSpeed);
+
+            // Clean + infinite effect: the gate must SKIP, leaving the
+            // caller's vibration object untouched (TickFfb relies on the
+            // retained object keeping its last computed values).
+            var untouched = new Vibration();
+            dec.ApplyIfDue(untouched);
+            Assert.Equal((ushort)0, untouched.LeftMotorSpeed);
+            Assert.NotEqual((ushort)0, dec.LastComputedMotors.Left);
+
+            // A new packet re-arms the gate.
+            dec.OnHidOutput(0x1A, new byte[] { 1, 3 }); // EFF_STOP
+            var after = new Vibration();
+            dec.ApplyIfDue(after);
+            Assert.Equal((ushort)0, dec.LastComputedMotors.Left);
+        }
+
+        [Fact]
+        public void ApplyIfDue_FiniteDuration_ExpiresWithoutPackets()
+        {
+            var dec = new HMaestroFfbDecoder(null);
+            // 40 ms finite duration: the gate must schedule its own
+            // re-apply at expiry even though no further packet arrives.
+            dec.OnHidOutput(0x11, new byte[] { 1, 0x01, 0x28, 0x00 });
+            dec.OnHidOutput(0x15, new byte[] { 1, 0x10, 0x27 });
+            dec.OnHidOutput(0x1A, new byte[] { 1, 1, 1 });
+
+            var vib = new Vibration();
+            dec.ApplyIfDue(vib);
+            Assert.NotEqual((ushort)0, vib.LeftMotorSpeed);
+
+            System.Threading.Thread.Sleep(80);
+            var expired = new Vibration();
+            dec.ApplyIfDue(expired);
+            Assert.Equal((ushort)0, dec.LastComputedMotors.Left);
+        }
+
         // ── LastComputedMotors mirrors Apply's game-authored pair ──
 
         [Fact]

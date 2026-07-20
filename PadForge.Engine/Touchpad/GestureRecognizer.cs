@@ -111,9 +111,17 @@ namespace PadForge.Engine.Touchpad
             bool joystickEnabled = settings.EnableJoystickOutput;
             if (!gesturesEnabled && !joystickEnabled)
             {
-                ctx.Reset();
+                // One reset per transition: re-clearing an already-clean
+                // context was per-tick churn on every assigned touchpad
+                // with gestures off (the default).
+                if (!ctx.IsCleanReset)
+                {
+                    ctx.Reset();
+                    ctx.IsCleanReset = true;
+                }
                 return;
             }
+            ctx.IsCleanReset = false;
             if (ctx.State == GestureState.Cooldown)
             {
                 if (nowMs >= ctx.CooldownUntilTimestampMs)

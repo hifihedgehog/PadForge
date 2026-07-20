@@ -54,10 +54,31 @@ namespace PadForge.Engine.RemoteLink
             if (sessionKey == null || sessionKey.Length != PeerCrypto.KeySize)
                 throw new ArgumentException($"Session key must be {PeerCrypto.KeySize} bytes.", nameof(sessionKey));
             _key = (byte[])sessionKey.Clone();
+            _keyParam = new Org.BouncyCastle.Crypto.Parameters.KeyParameter(_key);
             _sendSalt = isInitiator ? 0u : 1u;
             _recvSalt = isInitiator ? 1u : 0u;
             _epoch = (byte)(epoch & 0x0F);
         }
+
+        // Per-session AEAD cipher reuse (cite-verified against bc-csharp at
+        // tag release-2.6.2, the exact referenced package version: Init
+        // fully resets all per-message state including the one-time
+        // Poly1305 key, recovers from a failed-tag DoFinal, and BC's own
+        // TLS record layer runs one long-lived cipher per direction with
+        // Init per record). Replaces a fresh cipher graph + KeyParameter +
+        // AeadParameters + two ToArray copies per datagram at up to 125 Hz
+        // per device per peer, both directions. Seal has CONCURRENT callers
+        // (stream tick, keepalive timer, output relay, audio, device-list
+        // push) so the seal cipher works under its lock; Open's single
+        // UDP-loop caller gets the same guard for the uncontended price.
+        // PeerCrypto.Seal/Open stay as the one-shot reference helpers.
+        private readonly Org.BouncyCastle.Crypto.Modes.ChaCha20Poly1305 _sealCipher = new();
+        private readonly Org.BouncyCastle.Crypto.Modes.ChaCha20Poly1305 _openCipher = new();
+        private readonly Org.BouncyCastle.Crypto.Parameters.KeyParameter _keyParam;
+        private readonly byte[] _sealNonce = new byte[PeerCrypto.NonceSize];
+        private readonly byte[] _openNonce = new byte[PeerCrypto.NonceSize];
+        private readonly object _sealLock = new();
+        private readonly object _openLock = new();
 
         /// <summary>Number of datagrams sealed so far. Seal hard-stops before the
         /// sequence wraps 2^32 (nonce reuse under ChaCha20-Poly1305 is fatal), forcing
@@ -75,9 +96,15 @@ namespace PadForge.Engine.RemoteLink
             var datagram = new byte[HeaderSize + payload.Length + PeerCrypto.TagSize];
             WriteHeader(datagram, type, slotId, seq, timestampUs);
 
-            var nonce = PeerCrypto.BuildNonce(_sendSalt, seq);
-            byte[] sealedBytes = PeerCrypto.Seal(_key, nonce, datagram.AsSpan(0, HeaderSize), payload);
-            sealedBytes.CopyTo(datagram.AsSpan(HeaderSize));
+            lock (_sealLock)
+            {
+                BinaryPrimitives.WriteUInt32LittleEndian(_sealNonce.AsSpan(0), _sendSalt);
+                BinaryPrimitives.WriteUInt64LittleEndian(_sealNonce.AsSpan(4), seq);
+                _sealCipher.Init(true, new Org.BouncyCastle.Crypto.Parameters.ParametersWithIV(_keyParam, _sealNonce));
+                _sealCipher.ProcessAadBytes(datagram.AsSpan(0, HeaderSize));
+                int w = _sealCipher.ProcessBytes(payload, datagram.AsSpan(HeaderSize));
+                _sealCipher.DoFinal(datagram.AsSpan(HeaderSize + w));
+            }
             return datagram;
         }
 
@@ -100,9 +127,30 @@ namespace PadForge.Engine.RemoteLink
             uint seq = BinaryPrimitives.ReadUInt32LittleEndian(datagram.Slice(2, 4));
             ulong ts = BinaryPrimitives.ReadUInt64LittleEndian(datagram.Slice(6, 8));
 
-            var nonce = PeerCrypto.BuildNonce(_recvSalt, seq);
-            if (!PeerCrypto.Open(_key, nonce, datagram.Slice(0, HeaderSize), datagram.Slice(HeaderSize), out byte[] opened))
-                return false; // tag failed — forged or corrupt
+            var ct = datagram.Slice(HeaderSize);
+            byte[] opened;
+            lock (_openLock)
+            {
+                BinaryPrimitives.WriteUInt32LittleEndian(_openNonce.AsSpan(0), _recvSalt);
+                BinaryPrimitives.WriteUInt64LittleEndian(_openNonce.AsSpan(4), seq);
+                try
+                {
+                    _openCipher.Init(false, new Org.BouncyCastle.Crypto.Parameters.ParametersWithIV(_keyParam, _openNonce));
+                    _openCipher.ProcessAadBytes(datagram.Slice(0, HeaderSize));
+                    // DecInit GetOutputSize is exact (ct minus tag), so the
+                    // buffer never needs a trailing slice-copy.
+                    opened = new byte[_openCipher.GetOutputSize(ct.Length)];
+                    int w = _openCipher.ProcessBytes(ct, opened);
+                    w += _openCipher.DoFinal(opened.AsSpan(w));
+                    if (w != opened.Length) opened = opened[..w];
+                }
+                catch
+                {
+                    // AEAD tag mismatch or malformed input: forged or
+                    // corrupt. The next Init fully rebuilds cipher state.
+                    return false;
+                }
+            }
 
             // Verify-then-window: a forged sequence can never advance replay state.
             if (!_replay.CheckAndUpdate(seq)) return false; // duplicate or older than the window

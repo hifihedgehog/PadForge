@@ -156,6 +156,19 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public MidiRawState MidiRawOutputState { get; set; }
 
+        /// <summary>Poll-thread-owned scratch for the Extended/Nintendo raw
+        /// map (never published: the UI and Step 4 read
+        /// <see cref="RawHidOutputState"/>, whose instances stay immutable
+        /// after publish). The mapper builds here every tick and publishes a
+        /// fresh copy only when the content changed, so an idle slot
+        /// allocates nothing.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RawHidState RawHidScratch;
+
+        /// <summary>Same contract for the MIDI raw map.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public MidiRawState MidiRawScratch;
+
         /// <summary>
         /// The mapped KBM raw output state computed in Step 3 for KeyboardMouse slots.
         /// Written by the background thread, read by Step 4.

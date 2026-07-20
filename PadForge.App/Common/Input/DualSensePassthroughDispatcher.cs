@@ -436,18 +436,6 @@ namespace PadForge.Common.Input
         /// through a speaker still sitting at the mirror's volume.</summary>
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, byte[]> _maskedAudioStash = new();
 
-        /// <summary>Returns true when at least one DualSense / DualSense
-        /// Edge is currently mapped + online for
-        /// <paramref name="padIndex"/>.  Used by the rumble-pipeline
-        /// gating in <c>HMaestroVirtualController</c> to skip the
-        /// existing Sony rumble write when pass-through is active (rumble
-        /// bytes are already inside the DS5 effect message and would
-        /// otherwise double-fire).</summary>
-        public static bool HasAssignedDualSense(int padIndex)
-        {
-            var targets = ResolveAssignedDualSenseHandles(padIndex);
-            return targets != null && targets.Count > 0;
-        }
 
         /// <summary>Returns true when the specific device identified by
         /// <paramref name="deviceGuid"/> is a passthrough target for

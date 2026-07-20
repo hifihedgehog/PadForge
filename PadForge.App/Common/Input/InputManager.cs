@@ -1484,14 +1484,100 @@ namespace PadForge.Common.Input
         /// level. Configuring engage on two devices simultaneously is
         /// supported by editing the second device's PadSetting but only
         /// the first-listed wins at runtime.</para></summary>
+        /// <summary>Per-slot gyro-engage config snapshot, refreshed at 250 ms
+        /// like its two engage-family siblings (_triggerRouteCfg,
+        /// _mirrorEngageCfg): the SyncRoot lock + Items scan + GetPadSetting
+        /// string reads run at 4 Hz, not the ~1 kHz poll rate, while the
+        /// ENGAGE STATE itself still settles per tick for edge fidelity. A
+        /// config or device-list edit lands within a quarter second, which is
+        /// imperceptible and matches the siblings' contract.</summary>
+        private sealed class GyroEngageCfg
+        {
+            public string Descriptor = "";
+            public string DeviceGuid = "";
+            public string Mode = "Hold";
+            public bool WorkshopInvert;
+            public string[] Ratchets;
+            public string[] SlotGuids = System.Array.Empty<string>();
+        }
+        private readonly GyroEngageCfg[] _gyroEngageCfg = new GyroEngageCfg[MaxPads];
+        private long _gyroEngageCfgRefreshTick;
+
+        private void RefreshGyroEngageCfg(SettingsCollection settings)
+        {
+            var wsSets = SettingsManager.SlotMappingSets;
+            for (int slot = 0; slot < MaxPads; slot++)
+            {
+                if (!SettingsManager.SlotCreated[slot]) { _gyroEngageCfg[slot] = null; continue; }
+
+                var wsSet = wsSets != null && slot < wsSets.Length ? wsSets[slot] : null;
+                if (wsSet != null && !wsSet.Authoritative) wsSet = null;
+
+                var cfg = new GyroEngageCfg();
+                // First device on the slot with a configured engage button
+                // wins (per-slot ergonomic, storage order, see the method
+                // doc above). Slot guids are captured for the device-free
+                // descriptor and ratchet walks.
+                _gyroEngageGuidScratch.Clear();
+                lock (settings.SyncRoot)
+                {
+                    for (int i = 0; i < settings.Items.Count; i++)
+                    {
+                        var us = settings.Items[i];
+                        if (us == null || us.MapTo != slot) continue;
+                        _gyroEngageGuidScratch.Add(us.InstanceGuidString);
+                        if (cfg.Descriptor.Length > 0) continue;
+                        var ps = us.GetPadSetting();
+                        if (ps == null) continue;
+                        if (string.IsNullOrEmpty(ps.GyroAimEngageButton)) continue;
+                        cfg.Descriptor = ps.GyroAimEngageButton;
+                        cfg.DeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
+                        cfg.Mode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
+                    }
+                }
+                cfg.SlotGuids = _gyroEngageGuidScratch.ToArray();
+
+                // Workshop overlay (v18): an Authoritative slot with an
+                // authored gyro_button stamp engages on that device-free
+                // descriptor when no user PadSetting configured one. The
+                // invert flag flips the held sense (Steam
+                // gyro_button_invert: gyro fires while NOT held);
+                // gyro_button_invert 2 (translator v25) rides the Toggle arm.
+                if (cfg.Descriptor.Length == 0
+                    && wsSet != null
+                    && !string.IsNullOrEmpty(wsSet.WorkshopGyroEngageDescriptor))
+                {
+                    cfg.Descriptor = wsSet.WorkshopGyroEngageDescriptor;
+                    cfg.WorkshopInvert = wsSet.WorkshopGyroEngageInvert;
+                    cfg.DeviceGuid = "";
+                    cfg.Mode = wsSet.WorkshopGyroEngageToggle ? "Toggle" : "Hold";
+                }
+
+                // Workshop ratchet clutch (v22) descriptors, resolved
+                // per tick against SlotGuids.
+                var ratchets = wsSet?.WorkshopGyroRatchetList;
+                cfg.Ratchets = ratchets != null && ratchets.Length > 0 ? ratchets : null;
+
+                _gyroEngageCfg[slot] = cfg;
+            }
+        }
+
         private void UpdateGyroEngageStates()
         {
             var settings = SettingsManager.UserSettings;
             if (settings == null) return;
 
+            long nowCfg = Environment.TickCount64;
+            if (nowCfg - _gyroEngageCfgRefreshTick >= 250)
+            {
+                _gyroEngageCfgRefreshTick = nowCfg;
+                RefreshGyroEngageCfg(settings);
+            }
+
             for (int slot = 0; slot < MaxPads; slot++)
             {
-                if (!SettingsManager.SlotCreated[slot])
+                var cfg = _gyroEngageCfg[slot];
+                if (!SettingsManager.SlotCreated[slot] || cfg == null)
                 {
                     GyroEngagedFromButton[slot] = false;
                     GyroRatchetHeld[slot] = false;
@@ -1499,60 +1585,10 @@ namespace PadForge.Common.Input
                     continue;
                 }
 
-                // Authoritative workshop set for this slot (v18 engage
-                // stamp, v22 ratchet stamp). Fetched once per slot pass.
-                var wsSets = SettingsManager.SlotMappingSets;
-                var wsSet = wsSets != null && slot < wsSets.Length ? wsSets[slot] : null;
-                if (wsSet != null && !wsSet.Authoritative) wsSet = null;
-
-                // First device on the slot with a configured engage button
-                // wins. Empty descriptor everywhere → always-on (Hold-default).
-                // No per-tick guid list here: the slot's device guids are
-                // only needed on the device-free descriptor path below,
-                // which re-walks under the lock into a reused scratch list
-                // instead of allocating one per slot per tick for a state
-                // most slots never enter (audit 2026-07-17 P1).
-                string descriptor = "";
-                string deviceGuid = "";
-                string mode = "Hold";
-                lock (settings.SyncRoot)
-                {
-                    for (int i = 0; i < settings.Items.Count; i++)
-                    {
-                        var us = settings.Items[i];
-                        if (us == null || us.MapTo != slot) continue;
-                        var ps = us.GetPadSetting();
-                        if (ps == null) continue;
-                        if (string.IsNullOrEmpty(ps.GyroAimEngageButton)) continue;
-                        descriptor = ps.GyroAimEngageButton;
-                        deviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
-                        mode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
-                        break;
-                    }
-                }
-
-                // Workshop overlay (v18): an Authoritative slot with an
-                // authored gyro_button stamp engages on that device-free
-                // descriptor when no user PadSetting configured one. The
-                // stamp resolves against every device on the slot (the
-                // empty-DeviceGuid contract) and the invert flag flips
-                // the held sense (Steam gyro_button_invert: gyro fires
-                // while the button is NOT held).
-                bool workshopInvert = false;
-                if (descriptor.Length == 0
-                    && wsSet != null
-                    && !string.IsNullOrEmpty(wsSet.WorkshopGyroEngageDescriptor))
-                {
-                    descriptor = wsSet.WorkshopGyroEngageDescriptor;
-                    workshopInvert = wsSet.WorkshopGyroEngageInvert;
-                    deviceGuid = "";
-                    // gyro_button_invert 2 (translator v25): Steam's "Gyro
-                    // Button Behavior - Toggle" rides the same sticky-bit
-                    // Toggle arm the user-facing GyroAimEngageMode uses.
-                    // The invert flag is exclusive by construction (the
-                    // translator stamps one of the two enum arms).
-                    mode = wsSet.WorkshopGyroEngageToggle ? "Toggle" : "Hold";
-                }
+                string descriptor = cfg.Descriptor;
+                string deviceGuid = cfg.DeviceGuid;
+                string mode = cfg.Mode;
+                bool workshopInvert = cfg.WorkshopInvert;
 
                 bool buttonDown = false;
                 if (descriptor.Length > 0)
@@ -1564,24 +1600,15 @@ namespace PadForge.Common.Input
                     else
                     {
                         // Device-free (workshop) descriptor: any slot device
-                        // holding it engages. Guids are gathered into the
-                        // reused scratch list under the lock, and the
-                        // provider runs OUTSIDE it: the provider reads
-                        // device state and must never nest inside
-                        // UserSettings.SyncRoot (lock-order discipline).
-                        _gyroEngageGuidScratch.Clear();
-                        lock (settings.SyncRoot)
-                        {
-                            for (int i = 0; i < settings.Items.Count; i++)
-                            {
-                                var us = settings.Items[i];
-                                if (us == null || us.MapTo != slot) continue;
-                                _gyroEngageGuidScratch.Add(us.InstanceGuidString);
-                            }
-                        }
-                        for (int i = 0; i < _gyroEngageGuidScratch.Count && !buttonDown; i++)
+                        // holding it engages. The guid list comes from the
+                        // 250 ms snapshot; the provider reads device state
+                        // and must never nest inside UserSettings.SyncRoot
+                        // (lock-order discipline), which the snapshot walk
+                        // already honors.
+                        var guids = cfg.SlotGuids;
+                        for (int i = 0; i < guids.Length && !buttonDown; i++)
                             buttonDown = SourceCoercion.ButtonHeldProvider?.Invoke(
-                                _gyroEngageGuidScratch[i], descriptor, slot) ?? false;
+                                guids[i], descriptor, slot) ?? false;
                     }
                 }
 
@@ -1605,28 +1632,18 @@ namespace PadForge.Common.Input
                 _prevAimEngageButtonDown[slot] = buttonDown;
 
                 // Workshop ratchet clutch (v22): any stamped descriptor
-                // held on any slot device pauses the slot's gyro. Same
-                // device-free walk as the engage stamp: guids gathered
-                // under the settings lock into the reused scratch, the
-                // provider invoked outside it (lock-order discipline).
+                // held on any slot device pauses the slot's gyro. Guid
+                // list and descriptors come from the 250 ms snapshot; the
+                // provider runs outside any lock as before.
                 bool ratchetHeld = false;
-                var ratchets = wsSet?.WorkshopGyroRatchetList;
-                if (ratchets != null && ratchets.Length > 0)
+                var ratchets = cfg.Ratchets;
+                if (ratchets != null)
                 {
-                    _gyroEngageGuidScratch.Clear();
-                    lock (settings.SyncRoot)
-                    {
-                        for (int i = 0; i < settings.Items.Count; i++)
-                        {
-                            var us = settings.Items[i];
-                            if (us == null || us.MapTo != slot) continue;
-                            _gyroEngageGuidScratch.Add(us.InstanceGuidString);
-                        }
-                    }
-                    for (int g = 0; g < _gyroEngageGuidScratch.Count && !ratchetHeld; g++)
+                    var guids = cfg.SlotGuids;
+                    for (int g = 0; g < guids.Length && !ratchetHeld; g++)
                         for (int r = 0; r < ratchets.Length && !ratchetHeld; r++)
                             ratchetHeld = SourceCoercion.ButtonHeldProvider?.Invoke(
-                                _gyroEngageGuidScratch[g], ratchets[r], slot) ?? false;
+                                guids[g], ratchets[r], slot) ?? false;
                 }
                 GyroRatchetHeld[slot] = ratchetHeld;
             }

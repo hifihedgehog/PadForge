@@ -191,6 +191,13 @@ namespace PadForge.Common.Input
             // mutations (device assignment, profile load) don't see
             // measurable contention.
             var settingsForPoke = SettingsManager.UserSettings;
+            // 250 ms snapshot refresh of the per-slot poke facts.
+            long pokeNow = System.Environment.TickCount64;
+            if (pokeNow - _sonyPokeCfgRefreshTick >= 250)
+            {
+                _sonyPokeCfgRefreshTick = pokeNow;
+                RefreshSonyPokeCfg(settingsForPoke);
+            }
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
                 // Empty pad — no VC means no dispatcher to poke. Skip the
@@ -227,52 +234,15 @@ namespace PadForge.Common.Input
                 if (!hasGameRumble && TouchpadPulseService.IsSlotActive(padIndex))
                     hasGameRumble = true;
 
-                bool hasAudioRumbleEnabled = false;
-                if (settingsForPoke != null)
-                {
-                    lock (settingsForPoke.SyncRoot)
-                    {
-                        for (int i = 0; i < settingsForPoke.Items.Count; i++)
-                        {
-                            var us = settingsForPoke.Items[i];
-                            if (us == null || us.MapTo != padIndex) continue;
-                            var ps = us.GetPadSetting();
-                            if (ps == null) continue;
-                            // Either main-motor audio rumble OR audio-trigger
-                            // rumble keeps the dispatcher alive; both pull
-                            // from the same WASAPI capture / detector and
-                            // both need the per-tick dispatch to apply.
-                            if (ps.AudioRumbleEnabled == "1"
-                                || ps.AudioRumbleTriggersEnabled == "1")
-                                hasAudioRumbleEnabled = true;
-                            // Constant force: when any per-device PadSetting on
-                            // this slot has it enabled with nonzero X or Y,
-                            // treat as game-rumble-equivalent so the Sony
-                            // dispatcher's effect-packet timer runs and the
-                            // synthesized motor bytes from
-                            // ConstantForceEvaluator.Resolve actually reach
-                            // the wire. Without this poke, a slot that's
-                            // game-silent and lightbar-static parks the
-                            // dispatcher and constant force never fires on
-                            // DualSense / DS4.
-                            if (!hasGameRumble && ps.ConstantForceEnabled == "1"
-                                && (ParseConstantForceComponent(ps.ConstantForceX) != 0.0
-                                    || ParseConstantForceComponent(ps.ConstantForceY) != 0.0))
-                            {
-                                hasGameRumble = true;
-                            }
-                            // Constant trigger force: mirror the main-motor
-                            // keepalive — same shape, trigger-motor analogue.
-                            if (!hasGameRumble && ps.ConstantTriggerForceEnabled == "1"
-                                && (ParseConstantForceComponent(ps.ConstantTriggerForceLeft) != 0.0
-                                    || ParseConstantForceComponent(ps.ConstantTriggerForceRight) != 0.0))
-                            {
-                                hasGameRumble = true;
-                            }
-                            if (hasAudioRumbleEnabled && hasGameRumble) break;
-                        }
-                    }
-                }
+                // Config-derived poke facts come from the 250 ms snapshot
+                // below (the engage-family pattern): audio enables and
+                // constant-force values change only on user edit, and the
+                // per-tick lock + Items walk + string compares + parses ran
+                // per created slot at ~1 kHz. An edit lands within a
+                // quarter second, matching the sibling snapshots' contract.
+                var poke = _sonyPokeCfg[padIndex];
+                bool hasAudioRumbleEnabled = poke.audio;
+                if (!hasGameRumble && poke.cfPoke) hasGameRumble = true;
 
                 UserEffectsDispatcher.OnPollingTick(padIndex, hasGameRumble, hasAudioRumbleEnabled);
             }
@@ -282,6 +252,47 @@ namespace PadForge.Common.Input
         // (XmlElement-serialized). Parse defensively: anything we can't
         // turn into a number reads as zero so the dispatcher-timer poke
         // logic above never trips on a malformed setting.
+        // Per-slot dispatcher-poke config snapshot (see the 250 ms refresh
+        // in the caller): audio (either audio-rumble enable) and cfPoke
+        // (constant force or constant trigger force enabled with nonzero
+        // components, the game-rumble-equivalent keepalive that keeps the
+        // Sony dispatcher's effect-packet timer running on game-silent,
+        // lightbar-static slots).
+        private readonly (bool audio, bool cfPoke)[] _sonyPokeCfg =
+            new (bool, bool)[MaxPads];
+        private long _sonyPokeCfgRefreshTick;
+
+        private void RefreshSonyPokeCfg(SettingsCollection settings)
+        {
+            for (int slot = 0; slot < MaxPads; slot++) _sonyPokeCfg[slot] = default;
+            if (settings == null) return;
+            lock (settings.SyncRoot)
+            {
+                for (int i = 0; i < settings.Items.Count; i++)
+                {
+                    var us = settings.Items[i];
+                    if (us == null || us.MapTo < 0 || us.MapTo >= MaxPads) continue;
+                    var ps = us.GetPadSetting();
+                    if (ps == null) continue;
+                    var cur = _sonyPokeCfg[us.MapTo];
+                    if (!cur.audio
+                        && (ps.AudioRumbleEnabled == "1" || ps.AudioRumbleTriggersEnabled == "1"))
+                        cur.audio = true;
+                    if (!cur.cfPoke
+                        && ps.ConstantForceEnabled == "1"
+                        && (ParseConstantForceComponent(ps.ConstantForceX) != 0.0
+                            || ParseConstantForceComponent(ps.ConstantForceY) != 0.0))
+                        cur.cfPoke = true;
+                    if (!cur.cfPoke
+                        && ps.ConstantTriggerForceEnabled == "1"
+                        && (ParseConstantForceComponent(ps.ConstantTriggerForceLeft) != 0.0
+                            || ParseConstantForceComponent(ps.ConstantTriggerForceRight) != 0.0))
+                        cur.cfPoke = true;
+                    _sonyPokeCfg[us.MapTo] = cur;
+                }
+            }
+        }
+
         private static double ParseConstantForceComponent(string s)
         {
             if (string.IsNullOrEmpty(s)) return 0.0;

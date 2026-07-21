@@ -549,7 +549,9 @@ namespace PadForge.Common.Input
         /// When true, the polling loop skips the expensive pipeline steps and sleeps
         /// at a low rate (~20Hz) to minimize CPU usage. Device enumeration continues
         /// at a reduced rate so new controllers still appear on the Devices page.
-        /// Set by InputService when no virtual controller slots are created.
+        /// Set by InputService when no created+enabled slot has an ONLINE mapped
+        /// device (Step 5's own activity predicate). A slot whose every assigned
+        /// pad is asleep idles the engine instead of reading as "Forging".
         /// </summary>
         public bool IsIdle
         {

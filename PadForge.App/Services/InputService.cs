@@ -2417,23 +2417,44 @@ namespace PadForge.Services
         /// <summary>
         /// Sets the engine to idle when no virtual controller slots have active
         /// mappings, and wakes it when at least one slot does. A slot counts as
-        /// active when it is created, enabled, and has at least one device assigned.
-        /// Idle mode skips the expensive input/mapping/output pipeline and sleeps
-        /// at ~20Hz, reducing CPU to ~0%.
+        /// active when it is created, enabled, and has at least one ONLINE
+        /// mapped device. That is the same predicate Step 5 uses to create the
+        /// slot's virtual controller. Counting mere assignment rows here made the
+        /// dashboard read "Forging" (and the engine burn the full poll rate)
+        /// all night while every assigned pad was asleep, the sidebar said
+        /// "Awaiting devices", and no virtual controller existed. Idle mode
+        /// skips the expensive input/mapping/output pipeline and sleeps at
+        /// ~20Hz; device enumeration keeps running there, so a waking pad
+        /// flips this predicate within a tick.
         /// </summary>
         private void UpdateIdleState()
         {
             if (_inputManager == null) return;
 
             bool anyActive = false;
-            for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
+            var devsForIdle = SettingsManager.UserDevices;
+            var setsForIdle = SettingsManager.UserSettings;
+            if (devsForIdle != null && setsForIdle != null)
             {
-                if (SettingsManager.SlotCreated[i]
-                    && SettingsManager.SlotEnabled[i]
-                    && _mainVm.Pads[i].MappedDevices.Count > 0)
+                UserDevice[] devArr;
+                lock (devsForIdle.SyncRoot)
+                    devArr = devsForIdle.Items.ToArray();
+                lock (setsForIdle.SyncRoot)
                 {
-                    anyActive = true;
-                    break;
+                    foreach (var us in setsForIdle.Items)
+                    {
+                        if (us == null) continue;
+                        int slot = us.MapTo;
+                        if (slot < 0 || slot >= InputManager.MaxPads) continue;
+                        if (!SettingsManager.SlotCreated[slot]
+                            || !SettingsManager.SlotEnabled[slot]) continue;
+                        if (us.InstanceGuid == Guid.Empty) continue;
+                        if (AnyOnlineMatch(devArr, us.InstanceGuid))
+                        {
+                            anyActive = true;
+                            break;
+                        }
+                    }
                 }
             }
 

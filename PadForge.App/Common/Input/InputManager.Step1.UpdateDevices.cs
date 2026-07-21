@@ -146,10 +146,17 @@ namespace PadForge.Common.Input
                     // paths and can slip past both (observed live: the SDL
                     // switch driver then FIGHTS the virtual Switch Pro's
                     // protocol responder, cyclically resetting its inputs
-                    // and interleaving rumble). The driver stamps every
-                    // virtual's serial "HM-CTL-<n>" and its device path
-                    // contains HIDMAESTRO, either of which identifies it
-                    // regardless of cloak state.
+                    // and interleaving rumble). Coverage is narrower than
+                    // it looks: SDL's HIDAPI drivers overwrite the hid-level
+                    // "HM-CTL-<n>" serial with the fabricated MAC during
+                    // their identity handshake, and non-Xbox virtuals'
+                    // interface paths carry no HIDMAESTRO marker (the fork
+                    // filter reads DEVPKEY hardware IDs for that reason).
+                    // So this guard catches failed-handshake and
+                    // serial-preserving cases only; the fork enumeration
+                    // filter remains the primary defense, and the XInput
+                    // backend leak (no serial, no path marker) is out of
+                    // scope here entirely.
                     bool selfVirtual =
                         (wrapper.SerialNumber != null
                          && wrapper.SerialNumber.StartsWith("HM-CTL-", StringComparison.Ordinal))
@@ -1415,12 +1422,12 @@ namespace PadForge.Common.Input
             if (devices == null) return;
 
             // Resolve under the devices lock, but mark offline OUTSIDE it.
-            // MarkDeviceOffline takes the UserSettings lock to neutralize the
-            // device's per-slot outputs; holding UserDevices while acquiring
-            // UserSettings here (a ThreadPool websocket-disconnect thread)
-            // would form an ABBA pair with the UI-thread sites that nest the
-            // same locks Settings-first. The lock only guards the scan; the
-            // marking itself needs no collection lock.
+            // MarkDeviceOffline takes the UserSettings lock to neutralize
+            // the device's per-slot outputs. Nesting devices->settings here
+            // would be legal under the lock canon (devices before settings,
+            // never the reverse; no Settings-first nesting site exists in
+            // the repo as of the 2026-07-20 audit sweep), but the marking
+            // needs no collection lock, so keep it outside on principle.
             UserDevice target = null;
             lock (devices.SyncRoot)
             {

@@ -199,6 +199,14 @@ namespace PadForge.ViewModels
                     RebuildStickConfigs();
                     RebuildTriggerConfigs();
                     SyncMacroButtonStyle();
+                    // Preview handover: the raw bridge's change-detect
+                    // shadow must not survive a type switch, or a
+                    // re-switch to Nintendo whose first raw frames equal
+                    // the stale shadow leaves the previous era's preview
+                    // (a lit button, an off-center stick) frozen until an
+                    // input changes. Clearing the flag forces the next
+                    // raw push to rewrite the full preview surface.
+                    _hasLastRawSnapshot = false;
                 }
             }
         }

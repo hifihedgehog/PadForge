@@ -905,7 +905,6 @@ namespace PadForge.Common.Input
             _controller.SubmitState(state);
         }
 
-
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
         {
             FeedbackPadIndex = padIndex;
@@ -968,7 +967,6 @@ namespace PadForge.Common.Input
                 {
                     vibrationStates[idx].LeftMotorSpeed  = (ushort)(left  * 257);
                     vibrationStates[idx].RightMotorSpeed = (ushort)(right * 257);
-
 
                     // Inbound pack (#236): the Sony motor bytes are only
                     // TRUSTED behind the full validity gate. The codec

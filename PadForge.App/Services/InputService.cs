@@ -646,46 +646,23 @@ namespace PadForge.Services
                 if (_inputManager == null) return ((byte)0, (byte)0);
                 if (_inputManager.OutputsQuiesced) return ((byte)0, (byte)0);
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return ((byte)0, (byte)0);
-                // Cross-slot merge (owner facts, 2026-07-20): the dispatcher
-                // writes a multi-slot pad from ONE owner slot, and rumble
-                // from ANY of its assigned slots must still reach it. Take
-                // the per-motor max across every slot this device maps to,
-                // mirroring the input side's one-device-feeds-many-VCs
-                // philosophy. Single-slot devices reduce to the old read.
-                var raw = _inputManager.VibrationStates[padIndex];
-                if (raw == null) return ((byte)0, (byte)0);
-                if (deviceGuid != Guid.Empty)
-                {
-                    var settingsForMerge = SettingsManager.UserSettings;
-                    if (settingsForMerge != null)
-                    {
-                        Engine.Vibration merged = raw;
-                        lock (settingsForMerge.SyncRoot)
-                        {
-                            foreach (var usM in settingsForMerge.Items)
-                            {
-                                if (usM == null || usM.InstanceGuid != deviceGuid) continue;
-                                int slotM = usM.MapTo;
-                                if (slotM < 0 || slotM >= InputManager.MaxPads || slotM == padIndex) continue;
-                                var other = _inputManager.VibrationStates[slotM];
-                                if (other == null) continue;
-                                if (other.LeftMotorSpeed > merged.LeftMotorSpeed
-                                    || other.RightMotorSpeed > merged.RightMotorSpeed)
-                                {
-                                    var m = new Engine.Vibration
-                                    {
-                                        LeftMotorSpeed = System.Math.Max(merged.LeftMotorSpeed, other.LeftMotorSpeed),
-                                        RightMotorSpeed = System.Math.Max(merged.RightMotorSpeed, other.RightMotorSpeed),
-                                    };
-                                    merged = m;
-                                }
-                            }
-                        }
-                        raw = merged;
-                    }
-                }
 
-                PadSetting devicePs = null;
+                // Cross-slot combine, reference shape = the non-Sony
+                // multi-slot path in Step 2's ApplyForceFeedback: process
+                // EVERY assignment row of this device independently under
+                // that row's own settings (macro override, constant force,
+                // gains, #102 redirect, touchpad pulse), then max-combine
+                // the scaled motors. The owner slot is the sole writer
+                // (owner facts, 2026-07-20); merging processed values here
+                // is what carries a non-owner slot's rumble to the pad.
+                // Single-slot devices reduce to the pre-ownership path.
+                if (_macroRumbleScratchSony == null)
+                    _macroRumbleScratchSony = new Vibration();
+                if (_constantForceScratchSony == null)
+                    _constantForceScratchSony = new Vibration();
+
+                ushort maxL = 0, maxR = 0;
+                bool anyRow = false;
                 var settings = SettingsManager.UserSettings;
                 if (settings != null && deviceGuid != Guid.Empty)
                 {
@@ -695,52 +672,72 @@ namespace PadForge.Services
                         {
                             var us = settings.Items[i];
                             if (us == null) continue;
-                            if (us.MapTo != padIndex) continue;
                             if (us.InstanceGuid != deviceGuid) continue;
-                            devicePs = us.GetPadSetting();
-                            break;
+                            int slot = us.MapTo;
+                            if (slot < 0 || slot >= InputManager.MaxPads) continue;
+                            // A slot whose virtual-DualSense passthrough
+                            // targets this pad already writes it directly;
+                            // importing its decoded motors here would fight
+                            // that writer (the cross-slot twin of the
+                            // dispatcher's own passthrough rumble gate).
+                            if (DualSensePassthroughDispatcher.IsPassthroughTarget(slot, deviceGuid))
+                                continue;
+                            // Test-rumble provenance: a slot running a
+                            // device-targeted test contributes only to that
+                            // exact device (mirrors Step 2's physical gate).
+                            var tt = _inputManager.TestRumbleTargetGuid[slot];
+                            if (tt != Guid.Empty && tt != deviceGuid) continue;
+
+                            var slotRaw = _inputManager.VibrationStates[slot];
+                            if (slotRaw == null) continue;
+                            var rowPs = us.GetPadSetting();
+
+                            var withMacro = MacroRumbleOverride.Merge(slotRaw,
+                                _inputManager.MacroRumbleOverrides[slot],
+                                _macroRumbleScratchSony);
+                            var effective = ConstantForceEvaluator.Resolve(
+                                withMacro, rowPs, _constantForceScratchSony);
+                            _inputManager.ScaleRumbleForDevice(
+                                effective.LeftMotorSpeed, effective.RightMotorSpeed,
+                                rowPs, out ushort rowL, out ushort rowR);
+                            _inputManager.GetTriggerRouteMainRedirect(slot, out bool zMainL, out bool zMainR);
+                            if (zMainL) rowL = 0;
+                            if (zMainR) rowR = 0;
+                            TouchpadPulseService.MixIntoMotors(ref rowL, ref rowR,
+                                TouchpadPulseService.CurrentLevel(slot, deviceGuid));
+
+                            if (rowL > maxL) maxL = rowL;
+                            if (rowR > maxR) maxR = rowR;
+                            anyRow = true;
                         }
                     }
                 }
 
-                // Sony dispatcher path: layer the macro rumble override
-                // via max() over raw, then apply the constant-force
-                // override-with-resume rule. Same shape as Step 2's
-                // ApplyForceFeedback so DS5 / DS4 motors respond to
-                // macro rumble identically to non-Sony pads.
-                if (_macroRumbleScratchSony == null)
-                    _macroRumbleScratchSony = new Vibration();
-                var withMacro = MacroRumbleOverride.Merge(raw,
-                    _inputManager.MacroRumbleOverrides[padIndex],
-                    _macroRumbleScratchSony);
+                if (!anyRow)
+                {
+                    // No assignment rows (empty guid, or a transient
+                    // unassignment window): the pre-ownership single-slot
+                    // read, row-less, so the anchor-config path keeps its
+                    // old behavior byte for byte.
+                    var raw = _inputManager.VibrationStates[padIndex];
+                    if (raw == null) return ((byte)0, (byte)0);
+                    var withMacro = MacroRumbleOverride.Merge(raw,
+                        _inputManager.MacroRumbleOverrides[padIndex],
+                        _macroRumbleScratchSony);
+                    var effective = ConstantForceEvaluator.Resolve(withMacro, null, _constantForceScratchSony);
+                    _inputManager.ScaleRumbleForDevice(
+                        effective.LeftMotorSpeed, effective.RightMotorSpeed,
+                        null, out ushort scaledL, out ushort scaledR);
+                    _inputManager.GetTriggerRouteMainRedirect(padIndex, out bool zMainL, out bool zMainR);
+                    if (zMainL) scaledL = 0;
+                    if (zMainR) scaledR = 0;
+                    TouchpadPulseService.MixIntoMotors(ref scaledL, ref scaledR,
+                        TouchpadPulseService.CurrentLevel(padIndex, deviceGuid));
+                    maxL = scaledL;
+                    maxR = scaledR;
+                }
 
-                if (_constantForceScratchSony == null)
-                    _constantForceScratchSony = new Vibration();
-                var effective = ConstantForceEvaluator.Resolve(withMacro, devicePs, _constantForceScratchSony);
-
-                _inputManager.ScaleRumbleForDevice(
-                    effective.LeftMotorSpeed, effective.RightMotorSpeed,
-                    devicePs, out ushort scaledL, out ushort scaledR);
-
-                // #102 Redirect: silence the main motor(s) the engaged trigger route
-                // drew from on the physical DualSense, mirroring the Xbox physical
-                // write. The game still reads the unredirected virtual-controller state.
-                _inputManager.GetTriggerRouteMainRedirect(padIndex, out bool zMainL, out bool zMainR);
-                if (zMainL) scaledL = 0;
-                if (zMainR) scaledR = 0;
-
-                // #219 touchpad swipe-haptic burst: max() over the scaled
-                // bytes (the audio-bass idiom), applied after the trigger
-                // redirect and after per-device gains. The burst carries
-                // its own intensity setting, so the rumble-strength knobs
-                // do not double-scale it, and it expires on its own 80 ms
-                // window (TouchpadPulseService.PulseDurationMs). One
-                // consumer per dispatcher tick, so the sole-writer rule
-                // holds unchanged.
-                TouchpadPulseService.MixIntoMotors(ref scaledL, ref scaledR,
-                    TouchpadPulseService.CurrentLevel(padIndex, deviceGuid));
-
-                return ((byte)(scaledR >> 8), (byte)(scaledL >> 8));
+                return ((byte)(maxR >> 8), (byte)(maxL >> 8));
             };
 
             // Slot's raw rumble for change-detection inside the audio
@@ -782,11 +779,17 @@ namespace PadForge.Services
                 // below source from the main motor, which every VC type drives. They
                 // must reach the physical DualSense's AT Vibration whatever the slot
                 // outputs as (Xbox, DualShock 4, DualSense, generic).
+                //
+                // Cross-slot combine mirrors SlotRumbleForDeviceProvider:
+                // process every assignment row under its own settings and
+                // #102 routing, then max-combine the scaled trigger motors.
+                if (_constantTriggerForceScratchSony == null)
+                    _constantTriggerForceScratchSony = new Vibration();
+                if (_routeMainScratchSony == null) _routeMainScratchSony = new Vibration();
+                if (_routeCfScratchSony == null) _routeCfScratchSony = new Vibration();
 
-                var raw = _inputManager.VibrationStates[padIndex];
-                if (raw == null) return ((byte)0, (byte)0);
-
-                PadSetting devicePs = null;
+                ushort maxL = 0, maxR = 0;
+                bool anyRow = false;
                 var settings = SettingsManager.UserSettings;
                 if (settings != null && deviceGuid != Guid.Empty)
                 {
@@ -796,32 +799,47 @@ namespace PadForge.Services
                         {
                             var us = settings.Items[i];
                             if (us == null) continue;
-                            if (us.MapTo != padIndex) continue;
                             if (us.InstanceGuid != deviceGuid) continue;
-                            devicePs = us.GetPadSetting();
-                            break;
+                            int slot = us.MapTo;
+                            if (slot < 0 || slot >= InputManager.MaxPads) continue;
+                            var tt = _inputManager.TestRumbleTargetGuid[slot];
+                            if (tt != Guid.Empty && tt != deviceGuid) continue;
+
+                            var slotRaw = _inputManager.VibrationStates[slot];
+                            if (slotRaw == null) continue;
+                            var rowPs = us.GetPadSetting();
+
+                            var effective = ConstantTriggerForceEvaluator.Resolve(
+                                slotRaw, rowPs, _constantTriggerForceScratchSony);
+                            _inputManager.ScaleTriggerRumbleForDevice(
+                                effective.LeftTriggerMotorSpeed, effective.RightTriggerMotorSpeed,
+                                rowPs, out ushort rowL, out ushort rowR);
+                            _inputManager.ApplyTriggerRoutingForSony(slot, rowPs, slotRaw,
+                                _routeMainScratchSony, _routeCfScratchSony, ref rowL, ref rowR);
+
+                            if (rowL > maxL) maxL = rowL;
+                            if (rowR > maxR) maxR = rowR;
+                            anyRow = true;
                         }
                     }
                 }
 
-                if (_constantTriggerForceScratchSony == null)
-                    _constantTriggerForceScratchSony = new Vibration();
-                var effective = ConstantTriggerForceEvaluator.Resolve(
-                    raw, devicePs, _constantTriggerForceScratchSony);
+                if (!anyRow)
+                {
+                    var raw = _inputManager.VibrationStates[padIndex];
+                    if (raw == null) return ((byte)0, (byte)0);
+                    var effective = ConstantTriggerForceEvaluator.Resolve(
+                        raw, null, _constantTriggerForceScratchSony);
+                    _inputManager.ScaleTriggerRumbleForDevice(
+                        effective.LeftTriggerMotorSpeed, effective.RightTriggerMotorSpeed,
+                        null, out ushort scaledL, out ushort scaledR);
+                    _inputManager.ApplyTriggerRoutingForSony(padIndex, null, raw,
+                        _routeMainScratchSony, _routeCfScratchSony, ref scaledL, ref scaledR);
+                    maxL = scaledL;
+                    maxR = scaledR;
+                }
 
-                _inputManager.ScaleTriggerRumbleForDevice(
-                    effective.LeftTriggerMotorSpeed, effective.RightTriggerMotorSpeed,
-                    devicePs, out ushort scaledL, out ushort scaledR);
-
-                // #102: route the device's main-motor amplitude + macro trigger
-                // override into the AT Vibration amplitude, the same max-combine the
-                // Xbox impulse path applies in ApplyForceFeedback. Reaches DualSense
-                // running as an Xbox-class VC (the gate above already passed).
-                if (_routeMainScratchSony == null) _routeMainScratchSony = new Vibration();
-                if (_routeCfScratchSony == null) _routeCfScratchSony = new Vibration();
-                _inputManager.ApplyTriggerRoutingForSony(padIndex, devicePs, raw,
-                    _routeMainScratchSony, _routeCfScratchSony, ref scaledL, ref scaledR);
-                return ((byte)(scaledR >> 8), (byte)(scaledL >> 8));
+                return ((byte)(maxR >> 8), (byte)(maxL >> 8));
             };
 
             // Active test-rumble target for the slot, so the dispatcher's

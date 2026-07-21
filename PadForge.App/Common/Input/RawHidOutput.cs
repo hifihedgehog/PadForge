@@ -14,7 +14,7 @@ namespace PadForge.Common.Input
     internal static class RawHidOutput
     {
         /// <summary>Per-path cached device handle + manual-reset event
-        /// (the PlayStationEffectWriter CachedIo shape). Fanatec pedal rumble
+        /// (the shape PlayStationEffectWriter used before its cache revert). Fanatec pedal rumble
         /// writes at up to poll rate, and the old open-per-write shape
         /// paid CreateFile + CreateEvent + two CloseHandle per frame.
         /// FALLBACK-SAFE: any cached-handle failure closes the cache and

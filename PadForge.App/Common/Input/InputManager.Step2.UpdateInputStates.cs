@@ -202,6 +202,12 @@ namespace PadForge.Common.Input
                 _sonyPokeCfgRefreshTick = pokeNow;
                 RefreshSonyPokeCfg(settingsForPoke);
             }
+            // Pass 1 (owner facts, 2026-07-20): compute every slot's own
+            // need first; pass 2 pokes each dispatcher with the OR across
+            // its share group, so the OWNER slot's timer runs whenever any
+            // slot sharing its pad has a reason to rumble, and the final
+            // stop frame lands only when the whole group goes quiet.
+            int needGameMask = 0, needAudioMask = 0;
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
                 // Empty pad — no VC means no dispatcher to poke. Skip the
@@ -248,7 +254,17 @@ namespace PadForge.Common.Input
                 bool hasAudioRumbleEnabled = poke.audio;
                 if (!hasGameRumble && poke.cfPoke) hasGameRumble = true;
 
-                UserEffectsDispatcher.OnPollingTick(padIndex, hasGameRumble, hasAudioRumbleEnabled);
+                if (hasGameRumble) needGameMask |= 1 << padIndex;
+                if (hasAudioRumbleEnabled) needAudioMask |= 1 << padIndex;
+            }
+
+            // Pass 2: group-OR poke.
+            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            {
+                if (!SettingsManager.SlotCreated[padIndex]) continue;
+                var (needG, needA) = GroupNeed(needGameMask, needAudioMask,
+                    _sonyPokeCfg[padIndex].shareMask, padIndex);
+                UserEffectsDispatcher.OnPollingTick(padIndex, needG, needA);
             }
         }
 
@@ -262,14 +278,44 @@ namespace PadForge.Common.Input
         // components, the game-rumble-equivalent keepalive that keeps the
         // Sony dispatcher's effect-packet timer running on game-silent,
         // lightbar-static slots).
-        private readonly (bool audio, bool cfPoke)[] _sonyPokeCfg =
-            new (bool, bool)[MaxPads];
+        private readonly (bool audio, bool cfPoke, int shareMask)[] _sonyPokeCfg =
+            new (bool, bool, int)[MaxPads];
+
+        // Scratch for RefreshSonyPokeCfg's share-group build (250 ms
+        // cadence, refresh thread only): Sony-vendor instance guids and
+        // per-guid slot masks. Reused to keep the refresh allocation-free.
+        private readonly System.Collections.Generic.HashSet<Guid> _sonyGuidScratch = new();
+        private readonly System.Collections.Generic.Dictionary<Guid, int> _sonyGuidSlotMask = new();
         private long _sonyPokeCfgRefreshTick;
 
         private void RefreshSonyPokeCfg(SettingsCollection settings)
         {
             for (int slot = 0; slot < MaxPads; slot++) _sonyPokeCfg[slot] = default;
             if (settings == null) return;
+
+            // Share-group prep (owner facts, 2026-07-20): a Sony pad
+            // assigned to several slots is written only by its OWNER slot,
+            // whose own need can be false while a sharing slot rumbles.
+            // Collect Sony-vendor guids under the devices lock (taken and
+            // RELEASED before the settings lock; the canon order allows
+            // nesting devices->settings but never the reverse).
+            _sonyGuidScratch.Clear();
+            _sonyGuidSlotMask.Clear();
+            var devicesForMask = SettingsManager.UserDevices;
+            if (devicesForMask != null)
+            {
+                lock (devicesForMask.SyncRoot)
+                {
+                    foreach (var ud in devicesForMask.Items)
+                    {
+                        if (ud == null) continue;
+                        if (ud.VendorId != 0x054C) continue; // Sony VID
+                        if (ud.InstanceGuid == Guid.Empty) continue;
+                        _sonyGuidScratch.Add(ud.InstanceGuid);
+                    }
+                }
+            }
+
             lock (settings.SyncRoot)
             {
                 for (int i = 0; i < settings.Items.Count; i++)
@@ -294,7 +340,56 @@ namespace PadForge.Common.Input
                         cur.cfPoke = true;
                     _sonyPokeCfg[us.MapTo] = cur;
                 }
+
+                // Second pass, same lock: per-guid slot masks for the
+                // Sony devices collected above.
+                for (int i = 0; i < settings.Items.Count; i++)
+                {
+                    var us = settings.Items[i];
+                    if (us == null) continue;
+                    int slot = us.MapTo;
+                    if (slot < 0 || slot >= MaxPads) continue;
+                    if (!_sonyGuidScratch.Contains(us.InstanceGuid)) continue;
+                    _sonyGuidSlotMask.TryGetValue(us.InstanceGuid, out int m);
+                    _sonyGuidSlotMask[us.InstanceGuid] = m | (1 << slot);
+                }
             }
+
+            FoldShareMasks(_sonyGuidSlotMask, _sonyPokeCfg);
+        }
+
+        /// <summary>Pure fold, extracted for the tests: a slot's share
+        /// mask is the union of the slot masks of every Sony device
+        /// assigned to it (self bit included via the device's own row).
+        /// Slots with no Sony assignment keep 0 and the poke loop falls
+        /// back to their own bit.</summary>
+        internal static void FoldShareMasks(
+            System.Collections.Generic.Dictionary<Guid, int> guidSlotMasks,
+            (bool audio, bool cfPoke, int shareMask)[] cfg)
+        {
+            foreach (var kvp in guidSlotMasks)
+            {
+                int m = kvp.Value;
+                for (int slot = 0; slot < cfg.Length; slot++)
+                {
+                    if ((m & (1 << slot)) == 0) continue;
+                    var cur = cfg[slot];
+                    cur.shareMask |= m;
+                    cfg[slot] = cur;
+                }
+            }
+        }
+
+        /// <summary>Pure group-need decision, extracted for the tests
+        /// (owner facts, 2026-07-20): a slot is poked with the OR of
+        /// need across its share group; a slot with no Sony share group
+        /// falls back to its own bit.</summary>
+        internal static (bool game, bool audio) GroupNeed(
+            int needGameMask, int needAudioMask, int shareMask, int padIndex)
+        {
+            int m = shareMask;
+            if (m == 0) m = 1 << padIndex;
+            return ((needGameMask & m) != 0, (needAudioMask & m) != 0);
         }
 
         private static double ParseConstantForceComponent(string s)

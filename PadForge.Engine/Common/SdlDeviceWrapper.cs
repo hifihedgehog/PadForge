@@ -884,7 +884,7 @@ namespace PadForge.Engine
                 if (System.Math.Abs(direct - bulk) > 512)
                 { diffs++; detail.Append($" axis{a}={bulk}/{direct}"); }
             }
-            for (int b = 0; b < 21; b++)
+            for (int b = 0; b < 26; b++) // SDL_GAMEPAD_BUTTON_COUNT incl. MISC2-6
             {
                 bool direct = SDL_GetGamepadButton(GameController, b);
                 if (direct != ReadGamepadButton(b))

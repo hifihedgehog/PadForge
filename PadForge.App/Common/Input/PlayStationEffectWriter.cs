@@ -192,7 +192,6 @@ namespace PadForge.Common.Input
             }
         }
 
-
         private static bool WriteRaw(string devicePath, byte[] buf)
         {
 

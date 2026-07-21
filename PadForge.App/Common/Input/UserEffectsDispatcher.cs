@@ -289,6 +289,24 @@ namespace PadForge.Common.Input
         private readonly Dictionary<Guid, bool> _prevPadForgeWantsRightTrig = new();
         private readonly Dictionary<Guid, bool> _prevPadForgeWantsLeftTrig = new();
 
+        // Devices this dispatcher wrote on its previous dispatch as their
+        // OWNER (single-writer ownership, owner facts 2026-07-20). On the
+        // first owned dispatch of a device the prev-state maps above are
+        // seeded TRUE so the enable/drop-frame machinery emits the
+        // mandatory stop/disengage frame even when the current frame is
+        // zero: a prior owner (or a dead prior process) may have left
+        // rumble or an AT effect latched in firmware. Accessed only inside
+        // devices.SyncRoot during DispatchSnapshot, like _prevHadRumble.
+        private readonly HashSet<Guid> _ownedLastDispatch = new();
+
+        // Union bitmask of slots sharing any of this slot's assigned Sony
+        // devices (self bit always set). Refreshed by DispatchSnapshot from
+        // the same settings walk that resolves ownership; read by the
+        // audio-mode early-exit so a steady peak cannot starve rumble
+        // onset/stop originating on a sharing slot. One tick of staleness
+        // delays a merged edge by at most 33 ms.
+        private volatile int _groupSlotsMask;
+
         // Per-device timestamp of the last non-zero impulse-trigger sample
         // for the right / left trigger. Drives the linger window for the
         // impulse-to-AT Vibration auto-route — between rapid game pulses
@@ -559,6 +577,39 @@ namespace PadForge.Common.Input
             UpdateAnimTimer();
         }
 
+        /// <summary>Pure core of the single-writer ownership walk
+        /// (owner facts, 2026-07-20), extracted so the tests can lock
+        /// it. For every settings row whose device is in
+        /// <paramref name="guids"/>: fold the row's slot into the
+        /// share-group mask, and elect the device's owner as the lowest
+        /// live-dispatcher slot among its rows (falling back to
+        /// <paramref name="padIndex"/>). Caller holds the settings lock.</summary>
+        internal static void ResolveOwnersAndGroup(
+            System.Collections.Generic.IList<UserSetting> items,
+            System.Collections.Generic.List<Guid> guids,
+            int padIndex,
+            Func<int, bool> slotLive,
+            System.Collections.Generic.Dictionary<Guid, int> owners,
+            ref int groupMask)
+        {
+            if (items == null) return;
+            for (int i = 0; i < items.Count; i++)
+            {
+                var us = items[i];
+                if (us == null) continue;
+                int slot = us.MapTo;
+                if (slot < 0 || slot >= InputManager.MaxPads) continue;
+                if (us.InstanceGuid == Guid.Empty) continue;
+                if (!guids.Contains(us.InstanceGuid)) continue;
+                groupMask |= 1 << slot;
+                if (!owners.TryGetValue(us.InstanceGuid, out int cur))
+                    cur = padIndex;
+                if (slot < cur && slotLive(slot))
+                    cur = slot;
+                owners[us.InstanceGuid] = cur;
+            }
+        }
+
         /// <summary>Polling-thread broadcast — Step 2 calls this every
         /// tick for each slot with the current "any reason to keep the
         /// dispatcher's effect-packet timer alive" inputs. The dispatcher
@@ -567,32 +618,6 @@ namespace PadForge.Common.Input
         /// kick the timer on or off so audio-rumble / game-rumble onset
         /// without an animated lightbar still produces dispatcher writes,
         /// and a slot that drops both stays parked.</summary>
-        /// <summary>Single-writer ownership for a physical pad that feeds
-        /// several slots (owner facts, 2026-07-20): each slot runs its own
-        /// dispatcher instance, and N slots writing one pad interleave
-        /// reports and break its rumble continuity. The LOWEST slot index
-        /// with a live dispatcher among the device's assignments owns every
-        /// write to it; the other slots' dispatchers skip the device. Their
-        /// rumble still reaches the pad through the owner's cross-slot
-        /// merge in the rumble providers.</summary>
-        private static int OwnerSlotForDevice(Guid instanceGuid, int fallbackSlot)
-        {
-            var settings = SettingsManager.UserSettings;
-            if (settings == null || instanceGuid == Guid.Empty) return fallbackSlot;
-            int owner = fallbackSlot;
-            lock (settings.SyncRoot)
-            {
-                foreach (var us in settings.Items)
-                {
-                    if (us == null || us.InstanceGuid != instanceGuid) continue;
-                    if (us.MapTo < 0) continue;
-                    if (us.MapTo < owner && _instances.ContainsKey(us.MapTo))
-                        owner = us.MapTo;
-                }
-            }
-            return owner;
-        }
-
         public static void OnPollingTick(int padIndex, bool slotHasGameRumble, bool slotHasAudioRumbleEnabled)
         {
             if (_instances.TryGetValue(padIndex, out var d))
@@ -618,6 +643,12 @@ namespace PadForge.Common.Input
         public void Rebind(DeviceSlotConfig config)
         {
             if (_disposed) return;
+            // Reclaim the registry key. The spare-VC race registers the
+            // spare's dispatcher over this one at construction; when the
+            // spare loses and disposes, its removal leaves the slot key
+            // EMPTY and pokes/battery/sound notifications go nowhere.
+            // Rebind is the winner's re-attach path, so re-assert.
+            _instances[_padIndex] = this;
             if (_config != null)
                 _config.PropertyChanged -= OnConfigChanged;
             _config = config;
@@ -661,9 +692,10 @@ namespace PadForge.Common.Input
             // Only remove from the registry if WE are still the registered
             // instance — a fresh dispatcher could have replaced us mid-life
             // (rebind during VC reset) and we shouldn't yank its slot key.
-            _instances.TryGetValue(_padIndex, out var current);
-            if (ReferenceEquals(current, this))
-                _instances.TryRemove(_padIndex, out _);
+            // Atomic pair-remove: the old TryGetValue + key-only TryRemove
+            // could evict a replacement that registered between the two.
+            ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>>)_instances)
+                .Remove(new System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>(_padIndex, this));
         }
 
         private void OnConfigChanged(object sender, PropertyChangedEventArgs e)
@@ -1024,7 +1056,21 @@ namespace PadForge.Common.Input
                 // detection; per-device scaling happens later in the
                 // device loop via SlotRumbleForDeviceProvider.
                 var r = SlotRawRumbleProvider?.Invoke(_padIndex) ?? ((byte)0, (byte)0);
-                bool rumbleChanged = r.right != _lastDispatchedRumbleR || r.left != _lastDispatchedRumbleL;
+                byte rRight = r.right, rLeft = r.left;
+                // Group-aware change detect (owner facts, 2026-07-20): this
+                // slot may own a pad whose rumble originates on ANOTHER
+                // sharing slot, and a steady audio peak must not starve
+                // that onset/stop. Max the raw bytes across the share
+                // group resolved by the last DispatchSnapshot.
+                int grp = _groupSlotsMask;
+                for (int gs = 0; grp != 0 && gs < InputManager.MaxPads; gs++)
+                {
+                    if (gs == _padIndex || (grp & (1 << gs)) == 0) continue;
+                    var go = SlotRawRumbleProvider?.Invoke(gs) ?? ((byte)0, (byte)0);
+                    if (go.right > rRight) rRight = go.right;
+                    if (go.left > rLeft) rLeft = go.left;
+                }
+                bool rumbleChanged = rRight != _lastDispatchedRumbleR || rLeft != _lastDispatchedRumbleL;
 
                 // Suppress the rainbow-pulse mode's special-case
                 // anti-skip only when ANY device is on AudioPulseRainbow
@@ -1033,8 +1079,8 @@ namespace PadForge.Common.Input
                 if (!zeroCrossing && !rumbleChanged && delta < 0.004f && !anyAudioPulseRainbow)
                     return;
                 _lastDispatchedPeak = scaled;
-                _lastDispatchedRumbleR = r.right;
-                _lastDispatchedRumbleL = r.left;
+                _lastDispatchedRumbleR = rRight;
+                _lastDispatchedRumbleL = rLeft;
             }
 
             DispatchSnapshot(scaled);
@@ -1245,8 +1291,14 @@ namespace PadForge.Common.Input
             var devices = SettingsManager.UserDevices;
             if (settings == null || devices == null) return;
 
-            // Resolve assigned DS5 GUIDs.
+            // Resolve assigned DS5 GUIDs plus, in the SAME settings
+            // snapshot so ownership can never disagree with the guid list
+            // (the stale-assignment write window), each device's owner
+            // slot and the union share-group mask. Owner = lowest slot
+            // among the device's assignment rows with a live dispatcher.
             var guids = new System.Collections.Generic.List<Guid>(4);
+            var owners = new System.Collections.Generic.Dictionary<Guid, int>(4);
+            int groupMask = 1 << _padIndex;
             lock (settings.SyncRoot)
             {
                 foreach (var us in settings.Items)
@@ -1256,7 +1308,12 @@ namespace PadForge.Common.Input
                     if (us.InstanceGuid == Guid.Empty) continue;
                     guids.Add(us.InstanceGuid);
                 }
+                if (guids.Count > 0)
+                    ResolveOwnersAndGroup(settings.Items, guids, _padIndex,
+                        static slot => _instances.ContainsKey(slot),
+                        owners, ref groupMask);
             }
+            _groupSlotsMask = groupMask;
             if (guids.Count == 0) return;
 
             // Payloads are built under the device lock and written after it.
@@ -1277,10 +1334,6 @@ namespace PadForge.Common.Input
                 {
                     if (ud == null) continue;
 
-                    // Single-writer ownership (see OwnerSlotForDevice).
-                    if (OwnerSlotForDevice(ud.InstanceGuid, _padIndex) != _padIndex)
-                        continue;
-
                     bool isDs5 = ud.VendorId == SonyVid &&
                                  (ud.ProdId == PidStandard || ud.ProdId == PidEdge);
                     bool isDs4 = ud.VendorId == SonyVid &&
@@ -1290,6 +1343,31 @@ namespace PadForge.Common.Input
                     if (!guids.Contains(ud.InstanceGuid)) continue;
                     if (!ud.IsOnline) continue;
                     if (!isPs) continue;
+
+                    // Single-writer ownership (owner facts, 2026-07-20):
+                    // the lowest live-dispatcher slot among this device's
+                    // assignment rows makes every write; the other slots'
+                    // dispatchers skip it. Resolved from the same settings
+                    // snapshot as `guids`, checked after the cheap gates so
+                    // non-Sony devices never pay for it. On losing
+                    // ownership the seed entry drops so a later re-own
+                    // reseeds the stop-frame state below.
+                    if (owners.TryGetValue(ud.InstanceGuid, out int ownSlot) && ownSlot != _padIndex)
+                    {
+                        _ownedLastDispatch.Remove(ud.InstanceGuid);
+                        continue;
+                    }
+                    // First dispatch as this device's owner: seed the
+                    // prev-state maps TRUE so the enable/drop-frame logic
+                    // emits the mandatory stop/disengage frame even when
+                    // this frame is zero (a prior owner may have left
+                    // rumble or an AT effect latched in firmware).
+                    if (_ownedLastDispatch.Add(ud.InstanceGuid))
+                    {
+                        _prevHadRumble[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsLeftTrig[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsRightTrig[ud.InstanceGuid] = true;
+                    }
 
                     // Identity precedence: a pad shared across virtual
                     // controllers takes the winning (smallest displayed)

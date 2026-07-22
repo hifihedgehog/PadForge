@@ -1050,7 +1050,11 @@ namespace PadForge.Common.Input
                     if (desc.Index >= 0 && desc.Index < CustomInputState.MaxAxis)
                     {
                         int value = state.Axis[desc.Index];
-                        double t = Math.Max(deadZonePercent > 0 ? deadZonePercent : globalThresholdPercent, 1) / 100.0;
+                        // Floor 0, not 1: zero = strictly-positive
+                        // detection (any nonzero), the DS4/DualSense
+                        // digital trigger-follower contract. See the
+                        // trigger-click activation default below.
+                        double t = Math.Max(deadZonePercent > 0 ? deadZonePercent : globalThresholdPercent, 0) / 100.0;
                         if (desc.HalfAxis)
                         {
                             if (bidirectional)
@@ -1077,7 +1081,11 @@ namespace PadForge.Common.Input
                     if (desc.Index >= 0 && desc.Index < CustomInputState.MaxSliders)
                     {
                         int value = state.Sliders[desc.Index];
-                        double t = Math.Max(deadZonePercent > 0 ? deadZonePercent : globalThresholdPercent, 1) / 100.0;
+                        // Floor 0, not 1: zero = strictly-positive
+                        // detection (any nonzero), the DS4/DualSense
+                        // digital trigger-follower contract. See the
+                        // trigger-click activation default below.
+                        double t = Math.Max(deadZonePercent > 0 ? deadZonePercent : globalThresholdPercent, 0) / 100.0;
                         if (desc.HalfAxis)
                         {
                             if (bidirectional)
@@ -1916,12 +1924,15 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Activation threshold for a physical trigger AXIS
-        /// feeding a digital trigger-click button (ZL/ZR). PlayStation
-        /// pads assert their digital trigger followers at first
-        /// detectable travel; 5% is perceptibly immediate while immune
-        /// to minor rest offsets (XInput's own canonical threshold sits
-        /// near 12%, which already reads as lag on a click).</summary>
-        private const int TriggerClickActivationPercent = 5;
+        /// feeding a digital trigger-click button (ZL/ZR): ZERO, meaning
+        /// strictly-positive detection. DS4/DualSense hardware asserts
+        /// the digital trigger follower on ANY nonzero analog value, and
+        /// HIDMaestro's own virtual DS4/DualSense derives the bit the
+        /// same way (HidReportBuilder trigger-to-button derivation:
+        /// "any nonzero trigger value automatically engages the
+        /// corresponding descriptor button", value &gt; 0). The eval
+        /// floors treat a zero effective threshold as value &gt; 0.</summary>
+        private const int TriggerClickActivationPercent = 0;
 
         internal static void MapInputToExtendedRaw(ref RawHidState raw,
             CustomInputState state, PadSetting ps,

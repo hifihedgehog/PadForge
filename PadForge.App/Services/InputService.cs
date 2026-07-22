@@ -4275,6 +4275,35 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>Bit mask of raw button indices the profile layout
+        /// declares as digital trigger-clicks (LeftTriggerClick /
+        /// RightTriggerClick roles). Scans every button-binding list the
+        /// gamepad layout carries; non-gamepad layouts (wheels, HOTAS,
+        /// pedals) declare no trigger-click roles and return 0.</summary>
+        internal static int TriggerClickButtonMaskFrom(HIDMaestro.HMLayout layout)
+        {
+            if (layout is not HIDMaestro.HMGamepadLayout gp) return 0;
+            int mask = 0;
+            void Scan(System.Collections.Generic.IReadOnlyList<HIDMaestro.HMButtonBinding> list)
+            {
+                if (list == null) return;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var b = list[i];
+                    if (b == null) continue;
+                    if (b.Role is HIDMaestro.HMButtonRole.LeftTriggerClick
+                              or HIDMaestro.HMButtonRole.RightTriggerClick
+                        && b.ButtonIndex >= 0 && b.ButtonIndex < 32)
+                        mask |= 1 << b.ButtonIndex;
+                }
+            }
+            Scan(gp.FaceButtons);
+            Scan(gp.ShoulderButtons);
+            Scan(gp.SystemButtons);
+            Scan(gp.ExtraButtons);
+            return mask;
+        }
+
         /// <summary>
         /// Syncs a PadViewModel's per-slot custom controller layout to the
         /// InputManager. The Extended pipeline reads these counts to translate
@@ -4291,13 +4320,13 @@ namespace PadForge.Services
             // catalog ProductString so toggling OEM override alone (without
             // typing anything) still picks up a meaningful label from the
             // same value the UI is showing.
+            var activeProfile = HMaestroProfileCatalog.GetProfileById(padVm.ProfileId);
             string effectiveLabel = cfg.ProductString ?? string.Empty;
             if (string.IsNullOrEmpty(effectiveLabel))
             {
-                var profile = HMaestroProfileCatalog.GetProfileById(padVm.ProfileId);
-                effectiveLabel = !string.IsNullOrEmpty(profile?.ProductString)
-                    ? profile.ProductString
-                    : profile?.Name ?? string.Empty;
+                effectiveLabel = !string.IsNullOrEmpty(activeProfile?.ProductString)
+                    ? activeProfile.ProductString
+                    : activeProfile?.Name ?? string.Empty;
             }
 
             bool customize = padVm.OutputType == VirtualControllerType.Extended && cfg.Customize;
@@ -4316,7 +4345,12 @@ namespace PadForge.Services
                 Buttons = cfg.ButtonCount,
                 Povs = cfg.PovCount,
                 Sticks = cfg.ThumbstickCount,
-                Triggers = cfg.TriggerCount
+                Triggers = cfg.TriggerCount,
+                // Role metadata from the profile layout, not a type or
+                // index hardcode: any profile declaring trigger-click
+                // roles (switch-pro ZL/ZR today, Switch 2 / Joy-Con
+                // profiles when they ship) gets activation semantics.
+                TriggerClickButtonMask = TriggerClickButtonMaskFrom(activeProfile?.Layout)
             };
             // Extended and Nintendo always produce raw HID axes/buttons per
             // the active HIDMaestro profile; the gate is OutputType alone.

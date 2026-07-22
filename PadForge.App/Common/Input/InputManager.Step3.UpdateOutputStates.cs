@@ -1915,7 +1915,15 @@ namespace PadForge.Common.Input
             return dst;
         }
 
-        private static void MapInputToExtendedRaw(ref RawHidState raw,
+        /// <summary>Activation threshold for a physical trigger AXIS
+        /// feeding a digital trigger-click button (ZL/ZR). PlayStation
+        /// pads assert their digital trigger followers at first
+        /// detectable travel; 5% is perceptibly immediate while immune
+        /// to minor rest offsets (XInput's own canonical threshold sits
+        /// near 12%, which already reads as lag on a click).</summary>
+        private const int TriggerClickActivationPercent = 5;
+
+        internal static void MapInputToExtendedRaw(ref RawHidState raw,
             CustomInputState state, PadSetting ps,
             CustomControllerLayout cfg,
             MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
@@ -1956,16 +1964,26 @@ namespace PadForge.Common.Input
             for (int i = 0; i < cfg.Buttons; i++)
             {
                 string key = CachedName(ref _extBtnNames, i, "RawBtn");
+                // Trigger-click buttons (the profile layout's
+                // LeftTriggerClick / RightTriggerClick roles, e.g. ZL/ZR
+                // on the Switch Pro) fed by a physical trigger axis must
+                // fire at press DETECTION, the way PlayStation pads
+                // assert their digital trigger followers, not at the
+                // generic 50% axis-to-button midpoint. An explicit
+                // per-row threshold still wins; only the unset default
+                // changes.
+                int tgt = (cfg.TriggerClickButtonMask & (1 << i)) != 0
+                    ? TriggerClickActivationPercent : vgt;
                 bool pressed;
                 if (TryEvaluateMappingSetButton(state, mappingSet, thisDeviceGuid,
-                        slotIndex, key, vgt, out pressed))
+                        slotIndex, key, tgt, out pressed))
                 {
                     if (pressed) raw.SetButton(i, true);
                 }
                 else
                 {
                     string desc = ps.GetRawMapping(key);
-                    if (MapToButtonPressed(state, desc, thisDeviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), vgt, ps.GetMappingBidirectional(key) == "1"))
+                    if (MapToButtonPressed(state, desc, thisDeviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), tgt, ps.GetMappingBidirectional(key) == "1"))
                         raw.SetButton(i, true);
                 }
             }

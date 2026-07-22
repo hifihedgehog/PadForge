@@ -192,6 +192,21 @@ namespace PadForge.Common.Input
                 if (cfg != null && cfg.Enabled)
                 {
                     pack = GetInboundRumblePack(slot);
+                    // The preview's test rumble buttons write
+                    // VibrationStates directly and never cross the VC's
+                    // inbound callback, so the pack alone leaves the
+                    // shakers silent during a test while the physical pad
+                    // shakes. Per-voice max of the slot's live vibration
+                    // state closes that: test rumble becomes audible, and
+                    // game rumble (which fills both sides with the same
+                    // values) merges to itself.
+                    var vibe = VibrationStates[slot];
+                    if (vibe != null)
+                    {
+                        pack = Engine.Common.LfeOutputState.MaxMerge(pack,
+                            vibe.LeftMotorSpeed, vibe.RightMotorSpeed,
+                            vibe.LeftTriggerMotorSpeed, vibe.RightTriggerMotorSpeed);
+                    }
                     if (pack != 0)
                     {
                         // Per-voice enable masks (the four fixed unipolar

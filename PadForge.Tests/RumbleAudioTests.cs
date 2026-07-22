@@ -143,8 +143,16 @@ namespace PadForge.Tests
             // Global threshold 25%: 30% amplitude fires.
             Assert.True(SourceCoercion.EvaluateForButtonTarget(
                 state, RumbleSrc("Rumble Low"), 25, slotIndex: 0));
-            // Per-source DeadZone 50 beats the global: 30% does not fire.
+            // An authored per-source DeadZone beats the global: 30% does
+            // not fire under 60.
             Assert.False(SourceCoercion.EvaluateForButtonTarget(
+                state, RumbleSrc("Rumble Low", deadZone: 60), 25, slotIndex: 0));
+            // DeadZone 50 is the MappingSource model's untouched default
+            // (the sentinel the grid's customized indicator keys on), so
+            // it INHERITS the caller's global instead of overriding it:
+            // 30% fires under global 25. The trigger-click activation
+            // contract (ZL/ZR any-nonzero) depends on this inherit.
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(
                 state, RumbleSrc("Rumble Low", deadZone: 50), 25, slotIndex: 0));
         }
 

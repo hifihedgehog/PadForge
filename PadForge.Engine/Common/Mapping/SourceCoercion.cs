@@ -1935,7 +1935,7 @@ namespace PadForge.Engine.Common.Mapping
             string canonical, int globalThresholdPercent)
         {
             float mag = ReadStickRingMagnitude(state, canonical);
-            int radiusPct = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+            int radiusPct = EffectiveThresholdPercent(src, globalThresholdPercent);
             float r01 = Math.Max(radiusPct, 1) / 100f;
             if (src.Invert)
                 return mag > StickRingInnerFloorPercent / 100f && mag <= r01;
@@ -2505,6 +2505,17 @@ namespace PadForge.Engine.Common.Mapping
         /// the post-Invert pressed state. Axis and slider sources cross a
         /// threshold (per-source DeadZone overrides the global threshold
         /// when set).</summary>
+        /// <summary>Effective per-source threshold percent: an authored
+        /// row DeadZone wins, but 0 (unset) AND 50 (the MappingSource
+        /// model's untouched default, the same sentinel the mapping
+        /// grid's customized indicator keys on) inherit the caller's
+        /// global default. Normal button targets pass 50 as the global,
+        /// so the inherit is bit-identical for them; trigger-click
+        /// button targets pass 0, the DS4/DualSense any-nonzero
+        /// activation contract.</summary>
+        internal static int EffectiveThresholdPercent(MappingSource src, int globalThresholdPercent)
+            => (src.DeadZone > 0 && src.DeadZone != 50) ? src.DeadZone : globalThresholdPercent;
+
         public static bool EvaluateForButtonTarget(
             CustomInputState state, MappingSource src, int globalThresholdPercent, int slotIndex = -1,
             string evaluatedDeviceGuid = null)
@@ -2709,7 +2720,7 @@ namespace PadForge.Engine.Common.Mapping
             // the axis-as-button contract.
             if (IsRumbleDescriptor(s))
             {
-                int rdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                int rdz = EffectiveThresholdPercent(src, globalThresholdPercent);
                 return ReadRumbleUnipolar(slotIndex, s) > Math.Max(rdz, 1) / 100f;
             }
 
@@ -2720,7 +2731,7 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     float axisVal = TouchpadGestureAxisProvider?.Invoke(
                         slotIndex, deviceGuid ?? "", gPad, gName) ?? 0f;
-                    float gThresh = src.DeadZone > 0 ? src.DeadZone / 100f : 0.5f;
+                    float gThresh = EffectiveThresholdPercent(src, 50) / 100f;
                     return Math.Abs(axisVal) > gThresh;
                 }
                 return TouchpadGestureFiredProvider?.Invoke(
@@ -2744,7 +2755,7 @@ namespace PadForge.Engine.Common.Mapping
                 if (IsTouchpadPointerDescriptor(s))
                 {
                     float pv = ReadTunedTouchpadPointer(state, src, slotIndex, deviceGuid);
-                    int pdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                    int pdz = EffectiveThresholdPercent(src, globalThresholdPercent);
                     return Math.Abs(pv) > Math.Max(pdz, 1) / 100f;
                 }
                 // Finger ring (v26): ring geometry (radius on DeadZone,
@@ -2770,7 +2781,7 @@ namespace PadForge.Engine.Common.Mapping
                     // for device-free sources and would miss the provider.
                     pr = ApplySyntheticPressure(prState, prFinger, pr,
                         deviceGuid, slotIndex, prPad);
-                    int prDz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                    int prDz = EffectiveThresholdPercent(src, globalThresholdPercent);
                     return pr > Math.Max(prDz, 1) / 100f;
                 }
                 return ReadTouchpadBool(state, s);
@@ -2786,7 +2797,7 @@ namespace PadForge.Engine.Common.Mapping
                     // (default half-scale). Covers sustain pedals and
                     // encoder/pad CC buttons.
                     case 'C':
-                        int cdz = src.DeadZone > 0 ? src.DeadZone : 50;
+                        int cdz = EffectiveThresholdPercent(src, 50);
                         return state.Midi.Cc[mi] > (int)(127 * cdz / 100.0);
                     case 'U': return state.Midi.CcUp[mi];   // encoder CW pulse
                     case 'D': return state.Midi.CcDown[mi]; // encoder CCW pulse
@@ -2806,7 +2817,7 @@ namespace PadForge.Engine.Common.Mapping
             if (IsGyroLeanDescriptor(s))
             {
                 float lv = ReadGyroLean(src, s, deviceGuid);
-                int ldz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                int ldz = EffectiveThresholdPercent(src, globalThresholdPercent);
                 float lth = Math.Max(ldz, 1) / 100f;
                 if (src.HalfAxis && !src.Bidirectional)
                     return src.Invert ? lv < -lth : lv > lth;
@@ -2843,7 +2854,7 @@ namespace PadForge.Engine.Common.Mapping
                 // cursor offset clears the per-source deadzone (or the global
                 // threshold when none is set).
                 float v = ReadTunedMouseCursor(src);
-                int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                int cdz = EffectiveThresholdPercent(src, globalThresholdPercent);
                 return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
             }
 
@@ -2853,14 +2864,14 @@ namespace PadForge.Engine.Common.Mapping
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
             {
                 float v = ReadTunedIrPointer(state, src, slotIndex, deviceGuid);
-                int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                int cdz = EffectiveThresholdPercent(src, globalThresholdPercent);
                 return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
             }
 
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
             {
                 float v = ReadTunedBalanceBoard(state, src, deviceGuid);
-                int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                int cdz = EffectiveThresholdPercent(src, globalThresholdPercent);
                 return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
             }
 
@@ -2869,7 +2880,7 @@ namespace PadForge.Engine.Common.Mapping
                 // Cover-as-button (issue #151): pressed while the sensor reads
                 // brighter than the threshold. Same per-row DeadZone override /
                 // global-threshold fallback as the other derived sources.
-                int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                int cdz = EffectiveThresholdPercent(src, globalThresholdPercent);
                 return state.JoyConIrIntensity > Math.Max(cdz, 1) / 100f;
             }
 
@@ -2883,7 +2894,7 @@ namespace PadForge.Engine.Common.Mapping
                 // down, HalfAxis+Invert = left / up. Four rows give the full
                 // up/down/left/right wheel the issue asks for.
                 float v = ReadJoyCon2MouseMotion(state, src);
-                int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                int cdz = EffectiveThresholdPercent(src, globalThresholdPercent);
                 float th = Math.Max(cdz, 1) / 100f;
                 if (src.HalfAxis)
                 {
@@ -2908,8 +2919,15 @@ namespace PadForge.Engine.Common.Mapping
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return false;
 
-            int dz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
-            double thresh = Math.Max(dz, 1) / 100.0;
+            int dz = EffectiveThresholdPercent(src, globalThresholdPercent);
+            // Floor 0, not 1: a zero effective threshold means
+            // strictly-positive detection ("any nonzero"), the
+            // DS4/DualSense digital trigger-follower contract
+            // (HidReportBuilder derives those bits as value > 0).
+            // Reachable only when both the per-row threshold and the
+            // global default are 0: trigger-click buttons, or an
+            // authored 0% AxisToButtonThreshold.
+            double thresh = Math.Max(dz, 0) / 100.0;
 
             switch (t)
             {
@@ -4300,7 +4318,7 @@ namespace PadForge.Engine.Common.Mapping
             if (!pad.FingerDown[fingerIdx]) return false;
             if (!FingerInTouchpadHalf(pad, fingerIdx, half)) return false;
             float mag = ReadTouchpadRingMagnitude(state, padIdx, fingerIdx, half);
-            int radiusPct = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+            int radiusPct = EffectiveThresholdPercent(src, globalThresholdPercent);
             float r01 = Math.Max(radiusPct, 1) / 100f;
             return src.Invert ? mag <= r01 : mag >= r01;
         }

@@ -36,6 +36,22 @@ namespace PadForge.Engine.Common
         /// <summary>Unpacks the right trigger voice.</summary>
         public static ushort TriggerRight(long packed) => (ushort)((packed >> 48) & 0xFFFF);
 
+        /// <summary>Per-voice maximum of a packed state and four raw
+        /// magnitudes. Used by the feedback lane to merge the slot's live
+        /// vibration state (which carries preview test rumble that never
+        /// crosses the virtual controller's inbound callback) into the
+        /// game-written inbound pack; identical values merge to
+        /// themselves, so double-sourcing the same game rumble is
+        /// harmless.</summary>
+        public static long MaxMerge(long pack, ushort low, ushort high, ushort triggerLeft, ushort triggerRight)
+        {
+            return Pack(
+                System.Math.Max(Low(pack), low),
+                System.Math.Max(High(pack), high),
+                System.Math.Max(TriggerLeft(pack), triggerLeft),
+                System.Math.Max(TriggerRight(pack), triggerRight));
+        }
+
         /// <summary>Unpacks the voice selected by <paramref name="voice"/>
         /// (0 = low, 1 = high, 2 = trigger left, 3 = trigger right).
         /// Out-of-range indices read 0.</summary>

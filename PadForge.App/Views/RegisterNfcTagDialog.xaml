@@ -90,8 +90,17 @@
 
             <TextBlock Grid.Row="4" Text="{Binding Nfc_RegisteredTagsHeader, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"/>
 
-            <ListBox Grid.Row="5" x:Name="TagListBox" MinHeight="100"
-                     ItemContainerStyle="{StaticResource EmberSelectListItem}">
+            <ListBox Grid.Row="5" x:Name="TagListBox" MinHeight="100">
+                <!-- The shared row chrome left the container's content
+                     left-aligned, so the star column collapsed to text width
+                     and Remove sat flush against the name (owner report).
+                     Stretch pins the button to the row's right edge. -->
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource EmberSelectListItem}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="8,6"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -99,7 +108,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
                                 <TextBlock Text="{Binding Name}"/>
                                 <TextBlock Text="{Binding Uid}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>

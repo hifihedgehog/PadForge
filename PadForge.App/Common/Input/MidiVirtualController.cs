@@ -83,6 +83,21 @@ namespace PadForge.Common.Input
         internal static void AbandonEndpointForTest(string uniqueId, long abandonedAtTick) => s_liveEndpoints[uniqueId] = abandonedAtTick;
         internal static void UnregisterEndpointForTest(string uniqueId) => s_liveEndpoints.TryRemove(uniqueId, out _);
 
+        /// <summary>The unique service-registry id of this controller's
+        /// endpoint, or null before the first create attempt.</summary>
+        internal string UniqueEndpointId => _uniqueEndpointId;
+
+        /// <summary>Demotes the endpoint's registry claim out of READY so
+        /// the input scanner stops opening the loopback twin. Call BEFORE
+        /// teardown: the claim stays janitor-protected for the abandonment
+        /// grace, and DisconnectCore's finally removes it outright.</summary>
+        internal void MarkClosing()
+        {
+            var uid = _uniqueEndpointId;
+            if (uid != null)
+                s_liveEndpoints.TryUpdate(uid, Environment.TickCount64, EndpointReady);
+        }
+
         /// <summary>Drops abandoned claims whose grace window has passed.
         /// Called by the janitor at sweep start so expired corpses become
         /// sweep candidates.</summary>

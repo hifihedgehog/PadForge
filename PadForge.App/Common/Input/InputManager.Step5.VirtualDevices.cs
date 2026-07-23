@@ -2426,17 +2426,36 @@ namespace PadForge.Common.Input
             _extendedAppliedVendorId[padIndex] = 0;
             _extendedAppliedProductId[padIndex] = 0;
 
+            // MIDI teardown ordering: our own input scanner may hold an
+            // open loopback client connection to this endpoint, and the
+            // service wedges when a virtual endpoint is torn down under a
+            // live client from the same process (deterministic on the
+            // bench, 2026-07-23). Demote the endpoint claim so the scanner
+            // cannot reopen it, close the loopback, give the disconnect
+            // RPC a beat to land, THEN tear down the device side.
+            var midiVc = vc as MidiVirtualController;
+            midiVc?.MarkClosing();
+
             if (asyncDispose)
             {
                 // Null the pointer so Step 5 / Dashboard see the slot as empty
                 // immediately. The captured `vc` is disposed in the background.
                 // Track the task so Pass 2 can skip creation until every
-                // pending dispose has finished — this preserves ascending-
+                // pending dispose has finished. This preserves ascending-
                 // slot-order kernel allocation.
                 _virtualControllers[padIndex] = null;
                 _pendingDisposeTask[padIndex] = System.Threading.Tasks.Task.Run(() =>
                 {
-                    try { vc.Disconnect(); vc.Dispose(); }
+                    try
+                    {
+                        if (midiVc != null)
+                        {
+                            CloseMidiInputsForEndpoint(midiVc.UniqueEndpointId);
+                            System.Threading.Thread.Sleep(250);
+                        }
+                        vc.Disconnect();
+                        vc.Dispose();
+                    }
                     catch { /* best effort */ }
                 });
             }
@@ -2444,6 +2463,10 @@ namespace PadForge.Common.Input
             {
                 try
                 {
+                    // Every MIDI call site uses asyncDispose, so no sleep is
+                    // needed here; the close alone is belt-and-braces.
+                    if (midiVc != null)
+                        CloseMidiInputsForEndpoint(midiVc.UniqueEndpointId);
                     vc.Disconnect();
                     vc.Dispose();
                 }

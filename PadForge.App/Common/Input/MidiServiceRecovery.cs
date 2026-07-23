@@ -70,13 +70,22 @@ namespace PadForge.Common.Input
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool CloseServiceHandle(IntPtr handle);
 
-        private static int _attempted;
+        // Cooldown, not once-per-process: teardown of a live endpoint can
+        // wedge the service again later in the same session (observed
+        // twice in one run, 2026-07-23), and a once-only gate left the
+        // second wedge with no rescue. The cooldown still prevents
+        // restart storms if the service is truly unrecoverable.
+        private const int CooldownMs = 120_000;
+        private static long _lastAttemptTick = -CooldownMs;
 
-        /// <summary>Attempts the restart once per process. Returns true
-        /// when midisrv is Running again afterward.</summary>
+        /// <summary>Attempts the restart, at most once per cooldown
+        /// window. Returns true when midisrv is Running afterward.</summary>
         public static bool TryRecoverOnce()
         {
-            if (Interlocked.Exchange(ref _attempted, 1) == 1) return false;
+            long now = Environment.TickCount64;
+            long last = Interlocked.Read(ref _lastAttemptTick);
+            if (now - last < CooldownMs) return false;
+            if (Interlocked.CompareExchange(ref _lastAttemptTick, now, last) != last) return false;
             try { return Recover(); }
             catch { return false; }
         }

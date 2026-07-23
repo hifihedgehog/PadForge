@@ -982,6 +982,40 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly Dictionary<string, long> _midiOpenFailedAt = new(StringComparer.OrdinalIgnoreCase);
 
+        /// <summary>Closes any open loopback input connections to the
+        /// given PadForge MIDI endpoint. MUST run before that endpoint's
+        /// device-side teardown: tearing down a virtual endpoint while
+        /// this process still holds a client connection to it is the
+        /// deterministic midisrv wedge (bench 2026-07-23: every switch
+        /// away from a working MIDI slot with the loopback open left the
+        /// service hung past SCM control). Callers demote the endpoint's
+        /// registry claim first (MidiVirtualController.MarkClosing) so
+        /// the scanner cannot reopen it in this window.</summary>
+        internal void CloseMidiInputsForEndpoint(string uniqueEndpointId)
+        {
+            if (string.IsNullOrEmpty(uniqueEndpointId)) return;
+            lock (_midiInputsLock)
+            {
+                List<string> matches = null;
+                foreach (var kvp in _openedMidiInputs)
+                    if (kvp.Key.IndexOf(uniqueEndpointId, StringComparison.OrdinalIgnoreCase) >= 0)
+                        (matches ??= new List<string>()).Add(kvp.Key);
+                if (matches == null) return;
+                foreach (var id in matches)
+                {
+                    var dev = _openedMidiInputs[id];
+                    var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
+                    if (ud != null)
+                    {
+                        ud.IsOnline = false;
+                        ud.Device = null;
+                    }
+                    dev.Dispose();
+                    _openedMidiInputs.Remove(id);
+                }
+            }
+        }
+
         private bool UpdateMidiInputDevices()
         {
             if (_midiInputsSuppressed)

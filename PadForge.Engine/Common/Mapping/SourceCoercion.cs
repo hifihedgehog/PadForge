@@ -2203,6 +2203,14 @@ namespace PadForge.Engine.Common.Mapping
             if (state == null || string.IsNullOrEmpty(canonical)) return false;
             if (IsCapSenseDescriptor(canonical)) return ReadCapSenseBool(state, canonical);
             if (IsNfcTagDescriptor(canonical)) return ReadNfcTagBool(state, canonical);
+            // IR cover-as-button at the fixed 50 percent midpoint: the
+            // param/gate surfaces carry no per-source threshold, and the
+            // main rows keep their tunable read (#248 audit round 3).
+            if (canonical.Equals("IR Brightness", StringComparison.Ordinal))
+            {
+                NoteJoyConIrReadRequest();
+                return state.JoyConIrIntensity > 0.5f;
+            }
             return ReadTouchpadBool(state, canonical);
         }
 

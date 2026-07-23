@@ -179,15 +179,17 @@ namespace PadForge.Engine.Data
                 || string.Equals(ProductName, "Nintendo Switch 2 Joy-Con (R)", StringComparison.OrdinalIgnoreCase));
 
         /// <summary>Whether the device has an NFC reader the SDL fork can
-        /// drive (issue #241, SDL#15): the classic Switch right Joy-Con
-        /// (PID 0x2007) and Pro Controller (PID 0x2009), where the NFC/IR
-        /// MCU lives. Keyed by PID like the wrapper's HasNfcReader so the
-        /// picker offers the "Any NFC Tag" / tag sources exactly where the
-        /// reader exists. Switch 2 pads use different hardware and do not
-        /// qualify. Computed, not stored. Gates the picker offering.</summary>
+        /// drive (issue #241/#248, SDL#15): the classic Switch right
+        /// Joy-Con (PID 0x2007), the Pro Controller (PID 0x2009), and the
+        /// combined Joy-Con pair (synthetic PID 0x2008), whose right child
+        /// carries the MCU and posts onto the pair's joystick. Keyed by PID
+        /// like the wrapper's HasNfcReader so the picker offers the
+        /// "Any NFC Tag" / tag sources exactly where the reader exists.
+        /// Switch 2 pads use different hardware and do not qualify.
+        /// Computed, not stored. Gates the picker offering.</summary>
         [XmlIgnore]
         public bool HasNfcReader => VendorId == 0x057E
-            && (ProdId == 0x2007 || ProdId == 0x2009);
+            && (ProdId == 0x2007 || ProdId == 0x2008 || ProdId == 0x2009);
 
         // Wii IR pointer tuning (sensor-bar position/compensation, smoothing)
         // moved to PadSetting (issue #146 follow-up) so each (device, slot)

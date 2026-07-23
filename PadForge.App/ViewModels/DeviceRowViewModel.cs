@@ -622,8 +622,15 @@ namespace PadForge.ViewModels
         /// this, a controller-only user could never open the dialog, so the
         /// MCU never armed and no tag could ever be captured (Codex #1). The
         /// dialog opening arms the reader via RegistrationCaptureActive.</summary>
-        public bool ShowRegisterNfcTag => DeviceTypeKey == "Nfc"
-            || (VendorId == 0x057E && (ProductId == 0x2007 || ProductId == 0x2009));
+        public bool ShowRegisterNfcTag =>
+            (DeviceTypeKey == "Nfc"
+             || (VendorId == 0x057E && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009)))
+            // Remote rows (reader or controller) keep the owner's identity,
+            // but the tap event that feeds registration never crosses the
+            // link (the wire carries resolved tag bits, not UIDs), so
+            // offering the dialog there was a dead button (#248 audit).
+            // Register on the owner.
+            && !(DevicePath != null && DevicePath.StartsWith("peer://", System.StringComparison.Ordinal));
 
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary

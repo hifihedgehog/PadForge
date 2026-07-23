@@ -80,5 +80,66 @@ namespace PadForge.Tests
             // Bipolar-axis contribution: 0/1.
             Assert.Equal(1f, SourceCoercion.EvaluateForBipolarAxisTarget(held, Src("Any NFC Tag"), 0), 3);
         }
+
+        /// <summary>The param/gate readers must see NFC descriptors (#248
+        /// audit finding 4): the pickers offer them for Incremental/Ramped
+        /// ParamUp/Down and Invert-on-Hold modifiers, and Path A tags work
+        /// there because the PC/SC reader exposes them as raw buttons, so
+        /// controller tags must read identically.</summary>
+        [Fact]
+        public void NfcDescriptor_DrivesIncrementalParamUp()
+        {
+            var rt = new PadForge.Engine.Common.Mapping.SourceKindRuntime();
+            var src = new PadForge.Engine.Data.MappingSource
+            {
+                Kind = "Incremental",
+                Descriptor = "Button 0",
+                ParamUp = "Any NFC Tag",
+                ParamRate = 1.0,   // full range per second
+                ParamMin = 0,
+                ParamMax = 1,
+            };
+            var held = StateWithTags(4, 0);
+            double v = 0;
+            for (int i = 0; i < 10; i++)
+                v = rt.TickIncremental(0, "LeftTrigger", 0, src, held, 0.05);
+            Assert.True(v > 0.4, $"tag-held ParamUp never ramped (v={v})");
+
+            // Tag absent: the accumulator stops climbing.
+            var idle = StateWithTags(4);
+            double after = rt.TickIncremental(0, "LeftTrigger", 0, src, idle, 0.05);
+            Assert.Equal(v, after, 3);
+        }
+
+        [Fact]
+        public void HardwareBoolDescriptor_ReadsNfcAndRejectsOthers()
+        {
+            var held = StateWithTags(4, 0, 2);
+            Assert.True(SourceCoercion.ReadHardwareBoolDescriptor(held, "Any NFC Tag"));
+            Assert.True(SourceCoercion.ReadHardwareBoolDescriptor(held, "NFC Tag 2"));
+            Assert.False(SourceCoercion.ReadHardwareBoolDescriptor(held, "NFC Tag 1"));
+            Assert.False(SourceCoercion.ReadHardwareBoolDescriptor(held, "Axis 0"));
+            Assert.False(SourceCoercion.ReadHardwareBoolDescriptor(null, "Any NFC Tag"));
+        }
+
+        /// <summary>The reader-capability gate (#248), mirroring the
+        /// GuideLed gate tests: right Joy-Con single, combined pair (right
+        /// child carries the MCU, SDL propagates the pair's joystick to it,
+        /// SDL_hidapijoystick.c:784-787), and Pro qualify; the left Joy-Con
+        /// single (no reader), Switch 2 family (different hardware), and
+        /// foreign VIDs with Nintendo PIDs do not.</summary>
+        [Theory]
+        [InlineData(0x057E, 0x2007, true)]   // right Joy-Con
+        [InlineData(0x057E, 0x2008, true)]   // combined pair (right child)
+        [InlineData(0x057E, 0x2009, true)]   // Pro Controller
+        [InlineData(0x057E, 0x2006, false)]  // left Joy-Con: no reader
+        [InlineData(0x057E, 0x2069, false)]  // Switch 2 Pro: out of scope
+        [InlineData(0x045E, 0x2009, false)]  // wrong vendor, right PID
+        public void HasNfcReader_GatesByExactHardware(int vid, int pid, bool expected)
+        {
+            var ud = new PadForge.Engine.Data.UserDevice
+            { VendorId = (ushort)vid, ProdId = (ushort)pid };
+            Assert.Equal(expected, ud.HasNfcReader);
+        }
     }
 }

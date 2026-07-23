@@ -845,7 +845,13 @@ namespace PadForge.Engine.Common.Mapping
                 return false;
             }
 
-            return false;
+            // Not Button/POV: the pickers offer the full input list, so a
+            // gate or Incremental/Ramped param can name a hardware-bool
+            // family (capsense, NFC tag, touchpad contact). Route those
+            // through the shared descriptor read; Path A NFC tags never hit
+            // this (the PC/SC reader exposes them as raw buttons), which is
+            // how the gap shipped unnoticed (#248 audit).
+            return SourceCoercion.ReadHardwareBoolDescriptor(state, s);
         }
     }
 }

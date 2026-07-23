@@ -2148,6 +2148,20 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>The NFC tag-present bool read, straight from the
         /// wrapper's per-frame fill. Null array (device without an NFC
         /// reader, or NFC not armed) reads false.</summary>
+        /// <summary>Descriptor-only read for the plain hardware-bool
+        /// families (capsense touch, NFC tag, touchpad contact): the
+        /// param/gate reader's fallback (#248 audit). These carry no
+        /// threshold or direction, so a bare descriptor fully determines
+        /// the read; families that need a MappingSource (axes, rings,
+        /// mouse motion) stay out and read false here.</summary>
+        public static bool ReadHardwareBoolDescriptor(CustomInputState state, string canonical)
+        {
+            if (state == null || string.IsNullOrEmpty(canonical)) return false;
+            if (IsCapSenseDescriptor(canonical)) return ReadCapSenseBool(state, canonical);
+            if (IsNfcTagDescriptor(canonical)) return ReadNfcTagBool(state, canonical);
+            return ReadTouchpadBool(state, canonical);
+        }
+
         private static bool ReadNfcTagBool(CustomInputState state, string canonical)
         {
             if (state?.NfcTag == null) return false;

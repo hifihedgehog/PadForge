@@ -119,11 +119,13 @@ namespace PadForge.Engine
         public bool HasJoyCon2Mouse { get; private set; }
 
         /// <summary>Whether this device has an NFC reader the SDL fork can
-        /// drive (issue #241, SDL#15): the classic Switch right Joy-Con
-        /// (PID 0x2007) and Pro Controller (PID 0x2009), where the NFC/IR
-        /// MCU lives. The reader is only powered when NFC is armed and the
-        /// SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC hint is set; this flag just
-        /// says the hardware can. Read via SDL_GetGamepadNfcTagUid.</summary>
+        /// drive (issue #241/#248, SDL#15): the classic Switch right
+        /// Joy-Con (PID 0x2007), the Pro Controller (PID 0x2009), and the
+        /// combined Joy-Con pair (synthetic PID 0x2008), whose right child
+        /// carries the MCU. The reader is only powered when NFC is armed
+        /// and the SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC hint is set; this
+        /// flag just says the hardware can. Read via
+        /// SDL_GetGamepadNfcTagUid.</summary>
         public bool HasNfcReader { get; private set; }
 
         /// <summary>Total raw joystick axis count (before the gamepad layout pins
@@ -425,13 +427,18 @@ namespace PadForge.Engine
                 && (ProductId == 0x2066 || ProductId == 0x2067)
                 && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 8;
 
-            // NFC reader (issue #241, SDL#15). The NFC/IR MCU lives on the
-            // classic Switch right Joy-Con (PID 0x2007) and Pro Controller
-            // (PID 0x2009). Gated on GameController != 0 because the tag
-            // getter is a gamepad-layer call. Switch 2 pads use different
-            // hardware and are out of scope (plan-150).
+            // NFC reader (issue #241/#248, SDL#15). The NFC/IR MCU lives on
+            // the classic Switch right Joy-Con (PID 0x2007) and Pro
+            // Controller (PID 0x2009). The combined pair (synthetic PID
+            // 0x2008, SDL_hidapijoystick.c:1090) contains a right Joy-Con,
+            // and SDL propagates the combined joystick to every child
+            // (SDL_hidapijoystick.c:784-787), so the right child posts the
+            // tag UID onto the pair's joystick exactly like its GYRO_R.
+            // Gated on GameController != 0 because the tag getter is a
+            // gamepad-layer call. Switch 2 pads use different hardware and
+            // are out of scope (plan-150).
             HasNfcReader = VendorId == 0x057E
-                && (ProductId == 0x2007 || ProductId == 0x2009)
+                && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009)
                 && GameController != IntPtr.Zero;
 
             // Generic extra joystick axes (issue #193). A gamepad-opened device may

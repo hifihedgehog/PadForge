@@ -2514,9 +2514,11 @@ namespace PadForge.Services
                 {
                     foreach (var ud in devices.Items)
                     {
-                        // Classic Switch right Joy-Con (0x2007) / Pro (0x2009).
+                        // Classic Switch right Joy-Con (0x2007) / combined
+                        // pair (0x2008, right child carries the MCU) / Pro
+                        // (0x2009). Same set as UserDevice.HasNfcReader.
                         if (ud != null && ud.IsOnline && ud.VendorId == 0x057E
-                            && (ud.ProdId == 0x2007 || ud.ProdId == 0x2009))
+                            && (ud.ProdId == 0x2007 || ud.ProdId == 0x2008 || ud.ProdId == 0x2009))
                         {
                             capable = true;
                             break;
@@ -2525,9 +2527,11 @@ namespace PadForge.Services
                 }
             }
 
+            // No registry-count term: "Any NFC Tag" must fire with ZERO
+            // registered tags, exactly like the PC/SC reader's Any button
+            // (#248 audit). Usage alone decides.
             bool armed = PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive
-                || (capable && PadForge.Common.Input.NfcTagRegistry.Count > 0
-                    && AnyNfcInputConfigured());
+                || (capable && AnyNfcInputConfigured());
 
             if (armed != System.Threading.Volatile.Read(ref _switchNfcArmed))
             {
@@ -2539,30 +2543,72 @@ namespace PadForge.Services
                         armed ? "1" : "0"))
                 {
                     System.Threading.Volatile.Write(ref _switchNfcArmed, armed);
+                    PadForge.Common.Input.NfcTagRegistry.SwitchNfcArmed = armed;
                     PadForge.Engine.SdlDiagLog.WriteLine($"NFC arming -> {(armed ? "ON" : "off")} (capable={capable})");
+                }
+            }
+
+            // The right Joy-Con NIR camera hint (issue #151, SDL#7) is
+            // usage-gated by the SAME contract, and for a sharper reason:
+            // the camera and the NFC reader share the one MCU (camera mode
+            // 5, NFC mode 4; the fork's UpdateNfc abandons while the camera
+            // streams), so a globally-on IR hint silently killed standalone
+            // right Joy-Con NFC (#248 audit). When BOTH families are
+            // configured for one standalone right Joy-Con, the camera wins
+            // by fork arbitration; that conflict is the author's own
+            // mapping choice. Hint changes take effect on the fork's next
+            // sensors-enable edge, worst case a device reconnect.
+            bool irWanted = AnyJoyConIrInputConfigured();
+            if (irWanted != _joyConIrHintOn)
+            {
+                if (SDL3.SDL.SDL_SetHint(SDL3.SDL.SDL_HINT_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR,
+                        irWanted ? "1" : "0"))
+                {
+                    _joyConIrHintOn = irWanted;
+                    PadForge.Engine.SdlDiagLog.WriteLine($"JoyCon IR hint -> {(irWanted ? "ON" : "off")}");
                 }
             }
         }
 
-        /// <summary>Cached scan result so a transient list-mutation exception
-        /// (profile apply races the idle cadence) degrades to the previous
-        /// answer instead of flapping the MCU.</summary>
-        private bool _nfcInUseCached;
+        private bool _joyConIrHintOn;
 
-        /// <summary>True when the active configuration actually READS an NFC
-        /// input somewhere: a mapping-row source, a shift-activator descriptor
-        /// (any of its four descriptor slots), or a macro trigger entry. A
-        /// registered tag alone no longer arms the MCU: arming flips the
-        /// controller into the large-report NFC input mode with a continuous
-        /// command pump, which costs real CPU per pad, so it follows the
-        /// CapSense zero-cost contract. Pay only when the feature is wired
-        /// to something. The registration dialog arms independently via
+        /// <summary>Cached scan results so a transient list-mutation
+        /// exception (profile apply races the idle cadence) degrades to the
+        /// previous answer instead of flapping the MCU.</summary>
+        private bool _nfcInUseCached;
+        private bool _irInUseCached;
+
+        /// <summary>True when the active configuration reads an NFC input
+        /// anywhere. Surfaces covered (#248 audit): mapping-row sources'
+        /// primary descriptor AND their secondary descriptor slots
+        /// (Incremental/Ramped ParamUp/ParamDown, Invert-on-Hold
+        /// ParamModifier, gate chords GateDescriptor/Gate2Descriptor),
+        /// shift activators (all four descriptor slots), menu definitions
+        /// (host, custom axes, click), and macro trigger entries. The
+        /// registration dialog arms independently via
         /// RegistrationCaptureActive.</summary>
         private bool AnyNfcInputConfigured()
         {
-            static bool IsNfc(string d) =>
-                !string.IsNullOrEmpty(d)
-                && PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(d);
+            bool r = AnyConfiguredDescriptor(
+                static d => PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(d),
+                ref _nfcInUseCached);
+            return r;
+        }
+
+        /// <summary>True when the active configuration reads the right
+        /// Joy-Con NIR "IR Brightness" scalar anywhere (issue #151). Same
+        /// surfaces as the NFC scan.</summary>
+        private bool AnyJoyConIrInputConfigured()
+        {
+            bool r = AnyConfiguredDescriptor(
+                static d => string.Equals(d, "IR Brightness", StringComparison.Ordinal),
+                ref _irInUseCached);
+            return r;
+        }
+
+        private bool AnyConfiguredDescriptor(Func<string, bool> match, ref bool cached)
+        {
+            static bool Hit(Func<string, bool> m, string d) => !string.IsNullOrEmpty(d) && m(d);
             try
             {
                 var sets = SettingsManager.SlotMappingSets;
@@ -2577,17 +2623,34 @@ namespace PadForge.Services
                             var srcs = rows[r]?.Sources;
                             if (srcs == null) continue;
                             for (int k = 0; k < srcs.Count; k++)
-                                if (IsNfc(srcs[k]?.Descriptor)) { _nfcInUseCached = true; return true; }
+                            {
+                                var src = srcs[k];
+                                if (src == null) continue;
+                                if (Hit(match, src.Descriptor) || Hit(match, src.ParamUp)
+                                    || Hit(match, src.ParamDown) || Hit(match, src.ParamModifier)
+                                    || Hit(match, src.GateDescriptor) || Hit(match, src.Gate2Descriptor))
+                                { cached = true; return true; }
+                            }
                         }
                         var acts = set.ShiftActivators;
                         for (int a = 0; a < acts.Count; a++)
                         {
                             var act = acts[a];
                             if (act == null) continue;
-                            if (IsNfc(act.Descriptor) || IsNfc(act.ChordSecondDescriptor)
-                                || IsNfc(act.CyclePrevDescriptor) || IsNfc(act.GateDescriptor))
-                            { _nfcInUseCached = true; return true; }
+                            if (Hit(match, act.Descriptor) || Hit(match, act.ChordSecondDescriptor)
+                                || Hit(match, act.CyclePrevDescriptor) || Hit(match, act.GateDescriptor))
+                            { cached = true; return true; }
                         }
+                        var menus = set.Menus;
+                        if (menus != null)
+                            for (int m = 0; m < menus.Count; m++)
+                            {
+                                var menu = menus[m];
+                                if (menu == null) continue;
+                                if (Hit(match, menu.HostDescriptor) || Hit(match, menu.CustomXDescriptor)
+                                    || Hit(match, menu.CustomYDescriptor) || Hit(match, menu.ClickDescriptor))
+                                { cached = true; return true; }
+                            }
                     }
                 }
 
@@ -2603,19 +2666,24 @@ namespace PadForge.Services
                             var entries = macros[m]?.GetTriggerInputEntries();
                             if (entries == null) continue;
                             for (int e = 0; e < entries.Count; e++)
-                                if (IsNfc(entries[e]?.SourceDescriptor)) { _nfcInUseCached = true; return true; }
+                            {
+                                var entry = entries[e];
+                                if (entry == null) continue;
+                                if (Hit(match, entry.SourceDescriptor) || Hit(match, entry.GestureDescriptor))
+                                { cached = true; return true; }
+                            }
                         }
                     }
                 }
 
-                _nfcInUseCached = false;
+                cached = false;
                 return false;
             }
             catch
             {
                 // A list was mutated mid-scan; keep the previous verdict for
                 // this cadence and re-scan on the next.
-                return _nfcInUseCached;
+                return cached;
             }
         }
 

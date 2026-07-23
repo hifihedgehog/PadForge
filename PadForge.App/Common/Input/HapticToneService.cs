@@ -1155,8 +1155,17 @@ namespace PadForge.Common.Input
                         // does set_input_mode (main_pc.cpp:131) then enable_vibration
                         // (132); reproduce that order.
                         s.UseWriteFile = ProbeWriteFile(h, s.OutLen);
-                        JoyConSendCommand(h, s, subcommand: 0x03, arg: 0x30); // input report mode 0x30
-                        Thread.Sleep(50);
+                        // When Switch NFC is armed, SDL runs the controller in
+                        // input mode 0x31 (NFC). Forcing 0x30 here would knock
+                        // it out of that mode and drop taps until the fork's
+                        // watchdog re-inits (#248 audit). 0x31 carries the full
+                        // input head plus rumble acks, so haptics work either
+                        // way; skip the mode write and leave the mode to SDL.
+                        if (!NfcTagRegistry.SwitchNfcArmed)
+                        {
+                            JoyConSendCommand(h, s, subcommand: 0x03, arg: 0x30); // input report mode 0x30
+                            Thread.Sleep(50);
+                        }
                         JoyConSendCommand(h, s, subcommand: 0x48, arg: 0x01); // enable vibration
                         Thread.Sleep(50);
 
@@ -1443,8 +1452,12 @@ namespace PadForge.Common.Input
                 var (capOut, _) = QueryReportLens(h2);
                 s.PairSecondOutLen = capOut > 0 ? capOut : 64;
                 s.PairSecondUseWriteFile = ProbeWriteFile(h2, s.PairSecondOutLen);
-                JoyConSendCommandTo(h2, s.PairSecondOutLen, ref s.PairSecondTimer, subcommand: 0x03, arg: 0x30);
-                Thread.Sleep(50);
+                // Same NFC-armed guard as the primary init above (#248 audit).
+                if (!NfcTagRegistry.SwitchNfcArmed)
+                {
+                    JoyConSendCommandTo(h2, s.PairSecondOutLen, ref s.PairSecondTimer, subcommand: 0x03, arg: 0x30);
+                    Thread.Sleep(50);
+                }
                 JoyConSendCommandTo(h2, s.PairSecondOutLen, ref s.PairSecondTimer, subcommand: 0x48, arg: 0x01);
                 Thread.Sleep(50);
                 return h2;

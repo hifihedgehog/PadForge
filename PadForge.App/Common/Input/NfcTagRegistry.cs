@@ -66,6 +66,13 @@ namespace PadForge.Common.Input
         /// capture even before any tag is registered.</summary>
         public static volatile bool RegistrationCaptureActive;
 
+        /// <summary>Snapshot of the Switch NFC arming state, written by
+        /// InputService alongside the SDL hint. Read by raw-HID writers
+        /// (HapticToneService) that must not knock an armed controller out
+        /// of the 0x31 NFC input mode with their own 0x30 mode command
+        /// (#248 audit).</summary>
+        public static volatile bool SwitchNfcArmed;
+
         /// <summary>Snapshot of the registered tags (ordered by their stable
         /// button), each with the button it occupies.</summary>
         public static IReadOnlyList<TagEntry> Tags

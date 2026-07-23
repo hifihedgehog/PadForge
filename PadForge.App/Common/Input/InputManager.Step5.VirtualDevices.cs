@@ -603,6 +603,24 @@ namespace PadForge.Common.Input
         // 15s) and a failure is a real failure, not a timing flake.
         private readonly bool[] _createFailed = new bool[MaxPads];
 
+        /// <summary>What configuration the createFailed latch was set FOR:
+        /// the slot's type and profile at failure time. A failed slot has a
+        /// null VC, so the vc-based type/profile change branches in Pass 1
+        /// never ran for it and the latch could survive a reconfigure
+        /// forever (owner repro 2026-07-23: MIDI-unavailable failure left
+        /// the slot yellow through a switch back to Xbox). Pass 1 clears
+        /// the latch whenever the current configuration no longer matches
+        /// this key.</summary>
+        private readonly VirtualControllerType[] _createFailedType = new VirtualControllerType[MaxPads];
+        private readonly string[] _createFailedProfile = new string[MaxPads];
+
+        private void LatchCreateFailed(int padIndex)
+        {
+            _createFailedType[padIndex] = SlotControllerTypes[padIndex];
+            _createFailedProfile[padIndex] = SlotProfileIds[padIndex];
+            _createFailed[padIndex] = true;
+        }
+
         /// <summary>
         /// Per-slot async-dispose tracker. When a user-initiated swap/move
         /// calls <see cref="DestroyVirtualController(int, bool)"/> with
@@ -723,6 +741,18 @@ namespace PadForge.Common.Input
                 }
 
                 var vc = _virtualControllers[padIndex];
+
+                // A failed slot has no VC, so the vc-based change detection
+                // below cannot clear its latch. Clear it here the moment
+                // the slot is reconfigured away from the combination that
+                // failed (type or profile), so the new configuration gets
+                // its create attempt.
+                if (_createFailed[padIndex]
+                    && (_createFailedType[padIndex] != SlotControllerTypes[padIndex]
+                        || !string.Equals(_createFailedProfile[padIndex], SlotProfileIds[padIndex], StringComparison.Ordinal)))
+                {
+                    _createFailed[padIndex] = false;
+                }
 
                 // Detect controller type change — destroy old if type differs.
                 if (vc != null && vc.Type != SlotControllerTypes[padIndex])
@@ -1202,7 +1232,7 @@ namespace PadForge.Common.Input
                                     }
                                     else if (vcAsync == null)
                                     {
-                                        _createFailed[capturedIndex] = true;
+                                        LatchCreateFailed(capturedIndex);
                                     }
                                     else
                                     {
@@ -1214,13 +1244,13 @@ namespace PadForge.Common.Input
                                         // as eligible-but-unbuilt and kicks off another
                                         // connect, accumulating leaked VCs.
                                         try { vcAsync.Dispose(); } catch { /* best effort */ }
-                                        _createFailed[capturedIndex] = true;
+                                        LatchCreateFailed(capturedIndex);
                                     }
                                 }
                                 catch (Exception ex)
                                 {
                                     RaiseError($"Failed to create virtual controller for pad {capturedIndex}", ex);
-                                    _createFailed[capturedIndex] = true;
+                                    LatchCreateFailed(capturedIndex);
                                 }
                                 finally
                                 {
@@ -1248,7 +1278,7 @@ namespace PadForge.Common.Input
                             }
                             else if (vc == null)
                             {
-                                _createFailed[padIndex] = true;
+                                LatchCreateFailed(padIndex);
                                 _slotInitializing[padIndex] = false;
                             }
                             else
@@ -1257,7 +1287,7 @@ namespace PadForge.Common.Input
                                 // failure so we don't loop on the next cycle.
                                 try { vc.Dispose(); } catch { /* best effort */ }
                                 _virtualControllers[padIndex] = null;
-                                _createFailed[padIndex] = true;
+                                LatchCreateFailed(padIndex);
                                 _slotInitializing[padIndex] = false;
                             }
                         }

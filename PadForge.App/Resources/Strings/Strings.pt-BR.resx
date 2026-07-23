@@ -119,6 +119,7 @@
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Controle Virtual {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Motor parado</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>Aguardando dispositivos</value></data>
+  <data name="Main_VcFailed" xml:space="preserve"><value>Falha no controle virtual</value></data>
   <data name="Main_Active" xml:space="preserve"><value>Ativo</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>Inicializando</value></data>
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Controles Virtuais Ativados</value></data>

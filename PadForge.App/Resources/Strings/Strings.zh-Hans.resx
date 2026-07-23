@@ -119,6 +119,7 @@
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>虚拟控制器 {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>引擎已停止</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>等待设备</value></data>
+  <data name="Main_VcFailed" xml:space="preserve"><value>虚拟控制器创建失败</value></data>
   <data name="Main_Active" xml:space="preserve"><value>活跃</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>正在初始化</value></data>
   <data name="Main_VCsEnabled" xml:space="preserve"><value>虚拟控制器已启用</value></data>

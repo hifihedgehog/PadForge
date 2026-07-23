@@ -2041,9 +2041,15 @@ namespace PadForge.Services
                 // also cleared inside InputManager.Stop for symmetry;
                 // this is the bound-to-visual companion.
                 foreach (var slot in _mainVm.Dashboard.SlotSummaries)
+                {
                     slot.IsInitializing = false;
+                    slot.IsCreateFailed = false;
+                }
                 foreach (var nav in _mainVm.NavControllerItems)
+                {
                     nav.IsInitializing = false;
+                    nav.IsCreateFailed = false;
+                }
             });
 
             // Mark all device rows offline so indicators turn gray.
@@ -2826,9 +2832,11 @@ namespace PadForge.Services
                 slot.ConnectedDeviceCount = connectedCount;
                 slot.IsVirtualControllerConnected = _inputManager?.IsVirtualControllerConnected(padIndex) ?? false;
                 slot.IsInitializing = _inputManager?.IsVirtualControllerInitializing(padIndex) ?? false;
+                slot.IsCreateFailed = _inputManager?.IsVirtualControllerCreateFailed(padIndex) ?? false;
                 slot.IsEnabled = SettingsManager.SlotEnabled[padIndex];
                 slot.StatusText = !SettingsManager.SlotEnabled[padIndex] ? Strings.Instance.Common_Disabled
                     : slot.IsInitializing ? Strings.Instance.Main_Initializing
+                    : slot.IsCreateFailed ? Strings.Instance.Main_VcFailed
                     : mappedCount == 0 ? Strings.Instance.Status_NoMapping
                     : padVm.IsDeviceOnline ? Strings.Instance.Main_Active
                     : Strings.Instance.Common_Idle;
@@ -3384,6 +3392,7 @@ namespace PadForge.Services
                 nav.MappedDeviceCount = mappedCount;
                 nav.IsInitializing = _inputManager?.IsVirtualControllerInitializing(padIndex) ?? false;
                 nav.IsVirtualControllerConnected = _inputManager?.IsVirtualControllerConnected(padIndex) ?? false;
+                nav.IsCreateFailed = _inputManager?.IsVirtualControllerCreateFailed(padIndex) ?? false;
             }
         }
 

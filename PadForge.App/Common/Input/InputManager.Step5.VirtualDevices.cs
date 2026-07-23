@@ -709,6 +709,19 @@ namespace PadForge.Common.Input
             return _slotInitializing[padIndex];
         }
 
+        /// <summary>
+        /// True while the slot's latest virtual-controller create attempt
+        /// has failed for the currently configured type and profile (the
+        /// createFailed latch; Pass 1 clears it on any reconfigure). The
+        /// UI must present this as its own state: a failed slot with
+        /// online devices is neither forging nor awaiting devices.
+        /// </summary>
+        public bool IsVirtualControllerCreateFailed(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return false;
+            return _createFailed[padIndex];
+        }
+
 
         /// <summary>
         /// Step 5: Feed each slot's combined gamepad state to its virtual

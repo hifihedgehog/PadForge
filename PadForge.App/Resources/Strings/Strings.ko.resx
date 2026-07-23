@@ -119,6 +119,7 @@
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>가상 컨트롤러 {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>엔진 중지됨</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>장치 대기 중</value></data>
+  <data name="Main_VcFailed" xml:space="preserve"><value>가상 컨트롤러 생성 실패</value></data>
   <data name="Main_Active" xml:space="preserve"><value>활성</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>초기화 중</value></data>
   <data name="Main_VCsEnabled" xml:space="preserve"><value>가상 컨트롤러 활성화</value></data>

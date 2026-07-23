@@ -701,6 +701,15 @@
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="ToolTip" Value="{Binding Main_EngineStopped, Source={x:Static strings:Strings.Instance}}"/>
                                                     </MultiDataTrigger>
+                                                    <!-- Create failed: outranks awaiting-devices (a failed
+                                                         create with online devices is not waiting) -->
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsEnabled}" Value="True"/>
+                                                            <Condition Binding="{Binding IsCreateFailed}" Value="True"/>
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="ToolTip" Value="{Binding Main_VcFailed, Source={x:Static strings:Strings.Instance}}"/>
+                                                    </MultiDataTrigger>
                                                     <!-- Initializing: override tooltip -->
                                                     <DataTrigger Binding="{Binding IsInitializing}" Value="True">
                                                         <Setter Property="ToolTip" Value="{Binding Main_Initializing, Source={x:Static strings:Strings.Instance}}"/>

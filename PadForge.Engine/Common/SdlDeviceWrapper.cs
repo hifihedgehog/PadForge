@@ -118,6 +118,23 @@ namespace PadForge.Engine
         /// on joystick axes 6/7 (SDL#8, raw axis count 8).</summary>
         public bool HasJoyCon2Mouse { get; private set; }
 
+        /// <summary>Cycles the motion sensors off and back on. The SDL
+        /// fork decides the right Joy-Con NIR camera's fate only at this
+        /// enable edge (SDL_hidapi_switch.c SetSensorsEnabled: hint set ->
+        /// EnableIRSensor, hint clear while active -> DisableIRSensor via
+        /// the disable leg), so a RUNTIME flip of the IR hint needs one
+        /// bounce to take effect without a reconnect (#248 audit round 2).
+        /// Gyro/accel streams resume immediately; one bounce costs a few
+        /// sensor frames.</summary>
+        public void BounceMotionSensors()
+        {
+            if (GameController == IntPtr.Zero) return;
+            if (HasGyro) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO, false);
+            if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, false);
+            if (HasGyro) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO, true);
+            if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, true);
+        }
+
         /// <summary>Whether this device has an NFC reader the SDL fork can
         /// drive (issue #241/#248, SDL#15): the classic Switch right
         /// Joy-Con (PID 0x2007), the Pro Controller (PID 0x2009), and the

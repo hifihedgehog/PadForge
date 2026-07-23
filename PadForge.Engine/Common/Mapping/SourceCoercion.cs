@@ -2148,6 +2148,50 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>The NFC tag-present bool read, straight from the
         /// wrapper's per-frame fill. Null array (device without an NFC
         /// reader, or NFC not armed) reads false.</summary>
+        // ── MCU demand latches (#248 audit round 2) ──
+        // The Switch NFC reader and the right Joy-Con NIR camera are
+        // demand-armed (the MCU costs real CPU and the two features share
+        // it), and enumerating every configuration surface that can name
+        // their descriptors proved unwinnable: the audit found missed
+        // surfaces twice (params/gates/menus, then four engage families on
+        // providers). These latches instrument the READ choke points
+        // instead: every consumer, present and future, funnels through
+        // ReadNfcTagBool or the "IR Brightness" branches, and configured
+        // inputs are read every tick, so "a read was requested recently"
+        // IS "the configuration uses this family, enabled and active".
+        // Disabled macros/menus never evaluate, so they never latch.
+        // InputService's arming cadence reads these to drive the SDL hints.
+        private static long s_lastNfcReadRequestTick;
+        private static long s_lastJoyConIrReadRequestTick;
+
+        /// <summary>TickCount64 of the most recent NFC-descriptor read
+        /// request from ANY evaluator, 0 = never. The read fires whether
+        /// or not the MCU is armed, which is exactly what makes it a
+        /// demand signal.</summary>
+        public static long LastNfcReadRequestTick
+            => System.Threading.Volatile.Read(ref s_lastNfcReadRequestTick);
+
+        /// <summary>TickCount64 of the most recent "IR Brightness" read
+        /// request, 0 = never.</summary>
+        public static long LastJoyConIrReadRequestTick
+            => System.Threading.Volatile.Read(ref s_lastJoyConIrReadRequestTick);
+
+        /// <summary>Engine Stop clears both latches so a restarted engine
+        /// re-derives demand from fresh reads.</summary>
+        public static void ResetMcuDemandLatches()
+        {
+            System.Threading.Volatile.Write(ref s_lastNfcReadRequestTick, 0);
+            System.Threading.Volatile.Write(ref s_lastJoyConIrReadRequestTick, 0);
+        }
+
+        private static void NoteNfcReadRequest()
+            => System.Threading.Volatile.Write(ref s_lastNfcReadRequestTick,
+                Environment.TickCount64);
+
+        private static void NoteJoyConIrReadRequest()
+            => System.Threading.Volatile.Write(ref s_lastJoyConIrReadRequestTick,
+                Environment.TickCount64);
+
         /// <summary>Descriptor-only read for the plain hardware-bool
         /// families (capsense touch, NFC tag, touchpad contact): the
         /// param/gate reader's fallback (#248 audit). These carry no
@@ -2164,6 +2208,7 @@ namespace PadForge.Engine.Common.Mapping
 
         private static bool ReadNfcTagBool(CustomInputState state, string canonical)
         {
+            NoteNfcReadRequest();
             if (state?.NfcTag == null) return false;
             if (!TryGetNfcTagButton(canonical, out int button)) return false;
             return button >= 0 && button < state.NfcTag.Length && state.NfcTag[button];
@@ -2958,6 +3003,7 @@ namespace PadForge.Engine.Common.Mapping
                 // Cover-as-button (issue #151): pressed while the sensor reads
                 // brighter than the threshold. Same per-row DeadZone override /
                 // global-threshold fallback as the other derived sources.
+                NoteJoyConIrReadRequest();
                 int cdz = EffectiveThresholdPercent(src, globalThresholdPercent);
                 return state.JoyConIrIntensity > Math.Max(cdz, 1) / 100f;
             }
@@ -3248,7 +3294,10 @@ namespace PadForge.Engine.Common.Mapping
                 return ReadTunedBalanceBoard(state, src, deviceGuid);
 
             if (s.Equals("IR Brightness", StringComparison.Ordinal))
+            {
+                NoteJoyConIrReadRequest();
                 return state.JoyConIrIntensity;
+            }
 
             if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
             {
@@ -3487,7 +3536,10 @@ namespace PadForge.Engine.Common.Mapping
                 return Math.Abs(ReadTunedBalanceBoard(state, src, deviceGuid));
 
             if (s.Equals("IR Brightness", StringComparison.Ordinal))
+            {
+                NoteJoyConIrReadRequest();
                 return state.JoyConIrIntensity; // already unipolar 0..1
+            }
 
             if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
             {

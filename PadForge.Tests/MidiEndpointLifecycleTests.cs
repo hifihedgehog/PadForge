@@ -104,6 +104,37 @@ namespace PadForge.Tests
             Assert.Equal(expected, MidiEndpointJanitor.IsPadForgeEndpointId(id));
         }
 
+        // A timed-out create or teardown demotes its claim to "abandoned":
+        // still protected while the hung RPC might land, sweepable once
+        // the grace window passes. Without the expiry, every hung create
+        // parked one devnode in Device Manager until the next app launch.
+        [Fact]
+        public void Registry_AbandonedClaimExpiresAfterGrace()
+        {
+            string uid = "PADFORGE_MIDI_1_ABANDONTEST0";
+            try
+            {
+                string devnode = $@"SWD\MIDISRV\MIDIU_APPDEV_{uid}";
+
+                MidiVirtualController.AbandonEndpointForTest(uid, Environment.TickCount64);
+                Assert.True(MidiVirtualController.IsLiveEndpointInstance(devnode));
+                Assert.False(MidiVirtualController.IsReadyEndpointInstance(devnode));
+                Assert.False(MidiEndpointJanitor.IsSweepCandidate(devnode));
+
+                MidiVirtualController.AbandonEndpointForTest(uid,
+                    Environment.TickCount64 - MidiVirtualController.AbandonedGraceMs - 1_000);
+                Assert.False(MidiVirtualController.IsLiveEndpointInstance(devnode));
+                Assert.True(MidiEndpointJanitor.IsSweepCandidate(devnode));
+
+                MidiVirtualController.PruneExpiredEndpointClaims();
+                Assert.False(MidiVirtualController.IsLiveEndpointInstance(devnode));
+            }
+            finally
+            {
+                MidiVirtualController.UnregisterEndpointForTest(uid);
+            }
+        }
+
         [Fact]
         public void Janitor_SkipsLiveEndpoints_SweepsCorpses()
         {

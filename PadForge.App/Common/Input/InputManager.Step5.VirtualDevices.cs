@@ -735,7 +735,8 @@ namespace PadForge.Common.Input
                     // same poll cycle as Pass 1 sets it.
                     if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
                     else _slotInitializing[padIndex] = false;
-                    DestroyVirtualController(padIndex, asyncDispose: vc is HMaestroVirtualController);
+                    DestroyVirtualController(padIndex,
+                        asyncDispose: vc is HMaestroVirtualController or MidiVirtualController);
                     _virtualControllers[padIndex] = null;
                     _createFailed[padIndex] = false; // Type change — allow retry
                     // The old profile slug belongs to the old category and is
@@ -808,7 +809,8 @@ namespace PadForge.Common.Input
                 // (slot still created + enabled, but physical device offline).
                 if (vc != null && (!SettingsManager.SlotCreated[padIndex] || !SettingsManager.SlotEnabled[padIndex]))
                 {
-                    DestroyVirtualController(padIndex, asyncDispose: vc is HMaestroVirtualController);
+                    DestroyVirtualController(padIndex,
+                        asyncDispose: vc is HMaestroVirtualController or MidiVirtualController);
                     _virtualControllers[padIndex] = null;
                     _slotInactiveCounter[padIndex] = 0;
                     _slotInitializing[padIndex] = false;
@@ -1067,7 +1069,15 @@ namespace PadForge.Common.Input
                                      || slotType == VirtualControllerType.Nintendo
                                      || slotType == VirtualControllerType.Extended;
 
-                        if (isHmSlot)
+                        // MIDI rides the same async chain: its Connect()
+                        // drives Windows MIDI Services over WinRT RPC
+                        // (session + virtual device + endpoint open), which
+                        // can block for seconds or hang outright when the
+                        // service is slow or missing. Inline on the polling
+                        // thread it wedged the engine and the close path
+                        // (owner repro 2026-07-23). Only KeyboardMouse is
+                        // genuinely cheap enough to build inline.
+                        if (isHmSlot || slotType == VirtualControllerType.Midi)
                         {
                             // Visual-order gate: only kick off the create for
                             // the visually-highest eligible HM slot in this
@@ -1184,7 +1194,7 @@ namespace PadForge.Common.Input
                                                 }
                                             }
                                         }
-                                        else
+                                        else if (vcAsync is HMaestroVirtualController)
                                         {
                                             try { _hmaestroContext?.FinalizeNames(); }
                                             catch { /* best effort */ }
@@ -1226,8 +1236,8 @@ namespace PadForge.Common.Input
                         }
                         else
                         {
-                            // MIDI / KeyboardMouse — cheap construction, fine
-                            // to run inline.  No HIDMaestro driver bring-up.
+                            // KeyboardMouse only. Genuinely cheap, no
+                            // driver or service bring-up.
                             var vc = CreateVirtualController(padIndex);
                             _virtualControllers[padIndex] = vc;
 
@@ -2374,7 +2384,11 @@ namespace PadForge.Common.Input
         {
             for (int i = 0; i < MaxPads; i++)
             {
-                DestroyVirtualController(i);
+                // MIDI teardown talks to Windows MIDI Services (WinRT); a
+                // hung service must not hang Stop. HM teardown stays
+                // synchronous and ordered (kernel-slot semantics).
+                DestroyVirtualController(i,
+                    asyncDispose: _virtualControllers[i] is MidiVirtualController);
                 _virtualControllers[i] = null;
             }
         }

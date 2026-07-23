@@ -11873,6 +11873,14 @@ namespace PadForge.Services
                 {
                     if (assignments.TryGetValue(us, out var assign))
                     {
+                        // Automap-loss hunt (2026-07-22): this is the one
+                        // lane that REPLACES a device's PadSetting outside
+                        // ReAutoMapSlot. Name every stomp with what it
+                        // brings, so a profile re-apply overwriting a
+                        // fresh type-switch automap is visible in the ring.
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"PROFILEAPPLY guid={us.InstanceGuid.ToString().Substring(0, 8)}"
+                            + $" slot={assign.MapTo} incomingRaw={assign.Ps?.RawMappingEntries?.Length ?? 0}");
                         us.SetPadSetting(assign.Ps);
                         us.MapTo = assign.MapTo;
                     }

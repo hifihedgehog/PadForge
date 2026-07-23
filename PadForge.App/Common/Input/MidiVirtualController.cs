@@ -330,6 +330,18 @@ namespace PadForge.Common.Input
         {
             if (_isAvailable.HasValue) return _isAvailable.Value;
 
+            // Same bounded contract as Connect/Disconnect: the SDK probe
+            // and EnsureServiceAvailable are WinRT RPC and can hang on a
+            // broken service. A timed-out probe reads as unavailable for
+            // this session (ResetAvailability re-probes after an install).
+            var probe = System.Threading.Tasks.Task.Run(() => IsAvailableCore());
+            if (!probe.Wait(10_000))
+                return false;
+            return probe.Result;
+        }
+
+        private static bool IsAvailableCore()
+        {
             lock (_availLock)
             {
                 if (_isAvailable.HasValue) return _isAvailable.Value;

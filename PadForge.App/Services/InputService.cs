@@ -1072,6 +1072,19 @@ namespace PadForge.Services
                     ud.InputState, buttonHeldSynth, 50, slotIndex);
             };
 
+            // NFC controller-reader providers (issue #241): the Engine
+            // wrapper resolves a tag UID and surfaces the tag buttons
+            // through the App-side NfcTagRegistry, the same source-agnostic
+            // registry the PC/SC reader path (#150) uses.
+            PadForge.Engine.SdlDeviceWrapper.NfcTagButtonResolver =
+                uid => PadForge.Common.Input.NfcTagRegistry.ButtonForUid(uid);
+            PadForge.Engine.SdlDeviceWrapper.NfcTagSpanProvider =
+                () => PadForge.Common.Input.NfcTagRegistry.MaxButtonInUse;
+            PadForge.Engine.SdlDeviceWrapper.NfcTagDetectedForRegistration =
+                uid => PadForge.Common.Input.NfcTagRegistry.RaiseControllerTag(uid);
+            PadForge.Engine.SdlDeviceWrapper.NfcArmedProvider =
+                () => System.Threading.Volatile.Read(ref _switchNfcArmed);
+
             // — sample rate for the dual-threshold smoothing buffer.
             // Reads the live PollingRateMs setting; falls back to 60Hz
             // if the setting is missing or invalid.
@@ -1986,6 +1999,16 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.MenuItemFiredProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureAxisProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider = null;
+                // #241: unhook the NFC providers and power the MCU down.
+                PadForge.Engine.SdlDeviceWrapper.NfcArmedProvider = null;
+                PadForge.Engine.SdlDeviceWrapper.NfcTagButtonResolver = null;
+                PadForge.Engine.SdlDeviceWrapper.NfcTagSpanProvider = null;
+                PadForge.Engine.SdlDeviceWrapper.NfcTagDetectedForRegistration = null;
+                if (System.Threading.Volatile.Read(ref _switchNfcArmed))
+                {
+                    System.Threading.Volatile.Write(ref _switchNfcArmed, false);
+                    SDL3.SDL.SDL_SetHint(SDL3.SDL.SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC, "0");
+                }
                 // #107: stop sampling the cursor and unhook MouseCursorProvider.
                 _cursorControlService?.Dispose();
                 _cursorControlService = null;
@@ -2464,6 +2487,54 @@ namespace PadForge.Services
             bool remoteSharing = _linkServer != null && _linkServer.IsRunning && _linkServer.HasConnections;
 
             _inputManager.IsIdle = !anyActive && !remoteSharing;
+
+            RefreshSwitchNfcArming();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Switch NFC arming (issue #241)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Read on the poll thread by SdlDeviceWrapper.NfcArmedProvider;
+        /// written here. Volatile so the two threads agree.</summary>
+        private bool _switchNfcArmed;
+
+        /// <summary>Powers the Switch NFC MCU (sets the fork hint) only when a
+        /// capture is in progress or an NFC-capable controller is online with
+        /// at least one registered tag. Mirrors the CapSense "zero cost when
+        /// unused" contract: no such controller, or no tags, leaves the MCU
+        /// off. Runs on the auto-idle cadence (same device snapshot).</summary>
+        private void RefreshSwitchNfcArming()
+        {
+            bool capable = false;
+            var devices = SettingsManager.UserDevices;
+            if (devices != null)
+            {
+                lock (devices.SyncRoot)
+                {
+                    foreach (var ud in devices.Items)
+                    {
+                        // Classic Switch right Joy-Con (0x2007) / Pro (0x2009).
+                        if (ud != null && ud.IsOnline && ud.VendorId == 0x057E
+                            && (ud.ProdId == 0x2007 || ud.ProdId == 0x2009))
+                        {
+                            capable = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            bool armed = PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive
+                || (capable && PadForge.Common.Input.NfcTagRegistry.Count > 0);
+
+            if (armed != System.Threading.Volatile.Read(ref _switchNfcArmed))
+            {
+                System.Threading.Volatile.Write(ref _switchNfcArmed, armed);
+                SDL3.SDL.SDL_SetHint(SDL3.SDL.SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC,
+                    armed ? "1" : "0");
+                PadForge.Engine.SdlDiagLog.WriteLine($"NFC arming -> {(armed ? "ON" : "off")} (capable={capable})");
+            }
         }
 
         // ─────────────────────────────────────────────

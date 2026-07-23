@@ -2770,4 +2770,7 @@
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Durchläuft über acht Sekunden einen Ton von 20 bis 120 Hz auf dem Niederfrequenz-Weg. Merken, wo der Shaker am stärksten anspricht, und die Stimmenfrequenzen dort setzen.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Stopp</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Stoppt Testton oder Durchlauf.</value></data>
+  <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Beliebiger NFC-Tag</value></data>
+  <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC-Tag: {0}</value></data>
+  <data name="Nfc_WaitingController" xml:space="preserve"><value>Tippe einen Tag auf deinen Switch-Controller…</value></data>
 </root>

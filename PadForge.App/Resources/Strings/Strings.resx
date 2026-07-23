@@ -2825,4 +2825,7 @@
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Sweeps a tone from 20 to 120 Hz over eight seconds on the low motor routing. Note where your shaker responds strongest and set the voice frequencies there.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Stop</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Stops the test tone or sweep.</value></data>
+  <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Any NFC Tag</value></data>
+  <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC Tag: {0}</value></data>
+  <data name="Nfc_WaitingController" xml:space="preserve"><value>Tap a tag on your Switch controller…</value></data>
 </root>

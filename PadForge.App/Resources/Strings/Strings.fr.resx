@@ -2770,4 +2770,7 @@
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Balaye un son de 20 à 120 Hz pendant huit secondes sur la voie du moteur basse fréquence. Notez où votre shaker répond le plus fort et réglez-y les fréquences des voix.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Arrêter</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Arrête le son de test ou le balayage.</value></data>
+  <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>N'importe quel tag NFC</value></data>
+  <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Tag NFC : {0}</value></data>
+  <data name="Nfc_WaitingController" xml:space="preserve"><value>Touchez un tag avec votre manette Switch…</value></data>
 </root>

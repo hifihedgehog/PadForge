@@ -2790,4 +2790,7 @@
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Laat over acht seconden een toon van 20 tot 120 Hz lopen via de laagfrequente route. Noteer waar je shaker het sterkst reageert en zet daar de stemfrequenties.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Stoppen</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Stopt de testtoon of de sweep.</value></data>
+  <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Elke NFC-tag</value></data>
+  <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC-tag: {0}</value></data>
+  <data name="Nfc_WaitingController" xml:space="preserve"><value>Tik een tag tegen je Switch-controller…</value></data>
 </root>

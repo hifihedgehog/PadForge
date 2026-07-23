@@ -50,6 +50,10 @@ namespace SDL3
         public const string SDL_HINT_JOYSTICK_BLE_SWITCH2 = "SDL_JOYSTICK_BLE_SWITCH2";
         public const string SDL_HINT_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR = "SDL_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR";
         public const string SDL_HINT_JOYSTICK_BLE_SWITCH2_MOUSE = "SDL_JOYSTICK_BLE_SWITCH2_MOUSE";
+        // Fork addition (SDL#15): drive the right Joy-Con / Pro Controller
+        // NFC MCU and surface tag UIDs via SDL_GetGamepadNfcTagUid. Opt-in
+        // (MCU costs battery + changes report cadence); runtime-toggleable.
+        public const string SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC = "SDL_JOYSTICK_HIDAPI_SWITCH_NFC";
         public const string SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER = "SDL_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER";
         public const string SDL_HINT_VIDEO_ALLOW_SCREENSAVER = "SDL_VIDEO_ALLOW_SCREENSAVER";
 
@@ -695,6 +699,48 @@ namespace SDL3
             {
                 s_bulkProbe = -1;
                 state = default;
+                return false;
+            }
+        }
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetGamepadNfcTagUid")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GetGamepadNfcTagUid(IntPtr gamepad, byte[] uid, int len);
+
+        // 0 = unprobed, 1 = present, -1 = absent (stock SDL). Process-wide.
+        // PADFORGE_NO_SWITCH_NFC=1 disables the path at launch (bisect switch).
+        private static int s_nfcProbe =
+            Environment.GetEnvironmentVariable("PADFORGE_NO_SWITCH_NFC") == "1" ? -1 : 0;
+
+        /// <summary>Longest UID is 10 bytes of hex = 20 chars + NUL, per the
+        /// fork's documented buffer guarantee (SDL_GetGamepadNfcTagUid).</summary>
+        public const int NfcTagUidBufferLength = 21;
+
+        /// <summary>Reads the NFC tag UID currently held against a Switch
+        /// right Joy-Con / Pro Controller reader (fork export). Returns true
+        /// with <paramref name="uid"/> set to lowercase hex when a tag is
+        /// present, false (and empty) otherwise. On stock SDL the export is
+        /// absent: returns false permanently after the first probe, so the
+        /// caller simply never sees a controller tag.</summary>
+        public static bool SDL_TryGetGamepadNfcTagUid(IntPtr gamepad, out string uid)
+        {
+            uid = string.Empty;
+            if (s_nfcProbe < 0) return false;
+            var buf = new byte[NfcTagUidBufferLength];
+            try
+            {
+                bool present = _SDL_GetGamepadNfcTagUid(gamepad, buf, buf.Length);
+                s_nfcProbe = 1;
+                if (!present) return false;
+                int n = System.Array.IndexOf(buf, (byte)0);
+                if (n < 0) n = buf.Length;
+                if (n == 0) return false;
+                uid = System.Text.Encoding.ASCII.GetString(buf, 0, n);
+                return true;
+            }
+            catch (EntryPointNotFoundException)
+            {
+                s_nfcProbe = -1;
                 return false;
             }
         }

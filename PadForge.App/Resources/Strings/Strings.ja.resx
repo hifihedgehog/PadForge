@@ -2770,4 +2770,7 @@
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>低周波モーターの経路で 20〜120 Hz のトーンを 8 秒かけて流します。シェイカーが最も強く反応した周波数を各ボイスに設定してください。</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>停止</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>テストトーンやスイープを停止します。</value></data>
+  <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>任意のNFCタグ</value></data>
+  <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFCタグ: {0}</value></data>
+  <data name="Nfc_WaitingController" xml:space="preserve"><value>Switchコントローラーにタグをタッチ…</value></data>
 </root>

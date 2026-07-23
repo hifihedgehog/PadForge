@@ -474,6 +474,27 @@ namespace PadForge.Tests
         /// dead over Remote Link for a month without any test noticing.
         /// </summary>
         [Fact]
+        public void NfcTag_RoundTrips_AndOmitsTheIdleFrame()
+        {
+            // Span 5 (Any + 4 tag buttons); buttons 0 and 3 held.
+            var s = new CustomInputState { NfcTag = new bool[5] };
+            s.NfcTag[0] = true;  // Any NFC Tag
+            s.NfcTag[3] = true;  // a registered tag
+            var rt = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(s, NoSensors));
+            Assert.NotNull(rt.NfcTag);
+            Assert.True(rt.NfcTag[0]);
+            Assert.False(rt.NfcTag[1]);
+            Assert.False(rt.NfcTag[2]);
+            Assert.True(rt.NfcTag[3]);
+
+            // An all-clear NFC array is omitted, so it decodes back to null,
+            // exactly the neutral the encoder skipped (the CapSense contract).
+            var idle = new CustomInputState { NfcTag = new bool[5] };
+            var rtIdle = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(idle, NoSensors));
+            Assert.Null(rtIdle.NfcTag);
+        }
+
+        [Fact]
         public void EveryStateField_IsAccountedForByTheCodec()
         {
             var known = new[]
@@ -488,6 +509,10 @@ namespace PadForge.Tests
                 // into Encode (Block.CapSense bitmask byte), DecodeInto,
                 // ResetToNeutral, and Clone.
                 "CapSense",
+                // #241 NFC tag buttons (the fork's SDL_GetGamepadNfcTagUid):
+                // wired into Encode (Block.Nfc span + bitmask), DecodeInto,
+                // ResetToNeutral, and Clone.
+                "NfcTag",
             };
             var actual = typeof(CustomInputState)
                 .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)

@@ -157,6 +157,13 @@ namespace PadForge.Engine.Common.Mapping
                              // lane's four fixed voice bindings, not from
                              // user-authored rows. Leading 'R' keeps it
                              // clear of the I/H prefix grammar.
+            NfcTag,          // "Any NFC Tag" / "NFC Tag N" (issue #241).
+                             // NFC tag-present bools from the SDL fork's
+                             // SDL_GetGamepadNfcTagUid, read PER DEVICE from
+                             // CustomInputState.NfcTag. Button 0 = any tag,
+                             // N = the tag whose NfcTagRegistry button is N.
+                             // Leading 'A'/'N' keeps it clear of the I/H
+                             // prefix grammar.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -982,6 +989,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.StickRing;
             if (IsCapSenseDescriptor(s))
                 return SourceType.CapSense;
+            if (IsNfcTagDescriptor(s))
+                return SourceType.NfcTag;
             if (IsMenuItemDescriptor(s))
                 return SourceType.MenuItem;
             if (IsRumbleDescriptor(s))
@@ -2091,6 +2100,61 @@ namespace PadForge.Engine.Common.Mapping
             return ch >= 0 && ch < state.CapSense.Length && state.CapSense[ch];
         }
 
+        // ─── NFC tag family (issue #241) ───────────────────────────────
+        //
+        // Tag-present bools from the SDL fork's SDL_GetGamepadNfcTagUid,
+        // filled per device into CustomInputState.NfcTag by SdlDeviceWrapper.
+        // "Any NFC Tag" reads button 0; "NFC Tag N" reads button N, the
+        // stable NfcTagRegistry button the tag's UID occupies. The registry
+        // is the shared source of truth across the PC/SC reader path (#150)
+        // and this controller path (#241), so a tag registered once binds
+        // on either. Numbered descriptor (not by name) keeps the binding
+        // stable when a tag is renamed; the display layer resolves N -> name.
+
+        public const string AnyNfcTagDescriptor = "Any NFC Tag";
+        private const string NfcTagDescriptorPrefix = "NFC Tag ";
+
+        /// <summary>True for "Any NFC Tag" or a well-formed "NFC Tag N".</summary>
+        public static bool IsNfcTagDescriptor(string descriptor)
+            => TryGetNfcTagButton(descriptor, out _);
+
+        /// <summary>Resolves an NFC descriptor to its NfcTag button index:
+        /// 0 for "Any NFC Tag", N for "NFC Tag N" (N in 1..255). False for
+        /// anything else.</summary>
+        public static bool TryGetNfcTagButton(string descriptor, out int button)
+        {
+            button = -1;
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = descriptor.Trim();
+            if (string.Equals(s, AnyNfcTagDescriptor, StringComparison.OrdinalIgnoreCase))
+            {
+                button = 0;
+                return true;
+            }
+            if (s.StartsWith(NfcTagDescriptorPrefix, StringComparison.OrdinalIgnoreCase)
+                && int.TryParse(s.AsSpan(NfcTagDescriptorPrefix.Length), out int n)
+                && n >= 1 && n <= 255)
+            {
+                button = n;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>The per-tag descriptor for a stable registry button.</summary>
+        public static string NfcTagDescriptorForButton(int button)
+            => button <= 0 ? AnyNfcTagDescriptor : NfcTagDescriptorPrefix + button;
+
+        /// <summary>The NFC tag-present bool read, straight from the
+        /// wrapper's per-frame fill. Null array (device without an NFC
+        /// reader, or NFC not armed) reads false.</summary>
+        private static bool ReadNfcTagBool(CustomInputState state, string canonical)
+        {
+            if (state?.NfcTag == null) return false;
+            if (!TryGetNfcTagButton(canonical, out int button)) return false;
+            return button >= 0 && button < state.NfcTag.Length && state.NfcTag[button];
+        }
+
         // ─── Inbound rumble family (issue #236) ────────────────────────
         //
         // The four game-feedback channels the slot's virtual controller
@@ -2916,6 +2980,10 @@ namespace PadForge.Engine.Common.Mapping
             if (IsCapSenseDescriptor(s))
                 return ReadCapSenseBool(state, s);
 
+            // NFC tag present (#241): a plain hardware bool, no threshold.
+            if (IsNfcTagDescriptor(s))
+                return ReadNfcTagBool(state, s);
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return false;
 
@@ -3199,6 +3267,10 @@ namespace PadForge.Engine.Common.Mapping
             if (IsCapSenseDescriptor(s))
                 return ReadCapSenseBool(state, s) ? 1f : 0f;
 
+            // NFC tag present as an analog contribution (#241): 0/1.
+            if (IsNfcTagDescriptor(s))
+                return ReadNfcTagBool(state, s) ? 1f : 0f;
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
 
@@ -3419,6 +3491,10 @@ namespace PadForge.Engine.Common.Mapping
             // magnitude [0..1], the bipolar read's twin.
             if (IsStickRingDescriptor(s))
                 return ReadStickRingMagnitude(state, s);
+
+            // NFC tag present as a trigger pull (#241): 0/1.
+            if (IsNfcTagDescriptor(s))
+                return ReadNfcTagBool(state, s) ? 1f : 0f;
 
             // Capsense as a trigger pull (v26): 0/1 like a button.
             if (IsCapSenseDescriptor(s))

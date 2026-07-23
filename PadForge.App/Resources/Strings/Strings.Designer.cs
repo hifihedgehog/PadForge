@@ -2087,6 +2087,8 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_IrPointerX => Get("Mapping_IrPointerX");
     public string Mapping_IrPointerY => Get("Mapping_IrPointerY");
     public string Mapping_JoyConIrBrightness => Get("Mapping_JoyConIrBrightness");
+    public string Mapping_AnyNfcTag => Get("Mapping_AnyNfcTag");
+    public string Mapping_NfcTagNamed => Get("Mapping_NfcTagNamed");
     public string Mapping_MouseMotionX => Get("Mapping_MouseMotionX");
     public string Mapping_MouseMotionY => Get("Mapping_MouseMotionY");
     public string Mapping_IrPointerSensitivity => Get("Mapping_IrPointerSensitivity");
@@ -2129,6 +2131,7 @@ public class Strings : INotifyPropertyChanged
     public string Nfc_TapPrompt => Get("Nfc_TapPrompt");
     public string Nfc_UidLabel => Get("Nfc_UidLabel");
     public string Nfc_Waiting => Get("Nfc_Waiting");
+    public string Nfc_WaitingController => Get("Nfc_WaitingController");
     public string Nfc_NameLabel => Get("Nfc_NameLabel");
     public string Nfc_RegisterButton => Get("Nfc_RegisterButton");
     public string Nfc_RegisteredTagsHeader => Get("Nfc_RegisteredTagsHeader");

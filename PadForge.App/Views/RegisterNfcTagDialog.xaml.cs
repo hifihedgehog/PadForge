@@ -19,6 +19,7 @@ namespace PadForge.Views
     {
         private readonly NfcReaderService _svc;
         private Action<string, string> _handler;
+        private Action<string> _controllerHandler;
         private string _capturedUid;
 
         public RegisterNfcTagDialog()
@@ -27,13 +28,30 @@ namespace PadForge.Views
             _svc = NfcReaderService.Active;
             RefreshList();
 
-            if (_svc == null)
+            // Capture from a Switch controller too (issue #241): the tag
+            // reader on a right Joy-Con / Pro Controller raises
+            // NfcTagRegistry.ControllerTagDetected. RegistrationCaptureActive
+            // powers the MCU while this dialog is open, so a tap is caught
+            // even before any tag is registered. Both sources normalize the
+            // UID through the same registry, so a tag registered from either
+            // binds on either.
+            _controllerHandler = OnControllerTag;
+            NfcTagRegistry.ControllerTagDetected += _controllerHandler;
+            NfcTagRegistry.RegistrationCaptureActive = true;
+
+            // A PC/SC reader, if present, raises its own event.
+            if (_svc != null)
             {
-                StatusText.Text = Strings.Instance.Nfc_NoReader;
-                return;
+                _handler = OnTagDetected;
+                _svc.TagDetected += _handler;
             }
-            _handler = OnTagDetected;
-            _svc.TagDetected += _handler;
+
+            // Status: name whichever source(s) can capture. With neither a
+            // PC/SC reader nor (potentially) a controller, the old "no
+            // reader" text still stands, but a controller can arrive later,
+            // so the wait text is the honest default when a reader is absent.
+            StatusText.Text = _svc != null ? Strings.Instance.Nfc_Waiting : Strings.Instance.Nfc_WaitingController;
+
             Closed += (s, e) => Unsubscribe();
         }
 
@@ -43,8 +61,16 @@ namespace PadForge.Views
             {
                 try { _svc.TagDetected -= _handler; } catch { }
             }
+            if (_controllerHandler != null)
+            {
+                try { NfcTagRegistry.ControllerTagDetected -= _controllerHandler; } catch { }
+            }
+            NfcTagRegistry.RegistrationCaptureActive = false;
             _handler = null;
+            _controllerHandler = null;
         }
+
+        private void OnControllerTag(string uid) => OnTagDetected("controller", uid);
 
         private void OnTagDetected(string reader, string uid)
         {

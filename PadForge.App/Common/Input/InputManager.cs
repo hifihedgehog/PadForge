@@ -980,6 +980,12 @@ namespace PadForge.Common.Input
 
             RawInputListener.Start();
 
+            // Remove MIDI endpoint devnodes stranded by a previous run.
+            // Windows MIDI Services can leave them behind when its own
+            // teardown fails, and they otherwise sit in Device Manager
+            // forever and poison later MIDI slot creation.
+            MidiEndpointJanitor.ScheduleSweep(0);
+
             // PTP reader always runs so Devices page can preview touchpad input.
             // Note: on shared hardware (laptop trackpads), the digitizer registration
             // stops Windows from synthesizing mouse reports for the same device.

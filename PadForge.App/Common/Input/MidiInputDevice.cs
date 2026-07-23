@@ -427,11 +427,15 @@ namespace PadForge.Common.Input
             });
         }
 
-        /// <summary>Enumerates connectable MIDI endpoints. Includes normal
-        /// hardware endpoints AND virtual-device endpoints (PadForge's own
-        /// MIDI virtual controllers among them — that is the no-hardware
-        /// loopback test path); excludes the diagnostics endpoints and the
-        /// in-box GM synth, which never produce input.</summary>
+        /// <summary>Enumerates connectable MIDI endpoints: normal message
+        /// endpoints only. PadForge's own MIDI virtual controllers stay
+        /// visible through their CLIENT-side twin, which the service
+        /// publishes as a normal endpoint (MIDI reference:
+        /// Midi2.VirtualMidiEndpointManager.cpp CreateClientVisibleEndpoint,
+        /// EndpointDeviceType = Normal). The device-side responder twin is
+        /// for the device host application only per the service's own
+        /// description string, and enumerating it is how the input lane
+        /// used to poke stranded responder corpses every sweep.</summary>
         public static List<(string Id, string Name)> EnumerateEndpoints()
         {
             var result = new List<(string Id, string Name)>();
@@ -444,8 +448,7 @@ namespace PadForge.Common.Input
                 {
                     if (ep == null) continue;
                     var purpose = ep.EndpointPurpose;
-                    if (purpose != MidiEndpointDevicePurpose.NormalMessageEndpoint
-                        && purpose != MidiEndpointDevicePurpose.VirtualDeviceResponder)
+                    if (purpose != MidiEndpointDevicePurpose.NormalMessageEndpoint)
                         continue;
                     string id = ep.EndpointDeviceId;
                     if (string.IsNullOrEmpty(id)) continue;

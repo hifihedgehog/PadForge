@@ -119,6 +119,7 @@
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>仮想コントローラー {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>エンジン停止中</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>デバイス待機中</value></data>
+  <data name="Main_VcFailed" xml:space="preserve"><value>仮想コントローラーの作成に失敗しました</value></data>
   <data name="Main_Active" xml:space="preserve"><value>アクティブ</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>初期化中</value></data>
   <data name="Main_VCsEnabled" xml:space="preserve"><value>仮想コントローラーを有効化</value></data>

@@ -623,6 +623,22 @@ namespace PadForge.ViewModels
             }
         }
 
+        private bool _isCreateFailed;
+
+        /// <summary>Whether the slot's latest virtual-controller create
+        /// attempt failed (engine createFailed latch). Its own status:
+        /// a failed slot with online devices is neither forging nor
+        /// awaiting devices.</summary>
+        public bool IsCreateFailed
+        {
+            get => _isCreateFailed;
+            set
+            {
+                if (SetProperty(ref _isCreateFailed, value))
+                    OnPropertyChanged(nameof(StatusText));
+            }
+        }
+
         private int _mappedDeviceCount;
 
         /// <summary>Number of devices mapped to this slot.</summary>
@@ -675,6 +691,8 @@ namespace PadForge.ViewModels
             {
                 if (_isEnabled && !_isInitializing)
                 {
+                    if (_isCreateFailed)
+                        return Strings.Instance.Main_VcFailed;
                     if (_mappedDeviceCount == 0)
                         return Strings.Instance.Dashboard_StatusCold;
                     if (_connectedDeviceCount == 0 && !_isVirtualControllerConnected)

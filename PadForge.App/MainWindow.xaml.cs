@@ -2695,6 +2695,12 @@ namespace PadForge
             {
                 powerTooltip = Strings.Instance.Main_EngineStopped;
             }
+            else if (navItem.IsCreateFailed)
+            {
+                // The truth outranks the awaiting-devices default: a failed
+                // create with online devices is not waiting for anything.
+                powerTooltip = Strings.Instance.Main_VcFailed;
+            }
             else if (!navItem.IsVirtualControllerConnected)
             {
                 // Gold reflects "no live VC" (slot has never created a VC, or

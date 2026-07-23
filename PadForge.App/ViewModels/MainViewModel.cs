@@ -102,6 +102,17 @@ namespace PadForge.ViewModels
             get => _isVirtualControllerConnected;
             set => SetProperty(ref _isVirtualControllerConnected, value);
         }
+
+        private bool _isCreateFailed;
+        /// <summary>Whether the slot's latest virtual-controller create
+        /// attempt failed (engine createFailed latch). Distinct from
+        /// awaiting devices: the flame tooltip must not blame absent
+        /// devices for a failed create.</summary>
+        public bool IsCreateFailed
+        {
+            get => _isCreateFailed;
+            set => SetProperty(ref _isCreateFailed, value);
+        }
     }
 
     /// <summary>

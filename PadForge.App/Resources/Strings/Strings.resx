@@ -122,6 +122,7 @@
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtual Controller {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Engine stopped</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>Awaiting devices</value></data>
+  <data name="Main_VcFailed" xml:space="preserve"><value>Virtual controller failed</value></data>
   <data name="Main_Active" xml:space="preserve"><value>Forging</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>Initializing</value></data>
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Virtual Controllers Enabled</value></data>

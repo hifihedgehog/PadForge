@@ -186,6 +186,7 @@ public class Strings : INotifyPropertyChanged
     public string Main_VirtualController_Format => Get("Main_VirtualController_Format");
     public string Main_EngineStopped => Get("Main_EngineStopped");
     public string Main_AwaitingDevices => Get("Main_AwaitingDevices");
+    public string Main_VcFailed => Get("Main_VcFailed");
     public string Main_Active => Get("Main_Active");
     public string Main_Initializing => Get("Main_Initializing");
     public string Main_VCsEnabled => Get("Main_VCsEnabled");

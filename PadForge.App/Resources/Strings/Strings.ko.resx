@@ -2770,4 +2770,7 @@
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>저주파 모터 경로로 20~120 Hz 톤을 8초에 걸쳐 재생합니다. 셰이커가 가장 강하게 반응한 지점을 확인해 각 보이스의 주파수를 설정하세요.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>정지</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>테스트 톤이나 스윕을 멈춥니다.</value></data>
+  <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>모든 NFC 태그</value></data>
+  <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC 태그: {0}</value></data>
+  <data name="Nfc_WaitingController" xml:space="preserve"><value>Switch 컨트롤러에 태그를 갖다 대세요…</value></data>
 </root>

@@ -501,6 +501,20 @@ namespace PadForge.Common
                 return prefix + (leftStick ? si.Mapping_FlickStickLeft : si.Mapping_FlickStickRight);
             }
 
+            // NFC tag descriptors (#241): "Any NFC Tag" and "NFC Tag N".
+            // The numbered form resolves its registry button back to the
+            // user's tag name; an unregistered/removed button falls back to
+            // the generic label so a stale binding still reads sensibly.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.TryGetNfcTagButton(s, out int nfcButton))
+            {
+                var si = Strings.Instance;
+                if (nfcButton == 0) return prefix + si.Mapping_AnyNfcTag;
+                foreach (var tag in PadForge.Common.Input.NfcTagRegistry.Tags)
+                    if (tag.Button == nfcButton)
+                        return prefix + string.Format(si.Mapping_NfcTagNamed, tag.Name);
+                return prefix + string.Format(si.Mapping_NfcTagNamed, "#" + nfcButton);
+            }
+
             // Bundled motion-passthrough descriptors → localized display names.
             if (s.StartsWith("Motion ", System.StringComparison.Ordinal))
             {
@@ -1638,6 +1652,28 @@ namespace PadForge.Common
             // cover-to-press, or to a trigger for analog proximity.
             if (ud.HasJoyConIr)
                 list.Add(new InputChoice { Descriptor = "IR Brightness", DisplayName = si.Mapping_JoyConIrBrightness });
+
+            // NFC tag reader (#241): the right Joy-Con / Pro Controller reads
+            // NFC tags (amiibo UIDs). "Any NFC Tag" fires on any tag; each
+            // registered tag (NfcTagRegistry) is its own bindable source,
+            // stable button, display name from the registry. Map to a macro
+            // trigger for "tap tag -> action", or to a virtual button. The
+            // reader powers only while armed (a registered tag + this pad
+            // online, or a capture in progress).
+            if (ud.HasNfcReader)
+            {
+                list.Add(new InputChoice
+                {
+                    Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.AnyNfcTagDescriptor,
+                    DisplayName = si.Mapping_AnyNfcTag,
+                });
+                foreach (var tag in PadForge.Common.Input.NfcTagRegistry.Tags)
+                    list.Add(new InputChoice
+                    {
+                        Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.NfcTagDescriptorForButton(tag.Button),
+                        DisplayName = string.Format(si.Mapping_NfcTagNamed, tag.Name),
+                    });
+            }
 
             // Joy-Con 2 optical mouse sensor (#154). Per-poll motion velocity in
             // mouse counts, per device (CustomInputState.JoyCon2MouseDX/DY),

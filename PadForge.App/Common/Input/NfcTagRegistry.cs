@@ -43,6 +43,29 @@ namespace PadForge.Common.Input
         /// <summary>Raised when the registry changes (input-picker refresh).</summary>
         public static event EventHandler RegistryChanged;
 
+        /// <summary>Raised when a Switch controller reads a tag (issue #241),
+        /// carrying the UID. The registration dialog listens so a tag can be
+        /// recorded from the controller exactly as from a PC/SC reader; the
+        /// PC/SC path raises its own <see cref="Services.NfcReaderService.
+        /// TagDetected"/>. Fires on the poll thread, so a UI handler must
+        /// marshal. Rising-edge only (the wrapper debounces a resting tag).</summary>
+        public static event Action<string> ControllerTagDetected;
+
+        /// <summary>Fan-out for a controller-sourced tap. Normalizes the UID
+        /// and raises <see cref="ControllerTagDetected"/>.</summary>
+        public static void RaiseControllerTag(string uid)
+        {
+            string norm = NormalizeUid(uid);
+            if (norm.Length == 0) return;
+            ControllerTagDetected?.Invoke(norm);
+        }
+
+        /// <summary>True while a registration dialog is open and wants the
+        /// Switch NFC MCU powered to capture a tap. The arming logic ORs this
+        /// with "any NFC descriptor is bound" so the reader runs during a
+        /// capture even before any tag is registered.</summary>
+        public static volatile bool RegistrationCaptureActive;
+
         /// <summary>Snapshot of the registered tags (ordered by their stable
         /// button), each with the button it occupies.</summary>
         public static IReadOnlyList<TagEntry> Tags

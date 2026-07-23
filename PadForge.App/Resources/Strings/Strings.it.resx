@@ -2792,4 +2792,7 @@
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Esegue un tono da 20 a 120 Hz in otto secondi sulla via del motore a bassa frequenza. Annota dove il tuo shaker risponde di più e imposta lì le frequenze delle voci.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Interrompi</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Interrompe il tono di prova o la scansione.</value></data>
+  <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Qualsiasi tag NFC</value></data>
+  <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Tag NFC: {0}</value></data>
+  <data name="Nfc_WaitingController" xml:space="preserve"><value>Avvicina un tag al tuo controller Switch…</value></data>
 </root>

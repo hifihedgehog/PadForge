@@ -122,6 +122,7 @@ namespace PadForge.Tests
             {
                 Touchpads = new[] { new TouchpadInputState(3), new TouchpadInputState(3) },
                 CapSense = new bool[3],
+                NfcTag = new bool[3],
                 Midi = new MidiInputState(),
             };
             pooled.ResetForReuse();

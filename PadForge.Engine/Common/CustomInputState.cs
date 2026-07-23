@@ -160,6 +160,18 @@ namespace PadForge.Engine
         /// <see cref="Touchpads"/>.</summary>
         public bool[] CapSense;
 
+        /// <summary>NFC tag buttons for a Switch right Joy-Con / Pro
+        /// Controller reader (issue #241, fork SDL#15). Index 0 = "Any NFC
+        /// Tag" (any tag present pulses it); index N = the tag whose stable
+        /// <see cref="PadForge.Common.Input.NfcTagRegistry"/> button is N.
+        /// True while a matching tag is held (pulsed by SdlDeviceWrapper
+        /// from SDL_GetGamepadNfcTagUid). Null when the device has no NFC
+        /// reader or NFC is not armed, same nullable cost model as
+        /// <see cref="CapSense"/>. The controller IS the reader identity, so
+        /// tags surface here rather than on a synthetic device, and
+        /// <see cref="Buttons"/> stays the gamepad buttons.</summary>
+        public bool[] NfcTag;
+
         /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).
         /// Refreshed periodically by SdlDeviceWrapper, not every frame.</summary>
         public int BatteryPercent;
@@ -244,6 +256,16 @@ namespace PadForge.Engine
                     dst.CapSense = new bool[CapSense.Length];
                 Array.Copy(CapSense, dst.CapSense, CapSense.Length);
             }
+            if (NfcTag == null)
+            {
+                dst.NfcTag = null;
+            }
+            else
+            {
+                if (dst.NfcTag == null || dst.NfcTag.Length != NfcTag.Length)
+                    dst.NfcTag = new bool[NfcTag.Length];
+                Array.Copy(NfcTag, dst.NfcTag, NfcTag.Length);
+            }
             if (Midi == null)
             {
                 dst.Midi = null;
@@ -287,6 +309,8 @@ namespace PadForge.Engine
                     Touchpads[i]?.ResetForReuse();
             if (CapSense != null)
                 Array.Clear(CapSense, 0, CapSense.Length);
+            if (NfcTag != null)
+                Array.Clear(NfcTag, 0, NfcTag.Length);
             Midi?.ResetForReuse();
             Ir = default;
             JoyConIrIntensity = 0f;

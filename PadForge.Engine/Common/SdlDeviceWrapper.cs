@@ -118,6 +118,14 @@ namespace PadForge.Engine
         /// on joystick axes 6/7 (SDL#8, raw axis count 8).</summary>
         public bool HasJoyCon2Mouse { get; private set; }
 
+        /// <summary>Whether this device has an NFC reader the SDL fork can
+        /// drive (issue #241, SDL#15): the classic Switch right Joy-Con
+        /// (PID 0x2007) and Pro Controller (PID 0x2009), where the NFC/IR
+        /// MCU lives. The reader is only powered when NFC is armed and the
+        /// SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC hint is set; this flag just
+        /// says the hardware can. Read via SDL_GetGamepadNfcTagUid.</summary>
+        public bool HasNfcReader { get; private set; }
+
         /// <summary>Total raw joystick axis count (before the gamepad layout pins
         /// <see cref="NumAxes"/> to 6). SDL's convention is that device-specific
         /// analog data beyond the six standard gamepad axes rides raw joystick axes
@@ -417,6 +425,15 @@ namespace PadForge.Engine
                 && (ProductId == 0x2066 || ProductId == 0x2067)
                 && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 8;
 
+            // NFC reader (issue #241, SDL#15). The NFC/IR MCU lives on the
+            // classic Switch right Joy-Con (PID 0x2007) and Pro Controller
+            // (PID 0x2009). Gated on GameController != 0 because the tag
+            // getter is a gamepad-layer call. Switch 2 pads use different
+            // hardware and are out of scope (plan-150).
+            HasNfcReader = VendorId == 0x057E
+                && (ProductId == 0x2007 || ProductId == 0x2009)
+                && GameController != IntPtr.Zero;
+
             // Generic extra joystick axes (issue #193). A gamepad-opened device may
             // report raw joystick axes beyond the standard six that carry ordinary
             // analog inputs. Upstream SDL's own PS3 driver does exactly this: it
@@ -617,7 +634,94 @@ namespace PadForge.Engine
             if (HasJoyCon2Mouse && state != null)
                 ReadJoyCon2Mouse(state);
 
+            // NFC tag reader (issue #241). Read gamepad-layer, gated on the
+            // arming provider so the MCU stays off (and this stays a no-op)
+            // until a slot arms an NFC trigger.
+            if (HasNfcReader && state != null)
+                ReadNfcTag(state);
+
             return state;
+        }
+
+        // ─── NFC tag reader (issue #241, SDL#15) ───
+        // The Engine wrapper cannot see the App-side NfcTagRegistry, so the
+        // App wires these providers at startup (the SourceCoercion provider
+        // idiom). All null until wired, which keeps the Engine standalone.
+
+        /// <summary>True when any slot has armed an NFC trigger, so the MCU
+        /// should be powered and the tag getter polled. App-wired.</summary>
+        public static Func<bool> NfcArmedProvider;
+        /// <summary>Resolves a tag UID to its stable NfcTagRegistry button
+        /// (0 = registered nowhere / use Any only, &gt;0 = that tag's button,
+        /// -1 = unregistered). App-wired to NfcTagRegistry.ButtonForUid.</summary>
+        public static Func<string, int> NfcTagButtonResolver;
+        /// <summary>Highest registry button in use, so the NfcTag array spans
+        /// every registered tag. App-wired to NfcTagRegistry.MaxButtonInUse.</summary>
+        public static Func<int> NfcTagSpanProvider;
+        /// <summary>Raised (rising edge only) when a controller reads a tag,
+        /// so the registration flow can capture a controller-sourced UID the
+        /// same way it captures a PC/SC reader's. App-wired.</summary>
+        public static Action<string> NfcTagDetectedForRegistration;
+
+        /// <summary>Tag-button hold, mirroring NfcReaderDevice.PulseMs: a
+        /// held tag streams present from the getter, so the button stays
+        /// pressed while the tag rests and releases this long after removal,
+        /// smoothing any single-poll gap into a clean momentary edge.</summary>
+        private const int NfcPulseMs = 175;
+        private long[] _nfcPulseUntil;
+        private string _nfcPrevUid;
+
+        private void ReadNfcTag(CustomInputState state)
+        {
+            var armed = NfcArmedProvider;
+            if (armed == null || !armed())
+            {
+                // Not armed: leave the array absent so the codec omits it and
+                // consumers read "no NFC". Reset the edge tracker so re-arming
+                // re-raises registration on the next tap.
+                _nfcPrevUid = null;
+                if (state.NfcTag != null) Array.Clear(state.NfcTag, 0, state.NfcTag.Length);
+                return;
+            }
+
+            long now = Environment.TickCount64;
+            _nfcPulseUntil ??= new long[CustomInputState.MaxButtons];
+
+            if (SDL_TryGetGamepadNfcTagUid(GameController, out string uid)
+                && !string.IsNullOrEmpty(uid))
+            {
+                // Rising edge only for registration, so a resting tag doesn't
+                // spam the capture dialog.
+                if (!string.Equals(uid, _nfcPrevUid, StringComparison.Ordinal))
+                {
+                    _nfcPrevUid = uid;
+                    try { NfcTagDetectedForRegistration?.Invoke(uid); } catch { }
+                }
+                long until = now + NfcPulseMs;
+                _nfcPulseUntil[0] = until; // Any NFC Tag
+                int button = NfcTagButtonResolver?.Invoke(uid) ?? -1;
+                if (button > 0 && button < _nfcPulseUntil.Length)
+                    _nfcPulseUntil[button] = until;
+            }
+            else
+            {
+                _nfcPrevUid = null;
+            }
+
+            // Size the tag array to span every registered button (1 = "Any"
+            // plus the highest tag button), then write each button's pulse
+            // state, clearing expired pulses so a falling edge always lands.
+            int span = 1 + Math.Max(0, NfcTagSpanProvider?.Invoke() ?? 0);
+            if (span > CustomInputState.MaxButtons) span = CustomInputState.MaxButtons;
+            if (state.NfcTag == null || state.NfcTag.Length != span)
+                state.NfcTag = new bool[span];
+            for (int b = 0; b < span; b++)
+            {
+                long until = _nfcPulseUntil[b];
+                bool pressed = until != 0 && now < until;
+                if (!pressed) _nfcPulseUntil[b] = 0;
+                state.NfcTag[b] = pressed;
+            }
         }
 
         // Joy-Con 2 optical mouse sensor (issue #154). The fork's BLE Switch 2

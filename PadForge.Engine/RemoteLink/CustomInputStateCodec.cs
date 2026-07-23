@@ -56,6 +56,14 @@ namespace PadForge.Engine.RemoteLink
             // Capsense touch channels (stick tops / grips, fork API).
             // Appended after MouseRaw under the same mixed-version tail rule.
             CapSense = 1 << 14,
+            // NFC tag buttons (Switch right Joy-Con / Pro reader, issue #241).
+            // Appended after CapSense under the same mixed-version tail rule.
+            // Variable-length: a span byte then ceil(span/8) bitmask bytes.
+            // Button 0 = "Any NFC Tag" is registry-independent and always
+            // meaningful remotely; per-tag buttons resolve against the
+            // consumer's own NfcTagRegistry, the shared-config assumption
+            // every remote binding already makes.
+            Nfc = 1 << 15,
         }
 
         /// <summary>Capsense channels carried on the wire (one byte,
@@ -284,6 +292,32 @@ namespace PadForge.Engine.RemoteLink
                 }
             }
 
+            // NFC tag buttons (issue #241): omitted when nothing is held,
+            // and an omitted block decodes to "no tag", the neutral the
+            // encoder skipped. Framed span byte + ceil(span/8) bitmask.
+            if (state.NfcTag != null)
+            {
+                int span = Math.Min(state.NfcTag.Length, 255);
+                bool any = false;
+                for (int i = 0; i < span; i++) if (state.NfcTag[i]) { any = true; break; }
+                if (any)
+                {
+                    present |= Block.Nfc;
+                    destination[o++] = (byte)span;
+                    int bytes = (span + 7) / 8;
+                    for (int b = 0; b < bytes; b++)
+                    {
+                        byte mask = 0;
+                        for (int bit = 0; bit < 8; bit++)
+                        {
+                            int idx = b * 8 + bit;
+                            if (idx < span && state.NfcTag[idx]) mask |= (byte)(1 << bit);
+                        }
+                        destination[o++] = mask;
+                    }
+                }
+            }
+
             BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(presenceAt, 2), (ushort)present);
             return o;
         }
@@ -315,6 +349,7 @@ namespace PadForge.Engine.RemoteLink
             }
             if (state?.Midi != null) size += 48 + 1 + MidiInputState.CcCount * 2 + 2;
             size += 8 + 4 + 8 + 8 + 1; // Ir (2 floats) + JoyConIr (1 float) + JoyCon2Mouse (2 floats) + MouseRaw (2 int32) + CapSense (1 byte)
+            size += 1 + (255 / 8 + 1); // NFC: span byte + up to 32 bitmask bytes
             return size;
         }
 
@@ -510,6 +545,25 @@ namespace PadForge.Engine.RemoteLink
                         target.CapSense[i] = (touched & (1 << i)) != 0;
                 }
 
+                if ((present & Block.Nfc) != 0)
+                {
+                    int span = payload[o++];
+                    int bytes = (span + 7) / 8;
+                    if (target.NfcTag == null || target.NfcTag.Length < span)
+                        target.NfcTag = new bool[span];
+                    else
+                        Array.Clear(target.NfcTag, 0, target.NfcTag.Length);
+                    for (int b = 0; b < bytes; b++)
+                    {
+                        byte mask = payload[o++];
+                        for (int bit = 0; bit < 8; bit++)
+                        {
+                            int idx = b * 8 + bit;
+                            if (idx < span) target.NfcTag[idx] = (mask & (1 << bit)) != 0;
+                        }
+                    }
+                }
+
                 return o <= payload.Length;
             }
             catch
@@ -542,6 +596,7 @@ namespace PadForge.Engine.RemoteLink
             s.MouseRawDX = 0;
             s.MouseRawDY = 0;
             if (s.CapSense != null) Array.Clear(s.CapSense);
+            if (s.NfcTag != null) Array.Clear(s.NfcTag);
             if (s.Midi != null)
             {
                 // The decode contract promises "reset-to-neutral rather than

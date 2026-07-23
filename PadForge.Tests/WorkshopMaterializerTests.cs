@@ -19,6 +19,7 @@ namespace PadForge.Tests
     /// slot topology arrays, MacroData/ActionData construction, and the
     /// XML persistence round-trip.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class WorkshopMaterializerTests
     {
         private static TranslatedProfile SampleProfile()

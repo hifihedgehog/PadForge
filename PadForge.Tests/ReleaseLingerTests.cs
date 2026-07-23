@@ -19,6 +19,7 @@ namespace PadForge.Tests
     /// ReleaseDelayMs past the release the same way, and the materializer
     /// wires the translated DelayEndMs / TapDurationMs channels through
     /// the DTOs.</summary>
+    [Collection("SettingsManagerStatics")]
     public class ReleaseLingerTests
     {
         // ── Macro release linger (Step4b, Gamepad path) ──

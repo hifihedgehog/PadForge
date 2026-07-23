@@ -17,6 +17,7 @@ namespace PadForge.Tests
     /// meaningful, and the runtime proof that a gated gesture read fires
     /// for an imported mapping with every Touchpad-tab toggle off.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class WorkshopAutoArmTests
     {
         private static MappingSet AuthoritativeSet(params string[] descriptors)

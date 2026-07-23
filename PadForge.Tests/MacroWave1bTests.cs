@@ -889,7 +889,7 @@ namespace PadForge.Tests
             {
                 Type = MacroActionType.KeyPress,
                 KeyCode = 0xFC,
-                DurationMs = 40,
+                DurationMs = 400,
             };
             var macro = GamepadTriggerMacro(MacroTriggerMode.WhileHeld, MacroRepeatMode.Once,
                 new MacroAction { Type = MacroActionType.Delay, DurationMs = 1 });
@@ -909,7 +909,7 @@ namespace PadForge.Tests
             // while the Up at DurationMs still fired.
             Assert.Contains(press, im._pressDownSent);
 
-            System.Threading.Thread.Sleep(45);
+            System.Threading.Thread.Sleep(450);
             gp = new Gamepad { Buttons = Gamepad.A };
             im.EvaluateSlotMacros(ref gp, macros);            // Up leg + advance
             Assert.DoesNotContain(press, im._pressDownSent);  // re-armed
@@ -927,7 +927,7 @@ namespace PadForge.Tests
             {
                 Type = MacroActionType.MouseButtonPress,
                 MouseButton = (MacroMouseButton)99,
-                DurationMs = 40,
+                DurationMs = 400,
             };
             var macro = ExtendedTriggerMacro(MacroTriggerMode.WhileHeld, MacroRepeatMode.Once,
                 new MacroAction { Type = MacroActionType.Delay, DurationMs = 1 });
@@ -945,7 +945,7 @@ namespace PadForge.Tests
 
             Assert.Contains(press, im._pressDownSent);
 
-            System.Threading.Thread.Sleep(45);
+            System.Threading.Thread.Sleep(450);
             raw = RawState(0x1);
             im.EvaluateSlotMacrosExtended(ref raw, macros);
             Assert.DoesNotContain(press, im._pressDownSent);

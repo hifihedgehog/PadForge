@@ -17,6 +17,7 @@ namespace PadForge.Tests
     /// evaluator directly with the layer engaged and assert the remapped
     /// target fires while the base target is suppressed.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class ShiftLayerOutputRoutingTests
     {
         private static MappingSource Btn(int n) => new() { Descriptor = $"Button {n}" };

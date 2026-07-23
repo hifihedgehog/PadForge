@@ -19,6 +19,7 @@ namespace PadForge.Tests
     /// Always), including the mode-shift-end commit and the dead-center
     /// dismiss.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class MenuRuntimeTests : IDisposable
     {
         public MenuRuntimeTests()

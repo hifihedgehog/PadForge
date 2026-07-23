@@ -20,6 +20,7 @@ namespace PadForge.Tests
     /// still stamps the device; a descriptor-only fallback never does, so the
     /// source's own "(Any device)" identity stands.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class WorkshopSecondarySourceDisplayTests
     {
         private const string ConcreteGuid = "11111111-1111-1111-1111-111111111111";

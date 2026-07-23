@@ -16,6 +16,7 @@ namespace PadForge.Common.Input
     internal sealed class MidiVirtualController : IVirtualController
     {
         private static bool? _isAvailable;
+        private static volatile bool _probeTimedOut;
         private static readonly object _availLock = new();
         private static Microsoft.Windows.Devices.Midi2.Initialization.MidiDesktopAppSdkInitializer _initializer;
 
@@ -334,9 +335,16 @@ namespace PadForge.Common.Input
             // and EnsureServiceAvailable are WinRT RPC and can hang on a
             // broken service. A timed-out probe reads as unavailable for
             // this session (ResetAvailability re-probes after an install).
+            if (_probeTimedOut) return false;
             var probe = System.Threading.Tasks.Task.Run(() => IsAvailableCore());
             if (!probe.Wait(10_000))
+            {
+                // Hung service: remember for the session so every later
+                // create fails fast instead of re-paying the 10 s wait.
+                // ResetAvailability clears this after a service install.
+                _probeTimedOut = true;
                 return false;
+            }
             return probe.Result;
         }
 
@@ -380,6 +388,7 @@ namespace PadForge.Common.Input
         /// </summary>
         public static void ResetAvailability()
         {
+            _probeTimedOut = false;
             lock (_availLock)
             {
                 if (_initializer != null)

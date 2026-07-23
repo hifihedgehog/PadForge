@@ -19,6 +19,23 @@ namespace PadForge.Tests
             return p;
         }
 
+        /// <summary>Probe-then-bind is a TOCTOU race: the OS can hand the
+        /// probed port to another socket in the gap (seen on the bench with
+        /// the app running alongside the suite). Retry on a fresh ephemeral
+        /// port until the bind lands.</summary>
+        private static int StartOnFreePort(LinkServer s, int avoid = -1)
+        {
+            for (int attempt = 0; attempt < 8; attempt++)
+            {
+                int p = FreePort();
+                if (p == avoid) continue;
+                s.Start(p);
+                if (s.IsRunning) return p;
+                s.Stop();
+            }
+            throw new InvalidOperationException("no ephemeral port would bind after 8 attempts");
+        }
+
         private static async Task<bool> WaitUntil(Func<bool> cond, int timeoutMs)
         {
             var sw = Stopwatch.StartNew();
@@ -41,9 +58,6 @@ namespace PadForge.Tests
         [Fact]
         public async Task LocalhostLoopback_PairsAndStreamsInputOverRealSockets()
         {
-            int pA = FreePort(), pB = FreePort();
-            while (pB == pA) pB = FreePort();
-
             Func<PendingPairing, PairingApproval> approve = _ => true;
             using var host = new LinkServer(PeerIdentity.Generate(), new PeerTrustStore(), approve);     // consumer
             using var holder = new LinkServer(PeerIdentity.Generate(), new PeerTrustStore(), approve);   // device holder
@@ -51,8 +65,8 @@ namespace PadForge.Tests
             RemotePeerDevice received = null;
             host.DeviceConnected += d => received = d;
 
-            host.Start(pA);
-            holder.Start(pB);
+            int pA = StartOnFreePort(host);
+            StartOnFreePort(holder, avoid: pA);
 
             bool connected = await holder.ConnectAsync("127.0.0.1", pA, new[] { PadInfo() });
             Assert.True(connected);
@@ -83,9 +97,6 @@ namespace PadForge.Tests
         [Fact]
         public async Task UnknownPeerRejected_NoDeviceReachesPipeline()
         {
-            int pA = FreePort(), pB = FreePort();
-            while (pB == pA) pB = FreePort();
-
             // Host rejects the pairing; holder approves. No device must appear on the host.
             using var host = new LinkServer(PeerIdentity.Generate(), new PeerTrustStore(), approve: _ => false);
             using var holder = new LinkServer(PeerIdentity.Generate(), new PeerTrustStore(), approve: _ => true);
@@ -93,8 +104,8 @@ namespace PadForge.Tests
             bool deviceAppeared = false;
             host.DeviceConnected += _ => deviceAppeared = true;
 
-            host.Start(pA);
-            holder.Start(pB);
+            int pA = StartOnFreePort(host);
+            StartOnFreePort(holder, avoid: pA);
 
             await holder.ConnectAsync("127.0.0.1", pA, new[] { PadInfo() });
             await Task.Delay(300); // give any (erroneous) registration a chance to fire
@@ -105,9 +116,8 @@ namespace PadForge.Tests
         [Fact]
         public void StartStop_IsClean()
         {
-            int p = FreePort();
             var s = new LinkServer(PeerIdentity.Generate(), new PeerTrustStore(), _ => false);
-            s.Start(p);
+            StartOnFreePort(s);
             Assert.True(s.IsRunning);
             s.Stop();
             Assert.False(s.IsRunning);

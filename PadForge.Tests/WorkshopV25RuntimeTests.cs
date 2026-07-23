@@ -12,6 +12,7 @@ namespace PadForge.Tests
     /// Steam's Double_Press layer verbs) and the macro layer gate
     /// (<c>MacroData.LayerMask</c>, Steam's always_on_action on non-Base
     /// sets).</summary>
+    [Collection("SettingsManagerStatics")]
     public class WorkshopV25RuntimeTests : IDisposable
     {
         private readonly MappingSet[] _savedSlotSets;

@@ -355,6 +355,8 @@ namespace PadForge.ViewModels
                 if (d.StartsWith("Button ", System.StringComparison.Ordinal)) return true;
                 if (d.StartsWith("POV ", System.StringComparison.Ordinal)) return true;
                 if (d.StartsWith("Touchpad ", System.StringComparison.Ordinal)) return true;
+                // NFC tag bools (#241): direction badge on a bipolar-axis row.
+                if (PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(d)) return true;
                 return false;
             }
         }

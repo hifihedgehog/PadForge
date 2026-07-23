@@ -495,6 +495,21 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void NfcTag_CarriesTheHighestButton255()
+        {
+            // The registry allows buttons 1..255 (a 256-element array).
+            // The span byte stores span-1 so index 255 survives the wire
+            // (Codex #3: a naive 255 clamp dropped it).
+            var s = new CustomInputState { NfcTag = new bool[256] };
+            s.NfcTag[255] = true;
+            var rt = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(s, NoSensors));
+            Assert.NotNull(rt.NfcTag);
+            Assert.Equal(256, rt.NfcTag.Length);
+            Assert.True(rt.NfcTag[255]);
+            Assert.False(rt.NfcTag[0]);
+        }
+
+        [Fact]
         public void EveryStateField_IsAccountedForByTheCodec()
         {
             var known = new[]

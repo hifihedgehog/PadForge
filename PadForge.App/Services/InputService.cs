@@ -2530,10 +2530,16 @@ namespace PadForge.Services
 
             if (armed != System.Threading.Volatile.Read(ref _switchNfcArmed))
             {
-                System.Threading.Volatile.Write(ref _switchNfcArmed, armed);
-                SDL3.SDL.SDL_SetHint(SDL3.SDL.SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC,
-                    armed ? "1" : "0");
-                PadForge.Engine.SdlDiagLog.WriteLine($"NFC arming -> {(armed ? "ON" : "off")} (capable={capable})");
+                // Latch ONLY on a successful hint update (Codex #6): if SDL
+                // rejects it (e.g. a higher-priority hint owns the value), the
+                // managed flag would otherwise disagree with the MCU and never
+                // retry. Leaving the flag unchanged re-attempts next cadence.
+                if (SDL3.SDL.SDL_SetHint(SDL3.SDL.SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC,
+                        armed ? "1" : "0"))
+                {
+                    System.Threading.Volatile.Write(ref _switchNfcArmed, armed);
+                    PadForge.Engine.SdlDiagLog.WriteLine($"NFC arming -> {(armed ? "ON" : "off")} (capable={capable})");
+                }
             }
         }
 

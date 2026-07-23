@@ -1174,6 +1174,17 @@ namespace PadForge.ViewModels
                 return true;
             }
 
+            // NFC tags (#241): "Any NFC Tag" / "NFC Tag N" are plain bools the
+            // engine's NFC read answers, so a tap-to-macro trigger rides a
+            // descriptor entry exactly like the capsense family. Without this
+            // branch the tag showed in the mapping picker but not the macro
+            // "add trigger from list" list (Codex #2).
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(d))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                return true;
+            }
+
             // Mouse gestures (issue #200): every family member is a one-shot
             // bool in the recognizer's fired set, so the whole family rides
             // GestureDescriptor. Evaluated by CheckGestureTrigger's mouse

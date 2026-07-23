@@ -100,6 +100,10 @@ namespace PadForge.Common
                     || t.StartsWith("Gyro ", System.StringComparison.Ordinal)
                     || t.StartsWith("Menu ", System.StringComparison.Ordinal)
                     || t.StartsWith("Mouse Gesture ", System.StringComparison.Ordinal)
+                    // #241: route NFC to the friendly resolver; the numeric
+                    // token-2 path below would leave the raw descriptor on the
+                    // chip (Codex #8).
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(t)
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(t))
                 {
                     string fam = ResolveDescriptorText(t, null, padPrefixAlways: ud == null);
@@ -209,6 +213,10 @@ namespace PadForge.Common
                     || t.StartsWith("Gyro ", System.StringComparison.Ordinal)
                     || t.StartsWith("Menu ", System.StringComparison.Ordinal)
                     || t.StartsWith("Mouse Gesture ", System.StringComparison.Ordinal)
+                    // #241: route NFC to the friendly resolver; the numeric
+                    // token-2 path below would leave the raw descriptor on the
+                    // chip (Codex #8).
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(t)
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(t))
                 {
                     string fam = ResolveDescriptorText(t, null, padPrefixAlways: ud == null);

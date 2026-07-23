@@ -297,13 +297,16 @@ namespace PadForge.Engine.RemoteLink
             // encoder skipped. Framed span byte + ceil(span/8) bitmask.
             if (state.NfcTag != null)
             {
-                int span = Math.Min(state.NfcTag.Length, 255);
+                // Span up to 256 (registry buttons 0..255 = a 256-element
+                // array), stored as span-1 so the byte reaches index 255
+                // (Codex #3: clamping to 255 dropped the tag at button 255).
+                int span = Math.Min(state.NfcTag.Length, 256);
                 bool any = false;
                 for (int i = 0; i < span; i++) if (state.NfcTag[i]) { any = true; break; }
                 if (any)
                 {
                     present |= Block.Nfc;
-                    destination[o++] = (byte)span;
+                    destination[o++] = (byte)(span - 1);
                     int bytes = (span + 7) / 8;
                     for (int b = 0; b < bytes; b++)
                     {
@@ -547,7 +550,7 @@ namespace PadForge.Engine.RemoteLink
 
                 if ((present & Block.Nfc) != 0)
                 {
-                    int span = payload[o++];
+                    int span = payload[o++] + 1; // stored as span-1
                     int bytes = (span + 7) / 8;
                     if (target.NfcTag == null || target.NfcTag.Length < span)
                         target.NfcTag = new bool[span];

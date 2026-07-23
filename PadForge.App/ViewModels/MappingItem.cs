@@ -898,7 +898,8 @@ namespace PadForge.ViewModels
             var cls = PadForge.Engine.Common.Mapping.SourceCoercion.ClassifyDescriptor(descriptor ?? "");
             if (cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.Button
                 || cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.PovDirection
-                || cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.TouchpadButton)
+                || cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.TouchpadButton
+                || cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.NfcTag)
                 IsInverted = true;
         }
 

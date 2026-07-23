@@ -101,6 +101,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(VendorIdHex));
                     OnPropertyChanged(nameof(HasVidPid));
+                    OnPropertyChanged(nameof(ShowRegisterNfcTag));
                     // Transport depends on VID/PID for the fork BLE Switch 2
                     // case (empty DevicePath never fires its own notify).
                     OnPropertyChanged(nameof(IsBluetoothLink));
@@ -120,6 +121,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(ProductIdHex));
                     OnPropertyChanged(nameof(HasVidPid));
+                    OnPropertyChanged(nameof(ShowRegisterNfcTag));
                     OnPropertyChanged(nameof(IsBluetoothLink));
                 }
             }
@@ -614,8 +616,14 @@ namespace PadForge.ViewModels
         public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc";
 
         /// <summary>True for an NFC reader (issue #150): shows the "Register/Manage
-        /// NFC Tags" button, which opens the tap-to-name registration flow.</summary>
-        public bool ShowRegisterNfcTag => DeviceTypeKey == "Nfc";
+        /// NFC Tags" button, which opens the tap-to-name registration flow.
+        /// Also true for a Switch right Joy-Con / Pro Controller (issue #241),
+        /// whose own NFC reader registers tags through the same dialog. Without
+        /// this, a controller-only user could never open the dialog, so the
+        /// MCU never armed and no tag could ever be captured (Codex #1). The
+        /// dialog opening arms the reader via RegistrationCaptureActive.</summary>
+        public bool ShowRegisterNfcTag => DeviceTypeKey == "Nfc"
+            || (VendorId == 0x057E && (ProductId == 0x2007 || ProductId == 0x2009));
 
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary

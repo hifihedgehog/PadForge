@@ -734,7 +734,18 @@ namespace SDL3
                 if (!present) return false;
                 int n = System.Array.IndexOf(buf, (byte)0);
                 if (n < 0) n = buf.Length;
-                if (n == 0) return false;
+                // Reject a malformed native payload rather than register
+                // junk (Codex #7): a real UID is 1..20 lowercase-hex chars,
+                // even length. An ABI-skewed export filling the buffer with
+                // non-terminated data fails this and reads as "no tag".
+                if (n == 0 || n > 20 || (n & 1) != 0) return false;
+                for (int i = 0; i < n; i++)
+                {
+                    byte c = buf[i];
+                    bool hex = (c >= (byte)'0' && c <= (byte)'9')
+                            || (c >= (byte)'a' && c <= (byte)'f');
+                    if (!hex) return false;
+                }
                 uid = System.Text.Encoding.ASCII.GetString(buf, 0, n);
                 return true;
             }

@@ -500,6 +500,14 @@ namespace PadForge.Engine
                 Joystick = IntPtr.Zero;
             }
 
+            // Reset NFC pulse/edge state so a wrapper that is closed and
+            // reopened (Open supports this) cannot inherit a stale press or
+            // suppress the first equal UID from the prior connection (Codex
+            // #11). Harmless when the app reconnect path makes a fresh
+            // wrapper instead.
+            _nfcPrevUid = null;
+            if (_nfcPulseUntil != null) Array.Clear(_nfcPulseUntil, 0, _nfcPulseUntil.Length);
+
             SdlInstanceId = 0;
         }
 
@@ -673,55 +681,64 @@ namespace PadForge.Engine
 
         private void ReadNfcTag(CustomInputState state)
         {
+            long now = Environment.TickCount64;
             var armed = NfcArmedProvider;
             if (armed == null || !armed())
             {
-                // Not armed: leave the array absent so the codec omits it and
-                // consumers read "no NFC". Reset the edge tracker so re-arming
-                // re-raises registration on the next tap.
+                // Not armed: FULLY reset the pulse and edge state, not just
+                // the output array. A stale deadline left in _nfcPulseUntil
+                // would otherwise resurrect a false press when NFC re-arms
+                // (Codex #4). The array stays allocated (cleared) so the
+                // codec still omits it and consumers read "no NFC".
                 _nfcPrevUid = null;
+                if (_nfcPulseUntil != null) Array.Clear(_nfcPulseUntil, 0, _nfcPulseUntil.Length);
                 if (state.NfcTag != null) Array.Clear(state.NfcTag, 0, state.NfcTag.Length);
                 return;
             }
 
-            long now = Environment.TickCount64;
             _nfcPulseUntil ??= new long[CustomInputState.MaxButtons];
 
             if (SDL_TryGetGamepadNfcTagUid(GameController, out string uid)
                 && !string.IsNullOrEmpty(uid))
             {
-                // Rising edge only for registration, so a resting tag doesn't
-                // spam the capture dialog.
-                if (!string.Equals(uid, _nfcPrevUid, StringComparison.Ordinal))
+                // Rising edge for registration, tied to the SAME pulse window
+                // as the exposed button (Codex #5): raise only when the tag
+                // is different or the Any-tag pulse had lapsed (a real
+                // absence, not one dropped poll the fork's own 2 s debounce
+                // would bridge). A resting tag never re-raises.
+                bool anyPressed = _nfcPulseUntil[0] != 0 && now < _nfcPulseUntil[0];
+                if (!anyPressed || !string.Equals(uid, _nfcPrevUid, StringComparison.Ordinal))
                 {
-                    _nfcPrevUid = uid;
                     try { NfcTagDetectedForRegistration?.Invoke(uid); } catch { }
                 }
+                _nfcPrevUid = uid;
                 long until = now + NfcPulseMs;
                 _nfcPulseUntil[0] = until; // Any NFC Tag
                 int button = NfcTagButtonResolver?.Invoke(uid) ?? -1;
                 if (button > 0 && button < _nfcPulseUntil.Length)
                     _nfcPulseUntil[button] = until;
             }
-            else
-            {
-                _nfcPrevUid = null;
-            }
+            // A single absent poll does NOT clear _nfcPrevUid: the pulse holds
+            // the button through a dropped poll, so the edge tracker holds too.
+            // It clears below once the Any pulse actually lapses.
+
+            // Expire deadlines across the WHOLE pulse array (not just the
+            // current span), so a span that shrank and later regrew cannot
+            // inherit a stale deadline on a reused button (Codex #4).
+            for (int b = 0; b < _nfcPulseUntil.Length; b++)
+                if (_nfcPulseUntil[b] != 0 && now >= _nfcPulseUntil[b])
+                    _nfcPulseUntil[b] = 0;
 
             // Size the tag array to span every registered button (1 = "Any"
-            // plus the highest tag button), then write each button's pulse
-            // state, clearing expired pulses so a falling edge always lands.
+            // plus the highest tag button) and write each button's state.
             int span = 1 + Math.Max(0, NfcTagSpanProvider?.Invoke() ?? 0);
             if (span > CustomInputState.MaxButtons) span = CustomInputState.MaxButtons;
             if (state.NfcTag == null || state.NfcTag.Length != span)
                 state.NfcTag = new bool[span];
             for (int b = 0; b < span; b++)
-            {
-                long until = _nfcPulseUntil[b];
-                bool pressed = until != 0 && now < until;
-                if (!pressed) _nfcPulseUntil[b] = 0;
-                state.NfcTag[b] = pressed;
-            }
+                state.NfcTag[b] = _nfcPulseUntil[b] != 0;
+
+            if (_nfcPulseUntil[0] == 0) _nfcPrevUid = null;
         }
 
         // Joy-Con 2 optical mouse sensor (issue #154). The fork's BLE Switch 2

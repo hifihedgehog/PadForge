@@ -40,9 +40,20 @@ namespace PadForge.Common.Input
         // janitor both key off it instead of guessing from names.
         private string _uniqueEndpointId;
 
-        // value: false = creating (endpoint may exist, not yet open),
-        // true = ready (device-side connection open; loopback safe).
-        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, bool> s_liveEndpoints =
+        // value: EndpointCreating = creating (endpoint may exist, not yet
+        // open), EndpointReady = ready (device-side connection open;
+        // loopback safe), any positive tick = ABANDONED at that tick (the
+        // bounding timeout fired and nothing owns the outcome anymore).
+        // Abandoned claims protect the devnode for a grace window in case
+        // the hung RPC still lands, then expire so the janitor can
+        // collect the corpse. Without the expiry, every hung create on a
+        // sick service parked one devnode in Device Manager until the
+        // next app launch (owner repro 2026-07-23: two switches to MIDI,
+        // two stranded "PadForge MIDI 1" entries).
+        private const long EndpointCreating = 0;
+        private const long EndpointReady = -1;
+        internal const int AbandonedGraceMs = 60_000;
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> s_liveEndpoints =
             new(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>Unique service-registry id for one endpoint creation.
@@ -68,15 +79,36 @@ namespace PadForge.Common.Input
         // Test seams (InternalsVisibleTo PadForge.Tests): the real
         // registration lives in ConnectCore/DisconnectCore, which need the
         // MIDI service; tests drive the registry directly.
-        internal static void RegisterEndpointForTest(string uniqueId, bool ready) => s_liveEndpoints[uniqueId] = ready;
+        internal static void RegisterEndpointForTest(string uniqueId, bool ready) => s_liveEndpoints[uniqueId] = ready ? EndpointReady : EndpointCreating;
+        internal static void AbandonEndpointForTest(string uniqueId, long abandonedAtTick) => s_liveEndpoints[uniqueId] = abandonedAtTick;
         internal static void UnregisterEndpointForTest(string uniqueId) => s_liveEndpoints.TryRemove(uniqueId, out _);
+
+        /// <summary>Drops abandoned claims whose grace window has passed.
+        /// Called by the janitor at sweep start so expired corpses become
+        /// sweep candidates.</summary>
+        internal static void PruneExpiredEndpointClaims()
+        {
+            long now = Environment.TickCount64;
+            foreach (var kvp in s_liveEndpoints)
+                if (kvp.Value > 0 && now - kvp.Value >= AbandonedGraceMs)
+                    s_liveEndpoints.TryRemove(kvp.Key, out _);
+        }
 
         private static bool MatchesRegistry(string id, bool requireReady)
         {
             if (string.IsNullOrEmpty(id)) return false;
+            long now = Environment.TickCount64;
             foreach (var kvp in s_liveEndpoints)
             {
-                if (requireReady && !kvp.Value) continue;
+                if (requireReady)
+                {
+                    if (kvp.Value != EndpointReady) continue;
+                }
+                else if (kvp.Value > 0 && now - kvp.Value >= AbandonedGraceMs)
+                {
+                    // Abandoned past grace: no longer a live claim.
+                    continue;
+                }
                 if (id.IndexOf("MIDIU_APPDEV_" + kvp.Key, StringComparison.OrdinalIgnoreCase) >= 0
                     || id.IndexOf("MIDIU_APPPUB_" + kvp.Key, StringComparison.OrdinalIgnoreCase) >= 0)
                     return true;
@@ -149,6 +181,14 @@ namespace PadForge.Common.Input
                     if (fault == null)
                         try { Disconnect(); } catch { /* best effort */ }
                 }, System.Threading.Tasks.TaskScheduler.Default);
+                // Nothing owns this creation anymore: demote its registry
+                // claim to abandoned so the devnode the hung RPC may have
+                // materialized gets collected after the grace window
+                // instead of parking in Device Manager until next launch.
+                var uid = _uniqueEndpointId;
+                if (uid != null)
+                    s_liveEndpoints.TryUpdate(uid, Environment.TickCount64, EndpointCreating);
+                MidiEndpointJanitor.ScheduleSweep(AbandonedGraceMs + 5_000);
                 throw new TimeoutException(
                     $"Windows MIDI Services did not answer within {ConnectTimeoutMs / 1000} s while creating '{"PadForge MIDI " + _instanceNum}'.");
             }
@@ -164,7 +204,7 @@ namespace PadForge.Common.Input
             // endpoint, so the janitor never sweeps a mid-create endpoint
             // and the scanner can tell "ours, still creating" from corpse.
             _uniqueEndpointId = BuildUniqueEndpointId(_instanceNum);
-            s_liveEndpoints[_uniqueEndpointId] = false;
+            s_liveEndpoints[_uniqueEndpointId] = EndpointCreating;
 
             // Define the virtual device.
             var declaredEndpointInfo = new MidiDeclaredEndpointInfo();
@@ -245,7 +285,7 @@ namespace PadForge.Common.Input
             }
 
             _connected = true;
-            s_liveEndpoints[_uniqueEndpointId] = true;
+            s_liveEndpoints[_uniqueEndpointId] = EndpointReady;
 
             // Initialize change detection arrays sized to match configured CC/note counts.
             _lastCcValues = new byte[CcNumbers.Length];
@@ -271,8 +311,15 @@ namespace PadForge.Common.Input
                 // Hung service teardown: orphan it. The fields are cleared
                 // by the core whenever the RPC finally returns; this object
                 // is discarded either way, and the pending-dispose gate is
-                // what must not starve.
+                // what must not starve. Demote the registry claim so the
+                // endpoint the service failed to tear down gets collected
+                // after the grace window (DisconnectCore's finally removes
+                // the claim outright if the RPC ever lands).
                 _connected = false;
+                var uid = _uniqueEndpointId;
+                if (uid != null)
+                    s_liveEndpoints.TryUpdate(uid, Environment.TickCount64, EndpointReady);
+                MidiEndpointJanitor.ScheduleSweep(AbandonedGraceMs + 5_000);
             }
         }
 

@@ -68,33 +68,43 @@ namespace PadForge.Common.Input
             => IsPadForgeEndpointId(deviceInstanceId)
                && !MidiVirtualController.IsLiveEndpointInstance(deviceInstanceId);
 
-        private static int _sweepQueued;
-        private static int _sweepAgain;
+        private static readonly object _sweepLock = new();
+        private static long _sweepDueTick = long.MaxValue;
+        private static bool _sweepWorkerRunning;
 
         /// <summary>Coalesced background sweep. Safe from any thread; CM
         /// calls talk to PnP, not to the (possibly wedged) MIDI service.
-        /// A request landing while a sweep runs schedules one more pass
-        /// instead of being dropped, so a teardown that races an active
-        /// sweep still gets its corpse collected.</summary>
+        /// Requests coalesce on the EARLIEST due time, so a short-delay
+        /// teardown sweep is never parked behind a pending long-delay
+        /// abandonment sweep, and a request landing mid-sweep gets its
+        /// own pass afterward.</summary>
         public static void ScheduleSweep(int delayMs)
         {
-            if (Interlocked.Exchange(ref _sweepQueued, 1) == 1)
+            long due = Environment.TickCount64 + Math.Max(0, delayMs);
+            lock (_sweepLock)
             {
-                Interlocked.Exchange(ref _sweepAgain, 1);
-                return;
+                if (due < _sweepDueTick) _sweepDueTick = due;
+                if (_sweepWorkerRunning) return;
+                _sweepWorkerRunning = true;
             }
             Task.Run(async () =>
             {
-                try
+                while (true)
                 {
-                    do
+                    long wait;
+                    lock (_sweepLock)
                     {
-                        if (delayMs > 0) await Task.Delay(delayMs).ConfigureAwait(false);
-                        try { Sweep(); } catch { /* best effort */ }
+                        if (_sweepDueTick == long.MaxValue) { _sweepWorkerRunning = false; return; }
+                        wait = _sweepDueTick - Environment.TickCount64;
+                        if (wait <= 0) _sweepDueTick = long.MaxValue;
                     }
-                    while (Interlocked.Exchange(ref _sweepAgain, 0) == 1);
+                    if (wait > 0)
+                    {
+                        try { await Task.Delay((int)Math.Min(wait, 60_000)).ConfigureAwait(false); } catch { }
+                        continue;
+                    }
+                    try { Sweep(); } catch { /* best effort */ }
                 }
-                finally { Interlocked.Exchange(ref _sweepQueued, 0); }
             });
         }
 
@@ -105,6 +115,9 @@ namespace PadForge.Common.Input
             int removed = 0;
             try
             {
+                // Expired abandoned claims stop protecting their devnodes.
+                MidiVirtualController.PruneExpiredEndpointClaims();
+
                 if (CM_Get_Device_ID_List_SizeW(out uint length, MidiSrvEnumerator, CM_GETIDLIST_FILTER_ENUMERATOR) != CR_SUCCESS
                     || length == 0)
                     return 0;

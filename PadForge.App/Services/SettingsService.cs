@@ -299,14 +299,25 @@ namespace PadForge.Services
                     }
                 }
 
-                // Populate SettingsManager collections.
+                // Populate SettingsManager collections. Dedupe device
+                // records by InstanceGuid on the way in: a historical
+                // incident (identity churn during the 2026-07-20 driver
+                // upgrade) minted EMPTY ghost duplicates of real records,
+                // and first-match lookups then resolved a capability-less
+                // ghost, which silently broke the type-switch automap
+                // (CreateDefaultPadSetting saw CapType 0 and authored an
+                // empty PadSetting). Richest record per guid wins.
                 lock (SettingsManager.UserDevices.SyncRoot)
                 {
                     SettingsManager.UserDevices.Items.Clear();
                     if (data.Devices != null)
                     {
-                        foreach (var ud in data.Devices)
+                        int dropped = 0;
+                        foreach (var ud in DedupeDevicesByGuid(data.Devices, ref dropped))
                             SettingsManager.UserDevices.Items.Add(ud);
+                        if (dropped > 0)
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"CFG dropped {dropped} duplicate-guid ghost device record(s) at load");
                     }
                 }
 
@@ -1498,6 +1509,49 @@ namespace PadForge.Services
         /// instance reference. Lets DeviceService / MainWindow keep calling
         /// the static refresh while the backfill still runs.</summary>
         public static Action AfterMappingSetsRefreshed { get; set; }
+
+        /// <summary>Richness score for duplicate-guid device-record
+        /// resolution: capability objects beat a typed record, which
+        /// beats a named one. An empty ghost scores 0.</summary>
+        internal static int DeviceRecordRichness(Engine.Data.UserDevice d)
+        {
+            if (d == null) return -1;
+            int score = 0;
+            if (d.DeviceObjects != null && d.DeviceObjects.Length > 0) score += 4;
+            if (d.CapType != 0) score += 2;
+            if (!string.IsNullOrEmpty(d.InstanceName)) score += 1;
+            return score;
+        }
+
+        /// <summary>Collapses duplicate-InstanceGuid device records to the
+        /// richest one per guid (stable: earlier record wins ties).
+        /// Guid.Empty records pass through untouched. Ghost duplicates of
+        /// real records broke first-match lookups; see the load site.</summary>
+        internal static System.Collections.Generic.List<Engine.Data.UserDevice> DedupeDevicesByGuid(
+            System.Collections.Generic.IEnumerable<Engine.Data.UserDevice> devices, ref int dropped)
+        {
+            var result = new System.Collections.Generic.List<Engine.Data.UserDevice>();
+            var byGuid = new System.Collections.Generic.Dictionary<System.Guid, int>();
+            foreach (var ud in devices)
+            {
+                if (ud == null) continue;
+                if (ud.InstanceGuid == System.Guid.Empty)
+                {
+                    result.Add(ud);
+                    continue;
+                }
+                if (byGuid.TryGetValue(ud.InstanceGuid, out int at))
+                {
+                    dropped++;
+                    if (DeviceRecordRichness(ud) > DeviceRecordRichness(result[at]))
+                        result[at] = ud;
+                    continue;
+                }
+                byGuid[ud.InstanceGuid] = result.Count;
+                result.Add(ud);
+            }
+            return result;
+        }
 
         public static void RefreshMappingSetsFromLegacy()
         {

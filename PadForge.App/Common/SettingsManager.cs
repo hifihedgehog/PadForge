@@ -384,7 +384,23 @@ namespace PadForge.Common.Input
 
             lock (devices.SyncRoot)
             {
-                return devices.Items.FirstOrDefault(d => d.InstanceGuid == instanceGuid);
+                // Duplicate-guid defense: the load path dedupes ghost
+                // records, but a mid-session duplicate (whatever lane
+                // minted it) must not let a capability-less ghost shadow
+                // the real record for automap and identity decisions.
+                // Prefer the record that actually carries capabilities.
+                UserDevice best = null;
+                foreach (var d in devices.Items)
+                {
+                    if (d == null || d.InstanceGuid != instanceGuid) continue;
+                    if (best == null) { best = d; continue; }
+                    bool dRich = d.CapType != 0
+                        || (d.DeviceObjects != null && d.DeviceObjects.Length > 0);
+                    bool bestRich = best.CapType != 0
+                        || (best.DeviceObjects != null && best.DeviceObjects.Length > 0);
+                    if (dRich && !bestRich) best = d;
+                }
+                return best;
             }
         }
 

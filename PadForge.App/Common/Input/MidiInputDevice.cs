@@ -135,34 +135,65 @@ namespace PadForge.Common.Input
         /// the endpoint refuses the connection.</summary>
         public bool Open()
         {
-            try
+            // Every call here is Windows MIDI Services WinRT RPC, and this
+            // runs on the POLLING THREAD via the Step 1 sweep. A hung
+            // service wedged the whole engine through exactly this lane
+            // (live stack 2026-07-23: DisconnectEndpointConnection under
+            // UpdateMidiInputDevices under PollingLoop). Same event-bounded
+            // contract as the virtual-controller side; an event wait cannot
+            // inline the worker body.
+            MidiEndpointConnection conn = null;
+            bool ok = false;
+            var done = new System.Threading.ManualResetEventSlim(false);
+            var work = System.Threading.Tasks.Task.Run(() =>
             {
-                var session = MidiInputRuntime.Session;
-                if (session == null) return false;
-
-                _connection = session.CreateEndpointConnection(_endpointId);
-                if (_connection == null) return false;
-
-                _connection.MessageReceived += OnMessageReceived;
-                if (!_connection.Open())
+                try
                 {
-                    _connection.MessageReceived -= OnMessageReceived;
-                    // CreateEndpointConnection already registered this
-                    // connection in the session; undo that on the failure
-                    // path too (the success path does it in Dispose).
-                    MidiInputRuntime.Disconnect(_connection);
-                    _connection = null;
-                    return false;
+                    var session = MidiInputRuntime.Session;
+                    if (session == null) return;
+
+                    conn = session.CreateEndpointConnection(_endpointId);
+                    if (conn == null) return;
+
+                    conn.MessageReceived += OnMessageReceived;
+                    if (!conn.Open())
+                    {
+                        conn.MessageReceived -= OnMessageReceived;
+                        // CreateEndpointConnection already registered this
+                        // connection in the session; undo that on the
+                        // failure path too (the success path does it in
+                        // Dispose).
+                        MidiInputRuntime.Disconnect(conn);
+                        conn = null;
+                        return;
+                    }
+                    ok = true;
                 }
-                _attached = true;
-                return true;
-            }
-            catch
+                catch { conn = null; }
+                finally { done.Set(); }
+            });
+            if (!done.Wait(OpenTimeoutMs))
             {
-                _connection = null;
+                // Hung open: orphan it. If the RPC ever lands, tear the
+                // stray connection down on its own thread.
+                work.ContinueWith(_ =>
+                {
+                    var stray = conn;
+                    if (stray != null)
+                    {
+                        try { stray.MessageReceived -= OnMessageReceived; } catch { }
+                        MidiInputRuntime.Disconnect(stray);
+                    }
+                }, System.Threading.Tasks.TaskScheduler.Default);
                 return false;
             }
+            if (!ok) return false;
+            _connection = conn;
+            _attached = true;
+            return true;
         }
+
+        private const int OpenTimeoutMs = 3_000;
 
         public void Dispose()
         {
@@ -356,21 +387,44 @@ namespace PadForge.Common.Input
                 if (!MidiVirtualController.IsAvailable()) return null;
                 lock (_lock)
                 {
-                    _session ??= MidiSession.Create("PadForge MIDI Input");
+                    if (_session != null) return _session;
+                    // Bounded like every other service touch; a hung
+                    // Create must not strand whichever thread first asks
+                    // for the session.
+                    MidiSession created = null;
+                    var done = new System.Threading.ManualResetEventSlim(false);
+                    System.Threading.Tasks.Task.Run(() =>
+                    {
+                        try { created = MidiSession.Create("PadForge MIDI Input"); }
+                        catch { }
+                        finally { done.Set(); }
+                    });
+                    if (!done.Wait(3_000)) return null;
+                    _session = created;
                     return _session;
                 }
             }
         }
 
+        /// <summary>Fire-and-forget: the disconnect RPC runs on a worker
+        /// and NOTHING waits on it. Teardown outcome is irrelevant to the
+        /// caller (the connection object is discarded either way), and a
+        /// hung service must never hold the polling thread again (live
+        /// stack 2026-07-23). At worst a hung RPC parks one thread-pool
+        /// thread until the service answers or the process exits.</summary>
         public static void Disconnect(MidiEndpointConnection connection)
         {
-            try
+            if (connection == null) return;
+            System.Threading.Tasks.Task.Run(() =>
             {
-                var session = _session;
-                if (session != null && connection != null)
-                    session.DisconnectEndpointConnection(connection.ConnectionId);
-            }
-            catch { }
+                try
+                {
+                    var session = _session;
+                    if (session != null)
+                        session.DisconnectEndpointConnection(connection.ConnectionId);
+                }
+                catch { }
+            });
         }
 
         /// <summary>Enumerates connectable MIDI endpoints. Includes normal

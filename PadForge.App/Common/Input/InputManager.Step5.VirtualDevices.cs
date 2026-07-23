@@ -884,6 +884,9 @@ namespace PadForge.Common.Input
 
                 if (slotActive)
                 {
+                    if (_slotInactiveCounter[padIndex] > 0)
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"VCTRACE slot={padIndex} devices ONLINE (grace ends after {_slotInactiveCounter[padIndex]} cycles)");
                     _slotInactiveCounter[padIndex] = 0;
                     _hmInactivityFired[padIndex] = false;
 
@@ -942,7 +945,21 @@ namespace PadForge.Common.Input
                 {
                     // Device(s) mapped but offline — transient disconnect.
                     // Grace period preserves rumble feedback through USB hiccups.
+                    if (_slotInactiveCounter[padIndex] == 0)
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"VCTRACE slot={padIndex} devices OFFLINE (grace begins, vc={(vc == null ? "null" : vc.GetType().Name)})");
                     _slotInactiveCounter[padIndex]++;
+
+                    // No create can proceed while every mapped device is
+                    // offline (Pass 2 skips inactive slots), so a stale
+                    // Initializing latch from a type-change destroy would
+                    // paint "Forging" forever over what is honestly
+                    // "Awaiting devices" (owner repro: the three-stage
+                    // type switchover with the pad idle-disconnected
+                    // mid-fiddle). Clear it; the active branch re-arms it
+                    // the moment a device returns and a create is due.
+                    if (vc == null && _slotInitializing[padIndex])
+                        _slotInitializing[padIndex] = false;
 
                     bool isHMaestro = vc is HMaestroVirtualController;
 

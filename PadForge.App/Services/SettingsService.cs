@@ -1614,6 +1614,25 @@ namespace PadForge.Services
                     if (us != null && us.MapTo == slot)
                         devGuidsInSlot.Add(us.InstanceGuid.ToString().ToLowerInvariant());
                 }
+                // Merge diagnostics (2026-07-22, automap-loss hunt): the
+                // saved state showed raw-target rows with ZERO sources
+                // after a type switch that provably authored them. Name
+                // what this merge run sees and produces per slot.
+                if (devGuidsInSlot.Count > 0 || (current?.Rows?.Count ?? 0) > 0)
+                {
+                    int rebuiltRaw = 0, rebuiltRawSrc = 0;
+                    foreach (var rr in rebuilt.Rows)
+                    {
+                        if (rr?.Target != null && rr.Target.StartsWith("Raw", StringComparison.Ordinal))
+                        {
+                            rebuiltRaw++;
+                            rebuiltRawSrc += rr.Sources?.Count ?? 0;
+                        }
+                    }
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"MERGE slot={slot} devs={devGuidsInSlot.Count} curRows={current?.Rows?.Count ?? -1}"
+                        + $" rebuiltRawRows={rebuiltRaw} rebuiltRawSrcs={rebuiltRawSrc}");
+                }
 
                 if (current?.Rows == null)
                 {
@@ -1739,6 +1758,22 @@ namespace PadForge.Services
                     if (er.Sources == null || er.Sources.Count == 0) continue;
 
                     merged.Rows.Add(er);
+                }
+
+                // Merge diagnostics second half: what survived.
+                {
+                    int mergedRaw = 0, mergedRawSrc = 0;
+                    foreach (var mr in merged.Rows)
+                    {
+                        if (mr?.Target != null && mr.Target.StartsWith("Raw", StringComparison.Ordinal))
+                        {
+                            mergedRaw++;
+                            mergedRawSrc += mr.Sources?.Count ?? 0;
+                        }
+                    }
+                    if (mergedRaw > 0 || devGuidsInSlot.Count > 0)
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"MERGE slot={slot} keptRawRows={mergedRaw} keptRawSrcs={mergedRawSrc} (pre-unconsumed pass)");
                 }
 
                 // Add rebuilt rows that didn't match any existing row

@@ -581,6 +581,9 @@ namespace PadForge.Services
             UserDevice ud, Engine.VirtualControllerType outputType)
         {
             if (existingPs == null || ud == null) return;
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"FILLAUTO guid={ud.InstanceGuid.ToString().Substring(0, 8)} type={outputType}"
+                + $" preRaw={existingPs.RawMappingEntries?.Length ?? 0}");
 
             var freshPs = SettingsManager.CreateDefaultPadSetting(ud, outputType);
             if (freshPs == null) return;

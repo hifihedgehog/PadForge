@@ -1850,17 +1850,23 @@ namespace PadForge
 
             DashboardPageView.SlotTypeChangeRequested += (s, args) =>
             {
-                // Re-automap devices before setting OutputType so that when
-                // RebuildMappings fires, the PadSetting already has correct mappings.
+                // Order is load-bearing (2026-07-22 automap-loss root
+                // cause): ReAutoMapSlot authors the per-device legacy
+                // PadSettings, and the MERGE must fold them into the
+                // slot MappingSet BEFORE OutputType is set, because the
+                // setter's RebuildMappings rebuilds the grid view from
+                // the set, and the save pipeline REGENERATES settings
+                // from that view. With the old order (type first, merge
+                // after) the view rebuilt from the pre-merge set showed
+                // every new-type target as a sourceless skeleton, and
+                // the next view-driven save persisted that skeleton over
+                // the merged truth and regenerated the SELECTED device's
+                // PadSetting raw-less. Multi-controller Nintendo
+                // switches lost their automaps exactly this way.
                 SettingsManager.ReAutoMapSlot(args.SlotIndex, args.Type);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
                 _inputService.MoveSlotToGroupTail(args.SlotIndex);
-                // ReAutoMapSlot rewrites the PadSettings; the per-slot
-                // MappingSet still references the prior shape. Re-merge so
-                // newly-auto-mapped fields (Motion passthrough on Sony,
-                // touchpad rows on Sony, etc.) populate as MappingSet rows
-                // without waiting for a save+reload.
-                SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
                 // RefreshDeviceList below can re-select the slot's device and fire the
                 // mapping-persisting save; the flag keeps it from writing the pre-change view.
@@ -3770,10 +3776,13 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox;
                 _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view: the rebuild above re-auto-mapped
                 // the slot, but the OutputType setter's RebuildMappings reloaded the
                 // ViewModel from the pre-change MappingSet. Same guard as the device-
@@ -3790,10 +3799,13 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
                 _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view (see OnSidebarTypeXbox).
                 _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
@@ -3806,10 +3818,13 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
                 _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view (see OnSidebarTypeXbox).
                 _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
@@ -3822,10 +3837,13 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Nintendo);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Nintendo;
                 _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view (see OnSidebarTypeXbox).
                 _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
@@ -3838,10 +3856,13 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
                 _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view (see OnSidebarTypeXbox).
                 _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
@@ -3855,10 +3876,13 @@ namespace PadForge
             if (!DriverInstaller.IsMidiServicesInstalled()) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
                 _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view (see OnSidebarTypeXbox).
                 _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();

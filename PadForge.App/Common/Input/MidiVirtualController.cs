@@ -70,22 +70,34 @@ namespace PadForge.Common.Input
         {
             if (_connected) return;
 
-            var work = System.Threading.Tasks.Task.Run(ConnectCore);
-            if (!work.Wait(ConnectTimeoutMs))
+            // Event-based bound, NOT Task.Wait(timeout): Wait can inline an
+            // unstarted task onto the waiting thread, and an inlined body
+            // ignores the timeout entirely (trace 2026-07-23: an 8 s bound
+            // observed running 34+ s). A ManualResetEventSlim wait cannot
+            // execute anything.
+            Exception fault = null;
+            var done = new System.Threading.ManualResetEventSlim(false);
+            var work = System.Threading.Tasks.Task.Run(() =>
+            {
+                try { ConnectCore(); }
+                catch (Exception ex) { fault = ex; }
+                finally { done.Set(); }
+            });
+            if (!done.Wait(ConnectTimeoutMs))
             {
                 _abandoned = true;
                 // If the hung RPC ever completes, the session it built is
                 // unreachable; tear it down on its own thread.
-                work.ContinueWith(t =>
+                work.ContinueWith(_ =>
                 {
-                    if (t.IsCompletedSuccessfully)
+                    if (fault == null)
                         try { Disconnect(); } catch { /* best effort */ }
                 }, System.Threading.Tasks.TaskScheduler.Default);
                 throw new TimeoutException(
                     $"Windows MIDI Services did not answer within {ConnectTimeoutMs / 1000} s while creating '{"PadForge MIDI " + _instanceNum}'.");
             }
-            if (work.Exception != null)
-                throw work.Exception.GetBaseException();
+            if (fault != null)
+                throw fault;
         }
 
         private void ConnectCore()
@@ -178,8 +190,15 @@ namespace PadForge.Common.Input
         {
             if (!_connected) return;
 
-            var work = System.Threading.Tasks.Task.Run(DisconnectCore);
-            if (!work.Wait(DisconnectTimeoutMs))
+            // Same event-based bound as Connect (Task.Wait inlining trap).
+            var done = new System.Threading.ManualResetEventSlim(false);
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                try { DisconnectCore(); }
+                catch { /* best effort */ }
+                finally { done.Set(); }
+            });
+            if (!done.Wait(DisconnectTimeoutMs))
             {
                 // Hung service teardown: orphan it. The fields are cleared
                 // by the core whenever the RPC finally returns; this object
@@ -336,8 +355,15 @@ namespace PadForge.Common.Input
             // broken service. A timed-out probe reads as unavailable for
             // this session (ResetAvailability re-probes after an install).
             if (_probeTimedOut) return false;
-            var probe = System.Threading.Tasks.Task.Run(() => IsAvailableCore());
-            if (!probe.Wait(10_000))
+            bool result = false;
+            var done = new System.Threading.ManualResetEventSlim(false);
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                try { result = IsAvailableCore(); }
+                catch { /* unavailable */ }
+                finally { done.Set(); }
+            });
+            if (!done.Wait(10_000))
             {
                 // Hung service: remember for the session so every later
                 // create fails fast instead of re-paying the 10 s wait.
@@ -345,7 +371,7 @@ namespace PadForge.Common.Input
                 _probeTimedOut = true;
                 return false;
             }
-            return probe.Result;
+            return result;
         }
 
         private static bool IsAvailableCore()

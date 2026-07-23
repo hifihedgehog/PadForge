@@ -657,6 +657,8 @@ namespace PadForge.Common.Input
         /// that on our side keeps kernel-slot allocation predictable).
         /// </summary>
         private readonly System.Threading.Tasks.Task[] _pendingConnectTask = new System.Threading.Tasks.Task[MaxPads];
+        private long _disposeGateSinceTick;
+        private bool _disposeGateLogged;
 
         /// <summary>Per-slot latch: HM inactivity timeout already fired for
         /// this slot in the current offline window.  Prevents the polling
@@ -1063,6 +1065,19 @@ namespace PadForge.Common.Input
                     _pendingDisposeTask[i] = null;
                 }
             }
+            // Visibility watchdog: a dispose that outlives every documented
+            // bound is a defect worth naming, not a silent creation freeze.
+            if (anyDisposePending)
+            {
+                if (_disposeGateSinceTick == 0) _disposeGateSinceTick = Environment.TickCount64;
+                else if (!_disposeGateLogged && Environment.TickCount64 - _disposeGateSinceTick > 60_000)
+                {
+                    _disposeGateLogged = true;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        "VCTRACE dispose gate held Pass 2 for 60+ s; a teardown task is stuck past its bound");
+                }
+            }
+            else { _disposeGateSinceTick = 0; _disposeGateLogged = false; }
             // Gate on async-connect tasks too: Pass 2 hands HM creates to
             // the thread pool so the polling thread stays free to feed
             // every other live VC during the ~3-11s HIDMaestro driver

@@ -1161,7 +1161,7 @@ namespace PadForge.Common.Input
                         // watchdog re-inits (#248 audit). 0x31 carries the full
                         // input head plus rumble acks, so haptics work either
                         // way; skip the mode write and leave the mode to SDL.
-                        if (!NfcTagRegistry.SwitchNfcArmed)
+                        if (!NfcTagRegistry.SwitchNfcArmed && !NfcTagRegistry.JoyConIrHintOn)
                         {
                             JoyConSendCommand(h, s, subcommand: 0x03, arg: 0x30); // input report mode 0x30
                             Thread.Sleep(50);
@@ -1453,7 +1453,7 @@ namespace PadForge.Common.Input
                 s.PairSecondOutLen = capOut > 0 ? capOut : 64;
                 s.PairSecondUseWriteFile = ProbeWriteFile(h2, s.PairSecondOutLen);
                 // Same NFC-armed guard as the primary init above (#248 audit).
-                if (!NfcTagRegistry.SwitchNfcArmed)
+                if (!NfcTagRegistry.SwitchNfcArmed && !NfcTagRegistry.JoyConIrHintOn)
                 {
                     JoyConSendCommandTo(h2, s.PairSecondOutLen, ref s.PairSecondTimer, subcommand: 0x03, arg: 0x30);
                     Thread.Sleep(50);

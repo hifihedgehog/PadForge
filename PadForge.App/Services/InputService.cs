@@ -2004,6 +2004,13 @@ namespace PadForge.Services
                 PadForge.Engine.SdlDeviceWrapper.NfcTagButtonResolver = null;
                 PadForge.Engine.SdlDeviceWrapper.NfcTagSpanProvider = null;
                 PadForge.Engine.SdlDeviceWrapper.NfcTagDetectedForRegistration = null;
+                // Round-2 audit: SDL_Quit destroys hint storage, so drop
+                // the managed latches too or a restart never re-asserts
+                // them (stale-latch == stale hint disagreement).
+                PadForge.Engine.Common.Mapping.SourceCoercion.ResetMcuDemandLatches();
+                PadForge.Common.Input.NfcTagRegistry.SwitchNfcArmed = false;
+                PadForge.Common.Input.NfcTagRegistry.JoyConIrHintOn = false;
+                _joyConIrHintOn = false;
                 if (System.Threading.Volatile.Read(ref _switchNfcArmed))
                 {
                     System.Threading.Volatile.Write(ref _switchNfcArmed, false);
@@ -2529,9 +2536,16 @@ namespace PadForge.Services
 
             // No registry-count term: "Any NFC Tag" must fire with ZERO
             // registered tags, exactly like the PC/SC reader's Any button
-            // (#248 audit). Usage alone decides.
+            // (#248 audit). Demand decides: the SourceCoercion read latch
+            // proves a configured, ENABLED consumer polled an NFC
+            // descriptor within the window. Configured inputs are read
+            // every tick, so an active binding keeps the latch
+            // continuously fresh and a deleted/disabled one lapses.
+            long nowTick = Environment.TickCount64;
+            long nfcReq = PadForge.Engine.Common.Mapping.SourceCoercion.LastNfcReadRequestTick;
+            bool nfcWanted = nfcReq != 0 && nowTick - nfcReq < McuDemandWindowMs;
             bool armed = PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive
-                || (capable && AnyNfcInputConfigured());
+                || (capable && nfcWanted);
 
             if (armed != System.Threading.Volatile.Read(ref _switchNfcArmed))
             {
@@ -2539,12 +2553,22 @@ namespace PadForge.Services
                 // rejects it (e.g. a higher-priority hint owns the value), the
                 // managed flag would otherwise disagree with the MCU and never
                 // retry. Leaving the flag unchanged re-attempts next cadence.
+                // Publish the raw-writer snapshot BEFORE the hint flips so
+                // a haptic sink initializing mid-transition sees the armed
+                // state first (round-2 audit; the fork watchdog backstops
+                // the residual window).
+                PadForge.Common.Input.NfcTagRegistry.SwitchNfcArmed = armed;
                 if (SDL3.SDL.SDL_SetHint(SDL3.SDL.SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC,
                         armed ? "1" : "0"))
                 {
                     System.Threading.Volatile.Write(ref _switchNfcArmed, armed);
-                    PadForge.Common.Input.NfcTagRegistry.SwitchNfcArmed = armed;
                     PadForge.Engine.SdlDiagLog.WriteLine($"NFC arming -> {(armed ? "ON" : "off")} (capable={capable})");
+                }
+                else
+                {
+                    // Hint rejected: revert the snapshot to the latched state.
+                    PadForge.Common.Input.NfcTagRegistry.SwitchNfcArmed =
+                        System.Threading.Volatile.Read(ref _switchNfcArmed);
                 }
             }
 
@@ -2558,134 +2582,67 @@ namespace PadForge.Services
             // by fork arbitration; that conflict is the author's own
             // mapping choice. Hint changes take effect on the fork's next
             // sensors-enable edge, worst case a device reconnect.
-            bool irWanted = AnyJoyConIrInputConfigured();
+            long irReq = PadForge.Engine.Common.Mapping.SourceCoercion.LastJoyConIrReadRequestTick;
+            bool irWanted = irReq != 0 && nowTick - irReq < McuDemandWindowMs
+                && AnyStandaloneRightJoyConOnline();
             if (irWanted != _joyConIrHintOn)
             {
                 if (SDL3.SDL.SDL_SetHint(SDL3.SDL.SDL_HINT_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR,
                         irWanted ? "1" : "0"))
                 {
                     _joyConIrHintOn = irWanted;
+                    PadForge.Common.Input.NfcTagRegistry.JoyConIrHintOn = irWanted;
                     PadForge.Engine.SdlDiagLog.WriteLine($"JoyCon IR hint -> {(irWanted ? "ON" : "off")}");
+                    // The fork applies the hint only at the sensors-enable
+                    // edge, so drive every open standalone right Joy-Con
+                    // through that edge now: camera starts on ON, stops on
+                    // OFF (freeing the MCU for NFC) without a reconnect.
+                    var devs = SettingsManager.UserDevices;
+                    if (devs != null)
+                        lock (devs.SyncRoot)
+                        {
+                            foreach (var ud in devs.Items)
+                                if (ud != null && ud.IsOnline && ud.VendorId == 0x057E
+                                    && ud.ProdId == 0x2007
+                                    && ud.Device is PadForge.Engine.SdlDeviceWrapper w)
+                                    w.BounceMotionSensors();
+                        }
                 }
             }
         }
+
+        /// <summary>Demand-latch freshness window. Configured inputs are
+        /// read every poll tick, so anything over a few seconds means the
+        /// binding is gone or disabled. Generous so a paused poll loop
+        /// (device churn) cannot flap the MCU.</summary>
+        private const int McuDemandWindowMs = 10_000;
 
         private bool _joyConIrHintOn;
 
-        /// <summary>Cached scan results so a transient list-mutation
-        /// exception (profile apply races the idle cadence) degrades to the
-        /// previous answer instead of flapping the MCU.</summary>
-        private bool _nfcInUseCached;
-        private bool _irInUseCached;
-
-        /// <summary>True when the active configuration reads an NFC input
-        /// anywhere. Surfaces covered (#248 audit): mapping-row sources'
-        /// primary descriptor AND their secondary descriptor slots
-        /// (Incremental/Ramped ParamUp/ParamDown, Invert-on-Hold
-        /// ParamModifier, gate chords GateDescriptor/Gate2Descriptor),
-        /// shift activators (all four descriptor slots), menu definitions
-        /// (host, custom axes, click), and macro trigger entries. The
-        /// registration dialog arms independently via
-        /// RegistrationCaptureActive.</summary>
-        private bool AnyNfcInputConfigured()
+        /// <summary>Known residual, named: the IR hint is process-global,
+        /// so with TWO standalone right Joy-Cons online, one bound to
+        /// "IR Brightness" and the other to NFC, both cameras start and
+        /// the fork suppresses NFC on both (camera-first arbitration).
+        /// Splitting per-device needs a fork-side per-device property.</summary>
+        private bool AnyStandaloneRightJoyConOnline()
         {
-            bool r = AnyConfiguredDescriptor(
-                static d => PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(d),
-                ref _nfcInUseCached);
-            return r;
-        }
-
-        /// <summary>True when the active configuration reads the right
-        /// Joy-Con NIR "IR Brightness" scalar anywhere (issue #151). Same
-        /// surfaces as the NFC scan.</summary>
-        private bool AnyJoyConIrInputConfigured()
-        {
-            bool r = AnyConfiguredDescriptor(
-                static d => string.Equals(d, "IR Brightness", StringComparison.Ordinal),
-                ref _irInUseCached);
-            return r;
-        }
-
-        private bool AnyConfiguredDescriptor(Func<string, bool> match, ref bool cached)
-        {
-            static bool Hit(Func<string, bool> m, string d) => !string.IsNullOrEmpty(d) && m(d);
-            try
+            var devices = SettingsManager.UserDevices;
+            if (devices == null) return false;
+            lock (devices.SyncRoot)
             {
-                var sets = SettingsManager.SlotMappingSets;
-                if (sets != null)
-                {
-                    foreach (var set in sets)
-                    {
-                        if (set == null) continue;
-                        var rows = set.Rows;
-                        for (int r = 0; r < rows.Count; r++)
-                        {
-                            var srcs = rows[r]?.Sources;
-                            if (srcs == null) continue;
-                            for (int k = 0; k < srcs.Count; k++)
-                            {
-                                var src = srcs[k];
-                                if (src == null) continue;
-                                if (Hit(match, src.Descriptor) || Hit(match, src.ParamUp)
-                                    || Hit(match, src.ParamDown) || Hit(match, src.ParamModifier)
-                                    || Hit(match, src.GateDescriptor) || Hit(match, src.Gate2Descriptor))
-                                { cached = true; return true; }
-                            }
-                        }
-                        var acts = set.ShiftActivators;
-                        for (int a = 0; a < acts.Count; a++)
-                        {
-                            var act = acts[a];
-                            if (act == null) continue;
-                            if (Hit(match, act.Descriptor) || Hit(match, act.ChordSecondDescriptor)
-                                || Hit(match, act.CyclePrevDescriptor) || Hit(match, act.GateDescriptor))
-                            { cached = true; return true; }
-                        }
-                        var menus = set.Menus;
-                        if (menus != null)
-                            for (int m = 0; m < menus.Count; m++)
-                            {
-                                var menu = menus[m];
-                                if (menu == null) continue;
-                                if (Hit(match, menu.HostDescriptor) || Hit(match, menu.CustomXDescriptor)
-                                    || Hit(match, menu.CustomYDescriptor) || Hit(match, menu.ClickDescriptor))
-                                { cached = true; return true; }
-                            }
-                    }
-                }
-
-                var snapshots = _inputManager?.MacroSnapshots;
-                if (snapshots != null)
-                {
-                    for (int i = 0; i < snapshots.Length; i++)
-                    {
-                        var macros = snapshots[i];
-                        if (macros == null) continue;
-                        for (int m = 0; m < macros.Length; m++)
-                        {
-                            var entries = macros[m]?.GetTriggerInputEntries();
-                            if (entries == null) continue;
-                            for (int e = 0; e < entries.Count; e++)
-                            {
-                                var entry = entries[e];
-                                if (entry == null) continue;
-                                if (Hit(match, entry.SourceDescriptor) || Hit(match, entry.GestureDescriptor))
-                                { cached = true; return true; }
-                            }
-                        }
-                    }
-                }
-
-                cached = false;
-                return false;
+                foreach (var ud in devices.Items)
+                    if (ud != null && ud.IsOnline && ud.VendorId == 0x057E && ud.ProdId == 0x2007)
+                        return true;
             }
-            catch
-            {
-                // A list was mutated mid-scan; keep the previous verdict for
-                // this cadence and re-scan on the next.
-                return cached;
-            }
+            return false;
         }
+
+        // The former AnyConfiguredDescriptor surface scanner was replaced
+        // by the SourceCoercion read-request latches (#248 audit round 2):
+        // two audit rounds each found configuration surfaces the scanner
+        // missed (params/gates/menus, then four provider-fed engage
+        // families), while every consumer funnels through the coercion
+        // read primitives. See SourceCoercion.LastNfcReadRequestTick.
 
         // ─────────────────────────────────────────────
         //  Dashboard updates

@@ -73,6 +73,12 @@ namespace PadForge.Common.Input
         /// (#248 audit).</summary>
         public static volatile bool SwitchNfcArmed;
 
+        /// <summary>Snapshot of the right Joy-Con IR hint, same contract:
+        /// the NIR camera also owns input mode 0x31, so the raw haptic
+        /// writer must not force 0x30 while the camera streams either
+        /// (#248 audit round 2).</summary>
+        public static volatile bool JoyConIrHintOn;
+
         /// <summary>Snapshot of the registered tags (ordered by their stable
         /// button), each with the button it occupies.</summary>
         public static IReadOnlyList<TagEntry> Tags

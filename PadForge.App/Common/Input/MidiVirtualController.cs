@@ -26,6 +26,64 @@ namespace PadForge.Common.Input
         private bool _connected;
         private bool _disposed;
 
+        // ── Endpoint identity + live registry ─────────────────────────
+        // The unique id becomes the service's devnode instance id
+        // (MIDIU_APPDEV_/MIDIU_APPPUB_ + id; MIDI reference:
+        // Midi2.VirtualMidiEndpointManager.cpp:389, :285). That registry
+        // outlives this process: a failed service-side teardown strands
+        // the devnode AND, on the next create with the same id, the
+        // service ADOPTS the corpse instead of failing cleanly
+        // (MidiDeviceManager.cpp ERROR_ALREADY_EXISTS path). So the id
+        // must be unique per CREATION, never a stable per-slot name.
+        // The registry below is the in-process source of truth for which
+        // endpoints are ours and alive; the input scanner and the
+        // janitor both key off it instead of guessing from names.
+        private string _uniqueEndpointId;
+
+        // value: false = creating (endpoint may exist, not yet open),
+        // true = ready (device-side connection open; loopback safe).
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, bool> s_liveEndpoints =
+            new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Unique service-registry id for one endpoint creation.
+        /// Max 32 chars per the service contract (MIDI reference:
+        /// json_defs.h MIDI_CONFIG_JSON_ENDPOINT_VIRTUAL_DEVICE_UNIQUE_ID_MAX_LEN).</summary>
+        internal static string BuildUniqueEndpointId(int instanceNum)
+            => $"PADFORGE_MIDI_{instanceNum}_{Guid.NewGuid().ToString("N")[..12].ToUpperInvariant()}";
+
+        /// <summary>True when the id belongs to an endpoint this process
+        /// created and has not torn down. Works on devnode instance ids
+        /// and endpoint interface ids alike, since both embed
+        /// MIDIU_APPDEV_/MIDIU_APPPUB_ + the unique id. Creating and ready both count: the janitor must
+        /// never remove an endpoint a connect is still materializing.</summary>
+        internal static bool IsLiveEndpointInstance(string id)
+            => MatchesRegistry(id, requireReady: false);
+
+        /// <summary>True only when the owning controller finished its
+        /// device-side open. The input scanner's loopback path opens the
+        /// client-visible twin only in this state.</summary>
+        internal static bool IsReadyEndpointInstance(string id)
+            => MatchesRegistry(id, requireReady: true);
+
+        // Test seams (InternalsVisibleTo PadForge.Tests): the real
+        // registration lives in ConnectCore/DisconnectCore, which need the
+        // MIDI service; tests drive the registry directly.
+        internal static void RegisterEndpointForTest(string uniqueId, bool ready) => s_liveEndpoints[uniqueId] = ready;
+        internal static void UnregisterEndpointForTest(string uniqueId) => s_liveEndpoints.TryRemove(uniqueId, out _);
+
+        private static bool MatchesRegistry(string id, bool requireReady)
+        {
+            if (string.IsNullOrEmpty(id)) return false;
+            foreach (var kvp in s_liveEndpoints)
+            {
+                if (requireReady && !kvp.Value) continue;
+                if (id.IndexOf("MIDIU_APPDEV_" + kvp.Key, StringComparison.OrdinalIgnoreCase) >= 0
+                    || id.IndexOf("MIDIU_APPPUB_" + kvp.Key, StringComparison.OrdinalIgnoreCase) >= 0)
+                    return true;
+            }
+            return false;
+        }
+
         private readonly int _padIndex;
         private readonly int _channel; // 0-15
         private readonly int _instanceNum; // 1-based MIDI-type instance number
@@ -64,7 +122,6 @@ namespace PadForge.Common.Input
         /// frees for the next type.</summary>
         private const int ConnectTimeoutMs = 15_000;
         private const int DisconnectTimeoutMs = 8_000;
-        private volatile bool _abandoned;
 
         public void Connect()
         {
@@ -85,7 +142,6 @@ namespace PadForge.Common.Input
             });
             if (!done.Wait(ConnectTimeoutMs))
             {
-                _abandoned = true;
                 // If the hung RPC ever completes, the session it built is
                 // unreachable; tear it down on its own thread.
                 work.ContinueWith(_ =>
@@ -104,10 +160,16 @@ namespace PadForge.Common.Input
         {
             var deviceName = $"PadForge MIDI {_instanceNum}";
 
+            // Register the identity BEFORE the service can materialize the
+            // endpoint, so the janitor never sweeps a mid-create endpoint
+            // and the scanner can tell "ours, still creating" from corpse.
+            _uniqueEndpointId = BuildUniqueEndpointId(_instanceNum);
+            s_liveEndpoints[_uniqueEndpointId] = false;
+
             // Define the virtual device.
             var declaredEndpointInfo = new MidiDeclaredEndpointInfo();
             declaredEndpointInfo.Name = deviceName;
-            declaredEndpointInfo.ProductInstanceId = $"PADFORGE_MIDI_{_instanceNum}";
+            declaredEndpointInfo.ProductInstanceId = _uniqueEndpointId;
             declaredEndpointInfo.SpecificationVersionMajor = 1;
             declaredEndpointInfo.SpecificationVersionMinor = 1;
             declaredEndpointInfo.SupportsMidi10Protocol = true;
@@ -145,12 +207,12 @@ namespace PadForge.Common.Input
             block.MidiCIMessageVersionFormat = 0;
             config.FunctionBlocks.Add(block);
 
-            _session = MidiSession.Create(deviceName);
-            if (_session == null)
-                throw new InvalidOperationException("Failed to create MIDI session.");
-
             try
             {
+                _session = MidiSession.Create(deviceName);
+                if (_session == null)
+                    throw new InvalidOperationException("Failed to create MIDI session.");
+
                 _virtualDevice = MidiVirtualDeviceManager.CreateVirtualDevice(config);
                 if (_virtualDevice == null)
                     throw new InvalidOperationException("Failed to create virtual MIDI device.");
@@ -174,10 +236,16 @@ namespace PadForge.Common.Input
                 _virtualDevice = null;
                 _session?.Dispose();
                 _session = null;
+                // Creation failed partway: the service may have stranded
+                // the half-made endpoint. Unregister and let the janitor
+                // remove whatever the service left behind.
+                s_liveEndpoints.TryRemove(_uniqueEndpointId, out _);
+                MidiEndpointJanitor.ScheduleSweep(2_500);
                 throw;
             }
 
             _connected = true;
+            s_liveEndpoints[_uniqueEndpointId] = true;
 
             // Initialize change detection arrays sized to match configured CC/note counts.
             _lastCcValues = new byte[CcNumbers.Length];
@@ -213,26 +281,41 @@ namespace PadForge.Common.Input
             if (!_connected) return;
             _connected = false;
 
-            // Send Note Off for any held notes.
-            if (_connection != null && _lastNotes != null)
+            try
             {
-                for (int i = 0; i < _lastNotes.Length && i < NoteNumbers.Length; i++)
+                // Send Note Off for any held notes.
+                if (_connection != null && _lastNotes != null)
                 {
-                    if (_lastNotes[i])
-                        SendNoteOff(NoteNumbers[i]);
+                    for (int i = 0; i < _lastNotes.Length && i < NoteNumbers.Length; i++)
+                    {
+                        if (_lastNotes[i])
+                            SendNoteOff(NoteNumbers[i]);
+                    }
                 }
-            }
-            _lastNotes = null;
+                _lastNotes = null;
 
-            if (_connection != null && _session != null)
+                if (_connection != null && _session != null)
+                {
+                    _session.DisconnectEndpointConnection(_connection.ConnectionId);
+                    _connection = null;
+                }
+
+                _virtualDevice = null;
+                _session?.Dispose();
+                _session = null;
+            }
+            finally
             {
-                _session.DisconnectEndpointConnection(_connection.ConnectionId);
-                _connection = null;
+                // Endpoint torn down (or as torn down as the service
+                // allows; a throwing RPC lands here too). Unregister, then
+                // sweep after a beat: the service gets first crack at its
+                // own clean removal, and the janitor takes what it strands
+                // (MidiEndpointTable.cpp OnDeviceDisconnected bails before
+                // erasing when RemoveEndpoint fails).
+                if (_uniqueEndpointId != null)
+                    s_liveEndpoints.TryRemove(_uniqueEndpointId, out _);
+                MidiEndpointJanitor.ScheduleSweep(2_500);
             }
-
-            _virtualDevice = null;
-            _session?.Dispose();
-            _session = null;
         }
 
         public void SubmitGamepadState(Gamepad gp)

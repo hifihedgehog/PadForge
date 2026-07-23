@@ -980,7 +980,6 @@ namespace PadForge.Common.Input
         /// controller endpoints are deliberately included — assigning one
         /// as an input to another slot is the no-hardware loopback path.
         /// </summary>
-        private readonly Dictionary<string, long> _midiFirstSeen = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, long> _midiOpenFailedAt = new(StringComparer.OrdinalIgnoreCase);
 
         private bool UpdateMidiInputDevices()
@@ -1023,24 +1022,21 @@ namespace PadForge.Common.Input
                 {
                     current.Add(id);
 
-                    // PadForge's own virtual-controller endpoints stay
-                    // enumerable (they are the documented no-hardware
-                    // loopback path) but must be STABLE before we open
-                    // them: during a slot type switch the endpoint is
-                    // mid-create/mid-teardown inside Windows MIDI
-                    // Services, and poking it then is exactly the
-                    // create/destroy churn that fed the service hangs.
-                    if (name != null && name.StartsWith("PadForge MIDI ", StringComparison.OrdinalIgnoreCase)
-                        && !_openedMidiInputs.ContainsKey(id))
-                    {
-                        if (!_midiFirstSeen.TryGetValue(id, out long seen))
-                        {
-                            _midiFirstSeen[id] = midiNow;
-                            continue;
-                        }
-                        if (midiNow - seen < 3_000)
-                            continue;
-                    }
+                    // PadForge's own virtual-controller endpoints (the
+                    // documented no-hardware loopback path) open ONLY while
+                    // the owning MidiVirtualController in this process
+                    // reports its device side fully connected. That is the
+                    // authoritative state, not a name-plus-settle-time
+                    // heuristic: a PadForge-shaped endpoint with no ready
+                    // owner is either mid-create (the owner will flag ready
+                    // when the service finishes) or a corpse stranded by a
+                    // failed service-side teardown, and opening a corpse
+                    // re-animates it inside the service (see
+                    // MidiEndpointJanitor, which removes them instead).
+                    if (MidiEndpointJanitor.IsPadForgeEndpointId(id)
+                        && !_openedMidiInputs.ContainsKey(id)
+                        && !MidiVirtualController.IsReadyEndpointInstance(id))
+                        continue;
 
                     // A recent failed open backs off instead of re-poking a
                     // sick service every sweep.
@@ -1089,15 +1085,8 @@ namespace PadForge.Common.Input
                     if (!current.Contains(kvp.Key))
                         (gone ??= new List<string>()).Add(kvp.Key);
 
-                // Forget stability/cooldown tracking for vanished ids so a
-                // re-created endpoint starts a fresh window.
-                if (_midiFirstSeen.Count > 0)
-                {
-                    List<string> stale = null;
-                    foreach (var key in _midiFirstSeen.Keys)
-                        if (!current.Contains(key)) (stale ??= new List<string>()).Add(key);
-                    if (stale != null) foreach (var key in stale) _midiFirstSeen.Remove(key);
-                }
+                // Forget cooldown tracking for vanished ids so a
+                // re-created endpoint starts fresh.
                 if (_midiOpenFailedAt.Count > 0)
                 {
                     List<string> stale = null;

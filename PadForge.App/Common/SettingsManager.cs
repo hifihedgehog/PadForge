@@ -879,6 +879,16 @@ namespace PadForge.Common.Input
                 var ps = CreateDefaultPadSetting(ud, outputType);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
+                // Permanent automap-decision diagnostics (2026-07-22): a
+                // type switch that authors an EMPTY PadSetting is silent
+                // and latent until the user notices dead inputs. Name the
+                // gate that decided, every time.
+                int rawCount = ps.RawMappingEntries?.Length ?? 0;
+                Engine.SdlDiagLog.WriteLine(
+                    $"AUTOMAP slot={padIndex} type={outputType} guid={us.InstanceGuid.ToString().Substring(0, 8)}"
+                    + (ud == null
+                        ? " device=NOT-FOUND -> empty defaults"
+                        : $" cap={ud.CapType} forceRaw={ud.ForceRawJoystickMode} objs={ud.DeviceObjects?.Length ?? 0} rawRows={rawCount}"));
             }
         }
 

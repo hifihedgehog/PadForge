@@ -165,11 +165,13 @@ namespace PadForge.Engine
         /// Tag" (any tag present pulses it); index N = the tag whose stable
         /// <see cref="PadForge.Common.Input.NfcTagRegistry"/> button is N.
         /// True while a matching tag is held (pulsed by SdlDeviceWrapper
-        /// from SDL_GetGamepadNfcTagUid). Null when the device has no NFC
-        /// reader or NFC is not armed, same nullable cost model as
-        /// <see cref="CapSense"/>. The controller IS the reader identity, so
-        /// tags surface here rather than on a synthetic device, and
-        /// <see cref="Buttons"/> stays the gamepad buttons.</summary>
+        /// from SDL_GetGamepadNfcTagUid). Null until NFC first arms on a
+        /// device that has a reader; thereafter retained (cleared all-false)
+        /// across disarm rather than re-nulled, which the Remote Link codec
+        /// omits so consumers still read "no NFC" either way. Same nullable
+        /// cost model as <see cref="CapSense"/>. The controller IS the reader
+        /// identity, so tags surface here rather than on a synthetic device,
+        /// and <see cref="Buttons"/> stays the gamepad buttons.</summary>
         public bool[] NfcTag;
 
         /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).

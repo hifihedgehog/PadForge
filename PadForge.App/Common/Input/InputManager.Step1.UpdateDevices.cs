@@ -980,6 +980,9 @@ namespace PadForge.Common.Input
         /// controller endpoints are deliberately included — assigning one
         /// as an input to another slot is the no-hardware loopback path.
         /// </summary>
+        private readonly Dictionary<string, long> _midiFirstSeen = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, long> _midiOpenFailedAt = new(StringComparer.OrdinalIgnoreCase);
+
         private bool UpdateMidiInputDevices()
         {
             if (_midiInputsSuppressed)
@@ -1015,9 +1018,35 @@ namespace PadForge.Common.Input
                 if (_midiInputsSuppressed)
                     return false;
 
+                long midiNow = Environment.TickCount64;
                 foreach (var (id, name) in endpoints)
                 {
                     current.Add(id);
+
+                    // PadForge's own virtual-controller endpoints stay
+                    // enumerable (they are the documented no-hardware
+                    // loopback path) but must be STABLE before we open
+                    // them: during a slot type switch the endpoint is
+                    // mid-create/mid-teardown inside Windows MIDI
+                    // Services, and poking it then is exactly the
+                    // create/destroy churn that fed the service hangs.
+                    if (name != null && name.StartsWith("PadForge MIDI ", StringComparison.OrdinalIgnoreCase)
+                        && !_openedMidiInputs.ContainsKey(id))
+                    {
+                        if (!_midiFirstSeen.TryGetValue(id, out long seen))
+                        {
+                            _midiFirstSeen[id] = midiNow;
+                            continue;
+                        }
+                        if (midiNow - seen < 3_000)
+                            continue;
+                    }
+
+                    // A recent failed open backs off instead of re-poking a
+                    // sick service every sweep.
+                    if (_midiOpenFailedAt.TryGetValue(id, out long failedAt)
+                        && midiNow - failedAt < 60_000)
+                        continue;
 
                     if (_openedMidiInputs.TryGetValue(id, out var existing))
                     {
@@ -1037,8 +1066,10 @@ namespace PadForge.Common.Input
                         if (!dev.Open())
                         {
                             dev.Dispose();
+                            _midiOpenFailedAt[id] = midiNow;
                             continue;
                         }
+                        _midiOpenFailedAt.Remove(id);
 
                         UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
                         ud.LoadFromExternalDevice(dev);
@@ -1057,6 +1088,23 @@ namespace PadForge.Common.Input
                 foreach (var kvp in _openedMidiInputs)
                     if (!current.Contains(kvp.Key))
                         (gone ??= new List<string>()).Add(kvp.Key);
+
+                // Forget stability/cooldown tracking for vanished ids so a
+                // re-created endpoint starts a fresh window.
+                if (_midiFirstSeen.Count > 0)
+                {
+                    List<string> stale = null;
+                    foreach (var key in _midiFirstSeen.Keys)
+                        if (!current.Contains(key)) (stale ??= new List<string>()).Add(key);
+                    if (stale != null) foreach (var key in stale) _midiFirstSeen.Remove(key);
+                }
+                if (_midiOpenFailedAt.Count > 0)
+                {
+                    List<string> stale = null;
+                    foreach (var key in _midiOpenFailedAt.Keys)
+                        if (!current.Contains(key)) (stale ??= new List<string>()).Add(key);
+                    if (stale != null) foreach (var key in stale) _midiOpenFailedAt.Remove(key);
+                }
 
                 if (gone != null)
                 {

@@ -6546,10 +6546,15 @@ namespace PadForge
                 _viewModel.Settings.MainWindowState = (int)WindowState;
                 _settingsService.MarkDirty();
             }
+
+            ScheduleSelectionGlowReattach();
         }
 
         private void OnLocationOrSizeChanged(object sender, EventArgs e)
         {
+            if (sender != null && e is SizeChangedEventArgs)
+                ScheduleSelectionGlowReattach();
+
             // Only save when in Normal state (Maximized position/size is system-managed).
             if (WindowState != WindowState.Normal) return;
             var mw = _viewModel.Settings;
@@ -6558,6 +6563,35 @@ namespace PadForge
             mw.MainWindowWidth = Width;
             mw.MainWindowHeight = Height;
             _settingsService.MarkDirty();
+        }
+
+        private System.Windows.Threading.DispatcherTimer _glowReattachTimer;
+
+        /// <summary>Rebuilds the selected mini card's glow adorner after a
+        /// window state change or resize. The adorner's cached texture and the
+        /// adorner layer's arrange can land a frame apart across those
+        /// transitions, leaving the pill border drawn at a stale offset until
+        /// the next selection change. Debounced so a drag-resize re-attaches
+        /// once at the end, not per tick.</summary>
+        private void ScheduleSelectionGlowReattach()
+        {
+            if (_glowSelectedControllerTag == null) return;
+            if (_glowReattachTimer == null)
+            {
+                _glowReattachTimer = new System.Windows.Threading.DispatcherTimer
+                { Interval = TimeSpan.FromMilliseconds(150) };
+                _glowReattachTimer.Tick += (_, _) =>
+                {
+                    _glowReattachTimer.Stop();
+                    if (_glowSelectedControllerTag == null) return;
+                    // Defeat the change gate so the same pill re-attaches at
+                    // its current geometry.
+                    _glowSelectedControllerTag = null;
+                    RefreshControllerSelectionVisuals();
+                };
+            }
+            _glowReattachTimer.Stop();
+            _glowReattachTimer.Start();
         }
 
         private bool _isRestoring;

@@ -2526,7 +2526,8 @@ namespace PadForge.Services
             }
 
             bool armed = PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive
-                || (capable && PadForge.Common.Input.NfcTagRegistry.Count > 0);
+                || (capable && PadForge.Common.Input.NfcTagRegistry.Count > 0
+                    && AnyNfcInputConfigured());
 
             if (armed != System.Threading.Volatile.Read(ref _switchNfcArmed))
             {
@@ -2540,6 +2541,81 @@ namespace PadForge.Services
                     System.Threading.Volatile.Write(ref _switchNfcArmed, armed);
                     PadForge.Engine.SdlDiagLog.WriteLine($"NFC arming -> {(armed ? "ON" : "off")} (capable={capable})");
                 }
+            }
+        }
+
+        /// <summary>Cached scan result so a transient list-mutation exception
+        /// (profile apply races the idle cadence) degrades to the previous
+        /// answer instead of flapping the MCU.</summary>
+        private bool _nfcInUseCached;
+
+        /// <summary>True when the active configuration actually READS an NFC
+        /// input somewhere: a mapping-row source, a shift-activator descriptor
+        /// (any of its four descriptor slots), or a macro trigger entry. A
+        /// registered tag alone no longer arms the MCU: arming flips the
+        /// controller into the large-report NFC input mode with a continuous
+        /// command pump, which costs real CPU per pad, so it follows the
+        /// CapSense zero-cost contract. Pay only when the feature is wired
+        /// to something. The registration dialog arms independently via
+        /// RegistrationCaptureActive.</summary>
+        private bool AnyNfcInputConfigured()
+        {
+            static bool IsNfc(string d) =>
+                !string.IsNullOrEmpty(d)
+                && PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(d);
+            try
+            {
+                var sets = SettingsManager.SlotMappingSets;
+                if (sets != null)
+                {
+                    foreach (var set in sets)
+                    {
+                        if (set == null) continue;
+                        var rows = set.Rows;
+                        for (int r = 0; r < rows.Count; r++)
+                        {
+                            var srcs = rows[r]?.Sources;
+                            if (srcs == null) continue;
+                            for (int k = 0; k < srcs.Count; k++)
+                                if (IsNfc(srcs[k]?.Descriptor)) { _nfcInUseCached = true; return true; }
+                        }
+                        var acts = set.ShiftActivators;
+                        for (int a = 0; a < acts.Count; a++)
+                        {
+                            var act = acts[a];
+                            if (act == null) continue;
+                            if (IsNfc(act.Descriptor) || IsNfc(act.ChordSecondDescriptor)
+                                || IsNfc(act.CyclePrevDescriptor) || IsNfc(act.GateDescriptor))
+                            { _nfcInUseCached = true; return true; }
+                        }
+                    }
+                }
+
+                var snapshots = _inputManager?.MacroSnapshots;
+                if (snapshots != null)
+                {
+                    for (int i = 0; i < snapshots.Length; i++)
+                    {
+                        var macros = snapshots[i];
+                        if (macros == null) continue;
+                        for (int m = 0; m < macros.Length; m++)
+                        {
+                            var entries = macros[m]?.GetTriggerInputEntries();
+                            if (entries == null) continue;
+                            for (int e = 0; e < entries.Count; e++)
+                                if (IsNfc(entries[e]?.SourceDescriptor)) { _nfcInUseCached = true; return true; }
+                        }
+                    }
+                }
+
+                _nfcInUseCached = false;
+                return false;
+            }
+            catch
+            {
+                // A list was mutated mid-scan; keep the previous verdict for
+                // this cadence and re-scan on the next.
+                return _nfcInUseCached;
             }
         }
 

@@ -615,10 +615,20 @@ namespace PadForge.Common.Input
         private readonly string[] _createFailedProfile = new string[MaxPads];
 
         private void LatchCreateFailed(int padIndex)
+            => LatchCreateFailed(padIndex, SlotControllerTypes[padIndex], SlotProfileIds[padIndex]);
+
+        /// <summary>The async overload records the configuration the create
+        /// was STARTED for, not the slot's current one: a retype during the
+        /// create window (the MIDI probe alone can run 10 s) would otherwise
+        /// stamp the failure onto the NEW type and permanently block it
+        /// (owner race, 2026-07-23).</summary>
+        private void LatchCreateFailed(int padIndex, VirtualControllerType failedType, string failedProfile)
         {
-            _createFailedType[padIndex] = SlotControllerTypes[padIndex];
-            _createFailedProfile[padIndex] = SlotProfileIds[padIndex];
+            _createFailedType[padIndex] = failedType;
+            _createFailedProfile[padIndex] = failedProfile;
             _createFailed[padIndex] = true;
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"VCTRACE slot={padIndex} createFailed LATCH type={failedType} profile={failedProfile ?? "<null>"}");
         }
 
         /// <summary>
@@ -752,6 +762,8 @@ namespace PadForge.Common.Input
                         || !string.Equals(_createFailedProfile[padIndex], SlotProfileIds[padIndex], StringComparison.Ordinal)))
                 {
                     _createFailed[padIndex] = false;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"VCTRACE slot={padIndex} createFailed CLEAR (reconfigured to {SlotControllerTypes[padIndex]})");
                 }
 
                 // Detect controller type change — destroy old if type differs.
@@ -765,6 +777,8 @@ namespace PadForge.Common.Input
                     // same poll cycle as Pass 1 sets it.
                     if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
                     else _slotInitializing[padIndex] = false;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"VCTRACE slot={padIndex} type-change destroy {vc.Type} -> {SlotControllerTypes[padIndex]}");
                     DestroyVirtualController(padIndex,
                         asyncDispose: vc is HMaestroVirtualController or MidiVirtualController);
                     _virtualControllers[padIndex] = null;
@@ -1163,11 +1177,17 @@ namespace PadForge.Common.Input
                             // inline at the tail of the same task so it sees
                             // the just-bound controller.
                             int capturedIndex = padIndex;
+                            var capturedType = slotType;
+                            var capturedProfile = SlotProfileIds[padIndex];
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"VCTRACE slot={padIndex} async create KICK type={slotType}");
                             _pendingConnectTask[padIndex] = System.Threading.Tasks.Task.Run(() =>
                             {
                                 try
                                 {
                                     var vcAsync = CreateVirtualController(capturedIndex);
+                                    PadForge.Engine.SdlDiagLog.WriteLine(
+                                        $"VCTRACE slot={capturedIndex} async create RESULT vc={(vcAsync == null ? "null" : vcAsync.GetType().Name)} connected={vcAsync?.IsConnected ?? false}");
                                     if (vcAsync != null && vcAsync.IsConnected)
                                     {
                                         // Claim the slot only if it is still
@@ -1232,7 +1252,7 @@ namespace PadForge.Common.Input
                                     }
                                     else if (vcAsync == null)
                                     {
-                                        LatchCreateFailed(capturedIndex);
+                                        LatchCreateFailed(capturedIndex, capturedType, capturedProfile);
                                     }
                                     else
                                     {
@@ -1244,17 +1264,21 @@ namespace PadForge.Common.Input
                                         // as eligible-but-unbuilt and kicks off another
                                         // connect, accumulating leaked VCs.
                                         try { vcAsync.Dispose(); } catch { /* best effort */ }
-                                        LatchCreateFailed(capturedIndex);
+                                        LatchCreateFailed(capturedIndex, capturedType, capturedProfile);
                                     }
                                 }
                                 catch (Exception ex)
                                 {
+                                    PadForge.Engine.SdlDiagLog.WriteLine(
+                                        $"VCTRACE slot={capturedIndex} async create THREW {ex.GetType().Name}: {ex.Message}");
                                     RaiseError($"Failed to create virtual controller for pad {capturedIndex}", ex);
-                                    LatchCreateFailed(capturedIndex);
+                                    LatchCreateFailed(capturedIndex, capturedType, capturedProfile);
                                 }
                                 finally
                                 {
                                     _slotInitializing[capturedIndex] = false;
+                                    PadForge.Engine.SdlDiagLog.WriteLine(
+                                        $"VCTRACE slot={capturedIndex} async create DONE");
                                 }
                             });
                             // One HM connect kicked off per polling cycle.

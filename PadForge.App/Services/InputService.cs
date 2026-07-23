@@ -2583,7 +2583,13 @@ namespace PadForge.Services
             // mapping choice. Hint changes take effect on the fork's next
             // sensors-enable edge, worst case a device reconnect.
             long irReq = PadForge.Engine.Common.Mapping.SourceCoercion.LastJoyConIrReadRequestTick;
+            // Registration preempts the camera (#248 audit round 3): the
+            // NFC reader and the camera share the MCU, and a registration
+            // capture with the camera streaming would wait forever for a
+            // UID. The camera resumes when the dialog closes and IR demand
+            // re-latches.
             bool irWanted = irReq != 0 && nowTick - irReq < McuDemandWindowMs
+                && !PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive
                 && AnyStandaloneRightJoyConOnline();
             if (irWanted != _joyConIrHintOn)
             {
@@ -2597,6 +2603,12 @@ namespace PadForge.Services
                     // edge, so drive every open standalone right Joy-Con
                     // through that edge now: camera starts on ON, stops on
                     // OFF (freeing the MCU for NFC) without a reconnect.
+                    // Collected under the lock, bounced OUTSIDE it on a
+                    // worker (#248 audit round 3): the fork's IR bring-up
+                    // is synchronous MCU work that can run for seconds and
+                    // holds SDL's joystick lock, and neither this timer
+                    // thread nor UserDevices.SyncRoot may block on it.
+                    System.Collections.Generic.List<PadForge.Engine.SdlDeviceWrapper> toBounce = null;
                     var devs = SettingsManager.UserDevices;
                     if (devs != null)
                         lock (devs.SyncRoot)
@@ -2605,8 +2617,14 @@ namespace PadForge.Services
                                 if (ud != null && ud.IsOnline && ud.VendorId == 0x057E
                                     && ud.ProdId == 0x2007
                                     && ud.Device is PadForge.Engine.SdlDeviceWrapper w)
-                                    w.BounceMotionSensors();
+                                    (toBounce ??= new()).Add(w);
                         }
+                    if (toBounce != null)
+                        System.Threading.Tasks.Task.Run(() =>
+                        {
+                            foreach (var w in toBounce)
+                                try { w.BounceMotionSensors(); } catch { }
+                        });
                 }
             }
         }
@@ -11854,6 +11872,12 @@ namespace PadForge.Services
             // held activator at swap time can leave the new profile mid-
             // engagement and the wrong layer effective from frame zero.
             Common.Input.InputManager.ClearAllShiftRuntime();
+
+            // Same for the MCU demand latches (#248 audit round 3): a
+            // profile switch away from an IR profile must free the camera
+            // for NFC NOW, not after the stale latch's window lapses.
+            // Still-configured families re-latch on the next tick's reads.
+            PadForge.Engine.Common.Mapping.SourceCoercion.ResetMcuDemandLatches();
 
             // Same reset for the menu runtime: contexts key on
             // (slot, device, menu id) and would survive the swap, letting

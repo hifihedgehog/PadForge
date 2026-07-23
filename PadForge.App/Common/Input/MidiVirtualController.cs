@@ -155,56 +155,82 @@ namespace PadForge.Common.Input
         private const int ConnectTimeoutMs = 15_000;
         private const int DisconnectTimeoutMs = 8_000;
 
+        // Claim-or-dispose generation: each create attempt carries a gen;
+        // a timeout bumps it, so a late-landing creation sees itself
+        // superseded and tears down its OWN locals instead of committing
+        // over a newer attempt's fields. This is what makes the in-place
+        // retry after service recovery race-free.
+        private int _creationGen;
+        private readonly object _stateLock = new();
+
         public void Connect()
         {
             if (_connected) return;
 
-            // Event-based bound, NOT Task.Wait(timeout): Wait can inline an
-            // unstarted task onto the waiting thread, and an inlined body
-            // ignores the timeout entirely (trace 2026-07-23: an 8 s bound
-            // observed running 34+ s). A ManualResetEventSlim wait cannot
-            // execute anything.
-            Exception fault = null;
-            var done = new System.Threading.ManualResetEventSlim(false);
-            var work = System.Threading.Tasks.Task.Run(() =>
+            for (int attempt = 1; ; attempt++)
             {
-                try { ConnectCore(); }
-                catch (Exception ex) { fault = ex; }
-                finally { done.Set(); }
-            });
-            if (!done.Wait(ConnectTimeoutMs))
-            {
-                // If the hung RPC ever completes, the session it built is
-                // unreachable; tear it down on its own thread.
-                work.ContinueWith(_ =>
+                int gen = System.Threading.Interlocked.Increment(ref _creationGen);
+
+                // Event-based bound, NOT Task.Wait(timeout): Wait can inline
+                // an unstarted task onto the waiting thread, and an inlined
+                // body ignores the timeout entirely (trace 2026-07-23: an
+                // 8 s bound observed running 34+ s). A ManualResetEventSlim
+                // wait cannot execute anything.
+                Exception fault = null;
+                var done = new System.Threading.ManualResetEventSlim(false);
+                System.Threading.Tasks.Task.Run(() =>
                 {
-                    if (fault == null)
-                        try { Disconnect(); } catch { /* best effort */ }
-                }, System.Threading.Tasks.TaskScheduler.Default);
-                // Nothing owns this creation anymore: demote its registry
-                // claim to abandoned so the devnode the hung RPC may have
-                // materialized gets collected after the grace window
-                // instead of parking in Device Manager until next launch.
+                    try { ConnectCore(gen); }
+                    catch (Exception ex) { fault = ex; }
+                    finally { done.Set(); }
+                });
+                if (done.Wait(ConnectTimeoutMs))
+                {
+                    if (fault != null) throw fault;
+                    return;
+                }
+
+                // Timeout. Invalidate the attempt (a late completion now
+                // tears down its own locals) and demote the registry claim
+                // to abandoned so whatever devnode the hung RPC materialized
+                // gets collected after the grace window instead of parking
+                // in Device Manager until next launch.
+                System.Threading.Interlocked.Increment(ref _creationGen);
                 var uid = _uniqueEndpointId;
                 if (uid != null)
                     s_liveEndpoints.TryUpdate(uid, Environment.TickCount64, EndpointCreating);
                 MidiEndpointJanitor.ScheduleSweep(AbandonedGraceMs + 5_000);
+
+                // A hung create is the wedged-midisrv signature (bench
+                // 2026-07-23: instance stuck in StopPending; kill+restart
+                // took the same create from 15 s timeout to 63 ms). Recover
+                // the service once per process and retry once.
+                if (attempt == 1 && MidiServiceRecovery.TryRecoverOnce())
+                {
+                    ResetAvailability();
+                    if (!IsAvailable())
+                        throw new TimeoutException(
+                            $"Windows MIDI Services stayed unavailable after a service restart while creating '{"PadForge MIDI " + _instanceNum}'.");
+                    continue;
+                }
+
                 throw new TimeoutException(
                     $"Windows MIDI Services did not answer within {ConnectTimeoutMs / 1000} s while creating '{"PadForge MIDI " + _instanceNum}'.");
             }
-            if (fault != null)
-                throw fault;
         }
 
-        private void ConnectCore()
+        private void ConnectCore(int gen)
         {
+            if (_connected) return;
+
             var deviceName = $"PadForge MIDI {_instanceNum}";
 
             // Register the identity BEFORE the service can materialize the
             // endpoint, so the janitor never sweeps a mid-create endpoint
             // and the scanner can tell "ours, still creating" from corpse.
-            _uniqueEndpointId = BuildUniqueEndpointId(_instanceNum);
-            s_liveEndpoints[_uniqueEndpointId] = EndpointCreating;
+            var uid = BuildUniqueEndpointId(_instanceNum);
+            s_liveEndpoints[uid] = EndpointCreating;
+            _uniqueEndpointId = uid;
 
             // Define the virtual device.
             var declaredEndpointInfo = new MidiDeclaredEndpointInfo();
@@ -247,51 +273,79 @@ namespace PadForge.Common.Input
             block.MidiCIMessageVersionFormat = 0;
             config.FunctionBlocks.Add(block);
 
+            // Everything is built in LOCALS and committed to the instance
+            // fields only while this attempt is still the current
+            // generation. A superseded attempt (Connect timed out, maybe
+            // already retrying) tears down what it built and touches
+            // nothing shared.
+            MidiSession session = null;
+            MidiVirtualDevice virtualDevice = null;
+            MidiEndpointConnection connection = null;
             try
             {
-                _session = MidiSession.Create(deviceName);
-                if (_session == null)
+                session = MidiSession.Create(deviceName);
+                if (session == null)
                     throw new InvalidOperationException("Failed to create MIDI session.");
 
-                _virtualDevice = MidiVirtualDeviceManager.CreateVirtualDevice(config);
-                if (_virtualDevice == null)
+                virtualDevice = MidiVirtualDeviceManager.CreateVirtualDevice(config);
+                if (virtualDevice == null)
                     throw new InvalidOperationException("Failed to create virtual MIDI device.");
 
-                _virtualDevice.SuppressHandledMessages = true;
+                virtualDevice.SuppressHandledMessages = true;
 
-                _connection = _session.CreateEndpointConnection(_virtualDevice.DeviceEndpointDeviceId);
-                if (_connection == null)
+                connection = session.CreateEndpointConnection(virtualDevice.DeviceEndpointDeviceId);
+                if (connection == null)
                     throw new InvalidOperationException("Failed to create MIDI endpoint connection.");
 
-                _connection.AddMessageProcessingPlugin(_virtualDevice);
+                connection.AddMessageProcessingPlugin(virtualDevice);
 
-                if (!_connection.Open())
+                if (!connection.Open())
                     throw new InvalidOperationException("Failed to open MIDI endpoint connection.");
             }
             catch
             {
-                if (_connection != null && _session != null)
-                    _session.DisconnectEndpointConnection(_connection.ConnectionId);
-                _connection = null;
-                _virtualDevice = null;
-                _session?.Dispose();
-                _session = null;
                 // Creation failed partway: the service may have stranded
-                // the half-made endpoint. Unregister and let the janitor
-                // remove whatever the service left behind.
-                s_liveEndpoints.TryRemove(_uniqueEndpointId, out _);
-                MidiEndpointJanitor.ScheduleSweep(2_500);
+                // the half-made endpoint. Tear down the locals, unregister,
+                // and let the janitor remove whatever the service left.
+                TeardownLocalCreation(session, connection, uid);
                 throw;
             }
 
-            _connected = true;
-            s_liveEndpoints[_uniqueEndpointId] = EndpointReady;
+            lock (_stateLock)
+            {
+                if (gen != System.Threading.Volatile.Read(ref _creationGen) || _connected)
+                {
+                    // Superseded while creating: this endpoint belongs to
+                    // no one. Dispose it without touching instance fields.
+                    TeardownLocalCreation(session, connection, uid);
+                    return;
+                }
 
-            // Initialize change detection arrays sized to match configured CC/note counts.
-            _lastCcValues = new byte[CcNumbers.Length];
-            for (int i = 0; i < _lastCcValues.Length; i++)
-                _lastCcValues[i] = 64; // center for axes
-            _lastNotes = new bool[NoteNumbers.Length];
+                _session = session;
+                _virtualDevice = virtualDevice;
+                _connection = connection;
+                _connected = true;
+                s_liveEndpoints[uid] = EndpointReady;
+
+                // Initialize change detection arrays sized to match configured CC/note counts.
+                _lastCcValues = new byte[CcNumbers.Length];
+                for (int i = 0; i < _lastCcValues.Length; i++)
+                    _lastCcValues[i] = 64; // center for axes
+                _lastNotes = new bool[NoteNumbers.Length];
+            }
+        }
+
+        private static void TeardownLocalCreation(MidiSession session, MidiEndpointConnection connection, string uid)
+        {
+            try
+            {
+                if (connection != null && session != null)
+                    session.DisconnectEndpointConnection(connection.ConnectionId);
+            }
+            catch { /* best effort */ }
+            try { session?.Dispose(); } catch { /* best effort */ }
+            s_liveEndpoints.TryRemove(uid, out _);
+            MidiEndpointJanitor.ScheduleSweep(2_500);
         }
 
         public void Disconnect()
@@ -437,7 +491,9 @@ namespace PadForge.Common.Input
                 new MidiChannel((byte)_channel),
                 (byte)ccNumber,
                 value);
-            conn.SendSingleMessagePacket(msg);
+            // The send is service RPC; a dying/restarting midisrv must
+            // fail a message, never the polling thread.
+            try { conn.SendSingleMessagePacket(msg); } catch { /* dropped */ }
         }
 
         private void SendNoteOn(int note, byte velocity)
@@ -451,7 +507,7 @@ namespace PadForge.Common.Input
                 new MidiChannel((byte)_channel),
                 (byte)note,
                 velocity);
-            conn.SendSingleMessagePacket(msg);
+            try { conn.SendSingleMessagePacket(msg); } catch { /* dropped */ }
         }
 
         private void SendNoteOff(int note)
@@ -465,7 +521,7 @@ namespace PadForge.Common.Input
                 new MidiChannel((byte)_channel),
                 (byte)note,
                 0);
-            conn.SendSingleMessagePacket(msg);
+            try { conn.SendSingleMessagePacket(msg); } catch { /* dropped */ }
         }
 
         // ─────────────────────────────────────────────

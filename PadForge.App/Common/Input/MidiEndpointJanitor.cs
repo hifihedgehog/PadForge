@@ -33,7 +33,13 @@ namespace PadForge.Common.Input
         private const uint CM_REMOVE_UI_NOT_OK = 0x00000002;
         private const uint CM_REMOVE_NO_RESTART = 0x00000004;
 
-        private const string MidiSrvEnumerator = "SWD\\MIDISRV";
+        // Both enumerators that carry PadForge endpoint devnodes: the
+        // service's own SWD tree (APPDEV + APPPUB) and the MMDEVAPI tree
+        // where the service projects WinMM-compat MIDI 1.0 ports for each
+        // client-visible endpoint (observed live 2026-07-23: a healthy
+        // endpoint is one APPDEV + one APPPUB + two MMDEVAPI ports, all
+        // embedding the same unique id).
+        private static readonly string[] Enumerators = { "SWD\\MIDISRV", "SWD\\MMDEVAPI" };
 
         [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
         private static extern int CM_Get_Device_ID_List_SizeW(out uint length, string filter, uint flags);
@@ -118,37 +124,40 @@ namespace PadForge.Common.Input
                 // Expired abandoned claims stop protecting their devnodes.
                 MidiVirtualController.PruneExpiredEndpointClaims();
 
-                if (CM_Get_Device_ID_List_SizeW(out uint length, MidiSrvEnumerator, CM_GETIDLIST_FILTER_ENUMERATOR) != CR_SUCCESS
-                    || length == 0)
-                    return 0;
-
-                var buffer = new char[length];
-                if (CM_Get_Device_ID_ListW(MidiSrvEnumerator, buffer, length, CM_GETIDLIST_FILTER_ENUMERATOR) != CR_SUCCESS)
-                    return 0;
-
-                foreach (var id in new string(buffer).Split('\0', StringSplitOptions.RemoveEmptyEntries))
+                foreach (var enumerator in Enumerators)
                 {
-                    if (!IsSweepCandidate(id)) continue;
+                    if (CM_Get_Device_ID_List_SizeW(out uint length, enumerator, CM_GETIDLIST_FILTER_ENUMERATOR) != CR_SUCCESS
+                        || length == 0)
+                        continue;
 
-                    bool phantom = false;
-                    if (CM_Locate_DevNodeW(out uint devInst, id, CM_LOCATE_DEVNODE_NORMAL) != CR_SUCCESS)
+                    var buffer = new char[length];
+                    if (CM_Get_Device_ID_ListW(enumerator, buffer, length, CM_GETIDLIST_FILTER_ENUMERATOR) != CR_SUCCESS)
+                        continue;
+
+                    foreach (var id in new string(buffer).Split('\0', StringSplitOptions.RemoveEmptyEntries))
                     {
-                        if (CM_Locate_DevNodeW(out devInst, id, CM_LOCATE_DEVNODE_PHANTOM) != CR_SUCCESS)
-                            continue;
-                        phantom = true;
+                        if (!IsSweepCandidate(id)) continue;
+
+                        bool phantom = false;
+                        if (CM_Locate_DevNodeW(out uint devInst, id, CM_LOCATE_DEVNODE_NORMAL) != CR_SUCCESS)
+                        {
+                            if (CM_Locate_DevNodeW(out devInst, id, CM_LOCATE_DEVNODE_PHANTOM) != CR_SUCCESS)
+                                continue;
+                            phantom = true;
+                        }
+
+                        if (!phantom)
+                            CM_Query_And_Remove_SubTreeW(devInst, IntPtr.Zero, IntPtr.Zero, 0,
+                                CM_REMOVE_UI_NOT_OK | CM_REMOVE_NO_RESTART);
+
+                        // Best effort: clear the registry trace too, so the
+                        // devnode doesn't linger as a phantom.
+                        if (CM_Locate_DevNodeW(out uint phantomInst, id, CM_LOCATE_DEVNODE_PHANTOM) == CR_SUCCESS)
+                            CM_Uninstall_DevNode(phantomInst, 0);
+
+                        removed++;
+                        PadForge.Engine.SdlDiagLog.WriteLine($"MIDIJANITOR removed stranded endpoint devnode {id}");
                     }
-
-                    if (!phantom)
-                        CM_Query_And_Remove_SubTreeW(devInst, IntPtr.Zero, IntPtr.Zero, 0,
-                            CM_REMOVE_UI_NOT_OK | CM_REMOVE_NO_RESTART);
-
-                    // Best effort: clear the registry trace too, so the
-                    // devnode doesn't linger as a phantom.
-                    if (CM_Locate_DevNodeW(out uint phantomInst, id, CM_LOCATE_DEVNODE_PHANTOM) == CR_SUCCESS)
-                        CM_Uninstall_DevNode(phantomInst, 0);
-
-                    removed++;
-                    PadForge.Engine.SdlDiagLog.WriteLine($"MIDIJANITOR removed stranded endpoint devnode {id}");
                 }
             }
             catch { /* best effort */ }

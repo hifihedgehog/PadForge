@@ -53,10 +53,42 @@ namespace PadForge.Common.Input
             _instanceNum = instanceNum;
         }
 
+        /// <summary>Windows MIDI Services calls are WinRT RPC and can hang
+        /// outright when the service is broken (owner bench, 2026-07-23:
+        /// an unbounded connect held the per-slot pending-task gate forever
+        /// and the slot starved in Initializing). Every service touch is
+        /// bounded: the core runs on an inner task; on timeout the hung
+        /// call is orphaned (torn down if it ever lands) and the caller
+        /// gets a clean failure, so createFailed latches and the slot
+        /// frees for the next type.</summary>
+        private const int ConnectTimeoutMs = 15_000;
+        private const int DisconnectTimeoutMs = 8_000;
+        private volatile bool _abandoned;
+
         public void Connect()
         {
             if (_connected) return;
 
+            var work = System.Threading.Tasks.Task.Run(ConnectCore);
+            if (!work.Wait(ConnectTimeoutMs))
+            {
+                _abandoned = true;
+                // If the hung RPC ever completes, the session it built is
+                // unreachable; tear it down on its own thread.
+                work.ContinueWith(t =>
+                {
+                    if (t.IsCompletedSuccessfully)
+                        try { Disconnect(); } catch { /* best effort */ }
+                }, System.Threading.Tasks.TaskScheduler.Default);
+                throw new TimeoutException(
+                    $"Windows MIDI Services did not answer within {ConnectTimeoutMs / 1000} s while creating '{"PadForge MIDI " + _instanceNum}'.");
+            }
+            if (work.Exception != null)
+                throw work.Exception.GetBaseException();
+        }
+
+        private void ConnectCore()
+        {
             var deviceName = $"PadForge MIDI {_instanceNum}";
 
             // Define the virtual device.
@@ -142,6 +174,21 @@ namespace PadForge.Common.Input
         }
 
         public void Disconnect()
+        {
+            if (!_connected) return;
+
+            var work = System.Threading.Tasks.Task.Run(DisconnectCore);
+            if (!work.Wait(DisconnectTimeoutMs))
+            {
+                // Hung service teardown: orphan it. The fields are cleared
+                // by the core whenever the RPC finally returns; this object
+                // is discarded either way, and the pending-dispose gate is
+                // what must not starve.
+                _connected = false;
+            }
+        }
+
+        private void DisconnectCore()
         {
             if (!_connected) return;
             _connected = false;

@@ -641,12 +641,20 @@ namespace PadForge.Common.Input
                 // runs on the UI thread (PumpSdlEvents), so connecting the
                 // pad froze the whole app until unplug canceled the IRP.
                 // Upstream fixed the same wedge for the HORIPAD Switch
-                // (0x0f0d/0x00c1) with the type guard; XInput-mode PS4
+                // (0x0f0d/0x00c1) with the type guard, and XInput-mode PS4
                 // pads slip past it. Ignored here, the pad rides SDL's
                 // XInput lane, the one its classification names and the
-                // one Steam and Windows drive it with. PID-scoped: other
-                // Nacon PIDs stay untouched until a report proves they
-                // share the wedge.
+                // one Steam and Windows drive it with. The ignore cannot
+                // cost this PID anything: the Linux RFC for the BB4469
+                // (linux-input msg83414) records a single vendor-class
+                // xusb-wrapper identity with NO standard HID interfaces
+                // ("usbhid-dump: No matching HID interfaces"), so no
+                // Sony-protocol PC presentation exists on 0603 to lose,
+                // and DS4Windows carries zero 146B entries. PID-scoped:
+                // other Nacon PIDs stay untouched until a report proves
+                // they share the wedge. The class-level cure (skip Sony
+                // probes for IG_/xusb-presented interfaces) is filed as
+                // fork SDL#19; this seatbelt stays even after it lands.
                 SDL_SetHint(SDL_HINT_HIDAPI_IGNORE_DEVICES, HidapiIgnoreDevices);
 
                 // Enable Switch 2 Pro Controller HIDAPI driver (requires libusb-1.0.dll).

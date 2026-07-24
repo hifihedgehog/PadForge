@@ -339,6 +339,13 @@ namespace PadForge.Engine
             // Check rumble support via properties system (replaces SDL_JoystickHasRumble).
             uint props = SDL_GetJoystickProperties(Joystick);
             HasRumble = props != 0 && SDL_GetBooleanProperty(props, SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN, false);
+            // HAPTICDIAG (2026-07-24 rumble regression): ForceFeedbackState
+            // .SetDeviceForces drops every rumble when HasRumble and
+            // HasHaptic are both false, silently. That gate was invisible,
+            // so log the capability once per open.
+            if (VendorId == 0x057E)
+                SdlDiagLog.WriteLine(
+                    $"HAPTICDIAG caps vid=057E pid={ProductId:X4} hasRumble={HasRumble} props={props != 0}");
             // Trigger rumble: SDL property OR'd with a hardware fact —
             // every Microsoft Xbox One+ controller has impulse-trigger
             // motors regardless of what SDL's current backend reports.

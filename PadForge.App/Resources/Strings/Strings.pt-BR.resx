@@ -2618,6 +2618,7 @@
   <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>O primeiro toque trava as ações ativadas. Pressione de novo para soltar. Retenções e repetições continuam ativas até o segundo toque.</value></data>
   <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
   <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>Repete as ações no intervalo abaixo enquanto o gatilho estiver pressionado.</value></data>
+  <data name="Macro_ToggleInterval_Tooltip" xml:space="preserve"><value>Enquanto travado, as ações se repetem neste intervalo.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Janela de Pressão</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo de Retenção</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Repetir Botão Enquanto Segurar</value></data>

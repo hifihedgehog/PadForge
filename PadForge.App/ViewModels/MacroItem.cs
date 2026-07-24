@@ -41,6 +41,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(RecordTriggerIcon));
             OnPropertyChanged(nameof(TriggerDisplayText));
             OnPropertyChanged(nameof(TriggerPressWindowToolTip));
+            OnPropertyChanged(nameof(InlineIntervalToolTip));
             _outputChannelOptions = null;
             OnPropertyChanged(nameof(OutputChannelOptions));
         }
@@ -1695,7 +1696,9 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsCustomExpressionMode));
                     OnPropertyChanged(nameof(IsHoldForMsMode));
                     OnPropertyChanged(nameof(IsDoublePressMode));
-                    OnPropertyChanged(nameof(IsTurboMode));
+                    OnPropertyChanged(nameof(ShowsInlineIntervalRow));
+                    OnPropertyChanged(nameof(ShowsRepeatSection));
+                    OnPropertyChanged(nameof(InlineIntervalToolTip));
                     OnPropertyChanged(nameof(TriggerPressWindowToolTip));
                     OnPropertyChanged(nameof(ShowsTriggerComboEditor));
                 }
@@ -1712,11 +1715,37 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsHoldForMsMode => _triggerMode == MacroTriggerMode.HoldForMs;
 
-        /// <summary>True when TriggerMode is Turbo (#238). Gates the
-        /// inline repeat-interval ms row beside the Fire picker, so the
-        /// rate sits right where the mode was chosen.</summary>
+        /// <summary>True when the inline repeat-interval ms row shows
+        /// beside the Fire picker (#238): Turbo (the interval is the turbo
+        /// rate) and Toggle (while latched, the sequence re-runs at this
+        /// interval). Both modes force until-release repeats in the
+        /// engine, so the interval is their only live repeat setting and
+        /// it sits where the mode was chosen.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsTurboMode => _triggerMode == MacroTriggerMode.Turbo;
+        public bool ShowsInlineIntervalRow =>
+            _triggerMode == MacroTriggerMode.Turbo ||
+            _triggerMode == MacroTriggerMode.Toggle;
+
+        /// <summary>False when the Repeat section (Mode / Count / Interval)
+        /// hides (#238): Turbo and Toggle override RepeatMode and
+        /// RepeatCount in the engine, so showing dead controls would let
+        /// the user author settings that silently do nothing. Their one
+        /// live knob, the interval, moves to the inline row beside the
+        /// Fire picker instead.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ShowsRepeatSection =>
+            _triggerMode != MacroTriggerMode.Turbo &&
+            _triggerMode != MacroTriggerMode.Toggle;
+
+        /// <summary>Tooltip for the inline interval row, following the
+        /// active mode (the TriggerPressWindowToolTip idiom): the turbo
+        /// rate for Turbo, the while-latched pacing for Toggle. Re-raised
+        /// on mode and culture changes.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string InlineIntervalToolTip =>
+            _triggerMode == MacroTriggerMode.Turbo
+                ? Strings.Instance.Macro_Turbo_Tooltip
+                : Strings.Instance.Macro_ToggleInterval_Tooltip;
 
         /// <summary>True when TriggerMode is DoublePress (translator v17),
         /// TriplePress, or SinglePress (#238, all three consume the same

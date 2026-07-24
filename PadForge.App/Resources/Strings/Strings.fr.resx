@@ -2618,6 +2618,7 @@
   <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>Le premier appui verrouille les actions. Appuyez de nouveau pour relâcher. Les maintiens et répétitions restent actifs jusqu’au second appui.</value></data>
   <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
   <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>Répète les actions à l’intervalle ci-dessous tant que le déclencheur est maintenu.</value></data>
+  <data name="Macro_ToggleInterval_Tooltip" xml:space="preserve"><value>Tant que le verrou est actif, les actions se répètent à cet intervalle.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Fenêtre d&apos;appui</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Durée de maintien</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Répéter le bouton tant que maintenu</value></data>

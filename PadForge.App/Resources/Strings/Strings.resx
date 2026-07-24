@@ -2672,6 +2672,7 @@
   <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>First press latches the actions on. Press again to release. Holds and repeats stay active until the second press.</value></data>
   <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
   <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>Repeats the actions at the interval below for as long as the trigger is held.</value></data>
+  <data name="Macro_ToggleInterval_Tooltip" xml:space="preserve"><value>While latched, the actions repeat at this interval.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Press Window</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Hold Time</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Repeat Button While Held</value></data>

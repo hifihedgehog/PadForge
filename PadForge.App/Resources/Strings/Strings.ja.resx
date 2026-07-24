@@ -2618,6 +2618,7 @@
   <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>最初の押下でアクションが固定され、もう一度押すと解除されます。ホールドやリピートは 2 回目の押下まで有効なままです。</value></data>
   <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
   <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>トリガーを押している間、下の間隔でアクションを繰り返します。</value></data>
+  <data name="Macro_ToggleInterval_Tooltip" xml:space="preserve"><value>ラッチ中は、この間隔でアクションを繰り返します。</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>連続プレス時間</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持時間</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>押している間ボタンをリピート</value></data>

@@ -1231,18 +1231,19 @@
                                 <ui:Button Command="{Binding ResetTriggerDoublePressMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
                             </StackPanel>
 
-                            <!-- Turbo interval row (#238): visible only in Turbo mode,
-                                 binding the SAME RepeatDelayMs the Repeat card edits, so
-                                 the rate sits beside the Fire picker where the mode was
-                                 chosen. Turbo forces until-release repeats in the engine,
-                                 so this interval is the turbo rate. -->
+                            <!-- Inline interval row (#238): visible in Turbo and Toggle,
+                                 binding the SAME RepeatDelayMs the Repeat section edits.
+                                 Both modes force until-release repeats in the engine, so
+                                 the interval is their only live repeat setting (the turbo
+                                 rate, or the while-latched pacing) and the dead Repeat
+                                 section hides for them below. -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
-                                        Visibility="{Binding IsTurboMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        Visibility="{Binding ShowsInlineIntervalRow, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RepeatInterval_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Width="80" Margin="0,0,8,0"
-                                           ToolTip="{Binding Macro_Turbo_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                           ToolTip="{Binding InlineIntervalToolTip}"/>
                                 <TextBox Text="{Binding RepeatDelayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"
-                                         ToolTip="{Binding Macro_Turbo_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                         ToolTip="{Binding InlineIntervalToolTip}"/>
                                 <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                 <ui:Button Command="{Binding ResetRepeatDelayMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
                             </StackPanel>
@@ -2958,14 +2959,20 @@
                                 </StackPanel>
                             </Border>
 
-                            <!-- Repeat settings -->
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <!-- Repeat settings. Hidden for Turbo and Toggle (#238):
+                                 those modes force until-release repeats in the engine,
+                                 so Mode and Count would be dead controls there; their
+                                 one live knob (the interval) rides the inline row
+                                 beside the Fire picker instead. -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                        Visibility="{Binding ShowsRepeatSection, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <Border Width="3" CornerRadius="1.5" Margin="0,2,7,2"
                                         Background="{DynamicResource EmberBrush}"/>
                                 <TextBlock Text="{Binding Macro_Repeat, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                        Visibility="{Binding ShowsRepeatSection, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Width="80" Margin="0,0,8,0"/>
                                 <ComboBox SelectedValue="{Binding RepeatMode, Mode=TwoWay}"
@@ -2975,7 +2982,8 @@
                                     <ComboBoxItem Content="{Binding Macro_UntilRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroRepeatMode.UntilRelease}"/>
                                 </ComboBox>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                        Visibility="{Binding ShowsRepeatSection, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Count, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="0,0,8,0" Width="80"/>
                                 <TextBox Text="{Binding RepeatCount, Mode=TwoWay}"

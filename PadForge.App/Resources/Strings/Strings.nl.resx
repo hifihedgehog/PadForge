@@ -2638,6 +2638,7 @@
   <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>De eerste druk vergrendelt de acties. Druk opnieuw om los te laten. Vasthouden en herhalingen blijven actief tot de tweede druk.</value></data>
   <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
   <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>Herhaalt de acties met het onderstaande interval zolang de trigger ingedrukt blijft.</value></data>
+  <data name="Macro_ToggleInterval_Tooltip" xml:space="preserve"><value>Zolang vergrendeld herhalen de acties zich met dit interval.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Tijdvenster</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Vasthoudtijd</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Knop herhalen zolang ingedrukt</value></data>

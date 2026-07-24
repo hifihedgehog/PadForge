@@ -123,27 +123,28 @@ namespace PadForge.Tests
             Assert.False(SourceCoercion.ReadHardwareBoolDescriptor(null, "Any NFC Tag"));
         }
 
-        /// <summary>Controller NFC is DISABLED (owner decision 2026-07-24):
-        /// the Switch HD-haptic family cannot read tags and rumble at the
-        /// same time (an armed NFC MCU holds report mode 0x31 while HD
-        /// rumble needs 0x30), and rumble wins. No controller may report a
-        /// usable reader, so the mapping picker never offers tag sources
-        /// that can never fire. Dedicated PC/SC readers carry the whole tag
-        /// feature and are not gated by this property. Locks the decision
-        /// against a well-meaning re-enable of the old PID list.</summary>
+        /// <summary>The reader-capability gate (#248), mirroring the
+        /// GuideLed gate tests: right Joy-Con single, combined pair (right
+        /// child carries the MCU, SDL propagates the pair's joystick to it,
+        /// SDL_hidapijoystick.c:784-787), and Pro qualify. Left Joy-Con
+        /// (no reader), every Switch 2 controller (no reference reads their
+        /// NFC on PC and no working code exists, verified 2026-07-24), and
+        /// foreign VIDs with Nintendo PIDs do not.</summary>
         [Theory]
-        [InlineData(0x057E, 0x2007)]  // right Joy-Con: has hardware, not used
-        [InlineData(0x057E, 0x2008)]  // combined pair: has hardware, not used
-        [InlineData(0x057E, 0x2009)]  // Pro Controller: has hardware, not used
-        [InlineData(0x057E, 0x2006)]  // left Joy-Con: no reader
-        [InlineData(0x057E, 0x2069)]  // Switch 2 Pro: no PC NFC
-        [InlineData(0x057E, 0x2066)]  // Joy-Con 2 R: no PC NFC
-        [InlineData(0x045E, 0x2009)]  // wrong vendor, right PID
-        public void HasNfcReader_IsAlwaysFalse_RumbleWins(int vid, int pid)
+        [InlineData(0x057E, 0x2007, true)]   // right Joy-Con
+        [InlineData(0x057E, 0x2008, true)]   // combined pair (right child)
+        [InlineData(0x057E, 0x2009, true)]   // Pro Controller
+        [InlineData(0x057E, 0x2006, false)]  // left Joy-Con: no reader
+        [InlineData(0x057E, 0x2069, false)]  // Switch 2 Pro: no PC NFC
+        [InlineData(0x057E, 0x2066, false)]  // Joy-Con 2 R: no PC NFC
+        [InlineData(0x057E, 0x2067, false)]  // Joy-Con 2 L: no reader
+        [InlineData(0x057E, 0x2073, false)]  // NSO GameCube: no reader
+        [InlineData(0x045E, 0x2009, false)]  // wrong vendor, right PID
+        public void HasNfcReader_GatesByExactHardware(int vid, int pid, bool expected)
         {
             var ud = new PadForge.Engine.Data.UserDevice
             { VendorId = (ushort)vid, ProdId = (ushort)pid };
-            Assert.False(ud.HasNfcReader);
+            Assert.Equal(expected, ud.HasNfcReader);
         }
     }
 }

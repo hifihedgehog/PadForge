@@ -640,30 +640,30 @@ namespace PadForge.Common.Input
                             if (!_sinks.Contains(s) || s.Handle == IntPtr.Zero) continue;
                             h = s.Handle;
                         }
-                        // The FULL gen-1 init, in BuildSink's proven order:
-                        // input report mode 0x30, then enable vibration, 50 ms
-                        // apart (main_pc.cpp:131-132). Enable-vibration ALONE
-                        // does not revive the pad (owner bench 2026-07-24: the
-                        // 0x48-only re-arm fired and vibration stayed dead), so
-                        // the mode write is load-bearing, exactly as it is at
-                        // sink build. Knocking the pad back to 0x30 does not
-                        // strand NFC: the fork's NFC machine runs a stream
-                        // watchdog on its MCU heartbeat (m_ulNfcLastMcuTicks)
-                        // and re-runs bring-up when the 0x31 stream dies, so
-                        // scanning resumes on its own.
-                        JoyConSendCommand(h, s, subcommand: 0x03, arg: 0x30);
-                        Thread.Sleep(50);
-                        JoyConSendCommand(h, s, subcommand: 0x48, arg: 0x01);
-                        if (s.PairSecondHandle != IntPtr.Zero)
-                        {
-                            JoyConSendCommandTo(s.PairSecondHandle, s.PairSecondOutLen,
-                                ref s.PairSecondTimer, subcommand: 0x03, arg: 0x30);
-                            Thread.Sleep(50);
-                            JoyConSendCommandTo(s.PairSecondHandle, s.PairSecondOutLen,
-                                ref s.PairSecondTimer, subcommand: 0x48, arg: 0x01);
-                        }
+                        // Re-enable vibration through SDL's OWN write path, not
+                        // our raw handle. Two bench rounds killed the raw-handle
+                        // approach: 0x48 alone did nothing, and the full
+                        // mode-0x30 + 0x48 sequence did nothing either, while a
+                        // controller power cycle (which makes SDL re-open and
+                        // re-run SetVibrationEnabled) always works. That points
+                        // at our raw writes not landing on this pad, and rumble
+                        // surviving only because SDL enables vibration at open
+                        // (SDL_hidapi_switch.c:2599).
+                        //
+                        // SDL_SendGamepadEffect with a >=2-byte payload is the
+                        // driver's subcommand passthrough: payload[0] is the
+                        // subcommand id, the rest are its args, and it routes
+                        // through WriteSubcommand, the same proven path the open
+                        // sequence uses (HIDAPI_DriverSwitch_SendJoystickEffect,
+                        // the size >= 2 branch). Send enable-vibration there.
+                        bool sent = false;
+                        var gp = s.GamepadHandle;
+                        if (gp != IntPtr.Zero)
+                            sent = SDL3.SDL.SDL_SendGamepadEffect(
+                                gp, new byte[] { 0x48, 0x01 }, 0, 2);
                         PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"HAPTICDIAG re-init after NFC tag: mode 0x30 + vibration (family={s.Family} slot={s.Slot})");
+                            $"HAPTICDIAG re-enable vibration via SDL after NFC tag"
+                            + $" (family={s.Family} slot={s.Slot} gamepad={(gp != IntPtr.Zero)} sent={sent})");
                     }
                     catch { /* best effort: a dead handle is Reconcile's problem */ }
                 }

@@ -634,8 +634,7 @@ namespace PadForge.ViewModels
         /// button.</summary>
         public bool ShowRegisterNfcTag =>
             (DeviceTypeKey == "Nfc"
-             || (VendorId == 0x057E && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009
-                                        || ProductId == 0x2066 || ProductId == 0x2069)
+             || (VendorId == 0x057E && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009)
                  && IsBluetoothLink))
             // Remote rows (reader or controller) keep the owner's identity,
             // but the tap event that feeds registration never crosses the

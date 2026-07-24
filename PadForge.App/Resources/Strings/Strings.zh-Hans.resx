@@ -352,6 +352,7 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>振动</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>陀螺仪</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>加速度计</value></data>
+  <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>对所有应用程序隐藏此设备</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>屏蔽此设备已映射的输入</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> 对所有已连接的{0}</value></data>

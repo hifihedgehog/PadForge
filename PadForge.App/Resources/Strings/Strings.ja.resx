@@ -352,6 +352,7 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>振動</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>ジャイロ</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>加速度</value></data>
+  <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>このデバイスをすべてのアプリケーションから非表示に</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>このデバイスからのマッピング済み入力をブロック</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (接続中のすべての{0}に対して)</value></data>

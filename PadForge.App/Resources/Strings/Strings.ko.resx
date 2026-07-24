@@ -352,6 +352,7 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>진동</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>자이로</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>가속</value></data>
+  <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>모든 응용 프로그램에서 이 장치를 숨깁니다</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>이 장치의 매핑된 입력을 차단합니다</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value>(연결된 모든 {0}에 적용)</value></data>

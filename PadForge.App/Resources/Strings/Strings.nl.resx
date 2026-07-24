@@ -352,6 +352,7 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>Trillen</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Versn.</value></data>
+  <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>dit apparaat te verbergen voor alle toepassingen</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>toegewezen invoer van dit apparaat te blokkeren</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> voor alle aangesloten {0}en</value></data>

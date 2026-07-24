@@ -670,6 +670,7 @@ public class Strings : INotifyPropertyChanged
     public string Devices_Axis_Format => Get("Devices_Axis_Format");
     public string Devices_CapsSummary_Format => Get("Devices_CapsSummary_Format");
     public string Devices_Rumble => Get("Devices_Rumble");
+    public string Devices_Nfc => Get("Devices_Nfc");
     public string Devices_Gyro => Get("Devices_Gyro");
     public string Devices_Accel => Get("Devices_Accel");
     public string Devices_HideAction => Get("Devices_HideAction");

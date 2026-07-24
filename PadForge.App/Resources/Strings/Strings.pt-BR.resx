@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -352,6 +352,7 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibração</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Acel</value></data>
+  <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>ocultar este dispositivo de todos os aplicativos</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloquear entradas mapeadas deste dispositivo</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> para todos os {0}s conectados</value></data>

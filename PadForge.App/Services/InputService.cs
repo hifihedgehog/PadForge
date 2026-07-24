@@ -2529,9 +2529,12 @@ namespace PadForge.Services
                     {
                         // Classic Switch right Joy-Con (0x2007) / combined
                         // pair (0x2008, right child carries the MCU) / Pro
-                        // (0x2009). Same set as UserDevice.HasNfcReader.
+                        // (0x2009), plus the Switch 2 readers (SDL#18):
+                        // Pro Controller 2 (0x2069) and Joy-Con 2 R
+                        // (0x2066). Same set as UserDevice.HasNfcReader.
                         if (ud != null && ud.IsOnline && ud.VendorId == 0x057E
-                            && (ud.ProdId == 0x2007 || ud.ProdId == 0x2008 || ud.ProdId == 0x2009))
+                            && (ud.ProdId == 0x2007 || ud.ProdId == 0x2008 || ud.ProdId == 0x2009
+                                || ud.ProdId == 0x2066 || ud.ProdId == 0x2069))
                         {
                             capable = true;
                             break;

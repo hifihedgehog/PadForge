@@ -452,10 +452,15 @@ namespace PadForge.Engine
             // (SDL_hidapijoystick.c:784-787), so the right child posts the
             // tag UID onto the pair's joystick exactly like its GYRO_R.
             // Gated on GameController != 0 because the tag getter is a
-            // gamepad-layer call. Switch 2 pads use different hardware and
-            // are out of scope (plan-150).
+            // gamepad-layer call. Switch 2 readers (SDL#18): the Pro
+            // Controller 2 (PID 0x2069) and Joy-Con 2 R (0x2066) carry NFC
+            // and the fork's BLE driver publishes their tag UIDs through
+            // the same getter. Joy-Con 2 L has no NFC hardware
+            // (switch2_controller_research hid_reports.md) and the NSO
+            // GameCube pad is excluded pending evidence.
             HasNfcReader = VendorId == 0x057E
-                && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009)
+                && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009
+                    || ProductId == 0x2066 || ProductId == 0x2069)
                 && GameController != IntPtr.Zero;
 
             // Generic extra joystick axes (issue #193). A gamepad-opened device may

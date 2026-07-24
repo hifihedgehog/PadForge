@@ -122,18 +122,23 @@ namespace PadForge.Tests
             Assert.False(SourceCoercion.ReadHardwareBoolDescriptor(null, "Any NFC Tag"));
         }
 
-        /// <summary>The reader-capability gate (#248), mirroring the
-        /// GuideLed gate tests: right Joy-Con single, combined pair (right
-        /// child carries the MCU, SDL propagates the pair's joystick to it,
-        /// SDL_hidapijoystick.c:784-787), and Pro qualify; the left Joy-Con
-        /// single (no reader), Switch 2 family (different hardware), and
-        /// foreign VIDs with Nintendo PIDs do not.</summary>
+        /// <summary>The reader-capability gate (#248 gen-1, SDL#18 gen-2),
+        /// mirroring the GuideLed gate tests. Gen-1: right Joy-Con single,
+        /// combined pair (right child carries the MCU, SDL propagates the
+        /// pair's joystick to it, SDL_hidapijoystick.c:784-787), and Pro
+        /// qualify. Gen-2 over the BLE driver: Pro Controller 2 and
+        /// Joy-Con 2 R qualify. Left Joy-Cons of both generations lack the
+        /// reader, the NSO GameCube pad is excluded pending evidence, and
+        /// foreign VIDs with Nintendo PIDs never qualify.</summary>
         [Theory]
         [InlineData(0x057E, 0x2007, true)]   // right Joy-Con
         [InlineData(0x057E, 0x2008, true)]   // combined pair (right child)
         [InlineData(0x057E, 0x2009, true)]   // Pro Controller
         [InlineData(0x057E, 0x2006, false)]  // left Joy-Con: no reader
-        [InlineData(0x057E, 0x2069, false)]  // Switch 2 Pro: out of scope
+        [InlineData(0x057E, 0x2069, true)]   // Switch 2 Pro (SDL#18)
+        [InlineData(0x057E, 0x2066, true)]   // Joy-Con 2 R (SDL#18)
+        [InlineData(0x057E, 0x2067, false)]  // Joy-Con 2 L: no reader
+        [InlineData(0x057E, 0x2073, false)]  // NSO GameCube: unverified
         [InlineData(0x045E, 0x2009, false)]  // wrong vendor, right PID
         public void HasNfcReader_GatesByExactHardware(int vid, int pid, bool expected)
         {

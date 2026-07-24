@@ -606,6 +606,36 @@ namespace PadForge.Services
                 if (extChanged) existingPs.FlushRawMappings();
             }
 
+            // MIDI and KBM automap surfaces are dictionary siblings of the
+            // raw surface and equally invisible to the reflection walk.
+            // Same fill-empty semantics.
+            var freshMidi = freshPs.MidiMappingEntries;
+            if (freshMidi != null)
+            {
+                bool midiChanged = false;
+                foreach (var entry in freshMidi)
+                {
+                    if (entry == null || string.IsNullOrEmpty(entry.Key)) continue;
+                    if (!string.IsNullOrEmpty(existingPs.GetMidiMapping(entry.Key))) continue;
+                    existingPs.SetMidiMapping(entry.Key, entry.Value);
+                    midiChanged = true;
+                }
+                if (midiChanged) existingPs.FlushMidiMappings();
+            }
+            var freshKbm = freshPs.KbmMappingEntries;
+            if (freshKbm != null)
+            {
+                bool kbmChanged = false;
+                foreach (var entry in freshKbm)
+                {
+                    if (entry == null || string.IsNullOrEmpty(entry.Key)) continue;
+                    if (!string.IsNullOrEmpty(existingPs.GetKbmMapping(entry.Key))) continue;
+                    existingPs.SetKbmMapping(entry.Key, entry.Value);
+                    kbmChanged = true;
+                }
+                if (kbmChanged) existingPs.FlushKbmMappings();
+            }
+
             // Walk every copyable string mapping property and fill empty
             // ones on existingPs from freshPs. Reflection here mirrors the
             // pattern PadSetting.CopyFrom uses internally.

@@ -184,13 +184,18 @@ namespace PadForge.Engine.Data
         /// combined Joy-Con pair (synthetic PID 0x2008), whose right child
         /// carries the MCU and posts onto the pair's joystick. Keyed by PID
         /// like the wrapper's HasNfcReader so the picker offers the
-        /// "Any NFC Tag" / tag sources exactly where the reader exists.
-        /// Switch 2 controllers are excluded: no reference reads their NFC
-        /// on PC and no working code exists over any transport (verified
-        /// 2026-07-24). Computed, not stored. Gates the picker offering.</summary>
+        /// "Any NFC Tag" / tag sources exactly where taps can arrive.
+        /// ALWAYS FALSE for controllers as of 2026-07-24 (owner decision):
+        /// the Switch HD-haptic family cannot read tags and rumble at the
+        /// same time (armed NFC holds report mode 0x31, HD rumble needs
+        /// 0x30), and rumble wins, so no controller arms its reader and the
+        /// picker must not offer sources that can never fire. Dedicated
+        /// PC/SC readers carry the whole tag feature and are unaffected
+        /// (they are not UserDevice-gated here). Switch 2 controllers are
+        /// separately unsupported: no reference reads their NFC on PC.
+        /// Computed, not stored. Gates the picker offering.</summary>
         [XmlIgnore]
-        public bool HasNfcReader => VendorId == 0x057E
-            && (ProdId == 0x2007 || ProdId == 0x2008 || ProdId == 0x2009);
+        public bool HasNfcReader => false;
 
         // Wii IR pointer tuning (sensor-bar position/compensation, smoothing)
         // moved to PadSetting (issue #146 follow-up) so each (device, slot)

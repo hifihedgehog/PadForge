@@ -2512,59 +2512,20 @@ namespace PadForge.Services
         /// written here. Volatile so the two threads agree.</summary>
         private bool _switchNfcArmed;
 
-        /// <summary>Powers the Switch NFC MCU (sets the fork hint) only when a
-        /// capture is in progress or an NFC-capable controller is online with
-        /// at least one registered tag. Mirrors the CapSense "zero cost when
-        /// unused" contract: no such controller, or no tags, leaves the MCU
-        /// off. Runs on the auto-idle cadence (same device snapshot).</summary>
+        /// <summary>Keeps the fork's Switch NFC hint OFF. Controller NFC is
+        /// DISABLED by owner decision (2026-07-24): on the Switch HD-haptic
+        /// family, an armed NFC MCU holds the controller in report mode 0x31
+        /// and HD rumble needs 0x30, so tag reading and vibration are a
+        /// hardware either/or, and rumble wins. Dedicated PC/SC readers are
+        /// unaffected (they never used this hint). The method stays (rather
+        /// than deleting the lane) so the hint is actively driven to "0" on
+        /// startup and after any state that left it on, and so re-enabling
+        /// is a one-expression change if the trade-off is ever revisited.
+        /// The full BT NFC protocol work remains in the fork behind the
+        /// hint (SDL#15).</summary>
         private void RefreshSwitchNfcArming()
         {
-            bool capable = false;
-            var devices = SettingsManager.UserDevices;
-            if (devices != null)
-            {
-                lock (devices.SyncRoot)
-                {
-                    foreach (var ud in devices.Items)
-                    {
-                        // Classic Switch right Joy-Con (0x2007) / combined
-                        // pair (0x2008, right child carries the MCU) / Pro
-                        // (0x2009). Same set as UserDevice.HasNfcReader,
-                        // NARROWED to Bluetooth links: controller NFC is a
-                        // Bluetooth-only capability. Every reference that
-                        // reads tags is BT (scan_amiibo.log's MCU frames are
-                        // ~313-byte payloads, impossible in USB's 64-byte
-                        // reports), dekuNukem's USB-HID-Notes.md contains no
-                        // MCU/NFC/0x31 content, and the bench proved the
-                        // firmware acks mode 0x31 over USB without ever
-                        // streaming it (SDL#15, 2026-07-24). A USB-linked
-                        // reader therefore never arms. Switch 2 controllers
-                        // are excluded entirely: no reference reads their
-                        // NFC on PC and no working code exists.
-                        if (ud != null && ud.IsOnline && ud.VendorId == 0x057E
-                            && (ud.ProdId == 0x2007 || ud.ProdId == 0x2008 || ud.ProdId == 0x2009)
-                            && PadForge.Common.DeviceTransport.IsBluetooth(
-                                ud.DevicePath, ud.VendorId, ud.ProdId))
-                        {
-                            capable = true;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            // No registry-count term: "Any NFC Tag" must fire with ZERO
-            // registered tags, exactly like the PC/SC reader's Any button
-            // (#248 audit). Demand decides: the SourceCoercion read latch
-            // proves a configured, ENABLED consumer polled an NFC
-            // descriptor within the window. Configured inputs are read
-            // every tick, so an active binding keeps the latch
-            // continuously fresh and a deleted/disabled one lapses.
-            long nowTick = Environment.TickCount64;
-            long nfcReq = PadForge.Engine.Common.Mapping.SourceCoercion.LastNfcReadRequestTick;
-            bool nfcWanted = nfcReq != 0 && nowTick - nfcReq < McuDemandWindowMs;
-            bool armed = PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive
-                || (capable && nfcWanted);
+            const bool armed = false;
 
             if (armed != System.Threading.Volatile.Read(ref _switchNfcArmed))
             {
@@ -2581,7 +2542,7 @@ namespace PadForge.Services
                         armed ? "1" : "0"))
                 {
                     System.Threading.Volatile.Write(ref _switchNfcArmed, armed);
-                    PadForge.Engine.SdlDiagLog.WriteLine($"NFC arming -> {(armed ? "ON" : "off")} (capable={capable})");
+                    PadForge.Engine.SdlDiagLog.WriteLine($"NFC arming -> {(armed ? "ON" : "off")} (controller NFC disabled: rumble wins)");
                 }
                 else
                 {
@@ -2601,14 +2562,14 @@ namespace PadForge.Services
             // by fork arbitration; that conflict is the author's own
             // mapping choice. Hint changes take effect on the fork's next
             // sensors-enable edge, worst case a device reconnect.
+            long nowTick = Environment.TickCount64;
             long irReq = PadForge.Engine.Common.Mapping.SourceCoercion.LastJoyConIrReadRequestTick;
-            // Registration preempts the camera (#248 audit round 3): the
-            // NFC reader and the camera share the MCU, and a registration
-            // capture with the camera streaming would wait forever for a
-            // UID. The camera resumes when the dialog closes and IR demand
-            // re-latches.
+            // The camera no longer yields to an NFC registration capture:
+            // controller NFC is disabled (see this method's summary), so the
+            // MCU contention that made registration preempt the camera
+            // (#248 audit round 3) cannot occur. The camera is now the only
+            // consumer of the MCU on a standalone right Joy-Con.
             bool irWanted = irReq != 0 && nowTick - irReq < McuDemandWindowMs
-                && !PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive
                 && AnyStandaloneRightJoyConOnline();
             if (irWanted != _joyConIrHintOn)
             {

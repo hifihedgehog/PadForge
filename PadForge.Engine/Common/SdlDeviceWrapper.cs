@@ -444,21 +444,17 @@ namespace PadForge.Engine
                 && (ProductId == 0x2066 || ProductId == 0x2067)
                 && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 8;
 
-            // NFC reader (issue #241/#248, SDL#15). The NFC/IR MCU lives on
-            // the classic Switch right Joy-Con (PID 0x2007) and Pro
-            // Controller (PID 0x2009). The combined pair (synthetic PID
-            // 0x2008, SDL_hidapijoystick.c:1090) contains a right Joy-Con,
-            // and SDL propagates the combined joystick to every child
-            // (SDL_hidapijoystick.c:784-787), so the right child posts the
-            // tag UID onto the pair's joystick exactly like its GYRO_R.
-            // Gated on GameController != 0 because the tag getter is a
-            // gamepad-layer call. Switch 2 controllers are excluded: no
-            // reference reads their NFC on PC and there is no working code
-            // over any transport (verified 2026-07-24), so PadForge offers
-            // no NFC affordance the fork cannot back.
-            HasNfcReader = VendorId == 0x057E
-                && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009)
-                && GameController != IntPtr.Zero;
+            // NFC reader (issue #241/#248, SDL#15). ALWAYS FALSE as of
+            // 2026-07-24 (owner decision): the Switch HD-haptic family
+            // cannot read tags and rumble simultaneously (an armed NFC MCU
+            // holds report mode 0x31, HD rumble needs 0x30), and rumble
+            // wins, so PadForge never arms a controller's reader and never
+            // polls one for tag UIDs. Switch 2 controllers are separately
+            // unsupported (no reference reads their NFC on PC). Dedicated
+            // PC/SC readers carry the tag feature and do not run through
+            // this wrapper. The fork retains the protocol behind its hint
+            // (SDL#15) if the trade-off is ever revisited.
+            HasNfcReader = false;
 
             // Generic extra joystick axes (issue #193). A gamepad-opened device may
             // report raw joystick axes beyond the standard six that carry ordinary

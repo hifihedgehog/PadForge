@@ -623,23 +623,16 @@ namespace PadForge.ViewModels
         /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
         public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc";
 
-        /// <summary>True for an NFC reader (issue #150): shows the "Register/Manage
-        /// NFC Tags" button, which opens the tap-to-name registration flow.
-        /// Also true for a Switch right Joy-Con / Pro Controller (issue #241),
-        /// whose own NFC reader registers tags through the same dialog. Without
-        /// this, a controller-only user could never open the dialog, so the
-        /// MCU never armed and no tag could ever be captured (Codex #1). The
-        /// dialog opening arms the reader via RegistrationCaptureActive.
-        /// Controller readers are gated to Bluetooth links: their NFC MCU is
-        /// a Bluetooth-only capability (SDL#15, cite-verified 2026-07-24), so
-        /// a USB-linked controller offers no registration, matching the
-        /// arming gate in InputService.RefreshSwitchNfcArming. Standalone
-        /// PC/SC readers (DeviceTypeKey == "Nfc") are USB and keep the
-        /// button.</summary>
+        /// <summary>True for a dedicated NFC reader (issue #150): shows the
+        /// "Register/Manage NFC Tags" button, which opens the tap-to-name
+        /// registration flow. Switch controllers are excluded even though
+        /// they carry a reader: controller NFC is disabled by owner decision
+        /// (2026-07-24) because an armed NFC MCU holds the controller in
+        /// report mode 0x31 while HD rumble needs 0x30, and rumble wins. See
+        /// InputService.RefreshSwitchNfcArming. Offering the dialog on a
+        /// controller would open a capture that can never receive a tap.</summary>
         public bool ShowRegisterNfcTag =>
-            (DeviceTypeKey == "Nfc"
-             || (VendorId == 0x057E && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009)
-                 && IsBluetoothLink))
+            DeviceTypeKey == "Nfc"
             // Remote rows (reader or controller) keep the owner's identity,
             // but the tap event that feeds registration never crosses the
             // link (the wire carries resolved tag bits, not UIDs), so
@@ -647,14 +640,16 @@ namespace PadForge.ViewModels
             // Register on the owner.
             && !(DevicePath != null && DevicePath.StartsWith("peer://", System.StringComparison.Ordinal));
 
-        /// <summary>Whether to show the "NFC" capability chip in the summary:
-        /// a controller that carries an NFC reader (Switch right Joy-Con
-        /// 0x2007, combined pair 0x2008, Pro 0x2009), where NFC is a secondary
-        /// capability listed beside Rumble and Gyro. A standalone PC/SC reader
-        /// (DeviceTypeKey "Nfc") is excluded: its device type already conveys
-        /// NFC, so a chip would be redundant. Hardware capability, not the
-        /// transport-gated arming state (SDL#15), so it reads true whether the
-        /// controller is currently linked over Bluetooth or USB.</summary>
+        /// <summary>Whether to show the "NFC" capability chip in the summary.
+        /// The Switch controllers that physically carry a reader (right
+        /// Joy-Con 0x2007, combined pair 0x2008, Pro 0x2009) are listed, the
+        /// same way Rumble and Gyro are listed, because the hardware is
+        /// really there. PadForge does not USE it (controller NFC is
+        /// disabled so HD rumble works, see
+        /// InputService.RefreshSwitchNfcArming), so this is a hardware
+        /// inventory line, not an offer: no register button and no picker
+        /// sources accompany it. A standalone PC/SC reader is excluded
+        /// because its device type already conveys NFC.</summary>
         public bool HasNfcCapabilityChip =>
             VendorId == 0x057E
             && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009);

@@ -855,8 +855,18 @@ namespace PadForge.Common.Input
 
                 foreach (var s in toTeardown) TeardownSink(s);
                 foreach (var s in toBuild)
-                    if (!BuildSink(s))
+                {
+                    // HAPTICDIAG (2026-07-24, rumble-regression hunt): this
+                    // lane had NO diagnostics, so a dead sink was invisible
+                    // and the first diagnosis was a guess. Transition-only,
+                    // never per-tick.
+                    bool built = BuildSink(s);
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG build family={s.Family} slot={s.Slot} remote={s.Remote}"
+                        + $" handle={(s.Handle != IntPtr.Zero ? "OPEN" : "NULL")} result={(built ? "ok" : "FAILED")}");
+                    if (!built)
                         lock (_lock) _sinks.Remove(s);
+                }
 
                 RetryPairSecondHandles();
                 ReconcileMirrors();
@@ -1714,6 +1724,15 @@ namespace PadForge.Common.Input
 
         private static void StreamJoyConTick(Sink s, float toneHz, float amp, bool streaming, bool testActive, long nowMs)
         {
+            // HAPTICDIAG: transition-only (streaming edge), never per-tick.
+            // Answers "is anything driving this coil at all", which no
+            // existing signal could (2026-07-24 rumble regression).
+            if (streaming != s.JoyConWasStreaming)
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"HAPTICDIAG stream={(streaming ? "ON" : "off")} family={s.Family} slot={s.Slot}"
+                    + $" handle={(s.Handle != IntPtr.Zero ? "OPEN" : "NULL")} tone={toneHz:F0}Hz amp={amp:F2} test={testActive}");
+            }
             // Dual-coil combined pair (#223): both children live, so the tone
             // routes by the slot's commanded motor sides. A degraded pair
             // (second child unresolved) and every single Joy-Con / Pro keep the

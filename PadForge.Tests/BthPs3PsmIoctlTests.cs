@@ -63,5 +63,26 @@ namespace PadForge.Tests
             const int size = 4 + 4 + 200 * 2;
             Assert.Equal(408, size);
         }
+
+        /// <summary>The PSM-patch policy truth table (issue #199 +
+        /// the 2026-07-24 DsHidMini coexistence audit). A DsHidMini system
+        /// never has patching disarmed and never has ownership taken:
+        /// its DS3s connect only while BthPS3 patching is armed, and its
+        /// pads leave no BTHPORT VID/PID record for the paired probe to
+        /// find. Without DsHidMini, PadForge owns arming and patches only
+        /// while a DS3 is actually paired (the crash-safety default).</summary>
+        [Theory]
+        [InlineData(true, false, false, true)]   // DsHidMini, no PadForge DS3: leave theirs armed
+        [InlineData(true, true, false, true)]    // DsHidMini + PadForge DS3: still theirs, armed
+        [InlineData(false, false, true, false)]  // no DsHidMini, nothing paired: own + disarm
+        [InlineData(false, true, true, true)]    // no DsHidMini, DS3 paired: own + armed
+        public void PsmPatchPolicy_TruthTable(
+            bool dsHidMini, bool anyPaired, bool expectOwnership, bool expectPatching)
+        {
+            var (takeOwnership, patching) =
+                PadForge.Services.Ds3PairingService.PsmPatchPolicy(dsHidMini, anyPaired);
+            Assert.Equal(expectOwnership, takeOwnership);
+            Assert.Equal(expectPatching, patching);
+        }
     }
 }

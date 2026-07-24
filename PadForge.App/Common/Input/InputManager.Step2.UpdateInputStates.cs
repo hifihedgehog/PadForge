@@ -976,8 +976,28 @@ namespace PadForge.Common.Input
                 return;
             }
 
+            // HAPTICDIAG (2026-07-24 rumble regression): transition-only probe
+            // on the motors that actually reach the device. Distinguishes
+            // "nothing is commanding rumble" from "commands arrive but the
+            // write is dead", which no existing signal could.
+            if (ud.VendorId == 0x057E)
+            {
+                bool hot = _combinedVibration != null
+                    && (_combinedVibration.LeftMotorSpeed > 0 || _combinedVibration.RightMotorSpeed > 0);
+                if (hot != _nintendoRumbleWasHot)
+                {
+                    _nintendoRumbleWasHot = hot;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG motors={(hot ? "HOT" : "cold")} pid={ud.ProdId:X4}"
+                        + $" L={_combinedVibration?.LeftMotorSpeed ?? 0} R={_combinedVibration?.RightMotorSpeed ?? 0}"
+                        + $" hasRumble={ud.Device?.HasRumble}");
+                }
+            }
+
             ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, firstPadSetting, _combinedVibration);
         }
+
+        private bool _nintendoRumbleWasHot;
 
         private Vibration _combinedVibration;
 

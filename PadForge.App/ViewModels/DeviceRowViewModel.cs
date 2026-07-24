@@ -565,6 +565,10 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowInputModeSection));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
                     OnPropertyChanged(nameof(IsBluetoothLink));
+                    // ShowRegisterNfcTag's controller branch now gates on
+                    // IsBluetoothLink, which is path-derived, so a link
+                    // change must refresh the button too.
+                    OnPropertyChanged(nameof(ShowRegisterNfcTag));
                     OnPropertyChanged(nameof(DossierConnectionPath));
                 }
             }
@@ -621,11 +625,18 @@ namespace PadForge.ViewModels
         /// whose own NFC reader registers tags through the same dialog. Without
         /// this, a controller-only user could never open the dialog, so the
         /// MCU never armed and no tag could ever be captured (Codex #1). The
-        /// dialog opening arms the reader via RegistrationCaptureActive.</summary>
+        /// dialog opening arms the reader via RegistrationCaptureActive.
+        /// Controller readers are gated to Bluetooth links: their NFC MCU is
+        /// a Bluetooth-only capability (SDL#15, cite-verified 2026-07-24), so
+        /// a USB-linked controller offers no registration, matching the
+        /// arming gate in InputService.RefreshSwitchNfcArming. Standalone
+        /// PC/SC readers (DeviceTypeKey == "Nfc") are USB and keep the
+        /// button.</summary>
         public bool ShowRegisterNfcTag =>
             (DeviceTypeKey == "Nfc"
              || (VendorId == 0x057E && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009
-                                        || ProductId == 0x2066 || ProductId == 0x2069)))
+                                        || ProductId == 0x2066 || ProductId == 0x2069)
+                 && IsBluetoothLink))
             // Remote rows (reader or controller) keep the owner's identity,
             // but the tap event that feeds registration never crosses the
             // link (the wire carries resolved tag bits, not UIDs), so

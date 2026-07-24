@@ -2531,10 +2531,21 @@ namespace PadForge.Services
                         // pair (0x2008, right child carries the MCU) / Pro
                         // (0x2009), plus the Switch 2 readers (SDL#18):
                         // Pro Controller 2 (0x2069) and Joy-Con 2 R
-                        // (0x2066). Same set as UserDevice.HasNfcReader.
+                        // (0x2066). Same set as UserDevice.HasNfcReader,
+                        // NARROWED to Bluetooth links: controller NFC is a
+                        // Bluetooth-only capability. Every reference that
+                        // reads tags is BT (scan_amiibo.log's MCU frames are
+                        // ~313-byte payloads, impossible in USB's 64-byte
+                        // reports), dekuNukem's USB-HID-Notes.md contains no
+                        // MCU/NFC/0x31 content, and the bench proved the
+                        // firmware acks mode 0x31 over USB without ever
+                        // streaming it (SDL#15, 2026-07-24). A USB-linked
+                        // reader therefore never arms.
                         if (ud != null && ud.IsOnline && ud.VendorId == 0x057E
                             && (ud.ProdId == 0x2007 || ud.ProdId == 0x2008 || ud.ProdId == 0x2009
-                                || ud.ProdId == 0x2066 || ud.ProdId == 0x2069))
+                                || ud.ProdId == 0x2066 || ud.ProdId == 0x2069)
+                            && PadForge.Common.DeviceTransport.IsBluetooth(
+                                ud.DevicePath, ud.VendorId, ud.ProdId))
                         {
                             capable = true;
                             break;

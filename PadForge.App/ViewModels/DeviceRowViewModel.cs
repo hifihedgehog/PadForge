@@ -102,6 +102,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(VendorIdHex));
                     OnPropertyChanged(nameof(HasVidPid));
                     OnPropertyChanged(nameof(ShowRegisterNfcTag));
+                    OnPropertyChanged(nameof(HasNfcCapabilityChip));
+                    OnPropertyChanged(nameof(CapabilitiesSummary));
                     // Transport depends on VID/PID for the fork BLE Switch 2
                     // case (empty DevicePath never fires its own notify).
                     OnPropertyChanged(nameof(IsBluetoothLink));
@@ -122,6 +124,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ProductIdHex));
                     OnPropertyChanged(nameof(HasVidPid));
                     OnPropertyChanged(nameof(ShowRegisterNfcTag));
+                    OnPropertyChanged(nameof(HasNfcCapabilityChip));
+                    OnPropertyChanged(nameof(CapabilitiesSummary));
                     OnPropertyChanged(nameof(IsBluetoothLink));
                 }
             }
@@ -643,6 +647,18 @@ namespace PadForge.ViewModels
             // Register on the owner.
             && !(DevicePath != null && DevicePath.StartsWith("peer://", System.StringComparison.Ordinal));
 
+        /// <summary>Whether to show the "NFC" capability chip in the summary:
+        /// a controller that carries an NFC reader (Switch right Joy-Con
+        /// 0x2007, combined pair 0x2008, Pro 0x2009), where NFC is a secondary
+        /// capability listed beside Rumble and Gyro. A standalone PC/SC reader
+        /// (DeviceTypeKey "Nfc") is excluded: its device type already conveys
+        /// NFC, so a chip would be redundant. Hardware capability, not the
+        /// transport-gated arming state (SDL#15), so it reads true whether the
+        /// controller is currently linked over Bluetooth or USB.</summary>
+        public bool HasNfcCapabilityChip =>
+            VendorId == 0x057E
+            && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009);
+
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary
         {
@@ -662,6 +678,13 @@ namespace PadForge.ViewModels
                 if (_hasAccel) Append(Strings.Instance.Devices_Accel);
                 // Only show "Touchpad" capability on non-touchpad-type devices (e.g. DualSense gamepad).
                 if (_hasTouchpad && !isTouchpadType) Append(Strings.Instance.Btn_Touchpad);
+                // NFC reader as a secondary capability of a controller (Switch
+                // right Joy-Con / combined pair / Pro), shown beside Rumble and
+                // Gyro. A standalone PC/SC reader's own type already reads NFC,
+                // so it is not repeated as a capability chip (the touchpad
+                // pattern above). Hardware presence, not transport: the reader
+                // exists regardless of how the controller is linked.
+                if (HasNfcCapabilityChip) Append(Strings.Instance.Devices_Nfc);
 
                 return sb.Length > 0 ? sb.ToString() : Strings.Instance.Btn_Touchpad;
             }

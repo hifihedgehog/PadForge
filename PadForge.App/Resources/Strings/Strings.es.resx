@@ -352,6 +352,7 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibración</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Acel</value></data>
+  <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>ocultar este dispositivo de todas las aplicaciones</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloquear las entradas asignadas de este dispositivo</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> para todos los dispositivos {0} conectados</value></data>

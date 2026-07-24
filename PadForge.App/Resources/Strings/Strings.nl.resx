@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -2626,7 +2626,7 @@
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>muisafstelling vervallen ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>asomkering niet toegepast ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>cirkelvormig scrollwiel benaderd als verticaal slepen</value></data>
-  <data name="Macro_HoldForMs" xml:space="preserve"><value>Bij vasthouden</value></data>
+  <data name="Macro_HoldForMs" xml:space="preserve"><value>Bij lang indrukken</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Vuurt één keer nadat de trigger onafgebroken de vasthoudtijd ingedrukt is gehouden. Een kortere tik doet niets.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Bij dubbel indrukken</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Vuurt wanneer de trigger twee keer binnen het tijdvenster wordt ingedrukt. Blijft actief tot loslaten als de tweede druk wordt vastgehouden.</value></data>
@@ -2634,6 +2634,10 @@
   <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>Wordt geactiveerd wanneer er geen tweede druk volgt binnen het drukvenster, zodat een knop gedeeld kan worden met dubbele of driedubbele druk. 'Bij indrukken' activeert direct.</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>Bij drievoudig indrukken</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Vuurt wanneer de trigger drie keer binnen het tijdvenster wordt ingedrukt. Blijft actief tot loslaten als de derde druk wordt vastgehouden.</value></data>
+  <data name="Macro_Toggle" xml:space="preserve"><value>Schakelen</value></data>
+  <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>De eerste druk vergrendelt de acties. Druk opnieuw om los te laten. Vasthouden en herhalingen blijven actief tot de tweede druk.</value></data>
+  <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
+  <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>Herhaalt de acties met het onderstaande interval zolang de trigger ingedrukt blijft.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Tijdvenster</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Vasthoudtijd</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Knop herhalen zolang ingedrukt</value></data>

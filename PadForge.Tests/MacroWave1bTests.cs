@@ -195,12 +195,17 @@ namespace PadForge.Tests
         {
             // MacroData.TriggerMode rides the same numeric clipboard JSON
             // (wave 1b appended HoldForMs = 5; v17 appended DoublePress = 6;
-            // #238 appended TriplePress = 7 and SinglePress = 8).
+            // #238 appended TriplePress = 7, SinglePress = 8, then
+            // Toggle = 9 and Turbo = 10).
             var values = Enum.GetValues<MacroTriggerMode>();
-            Assert.Equal(MacroTriggerMode.SinglePress, values[^1]);
-            Assert.Equal(MacroTriggerMode.TriplePress, values[^2]);
-            Assert.Equal(MacroTriggerMode.DoublePress, values[^3]);
-            Assert.Equal(MacroTriggerMode.HoldForMs, values[^4]);
+            Assert.Equal(MacroTriggerMode.Turbo, values[^1]);
+            Assert.Equal(MacroTriggerMode.Toggle, values[^2]);
+            Assert.Equal(MacroTriggerMode.SinglePress, values[^3]);
+            Assert.Equal(MacroTriggerMode.TriplePress, values[^4]);
+            Assert.Equal(MacroTriggerMode.DoublePress, values[^5]);
+            Assert.Equal(MacroTriggerMode.HoldForMs, values[^6]);
+            Assert.Equal(10, (int)MacroTriggerMode.Turbo);
+            Assert.Equal(9, (int)MacroTriggerMode.Toggle);
             Assert.Equal(8, (int)MacroTriggerMode.SinglePress);
             Assert.Equal(5, (int)MacroTriggerMode.HoldForMs);
             Assert.Equal(6, (int)MacroTriggerMode.DoublePress);

@@ -1687,10 +1687,15 @@ namespace PadForge.ViewModels
                     TriggerHoldStartUtc = DateTime.MinValue;
                     TriggerHoldFired = false;
                     RunReleasedFireToCompletion = false;
+                    // #238 Toggle: a mode switch drops the latch, same
+                    // transient-voiding contract as the lines above.
+                    ToggleTriggerLatched = false;
+                    ToggleRawWasActive = false;
                     OnPropertyChanged(nameof(IsNotAlwaysMode));
                     OnPropertyChanged(nameof(IsCustomExpressionMode));
                     OnPropertyChanged(nameof(IsHoldForMsMode));
                     OnPropertyChanged(nameof(IsDoublePressMode));
+                    OnPropertyChanged(nameof(IsTurboMode));
                     OnPropertyChanged(nameof(TriggerPressWindowToolTip));
                     OnPropertyChanged(nameof(ShowsTriggerComboEditor));
                 }
@@ -1706,6 +1711,12 @@ namespace PadForge.ViewModels
         /// Gates the hold-time ms row in the trigger editor.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsHoldForMsMode => _triggerMode == MacroTriggerMode.HoldForMs;
+
+        /// <summary>True when TriggerMode is Turbo (#238). Gates the
+        /// inline repeat-interval ms row beside the Fire picker, so the
+        /// rate sits right where the mode was chosen.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsTurboMode => _triggerMode == MacroTriggerMode.Turbo;
 
         /// <summary>True when TriggerMode is DoublePress (translator v17),
         /// TriplePress, or SinglePress (#238, all three consume the same
@@ -1730,8 +1741,9 @@ namespace PadForge.ViewModels
 
         /// <summary>True when the standard trigger-combo recording UI should show
         /// (i.e. one of OnPress / OnRelease / WhileHeld / HoldForMs /
-        /// DoublePress / TriplePress). Always mode has no trigger;
-        /// CustomExpression mode uses the formula editor instead.</summary>
+        /// DoublePress / TriplePress / SinglePress / Toggle / Turbo).
+        /// Always mode has no trigger; CustomExpression mode uses the
+        /// formula editor instead.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool ShowsTriggerComboEditor =>
             _triggerMode == MacroTriggerMode.OnPress ||
@@ -1740,7 +1752,9 @@ namespace PadForge.ViewModels
             _triggerMode == MacroTriggerMode.HoldForMs ||
             _triggerMode == MacroTriggerMode.DoublePress ||
             _triggerMode == MacroTriggerMode.TriplePress ||
-            _triggerMode == MacroTriggerMode.SinglePress;
+            _triggerMode == MacroTriggerMode.SinglePress ||
+            _triggerMode == MacroTriggerMode.Toggle ||
+            _triggerMode == MacroTriggerMode.Turbo;
 
         private int _triggerHoldMs = 500;
 
@@ -1761,6 +1775,13 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public RelayCommand ResetTriggerHoldMsCommand =>
             _resetTriggerHoldMsCommand ??= new RelayCommand(() => TriggerHoldMs = 500);
+
+        private RelayCommand _resetRepeatDelayMsCommand;
+        /// <summary>Resets the repeat interval to the 100 ms default, for
+        /// the Turbo mode's inline interval row (#238).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetRepeatDelayMsCommand =>
+            _resetRepeatDelayMsCommand ??= new RelayCommand(() => RepeatDelayMs = 100);
 
         private int _triggerDoublePressMs = 442;
 
@@ -2279,6 +2300,19 @@ namespace PadForge.ViewModels
         /// <summary>Whether the trigger was active on the previous frame.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool WasTriggerActive { get; set; }
+
+        /// <summary>Raw trigger state on the previous frame for the Toggle
+        /// mode's edge detector (#238). Separate from
+        /// <see cref="WasTriggerActive"/>, which stores the LATCH the
+        /// evaluator presents downstream. Runtime only.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ToggleRawWasActive { get; set; }
+
+        /// <summary>The Toggle mode's latch (#238): flipped on each raw
+        /// rising edge, presented downstream as the trigger state, cleared
+        /// on disable, mode switch, and layer close. Runtime only.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ToggleTriggerLatched { get; set; }
 
         /// <summary>Combo-break park position (discussion #237): the action
         /// index the NEXT start resumes from. 0 = start from the top. Set
@@ -5278,7 +5312,28 @@ namespace PadForge.ViewModels
         /// at window expiry whether the button is still held (hold
         /// shapes keep working) or already released. At the tail per
         /// the APPEND-ONLY rule above; ordinal pinned.</summary>
-        SinglePress = 8
+        SinglePress = 8,
+
+        /// <summary>Latching trigger (discussion #238, the reWASD / Steam
+        /// "Toggle" activation mode): the first press latches the trigger
+        /// ACTIVE, the next press releases it. Downstream the macro
+        /// evaluates exactly like <see cref="WhileHeld"/> against the
+        /// latch, and the release-stop applies on unlatch regardless of
+        /// RepeatMode, so holds and repeats stay active until the button
+        /// is pressed again. Disabling the macro or closing its shift
+        /// layer clears the latch. At the tail per the APPEND-ONLY rule
+        /// above; ordinal pinned.</summary>
+        Toggle = 9,
+
+        /// <summary>Repeat-while-held (discussion #238, the classic
+        /// "Turbo" activation mode): the sequence re-runs at
+        /// <see cref="MacroItem.RepeatDelayMs"/> for as long as the
+        /// trigger is held, and stops on release regardless of
+        /// RepeatMode. The WhileHeld + Until Release composition as one
+        /// first-class mode, with the interval surfaced beside the Fire
+        /// picker. At the tail per the APPEND-ONLY rule above; ordinal
+        /// pinned.</summary>
+        Turbo = 10
     }
 
     public enum MacroTriggerSource

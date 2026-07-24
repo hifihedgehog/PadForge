@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -2660,7 +2660,7 @@
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Workshop Updates</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>These imported profiles have newer versions on the Steam Workshop. Re-import them from Browse Community Configs to pick up the changes.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
-  <data name="Macro_HoldForMs" xml:space="preserve"><value>On Hold</value></data>
+  <data name="Macro_HoldForMs" xml:space="preserve"><value>On Long Press</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Fires once after the trigger has been held continuously for the hold time. A shorter tap does nothing.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>On Double Press</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Fires when the trigger is pressed twice within the press window. If held on the second press, it stays active until release.</value></data>
@@ -2668,6 +2668,10 @@
   <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>Fires when a press is not followed by a second press within the press window, so it can share a button with Double or Triple Press. On Press fires instantly instead.</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>On Triple Press</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Fires when the trigger is pressed three times within the press window. If held on the third press, it stays active until release.</value></data>
+  <data name="Macro_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>First press latches the actions on. Press again to release. Holds and repeats stay active until the second press.</value></data>
+  <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
+  <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>Repeats the actions at the interval below for as long as the trigger is held.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Press Window</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Hold Time</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Repeat Button While Held</value></data>

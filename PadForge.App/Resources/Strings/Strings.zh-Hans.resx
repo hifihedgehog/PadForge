@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -2606,7 +2606,7 @@
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>已丢弃鼠标手感设置（{0}）</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>未应用轴反转（{0}）</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>环形滚轮近似为纵向拖动</value></data>
-  <data name="Macro_HoldForMs" xml:space="preserve"><value>按住时</value></data>
+  <data name="Macro_HoldForMs" xml:space="preserve"><value>长按时</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>在触发器被连续按住达到保持时间后触发一次。更短的点按不起作用。</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>双击时</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>在连按时间内按下两次时触发。若第二次按住不放，将保持激活直到松开。</value></data>
@@ -2614,6 +2614,10 @@
   <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>在按压窗口内没有第二次按下时触发，因此可与同一按钮的双击或三击共存。“按下时”则立即触发。</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>三击时</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>在连按时间内按下三次时触发。若第三次按住不放，将保持激活直到松开。</value></data>
+  <data name="Macro_Toggle" xml:space="preserve"><value>切换</value></data>
+  <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>第一次按下锁定动作，再按一次释放。按住与重复会保持生效，直到第二次按下。</value></data>
+  <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
+  <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>按住触发器时，按下方间隔重复执行动作。</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>连按时间</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持时间</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>按住时重复按钮</value></data>

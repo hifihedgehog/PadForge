@@ -640,12 +640,30 @@ namespace PadForge.Common.Input
                             if (!_sinks.Contains(s) || s.Handle == IntPtr.Zero) continue;
                             h = s.Handle;
                         }
-                        JoyConSendCommand(h, s, subcommand: 0x48, arg: 0x01); // enable vibration
+                        // The FULL gen-1 init, in BuildSink's proven order:
+                        // input report mode 0x30, then enable vibration, 50 ms
+                        // apart (main_pc.cpp:131-132). Enable-vibration ALONE
+                        // does not revive the pad (owner bench 2026-07-24: the
+                        // 0x48-only re-arm fired and vibration stayed dead), so
+                        // the mode write is load-bearing, exactly as it is at
+                        // sink build. Knocking the pad back to 0x30 does not
+                        // strand NFC: the fork's NFC machine runs a stream
+                        // watchdog on its MCU heartbeat (m_ulNfcLastMcuTicks)
+                        // and re-runs bring-up when the 0x31 stream dies, so
+                        // scanning resumes on its own.
+                        JoyConSendCommand(h, s, subcommand: 0x03, arg: 0x30);
+                        Thread.Sleep(50);
+                        JoyConSendCommand(h, s, subcommand: 0x48, arg: 0x01);
                         if (s.PairSecondHandle != IntPtr.Zero)
+                        {
+                            JoyConSendCommandTo(s.PairSecondHandle, s.PairSecondOutLen,
+                                ref s.PairSecondTimer, subcommand: 0x03, arg: 0x30);
+                            Thread.Sleep(50);
                             JoyConSendCommandTo(s.PairSecondHandle, s.PairSecondOutLen,
                                 ref s.PairSecondTimer, subcommand: 0x48, arg: 0x01);
+                        }
                         PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"HAPTICDIAG re-armed vibration after NFC tag (family={s.Family} slot={s.Slot})");
+                            $"HAPTICDIAG re-init after NFC tag: mode 0x30 + vibration (family={s.Family} slot={s.Slot})");
                     }
                     catch { /* best effort: a dead handle is Reconcile's problem */ }
                 }

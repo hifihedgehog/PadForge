@@ -348,6 +348,16 @@ namespace PadForge.Engine
                     scalarSuccess = device.SetRumble(finalLeft, finalRight, uint.MaxValue);
                 }
 
+                // HAPTICDIAG (2026-07-24 rumble regression): the emit's
+                // success was invisible, so a failing SDL write and a
+                // successful one that the firmware ignores were
+                // indistinguishable. Transition-only (this block already
+                // runs on change), Nintendo only.
+                if (ud != null && ud.VendorId == 0x057E)
+                    SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG emit L={finalLeft} R={finalRight} ok={scalarSuccess}"
+                        + $" viaHaptic={device.HasHaptic} gamepadHandle={(device.GamepadHandle != IntPtr.Zero)}");
+
                 if (scalarSuccess)
                 {
                     _cachedLeftMotorSpeed = finalLeft;

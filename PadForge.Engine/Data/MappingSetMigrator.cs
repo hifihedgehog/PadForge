@@ -209,12 +209,40 @@ namespace PadForge.Engine.Data
             // flick stick), so only exact raw-target keys translate.
             AppendRawSurfaceRows(ms, devicesAndPadSettings);
 
+            // MIDI and KBM surfaces are the raw surface's dictionary
+            // siblings and rot the same way without a lane here, but
+            // WORSE: the save pipeline regenerates every device's
+            // PadSetting from the grid view, so a merge that drops these
+            // rows turns the next save into a wipe of the authored
+            // mappings (the MIDI automap "didn't stick", 2026-07-23).
+            AppendDictionarySurfaceRows(ms, devicesAndPadSettings,
+                MidiTargetKey, MidiAxisTargetPrefixes, ps => ps?.MidiMappingEntries,
+                (ps, key) => ps?.GetMidiMapping(key));
+            AppendDictionarySurfaceRows(ms, devicesAndPadSettings,
+                KbmTargetKey, KbmAxisTargetPrefixes, ps => ps?.KbmMappingEntries,
+                (ps, key) => ps?.GetKbmMapping(key));
+
             return ms;
         }
 
         private static readonly System.Text.RegularExpressions.Regex RawTargetKey =
             new(@"^Raw(Axis\d+|Btn\d+|Pov\d+(Up|Down|Left|Right))$",
                 System.Text.RegularExpressions.RegexOptions.Compiled);
+
+        // MIDI surface grammar (MidiVirtualController targets): CC slots
+        // are axis-like (Neg legs fold), note slots are button-like.
+        private static readonly System.Text.RegularExpressions.Regex MidiTargetKey =
+            new(@"^Midi(CC\d+|Note\d+)$",
+                System.Text.RegularExpressions.RegexOptions.Compiled);
+        private static readonly string[] MidiAxisTargetPrefixes = { "MidiCC" };
+
+        // KBM surface grammar (KeyboardMouseVirtualController targets):
+        // keys and mouse buttons are button-like; mouse axes and scroll
+        // are axis-like.
+        private static readonly System.Text.RegularExpressions.Regex KbmTargetKey =
+            new(@"^Kbm(Key[0-9A-Fa-f]+|MBtn\d+|MouseX|MouseY|Scroll)$",
+                System.Text.RegularExpressions.RegexOptions.Compiled);
+        private static readonly string[] KbmAxisTargetPrefixes = { "KbmMouseX", "KbmMouseY", "KbmScroll" };
 
         /// <summary>Rewrites legacy raw-surface tokens (the pre-2026-07-19
         /// "Extended*" spellings) to the current "Raw*" grammar. Applies to
@@ -248,6 +276,79 @@ namespace PadForge.Engine.Data
             {
                 if (row == null || string.IsNullOrEmpty(row.Target)) continue;
                 row.Target = NormalizeRawToken(row.Target);
+            }
+        }
+
+        /// <summary>Shared lane for the dictionary-backed target surfaces
+        /// (MIDI, KBM). Same shape as <see cref="AppendRawSurfaceRows"/>:
+        /// collect exact-grammar targets in first-seen order across the
+        /// slot's devices, emit one row per target with one source per
+        /// contributing device, and fold "{target}Neg" legs into the
+        /// axis-like targets' rows with the bipolar polarity rule.</summary>
+        private static void AppendDictionarySurfaceRows(
+            MappingSet ms,
+            IReadOnlyList<(string DeviceGuid, PadSetting PadSetting, bool IsGamepadEligible)> devices,
+            System.Text.RegularExpressions.Regex targetKey,
+            string[] axisTargetPrefixes,
+            Func<PadSetting, RawMappingEntry[]> getEntries,
+            Func<PadSetting, string, string> getMapping)
+        {
+            var targets = new List<string>();
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var (_, ps, _) in devices)
+            {
+                var entries = getEntries(ps);
+                if (entries == null) continue;
+                foreach (var e in entries)
+                {
+                    if (e == null || string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
+                    string target = e.Key.EndsWith("Neg", StringComparison.Ordinal)
+                        ? e.Key.Substring(0, e.Key.Length - 3)
+                        : e.Key;
+                    if (!targetKey.IsMatch(target)) continue;
+                    if (seen.Add(target)) targets.Add(target);
+                }
+            }
+
+            foreach (var target in targets)
+            {
+                bool axisLike = false;
+                foreach (var prefix in axisTargetPrefixes)
+                {
+                    if (target.StartsWith(prefix, StringComparison.Ordinal)) { axisLike = true; break; }
+                }
+
+                var sources = new List<MappingSource>();
+                foreach (var (guid, ps, _) in devices)
+                {
+                    string desc = getMapping(ps, target);
+                    if (!string.IsNullOrEmpty(desc))
+                    {
+                        var src = BuildSource(guid, desc, ps?.GetMappingDeadZone(target));
+                        if (src != null) sources.Add(src);
+                    }
+
+                    if (!axisLike) continue;
+                    string negDesc = getMapping(ps, target + "Neg");
+                    if (string.IsNullOrEmpty(negDesc)) continue;
+                    var negSrc = BuildSource(guid, negDesc, ps?.GetMappingDeadZone(target));
+                    if (negSrc == null) continue;
+                    // Same polarity rule as AppendBipolarRow's negative leg.
+                    if (Common.Mapping.SourceCoercion.InvertConsumedByHalfAxisRead(negSrc))
+                        negSrc.InvertOutput = !negSrc.InvertOutput;
+                    else
+                        negSrc.Invert = !negSrc.Invert;
+                    sources.Add(negSrc);
+                }
+                if (sources.Count == 0) continue;
+
+                ms.Rows.Add(new MappingRow
+                {
+                    Target = target,
+                    LayerMask = "Base",
+                    CombineMode = "",
+                    Sources = sources,
+                });
             }
         }
 

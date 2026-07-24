@@ -17,6 +17,7 @@ namespace PadForge.Tests
     /// XML and the macro clipboard share, and the append-only enum
     /// contracts get their ordinal pins.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class MacroWave1bTests
     {
         // ── Shared builders ──
@@ -955,7 +956,7 @@ namespace PadForge.Tests
     /// <summary>GyroRecenter's MotionLean half: dropping the captured neutral
     /// re-references the CURRENT grip. Serialized with the other
     /// GravityProvider-swapping tests (shared static provider).</summary>
-    [Collection("GravityProviderSerial")]
+    [Collection("SettingsManagerStatics")]
     public class MacroWave1bMotionNeutralTests
     {
         private static readonly (float, float, float) Rest = (0f, 9.8f, 0f);

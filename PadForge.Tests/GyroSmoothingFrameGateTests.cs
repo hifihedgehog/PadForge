@@ -9,6 +9,7 @@ namespace PadForge.Tests
     /// settings deliver what they claim regardless of row count. Each test
     /// uses unique device keys because the caches are process-static.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class GyroSmoothingFrameGateTests
     {
         [Fact]

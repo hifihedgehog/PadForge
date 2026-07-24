@@ -12,6 +12,7 @@ namespace PadForge.Tests
     /// persistence legs (checksum inclusion, the dedup-by-checksum trap),
     /// and the descriptor grammar.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class MouseGestureTests
     {
         private const int X1 = 1 << 3;

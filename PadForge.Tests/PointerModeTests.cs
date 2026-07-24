@@ -10,6 +10,7 @@ namespace PadForge.Tests
     /// border-pin math (Ryochan7 lightgun lineage), the FPS Mouse response
     /// curve (Suegrini lineage), the IR Offscreen debounce, the PointerMode
     /// persistence legs, and the cycle action's CSV.</summary>
+    [Collection("SettingsManagerStatics")]
     public class PointerModeTests
     {
         // ── Aspect region (Ryochan7 dead-band math) ──

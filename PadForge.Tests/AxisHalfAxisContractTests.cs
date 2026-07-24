@@ -17,6 +17,7 @@ namespace PadForge.Tests
     /// (1 - 0 at center). Invert is consumed inside the analog reads as
     /// the half selector, mirroring the Mouse Motion family (issue #154).
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class AxisHalfAxisContractTests
     {
         private const int Center = 32768;

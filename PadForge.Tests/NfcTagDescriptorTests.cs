@@ -11,6 +11,7 @@ namespace PadForge.Tests
     // by SdlDeviceWrapper from the fork's SDL_GetGamepadNfcTagUid. This is
     // the surface a macro trigger / mapping source binds, so a tap on a
     // Switch Pro fires the bound action.
+    [Collection("SettingsManagerStatics")]
     public class NfcTagDescriptorTests
     {
         private static MappingSource Src(string descriptor)

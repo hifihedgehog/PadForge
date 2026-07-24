@@ -16,6 +16,7 @@ namespace PadForge.Tests
     /// raw descriptor grammar and silently missed either the legacy prefix
     /// encoding or the alias family.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class GamepadAliasGrammarTests
     {
         private static CustomInputState CenteredState()

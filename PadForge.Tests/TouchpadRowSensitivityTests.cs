@@ -17,6 +17,7 @@ namespace PadForge.Tests
     /// finger X/Y only, and touchpad-as-button (Click / Finger Down, plus the
     /// finger axes' absent bool read) is unaffected.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class TouchpadRowSensitivityTests
     {
         /// <summary>Slot indices far away from the frame-gate tests (slots

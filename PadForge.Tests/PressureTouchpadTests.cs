@@ -13,6 +13,7 @@ namespace PadForge.Tests
     /// button / shift-activator threshold, and the synthetic pressure
     /// curve for pads whose hardware reports touch as pressure 1.0.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class PressureTouchpadTests : IDisposable
     {
         public PressureTouchpadTests() => SourceCoercion.TouchpadSyntheticPressureProvider = null;

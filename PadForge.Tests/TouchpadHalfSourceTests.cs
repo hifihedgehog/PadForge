@@ -20,6 +20,7 @@ namespace PadForge.Tests
     /// trigger conversion, the VM gates, and the lens-1k persisted
     /// round-trip through the legacy migrator.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class TouchpadHalfSourceTests
     {
         /// <summary>Away from the frame-gate tests (slots 0/1) and the B-13

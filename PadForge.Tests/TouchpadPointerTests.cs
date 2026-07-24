@@ -19,6 +19,7 @@ namespace PadForge.Tests
     /// display strings and picker mirror entries, and the lens-1k
     /// persisted round-trip through the legacy migrator.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class TouchpadPointerTests
     {
         /// <summary>Away from every other test class's slots so the

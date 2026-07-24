@@ -14,6 +14,7 @@ namespace PadForge.Tests
     /// remote). Pins the persistence surface and the slot-scoped tuning
     /// application in ReadTunedIrPointer.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class IrPointerTuningTests
     {
         private static PadSetting RoundTrip(PadSetting ps)

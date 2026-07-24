@@ -416,7 +416,8 @@ namespace PadForge.Common.Input
                     if (macro != null && (macro.ComboResumeIndex != 0 || macro.AwaitReleaseAfterBreak
                         || macro.TriggerPressStreak != 0 || macro.TriggerHoldFired
                         || macro.TriggerHoldStartUtc != DateTime.MinValue
-                        || macro.RunReleasedFireToCompletion))
+                        || macro.RunReleasedFireToCompletion
+                        || macro.ToggleTriggerLatched || macro.ToggleRawWasActive))
                     {
                         macro.ComboResumeIndex = 0;
                         macro.AwaitReleaseAfterBreak = false;
@@ -431,6 +432,12 @@ namespace PadForge.Common.Input
                         macro.TriggerHoldStartUtc = DateTime.MinValue;
                         macro.TriggerHoldFired = false;
                         macro.RunReleasedFireToCompletion = false;
+                        // #238 Toggle: disabling drops the latch, so a
+                        // re-enabled macro starts unlatched and the next
+                        // press is a fresh latch-on, never a surprise
+                        // latch-off.
+                        macro.ToggleTriggerLatched = false;
+                        macro.ToggleRawWasActive = false;
                         ClearAxisYields(macro);
                     }
                     continue;
@@ -546,6 +553,24 @@ namespace PadForge.Common.Input
                 bool layerOpen = MacroLayerGateOpen(macro);
                 if (!layerOpen) triggerActive = false;
 
+                // Toggle mode (#238): a trigger-level latch. Each raw
+                // rising edge flips it, and downstream sees the LATCH as
+                // the trigger state, so the WhileHeld-shape evaluation,
+                // holds, and the release-stop all key on "pressed again"
+                // instead of the physical release. Layer close clears the
+                // latch (the gated trigger already reads inactive above,
+                // so a press inside a closed layer cannot flip it either).
+                if (macro.TriggerMode == MacroTriggerMode.Toggle)
+                {
+                    bool rawWas = macro.ToggleRawWasActive;
+                    macro.ToggleRawWasActive = triggerActive;
+                    if (!layerOpen)
+                        macro.ToggleTriggerLatched = false;
+                    else if (triggerActive && !rawWas)
+                        macro.ToggleTriggerLatched = !macro.ToggleTriggerLatched;
+                    triggerActive = macro.ToggleTriggerLatched;
+                }
+
                 bool wasTriggerActive = macro.WasTriggerActive;
                 macro.WasTriggerActive = triggerActive;
 
@@ -560,6 +585,15 @@ namespace PadForge.Common.Input
                         shouldStart = !triggerActive && wasTriggerActive;
                         break;
                     case MacroTriggerMode.WhileHeld:
+                        shouldStart = triggerActive;
+                        break;
+                    case MacroTriggerMode.Toggle:
+                    case MacroTriggerMode.Turbo:
+                        // #238: both evaluate WhileHeld-style. Toggle's
+                        // triggerActive is its latch (transformed above);
+                        // Turbo's is the plain held state. Their forced
+                        // until-release stop and repeat pacing live in the
+                        // stop block and AdvanceMacroAction.
                         shouldStart = triggerActive;
                         break;
                     case MacroTriggerMode.Always:
@@ -647,7 +681,12 @@ namespace PadForge.Common.Input
                     macro.ReleaseLingerStartUtc = DateTime.MinValue;
                 if (macro.IsExecuting &&
                     macro.TriggerMode != MacroTriggerMode.Always &&
-                    macro.RepeatMode == MacroRepeatMode.UntilRelease &&
+                    // #238: Toggle and Turbo carry until-release semantics
+                    // regardless of the authored RepeatMode; for Toggle,
+                    // triggerActive is the latch, so this fires on unlatch.
+                    (macro.RepeatMode == MacroRepeatMode.UntilRelease
+                     || macro.TriggerMode == MacroTriggerMode.Toggle
+                     || macro.TriggerMode == MacroTriggerMode.Turbo) &&
                     !triggerActive
                     && !macro.RunReleasedFireToCompletion
                     && !WithinReleaseLinger(macro))
@@ -1602,7 +1641,14 @@ namespace PadForge.Common.Input
 
             macro.RemainingRepeats--;
             if (macro.RemainingRepeats > 0 ||
-                (macro.RepeatMode == MacroRepeatMode.UntilRelease
+                // #238: Toggle and Turbo repeat until-release regardless of
+                // the authored RepeatMode. Staying on THIS branch (instead
+                // of stopping and re-starting via shouldStart next tick) is
+                // what makes RepeatDelayMs pace the passes: the stop-then-
+                // restart path re-fires immediately, unpaced.
+                ((macro.RepeatMode == MacroRepeatMode.UntilRelease
+                  || macro.TriggerMode == MacroTriggerMode.Toggle
+                  || macro.TriggerMode == MacroTriggerMode.Turbo)
                  && !macro.RunReleasedFireToCompletion))
             {
                 double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
@@ -3159,7 +3205,8 @@ namespace PadForge.Common.Input
                     if (macro != null && (macro.ComboResumeIndex != 0 || macro.AwaitReleaseAfterBreak
                         || macro.TriggerPressStreak != 0 || macro.TriggerHoldFired
                         || macro.TriggerHoldStartUtc != DateTime.MinValue
-                        || macro.RunReleasedFireToCompletion))
+                        || macro.RunReleasedFireToCompletion
+                        || macro.ToggleTriggerLatched || macro.ToggleRawWasActive))
                     {
                         macro.ComboResumeIndex = 0;
                         macro.AwaitReleaseAfterBreak = false;
@@ -3174,6 +3221,12 @@ namespace PadForge.Common.Input
                         macro.TriggerHoldStartUtc = DateTime.MinValue;
                         macro.TriggerHoldFired = false;
                         macro.RunReleasedFireToCompletion = false;
+                        // #238 Toggle: disabling drops the latch, so a
+                        // re-enabled macro starts unlatched and the next
+                        // press is a fresh latch-on, never a surprise
+                        // latch-off.
+                        macro.ToggleTriggerLatched = false;
+                        macro.ToggleRawWasActive = false;
                         ClearAxisYields(macro);
                     }
                     continue;
@@ -3237,6 +3290,24 @@ namespace PadForge.Common.Input
                 bool layerOpen = MacroLayerGateOpen(macro);
                 if (!layerOpen) triggerActive = false;
 
+                // Toggle mode (#238): a trigger-level latch. Each raw
+                // rising edge flips it, and downstream sees the LATCH as
+                // the trigger state, so the WhileHeld-shape evaluation,
+                // holds, and the release-stop all key on "pressed again"
+                // instead of the physical release. Layer close clears the
+                // latch (the gated trigger already reads inactive above,
+                // so a press inside a closed layer cannot flip it either).
+                if (macro.TriggerMode == MacroTriggerMode.Toggle)
+                {
+                    bool rawWas = macro.ToggleRawWasActive;
+                    macro.ToggleRawWasActive = triggerActive;
+                    if (!layerOpen)
+                        macro.ToggleTriggerLatched = false;
+                    else if (triggerActive && !rawWas)
+                        macro.ToggleTriggerLatched = !macro.ToggleTriggerLatched;
+                    triggerActive = macro.ToggleTriggerLatched;
+                }
+
                 bool wasTriggerActive = macro.WasTriggerActive;
                 macro.WasTriggerActive = triggerActive;
 
@@ -3250,6 +3321,15 @@ namespace PadForge.Common.Input
                         shouldStart = !triggerActive && wasTriggerActive;
                         break;
                     case MacroTriggerMode.WhileHeld:
+                        shouldStart = triggerActive;
+                        break;
+                    case MacroTriggerMode.Toggle:
+                    case MacroTriggerMode.Turbo:
+                        // #238: both evaluate WhileHeld-style. Toggle's
+                        // triggerActive is its latch (transformed above);
+                        // Turbo's is the plain held state. Their forced
+                        // until-release stop and repeat pacing live in the
+                        // stop block and AdvanceMacroAction.
                         shouldStart = triggerActive;
                         break;
                     case MacroTriggerMode.Always:
@@ -3319,7 +3399,12 @@ namespace PadForge.Common.Input
                     macro.ReleaseLingerStartUtc = DateTime.MinValue;
                 if (macro.IsExecuting &&
                     macro.TriggerMode != MacroTriggerMode.Always &&
-                    macro.RepeatMode == MacroRepeatMode.UntilRelease &&
+                    // #238: Toggle and Turbo carry until-release semantics
+                    // regardless of the authored RepeatMode; for Toggle,
+                    // triggerActive is the latch, so this fires on unlatch.
+                    (macro.RepeatMode == MacroRepeatMode.UntilRelease
+                     || macro.TriggerMode == MacroTriggerMode.Toggle
+                     || macro.TriggerMode == MacroTriggerMode.Turbo) &&
                     !triggerActive
                     && !macro.RunReleasedFireToCompletion
                     && !WithinReleaseLinger(macro))
@@ -3478,7 +3563,14 @@ namespace PadForge.Common.Input
 
             macro.RemainingRepeats--;
             if (macro.RemainingRepeats > 0 ||
-                (macro.RepeatMode == MacroRepeatMode.UntilRelease
+                // #238: Toggle and Turbo repeat until-release regardless of
+                // the authored RepeatMode. Staying on THIS branch (instead
+                // of stopping and re-starting via shouldStart next tick) is
+                // what makes RepeatDelayMs pace the passes: the stop-then-
+                // restart path re-fires immediately, unpaced.
+                ((macro.RepeatMode == MacroRepeatMode.UntilRelease
+                  || macro.TriggerMode == MacroTriggerMode.Toggle
+                  || macro.TriggerMode == MacroTriggerMode.Turbo)
                  && !macro.RunReleasedFireToCompletion))
             {
                 double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;

@@ -1539,6 +1539,10 @@ public class Strings : INotifyPropertyChanged
     public string Macro_DoublePress_Tooltip => Get("Macro_DoublePress_Tooltip");
     public string Macro_TriplePress => Get("Macro_TriplePress");
     public string Macro_TriplePress_Tooltip => Get("Macro_TriplePress_Tooltip");
+    public string Macro_Toggle => Get("Macro_Toggle");
+    public string Macro_Toggle_Tooltip => Get("Macro_Toggle_Tooltip");
+    public string Macro_Turbo => Get("Macro_Turbo");
+    public string Macro_Turbo_Tooltip => Get("Macro_Turbo_Tooltip");
     public string Macro_SinglePress => Get("Macro_SinglePress");
     public string Macro_SinglePress_Tooltip => Get("Macro_SinglePress_Tooltip");
     public string Macro_TriggerDoublePressMs_Label => Get("Macro_TriggerDoublePressMs_Label");

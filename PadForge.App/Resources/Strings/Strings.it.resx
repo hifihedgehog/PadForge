@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -2628,7 +2628,7 @@
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>regolazioni del mouse scartate ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversione degli assi non applicata ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>rotella circolare approssimata con un trascinamento verticale</value></data>
-  <data name="Macro_HoldForMs" xml:space="preserve"><value>Tenendo premuto</value></data>
+  <data name="Macro_HoldForMs" xml:space="preserve"><value>Alla pressione prolungata</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Si attiva una volta dopo che l'attivatore è stato tenuto premuto ininterrottamente per il tempo di mantenimento. Un tocco più breve non fa nulla.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Alla doppia pressione</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Si attiva quando il trigger viene premuto due volte entro la finestra di pressione. Se la seconda pressione viene mantenuta, resta attivo fino al rilascio.</value></data>
@@ -2636,6 +2636,10 @@
   <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>Si attiva quando non segue una seconda pressione entro la finestra di pressione, quindi può condividere un pulsante con la pressione doppia o tripla. "Alla pressione" si attiva subito.</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>Alla tripla pressione</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Si attiva quando il trigger viene premuto tre volte entro la finestra di pressione. Se la terza pressione viene mantenuta, resta attivo fino al rilascio.</value></data>
+  <data name="Macro_Toggle" xml:space="preserve"><value>Alterna</value></data>
+  <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>La prima pressione blocca le azioni attive. Premi di nuovo per rilasciare. Mantenimenti e ripetizioni restano attivi fino alla seconda pressione.</value></data>
+  <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
+  <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>Ripete le azioni all’intervallo indicato sotto finché l’attivatore resta premuto.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Finestra di pressione</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo di mantenimento</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Ripeti pulsante finché tenuto</value></data>

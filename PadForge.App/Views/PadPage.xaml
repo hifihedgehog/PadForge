@@ -1192,6 +1192,10 @@
                                                   ToolTip="{Binding Macro_DoublePress_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBoxItem Content="{Binding Macro_TriplePress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.TriplePress}"
                                                   ToolTip="{Binding Macro_TriplePress_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBoxItem Content="{Binding Macro_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.Toggle}"
+                                                  ToolTip="{Binding Macro_Toggle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBoxItem Content="{Binding Macro_Turbo, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.Turbo}"
+                                                  ToolTip="{Binding Macro_Turbo_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBoxItem Content="{Binding Macro_Always, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.Always}"/>
                                     <ComboBoxItem Content="{Binding Macro_CustomExpression, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.CustomExpression}"/>
                                 </ComboBox>
@@ -1225,6 +1229,22 @@
                                          ToolTip="{Binding TriggerPressWindowToolTip}"/>
                                 <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                 <ui:Button Command="{Binding ResetTriggerDoublePressMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
+                            </StackPanel>
+
+                            <!-- Turbo interval row (#238): visible only in Turbo mode,
+                                 binding the SAME RepeatDelayMs the Repeat card edits, so
+                                 the rate sits beside the Fire picker where the mode was
+                                 chosen. Turbo forces until-release repeats in the engine,
+                                 so this interval is the turbo rate. -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                        Visibility="{Binding IsTurboMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RepeatInterval_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                           Width="80" Margin="0,0,8,0"
+                                           ToolTip="{Binding Macro_Turbo_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Text="{Binding RepeatDelayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"
+                                         ToolTip="{Binding Macro_Turbo_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <ui:Button Command="{Binding ResetRepeatDelayMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
                             </StackPanel>
 
                             <!-- Custom-expression editor (visible only when TriggerMode = CustomExpression).

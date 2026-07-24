@@ -132,9 +132,11 @@ namespace PadForge.Tests
         [Fact]
         public void TriggerModeEnum_SinglePressPinnedAtTail()
         {
+            // #238 Toggle/Turbo appended after; SinglePress's ordinal
+            // stays pinned (the clipboard serializes numerically).
             Assert.Equal(8, (int)MacroTriggerMode.SinglePress);
             var values = Enum.GetValues<MacroTriggerMode>();
-            Assert.Equal(MacroTriggerMode.SinglePress, values[^1]);
+            Assert.Equal(MacroTriggerMode.SinglePress, values[^3]);
         }
 
         [Fact]

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -2614,6 +2614,10 @@
   <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>프레스 윈도우 내에 두 번째 누름이 없을 때 발동합니다. 같은 버튼에서 더블/트리플 프레스와 함께 사용할 수 있습니다. '누를 때'는 즉시 발동합니다.</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>세 번 누를 때</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>연속 누르기 시간 안에 세 번 누르면 발동합니다. 세 번째 누름을 유지하면 놓을 때까지 활성 상태로 유지됩니다.</value></data>
+  <data name="Macro_Toggle" xml:space="preserve"><value>토글</value></data>
+  <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>처음 누르면 동작이 고정되고, 다시 누르면 해제됩니다. 홀드와 반복은 두 번째 누를 때까지 유지됩니다.</value></data>
+  <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
+  <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>트리거를 누르고 있는 동안 아래 간격으로 동작을 반복합니다.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>연속 누르기 시간</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>유지 시간</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>누르고 있는 동안 버튼 반복</value></data>

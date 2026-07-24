@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -2606,7 +2606,7 @@
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>ajustes de resposta do mouse descartados ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversão de eixo não aplicada ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>roda de rolagem circular aproximada como arrasto vertical</value></data>
-  <data name="Macro_HoldForMs" xml:space="preserve"><value>Ao Segurar</value></data>
+  <data name="Macro_HoldForMs" xml:space="preserve"><value>Ao Pressionar Longamente</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Dispara uma vez depois que o gatilho for mantido continuamente pelo tempo de retenção. Um toque mais curto não faz nada.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Ao Pressionar Duas Vezes</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Dispara quando o gatilho é pressionado duas vezes dentro da janela de pressão. Se a segunda pressão for mantida, permanece ativo até soltar.</value></data>
@@ -2614,6 +2614,10 @@
   <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>Dispara quando não há um segundo pressionamento dentro da janela de pressionamento, podendo dividir um botão com o pressionamento duplo ou triplo. "Ao Pressionar" dispara na hora.</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>Ao Pressionar Três Vezes</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Dispara quando o gatilho é pressionado três vezes dentro da janela de pressão. Se a terceira pressão for mantida, permanece ativo até soltar.</value></data>
+  <data name="Macro_Toggle" xml:space="preserve"><value>Alternar</value></data>
+  <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>O primeiro toque trava as ações ativadas. Pressione de novo para soltar. Retenções e repetições continuam ativas até o segundo toque.</value></data>
+  <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
+  <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>Repete as ações no intervalo abaixo enquanto o gatilho estiver pressionado.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Janela de Pressão</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo de Retenção</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Repetir Botão Enquanto Segurar</value></data>

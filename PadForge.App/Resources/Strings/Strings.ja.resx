@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -2614,6 +2614,10 @@
   <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>プレスウィンドウ内に2回目の押下がない場合に発動します。同じボタンでダブルプレスやトリプルプレスと併用できます。「押した時」は即時に発動します。</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>トリプルプレス時</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>連続プレス時間内に3回押すと発動します。3回目を押し続けると、離すまで有効のままです。</value></data>
+  <data name="Macro_Toggle" xml:space="preserve"><value>トグル</value></data>
+  <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>最初の押下でアクションが固定され、もう一度押すと解除されます。ホールドやリピートは 2 回目の押下まで有効なままです。</value></data>
+  <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
+  <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>トリガーを押している間、下の間隔でアクションを繰り返します。</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>連続プレス時間</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持時間</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>押している間ボタンをリピート</value></data>

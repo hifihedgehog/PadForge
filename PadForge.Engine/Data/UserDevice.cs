@@ -185,13 +185,12 @@ namespace PadForge.Engine.Data
         /// carries the MCU and posts onto the pair's joystick. Keyed by PID
         /// like the wrapper's HasNfcReader so the picker offers the
         /// "Any NFC Tag" / tag sources exactly where the reader exists.
-        /// Switch 2 readers ride the BLE driver (SDL#18): Pro Controller 2
-        /// (PID 0x2069) and Joy-Con 2 R (0x2066). Joy-Con 2 L has no NFC.
-        /// Computed, not stored. Gates the picker offering.</summary>
+        /// Switch 2 controllers are excluded: no reference reads their NFC
+        /// on PC and no working code exists over any transport (verified
+        /// 2026-07-24). Computed, not stored. Gates the picker offering.</summary>
         [XmlIgnore]
         public bool HasNfcReader => VendorId == 0x057E
-            && (ProdId == 0x2007 || ProdId == 0x2008 || ProdId == 0x2009
-                || ProdId == 0x2066 || ProdId == 0x2069);
+            && (ProdId == 0x2007 || ProdId == 0x2008 || ProdId == 0x2009);
 
         // Wii IR pointer tuning (sensor-bar position/compensation, smoothing)
         // moved to PadSetting (issue #146 follow-up) so each (device, slot)

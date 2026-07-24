@@ -44,6 +44,15 @@ namespace PadForge.Common.Input
         /// the bubble-up cascade so XInput indices stay contiguous.</summary>
         public int HmInactivityTimeoutSeconds { get; set; } = 60;
 
+        /// <summary>Devices SDL's hidapi layer must never enumerate or probe
+        /// (SDL_HIDAPI_IGNORE_DEVICES format: comma-separated 0xVVVV/0xPPPP).
+        /// Each entry is a pad whose HID interface wedges the Sony
+        /// third-party detection FEATURE report forever on Windows, freezing
+        /// the UI thread that runs enumeration (issue #235). Ignored pads
+        /// ride SDL's XInput / DirectInput lanes instead.
+        ///   0x146b/0x0603: Nacon PS4 Compact (BB4469), XInput-mode PS4 pad.</summary>
+        internal const string HidapiIgnoreDevices = "0x146b/0x0603";
+
         /// <summary>Raised on the polling thread when an HM VC has reached
         /// its inactivity timeout.  Listener (MainWindow) marshals to the
         /// UI thread and runs DeviceService.DeleteSlot + InputService.OnSlotDeleted with
@@ -614,9 +623,31 @@ namespace PadForge.Common.Input
                 SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
                 // Allow SDL3 to enumerate XInput controllers (Xbox, etc.).
-                // Do NOT set SDL_HINT_JOYSTICK_RAWINPUT — it conflicts with
+                // Do NOT set SDL_HINT_JOYSTICK_RAWINPUT. It conflicts with
                 // XInput enumeration and prevents Xbox controllers from appearing.
                 SDL_SetHint(SDL_HINT_JOYSTICK_XINPUT, "1");
+
+                // Devices SDL's hidapi layer must never enumerate or probe
+                // (issue #235). The Nacon PS4 Compact (146B:0603) is
+                // classified XInputPS4Controller in SDL's controller list,
+                // which maps to GAMEPAD_TYPE_STANDARD off the UI path
+                // (SDL_joystick.c:3158-3163), so the hang guard in
+                // HIDAPI_SupportsPlaystationDetection does not exclude it
+                // and the PS4/PS5/PS3 drivers each send it the Sony
+                // third-party capabilities FEATURE report during
+                // enumeration. Windows hidapi waits on that IOCTL forever
+                // (hid.c GetOverlappedResult wait=TRUE, no timeout), the
+                // pad never answers it in XInput mode, and enumeration
+                // runs on the UI thread (PumpSdlEvents), so connecting the
+                // pad froze the whole app until unplug canceled the IRP.
+                // Upstream fixed the same wedge for the HORIPAD Switch
+                // (0x0f0d/0x00c1) with the type guard; XInput-mode PS4
+                // pads slip past it. Ignored here, the pad rides SDL's
+                // XInput lane, the one its classification names and the
+                // one Steam and Windows drive it with. PID-scoped: other
+                // Nacon PIDs stay untouched until a report proves they
+                // share the wedge.
+                SDL_SetHint(SDL_HINT_HIDAPI_IGNORE_DEVICES, HidapiIgnoreDevices);
 
                 // Enable Switch 2 Pro Controller HIDAPI driver (requires libusb-1.0.dll).
                 SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_SWITCH2, "1");

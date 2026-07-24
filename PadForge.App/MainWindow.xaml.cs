@@ -1961,6 +1961,17 @@ namespace PadForge
                     StatusMessageText.BeginAnimation(UIElement.OpacityProperty, null);
                     StatusMessageText.Opacity = 1.0;
                 }
+                // The nav flames read engine-level state (IsEngineRunning
+                // and the idle-following HasActiveSlots) but re-render only
+                // on per-slot property changes, so an engine idle/stop
+                // transition alone left every flame stale at its last heat
+                // (part of the owner's 2026-07-24 idle-vs-forging
+                // contradiction). Re-render the rail on those transitions.
+                else if (e.PropertyName is nameof(MainViewModel.HasActiveSlots)
+                         or nameof(MainViewModel.IsEngineRunning))
+                {
+                    RefreshAllControllerNavItems();
+                }
             };
 
             // Populate sidebar and dashboard with saved slots regardless of engine state,
@@ -2546,6 +2557,15 @@ namespace PadForge
             else if (navItem.MappedDeviceCount == 0) { lit = false; cooling = false; }
             else if (!_viewModel.IsEngineRunning) { lit = false; cooling = true; }
             else if (!navItem.IsVirtualControllerConnected) { lit = false; cooling = true; }
+            // Engine idle with the VC parked (inactivity timeout 0 = never
+            // destroy, all devices offline): idle is not forging. Gold,
+            // agreeing with the instrument line's Idle instead of
+            // contradicting it (owner repro 2026-07-24). Ordered after the
+            // VC check so the ordinary awaiting state keeps its own gold.
+            // With the timeout armed this state is transient: the engine
+            // stays awake through the grace and the teardown lands here as
+            // the not-connected branch above.
+            else if (!_viewModel.HasActiveSlots) { lit = false; cooling = true; }
             else { lit = true; cooling = false; }
         }
 
@@ -2708,6 +2728,13 @@ namespace PadForge
                 // the grace period the VC is still alive even with devices
                 // offline, so the flame stays ember until teardown.
                 powerTooltip = Strings.Instance.Main_AwaitingDevices;
+            }
+            else if (!_viewModel.HasActiveSlots)
+            {
+                // Engine idle with the VC parked (timeout 0, devices
+                // offline): idle, not forging, matching ComputeFlameHeat's
+                // parked branch and the instrument line.
+                powerTooltip = Strings.Instance.Common_Idle;
             }
             else
             {
@@ -3070,6 +3097,14 @@ namespace PadForge
             // Never touch Icon here — PaneClosed/PaneOpened handlers manage it exclusively.
             // Re-rendering the bitmap on every 30Hz update causes visual flashing.
         }
+
+        /// <summary>Re-renders every controller nav card in its CURRENT pane
+        /// mode. The flames read engine-level inputs (stopped, idle) that
+        /// change without any per-slot property firing, so those transitions
+        /// re-render here rather than leaving each flame stale at its last
+        /// heat (the 2026-07-24 idle-vs-forging contradiction).</summary>
+        private void RefreshAllControllerNavItems()
+            => UpdateAllControllerCardMode(compact: !NavView.IsPaneOpen);
 
         /// <summary>
         /// Swaps all controller NavigationViewItem cards between full and compact mode.

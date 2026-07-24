@@ -2499,7 +2499,32 @@ namespace PadForge.Services
             // shared input choppily on the consumer even with no local slot active (#138).
             bool remoteSharing = _linkServer != null && _linkServer.IsRunning && _linkServer.HasConnections;
 
-            _inputManager.IsIdle = !anyActive && !remoteSharing;
+            // A live virtual controller pending its inactivity teardown keeps
+            // the engine awake (owner repro 2026-07-24): the teardown counter
+            // advances only in the full pipeline (Step 5 never runs in idle),
+            // so idling here froze the timeout forever, with the VC still
+            // online, the flame reading Forging, and the instrument line
+            // reading Idle. Awake, the grace runs its 60 s (default), the
+            // teardown fires, the VC drops, and THEN this predicate goes
+            // false and the engine idles with every surface agreeing. With
+            // the timeout disabled (0 = never destroy) the legacy contract
+            // stands: the VC survives and the engine idles immediately.
+            bool teardownPending = false;
+            if (!anyActive && _inputManager.HmInactivityTimeoutSeconds > 0)
+            {
+                var vcs = _inputManager.GetVirtualControllers();
+                for (int i = 0; i < vcs.Length; i++)
+                {
+                    if (vcs[i] != null
+                        && SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
+                    {
+                        teardownPending = true;
+                        break;
+                    }
+                }
+            }
+
+            _inputManager.IsIdle = !anyActive && !remoteSharing && !teardownPending;
 
             RefreshSwitchNfcArming();
         }

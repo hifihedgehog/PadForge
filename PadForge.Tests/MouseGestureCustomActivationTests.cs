@@ -22,6 +22,7 @@ namespace PadForge.Tests
     /// persistence legs (Clone, checksum dedup trap, XML round-trip,
     /// CopyFrom deep copy).
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class MouseGestureCustomActivationTests : IDisposable
     {
         private const int CustomBit = 1 << MouseGestureContext.CustomButtonIndex;

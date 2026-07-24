@@ -16,7 +16,7 @@ namespace PadForge.Tests
     /// touch-surface flick stick vector, the POV any-direction read, the
     /// second AND companion, and the button-pair grid stepping.
     /// </summary>
-    [Collection("GravityProviderSerial")]
+    [Collection("SettingsManagerStatics")]
     public class WorkshopV26EngineTests
     {
         // ─── Gravity-lean pair: frame signs ─────────────────────────────

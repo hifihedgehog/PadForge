@@ -15,6 +15,7 @@ namespace PadForge.Tests
     /// activator classification, and the TriplePress disable reset. Each
     /// test goes red when its fix is reverted (Phase 4 mutation bar).
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class ArcAuditFixTests
     {
         // ─── Extended trigger yield: rest is short.MinValue, not 0 ───

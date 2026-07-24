@@ -15,6 +15,7 @@ namespace PadForge.Tests
     /// sign-preserving |x|^e shaping. Off by default, so every existing source
     /// keeps exact pass-through behavior.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class CurveRangeShapingTests
     {
         private static CustomInputState CenteredState()

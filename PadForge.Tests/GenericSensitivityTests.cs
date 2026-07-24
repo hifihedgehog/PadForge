@@ -14,6 +14,7 @@ namespace PadForge.Tests
     /// It is mutually exclusive with the specialized gyro / mouse / IR sensitivities,
     /// which apply in their own reader branches and return before the generic path.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class GenericSensitivityTests
     {
         private static CustomInputState CenteredState()

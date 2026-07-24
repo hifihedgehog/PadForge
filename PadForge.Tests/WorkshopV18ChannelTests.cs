@@ -13,6 +13,7 @@ namespace PadForge.Tests
     /// quadrants, the half-composed quadrants, and the windowed click).
     /// Every knob defaults off, so unstamped sources pin pass-through.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class WorkshopV18ChannelTests
     {
         // ── Curve / range on the unipolar trigger tail ──

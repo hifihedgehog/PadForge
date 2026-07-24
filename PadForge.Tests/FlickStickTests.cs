@@ -15,6 +15,7 @@ namespace PadForge.Tests
     /// and the layer engage/disengage arming the frame-sequence gap encodes
     /// (the #225 shift-layer host requirement).
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class FlickStickTests
     {
         private const double Dt = 0.004;          // 250 Hz tick

@@ -14,6 +14,7 @@ namespace PadForge.Tests
     /// <see cref="ShiftActivator.DoublePressMs"/> gate field, and the
     /// macro layer-gate DTO round-trip.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class WorkshopV25EngineTests
     {
         private static CustomInputState CenteredState()

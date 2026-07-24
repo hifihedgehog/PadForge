@@ -15,6 +15,7 @@ namespace PadForge.Tests
     /// config's persistence contract, including the config-only cold-load
     /// case that the rows-only content gate used to discard.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class RumbleAudioTests : IDisposable
     {
         public RumbleAudioTests() => SourceCoercion.SlotRumbleProvider = null;

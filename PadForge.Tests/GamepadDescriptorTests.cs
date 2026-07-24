@@ -17,6 +17,7 @@ namespace PadForge.Tests
     /// survival (the "1k lens": every member survives the persisted round-trip and
     /// is never touched by the legacy I/H prefix strip because it leads with 'G').
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class GamepadDescriptorTests
     {
         private static MappingSource Src(string descriptor) => new() { Descriptor = descriptor };

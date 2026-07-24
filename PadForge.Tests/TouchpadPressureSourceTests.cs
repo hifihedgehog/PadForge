@@ -11,6 +11,7 @@ namespace PadForge.Tests
     /// existed (SourceCoercion.TryParseTouchpadAxis, axisOffset 2), so this locks
     /// in that the newly-surfaced descriptor feeds a real value end to end.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class TouchpadPressureSourceTests
     {
         private static CustomInputState StateWithPressure(float pressure, bool down = true)

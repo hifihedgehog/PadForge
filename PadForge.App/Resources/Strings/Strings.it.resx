@@ -2640,6 +2640,7 @@
   <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>La prima pressione blocca le azioni attive. Premi di nuovo per rilasciare. Mantenimenti e ripetizioni restano attivi fino alla seconda pressione.</value></data>
   <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
   <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>Ripete le azioni all’intervallo indicato sotto finché l’attivatore resta premuto.</value></data>
+  <data name="Macro_ToggleInterval_Tooltip" xml:space="preserve"><value>Finché è bloccato, le azioni si ripetono a questo intervallo.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Finestra di pressione</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo di mantenimento</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Ripeti pulsante finché tenuto</value></data>

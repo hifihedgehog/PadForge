@@ -2618,6 +2618,7 @@
   <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>Der erste Druck rastet die Aktionen ein. Erneut drücken zum Lösen. Halten und Wiederholungen bleiben bis zum zweiten Druck aktiv.</value></data>
   <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
   <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>Wiederholt die Aktionen im unten stehenden Intervall, solange der Auslöser gehalten wird.</value></data>
+  <data name="Macro_ToggleInterval_Tooltip" xml:space="preserve"><value>Solange eingerastet, wiederholen sich die Aktionen in diesem Intervall.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Zeitfenster</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Haltezeit</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Controller-Taste wiederholen, solange gehalten</value></data>

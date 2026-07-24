@@ -2618,6 +2618,7 @@
   <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>La primera pulsación fija las acciones activadas. Pulsa de nuevo para soltar. Las retenciones y repeticiones siguen activas hasta la segunda pulsación.</value></data>
   <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
   <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>Repite las acciones en el intervalo indicado abajo mientras el activador se mantenga pulsado.</value></data>
+  <data name="Macro_ToggleInterval_Tooltip" xml:space="preserve"><value>Mientras esté fijado, las acciones se repiten en este intervalo.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Ventana de pulsación</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tiempo de retención</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Repetir botón mientras se mantiene</value></data>

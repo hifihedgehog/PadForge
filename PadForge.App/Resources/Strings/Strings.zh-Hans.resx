@@ -2618,6 +2618,7 @@
   <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>第一次按下锁定动作，再按一次释放。按住与重复会保持生效，直到第二次按下。</value></data>
   <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
   <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>按住触发器时，按下方间隔重复执行动作。</value></data>
+  <data name="Macro_ToggleInterval_Tooltip" xml:space="preserve"><value>锁定期间，动作按此间隔重复。</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>连按时间</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持时间</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>按住时重复按钮</value></data>

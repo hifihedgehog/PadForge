@@ -114,6 +114,26 @@ namespace PadForge.Tests
             Assert.Equal(30000, Tick(im, macros, held: true));
         }
 
+        /// <summary>The Repeat section (Mode / Count / Interval) hides for
+        /// Turbo and Toggle: the engine overrides RepeatMode and
+        /// RepeatCount there, and dead controls that silently do nothing
+        /// are the Phase-1h defect class. The one live knob, the interval,
+        /// moves to the inline row beside the Fire picker.</summary>
+        [Theory]
+        [InlineData(MacroTriggerMode.Turbo, false, true)]
+        [InlineData(MacroTriggerMode.Toggle, false, true)]
+        [InlineData(MacroTriggerMode.WhileHeld, true, false)]
+        [InlineData(MacroTriggerMode.OnPress, true, false)]
+        [InlineData(MacroTriggerMode.Always, true, false)]
+        [InlineData(MacroTriggerMode.SinglePress, true, false)]
+        public void RepeatSection_HidesExactlyWhereItIsDead(
+            MacroTriggerMode mode, bool repeatSection, bool inlineInterval)
+        {
+            var m = Macro(mode, 1000);
+            Assert.Equal(repeatSection, m.ShowsRepeatSection);
+            Assert.Equal(inlineInterval, m.ShowsInlineIntervalRow);
+        }
+
         [Fact]
         public void Turbo_StopsOnRelease()
         {

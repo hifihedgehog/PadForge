@@ -2618,6 +2618,7 @@
   <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>처음 누르면 동작이 고정되고, 다시 누르면 해제됩니다. 홀드와 반복은 두 번째 누를 때까지 유지됩니다.</value></data>
   <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
   <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>트리거를 누르고 있는 동안 아래 간격으로 동작을 반복합니다.</value></data>
+  <data name="Macro_ToggleInterval_Tooltip" xml:space="preserve"><value>고정된 동안 이 간격으로 동작을 반복합니다.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>연속 누르기 시간</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>유지 시간</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>누르고 있는 동안 버튼 반복</value></data>

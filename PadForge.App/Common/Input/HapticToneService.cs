@@ -598,7 +598,58 @@ namespace PadForge.Common.Input
                 _suppressed = false;
                 if (_reconcileTimer != null) return;
                 _reconcileTimer = new Timer(_ => { try { Reconcile(); } catch { } }, null, 0, 3000);
+                // Reading an NFC tag kills vibration on the controller until a
+                // power cycle (owner repro 2026-07-24: tap an amiibo, rumble
+                // dies and stays dead). SDL enables vibration exactly once, at
+                // device open (SetVibrationEnabled at SDL_hidapi_switch.c:2599),
+                // and its NFC machine never re-enables it, so nothing restores
+                // the state the MCU session clobbers. Re-assert enable-vibration
+                // (subcommand 0x48) on our own sole-writer handle after every
+                // tag read. Cheap (one 12-byte command per tap, not per tick)
+                // and self-healing: it also covers a tag read by any other
+                // consumer of the same reader.
+                NfcTagRegistry.ControllerTagDetected += OnControllerTagDetected;
             }
+        }
+
+        /// <summary>Re-assert enable-vibration after an NFC tag read. See the
+        /// subscription in <see cref="EnsureStarted"/> for why. Runs off the
+        /// caller's thread onto a worker so a tag event never blocks the
+        /// reader, and touches only live gen-1 Nintendo sinks.</summary>
+        private static void OnControllerTagDetected(string uid)
+        {
+            List<Sink> targets;
+            lock (_lock)
+            {
+                if (_suppressed) return;
+                targets = _sinks.Where(x => IsJoyConGen1(x.Family) && !x.Remote
+                    && x.Handle != IntPtr.Zero).ToList();
+            }
+            if (targets.Count == 0) return;
+            Task.Run(() =>
+            {
+                foreach (var s in targets)
+                {
+                    try
+                    {
+                        // Re-check liveness: Reconcile may have torn the sink
+                        // down between the snapshot and this write.
+                        IntPtr h;
+                        lock (_lock)
+                        {
+                            if (!_sinks.Contains(s) || s.Handle == IntPtr.Zero) continue;
+                            h = s.Handle;
+                        }
+                        JoyConSendCommand(h, s, subcommand: 0x48, arg: 0x01); // enable vibration
+                        if (s.PairSecondHandle != IntPtr.Zero)
+                            JoyConSendCommandTo(s.PairSecondHandle, s.PairSecondOutLen,
+                                ref s.PairSecondTimer, subcommand: 0x48, arg: 0x01);
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"HAPTICDIAG re-armed vibration after NFC tag (family={s.Family} slot={s.Slot})");
+                    }
+                    catch { /* best effort: a dead handle is Reconcile's problem */ }
+                }
+            });
         }
 
         // ── HID P/Invoke (same surface as the Wii speaker service) ──
@@ -2062,6 +2113,10 @@ namespace PadForge.Common.Input
         public static void Shutdown()
         {
             _suppressed = true;
+            // Paired with the subscription in EnsureStarted. Static event, so
+            // an un-removed handler would keep this class reachable and fire
+            // writes at torn-down handles after shutdown.
+            NfcTagRegistry.ControllerTagDetected -= OnControllerTagDetected;
             // Snapshot under the lock, tear down OUTSIDE it. TeardownSink does a
             // Thread.Join(3000) and a WASAPI capture dispose; holding _lock across
             // those stalls every other _lock caller (GetSlotSinkMixers macro playback,

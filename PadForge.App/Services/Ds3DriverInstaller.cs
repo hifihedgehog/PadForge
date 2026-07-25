@@ -359,7 +359,17 @@ namespace PadForge.Services
             // its use-after-free-on-disconnect path (upstream #48, unfixed at
             // v2.10.470.0) is unreachable. AutoDisableFilter stays default (1):
             // deny-then-off is a fail-safe we keep.
-            key?.SetValue("AutoEnableFilter", 0, RegistryValueKind.DWord);
+            //
+            // NOT on a DsHidMini system (audit 2026-07-24, lens 1r): the
+            // coexistence policy says PadForge never owns arming there,
+            // because their DS3s connect only while patching is armed and
+            // leave no BTHPORT record for AnyDs3Paired to find. Writing the
+            // override here would re-take the ownership
+            // ReconcilePsmPatchForCrashSafety just repaired, and it
+            // outlives PadForge. The install/pair path is the one caller
+            // that reached this line without consulting the policy.
+            if (!IsDsHidMiniInstalled())
+                key?.SetValue("AutoEnableFilter", 0, RegistryValueKind.DWord);
         }
 
         private static void EnsurePsmPatch(Action<string> log) => SetPsmPatching(true, log);

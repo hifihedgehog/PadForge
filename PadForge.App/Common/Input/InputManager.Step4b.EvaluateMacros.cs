@@ -711,8 +711,17 @@ namespace PadForge.Common.Input
 
                 // Consume trigger buttons if configured (only for Xbox bitmask triggers;
                 // raw device buttons aren't part of the combined Gamepad state).
-                if (macro.ConsumeTriggerButtons && triggerActive && macro.IsExecuting
-                    && !macro.UsesRawTrigger)
+                // Toggle consumes on the RAW button instead (#238 audit
+                // 2026-07-24): for that mode triggerActive is the latch and
+                // the unlatch press drives it false while the stop block
+                // clears IsExecuting, so both gate terms went false exactly
+                // when the physical button was down and the second press
+                // leaked through to the game. Consuming on the raw state
+                // keeps "the macro eats its trigger" true for both presses.
+                bool consumeNow = macro.TriggerMode == MacroTriggerMode.Toggle
+                    ? macro.ToggleRawWasActive
+                    : (triggerActive && macro.IsExecuting);
+                if (macro.ConsumeTriggerButtons && consumeNow && !macro.UsesRawTrigger)
                 {
                     gp.Buttons &= (ushort)~macro.TriggerButtons;
                 }
@@ -3424,8 +3433,15 @@ namespace PadForge.Common.Input
                 if (macro.IsExecuting && macro.Actions.Count > 0)
                     ExecuteMacroActionsExtended(ref raw, macro);
 
-                // Consume trigger buttons.
-                if (macro.ConsumeTriggerButtons && triggerActive && macro.IsExecuting
+                // Consume trigger buttons. Toggle keys on the RAW button for
+                // the same reason as the Gamepad loop above: its unlatch
+                // press drives the latch false and clears IsExecuting, so
+                // the gate went false exactly when the button was down and
+                // the second press leaked through (audit 2026-07-24).
+                bool consumeNowExtended = macro.TriggerMode == MacroTriggerMode.Toggle
+                    ? macro.ToggleRawWasActive
+                    : (triggerActive && macro.IsExecuting);
+                if (macro.ConsumeTriggerButtons && consumeNowExtended
                     && macro.UsesCustomTrigger)
                 {
                     var tw = macro.TriggerCustomButtonWords;

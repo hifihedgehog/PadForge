@@ -239,9 +239,19 @@ namespace PadForge.Engine.Data
         // KBM surface grammar (KeyboardMouseVirtualController targets):
         // keys and mouse buttons are button-like; mouse axes and scroll
         // are axis-like.
+        // ScrollH is the horizontal wheel and is a REAL target
+        // (MappingTranslation: KbmScrollH / KbmScrollHNeg). Without the
+        // optional H the regex rejected it, the merge rebuilt no row for
+        // it, and the clear-then-rewrite save then wiped the authored
+        // binding: the same data-loss shape the MIDI/KBM lanes were added
+        // to stop (2026-07-23), one target deeper (audit 2026-07-24,
+        // lens 1r). The Neg legs strip their suffix before matching, so
+        // KbmScrollHNeg reaches this as KbmScrollH.
         private static readonly System.Text.RegularExpressions.Regex KbmTargetKey =
-            new(@"^Kbm(Key[0-9A-Fa-f]+|MBtn\d+|MouseX|MouseY|Scroll)$",
+            new(@"^Kbm(Key[0-9A-Fa-f]+|MBtn\d+|MouseX|MouseY|Scroll|ScrollH)$",
                 System.Text.RegularExpressions.RegexOptions.Compiled);
+        // KbmScroll is a prefix of KbmScrollH, so the existing entry already
+        // classifies both as axis-like; listed explicitly for the reader.
         private static readonly string[] KbmAxisTargetPrefixes = { "KbmMouseX", "KbmMouseY", "KbmScroll" };
 
         /// <summary>Rewrites legacy raw-surface tokens (the pre-2026-07-19

@@ -41,6 +41,12 @@ namespace PadForge.Engine
         //  Cached motor speeds for change detection
         // ─────────────────────────────────────────────
 
+        /// <summary>Whether the last rumble emit failed, so the HAPTICDIAG
+        /// probe logs a failure run once instead of every poll (the cache
+        /// below advances only on success, which re-enters that block
+        /// forever while a write keeps failing).</summary>
+        private bool _lastEmitFailed;
+
         private ushort _cachedLeftMotorSpeed;
         private ushort _cachedRightMotorSpeed;
         private ushort _cachedLeftTriggerMotorSpeed;
@@ -351,9 +357,14 @@ namespace PadForge.Engine
                 // HAPTICDIAG (2026-07-24 rumble regression): the emit's
                 // success was invisible, so a failing SDL write and a
                 // successful one that the firmware ignores were
-                // indistinguishable. Transition-only (this block already
-                // runs on change), Nintendo only.
-                if (ud != null && ud.VendorId == 0x057E)
+                // indistinguishable. Nintendo only. NOT transition-only on
+                // its own: the cache below advances only on success, so a
+                // persistently failing write re-enters this block every
+                // poll. Log the failure once per (device, value) run and
+                // let success re-arm it (audit 2026-07-24, lens 1n).
+                bool emitLogWorthy = scalarSuccess || !_lastEmitFailed;
+                _lastEmitFailed = !scalarSuccess;
+                if (ud != null && ud.VendorId == 0x057E && emitLogWorthy)
                     SdlDiagLog.WriteLine(
                         $"HAPTICDIAG emit L={finalLeft} R={finalRight} ok={scalarSuccess}"
                         + $" viaHaptic={device.HasHaptic} gamepadHandle={(device.GamepadHandle != IntPtr.Zero)}");

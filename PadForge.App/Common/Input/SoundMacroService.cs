@@ -269,9 +269,24 @@ namespace PadForge.Common.Input
                     TeardownSlotOutput_NoLock(s);
                 }
             }
+            // AudioPassthroughService keeps riding this method: it has no
+            // suppression latch, so its Reconcile (driven from the effects
+            // dispatcher, the Audio tab, and engine start) rebuilds it on
+            // demand and a profile apply costs it nothing but a restart.
             AudioPassthroughService.Shutdown();
-            WiiSpeakerService.Shutdown();
-            HapticToneService.Shutdown();
+            // WiiSpeakerService and HapticToneService deliberately do NOT
+            // ride this method, the same carve-out RumbleAudioService got
+            // below and for the same reason. Both latch _suppressed in
+            // Shutdown and clear it ONLY in EnsureStarted, which has one
+            // call site: engine start (InputService). LoadMacros calls
+            // StopAll on EVERY profile apply, so shutting them down here
+            // killed the Wii speaker and the Switch/Steam haptic-tone
+            // stream (and, since 2026-07-24, the NFC vibration re-arm that
+            // rides HapticToneService's tag subscription) until the next
+            // engine restart. Their external Reconcile callers cannot
+            // revive them: Reconcile early-returns on _suppressed. Their
+            // lifecycle is the ENGINE's, so InputManager.Stop tears them
+            // down (audit 2026-07-24, lens 1m/1q).
             // #236 audit: RumbleAudioService.StopAll deliberately does NOT
             // ride this method. SettingsService.LoadMacros calls StopAll on
             // EVERY profile apply (macro sounds are profile-scoped), and

@@ -1320,6 +1320,15 @@ namespace PadForge.ViewModels
         /// finalizing a multi-device combo.</summary>
         public void SetTriggerInputEntries(List<TriggerInputEntry> entries)
         {
+            // Editing the trigger combo mid-hold invalidates every armed
+            // window: the old entries' state must not be credited to the
+            // new entries (audit 2026-07-25 round four, R15). Mirrors the
+            // TriggerMode setter's clears.
+            TriggerHoldStartUtc = DateTime.MinValue;
+            TriggerHoldFired = false;
+            TriggerPressStreak = 0;
+            TriggerLastPressUtc = DateTime.MinValue;
+
             _triggerInputEntries = entries ?? new List<TriggerInputEntry>();
             WireTriggerInputEntries();
             OnPropertyChanged(nameof(TriggerInputs));
@@ -1910,26 +1919,39 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool HasLayerScope => !string.IsNullOrEmpty(_layerMask);
 
-        /// <summary>True when the macro's own mask is not representable by
-        /// the slot's layer list, i.e. an imported or inherited scope
-        /// (audit 2026-07-25, C3). The editor shows the Layer row whenever
-        /// this or the slot's HasShiftLayers is true, so a scope that
+        /// <summary>True when the macro carries ANY scope (same predicate
+        /// as <see cref="HasLayerScope"/>; kept as a separate name because
+        /// the XAML visibility trigger binds a row-display contract, not
+        /// the scope-dot contract). The editor shows the Layer row whenever
+        /// this OR the slot's HasShiftLayers is true, so a scope that
         /// arrived from an import or a cross-slot copy is always visible
         /// and clearable rather than silently gating a macro the user
-        /// cannot inspect.</summary>
+        /// cannot inspect (audit 2026-07-25, C3; doc corrected round four,
+        /// R22: the earlier summary described a not-representable predicate
+        /// the code never implemented).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool ShowsLayerRow => HasLayerScope;
 
-        /// <summary>True once the evaluator has completed a tick for this
-        /// macro, so <see cref="WasTriggerActive"/> reflects an OBSERVED
-        /// sample rather than the field's default (audit 2026-07-25, C14).
-        /// Without it, the first tick after engine start or a profile load
-        /// reads a button that was ALREADY held as a fresh rising edge, and
-        /// On Short Press armed a window it never saw begin: releasing a
-        /// long hold then fired as a tap. Poll-thread transient, cleared at
-        /// engine start with the rest of the trigger state.</summary>
+        /// <summary>Re-raises LayerMask so the Layer picker re-reads the
+        /// source after its ItemsSource was rebuilt (round four, R21). The
+        /// rebuild's null write-back is rejected by the setter, but WPF
+        /// suppresses the re-entrant refresh for the initiating binding,
+        /// so without this the picker rendered blank over intact data.</summary>
+        public void RefreshLayerBinding() => OnPropertyChanged(nameof(LayerMask));
+
+        /// <summary>UTC time of the last evaluator tick that OBSERVED this
+        /// macro's trigger (audit 2026-07-25 round four, replacing the
+        /// round-three sticky bool). <see cref="WasTriggerActive"/> is only
+        /// trustworthy when observation was CONTINUOUS: after any gap (engine
+        /// stop, the macro disabled, its slot idle-skipped, a profile
+        /// hot-retain), the previous sample is stale and an apparent edge on
+        /// the first tick back may have happened entirely unwatched. The
+        /// sticky bool modeled "sampled sometime", so every one of those gap
+        /// sources re-created the held-at-start bug it was added to fix. A
+        /// stamp self-heals them all: a rising edge only arms On Short Press
+        /// when the previous tick is recent. Poll-thread transient.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool TriggerEdgeObserved { get; set; }
+        public DateTime LastEvaluatedUtc { get; set; } = DateTime.MinValue;
 
         /// <summary>Transient timing state for
         /// <see cref="MacroTriggerMode.DoublePress"/>: the UTC time of the

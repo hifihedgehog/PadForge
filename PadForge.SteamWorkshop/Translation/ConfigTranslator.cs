@@ -6374,6 +6374,23 @@ namespace PadForge.SteamWorkshop.Translation
                         || MacroHasLayer(req.LayerMask);
                     kbmHas = LayerHasRows(run.Profile.KbmMappingSet, req.LayerMask);
                 }
+
+                // Round-four mirror (audit 2026-07-25, R8/R9): a
+                // REPLACEMENT-set switch must land on the macro host slot
+                // whenever the profile carries macros, even when the set
+                // has no Xbox rows. Macros always materialize onto the
+                // Xbox slot, and the engine gates them by the OWN slot's
+                // engaged layer; a switch that lives only on the KBM set
+                // leaves the Xbox slot reading Base forever, so Base
+                // macros stayed open inside a set that REPLACES Base and
+                // set-scoped macros never opened. InheritUnmapped is the
+                // persisted replaces-vs-overlays bit: sets are emitted
+                // non-inheriting, mode-shift and overlay layers inherit,
+                // so the mirror never drags a mode-shift onto a slot that
+                // lacks its rows.
+                if (!req.InheritUnmapped && run.Profile.Macros.Count > 0)
+                    xboxHas = true;
+
                 if (!xboxHas && !kbmHas)
                 {
                     // The layer produced no rows (its bindings' own entries

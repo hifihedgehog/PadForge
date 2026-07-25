@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -731,7 +731,13 @@ namespace PadForge.Views
             string jumpToLayer = "";
 
             string cycleLayers = "";
-            if (CycleLayersList.SelectedItems != null && CycleLayersList.SelectedItems.Count > 0)
+            // Only a Cycle activator carries a ring (audit 2026-07-25 round
+            // four, R26). The list is merely HIDDEN when the mode is not
+            // Cycle, so serializing its lingering selection stamped a
+            // phantom ring onto a Hold/Latch/Toggle activator, and
+            // SlotDeclaresMask / the picker then treated those dead stops
+            // as engageable layers.
+            if (isCycle && CycleLayersList.SelectedItems != null && CycleLayersList.SelectedItems.Count > 0)
             {
                 // Walk Items (canonical display order), not SelectedItems
                 // (selection order), so the saved string is deterministic and

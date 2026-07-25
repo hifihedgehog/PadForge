@@ -212,18 +212,23 @@ namespace PadForge.Tests
             }
         }
 
-        // ── C6: Base closes when another slot carries the set switch ──
+        // ── C6 REVERSED (round four, R8/R9): a layerless slot's Base
+        // macro must NOT be closed by an unrelated layer on ANOTHER pad.
+        // The round-three fallback coupled every layerless pad to every
+        // other pad's layer state; the split-import case it was meant to
+        // fix is now handled at the translator instead (the set-switch
+        // mirror onto the macro host slot), so Base is purely own-slot. ──
 
         [Fact]
-        public void BaseScopedMacro_ClosesWhenAForeignSlotEngagesASet()
+        public void BaseScopedMacro_IsNotClosedByAnotherPadsLayer()
         {
-            var ownSet = new MappingSet();          // Xbox slot: macros, no activators
-            var kbmSet = new MappingSet();          // the set switch lives here
-            kbmSet.ShiftActivators.Add(new ShiftActivator
+            var ownSet = new MappingSet();          // pad 0: a Base macro, no activators
+            var foreignSet = new MappingSet();      // pad 1: an unrelated layer
+            foreignSet.ShiftActivators.Add(new ShiftActivator
             {
                 DeviceGuid = DevGuid.ToString(),
-                LayerMask = "Layer_9_2",
-                LayerName = "Set 2",
+                LayerMask = "Shift",
+                LayerName = "Shift",
                 Mode = "Hold",
                 Descriptor = "Button 9",
                 InheritUnmapped = false,
@@ -235,24 +240,18 @@ namespace PadForge.Tests
                 for (int i = 0; i < SettingsManager.SlotMappingSets.Length; i++)
                     SettingsManager.SlotMappingSets[i] = null;
                 SettingsManager.SlotMappingSets[0] = ownSet;
-                SettingsManager.SlotMappingSets[1] = kbmSet;
+                SettingsManager.SlotMappingSets[1] = foreignSet;
 
-                var im = new InputManager();
-                var macros = new[] { Macro(MacroTriggerMode.OnPress, layerMask: "Base", pad: 0) };
-
-                // Nothing engaged: a Base macro fires.
-                Assert.Equal((ushort)Fire, Tick(im, macros, held: true));
-
-                // Engage set 2 on the KBM slot. Steam action sets REPLACE
-                // Base, and this slot owns no layer machinery of its own,
-                // so the Base-scoped macro must close.
+                // Player 2 (pad 1) holds their own Shift layer.
                 var st = new PadForge.Engine.CustomInputState();
                 st.Buttons[9] = true;
-                InputManager.ResolveActiveLayerMask(1, kbmSet, st, DevGuid.ToString());
+                InputManager.ResolveActiveLayerMask(1, foreignSet, st, DevGuid.ToString());
 
-                var im2 = new InputManager();
-                var macros2 = new[] { Macro(MacroTriggerMode.OnPress, layerMask: "Base", pad: 0) };
-                Assert.Equal((ushort)0, Tick(im2, macros2, held: true));
+                // Player 1's (pad 0) Base macro is unaffected: controller
+                // isolation. Pre-fix the fallback closed it.
+                var im = new InputManager();
+                var macros = new[] { Macro(MacroTriggerMode.OnPress, layerMask: "Base", pad: 0) };
+                Assert.Equal((ushort)Fire, Tick(im, macros, held: true));
             }
             finally
             {

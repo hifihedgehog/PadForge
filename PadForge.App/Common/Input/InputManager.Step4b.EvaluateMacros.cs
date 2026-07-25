@@ -636,7 +636,16 @@ namespace PadForge.Common.Input
                 // while a hold-shaped trigger is still down; the break
                 // demands a fresh press. The guard opens on the first
                 // inactive tick.
-                if (macro.AwaitReleaseAfterBreak && !triggerActive)
+                // Toggle opens the guard on the RAW release (audit
+                // 2026-07-24): for that mode triggerActive is the latch, so
+                // the guard waited for an UNLATCH, and resuming a parked
+                // sequence cost three presses (latch, unlatch-to-open,
+                // relatch) instead of the documented "press the trigger
+                // again to continue".
+                bool breakGuardOpen = macro.TriggerMode == MacroTriggerMode.Toggle
+                    ? !macro.ToggleRawWasActive
+                    : !triggerActive;
+                if (macro.AwaitReleaseAfterBreak && breakGuardOpen)
                     macro.AwaitReleaseAfterBreak = false;
 
                 // Start new execution if triggered and not already executing.
@@ -3376,7 +3385,16 @@ namespace PadForge.Common.Input
                 }
 
                 // #237 combo break guard, the Gamepad-path twin.
-                if (macro.AwaitReleaseAfterBreak && !triggerActive)
+                // Toggle opens the guard on the RAW release (audit
+                // 2026-07-24): for that mode triggerActive is the latch, so
+                // the guard waited for an UNLATCH, and resuming a parked
+                // sequence cost three presses (latch, unlatch-to-open,
+                // relatch) instead of the documented "press the trigger
+                // again to continue".
+                bool breakGuardOpen = macro.TriggerMode == MacroTriggerMode.Toggle
+                    ? !macro.ToggleRawWasActive
+                    : !triggerActive;
+                if (macro.AwaitReleaseAfterBreak && breakGuardOpen)
                     macro.AwaitReleaseAfterBreak = false;
 
                 if (shouldStart && !macro.IsExecuting && !macro.AwaitReleaseAfterBreak)

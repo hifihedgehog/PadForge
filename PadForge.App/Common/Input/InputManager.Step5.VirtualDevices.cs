@@ -584,6 +584,12 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly int[] _slotInactiveCounter = new int[MaxPads];
 
+        /// <summary>Wall-clock stamp of each slot's grace start. The
+        /// inactivity timeout measures real elapsed milliseconds so a
+        /// polling-rate change mid-grace cannot rescale a pending teardown
+        /// (audit 2026-07-24).</summary>
+        private readonly long[] _slotInactiveSinceMs = new long[MaxPads];
+
         // The former non-HM short grace (SlotDestroyGraceCycles, 10 s) is
         // retired: every VC type now rides the same HmInactivityTimeoutSeconds
         // contract (60 s default, 0 = never), so a flaky assigned device is
@@ -961,9 +967,22 @@ namespace PadForge.Common.Input
                     // Device(s) mapped but offline — transient disconnect.
                     // Grace period preserves rumble feedback through USB hiccups.
                     if (_slotInactiveCounter[padIndex] == 0)
+                    {
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"VCTRACE slot={padIndex} devices OFFLINE (grace begins, vc={(vc == null ? "null" : vc.GetType().Name)})");
+                        // Stamp the wall clock at the grace's first tick
+                        // (audit 2026-07-24). The counter below stays for
+                        // the trace and for the "grace ended" report, but
+                        // the TIMEOUT is measured in milliseconds: the
+                        // thresholds used to convert seconds into cycles
+                        // with the LIVE PollingIntervalMs, so changing the
+                        // polling rate mid-grace rescaled a pending
+                        // timeout (60 s at 1 ms became ~4 s after a switch
+                        // to 16 ms, and the reverse stretched it).
+                        _slotInactiveSinceMs[padIndex] = Environment.TickCount64;
+                    }
                     _slotInactiveCounter[padIndex]++;
+                    long inactiveMs = Environment.TickCount64 - _slotInactiveSinceMs[padIndex];
 
                     // No create can proceed while every mapped device is
                     // offline (Pass 2 skips inactive slots), so a stale
@@ -981,8 +1000,7 @@ namespace PadForge.Common.Input
                     if (!isHMaestro
                         && vc != null
                         && HmInactivityTimeoutSeconds > 0
-                        && _slotInactiveCounter[padIndex]
-                            >= (HmInactivityTimeoutSeconds * 1000) / System.Math.Max(1, PollingIntervalMs))
+                        && inactiveMs >= HmInactivityTimeoutSeconds * 1000L)
                     {
                         // Non-HM (MIDI, KeyboardMouse) teardown is cheap and
                         // has no kernel-slot ordering concern, but the
@@ -1024,9 +1042,7 @@ namespace PadForge.Common.Input
                         // text "VC torn down due to inactivity") still get
                         // it, while the unified non-active cascade entry
                         // point also runs.
-                        int hmThresholdCycles =
-                            (HmInactivityTimeoutSeconds * 1000) / System.Math.Max(1, PollingIntervalMs);
-                        if (_slotInactiveCounter[padIndex] >= hmThresholdCycles)
+                        if (inactiveMs >= HmInactivityTimeoutSeconds * 1000L)
                         {
                             _hmInactivityFired[padIndex] = true;
                             VibrationStates[padIndex].LeftMotorSpeed = 0;

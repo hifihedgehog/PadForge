@@ -89,6 +89,37 @@ namespace PadForge.Tests
             Assert.Equal(0, Tick(true));
         }
 
+        /// <summary>R10: switching fire mode mid-run ends the run. The
+        /// setter already voided what the old mode ARMED; what it STARTED
+        /// outlived the switch, and the new mode's stop conditions never
+        /// match a run it did not begin, so an all-continuous sequence
+        /// asserted forever and no later press could restart the macro.</summary>
+        [Fact]
+        public void ChangingFireMode_EndsAnExecutingRun()
+        {
+            var m = new MacroItem
+            {
+                Name = "M",
+                IsEnabled = true,
+                TriggerMode = MacroTriggerMode.Toggle,
+                IsExecuting = true,
+                CurrentActionIndex = 3,
+                ComboResumeIndex = 2,
+                AwaitReleaseAfterBreak = true,
+                ToggleTriggerLatched = true,
+                ToggleRawWasActive = true,
+            };
+
+            m.TriggerMode = MacroTriggerMode.OnPress;
+
+            Assert.False(m.IsExecuting);
+            Assert.Equal(0, m.CurrentActionIndex);
+            Assert.Equal(0, m.ComboResumeIndex);
+            Assert.False(m.AwaitReleaseAfterBreak);
+            Assert.False(m.ToggleTriggerLatched);
+            Assert.False(m.ToggleRawWasActive);
+        }
+
         /// <summary>R7 (lens 1m): the combined gen-1 Joy-Con pair is
         /// Bluetooth by construction (Joy-Cons only combine wirelessly), but
         /// its synthetic SDL path carries no BT marker, so the transport

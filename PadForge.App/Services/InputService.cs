@@ -578,6 +578,23 @@ namespace PadForge.Services
                     mac.ComboResumeIndex = 0;
                     mac.AwaitReleaseAfterBreak = false;
                     mac.RunReleasedFireToCompletion = false;
+                    // ACTION-level latches too (round five, X11). Toggle
+                    // latches live on the MacroAction, survive a stop
+                    // exactly like the trigger fields above, and
+                    // ApplyMacroLatches re-asserts them on the first pass
+                    // after a restart: a latched button, key, mouse button,
+                    // axis, or wheel came back with no user input. Disabling
+                    // a macro already clears the same five.
+                    if (mac.Actions == null) continue;
+                    foreach (var act in mac.Actions)
+                    {
+                        if (act == null) continue;
+                        act.VcToggleLatched = false;
+                        act.KeyToggleLatched = false;
+                        act.MouseToggleLatched = false;
+                        act.VcAxisToggleLatched = false;
+                        act.WheelToggleLatched = false;
+                    }
                 }
             }
 

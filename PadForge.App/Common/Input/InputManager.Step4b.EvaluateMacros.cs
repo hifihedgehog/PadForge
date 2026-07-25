@@ -430,8 +430,11 @@ namespace PadForge.Common.Input
         // cannot erase a macro's own ButtonPress A. Poll-thread only.
         private ushort _macroPassConsumedButtons;
         private ushort _macroPassOutputButtons;
-        private readonly uint[] _macroPassConsumedWords = new uint[8];
-        private readonly uint[] _macroPassOutputWords = new uint[8];
+        // 4 words = 128 buttons, the ceiling RawHidState.Create and
+        // MacroItem.TriggerCustomButtonWords both enforce (round five, X20:
+        // the previous 8 was copied from the axis convention).
+        private readonly uint[] _macroPassConsumedWords = new uint[4];
+        private readonly uint[] _macroPassOutputWords = new uint[4];
 
         internal void EvaluateSlotMacros(ref Gamepad gp, MacroItem[] macros)
         {
@@ -481,6 +484,17 @@ namespace PadForge.Common.Input
                         macro.ToggleTriggerLatched = false;
                         macro.ToggleRawWasActive = false;
                         ClearAxisYields(macro);
+                    }
+                    // OUTSIDE the transient-reset guard on purpose (round
+                    // five, X15): a disabled tick is an OBSERVATION GAP
+                    // whether or not any transient happened to be set, and
+                    // the guard above trips only when one was. Its own pin
+                    // caught this: an idle macro disabled mid-hold kept a
+                    // fresh stamp and re-armed a press it never saw.
+                    if (macro != null)
+                    {
+                        macro.LastEvaluatedUtc = DateTime.MinValue;
+                        macro.WasTriggerActive = false;
                     }
                     continue;
                 }
@@ -780,6 +794,11 @@ namespace PadForge.Common.Input
                 }
 
                 // Execute current action if macro is running.
+                // Deleting the last action of a RUNNING macro empties the
+                // live collection, and no completion path can then clear the
+                // run (round five, X14): IsExecuting stayed set forever and
+                // the consume gate ate every later press.
+                if (macro.IsExecuting && macro.Actions.Count == 0) EndMacroRun(macro);
                 if (macro.IsExecuting && macro.Actions.Count > 0)
                 {
                     ExecuteMacroActions(ref gp, macro);
@@ -817,9 +836,12 @@ namespace PadForge.Common.Input
                 }
 
                 // Toggle latches apply every frame while the macro is enabled
-                // (issue #9 wave 1b), independent of IsExecuting, and AFTER
-                // the consume so a latched button is never stripped as if it
-                // were a trigger input.
+                // (issue #9 wave 1b), independent of IsExecuting. The consume
+                // no longer happens here: it accumulates above and strips ONCE
+                // after the walk, so a latched button survives by being in the
+                // output overlay, not by ordering (round five, X18 corrects a
+                // comment the deferral inverted). Any new latch branch that
+                // writes buttons MUST feed the overlay or it will be stripped.
                 ApplyMacroLatches(ref gp, macro);
             }
 
@@ -866,19 +888,40 @@ namespace PadForge.Common.Input
             {
                 // The Base-ROW contract (#221 family): open while Base is
                 // engaged on the MACRO'S OWN slot, and while a non-Base
-                // layer with InheritUnmapped lets Base fall through. Pure
-                // own-slot, deliberately (round four, R8/R9): the round-three
-                // fallback walked other slots when this one had no
-                // activators, which coupled a layerless pad's Base macros to
-                // every OTHER pad's layer state, and its zero-activator
-                // proxy still missed the split-import shape it existed for.
-                // The split import is fixed at the SOURCE instead: the
-                // translator now mirrors replacement-set switch activators
-                // onto the macro host slot, so the own slot always knows a
-                // set engaged. No runtime discriminator can substitute for
-                // that knowledge (two independent reviewers, same verdict).
-                if (string.Equals(engaged, "Base", StringComparison.Ordinal)) return true;
-                return ownSet != null && LayerInheritsUnmapped(ownSet, engaged);
+                // layer with InheritUnmapped lets Base fall through.
+                if (!string.Equals(engaged, "Base", StringComparison.Ordinal))
+                    return ownSet != null && LayerInheritsUnmapped(ownSet, engaged);
+
+                // Split-import fallback, scoped by IMPORT DOMAIN (round five).
+                // A Workshop import can put an action-set switch on the KBM
+                // slot while its macros ride the Xbox slot; a set engaged
+                // there REPLACES Base here, so a Base-scoped macro must
+                // close. Round three walked every slot unconditionally and
+                // coupled unrelated pads; round four removed the walk and
+                // pushed the job onto the translator, which could not help
+                // profiles that were already imported (nothing re-translates
+                // them) and mis-emitted activators besides. The domain check
+                // is the missing discriminator, and it needs no new data:
+                // import masks are "Layer_{fileId}_{presetId}", so the
+                // fileId segment already identifies which slots came from
+                // ONE import. Hand-authored masks are name-derived and never
+                // match that grammar, so two pads that both own "Shift"
+                // share no domain and stay independent.
+                if (ownSet == null) return true;
+                for (int s2 = 0; s2 < sets.Length; s2++)
+                {
+                    if (s2 == slot) continue;
+                    var other = sets[s2];
+                    if (other == null) continue;
+                    string otherEngaged = GetEngagedLayerMask(s2, other);
+                    if (string.Equals(otherEngaged, "Base", StringComparison.Ordinal)) continue;
+                    // An overlay layer leaves Base showing through; only a
+                    // replacing set closes it.
+                    if (LayerInheritsUnmapped(other, otherEngaged)) continue;
+                    if (!SlotSharesImportDomain(ownSet, otherEngaged)) continue;
+                    return false;
+                }
+                return true;
             }
 
             if (string.Equals(engaged, mask, StringComparison.Ordinal)) return true;
@@ -908,6 +951,75 @@ namespace PadForge.Common.Input
 
         /// <summary>True when the set carries a shift activator for the
         /// mask, i.e. the slot OWNS that layer (#254 A-4).</summary>
+        /// <summary>Length of a mask's "Layer_{fileId}_" import-domain
+        /// prefix, or -1 when the mask is not import-grammar (round five).
+        /// The translator mints set masks as "Layer_{fileId}_{presetId}",
+        /// so the leading two segments identify the IMPORT that produced
+        /// them, which is exactly the "are these slots related" signal the
+        /// Base gate needs. Hand-authored masks derive from layer names and
+        /// never match, which is what keeps independent pads independent.</summary>
+        internal static int ImportDomainPrefixLength(string mask)
+        {
+            if (string.IsNullOrEmpty(mask)) return -1;
+            const string Head = "Layer_";
+            if (!mask.StartsWith(Head, StringComparison.Ordinal)) return -1;
+            int second = mask.IndexOf('_', Head.Length);
+            // Require a non-empty fileId segment and something after it.
+            if (second <= Head.Length || second + 1 >= mask.Length) return -1;
+            return second + 1;
+        }
+
+        /// <summary>True when the slot declares any mask from the same
+        /// import as <paramref name="foreignMask"/> (round five). Walks the
+        /// slot's own activators and cycle rings; allocation-free, because
+        /// this runs on the poll thread per Base-scoped macro.</summary>
+        internal static bool SlotSharesImportDomain(MappingSet set, string foreignMask)
+        {
+            int flen = ImportDomainPrefixLength(foreignMask);
+            if (flen < 0) return false;   // hand-authored: never a domain match
+            var acts = set?.ShiftActivators;
+            if (acts == null) return false;
+            for (int i = 0; i < acts.Count; i++)
+            {
+                var a = acts[i];
+                if (a == null) continue;
+                if (MaskSharesDomain(a.LayerMask, foreignMask, flen)) return true;
+                string ring = a.CycleLayers;
+                if (string.IsNullOrEmpty(ring)) continue;
+                int start = 0;
+                while (start < ring.Length)
+                {
+                    int sep = ring.IndexOf('|', start);
+                    int end = sep < 0 ? ring.Length : sep;
+                    if (end > start && MaskSharesDomain(ring, foreignMask, flen, start, end - start))
+                        return true;
+                    if (sep < 0) break;
+                    start = sep + 1;
+                }
+            }
+            return false;
+        }
+
+        private static bool MaskSharesDomain(string mask, string foreignMask, int flen)
+            => MaskSharesDomain(mask, foreignMask, flen, 0, mask?.Length ?? 0);
+
+        private static bool MaskSharesDomain(string mask, string foreignMask, int flen, int start, int len)
+        {
+            if (mask == null || len < flen) return false;
+            return string.CompareOrdinal(mask, start, foreignMask, 0, flen) == 0;
+        }
+
+        /// <summary>Ends a run and re-arms it, the shape every completion
+        /// path uses (round five, X14).</summary>
+        private void EndMacroRun(MacroItem macro)
+        {
+            macro.IsExecuting = false;
+            macro.CurrentActionIndex = 0;
+            macro.ComboResumeIndex = 0;
+            macro.RunReleasedFireToCompletion = false;
+            ClearAxisYields(macro);
+        }
+
         /// <summary>Allocation-free membership test for a '|'-separated
         /// mask list (round four, R27). Equivalent to splitting on '|' with
         /// RemoveEmptyEntries and comparing Ordinal, without the per-call
@@ -3521,8 +3633,15 @@ namespace PadForge.Common.Input
                             AccumulateMouseScrollHInput((p.Value == 0 ? 1 : p.Value) * 120);
                         break;
                     case 'B':
+                        // NOT accumulated into the overlay (round five, X19).
+                        // The raw evaluator calls this helper with a THROWAWAY
+                        // scratch Gamepad so 'B' parts no-op on an Extended
+                        // slot; feeding the shared ushort accumulator there
+                        // recorded an output bit never written to real state,
+                        // in a lane that never clears it. The gamepad lane
+                        // needs no entry either: consume strips only TRIGGER
+                        // bits, which a cycle-tap step is not.
                         gp.Buttons |= (ushort)p.Value;
-                        _macroPassOutputButtons |= (ushort)p.Value; // R1 overlay
                         held = true;
                         break;
                     case 'A':
@@ -3631,6 +3750,17 @@ namespace PadForge.Common.Input
                         macro.ToggleTriggerLatched = false;
                         macro.ToggleRawWasActive = false;
                         ClearAxisYields(macro);
+                    }
+                    // OUTSIDE the transient-reset guard on purpose (round
+                    // five, X15): a disabled tick is an OBSERVATION GAP
+                    // whether or not any transient happened to be set, and
+                    // the guard above trips only when one was. Its own pin
+                    // caught this: an idle macro disabled mid-hold kept a
+                    // fresh stamp and re-armed a press it never saw.
+                    if (macro != null)
+                    {
+                        macro.LastEvaluatedUtc = DateTime.MinValue;
+                        macro.WasTriggerActive = false;
                     }
                     continue;
                 }
@@ -3858,6 +3988,7 @@ namespace PadForge.Common.Input
                     SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
                 }
 
+                if (macro.IsExecuting && macro.Actions.Count == 0) EndMacroRun(macro); // X14 twin
                 if (macro.IsExecuting && macro.Actions.Count > 0)
                     ExecuteMacroActionsExtended(ref raw, macro);
 
@@ -3884,8 +4015,9 @@ namespace PadForge.Common.Input
                 }
 
                 // Toggle latches apply every frame while the macro is enabled
-                // (issue #9 wave 1b), after the consume, mirroring the
-                // Gamepad-path ordering.
+                // (issue #9 wave 1b). As on the Gamepad path, the consume is
+                // deferred to one post-walk strip and latched words survive
+                // via the output overlay, not via ordering (round five, X18).
                 ApplyMacroLatchesRaw(ref raw, macro);
             }
 

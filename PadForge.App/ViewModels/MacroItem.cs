@@ -1328,6 +1328,11 @@ namespace PadForge.ViewModels
             TriggerHoldFired = false;
             TriggerPressStreak = 0;
             TriggerLastPressUtc = DateTime.MinValue;
+            // The previous sample belonged to the OLD trigger (round five,
+            // X15): swapping to a trigger already held would otherwise read
+            // as a fresh observed edge.
+            LastEvaluatedUtc = DateTime.MinValue;
+            WasTriggerActive = false;
 
             _triggerInputEntries = entries ?? new List<TriggerInputEntry>();
             WireTriggerInputEntries();
@@ -1937,7 +1942,20 @@ namespace PadForge.ViewModels
         /// rebuild's null write-back is rejected by the setter, but WPF
         /// suppresses the re-entrant refresh for the initiating binding,
         /// so without this the picker rendered blank over intact data.</summary>
-        public void RefreshLayerBinding() => OnPropertyChanged(nameof(LayerMask));
+        public void RefreshLayerBinding()
+        {
+            // Suppressible (round five, X13): this raise reaches a DIFFERENT
+            // dirty sink than PadViewModel's own (MainWindow subscribes each
+            // macro's PropertyChanged straight to MarkDirty), so the culture
+            // rebuild's SuppressSettingsDirty did not cover it and a mere
+            // language switch scheduled a settings write.
+            if (SuppressLayerBindingDirty) return;
+            OnPropertyChanged(nameof(LayerMask));
+        }
+
+        /// <summary>Set around a rebuild that is not a user edit.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal static bool SuppressLayerBindingDirty { get; set; }
 
         /// <summary>UTC time of the last evaluator tick that OBSERVED this
         /// macro's trigger (audit 2026-07-25 round four, replacing the

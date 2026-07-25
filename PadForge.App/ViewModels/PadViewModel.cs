@@ -107,14 +107,20 @@ namespace PadForge.ViewModels
             // action that must not schedule a settings write for 16 slots.
             var slotSetsForCulture = PadForge.Common.Input.SettingsManager.SlotMappingSets;
             bool prevSuppress = SuppressSettingsDirty;
+            bool prevMacroSuppress = PadForge.ViewModels.MacroItem.SuppressLayerBindingDirty;
             SuppressSettingsDirty = true;
+            PadForge.ViewModels.MacroItem.SuppressLayerBindingDirty = true;   // round five, X13
             try
             {
                 RebuildLayerTabs(slotSetsForCulture != null && PadIndex >= 0 && PadIndex < slotSetsForCulture.Length
                     ? slotSetsForCulture[PadIndex]?.ShiftActivators
                     : null);
             }
-            finally { SuppressSettingsDirty = prevSuppress; }
+            finally
+            {
+                SuppressSettingsDirty = prevSuppress;
+                PadForge.ViewModels.MacroItem.SuppressLayerBindingDirty = prevMacroSuppress;
+            }
 
             Title = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
             SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);

@@ -87,15 +87,15 @@ kbm activators: 2
   Hold Layer_2220285578_0_MS_left_trackpad_8 | Gamepad Paddle2 | inherit | name=left_trackpad shift
   Hold Layer_2220285578_0_MS_right_trackpad_10 | Gamepad Paddle2 | inherit | name=right_trackpad shift
 macros: 9
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower strength=33%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 strength=66%
-  macro HoldKey HoldForMs | Hold SPACE (button_escape) | btns=0x0010 hold=500ms vk=0x20
-  macro HoldKey HoldForMs | Hold H (button_menu) | btns=0x0020 hold=500ms vk=0x48
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro HoldKey HoldForMs | Hold SPACE (button_escape) | btns=0x0010 hold=500ms layer=Base vk=0x20
+  macro HoldKey HoldForMs | Hold H (button_menu) | btns=0x0020 hold=500ms layer=Base vk=0x48
 menus: 2
   menu 1 Grid | Touchpad 0 | Base | fire=Click cells=9 | name=Touch Menu 1
     [0] Character icon=ghost_050_menu_0040.png

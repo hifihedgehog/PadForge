@@ -3,6 +3,12 @@ description: Track pad radial menu don't fully works
 slots: xbox kbm
 gyroRatchet: Gamepad Paddle4
 xbox rows: 0
+xbox activators: 5
+  Cycle Layer_3456927474_1 cycle=Layer_3456927474_1+Base | Gamepad RightShoulder | inherit | name=Deactivate trackpad
+  Toggle Layer_3456927474_1 | Gamepad RightShoulder | inherit | name=Deactivate trackpad
+  Toggle Layer_3456927474_1 | Menu 1 Item 1 | inherit | name=Deactivate trackpad
+  Toggle Layer_3456927474_1 | Menu 2 Item 1 | inherit | name=Deactivate trackpad
+  Toggle Layer_3456927474_2 | Gamepad Paddle1 | inherit | name=Menu save
 kbm rows: 19
   Base | KbmKey08
     <- Gamepad DPadLeft
@@ -71,73 +77,73 @@ kbm activators: 5
   Toggle Layer_3456927474_1 | Menu 2 Item 1 | inherit | name=Deactivate trackpad
   Toggle Layer_3456927474_2 | Gamepad Paddle1 | inherit | name=Menu save
 macros: 67
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_1) | btns=0x0000 in=[Menu 1 Item 1] norm=(10667,1473)
-  macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_1) | btns=0x0000 in=[Menu 1 Item 1] mbtn=0 delayStart=1ms
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_2) | btns=0x0000 in=[Menu 1 Item 2] norm=(32307,31969)
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_2) | btns=0x0000 in=[Menu 1 Item 2] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_2) | btns=0x0000 in=[Menu 1 Item 2] strength=66%
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_3) | btns=0x0000 in=[Menu 1 Item 3] norm=(691,8713)
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_3) | btns=0x0000 in=[Menu 1 Item 3] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_3) | btns=0x0000 in=[Menu 1 Item 3] strength=66%
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] norm=(10667,1473)
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] norm=(27741,30558) delayStart=50ms
-  macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] mbtn=0 delayStart=300ms
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] norm=(21602,30558) delayStart=400ms
-  macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] mbtn=0 delayStart=800ms
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_8) | btns=0x0000 in=[Menu 1 Item 8] norm=(691,19267)
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_8) | btns=0x0000 in=[Menu 1 Item 8] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_8) | btns=0x0000 in=[Menu 1 Item 8] strength=66%
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_9) | btns=0x0000 in=[Menu 1 Item 9] norm=(691,20924)
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_9) | btns=0x0000 in=[Menu 1 Item 9] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_9) | btns=0x0000 in=[Menu 1 Item 9] strength=66%
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_10) | btns=0x0000 in=[Menu 1 Item 10] norm=(729,22581)
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_10) | btns=0x0000 in=[Menu 1 Item 10] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_10) | btns=0x0000 in=[Menu 1 Item 10] strength=66%
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_12) | btns=0x0000 in=[Menu 1 Item 12] norm=(269,32031)
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_12) | btns=0x0000 in=[Menu 1 Item 12] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_12) | btns=0x0000 in=[Menu 1 Item 12] strength=66%
-  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (click) | btns=0x0000 axis=LeftTrigger@75% ticks=-1 interval=125ms
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
-  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (edge) | btns=0x0000 axis=LeftTrigger@15% ticks=-1 interval=250ms
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 strength=66%
-  macro HoldMouseButton OnPress | Hold mouse LEFT (click) | btns=0x0080 mbtn=0 delayStart=25ms
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] strength=33% delayStart=25ms
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
-  macro MouseNudge OnPress | Nudge cursor (edge) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] delta=(100,0)
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] strength=33%
-  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (click) | btns=0x0000 axis=RightTrigger@75% ticks=1 interval=125ms
-  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (edge) | btns=0x0000 axis=RightTrigger@15% ticks=1 interval=250ms
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 strength=66%
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] norm=(16384,16384)
-  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
-  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
-  macro MouseButtonTap OnRelease | Click mouse RIGHT (right_bumper) | btns=0x0200 mbtn=1
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_1) | btns=0x0000 in=[Menu 2 Item 1] norm=(10667,1473)
-  macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_1) | btns=0x0000 in=[Menu 2 Item 1] mbtn=0 delayStart=1ms
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_2) | btns=0x0000 in=[Menu 2 Item 2] norm=(32307,31969)
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_2) | btns=0x0000 in=[Menu 2 Item 2] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_2) | btns=0x0000 in=[Menu 2 Item 2] strength=66%
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_3) | btns=0x0000 in=[Menu 2 Item 3] norm=(691,8713)
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_3) | btns=0x0000 in=[Menu 2 Item 3] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_3) | btns=0x0000 in=[Menu 2 Item 3] strength=66%
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_5) | btns=0x0000 in=[Menu 2 Item 5] norm=(10667,1473)
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_5) | btns=0x0000 in=[Menu 2 Item 5] norm=(27741,30558) delayStart=50ms
-  macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_5) | btns=0x0000 in=[Menu 2 Item 5] mbtn=0 delayStart=300ms
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_5) | btns=0x0000 in=[Menu 2 Item 5] norm=(21602,30558) delayStart=400ms
-  macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_5) | btns=0x0000 in=[Menu 2 Item 5] mbtn=0 delayStart=800ms
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_8) | btns=0x0000 in=[Menu 2 Item 8] norm=(691,19267)
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_8) | btns=0x0000 in=[Menu 2 Item 8] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_8) | btns=0x0000 in=[Menu 2 Item 8] strength=66%
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_9) | btns=0x0000 in=[Menu 2 Item 9] norm=(691,20924)
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_9) | btns=0x0000 in=[Menu 2 Item 9] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_9) | btns=0x0000 in=[Menu 2 Item 9] strength=66%
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_10) | btns=0x0000 in=[Menu 2 Item 10] norm=(729,22581)
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_10) | btns=0x0000 in=[Menu 2 Item 10] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_10) | btns=0x0000 in=[Menu 2 Item 10] strength=66%
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_12) | btns=0x0000 in=[Menu 2 Item 12] norm=(269,32031)
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_12) | btns=0x0000 in=[Menu 2 Item 12] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_12) | btns=0x0000 in=[Menu 2 Item 12] strength=66%
-  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_1) | btns=0x0000 in=[Menu 1 Item 1] layer=Base norm=(10667,1473)
+  macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_1) | btns=0x0000 in=[Menu 1 Item 1] layer=Base mbtn=0 delayStart=1ms
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_2) | btns=0x0000 in=[Menu 1 Item 2] layer=Base norm=(32307,31969)
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_2) | btns=0x0000 in=[Menu 1 Item 2] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_2) | btns=0x0000 in=[Menu 1 Item 2] layer=Base strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_3) | btns=0x0000 in=[Menu 1 Item 3] layer=Base norm=(691,8713)
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_3) | btns=0x0000 in=[Menu 1 Item 3] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_3) | btns=0x0000 in=[Menu 1 Item 3] layer=Base strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base norm=(10667,1473)
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base norm=(27741,30558) delayStart=50ms
+  macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base mbtn=0 delayStart=300ms
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base norm=(21602,30558) delayStart=400ms
+  macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base mbtn=0 delayStart=800ms
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base norm=(691,19267)
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_9) | btns=0x0000 in=[Menu 1 Item 9] layer=Base norm=(691,20924)
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_9) | btns=0x0000 in=[Menu 1 Item 9] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_9) | btns=0x0000 in=[Menu 1 Item 9] layer=Base strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_10) | btns=0x0000 in=[Menu 1 Item 10] layer=Base norm=(729,22581)
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_10) | btns=0x0000 in=[Menu 1 Item 10] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_10) | btns=0x0000 in=[Menu 1 Item 10] layer=Base strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_12) | btns=0x0000 in=[Menu 1 Item 12] layer=Base norm=(269,32031)
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_12) | btns=0x0000 in=[Menu 1 Item 12] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_12) | btns=0x0000 in=[Menu 1 Item 12] layer=Base strength=66%
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (click) | btns=0x0000 axis=LeftTrigger@75% layer=Base ticks=-1 interval=125ms
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (edge) | btns=0x0000 axis=LeftTrigger@15% layer=Base ticks=-1 interval=250ms
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro HoldMouseButton OnPress | Hold mouse LEFT (click) | btns=0x0080 layer=Base mbtn=0 delayStart=25ms
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=33% delayStart=25ms
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base strength=33%
+  macro MouseNudge OnPress | Nudge cursor (edge) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] layer=Base delta=(100,0)
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] layer=Base strength=33%
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (click) | btns=0x0000 axis=RightTrigger@75% layer=Base ticks=1 interval=125ms
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (edge) | btns=0x0000 axis=RightTrigger@15% layer=Base ticks=1 interval=250ms
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] layer=Base norm=(16384,16384)
+  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
+  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] layer=Layer_3456927474_1 vk=0x2C
+  macro MouseButtonTap OnRelease | Click mouse RIGHT (right_bumper) | btns=0x0200 layer=Layer_3456927474_1 mbtn=1
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_1) | btns=0x0000 in=[Menu 2 Item 1] layer=Layer_3456927474_2 norm=(10667,1473)
+  macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_1) | btns=0x0000 in=[Menu 2 Item 1] layer=Layer_3456927474_2 mbtn=0 delayStart=1ms
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_2) | btns=0x0000 in=[Menu 2 Item 2] layer=Layer_3456927474_2 norm=(32307,31969)
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_2) | btns=0x0000 in=[Menu 2 Item 2] layer=Layer_3456927474_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_2) | btns=0x0000 in=[Menu 2 Item 2] layer=Layer_3456927474_2 strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_3) | btns=0x0000 in=[Menu 2 Item 3] layer=Layer_3456927474_2 norm=(691,8713)
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_3) | btns=0x0000 in=[Menu 2 Item 3] layer=Layer_3456927474_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_3) | btns=0x0000 in=[Menu 2 Item 3] layer=Layer_3456927474_2 strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_5) | btns=0x0000 in=[Menu 2 Item 5] layer=Layer_3456927474_2 norm=(10667,1473)
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_5) | btns=0x0000 in=[Menu 2 Item 5] layer=Layer_3456927474_2 norm=(27741,30558) delayStart=50ms
+  macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_5) | btns=0x0000 in=[Menu 2 Item 5] layer=Layer_3456927474_2 mbtn=0 delayStart=300ms
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_5) | btns=0x0000 in=[Menu 2 Item 5] layer=Layer_3456927474_2 norm=(21602,30558) delayStart=400ms
+  macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_5) | btns=0x0000 in=[Menu 2 Item 5] layer=Layer_3456927474_2 mbtn=0 delayStart=800ms
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_8) | btns=0x0000 in=[Menu 2 Item 8] layer=Layer_3456927474_2 norm=(691,19267)
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_8) | btns=0x0000 in=[Menu 2 Item 8] layer=Layer_3456927474_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_8) | btns=0x0000 in=[Menu 2 Item 8] layer=Layer_3456927474_2 strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_9) | btns=0x0000 in=[Menu 2 Item 9] layer=Layer_3456927474_2 norm=(691,20924)
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_9) | btns=0x0000 in=[Menu 2 Item 9] layer=Layer_3456927474_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_9) | btns=0x0000 in=[Menu 2 Item 9] layer=Layer_3456927474_2 strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_10) | btns=0x0000 in=[Menu 2 Item 10] layer=Layer_3456927474_2 norm=(729,22581)
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_10) | btns=0x0000 in=[Menu 2 Item 10] layer=Layer_3456927474_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_10) | btns=0x0000 in=[Menu 2 Item 10] layer=Layer_3456927474_2 strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_12) | btns=0x0000 in=[Menu 2 Item 12] layer=Layer_3456927474_2 norm=(269,32031)
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_12) | btns=0x0000 in=[Menu 2 Item 12] layer=Layer_3456927474_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_12) | btns=0x0000 in=[Menu 2 Item 12] layer=Layer_3456927474_2 strength=66%
+  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] layer=Layer_3456927474_2 vk=0x2C
 menus: 2
   menu 1 Radial | Touchpad 0 | Base | fire=Click cells=12 | name=Menu
     [1] add_layer icon=ghost_050_menu_0302.png
@@ -157,7 +163,7 @@ menus: 2
     [9] MOUSE_POSITION icon=ghost_040_act_0327.png
     [10] MOUSE_POSITION icon=ghost_040_act_0307.png
     [12] MOUSE_POSITION icon=ghost_050_menu_0306.png
-report: v26 rows:x0+k19 macros:67 menus:2 layers:5 clean:82 partial:5 skipped:0 errors:0
+report: v26 rows:x0+k19 macros:67 menus:2 layers:10 clean:82 partial:5 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX

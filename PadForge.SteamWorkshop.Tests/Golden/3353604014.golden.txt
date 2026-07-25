@@ -50,24 +50,24 @@ xbox activators: 1
   Cycle  cycle=Base | Button 11 | name=When Trigger is pressed
 kbm rows: 0
 macros: 18
-  macro SetLightbarColor OnPress | Set LED (button_a) | btns=0x1000 rgb=(255,0,0) bright=43% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (button_a) | btns=0x0000 in=[Gamepad ButtonA] strength=33%
-  macro SetLightbarColor OnPress | Set LED (button_b) | btns=0x2000 rgb=(255,0,0) bright=67% sat=100% setting=1
-  macro SetLightbarColor OnPress | Set LED (button_x) | btns=0x4000 rgb=(255,0,0) bright=100% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (button_x) | btns=0x0000 in=[Gamepad ButtonX] strength=100%
-  macro SetLightbarColor OnPress | Set LED (button_y) | btns=0x8000 rgb=(217,255,0) bright=100% sat=100% setting=1
-  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0040 rgb=(255,0,0) bright=51% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
-  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0000 axis=LeftTrigger@75% rgb=(13,255,0) bright=100% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
-  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0080 rgb=(255,0,0) bright=51% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
-  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0000 axis=RightTrigger@75% rgb=(255,0,0) bright=79% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
-  macro SetLightbarColor OnPress | Set LED (left_bumper) | btns=0x0100 rgb=(255,0,0) bright=43% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (left_bumper) | btns=0x0000 in=[Gamepad LeftShoulder] strength=33%
-  macro SetLightbarColor OnPress | Set LED (right_bumper) | btns=0x0200 rgb=(255,0,0) bright=43% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (right_bumper) | btns=0x0000 in=[Gamepad RightShoulder] strength=33%
+  macro SetLightbarColor OnPress | Set LED (button_a) | btns=0x1000 layer=Base rgb=(255,0,0) bright=43% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (button_a) | btns=0x0000 in=[Gamepad ButtonA] layer=Base strength=33%
+  macro SetLightbarColor OnPress | Set LED (button_b) | btns=0x2000 layer=Base rgb=(255,0,0) bright=67% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (button_x) | btns=0x4000 layer=Base rgb=(255,0,0) bright=100% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (button_x) | btns=0x0000 in=[Gamepad ButtonX] layer=Base strength=100%
+  macro SetLightbarColor OnPress | Set LED (button_y) | btns=0x8000 layer=Base rgb=(217,255,0) bright=100% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0040 layer=Base rgb=(255,0,0) bright=51% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0000 axis=LeftTrigger@75% layer=Base rgb=(13,255,0) bright=100% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0080 layer=Base rgb=(255,0,0) bright=51% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0000 axis=RightTrigger@75% layer=Base rgb=(255,0,0) bright=79% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro SetLightbarColor OnPress | Set LED (left_bumper) | btns=0x0100 layer=Base rgb=(255,0,0) bright=43% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (left_bumper) | btns=0x0000 in=[Gamepad LeftShoulder] layer=Base strength=33%
+  macro SetLightbarColor OnPress | Set LED (right_bumper) | btns=0x0200 layer=Base rgb=(255,0,0) bright=43% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (right_bumper) | btns=0x0000 in=[Gamepad RightShoulder] layer=Base strength=33%
 report: v26 rows:x20+k0 macros:18 menus:0 layers:1 clean:35 partial:0 skipped:0 errors:0
   Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_a/Full_Press => Set LED macro
   Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_b/Full_Press => Set LED macro

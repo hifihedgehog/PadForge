@@ -62,26 +62,26 @@ kbm rows: 27
     <- Gamepad LeftShoulder
     <- Gamepad RightShoulder [inverted]
 macros: 20
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad DPadUp] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad DPadLeft] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower strength=33%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_1) | btns=0x0000 in=[Menu 1 Item 1] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_2) | btns=0x0000 in=[Menu 1 Item 2] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_3) | btns=0x0000 in=[Menu 1 Item 3] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_4) | btns=0x0000 in=[Menu 1 Item 4] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_6) | btns=0x0000 in=[Menu 1 Item 6] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_7) | btns=0x0000 in=[Menu 1 Item 7] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_8) | btns=0x0000 in=[Menu 1 Item 8] strength=66%
-  macro HoldMouseButton OnPress | Hold mouse LEFT (click) | btns=0x0000 in=[Touchpad 1 Click] mbtn=0 delayEnd=10ms
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 strength=66%
-  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad DPadUp] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_1) | btns=0x0000 in=[Menu 1 Item 1] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_2) | btns=0x0000 in=[Menu 1 Item 2] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_3) | btns=0x0000 in=[Menu 1 Item 3] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_4) | btns=0x0000 in=[Menu 1 Item 4] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_6) | btns=0x0000 in=[Menu 1 Item 6] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_7) | btns=0x0000 in=[Menu 1 Item 7] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base strength=66%
+  macro HoldMouseButton OnPress | Hold mouse LEFT (click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base mbtn=0 delayEnd=10ms
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
 menus: 1
   menu 1 Radial | Gamepad RightStick | Base | fire=Click cells=8 pos=(95%,70%) opacity=100% | name=Radial Menu 1
     [1] 1

@@ -6937,17 +6937,30 @@ namespace PadForge
             if (string.Equals(mask, "Base", StringComparison.Ordinal)) return true;
             var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
             if (sets == null) return true; // no layer machinery: fail open, like the gate
+            var destSet = padVm != null && padVm.PadIndex >= 0 && padVm.PadIndex < sets.Length
+                ? sets[padVm.PadIndex] : null;
             foreach (var set in sets)
             {
                 var acts = set?.ShiftActivators;
                 if (acts == null) continue;
+                bool declares = false;
                 foreach (var a in acts)
                 {
                     if (a == null) continue;
-                    if (string.Equals(a.LayerMask, mask, StringComparison.Ordinal)) return true;
-                    if (PadForge.Common.Input.InputManager.PipeListContains(a.CycleLayers, mask))
-                        return true;
+                    if (string.Equals(a.LayerMask, mask, StringComparison.Ordinal)
+                        || PadForge.Common.Input.InputManager.PipeListContains(a.CycleLayers, mask))
+                    { declares = true; break; }
                 }
+                if (!declares) continue;
+                // The destination's own set always counts. A FOREIGN slot
+                // counts only when it is the same import (round five, X17):
+                // keeping a mask an unrelated pad happens to own leaves the
+                // macro gated by that pad's controller and unrepresentable
+                // in the destination's own picker.
+                if (ReferenceEquals(set, destSet)) return true;
+                if (destSet != null
+                    && PadForge.Common.Input.InputManager.SlotSharesImportDomain(destSet, mask))
+                    return true;
             }
             return false;
         }

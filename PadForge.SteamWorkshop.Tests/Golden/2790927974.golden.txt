@@ -1,7 +1,9 @@
 name: Steam Deck: The Gabe Generation
 description: Your modified layout for this game.
-slots: kbm
+slots: xbox kbm
 xbox rows: 0
+xbox activators: 1
+  Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle2 | name=Controls - Landing party / Controls - Enterprise
 kbm rows: 42
   Base | KbmKey09
     <- Gamepad ButtonStart
@@ -95,16 +97,16 @@ kbm rows: 42
 kbm activators: 1
   Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle2 | name=Controls - Landing party / Controls - Enterprise
 macros: 10
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper strength=33%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 strength=66%
-  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
-  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Layer_2790927974_1 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Layer_2790927974_1 strength=66%
+  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] layer=Layer_2790927974_1 vk=0x2C
 menus: 2
   menu 1 Radial | Touchpad 0 | Base | fire=Click cells=6 | name=Radial Menu 1
     [1] T
@@ -120,7 +122,7 @@ menus: 2
     [3] U
     [4] G
     [5] L
-report: v26 rows:x0+k42 macros:10 menus:2 layers:1 clean:50 partial:0 skipped:0 errors:0
+report: v26 rows:x0+k42 macros:10 menus:2 layers:2 clean:50 partial:0 skipped:0 errors:0
   Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey53 <- Gamepad ButtonA
   Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey57 <- Gamepad ButtonB
   Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey44 <- Gamepad ButtonX

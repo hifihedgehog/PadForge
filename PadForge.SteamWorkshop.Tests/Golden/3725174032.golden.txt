@@ -87,15 +87,15 @@ kbm rows: 3
     <- Gyro Pitch
     <- Touchpad 1 Finger 0 Y
 macros: 9
-  macro HoldVcButton DoublePress | Double press LeftThumbButton (click) | btns=0x0000 in=[Gamepad LeftStick] dbl=442ms target=0x0040
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
-  macro HoldVcButton HoldForMs | Long press ButtonY (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] hold=500ms target=0x8000
-  macro HoldVcButton DoublePress | Double press ButtonY (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] dbl=442ms target=0x8000
-  macro HoldVcButton DoublePress | Double press RightShoulder (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] dbl=442ms target=0x0200
-  macro HoldVcButton HoldForMs | Long press ButtonY (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms target=0x8000
-  macro HoldVcButton HoldForMs | Long press LeftShoulder (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms target=0x0100
-  macro HoldVcButton HoldForMs | Long press ButtonY (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] hold=500ms target=0x8000
+  macro HoldVcButton DoublePress | Double press LeftThumbButton (click) | btns=0x0000 in=[Gamepad LeftStick] dbl=442ms layer=Base target=0x0040
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro HoldVcButton HoldForMs | Long press ButtonY (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] hold=500ms layer=Base target=0x8000
+  macro HoldVcButton DoublePress | Double press ButtonY (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] dbl=442ms layer=Base target=0x8000
+  macro HoldVcButton DoublePress | Double press RightShoulder (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] dbl=442ms layer=Base target=0x0200
+  macro HoldVcButton HoldForMs | Long press ButtonY (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms layer=Base target=0x8000
+  macro HoldVcButton HoldForMs | Long press LeftShoulder (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms layer=Base target=0x0100
+  macro HoldVcButton HoldForMs | Long press ButtonY (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] hold=500ms layer=Layer_3725174032_1 target=0x8000
 report: v26 rows:x32+k3 macros:9 menus:0 layers:4 clean:53 partial:4 skipped:0 errors:0
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseY <- Gyro Pitch

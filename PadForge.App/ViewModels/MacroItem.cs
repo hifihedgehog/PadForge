@@ -1692,6 +1692,20 @@ namespace PadForge.ViewModels
                     // transient-voiding contract as the lines above.
                     ToggleTriggerLatched = false;
                     ToggleRawWasActive = false;
+                    // ...and drops the RUN as well (audit 2026-07-24). The
+                    // lines above void what the old mode ARMED; without
+                    // this, what it STARTED outlived the switch. A latched
+                    // Toggle running an all-continuous sequence kept
+                    // IsExecuting through the change, and the new mode's
+                    // stop conditions never matched a run it did not begin
+                    // (a released OnPress never sees its own release edge),
+                    // so the actions asserted forever and no later press
+                    // could restart the macro. Ending the run is the same
+                    // contract the disable lane already applies.
+                    IsExecuting = false;
+                    CurrentActionIndex = 0;
+                    ComboResumeIndex = 0;
+                    AwaitReleaseAfterBreak = false;
                     OnPropertyChanged(nameof(IsNotAlwaysMode));
                     OnPropertyChanged(nameof(IsCustomExpressionMode));
                     OnPropertyChanged(nameof(IsHoldForMsMode));

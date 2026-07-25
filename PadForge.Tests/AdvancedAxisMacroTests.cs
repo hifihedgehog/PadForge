@@ -512,4 +512,102 @@ namespace PadForge.Tests
             Assert.Equal(MacroActionType.AxisScale, values[^1]);
         }
     }
+
+    /// <summary>Owner repro 2026-07-24: "Scale Axis does nothing." The
+    /// exact live-config shape (OnPress + Once + consumed raw device
+    /// button + AxisScale LX +50% 5000ms) driven through the REAL slot
+    /// evaluator with the real device-resolution statics. Pins the three
+    /// ticks the bench needs: apply on press, per-tick reapply while the
+    /// state rebuilds, and survival of trigger RELEASE inside the
+    /// duration window (the tap-then-move usage). Also pins the two
+    /// documented no-change cases: rest (0 x 1.5 = 0) and full
+    /// deflection (clamp), which is why +50%% is invisible on a fully
+    /// held stick.</summary>
+    [Collection("SettingsManagerStatics")]
+    public class ScaleAxisUserShapeTests : IDisposable
+    {
+        private static readonly Guid DevGuid = new("13ea3b23-bb17-802d-f268-c194414535f8");
+        private readonly SettingsCollection _savedSettings;
+        private readonly DeviceCollection _savedDevices;
+
+        public ScaleAxisUserShapeTests()
+        {
+            _savedSettings = SettingsManager.UserSettings;
+            _savedDevices = SettingsManager.UserDevices;
+        }
+
+        public void Dispose()
+        {
+            SettingsManager.UserSettings = _savedSettings;
+            SettingsManager.UserDevices = _savedDevices;
+        }
+
+        [Fact]
+        public void ScaleAxis_OnPressOnce_ConsumedRawButton_AppliesAndSurvivesRelease()
+        {
+            SettingsManager.UserDevices = new DeviceCollection();
+            SettingsManager.UserSettings = new SettingsCollection();
+            var state = new PadForge.Engine.CustomInputState();
+            var ud = new PadForge.Engine.Data.UserDevice
+            {
+                InstanceGuid = DevGuid,
+                ProductName = "Steam Controller",
+                IsOnline = true,
+                InputState = state,
+            };
+            lock (SettingsManager.UserDevices.SyncRoot)
+                SettingsManager.UserDevices.Items.Add(ud);
+            lock (SettingsManager.UserSettings.SyncRoot)
+                SettingsManager.UserSettings.Items.Add(
+                    new PadForge.Engine.Data.UserSetting { InstanceGuid = DevGuid, MapTo = 0 });
+
+            var m = new MacroItem
+            {
+                Name = "Macro 1",
+                IsEnabled = true,
+                PadIndex = 0,
+                TriggerMode = MacroTriggerMode.OnPress,
+                RepeatMode = MacroRepeatMode.Once,
+                ConsumeTriggerButtons = true,
+                TriggerInputs = "in:13ea3b23-bb17-802d-f268-c194414535f8:btn:0",
+            };
+            m.Actions.Add(new MacroAction
+            {
+                Type = MacroActionType.AxisScale,
+                AxisTarget = MacroAxisTarget.LeftStickX,
+                AxisValue = 16384,
+                DurationMs = 5000,
+            });
+            var macros = new[] { m };
+            var im = new InputManager();
+
+            // Tick 1: raw A down, stick partly deflected: +50% applies.
+            state.Buttons[0] = true;
+            var gp = new Gamepad { ThumbLX = 16000 };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.True(Math.Abs(gp.ThumbLX - 24000) < 300, $"tick1 held: {gp.ThumbLX}");
+
+            // Tick 2: state rebuilds every poll; the current action re-applies.
+            gp = new Gamepad { ThumbLX = 16000 };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.True(Math.Abs(gp.ThumbLX - 24000) < 300, $"tick2 held: {gp.ThumbLX}");
+
+            // Tick 3: trigger RELEASED inside the 5000ms window. Once-mode
+            // sequences run to completion, so the scale must still apply
+            // (tap the button, then move the stick).
+            state.Buttons[0] = false;
+            gp = new Gamepad { ThumbLX = 16000 };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.True(Math.Abs(gp.ThumbLX - 24000) < 300, $"tick3 released: {gp.ThumbLX}");
+
+            // Documented no-change cases: rest and full deflection (clamp).
+            gp = new Gamepad { ThumbLX = 0 };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.Equal(0, gp.ThumbLX);
+            gp = new Gamepad { ThumbLX = short.MaxValue };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.Equal(short.MaxValue, gp.ThumbLX);
+        }
+    }
+
 }

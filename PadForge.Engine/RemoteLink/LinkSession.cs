@@ -15,6 +15,13 @@ namespace PadForge.Engine.RemoteLink
         DeviceList = 6,// owner -> consumer: the owner's CURRENT exposed device set (stable
                        // slot + online per device), re-sent on change and periodically so a
                        // device hot-plugged after connect appears/disappears live (#138)
+        SourceDemand = 7,// consumer -> owner: "a live mapping on my side is polling this
+                       // device's demand-gated source", so the owner powers the hardware
+                       // that source needs. Demand latches are machine-local by design
+                       // (SourceCoercion stamps them where the mapping evaluates), so a
+                       // consumer's NFC binding could never arm the owner's reader
+                       // without this lane and silently never fired (#241, audit
+                       // 2026-07-24). Payload: [0] = demand kind (1 = NFC reader).
     }
 
     /// <summary>

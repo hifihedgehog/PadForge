@@ -89,6 +89,58 @@ namespace PadForge.Tests
             Assert.Equal(0, Tick(true));
         }
 
+        /// <summary>R13 (#241): the device-list v3 capability tail carries
+        /// HasNfcReader across Remote Link, so a consumer can discover a
+        /// remote reader instead of guessing from VID/PID. The v1 caps byte
+        /// was exhausted at bit 128, and an old peer that stops before the
+        /// tail must decode cleanly with the flag simply false.</summary>
+        [Fact]
+        public void DeviceList_CarriesNfcReaderAcrossTheWire()
+        {
+            var src = new PadForge.Engine.RemoteLink.RemotePeerDeviceInfo
+            {
+                Slot = 3,
+                PeerLocalDeviceId = "dev-1",
+                Name = "Nintendo Switch Pro Controller",
+                VendorId = 0x057E,
+                ProductId = 0x2009,
+                HasRumble = true,
+                HasAccelAux = true,   // the bit that exhausted the v1 byte
+                Online = true,
+                HasNfcReader = true,
+            };
+
+            var round = PadForge.Engine.RemoteLink.LinkConnection.DecodeDeviceList(
+                PadForge.Engine.RemoteLink.LinkConnection.EncodeDeviceList(new[] { src }));
+
+            Assert.Single(round);
+            Assert.True(round[0].HasNfcReader);
+            // The v1 fields must survive the added tail unchanged.
+            Assert.True(round[0].HasRumble);
+            Assert.True(round[0].HasAccelAux);
+            Assert.True(round[0].Online);
+            Assert.Equal(0x2009, round[0].ProductId);
+        }
+
+        /// <summary>A peer WITHOUT a reader must not advertise one, so the
+        /// consumer's picker offers nothing that cannot fire.</summary>
+        [Fact]
+        public void DeviceList_NfcReaderFalseSurvivesRoundTrip()
+        {
+            var src = new PadForge.Engine.RemoteLink.RemotePeerDeviceInfo
+            {
+                Slot = 0,
+                PeerLocalDeviceId = "dev-2",
+                Name = "Xbox Controller",
+                VendorId = 0x045E,
+                ProductId = 0x02FD,
+                HasNfcReader = false,
+            };
+            var round = PadForge.Engine.RemoteLink.LinkConnection.DecodeDeviceList(
+                PadForge.Engine.RemoteLink.LinkConnection.EncodeDeviceList(new[] { src }));
+            Assert.False(round[0].HasNfcReader);
+        }
+
         /// <summary>R10: switching fire mode mid-run ends the run. The
         /// setter already voided what the old mode ARMED; what it STARTED
         /// outlived the switch, and the new mode's stop conditions never

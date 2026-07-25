@@ -1668,18 +1668,15 @@ namespace PadForge.Common
             // trigger for "tap tag -> action", or to a virtual button. The
             // reader powers only while armed (a registered tag + this pad
             // online, or a capture in progress).
-            // Remote rows are excluded (audit 2026-07-24, lens 1m): arming is
-            // OWNER-side and keys on the owner's own demand latch, which no
-            // Remote Link message carries, so a consumer-side NFC binding
-            // can never arm the reader and never fires. The register button
-            // already suppresses peer rows for the same reason
-            // (DeviceRowViewModel.ShowRegisterNfcTag); the picker was the
-            // one surface still offering a source that cannot work. Wiring
-            // the latch across the link is the real feature and needs a
-            // protocol addition (the device-list capability byte is full).
-            bool remoteRow = ud.DevicePath != null
-                && ud.DevicePath.StartsWith("peer://", StringComparison.Ordinal);
-            if (ud.HasNfcReader && !remoteRow)
+            // Remote rows are INCLUDED and work end to end (#241, audit
+            // 2026-07-24). The owner announces the reader on the device-list
+            // v3 capability tail, and a live binding here ships a
+            // SourceDemand datagram that arms the owner's MCU on its own
+            // demand cadence, so a tap on the remote pad reaches this
+            // mapping. UserDevice.HasNfcReader is VID/PID-computed and a
+            // relayed Switch pad carries its real VID/PID, so this gate
+            // answers for both local and remote rows.
+            if (ud.HasNfcReader)
             {
                 list.Add(new InputChoice
                 {

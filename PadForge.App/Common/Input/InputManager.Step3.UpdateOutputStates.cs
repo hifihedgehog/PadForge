@@ -834,6 +834,11 @@ namespace PadForge.Common.Input
                 if (src == null
                     || !PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(src.Descriptor))
                     continue;
+                // Consume/postpone parity with the row evaluators
+                // (2026-07-25 audit): a suppressed flick source must not
+                // keep ticking flick state while its press is being eaten.
+                if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                    continue;
                 // Same cross-device resolution the per-target evaluators use:
                 // the source's own DeviceGuid wins; empty = this pass's device.
                 CustomInputState devState;
@@ -853,7 +858,8 @@ namespace PadForge.Common.Input
         }
 
         private static PadForge.Engine.Data.MappingSource FindIrPointerSource(
-            MappingSet mappingSet, string targetName, string legacyDesc, string thisDeviceGuid)
+            MappingSet mappingSet, string targetName, string legacyDesc, string thisDeviceGuid,
+            int slotIndex)
         {
             var row = FindBaseRowForTarget(mappingSet, targetName);
             if (row?.Sources != null)
@@ -864,6 +870,11 @@ namespace PadForge.Common.Input
                     if (!src.Descriptor.StartsWith("IR Pointer ", StringComparison.Ordinal)) continue;
                     if (!string.IsNullOrEmpty(src.DeviceGuid)
                         && !string.Equals(src.DeviceGuid, thisDeviceGuid, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    // Consume/postpone parity with the row evaluators
+                    // (2026-07-25 audit): a suppressed pointer source must
+                    // not keep steering the absolute cursor lane.
+                    if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                         continue;
                     return src;
                 }
@@ -876,7 +887,8 @@ namespace PadForge.Common.Input
             // smoothing, EMA key) attributes to this device rather than "".
             if (!string.IsNullOrEmpty(legacyDesc)
                 && TryGetEngineOwnedSource(legacyDesc, out string legacyClean, out bool legacyInv, out bool legacyHalf)
-                && legacyClean.StartsWith("IR Pointer ", StringComparison.Ordinal))
+                && legacyClean.StartsWith("IR Pointer ", StringComparison.Ordinal)
+                && !IsSourceSuppressedPostpone(slotIndex, thisDeviceGuid, legacyClean))
                 return new PadForge.Engine.Data.MappingSource
                 {
                     Descriptor = legacyClean,
@@ -926,6 +938,12 @@ namespace PadForge.Common.Input
                         .IsTouchpadPointerDescriptor(src.Descriptor)) continue;
                 if (!string.IsNullOrEmpty(src.DeviceGuid)
                     && !string.Equals(src.DeviceGuid, thisDeviceGuid, StringComparison.OrdinalIgnoreCase))
+                    continue;
+                // Consume/postpone parity with the row evaluators
+                // (2026-07-25 audit): a suppressed pointer source reads
+                // disengaged, so the caller falls through to the delta
+                // lane exactly as it does with no finger in the window.
+                if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                     continue;
                 if (!PadForge.Engine.Common.Mapping.SourceCoercion
                         .IsTouchpadPointerEngaged(state, src.Descriptor)) continue;
@@ -2432,7 +2450,7 @@ namespace PadForge.Common.Input
             {
                 string posDesc = ps.GetKbmMapping("KbmMouseX");
                 string negDesc = ps.GetKbmMapping("KbmMouseXNeg");
-                var irSrcX = FindIrPointerSource(mappingSet, "KbmMouseX", posDesc, thisDeviceGuid);
+                var irSrcX = FindIrPointerSource(mappingSet, "KbmMouseX", posDesc, thisDeviceGuid, slotIndex);
                 if (irSrcX != null)
                 {
                     // Wii IR pointing is ABSOLUTE aim (Touchmote-style): the
@@ -2480,7 +2498,7 @@ namespace PadForge.Common.Input
             {
                 string posDesc = ps.GetKbmMapping("KbmMouseY");
                 string negDesc = ps.GetKbmMapping("KbmMouseYNeg");
-                var irSrcY = FindIrPointerSource(mappingSet, "KbmMouseY", posDesc, thisDeviceGuid);
+                var irSrcY = FindIrPointerSource(mappingSet, "KbmMouseY", posDesc, thisDeviceGuid, slotIndex);
                 if (irSrcY != null)
                 {
                     // Absolute aim, same as the X block. state.Ir.Y is already

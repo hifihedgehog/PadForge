@@ -51,6 +51,10 @@ namespace PadForge.Common.Input
         private readonly HMController _controller;
         private byte _lastEbi;
         private PidStateFlags _stateFlags = PidStateFlags.ActuatorsEnabled | PidStateFlags.ActuatorPower;
+        // Wall-clock anchor of the current Device Pause; 0 when not paused.
+        // Continue shifts every running effect's StartTicks past the paused
+        // span so durations freeze instead of expiring mid-pause.
+        private long _pauseStartTicks;
 
         // Per-report magnitude scaling, derived from the descriptor at construction.
         // Canonical PID FFB descriptors declare Magnitude as 16-bit signed with
@@ -294,9 +298,26 @@ namespace PadForge.Common.Input
 
             lock (_lock)
             {
+                // Device Pause (2026-07-25 audit): playback AND effect
+                // clocks freeze. Skipping the whole loop keeps every sum
+                // and dominant at zero (the projection below then writes
+                // silence to the motors, the LFE pack, and the directional
+                // and condition blocks), advances no expiry, and leaves
+                // EffectPlaying untouched. Continue shifts StartTicks and
+                // re-Applies, so nothing here needs a wake tick.
+                bool paused = (_stateFlags & PidStateFlags.DeviceIsPaused) != 0;
+                // Actuators disabled: a mute, not a stop. Effects keep
+                // running and EXPIRING below (unlike pause), and only the
+                // final projection is masked to zero. Scope: this mutes
+                // the PID producer only; PadForge-local overlays (macro
+                // rumble, constant force) are downstream merges and stay
+                // governed by their own settings.
+                bool actuatorsOff = (_stateFlags & PidStateFlags.ActuatorsEnabled) == 0;
+
                 bool anyExpired = false;
                 foreach (var kv in _effects)
                 {
+                    if (paused) break;
                     var es = kv.Value;
                     if (!es.Running) continue;
 
@@ -352,6 +373,18 @@ namespace PadForge.Common.Input
 
                     leftSum  += mag * leftScale;
                     rightSum += mag * rightScale;
+                }
+
+                if (actuatorsOff)
+                {
+                    // Mask the whole projection: motors, LFE pack (via the
+                    // zeroed leftVal/rightVal below), directional block,
+                    // and condition block. State above stays live so
+                    // Enable Actuators resumes mid-effect.
+                    leftSum = 0; rightSum = 0;
+                    dominantMag = 0; dominantType = 0; dominantSignedMag = 0;
+                    dominantDir = 0; dominantPeriod = 0;
+                    conditionEffect = null;
                 }
 
                 double gainFactor = _deviceGain / 255.0;
@@ -726,9 +759,14 @@ namespace PadForge.Common.Input
                     _stateFlags |= PidStateFlags.ActuatorsEnabled;
                     break;
                 case 2: // disable actuators
-                    foreach (var kv in _effects) kv.Value.Running = false;
+                    // PID semantics (hid-pidff.c, HMPidState): actuators-off
+                    // is a MUTE with effect state preserved, distinct from
+                    // Stop All. The old Running=false loop destroyed the
+                    // effect set, so Enable restored nothing and a
+                    // SETACTUATORSOFF/ON round trip left permanent silence
+                    // (2026-07-25 audit). Effects keep playing (and keep
+                    // expiring) internally; Apply masks the projection.
                     _stateFlags &= ~PidStateFlags.ActuatorsEnabled;
-                    _stateFlags &= ~PidStateFlags.EffectPlaying;
                     break;
                 case 3: // stop all
                     foreach (var kv in _effects) kv.Value.Running = false;
@@ -740,12 +778,35 @@ namespace PadForge.Common.Input
                     _deviceGain = 255;
                     _lastEbi = 0;
                     _stateFlags = PidStateFlags.ActuatorsEnabled | PidStateFlags.ActuatorPower;
+                    _pauseStartTicks = 0;
                     break;
-                case 5: // device pause
-                    _stateFlags |= PidStateFlags.DeviceIsPaused;
+                case 5: // device pause (idempotent: a second Pause must not
+                        // move the freeze anchor)
+                    if ((_stateFlags & PidStateFlags.DeviceIsPaused) == 0)
+                    {
+                        _stateFlags |= PidStateFlags.DeviceIsPaused;
+                        _pauseStartTicks = Environment.TickCount64;
+                    }
                     break;
-                case 6: // device continue
-                    _stateFlags &= ~PidStateFlags.DeviceIsPaused;
+                case 6: // device continue: un-freeze effect lifetimes by
+                        // shifting each running effect's start forward by
+                        // the span it sat paused. An effect (re)started
+                        // DURING the pause anchors at its own start, so it
+                        // resumes with zero elapsed rather than over-shifted
+                        // (2026-07-25 audit; PID pause freezes playback AND
+                        // effect clocks, it never truncates durations).
+                    if ((_stateFlags & PidStateFlags.DeviceIsPaused) != 0)
+                    {
+                        _stateFlags &= ~PidStateFlags.DeviceIsPaused;
+                        long now = Environment.TickCount64;
+                        foreach (var kv in _effects)
+                        {
+                            var es = kv.Value;
+                            if (!es.Running) continue;
+                            es.StartTicks += now - Math.Max(_pauseStartTicks, es.StartTicks);
+                        }
+                        _pauseStartTicks = 0;
+                    }
                     break;
             }
             _controller?.PublishPidState(_lastEbi, _stateFlags);

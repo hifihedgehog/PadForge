@@ -663,6 +663,7 @@ namespace PadForge.Services
 
                 ushort maxL = 0, maxR = 0;
                 bool anyRow = false;
+                bool sawRow = false;
                 var settings = SettingsManager.UserSettings;
                 if (settings != null && deviceGuid != Guid.Empty)
                 {
@@ -675,6 +676,7 @@ namespace PadForge.Services
                             if (us.InstanceGuid != deviceGuid) continue;
                             int slot = us.MapTo;
                             if (slot < 0 || slot >= InputManager.MaxPads) continue;
+                            sawRow = true;
                             // A slot whose virtual-DualSense passthrough
                             // targets this pad already writes it directly;
                             // importing its decoded motors here would fight
@@ -713,12 +715,16 @@ namespace PadForge.Services
                     }
                 }
 
-                if (!anyRow)
+                if (!anyRow && !sawRow)
                 {
                     // No assignment rows (empty guid, or a transient
                     // unassignment window): the pre-ownership single-slot
                     // read, row-less, so the anchor-config path keeps its
-                    // old behavior byte for byte.
+                    // old behavior byte for byte. Rows that existed but
+                    // were ALL deliberately skipped (passthrough target,
+                    // foreign test target) must NOT fall through here:
+                    // the fallback re-reads the raw pack and would hand
+                    // the passthrough target a second rumble writer.
                     var raw = _inputManager.VibrationStates[padIndex];
                     if (raw == null) return ((byte)0, (byte)0);
                     var withMacro = MacroRumbleOverride.Merge(raw,
@@ -2045,6 +2051,10 @@ namespace PadForge.Services
                 // the managed latches too or a restart never re-asserts
                 // them (stale-latch == stale hint disagreement).
                 PadForge.Engine.Common.Mapping.SourceCoercion.ResetMcuDemandLatches();
+                // The remote-peer demand stamps are latches of the same
+                // family: left set, a restart within the demand window
+                // re-arms the MCU once with no live peer wanting it.
+                _remoteNfcDemandMs.Clear();
                 PadForge.Common.Input.NfcTagRegistry.SwitchNfcArmed = false;
                 PadForge.Common.Input.NfcTagRegistry.JoyConIrHintOn = false;
                 _joyConIrHintOn = false;
@@ -2614,9 +2624,15 @@ namespace PadForge.Services
                             // arms it exactly like a local one (#241). Checked
                             // per device so the demand and the capable device
                             // are the SAME pad, never a bare global flag.
+                            // Keep scanning past demand-less pads: the demand
+                            // may be stamped on the SECOND capable pad (the
+                            // shared one), and stopping at the first would
+                            // never see it. Stop only once both facts are in.
                             if (HasFreshRemoteNfcDemand(ud.InstanceGuid))
+                            {
                                 remoteWanted = true;
-                            break;
+                                break;
+                            }
                         }
                     }
                 }
@@ -8272,6 +8288,10 @@ namespace PadForge.Services
                                 // dead (always false) and the source stayed un-pickable.
                                 HasAccelAux = dev.HasAccelAux,
                                 HasGyroAux = dev.HasGyroAux,
+                                // NFC rides the v3 caps byte the same way, and the
+                                // flag lives on UserDevice (VID/PID-computed), not on
+                                // the SDL device wrapper.
+                                HasNfcReader = ud.HasNfcReader,
                                 HasTouchpad = dev.HasTouchpad,
                                 NumTouchpads = dev.NumTouchpads,
                                 TouchpadFingerCounts = dev.TouchpadFingerCounts,
@@ -12469,6 +12489,15 @@ namespace PadForge.Services
             // ApplyProfile with a shifted snapshot.
             if (!_compactingSlots)
                 CompactSlotsForGaps();
+
+            // 2026-07-25 audit: the apply (and the compaction it may have
+            // driven) rebound slot routing under the shaker renderer, whose
+            // voices bake their slot index into the routing snapshot. Only
+            // the 5 s timer and config edits kicked a reconcile, so a
+            // shifted voice rendered the pack now living at its OLD index,
+            // with the OLD endpoint/carrier/gain, until the next timer
+            // pass. Kick it now (async; WASAPI work must not run here).
+            PadForge.Common.Input.RumbleAudioService.RequestReconcile();
         }
 
         /// <summary>

@@ -130,6 +130,7 @@ namespace PadForge.Common.Input
             _lastTone.TryRemove(devicePath, out _);
             _lastPlayerIndex.TryRemove(devicePath, out _);
             _lastGuideLed.TryRemove(devicePath, out _);
+            _lastNfcDemandMs.TryRemove(devicePath, out _);
         }
 
         public static void Clear()
@@ -137,6 +138,7 @@ namespace PadForge.Common.Input
             _byPath.Clear();
             _lastSony.Clear(); _lastVib.Clear(); _lastWheel.Clear(); _lastTone.Clear();
             _lastPlayerIndex.Clear(); _lastGuideLed.Clear();
+            _lastNfcDemandMs.Clear();
             // Drop output leases too, or a stale lease would keep the owner's local
             // output suppressed for up to OutputLeaseMs after Remote Link stops.
             _outputLease.Clear();

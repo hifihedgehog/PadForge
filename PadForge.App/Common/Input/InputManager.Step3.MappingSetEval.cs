@@ -669,6 +669,7 @@ namespace PadForge.Common.Input
         {
             if (slotIndex < 0 || slotIndex >= _suppressedSourcesBySlot.Length) return false;
             string canon = null;
+            string guid = deviceGuid ?? "";
             var set = _suppressedSourcesBySlot[slotIndex];
             if (set != null && set.Count != 0)
             {
@@ -677,7 +678,12 @@ namespace PadForge.Common.Input
                 // (this runs per source per row per tick while an activator
                 // is held). Both member strings already exist.
                 canon = CanonicalPostponeDescriptor(descriptor);
-                if (set.Contains((deviceGuid ?? "", canon))) return true;
+                if (set.Contains((guid, canon))) return true;
+                // Empty-key fallback (2026-07-25 audit): an any-device
+                // activator/trigger suppresses the control regardless of
+                // which device a row pins. Same consume-means-consume
+                // tradeoff the population comments document.
+                if (guid.Length != 0 && set.Contains(("", canon))) return true;
             }
             // Consume-armed macro triggers (2026-07-25) ride the same
             // seam: a raw-button / descriptor trigger source that a
@@ -687,7 +693,8 @@ namespace PadForge.Common.Input
             if (consumed != null && consumed.Count != 0)
             {
                 canon ??= CanonicalPostponeDescriptor(descriptor);
-                if (consumed.Contains((deviceGuid ?? "", canon))) return true;
+                if (consumed.Contains((guid, canon))) return true;
+                if (guid.Length != 0 && consumed.Contains(("", canon))) return true;
             }
             return false;
         }
@@ -719,6 +726,22 @@ namespace PadForge.Common.Input
                 if (!string.IsNullOrEmpty(resolved)) return resolved;
             }
             return descriptor ?? "";
+        }
+
+        /// <summary>Adds an activator's suppression key in BOTH shapes,
+        /// mirroring the consume set's population (2026-07-25 audit): the
+        /// authored key, plus the empty-guid twin when the activator pins
+        /// a device, so an any-device row spelling the same control is
+        /// suppressed too. The inverse direction (any-device activator vs
+        /// a device-pinned row) is covered at lookup, which falls back to
+        /// the empty key.</summary>
+        internal static void AddPostponeKey(
+            System.Collections.Generic.HashSet<(string Guid, string Desc)> set,
+            string deviceGuid, string descriptor)
+        {
+            string canon = CanonicalPostponeDescriptor(descriptor);
+            set.Add((deviceGuid ?? "", canon));
+            if (!string.IsNullOrEmpty(deviceGuid)) set.Add(("", canon));
         }
 
         // ── Consume for raw-button / descriptor macro triggers ──
@@ -1040,18 +1063,18 @@ namespace PadForge.Common.Input
                 if (string.Equals(a.Mode, "Cycle", System.StringComparison.Ordinal))
                 {
                     if (rt.WasDown[i] && !string.IsNullOrEmpty(a.Descriptor))
-                        suppressed.Add((a.DeviceGuid ?? "", CanonicalPostponeDescriptor(a.Descriptor)));
+                        AddPostponeKey(suppressed, a.DeviceGuid, a.Descriptor);
                     if (rt.CyclePrevWasDown[i] && !string.IsNullOrEmpty(a.CyclePrevDescriptor))
-                        suppressed.Add((a.CyclePrevDeviceGuid ?? "", CanonicalPostponeDescriptor(a.CyclePrevDescriptor)));
+                        AddPostponeKey(suppressed, a.CyclePrevDeviceGuid, a.CyclePrevDescriptor);
                     continue;
                 }
                 if (!rt.WasDown[i]) continue;
                 if (!string.IsNullOrEmpty(a.Descriptor))
-                    suppressed.Add((a.DeviceGuid ?? "", CanonicalPostponeDescriptor(a.Descriptor)));
+                    AddPostponeKey(suppressed, a.DeviceGuid, a.Descriptor);
                 if (string.Equals(a.Kind, "Chord", System.StringComparison.Ordinal)
                     && !string.IsNullOrEmpty(a.ChordSecondDescriptor))
                 {
-                    suppressed.Add((a.ChordSecondDeviceGuid ?? "", CanonicalPostponeDescriptor(a.ChordSecondDescriptor)));
+                    AddPostponeKey(suppressed, a.ChordSecondDeviceGuid, a.ChordSecondDescriptor);
                 }
             }
 
@@ -2692,10 +2715,18 @@ namespace PadForge.Common.Input
                 return true;
             }
 
-            // Single source — evaluate cross-device (the source's own DeviceGuid
+            // Single source: evaluate cross-device (the source's own DeviceGuid
             // wins, not necessarily the device we're currently processing).
             var src = FirstContributingSource(row);
             if (src == null) return false;
+            // Consume/postpone parity with the gamepad lane and the
+            // multi-source builders (2026-07-25 audit): a suppressed
+            // source reads RELEASED, and the row still OWNS the target.
+            // Returning false instead would fall through to the legacy
+            // per-target descriptor read, which has no suppression check
+            // and would leak the very press being consumed.
+            if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                return true;
             CustomInputState devState;
             if (string.IsNullOrEmpty(src.DeviceGuid))
                 devState = state;
@@ -2756,20 +2787,32 @@ namespace PadForge.Common.Input
             {
                 var src = FirstContributingSource(row);
                 if (src == null) return false;
-                CustomInputState devState;
-                if (string.IsNullOrEmpty(src.DeviceGuid))
-                    devState = state;
+                if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                {
+                    // Consume/postpone parity (2026-07-25 audit): the row
+                    // owns the target and the suppressed source reads
+                    // centered, matching the multi-source builder's
+                    // contribute-zero. Never return false here. The legacy
+                    // fallback has no suppression check and would leak.
+                    combined = 0f;
+                }
                 else
                 {
-                    devState = LookupDeviceState(src.DeviceGuid);
-                    // Offline-contributes-zero (see the button branch):
-                    // rest for a bipolar axis is centered 0, which the
-                    // caller's pre-initialized value already holds.
-                    if (devState == null) return true;
+                    CustomInputState devState;
+                    if (string.IsNullOrEmpty(src.DeviceGuid))
+                        devState = state;
+                    else
+                    {
+                        devState = LookupDeviceState(src.DeviceGuid);
+                        // Offline-contributes-zero (see the button branch):
+                        // rest for a bipolar axis is centered 0, which the
+                        // caller's pre-initialized value already holds.
+                        if (devState == null) return true;
+                    }
+                    combined = ClampBipolar(SourceEvaluator.EvaluateForBipolarAxisTarget(
+                        devState, src, slotIndex, targetName, 0, slotRuntime, dt,
+                        evaluatedDeviceGuid: thisDeviceGuid));
                 }
-                combined = ClampBipolar(SourceEvaluator.EvaluateForBipolarAxisTarget(
-                    devState, src, slotIndex, targetName, 0, slotRuntime, dt,
-                    evaluatedDeviceGuid: thisDeviceGuid));
             }
 
             if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = -combined;
@@ -2834,6 +2877,14 @@ namespace PadForge.Common.Input
                 var src = sources[i];
                 if (IsRowModifierSource(src)) continue;
                 if (src == null) { values.Add(0f); flags.Add(0f); continue; }
+                // Consume/postpone parity (2026-07-25 audit): a suppressed
+                // source reads INACTIVE, exactly like a lifted finger or an
+                // offline device. The other evaluators check this too; the
+                // touchpad loop was the one family member with no check at
+                // all. All-sources-suppressed then lands in the existing
+                // activeCount==0 hold-last-position contract.
+                if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                { values.Add(0f); flags.Add(0f); continue; }
 
                 CustomInputState devState;
                 if (string.IsNullOrEmpty(src.DeviceGuid))
@@ -2968,19 +3019,31 @@ namespace PadForge.Common.Input
             {
                 var src = FirstContributingSource(row);
                 if (src == null) return false;
-                CustomInputState devState;
-                if (string.IsNullOrEmpty(src.DeviceGuid))
-                    devState = state;
+                if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                {
+                    // Consume/postpone parity (2026-07-25 audit): released,
+                    // row still owns the target, and the value flows through
+                    // InvertOnHold below exactly like the multi-source
+                    // builder's contribute-zero. Never return false here.
+                    // The legacy fallback has no suppression check.
+                    combined = 0f;
+                }
                 else
                 {
-                    devState = LookupDeviceState(src.DeviceGuid);
-                    // Offline-contributes-zero: trigger rest is released
-                    // (the caller's pre-initialized value).
-                    if (devState == null) return true;
+                    CustomInputState devState;
+                    if (string.IsNullOrEmpty(src.DeviceGuid))
+                        devState = state;
+                    else
+                    {
+                        devState = LookupDeviceState(src.DeviceGuid);
+                        // Offline-contributes-zero: trigger rest is released
+                        // (the caller's pre-initialized value).
+                        if (devState == null) return true;
+                    }
+                    combined = ClampUnipolar(SourceEvaluator.EvaluateForTriggerTarget(
+                        devState, src, slotIndex, targetName, 0, slotRuntime, dt,
+                        evaluatedDeviceGuid: thisDeviceGuid));
                 }
-                combined = ClampUnipolar(SourceEvaluator.EvaluateForTriggerTarget(
-                    devState, src, slotIndex, targetName, 0, slotRuntime, dt,
-                    evaluatedDeviceGuid: thisDeviceGuid));
             }
 
             if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = 1f - combined;

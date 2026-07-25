@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PadForge.Engine;
 using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
@@ -668,13 +668,28 @@ namespace PadForge.Common.Input
         internal static bool IsSourceSuppressedPostpone(int slotIndex, string deviceGuid, string descriptor)
         {
             if (slotIndex < 0 || slotIndex >= _suppressedSourcesBySlot.Length) return false;
+            string canon = null;
             var set = _suppressedSourcesBySlot[slotIndex];
-            if (set == null || set.Count == 0) return false;
-            // Key shape mirrors the population loop below.
-            // Tuple key: no per-call string concat on the 1 kHz path
-            // (this runs per source per row per tick while an activator
-            // is held). Both member strings already exist.
-            return set.Contains((deviceGuid ?? "", CanonicalPostponeDescriptor(descriptor)));
+            if (set != null && set.Count != 0)
+            {
+                // Key shape mirrors the population loop below.
+                // Tuple key: no per-call string concat on the 1 kHz path
+                // (this runs per source per row per tick while an activator
+                // is held). Both member strings already exist.
+                canon = CanonicalPostponeDescriptor(descriptor);
+                if (set.Contains((deviceGuid ?? "", canon))) return true;
+            }
+            // Consume-armed macro triggers (2026-07-25) ride the same
+            // seam: a raw-button / descriptor trigger source that a
+            // consume-on macro is currently eating reads as released in
+            // every row evaluator, exactly like a postponed activator.
+            var consumed = _consumedTriggerSourcesBySlot[slotIndex];
+            if (consumed != null && consumed.Count != 0)
+            {
+                canon ??= CanonicalPostponeDescriptor(descriptor);
+                if (consumed.Contains((deviceGuid ?? "", canon))) return true;
+            }
+            return false;
         }
 
         /// <summary>Folds a "Gamepad ..." alias to the canonical per-device
@@ -704,6 +719,162 @@ namespace PadForge.Common.Input
                 if (!string.IsNullOrEmpty(resolved)) return resolved;
             }
             return descriptor ?? "";
+        }
+
+        // ── Consume for raw-button / descriptor macro triggers ──
+        //
+        // "Consume Trigger Buttons" historically worked only for
+        // virtual-button (Xbox bitmask) triggers: Step 4b strips those
+        // from the combined Gamepad after the macro fires. Raw
+        // device-button and descriptor triggers had nothing to strip
+        // there (the press lives on the DEVICE; its effect on the output
+        // goes through the mapping rows), so the checkbox was silently
+        // inert for them from the day raw triggers shipped (ad77addb,
+        // owner report 2026-07-25). The fix suppresses at the SOURCE
+        // READ: while a consume-on macro's raw/descriptor trigger is
+        // physically active (and its layer gate open), the matching
+        // mapping sources on the macro's slot read as released. Step 3
+        // runs before Step 4b in the same tick, so the first pressed
+        // tick is already suppressed at any poll rate, and layers,
+        // combine modes, and curves all see an ordinary released
+        // control. The macro's own trigger read is unaffected:
+        // CheckRawButtonTrigger / CheckDescriptorTrigger read the
+        // device's raw InputState, not the mapping rows. The empty-guid
+        // key is added alongside the concrete one so "(Any device)" rows
+        // are eaten too. The cost on a multi-device slot: the same
+        // control's any-device row pauses for the OTHER pads while the
+        // trigger is held. Consume-means-consume beats leaking the
+        // mapped output. Axis-threshold, POV, and gesture triggers stay
+        // unconsumed
+        // (the option is named for buttons; the virtual path never
+        // consumed axes either).
+        private static readonly System.Collections.Generic.HashSet<(string Guid, string Desc)>[]
+            _consumedTriggerSourcesBySlot =
+                new System.Collections.Generic.HashSet<(string Guid, string Desc)>[MaxPads];
+
+        // "Button N" descriptor strings, lazily interned so the per-tick
+        // rebuild allocates nothing after first use. Poll thread only.
+        private static string[] _consumeButtonDescCache = new string[64];
+
+        private static string ConsumeButtonDesc(int n)
+        {
+            var arr = _consumeButtonDescCache;
+            if (n >= arr.Length)
+            {
+                var na = new string[System.Math.Max(n + 1, arr.Length * 2)];
+                System.Array.Copy(arr, na, arr.Length);
+                _consumeButtonDescCache = na;
+                arr = na;
+            }
+            return arr[n] ??= "Button " + n.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>Rebuilds the per-slot consumed-trigger-source keys for
+        /// this tick. Runs at the top of Step 3, before any row
+        /// evaluation, on the poll thread. Internal for the
+        /// PadForge.Tests consume pins.</summary>
+        internal void RebuildConsumedTriggerSources()
+        {
+            for (int slot = 0; slot < MaxPads; slot++)
+            {
+                var macros = MacroSnapshots[slot];
+                _consumedTriggerSourcesBySlot[slot]?.Clear();
+                if (macros == null || macros.Length == 0) continue;
+                for (int m = 0; m < macros.Length; m++)
+                {
+                    var macro = macros[m];
+                    if (macro == null || !macro.IsEnabled || !macro.ConsumeTriggerButtons) continue;
+                    if (!macro.UsesRawTrigger && !macro.UsesDescriptorTrigger) continue;
+                    if (!MacroLayerGateOpen(macro)) continue;
+                    var entries = macro.GetTriggerInputEntries();
+                    if (entries.Count > 0)
+                    {
+                        for (int i = 0; i < entries.Count; i++)
+                        {
+                            var e = entries[i];
+                            if (e.RawButton >= 0)
+                                AddConsumedRawButton(slot, e.DeviceGuid, e.RawButton);
+                            else if (e.DescriptorSource != null)
+                                AddConsumedDescriptor(slot, e.DeviceGuid, e.DescriptorSource);
+                        }
+                    }
+                    else if (macro.UsesRawTrigger && macro.TriggerDeviceGuid != System.Guid.Empty)
+                    {
+                        // Legacy single-device raw-button macros
+                        // (pre-multi-device saves).
+                        var raws = macro.TriggerRawButtons;
+                        if (raws == null) continue;
+                        for (int i = 0; i < raws.Length; i++)
+                            if (raws[i] >= 0)
+                                AddConsumedRawButton(slot, macro.TriggerDeviceGuid, raws[i]);
+                    }
+                }
+            }
+        }
+
+        private void AddConsumedRawButton(int slot, System.Guid deviceGuid, int rawButton)
+        {
+            string desc = ConsumeButtonDesc(rawButton);
+            if (deviceGuid == System.Guid.Empty)
+            {
+                // Device-free entry: any online slot device holding the button.
+                int n = EnsureSlotTriggerDevices(slot);
+                for (int d = 0; d < n; d++)
+                {
+                    var ud = _slotTriggerDeviceScratch[d];
+                    var btns = ud?.InputState?.Buttons;
+                    if (btns == null || rawButton >= btns.Length || !btns[rawButton]) continue;
+                    AddConsumedKey(slot, ud.InstanceGuidString, desc);
+                    AddConsumedKey(slot, "", desc);
+                }
+                return;
+            }
+            var udc = FindSlotDeviceByInstanceGuid(deviceGuid, slot);
+            var b = udc?.InputState?.Buttons;
+            if (udc == null || !udc.IsOnline || b == null) return;
+            if (rawButton < b.Length && b[rawButton])
+            {
+                AddConsumedKey(slot, udc.InstanceGuidString, desc);
+                AddConsumedKey(slot, "", desc);
+            }
+        }
+
+        private void AddConsumedDescriptor(int slot, System.Guid deviceGuid, PadForge.Engine.Data.MappingSource src)
+        {
+            string desc = CanonicalPostponeDescriptor(src.Descriptor);
+            if (string.IsNullOrEmpty(desc)) return;
+            if (deviceGuid == System.Guid.Empty)
+            {
+                int n = EnsureSlotTriggerDevices(slot);
+                for (int d = 0; d < n; d++)
+                {
+                    var ud = _slotTriggerDeviceScratch[d];
+                    if (ud?.InputState == null) continue;
+                    if (!SourceCoercion.EvaluateForButtonTarget(
+                            ud.InputState, src, DescriptorTriggerThresholdPercent,
+                            slot, ud.InstanceGuidString))
+                        continue;
+                    AddConsumedKey(slot, ud.InstanceGuidString, desc);
+                    AddConsumedKey(slot, "", desc);
+                }
+                return;
+            }
+            var udc = FindSlotDeviceByInstanceGuid(deviceGuid, slot);
+            if (udc == null || !udc.IsOnline || udc.InputState == null) return;
+            if (SourceCoercion.EvaluateForButtonTarget(
+                    udc.InputState, src, DescriptorTriggerThresholdPercent,
+                    slot, udc.InstanceGuidString))
+            {
+                AddConsumedKey(slot, udc.InstanceGuidString, desc);
+                AddConsumedKey(slot, "", desc);
+            }
+        }
+
+        private static void AddConsumedKey(int slot, string deviceGuid, string desc)
+        {
+            (_consumedTriggerSourcesBySlot[slot]
+                ??= new System.Collections.Generic.HashSet<(string Guid, string Desc)>(PostponeKeyComparer.Instance))
+                .Add((deviceGuid ?? "", desc));
         }
 
         /// <summary>Clears every slot's shift runtime state. Called from

@@ -610,4 +610,121 @@ namespace PadForge.Tests
         }
     }
 
+    /// <summary>Owner report 2026-07-25: "Consume Trigger Buttons doesn't
+    /// actually consume the button" for raw device-button triggers. The
+    /// strip in Step 4b only ever covered virtual (Xbox bitmask) triggers;
+    /// raw/descriptor triggers were inert from the day they shipped
+    /// (ad77addb). The fix suppresses the trigger's mapping SOURCES at the
+    /// Step 3 read gate while the trigger is physically active. These pins
+    /// drive the real population + the real gate.</summary>
+    [Collection("SettingsManagerStatics")]
+    public class ConsumeRawTriggerTests : IDisposable
+    {
+        private static readonly Guid DevGuid = new("13ea3b23-bb17-802d-f268-c194414535f8");
+        private static readonly string DevGuidStr = DevGuid.ToString();
+        private readonly SettingsCollection _savedSettings;
+        private readonly DeviceCollection _savedDevices;
+
+        public ConsumeRawTriggerTests()
+        {
+            _savedSettings = SettingsManager.UserSettings;
+            _savedDevices = SettingsManager.UserDevices;
+        }
+
+        public void Dispose()
+        {
+            SettingsManager.UserSettings = _savedSettings;
+            SettingsManager.UserDevices = _savedDevices;
+        }
+
+        private static PadForge.Engine.CustomInputState Arrange(out InputManager im, MacroItem macro)
+        {
+            SettingsManager.UserDevices = new DeviceCollection();
+            SettingsManager.UserSettings = new SettingsCollection();
+            var state = new PadForge.Engine.CustomInputState();
+            var ud = new PadForge.Engine.Data.UserDevice
+            {
+                InstanceGuid = DevGuid,
+                ProductName = "Steam Controller",
+                IsOnline = true,
+                InputState = state,
+            };
+            lock (SettingsManager.UserDevices.SyncRoot)
+                SettingsManager.UserDevices.Items.Add(ud);
+            lock (SettingsManager.UserSettings.SyncRoot)
+                SettingsManager.UserSettings.Items.Add(
+                    new PadForge.Engine.Data.UserSetting { InstanceGuid = DevGuid, MapTo = 0 });
+            im = new InputManager();
+            im.MacroSnapshots[0] = new[] { macro };
+            return state;
+        }
+
+        private static MacroItem ConsumeMacro(bool consume = true, bool enabled = true) => new()
+        {
+            Name = "Macro 1",
+            IsEnabled = enabled,
+            PadIndex = 0,
+            TriggerMode = MacroTriggerMode.OnPress,
+            RepeatMode = MacroRepeatMode.Once,
+            ConsumeTriggerButtons = consume,
+            TriggerInputs = "in:13ea3b23-bb17-802d-f268-c194414535f8:btn:0",
+        };
+
+        [Fact]
+        public void ConsumedRawButton_SuppressesItsMappingSource_WhileHeld()
+        {
+            var state = Arrange(out var im, ConsumeMacro());
+
+            // Held: the source reads suppressed under the concrete guid,
+            // the empty-guid ("any device") row form, and the "Gamepad A"
+            // alias spelling (the gate canonicalizes on lookup).
+            state.Buttons[0] = true;
+            im.RebuildConsumedTriggerSources();
+            Assert.True(InputManager.IsSourceSuppressedPostpone(0, DevGuidStr, "Button 0"), "concrete guid");
+            Assert.True(InputManager.IsSourceSuppressedPostpone(0, "", "Button 0"), "any-device row");
+            Assert.False(InputManager.IsSourceSuppressedPostpone(0, DevGuidStr, "Button 1"), "same-window negative control");
+
+            // Released: nothing suppressed.
+            state.Buttons[0] = false;
+            im.RebuildConsumedTriggerSources();
+            Assert.False(InputManager.IsSourceSuppressedPostpone(0, DevGuidStr, "Button 0"), "released");
+        }
+
+        [Fact]
+        public void ConsumeOff_OrDisabled_SuppressesNothing()
+        {
+            var state = Arrange(out var im, ConsumeMacro(consume: false));
+            state.Buttons[0] = true;
+            im.RebuildConsumedTriggerSources();
+            Assert.False(InputManager.IsSourceSuppressedPostpone(0, DevGuidStr, "Button 0"), "consume off");
+
+            var state2 = Arrange(out var im2, ConsumeMacro(enabled: false));
+            state2.Buttons[0] = true;
+            im2.RebuildConsumedTriggerSources();
+            Assert.False(InputManager.IsSourceSuppressedPostpone(0, DevGuidStr, "Button 0"), "macro disabled");
+        }
+
+        [Fact]
+        public void VirtualBitmaskTrigger_DoesNotEnterTheSourceSuppressionSet()
+        {
+            // The Step 4b bitmask strip still owns virtual triggers; the
+            // Step 3 set must stay empty for them.
+            var m = new MacroItem
+            {
+                Name = "V",
+                IsEnabled = true,
+                PadIndex = 0,
+                TriggerButtons = Gamepad.A,
+                TriggerMode = MacroTriggerMode.OnPress,
+                RepeatMode = MacroRepeatMode.Once,
+                ConsumeTriggerButtons = true,
+            };
+            var state = Arrange(out var im, m);
+            state.Buttons[0] = true;
+            im.RebuildConsumedTriggerSources();
+            Assert.False(InputManager.IsSourceSuppressedPostpone(0, DevGuidStr, "Button 0"));
+        }
+    }
+
+
 }

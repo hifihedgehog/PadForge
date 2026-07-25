@@ -1096,6 +1096,14 @@ namespace PadForge.Common.Input
             // Macro sounds die with the engine. Releases the WASAPI clients.
             SoundMacroService.StopAll();
 
+            // The Wii speaker and the Switch/Steam haptic-tone stream die
+            // with the ENGINE, not with a profile apply. StopAll no longer
+            // carries them (their _suppressed latch clears only in
+            // EnsureStarted, which runs at engine start), so engine stop
+            // tears them down here, mirroring RumbleAudioService below.
+            try { WiiSpeakerService.Shutdown(); } catch { }
+            try { HapticToneService.Shutdown(); } catch { }
+
             // #236: engine stop is an explicit silence edge. _running is
             // already false, so no in-flight poll can reassert a pack
             // after this (and the per-slot generation discards a racing

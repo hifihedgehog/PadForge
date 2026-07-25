@@ -883,7 +883,13 @@ namespace PadForge.Common.Input
                 // type switch that authors an EMPTY PadSetting is silent
                 // and latent until the user notices dead inputs. Name the
                 // gate that decided, every time.
-                int rawCount = ps.RawMappingEntries?.Length ?? 0;
+                // All three dictionary siblings, not raw alone: a MIDI or
+                // KBM slot's automap logged rawRows=0 with rows authored,
+                // defeating this line's own purpose (audit 2026-07-24,
+                // lens 1r).
+                int rawCount = (ps.RawMappingEntries?.Length ?? 0)
+                    + (ps.MidiMappingEntries?.Length ?? 0)
+                    + (ps.KbmMappingEntries?.Length ?? 0);
                 Engine.SdlDiagLog.WriteLine(
                     $"AUTOMAP slot={padIndex} type={outputType} guid={us.InstanceGuid.ToString().Substring(0, 8)}"
                     + (ud == null

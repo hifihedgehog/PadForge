@@ -583,7 +583,11 @@ namespace PadForge.Services
             if (existingPs == null || ud == null) return;
             PadForge.Engine.SdlDiagLog.WriteLine(
                 $"FILLAUTO guid={ud.InstanceGuid.ToString().Substring(0, 8)} type={outputType}"
-                + $" preRaw={existingPs.RawMappingEntries?.Length ?? 0}");
+                // All three dictionary siblings (lens 1r): the merge below
+                // handles Raw, Midi, and Kbm, so the pre-count must too.
+                + $" preRows={(existingPs.RawMappingEntries?.Length ?? 0)
+                    + (existingPs.MidiMappingEntries?.Length ?? 0)
+                    + (existingPs.KbmMappingEntries?.Length ?? 0)}");
 
             var freshPs = SettingsManager.CreateDefaultPadSetting(ud, outputType);
             if (freshPs == null) return;

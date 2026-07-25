@@ -53,6 +53,26 @@ namespace PadForge.ViewModels
 
         private void OnPaletteCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            // Clear() raises Reset with NO OldItems, so the per-entry
+            // unsubscribe below never runs for a cleared palette: the
+            // dropped entries keep a live handler into this config and a
+            // re-added entry double-subscribes (its edits then fire the
+            // reactive lane twice). Both palette-replace paths Clear()
+            // before repopulating, so re-sync the whole hook set on Reset.
+            // The InputReactive twin in this file already tracks exactly
+            // this trap (audit 2026-07-24, lens 1q).
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+            {
+                if (sender is ObservableCollection<LightbarPaletteEntry> coll)
+                    foreach (var entry in coll)
+                        if (entry != null)
+                        {
+                            entry.PropertyChanged -= OnPaletteEntryChanged;
+                            entry.PropertyChanged += OnPaletteEntryChanged;
+                        }
+                OnPropertyChanged(nameof(LightbarPalette));
+                return;
+            }
             if (e.OldItems != null)
                 foreach (LightbarPaletteEntry old in e.OldItems)
                     if (old != null) old.PropertyChanged -= OnPaletteEntryChanged;

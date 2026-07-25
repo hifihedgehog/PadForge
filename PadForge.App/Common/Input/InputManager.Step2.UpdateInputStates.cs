@@ -984,9 +984,13 @@ namespace PadForge.Common.Input
             {
                 bool hot = _combinedVibration != null
                     && (_combinedVibration.LeftMotorSpeed > 0 || _combinedVibration.RightMotorSpeed > 0);
-                if (hot != _nintendoRumbleWasHot)
+                // Per-DEVICE edge state: ApplyForceFeedback runs once per
+                // device per tick, so a single shared flag flapped between
+                // two Nintendo pads in different rumble states and logged
+                // at poll rate (audit 2026-07-24, lens 1n).
+                if (!_nintendoRumbleWasHot.TryGetValue(ud.InstanceGuid, out bool wasHot) || hot != wasHot)
                 {
-                    _nintendoRumbleWasHot = hot;
+                    _nintendoRumbleWasHot[ud.InstanceGuid] = hot;
                     PadForge.Engine.SdlDiagLog.WriteLine(
                         $"HAPTICDIAG motors={(hot ? "HOT" : "cold")} pid={ud.ProdId:X4}"
                         + $" L={_combinedVibration?.LeftMotorSpeed ?? 0} R={_combinedVibration?.RightMotorSpeed ?? 0}"
@@ -997,7 +1001,7 @@ namespace PadForge.Common.Input
             ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, firstPadSetting, _combinedVibration);
         }
 
-        private bool _nintendoRumbleWasHot;
+        private readonly System.Collections.Generic.Dictionary<Guid, bool> _nintendoRumbleWasHot = new();
 
         private Vibration _combinedVibration;
 

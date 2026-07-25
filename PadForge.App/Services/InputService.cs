@@ -12129,7 +12129,11 @@ namespace PadForge.Services
                         // fresh type-switch automap is visible in the ring.
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"PROFILEAPPLY guid={us.InstanceGuid.ToString().Substring(0, 8)}"
-                            + $" slot={assign.MapTo} incomingRaw={assign.Ps?.RawMappingEntries?.Length ?? 0}");
+                            // All three dictionary siblings (lens 1r): raw
+                            // alone undercounts a MIDI/KBM profile apply.
+                            + $" slot={assign.MapTo} incomingRows={(assign.Ps?.RawMappingEntries?.Length ?? 0)
+                                + (assign.Ps?.MidiMappingEntries?.Length ?? 0)
+                                + (assign.Ps?.KbmMappingEntries?.Length ?? 0)}");
                         us.SetPadSetting(assign.Ps);
                         us.MapTo = assign.MapTo;
                     }

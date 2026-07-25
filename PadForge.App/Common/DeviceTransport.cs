@@ -32,6 +32,21 @@ namespace PadForge.Common
             if (vendorId == MicrosoftVid && IsXboxBluetoothPid(productId))
                 return true;
 
+            // Combined gen-1 Joy-Con pair (PID 0x2008): another identity
+            // fact, and it must precede the path block because SDL gives the
+            // pair a NON-EMPTY synthetic path ("nintendo_joycons_combined",
+            // SDL_hidapijoystick.c:1087) that carries no BT marker, so that
+            // block would answer false before any tail check ran. Both
+            // halves hold the classic-BT links a single Joy-Con passes with
+            // (BluetoothLinkHelper.IsJoyConPair documents exactly this
+            // blind spot), and Joy-Cons only combine wirelessly, so the
+            // pair is Bluetooth by construction. Without this the pair
+            // failed the transport gate: its NFC reader never armed while
+            // the picker still offered its tag sources (audit 2026-07-24,
+            // lens 1m).
+            if (Input.BluetoothLinkHelper.IsJoyConPair(vendorId, productId))
+                return true;
+
             if (!string.IsNullOrEmpty(devicePath))
             {
                 // Classic Bluetooth HID (BR/EDR): the HID service class UUID

@@ -4183,6 +4183,41 @@ namespace PadForge.Common.Input
                     ApplyGyroRecenterAction(macro);
                     AdvanceAction(macro);
                     break;
+
+                // Slot-level actions, mirrored from the Gamepad loop. Both
+                // effects are output-type-independent (a global overlay
+                // request and a slot-keyed gyro latch, neither touching the
+                // Gamepad state), but slot routing is exclusive: a raw-HID
+                // surface runs THIS loop and never the Gamepad one. Without
+                // these cases the macro editor still offered both actions on
+                // an Extended slot and they silently did nothing.
+                case MacroActionType.ToggleTouchpadOverlay:
+                    ToggleTouchpadOverlayRequested = true;
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.SetGyroEngaged:
+                {
+                    int gyroSlot = macro.PadIndex;
+                    if (gyroSlot >= 0 && gyroSlot < MaxPads)
+                    {
+                        switch (action.SetGyroEngagedMode)
+                        {
+                            case MacroSetGyroEngagedMode.On:
+                                GyroEngagedFromMacro[gyroSlot] = true;
+                                break;
+                            case MacroSetGyroEngagedMode.Off:
+                                GyroEngagedFromMacro[gyroSlot] = false;
+                                break;
+                            case MacroSetGyroEngagedMode.Toggle:
+                            default:
+                                GyroEngagedFromMacro[gyroSlot] = !GyroEngagedFromMacro[gyroSlot];
+                                break;
+                        }
+                    }
+                    AdvanceAction(macro);
+                    break;
+                }
             }
         }
 

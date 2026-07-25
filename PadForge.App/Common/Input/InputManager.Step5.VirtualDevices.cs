@@ -906,8 +906,23 @@ namespace PadForge.Common.Input
                 if (slotActive)
                 {
                     if (_slotInactiveCounter[padIndex] > 0)
+                    {
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"VCTRACE slot={padIndex} devices ONLINE (grace ends after {_slotInactiveCounter[padIndex]} cycles)");
+                        // A genuine device arrival is a meaningful state
+                        // change per the latch's own contract (audit
+                        // 2026-07-25, C1): a create that failed while the
+                        // devices were absent deserves a retry now that
+                        // they are back. A genuinely broken config retries
+                        // once per offline->online edge, which is the old
+                        // cooldown's cadence, not a hammer loop.
+                        if (_createFailed[padIndex])
+                        {
+                            _createFailed[padIndex] = false;
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"VCTRACE slot={padIndex} createFailed CLEAR (devices returned)");
+                        }
+                    }
                     _slotInactiveCounter[padIndex] = 0;
                     _hmInactivityFired[padIndex] = false;
 
@@ -1313,7 +1328,26 @@ namespace PadForge.Common.Input
                                     }
                                     else if (vcAsync == null)
                                     {
-                                        LatchCreateFailed(capturedIndex, capturedType, capturedProfile);
+                                        // Latch only REAL failures (audit 2026-07-25, C1).
+                                        // CreateVirtualController re-reads live slot state,
+                                        // so a slot that lost its devices, its enabled bit,
+                                        // or its type between the KICK and the task body
+                                        // returns null as an ABORT, not a driver failure.
+                                        // The live diag log showed a one-tick device flap at
+                                        // launch arming the latch 4/4 launches, and no
+                                        // clear path fires on a later genuine device
+                                        // arrival, so the abort latched the slot dead until
+                                        // a manual reconfigure.
+                                        bool stillEligible =
+                                            SettingsManager.SlotCreated[capturedIndex]
+                                            && SettingsManager.SlotEnabled[capturedIndex]
+                                            && SlotControllerTypes[capturedIndex] == capturedType
+                                            && IsSlotActive(capturedIndex);
+                                        if (stillEligible)
+                                            LatchCreateFailed(capturedIndex, capturedType, capturedProfile);
+                                        else
+                                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                                $"VCTRACE slot={capturedIndex} async create ABANDONED (slot no longer eligible, no latch)");
                                     }
                                     else
                                     {
@@ -2419,6 +2453,17 @@ namespace PadForge.Common.Input
             // VibrationStates every tick, latching a trigger shaker voice
             // on until the next game write. A destroyed VC has no game
             // feedback by definition; the successor VC starts from zero.
+            // 2026-07-25 audit (C38): detach the driver-side feedback
+            // callbacks SYNCHRONOUSLY before zeroing. The async dispose
+            // below can take seconds (xinputhid ~11 s worst case) and the
+            // OutputDecoded/OutputReceived handlers die only when the
+            // controller disposes, so a late game write between the zero
+            // and the driver-side close repopulated the motors for a slot
+            // that no longer owns them. FeedbackPadIndex = -1 makes every
+            // late callback no-op at its own guard.
+            if (vc is HMaestroVirtualController hmFb)
+                hmFb.UnregisterFeedback();
+
             var vib = VibrationStates[padIndex];
             if (vib != null)
             {
@@ -2426,6 +2471,22 @@ namespace PadForge.Common.Input
                 vib.RightMotorSpeed = 0;
                 vib.LeftTriggerMotorSpeed = 0;
                 vib.RightTriggerMotorSpeed = 0;
+                // 2026-07-25 audit (C33): the PID directional/condition
+                // projection latches too. Step 2 selects on these flags
+                // with no VC-existence check, and the only writer that
+                // clears them (HMaestroFfbDecoder.Apply via TickFfb) dies
+                // with the VC, so a destroyed slot kept issuing the last
+                // constant/spring force to a physical wheel forever, and
+                // the stale HasDirectionalData also suppressed the user's
+                // own Constant Force feature.
+                vib.HasDirectionalData = false;
+                vib.HasConditionData = false;
+                vib.EffectType = 0;
+                vib.SignedMagnitude = 0;
+                vib.Direction = 0;
+                vib.Period = 0;
+                vib.ConditionAxisCount = 0;
+                vib.DeviceGain = 255;
             }
 
             // #240: forget SOCD winner state with the VC. Without this a

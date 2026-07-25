@@ -302,6 +302,11 @@ namespace PadForge.Common.Input
             // restricted flag the LAST slot left behind, and a KeyUp must
             // always be deliverable.
             _currentMacroSlotRestricted = false;
+            // Release the cross-macro stash (audit 2026-07-25, C20): it is
+            // a per-evaluation transient, and leaving the last array
+            // referenced rooted the previous profile's whole MacroItem
+            // graph across profile swaps.
+            _evalMacros = null;
             ReconcileLatchedKeys();
             ReconcileLatchedMouseButtons();
         }
@@ -402,7 +407,17 @@ namespace PadForge.Common.Input
         /// macros, not just its own. Poll-thread transient, assigned at the
         /// top of both evaluators.</summary>
         private MacroItem[] _evalMacros;
-        private readonly short[] _preMacroRawAxes = new short[6];
+
+        /// <summary>The Extended slot layout the current raw evaluator call
+        /// resolves axis indices against (audit 2026-07-25, C34). The old
+        /// fixed LX0/LY1/LT2/RX3/RY4/RT5 map matches only the default
+        /// 2-stick/2-trigger layout; the packer interleaves by
+        /// min(Sticks, Triggers), so a 2/0 Nintendo layout puts RightStickX
+        /// at 2 and a 1/2 layout puts RightTrigger at 3. Poll-thread
+        /// transient, assigned at the raw evaluator's top; null falls back
+        /// to the default map (direct-call tests, primed slots).</summary>
+        private static PadForge.Engine.CustomControllerLayout? _currentRawLayout;
+        private readonly short[] _preMacroRawAxes = new short[8];
 
         internal void EvaluateSlotMacros(ref Gamepad gp, MacroItem[] macros)
         {
@@ -2261,7 +2276,14 @@ namespace PadForge.Common.Input
             {
                 var sib = actions[i];
                 if (sib == null || ReferenceEquals(sib, action)) continue;
-                if (sib.Type == MacroActionType.AxisSetLatched
+                // The clear-set matches Release Axis Latches' type list
+                // (audit 2026-07-25, C29): the latch pass applies actions
+                // in list order with last-write-wins, so a latched Toggle
+                // Axis LATER in the list permanently overwrote the ladder
+                // step, making it read dead. Both types share the axis
+                // latch namespace.
+                if ((sib.Type == MacroActionType.AxisSetLatched
+                        || sib.Type == MacroActionType.ToggleVcAxis)
                     && sib.AxisTarget == action.AxisTarget)
                     sib.VcAxisToggleLatched = false;
             }
@@ -3087,7 +3109,7 @@ namespace PadForge.Common.Input
         /// never mistaken for physical input.</summary>
         private bool AxisWriteYieldsRawValueAt(int axisIndex, MacroAction action)
         {
-            if (axisIndex < 0 || axisIndex >= 6) return false;
+            if (axisIndex < 0 || axisIndex >= _preMacroRawAxes.Length) return false;
             return AxisWriteYieldsRawValue(action, _preMacroRawAxes[axisIndex]);
         }
 
@@ -3328,7 +3350,20 @@ namespace PadForge.Common.Input
         internal void EvaluateSlotMacrosExtended(ref RawHidState raw, MacroItem[] macros)
         {
             _evalMacros = macros;   // #251 cross-macro latch release, see above
-            for (int k = 0; k < 6; k++)
+            // Resolve the slot's ACTUAL axis packing for this call (audit
+            // 2026-07-25, C34). All macros in a snapshot share the slot.
+            int laySlot = -1;
+            for (int lm = 0; lm < macros.Length; lm++)
+                if (macros[lm] != null) { laySlot = macros[lm].PadIndex; break; }
+            // A default (0-stick/0-trigger) struct means "layout never
+            // populated": fall back to the fixed map rather than resolving
+            // every target to -1.
+            if (laySlot >= 0 && laySlot < MaxPads
+                && (SlotCustomLayouts[laySlot].Sticks > 0 || SlotCustomLayouts[laySlot].Triggers > 0))
+                _currentRawLayout = SlotCustomLayouts[laySlot];
+            else
+                _currentRawLayout = null;
+            for (int k = 0; k < _preMacroRawAxes.Length; k++)
                 _preMacroRawAxes[k] = raw.Axes != null && k < raw.Axes.Length ? raw.Axes[k] : (short)0;
             // Fresh slot-device resolution per evaluator call (#9 B-9),
             // mirroring the Gamepad path.
@@ -3631,7 +3666,7 @@ namespace PadForge.Common.Input
                     if (a.VcAxisToggleLatched && LatchPhaseOn(a) && raw.Axes != null)
                     {
                         int yIdx = MacroAxisTargetToRawIndex(a.AxisTarget);
-                        bool yields = yIdx >= 0 && yIdx < 6
+                        bool yields = yIdx >= 0 && yIdx < _preMacroRawAxes.Length
                             && AxisWriteYieldsRawValue(a, _preMacroRawAxes[yIdx]);
                         if (!yields)
                             ApplyAxisActionRaw(ref raw, a);
@@ -3923,8 +3958,14 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.AxisScale:
-                    // Proportional deflection (#251), the raw twin.
-                    ApplyAxisScaleActionRaw(ref raw, action);
+                    // Proportional deflection (#251), the raw twin. The
+                    // null guard matches the Set/Hold/Add siblings (audit
+                    // 2026-07-25, C16): an Extended slot whose raw surface
+                    // has not materialized threw here every tick, and the
+                    // outer catch silently aborted the whole slot's macro
+                    // pass.
+                    if (raw.Axes != null)
+                        ApplyAxisScaleActionRaw(ref raw, action);
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
                     break;
@@ -4256,33 +4297,78 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Applies an AxisSet action to a RawHidState.</summary>
         /// <summary>The one canonical MacroAxisTarget → Extended word-array
-        /// index map (LX0 LY1 LT2 RX3 RY4 RT5). Every raw-path axis write
-        /// and the #237 yield gates resolve through this so the map can
-        /// never drift between siblings. -1 = unmapped.</summary>
-        internal static int MacroAxisTargetToRawIndex(MacroAxisTarget target) => target switch
+        /// index map. Every raw-path axis write and the #237 yield gates
+        /// resolve through this so the map can never drift between
+        /// siblings. -1 = unmapped. With no layout in scope this is the
+        /// default 2-stick/2-trigger packing (LX0 LY1 LT2 RX3 RY4 RT5);
+        /// with the slot's layout it follows ComputeAxisLayout's interleave
+        /// formula (audit 2026-07-25, C34), so a Nintendo 2/0 layout
+        /// resolves RightStickX to 2 and drops the trigger targets instead
+        /// of corrupting a stick channel.</summary>
+        internal static int MacroAxisTargetToRawIndex(MacroAxisTarget target)
         {
-            MacroAxisTarget.LeftStickX => 0,
-            MacroAxisTarget.LeftStickY => 1,
-            MacroAxisTarget.RightStickX => 3,
-            MacroAxisTarget.RightStickY => 4,
-            MacroAxisTarget.LeftTrigger => 2,
-            MacroAxisTarget.RightTrigger => 5,
-            _ => -1
-        };
+            var layOpt = _currentRawLayout;
+            if (layOpt == null)
+            {
+                return target switch
+                {
+                    MacroAxisTarget.LeftStickX => 0,
+                    MacroAxisTarget.LeftStickY => 1,
+                    MacroAxisTarget.RightStickX => 3,
+                    MacroAxisTarget.RightStickY => 4,
+                    MacroAxisTarget.LeftTrigger => 2,
+                    MacroAxisTarget.RightTrigger => 5,
+                    _ => -1
+                };
+            }
+            var lay = layOpt.Value;
+            int sticks = lay.Sticks, trigs = lay.Triggers;
+            int interleave = System.Math.Min(sticks, trigs);
+            // Mirrors ExtendedSlotConfig.ComputeAxisLayout /
+            // CustomControllerLayout.IsTriggerSlot: interleaved
+            // (X, Y, trigger) groups, then trailing stick pairs, then
+            // trailing triggers one at a time.
+            int StickX(int n) => n < interleave ? n * 3 : interleave * 3 + (n - interleave) * 2;
+            int Trig(int n) => n < interleave
+                ? n * 3 + 2
+                : interleave * 3 + System.Math.Max(0, sticks - interleave) * 2 + (n - interleave);
+            return target switch
+            {
+                MacroAxisTarget.LeftStickX => sticks >= 1 ? StickX(0) : -1,
+                MacroAxisTarget.LeftStickY => sticks >= 1 ? StickX(0) + 1 : -1,
+                MacroAxisTarget.RightStickX => sticks >= 2 ? StickX(1) : -1,
+                MacroAxisTarget.RightStickY => sticks >= 2 ? StickX(1) + 1 : -1,
+                MacroAxisTarget.LeftTrigger => trigs >= 1 ? Trig(0) : -1,
+                MacroAxisTarget.RightTrigger => trigs >= 2 ? Trig(1) : -1,
+                _ => -1
+            };
+        }
 
         private static void ApplyAxisActionRaw(ref RawHidState raw, MacroAction action)
         {
             int axisIndex = MacroAxisTargetToRawIndex(action.AxisTarget);
-            if (axisIndex >= 0 && axisIndex < raw.Axes.Length)
-                raw.Axes[axisIndex] = action.AxisValue;
+            if (axisIndex < 0 || raw.Axes == null || axisIndex >= raw.Axes.Length) return;
+            // Trigger channels rest at short.MinValue and span the full
+            // signed word (audit 2026-07-25, C36): the editor's AxisValue
+            // is the 0..32767 pull scale, so writing it raw parked 0% at
+            // the channel MIDPOINT (half-pulled). Same doubling the Add
+            // twin ships; the Set/Hold/latch family routed through here
+            // was the only writer without it.
+            bool isTrigger = action.AxisTarget == MacroAxisTarget.LeftTrigger
+                || action.AxisTarget == MacroAxisTarget.RightTrigger;
+            raw.Axes[axisIndex] = isTrigger
+                ? (short)Math.Clamp(short.MinValue + (int)action.AxisValue * 2, short.MinValue, short.MaxValue)
+                : action.AxisValue;
         }
 
         /// <summary>Extended twin of <see cref="ApplyAxisAddAction"/>
-        /// (#237): signed addition in the word-array frame, clamped. The
-        /// Extended axis frame is -32768..32767 on every index, so no
-        /// trigger rescale applies (the AxisHold raw-twin rationale).</summary>
+        /// (#237): signed addition in the word-array frame, clamped.
+        /// Trigger channels rest at short.MinValue and span the full
+        /// signed word, so the add doubles onto that span exactly like
+        /// the Gamepad path's pull scale (audit 2026-07-25, C36: the
+        /// old text here claimed no rescale applies, and the Set/Hold
+        /// writer inherited that wrong frame).</summary>
         private static void ApplyAxisAddActionRaw(ref RawHidState raw, MacroAction action)
         {
             int axisIndex = MacroAxisTargetToRawIndex(action.AxisTarget);

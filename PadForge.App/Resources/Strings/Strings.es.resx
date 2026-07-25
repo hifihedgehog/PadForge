@@ -636,6 +636,7 @@
   <data name="Macro_OutputController" xml:space="preserve"><value>Control virtual</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Umbral</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consumir botones activadores (ocultar del juego)</value></data>
+  <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Consume la entrada del disparador para que el juego nunca la vea. Funciona con botones de mando virtual, botones físicos del dispositivo y entradas de panel táctil o giroscopio. Los disparadores por umbral de eje, POV y gestos no se consumen.</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Se ejecuta continuamente mientras este control virtual está activo. No requiere botón activador.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Secuencia de acciones</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Agregar acción</value></data>

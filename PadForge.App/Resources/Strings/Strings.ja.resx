@@ -636,6 +636,7 @@
   <data name="Macro_OutputController" xml:space="preserve"><value>仮想コントローラー</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>しきい値</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>トリガーボタンを消費する (ゲームから隠す)</value></data>
+  <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>トリガー入力を食べて、ゲームに渡さないようにします。仮想コントローラーのボタン、実機のボタン、タッチパッドやジャイロ系の入力に対応します。軸のしきい値・POV・ジェスチャーのトリガーは消費されません。</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>この仮想コントローラーがアクティブな間、継続的に実行されます。トリガーボタンは不要です。</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>アクションシーケンス</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>アクションを追加</value></data>

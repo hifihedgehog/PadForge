@@ -677,13 +677,19 @@ namespace PadForge.Services
                             int slot = us.MapTo;
                             if (slot < 0 || slot >= InputManager.MaxPads) continue;
                             sawRow = true;
-                            // A slot whose virtual-DualSense passthrough
-                            // targets this pad already writes it directly;
-                            // importing its decoded motors here would fight
-                            // that writer (the cross-slot twin of the
-                            // dispatcher's own passthrough rumble gate).
-                            if (DualSensePassthroughDispatcher.IsPassthroughTarget(slot, deviceGuid))
-                                continue;
+                            // Passthrough targets contribute their row like
+                            // any other (audit 2026-07-25, C37): the
+                            // dispatcher's own gate zeroes these bytes
+                            // exactly while the game drives passthrough
+                            // rumble (UserEffectsDispatcher, the
+                            // gameDrivenRumble branch), so skipping the row
+                            // here was an over-broad duplicate that also
+                            // killed test rumble, macro rumble, constant
+                            // force, and touchpad pulses for the device.
+                            // The rowless FALLBACK below still never runs
+                            // for these rows (sawRow stays true), which is
+                            // the second-writer case the old skip was
+                            // guarding against.
                             // Test-rumble provenance: a slot running a
                             // device-targeted test contributes only to that
                             // exact device (mirrors Step 2's physical gate).
@@ -8290,8 +8296,14 @@ namespace PadForge.Services
                                 HasGyroAux = dev.HasGyroAux,
                                 // NFC rides the v3 caps byte the same way, and the
                                 // flag lives on UserDevice (VID/PID-computed), not on
-                                // the SDL device wrapper.
-                                HasNfcReader = ud.HasNfcReader,
+                                // the SDL device wrapper. ANDed with the SAME
+                                // transport rule the owner's arming scan enforces
+                                // (audit 2026-07-25, C43): a USB-linked reader never
+                                // arms (64-byte reports cannot carry the MCU frames),
+                                // so advertising it invited perpetual demand traffic
+                                // for sources that can never fire.
+                                HasNfcReader = ud.HasNfcReader
+                                    && PadForge.Common.DeviceTransport.IsBluetooth(ud.DevicePath, ud.VendorId, ud.ProdId),
                                 HasTouchpad = dev.HasTouchpad,
                                 NumTouchpads = dev.NumTouchpads,
                                 TouchpadFingerCounts = dev.TouchpadFingerCounts,
@@ -12497,7 +12509,11 @@ namespace PadForge.Services
             // shifted voice rendered the pack now living at its OLD index,
             // with the OLD endpoint/carrier/gain, until the next timer
             // pass. Kick it now (async; WASAPI work must not run here).
-            PadForge.Common.Input.RumbleAudioService.RequestReconcile();
+            // Outermost apply only (audit 2026-07-25, C19): compaction
+            // drives a nested ApplyProfile, and the nested kick queued a
+            // second full COM pass per user-visible apply.
+            if (!_compactingSlots)
+                PadForge.Common.Input.RumbleAudioService.RequestReconcile();
         }
 
         /// <summary>

@@ -1730,6 +1730,7 @@
                                 </StackPanel>
 
                                 <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Macro_ConsumeTrigger, Source={x:Static strings:Strings.Instance}}"
+                                          ToolTip="{Binding Macro_ConsumeTrigger_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding ConsumeTriggerButtons, Mode=TwoWay}"
                                           Margin="0,0,0,4"/>
                             </StackPanel>

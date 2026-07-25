@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -69,6 +69,11 @@ namespace PadForge.Engine.RemoteLink
         /// payload. InputService maps the slot to the physical device and drives it.</summary>
         public event Action<string, byte, byte[]> OutputReceived;
 
+        /// <summary>Raised on the OWNER when a consumer reports live demand
+        /// for one of our shared devices' demand-gated sources (#241 NFC).
+        /// Args: peer fingerprint, link slot, payload ([0] = demand kind).</summary>
+        public event Action<string, byte, byte[]> SourceDemandReceived;
+
         /// <summary>A paired peer sent a speaker PCM block (issue #138) for one of THIS
         /// PC's shared pads. Args: peer fingerprint, link slot, raw PCM block.</summary>
         public event Action<string, byte, byte[]> AudioReceived;
@@ -102,6 +107,8 @@ namespace PadForge.Engine.RemoteLink
         public int DiagDatagramsSent;
         public int DiagOutputSent;      // reverse-feedback frames we sealed+sent (#138 M2)
         public int DiagOutputReceived;  // reverse-feedback frames we opened+surfaced
+        public int DiagDemandSent;      // source-demand frames we sealed+sent (#241)
+        public int DiagDemandReceived;  // source-demand frames we opened+surfaced (#241)
         public int DiagAudioReceived;   // speaker PCM blocks we opened+surfaced (#138)
         public string DiagLastError;
 
@@ -304,6 +311,34 @@ namespace PadForge.Engine.RemoteLink
             if (matched) DiagLastError = "output: peer endpoint not learned yet";
         }
 
+        /// <summary>Tell the device's OWNER that a live mapping on this side is
+        /// polling a demand-gated source (#241 NFC reader). Same addressing as
+        /// <see cref="PushOutputEffect"/> on its own datagram type. Fire it on
+        /// the consumer's demand cadence: the owner treats each arrival as a
+        /// fresh stamp and lets it lapse, so a deleted or disabled binding
+        /// stops arming the hardware without needing an explicit "off".</summary>
+        public void PushSourceDemand(string peerFingerprint, byte slot, byte[] payload)
+        {
+            if (string.IsNullOrEmpty(peerFingerprint) || payload == null) return;
+            LinkPeerConnection[] conns;
+            lock (_lock) conns = _connections.ToArray();
+            ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
+            foreach (var c in conns)
+            {
+                if (!string.Equals(c.PeerFingerprintHex, peerFingerprint, StringComparison.OrdinalIgnoreCase)) continue;
+                var ep = c.PeerUdpEndpoint;
+                if (ep == null) continue;
+                try
+                {
+                    _udp.SendTo(c.DataSession.Seal(LinkMessageType.SourceDemand, slot, ts, payload), ep);
+                    System.Threading.Interlocked.Increment(ref DiagDatagramsSent);
+                    System.Threading.Interlocked.Increment(ref DiagDemandSent);
+                }
+                catch (Exception ex) { DiagLastError = "demand: " + ex.Message; }
+                return;
+            }
+        }
+
         /// <summary>Send one speaker PCM block (issue #138) to the peer that owns the
         /// device. Same addressing as <see cref="PushOutputEffect"/> but on the Audio
         /// datagram type so the owner renders it to the pad speaker.</summary>
@@ -466,6 +501,14 @@ namespace PadForge.Engine.RemoteLink
                     // drive the hardware (LinkServer is Engine-side, no UserDevices).
                     System.Threading.Interlocked.Increment(ref DiagOutputReceived);
                     OutputReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
+                }
+                else if (type == LinkMessageType.SourceDemand)
+                {
+                    // A consumer's live mapping wants a demand-gated source on
+                    // one of OUR devices (#241). Surface it so InputService can
+                    // map slot -> physical device and arm the hardware.
+                    System.Threading.Interlocked.Increment(ref DiagDemandReceived);
+                    SourceDemandReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
                 }
                 else if (type == LinkMessageType.Audio)
                 {

@@ -51,6 +51,13 @@ namespace PadForge.Engine.RemoteLink
         public int NumTouchpads { get; set; }
         public int[] TouchpadFingerCounts { get; set; }
 
+        /// <summary>Whether the owner's device carries an NFC reader (#241).
+        /// Rides the v3 capability tail, because the v1 caps byte was
+        /// exhausted at bit 128. False from a peer that predates the tail,
+        /// which correctly hides the sources rather than offering ones the
+        /// old owner cannot serve.</summary>
+        public bool HasNfcReader { get; set; }
+
         /// <summary>The peer device's input-device-type constant (see InputDeviceType).</summary>
         public int InputDeviceType { get; set; } = PadForge.Engine.InputDeviceType.Gamepad;
 
@@ -171,6 +178,7 @@ namespace PadForge.Engine.RemoteLink
         public bool HasGyro => Info.HasGyro;
         public bool HasAccel => Info.HasAccel;
         public bool HasAccelAux => Info.HasAccelAux;
+        public bool HasNfcReader => Info.HasNfcReader;
         public bool HasTouchpad => Info.HasTouchpad;
         public int NumTouchpads => Info.HasTouchpad ? Math.Max(1, Info.NumTouchpads) : 0;
         public int[] TouchpadFingerCounts => Info.TouchpadFingerCounts ?? Array.Empty<int>();

@@ -2545,6 +2545,7 @@ namespace PadForge.Services
         private void RefreshSwitchNfcArming()
         {
             bool capable = false;
+            bool remoteWanted = false;
             var devices = SettingsManager.UserDevices;
             if (devices != null)
             {
@@ -2572,6 +2573,12 @@ namespace PadForge.Services
                                 ud.DevicePath, ud.VendorId, ud.ProdId))
                         {
                             capable = true;
+                            // A peer's live NFC mapping on this shared device
+                            // arms it exactly like a local one (#241). Checked
+                            // per device so the demand and the capable device
+                            // are the SAME pad, never a bare global flag.
+                            if (HasFreshRemoteNfcDemand(ud.InstanceGuid))
+                                remoteWanted = true;
                             break;
                         }
                     }
@@ -2588,8 +2595,35 @@ namespace PadForge.Services
             long nowTick = Environment.TickCount64;
             long nfcReq = PadForge.Engine.Common.Mapping.SourceCoercion.LastNfcReadRequestTick;
             bool nfcWanted = nfcReq != 0 && nowTick - nfcReq < McuDemandWindowMs;
+            // CONSUMER half of the reverse demand relay (#241): our own NFC
+            // demand must reach the OWNER of any peer device that carries a
+            // reader, or a remote binding can never arm it. The local latch
+            // is deliberately global ("ANY evaluator", SourceCoercion), and
+            // the owner re-gates per device on its own capability plus the
+            // Bluetooth rule, so shipping to each reader-capable peer device
+            // matches the local semantics exactly. Rate-bounded inside the
+            // router; letting it lapse is the "off".
+            if (nfcWanted || PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive)
+            {
+                var devs = SettingsManager.UserDevices;
+                if (devs != null)
+                {
+                    lock (devs.SyncRoot)
+                    {
+                        foreach (var ud in devs.Items)
+                        {
+                            if (ud == null || !ud.IsOnline) continue;
+                            if (!RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath)) continue;
+                            if (ud.Device is PadForge.Engine.RemoteLink.RemotePeerDevice rpd
+                                && !rpd.HasNfcReader) continue;
+                            RemoteLinkOutputRouter.ShipNfcDemand(ud.DevicePath);
+                        }
+                    }
+                }
+            }
+
             bool armed = PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive
-                || (capable && nfcWanted);
+                || (capable && (nfcWanted || remoteWanted));
 
             if (armed != System.Threading.Volatile.Read(ref _switchNfcArmed))
             {
@@ -7791,8 +7825,12 @@ namespace PadForge.Services
             // shipped to its owner; a peer's output for OUR device drives our hardware.
             RemoteLinkOutputRouter.SendOutput = (fp, slot, payload) => _linkServer?.PushOutputEffect(fp, slot, payload);
             RemoteLinkOutputRouter.SendAudio = (fp, slot, payload) => _linkServer?.PushAudio(fp, slot, payload);
+            // Reverse DEMAND relay (#241): a live NFC mapping on our side arms
+            // the reader on the device's owner, and a peer's demand arms ours.
+            RemoteLinkOutputRouter.SendSourceDemand = (fp, slot, payload) => _linkServer?.PushSourceDemand(fp, slot, payload);
             _linkServer.OutputReceived += OnRemoteOutputReceived;
             _linkServer.AudioReceived += OnRemoteAudioReceived;
+            _linkServer.SourceDemandReceived += OnRemoteSourceDemandReceived;
             _linkServer.DeviceConnected += device =>
             {
                 // Mark the restriction BEFORE the device goes online, or there is a
@@ -7951,6 +7989,7 @@ namespace PadForge.Services
                 _remoteDeltaAccs.Clear();
             }
             RemoteLinkOutputRouter.SendOutput = null;
+            RemoteLinkOutputRouter.SendSourceDemand = null;
             RemoteLinkOutputRouter.SendAudio = null;
             RemoteLinkOutputRouter.Clear();
             _remoteWheelOneShot.Clear();
@@ -8333,6 +8372,37 @@ namespace PadForge.Services
         /// directly — no local game / virtual controller is involved. The consumer baked
         /// in all config; the owner only re-encodes for its real device. Runs on the UDP
         /// receive thread (one writer).</summary>
+        /// <summary>Owner: a consumer reports live demand for a demand-gated
+        /// source on one of our shared devices (#241). Demand latches are
+        /// machine-local (SourceCoercion stamps them where the mapping
+        /// evaluates), so without this the consumer's NFC binding never armed
+        /// our reader and could never fire. Stamps a wall-clock mark that
+        /// <see cref="RefreshSwitchNfcArming"/> reads exactly like the local
+        /// latch, so the same demand window, teardown, and Bluetooth gate
+        /// apply and a lapsed peer stops arming the hardware on its own.</summary>
+        private void OnRemoteSourceDemandReceived(string peerFingerprint, byte slot, byte[] payload)
+        {
+            if (payload == null || payload.Length < 1) return;
+            if (payload[0] != RemoteLinkOutputRouter.DemandKindNfc) return;
+            if (!ResolveExposed(slot, out var source, out var ud)) return;
+            var guid = ud?.InstanceGuid ?? source?.InstanceGuid ?? Guid.Empty;
+            if (guid == Guid.Empty) return;
+            _remoteNfcDemandMs[guid] = Environment.TickCount64;
+        }
+
+        /// <summary>Per-device wall-clock stamp of the most recent peer NFC
+        /// demand (#241). Written on the link receive thread, read on the
+        /// auto-idle cadence; a concurrent dictionary of longs needs no
+        /// further synchronization for a freshness compare.</summary>
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, long> _remoteNfcDemandMs = new();
+
+        /// <summary>True while any peer's NFC demand for THIS device is inside
+        /// the shared demand window.</summary>
+        private bool HasFreshRemoteNfcDemand(Guid deviceGuid)
+            => deviceGuid != Guid.Empty
+            && _remoteNfcDemandMs.TryGetValue(deviceGuid, out long ms)
+            && Environment.TickCount64 - ms < McuDemandWindowMs;
+
         private void OnRemoteOutputReceived(string peerFingerprint, byte slot, byte[] payload)
         {
             if (!OutputEffectCodec.TryDecode(payload, out var effect))

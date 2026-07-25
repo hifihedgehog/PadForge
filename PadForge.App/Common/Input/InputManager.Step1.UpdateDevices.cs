@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -174,7 +174,8 @@ namespace PadForge.Common.Input
                     Debug.WriteLine($"[Step1] Accepted device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
                     Engine.SdlDiagLog.WriteLine($"DEV + SDL#{instanceId} {wrapper.VendorId:X4}:{wrapper.ProductId:X4} {wrapper.Name}");
 
-                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid);
+                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid,
+                        wrapper.SerialNumber);
 
                     // Populate from the SDL device.
                     ud.LoadFromSdlDevice(wrapper);
@@ -590,7 +591,25 @@ namespace PadForge.Common.Input
         /// When a fallback match is found, migrates the old device and its
         /// UserSetting to the new InstanceGuid.
         /// </summary>
-        private UserDevice FindOrCreateUserDevice(Guid instanceGuid, Guid productGuid = default)
+        /// <summary>True when two records provably belong to DIFFERENT physical
+        /// units: both report a serial and the serials disagree. Returns false
+        /// whenever either side is blank, so a device with no per-unit identity
+        /// keeps the same-model adoption that lets it reclaim its settings after
+        /// a path change. Serials are compared case-insensitively because the
+        /// HID serial is a hex MAC whose casing varies by transport.</summary>
+        internal static bool IsDifferentPhysicalUnit(string storedSerial, string incomingSerial)
+        {
+            if (string.IsNullOrWhiteSpace(storedSerial)) return false;
+            if (string.IsNullOrWhiteSpace(incomingSerial)) return false;
+            return !string.Equals(storedSerial.Trim(), incomingSerial.Trim(),
+                StringComparison.OrdinalIgnoreCase);
+        }
+
+        // Internal so the same-model adoption path is testable end to end.
+        // Pinning only the serial predicate left the CALL SITE unguarded:
+        // deleting the gate from the loop kept every predicate test green.
+        internal UserDevice FindOrCreateUserDevice(Guid instanceGuid, Guid productGuid = default,
+            string serialNumber = null)
         {
             var devices = SettingsManager.UserDevices;
             if (devices == null) return new UserDevice();
@@ -606,6 +625,17 @@ namespace PadForge.Common.Input
 
                 // 2. Fallback: find an offline device with the same ProductGuid.
                 //    This handles BT controllers that reconnect with a new device path.
+                //    ProductGuid is VID+PID ONLY, so it cannot tell two units of
+                //    the same model apart. When BOTH sides report a serial and the
+                //    serials differ, this is provably a DIFFERENT physical unit and
+                //    adopting would overwrite the stored unit's identity and steal
+                //    its settings (owner-reported 2026-07-25, reproduced on two
+                //    Steam Controllers: the second unit took the first's row).
+                //    Deliberately conservative: a missing serial on either side
+                //    still adopts, because that is the only behavior available for
+                //    devices SDL gives no per-unit identity for. The 2015 Steam
+                //    Controller is exactly that case, since SDL frees its serial on
+                //    Windows as garbage (SDL_hidapi_steam.c, HIDAPI_DriverSteam_InitDevice).
                 if (productGuid != Guid.Empty)
                 {
                     UserDevice fallback = null;
@@ -614,6 +644,7 @@ namespace PadForge.Common.Input
                         var d = devices.Items[i];
                         if (!d.IsOnline && d.ProductGuid == productGuid)
                         {
+                            if (IsDifferentPhysicalUnit(d.SerialNumber, serialNumber)) continue;
                             fallback = d;
                             break;
                         }

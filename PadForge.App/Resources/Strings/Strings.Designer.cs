@@ -1863,6 +1863,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_MouseGestures_CustomInput_Tooltip => Get("Pad_MouseGestures_CustomInput_Tooltip");
     public string Pad_ResetMouseGestureCustomInput => Get("Pad_ResetMouseGestureCustomInput");
     public string Devices_AccelAux => Get("Devices_AccelAux");
+    public string Devices_GyroAux => Get("Devices_GyroAux");
     public string Pad_Audio => Get("Pad_Audio");
     public string Pad_Pointer => Get("Pad_Pointer");
     public string Pad_Pointer_Header => Get("Pad_Pointer_Header");
@@ -1986,6 +1987,10 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_GyroHorizontal => Get("Mapping_GyroHorizontal");
     public string Mapping_GyroLeanX => Get("Mapping_GyroLeanX");
     public string Mapping_GyroLeanY => Get("Mapping_GyroLeanY");
+    public string Mapping_GyroAuxPitch => Get("Mapping_GyroAuxPitch");
+    public string Mapping_GyroAuxYaw => Get("Mapping_GyroAuxYaw");
+    public string Mapping_GyroAuxRoll => Get("Mapping_GyroAuxRoll");
+    public string Mapping_MotionGyroAux => Get("Mapping_MotionGyroAux");
     public string Mapping_CapSenseLeftStickTouch => Get("Mapping_CapSenseLeftStickTouch");
     public string Mapping_CapSenseRightStickTouch => Get("Mapping_CapSenseRightStickTouch");
     public string Mapping_CapSenseLeftGripTouch => Get("Mapping_CapSenseLeftGripTouch");

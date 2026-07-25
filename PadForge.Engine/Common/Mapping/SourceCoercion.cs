@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using PadForge.Engine.Data;
@@ -192,6 +192,13 @@ namespace PadForge.Engine.Common.Mapping
         /// MotionSnapshot aggregation path and would silently break
         /// user expectations if synced.</summary>
         public static Func<string, int, (float pitch, float yaw, float roll)> GyroBiasProvider { get; set; }
+
+        /// <summary>At-rest bias for the AUX gyro (#252). Same
+        /// (deviceGuid, slotIndex) key as <see cref="GyroBiasProvider"/> but
+        /// a separately stored triple, because the left Joy-Con's drift is
+        /// its own. Null leaves aux rates uncorrected, the honest default
+        /// before a calibration pass has run.</summary>
+        public static Func<string, int, (float pitch, float yaw, float roll)> GyroAuxBiasProvider { get; set; }
 
         /// <summary>v3.3 per-(device, slot) gyro tuning bundle. App
         /// layer wires <see cref="GyroTuningProvider"/> at startup with
@@ -561,7 +568,7 @@ namespace PadForge.Engine.Common.Mapping
 
         // Internal for the poll-frame-gate test pins (PadForge.Tests).
         internal static (float, float) ApplyDualThresholdSmoothing(
-            string deviceGuid, int slotIndex, float yaw, float pitch, GyroTuning tuning)
+            string deviceGuid, int slotIndex, float yaw, float pitch, GyroTuning tuning, bool aux = false)
         {
             float bottom = tuning.TighteningRadPerSec;
             float top    = tuning.SmoothingThresholdRadPerSec;
@@ -577,7 +584,10 @@ namespace PadForge.Engine.Common.Mapping
             float hz = PollHzProvider?.Invoke() ?? 60f;
             int N = (int)System.Math.Max(1, tuning.SmoothingWindowSeconds * hz);
 
-            var key = (deviceGuid ?? "", slotIndex);
+            // The aux gyro (#252) shares the device GUID with the primary,
+            // so it takes its own ring: a shared key would let one sensor
+            // consume the other's window and its once-per-poll advance.
+            var key = ((deviceGuid ?? "") + (aux ? "|aux" : ""), slotIndex);
             if (!_gyroSampleBuffers.TryGetValue(key, out var buf) || buf.Length != N)
             {
                 buf = new (float x, float y)[N];
@@ -663,8 +673,13 @@ namespace PadForge.Engine.Common.Mapping
         // alphas must not share (and double-advance) one EMA state.
         private sealed class GyroEmaState
         {
-            public readonly float[] Values = new float[3];
-            public readonly ulong[] Seq = new ulong[3];
+            // Six lanes: 0/1/2 primary pitch/yaw/roll, 3/4/5 the aux gyro's
+            // (#252). The aux shares the device GUID, so without its own
+            // lanes it would either share the primary's filter state or,
+            // worse, index past the array and read back UNSMOOTHED while
+            // looking wired.
+            public readonly float[] Values = new float[6];
+            public readonly ulong[] Seq = new ulong[6];
         }
         private static readonly Dictionary<string, GyroEmaState> _gyroSmoothingState = new();
 
@@ -965,6 +980,12 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.Motion;
             if (IsGyroLeanDescriptor(s))
                 return SourceType.GyroLean;
+            // Aux rate family (#252) before the generic arm, same reason as
+            // the lean pair: shared prefix, different sensor. It stays
+            // SourceType.Gyro because every gyro behavior applies; only the
+            // source array changes.
+            if (IsGyroAuxDescriptor(s))
+                return SourceType.Gyro;
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
                 return SourceType.Gyro;
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
@@ -1419,6 +1440,11 @@ namespace PadForge.Engine.Common.Mapping
             string s = (descriptor ?? "").Trim();
             if (!s.StartsWith("Gyro ", StringComparison.Ordinal)) return -1;
             string axis = s.Substring(5).Trim();
+            // Aux family (#252): "Gyro L Pitch" carries the same axis
+            // indices; only the sensor differs, and the reader picks that
+            // from IsGyroAuxDescriptor.
+            if (axis.StartsWith("L ", StringComparison.OrdinalIgnoreCase))
+                axis = axis.Substring(2).Trim();
             if (axis.Equals("Pitch",      StringComparison.OrdinalIgnoreCase)) return 0;
             if (axis.Equals("Yaw",        StringComparison.OrdinalIgnoreCase)) return 1;
             if (axis.Equals("Roll",       StringComparison.OrdinalIgnoreCase)) return 2;
@@ -1443,6 +1469,16 @@ namespace PadForge.Engine.Common.Mapping
         /// both stick and mouse targets are rate-direct, and the stick
         /// (absolute-axis) path flips the sign so the stick deflects toward
         /// the twist. Saves SourceEvaluator re-parsing the descriptor.</summary>
+        /// <summary>True when a gyro rate descriptor names the PITCH axis,
+        /// primary ("Gyro Pitch") or aux ("Gyro L Pitch", #252). Pitch is
+        /// the axis already in the stick sign frame, so the stick-X rate
+        /// flip must exclude it by AXIS and not by exact spelling.</summary>
+        public static bool IsGyroPitchAxisDescriptor(string descriptor)
+            => IsGyroDescriptor(descriptor)
+            && !IsGyroLeanDescriptor(descriptor)
+            && ParseGyroAxisIndex(descriptor) == 0
+            && !IsHorizontalBlendDescriptor(descriptor);
+
         public static bool IsGyroDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && descriptor.StartsWith("Gyro ", StringComparison.Ordinal);
@@ -1981,6 +2017,37 @@ namespace PadForge.Engine.Common.Mapping
         // neutral (gate above 4 m/s² so the no-data sentinel never
         // latches), then realigned with the shared RealignToDown.
 
+        // ─── "Gyro L Pitch/Yaw/Roll" aux rate family (issue #252) ──────────
+        //
+        // The LEFT Joy-Con's gyro on a combined pair, SDL_SENSOR_GYRO_L.
+        // SDL feeds the RIGHT half into the primary SDL_SENSOR_GYRO, so on a
+        // pair these three are the second physical sensor, not a duplicate
+        // view of the first (SDL_hidapi_switch.c SetEnhancedModeAvailable).
+        // Only the Switch drivers register it; a Wii Nunchuk has an aux
+        // ACCEL but no gyro, so this family never fires for one.
+        //
+        // Naming: the "L" sits between the family word and the axis so the
+        // axis token cannot be mistaken for the primary's. Both spellings
+        // fail closed in ParseGyroAxisIndex, but this one also sorts the
+        // family together in the picker. Classified BEFORE the generic
+        // "Gyro " arm, the Gyro Lean precedent: shared prefix, different
+        // sensor.
+        public const string GyroAuxPitchDescriptor = "Gyro L Pitch";
+        public const string GyroAuxYawDescriptor   = "Gyro L Yaw";
+        public const string GyroAuxRollDescriptor  = "Gyro L Roll";
+
+        /// <summary>True for any "Gyro L ..." aux rate descriptor. Checked
+        /// BEFORE the generic "Gyro " family everywhere, since the aux
+        /// family shares the prefix but reads a different sensor.</summary>
+        public static bool IsGyroAuxDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = descriptor.Trim();
+            return string.Equals(s, GyroAuxPitchDescriptor, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(s, GyroAuxYawDescriptor,   StringComparison.OrdinalIgnoreCase)
+                || string.Equals(s, GyroAuxRollDescriptor,  StringComparison.OrdinalIgnoreCase);
+        }
+
         public const string GyroLeanXDescriptor = "Gyro Lean X";
         public const string GyroLeanYDescriptor = "Gyro Lean Y";
 
@@ -2320,6 +2387,7 @@ namespace PadForge.Engine.Common.Mapping
 
             tuning = GetGyroTuning(srcDeviceGuid, slotIndex);
 
+            bool aux = IsGyroAuxDescriptor(src.Descriptor);
             int descAxis = ParseGyroAxisIndex(src.Descriptor);
             bool isHorizontal = IsHorizontalBlendDescriptor(src.Descriptor);
             bool isPitchSource = descAxis == 0;
@@ -2349,22 +2417,22 @@ namespace PadForge.Engine.Common.Mapping
 
             // ─── Bias-subtracted gyro components ─────────────────
             string deviceGuid = srcDeviceGuid;
-            float gPitch = ReadCalibratedGyroRate(state, 0, deviceGuid, slotIndex);
-            float gYaw   = ReadCalibratedGyroRate(state, 1, deviceGuid, slotIndex);
-            float gRoll  = ReadCalibratedGyroRate(state, 2, deviceGuid, slotIndex);
+            float gPitch = ReadCalibratedGyroRate(state, 0, deviceGuid, slotIndex, aux);
+            float gYaw   = ReadCalibratedGyroRate(state, 1, deviceGuid, slotIndex, aux);
+            float gRoll  = ReadCalibratedGyroRate(state, 2, deviceGuid, slotIndex, aux);
 
             // ─── Space projection ────────────────────────────────
             float yaw, pitch;
             string space = tuning.Space ?? "Local";
             if (space == "Player")
             {
-                var grav = GravityProvider?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
+                var grav = (aux ? GravityProviderAux : GravityProvider)?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
                 (yaw, pitch) = PlayerSpaceProject(
                     gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.PlayerYawRelax);
             }
             else if (space == "World")
             {
-                var grav = GravityProvider?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
+                var grav = (aux ? GravityProviderAux : GravityProvider)?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
                 (yaw, pitch) = WorldSpaceProject(
                     gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.WorldSideReduction);
             }
@@ -2385,7 +2453,7 @@ namespace PadForge.Engine.Common.Mapping
             if (useDualThreshold)
             {
                 (yaw, pitch) = ApplyDualThresholdSmoothing(
-                    deviceGuid, slotIndex, yaw, pitch, tuning);
+                    deviceGuid, slotIndex, yaw, pitch, tuning, aux);
             }
             else if (tuning.SmoothingAlpha > 0f)
             {
@@ -2399,8 +2467,11 @@ namespace PadForge.Engine.Common.Mapping
                 // the first's smoothed value. Horizontal stays on lane 1
                 // deliberately: it is the yaw-equivalent blend, designed
                 // to replace a yaw row, not coexist with one.
-                yaw   = ApplyGyroSmoothing(deviceGuid, slotIndex, isRollSource ? 2 : 1, yaw, tuning.SmoothingAlpha);
-                pitch = ApplyGyroSmoothing(deviceGuid, slotIndex, 0, pitch, tuning.SmoothingAlpha);
+                // Lanes 0/1/2 primary, 3/4/5 aux (#252): the two sensors share a
+                // device GUID, so a shared lane hands one the other's value.
+                int laneBase = aux ? 3 : 0;
+                yaw   = ApplyGyroSmoothing(deviceGuid, slotIndex, laneBase + (isRollSource ? 2 : 1), yaw, tuning.SmoothingAlpha);
+                pitch = ApplyGyroSmoothing(deviceGuid, slotIndex, laneBase + 0, pitch, tuning.SmoothingAlpha);
             }
 
             // In non-Local space, Gyro Roll source has no independent
@@ -2455,10 +2526,13 @@ namespace PadForge.Engine.Common.Mapping
         /// and is not clamped to the mapping [-1, +1] range.</para></summary>
         public static void GetPassthroughGyro(
             CustomInputState state, string deviceGuid, int slotIndex,
-            out float pitch, out float yaw, out float roll)
+            out float pitch, out float yaw, out float roll, bool aux = false)
         {
             pitch = yaw = roll = 0f;
-            if (state == null || state.Gyro == null || state.Gyro.Length < 3) return;
+            // aux (#252): the passthrough streams the LEFT Joy-Con's gyro
+            // when the slot's Motion Gyro row selected "Motion Gyro L".
+            float[] gyroArr = aux ? state?.GyroAux : state?.Gyro;
+            if (state == null || gyroArr == null || gyroArr.Length < 3) return;
 
             var tuning = GetGyroTuning(deviceGuid, slotIndex);
 
@@ -2471,9 +2545,9 @@ namespace PadForge.Engine.Common.Mapping
             // subtracts this same bias for display, so a drifting
             // passthrough still reads ~0 there — the readout was masking
             // the bug.
-            float gPitch = ReadCalibratedGyroRate(state, 0, deviceGuid, slotIndex);
-            float gYaw   = ReadCalibratedGyroRate(state, 1, deviceGuid, slotIndex);
-            float gRoll  = ReadCalibratedGyroRate(state, 2, deviceGuid, slotIndex);
+            float gPitch = ReadCalibratedGyroRate(state, 0, deviceGuid, slotIndex, aux);
+            float gYaw   = ReadCalibratedGyroRate(state, 1, deviceGuid, slotIndex, aux);
+            float gRoll  = ReadCalibratedGyroRate(state, 2, deviceGuid, slotIndex, aux);
 
             if (!tuning.ApplyToPassthrough)
             {
@@ -2513,14 +2587,14 @@ namespace PadForge.Engine.Common.Mapping
             float pPitch, pYaw, pRoll;
             if (space == "Player")
             {
-                var grav = GravityProvider?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
+                var grav = (aux ? GravityProviderAux : GravityProvider)?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
                 (pYaw, pPitch) = PlayerSpaceProject(
                     gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.PlayerYawRelax);
                 pRoll = 0f;
             }
             else if (space == "World")
             {
-                var grav = GravityProvider?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
+                var grav = (aux ? GravityProviderAux : GravityProvider)?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
                 (pYaw, pPitch) = WorldSpaceProject(
                     gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.WorldSideReduction);
                 pRoll = 0f;
@@ -2539,7 +2613,7 @@ namespace PadForge.Engine.Common.Mapping
             // chains, so the passthrough takes a distinct key suffix —
             // the bare deviceGuid would advance the shared buffer twice
             // per frame on a slot running both, halving the window.
-            string smKey = (deviceGuid ?? "") + "pt";
+            string smKey = (deviceGuid ?? "") + (aux ? "pt|aux" : "pt");
             bool useDualThreshold =
                 tuning.TighteningRadPerSec > 0f || tuning.SmoothingThresholdRadPerSec > 0f;
             if (useDualThreshold)
@@ -2613,12 +2687,16 @@ namespace PadForge.Engine.Common.Mapping
         /// raw reading minus zero, which is the right default for
         /// "uncalibrated yet, just connected." Defensive against null
         /// state.Gyro[].</summary>
-        private static float ReadCalibratedGyroRate(CustomInputState state, int gyroAxis, string deviceGuid, int slotIndex)
+        private static float ReadCalibratedGyroRate(CustomInputState state, int gyroAxis, string deviceGuid, int slotIndex, bool aux = false)
         {
-            if (state == null || state.Gyro == null) return 0f;
-            if (gyroAxis < 0 || gyroAxis >= state.Gyro.Length) return 0f;
-            float raw = state.Gyro[gyroAxis];
-            var provider = GyroBiasProvider;
+            float[] srcArr = aux ? state?.GyroAux : state?.Gyro;
+            if (srcArr == null) return 0f;
+            if (gyroAxis < 0 || gyroAxis >= srcArr.Length) return 0f;
+            float raw = srcArr[gyroAxis];
+            // The aux sensor is a DIFFERENT physical gyro sharing the device
+            // GUID (#252), so it carries its own at-rest bias. Subtracting
+            // the right Joy-Con's drift from the left half would be wrong.
+            var provider = aux ? GyroAuxBiasProvider : GyroBiasProvider;
             if (provider == null || string.IsNullOrEmpty(deviceGuid)) return raw;
             var bias = provider(deviceGuid, slotIndex);
             return gyroAxis switch

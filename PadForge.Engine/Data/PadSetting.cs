@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -579,6 +579,18 @@ namespace PadForge.Engine.Data
 
         /// <summary>At-rest bias for Roll axis (rad/s).</summary>
         [XmlElement] public string GyroBiasRoll { get; set; } = "0";
+
+        /// <summary>At-rest bias for the AUX gyro's Pitch axis (rad/s,
+        /// issue #252). The left Joy-Con of a pair is a separate physical
+        /// sensor with its own drift, so it never shares the primary's
+        /// triple above. Sampled by the same calibration pass.</summary>
+        [XmlElement] public string GyroAuxBiasPitch { get; set; } = "0";
+
+        /// <summary>At-rest bias for the AUX gyro's Yaw axis (rad/s).</summary>
+        [XmlElement] public string GyroAuxBiasYaw { get; set; } = "0";
+
+        /// <summary>At-rest bias for the AUX gyro's Roll axis (rad/s).</summary>
+        [XmlElement] public string GyroAuxBiasRoll { get; set; } = "0";
 
         /// <summary>UTC timestamp of the most recent successful
         /// calibration for this (device, slot). Default
@@ -1320,6 +1332,9 @@ namespace PadForge.Engine.Data
             sb.Append(GyroBiasPitch); sb.Append('|');
             sb.Append(GyroBiasYaw); sb.Append('|');
             sb.Append(GyroBiasRoll); sb.Append('|');
+            sb.Append(GyroAuxBiasPitch); sb.Append('|');
+            sb.Append(GyroAuxBiasYaw); sb.Append('|');
+            sb.Append(GyroAuxBiasRoll); sb.Append('|');
             sb.Append(GyroCalibratedAtUtc); sb.Append('|');
             sb.Append(GyroSpace); sb.Append('|');
             sb.Append(GyroPlayerSpaceYawRelaxFactor); sb.Append('|');
@@ -1829,6 +1844,7 @@ namespace PadForge.Engine.Data
             nameof(IrSensorBarPos), nameof(IrSensorBarComp), nameof(IrSmoothing),
             nameof(PointerMode), nameof(PointerFpsSpeed),
             nameof(GyroBiasPitch), nameof(GyroBiasYaw), nameof(GyroBiasRoll),
+            nameof(GyroAuxBiasPitch), nameof(GyroAuxBiasYaw), nameof(GyroAuxBiasRoll),
             nameof(GyroCalibratedAtUtc),
             nameof(GyroSpace), nameof(GyroPlayerSpaceYawRelaxFactor),
             nameof(GyroWorldSpaceSideReductionThreshold),

@@ -131,8 +131,12 @@ namespace PadForge.Engine
             if (GameController == IntPtr.Zero) return;
             if (HasGyro) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO, false);
             if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, false);
+            if (HasGyroAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO_L, false);
+            if (HasAccelAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL_L, false);
             if (HasGyro) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO, true);
             if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, true);
+            if (HasGyroAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO_L, true);
+            if (HasAccelAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL_L, true);
         }
 
         /// <summary>Whether this device has an NFC reader the SDL fork can
@@ -170,6 +174,16 @@ namespace PadForge.Engine
         /// Nunchuk-attached Wii Remote, the left half of a combined Joy-Con
         /// pair.</summary>
         public bool HasAccelAux { get; private set; }
+
+        /// <summary>Whether the device exposes the auxiliary (left-side)
+        /// gyroscope, SDL_SENSOR_GYRO_L (issue #252): the left half of a
+        /// combined Joy-Con pair. Only the Switch drivers register it
+        /// (SDL_hidapi_switch.c SetEnhancedModeAvailable, and the gen-2
+        /// twin), and on a pair the PRIMARY gyro is the right half, so this
+        /// is the second physical sensor rather than a duplicate. The Wii
+        /// Nunchuk has no gyro, so unlike <see cref="HasAccelAux"/> this
+        /// never fires for a Nunchuk.</summary>
+        public bool HasGyroAux { get; private set; }
 
         /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
         public bool HasTouchpad { get; private set; }
@@ -374,6 +388,11 @@ namespace PadForge.Engine
                 // pair's left child); PadForge simply never read it.
                 HasAccelAux = SDL_GamepadHasSensor(GameController, SDL_SENSOR_ACCEL_L);
                 if (HasAccelAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL_L, true);
+                // Auxiliary (left-side) gyroscope (issue #252): the left
+                // Joy-Con of a combined pair. Registered only by the Switch
+                // drivers; probing is the state-driven test, so no PID gate.
+                HasGyroAux = SDL_GamepadHasSensor(GameController, SDL_SENSOR_GYRO_L);
+                if (HasGyroAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO_L, true);
 
                 // Capacitive touch channels (fork API): stick-top touch on
                 // Steam Controller-family devices, grip capsense on the SC
@@ -1044,6 +1063,8 @@ namespace PadForge.Engine
                 SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL, state.Accel, 3);
             if (HasAccelAux)
                 SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL_L, state.AccelAux, 3);
+            if (HasGyroAux)
+                SDL_GetGamepadSensorData(GameController, SDL_SENSOR_GYRO_L, state.GyroAux, 3);
 
             // --- Capsense (stick-top / grip touch, fork API) ---
             if (_capSenseChannels != null)

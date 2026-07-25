@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Text;
@@ -280,6 +280,10 @@ namespace PadForge.Engine.RemoteLink
             {
                 byte caps2 = 0;
                 if (devices[i].HasNfcReader) caps2 |= 1;
+                // Bit 1 (issue #252): the aux gyro. Without it a remote
+                // Joy-Con pair's left-half gyro sources stay hidden, the
+                // same discoverability hole bit 0 closed for the reader.
+                if (devices[i].HasGyroAux) caps2 |= 2;
                 buf.Add(caps2);
             }
             return buf.ToArray();
@@ -415,6 +419,7 @@ namespace PadForge.Engine.RemoteLink
                         {
                             byte caps2 = data[o++];
                             list[i].HasNfcReader = (caps2 & 1) != 0;
+                            list[i].HasGyroAux = (caps2 & 2) != 0;
                         }
                     }
                 }

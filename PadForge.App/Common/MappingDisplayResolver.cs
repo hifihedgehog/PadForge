@@ -1,4 +1,4 @@
-using PadForge.Engine;
+﻿using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.Resources.Strings;
 using PadForge.ViewModels;
@@ -476,6 +476,17 @@ namespace PadForge.Common
             {
                 var si = Strings.Instance;
                 string axis = s.Substring(5).Trim();
+                // Aux rate family (#252) before the primary axis names: the
+                // left Joy-Con of a pair. Labelled with its own strings so
+                // the picker never shows two identical "Gyro Pitch" rows.
+                if (axis.StartsWith("L ", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    string auxAxis = axis.Substring(2).Trim();
+                    if (auxAxis.Equals("Pitch", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroAuxPitch;
+                    if (auxAxis.Equals("Yaw",   System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroAuxYaw;
+                    if (auxAxis.Equals("Roll",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroAuxRoll;
+                    return null;
+                }
                 if (axis.Equals("Pitch",      System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroPitch;
                 if (axis.Equals("Yaw",        System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroYaw;
                 if (axis.Equals("Roll",       System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroRoll;
@@ -1604,6 +1615,18 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Gyro Horizontal", DisplayName = si.Mapping_GyroHorizontal });
             }
 
+            // Aux gyro (#252): the LEFT half of a combined Joy-Con pair,
+            // whose rates are a second physical sensor (the primary gyro
+            // above is the right half). Gated on its own capability, so it
+            // appears only for a paired device that actually reports
+            // SDL_SENSOR_GYRO_L.
+            if (ud.HasGyroAux)
+            {
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroAuxPitchDescriptor, DisplayName = si.Mapping_GyroAuxPitch });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroAuxYawDescriptor,   DisplayName = si.Mapping_GyroAuxYaw });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroAuxRollDescriptor,  DisplayName = si.Mapping_GyroAuxRoll });
+            }
+
             // Bundled motion-passthrough sources. Marker descriptors that
             // bind the device's full 3-axis sensor stream to a virtual
             // controller's MotionGyro / MotionAccel target. Lets users
@@ -1619,6 +1642,11 @@ namespace PadForge.Common
             // the body. One internal descriptor, contextual display label.
             if (ud.HasAccelAux)
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Data.MappingSetMigrator.MotionAccelAuxSourceDescriptor, DisplayName = ResolveMotionAccelAuxName(ud) });
+            // Aux GYRO passthrough (#252): the gyro twin of the row above,
+            // so a slot can stream the left Joy-Con's full rate vector to
+            // DSU / a virtual DualSense instead of the right half's.
+            if (ud.HasGyroAux)
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Data.MappingSetMigrator.MotionGyroAuxSourceDescriptor, DisplayName = Strings.Instance.Mapping_MotionGyroAux });
 
             // Absolute cursor-position sources (#107). The cursor is system-wide,
             // read from SourceCoercion.MouseCursorProvider regardless of device, but

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
@@ -47,6 +47,9 @@ namespace PadForge.Engine.RemoteLink
         public bool HasGyro { get; set; }
         public bool HasAccel { get; set; }
         public bool HasAccelAux { get; set; }
+
+        /// <summary>Aux (left-side) gyro: left Joy-Con of a pair (#252).</summary>
+        public bool HasGyroAux { get; set; }
         public bool HasTouchpad { get; set; }
         public int NumTouchpads { get; set; }
         public int[] TouchpadFingerCounts { get; set; }
@@ -178,6 +181,7 @@ namespace PadForge.Engine.RemoteLink
         public bool HasGyro => Info.HasGyro;
         public bool HasAccel => Info.HasAccel;
         public bool HasAccelAux => Info.HasAccelAux;
+        public bool HasGyroAux => Info.HasGyroAux;
         public bool HasNfcReader => Info.HasNfcReader;
         public bool HasTouchpad => Info.HasTouchpad;
         public int NumTouchpads => Info.HasTouchpad ? Math.Max(1, Info.NumTouchpads) : 0;

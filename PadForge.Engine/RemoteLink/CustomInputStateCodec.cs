@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Buffers.Binary;
 
 namespace PadForge.Engine.RemoteLink
@@ -64,6 +64,30 @@ namespace PadForge.Engine.RemoteLink
             // consumer's own NfcTagRegistry, the shared-config assumption
             // every remote binding already makes.
             Nfc = 1 << 15,
+            // BIT 15 EXHAUSTS THIS MASK. Every further block rides the
+            // magic-guarded extension tail below, never a widened mask:
+            // widening would move the payload start and break every peer.
+        }
+
+        /// <summary>Guards the extension tail. The presence mask above is a
+        /// FULL u16, so post-Nfc blocks live in a second section appended
+        /// after every v1 block: this magic byte, then a u16 ext mask, then
+        /// the ext payloads in <see cref="BlockExt"/> order. Old decoders
+        /// stop after their known blocks and their trailing
+        /// <c>o &lt;= payload.Length</c> check tolerates the tail, which is
+        /// the same compatibility rule the post-3.5.0 blocks already rely
+        /// on. Same shape as the DeviceList v2/v3 tails.</summary>
+        private const byte ExtMagic = 0xE6;
+
+        [Flags]
+        private enum BlockExt : ushort
+        {
+            None = 0,
+            /// <summary>Aux (left-side) gyroscope, issue #252: the left
+            /// Joy-Con of a combined pair. Capability-gated like Gyro /
+            /// Accel / AccelAux, because a zeroed array is a legitimate
+            /// reading (a still controller), not "absent".</summary>
+            GyroAux = 1 << 0,
         }
 
         /// <summary>Capsense channels carried on the wire (one byte,
@@ -80,12 +104,14 @@ namespace PadForge.Engine.RemoteLink
         /// </summary>
         public readonly struct Caps
         {
-            public Caps(bool gyro, bool accel, bool accelAux = false)
-            { Gyro = gyro; Accel = accel; AccelAux = accelAux; }
+            public Caps(bool gyro, bool accel, bool accelAux = false, bool gyroAux = false)
+            { Gyro = gyro; Accel = accel; AccelAux = accelAux; GyroAux = gyroAux; }
             public bool Gyro { get; }
             public bool Accel { get; }
             /// <summary>Aux (left-side) accelerometer: Nunchuk / left Joy-Con (#199).</summary>
             public bool AccelAux { get; }
+            /// <summary>Aux (left-side) gyroscope: left Joy-Con of a pair (#252).</summary>
+            public bool GyroAux { get; }
         }
 
         /// <summary>Neutral (idle) value for axis index <paramref name="i"/>:
@@ -321,6 +347,19 @@ namespace PadForge.Engine.RemoteLink
                 }
             }
 
+            // ── Extension tail (the presence mask above is full) ──
+            BlockExt ext = BlockExt.None;
+            if (caps.GyroAux) ext |= BlockExt.GyroAux;
+            if (ext != BlockExt.None)
+            {
+                destination[o++] = ExtMagic;
+                int extAt = o;
+                o += 2; // ext mask backfilled below
+                if ((ext & BlockExt.GyroAux) != 0)
+                    for (int i = 0; i < 3; i++) { BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.GyroAux[i]); o += 4; }
+                BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(extAt, 2), (ushort)ext);
+            }
+
             BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(presenceAt, 2), (ushort)present);
             return o;
         }
@@ -344,6 +383,7 @@ namespace PadForge.Engine.RemoteLink
             if (caps.Gyro) size += 12;
             if (caps.Accel) size += 12;
             if (caps.AccelAux) size += 12;
+            if (caps.GyroAux) size += 3 + 12; // ext magic + ext mask + 3 floats
             size += 2; // battery
             if (state?.Touchpads != null)
             {
@@ -567,6 +607,26 @@ namespace PadForge.Engine.RemoteLink
                     }
                 }
 
+                // ── Extension tail (post-Nfc blocks; the mask is full) ──
+                // Presence is positional: the tail exists only when the magic
+                // byte is the next thing in the frame. A peer that predates
+                // the tail simply never writes one, and a frame that ends here
+                // is complete, so this is a "maybe" read, never a required one.
+                if (o + 3 <= payload.Length && payload[o] == ExtMagic)
+                {
+                    o++;
+                    var ext = (BlockExt)BinaryPrimitives.ReadUInt16LittleEndian(payload.Slice(o, 2)); o += 2;
+                    if ((ext & BlockExt.GyroAux) != 0)
+                        for (int i = 0; i < 3; i++)
+                        {
+                            float v = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4)); o += 4;
+                            // Fail closed on non-finite, the AccelAux rule: a
+                            // hostile NaN must not reach the tuning chain.
+                            if (!float.IsFinite(v)) { ResetToNeutral(target); return false; }
+                            target.GyroAux[i] = v;
+                        }
+                }
+
                 return o <= payload.Length;
             }
             catch
@@ -590,6 +650,7 @@ namespace PadForge.Engine.RemoteLink
             Array.Clear(s.Gyro);
             Array.Clear(s.Accel);
             Array.Clear(s.AccelAux);
+            Array.Clear(s.GyroAux);
             s.BatteryPercent = -1;
             s.BatteryCharging = false;
             s.Ir = default;

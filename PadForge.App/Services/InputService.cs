@@ -916,6 +916,42 @@ namespace PadForge.Services
                 return gyroBiasSnapshot.Get((g, slotIndex));
             };
 
+            // Aux gyro bias (#252): its own stored triple on the same
+            // (device, slot) PadSetting, because the left Joy-Con's drift
+            // is not the right's. Same 250 ms snapshot shape.
+            var gyroAuxBiasSnapshot = new ProviderSnapshot<(Guid, int), (float, float, float)>(key =>
+            {
+                var (g, slotIndex) = key;
+                var settings = SettingsManager.UserSettings;
+                if (settings == null) return (0f, 0f, 0f);
+                PadSetting ps = null;
+                lock (settings.SyncRoot)
+                {
+                    for (int i = 0; i < settings.Items.Count; i++)
+                    {
+                        var us = settings.Items[i];
+                        if (us == null) continue;
+                        if (us.InstanceGuid != g) continue;
+                        if (us.MapTo != slotIndex) continue;
+                        ps = us.GetPadSetting();
+                        break;
+                    }
+                }
+                if (ps == null) return (0f, 0f, 0f);
+                return (
+                    TryParseFloatPs(ps.GyroAuxBiasPitch, 0f),
+                    TryParseFloatPs(ps.GyroAuxBiasYaw,   0f),
+                    TryParseFloatPs(ps.GyroAuxBiasRoll,  0f)
+                );
+            });
+            PadForge.Engine.Common.Mapping.SourceCoercion.GyroAuxBiasProvider = (deviceGuid, slotIndex) =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid)) return (0f, 0f, 0f);
+                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return (0f, 0f, 0f);
+                if (!Guid.TryParse(deviceGuid, out var g)) return (0f, 0f, 0f);
+                return gyroAuxBiasSnapshot.Get((g, slotIndex));
+            };
+
             // Per-(device, slot) gyro tuning bundle (H/V sens,
             // deadzone, smoothing, acceleration, output curve, Easy
             // Aim threshold). Lookup goes through the slot's PadSetting
@@ -1980,6 +2016,7 @@ namespace PadForge.Services
                 UserEffectsDispatcher.SlotBatteryPercentProvider = null;
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GyroBiasProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.GyroAuxBiasProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.SlotStickDeflectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
@@ -3519,6 +3556,7 @@ namespace PadForge.Services
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
+                devVm.HasGyroAuxData = ud.HasGyroAux;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad;
             }
 
@@ -3819,6 +3857,7 @@ namespace PadForge.Services
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
+                devVm.HasGyroAuxData = ud.HasGyroAux;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
             }
 
@@ -3954,6 +3993,12 @@ namespace PadForge.Services
                 devVm.AccelAuxX = state.AccelAux[0];
                 devVm.AccelAuxY = state.AccelAux[1];
                 devVm.AccelAuxZ = state.AccelAux[2];
+            }
+            if (ud.HasGyroAux)
+            {
+                devVm.GyroAuxX = state.GyroAux[0];
+                devVm.GyroAuxY = state.GyroAux[1];
+                devVm.GyroAuxZ = state.GyroAux[2];
             }
 
             // Update touchpad finger positions. Click state is shown in
@@ -8226,6 +8271,7 @@ namespace PadForge.Services
                                 // the flag was never populated here, so it shipped
                                 // dead (always false) and the source stayed un-pickable.
                                 HasAccelAux = dev.HasAccelAux,
+                                HasGyroAux = dev.HasGyroAux,
                                 HasTouchpad = dev.HasTouchpad,
                                 NumTouchpads = dev.NumTouchpads,
                                 TouchpadFingerCounts = dev.TouchpadFingerCounts,
@@ -8338,7 +8384,7 @@ namespace PadForge.Services
                     if (snap == null || !e.ud.IsOnline) continue;
                     var s = snap.Clone();
                     e.acc.DrainInto(s, e.source is PadForge.Engine.SdlMouseWrapper);
-                    var caps = new CustomInputStateCodec.Caps(e.source.HasGyro, e.source.HasAccel, e.source.HasAccelAux);
+                    var caps = new CustomInputStateCodec.Caps(e.source.HasGyro, e.source.HasAccel, e.source.HasAccelAux, e.source.HasGyroAux);
                     server.PushLocalFrame(e.slot, s, caps, ts);
                 }
             }

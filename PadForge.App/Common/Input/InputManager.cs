@@ -2564,11 +2564,16 @@ namespace PadForge.Common.Input
                 if (gyroSrc.Ud != null)
                 {
                     var s = gyroSrc.Ud.InputState;
-                    if (s.Gyro != null && s.Gyro.Length >= 3)
+                    // "Motion Gyro L" (#252) streams the LEFT Joy-Con's gyro
+                    // instead of the body gyro, the twin of what
+                    // "Motion Accel L" already does for the accel above.
+                    bool gyroAux = MappingSetMigrator.IsMotionGyroAuxDescriptor(gyroSrc.Src?.Descriptor);
+                    var gyroArr = gyroAux ? s.GyroAux : s.Gyro;
+                    if (gyroArr != null && gyroArr.Length >= 3)
                     {
                         SourceCoercion.GetPassthroughGyro(
                             s, gyroSrc.Ud.InstanceGuidString, padIndex,
-                            out float tunedPitch, out float tunedYaw, out float tunedRoll);
+                            out float tunedPitch, out float tunedYaw, out float tunedRoll, gyroAux);
                         gx = tunedPitch * RadToDeg;
                         gy = tunedYaw * RadToDeg;
                         gz = tunedRoll * RadToDeg;
@@ -2620,9 +2625,12 @@ namespace PadForge.Common.Input
                     if (ud.InputState == null) continue;
                     // "Motion Accel L" needs the aux (Nunchuk / left Joy-Con)
                     // sensor, not the body accelerometer (#199 follow-up).
-                    bool wantsAux = !requireGyro
-                        && MappingSetMigrator.IsMotionAccelAuxDescriptor(src.Descriptor);
-                    if (requireGyro ? !ud.Device.HasGyro
+                    // "Motion Gyro L" is the gyro twin (#252): the left half
+                    // of a combined pair, whose capability is its own.
+                    bool wantsAux = requireGyro
+                        ? MappingSetMigrator.IsMotionGyroAuxDescriptor(src.Descriptor)
+                        : MappingSetMigrator.IsMotionAccelAuxDescriptor(src.Descriptor);
+                    if (requireGyro ? (wantsAux ? !ud.Device.HasGyroAux : !ud.Device.HasGyro)
                         : (wantsAux ? !ud.Device.HasAccelAux : !ud.Device.HasAccel)) continue;
                     return (ud, src);
                 }

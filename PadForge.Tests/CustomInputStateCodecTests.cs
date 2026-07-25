@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using PadForge.Engine;
 using PadForge.Engine.RemoteLink;
 
@@ -516,6 +516,11 @@ namespace PadForge.Tests
             {
                 "Axis", "Sliders", "Povs", "Buttons", "Gyro", "Accel",
                 "AccelAux",
+                // #252 aux gyro (SDL_SENSOR_GYRO_L, left Joy-Con of a pair):
+                // wired into Encode / DecodeInto through the EXTENSION tail
+                // (the u16 presence mask was full at Block.Nfc), plus
+                // ResetToNeutral and Clone.
+                "GyroAux",
                 "Touchpads", "Midi", "Ir", "JoyConIrIntensity",
                 "JoyCon2MouseDX", "JoyCon2MouseDY",
                 "MouseRawDX", "MouseRawDY",

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -396,10 +396,21 @@ namespace PadForge.Common.Input
         // confined. The earlier per-macro snapshot still let macro A's
         // latch write false-latch macro B's yield on a shared target.
         private Gamepad _preMacroGp;
+
+        /// <summary>The macro array the current evaluator call is walking
+        /// (#251): AxisLatchRelease clears latches across ALL the slot's
+        /// macros, not just its own. Poll-thread transient, assigned at the
+        /// top of both evaluators.</summary>
+        private MacroItem[] _evalMacros;
         private readonly short[] _preMacroRawAxes = new short[6];
 
         internal void EvaluateSlotMacros(ref Gamepad gp, MacroItem[] macros)
         {
+            // #251 AxisLatchRelease reaches across the slot's macros; the
+            // poll thread runs one evaluator at a time, so a transient
+            // stash is safe (the CancelExecutingPairTwin precedent, made
+            // reachable from the action executor).
+            _evalMacros = macros;
             _preMacroGp = gp;
             // Fresh slot-device resolution per evaluator call (#9 B-9):
             // device-free trigger entries resolve against the slot's
@@ -923,7 +934,7 @@ namespace PadForge.Common.Input
                             _desiredLatchedKeys.Add((ushort)codes[k]);
                     }
                 }
-                else if (a.Type == MacroActionType.ToggleVcAxis)
+                else if (a.Type == MacroActionType.ToggleVcAxis || a.Type == MacroActionType.AxisSetLatched)
                 {
                     // v18: a latched axis target re-writes its assert each
                     // frame, the AxisHold shape. #237 yield gate applies:
@@ -1892,6 +1903,16 @@ namespace PadForge.Common.Input
                         AdvanceAction(macro);
                     break;
 
+                case MacroActionType.AxisScale:
+                    // Proportional deflection (#251): multiplies the axis's
+                    // current combined value, the AxisAdd shape otherwise.
+                    // No yield gate: proportional composes with physical by
+                    // construction.
+                    ApplyAxisScaleAction(ref gp, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.ComboBreak:
                     // #237: park the sequence after this fire; the next
                     // trigger press resumes from the following action.
@@ -2193,6 +2214,24 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
 
+                case MacroActionType.AxisSetLatched:
+                    // #251 ladder step: SET semantics, not a flip. Clear the
+                    // sibling steps on the same axis first so a ladder
+                    // REPLACES the value press by press, then latch self.
+                    // The latch pass applies the value each frame, parked or
+                    // not, which is what makes a combo-break ladder hold.
+                    ExecuteAxisSetLatched(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisLatchRelease:
+                    // #251 nullify key: clear axis latches (ladder steps and
+                    // axis toggles) for the target, or ALL axes on None,
+                    // across every macro the evaluator is walking.
+                    ExecuteAxisLatchRelease(action);
+                    AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.ToggleWheel:
                     action.WheelToggleLatched = !action.WheelToggleLatched;
                     if (action.WheelToggleLatched)
@@ -2204,6 +2243,51 @@ namespace PadForge.Common.Input
                     ApplyGyroRecenterAction(macro);
                     AdvanceAction(macro);
                     break;
+            }
+        }
+
+        /// <summary>Set Axis (Latched) fire (#251): clears the sibling
+        /// ladder steps on the same axis, then latches this step. SET
+        /// semantics, so a ladder replaces the value instead of flipping
+        /// like Toggle Axis.</summary>
+        private static void ExecuteAxisSetLatched(MacroItem macro, MacroAction action)
+        {
+            var actions = macro.Actions;
+            for (int i = 0; i < actions.Count; i++)
+            {
+                var sib = actions[i];
+                if (sib == null || ReferenceEquals(sib, action)) continue;
+                if (sib.Type == MacroActionType.AxisSetLatched
+                    && sib.AxisTarget == action.AxisTarget)
+                    sib.VcAxisToggleLatched = false;
+            }
+            action.VcAxisToggleLatched = true;
+            ResetLatchPulsePhase(action);
+        }
+
+        /// <summary>Release Axis Latches fire (#251): clears Set Axis
+        /// (Latched) and Toggle Axis latches for the action's axis, or ALL
+        /// axes when the target is None, across every macro the current
+        /// evaluator call is walking (the slot's full set).</summary>
+        private void ExecuteAxisLatchRelease(MacroAction action)
+        {
+            var all = _evalMacros;
+            if (all == null) return;
+            for (int m = 0; m < all.Length; m++)
+            {
+                var mac = all[m];
+                if (mac == null) continue;
+                var acts = mac.Actions;
+                for (int i = 0; i < acts.Count; i++)
+                {
+                    var a2 = acts[i];
+                    if (a2 == null) continue;
+                    if (a2.Type != MacroActionType.AxisSetLatched
+                        && a2.Type != MacroActionType.ToggleVcAxis) continue;
+                    if (action.AxisTarget != MacroAxisTarget.None
+                        && a2.AxisTarget != action.AxisTarget) continue;
+                    a2.VcAxisToggleLatched = false;
+                }
             }
         }
 
@@ -3066,6 +3150,38 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Proportional deflection (#251): scales the axis's
+        /// current combined value by (1 + AxisValue/32767). -50% halves,
+        /// +50% amplifies half again, -100% zeroes, clamped to full scale.
+        /// Triggers scale their unsigned pull directly; sticks scale the
+        /// signed deflection, so direction is preserved.</summary>
+        private static void ApplyAxisScaleAction(ref Gamepad gp, MacroAction action)
+        {
+            double factor = 1.0 + action.AxisValue / 32767.0;
+            if (factor < 0) factor = 0;
+            switch (action.AxisTarget)
+            {
+                case MacroAxisTarget.LeftStickX:
+                    gp.ThumbLX = (short)Math.Clamp(gp.ThumbLX * factor, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.LeftStickY:
+                    gp.ThumbLY = (short)Math.Clamp(gp.ThumbLY * factor, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.RightStickX:
+                    gp.ThumbRX = (short)Math.Clamp(gp.ThumbRX * factor, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.RightStickY:
+                    gp.ThumbRY = (short)Math.Clamp(gp.ThumbRY * factor, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.LeftTrigger:
+                    gp.LeftTrigger = (ushort)Math.Clamp(gp.LeftTrigger * factor, 0, 65535);
+                    break;
+                case MacroAxisTarget.RightTrigger:
+                    gp.RightTrigger = (ushort)Math.Clamp(gp.RightTrigger * factor, 0, 65535);
+                    break;
+            }
+        }
+
         /// <summary>One discrete mouse-wheel detent (v15): AxisValue is the
         /// signed tick count (0 reads as +1; positive = up / right), routed
         /// through the same accumulate-and-flush lanes the continuous
@@ -3207,6 +3323,7 @@ namespace PadForge.Common.Input
         // Internal for the PadForge.Tests dispatch pins.
         internal void EvaluateSlotMacrosExtended(ref RawHidState raw, MacroItem[] macros)
         {
+            _evalMacros = macros;   // #251 cross-macro latch release, see above
             for (int k = 0; k < 6; k++)
                 _preMacroRawAxes[k] = raw.Axes != null && k < raw.Axes.Length ? raw.Axes[k] : (short)0;
             // Fresh slot-device resolution per evaluator call (#9 B-9),
@@ -3504,7 +3621,7 @@ namespace PadForge.Common.Input
                             _desiredLatchedKeys.Add((ushort)codes[k]);
                     }
                 }
-                else if (a.Type == MacroActionType.ToggleVcAxis)
+                else if (a.Type == MacroActionType.ToggleVcAxis || a.Type == MacroActionType.AxisSetLatched)
                 {
                     // #237 yield gate, the Gamepad-path twin's rationale.
                     if (a.VcAxisToggleLatched && LatchPhaseOn(a) && raw.Axes != null)
@@ -3801,6 +3918,13 @@ namespace PadForge.Common.Input
                         AdvanceAction(macro);
                     break;
 
+                case MacroActionType.AxisScale:
+                    // Proportional deflection (#251), the raw twin.
+                    ApplyAxisScaleActionRaw(ref raw, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.ComboBreak:
                     // Extended twin (#237): park + await re-press, exactly
                     // the Gamepad-path semantics.
@@ -4026,6 +4150,24 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
 
+                case MacroActionType.AxisSetLatched:
+                    // #251 ladder step: SET semantics, not a flip. Clear the
+                    // sibling steps on the same axis first so a ladder
+                    // REPLACES the value press by press, then latch self.
+                    // The latch pass applies the value each frame, parked or
+                    // not, which is what makes a combo-break ladder hold.
+                    ExecuteAxisSetLatched(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisLatchRelease:
+                    // #251 nullify key: clear axis latches (ladder steps and
+                    // axis toggles) for the target, or ALL axes on None,
+                    // across every macro the evaluator is walking.
+                    ExecuteAxisLatchRelease(action);
+                    AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.ToggleWheel:
                     action.WheelToggleLatched = !action.WheelToggleLatched;
                     if (action.WheelToggleLatched)
@@ -4116,6 +4258,33 @@ namespace PadForge.Common.Input
             int add = isTrigger ? action.AxisValue * 2 : action.AxisValue;
             raw.Axes[axisIndex] = (short)Math.Clamp(
                 raw.Axes[axisIndex] + add, short.MinValue, short.MaxValue);
+        }
+
+        /// <summary>Proportional deflection (#251), the raw twin. The raw
+        /// trigger channels span the full signed word from a MinValue
+        /// rest, so the scale runs on the PULL (distance from MinValue),
+        /// not the raw signed value: scaling the signed frame directly
+        /// would move a resting trigger, and -100% must land at rest, not
+        /// at the span's midpoint.</summary>
+        private static void ApplyAxisScaleActionRaw(ref RawHidState raw, MacroAction action)
+        {
+            int axisIndex = MacroAxisTargetToRawIndex(action.AxisTarget);
+            if (axisIndex < 0 || axisIndex >= raw.Axes.Length) return;
+            double factor = 1.0 + action.AxisValue / 32767.0;
+            if (factor < 0) factor = 0;
+            bool isTrigger = action.AxisTarget == MacroAxisTarget.LeftTrigger
+                || action.AxisTarget == MacroAxisTarget.RightTrigger;
+            if (isTrigger)
+            {
+                double pull = raw.Axes[axisIndex] - (double)short.MinValue;
+                raw.Axes[axisIndex] = (short)Math.Clamp(
+                    short.MinValue + pull * factor, short.MinValue, short.MaxValue);
+            }
+            else
+            {
+                raw.Axes[axisIndex] = (short)Math.Clamp(
+                    raw.Axes[axisIndex] * factor, short.MinValue, short.MaxValue);
+            }
         }
 
         // ─────────────────────────────────────────────

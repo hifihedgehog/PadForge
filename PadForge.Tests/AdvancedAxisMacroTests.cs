@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Services;
@@ -369,6 +369,124 @@ namespace PadForge.Tests
             raw.Buttons[0] = 1;
             im.EvaluateSlotMacrosExtended(ref raw, macros);
             Assert.Equal(5000, raw.Axes[0]);
+        }
+    
+        // ── #251: latched ladder, release, proportional scale ──
+
+        private static MacroItem LadderMacro()
+        {
+            return GamepadMacro(MacroTriggerMode.OnPress, MacroRepeatMode.Once,
+                new MacroAction { Type = MacroActionType.AxisSetLatched, AxisTarget = MacroAxisTarget.LeftTrigger, AxisValue = 24575 },
+                new MacroAction { Type = MacroActionType.ComboBreak },
+                new MacroAction { Type = MacroActionType.AxisSetLatched, AxisTarget = MacroAxisTarget.LeftTrigger, AxisValue = 27852 },
+                new MacroAction { Type = MacroActionType.ComboBreak },
+                new MacroAction { Type = MacroActionType.AxisSetLatched, AxisTarget = MacroAxisTarget.LeftTrigger, AxisValue = 31128 });
+        }
+
+        private static ushort LadderTick(InputManager im, MacroItem[] macros, bool held)
+        {
+            var gp = new Gamepad { Buttons = held ? Gamepad.A : (ushort)0 };
+            im.EvaluateSlotMacros(ref gp, macros);
+            return gp.LeftTrigger;
+        }
+
+        /// <summary>Use case 1 (#251): a press-by-press ladder whose value
+        /// HOLDS between presses (across combo-break parks), each press
+        /// REPLACING the value, and lap 2 relatching instead of the
+        /// ToggleVcAxis flip that unlatches.</summary>
+        [Fact]
+        public void Ladder_HoldsAndReplacesAcrossParks()
+        {
+            var im = new InputManager();
+            var macros = new[] { LadderMacro() };
+
+            // One sequential action executes per tick, so a real press
+            // spans the latch tick AND the break tick before the release
+            // (exactly as a 1 kHz poll would see it).
+            LadderTick(im, macros, held: true);              // latch 75
+            LadderTick(im, macros, held: true);              // break parks
+            ushort held75 = LadderTick(im, macros, held: false);
+            Assert.True(Math.Abs(held75 - 49150) < 700, $"expected ~75% pull, got {held75}");
+
+            LadderTick(im, macros, held: true);              // latch 85 (replaces 75)
+            LadderTick(im, macros, held: true);              // break parks
+            ushort held85 = LadderTick(im, macros, held: false);
+            Assert.True(Math.Abs(held85 - 55704) < 700, $"expected ~85% pull, got {held85}");
+
+            LadderTick(im, macros, held: true);              // latch 95
+            LadderTick(im, macros, held: true);              // sequence completes, re-arms
+            ushort held95 = LadderTick(im, macros, held: false);
+            Assert.True(Math.Abs(held95 - 62256) < 700, $"expected ~95% pull, got {held95}");
+
+            LadderTick(im, macros, held: true);              // lap 2: latch 75 again
+            LadderTick(im, macros, held: true);
+            ushort lap2 = LadderTick(im, macros, held: false);
+            Assert.True(Math.Abs(lap2 - 49150) < 700, $"lap 2 must relatch ~75%, got {lap2}");
+        }
+
+        /// <summary>Use case 1's nullify key (#251): a SECOND macro's
+        /// Release Axis Latches clears the ladder macro's latch, returning
+        /// the axis to physical control.</summary>
+        [Fact]
+        public void ReleaseLatches_ClearsAcrossMacros()
+        {
+            var im = new InputManager();
+            var ladder = LadderMacro();
+            var nullify = new MacroItem
+            {
+                Name = "Nullify",
+                IsEnabled = true,
+                PadIndex = 0,
+                TriggerButtons = Gamepad.B,
+                TriggerMode = MacroTriggerMode.OnPress,
+                RepeatMode = MacroRepeatMode.Once,
+            };
+            nullify.Actions.Add(new MacroAction
+            {
+                Type = MacroActionType.AxisLatchRelease,
+                AxisTarget = MacroAxisTarget.None,
+            });
+            var macros = new[] { ladder, nullify };
+
+            LadderTick(im, macros, held: true);
+            LadderTick(im, macros, held: true);   // break tick
+            Assert.True(LadderTick(im, macros, held: false) > 40000);
+
+            var gp = new Gamepad { Buttons = Gamepad.B };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.Equal(0, LadderTick(im, macros, held: false));
+        }
+
+        /// <summary>Use case 2 (#251): Scale Axis -50% halves the current
+        /// deflection, +50% amplifies with a full-scale clamp.</summary>
+        [Fact]
+        public void ScaleAxis_HalvesAndAmplifies()
+        {
+            var walkDown = GamepadMacro(MacroTriggerMode.WhileHeld, MacroRepeatMode.UntilRelease,
+                new MacroAction { Type = MacroActionType.AxisScale, AxisTarget = MacroAxisTarget.LeftStickX, AxisValue = -16384, DurationMs = 1000 });
+            var im = new InputManager();
+            var gp = new Gamepad { Buttons = Gamepad.A, ThumbLX = 30000 };
+            im.EvaluateSlotMacros(ref gp, new[] { walkDown });
+            Assert.True(Math.Abs(gp.ThumbLX - 15000) < 300, $"expected ~15000, got {gp.ThumbLX}");
+
+            var amplify = GamepadMacro(MacroTriggerMode.WhileHeld, MacroRepeatMode.UntilRelease,
+                new MacroAction { Type = MacroActionType.AxisScale, AxisTarget = MacroAxisTarget.LeftStickX, AxisValue = 16384, DurationMs = 1000 });
+            var im2 = new InputManager();
+            var gp2 = new Gamepad { Buttons = Gamepad.A, ThumbLX = 30000 };
+            im2.EvaluateSlotMacros(ref gp2, new[] { amplify });
+            Assert.Equal(short.MaxValue, gp2.ThumbLX);
+        }
+
+        /// <summary>#251 members sit at pinned tail ordinals (the clipboard
+        /// serializes numerically).</summary>
+        [Fact]
+        public void ActionTypeEnum_251TailPinned()
+        {
+            Assert.Equal(49, (int)MacroActionType.AxisSetLatched);
+            Assert.Equal(50, (int)MacroActionType.AxisLatchRelease);
+            Assert.Equal(51, (int)MacroActionType.AxisScale);
+            var values = Enum.GetValues<MacroActionType>();
+            Assert.Equal(MacroActionType.AxisScale, values[^1]);
         }
     }
 }

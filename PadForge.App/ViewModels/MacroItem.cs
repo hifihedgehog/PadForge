@@ -2575,6 +2575,9 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsRepeatVcAxisWhileHeldType));
                     OnPropertyChanged(nameof(IsToggleWheelType));
                     OnPropertyChanged(nameof(IsAxisAddType));
+                    OnPropertyChanged(nameof(IsAxisSetLatchedType));
+                    OnPropertyChanged(nameof(IsAxisScaleType));
+                    OnPropertyChanged(nameof(IsAxisLatchReleaseType));
                     OnPropertyChanged(nameof(IsComboBreakType));
                     OnPropertyChanged(nameof(IsAxisYieldCapableType));
                     OnPropertyChanged(nameof(IsAnyMouseButtonType));
@@ -2635,13 +2638,14 @@ namespace PadForge.ViewModels
         /// instead so the hold and fade sliders can be scaled and labeled
         /// separately from the generic ms field.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress || _type == MacroActionType.AxisHold || _type == MacroActionType.AxisAdd;
+        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress || _type == MacroActionType.AxisHold || _type == MacroActionType.AxisAdd || _type == MacroActionType.AxisScale;
 
         /// <summary>True when Type is AxisSet or AxisHold (both edit the
         /// axis target + value pair; AxisHold adds the duration knob via
         /// <see cref="IsDurationType"/>).</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsAxisType => _type == MacroActionType.AxisSet || _type == MacroActionType.AxisHold;
+        public bool IsAxisType => _type == MacroActionType.AxisSet || _type == MacroActionType.AxisHold
+            || _type == MacroActionType.AxisSetLatched || _type == MacroActionType.AxisScale;
 
         /// <summary>True when Type is MouseWheelTap (v15).</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -2805,6 +2809,23 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsAxisAddType => _type == MacroActionType.AxisAdd;
 
+        /// <summary>True when Type is AxisSetLatched (#251). Gates the
+        /// ladder hint under the shared axis editor.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAxisSetLatchedType => _type == MacroActionType.AxisSetLatched;
+
+        /// <summary>True when Type is AxisScale (#251). Surfaces the
+        /// signed-percent hint under the shared axis target / value pair:
+        /// the value is the scale delta, -50% halves the current
+        /// deflection, +50% amplifies half again.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAxisScaleType => _type == MacroActionType.AxisScale;
+
+        /// <summary>True when Type is AxisLatchRelease (#251). Surfaces the
+        /// axis-target-only row (None reads as "all axes").</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAxisLatchReleaseType => _type == MacroActionType.AxisLatchRelease;
+
         /// <summary>True when Type is ComboBreak (discussion #237). Gates
         /// the parameter-less info card in the macro editor, the
         /// GyroRecenter card shape.</summary>
@@ -2818,7 +2839,7 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsAxisYieldCapableType
             => _type is MacroActionType.AxisHold or MacroActionType.ToggleVcAxis
-                or MacroActionType.RepeatVcAxisWhileHeld;
+                or MacroActionType.RepeatVcAxisWhileHeld or MacroActionType.AxisSetLatched;
 
         /// <summary>True when the mouse-button picker applies:
         /// MouseButtonPress / MouseButtonRelease plus the v18
@@ -5022,6 +5043,17 @@ namespace PadForge.ViewModels
                     MacroActionType.AxisAdd => string.Format(
                         Strings.Instance.MacroAction_AxisAdd_Format,
                         _axisTarget.DisplayName(), FormatSignedPercent(_axisValue)),
+                    MacroActionType.AxisSetLatched => string.Format(
+                        Strings.Instance.MacroAction_AxisSetLatched_Format,
+                        _axisTarget.DisplayName(), FormatSignedPercent(_axisValue)),
+                    MacroActionType.AxisLatchRelease => string.Format(
+                        Strings.Instance.MacroAction_AxisLatchRelease_Format,
+                        _axisTarget == MacroAxisTarget.None
+                            ? Strings.Instance.MacroAction_AllAxes
+                            : _axisTarget.DisplayName()),
+                    MacroActionType.AxisScale => string.Format(
+                        Strings.Instance.MacroAction_AxisScale_Format,
+                        _axisTarget.DisplayName(), FormatSignedPercent(_axisValue)),
                     MacroActionType.ComboBreak =>
                         Strings.Instance.MacroAction_Type_ComboBreak,
                     _ => Strings.Instance.Macro_UnknownAction
@@ -5769,7 +5801,36 @@ namespace PadForge.ViewModels
         /// within a session deliberately preserve it, so a combo does
         /// not lose its place because the engine napped). At the tail
         /// per the APPEND-ONLY rule above; ordinal pinned.</summary>
-        ComboBreak = 48
+        ComboBreak = 48,
+
+        /// <summary>Set Axis (Latched) (discussion #237 use case 1, issue
+        /// #251): latches the axis at the value PERSISTENTLY, surviving
+        /// combo-break parks (the latch pass runs independent of
+        /// execution). Firing any Set Axis (Latched) step clears its
+        /// sibling steps on the same axis first, so a ladder of steps
+        /// separated by Combo Breaks REPLACES the value press by press
+        /// instead of flipping like Toggle Axis (whose second lap
+        /// unlatches). Honors Yield to physical. At the tail per the
+        /// APPEND-ONLY rule above; ordinal pinned.</summary>
+        AxisSetLatched = 49,
+
+        /// <summary>Release Axis Latches (discussion #237's "other key can
+        /// nullify", issue #251): clears every axis latch (Set Axis
+        /// (Latched) steps and Toggle Axis latches) for the chosen axis,
+        /// or ALL axes when the target is None, across all the slot's
+        /// macros, returning the axis to physical control. Latching zero
+        /// is not the same thing: that would force zero over the physical
+        /// input. At the tail; ordinal pinned.</summary>
+        AxisLatchRelease = 50,
+
+        /// <summary>Scale Axis (discussion #237 use case 2, issue #251):
+        /// proportional deflection. Multiplies the axis's current combined
+        /// value by (1 + value/32767) every frame while current, the
+        /// AxisHold duration shape: -50% halves the stick (run becomes
+        /// walk), +50% amplifies half again, clamped to full scale. No
+        /// yield gate, because proportional composes with the physical
+        /// input by construction. At the tail; ordinal pinned.</summary>
+        AxisScale = 51
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

@@ -2655,6 +2655,16 @@
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Mientras esté fijado, alterna la salida al ritmo del intervalo de repetición en lugar de mantenerla fija.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Sumar al eje (relativo)</value></data>
   <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Suma el valor con signo a lo que la asignación ya escribió en el eje, en cada fotograma durante la duración. Los valores negativos restan. Los gatillos suman en la escala de recorrido (32767 = recorrido completo).</value></data>
+  <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>Fijar eje (bloqueado)</value></data>
+  <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>Mantiene el eje en el valor, incluso a través de cortes de combo. Otro paso bloqueado en el mismo eje reemplaza el valor, así que pasos separados por cortes forman una escalera pulsación a pulsación. «Soltar bloqueos de eje» devuelve el eje al control físico.</value></data>
+  <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>Soltar bloqueos de eje</value></data>
+  <data name="MacroAction_AxisLatchRelease_Tooltip" xml:space="preserve"><value>Borra los valores de eje bloqueados (pasos bloqueados y alternadores de eje) del eje elegido, o de todos, en todos los macros de esta ranura, devolviendo el eje al control físico.</value></data>
+  <data name="MacroAction_Type_AxisScale" xml:space="preserve"><value>Escalar eje</value></data>
+  <data name="MacroAction_AxisScale_Tooltip" xml:space="preserve"><value>Multiplica el valor actual del eje mientras está activo: -50% reduce la deflexión a la mitad (correr pasa a caminar), +50% amplifica la mitad más, limitado a escala completa. Se compone con la entrada física, no necesita ceder.</value></data>
+  <data name="MacroAction_AxisSetLatched_Format" xml:space="preserve"><value>Bloquear {0} en {1}%</value></data>
+  <data name="MacroAction_AxisLatchRelease_Format" xml:space="preserve"><value>Soltar bloqueos: {0}</value></data>
+  <data name="MacroAction_AxisScale_Format" xml:space="preserve"><value>Escalar {0} un {1}%</value></data>
+  <data name="MacroAction_AllAxes" xml:space="preserve"><value>Todos los ejes</value></data>
   <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>Sumar al eje: {0} {1}%</value></data>
   <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>Interrupción de combo</value></data>
   <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>El combo se pausa aquí. Pulse el disparador de nuevo para continuar. Un disparador mantenido debe soltarse primero.</value></data>

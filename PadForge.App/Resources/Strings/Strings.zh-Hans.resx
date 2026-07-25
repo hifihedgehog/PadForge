@@ -2655,6 +2655,16 @@
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>锁定期间按重复间隔开关输出,而不是持续保持。</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>轴叠加(相对)</value></data>
   <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>在持续时间内,每帧将带符号的值叠加到映射已写入该轴的值上。负值为减。扳机目标按扣动量刻度叠加(32767 = 完全扣下)。</value></data>
+  <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>设置轴（锁定）</value></data>
+  <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>将轴保持在该值，跨越连招断点仍然有效。同一轴上的另一个锁定步骤会替换该值，因此以断点分隔的步骤构成逐按阶梯。“释放轴锁定”可使轴回到物理控制。</value></data>
+  <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>释放轴锁定</value></data>
+  <data name="MacroAction_AxisLatchRelease_Tooltip" xml:space="preserve"><value>清除所选轴（或所有轴）的锁定值（锁定步骤与轴切换），作用于此槽位的所有宏，使轴回到物理控制。</value></data>
+  <data name="MacroAction_Type_AxisScale" xml:space="preserve"><value>缩放轴</value></data>
+  <data name="MacroAction_AxisScale_Tooltip" xml:space="preserve"><value>激活期间将轴的当前值相乘：-50% 使偏转减半（跑步变行走），+50% 放大一半，限制在满量程内。与物理输入叠加，无需让位。</value></data>
+  <data name="MacroAction_AxisSetLatched_Format" xml:space="preserve"><value>将 {0} 锁定为 {1}%</value></data>
+  <data name="MacroAction_AxisLatchRelease_Format" xml:space="preserve"><value>释放锁定：{0}</value></data>
+  <data name="MacroAction_AxisScale_Format" xml:space="preserve"><value>将 {0} 缩放 {1}%</value></data>
+  <data name="MacroAction_AllAxes" xml:space="preserve"><value>所有轴</value></data>
   <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>轴叠加:{0} {1}%</value></data>
   <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>连招中断</value></data>
   <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>连招在此暂停。再次按下触发器即可继续。按住不放的触发器需要先松开。</value></data>

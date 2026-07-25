@@ -1521,6 +1521,16 @@ public class Strings : INotifyPropertyChanged
     public string Macro_PulseWhileLatched_Tooltip => Get("Macro_PulseWhileLatched_Tooltip");
     public string MacroAction_Type_AxisAdd => Get("MacroAction_Type_AxisAdd");
     public string MacroAction_AxisAdd_Tooltip => Get("MacroAction_AxisAdd_Tooltip");
+    public string MacroAction_Type_AxisSetLatched => Get("MacroAction_Type_AxisSetLatched");
+    public string MacroAction_AxisSetLatched_Tooltip => Get("MacroAction_AxisSetLatched_Tooltip");
+    public string MacroAction_Type_AxisLatchRelease => Get("MacroAction_Type_AxisLatchRelease");
+    public string MacroAction_AxisLatchRelease_Tooltip => Get("MacroAction_AxisLatchRelease_Tooltip");
+    public string MacroAction_Type_AxisScale => Get("MacroAction_Type_AxisScale");
+    public string MacroAction_AxisScale_Tooltip => Get("MacroAction_AxisScale_Tooltip");
+    public string MacroAction_AxisSetLatched_Format => Get("MacroAction_AxisSetLatched_Format");
+    public string MacroAction_AxisLatchRelease_Format => Get("MacroAction_AxisLatchRelease_Format");
+    public string MacroAction_AxisScale_Format => Get("MacroAction_AxisScale_Format");
+    public string MacroAction_AllAxes => Get("MacroAction_AllAxes");
     public string MacroAction_AxisAdd_Format => Get("MacroAction_AxisAdd_Format");
     public string MacroAction_Type_ComboBreak => Get("MacroAction_Type_ComboBreak");
     public string MacroAction_ComboBreak_Tooltip => Get("MacroAction_ComboBreak_Tooltip");

@@ -2677,6 +2677,16 @@
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Mentre è bloccato, alterna l'uscita al ritmo dell'intervallo di ripetizione invece di tenerla fissa.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Aggiunta asse (relativa)</value></data>
   <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Aggiunge il valore con segno a quanto la mappatura ha già scritto sull&apos;asse, a ogni frame per la durata. I valori negativi sottraggono. I grilletti aggiungono sulla scala di pressione (32767 = pressione completa).</value></data>
+  <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>Imposta asse (bloccato)</value></data>
+  <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>Mantiene l’asse al valore, anche attraverso le interruzioni combo. Un altro passo bloccato sullo stesso asse sostituisce il valore, così i passi separati da interruzioni formano una scala pressione per pressione. «Rilascia blocchi asse» restituisce l’asse al controllo fisico.</value></data>
+  <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>Rilascia blocchi asse</value></data>
+  <data name="MacroAction_AxisLatchRelease_Tooltip" xml:space="preserve"><value>Cancella i valori asse bloccati (passi bloccati e interruttori asse) per l’asse scelto, o tutti gli assi, in tutte le macro di questo slot, restituendo l’asse al controllo fisico.</value></data>
+  <data name="MacroAction_Type_AxisScale" xml:space="preserve"><value>Scala asse</value></data>
+  <data name="MacroAction_AxisScale_Tooltip" xml:space="preserve"><value>Moltiplica il valore corrente dell’asse mentre è attivo: -50% dimezza la deflessione (la corsa diventa camminata), +50% amplifica della metà, limitato al fondo scala. Si compone con l’input fisico, nessuna cessione necessaria.</value></data>
+  <data name="MacroAction_AxisSetLatched_Format" xml:space="preserve"><value>Blocca {0} a {1}%</value></data>
+  <data name="MacroAction_AxisLatchRelease_Format" xml:space="preserve"><value>Rilascia blocchi: {0}</value></data>
+  <data name="MacroAction_AxisScale_Format" xml:space="preserve"><value>Scala {0} del {1}%</value></data>
+  <data name="MacroAction_AllAxes" xml:space="preserve"><value>Tutti gli assi</value></data>
   <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>Aggiunta asse: {0} {1}%</value></data>
   <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>Interruzione combo</value></data>
   <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>La combo si mette in pausa qui. Premi di nuovo il grilletto per continuare. Un grilletto tenuto premuto va prima rilasciato.</value></data>

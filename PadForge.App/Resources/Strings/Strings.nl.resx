@@ -2675,6 +2675,16 @@
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Zolang vergrendeld schakelt de uitvoer aan en uit op het herhaalinterval in plaats van vast te houden.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>As optellen (relatief)</value></data>
   <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Telt de waarde met teken elk frame gedurende de duur op bij wat de toewijzing al naar de as schreef. Negatieve waarden trekken af. Triggers tellen op volgens de indrukschaal (32767 = volledig ingedrukt).</value></data>
+  <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>As instellen (vergrendeld)</value></data>
+  <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>Houdt de as op de waarde vast, ook door combo-onderbrekingen heen. Een andere vergrendelde stap op dezelfde as vervangt de waarde, zodat stappen gescheiden door onderbrekingen een ladder per druk vormen. “As-vergrendelingen loslaten” geeft de as terug aan fysieke besturing.</value></data>
+  <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>As-vergrendelingen loslaten</value></data>
+  <data name="MacroAction_AxisLatchRelease_Tooltip" xml:space="preserve"><value>Wist vergrendelde aswaarden (vergrendelde stappen en as-schakelaars) voor de gekozen as, of alle assen, in alle macro’s van dit slot, en geeft de as terug aan fysieke besturing.</value></data>
+  <data name="MacroAction_Type_AxisScale" xml:space="preserve"><value>As schalen</value></data>
+  <data name="MacroAction_AxisScale_Tooltip" xml:space="preserve"><value>Vermenigvuldigt de huidige aswaarde zolang actief: -50% halveert de uitslag (rennen wordt lopen), +50% versterkt de helft extra, begrensd op volle schaal. Combineert met fysieke invoer, geen toegeven nodig.</value></data>
+  <data name="MacroAction_AxisSetLatched_Format" xml:space="preserve"><value>{0} vergrendelen op {1}%</value></data>
+  <data name="MacroAction_AxisLatchRelease_Format" xml:space="preserve"><value>Vergrendelingen loslaten: {0}</value></data>
+  <data name="MacroAction_AxisScale_Format" xml:space="preserve"><value>{0} schalen met {1}%</value></data>
+  <data name="MacroAction_AllAxes" xml:space="preserve"><value>Alle assen</value></data>
   <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>As optellen: {0} {1}%</value></data>
   <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>Combo-onderbreking</value></data>
   <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>De combo pauzeert hier. Druk opnieuw op de trigger om verder te gaan. Een ingedrukte trigger moet eerst worden losgelaten.</value></data>

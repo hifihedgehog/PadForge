@@ -1702,19 +1702,22 @@ namespace PadForge.ViewModels
             // the "Any layer" sentinel first. Empty display name falls
             // back to the mask per the codebase-wide rule; the sentinel
             // carries its own localized label.
-            MacroLayerChoices.Clear();
-            MacroLayerChoices.Add(new ShiftLayerInfo
+            // RECONCILED IN PLACE, never Clear()ed (field repro 2026-07-25).
+            // Clearing made WPF drop the picker's SelectedItem, and because
+            // the macro's mask had not changed, re-pushing it set SelectedValue
+            // to the value the control ALREADY held. No change means no
+            // re-resolution against the new item instances, so SelectedItem
+            // stayed null and DisplayMemberPath had nothing to render: the
+            // picker went blank over intact data and a macro that still gated
+            // correctly. Keeping the instance whose LayerMask matches means the
+            // selection is never lost in the first place, and ShiftLayerInfo is
+            // observable so a renamed layer's new label just propagates.
+            var desired = new System.Collections.Generic.List<(string Mask, string Name, string Color)>
             {
-                LayerMask = "",
-                LayerName = PadForge.Resources.Strings.Strings.Instance.Macro_Layer_Any,
-            });
+                ("", PadForge.Resources.Strings.Strings.Instance.Macro_Layer_Any, ""),
+            };
             foreach (var t in LayerTabs)
-                MacroLayerChoices.Add(new ShiftLayerInfo
-                {
-                    LayerMask = t.LayerMask,
-                    LayerName = t.LayerName,
-                    Color = t.Color,
-                });
+                desired.Add((t.LayerMask, t.LayerName, t.Color));
 
             // A Cycle activator ENGAGES every stop in its ring while only
             // the first is its own LayerMask, so later stops are real,
@@ -1731,16 +1734,11 @@ namespace PadForge.ViewModels
                     foreach (var stop in a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries))
                     {
                         bool present = false;
-                        foreach (var c in MacroLayerChoices)
-                            if (string.Equals(c.LayerMask, stop, StringComparison.Ordinal))
+                        foreach (var d in desired)
+                            if (string.Equals(d.Mask, stop, StringComparison.Ordinal))
                             { present = true; break; }
                         if (!present)
-                            MacroLayerChoices.Add(new ShiftLayerInfo
-                            {
-                                LayerMask = stop,
-                                LayerName = stop,
-                                Color = a.Color ?? "",
-                            });
+                            desired.Add((stop, stop, a.Color ?? ""));
                     }
                 }
             }
@@ -1753,7 +1751,48 @@ namespace PadForge.ViewModels
             // rendered BLANK over an intact mask. A post-rebuild notify
             // re-reads the source outside that window and re-matches the
             // re-added item, the MappingItem sync-after-rebuild idiom.
-            SelectedMacro?.RefreshLayerBinding();
+            // Apply `desired` onto the live collection by INDEX, reusing the
+            // existing instance at each position so the item the picker has
+            // selected is never removed. Only genuine adds and removals touch
+            // the collection.
+            for (int i = 0; i < desired.Count; i++)
+            {
+                var (mask, name, color) = desired[i];
+                if (i < MacroLayerChoices.Count)
+                {
+                    var slot = MacroLayerChoices[i];
+                    if (string.Equals(slot.LayerMask, mask, StringComparison.Ordinal))
+                    {
+                        // Same entry: refresh its label and colour in place.
+                        slot.LayerName = name;
+                        slot.Color = color;
+                        continue;
+                    }
+                    // A different mask now belongs here. Look for the existing
+                    // instance carrying it and move that one, so a reorder does
+                    // not destroy the selected item either.
+                    int found = -1;
+                    for (int k = i + 1; k < MacroLayerChoices.Count; k++)
+                        if (string.Equals(MacroLayerChoices[k].LayerMask, mask, StringComparison.Ordinal))
+                        { found = k; break; }
+                    if (found >= 0)
+                    {
+                        MacroLayerChoices.Move(found, i);
+                        MacroLayerChoices[i].LayerName = name;
+                        MacroLayerChoices[i].Color = color;
+                        continue;
+                    }
+                    MacroLayerChoices.Insert(i, new ShiftLayerInfo
+                    { LayerMask = mask, LayerName = name, Color = color });
+                    continue;
+                }
+                MacroLayerChoices.Add(new ShiftLayerInfo
+                { LayerMask = mask, LayerName = name, Color = color });
+            }
+            // Drop any tail the new set no longer wants.
+            while (MacroLayerChoices.Count > desired.Count)
+                MacroLayerChoices.RemoveAt(MacroLayerChoices.Count - 1);
+
         }
 
         /// <summary>

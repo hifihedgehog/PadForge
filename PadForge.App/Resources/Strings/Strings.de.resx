@@ -2654,7 +2654,7 @@
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsieren solange eingerastet</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Solange eingerastet, wird die Ausgabe im Wiederholintervall ein- und ausgeschaltet, statt dauerhaft gehalten.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Achse addieren (relativ)</value></data>
-  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Addiert den vorzeichenbehafteten Wert in jedem Frame für die Dauer auf das, was die Zuordnung bereits auf die Achse geschrieben hat. Negative Werte subtrahieren. Trigger-Ziele addieren auf der Zugskala (32767 = voller Zug).</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Addiert den vorzeichenbehafteten Wert in jedem Frame für die Dauer auf das, was die Zuordnung bereits auf die Achse geschrieben hat. Negative Werte subtrahieren. Trigger-Ziele addieren auf der Zugskala (100% = voller Zug).</value></data>
   <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>Achse setzen (eingerastet)</value></data>
   <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>Hält die Achse auf dem Wert, auch über Combo-Breaks hinweg. Ein weiterer eingerasteter Schritt auf derselben Achse ersetzt den Wert, so entsteht mit Combo-Breaks eine Stufenleiter pro Tastendruck. „Achsen-Rastungen lösen“ gibt die Achse wieder frei.</value></data>
   <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>Achsen-Rastungen lösen</value></data>

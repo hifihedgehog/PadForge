@@ -477,6 +477,29 @@ namespace PadForge.Tests
             Assert.Equal(short.MaxValue, gp2.ThumbLX);
         }
 
+        /// <summary>The axis-family editor speaks PERCENT (owner report
+        /// 2026-07-24: a bare raw -32768..32767 box gave no way to know
+        /// that typing 75 meant 0.2%). The VM converts to the persisted
+        /// raw short and clamps to -100..100.</summary>
+        [Fact]
+        public void AxisValuePercent_MapsAndClamps()
+        {
+            var a = new MacroAction { Type = MacroActionType.AxisSetLatched };
+
+            a.AxisValuePercent = 75;
+            Assert.True(Math.Abs(a.AxisValue - 24575) <= 1, $"75% -> {a.AxisValue}");
+            Assert.Equal(75, a.AxisValuePercent);
+
+            a.AxisValuePercent = -50;
+            Assert.True(Math.Abs(a.AxisValue - (-16384)) <= 1, $"-50% -> {a.AxisValue}");
+
+            a.AxisValuePercent = 250;      // clamped to 100
+            Assert.Equal(short.MaxValue, a.AxisValue);
+
+            a.AxisValue = 32767;           // raw write reflects back as percent
+            Assert.Equal(100, a.AxisValuePercent);
+        }
+
         /// <summary>#251 members sit at pinned tail ordinals (the clipboard
         /// serializes numerically).</summary>
         [Fact]

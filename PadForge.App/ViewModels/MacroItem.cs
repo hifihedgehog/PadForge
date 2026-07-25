@@ -3554,7 +3554,28 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _axisValue, value))
+                {
                     OnPropertyChanged(nameof(DisplayText));
+                    OnPropertyChanged(nameof(AxisValuePercent));
+                }
+            }
+        }
+
+        /// <summary>The editor-facing form of <see cref="AxisValue"/>: a
+        /// signed percent of full deflection (-100..100), the unit every
+        /// summary and tooltip already speaks. The raw -32768..32767 field
+        /// stays the persisted truth, so profiles and the clipboard are
+        /// untouched. Typing 75 means 75% of full scale, which is what a
+        /// human means by 75 (the raw box demanded 24575 for the same
+        /// thing, which nobody could know).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public double AxisValuePercent
+        {
+            get => Math.Round(_axisValue * 100.0 / 32767.0);
+            set
+            {
+                double clamped = Math.Clamp(value, -100.0, 100.0);
+                AxisValue = (short)Math.Round(clamped * 32767.0 / 100.0);
             }
         }
 

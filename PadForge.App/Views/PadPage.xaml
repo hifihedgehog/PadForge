@@ -2692,7 +2692,13 @@
                                         </ComboBox>
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_AxisValue, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Margin="12,0,8,0"/>
-                                        <TextBox Text="{Binding AxisValue, Mode=TwoWay}" Width="80"/>
+                                        <!-- Percent, not raw axis units (-32768..32767): every
+                                             summary and tooltip in this family speaks percent, and
+                                             a bare raw box gave the user no way to know that 75
+                                             meant 0.2% (owner report, 2026-07-24). The VM converts
+                                             to the persisted raw short, clamped to -100..100. -->
+                                        <TextBox Text="{Binding AxisValuePercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F0}" Width="60"/>
+                                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                     </StackPanel>
 
                                     <!-- Axis Add hint (discussion #237): the shared value box is

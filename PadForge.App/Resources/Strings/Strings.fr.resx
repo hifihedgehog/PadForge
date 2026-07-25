@@ -2654,7 +2654,7 @@
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulser tant que verrouillé</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Tant que c'est verrouillé, alterne la sortie au rythme de l'intervalle de répétition au lieu de la maintenir.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Ajout d&apos;axe (relatif)</value></data>
-  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Ajoute la valeur signée à ce que le mappage a déjà écrit sur l&apos;axe, à chaque trame pendant la durée. Les valeurs négatives soustraient. Les gâchettes ajoutent sur l&apos;échelle de pression (32767 = pression complète).</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Ajoute la valeur signée à ce que le mappage a déjà écrit sur l&apos;axe, à chaque trame pendant la durée. Les valeurs négatives soustraient. Les gâchettes ajoutent sur l&apos;échelle de pression (100% = pression complète).</value></data>
   <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>Définir l’axe (verrouillé)</value></data>
   <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>Maintient l’axe à la valeur, y compris à travers les coupures de combo. Un autre pas verrouillé sur le même axe remplace la valeur : des pas séparés par des coupures forment une échelle appui par appui. « Relâcher les verrous d’axe » rend l’axe au contrôle physique.</value></data>
   <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>Relâcher les verrous d’axe</value></data>

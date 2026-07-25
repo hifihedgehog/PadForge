@@ -2654,7 +2654,7 @@
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>固定中はパルス</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>固定中は出力を押しっぱなしにせず、リピート間隔でオンとオフを繰り返します。</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>軸を加算(相対)</value></data>
-  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>指定時間のあいだ、マッピングが既に軸へ書き込んだ値に符号付きの値を毎フレーム加算します。負の値は減算します。トリガーは引き量のスケール(32767 = 最大)で加算します。</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>指定時間のあいだ、マッピングが既に軸へ書き込んだ値に符号付きの値を毎フレーム加算します。負の値は減算します。トリガーは引き量のスケール(100% = 最大)で加算します。</value></data>
   <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>軸を設定（ラッチ）</value></data>
   <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>値を保持し、コンボブレイクをまたいでも維持します。同じ軸の別のラッチステップは値を置き換えるので、ブレイクで区切ったステップが押すたびの段階になります。「軸ラッチを解除」で物理操作に戻ります。</value></data>
   <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>軸ラッチを解除</value></data>

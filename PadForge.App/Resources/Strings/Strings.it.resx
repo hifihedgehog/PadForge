@@ -2676,7 +2676,7 @@
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Impulsi mentre bloccato</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Mentre è bloccato, alterna l'uscita al ritmo dell'intervallo di ripetizione invece di tenerla fissa.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Aggiunta asse (relativa)</value></data>
-  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Aggiunge il valore con segno a quanto la mappatura ha già scritto sull&apos;asse, a ogni frame per la durata. I valori negativi sottraggono. I grilletti aggiungono sulla scala di pressione (32767 = pressione completa).</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Aggiunge il valore con segno a quanto la mappatura ha già scritto sull&apos;asse, a ogni frame per la durata. I valori negativi sottraggono. I grilletti aggiungono sulla scala di pressione (100% = pressione completa).</value></data>
   <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>Imposta asse (bloccato)</value></data>
   <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>Mantiene l’asse al valore, anche attraverso le interruzioni combo. Un altro passo bloccato sullo stesso asse sostituisce il valore, così i passi separati da interruzioni formano una scala pressione per pressione. «Rilascia blocchi asse» restituisce l’asse al controllo fisico.</value></data>
   <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>Rilascia blocchi asse</value></data>

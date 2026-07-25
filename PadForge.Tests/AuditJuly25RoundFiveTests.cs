@@ -143,6 +143,69 @@ namespace PadForge.Tests
             Assert.Equal((ushort)Fire, Tick(im, new[] { Macro("Base") }, held: true));
         }
 
+        // ── Layer picker: the selected item must SURVIVE a rebuild ──
+
+        /// <summary>Field repro 2026-07-25: after renaming a layer the macro's
+        /// Layer picker went blank while the macro still gated correctly. The
+        /// rebuild Clear()ed the choices, so WPF dropped the picker's
+        /// SelectedItem, and re-pushing the unchanged mask set SelectedValue to
+        /// the value the control already held. No change, no re-resolution,
+        /// nothing to display. The rebuild now reconciles in place, so the
+        /// instance carrying the selected mask is never removed and a rename
+        /// just updates its label.</summary>
+        [Fact]
+        public void RebuildingLayerTabs_KeepsTheChoiceInstanceForAnUnchangedMask()
+        {
+            var vm = new PadViewModel(0);
+            var acts = new System.Collections.Generic.List<ShiftActivator>
+            {
+                new ShiftActivator { LayerMask = "Shift", LayerName = "Shift", Mode = "Hold", Descriptor = "Button 9" },
+            };
+            vm.RebuildLayerTabs(acts);
+
+            ShiftLayerInfo before = null;
+            foreach (var c in vm.MacroLayerChoices)
+                if (c.LayerMask == "Shift") { before = c; break; }
+            Assert.NotNull(before);
+
+            // Rename the LAYER (mask unchanged), exactly as the inline rename does.
+            acts[0].LayerName = "Combat";
+            vm.RebuildLayerTabs(acts);
+
+            ShiftLayerInfo after = null;
+            foreach (var c in vm.MacroLayerChoices)
+                if (c.LayerMask == "Shift") { after = c; break; }
+
+            Assert.NotNull(after);
+            Assert.Same(before, after);              // the selected item survived
+            Assert.Equal("Combat", after.LayerName); // and shows the new label
+        }
+
+        /// <summary>Adds and removals still land, so the picker tracks the real
+        /// layer set rather than going stale in the name of stability.</summary>
+        [Fact]
+        public void RebuildingLayerTabs_StillAddsAndRemovesLayers()
+        {
+            var vm = new PadViewModel(0);
+            var acts = new System.Collections.Generic.List<ShiftActivator>
+            {
+                new ShiftActivator { LayerMask = "A", LayerName = "A", Mode = "Hold", Descriptor = "Button 9" },
+            };
+            vm.RebuildLayerTabs(acts);
+            int withOne = vm.MacroLayerChoices.Count;      // "", Base, A
+
+            acts.Add(new ShiftActivator { LayerMask = "B", LayerName = "B", Mode = "Hold", Descriptor = "Button 8" });
+            vm.RebuildLayerTabs(acts);
+            Assert.Equal(withOne + 1, vm.MacroLayerChoices.Count);
+
+            acts.RemoveAt(0);
+            vm.RebuildLayerTabs(acts);
+            Assert.Equal(withOne, vm.MacroLayerChoices.Count);
+            bool hasA = false;
+            foreach (var c in vm.MacroLayerChoices) if (c.LayerMask == "A") hasA = true;
+            Assert.False(hasA);                            // the removed layer is gone
+        }
+
         // ── X11: engine start clears ACTION latches ──
 
         [Fact]

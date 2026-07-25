@@ -301,33 +301,37 @@ namespace PadForge.Tests
             Assert.Equal(viaSplit && !string.IsNullOrEmpty(mask), InputManager.PipeListContains(list, mask));
         }
 
-        // ── R21: the rebuild re-pushes the selected macro's mask ──
+        // ── R21 SUPERSEDED (field repro 2026-07-25) ──
 
-        /// <summary>MacroLayerChoices.Clear() nulls the ComboBox selection
-        /// and the null write is rejected by the setter, but WPF suppresses
-        /// the re-entrant target refresh for the initiating binding, so the
-        /// picker rendered BLANK over intact data. RebuildLayerTabs must
-        /// re-raise LayerMask on the selected macro so the binding re-reads
-        /// the source outside that window. (The visual re-match needs WPF;
-        /// this pins the notification the fix depends on.)</summary>
+        /// <summary>R21 pinned a re-push of the selected macro's mask after
+        /// the rebuild, on the theory that re-raising the property would make
+        /// the picker re-read. On hardware it did not work, and the trace
+        /// showed why: the mask had not changed, so the re-push set
+        /// SelectedValue to the value the control ALREADY held, WPF saw no
+        /// change and never re-resolved against the new item instances. The
+        /// re-push mechanism is gone. What the picker actually needs is for
+        /// the choice instance carrying the selected mask to SURVIVE the
+        /// rebuild, which AuditJuly25RoundFiveTests pins directly.
+        ///
+        /// Kept here as the outcome R21 was reaching for: after a rebuild, the
+        /// selected macro's mask still resolves to a choice, so the control
+        /// has something to display.</summary>
         [Fact]
-        public void RebuildLayerTabs_RePushesTheSelectedMacrosLayerBinding()
+        public void RebuildLayerTabs_LeavesTheSelectedMacrosMaskResolvable()
         {
             var vm = new PadViewModel(0);
-            var m = Macro(MacroTriggerMode.OnPress, layerMask: "Shift");
+            var m = Macro(MacroTriggerMode.OnPress, layerMask: "Base");
             vm.Macros.Add(m);
             vm.SelectedMacro = m;
 
-            bool raised = false;
-            m.PropertyChanged += (_, e) =>
-            {
-                if (e.PropertyName == nameof(MacroItem.LayerMask)) raised = true;
-            };
-
             vm.RebuildLayerTabs(null);
 
-            Assert.True(raised, "RebuildLayerTabs must re-push the selected macro's LayerMask binding.");
-            Assert.Equal("Shift", m.LayerMask); // and the data is untouched
+            Assert.Equal("Base", m.LayerMask);          // data untouched
+            bool resolvable = false;
+            foreach (var c in vm.MacroLayerChoices)
+                if (string.Equals(c.LayerMask, m.LayerMask, StringComparison.Ordinal))
+                { resolvable = true; break; }
+            Assert.True(resolvable, "the selected macro's mask must match a choice the picker offers");
         }
 
         // ── R25a: a cycle stop is representable as a macro scope ──

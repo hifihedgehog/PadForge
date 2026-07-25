@@ -22,6 +22,13 @@ namespace PadForge.Tests
     /// must keep adopting. The 2026 controller reports its BLE MAC as the serial
     /// and is fully distinguishable.
     /// </summary>
+    /// <remarks>Shares the SettingsManagerStatics collection: the adoption
+    /// tests swap SettingsManager.UserDevices, a global static that other
+    /// test classes also replace. Without this the class runs in parallel
+    /// with them and fails intermittently (observed once: 6 failures in one
+    /// run of 1782, clean in the 10 runs either side). Same trap, same fix
+    /// as ShortPressAndMacroLayerTests.</remarks>
+    [Collection("SettingsManagerStatics")]
     public class SameModelDeviceIdentityTests
     {
         // Real shape from the owner's hardware: the 2026 Steam Controller's
@@ -102,6 +109,71 @@ namespace PadForge.Tests
             Assert.NotSame(stored, got);                 // a NEW row
             Assert.Equal(guidA, stored.InstanceGuid);    // A's identity intact
             Assert.Equal(UnitA, stored.SerialNumber);    // A's serial intact
+        }
+
+        // ── THE PROPERTY THAT ACTUALLY MATTERS: at process time, N
+        //    simultaneously-connected units of one model are told apart. ──
+
+        /// <summary>Two units connected AT THE SAME TIME must occupy two
+        /// rows. This is the multiplayer case and it does not depend on
+        /// serials at all: the first unit is marked online the instant it
+        /// is resolved, and the adoption fallback only ever considers
+        /// OFFLINE candidates, so the second unit cannot land on the
+        /// first's row. Pinned for the 2015 shape specifically (BOTH
+        /// serials blank, because SDL frees that model's serial on
+        /// Windows), since that is the configuration with no per-unit
+        /// identity available anywhere.</summary>
+        [Theory]
+        [InlineData("", "")]                            // 2015: no serials at all
+        [InlineData("e3a4e86c8422", "f1b7d95a3011")]    // 2026: distinct BLE MACs
+        [InlineData(null, null)]
+        public void TwoUnitsConnectedSimultaneously_GetSeparateRows(string serialA, string serialB)
+        {
+            using var _ = new DeviceListScope();
+            var im = new InputManager();
+
+            // Unit A enumerates first and is marked online, exactly as the
+            // device sweep does immediately after resolving it.
+            var guidA = Guid.NewGuid();
+            var rowA = im.FindOrCreateUserDevice(guidA, SteamProductGuid, serialA);
+            rowA.ProductGuid = SteamProductGuid;
+            rowA.SerialNumber = serialA;
+            rowA.IsOnline = true;
+
+            // Unit B enumerates in the same sweep with its own identity.
+            var guidB = Guid.NewGuid();
+            var rowB = im.FindOrCreateUserDevice(guidB, SteamProductGuid, serialB);
+
+            Assert.NotSame(rowA, rowB);
+            Assert.Equal(guidA, rowA.InstanceGuid);   // A untouched
+            Assert.Equal(guidB, rowB.InstanceGuid);
+        }
+
+        /// <summary>Four on one 2015 dongle: the dongle exposes them as USB
+        /// interfaces 1-4, so all four share VID, PID and a blank serial and
+        /// differ only by device path. They must still occupy four rows.</summary>
+        [Fact]
+        public void FourUnitsOnOneDongle_GetFourRows()
+        {
+            using var _ = new DeviceListScope();
+            var im = new InputManager();
+            var guids = new Guid[4];
+            var rows = new PadForge.Engine.Data.UserDevice[4];
+
+            for (int i = 0; i < 4; i++)
+            {
+                guids[i] = Guid.NewGuid();               // distinct: paths differ by interface
+                rows[i] = im.FindOrCreateUserDevice(guids[i], SteamProductGuid, "");
+                rows[i].ProductGuid = SteamProductGuid;
+                rows[i].SerialNumber = "";
+                rows[i].IsOnline = true;                 // as each is resolved
+            }
+
+            for (int i = 0; i < 4; i++)
+                for (int j = i + 1; j < 4; j++)
+                    Assert.NotSame(rows[i], rows[j]);
+            for (int i = 0; i < 4; i++)
+                Assert.Equal(guids[i], rows[i].InstanceGuid);
         }
 
         /// <summary>The behavior the fallback exists for must still work: the

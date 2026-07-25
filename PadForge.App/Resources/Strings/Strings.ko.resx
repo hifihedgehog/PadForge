@@ -637,6 +637,9 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>임계값</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>트리거 버튼 소비 (게임에서 숨기기)</value></data>
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>트리거 입력을 소비하여 게임이 보지 못하게 합니다. 가상 컨트롤러 버튼, 장치 버튼, 터치패드·자이로 계열 입력에 적용됩니다. 축 임계값·POV·제스처 트리거는 소비되지 않습니다.</value></data>
+  <data name="Macro_Layer" xml:space="preserve"><value>레이어</value></data>
+  <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>이 매크로가 속한 시프트 레이어입니다. ‘모든 레이어’는 활성 레이어와 무관하게 발동합니다. 베이스와 이름 있는 레이어는 매핑 행과 동일하게 해당 레이어가 활성인 동안에만 발동합니다.</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>모든 레이어</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>이 가상 컨트롤러가 활성 상태인 동안 계속 실행됩니다. 트리거 버튼이 필요하지 않습니다.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>동작 시퀀스</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>동작 추가</value></data>
@@ -2613,6 +2616,8 @@
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>축 반전이 적용되지 않음({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>원형 스크롤 휠을 세로 드래그로 근사</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>길게 누를 때</value></data>
+  <data name="Macro_ShortPress" xml:space="preserve"><value>짧게 누를 때</value></data>
+  <data name="Macro_ShortPress_Tooltip" xml:space="preserve"><value>유지 시간이 지나기 전에 트리거를 놓으면 한 번 발동합니다. 임계값을 넘기면 아무것도 발동하지 않으므로 같은 버튼의 ‘길게 누를 때’와 조합하면 탭과 홈드를 구분할 수 있습니다.</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>트리거를 유지 시간 동안 계속 누르고 있으면 한 번 실행됩니다. 더 짧게 누르면 아무 일도 일어나지 않습니다.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>두 번 누를 때</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>연속 누르기 시간 안에 두 번 누르면 발동합니다. 두 번째 누름을 유지하면 놓을 때까지 활성 상태로 유지됩니다.</value></data>

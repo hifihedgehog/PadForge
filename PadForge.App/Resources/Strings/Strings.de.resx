@@ -637,6 +637,9 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>Schwellenwert</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Auslöser-Tasten verbrauchen (vor Spiel verbergen)</value></data>
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Verbraucht die Auslöser-Eingabe, sodass das Spiel sie nie sieht. Gilt für virtuelle Controller-Tasten, Gerätetasten und Touchpad- oder Gyro-Eingaben. Achsenschwellen-, POV- und Gesten-Auslöser werden nicht verbraucht.</value></data>
+  <data name="Macro_Layer" xml:space="preserve"><value>Ebene</value></data>
+  <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Zu welcher Shift-Ebene dieses Makro gehört. „Jede Ebene“ feuert unabhängig von der aktiven Ebene. Basis und benannte Ebenen feuern nur, solange diese Ebene aktiv ist, genau wie eine Zuordnungszeile.</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>Jede Ebene</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Läuft kontinuierlich, solange dieser virtuelle Controller aktiv ist. Keine Auslöser-Taste erforderlich.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Aktionssequenz</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Aktion hinzufügen</value></data>
@@ -2613,6 +2616,8 @@
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>Achsenumkehr nicht angewendet ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>kreisförmiges Scrollrad als vertikales Ziehen angenähert</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Bei langem Drücken</value></data>
+  <data name="Macro_ShortPress" xml:space="preserve"><value>Bei kurzem Druck</value></data>
+  <data name="Macro_ShortPress_Tooltip" xml:space="preserve"><value>Löst einmal aus, wenn der Auslöser vor Ablauf der Haltezeit losgelassen wird. Längeres Halten löst nichts aus; zusammen mit „Bei langem Druck“ auf derselben Taste ergibt das Tippen-oder-Halten.</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Löst einmal aus, nachdem der Auslöser ununterbrochen für die Haltezeit gehalten wurde. Ein kürzeres Antippen bewirkt nichts.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Bei Doppeldruck</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Wird ausgelöst, wenn der Auslöser zweimal innerhalb des Zeitfensters gedrückt wird. Wird der zweite Druck gehalten, bleibt er bis zum Loslassen aktiv.</value></data>

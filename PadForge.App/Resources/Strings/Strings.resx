@@ -1002,6 +1002,9 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>Threshold</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consume trigger buttons (hide from game)</value></data>
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Eats the trigger input so the game never sees it. Works for virtual controller buttons, raw device buttons, and touchpad or gyro style inputs. Axis-threshold, POV, and gesture triggers are not consumed.</value></data>
+  <data name="Macro_Layer" xml:space="preserve"><value>Layer</value></data>
+  <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Which shift layer this macro belongs to. Any layer fires regardless of the engaged layer. Base and named layers fire only while that layer is engaged, exactly like a mapping row.</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>Any layer</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Runs continuously while this virtual controller is active. No trigger button required.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Action Sequence</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Add Action</value></data>
@@ -2667,6 +2670,8 @@
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>These imported profiles have newer versions on the Steam Workshop. Re-import them from Browse Community Configs to pick up the changes.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>On Long Press</value></data>
+  <data name="Macro_ShortPress" xml:space="preserve"><value>On Short Press</value></data>
+  <data name="Macro_ShortPress_Tooltip" xml:space="preserve"><value>Fires once when the trigger is released before the hold time elapses. Holding past the threshold fires nothing, so pairing it with On Long Press on the same button gives tap-vs-hold.</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Fires once after the trigger has been held continuously for the hold time. A shorter tap does nothing.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>On Double Press</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Fires when the trigger is pressed twice within the press window. If held on the second press, it stays active until release.</value></data>

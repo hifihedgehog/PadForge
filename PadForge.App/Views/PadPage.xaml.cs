@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -1423,13 +1423,23 @@ namespace PadForge.Views
             existing.Icon = dlg.Result.Icon;
             existing.PostponeMapping = dlg.Result.PostponeMapping;
 
-            if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal)
-                && slotMs.Rows != null)
+            if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal))
             {
-                foreach (var r in slotMs.Rows)
+                if (slotMs.Rows != null)
                 {
-                    if (r != null && string.Equals(r.LayerMask, oldMask, StringComparison.Ordinal))
-                        r.LayerMask = existing.LayerMask;
+                    foreach (var r in slotMs.Rows)
+                    {
+                        if (r != null && string.Equals(r.LayerMask, oldMask, StringComparison.Ordinal))
+                            r.LayerMask = existing.LayerMask;
+                    }
+                }
+                // #254 A-3: macros scoped to the layer follow the mask
+                // exactly like rows, or they silently never fire again
+                // (MacroLayerGateOpen holds a dead mask forever).
+                foreach (var mac in _currentPadVm.Macros)
+                {
+                    if (mac != null && string.Equals(mac.LayerMask, oldMask, StringComparison.Ordinal))
+                        mac.LayerMask = existing.LayerMask;
                 }
             }
 
@@ -1673,6 +1683,10 @@ namespace PadForge.Views
 
             slotMs.Rows.RemoveAll(
                 r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
+            // #254 A-3: Clear empties the layer's ROWS only, by design.
+            // Macros keep their mask: the layer still exists, so they
+            // remain live and re-authoring rows around them is the
+            // expected flow.
 
             if (string.Equals(_currentPadVm.ActiveLayerMask, mask, StringComparison.Ordinal))
             {
@@ -1714,6 +1728,16 @@ namespace PadForge.Views
             {
                 slotMs.Rows.RemoveAll(
                     r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
+            }
+            // #254 A-3: deleting a layer RETAGS its macros to "" (Any
+            // layer) instead of deleting them. Rows die with the layer
+            // because they are the layer's content; macros are standalone
+            // authoring a user may want to keep, and a macro left holding
+            // a dead mask would silently never fire again.
+            foreach (var mac in _currentPadVm.Macros)
+            {
+                if (mac != null && string.Equals(mac.LayerMask, mask, StringComparison.Ordinal))
+                    mac.LayerMask = "";
             }
 
             // Snap the active tab back to Base; RebuildLayerTabs will

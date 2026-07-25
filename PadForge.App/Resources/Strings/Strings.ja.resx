@@ -637,6 +637,9 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>しきい値</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>トリガーボタンを消費する (ゲームから隠す)</value></data>
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>トリガー入力を食べて、ゲームに渡さないようにします。仮想コントローラーのボタン、実機のボタン、タッチパッドやジャイロ系の入力に対応します。軸のしきい値・POV・ジェスチャーのトリガーは消費されません。</value></data>
+  <data name="Macro_Layer" xml:space="preserve"><value>レイヤー</value></data>
+  <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>このマクロが属するシフトレイヤーです。「すべてのレイヤー」は有効なレイヤーに関係なく発動します。ベースと名前付きレイヤーは、マッピング行と同じくそのレイヤーが有効な間だけ発動します。</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>すべてのレイヤー</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>この仮想コントローラーがアクティブな間、継続的に実行されます。トリガーボタンは不要です。</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>アクションシーケンス</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>アクションを追加</value></data>
@@ -2613,6 +2616,8 @@
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>軸の反転は未適用 ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>円形スクロールホイールを縦ドラッグで近似</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>長押し時</value></data>
+  <data name="Macro_ShortPress" xml:space="preserve"><value>短押し時</value></data>
+  <data name="Macro_ShortPress_Tooltip" xml:space="preserve"><value>保持時間が経過する前にトリガーを離すと一度発動します。しきい値を超えて押し続けると何も発動しないため、同じボタンの「長押し時」と組み合わせるとタップと長押しを使い分けられます。</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>トリガーを保持時間のあいだ押し続けると 1 回だけ発動します。それより短いタップでは何も起こりません。</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>ダブルプレス時</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>連続プレス時間内に2回押すと発動します。2回目を押し続けると、離すまで有効のままです。</value></data>

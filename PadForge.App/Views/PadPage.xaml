@@ -1116,8 +1116,23 @@
 
                         <ListBox ItemsSource="{Binding Macros}"
                                  SelectedItem="{Binding SelectedMacro, Mode=TwoWay}"
-                                 ItemContainerStyle="{StaticResource EmberSelectListItem}"
-                                 DisplayMemberPath="Name"/>
+                                 ItemContainerStyle="{StaticResource EmberSelectListItem}">
+                            <!-- #254 A-1: the scope dot marks layer-scoped
+                                 macros so scope is visible without selecting
+                                 each one, the layer-tab dot's sibling. -->
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Width="8" Height="8"
+                                                 Margin="0,0,6,0"
+                                                 VerticalAlignment="Center"
+                                                 Fill="{DynamicResource TextFillColorTertiaryBrush}"
+                                                 Visibility="{Binding HasLayerScope, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </DockPanel>
 
                     <GridSplitter Grid.Column="1" Width="4" Margin="4,0"
@@ -1188,6 +1203,8 @@
                                     <ComboBoxItem Content="{Binding Macro_WhileHeld, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.WhileHeld}"/>
                                     <ComboBoxItem Content="{Binding Macro_HoldForMs, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.HoldForMs}"
                                                   ToolTip="{Binding Macro_HoldForMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBoxItem Content="{Binding Macro_ShortPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.ShortPress}"
+                                                  ToolTip="{Binding Macro_ShortPress_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBoxItem Content="{Binding Macro_DoublePress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.DoublePress}"
                                                   ToolTip="{Binding Macro_DoublePress_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBoxItem Content="{Binding Macro_TriplePress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.TriplePress}"
@@ -1201,16 +1218,33 @@
                                 </ComboBox>
                             </StackPanel>
 
+                            <!-- Macro layer scope (#254 A-1). Visible only when the slot
+                                 has shift layers, the same gate the Mappings strip uses.
+                                 "" = Any layer (the ungated default), "Base" and each
+                                 layer scope the macro exactly like a mapping row. -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                        Visibility="{Binding DataContext.HasShiftLayers, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Layer, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                           Width="80" Margin="0,0,8,0"
+                                           ToolTip="{Binding Macro_Layer_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <ComboBox MinWidth="160"
+                                          ItemsSource="{Binding DataContext.MacroLayerChoices, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                          SelectedValue="{Binding LayerMask, Mode=TwoWay}"
+                                          SelectedValuePath="LayerMask"
+                                          DisplayMemberPath="LayerName"
+                                          ToolTip="{Binding Macro_Layer_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+
                             <!-- Hold-threshold row (issue #9 wave 1b, B-8b). Visible only in
                                  On Hold mode: the macro fires once the trigger combo has been
                                  held this long; a shorter tap does nothing. -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
-                                        Visibility="{Binding IsHoldForMsMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        Visibility="{Binding ShowsHoldTimeRow, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_TriggerHoldMs_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Width="80" Margin="0,0,8,0"
-                                           ToolTip="{Binding Macro_HoldForMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                           ToolTip="{Binding HoldTimeToolTip}"/>
                                 <TextBox Text="{Binding TriggerHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"
-                                         ToolTip="{Binding Macro_HoldForMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                         ToolTip="{Binding HoldTimeToolTip}"/>
                                 <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                 <ui:Button Command="{Binding ResetTriggerHoldMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
                             </StackPanel>

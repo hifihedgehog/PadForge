@@ -637,6 +637,9 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>阈值</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>拦截触发按钮（对游戏隐藏）</value></data>
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>吃掉触发输入，使游戏永远看不到它。适用于虚拟控制器按钮、设备实体按钮以及触控板或陀螺仪类输入。轴阈值、POV 和手势触发器不会被消耗。</value></data>
+  <data name="Macro_Layer" xml:space="preserve"><value>层</value></data>
+  <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>此宏所属的切换层。“任意层”无论哪个层激活都会触发。基础层和命名层仅在该层激活时触发，与映射行完全一致。</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>任意层</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>在此虚拟控制器激活时持续运行。无需触发按钮。</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>动作序列</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>添加动作</value></data>
@@ -2613,6 +2616,8 @@
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>未应用轴反转（{0}）</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>环形滚轮近似为纵向拖动</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>长按时</value></data>
+  <data name="Macro_ShortPress" xml:space="preserve"><value>短按时</value></data>
+  <data name="Macro_ShortPress_Tooltip" xml:space="preserve"><value>在保持时长到期前松开触发器时触发一次。按住超过阈值则不触发，因此与同一按钮的“长按时”搭配即可区分轻点与长按。</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>在触发器被连续按住达到保持时间后触发一次。更短的点按不起作用。</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>双击时</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>在连按时间内按下两次时触发。若第二次按住不放，将保持激活直到松开。</value></data>

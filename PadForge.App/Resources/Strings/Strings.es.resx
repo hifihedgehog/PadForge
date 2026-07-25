@@ -637,6 +637,9 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>Umbral</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consumir botones activadores (ocultar del juego)</value></data>
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Consume la entrada del disparador para que el juego nunca la vea. Funciona con botones de mando virtual, botones físicos del dispositivo y entradas de panel táctil o giroscopio. Los disparadores por umbral de eje, POV y gestos no se consumen.</value></data>
+  <data name="Macro_Layer" xml:space="preserve"><value>Capa</value></data>
+  <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>A qué capa de cambio pertenece esta macro. «Cualquier capa» se dispara sin importar la capa activa. Base y las capas con nombre solo se disparan mientras esa capa está activa, igual que una fila de asignación.</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>Cualquier capa</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Se ejecuta continuamente mientras este control virtual está activo. No requiere botón activador.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Secuencia de acciones</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Agregar acción</value></data>
@@ -2613,6 +2616,8 @@
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversión de ejes no aplicada ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>rueda de desplazamiento circular aproximada como arrastre vertical</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Al pulsar prolongadamente</value></data>
+  <data name="Macro_ShortPress" xml:space="preserve"><value>Al pulsar brevemente</value></data>
+  <data name="Macro_ShortPress_Tooltip" xml:space="preserve"><value>Se dispara una vez cuando el disparador se suelta antes de que transcurra el tiempo de mantenimiento. Mantenerlo más tiempo no dispara nada, así que combinarlo con «Al mantener pulsado» en el mismo botón da toque frente a mantener.</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se dispara una vez cuando el activador se ha mantenido de forma continua durante el tiempo de retención. Un toque más corto no hace nada.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Al pulsar dos veces</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Se activa cuando el disparador se pulsa dos veces dentro de la ventana de pulsación. Si se mantiene la segunda pulsación, permanece activo hasta soltar.</value></data>

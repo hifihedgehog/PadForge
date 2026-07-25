@@ -637,6 +637,9 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>Soglia</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consuma pulsanti attivatore (nascondi al gioco)</value></data>
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Consuma l'input del trigger così il gioco non lo vede mai. Funziona con i pulsanti del controller virtuale, i pulsanti fisici del dispositivo e gli input touchpad o giroscopio. I trigger a soglia d'asse, POV e gesti non vengono consumati.</value></data>
+  <data name="Macro_Layer" xml:space="preserve"><value>Livello</value></data>
+  <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>A quale livello shift appartiene questa macro. «Qualsiasi livello» si attiva a prescindere dal livello attivo. Base e i livelli con nome si attivano solo mentre quel livello è attivo, esattamente come una riga di mappatura.</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>Qualsiasi livello</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Esegue continuamente mentre questo controller virtuale è attivo. Nessun pulsante attivatore richiesto.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Sequenza azioni</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Aggiungi azione</value></data>
@@ -2635,6 +2638,8 @@
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversione degli assi non applicata ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>rotella circolare approssimata con un trascinamento verticale</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Alla pressione prolungata</value></data>
+  <data name="Macro_ShortPress" xml:space="preserve"><value>Alla pressione breve</value></data>
+  <data name="Macro_ShortPress_Tooltip" xml:space="preserve"><value>Si attiva una volta quando il trigger viene rilasciato prima che scada il tempo di pressione. Tenerlo premuto oltre la soglia non attiva nulla, quindi abbinarlo ad «Alla pressione prolungata» sullo stesso pulsante dà tocco-o-tieni.</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Si attiva una volta dopo che l'attivatore è stato tenuto premuto ininterrottamente per il tempo di mantenimento. Un tocco più breve non fa nulla.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Alla doppia pressione</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Si attiva quando il trigger viene premuto due volte entro la finestra di pressione. Se la seconda pressione viene mantenuta, resta attivo fino al rilascio.</value></data>

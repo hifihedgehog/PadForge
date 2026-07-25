@@ -637,6 +637,9 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>Drempelwaarde</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Triggerknoppen verbruiken (verbergen voor game)</value></data>
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Verbruikt de trigger-invoer zodat de game die nooit ziet. Werkt voor virtuele controllerknoppen, fysieke apparaatknoppen en touchpad- of gyro-invoer. Triggers op asdrempel, POV en gebaren worden niet verbruikt.</value></data>
+  <data name="Macro_Layer" xml:space="preserve"><value>Laag</value></data>
+  <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Bij welke shift-laag deze macro hoort. ‘Elke laag’ vuurt ongeacht de actieve laag. Basis en benoemde lagen vuren alleen zolang die laag actief is, precies zoals een toewijzingsrij.</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>Elke laag</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Draait continu zolang deze virtuele controller actief is. Geen triggerknop vereist.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Actiereeks</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Actie toevoegen</value></data>
@@ -2633,6 +2636,8 @@
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>asomkering niet toegepast ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>cirkelvormig scrollwiel benaderd als verticaal slepen</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Bij lang indrukken</value></data>
+  <data name="Macro_ShortPress" xml:space="preserve"><value>Bij kort indrukken</value></data>
+  <data name="Macro_ShortPress_Tooltip" xml:space="preserve"><value>Vuurt één keer wanneer de trigger wordt losgelaten voordat de vasthoudtijd verstrijkt. Langer vasthouden vuurt niets af; samen met ‘Bij lang indrukken’ op dezelfde knop geeft dat tik-of-vasthouden.</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Vuurt één keer nadat de trigger onafgebroken de vasthoudtijd ingedrukt is gehouden. Een kortere tik doet niets.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Bij dubbel indrukken</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Vuurt wanneer de trigger twee keer binnen het tijdvenster wordt ingedrukt. Blijft actief tot loslaten als de tweede druk wordt vastgehouden.</value></data>

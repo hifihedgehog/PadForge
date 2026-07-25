@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PadForge.Common.Input;
@@ -366,8 +366,8 @@ namespace PadForge.Services
 
             if (!ApplyDeviceFreeTrigger(data, m)) return null;
 
-            if (mode == MacroTriggerMode.HoldForMs)
-                data.TriggerHoldMs = Math.Clamp(m.TriggerHoldMs, 50, 10000); // MacroItem clamp range
+            if (mode == MacroTriggerMode.HoldForMs || mode == MacroTriggerMode.ShortPress)
+                data.TriggerHoldMs = Math.Clamp(m.TriggerHoldMs, 50, 10000); // MacroItem clamp range (#253 shares the threshold)
             if (mode == MacroTriggerMode.DoublePress)
                 data.TriggerDoublePressMs = Math.Clamp(m.TriggerDoublePressMs, 50, 5000); // MacroItem clamp range
             // Layer gate (v25, always_on_action): set-scoped macros only
@@ -501,8 +501,8 @@ namespace PadForge.Services
                         }
                         : new[] { action },
                 };
-                if (mode == MacroTriggerMode.HoldForMs)
-                    data.TriggerHoldMs = Math.Clamp(m.TriggerHoldMs, 50, 10000); // MacroItem clamp range
+                if (mode == MacroTriggerMode.HoldForMs || mode == MacroTriggerMode.ShortPress)
+                    data.TriggerHoldMs = Math.Clamp(m.TriggerHoldMs, 50, 10000); // MacroItem clamp range (#253 shares the threshold)
                 if (mode == MacroTriggerMode.DoublePress)
                     data.TriggerDoublePressMs = Math.Clamp(m.TriggerDoublePressMs, 50, 5000); // MacroItem clamp range
                 // Layer gate (v25): both legs of a hold pair carry it.

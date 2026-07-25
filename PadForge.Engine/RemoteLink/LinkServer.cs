@@ -327,7 +327,10 @@ namespace PadForge.Engine.RemoteLink
             {
                 if (!string.Equals(c.PeerFingerprintHex, peerFingerprint, StringComparison.OrdinalIgnoreCase)) continue;
                 var ep = c.PeerUdpEndpoint;
-                if (ep == null) continue;
+                // Same diag trailer as the PushOutputEffect twin (audit
+                // 2026-07-25, C32): a demand dropped for an unlearned
+                // endpoint was invisible in diagnostics.
+                if (ep == null) { DiagLastError = "demand: peer endpoint not learned yet"; continue; }
                 try
                 {
                     _udp.SendTo(c.DataSession.Seal(LinkMessageType.SourceDemand, slot, ts, payload), ep);
@@ -569,6 +572,26 @@ namespace PadForge.Engine.RemoteLink
                     }
                     if (!string.IsNullOrEmpty(info.SerialNumber))
                         existing.Info.SerialNumber = info.SerialNumber;
+                    // Capability bits refresh with the metadata (audit
+                    // 2026-07-25, C41): a capability appearing after
+                    // connect (a Joy-Con pair joining, a reader arming
+                    // rule flipping) never reached the consumer, since
+                    // the fresh-registration branch below runs only for
+                    // unknown device ids. Counts and flags are relayed
+                    // state, not identity.
+                    existing.Info.HasRumble = info.HasRumble;
+                    existing.Info.HasRumbleTriggers = info.HasRumbleTriggers;
+                    existing.Info.HasGyro = info.HasGyro;
+                    existing.Info.HasAccel = info.HasAccel;
+                    existing.Info.HasAccelAux = info.HasAccelAux;
+                    existing.Info.HasGyroAux = info.HasGyroAux;
+                    existing.Info.HasTouchpad = info.HasTouchpad;
+                    existing.Info.HasHaptic = info.HasHaptic;
+                    existing.Info.HasNfcReader = info.HasNfcReader;
+                    existing.Info.NumAxes = info.NumAxes;
+                    existing.Info.NumButtons = info.NumButtons;
+                    existing.Info.NumHats = info.NumHats;
+                    existing.Info.InputDeviceType = info.InputDeviceType;
                     next[info.Slot] = existing;
                     // Re-register only when the slot moved, so the slot-stamped output route refreshes.
                     if (slotChanged) DeviceConnected?.Invoke(existing);

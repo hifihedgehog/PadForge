@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Common.Mapping;
@@ -55,7 +55,12 @@ namespace PadForge.Tests
             raw.Buttons[0] = 1;
             raw.Axes[2] = short.MinValue;
             im.EvaluateSlotMacrosExtended(ref raw, macros);
-            Assert.Equal(32767, raw.Axes[2]);
+            // MinValue + 32767*2 = 32766: the pull-scale endpoint (audit
+            // 2026-07-25, C36). The old pin of 32767 relied on the raw
+            // writer's identity transfer, which parked 0% at the channel
+            // MIDPOINT; one wire unit below full is the correct frame's
+            // ceiling, matching the AxisAdd twin's established math.
+            Assert.Equal(32766, raw.Axes[2]);
         }
 
         [Fact]

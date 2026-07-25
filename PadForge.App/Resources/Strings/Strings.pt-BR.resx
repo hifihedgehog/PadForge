@@ -636,6 +636,7 @@
   <data name="Macro_OutputController" xml:space="preserve"><value>Controle Virtual</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Limiar</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consumir botões de gatilho (ocultar do jogo)</value></data>
+  <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Consome a entrada do gatilho para que o jogo nunca a veja. Funciona com botões do controle virtual, botões físicos do dispositivo e entradas de touchpad ou giroscópio. Gatilhos por limiar de eixo, POV e gestos não são consumidos.</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Executa continuamente enquanto este controle virtual estiver ativo. Nenhum botão de gatilho necessário.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Sequência de Ações</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Adicionar Ação</value></data>

@@ -37,6 +37,15 @@ namespace PadForge.Common
                 mapping.SetResolvedSourceText(ResolveMotionAccelAuxName(ud));
                 return;
             }
+            // "Motion Gyro L" (#252): the gyro twin of the row above. The
+            // aux gyro is Joy-Con-pair-only (no Nunchuk gyro exists), so
+            // the label is fixed rather than contextual (audit 2026-07-25,
+            // C10: without this arm the row rendered the raw literal).
+            if (PadForge.Engine.Data.MappingSetMigrator.IsMotionGyroAuxDescriptor(mapping.SourceDescriptor))
+            {
+                mapping.SetResolvedSourceText(Strings.Instance.Mapping_MotionGyroAux);
+                return;
+            }
 
             // Abstract "Gamepad ..." family (issue #9): device-agnostic
             // semantic names that resolve without device-object metadata, so
@@ -1191,6 +1200,10 @@ namespace PadForge.Common
                 string sub = s.Substring(7).Trim();
                 if (sub.Equals("Gyro",  System.StringComparison.OrdinalIgnoreCase)) return prefix + siM.Mapping_MotionGyro;
                 if (sub.Equals("Accel", System.StringComparison.OrdinalIgnoreCase)) return prefix + siM.Mapping_MotionAccel;
+                // #252 aux twin, symmetric with the arms above (audit
+                // 2026-07-25, C10). Practically unreachable (pairs are
+                // not raw-numbered class) but the family stays whole.
+                if (sub.Equals("Gyro L", System.StringComparison.OrdinalIgnoreCase)) return prefix + siM.Mapping_MotionGyroAux;
                 return null;
             }
 

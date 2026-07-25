@@ -2522,6 +2522,19 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _type, value))
                 {
+                    // A hidden pulse must not survive a retype (audit
+                    // 2026-07-25, C40): the latch pass consults
+                    // PulseWhileLatched for every latched axis action, but
+                    // the editor offers the checkbox only for
+                    // IsPulseCapableType. Switching ToggleVcAxis(pulse on)
+                    // to Set Axis (Latched) left the flag set with no UI to
+                    // see or clear it, so the "persistent" ladder value
+                    // oscillated on an invisible square wave.
+                    if (!IsPulseCapableType && _pulseWhileLatched)
+                    {
+                        _pulseWhileLatched = false;
+                        OnPropertyChanged(nameof(PulseWhileLatched));
+                    }
                     OnPropertyChanged(nameof(DisplayText));
                     OnPropertyChanged(nameof(IsButtonType));
                     OnPropertyChanged(nameof(IsKeyType));

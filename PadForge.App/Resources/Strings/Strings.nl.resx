@@ -636,6 +636,7 @@
   <data name="Macro_OutputController" xml:space="preserve"><value>Virtuele Controller</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Drempelwaarde</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Triggerknoppen verbruiken (verbergen voor game)</value></data>
+  <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Verbruikt de trigger-invoer zodat de game die nooit ziet. Werkt voor virtuele controllerknoppen, fysieke apparaatknoppen en touchpad- of gyro-invoer. Triggers op asdrempel, POV en gebaren worden niet verbruikt.</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Draait continu zolang deze virtuele controller actief is. Geen triggerknop vereist.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Actiereeks</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Actie toevoegen</value></data>

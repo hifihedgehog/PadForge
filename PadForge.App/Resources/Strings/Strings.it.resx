@@ -636,6 +636,7 @@
   <data name="Macro_OutputController" xml:space="preserve"><value>Controller virtuale</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Soglia</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consuma pulsanti attivatore (nascondi al gioco)</value></data>
+  <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Consuma l'input del trigger così il gioco non lo vede mai. Funziona con i pulsanti del controller virtuale, i pulsanti fisici del dispositivo e gli input touchpad o giroscopio. I trigger a soglia d'asse, POV e gesti non vengono consumati.</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Esegue continuamente mentre questo controller virtuale è attivo. Nessun pulsante attivatore richiesto.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Sequenza azioni</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Aggiungi azione</value></data>

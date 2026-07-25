@@ -46,7 +46,20 @@ namespace PadForge.Services
         {
             if (ud == null || ps == null) return Task.CompletedTask;
             if (!ud.HasGyro) return Task.CompletedTask;
-            if (!string.IsNullOrEmpty(ps.GyroCalibratedAtUtc)) return Task.CompletedTask;
+            if (!string.IsNullOrEmpty(ps.GyroCalibratedAtUtc))
+            {
+                // Upgrade path for the #252 aux triple (audit 2026-07-25,
+                // C39): a profile stamped BEFORE the aux fields existed
+                // skipped here forever, leaving the left Joy-Con's bias at
+                // the field default and its rows drifting. An unset triple
+                // on an aux-capable device re-runs the same at-rest pass;
+                // a measured all-zero result re-runs harmlessly at next
+                // launch (1.5 s background sample, idempotent).
+                bool auxUnset = ps.GyroAuxBiasPitch == "0"
+                    && ps.GyroAuxBiasYaw == "0"
+                    && ps.GyroAuxBiasRoll == "0";
+                if (!(ud.HasGyroAux && auxUnset)) return Task.CompletedTask;
+            }
             return RecalibrateAsync(ud, ps, 1500);
         }
 
@@ -86,9 +99,11 @@ namespace PadForge.Services
             int samples = 0;
             // The aux gyro (#252) is sampled in the SAME at-rest pass: the
             // user is already holding both halves of a Joy-Con pair still,
-            // and the left half's drift is its own number. Counted
-            // separately so a device without the sensor leaves its stored
-            // triple untouched rather than writing zeros over it.
+            // and the left half's drift is its own number. Gated on
+            // ud.HasGyroAux (audit 2026-07-25, C24): CustomInputState
+            // always allocates the array, so the old null check was dead
+            // and every calibration of ANY gyro device overwrote the
+            // stored aux triple with zeros.
             double accAuxPitch = 0, accAuxYaw = 0, accAuxRoll = 0;
             int auxSamples = 0;
             var sw = System.Diagnostics.Stopwatch.StartNew();
@@ -109,7 +124,7 @@ namespace PadForge.Services
                     samples++;
                 }
                 var gyroAux = state.GyroAux;
-                if (gyroAux != null && gyroAux.Length >= 3)
+                if (ud.HasGyroAux && gyroAux != null && gyroAux.Length >= 3)
                 {
                     accAuxPitch += gyroAux[0];
                     accAuxYaw   += gyroAux[1];

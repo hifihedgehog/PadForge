@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HIDMaestro;
@@ -905,6 +905,20 @@ namespace PadForge.Common.Input
             _controller.SubmitState(state);
         }
 
+        /// <summary>Detaches this VC from the engine's feedback array
+        /// (audit 2026-07-25, C38). Called synchronously by
+        /// DestroyVirtualController BEFORE the motor zero: the driver-side
+        /// OutputDecoded / OutputReceived handlers die only when the async
+        /// dispose reaches _controller.Dispose() (seconds later for
+        /// xinputhid), and every one of them guards on FeedbackPadIndex,
+        /// so parking it at -1 makes late callbacks no-op instead of
+        /// repopulating a slot this VC no longer owns.</summary>
+        public void UnregisterFeedback()
+        {
+            FeedbackPadIndex = -1;
+            _fbVibrationStates = null;
+        }
+
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
         {
             FeedbackPadIndex = padIndex;
@@ -953,10 +967,12 @@ namespace PadForge.Common.Input
             // ApplyForceFeedback reads it to fire SDL_RumbleJoystick on
             // non-Sony devices on the same slot (Xbox, third-party, etc.).
             // Double-fire on the real DualSense is prevented at a different
-            // layer: SlotRumbleForDeviceProvider returns (0,0) for any
-            // device that's a passthrough target, so the Sony dispatcher
-            // emits zero rumble bytes for that specific device while the
-            // passthrough dispatcher carries the game's actual rumble.
+            // layer: UserEffectsDispatcher's gameDrivenRumble branch zeroes
+            // the provider bytes for a passthrough target exactly while the
+            // game is writing (audit 2026-07-25, C37 replaced the old
+            // unconditional provider skip, which also killed test/macro
+            // rumble for the device), so the passthrough dispatcher carries
+            // the game's rumble and the Sony dispatcher carries the rest.
             _controller.OutputDecoded += (ctrl, e) =>
             {
                 int idx = FeedbackPadIndex;

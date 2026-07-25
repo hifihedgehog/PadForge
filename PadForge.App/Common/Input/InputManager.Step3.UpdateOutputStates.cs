@@ -1023,6 +1023,14 @@ namespace PadForge.Common.Input
             string deviceGuid, int slotIndex,
             int deadZonePercent = 0, int globalThresholdPercent = 50, bool bidirectional = false)
         {
+            // Suppression parity for the legacy per-key path (audit
+            // 2026-07-25, C14): the mapping-set evaluators and the legacy
+            // IR-pointer fallback all consult the consume/postpone set;
+            // these singles were the remaining unguarded readers. Gate on
+            // the raw spelling: legacy I/H-prefixed strings miss the clean
+            // key and stay unsuppressed, an accepted residual of a
+            // migrated-away config shape.
+            if (IsSourceSuppressedPostpone(slotIndex, deviceGuid, descriptor)) return false;
             // Touchpad-typed descriptors that resolve to a bool. Parallel to the
             // "Touchpad N Finger M X/Y/Down" descriptors consumed by Step 3's
             // touchpad output path; here we recognize:
@@ -1333,6 +1341,9 @@ namespace PadForge.Common.Input
         private static short MapToThumbAxisSingle(CustomInputState state, string descriptor,
             string deviceGuid, int slotIndex)
         {
+            // Suppression parity (audit 2026-07-25, C14), see
+            // MapToButtonPressedSingle.
+            if (IsSourceSuppressedPostpone(slotIndex, deviceGuid, descriptor)) return 0;
             // Engine-owned families (IR Pointer / IR Brightness / Balance /
             // Mouse Position / Midi): bipolar [-1..+1] scaled to the signed
             // axis range, same evaluator the mapping grid uses.
@@ -1428,6 +1439,12 @@ namespace PadForge.Common.Input
         private static short MapToRawTriggerAxis(CustomInputState state, string posDescriptor, string negDescriptor,
             string deviceGuid, int slotIndex)
         {
+            // Suppression parity (audit 2026-07-25, C14), see
+            // MapToButtonPressedSingle. Trigger rest is short.MinValue.
+            if (IsSourceSuppressedPostpone(slotIndex, deviceGuid, posDescriptor)
+                && (string.IsNullOrWhiteSpace(negDescriptor)
+                    || IsSourceSuppressedPostpone(slotIndex, deviceGuid, negDescriptor)))
+                return short.MinValue;
             if (string.IsNullOrWhiteSpace(negDescriptor))
             {
                 // Single descriptor: empty → released; valid → analog read;

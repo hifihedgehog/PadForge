@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Globalization;
 using PadForge.Engine.Data;
 using PadForge.Engine.Common.Mapping;
@@ -17,8 +17,15 @@ namespace PadForge.Common.Input
             => t == "LeftThumbAxisX" || t == "LeftThumbAxisY"
             || t == "RightThumbAxisX" || t == "RightThumbAxisY";
 
+        // "MotionLeanAuxX" joined the family with the #199 aux lean (audit
+        // 2026-07-25, C9): the aux row runs the SAME TickMotionLean and
+        // stores lock state under the same (slot, target, sourceIndex)
+        // key, but its absence here left all four steering-lock feedback
+        // toggles silently dead for a Nunchuk / left Joy-Con steering
+        // source while the UI offered them.
         private static bool IsSteeringKind(string k)
-            => k == "WindingStick" || k == "AngleToAxisX" || k == "AngleToAxisY" || k == "MotionLeanX";
+            => k == "WindingStick" || k == "AngleToAxisX" || k == "AngleToAxisY"
+            || k == "MotionLeanX" || k == "MotionLeanAuxX";
 
         /// <summary>Per-slot continuous steering AT-resistance (0..1), set by the
         /// lock-feedback pass and read by UserEffectsDispatcher to ramp DualSense
@@ -84,7 +91,9 @@ namespace PadForge.Common.Input
                     // "Motion Lean" input, which steers with Kind=Direct — its
                     // lock state lives in the same SourceKindRuntime machine.
                     if (src == null
-                        || !(IsSteeringKind(src.Kind) || SourceCoercion.IsMotionLeanDescriptor(src.Descriptor)))
+                        || !(IsSteeringKind(src.Kind)
+                             || SourceCoercion.IsMotionLeanDescriptor(src.Descriptor)
+                             || SourceCoercion.IsMotionLeanAuxDescriptor(src.Descriptor)))
                         continue;
 
                     if (atRes)

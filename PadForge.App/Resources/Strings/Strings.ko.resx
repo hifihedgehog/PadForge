@@ -636,6 +636,7 @@
   <data name="Macro_OutputController" xml:space="preserve"><value>가상 컨트롤러</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>임계값</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>트리거 버튼 소비 (게임에서 숨기기)</value></data>
+  <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>트리거 입력을 소비하여 게임이 보지 못하게 합니다. 가상 컨트롤러 버튼, 장치 버튼, 터치패드·자이로 계열 입력에 적용됩니다. 축 임계값·POV·제스처 트리거는 소비되지 않습니다.</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>이 가상 컨트롤러가 활성 상태인 동안 계속 실행됩니다. 트리거 버튼이 필요하지 않습니다.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>동작 시퀀스</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>동작 추가</value></data>

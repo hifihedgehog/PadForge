@@ -636,6 +636,7 @@
   <data name="Macro_OutputController" xml:space="preserve"><value>Virtueller Controller</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Schwellenwert</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Auslöser-Tasten verbrauchen (vor Spiel verbergen)</value></data>
+  <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Verbraucht die Auslöser-Eingabe, sodass das Spiel sie nie sieht. Gilt für virtuelle Controller-Tasten, Gerätetasten und Touchpad- oder Gyro-Eingaben. Achsenschwellen-, POV- und Gesten-Auslöser werden nicht verbraucht.</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Läuft kontinuierlich, solange dieser virtuelle Controller aktiv ist. Keine Auslöser-Taste erforderlich.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Aktionssequenz</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Aktion hinzufügen</value></data>

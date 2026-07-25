@@ -562,9 +562,12 @@ namespace PadForge.Engine.Common.Mapping
 
         // dual-threshold gyro smoothing buffer. Keyed by
         // (deviceGuid, slotIndex). Single-threaded (polling thread only).
-        private static readonly Dictionary<(string, int), (float x, float y)[]> _gyroSampleBuffers = new();
-        private static readonly Dictionary<(string, int), int> _gyroSampleHeads = new();
-        private static readonly Dictionary<(string, int), ulong> _gyroSampleFrames = new();
+        // Keyed (deviceGuid, slot, aux). The aux member replaced a "|aux"
+        // string suffix (audit 2026-07-25, C5): the suffix allocated per
+        // call on the poll path, which this file's own key comments forbid.
+        private static readonly Dictionary<(string, int, bool), (float x, float y)[]> _gyroSampleBuffers = new();
+        private static readonly Dictionary<(string, int, bool), int> _gyroSampleHeads = new();
+        private static readonly Dictionary<(string, int, bool), ulong> _gyroSampleFrames = new();
 
         // Internal for the poll-frame-gate test pins (PadForge.Tests).
         internal static (float, float) ApplyDualThresholdSmoothing(
@@ -587,7 +590,8 @@ namespace PadForge.Engine.Common.Mapping
             // The aux gyro (#252) shares the device GUID with the primary,
             // so it takes its own ring: a shared key would let one sensor
             // consume the other's window and its once-per-poll advance.
-            var key = ((deviceGuid ?? "") + (aux ? "|aux" : ""), slotIndex);
+            // aux rides the key tuple, zero-alloc (audit 2026-07-25, C5).
+            var key = (deviceGuid ?? "", slotIndex, aux);
             if (!_gyroSampleBuffers.TryGetValue(key, out var buf) || buf.Length != N)
             {
                 buf = new (float x, float y)[N];
@@ -692,7 +696,7 @@ namespace PadForge.Engine.Common.Mapping
         /// sample, exactly like a fresh (device, slot) pair.</summary>
         public static void ResetGyroAimStateForSlot(int slotIndex)
         {
-            List<(string, int)> deadRings = null;
+            List<(string, int, bool)> deadRings = null;
             foreach (var k in _gyroSampleBuffers.Keys)
                 if (k.Item2 == slotIndex) (deadRings ??= new()).Add(k);
             if (deadRings != null)
@@ -1442,8 +1446,12 @@ namespace PadForge.Engine.Common.Mapping
             string axis = s.Substring(5).Trim();
             // Aux family (#252): "Gyro L Pitch" carries the same axis
             // indices; only the sensor differs, and the reader picks that
-            // from IsGyroAuxDescriptor.
-            if (axis.StartsWith("L ", StringComparison.OrdinalIgnoreCase))
+            // from IsGyroAuxDescriptor. The strip is gated on the SAME
+            // predicate (audit 2026-07-25, C45): a lenient bare "L " strip
+            // accepted mangled spellings ("Gyro L  Yaw") that the
+            // classifier rejects, so the row parsed an axis while aux
+            // resolved false and silently read the PRIMARY sensor.
+            if (IsGyroAuxDescriptor(s))
                 axis = axis.Substring(2).Trim();
             if (axis.Equals("Pitch",      StringComparison.OrdinalIgnoreCase)) return 0;
             if (axis.Equals("Yaw",        StringComparison.OrdinalIgnoreCase)) return 1;
@@ -1464,11 +1472,6 @@ namespace PadForge.Engine.Common.Mapping
             return s.Substring(5).Trim().Equals("Horizontal", StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <summary>True for "Gyro Pitch" / "Gyro Yaw" / "Gyro Roll"
-        /// descriptors. Public so SourceEvaluator can special-case gyro:
-        /// both stick and mouse targets are rate-direct, and the stick
-        /// (absolute-axis) path flips the sign so the stick deflects toward
-        /// the twist. Saves SourceEvaluator re-parsing the descriptor.</summary>
         /// <summary>True when a gyro rate descriptor names the PITCH axis,
         /// primary ("Gyro Pitch") or aux ("Gyro L Pitch", #252). Pitch is
         /// the axis already in the stick sign frame, so the stick-X rate
@@ -1479,6 +1482,11 @@ namespace PadForge.Engine.Common.Mapping
             && ParseGyroAxisIndex(descriptor) == 0
             && !IsHorizontalBlendDescriptor(descriptor);
 
+        /// <summary>True for any "Gyro ..." rate descriptor. Public so
+        /// SourceEvaluator can special-case gyro: both stick and mouse
+        /// targets are rate-direct, and the stick (absolute-axis) path
+        /// flips the sign so the stick deflects toward the twist. Saves
+        /// SourceEvaluator re-parsing the descriptor.</summary>
         public static bool IsGyroDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && descriptor.StartsWith("Gyro ", StringComparison.Ordinal);

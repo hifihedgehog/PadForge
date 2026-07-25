@@ -636,6 +636,7 @@
   <data name="Macro_OutputController" xml:space="preserve"><value>虚拟控制器</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>阈值</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>拦截触发按钮（对游戏隐藏）</value></data>
+  <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>吃掉触发输入，使游戏永远看不到它。适用于虚拟控制器按钮、设备实体按钮以及触控板或陀螺仪类输入。轴阈值、POV 和手势触发器不会被消耗。</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>在此虚拟控制器激活时持续运行。无需触发按钮。</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>动作序列</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>添加动作</value></data>

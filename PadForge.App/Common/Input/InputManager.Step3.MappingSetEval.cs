@@ -798,6 +798,14 @@ namespace PadForge.Common.Input
         /// PadForge.Tests consume pins.</summary>
         internal void RebuildConsumedTriggerSources()
         {
+            // Fresh slot-device resolution for THIS pass (audit 2026-07-25,
+            // C21): the memo behind EnsureSlotTriggerDevices is reset only
+            // at the Step 4b evaluators' entries, so without this reset the
+            // rebuild could be served the PREVIOUS tick's scratch, whose
+            // devices may have gone offline (or been replaced) in Step 1
+            // since. Matches the two evaluator entries.
+            _slotTriggerDeviceSlot = -1;
+
             for (int slot = 0; slot < MaxPads; slot++)
             {
                 var macros = MacroSnapshots[slot];
@@ -808,7 +816,38 @@ namespace PadForge.Common.Input
                     var macro = macros[m];
                     if (macro == null || !macro.IsEnabled || !macro.ConsumeTriggerButtons) continue;
                     if (!macro.UsesRawTrigger && !macro.UsesDescriptorTrigger) continue;
+                    // Modes that never READ the entry list never consume it
+                    // (audit 2026-07-25, C30): Always and CustomExpression
+                    // evaluate their own condition and ignore TriggerInputs
+                    // entirely, so a macro switched into them was consuming
+                    // stale entries forever.
+                    if (macro.TriggerMode == PadForge.ViewModels.MacroTriggerMode.Always
+                        || macro.TriggerMode == PadForge.ViewModels.MacroTriggerMode.CustomExpression) continue;
+                    // ACCEPTED SKEW (audit 2026-07-25, C22): this gate
+                    // reads the PREVIOUS tick's engaged layer mask, because
+                    // the rebuild runs before any ResolveActiveLayerMask
+                    // call this tick. On a layer-engage edge the mapped
+                    // output leaks for exactly one tick (~1 ms at the
+                    // default rate); the raw-button edge, the load-bearing
+                    // one, stays same-tick. Restructuring layer resolution
+                    // out of row eval is not worth that millisecond.
                     if (!MacroLayerGateOpen(macro)) continue;
+
+                    // Consume only when the macro's FULL trigger condition
+                    // reads active (audit 2026-07-25, C30): the evaluator
+                    // ANDs every button, POV, gesture, and descriptor term,
+                    // so arming per-entry ate a chord member's mapping while
+                    // the macro never fired. Axis-conditioned triggers
+                    // (legacy slot-axis targets or per-device axis entries)
+                    // stay unconsumed entirely: their gp-based legacy read
+                    // does not exist yet at Step 3, and axis thresholds are
+                    // already documented as non-consuming.
+                    if (macro.UsesAxisTrigger || HasAxisEntry(macro)) continue;
+                    if (macro.UsesRawTrigger && !CheckRawButtonTrigger(macro)) continue;
+                    if (macro.UsesPovTrigger && !CheckRawPovTrigger(macro)) continue;
+                    if (macro.UsesGestureTrigger && !CheckGestureTrigger(macro)) continue;
+                    if (macro.UsesDescriptorTrigger && !CheckDescriptorTrigger(macro)) continue;
+
                     var entries = macro.GetTriggerInputEntries();
                     if (entries.Count > 0)
                     {
@@ -835,8 +874,25 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>True when any multi-device trigger entry is an axis
+        /// threshold (audit 2026-07-25, C30). Axis-conditioned triggers do
+        /// not consume, and they must GATE consumption of their chord
+        /// siblings too, since the macro cannot fire without them.</summary>
+        private static bool HasAxisEntry(PadForge.ViewModels.MacroItem macro)
+        {
+            var entries = macro.GetTriggerInputEntries();
+            for (int i = 0; i < entries.Count; i++)
+                if (entries[i].AxisTarget != PadForge.ViewModels.MacroAxisTarget.None) return true;
+            return false;
+        }
+
         private void AddConsumedRawButton(int slot, System.Guid deviceGuid, int rawButton)
         {
+            // Bound the intern cache's index (audit 2026-07-25, C28): the
+            // raw button number arrives straight from persisted macro data,
+            // and an out-of-range value would otherwise size the cache
+            // array to it. 255 matches the engine's raw-button ceiling.
+            if (rawButton > 255) return;
             string desc = ConsumeButtonDesc(rawButton);
             if (deviceGuid == System.Guid.Empty)
             {
@@ -906,7 +962,14 @@ namespace PadForge.Common.Input
         public static void ClearAllShiftRuntime()
         {
             for (int i = 0; i < _shiftRuntime.Length; i++)
+            {
                 _shiftRuntime[i]?.Clear();
+                // The postpone suppression set is activator-derived state
+                // (audit 2026-07-25, C35): a profile/topology transition
+                // that un-engages every activator must drop its keys too,
+                // or a held activator's suppression outlives the activator.
+                _suppressedSourcesBySlot[i]?.Clear();
+            }
         }
 
         /// <summary>Clears one slot's shift runtime state. Use when a single
@@ -916,6 +979,8 @@ namespace PadForge.Common.Input
         {
             if (slotIndex < 0 || slotIndex >= _shiftRuntime.Length) return;
             _shiftRuntime[slotIndex]?.Clear();
+            // Same rule as ClearAllShiftRuntime (audit 2026-07-25, C35).
+            _suppressedSourcesBySlot[slotIndex]?.Clear();
         }
 
         /// <summary>Inspect-only snapshot of the active engaged layer for a
@@ -1016,10 +1081,20 @@ namespace PadForge.Common.Input
             CustomInputState thisDeviceState,
             string thisDeviceGuid)
         {
-            if (mappingSet == null) return "Base";
-            var activators = mappingSet.ShiftActivators;
-            if (activators == null || activators.Count == 0) return "Base";
             if (slotIndex < 0 || slotIndex >= MaxPads) return "Base";
+            if (mappingSet == null || mappingSet.ShiftActivators == null
+                || mappingSet.ShiftActivators.Count == 0)
+            {
+                // No activator machinery: the postpone suppression set must
+                // empty WITH it (audit 2026-07-25, C35). The rebuild below
+                // is the set's only clear path, so these early returns used
+                // to preserve keys from the PREVIOUS profile's activators
+                // forever, and a source held across a profile switch stayed
+                // suppressed with nothing left to release it.
+                _suppressedSourcesBySlot[slotIndex]?.Clear();
+                return "Base";
+            }
+            var activators = mappingSet.ShiftActivators;
 
             var rt = _shiftRuntime[slotIndex] ??= new ShiftRuntime();
             rt.EnsureSize(activators.Count);
@@ -2089,6 +2164,11 @@ namespace PadForge.Common.Input
                         var src = row.Sources[i];
                         if (IsRowModifierSource(src)) continue;
                         if (!SourceMatchesDevice(src, deviceGuid)) continue;
+                        // Preview truthfulness (audit 2026-07-25, C12): the
+                        // live dispatch suppresses consumed/postponed
+                        // sources, so the preview must too or the Pad page
+                        // shows a trigger pulling while the press is eaten.
+                        if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         (contribs ??= new List<float>(row.Sources.Count)).Add(
                             SourceEvaluator.EvaluateForTriggerTarget(state, src, slotIndex, target, i, null, 0,
                                 evaluatedDeviceGuid: deviceGuid));
@@ -3122,6 +3202,11 @@ namespace PadForge.Common.Input
             {
                 if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
                 if (string.IsNullOrEmpty(src.Descriptor)) continue;
+                // Suppression parity (audit 2026-07-25, C11): this was the
+                // one row-source evaluator in the dispatch loop without the
+                // consume/postpone gate, so a suppressed POV source still
+                // wrote all four DPad bits.
+                if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                 // Construct synthetic POV-direction sources to reuse the coercion path.
                 up    |= EvalPovBool(state, src, "Up");
                 down  |= EvalPovBool(state, src, "Down");

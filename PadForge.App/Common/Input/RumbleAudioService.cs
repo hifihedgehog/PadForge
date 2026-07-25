@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using NAudio.CoreAudioApi;
@@ -204,7 +204,14 @@ namespace PadForge.Common.Input
             lock (_lock)
             {
                 if (_reconcileTimer != null) return;
-                _reconcileTimer = new Timer(_ => { try { Reconcile(); } catch { } }, null, 0, 5000);
+                // The periodic tick does NOT arm the rerun latch (audit
+                // 2026-07-25, C18): a pass that outlives the 5 s period
+                // had every subsequent tick queue another back-to-back
+                // rerun, so a slow endpoint pinned a threadpool thread in
+                // a never-idle reconcile loop. A timer collision simply
+                // waits for its own next tick; explicit RequestReconcile
+                // kicks keep the latch so a routing change is never lost.
+                _reconcileTimer = new Timer(_ => { try { Reconcile(armRerunOnBusy: false); } catch { } }, null, 0, 5000);
             }
         }
 
@@ -231,7 +238,7 @@ namespace PadForge.Common.Input
         /// per-slot configs. Runs on the timer worker and after config
         /// edits; never on the UI thread's critical path and never on the
         /// poll thread (WASAPI activation blocks).</summary>
-        public static void Reconcile()
+        public static void Reconcile(bool armRerunOnBusy = true)
         {
             // Sticky, not lossy (2026-07-25 audit): the old busy-gate
             // silently DROPPED a request when a pass was in flight, and
@@ -246,8 +253,10 @@ namespace PadForge.Common.Input
                 {
                     // A pass is in flight; its holder re-runs for us via
                     // the rerun latch (inner loop or the post-release
-                    // check below).
-                    Volatile.Write(ref _reconcileRerun, 1);
+                    // check below). Periodic-timer collisions skip the
+                    // latch (C18): the next tick retries on its own.
+                    if (armRerunOnBusy)
+                        Volatile.Write(ref _reconcileRerun, 1);
                     return;
                 }
                 try
@@ -467,6 +476,15 @@ namespace PadForge.Common.Input
 
             foreach (var b in toBuild)
             {
+                // Post-stop kick (audit 2026-07-25, C17): the commit gate
+                // below rejects RETENTION after StopAll, but the stream was
+                // already activated and playing by then (Init+Play inside
+                // BuildPlayer), so a stopped service still emitted a >=60 ms
+                // audio blip on the user's endpoint. Checking the worker
+                // before building narrows the window from the whole COM
+                // pass to the build call itself; the commit gate stays as
+                // the backstop for the residual race.
+                lock (_lock) { if (_reconcileTimer == null) break; }
                 var built = BuildPlayer(b.Id, b.Name, b.Voices);
                 if (built == null) continue;
                 bool committed = false;

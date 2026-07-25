@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -333,6 +333,11 @@ namespace PadForge.Common.Input
             if (down >= _pulsePending.Length) return;
             _pulsePending[up] = 0; _pulsePending[down] = 0;
             _pulsePhase[up] = 0; _pulsePhase[down] = 0;
+            // Deadline stamps reset with their phase (audit 2026-07-25,
+            // C23): today every phase entry re-stamps before reading, but
+            // a reset that leaves a stale deadline is one future phase-0
+            // read away from replaying it.
+            _pulsePhaseUntil[up] = 0; _pulsePhaseUntil[down] = 0;
         }
 
         internal void SetPitchBend(int scaled)

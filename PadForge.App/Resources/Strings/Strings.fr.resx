@@ -636,6 +636,7 @@
   <data name="Macro_OutputController" xml:space="preserve"><value>Contrôleur virtuel</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Seuil </value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consommer les boutons déclencheurs (masquer du jeu)</value></data>
+  <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Consomme l'entrée du déclencheur pour que le jeu ne la voie jamais. Fonctionne avec les boutons de manette virtuelle, les boutons physiques et les entrées pavé tactile ou gyroscope. Les déclencheurs par seuil d'axe, POV et gestes ne sont pas consommés.</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>S'exécute en continu tant que ce contrôleur virtuel est actif. Aucun bouton déclencheur requis.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Séquence d'actions</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Ajouter une action</value></data>

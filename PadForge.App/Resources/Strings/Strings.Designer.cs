@@ -1347,6 +1347,7 @@ public class Strings : INotifyPropertyChanged
     public string Macro_OutputController => Get("Macro_OutputController");
     public string Macro_Threshold => Get("Macro_Threshold");
     public string Macro_ConsumeTrigger => Get("Macro_ConsumeTrigger");
+    public string Macro_ConsumeTrigger_Tooltip => Get("Macro_ConsumeTrigger_Tooltip");
     public string Macro_AlwaysDesc => Get("Macro_AlwaysDesc");
     public string Macro_ActionSequence => Get("Macro_ActionSequence");
     public string Macro_AddAction => Get("Macro_AddAction");

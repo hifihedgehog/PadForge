@@ -233,15 +233,59 @@ namespace PadForge.Common.Input
         /// poll thread (WASAPI activation blocks).</summary>
         public static void Reconcile()
         {
-            if (Interlocked.Exchange(ref _reconcileBusy, 1) == 1) return;
-            try
+            // Sticky, not lossy (2026-07-25 audit): the old busy-gate
+            // silently DROPPED a request when a pass was in flight, and
+            // the in-flight pass had already snapshotted the OLD routing.
+            // A transition kick (profile apply, slot compaction) cannot
+            // wait for the next 5 s timer pass with a voice rendering a
+            // stale slot index, so a colliding request now re-runs after
+            // the current pass instead of vanishing.
+            while (true)
             {
-                ReconcileCore();
+                if (Interlocked.Exchange(ref _reconcileBusy, 1) == 1)
+                {
+                    // A pass is in flight; its holder re-runs for us via
+                    // the rerun latch (inner loop or the post-release
+                    // check below).
+                    Volatile.Write(ref _reconcileRerun, 1);
+                    return;
+                }
+                try
+                {
+                    do
+                    {
+                        Volatile.Write(ref _reconcileRerun, 0);
+                        ReconcileCore();
+                    }
+                    while (Volatile.Read(ref _reconcileRerun) == 1);
+                }
+                finally
+                {
+                    Volatile.Write(ref _reconcileBusy, 0);
+                }
+                // A request that landed between the inner loop's last
+                // check and the busy release would otherwise be lost:
+                // nobody holds the gate and the latch is set. Retake and
+                // honor it (if another thread grabbed the gate first, its
+                // inner loop honors it instead).
+                if (Volatile.Read(ref _reconcileRerun) != 1) return;
             }
-            finally
-            {
-                Volatile.Write(ref _reconcileBusy, 0);
-            }
+        }
+
+        private static int _reconcileRerun;
+
+        /// <summary>Asynchronous reconcile kick for state transitions that
+        /// rebind slot routing under the renderer (live profile apply,
+        /// slot compaction after a delete). Voices bake their slot index
+        /// into the routing snapshot, so until a reconcile runs, a shifted
+        /// voice renders whatever pack now lives at its OLD index with the
+        /// OLD endpoint/carrier/gain. Runs off-thread because reconcile
+        /// touches WASAPI/COM, and deliberately does NOT EnsureStarted:
+        /// a post-stop kick must not resurrect audio (ReconcileCore's
+        /// commit gate rejects new players while the worker is null).</summary>
+        public static void RequestReconcile()
+        {
+            System.Threading.Tasks.Task.Run(() => { try { Reconcile(); } catch { } });
         }
 
         private static void ReconcileCore()

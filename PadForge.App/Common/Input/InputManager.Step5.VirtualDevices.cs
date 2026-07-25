@@ -2411,6 +2411,23 @@ namespace PadForge.Common.Input
             // and the generation bump discards any racing lane publish.
             RumbleAudioService.SilenceSlot(padIndex);
 
+            // 2026-07-25 audit: make VibrationStates itself honor that
+            // edge, all four motors. The per-site clears zero only the
+            // body pair (and the recreate-transition sites clear nothing),
+            // so stale Left/RightTriggerMotorSpeed survived destruction
+            // with no remaining writer. The LFE lane MaxMerges
+            // VibrationStates every tick, latching a trigger shaker voice
+            // on until the next game write. A destroyed VC has no game
+            // feedback by definition; the successor VC starts from zero.
+            var vib = VibrationStates[padIndex];
+            if (vib != null)
+            {
+                vib.LeftMotorSpeed = 0;
+                vib.RightMotorSpeed = 0;
+                vib.LeftTriggerMotorSpeed = 0;
+                vib.RightTriggerMotorSpeed = 0;
+            }
+
             // #240: forget SOCD winner state with the VC. Without this a
             // recreate with identical config strings no-ops Configure and
             // a stale Winner mis-suppresses the first press.

@@ -258,7 +258,9 @@ namespace PadForge.Common.Input
             }
         }
 
-        private void SetNote(int note, bool down)
+        // Internal for the audit test seam (2026-07-25): the WinRT
+        // callback is not constructible in tests.
+        internal void SetNote(int note, bool down)
         {
             if (note < 0 || note >= MidiInputState.NoteCount) return;
             lock (_stateLock)
@@ -269,7 +271,7 @@ namespace PadForge.Common.Input
             }
         }
 
-        private void SetCc(int cc, int value7)
+        internal void SetCc(int cc, int value7)
         {
             if (cc < 0 || cc >= MidiInputState.CcCount) return;
             int v = Math.Clamp(value7, 0, 127);
@@ -281,9 +283,33 @@ namespace PadForge.Common.Input
                 // Off (CC 123) silence every sounding note. Clear the note lanes so
                 // mapped note-buttons release. A controller that ends a phrase with
                 // one of these instead of per-note NoteOff would otherwise leave
-                // every mapped note latched on.
-                if (cc == 120 || cc == 123)
+                // every mapped note latched on. Omni Off/On and Mono/Poly
+                // (CC 124-127) carry All Notes Off semantics per MIDI 1.0,
+                // so they clear the lanes too (2026-07-25 audit). CC 122
+                // (Local Control) does not.
+                if (cc == 120 || (cc >= 123 && cc <= 127))
                     System.Array.Clear(s.Midi.Notes, 0, s.Midi.Notes.Length);
+                // CC 121 Reset All Controllers (RP-015, scoped to the lanes
+                // this consumer models): pitch bend recenters, mod wheel and
+                // the pedals drop, expression returns to full, RPN/NRPN
+                // selectors return to null. Bank/volume/pan/sound lanes are
+                // deliberately NOT reset, per RP-015. Without this, a
+                // keyboard panic (121+123) released mapped notes but left a
+                // mapped Pitch Bend axis frozen off-center forever.
+                if (cc == 121)
+                {
+                    s.Midi.PitchBend = 32768;
+                    s.Midi.Cc[1] = 0;                                  // mod wheel
+                    s.Midi.Cc[11] = 127;                               // expression
+                    for (int p = 64; p <= 67; p++) s.Midi.Cc[p] = 0;   // pedals
+                    for (int p = 98; p <= 101; p++) s.Midi.Cc[p] = 127; // (N)RPN null
+                    // Kill the reset lanes' queued/in-flight encoder pulses,
+                    // or CcUp/CcDown momentaries keep firing after the reset.
+                    ResetPulseLane(1);
+                    ResetPulseLane(11);
+                    for (int p = 64; p <= 67; p++) ResetPulseLane(p);
+                    for (int p = 98; p <= 101; p++) ResetPulseLane(p);
+                }
                 _state = s;
 
                 // Relative-encoder reading: a value near 0x40 is a signed
@@ -298,7 +324,18 @@ namespace PadForge.Common.Input
             }
         }
 
-        private void SetPitchBend(int scaled)
+        /// <summary>Clears one CC lane's encoder-pulse machine, both
+        /// directions: pending detents and any in-flight press/gap phase.
+        /// Caller holds _stateLock (the pulse arrays are lock-guarded).</summary>
+        private void ResetPulseLane(int cc)
+        {
+            int up = 2 * cc, down = 2 * cc + 1;
+            if (down >= _pulsePending.Length) return;
+            _pulsePending[up] = 0; _pulsePending[down] = 0;
+            _pulsePhase[up] = 0; _pulsePhase[down] = 0;
+        }
+
+        internal void SetPitchBend(int scaled)
         {
             lock (_stateLock)
             {

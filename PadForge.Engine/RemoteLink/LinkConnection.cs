@@ -426,7 +426,10 @@ namespace PadForge.Engine.RemoteLink
                 catch
                 {
                     foreach (var info in list)
+                    {
                         info.HasNfcReader = false;
+                        info.HasGyroAux = false;
+                    }
                 }
             }
             return list;

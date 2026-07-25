@@ -962,21 +962,20 @@ namespace PadForge.Common.Input
                 int idx = FeedbackPadIndex;
                 if (idx < 0 || idx >= vibrationStates.Length) return;
 
+                int declaredSize = _profile.ExtendedOutputReport?.Size ?? -1;
+
                 if (e.Fields.TryGetValue("leftMotor", out var lmObj2) && lmObj2 is byte left
                  && e.Fields.TryGetValue("rightMotor", out var rmObj) && rmObj is byte right)
                 {
-                    vibrationStates[idx].LeftMotorSpeed  = (ushort)(left  * 257);
-                    vibrationStates[idx].RightMotorSpeed = (ushort)(right * 257);
-
-                    // Inbound pack (#236): the Sony motor bytes are only
-                    // TRUSTED behind the full validity gate. The codec
-                    // inserts leftMotor/rightMotor unconditionally (report
-                    // ID alone selects the decode), but per the protocol
-                    // contract (linux-hid hid-playstation.c, dualsense_
-                    // output_worker / ds4_output_worker: motor bytes are
-                    // assigned only inside the block that asserts
-                    // VALID_FLAG0 bit 0 (+bit 1 HAPTICS_SELECT on DS5), and
-                    // an audio/lightbar-only report carries motor=0 meaning
+                    // The Sony motor bytes are only TRUSTED behind the full
+                    // validity gate. The codec inserts leftMotor/rightMotor
+                    // unconditionally (report ID alone selects the decode),
+                    // but per the protocol contract (linux-hid
+                    // hid-playstation.c, dualsense_output_worker /
+                    // ds4_output_worker: motor bytes are assigned only
+                    // inside the block that asserts VALID_FLAG0 bit 0
+                    // (+bit 1 HAPTICS_SELECT on DS5), and an
+                    // audio/lightbar-only report carries motor=0 meaning
                     // "ignore", NOT "stop"):
                     //   1. exact declared report size (Decode silently
                     //      skips out-of-range bytes, so a truncated BT
@@ -986,16 +985,28 @@ namespace PadForge.Common.Input
                     //      is absent, hence the length check too);
                     //   3. the motor-valid flag asserted. DS4 bit 0
                     //      (0x01), DS5 bits 0/1 (0x03).
-                    // Fail any leg → PRESERVE the previous pack. Flag
+                    // Fail any leg → PRESERVE the previous state, for BOTH
+                    // consumers: the #236 LFE pack AND the legacy
+                    // VibrationStates write (2026-07-25 audit: the write
+                    // shipped ungated, so a lightbar-only report zeroed
+                    // rumble on every non-Sony device on the slot). Flag
                     // asserted with both bytes zero IS a real stop.
                     // Sony pads have no trigger motors; those voices stay 0.
-                    int expectedSize = _profile.ExtendedOutputReport?.Size ?? -1;
                     byte motorMask = IsDualSenseVirtual ? (byte)0x03 : (byte)0x01;
-                    if (e.RawBytes.Length == expectedSize
-                        && e.CrcValid
-                        && e.Fields.TryGetValue("validFlag0", out var vfObj)
-                        && vfObj is byte validFlag0
-                        && (validFlag0 & motorMask) != 0)
+                    e.Fields.TryGetValue("validFlag0", out var vfObj);
+                    bool sonyMotorsValid = SonyMotorsValid(
+                        e.RawBytes.Length, declaredSize, e.CrcValid, vfObj, motorMask);
+
+                    // Non-Sony producers (Switch Pro's synthesized decode,
+                    // any future flag-less profile) keep the original
+                    // unconditional trust: the flag semantics are Sony's.
+                    if (MotorWriteAllowed(_profile.VendorId, sonyMotorsValid))
+                    {
+                        vibrationStates[idx].LeftMotorSpeed  = (ushort)(left  * 257);
+                        vibrationStates[idx].RightMotorSpeed = (ushort)(right * 257);
+                    }
+
+                    if (sonyMotorsValid)
                     {
                         System.Threading.Volatile.Write(ref _inboundRumblePack,
                             Engine.Common.LfeOutputState.Pack(
@@ -1015,8 +1026,19 @@ namespace PadForge.Common.Input
                     }
                 }
 
+                // Integrity gate on the passthrough forward (2026-07-25
+                // audit): a full-length BT report with a corrupt CRC
+                // decodes every field with CrcValid=false, and forwarding
+                // it re-frames corrupt bytes into a fresh PHYSICAL write
+                // plus poisons the grace-window subsystem mirror. The
+                // length leg covers the CrcValid-true-on-absent-footer
+                // trap exactly as the motor gate above documents. USB
+                // profiles declare no CRC, so CrcValid is trivially true
+                // there and only the length leg bites.
                 if (_ds5Dispatcher != null
                     && _profile.VendorId == SonyVid
+                    && e.RawBytes.Length == declaredSize
+                    && e.CrcValid
                     && e.Fields.TryGetValue("effectPayload", out var epObj)
                     && epObj is byte[] effectPayload
                     && effectPayload.Length > 0)
@@ -1209,6 +1231,28 @@ namespace PadForge.Common.Input
             if (gp.Share) b |= HMButton.Share;
             return b;
         }
+
+        /// <summary>The Sony motor trust gate (#236 / 2026-07-25 audit), as
+        /// one pure predicate so tests can pin its legs: exact declared
+        /// report size (a truncated BT report surfaces partial fields AND
+        /// CrcValid=true, since the codec skips CRC when the footer is out
+        /// of range), CRC valid, and the motor-valid flag asserted (DS4
+        /// mask 0x01, DS5 mask 0x03, per linux-hid hid-playstation.c). A
+        /// failing gate means PRESERVE previous motors, never stop.</summary>
+        internal static bool SonyMotorsValid(
+            int rawByteCount, int declaredSize, bool crcValid, object validFlag0, byte motorMask)
+            => rawByteCount == declaredSize
+            && crcValid
+            && validFlag0 is byte vf
+            && (vf & motorMask) != 0;
+
+        /// <summary>Whether a decoded motor pair may land in
+        /// VibrationStates: Sony profiles require the full trust gate; any
+        /// other vendor (Switch Pro's synthesized decode, future flag-less
+        /// profiles) keeps unconditional trust, because the validity-flag
+        /// semantics are Sony's.</summary>
+        internal static bool MotorWriteAllowed(ushort vendorId, bool sonyMotorsValid)
+            => vendorId != SonyVid || sonyMotorsValid;
 
         /// <summary>True when the descriptor declares a HID PID FFB block.
         /// Detected by the canonical opening signature

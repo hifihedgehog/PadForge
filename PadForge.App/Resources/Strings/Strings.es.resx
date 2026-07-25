@@ -2654,7 +2654,7 @@
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsos mientras esté fijado</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Mientras esté fijado, alterna la salida al ritmo del intervalo de repetición en lugar de mantenerla fija.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Sumar al eje (relativo)</value></data>
-  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Suma el valor con signo a lo que la asignación ya escribió en el eje, en cada fotograma durante la duración. Los valores negativos restan. Los gatillos suman en la escala de recorrido (32767 = recorrido completo).</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Suma el valor con signo a lo que la asignación ya escribió en el eje, en cada fotograma durante la duración. Los valores negativos restan. Los gatillos suman en la escala de recorrido (100% = recorrido completo).</value></data>
   <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>Fijar eje (bloqueado)</value></data>
   <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>Mantiene el eje en el valor, incluso a través de cortes de combo. Otro paso bloqueado en el mismo eje reemplaza el valor, así que pasos separados por cortes forman una escalera pulsación a pulsación. «Soltar bloqueos de eje» devuelve el eje al control físico.</value></data>
   <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>Soltar bloqueos de eje</value></data>

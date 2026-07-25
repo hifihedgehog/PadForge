@@ -2654,7 +2654,7 @@
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>锁定时脉冲</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>锁定期间按重复间隔开关输出,而不是持续保持。</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>轴叠加(相对)</value></data>
-  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>在持续时间内,每帧将带符号的值叠加到映射已写入该轴的值上。负值为减。扳机目标按扣动量刻度叠加(32767 = 完全扣下)。</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>在持续时间内,每帧将带符号的值叠加到映射已写入该轴的值上。负值为减。扳机目标按扣动量刻度叠加(100% = 完全扣下)。</value></data>
   <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>设置轴（锁定）</value></data>
   <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>将轴保持在该值，跨越连招断点仍然有效。同一轴上的另一个锁定步骤会替换该值，因此以断点分隔的步骤构成逐按阶梯。“释放轴锁定”可使轴回到物理控制。</value></data>
   <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>释放轴锁定</value></data>

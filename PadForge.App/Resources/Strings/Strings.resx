@@ -2708,7 +2708,7 @@
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulse While Latched</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>While latched, pulse the output on and off at the repeat interval instead of holding it solid.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Axis Add (Relative)</value></data>
-  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Adds the signed value on top of what the mapping already wrote to the axis, every frame for the duration. Negative values subtract. Trigger targets add on the pull scale (32767 = full pull).</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Adds the signed value on top of what the mapping already wrote to the axis, every frame for the duration. Negative values subtract. Trigger targets add on the pull scale (100% = full pull).</value></data>
   <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>Set Axis (Latched)</value></data>
   <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>Holds the axis at the value until released, surviving combo breaks. Firing another latched step on the same axis replaces the value, so steps separated by Combo Breaks build a press-by-press ladder. Release Axis Latches returns the axis to physical control.</value></data>
   <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>Release Axis Latches</value></data>

@@ -1,68 +1,38 @@
-﻿using System;
+using System;
 using PadForge.Common.Input;
 using Xunit;
 
 namespace PadForge.Tests
 {
     /// <summary>
-    /// Two physically distinct units of the SAME controller model must not
-    /// collide onto one Devices-list row. Reported 2026-07-25 with two Steam
-    /// Controllers: connecting the second filled in the first's entry.
+    /// How PadForge identifies two or more controllers of the SAME model.
     ///
-    /// Root cause: the reconnect fallback in FindOrCreateUserDevice adopts any
-    /// OFFLINE record with a matching ProductGuid, and ProductGuid is VID+PID
-    /// only. It exists so a Bluetooth controller can reclaim its settings after
-    /// its device path changes, so it cannot simply be removed. The serial is
-    /// the discriminator: when both sides report one and they differ, it is
-    /// provably a different unit.
+    /// The policy is CONNECTION ORDER, not hardware identity (owner decision,
+    /// 2026-07-25). Identical controllers are physically indistinguishable to
+    /// their owner: without labelling the shell you cannot tell which unit you
+    /// pulled out of the drawer. So the first unit powered on claims the stored
+    /// entry and the mappings already built for it, whichever unit it is. What
+    /// must hold is that identity is STABLE while PadForge runs.
     ///
-    /// The asymmetry is deliberate and is the whole design. SDL frees the 2015
-    /// Steam Controller's serial on Windows ("We get a garbage serial number on
-    /// Windows", SDL_hidapi_steam.c), so that model has NO per-unit identity and
-    /// must keep adopting. The 2026 controller reports its BLE MAC as the serial
-    /// and is fully distinguishable.
+    /// A serial gate was tried here and reverted. Blocking adoption when the
+    /// serials differ is precisely the drawer case, and it made the second
+    /// controller come up blank instead of inheriting the user's config.
+    /// Serial-pinned identity belongs only where the user has a mental model of
+    /// a specific pairing (DualShock 3, Wii); that is a separate per-device-class
+    /// decision and is not this generic path.
     /// </summary>
-    /// <remarks>Shares the SettingsManagerStatics collection: the adoption
-    /// tests swap SettingsManager.UserDevices, a global static that other
-    /// test classes also replace. Without this the class runs in parallel
-    /// with them and fails intermittently (observed once: 6 failures in one
-    /// run of 1782, clean in the 10 runs either side). Same trap, same fix
-    /// as ShortPressAndMacroLayerTests.</remarks>
+    /// <remarks>Shares the SettingsManagerStatics collection: these tests swap
+    /// SettingsManager.UserDevices, a global static other classes also replace,
+    /// so without this the class races them by construction.</remarks>
     [Collection("SettingsManagerStatics")]
     public class SameModelDeviceIdentityTests
     {
         // Real shape from the owner's hardware: the 2026 Steam Controller's
-        // serial is its BLE MAC, lowercase hex, also embedded in the HID path.
+        // serial is its BLE MAC. The 2015 model has NO serial on Windows at
+        // all, because SDL frees it as garbage in HIDAPI_DriverSteam_InitDevice.
         private const string UnitA = "e3a4e86c8422";
-        private const string UnitB = "f1b7d95a3011";
 
-        [Fact]
-        public void TwoUnitsWithDifferentSerials_AreNotTheSameUnit()
-        {
-            Assert.True(InputManager.IsDifferentPhysicalUnit(UnitA, UnitB));
-        }
-
-        [Fact]
-        public void TheSameUnitReconnecting_IsAdopted()
-        {
-            // The case the fallback exists for: same physical controller, new
-            // device path after a BT reconnect. Must still be adopted.
-            Assert.False(InputManager.IsDifferentPhysicalUnit(UnitA, UnitA));
-        }
-
-        /// <summary>Serial casing varies by transport, so a case difference is
-        /// the SAME unit, not a different one. Getting this wrong would break
-        /// reconnect for every device whose serial arrives uppercased.</summary>
-        [Theory]
-        [InlineData("e3a4e86c8422", "E3A4E86C8422")]
-        [InlineData("E3A4E86C8422", "e3a4e86c8422")]
-        [InlineData(" e3a4e86c8422 ", "e3a4e86c8422")]
-        public void SerialComparison_IgnoresCaseAndSurroundingSpace(string stored, string incoming)
-        {
-            Assert.False(InputManager.IsDifferentPhysicalUnit(stored, incoming));
-        }
-
-        // ── the ADOPTION PATH itself, not just the predicate ──
+        private static readonly Guid SteamProductGuid = new("130328de-0000-0000-0000-000000000000");
 
         private sealed class DeviceListScope : IDisposable
         {
@@ -75,8 +45,6 @@ namespace PadForge.Tests
             public void Dispose() => SettingsManager.UserDevices = _saved;
         }
 
-        private static readonly Guid SteamProductGuid = new("130328de-0000-0000-0000-000000000000");
-
         private static PadForge.Engine.Data.UserDevice Stored(Guid guid, string serial)
         {
             var ud = new PadForge.Engine.Data.UserDevice
@@ -85,44 +53,21 @@ namespace PadForge.Tests
                 ProductGuid = SteamProductGuid,
                 ProductName = "Steam Controller",
                 SerialNumber = serial,
-                IsOnline = false,          // the state the fallback looks for
+                IsOnline = false,          // the state the adoption path looks for
             };
             lock (SettingsManager.UserDevices.SyncRoot)
                 SettingsManager.UserDevices.Items.Add(ud);
             return ud;
         }
 
-        /// <summary>THE reported bug: unit A is saved and offline, unit B of the
-        /// same model connects. B must get its OWN row; A's identity and
-        /// settings must survive untouched.</summary>
-        [Fact]
-        public void SecondUnitOfTheSameModel_DoesNotAdoptTheFirstsRow()
-        {
-            using var _ = new DeviceListScope();
-            var guidA = Guid.NewGuid();
-            var stored = Stored(guidA, UnitA);
+        // ── The property that matters: identity is stable while running ──
 
-            var im = new InputManager();
-            var guidB = Guid.NewGuid();
-            var got = im.FindOrCreateUserDevice(guidB, SteamProductGuid, UnitB);
-
-            Assert.NotSame(stored, got);                 // a NEW row
-            Assert.Equal(guidA, stored.InstanceGuid);    // A's identity intact
-            Assert.Equal(UnitA, stored.SerialNumber);    // A's serial intact
-        }
-
-        // ── THE PROPERTY THAT ACTUALLY MATTERS: at process time, N
-        //    simultaneously-connected units of one model are told apart. ──
-
-        /// <summary>Two units connected AT THE SAME TIME must occupy two
-        /// rows. This is the multiplayer case and it does not depend on
-        /// serials at all: the first unit is marked online the instant it
-        /// is resolved, and the adoption fallback only ever considers
-        /// OFFLINE candidates, so the second unit cannot land on the
-        /// first's row. Pinned for the 2015 shape specifically (BOTH
-        /// serials blank, because SDL frees that model's serial on
-        /// Windows), since that is the configuration with no per-unit
-        /// identity available anywhere.</summary>
+        /// <summary>Two units connected AT THE SAME TIME occupy two rows. This
+        /// never depended on serials: each unit is marked online the instant it
+        /// is resolved, and adoption only ever considers OFFLINE candidates, so
+        /// a later unit in the same sweep cannot land on an earlier one's row.
+        /// Pinned for the 2015 shape (both serials blank) because that is the
+        /// configuration with no per-unit identity available anywhere.</summary>
         [Theory]
         [InlineData("", "")]                            // 2015: no serials at all
         [InlineData("e3a4e86c8422", "f1b7d95a3011")]    // 2026: distinct BLE MACs
@@ -132,26 +77,23 @@ namespace PadForge.Tests
             using var _ = new DeviceListScope();
             var im = new InputManager();
 
-            // Unit A enumerates first and is marked online, exactly as the
-            // device sweep does immediately after resolving it.
             var guidA = Guid.NewGuid();
-            var rowA = im.FindOrCreateUserDevice(guidA, SteamProductGuid, serialA);
+            var rowA = im.FindOrCreateUserDevice(guidA, SteamProductGuid);
             rowA.ProductGuid = SteamProductGuid;
             rowA.SerialNumber = serialA;
-            rowA.IsOnline = true;
+            rowA.IsOnline = true;                       // as the sweep does immediately
 
-            // Unit B enumerates in the same sweep with its own identity.
             var guidB = Guid.NewGuid();
-            var rowB = im.FindOrCreateUserDevice(guidB, SteamProductGuid, serialB);
+            var rowB = im.FindOrCreateUserDevice(guidB, SteamProductGuid);
+            rowB.SerialNumber = serialB;
 
             Assert.NotSame(rowA, rowB);
-            Assert.Equal(guidA, rowA.InstanceGuid);   // A untouched
+            Assert.Equal(guidA, rowA.InstanceGuid);     // A untouched
             Assert.Equal(guidB, rowB.InstanceGuid);
         }
 
-        /// <summary>Four on one 2015 dongle: the dongle exposes them as USB
-        /// interfaces 1-4, so all four share VID, PID and a blank serial and
-        /// differ only by device path. They must still occupy four rows.</summary>
+        /// <summary>Four on one 2015 dongle, which exposes them as USB
+        /// interfaces 1-4 sharing VID, PID and a blank serial. Four rows.</summary>
         [Fact]
         public void FourUnitsOnOneDongle_GetFourRows()
         {
@@ -162,11 +104,11 @@ namespace PadForge.Tests
 
             for (int i = 0; i < 4; i++)
             {
-                guids[i] = Guid.NewGuid();               // distinct: paths differ by interface
-                rows[i] = im.FindOrCreateUserDevice(guids[i], SteamProductGuid, "");
+                guids[i] = Guid.NewGuid();              // distinct: paths differ by interface
+                rows[i] = im.FindOrCreateUserDevice(guids[i], SteamProductGuid);
                 rows[i].ProductGuid = SteamProductGuid;
                 rows[i].SerialNumber = "";
-                rows[i].IsOnline = true;                 // as each is resolved
+                rows[i].IsOnline = true;
             }
 
             for (int i = 0; i < 4; i++)
@@ -176,9 +118,29 @@ namespace PadForge.Tests
                 Assert.Equal(guids[i], rows[i].InstanceGuid);
         }
 
-        /// <summary>The behavior the fallback exists for must still work: the
-        /// SAME unit reconnecting with a new path adopts its old row and keeps
-        /// its settings.</summary>
+        // ── The drawer contract: first one on claims the entry ──
+
+        /// <summary>THE contract. A DIFFERENT physical unit of the same model,
+        /// powered on while the stored one is offline, adopts the stored entry
+        /// and inherits its mappings. The user cannot tell the units apart, so
+        /// the one they switch on is the one that should work.</summary>
+        [Fact]
+        public void ADifferentUnitPoweredOnFirst_InheritsTheStoredEntry()
+        {
+            using var _ = new DeviceListScope();
+            var stored = Stored(Guid.NewGuid(), UnitA);   // configured with unit A
+
+            var im = new InputManager();
+            var guidB = Guid.NewGuid();                   // unit B is what got grabbed
+            var got = im.FindOrCreateUserDevice(guidB, SteamProductGuid);
+
+            Assert.Same(stored, got);                     // B inherits A's config
+            Assert.Equal(guidB, got.InstanceGuid);        // and the entry follows B
+        }
+
+        /// <summary>The same unit reconnecting with a new device path also
+        /// adopts. This is the case the fallback was originally written for
+        /// (Bluetooth paths change), and it stays intact.</summary>
         [Fact]
         public void SameUnitWithANewPath_StillAdoptsItsOwnRow()
         {
@@ -187,16 +149,14 @@ namespace PadForge.Tests
 
             var im = new InputManager();
             var newGuid = Guid.NewGuid();
-            var got = im.FindOrCreateUserDevice(newGuid, SteamProductGuid, UnitA);
+            var got = im.FindOrCreateUserDevice(newGuid, SteamProductGuid);
 
-            Assert.Same(stored, got);                    // adopted
-            Assert.Equal(newGuid, got.InstanceGuid);     // migrated to the new identity
+            Assert.Same(stored, got);
+            Assert.Equal(newGuid, got.InstanceGuid);
         }
 
-        /// <summary>A device with no per-unit identity (the 2015 Steam
-        /// Controller on Windows, or any record saved before serials were
-        /// captured) must keep adopting, or it would strand on a fresh empty
-        /// row every reconnect.</summary>
+        /// <summary>A device with no per-unit identity at all (the 2015 Steam
+        /// Controller on Windows) adopts too, by the same rule.</summary>
         [Fact]
         public void SeriallessDevice_StillAdopts()
         {
@@ -204,26 +164,28 @@ namespace PadForge.Tests
             var stored = Stored(Guid.NewGuid(), "");
 
             var im = new InputManager();
-            var got = im.FindOrCreateUserDevice(Guid.NewGuid(), SteamProductGuid, "");
+            var got = im.FindOrCreateUserDevice(Guid.NewGuid(), SteamProductGuid);
 
             Assert.Same(stored, got);
         }
 
-        /// <summary>No serial on either side means no evidence, so adoption
-        /// must proceed. This is the 2015 Steam Controller path on Windows and
-        /// every record saved before serials were captured; blocking here would
-        /// strand those devices with a fresh empty row on every reconnect.</summary>
-        [Theory]
-        [InlineData(null, "e3a4e86c8422")]      // legacy stored record
-        [InlineData("", "e3a4e86c8422")]
-        [InlineData("   ", "e3a4e86c8422")]
-        [InlineData("e3a4e86c8422", null)]      // device reports no serial
-        [InlineData("e3a4e86c8422", "")]
-        [InlineData(null, null)]                // neither side knows
-        [InlineData("", "")]
-        public void MissingSerialOnEitherSide_StillAdopts(string stored, string incoming)
+        /// <summary>Adoption is scoped to the MODEL. A different product never
+        /// adopts, so a 2015 controller and a 2026 controller (different PIDs,
+        /// therefore different ProductGuids) can never take each other's entry
+        /// no matter what order they are switched on in.</summary>
+        [Fact]
+        public void ADifferentModel_NeverAdopts()
         {
-            Assert.False(InputManager.IsDifferentPhysicalUnit(stored, incoming));
+            using var _ = new DeviceListScope();
+            var stored2026 = Stored(Guid.NewGuid(), UnitA);          // PID 1303
+
+            var im = new InputManager();
+            var guid2015 = Guid.NewGuid();
+            var productGuid2015 = new Guid("114228de-0000-0000-0000-000000000000");  // PID 1142
+            var got = im.FindOrCreateUserDevice(guid2015, productGuid2015);
+
+            Assert.NotSame(stored2026, got);
+            Assert.Equal(UnitA, stored2026.SerialNumber);            // 2026 entry untouched
         }
     }
 }

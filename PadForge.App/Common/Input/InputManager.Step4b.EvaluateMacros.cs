@@ -729,8 +729,12 @@ namespace PadForge.Common.Input
                     ExecuteMacroActions(ref gp, macro);
                 }
 
-                // Consume trigger buttons if configured (only for Xbox bitmask triggers;
-                // raw device buttons aren't part of the combined Gamepad state).
+                // Consume trigger buttons if configured. This strip handles
+                // Xbox bitmask triggers only; raw device-button and
+                // descriptor triggers are consumed at the SOURCE READ in
+                // Step 3 instead (RebuildConsumedTriggerSources, 2026-07-25),
+                // since the raw press lives on the device and its mapped
+                // output never has a single bitmask to strip here.
                 // Toggle consumes on the RAW button instead (#238 audit
                 // 2026-07-24): for that mode triggerActive is the latch and
                 // the unlatch press drives it false while the stop block

@@ -40,6 +40,12 @@ namespace PadForge.Common.Input
             // unique GUID per pass instead of once per source per row.
             BeginDeviceStateMemo();
 
+            // Consume-armed macro trigger sources read as released in this
+            // pass's row evaluators (the raw/descriptor half of "Consume
+            // Trigger Buttons"). Rebuilt before any row eval so the first
+            // pressed tick is already suppressed.
+            RebuildConsumedTriggerSources();
+
             // Reset per-slot multi-source row evaluation tracking so
             // the new frame's first device pass triggers fresh cross-
             // device evaluation. Every multi-source row (Sum, Average,

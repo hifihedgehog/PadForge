@@ -101,11 +101,20 @@ namespace PadForge.ViewModels
             // The layer picker's synthetic "Any layer" label is snapshotted
             // into its entry at build time (audit 2026-07-25, C2), so a
             // language switch left the previous wording standing until some
-            // unrelated layer edit rebuilt the tabs.
+            // unrelated layer edit rebuilt the tabs. Dirty suppression
+            // (round four, R24): the rebuild raises properties this VM's
+            // dirty hook listens to, and a language switch is a read-only
+            // action that must not schedule a settings write for 16 slots.
             var slotSetsForCulture = PadForge.Common.Input.SettingsManager.SlotMappingSets;
-            RebuildLayerTabs(slotSetsForCulture != null && PadIndex >= 0 && PadIndex < slotSetsForCulture.Length
-                ? slotSetsForCulture[PadIndex]?.ShiftActivators
-                : null);
+            bool prevSuppress = SuppressSettingsDirty;
+            SuppressSettingsDirty = true;
+            try
+            {
+                RebuildLayerTabs(slotSetsForCulture != null && PadIndex >= 0 && PadIndex < slotSetsForCulture.Length
+                    ? slotSetsForCulture[PadIndex]?.ShiftActivators
+                    : null);
+            }
+            finally { SuppressSettingsDirty = prevSuppress; }
 
             Title = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
             SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
@@ -1669,10 +1678,15 @@ namespace PadForge.ViewModels
             }
             if (!activeFound)
             {
-                // Active layer no longer exists; snap back to Base.
+                // Active layer no longer exists; snap back to Base. Raise
+                // LayerActivated too (audit 2026-07-25 round four, R23):
+                // the direct field write skipped the event, so the tab
+                // strip snapped to Base while the mapping grid kept
+                // rendering the vanished layer's rows.
                 _activeLayerMask = "Base";
                 LayerTabs[0].IsActive = true;
                 OnPropertyChanged(nameof(ActiveLayerMask));
+                LayerActivated?.Invoke(this, EventArgs.Empty);
             }
             OnPropertyChanged(nameof(HasShiftLayers));
             OnPropertyChanged(nameof(IsActiveLayerInheriting));
@@ -1695,6 +1709,45 @@ namespace PadForge.ViewModels
                     LayerName = t.LayerName,
                     Color = t.Color,
                 });
+
+            // A Cycle activator ENGAGES every stop in its ring while only
+            // the first is its own LayerMask, so later stops are real,
+            // engageable scopes with no tab (round four, R25a). Without
+            // these entries a macro scoped to a later stop rendered a
+            // blank picker and the scope could not be re-authored. The
+            // mask doubles as the display name: stops carry no name of
+            // their own.
+            if (activators != null)
+            {
+                foreach (var a in activators)
+                {
+                    if (a == null || string.IsNullOrEmpty(a.CycleLayers)) continue;
+                    foreach (var stop in a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        bool present = false;
+                        foreach (var c in MacroLayerChoices)
+                            if (string.Equals(c.LayerMask, stop, StringComparison.Ordinal))
+                            { present = true; break; }
+                        if (!present)
+                            MacroLayerChoices.Add(new ShiftLayerInfo
+                            {
+                                LayerMask = stop,
+                                LayerName = stop,
+                                Color = a.Color ?? "",
+                            });
+                    }
+                }
+            }
+
+            // Re-push the selected macro's mask through the picker binding
+            // (round four, R21). The Clear() above nulls the ComboBox
+            // selection; the null write is rejected by the LayerMask
+            // setter, but WPF suppresses the re-entrant target refresh
+            // for the binding that initiated the write, so the picker
+            // rendered BLANK over an intact mask. A post-rebuild notify
+            // re-reads the source outside that window and re-matches the
+            // re-added item, the MappingItem sync-after-rebuild idiom.
+            SelectedMacro?.RefreshLayerBinding();
         }
 
         /// <summary>

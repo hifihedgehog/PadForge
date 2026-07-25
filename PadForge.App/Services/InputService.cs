@@ -549,12 +549,17 @@ namespace PadForge.Services
                 _mainVm.Pads[i].RebuildLayerTabs(slotMs?.ShiftActivators);
             }
 
-            // Macro trigger transients are POLL-THREAD state on objects the
-            // UI keeps across engine restarts (audit 2026-07-25, C14/C22).
-            // A stop leaves WasTriggerActive / TriggerHoldStartUtc holding
-            // the last live sample, so a button released while stopped read
-            // as an armed short-press edge on the next start. Clearing here
-            // makes every start observe its own first edge.
+            // Macro runtime state lives on objects the UI keeps across
+            // engine restarts (audit 2026-07-25 rounds three and four,
+            // C14/C22/R17). A stop leaves the last live sample AND any
+            // in-flight run parked: without the full reset, a Toggle stayed
+            // latched across a restart and re-fired with no input, and a
+            // stopped mid-sequence run resumed at its parked index with a
+            // minutes-old ActionStartTime (every pending Delay elapsed
+            // instantly). Mirrors the evaluator's disable lane, which
+            // clears the same family for the same reason. Edge continuity
+            // itself needs no reset: the LastEvaluatedUtc stamp reads any
+            // stop as a gap.
             foreach (var pad in _mainVm.Pads)
             {
                 if (pad?.Macros == null) continue;
@@ -562,9 +567,17 @@ namespace PadForge.Services
                 {
                     if (mac == null) continue;
                     mac.WasTriggerActive = false;
-                    mac.TriggerEdgeObserved = false;
                     mac.TriggerHoldStartUtc = DateTime.MinValue;
                     mac.TriggerHoldFired = false;
+                    mac.TriggerPressStreak = 0;
+                    mac.TriggerLastPressUtc = DateTime.MinValue;
+                    mac.ToggleTriggerLatched = false;
+                    mac.ToggleRawWasActive = false;
+                    mac.IsExecuting = false;
+                    mac.CurrentActionIndex = 0;
+                    mac.ComboResumeIndex = 0;
+                    mac.AwaitReleaseAfterBreak = false;
+                    mac.RunReleasedFireToCompletion = false;
                 }
             }
 

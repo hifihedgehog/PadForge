@@ -1425,46 +1425,31 @@ namespace PadForge.Views
 
             if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal))
             {
-                if (slotMs.Rows != null)
-                {
-                    foreach (var r in slotMs.Rows)
-                    {
-                        if (r != null && string.Equals(r.LayerMask, oldMask, StringComparison.Ordinal))
-                            r.LayerMask = existing.LayerMask;
-                    }
-                }
-                // #254 A-3: macros scoped to the layer follow the mask
-                // exactly like rows, or they silently never fire again
-                // (MacroLayerGateOpen holds a dead mask forever). Walks
-                // EVERY pad (audit 2026-07-25, C7): the gate's split-config
-                // fallback lets a macro on another slot ride this layer, and
-                // that macro is exactly the one nobody would think to retag.
-                foreach (var padVm in AllPadViewModels())
-                {
-                    foreach (var mac in padVm.Macros)
-                    {
-                        if (mac != null && string.Equals(mac.LayerMask, oldMask, StringComparison.Ordinal))
-                            mac.LayerMask = existing.LayerMask;
-                    }
-                }
+                // A mask change renames the LOGICAL layer, and mask
+                // equality is the layer identity across slots (audit
+                // 2026-07-25 round four, R10/R19/R28). Split-config imports
+                // clone the same activator and cycle ring onto both member
+                // slots, so a current-slot-only rewrite left the twin
+                // split-brained: its ring stepped onto the dead mask while
+                // the globally-retagged macros waited on the new one. The
+                // rename therefore follows the mask EVERYWHERE: activators,
+                // cycle rings, rows, menus, and macros on every slot. For
+                // two independently hand-authored same-named layers this
+                // co-renames both, which is visible and non-lossy; the
+                // half-global alternative silently broke imports.
+                RenameMaskEverywhere(oldMask, existing.LayerMask, existing);
 
-                // Sibling Cycle activators still list the OLD mask in their
-                // ring (audit 2026-07-25, C13). Left alone, the cycle keeps
-                // engaging a mask nothing carries while the retagged macro
-                // waits on the new one, so the macro never fires again.
-                foreach (var a in slotMs.ShiftActivators)
-                {
-                    if (a == null || string.IsNullOrEmpty(a.CycleLayers)) continue;
-                    var stops = a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries);
-                    bool touched = false;
-                    for (int si = 0; si < stops.Length; si++)
-                    {
-                        if (!string.Equals(stops[si], oldMask, StringComparison.Ordinal)) continue;
-                        stops[si] = existing.LayerMask;
-                        touched = true;
-                    }
-                    if (touched) a.CycleLayers = string.Join("|", stops);
-                }
+                // The per-slot shift runtime can still hold the OLD mask as
+                // the engaged layer (R12: for Latch/Toggle/Cycle it is a
+                // stored string only that activator tick rewrites). Drop
+                // all engagement so nothing stays parked on a mask that no
+                // longer exists; the profile-apply path uses this reset.
+                PadForge.Common.Input.InputManager.ClearAllShiftRuntime();
+
+                // Sibling tab strips and pickers mirror their own slot
+                // activators; rebuild them all so the rename shows
+                // everywhere it landed.
+                RebuildAllPadLayerTabs();
             }
 
             _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
@@ -1744,8 +1729,22 @@ namespace PadForge.Views
                 PrimaryButtonText = Strings.Instance.Pad_Shift_Delete,
                 CloseButtonText = Strings.Instance.Common_Cancel,
             };
+            // Capture the pad VM BEFORE the await (audit 2026-07-25 round
+            // four, R20): the confirm is not application-modal, so the user
+            // can switch slots while it is up, and _currentPadVm would then
+            // point at the NEW slot while slotMs still belongs to the old
+            // one. Everything after the await targets this capture.
+            var padVmAtOpen = _currentPadVm;
+
             var result = await dialog.ShowDialogAsync();
             if (result != Wpf.Ui.Controls.MessageBoxResult.Primary) return;
+
+            // Re-validate after the await (R20): a Configure or a second
+            // delete may have removed or renamed the activator while the
+            // confirm was up. The activator REFERENCE is the identity; a
+            // stale mask capture must not sweep rows or macros.
+            if (!slotMs.ShiftActivators.Contains(activator)) return;
+            mask = activator.LayerMask;
 
             slotMs.ShiftActivators.Remove(activator);
             if (slotMs.Rows != null)
@@ -1753,28 +1752,64 @@ namespace PadForge.Views
                 slotMs.Rows.RemoveAll(
                     r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
             }
-            // #254 A-3: deleting a layer keeps its macros (rows die with
-            // the layer because they ARE its content; macros are
-            // standalone authoring). They are retagged to "" so no macro
-            // holds a dead mask, and DISABLED in the same breath (audit
-            // 2026-07-25, C23): "" means "fires in every layer", so a bare
-            // retag would silently promote a deliberately restricted macro
-            // into a global one the moment its layer was deleted. Disabled
-            // preserves the authoring and leaves the choice to re-enable
-            // with the user. Walks every pad for the C7 reason above.
-            foreach (var padVm in AllPadViewModels())
+
+            // Does any REMAINING slot still declare this mask (a split-config
+            // twin activator, or another slot's cycle ring)? If so the
+            // logical layer still exists there, and macros riding it keep
+            // gating through the split-config fallback: touching them would
+            // break the surviving half (round four, R10-delete).
+            bool maskStillDeclared = false;
+            var allSets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            if (allSets != null)
             {
-                foreach (var mac in padVm.Macros)
+                foreach (var otherSet in allSets)
                 {
-                    if (mac == null || !string.Equals(mac.LayerMask, mask, StringComparison.Ordinal))
-                        continue;
-                    mac.LayerMask = "";
-                    mac.IsEnabled = false;
+                    if (otherSet?.ShiftActivators == null) continue;
+                    foreach (var a in otherSet.ShiftActivators)
+                    {
+                        if (a == null) continue;
+                        if (string.Equals(a.LayerMask, mask, StringComparison.Ordinal)
+                            || PadForge.Common.Input.InputManager.PipeListContains(a.CycleLayers, mask))
+                        {
+                            maskStillDeclared = true;
+                            break;
+                        }
+                    }
+                    if (maskStillDeclared) break;
                 }
             }
 
-            // Scrub the deleted mask from sibling cycle rings so no
-            // activator steps onto a layer that no longer exists (C13).
+            if (!maskStillDeclared)
+            {
+                // #254 A-3: deleting a layer keeps its macros (rows die with
+                // the layer because they ARE its content; macros are
+                // standalone authoring). They are DISABLED FIRST and only
+                // then untagged (round four, R18): the engine reads these
+                // shared instances live on the poll thread, and the old
+                // order opened a window where the macro was enabled and
+                // ungated between the two writes, firing once globally
+                // during the delete. Disabled preserves the authoring;
+                // "" clears the dead mask.
+                foreach (var padVm in AllPadViewModels())
+                {
+                    foreach (var mac in padVm.Macros)
+                    {
+                        if (mac == null || !string.Equals(mac.LayerMask, mask, StringComparison.Ordinal))
+                            continue;
+                        mac.IsEnabled = false;
+                        mac.LayerMask = "";
+                    }
+                }
+                // Layer-scoped menus on the deleted mask stay tagged: they
+                // have no disable field, an untag would silently broaden
+                // them to always-available, and a same-named layer re-add
+                // revives them (hand-authored masks are name-derived).
+            }
+
+            // Scrub the deleted mask from THIS slot's cycle rings so no
+            // activator here steps onto a layer the slot no longer declares
+            // (C13). Other slots' rings are their own declaration of the
+            // mask and stay valid (the maskStillDeclared branch above).
             foreach (var a in slotMs.ShiftActivators)
             {
                 if (a == null || string.IsNullOrEmpty(a.CycleLayers)) continue;
@@ -1785,11 +1820,20 @@ namespace PadForge.Views
                 if (kept.Count != stops.Length) a.CycleLayers = string.Join("|", kept);
             }
 
+            // The engine's shift runtime may still be ENGAGED on the deleted
+            // mask (round four, R12: Latch/Toggle/Cycle park the mask string
+            // until their own activator's tick rewrites it, and that
+            // activator is gone). ClearShiftRuntime exists for exactly this
+            // topology change; without it the slot reported the dead mask
+            // forever and gated macros stayed dark with nothing in the UI
+            // to explain it.
+            PadForge.Common.Input.InputManager.ClearAllShiftRuntime();
+
             // Snap the active tab back to Base; RebuildLayerTabs will
             // also recover if the active mask no longer matches a tab.
-            _currentPadVm.ActiveLayerMask = "Base";
-            _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
-            _currentPadVm.ConfigItemDirtyCallback?.Invoke();
+            padVmAtOpen.ActiveLayerMask = "Base";
+            padVmAtOpen.RebuildLayerTabs(slotMs.ShiftActivators);
+            padVmAtOpen.ConfigItemDirtyCallback?.Invoke();
         }
 
         // Full memberwise copy. The previous hand-listed clone silently dropped
@@ -1799,6 +1843,85 @@ namespace PadForge.Views
         // says to use at clone sites.
         private static Engine.Data.MappingSource CloneSource(Engine.Data.MappingSource s)
             => s?.Clone();
+
+        /// <summary>Renames a layer mask across the WHOLE configuration:
+        /// every slot activators list (mask + display name follow
+        /// together), cycle rings, mapping rows, layer-scoped menus, and
+        /// every pad macros (audit 2026-07-25 round four, R10/R19/R28).
+        /// Mask equality is layer identity across slots; see the Configure
+        /// caller for the policy note.</summary>
+        private void RenameMaskEverywhere(string oldMask, string newMask, PadForge.Engine.Data.ShiftActivator renamed)
+        {
+            var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            if (sets != null)
+            {
+                foreach (var set in sets)
+                {
+                    if (set == null) continue;
+                    if (set.ShiftActivators != null)
+                    {
+                        foreach (var a in set.ShiftActivators)
+                        {
+                            if (a == null) continue;
+                            if (!ReferenceEquals(a, renamed)
+                                && string.Equals(a.LayerMask, oldMask, StringComparison.Ordinal))
+                            {
+                                a.LayerMask = newMask;
+                                a.LayerName = renamed.LayerName;
+                            }
+                            if (string.IsNullOrEmpty(a.CycleLayers)) continue;
+                            var stops = a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries);
+                            bool touched = false;
+                            for (int si = 0; si < stops.Length; si++)
+                            {
+                                if (!string.Equals(stops[si], oldMask, StringComparison.Ordinal)) continue;
+                                stops[si] = newMask;
+                                touched = true;
+                            }
+                            if (touched) a.CycleLayers = string.Join("|", stops);
+                        }
+                    }
+                    if (set.Rows != null)
+                    {
+                        foreach (var r in set.Rows)
+                            if (r != null && string.Equals(r.LayerMask, oldMask, StringComparison.Ordinal))
+                                r.LayerMask = newMask;
+                    }
+                    if (set.Menus != null)
+                    {
+                        // Menus are the retag family fourth member (R28):
+                        // they persist a LayerMask and the runtime requires
+                        // exact engagement equality, so a menu left on the
+                        // old mask would never open again.
+                        foreach (var mn in set.Menus)
+                            if (mn != null && string.Equals(mn.LayerMask, oldMask, StringComparison.Ordinal))
+                                mn.LayerMask = newMask;
+                    }
+                }
+            }
+            foreach (var padVm in AllPadViewModels())
+            {
+                foreach (var mac in padVm.Macros)
+                {
+                    if (mac != null && string.Equals(mac.LayerMask, oldMask, StringComparison.Ordinal))
+                        mac.LayerMask = newMask;
+                }
+            }
+        }
+
+        /// <summary>Rebuilds every OTHER pad layer tabs from its own slot
+        /// activators after a cross-slot mask edit (round four).</summary>
+        private void RebuildAllPadLayerTabs()
+        {
+            var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            foreach (var padVm in AllPadViewModels())
+            {
+                if (ReferenceEquals(padVm, _currentPadVm)) continue;
+                var ms = sets != null && padVm.PadIndex >= 0 && padVm.PadIndex < sets.Length
+                    ? sets[padVm.PadIndex] : null;
+                padVm.RebuildLayerTabs(ms?.ShiftActivators);
+            }
+        }
 
         /// <summary>Every pad view-model, for the layer-retag walks (audit
         /// 2026-07-25, C7). Macros on OTHER slots can legitimately carry

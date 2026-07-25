@@ -6922,25 +6922,32 @@ namespace PadForge
             }
         }
 
-        /// <summary>True when the destination slot's layer set declares the
-        /// mask, so a copied or pasted macro may keep its scope (audit
-        /// 2026-07-25, C8). Empty masks are always representable.</summary>
+        /// <summary>True when ANY slot's layer set declares the mask, so a
+        /// copied or pasted macro may keep its scope. Round four (R11)
+        /// widened this from destination-only: the runtime gate honors a
+        /// mask the macro's own slot does not declare (the split-config
+        /// fallback), so the old rule stripped scopes the engine supports,
+        /// including on a SAME-slot paste of an imported macro, ungating
+        /// it globally. Only a true orphan (no slot declares it) is
+        /// stripped, and missing machinery fails OPEN, matching the gate:
+        /// keeping a scope is never data loss, destroying one is.</summary>
         private static bool DestinationDeclaresLayer(PadForge.ViewModels.PadViewModel padVm, string mask)
         {
             if (string.IsNullOrEmpty(mask)) return true;
             if (string.Equals(mask, "Base", StringComparison.Ordinal)) return true;
             var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
-            if (sets == null || padVm == null || padVm.PadIndex < 0 || padVm.PadIndex >= sets.Length)
-                return false;
-            var acts = sets[padVm.PadIndex]?.ShiftActivators;
-            if (acts == null) return false;
-            foreach (var a in acts)
+            if (sets == null) return true; // no layer machinery: fail open, like the gate
+            foreach (var set in sets)
             {
-                if (a == null) continue;
-                if (string.Equals(a.LayerMask, mask, StringComparison.Ordinal)) return true;
-                if (string.IsNullOrEmpty(a.CycleLayers)) continue;
-                foreach (var stop in a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries))
-                    if (string.Equals(stop, mask, StringComparison.Ordinal)) return true;
+                var acts = set?.ShiftActivators;
+                if (acts == null) continue;
+                foreach (var a in acts)
+                {
+                    if (a == null) continue;
+                    if (string.Equals(a.LayerMask, mask, StringComparison.Ordinal)) return true;
+                    if (PadForge.Common.Input.InputManager.PipeListContains(a.CycleLayers, mask))
+                        return true;
+                }
             }
             return false;
         }

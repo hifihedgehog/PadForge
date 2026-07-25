@@ -419,8 +419,24 @@ namespace PadForge.Common.Input
         private static PadForge.Engine.CustomControllerLayout? _currentRawLayout;
         private readonly short[] _preMacroRawAxes = new short[8];
 
+        // Per-pass consume/output accumulators (audit 2026-07-25 round
+        // four, R1/R2). Consume used to strip gp INLINE per macro, so an
+        // earlier ShortPress with consume (the default) blinded every LATER
+        // macro's trigger read of the same button: the tap-vs-hold pair
+        // fired neither leg, order-dependently. Deferring the strip to the
+        // end of the pass gives every macro the same pre-consumption view
+        // (the raw-descriptor lane's documented model), and the OUTPUT
+        // overlay re-asserts bits macros generated so consuming trigger A
+        // cannot erase a macro's own ButtonPress A. Poll-thread only.
+        private ushort _macroPassConsumedButtons;
+        private ushort _macroPassOutputButtons;
+        private readonly uint[] _macroPassConsumedWords = new uint[8];
+        private readonly uint[] _macroPassOutputWords = new uint[8];
+
         internal void EvaluateSlotMacros(ref Gamepad gp, MacroItem[] macros)
         {
+            _macroPassConsumedButtons = 0;
+            _macroPassOutputButtons = 0;
             // #251 AxisLatchRelease reaches across the slot's macros; the
             // poll thread runs one evaluator at a time, so a transient
             // stash is safe (the CancelExecutingPairTwin precedent, made
@@ -598,13 +614,19 @@ namespace PadForge.Common.Input
                 }
 
                 bool wasTriggerActive = macro.WasTriggerActive;
-                // Capture BEFORE the latch, exactly like wasTriggerActive:
-                // the flag is set for the NEXT tick, so reading it inside
-                // the evaluator would always see true and the C14 guard
-                // would never block (caught by its own guard test).
-                bool edgeObserved = macro.TriggerEdgeObserved;
+                // Continuity check BEFORE the latch, exactly like
+                // wasTriggerActive (round four, R13/R14): the previous
+                // sample is trustworthy only when it is RECENT. Any gap
+                // (engine stop, this macro disabled, its slot idle-skipped,
+                // a profile hot-retain) means an apparent edge on the first
+                // tick back may have happened entirely unwatched, and On
+                // Short Press must not arm from it. 250ms is two orders
+                // above the poll cadence, so only real gaps trip it.
+                var nowUtcForEdge = DateTime.UtcNow;
+                bool edgeObserved =
+                    (nowUtcForEdge - macro.LastEvaluatedUtc).TotalMilliseconds <= 250.0;
                 macro.WasTriggerActive = triggerActive;
-                macro.TriggerEdgeObserved = true;
+                macro.LastEvaluatedUtc = nowUtcForEdge;
 
                 // Determine if we should start execution based on trigger mode.
                 bool shouldStart = false;
@@ -686,7 +708,13 @@ namespace PadForge.Common.Input
                     macro.AwaitReleaseAfterBreak = false;
 
                 // Start new execution if triggered and not already executing.
-                if (shouldStart && !macro.IsExecuting && !macro.AwaitReleaseAfterBreak)
+                if (shouldStart && !macro.IsExecuting && !macro.AwaitReleaseAfterBreak
+                    // R5 (round four): an empty macro must never START. The
+                    // advance routine is gated on Actions.Count > 0, so a
+                    // start with zero actions wedged IsExecuting and the
+                    // deferred-completion flag forever, and the consume gate
+                    // then ate every later press of the trigger.
+                    && macro.Actions.Count > 0)
                 {
                     // A starting hold-pair leg cancels its executing twin
                     // (audit #2 M6): a re-press during the twin's pending
@@ -784,7 +812,8 @@ namespace PadForge.Common.Input
                         : (triggerActive && macro.IsExecuting);
                 if (macro.ConsumeTriggerButtons && consumeNow && !macro.UsesRawTrigger)
                 {
-                    gp.Buttons &= (ushort)~macro.TriggerButtons;
+                    // Accumulate; the strip lands once, after the walk (R2).
+                    _macroPassConsumedButtons |= macro.TriggerButtons;
                 }
 
                 // Toggle latches apply every frame while the macro is enabled
@@ -793,6 +822,14 @@ namespace PadForge.Common.Input
                 // were a trigger input.
                 ApplyMacroLatches(ref gp, macro);
             }
+
+            // Deferred consume (R2) with output overlay (R1): strip the
+            // accumulated trigger bits once, then re-assert every bit a
+            // macro generated this pass, so consuming trigger A never
+            // erases a macro's own A output and never blinds a sibling.
+            if (_macroPassConsumedButtons != 0)
+                gp.Buttons = (ushort)((gp.Buttons & (ushort)~_macroPassConsumedButtons)
+                                      | _macroPassOutputButtons);
         }
 
         /// <summary>Shift-layer gate for layer-scoped macros (translator
@@ -828,33 +865,20 @@ namespace PadForge.Common.Input
             if (string.Equals(mask, "Base", StringComparison.Ordinal))
             {
                 // The Base-ROW contract (#221 family): open while Base is
-                // engaged, and while a non-Base layer with InheritUnmapped
-                // lets Base fall through.
-                if (!string.Equals(engaged, "Base", StringComparison.Ordinal))
-                    return ownSet != null && LayerInheritsUnmapped(ownSet, engaged);
-
-                // Split-config fallback, the mirror of the named-mask one
-                // below (audit 2026-07-25, C6). A Workshop import puts its
-                // macros on the Xbox slot, but an action set whose content
-                // is KBM-only gets its switch activator on the KBM slot
-                // alone. The Xbox slot then reads "Base" forever, so a
-                // Base-scoped macro stayed open in a set that REPLACED
-                // Base. When this slot owns no layer machinery at all,
-                // another slot's engaged non-Base layer closes Base here
-                // too.
-                if (ownSet?.ShiftActivators == null || ownSet.ShiftActivators.Count == 0)
-                {
-                    for (int s2 = 0; s2 < sets.Length; s2++)
-                    {
-                        var other = sets[s2];
-                        if (other == null || s2 == slot) continue;
-                        string otherEngaged = GetEngagedLayerMask(s2, other);
-                        if (!string.Equals(otherEngaged, "Base", StringComparison.Ordinal)
-                            && !LayerInheritsUnmapped(other, otherEngaged))
-                            return false;
-                    }
-                }
-                return true;
+                // engaged on the MACRO'S OWN slot, and while a non-Base
+                // layer with InheritUnmapped lets Base fall through. Pure
+                // own-slot, deliberately (round four, R8/R9): the round-three
+                // fallback walked other slots when this one had no
+                // activators, which coupled a layerless pad's Base macros to
+                // every OTHER pad's layer state, and its zero-activator
+                // proxy still missed the split-import shape it existed for.
+                // The split import is fixed at the SOURCE instead: the
+                // translator now mirrors replacement-set switch activators
+                // onto the macro host slot, so the own slot always knows a
+                // set engaged. No runtime discriminator can substitute for
+                // that knowledge (two independent reviewers, same verdict).
+                if (string.Equals(engaged, "Base", StringComparison.Ordinal)) return true;
+                return ownSet != null && LayerInheritsUnmapped(ownSet, engaged);
             }
 
             if (string.Equals(engaged, mask, StringComparison.Ordinal)) return true;
@@ -884,6 +908,27 @@ namespace PadForge.Common.Input
 
         /// <summary>True when the set carries a shift activator for the
         /// mask, i.e. the slot OWNS that layer (#254 A-4).</summary>
+        /// <summary>Allocation-free membership test for a '|'-separated
+        /// mask list (round four, R27). Equivalent to splitting on '|' with
+        /// RemoveEmptyEntries and comparing Ordinal, without the per-call
+        /// array and token allocations the 1 kHz poll path cannot afford.</summary>
+        internal static bool PipeListContains(string list, string mask)
+        {
+            if (string.IsNullOrEmpty(list) || string.IsNullOrEmpty(mask)) return false;
+            int start = 0;
+            while (start < list.Length)
+            {
+                int sep = list.IndexOf('|', start);
+                int end = sep < 0 ? list.Length : sep;
+                if (end - start == mask.Length
+                    && string.CompareOrdinal(list, start, mask, 0, mask.Length) == 0)
+                    return true;
+                if (sep < 0) break;
+                start = sep + 1;
+            }
+            return false;
+        }
+
         private static bool SlotDeclaresMask(MappingSet set, string mask)
         {
             var acts = set?.ShiftActivators;
@@ -898,9 +943,10 @@ namespace PadForge.Common.Input
                 // 2026-07-25, C5). Without this the slot looked like it
                 // did not own its own cycle stops, and the gate silently
                 // dropped to the any-slot walk #254 exists to retire.
-                if (string.IsNullOrEmpty(a.CycleLayers)) continue;
-                foreach (var stop in a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries))
-                    if (string.Equals(stop, mask, StringComparison.Ordinal)) return true;
+                // Allocation-free scan (round four, R27): this runs per
+                // scoped macro per poll tick, and Split allocated an array
+                // plus token strings at the loop rate.
+                if (PipeListContains(a.CycleLayers, mask)) return true;
             }
             return false;
         }
@@ -1095,7 +1141,10 @@ namespace PadForge.Common.Input
                 if (a.Type == MacroActionType.ToggleVcButton)
                 {
                     if (a.VcToggleLatched && LatchPhaseOn(a))
+                    {
                         gp.Buttons |= a.ButtonFlags;
+                        _macroPassOutputButtons |= a.ButtonFlags; // R1 overlay
+                    }
                 }
                 else if (a.Type == MacroActionType.ToggleKey)
                 {
@@ -1840,15 +1889,21 @@ namespace PadForge.Common.Input
             }
             if (allContinuous)
             {
-                // Clear the deferred-completion flag before the early
-                // return (audit 2026-07-25, C16). A ShortPress/SinglePress
-                // run always starts with the trigger already up, so the
-                // flag is set; leaving it set here suppressed the
-                // until-release stop FOREVER and an all-continuous
-                // sequence (repeat-while-held, mouse move, scroll) ran
-                // until the macro was disabled. The sequence has completed:
-                // the deferral it protects is over.
-                macro.RunReleasedFireToCompletion = false;
+                // A run that started with the trigger ALREADY UP (ShortPress,
+                // deferred SinglePress) has no future release to stop it, so
+                // an all-continuous sequence must complete after its single
+                // pass regardless of RepeatMode (round four, R4: the
+                // round-three flag-clear-only shape stopped UntilRelease but
+                // left the hidden default Once pulsing forever). A held run
+                // keeps running as before and stops on release.
+                if (macro.RunReleasedFireToCompletion)
+                {
+                    macro.IsExecuting = false;
+                    macro.CurrentActionIndex = 0;
+                    macro.ComboResumeIndex = 0;
+                    macro.RunReleasedFireToCompletion = false;
+                    ClearAxisYields(macro);
+                }
                 return; // Keep running. Continuous actions handled above.
             }
 
@@ -1942,7 +1997,10 @@ namespace PadForge.Common.Input
                     // exactly like a ButtonPress; the OFF half writes nothing,
                     // so the button reads released (gp is rebuilt per frame).
                     if (TickRepeatVcButtonPhase(action))
+                    {
                         gp.Buttons |= action.ButtonFlags;
+                        _macroPassOutputButtons |= action.ButtonFlags; // R1 overlay
+                    }
                     break;
                 case MacroActionType.RepeatVcAxisWhileHeld:
                     // Axis turbo (v18): the same square wave asserting an
@@ -2006,12 +2064,15 @@ namespace PadForge.Common.Input
             {
                 case MacroActionType.ButtonPress:
                     gp.Buttons |= action.ButtonFlags;
+                    _macroPassOutputButtons |= action.ButtonFlags; // R1 overlay
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
                     break;
 
                 case MacroActionType.ButtonRelease:
                     gp.Buttons &= (ushort)~action.ButtonFlags;
+                    // A same-pass release must not be re-asserted by the overlay.
+                    _macroPassOutputButtons &= (ushort)~action.ButtonFlags;
                     AdvanceAction(macro);
                     break;
 
@@ -3410,7 +3471,7 @@ namespace PadForge.Common.Input
         /// "Wrap List - Off": no further output past the end, and the
         /// forward-only lowering has no back-step to free it, which the
         /// translator's group note covers).</summary>
-        private static bool ExecuteCycleTapList(ref Gamepad gp, MacroAction action, double actionElapsed)
+        private bool ExecuteCycleTapList(ref Gamepad gp, MacroAction action, double actionElapsed)
         {
             var steps = action.ParsedCycleSteps;
             if (steps.Length == 0) return true;
@@ -3461,6 +3522,7 @@ namespace PadForge.Common.Input
                         break;
                     case 'B':
                         gp.Buttons |= (ushort)p.Value;
+                        _macroPassOutputButtons |= (ushort)p.Value; // R1 overlay
                         held = true;
                         break;
                     case 'A':
@@ -3514,6 +3576,8 @@ namespace PadForge.Common.Input
         // Internal for the PadForge.Tests dispatch pins.
         internal void EvaluateSlotMacrosExtended(ref RawHidState raw, MacroItem[] macros)
         {
+            System.Array.Clear(_macroPassConsumedWords, 0, _macroPassConsumedWords.Length);
+            System.Array.Clear(_macroPassOutputWords, 0, _macroPassOutputWords.Length);
             _evalMacros = macros;   // #251 cross-macro latch release, see above
             // Resolve the slot's ACTUAL axis packing for this call (audit
             // 2026-07-25, C34). All macros in a snapshot share the slot.
@@ -3648,13 +3712,19 @@ namespace PadForge.Common.Input
                 }
 
                 bool wasTriggerActive = macro.WasTriggerActive;
-                // Capture BEFORE the latch, exactly like wasTriggerActive:
-                // the flag is set for the NEXT tick, so reading it inside
-                // the evaluator would always see true and the C14 guard
-                // would never block (caught by its own guard test).
-                bool edgeObserved = macro.TriggerEdgeObserved;
+                // Continuity check BEFORE the latch, exactly like
+                // wasTriggerActive (round four, R13/R14): the previous
+                // sample is trustworthy only when it is RECENT. Any gap
+                // (engine stop, this macro disabled, its slot idle-skipped,
+                // a profile hot-retain) means an apparent edge on the first
+                // tick back may have happened entirely unwatched, and On
+                // Short Press must not arm from it. 250ms is two orders
+                // above the poll cadence, so only real gaps trip it.
+                var nowUtcForEdge = DateTime.UtcNow;
+                bool edgeObserved =
+                    (nowUtcForEdge - macro.LastEvaluatedUtc).TotalMilliseconds <= 250.0;
                 macro.WasTriggerActive = triggerActive;
-                macro.TriggerEdgeObserved = true;
+                macro.LastEvaluatedUtc = nowUtcForEdge;
 
                 bool shouldStart = false;
                 switch (macro.TriggerMode)
@@ -3729,7 +3799,13 @@ namespace PadForge.Common.Input
                 if (macro.AwaitReleaseAfterBreak && breakGuardOpen)
                     macro.AwaitReleaseAfterBreak = false;
 
-                if (shouldStart && !macro.IsExecuting && !macro.AwaitReleaseAfterBreak)
+                if (shouldStart && !macro.IsExecuting && !macro.AwaitReleaseAfterBreak
+                    // R5 (round four): an empty macro must never START. The
+                    // advance routine is gated on Actions.Count > 0, so a
+                    // start with zero actions wedged IsExecuting and the
+                    // deferred-completion flag forever, and the consume gate
+                    // then ate every later press of the trigger.
+                    && macro.Actions.Count > 0)
                 {
                     // Hold-pair twin cancel (audit #2 M6), mirroring the
                     // Gamepad-path start branch.
@@ -3799,10 +3875,12 @@ namespace PadForge.Common.Input
                 if (macro.ConsumeTriggerButtons && consumeNowExtended
                     && macro.UsesCustomTrigger)
                 {
+                    // Accumulate; the strip lands once, after the walk (R2).
                     var tw = macro.TriggerCustomButtonWords;
                     if (raw.Buttons != null)
-                        for (int w = 0; w < raw.Buttons.Length && w < tw.Length; w++)
-                            raw.Buttons[w] &= ~tw[w];
+                        for (int w = 0; w < raw.Buttons.Length
+                             && w < tw.Length && w < _macroPassConsumedWords.Length; w++)
+                            _macroPassConsumedWords[w] |= tw[w];
                 }
 
                 // Toggle latches apply every frame while the macro is enabled
@@ -3810,6 +3888,15 @@ namespace PadForge.Common.Input
                 // Gamepad-path ordering.
                 ApplyMacroLatchesRaw(ref raw, macro);
             }
+
+            // Deferred consume with output overlay, the Gamepad loop's twin
+            // (R1/R2): one strip after the walk, macro-generated words
+            // re-asserted.
+            if (raw.Buttons != null)
+                for (int w = 0; w < raw.Buttons.Length && w < _macroPassConsumedWords.Length; w++)
+                    if (_macroPassConsumedWords[w] != 0)
+                        raw.Buttons[w] = (raw.Buttons[w] & ~_macroPassConsumedWords[w])
+                                         | _macroPassOutputWords[w];
         }
 
         /// <summary>Extended twin of <see cref="ApplyMacroLatches"/> (issue #9
@@ -3829,7 +3916,11 @@ namespace PadForge.Common.Input
                     {
                         var cw = a.CustomButtonWords;
                         for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
+                        {
                             raw.Buttons[w] |= cw[w];
+                            if (w < _macroPassOutputWords.Length)
+                                _macroPassOutputWords[w] |= cw[w]; // R1 overlay
+                        }
                     }
                 }
                 else if (a.Type == MacroActionType.ToggleKey)
@@ -3932,15 +4023,21 @@ namespace PadForge.Common.Input
             }
             if (allContinuous)
             {
-                // Clear the deferred-completion flag before the early
-                // return (audit 2026-07-25, C16). A ShortPress/SinglePress
-                // run always starts with the trigger already up, so the
-                // flag is set; leaving it set here suppressed the
-                // until-release stop FOREVER and an all-continuous
-                // sequence (repeat-while-held, mouse move, scroll) ran
-                // until the macro was disabled. The sequence has completed:
-                // the deferral it protects is over.
-                macro.RunReleasedFireToCompletion = false;
+                // A run that started with the trigger ALREADY UP (ShortPress,
+                // deferred SinglePress) has no future release to stop it, so
+                // an all-continuous sequence must complete after its single
+                // pass regardless of RepeatMode (round four, R4: the
+                // round-three flag-clear-only shape stopped UntilRelease but
+                // left the hidden default Once pulsing forever). A held run
+                // keeps running as before and stops on release.
+                if (macro.RunReleasedFireToCompletion)
+                {
+                    macro.IsExecuting = false;
+                    macro.CurrentActionIndex = 0;
+                    macro.ComboResumeIndex = 0;
+                    macro.RunReleasedFireToCompletion = false;
+                    ClearAxisYields(macro);
+                }
                 return; // Keep running. Continuous actions handled above.
             }
 
@@ -4036,7 +4133,11 @@ namespace PadForge.Common.Input
                     {
                         var cw = action.CustomButtonWords;
                         for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
+                        {
                             raw.Buttons[w] |= cw[w];
+                            if (w < _macroPassOutputWords.Length)
+                                _macroPassOutputWords[w] |= cw[w]; // R1 overlay
+                        }
                     }
                     break;
                 case MacroActionType.RepeatVcAxisWhileHeld:
@@ -4064,7 +4165,11 @@ namespace PadForge.Common.Input
                     {
                         var cw = action.CustomButtonWords;
                         for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
+                        {
                             raw.Buttons[w] |= cw[w];
+                            if (w < _macroPassOutputWords.Length)
+                                _macroPassOutputWords[w] |= cw[w]; // R1 overlay
+                        }
                     }
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
@@ -4075,7 +4180,12 @@ namespace PadForge.Common.Input
                     {
                         var cw = action.CustomButtonWords;
                         for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
+                        {
                             raw.Buttons[w] &= ~cw[w];
+                            // A same-pass release must not be re-asserted.
+                            if (w < _macroPassOutputWords.Length)
+                                _macroPassOutputWords[w] &= ~cw[w];
+                        }
                     }
                     AdvanceAction(macro);
                     break;

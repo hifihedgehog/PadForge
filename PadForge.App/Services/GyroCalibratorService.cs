@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,6 +62,9 @@ namespace PadForge.Services
             ps.GyroBiasPitch = "0";
             ps.GyroBiasYaw   = "0";
             ps.GyroBiasRoll  = "0";
+            ps.GyroAuxBiasPitch = "0";
+            ps.GyroAuxBiasYaw   = "0";
+            ps.GyroAuxBiasRoll  = "0";
             ps.GyroCalibratedAtUtc = "";
             _persistCallback?.Invoke();
         }
@@ -81,6 +84,13 @@ namespace PadForge.Services
         {
             double accPitch = 0, accYaw = 0, accRoll = 0;
             int samples = 0;
+            // The aux gyro (#252) is sampled in the SAME at-rest pass: the
+            // user is already holding both halves of a Joy-Con pair still,
+            // and the left half's drift is its own number. Counted
+            // separately so a device without the sensor leaves its stored
+            // triple untouched rather than writing zeros over it.
+            double accAuxPitch = 0, accAuxYaw = 0, accAuxRoll = 0;
+            int auxSamples = 0;
             var sw = System.Diagnostics.Stopwatch.StartNew();
             // ~5 ms cadence — fast enough to catch the polling thread's
             // updates without burning CPU. ~200 samples per 1500 ms is
@@ -98,6 +108,14 @@ namespace PadForge.Services
                     accRoll  += gyro[2];
                     samples++;
                 }
+                var gyroAux = state.GyroAux;
+                if (gyroAux != null && gyroAux.Length >= 3)
+                {
+                    accAuxPitch += gyroAux[0];
+                    accAuxYaw   += gyroAux[1];
+                    accAuxRoll  += gyroAux[2];
+                    auxSamples++;
+                }
                 try { Thread.Sleep(5); }
                 catch (ThreadInterruptedException) { return false; }
             }
@@ -106,6 +124,12 @@ namespace PadForge.Services
             ps.GyroBiasPitch = ((float)(accPitch / samples)).ToString("R", CultureInfo.InvariantCulture);
             ps.GyroBiasYaw   = ((float)(accYaw   / samples)).ToString("R", CultureInfo.InvariantCulture);
             ps.GyroBiasRoll  = ((float)(accRoll  / samples)).ToString("R", CultureInfo.InvariantCulture);
+            if (auxSamples > 0)
+            {
+                ps.GyroAuxBiasPitch = ((float)(accAuxPitch / auxSamples)).ToString("R", CultureInfo.InvariantCulture);
+                ps.GyroAuxBiasYaw   = ((float)(accAuxYaw   / auxSamples)).ToString("R", CultureInfo.InvariantCulture);
+                ps.GyroAuxBiasRoll  = ((float)(accAuxRoll  / auxSamples)).ToString("R", CultureInfo.InvariantCulture);
+            }
             ps.GyroCalibratedAtUtc = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
 
             _persistCallback?.Invoke();

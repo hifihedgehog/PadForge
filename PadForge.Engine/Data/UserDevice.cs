@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
@@ -130,6 +130,13 @@ namespace PadForge.Engine.Data
         /// <see cref="Common.ISdlInputDevice.HasAccelAux"/>.</summary>
         [XmlElement]
         public bool HasAccelAux { get; set; }
+
+        /// <summary>Whether the device exposes an auxiliary (left-side)
+        /// gyroscope (issue #252): the left half of a combined Joy-Con pair.
+        /// Never a Nunchuk (no gyro there). Mirrors
+        /// <see cref="Common.ISdlInputDevice.HasGyroAux"/>.</summary>
+        [XmlElement]
+        public bool HasGyroAux { get; set; }
 
         /// <summary>Whether the device is an IR-camera-capable Wii Remote (issue
         /// #146). Identity-derived from VID + name, so it is correct whether the
@@ -519,6 +526,7 @@ namespace PadForge.Engine.Data
             HasGyro = wrapper.HasGyro;
             HasAccel = wrapper.HasAccel;
             HasAccelAux = wrapper.HasAccelAux;
+            HasGyroAux = wrapper.HasGyroAux;
             HasTouchpad = wrapper.HasTouchpad;
             CapTouchpadCount = wrapper.NumTouchpads;
             CapTouchpadFingerCounts = wrapper.TouchpadFingerCounts;

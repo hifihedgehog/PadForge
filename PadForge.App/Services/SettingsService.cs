@@ -456,14 +456,14 @@ namespace PadForge.Services
             // Per-guid capability lookup. Devices not currently known
             // (offline / never enumerated) report no caps and get no row;
             // they'll be backfilled on the next load after they appear.
-            (bool HasGyro, bool HasAccel, bool HasAccelAux) Caps(Guid guid)
+            (bool HasGyro, bool HasAccel, bool HasAccelAux, bool HasGyroAux) Caps(Guid guid)
             {
                 foreach (var ud in devSnapshot)
                 {
                     if (ud != null && ud.InstanceGuid == guid)
-                        return (ud.HasGyro, ud.HasAccel, ud.HasAccelAux);
+                        return (ud.HasGyro, ud.HasAccel, ud.HasAccelAux, ud.HasGyroAux);
                 }
-                return (false, false, false);
+                return (false, false, false, false);
             }
 
             for (int slot = 0; slot < sets.Length && slot < _mainVm.Pads.Count; slot++)
@@ -507,6 +507,13 @@ namespace PadForge.Services
                     if (isSony && caps.HasAccelAux
                         && MappingSetMigrator.IsMotionAccelAuxDescriptor(ps.MotionAccel))
                         newAccel = MappingSetMigrator.MotionAccelAuxSourceDescriptor;
+                    // Same survival rule for the aux GYRO pick (#252): without
+                    // it, choosing the left Joy-Con's gyro for the slot's
+                    // motion stream was silently reverted to the body gyro on
+                    // the next recompute.
+                    if (isSony && caps.HasGyroAux
+                        && MappingSetMigrator.IsMotionGyroAuxDescriptor(ps.MotionGyro))
+                        newGyro = MappingSetMigrator.MotionGyroAuxSourceDescriptor;
                     if (ps.MotionGyro != newGyro || ps.MotionAccel != newAccel)
                     {
                         ps.MotionGyro = newGyro;

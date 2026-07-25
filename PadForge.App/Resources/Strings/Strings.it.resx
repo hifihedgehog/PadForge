@@ -1167,6 +1167,10 @@
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Ripristina motore sinistro</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Ripristina motore destro</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Giroscopio beccheggio</value></data>
+  <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>Beccheggio giroscopio Joy-Con sinistro</value></data>
+  <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>Imbardata giroscopio Joy-Con sinistro</value></data>
+  <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>Rollio giroscopio Joy-Con sinistro</value></data>
+  <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>Giroscopio movimento Joy-Con sinistro</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscopio imbardata</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscopio rollio</value></data>
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Giroscopio orizzontale (Yaw + Roll)</value></data>
@@ -2303,6 +2307,7 @@
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Inclinazione del Joy-Con sinistro</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>Inclinazione di movimento ausiliaria</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>Accelerometro ausiliario</value></data>
+  <data name="Devices_GyroAux" xml:space="preserve"><value>Giroscopio ausiliario</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Accelerometro del Nunchuk</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>Accelerometro del Joy-Con sinistro</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>Accelerometro di movimento ausiliario</value></data>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Engine.Data;
 
 namespace PadForge.Engine.Common.Mapping
@@ -287,8 +287,13 @@ namespace PadForge.Engine.Common.Mapping
             // right), not a right-hand-rule rate, so the rate correction
             // must not touch it.
             if (SourceCoercion.IsGyroLeanDescriptor(desc)) return false;
+            // Pitch is the one rate axis already in the stick frame, and the
+            // aux family (#252) spells it "Gyro L Pitch", so the exclusion
+            // matches the AXIS rather than the exact primary descriptor. A
+            // plain string compare against "Gyro Pitch" would have flipped
+            // the aux pitch while leaving the primary correct.
             return SourceCoercion.IsGyroDescriptor(desc)
-                && !desc.Trim().Equals("Gyro Pitch", StringComparison.OrdinalIgnoreCase);
+                && !SourceCoercion.IsGyroPitchAxisDescriptor(desc);
         }
 
         public static float EvaluateForTriggerTarget(

@@ -1147,6 +1147,10 @@
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>重置左马达</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>重置右马达</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>陀螺仪 俯仰</value></data>
+  <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>左Joy-Con 陀螺仪俯仰</value></data>
+  <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>左Joy-Con 陀螺仪偏航</value></data>
+  <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>左Joy-Con 陀螺仪横滚</value></data>
+  <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>左Joy-Con 体感陀螺仪</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>陀螺仪 偏航</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>陀螺仪 翻滚</value></data>
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>陀螺仪 水平 (Yaw + Roll)</value></data>
@@ -2281,6 +2285,7 @@
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>左 Joy-Con 倾斜</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>辅助体感倾斜</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>辅助加速度计</value></data>
+  <data name="Devices_GyroAux" xml:space="preserve"><value>辅助陀螺仪</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>双节棍控制器加速度计</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>左 Joy-Con 加速度计</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>辅助体感加速度计</value></data>

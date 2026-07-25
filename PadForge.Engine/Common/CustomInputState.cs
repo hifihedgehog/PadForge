@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace PadForge.Engine
 {
@@ -88,6 +88,17 @@ namespace PadForge.Engine
         /// Zeroed for devices without the sensor.
         /// </summary>
         public float[] AccelAux;
+
+        /// <summary>
+        /// Auxiliary (left-side) gyroscope data: [pitch, yaw, roll] in
+        /// radians per second, SDL native frame (issue #252). SDL delivers
+        /// this as SDL_SENSOR_GYRO_L, which ONLY the Switch drivers register:
+        /// the LEFT Joy-Con of a combined pair, gen 1 and gen 2, whose
+        /// primary Gyro is the right half. The Wii Nunchuk has no gyro, so
+        /// unlike <see cref="AccelAux"/> this never carries a Nunchuk.
+        /// Zeroed for devices without the sensor.
+        /// </summary>
+        public float[] GyroAux;
 
         /// <summary>
         /// Per-touchpad finger state. One <see cref="TouchpadInputState"/>
@@ -195,6 +206,7 @@ namespace PadForge.Engine
             Gyro = new float[3];
             Accel = new float[3];
             AccelAux = new float[3];
+            GyroAux = new float[3];
             // Touchpads starts null. Device wrappers allocate the per-pad
             // TouchpadState[] at device-open time with the right pad count
             // and per-pad finger slot count for the actual hardware. Null
@@ -232,6 +244,7 @@ namespace PadForge.Engine
             Array.Copy(Gyro, dst.Gyro, 3);
             Array.Copy(Accel, dst.Accel, 3);
             Array.Copy(AccelAux, dst.AccelAux, 3);
+            Array.Copy(GyroAux, dst.GyroAux, 3);
             if (Touchpads == null)
             {
                 dst.Touchpads = null;
@@ -304,6 +317,7 @@ namespace PadForge.Engine
             Array.Clear(Gyro, 0, 3);
             Array.Clear(Accel, 0, 3);
             Array.Clear(AccelAux, 0, 3);
+            Array.Clear(GyroAux, 0, 3);
             for (int i = 0; i < Povs.Length; i++)
                 Povs[i] = -1;
             if (Touchpads != null)

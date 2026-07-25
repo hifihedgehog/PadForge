@@ -1167,6 +1167,10 @@
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Linkermotor herstellen</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Rechtermotor herstellen</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Pitch</value></data>
+  <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>Gyro-pitch linker Joy-Con</value></data>
+  <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>Gyro-yaw linker Joy-Con</value></data>
+  <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>Gyro-roll linker Joy-Con</value></data>
+  <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>Bewegingsgyro linker Joy-Con</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Gyro Horizontaal (Yaw + Roll)</value></data>
@@ -2301,6 +2305,7 @@
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Helling linker Joy-Con</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>Extra bewegingshelling</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>Extra versnellingsmeter</value></data>
+  <data name="Devices_GyroAux" xml:space="preserve"><value>Extra gyroscoop</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Nunchuk-versnellingsmeter</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>Versnellingsmeter linker Joy-Con</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>Extra bewegingsversnellingsmeter</value></data>

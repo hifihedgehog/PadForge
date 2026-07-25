@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace PadForge.Engine
 {
@@ -66,6 +66,13 @@ namespace PadForge.Engine
         /// pair. SDL_SENSOR_ACCEL_L. Default false; only the SDL wrapper
         /// (live query) and the Remote Link peer mirror override.</summary>
         bool HasAccelAux => false;
+        /// <summary>Whether the device exposes an auxiliary (left-side)
+        /// gyroscope (issue #252): the left half of a combined Joy-Con pair,
+        /// gen 1 or gen 2. SDL_SENSOR_GYRO_L. Unlike
+        /// <see cref="HasAccelAux"/> this is never a Nunchuk, which has no
+        /// gyro. Default false; only the SDL wrapper (live query) and the
+        /// Remote Link peer mirror override.</summary>
+        bool HasGyroAux => false;
         bool HasTouchpad { get; }
         /// <summary>Number of distinct touchpad surfaces the device exposes
         /// (Steam Controller 2026 / Steam Deck = 2; DualSense / DS4 = 1).

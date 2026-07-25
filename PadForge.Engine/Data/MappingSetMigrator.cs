@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -81,6 +81,24 @@ namespace PadForge.Engine.Data
         public static bool IsMotionAccelAuxDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && string.Equals(descriptor.Trim(), MotionAccelAuxSourceDescriptor, StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>Aux (left-side) GYRO variant for the MotionGyro row
+        /// (issue #252): sources the slot's single IMU stream from a
+        /// combined Joy-Con pair's LEFT half instead of the body gyro
+        /// (which on a pair is the right half). The accel twin above has
+        /// shipped since #199; without this one a slot could passthrough
+        /// the left accelerometer but not the left gyro, so DSU and a
+        /// virtual DualSense saw a mismatched pair of halves. Same
+        /// exact-match grammar as "Motion Accel L": ParseMotionSubChannel
+        /// returns -1 for "Gyro L", so it cannot be read as the primary.
+        /// Never a Nunchuk, which has no gyro.</summary>
+        public const string MotionGyroAuxSourceDescriptor = "Motion Gyro L";
+
+        /// <summary>True when the descriptor is
+        /// <see cref="MotionGyroAuxSourceDescriptor"/>.</summary>
+        public static bool IsMotionGyroAuxDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && string.Equals(descriptor.Trim(), MotionGyroAuxSourceDescriptor, StringComparison.OrdinalIgnoreCase);
 
         // Touchpad output targets. Stored as plain string properties on
         // PadSetting (TouchpadX1, TouchpadY1, …, TouchpadClick), reached via

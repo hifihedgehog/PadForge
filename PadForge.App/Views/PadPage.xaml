@@ -1116,6 +1116,7 @@
 
                         <ListBox ItemsSource="{Binding Macros}"
                                  SelectedItem="{Binding SelectedMacro, Mode=TwoWay}"
+                                 TextSearch.TextPath="Name"
                                  ItemContainerStyle="{StaticResource EmberSelectListItem}">
                             <!-- #254 A-1: the scope dot marks layer-scoped
                                  macros so scope is visible without selecting
@@ -1222,8 +1223,24 @@
                                  has shift layers, the same gate the Mappings strip uses.
                                  "" = Any layer (the ungated default), "Base" and each
                                  layer scope the macro exactly like a mapping row. -->
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
-                                        Visibility="{Binding DataContext.HasShiftLayers, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <!-- Visible when the slot HAS layers, or when this
+                                     macro already carries a scope (audit C3): an
+                                     imported or copied mask must stay visible and
+                                     clearable even on a slot with no layers. -->
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DataContext.HasShiftLayers, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ShowsLayerRow}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Layer, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Width="80" Margin="0,0,8,0"
                                            ToolTip="{Binding Macro_Layer_Tooltip, Source={x:Static strings:Strings.Instance}}"/>

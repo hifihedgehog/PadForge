@@ -42,6 +42,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(TriggerDisplayText));
             OnPropertyChanged(nameof(TriggerPressWindowToolTip));
             OnPropertyChanged(nameof(HoldTimeToolTip));
+            OnPropertyChanged(nameof(TriggerInputItems)); // C24: chip labels are localized too
             OnPropertyChanged(nameof(InlineIntervalToolTip));
             _outputChannelOptions = null;
             OnPropertyChanged(nameof(OutputChannelOptions));
@@ -1709,7 +1710,6 @@ namespace PadForge.ViewModels
                     AwaitReleaseAfterBreak = false;
                     OnPropertyChanged(nameof(IsNotAlwaysMode));
                     OnPropertyChanged(nameof(IsCustomExpressionMode));
-                    OnPropertyChanged(nameof(IsHoldForMsMode));
                     OnPropertyChanged(nameof(ShowsHoldTimeRow));
                     OnPropertyChanged(nameof(HoldTimeToolTip));
                     OnPropertyChanged(nameof(IsDoublePressMode));
@@ -1726,11 +1726,6 @@ namespace PadForge.ViewModels
         /// gate UI that should hide in Always mode).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsNotAlwaysMode => _triggerMode != MacroTriggerMode.Always;
-
-        /// <summary>True when TriggerMode is HoldForMs (issue #9 wave 1b).
-        /// Gates the hold-time ms row in the trigger editor.</summary>
-        [System.Xml.Serialization.XmlIgnore]
-        public bool IsHoldForMsMode => _triggerMode == MacroTriggerMode.HoldForMs;
 
         /// <summary>True when the shared hold-time ms row shows (#253):
         /// HoldForMs fires AT the threshold, ShortPress fires at release
@@ -1770,7 +1765,13 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool ShowsRepeatSection =>
             _triggerMode != MacroTriggerMode.Turbo &&
-            _triggerMode != MacroTriggerMode.Toggle;
+            _triggerMode != MacroTriggerMode.Toggle &&
+            // ShortPress starts with the trigger ALREADY released, so the
+            // deferred-completion flag is always set and the until-release
+            // repeat branch can never run (audit 2026-07-25, C17). Showing
+            // Repeat there let a user author a setting the engine provably
+            // ignores, the same dead-control class this gate exists for.
+            _triggerMode != MacroTriggerMode.ShortPress;
 
         /// <summary>Tooltip for the inline interval row, following the
         /// active mode (the TriggerPressWindowToolTip idiom): the turbo
@@ -1884,8 +1885,22 @@ namespace PadForge.ViewModels
             get => _layerMask;
             set
             {
-                if (SetProperty(ref _layerMask, value ?? ""))
+                // A NULL write is a picker artifact, never a user choice
+                // (audit 2026-07-25, C1). The editor's Layer ComboBox binds
+                // SelectedValue two-way over MacroLayerChoices, and every
+                // RebuildLayerTabs Clear()s that collection: WPF's Selector
+                // then coerces SelectedValue to null and the binding pushes
+                // it here, silently downgrading a scoped macro to "" (Any
+                // layer) and persisting the loss through the dirty gate.
+                // Ignoring null is the same defense MappingItem.SelectedInput
+                // uses against its own picker rebuilds; the persisted mask
+                // stays the truth and the re-Add re-matches it.
+                if (value == null) return;
+                if (SetProperty(ref _layerMask, value))
+                {
                     OnPropertyChanged(nameof(HasLayerScope));
+                    OnPropertyChanged(nameof(ShowsLayerRow));
+                }
             }
         }
 
@@ -1894,6 +1909,27 @@ namespace PadForge.ViewModels
         /// scope dot on the macro list.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool HasLayerScope => !string.IsNullOrEmpty(_layerMask);
+
+        /// <summary>True when the macro's own mask is not representable by
+        /// the slot's layer list, i.e. an imported or inherited scope
+        /// (audit 2026-07-25, C3). The editor shows the Layer row whenever
+        /// this or the slot's HasShiftLayers is true, so a scope that
+        /// arrived from an import or a cross-slot copy is always visible
+        /// and clearable rather than silently gating a macro the user
+        /// cannot inspect.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ShowsLayerRow => HasLayerScope;
+
+        /// <summary>True once the evaluator has completed a tick for this
+        /// macro, so <see cref="WasTriggerActive"/> reflects an OBSERVED
+        /// sample rather than the field's default (audit 2026-07-25, C14).
+        /// Without it, the first tick after engine start or a profile load
+        /// reads a button that was ALREADY held as a fresh rising edge, and
+        /// On Short Press armed a window it never saw begin: releasing a
+        /// long hold then fired as a tap. Poll-thread transient, cleared at
+        /// engine start with the rest of the trigger state.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool TriggerEdgeObserved { get; set; }
 
         /// <summary>Transient timing state for
         /// <see cref="MacroTriggerMode.DoublePress"/>: the UTC time of the

@@ -2655,6 +2655,16 @@
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>고정된 동안 출력을 계속 유지하는 대신 반복 간격에 맞춰 켰다 껐다 합니다.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>축 더하기 (상대)</value></data>
   <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>지속 시간 동안 매 프레임, 매핑이 이미 축에 기록한 값에 부호 있는 값을 더합니다. 음수 값은 뺍니다. 트리거 대상은 당김 스케일(32767 = 최대 당김)로 더합니다.</value></data>
+  <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>축 설정(고정)</value></data>
+  <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>값을 고정하고 콤보 브레이크를 지나도 유지합니다. 같은 축의 다른 고정 단계는 값을 교체하므로, 브레이크로 나눈 단계가 누를 때마다 사다리가 됩니다. "축 고정 해제"로 물리 입력으로 돌아갑니다.</value></data>
+  <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>축 고정 해제</value></data>
+  <data name="MacroAction_AxisLatchRelease_Tooltip" xml:space="preserve"><value>선택한 축(또는 모든 축)의 고정 값(고정 단계와 축 토글)을 이 슬롯의 모든 매크로에서 지우고 물리 입력으로 되돌립니다.</value></data>
+  <data name="MacroAction_Type_AxisScale" xml:space="preserve"><value>축 배율</value></data>
+  <data name="MacroAction_AxisScale_Tooltip" xml:space="preserve"><value>활성 중 축의 현재 값을 곱합니다. -50%는 기울임을 절반으로(달리기가 걷기로), +50%는 1.5배로, 최대치에서 제한됩니다. 물리 입력과 합성되므로 양보가 필요 없습니다.</value></data>
+  <data name="MacroAction_AxisSetLatched_Format" xml:space="preserve"><value>{0}을(를) {1}%로 고정</value></data>
+  <data name="MacroAction_AxisLatchRelease_Format" xml:space="preserve"><value>고정 해제: {0}</value></data>
+  <data name="MacroAction_AxisScale_Format" xml:space="preserve"><value>{0} {1}% 배율</value></data>
+  <data name="MacroAction_AllAxes" xml:space="preserve"><value>모든 축</value></data>
   <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>축 더하기: {0} {1}%</value></data>
   <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>콤보 브레이크</value></data>
   <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>콤보가 여기서 일시 정지합니다. 계속하려면 트리거를 다시 누르세요. 누르고 있는 트리거는 먼저 놓아야 합니다.</value></data>

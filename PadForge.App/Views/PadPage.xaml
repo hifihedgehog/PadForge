@@ -1903,6 +1903,15 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_AxisAdd, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.AxisAdd}"
                                                           ToolTip="{Binding MacroAction_AxisAdd_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_AxisScale, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.AxisScale}"
+                                                          ToolTip="{Binding MacroAction_AxisScale_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_AxisSetLatched, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.AxisSetLatched}"
+                                                          ToolTip="{Binding MacroAction_AxisSetLatched_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_AxisLatchRelease, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.AxisLatchRelease}"
+                                                          ToolTip="{Binding MacroAction_AxisLatchRelease_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_MouseWheelTap, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.MouseWheelTap}"
                                                           ToolTip="{Binding MacroAction_MouseWheelTap_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -2693,6 +2702,38 @@
                                                FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
                                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                Visibility="{Binding IsAxisAddType, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                    <!-- Scale Axis hint (#251): the shared signed value box is
+                                         the scale delta, -50% halves the current deflection. -->
+                                    <TextBlock Text="{Binding MacroAction_AxisScale_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                               FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Visibility="{Binding IsAxisScaleType, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                    <!-- Set Axis (Latched) hint (#251): ladder semantics. -->
+                                    <TextBlock Text="{Binding MacroAction_AxisSetLatched_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                               FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Visibility="{Binding IsAxisSetLatchedType, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                    <!-- Release Axis Latches (#251): target-only row, no value box
+                                         (the action carries no value). None reads as all axes. -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                Visibility="{Binding IsAxisLatchReleaseType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                   Width="80" Margin="0,0,8,0"/>
+                                        <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
+                                                  SelectedValuePath="Tag" MinWidth="120"
+                                                  ToolTip="{Binding MacroAction_AxisLatchRelease_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem Content="{Binding MacroAction_AllAxes, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.None}"/>
+                                            <ComboBoxItem Content="{Binding Macro_LeftStickX, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftStickX}"/>
+                                            <ComboBoxItem Content="{Binding Macro_LeftStickY, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftStickY}"/>
+                                            <ComboBoxItem Content="{Binding Macro_RightStickX, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightStickX}"/>
+                                            <ComboBoxItem Content="{Binding Macro_RightStickY, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightStickY}"/>
+                                            <ComboBoxItem Content="{Binding Macro_LeftTrigger, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
+                                            <ComboBoxItem Content="{Binding Macro_RightTrigger, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
+                                        </ComboBox>
+                                    </StackPanel>
 
                                     <!-- Yield to physical input (discussion #237): the axis holds
                                          can hand the axis back to the player mid-activation. -->

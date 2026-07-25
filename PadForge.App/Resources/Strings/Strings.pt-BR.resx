@@ -2655,6 +2655,16 @@
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Enquanto travado, alterna a saída no ritmo do intervalo de repetição em vez de mantê-la fixa.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Adicionar ao Eixo (Relativo)</value></data>
   <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Soma o valor com sinal ao que o mapeamento já escreveu no eixo, a cada quadro durante a duração. Valores negativos subtraem. Gatilhos somam na escala de acionamento (32767 = acionamento completo).</value></data>
+  <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>Definir Eixo (Travado)</value></data>
+  <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>Mantém o eixo no valor, mesmo através de quebras de combo. Outro passo travado no mesmo eixo substitui o valor, então passos separados por quebras formam uma escada a cada toque. "Soltar Travas de Eixo" devolve o eixo ao controle físico.</value></data>
+  <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>Soltar Travas de Eixo</value></data>
+  <data name="MacroAction_AxisLatchRelease_Tooltip" xml:space="preserve"><value>Limpa valores de eixo travados (passos travados e alternadores de eixo) do eixo escolhido, ou de todos, em todas as macros deste slot, devolvendo o eixo ao controle físico.</value></data>
+  <data name="MacroAction_Type_AxisScale" xml:space="preserve"><value>Escalar Eixo</value></data>
+  <data name="MacroAction_AxisScale_Tooltip" xml:space="preserve"><value>Multiplica o valor atual do eixo enquanto ativo: -50% reduz a deflexão pela metade (correr vira andar), +50% amplifica em metade, limitado à escala cheia. Compõe com a entrada física, sem necessidade de ceder.</value></data>
+  <data name="MacroAction_AxisSetLatched_Format" xml:space="preserve"><value>Travar {0} em {1}%</value></data>
+  <data name="MacroAction_AxisLatchRelease_Format" xml:space="preserve"><value>Soltar travas: {0}</value></data>
+  <data name="MacroAction_AxisScale_Format" xml:space="preserve"><value>Escalar {0} em {1}%</value></data>
+  <data name="MacroAction_AllAxes" xml:space="preserve"><value>Todos os Eixos</value></data>
   <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>Adicionar ao Eixo: {0} {1}%</value></data>
   <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>Quebra de Combo</value></data>
   <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>O combo pausa aqui. Pressione o gatilho novamente para continuar. Um gatilho mantido pressionado precisa ser solto primeiro.</value></data>

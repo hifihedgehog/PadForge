@@ -2709,6 +2709,16 @@
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>While latched, pulse the output on and off at the repeat interval instead of holding it solid.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Axis Add (Relative)</value></data>
   <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Adds the signed value on top of what the mapping already wrote to the axis, every frame for the duration. Negative values subtract. Trigger targets add on the pull scale (32767 = full pull).</value></data>
+  <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>Set Axis (Latched)</value></data>
+  <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>Holds the axis at the value until released, surviving combo breaks. Firing another latched step on the same axis replaces the value, so steps separated by Combo Breaks build a press-by-press ladder. Release Axis Latches returns the axis to physical control.</value></data>
+  <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>Release Axis Latches</value></data>
+  <data name="MacroAction_AxisLatchRelease_Tooltip" xml:space="preserve"><value>Clears latched axis values (latched steps and axis toggles) for the chosen axis, or all axes, across every macro on this slot, returning the axis to physical control.</value></data>
+  <data name="MacroAction_Type_AxisScale" xml:space="preserve"><value>Scale Axis</value></data>
+  <data name="MacroAction_AxisScale_Tooltip" xml:space="preserve"><value>Multiplies the axis’s current value while active: -50% halves the deflection (run becomes walk), +50% amplifies half again, clamped to full scale. Composes with the physical input, so no yield is needed.</value></data>
+  <data name="MacroAction_AxisSetLatched_Format" xml:space="preserve"><value>Latch {0} at {1}%</value></data>
+  <data name="MacroAction_AxisLatchRelease_Format" xml:space="preserve"><value>Release latches: {0}</value></data>
+  <data name="MacroAction_AxisScale_Format" xml:space="preserve"><value>Scale {0} by {1}%</value></data>
+  <data name="MacroAction_AllAxes" xml:space="preserve"><value>All Axes</value></data>
   <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>Axis Add: {0} {1}%</value></data>
   <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>Combo Break</value></data>
   <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>The combo pauses here. Press the trigger again to continue. A held trigger must be released first.</value></data>

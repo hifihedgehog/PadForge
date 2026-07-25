@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Common.Mapping;
@@ -79,18 +79,25 @@ namespace PadForge.Tests
             // The macro clipboard serializes MacroActionType numerically, so
             // new members MUST append at the tail and their values must
             // never move (wave 1b pinned 35..38; v15 appended 39..40; v16
-            // appended 41..42; v18 appended 43..46; #237 appended 47..48).
+            // appended 41..42; v18 appended 43..46; #237 appended 47..48;
+            // #251 appended 49..51).
             var values = Enum.GetValues<MacroActionType>();
-            Assert.Equal(MacroActionType.ComboBreak, values[^1]);
-            Assert.Equal(MacroActionType.AxisAdd, values[^2]);
-            Assert.Equal(MacroActionType.ToggleWheel, values[^3]);
-            Assert.Equal(MacroActionType.RepeatVcAxisWhileHeld, values[^4]);
-            Assert.Equal(MacroActionType.ToggleVcAxis, values[^5]);
-            Assert.Equal(MacroActionType.ToggleMouseButton, values[^6]);
-            Assert.Equal(MacroActionType.CycleTapList, values[^7]);
-            Assert.Equal(MacroActionType.MouseNudge, values[^8]);
-            Assert.Equal(MacroActionType.MouseWheelTap, values[^9]);
-            Assert.Equal(MacroActionType.AxisHold, values[^10]);
+            Assert.Equal(MacroActionType.AxisScale, values[^1]);
+            Assert.Equal(MacroActionType.AxisLatchRelease, values[^2]);
+            Assert.Equal(MacroActionType.AxisSetLatched, values[^3]);
+            Assert.Equal(49, (int)MacroActionType.AxisSetLatched);
+            Assert.Equal(50, (int)MacroActionType.AxisLatchRelease);
+            Assert.Equal(51, (int)MacroActionType.AxisScale);
+            Assert.Equal(MacroActionType.ComboBreak, values[^4]);
+            Assert.Equal(MacroActionType.AxisAdd, values[^5]);
+            Assert.Equal(MacroActionType.ToggleWheel, values[^6]);
+            Assert.Equal(MacroActionType.RepeatVcAxisWhileHeld, values[^7]);
+            Assert.Equal(MacroActionType.ToggleVcAxis, values[^8]);
+            Assert.Equal(MacroActionType.ToggleMouseButton, values[^9]);
+            Assert.Equal(MacroActionType.CycleTapList, values[^10]);
+            Assert.Equal(MacroActionType.MouseNudge, values[^11]);
+            Assert.Equal(MacroActionType.MouseWheelTap, values[^12]);
+            Assert.Equal(MacroActionType.AxisHold, values[^13]);
 
             Assert.Equal(35, (int)MacroActionType.RepeatVcButtonWhileHeld);
             Assert.Equal(36, (int)MacroActionType.ToggleVcButton);

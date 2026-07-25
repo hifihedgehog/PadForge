@@ -637,6 +637,9 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>Seuil </value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consommer les boutons déclencheurs (masquer du jeu)</value></data>
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Consomme l'entrée du déclencheur pour que le jeu ne la voie jamais. Fonctionne avec les boutons de manette virtuelle, les boutons physiques et les entrées pavé tactile ou gyroscope. Les déclencheurs par seuil d'axe, POV et gestes ne sont pas consommés.</value></data>
+  <data name="Macro_Layer" xml:space="preserve"><value>Calque</value></data>
+  <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>À quel calque de bascule cette macro appartient. « Tout calque » se déclenche quel que soit le calque actif. Base et les calques nommés ne se déclenchent que lorsque ce calque est actif, exactement comme une ligne de mappage.</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>Tout calque</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>S'exécute en continu tant que ce contrôleur virtuel est actif. Aucun bouton déclencheur requis.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Séquence d'actions</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Ajouter une action</value></data>
@@ -2613,6 +2616,8 @@
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversion des axes non appliquée ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>molette circulaire approximée par un glissement vertical</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Sur appui long</value></data>
+  <data name="Macro_ShortPress" xml:space="preserve"><value>Sur appui bref</value></data>
+  <data name="Macro_ShortPress_Tooltip" xml:space="preserve"><value>Se déclenche une fois quand le déclencheur est relâché avant la fin du temps de maintien. Maintenir au-delà du seuil ne déclenche rien ; associé à « Sur appui long » sur le même bouton, cela donne tape-ou-maintien.</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se déclenche une fois lorsque le déclencheur a été maintenu en continu pendant la durée de maintien. Un appui plus court ne fait rien.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Sur double appui</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Se déclenche quand la commande est appuyée deux fois dans la fenêtre d&apos;appui. Si le second appui est maintenu, elle reste active jusqu&apos;au relâchement.</value></data>

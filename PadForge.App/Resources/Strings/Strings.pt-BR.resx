@@ -637,6 +637,9 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>Limiar</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consumir botões de gatilho (ocultar do jogo)</value></data>
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Consome a entrada do gatilho para que o jogo nunca a veja. Funciona com botões do controle virtual, botões físicos do dispositivo e entradas de touchpad ou giroscópio. Gatilhos por limiar de eixo, POV e gestos não são consumidos.</value></data>
+  <data name="Macro_Layer" xml:space="preserve"><value>Camada</value></data>
+  <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>A qual camada de shift esta macro pertence. “Qualquer camada” dispara independentemente da camada ativa. Base e camadas nomeadas disparam apenas enquanto essa camada está ativa, exatamente como uma linha de mapeamento.</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>Qualquer camada</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Executa continuamente enquanto este controle virtual estiver ativo. Nenhum botão de gatilho necessário.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Sequência de Ações</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Adicionar Ação</value></data>
@@ -2613,6 +2616,8 @@
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversão de eixo não aplicada ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>roda de rolagem circular aproximada como arrasto vertical</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Ao Pressionar Longamente</value></data>
+  <data name="Macro_ShortPress" xml:space="preserve"><value>Ao pressionar brevemente</value></data>
+  <data name="Macro_ShortPress_Tooltip" xml:space="preserve"><value>Dispara uma vez quando o gatilho é solto antes de o tempo de retenção expirar. Segurar além do limite não dispara nada, então combiná-lo com “Ao pressionar e segurar” no mesmo botão dá toque-ou-segurar.</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Dispara uma vez depois que o gatilho for mantido continuamente pelo tempo de retenção. Um toque mais curto não faz nada.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Ao Pressionar Duas Vezes</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Dispara quando o gatilho é pressionado duas vezes dentro da janela de pressão. Se a segunda pressão for mantida, permanece ativo até soltar.</value></data>

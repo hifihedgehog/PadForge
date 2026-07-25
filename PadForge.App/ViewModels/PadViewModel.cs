@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -1567,6 +1567,15 @@ namespace PadForge.ViewModels
         /// <c>SettingsManager.SlotMappingSets[PadIndex].ShiftActivators</c>.</summary>
         public ObservableCollection<ShiftLayerInfo> LayerTabs { get; } = new();
 
+        /// <summary>Macro layer-scope choices (#254 A-1): a synthetic
+        /// "Any layer" entry (LayerMask = "", the ungated default every
+        /// pre-#254 macro carries) followed by Base and every shift layer.
+        /// A DEDICATED collection rather than a LayerTabs mutation, because
+        /// four other consumers read LayerTabs (the pipeline chip cycles
+        /// it) and none of them may see the synthetic entry. Rebuilt
+        /// alongside LayerTabs.</summary>
+        public ObservableCollection<ShiftLayerInfo> MacroLayerChoices { get; } = new();
+
         /// <summary>True when the slot has at least one shift activator
         /// authored, i.e. at least one tab beyond Base. Drives the nested
         /// tab strip's visibility (basic users without any shift layers see
@@ -1659,6 +1668,24 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(HasShiftLayers));
             OnPropertyChanged(nameof(IsActiveLayerInheriting));
             OnPropertyChanged(nameof(ActiveLayerColor));
+
+            // #254 A-1: mirror the tabs into the macro-scope picker, with
+            // the "Any layer" sentinel first. Empty display name falls
+            // back to the mask per the codebase-wide rule; the sentinel
+            // carries its own localized label.
+            MacroLayerChoices.Clear();
+            MacroLayerChoices.Add(new ShiftLayerInfo
+            {
+                LayerMask = "",
+                LayerName = PadForge.Resources.Strings.Strings.Instance.Macro_Layer_Any,
+            });
+            foreach (var t in LayerTabs)
+                MacroLayerChoices.Add(new ShiftLayerInfo
+                {
+                    LayerMask = t.LayerMask,
+                    LayerName = t.LayerName,
+                    Color = t.Color,
+                });
         }
 
         /// <summary>

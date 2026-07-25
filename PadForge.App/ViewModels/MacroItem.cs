@@ -41,6 +41,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(RecordTriggerIcon));
             OnPropertyChanged(nameof(TriggerDisplayText));
             OnPropertyChanged(nameof(TriggerPressWindowToolTip));
+            OnPropertyChanged(nameof(HoldTimeToolTip));
             OnPropertyChanged(nameof(InlineIntervalToolTip));
             _outputChannelOptions = null;
             OnPropertyChanged(nameof(OutputChannelOptions));
@@ -1709,6 +1710,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsNotAlwaysMode));
                     OnPropertyChanged(nameof(IsCustomExpressionMode));
                     OnPropertyChanged(nameof(IsHoldForMsMode));
+                    OnPropertyChanged(nameof(ShowsHoldTimeRow));
+                    OnPropertyChanged(nameof(HoldTimeToolTip));
                     OnPropertyChanged(nameof(IsDoublePressMode));
                     OnPropertyChanged(nameof(ShowsInlineIntervalRow));
                     OnPropertyChanged(nameof(ShowsRepeatSection));
@@ -1728,6 +1731,24 @@ namespace PadForge.ViewModels
         /// Gates the hold-time ms row in the trigger editor.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsHoldForMsMode => _triggerMode == MacroTriggerMode.HoldForMs;
+
+        /// <summary>True when the shared hold-time ms row shows (#253):
+        /// HoldForMs fires AT the threshold, ShortPress fires at release
+        /// UNDER it. One row, one stored value, two directions (the
+        /// ShowsInlineIntervalRow precedent).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ShowsHoldTimeRow =>
+            _triggerMode == MacroTriggerMode.HoldForMs ||
+            _triggerMode == MacroTriggerMode.ShortPress;
+
+        /// <summary>Tooltip for the shared hold-time row, following the
+        /// active mode (the TriggerPressWindowToolTip idiom). Re-raised on
+        /// mode and culture changes.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string HoldTimeToolTip =>
+            _triggerMode == MacroTriggerMode.ShortPress
+                ? Strings.Instance.Macro_ShortPress_Tooltip
+                : Strings.Instance.Macro_HoldForMs_Tooltip;
 
         /// <summary>True when the inline repeat-interval ms row shows
         /// beside the Fire picker (#238): Turbo (the interval is the turbo
@@ -1797,7 +1818,8 @@ namespace PadForge.ViewModels
             _triggerMode == MacroTriggerMode.TriplePress ||
             _triggerMode == MacroTriggerMode.SinglePress ||
             _triggerMode == MacroTriggerMode.Toggle ||
-            _triggerMode == MacroTriggerMode.Turbo;
+            _triggerMode == MacroTriggerMode.Turbo ||
+            _triggerMode == MacroTriggerMode.ShortPress;
 
         private int _triggerHoldMs = 500;
 
@@ -1860,8 +1882,18 @@ namespace PadForge.ViewModels
         public string LayerMask
         {
             get => _layerMask;
-            set => SetProperty(ref _layerMask, value ?? "");
+            set
+            {
+                if (SetProperty(ref _layerMask, value ?? ""))
+                    OnPropertyChanged(nameof(HasLayerScope));
+            }
         }
+
+        /// <summary>True when the macro is scoped to a layer or to Base
+        /// (#254 A-1), i.e. anything but the ungated "" default. Drives the
+        /// scope dot on the macro list.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool HasLayerScope => !string.IsNullOrEmpty(_layerMask);
 
         /// <summary>Transient timing state for
         /// <see cref="MacroTriggerMode.DoublePress"/>: the UTC time of the
@@ -5442,7 +5474,15 @@ namespace PadForge.ViewModels
         /// first-class mode, with the interval surfaced beside the Fire
         /// picker. At the tail per the APPEND-ONLY rule above; ordinal
         /// pinned.</summary>
-        Turbo = 10
+        Turbo = 10,
+
+        /// <summary>#253 "On Short Press": fires once at RELEASE, only when
+        /// the continuous hold stayed UNDER <see cref="MacroItem.TriggerHoldMs"/>.
+        /// The exact twin of <see cref="HoldForMs"/> ("On Long Press"),
+        /// sharing its threshold, so the pair composes tap-vs-hold on one
+        /// button. At the tail per the APPEND-ONLY rule above; ordinal
+        /// pinned.</summary>
+        ShortPress = 11
     }
 
     public enum MacroTriggerSource

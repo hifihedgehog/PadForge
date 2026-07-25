@@ -1348,6 +1348,9 @@ public class Strings : INotifyPropertyChanged
     public string Macro_Threshold => Get("Macro_Threshold");
     public string Macro_ConsumeTrigger => Get("Macro_ConsumeTrigger");
     public string Macro_ConsumeTrigger_Tooltip => Get("Macro_ConsumeTrigger_Tooltip");
+    public string Macro_Layer => Get("Macro_Layer");
+    public string Macro_Layer_Tooltip => Get("Macro_Layer_Tooltip");
+    public string Macro_Layer_Any => Get("Macro_Layer_Any");
     public string Macro_AlwaysDesc => Get("Macro_AlwaysDesc");
     public string Macro_ActionSequence => Get("Macro_ActionSequence");
     public string Macro_AddAction => Get("Macro_AddAction");
@@ -1545,6 +1548,8 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_Type_GyroRecenter => Get("MacroAction_Type_GyroRecenter");
     public string MacroAction_GyroRecenter_Tooltip => Get("MacroAction_GyroRecenter_Tooltip");
     public string Macro_HoldForMs => Get("Macro_HoldForMs");
+    public string Macro_ShortPress => Get("Macro_ShortPress");
+    public string Macro_ShortPress_Tooltip => Get("Macro_ShortPress_Tooltip");
     public string Macro_HoldForMs_Tooltip => Get("Macro_HoldForMs_Tooltip");
     public string Macro_DoublePress => Get("Macro_DoublePress");
     public string Macro_DoublePress_Tooltip => Get("Macro_DoublePress_Tooltip");

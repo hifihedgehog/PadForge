@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -1321,7 +1321,7 @@ namespace PadForge.Views
             int arrow = emitted.IndexOf(" <- ", StringComparison.Ordinal);
             if (arrow >= 0)
             {
-                string target = emitted.Substring(0, arrow);
+                string target = HumanizeKbmTarget(emitted.Substring(0, arrow));
                 string source = emitted.Substring(arrow + 4);
                 string activator = ActivatorAnnotation(entry.SourcePath);
                 if (activator != null) source += " · " + activator;
@@ -1333,7 +1333,58 @@ namespace PadForge.Views
                 : PathTail(entry.SourcePath);
             // U+2014 is the design's skipped-row target glyph (a data
             // token in the manifest column, not punctuation).
-            return (fallback, emitted.Length > 0 ? emitted : "\u2014");
+            return (fallback, emitted.Length > 0 ? HumanizeKbmTarget(emitted) : "\u2014");
+        }
+
+        /// <summary>Renders a keyboard/mouse mapping target as the key a
+        /// person would recognize. The translator's target vocabulary is
+        /// the engine's storage grammar ("KbmKey5A" is a HEX virtual-key
+        /// code, "KbmMBtn1" a mouse-button index), which is correct on
+        /// disk and unreadable in a preview: nobody knows 0x5A is Z.
+        /// Routes through the same localized
+        /// <see cref="ViewModels.MacroAction.VirtualKeyDisplayName"/> table
+        /// the macro editor's key picker uses, so the preview and the
+        /// editor name a key identically in every language. Non-KBM
+        /// targets (gamepad buttons, axes) pass through untouched, being
+        /// already human-readable.</summary>
+        internal static string HumanizeKbmTarget(string target)
+        {
+            if (string.IsNullOrEmpty(target)) return target;
+
+            if (target.StartsWith("KbmKey", StringComparison.Ordinal)
+                && int.TryParse(target.AsSpan(6), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out int vk)
+                && Enum.IsDefined(typeof(PadForge.Common.VirtualKey), vk))
+                return ViewModels.MacroAction.VirtualKeyDisplayName((PadForge.Common.VirtualKey)vk);
+
+            // Mouse buttons are 1-based in the translator's spelling and
+            // resolve through the same VK table the keys use.
+            if (target.StartsWith("KbmMBtn", StringComparison.Ordinal)
+                && int.TryParse(target.AsSpan(7), out int btn))
+            {
+                var vkBtn = btn switch
+                {
+                    1 => PadForge.Common.VirtualKey.LButton,
+                    2 => PadForge.Common.VirtualKey.RButton,
+                    3 => PadForge.Common.VirtualKey.MButton,
+                    4 => PadForge.Common.VirtualKey.XButton1,
+                    5 => PadForge.Common.VirtualKey.XButton2,
+                    _ => PadForge.Common.VirtualKey.None,
+                };
+                return vkBtn == PadForge.Common.VirtualKey.None
+                    ? target
+                    : ViewModels.MacroAction.VirtualKeyDisplayName(vkBtn);
+            }
+
+            var si = Strings.Instance;
+            return target switch
+            {
+                "KbmMouseX" => si.Mapping_MouseSpeedX,
+                "KbmMouseY" => si.Mapping_MouseSpeedY,
+                "KbmScroll" => si.Mapping_MouseScroll,
+                "KbmScrollH" => si.Mouse_ScrollH,
+                _ => target,
+            };
         }
 
         /// <summary>The activator variant, lowercased ("long-press"), when it

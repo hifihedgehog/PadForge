@@ -633,6 +633,11 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.HoldForMs:
                         shouldStart = EvaluateHoldForMsTrigger(macro, triggerActive, wasTriggerActive);
                         break;
+                    case MacroTriggerMode.ShortPress:
+                        // #253: fires at the falling edge when the hold
+                        // stayed under TriggerHoldMs, the HoldForMs twin.
+                        shouldStart = EvaluateShortPressTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
                     case MacroTriggerMode.DoublePress:
                         shouldStart = EvaluateDoublePressTrigger(macro, triggerActive, wasTriggerActive);
                         break;
@@ -696,7 +701,9 @@ namespace PadForge.Common.Input
                     // zero actions. The flag suppresses the release-stop
                     // until the pass completes.
                     macro.RunReleasedFireToCompletion =
-                        macro.TriggerMode == MacroTriggerMode.SinglePress && !triggerActive;
+                        (macro.TriggerMode == MacroTriggerMode.SinglePress
+                         || macro.TriggerMode == MacroTriggerMode.ShortPress)
+                        && !triggerActive;
                     // #237: resume from a combo-break park (0 = the top).
                     macro.CurrentActionIndex = macro.ComboResumeIndex;
                     macro.ActionStartTime = DateTime.UtcNow;
@@ -774,23 +781,59 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Shift-layer gate for layer-scoped macros (translator
-        /// v25, Steam's always_on_action). Open when the macro carries no
-        /// mask (the default, every ordinary macro) or when ANY created
-        /// slot's mapping set currently engages the mask. The any-slot
-        /// walk covers split configs, where the twin activators live on
-        /// whichever set has the layer's rows while the macro rides the
-        /// Xbox slot; masks are per-import unique
-        /// ("Layer_{fileId}_{presetId}"), so a cross-slot match can only
-        /// be the same import's twin. Reads the engaged mask through the
-        /// pure <see cref="GetEngagedLayerMask"/> (no activator re-tick).</summary>
+        /// v25 / #254). Semantics of <see cref="MacroItem.LayerMask"/>:
+        /// "" = ANY layer (ungated, every pre-#254 macro), "Base" = only
+        /// while Base is effectively engaged, honoring the engaged layer's
+        /// InheritUnmapped exactly like a Base ROW does, any other value =
+        /// only while that layer is engaged. Scoped to the MACRO'S OWN
+        /// slot (#254 A-4): the old any-slot walk was safe only while
+        /// masks were import-unique ("Layer_{fileId}_{presetId}"), and
+        /// hand-authored masks derive from layer names uniquified only
+        /// WITHIN a slot, so two slots both named "Shift" would
+        /// cross-trigger. The split-config case the walk existed for (twin
+        /// activators live on whichever set owns the layer's rows while
+        /// the macro rides the Xbox slot) survives as a fallback: when the
+        /// macro's own slot does not DECLARE the mask at all, any slot's
+        /// engagement still opens it. Reads engagement through the pure
+        /// <see cref="GetEngagedLayerMask"/> (no activator re-tick).</summary>
         private static bool MacroLayerGateOpen(MacroItem macro)
         {
             string mask = macro.LayerMask;
-            if (string.IsNullOrEmpty(mask)
-                || string.Equals(mask, "Base", StringComparison.Ordinal))
-                return true;
+            if (string.IsNullOrEmpty(mask)) return true; // "" = any layer
             var sets = SettingsManager.SlotMappingSets;
             if (sets == null) return true; // no layer machinery: fail open
+
+            int slot = macro.PadIndex;
+            if (slot < 0 || slot >= sets.Length)
+                return AnySlotEngages(sets, mask); // unset slot: legacy walk
+
+            var ownSet = sets[slot];
+            string engaged = ownSet != null ? GetEngagedLayerMask(slot, ownSet) : "Base";
+
+            if (string.Equals(mask, "Base", StringComparison.Ordinal))
+            {
+                // The Base-ROW contract (#221 family): open while Base is
+                // engaged, and while a non-Base layer with InheritUnmapped
+                // lets Base fall through.
+                if (string.Equals(engaged, "Base", StringComparison.Ordinal)) return true;
+                return ownSet != null && LayerInheritsUnmapped(ownSet, engaged);
+            }
+
+            if (string.Equals(engaged, mask, StringComparison.Ordinal)) return true;
+
+            // Split-config fallback: only when the macro's own slot does
+            // not declare the mask. A same-named mask engaged on a foreign
+            // slot must NOT open a macro whose own slot declares it.
+            if (!SlotDeclaresMask(ownSet, mask))
+                return AnySlotEngages(sets, mask);
+            return false;
+        }
+
+        /// <summary>True when any slot's set currently engages the mask
+        /// (the pre-#254 walk, kept for the split-config and unset-slot
+        /// fallbacks).</summary>
+        private static bool AnySlotEngages(MappingSet[] sets, string mask)
+        {
             for (int s = 0; s < sets.Length; s++)
             {
                 var set = sets[s];
@@ -798,6 +841,19 @@ namespace PadForge.Common.Input
                 if (string.Equals(GetEngagedLayerMask(s, set), mask, StringComparison.Ordinal))
                     return true;
             }
+            return false;
+        }
+
+        /// <summary>True when the set carries a shift activator for the
+        /// mask, i.e. the slot OWNS that layer (#254 A-4).</summary>
+        private static bool SlotDeclaresMask(MappingSet set, string mask)
+        {
+            var acts = set?.ShiftActivators;
+            if (acts == null) return false;
+            for (int i = 0; i < acts.Count; i++)
+                if (acts[i] != null
+                    && string.Equals(acts[i].LayerMask, mask, StringComparison.Ordinal))
+                    return true;
             return false;
         }
 
@@ -922,6 +978,38 @@ namespace PadForge.Common.Input
             {
                 macro.TriggerHoldFired = true;
                 return true;
+            }
+            return false;
+        }
+
+        /// <summary>Shared On Short Press evaluation (#253): fires once at
+        /// the FALLING edge, only when the hold stayed under
+        /// <see cref="MacroItem.TriggerHoldMs"/>. Reuses the HoldForMs
+        /// transients on the TriplePress precedent (a macro has exactly one
+        /// mode, and both fields clear in every reset lane). A release with
+        /// no armed timestamp (engine started mid-hold, or the reset lanes
+        /// cleared it) never fires: the press's rising edge was never
+        /// witnessed, so its duration is unknowable.</summary>
+        private static bool EvaluateShortPressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
+        {
+            if (triggerActive && !wasTriggerActive)
+            {
+                // Rising edge: arm the window, exactly like HoldForMs.
+                macro.TriggerHoldStartUtc = DateTime.UtcNow;
+                macro.TriggerHoldFired = false;
+                return false;
+            }
+            if (!triggerActive && wasTriggerActive
+                && macro.TriggerHoldStartUtc != DateTime.MinValue
+                && !macro.TriggerHoldFired)
+            {
+                double heldMs = (DateTime.UtcNow - macro.TriggerHoldStartUtc).TotalMilliseconds;
+                macro.TriggerHoldStartUtc = DateTime.MinValue;
+                if (heldMs < macro.TriggerHoldMs)
+                {
+                    macro.TriggerHoldFired = true;
+                    return true;
+                }
             }
             return false;
         }
@@ -3515,6 +3603,11 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.HoldForMs:
                         shouldStart = EvaluateHoldForMsTrigger(macro, triggerActive, wasTriggerActive);
                         break;
+                    case MacroTriggerMode.ShortPress:
+                        // #253: fires at the falling edge when the hold
+                        // stayed under TriggerHoldMs, the HoldForMs twin.
+                        shouldStart = EvaluateShortPressTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
                     case MacroTriggerMode.DoublePress:
                         shouldStart = EvaluateDoublePressTrigger(macro, triggerActive, wasTriggerActive);
                         break;
@@ -3567,7 +3660,9 @@ namespace PadForge.Common.Input
                     // zero actions. The flag suppresses the release-stop
                     // until the pass completes.
                     macro.RunReleasedFireToCompletion =
-                        macro.TriggerMode == MacroTriggerMode.SinglePress && !triggerActive;
+                        (macro.TriggerMode == MacroTriggerMode.SinglePress
+                         || macro.TriggerMode == MacroTriggerMode.ShortPress)
+                        && !triggerActive;
                     // #237: resume from a combo-break park (0 = the top).
                     macro.CurrentActionIndex = macro.ComboResumeIndex;
                     macro.ActionStartTime = DateTime.UtcNow;

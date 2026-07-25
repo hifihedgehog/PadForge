@@ -1357,31 +1357,37 @@ namespace PadForge.Views
                 && Enum.IsDefined(typeof(PadForge.Common.VirtualKey), vk))
                 return ViewModels.MacroAction.VirtualKeyDisplayName((PadForge.Common.VirtualKey)vk);
 
-            // Mouse buttons are 1-based in the translator's spelling and
-            // resolve through the same VK table the keys use.
+            // Mouse buttons are ZERO-based across the whole vocabulary
+            // (audit 2026-07-25, C25): SteamInputVkTable emits LEFT as
+            // KbmMBtn0, and MappingTranslation / the KBM output map / the
+            // editor's own picker all agree. The first cut of this helper
+            // read them as 1-based, so every button rendered as its
+            // predecessor and left-click fell through unnamed, which is
+            // worse than the raw string it replaced.
+            var si = Strings.Instance;
             if (target.StartsWith("KbmMBtn", StringComparison.Ordinal)
                 && int.TryParse(target.AsSpan(7), out int btn))
             {
-                var vkBtn = btn switch
+                // The editor's own KBM row labels, so the preview and the
+                // mapping grid name the same target identically.
+                return btn switch
                 {
-                    1 => PadForge.Common.VirtualKey.LButton,
-                    2 => PadForge.Common.VirtualKey.RButton,
-                    3 => PadForge.Common.VirtualKey.MButton,
-                    4 => PadForge.Common.VirtualKey.XButton1,
-                    5 => PadForge.Common.VirtualKey.XButton2,
-                    _ => PadForge.Common.VirtualKey.None,
+                    0 => si.Mouse_LeftClick,
+                    1 => si.Mouse_RightClick,
+                    2 => si.Mouse_MiddleClick,
+                    3 => si.Mouse_Button4,
+                    4 => si.Mouse_Button5,
+                    _ => target,
                 };
-                return vkBtn == PadForge.Common.VirtualKey.None
-                    ? target
-                    : ViewModels.MacroAction.VirtualKeyDisplayName(vkBtn);
             }
 
-            var si = Strings.Instance;
             return target switch
             {
-                "KbmMouseX" => si.Mapping_MouseSpeedX,
-                "KbmMouseY" => si.Mapping_MouseSpeedY,
-                "KbmScroll" => si.Mapping_MouseScroll,
+                // Same rule for the analog lanes: these are the strings the
+                // KBM mapping rows use for these exact target names.
+                "KbmMouseX" => si.Mouse_X,
+                "KbmMouseY" => si.Mouse_Y,
+                "KbmScroll" => si.Mouse_Scroll,
                 "KbmScrollH" => si.Mouse_ScrollH,
                 _ => target,
             };

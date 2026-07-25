@@ -598,7 +598,13 @@ namespace PadForge.Common.Input
                 }
 
                 bool wasTriggerActive = macro.WasTriggerActive;
+                // Capture BEFORE the latch, exactly like wasTriggerActive:
+                // the flag is set for the NEXT tick, so reading it inside
+                // the evaluator would always see true and the C14 guard
+                // would never block (caught by its own guard test).
+                bool edgeObserved = macro.TriggerEdgeObserved;
                 macro.WasTriggerActive = triggerActive;
+                macro.TriggerEdgeObserved = true;
 
                 // Determine if we should start execution based on trigger mode.
                 bool shouldStart = false;
@@ -636,7 +642,7 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.ShortPress:
                         // #253: fires at the falling edge when the hold
                         // stayed under TriggerHoldMs, the HoldForMs twin.
-                        shouldStart = EvaluateShortPressTrigger(macro, triggerActive, wasTriggerActive);
+                        shouldStart = EvaluateShortPressTrigger(macro, triggerActive, wasTriggerActive, layerOpen, edgeObserved);
                         break;
                     case MacroTriggerMode.DoublePress:
                         shouldStart = EvaluateDoublePressTrigger(macro, triggerActive, wasTriggerActive);
@@ -766,7 +772,16 @@ namespace PadForge.Common.Input
                 // keeps "the macro eats its trigger" true for both presses.
                 bool consumeNow = macro.TriggerMode == MacroTriggerMode.Toggle
                     ? macro.ToggleRawWasActive
-                    : (triggerActive && macro.IsExecuting);
+                    // ShortPress consumes while the trigger is HELD (audit
+                    // 2026-07-25, C18). It starts on the falling edge, so
+                    // "active AND executing" is never simultaneously true
+                    // and the checkbox was silently inert for the mode.
+                    // Eating the press as it happens is also what the
+                    // tap-vs-hold pairing wants: the button's own binding
+                    // must not fire alongside either half.
+                    : macro.TriggerMode == MacroTriggerMode.ShortPress
+                        ? (triggerActive || macro.IsExecuting)
+                        : (triggerActive && macro.IsExecuting);
                 if (macro.ConsumeTriggerButtons && consumeNow && !macro.UsesRawTrigger)
                 {
                     gp.Buttons &= (ushort)~macro.TriggerButtons;
@@ -815,8 +830,31 @@ namespace PadForge.Common.Input
                 // The Base-ROW contract (#221 family): open while Base is
                 // engaged, and while a non-Base layer with InheritUnmapped
                 // lets Base fall through.
-                if (string.Equals(engaged, "Base", StringComparison.Ordinal)) return true;
-                return ownSet != null && LayerInheritsUnmapped(ownSet, engaged);
+                if (!string.Equals(engaged, "Base", StringComparison.Ordinal))
+                    return ownSet != null && LayerInheritsUnmapped(ownSet, engaged);
+
+                // Split-config fallback, the mirror of the named-mask one
+                // below (audit 2026-07-25, C6). A Workshop import puts its
+                // macros on the Xbox slot, but an action set whose content
+                // is KBM-only gets its switch activator on the KBM slot
+                // alone. The Xbox slot then reads "Base" forever, so a
+                // Base-scoped macro stayed open in a set that REPLACED
+                // Base. When this slot owns no layer machinery at all,
+                // another slot's engaged non-Base layer closes Base here
+                // too.
+                if (ownSet?.ShiftActivators == null || ownSet.ShiftActivators.Count == 0)
+                {
+                    for (int s2 = 0; s2 < sets.Length; s2++)
+                    {
+                        var other = sets[s2];
+                        if (other == null || s2 == slot) continue;
+                        string otherEngaged = GetEngagedLayerMask(s2, other);
+                        if (!string.Equals(otherEngaged, "Base", StringComparison.Ordinal)
+                            && !LayerInheritsUnmapped(other, otherEngaged))
+                            return false;
+                    }
+                }
+                return true;
             }
 
             if (string.Equals(engaged, mask, StringComparison.Ordinal)) return true;
@@ -851,9 +889,19 @@ namespace PadForge.Common.Input
             var acts = set?.ShiftActivators;
             if (acts == null) return false;
             for (int i = 0; i < acts.Count; i++)
-                if (acts[i] != null
-                    && string.Equals(acts[i].LayerMask, mask, StringComparison.Ordinal))
-                    return true;
+            {
+                var a = acts[i];
+                if (a == null) continue;
+                if (string.Equals(a.LayerMask, mask, StringComparison.Ordinal)) return true;
+                // A Cycle activator ENGAGES every mask in its ring while
+                // carrying only the first as its own LayerMask (audit
+                // 2026-07-25, C5). Without this the slot looked like it
+                // did not own its own cycle stops, and the gate silently
+                // dropped to the any-slot walk #254 exists to retire.
+                if (string.IsNullOrEmpty(a.CycleLayers)) continue;
+                foreach (var stop in a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries))
+                    if (string.Equals(stop, mask, StringComparison.Ordinal)) return true;
+            }
             return false;
         }
 
@@ -990,13 +1038,30 @@ namespace PadForge.Common.Input
         /// no armed timestamp (engine started mid-hold, or the reset lanes
         /// cleared it) never fires: the press's rising edge was never
         /// witnessed, so its duration is unknowable.</summary>
-        private static bool EvaluateShortPressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
+        private static bool EvaluateShortPressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive, bool layerOpen, bool edgeObserved)
         {
             if (triggerActive && !wasTriggerActive)
             {
-                // Rising edge: arm the window, exactly like HoldForMs.
+                // Rising edge: arm the window, exactly like HoldForMs, but
+                // only when the previous sample was OBSERVED (audit
+                // 2026-07-25, C14). On the first tick after engine start or
+                // a profile load, WasTriggerActive is merely the field
+                // default, so a button already held looked like a fresh
+                // press and a long hold fired as a tap on release.
+                if (!edgeObserved) return false;
                 macro.TriggerHoldStartUtc = DateTime.UtcNow;
                 macro.TriggerHoldFired = false;
+                return false;
+            }
+            // A CLOSED shift layer forces triggerActive false upstream, so
+            // the disengage looks identical to a physical release (audit
+            // 2026-07-25, C15). Firing there would run the macro when the
+            // user let go of the LAYER, not of the macro's own button. The
+            // SinglePress arm carries the same guard for the same reason;
+            // the pending window is dropped so re-engaging starts fresh.
+            if (!layerOpen)
+            {
+                macro.TriggerHoldStartUtc = DateTime.MinValue;
                 return false;
             }
             if (!triggerActive && wasTriggerActive
@@ -1773,7 +1838,19 @@ namespace PadForge.Common.Input
                 if (!IsContinuousAction(macro.Actions[i].Type))
                 { allContinuous = false; break; }
             }
-            if (allContinuous) return; // Keep running — continuous actions handled above.
+            if (allContinuous)
+            {
+                // Clear the deferred-completion flag before the early
+                // return (audit 2026-07-25, C16). A ShortPress/SinglePress
+                // run always starts with the trigger already up, so the
+                // flag is set; leaving it set here suppressed the
+                // until-release stop FOREVER and an all-continuous
+                // sequence (repeat-while-held, mouse move, scroll) ran
+                // until the macro was disabled. The sequence has completed:
+                // the deferral it protects is over.
+                macro.RunReleasedFireToCompletion = false;
+                return; // Keep running. Continuous actions handled above.
+            }
 
             macro.RemainingRepeats--;
             if (macro.RemainingRepeats > 0 ||
@@ -3571,7 +3648,13 @@ namespace PadForge.Common.Input
                 }
 
                 bool wasTriggerActive = macro.WasTriggerActive;
+                // Capture BEFORE the latch, exactly like wasTriggerActive:
+                // the flag is set for the NEXT tick, so reading it inside
+                // the evaluator would always see true and the C14 guard
+                // would never block (caught by its own guard test).
+                bool edgeObserved = macro.TriggerEdgeObserved;
                 macro.WasTriggerActive = triggerActive;
+                macro.TriggerEdgeObserved = true;
 
                 bool shouldStart = false;
                 switch (macro.TriggerMode)
@@ -3606,7 +3689,7 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.ShortPress:
                         // #253: fires at the falling edge when the hold
                         // stayed under TriggerHoldMs, the HoldForMs twin.
-                        shouldStart = EvaluateShortPressTrigger(macro, triggerActive, wasTriggerActive);
+                        shouldStart = EvaluateShortPressTrigger(macro, triggerActive, wasTriggerActive, layerOpen, edgeObserved);
                         break;
                     case MacroTriggerMode.DoublePress:
                         shouldStart = EvaluateDoublePressTrigger(macro, triggerActive, wasTriggerActive);
@@ -3709,7 +3792,10 @@ namespace PadForge.Common.Input
                 // the second press leaked through (audit 2026-07-24).
                 bool consumeNowExtended = macro.TriggerMode == MacroTriggerMode.Toggle
                     ? macro.ToggleRawWasActive
-                    : (triggerActive && macro.IsExecuting);
+                    // ShortPress twin of the gamepad loop's rule (C18).
+                    : macro.TriggerMode == MacroTriggerMode.ShortPress
+                        ? (triggerActive || macro.IsExecuting)
+                        : (triggerActive && macro.IsExecuting);
                 if (macro.ConsumeTriggerButtons && consumeNowExtended
                     && macro.UsesCustomTrigger)
                 {
@@ -3844,7 +3930,19 @@ namespace PadForge.Common.Input
                 if (!IsContinuousAction(macro.Actions[i].Type))
                 { allContinuous = false; break; }
             }
-            if (allContinuous) return;
+            if (allContinuous)
+            {
+                // Clear the deferred-completion flag before the early
+                // return (audit 2026-07-25, C16). A ShortPress/SinglePress
+                // run always starts with the trigger already up, so the
+                // flag is set; leaving it set here suppressed the
+                // until-release stop FOREVER and an all-continuous
+                // sequence (repeat-while-held, mouse move, scroll) ran
+                // until the macro was disabled. The sequence has completed:
+                // the deferral it protects is over.
+                macro.RunReleasedFireToCompletion = false;
+                return; // Keep running. Continuous actions handled above.
+            }
 
             macro.RemainingRepeats--;
             if (macro.RemainingRepeats > 0 ||

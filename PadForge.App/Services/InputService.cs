@@ -549,6 +549,25 @@ namespace PadForge.Services
                 _mainVm.Pads[i].RebuildLayerTabs(slotMs?.ShiftActivators);
             }
 
+            // Macro trigger transients are POLL-THREAD state on objects the
+            // UI keeps across engine restarts (audit 2026-07-25, C14/C22).
+            // A stop leaves WasTriggerActive / TriggerHoldStartUtc holding
+            // the last live sample, so a button released while stopped read
+            // as an armed short-press edge on the next start. Clearing here
+            // makes every start observe its own first edge.
+            foreach (var pad in _mainVm.Pads)
+            {
+                if (pad?.Macros == null) continue;
+                foreach (var mac in pad.Macros)
+                {
+                    if (mac == null) continue;
+                    mac.WasTriggerActive = false;
+                    mac.TriggerEdgeObserved = false;
+                    mac.TriggerHoldStartUtc = DateTime.MinValue;
+                    mac.TriggerHoldFired = false;
+                }
+            }
+
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
             _inputManagerStatic = _inputManager;

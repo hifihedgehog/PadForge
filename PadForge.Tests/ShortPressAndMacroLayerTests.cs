@@ -76,6 +76,12 @@ namespace PadForge.Tests
             var im = new InputManager();
             var macros = new[] { Macro(MacroTriggerMode.ShortPress, holdMs: 500) };
 
+            // One idle tick first: the C14 guard treats a button that is
+            // already down on a macro's FIRST evaluated tick as held-through
+            // -start (its press edge was never observed), so a genuine tap
+            // must be preceded by an observed release, which at poll rate it
+            // always is.
+            Assert.Equal((ushort)0, Tick(im, macros, held: false));
             // Press: nothing yet, the hold could still become long.
             Assert.Equal((ushort)0, Tick(im, macros, held: true));
             // Release inside the window: fires.
@@ -91,6 +97,7 @@ namespace PadForge.Tests
             var m = Macro(MacroTriggerMode.ShortPress, holdMs: 200);
             var macros = new[] { m };
 
+            Assert.Equal((ushort)0, Tick(im, macros, held: false)); // observed idle (C14)
             Assert.Equal((ushort)0, Tick(im, macros, held: true));
             // Back-date the arm instead of sleeping (the MacroWave1b idiom).
             m.TriggerHoldStartUtc = DateTime.UtcNow.AddMilliseconds(-600);
@@ -111,6 +118,7 @@ namespace PadForge.Tests
             m.RepeatMode = MacroRepeatMode.UntilRelease;
             var macros = new[] { m };
 
+            Assert.Equal((ushort)0, Tick(im, macros, held: false)); // observed idle (C14)
             Assert.Equal((ushort)0, Tick(im, macros, held: true));
             Assert.Equal((ushort)Fire, Tick(im, macros, held: false));
         }
@@ -126,6 +134,10 @@ namespace PadForge.Tests
             var longM = Macro(MacroTriggerMode.HoldForMs, holdMs: 300);
             longM.Actions[0].AxisTarget = MacroAxisTarget.RightTrigger;
             var macros = new[] { shortM, longM };
+
+            // Observed idle first (C14).
+            var gpIdle = new Gamepad();
+            im.EvaluateSlotMacros(ref gpIdle, macros);
 
             var gp = new Gamepad { Buttons = Gamepad.A };
             im.EvaluateSlotMacros(ref gp, macros);
@@ -143,6 +155,9 @@ namespace PadForge.Tests
             var longM2 = Macro(MacroTriggerMode.HoldForMs, holdMs: 300);
             longM2.Actions[0].AxisTarget = MacroAxisTarget.RightTrigger;
             var macros2 = new[] { shortM2, longM2 };
+
+            gpIdle = new Gamepad();
+            im2.EvaluateSlotMacros(ref gpIdle, macros2); // observed idle (C14)
 
             gp = new Gamepad { Buttons = Gamepad.A };
             im2.EvaluateSlotMacros(ref gp, macros2);
@@ -169,6 +184,7 @@ namespace PadForge.Tests
             m.TriggerCustomButtons = "00000001,00000000,00000000,00000000";
             var macros = new[] { m };
 
+            TickExtended(im, macros, held: false); // observed idle (C14)
             // Held: nothing written yet (the hold could still become long).
             Assert.Equal((short)0, TickExtended(im, macros, held: true));
             // Released inside the window: the action writes the trigger on
@@ -340,12 +356,18 @@ namespace PadForge.Tests
                 PadForge.ViewModels.MacroAction.VirtualKeyDisplayName(PadForge.Common.VirtualKey.Space),
                 PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmKey20"));
 
-            // Mouse buttons and the analog lanes resolve too.
+            // Mouse buttons are ZERO-based (audit 2026-07-25, C25: this
+            // assertion previously encoded the off-by-one it was meant to
+            // guard, naming KbmMBtn1 as the LEFT button). The analog lanes
+            // use the editor's own row names (C26).
             Assert.Equal(
-                PadForge.ViewModels.MacroAction.VirtualKeyDisplayName(PadForge.Common.VirtualKey.LButton),
+                PadForge.Resources.Strings.Strings.Instance.Mouse_LeftClick,
+                PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMBtn0"));
+            Assert.Equal(
+                PadForge.Resources.Strings.Strings.Instance.Mouse_RightClick,
                 PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMBtn1"));
             Assert.Equal(
-                PadForge.Resources.Strings.Strings.Instance.Mapping_MouseSpeedX,
+                PadForge.Resources.Strings.Strings.Instance.Mouse_X,
                 PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMouseX"));
 
             // Non-KBM targets pass through: they are already readable.

@@ -1435,11 +1435,35 @@ namespace PadForge.Views
                 }
                 // #254 A-3: macros scoped to the layer follow the mask
                 // exactly like rows, or they silently never fire again
-                // (MacroLayerGateOpen holds a dead mask forever).
-                foreach (var mac in _currentPadVm.Macros)
+                // (MacroLayerGateOpen holds a dead mask forever). Walks
+                // EVERY pad (audit 2026-07-25, C7): the gate's split-config
+                // fallback lets a macro on another slot ride this layer, and
+                // that macro is exactly the one nobody would think to retag.
+                foreach (var padVm in AllPadViewModels())
                 {
-                    if (mac != null && string.Equals(mac.LayerMask, oldMask, StringComparison.Ordinal))
-                        mac.LayerMask = existing.LayerMask;
+                    foreach (var mac in padVm.Macros)
+                    {
+                        if (mac != null && string.Equals(mac.LayerMask, oldMask, StringComparison.Ordinal))
+                            mac.LayerMask = existing.LayerMask;
+                    }
+                }
+
+                // Sibling Cycle activators still list the OLD mask in their
+                // ring (audit 2026-07-25, C13). Left alone, the cycle keeps
+                // engaging a mask nothing carries while the retagged macro
+                // waits on the new one, so the macro never fires again.
+                foreach (var a in slotMs.ShiftActivators)
+                {
+                    if (a == null || string.IsNullOrEmpty(a.CycleLayers)) continue;
+                    var stops = a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries);
+                    bool touched = false;
+                    for (int si = 0; si < stops.Length; si++)
+                    {
+                        if (!string.Equals(stops[si], oldMask, StringComparison.Ordinal)) continue;
+                        stops[si] = existing.LayerMask;
+                        touched = true;
+                    }
+                    if (touched) a.CycleLayers = string.Join("|", stops);
                 }
             }
 
@@ -1729,15 +1753,36 @@ namespace PadForge.Views
                 slotMs.Rows.RemoveAll(
                     r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
             }
-            // #254 A-3: deleting a layer RETAGS its macros to "" (Any
-            // layer) instead of deleting them. Rows die with the layer
-            // because they are the layer's content; macros are standalone
-            // authoring a user may want to keep, and a macro left holding
-            // a dead mask would silently never fire again.
-            foreach (var mac in _currentPadVm.Macros)
+            // #254 A-3: deleting a layer keeps its macros (rows die with
+            // the layer because they ARE its content; macros are
+            // standalone authoring). They are retagged to "" so no macro
+            // holds a dead mask, and DISABLED in the same breath (audit
+            // 2026-07-25, C23): "" means "fires in every layer", so a bare
+            // retag would silently promote a deliberately restricted macro
+            // into a global one the moment its layer was deleted. Disabled
+            // preserves the authoring and leaves the choice to re-enable
+            // with the user. Walks every pad for the C7 reason above.
+            foreach (var padVm in AllPadViewModels())
             {
-                if (mac != null && string.Equals(mac.LayerMask, mask, StringComparison.Ordinal))
+                foreach (var mac in padVm.Macros)
+                {
+                    if (mac == null || !string.Equals(mac.LayerMask, mask, StringComparison.Ordinal))
+                        continue;
                     mac.LayerMask = "";
+                    mac.IsEnabled = false;
+                }
+            }
+
+            // Scrub the deleted mask from sibling cycle rings so no
+            // activator steps onto a layer that no longer exists (C13).
+            foreach (var a in slotMs.ShiftActivators)
+            {
+                if (a == null || string.IsNullOrEmpty(a.CycleLayers)) continue;
+                var stops = a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries);
+                var kept = new System.Collections.Generic.List<string>(stops.Length);
+                foreach (var stop in stops)
+                    if (!string.Equals(stop, mask, StringComparison.Ordinal)) kept.Add(stop);
+                if (kept.Count != stops.Length) a.CycleLayers = string.Join("|", kept);
             }
 
             // Snap the active tab back to Base; RebuildLayerTabs will
@@ -1754,6 +1799,24 @@ namespace PadForge.Views
         // says to use at clone sites.
         private static Engine.Data.MappingSource CloneSource(Engine.Data.MappingSource s)
             => s?.Clone();
+
+        /// <summary>Every pad view-model, for the layer-retag walks (audit
+        /// 2026-07-25, C7). Macros on OTHER slots can legitimately carry
+        /// this slot's mask through the gate's split-config fallback, and
+        /// they are exactly the ones a current-slot-only walk orphans.
+        /// Falls back to the current pad alone when the main window is not
+        /// reachable (design-time, detached host).</summary>
+        private System.Collections.Generic.IEnumerable<PadViewModel> AllPadViewModels()
+        {
+            if (Application.Current?.MainWindow?.DataContext is MainViewModel mainVm
+                && mainVm.Pads != null)
+            {
+                foreach (var p in mainVm.Pads)
+                    if (p?.Macros != null) yield return p;
+                yield break;
+            }
+            if (_currentPadVm?.Macros != null) yield return _currentPadVm;
+        }
 
         /// <summary>Reads the slot's MappingSet from
         /// <see cref="Common.SettingsManager.SlotMappingSets"/> by pad index.

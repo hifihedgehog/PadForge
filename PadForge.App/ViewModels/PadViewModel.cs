@@ -98,6 +98,15 @@ namespace PadForge.ViewModels
 
         protected override void OnCultureChanged()
         {
+            // The layer picker's synthetic "Any layer" label is snapshotted
+            // into its entry at build time (audit 2026-07-25, C2), so a
+            // language switch left the previous wording standing until some
+            // unrelated layer edit rebuilt the tabs.
+            var slotSetsForCulture = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            RebuildLayerTabs(slotSetsForCulture != null && PadIndex >= 0 && PadIndex < slotSetsForCulture.Length
+                ? slotSetsForCulture[PadIndex]?.ShiftActivators
+                : null);
+
             Title = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
             SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
 

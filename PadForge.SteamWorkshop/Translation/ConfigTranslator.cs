@@ -1909,6 +1909,7 @@ namespace PadForge.SteamWorkshop.Translation
         private void TranslateStickSwipeGroup(Run run, SteamInputPreset preset, SteamInputGroup group,
             SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
         {
+            run.CurrentLayer = layer; // #254 A-2 (audit C9): swipe groups emit macros
             int dzPct = GroupDeadZonePercent(settings);
             foreach (var inputName in group.Inputs.Keys.OrderBy(k => k, StringComparer.Ordinal))
             {
@@ -1977,6 +1978,7 @@ namespace PadForge.SteamWorkshop.Translation
         private void TranslateGyroSwipeGroup(Run run, SteamInputPreset preset,
             SteamInputGroup group, string layer, string path)
         {
+            run.CurrentLayer = layer; // #254 A-2 (audit C9): swipe groups emit macros
             foreach (var inputName in group.Inputs.Keys.OrderBy(k => k, StringComparer.Ordinal))
             {
                 var input = group.Inputs[inputName];
@@ -3737,6 +3739,13 @@ namespace PadForge.SteamWorkshop.Translation
                                 TriggerDescriptorDeadZonePercent = m.TriggerDescriptorDeadZonePercent,
                             };
                             ext.TriggerInputDescriptors.AddRange(m.TriggerInputDescriptors);
+                            // Inherit the source macro's scope (audit
+                            // 2026-07-25, C10). This synthesized tail is
+                            // built after translation, so it bypasses the
+                            // AddMacro funnel; without the copy it shipped
+                            // ungated and asserted its button in every
+                            // action set for the delay window.
+                            ext.LayerMask = m.LayerMask;
                             macros.Add(ext);
                         }
                         continue;

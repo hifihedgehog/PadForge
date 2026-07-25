@@ -707,6 +707,13 @@ namespace PadForge.Services
                     ConsumeTriggerButtons = false,
                     TriggerAxisTargets = string.IsNullOrEmpty(m.TriggerAxisTarget) ? null : m.TriggerAxisTarget,
                     TriggerAxisThreshold = Math.Clamp(m.TriggerAxisThresholdPercent, 1, 100),
+                    // Carry the action-set scope like the other two build
+                    // legs do (audit 2026-07-25, C11). The omission was
+                    // invisible while every translated macro shipped with
+                    // an empty mask; once the #254 funnel started stamping
+                    // them, this pair became the one imported macro whose
+                    // cursor clamp engaged in EVERY action set.
+                    LayerMask = m.LayerMask ?? "",
                     Actions = legDelay > 0
                         ? new[]
                         {

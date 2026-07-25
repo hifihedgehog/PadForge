@@ -6922,6 +6922,29 @@ namespace PadForge
             }
         }
 
+        /// <summary>True when the destination slot's layer set declares the
+        /// mask, so a copied or pasted macro may keep its scope (audit
+        /// 2026-07-25, C8). Empty masks are always representable.</summary>
+        private static bool DestinationDeclaresLayer(PadForge.ViewModels.PadViewModel padVm, string mask)
+        {
+            if (string.IsNullOrEmpty(mask)) return true;
+            if (string.Equals(mask, "Base", StringComparison.Ordinal)) return true;
+            var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            if (sets == null || padVm == null || padVm.PadIndex < 0 || padVm.PadIndex >= sets.Length)
+                return false;
+            var acts = sets[padVm.PadIndex]?.ShiftActivators;
+            if (acts == null) return false;
+            foreach (var a in acts)
+            {
+                if (a == null) continue;
+                if (string.Equals(a.LayerMask, mask, StringComparison.Ordinal)) return true;
+                if (string.IsNullOrEmpty(a.CycleLayers)) continue;
+                foreach (var stop in a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries))
+                    if (string.Equals(stop, mask, StringComparison.Ordinal)) return true;
+            }
+            return false;
+        }
+
         private void OnPasteMacro(PadViewModel padVm)
         {
             try
@@ -6933,6 +6956,13 @@ namespace PadForge
                 {
                     var macro = SettingsService.LoadMacroFromData(md, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount, padVm.ProfileId);
                     macro.PadIndex = padVm.PadIndex;
+                    // A layer scope belongs to the SOURCE slot's layer set
+                    // (audit 2026-07-25, C8). Carrying it across slots left
+                    // the copy gated on a foreign slot's layer through the
+                    // split-config fallback, and on a slot with no layers
+                    // the picker could not show or clear it. Keep the mask
+                    // only when the destination declares it.
+                    if (!DestinationDeclaresLayer(padVm, macro.LayerMask)) macro.LayerMask = "";
                     padVm.Macros.Add(macro);
                     last = macro;
                 }
@@ -7015,6 +7045,8 @@ namespace PadForge
                 var data = SettingsService.BuildMacroDataForMacro(macro, padVm.PadIndex);
                 var clone = SettingsService.LoadMacroFromData(data, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount, padVm.ProfileId);
                 clone.PadIndex = padVm.PadIndex;
+                // Same rule as the paste path above (audit C8).
+                if (!DestinationDeclaresLayer(padVm, clone.LayerMask)) clone.LayerMask = "";
                 padVm.Macros.Add(clone);
                 last = clone;
             }

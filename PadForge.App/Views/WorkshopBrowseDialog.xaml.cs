@@ -1694,6 +1694,13 @@ namespace PadForge.Views
         internal static string ArtTargetFor(string target)
         {
             if (string.IsNullOrWhiteSpace(target)) return null;
+            // The paddle family is the one target the translator reports
+            // WITH the family prefix ("Gamepad Paddle1"), because that is
+            // the descriptor the mapping grid stores. Art TargetNames are
+            // bare, so without this the Steam Deck's four rear paddles
+            // could never match the body that now draws them.
+            if (target.StartsWith("Gamepad ", StringComparison.OrdinalIgnoreCase))
+                target = target.Substring("Gamepad ".Length);
             if (target.StartsWith("LeftThumbAxis", StringComparison.OrdinalIgnoreCase))
                 return "LeftThumbRing";
             if (target.StartsWith("RightThumbAxis", StringComparison.OrdinalIgnoreCase))

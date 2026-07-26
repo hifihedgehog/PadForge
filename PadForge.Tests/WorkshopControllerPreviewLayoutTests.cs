@@ -87,6 +87,10 @@ namespace PadForge.Tests
         [InlineData("ButtonGuide")]
         [InlineData("LeftTouchpad")]
         [InlineData("RightTouchpad")]
+        [InlineData("Paddle1")]
+        [InlineData("Paddle2")]
+        [InlineData("Paddle3")]
+        [InlineData("Paddle4")]
         public void DeckCoversTheControlSet(string target)
             => Assert.Contains(SteamDeckLayout.Overlays,
                                o => string.Equals(o.TargetName, target, StringComparison.Ordinal));
@@ -107,6 +111,36 @@ namespace PadForge.Tests
 
         /// <summary>Valve tags must reach Valve bodies. Before this, every
         /// one of them fell through to the Xbox One S shape.</summary>
+        /// <summary>The Deck's four rear paddles have no front-facing
+        /// position, so they are drawn on the Compact overlay's dedicated
+        /// labeled tiles. The plain VSCView overlay parks them OFF canvas
+        /// (x=-149 and x=1879 on an 1860-wide body), which is why the
+        /// layout is built on the Compact/Alternative pair instead.</summary>
+        [Fact]
+        public void DeckPaddlesAreOnTheBodyNotParkedOffCanvas()
+        {
+            var paddles = SteamDeckLayout.Overlays
+                .Where(o => o.TargetName.StartsWith("Paddle", StringComparison.Ordinal))
+                .ToList();
+            Assert.Equal(4, paddles.Count);
+            Assert.All(paddles, p =>
+            {
+                Assert.InRange(p.X, 0, SteamDeckLayout.BaseWidth - p.Width);
+                Assert.InRange(p.Y, 0, SteamDeckLayout.BaseHeight - p.Height);
+            });
+        }
+
+        /// <summary>The paddle descriptor is the one target the translator
+        /// reports with its family prefix. Without the strip, the Deck's
+        /// paddles draw but never light.</summary>
+        [Theory]
+        [InlineData("Gamepad Paddle1", "Paddle1")]
+        [InlineData("Gamepad Paddle4", "Paddle4")]
+        [InlineData("ButtonA", "ButtonA")]
+        [InlineData("LeftThumbAxisX", "LeftThumbRing")]
+        public void PaddleTargetsReachTheArt(string target, string expected)
+            => Assert.Equal(expected, PadForge.Views.WorkshopBrowseDialog.ArtTargetFor(target));
+
         [Theory]
         [InlineData("controller_neptune", "STEAMDECK")]
         [InlineData("controller_steamcontroller_gordon", "STEAMCONTROLLER")]

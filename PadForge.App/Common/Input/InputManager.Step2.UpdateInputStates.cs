@@ -678,9 +678,33 @@ namespace PadForge.Common.Input
                     if (stv > combinedRT) combinedRT = stv;
                 }
 
+                // COPY, never alias. `effective` is usually one of the
+                // shared per-tick scratches (ConstantForceEvaluator fills
+                // its scratch, sets HasDirectionalData, and returns that
+                // same object), and the NEXT slot's Resolve overwrites it
+                // in place. Holding the reference made the copy-out below
+                // emit the LAST resolving slot's force while both the
+                // == null guard here and the comment there promise the
+                // FIRST, so two slots each running a constant force sent
+                // an order-dependent direction to the wheel. Field set is
+                // kept identical to the copy-out's.
                 if (directionalSource == null
                     && (effective.HasDirectionalData || effective.HasConditionData))
-                    directionalSource = effective;
+                {
+                    if (_directionalCaptureScratch == null)
+                        _directionalCaptureScratch = new Vibration();
+                    var dcap = _directionalCaptureScratch;
+                    dcap.HasDirectionalData = effective.HasDirectionalData;
+                    dcap.EffectType = effective.EffectType;
+                    dcap.SignedMagnitude = effective.SignedMagnitude;
+                    dcap.Direction = effective.Direction;
+                    dcap.Period = effective.Period;
+                    dcap.DeviceGain = effective.DeviceGain;
+                    dcap.HasConditionData = effective.HasConditionData;
+                    dcap.ConditionAxisCount = effective.ConditionAxisCount;
+                    dcap.ConditionAxes = effective.ConditionAxes;
+                    directionalSource = dcap;
+                }
 
                 if (firstPadSetting == null)
                     firstPadSetting = devicePs;
@@ -1045,10 +1069,17 @@ namespace PadForge.Common.Input
         // on every device with multi-slot mappings.
         private Vibration _constantForceScratch;
 
-        // Constant-trigger-force evaluator's scratch — same shape as
+        // Constant-trigger-force evaluator's scratch. Same shape as
         // _constantForceScratch but composes onto the post-main-constant-
         // force result so both layers can be active simultaneously.
         private Vibration _constantTriggerForceScratch;
+
+        // Holds the FIRST slot's directional/condition payload across the
+        // rest of the per-slot loop. It must be a COPY: the evaluators
+        // above return the very scratch they filled, so keeping a
+        // reference let the next slot's Resolve overwrite the captured
+        // force in place.
+        private Vibration _directionalCaptureScratch;
 
         // Same shape as _constantForceScratch but for the macro rumble
         // merge layer that runs ahead of constant-force resolution.

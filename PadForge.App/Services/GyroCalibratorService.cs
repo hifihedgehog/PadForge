@@ -160,11 +160,19 @@ namespace PadForge.Services
             {
                 if (!_inFlight.Add(ps)) return Task.FromResult(false);
             }
+            // The token is deliberately NOT passed to Task.Run (round
+            // ten): Task.Run with an already-signalled token transitions
+            // straight to Canceled WITHOUT invoking the delegate, so the
+            // finally below would never run and this profile would be
+            // locked out of calibration for the process lifetime, silently
+            // and permanently. RunSampling checks the token itself on
+            // every sample, so cancellation still works, and the body
+            // always runs far enough to release the guard.
             return Task.Run(() =>
             {
                 try { return RunSampling(ud, ps, durationMs, ct, auxOnly); }
                 finally { lock (_inFlightLock) _inFlight.Remove(ps); }
-            }, ct);
+            });
         }
 
         // Reference-identity set: one entry per PadSetting with a live
@@ -174,6 +182,18 @@ namespace PadForge.Services
         private static readonly HashSet<PadSetting> _inFlight =
             new(ReferenceEqualityComparer.Instance);
         private static readonly object _inFlightLock = new();
+
+        /// <summary>Whether a sampling pass already owns this profile.
+        /// The auto-calibration caller consults it so a refusal does not
+        /// burn one of its three attempts (round ten): a refusal means
+        /// nothing was measured, and counting it let three
+        /// Reset-during-a-run cycles exhaust the cap and re-enter the
+        /// session lockout the attempts ledger exists to prevent.</summary>
+        public static bool IsSampling(PadSetting ps)
+        {
+            if (ps == null) return false;
+            lock (_inFlightLock) return _inFlight.Contains(ps);
+        }
 
         private bool RunSampling(UserDevice ud, PadSetting ps, int durationMs, CancellationToken ct, bool auxOnly)
         {

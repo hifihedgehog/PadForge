@@ -1538,6 +1538,191 @@ def _hit_polygons(overlay_path, _cache={}):
     return result
 
 
+def process_steamdeck():
+    """Extract Steam Deck overlay positions.
+
+    Same posture as Switch Pro: the pack's theme SVG labels sit ON the
+    controls, so each label's bbox is the authoritative measurement and
+    every press overlay is fit_overlay_to_bbox-sized to it. No composite
+    refinement pass is needed.
+
+    The Deck ships ONE face-button cap and ONE trackpad-click overlay,
+    reused at each lettered/side position exactly like the DS4 flow
+    reuses DS4_Face_Button.png. L4/L5/R4/R5 are rear paddles: the SVG
+    labels them (they are drawn on the rear-view layer) but they do not
+    appear on the front render, so they are deliberately not emitted --
+    a callout would point at empty body plastic.
+
+    The shipped base is the pack's VSCView overlay with its chroma-green
+    screen keyed to a dark panel; the green is a literal green screen,
+    keyed for its authored purpose, not repainted art.
+    """
+    svg_path = os.path.join(ASSET_PACK, "Steam Deck Images",
+        "Theme SVG", "Black", "Steam Deck VSCView Overlay.svg")
+
+    root = etree.parse(svg_path).getroot()
+    base = cv2.imread(os.path.join(MODELS_DIR, "STEAMDECK", "SD_base.png"), cv2.IMREAD_UNCHANGED)
+    base_w, base_h = base.shape[1], base.shape[0]
+
+    vb = [float(v) for v in root.get("viewBox").split()]
+    scale = base_w / vb[2]
+
+    ov_dir = os.path.join(MODELS_DIR, "STEAMDECK")
+    results = []
+
+    def add(svg_label, filename, target, elem_type, fit_scale=1.0):
+        bbox = get_element_pixel_bbox(root, svg_label, scale)
+        if bbox is None:
+            print(f"  MISS: {svg_label}")
+            return None
+        pos = fit_overlay_to_bbox(bbox, os.path.join(ov_dir, filename), scale=fit_scale)
+        results.append((filename, target, elem_type, pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {target:20s} ({svg_label:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+        return bbox
+
+    print("Parsing Steam Deck SVG elements...")
+
+    add("L2 Trigger", "SD_L2.png", "LeftTrigger", "Trigger")
+    add("R2 Trigger", "SD_R2.png", "RightTrigger", "Trigger")
+    add("L1 Button", "SD_L1.png", "LeftShoulder", "Button")
+    add("R1 Button", "SD_R1.png", "RightShoulder", "Button")
+
+    # Face cluster: Xbox-style lettering, one shared cap overlay.
+    add("A Button", "SD_Face_Button.png", "ButtonA", "Button")
+    add("B Button", "SD_Face_Button.png", "ButtonB", "Button")
+    add("X Button", "SD_Face_Button.png", "ButtonX", "Button")
+    add("Y Button", "SD_Face_Button.png", "ButtonY", "Button")
+
+    # D-pad: only the full cross is labeled, so the same edge-anchored
+    # quadrant split the Xbox One / Series / Switch Pro flows use.
+    dpad_bbox = get_element_pixel_bbox(root, "D-PAD", scale)
+    if dpad_bbox:
+        dx, dy, dw, dh = dpad_bbox
+        half_w, half_h = dw / 2.0, dh / 2.0
+        for direction, fn, target, sub in [
+            ("Up",    "SD_D-PAD_Up.png",    "DPadUp",    (dx, dy, dw, half_h)),
+            ("Down",  "SD_D-PAD_Down.png",  "DPadDown",  (dx, dy + dh - half_h, dw, half_h)),
+            ("Left",  "SD_D-PAD_Left.png",  "DPadLeft",  (dx, dy, half_w, dh)),
+            ("Right", "SD_D-PAD_Right.png", "DPadRight", (dx + dw - half_w, dy, half_w, dh)),
+        ]:
+            pos = fit_overlay_to_bbox(sub, os.path.join(ov_dir, fn))
+            results.append((fn, target, "Button", pos[0], pos[1], pos[2], pos[3]))
+            print(f"  {target:20s} ({'D-PAD ' + direction:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+
+    add("View", "SD_View-Menu_Button.png", "ButtonBack", "Button")
+    add("Menu", "SD_View-Menu_Button.png", "ButtonStart", "Button")
+    add("Guide Button", "SD_Guide-QuickMenu_Button.png", "ButtonGuide", "Button")
+    add("Quick Access", "SD_Guide-QuickMenu_Button.png", "ButtonQuickAccess", "Button")
+
+    add("Left Joystick", "SD_LeftAnalogStick.png", "LeftThumbRing", "StickRing")
+    add("Right Joystick", "SD_RightAnalogStick.png", "RightThumbRing", "StickRing")
+    for lbl, target in [("Left Joystick", "LeftThumbButton"),
+                        ("Right Joystick", "RightThumbButton")]:
+        bbox = get_element_pixel_bbox(root, lbl, scale)
+        if bbox:
+            pos = fit_overlay_to_bbox(bbox, os.path.join(ov_dir, "SD_Joystick_Click.png"))
+            results.append(("SD_Joystick_Click.png", target, "StickClick", pos[0], pos[1], pos[2], pos[3]))
+            print(f"  {target:20s} ({lbl:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+
+    # Trackpads: click highlight plus the finger-dot zone, the DualSense
+    # Touchpad/TouchpadClick pairing widened to left and right.
+    for lbl, side in [("Left Pad", "Left"), ("Right Pad", "Right")]:
+        bbox = get_element_pixel_bbox(root, lbl, scale)
+        if bbox is None:
+            print(f"  MISS: {lbl}")
+            continue
+        pos = fit_overlay_to_bbox(bbox, os.path.join(ov_dir, "SD_Touchpad_Click.png"))
+        results.append(("SD_Touchpad_Click.png", side + "TouchpadClick", "Button", pos[0], pos[1], pos[2], pos[3]))
+        results.append(("", side + "Touchpad", "Touchpad", pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {side + 'TouchpadClick':20s} ({lbl:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+
+    return {"base_width": base_w, "base_height": base_h, "results": results}
+
+
+def process_steamcontroller():
+    """Extract Steam Controller (2026 retail name: the original Valve
+    pad) overlay positions from the pack's Black theme SVG.
+
+    Two departures from every other layout, both physical rather than
+    incidental: the pad has no D-pad (the LEFT trackpad serves that
+    role, and the SVG labels the cross as trackpad outline art), and it
+    carries a single analog stick, so no Right* stick entries exist.
+
+    The rear grip paddles are the one element the SVG does not label.
+    Their positions come from differencing the pack's own
+    'Active Button View' template against the plain overlay -- the same
+    template-difference technique the Switch Pro rest-state triggers
+    use -- which isolates each grip to a 184x327 region matching
+    SC_LeftGrip_Button.png's native 183x327 to within a pixel.
+    """
+    svg_path = os.path.join(ASSET_PACK, "Steam Controller Images",
+        "Default Theme", "Theme SVG", "Black", "Steam Controller VSCView.svg")
+
+    root = etree.parse(svg_path).getroot()
+    base = cv2.imread(os.path.join(MODELS_DIR, "STEAMCONTROLLER", "SC_base.png"), cv2.IMREAD_UNCHANGED)
+    base_w, base_h = base.shape[1], base.shape[0]
+
+    vb = [float(v) for v in root.get("viewBox").split()]
+    scale = base_w / vb[2]
+
+    ov_dir = os.path.join(MODELS_DIR, "STEAMCONTROLLER")
+    results = []
+
+    def add(svg_label, filename, target, elem_type, fit_scale=1.0):
+        bbox = get_element_pixel_bbox(root, svg_label, scale)
+        if bbox is None:
+            print(f"  MISS: {svg_label}")
+            return None
+        pos = fit_overlay_to_bbox(bbox, os.path.join(ov_dir, filename), scale=fit_scale)
+        results.append((filename, target, elem_type, pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {target:20s} ({svg_label:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+        return bbox
+
+    print("Parsing Steam Controller SVG elements...")
+
+    add("Left Trigger", "SC_LeftTrigger-FullPull-Active.png", "LeftTrigger", "Trigger")
+    add("Right Trigger", "SC_RightTrigger-FullPull-Active.png", "RightTrigger", "Trigger")
+    add("Left Bumper", "SC_LeftBumper-Active.png", "LeftShoulder", "Button")
+    add("Right Bumper", "SC_RightBumper-Active.png", "RightShoulder", "Button")
+
+    add("A", "SC_Face_Button.png", "ButtonA", "Button")
+    add("B", "SC_Face_Button.png", "ButtonB", "Button")
+    add("X", "SC_Face_Button.png", "ButtonX", "Button")
+    add("Y", "SC_Face_Button.png", "ButtonY", "Button")
+
+    add("Select Button", "SC_Start-Select_Button.png", "ButtonBack", "Button")
+    add("Start Button", "SC_Start-Select_Button.png", "ButtonStart", "Button")
+    add("Steam Guide Button", "SC_Guide_Button.png", "ButtonGuide", "Button")
+
+    add("Analog Stick", "SC_AnalogStick.png", "LeftThumbRing", "StickRing")
+    bbox = get_element_pixel_bbox(root, "Analog Stick", scale)
+    if bbox:
+        pos = fit_overlay_to_bbox(bbox, os.path.join(ov_dir, "SC_AnalogStick_Click.png"))
+        results.append(("SC_AnalogStick_Click.png", "LeftThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {'LeftThumbButton':20s} ({'Analog Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+
+    for lbl, side, fn in [("Left Touchpad Color", "Left", "SC_LeftTrackpad_Click.png"),
+                          ("Right Touchpad Color", "Right", "SC_RightTrackpad_Click.png")]:
+        bbox = get_element_pixel_bbox(root, lbl, scale)
+        if bbox is None:
+            print(f"  MISS: {lbl}")
+            continue
+        pos = fit_overlay_to_bbox(bbox, os.path.join(ov_dir, fn))
+        results.append((fn, side + "TouchpadClick", "Button", pos[0], pos[1], pos[2], pos[3]))
+        results.append(("", side + "Touchpad", "Touchpad", pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {side + 'TouchpadClick':20s} ({lbl:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+
+    # Grips: unlabeled in the SVG, measured by template difference (see
+    # the docstring). Position is exact at base-canvas registration, so
+    # no fitting applies.
+    results.append(("SC_LeftGrip_Button.png", "LeftGrip", "Button", 215, 560, 183, 327))
+    print(f"  {'LeftGrip':20s} ({'template diff':20s}) -> ( 215,  560)  183x327")
+    results.append(("SC_RightGrip_Button.png", "RightGrip", "Button", 1068, 563, 183, 327))
+    print(f"  {'RightGrip':20s} ({'template diff':20s}) -> (1068,  563)  183x327")
+
+    return {"base_width": base_w, "base_height": base_h, "results": results}
+
+
 def generate_csharp(layouts, output_path):
     """Generate C# source file with overlay position data."""
     lines = [
@@ -1606,10 +1791,22 @@ def main():
     swpro_data = process_switchpro()
     print(f"\n  Total Switch Pro overlays: {len(swpro_data['results'])}")
 
+    print("\n=== Steam Deck ===")
+    deck_data = process_steamdeck()
+    print(f"\n  Total Steam Deck overlays: {len(deck_data['results'])}")
+
+    print("\n=== Steam Controller ===")
+    steamc_data = process_steamcontroller()
+    print(f"\n  Total Steam Controller overlays: {len(steamc_data['results'])}")
+
     # Inject TriggerBase entries (rest-state trigger image under each
     # active-press blue overlay). Done after all profile-specific
     # processing so the rest-state inherits the final trigger
     # position/size.
+    # Steam Deck and Steam Controller are deliberately excluded: their
+    # shipped base renders already draw the triggers at rest (unlike the
+    # Switch Pro base, which is the pack's trigger-LESS variant), and the
+    # Steam packs ship no rest-state trigger PNG for the pass to point at.
     for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data]:
         data["results"] = _add_trigger_base_entries(data["results"])
 
@@ -1622,7 +1819,8 @@ def main():
     # measured on all six layouts). Stable-move Trigger + TriggerBase
     # entries to the front so bumpers win the shared band; visual
     # stacking is unaffected (Z-indices are explicit in the view).
-    for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data]:
+    for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data,
+                 deck_data, steamc_data]:
         rs = data["results"]
         trig = [r for r in rs if r[2] in ("Trigger", "TriggerBase")]
         rest = [r for r in rs if r[2] not in ("Trigger", "TriggerBase")]
@@ -1633,7 +1831,9 @@ def main():
                        ("DualSense", dualsense_data),
                        ("Xbox One S", xbone_data),
                        ("Xbox Series X", xbseries_data),
-                       ("Switch Pro", swpro_data)]:
+                       ("Switch Pro", swpro_data),
+                       ("Steam Deck", deck_data),
+                       ("Steam Controller", steamc_data)]:
         bw, bh = data["base_width"], data["base_height"]
         for fn, target, _, x, y, w, h in data["results"]:
             if x < -10 or y < -10 or x + w > bw + 10 or y + h > bh + 10:
@@ -1648,6 +1848,8 @@ def main():
         ("XboxOneSLayout",      xbone_data,     "2DModels/XBOXONE/XB1_S_base.png",         30),
         ("XboxSeriesXLayout",   xbseries_data,  "2DModels/XBOXSERIES/XBSeries_base.png",   30),
         ("SwitchProLayout",     swpro_data,     "2DModels/SWITCHPRO/NSwitchPro_base.png",  25),
+        ("SteamDeckLayout",      deck_data,      "2DModels/STEAMDECK/SD_base.png",          22),
+        ("SteamControllerLayout", steamc_data,   "2DModels/STEAMCONTROLLER/SC_base.png",    28),
     ]
     generate_csharp(layouts, os.path.join(output_dir, "ControllerOverlayLayout.cs"))
     print("\nDone!")

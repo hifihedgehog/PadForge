@@ -209,84 +209,69 @@ public static class SwitchProLayout
     };
 }
 
-/// <summary>
-/// Two-way translation between the preview element grammar (the Xbox-style
-/// TargetNames the 2D/3D preview art, hit zones, quadrant emitter, and
-/// annotation anchors all speak) and a Nintendo slot's raw mapping grid
-/// (RawBtn / RawAxis / RawPov rows). The button-index correspondence is the
-/// switch-pro wire order (B A Y X, L R, ZL ZR, Minus Plus, LS RS, Home,
-/// Capture), the same table PadViewModel.UpdateNintendoPreviewFromRaw uses
-/// in the state-to-preview direction. Axis names map mechanically with the
-/// Neg suffix preserved: the quadrant emitter speaks screen convention
-/// (positive Y = down), which is also HID wire convention, so no direction
-/// crossing is needed (the gamepad path's Step 3 inversion is XInput-only).
-/// </summary>
-public static class NintendoPreviewMap
+public static class SteamDeckLayout
 {
-    // Index = raw button number on the switch-pro wire.
-    private static readonly string[] PreviewByRawBtn =
+    public const int BaseWidth = 1860;
+    public const int BaseHeight = 758;
+    public const string BasePath = "2DModels/STEAMDECK/SD_base.png";
+    public const double StickMaxTravel = 22;
+
+    public static readonly OverlayElement[] Overlays =
     {
-        "ButtonB", "ButtonA", "ButtonY", "ButtonX",          // 0-3
-        "LeftShoulder", "RightShoulder",                      // 4-5  L R
-        "LeftTrigger", "RightTrigger",                        // 6-7  ZL ZR (digital)
-        "ButtonBack", "ButtonStart",                          // 8-9  Minus Plus
-        "LeftThumbButton", "RightThumbButton",                // 10-11
-        "ButtonGuide", "ButtonShare",                         // 12-13 Home Capture
+        new("SD_L2.png", "LeftTrigger", OverlayElementType.Trigger, 78, 1, 188, 37, "0.0000,0.9730 0.0532,0.9730 0.1543,0.7568 0.2553,0.6486 0.9947,0.6486 0.9947,0.4054 0.5585,0.0000 0.2021,0.0000 0.1330,0.1622 0.0426,0.5135 0.0000,0.7568"),
+        new("SD_R2.png", "RightTrigger", OverlayElementType.Trigger, 1592, 2, 188, 37, "0.0000,0.4054 0.0000,0.6486 0.7394,0.6486 0.8404,0.7568 0.9415,0.9730 0.9947,0.9730 0.9947,0.7568 0.9521,0.5135 0.8617,0.1622 0.7926,0.0000 0.4362,0.0000"),
+        new("SD_L1.png", "LeftShoulder", OverlayElementType.Button, 75, 21, 210, 26, "0.0000,0.9615 0.0619,0.9615 0.1571,0.6923 0.3476,0.5000 0.9952,0.5000 0.9952,0.0000 0.1429,0.0000 0.0095,0.5000"),
+        new("SD_R1.png", "RightShoulder", OverlayElementType.Button, 1572, 22, 209, 25, "0.0000,0.0000 0.0000,0.5200 0.7225,0.5600 0.8469,0.7200 0.9330,0.9600 0.9952,0.9600 0.9904,0.5600 0.8517,0.0000"),
+        new("SD_Face_Button.png", "ButtonA", OverlayElementType.Button, 1720, 178, 55, 54, "0.1273,0.0370 0.0000,0.1852 0.0000,0.7963 0.0182,0.8333 0.1818,0.9815 0.8000,0.9815 0.8545,0.9444 0.9818,0.7963 0.9818,0.1852 0.9636,0.1481 0.8000,0.0000 0.1818,0.0000"),
+        new("SD_Face_Button.png", "ButtonB", OverlayElementType.Button, 1773, 124, 55, 54, "0.1273,0.0370 0.0000,0.1852 0.0000,0.7963 0.0182,0.8333 0.1818,0.9815 0.8000,0.9815 0.8545,0.9444 0.9818,0.7963 0.9818,0.1852 0.9636,0.1481 0.8000,0.0000 0.1818,0.0000"),
+        new("SD_Face_Button.png", "ButtonX", OverlayElementType.Button, 1664, 124, 55, 54, "0.1273,0.0370 0.0000,0.1852 0.0000,0.7963 0.0182,0.8333 0.1818,0.9815 0.8000,0.9815 0.8545,0.9444 0.9818,0.7963 0.9818,0.1852 0.9636,0.1481 0.8000,0.0000 0.1818,0.0000"),
+        new("SD_Face_Button.png", "ButtonY", OverlayElementType.Button, 1719, 68, 55, 54, "0.1273,0.0370 0.0000,0.1852 0.0000,0.7963 0.0182,0.8333 0.1818,0.9815 0.8000,0.9815 0.8545,0.9444 0.9818,0.7963 0.9818,0.1852 0.9636,0.1481 0.8000,0.0000 0.1818,0.0000"),
+        new("SD_D-PAD_Up.png", "DPadUp", OverlayElementType.Button, 90, 81, 51, 68, "0.0196,0.0000 0.0000,0.0147 0.0000,0.7206 0.3529,0.9853 0.6275,0.9853 0.9804,0.7206 0.9804,0.0147 0.9608,0.0000"),
+        new("SD_D-PAD_Down.png", "DPadDown", OverlayElementType.Button, 90, 150, 52, 68, "0.3654,0.0000 0.0000,0.2794 0.0000,0.9706 0.0192,0.9853 0.9615,0.9853 0.9808,0.9706 0.9808,0.2794 0.6154,0.0000"),
+        new("SD_D-PAD_Left.png", "DPadLeft", OverlayElementType.Button, 47, 123, 69, 53, "0.0000,0.0377 0.0000,0.9245 0.0435,0.9811 0.7101,0.9811 0.9855,0.6226 0.9855,0.3585 0.7101,0.0000 0.0290,0.0000"),
+        new("SD_D-PAD_Right.png", "DPadRight", OverlayElementType.Button, 116, 123, 69, 53, "0.0000,0.3585 0.0000,0.6226 0.2754,0.9811 0.9420,0.9811 0.9855,0.9245 0.9855,0.0377 0.9565,0.0000 0.2754,0.0000"),
+        new("SD_View-Menu_Button.png", "ButtonBack", OverlayElementType.Button, 193, 64, 47, 24, "0.0000,0.0000 0.0000,0.9583 0.9787,0.9583 0.9787,0.0000"),
+        new("SD_View-Menu_Button.png", "ButtonStart", OverlayElementType.Button, 1619, 64, 47, 24, "0.0000,0.0000 0.0000,0.9583 0.9787,0.9583 0.9787,0.0000"),
+        new("SD_Guide-QuickMenu_Button.png", "ButtonGuide", OverlayElementType.Button, 277, 523, 91, 40, "0.0000,0.1250 0.0000,0.8500 0.0549,0.9750 0.9341,0.9750 0.9890,0.8500 0.9890,0.1250 0.9341,0.0000 0.0549,0.0000"),
+        new("SD_Guide-QuickMenu_Button.png", "ButtonQuickAccess", OverlayElementType.Button, 1492, 523, 91, 40, "0.0000,0.1250 0.0000,0.8500 0.0549,0.9750 0.9341,0.9750 0.9890,0.8500 0.9890,0.1250 0.9341,0.0000 0.0549,0.0000"),
+        new("SD_LeftAnalogStick.png", "LeftThumbRing", OverlayElementType.StickRing, 230, 117, 125, 125, "0.2720,0.0000 0.1120,0.1040 0.0000,0.2720 0.0000,0.7200 0.1040,0.8800 0.2720,0.9920 0.7200,0.9920 0.8320,0.9280 0.9280,0.8320 0.9920,0.7200 0.9920,0.2720 0.8880,0.1120 0.7200,0.0000"),
+        new("SD_RightAnalogStick.png", "RightThumbRing", OverlayElementType.StickRing, 1503, 118, 125, 125, "0.2720,0.0000 0.1120,0.1040 0.0000,0.2720 0.0000,0.7200 0.1040,0.8800 0.2720,0.9920 0.7200,0.9920 0.8320,0.9280 0.9280,0.8320 0.9920,0.7200 0.9920,0.2720 0.8880,0.1120 0.7200,0.0000"),
+        new("SD_Joystick_Click.png", "LeftThumbButton", OverlayElementType.StickClick, 230, 117, 125, 125, "0.2720,0.0000 0.1600,0.0640 0.0640,0.1600 0.0000,0.2720 0.0000,0.7200 0.0640,0.8320 0.1600,0.9280 0.2720,0.9920 0.7200,0.9920 0.8400,0.9200 0.9200,0.8400 0.9920,0.7200 0.9920,0.2720 0.9200,0.1520 0.8400,0.0720 0.7200,0.0000"),
+        new("SD_Joystick_Click.png", "RightThumbButton", OverlayElementType.StickClick, 1503, 118, 125, 125, "0.2720,0.0000 0.1600,0.0640 0.0640,0.1600 0.0000,0.2720 0.0000,0.7200 0.0640,0.8320 0.1600,0.9280 0.2720,0.9920 0.7200,0.9920 0.8400,0.9200 0.9200,0.8400 0.9920,0.7200 0.9920,0.2720 0.9200,0.1520 0.8400,0.0720 0.7200,0.0000"),
+        new("SD_Touchpad_Click.png", "LeftTouchpadClick", OverlayElementType.Button, 174, 287, 197, 197, "0.0203,0.0000 0.0000,0.0203 0.0000,0.9746 0.0203,0.9949 0.9746,0.9949 0.9949,0.9746 0.9949,0.0203 0.9746,0.0000"),
+        new("", "LeftTouchpad", OverlayElementType.Touchpad, 174, 287, 197, 197),
+        new("SD_Touchpad_Click.png", "RightTouchpadClick", OverlayElementType.Button, 1488, 287, 197, 197, "0.0203,0.0000 0.0000,0.0203 0.0000,0.9746 0.0203,0.9949 0.9746,0.9949 0.9949,0.9746 0.9949,0.0203 0.9746,0.0000"),
+        new("", "RightTouchpad", OverlayElementType.Touchpad, 1488, 287, 197, 197),
     };
+}
 
-    private static readonly string[] PreviewByRawAxis =
+public static class SteamControllerLayout
+{
+    public const int BaseWidth = 1466;
+    public const int BaseHeight = 1049;
+    public const string BasePath = "2DModels/STEAMCONTROLLER/SC_base.png";
+    public const double StickMaxTravel = 28;
+
+    public static readonly OverlayElement[] Overlays =
     {
-        "LeftThumbAxisX", "LeftThumbAxisY",
-        "RightThumbAxisX", "RightThumbAxisY",
+        new("SC_LeftTrigger-FullPull-Active.png", "LeftTrigger", OverlayElementType.Trigger, 228, 4, 165, 47, "0.0000,0.9787 0.1091,0.9787 0.2909,0.8085 0.5636,0.6809 0.9939,0.6596 0.9939,0.3191 0.9455,0.1489 0.8606,0.0000 0.4485,0.0000 0.2667,0.1915 0.1273,0.4255 0.0000,0.7660"),
+        new("SC_RightTrigger-FullPull-Active.png", "RightTrigger", OverlayElementType.Trigger, 1074, 6, 169, 47, "0.0000,0.3617 0.0000,0.6596 0.2663,0.6383 0.6805,0.7872 0.8876,0.9787 0.9941,0.9787 0.9941,0.7660 0.9053,0.5106 0.7870,0.2766 0.5621,0.0000 0.1538,0.0000 0.0769,0.1277"),
+        new("SC_LeftBumper-Active.png", "LeftShoulder", OverlayElementType.Button, 214, 29, 232, 44, "0.0000,0.9773 0.0733,0.9773 0.1466,0.8182 0.4267,0.5909 0.9957,0.4545 0.9957,0.0455 0.3621,0.0000 0.1638,0.1818 0.0603,0.4091 0.0000,0.7045"),
+        new("SC_RightBumper-Active.png", "RightShoulder", OverlayElementType.Button, 1017, 29, 232, 44, "0.0000,0.0455 0.0000,0.4545 0.2759,0.4773 0.5862,0.5909 0.8319,0.7955 0.9224,0.9773 0.9957,0.9773 0.9957,0.7045 0.9267,0.3864 0.7241,0.0682 0.6207,0.0000"),
+        new("SC_Face_Button.png", "ButtonA", OverlayElementType.Button, 865, 570, 81, 81, "0.1975,0.0247 0.0494,0.1605 0.0000,0.2469 0.0000,0.7407 0.0247,0.7901 0.1605,0.9383 0.2469,0.9877 0.7407,0.9877 0.7901,0.9630 0.9383,0.8272 0.9877,0.7407 0.9877,0.2469 0.9630,0.1975 0.8272,0.0494 0.7407,0.0000 0.2469,0.0000"),
+        new("SC_Face_Button.png", "ButtonB", OverlayElementType.Button, 948, 488, 81, 81, "0.1975,0.0247 0.0494,0.1605 0.0000,0.2469 0.0000,0.7407 0.0247,0.7901 0.1605,0.9383 0.2469,0.9877 0.7407,0.9877 0.7901,0.9630 0.9383,0.8272 0.9877,0.7407 0.9877,0.2469 0.9630,0.1975 0.8272,0.0494 0.7407,0.0000 0.2469,0.0000"),
+        new("SC_Face_Button.png", "ButtonX", OverlayElementType.Button, 784, 488, 81, 81, "0.1975,0.0247 0.0494,0.1605 0.0000,0.2469 0.0000,0.7407 0.0247,0.7901 0.1605,0.9383 0.2469,0.9877 0.7407,0.9877 0.7901,0.9630 0.9383,0.8272 0.9877,0.7407 0.9877,0.2469 0.9630,0.1975 0.8272,0.0494 0.7407,0.0000 0.2469,0.0000"),
+        new("SC_Face_Button.png", "ButtonY", OverlayElementType.Button, 865, 406, 81, 81, "0.1975,0.0247 0.0494,0.1605 0.0000,0.2469 0.0000,0.7407 0.0247,0.7901 0.1605,0.9383 0.2469,0.9877 0.7407,0.9877 0.7901,0.9630 0.9383,0.8272 0.9877,0.7407 0.9877,0.2469 0.9630,0.1975 0.8272,0.0494 0.7407,0.0000 0.2469,0.0000"),
+        new("SC_Start-Select_Button.png", "ButtonBack", OverlayElementType.Button, 570, 286, 85, 49, "0.0000,0.1633 0.0000,0.8163 0.0941,0.9796 0.8941,0.9796 0.9882,0.8163 0.9882,0.1633 0.8941,0.0000 0.0941,0.0000"),
+        new("SC_Start-Select_Button.png", "ButtonStart", OverlayElementType.Button, 810, 286, 85, 49, "0.0000,0.1633 0.0000,0.8163 0.0941,0.9796 0.8941,0.9796 0.9882,0.8163 0.9882,0.1633 0.8941,0.0000 0.0941,0.0000"),
+        new("SC_Guide_Button.png", "ButtonGuide", OverlayElementType.Button, 681, 240, 105, 105, "0.2762,0.0000 0.1619,0.0667 0.0667,0.1619 0.0000,0.2762 0.0000,0.7143 0.0667,0.8286 0.1619,0.9238 0.2762,0.9905 0.7143,0.9905 0.8286,0.9238 0.9238,0.8286 0.9905,0.7143 0.9905,0.2762 0.9238,0.1619 0.8286,0.0667 0.7143,0.0000"),
+        new("SC_AnalogStick.png", "LeftThumbRing", OverlayElementType.StickRing, 480, 446, 174, 174, "0.2874,0.0000 0.1437,0.0862 0.0632,0.1724 0.0057,0.2759 0.0057,0.7184 0.0862,0.8506 0.1724,0.9310 0.2759,0.9885 0.7184,0.9885 0.8506,0.9080 0.9310,0.8218 0.9885,0.7184 0.9885,0.2759 0.9080,0.1437 0.8218,0.0632 0.7184,0.0057"),
+        new("SC_AnalogStick_Click.png", "LeftThumbButton", OverlayElementType.StickClick, 480, 446, 174, 174, "0.2356,0.0230 0.0805,0.1494 0.0000,0.2874 0.0000,0.7069 0.0230,0.7586 0.1494,0.9138 0.2874,0.9943 0.7069,0.9943 0.7586,0.9713 0.9138,0.8448 0.9943,0.7069 0.9943,0.2874 0.9713,0.2356 0.8448,0.0805 0.7069,0.0000 0.2874,0.0000"),
+        new("SC_LeftTrackpad_Click.png", "LeftTouchpadClick", OverlayElementType.Button, 147, 133, 372, 364, "0.2070,0.0412 0.0833,0.1484 0.0000,0.2940 0.0000,0.7033 0.0565,0.8132 0.1532,0.9176 0.2930,0.9973 0.7043,0.9973 0.8226,0.9341 0.9247,0.8352 0.9973,0.7033 0.9973,0.2940 0.9409,0.1841 0.8441,0.0797 0.7043,0.0000 0.2930,0.0000"),
+        new("", "LeftTouchpad", OverlayElementType.Touchpad, 147, 133, 372, 364),
+        new("SC_RightTrackpad_Click.png", "RightTouchpadClick", OverlayElementType.Button, 946, 132, 372, 364, "0.2070,0.0412 0.0833,0.1484 0.0000,0.2940 0.0000,0.7033 0.0565,0.8132 0.1532,0.9176 0.2930,0.9973 0.7043,0.9973 0.8226,0.9341 0.9247,0.8352 0.9973,0.7033 0.9973,0.2940 0.9409,0.1841 0.8441,0.0797 0.7043,0.0000 0.2930,0.0000"),
+        new("", "RightTouchpad", OverlayElementType.Touchpad, 946, 132, 372, 364),
+        new("SC_LeftGrip_Button.png", "LeftGrip", OverlayElementType.Button, 215, 560, 183, 327, "0.9126,0.0000 0.5683,0.0000 0.4044,0.0428 0.1311,0.1682 0.0000,0.3058 0.0000,0.6024 0.0383,0.6758 0.2240,0.8777 0.4426,0.9969 0.6721,0.9969 0.9945,0.7156 0.9945,0.5076 0.8743,0.2385"),
+        new("SC_RightGrip_Button.png", "RightGrip", OverlayElementType.Button, 1068, 563, 183, 327, "0.0820,0.0000 0.1202,0.2385 0.0000,0.5076 0.0000,0.7156 0.3224,0.9969 0.5519,0.9969 0.7705,0.8777 0.9563,0.6758 0.9945,0.6024 0.9945,0.3058 0.8634,0.1682 0.5902,0.0428 0.4262,0.0000"),
     };
-
-    /// <summary>Preview element name (optionally with a "Neg" suffix on a
-    /// stick axis) to the raw grid target. Null when the element has no
-    /// raw-surface counterpart.</summary>
-    public static string ToRaw(string previewName)
-    {
-        if (string.IsNullOrEmpty(previewName)) return null;
-
-        bool neg = previewName.EndsWith("Neg", System.StringComparison.Ordinal);
-        string name = neg ? previewName.Substring(0, previewName.Length - 3) : previewName;
-
-        for (int i = 0; i < PreviewByRawAxis.Length; i++)
-            if (name == PreviewByRawAxis[i])
-                return neg ? $"RawAxis{i}Neg" : $"RawAxis{i}";
-        if (neg) return null;
-
-        for (int i = 0; i < PreviewByRawBtn.Length; i++)
-            if (name == PreviewByRawBtn[i])
-                return $"RawBtn{i}";
-        if (name.StartsWith("DPad", System.StringComparison.Ordinal))
-            return "RawPov0" + name.Substring(4);
-        return null;
-    }
-
-    /// <summary>Raw grid target back to the preview element name (Neg
-    /// preserved on axes). Null when the raw target has no preview element
-    /// (e.g. an out-of-range index).</summary>
-    public static string ToPreview(string rawName)
-    {
-        if (string.IsNullOrEmpty(rawName)) return null;
-
-        if (rawName.StartsWith("RawAxis", System.StringComparison.Ordinal))
-        {
-            bool neg = rawName.EndsWith("Neg", System.StringComparison.Ordinal);
-            string idxStr = rawName.Substring(7, rawName.Length - 7 - (neg ? 3 : 0));
-            if (int.TryParse(idxStr, out int i) && i >= 0 && i < PreviewByRawAxis.Length)
-                return neg ? PreviewByRawAxis[i] + "Neg" : PreviewByRawAxis[i];
-            return null;
-        }
-        if (rawName.StartsWith("RawBtn", System.StringComparison.Ordinal))
-        {
-            if (int.TryParse(rawName.Substring(6), out int i)
-                && i >= 0 && i < PreviewByRawBtn.Length)
-                return PreviewByRawBtn[i];
-            return null;
-        }
-        if (rawName.StartsWith("RawPov0", System.StringComparison.Ordinal))
-            return "DPad" + rawName.Substring(7);
-        return null;
-    }
 }

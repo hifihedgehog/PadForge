@@ -2006,6 +2006,7 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GyroLastCalibrated_Format => Get("Settings_GyroLastCalibrated_Format");
     public string Settings_GyroNeverCalibrated => Get("Settings_GyroNeverCalibrated");
     public string Settings_GyroCalibrating => Get("Settings_GyroCalibrating");
+    public string Settings_GyroCalibrateFailed => Get("Settings_GyroCalibrateFailed");
     public string Settings_GyroResetCalibration_Button => Get("Settings_GyroResetCalibration_Button");
     public string Settings_GyroResetCalibration_Tooltip => Get("Settings_GyroResetCalibration_Tooltip");
     public string Settings_GyroLiveRate_Label => Get("Settings_GyroLiveRate_Label");

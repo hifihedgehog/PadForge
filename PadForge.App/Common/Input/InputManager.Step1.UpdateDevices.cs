@@ -641,21 +641,80 @@ namespace PadForge.Common.Input
                 if (exact != null && !liveTwinCollision)
                     return exact;
 
-                // A live twin gets a SESSION-MINTED identity instead of the
-                // colliding serial key, so both rows stay unique in every
-                // GUID-keyed lookup (UserSettings included). The caller
-                // pushes the minted GUID back onto the wrapper before
-                // LoadFromSdlDevice, which stamps row identity from the
-                // wrapper. Across launches the twin's persisted row is
-                // recycled through the step-2 drawer adoption below (it is
-                // offline and same-ProductGuid next launch), so its
-                // settings follow connection order like every identical
-                // shell. Known cosmetic corner, accepted: a twin that
-                // drops and reconnects within the disconnect debounce
-                // while its sibling stays live finds its own row still
-                // online and claimant-absent, adopts nothing, and leaves
-                // one stale row until the next launch recycles it.
-                Guid rowGuid = liveTwinCollision ? Guid.NewGuid() : instanceGuid;
+                if (liveTwinCollision)
+                {
+                    // TWIN RESOLUTION (round seven R4/R5, superseding the
+                    // round-six mint-per-resolve design).
+                    //
+                    // (a) The flapped-sibling rebind. A same-product row
+                    // still marked online while its claiming wrapper's SDL
+                    // instance has LEFT the present set is this same
+                    // physical unit re-identifying inside the disconnect
+                    // debounce: its old connection is gone, and one
+                    // physical device is never two present instances.
+                    // Returning that row is the deliberate rebind flow.
+                    // LoadFromSdlDevice swaps the wrapper in place and
+                    // DeviceLiveUnderNewWrapper then shields the stale
+                    // handle from the orphan sweep. Round six minted a
+                    // fresh row here instead, which orphaned the twin's
+                    // assignment (no output) and left its stale wrapper to
+                    // Phase 2's debounce path, whose MarkDeviceOffline
+                    // disposes UNCONDITIONALLY, re-opening the shared
+                    // HIDAPI-context churn the 2026-07-11 audit fixed.
+                    if (productGuid != Guid.Empty)
+                    {
+                        for (int i = 0; i < devices.Items.Count; i++)
+                        {
+                            var d = devices.Items[i];
+                            if (d.IsOnline && d.ProductGuid == productGuid
+                                && d.Device != null
+                                && !livePresentSdlIds.Contains(d.Device.SdlInstanceId))
+                                return d;
+                        }
+
+                        // (b) The drawer adoption, KEEPING the row's own
+                        // identity (round seven, R5). The incoming
+                        // serial-derived GUID is unusable here (it collides
+                        // with the live sibling), and minting a fresh one
+                        // per resolve re-keyed the twin EVERY LAUNCH: its
+                        // per-device slot configs (lighting, triggers,
+                        // audio) could never persist and grew a dead saved
+                        // entry per launch, device-pinned mapping rows died
+                        // on every reconnect, and Remote Link's
+                        // PeerLocalDeviceId broke its documented stability
+                        // contract. The adopted row's existing GUID is what
+                        // its UserSettings and every other GUID-keyed store
+                        // already reference, so identity is NOT restamped
+                        // and nothing is migrated; the caller pushes the
+                        // row's GUID onto the wrapper instead. Ordinary
+                        // non-collision adoption keeps restamping, because
+                        // there the incoming GUID is the device's true
+                        // stable identity. The asymmetry is deliberate.
+                        for (int i = 0; i < devices.Items.Count; i++)
+                        {
+                            var d = devices.Items[i];
+                            if (!d.IsOnline && d.ProductGuid == productGuid)
+                                return d;
+                        }
+                    }
+
+                    // (c) First-ever twin: a session-minted identity,
+                    // stable from the next launch on via (b). Same-serial
+                    // hardware with NO usable product identity (VID/PID
+                    // 0000) cannot take (a)/(b), because an Empty-product
+                    // scan would match across device classes, so it
+                    // re-mints per launch; accepted degenerate-hardware
+                    // limitation. WATCHED RESIDUAL: if SDL ever listed a
+                    // re-identifying device's old and new instance ids in
+                    // ONE snapshot, the collision predicate above would
+                    // read it as a live sibling and (a) would not match.
+                    // No evidence SDL produces that shape; if
+                    // single-device duplicate rows ever appear, this gate
+                    // is the first suspect.
+                    var twin = new UserDevice { InstanceGuid = Guid.NewGuid() };
+                    devices.Items.Add(twin);
+                    return twin;
+                }
 
                 // 2. Fallback: find an offline device with the same ProductGuid.
                 //    This handles BT controllers that reconnect with a new device path.
@@ -690,21 +749,20 @@ namespace PadForge.Common.Input
 
                     if (fallback != null)
                     {
-                        // Migrate the device to its new InstanceGuid (the
-                        // session-minted one on the twin path).
+                        // Migrate the device to its new InstanceGuid.
                         Guid oldGuid = fallback.InstanceGuid;
-                        fallback.InstanceGuid = rowGuid;
+                        fallback.InstanceGuid = instanceGuid;
 
-                        // Also migrate the linked UserSetting so slot assignment
-                        // and PadSetting are preserved.
-                        MigrateUserSettingGuid(oldGuid, rowGuid);
+                        // Also migrate the linked UserSettings so slot
+                        // assignments and PadSettings are preserved.
+                        MigrateUserSettingGuid(oldGuid, instanceGuid);
 
                         return fallback;
                     }
                 }
 
                 // 3. No match: create a new device.
-                var ud = new UserDevice { InstanceGuid = rowGuid };
+                var ud = new UserDevice { InstanceGuid = instanceGuid };
                 devices.Items.Add(ud);
                 return ud;
             }
@@ -721,13 +779,16 @@ namespace PadForge.Common.Input
 
             lock (settings.SyncRoot)
             {
+                // A device may be assigned to several slots at once (one
+                // UserSetting per slot, same InstanceGuid, different
+                // MapTo), so EVERY matching row follows the device. The
+                // old first-match break silently orphaned slots 2..N on
+                // any adoption (round seven, R6; pre-existing since
+                // v2.0.0-beta, its comment claimed one row per device).
                 for (int i = 0; i < settings.Items.Count; i++)
                 {
                     if (settings.Items[i].InstanceGuid == oldGuid)
-                    {
                         settings.Items[i].InstanceGuid = newGuid;
-                        break; // One UserSetting per device.
-                    }
                 }
             }
         }

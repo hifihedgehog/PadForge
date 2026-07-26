@@ -2801,4 +2801,5 @@
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>N'importe quel tag NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Tag NFC : {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Touchez un tag avec votre manette Switch…</value></data>
+  <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Échec du calibrage. Posez la manette et réessayez.</value></data>
 </root>

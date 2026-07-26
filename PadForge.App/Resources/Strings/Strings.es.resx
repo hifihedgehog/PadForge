@@ -2801,4 +2801,5 @@
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Cualquier etiqueta NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Etiqueta NFC: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Toca una etiqueta en tu mando Switch…</value></data>
+  <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>No se pudo calibrar. Deja el mando quieto e inténtalo de nuevo.</value></data>
 </root>

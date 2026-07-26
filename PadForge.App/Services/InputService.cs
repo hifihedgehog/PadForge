@@ -221,10 +221,23 @@ namespace PadForge.Services
         private int _disposed;
         private readonly HashSet<string> _managedWhitelistDosPaths = new(StringComparer.OrdinalIgnoreCase);
         private GyroCalibratorService _gyroCalibrator;
-        // Track which (device, slot) pairs have had auto-calibration
-        // kicked off so we don't double-fire the worker if
-        // UpdatePadDeviceInfo sees the same pair pre-completion.
-        private readonly HashSet<(Guid InstanceGuid, int Slot)> _gyroAutoCalibKicked = new();
+        // Auto-calibration latch, one entry per (device, slot). The VALUE
+        // is the PadSetting the pass ran against, and that identity IS the
+        // ownership token (round seven, R3): profile applies REPLACE a
+        // slot's PadSetting object, so a different live ps means the
+        // latch belongs to a superseded profile and the pair re-fires. A
+        // completion releases only its own token, and only when the
+        // calibrator still has work for that ps (rejected run, or an aux
+        // triple the full pass could not measure). All mutations ride
+        // SettingsManager.UserDevices.SyncRoot.
+        private readonly Dictionary<(Guid InstanceGuid, int Slot), PadSetting> _gyroAutoCalibKicked = new();
+        // Bounded retry ledger (round seven, R3): a released pass has no
+        // natural next event (UpdatePadDeviceInfo is edge-driven), so a
+        // release schedules one delayed re-poke, capped per ps epoch so a
+        // permanently-failing shape cannot burn samplers forever.
+        private readonly Dictionary<(Guid InstanceGuid, int Slot), (PadSetting Ps, int Count)> _gyroAutoCalibAttempts = new();
+        private const int GyroAutoCalibMaxAttempts = 3;
+        private const int GyroAutoCalibRetryDelayMs = 15000;
 
         // — per-device gravity vector for Player/World Space gyro
         // projection. Low-pass-filtered against state.Accel[] each
@@ -268,7 +281,12 @@ namespace PadForge.Services
         {
             if (instanceGuid == Guid.Empty) return;
             lock (SettingsManager.UserDevices.SyncRoot)
+            {
                 _gyroAutoCalibKicked.Remove((instanceGuid, slot));
+                // A user-driven reset is a fresh epoch: the retry cap
+                // starts over too.
+                _gyroAutoCalibAttempts.Remove((instanceGuid, slot));
+            }
         }
 
         /// <summary>Proxy to <see cref="InputManager.IsHmVcAt"/> so callers
@@ -2418,7 +2436,13 @@ namespace PadForge.Services
                                     ? Strings.Instance.Settings_GyroNeverCalibrated
                                     : string.Format(Strings.Instance.Settings_GyroLastCalibrated_Format, when.ToLocalTime());
                             }
-                            padVm.GyroCalibrationLabel = _gyroBiasMemo[i].Label;
+                            // The manual Calibrate flow owns the label
+                            // during a pass and briefly after a rejected
+                            // one (round seven, R1); pushing the memo over
+                            // it made "Calibrating…" invisible and a
+                            // rejection look like nothing happened.
+                            if (DateTime.UtcNow >= padVm.GyroCalibrationLabelHoldUntilUtc)
+                                padVm.GyroCalibrationLabel = _gyroBiasMemo[i].Label;
                         }
                     }
                 }
@@ -10105,11 +10129,24 @@ namespace PadForge.Services
                     // bringing an uncalibrated PadSetting to the same
                     // (device, slot) could never auto-calibrate until
                     // restart. WouldCalibrate is the callee's own pure
-                    // decision, so the two halves cannot drift.
+                    // decision, so the two halves cannot drift. The latch is
+                    // keyed to the ps OBJECT (round seven, R3): a profile
+                    // apply that replaces the PadSetting mid-session, or
+                    // mid-sample, presents a different reference and re-fires
+                    // rather than staying dark behind a token a superseded
+                    // profile burned.
                     if (!GyroCalibratorService.WouldCalibrate(ud, ps)) continue;
                     var key = (ud.InstanceGuid, slot);
-                    if (_gyroAutoCalibKicked.Contains(key)) continue;
-                    _gyroAutoCalibKicked.Add(key);
+                    if (_gyroAutoCalibKicked.TryGetValue(key, out var latchedPs)
+                        && ReferenceEquals(latchedPs, ps))
+                        continue;
+                    int attempts = 0;
+                    if (_gyroAutoCalibAttempts.TryGetValue(key, out var led)
+                        && ReferenceEquals(led.Ps, ps))
+                        attempts = led.Count;
+                    if (attempts >= GyroAutoCalibMaxAttempts) continue;
+                    _gyroAutoCalibAttempts[key] = (ps, attempts + 1);
+                    _gyroAutoCalibKicked[key] = ps;
                     found.Add((ud, ps, key));
                 }
                 candidates = found.ToArray();
@@ -10117,19 +10154,37 @@ namespace PadForge.Services
             foreach (var (ud, ps, key) in candidates)
             {
                 var pass = GyroCalibrator.EnsureAutoCalibratedAsync(ud, ps);
-                // A pass that wrote nothing (device raced offline before the
-                // first sample, mid-run disconnect, or the motion gate saw
-                // the pad move) releases the latch so a later
-                // UpdatePadDeviceInfo can retry; a successful write keeps it
-                // burned for the session. Latch mutations stay under the
-                // UserDevices sync root, matching ClearGyroAutoCalibLatch
-                // and the consume above.
+                // Release when work remains for THIS ps: a run that wrote
+                // nothing (offline race, motion gate), and also a full run
+                // that wrote the primary while the aux triple stayed
+                // unmeasured (round seven, R3: keeping the latch there
+                // wedged the #252 upgrade until restart). A release only
+                // ever removes its own token, so a newer pass for a
+                // replacement ps is never clobbered, and it schedules one
+                // delayed re-poke because nothing else may fire again this
+                // session (UpdatePadDeviceInfo is edge-driven). The attempt
+                // cap keeps a permanently-failing shape from burning
+                // samplers forever.
                 _ = pass.ContinueWith(done =>
                 {
                     bool wrote = done.Status == TaskStatus.RanToCompletion && done.Result;
-                    if (wrote) return;
+                    bool stillDue = GyroCalibratorService.WouldCalibrate(ud, ps);
+                    if (wrote && !stillDue) return;
+                    bool retry = false;
                     lock (SettingsManager.UserDevices.SyncRoot)
-                        _gyroAutoCalibKicked.Remove(key);
+                    {
+                        if (_gyroAutoCalibKicked.TryGetValue(key, out var cur)
+                            && ReferenceEquals(cur, ps))
+                        {
+                            _gyroAutoCalibKicked.Remove(key);
+                            retry = _gyroAutoCalibAttempts.TryGetValue(key, out var led)
+                                && ReferenceEquals(led.Ps, ps)
+                                && led.Count < GyroAutoCalibMaxAttempts;
+                        }
+                    }
+                    if (retry)
+                        _ = Task.Delay(GyroAutoCalibRetryDelayMs)
+                            .ContinueWith(_ => TryAutoCalibrateGyros());
                 }, TaskContinuationOptions.ExecuteSynchronously);
             }
         }

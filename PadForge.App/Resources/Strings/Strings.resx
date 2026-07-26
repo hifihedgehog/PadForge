@@ -2856,4 +2856,5 @@
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Any NFC Tag</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC Tag: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Tap a tag on your Switch controller…</value></data>
+  <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Couldn't calibrate. Set the controller down and try again.</value></data>
 </root>

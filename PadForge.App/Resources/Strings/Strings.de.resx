@@ -2801,4 +2801,5 @@
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Beliebiger NFC-Tag</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC-Tag: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Tippe einen Tag auf deinen Switch-Controller…</value></data>
+  <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Kalibrierung fehlgeschlagen. Controller ablegen und erneut versuchen.</value></data>
 </root>

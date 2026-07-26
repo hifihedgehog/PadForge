@@ -236,6 +236,54 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.All(sources, s => Assert.Equal(0.99, s.Inner, 6));
         }
 
+        /// <summary>Round seven: the OTHER half of EmitMouseJoystickAxes's
+        /// residual gate. A trackpad-hosted mouse_joystick pair rides the
+        /// finger read, where the geometry cannot land, so it keeps the
+        /// note. Until this pin, deleting the emitter's family-gated
+        /// reporter left every test green.</summary>
+        [Fact]
+        public void TrackpadMouseJoystick_ReportsTheResidual()
+        {
+            string vdf = Head
+                + Group(1, "mouse_joystick",
+                    Inputs(Inp("click", "xinput_button JOYSTICK_LEFT"))
+                    + Settings(("deadzone_shape", "1"), ("deadzone_inner_radius", "8192")))
+                + Preset(0, "Default", (1, "left_trackpad active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            Assert.Contains(p.Report.Entries,
+                e => e.ReasonKey == TranslationReasons.DeadZoneRadialResidual);
+        }
+
+        /// <summary>Round seven (R8): gyro_to_joystick hand-bound to a
+        /// STICK slot arms the geometry stamp, but the mode sits outside
+        /// the curve channel, so the authored outer radius had no carrier
+        /// and vanished silently, the exact drift the curve predicate's
+        /// comment forbids. The geometry block now carries it on
+        /// ParamRangeOuter itself, which the engine consumes inside the
+        /// pair test whenever the shape is set.</summary>
+        [Fact]
+        public void GyroToJoystickOnAStick_CarriesTheOuterRadius()
+        {
+            string vdf = Head
+                + Group(1, "gyro_to_joystick",
+                    Inputs(Inp("click", "xinput_button JOYSTICK_LEFT"))
+                    + Settings(("deadzone_outer_radius", "28000")))
+                + Preset(0, "Default", (1, "joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            var sources = p.XboxMappingSet.Rows
+                .Where(r => r.Target == "RightThumbAxisX" || r.Target == "RightThumbAxisY")
+                .SelectMany(r => r.Sources)
+                .ToArray();
+
+            Assert.NotEmpty(sources);
+            Assert.All(sources, s => Assert.NotEqual(0, s.ParamStickDeadZoneShape));
+            Assert.All(sources, s => Assert.Equal(28000.0 / 32767.0, s.ParamRangeOuter, 3));
+        }
+
         /// <summary>Round six (R5): gyro_to_joystick_deflection reads the
         /// gravity-lean pair, which is not an Axis-path read, so the
         /// geometry stamp cannot land there. It used to drop an authored

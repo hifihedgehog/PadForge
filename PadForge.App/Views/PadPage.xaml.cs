@@ -1793,7 +1793,50 @@ namespace PadForge.Views
             if (!slotMs.ShiftActivators.Contains(activator)) return;
             mask = activator.LayerMask;
 
+            ExecuteLayerDelete(slotMs, activator, mask, AllPadViewModels());
+
+            // The engine's shift runtime may still be ENGAGED on the deleted
+            // mask (round four, R12: Latch/Toggle/Cycle park the mask string
+            // until their own activator's tick rewrites it, and that
+            // activator is gone). Removing an activator also shifts every
+            // later activator's INDEX down, and the runtime is index-parallel,
+            // so this slot's state must be dropped either way. Slot-scoped
+            // (round five, X12): the all-slots reset also wiped unrelated
+            // pads' live engagement.
+            PadForge.Common.Input.InputManager.ClearShiftRuntime(padVmAtOpen.PadIndex);
+
+            // Snap the active tab back to Base; RebuildLayerTabs will
+            // also recover if the active mask no longer matches a tab.
+            padVmAtOpen.ActiveLayerMask = "Base";
+            padVmAtOpen.RebuildLayerTabs(slotMs.ShiftActivators);
+            padVmAtOpen.ConfigItemDirtyCallback?.Invoke();
+        }
+
+        /// <summary>The data half of a layer delete, after the user
+        /// confirmed and the handler re-validated. Internal static so the
+        /// legacy-"Base" healing below is testable without driving the
+        /// dialog (the round-six lesson: pinning only a predicate leaves
+        /// the call site unguarded).
+        ///
+        /// LEGACY-"BASE" HEALING (round seven, R7): a pre-round-six layer
+        /// whose persisted MASK is literally "Base" collides with the
+        /// base-set identity. Its rows are indistinguishable from base
+        /// rows (MappingRow.LayerMask defaults to "Base"), so the normal
+        /// sweep below would delete EVERY base mapping on the slot, and
+        /// macros scoped "Base" carry the #254 base-set contract, not
+        /// this layer. Deleting such an activator therefore removes ONLY
+        /// the bogus activator, healing the data; rows, macros, menus,
+        /// and rings stay untouched.</summary>
+        internal static void ExecuteLayerDelete(
+            PadForge.Engine.Data.MappingSet slotMs,
+            PadForge.Engine.Data.ShiftActivator activator,
+            string mask,
+            System.Collections.Generic.IEnumerable<PadViewModel> padVms)
+        {
             slotMs.ShiftActivators.Remove(activator);
+            if (string.Equals(mask, "Base", StringComparison.Ordinal))
+                return;
+
             if (slotMs.Rows != null)
             {
                 slotMs.Rows.RemoveAll(
@@ -1838,7 +1881,7 @@ namespace PadForge.Views
                 // ungated between the two writes, firing once globally
                 // during the delete. Disabled preserves the authoring;
                 // "" clears the dead mask.
-                foreach (var padVm in AllPadViewModels())
+                foreach (var padVm in padVms)
                 {
                     foreach (var mac in padVm.Macros)
                     {
@@ -1853,22 +1896,6 @@ namespace PadForge.Views
                 // them to always-available, and a same-named layer re-add
                 // revives them (hand-authored masks are name-derived).
             }
-
-            // The engine's shift runtime may still be ENGAGED on the deleted
-            // mask (round four, R12: Latch/Toggle/Cycle park the mask string
-            // until their own activator's tick rewrites it, and that
-            // activator is gone). Removing an activator also shifts every
-            // later activator's INDEX down, and the runtime is index-parallel,
-            // so this slot's state must be dropped either way. Slot-scoped
-            // (round five, X12): the all-slots reset also wiped unrelated
-            // pads' live engagement.
-            PadForge.Common.Input.InputManager.ClearShiftRuntime(padVmAtOpen.PadIndex);
-
-            // Snap the active tab back to Base; RebuildLayerTabs will
-            // also recover if the active mask no longer matches a tab.
-            padVmAtOpen.ActiveLayerMask = "Base";
-            padVmAtOpen.RebuildLayerTabs(slotMs.ShiftActivators);
-            padVmAtOpen.ConfigItemDirtyCallback?.Invoke();
         }
 
         // Full memberwise copy. The previous hand-listed clone silently dropped

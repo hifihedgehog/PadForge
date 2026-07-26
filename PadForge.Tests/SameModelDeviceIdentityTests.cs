@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using PadForge.Common.Input;
+using PadForge.Engine;
 using Xunit;
 
 namespace PadForge.Tests
@@ -186,6 +188,148 @@ namespace PadForge.Tests
 
             Assert.NotSame(stored2026, got);
             Assert.Equal(UnitA, stored2026.SerialNumber);            // 2026 entry untouched
+        }
+
+        // ── The twin gate: identical serials must not merge live pads ──
+        //
+        // Serial outranks device path when the identity GUID is built, so
+        // two units reporting the IDENTICAL serial string (a real clone-pad
+        // shape) arrive with the SAME GUID. The distinctness pins above
+        // never covered that: they mint distinct GUIDs per unit. The gate:
+        // an exact-GUID row whose claiming wrapper's SDL instance is still
+        // PRESENT belongs to a live sibling, so the newcomer gets a
+        // session-minted row instead of stealing it. A claimant that has
+        // left the present set is the ordinary reconnect rebind and adopts
+        // as always. Only the SDL sweep passes the present set.
+
+        private static PadForge.Engine.Data.UserDevice LiveRow(
+            InputManager im, Guid guid, uint claimantSdlId)
+        {
+            var row = im.FindOrCreateUserDevice(guid, SteamProductGuid);
+            row.ProductGuid = SteamProductGuid;
+            row.IsOnline = true;
+            row.Device = new SdlDeviceWrapper { SdlInstanceId = claimantSdlId };
+            return row;
+        }
+
+        /// <summary>THE twin pin. The second unit with the same serial gets
+        /// its own row under a minted identity, and the live sibling's row,
+        /// wrapper, and GUID are untouched.</summary>
+        [Fact]
+        public void IdenticalSerialTwin_GetsItsOwnRow_AndTheLiveRowIsUntouched()
+        {
+            using var _ = new DeviceListScope();
+            var im = new InputManager();
+            var sharedGuid = Guid.NewGuid();          // both units derive this from the shared serial
+            var rowA = LiveRow(im, sharedGuid, claimantSdlId: 7);
+            var wrapperA = rowA.Device;
+
+            var present = new HashSet<uint> { 7, 9 }; // sibling still present; incoming is 9
+            var rowB = im.FindOrCreateUserDevice(sharedGuid, SteamProductGuid, present);
+
+            Assert.NotSame(rowA, rowB);
+            Assert.Equal(sharedGuid, rowA.InstanceGuid);
+            Assert.Same(wrapperA, rowA.Device);       // live wrapper not stolen or disposed
+            Assert.NotEqual(sharedGuid, rowB.InstanceGuid);
+            Assert.NotEqual(Guid.Empty, rowB.InstanceGuid);
+        }
+
+        /// <summary>A reconnect of the SAME unit arrives under a new SDL
+        /// instance while the old one has left the present set, so the
+        /// rebind flow the disconnect debounce relies on is untouched.</summary>
+        [Fact]
+        public void SameUnitReconnect_WhoseClaimantLeft_StillRebindsToItsRow()
+        {
+            using var _ = new DeviceListScope();
+            var im = new InputManager();
+            var sharedGuid = Guid.NewGuid();
+            var rowA = LiveRow(im, sharedGuid, claimantSdlId: 7);
+
+            var present = new HashSet<uint> { 9 };    // 7 is gone; 9 is the new connection
+            var got = im.FindOrCreateUserDevice(sharedGuid, SteamProductGuid, present);
+
+            Assert.Same(rowA, got);
+            Assert.Equal(sharedGuid, got.InstanceGuid);
+        }
+
+        /// <summary>Across launches the twin's persisted row is recycled by
+        /// the drawer adoption, and its UserSetting follows the minted
+        /// identity, so a twin keeps settings by connection order like any
+        /// identical shell.</summary>
+        [Fact]
+        public void TwinRowFromLastLaunch_IsRecycledWithItsSettings()
+        {
+            using var _ = new DeviceListScope();
+            var savedSettings = SettingsManager.UserSettings;
+            SettingsManager.UserSettings = new SettingsCollection();
+            try
+            {
+                var im = new InputManager();
+                var sharedGuid = Guid.NewGuid();
+                LiveRow(im, sharedGuid, claimantSdlId: 7);
+
+                var lastLaunchGuid = Guid.NewGuid();
+                var twinRow = Stored(lastLaunchGuid, "");     // offline, same product
+                lock (SettingsManager.UserSettings.SyncRoot)
+                    SettingsManager.UserSettings.Items.Add(new PadForge.Engine.Data.UserSetting
+                    { InstanceGuid = lastLaunchGuid, MapTo = 3 });
+
+                var present = new HashSet<uint> { 7 };
+                var got = im.FindOrCreateUserDevice(sharedGuid, SteamProductGuid, present);
+
+                Assert.Same(twinRow, got);
+                Assert.NotEqual(sharedGuid, got.InstanceGuid);
+                Assert.NotEqual(lastLaunchGuid, got.InstanceGuid);
+                lock (SettingsManager.UserSettings.SyncRoot)
+                    Assert.Equal(got.InstanceGuid,
+                        SettingsManager.UserSettings.Items[0].InstanceGuid);
+            }
+            finally
+            {
+                SettingsManager.UserSettings = savedSettings;
+            }
+        }
+
+        /// <summary>Callers that pass no present set (touchpad, keyboard,
+        /// mouse, remote devices) keep today's semantics exactly: an exact
+        /// online match returns the row, twin gate never engages.</summary>
+        [Fact]
+        public void NullPresentSet_KeepsTodaySemantics_ForNonSweepCallers()
+        {
+            using var _ = new DeviceListScope();
+            var im = new InputManager();
+            var guid = Guid.NewGuid();
+            var rowA = LiveRow(im, guid, claimantSdlId: 7);
+
+            var got = im.FindOrCreateUserDevice(guid, SteamProductGuid);
+
+            Assert.Same(rowA, got);
+        }
+
+        /// <summary>Three identical-serial units at once occupy three rows
+        /// with three distinct identities.</summary>
+        [Fact]
+        public void ThreeIdenticalTwins_GetThreeRows()
+        {
+            using var _ = new DeviceListScope();
+            var im = new InputManager();
+            var sharedGuid = Guid.NewGuid();
+
+            var rowA = LiveRow(im, sharedGuid, claimantSdlId: 7);
+
+            var rowB = im.FindOrCreateUserDevice(sharedGuid, SteamProductGuid,
+                new HashSet<uint> { 7, 8 });
+            rowB.ProductGuid = SteamProductGuid;
+            rowB.IsOnline = true;
+            rowB.Device = new SdlDeviceWrapper { SdlInstanceId = 8 };
+
+            var rowC = im.FindOrCreateUserDevice(sharedGuid, SteamProductGuid,
+                new HashSet<uint> { 7, 8, 9 });
+
+            Assert.NotSame(rowA, rowB);
+            Assert.NotSame(rowA, rowC);
+            Assert.NotSame(rowB, rowC);
+            Assert.NotEqual(rowB.InstanceGuid, rowC.InstanceGuid);
         }
     }
 }

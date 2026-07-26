@@ -174,7 +174,17 @@ namespace PadForge.Common.Input
                     Debug.WriteLine($"[Step1] Accepted device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
                     Engine.SdlDiagLog.WriteLine($"DEV + SDL#{instanceId} {wrapper.VendorId:X4}:{wrapper.ProductId:X4} {wrapper.Name}");
 
-                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid);
+                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid,
+                        currentInstanceIds);
+
+                    // Same-serial twin (owner-approved 2026-07-25): the
+                    // resolver minted a session identity for this
+                    // connection instead of stealing the live sibling's
+                    // row. The wrapper must carry it BEFORE
+                    // LoadFromSdlDevice, which stamps the row's
+                    // InstanceGuid from the wrapper.
+                    if (ud.InstanceGuid != wrapper.InstanceGuid)
+                        wrapper.OverrideInstanceGuid(ud.InstanceGuid);
 
                     // Populate from the SDL device.
                     ud.LoadFromSdlDevice(wrapper);
@@ -593,19 +603,59 @@ namespace PadForge.Common.Input
         // Internal so the same-model adoption path is testable end to end.
         // Pinning only the serial predicate left the CALL SITE unguarded:
         // deleting the gate from the loop kept every predicate test green.
-        internal UserDevice FindOrCreateUserDevice(Guid instanceGuid, Guid productGuid = default)
+        //
+        // livePresentSdlIds (same-serial twin gate, owner-approved
+        // 2026-07-25): the SDL sweep passes the instance IDs SDL reports
+        // present RIGHT NOW. Serial outranks device path in
+        // BuildInstanceGuid, so two units reporting the identical serial
+        // string (a real clone-pad shape) build the SAME InstanceGuid, and
+        // without this gate the second unit stole the first one's row and
+        // disposed its live wrapper, violating the process-time
+        // distinctness rule. An exact-GUID row is treated as a LIVE TWIN's
+        // row only when its claiming wrapper's SDL instance is still in
+        // the present set: a same-unit reconnect always arrives under a
+        // NEW instance id while the old one has left the set (one physical
+        // device cannot be two present instances), so the rebind flow the
+        // disconnect debounce relies on is untouched. Every non-SDL caller
+        // passes null and keeps today's semantics exactly.
+        internal UserDevice FindOrCreateUserDevice(Guid instanceGuid, Guid productGuid = default,
+            HashSet<uint> livePresentSdlIds = null)
         {
             var devices = SettingsManager.UserDevices;
-            if (devices == null) return new UserDevice();
+            if (devices == null) return new UserDevice { InstanceGuid = instanceGuid };
 
             lock (devices.SyncRoot)
             {
                 // 1. Exact match by InstanceGuid.
+                UserDevice exact = null;
                 for (int i = 0; i < devices.Items.Count; i++)
                 {
                     if (devices.Items[i].InstanceGuid == instanceGuid)
-                        return devices.Items[i];
+                    { exact = devices.Items[i]; break; }
                 }
+                bool liveTwinCollision = exact != null
+                    && livePresentSdlIds != null
+                    && exact.IsOnline
+                    && exact.Device != null
+                    && livePresentSdlIds.Contains(exact.Device.SdlInstanceId);
+                if (exact != null && !liveTwinCollision)
+                    return exact;
+
+                // A live twin gets a SESSION-MINTED identity instead of the
+                // colliding serial key, so both rows stay unique in every
+                // GUID-keyed lookup (UserSettings included). The caller
+                // pushes the minted GUID back onto the wrapper before
+                // LoadFromSdlDevice, which stamps row identity from the
+                // wrapper. Across launches the twin's persisted row is
+                // recycled through the step-2 drawer adoption below (it is
+                // offline and same-ProductGuid next launch), so its
+                // settings follow connection order like every identical
+                // shell. Known cosmetic corner, accepted: a twin that
+                // drops and reconnects within the disconnect debounce
+                // while its sibling stays live finds its own row still
+                // online and claimant-absent, adopts nothing, and leaves
+                // one stale row until the next launch recycles it.
+                Guid rowGuid = liveTwinCollision ? Guid.NewGuid() : instanceGuid;
 
                 // 2. Fallback: find an offline device with the same ProductGuid.
                 //    This handles BT controllers that reconnect with a new device path.
@@ -640,20 +690,21 @@ namespace PadForge.Common.Input
 
                     if (fallback != null)
                     {
-                        // Migrate the device to its new InstanceGuid.
+                        // Migrate the device to its new InstanceGuid (the
+                        // session-minted one on the twin path).
                         Guid oldGuid = fallback.InstanceGuid;
-                        fallback.InstanceGuid = instanceGuid;
+                        fallback.InstanceGuid = rowGuid;
 
                         // Also migrate the linked UserSetting so slot assignment
                         // and PadSetting are preserved.
-                        MigrateUserSettingGuid(oldGuid, instanceGuid);
+                        MigrateUserSettingGuid(oldGuid, rowGuid);
 
                         return fallback;
                     }
                 }
 
-                // 3. No match — create a new device.
-                var ud = new UserDevice { InstanceGuid = instanceGuid };
+                // 3. No match: create a new device.
+                var ud = new UserDevice { InstanceGuid = rowGuid };
                 devices.Items.Add(ud);
                 return ud;
             }

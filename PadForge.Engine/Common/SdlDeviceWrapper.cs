@@ -28,8 +28,10 @@ namespace PadForge.Engine
         /// <summary>SDL Gamepad handle. May be IntPtr.Zero if the device is not recognized as a gamepad.</summary>
         public IntPtr GameController { get; private set; } = IntPtr.Zero;
 
-        /// <summary>SDL instance ID (unique per device connection session). 0 = invalid.</summary>
-        public uint SdlInstanceId { get; private set; }
+        /// <summary>SDL instance ID (unique per device connection session). 0 = invalid.
+        /// Internal setter so identity tests can fabricate a claimant wrapper
+        /// without opening a native device.</summary>
+        public uint SdlInstanceId { get; internal set; }
 
         /// <summary>Number of axes reported by SDL.</summary>
         public int NumAxes { get; private set; }
@@ -235,6 +237,20 @@ namespace PadForge.Engine
         /// to physical devices.
         /// </summary>
         public Guid InstanceGuid { get; private set; } = Guid.Empty;
+
+        /// <summary>Replaces this connection's identity GUID with a
+        /// session-scoped one. Called by the device resolver ONLY when the
+        /// serial-derived identity collided with a DIFFERENT live device
+        /// (two units reporting the identical serial string, a real clone
+        /// pad shape, make the same GUID). The wrapper must carry the
+        /// minted identity BEFORE UserDevice.LoadFromSdlDevice runs,
+        /// because LoadInstance stamps the row's InstanceGuid from the
+        /// wrapper and would otherwise clobber the disambiguated row back
+        /// onto the colliding key.</summary>
+        public void OverrideInstanceGuid(Guid sessionGuid)
+        {
+            if (sessionGuid != Guid.Empty) InstanceGuid = sessionGuid;
+        }
 
         /// <summary>
         /// Product GUID derived from VID/PID for device identification

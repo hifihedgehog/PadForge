@@ -1147,7 +1147,7 @@ namespace PadForge.Views
                     item.Tags?.FirstOrDefault()?.Tag,
                     outcome.Rows.OfType<WorkshopManifestRowItem>()
                                 .Select(r => new WorkshopControllerPreview.Callout(
-                                    ArtTargetFor(r.Target), r.Source)));
+                                    r.ArtTarget, r.Source)));
 
                 SetManifestPanel(ManifestResultPanel);
             }
@@ -1277,7 +1277,8 @@ namespace PadForge.Views
                 rows.Add(new WorkshopManifestRowItem
                 {
                     Source = FriendlySource(source),
-                    Target = target,
+                    Target = FriendlySource(target),
+                    ArtTarget = ArtTargetFor(target),
                     Reason = ReasonText(entry),
                     DotBrush = entry.Status switch
                     {
@@ -1620,18 +1621,57 @@ namespace PadForge.Views
             return PrettifyTag(tag);
         }
 
-        /// <summary>Drops the "Gamepad " noise every Steam source carries
-        /// and spaces the trailing ordinal, so a row reads "Paddle 2"
-        /// instead of "Gamepad Paddle2". The manifest is the first thing a
-        /// user reads about a config, and it was rendering the translator's
-        /// internal vocabulary at them.</summary>
-        internal static string FriendlySource(string source)
+        /// <summary>Real button names for the manifest and the callouts.
+        ///
+        /// <para>Both columns used to render the engine's own identifiers
+        /// ("Gamepad Paddle2", "LeftThumbAxisX", "ButtonA"). That is
+        /// programmer vocabulary on a screen users read to decide whether
+        /// to install someone's config. Names here are what is printed on
+        /// the hardware or what a player would say out loud.</para></summary>
+        private static readonly Dictionary<string, string> InputNames =
+            new(StringComparer.OrdinalIgnoreCase)
+            {
+                ["ButtonA"] = "A", ["ButtonB"] = "B", ["ButtonX"] = "X", ["ButtonY"] = "Y",
+                ["A"] = "A", ["B"] = "B", ["X"] = "X", ["Y"] = "Y",
+                ["LeftTrigger"] = "Left Trigger", ["RightTrigger"] = "Right Trigger",
+                ["LeftShoulder"] = "Left Bumper", ["RightShoulder"] = "Right Bumper",
+                ["LeftBumper"] = "Left Bumper", ["RightBumper"] = "Right Bumper",
+                ["LeftThumbAxisX"] = "Left Stick", ["LeftThumbAxisY"] = "Left Stick",
+                ["RightThumbAxisX"] = "Right Stick", ["RightThumbAxisY"] = "Right Stick",
+                ["LeftStickX"] = "Left Stick", ["LeftStickY"] = "Left Stick",
+                ["RightStickX"] = "Right Stick", ["RightStickY"] = "Right Stick",
+                ["LeftThumbButton"] = "Left Stick Click",
+                ["RightThumbButton"] = "Right Stick Click",
+                ["LeftThumbRing"] = "Left Stick", ["RightThumbRing"] = "Right Stick",
+                ["DPadUp"] = "D-Pad Up", ["DPadDown"] = "D-Pad Down",
+                ["DPadLeft"] = "D-Pad Left", ["DPadRight"] = "D-Pad Right",
+                ["ButtonStart"] = "Menu", ["ButtonBack"] = "View",
+                ["ButtonGuide"] = "Guide", ["Start"] = "Menu", ["Back"] = "View",
+                ["Paddle1"] = "Paddle 1", ["Paddle2"] = "Paddle 2",
+                ["Paddle3"] = "Paddle 3", ["Paddle4"] = "Paddle 4",
+                ["Touchpad"] = "Touchpad", ["TouchpadClick"] = "Touchpad Click",
+            };
+
+        /// <summary>Names one input for a human. Falls back to spacing the
+        /// identifier so an input we have not named still reads as words
+        /// rather than as run-together Pascal case.</summary>
+        internal static string FriendlySource(string raw)
         {
-            if (string.IsNullOrWhiteSpace(source)) return source;
-            var s = source.StartsWith("Gamepad ", StringComparison.OrdinalIgnoreCase)
-                ? source.Substring("Gamepad ".Length)
-                : source;
-            // "Paddle2" -> "Paddle 2", "LeftStickX" -> "Left Stick X".
+            if (string.IsNullOrWhiteSpace(raw)) return raw;
+            var s = raw.StartsWith("Gamepad ", StringComparison.OrdinalIgnoreCase)
+                ? raw.Substring("Gamepad ".Length)
+                : raw;
+            s = s.Trim();
+            if (InputNames.TryGetValue(s, out var nice)) return nice;
+            if (InputNames.TryGetValue(s.Replace(" ", ""), out nice)) return nice;
+            return SpaceIdentifier(s);
+        }
+
+        /// <summary>"LeftStickX" -> "Left Stick X", "Paddle2" -> "Paddle 2".
+        /// Consecutive capitals stay together so "DPad" does not shatter.</summary>
+        internal static string SpaceIdentifier(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return s;
             var sb = new System.Text.StringBuilder(s.Length + 4);
             for (int i = 0; i < s.Length; i++)
             {
@@ -1834,6 +1874,12 @@ namespace PadForge.Views
 
         public string Source { get; init; }
         public string Target { get; init; }
+
+        /// <summary>The RAW target, kept for the controller preview's art
+        /// join. Target itself is humanized for display, and the 2DModels
+        /// layout keys on the engine identifier, so the two must not be the
+        /// same string.</summary>
+        public string ArtTarget { get; init; }
         public string Reason { get; init; }
         public Brush DotBrush { get; init; } = CleanBrush;
         public Effect DotGlow { get; init; }

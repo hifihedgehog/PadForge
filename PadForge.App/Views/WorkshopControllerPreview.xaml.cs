@@ -85,16 +85,9 @@ namespace PadForge.Views
 
             foreach (var ov in hits)
             {
-                var lit = Load($"2DModels/{folder}/{ov.ImageFile}", Gutter + ov.X, ov.Y, ov.Width, ov.Height);
+                var lit = LoadTinted($"2DModels/{folder}/{ov.ImageFile}",
+                                     Gutter + ov.X, ov.Y, ov.Width, ov.Height);
                 if (lit == null) continue;
-                lit.IsHitTestVisible = false;
-                lit.Effect = new DropShadowEffect
-                {
-                    Color = Color.FromRgb(0xE8, 0x7A, 0x2E),
-                    BlurRadius = 26,
-                    ShadowDepth = 0,
-                    Opacity = 0.85,
-                };
                 Panel.SetZIndex(lit, 5);
                 ModelCanvas.Children.Add(lit);
             }
@@ -156,6 +149,41 @@ namespace PadForge.Views
 
             // Nothing anchored means nothing worth drawing.
             Visibility = hits.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        /// <summary>Draws a pack element in EMBER instead of its own paint.
+        ///
+        /// <para>The pack's *_Active and *_Click PNGs are authored in the
+        /// vendor's own highlight colour, which is blue. Dropping an ember
+        /// glow behind a blue sprite still reads as blue. So the sprite is
+        /// used as an ALPHA MASK over a solid ember fill, which is the
+        /// technique this repo already uses for the lightbar overlays: the
+        /// shape comes from the art, the colour comes from us, and the
+        /// preview stays on-brand without touching the assets.</para></summary>
+        private static FrameworkElement LoadTinted(string resourcePath, double x, double y, double w, double h)
+        {
+            var bmp = EmbeddedBitmaps.Load(resourcePath);
+            if (bmp == null) return null;
+            var mask = new ImageBrush(bmp) { Stretch = Stretch.Fill };
+            mask.Freeze();
+            var rect = new System.Windows.Shapes.Rectangle
+            {
+                Width = w,
+                Height = h,
+                Fill = Ember,
+                OpacityMask = mask,
+                IsHitTestVisible = false,
+                Effect = new DropShadowEffect
+                {
+                    Color = Color.FromRgb(0xE8, 0x7A, 0x2E),
+                    BlurRadius = 26,
+                    ShadowDepth = 0,
+                    Opacity = 0.8,
+                },
+            };
+            Canvas.SetLeft(rect, x);
+            Canvas.SetTop(rect, y);
+            return rect;
         }
 
         private static Image Load(string resourcePath, double x, double y, double w, double h)

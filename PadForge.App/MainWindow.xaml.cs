@@ -808,6 +808,24 @@ namespace PadForge
                     if (ps == null) return;
                     var calibratedGuid = selected.InstanceGuid;
                     int generation = pvm.GyroCalibrationGeneration;
+                    // A pass already owns this profile (round eleven).
+                    // Auto-calibration fires on device connect and runs
+                    // 1.5 s, which is exactly when a user plugs in a gyro
+                    // pad and reaches for this button, and the calibrator
+                    // refuses a second concurrent pass. Reporting that
+                    // refusal as "Couldn't calibrate" blamed a healthy,
+                    // stationary pad for the most likely gesture on the
+                    // tab. Round nine introduced the refusal and round
+                    // ten taught the auto lane and the Reset handler what
+                    // it means; this caller was never taught. Show the
+                    // run that IS happening instead.
+                    if (GyroCalibratorService.IsSampling(ps))
+                    {
+                        pvm.GyroCalibrationLabel =
+                            PadForge.Resources.Strings.Strings.Instance.Settings_GyroCalibrating;
+                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.UtcNow.AddSeconds(2);
+                        return;
+                    }
                     // Hold the label for the run (round seven, R1): the
                     // 30 Hz tick otherwise clobbers "Calibrating…" within
                     // one frame, and a motion-rejected run looked exactly

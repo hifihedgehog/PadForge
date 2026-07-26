@@ -1146,8 +1146,8 @@ namespace PadForge.Views
                 ControllerPreview.Render(
                     item.Tags?.FirstOrDefault()?.Tag,
                     outcome.Rows.OfType<WorkshopManifestRowItem>()
-                                .Select(r => ArtTargetFor(r.Target))
-                                .Where(t => !string.IsNullOrEmpty(t)));
+                                .Select(r => new WorkshopControllerPreview.Callout(
+                                    ArtTargetFor(r.Target), r.Source)));
 
                 SetManifestPanel(ManifestResultPanel);
             }

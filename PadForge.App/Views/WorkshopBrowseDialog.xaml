@@ -864,7 +864,8 @@
                                                  lit. Scrolls with the manifest so the list
                                                  below reads as the detail behind it. -->
                                             <views:WorkshopControllerPreview x:Name="ControllerPreview"
-                                                                             MaxHeight="230"
+                                                                             MaxHeight="330"
+                                                                             Margin="0,2,0,10"
                                                                              Visibility="Collapsed"/>
                                             <ItemsControl x:Name="ManifestRowsList"/>
                                         </StackPanel>

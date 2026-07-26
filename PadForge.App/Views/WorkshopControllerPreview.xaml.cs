@@ -202,18 +202,28 @@ namespace PadForge.Views
             LayoutFor(string tag)
         {
             string t = tag ?? "";
-            if (t.Contains("ps5", StringComparison.OrdinalIgnoreCase))
+            bool Is(string frag) => t.Contains(frag, StringComparison.OrdinalIgnoreCase);
+
+            // Every body this repo ships, matched most-specific first. The
+            // Steam tags are the same namespace the browse chips use.
+            if (Is("ps5")) // DualSense and DualSense Edge
                 return (DualSenseLayout.BaseWidth, DualSenseLayout.BaseHeight,
                         DualSenseLayout.BasePath, DualSenseLayout.Overlays, "DualSense");
-            if (t.Contains("ps4", StringComparison.OrdinalIgnoreCase))
+            if (Is("ps4"))
                 return (DS4Layout.BaseWidth, DS4Layout.BaseHeight,
                         DS4Layout.BasePath, DS4Layout.Overlays, "DS4");
-            if (t.Contains("switch", StringComparison.OrdinalIgnoreCase))
+            if (Is("switch"))
                 return (SwitchProLayout.BaseWidth, SwitchProLayout.BaseHeight,
                         SwitchProLayout.BasePath, SwitchProLayout.Overlays, "SWITCHPRO");
-            if (t.Contains("xbox360", StringComparison.OrdinalIgnoreCase))
+            if (Is("xbox360"))
                 return (Xbox360Layout.BaseWidth, Xbox360Layout.BaseHeight,
                         Xbox360Layout.BasePath, Xbox360Layout.Overlays, "XBOX360");
+            // The Elite and the Series pad are the current-generation body,
+            // which we ship and which was previously going unused while
+            // every one of these fell back to the Xbox One S shape.
+            if (Is("xboxelite") || Is("xboxseries") || Is("xbsx"))
+                return (XboxSeriesXLayout.BaseWidth, XboxSeriesXLayout.BaseHeight,
+                        XboxSeriesXLayout.BasePath, XboxSeriesXLayout.Overlays, "XBOXSERIES");
             return (XboxOneSLayout.BaseWidth, XboxOneSLayout.BaseHeight,
                     XboxOneSLayout.BasePath, XboxOneSLayout.Overlays, "XBOXONE");
         }

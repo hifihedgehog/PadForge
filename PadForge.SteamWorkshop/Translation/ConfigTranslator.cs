@@ -2908,6 +2908,19 @@ namespace PadForge.SteamWorkshop.Translation
                     // default is the button-threshold sentinel, so the
                     // analog inner radius must never read it.
                     if (dzPct > 0) src.ParamStickDeadZoneInner = StickInnerFraction(dzPct);
+                    // A stick host on a mode OUTSIDE the curve channel
+                    // (hand-edited grammar: a gyro mode bound to a stick
+                    // slot) has no CurveRangeChannel stamp, so an authored
+                    // outer radius would arm the geometry above and then
+                    // vanish (round seven, R8). Carry it on the geometry's
+                    // own field: the engine consumes ParamRangeOuter
+                    // inside ApplyStickDeadZoneShape whenever the shape is
+                    // set, keeping the no-silent-drop law the curve
+                    // predicate's comment states.
+                    if (!curveChannel
+                        && TryParseDeadZoneRaw(settings, "deadzone_outer_radius", out int gOuter)
+                        && gOuter < 32767)
+                        src.ParamRangeOuter = gOuter / 32767.0;
                 }
                 if (invert ^ (coeff < 0)) src.Invert = true;
                 if (curveChannel) curve.StampAxis(src, isX);
@@ -3027,6 +3040,19 @@ namespace PadForge.SteamWorkshop.Translation
                     // default is the button-threshold sentinel, so the
                     // analog inner radius must never read it.
                     if (dzPct > 0) src.ParamStickDeadZoneInner = StickInnerFraction(dzPct);
+                    // A stick host on a mode OUTSIDE the curve channel
+                    // (hand-edited grammar: a gyro mode bound to a stick
+                    // slot) has no CurveRangeChannel stamp, so an authored
+                    // outer radius would arm the geometry above and then
+                    // vanish (round seven, R8). Carry it on the geometry's
+                    // own field: the engine consumes ParamRangeOuter
+                    // inside ApplyStickDeadZoneShape whenever the shape is
+                    // set, keeping the no-silent-drop law the curve
+                    // predicate's comment states.
+                    if (!curveChannel
+                        && TryParseDeadZoneRaw(settings, "deadzone_outer_radius", out int gOuter)
+                        && gOuter < 32767)
+                        src.ParamRangeOuter = gOuter / 32767.0;
                 }
                 if (invert ^ (coeff < 0)) src.Invert = true;
                 if (curveChannel) curve.StampAxis(src, isX);

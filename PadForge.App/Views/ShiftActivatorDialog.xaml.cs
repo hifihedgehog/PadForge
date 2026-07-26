@@ -53,10 +53,14 @@ namespace PadForge.Views
         /// the Base reservation above is lockable by a test.</summary>
         internal static string DeriveUniqueMask(string name, HashSet<string> reserved)
         {
+            // No null tolerance (round seven): a caller that forgot
+            // BuildReservedMasks would silently skip the whole collision
+            // walk, including the Base reservation, which is this
+            // function's entire purpose. Better a loud throw.
             string baseMask = string.IsNullOrWhiteSpace(name) ? "Shift" : name;
             string mask = baseMask;
             int suffix = 2;
-            while (reserved != null && reserved.Contains(mask))
+            while (reserved.Contains(mask))
                 mask = $"{baseMask}_{suffix++}";
             return mask;
         }

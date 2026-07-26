@@ -792,7 +792,7 @@ namespace PadForge
                 // are per-(device, slot) on the PadSetting; the handlers
                 // look up the slot's PadSetting via the same key the
                 // mapping editor uses (InstanceGuid + slot index).
-                pad.GyroCalibrateRequested += (s, e) =>
+                pad.GyroCalibrateRequested += async (s, e) =>
                 {
                     if (s is not PadViewModel pvm) return;
                     var selected = pvm.SelectedMappedDevice;
@@ -802,8 +802,27 @@ namespace PadForge
                     var us = PadForge.Common.Input.SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, pvm.PadIndex);
                     var ps = us?.GetPadSetting();
                     if (ps == null) return;
+                    // Hold the label for the run (round seven, R1): the
+                    // 30 Hz tick otherwise clobbers "Calibrating…" within
+                    // one frame, and a motion-rejected run looked exactly
+                    // like nothing happening, so the Calibrate button read
+                    // as dead. The hold releases on success (the tick then
+                    // shows the fresh timestamp) and five seconds after a
+                    // rejection so the failure line is actually readable.
+                    pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MaxValue;
                     pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroCalibrating;
-                    _ = _inputService.GyroCalibrator.RecalibrateAsync(ud, ps);
+                    bool ok = false;
+                    try { ok = await _inputService.GyroCalibrator.RecalibrateAsync(ud, ps); }
+                    catch { }
+                    if (ok)
+                    {
+                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MinValue;
+                    }
+                    else
+                    {
+                        pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroCalibrateFailed;
+                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.UtcNow.AddSeconds(5);
+                    }
                 };
                 pad.GyroResetCalibrationRequested += (s, e) =>
                 {

@@ -3263,11 +3263,20 @@
                                         </Ellipse>
                                         <TextBlock Text="{Binding LayerName}" VerticalAlignment="Center"/>
                                     </StackPanel>
-                                    <!-- Per-tab context menu. Configure /
-                                         Rename / Delete are disabled for
-                                         the Base tab (no activator to act
-                                         on); Copy / Paste / Clear still
-                                         work against Base rows. -->
+                                    <!-- Per-tab context menu, shown on every
+                                         tab including Base (round seven, R7:
+                                         an older comment here claimed the
+                                         first three were disabled for Base,
+                                         which nothing implemented). On the
+                                         Base tab: Configure opens the
+                                         base-appearance dialog, Rename edits
+                                         a legacy activator's display name if
+                                         one exists, and Delete removes only
+                                         a legacy "Base"-masked activator,
+                                         never base rows or macros
+                                         (ExecuteLayerDelete heals). Copy /
+                                         Paste / Clear work against Base rows
+                                         as always. -->
                                     <RadioButton.ContextMenu>
                                         <ContextMenu>
                                             <ContextMenu.Resources>

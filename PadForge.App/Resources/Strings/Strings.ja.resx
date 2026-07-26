@@ -2801,4 +2801,5 @@
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>任意のNFCタグ</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFCタグ: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Switchコントローラーにタグをタッチ…</value></data>
+  <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>キャリブレーションに失敗しました。コントローラーを置いてやり直してください。</value></data>
 </root>

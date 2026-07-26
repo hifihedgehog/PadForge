@@ -49,8 +49,11 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>True for the synthetic Base tab; false for shift layers.
-        /// Drives whether right-click context menu shows the delete /
-        /// configure / rename items (Base never has them).</summary>
+        /// Drives the tab chip's color-dot visibility, its ONLY consumer
+        /// (round seven, R7: the old doc claimed it disabled the context
+        /// menu's Configure / Rename / Delete for Base, which nothing ever
+        /// implemented; those handlers carry their own Base behavior
+        /// instead, see PadPage's tab context-menu comment).</summary>
         public bool IsBase => string.Equals(_layerMask, "Base", System.StringComparison.Ordinal);
     }
 }

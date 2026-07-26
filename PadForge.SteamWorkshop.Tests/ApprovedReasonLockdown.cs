@@ -30,10 +30,12 @@ namespace PadForge.SteamWorkshop.Tests
             // Round six (R3) closed the emitter that pass missed:
             // EmitMouseJoystickAxes (mouse_joystick / gyro_to_joystick)
             // now stamps its stick hosts and scopes the residual to the
-            // finger / gyro lanes, so the earlier "only the trackpad
-            // remains" wording here is finally true of the code. The
-            // gyro-lean deflection pair also names its dropped radii now
-            // (R5) instead of losing them silently.
+            // finger / gyro lanes. The gyro-lean deflection pair also
+            // names its dropped radii now (R5) instead of losing them
+            // silently. So the residual CODE PATHS are: trackpad-hosted
+            // pairs, gyro-hosted pairs, and the deflection pair; "only
+            // the trackpad remains" below is a statement about the
+            // CORPUS, not the code (round seven wording fix).
             // What remains is a genuine non-Axis-read boundary, not an
             // unfinished stamp: trackpad pairs ride Touchpad finger /
             // gesture descriptors and gyro pairs ride the rate / lean

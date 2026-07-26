@@ -46,6 +46,16 @@ namespace PadForge.Services
         /// order of magnitude above it.</summary>
         internal const float MotionRangeLimit = 0.35f;
 
+        /// <summary>Largest average magnitude (rad/s) a measured bias may
+        /// carry per axis (round seven, R2). Genuine at-rest drift sits
+        /// near 0.02 rad/s. The peak-to-peak gate alone cannot reject a
+        /// pad rotating at a STEADY rate, or a state stream frozen on a
+        /// mid-motion sample, because constant values have zero range;
+        /// their averages, though, sit orders of magnitude above any real
+        /// drift, so a run whose average lands near this bound measured
+        /// motion, not bias.</summary>
+        internal const float MaxPlausibleBias = 0.5f;
+
         private readonly Action _persistCallback;
 
         /// <param name="persistCallback">Called on completion to ask
@@ -190,8 +200,10 @@ namespace PadForge.Services
                 try { Thread.Sleep(5); }
                 catch (ThreadInterruptedException) { return false; }
             }
-            bool primaryStill = samples > 0 && HeldStill(lo, hi, 0);
-            bool auxStill = auxSamples > 0 && HeldStill(lo, hi, 3);
+            bool primaryStill = samples > 0 && HeldStill(lo, hi, 0)
+                && PlausibleAverage(accPitch, accYaw, accRoll, samples);
+            bool auxStill = auxSamples > 0 && HeldStill(lo, hi, 3)
+                && PlausibleAverage(accAuxPitch, accAuxYaw, accAuxRoll, auxSamples);
 
             if (auxOnly)
             {
@@ -232,6 +244,11 @@ namespace PadForge.Services
                 if (hi[offset + i] - lo[offset + i] > MotionRangeLimit) return false;
             return true;
         }
+
+        private static bool PlausibleAverage(double accA, double accB, double accC, int n)
+            => Math.Abs(accA / n) <= MaxPlausibleBias
+            && Math.Abs(accB / n) <= MaxPlausibleBias
+            && Math.Abs(accC / n) <= MaxPlausibleBias;
 
         private static string AvgStr(double acc, int n)
             => ((float)(acc / n)).ToString("R", CultureInfo.InvariantCulture);

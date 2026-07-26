@@ -253,11 +253,16 @@ namespace PadForge.Tests
         }
 
         /// <summary>Across launches the twin's persisted row is recycled by
-        /// the drawer adoption, and its UserSetting follows the minted
-        /// identity, so a twin keeps settings by connection order like any
-        /// identical shell.</summary>
+        /// the drawer adoption KEEPING ITS OWN identity (round seven, R5).
+        /// The incoming serial GUID collides with the live sibling, and the
+        /// round-six design minted a fresh GUID per resolve, which re-keyed
+        /// the twin every launch: per-device slot configs could never
+        /// persist, device-pinned mapping rows died on reconnect, and
+        /// Remote Link's stable-id contract broke. The row's existing GUID
+        /// is what its UserSetting already references, so nothing migrates
+        /// and everything GUID-keyed stays valid.</summary>
         [Fact]
-        public void TwinRowFromLastLaunch_IsRecycledWithItsSettings()
+        public void TwinRowFromLastLaunch_IsRecycledKeepingItsIdentity()
         {
             using var _ = new DeviceListScope();
             var savedSettings = SettingsManager.UserSettings;
@@ -278,11 +283,81 @@ namespace PadForge.Tests
                 var got = im.FindOrCreateUserDevice(sharedGuid, SteamProductGuid, present);
 
                 Assert.Same(twinRow, got);
-                Assert.NotEqual(sharedGuid, got.InstanceGuid);
-                Assert.NotEqual(lastLaunchGuid, got.InstanceGuid);
+                Assert.Equal(lastLaunchGuid, got.InstanceGuid);   // identity KEPT
                 lock (SettingsManager.UserSettings.SyncRoot)
-                    Assert.Equal(got.InstanceGuid,
+                    Assert.Equal(lastLaunchGuid,
                         SettingsManager.UserSettings.Items[0].InstanceGuid);
+            }
+            finally
+            {
+                SettingsManager.UserSettings = savedSettings;
+            }
+        }
+
+        /// <summary>A twin that flaps back INSIDE the disconnect debounce:
+        /// its own row is still marked online but its old SDL instance has
+        /// left the present set. That is the same physical unit
+        /// re-identifying, so it rebinds to its own row (round seven, R4).
+        /// The round-six design minted a fresh row here, which orphaned the
+        /// twin's assignment (no output) and left its stale wrapper to the
+        /// debounce path's unconditional dispose, re-opening the shared
+        /// HIDAPI-context churn the 2026-07-11 audit fixed.</summary>
+        [Fact]
+        public void FlappedTwin_InsideTheDebounce_RebindsToItsOwnRow()
+        {
+            using var _ = new DeviceListScope();
+            var im = new InputManager();
+            var sharedGuid = Guid.NewGuid();
+            LiveRow(im, sharedGuid, claimantSdlId: 7);
+
+            var rowB = im.FindOrCreateUserDevice(sharedGuid, SteamProductGuid,
+                new HashSet<uint> { 7, 9 });
+            rowB.ProductGuid = SteamProductGuid;
+            rowB.IsOnline = true;
+            rowB.Device = new SdlDeviceWrapper { SdlInstanceId = 9 };
+            var mintedGuid = rowB.InstanceGuid;
+
+            // B's old instance 9 has left; it returns as 11 while A stays.
+            var got = im.FindOrCreateUserDevice(sharedGuid, SteamProductGuid,
+                new HashSet<uint> { 7, 11 });
+
+            Assert.Same(rowB, got);
+            Assert.Equal(mintedGuid, got.InstanceGuid);
+        }
+
+        /// <summary>Ordinary drawer adoption follows EVERY slot the device
+        /// is assigned to. The migrator's old first-match break orphaned
+        /// slots 2..N under a comment claiming one UserSetting per device,
+        /// while the data model documents one PER SLOT (round seven, R6;
+        /// pre-existing since v2.0.0-beta).</summary>
+        [Fact]
+        public void Adoption_MigratesEverySlotAssignment()
+        {
+            using var _ = new DeviceListScope();
+            var savedSettings = SettingsManager.UserSettings;
+            SettingsManager.UserSettings = new SettingsCollection();
+            try
+            {
+                var oldGuid = Guid.NewGuid();
+                Stored(oldGuid, UnitA);                       // offline, adoptable
+                lock (SettingsManager.UserSettings.SyncRoot)
+                {
+                    SettingsManager.UserSettings.Items.Add(new PadForge.Engine.Data.UserSetting
+                    { InstanceGuid = oldGuid, MapTo = 0 });
+                    SettingsManager.UserSettings.Items.Add(new PadForge.Engine.Data.UserSetting
+                    { InstanceGuid = oldGuid, MapTo = 3 });
+                }
+
+                var im = new InputManager();
+                var newGuid = Guid.NewGuid();
+                var got = im.FindOrCreateUserDevice(newGuid, SteamProductGuid);
+
+                Assert.Equal(newGuid, got.InstanceGuid);
+                lock (SettingsManager.UserSettings.SyncRoot)
+                {
+                    Assert.Equal(newGuid, SettingsManager.UserSettings.Items[0].InstanceGuid);
+                    Assert.Equal(newGuid, SettingsManager.UserSettings.Items[1].InstanceGuid);
+                }
             }
             finally
             {

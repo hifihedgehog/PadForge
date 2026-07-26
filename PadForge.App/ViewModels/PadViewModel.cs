@@ -2572,6 +2572,16 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroCalibrationLabel, value);
         }
 
+        /// <summary>UTC gate before which the 30 Hz pad tick must not
+        /// overwrite <see cref="GyroCalibrationLabel"/> (round seven, R1).
+        /// The manual Calibrate flow owns the label while a pass runs and
+        /// briefly after a rejection: the tick pushes the memoized
+        /// timestamp label unconditionally, which otherwise clobbers
+        /// "Calibrating…" within one frame and makes a motion-rejected
+        /// run pixel-identical to nothing happening.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public DateTime GyroCalibrationLabelHoldUntilUtc { get; set; }
+
         /// <summary>Raised when the user clicks Calibrate Gyro on the
         /// Pad page's Gyro tab. MainWindow wires the handler to
         /// InputService.GyroCalibrator.RecalibrateAsync against the

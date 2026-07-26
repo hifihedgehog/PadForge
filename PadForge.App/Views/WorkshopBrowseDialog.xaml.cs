@@ -751,7 +751,7 @@ namespace PadForge.Views
                 .Select(t => new WorkshopTagChipItem
                 {
                     Tag = t.tag,
-                    Label = (string.IsNullOrEmpty(t.display_name) ? PrettifyTag(t.tag) : t.display_name).ToUpperInvariant(),
+                    Label = ControllerTagLabel(t.tag, t.display_name).ToUpperInvariant(),
                     IsCold = string.Equals(t.tag, "controller_neptune", StringComparison.OrdinalIgnoreCase),
                 })
                 .ToList();
@@ -789,7 +789,7 @@ namespace PadForge.Views
                     TagChips.Add(new WorkshopTagChipItem
                     {
                         Tag = t.tag,
-                        Label = string.IsNullOrEmpty(t.display_name) ? PrettifyTag(t.tag) : t.display_name,
+                        Label = ControllerTagLabel(t.tag, t.display_name),
                     });
                 }
             }
@@ -1558,6 +1558,54 @@ namespace PadForge.Views
             if (string.IsNullOrWhiteSpace(name)) return "?";
             var trimmed = name.Trim();
             return trimmed.Substring(0, Math.Min(2, trimmed.Length)).ToUpperInvariant();
+        }
+
+        /// <summary>Retail names for Steam's controller tag namespace.
+        ///
+        /// <para>Steam hands back the RAW TAG as a controller tag's
+        /// display_name, so the browse chips rendered
+        /// "controller_ps5_edge" and "controller_steamcontroller_gordon"
+        /// verbatim. Prettifying the tag alone is not enough either: it
+        /// yields "Ps5 Edge" and "Steamcontroller Gordon", because the tag
+        /// bodies are Valve's internal codenames rather than product
+        /// names.</para>
+        ///
+        /// <para>Codenames resolved rather than guessed, since these are
+        /// user-visible: <c>neptune</c> is the Steam Deck, <c>triton</c> is
+        /// the second-generation Steam Controller (28DE:1304, the same pad
+        /// this app already drives), and <c>gordon</c> is the original 2015
+        /// Steam Controller. Names follow the hardware's retail branding
+        /// and PadForge's own terminology.</para></summary>
+        private static readonly Dictionary<string, string> ControllerTagNames =
+            new(StringComparer.OrdinalIgnoreCase)
+            {
+                ["controller_xbox360"] = "Xbox 360",
+                ["controller_xboxone"] = "Xbox One",
+                ["controller_xboxelite"] = "Xbox Elite",
+                ["controller_ps4"] = "DualShock 4",
+                ["controller_ps5"] = "DualSense",
+                ["controller_ps5_edge"] = "DualSense Edge",
+                ["controller_switch_pro"] = "Switch Pro",
+                ["controller_neptune"] = "Steam Deck",
+                ["controller_triton"] = "Steam Controller 2",
+                ["controller_steamcontroller_gordon"] = "Steam Controller (2015)",
+                ["controller_steamcontroller"] = "Steam Controller",
+                ["controller_generic"] = "Generic",
+                ["controller_mobile_touch"] = "Mobile Touch",
+            };
+
+        /// <summary>The label for one controller tag. Prefers the mapped
+        /// retail name, then a display_name only when Steam actually gave
+        /// one (it usually echoes the tag), then the prettified tag so a
+        /// controller released after this build still reads sanely.</summary>
+        internal static string ControllerTagLabel(string tag, string displayName)
+        {
+            if (tag != null && ControllerTagNames.TryGetValue(tag, out var retail))
+                return retail;
+            if (!string.IsNullOrEmpty(displayName)
+                && !string.Equals(displayName, tag, StringComparison.OrdinalIgnoreCase))
+                return displayName;
+            return PrettifyTag(tag);
         }
 
         private static string PrettifyTag(string tag)

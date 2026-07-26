@@ -456,8 +456,23 @@ namespace PadForge.Engine
         {
             if (periodMs == 0 || effectType < FfbEffectTypes.Square || effectType > FfbEffectTypes.SawDown)
                 return 1.0;
-            double phase = (Environment.TickCount % (long)periodMs) / (double)periodMs; // 0..1
-            return effectType switch
+            // TickCount64, never TickCount. The 32-bit counter wraps NEGATIVE
+            // after 24.9 days of uptime, and C# takes the sign of the dividend
+            // through %, so the phase went to (-1, 0] on any long-running
+            // machine. Every waveform below assumes [0, 1): triangle and both
+            // sawtooths then returned up to 3.0 instead of 1.0, tripling the
+            // force until the caller's clamp saturated it, and square stopped
+            // alternating and held +1. A wheel that had been buzzing started
+            // pulling to one side, and only a reboot fixed it.
+            double phase = (Environment.TickCount64 % (long)periodMs) / (double)periodMs; // 0..1
+            return PeriodicWaveformAtPhase(effectType, phase);
+        }
+
+        /// <summary>The waveform's shape alone, as an instantaneous -1..+1
+        /// multiplier for a normalized phase in [0, 1). Split out from the
+        /// clock so the shape is verifiable without one.</summary>
+        internal static double PeriodicWaveformAtPhase(uint effectType, double phase)
+            => effectType switch
             {
                 FfbEffectTypes.Square   => phase < 0.5 ? 1.0 : -1.0,
                 FfbEffectTypes.Sine     => Math.Sin(phase * 2.0 * Math.PI),
@@ -466,7 +481,6 @@ namespace PadForge.Engine
                 FfbEffectTypes.SawDown  => 1.0 - 2.0 * phase,                  // +1 -> -1
                 _ => 1.0,
             };
-        }
 
         /// <summary>Translates rumble (the main and impulse-trigger motors, from any
         /// virtual controller, Xbox or Sony) into a steering-axis vibration for
@@ -488,7 +502,11 @@ namespace PadForge.Engine
             int mag = (int)(Math.Min(Math.Max(heavy, light) >> 1, 32767) * gainScale);
             if (mag <= 0) return 0;
             int periodMs = heavy >= light ? 120 : 40; // heavy channel -> low freq, light -> high (matches SetHapticForces)
-            double phase = (Environment.TickCount % periodMs) / (double)periodMs;
+            // TickCount64 for the same wrap reason as PeriodicWaveform. Sine is
+            // odd-symmetric so a negative phase only inverted the buzz here,
+            // which is inaudible in a rumble, but the two clocks must not
+            // disagree about what "now" means.
+            double phase = (Environment.TickCount64 % periodMs) / (double)periodMs;
             return (short)Math.Clamp(mag * Math.Sin(phase * 2.0 * Math.PI), -32767, 32767);
         }
 

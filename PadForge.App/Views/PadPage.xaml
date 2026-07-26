@@ -4627,6 +4627,7 @@
                                                                     Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                                             <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
                                                                       IsChecked="{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                      IsEnabled="{Binding IsInvertApplicable}"
                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
                                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                             <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
@@ -5391,6 +5392,7 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
                                             <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsInverted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      IsEnabled="{Binding IsInvertApplicable}"
                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                             <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsHalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

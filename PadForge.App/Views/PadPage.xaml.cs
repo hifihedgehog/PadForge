@@ -1511,6 +1511,15 @@ namespace PadForge.Views
 
         private void ShiftLayer_Rename_Click(object sender, RoutedEventArgs e)
         {
+            // The Base tab's Rename edits the base APPEARANCE (name,
+            // color, icon) through the same dialog Configure reroutes to;
+            // without this the menu item was a silent no-op on any config
+            // with no legacy "Base" activator (round eight, R14).
+            if (string.Equals(TagToLayerMask(sender), "Base", StringComparison.Ordinal))
+            {
+                ShiftLayer_Configure_Click(sender, e);
+                return;
+            }
             if (_currentPadVm == null) return;
             string mask = TagToLayerMask(sender);
             if (string.IsNullOrEmpty(mask)) return;
@@ -1763,10 +1772,17 @@ namespace PadForge.Views
             // MessageBox.Show — the Mica-styled host clashes with the
             // legacy gray system dialog and breaks the visual continuity
             // the rest of PadForge keeps.
+            // The Base-mask delete HEALS (removes only the bogus legacy
+            // activator, never rows or macros), so it gets its own honest
+            // confirm text; the standard string promises row deletion
+            // that deliberately does not happen there (round eight, R14).
+            string confirmText = string.Equals(mask, "Base", StringComparison.Ordinal)
+                ? string.Format(Strings.Instance.Pad_Shift_DeleteConfirmBase_Format, layerName)
+                : string.Format(Strings.Instance.Pad_Shift_DeleteConfirm_Format, layerName);
             var dialog = new Wpf.Ui.Controls.MessageBox
             {
                 Title = Strings.Instance.Pad_Shift_DeleteConfirmTitle,
-                Content = string.Format(Strings.Instance.Pad_Shift_DeleteConfirm_Format, layerName),
+                Content = confirmText,
                 PrimaryButtonText = Strings.Instance.Pad_Shift_Delete,
                 CloseButtonText = Strings.Instance.Common_Cancel,
             };

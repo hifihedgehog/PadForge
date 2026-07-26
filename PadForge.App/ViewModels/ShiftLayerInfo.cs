@@ -49,11 +49,12 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>True for the synthetic Base tab; false for shift layers.
-        /// Drives the tab chip's color-dot visibility, its ONLY consumer
-        /// (round seven, R7: the old doc claimed it disabled the context
-        /// menu's Configure / Rename / Delete for Base, which nothing ever
-        /// implemented; those handlers carry their own Base behavior
-        /// instead, see PadPage's tab context-menu comment).</summary>
+        /// Consumers: the tab chip's color-dot visibility and the SHIFT
+        /// pipeline chip's idle summary, which lists only non-Base layer
+        /// names (round eight, R16: round seven's rewrite claimed the dot
+        /// was the only consumer, repeating the mistake it corrected). The
+        /// context menu's Base behavior lives in the handlers, see
+        /// PadPage's tab context-menu comment.</summary>
         public bool IsBase => string.Equals(_layerMask, "Base", System.StringComparison.Ordinal);
     }
 }

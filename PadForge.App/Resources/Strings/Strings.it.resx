@@ -2824,4 +2824,5 @@
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Tag NFC: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Avvicina un tag al tuo controller Switch…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Calibrazione non riuscita. Appoggia il controller e riprova.</value></data>
+  <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>Rimuovere la voce di livello residua "{0}"? Le mappature e le macro di Base non verranno toccate.</value></data>
 </root>

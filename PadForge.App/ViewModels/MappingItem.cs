@@ -1023,9 +1023,18 @@ namespace PadForge.ViewModels
                 {
                     RebuildDescriptor();
                     OnPropertyChanged(nameof(IsTrivialDirect));
+                    OnPropertyChanged(nameof(IsInvertApplicable));
                 }
             }
         }
+
+        /// <summary>Whether the Invert checkbox actually does anything in
+        /// the current combination (round eight, R15): with Half + Either
+        /// both on, the engine reads absolute deflection and Invert is
+        /// documented inert, yet the checkbox was offered ungated while
+        /// both its neighbours carry applicability gates. Drives the
+        /// checkbox's IsEnabled so an inert option is visibly inert.</summary>
+        public bool IsInvertApplicable => !(_isHalfAxis && _isBidirectional);
 
         private bool _isBidirectional;
 
@@ -1043,7 +1052,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _isBidirectional, value))
+                {
                     OnPropertyChanged(nameof(IsTrivialDirect));
+                    OnPropertyChanged(nameof(IsInvertApplicable));
+                }
             }
         }
 

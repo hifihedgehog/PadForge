@@ -111,7 +111,10 @@ namespace PadForge.Tests
         {
             var state = ArrangeDevice(out var ud);
             state.Gyro[0] = 0.01f; state.Gyro[1] = 0.02f; state.Gyro[2] = 0.03f;
-            state.GyroAux[0] = 0.2f; state.GyroAux[1] = 0.3f; state.GyroAux[2] = 0.4f;
+            // Realistic at-rest drift (round eight: the plausibility
+            // bound is 0.15 rad/s, so the old arbitrary 0.2..0.4 values
+            // read as steady MOTION and were rightly rejected).
+            state.GyroAux[0] = 0.02f; state.GyroAux[1] = 0.03f; state.GyroAux[2] = 0.04f;
             var ps = new PadSetting
             {
                 GyroCalibratedAtUtc = "2026-01-01T00:00:00Z",
@@ -128,11 +131,11 @@ namespace PadForge.Tests
             Assert.Equal("0.6", ps.GyroBiasYaw);
             Assert.Equal("0.7", ps.GyroBiasRoll);
             Assert.Equal("2026-01-01T00:00:00Z", ps.GyroCalibratedAtUtc);
-            Assert.Equal(0.2f, float.Parse(ps.GyroAuxBiasPitch,
+            Assert.Equal(0.02f, float.Parse(ps.GyroAuxBiasPitch,
                 System.Globalization.CultureInfo.InvariantCulture), 3);
-            Assert.Equal(0.3f, float.Parse(ps.GyroAuxBiasYaw,
+            Assert.Equal(0.03f, float.Parse(ps.GyroAuxBiasYaw,
                 System.Globalization.CultureInfo.InvariantCulture), 3);
-            Assert.Equal(0.4f, float.Parse(ps.GyroAuxBiasRoll,
+            Assert.Equal(0.04f, float.Parse(ps.GyroAuxBiasRoll,
                 System.Globalization.CultureInfo.InvariantCulture), 3);
         }
 

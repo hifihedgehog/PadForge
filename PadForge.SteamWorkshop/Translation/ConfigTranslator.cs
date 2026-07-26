@@ -615,6 +615,13 @@ namespace PadForge.SteamWorkshop.Translation
             "absolute_mouse", "relative_mouse", "scrollwheel", "touch_menu",
             "radial_menu", "mouse_region", "gyro_to_mouse", "flickstick",
             "2dscroll", "hotbar",
+            // Round eight (R18): both gyro-as-stick modes produce output
+            // (the thumb pair), yet were absent here, so their authored
+            // gyro_button / ratchet / invert settings never reached the
+            // shared gyro-settings walk below and a configured engage
+            // button was silently ignored, contradicting the dispatch
+            // comment that says the walk covers every gyro mode.
+            "gyro_to_joystick", "gyro_to_joystick_deflection",
         };
 
         /// <summary>Response-shaping group settings. Key list grounded on
@@ -973,7 +980,12 @@ namespace PadForge.SteamWorkshop.Translation
             if (!shapeConsumed
                 && settings.ContainsKey("deadzone_shape")
                 && PhysicalSlotResolver.IsStick(slot)
-                && (mode == "joystick_mouse" || mode == "joystick_camera"))
+                && (mode == "joystick_mouse" || mode == "joystick_camera"
+                    // Round eight (R18): the stick-hosted gyro-as-stick
+                    // pair consumes the shape (and the outer radius) via
+                    // the same per-source geometry stamp, rounds
+                    // seven/eight.
+                    || mode == "gyro_to_joystick"))
             {
                 shapeConsumed = true;
             }
@@ -2908,19 +2920,6 @@ namespace PadForge.SteamWorkshop.Translation
                     // default is the button-threshold sentinel, so the
                     // analog inner radius must never read it.
                     if (dzPct > 0) src.ParamStickDeadZoneInner = StickInnerFraction(dzPct);
-                    // A stick host on a mode OUTSIDE the curve channel
-                    // (hand-edited grammar: a gyro mode bound to a stick
-                    // slot) has no CurveRangeChannel stamp, so an authored
-                    // outer radius would arm the geometry above and then
-                    // vanish (round seven, R8). Carry it on the geometry's
-                    // own field: the engine consumes ParamRangeOuter
-                    // inside ApplyStickDeadZoneShape whenever the shape is
-                    // set, keeping the no-silent-drop law the curve
-                    // predicate's comment states.
-                    if (!curveChannel
-                        && TryParseDeadZoneRaw(settings, "deadzone_outer_radius", out int gOuter)
-                        && gOuter < 32767)
-                        src.ParamRangeOuter = gOuter / 32767.0;
                 }
                 if (invert ^ (coeff < 0)) src.Invert = true;
                 if (curveChannel) curve.StampAxis(src, isX);
@@ -3040,15 +3039,17 @@ namespace PadForge.SteamWorkshop.Translation
                     // default is the button-threshold sentinel, so the
                     // analog inner radius must never read it.
                     if (dzPct > 0) src.ParamStickDeadZoneInner = StickInnerFraction(dzPct);
-                    // A stick host on a mode OUTSIDE the curve channel
-                    // (hand-edited grammar: a gyro mode bound to a stick
-                    // slot) has no CurveRangeChannel stamp, so an authored
-                    // outer radius would arm the geometry above and then
-                    // vanish (round seven, R8). Carry it on the geometry's
-                    // own field: the engine consumes ParamRangeOuter
-                    // inside ApplyStickDeadZoneShape whenever the shape is
-                    // set, keeping the no-silent-drop law the curve
-                    // predicate's comment states.
+                    // gyro_to_joystick hand-bound to a STICK slot is
+                    // the one mode reaching this emitter outside the
+                    // curve channel (round seven R8, scoped round eight:
+                    // the EmitMouseAxes twin of this block was
+                    // unreachable, since every mode routed there is
+                    // curve-channel, and was removed). With no
+                    // CurveRangeChannel stamp the authored outer radius
+                    // would arm the geometry above and then vanish;
+                    // carry it on the geometry's own field, which the
+                    // engine consumes inside ApplyStickDeadZoneShape
+                    // whenever the shape is set.
                     if (!curveChannel
                         && TryParseDeadZoneRaw(settings, "deadzone_outer_radius", out int gOuter)
                         && gOuter < 32767)

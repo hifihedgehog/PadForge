@@ -2802,4 +2802,5 @@
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFCタグ: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Switchコントローラーにタグをタッチ…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>キャリブレーションに失敗しました。コントローラーを置いてやり直してください。</value></data>
+  <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>残っているレイヤー項目「{0}」を削除しますか？Base のマッピングとマクロには影響しません。</value></data>
 </root>

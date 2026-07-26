@@ -795,6 +795,10 @@ namespace PadForge
                 pad.GyroCalibrateRequested += async (s, e) =>
                 {
                     if (s is not PadViewModel pvm) return;
+                    // Busy-guard (round eight, R6): the MaxValue hold IS
+                    // the in-flight flag, so a double-click cannot start
+                    // two samplers racing each other's labels and writes.
+                    if (pvm.GyroCalibrationLabelHoldUntilUtc == DateTime.MaxValue) return;
                     var selected = pvm.SelectedMappedDevice;
                     if (selected == null || selected.InstanceGuid == Guid.Empty) return;
                     var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(selected.InstanceGuid);
@@ -802,20 +806,38 @@ namespace PadForge
                     var us = PadForge.Common.Input.SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, pvm.PadIndex);
                     var ps = us?.GetPadSetting();
                     if (ps == null) return;
+                    var calibratedGuid = selected.InstanceGuid;
                     // Hold the label for the run (round seven, R1): the
                     // 30 Hz tick otherwise clobbers "Calibrating…" within
                     // one frame, and a motion-rejected run looked exactly
                     // like nothing happening, so the Calibrate button read
-                    // as dead. The hold releases on success (the tick then
-                    // shows the fresh timestamp) and five seconds after a
-                    // rejection so the failure line is actually readable.
+                    // as dead.
                     pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MaxValue;
                     pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroCalibrating;
                     bool ok = false;
                     try { ok = await _inputService.GyroCalibrator.RecalibrateAsync(ud, ps); }
                     catch { }
+                    // Post-await re-validation (round eight, R6): if the
+                    // pad's selection moved to a DIFFERENT device during
+                    // the run, neither banner belongs to what is now on
+                    // screen. Just release the hold; the tick shows the
+                    // current device's own state.
+                    if (pvm.SelectedMappedDevice?.InstanceGuid != calibratedGuid)
+                    {
+                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MinValue;
+                        return;
+                    }
                     if (ok)
                     {
+                        // Write the fresh label DIRECTLY (round eight,
+                        // R6): the 30 Hz tick is skipped while the window
+                        // is minimized, the page hidden, or the selection
+                        // non-motion, and delegating to it left
+                        // "Calibrating…" pinned indefinitely in those
+                        // states.
+                        pvm.GyroCalibrationLabel = string.Format(
+                            PadForge.Resources.Strings.Strings.Instance.Settings_GyroLastCalibrated_Format,
+                            DateTime.Now);
                         pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MinValue;
                     }
                     else
@@ -837,6 +859,13 @@ namespace PadForge
                     _inputService.GyroCalibrator.ResetCalibration(ps);
                     _inputService.ClearGyroAutoCalibLatch(ud.InstanceGuid, pvm.PadIndex);
                     pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroNeverCalibrated;
+                    // Keep the tooltip's promise (round eight, R8): fire
+                    // the auto-calibration scan now instead of waiting for
+                    // the next incidental device event. The reset changed
+                    // the timestamp, so an in-flight run's write-guard
+                    // discards its result rather than reverting this
+                    // reset.
+                    _inputService.RequestGyroAutoCalibration();
                 };
 
                 // Record button on the Aim Engage picker. Toggles like

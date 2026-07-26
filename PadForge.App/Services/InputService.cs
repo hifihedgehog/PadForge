@@ -10241,7 +10241,15 @@ namespace PadForge.Services
                     bool wrote = done.Status == TaskStatus.RanToCompletion && done.Result;
                     bool stillDue = GyroCalibratorService.WouldCalibrate(ud, ps);
                     bool retry = false;
-                    lock (SettingsManager.UserDevices.SyncRoot)
+                    // The captured local, NOT a fresh read of the settable
+                    // static. This continuation runs later and off the poll
+                    // thread, so re-reading here could take a DIFFERENT
+                    // collection's SyncRoot than the scan above held, leaving
+                    // the two plain-Dictionary ledgers below unguarded. Round
+                    // thirteen hoisted the three reads in the scan body and
+                    // missed this one, while its comment claimed the method
+                    // uses one read throughout.
+                    lock (deviceList.SyncRoot)
                     {
                         if (!_gyroAutoCalibKicked.TryGetValue(key, out var cur)
                             || !ReferenceEquals(cur.Run, runToken))

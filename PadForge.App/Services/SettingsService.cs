@@ -4311,7 +4311,11 @@ namespace PadForge.Services
         /// Pushes ViewModel values back into the currently selected device's
         /// PadSetting per slot. Non-selected devices retain their own settings.
         /// </summary>
-        private void UpdatePadSettingsFromViewModels()
+        // Internal so a test can drive the real save-side ViewModel push
+        // (round twelve): the device-pin re-key is only correct if it
+        // survives THIS, and asserting on the in-memory PadSetting alone
+        // is what let two rounds ship a fix the next save undid.
+        internal void UpdatePadSettingsFromViewModels()
         {
             lock (SettingsManager.UserSettings.SyncRoot)
             {

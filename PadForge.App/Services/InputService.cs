@@ -10473,9 +10473,52 @@ namespace PadForge.Services
             if (_mainVm?.Pads == null) return;
             string from = oldGuid.ToString();
             string to = newGuid.ToString();
-            foreach (var pad in _mainVm.Pads)
+            string Map(string g) =>
+                string.Equals(g, from, StringComparison.OrdinalIgnoreCase) ? to : g;
+            RemapDeviceGuidsInPadViewModels(oldGuid, newGuid, _mainVm.Pads);
+        }
+
+        /// <summary>The VIEWMODEL half of the device-pin re-key. Internal
+        /// static so the tests drive the same code the drain does, and so
+        /// this half can never drift from the stored half again.</summary>
+        internal static void RemapDeviceGuidsInPadViewModels(
+            Guid oldGuid, Guid newGuid,
+            System.Collections.Generic.IEnumerable<PadForge.ViewModels.PadViewModel> pads)
+        {
+            if (pads == null) return;
+            string from = oldGuid.ToString();
+            string to = newGuid.ToString();
+            string Map(string g) =>
+                string.Equals(g, from, StringComparison.OrdinalIgnoreCase) ? to : g;
+            foreach (var pad in pads)
             {
-                if (pad?.PerDeviceSlotConfigs == null) continue;
+                if (pad == null) continue;
+
+                // THE VIEWMODEL MIRRORS TOO (round twelve). Rewriting only
+                // the stored PadSetting was pointless: SaveToFile's FIRST
+                // action is UpdatePadSettingsFromViewModels, which pushes
+                // these same three fields ViewModel -> PadSetting, and the
+                // drain arms that save itself via MarkDirty. So the re-key
+                // was guaranteed to be overwritten before it reached disk.
+                // The self-pinned case was repaired by accident (a changed
+                // selection reloads the ViewModel from the re-keyed
+                // PadSetting), but these fields exist FOR the cross-device
+                // case, where the selection never changes and nothing
+                // repairs it: on restart the Aim Engage source and the
+                // trigger-route activators named a device that no longer
+                // exists.
+                pad.GyroAimEngageDeviceGuid = Map(pad.GyroAimEngageDeviceGuid);
+                pad.LeftTriggerRouteActivatorDeviceGuid =
+                    Map(pad.LeftTriggerRouteActivatorDeviceGuid);
+                pad.RightTriggerRouteActivatorDeviceGuid =
+                    Map(pad.RightTriggerRouteActivatorDeviceGuid);
+                // Same shape on the mouse-gesture mirror: its VM value is
+                // what the next Mouse-tab gesture writes back into the
+                // entry array.
+                pad.MouseGestureCustomEngageDeviceGuid =
+                    Map(pad.MouseGestureCustomEngageDeviceGuid);
+
+                if (pad.PerDeviceSlotConfigs == null) continue;
                 foreach (var cfg in pad.PerDeviceSlotConfigs.Values)
                 {
                     if (cfg == null) continue;
@@ -12963,7 +13006,20 @@ namespace PadForge.Services
             // the outgoing profile's macros and then discarded them, so
             // round nine's fix was inert on this lane.
             if (pendingMacroRemap.Count > 0)
+            {
                 RemapDeviceGuidsInMacros(pendingMacroRemap, _mainVm?.Pads);
+                // ...and the PadSetting device pins, which this lane never
+                // covered (round twelve). A saved profile carries its own
+                // copies of the gyro Aim Engage source, both trigger-route
+                // activators, and the per-device touchpad / mouse-gesture
+                // catalogs. Applying a profile authored before a device
+                // was re-keyed re-installed those dead identities verbatim
+                // over the drain's repair, and the next save wrote them
+                // back. Same remap the mapping-set and macro halves above
+                // already use.
+                foreach (var kv in pendingMacroRemap)
+                    RemapDeviceGuidsInStoredPadSettings(kv.Key, kv.Value);
+            }
 
             // ── Apply DSU motion server settings ──
             _mainVm.Dashboard.EnableDsuMotionServer = profile.EnableDsuMotionServer;

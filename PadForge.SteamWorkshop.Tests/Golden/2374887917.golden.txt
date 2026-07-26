@@ -47,9 +47,9 @@ xbox rows: 32
     <- Gamepad RightTrigger
     <- Gamepad RightTrigger [upper-half] dz=75
   Layer_2374887917_0_MS_right_joystick_14 | RightThumbAxisX
-    <- Gamepad RightStickX rangeOuter=0.977
+    <- Gamepad RightStickX rangeOuter=0.977 dzShape=radial
   Layer_2374887917_0_MS_right_joystick_14 | RightThumbAxisY
-    <- Gamepad RightStickY rangeOuter=0.977
+    <- Gamepad RightStickY rangeOuter=0.977 dzShape=radial
   Layer_2374887917_0_MS_right_joystick_14 | RightThumbButton
     <- Gamepad RightStick
   Layer_2374887917_1 | ButtonB
@@ -110,12 +110,11 @@ macros: 7
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-report: v26 rows:x32+k4 macros:7 menus:0 layers:15 clean:52 partial:5 skipped:0 errors:0
+report: v26 rows:x32+k4 macros:7 menus:0 layers:15 clean:52 partial:4 skipped:0 errors:0
   Clean RowEmitted @ Default/gyro/group 12 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 12 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Default/left_trackpad/group 11 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
   Clean RowEmitted @ Default/right_joystick/group 13 (flickstick) => KbmMouseX <- Flick Stick Right
-  Partial DeadZoneRadialResidual(deadzone_outer_radius) @ Default/right_joystick/group 14 (joystick_move)
   Clean RowEmitted @ Default/right_trackpad/group 10 (single_button)/click/Full_Press => ButtonStart <- Touchpad 0 Click
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1

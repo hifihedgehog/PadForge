@@ -108,17 +108,17 @@ namespace PadForge.SteamWorkshop.Translation
             // keyboard/mouse config must not sprout an Xbox slot for a
             // stick nobody consumes.
             public readonly List<(string Layer, string Target, string Descriptor, string Path, int DeadZonePct,
-                    double CurveExponent, double RangeOuter, double Sensitivity, double Anti)>
+                    double CurveExponent, double RangeOuter, double Sensitivity, double Anti, int StickShape)>
                 MatchedAnalogs = new();
             private readonly HashSet<string> _matchedAnalogSeen = new(StringComparer.Ordinal);
 
             public void AddMatchedAnalog(string layer, string target, string descriptor, string path,
                 int deadZonePct = 0, double curveExponent = 0, double rangeOuter = 0, double sensitivity = 1.0,
-                double anti = 0)
+                double anti = 0, int stickShape = 0)
             {
                 if (_matchedAnalogSeen.Add($"{layer}|{target}|{descriptor}"))
                     MatchedAnalogs.Add((layer, target, descriptor, path, deadZonePct,
-                        curveExponent, rangeOuter, sensitivity, anti));
+                        curveExponent, rangeOuter, sensitivity, anti, stickShape));
             }
 
             public readonly List<ActivatorRequest> Activators = new();
@@ -2680,16 +2680,47 @@ namespace PadForge.SteamWorkshop.Translation
                 && int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int o)
                     ? o : 0;
             int dzPct = GroupDeadZonePercent(settings);
-            // v19 (T2): the emitted thumb pair reads each axis alone, so
-            // the authored radii do not apply radially; name the residual
-            // on the pair-emitting hosts.
-            if (PhysicalSlotResolver.IsStick(slot) || PhysicalSlotResolver.IsTrackpad(slot))
+
+            // Stick-hosted pairs consume the authored radii FOR REAL via the
+            // per-source geometry stamp, exactly as the stick-hosted mouse
+            // lanes already did. Steam 1 = Circle = the radial pair test
+            // (engine shape 2); 0 = Cross and 2 = Square are per-axis checks
+            // (engine shape 1), and an absent key reads as Steam's default,
+            // Cross. This emitter used to skip the stamp and merely NAME the
+            // shortfall in the import report, which is why a Circle deadzone
+            // came through as a square one. The engine finds the companion
+            // axis by index (0<->1, 3<->4) and "Gamepad LeftStickX" resolves
+            // to "Axis 0", so the pair test genuinely applies here.
+            int stickShape = 0;
+            if (PhysicalSlotResolver.IsStick(slot))
+            {
+                int shapeVal = ParseIntSetting(settings, "deadzone_shape", 0);
+                bool anyGeometry = dzPct > 0
+                    || settings.ContainsKey("deadzone_shape")
+                    || (TryParseDeadZoneRaw(settings, "deadzone_outer_radius", out int so)
+                        && so < 32767);
+                if (anyGeometry) stickShape = shapeVal == 1 ? 2 : 1;
+            }
+
+            // TRACKPAD hosts keep the residual, and it is honest: their pair
+            // rides Touchpad finger / gesture descriptors, which the engine
+            // reads outside the Axis path where the geometry is applied, so
+            // there is no companion-axis pair test to consume the radii.
+            if (PhysicalSlotResolver.IsTrackpad(slot))
                 ReportRadialDeadZoneResidual(run, settings, path);
 
             MappingSource Src(string descriptor)
             {
                 var s = new MappingSource { Descriptor = descriptor };
                 if (dzPct > 0) s.DeadZone = dzPct;
+                if (stickShape != 0)
+                {
+                    s.ParamStickDeadZoneShape = stickShape;
+                    // The geometry's own inner field: DeadZone's 50 default is
+                    // the button-threshold sentinel, so the analog inner
+                    // radius must never read it.
+                    if (dzPct > 0) s.ParamStickDeadZoneInner = dzPct / 100.0;
+                }
                 return s;
             }
 
@@ -2721,9 +2752,9 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     string dst = left ? "Left" : "Right";
                     run.AddMatchedAnalog(layer, $"{dst}ThumbAxisX", $"Gamepad {src}X", path, dzPct,
-                        curve.Exponent, curve.RangeOuter, curve.SensX, curve.Anti);
+                        curve.Exponent, curve.RangeOuter, curve.SensX, curve.Anti, stickShape);
                     run.AddMatchedAnalog(layer, $"{dst}ThumbAxisY", $"Gamepad {src}Y", path, dzPct,
-                        curve.Exponent, curve.RangeOuter, curve.SensY, curve.Anti);
+                        curve.Exponent, curve.RangeOuter, curve.SensY, curve.Anti, stickShape);
                 }
             }
             else if (PhysicalSlotResolver.IsTrackpad(slot))
@@ -6187,6 +6218,14 @@ namespace PadForge.SteamWorkshop.Translation
                     if (ma.RangeOuter > 0) src.ParamRangeOuter = ma.RangeOuter;
                     if (ma.Sensitivity > 0 && ma.Sensitivity != 1.0) src.Sensitivity = ma.Sensitivity;
                     if (ma.Anti > 0) src.ParamAntiDeadzone = ma.Anti;
+                    // Stick deadzone geometry rides the matched side too, so
+                    // an uncrossed joystick_move gets the same radial read as
+                    // a crossed one.
+                    if (ma.StickShape != 0)
+                    {
+                        src.ParamStickDeadZoneShape = ma.StickShape;
+                        if (ma.DeadZonePct > 0) src.ParamStickDeadZoneInner = ma.DeadZonePct / 100.0;
+                    }
                     AddRowSource(run, isKbm: false, ma.Layer, ma.Target,
                         src, isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, ma.Path);

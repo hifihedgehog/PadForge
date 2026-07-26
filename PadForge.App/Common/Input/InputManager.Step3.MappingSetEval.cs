@@ -1592,9 +1592,18 @@ namespace PadForge.Common.Input
 
         /// <summary>Axis read used by the Axis activator kind. Mirrors
         /// <see cref="SourceKindRuntimeReadButtonLikeBool"/> but returns the
-        /// signed [-1..+1] bipolar axis value without thresholding.</summary>
+        /// signed [-1..+1] bipolar axis value without thresholding.
+        ///
+        /// <para>Both keys are REQUIRED, deliberately. They used to be
+        /// optional, and the slotIndex default was 0, which is a VALID slot
+        /// rather than a sentinel, so a caller that forgot it read slot 0's
+        /// state instead of failing. That is exactly how the round-thirteen
+        /// InvertOnHold defect stayed silent. Every caller now passes both,
+        /// so the defaults were dead as well as dangerous. Requiring them
+        /// moves the check from a future audit round to the
+        /// compiler.</para></summary>
         private static float SourceKindRuntimeReadAxisLikeFloat(CustomInputState state, string descriptor,
-            string deviceGuid = null, int slotIndex = 0)
+            string deviceGuid, int slotIndex)
             => SourceEvaluator.EvaluateForBipolarAxisTarget(
                 state,
                 // DeviceGuid rides along so per-device engine families
@@ -1606,10 +1615,14 @@ namespace PadForge.Common.Input
         // Reuses the Engine's button-like reader without going through the
         // managed-cast SourceCoercion wrapper (we already know the activator
         // is button-class). slotIndex keys the slot-scoped families (menu
-        // fires, per-(device, slot) tuning) for callers that know their
-        // slot (#9 B-17); legacy utility callers keep the 0 default.
+        // fires, per-(device, slot) tuning) and DeviceGuid keys the
+        // per-device ones, so both are required. The previous note here
+        // said "legacy utility callers keep the 0 default", and that was no
+        // longer true: all seven call sites pass both keys, so the defaults
+        // were dead. See the twin above for why a 0 default in particular
+        // was worth removing rather than leaving.
         private static bool SourceKindRuntimeReadButtonLikeBool(CustomInputState state, string descriptor,
-            string deviceGuid = null, int slotIndex = 0)
+            string deviceGuid, int slotIndex)
             => SourceEvaluator.EvaluateForButtonTarget(
                 state,
                 new MappingSource { Kind = "Direct", Descriptor = descriptor ?? "", DeviceGuid = deviceGuid ?? "" },

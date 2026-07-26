@@ -105,11 +105,12 @@ namespace PadForge.ViewModels
             // (round four, R24): the rebuild raises properties this VM's
             // dirty hook listens to, and a language switch is a read-only
             // action that must not schedule a settings write for 16 slots.
+            // (Round six, R7: the round-five X13 MacroItem suppress flag
+            // that used to wrap this call guarded a macro-side re-notify
+            // the in-place reconcile made unnecessary; both are gone.)
             var slotSetsForCulture = PadForge.Common.Input.SettingsManager.SlotMappingSets;
             bool prevSuppress = SuppressSettingsDirty;
-            bool prevMacroSuppress = PadForge.ViewModels.MacroItem.SuppressLayerBindingDirty;
             SuppressSettingsDirty = true;
-            PadForge.ViewModels.MacroItem.SuppressLayerBindingDirty = true;   // round five, X13
             try
             {
                 RebuildLayerTabs(slotSetsForCulture != null && PadIndex >= 0 && PadIndex < slotSetsForCulture.Length
@@ -119,7 +120,6 @@ namespace PadForge.ViewModels
             finally
             {
                 SuppressSettingsDirty = prevSuppress;
-                PadForge.ViewModels.MacroItem.SuppressLayerBindingDirty = prevMacroSuppress;
             }
 
             Title = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
@@ -1717,7 +1717,21 @@ namespace PadForge.ViewModels
                 ("", PadForge.Resources.Strings.Strings.Instance.Macro_Layer_Any, ""),
             };
             foreach (var t in LayerTabs)
-                desired.Add((t.LayerMask, t.LayerName, t.Color));
+            {
+                // Dedupe by mask, same as the cycle stops below (round
+                // six, R8): a persisted activator whose mask collides
+                // with the synthetic Base (pre-round-six data; the
+                // dialog now reserves "Base") would otherwise put two
+                // identical-valued entries in the picker, and reducing
+                // them later can drop the instance a picker has
+                // selected. One entry per mask; SelectedValuePath
+                // resolves by value, so one is all any picker needs.
+                bool dup = false;
+                foreach (var d in desired)
+                    if (string.Equals(d.Mask, t.LayerMask, StringComparison.Ordinal))
+                    { dup = true; break; }
+                if (!dup) desired.Add((t.LayerMask, t.LayerName, t.Color));
+            }
 
             // A Cycle activator ENGAGES every stop in its ring while only
             // the first is its own LayerMask, so later stops are real,
@@ -1743,14 +1757,6 @@ namespace PadForge.ViewModels
                 }
             }
 
-            // Re-push the selected macro's mask through the picker binding
-            // (round four, R21). The Clear() above nulls the ComboBox
-            // selection; the null write is rejected by the LayerMask
-            // setter, but WPF suppresses the re-entrant target refresh
-            // for the binding that initiated the write, so the picker
-            // rendered BLANK over an intact mask. A post-rebuild notify
-            // re-reads the source outside that window and re-matches the
-            // re-added item, the MappingItem sync-after-rebuild idiom.
             // Apply `desired` onto the live collection by INDEX, reusing the
             // existing instance at each position so the item the picker has
             // selected is never removed. Only genuine adds and removals touch

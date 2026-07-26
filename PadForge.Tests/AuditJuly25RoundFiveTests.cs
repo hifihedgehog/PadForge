@@ -334,25 +334,11 @@ namespace PadForge.Tests
             Assert.True(PadForge.Views.PadPage.RelatedSlotStillDeclares(all, own, "Gone"));
         }
 
-        // ── X13: a non-user rebuild must not dirty ──
-
-        [Fact]
-        public void SuppressedLayerBindingRefresh_RaisesNothing()
-        {
-            var m = Macro("Shift");
-            bool raised = false;
-            m.PropertyChanged += (_, e) =>
-            {
-                if (e.PropertyName == nameof(MacroItem.LayerMask)) raised = true;
-            };
-
-            MacroItem.SuppressLayerBindingDirty = true;
-            try { m.RefreshLayerBinding(); }
-            finally { MacroItem.SuppressLayerBindingDirty = false; }
-            Assert.False(raised);
-
-            m.RefreshLayerBinding();               // unsuppressed still works
-            Assert.True(raised);
-        }
+        // (Round six, R7: the X13 SuppressedLayerBindingRefresh pin was
+        // removed together with MacroItem.RefreshLayerBinding and its
+        // suppress flag. The re-notify it guarded was superseded by the
+        // in-place reconcile above, which left the method with zero
+        // production callers; a pin that drives dead code directly
+        // proves a decision nothing asks for.)
     }
 }

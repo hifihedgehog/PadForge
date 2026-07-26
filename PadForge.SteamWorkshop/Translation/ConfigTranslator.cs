@@ -1222,16 +1222,29 @@ namespace PadForge.SteamWorkshop.Translation
                 && value > 0;
         }
 
-        /// <summary>Names the pair-host deadzone residual (v19, T2): the
-        /// authored inner radius lands on the per-source DeadZone, which
-        /// only the digital (button-shaped) reads consume (the analog
-        /// pair read has no per-source inner channel), and the outer
-        /// radius applies per axis (ParamRangeOuter in the scalar shaping
-        /// tail), not radially over the pair, so diagonals reach full
-        /// deflection early. The radial application needs the per-source
-        /// companion-axis pair read (a ParamYDescriptor-style channel on
-        /// MappingSource) the engine does not carry yet; until it exists
-        /// the residual rides this named Partial per analog pair host.</summary>
+        /// <summary>The authored inner radius as the per-source geometry
+        /// fraction, capped at 0.99 (round six, R4): the engine's
+        /// ApplyStickDeadZoneShape treats an inner of 1.0 as unset, so a
+        /// full 32767 radius (dzPct 100, a stick meant to be dead until
+        /// the rim) imported as NO deadzone at all. The cap keeps the
+        /// author's intent: only the outermost sliver of travel
+        /// registers. Every geometry stamp site goes through here so the
+        /// boundary lives in one place.</summary>
+        private static double StickInnerFraction(int dzPct)
+            => Math.Min(dzPct, 99) / 100.0;
+
+        /// <summary>Names the pair-host deadzone residual (v19, T2). The
+        /// engine HAS carried the per-source geometry since v25
+        /// (ParamStickDeadZoneShape / Inner, the companion-axis pair
+        /// read), and every stick-hosted pair emitter stamps it, so this
+        /// note remains only for hosts whose pair rides a NON-Axis read
+        /// where that stamp cannot land: trackpad fingers (Touchpad
+        /// descriptors), the gyro rate pair, and the gyro-lean
+        /// deflection pair. There the authored inner radius lands on the
+        /// per-source DeadZone, which only the digital (button-shaped)
+        /// reads consume, and the outer radius applies per axis in the
+        /// scalar shaping tail, not radially over the pair. No-op when
+        /// the group authored no deadzone keys.</summary>
         private void ReportRadialDeadZoneResidual(Run run,
             Dictionary<string, string> settings, string path)
         {
@@ -2719,7 +2732,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // The geometry's own inner field: DeadZone's 50 default is
                     // the button-threshold sentinel, so the analog inner
                     // radius must never read it.
-                    if (dzPct > 0) s.ParamStickDeadZoneInner = dzPct / 100.0;
+                    if (dzPct > 0) s.ParamStickDeadZoneInner = StickInnerFraction(dzPct);
                 }
                 return s;
             }
@@ -2894,7 +2907,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // The geometry's own inner field: DeadZone's 50
                     // default is the button-threshold sentinel, so the
                     // analog inner radius must never read it.
-                    if (dzPct > 0) src.ParamStickDeadZoneInner = dzPct / 100.0;
+                    if (dzPct > 0) src.ParamStickDeadZoneInner = StickInnerFraction(dzPct);
                 }
                 if (invert ^ (coeff < 0)) src.Invert = true;
                 if (curveChannel) curve.StampAxis(src, isX);
@@ -2963,8 +2976,15 @@ namespace PadForge.SteamWorkshop.Translation
 
             var (x, y, family) = pair.Value;
             int dzPct = GroupDeadZonePercent(settings);
-            // v19 (T2): same pair-host radial residual note as EmitMouseAxes.
-            ReportRadialDeadZoneResidual(run, settings, path);
+            // v19 (T2) residual, scoped exactly like EmitMouseAxes since
+            // round six (R3): stick hosts consume the radii through the
+            // v25 per-source geometry stamp below, so only the finger /
+            // gyro lanes keep the note. This emitter was the one
+            // stick-capable thumb-pair host the 67fca4d9 completion pass
+            // missed, which put the lockdown's "only the trackpad
+            // remains" claim ahead of the code.
+            if (family != 0)
+                ReportRadialDeadZoneResidual(run, settings, path);
             bool invertX = SettingIsOn(settings, "invert_x");
             bool invertY = SettingIsOn(settings, "invert_y");
             string dst = ParseIntSetting(settings, "output_joystick", 0) == 1 ? "Left" : "Right";
@@ -2975,6 +2995,24 @@ namespace PadForge.SteamWorkshop.Translation
                 : default;
             var feel = MouseFeelChannel.FromSettings(settings);
 
+            // deadzone_shape on a stick host (round six, R3): the same
+            // per-source geometry stamp as EmitMouseAxes. Steam 1 =
+            // Circle = the radial pair test (engine shape 2); 0 = Cross
+            // and 2 = Square are per-axis checks (engine shape 1), and an
+            // absent key reads as the selector's serialized default,
+            // Cross. Stick family only: the finger / gyro lanes have no
+            // companion-axis pair read and keep the residual above.
+            int stickShape = 0;
+            if (family == 0)
+            {
+                int mjShapeVal = ParseIntSetting(settings, "deadzone_shape", 0);
+                bool anyGeometry = dzPct > 0
+                    || settings.ContainsKey("deadzone_shape")
+                    || (TryParseDeadZoneRaw(settings, "deadzone_outer_radius", out int mjo)
+                        && mjo < 32767);
+                if (anyGeometry) stickShape = mjShapeVal == 1 ? 2 : 1;
+            }
+
             MappingSource Make(string descriptor, bool invert, bool isX, double coeff = 1.0)
             {
                 var src = new MappingSource { Descriptor = descriptor };
@@ -2982,6 +3020,14 @@ namespace PadForge.SteamWorkshop.Translation
                 if (family == 0 || family == 1) src.Sensitivity = scale;
                 else if (family == 2) src.GyroSensitivity = scale;
                 if (dzPct > 0) src.DeadZone = dzPct;
+                if (stickShape != 0)
+                {
+                    src.ParamStickDeadZoneShape = stickShape;
+                    // The geometry's own inner field: DeadZone's 50
+                    // default is the button-threshold sentinel, so the
+                    // analog inner radius must never read it.
+                    if (dzPct > 0) src.ParamStickDeadZoneInner = StickInnerFraction(dzPct);
+                }
                 if (invert ^ (coeff < 0)) src.Invert = true;
                 if (curveChannel) curve.StampAxis(src, isX);
                 feel.StampFeel(src, isX);
@@ -3058,6 +3104,15 @@ namespace PadForge.SteamWorkshop.Translation
             string dst = ParseIntSetting(settings, "output_joystick", 0) == 1 ? "Left" : "Right";
             bool invertX = SettingIsOn(settings, "invert_x");
             bool invertY = SettingIsOn(settings, "invert_y");
+            int dzPct = GroupDeadZonePercent(settings);
+            // Round six (R5): the deflection pair reads Gyro Lean X/Y,
+            // which is not an Axis-path read, so the v25 geometry stamp
+            // cannot land and the authored radii ride the per-source
+            // DeadZone like every other non-stick pair host. This was
+            // the one pair emitter that dropped them with NO note; the
+            // residual (a no-op when the group authored no deadzone
+            // keys) keeps the import report honest.
+            ReportRadialDeadZoneResidual(run, settings, path);
 
             MappingSource MakeLean(string descriptor, bool invert)
             {
@@ -3066,6 +3121,7 @@ namespace PadForge.SteamWorkshop.Translation
                     Descriptor = descriptor,
                     Sensitivity = 2.0 * ratio,
                 };
+                if (dzPct > 0) src.DeadZone = dzPct;
                 if (invert) src.Invert = true;
                 return src;
             }
@@ -6224,7 +6280,7 @@ namespace PadForge.SteamWorkshop.Translation
                     if (ma.StickShape != 0)
                     {
                         src.ParamStickDeadZoneShape = ma.StickShape;
-                        if (ma.DeadZonePct > 0) src.ParamStickDeadZoneInner = ma.DeadZonePct / 100.0;
+                        if (ma.DeadZonePct > 0) src.ParamStickDeadZoneInner = StickInnerFraction(ma.DeadZonePct);
                     }
                     AddRowSource(run, isKbm: false, ma.Layer, ma.Target,
                         src, isAxis: true,

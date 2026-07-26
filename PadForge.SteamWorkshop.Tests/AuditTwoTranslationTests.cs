@@ -136,10 +136,19 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.False(m.ConsumeTrigger);
         }
 
-        // ─── T2: pair-host radial deadzone residual ─────────────────────
+        // ─── T2: pair-host deadzone radii on a stick host ───────────────
+        // SUPERSEDED CONTRACT (round six, R3): this pin used to assert the
+        // v19 residual note on a stick-hosted mouse_joystick, which locked
+        // the emitter's INCOMPLETENESS in place. The stick host has a
+        // companion-axis pair read, so filing a note instead of stamping
+        // the geometry was the defect, not the contract. The stick host
+        // now stamps ParamStickDeadZoneShape/Inner exactly like
+        // EmitMouseAxes and files nothing; the residual is pinned on the
+        // hosts that genuinely cannot consume the radii (trackpad and the
+        // deflection pair, DeadZoneGeometryTranslationTests).
 
         [Fact]
-        public void PairHostDeadZoneRadii_NameTheRadialResidual()
+        public void PairHostDeadZoneRadii_OnAStick_LandOnTheGeometry()
         {
             string vdf = Head
                 + Group(1, "mouse_joystick", Settings(
@@ -148,16 +157,17 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
 
-            var note = Assert.Single(p.Report.Entries, e =>
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.DeadZoneRadialResidual);
-            Assert.Equal(TranslationStatus.Partial, note.Status);
-            Assert.Equal("deadzone_inner_radius, deadzone_outer_radius",
-                Assert.Single(note.ReasonArgs));
 
-            // The per-axis stamps stay: DeadZone for digital reads, the
-            // outer range on the scalar shaping tail.
             var x = p.XboxMappingSet.Rows.Single(r => r.Target == "RightThumbAxisX");
             var src = Assert.Single(x.Sources);
+            // No deadzone_shape key + geometry present reads as Steam's
+            // default Cross: the axial pair test (engine shape 1).
+            Assert.Equal(1, src.ParamStickDeadZoneShape);
+            Assert.Equal(0.25, src.ParamStickDeadZoneInner, 3);
+            // The per-axis stamps stay: DeadZone for digital reads, the
+            // outer range on the scalar shaping tail.
             Assert.Equal(25, src.DeadZone);
             Assert.Equal(28000.0 / 32767.0, src.ParamRangeOuter, 3);
         }

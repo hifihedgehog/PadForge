@@ -1901,14 +1901,15 @@ namespace PadForge.ViewModels
             {
                 // A NULL write is a picker artifact, never a user choice
                 // (audit 2026-07-25, C1). The editor's Layer ComboBox binds
-                // SelectedValue two-way over MacroLayerChoices, and every
-                // RebuildLayerTabs Clear()s that collection: WPF's Selector
-                // then coerces SelectedValue to null and the binding pushes
-                // it here, silently downgrading a scoped macro to "" (Any
-                // layer) and persisting the loss through the dirty gate.
+                // SelectedValue two-way over MacroLayerChoices; when the
+                // choice this macro selects disappears (a layer delete, or
+                // a reconcile tail-removal), WPF's Selector coerces
+                // SelectedValue to null and the binding pushes it here,
+                // silently downgrading a scoped macro to "" (Any layer)
+                // and persisting the loss through the dirty gate.
                 // Ignoring null is the same defense MappingItem.SelectedInput
                 // uses against its own picker rebuilds; the persisted mask
-                // stays the truth and the re-Add re-matches it.
+                // stays the truth.
                 if (value == null) return;
                 if (SetProperty(ref _layerMask, value))
                 {
@@ -1936,26 +1937,6 @@ namespace PadForge.ViewModels
         /// the code never implemented).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool ShowsLayerRow => HasLayerScope;
-
-        /// <summary>Re-raises LayerMask so the Layer picker re-reads the
-        /// source after its ItemsSource was rebuilt (round four, R21). The
-        /// rebuild's null write-back is rejected by the setter, but WPF
-        /// suppresses the re-entrant refresh for the initiating binding,
-        /// so without this the picker rendered blank over intact data.</summary>
-        public void RefreshLayerBinding()
-        {
-            // Suppressible (round five, X13): this raise reaches a DIFFERENT
-            // dirty sink than PadViewModel's own (MainWindow subscribes each
-            // macro's PropertyChanged straight to MarkDirty), so the culture
-            // rebuild's SuppressSettingsDirty did not cover it and a mere
-            // language switch scheduled a settings write.
-            if (SuppressLayerBindingDirty) return;
-            OnPropertyChanged(nameof(LayerMask));
-        }
-
-        /// <summary>Set around a rebuild that is not a user edit.</summary>
-        [System.Xml.Serialization.XmlIgnore]
-        internal static bool SuppressLayerBindingDirty { get; set; }
 
         /// <summary>UTC time of the last evaluator tick that OBSERVED this
         /// macro's trigger (audit 2026-07-25 round four, replacing the

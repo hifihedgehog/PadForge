@@ -1464,6 +1464,11 @@ namespace PadForge.Views
             }
 
             _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
+            // Macros retag LAST (round six, R2): every pad's picker
+            // choices now hold the new mask, so the SelectedValue each
+            // retag pushes resolves instead of blanking the picker.
+            if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal))
+                RetagMacrosEverywhere(AllPadViewModels(), oldMask, existing.LayerMask);
             _currentPadVm.ActiveLayerMask = existing.LayerMask;
             _currentPadVm.ConfigItemDirtyCallback?.Invoke();
         }
@@ -1907,12 +1912,20 @@ namespace PadForge.Views
             return false;
         }
 
-        /// <summary>Renames a layer mask across the WHOLE configuration:
-        /// every slot activators list (mask + display name follow
-        /// together), cycle rings, mapping rows, layer-scoped menus, and
-        /// every pad macros (audit 2026-07-25 round four, R10/R19/R28).
-        /// Mask equality is layer identity across slots; see the Configure
-        /// caller for the policy note.</summary>
+        /// <summary>Renames a layer mask across the persisted
+        /// configuration: every slot activators list, cycle rings,
+        /// mapping rows, and layer-scoped menus (audit 2026-07-25 round
+        /// four, R10/R19/R28). Mask equality is layer identity across
+        /// slots; see the Configure caller for the policy note.
+        /// MACROS ARE DELIBERATELY NOT HERE (round six, R2): their masks
+        /// feed the editor's Layer picker through a SelectedValue
+        /// binding, and WPF resolves a changed value only against the
+        /// choices that exist at write time. Retagging them before the
+        /// tab rebuilds pushed the new mask into pickers that did not
+        /// hold it yet, and an item added later never re-resolves a null
+        /// selection, so every rename blanked the picker over intact
+        /// data. <see cref="RetagMacrosEverywhere"/> runs AFTER all tab
+        /// rebuilds instead.</summary>
         private void RenameMaskEverywhere(string oldMask, string newMask, PadForge.Engine.Data.ShiftActivator renamed)
         {
             var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
@@ -1967,8 +1980,23 @@ namespace PadForge.Views
                     }
                 }
             }
-            foreach (var padVm in AllPadViewModels())
+        }
+
+        /// <summary>The macro half of a mask rename (round four R10,
+        /// repositioned round six R2). Must run only after EVERY pad's
+        /// tabs (and therefore its MacroLayerChoices) have been rebuilt
+        /// with the new mask: the picker's SelectedValue binding resolves
+        /// the retagged value at write time, so the matching choice has
+        /// to exist first. Internal static so the walk is testable
+        /// without constructing the page.</summary>
+        internal static void RetagMacrosEverywhere(
+            System.Collections.Generic.IEnumerable<PadForge.ViewModels.PadViewModel> padVms,
+            string oldMask, string newMask)
+        {
+            if (padVms == null) return;
+            foreach (var padVm in padVms)
             {
+                if (padVm?.Macros == null) continue;
                 foreach (var mac in padVm.Macros)
                 {
                     if (mac != null && string.Equals(mac.LayerMask, oldMask, StringComparison.Ordinal))

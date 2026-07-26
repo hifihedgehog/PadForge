@@ -24,6 +24,42 @@ namespace PadForge.Views
 
         private readonly HashSet<string> _existingLayerNames;
         private readonly HashSet<string> _existingLayerMasks;
+
+        /// <summary>The mask identities a new or renamed layer may not
+        /// take: every OTHER activator's mask, plus the reserved "Base"
+        /// (round six, R8). "Base" is the synthetic base tab's mask AND
+        /// the #254 macro-scope contract ("fires while Base is
+        /// effectively engaged"), so a user layer whose IDENTITY is
+        /// literally Base collides with that semantic and duplicates the
+        /// picker entry. The display name may still read "Base"; the
+        /// derived mask uniquifies to Base_2. Internal static so the
+        /// reservation is testable without constructing the dialog.</summary>
+        internal static HashSet<string> BuildReservedMasks(
+            IEnumerable<ShiftActivator> otherActivators)
+        {
+            var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "Base" };
+            if (otherActivators != null)
+            {
+                foreach (var a in otherActivators)
+                    if (!string.IsNullOrEmpty(a?.LayerMask)) set.Add(a.LayerMask);
+            }
+            return set;
+        }
+
+        /// <summary>Derives a layer's persisted mask from its display
+        /// name: the name itself (whitespace-only falls back to "Shift"),
+        /// suffixed _2, _3... until it collides with nothing in
+        /// <paramref name="reserved"/>. Split out of the OK handler so
+        /// the Base reservation above is lockable by a test.</summary>
+        internal static string DeriveUniqueMask(string name, HashSet<string> reserved)
+        {
+            string baseMask = string.IsNullOrWhiteSpace(name) ? "Shift" : name;
+            string mask = baseMask;
+            int suffix = 2;
+            while (reserved != null && reserved.Contains(mask))
+                mask = $"{baseMask}_{suffix++}";
+            return mask;
+        }
         private readonly IReadOnlyList<InputChoice> _buttonChoices;
         private readonly IReadOnlyList<InputChoice> _axisChoices;
         private readonly IReadOnlyList<ShiftActivator> _otherActivators;
@@ -187,12 +223,11 @@ namespace PadForge.Views
 
             // Validation context.
             _existingLayerNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            _existingLayerMasks = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var a in _otherActivators)
             {
                 if (!string.IsNullOrEmpty(a.LayerName)) _existingLayerNames.Add(a.LayerName);
-                if (!string.IsNullOrEmpty(a.LayerMask)) _existingLayerMasks.Add(a.LayerMask);
             }
+            _existingLayerMasks = BuildReservedMasks(_otherActivators);
 
             // Bind the data-shaped option lists for the two two-line
             // dropdowns. Set ItemsSource BEFORE SelectedValue so the
@@ -721,11 +756,7 @@ namespace PadForge.Views
                 return;
             }
 
-            string baseMask = string.IsNullOrWhiteSpace(name) ? "Shift" : name;
-            string mask = baseMask;
-            int suffix = 2;
-            while (_existingLayerMasks.Contains(mask))
-                mask = $"{baseMask}_{suffix++}";
+            string mask = DeriveUniqueMask(name, _existingLayerMasks);
 
             // Latch (#119) has no jump target; it engages its own layer.
             string jumpToLayer = "";

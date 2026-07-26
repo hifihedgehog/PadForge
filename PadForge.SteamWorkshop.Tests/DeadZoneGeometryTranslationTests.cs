@@ -169,16 +169,87 @@ namespace PadForge.SteamWorkshop.Tests
         /// pair rides Touchpad finger / gesture descriptors, which the engine
         /// reads outside the Axis path where the geometry is applied, so there
         /// is no companion-axis pair test to consume the radii. Pinned so the
-        /// distinction is deliberate rather than an oversight.</summary>
+        /// distinction is deliberate rather than an oversight. Round six (R6):
+        /// this now drives joystick_move on a trackpad, the exact branch the
+        /// commit preserved; the first version drove absolute_mouse, whose
+        /// residual fires from a different emitter, so deleting the pinned
+        /// branch left this green.</summary>
         [Fact]
         public void TrackpadHost_StillReportsTheResidual()
         {
             string vdf = Head
-                + Group(1, "absolute_mouse",
+                + Group(1, "joystick_move",
                     Inputs(Inp("click", "xinput_button JOYSTICK_LEFT"))
-                    + Settings(("output_joystick", "1"), ("deadzone_shape", "1"),
-                               ("deadzone_inner_radius", "8192")))
+                    + Settings(("deadzone_shape", "1"), ("deadzone_inner_radius", "8192")))
                 + Preset(0, "Default", (1, "left_trackpad active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            Assert.Contains(p.Report.Entries,
+                e => e.ReasonKey == TranslationReasons.DeadZoneRadialResidual);
+        }
+
+        /// <summary>Round six (R3): mouse_joystick ("As Joystick,
+        /// Mouse-like") on a STICK host is the other stick-capable
+        /// thumb-pair emitter, and the 67fca4d9 pass missed it: it kept
+        /// filing the residual and stamped no geometry, so a Circle
+        /// deadzone still came through square there. It now mirrors
+        /// EmitMouseAxes exactly. Default output is the right thumb.</summary>
+        [Fact]
+        public void MouseJoystickOnAStick_StampsTheGeometry_AndFilesNoResidual()
+        {
+            string vdf = Head
+                + Group(1, "mouse_joystick",
+                    Inputs(Inp("click", "xinput_button JOYSTICK_LEFT"))
+                    + Settings(("deadzone_shape", "1"), ("deadzone_inner_radius", "8192")))
+                + Preset(0, "Default", (1, "joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            var sources = p.XboxMappingSet.Rows
+                .Where(r => r.Target == "RightThumbAxisX" || r.Target == "RightThumbAxisY")
+                .SelectMany(r => r.Sources)
+                .ToArray();
+
+            Assert.NotEmpty(sources);
+            Assert.All(sources, s => Assert.Equal(2, s.ParamStickDeadZoneShape));
+            Assert.All(sources, s => Assert.True(s.ParamStickDeadZoneInner > 0.0));
+
+            Assert.DoesNotContain(p.Report.Entries,
+                e => e.ReasonKey == TranslationReasons.DeadZoneRadialResidual);
+        }
+
+        /// <summary>Round six (R4): a FULL inner radius (32767, a stick
+        /// meant to be dead until the rim) folded to dzPct 100 and was
+        /// stamped as 1.0, which the engine's geometry read treats as
+        /// unset, so the strictest authored deadzone imported as none at
+        /// all. The stamp caps at 0.99: only the outermost sliver of
+        /// travel registers, which is the author's intent.</summary>
+        [Fact]
+        public void FullInnerRadius_ClampsBelowTheEngineGate()
+        {
+            var p = Translate(StickVdf(("deadzone_shape", "1"),
+                ("deadzone_inner_radius", "32767")));
+
+            var sources = StickSources(p);
+            Assert.NotEmpty(sources);
+            Assert.All(sources, s => Assert.Equal(0.99, s.Inner, 6));
+        }
+
+        /// <summary>Round six (R5): gyro_to_joystick_deflection reads the
+        /// gravity-lean pair, which is not an Axis-path read, so the
+        /// geometry stamp cannot land there. It used to drop an authored
+        /// deadzone with NO note, the one pair host that lost the radii
+        /// silently; it now files the same residual as every other
+        /// non-stick pair host.</summary>
+        [Fact]
+        public void DeflectionHost_ReportsTheResidual()
+        {
+            string vdf = Head
+                + Group(1, "gyro_to_joystick_deflection",
+                    Inputs(Inp("click", "xinput_button JOYSTICK_LEFT"))
+                    + Settings(("deadzone_inner_radius", "8192")))
+                + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
 

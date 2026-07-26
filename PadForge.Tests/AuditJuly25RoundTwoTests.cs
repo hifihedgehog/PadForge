@@ -300,24 +300,30 @@ namespace PadForge.Tests
         /// <summary>A profile stamped before the aux fields existed still
         /// gets the aux pass; one whose aux triple is set does not.</summary>
         [Fact]
-        public void Calibrator_UpgradePath_RunsOnlyWhenAuxUnset()
+        public async Task Calibrator_UpgradePath_RunsOnlyWhenAuxUnset()
         {
             ArrangeSlotDevice(out var ud);
             ud.HasGyro = true;
             ud.HasGyroAux = true;
             var svc = new GyroCalibratorService();
 
+            // Round six, R1: the no-work return is a synchronously
+            // completed false rather than Task.CompletedTask, so the
+            // caller can release its latch when a started pass writes
+            // nothing. "Started" is observable as a not-yet-completed
+            // task (the sampler runs for >= 250 ms on a worker).
             var stampedUnset = new PadSetting { GyroCalibratedAtUtc = "2026-01-01T00:00:00Z" };
-            Assert.False(ReferenceEquals(
-                svc.EnsureAutoCalibratedAsync(ud, stampedUnset), Task.CompletedTask));
+            var upgrade = svc.EnsureAutoCalibratedAsync(ud, stampedUnset);
+            Assert.False(upgrade.IsCompleted);
 
             var stampedSet = new PadSetting
             {
                 GyroCalibratedAtUtc = "2026-01-01T00:00:00Z",
                 GyroAuxBiasPitch = "0.01",
             };
-            Assert.True(ReferenceEquals(
-                svc.EnsureAutoCalibratedAsync(ud, stampedSet), Task.CompletedTask));
+            var noWork = svc.EnsureAutoCalibratedAsync(ud, stampedSet);
+            Assert.True(noWork.IsCompleted);
+            Assert.False(await noWork);
 
             // AND THE CALLER MUST ACTUALLY DELIVER IT (audit 2026-07-25, G1).
             // The two assertions above call the calibrator DIRECTLY, so they

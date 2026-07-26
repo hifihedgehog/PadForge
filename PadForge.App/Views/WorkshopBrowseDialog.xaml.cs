@@ -1263,10 +1263,14 @@ namespace PadForge.Views
                 }
 
                 var (source, target) = SourceAndTarget(entry);
+                var badge = InputBadge(source);
                 rows.Add(new WorkshopManifestRowItem
                 {
-                    Source = source,
+                    Source = FriendlySource(source),
                     Target = target,
+                    Glyph = badge.Glyph,
+                    GlyphTint = badge.Tint,
+                    IsRoundGlyph = badge.Round,
                     Reason = ReasonText(entry),
                     DotBrush = entry.Status switch
                     {
@@ -1572,10 +1576,11 @@ namespace PadForge.Views
         ///
         /// <para>Codenames resolved rather than guessed, since these are
         /// user-visible: <c>neptune</c> is the Steam Deck, <c>triton</c> is
-        /// the second-generation Steam Controller (28DE:1304, the same pad
-        /// this app already drives), and <c>gordon</c> is the original 2015
-        /// Steam Controller. Names follow the hardware's retail branding
-        /// and PadForge's own terminology.</para></summary>
+        /// the Steam Controller (2026) (28DE:1304, the same pad this app
+        /// already drives as SC2026), and <c>gordon</c> is the Steam
+        /// Controller (2015). Both Steam Controller generations are named
+        /// by YEAR rather than by ordinal, which is the branding and also
+        /// what PadForge calls them everywhere else.</para></summary>
         private static readonly Dictionary<string, string> ControllerTagNames =
             new(StringComparer.OrdinalIgnoreCase)
             {
@@ -1587,7 +1592,7 @@ namespace PadForge.Views
                 ["controller_ps5_edge"] = "DualSense Edge",
                 ["controller_switch_pro"] = "Switch Pro",
                 ["controller_neptune"] = "Steam Deck",
-                ["controller_triton"] = "Steam Controller 2",
+                ["controller_triton"] = "Steam Controller (2026)",
                 ["controller_steamcontroller_gordon"] = "Steam Controller (2015)",
                 ["controller_steamcontroller"] = "Steam Controller",
                 ["controller_generic"] = "Generic",
@@ -1606,6 +1611,72 @@ namespace PadForge.Views
                 && !string.Equals(displayName, tag, StringComparison.OrdinalIgnoreCase))
                 return displayName;
             return PrettifyTag(tag);
+        }
+
+        /// <summary>Drops the "Gamepad " noise every Steam source carries
+        /// and spaces the trailing ordinal, so a row reads "Paddle 2"
+        /// instead of "Gamepad Paddle2". The manifest is the first thing a
+        /// user reads about a config, and it was rendering the translator's
+        /// internal vocabulary at them.</summary>
+        internal static string FriendlySource(string source)
+        {
+            if (string.IsNullOrWhiteSpace(source)) return source;
+            var s = source.StartsWith("Gamepad ", StringComparison.OrdinalIgnoreCase)
+                ? source.Substring("Gamepad ".Length)
+                : source;
+            // "Paddle2" -> "Paddle 2", "LeftStickX" -> "Left Stick X".
+            var sb = new System.Text.StringBuilder(s.Length + 4);
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                bool boundary = i > 0
+                    && (char.IsDigit(c) != char.IsDigit(s[i - 1])
+                        || (char.IsUpper(c) && !char.IsUpper(s[i - 1])));
+                if (boundary && sb.Length > 0 && sb[^1] != ' ') sb.Append(' ');
+                sb.Append(c);
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>Maps a Steam source descriptor to a scannable badge:
+        /// short glyph text, an input-class tint, and whether the badge is
+        /// round. Returns an empty glyph for anything unrecognised, and the
+        /// row then renders exactly as it did before rather than inventing
+        /// a label for something we cannot place on a controller.</summary>
+        internal static (string Glyph, Brush Tint, bool Round) InputBadge(string source)
+        {
+            if (string.IsNullOrWhiteSpace(source))
+                return ("", WorkshopManifestRowItem.OtherTint, false);
+            var s = source.Replace("Gamepad ", "", StringComparison.OrdinalIgnoreCase)
+                          .Replace(" ", "").Trim();
+
+            bool Is(string name) => s.Equals(name, StringComparison.OrdinalIgnoreCase);
+            bool Has(string frag) => s.Contains(frag, StringComparison.OrdinalIgnoreCase);
+
+            if (Is("A") || Is("B") || Is("X") || Is("Y"))
+                return (s.ToUpperInvariant(), WorkshopManifestRowItem.FaceTint, true);
+            if (Has("Paddle"))
+                return ("P" + new string(s.Where(char.IsDigit).ToArray()),
+                        WorkshopManifestRowItem.FaceTint, false);
+            if (Has("LeftBumper") || Is("LB") || Has("LeftShoulder"))
+                return ("LB", WorkshopManifestRowItem.BumperTint, false);
+            if (Has("RightBumper") || Is("RB") || Has("RightShoulder"))
+                return ("RB", WorkshopManifestRowItem.BumperTint, false);
+            if (Has("LeftTrigger")) return ("LT", WorkshopManifestRowItem.TriggerTint, false);
+            if (Has("RightTrigger")) return ("RT", WorkshopManifestRowItem.TriggerTint, false);
+            if (Has("LeftStick")) return ("LS", WorkshopManifestRowItem.StickTint, true);
+            if (Has("RightStick")) return ("RS", WorkshopManifestRowItem.StickTint, true);
+            if (Has("DPad") || Has("DirectionalPad"))
+                return ("D-Pad", WorkshopManifestRowItem.DpadTint, false);
+            if (Has("Trackpad") || Has("Touchpad"))
+                return ("Pad", WorkshopManifestRowItem.PadTint, false);
+            if (Has("Gyro") || Has("Motion"))
+                return ("Gyro", WorkshopManifestRowItem.PadTint, false);
+            if (Has("Start") || Has("Menu")) return ("Menu", WorkshopManifestRowItem.OtherTint, false);
+            if (Has("Back") || Has("Select") || Has("View"))
+                return ("View", WorkshopManifestRowItem.OtherTint, false);
+            if (Has("Guide") || Has("Home")) return ("Home", WorkshopManifestRowItem.OtherTint, false);
+            return ("", WorkshopManifestRowItem.OtherTint, false);
         }
 
         private static string PrettifyTag(string tag)
@@ -1779,11 +1850,52 @@ namespace PadForge.Views
         public static readonly Effect CleanGlow = FrozenGlow(0x57, 0xC7, 0x84);
         public static readonly Effect PartialGlow = FrozenGlow(0xE3, 0xB3, 0x41);
 
+        // Input-class tints. Ember family, deliberately NOT the pad's own
+        // A/B/X/Y colours: this is a PadForge surface, and cloning another
+        // vendor's button palette would read as a costume. The classes are
+        // distinguished by hue WITHIN the ember/steel range plus the badge
+        // shape, which is enough to scan a list at a glance.
+        public static readonly Brush FaceTint = Frozen(0xE8, 0x7A, 0x2E);   // ember
+        public static readonly Brush BumperTint = Frozen(0x6E, 0x8C, 0xA8); // steel
+        public static readonly Brush TriggerTint = Frozen(0xC9, 0x5A, 0x3A);// deep ember
+        public static readonly Brush StickTint = Frozen(0x8A, 0x7B, 0xB5);  // dusk
+        public static readonly Brush DpadTint = Frozen(0x5E, 0x9E, 0x8C);   // slate green
+        public static readonly Brush PadTint = Frozen(0x9A, 0x8F, 0x7E);    // sand
+        public static readonly Brush OtherTint = Frozen(0x7E, 0x88, 0x96);
+
         public string Source { get; init; }
         public string Target { get; init; }
         public string Reason { get; init; }
         public Brush DotBrush { get; init; } = CleanBrush;
         public Effect DotGlow { get; init; }
+
+        /// <summary>Short badge text for the physical input ("A", "LB",
+        /// "LS", "D-Pad"). Empty when the source is not a recognisable pad
+        /// input, in which case the badge collapses and the row degrades to
+        /// the text it always was.</summary>
+        public string Glyph { get; init; } = "";
+
+        /// <summary>Tint for the badge, chosen by input class so a reader
+        /// can find every trigger or every face button without reading a
+        /// single word.</summary>
+        public Brush GlyphTint { get; init; } = OtherTint;
+
+        public Visibility GlyphVisibility =>
+            string.IsNullOrEmpty(Glyph) ? Visibility.Collapsed : Visibility.Visible;
+
+        /// <summary>True for round badges (face buttons and sticks), false
+        /// for the wider pill shapes (bumpers, triggers, d-pad, trackpads).
+        /// Shape carries the class as much as the tint does, which keeps
+        /// the list readable for anyone who cannot separate the hues.</summary>
+        public bool IsRoundGlyph { get; init; }
+
+        /// <summary>Typed as CornerRadius, not double: binding a double to
+        /// a CornerRadius target leans on a runtime type conversion that
+        /// fails silently into the binding-error channel rather than at
+        /// build time.</summary>
+        public CornerRadius GlyphCorner => IsRoundGlyph
+            ? new CornerRadius(9)
+            : new CornerRadius(4);
     }
 
     /// <summary>The translator's answer, adapted for the dossier: the

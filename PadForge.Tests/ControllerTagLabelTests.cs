@@ -14,8 +14,9 @@ namespace PadForge.Tests
     ///
     /// <para>The codenames were resolved rather than guessed, because they
     /// are user-visible: neptune is the Steam Deck, triton is the
-    /// second-generation Steam Controller (28DE:1304), gordon is the
-    /// original 2015 Steam Controller.</para></summary>
+    /// Steam Controller (2026) (28DE:1304), gordon is the Steam Controller
+    /// (2015). Both generations are named by YEAR rather than by ordinal,
+    /// matching the branding and the rest of PadForge.</para></summary>
     public class ControllerTagLabelTests
     {
         [Theory]
@@ -34,7 +35,7 @@ namespace PadForge.Tests
         /// prettifier cannot possibly get right.</summary>
         [Theory]
         [InlineData("controller_neptune", "Steam Deck")]
-        [InlineData("controller_triton", "Steam Controller 2")]
+        [InlineData("controller_triton", "Steam Controller (2026)")]
         [InlineData("controller_steamcontroller_gordon", "Steam Controller (2015)")]
         public void CodenamesResolveToRetailNames(string tag, string expected)
             => Assert.Equal(expected, WorkshopBrowseDialog.ControllerTagLabel(tag, null));

@@ -300,7 +300,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>用于数据绑定的 CommunityToolkit.Mvvm。MIT。</value></data>
   <data name="About_License" xml:space="preserve"><value>许可证</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>本软件基于 CC BY-NC-SA 4.0（知识共享 署名-非商业性使用-相同方式共享 4.0 国际）许可协议发布。3D 控制器模型改编自 Handheld Companion（CC BY-NC-SA 4.0）。2D 控制器素材来自 AL2009man 的 Gamepad-Asset-Pack（MIT）。原始代码库分叉自 x360ce（MIT）。SDL3 基于 zlib 许可协议。HIDMaestro、Windows MIDI Services、HidHide、HelixToolkit 和 WPF UI 基于 MIT 许可协议。OpenXInput 仅附带上游项目的商标免责声明，按相同条款原样再分发。</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>本软件基于 CC BY-NC-SA 4.0（知识共享 署名-非商业性使用-相同方式共享 4.0 国际）许可协议发布。3D 控制器模型改编自 Handheld Companion（CC BY-NC-SA 4.0）。2D 控制器素材来自 AL2009man 的 Gamepad-Asset-Pack（MIT）。原始代码库分叉自 x360ce（MIT）。SDL3 基于 zlib 许可协议。HIDMaestro、Windows MIDI Services、HidHide、HelixToolkit 和 WPF UI 基于 MIT 许可协议。OpenXInput 仅附带上游项目的商标免责声明，按相同条款原样再分发。 Mouse artwork from Zergatul.Obs.InputOverlay by Igor Budzhak (MIT).</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>游戏手柄</value></data>

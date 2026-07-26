@@ -300,7 +300,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>データバインディング用の CommunityToolkit.Mvvm。MIT。</value></data>
   <data name="About_License" xml:space="preserve"><value>ライセンス</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>本ソフトウェアは CC BY-NC-SA 4.0 (Creative Commons 表示-非営利-継承 4.0 国際) の下でライセンスされています。3D コントローラーモデルは Handheld Companion (CC BY-NC-SA 4.0) から派生しています。2D コントローラーアセットは AL2009man による Gamepad-Asset-Pack (MIT) です。元のコードベースは x360ce (MIT) からフォークされました。SDL3 は zlib ライセンスの下でライセンスされています。HIDMaestro、Windows MIDI Services、HidHide、HelixToolkit、および WPF UI は MIT ライセンスの下でライセンスされています。OpenXInput は上流プロジェクトの商標免責事項のみを含み、同条件のもとでそのまま再配布されます。</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>本ソフトウェアは CC BY-NC-SA 4.0 (Creative Commons 表示-非営利-継承 4.0 国際) の下でライセンスされています。3D コントローラーモデルは Handheld Companion (CC BY-NC-SA 4.0) から派生しています。2D コントローラーアセットは AL2009man による Gamepad-Asset-Pack (MIT) です。元のコードベースは x360ce (MIT) からフォークされました。SDL3 は zlib ライセンスの下でライセンスされています。HIDMaestro、Windows MIDI Services、HidHide、HelixToolkit、および WPF UI は MIT ライセンスの下でライセンスされています。OpenXInput は上流プロジェクトの商標免責事項のみを含み、同条件のもとでそのまま再配布されます。 Mouse artwork from Zergatul.Obs.InputOverlay by Igor Budzhak (MIT).</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>ゲームパッド</value></data>

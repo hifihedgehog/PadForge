@@ -7,6 +7,8 @@
 // mouse_line.png is the artwork as authored; every other layer is a
 // full-canvas alpha mask over it, so the view tints a control without
 // redrawing any of the shape. Nothing here approximates a curve.
+using System.Windows;
+
 namespace PadForge.Views;
 
 internal static class MouseArt
@@ -18,11 +20,17 @@ internal static class MouseArt
     internal const string Line = "mouse_line.png";
 
     internal const string Body = "mouse_body.png";
+    internal static readonly Rect BodyRect = new(28.206, 14.230, 159.998, 272.866);
     internal const string Lmb = "mouse_lmb.png";
+    internal static readonly Rect LmbRect = new(36.443, 8.488, 70.389, 167.015);
     internal const string Rmb = "mouse_rmb.png";
+    internal static readonly Rect RmbRect = new(109.577, 8.488, 70.639, 167.015);
     internal const string Wheel = "mouse_wheel.png";
+    internal static readonly Rect WheelRect = new(94.351, 29.209, 27.706, 58.917);
     internal const string SideUpper = "mouse_sideupper.png";
+    internal static readonly Rect SideUpperRect = new(19.469, 94.118, 11.482, 40.693);
     internal const string SideLower = "mouse_sidelower.png";
+    internal static readonly Rect SideLowerRect = new(18.970, 136.808, 9.485, 39.694);
 
     // Clickable geometry. Never drawn: WPF hit-tests a masked
     // rectangle over its whole rect, not its mask, so each control
@@ -39,9 +47,9 @@ internal static class MouseArt
     internal const string SideLowerHit = "M 20.72,137.06 L 20.47,137.31 L 20.22,137.31 L 19.97,137.56 L 19.97,137.81 L 19.72,138.06 L 19.72,139.05 L 19.47,139.30 L 19.47,141.30 L 19.22,141.55 L 19.22,171.26 L 19.47,171.51 L 19.47,173.51 L 19.72,173.76 L 19.72,174.50 L 19.97,174.75 L 19.97,175.25 L 20.22,175.25 L 20.47,175.50 L 20.72,175.50 L 20.97,175.75 L 21.97,175.75 L 22.22,176.00 L 26.96,176.00 L 27.21,175.75 L 27.96,175.75 L 27.96,173.26 L 27.71,173.01 L 27.71,163.02 L 27.46,162.77 L 27.46,159.78 L 27.71,159.53 L 27.71,145.30 L 27.96,145.05 L 27.96,137.31 L 26.71,137.31 L 26.46,137.06 Z";
 
     /// <summary>The art's own axis of symmetry, measured off the wheel.</summary>
-    internal const double CenterX = 108.080;
+    internal const double CenterX = 108.205;
     internal const double WheelTop = 29.209;
-    internal const double WheelBottom = 87.876;
+    internal const double WheelBottom = 88.126;
     internal const double BodyTop = 14.230;
-    internal const double BodyBottom = 286.847;
+    internal const double BodyBottom = 287.096;
 }

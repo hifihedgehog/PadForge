@@ -137,15 +137,10 @@ namespace PadForge.Views
             bool x2 = vm.RawButtons.Count > 4 && vm.RawButtons[4].IsPressed;
 
             _lmbPath.Fill = lmb ? AccentBrush : MouseButtonBrush;
-            SetGlow(_lmbPath, lmb ? EmberGlow : null);
             _rmbPath.Fill = rmb ? AccentBrush : MouseButtonBrush;
-            SetGlow(_rmbPath, rmb ? EmberGlow : null);
             _scrollWheelPill.Fill = mmb ? AccentBrush : ScrollWheelBrush;
-            SetGlow(_scrollWheelPill, mmb ? EmberGlow : null);
             _x1Rect.Fill = x1 ? AccentBrush : MouseButtonBrush;
-            SetGlow(_x1Rect, x1 ? EmberGlowSmall : null);
             _x2Rect.Fill = x2 ? AccentBrush : MouseButtonBrush;
-            SetGlow(_x2Rect, x2 ? EmberGlowSmall : null);
 
             // Movement dot
             double moveX = MC - MoveSize / 2;

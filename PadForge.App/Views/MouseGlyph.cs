@@ -84,13 +84,13 @@ namespace PadForge.Views
         /// flat brush. The shape comes from the artwork, the colour from us,
         /// so a control can light up without the art being recoloured or
         /// redrawn.</summary>
-        private static Shape Layer(string file, Brush fill)
+        private static Shape Layer(string file, Brush fill, Rect at)
         {
             var bmp = EmbeddedBitmaps.Load(MouseArt.Dir + file);
             var rect = new Rectangle
             {
-                Width = CanvasW,
-                Height = BodyH,
+                Width = at.Width,
+                Height = at.Height,
                 Fill = fill,
                 IsHitTestVisible = false,
             };
@@ -100,8 +100,8 @@ namespace PadForge.Views
                 mask.Freeze();
                 rect.OpacityMask = mask;
             }
-            Canvas.SetLeft(rect, 0);
-            Canvas.SetTop(rect, 0);
+            Canvas.SetLeft(rect, at.X);
+            Canvas.SetTop(rect, at.Y);
             return rect;
         }
 
@@ -127,13 +127,13 @@ namespace PadForge.Views
             shell.GradientStops.Add(new GradientStop(Color.FromRgb(lo, lo, lo), 1));
             shell.Freeze();
 
-            canvas.Children.Add(Layer(MouseArt.Body, shell));
+            canvas.Children.Add(Layer(MouseArt.Body, shell, MouseArt.BodyRect));
 
-            p.Lmb = Layer(MouseArt.Lmb, button);
-            p.Rmb = Layer(MouseArt.Rmb, button);
-            p.Wheel = Layer(MouseArt.Wheel, wheel);
-            p.X1 = Layer(MouseArt.SideUpper, button);
-            p.X2 = Layer(MouseArt.SideLower, button);
+            p.Lmb = Layer(MouseArt.Lmb, button, MouseArt.LmbRect);
+            p.Rmb = Layer(MouseArt.Rmb, button, MouseArt.RmbRect);
+            p.Wheel = Layer(MouseArt.Wheel, wheel, MouseArt.WheelRect);
+            p.X1 = Layer(MouseArt.SideUpper, button, MouseArt.SideUpperRect);
+            p.X2 = Layer(MouseArt.SideLower, button, MouseArt.SideLowerRect);
             canvas.Children.Add(p.Lmb);
             canvas.Children.Add(p.Rmb);
             canvas.Children.Add(p.Wheel);
@@ -142,18 +142,18 @@ namespace PadForge.Views
 
             // Hover washes, hidden until asked for. Same masks, so the
             // highlight follows the artwork's own curve exactly.
-            Shape Hover(string file)
+            Shape Hover(string file, Rect at)
             {
-                var h = Layer(file, HoverWash);
+                var h = Layer(file, HoverWash, at);
                 h.Visibility = Visibility.Collapsed;
                 canvas.Children.Add(h);
                 return h;
             }
-            p.LmbHover = Hover(MouseArt.Lmb);
-            p.RmbHover = Hover(MouseArt.Rmb);
-            p.WheelHover = Hover(MouseArt.Wheel);
-            p.X1Hover = Hover(MouseArt.SideUpper);
-            p.X2Hover = Hover(MouseArt.SideLower);
+            p.LmbHover = Hover(MouseArt.Lmb, MouseArt.LmbRect);
+            p.RmbHover = Hover(MouseArt.Rmb, MouseArt.RmbRect);
+            p.WheelHover = Hover(MouseArt.Wheel, MouseArt.WheelRect);
+            p.X1Hover = Hover(MouseArt.SideUpper, MouseArt.SideUpperRect);
+            p.X2Hover = Hover(MouseArt.SideLower, MouseArt.SideLowerRect);
 
             // Scroll direction arrows, off the wheel's measured bounds.
             p.ScrollUp = new Polygon
@@ -239,7 +239,7 @@ namespace PadForge.Views
         /// it is the real art in the right colour, not a re-stroked copy.</summary>
         internal static void AddOutline(Canvas canvas, Brush dim)
         {
-            canvas.Children.Add(Layer(MouseArt.Line, dim));
+            canvas.Children.Add(Layer(MouseArt.Line, dim, new Rect(0, 0, CanvasW, BodyH)));
         }
     }
 }

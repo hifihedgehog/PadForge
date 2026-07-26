@@ -24,16 +24,16 @@ namespace PadForge.Views
         private readonly List<KbmKeyWidget> _keyWidgets = new();
 
         // Mouse elements
-        private Path _lmbPath;
-        private Path _rmbPath;
-        private Path _scrollWheelPill;
+        private Shape _lmbPath;
+        private Shape _rmbPath;
+        private Shape _scrollWheelPill;
         private Polygon _scrollUpArrow;
         private Polygon _scrollDownArrow;
         private Ellipse _movementDot;
         private Ellipse _moveCircle;
         private Polygon _moveArrow;
-        private Path _x1Rect;
-        private Path _x2Rect;
+        private Shape _x1Rect;
+        private Shape _x2Rect;
         private Canvas _moveArrowCanvas;
 
         // Colors — pre-cached dark/light variants (zero per-frame allocation)
@@ -92,12 +92,12 @@ namespace PadForge.Views
         }
 
         // Layout constants
-        private static readonly double MC = MouseGlyph.CenterX;       // mouse center X
-        private static readonly double MoveSize = MouseGlyph.MoveSize;
+        private const double MC = MouseGlyph.CenterX;       // mouse center X
+        private const double MoveSize = MouseGlyph.MoveSize;
 
         // Button area (used by both build and render)
         private const double BtnBottom = 58;
-        private static readonly double MoveTop = MouseGlyph.MoveTop;
+        private const double MoveTop = MouseGlyph.MoveTop;
 
         private System.Windows.Threading.DispatcherTimer _flashTimer;
         private string _flashTarget;
@@ -309,7 +309,7 @@ namespace PadForge.Views
         //  Helpers
         // ─────────────────────────────────────────────
 
-        private void AddButtonHandlers(Path path, string target)
+        private void AddButtonHandlers(Shape path, string target)
         {
             path.MouseEnter += (s, e) => { if (_flashTarget == null) { path.Stroke = HoverBrush; path.StrokeThickness = 2; } };
             path.MouseLeave += (s, e) => { if (_flashTarget == null) { path.Stroke = DimBrush; path.StrokeThickness = 1; } };

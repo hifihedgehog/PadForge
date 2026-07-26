@@ -14,8 +14,8 @@ namespace PadForge.Views
     /// </summary>
     public partial class MousePreviewControl : UserControl
     {
-        private Path _lmbPath, _rmbPath;
-        private Path _scrollWheelPill;
+        private Shape _lmbPath, _rmbPath;
+        private Shape _scrollWheelPill;
         private Polygon _scrollUpArrow, _scrollDownArrow;
         private Ellipse _movementDot, _moveCircle;
 
@@ -65,11 +65,11 @@ namespace PadForge.Views
                 element.Effect = glow;
         }
 
-        private static readonly double MC = MouseGlyph.CenterX;
-        private static readonly double MoveSize = MouseGlyph.MoveSize;
-        private static readonly double MoveTop = MouseGlyph.MoveTop;
+        private const double MC = MouseGlyph.CenterX;
+        private const double MoveSize = MouseGlyph.MoveSize;
+        private const double MoveTop = MouseGlyph.MoveTop;
 
-        private Path _x1Rect, _x2Rect;
+        private Shape _x1Rect, _x2Rect;
         private bool _built;
 
         private Wpf.Ui.Appearance.ApplicationTheme? _lastTheme;
@@ -203,6 +203,6 @@ namespace PadForge.Views
             }
         }
 
-        private static readonly double swBotConst = MouseGlyph.WheelBottom;
+        private const double swBotConst = MouseGlyph.WheelBottom;
     }
 }

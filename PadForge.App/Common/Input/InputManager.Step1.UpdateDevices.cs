@@ -855,10 +855,6 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>
-        /// Updates a UserSetting's InstanceGuid when the physical device's
-        /// identity changes (e.g. Bluetooth reconnect with different path).
-        /// </summary>
         /// <summary>Adoption re-keys queued by the poll thread for the UI
         /// thread to drain (round eight, R13). InputService's
         /// UpdatePadDeviceInfo rewrites the device-pinned mapping-row /
@@ -869,6 +865,10 @@ namespace PadForge.Common.Input
             PendingDeviceGuidMigrations = new();
         internal static readonly object PendingDeviceGuidMigrationsLock = new();
 
+        /// <summary>
+        /// Updates a UserSetting's InstanceGuid when the physical device's
+        /// identity changes (e.g. Bluetooth reconnect with different path).
+        /// </summary>
         private static void MigrateUserSettingGuid(Guid oldGuid, Guid newGuid)
         {
             var settings = SettingsManager.UserSettings;
@@ -905,9 +905,6 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>
-        /// Marks a device as offline, disposes its SDL handle, and clears runtime state.
-        /// </summary>
         /// <summary>True when the physical device behind <paramref name="orphan"/>
         /// is still online through a DIFFERENT wrapper (the driver re-identify
         /// rebind: same InstanceGuid, new SDL instance id). Disposing the stale
@@ -930,6 +927,9 @@ namespace PadForge.Common.Input
             return false;
         }
 
+        /// <summary>
+        /// Marks a device as offline, disposes its SDL handle, and clears runtime state.
+        /// </summary>
         private void MarkDeviceOffline(UserDevice ud)
         {
             if (ud == null) return;

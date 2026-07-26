@@ -1962,7 +1962,14 @@ namespace PadForge.Common.Input
                 CustomInputState s = string.IsNullOrEmpty(src.DeviceGuid)
                     ? fallbackState
                     : (LookupDeviceState(src.DeviceGuid) ?? fallbackState);
-                if (SourceKindRuntimeReadButtonLikeBool(s, src.ParamModifier))
+                // Both keys ride along, same as all five sibling call sites.
+                // Dropping them collapsed every stateful modifier family (IR
+                // Offscreen's debounce store, the IR EMA keys, menu fires,
+                // per-(device, slot) tuning) onto slot 0 and a shared
+                // empty-string device key, so an InvertOnHold modifier on any
+                // slot but 0 read another slot's state. Plain buttons are
+                // stateless, which is why the common case never showed it.
+                if (SourceKindRuntimeReadButtonLikeBool(s, src.ParamModifier, modifierDeviceGuid, slotIndex))
                     return true;
             }
             return false;

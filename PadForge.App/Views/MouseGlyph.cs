@@ -14,9 +14,7 @@ namespace PadForge.Views
     /// duplicated drawing invites. Both now build from here, so the shape
     /// cannot drift again.</para>
     ///
-    /// <para>Shape is a gaming mouse read top-down: clipped nose, hard
-    /// shoulders, a pinched waist where the thumb sits, and a flared rear
-    /// haunch. Buttons are CLIPPED TO THE BODY, so every outer edge is the
+    /// <para>Buttons are CLIPPED TO THE BODY, so every outer edge is the
     /// shell's own curve rather than an approximation that can drift from
     /// it.</para>
     ///
@@ -29,30 +27,28 @@ namespace PadForge.Views
         internal const double CenterX = 80;
         internal const double CanvasW = 160;
         internal const double BodyH = 188;
-        internal const double MoveSize = 54;
-        internal const double MoveTop = 99;
+        internal const double MoveSize = 56;
+        internal const double MoveTop = 90;
         internal const double WheelW = 15;
-        internal const double WheelTop = 14;
-        internal const double WheelH = 34;
+        internal const double WheelTop = 12;
+        internal const double WheelH = 38;
         internal const double WheelBottom = WheelTop + WheelH;
 
+        // Narrow across the front, widest over the palm, tapering to a
+        // rounded base. An earlier pass pinched the waist and flared the
+        // rear to chase a "gaming" profile; at this size that reads as a
+        // peanut, not a mouse. A clean shell carries the shape better.
         private const string BodyPath =
-            "M 80,0 C 96,0 122,14 128,44 C 132,70 124,86 123,104" +
-            " C 122,130 132,150 126,168 C 120,182 100,188 80,188" +
-            " C 60,188 40,182 34,168 C 28,150 38,130 37,104" +
-            " C 36,86 28,70 32,44 C 38,14 64,0 80,0 Z";
+            "M 80,0 C 102,0 126,20 130,58 C 135,96 134,142 122,170" +
+            " C 112,184 96,188 80,188 C 64,188 48,184 38,170" +
+            " C 26,142 25,96 30,58 C 34,20 58,0 80,0 Z";
 
         // Button/palm seam: a shallow curve, not a straight cut.
-        private const string SeamPath = "M 0,0 L 160,0 L 160,62 C 120,76 40,76 0,62 Z";
-
-        // Flank keys sit ON the pinched waist and rake forward, the way a
-        // thumb cluster actually does.
-        private const string X1Path = "M 26,81 L 40,78 L 40,98 L 26,95 Z";
-        private const string X2Path = "M 26,104 L 40,101 L 40,119 L 26,116 Z";
+        private const string SeamPath = "M 0,0 L 160,0 L 160,66 C 116,78 44,78 0,66 Z";
 
         internal sealed class Parts
         {
-            public Path Lmb, Rmb, X1, X2, Dpi;
+            public Path Lmb, Rmb, X1, X2;
             public Rectangle Wheel;
             public Polygon ScrollUp, ScrollDown;
             public Ellipse MoveCircle, MoveDot;
@@ -90,7 +86,7 @@ namespace PadForge.Views
             // Wheel channel recess.
             canvas.Children.Add(new Path
             {
-                Data = new RectangleGeometry(new Rect(gapL, 0, gapR - gapL, 56), 3, 3),
+                Data = new RectangleGeometry(new Rect(gapL, 0, gapR - gapL, 58), 3, 3),
                 Clip = body,
                 Fill = mmb,
                 IsHitTestVisible = false,
@@ -159,28 +155,16 @@ namespace PadForge.Views
             };
             canvas.Children.Add(p.ScrollDown);
 
-            // DPI key under the wheel. Inert: nothing routes it, so it is
-            // shell detail and never lights.
-            p.Dpi = new Path
+            Path Flank(double top) => new()
             {
-                Data = new RectangleGeometry(new Rect(CenterX - 7, 58, 14, 11), 3, 3),
-                Fill = button,
-                Stroke = dim,
-                StrokeThickness = 1,
-                IsHitTestVisible = false,
-            };
-            canvas.Children.Add(p.Dpi);
-
-            Path Flank(string d) => new()
-            {
-                Data = Geometry.Parse(d),
+                Data = new RectangleGeometry(new Rect(26, top, 11, 18), 3, 3),
                 Clip = body,
                 Fill = button,
                 Stroke = dim,
                 StrokeThickness = 1,
             };
-            p.X1 = Flank(X1Path);
-            p.X2 = Flank(X2Path);
+            p.X1 = Flank(72);
+            p.X2 = Flank(94);
             canvas.Children.Add(p.X1);
             canvas.Children.Add(p.X2);
 

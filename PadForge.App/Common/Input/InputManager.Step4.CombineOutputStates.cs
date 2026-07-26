@@ -60,7 +60,15 @@ namespace PadForge.Common.Input
                     {
                         // Single device — no combination needed, direct copy.
                         CombinedOutputStates[padIndex] = _padIndexBuffer[0].OutputState;
-                        if (isExtended) CombinedRawHidStates[padIndex] = _padIndexBuffer[0].RawHidOutputState;
+                        if (isExtended)
+                        {
+                            // COPY, never alias: the SOCD cleaner and the
+                            // inactive-transition Clear write into this
+                            // state, and a bare struct assign would point
+                            // them at the device's published arrays.
+                            var singleRaw = _padIndexBuffer[0].RawHidOutputState;
+                            CopyRawInto(ref CombinedRawHidStates[padIndex], ref singleRaw);
+                        }
                         if (isMidi) CombinedMidiRawStates[padIndex] = _padIndexBuffer[0].MidiRawOutputState;
                         if (isKbm) CombinedKbmRawStates[padIndex] = _padIndexBuffer[0].KbmRawOutputState;
                         if (isDs4)
@@ -87,7 +95,6 @@ namespace PadForge.Common.Input
 
                     // Multiple devices — merge all states.
                     var combined = new Gamepad();
-                    RawHidState combinedRaw = default;
                     bool firstRaw = true;
                     MidiRawState combinedMidi = default;
                     bool firstMidi = true;
@@ -120,7 +127,12 @@ namespace PadForge.Common.Input
                             }
                             else if (firstRaw)
                             {
-                                combinedRaw = rawState;
+                                // Seed the pad's OWN arrays. Seeding with a
+                                // bare assign made every subsequent
+                                // MergeRawHid store land in THIS device's
+                                // published state, so device A's card showed
+                                // device B's presses on a two-device slot.
+                                CopyRawInto(ref CombinedRawHidStates[padIndex], ref rawState);
                                 firstRaw = false;
                             }
                             else
@@ -130,7 +142,8 @@ namespace PadForge.Common.Input
                                 // and use the right comparison rule per slot
                                 // (pressed-wins for triggers, magnitude-wins
                                 // for sticks). See MergeRawHid docstring.
-                                MergeRawHid(ref combinedRaw, ref rawState, SlotCustomLayouts[padIndex]);
+                                MergeRawHid(ref CombinedRawHidStates[padIndex], ref rawState,
+                                    SlotCustomLayouts[padIndex]);
                             }
                         }
 
@@ -162,7 +175,13 @@ namespace PadForge.Common.Input
                     }
 
                     CombinedOutputStates[padIndex] = combined;
-                    if (isExtended) CombinedRawHidStates[padIndex] = combinedRaw;
+                    // The contributing devices wrote straight into the pad's
+                    // own arrays above. When NONE contributed (every assigned
+                    // device offline, so all their arrays are null) the slot
+                    // must keep reading as absent rather than as a stale
+                    // frame, which is what the old `= combinedRaw` default
+                    // did here.
+                    if (isExtended && firstRaw) CombinedRawHidStates[padIndex] = default;
                     if (isMidi) CombinedMidiRawStates[padIndex] = combinedMidi;
                     if (isKbm) CombinedKbmRawStates[padIndex] = combinedKbm;
 
@@ -332,6 +351,39 @@ namespace PadForge.Common.Input
                         dest.Povs[i] = src.Povs[i];
                 }
             }
+        }
+
+        /// <summary>Copies <paramref name="src"/> into <paramref name="dst"/>
+        /// so that <paramref name="dst"/> OWNS its arrays, reusing them
+        /// whenever the layout is unchanged.
+        ///
+        /// <para>The combine used to assign the struct directly, which
+        /// copies only the array REFERENCES: RawHidState is a struct whose
+        /// Axes / Buttons / Povs / HardwareAxes are arrays. Every later
+        /// write in the slot pipeline landed in the contributing device's
+        /// PUBLISHED RawHidOutputState, which UserSetting and Step 3 both
+        /// document as immutable after publish and which the UI reads
+        /// cross-thread at 30 Hz. The writers were MergeRawHid's per-axis
+        /// and per-button stores, the Step 4b macro pass, the Step 5 SOCD
+        /// cleaner, and both inactive-transition Clear calls.</para>
+        ///
+        /// <para>Lengths and values are reproduced exactly, so every
+        /// consumer downstream sees precisely what it saw before. Null
+        /// stays null: a never-populated state must keep reading as
+        /// absent rather than as an all-zero frame.</para></summary>
+        internal static void CopyRawInto(ref RawHidState dst, ref RawHidState src)
+        {
+            CopyArray(ref dst.Axes, src.Axes);
+            CopyArray(ref dst.Buttons, src.Buttons);
+            CopyArray(ref dst.Povs, src.Povs);
+            CopyArray(ref dst.HardwareAxes, src.HardwareAxes);
+        }
+
+        private static void CopyArray<T>(ref T[] dst, T[] src)
+        {
+            if (src == null) { dst = null; return; }
+            if (dst == null || dst.Length != src.Length) dst = new T[src.Length];
+            Array.Copy(src, dst, src.Length);
         }
     }
 }

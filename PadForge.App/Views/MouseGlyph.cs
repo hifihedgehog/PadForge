@@ -48,6 +48,18 @@ namespace PadForge.Views
         internal const double WheelBottom = MouseArt.WheelBottom;
 
         internal const double MoveSize = 62;
+
+        /// <summary>Hover tint. Deliberately a wash rather than a solid, so
+        /// hovering reads as "this is pickable" without impersonating the
+        /// pressed state the render loop paints.</summary>
+        private static readonly Brush HoverWash = MakeWash();
+
+        private static Brush MakeWash()
+        {
+            var b = new SolidColorBrush(Color.FromArgb(0x66, 0xE8, 0x7A, 0x2E));
+            b.Freeze();
+            return b;
+        }
         /// <summary>Sits in the lower palm, clear of both the button seam and
         /// the shell vents, which are the only busy areas of the artwork.</summary>
         internal const double MoveTop =
@@ -56,6 +68,13 @@ namespace PadForge.Views
         internal sealed class Parts
         {
             public Shape Lmb, Rmb, X1, X2, Wheel;
+            /// <summary>Per-control hover wash. Its own layer because Fill on
+            /// the visual is owned by the per-frame render loop and the flash
+            /// animation, so hover cannot borrow that channel.</summary>
+            public Shape LmbHover, RmbHover, X1Hover, X2Hover, WheelHover;
+            /// <summary>Clickable geometry. A masked rectangle hit-tests over
+            /// its whole rect, not its mask, so input needs real shapes.</summary>
+            public Path LmbHit, RmbHit, X1Hit, X2Hit, WheelHit;
             public Polygon ScrollUp, ScrollDown;
             public Ellipse MoveCircle, MoveDot;
             public double MoveX;
@@ -121,6 +140,21 @@ namespace PadForge.Views
             canvas.Children.Add(p.X1);
             canvas.Children.Add(p.X2);
 
+            // Hover washes, hidden until asked for. Same masks, so the
+            // highlight follows the artwork's own curve exactly.
+            Shape Hover(string file)
+            {
+                var h = Layer(file, HoverWash);
+                h.Visibility = Visibility.Collapsed;
+                canvas.Children.Add(h);
+                return h;
+            }
+            p.LmbHover = Hover(MouseArt.Lmb);
+            p.RmbHover = Hover(MouseArt.Rmb);
+            p.WheelHover = Hover(MouseArt.Wheel);
+            p.X1Hover = Hover(MouseArt.SideUpper);
+            p.X2Hover = Hover(MouseArt.SideLower);
+
             // Scroll direction arrows, off the wheel's measured bounds.
             p.ScrollUp = new Polygon
             {
@@ -179,6 +213,23 @@ namespace PadForge.Views
             Canvas.SetLeft(p.MoveDot, p.MoveX + MoveSize / 2 - 5);
             Canvas.SetTop(p.MoveDot, MoveTop + MoveSize / 2 - 5);
             canvas.Children.Add(p.MoveDot);
+
+            // Hit shapes LAST, so they sit above every visual layer and win
+            // the mouse. Transparent fill still answers hit tests; null does
+            // not, which is the difference between clickable and inert.
+            Path Hit(string data)
+            {
+                var g = Geometry.Parse(data);
+                g.Freeze();
+                var h = new Path { Data = g, Fill = Brushes.Transparent };
+                canvas.Children.Add(h);
+                return h;
+            }
+            p.LmbHit = Hit(MouseArt.LmbHit);
+            p.RmbHit = Hit(MouseArt.RmbHit);
+            p.WheelHit = Hit(MouseArt.WheelHit);
+            p.X1Hit = Hit(MouseArt.SideUpperHit);
+            p.X2Hit = Hit(MouseArt.SideLowerHit);
 
             return p;
         }

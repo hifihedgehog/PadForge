@@ -101,6 +101,7 @@ namespace PadForge.Views
 
         private System.Windows.Threading.DispatcherTimer _flashTimer;
         private string _flashTarget;
+        private MouseGlyph.Parts _parts;
         private bool _flashOn;
         private Wpf.Ui.Appearance.ApplicationTheme? _lastTheme;
 
@@ -213,6 +214,7 @@ namespace PadForge.Views
             _scrollWheelPill = parts.Wheel;
             _scrollUpArrow = parts.ScrollUp; _scrollDownArrow = parts.ScrollDown;
             _moveCircle = parts.MoveCircle;  _movementDot = parts.MoveDot;
+            _parts = parts;
             _moveCircle.Cursor = Cursors.Hand;
             _moveCircle.ToolTip = Strings.Instance.Pad_MouseMovement;
 
@@ -244,15 +246,13 @@ namespace PadForge.Views
                                              _scrollUpArrow, _scrollDownArrow })
                 sh.Cursor = Cursors.Hand;
 
-            _lmbPath.ToolTip = MappingLabel("KbmMBtn0");
-            AddButtonHandlers(_lmbPath, "KbmMBtn0");
-            _rmbPath.ToolTip = MappingLabel("KbmMBtn1");
-            AddButtonHandlers(_rmbPath, "KbmMBtn1");
-
-            _scrollWheelPill.ToolTip = MappingLabel("KbmMBtn2");
-            _scrollWheelPill.MouseEnter += (s, e) => { if (_flashTarget == null) { _scrollWheelPill.Stroke = HoverBrush; _scrollWheelPill.StrokeThickness = 2; } };
-            _scrollWheelPill.MouseLeave += (s, e) => { if (_flashTarget == null) { _scrollWheelPill.Stroke = DimBrush; _scrollWheelPill.StrokeThickness = 1; } };
-            _scrollWheelPill.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn2"); e.Handled = true; };
+            // Engine descriptors, not visual order: LMB is Btn0, RMB is
+            // Btn1, the wheel is Btn2.
+            AddMouseControlHandlers(_parts.LmbHit,   _parts.LmbHover,   "KbmMBtn0");
+            AddMouseControlHandlers(_parts.RmbHit,   _parts.RmbHover,   "KbmMBtn1");
+            AddMouseControlHandlers(_parts.WheelHit, _parts.WheelHover, "KbmMBtn2");
+            AddMouseControlHandlers(_parts.X1Hit,    _parts.X1Hover,    "KbmMBtn3");
+            AddMouseControlHandlers(_parts.X2Hit,    _parts.X2Hover,    "KbmMBtn4");
 
             _scrollUpArrow.ToolTip = MappingLabel("KbmScroll") + " " + Strings.Instance.Pad_ScrollUp;
             _scrollUpArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = HoverBrush; };
@@ -263,16 +263,6 @@ namespace PadForge.Views
             _scrollDownArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = HoverBrush; };
             _scrollDownArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = DimBrush; };
             _scrollDownArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScrollNeg"); e.Handled = true; };
-
-            _x1Rect.ToolTip = MappingLabel("KbmMBtn3");
-            _x1Rect.MouseEnter += (s, e) => { if (_flashTarget == null) { _x1Rect.Stroke = HoverBrush; _x1Rect.StrokeThickness = 2; } };
-            _x1Rect.MouseLeave += (s, e) => { if (_flashTarget == null) { _x1Rect.Stroke = DimBrush; _x1Rect.StrokeThickness = 1; } };
-            _x1Rect.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn3"); e.Handled = true; };
-
-            _x2Rect.ToolTip = MappingLabel("KbmMBtn4");
-            _x2Rect.MouseEnter += (s, e) => { if (_flashTarget == null) { _x2Rect.Stroke = HoverBrush; _x2Rect.StrokeThickness = 2; } };
-            _x2Rect.MouseLeave += (s, e) => { if (_flashTarget == null) { _x2Rect.Stroke = DimBrush; _x2Rect.StrokeThickness = 1; } };
-            _x2Rect.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn4"); e.Handled = true; };
 
             _moveCircle.MouseMove += (s, e) =>
             {
@@ -309,11 +299,33 @@ namespace PadForge.Views
         //  Helpers
         // ─────────────────────────────────────────────
 
-        private void AddButtonHandlers(Shape path, string target)
+        /// <summary>Wires one mouse control for recording.
+        ///
+        /// <para>Input rides a dedicated HIT shape, not the visual: the visual
+        /// is a full-canvas rectangle carrying an alpha mask, and WPF hit-tests
+        /// such a rectangle over its whole rect rather than its mask, so every
+        /// control would otherwise answer for the entire pad. Hover shows a
+        /// separate wash layer rather than stroking anything, because the
+        /// visual's Fill is owned by the render loop and the flash
+        /// animation.</para></summary>
+        private void AddMouseControlHandlers(Shape hit, Shape hover, string target)
         {
-            path.MouseEnter += (s, e) => { if (_flashTarget == null) { path.Stroke = HoverBrush; path.StrokeThickness = 2; } };
-            path.MouseLeave += (s, e) => { if (_flashTarget == null) { path.Stroke = DimBrush; path.StrokeThickness = 1; } };
-            path.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, target); e.Handled = true; };
+            if (hit == null) return;
+            hit.Cursor = Cursors.Hand;
+            hit.ToolTip = MappingLabel(target);
+            hit.MouseEnter += (s, e) =>
+            {
+                if (_flashTarget == null && hover != null) hover.Visibility = Visibility.Visible;
+            };
+            hit.MouseLeave += (s, e) =>
+            {
+                if (hover != null) hover.Visibility = Visibility.Collapsed;
+            };
+            hit.MouseLeftButtonDown += (s, e) =>
+            {
+                ControllerElementRecordRequested?.Invoke(this, target);
+                e.Handled = true;
+            };
         }
 
         private string MappingLabel(string targetSettingName)
@@ -346,8 +358,10 @@ namespace PadForge.Views
             if (_flashTarget == "KbmMBtn0") { _lmbPath.Fill = highlight ? FlashBrush : MouseButtonBrush; return; }
             if (_flashTarget == "KbmMBtn1") { _rmbPath.Fill = highlight ? FlashBrush : MouseButtonBrush; return; }
             if (_flashTarget == "KbmMBtn2") { _scrollWheelPill.Fill = highlight ? FlashBrush : ScrollWheelBrush; return; }
-            if (_flashTarget == "KbmMBtn3") { _x1Rect.Stroke = highlight ? FlashBrush : DimBrush; _x1Rect.StrokeThickness = highlight ? 2 : 1; return; }
-            if (_flashTarget == "KbmMBtn4") { _x2Rect.Stroke = highlight ? FlashBrush : DimBrush; _x2Rect.StrokeThickness = highlight ? 2 : 1; return; }
+            // Fill, not Stroke: these are masked full-canvas rectangles now,
+            // so stroking one draws a border around the whole pad.
+            if (_flashTarget == "KbmMBtn3") { _x1Rect.Fill = highlight ? FlashBrush : MouseButtonBrush; return; }
+            if (_flashTarget == "KbmMBtn4") { _x2Rect.Fill = highlight ? FlashBrush : MouseButtonBrush; return; }
 
             if (_flashTarget.StartsWith("KbmMouse"))
             {
@@ -367,15 +381,17 @@ namespace PadForge.Views
             if (_flashTarget == "KbmScroll")
             {
                 _scrollUpArrow.Fill = highlight ? FlashBrush : DimBrush;
-                _scrollWheelPill.Stroke = highlight ? FlashBrush : DimBrush;
-                _scrollWheelPill.StrokeThickness = highlight ? 2 : 1;
+                // Fill, not Stroke: the wheel is a masked full-canvas
+                // rectangle, so stroking it borders the whole pad.
+                _scrollWheelPill.Fill = highlight ? FlashBrush : ScrollWheelBrush;
                 return;
             }
             if (_flashTarget == "KbmScrollNeg")
             {
                 _scrollDownArrow.Fill = highlight ? FlashBrush : DimBrush;
-                _scrollWheelPill.Stroke = highlight ? FlashBrush : DimBrush;
-                _scrollWheelPill.StrokeThickness = highlight ? 2 : 1;
+                // Fill, not Stroke: the wheel is a masked full-canvas
+                // rectangle, so stroking it borders the whole pad.
+                _scrollWheelPill.Fill = highlight ? FlashBrush : ScrollWheelBrush;
                 return;
             }
         }

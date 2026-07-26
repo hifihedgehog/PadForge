@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PadForge.SteamWorkshop.Tests
@@ -23,18 +23,22 @@ namespace PadForge.SteamWorkshop.Tests
         /// construction.</summary>
         internal static readonly string[] CorpusMultiset =
         {
-            // Impossibility proof in code: the VC thumb-pair hosts
-            // (joystick_move / mouse_joystick) still have no per-source
-            // radial channel at their analog reads (the slot-level
-            // DeadZoneShape stamp overlays the VC pair processing, not
-            // the authored radii). Proof at
-            // ConfigTranslator.ReportRadialDeadZoneResidual (v19 T2).
-            // 5 -> 3 in v25: the stick-hosted MOUSE pairs consume their
-            // radii through ParamStickDeadZoneShape now, so their two
-            // residuals retired; the remaining three are pair-output
-            // hosts. Retires fully when the same stamp reaches the
-            // thumb-pair emitters.
-            "Workshop_Tr_DeadZoneRadialResidual=3",
+            // 5 -> 3 in v25: the stick-hosted MOUSE pairs consumed their
+            // radii through ParamStickDeadZoneShape, retiring two.
+            // 3 -> 1 now: the same stamp reached the THUMB-PAIR emitters,
+            // which is the retirement the previous note said was owed. A
+            // stick-hosted joystick_move carries its authored deadzone
+            // geometry to the read for real, radial for Steam's Circle
+            // and axial for Cross/Square, on both the crossed and the
+            // matched emission paths.
+            // The ONE that remains is the TRACKPAD host, and it is an
+            // honest impossibility rather than an unfinished job: its
+            // pair rides Touchpad finger / gesture descriptors, which the
+            // engine reads outside the Axis path where the geometry is
+            // applied, so there is no companion-axis pair test to consume
+            // the radii. Retiring it needs the touchpad read to gain that
+            // test, not another stamp.
+            "Workshop_Tr_DeadZoneRadialResidual=1",
             // Steam-session/client: in-game Steam Input API action
             // blocks are delivered to the game by its own Steam
             // session. No virtual controller can feed them.

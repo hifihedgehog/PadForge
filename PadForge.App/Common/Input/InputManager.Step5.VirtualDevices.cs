@@ -666,6 +666,43 @@ namespace PadForge.Common.Input
         private long _disposeGateSinceTick;
         private bool _disposeGateLogged;
 
+        // Connect-gate watchdog, the sibling of the dispose pair above. A
+        // single connect task that never completes holds anyConnectPending
+        // true forever and blocks the create of EVERY slot, not just its
+        // own. The dispose half has had a watchdog since it was written and
+        // this half never got one, so that freeze was invisible.
+        private long _connectGateSinceTick;
+        private bool _connectGateLogged;
+
+        // Visual-order wait bound. A single HM create runs 3-11 s, and a
+        // legitimate queue of several slots serializes those, so the window
+        // must clear a real queue comfortably. It only ever trips when ONE
+        // slot blocks continuously for the whole window, because a changing
+        // blocker resets the timer.
+        private const long OrderWaitMaxMs = 45_000;
+        private readonly int[] _orderWaitBlocker = new int[MaxPads];
+        private readonly long[] _orderWaitSinceTick = new long[MaxPads];
+
+        /// <summary>True when the visual-order wait has run its full window
+        /// against ONE unchanged blocker, so the waiting slot should create
+        /// out of order rather than stay dead. Split out from the poll loop
+        /// so the timing rule is testable without an InputManager: the
+        /// deadlock it guards was found on hardware and cannot be
+        /// reproduced on demand, which makes an unlockable fix
+        /// unacceptable. A zero tick means "not waiting yet" and never
+        /// expires.</summary>
+        internal static bool OrderWaitExpired(long waitSinceTick, long nowTick)
+            => waitSinceTick != 0 && nowTick - waitSinceTick >= OrderWaitMaxMs;
+
+        // Gate heartbeat. Writes the create-gate inputs on a cadence
+        // WHENEVER a slot wants a VC and has not got one, so a stuck gate
+        // is visible instead of silent. The 2026-07-26 investigation lost
+        // hours to exactly that ambiguity: the diagnostics channel went
+        // quiet and the quiet was read as "nothing is happening" when it
+        // meant "the thing that logs is not running". A heartbeat makes
+        // silence mean one thing only.
+        private long _vcGateHeartbeatTick;
+
         /// <summary>Per-slot latch: HM inactivity timeout already fired for
         /// this slot in the current offline window.  Prevents the polling
         /// thread from re-firing the event every tick after the threshold
@@ -1140,6 +1177,43 @@ namespace PadForge.Common.Input
                     _pendingConnectTask[i] = null;
                 }
             }
+            // Connect-gate watchdog: mirror of the dispose watchdog above.
+            if (anyConnectPending)
+            {
+                if (_connectGateSinceTick == 0) _connectGateSinceTick = Environment.TickCount64;
+                else if (!_connectGateLogged && Environment.TickCount64 - _connectGateSinceTick > 60_000)
+                {
+                    _connectGateLogged = true;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        "VCTRACE connect gate held Pass 2 for 60+ s; a create task is stuck and is blocking EVERY slot");
+                }
+            }
+            else { _connectGateSinceTick = 0; _connectGateLogged = false; }
+
+            // Gate heartbeat: while any slot wants a VC and lacks one, write
+            // the gate inputs every 5 s. This answers "why did no create
+            // fire" directly, instead of leaving an absence of KICK lines to
+            // be interpreted.
+            if (anyNeedsCreate && Environment.TickCount64 - _vcGateHeartbeatTick > 5_000)
+            {
+                _vcGateHeartbeatTick = Environment.TickCount64;
+                var hb = new System.Text.StringBuilder(160);
+                hb.Append("VCGATE needCreate=1")
+                  .Append(" disposePend=").Append(anyDisposePending ? '1' : '0')
+                  .Append(" connectPend=").Append(anyConnectPending ? '1' : '0');
+                for (int i = 0; i < MaxPads; i++)
+                {
+                    if (!SettingsManager.SlotCreated[i] || !SettingsManager.SlotEnabled[i]) continue;
+                    if (_virtualControllers[i] != null) continue;
+                    hb.Append(" | s").Append(i)
+                      .Append(" type=").Append(SlotControllerTypes[i])
+                      .Append(" inactCtr=").Append(_slotInactiveCounter[i])
+                      .Append(" active=").Append(IsSlotActive(i) ? '1' : '0')
+                      .Append(" failed=").Append(_createFailed[i] ? '1' : '0');
+                }
+                PadForge.Engine.SdlDiagLog.WriteLine(hb.ToString());
+            }
+
             if (anyNeedsCreate && !anyDisposePending && !anyConnectPending)
             {
                 for (int padIndex = 0; padIndex < MaxPads; padIndex++)
@@ -1222,6 +1296,7 @@ namespace PadForge.Common.Input
                             var orderList = SettingsManager.SlotOrders.GetOrderSnapshotFor(slotType);
                             int myVisualPos = System.Array.IndexOf(orderList, padIndex);
                             bool higherStillNeeds = false;
+                            int blockerIndex = -1;
                             for (int p = 0; p < myVisualPos; p++)
                             {
                                 int pi = orderList[p];
@@ -1232,9 +1307,53 @@ namespace PadForge.Common.Input
                                 if (_createFailed[pi]) continue;
                                 if (!IsSlotActive(pi)) continue;
                                 higherStillNeeds = true;
+                                blockerIndex = pi;
                                 break;
                             }
-                            if (higherStillNeeds) continue;
+                            // BOUND THE WAIT. The gate above is an ORDERING
+                            // PREFERENCE (kernel slot allocation matching the
+                            // user's visual order), and it used to be
+                            // unbounded, so a preference could outrank
+                            // functioning entirely.
+                            //
+                            // The deadlock, owner-reported 2026-07-26 and
+                            // reproduced from the diag log: a device flap
+                            // aborts a higher slot's create, and the abort
+                            // path deliberately does NOT latch _createFailed
+                            // so a later arrival can retry. That leaves the
+                            // higher slot in precisely the blocking state
+                            // (Created + Enabled + Active + not-failed +
+                            // vc == null), and every visually-lower slot in
+                            // the same type group then waits on it forever.
+                            // The owner's workaround was switching a lower
+                            // slot's TYPE, which moves it into a different
+                            // order group and out from behind the blocker.
+                            //
+                            // A changing blocker means the queue is
+                            // progressing, so the timer resets on a new
+                            // blocker and only a single slot stuck for the
+                            // whole window trips the escape.
+                            if (higherStillNeeds)
+                            {
+                                long nowTick = Environment.TickCount64;
+                                if (_orderWaitBlocker[padIndex] != blockerIndex)
+                                {
+                                    _orderWaitBlocker[padIndex] = blockerIndex;
+                                    _orderWaitSinceTick[padIndex] = nowTick;
+                                    continue;
+                                }
+                                if (!OrderWaitExpired(_orderWaitSinceTick[padIndex], nowTick))
+                                    continue;
+                                PadForge.Engine.SdlDiagLog.WriteLine(
+                                    $"VCTRACE slot={padIndex} visual-order wait exceeded {OrderWaitMaxMs}ms behind slot={blockerIndex}; creating OUT OF ORDER rather than staying dead");
+                                _orderWaitBlocker[padIndex] = -1;
+                                _orderWaitSinceTick[padIndex] = 0;
+                            }
+                            else
+                            {
+                                _orderWaitBlocker[padIndex] = -1;
+                                _orderWaitSinceTick[padIndex] = 0;
+                            }
 
                             // Hand the CreateController + Connect chain to the
                             // thread pool.  HIDMaestro driver bring-up takes

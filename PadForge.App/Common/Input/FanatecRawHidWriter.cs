@@ -94,20 +94,33 @@ namespace PadForge.Common.Input
 
         /// <summary>Pedal rumble. throttle/brake each 0..255. Report ID 0x01,
         /// payload <c>F8 09 01 04 [throttle] [brake] 00</c>.</summary>
-        // Poll thread is the sole caller (Step 2 ApplyForceFeedback), and
-        // RawHidOutput.Write copies/pins under its per-path gate, so one
-        // scratch avoids an 8-byte allocation at pedal-rumble rate.
-        private static readonly byte[] s_pedalScratch =
-            { 0x01, 0xF8, 0x09, 0x01, 0x04, 0x00, 0x00, 0x00 };
+        // PER-THREAD, not one shared static. The previous comment here said
+        // the poll thread was the sole caller. It is not: the Remote Link
+        // output path (#138, InputService's effect apply) reaches the same
+        // writer from the network receive thread whenever a remote peer
+        // drives a Fanatec pedal. Two threads writing one buffer with no
+        // lock could interleave, so a local write and a remote write landed
+        // as a blend of one throttle and the other's brake. Per-thread keeps
+        // the allocation-free property the shared buffer existed for, with
+        // no lock on the 1 kHz path. The sibling wheel writers were never
+        // exposed: BuildWheelReport allocates a fresh report per call.
+        [ThreadStatic] private static byte[] t_pedalScratch;
+
+        /// <summary>Fills this thread's pedal report and returns it. Report
+        /// ID 0x01 is byte[0] of the report (per the Fanatec descriptor),
+        /// not a prepended placeholder, so the 8-byte buffer IS the report.
+        /// Internal so the per-thread isolation is testable.</summary>
+        internal static byte[] BuildPedalReport(byte throttle, byte brake)
+        {
+            var buf = t_pedalScratch ??=
+                new byte[] { 0x01, 0xF8, 0x09, 0x01, 0x04, 0x00, 0x00, 0x00 };
+            buf[5] = throttle;
+            buf[6] = brake;
+            return buf;
+        }
 
         public static bool WritePedalRumble(string devicePath, byte throttle, byte brake)
-        {
-            // Report ID 0x01 is byte[0] of the report (per the Fanatec descriptor),
-            // not a prepended placeholder — the 8-byte buffer is the report.
-            s_pedalScratch[5] = throttle;
-            s_pedalScratch[6] = brake;
-            return RawHidOutput.Write(devicePath, s_pedalScratch);
-        }
+            => RawHidOutput.Write(devicePath, BuildPedalReport(throttle, brake));
 
         // ─────────────────────────────────────────────
         //  Wheel base — constant force (hid-ftecff.c ftecff_update_slot)

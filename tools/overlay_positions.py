@@ -1538,6 +1538,64 @@ def _hit_polygons(overlay_path, _cache={}):
     return result
 
 
+def _prepare_steamdeck_base():
+    """Build STEAMDECK/SD_base.png from the pack's Compact render.
+
+    Three edits, all reproducible from the source art so this never
+    becomes a hand-painted asset:
+
+    1. The chroma-green screen is keyed to a dark panel. That is a
+       literal green screen used for its authored purpose.
+
+    2. The L1/L2/R1/R2 callout tiles are ERASED. The Compact view
+       carries a labeled tile for every input, but those four controls
+       are already drawn on the body as their own trigger and shoulder
+       arcs, which is where the SVG labels them and where this layout
+       anchors them. Keeping the tiles would show each of those inputs
+       twice, with only the body copy ever lighting up.
+
+    3. The remaining L4/L5/R4/R5 tiles are DESATURATED. They stay,
+       because a rear paddle has no other representation on a front
+       view, but the pack authors them in its own blue, which is off
+       this app's palette. Neutral grey matches the body, and the ember
+       comes from the tinted overlay drawn on top, exactly as it does
+       for every other element.
+
+    Tiles are found by their blue, not by hardcoded rectangles, and
+    split top-pair vs side-pair by position.
+    """
+    src = os.path.join(ASSET_PACK, "Steam Deck Images", "Template",
+                       "Steam Deck Compact.png")
+    im = cv2.imread(src, cv2.IMREAD_UNCHANGED)
+    b, g, r, a = [im[:, :, i].astype(int) for i in range(4)]
+
+    green = (g > 120) & (g - r > 60) & (g - b > 60)
+    im[green] = (28, 23, 20, 255)
+
+    blue = ((b > 70) & (b - r > 25) & (a > 60)).astype(np.uint8) * 255
+    blue = cv2.morphologyEx(blue, cv2.MORPH_CLOSE, np.ones((15, 15), np.uint8))
+    n, labels, stats, cent = cv2.connectedComponentsWithStats(blue, 8)
+    erased = neutralised = 0
+    for i in range(1, n):
+        x, y, w, h, area = stats[i]
+        if area < 3000:
+            continue
+        region = labels == i
+        if cent[i][1] < im.shape[0] / 3:      # top pair: L1/L2 and R1/R2
+            im[region] = (0, 0, 0, 0)
+            erased += 1
+        else:                                  # side pair: L4/L5 and R4/R5
+            px = im[region]
+            lum = (px[:, 0] * 0.114 + px[:, 1] * 0.587 + px[:, 2] * 0.299)
+            px[:, 0] = px[:, 1] = px[:, 2] = lum.astype(np.uint8)
+            im[region] = px
+            neutralised += 1
+    print(f"  base: keyed {int(green.sum())} green px, "
+          f"erased {erased} shoulder/trigger tiles, "
+          f"desaturated {neutralised} paddle tiles")
+    cv2.imwrite(os.path.join(MODELS_DIR, "STEAMDECK", "SD_base.png"), im)
+
+
 def process_steamdeck():
     """Extract Steam Deck overlay positions.
 
@@ -1572,6 +1630,8 @@ def process_steamdeck():
     """
     svg_path = os.path.join(ASSET_PACK, "Steam Deck Images",
         "Theme SVG", "Steam Deck Alternative Overlay.svg")
+
+    _prepare_steamdeck_base()
 
     root = etree.parse(svg_path).getroot()
     base = cv2.imread(os.path.join(MODELS_DIR, "STEAMDECK", "SD_base.png"), cv2.IMREAD_UNCHANGED)

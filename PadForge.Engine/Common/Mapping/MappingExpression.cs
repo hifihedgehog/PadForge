@@ -31,8 +31,10 @@ namespace PadForge.Engine.Common.Mapping
     /// </para>
     ///
     /// <para>
-    /// Literals: numbers (decimal), <c>true</c>/<c>false</c>, <c>pi</c>,
-    /// <c>e</c>.
+    /// Literals: numbers (decimal), <c>true</c>/<c>false</c>, <c>pi</c>.
+    /// There is deliberately NO <c>e</c> constant: every letter <c>a..z</c>
+    /// addresses a source, so a constant named <c>e</c> would shadow the
+    /// fifth one.
     /// </para>
     ///
     /// <para>
@@ -432,7 +434,17 @@ namespace PadForge.Engine.Common.Mapping
                         if (t.Text.Equals("true", StringComparison.Ordinal)) return new NumberNode(1);
                         if (t.Text.Equals("false", StringComparison.Ordinal)) return new NumberNode(0);
                         if (t.Text.Equals("pi", StringComparison.Ordinal)) return new NumberNode(Math.PI);
-                        if (t.Text.Equals("e", StringComparison.Ordinal)) return new NumberNode(Math.E);
+                        // NO "e" constant. It used to return Math.E here, which
+                        // shadowed the FIFTH source: letters address sources by
+                        // Letter - 'a', so 'e' is index 4, and a formula on a
+                        // row with five or more sources silently read
+                        // 2.718281828 instead of that source's value. There was
+                        // no error and no warning. Euler's number also had no
+                        // real use in this grammar, since there is no power
+                        // operator and no exp(), so it could only ever be a
+                        // magic multiplier. "pi" keeps its constant because it
+                        // is two characters and cannot collide with a
+                        // single-letter source.
                         if (t.Text.Length == 1 && t.Text[0] >= 'a' && t.Text[0] <= 'z')
                             return new SingleLetterSourceNode { Letter = t.Text[0] };
                         // Per-source "active" flag — aD, bD, cD, … zD.

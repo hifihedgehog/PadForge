@@ -163,45 +163,60 @@ namespace PadForge.Tests
             Assert.Equal(0f, Eval("z", 10, 20), 4);
         }
 
-        /// <summary>THE DEFECT, pinned as current behaviour.
+        /// <summary>THE FIX (owner decision, 2026-07-26). Every letter
+        /// addresses a source, so <c>e</c> addresses the FIFTH one like any
+        /// other letter.
         ///
-        /// <para>SingleLetterSourceNode maps a letter to a source by
-        /// <c>Letter - 'a'</c>, so 'e' is index 4, the FIFTH source. But
-        /// ParsePrimary tests the "e" constant BEFORE the single-letter
-        /// variable branch, so 'e' can never reach a source. A formula on a
-        /// row with five or more sources that says <c>e</c> silently
-        /// evaluates to 2.718281828 instead of that source's value. There
-        /// is no error, no warning, and no comment in the parser marking
-        /// 'e' as reserved: line 435 is the only mention of it in the whole
-        /// file. Rows have no source-count cap, so this is reachable
-        /// whenever an author adds a fifth extra source.</para>
+        /// <para>It used to return Euler's number. SingleLetterSourceNode
+        /// maps a letter to a source by <c>Letter - 'a'</c>, making 'e'
+        /// index 4, but ParsePrimary tested the "e" constant BEFORE the
+        /// single-letter branch, so a formula on a row with five or more
+        /// sources silently evaluated 2.718281828 instead of that source's
+        /// value, with no error and no warning. Rows carry no source-count
+        /// cap, so any author adding a fifth extra source could hit
+        /// it.</para>
         ///
-        /// <para>Euler's number is close to useless in this grammar, which
-        /// is what makes the trade lopsided: there is no power operator and
-        /// no exp(), so writing e^x is impossible and 'e' can only ever be
-        /// a magic multiplier. Reclaiming it for the fifth source is
-        /// therefore the recommendation, but it IS a breaking change to a
-        /// shipped language, so it stays the owner's call. This test
-        /// documents the behaviour so the choice is explicit rather than
-        /// accidental, and it will fail loudly the moment anyone
-        /// changes it.</para></summary>
+        /// <para>The trade was lopsided: this grammar has no power operator
+        /// and no exp(), so Euler's number could only ever be a magic
+        /// multiplier, while the fifth source is something users reach for
+        /// naturally. <c>pi</c> keeps its constant because two characters
+        /// cannot collide with a single-letter source.</para></summary>
         [Fact]
-        public void SingleLetterVariable_e_IsShadowedByEulersConstant()
+        public void SingleLetterVariable_e_AddressesTheFifthSource()
         {
-            // Sources are 10,20,30,40,50: 'e' SHOULD be 50.
-            float actual = Eval("e", 10, 20, 30, 40, 50);
-
-            Assert.Equal(2.71828f, actual, 4);      // Euler, not the source
-            Assert.NotEqual(50f, actual);
+            Assert.Equal(50f, Eval("e", 10, 20, 30, 40, 50), 4);
         }
 
-        /// <summary>The workaround, and the reason the defect is an
-        /// annoyance rather than a data-loss bug: the indexed form reaches
-        /// the fifth source correctly.</summary>
+        /// <summary>All five leading letters now read consecutively, which
+        /// is the property the old constant broke.</summary>
         [Fact]
-        public void IndexedFormReachesTheFifthSource()
+        public void LettersAToE_ReadConsecutiveSources()
         {
-            Assert.Equal(50f, Eval("s[4]", 10, 20, 30, 40, 50), 4);
+            var src = new float[] { 10, 20, 30, 40, 50 };
+            Assert.Equal(10f, Eval("a", src), 4);
+            Assert.Equal(20f, Eval("b", src), 4);
+            Assert.Equal(30f, Eval("c", src), 4);
+            Assert.Equal(40f, Eval("d", src), 4);
+            Assert.Equal(50f, Eval("e", src), 4);
+        }
+
+        /// <summary>The indexed form still agrees with the letter form, so
+        /// the documented workaround keeps working for anyone who adopted
+        /// it.</summary>
+        [Fact]
+        public void IndexedFormAgreesWithTheLetterForm()
+        {
+            var src = new float[] { 10, 20, 30, 40, 50 };
+            Assert.Equal(Eval("s[4]", src), Eval("e", src), 4);
+            Assert.Equal(50f, Eval("s[4]", src), 4);
+        }
+
+        /// <summary>pi is unaffected: it is two characters, so it cannot
+        /// shadow a source.</summary>
+        [Fact]
+        public void PiSurvivesTheChange()
+        {
+            Assert.Equal(3.14159f, Eval("pi", 10, 20, 30, 40, 50), 4);
         }
 
         [Fact]

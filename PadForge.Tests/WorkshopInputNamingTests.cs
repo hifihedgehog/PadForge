@@ -45,7 +45,7 @@ namespace PadForge.Tests
 
         /// <summary>THE JOIN THAT MUST NOT BREAK. Display names are
         /// humanized, but the controller art keys on the ENGINE identifier,
-        /// so the art target has to stay raw. Humanizing both would silently
+        /// so the anchor has to stay raw. Humanizing both would silently
         /// stop lighting any button.</summary>
         [Theory]
         [InlineData("ButtonA", "ButtonA")]
@@ -53,7 +53,7 @@ namespace PadForge.Tests
         [InlineData("DPadUp", "DPadUp")]
         [InlineData("LeftThumbAxisX", "LeftThumbRing")]
         [InlineData("RightThumbAxisY", "RightThumbRing")]
-        public void ArtTargetStaysTheEngineIdentifier(string target, string expected)
-            => Assert.Equal(expected, WorkshopBrowseDialog.ArtTargetFor(target));
+        public void ArtAnchorStaysTheEngineIdentifier(string source, string expected)
+            => Assert.Equal(expected, WorkshopBrowseDialog.ArtAnchorFor(source));
     }
 }

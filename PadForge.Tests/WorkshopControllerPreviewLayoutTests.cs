@@ -130,16 +130,49 @@ namespace PadForge.Tests
             });
         }
 
-        /// <summary>The paddle descriptor is the one target the translator
-        /// reports with its family prefix. Without the strip, the Deck's
-        /// paddles draw but never light.</summary>
+        /// <summary>THE DIRECTION. The preview draws the pad the config was
+        /// authored ON, so a binding is anchored to the control the author
+        /// physically pressed and labelled with what it produces. Anchoring
+        /// on the target drew the VIRTUAL pad's geometry on the source
+        /// device's body: a Deck touchpad bound to the d-pad lit the Deck's
+        /// own d-pad and called it "Touchpad 0".</summary>
         [Theory]
+        [InlineData("Touchpad 0 DPadUp", "LeftTouchpadClick")]
+        [InlineData("Touchpad 0 Click", "LeftTouchpadClick")]
+        [InlineData("Touchpad 1 Finger 0 X", "RightTouchpadClick")]
         [InlineData("Gamepad Paddle1", "Paddle1")]
         [InlineData("Gamepad Paddle4", "Paddle4")]
-        [InlineData("ButtonA", "ButtonA")]
-        [InlineData("LeftThumbAxisX", "LeftThumbRing")]
-        public void PaddleTargetsReachTheArt(string target, string expected)
-            => Assert.Equal(expected, PadForge.Views.WorkshopBrowseDialog.ArtTargetFor(target));
+        [InlineData("Gamepad LeftStick", "LeftThumbRing")]
+        [InlineData("Gamepad LeftStickRing", "LeftThumbRing")]
+        [InlineData("Gamepad RightStick", "RightThumbRing")]
+        [InlineData("LeftThumbButton", "LeftThumbButton")]
+        [InlineData("Gamepad ButtonA", "ButtonA")]
+        [InlineData("Gamepad DPadUp", "DPadUp")]
+        [InlineData("LeftTrigger", "LeftTrigger")]
+        public void SourceAnchorsOntoItsOwnControl(string source, string expected)
+            => Assert.Equal(expected, PadForge.Views.WorkshopBrowseDialog.ArtAnchorFor(source));
+
+        /// <summary>A DualSense or DS4 has ONE touchpad, named without a
+        /// side, so a sided anchor must fold onto it instead of vanishing.</summary>
+        [Fact]
+        public void SidedTouchpadFoldsOntoASingleTouchpadBody()
+        {
+            var w = new System.Collections.Generic.Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                { ["LeftTouchpadClick"] = "D-Pad Up" };
+            PadForge.Views.WorkshopControllerPreview.FoldTouchpadAnchors(w, DualSenseLayout.Overlays);
+            Assert.False(w.ContainsKey("LeftTouchpadClick"));
+            Assert.Equal("D-Pad Up", w["TouchpadClick"]);
+        }
+
+        /// <summary>...and must NOT fold on a body that really has two.</summary>
+        [Fact]
+        public void SidedTouchpadStaysPutOnATwoPadBody()
+        {
+            var w = new System.Collections.Generic.Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                { ["LeftTouchpadClick"] = "D-Pad Up" };
+            PadForge.Views.WorkshopControllerPreview.FoldTouchpadAnchors(w, SteamDeckLayout.Overlays);
+            Assert.Equal("D-Pad Up", w["LeftTouchpadClick"]);
+        }
 
         [Theory]
         [InlineData("controller_neptune", "STEAMDECK")]

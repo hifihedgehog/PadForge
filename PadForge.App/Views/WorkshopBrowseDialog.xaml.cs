@@ -1147,7 +1147,7 @@ namespace PadForge.Views
                     item.Tags?.FirstOrDefault()?.Tag,
                     outcome.Rows.OfType<WorkshopManifestRowItem>()
                                 .Select(r => new WorkshopControllerPreview.Callout(
-                                    r.ArtTarget, r.Source)));
+                                    r.ArtAnchor, r.Target)));
 
                 SetManifestPanel(ManifestResultPanel);
             }
@@ -1278,7 +1278,7 @@ namespace PadForge.Views
                 {
                     Source = FriendlySource(source),
                     Target = FriendlySource(target),
-                    ArtTarget = ArtTargetFor(target),
+                    ArtAnchor = ArtAnchorFor(source),
                     Reason = ReasonText(entry),
                     DotBrush = entry.Status switch
                     {
@@ -1685,27 +1685,42 @@ namespace PadForge.Views
             return sb.ToString();
         }
 
-        /// <summary>Folds a translator target onto the art element that
-        /// draws it. Most targets already match a layout TargetName exactly.
-        /// The axis families do not: the manifest reports
-        /// "LeftThumbAxisX" / "LeftThumbAxisY" per axis while the art has a
-        /// single "LeftThumbRing" for the stick, and trigger axes report as
-        /// the trigger itself.</summary>
-        internal static string ArtTargetFor(string target)
+        /// <summary>Folds a translator SOURCE onto the art element that
+        /// draws it.
+        ///
+        /// <para>The preview renders the controller the config was authored
+        /// on (the body is picked from the config's own controller tag), so
+        /// a binding belongs on the control the author physically pressed,
+        /// labelled with what it produces. Anchoring on the target instead
+        /// drew the virtual pad's geometry on the source device's body: a
+        /// Steam Deck touchpad bound to the d-pad lit the DECK'S d-pad and
+        /// called it "Touchpad 0", which is backwards on every layout.</para></summary>
+        internal static string ArtAnchorFor(string source)
         {
-            if (string.IsNullOrWhiteSpace(target)) return null;
-            // The paddle family is the one target the translator reports
-            // WITH the family prefix ("Gamepad Paddle1"), because that is
-            // the descriptor the mapping grid stores. Art TargetNames are
-            // bare, so without this the Steam Deck's four rear paddles
-            // could never match the body that now draws them.
-            if (target.StartsWith("Gamepad ", StringComparison.OrdinalIgnoreCase))
-                target = target.Substring("Gamepad ".Length);
-            if (target.StartsWith("LeftThumbAxis", StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(source)) return null;
+            var s = source.Trim();
+
+            // Touchpad sources name a PAD and a gesture on it
+            // ("Touchpad 0 DPadUp", "Touchpad 1 Finger 0 X"), not a
+            // button. Pad 0 is the left surface, pad 1 the right.
+            if (s.StartsWith("Touchpad ", StringComparison.OrdinalIgnoreCase))
+                return s.Length > 9 && s[9] == '1' ? "RightTouchpadClick" : "LeftTouchpadClick";
+
+            // The mapping grid stores most physical inputs under the
+            // family prefix; art TargetNames are bare.
+            if (s.StartsWith("Gamepad ", StringComparison.OrdinalIgnoreCase))
+                s = s.Substring("Gamepad ".Length);
+
+            // Every stick family anchors on the ring: the axes, the ring
+            // descriptor, and the axis pair the manifest reports per axis.
+            if (s.StartsWith("LeftStick", StringComparison.OrdinalIgnoreCase)
+                || s.StartsWith("LeftThumbAxis", StringComparison.OrdinalIgnoreCase))
                 return "LeftThumbRing";
-            if (target.StartsWith("RightThumbAxis", StringComparison.OrdinalIgnoreCase))
+            if (s.StartsWith("RightStick", StringComparison.OrdinalIgnoreCase)
+                || s.StartsWith("RightThumbAxis", StringComparison.OrdinalIgnoreCase))
                 return "RightThumbRing";
-            return target;
+
+            return s;
         }
 
         private static string PrettifyTag(string tag)
@@ -1886,7 +1901,11 @@ namespace PadForge.Views
         /// join. Target itself is humanized for display, and the 2DModels
         /// layout keys on the engine identifier, so the two must not be the
         /// same string.</summary>
-        public string ArtTarget { get; init; }
+        /// <summary>The art element this row is DRAWN ON: the physical
+        /// control the config binds, not the virtual output it produces.
+        /// The preview shows the pad the config was authored for, so the
+        /// anchor is the source and the label is what it does.</summary>
+        public string ArtAnchor { get; init; }
         public string Reason { get; init; }
         public Brush DotBrush { get; init; } = CleanBrush;
         public Effect DotGlow { get; init; }

@@ -26,7 +26,7 @@ namespace PadForge.Views
         // Mouse elements
         private Path _lmbPath;
         private Path _rmbPath;
-        private Rectangle _scrollWheelPill;
+        private Path _scrollWheelPill;
         private Polygon _scrollUpArrow;
         private Polygon _scrollDownArrow;
         private Ellipse _movementDot;
@@ -92,12 +92,12 @@ namespace PadForge.Views
         }
 
         // Layout constants
-        private const double MC = 80;       // mouse center X
-        private const double MoveSize = MouseGlyph.MoveSize;
+        private static readonly double MC = MouseGlyph.CenterX;       // mouse center X
+        private static readonly double MoveSize = MouseGlyph.MoveSize;
 
         // Button area (used by both build and render)
         private const double BtnBottom = 58;
-        private const double MoveTop = MouseGlyph.MoveTop;
+        private static readonly double MoveTop = MouseGlyph.MoveTop;
 
         private System.Windows.Threading.DispatcherTimer _flashTimer;
         private string _flashTarget;

@@ -11,45 +11,63 @@ namespace PadForge.Views
     /// (<see cref="MousePreviewControl"/>) and the virtual keyboard-and-mouse
     /// preview (<c>KBMPreviewView</c>), down to the same constants. Reshaping
     /// one left the other on the old body, which is exactly the failure a
-    /// duplicated drawing invites. Both now build from here, so the shape
-    /// cannot drift again.</para>
+    /// duplicated drawing invites. Both build from here.</para>
     ///
-    /// <para>Buttons are CLIPPED TO THE BODY, so every outer edge is the
-    /// shell's own curve rather than an approximation that can drift from
-    /// it.</para>
+    /// <para>The shell is no longer hand-authored. It is gaming-mouse vector
+    /// art from Zergatul.Obs.InputOverlay (MIT, (c) 2021 Igor Budzhak),
+    /// vendored at <c>2DModels/MOUSE/mouse.svg</c> with its licence beside it
+    /// and converted to path geometry by <c>tools/gen_mouse_art.py</c> into
+    /// <see cref="MouseArt"/>. Successive attempts to draw a convincing mouse
+    /// by hand produced first a plain egg, then, chasing a gaming profile,
+    /// something closer to a peanut.</para>
     ///
-    /// <para>Callers own behaviour: this returns the live shapes and attaches
-    /// no handlers, no tooltips and no hit-testing policy, because the two
-    /// surfaces differ there (the KBM preview is clickable for recording, the
-    /// Devices pane is read-only).</para></summary>
+    /// <para>The one thing the art does NOT carry is any indication of
+    /// movement, so the deflection ring is still ours, drawn into the palm
+    /// where the artwork leaves a clear field.</para>
+    ///
+    /// <para>Callers own behaviour. This returns the live shapes and attaches
+    /// no handlers, tooltips or hit-testing policy, because the two surfaces
+    /// differ there (the KBM preview is clickable for recording, the Devices
+    /// pane is read-only).</para></summary>
     internal static class MouseGlyph
     {
-        internal const double CenterX = 80;
-        internal const double CanvasW = 160;
-        internal const double BodyH = 188;
-        internal const double MoveSize = 56;
-        internal const double MoveTop = 90;
-        internal const double WheelW = 15;
-        internal const double WheelTop = 12;
-        internal const double WheelH = 38;
-        internal const double WheelBottom = WheelTop + WheelH;
+        internal const double CanvasW = MouseArt.W;
+        internal const double BodyH = MouseArt.H;
+        internal const double MoveSize = 66;
 
-        // Narrow across the front, widest over the palm, tapering to a
-        // rounded base. An earlier pass pinched the waist and flared the
-        // rear to chase a "gaming" profile; at this size that reads as a
-        // peanut, not a mouse. A clean shell carries the shape better.
-        private const string BodyPath =
-            "M 80,0 C 102,0 126,20 130,58 C 135,96 134,142 122,170" +
-            " C 112,184 96,188 80,188 C 64,188 48,184 38,170" +
-            " C 26,142 25,96 30,58 C 34,20 58,0 80,0 Z";
+        /// <summary>The art's own axis of symmetry, which is NOT the canvas
+        /// midpoint: the shell is drawn a shade right of centre.</summary>
+        internal static readonly double CenterX;
+        internal static readonly double MoveTop;
+        internal static readonly double WheelTop;
+        internal static readonly double WheelBottom;
 
-        // Button/palm seam: a shallow curve, not a straight cut.
-        private const string SeamPath = "M 0,0 L 160,0 L 160,66 C 116,78 44,78 0,66 Z";
+        private static readonly Geometry WheelGeo, PalmGeo;
+
+        static MouseGlyph()
+        {
+            WheelGeo = Frozen(MouseArt.WheelWell);
+            PalmGeo = Frozen(MouseArt.Palm);
+            var wb = WheelGeo.Bounds;
+            var pb = PalmGeo.Bounds;
+            // Measured off the geometry rather than written down, so a
+            // re-export of the art cannot silently desynchronise them.
+            CenterX = wb.Left + wb.Width / 2;
+            WheelTop = wb.Top;
+            WheelBottom = wb.Bottom;
+            MoveTop = pb.Top + pb.Height * 0.42 - MoveSize / 2;
+        }
+
+        private static Geometry Frozen(string data)
+        {
+            var g = Geometry.Parse(data);
+            g.Freeze();
+            return g;
+        }
 
         internal sealed class Parts
         {
-            public Path Lmb, Rmb, X1, X2;
-            public Rectangle Wheel;
+            public Path Lmb, Rmb, X1, X2, Wheel;
             public Polygon ScrollUp, ScrollDown;
             public Ellipse MoveCircle, MoveDot;
             public double MoveX;
@@ -61,16 +79,13 @@ namespace PadForge.Views
                                     Brush mmb, Brush wheel, Brush dot)
         {
             var p = new Parts();
-            double swL = CenterX - WheelW / 2, swR = CenterX + WheelW / 2;
-            double gapL = swL - 2, gapR = swR + 2;
 
-            var body = Geometry.Parse(BodyPath);
-            body.Freeze();
-            var seam = Geometry.Parse(SeamPath);
-            seam.Freeze();
+            canvas.Width = CanvasW;
+            canvas.Height = BodyH;
 
-            // Shallow vertical gradient so the shell reads as curved rather
-            // than as a flat cut-out. Built per theme rebuild, never per frame.
+            // Shell, with a shallow vertical gradient so it reads as a curved
+            // body rather than a flat cut-out. Built per theme rebuild, never
+            // per frame.
             var shell = new LinearGradientBrush
             {
                 StartPoint = new Point(0, 0),
@@ -81,99 +96,72 @@ namespace PadForge.Views
             shell.GradientStops.Add(new GradientStop(Color.FromRgb(hi, hi, hi), 0));
             shell.GradientStops.Add(new GradientStop(Color.FromRgb(lo, lo, lo), 1));
             shell.Freeze();
-            canvas.Children.Add(new Path { Data = body, Fill = shell, IsHitTestVisible = false });
 
-            // Wheel channel recess.
-            canvas.Children.Add(new Path
-            {
-                Data = new RectangleGeometry(new Rect(gapL, 0, gapR - gapL, 58), 3, 3),
-                Clip = body,
-                Fill = mmb,
-                IsHitTestVisible = false,
-            });
+            canvas.Children.Add(new Path { Data = PalmGeo, Fill = shell, IsHitTestVisible = false });
 
-            Path Half(double x0, double x1) => new()
+            // Shell cutouts. Decorative: never lit, never routed.
+            foreach (var vent in MouseArt.Vents)
             {
-                Data = new CombinedGeometry(GeometryCombineMode.Intersect, seam,
-                           new RectangleGeometry(new Rect(x0, 0, x1 - x0, 200))),
-                Clip = body,
-                Fill = button,
-                Stroke = dim,
-                StrokeThickness = 1,
-            };
-            p.Lmb = Half(0, gapL);
-            p.Rmb = Half(gapR, CanvasW);
-            canvas.Children.Add(p.Lmb);
-            canvas.Children.Add(p.Rmb);
-
-            p.Wheel = new Rectangle
-            {
-                Width = WheelW,
-                Height = WheelH,
-                RadiusX = WheelW / 2,
-                RadiusY = WheelW / 2,
-                Fill = wheel,
-                Stroke = dim,
-                StrokeThickness = 1,
-            };
-            Canvas.SetLeft(p.Wheel, swL);
-            Canvas.SetTop(p.Wheel, WheelTop);
-            canvas.Children.Add(p.Wheel);
-
-            // Tread ridges.
-            for (int k = 1; k < 5; k++)
-            {
-                double ty = WheelTop + k * WheelH / 5.0;
-                canvas.Children.Add(new Line
+                canvas.Children.Add(new Path
                 {
-                    X1 = swL + 3, Y1 = ty, X2 = swR - 3, Y2 = ty,
-                    Stroke = dim, StrokeThickness = 0.6, Opacity = 0.7,
+                    Data = Frozen(vent),
+                    Fill = mmb,
+                    Opacity = 0.55,
                     IsHitTestVisible = false,
                 });
             }
 
+            Path Region(Geometry g, Brush fill) => new()
+            {
+                Data = g,
+                Fill = fill,
+                Stroke = dim,
+                StrokeThickness = 0.8,
+            };
+
+            p.Lmb = Region(Frozen(MouseArt.Lmb), button);
+            p.Rmb = Region(Frozen(MouseArt.Rmb), button);
+            p.Wheel = Region(WheelGeo, wheel);
+            p.X1 = Region(Frozen(MouseArt.SideUpper), button);
+            p.X2 = Region(Frozen(MouseArt.SideLower), button);
+            canvas.Children.Add(p.Lmb);
+            canvas.Children.Add(p.Rmb);
+            canvas.Children.Add(p.Wheel);
+            canvas.Children.Add(p.X1);
+            canvas.Children.Add(p.X2);
+
+            // Scroll direction arrows, placed off the wheel's measured bounds.
             p.ScrollUp = new Polygon
             {
                 Points = new PointCollection
                 {
-                    new Point(CenterX, WheelTop + 4),
-                    new Point(CenterX - 4, WheelTop + 10),
-                    new Point(CenterX + 4, WheelTop + 10),
+                    new Point(CenterX, WheelTop + 5),
+                    new Point(CenterX - 4.5, WheelTop + 12),
+                    new Point(CenterX + 4.5, WheelTop + 12),
                 },
                 Fill = dim,
             };
-            canvas.Children.Add(p.ScrollUp);
             p.ScrollDown = new Polygon
             {
                 Points = new PointCollection
                 {
-                    new Point(CenterX, WheelBottom - 4),
-                    new Point(CenterX - 4, WheelBottom - 10),
-                    new Point(CenterX + 4, WheelBottom - 10),
+                    new Point(CenterX, WheelBottom - 5),
+                    new Point(CenterX - 4.5, WheelBottom - 12),
+                    new Point(CenterX + 4.5, WheelBottom - 12),
                 },
                 Fill = dim,
             };
+            canvas.Children.Add(p.ScrollUp);
             canvas.Children.Add(p.ScrollDown);
 
-            Path Flank(double top) => new()
-            {
-                Data = new RectangleGeometry(new Rect(26, top, 11, 18), 3, 3),
-                Clip = body,
-                Fill = button,
-                Stroke = dim,
-                StrokeThickness = 1,
-            };
-            p.X1 = Flank(72);
-            p.X2 = Flank(94);
-            canvas.Children.Add(p.X1);
-            canvas.Children.Add(p.X2);
-
+            // Movement. The artwork shows a mouse but says nothing about which
+            // way it is being moved, so the deflection ring is ours.
             p.MoveX = CenterX - MoveSize / 2;
             p.MoveCircle = new Ellipse
             {
                 Width = MoveSize,
                 Height = MoveSize,
-                Fill = new SolidColorBrush(Color.FromArgb(0x18, 0x88, 0x88, 0x88)),
+                Fill = new SolidColorBrush(Color.FromArgb(0x22, 0x00, 0x00, 0x00)),
                 Stroke = dim,
                 StrokeThickness = 1.4,
             };
@@ -187,39 +175,40 @@ namespace PadForge.Views
             {
                 canvas.Children.Add(new Line
                 {
-                    X1 = CenterX + dx * ringR * 0.80,
-                    Y1 = ringC + dy * ringR * 0.80,
-                    X2 = CenterX + dx * ringR * 0.98,
-                    Y2 = ringC + dy * ringR * 0.98,
+                    X1 = CenterX + dx * ringR * 0.78,
+                    Y1 = ringC + dy * ringR * 0.78,
+                    X2 = CenterX + dx * ringR * 0.99,
+                    Y2 = ringC + dy * ringR * 0.99,
                     Stroke = dim,
                     StrokeThickness = 1.2,
                     IsHitTestVisible = false,
                 });
             }
 
-            p.MoveDot = new Ellipse { Width = 10, Height = 10, Fill = dot, IsHitTestVisible = false };
-            Canvas.SetLeft(p.MoveDot, p.MoveX + MoveSize / 2 - 5);
-            Canvas.SetTop(p.MoveDot, MoveTop + MoveSize / 2 - 5);
+            p.MoveDot = new Ellipse { Width = 11, Height = 11, Fill = dot, IsHitTestVisible = false };
+            Canvas.SetLeft(p.MoveDot, p.MoveX + MoveSize / 2 - 5.5);
+            Canvas.SetTop(p.MoveDot, MoveTop + MoveSize / 2 - 5.5);
             canvas.Children.Add(p.MoveDot);
 
             return p;
         }
 
-        /// <summary>Shell outline, added LAST by the caller so the edge stays
-        /// one continuous line over the buttons and flank keys instead of
-        /// being interrupted by them.</summary>
+        /// <summary>The shell line-work, added LAST by the caller so the seams
+        /// stay continuous over the filled regions instead of being cut by
+        /// them. This is the upstream art drawn as authored.</summary>
         internal static void AddOutline(Canvas canvas, Brush dim)
         {
-            var body = Geometry.Parse(BodyPath);
-            body.Freeze();
-            canvas.Children.Add(new Path
+            foreach (var d in MouseArt.Outline)
             {
-                Data = body,
-                Fill = null,
-                Stroke = dim,
-                StrokeThickness = 2,
-                IsHitTestVisible = false,
-            });
+                canvas.Children.Add(new Path
+                {
+                    Data = Frozen(d),
+                    Fill = null,
+                    Stroke = dim,
+                    StrokeThickness = 1.1,
+                    IsHitTestVisible = false,
+                });
+            }
         }
     }
 }

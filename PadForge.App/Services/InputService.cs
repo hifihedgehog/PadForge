@@ -278,10 +278,13 @@ namespace PadForge.Services
                 () => new GyroCalibratorService(() => _settingsService?.MarkDirty()));
 
         /// <summary>Clears the per-(device, slot) auto-calibrate dedup
-        /// latch so the next <see cref="UpdatePadDeviceInfo"/> pass
-        /// re-fires the 1500 ms auto-calibration for this pair. Called
-        /// by the Pad page "Reset Calibration" handler after
-        /// <c>GyroCalibrator.ResetCalibration</c> zeroes the bias.</summary>
+        /// latch and its attempts ledger for this pair. Called by the Pad
+        /// page "Reset Calibration" handler after
+        /// <c>GyroCalibrator.ResetCalibration</c> zeroes the bias; that
+        /// handler then calls
+        /// <see cref="RequestGyroAutoCalibration"/> itself rather than
+        /// waiting for the next <see cref="UpdatePadDeviceInfo"/> edge
+        /// (round eight, R8).</summary>
         public void ClearGyroAutoCalibLatch(Guid instanceGuid, int slot)
         {
             if (instanceGuid == Guid.Empty) return;
@@ -10100,6 +10103,21 @@ namespace PadForge.Services
             var devs = SettingsManager.UserDevices?.Items;
             if (devs == null) return;
             var seenKeys = new HashSet<(Guid, int)>();
+            // Prune the ledgers for devices that are no longer online
+            // (round nine, R6). Without this a pad that burned its three
+            // in-hand attempts inherited the spent cap across a
+            // reconnect and never auto-calibrated again that session,
+            // exactly when it was finally sitting still, and every dead
+            // guid (including the ones the adoption drain re-keys) leaked
+            // an entry for the process lifetime.
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                var live = new HashSet<Guid>();
+                foreach (var d in SettingsManager.UserDevices.Items)
+                    if (d != null && d.IsOnline) live.Add(d.InstanceGuid);
+                PruneGyroLedger(_gyroAutoCalibKicked, live);
+                PruneGyroLedger(_gyroAutoCalibAttempts, live);
+            }
             (UserDevice ud, PadSetting ps, (Guid, int) key, object runToken)[] candidates;
             // Canonical lock order is UserDevices -> UserSettings (see
             // MappingSetEval's snapshot doc); Settings-first here was one half
@@ -10225,6 +10243,22 @@ namespace PadForge.Services
         /// eight, R8). Safe from any thread.</summary>
         public void RequestGyroAutoCalibration() => TryAutoCalibrateGyros();
 
+        /// <summary>Drops ledger entries whose device is no longer online
+        /// (round nine, R6). Caller holds the UserDevices sync root.</summary>
+        private static void PruneGyroLedger<TValue>(
+            Dictionary<(Guid InstanceGuid, int Slot), TValue> ledger, HashSet<Guid> liveGuids)
+        {
+            if (ledger.Count == 0) return;
+            List<(Guid, int)> dead = null;
+            foreach (var kv in ledger)
+            {
+                if (liveGuids.Contains(kv.Key.InstanceGuid)) continue;
+                (dead ??= new List<(Guid, int)>()).Add(kv.Key);
+            }
+            if (dead == null) return;
+            foreach (var k in dead) ledger.Remove(k);
+        }
+
         /// <summary>Applies adoption re-keys the poll thread queued
         /// (round eight, R13): rewrites device-pinned mapping-row /
         /// activator / menu guids through the same helper ApplyProfile's
@@ -10242,20 +10276,110 @@ namespace PadForge.Services
                 pending = InputManager.PendingDeviceGuidMigrations.ToArray();
                 InputManager.PendingDeviceGuidMigrations.Clear();
             }
-            var remap = new Dictionary<string, string>();
+            // Collapse chains before mapping (round nine, R8): two
+            // adoptions of one row inside a single dispatcher latency
+            // queue A->B and B->C, and the remap is a SINGLE pass, so a
+            // row still on A would land on B, an identity that no longer
+            // exists. Follow each chain to its terminal first.
+            var terminal = new Dictionary<Guid, Guid>();
             foreach (var (o, n) in pending)
-                remap[o.ToString().ToLowerInvariant()] = n.ToString().ToLowerInvariant();
+            {
+                Guid end = n;
+                for (int hop = 0; hop < pending.Length && terminal.TryGetValue(end, out var next); hop++)
+                    end = next;
+                terminal[o] = end;
+                var keys = new List<Guid>(terminal.Keys);
+                foreach (var k in keys)
+                    if (terminal[k] == o) terminal[k] = end;
+            }
+            var remap = new Dictionary<string, string>();
+            foreach (var kv in terminal)
+                remap[kv.Key.ToString().ToLowerInvariant()] = kv.Value.ToString().ToLowerInvariant();
             RemapDeviceGuidsInSlotMappingSets(remap);
+            RemapDeviceGuidsInMacros(terminal, _mainVm?.Pads);
             if (_mainVm?.Pads != null)
             {
                 foreach (var pad in _mainVm.Pads)
                 {
                     if (pad == null) continue;
-                    foreach (var (o, n) in pending)
-                        pad.RekeyDeviceConfig(o, n);
+                    foreach (var kv in terminal)
+                        pad.RekeyDeviceConfig(kv.Key, kv.Value);
+                    // THE ROWS MUST REACH THE VIEWMODEL (round nine, R1).
+                    // MarkDirty below arms the autosave, and
+                    // PushUiExtraSourcesIntoSlotMappingSets rebuilds every
+                    // ACTIVE-layer row's Sources from the MappingItems,
+                    // which still carry the OLD guid: the re-key was
+                    // reverted before it ever serialized, so the row went
+                    // dark again and the stale guid is what persisted.
+                    // ApplyProfile's lane defends with this same call and
+                    // its comment names the clobber verbatim; the drain
+                    // shipped without it.
+                    RefreshMappingsToViewModel(pad);
                 }
             }
             _settingsService?.MarkDirty();
+        }
+
+        /// <summary>Follows a device re-key into the MACRO surfaces, which
+        /// no remap lane covered before round nine (R2). Mapping rows,
+        /// activator legs, and menus were handled while every macro pin
+        /// stayed on the dead guid and its trigger simply stopped firing:
+        /// the evaluator matches these by exact equality, so a pinned
+        /// macro, an axis-follow source, a disconnect target, an
+        /// expression variable, or a per-device profile shortcut went
+        /// permanently dark after any Bluetooth path change. Both remap
+        /// lanes (this drain and ApplyProfile) call it.
+        ///
+        /// <para>Entries are walked as OBJECTS, not as their serialized
+        /// "in:{guid}:..." spec strings: TriggerInputEntry.DeviceGuid is a
+        /// real property whose setter invalidates the cached string, so
+        /// the spec regenerates itself and no string surgery is
+        /// needed.</para></summary>
+        internal static void RemapDeviceGuidsInMacros(
+            IReadOnlyDictionary<Guid, Guid> remap,
+            System.Collections.Generic.IEnumerable<PadForge.ViewModels.PadViewModel> pads)
+        {
+            if (remap == null || remap.Count == 0) return;
+            Guid Map(Guid g) => g != Guid.Empty && remap.TryGetValue(g, out var to) ? to : g;
+
+            if (pads != null)
+            {
+                foreach (var pad in pads)
+                {
+                    if (pad?.Macros == null) continue;
+                    foreach (var mac in pad.Macros)
+                    {
+                        if (mac == null) continue;
+                        mac.TriggerDeviceGuid = Map(mac.TriggerDeviceGuid);
+                        foreach (var entry in mac.GetTriggerInputEntries())
+                            if (entry != null) entry.DeviceGuid = Map(entry.DeviceGuid);
+                        if (mac.TriggerExpressionVariables != null)
+                        {
+                            foreach (var v in mac.TriggerExpressionVariables)
+                                if (v != null) v.DeviceGuid = Map(v.DeviceGuid);
+                        }
+                        foreach (var act in mac.Actions)
+                        {
+                            if (act == null) continue;
+                            act.SourceDeviceGuid = Map(act.SourceDeviceGuid);
+                            act.DisconnectDeviceGuid = Map(act.DisconnectDeviceGuid);
+                        }
+                    }
+                }
+            }
+
+            var globals = SettingsManager.GlobalMacros;
+            if (globals != null)
+            {
+                foreach (var g in globals)
+                {
+                    if (g == null) continue;
+                    g.TriggerDeviceGuid = Map(g.TriggerDeviceGuid);
+                    if (g.TriggerEntries == null) continue;
+                    foreach (var e in g.TriggerEntries)
+                        if (e != null) e.DeviceInstanceGuid = Map(e.DeviceInstanceGuid);
+                }
+            }
         }
 
         public void UpdatePadDeviceInfo()
@@ -12528,6 +12652,18 @@ namespace PadForge.Services
             // Point the just-cloned mapping sets at the instances the
             // same-product fallback actually bound (see the remap note above).
             RemapDeviceGuidsInSlotMappingSets(deviceGuidRemap);
+            // ...and the macro surfaces, which this lane never covered
+            // either (round nine, R2).
+            if (deviceGuidRemap.Count > 0)
+            {
+                var macroRemap = new Dictionary<Guid, Guid>();
+                foreach (var kv in deviceGuidRemap)
+                {
+                    if (Guid.TryParse(kv.Key, out var mo) && Guid.TryParse(kv.Value, out var mn))
+                        macroRemap[mo] = mn;
+                }
+                RemapDeviceGuidsInMacros(macroRemap, _mainVm?.Pads);
+            }
 
             // ── Reconcile per-group order lists with the new topology ──
             // Profile activation has just reset SlotCreated and OutputType for
@@ -13268,6 +13404,15 @@ namespace PadForge.Services
         {
             if (System.Threading.Interlocked.Exchange(ref _disposed, 1) != 0)
                 return;
+
+            // The adoption-migration queue is STATIC on InputManager, so
+            // anything queued after the DevicesUpdated unsubscribe below
+            // would never drain and would survive into the next
+            // InputService in-process (tests, engine restart), where it
+            // would be applied against an unrelated mapping set (round
+            // nine, R11).
+            lock (InputManager.PendingDeviceGuidMigrationsLock)
+                InputManager.PendingDeviceGuidMigrations.Clear();
 
             // NFC teardown (cancel the monitor thread + release the PC/SC
             // context, #150) is owned by InputManager.Dispose, which Stop()

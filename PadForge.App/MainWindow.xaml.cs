@@ -807,6 +807,7 @@ namespace PadForge
                     var ps = us?.GetPadSetting();
                     if (ps == null) return;
                     var calibratedGuid = selected.InstanceGuid;
+                    int generation = pvm.GyroCalibrationGeneration;
                     // Hold the label for the run (round seven, R1): the
                     // 30 Hz tick otherwise clobbers "Calibrating…" within
                     // one frame, and a motion-rejected run looked exactly
@@ -822,7 +823,13 @@ namespace PadForge
                     // the run, neither banner belongs to what is now on
                     // screen. Just release the hold; the tick shows the
                     // current device's own state.
-                    if (pvm.SelectedMappedDevice?.InstanceGuid != calibratedGuid)
+                    // A Reset during the run voids this result (round
+                    // nine, R5): the write-guard already discarded the
+                    // measurement, so reporting "Couldn't calibrate"
+                    // would blame the user's own abort, and would sit on
+                    // top of whatever the Reset's own auto-fire produced.
+                    if (pvm.SelectedMappedDevice?.InstanceGuid != calibratedGuid
+                        || pvm.GyroCalibrationGeneration != generation)
                     {
                         pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MinValue;
                         return;
@@ -835,9 +842,20 @@ namespace PadForge
                         // non-motion, and delegating to it left
                         // "Calibrating…" pinned indefinitely in those
                         // states.
+                        // Format from the stamp the run just wrote, not
+                        // DateTime.Now (round nine, R10): the two are read
+                        // an instant apart and disagree across a minute
+                        // boundary, and after an aux-only upgrade (which
+                        // leaves the primary stamp untouched) "now" would
+                        // claim a calibration that was never stamped.
+                        var shown = DateTime.TryParse(ps.GyroCalibratedAtUtc,
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            System.Globalization.DateTimeStyles.RoundtripKind, out var stamped)
+                            ? stamped.ToLocalTime()
+                            : DateTime.Now;
                         pvm.GyroCalibrationLabel = string.Format(
                             PadForge.Resources.Strings.Strings.Instance.Settings_GyroLastCalibrated_Format,
-                            DateTime.Now);
+                            shown);
                         pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MinValue;
                     }
                     else
@@ -856,15 +874,23 @@ namespace PadForge
                     var us = PadForge.Common.Input.SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, pvm.PadIndex);
                     var ps = us?.GetPadSetting();
                     if (ps == null) return;
+                    // Void any in-flight manual run BEFORE clearing the
+                    // data, so its completion releases quietly instead of
+                    // blaming the user for their own abort (round nine,
+                    // R5), and release the label hold so the tick governs
+                    // again.
+                    pvm.GyroCalibrationGeneration++;
+                    pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MinValue;
                     _inputService.GyroCalibrator.ResetCalibration(ps);
                     _inputService.ClearGyroAutoCalibLatch(ud.InstanceGuid, pvm.PadIndex);
                     pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroNeverCalibrated;
                     // Keep the tooltip's promise (round eight, R8): fire
                     // the auto-calibration scan now instead of waiting for
-                    // the next incidental device event. The reset changed
-                    // the timestamp, so an in-flight run's write-guard
-                    // discards its result rather than reverting this
-                    // reset.
+                    // the next incidental device event. Any in-flight run
+                    // is refused by the calibrator's per-profile
+                    // in-flight guard, and its own result is discarded by
+                    // the write-guard, so this cannot double-sample or
+                    // revert the reset (round nine, R4/R5).
                     _inputService.RequestGyroAutoCalibration();
                 };
 

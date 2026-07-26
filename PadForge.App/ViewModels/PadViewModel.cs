@@ -482,11 +482,14 @@ namespace PadForge.ViewModels
 
         /// <summary>Moves a per-device slot config to a device's new
         /// identity after an adoption re-key (round eight, R13). The
-        /// INSTANCE moves, never a copy, so effect-dispatcher
+        /// INSTANCE moves rather than being copied, so effect-dispatcher
         /// subscriptions anchored to it stay valid. No-op when the old
-        /// key is absent; when the new key already holds a config, that
-        /// existing entry is the newer truth and the old one is simply
-        /// dropped.</summary>
+        /// key is absent. When the new key ALREADY holds a config that
+        /// entry is the newer truth and the old instance is dropped, so
+        /// subscriptions anchored to the dropped one do not survive: the
+        /// destination-wins policy matches the UserSetting migration's,
+        /// and the loss is bounded to a collision that only an orphaned
+        /// entry can produce.</summary>
         internal void RekeyDeviceConfig(Guid oldGuid, Guid newGuid)
         {
             if (oldGuid == Guid.Empty || newGuid == Guid.Empty || oldGuid == newGuid) return;
@@ -2595,6 +2598,16 @@ namespace PadForge.ViewModels
         /// run pixel-identical to nothing happening.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public DateTime GyroCalibrationLabelHoldUntilUtc { get; set; }
+
+        /// <summary>Bumped by Reset Calibration so an in-flight manual run
+        /// knows its result was voided (round nine, R5). Reset ignores the
+        /// busy flag by design (the user may want to abandon a run), and
+        /// without this the aborted manual pass pinned "Couldn't
+        /// calibrate" for five seconds over a profile that had just been
+        /// reset or re-calibrated. Same idiom as the auto latch's run
+        /// token and the handler's selection re-validation.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int GyroCalibrationGeneration { get; set; }
 
         /// <summary>Raised when the user clicks Calibrate Gyro on the
         /// Pad page's Gyro tab. MainWindow wires the handler to

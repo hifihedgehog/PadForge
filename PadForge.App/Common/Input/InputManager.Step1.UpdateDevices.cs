@@ -175,7 +175,7 @@ namespace PadForge.Common.Input
                     Engine.SdlDiagLog.WriteLine($"DEV + SDL#{instanceId} {wrapper.VendorId:X4}:{wrapper.ProductId:X4} {wrapper.Name}");
 
                     UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid,
-                        currentInstanceIds);
+                        currentInstanceIds, wrapper.SerialNumber);
 
                     // Same-serial twin (owner-approved 2026-07-25): the
                     // resolver bound this connection to a row whose
@@ -621,7 +621,7 @@ namespace PadForge.Common.Input
         // disconnect debounce relies on is untouched. Every non-SDL caller
         // passes null and keeps today's semantics exactly.
         internal UserDevice FindOrCreateUserDevice(Guid instanceGuid, Guid productGuid = default,
-            HashSet<uint> livePresentSdlIds = null)
+            HashSet<uint> livePresentSdlIds = null, string serialNumber = null)
         {
             var devices = SettingsManager.UserDevices;
             if (devices == null) return new UserDevice { InstanceGuid = instanceGuid };
@@ -672,17 +672,29 @@ namespace PadForge.Common.Input
                 // WATCHED RESIDUAL: if fork-driver re-identify churn ever
                 // recurs, the in-place dispose at rebind time is the
                 // first suspect.
-                if (livePresentSdlIds != null && exact != null
-                    && productGuid != Guid.Empty)
+                // The scan runs ANCHOR-FREE (round nine, R7): it used to
+                // require an exact-GUID row to read the incoming serial
+                // from, so deleting a twin's offline sibling row (the
+                // Devices page allows it, with no online gate) left a
+                // flapped LIVE twin with no anchor, no zombie match, and
+                // a freshly minted row that orphaned its own. The
+                // wrapper's serial is the quantity the constraint always
+                // meant; exact.SerialNumber was only ever a proxy for it.
+                // Empty serials still compare equal to each other, which
+                // keeps path-derived identities inside the drawer policy
+                // for indistinguishable shells.
+                string incomingSerial = serialNumber ?? exact?.SerialNumber ?? "";
+                if (livePresentSdlIds != null && productGuid != Guid.Empty)
                 {
                     for (int i = 0; i < devices.Items.Count; i++)
                     {
                         var d = devices.Items[i];
                         if (d.IsOnline && d.ProductGuid == productGuid
                             && d.InstanceGuid != Guid.Empty
+                            && d.InstanceGuid != instanceGuid
                             && d.Device != null
                             && !livePresentSdlIds.Contains(d.Device.SdlInstanceId)
-                            && string.Equals(d.SerialNumber ?? "", exact.SerialNumber ?? "",
+                            && string.Equals(d.SerialNumber ?? "", incomingSerial,
                                 StringComparison.Ordinal))
                             return d;
                     }
@@ -778,6 +790,13 @@ namespace PadForge.Common.Input
                 //    generic path.
                 if (productGuid != Guid.Empty)
                 {
+                    // No Guid.Empty exclusion here, unlike the twin lane
+                    // above: on this ordinary path the row is RESTAMPED
+                    // with the incoming identity, so adopting a corrupt
+                    // empty-guid row repairs it instead of creating the
+                    // duplicate the twin lane must avoid (where the
+                    // wrapper override no-ops on Empty). The asymmetry is
+                    // deliberate.
                     UserDevice fallback = null;
                     for (int i = 0; i < devices.Items.Count; i++)
                     {

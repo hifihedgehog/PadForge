@@ -242,10 +242,10 @@ public static class SteamDeckLayout
         new("", "LeftTouchpad", OverlayElementType.Touchpad, 364, 462, 197, 197),
         new("SD_Touchpad_Click.png", "RightTouchpadClick", OverlayElementType.Button, 1679, 462, 197, 197, "0.0203,0.0000 0.0000,0.0203 0.0000,0.9746 0.0203,0.9949 0.9746,0.9949 0.9949,0.9746 0.9949,0.0203 0.9746,0.0000"),
         new("", "RightTouchpad", OverlayElementType.Touchpad, 1679, 462, 197, 197),
-        new("SD_BackButton.png", "Paddle1", OverlayElementType.Button, 2069, 461, 125, 125, "0.0320,0.0000 0.0000,0.0320 0.0000,0.9600 0.0320,0.9920 0.9600,0.9920 0.9920,0.9600 0.9920,0.0320 0.9600,0.0000"),
-        new("SD_BackButton.png", "Paddle2", OverlayElementType.Button, 42, 462, 125, 125, "0.0320,0.0000 0.0000,0.0320 0.0000,0.9600 0.0320,0.9920 0.9600,0.9920 0.9920,0.9600 0.9920,0.0320 0.9600,0.0000"),
-        new("SD_BackButton.png", "Paddle3", OverlayElementType.Button, 2069, 603, 125, 125, "0.0320,0.0000 0.0000,0.0320 0.0000,0.9600 0.0320,0.9920 0.9600,0.9920 0.9920,0.9600 0.9920,0.0320 0.9600,0.0000"),
-        new("SD_BackButton.png", "Paddle4", OverlayElementType.Button, 42, 602, 125, 125, "0.0320,0.0000 0.0000,0.0320 0.0000,0.9600 0.0320,0.9920 0.9600,0.9920 0.9920,0.9600 0.9920,0.0320 0.9600,0.0000"),
+        new("SD_CompactTile.png", "Paddle2", OverlayElementType.Button, 0, 455, 174, 175, "0.0000,0.0000 0.0000,0.9943 0.9943,0.9943 0.9943,0.0000"),
+        new("SD_CompactTile.png", "Paddle4", OverlayElementType.Button, 0, 639, 174, 174, "0.0000,0.0000 0.0000,0.9943 0.9943,0.9943 0.9943,0.0000"),
+        new("SD_CompactTile.png", "Paddle1", OverlayElementType.Button, 2067, 455, 174, 175, "0.0000,0.0000 0.0000,0.9943 0.9943,0.9943 0.9943,0.0000"),
+        new("SD_CompactTile.png", "Paddle3", OverlayElementType.Button, 2067, 639, 174, 174, "0.0000,0.0000 0.0000,0.9943 0.9943,0.9943 0.9943,0.0000"),
     };
 }
 

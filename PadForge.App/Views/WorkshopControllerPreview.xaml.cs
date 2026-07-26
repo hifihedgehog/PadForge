@@ -136,7 +136,11 @@ namespace PadForge.Views
                     Points = new PointCollection { new(lx, y), new((lx + ex) / 2, y), new(ex, cy) },
                     IsHitTestVisible = false,
                 };
-                Panel.SetZIndex(poly, 15);
+                // UNDER the lit controls (z 5), over the body (z 1). The
+                // Deck's paddle tiles sit in the left and right margins,
+                // which is the corridor every leader has to cross to reach
+                // the body, so a leader drawn on top scribbles over them.
+                Panel.SetZIndex(poly, 3);
                 ModelCanvas.Children.Add(poly);
 
                 var tick = new System.Windows.Shapes.Ellipse

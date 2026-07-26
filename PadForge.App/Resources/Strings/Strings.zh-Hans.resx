@@ -2802,4 +2802,5 @@
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC标签：{0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>用 Switch 手柄轻触标签…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>校准失败。请放稳手柄后重试。</value></data>
+  <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>移除遗留的图层条目"{0}"？Base 的映射和宏不会受到影响。</value></data>
 </root>

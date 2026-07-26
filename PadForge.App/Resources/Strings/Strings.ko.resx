@@ -2802,4 +2802,5 @@
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC 태그: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Switch 컨트롤러에 태그를 갖다 대세요…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>보정에 실패했습니다. 컨트롤러를 내려놓고 다시 시도하세요.</value></data>
+  <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>남아 있는 레이어 항목 "{0}"을(를) 제거할까요? Base 매핑과 매크로는 그대로 유지됩니다.</value></data>
 </root>

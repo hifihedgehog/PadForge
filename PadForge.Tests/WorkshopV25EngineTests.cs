@@ -112,17 +112,19 @@ namespace PadForge.Tests
         [Fact]
         public void StickShape_ConsumesTheOuterRange_NotTheScalarTail()
         {
-            // Outer 0.5: full output at half deflection, applied inside
-            // the geometry transform exactly once.
+            // Outer 0.5 with a QUARTER deflection (round eight, R19): a
+            // single application gives 0.25 / 0.5 = 0.5, a double
+            // application would give 1.0. The old half-deflection input
+            // saturated to 1.0 either way and could not distinguish them.
             var s = CenteredState();
-            s.Axis[0] = 32768 + 16384; // +0.5
+            s.Axis[0] = 32768 + 8192; // +0.25
             var src = new MappingSource
             {
                 Descriptor = "Axis 0",
                 ParamStickDeadZoneShape = 1,
                 ParamRangeOuter = 0.5,
             };
-            Assert.Equal(1f, SourceCoercion.EvaluateForBipolarAxisTarget(s, src), 3);
+            Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(s, src), 3);
         }
 
         // ─── ShiftActivator.DoublePressMs field contract ────────────────

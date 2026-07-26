@@ -56,7 +56,9 @@ namespace PadForge.Views
             // No null tolerance (round seven): a caller that forgot
             // BuildReservedMasks would silently skip the whole collision
             // walk, including the Base reservation, which is this
-            // function's entire purpose. Better a loud throw.
+            // function's entire purpose. A null set therefore fails fast
+            // (NullReferenceException at the Contains) instead of
+            // succeeding wrongly.
             string baseMask = string.IsNullOrWhiteSpace(name) ? "Shift" : name;
             string mask = baseMask;
             int suffix = 2;

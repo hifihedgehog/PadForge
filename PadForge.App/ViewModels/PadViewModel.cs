@@ -479,6 +479,20 @@ namespace PadForge.ViewModels
         // load. Iteration on ConcurrentDictionary returns a moment-in-time
         // snapshot rather than throwing InvalidOperationException.
         private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, DeviceSlotConfig> _perDeviceSlotConfigs = new();
+
+        /// <summary>Moves a per-device slot config to a device's new
+        /// identity after an adoption re-key (round eight, R13). The
+        /// INSTANCE moves, never a copy, so effect-dispatcher
+        /// subscriptions anchored to it stay valid. No-op when the old
+        /// key is absent; when the new key already holds a config, that
+        /// existing entry is the newer truth and the old one is simply
+        /// dropped.</summary>
+        internal void RekeyDeviceConfig(Guid oldGuid, Guid newGuid)
+        {
+            if (oldGuid == Guid.Empty || newGuid == Guid.Empty || oldGuid == newGuid) return;
+            if (!_perDeviceSlotConfigs.TryRemove(oldGuid, out var cfg)) return;
+            _perDeviceSlotConfigs.TryAdd(newGuid, cfg);
+        }
         private DeviceSlotConfig _deviceConfig = new();
         private static readonly DeviceSlotConfig _emptyDeviceConfigSentinel = new();
 

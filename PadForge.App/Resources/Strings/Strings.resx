@@ -2857,4 +2857,5 @@
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC Tag: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Tap a tag on your Switch controller…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Couldn't calibrate. Set the controller down and try again.</value></data>
+  <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>Remove the leftover "{0}" layer entry? Your Base mappings and macros will not be touched.</value></data>
 </root>

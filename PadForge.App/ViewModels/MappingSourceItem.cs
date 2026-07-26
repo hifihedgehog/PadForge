@@ -374,7 +374,22 @@ namespace PadForge.ViewModels
                 return _invert ? "← −" : "→ +";
             }
         }
-        public bool HalfAxis { get => _halfAxis; set => SetProperty(ref _halfAxis, value); }
+        public bool HalfAxis
+        {
+            get => _halfAxis;
+            set
+            {
+                if (SetProperty(ref _halfAxis, value))
+                    OnPropertyChanged(nameof(IsInvertApplicable));
+            }
+        }
+
+        /// <summary>Whether the Invert checkbox actually does anything in
+        /// the current combination (round eight, R15): with Half + Either
+        /// both on, the engine reads absolute deflection and Invert is
+        /// documented inert. Mirrors MappingItem.IsInvertApplicable on
+        /// the grid-row twin.</summary>
+        public bool IsInvertApplicable => !(_halfAxis && _bidirectional);
 
         /// <summary>True when the Half checkbox (and the dependent Either)
         /// is meaningful for this source. Half-axis only applies to
@@ -430,7 +445,15 @@ namespace PadForge.ViewModels
         /// the axis-to-button check fires on absolute deflection past the
         /// deadzone — either side of center counts. <see cref="Invert"/>
         /// has no effect in this mode.</summary>
-        public bool Bidirectional { get => _bidirectional; set => SetProperty(ref _bidirectional, value); }
+        public bool Bidirectional
+        {
+            get => _bidirectional;
+            set
+            {
+                if (SetProperty(ref _bidirectional, value))
+                    OnPropertyChanged(nameof(IsInvertApplicable));
+            }
+        }
         public int DeadZone
         {
             // Minimum 1: a 0% axis-to-button deadzone is disallowed. The engine

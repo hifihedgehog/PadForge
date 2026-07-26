@@ -20,14 +20,18 @@ namespace PadForge.Services
     /// <c>PadSetting</c>s, so re-calibrating one slot does not disturb
     /// the other.</para>
     ///
-    /// <para>At-rest is VERIFIED, not assumed (audit 2026-07-25 round
-    /// six, R1): each sampled axis's peak-to-peak range must stay under
-    /// <see cref="MotionRangeLimit"/> or the run writes nothing and
-    /// returns false. The auto-calibration trigger is device-connect,
-    /// which is exactly when the pad is plausibly in the user's hands
-    /// (power button just pressed, BT reconnect mid-game), and a bias
-    /// averaged from deliberate motion made every gyro row read a large
-    /// constant rate while the pad sat still.</para>
+    /// <para>At-rest is VERIFIED, not assumed (rounds six and seven):
+    /// each sampled axis's peak-to-peak range must stay under
+    /// <see cref="MotionRangeLimit"/> AND its average magnitude under
+    /// <see cref="MaxPlausibleBias"/>, or the run writes nothing and
+    /// returns false. The range test catches varying motion, the
+    /// magnitude test catches steady rotation and frozen mid-motion
+    /// streams, and neither alone is a gate. The auto-calibration
+    /// trigger is device-connect, which is exactly when the pad is
+    /// plausibly in the user's hands, and a bias averaged from motion
+    /// made every gyro row read a large constant rate at rest. Writes
+    /// are also guarded optimistically against a reset or concurrent
+    /// calibration finishing mid-run (round eight, R1).</para>
     ///
     /// <para>Thread model: sampling runs on a worker task, polling
     /// <c>ud.InputState.Gyro[]</c> at ~5 ms intervals. The state object
@@ -47,14 +51,15 @@ namespace PadForge.Services
         internal const float MotionRangeLimit = 0.35f;
 
         /// <summary>Largest average magnitude (rad/s) a measured bias may
-        /// carry per axis (round seven, R2). Genuine at-rest drift sits
-        /// near 0.02 rad/s. The peak-to-peak gate alone cannot reject a
-        /// pad rotating at a STEADY rate, or a state stream frozen on a
-        /// mid-motion sample, because constant values have zero range;
-        /// their averages, though, sit orders of magnitude above any real
-        /// drift, so a run whose average lands near this bound measured
-        /// motion, not bias.</summary>
-        internal const float MaxPlausibleBias = 0.5f;
+        /// carry per axis (round seven, R2; tightened round eight). Genuine
+        /// at-rest drift sits near 0.02 rad/s and pathological units reach
+        /// perhaps 0.05, so 0.15 keeps a 3x margin over the worst real
+        /// bias. The peak-to-peak gate alone cannot reject a pad rotating
+        /// at a STEADY rate, or a state stream frozen on a mid-motion
+        /// sample, because constant values have zero range; the original
+        /// 0.5 bound still let a slow ~23 deg/s pan calibrate itself into
+        /// the bias.</summary>
+        internal const float MaxPlausibleBias = 0.15f;
 
         private readonly Action _persistCallback;
 
@@ -129,8 +134,11 @@ namespace PadForge.Services
         /// <summary>Samples <paramref name="ud"/>'s gyro readings for
         /// <paramref name="durationMs"/>, averages each axis, and writes
         /// the result to <paramref name="ps"/>'s bias fields. Returns
-        /// false, writing nothing, if the device went offline
-        /// mid-sample, has no gyro, or the motion gate saw the pad move.
+        /// false, writing nothing, if the device went offline mid-sample,
+        /// has no gyro, the motion gates rejected the run (peak-to-peak
+        /// range over <see cref="MotionRangeLimit"/>, or average over
+        /// <see cref="MaxPlausibleBias"/>), or the profile's calibration
+        /// state changed underneath the run (reset / concurrent write).
         /// <paramref name="auxOnly"/> (the #252 upgrade) writes the aux
         /// triple alone and leaves the primary bias and the calibration
         /// timestamp untouched.</summary>
@@ -144,6 +152,15 @@ namespace PadForge.Services
 
         private bool RunSampling(UserDevice ud, PadSetting ps, int durationMs, CancellationToken ct, bool auxOnly)
         {
+            // Optimistic write-guard (round eight, R1): capture the
+            // calibration timestamp at entry and refuse to write when it
+            // changed underneath the run. Nothing cancels a sampler, so
+            // without this a user's Reset Calibration during the 1.5 s
+            // window was silently REVERTED to disk ~a second later by the
+            // in-flight run's write, and two concurrent runs clobbered
+            // each other blindly. First intervening writer wins; this run
+            // reports false and the caller may retry.
+            string entryStamp = ps.GyroCalibratedAtUtc;
             double accPitch = 0, accYaw = 0, accRoll = 0;
             int samples = 0;
             // The aux gyro (#252) is sampled in the SAME at-rest pass: the
@@ -204,6 +221,13 @@ namespace PadForge.Services
                 && PlausibleAverage(accPitch, accYaw, accRoll, samples);
             bool auxStill = auxSamples > 0 && HeldStill(lo, hi, 3)
                 && PlausibleAverage(accAuxPitch, accAuxYaw, accAuxRoll, auxSamples);
+
+            // The write-guard proper (R1): a changed timestamp means a
+            // reset or a concurrent calibration finished during this run;
+            // its result is the newer truth and this run must not clobber
+            // it.
+            if (!string.Equals(ps.GyroCalibratedAtUtc, entryStamp, StringComparison.Ordinal))
+                return false;
 
             if (auxOnly)
             {

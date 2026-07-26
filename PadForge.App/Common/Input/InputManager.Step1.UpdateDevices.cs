@@ -178,9 +178,11 @@ namespace PadForge.Common.Input
                         currentInstanceIds);
 
                     // Same-serial twin (owner-approved 2026-07-25): the
-                    // resolver minted a session identity for this
-                    // connection instead of stealing the live sibling's
-                    // row. The wrapper must carry it BEFORE
+                    // resolver bound this connection to a row whose
+                    // identity differs from the wrapper's serial-derived
+                    // GUID (an adopted or rebound twin row keeping its
+                    // persisted identity, or a first-ever minted one).
+                    // The wrapper must carry that identity BEFORE
                     // LoadFromSdlDevice, which stamps the row's
                     // InstanceGuid from the wrapper.
                     if (ud.InstanceGuid != wrapper.InstanceGuid)
@@ -633,6 +635,59 @@ namespace PadForge.Common.Input
                     if (devices.Items[i].InstanceGuid == instanceGuid)
                     { exact = devices.Items[i]; break; }
                 }
+                // The flapped-unit rebind, HOISTED above every other
+                // resolution (round eight, R11). A same-product,
+                // SAME-SERIAL row still marked online while its claiming
+                // wrapper's SDL instance has LEFT the present set is this
+                // same physical unit re-identifying inside the disconnect
+                // debounce: its old connection is gone, and one physical
+                // device is never two present instances. It outranks the
+                // exact-match return in BOTH directions: (1) when the
+                // exact row is a live sibling (the twin collision), the
+                // flapped twin must get its own row back; (2) when the
+                // exact row is OFFLINE, adopting it would move a LIVE
+                // unit onto different assignments mid-session, breaking
+                // in-process identity stability. The serial constraint is
+                // load-bearing (round eight): without it, a THIRD
+                // same-model unit sitting inside its own disconnect
+                // debounce was hijacked and the two units swapped
+                // identities. Rows with no serial (path/sdlguid derived
+                // identities) compare as empty == empty, which stays
+                // inside the drawer policy for indistinguishable shells.
+                //
+                // Dispose truth (round eight, R12, correcting round
+                // seven's claim): returning this row means
+                // LoadFromSdlDevice swaps the wrapper IN PLACE and
+                // disposes the stale one right there
+                // (UserDevice.LoadFromDevice), the same flow every
+                // exact-guid rebind has used since 54b572b9.
+                // DeviceLiveUnderNewWrapper does NOT shield that dispose;
+                // it is consulted only in the orphan sweep, which this
+                // precedes. The two 2026-07-11 commits embody opposing
+                // policies (dispose-at-rebind to keep handles off the
+                // finalizer thread vs leave-to-finalizer to protect
+                // shared fork HIDAPI contexts); dispose-at-rebind is the
+                // long-established behavior, including the
+                // hardware-validated Wii re-identify, so it stands.
+                // WATCHED RESIDUAL: if fork-driver re-identify churn ever
+                // recurs, the in-place dispose at rebind time is the
+                // first suspect.
+                if (livePresentSdlIds != null && exact != null
+                    && productGuid != Guid.Empty)
+                {
+                    for (int i = 0; i < devices.Items.Count; i++)
+                    {
+                        var d = devices.Items[i];
+                        if (d.IsOnline && d.ProductGuid == productGuid
+                            && d.InstanceGuid != Guid.Empty
+                            && d.Device != null
+                            && !livePresentSdlIds.Contains(d.Device.SdlInstanceId)
+                            && string.Equals(d.SerialNumber ?? "", exact.SerialNumber ?? "",
+                                StringComparison.Ordinal))
+                            return d;
+                    }
+                }
+
                 bool liveTwinCollision = exact != null
                     && livePresentSdlIds != null
                     && exact.IsOnline
@@ -643,35 +698,10 @@ namespace PadForge.Common.Input
 
                 if (liveTwinCollision)
                 {
-                    // TWIN RESOLUTION (round seven R4/R5, superseding the
-                    // round-six mint-per-resolve design).
-                    //
-                    // (a) The flapped-sibling rebind. A same-product row
-                    // still marked online while its claiming wrapper's SDL
-                    // instance has LEFT the present set is this same
-                    // physical unit re-identifying inside the disconnect
-                    // debounce: its old connection is gone, and one
-                    // physical device is never two present instances.
-                    // Returning that row is the deliberate rebind flow.
-                    // LoadFromSdlDevice swaps the wrapper in place and
-                    // DeviceLiveUnderNewWrapper then shields the stale
-                    // handle from the orphan sweep. Round six minted a
-                    // fresh row here instead, which orphaned the twin's
-                    // assignment (no output) and left its stale wrapper to
-                    // Phase 2's debounce path, whose MarkDeviceOffline
-                    // disposes UNCONDITIONALLY, re-opening the shared
-                    // HIDAPI-context churn the 2026-07-11 audit fixed.
+                    // TWIN RESOLUTION (round seven R4/R5, zombie rebind
+                    // hoisted above in round eight).
                     if (productGuid != Guid.Empty)
                     {
-                        for (int i = 0; i < devices.Items.Count; i++)
-                        {
-                            var d = devices.Items[i];
-                            if (d.IsOnline && d.ProductGuid == productGuid
-                                && d.Device != null
-                                && !livePresentSdlIds.Contains(d.Device.SdlInstanceId))
-                                return d;
-                        }
-
                         // (b) The drawer adoption, KEEPING the row's own
                         // identity (round seven, R5). The incoming
                         // serial-derived GUID is unusable here (it collides
@@ -693,7 +723,13 @@ namespace PadForge.Common.Input
                         for (int i = 0; i < devices.Items.Count; i++)
                         {
                             var d = devices.Items[i];
-                            if (!d.IsOnline && d.ProductGuid == productGuid)
+                            // Empty-guid rows (corrupt persisted data) are
+                            // never adopted as a twin identity (round
+                            // eight, R11): the caller's wrapper override
+                            // no-ops on Guid.Empty and the row would then
+                            // be restamped with the COLLIDING serial GUID.
+                            if (!d.IsOnline && d.ProductGuid == productGuid
+                                && d.InstanceGuid != Guid.Empty)
                                 return d;
                         }
                     }
@@ -711,7 +747,13 @@ namespace PadForge.Common.Input
                     // No evidence SDL produces that shape; if
                     // single-device duplicate rows ever appear, this gate
                     // is the first suspect.
-                    var twin = new UserDevice { InstanceGuid = Guid.NewGuid() };
+                    // ProductGuid stamped at creation (round eight, R11):
+                    // LoadFromSdlDevice normally stamps it right after,
+                    // but a failed load used to leave the row
+                    // product-less and therefore invisible to every
+                    // adoption scan forever.
+                    var twin = new UserDevice
+                    { InstanceGuid = Guid.NewGuid(), ProductGuid = productGuid };
                     devices.Items.Add(twin);
                     return twin;
                 }
@@ -757,6 +799,18 @@ namespace PadForge.Common.Input
                         // assignments and PadSettings are preserved.
                         MigrateUserSettingGuid(oldGuid, instanceGuid);
 
+                        // Device-PINNED references (mapping-row sources,
+                        // activator legs, menu entries, per-pad slot
+                        // configs) live in UI-owned structures this poll
+                        // thread must not touch, so the re-key is queued
+                        // and UpdatePadDeviceInfo drains it on the UI
+                        // thread through the same remap helper
+                        // ApplyProfile's rebind lane uses (round eight,
+                        // R13: without this, a re-keyed device's pinned
+                        // rows produced no output and its lighting reset).
+                        lock (PendingDeviceGuidMigrationsLock)
+                            PendingDeviceGuidMigrations.Add((oldGuid, instanceGuid));
+
                         return fallback;
                     }
                 }
@@ -772,6 +826,16 @@ namespace PadForge.Common.Input
         /// Updates a UserSetting's InstanceGuid when the physical device's
         /// identity changes (e.g. Bluetooth reconnect with different path).
         /// </summary>
+        /// <summary>Adoption re-keys queued by the poll thread for the UI
+        /// thread to drain (round eight, R13). InputService's
+        /// UpdatePadDeviceInfo rewrites the device-pinned mapping-row /
+        /// activator / menu guids and moves the per-pad slot configs;
+        /// those structures are UI-owned and must never be walked from
+        /// here.</summary>
+        internal static readonly System.Collections.Generic.List<(Guid Old, Guid New)>
+            PendingDeviceGuidMigrations = new();
+        internal static readonly object PendingDeviceGuidMigrationsLock = new();
+
         private static void MigrateUserSettingGuid(Guid oldGuid, Guid newGuid)
         {
             var settings = SettingsManager.UserSettings;
@@ -785,10 +849,25 @@ namespace PadForge.Common.Input
                 // old first-match break silently orphaned slots 2..N on
                 // any adoption (round seven, R6; pre-existing since
                 // v2.0.0-beta, its comment claimed one row per device).
-                for (int i = 0; i < settings.Items.Count; i++)
+                // When a (newGuid, MapTo) row ALREADY exists (an orphaned
+                // setting colliding with the adoption target), the
+                // existing destination row is the live truth and the old
+                // row is dropped instead of rewritten, so the migration
+                // can never manufacture duplicate (guid, slot) rows
+                // (round eight, R5).
+                var items = settings.Items;
+                for (int i = items.Count - 1; i >= 0; i--)
                 {
-                    if (settings.Items[i].InstanceGuid == oldGuid)
-                        settings.Items[i].InstanceGuid = newGuid;
+                    if (items[i].InstanceGuid != oldGuid) continue;
+                    int mapTo = items[i].MapTo;
+                    bool twinExists = false;
+                    for (int j = 0; j < items.Count; j++)
+                    {
+                        if (j != i && items[j].InstanceGuid == newGuid && items[j].MapTo == mapTo)
+                        { twinExists = true; break; }
+                    }
+                    if (twinExists) items.RemoveAt(i);
+                    else items[i].InstanceGuid = newGuid;
                 }
             }
         }

@@ -2802,4 +2802,5 @@
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Etiqueta NFC: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Toca una etiqueta en tu mando Switch…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>No se pudo calibrar. Deja el mando quieto e inténtalo de nuevo.</value></data>
+  <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>¿Quitar la entrada de capa sobrante "{0}"? Tus asignaciones y macros de Base no se tocarán.</value></data>
 </root>

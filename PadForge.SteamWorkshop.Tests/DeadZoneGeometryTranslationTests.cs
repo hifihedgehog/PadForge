@@ -284,6 +284,44 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.All(sources, s => Assert.Equal(28000.0 / 32767.0, s.ParamRangeOuter, 3));
         }
 
+        /// <summary>Round eight (R18): both gyro-as-stick modes were
+        /// absent from ProductiveModes, so an authored engage button
+        /// (gyro_button) never reached the shared gyro-settings walk and
+        /// was silently ignored while the dispatch comment claimed the
+        /// walk covers every gyro mode. gyro_button 0 is Steam's
+        /// pad-touch default and stamps the documented descriptor.</summary>
+        [Fact]
+        public void GyroToJoystick_EngageButton_Translates()
+        {
+            string vdf = Head
+                + Group(1, "gyro_to_joystick",
+                    Inputs(Inp("click", "xinput_button JOYSTICK_LEFT"))
+                    + Settings(("gyro_button", "0")))
+                + Preset(0, "Default", (1, "gyro active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            Assert.False(string.IsNullOrEmpty(p.GyroEngageDescriptor));
+        }
+
+        /// <summary>And a stick-hosted gyro_to_joystick's deadzone_shape
+        /// is consumed by the geometry stamp, so joining ProductiveModes
+        /// must not start noting it as an unsupported response key.</summary>
+        [Fact]
+        public void GyroToJoystickOnAStick_DoesNotNoteTheConsumedShape()
+        {
+            string vdf = Head
+                + Group(1, "gyro_to_joystick",
+                    Inputs(Inp("click", "xinput_button JOYSTICK_LEFT"))
+                    + Settings(("deadzone_shape", "1"), ("deadzone_inner_radius", "8192")))
+                + Preset(0, "Default", (1, "joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            Assert.DoesNotContain(p.Report.Entries,
+                e => e.ReasonKey == TranslationReasons.ResponseCurveNotSupported);
+        }
+
         /// <summary>Round six (R5): gyro_to_joystick_deflection reads the
         /// gravity-lean pair, which is not an Axis-path read, so the
         /// geometry stamp cannot land there. It used to drop an authored

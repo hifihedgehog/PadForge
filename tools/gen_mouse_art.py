@@ -104,10 +104,28 @@ def write_mask(name, members):
                 r=xs.max() / RW * VW, b=ys.max() / RH * VH)
 
 
+def hit_path(members):
+    """Clickable geometry. NEVER drawn, so a polygon approximation is fine
+    here: WPF hit-tests a masked rectangle over its whole rect, not its mask,
+    so each control needs real geometry to answer the mouse."""
+    m = np.zeros((RH, RW), np.uint8)
+    for r in members:
+        m[lab == r["i"]] = 255
+    m = cv2.dilate(m, np.ones((3, 3), np.uint8), iterations=2)
+    cs, _ = cv2.findContours(m, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    c = max(cs, key=cv2.contourArea)
+    pts = cv2.approxPolyDP(c, 0.0006 * cv2.arcLength(c, True), True).reshape(-1, 2)
+    sx, sy = VW / RW, VH / RH
+    return "M " + " L ".join("%.2f,%.2f" % (x * sx, y * sy) for x, y in pts) + " Z", len(pts)
+
+
 bounds = {}
+hits = {}
 for name, members in layers.items():
     b = write_mask(name, members)
     bounds[name] = b
+    if name != "Body":
+        hits[name] = hit_path(members)
     print("  %-10s -> %-22s x %.1f..%.1f  y %.1f..%.1f"
           % (name, b["file"], b["l"], b["r"], b["t"], b["b"]))
 
@@ -138,6 +156,13 @@ lines = [
 ]
 for name, b in bounds.items():
     lines.append('    internal const string %s = "%s";' % (name, b["file"]))
+lines.append("")
+lines.append("    // Clickable geometry. Never drawn: WPF hit-tests a masked")
+lines.append("    // rectangle over its whole rect, not its mask, so each control")
+lines.append("    // needs real geometry to answer the mouse.")
+for name, (d, npts) in hits.items():
+    lines.append("    /// <summary>%d-point hit region.</summary>" % npts)
+    lines.append('    internal const string %sHit = "%s";' % (name, d))
 lines.append("")
 lines.append("    /// <summary>The art's own axis of symmetry, measured off the wheel.</summary>")
 lines.append("    internal const double CenterX = %.3f;" % cx)

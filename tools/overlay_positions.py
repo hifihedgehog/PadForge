@@ -1572,28 +1572,67 @@ def _prepare_steamdeck_base():
     green = (g > 120) & (g - r > 60) & (g - b > 60)
     im[green] = (28, 23, 20, 255)
 
-    blue = ((b > 70) & (b - r > 25) & (a > 60)).astype(np.uint8) * 255
-    blue = cv2.morphologyEx(blue, cv2.MORPH_CLOSE, np.ones((15, 15), np.uint8))
+    blue_raw = ((b > 70) & (b - r > 25) & (a > 60))
+    blue = cv2.morphologyEx(blue_raw.astype(np.uint8) * 255,
+                            cv2.MORPH_CLOSE, np.ones((15, 15), np.uint8))
     n, labels, stats, cent = cv2.connectedComponentsWithStats(blue, 8)
-    erased = neutralised = 0
+    erased = 0
+    pair_masks = []
     for i in range(1, n):
-        x, y, w, h, area = stats[i]
-        if area < 3000:
+        if stats[i][4] < 3000:
             continue
         region = labels == i
         if cent[i][1] < im.shape[0] / 3:      # top pair: L1/L2 and R1/R2
             im[region] = (0, 0, 0, 0)
             erased += 1
         else:                                  # side pair: L4/L5 and R4/R5
+            pair_masks.append(region)
             px = im[region]
             lum = (px[:, 0] * 0.114 + px[:, 1] * 0.587 + px[:, 2] * 0.299)
             px[:, 0] = px[:, 1] = px[:, 2] = lum.astype(np.uint8)
             im[region] = px
-            neutralised += 1
+
+    # Each side region is a STACKED PAIR of tiles. Split them apart on the
+    # empty scanlines between, so every paddle gets its own rect.
+    tiles = []
+    for region in pair_masks:
+        ys, xs = np.where(region)
+        x0, x1 = xs.min(), xs.max()
+        # Split on the UNCLOSED mask: the morphological close that makes
+        # the pair one component also bridges the gap between its tiles.
+        rows = np.where((region & blue_raw).any(axis=1))[0]
+        runs, start = [], rows[0]
+        for a_, b_ in zip(rows, rows[1:]):
+            if b_ - a_ > 1:
+                runs.append((start, a_)); start = b_
+        runs.append((start, rows[-1]))
+        for top, bot in runs:
+            tiles.append((int(x0), int(top), int(x1 - x0 + 1), int(bot - top + 1)))
+    tiles.sort(key=lambda t: (t[0] > im.shape[1] / 2, t[1]))
+
+    # The paddle highlight is the TILE'S OWN silhouette, lifted from the
+    # art rather than approximated. SD_BackButton.png cannot serve: it is
+    # a 98%-opaque square, so on a rounded tile it fills a block and
+    # leaves the border and the "L4" legend showing around it.
+    # Drawn as a RING plus a wash, not a solid fill: the tile carries its
+    # own "L4"/"L5" legend, and a solid highlight buries it, so with both
+    # paddles bound you cannot tell which is which. The ring reads as
+    # bound while the legend stays readable underneath, which is also how
+    # the trackpad-click overlay in this same pack is authored.
+    if tiles:
+        x, y, w, h = tiles[0]
+        solid = (im[y:y + h, x:x + w, 3] > 8).astype(np.uint8)
+        inner = cv2.erode(solid, np.ones((3, 3), np.uint8), iterations=9)
+        sil = np.zeros((h, w, 4), np.uint8)
+        sil[:, :, :3] = 255
+        sil[:, :, 3] = np.where(solid > 0, np.where(inner > 0, 96, 255), 0)
+        cv2.imwrite(os.path.join(MODELS_DIR, "STEAMDECK", "SD_CompactTile.png"), sil)
+
     print(f"  base: keyed {int(green.sum())} green px, "
           f"erased {erased} shoulder/trigger tiles, "
-          f"desaturated {neutralised} paddle tiles")
+          f"desaturated {len(pair_masks)} paddle tile pairs -> {len(tiles)} tiles")
     cv2.imwrite(os.path.join(MODELS_DIR, "STEAMDECK", "SD_base.png"), im)
+    return tiles
 
 
 def process_steamdeck():
@@ -1631,7 +1670,7 @@ def process_steamdeck():
     svg_path = os.path.join(ASSET_PACK, "Steam Deck Images",
         "Theme SVG", "Steam Deck Alternative Overlay.svg")
 
-    _prepare_steamdeck_base()
+    paddle_tiles = _prepare_steamdeck_base()
 
     root = etree.parse(svg_path).getroot()
     base = cv2.imread(os.path.join(MODELS_DIR, "STEAMDECK", "SD_base.png"), cv2.IMREAD_UNCHANGED)
@@ -1710,9 +1749,16 @@ def process_steamdeck():
         print(f"  {side + 'TouchpadClick':20s} ({lbl:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
 
     # Rear paddles, on-body only in this overlay (see the docstring).
-    for lbl, target in [("R4", "Paddle1"), ("L4", "Paddle2"),
-                        ("R5", "Paddle3"), ("L5", "Paddle4")]:
-        add(lbl, "SD_BackButton.png", target, "Button")
+    # Positioned on the TILE rects measured from the art, not on the SVG
+    # label bbox: the label marks the legend glyph inside the tile, while
+    # the tile is the whole control the highlight has to cover.
+    # _prepare_steamdeck_base returns them ordered left-top, left-bottom,
+    # right-top, right-bottom -> L4, L5, R4, R5.
+    for (x, y, w, h), lbl, target in zip(
+            paddle_tiles, ["L4", "L5", "R4", "R5"],
+            ["Paddle2", "Paddle4", "Paddle1", "Paddle3"]):
+        results.append(("SD_CompactTile.png", target, "Button", x, y, w, h))
+        print(f"  {target:20s} ({lbl + ' tile':20s}) -> ({x:4d}, {y:4d}) {w:4d}x{h:3d}")
 
     return {"base_width": base_w, "base_height": base_h, "results": results}
 

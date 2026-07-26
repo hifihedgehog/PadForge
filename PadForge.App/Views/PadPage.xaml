@@ -1714,6 +1714,7 @@
                                                                            Visibility="{Binding IsAxis, Converter={StaticResource BoolToVisibilityConverter}}">
                                                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
                                                                               IsChecked="{Binding AxisEntry.Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                              IsEnabled="{Binding AxisEntry.IsInvertApplicable}"
                                                                               VerticalAlignment="Center" Margin="0,0,6,2"/>
                                                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
                                                                               IsChecked="{Binding AxisEntry.HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

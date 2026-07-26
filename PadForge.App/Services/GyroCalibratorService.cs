@@ -147,20 +147,52 @@ namespace PadForge.Services
         {
             if (ud == null || ps == null || !ud.HasGyro) return Task.FromResult(false);
             durationMs = Math.Clamp(durationMs, 250, 5000);
-            return Task.Run(() => RunSampling(ud, ps, durationMs, ct, auxOnly), ct);
+            // ONE sampler per profile at a time (round nine, R5). The
+            // write-guard is a last line of defense, not a concurrency
+            // policy: two runs against one PadSetting could tear the aux
+            // triple (the aux-only lane never writes the timestamp the
+            // guard reads), and Reset-then-auto-fire genuinely produced a
+            // second live sampler on the same object. Refusing here kills
+            // manual-vs-manual, manual-vs-auto, and auto-vs-auto at the
+            // source. A refusal reports false, which the auto caller
+            // treats as "work remains" and retries.
+            lock (_inFlightLock)
+            {
+                if (!_inFlight.Add(ps)) return Task.FromResult(false);
+            }
+            return Task.Run(() =>
+            {
+                try { return RunSampling(ud, ps, durationMs, ct, auxOnly); }
+                finally { lock (_inFlightLock) _inFlight.Remove(ps); }
+            }, ct);
         }
+
+        // Reference-identity set: one entry per PadSetting with a live
+        // sampling pass. Profiles are cloned on load, so two UserSettings
+        // never share one PadSetting and this cannot over-serialize
+        // unrelated slots.
+        private static readonly HashSet<PadSetting> _inFlight =
+            new(ReferenceEqualityComparer.Instance);
+        private static readonly object _inFlightLock = new();
 
         private bool RunSampling(UserDevice ud, PadSetting ps, int durationMs, CancellationToken ct, bool auxOnly)
         {
-            // Optimistic write-guard (round eight, R1): capture the
-            // calibration timestamp at entry and refuse to write when it
-            // changed underneath the run. Nothing cancels a sampler, so
-            // without this a user's Reset Calibration during the 1.5 s
-            // window was silently REVERTED to disk ~a second later by the
-            // in-flight run's write, and two concurrent runs clobbered
-            // each other blindly. First intervening writer wins; this run
-            // reports false and the caller may retry.
-            string entryStamp = ps.GyroCalibratedAtUtc;
+            // Optimistic write-guard (round eight R1, widened round nine
+            // R4): snapshot the WHOLE calibration state at entry and
+            // refuse to write when any of it moved underneath the run.
+            // Nothing cancels a sampler, so without this a user's Reset
+            // during the 1.5 s window was silently REVERTED to disk a
+            // second later. Round eight guarded the timestamp ALONE,
+            // which is one field of a seven-field non-atomic
+            // transaction: ResetCalibration writes six bias strings and
+            // THEN the stamp, and a clipboard paste (PadSetting.CopyFrom,
+            // reflection, stamp last) leaves a microsecond-scale window,
+            // so a guard read landing mid-transaction saw the old stamp,
+            // passed, and produced a hybrid (measured bias, cleared
+            // stamp). Comparing every field closes both orderings.
+            // First intervening writer wins; this run reports false and
+            // the caller may retry.
+            var entry = Snapshot(ps);
             double accPitch = 0, accYaw = 0, accRoll = 0;
             int samples = 0;
             // The aux gyro (#252) is sampled in the SAME at-rest pass: the
@@ -222,11 +254,11 @@ namespace PadForge.Services
             bool auxStill = auxSamples > 0 && HeldStill(lo, hi, 3)
                 && PlausibleAverage(accAuxPitch, accAuxYaw, accAuxRoll, auxSamples);
 
-            // The write-guard proper (R1): a changed timestamp means a
-            // reset or a concurrent calibration finished during this run;
-            // its result is the newer truth and this run must not clobber
-            // it.
-            if (!string.Equals(ps.GyroCalibratedAtUtc, entryStamp, StringComparison.Ordinal))
+            // The write-guard proper: any change to the calibration state
+            // means a reset, a paste, or another pass landed during this
+            // run. Its result is the newer truth and this run must not
+            // clobber it.
+            if (!SameSnapshot(entry, Snapshot(ps)))
                 return false;
 
             if (auxOnly)
@@ -266,6 +298,22 @@ namespace PadForge.Services
         {
             for (int i = 0; i < 3; i++)
                 if (hi[offset + i] - lo[offset + i] > MotionRangeLimit) return false;
+            return true;
+        }
+
+        /// <summary>The whole calibration state of a profile, for the
+        /// write-guard's before / after comparison.</summary>
+        private static string[] Snapshot(PadSetting ps) => new[]
+        {
+            ps.GyroBiasPitch, ps.GyroBiasYaw, ps.GyroBiasRoll,
+            ps.GyroAuxBiasPitch, ps.GyroAuxBiasYaw, ps.GyroAuxBiasRoll,
+            ps.GyroCalibratedAtUtc,
+        };
+
+        private static bool SameSnapshot(string[] a, string[] b)
+        {
+            for (int i = 0; i < a.Length; i++)
+                if (!string.Equals(a[i], b[i], StringComparison.Ordinal)) return false;
             return true;
         }
 

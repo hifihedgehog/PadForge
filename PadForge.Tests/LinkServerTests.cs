@@ -22,22 +22,56 @@ namespace PadForge.Tests
     [Collection("RemoteLinkSockets")]
     public class LinkServerTests
     {
+        /// <summary>An ephemeral port number free on BOTH protocols.
+        ///
+        /// <para>Round nine, mechanism finally captured: the trio's
+        /// intermittent failure was always
+        /// "no ephemeral port would bind after 8 attempts", never a
+        /// deadline blowout. LinkServer.Start binds a TcpListener AND a
+        /// UDP socket to the SAME port number, while this probe used to
+        /// test TCP only, so every candidate it returned was unverified
+        /// on UDP. That is a systematic blind spot rather than a pure
+        /// timing race, and machine load (a concurrent build or a second
+        /// test host) merely made the collision likely enough to exhaust
+        /// every attempt. Probing both protocols removes the blind spot;
+        /// the residual TOCTOU gap between release and re-bind is what
+        /// the retry loop is for.</para></summary>
         private static int FreePort()
         {
-            var l = new TcpListener(IPAddress.Loopback, 0);
-            l.Start();
-            int p = ((IPEndPoint)l.LocalEndpoint).Port;
-            l.Stop();
-            return p;
+            for (int probe = 0; probe < 40; probe++)
+            {
+                var l = new TcpListener(IPAddress.Loopback, 0);
+                l.Start();
+                int p = ((IPEndPoint)l.LocalEndpoint).Port;
+                Socket udp = null;
+                bool udpFree = false;
+                try
+                {
+                    udp = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                    udp.Bind(new IPEndPoint(IPAddress.Any, p));
+                    udpFree = true;
+                }
+                catch (SocketException) { }
+                finally
+                {
+                    try { udp?.Close(); } catch { }
+                    l.Stop();
+                }
+                if (udpFree) return p;
+            }
+            throw new InvalidOperationException(
+                "no ephemeral port was free on both TCP and UDP after 40 probes");
         }
 
-        /// <summary>Probe-then-bind is a TOCTOU race: the OS can hand the
-        /// probed port to another socket in the gap (seen on the bench with
-        /// the app running alongside the suite). Retry on a fresh ephemeral
-        /// port until the bind lands.</summary>
+        /// <summary>Probe-then-bind keeps a residual TOCTOU gap: the OS can
+        /// hand the probed port to another socket between the release and
+        /// LinkServer's own bind. Retry on a fresh doubly-probed port
+        /// until the bind lands. Twenty-five attempts because the observed
+        /// failures came in bursts under heavy machine load, where a
+        /// handful of consecutive losses is ordinary.</summary>
         private static int StartOnFreePort(LinkServer s, int avoid = -1)
         {
-            for (int attempt = 0; attempt < 8; attempt++)
+            for (int attempt = 0; attempt < 25; attempt++)
             {
                 int p = FreePort();
                 if (p == avoid) continue;
@@ -45,7 +79,7 @@ namespace PadForge.Tests
                 if (s.IsRunning) return p;
                 s.Stop();
             }
-            throw new InvalidOperationException("no ephemeral port would bind after 8 attempts");
+            throw new InvalidOperationException("no ephemeral port would bind after 25 attempts");
         }
 
         private static async Task<bool> WaitUntil(Func<bool> cond, int timeoutMs)

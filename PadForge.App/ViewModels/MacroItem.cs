@@ -755,8 +755,24 @@ namespace PadForge.ViewModels
             public bool HalfAxis
             {
                 get => _halfAxis;
-                set { if (SetProperty(ref _halfAxis, value)) _descriptorSource = null; }
+                set
+                {
+                    if (SetProperty(ref _halfAxis, value))
+                    {
+                        _descriptorSource = null;
+                        OnPropertyChanged(nameof(IsInvertApplicable));
+                    }
+                }
             }
+
+            /// <summary>Whether Invert does anything in the current
+            /// combination (round nine, R9): with Half + Either both on
+            /// the evaluator mirrors around center and Invert is inert,
+            /// exactly as in the two mapping editors. This third editor
+            /// was left ungated when those two were fixed, so the commit
+            /// that claimed "both mapping editors" was one short.</summary>
+            [System.Xml.Serialization.XmlIgnore]
+            public bool IsInvertApplicable => !(_halfAxis && _bidirectional);
 
             /// <summary>When true the axis reading is flipped (val → 1−val)
             /// before the deadzone test. Same semantics as
@@ -779,7 +795,14 @@ namespace PadForge.ViewModels
             public bool Bidirectional
             {
                 get => _bidirectional;
-                set { if (SetProperty(ref _bidirectional, value)) _descriptorSource = null; }
+                set
+                {
+                    if (SetProperty(ref _bidirectional, value))
+                    {
+                        _descriptorSource = null;
+                        OnPropertyChanged(nameof(IsInvertApplicable));
+                    }
+                }
             }
 
             /// <summary>Axis-to-button deadzone in percent (1..100). Default

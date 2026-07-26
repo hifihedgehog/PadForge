@@ -326,11 +326,19 @@ namespace PadForge.Tests
         [Fact]
         public void DevicePause_FreezesFiniteEffectClocks()
         {
-            var dec = StartedConstant(duration: 100);
+            // Round nine: the life was 100 ms with the pause arriving on
+            // the very next line, so under heavy machine load (a
+            // concurrent build, a second test host) the scheduler could
+            // starve that gap past 100 ms, the effect expired BEFORE the
+            // pause landed, and the resume found nothing to keep alive.
+            // The product was right every time; the margin was too thin.
+            // A one-second life needs a full second of starvation to
+            // break, which is far outside anything observed.
+            var dec = StartedConstant(duration: 1000);
             dec.Apply(new Vibration());
 
             dec.OnHidOutput(0x1C, new byte[] { 5 });
-            System.Threading.Thread.Sleep(250); // far past the 100 ms life
+            System.Threading.Thread.Sleep(1200); // far past the 1000 ms life
             dec.OnHidOutput(0x1C, new byte[] { 6 });
 
             // The paused span must not count against the duration.

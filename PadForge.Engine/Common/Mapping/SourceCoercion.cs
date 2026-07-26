@@ -3659,7 +3659,18 @@ namespace PadForge.Engine.Common.Mapping
                 // HalfAxis+Invert row on Mouse Motion Y, per the issue's
                 // driving use case.
                 float mv = ReadJoyCon2MouseMotion(state, src);
-                if (src.HalfAxis) return Math.Max(0f, src.Invert ? -mv : mv);
+                if (src.HalfAxis)
+                {
+                    // Bidirectional mirrors around center, so BOTH
+                    // directions pull and Invert is inert, matching the
+                    // Axis and Gyro-Lean arms of this same read (round
+                    // nine, R3: this arm was the one sibling missing the
+                    // branch, which made the editors' new Invert
+                    // applicability gate lie for a Mouse Motion source on
+                    // a trigger target).
+                    if (src.Bidirectional) return Math.Min(1f, Math.Abs(mv));
+                    return Math.Max(0f, src.Invert ? -mv : mv);
+                }
                 return Math.Abs(mv);
             }
 

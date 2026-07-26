@@ -8,6 +8,18 @@ using PadForge.Engine.RemoteLink;
 
 namespace PadForge.Tests
 {
+    /// <summary>Runs with suite parallelism disabled (round six): these
+    /// three drive REAL loopback sockets with wall-clock deadlines, and
+    /// under the full suite's parallel load they intermittently failed
+    /// as a trio (twice on 2026-07-25, green in isolation six of six)
+    /// while every other run was clean. Deadline blowout and
+    /// ephemeral-port churn are both load-shaped; taking the class out
+    /// of the parallel pool removes the load from the window instead of
+    /// guessing at a longer deadline.</summary>
+    [CollectionDefinition("RemoteLinkSockets", DisableParallelization = true)]
+    public sealed class RemoteLinkSocketsCollection { }
+
+    [Collection("RemoteLinkSockets")]
     public class LinkServerTests
     {
         private static int FreePort()

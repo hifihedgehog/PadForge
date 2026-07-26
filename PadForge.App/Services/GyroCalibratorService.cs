@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,15 +20,32 @@ namespace PadForge.Services
     /// <c>PadSetting</c>s, so re-calibrating one slot does not disturb
     /// the other.</para>
     ///
+    /// <para>At-rest is VERIFIED, not assumed (audit 2026-07-25 round
+    /// six, R1): each sampled axis's peak-to-peak range must stay under
+    /// <see cref="MotionRangeLimit"/> or the run writes nothing and
+    /// returns false. The auto-calibration trigger is device-connect,
+    /// which is exactly when the pad is plausibly in the user's hands
+    /// (power button just pressed, BT reconnect mid-game), and a bias
+    /// averaged from deliberate motion made every gyro row read a large
+    /// constant rate while the pad sat still.</para>
+    ///
     /// <para>Thread model: sampling runs on a worker task, polling
     /// <c>ud.InputState.Gyro[]</c> at ~5 ms intervals. The state object
     /// is mutated by the InputManager polling thread on every SDL update;
     /// reads are non-atomic on float arrays but tearing is acceptable
     /// here (the average across hundreds of samples washes out any
-    /// half-written transient).</para>
+    /// half-written transient, and a torn value large enough to matter
+    /// trips the motion gate instead of landing in the bias).</para>
     /// </summary>
     public sealed class GyroCalibratorService
     {
+        /// <summary>Maximum per-axis peak-to-peak gyro range (rad/s) a
+        /// sampling run may see and still count as at-rest. At-rest
+        /// sensor noise plus hand tremor stays an order of magnitude
+        /// below this ~20°/s bound; deliberately moving the pad is an
+        /// order of magnitude above it.</summary>
+        internal const float MotionRangeLimit = 0.35f;
+
         private readonly Action _persistCallback;
 
         /// <param name="persistCallback">Called on completion to ask
@@ -38,29 +55,46 @@ namespace PadForge.Services
             _persistCallback = persistCallback;
         }
 
+        /// <summary>Whether <see cref="EnsureAutoCalibratedAsync"/> would
+        /// start a sampling pass for this (device, profile) pair right
+        /// now: gyro-capable, and either never calibrated (no timestamp)
+        /// or aux-capable with the aux triple still at the field default
+        /// (the #252 upgrade). Pure and cheap; the caller consults it
+        /// BEFORE burning its one-shot per-session latch, so a pair with
+        /// nothing to do never consumes the latch (round six, R1: the old
+        /// order latched every considered pair, and a later profile
+        /// switch bringing an uncalibrated PadSetting to the same
+        /// (device, slot) could not auto-calibrate until restart).</summary>
+        public static bool WouldCalibrate(UserDevice ud, PadSetting ps)
+        {
+            if (ud == null || ps == null) return false;
+            if (!ud.HasGyro) return false;
+            if (string.IsNullOrEmpty(ps.GyroCalibratedAtUtc)) return true;
+            bool auxUnset = ps.GyroAuxBiasPitch == "0"
+                && ps.GyroAuxBiasYaw == "0"
+                && ps.GyroAuxBiasRoll == "0";
+            return ud.HasGyroAux && auxUnset;
+        }
+
         /// <summary>Auto-runs the 1500 ms calibration the first time a
         /// (device, slot) is seen with no calibration timestamp on its
-        /// <see cref="PadSetting"/>. No-op if either argument is null or
-        /// the device lacks a gyro.</summary>
-        public Task EnsureAutoCalibratedAsync(UserDevice ud, PadSetting ps)
+        /// <see cref="PadSetting"/>, plus the #252 upgrade for a stamped
+        /// profile whose aux triple was never measured. The upgrade
+        /// samples the AUX TRIPLE ALONE: the stored primary bias is the
+        /// user's real calibration and an unattended connect-time pass
+        /// has no business rewriting it (round six, R1: the full-fat
+        /// call here re-sampled the primary with the pad plausibly in
+        /// hand, and one moving run poisoned it permanently because a
+        /// non-zero aux measurement retires the branch). Returns false
+        /// without sampling when there is nothing to do. Otherwise
+        /// returns the sampling result, where false means the run wrote
+        /// nothing (offline mid-run, or the motion gate rejected it)
+        /// and the caller may retry.</summary>
+        public Task<bool> EnsureAutoCalibratedAsync(UserDevice ud, PadSetting ps)
         {
-            if (ud == null || ps == null) return Task.CompletedTask;
-            if (!ud.HasGyro) return Task.CompletedTask;
-            if (!string.IsNullOrEmpty(ps.GyroCalibratedAtUtc))
-            {
-                // Upgrade path for the #252 aux triple (audit 2026-07-25,
-                // C39): a profile stamped BEFORE the aux fields existed
-                // skipped here forever, leaving the left Joy-Con's bias at
-                // the field default and its rows drifting. An unset triple
-                // on an aux-capable device re-runs the same at-rest pass;
-                // a measured all-zero result re-runs harmlessly at next
-                // launch (1.5 s background sample, idempotent).
-                bool auxUnset = ps.GyroAuxBiasPitch == "0"
-                    && ps.GyroAuxBiasYaw == "0"
-                    && ps.GyroAuxBiasRoll == "0";
-                if (!(ud.HasGyroAux && auxUnset)) return Task.CompletedTask;
-            }
-            return RecalibrateAsync(ud, ps, 1500);
+            if (!WouldCalibrate(ud, ps)) return Task.FromResult(false);
+            bool auxOnly = !string.IsNullOrEmpty(ps.GyroCalibratedAtUtc);
+            return RecalibrateAsync(ud, ps, 1500, auxOnly: auxOnly);
         }
 
         /// <summary>Zeroes the gyro bias fields and clears the
@@ -85,15 +119,20 @@ namespace PadForge.Services
         /// <summary>Samples <paramref name="ud"/>'s gyro readings for
         /// <paramref name="durationMs"/>, averages each axis, and writes
         /// the result to <paramref name="ps"/>'s bias fields. Returns
-        /// false if the device went offline mid-sample or has no gyro.</summary>
-        public Task<bool> RecalibrateAsync(UserDevice ud, PadSetting ps, int durationMs = 1500, CancellationToken ct = default)
+        /// false, writing nothing, if the device went offline
+        /// mid-sample, has no gyro, or the motion gate saw the pad move.
+        /// <paramref name="auxOnly"/> (the #252 upgrade) writes the aux
+        /// triple alone and leaves the primary bias and the calibration
+        /// timestamp untouched.</summary>
+        public Task<bool> RecalibrateAsync(UserDevice ud, PadSetting ps, int durationMs = 1500,
+            CancellationToken ct = default, bool auxOnly = false)
         {
             if (ud == null || ps == null || !ud.HasGyro) return Task.FromResult(false);
             durationMs = Math.Clamp(durationMs, 250, 5000);
-            return Task.Run(() => RunSampling(ud, ps, durationMs, ct), ct);
+            return Task.Run(() => RunSampling(ud, ps, durationMs, ct, auxOnly), ct);
         }
 
-        private bool RunSampling(UserDevice ud, PadSetting ps, int durationMs, CancellationToken ct)
+        private bool RunSampling(UserDevice ud, PadSetting ps, int durationMs, CancellationToken ct, bool auxOnly)
         {
             double accPitch = 0, accYaw = 0, accRoll = 0;
             int samples = 0;
@@ -106,8 +145,13 @@ namespace PadForge.Services
             // stored aux triple with zeros.
             double accAuxPitch = 0, accAuxYaw = 0, accAuxRoll = 0;
             int auxSamples = 0;
+            // Per-axis peak-to-peak extremes for the motion gate:
+            // [0..2] primary, [3..5] aux.
+            var lo = new float[6];
+            var hi = new float[6];
+            for (int i = 0; i < 6; i++) { lo[i] = float.MaxValue; hi[i] = float.MinValue; }
             var sw = System.Diagnostics.Stopwatch.StartNew();
-            // ~5 ms cadence — fast enough to catch the polling thread's
+            // ~5 ms cadence: fast enough to catch the polling thread's
             // updates without burning CPU. ~200 samples per 1500 ms is
             // ample for averaging out small noise.
             while (sw.ElapsedMilliseconds < durationMs)
@@ -118,6 +162,12 @@ namespace PadForge.Services
                 var gyro = state.Gyro;
                 if (gyro != null && gyro.Length >= 3)
                 {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        float v = gyro[i];
+                        if (v < lo[i]) lo[i] = v;
+                        if (v > hi[i]) hi[i] = v;
+                    }
                     accPitch += gyro[0];
                     accYaw   += gyro[1];
                     accRoll  += gyro[2];
@@ -126,6 +176,12 @@ namespace PadForge.Services
                 var gyroAux = state.GyroAux;
                 if (ud.HasGyroAux && gyroAux != null && gyroAux.Length >= 3)
                 {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        float v = gyroAux[i];
+                        if (v < lo[3 + i]) lo[3 + i] = v;
+                        if (v > hi[3 + i]) hi[3 + i] = v;
+                    }
                     accAuxPitch += gyroAux[0];
                     accAuxYaw   += gyroAux[1];
                     accAuxRoll  += gyroAux[2];
@@ -134,21 +190,57 @@ namespace PadForge.Services
                 try { Thread.Sleep(5); }
                 catch (ThreadInterruptedException) { return false; }
             }
-            if (samples == 0) return false;
+            bool primaryStill = samples > 0 && HeldStill(lo, hi, 0);
+            bool auxStill = auxSamples > 0 && HeldStill(lo, hi, 3);
 
-            ps.GyroBiasPitch = ((float)(accPitch / samples)).ToString("R", CultureInfo.InvariantCulture);
-            ps.GyroBiasYaw   = ((float)(accYaw   / samples)).ToString("R", CultureInfo.InvariantCulture);
-            ps.GyroBiasRoll  = ((float)(accRoll  / samples)).ToString("R", CultureInfo.InvariantCulture);
-            if (auxSamples > 0)
+            if (auxOnly)
             {
-                ps.GyroAuxBiasPitch = ((float)(accAuxPitch / auxSamples)).ToString("R", CultureInfo.InvariantCulture);
-                ps.GyroAuxBiasYaw   = ((float)(accAuxYaw   / auxSamples)).ToString("R", CultureInfo.InvariantCulture);
-                ps.GyroAuxBiasRoll  = ((float)(accAuxRoll  / auxSamples)).ToString("R", CultureInfo.InvariantCulture);
+                // #252 upgrade: write ONLY the never-measured aux triple,
+                // and only from a run where the left half genuinely held
+                // still. The primary bias and the timestamp are the
+                // user's existing calibration and stay untouched. A
+                // rejected run returns false so the caller can retry; a
+                // legitimately-zero measurement writes "0" and re-runs at
+                // next launch, which is now genuinely harmless because
+                // this branch cannot reach the primary.
+                if (!auxStill) return false;
+                WriteAuxTriple(ps, accAuxPitch, accAuxYaw, accAuxRoll, auxSamples);
+                _persistCallback?.Invoke();
+                return true;
             }
+
+            // Full calibration: a moving pad writes nothing (round six,
+            // R1). A still primary with a moving aux is possible (the
+            // halves are separate hands), so the primary is written and
+            // the aux triple stays at its default for the upgrade branch
+            // to retry.
+            if (!primaryStill) return false;
+            ps.GyroBiasPitch = AvgStr(accPitch, samples);
+            ps.GyroBiasYaw   = AvgStr(accYaw, samples);
+            ps.GyroBiasRoll  = AvgStr(accRoll, samples);
+            if (auxStill)
+                WriteAuxTriple(ps, accAuxPitch, accAuxYaw, accAuxRoll, auxSamples);
             ps.GyroCalibratedAtUtc = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
 
             _persistCallback?.Invoke();
             return true;
+        }
+
+        private static bool HeldStill(float[] lo, float[] hi, int offset)
+        {
+            for (int i = 0; i < 3; i++)
+                if (hi[offset + i] - lo[offset + i] > MotionRangeLimit) return false;
+            return true;
+        }
+
+        private static string AvgStr(double acc, int n)
+            => ((float)(acc / n)).ToString("R", CultureInfo.InvariantCulture);
+
+        private static void WriteAuxTriple(PadSetting ps, double p, double y, double r, int n)
+        {
+            ps.GyroAuxBiasPitch = AvgStr(p, n);
+            ps.GyroAuxBiasYaw   = AvgStr(y, n);
+            ps.GyroAuxBiasRoll  = AvgStr(r, n);
         }
     }
 }

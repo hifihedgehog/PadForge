@@ -340,18 +340,24 @@ namespace PadForge.Engine.Data
         [XmlAttribute] public double ParamAntiDeadzone { get; set; }
 
         /// <summary>Stick-read deadzone geometry (translator v25, Steam's
-        /// deadzone_shape on the stick-hosted mouse modes): 0 (default) =
-        /// off, the untouched read. 1 = axial: the source's DeadZone
-        /// percent and ParamRangeOuter rescale this axis by its own
-        /// magnitude (Steam Cross / Square, the per-axis check). 2 =
-        /// radial: the rescale factor is computed from the stick PAIR
-        /// magnitude (this axis and its companion, Axis 0/1 or 3/4), so
-        /// the dead region is a circle and diagonals shape correctly
-        /// (Steam Circle). Applied inside the generic bipolar Axis read
-        /// before sensitivity; when set, ParamRangeOuter is consumed here
-        /// instead of the per-axis shaping tail. Retires the v19 "no
-        /// per-source companion-axis channel" residual for the mouse
-        /// lanes.</summary>
+        /// deadzone_shape on the stick-hosted analog pair modes): 0
+        /// (default) = off, the untouched read. 1 = axial:
+        /// <see cref="ParamStickDeadZoneInner"/> and ParamRangeOuter
+        /// rescale this axis by its own magnitude (Steam Cross / Square,
+        /// the per-axis check). 2 = radial: the rescale factor is
+        /// computed from the stick PAIR magnitude (this axis and its
+        /// companion, Axis 0/1 or 3/4), so the dead region is a circle
+        /// and diagonals shape correctly (Steam Circle). Applied inside
+        /// the generic bipolar Axis read before sensitivity; when set,
+        /// ParamRangeOuter is consumed here instead of the per-axis
+        /// shaping tail. Retires the v19 "no per-source companion-axis
+        /// channel" residual for every stick-hosted pair emitter (mouse
+        /// lanes since v25, thumb pairs since the round-six completion).
+        /// CODING TRAP: this 1 = axial / 2 = radial coding is per-source
+        /// only. The slot-level DeadZoneShape enum codes Axial = 0 /
+        /// Radial = 1 / ScaledRadial = 2, so the value 1 means opposite
+        /// things in the two channels; never copy one into the
+        /// other.</summary>
         [XmlAttribute] public int ParamStickDeadZoneShape { get; set; }
 
         /// <summary>Inner radius for <see cref="ParamStickDeadZoneShape"/>

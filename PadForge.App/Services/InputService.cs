@@ -10031,13 +10031,6 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>For each (UserDevice × assigned slot) pair where the
-        /// device is online + gyro-capable and the slot's PadSetting has
-        /// no calibration timestamp, fire a background recalibration on
-        /// that (device, slot)'s PadSetting. Idempotent — guarded by
-        /// _gyroAutoCalibKicked (keyed by (InstanceGuid, slot)) to
-        /// survive concurrent UpdatePadDeviceInfo passes while the
-        /// 1500 ms worker is still running.</summary>
         /// <summary>Whether a (device, profile) pair is worth handing to the
         /// gyro auto-calibrator. Deliberately does NOT pre-filter on the
         /// calibration timestamp (audit 2026-07-25, G1): the calibrator's own
@@ -10058,13 +10051,21 @@ namespace PadForge.Services
             return true;
         }
 
+        /// <summary>For each (UserDevice × assigned slot) pair that is
+        /// online + gyro-capable, hand the pair to the calibrator when its
+        /// own <see cref="GyroCalibratorService.WouldCalibrate"/> says a
+        /// sampling pass is due (first-time calibration, or the #252
+        /// aux-only upgrade). The per-(InstanceGuid, slot) latch burns
+        /// only when a pass actually starts and is released again when
+        /// the pass writes nothing, so a rejected or raced run retries on
+        /// a later pass instead of going dark for the session.</summary>
         private void TryAutoCalibrateGyros()
         {
             var settings = SettingsManager.UserSettings;
             if (settings == null) return;
             var devs = SettingsManager.UserDevices?.Items;
             if (devs == null) return;
-            (UserDevice ud, PadSetting ps)[] candidates;
+            (UserDevice ud, PadSetting ps, (Guid, int) key)[] candidates;
             // Canonical lock order is UserDevices -> UserSettings (see
             // MappingSetEval's snapshot doc); Settings-first here was one half
             // of an ABBA pair against the disconnect path's Devices-first
@@ -10072,7 +10073,7 @@ namespace PadForge.Services
             lock (SettingsManager.UserDevices.SyncRoot)
             lock (settings.SyncRoot)
             {
-                var found = new List<(UserDevice, PadSetting)>();
+                var found = new List<(UserDevice, PadSetting, (Guid, int))>();
                 for (int i = 0; i < settings.Items.Count; i++)
                 {
                     var us = settings.Items[i];
@@ -10088,26 +10089,49 @@ namespace PadForge.Services
                     var ps = us.GetPadSetting();
                     if (!ShouldConsiderForGyroAutoCalibration(ud, ps)) continue;
                     // NO timestamp pre-filter here (audit 2026-07-25, G1).
-                    // EnsureAutoCalibratedAsync owns the whole decision, and
-                    // its #252 upgrade branch fires only for a profile that
-                    // ALREADY carries a timestamp. Filtering those out here
-                    // made that branch unreachable: every pre-#252 profile on
-                    // a Joy-Con pair kept its aux bias at the field default
+                    // The calibrator owns the whole decision, and its #252
+                    // upgrade branch fires only for a profile that ALREADY
+                    // carries a timestamp. Filtering those out here made
+                    // that branch unreachable: every pre-#252 profile on a
+                    // Joy-Con pair kept its aux bias at the field default
                     // forever, so the left half ran with no drift correction
                     // while the right half was corrected. Two gates on the
-                    // same condition, in opposite directions. The per-(device,
-                    // slot) latch below still bounds this to one call each per
-                    // session, and the callee returns a completed task
-                    // immediately when there is nothing to do.
+                    // same condition, in opposite directions.
+                    //
+                    // The latch burns only when the calibrator says a
+                    // sampling pass is actually due (round six, R1): the old
+                    // order latched every considered pair, so a calibrated
+                    // profile consumed the key and a later profile switch
+                    // bringing an uncalibrated PadSetting to the same
+                    // (device, slot) could never auto-calibrate until
+                    // restart. WouldCalibrate is the callee's own pure
+                    // decision, so the two halves cannot drift.
+                    if (!GyroCalibratorService.WouldCalibrate(ud, ps)) continue;
                     var key = (ud.InstanceGuid, slot);
                     if (_gyroAutoCalibKicked.Contains(key)) continue;
                     _gyroAutoCalibKicked.Add(key);
-                    found.Add((ud, ps));
+                    found.Add((ud, ps, key));
                 }
                 candidates = found.ToArray();
             }
-            foreach (var (ud, ps) in candidates)
-                _ = GyroCalibrator.EnsureAutoCalibratedAsync(ud, ps);
+            foreach (var (ud, ps, key) in candidates)
+            {
+                var pass = GyroCalibrator.EnsureAutoCalibratedAsync(ud, ps);
+                // A pass that wrote nothing (device raced offline before the
+                // first sample, mid-run disconnect, or the motion gate saw
+                // the pad move) releases the latch so a later
+                // UpdatePadDeviceInfo can retry; a successful write keeps it
+                // burned for the session. Latch mutations stay under the
+                // UserDevices sync root, matching ClearGyroAutoCalibLatch
+                // and the consume above.
+                _ = pass.ContinueWith(done =>
+                {
+                    bool wrote = done.Status == TaskStatus.RanToCompletion && done.Result;
+                    if (wrote) return;
+                    lock (SettingsManager.UserDevices.SyncRoot)
+                        _gyroAutoCalibKicked.Remove(key);
+                }, TaskContinuationOptions.ExecuteSynchronously);
+            }
         }
 
         public void UpdatePadDeviceInfo()

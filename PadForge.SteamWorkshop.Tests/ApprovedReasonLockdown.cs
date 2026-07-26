@@ -25,19 +25,23 @@ namespace PadForge.SteamWorkshop.Tests
         {
             // 5 -> 3 in v25: the stick-hosted MOUSE pairs consumed their
             // radii through ParamStickDeadZoneShape, retiring two.
-            // 3 -> 1 now: the same stamp reached the THUMB-PAIR emitters,
-            // which is the retirement the previous note said was owed. A
-            // stick-hosted joystick_move carries its authored deadzone
-            // geometry to the read for real, radial for Steam's Circle
-            // and axial for Cross/Square, on both the crossed and the
-            // matched emission paths.
-            // The ONE that remains is the TRACKPAD host, and it is an
-            // honest impossibility rather than an unfinished job: its
-            // pair rides Touchpad finger / gesture descriptors, which the
-            // engine reads outside the Axis path where the geometry is
-            // applied, so there is no companion-axis pair test to consume
-            // the radii. Retiring it needs the touchpad read to gain that
-            // test, not another stamp.
+            // 3 -> 1 in the 67fca4d9 pass: the same stamp reached the
+            // joystick_move thumb-pair emitter, crossed and matched.
+            // Round six (R3) closed the emitter that pass missed:
+            // EmitMouseJoystickAxes (mouse_joystick / gyro_to_joystick)
+            // now stamps its stick hosts and scopes the residual to the
+            // finger / gyro lanes, so the earlier "only the trackpad
+            // remains" wording here is finally true of the code. The
+            // gyro-lean deflection pair also names its dropped radii now
+            // (R5) instead of losing them silently.
+            // What remains is a genuine non-Axis-read boundary, not an
+            // unfinished stamp: trackpad pairs ride Touchpad finger /
+            // gesture descriptors and gyro pairs ride the rate / lean
+            // reads, none of which pass through the Axis path where the
+            // geometry applies. Retiring these needs those reads to gain
+            // the pair test, not another stamp. The corpus count stays 1
+            // (the joystick_move right_trackpad group in 1150803559); no
+            // fixture authors deadzone keys on the other residual hosts.
             "Workshop_Tr_DeadZoneRadialResidual=1",
             // Steam-session/client: in-game Steam Input API action
             // blocks are delivered to the game by its own Steam

@@ -77,10 +77,10 @@ namespace PadForge.Common.Input
             // its OWN bus-bypassing HIDAPI path, but that requires Steam
             // Xbox Extended Feature Driver and is not what we are doing
             // here. Stock XUSB driver accepts the 9-byte shape on the
-            // XUSB interface (verified by X1nput). Scratch reuse: the poll
-            // thread is the sole caller (Step 2 ApplyForceFeedback).
-            var buf = s_reportScratch;
-            buf[2] = lt; buf[3] = rt; buf[4] = lm; buf[5] = rm;
+            // XUSB interface (verified by X1nput). Scratch is PER-THREAD:
+            // the poll thread is NOT the sole caller, see the note on
+            // s_targets below.
+            var buf = BuildReport(lt, rt, lm, rm);
 
             // Cached resolved path + persistent handle: the per-change
             // ResolveInterfacePath ran a full SetupDi interface sweep plus
@@ -94,7 +94,7 @@ namespace PadForge.Common.Input
                     && WriteFile(cached.Handle, buf, (uint)buf.Length, out _, IntPtr.Zero))
                     return true;
                 cached.Handle?.Dispose();
-                s_targets.Remove(ud.DevicePath);
+                s_targets.TryRemove(ud.DevicePath, out _);
             }
 
             string interfacePath = ResolveInterfacePath(ud);
@@ -112,7 +112,14 @@ namespace PadForge.Common.Input
             bool ok = WriteFile(handle, buf, (uint)buf.Length, out _, IntPtr.Zero);
             if (ok)
             {
-                s_targets[ud.DevicePath] = new CachedTarget { InterfacePath = interfacePath, Handle = handle };
+                // TryAdd, not the indexer: if the other caller cached this
+                // same device between our miss and here, its handle is as
+                // good as ours, so drop ours rather than orphan it under an
+                // overwritten entry. The write above already succeeded
+                // either way, so the result is true regardless of who won.
+                if (!s_targets.TryAdd(ud.DevicePath,
+                        new CachedTarget { InterfacePath = interfacePath, Handle = handle }))
+                    handle.Dispose();
                 return true;
             }
             handle.Dispose();
@@ -124,11 +131,35 @@ namespace PadForge.Common.Input
             public string InterfacePath;
             public Microsoft.Win32.SafeHandles.SafeFileHandle Handle;
         }
-        // Poll thread is the sole caller, so a plain dictionary suffices.
-        private static readonly System.Collections.Generic.Dictionary<string, CachedTarget> s_targets =
+        // The poll thread is NOT the sole caller, though a comment here
+        // claimed it was. The Remote Link output path (#138) reaches
+        // Write from the network receive thread whenever a remote peer
+        // drives an Xbox One+ pad (InputService's effect apply, the
+        // impulse-trigger branch). A plain Dictionary mutated from two
+        // threads with no lock can corrupt its buckets, and a corrupt
+        // Dictionary sends TryGetValue into an INFINITE LOOP, which on the
+        // 1 kHz poll thread is a hung input pipeline rather than a wrong
+        // value. Concurrent now.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, CachedTarget> s_targets =
             new(StringComparer.OrdinalIgnoreCase);
-        private static readonly byte[] s_reportScratch =
-            { 0x03, 0x0F, 0, 0, 0, 0, 0xFF, 0x00, 0xEB };
+
+        // Same two-caller reason: per-thread, so a local write and a remote
+        // write cannot interleave their motor bytes into a blend neither
+        // side asked for. Keeps the allocation-free property the shared
+        // buffer existed for, with no lock on the hot path.
+        [ThreadStatic] private static byte[] t_reportScratch;
+
+        /// <summary>Fills this thread's 9-byte GIP report. Bytes 0/1 and
+        /// 6/7/8 are the fixed X1nput command frame, 2..5 are LT / RT /
+        /// large / small. Internal so the per-thread isolation is
+        /// testable.</summary>
+        internal static byte[] BuildReport(byte lt, byte rt, byte lm, byte rm)
+        {
+            var buf = t_reportScratch ??=
+                new byte[] { 0x03, 0x0F, 0, 0, 0, 0, 0xFF, 0x00, 0xEB };
+            buf[2] = lt; buf[3] = rt; buf[4] = lm; buf[5] = rm;
+            return buf;
+        }
 
         // ─────────────────────────────────────────────
         //  HID interface enumeration

@@ -51,13 +51,55 @@ namespace PadForge.Tests
         // sequential application must produce; the collapse got the last
         // two wrong.
 
+        /// <summary>Drives the REAL remap the drain uses, one single-hop
+        /// pass per queued pair in order, and reports where a row that
+        /// started on <paramref name="start"/> ended up.
+        ///
+        /// <para>Round eleven: these tests previously asserted against a
+        /// local reimplementation of the drain's loop, so reintroducing
+        /// round nine's chain collapse in the real code would have left
+        /// every one of them green. A test that mirrors the code it is
+        /// meant to guard proves only that the mirror is
+        /// self-consistent.</para></summary>
         private static Guid Apply(IReadOnlyList<(Guid Old, Guid New)> pending, Guid start)
         {
-            // Mirrors the drain's loop: each queued pair is one pass.
-            Guid cur = start;
-            foreach (var (o, n) in pending)
-                if (cur == o) cur = n;
-            return cur;
+            var ms = new MappingSet
+            {
+                Rows = new List<MappingRow>
+                {
+                    new MappingRow
+                    {
+                        Target = "A",
+                        LayerMask = "Base",
+                        Sources = new List<MappingSource>
+                        {
+                            new MappingSource
+                            {
+                                Descriptor = "Button 0",
+                                DeviceGuid = start.ToString().ToLowerInvariant(),
+                            },
+                        },
+                    },
+                },
+            };
+            var saved = SettingsManager.SlotMappingSets;
+            SettingsManager.SlotMappingSets = new[] { ms };
+            try
+            {
+                // BuildRekeyPasses is the drain's OWN ordering rule, not a
+                // copy of it: reintroducing a chain collapse there turns
+                // these tests red.
+                foreach (var (o, n) in InputService.BuildRekeyPasses(pending))
+                {
+                    InputService.RemapDeviceGuidsInSlotMappingSets(
+                        new Dictionary<string, string>
+                        {
+                            [o.ToString().ToLowerInvariant()] = n.ToString().ToLowerInvariant(),
+                        });
+                }
+            }
+            finally { SettingsManager.SlotMappingSets = saved; }
+            return Guid.Parse(ms.Rows[0].Sources[0].DeviceGuid);
         }
 
         [Fact]
@@ -169,11 +211,32 @@ namespace PadForge.Tests
             lock (SettingsManager.UserSettings.SyncRoot)
                 SettingsManager.UserSettings.Items.Add(us);
 
-            InputService.RemapDeviceGuidsInPadSettingsForTests(oldGuid, newGuid);
+            // Round eleven: the per-device Touchpad and Mouse tabs are
+            // guid-keyed too, and were missed by the round-ten walk.
+            ps.TouchpadSettings = new[]
+            {
+                new PadForge.Engine.Touchpad.TouchpadSettingsEntry
+                { DeviceGuid = oldGuid.ToString() },
+            };
+            ps.MouseGestureSettings = new[]
+            {
+                new PadForge.Engine.Mouse.MouseGestureSettingsEntry
+                {
+                    DeviceGuid = oldGuid.ToString(),
+                    Settings = new PadForge.Engine.Mouse.MouseGestureSettings
+                    { CustomEngageDeviceGuid = oldGuid.ToString() },
+                },
+            };
+
+            InputService.RemapDeviceGuidsInStoredPadSettings(oldGuid, newGuid);
 
             Assert.Equal(newGuid.ToString(), ps.GyroAimEngageDeviceGuid);
             Assert.Equal(newGuid.ToString(), ps.LeftTriggerRouteActivatorDeviceGuid);
             Assert.Equal(other.ToString(), ps.RightTriggerRouteActivatorDeviceGuid);
+            Assert.Equal(newGuid.ToString(), ps.TouchpadSettings[0].DeviceGuid);
+            Assert.Equal(newGuid.ToString(), ps.MouseGestureSettings[0].DeviceGuid);
+            Assert.Equal(newGuid.ToString(),
+                ps.MouseGestureSettings[0].Settings.CustomEngageDeviceGuid);
         }
 
         // ── The armed-window clear on a re-pin ──

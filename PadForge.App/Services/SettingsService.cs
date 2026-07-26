@@ -707,6 +707,20 @@ namespace PadForge.Services
                 var padVm = pads[slot];
                 if (padVm == null) continue;
 
+                // A pad whose grid has not been hydrated yet is NOT a
+                // source of truth (round eleven). MappingsViewLoaded is
+                // false across a device assignment and every output-type
+                // switch, precisely while the MappingSet holds freshly
+                // auto-mapped rows the ViewModel has never seen. Pushing
+                // there rebuilds those rows from an empty grid and wipes
+                // them, which is the MappingSet-level twin of the
+                // "21 descriptors to 0 in 2 ms" failure the PadSetting
+                // save path already guards against. Harmless before this
+                // week, because the only caller was the autosave, which
+                // never ran inside those windows; the adoption drain
+                // does.
+                if (!padVm.MappingsViewLoaded) continue;
+
                 // Ensure the slot has a MappingSet to mutate.
                 var ms = sets[slot] ?? (sets[slot] = new MappingSet());
 

@@ -234,6 +234,14 @@ namespace PadForge.Services
         // instead of being wedged behind a burned token. All mutations
         // ride SettingsManager.UserDevices.SyncRoot.
         private readonly Dictionary<(Guid InstanceGuid, int Slot), (PadSetting Ps, object Run)> _gyroAutoCalibKicked = new();
+
+        /// <summary>True while a caller has swapped the domain mapping
+        /// sets but has not yet reconciled the ViewModels against them
+        /// (ApplyProfile's window). The adoption drain must not push the
+        /// ViewModels into the domain during that window: they still
+        /// describe the OUTGOING profile and would overwrite the incoming
+        /// one (round eleven).</summary>
+        private bool _vmMappingsStale;
         // Bounded retry ledger (round seven, R3): a released pass has no
         // natural next event (UpdatePadDeviceInfo is edge-driven), so a
         // release schedules one delayed re-poke, capped per ps epoch so a
@@ -6041,7 +6049,14 @@ namespace PadForge.Services
                 // BuildInputChoices is device-only and doesn't have
                 // profile context, so the custom-gesture surfacing
                 // lives here next to the per-device flat-list build.
-                if ((udi.HasTouchpad || udi.IsTouchpad) && _activeTouchpadGestures.Count > 0)
+                // udi is null whenever the pad's MappedDevices still names
+                // a guid the device list no longer carries: an orphaned
+                // UserSetting, or a row re-keyed by an adoption earlier in
+                // the same pass. BuildInputChoices above tolerates null;
+                // this line did not, and the resulting NullReferenceException
+                // aborted the whole DevicesUpdated continuation (round
+                // eleven).
+                if (udi != null && (udi.HasTouchpad || udi.IsTouchpad) && _activeTouchpadGestures.Count > 0)
                 {
                     string devClass = ResolveDeviceClass(udi);
                     // Match MappingDisplayResolver's pad-disambiguator
@@ -10295,7 +10310,15 @@ namespace PadForge.Services
             // MarkDirty below would then persist the revert (the #155
             // trap). Every other lane that rehydrates pushes first; the
             // drain shipped without it.
-            _settingsService?.PushUiExtraSourcesIntoSlotMappingSets();
+            //
+            // ...UNLESS the ViewModels are known stale (round eleven).
+            // ApplyProfile swaps SlotMappingSets and only reconciles the
+            // ViewModels afterwards, so between those two steps a push
+            // would write the OUTGOING profile's rows over the incoming
+            // profile's. ApplyProfile does its own refresh, so the drain
+            // limits itself to the re-key passes there.
+            bool vmUsable = !_vmMappingsStale;
+            if (vmUsable) _settingsService?.PushUiExtraSourcesIntoSlotMappingSets();
 
             // Apply each re-key as its OWN single-hop pass, in queue order
             // (round ten, replacing round nine's chain collapse). The
@@ -10310,10 +10333,8 @@ namespace PadForge.Services
             // pass is exactly the rename that happened, in the order it
             // happened. N is the number of adoptions in one dispatcher
             // window, virtually always one.
-            foreach (var (oldGuid, newGuid) in pending)
+            foreach (var (oldGuid, newGuid) in BuildRekeyPasses(pending))
             {
-                if (oldGuid == Guid.Empty || newGuid == Guid.Empty || oldGuid == newGuid)
-                    continue;   // Empty is not an identity; see the resolver's note.
                 var remap = new Dictionary<string, string>
                 {
                     [oldGuid.ToString().ToLowerInvariant()] = newGuid.ToString().ToLowerInvariant(),
@@ -10327,7 +10348,7 @@ namespace PadForge.Services
                     pad?.RekeyDeviceConfig(oldGuid, newGuid);
             }
 
-            if (_mainVm?.Pads != null)
+            if (vmUsable && _mainVm?.Pads != null)
             {
                 foreach (var pad in _mainVm.Pads)
                 {
@@ -10340,13 +10361,16 @@ namespace PadForge.Services
                     // reverted before it ever serialized, so the row went
                     // dark again and the stale guid is what persisted.
                     RefreshMappingsToViewModel(pad);
-                    // ...and the pickers must follow the descriptors
-                    // (round ten): every sibling lane pairs these two, and
-                    // its comment says the reverse order leaves
-                    // SelectedInput stale and renders the picker cells
-                    // blank. The drain paired it with nothing.
-                    PopulateAvailableInputs(pad, FindUserDevice(
-                        pad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty));
+                    // NO PopulateAvailableInputs here (round eleven). It
+                    // was added to pair with the refresh, but on this
+                    // path SelectedMappedDevice still carries the OLD
+                    // guid, so it resolved to null and did a
+                    // device-agnostic O(rows x inputs) clear-and-refill
+                    // of every row on all 16 pads for nothing. The picker
+                    // is repaired correctly further down this same
+                    // UpdatePadDeviceInfo pass, by the identity-changed
+                    // notification whose guard is exactly "the selected
+                    // device's guid moved".
                 }
             }
             _settingsService?.MarkDirty();
@@ -10359,10 +10383,39 @@ namespace PadForge.Services
         /// the audio-mirror engage source. All are exact-equality matched
         /// by the engine, so each one went dark after a re-key exactly
         /// like the macro pins did.</summary>
-        /// <summary>Test seam for the PadSetting/DeviceSlotConfig pin
-        /// walk: the drain's own lane needs a live InputService, and the
-        /// pins it rewrites are plain settings state.</summary>
-        internal static void RemapDeviceGuidsInPadSettingsForTests(Guid oldGuid, Guid newGuid)
+        /// <summary>The queued re-keys, in the order the drain must apply
+        /// them: one single-hop pass each, in queue order, skipping
+        /// no-ops. Extracted so there is exactly ONE copy of this
+        /// ordering rule and the tests can drive it (round eleven).
+        ///
+        /// <para>Do NOT collapse chains here. Folding two pairs because
+        /// one pair's new guid equals another's old guid is chain
+        /// evidence only for a single row; when two pads swap ports the
+        /// second pad's old guid legitimately equals the first pad's new
+        /// one, and folding merges one pad's rows, macros and slot config
+        /// onto the OTHER PHYSICAL PAD. Round nine shipped that collapse
+        /// and round ten removed it.</para></summary>
+        internal static IReadOnlyList<(Guid Old, Guid New)> BuildRekeyPasses(
+            IReadOnlyList<(Guid Old, Guid New)> pending)
+        {
+            var passes = new List<(Guid, Guid)>();
+            if (pending == null) return passes;
+            foreach (var (o, n) in pending)
+            {
+                // Empty is not an identity; see the resolver's note.
+                if (o == Guid.Empty || n == Guid.Empty || o == n) continue;
+                passes.Add((o, n));
+            }
+            return passes;
+        }
+
+        /// <summary>The SETTINGS half of the pin walk: everything reachable
+        /// from the stored PadSettings. Static and internal so the tests
+        /// drive the SAME code the drain does. Round ten shipped a
+        /// hand-copied "ForTests" twin instead, which had already drifted
+        /// (it omitted the audio-mirror pin) while its test claimed to
+        /// cover it.</summary>
+        internal static void RemapDeviceGuidsInStoredPadSettings(Guid oldGuid, Guid newGuid)
         {
             string from = oldGuid.ToString();
             string to = newGuid.ToString();
@@ -10380,42 +10433,55 @@ namespace PadForge.Services
                         Map(ps.LeftTriggerRouteActivatorDeviceGuid);
                     ps.RightTriggerRouteActivatorDeviceGuid =
                         Map(ps.RightTriggerRouteActivatorDeviceGuid);
+                    // The per-device Touchpad and Mouse tabs are keyed by
+                    // guid too (round eleven): without these, every
+                    // touchpad and gesture setting the user authored for
+                    // the device fell back to defaults on a reconnect,
+                    // the same failure class this walk was created for.
+                    if (ps.TouchpadSettings != null)
+                    {
+                        foreach (var e in ps.TouchpadSettings)
+                            if (e != null) e.DeviceGuid = Map(e.DeviceGuid);
+                    }
+                    if (ps.MouseGestureSettings != null)
+                    {
+                        foreach (var e in ps.MouseGestureSettings)
+                        {
+                            if (e == null) continue;
+                            e.DeviceGuid = Map(e.DeviceGuid);
+                            if (e.Settings != null)
+                                e.Settings.CustomEngageDeviceGuid =
+                                    Map(e.Settings.CustomEngageDeviceGuid);
+                        }
+                    }
                 }
             }
         }
 
+        /// <summary>Follows a device re-key into the per-(slot, device)
+        /// PadSettings and the per-pad device configs (round ten,
+        /// extended round eleven). These carry device pins the
+        /// mapping-set and macro lanes never see: the gyro Aim Engage
+        /// source, both trigger-route activators, the per-device touchpad
+        /// and mouse-gesture entries, and the audio-mirror engage source.
+        /// All are exact-equality matched by the engine, so each one went
+        /// dark or silently reset after a re-key.</summary>
         private void RemapDeviceGuidsInPadSettings(Guid oldGuid, Guid newGuid)
         {
-            string from = oldGuid.ToString();
-            string to = newGuid.ToString();
-            string Map(string g) => string.Equals(g, from, StringComparison.OrdinalIgnoreCase) ? to : g;
-
-            var settings = SettingsManager.UserSettings;
-            if (settings != null)
-            {
-                lock (settings.SyncRoot)
-                {
-                    foreach (var us in settings.Items)
-                    {
-                        var ps = us?.GetPadSetting();
-                        if (ps == null) continue;
-                        ps.GyroAimEngageDeviceGuid = Map(ps.GyroAimEngageDeviceGuid);
-                        ps.LeftTriggerRouteActivatorDeviceGuid =
-                            Map(ps.LeftTriggerRouteActivatorDeviceGuid);
-                        ps.RightTriggerRouteActivatorDeviceGuid =
-                            Map(ps.RightTriggerRouteActivatorDeviceGuid);
-                    }
-                }
-            }
+            RemapDeviceGuidsInStoredPadSettings(oldGuid, newGuid);
 
             if (_mainVm?.Pads == null) return;
+            string from = oldGuid.ToString();
+            string to = newGuid.ToString();
             foreach (var pad in _mainVm.Pads)
             {
                 if (pad?.PerDeviceSlotConfigs == null) continue;
                 foreach (var cfg in pad.PerDeviceSlotConfigs.Values)
                 {
                     if (cfg == null) continue;
-                    cfg.AudioMirrorEngageDeviceGuid = Map(cfg.AudioMirrorEngageDeviceGuid);
+                    if (string.Equals(cfg.AudioMirrorEngageDeviceGuid, from,
+                            StringComparison.OrdinalIgnoreCase))
+                        cfg.AudioMirrorEngageDeviceGuid = to;
                 }
             }
         }
@@ -12922,7 +12988,22 @@ namespace PadForge.Services
                 ? profile.TouchpadOverlayHeight : 250;
 
             // Rebuild pad device lists based on new MapTo values.
-            UpdatePadDeviceInfo();
+            //
+            // The ViewModels are KNOWN STALE across this call (round
+            // eleven): SlotMappingSets already holds the incoming
+            // profile's clones while padVm.Mappings still holds the
+            // OUTGOING profile's rows, and they are not reconciled until
+            // RefreshMappingsToViewModel below. UpdatePadDeviceInfo
+            // drains any queued adoption re-key, and that drain pushes
+            // the ViewModels into the domain before rehydrating: pushing
+            // here would have written the outgoing profile's rows over
+            // the incoming profile's on every active-layer target, and
+            // the drain's MarkDirty would have persisted the loss. This
+            // is exactly the clobber the comment below names, one call
+            // frame earlier.
+            _vmMappingsStale = true;
+            try { UpdatePadDeviceInfo(); }
+            finally { _vmMappingsStale = false; }
 
             // Reload ViewModels with new PadSettings (after device lists are rebuilt).
             // LoadPadSettingToViewModel loads per-device TUNING only; mapping

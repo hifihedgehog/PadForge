@@ -93,15 +93,22 @@ def write_mask(name, members):
     # the edge is not a hard staircase when the Viewbox scales it up.
     m = cv2.dilate(m, np.ones((3, 3), np.uint8), iterations=2)
     m = cv2.GaussianBlur(m, (3, 3), 0)
-    rgba = np.zeros((RH, RW, 4), np.uint8)
+    ys, xs = np.where(m > 8)
+    x0, x1 = int(xs.min()), int(xs.max()) + 1
+    y0, y1 = int(ys.min()), int(ys.max()) + 1
+    # CROPPED to its own bounds, not full-canvas. A full-canvas layer carrying
+    # an OpacityMask is one element with both a mask and (when lit) a glow
+    # Effect, and WPF is not dependable about honouring the mask in that
+    # combination: if it drops, the layer floods the entire pad with the lit
+    # colour. A layer bounded by its own control cannot do that.
+    rgba = np.zeros((y1 - y0, x1 - x0, 4), np.uint8)
     rgba[:, :, :3] = 255
-    rgba[:, :, 3] = m
+    rgba[:, :, 3] = m[y0:y1, x0:x1]
     p = os.path.join(OUTDIR, "mouse_%s.png" % name.lower())
     cv2.imwrite(p, rgba)
-    ys, xs = np.where(m > 8)
     return dict(name=name, file=os.path.basename(p),
-                l=xs.min() / RW * VW, t=ys.min() / RH * VH,
-                r=xs.max() / RW * VW, b=ys.max() / RH * VH)
+                l=x0 / RW * VW, t=y0 / RH * VH,
+                r=x1 / RW * VW, b=y1 / RH * VH)
 
 
 def hit_path(members):
@@ -143,6 +150,8 @@ lines = [
     "// mouse_line.png is the artwork as authored; every other layer is a",
     "// full-canvas alpha mask over it, so the view tints a control without",
     "// redrawing any of the shape. Nothing here approximates a curve.",
+    "using System.Windows;",
+    "",
     "namespace PadForge.Views;",
     "",
     "internal static class MouseArt",
@@ -156,6 +165,8 @@ lines = [
 ]
 for name, b in bounds.items():
     lines.append('    internal const string %s = "%s";' % (name, b["file"]))
+    lines.append("    internal static readonly Rect %sRect = new(%.3f, %.3f, %.3f, %.3f);"
+                 % (name, b["l"], b["t"], b["r"] - b["l"], b["b"] - b["t"]))
 lines.append("")
 lines.append("    // Clickable geometry. Never drawn: WPF hit-tests a masked")
 lines.append("    // rectangle over its whole rect, not its mask, so each control")

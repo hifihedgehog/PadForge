@@ -428,31 +428,26 @@ namespace PadForge.Views
             {
                 bool p = kbm.GetMouseButton(0);
                 _lmbPath.Fill = p ? AccentBrush : MouseButtonBrush;
-                SetGlow(_lmbPath, p ? EmberGlow : null);
             }
             if (_flashTarget != "KbmMBtn1" || !_flashOn)
             {
                 bool p = kbm.GetMouseButton(1);
                 _rmbPath.Fill = p ? AccentBrush : MouseButtonBrush;
-                SetGlow(_rmbPath, p ? EmberGlow : null);
             }
             if (_flashTarget != "KbmMBtn2" || !_flashOn)
             {
                 bool p = kbm.GetMouseButton(2);
                 _scrollWheelPill.Fill = p ? AccentBrush : ScrollWheelBrush;
-                SetGlow(_scrollWheelPill, p ? EmberGlow : null);
             }
             if (_flashTarget != "KbmMBtn3" || !_flashOn)
             {
                 bool p = kbm.GetMouseButton(3);
                 _x1Rect.Fill = p ? AccentBrush : MouseButtonBrush;
-                SetGlow(_x1Rect, p ? EmberGlowSmall : null);
             }
             if (_flashTarget != "KbmMBtn4" || !_flashOn)
             {
                 bool p = kbm.GetMouseButton(4);
                 _x2Rect.Fill = p ? AccentBrush : MouseButtonBrush;
-                SetGlow(_x2Rect, p ? EmberGlowSmall : null);
             }
 
             // Movement dot — map output values directly (deadzone already applied in Step 3)

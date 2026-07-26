@@ -10115,7 +10115,16 @@ namespace PadForge.Services
             if (System.Threading.Volatile.Read(ref _disposed) != 0) return;
             var settings = SettingsManager.UserSettings;
             if (settings == null) return;
-            var devs = SettingsManager.UserDevices?.Items;
+            // ONE read of the settable static, used for SyncRoot AND Items AND
+            // the prune. Round ten wrote the comment below claiming this; three
+            // separate reads actually shipped. The third (at the candidate-scan
+            // lock) could take collection C's SyncRoot while the scan
+            // enumerated collection A's Items. That is verbatim the hazard the
+            // comment claims to have closed. It also carried no null guard,
+            // even though the read above it used ?..
+            var deviceList = SettingsManager.UserDevices;
+            if (deviceList == null) return;
+            var devs = deviceList.Items;
             if (devs == null) return;
             var seenKeys = new HashSet<(Guid, int)>();
             // Prune the ledgers for devices that are no longer online
@@ -10125,28 +10134,20 @@ namespace PadForge.Services
             // exactly when it was finally sitting still, and every dead
             // guid (including the ones the adoption drain re-keys) leaked
             // an entry for the process lifetime.
-            // One local, read once (round ten): UserDevices is a settable
-            // static, and re-reading it for SyncRoot and again for Items
-            // could lock one collection while enumerating another, or NRE
-            // if it were nulled between reads.
-            var deviceList = SettingsManager.UserDevices;
-            if (deviceList != null)
+            lock (deviceList.SyncRoot)
             {
-                lock (deviceList.SyncRoot)
-                {
-                    var live = new HashSet<Guid>();
-                    foreach (var d in deviceList.Items)
-                        if (d != null && d.IsOnline) live.Add(d.InstanceGuid);
-                    PruneGyroLedger(_gyroAutoCalibKicked, live);
-                    PruneGyroLedger(_gyroAutoCalibAttempts, live);
-                }
+                var live = new HashSet<Guid>();
+                foreach (var d in devs)
+                    if (d != null && d.IsOnline) live.Add(d.InstanceGuid);
+                PruneGyroLedger(_gyroAutoCalibKicked, live);
+                PruneGyroLedger(_gyroAutoCalibAttempts, live);
             }
             (UserDevice ud, PadSetting ps, (Guid, int) key, object runToken)[] candidates;
             // Canonical lock order is UserDevices -> UserSettings (see
             // MappingSetEval's snapshot doc); Settings-first here was one half
             // of an ABBA pair against the disconnect path's Devices-first
             // nesting on the websocket thread.
-            lock (SettingsManager.UserDevices.SyncRoot)
+            lock (deviceList.SyncRoot)
             lock (settings.SyncRoot)
             {
                 var found = new List<(UserDevice, PadSetting, (Guid, int), object)>();
@@ -10376,13 +10377,6 @@ namespace PadForge.Services
             _settingsService?.MarkDirty();
         }
 
-        /// <summary>Follows a device re-key into the per-(slot, device)
-        /// PadSettings and the per-pad device configs (round ten). These
-        /// carry device pins the mapping-set and macro lanes never see:
-        /// the gyro Aim Engage source, both trigger-route activators, and
-        /// the audio-mirror engage source. All are exact-equality matched
-        /// by the engine, so each one went dark after a re-key exactly
-        /// like the macro pins did.</summary>
         /// <summary>The queued re-keys, in the order the drain must apply
         /// them: one single-hop pass each, in queue order, skipping
         /// no-ops. Extracted so there is exactly ONE copy of this
@@ -10471,10 +10465,6 @@ namespace PadForge.Services
             RemapDeviceGuidsInStoredPadSettings(oldGuid, newGuid);
 
             if (_mainVm?.Pads == null) return;
-            string from = oldGuid.ToString();
-            string to = newGuid.ToString();
-            string Map(string g) =>
-                string.Equals(g, from, StringComparison.OrdinalIgnoreCase) ? to : g;
             RemapDeviceGuidsInPadViewModels(oldGuid, newGuid, _mainVm.Pads);
         }
 

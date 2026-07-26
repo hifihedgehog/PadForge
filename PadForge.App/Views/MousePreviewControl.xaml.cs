@@ -66,21 +66,8 @@ namespace PadForge.Views
         }
 
         private const double MC = 80;
-        private const double MoveSize = 56;
-        private const double MoveTop = 90;
-
-        // Body silhouette, top-down: narrow across the front, widest over
-        // the palm, tapering to a rounded base. The old shape was a rounded
-        // rectangle, so the flanks ran dead straight and the buttons had to
-        // trace those straight edges.
-        private const string BodyPath =
-            "M 80,0 C 102,0 126,20 130,58 C 135,96 134,142 122,170" +
-            " C 112,184 96,188 80,188 C 64,188 48,184 38,170" +
-            " C 26,142 25,96 30,58 C 34,20 58,0 80,0 Z";
-
-        // The button/palm seam is a shallow curve, not a straight cut.
-        private const string ButtonRegionPath =
-            "M 0,0 L 160,0 L 160,66 C 116,78 44,78 0,66 Z";
+        private const double MoveSize = MouseGlyph.MoveSize;
+        private const double MoveTop = MouseGlyph.MoveTop;
 
         private Path _x1Rect, _x2Rect;
         private bool _built;
@@ -111,146 +98,16 @@ namespace PadForge.Views
             _lastTheme = currentTheme;
             MouseCanvas.Children.Clear();
 
-            const double swW = 15, swH = 38;
-            double swL = MC - swW / 2, swR = MC + swW / 2;
-            const double swTop = 12;
-            const double swBot = swTop + swH;
-            double gapL = swL - 1.5, gapR = swR + 1.5;
-            const double mH = 188;
+            var parts = MouseGlyph.Build(MouseCanvas, IsDarkTheme, DimBrush,
+                MouseButtonBrush, MmbBrush, ScrollWheelBrush, DotBrush);
+            _lmbPath = parts.Lmb; _rmbPath = parts.Rmb;
+            _x1Rect = parts.X1;   _x2Rect = parts.X2;
+            _scrollWheelPill = parts.Wheel;
+            _scrollUpArrow = parts.ScrollUp; _scrollDownArrow = parts.ScrollDown;
+            _moveCircle = parts.MoveCircle;  _movementDot = parts.MoveDot;
+            MouseGlyph.AddOutline(MouseCanvas, DimBrush);
 
-            var body = Geometry.Parse(BodyPath);
-            body.Freeze();
-            var buttonRegion = Geometry.Parse(ButtonRegionPath);
-            buttonRegion.Freeze();
-
-            // Body, with a shallow vertical gradient so the shell reads as a
-            // curved shell rather than a flat cut-out. Built here, not
-            // per-frame: BuildMouse only re-runs on a theme change.
-            var shell = new LinearGradientBrush
-            {
-                StartPoint = new Point(0, 0),
-                EndPoint = new Point(0, 1),
-            };
-            byte hi = IsDarkTheme ? (byte)0x5A : (byte)0xCB;
-            byte lo = IsDarkTheme ? (byte)0x44 : (byte)0xB2;
-            shell.GradientStops.Add(new GradientStop(Color.FromRgb(hi, hi, hi), 0));
-            shell.GradientStops.Add(new GradientStop(Color.FromRgb(lo, lo, lo), 1));
-            shell.Freeze();
-            MouseCanvas.Children.Add(new Path { Data = body, Fill = shell });
-
-            // Wheel channel: a recess between the two buttons.
-            MouseCanvas.Children.Add(new Path
-            {
-                Data = new RectangleGeometry(new Rect(gapL, 0, gapR - gapL, 58), 3, 3),
-                Clip = body,
-                Fill = MmbBrush,
-                IsHitTestVisible = false,
-            });
-
-            // LMB / RMB. Each is the button region cut to its own side of
-            // the channel, then CLIPPED TO THE BODY, so the outer edge is
-            // the shell's own curve instead of an approximation of it.
-            Path Half(double x0, double x1) => new()
-            {
-                Data = new CombinedGeometry(GeometryCombineMode.Intersect, buttonRegion,
-                           new RectangleGeometry(new Rect(x0, 0, x1 - x0, 200))),
-                Clip = body,
-                Fill = MouseButtonBrush,
-                Stroke = DimBrush,
-                StrokeThickness = 1,
-            };
-            _lmbPath = Half(0, gapL);
-            _rmbPath = Half(gapR, 160);
-            MouseCanvas.Children.Add(_lmbPath);
-            MouseCanvas.Children.Add(_rmbPath);
-
-            // Scroll wheel, with tread ridges.
-            _scrollWheelPill = new Rectangle
-            {
-                Width = swW, Height = swH,
-                RadiusX = swW / 2, RadiusY = swW / 2,
-                Fill = ScrollWheelBrush, Stroke = DimBrush, StrokeThickness = 1
-            };
-            Canvas.SetLeft(_scrollWheelPill, swL);
-            Canvas.SetTop(_scrollWheelPill, swTop);
-            MouseCanvas.Children.Add(_scrollWheelPill);
-            for (int k = 1; k < 5; k++)
-            {
-                double ty = swTop + k * swH / 5.0;
-                MouseCanvas.Children.Add(new Line
-                {
-                    X1 = swL + 3, Y1 = ty, X2 = swR - 3, Y2 = ty,
-                    Stroke = DimBrush, StrokeThickness = 0.6, Opacity = 0.7,
-                    IsHitTestVisible = false,
-                });
-            }
-
-            _scrollUpArrow = new Polygon
-            {
-                Points = new PointCollection { new Point(MC, swTop + 4), new Point(MC - 4, swTop + 10), new Point(MC + 4, swTop + 10) },
-                Fill = DimBrush
-            };
-            MouseCanvas.Children.Add(_scrollUpArrow);
-            _scrollDownArrow = new Polygon
-            {
-                Points = new PointCollection { new Point(MC, swBot - 4), new Point(MC - 4, swBot - 10), new Point(MC + 4, swBot - 10) },
-                Fill = DimBrush
-            };
-            MouseCanvas.Children.Add(_scrollDownArrow);
-
-            // Side buttons, sitting ON the left flank and cut to it, rather
-            // than floating rectangles pinned outside the old straight edge.
-            Path Side(double top) => new()
-            {
-                Data = new RectangleGeometry(new Rect(26, top, 11, 18), 3, 3),
-                Clip = body,
-                Fill = MouseButtonBrush,
-                Stroke = DimBrush,
-                StrokeThickness = 1,
-            };
-            _x1Rect = Side(72);
-            _x2Rect = Side(94);
-            MouseCanvas.Children.Add(_x1Rect);
-            MouseCanvas.Children.Add(_x2Rect);
-
-            // Movement ring with quadrant ticks, so deflection reads against
-            // a reference instead of a bare circle.
-            double moveX = MC - MoveSize / 2;
-            _moveCircle = new Ellipse
-            {
-                Width = MoveSize, Height = MoveSize,
-                Fill = new SolidColorBrush(Color.FromArgb(0x18, 0x88, 0x88, 0x88)),
-                Stroke = DimBrush, StrokeThickness = 1.4
-            };
-            Canvas.SetLeft(_moveCircle, moveX);
-            Canvas.SetTop(_moveCircle, MoveTop);
-            MouseCanvas.Children.Add(_moveCircle);
-
-            double ringC = MoveTop + MoveSize / 2, ringR = MoveSize / 2;
-            foreach (var (dx, dy) in new[] { (0.0, -1.0), (0.0, 1.0), (-1.0, 0.0), (1.0, 0.0) })
-            {
-                MouseCanvas.Children.Add(new Line
-                {
-                    X1 = MC + dx * ringR * 0.80, Y1 = ringC + dy * ringR * 0.80,
-                    X2 = MC + dx * ringR * 0.98, Y2 = ringC + dy * ringR * 0.98,
-                    Stroke = DimBrush, StrokeThickness = 1.2, IsHitTestVisible = false,
-                });
-            }
-
-            _movementDot = new Ellipse { Width = 10, Height = 10, Fill = DotBrush, IsHitTestVisible = false };
-            Canvas.SetLeft(_movementDot, moveX + MoveSize / 2 - 5);
-            Canvas.SetTop(_movementDot, MoveTop + MoveSize / 2 - 5);
-            MouseCanvas.Children.Add(_movementDot);
-
-            // Shell outline last, so it reads as one continuous edge over
-            // the buttons and the flank keys rather than being interrupted.
-            MouseCanvas.Children.Add(new Path
-            {
-                Data = body, Fill = null, Stroke = DimBrush, StrokeThickness = 2,
-                IsHitTestVisible = false,
-            });
-
-            MouseCanvas.Height = mH + 6;
+            MouseCanvas.Height = MouseGlyph.BodyH + 6;
         }
 
         // Retained scroll-arrow transforms (a fresh ScaleTransform per
@@ -346,6 +203,6 @@ namespace PadForge.Views
             }
         }
 
-        private const double swBotConst = 12 + 38; // swTop + swH
+        private const double swBotConst = MouseGlyph.WheelBottom;
     }
 }

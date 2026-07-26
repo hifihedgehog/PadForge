@@ -326,6 +326,40 @@ namespace PadForge.Tests
             Assert.Equal(3.75f, back.GyroAux[2], 4);
         }
 
+        /// <summary>The tail is the LAST section of the frame, so its
+        /// correctness depends on encoder and decoder agreeing on where the
+        /// preceding VARIABLE-LENGTH NFC block ends (audit 2026-07-25, G4).
+        /// The bare-frame round trip above carries no such block and would
+        /// still pass if the tail were written before it, or if the NFC span
+        /// arithmetic desynced. This one puts real content in front of it.</summary>
+        [Fact]
+        public void GyroAux_TailSurvivesBehindAVariableLengthNfcBlock()
+        {
+            var s = new CustomInputState();
+            s.GyroAux[0] = 0.25f; s.GyroAux[1] = -1.5f; s.GyroAux[2] = 3.75f;
+            // A long NFC payload with the LAST byte set, so any off-by-one in
+            // the span or its mask bytes shifts everything after it.
+            s.NfcTag = new bool[256];
+            s.NfcTag[0] = true;
+            s.NfcTag[255] = true;   // the LAST bit: any span/mask off-by-one shifts the tail
+            s.BatteryPercent = 77;
+
+            var caps = new CustomInputStateCodec.Caps(false, false, false, gyroAux: true);
+            byte[] wire = CustomInputStateCodec.Encode(s, caps);
+
+            var back = new CustomInputState();
+            Assert.True(CustomInputStateCodec.DecodeInto(wire, back));
+
+            // The block in front of the tail survives...
+            Assert.NotNull(back.NfcTag);
+            Assert.True(back.NfcTag[0]);
+            Assert.True(back.NfcTag[255]);
+            // ...and so does the tail behind it.
+            Assert.Equal(0.25f, back.GyroAux[0], 4);
+            Assert.Equal(-1.5f, back.GyroAux[1], 4);
+            Assert.Equal(3.75f, back.GyroAux[2], 4);
+        }
+
         [Fact]
         public void GyroAux_OmittedWhenCapabilityAbsent_AndOlderFramesStillDecode()
         {
@@ -341,6 +375,27 @@ namespace PadForge.Tests
             back.GyroAux[0] = 5f; // stale value must be cleared, not kept
             Assert.True(CustomInputStateCodec.DecodeInto(wire, back));
             Assert.Equal(0f, back.GyroAux[0]);
+
+            // The assertion above is satisfied by DecodeInto's unconditional
+            // ResetToNeutral alone, so on its own it would pass with the whole
+            // tail deleted (audit 2026-07-25, G3). Pin the actual contract:
+            // the capability decides whether the tail is present, so the two
+            // encodings must DIFFER, and the tail-bearing one must carry the
+            // value through while the tail-less one must not.
+            var withTail = CustomInputStateCodec.Encode(s,
+                new CustomInputStateCodec.Caps(false, false, false, gyroAux: true));
+            Assert.True(withTail.Length > wire.Length,
+                "the capability must actually add a tail to the frame");
+
+            var decoded = new CustomInputState();
+            Assert.True(CustomInputStateCodec.DecodeInto(withTail, decoded));
+            Assert.Equal(9f, decoded.GyroAux[0], 4);   // carried by the tail
+
+            // And the tail-less frame is still readable by a decoder that
+            // expects one, which is the older-peer direction.
+            var noTail = new CustomInputState();
+            Assert.True(CustomInputStateCodec.DecodeInto(wire, noTail));
+            Assert.Equal(0f, noTail.GyroAux[0]);
         }
 
         /// <summary>The device-list v1 capability byte was exhausted at #199,

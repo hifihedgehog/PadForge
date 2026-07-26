@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 using Xunit;
@@ -101,9 +101,27 @@ namespace PadForge.Tests
 
             var d = Assert.Single(Assert.Single(back.Rows).Sources).Descriptor;
 
-            // Reads as the aux family, and NOT as the primary gyro.
+            // Reads as the aux family, and NOT as the primary gyro. The
+            // second assertion used to compare against the "Motion Gyro L"
+            // passthrough selector, which is trivially different and says
+            // nothing about the primary (audit 2026-07-25, G6). What matters
+            // is that the axis parser routes it to the right axis AFTER the
+            // round trip, since that is what decides which sensor is read.
             Assert.True(SourceCoercion.IsGyroAuxDescriptor(d));
-            Assert.False(MappingSetMigrator.IsMotionGyroAuxDescriptor(d));
+
+            // The axis token survives the round trip, so the descriptor still
+            // routes by AXIS. IsGyroPitchAxisDescriptor is the axis-derived
+            // predicate the stick-frame flip keys on, so it answers "did the
+            // 'L ' strip still work" without needing the private parser.
+            string primary = d.Replace("Gyro L ", "Gyro ");
+            Assert.Equal(
+                SourceCoercion.IsGyroPitchAxisDescriptor(primary),
+                SourceCoercion.IsGyroPitchAxisDescriptor(d));
+
+            // And the primary counterpart is NOT the aux family, which is the
+            // disjointness the comment actually claims.
+            Assert.False(SourceCoercion.IsGyroAuxDescriptor(primary));
+            Assert.True(SourceCoercion.IsGyroDescriptor(d));
         }
     }
 }

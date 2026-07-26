@@ -393,10 +393,13 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>Twin of <see cref="GravityProvider"/> for the auxiliary
         /// (left-side) accelerometer (issue #199): the Nunchuk's own sensor on
         /// a Nunchuk-attached Wii Remote, or the left half of a combined
-        /// Joy-Con pair. Smoothed over <c>CustomInputState.AccelAux</c>. Only
-        /// the "Motion Lean L" family reads it; the gyro Player/World space
-        /// projections stay on the primary gravity (the primary gyro lives on
-        /// the same body as the primary accel).</summary>
+        /// Joy-Con pair. Smoothed over <c>CustomInputState.AccelAux</c>. Read by
+        /// the "Motion Lean L" family AND, since #252, by the AUX GYRO's
+        /// Player and World space projections. The rationale first written
+        /// here was the reverse of the truth (audit 2026-07-25, G2): on a
+        /// combined pair the primary gyro and the primary accel are both the
+        /// RIGHT body, so projecting the LEFT half's gyro against primary
+        /// gravity would reference the wrong controller entirely.</summary>
         public static Func<string, (float gx, float gy, float gz)> GravityProviderAux { get; set; }
 
         /// <summary>— reads whether the given (deviceGuid,
@@ -2049,6 +2052,19 @@ namespace PadForge.Engine.Common.Mapping
         /// family shares the prefix but reads a different sensor.</summary>
         public static bool IsGyroAuxDescriptor(string descriptor)
         {
+            // Case-INSENSITIVE deliberately, and pinned that way by
+            // Descriptor_Predicates_AreExactAndDisjointFromThePrimary.
+            // KNOWN ASYMMETRY (audit 2026-07-25, G8, examined and left
+            // alone): ClassifySource, ParseGyroAxisIndex and all three value
+            // readers gate on a case-SENSITIVE StartsWith("Gyro "), so a
+            // non-canonical "GYRO L Pitch" would classify as a gyro source
+            // here and then read as zero downstream. It is unreachable today
+            // (no producer emits non-canonical case, and nothing outside this
+            // class consumes SourceType.Gyro), and closing it the other way
+            // means loosening the SHARED readers, which the primary gyro
+            // family also runs through. Not worth that blast radius for a
+            // path nothing can reach. Left documented rather than silently
+            // half-fixed.
             if (string.IsNullOrEmpty(descriptor)) return false;
             string s = descriptor.Trim();
             return string.Equals(s, GyroAuxPitchDescriptor, StringComparison.OrdinalIgnoreCase)

@@ -46,21 +46,23 @@ namespace PadForge.Views
 
         public WorkshopControllerPreview() => InitializeComponent();
 
-        /// <summary>One callout: the art element that serves it and the
-        /// text describing what drives it.</summary>
-        public readonly record struct Callout(string ArtTarget, string Label);
+        /// <summary>One callout: the art element it is DRAWN ON (the
+        /// physical control the config binds) and the text describing what
+        /// that control does.</summary>
+        public readonly record struct Callout(string ArtAnchor, string Label);
 
         public void Render(string controllerTag, IEnumerable<Callout> callouts)
         {
             ModelCanvas.Children.Clear();
             var wanted = (callouts ?? Enumerable.Empty<Callout>())
-                .Where(c => !string.IsNullOrWhiteSpace(c.ArtTarget))
-                .GroupBy(c => c.ArtTarget, StringComparer.OrdinalIgnoreCase)
+                .Where(c => !string.IsNullOrWhiteSpace(c.ArtAnchor))
+                .GroupBy(c => c.ArtAnchor, StringComparer.OrdinalIgnoreCase)
                 .ToDictionary(g => g.Key,
                               g => string.Join(", ", g.Select(c => c.Label).Where(l => !string.IsNullOrWhiteSpace(l)).Distinct()),
                               StringComparer.OrdinalIgnoreCase);
 
             var (bodyW, bodyH, basePath, overlays, folder) = LayoutFor(controllerTag);
+            FoldTouchpadAnchors(wanted, overlays);
             double canvasW = bodyW + Gutter * 2;
             ModelCanvas.Width = canvasW;
             ModelCanvas.Height = bodyH;
@@ -196,6 +198,33 @@ namespace PadForge.Views
             Canvas.SetLeft(img, x);
             Canvas.SetTop(img, y);
             return img;
+        }
+
+        /// <summary>Steam names touchpads by index, so a source resolves to
+        /// a SIDED anchor. Valve's own pads have two, but a DualSense or DS4
+        /// body has exactly one, named without a side. Fold the sided anchor
+        /// onto it rather than dropping the callout.</summary>
+        internal static void FoldTouchpadAnchors(
+            IDictionary<string, string> wanted, OverlayElement[] overlays)
+        {
+            var have = new HashSet<string>(overlays.Select(o => o.TargetName),
+                                           StringComparer.OrdinalIgnoreCase);
+            foreach (var key in wanted.Keys.ToList())
+            {
+                if (have.Contains(key)) continue;
+                if (!key.StartsWith("LeftTouchpad", StringComparison.OrdinalIgnoreCase)
+                    && !key.StartsWith("RightTouchpad", StringComparison.OrdinalIgnoreCase))
+                    continue;
+                foreach (var alt in new[] { "TouchpadClick", "Touchpad" })
+                {
+                    if (!have.Contains(alt)) continue;
+                    wanted[alt] = wanted.TryGetValue(alt, out var prior) && prior != wanted[key]
+                        ? prior + ", " + wanted[key]
+                        : wanted[key];
+                    wanted.Remove(key);
+                    break;
+                }
+            }
         }
 
         /// <summary>Which art folder a controller tag resolves to. Exists so

@@ -880,7 +880,16 @@ namespace PadForge
                     // R5), and release the label hold so the tick governs
                     // again.
                     pvm.GyroCalibrationGeneration++;
-                    pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MinValue;
+                    // Release the label hold ONLY when no manual run owns
+                    // it (round ten): the MaxValue hold doubles as the
+                    // busy-guard, so clearing it mid-run re-admitted the
+                    // Calibrate button, whose start was then refused by
+                    // the per-profile in-flight guard and rendered as
+                    // "Couldn't calibrate" on a perfectly healthy pad.
+                    // A run that owns the hold releases it itself, and
+                    // the generation bump above already voids its result.
+                    if (pvm.GyroCalibrationLabelHoldUntilUtc != DateTime.MaxValue)
+                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MinValue;
                     _inputService.GyroCalibrator.ResetCalibration(ps);
                     _inputService.ClearGyroAutoCalibLatch(ud.InstanceGuid, pvm.PadIndex);
                     pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroNeverCalibrated;

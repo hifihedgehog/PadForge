@@ -15,7 +15,7 @@ namespace PadForge.Tests
     /// </summary>
     public class SinglePressTriggerTests
     {
-        private static MacroItem Macro(MacroTriggerMode mode, short value, int windowMs = 80)
+        private static MacroItem Macro(MacroTriggerMode mode, short value, int windowMs = 800)
         {
             var m = new MacroItem
             {
@@ -52,7 +52,7 @@ namespace PadForge.Tests
 
             Assert.Equal(0, Tick(im, macros, held: true));   // press: defer
             Assert.Equal(0, Tick(im, macros, held: false));  // release inside window
-            Thread.Sleep(150);                                // window expires
+            Thread.Sleep(950);                                // window expires
             Assert.Equal(1000, Tick(im, macros, held: false));
             // One-shot: nothing further.
             Assert.Equal(0, Tick(im, macros, held: false));
@@ -65,7 +65,7 @@ namespace PadForge.Tests
             var macros = new[] { Macro(MacroTriggerMode.SinglePress, 1000) };
 
             Assert.Equal(0, Tick(im, macros, held: true));
-            Thread.Sleep(150);
+            Thread.Sleep(950);
             Assert.Equal(1000, Tick(im, macros, held: true));
         }
 
@@ -80,7 +80,7 @@ namespace PadForge.Tests
             Tick(im, macros, held: true);    // second press inside the window
             Tick(im, macros, held: false);
             // Even long after, the chained pair must not fire the single.
-            Thread.Sleep(50);
+            Thread.Sleep(500);
             Assert.Equal(0, Tick(im, macros, held: false));
         }
 
@@ -88,20 +88,20 @@ namespace PadForge.Tests
         public void ChainResets_NextIsolatedPressFiresAgain()
         {
             var im = new InputManager();
-            var macros = new[] { Macro(MacroTriggerMode.SinglePress, 1000, windowMs: 80) };
+            var macros = new[] { Macro(MacroTriggerMode.SinglePress, 1000, windowMs: 800) };
 
             // Fast pair: suppressed.
             Tick(im, macros, held: true);
             Tick(im, macros, held: false);
             Tick(im, macros, held: true);
             Tick(im, macros, held: false);
-            Thread.Sleep(150);
+            Thread.Sleep(950);
             Assert.Equal(0, Tick(im, macros, held: false));  // quiet: chain resets, no fire
 
             // A later isolated press fires normally.
             Tick(im, macros, held: true);
             Tick(im, macros, held: false);
-            Thread.Sleep(150);
+            Thread.Sleep(950);
             Assert.Equal(1000, Tick(im, macros, held: false));
         }
 
@@ -109,8 +109,8 @@ namespace PadForge.Tests
         public void SingleAndDouble_ShareOneButton()
         {
             var im = new InputManager();
-            var single = Macro(MacroTriggerMode.SinglePress, 1000, windowMs: 80);
-            var dbl = Macro(MacroTriggerMode.DoublePress, 2000, windowMs: 80);
+            var single = Macro(MacroTriggerMode.SinglePress, 1000, windowMs: 800);
+            var dbl = Macro(MacroTriggerMode.DoublePress, 2000, windowMs: 800);
             var macros = new[] { single, dbl };
 
             // Fast double tap: the Double fires, the Single stays quiet.
@@ -119,13 +119,13 @@ namespace PadForge.Tests
             ushort onSecondPress = Tick(im, macros, held: true);
             Assert.Equal(2000, onSecondPress);
             Tick(im, macros, held: false);
-            Thread.Sleep(150);
+            Thread.Sleep(950);
             Assert.Equal(0, Tick(im, macros, held: false));
 
             // Isolated tap: the Single fires, the Double stays quiet.
             Tick(im, macros, held: true);
             Tick(im, macros, held: false);
-            Thread.Sleep(150);
+            Thread.Sleep(950);
             Assert.Equal(1000, Tick(im, macros, held: false));
         }
 

@@ -684,7 +684,21 @@ namespace PadForge.Common.Input
                 // keeps path-derived identities inside the drawer policy
                 // for indistinguishable shells.
                 string incomingSerial = serialNumber ?? exact?.SerialNumber ?? "";
-                if (livePresentSdlIds != null && productGuid != Guid.Empty)
+                // A NON-EMPTY serial is required when there is no anchor
+                // (round ten). Empty == empty carries zero identity
+                // information, so anchor-free it matched ANY online
+                // same-product row whose claimant had lapsed: a
+                // genuinely new serialless pad, enumerated in the same
+                // sweep as a momentarily-absent sibling, adopted that
+                // sibling's row, mappings and calibration, and the two
+                // pads swapped when the first returned. Round nine's
+                // deleted-sibling fix is untouched by this: a twin
+                // COLLISION only exists when the serial is non-empty,
+                // because BuildInstanceGuid falls through to the
+                // per-unit device path when it is empty, so two
+                // serialless units never derive the same identity.
+                if (livePresentSdlIds != null && productGuid != Guid.Empty
+                    && (exact != null || !string.IsNullOrEmpty(incomingSerial)))
                 {
                     for (int i = 0; i < devices.Items.Count; i++)
                     {

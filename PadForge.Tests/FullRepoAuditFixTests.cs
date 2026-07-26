@@ -53,13 +53,20 @@ namespace PadForge.Tests
         public void SinglePress_ReleasedTap_UntilRelease_RunsOnePass()
         {
             var im = new InputManager();
-            var m = Macro(MacroTriggerMode.SinglePress, MacroRepeatMode.UntilRelease, 80,
+            // Round ten: the window was 80 ms and the release had to land
+            // inside it, but the press and the release are two consecutive
+            // Tick calls, so under heavy machine load the scheduler could
+            // starve that gap past 80 ms. The tap then read as a long
+            // press, nothing armed, and the assertion saw 0 instead of
+            // 1000. The product was right; the window was too tight to
+            // survive a loaded box.
+            var m = Macro(MacroTriggerMode.SinglePress, MacroRepeatMode.UntilRelease, 800,
                 TriggerSet(1000));
             var macros = new[] { m };
 
             Tick(im, macros, held: true);
             Tick(im, macros, held: false);   // released inside the window
-            Thread.Sleep(150);                // window expires
+            Thread.Sleep(950);                // window expires
             // The deferred fire lands with the button up; the release-stop
             // must not kill the pass in the same frame.
             Assert.Equal(1000, Tick(im, macros, held: false));
@@ -75,7 +82,10 @@ namespace PadForge.Tests
         public void SinglePress_StaleArm_NeverGhostFires()
         {
             var im = new InputManager();
-            var m = Macro(MacroTriggerMode.SinglePress, MacroRepeatMode.Once, 40,
+            // Window scaled with its sleeps (round ten, same load class as
+            // the sibling above): the inside/outside relationships are
+            // preserved, only the margin against a starved scheduler grows.
+            var m = Macro(MacroTriggerMode.SinglePress, MacroRepeatMode.Once, 800,
                 TriggerSet(1000));
             var macros = new[] { m };
 
@@ -83,14 +93,14 @@ namespace PadForge.Tests
             Tick(im, macros, held: false);
             // Simulate a stopped pipeline: no evaluation until far past
             // the window plus the grace.
-            Thread.Sleep(500);
+            Thread.Sleep(1400);
             Assert.Equal(0, Tick(im, macros, held: false));  // reset, no ghost
             Assert.Equal(0, m.TriggerPressStreak);
 
             // A fresh isolated press still fires normally.
             Tick(im, macros, held: true);
             Tick(im, macros, held: false);
-            Thread.Sleep(80);
+            Thread.Sleep(950);
             Assert.Equal(1000, Tick(im, macros, held: false));
         }
 

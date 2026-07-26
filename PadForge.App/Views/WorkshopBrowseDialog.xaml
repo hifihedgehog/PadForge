@@ -237,28 +237,10 @@
                     </Grid.ColumnDefinitions>
                     <Ellipse Width="7" Height="7" Fill="{Binding DotBrush}" Effect="{Binding DotGlow}"
                              VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <!-- Input badge: tint carries the input class and the
-                         corner radius carries the shape (round for face
-                         buttons and sticks, pill for everything else), so
-                         the list is scannable without reading it. Collapses
-                         for sources we cannot place on a controller. -->
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" MinWidth="172" MaxWidth="240"
-                                VerticalAlignment="Center">
-                        <Border Visibility="{Binding GlyphVisibility}"
-                                Background="{Binding GlyphTint}"
-                                CornerRadius="{Binding GlyphCorner}"
-                                MinWidth="26" Height="18" Padding="6,0" Margin="0,0,8,0"
-                                VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Glyph}"
-                                       FontFamily="{StaticResource TelemetryFontFamily}"
-                                       FontSize="10" FontWeight="SemiBold" Foreground="#FF14181D"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <TextBlock Text="{Binding Source}"
-                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                                   Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center"
-                                   TextTrimming="CharacterEllipsis"/>
-                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="{Binding Source}" MinWidth="172"
+                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                               Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center"
+                               TextTrimming="CharacterEllipsis" MaxWidth="240"/>
                     <TextBlock Grid.Column="2" Text="&#x2192;" Margin="10,0"
                                FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
                                Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
@@ -876,7 +858,16 @@
                                     <ScrollViewer Grid.Row="1" Margin="14,0,14,6"
                                                   VerticalScrollBarVisibility="Visible"
                                                   HorizontalScrollBarVisibility="Disabled">
-                                        <ItemsControl x:Name="ManifestRowsList"/>
+                                        <StackPanel>
+                                            <!-- The pad itself, drawn from the repo's own
+                                                 2DModels art with the config's bound inputs
+                                                 lit. Scrolls with the manifest so the list
+                                                 below reads as the detail behind it. -->
+                                            <views:WorkshopControllerPreview x:Name="ControllerPreview"
+                                                                             MaxHeight="230"
+                                                                             Visibility="Collapsed"/>
+                                            <ItemsControl x:Name="ManifestRowsList"/>
+                                        </StackPanel>
                                     </ScrollViewer>
                                 </Grid>
 

@@ -1138,6 +1138,17 @@ namespace PadForge.Views
                 foreach (var row in outcome.Rows)
                     ManifestRows.Add(row);
 
+                // Light the pad. The manifest's Target column and the 2DModels
+                // layout's TargetName share one namespace ("ButtonA",
+                // "LeftTrigger", "DPadUp"), so the bound set needs no
+                // translation. Axis targets carry an X/Y suffix the art does
+                // not, so they fold onto the stick ring they belong to.
+                ControllerPreview.Render(
+                    item.Tags?.FirstOrDefault()?.Tag,
+                    outcome.Rows.OfType<WorkshopManifestRowItem>()
+                                .Select(r => ArtTargetFor(r.Target))
+                                .Where(t => !string.IsNullOrEmpty(t)));
+
                 SetManifestPanel(ManifestResultPanel);
             }
             catch (Exception ex)
@@ -1263,14 +1274,10 @@ namespace PadForge.Views
                 }
 
                 var (source, target) = SourceAndTarget(entry);
-                var badge = InputBadge(source);
                 rows.Add(new WorkshopManifestRowItem
                 {
                     Source = FriendlySource(source),
                     Target = target,
-                    Glyph = badge.Glyph,
-                    GlyphTint = badge.Tint,
-                    IsRoundGlyph = badge.Round,
                     Reason = ReasonText(entry),
                     DotBrush = entry.Status switch
                     {
@@ -1638,45 +1645,20 @@ namespace PadForge.Views
             return sb.ToString();
         }
 
-        /// <summary>Maps a Steam source descriptor to a scannable badge:
-        /// short glyph text, an input-class tint, and whether the badge is
-        /// round. Returns an empty glyph for anything unrecognised, and the
-        /// row then renders exactly as it did before rather than inventing
-        /// a label for something we cannot place on a controller.</summary>
-        internal static (string Glyph, Brush Tint, bool Round) InputBadge(string source)
+        /// <summary>Folds a translator target onto the art element that
+        /// draws it. Most targets already match a layout TargetName exactly.
+        /// The axis families do not: the manifest reports
+        /// "LeftThumbAxisX" / "LeftThumbAxisY" per axis while the art has a
+        /// single "LeftThumbRing" for the stick, and trigger axes report as
+        /// the trigger itself.</summary>
+        internal static string ArtTargetFor(string target)
         {
-            if (string.IsNullOrWhiteSpace(source))
-                return ("", WorkshopManifestRowItem.OtherTint, false);
-            var s = source.Replace("Gamepad ", "", StringComparison.OrdinalIgnoreCase)
-                          .Replace(" ", "").Trim();
-
-            bool Is(string name) => s.Equals(name, StringComparison.OrdinalIgnoreCase);
-            bool Has(string frag) => s.Contains(frag, StringComparison.OrdinalIgnoreCase);
-
-            if (Is("A") || Is("B") || Is("X") || Is("Y"))
-                return (s.ToUpperInvariant(), WorkshopManifestRowItem.FaceTint, true);
-            if (Has("Paddle"))
-                return ("P" + new string(s.Where(char.IsDigit).ToArray()),
-                        WorkshopManifestRowItem.FaceTint, false);
-            if (Has("LeftBumper") || Is("LB") || Has("LeftShoulder"))
-                return ("LB", WorkshopManifestRowItem.BumperTint, false);
-            if (Has("RightBumper") || Is("RB") || Has("RightShoulder"))
-                return ("RB", WorkshopManifestRowItem.BumperTint, false);
-            if (Has("LeftTrigger")) return ("LT", WorkshopManifestRowItem.TriggerTint, false);
-            if (Has("RightTrigger")) return ("RT", WorkshopManifestRowItem.TriggerTint, false);
-            if (Has("LeftStick")) return ("LS", WorkshopManifestRowItem.StickTint, true);
-            if (Has("RightStick")) return ("RS", WorkshopManifestRowItem.StickTint, true);
-            if (Has("DPad") || Has("DirectionalPad"))
-                return ("D-Pad", WorkshopManifestRowItem.DpadTint, false);
-            if (Has("Trackpad") || Has("Touchpad"))
-                return ("Pad", WorkshopManifestRowItem.PadTint, false);
-            if (Has("Gyro") || Has("Motion"))
-                return ("Gyro", WorkshopManifestRowItem.PadTint, false);
-            if (Has("Start") || Has("Menu")) return ("Menu", WorkshopManifestRowItem.OtherTint, false);
-            if (Has("Back") || Has("Select") || Has("View"))
-                return ("View", WorkshopManifestRowItem.OtherTint, false);
-            if (Has("Guide") || Has("Home")) return ("Home", WorkshopManifestRowItem.OtherTint, false);
-            return ("", WorkshopManifestRowItem.OtherTint, false);
+            if (string.IsNullOrWhiteSpace(target)) return null;
+            if (target.StartsWith("LeftThumbAxis", StringComparison.OrdinalIgnoreCase))
+                return "LeftThumbRing";
+            if (target.StartsWith("RightThumbAxis", StringComparison.OrdinalIgnoreCase))
+                return "RightThumbRing";
+            return target;
         }
 
         private static string PrettifyTag(string tag)
@@ -1850,52 +1832,12 @@ namespace PadForge.Views
         public static readonly Effect CleanGlow = FrozenGlow(0x57, 0xC7, 0x84);
         public static readonly Effect PartialGlow = FrozenGlow(0xE3, 0xB3, 0x41);
 
-        // Input-class tints. Ember family, deliberately NOT the pad's own
-        // A/B/X/Y colours: this is a PadForge surface, and cloning another
-        // vendor's button palette would read as a costume. The classes are
-        // distinguished by hue WITHIN the ember/steel range plus the badge
-        // shape, which is enough to scan a list at a glance.
-        public static readonly Brush FaceTint = Frozen(0xE8, 0x7A, 0x2E);   // ember
-        public static readonly Brush BumperTint = Frozen(0x6E, 0x8C, 0xA8); // steel
-        public static readonly Brush TriggerTint = Frozen(0xC9, 0x5A, 0x3A);// deep ember
-        public static readonly Brush StickTint = Frozen(0x8A, 0x7B, 0xB5);  // dusk
-        public static readonly Brush DpadTint = Frozen(0x5E, 0x9E, 0x8C);   // slate green
-        public static readonly Brush PadTint = Frozen(0x9A, 0x8F, 0x7E);    // sand
-        public static readonly Brush OtherTint = Frozen(0x7E, 0x88, 0x96);
-
         public string Source { get; init; }
         public string Target { get; init; }
         public string Reason { get; init; }
         public Brush DotBrush { get; init; } = CleanBrush;
         public Effect DotGlow { get; init; }
 
-        /// <summary>Short badge text for the physical input ("A", "LB",
-        /// "LS", "D-Pad"). Empty when the source is not a recognisable pad
-        /// input, in which case the badge collapses and the row degrades to
-        /// the text it always was.</summary>
-        public string Glyph { get; init; } = "";
-
-        /// <summary>Tint for the badge, chosen by input class so a reader
-        /// can find every trigger or every face button without reading a
-        /// single word.</summary>
-        public Brush GlyphTint { get; init; } = OtherTint;
-
-        public Visibility GlyphVisibility =>
-            string.IsNullOrEmpty(Glyph) ? Visibility.Collapsed : Visibility.Visible;
-
-        /// <summary>True for round badges (face buttons and sticks), false
-        /// for the wider pill shapes (bumpers, triggers, d-pad, trackpads).
-        /// Shape carries the class as much as the tint does, which keeps
-        /// the list readable for anyone who cannot separate the hues.</summary>
-        public bool IsRoundGlyph { get; init; }
-
-        /// <summary>Typed as CornerRadius, not double: binding a double to
-        /// a CornerRadius target leans on a runtime type conversion that
-        /// fails silently into the binding-error channel rather than at
-        /// build time.</summary>
-        public CornerRadius GlyphCorner => IsRoundGlyph
-            ? new CornerRadius(9)
-            : new CornerRadius(4);
     }
 
     /// <summary>The translator's answer, adapted for the dossier: the

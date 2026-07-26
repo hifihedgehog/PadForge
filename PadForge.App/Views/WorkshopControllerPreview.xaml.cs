@@ -198,6 +198,10 @@ namespace PadForge.Views
             return img;
         }
 
+        /// <summary>Which art folder a controller tag resolves to. Exists so
+        /// the tag-to-body routing is testable without a UI thread.</summary>
+        internal static string FolderForTag(string tag) => LayoutFor(tag).Folder;
+
         private static (int W, int H, string BasePath, OverlayElement[] Ov, string Folder)
             LayoutFor(string tag)
         {
@@ -215,6 +219,19 @@ namespace PadForge.Views
             if (Is("switch"))
                 return (SwitchProLayout.BaseWidth, SwitchProLayout.BaseHeight,
                         SwitchProLayout.BasePath, SwitchProLayout.Overlays, "SWITCHPRO");
+            // Valve's own hardware, which is most of what the Steam
+            // workshop actually carries. "neptune" is the Deck.
+            if (Is("neptune"))
+                return (SteamDeckLayout.BaseWidth, SteamDeckLayout.BaseHeight,
+                        SteamDeckLayout.BasePath, SteamDeckLayout.Overlays, "STEAMDECK");
+            // "gordon" is the 2015 pad; "triton" is the 2026 one, which we
+            // ship no body for. Its predecessor is the closest shape we
+            // have (trackpads either side of a face cluster) and reads far
+            // truer than falling through to an Xbox pad, but the 2026 unit
+            // adds a second stick this render does not show.
+            if (Is("steamcontroller") || Is("triton"))
+                return (SteamControllerLayout.BaseWidth, SteamControllerLayout.BaseHeight,
+                        SteamControllerLayout.BasePath, SteamControllerLayout.Overlays, "STEAMCONTROLLER");
             if (Is("xbox360"))
                 return (Xbox360Layout.BaseWidth, Xbox360Layout.BaseHeight,
                         Xbox360Layout.BasePath, Xbox360Layout.Overlays, "XBOX360");

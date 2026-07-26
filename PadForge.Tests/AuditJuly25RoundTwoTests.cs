@@ -318,6 +318,25 @@ namespace PadForge.Tests
             };
             Assert.True(ReferenceEquals(
                 svc.EnsureAutoCalibratedAsync(ud, stampedSet), Task.CompletedTask));
+
+            // AND THE CALLER MUST ACTUALLY DELIVER IT (audit 2026-07-25, G1).
+            // The two assertions above call the calibrator DIRECTLY, so they
+            // stayed green for months while the only automatic caller skipped
+            // every profile carrying a timestamp: the upgrade branch above
+            // could not be reached in the product at all. Testing the callee
+            // in isolation proves the decision is right, never that anything
+            // asks it. This is the caller's half.
+            Assert.True(InputService.ShouldConsiderForGyroAutoCalibration(ud, stampedUnset),
+                "a timestamped, aux-unset profile must still reach the calibrator");
+            Assert.True(InputService.ShouldConsiderForGyroAutoCalibration(ud, stampedSet),
+                "the caller must not pre-judge; the calibrator owns the decision");
+
+            // The cheap filters it IS allowed to apply.
+            ud.IsOnline = false;
+            Assert.False(InputService.ShouldConsiderForGyroAutoCalibration(ud, stampedUnset));
+            ud.IsOnline = true;
+            ud.HasGyro = false;
+            Assert.False(InputService.ShouldConsiderForGyroAutoCalibration(ud, stampedUnset));
         }
 
         // ── C40: hidden pulse dies on retype ──

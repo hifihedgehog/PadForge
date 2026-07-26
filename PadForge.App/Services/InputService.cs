@@ -10038,6 +10038,26 @@ namespace PadForge.Services
         /// _gyroAutoCalibKicked (keyed by (InstanceGuid, slot)) to
         /// survive concurrent UpdatePadDeviceInfo passes while the
         /// 1500 ms worker is still running.</summary>
+        /// <summary>Whether a (device, profile) pair is worth handing to the
+        /// gyro auto-calibrator. Deliberately does NOT pre-filter on the
+        /// calibration timestamp (audit 2026-07-25, G1): the calibrator's own
+        /// #252 upgrade branch fires ONLY for a profile that already carries
+        /// one, so filtering those out here made that branch unreachable and
+        /// left every pre-#252 Joy-Con pair running its left half with no
+        /// drift correction. One decision, one place: this answers "could
+        /// this device ever need calibrating", the calibrator answers
+        /// "does it need it now". Internal so the caller's half is testable,
+        /// which is what the previous pin missed by calling the callee
+        /// directly.</summary>
+        internal static bool ShouldConsiderForGyroAutoCalibration(
+            PadForge.Engine.Data.UserDevice ud, PadForge.Engine.Data.PadSetting ps)
+        {
+            if (ud == null || ps == null) return false;
+            if (!ud.HasGyro) return false;
+            if (!ud.IsOnline) return false;
+            return true;
+        }
+
         private void TryAutoCalibrateGyros()
         {
             var settings = SettingsManager.UserSettings;
@@ -10065,11 +10085,20 @@ namespace PadForge.Services
                         if (d != null && d.InstanceGuid == us.InstanceGuid) { ud = d; break; }
                     }
                     if (ud == null) continue;
-                    if (!ud.HasGyro) continue;
-                    if (!ud.IsOnline) continue;
                     var ps = us.GetPadSetting();
-                    if (ps == null) continue;
-                    if (!string.IsNullOrEmpty(ps.GyroCalibratedAtUtc)) continue;
+                    if (!ShouldConsiderForGyroAutoCalibration(ud, ps)) continue;
+                    // NO timestamp pre-filter here (audit 2026-07-25, G1).
+                    // EnsureAutoCalibratedAsync owns the whole decision, and
+                    // its #252 upgrade branch fires only for a profile that
+                    // ALREADY carries a timestamp. Filtering those out here
+                    // made that branch unreachable: every pre-#252 profile on
+                    // a Joy-Con pair kept its aux bias at the field default
+                    // forever, so the left half ran with no drift correction
+                    // while the right half was corrected. Two gates on the
+                    // same condition, in opposite directions. The per-(device,
+                    // slot) latch below still bounds this to one call each per
+                    // session, and the callee returns a completed task
+                    // immediately when there is nothing to do.
                     var key = (ud.InstanceGuid, slot);
                     if (_gyroAutoCalibKicked.Contains(key)) continue;
                     _gyroAutoCalibKicked.Add(key);

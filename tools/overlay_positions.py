@@ -1546,19 +1546,32 @@ def process_steamdeck():
     every press overlay is fit_overlay_to_bbox-sized to it. No composite
     refinement pass is needed.
 
-    The Deck ships ONE face-button cap and ONE trackpad-click overlay,
-    reused at each lettered/side position exactly like the DS4 flow
-    reuses DS4_Face_Button.png. L4/L5/R4/R5 are rear paddles: the SVG
-    labels them (they are drawn on the rear-view layer) but they do not
-    appear on the front render, so they are deliberately not emitted --
-    a callout would point at empty body plastic.
+    The Deck ships ONE face-button cap, ONE trackpad-click overlay and
+    ONE rear-paddle overlay, reused at each lettered/side position
+    exactly like the DS4 flow reuses DS4_Face_Button.png.
 
-    The shipped base is the pack's VSCView overlay with its chroma-green
-    screen keyed to a dark panel; the green is a literal green screen,
-    keyed for its authored purpose, not repainted art.
+    THE ALTERNATIVE OVERLAY IS THE ONE TO USE, not the plain VSCView
+    overlay, because it is the composition that places the rear
+    paddles. In the plain overlay L4/L5/R4/R5 are labeled but parked
+    off-canvas (L4/L5 at x=-149, R4/R5 at x=1879 on an 1860-wide
+    canvas), so a layout built on it can only omit them. The
+    Alternative widens the canvas and brings all four on-body. Its
+    raster is 'Steam Deck Compact.png': the two agree on aspect to four
+    decimals (593.72x247.22mm = 2.4016, 2241x933 = 2.4020), which is
+    what identifies them as a pair, since neither filename says so.
+
+    The shipped base is that Compact render with its chroma-green screen
+    keyed to a dark panel; the green is a literal green screen, keyed
+    for its authored purpose, not repainted art.
+
+    Paddle target names follow the translator, not Valve's labels:
+    PhysicalSlotResolver maps button_back_right -> Paddle1,
+    button_back_left -> Paddle2, button_back_right_upper -> Paddle3,
+    button_back_left_upper -> Paddle4. So R4=Paddle1, L4=Paddle2,
+    R5=Paddle3, L5=Paddle4.
     """
     svg_path = os.path.join(ASSET_PACK, "Steam Deck Images",
-        "Theme SVG", "Black", "Steam Deck VSCView Overlay.svg")
+        "Theme SVG", "Steam Deck Alternative Overlay.svg")
 
     root = etree.parse(svg_path).getroot()
     base = cv2.imread(os.path.join(MODELS_DIR, "STEAMDECK", "SD_base.png"), cv2.IMREAD_UNCHANGED)
@@ -1635,6 +1648,11 @@ def process_steamdeck():
         results.append(("SD_Touchpad_Click.png", side + "TouchpadClick", "Button", pos[0], pos[1], pos[2], pos[3]))
         results.append(("", side + "Touchpad", "Touchpad", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {side + 'TouchpadClick':20s} ({lbl:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+
+    # Rear paddles, on-body only in this overlay (see the docstring).
+    for lbl, target in [("R4", "Paddle1"), ("L4", "Paddle2"),
+                        ("R5", "Paddle3"), ("L5", "Paddle4")]:
+        add(lbl, "SD_BackButton.png", target, "Button")
 
     return {"base_width": base_w, "base_height": base_h, "results": results}
 

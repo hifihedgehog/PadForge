@@ -365,9 +365,12 @@ namespace PadForge.Engine.Haptics
         /// (ID_OUT_REPORT_HAPTIC_RUMBLE) with the whole payload zero, byte-identical
         /// to SDL's HIDAPI_DriverSteamTriton_RumbleJoystick with both speeds 0
         /// (SDL_hidapi_steam_triton.c: type 0, intensity 0, left/right speed 0,
-        /// gain 0). Sent before arming a fresh tone cue because a plain rumble
-        /// write is what clears the haptic engine's wedged/garbled state on real
-        /// hardware (observed 2026-07-01).</summary>
+        /// gain 0). BLE ONLY: sent before arming a fresh tone cue because a plain
+        /// rumble write is what cleared the haptic engine's wedged state on real
+        /// hardware over BLE (observed 2026-07-01). NEVER send on the wired pad
+        /// (PID 0x1302): the owner-benched 2026-07-27 matrix showed a zero 0x80,
+        /// leading OR trailing, leaves wired firmware garbling the next 0x83 cue.
+        /// No reference mixes 0x80 with 0x83 on one pad; only BLE tolerates it.</summary>
         public static byte[] EncodeTritonRumbleClear()
         {
             var b = new byte[10];

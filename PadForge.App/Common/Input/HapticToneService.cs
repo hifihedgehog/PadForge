@@ -498,6 +498,7 @@ namespace PadForge.Common.Input
             // accepts it, else synchronous HidD_SetOutputReport (the BT-Joy-Con
             // err-87 case, same split as the Wii speaker).
             public bool UseWriteFile;
+            public bool WriteFailing;
 
             public long LastContentMs = long.MinValue / 2;
 
@@ -1492,21 +1493,39 @@ namespace PadForge.Common.Input
         // synchronous HidD_SetOutputReport (BT-Joy-Con err-87 fallback). Used by
         // the Joy-Con 0x10 rumble lane and the Triton 0x80/0x83 output lane.
         private static void HidOutputWrite(Sink s, byte[] buf)
-            => HidOutputWriteTo(s.Handle, buf, ref s.UseWriteFile);
+        {
+            bool ok = HidOutputWriteTo(s.Handle, buf, ref s.UseWriteFile);
+            // Edge-gated failure visibility (VC-freeze discipline applied
+            // here): a swallowed write failure is exactly how a garble
+            // stays undiagnosable. One line on the first failure, one on
+            // recovery, never per tick.
+            if (!ok && !s.WriteFailing)
+            {
+                s.WriteFailing = true;
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"HAPTICDIAG writefail family={s.Family} slot={s.Slot} err={Marshal.GetLastWin32Error()} len={buf.Length} id=0x{buf[0]:X2}");
+            }
+            else if (ok && s.WriteFailing)
+            {
+                s.WriteFailing = false;
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"HAPTICDIAG writerecover family={s.Family} slot={s.Slot}");
+            }
+        }
 
         // Handle-explicit form: the combined pair's two children each carry
         // their own probed write-path flag (#223).
-        private static void HidOutputWriteTo(IntPtr h, byte[] buf, ref bool useWriteFile)
+        private static bool HidOutputWriteTo(IntPtr h, byte[] buf, ref bool useWriteFile)
         {
-            if (h == IntPtr.Zero) return;
+            if (h == IntPtr.Zero) return false;
             if (useWriteFile)
             {
-                if (OverlappedWrite(h, buf)) return;
+                if (OverlappedWrite(h, buf)) return true;
                 useWriteFile = false; // fall back for the rest of the cue
             }
             // Fire-and-forget rumble write: a dropped tick is inaudible, never a
-            // crash. Same swallow idiom as the OverlappedWrite/ProbeWriteFile path.
-            try { HidD_SetOutputReport(h, buf, buf.Length); } catch { }
+            // crash. The RESULT is surfaced (edge-gated) by HidOutputWrite.
+            try { return HidD_SetOutputReport(h, buf, buf.Length); } catch { return false; }
         }
 
         /// <summary>Opens and inits the combined pair's second child (#223):
@@ -1936,6 +1955,8 @@ namespace PadForge.Common.Input
                         // rumble signal clears the garble). Same zero form SDL's
                         // RumbleJoystick sends (report 0x80, payload all zero).
                         TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"HAPTICDIAG triton-arm slot={s.Slot} hz={toneHz:F0} amp={amp:F2} outlen={s.OutLen} wf={(s.UseWriteFile ? 1 : 0)}");
                     }
                     foreach (int hap in HapticToneEncoder.TritonActuators)
                         TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));

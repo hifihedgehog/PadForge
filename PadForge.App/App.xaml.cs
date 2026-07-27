@@ -70,11 +70,14 @@ namespace PadForge
         /// Background task sweeping HIDMaestro virtual controllers orphaned
         /// by a prior session that didn't cleanly dispose (crash, force-kill,
         /// power loss). Kicked off during OnStartup so the main window can
-        /// render immediately; awaited from <see cref="InputManager.InitializeSdl"/>
-        /// before SDL enumerates devices so the orphans never surface in
-        /// Devices list or XInput slots. By the time the user's engine Start
-        /// fires, the sweep is typically already complete; the Wait there
-        /// is the safety catch when a heavy kernel cleanup runs long.
+        /// render immediately. Nothing awaits it for correctness anymore
+        /// (an earlier InitializeSdl await was removed when the SDL3 fork
+        /// grew its own HM filter; round 33, C3 retired the stale claim
+        /// here): the ordering property lives INSIDE the task, which ends
+        /// with a bounded wait (up to 5 s) for the HIDMAESTRO devnodes to
+        /// be genuinely ABSENT, so a same-session VC create cannot adopt a
+        /// dying node, and logs ORPHANSWEEP when one lingers past the
+        /// bound. MainWindow only watches it to show the startup overlay.
         /// </summary>
         public static System.Threading.Tasks.Task OrphanSweepTask { get; private set; }
 

@@ -105,7 +105,6 @@ namespace PadForge.Views
         private const double MoveSize = MouseGlyph.MoveSize;
 
         // Button area (used by both build and render)
-        private const double BtnBottom = 58;
         private const double MoveTop = MouseGlyph.MoveTop;
 
         private System.Windows.Threading.DispatcherTimer _flashTimer;
@@ -253,13 +252,11 @@ namespace PadForge.Views
 
             MouseGlyph.AddOutline(MouseCanvas, DimBrush);
 
-            // Interaction is KBM-only: these surfaces record a mapping.
-            // Targets are the ORIGINAL ones -- LMB is Btn0, RMB is Btn1,
-            // the wheel is Btn2. Do not renumber them to match the visual
-            // left-to-right order; they are the engine's descriptors.
-            foreach (var sh in new Shape[] { _lmbPath, _rmbPath, _scrollWheelPill, _x1Rect, _x2Rect,
-                                             _scrollUpArrow, _scrollDownArrow })
-                sh.Cursor = Cursors.Hand;
+            // Only the scroll arrows carry their own handlers (below); the
+            // five masked art layers are IsHitTestVisible=false with
+            // dedicated hit Paths, so a Cursor on them is inert (round 33).
+            _scrollUpArrow.Cursor = Cursors.Hand;
+            _scrollDownArrow.Cursor = Cursors.Hand;
 
             // Engine descriptors, not visual order: LMB is Btn0, RMB is
             // Btn1, the wheel is Btn2.
@@ -472,7 +469,13 @@ namespace PadForge.Views
                 bool p = kbm.GetMouseButton(1);
                 _rmbPath.Fill = p ? AccentBrush : MouseButtonBrush;
             }
-            if (_flashTarget != "KbmMBtn2" || !_flashOn)
+            // The wheel Fill is ALSO the recording flash surface for the
+            // scroll targets (ApplyFlashState), not just KbmMBtn2; a guard
+            // that only knew the button let this repaint stomp the scroll
+            // flash every frame (round 33, C4).
+            if ((_flashTarget != "KbmMBtn2"
+                 && _flashTarget != "KbmScroll"
+                 && _flashTarget != "KbmScrollNeg") || !_flashOn)
             {
                 bool p = kbm.GetMouseButton(2);
                 _scrollWheelPill.Fill = p ? AccentBrush : ScrollWheelBrush;

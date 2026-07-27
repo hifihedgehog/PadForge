@@ -45,6 +45,9 @@ namespace PadForge.Services
         private readonly MainViewModel _mainVm;
         private readonly Dispatcher _dispatcher;
         private InputManager _inputManager;
+        // Gesture fired-key compose cache; see the provider (round 33, C14).
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<(int, string), string>
+            s_gestureFiredKeyCache = new();
         // Static mirror of the live engine for the static MappingSet swap
         // helpers (menus paste, Copy From Slot), which must reset the menu
         // runtime the same way the instance-side profile apply does.
@@ -1538,8 +1541,14 @@ namespace PadForge.Services
                     };
                 }
 
-                return ctx.FiredGesturesThisFrame.Contains(
-                    $"Touchpad {padIdx} {gestureName}");
+                // Composed-key cache (round 33, C14): this provider runs per
+                // gesture-bound row per polling tick, and the interpolation
+                // allocated a string every read on the 1 kHz thread. The key
+                // space is bounded (pads x descriptor names).
+                string firedKey = s_gestureFiredKeyCache.GetOrAdd(
+                    (padIdx, gestureName),
+                    static k => $"Touchpad {k.Item1} {k.Item2}");
+                return ctx.FiredGesturesThisFrame.Contains(firedKey);
             };
 
             // Menu-item fired reads (#9 B-17): the menu runtime asserts /

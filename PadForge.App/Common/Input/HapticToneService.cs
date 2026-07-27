@@ -1274,9 +1274,12 @@ namespace PadForge.Common.Input
                         // reports all along). SDL, and therefore Steam,
                         // drives the wired pad with WriteFile on the
                         // interrupt pipe, and that is the only style it
-                        // accepts. If WriteFile ever fails here the per-sink
-                        // fallback latches SET_REPORT and the writefail line
-                        // names the error.
+                        // accepts. WriteFile stays PINNED here: a failure
+                        // tries SET_REPORT for that one write and logs the
+                        // edge-gated pinned-wf-fail line, but never latches
+                        // the lane away from the reference style (round 33,
+                        // C1 retired the stale latch claim this comment
+                        // used to make).
                         bool usbTriton = path != null
                             && path.IndexOf("pid_1302", StringComparison.OrdinalIgnoreCase) >= 0;
                         // Proteus/Nereid dongle (0x1304/0x1305): the real puck

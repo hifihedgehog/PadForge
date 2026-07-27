@@ -60,9 +60,14 @@ namespace PadForge.Engine.Touchpad
         /// finger snapshot, and fires gestures into
         /// <see cref="TouchpadGestureContext.FiredGesturesThisFrame"/>.
         ///
-        /// <para>Caller should clear <c>FiredGesturesThisFrame</c> before
-        /// calling, then read it after; this method appends to it but
-        /// does not clear so the caller can compose multiple sources.</para>
+        /// <para>Callers must NOT clear <c>FiredGesturesThisFrame</c>: the
+        /// set deliberately latches through the cooldown window so slower
+        /// consumers catch the rising edge, and held sources (radial
+        /// zones, touch spots) add and remove their keys explicitly. The
+        /// recognizer clears it itself at cooldown expiry and at
+        /// fresh-gesture start. (An earlier version of this doc said the
+        /// opposite; following it would break every latched consumer.
+        /// Round 33, S6.)</para>
         ///
         /// <para>Shape-gesture matching (Tier 3) is delegated to
         /// <paramref name="shapeTemplates"/>: pass null to skip Tier 3
@@ -688,7 +693,6 @@ namespace PadForge.Engine.Touchpad
                     if (gap > settings.MultiTapGapMs) ctx.RecentTapCount = 0;
                     ctx.RecentTapCount++;
                     ctx.LastTapEndTimestampMs = nowMs;
-                    ctx.LastTapPosition = end;
                     string tapName = ctx.RecentTapCount switch
                     {
                         1 => "Tap",

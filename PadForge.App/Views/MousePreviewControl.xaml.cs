@@ -200,6 +200,5 @@ namespace PadForge.Views
             }
         }
 
-        private const double swBotConst = MouseGlyph.WheelBottom;
     }
 }

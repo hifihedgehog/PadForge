@@ -93,7 +93,6 @@ namespace PadForge.Engine.Touchpad
         /// TripleTap classification.</summary>
         public int RecentTapCount;
         public long LastTapEndTimestampMs;
-        public Vector2 LastTapPosition;
 
         // ─── Continuous gesture state (Tier 2 axes) ──────────────────
 
@@ -194,7 +193,6 @@ namespace PadForge.Engine.Touchpad
             CooldownUntilTimestampMs = 0;
             RecentTapCount = 0;
             LastTapEndTimestampMs = 0;
-            LastTapPosition = Vector2.Zero;
             CurrentPinchAxis = 0f;
             CurrentRotateAxis = 0f;
             TwoFingerSessionActive = false;

@@ -127,8 +127,9 @@ namespace PadForge.Engine.Haptics
         /// is a real protocol quirk (the split desyncs from a clean low/high byte at
         /// byte boundaries), but it is confirmed byte-identical to the proven
         /// SteamControllerSinger main.cpp:129-134 on all six bytes (e.g. period
-        /// 0x0466 -> LSB 0x67, which 0x100 would render 0x66). Do not "fix" it to
-        /// 0x100; that would diverge from the only same-transport reference.</summary>
+        /// 0x0166 = 358: % 0xFF gives LSB 0x67 where 0x100 would give 0x66).
+        /// Do not "fix" it to 0x100; that would diverge from the only
+        /// same-transport reference.</summary>
         public static byte[] EncodeSteamClassic(float freqHz, double durationSeconds, int haptic = 0)
         {
             var blob = new byte[64];
@@ -141,17 +142,23 @@ namespace PadForge.Engine.Haptics
             // only the repeat count is zeroed (main.cpp:114-134). Reproduce that
             // exactly: a stop is "this tone, repeated zero times", not a blank
             // packet. Use the same 8.1758 Hz note-0 frequency.
-            if (freqHz <= 0f)
+            if (!float.IsFinite(freqHz) || freqHz <= 0f)
             {
                 freqHz = 8.1758f;
                 durationSeconds = 0.0;
             }
 
             double period = 1.0 / freqHz;
-            ushort periodCommand = (ushort)(period * SteamMagicPeriodRatio);
-            ushort repeatCount = durationSeconds >= 0.0
-                ? (ushort)(durationSeconds / period)
-                : (ushort)0x7FFF;
+            // Clamp before the ushort narrowing (round 33, S7): below
+            // ~7.6 Hz the period command exceeds 65535 and the raw cast
+            // wraps to arbitrary wire bytes. 65535 = the lowest tone the
+            // 16-bit field can express, the honest floor.
+            double pc = period * SteamMagicPeriodRatio;
+            ushort periodCommand = pc >= 65535.0 ? (ushort)65535 : (ushort)pc;
+            double rc = durationSeconds >= 0.0 ? durationSeconds / period : -1.0;
+            ushort repeatCount = rc < 0.0
+                ? (ushort)0x7FFF
+                : rc >= 65535.0 ? (ushort)65535 : (ushort)rc;
 
             blob[2] = (byte)haptic;
             blob[3] = (byte)(periodCommand % 0xFF); // LSB pulse-high

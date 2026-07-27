@@ -45,6 +45,11 @@ namespace PadForge.Services
         private readonly MainViewModel _mainVm;
         private readonly Dispatcher _dispatcher;
         private InputManager _inputManager;
+        // Per-slot test-pulse generation. Both test lanes (main motors and
+        // impulse triggers) share the slot's vibration object and target
+        // filter, so each pulse stamps a generation and only the newest one
+        // clears (round 34). UI thread only.
+        private readonly long[] _testPulseGeneration = new long[InputManager.MaxPads];
         // Gesture fired-key compose cache; see the provider (round 33, C14).
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<(int, string), string>
             s_gestureFiredKeyCache = new();
@@ -11153,16 +11158,21 @@ namespace PadForge.Services
             if (left) vib.LeftTriggerMotorSpeed = 65535;
             if (right) vib.RightTriggerMotorSpeed = 65535;
 
+            long myGen = ++_testPulseGeneration[padIndex];
             var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
             clearTimer.Tick += (s2, e2) =>
             {
-                if (_inputManager != null && padIndex < InputManager.MaxPads)
-                {
-                    if (left) vib.LeftTriggerMotorSpeed = 0;
-                    if (right) vib.RightTriggerMotorSpeed = 0;
-                    _inputManager.TestRumbleTargetGuid[padIndex] = Guid.Empty;
-                }
                 clearTimer.Stop();
+                // Only the NEWEST pulse on this slot may clear shared state.
+                // Both test lanes write the slot's single VibrationStates
+                // object and its single TestRumbleTargetGuid, so a stale
+                // timer used to zero a newer pulse's motors and wipe its
+                // device filter mid-flight (round 34).
+                if (_inputManager == null || padIndex >= InputManager.MaxPads) return;
+                if (_testPulseGeneration[padIndex] != myGen) return;
+                if (left) vib.LeftTriggerMotorSpeed = 0;
+                if (right) vib.RightTriggerMotorSpeed = 0;
+                _inputManager.TestRumbleTargetGuid[padIndex] = Guid.Empty;
             };
             clearTimer.Start();
         }
@@ -11196,24 +11206,26 @@ namespace PadForge.Services
             if (left) vib.LeftMotorSpeed = 65535;
             if (right) vib.RightMotorSpeed = 65535;
 
-            // Schedule clearing after 500ms.
+            // Schedule clearing after 500ms. Generation-gated: see the twin in
+            // SendTestImpulseTrigger. Both lanes share this slot's vibration
+            // object and target filter, so only the newest pulse may clear.
+            long myGen = ++_testPulseGeneration[padIndex];
             var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
             clearTimer.Tick += (s2, e2) =>
             {
-                if (_inputManager != null && padIndex < InputManager.MaxPads)
-                {
-                    if (left) vib.LeftMotorSpeed = 0;
-                    if (right) vib.RightMotorSpeed = 0;
-                    if (isExtended)
-                    {
-                        vib.HasDirectionalData = false;
-                        vib.SignedMagnitude = 0;
-                        vib.Direction = 0;
-                        vib.EffectType = 0;
-                    }
-                    _inputManager.TestRumbleTargetGuid[padIndex] = Guid.Empty;
-                }
                 clearTimer.Stop();
+                if (_inputManager == null || padIndex >= InputManager.MaxPads) return;
+                if (_testPulseGeneration[padIndex] != myGen) return;
+                if (left) vib.LeftMotorSpeed = 0;
+                if (right) vib.RightMotorSpeed = 0;
+                if (isExtended)
+                {
+                    vib.HasDirectionalData = false;
+                    vib.SignedMagnitude = 0;
+                    vib.Direction = 0;
+                    vib.EffectType = 0;
+                }
+                _inputManager.TestRumbleTargetGuid[padIndex] = Guid.Empty;
             };
             clearTimer.Start();
         }
@@ -13303,14 +13315,7 @@ namespace PadForge.Services
                     SettingsManager.ActiveProfileId = profileId;
                     _mainVm.Settings.ActiveProfileInfo = target.Name;
                     ApplyProfile(target);
-                    // Drop stateful source-kind accumulators (Incremental
-                    // cruise/ramp throttle), shift-toggle latches, and the
-                    // gyro engage stickies so the new profile starts neutral.
-                    Common.Input.InputManager.ClearSourceKindRuntime();
-                    Common.Input.InputManager.ClearAllShiftRuntime();
-                    _inputManager?.ResetGyroEngageStates();
-                    _inputManager?.ResetTriggerRouteEngageStates();
-                    _inputManager?.ResetGestureContexts();
+                    ResetRuntimeStateForProfileSwitch();
                     _mainVm.StatusText = string.Format(Strings.Instance.Status_ProfileSwitched_Format, target.Name);
                 }
             }
@@ -13321,12 +13326,30 @@ namespace PadForge.Services
                 _mainVm.Settings.ActiveProfileInfo = Strings.Instance.Profile_Default;
                 if (_defaultProfileSnapshot != null)
                     ApplyProfile(_defaultProfileSnapshot);
-                Common.Input.InputManager.ClearSourceKindRuntime();
-                Common.Input.InputManager.ClearAllShiftRuntime();
-                _inputManager?.ResetGyroEngageStates();
-                _inputManager?.ResetTriggerRouteEngageStates();
+                ResetRuntimeStateForProfileSwitch();
                 _mainVm.StatusText = Strings.Instance.Status_ProfileSwitchedDefault;
             }
+        }
+
+        /// <summary>Drops every stateful accumulator a profile switch must not
+        /// carry across: source-kind runtime (Incremental cruise / ramp
+        /// throttle), shift-toggle latches, gyro engage stickies, trigger-route
+        /// engage, and gesture contexts.
+        ///
+        /// <para>This exists as ONE method because the reset set had drifted
+        /// three ways (round 34): the named-profile auto lane ran all five, the
+        /// default auto lane omitted ResetGestureContexts, and the MANUAL lanes
+        /// (LoadProfile, RevertToDefaultProfile, DeleteProfile's fallback) ran
+        /// none of them, so switching profiles from the UI carried a latched
+        /// shift layer or an engaged gyro into the new profile while the
+        /// foreground-monitor lane doing the same switch did not.</para></summary>
+        private void ResetRuntimeStateForProfileSwitch()
+        {
+            Common.Input.InputManager.ClearSourceKindRuntime();
+            Common.Input.InputManager.ClearAllShiftRuntime();
+            _inputManager?.ResetGyroEngageStates();
+            _inputManager?.ResetTriggerRouteEngageStates();
+            _inputManager?.ResetGestureContexts();
         }
 
         /// <summary>
@@ -13488,6 +13511,7 @@ namespace PadForge.Services
             {
                 SettingsManager.ActiveProfileId = null;
                 ApplyDefaultProfile();
+                ResetRuntimeStateForProfileSwitch();
             }
             RefreshProfileTopology();
             return wasActive;
@@ -13518,6 +13542,9 @@ namespace PadForge.Services
             SaveActiveProfileState();
             SettingsManager.ActiveProfileId = profile.Id;
             ApplyProfile(profile);
+            // Same neutral-state contract as the auto (foreground-monitor)
+            // lane; see ResetRuntimeStateForProfileSwitch.
+            ResetRuntimeStateForProfileSwitch();
         }
 
         /// <summary>
@@ -13529,6 +13556,7 @@ namespace PadForge.Services
             SaveActiveProfileState();
             SettingsManager.ActiveProfileId = null;
             ApplyDefaultProfile();
+            ResetRuntimeStateForProfileSwitch();
         }
 
         /// <summary>

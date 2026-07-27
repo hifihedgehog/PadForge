@@ -2353,10 +2353,21 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isRecordingExpressionVariable, value);
         }
 
+        /// <summary>Variable ceiling for a custom-expression macro. The
+        /// editor labels each row from the ItemsControl's AlternationIndex,
+        /// which WPF assigns cyclically, so past this count two rows would
+        /// carry the SAME letter while the evaluator still binds them
+        /// positionally: the user would edit one variable and the formula
+        /// would read the other (round 34). Keep in sync with
+        /// AlternationCount on the TriggerExpressionVariables ItemsControl
+        /// in PadPage.xaml.</summary>
+        public const int MaxExpressionVariables = 32;
+
         private RelayCommand _addExpressionVariableCommand;
         public RelayCommand AddExpressionVariableCommand =>
             _addExpressionVariableCommand ??= new RelayCommand(() =>
             {
+                if (TriggerExpressionVariables.Count >= MaxExpressionVariables) return;
                 TriggerExpressionVariables.Add(new MacroExpressionVariable());
                 OnPropertyChanged(nameof(CustomExpressionStatus));
                 OnPropertyChanged(nameof(IsCustomExpressionWarning));

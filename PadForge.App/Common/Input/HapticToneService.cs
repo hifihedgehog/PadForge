@@ -1223,6 +1223,28 @@ namespace PadForge.Common.Input
                     s.OutLen = capOut > 0 ? capOut : 64;
                     s.FeatLen = capFeat > 0 ? capFeat : 65;
 
+                    if (s.Family == Family.Steam2026)
+                    {
+                        // WriteFile-first (2026-07-26 captures). SET_REPORT via
+                        // HidD_SetOutputReport is the write style NOBODY else
+                        // uses on this pad: SDL, and therefore Steam itself,
+                        // writes it with WriteFile on the interrupt pipe. Over
+                        // USB the firmware rejects SET_REPORT outright
+                        // (writefail err=31 on the first 0x80, every write
+                        // bounced, total silence). Over BLE it accepted
+                        // SET_REPORT at the June hardware-confirm but now
+                        // garbles and then drops the link ~3.6 s later on
+                        // SDL's next lizard-disable write -- consistent with a
+                        // firmware update keeping only the Valve-canonical
+                        // path healthy. WriteFile-first puts us on that path;
+                        // a stack that rejects it fast-fails once and the
+                        // existing per-sink fallback latches SET_REPORT for
+                        // the rest of the cue.
+                        s.UseWriteFile = true;
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"HAPTICDIAG triton-build outlenCaps={capOut} featCaps={capFeat} path-tail={(path != null && path.Length > 24 ? path.Substring(path.Length - 24) : path)}");
+                    }
+
                     if (IsJoyConGen1(s.Family))
                     {
                         // Joy-Con gen-1 init: set input report mode 0x30 then enable

@@ -1301,7 +1301,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>停止しています…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>エンジンを停止中…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>非アクティブタイムアウト</value></data>
-  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>マッピングされたすべてのデバイスがオフラインのときに、仮想コントローラーが破棄されるまでの秒数。0 で無効になります。残ったコントローラーは隙間を埋めるために上にシフトし、低い XInput スロットに再バインドされます。</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>マッピングされたすべてのデバイスがオフラインのときに、仮想コントローラーが破棄されるまでの秒数。0 で無効になります。残った同じ種類のコントローラーは隙間を埋めるために上にシフトし、低いスロットに再バインドされます。</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>秒 (0 = 無効)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ユーザーモードの仮想 HID コントローラーエンジン (ViGEmBus と vJoy を置き換え)。MIT。</value></data>

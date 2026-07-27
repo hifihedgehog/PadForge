@@ -1321,7 +1321,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Bezig met stoppen…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Engine wordt gestopt…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inactiviteits-time-out</value></data>
-  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconden voordat een virtuele controller wordt verwijderd wanneer alle gekoppelde apparaten offline zijn. 0 schakelt dit uit. Overgebleven controllers schuiven omhoog om het gat op te vullen en worden opnieuw gebonden aan lagere XInput-slots.</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconden voordat een virtuele controller wordt verwijderd wanneer alle gekoppelde apparaten offline zijn. 0 schakelt dit uit. Overgebleven controllers van hetzelfde type schuiven omhoog om het gat op te vullen en worden opnieuw gebonden aan lagere slots.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>seconden (0 = nooit)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Virtuele HID-controllerengine in gebruikersmodus (vervangt ViGEmBus en vJoy). MIT.</value></data>

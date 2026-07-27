@@ -1301,7 +1301,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>중지 중…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>엔진 중지 중…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>비활성 시간 초과</value></data>
-  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>매핑된 모든 장치가 오프라인일 때 가상 컨트롤러가 제거되기까지의 시간(초)입니다. 0이면 비활성화됩니다. 남은 컨트롤러는 빈 자리를 메우기 위해 위로 이동하고 더 낮은 XInput 슬롯에 다시 바인딩됩니다.</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>매핑된 모든 장치가 오프라인일 때 가상 컨트롤러가 제거되기까지의 시간(초)입니다. 0이면 비활성화됩니다. 남은 동일한 유형의 컨트롤러는 빈 자리를 메우기 위해 위로 이동하고 더 낮은 슬롯에 다시 바인딩됩니다.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>초 (0 = 안 함)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>사용자 모드 가상 HID 컨트롤러 엔진 (ViGEmBus 및 vJoy 대체). MIT.</value></data>

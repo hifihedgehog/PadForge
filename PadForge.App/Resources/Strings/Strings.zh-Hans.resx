@@ -1300,7 +1300,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>正在停止…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>正在停止引擎…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>非活动超时</value></data>
-  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>当所有映射设备都离线时，虚拟控制器被销毁前的秒数。0 表示禁用。剩余的控制器会上移以填补空缺，并重新绑定到较低的 XInput 槽位。</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>当所有映射设备都离线时，虚拟控制器被销毁前的秒数。0 表示禁用。剩余的同类型控制器会上移以填补空缺，并重新绑定到较低的槽位。</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>秒（0 = 永不）</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>用户模式虚拟 HID 控制器引擎（替代 ViGEmBus 和 vJoy）。MIT。</value></data>

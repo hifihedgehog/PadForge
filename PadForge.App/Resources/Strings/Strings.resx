@@ -2002,7 +2002,7 @@
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Right Motor</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Level</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inactivity timeout</value></data>
-  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconds before a virtual controller is destroyed when all mapped devices are offline. 0 disables. Surviving controllers shift up to fill the gap and re-bind to lower XInput slots.</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconds before a virtual controller is destroyed when all of its mapped devices are offline. 0 disables. Surviving controllers of the same type shift up to fill the gap and re-bind to lower slots.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>seconds (0 = never)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift Layer</value></data>

@@ -1225,22 +1225,15 @@ namespace PadForge.Common.Input
 
                     if (s.Family == Family.Steam2026)
                     {
-                        // WriteFile-first (2026-07-26 captures). SET_REPORT via
-                        // HidD_SetOutputReport is the write style NOBODY else
-                        // uses on this pad: SDL, and therefore Steam itself,
-                        // writes it with WriteFile on the interrupt pipe. Over
-                        // USB the firmware rejects SET_REPORT outright
-                        // (writefail err=31 on the first 0x80, every write
-                        // bounced, total silence). Over BLE it accepted
-                        // SET_REPORT at the June hardware-confirm but now
-                        // garbles and then drops the link ~3.6 s later on
-                        // SDL's next lizard-disable write -- consistent with a
-                        // firmware update keeping only the Valve-canonical
-                        // path healthy. WriteFile-first puts us on that path;
-                        // a stack that rejects it fast-fails once and the
-                        // existing per-sink fallback latches SET_REPORT for
-                        // the rest of the cue.
-                        s.UseWriteFile = true;
+                        // SET_REPORT (HidD_SetOutputReport), deliberately: the
+                        // write shape 3.6.1 shipped and the one that plays
+                        // CLEAN on current firmware (owner-verified after the
+                        // 2026-07-26 firmware update). The lizard-mode drops
+                        // that night were an OLD-FACTORY-FIRMWARE fragility on
+                        // a brand-new pad, fixed by updating the controller,
+                        // not by any transport change here. A WriteFile-first
+                        // experiment from that arc garbled on the new
+                        // firmware and was reverted the same night.
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"HAPTICDIAG triton-build outlenCaps={capOut} featCaps={capFeat} path-tail={(path != null && path.Length > 24 ? path.Substring(path.Length - 24) : path)}");
                     }
@@ -1977,17 +1970,11 @@ namespace PadForge.Common.Input
                         // rumble signal clears the garble). Same zero form SDL's
                         // RumbleJoystick sends (report 0x80, payload all zero).
                         TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
-                        Thread.Sleep(TritonInterWritePaceMs);
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"HAPTICDIAG triton-arm slot={s.Slot} hz={toneHz:F0} amp={amp:F2} outlen={s.OutLen} wf={(s.UseWriteFile ? 1 : 0)}");
                     }
-                    bool first = true;
                     foreach (int hap in HapticToneEncoder.TritonActuators)
-                    {
-                        if (!first) Thread.Sleep(TritonInterWritePaceMs);
-                        first = false;
                         TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));
-                    }
                     s.SteamOn = true;
                     s.SteamLastFreq = toneHz;
                     s.SteamLastAmp = amp;
@@ -2010,32 +1997,16 @@ namespace PadForge.Common.Input
             HidOutputWrite(s, ResizeOut(report, Math.Max(report.Length, s.OutLen)));
         }
 
-        /// <summary>Spacing between the Triton's intra-burst writes.
-        ///
-        /// <para>MITIGATION, hypothesis-under-test (2026-07-26 capture): one
-        /// Test cue's writes all SUCCEEDED on the confirmed transport, then
-        /// the controller itself dropped off ~3.6 s later, on SDL's next
-        /// 3-second lizard-disable cadence -- the burst wedges the firmware
-        /// silently and SDL's periodic write exposes it. What is unique to
-        /// our path versus every reference is the burst SHAPE: five
-        /// back-to-back SET_REPORT control-channel writes in under a
-        /// millisecond, where SDL itself never sends more than one write per
-        /// 40 ms to this pad and the singer reference ran over USB. Pacing
-        /// the writes is the graded test of that hypothesis. Runs on the
-        /// service's stream thread, never the poll loop.</para></summary>
-        private const int TritonInterWritePaceMs = 3;
-
         private static void TritonStop(Sink s)
         {
             if (s.Handle == IntPtr.Zero) return;
             // Per-actuator 0x83 stop form (gain 0x80), the reference note-off.
-            bool first = true;
+            // Back-to-back like the arm: the four LRAs are driven
+            // phase-locked. A 3 ms stagger experiment (2026-07-26, aimed at
+            // an old-firmware pad) de-phased the actuators and read as
+            // garble on current firmware; reverted the same night.
             foreach (int hap in HapticToneEncoder.TritonActuators)
-            {
-                if (!first) Thread.Sleep(TritonInterWritePaceMs);
-                first = false;
                 TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, 0f, 0f));
-            }
         }
 
 

@@ -3739,12 +3739,14 @@ namespace PadForge.ViewModels
             LeftDeadZoneX = 0; LeftDeadZoneY = 0;
             LeftAntiDeadZoneX = 0; LeftAntiDeadZoneY = 0;
             LeftLinear = 0;
+            LeftStickSensitivity = 1.0;
             LeftCenterOffsetX = 0; LeftCenterOffsetY = 0;
             LeftMaxRangeX = 100; LeftMaxRangeY = 100;
             RightDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
             RightDeadZoneX = 0; RightDeadZoneY = 0;
             RightAntiDeadZoneX = 0; RightAntiDeadZoneY = 0;
             RightLinear = 0;
+            RightStickSensitivity = 1.0;
             RightCenterOffsetX = 0; RightCenterOffsetY = 0;
             RightMaxRangeX = 100; RightMaxRangeY = 100;
             LeftTriggerDeadZone = 0; LeftTriggerAntiDeadZone = 0; LeftTriggerMaxRange = 100;
@@ -3770,6 +3772,8 @@ namespace PadForge.ViewModels
 
         private double _leftLinear;
         public double LeftLinear { get => _leftLinear; set => SetProperty(ref _leftLinear, Math.Clamp(value, 0, 100)); }
+        private double _leftStickSensitivity = 1.0;
+        public double LeftStickSensitivity { get => _leftStickSensitivity; set => SetProperty(ref _leftStickSensitivity, Math.Clamp(value, 0.1, 5.0)); }
 
         // ── Right Stick ──
         private int _rightDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
@@ -3789,6 +3793,8 @@ namespace PadForge.ViewModels
 
         private double _rightLinear;
         public double RightLinear { get => _rightLinear; set => SetProperty(ref _rightLinear, Math.Clamp(value, 0, 100)); }
+        private double _rightStickSensitivity = 1.0;
+        public double RightStickSensitivity { get => _rightStickSensitivity; set => SetProperty(ref _rightStickSensitivity, Math.Clamp(value, 0.1, 5.0)); }
 
         // ── Sensitivity Curves (per-axis for sticks, serialized control point strings) ──
         private string _leftSensitivityCurveX = "0,0;1,1";
@@ -4042,6 +4048,7 @@ namespace PadForge.ViewModels
                         item.AntiDeadZoneX = LeftAntiDeadZoneX;
                         item.AntiDeadZoneY = LeftAntiDeadZoneY;
                         item.Linear = LeftLinear;
+                        item.Sensitivity = LeftStickSensitivity;
                         item.SensitivityCurveX = LeftSensitivityCurveX;
                         item.SensitivityCurveY = LeftSensitivityCurveY;
                         item.MaxRangeX = LeftMaxRangeX;
@@ -4059,6 +4066,7 @@ namespace PadForge.ViewModels
                         item.AntiDeadZoneX = RightAntiDeadZoneX;
                         item.AntiDeadZoneY = RightAntiDeadZoneY;
                         item.Linear = RightLinear;
+                        item.Sensitivity = RightStickSensitivity;
                         item.SensitivityCurveX = RightSensitivityCurveX;
                         item.SensitivityCurveY = RightSensitivityCurveY;
                         item.MaxRangeX = RightMaxRangeX;
@@ -4200,6 +4208,7 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.AntiDeadZoneX): LeftAntiDeadZoneX = item.AntiDeadZoneX; break;
                         case nameof(StickConfigItem.AntiDeadZoneY): LeftAntiDeadZoneY = item.AntiDeadZoneY; break;
                         case nameof(StickConfigItem.Linear): LeftLinear = item.Linear; break;
+                        case nameof(StickConfigItem.Sensitivity): LeftStickSensitivity = item.Sensitivity; break;
                         case nameof(StickConfigItem.SensitivityCurveX): LeftSensitivityCurveX = item.SensitivityCurveX; break;
                         case nameof(StickConfigItem.SensitivityCurveY): LeftSensitivityCurveY = item.SensitivityCurveY; break;
                         case nameof(StickConfigItem.MaxRangeX): LeftMaxRangeX = item.MaxRangeX; break;
@@ -4221,6 +4230,7 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.AntiDeadZoneX): RightAntiDeadZoneX = item.AntiDeadZoneX; break;
                         case nameof(StickConfigItem.AntiDeadZoneY): RightAntiDeadZoneY = item.AntiDeadZoneY; break;
                         case nameof(StickConfigItem.Linear): RightLinear = item.Linear; break;
+                        case nameof(StickConfigItem.Sensitivity): RightStickSensitivity = item.Sensitivity; break;
                         case nameof(StickConfigItem.SensitivityCurveX): RightSensitivityCurveX = item.SensitivityCurveX; break;
                         case nameof(StickConfigItem.SensitivityCurveY): RightSensitivityCurveY = item.SensitivityCurveY; break;
                         case nameof(StickConfigItem.MaxRangeX): RightMaxRangeX = item.MaxRangeX; break;

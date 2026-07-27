@@ -1,4 +1,4 @@
-<UserControl x:Class="PadForge.Views.PadPage"
+﻿<UserControl x:Class="PadForge.Views.PadPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -4710,22 +4710,6 @@
                                                             <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <ui:Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                                         </StackPanel>
-                                                        <!-- Generic per-source sensitivity (#9). Renders for plain "Axis N" /
-                                                             "Slider N" and the abstract Gamepad sticks / triggers. -->
-                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0"
-                                                                    Visibility="{Binding IsGenericSensitivitySource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_Sensitivity, Source={x:Static strings:Strings.Instance}}"
-                                                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                                            <Slider Value="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                    Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
-                                                                    Width="120" VerticalAlignment="Center"
-                                                                    ToolTip="{Binding Mapping_Sensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                            <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
-                                                                     Width="50" Margin="4,0,4,0" Padding="2,1"
-                                                                     VerticalContentAlignment="Center"/>
-                                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
-                                                            <ui:Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}"/>
-                                                        </StackPanel>
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0" Width="230"
                                                                     Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                                             <StackPanel.Style>
@@ -5486,22 +5470,6 @@
                                                 <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <ui:Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                             </StackPanel>
-                                            <!-- Generic per-source sensitivity (#9). Renders for plain "Axis N" /
-                                                 "Slider N" and the abstract Gamepad sticks / triggers. -->
-                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0"
-                                                        Visibility="{Binding IsGenericSensitivitySource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_Sensitivity, Source={x:Static strings:Strings.Instance}}"
-                                                           VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                                <Slider Value="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
-                                                        Width="120" VerticalAlignment="Center"
-                                                        ToolTip="{Binding Mapping_Sensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
-                                                         Width="50" Margin="4,0,4,0" Padding="2,1"
-                                                         VerticalContentAlignment="Center"/>
-                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
-                                                <ui:Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}"/>
-                                            </StackPanel>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -5950,6 +5918,21 @@
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <ui:Button Command="{Binding ResetLinearCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLinear, Source={x:Static strings:Strings.Instance}}"/>
+                                            </StackPanel>
+                                            <!-- Per-stick output sensitivity. Scales what the mapping table produced,
+                                                 applied after the deadzone / range / curve stage. Lives here rather than in
+                                                 the mapping grid: per-row the multiply happened before the row's own readout,
+                                                 which made its raw and out columns agree, and the slider sat in a grid column
+                                                 too narrow to show it. -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding Sensitivity, Mode=TwoWay}"
+                                                        Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="&#215;" Style="{StaticResource DzPercent}"/>
+                                                <ui:Button Command="{Binding ResetStickSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <Separator Margin="0,8,0,8"/>
                                             <!-- ─── Sensitivity curves ─── -->

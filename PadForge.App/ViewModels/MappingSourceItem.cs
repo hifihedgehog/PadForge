@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Resources.Strings;
@@ -616,6 +616,12 @@ namespace PadForge.ViewModels
 
         private double _sensitivity = 1.0;
         /// <summary>Generic per-source sensitivity (issue #9). Only applied for
+        /// NO LONGER EXPOSED IN THE MAPPING GRID (2026-07-27): the knob moved
+        /// to the Sticks tab as a per-stick multiplier, because per-row the
+        /// scale was folded in before the row's own readout (making its raw
+        /// and out columns agree) and its slider sat in a grid column too
+        /// narrow to show. The field stays for the mapping-set schema and
+        /// defaults to 1.0, i.e. inert. Do not re-add a grid slider for it.
         /// plain analog sources (see <see cref="IsGenericSensitivitySource"/>):
         /// "Axis N" / "Slider N" and the abstract Gamepad sticks / triggers that
         /// canonicalize to them. Default 1.0 = unchanged.</summary>

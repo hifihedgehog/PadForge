@@ -171,9 +171,23 @@ namespace PadForge.Engine.Data
         /// Left stick linear response curve (0–100%). 0 = default, 100 = fully linear.
         /// </summary>
         [XmlElement] public string LeftThumbLinear { get; set; } = "0";
+        /// <summary>Per-stick output sensitivity multiplier (1 = unchanged).
+        /// Applied AFTER the deadzone / range / curve stage, so the Sticks
+        /// tab scales what the mapping table already produced. This is the
+        /// home of the sensitivity knob; the mapping grid does not carry
+        /// one for plain analog sources.</summary>
+        [XmlElement] public string LeftThumbSensitivity { get; set; } = "1";
+
 
         /// <summary>Right stick linear response curve (0–100%).</summary>
         [XmlElement] public string RightThumbLinear { get; set; } = "0";
+        /// <summary>Per-stick output sensitivity multiplier (1 = unchanged).
+        /// Applied AFTER the deadzone / range / curve stage, so the Sticks
+        /// tab scales what the mapping table already produced. This is the
+        /// home of the sensitivity knob; the mapping grid does not carry
+        /// one for plain analog sources.</summary>
+        [XmlElement] public string RightThumbSensitivity { get; set; } = "1";
+
 
         /// <summary>Left stick X-axis sensitivity curve (-100 to 100). 0 = linear, +100 = exponential, -100 = logarithmic.</summary>
         [XmlElement] public string LeftThumbSensitivityCurveX { get; set; } = "0";

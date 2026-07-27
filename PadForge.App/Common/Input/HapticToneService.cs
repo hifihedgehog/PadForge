@@ -499,6 +499,10 @@ namespace PadForge.Common.Input
             // err-87 case, same split as the Wii speaker).
             public bool UseWriteFile;
             public bool WriteFailing;
+            // Wired Triton (PID 0x1302). Stamped at build, never flipped by the
+            // write-path fallback, so transport-conditional protocol shape
+            // (the 0x80 pre-clear) stays keyed to the transport itself.
+            public bool UsbTriton;
 
             public long LastContentMs = long.MinValue / 2;
 
@@ -1247,6 +1251,7 @@ namespace PadForge.Common.Input
                         bool usbTriton = path != null
                             && path.IndexOf("pid_1302", StringComparison.OrdinalIgnoreCase) >= 0;
                         s.UseWriteFile = usbTriton;
+                        s.UsbTriton = usbTriton;
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"HAPTICDIAG triton-build usb={(usbTriton ? 1 : 0)} outlenCaps={capOut} featCaps={capFeat} path-tail={(path != null && path.Length > 24 ? path.Substring(path.Length - 24) : path)}");
                     }
@@ -1982,9 +1987,20 @@ namespace PadForge.Common.Input
                         // of the wedged state (observed on hardware: a normal
                         // rumble signal clears the garble). Same zero form SDL's
                         // RumbleJoystick sends (report 0x80, payload all zero).
-                        TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
+                        //
+                        // BLE ONLY. No wired reference sends 0x80 before tones:
+                        // SteamHapticsSinger arms 0x83 bare over hid_write for
+                        // whole songs (main.cpp:252-285) and SDL's driver never
+                        // sends 0x83 at all. Over BLE the clear and the arms
+                        // batch into one connection event (atomic, hardware-
+                        // clean); over USB the interrupt pipe serializes them
+                        // ~1 ms apart, putting the arms inside the engine's
+                        // reset window -- the prime suspect for the per-click
+                        // wired garble.
+                        if (!s.UsbTriton)
+                            TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
                         PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"HAPTICDIAG triton-arm slot={s.Slot} hz={toneHz:F0} amp={amp:F2} outlen={s.OutLen} wf={(s.UseWriteFile ? 1 : 0)}");
+                            $"HAPTICDIAG triton-arm slot={s.Slot} hz={toneHz:F0} amp={amp:F2} outlen={s.OutLen} wf={(s.UseWriteFile ? 1 : 0)} usb={(s.UsbTriton ? 1 : 0)}");
                     }
                     foreach (int hap in HapticToneEncoder.TritonActuators)
                         TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));

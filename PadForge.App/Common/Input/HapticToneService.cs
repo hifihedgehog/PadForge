@@ -499,11 +499,18 @@ namespace PadForge.Common.Input
             // err-87 case, same split as the Wii speaker).
             public bool UseWriteFile;
             public bool WriteFailing;
-            // Wired Triton (PID 0x1302). Stamped at build, never flipped by the
-            // write-path fallback, so transport-conditional protocol shape
-            // (the 0x80 pre-clear, write pacing) stays keyed to the transport
-            // itself.
-            public bool UsbTriton;
+            // Triton SERIALIZED-DELIVERY lane (wired 0x1302 + puck
+            // 0x1304/0x1305). The one law all five 2026-07-27 benches fit:
+            // commands that arrive at the pad TOGETHER render quads clean
+            // (direct BLE batches a burst into one connection event), while
+            // commands that arrive SPREAD OUT garble quads (the wire
+            // serializes ~1 ms/report; the puck relays one message per RF
+            // poll turn -- its quad bench read mostly-garbled with lucky
+            // clean tones, the wired quad's exact signature). Serialized
+            // lanes drive the pair {0,3} bare; only batched BLE keeps the
+            // clear + quad. Stamped at build, never flipped by the
+            // write-path fallback.
+            public bool TritonSerialLane;
             // Steam-2026 family lanes that deliberately chose WriteFile from
             // reference grounding (wired 0x1302: SET_REPORT refused err=31;
             // puck 0x1304/0x1305: SDL/Steam drive it with hid_write and
@@ -1264,20 +1271,21 @@ namespace PadForge.Common.Input
                         // pad's slot (OpenPuck PROTOCOL.md 9.1, from Windows
                         // captures -- Steam's own test haptics ride non-0x82
                         // ids through it), and SDL drives the dongle's slot
-                        // interfaces (2..5) with the same SDL_hid_write as the
-                        // wired pad. So: Steam's write style (WriteFile,
+                        // interfaces (2..5) with the same SDL_hid_write as
+                        // the wired pad. Steam's write style (WriteFile,
                         // pinned -- SET_REPORT acceptance on the real puck is
-                        // unproven), but the BLE burst SHAPE (leading clear +
-                        // all four actuators): the pad ingests relayed
-                        // commands through its radio path, the lane that
-                        // renders quads clean, not the USB ingest that
-                        // garbles them.
+                        // unproven), and the SERIALIZED-lane shape: the relay
+                        // forwards one message per RF poll turn, so a quad
+                        // arrives spread out and garbles exactly like the
+                        // wired quad did (owner bench: mostly garbled, lucky
+                        // clean tones -- the quad-over-BLE-shape experiment,
+                        // refuted). See TritonSerialLane.
                         bool puckTriton = path != null
                             && (path.IndexOf("pid_1304", StringComparison.OrdinalIgnoreCase) >= 0
                                 || path.IndexOf("pid_1305", StringComparison.OrdinalIgnoreCase) >= 0);
                         s.UseWriteFile = usbTriton || puckTriton;
                         s.TritonPinWriteFile = usbTriton || puckTriton;
-                        s.UsbTriton = usbTriton;
+                        s.TritonSerialLane = usbTriton || puckTriton;
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"HAPTICDIAG triton-build usb={(usbTriton ? 1 : 0)} puck={(puckTriton ? 1 : 0)} outlenCaps={capOut} featCaps={capFeat} path-tail={(path != null && path.Length > 24 ? path.Substring(path.Length - 24) : path)}");
                     }
@@ -2032,17 +2040,17 @@ namespace PadForge.Common.Input
                         // TritonSend); BLE keeps the proven 2026-07-01 wedge
                         // reset, where the radio batches the burst and the
                         // firmware drains it at its own pace.
-                        if (!s.UsbTriton)
+                        if (!s.TritonSerialLane)
                             TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
                         PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"HAPTICDIAG triton-arm slot={s.Slot} hz={toneHz:F0} amp={amp:F2} outlen={s.OutLen} wf={(s.UseWriteFile ? 1 : 0)} usb={(s.UsbTriton ? 1 : 0)}");
+                            $"HAPTICDIAG triton-arm slot={s.Slot} hz={toneHz:F0} amp={amp:F2} outlen={s.OutLen} wf={(s.UseWriteFile ? 1 : 0)} serial={(s.TritonSerialLane ? 1 : 0)}");
                     }
                     // Bare arms, one 0x83 per actuator. Wired drives the
                     // PROVEN PAIR only (see TritonActuatorsWired): the
                     // standalone probe showed four-tone wired garbles at the
                     // firmware regardless of burst shape, while pad+grip is
                     // clean and loud enough.
-                    foreach (int hap in s.UsbTriton
+                    foreach (int hap in s.TritonSerialLane
                         ? HapticToneEncoder.TritonActuatorsWired
                         : HapticToneEncoder.TritonActuators)
                         TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));
@@ -2082,7 +2090,7 @@ namespace PadForge.Common.Input
             // phase-locked. A 3 ms stagger experiment (2026-07-26, aimed at
             // an old-firmware pad) de-phased the actuators and read as
             // garble on current firmware; reverted the same night.
-            foreach (int hap in s.UsbTriton
+            foreach (int hap in s.TritonSerialLane
                 ? HapticToneEncoder.TritonActuatorsWired
                 : HapticToneEncoder.TritonActuators)
                 TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, 0f, 0f));

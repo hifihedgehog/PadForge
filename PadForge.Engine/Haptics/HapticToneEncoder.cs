@@ -259,7 +259,11 @@ namespace PadForge.Engine.Haptics
         /// is skipped by the reference's <c>haptic + (haptic &gt;&gt; 1)</c> map.)</summary>
         public static readonly int[] TritonActuators = { 0, 1, 3, 4 };
 
-        /// <summary>The WIRED (PID 0x1302) tone set: one trackpad + one grip.
+        /// <summary>The SERIALIZED-DELIVERY tone set (wired 0x1302 AND the
+        /// Proteus/Nereid puck 0x1304/0x1305): one trackpad + one grip.
+        /// The puck relays one message per RF poll turn, so its quads arrive
+        /// spread out and garble like the wired quad (owner bench
+        /// 2026-07-27); only batched direct BLE renders quads clean.
         /// Standalone-probe verdict (2026-07-27, owner-heard, PadForge/SDL/Steam
         /// all out of the process, SteamHapticsSinger's exact bytes and write
         /// style): four simultaneous actuators garble over USB whether the arms

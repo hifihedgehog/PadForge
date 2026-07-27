@@ -2036,6 +2036,18 @@ namespace PadForge.Common.Input
             // garble on current firmware; reverted the same night.
             foreach (int hap in HapticToneEncoder.TritonActuators)
                 TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, 0f, 0f));
+            // Wired lane: sanitize the engine AT IDLE with the zero 0x80 --
+            // SDL's own idle-transition write (RumbleJoystick sends exactly
+            // this form when rumble ends). The clear is hardware-proven to
+            // reset a wedged engine (2026-07-01), but LEADING the arm with it
+            // over USB put the reset ~1 ms ahead of the arms and read as
+            // per-click garble (9a7eb422); trailing the stop is the same
+            // medicine with nothing behind it to race. Targets the
+            // post-9a7eb422 bench signature: mostly clean, with sticky
+            // multi-click garble ruts, i.e. a latched dirty state carried
+            // cue to cue. BLE keeps its leading clear (hardware-clean).
+            if (s.UsbTriton)
+                TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
         }
 
 

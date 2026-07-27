@@ -258,6 +258,18 @@ namespace PadForge.Engine.Haptics
         /// 0,1,3,4 (the 0x83 byte-1 field): 0/1 = trackpads, 3/4 = grips. (Index 2
         /// is skipped by the reference's <c>haptic + (haptic &gt;&gt; 1)</c> map.)</summary>
         public static readonly int[] TritonActuators = { 0, 1, 3, 4 };
+
+        /// <summary>The WIRED (PID 0x1302) tone set: one trackpad + one grip.
+        /// Standalone-probe verdict (2026-07-27, owner-heard, PadForge/SDL/Steam
+        /// all out of the process, SteamHapticsSinger's exact bytes and write
+        /// style): four simultaneous actuators garble over USB whether the arms
+        /// are back-to-back or paced, a single actuator is clean but quiet, and
+        /// this pad+grip pair is clean and loud enough -- with garbled quads on
+        /// both sides of it in the same run. Four-tone wired is firmware-
+        /// unstable regardless of sender; the pair is the proven wired shape.
+        /// BLE keeps all four (hardware-clean there).</summary>
+        public static readonly int[] TritonActuatorsWired = { 0, 3 };
+
         public static bool TritonIsGrip(int haptic) => haptic > 2;
 
         // SteamHapticsSinger's per-note drive-frequency tables (main.cpp:36-37). The

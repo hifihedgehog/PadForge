@@ -2012,10 +2012,14 @@ namespace PadForge.Common.Input
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"HAPTICDIAG triton-arm slot={s.Slot} hz={toneHz:F0} amp={amp:F2} outlen={s.OutLen} wf={(s.UseWriteFile ? 1 : 0)} usb={(s.UsbTriton ? 1 : 0)}");
                     }
-                    // Bare arms, one 0x83 per actuator. The stop-before-play
-                    // prelude experiment (ee3cccf7, an 8-write burst) took the
-                    // wired pad from mostly-clean to ~3-in-25 clean and is out.
-                    foreach (int hap in HapticToneEncoder.TritonActuators)
+                    // Bare arms, one 0x83 per actuator. Wired drives the
+                    // PROVEN PAIR only (see TritonActuatorsWired): the
+                    // standalone probe showed four-tone wired garbles at the
+                    // firmware regardless of burst shape, while pad+grip is
+                    // clean and loud enough.
+                    foreach (int hap in s.UsbTriton
+                        ? HapticToneEncoder.TritonActuatorsWired
+                        : HapticToneEncoder.TritonActuators)
                         TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));
                     s.SteamOn = true;
                     s.SteamLastFreq = toneHz;
@@ -2053,15 +2057,13 @@ namespace PadForge.Common.Input
             // phase-locked. A 3 ms stagger experiment (2026-07-26, aimed at
             // an old-firmware pad) de-phased the actuators and read as
             // garble on current firmware; reverted the same night.
-            foreach (int hap in HapticToneEncoder.TritonActuators)
+            foreach (int hap in s.UsbTriton
+                ? HapticToneEncoder.TritonActuatorsWired
+                : HapticToneEncoder.TritonActuators)
                 TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, 0f, 0f));
-            // NO 0x80 here, ever, on the wired lane. The trailing-clear
-            // experiment (3df09fc7) returned the wired pad to garbled-most-
-            // clicks even with seconds of idle before the next arm: on wired
-            // firmware a zero 0x80 poisons the next 0x83 cue regardless of
-            // position. This stop fan IS the reference teardown -- the
-            // Singer's abortPlaying sends exactly NOTE_STOP per channel
-            // (main.cpp:556-561), nothing else.
+            // NO 0x80 on the wired lane. This stop fan IS the reference
+            // teardown -- the Singer's abortPlaying sends exactly NOTE_STOP
+            // per channel (main.cpp:556-561), nothing else.
         }
 
 

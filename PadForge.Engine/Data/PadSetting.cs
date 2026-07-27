@@ -874,34 +874,47 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         private Dictionary<string, string> _midiMappingDict;
 
+        // The lock guards the dictionary OPERATIONS, not just the lazy
+        // construction it originally wrapped: the poll thread reads these
+        // while the UI thread edits mappings, which is the identical shape
+        // the raw twin locks on every access (_rawDictLock). Unlocked, a
+        // concurrent write can corrupt the buckets and hang a later
+        // TryGetValue on the 1 kHz thread (round 34).
         public string GetMidiMapping(string key)
         {
             EnsureMidiDict();
-            return _midiMappingDict.TryGetValue(key, out var val) ? val : "";
+            lock (_midiDictLock)
+                return _midiMappingDict.TryGetValue(key, out var val) ? val : "";
         }
 
         public void SetMidiMapping(string key, string value)
         {
             EnsureMidiDict();
-            if (string.IsNullOrEmpty(value))
-                _midiMappingDict.Remove(key);
-            else
-                _midiMappingDict[key] = value;
+            lock (_midiDictLock)
+            {
+                if (string.IsNullOrEmpty(value))
+                    _midiMappingDict.Remove(key);
+                else
+                    _midiMappingDict[key] = value;
+            }
         }
 
         public void FlushMidiMappings()
         {
-            if (_midiMappingDict == null) return; // Not initialized — array is canonical.
-            if (_midiMappingDict.Count == 0)
+            if (_midiMappingDict == null) return; // Not initialized. Array is canonical.
+            lock (_midiDictLock)
             {
-                MidiMappingEntries = null;
-                return;
+                if (_midiMappingDict.Count == 0)
+                {
+                    MidiMappingEntries = null;
+                    return;
+                }
+                var entries = new RawMappingEntry[_midiMappingDict.Count];
+                int i = 0;
+                foreach (var kvp in _midiMappingDict)
+                    entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                MidiMappingEntries = entries;
             }
-            var entries = new RawMappingEntry[_midiMappingDict.Count];
-            int i = 0;
-            foreach (var kvp in _midiMappingDict)
-                entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
-            MidiMappingEntries = entries;
         }
 
         private readonly object _midiDictLock = new();
@@ -939,34 +952,43 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         private Dictionary<string, string> _kbmMappingDict;
 
+        // Locked per operation for the same reason as the MIDI and raw
+        // twins above (round 34).
         public string GetKbmMapping(string key)
         {
             EnsureKbmDict();
-            return _kbmMappingDict.TryGetValue(key, out var val) ? val : "";
+            lock (_kbmDictLock)
+                return _kbmMappingDict.TryGetValue(key, out var val) ? val : "";
         }
 
         public void SetKbmMapping(string key, string value)
         {
             EnsureKbmDict();
-            if (string.IsNullOrEmpty(value))
-                _kbmMappingDict.Remove(key);
-            else
-                _kbmMappingDict[key] = value;
+            lock (_kbmDictLock)
+            {
+                if (string.IsNullOrEmpty(value))
+                    _kbmMappingDict.Remove(key);
+                else
+                    _kbmMappingDict[key] = value;
+            }
         }
 
         public void FlushKbmMappings()
         {
             if (_kbmMappingDict == null) return;
-            if (_kbmMappingDict.Count == 0)
+            lock (_kbmDictLock)
             {
-                KbmMappingEntries = null;
-                return;
+                if (_kbmMappingDict.Count == 0)
+                {
+                    KbmMappingEntries = null;
+                    return;
+                }
+                var entries = new RawMappingEntry[_kbmMappingDict.Count];
+                int i = 0;
+                foreach (var kvp in _kbmMappingDict)
+                    entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                KbmMappingEntries = entries;
             }
-            var entries = new RawMappingEntry[_kbmMappingDict.Count];
-            int i = 0;
-            foreach (var kvp in _kbmMappingDict)
-                entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
-            KbmMappingEntries = entries;
         }
 
         private readonly object _kbmDictLock = new();

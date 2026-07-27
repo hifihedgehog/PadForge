@@ -57,17 +57,13 @@ namespace PadForge.Views
         private static SolidColorBrush FA(byte a, byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromArgb(a, r, g, b)); br.Freeze(); return br; }
 
         private static readonly Brush _dimD = F(0x40,0x40,0x40), _dimL = F(0xB0,0xB0,0xB0);
-        private static readonly Brush _bodyD = F(0x50,0x50,0x50), _bodyL = F(0xC0,0xC0,0xC0);
         private static readonly Brush _btnD = F(0x60,0x60,0x60), _btnL = F(0xD0,0xD0,0xD0);
-        private static readonly Brush _mmbD = F(0x55,0x55,0x55), _mmbL = F(0xC8,0xC8,0xC8);
         private static readonly Brush _swD = F(0x38,0x38,0x38), _swL = F(0xA8,0xA8,0xA8);
         private static readonly Brush _dotD = F(0x88,0x88,0x88), _dotL = F(0x70,0x70,0x70);
         private static readonly Brush _knD = FA(0x28,0x88,0x88,0x88), _knL = FA(0x30,0x40,0x40,0x40);
 
         private static Brush DimBrush => IsDarkTheme ? _dimD : _dimL;
-        private static Brush MouseBodyBrush => IsDarkTheme ? _bodyD : _bodyL;
         private static Brush MouseButtonBrush => IsDarkTheme ? _btnD : _btnL;
-        private static Brush MmbBrush => IsDarkTheme ? _mmbD : _mmbL;
         private static Brush ScrollWheelBrush => IsDarkTheme ? _swD : _swL;
         // Ember (#175): this preview shows what the virtual keyboard and
         // mouse emit, so pressed states light ember, not the old blue.

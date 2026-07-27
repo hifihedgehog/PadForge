@@ -1360,6 +1360,14 @@ namespace PadForge.Common.Input
                         // feedback lane is not running, so keep the audio lane
                         // silenced every iteration rather than once.
                         RumbleAudioService.SilenceAll();
+                        // Step 5 keeps running at this loop's 10 Hz, on neutral
+                        // state. Skipping it froze the create/dispose gates and
+                        // BOTH watchdogs for the whole suspension: a dispose
+                        // in flight when focus left stayed half-done, silently,
+                        // until refocus. Suspension stops the engine DRIVING
+                        // inputs; it must not stop the lifecycle machinery.
+                        try { UpdateVirtualDevices(); }
+                        catch (Exception ex) { RaiseError("Focus-suspend VC upkeep", ex); }
                         CurrentFrequency = 0;
                         _frequencyCounter = 0;
                         _frequencyTimer.Restart();
@@ -2750,6 +2758,12 @@ namespace PadForge.Common.Input
                 CombinedRawHidStates[i].Clear();
                 CombinedKbmRawStates[i] = default;
                 CombinedTouchpadStates[i] = default;
+                // Motion rides beside the raw surface on every Step 5 submit
+                // (HasMotion=false submits zeroes), so leaving it out froze
+                // the LAST gyro/accel sample into the driver: tab away
+                // mid-motion and the virtual pad kept reporting that angular
+                // rate for the whole suspension.
+                MotionSnapshots[i] = default;
                 var midi = CombinedMidiRawStates[i];
                 if (midi.CcValues != null) Array.Clear(midi.CcValues, 0, midi.CcValues.Length);
                 if (midi.Notes != null) Array.Clear(midi.Notes, 0, midi.Notes.Length);

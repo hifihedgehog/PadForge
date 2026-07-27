@@ -441,6 +441,7 @@
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Colar mapeamentos e configurações da área de transferência</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Copiar de...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Copiar configurações de outro dispositivo configurado</value></data>
+  <data name="Pad_RawAxisValue" xml:space="preserve"><value>Valor bruto do eixo</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Redefinir Tudo</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Limpar Tudo</value></data>
   <data name="Pad_HeaderOutput" xml:space="preserve"><value>Saída</value></data>

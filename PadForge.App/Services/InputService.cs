@@ -9657,12 +9657,18 @@ namespace PadForge.Services
             }
 
             // Add new desired entries that aren't already in the whitelist.
+            // Claim ONLY what we actually add: an entry put there by the
+            // HidHide Configuration Client or another tool is not ours, and
+            // claiming it meant the removal pass above deleted a stranger's
+            // whitelist entry the moment the user dropped that path from
+            // PadForge's own list (round 34). "Managed" has to mean
+            // "PadForge added it".
             foreach (var dosPath in desiredDosPaths)
             {
-                _managedWhitelistDosPaths.Add(dosPath);
                 if (!currentWhitelist.Contains(dosPath, StringComparer.OrdinalIgnoreCase))
                 {
                     currentWhitelist.Add(dosPath);
+                    _managedWhitelistDosPaths.Add(dosPath);
                     changed = true;
                 }
             }
@@ -13135,6 +13141,17 @@ namespace PadForge.Services
                 // already use.
                 foreach (var kv in pendingMacroRemap)
                     RemapDeviceGuidsInStoredPadSettings(kv.Key, kv.Value);
+                // ...and the per-(slot, device) configs. The profile's
+                // DeviceSlotConfigs were applied above keyed by the OLD
+                // instance guid, so after a BT re-pair the slot ran with
+                // default per-device settings (lightbar, touchpad, audio
+                // passthrough, rumble scaling) while the profile's real
+                // values sat under a dead key. The drain lane already
+                // rekeys via PadViewModel.RekeyDeviceConfig (round 34
+                // closed the profile lane to match).
+                foreach (var pad in _mainVm?.Pads ?? Enumerable.Empty<ViewModels.PadViewModel>())
+                    foreach (var kv in pendingMacroRemap)
+                        pad?.RekeyDeviceConfig(kv.Key, kv.Value);
             }
 
             // ── Apply DSU motion server settings ──

@@ -441,6 +441,7 @@
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>클립보드에서 매핑 및 설정을 붙여넣습니다</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>복사 원본...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>다른 설정된 장치에서 설정을 복사합니다</value></data>
+  <data name="Pad_RawAxisValue" xml:space="preserve"><value>원시 축 값</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>전체 초기화</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>전체 지우기</value></data>
   <data name="Pad_HeaderOutput" xml:space="preserve"><value>출력</value></data>

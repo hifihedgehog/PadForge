@@ -441,6 +441,7 @@
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Zuordnungen und Einstellungen aus der Zwischenablage einfügen</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopieren von...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Einstellungen von einem anderen konfigurierten Gerät kopieren</value></data>
+  <data name="Pad_RawAxisValue" xml:space="preserve"><value>Roher Achsenwert</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Alles zurücksetzen</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Alles leeren</value></data>
   <data name="Pad_HeaderOutput" xml:space="preserve"><value>Ausgabe</value></data>

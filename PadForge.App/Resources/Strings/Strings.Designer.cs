@@ -968,6 +968,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetFlickForwardDeadzone => Get("Pad_ResetFlickForwardDeadzone");
     public string Settings_FlickSmoothing => Get("Settings_FlickSmoothing");
     public string Settings_FlickSmoothing_Tooltip => Get("Settings_FlickSmoothing_Tooltip");
+    public string Pad_RawAxisValue => Get("Pad_RawAxisValue");
     public string Pad_ResetFlickSmoothing => Get("Pad_ResetFlickSmoothing");
     public string Settings_FlickOnEngage => Get("Settings_FlickOnEngage");
     public string Settings_FlickOnEngage_Tooltip => Get("Settings_FlickOnEngage_Tooltip");

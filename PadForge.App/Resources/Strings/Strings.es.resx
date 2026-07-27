@@ -441,6 +441,7 @@
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Pegar asignaciones y configuraciones desde el portapapeles</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Copiar de...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Copiar configuración de otro dispositivo configurado</value></data>
+  <data name="Pad_RawAxisValue" xml:space="preserve"><value>Valor de eje sin procesar</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Restablecer todo</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Limpiar todo</value></data>
   <data name="Pad_HeaderOutput" xml:space="preserve"><value>Salida</value></data>

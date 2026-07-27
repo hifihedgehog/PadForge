@@ -476,8 +476,12 @@ namespace PadForge.ViewModels
         // ConcurrentDictionary so the polling thread (which iterates this
         // every dispatch tick + every macro lightbar action) doesn't race
         // with UI-thread mutations from device-map changes / settings
-        // load. Iteration on ConcurrentDictionary returns a moment-in-time
-        // snapshot rather than throwing InvalidOperationException.
+        // load. Iteration on ConcurrentDictionary never throws
+        // InvalidOperationException, which is the property relied on here.
+        // It is NOT a moment-in-time snapshot: the enumerator may or may not
+        // observe concurrent writes, so a consumer that needs a stable view
+        // must copy first (round 34 corrected this comment, which overclaimed
+        // the guarantee and would justify code that does not hold).
         private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, DeviceSlotConfig> _perDeviceSlotConfigs = new();
 
         /// <summary>Moves a per-device slot config to a device's new

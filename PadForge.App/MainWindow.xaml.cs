@@ -2857,6 +2857,17 @@ namespace PadForge
             {
                 powerTooltip = Strings.Instance.Main_Initializing;
             }
+            else if (navItem.MappedDeviceCount == 0)
+            {
+                // Mirror ComputeFlameHeat's nothing-mapped branch, which the
+                // tooltip chain lacked: an EMPTY slot showed the cold outline
+                // flame while its tooltip read "Awaiting devices", claiming it
+                // was waiting for devices it does not have (round 34). The
+                // flame's own comment says these two states must not look
+                // alike, and the text has to agree with it.
+                powerTooltip = Strings.Instance.Dashboard_NoDevice;
+                isInitializing = false;
+            }
             else if (!_viewModel.IsEngineRunning)
             {
                 powerTooltip = Strings.Instance.Main_EngineStopped;
@@ -5555,6 +5566,17 @@ namespace PadForge
 
             // Add a non-tracking tool with the button's client rect.
             AddNativeTooltipTool(source.Handle);
+
+            // The tool's hit rect is BAKED at registration, and the title-bar
+            // button moves with the window's right edge, so a single
+            // registration went stale on the first resize: the relayed
+            // WM_MOUSEMOVE carries current coordinates that no longer fall
+            // inside the recorded rect, and the tooltip stopped appearing
+            // (round 34). Re-register on geometry and DPI changes.
+            // AddNativeTooltipTool already sends TTM_DELTOOL before
+            // TTM_ADDTOOL, which is exactly what makes this safe to repeat.
+            SizeChanged += (s, ev) => AddNativeTooltipTool(source.Handle);
+            DpiChanged += (s, ev) => AddNativeTooltipTool(source.Handle);
 
             // Relay mouse messages so the tooltip handles delay/positioning natively.
             FullScreenBtn.MouseMove += (s, ev) => RelayMouseMessage(source.Handle, 0x0200); // WM_MOUSEMOVE

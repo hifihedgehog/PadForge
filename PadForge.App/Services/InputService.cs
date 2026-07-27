@@ -2534,6 +2534,13 @@ namespace PadForge.Services
             // these VMs (power toggle, Map All). The overlay lanes below
             // (shift-layer flyout, radial menu) stay at full rate: they
             // render DURING gameplay with the app behind.
+            // Engine half of the background-polling setting: push the
+            // user's choice and the foreground fact to the poll thread. The
+            // suspend decision itself lives in the poll loop.
+            _inputManager.SuspendWhenBackground =
+                !(_mainVm?.Settings?.EnablePollingOnFocusLoss ?? true);
+            _inputManager.HostIsForeground = IsPadForgeForeground();
+
             var ambientProbe = PadForge.Common.AmbientMotionProbe.Instance;
             long dashGateMs = ambientProbe.IsAppActive ? 0
                 : ambientProbe.IsWindowMinimized ? 1000 : 200;

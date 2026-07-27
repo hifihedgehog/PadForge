@@ -1225,17 +1225,30 @@ namespace PadForge.Common.Input
 
                     if (s.Family == Family.Steam2026)
                     {
-                        // SET_REPORT (HidD_SetOutputReport), deliberately: the
-                        // write shape 3.6.1 shipped and the one that plays
-                        // CLEAN on current firmware (owner-verified after the
-                        // 2026-07-26 firmware update). The lizard-mode drops
-                        // that night were an OLD-FACTORY-FIRMWARE fragility on
-                        // a brand-new pad, fixed by updating the controller,
-                        // not by any transport change here. A WriteFile-first
-                        // experiment from that arc garbled on the new
-                        // firmware and was reverted the same night.
+                        // Transport split by PID, each half owner-verified on
+                        // hardware (2026-07-26/27 captures):
+                        //
+                        // BLE (0x1303): SET_REPORT (HidD_SetOutputReport) with
+                        // the phase-locked back-to-back burst -- the 3.6.1
+                        // shape, clean on current firmware. WriteFile GARBLES
+                        // over BLE and a 3 ms stagger de-phases the LRAs;
+                        // both were tried and reverted. UseWriteFile stays
+                        // false.
+                        //
+                        // USB (0x1302): the wired firmware REFUSES SET_REPORT
+                        // outright (err=31 on the first 0x80, old and new
+                        // firmware alike, caps declaring 64-byte output
+                        // reports all along). SDL, and therefore Steam,
+                        // drives the wired pad with WriteFile on the
+                        // interrupt pipe, and that is the only style it
+                        // accepts. If WriteFile ever fails here the per-sink
+                        // fallback latches SET_REPORT and the writefail line
+                        // names the error.
+                        bool usbTriton = path != null
+                            && path.IndexOf("pid_1302", StringComparison.OrdinalIgnoreCase) >= 0;
+                        s.UseWriteFile = usbTriton;
                         PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"HAPTICDIAG triton-build outlenCaps={capOut} featCaps={capFeat} path-tail={(path != null && path.Length > 24 ? path.Substring(path.Length - 24) : path)}");
+                            $"HAPTICDIAG triton-build usb={(usbTriton ? 1 : 0)} outlenCaps={capOut} featCaps={capFeat} path-tail={(path != null && path.Length > 24 ? path.Substring(path.Length - 24) : path)}");
                     }
 
                     if (IsJoyConGen1(s.Family))

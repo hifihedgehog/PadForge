@@ -97,7 +97,11 @@ namespace PadForge.Services
         private readonly long[] _lastSubmitCount = new long[InputManager.MaxPads];
         private readonly Dictionary<string, ulong> _lastDeviceSig = new(StringComparer.OrdinalIgnoreCase);
         private List<string> _hmPaths = new();
-        private int _ticksSinceEnum = int.MaxValue;
+        // Forces an enumeration on the first tick. NEVER seed this with
+        // int.MaxValue: ++ overflowed it negative, the refresh condition
+        // never fired again, and the probe shipped blind -- it missed the
+        // first real freeze it existed to capture (2026-07-27).
+        private int _ticksSinceEnum = 1000;
 
         internal VcFreezeProbe(InputManager inputManager, Action<string> alert)
         {
@@ -137,9 +141,11 @@ namespace PadForge.Services
 
         private void Tick()
         {
-            // Re-enumerate HM device paths every 5 ticks (~10 s): VCs come
-            // and go with slot toggles and the bubble-down cascade.
-            if (++_ticksSinceEnum >= 5)
+            // Re-enumerate HM device paths every 5 ticks (~10 s), and EVERY
+            // tick while the list is empty: a VC created moments after the
+            // last sweep must not leave the probe blind for 10 s.
+            _ticksSinceEnum++;
+            if (_ticksSinceEnum >= 5 || _hmPaths.Count == 0)
             {
                 _ticksSinceEnum = 0;
                 _hmPaths = EnumerateHmHidPaths();
@@ -189,6 +195,14 @@ namespace PadForge.Services
                     outcomes.Add(Tail(path) + "=" + note);
                 }
             }
+
+            // With zero enumerated devices there is nothing to judge the
+            // driver BY: feeding the detector would manufacture "driver
+            // static" out of blindness (which is exactly how the shipped
+            // probe false-tripped and then latched). Unobservable ticks are
+            // skipped entirely; the empty-list re-enum above bounds the
+            // blind window to one tick.
+            if (_hmPaths.Count == 0) return;
 
             if (_detector.Observe(outputsChanging, driverChanged))
             {

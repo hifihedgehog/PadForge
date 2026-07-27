@@ -45,6 +45,7 @@ namespace PadForge.Services
         private readonly MainViewModel _mainVm;
         private readonly Dispatcher _dispatcher;
         private InputManager _inputManager;
+        private VcFreezeProbe _vcFreezeProbe;
         // Static mirror of the live engine for the static MappingSet swap
         // helpers (menus paste, Copy From Slot), which must reset the menu
         // runtime the same way the instance-side profile apply does.
@@ -665,6 +666,17 @@ namespace PadForge.Services
             _inputManager.DevicesUpdated += OnDevicesUpdated;
             _inputManager.FrequencyUpdated += OnFrequencyUpdated;
             _inputManager.ErrorOccurred += OnErrorOccurred;
+            // Freeze probe (OPEN bug, twice reported): reads our own HM VCs
+            // back through their HID interfaces, joy.cpl's exact vantage,
+            // and compares against what the engine submits. One loud
+            // VCFREEZE line + a persistent status message on the trip, so
+            // the next random occurrence names its own failing layer.
+            // Detection only until one capture confirms the seam.
+            _vcFreezeProbe = new VcFreezeProbe(_inputManager, detail =>
+                _dispatcher.BeginInvoke(new Action(() =>
+                    _mainVm.SetStatus(string.Format(
+                        Strings.Instance.Status_Error_Format, detail), persist: true))));
+            _vcFreezeProbe.Start();
             _inputManager.HmVcInactivityDestroyed += OnHmVcInactivityDestroyed;
             _inputManager.HmVcWentNonActive += OnHmVcWentNonActive;
 
@@ -2092,6 +2104,8 @@ namespace PadForge.Services
             {
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
                 _inputManager.FrequencyUpdated -= OnFrequencyUpdated;
+                _vcFreezeProbe?.Dispose();
+                _vcFreezeProbe = null;
                 _inputManager.ErrorOccurred -= OnErrorOccurred;
                 _inputManager.HmVcInactivityDestroyed -= OnHmVcInactivityDestroyed;
                 _inputManager.HmVcWentNonActive -= OnHmVcWentNonActive;

@@ -208,6 +208,21 @@ namespace PadForge
             {
                 try { HIDMaestro.HMContext.RemoveAllVirtualControllers(); }
                 catch { /* best effort — continue without sweep */ }
+                // HM#38 consumer-side ordering hygiene: RemoveAll returns when
+                // the CALL completes, not when PnP removal completes, and a
+                // create racing an in-flight removal was one of the freeze's
+                // trigger windows. Wait (bounded) for the devnodes to actually
+                // be gone before the first enumeration proceeds. Purely an
+                // ordering barrier: with the v1.3.22 driver the freeze itself
+                // is structurally fixed, and if something genuinely cannot be
+                // removed we log and proceed rather than block startup.
+                for (int i = 0; i < 25; i++)
+                {
+                    if (!Common.SetupApiInterop.AnyPresentHidMaestroDevice()) return;
+                    System.Threading.Thread.Sleep(200);
+                }
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    "ORPHANSWEEP devnodes still present after 5 s; proceeding");
             });
 
             // Reconcile BthPS3 PSM patching to the crash-safe state once per

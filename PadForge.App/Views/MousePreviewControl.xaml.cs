@@ -99,7 +99,7 @@ namespace PadForge.Views
             MouseCanvas.Children.Clear();
 
             var parts = MouseGlyph.Build(MouseCanvas, IsDarkTheme, DimBrush,
-                MouseButtonBrush, MmbBrush, ScrollWheelBrush, DotBrush);
+                MouseButtonBrush, ScrollWheelBrush, DotBrush);
             _lmbPath = parts.Lmb; _rmbPath = parts.Rmb;
             _x1Rect = parts.X1;   _x2Rect = parts.X2;
             _scrollWheelPill = parts.Wheel;
@@ -163,7 +163,10 @@ namespace PadForge.Views
             {
                 _scrollUpArrow.Fill = AccentBrush;
                 _scrollUpArrow.Opacity = 0.3 + 0.7 * absScroll;
-                _scrollUpScale ??= new ScaleTransform(1, 1, MC, 7);
+                // Anchor on the arrow itself. These were literals from the
+                // hand-drawn glyph; the vendored art moved the arrows, so a
+                // pulse slid them down the wheel instead of growing in place.
+                _scrollUpScale ??= new ScaleTransform(1, 1, MC, MouseGlyph.WheelTop + 9);
                 _scrollUpScale.ScaleX = _scrollUpScale.ScaleY = 1.0 + 0.4 * absScroll;
                 _scrollUpArrow.RenderTransform = _scrollUpScale;
                 SetGlow(_scrollUpArrow, EmberGlowSmall);
@@ -176,7 +179,7 @@ namespace PadForge.Views
             {
                 _scrollDownArrow.Fill = AccentBrush;
                 _scrollDownArrow.Opacity = 0.3 + 0.7 * absScroll;
-                _scrollDownScale ??= new ScaleTransform(1, 1, MC, swBotConst - 7);
+                _scrollDownScale ??= new ScaleTransform(1, 1, MC, MouseGlyph.WheelBottom - 9);
                 _scrollDownScale.ScaleX = _scrollDownScale.ScaleY = 1.0 + 0.4 * absScroll;
                 _scrollDownArrow.RenderTransform = _scrollDownScale;
                 SetGlow(_scrollDownArrow, EmberGlowSmall);

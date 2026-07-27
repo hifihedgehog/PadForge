@@ -2573,9 +2573,27 @@ namespace PadForge.Common.Input
             raw.MouseDeltaY = ApplyCenterOffset(raw.MouseDeltaY, TryParseDoubleStatic(ps.LeftThumbCenterOffsetY, 0));
 
             // ── Mouse movement deadzone + sensitivity (uses Left Thumb settings) ──
+            // SAFETY FLOOR. The stored default for these is "0", and a stick
+            // driving the SYSTEM CURSOR with no deadzone means the pointer
+            // creeps forever on any pad that does not have a generous
+            // mechanical deadzone of its own, which is nearly all of them.
+            // The user then cannot reach PadForge's own window to undo it:
+            // Alt+F4 is the only exit. Unlike a drifting gamepad stick, this
+            // failure takes the machine away from them, so the mouse lane
+            // gets a non-zero default that the gamepad lane does not.
+            // An explicit value in the Sticks tab still wins in both
+            // directions; only "unset" is floored. Known trade-off: a real
+            // "Mouse Motion" source routed to the mouse target is also
+            // deadzoned, which this lane already did with whatever the user
+            // had set.
+            const double KbmMouseDefaultDeadZonePercent = 10.0;
+            double kbmDzX = TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0);
+            double kbmDzY = TryParseDoubleStatic(ps.LeftThumbDeadZoneY, 0);
+            if (kbmDzX <= 0) kbmDzX = KbmMouseDefaultDeadZonePercent;
+            if (kbmDzY <= 0) kbmDzY = KbmMouseDefaultDeadZonePercent;
             ApplyDeadZone(ref raw.MouseDeltaX, ref raw.MouseDeltaY,
-                TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0),
-                TryParseDoubleStatic(ps.LeftThumbDeadZoneY, 0),
+                kbmDzX,
+                kbmDzY,
                 TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneX, 0),
                 TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneY, 0),
                 TryParseDoubleStatic(ps.LeftThumbLinear, 0),

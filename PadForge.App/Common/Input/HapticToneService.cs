@@ -656,14 +656,10 @@ namespace PadForge.Common.Input
                         // through WriteSubcommand, the same proven path the open
                         // sequence uses (HIDAPI_DriverSwitch_SendJoystickEffect,
                         // the size >= 2 branch). Send enable-vibration there.
-                        bool sent = false;
                         var gp = s.GamepadHandle;
                         if (gp != IntPtr.Zero)
-                            sent = SDL3.SDL.SDL_SendGamepadEffect(
+                            SDL3.SDL.SDL_SendGamepadEffect(
                                 gp, new byte[] { 0x48, 0x01 }, 0, 2);
-                        PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"HAPTICDIAG re-enable vibration via SDL after NFC tag"
-                            + $" (family={s.Family} slot={s.Slot} gamepad={(gp != IntPtr.Zero)} sent={sent})");
                     }
                     catch { /* best effort: a dead handle is Reconcile's problem */ }
                 }

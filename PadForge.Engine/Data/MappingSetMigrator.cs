@@ -670,15 +670,27 @@ namespace PadForge.Engine.Data
             IReadOnlyList<(string DeviceGuid, bool HasGyro, bool HasAccel)> devices,
             Func<(string DeviceGuid, bool HasGyro, bool HasAccel), bool> capCheck)
         {
-            // Find or create the target's row.
+            // Find or create the target's BASE row.
+            //
+            // Pinned to Base deliberately. Motion rows follow shift layers as
+            // of the layer-aware resolve, and this backfill runs on load for
+            // newly-assigned devices. Matching layer-blind let it append a
+            // slot's real motion sources to whichever row happened to come
+            // first -- a shift-layer row if one existed -- so no Base row was
+            // ever created and the slot lost motion outside that layer. The
+            // create branch below already stamps LayerMask = "Base"; this
+            // makes the find agree with it.
+            //
+            // The "Base" coalesce is not redundant with MappingRow's default:
+            // hand-edited XML and imported profiles can deliver a null mask.
             MappingRow row = null;
             for (int i = 0; i < ms.Rows.Count; i++)
             {
-                if (ms.Rows[i] != null && ms.Rows[i].Target == target)
-                {
-                    row = ms.Rows[i];
-                    break;
-                }
+                var candidate = ms.Rows[i];
+                if (candidate == null || candidate.Target != target) continue;
+                if (!string.Equals(candidate.LayerMask ?? "Base", "Base", StringComparison.Ordinal)) continue;
+                row = candidate;
+                break;
             }
 
             // Collect already-represented device guids for this target so we

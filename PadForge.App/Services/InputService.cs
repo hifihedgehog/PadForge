@@ -2210,6 +2210,59 @@ namespace PadForge.Services
         /// Called ~30 times per second on the UI thread.
         /// Reads engine state and pushes it to ViewModels.
         /// </summary>
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+        private bool _fgCached;
+        private long _fgCachedTick;
+
+        /// <summary>True when PadForge owns the foreground window.
+        ///
+        /// <para>Deliberately NOT AmbientMotionProbe.IsAppActive: that tracks
+        /// MainWindow activation, which our own dialogs toggle constantly, so
+        /// opening Settings would read as "focus lost". The foreground PROCESS
+        /// is the real question. Cached per UI tick because this runs at
+        /// 30 Hz.</para></summary>
+        private bool IsPadForgeForeground()
+        {
+            long now = Environment.TickCount64;
+            if (now - _fgCachedTick < 16) return _fgCached;
+            _fgCachedTick = now;
+            try
+            {
+                var hwnd = GetForegroundWindow();
+                if (hwnd == IntPtr.Zero) { _fgCached = false; return false; }
+                GetWindowThreadProcessId(hwnd, out uint pid);
+                _fgCached = pid == (uint)Environment.ProcessId;
+            }
+            catch { _fgCached = true; }   // never let a probe failure blank the UI
+            return _fgCached;
+        }
+
+        /// <summary>The consumer for "Continue polling when window loses
+        /// focus" (EnablePollingOnFocusLoss).
+        ///
+        /// <para>The label predates this code and reads broader than it can
+        /// safely be. The poll loop carries virtual-controller submits,
+        /// macros, rumble return, the DSU broadcast and Remote Link -- and
+        /// being unfocused IS the working state, because the user alt-tabs
+        /// into the game. Gating THAT on focus would stop input reaching the
+        /// game the moment the user started playing.</para>
+        ///
+        /// <para>So the setting gates the DISPLAY mirror instead: when it is
+        /// off and PadForge is not the foreground process, the UI lanes stop
+        /// rather than merely throttling. Input is untouched. That is also
+        /// what the x360ce heritage this checkbox came from actually did:
+        /// focus gated its UI frame rate, never its read thread.</para></summary>
+        private bool BackgroundUiSuspended()
+            => _mainVm?.Settings != null
+               && !_mainVm.Settings.EnablePollingOnFocusLoss
+               && !IsPadForgeForeground();
+
         private void UiTimer_Tick(object sender, EventArgs e)
         {
             if (_inputManager == null || !_inputManager.IsRunning)
@@ -2484,7 +2537,14 @@ namespace PadForge.Services
             var ambientProbe = PadForge.Common.AmbientMotionProbe.Instance;
             long dashGateMs = ambientProbe.IsAppActive ? 0
                 : ambientProbe.IsWindowMinimized ? 1000 : 200;
-            if (dashGateMs == 0
+            if (BackgroundUiSuspended())
+            {
+                // Setting off and we are behind the game: stop the mirror
+                // outright. Reset the tick so the first frame after refocus
+                // refreshes at full rate, as the tiers above promise.
+                _lastGatedDashboardTick = 0;
+            }
+            else if (dashGateMs == 0
                 || Environment.TickCount64 - _lastGatedDashboardTick >= dashGateMs)
             {
                 _lastGatedDashboardTick = Environment.TickCount64;
@@ -2507,13 +2567,15 @@ namespace PadForge.Services
             // ── Update Devices page (only if visible) ──
             // Nav-tag visibility does not flip on minimize; gate on the
             // probe so the 30 Hz repaint stops while iconic.
-            if (IsDevicesPageVisible && !PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized)
+            if (IsDevicesPageVisible && !PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized
+                && !BackgroundUiSuspended())
             {
                 UpdateDevicesRawState();
             }
 
             // ── Update mapping row live values (only if a Pad page is visible) ──
-            if (IsPadPageVisible && !PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized)
+            if (IsPadPageVisible && !PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized
+                && !BackgroundUiSuspended())
             {
                 UpdateMappingLiveValues();
             }

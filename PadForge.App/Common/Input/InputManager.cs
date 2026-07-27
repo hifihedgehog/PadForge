@@ -2528,10 +2528,10 @@ namespace PadForge.Common.Input
                 }
 
                 var gyroSrc = _motionHasGyroRow[padIndex]
-                    ? ResolveMotionSource(ms, MappingSetMigrator.MotionGyroTarget, requireGyro: true)
+                    ? ResolveMotionSource(ms, MappingSetMigrator.MotionGyroTarget, requireGyro: true, padIndex)
                     : default;
                 var accelSrc = _motionHasAccelRow[padIndex]
-                    ? ResolveMotionSource(ms, MappingSetMigrator.MotionAccelTarget, requireGyro: false)
+                    ? ResolveMotionSource(ms, MappingSetMigrator.MotionAccelTarget, requireGyro: false, padIndex)
                     : default;
 
                 if (gyroSrc.Ud == null && accelSrc.Ud == null)
@@ -2630,17 +2630,80 @@ namespace PadForge.Common.Input
         /// per-tick walk + first-online wins gives natural hand-off when
         /// devices come and go without restarting the engine.
         /// </summary>
+        /// <summary>Motion row candidates for the slot's engaged layer, in
+        /// preference order: the layer's own row, then Base, then any other
+        /// row naming the target.
+        ///
+        /// <para>Layer resolution is delegated ENTIRELY to the #221 resolver;
+        /// this only decides fallback ORDER, so there is no second
+        /// layer-resolution path to drift.</para>
+        ///
+        /// <para>The resolver's <c>suppressed</c> flag is deliberately
+        /// discarded here. Layers default to REPLACE semantics
+        /// (ShiftActivator.InheritUnmapped is false), so honouring suppression
+        /// would silence gyro and accel the moment a layer without a motion
+        /// row engaged. Motion never goes dark because of a layer: that is a
+        /// product decision, and it makes this change a strict preference
+        /// re-ordering, so nothing that resolves today stops resolving.</para></summary>
+        private static void BuildMotionRowCandidates(
+            MappingSet ms, string targetName, int slotIndex, MappingRow[] buf, out int count)
+        {
+            count = 0;
+            if (ms?.Rows == null) return;
+
+            var activeRow = FindActiveRowForTarget(ms, targetName, slotIndex, out _);
+            if (activeRow != null) buf[count++] = activeRow;
+
+            var baseRow = FindBaseRowForTarget(ms, targetName);
+            if (baseRow != null && !ReferenceEquals(baseRow, activeRow)) buf[count++] = baseRow;
+
+            var rows = ms.Rows;
+            for (int r = 0; r < rows.Count && count < buf.Length; r++)
+            {
+                var row = rows[r];
+                if (row == null) continue;
+                if (!string.Equals(row.Target, targetName, StringComparison.Ordinal)) continue;
+                if (ReferenceEquals(row, activeRow) || ReferenceEquals(row, baseRow)) continue;
+                buf[count++] = row;
+            }
+        }
+
+        /// <summary>Scratch for <see cref="BuildMotionRowCandidates"/>. Poll
+        /// thread only, so the candidate walk allocates nothing per tick.</summary>
+        private readonly MappingRow[] _motionRowCandidateBuf = new MappingRow[3];
+
         private (UserDevice Ud, MappingSource Src) ResolveMotionSource(
-            MappingSet ms, string targetName, bool requireGyro)
+            MappingSet ms, string targetName, bool requireGyro, int slotIndex)
         {
             if (ms?.Rows == null) return (null, null);
-            for (int r = 0; r < ms.Rows.Count; r++)
+            var buf = _motionRowCandidateBuf;
+            BuildMotionRowCandidates(ms, targetName, slotIndex, buf, out int count);
+            try
             {
-                var row = ms.Rows[r];
-                if (row == null || row.Target != targetName || row.Sources == null) continue;
-                for (int i = 0; i < row.Sources.Count; i++)
+                for (int c = 0; c < count; c++)
                 {
-                    var src = row.Sources[i];
+                    var hit = ResolveMotionSourceFromRow(buf[c], requireGyro);
+                    if (hit.Ud != null) return hit;
+                }
+                return (null, null);
+            }
+            finally
+            {
+                // Don't let the scratch pin rows (and through them devices)
+                // past the tick that used it.
+                for (int k = 0; k < count; k++) buf[k] = null;
+            }
+        }
+
+        private (UserDevice Ud, MappingSource Src) ResolveMotionSourceFromRow(
+            MappingRow row, bool requireGyro)
+        {
+            var sources = row?.Sources;
+            if (sources != null)
+            {
+                for (int i = 0; i < sources.Count; i++)
+                {
+                    var src = sources[i];
                     if (src == null) continue;
                     if (!SourceCoercion.IsMotionDescriptor(src.Descriptor)) continue;
                     if (string.IsNullOrEmpty(src.DeviceGuid)) continue;

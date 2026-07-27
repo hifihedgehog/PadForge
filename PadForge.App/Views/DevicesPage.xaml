@@ -81,8 +81,15 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <!-- NFC tag rows light on IsActive instead of IsPressed. -->
-        <Style x:Key="RawCellBorderActive" TargetType="Border" BasedOn="{StaticResource RawCellBorder}">
+        <!-- NFC tag rows light on IsActive instead of IsPressed. Deliberately
+             NOT BasedOn RawCellBorder: inheritance carried the base style's
+             IsPressed trigger along, and NfcTagDisplayItem has no IsPressed,
+             so every NFC row realization logged a BINDERR pair. Base setters
+             are duplicated instead. -->
+        <Style x:Key="RawCellBorderActive" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource SteelGroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsActive}" Value="True">
                     <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>

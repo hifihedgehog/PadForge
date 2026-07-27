@@ -2857,7 +2857,6 @@ namespace PadForge.Services
                         armed ? "1" : "0"))
                 {
                     System.Threading.Volatile.Write(ref _switchNfcArmed, armed);
-                    PadForge.Engine.SdlDiagLog.WriteLine($"NFC arming -> {(armed ? "ON" : "off")} (capable={capable})");
                 }
                 else
                 {

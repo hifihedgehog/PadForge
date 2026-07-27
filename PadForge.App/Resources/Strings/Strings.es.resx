@@ -1301,7 +1301,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Deteniendo…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Deteniendo motor…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Tiempo de inactividad</value></data>
-  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Segundos antes de que un control virtual sea destruido cuando todos los dispositivos asignados están desconectados. 0 lo desactiva. Los controles sobrevivientes se desplazan hacia arriba para llenar el hueco y se vuelven a vincular a ranuras XInput inferiores.</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Segundos antes de que un control virtual sea destruido cuando todos los dispositivos asignados están desconectados. 0 lo desactiva. Los controles sobrevivientes del mismo tipo se desplazan hacia arriba para llenar el hueco y se vuelven a vincular a ranuras inferiores.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segundos (0 = nunca)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Motor de control HID virtual en modo usuario (reemplaza ViGEmBus y vJoy). MIT.</value></data>

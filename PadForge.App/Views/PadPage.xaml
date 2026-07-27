@@ -6770,7 +6770,7 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Settings_FlickSmoothing, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                ToolTip="{Binding Settings_FlickSmoothing_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Slider Value="{Binding FlickSmoothing, Mode=TwoWay}" Minimum="-1" Maximum="0.2" Style="{StaticResource DzSlider}"/>
+                                    <Slider Value="{Binding FlickSmoothing, Mode=TwoWay}" Minimum="-1" Maximum="0.5" Style="{StaticResource DzSlider}"/>
                                     <TextBox Text="{Binding FlickSmoothing, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                     <ui:Button Command="{Binding ResetFlickSmoothingCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickSmoothing, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>

@@ -22,42 +22,44 @@ namespace PadForge.Tests
     [Collection("RemoteLinkSockets")]
     public class LinkServerTests
     {
-        /// <summary>An ephemeral port number free on BOTH protocols.
+        /// <summary>An ephemeral port number free on BOTH protocols, verified
+        /// with the server's exact binds (LinkServer.Start:
+        /// TcpListener(IPAddress.Any, port) then UDP bind on Any:port).
         ///
-        /// <para>Round nine, mechanism finally captured: the trio's
-        /// intermittent failure was always
-        /// "no ephemeral port would bind after 8 attempts", never a
-        /// deadline blowout. LinkServer.Start binds a TcpListener AND a
-        /// UDP socket to the SAME port number, while this probe used to
-        /// test TCP only, so every candidate it returned was unverified
-        /// on UDP. That is a systematic blind spot rather than a pure
-        /// timing race, and machine load (a concurrent build or a second
-        /// test host) merely made the collision likely enough to exhaust
-        /// every attempt. Probing both protocols removes the blind spot;
-        /// the residual TOCTOU gap between release and re-bind is what
-        /// the retry loop is for.</para></summary>
+        /// <para>Round nine captured half the mechanism: the probe tested TCP
+        /// only, so candidates were unverified on UDP. Round twelve captured
+        /// the rest: candidates came from a TCP port-0 bind, and Windows
+        /// assigns ephemeral TCP ports SEQUENTIALLY, while this machine
+        /// reserves a contiguous 900-port UDP exclusion block inside the
+        /// dynamic range (netsh excludedportrange: 63832-64732). Whenever the
+        /// rotor sat inside the block, forty CONSECUTIVE candidates were all
+        /// UDP-dead and the trio failed as a burst, healing minutes later
+        /// when the rotor walked out. Random candidates make probe failures
+        /// independent, so an exclusion band can only ever eat single
+        /// probes, never the loop. The residual TOCTOU gap between the
+        /// probe's release and the caller's real bind is what the caller's
+        /// retry loop is for.</para></summary>
         private static int FreePort()
         {
             for (int probe = 0; probe < 40; probe++)
             {
-                var l = new TcpListener(IPAddress.Loopback, 0);
-                l.Start();
-                int p = ((IPEndPoint)l.LocalEndpoint).Port;
+                int p = Random.Shared.Next(49152, 65536);
+                TcpListener tcp = null;
                 Socket udp = null;
-                bool udpFree = false;
                 try
                 {
+                    tcp = new TcpListener(IPAddress.Any, p);
+                    tcp.Start();
                     udp = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                     udp.Bind(new IPEndPoint(IPAddress.Any, p));
-                    udpFree = true;
+                    return p;
                 }
                 catch (SocketException) { }
                 finally
                 {
                     try { udp?.Close(); } catch { }
-                    l.Stop();
+                    try { tcp?.Stop(); } catch { }
                 }
-                if (udpFree) return p;
             }
             throw new InvalidOperationException(
                 "no ephemeral port was free on both TCP and UDP after 40 probes");

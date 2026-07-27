@@ -501,8 +501,12 @@ namespace PadForge.Common.Input
             public bool WriteFailing;
             // Wired Triton (PID 0x1302). Stamped at build, never flipped by the
             // write-path fallback, so transport-conditional protocol shape
-            // (the 0x80 pre-clear) stays keyed to the transport itself.
+            // (the 0x80 pre-clear, write pacing) stays keyed to the transport
+            // itself.
             public bool UsbTriton;
+            // Stopwatch timestamp of the last wired write (TritonWiredGapMs
+            // pacing). Zero = never written, so the first write never waits.
+            public long LastWiredWriteSw;
 
             public long LastContentMs = long.MinValue / 2;
 
@@ -1998,39 +2002,24 @@ namespace PadForge.Common.Input
                 {
                     if (firstArm)
                     {
-                        // BLE ONLY, and never wired. Owner-benched matrix
-                        // (2026-07-27, wired): leading 0x80 = garbled most
-                        // clicks; no 0x80 = mostly clean; TRAILING 0x80 at cue
-                        // end, seconds idle before the next arm = garbled most
-                        // clicks again. Position-independent, so this is not a
-                        // reset/arm race: on wired firmware a zero 0x80 leaves
-                        // the engine in a state that garbles the next 0x83
-                        // cue outright. No reference ever mixes the families
-                        // (SteamHapticsSinger is 0x83-only for whole songs,
-                        // SDL is 0x80-only), and only BLE firmware tolerates
-                        // the mix (leading clear is hardware-clean there and
-                        // is the proven 2026-07-01 wedge reset).
+                        // BLE ONLY. The wired bench matrix (2026-07-27, four
+                        // builds) tracks BURST SIZE, not the 0x80: 5-write and
+                        // 8-write bursts garbled most clicks whatever their
+                        // report mix, and the 4-write bare burst was mostly
+                        // clean. Wired stays minimal (bare arms, paced in
+                        // TritonSend); BLE keeps the proven 2026-07-01 wedge
+                        // reset, where the radio batches the burst and the
+                        // firmware drains it at its own pace.
                         if (!s.UsbTriton)
                             TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"HAPTICDIAG triton-arm slot={s.Slot} hz={toneHz:F0} amp={amp:F2} outlen={s.OutLen} wf={(s.UseWriteFile ? 1 : 0)} usb={(s.UsbTriton ? 1 : 0)}");
                     }
+                    // Bare arms, one 0x83 per actuator. The stop-before-play
+                    // prelude experiment (ee3cccf7, an 8-write burst) took the
+                    // wired pad from mostly-clean to ~3-in-25 clean and is out.
                     foreach (int hap in HapticToneEncoder.TritonActuators)
-                    {
-                        // Wired fresh-cue hygiene, in the 0x83 vocabulary only:
-                        // SteamHapticsSinger's stop-before-play prelude, the
-                        // per-channel NOTE_STOP immediately before the note
-                        // (main.cpp:453-455 -- shipped to stop the 2026
-                        // corrupting "when using motors", retired upstream as
-                        // no-longer-needed). Aimed at the bare-arm bench's
-                        // sticky ruts: a latched dirty state carried cue to
-                        // cue that the 0x80 reset cannot serve here (see
-                        // above). Weakest-grounded write in the lane; if the
-                        // rut signature survives it, remove it.
-                        if (firstArm && s.UsbTriton)
-                            TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, 0f, 0f));
                         TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));
-                    }
                     s.SteamOn = true;
                     s.SteamLastFreq = toneHz;
                     s.SteamLastAmp = amp;
@@ -2045,12 +2034,47 @@ namespace PadForge.Common.Input
             }
         }
 
+        // Wired inter-write gap. No established Windows implementation sends
+        // adjacent output reports to the wired pad the way a 4-actuator tone
+        // burst does: SteamlessController's heartbeat writes at most ONE
+        // output report per 40 ms tick with a 2-write click as its largest
+        // adjacency (SteamController.cpp:337-359, 265-272), SDL resends
+        // rumble at the same 40 ms (TRITON_RUMBLE_RESEND_INTERVAL_MS), and
+        // SteamHapticsSinger's player loop paces at 10 ms (usleep, main.cpp:
+        // 406). 5 ms sits inside those bounds (above the ~1 ms USB frame,
+        // below the Singer's loop) and keeps the 4-actuator attack spread at
+        // ~15 ms. The value is chosen within reference bounds, not cited
+        // from one.
+        private const int TritonWiredGapMs = 5;
+
         private static void TritonSend(Sink s, byte[] report)
         {
             if (s.Handle == IntPtr.Zero) return;
+            if (s.UsbTriton)
+            {
+                // Pace wired writes. The 2026-07-27 bench matrix is monotone
+                // in burst size (4 back-to-back = mostly clean, 5 = garbled
+                // most clicks, 8 = ~3-in-25 clean), pointing at firmware
+                // ingest overrun on the wire, where reports land ~1 ms apart.
+                // BLE never shows this because the radio batches the burst
+                // and the firmware drains it at its own pace. Runs on the
+                // stream thread (timeBeginPeriod(1) active while streaming),
+                // so Sleep granularity is real milliseconds.
+                long freq = System.Diagnostics.Stopwatch.Frequency;
+                long due = s.LastWiredWriteSw + freq * TritonWiredGapMs / 1000;
+                long now = System.Diagnostics.Stopwatch.GetTimestamp();
+                while (now < due)
+                {
+                    long remainMs = (due - now) * 1000 / freq;
+                    Thread.Sleep(remainMs > 1 ? (int)remainMs : 1);
+                    now = System.Diagnostics.Stopwatch.GetTimestamp();
+                }
+            }
             // Padded to the queried OutputReportByteLength (HID output writes require
             // exactly that; SteamHapticsSinger writes the full 64-byte report).
             HidOutputWrite(s, ResizeOut(report, Math.Max(report.Length, s.OutLen)));
+            if (s.UsbTriton)
+                s.LastWiredWriteSw = System.Diagnostics.Stopwatch.GetTimestamp();
         }
 
         private static void TritonStop(Sink s)

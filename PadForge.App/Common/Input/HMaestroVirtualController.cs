@@ -425,24 +425,9 @@ namespace PadForge.Common.Input
         /// calls this AFTER <see cref="SubmitGamepadState"/> so the GIP
         /// buffer stays consistent and the raw report overrides the HID
         /// surface with the full Sony layout.</summary>
-        /// <summary>Accepted-submit counter for the freeze probe. Incremented
-        /// AFTER the null-controller gate in every Submit* path, so a stall
-        /// here (counter static while combined state changes) means Step 5 or
-        /// this wrapper stopped, while a counter that keeps climbing against
-        /// a frozen driver report pins the freeze at the driver boundary.
-        /// long + Volatile read on a probe thread; written only by the poll
-        /// thread.</summary>
-        public long SubmitCounter;
-
-        /// <summary>True while this wrapper still holds its HM controller.
-        /// Every Submit* silently no-ops when it is null, which is exactly
-        /// the shape a frozen-output probe must be able to see.</summary>
-        public bool ControllerLive => _controller != null;
-
         public void SubmitRawReport(ReadOnlySpan<byte> report)
         {
             if (_controller == null) return;
-            System.Threading.Interlocked.Increment(ref SubmitCounter);
             // Every per-tick Submit path ticks FFB (see TickFfb doc). This
             // is the ONLY submit on USB Sony slots now that Step 5 skips
             // the redundant extended leg when a packer exists.
@@ -483,7 +468,6 @@ namespace PadForge.Common.Input
         public void SubmitGamepadState(Gamepad gp)
         {
             if (_controller == null) return;
-            System.Threading.Interlocked.Increment(ref SubmitCounter);
             TickFfb();
 
             // Idle dedup with a 16 ms keepalive. An unchanged state means an
@@ -604,7 +588,6 @@ namespace PadForge.Common.Input
             bool batteryCharging)
         {
             if (_controller == null) return;
-            System.Threading.Interlocked.Increment(ref SubmitCounter);
             TickFfb();
 
             // Tracking-ID synthesis. Bump each finger's ID on rising edge of
@@ -768,7 +751,6 @@ namespace PadForge.Common.Input
             in PadForge.Services.MotionSnapshot motion)
         {
             if (_controller == null) return;
-            System.Threading.Interlocked.Increment(ref SubmitCounter);
             TickFfb();
 
             // Idle dedup, the EXACT basic-path shape (16 ms keepalive):
@@ -950,7 +932,6 @@ namespace PadForge.Common.Input
             // nothing after the final packet).
             _fbVibrationStates = vibrationStates;
             if (_controller == null) return;
-            System.Threading.Interlocked.Increment(ref SubmitCounter);
 
             // Virtual DualSense slots get a per-VC pass-through dispatcher
             // that forwards DS5 effect messages (Report 0x02 USB / 0x31 BT)

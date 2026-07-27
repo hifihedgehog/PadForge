@@ -504,6 +504,14 @@ namespace PadForge.Common.Input
             // (the 0x80 pre-clear, write pacing) stays keyed to the transport
             // itself.
             public bool UsbTriton;
+            // Steam-2026 family lanes that deliberately chose WriteFile from
+            // reference grounding (wired 0x1302: SET_REPORT refused err=31;
+            // puck 0x1304/0x1305: SDL/Steam drive it with hid_write and
+            // SET_REPORT acceptance is unproven). The one-way
+            // WriteFile->SET_REPORT fallback latch never fires for these:
+            // each failed write still TRIES SET_REPORT once, visibly, but
+            // the next write returns to the reference style.
+            public bool TritonPinWriteFile;
 
             public long LastContentMs = long.MinValue / 2;
 
@@ -1251,10 +1259,27 @@ namespace PadForge.Common.Input
                         // names the error.
                         bool usbTriton = path != null
                             && path.IndexOf("pid_1302", StringComparison.OrdinalIgnoreCase) >= 0;
-                        s.UseWriteFile = usbTriton;
+                        // Proteus/Nereid dongle (0x1304/0x1305): the real puck
+                        // RELAYS output reports 0x80-0x86 to the connected
+                        // pad's slot (OpenPuck PROTOCOL.md 9.1, from Windows
+                        // captures -- Steam's own test haptics ride non-0x82
+                        // ids through it), and SDL drives the dongle's slot
+                        // interfaces (2..5) with the same SDL_hid_write as the
+                        // wired pad. So: Steam's write style (WriteFile,
+                        // pinned -- SET_REPORT acceptance on the real puck is
+                        // unproven), but the BLE burst SHAPE (leading clear +
+                        // all four actuators): the pad ingests relayed
+                        // commands through its radio path, the lane that
+                        // renders quads clean, not the USB ingest that
+                        // garbles them.
+                        bool puckTriton = path != null
+                            && (path.IndexOf("pid_1304", StringComparison.OrdinalIgnoreCase) >= 0
+                                || path.IndexOf("pid_1305", StringComparison.OrdinalIgnoreCase) >= 0);
+                        s.UseWriteFile = usbTriton || puckTriton;
+                        s.TritonPinWriteFile = usbTriton || puckTriton;
                         s.UsbTriton = usbTriton;
                         PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"HAPTICDIAG triton-build usb={(usbTriton ? 1 : 0)} outlenCaps={capOut} featCaps={capFeat} path-tail={(path != null && path.Length > 24 ? path.Substring(path.Length - 24) : path)}");
+                            $"HAPTICDIAG triton-build usb={(usbTriton ? 1 : 0)} puck={(puckTriton ? 1 : 0)} outlenCaps={capOut} featCaps={capFeat} path-tail={(path != null && path.Length > 24 ? path.Substring(path.Length - 24) : path)}");
                     }
 
                     if (IsJoyConGen1(s.Family))
@@ -1529,12 +1554,12 @@ namespace PadForge.Common.Input
         private static void HidOutputWrite(Sink s, byte[] buf)
         {
             bool ok;
-            if (s.UsbTriton)
+            if (s.TritonPinWriteFile)
             {
-                // Wired Triton: the firmware refuses SET_REPORT outright
-                // (err=31, both firmwares), so the one-way WriteFile ->
+                // Wired/puck Triton: WriteFile is the reference style (see
+                // the field's banner), so the one-way WriteFile ->
                 // SET_REPORT fallback latch would turn ONE transient
-                // WriteFile failure into a permanently dead tone lane.
+                // WriteFile failure into a permanently degraded lane.
                 // Try the fallback for this write (it fails visibly into
                 // the writefail line) but never latch away from WriteFile.
                 bool wf = s.UseWriteFile;

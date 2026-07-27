@@ -3424,6 +3424,7 @@ namespace PadForge.SteamWorkshop.Translation
                     TrackpadFeature = PhysicalSlotResolver.FeatureTaps,
                 };
                 int tapMacrosBefore = run.Profile.Macros.Count;
+                int tapActivatorsBefore = run.Activators.Count;
                 foreach (var binding in activator.Bindings)
                 {
                     // DoubleTap is a one-frame pulse, so press-shaped
@@ -3434,7 +3435,11 @@ namespace PadForge.SteamWorkshop.Translation
                         toggle: false, input.Name);
                 }
                 EmitHapticPulse(run, activator, tap, input.Name, actPath, "OnPress", holdMs: 0);
-                ConsumeActivatorDelays(run, activator, actPath, tapMacrosBefore);
+                // activatorsBefore must be passed or the routine's
+                // activator-stamping block is gated off and a Double_Press
+                // hosted layer switch / preset jump silently loses its
+                // delay_start engage debounce and delay_end (round 34).
+                ConsumeActivatorDelays(run, activator, actPath, tapMacrosBefore, tapActivatorsBefore);
                 return;
             }
 
@@ -3457,6 +3462,7 @@ namespace PadForge.SteamWorkshop.Translation
 
             bool anyCarry = false;
             int macrosBefore = run.Profile.Macros.Count;
+            int dpActivatorsBefore = run.Activators.Count;
             foreach (var binding in activator.Bindings)
             {
                 string bt = (binding.Type ?? "").Trim().ToLowerInvariant();
@@ -3604,10 +3610,20 @@ namespace PadForge.SteamWorkshop.Translation
                         // trigger (v17); Steam-client-only families keep
                         // their named skips inside.
                         string verb = FirstToken(binding.Param).ToUpperInvariant();
+                        int emitBefore = run.Profile.Macros.Count + run.Activators.Count;
                         TranslateControllerAction(run, preset, binding, source, layer, actPath,
                             onRelease: false, input.Name, toggle: toggle,
                             triggerModeOverride: "DoublePress", doublePressMs: windowMs);
-                        anyCarry |= LongPressEmittingVerbs.Contains(verb);
+                        // The verb NAME is not proof of emission: a
+                        // CHANGE_PRESET / add_layer that lowered to a named
+                        // skip (MissingPreset, ActivatorInputNotSupported)
+                        // still matched the set, and the activator's
+                        // haptic_intensity rumble then ticked for a binding
+                        // that produced nothing, against
+                        // LongPressEmittingVerbs' own stated invariant
+                        // (round 34). Require that something actually landed.
+                        anyCarry |= LongPressEmittingVerbs.Contains(verb)
+                            && (run.Profile.Macros.Count + run.Activators.Count) > emitBefore;
                         break;
                     }
 
@@ -3651,7 +3667,7 @@ namespace PadForge.SteamWorkshop.Translation
             }
 
             if (anyCarry)
-                ConsumeActivatorDelays(run, activator, actPath, macrosBefore);
+                ConsumeActivatorDelays(run, activator, actPath, macrosBefore, dpActivatorsBefore);
         }
 
         /// <summary>Physical touchpad index of a resolved source
@@ -3823,7 +3839,15 @@ namespace PadForge.SteamWorkshop.Translation
                         // would have asserted for zero frames anyway.
                         if (delayStart > 0)
                         {
-                            m.TriggerMode = "HoldForMs";
+                            // A DoublePress-gated hold keeps its gate: the
+                            // wait composes into the hold threshold, but
+                            // overwriting the mode dropped the
+                            // double-press requirement entirely and the
+                            // macro fired on any single press held long
+                            // enough (round 34). Only an ungated hold
+                            // becomes a plain HoldForMs.
+                            if (!string.Equals(m.TriggerMode, "DoublePress", StringComparison.Ordinal))
+                                m.TriggerMode = "HoldForMs";
                             m.TriggerHoldMs += delayStart;
                         }
                         if (delayEnd > 0)
@@ -3831,6 +3855,13 @@ namespace PadForge.SteamWorkshop.Translation
                             // Release-extension twin: re-assert the target
                             // for delay_end ms on the release edge, so the
                             // output deactivates late, Steam's semantics.
+                            // The twin inherits the SOURCE's trigger mode
+                            // and thresholds rather than firing on every
+                            // release: a short press that never reached the
+                            // hold / double-press gate produced a phantom
+                            // assert of the target (round 34). OnRelease
+                            // with a hold threshold means "released after
+                            // the hold engaged".
                             var ext = new TranslatedMacro
                             {
                                 Name = $"{m.Name} (release tail)",
@@ -3838,6 +3869,8 @@ namespace PadForge.SteamWorkshop.Translation
                                     ? TranslatedMacroAction.VcButtonTap
                                     : TranslatedMacroAction.VcAxisTap,
                                 TriggerMode = "OnRelease",
+                                TriggerHoldMs = m.TriggerHoldMs,
+                                TriggerDoublePressMs = m.TriggerDoublePressMs,
                                 ConsumeTrigger = false,
                                 TargetXboxButtons = m.TargetXboxButtons,
                                 TargetAxis = m.TargetAxis,
@@ -4035,9 +4068,15 @@ namespace PadForge.SteamWorkshop.Translation
                     // not the activator's. anyCarry only for verbs that
                     // emit something (haptics must not tick for a binding
                     // that lowered to a named skip).
-                    anyCarry |= LongPressEmittingVerbs.Contains(action);
+                    // Verb-name membership is necessary, NOT sufficient: the
+                    // named skips above return without emitting, so require
+                    // that the walk actually produced a macro or activator
+                    // before letting haptics tick (round 34).
+                    int lpEmitBefore = run.Profile.Macros.Count + run.Activators.Count;
                     TranslateControllerAction(run, preset, binding, source, layer, actPath,
                         onRelease: false, input.Name, delayMs, toggle);
+                    anyCarry |= LongPressEmittingVerbs.Contains(action)
+                        && (run.Profile.Macros.Count + run.Activators.Count) > lpEmitBefore;
                 }
                 else if (bt == "game_action" || bt == "game_action_analog")
                 {
@@ -6455,7 +6494,15 @@ namespace PadForge.SteamWorkshop.Translation
                 .ThenBy(a => a.Descriptor, StringComparer.Ordinal)
                 .ThenBy(a => a.Mode, StringComparer.Ordinal))
             {
-                if (!seen.Add($"{req.LayerMask}|{req.Descriptor}|{req.GateDescriptor}|{req.Mode}|{req.JumpToLayer}|{req.CycleLayers}|{(req.AxisHalf ? 1 : 0)}{(req.AxisInvert ? 1 : 0)}")) continue;
+                // DelayMs / ReleaseDelayMs / DoublePressMs are part of a
+                // trigger's IDENTITY, not decoration: a Full_Press and a
+                // Double_Press (or Long_Press) on the same input are two
+                // authored triggers. Omitting them here made the second one
+                // a "duplicate" and silently dropped it, so one of the
+                // user's two triggers stopped working (round 34).
+                // MergeSameInputJumpsIntoCycles already treats DoublePressMs
+                // this way; this key now agrees with it.
+                if (!seen.Add($"{req.LayerMask}|{req.Descriptor}|{req.GateDescriptor}|{req.Mode}|{req.JumpToLayer}|{req.CycleLayers}|{(req.AxisHalf ? 1 : 0)}{(req.AxisInvert ? 1 : 0)}|{req.DelayMs}|{req.ReleaseDelayMs}|{req.DoublePressMs}")) continue;
 
                 // Layer-gated macros are layer CONTENT too (v25,
                 // always_on_action): a set whose only authored binding is
@@ -6621,7 +6668,12 @@ namespace PadForge.SteamWorkshop.Translation
                 // gate likewise: a Double_Press jump and a Full_Press jump
                 // on the same button are two different triggers and must
                 // not fold into one Cycle.
-                .GroupBy(a => $"{a.Kind}|{a.Descriptor}|{a.GateDescriptor}|{(a.AxisHalf ? 1 : 0)}{(a.AxisInvert ? 1 : 0)}|{a.DoublePressMs}", StringComparer.Ordinal)
+                // DelayMs joins the key for the same reason DoublePressMs is
+                // here: a Long_Press jump and a Full_Press jump on the same
+                // button are different triggers. Folding them erased the
+                // hold threshold, so a quick tap stepped the preset ring
+                // where Steam requires a hold (round 34).
+                .GroupBy(a => $"{a.Kind}|{a.Descriptor}|{a.GateDescriptor}|{(a.AxisHalf ? 1 : 0)}{(a.AxisInvert ? 1 : 0)}|{a.DoublePressMs}|{a.DelayMs}", StringComparer.Ordinal)
                 .Where(g => g.Select(a => a.JumpToLayer).Distinct(StringComparer.Ordinal).Count() > 1)
                 .ToList();
 

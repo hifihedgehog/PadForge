@@ -1527,7 +1527,22 @@ namespace PadForge.Common.Input
         // the Joy-Con 0x10 rumble lane and the Triton 0x80/0x83 output lane.
         private static void HidOutputWrite(Sink s, byte[] buf)
         {
-            bool ok = HidOutputWriteTo(s.Handle, buf, ref s.UseWriteFile);
+            bool ok;
+            if (s.UsbTriton)
+            {
+                // Wired Triton: the firmware refuses SET_REPORT outright
+                // (err=31, both firmwares), so the one-way WriteFile ->
+                // SET_REPORT fallback latch would turn ONE transient
+                // WriteFile failure into a permanently dead tone lane.
+                // Try the fallback for this write (it fails visibly into
+                // the writefail line) but never latch away from WriteFile.
+                bool wf = s.UseWriteFile;
+                ok = HidOutputWriteTo(s.Handle, buf, ref wf);
+            }
+            else
+            {
+                ok = HidOutputWriteTo(s.Handle, buf, ref s.UseWriteFile);
+            }
             // Edge-gated failure visibility (VC-freeze discipline applied
             // here): a swallowed write failure is exactly how a garble
             // stays undiagnosable. One line on the first failure, one on
@@ -1983,27 +1998,39 @@ namespace PadForge.Common.Input
                 {
                     if (firstArm)
                     {
-                        // A plain zero rumble command resets the haptic engine out
-                        // of the wedged state (observed on hardware: a normal
-                        // rumble signal clears the garble). Same zero form SDL's
-                        // RumbleJoystick sends (report 0x80, payload all zero).
-                        //
-                        // BLE ONLY. No wired reference sends 0x80 before tones:
-                        // SteamHapticsSinger arms 0x83 bare over hid_write for
-                        // whole songs (main.cpp:252-285) and SDL's driver never
-                        // sends 0x83 at all. Over BLE the clear and the arms
-                        // batch into one connection event (atomic, hardware-
-                        // clean); over USB the interrupt pipe serializes them
-                        // ~1 ms apart, putting the arms inside the engine's
-                        // reset window -- the prime suspect for the per-click
-                        // wired garble.
+                        // BLE ONLY, and never wired. Owner-benched matrix
+                        // (2026-07-27, wired): leading 0x80 = garbled most
+                        // clicks; no 0x80 = mostly clean; TRAILING 0x80 at cue
+                        // end, seconds idle before the next arm = garbled most
+                        // clicks again. Position-independent, so this is not a
+                        // reset/arm race: on wired firmware a zero 0x80 leaves
+                        // the engine in a state that garbles the next 0x83
+                        // cue outright. No reference ever mixes the families
+                        // (SteamHapticsSinger is 0x83-only for whole songs,
+                        // SDL is 0x80-only), and only BLE firmware tolerates
+                        // the mix (leading clear is hardware-clean there and
+                        // is the proven 2026-07-01 wedge reset).
                         if (!s.UsbTriton)
                             TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"HAPTICDIAG triton-arm slot={s.Slot} hz={toneHz:F0} amp={amp:F2} outlen={s.OutLen} wf={(s.UseWriteFile ? 1 : 0)} usb={(s.UsbTriton ? 1 : 0)}");
                     }
                     foreach (int hap in HapticToneEncoder.TritonActuators)
+                    {
+                        // Wired fresh-cue hygiene, in the 0x83 vocabulary only:
+                        // SteamHapticsSinger's stop-before-play prelude, the
+                        // per-channel NOTE_STOP immediately before the note
+                        // (main.cpp:453-455 -- shipped to stop the 2026
+                        // corrupting "when using motors", retired upstream as
+                        // no-longer-needed). Aimed at the bare-arm bench's
+                        // sticky ruts: a latched dirty state carried cue to
+                        // cue that the 0x80 reset cannot serve here (see
+                        // above). Weakest-grounded write in the lane; if the
+                        // rut signature survives it, remove it.
+                        if (firstArm && s.UsbTriton)
+                            TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, 0f, 0f));
                         TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));
+                    }
                     s.SteamOn = true;
                     s.SteamLastFreq = toneHz;
                     s.SteamLastAmp = amp;
@@ -2036,18 +2063,13 @@ namespace PadForge.Common.Input
             // garble on current firmware; reverted the same night.
             foreach (int hap in HapticToneEncoder.TritonActuators)
                 TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, 0f, 0f));
-            // Wired lane: sanitize the engine AT IDLE with the zero 0x80 --
-            // SDL's own idle-transition write (RumbleJoystick sends exactly
-            // this form when rumble ends). The clear is hardware-proven to
-            // reset a wedged engine (2026-07-01), but LEADING the arm with it
-            // over USB put the reset ~1 ms ahead of the arms and read as
-            // per-click garble (9a7eb422); trailing the stop is the same
-            // medicine with nothing behind it to race. Targets the
-            // post-9a7eb422 bench signature: mostly clean, with sticky
-            // multi-click garble ruts, i.e. a latched dirty state carried
-            // cue to cue. BLE keeps its leading clear (hardware-clean).
-            if (s.UsbTriton)
-                TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
+            // NO 0x80 here, ever, on the wired lane. The trailing-clear
+            // experiment (3df09fc7) returned the wired pad to garbled-most-
+            // clicks even with seconds of idle before the next arm: on wired
+            // firmware a zero 0x80 poisons the next 0x83 cue regardless of
+            // position. This stop fan IS the reference teardown -- the
+            // Singer's abortPlaying sends exactly NOTE_STOP per channel
+            // (main.cpp:556-561), nothing else.
         }
 
 

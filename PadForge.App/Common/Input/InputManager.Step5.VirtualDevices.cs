@@ -961,7 +961,12 @@ namespace PadForge.Common.Input
                         }
                     }
                     _slotInactiveCounter[padIndex] = 0;
-                    _hmInactivityFired[padIndex] = false;
+                    // Volatile: this clear is the STALENESS HANDSHAKE read by
+                    // the UI-thread inactivity teardown (see
+                    // InactivityFireStillValid). A device arriving between
+                    // the poll-thread fire and the marshaled destroy must
+                    // veto the destroy, not lose the race to a torn read.
+                    System.Threading.Volatile.Write(ref _hmInactivityFired[padIndex], false);
 
                     if (vc == null)
                     {
@@ -1096,7 +1101,7 @@ namespace PadForge.Common.Input
                         // point also runs.
                         if (inactiveMs >= HmInactivityTimeoutSeconds * 1000L)
                         {
-                            _hmInactivityFired[padIndex] = true;
+                            System.Threading.Volatile.Write(ref _hmInactivityFired[padIndex], true);
                             VibrationStates[padIndex].LeftMotorSpeed = 0;
                             VibrationStates[padIndex].RightMotorSpeed = 0;
                             HmVcInactivityDestroyed?.Invoke(this, padIndex);
@@ -1822,6 +1827,21 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
         //  Slot activity check
         // ─────────────────────────────────────────────
+
+        /// <summary>UI-thread staleness guard for the marshaled inactivity
+        /// teardown. The poll thread SETS the fired latch when the countdown
+        /// expires and CLEARS it the moment the slot goes active again
+        /// (devices online). A teardown that arrives on the UI thread after
+        /// the clear is stale: a new controller was assigned/came online in
+        /// the BeginInvoke gap, and destroying now would kill the live VC of
+        /// an active slot (owner repro 2026-07-27: assign a new controller
+        /// while the slot's other devices sit offline, moments before the
+        /// timeout expires -- the VC vanishes). Latch-only on purpose: the
+        /// poll thread owns slot-activity evaluation, and IsSlotActive's
+        /// shared buffer must not be raced from the UI thread.</summary>
+        public bool InactivityFireStillValid(int padIndex)
+            => padIndex >= 0 && padIndex < MaxPads
+               && System.Threading.Volatile.Read(ref _hmInactivityFired[padIndex]);
 
         private bool IsSlotActive(int padIndex)
         {

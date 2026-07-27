@@ -519,6 +519,19 @@ namespace PadForge.Common.Input
             // each failed write still TRIES SET_REPORT once, visibly, but
             // the next write returns to the reference style.
             public bool TritonPinWriteFile;
+            // Edge latch for the pinned lane's WriteFile-specific failure
+            // log (S1): on the puck SET_REPORT can succeed while WriteFile
+            // fails every write, and the combined-result log would hide it.
+            public bool PinnedWfFailing;
+            // Set by teardown BEFORE its final stop fan. The stream thread
+            // checks it in TritonSend, so a tick already in flight when
+            // Join times out cannot re-arm an actuator after the teardown
+            // stop and leave it sounding on a dead sink (C18).
+            public volatile bool TornDown;
+            // A Triton arm burst failed; the next attempt waits for the
+            // 40 ms cadence instead of retrying per tick (the flood-wedge
+            // hazard the cap exists for). Cleared on a successful arm.
+            public bool ArmRetryPending;
 
             public long LastContentMs = long.MinValue / 2;
 
@@ -1386,7 +1399,15 @@ namespace PadForge.Common.Input
                     switch (s.Family)
                     {
                         case Family.Steam: SteamStop(s); break;     // 2015: classic 0x8f feature stop (both haptics)
-                        case Family.Steam2026: TritonStop(s); break; // Triton: 0x83 stop on all 4 actuators
+                        case Family.Steam2026:
+                            // Fence BEFORE the final stop (C18): a stream
+                            // tick still in flight after a timed-out Join
+                            // must not re-arm past this stop and leave an
+                            // actuator sounding on a dead sink. TritonStop
+                            // itself bypasses the fence via TritonSendCore.
+                            s.TornDown = true;
+                            TritonStop(s); // 0x83 stop on the lane's actuator set
+                            break;
                         case Family.SteamDeck:                       // Deck: 0x8F note-off on both haptics (same as 2015)
                             SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 0));
                             SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 1));
@@ -1559,7 +1580,7 @@ namespace PadForge.Common.Input
         // Output write with the probed path: overlapped WriteFile, else
         // synchronous HidD_SetOutputReport (BT-Joy-Con err-87 fallback). Used by
         // the Joy-Con 0x10 rumble lane and the Triton 0x80/0x83 output lane.
-        private static void HidOutputWrite(Sink s, byte[] buf)
+        private static bool HidOutputWrite(Sink s, byte[] buf)
         {
             bool ok;
             if (s.TritonPinWriteFile)
@@ -1567,11 +1588,31 @@ namespace PadForge.Common.Input
                 // Wired/puck Triton: WriteFile is the reference style (see
                 // the field's banner), so the one-way WriteFile ->
                 // SET_REPORT fallback latch would turn ONE transient
-                // WriteFile failure into a permanently degraded lane.
-                // Try the fallback for this write (it fails visibly into
-                // the writefail line) but never latch away from WriteFile.
-                bool wf = s.UseWriteFile;
-                ok = HidOutputWriteTo(s.Handle, buf, ref wf);
+                // WriteFile failure into a permanently degraded lane. Try
+                // SET_REPORT for this write only, never latch, and make
+                // the WriteFile failure itself edge-visible: on the puck
+                // SET_REPORT may SUCCEED, and the combined-result log
+                // below would then hide that the reference lane is
+                // failing every write (round 33, S1).
+                bool wfOk = s.Handle != IntPtr.Zero && OverlappedWrite(s.Handle, buf);
+                if (!wfOk && !s.PinnedWfFailing)
+                {
+                    s.PinnedWfFailing = true;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG pinned-wf-fail family={s.Family} slot={s.Slot} err={Marshal.GetLastWin32Error()} id=0x{buf[0]:X2}");
+                }
+                else if (wfOk && s.PinnedWfFailing)
+                {
+                    s.PinnedWfFailing = false;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG pinned-wf-recover family={s.Family} slot={s.Slot}");
+                }
+                if (wfOk) ok = true;
+                else
+                {
+                    try { ok = s.Handle != IntPtr.Zero && HidD_SetOutputReport(s.Handle, buf, buf.Length); }
+                    catch { ok = false; }
+                }
             }
             else
             {
@@ -1593,6 +1634,7 @@ namespace PadForge.Common.Input
                 PadForge.Engine.SdlDiagLog.WriteLine(
                     $"HAPTICDIAG writerecover family={s.Family} slot={s.Slot}");
             }
+            return ok;
         }
 
         // Handle-explicit form: the combined pair's two children each carry
@@ -2028,20 +2070,27 @@ namespace PadForge.Common.Input
                 // wedges the haptic engine into a garbled state that persists into
                 // later cues (observed on hardware, 2026-07-01). A fresh cue always
                 // arms immediately.
-                if ((pitchShift || ampStep) && (firstArm || nowMs - s.SteamLastBurstMs >= 40))
+                // A fresh cue arms immediately unless the PREVIOUS attempt
+                // failed (ArmRetryPending): failed arms respect the 40 ms
+                // cadence too, or a refusing device would eat the burst at
+                // 100 Hz, the flood-wedge hazard the cap exists for (C17).
+                bool cadenceOk = firstArm && !s.ArmRetryPending
+                    || nowMs - s.SteamLastBurstMs >= 40;
+                if ((pitchShift || ampStep) && cadenceOk)
                 {
+                    bool allOk = true;
                     if (firstArm)
                     {
                         // BLE ONLY. The wired bench matrix (2026-07-27, four
                         // builds) tracks BURST SIZE, not the 0x80: 5-write and
                         // 8-write bursts garbled most clicks whatever their
                         // report mix, and the 4-write bare burst was mostly
-                        // clean. Wired stays minimal (bare arms, paced in
-                        // TritonSend); BLE keeps the proven 2026-07-01 wedge
-                        // reset, where the radio batches the burst and the
-                        // firmware drains it at its own pace.
+                        // clean. Wired stays minimal (bare arms); BLE keeps
+                        // the proven 2026-07-01 wedge reset, where the radio
+                        // batches the burst and the firmware drains it at
+                        // its own pace.
                         if (!s.TritonSerialLane)
-                            TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
+                            allOk &= TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"HAPTICDIAG triton-arm slot={s.Slot} hz={toneHz:F0} amp={amp:F2} outlen={s.OutLen} wf={(s.UseWriteFile ? 1 : 0)} serial={(s.TritonSerialLane ? 1 : 0)}");
                     }
@@ -2053,24 +2102,49 @@ namespace PadForge.Common.Input
                     foreach (int hap in s.TritonSerialLane
                         ? HapticToneEncoder.TritonActuatorsWired
                         : HapticToneEncoder.TritonActuators)
-                        TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));
-                    s.SteamOn = true;
-                    s.SteamLastFreq = toneHz;
-                    s.SteamLastAmp = amp;
+                        allOk &= TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));
+                    // Commit the armed state only when every write landed
+                    // (C17): committing a FAILED arm as "on" suppressed the
+                    // edge-only model's one retry, and a failed STOP left
+                    // the previous 0x7FFF sustain running while the state
+                    // said silent. The burst stamp commits either way so
+                    // the cadence holds.
                     s.SteamLastBurstMs = nowMs;
+                    s.ArmRetryPending = !allOk;
+                    if (allOk)
+                    {
+                        s.SteamOn = true;
+                        s.SteamLastFreq = toneHz;
+                        s.SteamLastAmp = amp;
+                    }
                 }
             }
             else if (s.SteamOn)
             {
-                TritonStop(s);
-                s.SteamOn = false;
-                s.SteamLastAmp = 0f;
+                if (TritonStop(s))
+                {
+                    s.SteamOn = false;
+                    s.SteamLastAmp = 0f;
+                }
+                // Failed stop: SteamOn stays true, so this branch retries
+                // next tick until the stop lands or Reconcile tears the
+                // sink down (a dead handle fails in microseconds and the
+                // writefail line is edge-gated).
             }
         }
 
-        private static void TritonSend(Sink s, byte[] report)
+        private static bool TritonSend(Sink s, byte[] report)
         {
-            if (s.Handle == IntPtr.Zero) return;
+            // Teardown fence (C18): once teardown has sent its final stop,
+            // a stream tick still in flight must not re-arm the actuator.
+            // The teardown's own stop fan goes through TritonSendCore.
+            if (s.TornDown) return false;
+            return TritonSendCore(s, report);
+        }
+
+        private static bool TritonSendCore(Sink s, byte[] report)
+        {
+            if (s.Handle == IntPtr.Zero) return false;
             // Back-to-back, no pacing: the best wired shape benched
             // (2026-07-27 matrix). A 5 ms inter-write pacing experiment
             // (c3d1dc9f) benched 0-in-30 clean and is reverted; wider
@@ -2079,24 +2153,26 @@ namespace PadForge.Common.Input
             // writes (main.cpp:443-464, back-to-back hid_write per channel).
             // Padded to the queried OutputReportByteLength (HID output writes require
             // exactly that; SteamHapticsSinger writes the full 64-byte report).
-            HidOutputWrite(s, ResizeOut(report, Math.Max(report.Length, s.OutLen)));
+            return HidOutputWrite(s, ResizeOut(report, Math.Max(report.Length, s.OutLen)));
         }
 
-        private static void TritonStop(Sink s)
+        private static bool TritonStop(Sink s)
         {
-            if (s.Handle == IntPtr.Zero) return;
+            if (s.Handle == IntPtr.Zero) return false;
             // Per-actuator 0x83 stop form (gain 0x80), the reference note-off.
             // Back-to-back like the arm: the four LRAs are driven
             // phase-locked. A 3 ms stagger experiment (2026-07-26, aimed at
             // an old-firmware pad) de-phased the actuators and read as
             // garble on current firmware; reverted the same night.
+            bool allOk = true;
             foreach (int hap in s.TritonSerialLane
                 ? HapticToneEncoder.TritonActuatorsWired
                 : HapticToneEncoder.TritonActuators)
-                TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, 0f, 0f));
+                allOk &= TritonSendCore(s, HapticToneEncoder.EncodeTritonTone(hap, 0f, 0f));
             // NO 0x80 on the wired lane. This stop fan IS the reference
             // teardown -- the Singer's abortPlaying sends exactly NOTE_STOP
             // per channel (main.cpp:556-561), nothing else.
+            return allOk;
         }
 
 

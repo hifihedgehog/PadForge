@@ -3762,14 +3762,24 @@ namespace PadForge.Views
             int slotIndex = _currentPadVm.PadIndex;
             var devices = new List<PadForge.Engine.Data.UserDevice>();
 
-            foreach (var setting in SettingsManager.UserSettings.Items)
+            // Both collections are mutated by the polling thread's device /
+            // settings passes, so this UI-thread walk takes their SyncRoots
+            // exactly as the same file already does at lines ~377 and ~3351.
+            // Unlocked, a concurrent Add could throw out of the enumeration
+            // or let Find read a torn list (round 34). Lock order is
+            // UserDevices BEFORE UserSettings, the codebase-wide rule.
+            lock (SettingsManager.UserDevices.SyncRoot)
+            lock (SettingsManager.UserSettings.SyncRoot)
             {
-                if (setting.MapTo != slotIndex)
-                    continue;
-                var ud = SettingsManager.UserDevices.Items
-                    .Find(d => d.InstanceGuid == setting.InstanceGuid);
-                if (ud != null && !devices.Contains(ud))
-                    devices.Add(ud);
+                foreach (var setting in SettingsManager.UserSettings.Items)
+                {
+                    if (setting.MapTo != slotIndex)
+                        continue;
+                    var ud = SettingsManager.UserDevices.Items
+                        .Find(d => d.InstanceGuid == setting.InstanceGuid);
+                    if (ud != null && !devices.Contains(ud))
+                        devices.Add(ud);
+                }
             }
 
             cb.ItemsSource = devices;
@@ -3790,8 +3800,11 @@ namespace PadForge.Views
                 return;
             }
 
-            var ud = SettingsManager.UserDevices.Items
-                .Find(d => d.InstanceGuid == action.SourceDeviceGuid);
+            // Same SyncRoot discipline as the sibling picker above.
+            PadForge.Engine.Data.UserDevice ud;
+            lock (SettingsManager.UserDevices.SyncRoot)
+                ud = SettingsManager.UserDevices.Items
+                    .Find(d => d.InstanceGuid == action.SourceDeviceGuid);
             if (ud?.DeviceObjects == null)
             {
                 cb.ItemsSource = null;

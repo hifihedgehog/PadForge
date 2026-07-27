@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using PadForge.Engine.Data;
 
@@ -23,13 +23,13 @@ namespace PadForge.Engine.Common.Mapping
         // Target+sourceIndex is what most users edit incrementally; on
         // wholesale row removal the state lingers harmlessly until the
         // dictionary is cleared (profile switch / engine stop).
-        private readonly Dictionary<(int slot, string target, int srcIdx), double> _incrementalAccum
+        private Dictionary<(int slot, string target, int srcIdx), double> _incrementalAccum
             = new();
 
         // Ramped axis envelope accumulator (v3.5 #111), bipolar [-1, +1], same
         // (slot, target, srcIdx) key as Incremental so two ramped sources on one
         // row keep independent state.
-        private readonly Dictionary<(int slot, string target, int srcIdx), double> _rampedAccum
+        private Dictionary<(int slot, string target, int srcIdx), double> _rampedAccum
             = new();
 
         // ── Steering kinds (v3.4 #94) ──
@@ -40,9 +40,9 @@ namespace PadForge.Engine.Common.Mapping
         private struct LockState { public LockSide Side; public LockEdge PendingEdge; public bool PendingLeft; public double LastAbs; }
 
         // Signed winding accumulator per row (deg, NOT clamped — overshoot is intentional).
-        private readonly Dictionary<(int slot, string target, int srcIdx), WindingState> _windingState = new();
+        private Dictionary<(int slot, string target, int srcIdx), WindingState> _windingState = new();
         // At-lock edge tracking per row, drives the haptic feedback layer.
-        private readonly Dictionary<(int slot, string target, int srcIdx), LockState> _lockState = new();
+        private Dictionary<(int slot, string target, int srcIdx), LockState> _lockState = new();
 
         // Per-device captured neutral orientation (down-convention unit vector) for
         // MotionLean. The resting grip is a few degrees off true level, so without
@@ -50,7 +50,7 @@ namespace PadForge.Engine.Common.Mapping
         // Faithful to JSM's neutralQuat (main.cpp:421-435, 891): captured once when
         // the steering source first sees real gravity for a device, held until profile
         // switch (Clear). Keyed by device GUID. The resting pose is physical, not per-slot.
-        private readonly Dictionary<string, (double x, double y, double z)> _motionNeutral = new();
+        private Dictionary<string, (double x, double y, double z)> _motionNeutral = new();
 
         // ── Flick stick (#225) ──
         // Per-row flick stick state, JSM's Stick flick fields (Stick.h:75-90)
@@ -76,7 +76,7 @@ namespace PadForge.Engine.Common.Mapping
         // 1000 Hz-poll ceiling, same as JSM's.
         private const int FlickNumSamples = 256;
 
-        private readonly Dictionary<(int slot, string target, int srcIdx), FlickState> _flickState = new();
+        private Dictionary<(int slot, string target, int srcIdx), FlickState> _flickState = new();
 
         // Saturation band for the lock state machine — avoids float-edge thrash at ±1.
         private const double LockEpsilon = 1e-3;
@@ -85,12 +85,24 @@ namespace PadForge.Engine.Common.Mapping
         /// stop. Cruise control snaps to neutral on next read.</summary>
         public void Clear()
         {
-            _incrementalAccum.Clear();
-            _rampedAccum.Clear();
-            _windingState.Clear();
-            _lockState.Clear();
-            _motionNeutral.Clear();
-            _flickState.Clear();
+            // SWAP, never Clear-in-place. These dictionaries are mutated by
+            // the 1 kHz polling thread while this runs on the UI thread
+            // (profile switch, engine stop), and clearing a plain Dictionary
+            // under a concurrent writer can corrupt its buckets and hang a
+            // subsequent lookup in an infinite loop -- the exact failure the
+            // XboxImpulseHidWriter fix chased (audit round 24). Publishing a
+            // fresh instance means no two threads ever mutate the SAME
+            // dictionary: a poll tick still holding the old reference writes
+            // into an orphan that is about to be collected, which is
+            // precisely the state this method wanted dropped. Costs one
+            // field read on the hot path, versus ConcurrentDictionary's
+            // per-access overhead on a 1 kHz loop (round 34).
+            _incrementalAccum = new();
+            _rampedAccum = new();
+            _windingState = new();
+            _lockState = new();
+            _motionNeutral = new();
+            _flickState = new();
         }
 
         /// <summary>Drops all steering + flick state for a slot. Called on profile switch.</summary>

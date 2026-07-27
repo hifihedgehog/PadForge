@@ -1680,6 +1680,21 @@ namespace PadForge
                 _savedPosDescriptor = null;
                 _negChainCompletedMapping = null;
 
+                // #111 kind recording (Ramp / Incremental / Invert-On-Hold):
+                // the row's IsRecording is set by hand at the start site
+                // because RecorderService only marks the param extraSource,
+                // and CancelRecording deliberately leaves the mapping alone
+                // when an extraSource is active. Without this, a timed-out
+                // kind record left the row's button stuck showing Stop and
+                // the stale mapping latched until an unrelated recording
+                // completed (round 34).
+                if (_kindRecordMapping != null)
+                {
+                    _kindRecordMapping.IsRecording = false;
+                    _kindRecordMapping = null;
+                    _kindRecordStage = KindRecStage.None;
+                }
+
                 var activePad = _viewModel.SelectedPad;
                 if (activePad != null)
                 {
@@ -1702,6 +1717,14 @@ namespace PadForge
                     // Mouse-gesture custom activation record button (#216).
                     if (activePad.MouseGestureCustomEngageRecording)
                         activePad.MouseGestureCustomEngageRecording = false;
+                    // Menus tab host / steer / click recording (#9). Its
+                    // freeform completion callback is what normally clears
+                    // this, and CancelRecording drops that callback without
+                    // invoking it, so a timeout left the button stuck at Stop
+                    // and consumed the user's next click as a cancel
+                    // (round 34).
+                    if (activePad.SelectedMenu != null && activePad.SelectedMenu.HostRecording)
+                        activePad.SelectedMenu.HostRecording = false;
                 }
             };
 
@@ -2009,6 +2032,10 @@ namespace PadForge
             // decide whether to show the window at all (start-minimized-to-tray).
             _settingsService.Initialize();
 
+            // Only now does RemoteLink.IdentityProtection hold the persisted
+            // choice, so this is the earliest point the dropdown can show it.
+            _inputService?.SeedIdentityProtectionDisplay();
+
             // Load profile shortcuts after settings are loaded.
             LoadProfileShortcuts();
 
@@ -2018,10 +2045,28 @@ namespace PadForge
 
             // Restore main window position/size/state.
             var mw = _viewModel.Settings;
-            if (mw.MainWindowLeft >= 0 && mw.MainWindowTop >= 0)
+            // (-1, -1) is the legacy "never saved" sentinel (SettingsViewModel
+            // defaults). ANY other value is a real saved position, negative
+            // coordinates included: a monitor left of or above the primary has
+            // negative virtual-desktop coordinates, and the old "both >= 0"
+            // gate silently discarded those users' position on every launch
+            // while still restoring size (round 34). Requiring the restored
+            // rect to intersect the CURRENT virtual screen also stops a
+            // position saved on a since-removed monitor from stranding the
+            // window offscreen, which the old gate could not catch either.
+            if (mw.MainWindowLeft != -1 || mw.MainWindowTop != -1)
             {
-                Left = mw.MainWindowLeft;
-                Top = mw.MainWindowTop;
+                double rw = mw.MainWindowWidth > 0 ? mw.MainWindowWidth : Width;
+                double rh = mw.MainWindowHeight > 0 ? mw.MainWindowHeight : Height;
+                var saved = new Rect(mw.MainWindowLeft, mw.MainWindowTop, rw, rh);
+                var desktop = new Rect(
+                    SystemParameters.VirtualScreenLeft, SystemParameters.VirtualScreenTop,
+                    SystemParameters.VirtualScreenWidth, SystemParameters.VirtualScreenHeight);
+                if (saved.IntersectsWith(desktop))
+                {
+                    Left = mw.MainWindowLeft;
+                    Top = mw.MainWindowTop;
+                }
             }
             if (mw.MainWindowWidth > 0) Width = mw.MainWindowWidth;
             if (mw.MainWindowHeight > 0) Height = mw.MainWindowHeight;
@@ -5256,12 +5301,29 @@ namespace PadForge
         }
 
         /// <summary>
-        /// Returns the last created slot index of the given type, or -1 if none.
-        /// Used after CreateSlot to navigate to the newly added slot, which is
-        /// always the tail of its group's order list.
+        /// Returns the slot at the TAIL of the type's group order list, or -1
+        /// if none. Used after CreateSlot to navigate to the newly added slot,
+        /// which CreateSlot appends to that order list.
+        ///
+        /// <para>Pad INDEX order is not group order: CreateSlot reuses the
+        /// first free pad index, so after a middle-slot delete the new slot's
+        /// index is lower than its same-type siblings. Scanning indices then
+        /// returned a pre-existing slot and the Add-Controller handlers
+        /// navigated the user to someone else's config (round 34).</para>
         /// </summary>
         private int FindLastSlotOfType(VirtualControllerType type)
         {
+            var order = SettingsManager.SlotOrders.GetOrderFor(type);
+            for (int p = order.Count - 1; p >= 0; p--)
+            {
+                int pad = order[p];
+                if (pad >= 0 && pad < InputManager.MaxPads
+                    && SettingsManager.SlotCreated[pad]
+                    && _viewModel.Pads[pad].OutputType == type)
+                    return pad;
+            }
+            // Types with no order list (MIDI / KeyboardMouse) keep the old
+            // index scan: they have no group-order concept to be wrong about.
             int last = -1;
             for (int i = 0; i < InputManager.MaxPads; i++)
                 if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == type)

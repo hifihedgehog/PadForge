@@ -4960,6 +4960,11 @@ namespace PadForge.Services
             ps.LeftThumbLinear = padVm.LeftLinear.ToString(ic);
             ps.RightThumbLinear = padVm.RightLinear.ToString(ic);
 
+            // Per-stick output sensitivity (the Sticks-tab home of the knob
+            // that used to sit in the mapping grid).
+            ps.LeftThumbSensitivity = padVm.LeftStickSensitivity.ToString(ic);
+            ps.RightThumbSensitivity = padVm.RightStickSensitivity.ToString(ic);
+
             // Center offsets.
             ps.LeftThumbCenterOffsetX = padVm.LeftCenterOffsetX.ToString(ic);
             ps.LeftThumbCenterOffsetY = padVm.LeftCenterOffsetY.ToString(ic);
@@ -5355,8 +5360,10 @@ namespace PadForge.Services
             padVm.RightAntiDeadZoneX = TryParseDouble(ps.RightThumbAntiDeadZoneX, 0);
             padVm.RightAntiDeadZoneY = TryParseDouble(ps.RightThumbAntiDeadZoneY, 0);
             padVm.LeftLinear = TryParseDouble(ps.LeftThumbLinear, 0);
+            padVm.LeftStickSensitivity = TryParseDouble(ps.LeftThumbSensitivity, 1);
             padVm.RightLinear = TryParseDouble(ps.RightThumbLinear, 0);
 
+            padVm.RightStickSensitivity = TryParseDouble(ps.RightThumbSensitivity, 1);
             // Sensitivity curves (string format: control points "x,y;x,y;..." or legacy single number).
             padVm.LeftSensitivityCurveX = ps.LeftThumbSensitivityCurveX ?? "0,0;1,1";
             padVm.LeftSensitivityCurveY = ps.LeftThumbSensitivityCurveY ?? "0,0;1,1";

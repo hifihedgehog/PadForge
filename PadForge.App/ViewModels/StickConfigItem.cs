@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
@@ -112,6 +112,19 @@ namespace PadForge.ViewModels
         {
             get => _linear;
             set { if (SetProperty(ref _linear, Math.Clamp(value, 0, 100))) RebuildCurvePoints(); }
+        }
+
+        private double _sensitivity = 1.0;
+        /// <summary>Output sensitivity multiplier for this stick. Applied
+        /// after the deadzone / range / curve stage, so it scales what the
+        /// mapping table already produced. Lives here rather than in the
+        /// mapping grid: per-row it made the grid's raw and out readouts
+        /// agree (the scale was folded in before the readout) and its slider
+        /// sat in a column too narrow to show it.</summary>
+        public double Sensitivity
+        {
+            get => _sensitivity;
+            set => SetProperty(ref _sensitivity, Math.Clamp(value, 0.1, 5.0));
         }
 
         private string _sensitivityCurveX = "0,0;1,1";
@@ -526,6 +539,7 @@ namespace PadForge.ViewModels
             DeadZoneX = 0; DeadZoneY = 0;
             AntiDeadZoneX = 0; AntiDeadZoneY = 0;
             Linear = 0;
+            Sensitivity = 1.0;
             SensitivityCurveX = "0,0;1,1"; SensitivityCurveY = "0,0;1,1";
             MaxRangeX = 100; MaxRangeY = 100;
             MaxRangeXNeg = 100; MaxRangeYNeg = 100;
@@ -549,6 +563,8 @@ namespace PadForge.ViewModels
         private ICommand _resetLinearCommand;
         public ICommand ResetLinearCommand => _resetLinearCommand ??= new RelayCommand(() => Linear = 0);
         private ICommand _resetSensitivityXCommand, _resetSensitivityYCommand;
+        private ICommand _resetStickSensitivityCommand;
+        public ICommand ResetStickSensitivityCommand => _resetStickSensitivityCommand ??= new RelayCommand(() => Sensitivity = 1.0);
         public ICommand ResetSensitivityXCommand => _resetSensitivityXCommand ??= new RelayCommand(() => SensitivityCurveX = "0,0;1,1");
         public ICommand ResetSensitivityYCommand => _resetSensitivityYCommand ??= new RelayCommand(() => SensitivityCurveY = "0,0;1,1");
         private ICommand _resetMaxRangeXCommand, _resetMaxRangeYCommand;

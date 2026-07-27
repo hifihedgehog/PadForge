@@ -7567,6 +7567,20 @@ namespace PadForge.Services
             if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
             if (!SettingsManager.SlotCreated[padIndex]) return;
 
+            // The engine fired this on the poll thread; the destroy runs here
+            // after a BeginInvoke hop. If a device came online for the slot in
+            // that gap (a new controller assigned while the old ones sat
+            // offline, moments before the countdown expired), the poll thread
+            // has already cleared the fired latch and this teardown is STALE:
+            // executing it would destroy the live VC of an active slot and
+            // cascade its siblings. The latch is the handshake.
+            if (!_inputManager.InactivityFireStillValid(padIndex))
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"VCTRACE slot={padIndex} stale inactivity teardown IGNORED (slot active again)");
+                return;
+            }
+
             var slotType = _mainVm.Pads[padIndex].OutputType;
 
             try { _inputManager.DestroyVirtualControllerAsync(padIndex); }

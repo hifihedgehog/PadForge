@@ -17,43 +17,42 @@ namespace PadForge.Views
         private Shape _lmbPath, _rmbPath;
         private Shape _scrollWheelPill;
         private Polygon _scrollUpArrow, _scrollDownArrow;
-        private Ellipse _movementDot, _moveCircle;
+        private Ellipse _movementDot;
 
         private static bool IsDarkTheme =>
             Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() == Wpf.Ui.Appearance.ApplicationTheme.Dark;
         private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
 
         private static readonly Brush _dimD = F(0x40,0x40,0x40), _dimL = F(0xB0,0xB0,0xB0);
-        private static readonly Brush _bodyD = F(0x50,0x50,0x50), _bodyL = F(0xC0,0xC0,0xC0);
         private static readonly Brush _btnD = F(0x60,0x60,0x60), _btnL = F(0xD0,0xD0,0xD0);
-        private static readonly Brush _mmbD = F(0x55,0x55,0x55), _mmbL = F(0xC8,0xC8,0xC8);
         private static readonly Brush _swD = F(0x38,0x38,0x38), _swL = F(0xA8,0xA8,0xA8);
         private static readonly Brush _dotD = F(0x88,0x88,0x88), _dotL = F(0x70,0x70,0x70);
 
         private static Brush DimBrush => IsDarkTheme ? _dimD : _dimL;
-        private static Brush MouseBodyBrush => IsDarkTheme ? _bodyD : _bodyL;
         private static Brush MouseButtonBrush => IsDarkTheme ? _btnD : _btnL;
-        private static Brush MmbBrush => IsDarkTheme ? _mmbD : _mmbL;
         private static Brush ScrollWheelBrush => IsDarkTheme ? _swD : _swL;
-        // Ember (#175): output preview surface.
-        private static readonly Brush AccentBrush = F(0xFF,0x6B,0x2C);
+        // Cold (#175): the Devices page is the INPUT preview surface, and
+        // every other device preview there lights pressed elements in the
+        // cold blue (#58B6E4) with the ColdDotGlow treatment. Ember belongs
+        // to the OUTPUT previews (the KBM virtual-controller view keeps it).
+        private static readonly Brush AccentBrush = F(0x58,0xB6,0xE4);
         private static Brush DotBrush => IsDarkTheme ? _dotD : _dotL;
 
         // Ember bloom (#175 glow sweep): pressed visuals carry a static
         // DropShadowEffect, attached alongside the brush swap and detached
         // when unlit. Frozen and shared, never animated. Small variant for
         // glyphs 14px and under (movement dot, scroll arrows, side buttons).
-        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlow = MakeEmberGlow(12);
         private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlowSmall = MakeEmberGlow(8);
 
         private static System.Windows.Media.Effects.DropShadowEffect MakeEmberGlow(double blur)
         {
             var fx = new System.Windows.Media.Effects.DropShadowEffect
             {
-                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
+                // Matches DevicesPage's ColdDotGlow (#58B6E4 @ 0.45).
+                Color = Color.FromRgb(0x58, 0xB6, 0xE4),
                 BlurRadius = blur,
                 ShadowDepth = 0,
-                Opacity = 0.5
+                Opacity = 0.45
             };
             fx.Freeze();
             return fx;
@@ -104,7 +103,7 @@ namespace PadForge.Views
             _x1Rect = parts.X1;   _x2Rect = parts.X2;
             _scrollWheelPill = parts.Wheel;
             _scrollUpArrow = parts.ScrollUp; _scrollDownArrow = parts.ScrollDown;
-            _moveCircle = parts.MoveCircle;  _movementDot = parts.MoveDot;
+            _movementDot = parts.MoveDot;
             MouseGlyph.AddOutline(MouseCanvas, DimBrush);
 
             MouseCanvas.Height = MouseGlyph.BodyH + 6;

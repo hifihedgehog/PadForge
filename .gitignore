@@ -112,3 +112,4 @@ __pycache__/
 # Wild-corpus sweep download cache (manifest.json is committed, VDFs are not)
 tools/SteamWorkshopSweep/cache/
 PadForge.Tests/TestResults/
+PadForge.SteamWorkshop.Tests/TestResults/

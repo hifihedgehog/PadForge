@@ -438,9 +438,24 @@ namespace PadForge.Services
             _mainVm.Settings.PeerRenameRequested += OnPeerRenameRequested;
             _mainVm.Settings.PeerConnectRequested += OnConnectToPeerRequested;
             _mainVm.Settings.IdentityProtectionModeChangeRequested += OnIdentityProtectionModeChangeRequested;
-            // Reflect the persisted identity-protection mode in the dropdown.
-            var ipm0 = _settingsService?.RemoteLink?.IdentityProtection ?? PadForge.Engine.RemoteLink.IdentityProtectionMode.Secure;
-            _mainVm.Settings.SetIdentityProtectionModeSilently((int)ipm0 - 1);
+            // The dropdown is seeded by SeedIdentityProtectionDisplay, NOT
+            // here: this constructor runs before SettingsService is assigned
+            // (object initializer) AND before Initialize() parses the
+            // persisted value, so a ctor-time read saw null twice over and
+            // the dropdown always displayed Secure no matter what was saved
+            // (round 34).
+        }
+
+        /// <summary>Reflects the PERSISTED identity-protection mode in the
+        /// Settings dropdown. Must be called after
+        /// <see cref="SettingsService.Initialize"/> has parsed PadForge.xml,
+        /// which is the only point at which RemoteLink.IdentityProtection
+        /// holds the user's stored choice.</summary>
+        public void SeedIdentityProtectionDisplay()
+        {
+            var ipm = _settingsService?.RemoteLink?.IdentityProtection
+                ?? PadForge.Engine.RemoteLink.IdentityProtectionMode.Secure;
+            _mainVm?.Settings?.SetIdentityProtectionModeSilently((int)ipm - 1);
         }
 
         private void OnPeerRevokeRequested(string fingerprintHex)

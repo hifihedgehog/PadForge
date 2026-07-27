@@ -1274,11 +1274,18 @@ namespace PadForge.Views
                 }
 
                 var (source, target) = SourceAndTarget(entry);
+                // SourceAndTarget DECORATES the source: the translator's
+                // half-axis/invert parenthetical plus a " . activator"
+                // annotation. Both the art anchor and the friendly-name table
+                // key on the BARE identifier, so they must be handed the
+                // undecorated stem or they match nothing. The decoration is
+                // re-attached to the display string only.
+                var (bare, decoration) = SplitSourceDecoration(source);
                 rows.Add(new WorkshopManifestRowItem
                 {
-                    Source = FriendlySource(source),
+                    Source = FriendlySource(bare) + decoration,
                     Target = FriendlySource(target),
-                    ArtAnchor = ArtAnchorFor(source),
+                    ArtAnchor = ArtAnchorFor(bare),
                     Reason = ReasonText(entry),
                     DotBrush = entry.Status switch
                     {
@@ -1695,6 +1702,39 @@ namespace PadForge.Views
         /// drew the virtual pad's geometry on the source device's body: a
         /// Steam Deck touchpad bound to the d-pad lit the DECK'S d-pad and
         /// called it "Touchpad 0", which is backwards on every layout.</para></summary>
+        /// <summary>Splits a manifest source into the bare engine identifier
+        /// and its human decoration.
+        ///
+        /// <para>The manifest shows a source as the identifier plus, where
+        /// they apply, the translator's half-axis/invert parenthetical and an
+        /// activator annotation after a middle dot. Those belong in the label
+        /// and nowhere else: the art anchor and the friendly-name table both
+        /// key on the bare stem, so handing either the decorated string makes
+        /// every non-default activator match nothing and fall through to the
+        /// raw identifier.</para></summary>
+        internal static (string Bare, string Decoration) SplitSourceDecoration(string source)
+        {
+            if (string.IsNullOrWhiteSpace(source)) return (source, string.Empty);
+            var bare = source;
+            var decoration = string.Empty;
+
+            int dot = bare.IndexOf(" · ", StringComparison.Ordinal);
+            if (dot >= 0)
+            {
+                decoration = bare.Substring(dot);
+                bare = bare.Substring(0, dot);
+            }
+
+            int paren = bare.IndexOf(" (", StringComparison.Ordinal);
+            if (paren > 0 && bare.EndsWith(")", StringComparison.Ordinal))
+            {
+                decoration = bare.Substring(paren) + decoration;
+                bare = bare.Substring(0, paren);
+            }
+
+            return (bare.TrimEnd(), decoration);
+        }
+
         internal static string ArtAnchorFor(string source)
         {
             if (string.IsNullOrWhiteSpace(source)) return null;

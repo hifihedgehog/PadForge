@@ -150,6 +150,12 @@ namespace PadForge.Views
         public void Unbind()
         {
             CompositionTarget.Rendering -= OnRendering;
+            // Stop the recording flash FIRST. UpdateFlashTarget(null) is the
+            // only path that stops _flashTimer and clears _flashTarget, and
+            // it is reached only through the subscription torn down below, so
+            // unbinding mid-recording used to strand an armed timer that kept
+            // a control blinking and suppressed hover across the preview.
+            UpdateFlashTarget(null);
             if (_vm != null) _vm.PropertyChanged -= OnVmPropertyChanged;
             _vm = null;
             _layoutBuilt = false;
@@ -221,7 +227,7 @@ namespace PadForge.Views
             MouseCanvas.Children.Clear();
 
             var parts = MouseGlyph.Build(MouseCanvas, IsDarkTheme, DimBrush,
-                MouseButtonBrush, MmbBrush, ScrollWheelBrush, DotBrush);
+                MouseButtonBrush, ScrollWheelBrush, DotBrush);
             _lmbPath = parts.Lmb; _rmbPath = parts.Rmb;
             _x1Rect = parts.X1;   _x2Rect = parts.X2;
             _scrollWheelPill = parts.Wheel;
@@ -362,6 +368,13 @@ namespace PadForge.Views
         {
             if (_flashTimer != null) { _flashTimer.Stop(); _flashTimer = null; }
             ApplyFlashState(false);
+            // ApplyFlashState(false) repaints the widget to its NEUTRAL brush,
+            // which is not necessarily its live value. Drop the change latch
+            // so the next frame repaints from the snapshot; without this, an
+            // idle pad leaves the control stuck neutral because nothing in
+            // the snapshot changed.
+            _paintedValid = false;
+            _dirty = true;
             _flashTarget = target;
             if (string.IsNullOrEmpty(target)) return;
             _flashOn = true;

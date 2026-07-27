@@ -108,7 +108,7 @@ namespace PadForge.Views
         /// <summary>Populates <paramref name="canvas"/> and hands back the
         /// parts a render loop drives.</summary>
         internal static Parts Build(Canvas canvas, bool dark, Brush dim, Brush button,
-                                    Brush mmb, Brush wheel, Brush dot)
+                                    Brush wheel, Brush dot)
         {
             var p = new Parts();
             canvas.Width = CanvasW;
@@ -176,8 +176,6 @@ namespace PadForge.Views
                 },
                 Fill = dim,
             };
-            canvas.Children.Add(p.ScrollUp);
-            canvas.Children.Add(p.ScrollDown);
 
             // Movement. The artwork shows a mouse but says nothing about which
             // way it is being moved, so the deflection ring is ours.
@@ -230,6 +228,13 @@ namespace PadForge.Views
             p.WheelHit = Hit(MouseArt.WheelHit);
             p.X1Hit = Hit(MouseArt.SideUpperHit);
             p.X2Hit = Hit(MouseArt.SideLowerHit);
+
+            // Scroll arrows go ON TOP of the hit shapes, deliberately. They
+            // sit geometrically INSIDE the wheel, so with the wheel's hit
+            // path above them every arrow click recorded the middle button
+            // and neither arrow could hover. They are their own targets.
+            canvas.Children.Add(p.ScrollUp);
+            canvas.Children.Add(p.ScrollDown);
 
             return p;
         }

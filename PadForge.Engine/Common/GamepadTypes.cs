@@ -148,10 +148,14 @@ namespace PadForge.Engine
             return (Buttons[word] & (uint)(1 << bit)) != 0;
         }
 
-        /// <summary>Resets all axes to 0, buttons to 0, POVs to centered (-1).</summary>
+        /// <summary>Resets all axes to 0, buttons to 0, POVs to centered (-1).
+        /// HardwareAxes is the pre-tuning mirror of Axes and clears with it:
+        /// leaving it behind meant a cleared state still carried the last
+        /// stick sample, which the Pad page reads back as live input.</summary>
         public void Clear()
         {
             if (Axes != null) Array.Clear(Axes, 0, Axes.Length);
+            if (HardwareAxes != null) Array.Clear(HardwareAxes, 0, HardwareAxes.Length);
             if (Buttons != null) Array.Clear(Buttons, 0, Buttons.Length);
             if (Povs != null)
                 for (int i = 0; i < Povs.Length; i++)

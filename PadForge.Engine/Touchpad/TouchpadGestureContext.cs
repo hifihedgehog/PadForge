@@ -58,6 +58,30 @@ namespace PadForge.Engine.Touchpad
         /// still active.</summary>
         public int ActiveFingerCount;
 
+        /// <summary>Per-path liveness, paired with <see cref="FingerPaths"/>:
+        /// true while the path's (slot, contact id) is still down this tick.
+        /// Round-33 audit: every consumer that picked "the first non-empty
+        /// path" kept reading a LIFTED finger's frozen endpoints while a
+        /// live finger was ignored (radial zones, the two-finger pair, and
+        /// the joystick output all had the bug). Selection now filters by
+        /// this flag.</summary>
+        public List<bool> FingerPathLive = new List<bool>();
+
+        /// <summary>Timestamp of the last tick each path's contact was
+        /// down, paired with <see cref="FingerPaths"/>. End-of-gesture
+        /// classification selects the paths that were live LATEST: after
+        /// a contact bounce, list order puts the dead fragment after the
+        /// other finger's path, so positional selection picks the wrong
+        /// pair. Recency selection is exact.</summary>
+        public List<long> FingerPathLastLiveMs = new List<long>();
+
+        /// <summary>Peak simultaneous contact count during the current
+        /// gesture. End-of-gesture classification uses THIS, not the total
+        /// accumulated path count: a finger that bounces (lift + re-land)
+        /// opens a second path, and counting paths reclassified a
+        /// two-finger swipe as a three-finger gesture.</summary>
+        public int PeakActiveFingerCount;
+
         public long GestureStartTimestampMs;
         public long CooldownUntilTimestampMs;
 
@@ -98,6 +122,18 @@ namespace PadForge.Engine.Touchpad
         /// <summary>Initial angle of the inter-finger line when the
         /// 2-finger session opened. Rotate compares against this.</summary>
         public float TwoFingerInitialAngle;
+
+        /// <summary>Previous tick's raw inter-finger angle, for per-frame
+        /// unwrapping. Folding the total delta into -PI..+PI (the old
+        /// scheme) made a continuous rotation past 180 degrees wrap
+        /// negative and fire the OPPOSITE direction; per-frame steps are
+        /// tiny, so wrapping the step and accumulating is exact.</summary>
+        public float TwoFingerLastAngle;
+
+        /// <summary>Unwrapped accumulated rotation (radians, signed,
+        /// unbounded) since the 2-finger session opened. Thresholds and
+        /// the continuous axis read this.</summary>
+        public float TwoFingerAccumRotateRad;
 
         /// <summary>Whether Pinch / Spread / RotateCW / RotateCCW have
         /// already fired in this 2-finger session. One-shot per
@@ -150,7 +186,10 @@ namespace PadForge.Engine.Touchpad
             FingerStartTimestampsMs.Clear();
             FingerContactIds.Clear();
             FingerSlotIndices.Clear();
+            FingerPathLive.Clear();
+            FingerPathLastLiveMs.Clear();
             ActiveFingerCount = 0;
+            PeakActiveFingerCount = 0;
             GestureStartTimestampMs = 0;
             CooldownUntilTimestampMs = 0;
             RecentTapCount = 0;
@@ -161,6 +200,8 @@ namespace PadForge.Engine.Touchpad
             TwoFingerSessionActive = false;
             TwoFingerInitialDistance = 0f;
             TwoFingerInitialAngle = 0f;
+            TwoFingerLastAngle = 0f;
+            TwoFingerAccumRotateRad = 0f;
             FiredPinchThisSession = false;
             FiredSpreadThisSession = false;
             FiredRotateCWThisSession = false;

@@ -71,7 +71,7 @@
             <Setter Property="TextAlignment" Value="Right"/>
             <Setter Property="Margin" Value="6,0,0,0"/>
             <Setter Property="Padding" Value="2,1"/>
-            <Setter Property="ToolTip" Value="Raw axis value"/>
+            <Setter Property="ToolTip" Value="{Binding Pad_RawAxisValue, Source={x:Static strings:Strings.Instance}}"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
@@ -94,7 +94,7 @@
         <Style x:Key="ResetButton" TargetType="ui:Button" BasedOn="{StaticResource EmberIconButton}">
             <Setter Property="Content" Value="&#xE72C;"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="ToolTip" Value="Reset"/>
+            <Setter Property="ToolTip" Value="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}"/>
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
@@ -2440,10 +2440,13 @@
                                                         Command="{Binding AddLightbarPaletteColorCommand}"
                                                         HorizontalAlignment="Left" Padding="8,2"/>
                                             </StackPanel>
-                                            <!-- Hold slider — Reactive only. Held at full intensity for this many ms before the fade begins. -->
+                                            <!-- Hold slider, Reactive only. Held at full intensity for this many ms before the fade begins.
+                                                 Labelled with the DURATION key, not Macro_LightbarHold_Label: that key labels the
+                                                 mode picker above, and translators read it that way (es "Modo", de "Modus", it
+                                                 "Modalità"), so sharing it made one of the two rows wrong in every locale. -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                         Visibility="{Binding IsLightbarReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_LightbarHold_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_TriggerHoldMs_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
                                                 <Slider Value="{Binding LightbarHoldMs, Mode=TwoWay}"
                                                         Minimum="0" Maximum="5000" Width="220"

@@ -441,6 +441,7 @@
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Toewijzingen en instellingen vanuit klembord plakken</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopiëren van...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Instellingen kopiëren van een ander geconfigureerd apparaat</value></data>
+  <data name="Pad_RawAxisValue" xml:space="preserve"><value>Ruwe aswaarde</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Alles herstellen</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Alles wissen</value></data>
   <data name="Pad_HeaderOutput" xml:space="preserve"><value>Uitvoer</value></data>

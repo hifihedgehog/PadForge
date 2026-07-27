@@ -441,6 +441,7 @@
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Coller les mappings et paramètres depuis le presse-papiers</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Copier depuis...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Copier les paramètres d'un autre appareil configuré</value></data>
+  <data name="Pad_RawAxisValue" xml:space="preserve"><value>Valeur d'axe brute</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Tout réinitialiser</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Tout effacer</value></data>
   <data name="Pad_HeaderOutput" xml:space="preserve"><value>Sortie</value></data>

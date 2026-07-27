@@ -712,7 +712,14 @@ namespace PadForge.ViewModels
         /// user picking Cycle there gets the editor next to the dropdown
         /// they just used.</summary>
         public bool ShowPaletteForOverlay =>
-            _inputReactiveMode == InputReactiveMode.Cycle;
+            _inputReactiveMode == InputReactiveMode.Cycle
+            // The "AND ColorCycle isn't the base" half of this property's own
+            // doc was never implemented, so base=ColorCycle + overlay=Cycle
+            // rendered the palette editor TWICE, once above the InputReactive
+            // dropdown and once below it, both bound to the same colors. Three
+            // comments (here and at PadPage.xaml:8142) asserted the exclusion
+            // that this line now actually performs (round 34).
+            && _lightbarMode != LightbarMode.ColorCycle;
 
         /// <summary>True when the input-reactive overlay is the
         /// Fixed variant — the color picker for the per-press flash

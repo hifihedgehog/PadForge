@@ -441,6 +441,7 @@
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>クリップボードからマッピングと設定を貼り付けます</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>コピー元...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>他の設定済みデバイスから設定をコピーします</value></data>
+  <data name="Pad_RawAxisValue" xml:space="preserve"><value>生の軸値</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>すべてリセット</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>すべてクリア</value></data>
   <data name="Pad_HeaderOutput" xml:space="preserve"><value>出力</value></data>

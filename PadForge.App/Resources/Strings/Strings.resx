@@ -533,6 +533,7 @@
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Test Left Trigger</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Test Right Trigger</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Trigger motor activity</value></data>
+  <data name="Pad_RawAxisValue" xml:space="preserve"><value>Raw axis value</value></data>
   <data name="Pad_ResetImpulseTriggers" xml:space="preserve"><value>Reset Impulse Triggers</value></data>
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Reset Overall Gain</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Reset Left Trigger</value></data>

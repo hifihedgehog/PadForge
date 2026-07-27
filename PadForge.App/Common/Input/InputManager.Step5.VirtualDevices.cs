@@ -911,14 +911,25 @@ namespace PadForge.Common.Input
                 // (slot still created + enabled, but physical device offline).
                 if (vc != null && (!SettingsManager.SlotCreated[padIndex] || !SettingsManager.SlotEnabled[padIndex]))
                 {
+                    bool wasHmHere = vc is HMaestroVirtualController;
                     DestroyVirtualController(padIndex,
-                        asyncDispose: vc is HMaestroVirtualController or MidiVirtualController);
+                        asyncDispose: wasHmHere || vc is MidiVirtualController);
                     _virtualControllers[padIndex] = null;
                     _slotInactiveCounter[padIndex] = 0;
                     _slotInitializing[padIndex] = false;
-                    _createFailed[padIndex] = false; // Slot toggle — allow retry
+                    _createFailed[padIndex] = false; // Slot toggle. Allow retry.
                     VibrationStates[padIndex].LeftMotorSpeed = 0;
                     VibrationStates[padIndex].RightMotorSpeed = 0;
+                    // Round 33, C2: this branch consumed the SIDEBAR-DISABLE
+                    // reason before the documented cascade branch below could
+                    // see it, so surviving HM VCs at higher positions in the
+                    // same subgroup never compacted and an XInput game bound
+                    // to player 1 saw no controller. Fire the non-active
+                    // cascade here. Deletes are safe to fire too: the UI
+                    // handler no-ops when SlotCreated is already false, and
+                    // the delete path runs its own cascade.
+                    if (wasHmHere)
+                        HmVcWentNonActive?.Invoke(this, padIndex);
                     continue;
                 }
 
@@ -1462,11 +1473,17 @@ namespace PadForge.Common.Input
                                         // clear path fires on a later genuine device
                                         // arrival, so the abort latched the slot dead until
                                         // a manual reconfigure.
+                                        // Own buffer: this runs on the async
+                                        // task thread, and the parameterless
+                                        // IsSlotActive would race the poll
+                                        // thread's shared scratch (round 33,
+                                        // C20). Rare path; the allocation is
+                                        // irrelevant.
                                         bool stillEligible =
                                             SettingsManager.SlotCreated[capturedIndex]
                                             && SettingsManager.SlotEnabled[capturedIndex]
                                             && SlotControllerTypes[capturedIndex] == capturedType
-                                            && IsSlotActive(capturedIndex);
+                                            && IsSlotActive(capturedIndex, new Engine.Data.UserSetting[64]);
                                         if (stillEligible)
                                             LatchCreateFailed(capturedIndex, capturedType, capturedProfile);
                                         else
@@ -1843,7 +1860,14 @@ namespace PadForge.Common.Input
             => padIndex >= 0 && padIndex < MaxPads
                && System.Threading.Volatile.Read(ref _hmInactivityFired[padIndex]);
 
-        private bool IsSlotActive(int padIndex)
+        private bool IsSlotActive(int padIndex) => IsSlotActive(padIndex, _padIndexBuffer);
+
+        /// <summary>Buffer-explicit form. The parameterless overload uses
+        /// the poll thread's preallocated scratch; any OTHER thread (the
+        /// async create-failure validation, round 33 C20) must pass its
+        /// own buffer, or its read races the poll thread's reuse of the
+        /// shared scratch and misclassifies eligibility.</summary>
+        private bool IsSlotActive(int padIndex, Engine.Data.UserSetting[] buffer)
         {
             // Slot must be explicitly created AND enabled.
             if (!SettingsManager.SlotCreated[padIndex] || !SettingsManager.SlotEnabled[padIndex])
@@ -1852,14 +1876,13 @@ namespace PadForge.Common.Input
             var settings = SettingsManager.UserSettings;
             if (settings == null) return false;
 
-            // Use non-allocating overload with pre-allocated buffer.
-            int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
+            int slotCount = settings.FindByPadIndex(padIndex, buffer);
             if (slotCount == 0)
                 return false;
 
             for (int i = 0; i < slotCount; i++)
             {
-                var us = _padIndexBuffer[i];
+                var us = buffer[i];
                 if (us == null) continue;
                 var ud = FindOnlineDeviceByInstanceGuid(us.InstanceGuid);
                 if (ud != null && ud.IsOnline)

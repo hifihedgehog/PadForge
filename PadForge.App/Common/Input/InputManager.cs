@@ -126,7 +126,12 @@ namespace PadForge.Common.Input
         // ── Pre-allocated snapshot buffers for hot path (avoid LINQ allocations) ──
         private UserDevice[] _deviceSnapshotBuffer = new UserDevice[16];
         private UserSetting[] _settingSnapshotBuffer = new UserSetting[16];
-        private readonly UserSetting[] _padIndexBuffer = new UserSetting[MaxPads];
+        // 64, not MaxPads: this buffer holds one SLOT's mappings, and
+        // FindByPadIndex silently truncates at the buffer's length, so a
+        // slot-count constant here capped per-slot device mappings at 16
+        // (round 33, S14). Poll thread only; the async create-failure
+        // validation passes its own buffer (see IsSlotActive's overload).
+        private readonly UserSetting[] _padIndexBuffer = new UserSetting[64];
         private readonly UserSetting[] _instanceGuidBuffer = new UserSetting[MaxPads];
 
         /// <summary>

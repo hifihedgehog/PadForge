@@ -19,6 +19,19 @@ namespace PadForge.Views
 
         private PadViewModel _vm;
         private bool _dirty;
+
+        /// <summary>Last state actually painted, so the preview can repaint on
+        /// its OWN data changing.
+        ///
+        /// <para>PadViewModel.KbmOutputSnapshot is a plain auto-property that
+        /// InputService assigns every poll. Assigning it raises nothing, so
+        /// _dirty never went true for it and this view only ever repainted
+        /// when some UNRELATED view-model property happened to change. A
+        /// mapped button engaging is precisely the case where nothing else
+        /// changes, which is why the preview sat dead while the mapping
+        /// worked.</para></summary>
+        private KbmRawState _painted;
+        private bool _paintedValid;
         private bool _layoutBuilt;
 
         private readonly List<KbmKeyWidget> _keyWidgets = new();
@@ -328,6 +341,16 @@ namespace PadForge.Views
             };
         }
 
+        /// <summary>Only the fields this preview actually draws. Comparing
+        /// the whole struct would repaint on values nothing here shows.</summary>
+        internal static bool SamePreviewState(in KbmRawState a, in KbmRawState b)
+            => a.Keys0 == b.Keys0 && a.Keys1 == b.Keys1
+            && a.Keys2 == b.Keys2 && a.Keys3 == b.Keys3
+            && a.MouseButtons == b.MouseButtons
+            && a.ScrollDelta == b.ScrollDelta
+            && a.MouseDeltaX == b.MouseDeltaX
+            && a.MouseDeltaY == b.MouseDeltaY;
+
         private string MappingLabel(string targetSettingName)
             => _vm?.Mappings?.FirstOrDefault(m => m.TargetSettingName == targetSettingName)?.TargetLabel ?? targetSettingName;
 
@@ -410,9 +433,15 @@ namespace PadForge.Views
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_layoutBuilt && _lastTheme != currentTheme) { _lastTheme = currentTheme; RebuildLayout(); }
 
-            if (!_dirty || _vm == null || !_layoutBuilt) return;
-            _dirty = false;
+            if (_vm == null || !_layoutBuilt) return;
             var kbm = _vm.KbmOutputSnapshot;
+            // Repaint when OUR data moved, not only when the view model
+            // happened to raise something. See _painted.
+            bool moved = !_paintedValid || !SamePreviewState(kbm, _painted);
+            if (!_dirty && !moved) return;
+            _dirty = false;
+            _painted = kbm;
+            _paintedValid = true;
 
             // Keyboard keys
             foreach (var w in _keyWidgets)

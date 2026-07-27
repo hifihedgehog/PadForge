@@ -95,6 +95,21 @@ namespace PadForge.Common.Input
         private Thread _mouseInjectorThread;
         private volatile bool _running;
         private volatile bool _idle;
+
+        /// <summary>The engine half of "Continue polling when window loses
+        /// focus" (EnablePollingOnFocusLoss). True when the box is UNCHECKED:
+        /// the user has asked the engine itself to stop while PadForge is not
+        /// the foreground process. Written by the UI tick, read by the poll
+        /// thread.</summary>
+        public volatile bool SuspendWhenBackground;
+
+        /// <summary>Whether PadForge owns the foreground window. Probed on
+        /// the UI thread (user32 calls stay off the poll thread) and pushed
+        /// here every UI tick. Defaults true so a stalled UI timer can never
+        /// suspend the engine by accident.</summary>
+        public volatile bool HostIsForeground = true;
+
+        private bool _focusSuspended;
         private bool _sdlInitialized;
         private bool _disposed;
 
@@ -1309,6 +1324,56 @@ namespace PadForge.Common.Input
                         wallClock.Restart();
                         expectedTicks = 0;
                         continue;
+                    }
+
+                    // ── Focus suspend: the engine half of the background-
+                    //    polling setting. The user UNCHECKED "continue polling
+                    //    when window loses focus", so with PadForge behind
+                    //    another window the engine stops: no output evaluation,
+                    //    no VC submits, no macros, no Remote Link. The label is
+                    //    the contract. Distinct from _idle, which engages only
+                    //    when nothing is active; this engages BECAUSE things
+                    //    are active and the user wants them off while away.
+                    if (SuspendWhenBackground && !HostIsForeground)
+                    {
+                        if (!_focusSuspended)
+                        {
+                            _focusSuspended = true;
+                            try
+                            {
+                                // Neutral edge: zero every combined surface and
+                                // submit once, so the game we just left behind
+                                // is not stuck holding whatever was pressed at
+                                // the instant focus moved.
+                                NeutralizeCombinedOutputs();
+                                UpdateVirtualDevices();
+                                ReleaseAllLatchedMacroKeys();
+                            }
+                            catch (Exception ex)
+                            {
+                                RaiseError("Focus-suspend neutral edge", ex);
+                            }
+                            Engine.SdlDiagLog.WriteLine(
+                                "ENGINE suspended: unfocused and background polling disabled");
+                        }
+                        // Same silence-republish idle carries (#236): the
+                        // feedback lane is not running, so keep the audio lane
+                        // silenced every iteration rather than once.
+                        RumbleAudioService.SilenceAll();
+                        CurrentFrequency = 0;
+                        _frequencyCounter = 0;
+                        _frequencyTimer.Restart();
+                        FrequencyUpdated?.Invoke(this, EventArgs.Empty);
+                        Thread.Sleep(100);
+                        firstCycle = true;
+                        wallClock.Restart();
+                        expectedTicks = 0;
+                        continue;
+                    }
+                    if (_focusSuspended)
+                    {
+                        _focusSuspended = false;
+                        Engine.SdlDiagLog.WriteLine("ENGINE resumed: foreground regained");
                     }
 
                     // Calculate target ticks each cycle so PollingIntervalMs can be
@@ -2665,6 +2730,29 @@ namespace PadForge.Common.Input
                 if (!string.Equals(row.Target, targetName, StringComparison.Ordinal)) continue;
                 if (ReferenceEquals(row, activeRow) || ReferenceEquals(row, baseRow)) continue;
                 buf[count++] = row;
+            }
+        }
+
+        /// <summary>Zeroes every combined output surface Step 5 submits.
+        ///
+        /// <para>The focus-suspend neutral edge: called once when the engine
+        /// stops because PadForge left the foreground with background polling
+        /// disabled, then Step 5 runs once more so the neutral state actually
+        /// reaches the virtual devices. Array-carrying structs are cleared in
+        /// place (RawHidState.Clear handles its own arrays, MidiRawState's
+        /// arrays are wiped per element) because a default-assign would null
+        /// the arrays and break Step 5's readers.</para></summary>
+        private void NeutralizeCombinedOutputs()
+        {
+            for (int i = 0; i < MaxPads; i++)
+            {
+                CombinedOutputStates[i] = default;
+                CombinedRawHidStates[i].Clear();
+                CombinedKbmRawStates[i] = default;
+                CombinedTouchpadStates[i] = default;
+                var midi = CombinedMidiRawStates[i];
+                if (midi.CcValues != null) Array.Clear(midi.CcValues, 0, midi.CcValues.Length);
+                if (midi.Notes != null) Array.Clear(midi.Notes, 0, midi.Notes.Length);
             }
         }
 

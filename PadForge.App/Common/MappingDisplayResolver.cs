@@ -207,17 +207,17 @@ namespace PadForge.Common
             if (mapping == null || string.IsNullOrEmpty(mapping.NegSourceDescriptor))
                 return;
 
-            if (ud != null && UseRawNumberedNaming(ud))
-            {
-                string resolved = ResolveRawNumberedText(mapping.NegSourceDescriptor);
-                if (resolved != null)
-                    mapping.SetResolvedNegText(resolved);
-                return;
-            }
-
             // Device-independent touchpad / gyro families: same delegation
             // the primary-side resolver applies, so an empty-guid neg source
             // renders the picker's naming instead of the raw descriptor.
+            //
+            // ORDER MATTERS, and this block now sits where its primary-side
+            // twin sits: ABOVE the raw-numbered early return. It used to sit
+            // below, so on a raw-numbered device the early return took every
+            // neg descriptor first and these families never got their
+            // contextual label. The primary resolver's own note says why that
+            // is wrong: raw-numbered devices, Wii remotes above all, are
+            // exactly where these labels matter.
             {
                 string t = mapping.NegSourceDescriptor;
                 string tPrefix = "";
@@ -251,6 +251,16 @@ namespace PadForge.Common
                     }
                     return;
                 }
+            }
+
+            // Raw-numbered naming, now BELOW the family block rather than above
+            // it, matching the primary-side resolver's order.
+            if (ud != null && UseRawNumberedNaming(ud))
+            {
+                string resolved = ResolveRawNumberedText(mapping.NegSourceDescriptor);
+                if (resolved != null)
+                    mapping.SetResolvedNegText(resolved);
+                return;
             }
 
             var objects = ud?.DeviceObjects;

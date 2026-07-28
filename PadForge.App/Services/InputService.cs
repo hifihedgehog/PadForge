@@ -50,6 +50,23 @@ namespace PadForge.Services
         // filter, so each pulse stamps a generation and only the newest one
         // clears (round 34). UI thread only.
         private readonly long[] _testPulseGeneration = new long[InputManager.MaxPads];
+        // Per-MOTOR-FIELD generations. The slot-wide generation above governs
+        // only the state the two lanes genuinely share (the target filter and
+        // the directional block). It must not govern the motors, because the
+        // lanes write DISJOINT fields: main rumble owns Left/RightMotorSpeed,
+        // impulse owns Left/RightTriggerMotorSpeed. Gating the motor clears on
+        // the slot-wide counter meant "Test Left Motor" then "Test Right Motor"
+        // within 500 ms left the LEFT motor at 65535 forever, since the first
+        // timer bailed at the generation check and the second never touched a
+        // field it did not set. Each pulse now stamps only the fields it wrote,
+        // so a superseded timer still clears whatever no newer pulse claimed.
+        // UI thread only.
+        private readonly long[,] _testPulseMotorGeneration =
+            new long[InputManager.MaxPads, 4];
+        private const int PulseFieldMainLeft = 0;
+        private const int PulseFieldMainRight = 1;
+        private const int PulseFieldTriggerLeft = 2;
+        private const int PulseFieldTriggerRight = 3;
         // Gesture fired-key compose cache; see the provider (round 33, C14).
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<(int, string), string>
             s_gestureFiredKeyCache = new();
@@ -11236,19 +11253,28 @@ namespace PadForge.Services
             if (right) vib.RightTriggerMotorSpeed = 65535;
 
             long myGen = ++_testPulseGeneration[padIndex];
+            long myLeftGen = left ? ++_testPulseMotorGeneration[padIndex, PulseFieldTriggerLeft] : 0;
+            long myRightGen = right ? ++_testPulseMotorGeneration[padIndex, PulseFieldTriggerRight] : 0;
             var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
             clearTimer.Tick += (s2, e2) =>
             {
                 clearTimer.Stop();
-                // Only the NEWEST pulse on this slot may clear shared state.
-                // Both test lanes write the slot's single VibrationStates
-                // object and its single TestRumbleTargetGuid, so a stale
-                // timer used to zero a newer pulse's motors and wipe its
-                // device filter mid-flight (round 34).
                 if (_inputManager == null || padIndex >= InputManager.MaxPads) return;
+
+                // Motors clear per FIELD, not per slot: only a newer pulse that
+                // wrote THIS field may stop this timer from zeroing it. Gating
+                // these on the slot-wide generation stranded a motor at full
+                // whenever the other lane fired inside the 500 ms window.
+                if (left && _testPulseMotorGeneration[padIndex, PulseFieldTriggerLeft] == myLeftGen)
+                    vib.LeftTriggerMotorSpeed = 0;
+                if (right && _testPulseMotorGeneration[padIndex, PulseFieldTriggerRight] == myRightGen)
+                    vib.RightTriggerMotorSpeed = 0;
+
+                // Only the NEWEST pulse on this slot may clear shared state.
+                // Both test lanes write the slot's single TestRumbleTargetGuid,
+                // so a stale timer used to wipe a newer pulse's device filter
+                // mid-flight (round 34).
                 if (_testPulseGeneration[padIndex] != myGen) return;
-                if (left) vib.LeftTriggerMotorSpeed = 0;
-                if (right) vib.RightTriggerMotorSpeed = 0;
                 _inputManager.TestRumbleTargetGuid[padIndex] = Guid.Empty;
             };
             clearTimer.Start();
@@ -11283,18 +11309,29 @@ namespace PadForge.Services
             if (left) vib.LeftMotorSpeed = 65535;
             if (right) vib.RightMotorSpeed = 65535;
 
-            // Schedule clearing after 500ms. Generation-gated: see the twin in
-            // SendTestImpulseTrigger. Both lanes share this slot's vibration
-            // object and target filter, so only the newest pulse may clear.
+            // Schedule clearing after 500ms. Generation-gated in two tiers: see
+            // the twin in SendTestImpulseTrigger. Motors are stamped per field
+            // because the lanes write disjoint ones; the target filter and the
+            // directional block are genuinely shared, so only the newest pulse
+            // on the slot clears those.
             long myGen = ++_testPulseGeneration[padIndex];
+            long myLeftGen = left ? ++_testPulseMotorGeneration[padIndex, PulseFieldMainLeft] : 0;
+            long myRightGen = right ? ++_testPulseMotorGeneration[padIndex, PulseFieldMainRight] : 0;
             var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
             clearTimer.Tick += (s2, e2) =>
             {
                 clearTimer.Stop();
                 if (_inputManager == null || padIndex >= InputManager.MaxPads) return;
+
+                // Motors clear per FIELD (see the impulse twin): the two test
+                // lanes write disjoint motor fields, so the slot-wide
+                // generation must not veto this lane's own clear.
+                if (left && _testPulseMotorGeneration[padIndex, PulseFieldMainLeft] == myLeftGen)
+                    vib.LeftMotorSpeed = 0;
+                if (right && _testPulseMotorGeneration[padIndex, PulseFieldMainRight] == myRightGen)
+                    vib.RightMotorSpeed = 0;
+
                 if (_testPulseGeneration[padIndex] != myGen) return;
-                if (left) vib.LeftMotorSpeed = 0;
-                if (right) vib.RightMotorSpeed = 0;
                 // Same condition the SET above uses. Clearing under the looser
                 // `isExtended` alone meant the both-motors Test Rumble path
                 // (left and right together, so the set was skipped) still wiped

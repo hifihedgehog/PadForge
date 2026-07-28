@@ -1668,22 +1668,58 @@ namespace PadForge.Engine.Data
         /// leftovers from a previous mapping layout (e.g., switching Xbox preset →
         /// custom Extended).
         /// </summary>
-        public void ClearMappingDescriptors()
+        /// <param name="seed">Optional final values, keyed by property name. When
+        /// supplied, each standard descriptor property is assigned its seeded value
+        /// (or "" when absent) in a SINGLE pass instead of being blanked for the
+        /// caller to refill. That matters because the ~1 kHz poll thread reads these
+        /// properties directly (InputManager.Step3.UpdateOutputStates reads ButtonA,
+        /// GetMappingDeadZone("ButtonA"), and the same triple for every target), so a
+        /// blank-then-refill leaves a window in which a tick sees empty descriptors
+        /// and drives the pad to neutral for that frame. Callers on a frequent path
+        /// MUST pass a seed. Callers that genuinely want everything cleared pass
+        /// null.</param>
+        public void ClearMappingDescriptors(IReadOnlyDictionary<string, string> seed = null)
         {
-            // Standard mapping properties.
-            ButtonA = ButtonB = ButtonX = ButtonY = "";
-            LeftShoulder = RightShoulder = "";
-            ButtonBack = ButtonStart = ButtonGuide = "";
-            LeftThumbButton = RightThumbButton = "";
-            ButtonShare = "";
-            DPad = DPadUp = DPadDown = DPadLeft = DPadRight = "";
-            LeftTrigger = RightTrigger = "";
-            LeftThumbAxisX = LeftThumbAxisY = "";
-            RightThumbAxisX = RightThumbAxisY = "";
-            LeftThumbAxisXNeg = LeftThumbAxisYNeg = "";
-            RightThumbAxisXNeg = RightThumbAxisYNeg = "";
-            TouchpadX1 = TouchpadY1 = TouchpadX2 = TouchpadY2 = "";
-            TouchpadContact1 = TouchpadContact2 = TouchpadClick = "";
+            // Standard mapping properties. Assigned once each, from the seed when
+            // the caller supplied one, so no property is ever transiently empty
+            // when it is about to be repopulated.
+            string V(string name) =>
+                seed != null && seed.TryGetValue(name, out var v) && v != null ? v : "";
+
+            ButtonA = V(nameof(ButtonA));
+            ButtonB = V(nameof(ButtonB));
+            ButtonX = V(nameof(ButtonX));
+            ButtonY = V(nameof(ButtonY));
+            LeftShoulder = V(nameof(LeftShoulder));
+            RightShoulder = V(nameof(RightShoulder));
+            ButtonBack = V(nameof(ButtonBack));
+            ButtonStart = V(nameof(ButtonStart));
+            ButtonGuide = V(nameof(ButtonGuide));
+            LeftThumbButton = V(nameof(LeftThumbButton));
+            RightThumbButton = V(nameof(RightThumbButton));
+            ButtonShare = V(nameof(ButtonShare));
+            DPad = V(nameof(DPad));
+            DPadUp = V(nameof(DPadUp));
+            DPadDown = V(nameof(DPadDown));
+            DPadLeft = V(nameof(DPadLeft));
+            DPadRight = V(nameof(DPadRight));
+            LeftTrigger = V(nameof(LeftTrigger));
+            RightTrigger = V(nameof(RightTrigger));
+            LeftThumbAxisX = V(nameof(LeftThumbAxisX));
+            LeftThumbAxisY = V(nameof(LeftThumbAxisY));
+            RightThumbAxisX = V(nameof(RightThumbAxisX));
+            RightThumbAxisY = V(nameof(RightThumbAxisY));
+            LeftThumbAxisXNeg = V(nameof(LeftThumbAxisXNeg));
+            LeftThumbAxisYNeg = V(nameof(LeftThumbAxisYNeg));
+            RightThumbAxisXNeg = V(nameof(RightThumbAxisXNeg));
+            RightThumbAxisYNeg = V(nameof(RightThumbAxisYNeg));
+            TouchpadX1 = V(nameof(TouchpadX1));
+            TouchpadY1 = V(nameof(TouchpadY1));
+            TouchpadX2 = V(nameof(TouchpadX2));
+            TouchpadY2 = V(nameof(TouchpadY2));
+            TouchpadContact1 = V(nameof(TouchpadContact1));
+            TouchpadContact2 = V(nameof(TouchpadContact2));
+            TouchpadClick = V(nameof(TouchpadClick));
 
             // Extended mapping dict: clear only the input-routing descriptors and PRESERVE
             // per-device tuning that shares this dict (steering Stick{g}Steer*, Extended

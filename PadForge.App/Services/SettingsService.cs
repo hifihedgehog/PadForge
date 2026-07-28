@@ -4633,8 +4633,43 @@ namespace PadForge.Services
                         // rewrite on the owning device only. Without the clear,
                         // a row that moves from pad A to pad B leaves its stale
                         // descriptor behind on A.
+                        //
+                        // The clear is SEEDED with the values the rewrite below
+                        // is about to write. This block runs from SaveToFile,
+                        // which the 250 ms autosave debounce drives after any
+                        // MarkDirty, so it fires on ordinary slider drags while
+                        // the ~1 kHz poll thread is reading these very
+                        // properties (Step3.UpdateOutputStates reads ButtonA and
+                        // friends directly). A blank-then-refill would leave a
+                        // window where a tick reads empty descriptors and drops
+                        // the pad to neutral for that frame. That is exactly the
+                        // hazard InputService.SaveViewModelToPadSetting
+                        // documents and dodges by only clearing on an explicit
+                        // sync. This copy runs on the frequent path, so it
+                        // removes the window instead.
+                        var seeded = new Dictionary<PadSetting, Dictionary<string, string>>();
+                        foreach (var mapping in padVm.Mappings)
+                        {
+                            PadSetting target = ps;
+                            if (!string.IsNullOrEmpty(mapping.PrimarySourceDeviceGuid)
+                                && Guid.TryParse(mapping.PrimarySourceDeviceGuid, out var seedGuid))
+                            {
+                                foreach (var (g, devPs) in slotDevices)
+                                {
+                                    if (g == seedGuid) { target = devPs; break; }
+                                }
+                            }
+                            if (!seeded.TryGetValue(target, out var map))
+                                seeded[target] = map = new Dictionary<string, string>(StringComparer.Ordinal);
+                            if (!string.IsNullOrEmpty(mapping.TargetSettingName))
+                                map[mapping.TargetSettingName] = mapping.SourceDescriptor;
+                            if (!string.IsNullOrEmpty(mapping.NegSettingName))
+                                map[mapping.NegSettingName] = mapping.NegSourceDescriptor;
+                        }
+
                         foreach (var (_, devPs) in slotDevices)
-                            devPs.ClearMappingDescriptors();
+                            devPs.ClearMappingDescriptors(
+                                seeded.TryGetValue(devPs, out var seedMap) ? seedMap : null);
 
                         foreach (var mapping in padVm.Mappings)
                         {

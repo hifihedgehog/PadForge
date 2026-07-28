@@ -3752,7 +3752,18 @@ namespace PadForge.ViewModels
                         // activators, so its rows evaluated against layers the
                         // user never authored on it. The Base appearance trio
                         // rides the same structure and is cleared with it.
-                        delSet.ShiftActivators?.Clear();
+                        //
+                        // Swap the reference, never Clear() in place. The poll
+                        // thread enumerates ShiftActivators every frame without
+                        // our lock (ResolveActiveLayerMask,
+                        // ApplyMappingSetToGamepad), so mutating the live list
+                        // throws "collection was modified" inside its foreach
+                        // and costs that device its whole mapping pass. Deleting
+                        // a slot runs ResetAllSettings BEFORE unassigning its
+                        // devices, so the poll thread is still walking this very
+                        // set. Same discipline as the add/remove paths in
+                        // PadPage and ApplyShiftLayerSnapshot.
+                        delSet.ShiftActivators = new List<Engine.Data.ShiftActivator>();
                         delSet.BaseLayerName = "";
                         delSet.BaseColor = "";
                         delSet.BaseIcon = "";

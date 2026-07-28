@@ -213,6 +213,40 @@ public static class W {
     }
 }
 
+# Evaluate the acceptance bar this script's own header states. It used to
+# stop at "sweep done", so the harness gathered the evidence and left the
+# verdict to whoever remembered to grep the log. A bar nobody evaluates is a
+# bar nobody fails.
+$verdict = 'NO HARVEST'
+if (Test-Path $diag) {
+    # BINDERR and FAILED are matched CASE-SENSITIVELY on purpose. The ring
+    # carries a VCGATE field literally spelled `failed=0`, and a
+    # case-insensitive substring match reports five "error-class lines" on a
+    # perfectly clean harvest. A bar that fails on a healthy run gets ignored
+    # within a week, which is worse than no bar. Real failures in this log are
+    # uppercase (BINDERR, "... FAILED"); the field is lowercase.
+    $hits = Select-String -Path $diag -Pattern 'BINDERR', 'FAILED' -CaseSensitive -ErrorAction SilentlyContinue
+    $hits += Select-String -Path $diag -Pattern 'exception' -ErrorAction SilentlyContinue
+    $hits = $hits | Sort-Object LineNumber -Unique
+    if ($hits) {
+        $verdict = "FAIL ($($hits.Count) error-class line(s))"
+        Note "ACCEPTANCE: $verdict"
+        # Echo a bounded sample so the failure is actionable from this file
+        # alone rather than requiring a second pass over the harvest.
+        foreach ($h in $hits | Select-Object -First 20) {
+            Note "    $($h.Line.Trim())"
+        }
+    }
+    else {
+        $verdict = 'PASS (no error-class lines)'
+        Note "ACCEPTANCE: $verdict"
+    }
+}
+else {
+    Note "ACCEPTANCE: $verdict. $diag was never written. The mirror did not arm, so this run proves nothing."
+}
+Write-Host "diag-sweep acceptance: $verdict"
+
 # Relaunch clean (no mirror)
 taskkill /F /IM PadForge.exe 2>$null | Out-Null
 Start-Sleep 3

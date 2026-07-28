@@ -732,10 +732,21 @@ namespace PadForge.Services
             };
             using var proc = Process.Start(psi);
             if (proc == null) return string.Empty;
-            string output = proc.StandardOutput.ReadToEnd();
+
+            // Start the read BEFORE waiting, and do not block on it. ReadToEnd
+            // returns only when the pipe closes, so a netsh that wedged without
+            // exiting hung here forever and the five-second timeout on the next
+            // line was unreachable. Kicking the read off asynchronously lets
+            // WaitForExit own the deadline, and the Kill closes the pipe, which
+            // is what completes the read.
+            var read = proc.StandardOutput.ReadToEndAsync();
             if (!proc.WaitForExit(5_000))
+            {
                 try { proc.Kill(); } catch { }
-            return output;
+            }
+
+            try { return read.Wait(2_000) ? read.Result : string.Empty; }
+            catch { return string.Empty; }
         }
 
         // ─────────────────────────────────────────────

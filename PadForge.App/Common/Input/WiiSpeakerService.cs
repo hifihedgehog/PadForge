@@ -367,17 +367,28 @@ namespace PadForge.Common.Input
                 var settings = SettingsManager.UserSettings;
                 if (settings != null)
                 {
-                    var seen = new HashSet<Guid>();
-                    var assigned = new List<(int MapTo, Guid Guid)>();
+                    // One sink per DEVICE: a remote has one speaker, and the
+                    // sole-writer rule says one lane owns it. When the same
+                    // remote is assigned to several slots, the LOWEST slot
+                    // wins rather than whichever UserSetting happened to sit
+                    // first in Items, which is an ordering the user cannot
+                    // see or control and which could change under an
+                    // unrelated edit.
+                    var lowestSlot = new Dictionary<Guid, int>();
                     lock (settings.SyncRoot)
                     {
                         foreach (var us in settings.Items)
                         {
                             if (us == null || us.MapTo < 0) continue;
-                            if (!seen.Add(us.InstanceGuid)) continue;
-                            assigned.Add((us.MapTo, us.InstanceGuid));
+                            if (!lowestSlot.TryGetValue(us.InstanceGuid, out int prior)
+                                || us.MapTo < prior)
+                                lowestSlot[us.InstanceGuid] = us.MapTo;
                         }
                     }
+                    var assigned = new List<(int MapTo, Guid Guid)>(lowestSlot.Count);
+                    foreach (var kvp in lowestSlot)
+                        assigned.Add((kvp.Value, kvp.Key));
+                    assigned.Sort((a, b) => a.MapTo.CompareTo(b.MapTo));
                     // Resolve devices OUTSIDE the UserSettings lock. FindDeviceByInstanceGuid
                     // takes UserDevices.SyncRoot, and holding UserSettings.SyncRoot while
                     // acquiring it inverts the canonical lock order (UserDevices before

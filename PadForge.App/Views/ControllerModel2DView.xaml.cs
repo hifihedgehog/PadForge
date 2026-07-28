@@ -852,15 +852,24 @@ namespace PadForge.Views
                 {
                     img.Opacity = _flashOn ? 1.0 : 0.2;
                 }
+                else if (_triggerClips.TryGetValue(_flashTarget, out var clip))
+                {
+                    // A trigger flashes through its CLIP, full to empty, the
+                    // same channel its live level uses. Toggling Visibility
+                    // here instead left the image Collapsed whenever the
+                    // flash happened to stop on an off phase, because the
+                    // restore path's trigger branch only resets the clip and
+                    // never puts Visibility back.
+                    img.Visibility = Visibility.Visible;
+                    img.Opacity = 1.0;
+                    clip.Rect = _flashOn
+                        ? new Rect(0, 0, img.Width, img.Height)
+                        : new Rect(0, img.Height, img.Width, 0);
+                }
                 else
                 {
                     img.Visibility = _flashOn ? Visibility.Visible : Visibility.Collapsed;
-                    if (_flashOn)
-                    {
-                        img.Opacity = 1.0;
-                        if (_triggerClips.TryGetValue(_flashTarget, out var clip))
-                            clip.Rect = new Rect(0, 0, img.Width, img.Height);
-                    }
+                    if (_flashOn) img.Opacity = 1.0;
                 }
             }
         }

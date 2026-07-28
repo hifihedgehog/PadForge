@@ -34,6 +34,19 @@ namespace PadForge.Common.Input
             SourceCoercion.ResetGyroLeanNeutral();
         }
 
+        /// <summary>Drops one slot's steering and flick state. Called when a
+        /// slot's rows are replaced wholesale, so a winding accumulator or a
+        /// steering lock does not survive a structural mapping change and
+        /// hand the re-authored row a stale full lock. SourceKindRuntime has
+        /// carried ResetForSlot and ResetForRow since the steering work, both
+        /// documented as the row-reorder drop, and neither had a caller
+        /// anywhere in the repo until now.</summary>
+        public static void ResetSourceKindRuntimeForSlot(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= _slotSourceKindRuntime.Length) return;
+            _slotSourceKindRuntime[slotIndex]?.ResetForSlot(slotIndex);
+        }
+
         // ─────────────────────────────────────────────
         //  Stick-trim combine state (#155)
         //

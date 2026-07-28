@@ -131,8 +131,12 @@ namespace PadForge.Engine.Common.Mapping
             RemoveWhere(_rampedReplay, slot, null);
         }
 
-        /// <summary>Drops steering state for one (slot, target). Called on row reorder
-        /// so a winding accumulator does not survive a structural mapping change.</summary>
+        /// <summary>Drops steering state for one (slot, target). The
+        /// finer-grained twin of <see cref="ResetForSlot"/>, which is what
+        /// the row-replacement path actually calls: PadForge replaces a
+        /// slot's rows wholesale rather than editing one in place, so there
+        /// is no single-row structural change to hook. Kept for a caller
+        /// that edits one row without rebuilding the set.</summary>
         public void ResetForRow(int slot, string target)
         {
             RemoveWhere(_windingState, slot, target ?? "");
@@ -336,7 +340,20 @@ namespace PadForge.Engine.Common.Mapping
             // the stick left when a wheel turns right. (Angle-to-axis modes don't get this
             // treatment: AngleToAxisX uses Abs(y), and AngleToAxisY's down-positive Y
             // cancels against the Y-target write negation, so both are already correct.)
-            if (len > 0 && ws.LastX != 0 && ws.LastY != 0)
+            // Deliberate divergence from JoyShock.cpp:1247, which reads
+            // `stickLength > 0.f && stick.lastX != 0.f && stick.lastY != 0.f`.
+            // JSM only ever sees a physical analog stick, where landing
+            // exactly on an axis is a measure-zero event. PadForge also
+            // drives winding from digital sources (keys and buttons mapped
+            // onto a stick axis) and from radial deadzones that can emit an
+            // exact zero on one channel, and there the AND form skipped
+            // accrual on every pure cardinal hold: winding accumulated on
+            // diagonals only. OR is equivalent for analog input, since it
+            // differs only when exactly one channel is exactly zero, and
+            // atan2 is well defined with one zero component. The only case
+            // still skipped is a previous sample at dead centre, where no
+            // angle exists to difference against.
+            if (len > 0 && (ws.LastX != 0 || ws.LastY != 0))
             {
                 double cur = Math.Atan2(-x, -y);
                 double last = Math.Atan2(-ws.LastX, -ws.LastY);

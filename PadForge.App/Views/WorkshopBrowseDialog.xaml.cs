@@ -458,9 +458,12 @@ namespace PadForge.Views
             }
         }
 
-        /// <summary>Hero backdrop swap: 240 ms crossfade through steel (fade
-        /// to the ground, swap, fade back; never art-to-art). Honors the
-        /// Windows "show animations" setting with an instant cut.</summary>
+        /// <summary>Hero backdrop swap. With art already on screen this is a
+        /// 240 ms crossfade through steel: fade to the ground, swap, fade
+        /// back, never art-to-art. With nothing showing, which is every swap
+        /// entered from the search or cold state because leaving browse
+        /// collapses the art layer, it is a straight 120 ms fade in. Honors
+        /// the Windows "show animations" setting with an instant cut.</summary>
         private async Task SwapHeroAsync(int appId)
         {
             int version = ++_heroSwapVersion;
@@ -579,8 +582,21 @@ namespace PadForge.Views
                 int total = (int)(resp?.total ?? 0);
                 _configsTotal = total;
                 UpdateConfigsFoundText();
-                g.ConfigCount = total;
-                UpdateGameMeta(total);
+                // g.ConfigCount is a GAME-level stat that outlives this
+                // dialog and feeds the browse list. Steam's `total` is the
+                // count for THIS query, so writing it while a tag filter is
+                // active turned a game's config count into a filter's count
+                // and kept it. Only an unfiltered query may set it, and the
+                // header meta line follows the same rule.
+                if (requiredTag == null)
+                {
+                    g.ConfigCount = total;
+                    UpdateGameMeta(total);
+                }
+                else
+                {
+                    UpdateGameMeta(g.ConfigCount);
+                }
 
                 // Chips come from the unfiltered result's live tags and stay
                 // put while a tag filter narrows the list.
@@ -1566,17 +1582,31 @@ namespace PadForge.Views
         //  Formatting helpers
         // ─────────────────────────────────────────────
 
+        /// <summary>Length in CHAR units of the text element starting at
+        /// index 0, so a name beginning with an astral-plane character (an
+        /// emoji, common in Steam personas) is not split into a lone
+        /// surrogate that renders as the replacement glyph.</summary>
+        private static int FirstElementLength(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return 0;
+            return char.IsHighSurrogate(s[0]) && s.Length > 1 && char.IsLowSurrogate(s[1]) ? 2 : 1;
+        }
+
         private static string FirstLetter(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) return "?";
-            return name.Trim().Substring(0, 1).ToUpperInvariant();
+            var trimmed = name.Trim();
+            return trimmed.Substring(0, FirstElementLength(trimmed)).ToUpperInvariant();
         }
 
         private static string Initials(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) return "?";
             var trimmed = name.Trim();
-            return trimmed.Substring(0, Math.Min(2, trimmed.Length)).ToUpperInvariant();
+            int take = FirstElementLength(trimmed);
+            if (take < trimmed.Length)
+                take += FirstElementLength(trimmed.Substring(take));
+            return trimmed.Substring(0, Math.Min(take, trimmed.Length)).ToUpperInvariant();
         }
 
         /// <summary>Retail names for Steam's controller tag namespace.

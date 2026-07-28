@@ -191,6 +191,9 @@ namespace PadForge.Services
             _mainVm.Settings.SettingsFilePath = _settingsFilePath;
             _mainVm.Settings.HasUnsavedChanges = false;
             IsDirty = false;
+            // Re-arm AFTER the clear so a load-time profile compaction
+            // actually reaches disk (round 34).
+            if (_profilesCompactedOnLoad) { _profilesCompactedOnLoad = false; MarkDirty(); }
         }
 
         // ─────────────────────────────────────────────
@@ -3324,8 +3327,16 @@ namespace PadForge.Services
                     UpdateTopologyCounts(item, p.SlotCreated, p.SlotControllerTypes);
                     _mainVm.Settings.ProfileItems.Add(item);
                 }
+                // Record it; do NOT rely on MarkDirty here. Both callers
+                // of LoadFromFile clear IsDirty immediately afterwards, so
+                // the 250 ms autosave timer never saw this and the gappy
+                // profile data was re-compacted in memory on every launch
+                // while the FILE never healed, contradicting this block's
+                // own "fixes the source data, not just the view" comment
+                // (round 34). The callers re-arm from this flag after their
+                // clear.
                 if (anyProfileCompacted)
-                    MarkDirty();
+                    _profilesCompactedOnLoad = true;
             }
 
             // Update active profile display.
@@ -3534,7 +3545,7 @@ namespace PadForge.Services
 
         /// <summary>
         /// Formats a profile's topology into a compact label like "2x Xbox, 1x PlayStation".
-        /// Returns empty string for old profiles without topology data.
+        /// Returns the localized no-slots label when there is no topology data.
         /// </summary>
         internal static string FormatTopologyLabel(bool[] slotCreated, int[] slotControllerTypes)
         {
@@ -3589,6 +3600,11 @@ namespace PadForge.Services
         }
 
         /// <summary>
+
+        /// <summary>Set when LoadProfiles compacted gappy profile slot data
+        /// in memory. The post-load IsDirty clear would otherwise discard the
+        /// intent to write the repaired data back.</summary>
+        private bool _profilesCompactedOnLoad;
 
         // ─────────────────────────────────────────────
         //  Save
@@ -4701,6 +4717,7 @@ namespace PadForge.Services
 
             IsDirty = false;
             _mainVm.Settings.HasUnsavedChanges = false;
+            if (_profilesCompactedOnLoad) { _profilesCompactedOnLoad = false; MarkDirty(); }
         }
 
         /// <summary>

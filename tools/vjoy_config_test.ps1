@@ -5,6 +5,23 @@
 $logFile = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_config_test_log.txt'
 $padForgeExe = 'C:\PadForge\PadForge.exe'
 $padForgeXml = 'C:\PadForge\PadForge.xml'
+
+# Back up the real settings ONCE, before any test mutates them.
+#
+# This first landed inside Set-PadForgeVJoyConfig, AFTER that function had
+# already read the xml into $xml. On a re-run the restore wrote the real
+# settings to disk and the save at the end of the same call put the test
+# config straight back over them, so the restore undid itself. That function
+# also runs once per test case, so it repeated the round-trip every
+# iteration. Script scope, before any read, is the only place it works.
+$xmlBak = "$padForgeXml.config-test-bak"
+if (Test-Path -LiteralPath $xmlBak) {
+    # A leftover backup means an earlier run never restored: it holds the
+    # real settings and the live file is this test's residue.
+    Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force
+} elseif (Test-Path -LiteralPath $padForgeXml) {
+    Copy-Item -LiteralPath $padForgeXml -Destination $xmlBak -Force
+}
 $queryScript = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_query_device.ps1'
 $toolsDir = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools'
 
@@ -57,14 +74,6 @@ function Stop-PadForge {
 
 function Set-PadForgeVJoyConfig([array]$slots) {
     [xml]$xml = Get-Content $padForgeXml
-
-# Back up the real settings before this test rewrites slot types and
-# created flags. Nothing here restored them, so a run left the user's
-# slot layout replaced by test values permanently.
-$xmlBak = "$padForgeXml.config-test-bak"
-if (Test-Path -LiteralPath $xmlBak) { Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force }
-elseif (Test-Path -LiteralPath $padForgeXml) { Copy-Item -LiteralPath $padForgeXml -Destination $xmlBak -Force }
-
     $appSettings = $xml.PadForgeSettings.AppSettings
 
     $typeNodes = $appSettings.SlotControllerTypes.ChildNodes
@@ -213,6 +222,15 @@ $R.Add("Restored Xbox 360 default, PadForge restarted")
 for ($i = 1; $i -le 16; $i++) {
     $f = "$toolsDir\vjoy_query_result_$i.txt"
     if (Test-Path $f) { Remove-Item $f -Force }
+}
+
+# Put the user's real settings back. Nothing here did, so the machine was
+# left running whichever test case happened to be last.
+Stop-PadForge
+if (Test-Path -LiteralPath $xmlBak) {
+    Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force
+    Remove-Item -LiteralPath $xmlBak -Force -ErrorAction SilentlyContinue
+    $R.Add("Restored real settings from backup")
 }
 
 $R.Add("")

@@ -120,7 +120,7 @@ Start-Sleep -Milliseconds 500
 $uiaRoot = [System.Windows.Automation.AutomationElement]::RootElement
 $pidCond = New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ProcessIdProperty, $proc.Id)
 $uiaWin = $uiaRoot.FindFirst($TC, $pidCond)
-if (-not $uiaWin) { Write-Host "UIA fail"; exit 1 }
+if (-not $uiaWin) { Write-Host "UIA fail"; [W32]::SetWindowPos($hwnd, [W32]::NOTOPMOST, 0, 0, 0, 0, 0x0003) | Out-Null; exit 1 }
 
 # Warm-up
 $wr = New-Object W32+RECT; [W32]::GetWindowRect($hwnd, [ref]$wr) | Out-Null
@@ -141,7 +141,7 @@ foreach ($item in $allItems) {
         Write-Host "  Slot: '$n'"; $slot = $item; break
     }
 }
-if (-not $slot) { Write-Host "No slot!"; exit 1 }
+if (-not $slot) { Write-Host "No slot!"; [W32]::SetWindowPos($hwnd, [W32]::NOTOPMOST, 0, 0, 0, 0, 0x0003) | Out-Null; exit 1 }
 
 SelectEl $slot -d 2000 -lbl "Slot"
 Start-Sleep -Milliseconds 1000

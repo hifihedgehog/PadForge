@@ -122,7 +122,7 @@ Start-Sleep -Milliseconds 500
 $uiaRoot = [System.Windows.Automation.AutomationElement]::RootElement
 $pidCond = New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ProcessIdProperty, $proc.Id)
 $uiaWin = $uiaRoot.FindFirst($TC, $pidCond)
-if (-not $uiaWin) { Log "UIA fail"; exit 1 }
+if (-not $uiaWin) { Log "UIA fail"; [W32]::SetWindowPos($hwnd, [W32]::NOTOPMOST, 0, 0, 0, 0, 0x0003) | Out-Null; exit 1 }
 
 # Warm-up
 $wr = New-Object W32+RECT; [W32]::GetWindowRect($hwnd, [ref]$wr) | Out-Null
@@ -200,7 +200,7 @@ foreach ($item in $allItems) {
     }
 }
 
-if (-not $slot) { Log "No slot found after creation!"; exit 1 }
+if (-not $slot) { Log "No slot found after creation!"; [W32]::SetWindowPos($hwnd, [W32]::NOTOPMOST, 0, 0, 0, 0, 0x0003) | Out-Null; exit 1 }
 
 # The slot is already selected (Add Controller navigates to it)
 # Give it time to fully render the 3D view

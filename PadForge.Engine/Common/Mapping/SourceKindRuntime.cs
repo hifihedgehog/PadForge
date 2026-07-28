@@ -78,6 +78,20 @@ namespace PadForge.Engine.Common.Mapping
 
         private Dictionary<(int slot, string target, int srcIdx), FlickState> _flickState = new();
 
+        /// <summary>Frame counter, stamped by the caller once per polling
+        /// frame. The Extended/KBM/MIDI evaluators run once per assigned
+        /// DEVICE per frame, and a source with an empty device GUID matches
+        /// every device, so a two-device slot reaches the same accumulator
+        /// twice in one frame. FlickStick and StickTrim already gate on a
+        /// frame sequence for exactly this; Incremental and Ramped did not,
+        /// and advanced by the full frame dt on each pass (a 2 s sweep ran
+        /// in 1 s on two devices, 0.66 s on three).</summary>
+        public long FrameSeq;
+
+        private sealed class TickReplay { public long Seq = -1; public double Output; }
+        private Dictionary<(int slot, string target, int srcIdx), TickReplay> _incrementalReplay = new();
+        private Dictionary<(int slot, string target, int srcIdx), TickReplay> _rampedReplay = new();
+
         // Saturation band for the lock state machine — avoids float-edge thrash at ±1.
         private const double LockEpsilon = 1e-3;
 
@@ -103,6 +117,8 @@ namespace PadForge.Engine.Common.Mapping
             _lockState = new();
             _motionNeutral = new();
             _flickState = new();
+            _incrementalReplay = new();
+            _rampedReplay = new();
         }
 
         /// <summary>Drops all steering + flick state for a slot. Called on profile switch.</summary>
@@ -111,6 +127,8 @@ namespace PadForge.Engine.Common.Mapping
             RemoveWhere(_windingState, slot, null);
             RemoveWhere(_lockState, slot, null);
             RemoveWhere(_flickState, slot, null);
+            RemoveWhere(_incrementalReplay, slot, null);
+            RemoveWhere(_rampedReplay, slot, null);
         }
 
         /// <summary>Drops steering state for one (slot, target). Called on row reorder
@@ -155,6 +173,12 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (src == null || state == null) return 0;
             var key = (slotIndex, target ?? "", sourceIndex);
+            if (!_incrementalReplay.TryGetValue(key, out var replay))
+                _incrementalReplay[key] = replay = new TickReplay();
+            // Second per-device pass in the same frame: replay this frame's
+            // value instead of advancing the accumulator again.
+            if (replay.Seq == FrameSeq) return replay.Output;
+            replay.Seq = FrameSeq;
             _incrementalAccum.TryGetValue(key, out double current);
 
             // Clamp to declared range (handles user re-narrowing the range
@@ -194,6 +218,7 @@ namespace PadForge.Engine.Common.Mapping
             // hold last value.
 
             _incrementalAccum[key] = current;
+            replay.Output = current;
             return current;
         }
 
@@ -220,6 +245,11 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (src == null || state == null) return 0;
             var key = (slotIndex, target ?? "", sourceIndex);
+            if (!_rampedReplay.TryGetValue(key, out var replay))
+                _rampedReplay[key] = replay = new TickReplay();
+            // Second per-device pass in the same frame: replay, don't re-ramp.
+            if (replay.Seq == FrameSeq) return replay.Output;
+            replay.Seq = FrameSeq;
             _rampedAccum.TryGetValue(key, out double v);
 
             bool up = ReadButtonLikeBool(state, src.ParamUp);     // positive direction
@@ -272,6 +302,7 @@ namespace PadForge.Engine.Common.Mapping
 
             if (v < -1) v = -1; else if (v > 1) v = 1;
             _rampedAccum[key] = v;
+            replay.Output = v;
             return v;
         }
 

@@ -224,6 +224,13 @@ namespace PadForge.Common.Input
             for (int i = 0; i < _multiSourceEvaluatedTargetsBySlot.Length; i++)
                 _multiSourceEvaluatedTargetsBySlot[i].Clear();
             _stickTrimFrameSeq++;
+            // Same stamp reaches the source-kind runtimes, so Incremental and
+            // Ramped can tell a second device's pass from a new frame.
+            for (int i = 0; i < _slotSourceKindRuntime.Length; i++)
+            {
+                var rt = _slotSourceKindRuntime[i];
+                if (rt != null) rt.FrameSeq = _stickTrimFrameSeq;
+            }
             StampFrameDelta();
         }
 

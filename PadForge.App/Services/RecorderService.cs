@@ -69,7 +69,7 @@ namespace PadForge.Services
         // 48..80 relative band) during the current recording". A real encoder
         // never leaves the band; a fader sweeping does. Used to stop a fader
         // caught mid-sweep being mis-captured as an encoder pulse (issue #142 b).
-        // Reset when a recording's MIDI baseline is established.
+        // Cleared when a recording starts.
         private readonly bool[] _ccLeftBand = new bool[MidiInputState.CcCount];
         private DispatcherTimer _timer;
         private bool _disposed;
@@ -388,6 +388,15 @@ namespace PadForge.Services
             // being immediately re-detected when it's still physically held.
             _waitForRelease = neutralizeBaseline;
 
+            // The per-CC "this fader has left the relative band" flags are
+            // per-RECORDING state. Their only reset sat behind
+            // "baseline.Midi == null", which a polled MIDI device never
+            // satisfies (MidiInputDevice builds its state with a non-null
+            // Midi from birth), so a fader that swept during one recording
+            // stayed flagged for every later one and its encoder pulses were
+            // ignored forever. Reset where the recording actually starts.
+            Array.Clear(_ccLeftBand, 0, _ccLeftBand.Length);
+
             // Mark the recording target.
             if (extraSource != null)
                 extraSource.IsRecording = true;
@@ -575,6 +584,12 @@ namespace PadForge.Services
             // during enumeration when CancelRecording is called from
             // CompleteRecording.
             var deviceGuids = new List<Guid>(_baselines.Keys);
+            // Does any device still hold something this tick? The exit below
+            // used to fire after the first tick no matter what, so a device
+            // held when recording started left wait-for-release mode with
+            // its input still down and was captured immediately, which is
+            // the one thing the mode exists to prevent.
+            bool anyDeviceStillHeld = false;
             foreach (var dg in deviceGuids)
             {
                 if (!_activeDevices.TryGetValue(dg, out var ud)) continue;
@@ -598,7 +613,7 @@ namespace PadForge.Services
                         for (int i = 0; i < current.Midi.Notes.Length && !anyHeld; i++)
                             anyHeld = current.Midi.Notes[i];
 
-                    if (anyHeld) continue;
+                    if (anyHeld) { anyDeviceStillHeld = true; continue; }
 
                     // Everything released — capture fresh baseline and reset axis tracking.
                     _baselines[dg] = current;
@@ -669,6 +684,26 @@ namespace PadForge.Services
                     }
                 }
 
+                // Param recording (Incremental Up/Down, InvertOnHold Modifier)
+                // captures what ReadButtonLikeBool can actually read, which is
+                // Button and POV descriptors plus the hardware-bool families
+                // it forwards to (capsense, NFC tag, touchpad contact). Nothing
+                // else. An axis capture would land in ParamUp / ParamDown /
+                // ParamModifier as "Axis N" and silently do nothing, which is
+                // the "I have to record 3-4 times before it works" symptom
+                // (early tries get captured by stick drift on whichever axis
+                // crosses the detection threshold first; later tries hit the
+                // real button).
+                //
+                // The gate sits ABOVE the MIDI blocks, not below them. There
+                // is no MIDI branch anywhere in ReadButtonLikeBool or in the
+                // ReadHardwareBoolDescriptor it falls through to, so a MIDI
+                // note or encoder pulse captured into a param wrote a
+                // descriptor that reads false forever while the UI reported
+                // success. Same dead capture the axis case describes, minus
+                // the ambiguity, so it gets the same treatment.
+                if (_paramTarget != ParamTarget.None) continue;
+
                 // ── MIDI notes (button-class, instant rising edge) ──
                 // MIDI input lives in the Midi sub-state, not Buttons[]/Axis[],
                 // so the sweeps above never see it. A MIDI device that hadn't
@@ -680,7 +715,6 @@ namespace PadForge.Services
                     if (baseline.Midi == null)
                     {
                         baseline.Midi = current.Midi.Clone();
-                        Array.Clear(_ccLeftBand, 0, _ccLeftBand.Length);
                     }
                     else
                     {
@@ -729,16 +763,6 @@ namespace PadForge.Services
                         }
                     }
                 }
-
-                // Param recording (Incremental Up/Down, InvertOnHold Modifier)
-                // captures button-class inputs only — the engine's ReadButtonLikeBool
-                // recognizes Button / POV descriptors, nothing else. An axis
-                // capture would land in ParamUp / ParamDown / ParamModifier as
-                // "Axis N" and silently do nothing, which is the "I have to
-                // record 3-4 times before it works" symptom (early tries get
-                // captured by stick drift on whichever axis crosses the
-                // detection threshold first; later tries hit the real button).
-                if (_paramTarget != ParamTarget.None) continue;
 
                 // ── MIDI CC / pitch bend (axis-class, threshold) ──
                 // After the param gate (these are continuous, not button-class)
@@ -843,7 +867,7 @@ namespace PadForge.Services
 
             // After processing all devices, exit wait-for-release mode
             // once every device has cleared.
-            if (_waitForRelease)
+            if (_waitForRelease && !anyDeviceStillHeld)
                 _waitForRelease = false;
         }
 
@@ -907,6 +931,15 @@ namespace PadForge.Services
             _activeExtraSource = null;
             _activePadIndex = -1;
             _paramTarget = ParamTarget.None;
+            // Capture before the clears below, alongside the other state
+            // this method reads after teardown. The two #200 half-axis
+            // decisions further down queried _isMouseByDevice AFTER it was
+            // emptied, so TryGetValue always missed and the negative-half
+            // (IH) form never fired: an inverted mouse relative axis on a
+            // button-like target kept emitting the bare Invert form, which
+            // reads pressed at rest.
+            bool winningIsMouse = _isMouseByDevice.TryGetValue(winningDevice, out bool winMouse) && winMouse;
+
             _activeDevices.Clear();
             _baselines.Clear();
             _isMouseByDevice.Clear();
@@ -987,7 +1020,7 @@ namespace PadForge.Services
                     // target selects the negative half instead of the bare
                     // Invert form that reads pressed at rest.
                     extraSource.HalfAxis = shouldInvert
-                        && _isMouseByDevice.TryGetValue(winningDevice, out bool isMouseDevX) && isMouseDevX
+                        && winningIsMouse
                         && IsButtonLikeRecordingTarget(mapping.TargetSettingName);
                 }
                 else
@@ -1026,7 +1059,7 @@ namespace PadForge.Services
                     // (IH prefix), which is off at rest and fires on leftward
                     // or upward motion only (issue #200 companion fix).
                     bool mouseHalf = shouldInvert
-                        && _isMouseByDevice.TryGetValue(winningDevice, out bool isMouseDev) && isMouseDev
+                        && winningIsMouse
                         && IsButtonLikeRecordingTarget(mapping.TargetSettingName);
                     descriptor = (shouldInvert ? (mouseHalf ? "IH" : "I") : "") + descriptor;
                 }

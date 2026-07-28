@@ -25,19 +25,37 @@ INSERTS = [
 ]
 
 done = 0
+missed = []
 for binding, cmd, tip in INSERTS:
     if f"{cmd}}}" in text:   # idempotent
         continue
     bidx = text.find(binding)
     if bidx < 0:
-        print(f"FAIL: binding not found: {binding}")
+        missed.append(f"binding not found: {binding}")
         continue
     cidx = text.find(row_close, bidx)
     if cidx < 0:
-        print(f"FAIL: row close not found after {binding}")
+        missed.append(f"row close not found after {binding}")
         continue
     text = text[:cidx] + btn(cmd, tip) + text[cidx:]
     done += 1
 
-open(p, "wb").write((b"\xef\xbb\xbf" if bom else b"") + text.encode("utf-8"))
-print(f"Inserted {done}/8 reset buttons.")
+# Fail SAFE: write nothing when an anchor missed. This used to write
+# unconditionally, so a partial run left PadForge.xaml half-patched on disk
+# while printing "Inserted 3/8" as though that were a status rather than
+# damage. Its sibling move_trigger_routing_card.py already gets this right
+# (its next()/assert lookups raise before the single write), and it is the
+# rule the project's resx recipe states outright: count anchors, write nothing
+# when an anchor misses.
+if missed:
+    for m in missed:
+        print(f"FAIL: {m}")
+    raise SystemExit(
+        f"Aborted without writing: {len(missed)} anchor(s) missed, "
+        f"{done} insert(s) discarded. The file is unchanged.")
+
+if done == 0:
+    print("Nothing to do: all 8 reset buttons already present.")
+else:
+    open(p, "wb").write((b"\xef\xbb\xbf" if bom else b"") + text.encode("utf-8"))
+    print(f"Inserted {done}/8 reset buttons.")

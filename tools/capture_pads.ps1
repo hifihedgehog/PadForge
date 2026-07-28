@@ -152,7 +152,7 @@ Start-Sleep -Milliseconds 500
 $uiaRoot = [System.Windows.Automation.AutomationElement]::RootElement
 $pidCond = New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ProcessIdProperty, $proc.Id)
 $uiaWin = $uiaRoot.FindFirst($TC, $pidCond)
-if (-not $uiaWin) { Log "UIA fail"; $out | Out-File C:\PadForge\capture_pads_log.txt; exit 1 }
+if (-not $uiaWin) { Log "UIA fail"; $out | Out-File C:\PadForge\capture_pads_log.txt; [W32]::SetWindowPos($hwnd, [W32]::NOTOPMOST, 0, 0, 0, 0, 0x0003) | Out-Null; exit 1 }
 
 # Warm-up
 $wr = New-Object W32+RECT; [W32]::GetWindowRect($hwnd, [ref]$wr) | Out-Null

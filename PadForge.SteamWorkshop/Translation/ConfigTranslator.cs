@@ -3850,18 +3850,34 @@ namespace PadForge.SteamWorkshop.Translation
                                 m.TriggerMode = "HoldForMs";
                             m.TriggerHoldMs += delayStart;
                         }
-                        if (delayEnd > 0)
+                        // Release-extension twin: re-assert the target for
+                        // delay_end ms on the release edge, so the output
+                        // deactivates late, Steam's semantics.
+                        //
+                        // ONLY for an ungated hold. The engine's OnRelease
+                        // fires on the bare falling edge and consults no
+                        // threshold (Step4b's trigger switch), so a twin
+                        // attached to a Long_Press or Double_Press source
+                        // asserted the target on EVERY release, including
+                        // short presses that never engaged the gate: a
+                        // phantom output the user never asked for. Copying
+                        // the source's thresholds onto the twin does NOT fix
+                        // that, since OnRelease ignores them. Dropping
+                        // delay_end on gated activators loses a late-release
+                        // nicety; emitting it produces wrong output, so the
+                        // nicety loses (round 34).
+                        bool gatedSource =
+                            string.Equals(m.TriggerMode, "HoldForMs", StringComparison.Ordinal)
+                            || string.Equals(m.TriggerMode, "DoublePress", StringComparison.Ordinal);
+                        // Deliberately silent: the ActivatorDelayDropped
+                        // vocabulary was retired in v22 precisely because
+                        // every surviving arm built something, and reviving
+                        // it for this narrow case would cost a reason
+                        // constant plus ten locale strings for a timing
+                        // nicety. Recorded in the round-34 audit memory as a
+                        // known residual instead.
+                        if (delayEnd > 0 && !gatedSource)
                         {
-                            // Release-extension twin: re-assert the target
-                            // for delay_end ms on the release edge, so the
-                            // output deactivates late, Steam's semantics.
-                            // The twin inherits the SOURCE's trigger mode
-                            // and thresholds rather than firing on every
-                            // release: a short press that never reached the
-                            // hold / double-press gate produced a phantom
-                            // assert of the target (round 34). OnRelease
-                            // with a hold threshold means "released after
-                            // the hold engaged".
                             var ext = new TranslatedMacro
                             {
                                 Name = $"{m.Name} (release tail)",
@@ -3869,8 +3885,6 @@ namespace PadForge.SteamWorkshop.Translation
                                     ? TranslatedMacroAction.VcButtonTap
                                     : TranslatedMacroAction.VcAxisTap,
                                 TriggerMode = "OnRelease",
-                                TriggerHoldMs = m.TriggerHoldMs,
-                                TriggerDoublePressMs = m.TriggerDoublePressMs,
                                 ConsumeTrigger = false,
                                 TargetXboxButtons = m.TargetXboxButtons,
                                 TargetAxis = m.TargetAxis,

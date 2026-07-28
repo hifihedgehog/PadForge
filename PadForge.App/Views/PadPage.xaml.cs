@@ -1411,6 +1411,7 @@ namespace PadForge.Views
             // the new mask so the existing authoring stays attached.
             string oldMask = existing.LayerMask;
             string oldMode = existing.Mode;   // round five, X12 inverse
+            string oldCycle = existing.CycleLayers;
             existing.LayerName = dlg.Result.LayerName;
             existing.LayerMask = dlg.Result.LayerMask;
             existing.DeviceGuid = dlg.Result.DeviceGuid;
@@ -1469,6 +1470,17 @@ namespace PadForge.Views
                 // runtime just as badly (round five, X12 inverse): Latch and
                 // Cycle park a mask string that only their own mode's tick
                 // rewrites, so Latch -> Hold left the slot stuck engaged.
+                PadForge.Common.Input.InputManager.ClearShiftRuntime(_currentPadVm.PadIndex);
+            }
+
+            else if (!string.Equals(oldCycle, existing.CycleLayers, StringComparison.Ordinal))
+            {
+                // Same mask, same mode, different ring. The live cursor
+                // indexes the OLD list, so shortening the ring leaves it
+                // pointing past the end and the next press evaluates a stop
+                // that no longer exists. ShiftCycleStepper clamps so this
+                // cannot throw, but a cursor rebased by a clamp lands the
+                // user somewhere they did not choose. Reset it instead.
                 PadForge.Common.Input.InputManager.ClearShiftRuntime(_currentPadVm.PadIndex);
             }
 

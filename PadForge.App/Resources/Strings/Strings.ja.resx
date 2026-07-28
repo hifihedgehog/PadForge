@@ -865,6 +865,7 @@
   <data name="Preview_Stick_Format" xml:space="preserve"><value>スティック {0}</value></data>
   <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>十字キー</value></data>
+  <data name="Preview_Buttons" xml:space="preserve"><value>ボタン</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
   <data name="Pad_DeadZoneX" xml:space="preserve"><value>デッドゾーン X</value></data>

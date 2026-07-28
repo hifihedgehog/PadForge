@@ -2223,6 +2223,7 @@ public class Strings : INotifyPropertyChanged
     public string Preview_Stick_Format => Get("Preview_Stick_Format");
     public string Preview_Trigger_Format => Get("Preview_Trigger_Format");
     public string Preview_DPad => Get("Preview_DPad");
+    public string Preview_Buttons => Get("Preview_Buttons");
     public string Preview_POV_Format => Get("Preview_POV_Format");
     public string Btn_LeftShoulder => Get("Btn_LeftShoulder");
     public string Btn_RightShoulder => Get("Btn_RightShoulder");

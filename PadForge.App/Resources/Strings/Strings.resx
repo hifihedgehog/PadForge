@@ -1991,6 +1991,7 @@
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
   <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="Preview_Buttons" xml:space="preserve"><value>Buttons</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->

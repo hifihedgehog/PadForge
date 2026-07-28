@@ -709,8 +709,13 @@ namespace PadForge.Common.Input
             lock (_lock)
             {
                 if (_suppressed) return;
+                // Gate on the handle this actually writes through. The old
+                // gate tested the raw HID handle, which the bench notes below
+                // took out of this path: two different objects with two
+                // different lifetimes, so a raw handle proved nothing about
+                // the gamepad handle the 0x48 goes to.
                 targets = _sinks.Where(x => IsJoyConGen1(x.Family) && !x.Remote
-                    && x.Handle != IntPtr.Zero).ToList();
+                    && x.GamepadHandle != IntPtr.Zero).ToList();
             }
             if (targets.Count == 0) return;
             Task.Run(() =>
@@ -720,12 +725,14 @@ namespace PadForge.Common.Input
                     try
                     {
                         // Re-check liveness: Reconcile may have torn the sink
-                        // down between the snapshot and this write.
-                        IntPtr h;
+                        // down between the snapshot and this write. Capture the
+                        // gamepad handle under the lock and use that capture,
+                        // so the value written is the value checked.
+                        IntPtr gp;
                         lock (_lock)
                         {
-                            if (!_sinks.Contains(s) || s.Handle == IntPtr.Zero) continue;
-                            h = s.Handle;
+                            if (!_sinks.Contains(s) || s.GamepadHandle == IntPtr.Zero) continue;
+                            gp = s.GamepadHandle;
                         }
                         // Re-enable vibration through SDL's OWN write path, not
                         // our raw handle. Two bench rounds killed the raw-handle
@@ -743,10 +750,8 @@ namespace PadForge.Common.Input
                         // through WriteSubcommand, the same proven path the open
                         // sequence uses (HIDAPI_DriverSwitch_SendJoystickEffect,
                         // the size >= 2 branch). Send enable-vibration there.
-                        var gp = s.GamepadHandle;
-                        if (gp != IntPtr.Zero)
-                            SDL3.SDL.SDL_SendGamepadEffect(
-                                gp, new byte[] { 0x48, 0x01 }, 0, 2);
+                        SDL3.SDL.SDL_SendGamepadEffect(
+                            gp, new byte[] { 0x48, 0x01 }, 0, 2);
                     }
                     catch { /* best effort: a dead handle is Reconcile's problem */ }
                 }

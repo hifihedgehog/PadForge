@@ -9694,6 +9694,11 @@ namespace PadForge.Services
             }
 
             var currentWhitelist = HidHideController.GetWhitelist();
+            // Null means the driver could not be read, which is not the same as
+            // an empty whitelist. This method edits the list and writes it back,
+            // so proceeding on a failed read would push an empty whitelist and
+            // strip every entry, including paths PadForge never added.
+            if (currentWhitelist == null) return;
             bool changed = false;
 
             // Remove PadForge-managed entries that are no longer desired.

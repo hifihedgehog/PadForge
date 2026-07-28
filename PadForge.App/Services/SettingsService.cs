@@ -3538,10 +3538,11 @@ namespace PadForge.Services
         /// </summary>
         internal static string FormatTopologyLabel(bool[] slotCreated, int[] slotControllerTypes)
         {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm);
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm, out int nintendo);
             var parts = new System.Collections.Generic.List<string>();
             if (xbox > 0) parts.Add($"{xbox}x Xbox");
             if (playstation > 0) parts.Add($"{playstation}x PlayStation");
+            if (nintendo > 0) parts.Add($"{nintendo}x Nintendo");
             if (extendedCount > 0) parts.Add($"{extendedCount}x Extended");
             if (midi > 0) parts.Add($"{midi}x MIDI");
             if (kbm > 0) parts.Add($"{kbm}x KB+M");
@@ -3551,7 +3552,7 @@ namespace PadForge.Services
         internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,
             bool[] slotCreated, int[] slotControllerTypes)
         {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm);
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm, out _);
             item.XboxCount = xbox;
             item.PlayStationCount = playstation;
             item.ExtendedCount = extendedCount;
@@ -3561,9 +3562,10 @@ namespace PadForge.Services
         }
 
         private static void CountTopology(bool[] slotCreated, int[] slotControllerTypes,
-            out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm)
+            out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm,
+            out int nintendo)
         {
-            xbox = 0; playstation = 0; extendedCount = 0; midi = 0; kbm = 0;
+            xbox = 0; playstation = 0; extendedCount = 0; midi = 0; kbm = 0; nintendo = 0;
             if (slotCreated == null) return;
             for (int i = 0; i < slotCreated.Length; i++)
             {
@@ -3576,6 +3578,11 @@ namespace PadForge.Services
                     case 2: extendedCount++; break;
                     case 3: midi++; break;
                     case 4: kbm++; break;
+                    // Nintendo is VirtualControllerType 5. Without this case
+                    // it fell through to default and was counted as Xbox, so
+                    // a Switch Pro slot showed up as "1x Xbox" in the profile
+                    // topology label and count (round 34).
+                    case 5: nintendo++; break;
                     default: xbox++; break;
                 }
             }

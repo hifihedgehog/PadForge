@@ -1315,6 +1315,26 @@ namespace PadForge.Common.Input
             // it worked on every other target family.
             if (IsSourceSuppressedPostpone(slotIndex, deviceGuid, descriptor)) return 0;
 
+            // Engine-owned families (IR Pointer / IR Brightness / Balance /
+            // Mouse Position / Midi), the other half of the parity with
+            // MapToThumbAxisSingle. ParseDescriptor does not recognise these,
+            // so without this they fell straight to the invalid return and any
+            // engine-owned source mapped to an analog TRIGGER read a flat zero,
+            // while the identical descriptor on a thumb axis worked.
+            //
+            // EvaluateForTriggerTarget, not the bipolar evaluator the axis twin
+            // uses: a trigger is unipolar, and running it through the [-1..+1]
+            // path would put rest at mid-pull.
+            if (!string.IsNullOrWhiteSpace(descriptor)
+                && TryGetEngineOwnedSource(descriptor, out string engClean, out bool engInv, out bool engHalf))
+            {
+                float v = PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForTriggerTarget(
+                    state,
+                    new PadForge.Engine.Data.MappingSource { Descriptor = engClean, DeviceGuid = deviceGuid, Invert = engInv, HalfAxis = engHalf },
+                    slotIndex);
+                return (ushort)Math.Clamp((int)(v * ushort.MaxValue), 0, ushort.MaxValue);
+            }
+
             var desc = ParseDescriptor(descriptor);
             if (!desc.IsValid)
                 return 0;

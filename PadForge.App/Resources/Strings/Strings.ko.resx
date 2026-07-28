@@ -2754,6 +2754,10 @@
   <data name="Menu_Binding_RowBound" xml:space="preserve"><value>매핑 행으로 바인딩됨</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>메뉴 {0} 셀 {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>메뉴 오버레이</value></data>
+  <data name="Dashboard_Overlays" xml:space="preserve"><value>오버레이</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>플레이 중 PadForge가 표시하는 화면 표시기입니다. 끄더라도 동작은 바뀌지 않고 표시 여부만 달라집니다.</value></data>
+  <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>시프트 레이어 플라이아웃</value></data>
+  <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>프로필 전환 오버레이</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>방사형 또는 터치 메뉴가 활성화된 동안 화면에 링 또는 그리드를 표시합니다. 오버레이가 꺼져 있어도 메뉴는 실행됩니다.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>화면 메뉴 생성됨({0}개 할당된 셀)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>메뉴에 할당된 셀이 없음</value></data>

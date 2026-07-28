@@ -2774,6 +2774,10 @@
   <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Gebonden via toewijzingsrijen</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cel {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu-overlay</value></data>
+  <data name="Dashboard_Overlays" xml:space="preserve"><value>Overlays</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Schermaanduidingen die PadForge tijdens het spelen toont. Uitschakelen verandert nooit het gedrag, alleen of het wordt gemeld.</value></data>
+  <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift-laag flyout</value></data>
+  <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profielwissel-overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Toont de ring of het raster op het scherm zolang een radiaal of touch-menu actief is. Menu's vuren ook met de overlay uit.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu op het scherm gemaakt ({0} toegewezen cellen)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu heeft geen toegewezen cellen</value></data>

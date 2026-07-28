@@ -354,6 +354,46 @@ namespace PadForge.Tests
                 src);
         }
 
+        // ── Every overlay toggle crosses every persistence leg ──
+
+        /// <summary>The three overlay toggles are a family, and a setting that
+        /// misses one leg of the profile pipeline is the classic
+        /// mirror-completeness defect: it works until you switch profiles, then
+        /// silently reverts or leaks the outgoing profile's value.
+        ///
+        /// <para>EnableMenuOverlay is the established member, so its footprint
+        /// is the spec. This diffs the newer two against it per file rather
+        /// than per line, which is what catches a missed snapshot, apply, save,
+        /// load, dirty-marker or XAML binding.</para></summary>
+        [Fact]
+        public void EveryOverlayToggle_CrossesTheSameLegsAsItsSibling()
+        {
+            var files = new[]
+            {
+                "PadForge.App/Services/SettingsService.cs",
+                "PadForge.App/Services/InputService.cs",
+                "PadForge.App/ViewModels/DashboardViewModel.cs",
+                "PadForge.App/MainWindow.xaml.cs",
+                "PadForge.App/Views/DashboardPage.xaml",
+            };
+
+            int Count(string file, string key) =>
+                Regex.Matches(Src(file), Regex.Escape(key)).Count;
+
+            foreach (var file in files)
+            {
+                int spec = Count(file, "EnableMenuOverlay");
+
+                // Positive control: the spec member must actually appear here,
+                // or "the others match it" is satisfied by 0 == 0 == 0.
+                Assert.True(spec > 0,
+                    $"{file} no longer references EnableMenuOverlay; update this test with the family.");
+
+                Assert.Equal(spec, Count(file, "EnableShiftLayerFlyout"));
+                Assert.Equal(spec, Count(file, "EnableProfileOverlay"));
+            }
+        }
+
         // ── An empty HidHide list is a successful read, not a failure ──
 
         /// <summary>Round 35 made the HidHide list reader return null on a

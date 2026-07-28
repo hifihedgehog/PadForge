@@ -2754,6 +2754,10 @@
   <data name="Menu_Binding_RowBound" xml:space="preserve"><value>通过映射行绑定</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>菜单 {0} 单元格 {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>菜单叠加层</value></data>
+  <data name="Dashboard_Overlays" xml:space="preserve"><value>叠加层</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>PadForge 在游戏过程中显示的屏幕指示器。关闭任何一项都不会改变行为，只会改变是否显示提示。</value></data>
+  <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>切换层浮出控件</value></data>
+  <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>配置文件切换叠加层</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>在径向或触摸菜单激活期间显示屏幕上的环形或网格。即使关闭叠加层，菜单仍会触发。</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>已创建屏幕菜单（{0} 个已绑定单元格）</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>菜单没有已绑定的单元格</value></data>

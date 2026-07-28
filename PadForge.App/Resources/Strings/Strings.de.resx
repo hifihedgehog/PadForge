@@ -2754,6 +2754,10 @@
   <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Über Zuordnungszeilen gebunden</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menü {0} Feld {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menü-Overlay</value></data>
+  <data name="Dashboard_Overlays" xml:space="preserve"><value>Overlays</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Bildschirmanzeigen, die PadForge während des Spielens einblendet. Das Deaktivieren ändert nie das Verhalten, sondern nur die Anzeige.</value></data>
+  <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Umschaltebenen-Flyout</value></data>
+  <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profilwechsel-Overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Zeigt den Ring oder das Raster auf dem Bildschirm, solange ein Radial- oder Touch-Menü aktiv ist. Menüs lösen auch bei ausgeschaltetem Overlay aus.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>Bildschirmmenü erstellt ({0} belegte Felder)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>Menü hat keine belegten Felder</value></data>

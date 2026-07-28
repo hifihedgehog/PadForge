@@ -2809,6 +2809,10 @@
   <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Bound via mapping rows</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Cell {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu Overlay</value></data>
+  <data name="Dashboard_Overlays" xml:space="preserve"><value>Overlays</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>On-screen indicators PadForge shows while you play. Turning one off never changes behaviour, only whether it is announced.</value></data>
+  <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift layer flyout</value></data>
+  <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profile switch overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Show the on-screen ring or grid while a radial or touch menu is engaged. Menus still fire with the overlay off.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>on-screen menu created ({0} bound cells)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu has no bound cells</value></data>

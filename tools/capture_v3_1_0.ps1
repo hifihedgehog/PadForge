@@ -4,7 +4,7 @@
     PadForge.xml. Assumes a slot exists with a DualSense assigned so
     Force Feedback / Adaptive Triggers / Lighting tabs are visible.
 .NOTES
-    Run elevated (PadForge runs elevated for vJoy/HM auto-elevation,
+    Run elevated (PadForge runs elevated for HIDMaestro auto-elevation,
     so UIA needs the same).
 #>
 

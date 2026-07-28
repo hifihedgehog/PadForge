@@ -4600,19 +4600,64 @@ namespace PadForge.Services
                         ps.SetRawMapping($"RawTrigger{g}Curve", trig.SensitivityCurve);
                     }
 
-                    // Write mapping descriptors and per-mapping deadzones.
-                    foreach (var mapping in padVm.Mappings)
+                    // Write mapping descriptors and per-mapping deadzones,
+                    // ROUTED to the device each row's primary source actually
+                    // belongs to. This block used to write every row into the
+                    // SELECTED device's PadSetting with no routing and no
+                    // per-device clear, so on a multi-device slot a row owned
+                    // by pad B was stamped onto pad A. MergeMappingSetsFromLegacy
+                    // then read that back and appended it as a genuine extra
+                    // source, or silently rebound the target.
+                    //
+                    // Mirrors InputService.SaveViewModelToPadSetting field for
+                    // field, including its MappingsViewLoaded gate: a grid that
+                    // has not hydrated is NOT a source of truth, and writing
+                    // from it wipes freshly auto-mapped rows the ViewModel has
+                    // never seen (round eleven).
+                    if (padVm.MappingsViewLoaded)
                     {
-                        SetPadSettingProperty(ps, mapping.TargetSettingName, mapping.SourceDescriptor);
-                        if (mapping.NegSettingName != null)
-                            SetPadSettingProperty(ps, mapping.NegSettingName, mapping.NegSourceDescriptor);
+                        var slotDevices = new List<(Guid g, PadSetting devPs)>();
+                        lock (SettingsManager.UserSettings.SyncRoot)
+                        {
+                            foreach (var devUs in SettingsManager.UserSettings.Items)
+                            {
+                                if (devUs == null || devUs.MapTo != padVm.PadIndex) continue;
+                                var devPs = devUs.GetPadSetting();
+                                if (devPs == null) continue;
+                                slotDevices.Add((devUs.InstanceGuid, devPs));
+                            }
+                        }
 
-                        if (mapping.MappingDeadZone > 0)
-                            ps.SetMappingDeadZone(mapping.TargetSettingName, mapping.MappingDeadZone.ToString());
-                        else
-                            ps.SetMappingDeadZone(mapping.TargetSettingName, "");
+                        // Clear every assigned device's mapping fields, then
+                        // rewrite on the owning device only. Without the clear,
+                        // a row that moves from pad A to pad B leaves its stale
+                        // descriptor behind on A.
+                        foreach (var (_, devPs) in slotDevices)
+                            devPs.ClearMappingDescriptors();
 
-                        ps.SetMappingBidirectional(mapping.TargetSettingName, mapping.IsBidirectional ? "1" : "");
+                        foreach (var mapping in padVm.Mappings)
+                        {
+                            PadSetting owningPs = ps;
+                            if (!string.IsNullOrEmpty(mapping.PrimarySourceDeviceGuid)
+                                && Guid.TryParse(mapping.PrimarySourceDeviceGuid, out var owningGuid))
+                            {
+                                foreach (var (g, devPs) in slotDevices)
+                                {
+                                    if (g == owningGuid) { owningPs = devPs; break; }
+                                }
+                            }
+
+                            SetPadSettingProperty(owningPs, mapping.TargetSettingName, mapping.SourceDescriptor);
+                            if (mapping.NegSettingName != null)
+                                SetPadSettingProperty(owningPs, mapping.NegSettingName, mapping.NegSourceDescriptor);
+
+                            if (mapping.MappingDeadZone > 0)
+                                owningPs.SetMappingDeadZone(mapping.TargetSettingName, mapping.MappingDeadZone.ToString());
+                            else
+                                owningPs.SetMappingDeadZone(mapping.TargetSettingName, "");
+
+                            owningPs.SetMappingBidirectional(mapping.TargetSettingName, mapping.IsBidirectional ? "1" : "");
+                        }
                     }
                 }
             }

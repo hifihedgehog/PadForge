@@ -130,6 +130,18 @@ namespace PadForge.Services
             try { _listener?.Stop(); _listener?.Close(); }
             catch { /* best effort */ }
 
+            // Snapshot the live devices BEFORE anything clears the registry.
+            // Each receive loop's teardown is gated on a conditional remove
+            // from _clients (so a browser reconnecting under the same id
+            // cannot evict the new session), and Stop cleared the dictionary
+            // out from under those loops. The remove then failed, the gate
+            // stayed shut, and the web pad was never marked offline: it sat in
+            // the device list as a phantom online controller for the rest of
+            // the session.
+            var stopping = new System.Collections.Generic.List<WebControllerDevice>();
+            foreach (var kvp in _clients)
+                if (kvp.Value?.Device != null) stopping.Add(kvp.Value.Device);
+
             // Close all client WebSockets.
             foreach (var kvp in _clients)
             {
@@ -141,6 +153,20 @@ namespace PadForge.Services
             _acceptThread = null;
             _listener = null;
             _clients.Clear();
+
+            // Fire the teardown ourselves, AFTER the clear. Doing it here
+            // rather than before is what keeps it exactly-once: with _clients
+            // already empty no receive loop can win its conditional remove, so
+            // this is the sole path that can raise DeviceDisconnected.
+            foreach (var dev in stopping)
+            {
+                try
+                {
+                    dev.SetConnected(false);
+                    DeviceDisconnected?.Invoke(dev);
+                }
+                catch { /* best effort */ }
+            }
             _clientPadIds.Clear();
             _typePadCounters.Clear();
 

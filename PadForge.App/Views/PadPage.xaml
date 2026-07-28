@@ -5919,21 +5919,6 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <ui:Button Command="{Binding ResetLinearCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLinear, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
-                                            <!-- Per-stick output sensitivity. Scales what the mapping table produced,
-                                                 applied after the deadzone / range / curve stage. Lives here rather than in
-                                                 the mapping grid: per-row the multiply happened before the row's own readout,
-                                                 which made its raw and out columns agree, and the slider sat in a grid column
-                                                 too narrow to show it. -->
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                                <Slider Value="{Binding Sensitivity, Mode=TwoWay}"
-                                                        Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
-                                                        Style="{StaticResource DzSlider}"/>
-                                                <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
-                                                         Style="{StaticResource DzValueEdit}"/>
-                                                <TextBlock Text="&#215;" Style="{StaticResource DzPercent}"/>
-                                                <ui:Button Command="{Binding ResetStickSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}"/>
-                                            </StackPanel>
                                             <Separator Margin="0,8,0,8"/>
                                             <!-- ─── Sensitivity curves ─── -->
                                             <TextBlock Text="{Binding Pad_SensitivityCurves, Source={x:Static strings:Strings.Instance}}"

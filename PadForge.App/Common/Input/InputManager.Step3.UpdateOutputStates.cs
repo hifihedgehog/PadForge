@@ -346,25 +346,6 @@ namespace PadForge.Common.Input
         }
 
 
-        /// <summary>Per-stick output sensitivity, applied AFTER the deadzone /
-        /// range / curve stage so the Sticks tab scales what the mapping table
-        /// already produced. That ordering is the standing rule for this tab,
-        /// and it is why the knob lives here and not in the mapping grid: in
-        /// the grid the multiply happened before the row's own readout, which
-        /// made its raw and out columns agree and read as a no-op.</summary>
-        private static void ApplyStickSensitivity(ref short x, ref short y, double sens)
-        {
-            if (sens <= 0 || Math.Abs(sens - 1.0) < 1e-6) return;
-            x = ClampToShort(x * sens);
-            y = ClampToShort(y * sens);
-        }
-
-        private static short ClampToShort(double v)
-        {
-            if (v > short.MaxValue) return short.MaxValue;
-            if (v < short.MinValue) return short.MinValue;
-            return (short)v;
-        }
 
         /// <summary>
         /// Applies the per-(VC × Device) tuning shared by both Step 3
@@ -421,8 +402,6 @@ namespace PadForge.Common.Input
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveY),
                 ResolveThumbDeadZoneShape(slotIndex, left: true, ps));
-            ApplyStickSensitivity(ref gp.ThumbLX, ref gp.ThumbLY,
-                TryParseDoubleStatic(ps.LeftThumbSensitivity, 1));
 
             ApplyDeadZone(ref gp.ThumbRX, ref gp.ThumbRY,
                 TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0),
@@ -437,8 +416,6 @@ namespace PadForge.Common.Input
                 Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
                 ResolveThumbDeadZoneShape(slotIndex, left: false, ps));
-            ApplyStickSensitivity(ref gp.ThumbRX, ref gp.ThumbRY,
-                TryParseDoubleStatic(ps.RightThumbSensitivity, 1));
         }
 
         /// <summary>Effective per-thumb deadzone shape (v18): the Workshop

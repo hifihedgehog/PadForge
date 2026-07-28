@@ -517,8 +517,16 @@ namespace PadForge.ViewModels
         /// CC preview on the Devices page (issue #128).</summary>
         public bool IsMidiDevice => DeviceTypeKey == "Midi";
 
-        /// <summary>Whether to show the "Consume mapped inputs" toggle (keyboards and mice only).</summary>
-        public bool ShowConsumeToggle => DeviceTypeKey == "Keyboard" || DeviceTypeKey == "Mouse";
+        /// <summary>Whether to show the "Consume mapped inputs" toggle (real
+        /// keyboards and mice only). Consumption works by suppressing the
+        /// source at the raw/descriptor layer, which exists only for a real
+        /// Windows HID device, so an internal virtual source (a web touchpad,
+        /// the on-screen overlay) has nothing to consume and the toggle did
+        /// nothing there. Its neighbours in the same panel already carry this
+        /// term (ShowInputHidingSection, ShowInputModeSection); this was the
+        /// member of that family that missed it.</summary>
+        public bool ShowConsumeToggle =>
+            (DeviceTypeKey == "Keyboard" || DeviceTypeKey == "Mouse") && !IsInternalVirtual;
 
         /// <summary>True for PadForge-internal virtual sources (web controllers, web
         /// touchpads, the on-screen touchpad overlay). Identified by a URI-scheme
@@ -567,6 +575,10 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsInternalVirtual));
                     OnPropertyChanged(nameof(ShowInputHidingSection));
                     OnPropertyChanged(nameof(ShowInputModeSection));
+                    // ShowConsumeToggle now gates on IsInternalVirtual, which
+                    // is path-derived, so it belongs in this refresh group
+                    // with the other path-derived siblings.
+                    OnPropertyChanged(nameof(ShowConsumeToggle));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
                     OnPropertyChanged(nameof(IsBluetoothLink));
                     // ShowRegisterNfcTag's controller branch now gates on

@@ -6491,6 +6491,13 @@ namespace PadForge.SteamWorkshop.Translation
             || m.Action == TranslatedMacroAction.VcButtonTap
             || m.Action == TranslatedMacroAction.VcAxisTap
             || m.Action == TranslatedMacroAction.HoldVcAxis
+            // The other two VC-axis writers. This file emits both
+            // (EmitVcAxisToggleMacro, EmitVcAxisTurboMacro), and they drive a
+            // virtual-controller axis exactly as the six above drive a button
+            // or an axis tap, so they need the Xbox slot for the same reason.
+            // They were the sibling-set members this list omitted.
+            || m.Action == TranslatedMacroAction.ToggleVcAxis
+            || m.Action == TranslatedMacroAction.RepeatVcAxisWhileHeld
             // A wheel-list cycle needs the Xbox slot only when a step
             // writes a virtual-controller target (v16).
             || (m.Action == TranslatedMacroAction.CycleList

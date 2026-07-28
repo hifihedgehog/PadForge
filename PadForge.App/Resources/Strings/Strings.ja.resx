@@ -2445,6 +2445,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} か月前</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} 年前</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>登録者 {0}</value></data>
+  <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} 票</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>すべて</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>このゲームのコンフィグはまだありません</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam ワークショップには {0} のコミュニティ製コントローラーコンフィグがありません。最初の作成者になれます。Steam で作成すれば、ここに表示されます。</value></data>

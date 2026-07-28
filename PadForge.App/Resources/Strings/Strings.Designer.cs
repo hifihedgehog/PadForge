@@ -2533,6 +2533,7 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_TimeMonths_Format => Get("Workshop_TimeMonths_Format");
     public string Workshop_TimeYears_Format => Get("Workshop_TimeYears_Format");
     public string Workshop_Subs_Format => Get("Workshop_Subs_Format");
+    public string Workshop_Votes_Format => Get("Workshop_Votes_Format");
     public string Workshop_TagAll => Get("Workshop_TagAll");
     public string Workshop_EmptyTitle => Get("Workshop_EmptyTitle");
     public string Workshop_EmptyBody_Format => Get("Workshop_EmptyBody_Format");

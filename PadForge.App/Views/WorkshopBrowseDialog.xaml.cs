@@ -804,6 +804,18 @@ namespace PadForge.Views
                 HasVotes = hasVotes,
                 VoteBarWidth = Math.Round(ratio * 64.0),
                 VotePercentText = hasVotes ? ((int)Math.Round(ratio * 100)).ToString(CultureInfo.InvariantCulture) + "%" : string.Empty,
+                // The vote COUNT, beside the percentage, because the list is
+                // ordered by neither. Steam ranks RankedByVote on its own
+                // confidence-weighted score, so evidence beats a thin
+                // ratio: 6 up / 1 down (86%) outranks 2 up / 0 down (100%),
+                // and a config with no votes at all sorts below one with a
+                // single downvote. Showing the percentage alone made that
+                // order look arbitrary, since the number on screen was not
+                // the number being sorted on. The count is the missing
+                // half, and with it the ranking reads correctly.
+                VotesText = hasVotes
+                    ? string.Format(Strings.Instance.Workshop_Votes_Format, up + down)
+                    : string.Empty,
                 HasSubs = hasSubs,
                 SubsText = hasSubs
                     ? string.Format(Strings.Instance.Workshop_Subs_Format, CompactCount(subs))
@@ -2134,6 +2146,7 @@ namespace PadForge.Views
         public bool HasVotes { get; init; }
         public double VoteBarWidth { get; init; }
         public string VotePercentText { get; init; }
+        public string VotesText { get; init; }
         public bool HasSubs { get; init; }
         public string SubsText { get; init; }
         public List<WorkshopTagChipItem> Tags { get; init; }

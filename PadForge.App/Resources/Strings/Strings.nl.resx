@@ -2465,6 +2465,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} mnd geleden</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} jr geleden</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} abonnees</value></data>
+  <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} stemmen</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Alle</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Nog geen configuraties voor dit spel</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>De Steam Workshop heeft geen community-controllerconfiguraties voor {0}. U kunt de eerste zijn: maak er een in Steam, en hij verschijnt hier.</value></data>

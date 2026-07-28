@@ -2445,6 +2445,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>il y a {0} mois</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>il y a {0} an(s)</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} abonnés</value></data>
+  <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} votes</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Tous</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Pas encore de configuration pour ce jeu</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Le Steam Workshop n'a aucune configuration de manette communautaire pour {0}. Vous pouvez être le premier : créez-en une dans Steam, et elle apparaîtra ici.</value></data>

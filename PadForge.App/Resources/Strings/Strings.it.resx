@@ -2467,6 +2467,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} mesi fa</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} a. fa</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} iscritti</value></data>
+  <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} voti</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Tutti</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Ancora nessuna configurazione per questo gioco</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop non ha configurazioni controller della community per {0}. Puoi essere il primo: creane una in Steam e apparirà qui.</value></data>

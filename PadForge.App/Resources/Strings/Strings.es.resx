@@ -2445,6 +2445,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>hace {0} meses</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>hace {0} a.</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} suscriptores</value></data>
+  <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} votos</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Todos</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Aún no hay configuraciones para este juego</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop no tiene configuraciones de mando de la comunidad para {0}. Puede ser el primero: cree una en Steam y aparecerá aquí.</value></data>

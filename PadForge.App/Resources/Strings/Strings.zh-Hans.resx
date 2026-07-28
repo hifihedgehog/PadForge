@@ -2445,6 +2445,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} 个月前</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} 年前</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} 订阅</value></data>
+  <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} 票</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>全部</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>此游戏暂无配置</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam 创意工坊上还没有 {0} 的社区控制器配置。您可以成为第一个：在 Steam 中制作一个，它就会出现在这里。</value></data>

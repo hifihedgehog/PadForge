@@ -2445,6 +2445,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>vor {0} Mon.</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>vor {0} J.</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} Abos</value></data>
+  <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} Stimmen</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Alle</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Noch keine Konfigurationen für dieses Spiel</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Der Steam Workshop hat keine Community-Controllerkonfigurationen für {0}. Erstellen Sie die erste in Steam, und sie erscheint hier.</value></data>

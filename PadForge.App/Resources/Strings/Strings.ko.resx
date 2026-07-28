@@ -2445,6 +2445,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0}개월 전</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0}년 전</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>구독 {0}</value></data>
+  <data name="Workshop_Votes_Format" xml:space="preserve"><value>투표 {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>전체</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>이 게임의 구성이 아직 없습니다</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam 창작마당에 {0}의 커뮤니티 컨트롤러 구성이 없습니다. 첫 번째 제작자가 될 수 있습니다. Steam에서 만들면 여기에 표시됩니다.</value></data>

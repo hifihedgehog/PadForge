@@ -185,6 +185,51 @@ namespace PadForge.Common.Input
         /// as before, and the 3 s Reconcile retry stands. With one child the
         /// sink degrades to the #184 single-coil behavior and Reconcile
         /// retries the missing child every 3 s.</summary>
+        /// <summary>First path in <paramref name="candidates"/> that no OTHER
+        /// live pair sink has already claimed. Pure so the tests can drive it:
+        /// <paramref name="claimed"/> is the snapshot of every other sink's
+        /// primary and second child path.</summary>
+        internal static string FirstUnclaimed(List<string> candidates, HashSet<string> claimed)
+        {
+            if (candidates == null) return null;
+            foreach (var c in candidates)
+            {
+                if (string.IsNullOrEmpty(c)) continue;
+                if (claimed != null && claimed.Contains(c)) continue;
+                return c;
+            }
+            return null;
+        }
+
+        /// <summary>Child paths this pair sink may open: the first left and the
+        /// first right no other live pair sink holds. With one combined pair
+        /// this is identical to the old first-match resolve. With two, the
+        /// second sink gets the second pair's coils instead of stacking a
+        /// second writer onto the first pair's.
+        ///
+        /// <para>Residual, stated plainly: nothing here proves the left it
+        /// picks is the physical partner of the right it picks. SDL owns that
+        /// pairing (HIDAPI_COMBINE_JOY_CONS) and exposes only the combined
+        /// device, whose serial is empty, so no fact available to this layer
+        /// joins a specific left to a specific right. What this does
+        /// guarantee is one writer per physical Joy-Con and coils for every
+        /// assigned pair.</para></summary>
+        private static (string Left, string Right) ResolveUnclaimedPairChildren(Sink self)
+        {
+            var claimed = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            lock (_lock)
+            {
+                foreach (var x in _sinks)
+                {
+                    if (ReferenceEquals(x, self) || x.Family != Family.JoyConPair) continue;
+                    if (!string.IsNullOrEmpty(x.PairPrimaryPath)) claimed.Add(x.PairPrimaryPath);
+                    if (!string.IsNullOrEmpty(x.PairSecondPath)) claimed.Add(x.PairSecondPath);
+                }
+            }
+            return (FirstUnclaimed(FindHidPaths(NintendoVid, 0x2006), claimed),
+                    FirstUnclaimed(FindHidPaths(NintendoVid, 0x2007), claimed));
+        }
+
         internal static (string PrimaryPath, string SecondPath, bool PrimaryIsRight)
             SelectPairChildPaths(string leftPath, string rightPath)
         {
@@ -476,6 +521,14 @@ namespace PadForge.Common.Input
             // one tick (the file's torn-read tolerance).
             public IntPtr PairSecondHandle = IntPtr.Zero;
             public bool PairPrimaryIsRight;
+            // Which physical children this pair sink claimed. Two combined
+            // pairs would otherwise both resolve to the first-enumerated left
+            // and right: one physical pair driven by two writers with two
+            // independent rolling 4-bit timers (the counter corruption the
+            // per-sink-timer comment above exists to prevent), the other
+            // silent behind a sink that looks live.
+            public string PairPrimaryPath;
+            public string PairSecondPath;
             public byte PairSecondTimer;
             public bool PairSecondUseWriteFile;
             public int PairSecondOutLen = 64;
@@ -776,9 +829,23 @@ namespace PadForge.Common.Input
         /// the disconnect path reads each child's own HID serial instead.</summary>
         internal static string FindHidPath(ushort vid, ushort pid)
         {
+            var all = FindHidPaths(vid, pid);
+            return all.Count > 0 ? all[0] : null;
+        }
+
+        /// <summary>Every present HID interface matching vid/pid, in enumeration
+        /// order. Two combined Joy-Con pairs expose two lefts and two rights, and
+        /// the first-match resolver above cannot tell them apart (the pair's SDL
+        /// serial is empty, and the two halves of a pair are separate Bluetooth
+        /// radios with no shared container ID, so no OS-level fact joins them).
+        /// The pair sinks claim children off this list instead, skipping paths a
+        /// live sink already holds.</summary>
+        internal static List<string> FindHidPaths(ushort vid, ushort pid)
+        {
+            var found = new List<string>();
             HidD_GetHidGuid(out Guid hidGuid);
             IntPtr set = SetupDiGetClassDevsW(ref hidGuid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-            if (set == INVALID || set == IntPtr.Zero) return null;
+            if (set == INVALID || set == IntPtr.Zero) return found;
             try
             {
                 var did = new SP_DEVICE_INTERFACE_DATA { cbSize = (uint)Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
@@ -804,16 +871,16 @@ namespace PadForge.Common.Input
                         {
                             var attr = new HIDD_ATTRIBUTES { Size = (uint)Marshal.SizeOf<HIDD_ATTRIBUTES>() };
                             if (HidD_GetAttributes(h, ref attr) && attr.VendorID == vid && attr.ProductID == pid)
-                                return devPath;
+                                found.Add(devPath);
                         }
                         finally { CloseHandle(h); }
                     }
                     finally { Marshal.FreeHGlobal(detail); }
                 }
             }
-            catch { /* enumeration failure -> null, sink falls back to failing open */ }
+            catch { /* enumeration failure -> what we have, sink falls back to failing open */ }
             finally { SetupDiDestroyDeviceInfoList(set); }
-            return null;
+            return found;
         }
 
         private static (int outLen, int featLen) QueryReportLens(IntPtr h)
@@ -999,8 +1066,10 @@ namespace PadForge.Common.Input
             {
                 // The missing child is the primary's opposite side.
                 ushort pid = s.PairPrimaryIsRight ? (ushort)0x2006 : (ushort)0x2007;
-                string path = FindHidPath(NintendoVid, pid);
+                var (leftPath, rightPath) = ResolveUnclaimedPairChildren(s);
+                string path = pid == 0x2006 ? leftPath : rightPath;
                 if (path == null) continue;
+                s.PairSecondPath = path;
                 IntPtr h2 = OpenPairSecondChild(s, path);
                 if (h2 == IntPtr.Zero) continue;
                 lock (_lock)
@@ -1239,13 +1308,15 @@ namespace PadForge.Common.Input
                     if (s.Family == Family.JoyConPair &&
                         (string.IsNullOrEmpty(path) || !path.StartsWith(@"\\?\", StringComparison.Ordinal)))
                     {
-                        var (primary, second, primaryIsRight) = SelectPairChildPaths(
-                            FindHidPath(NintendoVid, 0x2006), FindHidPath(NintendoVid, 0x2007));
+                        var (leftPath, rightPath) = ResolveUnclaimedPairChildren(s);
+                        var (primary, second, primaryIsRight) = SelectPairChildPaths(leftPath, rightPath);
                         if (primary != null)
                         {
                             path = primary;
                             pairSecondPath = second;
                             s.PairPrimaryIsRight = primaryIsRight;
+                            s.PairPrimaryPath = primary;
+                            s.PairSecondPath = second;
                         }
                     }
                     h = CreateFileW(path, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
@@ -1451,6 +1522,10 @@ namespace PadForge.Common.Input
             }
             s.Handle = IntPtr.Zero;
             s.PairSecondHandle = IntPtr.Zero;
+            // Release the child claims with the handles, so the next pair sink
+            // to build can take these coils.
+            s.PairPrimaryPath = null;
+            s.PairSecondPath = null;
             s.MonoSource = null;
         }
 
@@ -2272,7 +2347,18 @@ namespace PadForge.Common.Input
             // instead of flooding the haptic engine (the 0x83 flood wedge,
             // observed on hardware 2026-07-01, argues for capping every
             // burst lane on this handle).
-            if (nowMs - s.PulseLastSendMs < 40) return;
+            if (nowMs - s.PulseLastSendMs < 40)
+            {
+                // Put the drained bits back. StreamLoop takes them with an
+                // Interlocked.Exchange before calling in, so returning here
+                // without restoring them dropped the pulse outright instead
+                // of coalescing it, and no later iteration could resend
+                // (the sides == 0 gate above returns forever). PulseAmp is
+                // still latched and QueueTouchpadPulse is max-wins, so the
+                // deferred burst carries the loudest queued amplitude.
+                Interlocked.Or(ref s.PulsePendingSides, sides);
+                return;
+            }
             s.PulseLastSendMs = nowMs;
             float pAmp = Math.Clamp(s.PulseAmp, 0f, 1f);
             s.PulseAmp = 0f;

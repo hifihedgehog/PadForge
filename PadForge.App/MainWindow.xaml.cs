@@ -2328,17 +2328,41 @@ namespace PadForge
                 var result = await dialog.ShowDialogAsync();
                 if (result == Wpf.Ui.Controls.MessageBoxResult.Primary)
                 {
-                    try
-                    {
-                        if (hasViGEm) DriverInstaller.UninstallViGEmBus();
-                        if (hasExtended) DriverInstaller.UninstallVJoy();
-                    }
-                    catch (Exception ex)
+                    // Both uninstalls used to run right here, on the UI thread.
+                    // This method is entered via Dispatcher.BeginInvoke and the
+                    // continuation after ShowDialogAsync resumes on the
+                    // dispatcher, so a driver removal (elevation prompt, service
+                    // stop, device-node teardown) froze the whole window with no
+                    // overlay and no progress until it returned. Route them
+                    // through the same helper every other driver operation uses:
+                    // it shows the overlay, runs the work on a worker thread and
+                    // restores status afterwards.
+                    //
+                    // The helper reports failures as status text and does not
+                    // rethrow, so the exception is captured inside the operation
+                    // to keep this flow's modal error. It is a one-time offer
+                    // whose failure needs to be seen, not a line of status that
+                    // scrolls past.
+                    Exception cleanupError = null;
+                    await RunDriverOperationAsync(
+                        "Removing legacy drivers...",
+                        () =>
+                        {
+                            try
+                            {
+                                if (hasViGEm) DriverInstaller.UninstallViGEmBus();
+                                if (hasExtended) DriverInstaller.UninstallVJoy();
+                            }
+                            catch (Exception ex) { cleanupError = ex; }
+                        },
+                        () => { });
+
+                    if (cleanupError != null)
                     {
                         var err = new Wpf.Ui.Controls.MessageBox
                         {
                             Title = "Legacy Driver Cleanup",
-                            Content = $"Cleanup encountered an error: {ex.Message}\n\nYou can retry later from Settings.",
+                            Content = $"Cleanup encountered an error: {cleanupError.Message}\n\nYou can retry later from Settings.",
                             CloseButtonText = "OK",
                         };
                         _ = await err.ShowDialogAsync();

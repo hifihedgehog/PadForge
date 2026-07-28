@@ -124,18 +124,18 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>Drops all steering + flick state for a slot. Called on profile switch.</summary>
         public void ResetForSlot(int slot)
         {
-            RemoveWhere(_windingState, slot, null);
-            RemoveWhere(_lockState, slot, null);
-            RemoveWhere(_flickState, slot, null);
+            _windingState = Without(_windingState, slot, null);
+            _lockState = Without(_lockState, slot, null);
+            _flickState = Without(_flickState, slot, null);
             // The accumulators, not only their frame-replay stamps. All five
             // dictionaries key on (slot, target, srcIdx), so a wholesale row
             // replacement invalidates every one of them: dropping the stamp
             // while leaving the value just meant the re-authored row resumed
             // the previous occupant's cruise position on the next tick.
-            RemoveWhere(_incrementalAccum, slot, null);
-            RemoveWhere(_rampedAccum, slot, null);
-            RemoveWhere(_incrementalReplay, slot, null);
-            RemoveWhere(_rampedReplay, slot, null);
+            _incrementalAccum = Without(_incrementalAccum, slot, null);
+            _rampedAccum = Without(_rampedAccum, slot, null);
+            _incrementalReplay = Without(_incrementalReplay, slot, null);
+            _rampedReplay = Without(_rampedReplay, slot, null);
         }
 
         /// <summary>Drops steering state for one (slot, target). The
@@ -146,12 +146,12 @@ namespace PadForge.Engine.Common.Mapping
         /// that edits one row without rebuilding the set.</summary>
         public void ResetForRow(int slot, string target)
         {
-            RemoveWhere(_windingState, slot, target ?? "");
-            RemoveWhere(_lockState, slot, target ?? "");
-            RemoveWhere(_incrementalAccum, slot, target ?? "");
-            RemoveWhere(_rampedAccum, slot, target ?? "");
-            RemoveWhere(_incrementalReplay, slot, target ?? "");
-            RemoveWhere(_rampedReplay, slot, target ?? "");
+            _windingState = Without(_windingState, slot, target ?? "");
+            _lockState = Without(_lockState, slot, target ?? "");
+            _incrementalAccum = Without(_incrementalAccum, slot, target ?? "");
+            _rampedAccum = Without(_rampedAccum, slot, target ?? "");
+            _incrementalReplay = Without(_incrementalReplay, slot, target ?? "");
+            _rampedReplay = Without(_rampedReplay, slot, target ?? "");
         }
 
         /// <summary>Drops the captured MotionLean neutral orientations (the
@@ -162,15 +162,29 @@ namespace PadForge.Engine.Common.Mapping
         /// Instance state, so the per-slot runtime scopes this to its slot.</summary>
         public void ResetMotionNeutral() => _motionNeutral.Clear();
 
-        private static void RemoveWhere<TVal>(
+        /// <summary>Returns a COPY with the matching entries dropped, for the
+        /// caller to publish. Swap, never remove-in-place: this runs on the UI
+        /// thread (paste, row replacement) while the 1 kHz poll thread mutates
+        /// the same dictionaries, and mutating a plain Dictionary under a
+        /// concurrent writer can corrupt its buckets and hang a later lookup in
+        /// an infinite loop. Clear() states this rule verbatim and these two
+        /// reset paths were the ones that broke it. Returns the original
+        /// instance when nothing matched, so the common no-op costs no
+        /// allocation and no publish.</summary>
+        private static Dictionary<(int slot, string target, int srcIdx), TVal> Without<TVal>(
             Dictionary<(int slot, string target, int srcIdx), TVal> dict, int slot, string target)
         {
-            List<(int, string, int)> dead = null;
+            if (dict == null || dict.Count == 0) return dict;
+            bool any = false;
             foreach (var k in dict.Keys)
-                if (k.slot == slot && (target == null || k.target == target))
-                    (dead ??= new()).Add(k);
-            if (dead != null)
-                foreach (var k in dead) dict.Remove(k);
+                if (k.slot == slot && (target == null || k.target == target)) { any = true; break; }
+            if (!any) return dict;
+
+            var copy = new Dictionary<(int slot, string target, int srcIdx), TVal>(dict.Count);
+            foreach (var kv in dict)
+                if (!(kv.Key.slot == slot && (target == null || kv.Key.target == target)))
+                    copy.Add(kv.Key, kv.Value);
+            return copy;
         }
 
         /// <summary>

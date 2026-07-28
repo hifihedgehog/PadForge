@@ -298,8 +298,8 @@ namespace PadForge.Common.Input
             }
 
             // ── Triggers ──
-            gp.LeftTrigger = MapToTrigger(state, ps.LeftTrigger);
-            gp.RightTrigger = MapToTrigger(state, ps.RightTrigger);
+            gp.LeftTrigger = MapToTrigger(state, ps.LeftTrigger, deviceGuid, slotIndex);
+            gp.RightTrigger = MapToTrigger(state, ps.RightTrigger, deviceGuid, slotIndex);
 
             // ── Thumbsticks ──
             gp.ThumbLX = MapToThumbAxisWithNeg(state, ps.LeftThumbAxisX, ps.LeftThumbAxisXNeg, deviceGuid, slotIndex);
@@ -1280,7 +1280,8 @@ namespace PadForge.Common.Input
         ///   "Axis 4"               → single source
         ///   "Axis 4|Button 8"      → max of axis value or button (0 or 65535)
         /// </summary>
-        private static ushort MapToTrigger(CustomInputState state, string descriptor)
+        private static ushort MapToTrigger(CustomInputState state, string descriptor,
+            string deviceGuid, int slotIndex)
         {
             if (string.IsNullOrWhiteSpace(descriptor))
                 return 0;
@@ -1291,21 +1292,29 @@ namespace PadForge.Common.Input
                 ushort best = 0;
                 foreach (string part in PipePartsCached(descriptor))
                 {
-                    ushort val = MapToTriggerSingle(state, part);
+                    ushort val = MapToTriggerSingle(state, part, deviceGuid, slotIndex);
                     if (val > best)
                         best = val;
                 }
                 return best;
             }
 
-            return MapToTriggerSingle(state, descriptor);
+            return MapToTriggerSingle(state, descriptor, deviceGuid, slotIndex);
         }
 
         /// <summary>
         /// Maps a single descriptor to a trigger value (0–65535).
         /// </summary>
-        private static ushort MapToTriggerSingle(CustomInputState state, string descriptor)
+        private static ushort MapToTriggerSingle(CustomInputState state, string descriptor,
+            string deviceGuid, int slotIndex)
         {
+            // Suppression parity with MapToButtonPressedSingle and
+            // MapToThumbAxisSingle. This was the ONE legacy per-key reader that
+            // never consulted the postpone/consume set, so "Consume Trigger
+            // Buttons" was inert for anything mapped to an analog trigger while
+            // it worked on every other target family.
+            if (IsSourceSuppressedPostpone(slotIndex, deviceGuid, descriptor)) return 0;
+
             var desc = ParseDescriptor(descriptor);
             if (!desc.IsValid)
                 return 0;

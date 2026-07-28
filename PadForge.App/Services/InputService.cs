@@ -9741,19 +9741,35 @@ namespace PadForge.Services
                     changed = true;
             }
 
-            // Add new desired entries that aren't already in the whitelist.
-            // Claim ONLY what we actually add: an entry put there by the
-            // HidHide Configuration Client or another tool is not ours, and
-            // claiming it meant the removal pass above deleted a stranger's
-            // whitelist entry the moment the user dropped that path from
-            // PadForge's own list (round 34). "Managed" has to mean
-            // "PadForge added it".
+            // Claim every path that is in OUR OWN desired list, on every sync,
+            // whether or not this run is the one that inserted it.
+            //
+            // Round 34 narrowed this to "only what we actually inserted", to
+            // avoid deleting an entry another tool had also added. That broke
+            // the primary flow outright. _managedWhitelistDosPaths is a
+            // per-process set that starts empty and is never seeded from disk,
+            // while the driver's whitelist persists across restarts, so after
+            // any restart the path is already present, nothing is inserted,
+            // nothing is claimed, and the removal pass above can never find it.
+            // Removing an app from Settings > Whitelisted Applications then
+            // deleted it from PadForge's list while leaving it whitelisted in
+            // the driver forever, with no way back short of the HidHide
+            // Configuration Client. Owner: this worked from early on, so the
+            // only way it could stop was a regression.
+            //
+            // The narrowing also protected nothing. The removal pass iterates
+            // _managedWhitelistDosPaths, which only ever holds entries from
+            // desiredDosPaths, so a driver entry that PadForge's own settings
+            // never asked for was already untouchable. The only case round 34
+            // actually changed is a path the user PUT in PadForge's list and
+            // then took out, which is exactly the case where acting on it is
+            // correct.
             foreach (var dosPath in desiredDosPaths)
             {
+                _managedWhitelistDosPaths.Add(dosPath);
                 if (!currentWhitelist.Contains(dosPath, StringComparer.OrdinalIgnoreCase))
                 {
                     currentWhitelist.Add(dosPath);
-                    _managedWhitelistDosPaths.Add(dosPath);
                     changed = true;
                 }
             }

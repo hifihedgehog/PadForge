@@ -175,6 +175,25 @@ namespace PadForge.Views
             _autoDismissTimer.Start();
         }
 
+        /// <summary>Re-arms the auto-dismiss without touching the content.
+        ///
+        /// <para>AutoDismissDelay's note claims hold-mode users keep seeing the
+        /// flyout for the duration of their hold "because the engine-driven
+        /// mask-change calls re-arm the timer on every fresh engage". There are
+        /// no fresh engages during a steady hold: the caller no-ops while the
+        /// (slot, mask) tuple is unchanged, so ShowLayer ran once and the
+        /// flyout dismissed itself two seconds later with the layer still
+        /// held. This is the keep-alive that makes the note true.</para>
+        ///
+        /// <para>Does nothing while hidden or sliding out, so it can never
+        /// resurrect a flyout that HideFlyout is in the middle of retiring.</para></summary>
+        public void KeepAlive()
+        {
+            if (_isSlidingOut || Visibility != Visibility.Visible) return;
+            _autoDismissTimer.Stop();
+            _autoDismissTimer.Start();
+        }
+
         /// <summary>Slides the flyout out and hides it. Safe to call when
         /// already hidden. Cancels any pending auto-dismiss.</summary>
         public void HideFlyout()

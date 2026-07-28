@@ -113,7 +113,15 @@ namespace PadForge.Engine.Data
             || Authoritative
             || RumbleAudio != null
             || !string.IsNullOrEmpty(SocdMode)
-            || !string.IsNullOrEmpty(SocdPairs);
+            || !string.IsNullOrEmpty(SocdPairs)
+            // The Base layer's appearance trio, added after this gate was
+            // written and the next instance of exactly what the note above
+            // describes. A slot whose only authoring was renaming Base or
+            // giving it a colour or icon read as empty and was dropped on
+            // cold load.
+            || !string.IsNullOrEmpty(BaseLayerName)
+            || !string.IsNullOrEmpty(BaseColor)
+            || !string.IsNullOrEmpty(BaseIcon);
 
         /// <summary>
         /// An authoritative set owns its slot's mappings completely: the

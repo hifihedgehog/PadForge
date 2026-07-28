@@ -979,6 +979,10 @@ namespace PadForge.Views
 
         private void ClearManifest()
         {
+            // Cancel any in-flight manifest load first, the way BackToSearch
+            // and LoadConfigsAsync both do. Without it the pending load kept
+            // running and repopulated the panel this method just cleared.
+            _manifestCts?.Cancel();
             _selectedConfig = null;
             _parsedConfig = null;
             _outcome = null;

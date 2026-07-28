@@ -243,6 +243,13 @@ namespace PadForge.Views
             // this every profile/output switch leaked the old model's
             // transform graphs for the view's lifetime.
             _stickTransforms3D.Clear();
+            // The retained trigger angles key on the OUTGOING model the same
+            // way, and they are passed by ref as the running state of the
+            // smoothing. Left set, a switch carried the old model's pull angles
+            // into the new one and the triggers rendered part-pressed at rest
+            // until the next real input moved them.
+            _triggerAngleLeft = 0f;
+            _triggerAngleRight = 0f;
 
             // Clear arrow from old model before switching
             RemoveArrow();

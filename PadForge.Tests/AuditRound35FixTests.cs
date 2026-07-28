@@ -696,6 +696,29 @@ namespace PadForge.Tests
                 + string.Join(", ", offenders));
         }
 
+        // ── HasAuthoredContent sees the Base layer trio ──
+
+        /// <summary>HasAuthoredContent is the ONE content gate for cold load
+        /// and slot-has-content checks, and its own doc note records that a
+        /// hand-list previously discarded a menus-only slot on every launch.
+        /// The Base layer's appearance trio was added after that note and was
+        /// the next omission of the same kind: a slot whose only authoring was
+        /// renaming Base, or giving it a colour or icon, read as empty and was
+        /// dropped.</summary>
+        [Theory]
+        [InlineData("BaseLayerName")]
+        [InlineData("BaseColor")]
+        [InlineData("BaseIcon")]
+        public void MappingSetWithOnlyABaseLayerEdit_CountsAsAuthored(string property)
+        {
+            var set = new MappingSet();
+            Assert.False(set.HasAuthoredContent, "A blank set must read as empty.");
+
+            typeof(MappingSet).GetProperty(property).SetValue(set, "x");
+            Assert.True(set.HasAuthoredContent,
+                $"A set whose only authoring is {property} reads as empty, so cold load drops it.");
+        }
+
         [Fact]
         public void ImpulseTriggerPids_StillRejectNonImpulsePads()
         {

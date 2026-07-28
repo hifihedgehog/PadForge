@@ -525,10 +525,7 @@ namespace PadForge.Views
             {
                 PovIndex = index,
                 Arrow = arrow,
-                ArrowCanvas = arrowCanvas,
                 Outer = outer,
-                CenterX = x + PovSize / 2,
-                CenterY = y + PovSize / 2,
                 Rotate = rotate,
                 FlashPrefix = $"RawPov{index}"
             };
@@ -917,9 +914,7 @@ namespace PadForge.Views
         {
             public int PovIndex;
             public Polygon Arrow;
-            public Canvas ArrowCanvas;
             public Ellipse Outer;
-            public double CenterX, CenterY;
             /// <summary>Retained transform, mutated per change (a fresh
             /// RotateTransform per repaint frame was pure churn).</summary>
             public RotateTransform Rotate;

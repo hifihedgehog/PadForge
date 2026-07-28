@@ -483,7 +483,15 @@ namespace PadForge.Engine
             // whether or not that array has been rebuilt, and no Length/Count
             // staleness race is introduced. IntPtr.Zero is skipped because it
             // is the synthetic injected-input key, which never enumerates.
-            if (devices != null && !_mouseStates.IsEmpty)
+            // Length 0 means "I don't know", NOT "no mice present":
+            // EnumerateDevicesByType returns an empty array on a failed
+            // GetRawInputDeviceList as well as on a genuine zero, and those are
+            // indistinguishable here. Sweeping on an empty list would treat
+            // every live mouse as absent and release a button the user is
+            // holding. If there really are no mice there is nothing to release
+            // anyway, so skipping costs nothing and the failure case is the
+            // only one that differs.
+            if (devices != null && devices.Length > 0 && !_mouseStates.IsEmpty)
             {
                 var present = new HashSet<IntPtr>();
                 for (int i = 0; i < devices.Length; i++) present.Add(devices[i].Handle);

@@ -589,5 +589,116 @@ namespace PadForge.Tests
             Assert.Equal("Gamepad ButtonA", src.Descriptor);
             Assert.True(string.IsNullOrEmpty(src.DeviceGuid));
         }
+    
+        /// <summary>The owner's action, through the real assignment entry
+        /// point: import a Workshop profile, then assign an automappable
+        /// device to the slot. DeviceService.AssignDeviceToSlot is the method
+        /// the Devices page calls, and no test had ever run it after an
+        /// import.</summary>
+        [Fact]
+        public void AssignDeviceToSlot_AfterImport_LeavesTheImportedRowsAlone()
+        {
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            var settingsSvc = new SettingsService(mainVm);
+            var devSvc = new DeviceService(mainVm, settingsSvc);
+
+            ImportAndApplyWorkshopProfile(svc);
+
+            // A Workshop import leaves the slot deviceless, which is the
+            // state the owner assigns INTO. Make that explicit, or
+            // AssignDeviceToSlot early-returns on "already assigned" and the
+            // test passes without running the path it exists to exercise.
+            lock (SettingsManager.UserSettings.SyncRoot)
+                foreach (var u in SettingsManager.UserSettings.Items)
+                    if (u.InstanceGuid == XboxGuid) u.MapTo = -1;
+            svc.RefreshDeviceList();
+
+            var devRow = mainVm.Devices.Devices.OfType<DeviceRowViewModel>()
+                .FirstOrDefault(d => d.InstanceGuid == XboxGuid);
+            Assert.NotNull(devRow);
+            Assert.DoesNotContain(0, devRow.AssignedSlots);
+
+            var before = SettingsManager.SlotMappingSets[0];
+            Assert.True(before.Authoritative);
+            var srcBefore = before.Rows.First(r => r.Target == "ButtonA").Sources.First();
+            Assert.Equal("Gamepad ButtonA", srcBefore.Descriptor);
+
+            devSvc.AssignDeviceToSlot(XboxGuid, 0);
+
+            // Positive control: the assignment really happened.
+            Assert.Contains(0, SettingsManager.GetAssignedSlots(XboxGuid));
+
+            // Now the rest of MainWindow's DeviceAssignmentChanged handler,
+            // in its real order. Units pass in isolation; this composition is
+            // what the app actually runs and what no test had ever executed.
+            foreach (var pv in mainVm.Pads) pv.MappingsViewLoaded = false;
+            svc.RefreshDeviceList();
+            SettingsService.RefreshMappingSetsFromLegacy();
+            for (int i = 0; i < mainVm.Pads.Count; i++)
+            {
+                var pv = mainVm.Pads[i];
+                InputService.RefreshMappingsToViewModel(pv);
+                var sel = pv.SelectedMappedDevice;
+                if (sel != null && sel.InstanceGuid != Guid.Empty)
+                    InputService.LoadPadSettingToViewModel(pv, sel.InstanceGuid);
+                svc.RefreshAvailableInputsForSlot(pv);
+            }
+            // The debounced save that follows any assignment.
+            svc.PushUiIntoSlotMappingSetsForTest();
+
+            var after = SettingsManager.SlotMappingSets[0];
+            var row = after.Rows.FirstOrDefault(r => r.Target == "ButtonA");
+            Assert.NotNull(row);
+            var src = row.Sources.First();
+            Assert.Equal("Gamepad ButtonA", src.Descriptor);
+            Assert.True(string.IsNullOrEmpty(src.DeviceGuid),
+                $"assignment rebound the imported row to '{src.DeviceGuid}' "
+                + $"with descriptor '{src.Descriptor}'.");
+        }
+    
+        /// <summary>Startup load: the persisted Authoritative set must come
+        /// back from XML with its device-free rows, not be rebuilt from the
+        /// assigned device's legacy automap.
+        ///
+        /// <para>Every deploy restarts the app, so LoadOrMigrateSlotMappingSets
+        /// runs constantly in practice. It keeps the XML set when
+        /// HasAuthoredContent is true and otherwise hands the slot to
+        /// BuildOneSlotFromLegacy, which knows only the per-device
+        /// descriptors and therefore emits device-bound rows in the
+        /// automap's alphabetical target order. That is the exact shape in
+        /// the owner's file.</para></summary>
+        [Fact]
+        public void StartupLoad_KeepsTheImportedSet_DoesNotRebuildFromLegacy()
+        {
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            ImportAndApplyWorkshopProfile(svc);
+
+            // The device carries an automap PadSetting, as it does after any
+            // assignment. This is what BuildOneSlotFromLegacy would emit from.
+            var autoPs = new PadSetting();
+            autoPs.ButtonA = "Button 0";
+            autoPs.ButtonB = "Button 1";
+            lock (SettingsManager.UserSettings.SyncRoot)
+                foreach (var u in SettingsManager.UserSettings.Items)
+                    if (u.InstanceGuid == XboxGuid) { u.MapTo = 0; u.SetPadSetting(autoPs); }
+
+            var persisted = SettingsManager.SlotMappingSets;
+            Assert.True(persisted[0].Authoritative);
+            Assert.Equal("Gamepad ButtonA",
+                persisted[0].Rows.First(r => r.Target == "ButtonA").Sources.First().Descriptor);
+
+            // Re-run the startup path over the persisted sets.
+            SettingsService.LoadOrMigrateSlotMappingSetsForTest(persisted);
+
+            var after = SettingsManager.SlotMappingSets[0];
+            Assert.True(after.Authoritative, "startup load dropped Workshop ownership");
+            var row = after.Rows.FirstOrDefault(r => r.Target == "ButtonA");
+            Assert.NotNull(row);
+            var src = row.Sources.First();
+            Assert.Equal("Gamepad ButtonA", src.Descriptor);
+            Assert.True(string.IsNullOrEmpty(src.DeviceGuid),
+                $"startup load rebound the imported row to '{src.DeviceGuid}' "
+                + $"with descriptor '{src.Descriptor}'.");
+        }
     }
 }

@@ -935,6 +935,15 @@ namespace PadForge.Common.Input
             }
             EmbeddedMappingsLoaded = applied;
             System.Diagnostics.Debug.WriteLine($"[InputManager] Applied {applied} embedded PadForge gamepad mapping(s).");
+            // Also to the real diagnostics channel. The Debug.WriteLine above
+            // is compiled out of Release, so in the shipping build this count
+            // reached nothing: not a log, and not a reader, while the property's
+            // own doc offers it as the way to tell whether the embed is
+            // reaching SDL at runtime. A zero here means the resource is
+            // missing or every line was blank, which is a build
+            // misconfiguration worth seeing in a user's log rather than only
+            // under a debugger.
+            Engine.SdlDiagLog.WriteLine($"MAPPINGS embedded applied={applied}");
         }
 
         // ─────────────────────────────────────────────

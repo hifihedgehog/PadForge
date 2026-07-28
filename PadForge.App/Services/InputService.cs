@@ -10032,7 +10032,6 @@ namespace PadForge.Services
             row.ProductId = ud.ProdId;
             row.IsOnline = ud.IsOnline;
             row.IsEnabled = ud.IsEnabled;
-            row.IsHidden = ud.IsHidden;
             row.AxisCount = ud.CapAxeCount;
             // Prefer the live device's gated count (Xbox 360 → 11, Elite with paddles → 15+)
             // so the Devices summary doesn't always read 21 on SDL3 gamepads.

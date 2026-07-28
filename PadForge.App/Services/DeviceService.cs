@@ -354,12 +354,6 @@ namespace PadForge.Services
                 ud.IsHidden = true;
             }
 
-            // Also update the ViewModel row.
-            var row = _mainVm.Devices.FindByGuid(instanceGuid);
-            if (row != null)
-            {
-                row.IsHidden = true;
-            }
 
             _settingsService.MarkDirty();
             _mainVm.StatusText = Strings.Instance.Status_DeviceHidden;

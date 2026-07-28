@@ -108,6 +108,15 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public int RawButtonCount { get; set; }
 
+        /// <summary>Raw joystick axis count, axis twin of
+        /// <see cref="RawButtonCount"/>.</summary>
+        public int RawAxisCount { get; set; }
+
+        /// <summary>Device carries raw axes past the standard six that should
+        /// surface as generic "Axis N" sources. Not derivable from the counts:
+        /// it excludes devices whose extras are already sensor sources.</summary>
+        public bool HasExtraGenericAxes { get; set; }
+
         /// <summary>Number of POV hat switches on the device.</summary>
         [XmlElement]
         public int CapPovCount { get; set; }
@@ -521,6 +530,14 @@ namespace PadForge.Engine.Data
 
             // Store the raw joystick button count (may exceed NumButtons for gamepad devices).
             RawButtonCount = Math.Max(wrapper.RawButtonCount, wrapper.NumButtons);
+
+            // Axis twin of the line above. Kept alongside the folded
+            // effectiveAxisCount because Remote Link ships the RAW count and
+            // the extras flag separately: a consumer cannot derive the flag
+            // from the counts, since HasExtraGenericAxes deliberately excludes
+            // devices whose extra axes are already sensor sources.
+            RawAxisCount = Math.Max(wrapper.RawAxisCount, wrapper.NumAxes);
+            HasExtraGenericAxes = wrapper.HasExtraGenericAxes;
 
             // Sensor capabilities.
             HasGyro = wrapper.HasGyro;

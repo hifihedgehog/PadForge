@@ -8542,6 +8542,8 @@ namespace PadForge.Services
                                 NumAxes = dev.NumAxes,
                                 NumButtons = dev.NumButtons,
                                 RawButtonCount = dev.RawButtonCount,
+                                RawAxisCount = dev.RawAxisCount,
+                                HasExtraGenericAxes = dev.HasExtraGenericAxes,
                                 NumHats = dev.NumHats,
                                 HasRumble = dev.HasRumble,
                                 HasRumbleTriggers = dev.HasRumbleTriggers,

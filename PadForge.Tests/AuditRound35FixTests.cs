@@ -995,6 +995,64 @@ namespace PadForge.Tests
             Assert.Equal(expected, ConfigTranslator.CurveChannelApplies(slot, mode));
         }
 
+        // ── Remote Link carries the raw AXIS count, not just buttons ──
+
+        /// <summary>The v2 tail has shipped RawButtonCount since #193, and the
+        /// local side has tracked RawAxisCount just as long, but only the
+        /// button half crossed the wire. A remote fight stick's or DS3's extra
+        /// analog axes were therefore undiscoverable on the consumer.
+        ///
+        /// <para>HasExtraGenericAxes rides caps2 bit 2 rather than being
+        /// derived from the counts, because it deliberately excludes devices
+        /// whose extras are already sensor sources.</para></summary>
+        [Fact]
+        public void DeviceList_RoundTripsRawAxisCountAndExtrasFlag()
+        {
+            var info = new PadForge.Engine.RemoteLink.RemotePeerDeviceInfo
+            {
+                PeerLocalDeviceId = "x", Name = "Stick",
+                InputDeviceType = InputDeviceType.Gamepad,
+                NumAxes = 6, RawAxisCount = 16, HasExtraGenericAxes = true,
+                NumButtons = 22, RawButtonCount = 30,
+            };
+
+            var round = PadForge.Engine.RemoteLink.LinkConnection.DecodeDeviceList(
+                PadForge.Engine.RemoteLink.LinkConnection.EncodeDeviceList(new[] { info }));
+
+            Assert.Single(round);
+            Assert.Equal(16, round[0].RawAxisCount);
+            Assert.True(round[0].HasExtraGenericAxes);
+            // Positive control: the pre-existing button half still round-trips,
+            // so a codec that dropped everything could not pass this.
+            Assert.Equal(30, round[0].RawButtonCount);
+        }
+
+        /// <summary>Old-peer compatibility. A payload that stops after the v3
+        /// tail must still decode, leaving the new fields at their documented
+        /// defaults rather than throwing or corrupting the v1 metadata.</summary>
+        [Fact]
+        public void DeviceList_FromAPeerWithoutTheV4Tail_StillDecodes()
+        {
+            var info = new PadForge.Engine.RemoteLink.RemotePeerDeviceInfo
+            {
+                PeerLocalDeviceId = "old", Name = "Legacy",
+                InputDeviceType = InputDeviceType.Gamepad,
+                NumAxes = 6, RawAxisCount = 16, RawButtonCount = 30,
+            };
+            var full = PadForge.Engine.RemoteLink.LinkConnection.EncodeDeviceList(new[] { info });
+
+            // Chop the v4 tail: [magic][count] for one device.
+            var withoutV4 = new byte[full.Length - 2];
+            Array.Copy(full, withoutV4, withoutV4.Length);
+
+            var round = PadForge.Engine.RemoteLink.LinkConnection.DecodeDeviceList(withoutV4);
+
+            Assert.Single(round);
+            Assert.Equal("Legacy", round[0].Name);          // v1 metadata intact
+            Assert.Equal(30, round[0].RawButtonCount);      // v2 tail intact
+            Assert.Equal(0, round[0].RawAxisCount);         // documented default
+        }
+
         [Fact]
         public void ImpulseTriggerPids_StillRejectNonImpulsePads()
         {

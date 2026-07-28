@@ -202,10 +202,14 @@ namespace PadForge.Tests
             };
             var full = LinkConnection.EncodeDeviceList(new[] { a, b });
 
-            // Drop the final byte: the v3 tail is the last section, so the
-            // magic survives, record A's caps byte parses (flags applied),
-            // and record B's read throws mid-loop into the catch.
-            var truncated = new byte[full.Length - 1];
+            // Cut into the V3 tail. It is no longer the last section: the v4
+            // tail (#193 raw axis counts) now follows it as
+            // [magic][axisA][axisB], so dropping ONE byte only truncates v4
+            // and leaves v3 intact. Dropping four removes v4 entirely plus
+            // record B's caps byte, which is the condition under test: the
+            // magic survives, A's caps parses, and B's read throws into the
+            // catch.
+            var truncated = new byte[full.Length - 4];
             Array.Copy(full, truncated, truncated.Length);
 
             var list = LinkConnection.DecodeDeviceList(truncated);

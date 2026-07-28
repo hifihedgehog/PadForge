@@ -38,6 +38,24 @@ namespace PadForge.Engine.RemoteLink
         /// NumButtons" (old peers, or a device with no extras).</summary>
         public int RawButtonCount { get; set; }
 
+        /// <summary>Raw HID axis count, the axis twin of
+        /// <see cref="RawButtonCount"/>. SDL puts device-specific analog data
+        /// beyond the six standard gamepad axes on raw joystick axes 6+, and
+        /// SdlDeviceWrapper already tracks this locally for exactly that
+        /// reason. Without it crossing the wire, a remote device's extra axes
+        /// were undiscoverable and the consumer's picker capped at NumAxes.
+        /// 0 means "same as NumAxes" (old peers, or a device with no
+        /// extras).</summary>
+        public int RawAxisCount { get; set; }
+
+        /// <summary>The raw axes past the standard six should surface as
+        /// generic "Axis N" sources. Carried separately because it is NOT
+        /// derivable from the counts: it deliberately excludes devices whose
+        /// extra axes are already dedicated sensor sources (Wii IR pointer,
+        /// Joy-Con NIR / mouse), where a raw coordinate would be noise in the
+        /// picker. Rides caps2 bit 2 in the v3 tail.</summary>
+        public bool HasExtraGenericAxes { get; set; }
+
         public bool HasRumble { get; set; }
         public bool HasRumbleTriggers { get; set; }
         /// <summary>The device exposes DirectInput-style haptic FFB (wheels, FFB sticks).

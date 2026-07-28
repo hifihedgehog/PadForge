@@ -151,12 +151,13 @@ namespace PadForge.Tests
             info.TouchpadFingerCounts = null; info.DeviceObjects = null;
             var bare = LinkConnection.EncodeDeviceList(new[] { info });
 
-            // The bare payload's tail is a fixed 10 bytes: the v1 ext
+            // The bare payload's tail is a fixed 12 bytes: the v1 ext
             // [magic][serial len=0 (2B)][pads=0][objCount=0 (2B)] = 6, the
-            // v2 ext [magic][rawButtonCount=0] = 2, and the v3 ext
-            // [magic][caps2=0] = 2 (#241 NFC capability). The v1 section
-            // length falls out of it.
-            int v1Len = bare.Length - 10;
+            // v2 ext [magic][rawButtonCount=0] = 2, the v3 ext
+            // [magic][caps2=0] = 2 (#241 NFC capability), and the v4 ext
+            // [magic][rawAxisCount=0] = 2 (#193 over the wire). The v1
+            // section length falls out of it.
+            int v1Len = bare.Length - 12;
             Assert.Equal(0xE2, bare[v1Len]);
 
             var corrupt = new byte[v1Len + 3];

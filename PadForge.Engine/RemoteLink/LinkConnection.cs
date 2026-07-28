@@ -189,6 +189,13 @@ namespace PadForge.Engine.RemoteLink
         // guess the owner already knows the answer to.
         private const byte DeviceListExtV3Magic = 0xE4;
 
+        // Fourth extension tail, same shape and same guarantees: one clamped
+        // byte per device for RawAxisCount, the axis twin of the v2 tail's
+        // RawButtonCount. The local side has tracked both since #193; only the
+        // button half ever crossed the wire, so a remote fight stick's or
+        // DS3's extra analog axes stayed undiscoverable on the consumer.
+        private const byte DeviceListExtV4Magic = 0xE5;
+
         // Shared by the handshake exchange AND the post-connect DeviceList sync (#138).
         // Each entry leads with the owner's STABLE slot, and caps now carry HasHaptic +
         // Online so a remote wheel's FFB pipeline runs and active/inactive propagates.
@@ -284,8 +291,17 @@ namespace PadForge.Engine.RemoteLink
                 // Joy-Con pair's left-half gyro sources stay hidden, the
                 // same discoverability hole bit 0 closed for the reader.
                 if (devices[i].HasGyroAux) caps2 |= 2;
+                // Bit 2 (#193 over the wire): the generic-extra-axes flag. Its
+                // count rides the v4 tail; this is the half a consumer cannot
+                // compute, since the flag excludes sensor-surfaced extras.
+                if (devices[i].HasExtraGenericAxes) caps2 |= 4;
                 buf.Add(caps2);
             }
+
+            // v4 tail: raw HID axis count per device. Twin of the v2 tail.
+            buf.Add(DeviceListExtV4Magic);
+            for (int i = 0; i < count; i++)
+                buf.Add((byte)Math.Clamp(devices[i].RawAxisCount, 0, 255));
             return buf.ToArray();
         }
 
@@ -420,6 +436,7 @@ namespace PadForge.Engine.RemoteLink
                             byte caps2 = data[o++];
                             list[i].HasNfcReader = (caps2 & 1) != 0;
                             list[i].HasGyroAux = (caps2 & 2) != 0;
+                            list[i].HasExtraGenericAxes = (caps2 & 4) != 0;
                         }
                     }
                 }
@@ -429,7 +446,34 @@ namespace PadForge.Engine.RemoteLink
                     {
                         info.HasNfcReader = false;
                         info.HasGyroAux = false;
+                        info.HasExtraGenericAxes = false;
                     }
+                    // Cursor unreliable: do not read v4. The v2 catch has
+                    // always done this; v3's did not need to until a tail was
+                    // appended after it.
+                    v1ExtOk = false;
+                }
+            }
+
+            // v4 tail (raw axis counts). Same gating and same guarantees as
+            // v2: only after a clean parse of everything before it, its own
+            // try/catch, and an old peer that stops earlier simply leaves the
+            // counts at 0, which the field documents as "same as NumAxes".
+            if (v1ExtOk)
+            {
+                try
+                {
+                    if (o < data.Length && data[o] == DeviceListExtV4Magic)
+                    {
+                        o++;
+                        for (int i = 0; i < count; i++)
+                            list[i].RawAxisCount = data[o++];
+                    }
+                }
+                catch
+                {
+                    foreach (var info in list)
+                        info.RawAxisCount = 0;
                 }
             }
             return list;

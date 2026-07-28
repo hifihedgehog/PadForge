@@ -1736,8 +1736,17 @@ namespace PadForge.Views
             // Drop existing rows on this layer first so paste is a
             // replace rather than a merge — matches user expectation of
             // "paste rows into layer" overwriting the destination.
-            slotMs.Rows.RemoveAll(
-                r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
+            // One reference swap, not an in-place edit. The poll thread reads
+            // Rows every tick without taking a lock, so a RemoveAll followed by
+            // a run of Adds exposed it to a list that was missing the old rows
+            // and did not yet have the new ones.
+            var pasted = new System.Collections.Generic.List<Engine.Data.MappingRow>(slotMs.Rows.Count);
+            foreach (var keep in slotMs.Rows)
+            {
+                if (keep != null && string.Equals(keep.LayerMask, mask, StringComparison.Ordinal))
+                    continue;
+                pasted.Add(keep);
+            }
 
             foreach (var r in _shiftLayerClipboard)
             {
@@ -1757,8 +1766,13 @@ namespace PadForge.Views
                 if (r.Sources != null)
                     foreach (var s in r.Sources)
                         if (s != null) rc.Sources.Add(CloneSource(s));
-                slotMs.Rows.Add(rc);
+                pasted.Add(rc);
             }
+
+            // The swap itself. Everything above built the replacement off to
+            // the side; this is the single point where the poll thread's view
+            // changes, and it changes from one complete list to another.
+            slotMs.Rows = pasted;
 
             // Force the DataGrid to reflect the pasted rows by triggering
             // a refresh on the active layer.
@@ -1780,8 +1794,9 @@ namespace PadForge.Views
             var slotMs = GetSlotMappingSet(_currentPadVm.PadIndex);
             if (slotMs?.Rows == null) return;
 
-            slotMs.Rows.RemoveAll(
-                r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
+            // Reference swap, same reason as the paste handler above.
+            slotMs.Rows = slotMs.Rows.FindAll(
+                r => !(r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal)));
             // #254 A-3: Clear empties the layer's ROWS only, by design.
             // Macros keep their mask: the layer still exists, so they
             // remain live and re-authoring rows around them is the
@@ -1903,8 +1918,9 @@ namespace PadForge.Views
 
             if (slotMs.Rows != null)
             {
-                slotMs.Rows.RemoveAll(
-                    r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
+                // Reference swap, same reason as the two handlers above.
+                slotMs.Rows = slotMs.Rows.FindAll(
+                    r => !(r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal)));
             }
 
             // Scrub the deleted mask from THIS slot's cycle rings FIRST

@@ -569,6 +569,29 @@
                                                                    VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Border>
+                                                <!-- Nintendo count badge -->
+                                                <Border CornerRadius="8" Padding="7,2" Margin="0,0,4,0"
+                                                        BorderThickness="1"
+                                                        BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                                                        Background="{DynamicResource ControlFillColorDefaultBrush}">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding NintendoCount}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Path Data="M 21.661,0 C 20.071,0 18.746,0.02 18.726,0.046 C 18.699,0.066 18.679,7.248 18.679,16.007 C 18.679,30.458 18.686,31.922 18.785,31.962 C 18.964,32.028 24.106,32.001 24.742,31.935 C 27.432,31.63 29.804,29.994 31.096,27.562 C 31.261,27.251 31.48,26.727 31.592,26.403 C 32.01,25.157 31.997,25.488 31.997,15.968 C 31.997,8.368 31.983,7.235 31.891,6.751 C 31.235,3.3 28.604,0.696 25.146,0.099 C 24.682,0.02 23.966,0 21.661,0 L 21.661,0 M 13.635,0.006 C 13.077,0.004 12.342,0.005 11.371,0.007 C 8.218,0.013 7.27,0.033 6.853,0.106 C 3.666,0.676 1.102,3.035 0.293,6.135 C 0.002,7.255 -0.018,7.911 0.015,16.597 C 0.035,24.574 0.042,24.76 0.174,25.376 C 0.91,28.695 3.268,31.061 6.621,31.842 C 7.058,31.942 7.615,31.962 11.199,31.981 C 14.909,32.008 15.294,32.001 15.393,31.902 C 15.492,31.803 15.499,30.524 15.499,16.027 C 15.499,5.281 15.479,0.219 15.433,0.126 C 15.383,0.036 15.307,0.01 13.635,0.006 L 13.635,0.006 M 12.849,2.584 L 12.849,16.007 L 12.849,29.431 L 10.152,29.397 C 7.668,29.371 7.403,29.358 6.906,29.232 C 4.772,28.682 3.189,27.039 2.745,24.899 C 2.599,24.23 2.599,7.745 2.738,7.089 C 3.136,5.228 4.428,3.684 6.17,2.988 C 7.045,2.637 7.449,2.597 10.285,2.591 L 12.849,2.584 M 7.967,6.575 C 7.787,6.577 7.605,6.596 7.423,6.632 C 7.005,6.712 6.369,7.03 6.031,7.328 C 5.335,7.931 4.991,8.785 5.044,9.793 C 5.071,10.316 5.104,10.455 5.316,10.879 C 5.627,11.522 6.097,11.992 6.74,12.31 C 7.184,12.529 7.297,12.555 7.873,12.575 C 8.396,12.595 8.582,12.575 8.933,12.456 C 10.371,11.972 11.239,10.574 10.994,9.143 C 10.74,7.627 9.43,6.557 7.967,6.575 M 25.025,14.374 C 25.283,14.376 25.543,14.41 25.802,14.477 C 26.835,14.748 27.683,15.537 28.028,16.544 C 28.247,17.167 28.24,18.081 28.021,18.651 C 27.617,19.698 26.822,20.433 25.802,20.705 C 24.145,21.135 22.383,20.135 21.899,18.492 C 21.754,17.988 21.76,17.14 21.926,16.623 C 22.345,15.254 23.637,14.361 25.025,14.374 L 25.025,14.374"
+                                                              Fill="{DynamicResource TextFillColorTertiaryBrush}"
+                                                              Width="10" Height="10" Stretch="Uniform"
+                                                              VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding NintendoCount}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="3,0,0,0"
+                                                                   VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
                                                 <!-- No slots fallback badge -->
                                                 <Border CornerRadius="4" Padding="5,2"
                                                         Background="{DynamicResource SubtleFillColorSecondaryBrush}">

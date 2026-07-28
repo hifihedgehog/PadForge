@@ -1176,7 +1176,7 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _topologyLabel, value)) OnPropertyChanged(nameof(HasNoSlots)); }
         }
 
-        public bool HasNoSlots => XboxCount == 0 && PlayStationCount == 0 && ExtendedCount == 0 && MidiCount == 0 && KbmCount == 0;
+        public bool HasNoSlots => XboxCount == 0 && PlayStationCount == 0 && ExtendedCount == 0 && MidiCount == 0 && KbmCount == 0 && NintendoCount == 0;
 
         private int _xboxCount;
         public int XboxCount
@@ -1211,6 +1211,18 @@ namespace PadForge.ViewModels
         {
             get => _kbmCount;
             set => SetProperty(ref _kbmCount, value);
+        }
+
+        /// <summary>Nintendo slot count. The topology counter always produced
+        /// it, but UpdateTopologyCounts discarded it with `out _` while setting
+        /// the other five, so a profile whose slots are Nintendo showed an
+        /// empty chip strip and, with no other type present, the "no slots"
+        /// fallback badge.</summary>
+        private int _nintendoCount;
+        public int NintendoCount
+        {
+            get => _nintendoCount;
+            set => SetProperty(ref _nintendoCount, value);
         }
     }
 }

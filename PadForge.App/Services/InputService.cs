@@ -8474,7 +8474,18 @@ namespace PadForge.Services
                             seenIds.Add(id);
                             if (!_exposedSlots.TryGetValue(id, out byte slot))
                             {
-                                slot = 0; while (used.Contains(slot)) slot++; // lowest free slot
+                                // Lowest free slot, counted in an INT. As a
+                                // byte this loop wraps 255 -> 0 and spins
+                                // forever if every id is taken. The 250-item
+                                // cap plus the prune below keep the map under
+                                // 256 in practice, so this is insurance
+                                // rather than a live bug, but an infinite
+                                // loop on this thread is not worth leaving
+                                // reachable at any probability (round 34).
+                                int free = 0;
+                                while (free < 256 && used.Contains((byte)free)) free++;
+                                if (free > 255) continue; // no id left; skip rather than spin
+                                slot = (byte)free;
                                 _exposedSlots[id] = slot; used.Add(slot);
                             }
                             // Forward named inputs ONLY for device types whose
@@ -9627,7 +9638,7 @@ namespace PadForge.Services
 
         /// <summary>
         /// Idempotent: create + start the keyboard / mouse hook manager if it
-        /// is not yet running. Called by SyncInputHooks AND by global-hotkey
+        /// is not yet running. Called by the global-hotkey
         /// registration paths that need the hook alive even with zero
         /// suppressed inputs.
         /// </summary>

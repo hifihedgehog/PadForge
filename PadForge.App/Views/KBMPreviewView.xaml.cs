@@ -423,6 +423,16 @@ namespace PadForge.Views
                 _scrollWheelPill.Fill = highlight ? FlashBrush : ScrollWheelBrush;
                 return;
             }
+            // The horizontal pair had no branch at all, so a source mapped to
+            // horizontal scroll flashed nothing and the preview looked dead.
+            // The pad draws no left/right arrows, so the wheel itself is the
+            // whole surface, which is what the two vertical branches light in
+            // addition to their arrow.
+            if (_flashTarget == "KbmScrollH" || _flashTarget == "KbmScrollHNeg")
+            {
+                _scrollWheelPill.Fill = highlight ? FlashBrush : ScrollWheelBrush;
+                return;
+            }
         }
 
         // ─────────────────────────────────────────────

@@ -290,7 +290,12 @@ namespace PadForge.Services
                     }
                     finally { LocalFree(admins); }
                 }
-                RegDeleteKey(HKLM, BthPortDevicesKey + deviceMacHex);
+                // Log a nonzero rc the way WriteLinkKeyAnchor does. Discarding
+                // it meant an unpair that silently left the device record in
+                // place reported success, and the next pair attempt then hit a
+                // stale record with nothing in the log to explain it.
+                int rcDel = RegDeleteKey(HKLM, BthPortDevicesKey + deviceMacHex);
+                if (rcDel != 0) log($"Removing the device record failed (rc={rcDel}).");
             }
             catch (Exception ex) { log("Removing the device record failed: " + ex.Message); }
             DeleteLinkKeyAnchor(radioMacBigEndian, deviceMacHex, log);

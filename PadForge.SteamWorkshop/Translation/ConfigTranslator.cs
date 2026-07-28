@@ -1971,11 +1971,16 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     string actPath = $"{inputPath}/{(activator.Type ?? "").Trim()}";
                     int macrosBefore = run.Profile.Macros.Count;
+                    // ConsumeActivatorDelays defaults activatorsBefore to -1 and
+                    // gates its ACTIVATOR delay stamp on >= 0, so omitting it
+                    // silently dropped that stamp. Four of the six call sites
+                    // pass it; these two swipe groups were the pair that did not.
+                    int activatorsBefore = run.Activators.Count;
                     foreach (var binding in activator.Bindings)
                         TranslateOneShotSwipeBinding(run, preset, binding, source, layer, actPath,
                             input.Name);
                     EmitHapticPulse(run, activator, source, input.Name, actPath, "OnPress", holdMs: 0);
-                    ConsumeActivatorDelays(run, activator, actPath, macrosBefore);
+                    ConsumeActivatorDelays(run, activator, actPath, macrosBefore, activatorsBefore);
                 }
             }
         }
@@ -2035,11 +2040,16 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     string actPath = $"{inputPath}/{(activator.Type ?? "").Trim()}";
                     int macrosBefore = run.Profile.Macros.Count;
+                    // ConsumeActivatorDelays defaults activatorsBefore to -1 and
+                    // gates its ACTIVATOR delay stamp on >= 0, so omitting it
+                    // silently dropped that stamp. Four of the six call sites
+                    // pass it; these two swipe groups were the pair that did not.
+                    int activatorsBefore = run.Activators.Count;
                     foreach (var binding in activator.Bindings)
                         TranslateOneShotSwipeBinding(run, preset, binding, source, layer, actPath,
                             input.Name);
                     EmitHapticPulse(run, activator, source, input.Name, actPath, "OnPress", holdMs: 0);
-                    ConsumeActivatorDelays(run, activator, actPath, macrosBefore);
+                    ConsumeActivatorDelays(run, activator, actPath, macrosBefore, activatorsBefore);
                 }
             }
         }
@@ -4066,8 +4076,15 @@ namespace PadForge.SteamWorkshop.Translation
                 string action = FirstToken(binding.Param).ToUpperInvariant();
                 if (bt == "mode_shift")
                 {
-                    anyCarry = true;
+                    // Claim carry only if something was actually emitted.
+                    // TranslateModeShift has early returns that emit nothing
+                    // (unparseable param, unresolvable target), and setting the
+                    // flag ahead of the call reported a carried binding for a
+                    // profile where the translation had in fact been skipped.
+                    int emittedBefore = run.Profile.Macros.Count + run.Activators.Count;
                     TranslateModeShift(run, preset, binding, source, actPath, delayMs, toggle);
+                    if (run.Profile.Macros.Count + run.Activators.Count > emittedBefore)
+                        anyCarry = true;
                 }
                 else if (bt == "controller_action")
                 {

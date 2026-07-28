@@ -1063,5 +1063,96 @@ namespace PadForge.Tests
             Assert.False(XboxControllerIdentity.IsImpulseTriggerDevice(
                 0x054C, 0x0B20));                                 // right pid, Sony vid
         }
+
+        // ── An absent test target must not freeze the AT-resistance value ──
+
+        /// <summary>
+        /// <para>ApplySteeringLockFeedback runs once per assigned device per
+        /// tick. Round 35 moved the test-target check ABOVE the row loop,
+        /// correctly, because TryGetLockEdgeTransition clears PendingEdge as it
+        /// reads and a non-target device was consuming the target's edge. That
+        /// move also dropped the old <c>deviceAllowed</c> term from the
+        /// SteeringAtResistance write, which is right while the target is
+        /// present: the target's own pass owns the value and a second pass
+        /// zeroing it would fight that.</para>
+        ///
+        /// <para>It is wrong when the target is ABSENT from the slot. Then no
+        /// pass satisfies deviceAllowed, none reaches the write, and the last
+        /// non-zero reading sticks forever while UserEffectsDispatcher keeps
+        /// applying adaptive-trigger resistance nothing is driving. The old
+        /// line could not do this because every not-allowed device zeroed.</para>
+        ///
+        /// <para>Source-level because the method is private and needs a slot
+        /// runtime, a MappingSet and SettingsManager state to invoke. The body
+        /// is bounded by brace depth rather than a fixed window: a fixed window
+        /// silently ran past the closing brace into the next method earlier in
+        /// this same audit and made the guard vacuous.</para>
+        /// </summary>
+        [Fact]
+        public void AbsentSteeringTestTarget_StillClearsAtResistance()
+        {
+            const string rel = "PadForge.App/Common/Input/InputManager.Step3.SteeringLockFeedback.cs";
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), rel));
+
+            int at = src.IndexOf("void ApplySteeringLockFeedback(", StringComparison.Ordinal);
+            Assert.True(at >= 0, $"ApplySteeringLockFeedback not found in {rel}; rename the test with the code.");
+
+            // Bound the body by brace depth, ignoring braces inside comments.
+            int open = src.IndexOf('{', at);
+            Assert.True(open > 0, "no method body brace found");
+            int depth = 0, end = -1;
+            for (int i = open; i < src.Length; i++)
+            {
+                if (src[i] == '{') depth++;
+                else if (src[i] == '}') { depth--; if (depth == 0) { end = i; break; } }
+            }
+            Assert.True(end > open, "method body brace never closed");
+            string body = src.Substring(open, end - open);
+
+            // Strip line comments so the prose above the guard cannot satisfy it.
+            var code = string.Join("\n", body.Split('\n')
+                .Select(l => l.Split(new[] { "//" }, StringSplitOptions.None)[0]));
+
+            int guard = code.IndexOf("!deviceAllowed", StringComparison.Ordinal);
+            Assert.True(guard >= 0, "the test-target early-exit is gone; re-derive this guard against the new shape.");
+
+            // From the guard to the end of its block: must consult the slot for
+            // the target AND zero the slot's resistance when it is not there.
+            //
+            // The brace must be the one that OPENS this guard, not merely the
+            // next brace in the file. A bare `if (!deviceAllowed) return;`
+            // otherwise latches onto the following foreach and the failure gets
+            // reported against the wrong assertion (observed while mutating).
+            int afterCond = code.IndexOf(')', guard);
+            int gOpen = -1;
+            if (afterCond > 0)
+            {
+                string tail = code.Substring(afterCond + 1);
+                int firstNonWs = 0;
+                while (firstNonWs < tail.Length && char.IsWhiteSpace(tail[firstNonWs])) firstNonWs++;
+                if (firstNonWs < tail.Length && tail[firstNonWs] == '{')
+                    gOpen = afterCond + 1 + firstNonWs;
+            }
+            int gEnd = -1;
+            if (gOpen > 0)
+            {
+                int d = 0;
+                for (int i = gOpen; i < code.Length; i++)
+                {
+                    if (code[i] == '{') d++;
+                    else if (code[i] == '}') { d--; if (d == 0) { gEnd = i; break; } }
+                }
+            }
+            Assert.True(gOpen > 0 && gEnd > gOpen,
+                "the !deviceAllowed exit is a bare `return;` again: an absent test target now freezes "
+                + "SteeringAtResistance at its last non-zero value.");
+
+            string branch = code.Substring(gOpen, gEnd - gOpen);
+            Assert.True(branch.Contains("FindSlotDeviceByInstanceGuid"),
+                "the not-allowed branch no longer checks whether the test target is on this slot, so it "
+                + "cannot tell 'another device owns the value' from 'nothing will ever write it'.");
+            Assert.True(branch.Contains("SteeringAtResistance[slotIndex] = 0f"),
+                "the not-allowed branch no longer zeroes SteeringAtResistance for an absent target.");
+        }
     }
 }

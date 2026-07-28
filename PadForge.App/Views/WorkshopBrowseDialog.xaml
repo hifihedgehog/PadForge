@@ -215,8 +215,28 @@
                 </Style.Triggers>
             </Style>
 
-            <!-- Manifest telemetry rows: two shapes ride one ItemsControl, so
-                 both templates are implicit-typed (BINDERR canon). -->
+            <!-- Manifest telemetry rows: three shapes ride one ItemsControl, so
+                 all templates are implicit-typed (BINDERR canon). -->
+            <!-- Layer band. A config's action layers are what its author
+                 built the thing out of ("Menu save", "Deactivate trackpad"),
+                 and reading a flat run of control headers gives no sense of
+                 where one layer ends. Only drawn when the config HAS more
+                 than one, so a single-layer config keeps its clean list. -->
+            <DataTemplate DataType="{x:Type views:WorkshopManifestLayerItem}">
+                <Border Margin="2,16,2,4" CornerRadius="6" Padding="9,5"
+                        Background="#14FF7A45" BorderThickness="1" BorderBrush="#38FF7A45">
+                    <DockPanel LastChildFill="True">
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding CountText}"
+                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   VerticalAlignment="Center" Margin="8,0,0,0"/>
+                        <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"
+                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
+                                   FontWeight="SemiBold" Foreground="#FFB08A"
+                                   VerticalAlignment="Center"/>
+                    </DockPanel>
+                </Border>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type views:WorkshopManifestGroupItem}">
                 <DockPanel Margin="2,10,2,6" LastChildFill="True">
                     <TextBlock DockPanel.Dock="Left" Text="{Binding Name}"
@@ -607,7 +627,26 @@
                                                    Style="{StaticResource WsPaneHeaderText}"
                                                    Foreground="{DynamicResource EmberBrush}" FontWeight="Bold"/>
                                         <TextBlock Style="{StaticResource WsPaneHeaderText}" Margin="8,0,0,0"
-                                                   Text="{Binding Workshop_SortedByRating, Source={x:Static strings:Strings.Instance}}"/>
+                                                   Text="{Binding Workshop_SortedBy, Source={x:Static strings:Strings.Instance}}"/>
+                                        <!-- Sort key. Each entry is a Steam query type, so the
+                                             ORDER IS STEAM'S over the whole result set, not a
+                                             re-shuffle of the page already loaded. -->
+                                        <Border x:Name="SortChip" Style="{StaticResource WsFilterChip}"
+                                                Margin="6,0,0,0" MouseLeftButtonUp="SortChip_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock x:Name="SortChipText"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
+                                                <TextBlock Text="&#x25BE;" Margin="5,0,0,0" FontSize="9"
+                                                           VerticalAlignment="Center" Opacity="0.7"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <!-- Direction. Steam only ever ranks descending, so this
+                                             reverses what has been loaded. -->
+                                        <Border x:Name="SortDirChip" Style="{StaticResource WsFilterChip}"
+                                                Margin="4,0,0,0" MouseLeftButtonUp="SortDir_Click">
+                                            <TextBlock x:Name="SortDirText"
+                                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
+                                        </Border>
                                         <TextBlock x:Name="ConfigsFoundText" Style="{StaticResource WsPaneHeaderText}" Margin="8,0,0,0"/>
                                     </StackPanel>
                                 </Border>

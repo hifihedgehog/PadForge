@@ -160,9 +160,9 @@ report: v26 rows:x0+k38 macros:9 menus:2 layers:2 clean:47 partial:1 skipped:0 e
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_back_right/Full_Press => KbmKey1B <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_escape/Full_Press => KbmKey47 <- Gamepad ButtonStart
-  Clean MacroEmitted @ Default/switch/group 12 (switches)/button_escape/Long_Press => Hold Space macro <- Gamepad ButtonStart
+  Clean MacroEmitted @ Default/switch/group 12 (switches)/button_escape/Long_Press => Hold Space <- Gamepad ButtonStart
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_menu/Full_Press => KbmKey46 <- Gamepad ButtonBack
-  Clean MacroEmitted @ Default/switch/group 12 (switches)/button_menu/Long_Press => Hold H macro <- Gamepad ButtonBack
+  Clean MacroEmitted @ Default/switch/group 12 (switches)/button_menu/Long_Press => Hold H <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 12 (switches)/left_bumper/Full_Press => KbmKeyA2 <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 12 (switches)/right_bumper/Full_Press => KbmKeyA0 <- Gamepad RightShoulder
   Clean ShiftLayerEmitted(Left Trackpad shift) @ Default/switch/group 12 (switches)/button_back_left/Full_Press => Hold Left Trackpad shift <- Gamepad Paddle2

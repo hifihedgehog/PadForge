@@ -2432,6 +2432,15 @@
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Steam에서 구성을 읽는 중…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Steam에서 구성을 읽는 중…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>평점순 정렬</value></data>
+  <data name="Workshop_SortedBy" xml:space="preserve"><value>정렬</value></data>
+  <data name="Workshop_Sort_Rating" xml:space="preserve"><value>평가</value></data>
+  <data name="Workshop_Sort_Trend" xml:space="preserve"><value>인기</value></data>
+  <data name="Workshop_Sort_Newest" xml:space="preserve"><value>최신</value></data>
+  <data name="Workshop_Sort_Subscribers" xml:space="preserve"><value>구독자</value></data>
+  <data name="Workshop_Sort_Votes" xml:space="preserve"><value>최다 투표</value></data>
+  <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>오름차순</value></data>
+  <data name="Workshop_Sort_Descending" xml:space="preserve"><value>내림차순</value></data>
+  <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>할당 {0}개</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0}개 발견</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1}개 중 {0}개 표시</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>구성 {0}개</value></data>

@@ -2520,6 +2520,15 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_ReadingConfigs => Get("Workshop_ReadingConfigs");
     public string Workshop_ReadingConfig => Get("Workshop_ReadingConfig");
     public string Workshop_SortedByRating => Get("Workshop_SortedByRating");
+    public string Workshop_SortedBy => Get("Workshop_SortedBy");
+    public string Workshop_Sort_Rating => Get("Workshop_Sort_Rating");
+    public string Workshop_Sort_Trend => Get("Workshop_Sort_Trend");
+    public string Workshop_Sort_Newest => Get("Workshop_Sort_Newest");
+    public string Workshop_Sort_Subscribers => Get("Workshop_Sort_Subscribers");
+    public string Workshop_Sort_Votes => Get("Workshop_Sort_Votes");
+    public string Workshop_Sort_Ascending => Get("Workshop_Sort_Ascending");
+    public string Workshop_Sort_Descending => Get("Workshop_Sort_Descending");
+    public string Workshop_LayerBindings_Format => Get("Workshop_LayerBindings_Format");
     public string Workshop_Found_Format => Get("Workshop_Found_Format");
     public string Workshop_ShowingOf_Format => Get("Workshop_ShowingOf_Format");
     public string Workshop_ConfigsCount_Format => Get("Workshop_ConfigsCount_Format");

@@ -236,6 +236,67 @@ namespace PadForge.SteamWorkshop.Tests
         public void SlotDisplayName_NamesTheSlotTheWayTheAppDoes(string token, string expected)
             => Assert.Equal(expected, PhysicalSlotResolver.SlotDisplayName(token));
 
+        // ── one name per macro ────────────────────────────────────────────
+
+        [Fact]
+        public void EveryMacroReport_UsesTheNameTheMacroWillCarryAfterImport()
+        {
+            // The preview prints the report line on the controller diagram
+            // and the macro list prints the macro's Name, so a macro named
+            // "Turbo wheel" that reported itself as "Turbo wheel macro
+            // (125 ms)" gave the user two vocabularies for one thing. Every
+            // macro report must now match a macro that actually exists in
+            // the profile it came from.
+            var offenders = new List<string>();
+            int checked_ = 0;
+            foreach (long id in AllIds())
+            {
+                var profile = new ConfigTranslator().Translate(
+                    SteamInputConfig.FromVdf(VdfParser.Parse(
+                        File.ReadAllText(TestFixtures.Path_(id)))),
+                    new TranslationOptions { FileId = id });
+
+                var labels = new HashSet<string>(
+                    profile.Macros.Select(m => ConfigTranslator.MacroLabel(m.Name)),
+                    StringComparer.Ordinal);
+                if (labels.Count == 0) continue;
+
+                foreach (var e in profile.Report.Entries)
+                {
+                    if (e.ReasonKey != TranslationReasons.MacroEmitted) continue;
+                    if (string.IsNullOrEmpty(e.Emitted)) continue;
+                    int arrow = e.Emitted.IndexOf(" <- ", StringComparison.Ordinal);
+                    string shown = (arrow >= 0 ? e.Emitted.Substring(0, arrow) : e.Emitted).Trim();
+                    checked_++;
+                    // A cycle step appends its ordinal ("Wheel list step 2"),
+                    // so a prefix match counts.
+                    if (!labels.Contains(shown) && !labels.Any(l =>
+                            shown.StartsWith(l + " ", StringComparison.Ordinal)))
+                        offenders.Add($"{id}: reported \"{shown}\", no macro is named that");
+                }
+            }
+            // The corpus carries 90 macro reports. The floor is a guard on the
+            // HARNESS, not on the corpus: it fails if a future change stops
+            // these entries being produced and quietly turns the sweep below
+            // into a pass over nothing.
+            Assert.True(checked_ >= 80, $"harness checked only {checked_} macro reports");
+            Assert.True(offenders.Count == 0,
+                "A macro reports itself by a name it does not have, so the preview and the "
+                + "imported macro list disagree:\n  " + string.Join("\n  ", offenders.Take(20)));
+        }
+
+        [Theory]
+        [InlineData("Warp cursor (Left Trigger)", "Warp cursor")]
+        [InlineData("Turbo wheel (Paddle2)", "Turbo wheel")]
+        [InlineData("Click mouse Left (ButtonA)", "Click mouse Left")]
+        [InlineData("Wheel list (Left Trackpad)", "Wheel list")]
+        // No trailing parenthetical: nothing to strip.
+        [InlineData("Warp cursor", "Warp cursor")]
+        // A parenthetical that is not trailing survives whole.
+        [InlineData("Turbo wheel (125 ms) burst", "Turbo wheel (125 ms) burst")]
+        public void MacroLabel_StripsOnlyTheTrailingMemberParenthetical(string name, string expected)
+            => Assert.Equal(expected, ConfigTranslator.MacroLabel(name));
+
         // ── rear buttons ──────────────────────────────────────────────────
 
         /// <summary>PadForge's paddle numbering follows the SDL button order

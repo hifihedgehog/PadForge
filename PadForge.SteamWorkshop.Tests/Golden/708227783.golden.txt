@@ -202,8 +202,8 @@ report: v26 rows:x0+k69 macros:18 menus:1 layers:7 clean:85 partial:6 skipped:0 
   Clean RowEmitted @ Default Config / Map Modes/joystick/group 12 (four_buttons)/button_B/Full_Press => KbmKey76 <- Gamepad LeftStickX (upper half)
   Clean RowEmitted @ Default Config / Map Modes/joystick/group 12 (four_buttons)/button_X/Full_Press => KbmKey78 <- Gamepad LeftStickX (lower half)
   Clean RowEmitted @ Default Config / Map Modes/joystick/group 12 (four_buttons)/button_Y/Full_Press => KbmKey77 <- Gamepad LeftStickY (lower half)
-  Clean MacroEmitted @ Default Config / Map Modes/left_trackpad/group 6 (scrollwheel)/scroll_clockwise/Full_Press => Tap Keypad Plus macro <- Touchpad 0 SwipeDown
-  Clean MacroEmitted @ Default Config / Map Modes/left_trackpad/group 6 (scrollwheel)/scroll_counterclockwise/Full_Press => Tap Keypad Minus macro <- Touchpad 0 SwipeUp
+  Clean MacroEmitted @ Default Config / Map Modes/left_trackpad/group 6 (scrollwheel)/scroll_clockwise/Full_Press => Tap Keypad Plus <- Touchpad 0 SwipeDown
+  Clean MacroEmitted @ Default Config / Map Modes/left_trackpad/group 6 (scrollwheel)/scroll_counterclockwise/Full_Press => Tap Keypad Minus <- Touchpad 0 SwipeUp
   Partial ScrollWheelApproximated @ Default Config / Map Modes/left_trackpad/group 6 (scrollwheel)
   Clean RowEmitted @ Default Config / Map Modes/left_trackpad/group 6 (scrollwheel)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
   Clean MenuEmitted(8) @ Default Config / Map Modes/left_trackpad/group 9 (touch_menu) => Grid menu 1: 8 bound cells <- Touchpad 0
@@ -224,7 +224,7 @@ report: v26 rows:x0+k69 macros:18 menus:1 layers:7 clean:85 partial:6 skipped:0 
   Partial ScrollWheelApproximated @ Default Config / Map Modes/right_trackpad/group 13 (scrollwheel)
   Clean RowEmitted @ Default Config / Map Modes/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_back_left/Full_Press => KbmKeyA0 <- Gamepad Paddle2
-  Clean MacroEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_back_left/Double_Press => Hold Left Ctrl macro <- Gamepad Paddle2
+  Clean MacroEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_back_left/Double_Press => Hold Left Ctrl <- Gamepad Paddle2
   Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_menu/Full_Press => KbmKey20 <- Gamepad ButtonBack
   Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/left_bumper/Full_Press => KbmKey4C <- Gamepad LeftShoulder
@@ -246,8 +246,8 @@ report: v26 rows:x0+k69 macros:18 menus:1 layers:7 clean:85 partial:6 skipped:0 
   Clean RowEmitted @ Army Hotkeys/joystick/group 24 (four_buttons)/button_B/Full_Press => KbmKey76 <- Gamepad LeftStickX (upper half)
   Clean RowEmitted @ Army Hotkeys/joystick/group 24 (four_buttons)/button_X/Full_Press => KbmKey78 <- Gamepad LeftStickX (lower half)
   Clean RowEmitted @ Army Hotkeys/joystick/group 24 (four_buttons)/button_Y/Full_Press => KbmKey77 <- Gamepad LeftStickY (lower half)
-  Clean MacroEmitted @ Army Hotkeys/left_trackpad/group 21 (scrollwheel)/scroll_clockwise/Full_Press => Tap Keypad Plus macro <- Touchpad 0 SwipeDown
-  Clean MacroEmitted @ Army Hotkeys/left_trackpad/group 21 (scrollwheel)/scroll_counterclockwise/Full_Press => Tap Keypad Minus macro <- Touchpad 0 SwipeUp
+  Clean MacroEmitted @ Army Hotkeys/left_trackpad/group 21 (scrollwheel)/scroll_clockwise/Full_Press => Tap Keypad Plus <- Touchpad 0 SwipeDown
+  Clean MacroEmitted @ Army Hotkeys/left_trackpad/group 21 (scrollwheel)/scroll_counterclockwise/Full_Press => Tap Keypad Minus <- Touchpad 0 SwipeUp
   Partial ScrollWheelApproximated @ Army Hotkeys/left_trackpad/group 21 (scrollwheel)
   Clean RowEmitted @ Army Hotkeys/left_trackpad/group 21 (scrollwheel)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
   Clean RowEmitted @ Army Hotkeys/left_trackpad/group 32 (four_buttons)/button_A/Full_Press => KbmKeyA2 <- Touchpad 0 Finger 0 Down South
@@ -265,7 +265,7 @@ report: v26 rows:x0+k69 macros:18 menus:1 layers:7 clean:85 partial:6 skipped:0 
   Partial ScrollWheelApproximated @ Army Hotkeys/right_trackpad/group 20 (scrollwheel)
   Clean RowEmitted @ Army Hotkeys/right_trigger/group 29 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/button_back_left/Full_Press => KbmKeyA0 <- Gamepad Paddle2
-  Clean MacroEmitted @ Army Hotkeys/switch/group 18 (switches)/button_back_left/Double_Press => Hold Left Ctrl macro <- Gamepad Paddle2
+  Clean MacroEmitted @ Army Hotkeys/switch/group 18 (switches)/button_back_left/Double_Press => Hold Left Ctrl <- Gamepad Paddle2
   Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/button_back_right/Full_Press => KbmKeyA4 <- Gamepad Paddle1
   Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/button_menu/Full_Press => KbmKey20 <- Gamepad ButtonBack

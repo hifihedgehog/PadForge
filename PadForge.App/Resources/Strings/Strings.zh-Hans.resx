@@ -2432,6 +2432,15 @@
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>正在从 Steam 读取配置…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>正在从 Steam 读取配置…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>按评分排序</value></data>
+  <data name="Workshop_SortedBy" xml:space="preserve"><value>排序方式</value></data>
+  <data name="Workshop_Sort_Rating" xml:space="preserve"><value>评分</value></data>
+  <data name="Workshop_Sort_Trend" xml:space="preserve"><value>热门</value></data>
+  <data name="Workshop_Sort_Newest" xml:space="preserve"><value>最新</value></data>
+  <data name="Workshop_Sort_Subscribers" xml:space="preserve"><value>订阅数</value></data>
+  <data name="Workshop_Sort_Votes" xml:space="preserve"><value>最多投票</value></data>
+  <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>升序</value></data>
+  <data name="Workshop_Sort_Descending" xml:space="preserve"><value>降序</value></data>
+  <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} 个映射</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>找到 {0} 个</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>显示 {0} / 共 {1} 个</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} 个配置</value></data>

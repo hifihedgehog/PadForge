@@ -59,13 +59,13 @@ macros: 10
   macro SetLightbarColor OnPress | Set LED (Touchpad 0 DPadDown) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click Right] layer=Base rgb=(0,255,255) bright=100% sat=100% setting=0
   macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
 report: v26 rows:x19+k1 macros:10 menus:0 layers:0 clean:31 partial:0 skipped:0 errors:0
-  Clean MacroEmitted @ Default/left_trackpad/group 17 (dpad)/dpad_east/Full_Press => Set LED macro <- Touchpad 0 DPadRight
-  Clean MacroEmitted @ Default/left_trackpad/group 17 (dpad)/dpad_north/Full_Press => Set LED macro <- Touchpad 0 DPadUp
-  Clean MacroEmitted @ Default/left_trackpad/group 17 (dpad)/dpad_south/Full_Press => Set LED macro <- Touchpad 0 DPadDown
-  Clean MacroEmitted @ Default/left_trackpad/group 17 (dpad)/dpad_west/Full_Press => Set LED macro <- Touchpad 0 DPadLeft
-  Clean MacroEmitted @ Default/right_trackpad/group 19 (dpad)/dpad_east/Full_Press => Set LED macro <- Touchpad 0 DPadRight
-  Clean MacroEmitted @ Default/right_trackpad/group 19 (dpad)/dpad_north/Full_Press => Set LED macro <- Touchpad 0 DPadUp
-  Clean MacroEmitted @ Default/right_trackpad/group 19 (dpad)/dpad_south/Full_Press => Set LED macro <- Touchpad 0 DPadDown
+  Clean MacroEmitted @ Default/left_trackpad/group 17 (dpad)/dpad_east/Full_Press => Set LED <- Touchpad 0 DPadRight
+  Clean MacroEmitted @ Default/left_trackpad/group 17 (dpad)/dpad_north/Full_Press => Set LED <- Touchpad 0 DPadUp
+  Clean MacroEmitted @ Default/left_trackpad/group 17 (dpad)/dpad_south/Full_Press => Set LED <- Touchpad 0 DPadDown
+  Clean MacroEmitted @ Default/left_trackpad/group 17 (dpad)/dpad_west/Full_Press => Set LED <- Touchpad 0 DPadLeft
+  Clean MacroEmitted @ Default/right_trackpad/group 19 (dpad)/dpad_east/Full_Press => Set LED <- Touchpad 0 DPadRight
+  Clean MacroEmitted @ Default/right_trackpad/group 19 (dpad)/dpad_north/Full_Press => Set LED <- Touchpad 0 DPadUp
+  Clean MacroEmitted @ Default/right_trackpad/group 19 (dpad)/dpad_south/Full_Press => Set LED <- Touchpad 0 DPadDown
   Clean RowEmitted @ Default/right_trackpad/group 19 (dpad)/dpad_west/Full_Press => KbmKey4E <- Touchpad 0 DPadLeft
   Clean RowEmitted @ Default/switch/group 9 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 9 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1

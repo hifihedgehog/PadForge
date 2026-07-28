@@ -2582,6 +2582,15 @@
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Reading configs from Steam…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Reading config from Steam…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>sorted by rating</value></data>
+  <data name="Workshop_SortedBy" xml:space="preserve"><value>sorted by</value></data>
+  <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Rating</value></data>
+  <data name="Workshop_Sort_Trend" xml:space="preserve"><value>Trending</value></data>
+  <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Newest</value></data>
+  <data name="Workshop_Sort_Subscribers" xml:space="preserve"><value>Subscribers</value></data>
+  <data name="Workshop_Sort_Votes" xml:space="preserve"><value>Most Votes</value></data>
+  <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Ascending</value></data>
+  <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Descending</value></data>
+  <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} bindings</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} found</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Showing {0} of {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configs</value></data>

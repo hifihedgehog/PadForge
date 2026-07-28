@@ -2452,6 +2452,15 @@
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Configuraties lezen van Steam…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Configuratie lezen van Steam…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>gesorteerd op beoordeling</value></data>
+  <data name="Workshop_SortedBy" xml:space="preserve"><value>gesorteerd op</value></data>
+  <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Beoordeling</value></data>
+  <data name="Workshop_Sort_Trend" xml:space="preserve"><value>Trending</value></data>
+  <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Nieuwste</value></data>
+  <data name="Workshop_Sort_Subscribers" xml:space="preserve"><value>Abonnees</value></data>
+  <data name="Workshop_Sort_Votes" xml:space="preserve"><value>Meeste stemmen</value></data>
+  <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Oplopend</value></data>
+  <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Aflopend</value></data>
+  <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} toewijzingen</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} gevonden</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{0} van {1} weergegeven</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configuraties</value></data>

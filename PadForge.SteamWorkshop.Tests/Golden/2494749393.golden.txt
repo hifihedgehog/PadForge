@@ -71,7 +71,7 @@ report: v26 rows:x20+k1 macros:10 menus:0 layers:0 clean:28 partial:0 skipped:0 
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_escape/Full_Press => KbmKey74 <- Gamepad ButtonStart
-  Clean MacroEmitted @ Default/switch/group 8 (switches)/button_escape/Double_Press => Hold F9 macro <- Gamepad ButtonStart
+  Clean MacroEmitted @ Default/switch/group 8 (switches)/button_escape/Double_Press => Hold F9 <- Gamepad ButtonStart
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger) => LeftTrigger <- Gamepad LeftTrigger

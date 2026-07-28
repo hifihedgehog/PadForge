@@ -161,6 +161,7 @@ namespace PadForge.Views
             TagChipList.ItemsSource = TagChips;
             PresetChipList.ItemsSource = PresetChips;
             ManifestRowsList.ItemsSource = ManifestRows;
+            UpdateSortChips();
 
             BuildScrims();
 
@@ -695,13 +696,82 @@ namespace PadForge.Views
             }
         }
 
-        /// <summary>One QueryFiles page for the game room: rating order, the
-        /// requested tag filter, the shared page size.</summary>
+        /// <summary>One QueryFiles page for the game room: the chosen sort
+        /// order, the requested tag filter, the shared page size.</summary>
         private Task<SkQueryFilesResponse> FetchConfigsPageAsync(
             WorkshopGameItem g, string requiredTag, int page, CancellationToken ct)
         {
             var tags = requiredTag == null ? null : new[] { requiredTag };
-            return _workshop.SearchAsync(g.AppId, EPublishedFileQueryType.RankedByVote, page, ConfigsPageSize, tags, ct);
+            return _workshop.SearchAsync(g.AppId, SortOrders[_sortIndex].Query, page, ConfigsPageSize, tags, ct);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Sort
+        // ─────────────────────────────────────────────
+
+        /// <summary><para>The orders worth offering, each a Steam query type
+        /// so the RANKING IS STEAM'S over the whole result set rather than a
+        /// re-shuffle of whatever page happens to be loaded.</para>
+        /// <para>Rating stays first and stays the default: it is Steam's
+        /// confidence-weighted vote score, which is why a 100% with two votes
+        /// sits below an 86% with seven.</para></summary>
+        private static readonly (string Key, EPublishedFileQueryType Query)[] SortOrders =
+        {
+            ("Workshop_Sort_Rating", EPublishedFileQueryType.RankedByVote),
+            ("Workshop_Sort_Trend", EPublishedFileQueryType.RankedByTrend),
+            ("Workshop_Sort_Newest", EPublishedFileQueryType.RankedByPublicationDate),
+            ("Workshop_Sort_Subscribers", EPublishedFileQueryType.RankedByTotalUniqueSubscriptions),
+            ("Workshop_Sort_Votes", EPublishedFileQueryType.RankedByVotesUp),
+        };
+
+        private int _sortIndex;
+        private bool _sortAscending;
+
+        /// <summary>Cycles the sort order and refetches. Refetch rather than
+        /// re-sort, because the order decides WHICH configs come back, not
+        /// just how the loaded ones line up.</summary>
+        private void SortChip_Click(object sender, MouseButtonEventArgs e)
+        {
+            _sortIndex = (_sortIndex + 1) % SortOrders.Length;
+            UpdateSortChips();
+            if (_selectedGame != null) _ = OpenGameAsync(_selectedGame);
+        }
+
+        /// <summary><para>Flips the direction. Steam ranks descending and
+        /// offers no ascending form, so this reverses the rows on this side.
+        /// </para>
+        /// <para>Which means it reverses what has been LOADED, not the whole
+        /// result set: a game with 1,171 configs and 59 pulled in shows the
+        /// weakest of those 59 first, not the weakest of the 1,171. Paging
+        /// keeps working, and each new page is folded in and the whole list
+        /// re-reversed, so the order stays consistent as it grows.</para>
+        /// </summary>
+        private void SortDir_Click(object sender, MouseButtonEventArgs e)
+        {
+            _sortAscending = !_sortAscending;
+            UpdateSortChips();
+            ApplySortDirection();
+        }
+
+        /// <summary>Reverses the loaded rows in place when ascending is on.
+        /// Kept as a separate step from the fetch so newly paged-in rows can
+        /// be folded into the same order without a round trip.</summary>
+        private void ApplySortDirection()
+        {
+            if (Configs.Count < 2) return;
+            var ordered = Configs.ToList();
+            ordered.Reverse();
+            Configs.Clear();
+            foreach (var c in ordered) Configs.Add(c);
+        }
+
+        private void UpdateSortChips()
+        {
+            var si = Strings.Instance;
+            SortChipText.Text = Strings.Get(SortOrders[_sortIndex].Key);
+            SortDirText.Text = _sortAscending
+                ? "↑ " + si.Workshop_Sort_Ascending
+                : "↓ " + si.Workshop_Sort_Descending;
         }
 
         /// <summary>Appends one page's visible rows (the pager filters and
@@ -711,8 +781,20 @@ namespace PadForge.Views
             var rows = new List<WorkshopConfigItem>();
             foreach (var d in _configsPager.Accept(details, _settings.ShowLegacyWorkshopConfigs))
                 rows.Add(BuildConfigItem(d));
-            foreach (var row in rows)
-                Configs.Add(row);
+            // Steam hands every page back in descending rank. Ascending puts
+            // each new page at the FRONT and reversed, which keeps one
+            // consistent order as the list pages in rather than appending a
+            // second descending run underneath the first.
+            if (_sortAscending)
+            {
+                for (int i = 0; i < rows.Count; i++)
+                    Configs.Insert(i, rows[rows.Count - 1 - i]);
+            }
+            else
+            {
+                foreach (var row in rows)
+                    Configs.Add(row);
+            }
             return rows;
         }
 
@@ -1426,10 +1508,38 @@ namespace PadForge.Views
             }
             bool multiPreset = presets.Count > 1;
 
+            // Rows arrive in the translator's deterministic emit order, which
+            // walks one preset at a time, so a layer's rows are contiguous and
+            // a band can be opened each time the leading segment changes.
+            var perLayer = report.Entries
+                .GroupBy(e => LayerLabel(e.SourcePath))
+                .ToDictionary(g => g.Key, g => g.Count(), StringComparer.Ordinal);
+
             string lastGroup = null;
+            string lastLayer = null;
             foreach (var entry in report.Entries)
             {
-                string group = GroupLabel(entry.SourcePath, multiPreset);
+                if (multiPreset)
+                {
+                    string layer = LayerLabel(entry.SourcePath);
+                    if (layer != lastLayer)
+                    {
+                        rows.Add(new WorkshopManifestLayerItem
+                        {
+                            Name = layer,
+                            CountText = string.Format(Strings.Instance.Workshop_LayerBindings_Format,
+                                perLayer.TryGetValue(layer, out int n) ? n : 0),
+                        });
+                        lastLayer = layer;
+                        // A control header repeats under each layer it appears
+                        // in, so the same pad reads as its own section there.
+                        lastGroup = null;
+                    }
+                }
+
+                // The layer band already carries the layer, so the control
+                // header no longer repeats it on every line.
+                string group = GroupLabel(entry.SourcePath, multiPreset && lastLayer == null);
                 if (group != lastGroup)
                 {
                     rows.Add(new WorkshopManifestGroupItem { Name = group });
@@ -1478,6 +1588,19 @@ namespace PadForge.Views
         /// physical cluster, preset-prefixed when several presets are in
         /// play. Aggregate entries (preset-only paths) group under the
         /// preset name, or the neutral fallback.</summary>
+        /// <summary>The action layer a row belongs to: the leading segment of
+        /// the entry path, which the translator fills with the preset's
+        /// DISPLAY name (its action-set title, resolved through the config's
+        /// localization). Aggregate entries whose whole path is the preset
+        /// name land here too.</summary>
+        private static string LayerLabel(string sourcePath)
+        {
+            var s = sourcePath ?? string.Empty;
+            int slash = s.IndexOf('/');
+            var head = (slash < 0 ? s : s.Substring(0, slash)).Trim();
+            return head.Length == 0 ? Strings.Instance.Workshop_GroupOther : head;
+        }
+
         private static string GroupLabel(string sourcePath, bool multiPreset)
         {
             var segments = (sourcePath ?? string.Empty).Split('/');
@@ -2317,6 +2440,14 @@ namespace PadForge.Views
     public sealed class WorkshopManifestGroupItem
     {
         public string Name { get; init; }
+    }
+
+    /// <summary>An action-layer band above the control headers that belong to
+    /// it. Only emitted for a config with more than one layer.</summary>
+    public sealed class WorkshopManifestLayerItem
+    {
+        public string Name { get; init; }
+        public string CountText { get; init; }
     }
 
     /// <summary>One telemetry row of the dossier: status dot, source →

@@ -2432,6 +2432,15 @@
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Steam からコンフィグを読み込んでいます…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Steam からコンフィグを読み込んでいます…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>評価順</value></data>
+  <data name="Workshop_SortedBy" xml:space="preserve"><value>並べ替え</value></data>
+  <data name="Workshop_Sort_Rating" xml:space="preserve"><value>評価</value></data>
+  <data name="Workshop_Sort_Trend" xml:space="preserve"><value>注目</value></data>
+  <data name="Workshop_Sort_Newest" xml:space="preserve"><value>新着</value></data>
+  <data name="Workshop_Sort_Subscribers" xml:space="preserve"><value>登録者</value></data>
+  <data name="Workshop_Sort_Votes" xml:space="preserve"><value>投票数</value></data>
+  <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>昇順</value></data>
+  <data name="Workshop_Sort_Descending" xml:space="preserve"><value>降順</value></data>
+  <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>割り当て {0}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} 件見つかりました</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} 件中 {0} 件を表示</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} 件のコンフィグ</value></data>

@@ -912,6 +912,16 @@ namespace PadForge.Common.Input
                         while (s.Running && (next - sw.ElapsedTicks) > spinTicks) Thread.Sleep(1);
                         while (s.Running && sw.ElapsedTicks < next) Thread.SpinWait(16);
                         next += intervalTicks;
+                        // Accumulate, but not without bound. A long stall (a
+                        // blocked write, a suspended thread) left next far in
+                        // the past, and the two waits above then fell straight
+                        // through for every missed interval, firing a burst of
+                        // back-to-back writes at the speaker with no pacing.
+                        // Catch-up is still what happens for ordinary overruns;
+                        // past a few intervals behind, re-base instead.
+                        long behind = sw.ElapsedTicks - next;
+                        if (behind > intervalTicks * 4)
+                            next = sw.ElapsedTicks + intervalTicks;
                     }
                     else
                     {

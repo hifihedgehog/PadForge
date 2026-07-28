@@ -4953,7 +4953,6 @@ namespace PadForge.Common.Input
             bool inCorrectionWindow = (DateTime.UtcNow - _lastOsdTriggerTime).TotalMilliseconds < 150;
             if (!inCorrectionWindow && Math.Abs(volume - _lastSetVolume) < 0.004f)
                 return;
-            _lastSetVolume = volume;
 
             if (Environment.TickCount64 < _audioEndpointRetryAtMs) return;
 
@@ -4970,6 +4969,13 @@ namespace PadForge.Common.Input
 
                 var emptyGuid = Guid.Empty;
                 _audioEndpointVolume.SetMasterVolumeLevelScalar(volume, ref emptyGuid);
+                // Record only once the write has LANDED. Stamping it above the
+                // retry gate and the COM call meant a skipped or throwing write
+                // still registered the target as applied, and the dedup at the
+                // top then swallowed every retry at that same volume. The
+                // requested level was silently never reached until the user
+                // picked a different one.
+                _lastSetVolume = volume;
 
                 // Trigger the modern Windows volume flyout OSD by sending a
                 // net-zero VK_VOLUME_UP + VK_VOLUME_DOWN pair, then immediately
@@ -5023,7 +5029,6 @@ namespace PadForge.Common.Input
             // Change detection per process name.
             if (_lastAppVolumes.TryGetValue(processName, out float last) && Math.Abs(volume - last) < 0.004f)
                 return;
-            _lastAppVolumes[processName] = volume;
 
             if (Environment.TickCount64 < _audioSessionRetryAtMs) return;
 
@@ -5073,6 +5078,13 @@ namespace PadForge.Common.Input
                             Marshal.Release(pSession);
                     }
                 }
+
+                // Recorded only after the enumeration completed without
+                // throwing. Same reason as the master endpoint: stamping it
+                // above the retry gate let a skipped or failed pass register
+                // the level as applied, and the change detection then swallowed
+                // every retry for that process.
+                _lastAppVolumes[processName] = volume;
             }
             catch
             {

@@ -45,8 +45,12 @@ function Get-VJoyNodeId {
     $currentId = $null
     foreach ($line in $output -split "`n") {
         $t = $line.Trim()
-        if ($t -match 'Instance ID:\s+(.+)') { $currentId = $matches[1].Trim() }
-        elseif ($currentId -and $t -match 'vJoy' -and $currentId -match '^ROOT\\HIDCLASS\\') { return $currentId }
+        # Match the ROOT\HIDCLASS path itself, not the "Instance ID:" label.
+        # pnputil localizes its field labels, so the label match returned no
+        # node at all on a non-English Windows and every caller read that as
+        # "vJoy is not installed".
+        if ($t -match '(ROOT\\HIDCLASS\\\S+)') { $currentId = $Matches[1] }
+        elseif ($currentId -and $t -match 'vJoy') { return $currentId }
         elseif ([string]::IsNullOrWhiteSpace($t)) { $currentId = $null }
     }
     return $null

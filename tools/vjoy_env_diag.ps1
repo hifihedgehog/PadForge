@@ -24,7 +24,11 @@ Write-Host ""
 # 3. Check vJoy driver in driver store
 Write-Host "=== Driver Store ==="
 $driverStore = pnputil /enum-drivers 2>&1
-$vjoyDrivers = ($driverStore | Out-String) -split '(?=Published Name)' | Where-Object { $_ -match 'vjoy' }
+# Split on the locale-invariant oemNN.inf token, not the "Published Name"
+# label, which pnputil localizes. With the label match, a non-English Windows
+# split nothing, so the single remaining chunk matched 'vjoy' and this printed
+# the ENTIRE driver store as though it were the vJoy entry.
+$vjoyDrivers = ($driverStore | Out-String) -split '(?=oem\d+\.inf)' | Where-Object { $_ -match 'vjoy' }
 if ($vjoyDrivers) {
     foreach ($d in $vjoyDrivers) {
         Write-Host $d.Trim()
@@ -38,7 +42,7 @@ Write-Host ""
 # 4. Check vJoy device nodes
 Write-Host "=== Device Nodes (pnputil) ==="
 $pnpOutput = pnputil /enum-devices /class HIDClass 2>&1 | Out-String
-$vjoyNodes = $pnpOutput -split '(?=Instance ID)' | Where-Object { $_ -match 'vjoy|VID_1234|PID_BEAD|PID_0FFB' }
+$vjoyNodes = $pnpOutput -split '(?m)(?=^[^\r\n]*:\s+[A-Z][A-Z0-9]*\\)' | Where-Object { $_ -match 'vjoy|VID_1234|PID_BEAD|PID_0FFB' }
 if ($vjoyNodes) {
     foreach ($node in $vjoyNodes) {
         Write-Host $node.Trim()
@@ -52,7 +56,7 @@ Write-Host ""
 # Also check ROOT\HIDCLASS nodes specifically
 Write-Host "=== ROOT\HIDCLASS Nodes ==="
 $rootNodes = pnputil /enum-devices /instanceid "ROOT\HIDCLASS\*" 2>&1 | Out-String
-$rootVjoy = $rootNodes -split '(?=Instance ID)' | Where-Object { $_ -match 'VID_1234|vjoy' }
+$rootVjoy = $rootNodes -split '(?m)(?=^[^\r\n]*:\s+[A-Z][A-Z0-9]*\\)' | Where-Object { $_ -match 'VID_1234|vjoy' }
 if ($rootVjoy) {
     foreach ($node in $rootVjoy) {
         Write-Host $node.Trim()
@@ -125,19 +129,23 @@ Write-Host ""
 
 # 7. Test pnputil disable/enable on existing node
 Write-Host "=== Test pnputil Operations ==="
-$allDevices = pnputil /enum-devices /class HIDClass 2>&1 | Out-String
-# Find ROOT\HIDCLASS nodes with vJoy hardware IDs
+# Find vJoy device nodes.
+#
+# This filtered on a "Hardware IDs:" field, which pnputil /enum-devices does
+# not print. It emits Instance ID, Device Description, Class Name, Class GUID,
+# Manufacturer Name, Status, Driver Name and Extension Driver Names, and
+# nothing else. The filter therefore never matched, $instanceIds was always
+# empty, and this whole section reported "No vJoy device nodes found to test"
+# on a machine with vJoy installed. Match the vJoy marker anywhere in the
+# record instead, which is what every sibling script here does.
 $instanceIds = @()
 $lines = (pnputil /enum-devices /class HIDClass 2>&1)
 $currentId = $null
 foreach ($line in $lines) {
-    if ($line -match 'Instance ID:\s+(.+)') {
+    if ($line -match ':\s*([A-Z][A-Z0-9]*\\\S*)\s*$') {
         $currentId = $matches[1].Trim()
     }
-    if ($currentId -and $line -match 'Hardware IDs:\s+.*VID_1234') {
-        $instanceIds += $currentId
-    }
-    if ($currentId -and $line -match 'Hardware IDs:\s+.*vjoy') {
+    elseif ($currentId -and $line -match 'vJoy|VID_1234') {
         $instanceIds += $currentId
     }
 }

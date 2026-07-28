@@ -64,6 +64,18 @@ foreach ($line in ($pnp -split "`n")) {
     elseif (-not $t) { $currentId = $null }
 }
 
+# Confirm slot 0000 is vJoy before disabling it. The instance path is a slot
+# number, not an identity, so whichever root-enumerated HID device came first
+# owns it, and this disabled whatever that was.
+$node0 = pnputil /enum-devices /instanceid "ROOT\HIDCLASS\0000" 2>&1 | Out-String
+if ($node0 -notmatch 'vJoy|VID_1234') {
+    $out += ""
+    $out += "SKIP: ROOT\HIDCLASS\0000 does not look like a vJoy node. Not disabling it."
+    $out | Out-File 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_diag_restart_log.txt' -Encoding utf8 -Force
+    $out | ForEach-Object { Write-Host $_ }
+    exit 1
+}
+
 # Try disable
 $out += ""
 $out += "Disabling ROOT\HIDCLASS\0000..."

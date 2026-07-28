@@ -59,14 +59,6 @@ namespace PadForge.Common
                 }
             }
 
-            if (ud != null && UseRawNumberedNaming(ud))
-            {
-                string resolved = ResolveRawNumberedText(mapping.SourceDescriptor);
-                if (resolved != null)
-                    mapping.SetResolvedSourceText(resolved);
-                return;
-            }
-
             // Bundled motion-passthrough descriptors don't depend on
             // device-objects metadata — they are protocol-level markers
             // that always resolve to a fixed localized name.
@@ -128,6 +120,24 @@ namespace PadForge.Common
                     }
                     return;
                 }
+            }
+
+            // Raw-numbered naming runs AFTER the named families above, not
+            // before them. ResolveRawNumberedText only knows button / axis /
+            // slider / pov and echoes anything else verbatim, so running it
+            // first meant a device whose CapType is not on the exclusion list
+            // (a PTP touchpad, a MIDI endpoint) displayed its internal 0-based
+            // string, "Touchpad 0 Tap", while its own picker offered the
+            // localized 1-based entry. That is exactly what the family block
+            // above says it exists to prevent, and it was unreachable for the
+            // device classes that needed it most. Buttons and axes still land
+            // here: they match none of the family prefixes.
+            if (ud != null && UseRawNumberedNaming(ud))
+            {
+                string resolved = ResolveRawNumberedText(mapping.SourceDescriptor);
+                if (resolved != null)
+                    mapping.SetResolvedSourceText(resolved);
+                return;
             }
 
             var objects = ud?.DeviceObjects;
@@ -551,6 +561,7 @@ namespace PadForge.Common
                 if (sub.Equals("Gyro",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionGyro;
                 if (sub.Equals("Accel", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionAccel;
                 if (sub.Equals("Lean",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionLean;
+                if (sub.Equals("Gyro L", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionGyroAux;
                 // Aux lean (#199): this reverse path has no device context, so
                 // the neutral label stands in for the contextual one.
                 if (sub.Equals("Lean L", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_AuxMotionLean;
@@ -1200,10 +1211,17 @@ namespace PadForge.Common
                 string sub = s.Substring(7).Trim();
                 if (sub.Equals("Gyro",  System.StringComparison.OrdinalIgnoreCase)) return prefix + siM.Mapping_MotionGyro;
                 if (sub.Equals("Accel", System.StringComparison.OrdinalIgnoreCase)) return prefix + siM.Mapping_MotionAccel;
+                // Lean is offered by the picker on ANY device with an
+                // accelerometer, raw-numbered class included, so leaving it
+                // out here returned null and the caller's early return left
+                // the row's resolved text blank on exactly those devices.
+                if (sub.Equals("Lean",  System.StringComparison.OrdinalIgnoreCase)) return prefix + siM.Mapping_MotionLean;
                 // #252 aux twin, symmetric with the arms above (audit
                 // 2026-07-25, C10). Practically unreachable (pairs are
                 // not raw-numbered class) but the family stays whole.
                 if (sub.Equals("Gyro L", System.StringComparison.OrdinalIgnoreCase)) return prefix + siM.Mapping_MotionGyroAux;
+                if (sub.Equals("Lean L", System.StringComparison.OrdinalIgnoreCase)) return prefix + siM.Mapping_AuxMotionLean;
+                if (sub.Equals("Accel L", System.StringComparison.OrdinalIgnoreCase)) return prefix + siM.Mapping_AuxMotionAccel;
                 return null;
             }
 

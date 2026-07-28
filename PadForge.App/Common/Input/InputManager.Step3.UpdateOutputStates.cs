@@ -418,6 +418,26 @@ namespace PadForge.Common.Input
                 ResolveThumbDeadZoneShape(slotIndex, left: false, ps));
         }
 
+        /// <summary>Per-stick speed multiplier for the KEYBOARD AND MOUSE
+        /// lane only. Stick 0 there is mouse movement and stick 1 is the
+        /// scroll wheel: both are rate outputs, so a multiplier is the
+        /// natural control and there is no fixed full-scale for it to clamp
+        /// against the way there is on a gamepad stick, where the per-axis
+        /// response curves own the shaping instead.</summary>
+        private static void ApplyKbmStickSpeed(ref short x, ref short y, double sens)
+        {
+            if (sens <= 0 || Math.Abs(sens - 1.0) < 1e-6) return;
+            x = ClampAxisToShort(x * sens);
+            y = ClampAxisToShort(y * sens);
+        }
+
+        private static short ClampAxisToShort(double v)
+        {
+            if (v > short.MaxValue) return short.MaxValue;
+            if (v < short.MinValue) return short.MinValue;
+            return (short)v;
+        }
+
         /// <summary>Effective per-thumb deadzone shape (v18): the Workshop
         /// slot-level stamp wins on an Authoritative slot (Steam's
         /// deadzone_shape, carried on the imported MappingSet because an
@@ -2164,6 +2184,15 @@ namespace PadForge.Common.Input
                     Common.StickBoundary.GetOrBuild(boundaryMap));
                 ApplyDeadZone(ref raw.Axes[xi], ref raw.Axes[yi],
                     dzX, dzY, adzX, adzY, lin, mrX, mrY, mrXN, mrYN, lutX, lutY, dzShape);
+                // Speed knob, applied after the deadzone / range / curve
+                // stage so the Sticks tab scales what the mapping table
+                // produced. KBM stick 0 is mouse movement and stick 1 is the
+                // scroll wheel, both rate outputs, which is the one place
+                // this multiplier is the right instrument. The field carried
+                // no engine reader at all before this.
+                ApplyKbmStickSpeed(ref raw.Axes[xi], ref raw.Axes[yi],
+                    TryParseDoubleStatic(
+                        g == 0 ? ps.LeftThumbSensitivity : ps.RightThumbSensitivity, 1));
             }
 
             for (int g = 0; g < cfg.Triggers; g++)

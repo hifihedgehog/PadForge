@@ -5919,6 +5919,24 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <ui:Button Command="{Binding ResetLinearCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLinear, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
+                                            <!-- Speed multiplier: pointer sticks ONLY (keyboard-and-mouse
+                                                 stick 0 = mouse movement, stick 1 = scroll wheel). Those are
+                                                 rate outputs, so a multiplier is the right instrument. It is
+                                                 deliberately absent on a gamepad stick, where the deadzone
+                                                 stage has already mapped full deflection to full scale and the
+                                                 per-axis curves below own the shaping (owner ruling
+                                                 2026-07-27). -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                                        Visibility="{Binding IsPointerStick, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <Slider Value="{Binding Sensitivity, Mode=TwoWay}"
+                                                        Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
+                                                        Style="{StaticResource DzSlider}"/>
+                                                <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="&#215;" Style="{StaticResource DzPercent}"/>
+                                                <ui:Button Command="{Binding ResetStickSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}"/>
+                                            </StackPanel>
                                             <Separator Margin="0,8,0,8"/>
                                             <!-- ─── Sensitivity curves ─── -->
                                             <TextBlock Text="{Binding Pad_SensitivityCurves, Source={x:Static strings:Strings.Instance}}"

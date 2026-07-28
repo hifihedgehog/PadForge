@@ -121,18 +121,20 @@ namespace PadForge.ViewModels
         /// mapping grid: per-row it made the grid's raw and out readouts
         /// agree (the scale was folded in before the readout) and its slider
         /// sat in a column too narrow to show it.</summary>
-        /// <summary>Vestigial. A flat per-stick multiplier duplicates what
-        /// the per-axis response curves on this same tab already do, and it
-        /// can only clip: the deadzone stage has already mapped full physical
-        /// deflection to full scale, so scaling above 1 changes partial
-        /// deflections and clamps at the top, which reads as no effect when
-        /// you test by pushing the stick to the corner. It carried no engine
-        /// reader from the March 2026 curve work until a 2026-07-27 UI move
-        /// briefly wired it up; that is reverted. The property and its
-        /// PadSetting field stay so existing profiles round-trip unchanged.
-        /// Per-source Sensitivity on the mapping rows is a different field
-        /// and is still live, for the rate-based sources it was built for:
-        /// mouse, gyro, IR pointer, touchpad.</summary>
+        /// <summary>Speed multiplier for the KEYBOARD AND MOUSE lane's two
+        /// pointer sticks (mouse movement, scroll wheel), where the output is
+        /// a rate and a multiplier is the natural control. Surfaced only when
+        /// <see cref="IsPointerStick"/> is true.
+        ///
+        /// <para>Deliberately NOT offered on a gamepad stick. There the
+        /// deadzone stage has already mapped full physical deflection to full
+        /// scale, so a multiplier above 1 changes only partial deflections and
+        /// clamps at the top, which reads as no effect when you test by
+        /// pushing the stick to the corner. The per-axis response curves on
+        /// the same tab do that job properly. See the 2026-07-27 ruling.</para>
+        ///
+        /// <para>Per-source Sensitivity on the mapping rows is a different
+        /// field, live for mouse, gyro, IR pointer, and touchpad.</para></summary>
         public double Sensitivity
         {
             get => _sensitivity;
@@ -441,6 +443,13 @@ namespace PadForge.ViewModels
             if (lut == null) return magnitude;
             return CurveLut.Lookup(lut, Math.Clamp(magnitude, 0, 1));
         }
+
+        /// <summary>True on a keyboard-and-mouse slot, where stick 0 is
+        /// mouse movement and stick 1 is the scroll wheel. Those are rate
+        /// outputs, so the speed multiplier row applies there and only
+        /// there: on a gamepad stick the per-axis response curves own the
+        /// shaping and a flat multiplier can only clip.</summary>
+        public bool IsPointerStick { get; init; }
 
         public StickConfigItem(int index, string title, int axisXIndex = -1, int axisYIndex = -1,
             string iconLabel = "", bool supportsBoundaryCalibration = false)

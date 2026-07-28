@@ -3948,12 +3948,14 @@ namespace PadForge.ViewModels
             if (isKbm)
             {
                 // KBM: stick 0 = Mouse X/Y, stick 1 = Scroll Wheel (Y-axis only)
-                var mouse = new StickConfigItem(0, Strings.Instance.Pad_MouseMovement, -1, -1);
+                var mouse = new StickConfigItem(0, Strings.Instance.Pad_MouseMovement, -1, -1)
+                    { IsPointerStick = true };
                 SyncStickItemFromVm(mouse);
                 mouse.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(mouse);
 
-                var scroll = new StickConfigItem(1, Strings.Instance.Stick_ScrollWheel, -1, -1);
+                var scroll = new StickConfigItem(1, Strings.Instance.Stick_ScrollWheel, -1, -1)
+                    { IsPointerStick = true };
                 SyncStickItemFromVm(scroll);
                 scroll.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(scroll);

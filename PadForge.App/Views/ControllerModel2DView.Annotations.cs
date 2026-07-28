@@ -921,6 +921,16 @@ namespace PadForge.Views
         private bool GetAnnotationButtonState(string prop)
         {
             if (_vm == null) return false;
+            // Nintendo rows arrive as raw grid names (RawBtn0, RawPov0Up),
+            // the same as they do for the anchor lookup a few methods up.
+            // Without the same translation every one of them fell to the
+            // default arm, so the ember output dot was permanently collapsed
+            // on the ONLY slot type that feeds raw names to this canvas.
+            if (prop != null && prop.StartsWith("Raw", System.StringComparison.Ordinal))
+            {
+                prop = Models2D.NintendoPreviewMap.ToPreview(prop);
+                if (prop == null) return false;
+            }
             return prop switch
             {
                 "ButtonA" => _vm.ButtonA,

@@ -124,6 +124,16 @@ namespace PadForge.Common
                 // archives, which then keep the probed-name-only behavior.
                 var aliasesByFile = ReadAliasMap(zip);
 
+                // Actions already rewritten by THIS import. RewritePackageRefs
+                // matches on a ref's CURRENT value, and the loop below rewrites
+                // in place once per bundled entry, so an alias belonging to a
+                // LATER entry could re-match refs an earlier entry had already
+                // pointed at its final name. Registration dedups by appending
+                // " (n)", which is exactly the shape that collides. Marking each
+                // action stops the cascade without reordering the loop.
+                var rewrittenActions = new HashSet<object>(
+                    System.Collections.Generic.ReferenceEqualityComparer.Instance);
+
                 string appDir = AppDomain.CurrentDomain.BaseDirectory;
                 foreach (var e in zip.Entries.Where(x =>
                              x.FullName.StartsWith(PackagesPrefix, StringComparison.OrdinalIgnoreCase)
@@ -208,14 +218,14 @@ namespace PadForge.Common
                         foreach (var alias in aliases)
                         {
                             if (string.Equals(alias, name, StringComparison.OrdinalIgnoreCase)) { rewrote = true; continue; }
-                            RewritePackageRefs(profile, alias, name);
+                            RewritePackageRefs(profile, alias, name, rewrittenActions);
                             rewrote = true;
                         }
                     }
                     // Older archives carry no map: fall back to the probed
                     // name, which is what those refs were written against.
                     if (!rewrote && !string.Equals(name, probedName, StringComparison.OrdinalIgnoreCase))
-                        RewritePackageRefs(profile, probedName, name);
+                        RewritePackageRefs(profile, probedName, name, rewrittenActions);
                 }
                 return profile;
             }
@@ -308,7 +318,13 @@ namespace PadForge.Common
 
         /// <summary>Rewrites every macro sound ref pointing at
         /// <paramref name="fromPackage"/> to <paramref name="toPackage"/>.</summary>
-        private static void RewritePackageRefs(ProfileData profile, string fromPackage, string toPackage)
+        /// <param name="alreadyRewritten">Actions this import has already
+        /// repointed. Null means no tracking, for callers outside the import
+        /// loop. An action is rewritten at most once per import: without that,
+        /// a later entry whose alias equals an earlier entry's FINAL name
+        /// re-matched refs that were already correct and moved them again.</param>
+        private static void RewritePackageRefs(ProfileData profile, string fromPackage, string toPackage,
+            HashSet<object> alreadyRewritten = null)
         {
             if (profile.Macros == null) return;
             foreach (var m in profile.Macros)
@@ -317,9 +333,13 @@ namespace PadForge.Common
                 foreach (var a in m.Actions)
                 {
                     if (a == null) continue;
+                    if (alreadyRewritten != null && alreadyRewritten.Contains(a)) continue;
                     if (SoundPackageManager.TryParseRef(a.SoundFilePath, out string pkg, out string entry)
                         && string.Equals(pkg, fromPackage, StringComparison.OrdinalIgnoreCase))
+                    {
                         a.SoundFilePath = SoundPackageManager.MakeRef(toPackage, entry);
+                        alreadyRewritten?.Add(a);
+                    }
                 }
             }
         }

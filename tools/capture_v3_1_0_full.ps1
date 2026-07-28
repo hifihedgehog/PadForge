@@ -198,6 +198,7 @@ Start-Sleep -Seconds 15
 $proc = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
 if (-not $proc) {
     Write-Host "  !! PadForge didn't launch" -ForegroundColor Red
+    if (Test-Path -LiteralPath "$XmlPath.bak-capture") { Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 2; Copy-Item -LiteralPath "$XmlPath.bak-capture" -Destination $XmlPath -Force; Write-Host "  Restored real settings from backup" }
     Stop-Transcript | Out-Null
     exit 1
 }
@@ -210,7 +211,7 @@ $uiaRoot = [System.Windows.Automation.AutomationElement]::RootElement
 $pidProp = [System.Windows.Automation.AutomationElement]::ProcessIdProperty
 $pidCond = New-Object System.Windows.Automation.PropertyCondition($pidProp, $proc.Id)
 $uiaWin = $uiaRoot.FindFirst([System.Windows.Automation.TreeScope]::Children, $pidCond)
-if (-not $uiaWin) { Write-Host "  !! UIA window not found" -ForegroundColor Red; exit 1 }
+if (-not $uiaWin) { Write-Host "  !! UIA window not found" -ForegroundColor Red; if (Test-Path -LiteralPath "$XmlPath.bak-capture") { Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 2; Copy-Item -LiteralPath "$XmlPath.bak-capture" -Destination $XmlPath -Force; Write-Host "  Restored real settings from backup" }; exit 1 }
 
 $TC = [System.Windows.Automation.TreeScope]::Children
 $TD = [System.Windows.Automation.TreeScope]::Descendants

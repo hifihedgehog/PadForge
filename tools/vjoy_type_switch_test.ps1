@@ -152,7 +152,7 @@ Start-Sleep -Seconds 10
 
 $root = Get-PadForgeRoot
 Assert ($null -ne $root) "PadForge window found"
-if (-not $root) { Log "ABORT: No PadForge window"; exit 1 }
+if (-not $root) { Log "ABORT: No PadForge window"; if ($configBackup -and (Test-Path -LiteralPath $configBackup)) { Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 2; Copy-Item -LiteralPath $configBackup -Destination $configPath -Force; Log "Restored real settings from backup" }; exit 1 }
 
 Log "UI tree dump:"
 Dump-Elements $root
@@ -272,7 +272,7 @@ Log "=== Cleanup ==="
 Stop-Process -Name PadForge -Force -ErrorAction SilentlyContinue
 Start-Sleep -Seconds 3
 
-if (Test-Path $configBackup) {
+if ($configBackup -and (Test-Path $configBackup)) {
     Copy-Item $configBackup $configPath -Force
     Remove-Item $configBackup -Force
     Log "Restored PadForge.xml"

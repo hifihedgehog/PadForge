@@ -192,7 +192,7 @@ Write-Host "  PID=$($proc.Id) HWND=$hwnd"
 $TC = [System.Windows.Automation.TreeScope]::Children
 $TD = [System.Windows.Automation.TreeScope]::Descendants
 $uiaWin = AttachUia $proc
-if (-not $uiaWin) { Write-Host "!! UIA window not found"; Stop-Transcript | Out-Null; exit 1 }
+if (-not $uiaWin) { Write-Host "!! UIA window not found"; if ($XmlBak -and (Test-Path -LiteralPath $XmlBak)) { Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 2; Copy-Item -LiteralPath $XmlBak -Destination $XmlPath -Force; Write-Host "  Restored real settings from backup" }; Stop-Transcript | Out-Null; exit 1 }
 Write-Host "  UIA window attached"
 
 function FindByAid { param([string]$Aid, $Parent = $null)
@@ -408,7 +408,7 @@ $r2 = LaunchAndAttach
 $proc = $r2.Proc; $hwnd = $r2.Hwnd
 Write-Host "  Restarted PID=$($proc.Id) HWND=$hwnd"
 $uiaWin = AttachUia $proc
-if (-not $uiaWin) { Write-Host "  !! Step 12 UIA window not found"; Stop-Transcript | Out-Null; exit 1 }
+if (-not $uiaWin) { Write-Host "  !! Step 12 UIA window not found"; if ($XmlBak -and (Test-Path -LiteralPath $XmlBak)) { Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 2; Copy-Item -LiteralPath $XmlBak -Destination $XmlPath -Force; Write-Host "  Restored real settings from backup" }; Stop-Transcript | Out-Null; exit 1 }
 
 if (SelectSlot 0 "Xbox Series 2D") {
     Tab "Controller" | Out-Null; Start-Sleep -Milliseconds 800

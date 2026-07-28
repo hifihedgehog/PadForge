@@ -333,7 +333,10 @@ function Assign-KeyboardToSlot($slotIndex) {
     }
 
     if (-not $foundToggle) {
-        Log "  ERROR: Could not find slot toggle button for slot $slotNum"
+        # $slotNum does not exist; the parameter is $slotIndex, so this line
+        # printed "for slot " with nothing after it on the one path where the
+        # slot number is the thing you need to know.
+        Log "  ERROR: Could not find slot toggle button for slot $slotIndex"
         return $false
     }
 
@@ -451,7 +454,7 @@ $configBackup = "C:\PadForge\PadForge.xml.autotest.bak"
 # would overwrite the real settings with that residue. Restore first, exactly
 # as capture_all.ps1 does after the same bug destroyed a settings file on
 # 2026-07-12.
-if (Test-Path $configBackup) {
+if ($configBackup -and (Test-Path $configBackup)) {
     Log "!! Leftover .autotest.bak from an interrupted run; restoring it before re-backup"
     Copy-Item $configBackup $configPath -Force
 }
@@ -475,7 +478,21 @@ if (-not $root) {
     $root = Get-PadForgeRoot
 }
 Assert ($root -ne $null) "PadForge window found"
-if (-not $root) { Log "ABORT: No window"; exit 1 }
+if (-not $root) {
+    # The config was backed up and DELETED above, and PadForge has since been
+    # launched, so it has written a fresh default file at that path. Exiting
+    # here left the user's real settings sitting in .autotest.bak with defaults
+    # live. The restore at the end of the script is the only thing that put
+    # them back, and this path never reached it.
+    Log "ABORT: No window"
+    if ($configBackup -and (Test-Path $configBackup)) {
+        Stop-PadForge
+        Copy-Item $configBackup $configPath -Force
+        Remove-Item $configBackup -Force -ErrorAction SilentlyContinue
+        Log "Restored PadForge.xml from backup"
+    }
+    exit 1
+}
 
 Log "Window: $($root.Current.Name)"
 $initialState = Log-State "INITIAL"
@@ -997,7 +1014,7 @@ Start-Sleep -Seconds 3
 $stateClean = Log-State "AFTER EXIT"
 
 # Restore original config
-if (Test-Path $configBackup) {
+if ($configBackup -and (Test-Path $configBackup)) {
     Copy-Item $configBackup $configPath -Force
     Remove-Item $configBackup -Force
     Log "Restored PadForge.xml from backup"

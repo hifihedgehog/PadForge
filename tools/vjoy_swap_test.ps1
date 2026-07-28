@@ -126,7 +126,7 @@ if (-not $pad2Exists) {
     # created flags. Nothing here restored them, so a run left the user's
     # slot layout replaced by test values permanently.
     $xmlBak = "$padForgeXml.swap-test-bak"
-    if (Test-Path -LiteralPath $xmlBak) { Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force }
+    if ($xmlBak -and (Test-Path -LiteralPath $xmlBak)) { Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force }
     elseif (Test-Path -LiteralPath $padForgeXml) { Copy-Item -LiteralPath $padForgeXml -Destination $xmlBak -Force }
 
     [xml]$xml = Get-Content $padForgeXml
@@ -140,13 +140,13 @@ if (-not $pad2Exists) {
     Start-Sleep -Seconds 6
     
     $mainWin = $ae::RootElement.FindFirst($tree::Children, $cond)
-    if (-not $mainWin) { Log "FAIL: PadForge not found after restart"; exit 1 }
+    if (-not $mainWin) { Log "FAIL: PadForge not found after restart"; if ($xmlBak -and (Test-Path -LiteralPath $xmlBak)) { Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 2; Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force; Log "Restored real settings from backup" }; exit 1 }
 }
 
 # Step 3: Check Pad1's config is preserved
 Log ""
 Log "--- Step 3: Verify Pad1 config preserved ---"
-if (-not (Navigate "Pad1")) { Log "FAIL: Pad1 not found"; exit 1 }
+if (-not (Navigate "Pad1")) { Log "FAIL: Pad1 not found"; if ($xmlBak -and (Test-Path -LiteralPath $xmlBak)) { Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 2; Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force; Log "Restored real settings from backup" }; exit 1 }
 
 $p1presetAfter = Get-ComboValue "VJoyPresetCombo"
 $p1btnsAfter = Get-TextValue "VJoyButtonCountBox"

@@ -25,7 +25,7 @@ internal static class Program
     {
         if (args.Length < 2)
         {
-            Console.Error.WriteLine("usage: SteamWorkshopSmoke <store|details|download|search|persona> <arg>");
+            Console.Error.WriteLine("usage: SteamWorkshopSmoke <store|details|download|search|cmdetails|persona> <arg>");
             return 2;
         }
 
@@ -141,13 +141,20 @@ internal static class Program
     {
         await using var client = new SteamWorkshopClient(gate, cache: null);
         var d = await client.GetCmDetailsAsync(fileId);
+        // Null-guard like DetailsAsync above, which returns cleanly on no
+        // result rather than dereferencing into the outer catch.
+        if (d == null)
+        {
+            Console.WriteLine("no details");
+            return;
+        }
         Console.WriteLine($"title       : {d.title}");
         Console.WriteLine($"creator_app : {d.creator_appid}");
         Console.WriteLine($"consumer_app: {d.consumer_appid}");
         Console.WriteLine($"visibility  : {d.visibility}");
         Console.WriteLine($"file_type   : {d.file_type}");
-        Console.WriteLine($"tags        : {string.Join(", ", d.tags.ConvertAll(t => t.tag))}");
-        Console.WriteLine($"kvtags      : {string.Join(", ", d.kvtags.ConvertAll(t => $"{t.key}={t.value}"))}");
+        Console.WriteLine($"tags        : {string.Join(", ", (d.tags ?? new()).ConvertAll(t => t.tag))}");
+        Console.WriteLine($"kvtags      : {string.Join(", ", (d.kvtags ?? new()).ConvertAll(t => $"{t.key}={t.value}"))}");
     }
 
     private static async Task PersonaAsync(ISteamWorkshopGate gate, ulong steamId)

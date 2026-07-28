@@ -406,11 +406,17 @@ class Program
     static void SetConstantForce(Effect? effect, int magnitude, int direction, int[] axisOffsets)
     {
         if (effect == null) return;
+        // Directions must be as long as Axes. SetCondition below already sizes
+        // both from the axis count; these three hardcoded two directions, so a
+        // single-actuator device (some wheels expose only X) got a 1-axis /
+        // 2-direction mismatch and every constant, periodic and ramp command
+        // failed while conditions worked.
+        int nAxes = Math.Min(axisOffsets.Length, 2);
         var ep = new EffectParameters
         {
             Flags = EffectFlags.Polar | EffectFlags.ObjectOffsets,
-            Axes = axisOffsets.Take(2).ToArray(),
-            Directions = new[] { direction, 0 },
+            Axes = axisOffsets.Take(nAxes).ToArray(),
+            Directions = BuildDirections(direction, nAxes),
             Parameters = new ConstantForce { Magnitude = magnitude }
         };
         effect.SetParameters(ep,
@@ -422,11 +428,12 @@ class Program
     static void SetPeriodic(Effect? effect, int magnitude, int periodMicroseconds, int direction, int[] axisOffsets)
     {
         if (effect == null) return;
+        int nAxes = Math.Min(axisOffsets.Length, 2);
         var ep = new EffectParameters
         {
             Flags = EffectFlags.Polar | EffectFlags.ObjectOffsets,
-            Axes = axisOffsets.Take(2).ToArray(),
-            Directions = new[] { direction, 0 },
+            Axes = axisOffsets.Take(nAxes).ToArray(),
+            Directions = BuildDirections(direction, nAxes),
             Parameters = new PeriodicForce
             {
                 Magnitude = magnitude,
@@ -481,11 +488,12 @@ class Program
     static void SetRamp(Effect? effect, int startMag, int endMag, int direction, int[] axisOffsets)
     {
         if (effect == null) return;
+        int nAxes = Math.Min(axisOffsets.Length, 2);
         var ep = new EffectParameters
         {
             Flags = EffectFlags.Polar | EffectFlags.ObjectOffsets,
-            Axes = axisOffsets.Take(2).ToArray(),
-            Directions = new[] { direction, 0 },
+            Axes = axisOffsets.Take(nAxes).ToArray(),
+            Directions = BuildDirections(direction, nAxes),
             Parameters = new RampForce { Start = startMag, End = endMag }
         };
         effect.SetParameters(ep,
@@ -596,6 +604,16 @@ class Program
             Console.WriteLine($"  FAIL: Ramp - {ex.Message}");
             return null;
         }
+    }
+
+    /// <summary>Polar direction array sized to the axis count: the angle on
+    /// the first element, zero on any second. DirectInput rejects a
+    /// Directions array whose length differs from Axes.</summary>
+    static int[] BuildDirections(int direction, int axisCount)
+    {
+        var dirs = new int[Math.Max(1, axisCount)];
+        dirs[0] = direction;
+        return dirs;
     }
 
     static void StopAll(IEnumerable<Effect?> effects)

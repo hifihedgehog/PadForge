@@ -936,6 +936,39 @@ namespace PadForge.Tests
             Assert.True(expected.Notes[0] && expected.Notes[1]);
         }
 
+        /// <summary>The MIDI combine buffer must be indexed per slot. Sharing
+        /// one across slots makes every slot's combine write the same arrays,
+        /// so a later slot overwrites an earlier one's result. That cannot be
+        /// unit-tested: it needs two slots each carrying two or more MIDI
+        /// devices, driven through the whole poll loop. Guarded at the source
+        /// instead, which is exactly the mutation that would reintroduce it.</summary>
+        [Fact]
+        public void MidiCombineScratch_IsIndexedPerSlot()
+        {
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                RepoRoot(), "PadForge.App", "Common", "Input",
+                "InputManager.Step4.CombineOutputStates.cs"));
+
+            var uses = System.Text.RegularExpressions.Regex.Matches(
+                src, @"_midiCombineScratch\[(?<idx>[^\]]+)\]");
+
+            // Positive control: the buffer is actually in use, so a rename
+            // cannot make this pass by matching nothing.
+            Assert.True(uses.Count >= 2,
+                $"Only {uses.Count} uses of _midiCombineScratch found. Test is stale.");
+
+            var constIndexed = uses
+                .Select(m => m.Groups["idx"].Value.Trim())
+                .Where(i => i != "padIndex")
+                .Distinct()
+                .ToList();
+
+            Assert.True(constIndexed.Count == 0,
+                "MIDI combine buffer indexed by something other than padIndex, so slots share "
+                + "one buffer and a later slot overwrites an earlier one's combine: "
+                + string.Join(", ", constIndexed));
+        }
+
         [Fact]
         public void ImpulseTriggerPids_StillRejectNonImpulsePads()
         {

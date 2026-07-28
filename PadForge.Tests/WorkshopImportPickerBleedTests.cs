@@ -700,5 +700,51 @@ namespace PadForge.Tests
                 $"startup load rebound the imported row to '{src.DeviceGuid}' "
                 + $"with descriptor '{src.Descriptor}'.");
         }
+    
+        /// <summary>The owner's own discriminator: "the issue ONLY occurs if
+        /// there is a virtual controller type from the default profile
+        /// matching the newly loaded community profile."
+        ///
+        /// <para>PadViewModel.OutputType rebuilds Mappings, sticks and
+        /// triggers only inside its SetProperty guard, so assigning the SAME
+        /// type is a no-op and the slot keeps the OUTGOING profile's
+        /// MappingItem instances: their PrimarySourceDeviceGuid, their
+        /// AvailableInputs, and a SelectedInput still referencing an
+        /// InputChoice built for the previous profile's device. A slot whose
+        /// type DIFFERS goes through the rebuild and comes out clean, which
+        /// is exactly the asymmetry the owner observed.</para></summary>
+        [Fact]
+        public void SameTypeSlot_StillRebuildsItsRows_OnProfileApply()
+        {
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            var pad0 = mainVm.Pads[0];
+            Assert.Equal(VirtualControllerType.Xbox, pad0.OutputType);
+
+            // The outgoing profile's row, bound to the default profile's pad.
+            var stale = pad0.Mappings.First(m => m.TargetSettingName == "ButtonA");
+            stale.PrimarySourceDeviceGuid = XboxGuid.ToString();
+            stale.LoadDescriptor("Button 0");
+            stale.SelectedInput = new InputChoice
+            {
+                Descriptor = "Button 0",
+                DisplayName = "A",
+                DeviceGuid = XboxGuid.ToString(),
+                DeviceLabel = "Xbox pad",
+            };
+
+            // The imported profile also wants an Xbox slot 0: types MATCH.
+            ImportAndApplyWorkshopProfile(svc);
+            Assert.Equal(VirtualControllerType.Xbox, pad0.OutputType);
+
+            var row = pad0.Mappings.First(m => m.TargetSettingName == "ButtonA");
+
+            Assert.True(string.IsNullOrEmpty(row.PrimarySourceDeviceGuid),
+                $"a same-type slot kept the outgoing profile's device "
+                + $"('{row.PrimarySourceDeviceGuid}') on its row.");
+            Assert.True(row.SelectedInput == null
+                || string.IsNullOrEmpty(row.SelectedInput.DeviceGuid),
+                "the row's picker selection still points at the outgoing "
+                + "profile's device.");
+        }
     }
 }

@@ -3713,6 +3713,17 @@ namespace PadForge.ViewModels
                         // deleted slot's pair cleaning.
                         delSet.SocdMode = "";
                         delSet.SocdPairs = "";
+                        // Shift layers are slot-scoped for exactly the same
+                        // reason as the three above, and were the one member
+                        // of that family this reset missed: the next VC at
+                        // this pad index inherited the deleted slot's
+                        // activators, so its rows evaluated against layers the
+                        // user never authored on it. The Base appearance trio
+                        // rides the same structure and is cleared with it.
+                        delSet.ShiftActivators?.Clear();
+                        delSet.BaseLayerName = "";
+                        delSet.BaseColor = "";
+                        delSet.BaseIcon = "";
                     }
                 }
             }
@@ -3720,6 +3731,12 @@ namespace PadForge.ViewModels
             ReloadMenus();
             ReloadRumbleAudio();
             ReloadSocd();
+            // The ViewModel half of the shift-layer clear above. Menus,
+            // rumble-audio and SOCD each get their reload here; layers had
+            // none, so the tab strip kept showing the deleted slot's layers
+            // and ActiveLayerMask could still point at one of them.
+            ActiveLayerMask = "Base";
+            RebuildLayerTabs(null);
 
             // Per-device Lighting tab configs live in this PadViewModel's
             // dictionary, keyed by physical device InstanceGuid — not on

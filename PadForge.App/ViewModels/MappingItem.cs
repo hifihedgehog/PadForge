@@ -1568,35 +1568,27 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Resolves a device GUID to its friendly name. Wired by
-        /// InputService to its own ResolveDeviceLabel, which answers
-        /// "(Any device)" for the empty GUID.</summary>
+        /// InputService. Retained for MappingSourceItem's twin; the primary
+        /// label below is stored, not derived (see the note there).</summary>
         public static System.Func<string, string> DeviceLabelResolver { get; set; }
 
         private string _primarySourceDeviceLabel = "";
-        /// <summary>Human-friendly device name for the primary source.
+        /// <summary>Human-friendly device name for the primary source,
+        /// STORED and stamped by the load path from the row's GUID.
         ///
-        /// <para>DERIVED from <see cref="PrimarySourceDeviceGuid"/>, never
-        /// trusted as stored state. It used to be an independently assigned
-        /// string kept in step with the GUID by every writer, and a profile
-        /// switch could leave the two disagreeing: the owner's Workshop
-        /// import showed rows whose stored DeviceGuid was empty (the abstract
-        /// "Gamepad ButtonA" family) while this subtitle still read the
-        /// OUTGOING profile's controller. A label that cannot be set
-        /// independently cannot go stale. The setter stays so existing
-        /// writers compile, and is honoured only as a fallback when no
-        /// resolver is wired (early startup, tests).</para></summary>
+        /// <para>Deriving it live from PrimarySourceDeviceGuid was tried on
+        /// 2026-07-28 and reverted the same night. It is a faithful
+        /// projection, which is the problem: any path that clobbers the GUID
+        /// after the load immediately shows the wrong controller in the row
+        /// subtitle. The owner hit that switching between two same-type
+        /// profiles, where the subtitle named the other profile's pad while
+        /// the picker still listed this one's. The GUID clobber is a real
+        /// separate defect and is still open; surfacing it through the
+        /// subtitle traded one wrong display for another and regressed a
+        /// case that had been correct.</para></summary>
         public string PrimarySourceDeviceLabel
         {
-            get
-            {
-                var resolver = DeviceLabelResolver;
-                if (resolver != null)
-                {
-                    try { return resolver(_primarySourceDeviceGuid) ?? ""; }
-                    catch { /* fall through to the stored value */ }
-                }
-                return _primarySourceDeviceLabel;
-            }
+            get => _primarySourceDeviceLabel;
             set
             {
                 if (SetProperty(ref _primarySourceDeviceLabel, value ?? ""))

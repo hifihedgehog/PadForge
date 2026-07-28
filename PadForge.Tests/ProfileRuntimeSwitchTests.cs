@@ -717,5 +717,103 @@ namespace PadForge.Tests
 
             Assert.Contains(macros, m => m.Name == "Rapid Fire" && m.PadIndex == 0);
         }
+    
+        private static readonly Guid SteamGuid = new("32462c1a-3538-3ea7-4ed1-692056f86c4b");
+        private static readonly Guid XboxPadGuid = new("77777777-7777-7777-7777-777777777777");
+
+        private static void AddPad(Guid guid, string name)
+        {
+            lock (SettingsManager.UserDevices.SyncRoot)
+                SettingsManager.UserDevices.Items.Add(new UserDevice
+                {
+                    InstanceGuid = guid,
+                    ProductGuid = guid,
+                    InstanceName = name,
+                    ProductName = name,
+                    IsOnline = true,
+                    CapType = InputDeviceType.Gamepad,
+                });
+        }
+
+        private static void AssignTo(Guid guid, int slot)
+        {
+            lock (SettingsManager.UserSettings.SyncRoot)
+            {
+                var us = SettingsManager.UserSettings.Items
+                    .FirstOrDefault(u => u.InstanceGuid == guid);
+                if (us == null)
+                {
+                    us = new UserSetting { InstanceGuid = guid };
+                    us.SetPadSetting(new PadSetting());
+                    SettingsManager.UserSettings.Items.Add(us);
+                }
+                us.MapTo = slot;
+            }
+        }
+
+        private static void MapButtonA(int slot, Guid deviceGuid, string descriptor)
+        {
+            var ms = SettingsManager.SlotMappingSets[slot] ?? (SettingsManager.SlotMappingSets[slot] = new MappingSet());
+            ms.Rows.RemoveAll(r => r.Target == "ButtonA");
+            var row = new MappingRow { Target = "ButtonA", LayerMask = "Base" };
+            row.Sources.Add(new MappingSource
+            { Kind = "Direct", Descriptor = descriptor, DeviceGuid = deviceGuid.ToString() });
+            ms.Rows.Add(row);
+        }
+
+        /// <summary>The owner's reproduction, with no Workshop involvement:
+        /// a default profile with one pad mapped, a NEW profile with the same
+        /// slot type and a DIFFERENT pad, then back to default. The default
+        /// profile's row must come back pointing at its own device.
+        ///
+        /// <para>Reported symptom: the row subtitle shows the other profile's
+        /// controller while the picker still lists this profile's. The
+        /// subtitle renders PrimarySourceDeviceGuid, so the two having
+        /// diverged means the GUID carried across the switch.</para></summary>
+        [Fact]
+        public void SwitchingBetweenSameTypeProfiles_KeepsEachProfilesOwnDevice()
+        {
+            var (vm, svc, ss) = Arrange();
+            AddPad(SteamGuid, "Steam Controller");
+            AddPad(XboxPadGuid, "Xbox pad");
+
+            // Default profile: Steam Controller assigned and mapped.
+            AssignTo(SteamGuid, 0);
+            MapButtonA(0, SteamGuid, "Button 0");
+            svc.UpdatePadDeviceInfo();
+            InputService.RefreshMappingsToViewModel(vm.Pads[0]);
+            svc.RefreshAvailableInputsForSlot(vm.Pads[0]);
+            Assert.Equal(SteamGuid.ToString(),
+                vm.Pads[0].Mappings.First(m => m.TargetSettingName == "ButtonA").PrimarySourceDeviceGuid,
+                ignoreCase: true);
+
+            // A NEW profile, same slot type, different pad.
+            var other = IncomingProfile();
+            var otherSets = new MappingSet[InputManager.MaxPads];
+            otherSets[0] = new MappingSet();
+            otherSets[0].Rows.Add(new MappingRow
+            {
+                Target = "ButtonA",
+                LayerMask = "Base",
+                Sources = { new MappingSource
+                    { Kind = "Direct", Descriptor = "Button 0", DeviceGuid = XboxPadGuid.ToString() } },
+            });
+            other.SlotMappingSets = otherSets;
+            SettingsManager.Profiles.Add(other);
+
+            svc.LoadProfile(other.Id);
+            AssignTo(XboxPadGuid, 0);
+            svc.UpdatePadDeviceInfo();
+            InputService.RefreshMappingsToViewModel(vm.Pads[0]);
+            svc.RefreshAvailableInputsForSlot(vm.Pads[0]);
+
+            // Back to default.
+            svc.RevertToDefaultProfile();
+            InputService.RefreshMappingsToViewModel(vm.Pads[0]);
+            svc.RefreshAvailableInputsForSlot(vm.Pads[0]);
+
+            var row = vm.Pads[0].Mappings.First(m => m.TargetSettingName == "ButtonA");
+            Assert.Equal(SteamGuid.ToString(), row.PrimarySourceDeviceGuid, ignoreCase: true);
+        }
     }
 }

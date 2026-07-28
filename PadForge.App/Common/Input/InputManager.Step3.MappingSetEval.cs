@@ -1814,10 +1814,15 @@ namespace PadForge.Common.Input
                 // don't count toward "multi-source" since they're
                 // transparent to the user's chosen combine mode.
                 int contribCount = 0;
-                if (row.Sources != null)
+                // Capture the list reference once. The save path publishes a
+                // rebuilt Sources list by reference assignment, so a loop that
+                // re-reads the property could pair one list's Count with the
+                // other's indexer and throw on the poll thread.
+                var rowSources = row.Sources;
+                if (rowSources != null)
                 {
-                    for (int si = 0; si < row.Sources.Count; si++)
-                        if (!IsRowModifierSource(row.Sources[si])) contribCount++;
+                    for (int si = 0; si < rowSources.Count; si++)
+                        if (!IsRowModifierSource(rowSources[si])) contribCount++;
                 }
                 bool isMultiSource = contribCount > 1;
                 HashSet<string> multiDone = (isMultiSource && slotIndex >= 0
@@ -1851,9 +1856,9 @@ namespace PadForge.Common.Input
                         multiDone?.Add(row.Target);
                         continue;
                     }
-                    for (int i = 0; i < row.Sources.Count; i++)
+                    for (int i = 0; i < rowSources.Count; i++)
                     {
-                        var src = row.Sources[i];
+                        var src = rowSources[i];
                         if (IsRowModifierSource(src)) continue;
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
@@ -1882,9 +1887,9 @@ namespace PadForge.Common.Input
                         multiDone?.Add(row.Target);
                         continue;
                     }
-                    for (int i = 0; i < row.Sources.Count; i++)
+                    for (int i = 0; i < rowSources.Count; i++)
                     {
-                        var src = row.Sources[i];
+                        var src = rowSources[i];
                         if (IsRowModifierSource(src)) continue;
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
@@ -1924,9 +1929,9 @@ namespace PadForge.Common.Input
                         multiDone?.Add(row.Target);
                         continue;
                     }
-                    for (int i = 0; i < row.Sources.Count; i++)
+                    for (int i = 0; i < rowSources.Count; i++)
                     {
-                        var src = row.Sources[i];
+                        var src = rowSources[i];
                         if (IsRowModifierSource(src)) continue;
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
@@ -1956,10 +1961,14 @@ namespace PadForge.Common.Input
         /// any held modifier triggers the flip.</para></summary>
         private static bool IsInvertOnHoldActive(MappingRow row, CustomInputState fallbackState, string fallbackDeviceGuid, int slotIndex)
         {
-            if (row == null || row.Sources == null) return false;
-            for (int i = 0; i < row.Sources.Count; i++)
+            // Capture once: the save path publishes a rebuilt list by
+            // reference assignment, so re-reading the property could pair
+            // one list's Count with the other's indexer on the poll thread.
+            var srcs = row?.Sources;
+            if (srcs == null) return false;
+            for (int i = 0; i < srcs.Count; i++)
             {
-                var src = row.Sources[i];
+                var src = srcs[i];
                 if (src == null) continue;
                 if (!string.Equals(src.Kind ?? "Direct", "InvertOnHold", System.StringComparison.Ordinal))
                     continue;
@@ -2001,10 +2010,14 @@ namespace PadForge.Common.Input
         /// single-vs-multi-source dispatch.</summary>
         private static int CountContributingSources(MappingRow row)
         {
-            if (row?.Sources == null) return 0;
+            // Capture once: the save path publishes a rebuilt list by
+            // reference assignment, so re-reading the property could pair
+            // one list's Count with the other's indexer on the poll thread.
+            var srcs = row?.Sources;
+            if (srcs == null) return 0;
             int n = 0;
-            for (int i = 0; i < row.Sources.Count; i++)
-                if (!IsRowModifierSource(row.Sources[i])) n++;
+            for (int i = 0; i < srcs.Count; i++)
+                if (!IsRowModifierSource(srcs[i])) n++;
             return n;
         }
 
@@ -2013,9 +2026,13 @@ namespace PadForge.Common.Input
         /// effectively unmapped — the modifier has nothing to flip).</summary>
         private static MappingSource FirstContributingSource(MappingRow row)
         {
-            if (row?.Sources == null) return null;
-            for (int i = 0; i < row.Sources.Count; i++)
-                if (!IsRowModifierSource(row.Sources[i])) return row.Sources[i];
+            // Capture once: the save path publishes a rebuilt list by
+            // reference assignment, so re-reading the property could pair
+            // one list's Count with the other's indexer on the poll thread.
+            var srcs = row?.Sources;
+            if (srcs == null) return null;
+            for (int i = 0; i < srcs.Count; i++)
+                if (!IsRowModifierSource(srcs[i])) return srcs[i];
             return null;
         }
 
@@ -2150,7 +2167,11 @@ namespace PadForge.Common.Input
                 for (int r = 0; r < rows.Count; r++)
                 {
                     var row = rows[r];
-                    if (row == null || row.Sources == null) continue;
+                    // Capture once: the save path publishes a rebuilt Sources
+                    // list by reference assignment, so re-reading the property
+                    // could pair one list's Count with the other's indexer.
+                    var rowSources = row?.Sources;
+                    if (rowSources == null) continue;
                     if (!string.Equals(row.Target, target, System.StringComparison.Ordinal)) continue;
 
                     if (string.Equals(row.CombineMode, "StickTrim", System.StringComparison.Ordinal))
@@ -2166,8 +2187,8 @@ namespace PadForge.Common.Input
                         // freezes, so the normal preview below is the
                         // accurate one.
                         int contributing = 0;
-                        for (int ci = 0; ci < row.Sources.Count; ci++)
-                            if (row.Sources[ci] != null && !IsRowModifierSource(row.Sources[ci]))
+                        for (int ci = 0; ci < rowSources.Count; ci++)
+                            if (rowSources[ci] != null && !IsRowModifierSource(rowSources[ci]))
                                 contributing++;
                         if (contributing >= 2)
                         {
@@ -2179,9 +2200,9 @@ namespace PadForge.Common.Input
                     }
 
                     List<float> contribs = null;
-                    for (int i = 0; i < row.Sources.Count; i++)
+                    for (int i = 0; i < rowSources.Count; i++)
                     {
-                        var src = row.Sources[i];
+                        var src = rowSources[i];
                         if (IsRowModifierSource(src)) continue;
                         if (!SourceMatchesDevice(src, deviceGuid)) continue;
                         // Preview truthfulness (audit 2026-07-25, C12): the
@@ -2189,7 +2210,7 @@ namespace PadForge.Common.Input
                         // sources, so the preview must too or the Pad page
                         // shows a trigger pulling while the press is eaten.
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
-                        (contribs ??= new List<float>(row.Sources.Count)).Add(
+                        (contribs ??= new List<float>(rowSources.Count)).Add(
                             SourceEvaluator.EvaluateForTriggerTarget(state, src, slotIndex, target, i, null, 0,
                                 evaluatedDeviceGuid: deviceGuid));
                     }
@@ -3218,7 +3239,11 @@ namespace PadForge.Common.Input
             // exposed in the UI, but we tolerate it here by OR'ing each
             // direction across sources.
             bool up = false, down = false, left = false, right = false;
-            foreach (var src in row.Sources)
+            // Capture once: a foreach over the live list throws
+            // InvalidOperationException the moment the save path touches it.
+            var dpadSources = row.Sources;
+            if (dpadSources == null) return;
+            foreach (var src in dpadSources)
             {
                 if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
                 if (string.IsNullOrEmpty(src.Descriptor)) continue;

@@ -412,14 +412,23 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Called by <c>HMaestroVirtualController.OutputDecoded</c>
-        /// for every external host write to a Sony virtual. Inspects the
-        /// 47-byte USB-shape effect payload's validFlag bits to identify
+        /// for every external host write to a Sony virtual.
+        ///
+        /// <para>DualSense-shaped payloads ONLY. Every offset below is the
+        /// DS5 output-report layout: validFlags at [0] and [1], motors at
+        /// [2] and [3], the two 11-byte trigger blocks at [10] and [21].
+        /// A DualShock 4 effect report has none of that, which is why the
+        /// caller gates on a live DS5 dispatcher and why a DS4 virtual gets
+        /// no per-subsystem mirror. Firing this for DS4 would capture
+        /// garbage, not fix a gap. A DS4 mirror needs its own parser.</para>
+        ///
+        /// <para>Inspects the 47-byte USB-shape effect payload's validFlag bits to identify
         /// which subsystems the writer touched; captures their bytes and
         /// refreshes a per-subsystem timestamp. Subsequent
         /// <see cref="DispatchSnapshot"/> calls within the grace window
         /// mirror those bytes (per subsystem, independently) so PadForge
         /// keeps animating subsystems the writer didn't touch while
-        /// preserving the writer's intent for the ones it did.</summary>
+        /// preserving the writer's intent for the ones it did.</para></summary>
         public static void NotifyExternalSubsystems(int padIndex, ReadOnlySpan<byte> effectPayload)
         {
             if (effectPayload.Length < 47) return;
@@ -1075,7 +1084,9 @@ namespace PadForge.Common.Input
                 // Suppress the rainbow-pulse mode's special-case
                 // anti-skip only when ANY device is on AudioPulseRainbow
                 // — keeps that mode's per-tick hue rotation alive.
-                bool anyAudioPulseRainbow = AnyDeviceMode(perDeviceCfgs, LightbarMode.AudioPulseRainbow);
+                bool anyAudioPulseRainbow = (perDeviceCfgs != null && perDeviceCfgs.Count > 0)
+                    ? AnyDeviceMode(perDeviceCfgs, LightbarMode.AudioPulseRainbow)
+                    : cfg.LightbarMode == LightbarMode.AudioPulseRainbow;
                 if (!zeroCrossing && !rumbleChanged && delta < 0.004f && !anyAudioPulseRainbow)
                     return;
                 _lastDispatchedPeak = scaled;
@@ -1083,12 +1094,29 @@ namespace PadForge.Common.Input
                 _lastDispatchedRumbleL = rLeft;
             }
 
-            DispatchSnapshot(scaled);
+            // Dispatch WITHOUT a pre-scaled peak, so each device rescales the
+            // raw peak by its OWN AudioLightbarSensitivity in the device loop.
+            // Passing `scaled` here handed every Sony device on the slot the
+            // peak computed from maxSensitivity, so a device deliberately set
+            // low flashed exactly as hard as the most sensitive one beside it
+            // and its own slider did nothing on the 30 Hz path. maxSensitivity
+            // is still right for the onset and early-exit decisions above:
+            // those gate whether ANY device renders, and must not suppress a
+            // device more sensitive than the anchor.
+            DispatchSnapshot();
         }
 
         /// <summary>True when any device's config on the slot is in the
         /// given <see cref="LightbarMode"/>. Used by tick-suppression
         /// special-cases (e.g. AudioPulseRainbow's per-tick rotation).</summary>
+        /// <summary>True when any per-device config on the slot is in
+        /// <paramref name="mode"/>. With no per-device configs the caller
+        /// must fall back to the anchor _config, exactly as the other
+        /// per-tick aggregates in OnAnimTickCore do: this returning false on
+        /// an empty map dropped the AudioPulseRainbow anti-skip exception on
+        /// a slot that had not built per-device configs yet, and the mode's
+        /// per-tick hue rotation stalled whenever the audio delta was
+        /// small.</summary>
         private static bool AnyDeviceMode(IReadOnlyDictionary<Guid, DeviceSlotConfig> cfgs, LightbarMode mode)
         {
             if (cfgs == null) return false;

@@ -1720,9 +1720,12 @@ namespace PadForge.ViewModels
         /// <summary>Step through the configured lightbar palette
         /// on each button press.</summary>
         Cycle = 2,
-        /// <summary>Flash the configured base RGB
-        /// (<see cref="DeviceSlotConfig.LightbarRed"/> et al.)
-        /// on each button press.</summary>
+        /// <summary>Flash one fixed colour on each button press, taken from
+        /// <see cref="DeviceSlotConfig.InputReactiveR"/> and friends. That is
+        /// deliberately NOT the base LightbarRed/Green/Blue, so a user can
+        /// layer a white flash over a blue Static base. This doc used to name
+        /// the base RGB, contradicting both IsInputReactiveFixed's own doc and
+        /// the consumer.</summary>
         Fixed = 3,
     }
 

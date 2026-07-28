@@ -136,6 +136,14 @@ namespace PadForge.Tests
             // IntPtr.Zero is the synthetic injected-input key and never
             // enumerates, so clearing it would break PadForge's own injection.
             Assert.Contains("IntPtr.Zero", b);
+
+            // And the sweep must NOT run on an empty enumeration. This was a
+            // regression the fix itself introduced: EnumerateDevicesByType
+            // returns an empty array on a failed GetRawInputDeviceList as well
+            // as on a genuine zero, and those are indistinguishable, so an
+            // unguarded sweep treated every live mouse as absent and released
+            // a button the user was holding on any transient API hiccup.
+            Assert.Contains("devices.Length > 0", b);
         }
 
         // ── The KBM mouse floor documents what it can actually deliver ──

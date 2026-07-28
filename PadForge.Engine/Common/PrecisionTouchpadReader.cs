@@ -336,6 +336,12 @@ namespace PadForge.Engine
             // observe all fingers down at once.
             public int FrameExpected;
             public int FrameSeen;
+            /// <summary>Contacts in this frame that reported tip-switch = 0.
+            /// They are deliberately NOT buffered as live fingers, but the
+            /// frame's declared contactCount still counts them, so they must
+            /// count toward completion or a lift frame can never satisfy
+            /// FrameSeen >= FrameExpected.</summary>
+            public int FrameLifted;
             public readonly float[] FrameBufX = new float[PtpMaxFingers];
             public readonly float[] FrameBufY = new float[PtpMaxFingers];
             public readonly int[]   FrameBufId = new int[PtpMaxFingers];
@@ -438,6 +444,7 @@ namespace PadForge.Engine
                 // shouldn't carry into the next touch session.
                 ds.FrameExpected = 0;
                 ds.FrameSeen = 0;
+                ds.FrameLifted = 0;
             }
 
             // PTP exposes a single touchpad surface with up to
@@ -818,6 +825,10 @@ namespace PadForge.Engine
             // device packs all fingers into one report.
             var fingers = _fingersScratch;
             fingers.Clear();
+            // Contacts in THIS report that reported tip-switch = 0. They are
+            // not buffered as live fingers, but the frame's declared
+            // contactCount counts them, so they must count toward completion.
+            int liftedThisReport = 0;
 
             foreach (var vc in valueCaps)
             {
@@ -843,7 +854,16 @@ namespace PadForge.Engine
                     // taps every lift report contributes one phantom
                     // contact — fingerCount overshoots, no tap fires.
                     if (!ReadTipSwitch(preparsed, report, reportLength, linkCollection))
+                    {
+                        // Counted, not buffered. The frame's contactCount
+                        // includes this lifted contact, so skipping it
+                        // silently left FrameSeen permanently short of
+                        // FrameExpected and the frame never completed: the
+                        // release was deferred to the 100 ms staleness timer,
+                        // or swallowed outright by the next tap.
+                        liftedThisReport++;
                         continue;
+                    }
 
                     if (HidP_GetUsageValue(HidP_Input, HID_USAGE_PAGE_GENERIC, linkCollection,
                             HID_USAGE_GENERIC_X, out uint rawX, preparsed, report, reportLength)
@@ -906,6 +926,7 @@ namespace PadForge.Engine
                         // Partial prior frame mismatches new total →
                         // truncated. Discard.
                         ds.FrameSeen = 0;
+                        ds.FrameLifted = 0;
                     }
                     ds.FrameExpected = System.Math.Min((int)contactCount, PtpMaxFingers);
                 }
@@ -929,8 +950,10 @@ namespace PadForge.Engine
                     ds.FrameSeen++;
                 }
 
+                ds.FrameLifted += liftedThisReport;
+
                 bool frameComplete =
-                    (ds.FrameExpected > 0 && ds.FrameSeen >= ds.FrameExpected)
+                    (ds.FrameExpected > 0 && ds.FrameSeen + ds.FrameLifted >= ds.FrameExpected)
                     || (ds.FrameExpected == 0);
 
                 if (!frameComplete) return;

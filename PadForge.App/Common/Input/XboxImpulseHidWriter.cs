@@ -143,6 +143,27 @@ namespace PadForge.Common.Input
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, CachedTarget> s_targets =
             new(StringComparer.OrdinalIgnoreCase);
 
+        /// <summary>Drops every cached handle. Called on any confirmed device
+        /// disconnect, because the cache key is <c>ud.DevicePath</c>, which for
+        /// these pads is SDL's SLOT-derived synthetic "XInput#N" string rather
+        /// than a stable hardware path.
+        ///
+        /// <para>The lookup already self-heals when a cached handle has gone
+        /// bad: the write fails, the entry is dropped and the resolve re-runs.
+        /// The case that does NOT self-heal is a reshuffle in which the cached
+        /// handle is still VALID. Unplug the pad on XInput#0 and the pad that
+        /// was on #1 can re-enumerate as #0, at which point the stale #0 entry
+        /// writes a perfectly successful report to the wrong physical
+        /// controller, and nothing ever invalidates it.</para></summary>
+        internal static void InvalidateCachedTargets()
+        {
+            foreach (var kv in s_targets)
+            {
+                try { kv.Value?.Handle?.Dispose(); } catch { /* best effort */ }
+            }
+            s_targets.Clear();
+        }
+
         // Same two-caller reason: per-thread, so a local write and a remote
         // write cannot interleave their motor bytes into a blend neither
         // side asked for. Keeps the allocation-free property the shared

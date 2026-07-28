@@ -1748,11 +1748,10 @@ namespace PadForge.ViewModels
                 if (c.MaxIndexedRef >= 0)
                     refsBit += (refsBit.Length == 0 ? " · " + s.Pad_Formula_Status_RefsLabel + ": " : ", ") + "s[" + c.MaxIndexedRef + "]";
 
-                // Effective source count = primary (a) + ExtraSources.
-                // Bipolar Neg-pair is merged into a, so it doesn't add
-                // a slot. ExtraSources.Count covers b..z directly.
-                int sourceCount = (string.IsNullOrEmpty(_sourceDescriptor) ? 0 : 1)
-                                + (ExtraSources?.Count ?? 0);
+                // Effective source count: exactly the slots the engine
+                // builds, which is NOT primary + ExtraSources.Count once a
+                // Neg pair or an InvertOnHold modifier is on the row.
+                int sourceCount = PositionalSourceCount;
 
                 var outOfRange = new System.Collections.Generic.List<char>();
                 foreach (char letter in refs)
@@ -1823,6 +1822,68 @@ namespace PadForge.ViewModels
                 ? positionLabel + " — " + PadForge.Resources.Strings.Strings.Instance.Pad_Formula_Var_NotYetMapped
                 : positionLabel + " · " + alias;
 
+        /// <summary>The sources that occupy a Custom formula's positional
+        /// slots, in order, mirroring what the engine's contribution builder
+        /// does. Two classes are skipped there with NO placeholder, so they
+        /// shift every later letter:
+        ///
+        /// <para>the bipolar Neg pair, which is Sources[1] carrying the same
+        /// device as the primary with Invert flipped on a bipolar-axis
+        /// target, because it merges into the primary's own slot; and any
+        /// InvertOnHold source, which is a row modifier and never enters the
+        /// combine. Null and postpone-suppressed sources DO get a 0f
+        /// placeholder there, precisely to keep the letters stable, so they
+        /// still count here.</para>
+        ///
+        /// <para>The UI used to count the primary plus ExtraSources.Count
+        /// flat. Since the load path materializes Sources[1..] as visible
+        /// ExtraSources rows, including the promoted Neg pair, that count
+        /// ran ahead of the engine's: a formula referencing the last letter
+        /// validated green in the editor and silently read nothing at
+        /// runtime, and the chip aliases named the wrong physical input.
+        /// Entries are null for the primary slot.</para></summary>
+        internal System.Collections.Generic.List<MappingSourceItem> PositionalSources()
+        {
+            var slots = new System.Collections.Generic.List<MappingSourceItem>(4);
+            bool primaryIsModifier = string.Equals(
+                PrimaryKindSource?.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal);
+            bool primaryExists = !string.IsNullOrEmpty(_sourceDescriptor) || primaryIsModifier;
+            if (primaryExists && !primaryIsModifier) slots.Add(null);
+
+            if (ExtraSources == null) return slots;
+
+            // The engine's neg-pair test, on the same two facts: Sources[1]
+            // shares the primary's device and its Invert is flipped.
+            int negPairIdx = -1;
+            if (IsBipolarAxisTarget && primaryExists && ExtraSources.Count > 0)
+            {
+                PadForge.Engine.Common.Mapping.SourceCoercion.StripLegacyPrefix(
+                    _sourceDescriptor, out bool primaryInvert, out _);
+                var first = ExtraSources[0];
+                if (first != null
+                    && string.Equals(first.DeviceGuid ?? "", PrimarySourceDeviceGuid ?? "",
+                        StringComparison.OrdinalIgnoreCase)
+                    && first.Invert != primaryInvert)
+                    negPairIdx = 0;
+            }
+
+            for (int i = 0; i < ExtraSources.Count; i++)
+            {
+                if (i == negPairIdx) continue;
+                var extra = ExtraSources[i];
+                if (extra != null && string.Equals(extra.Kind ?? "Direct", "InvertOnHold",
+                        StringComparison.Ordinal))
+                    continue;
+                slots.Add(extra);
+            }
+            return slots;
+        }
+
+        /// <summary>How many letters a Custom formula may reference on this
+        /// row. See <see cref="PositionalSources"/> for why this is not
+        /// simply the primary plus ExtraSources.Count.</summary>
+        internal int PositionalSourceCount => PositionalSources().Count;
+
         /// <summary>Returns "DeviceLabel · InputName" for the source
         /// at the given position (0 = primary, 1+ = ExtraSources in
         /// UI order). Empty if no source occupies that slot.</summary>
@@ -1835,9 +1896,10 @@ namespace PadForge.ViewModels
                 return string.IsNullOrEmpty(_primarySourceDeviceLabel)
                     ? name : _primarySourceDeviceLabel + " · " + name;
             }
-            int extraIdx = index - 1;
-            if (ExtraSources == null || extraIdx < 0 || extraIdx >= ExtraSources.Count) return "";
-            var extra = ExtraSources[extraIdx];
+            var slots = PositionalSources();
+            if (index < 0 || index >= slots.Count) return "";
+            var extra = slots[index];
+            if (extra == null) return "";
             if (extra == null || string.IsNullOrEmpty(extra.Descriptor)) return "";
             string ename = extra.SelectedInput?.DisplayName ?? extra.Descriptor;
             return string.IsNullOrEmpty(extra.DeviceLabel)
@@ -1868,8 +1930,7 @@ namespace PadForge.ViewModels
                 if (string.IsNullOrWhiteSpace(_combineExpression)) return false;
                 var c = Engine.Common.Mapping.MappingExpression.Compile(_combineExpression);
                 if (!c.IsValid) return false;
-                int sourceCount = (string.IsNullOrEmpty(_sourceDescriptor) ? 0 : 1)
-                                + (ExtraSources?.Count ?? 0);
+                int sourceCount = PositionalSourceCount;
                 foreach (char letter in c.ReferencedSingleLetterVars ?? "")
                 {
                     int idx = letter - 'a';

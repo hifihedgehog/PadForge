@@ -1246,6 +1246,27 @@ namespace PadForge.Engine.Common.Mapping
                 || s.StartsWith("IR Brightness", StringComparison.OrdinalIgnoreCase)
                 || s.StartsWith("IR Offscreen", StringComparison.OrdinalIgnoreCase));
 
+        /// <summary>Splits a legacy I / H / IH prefixed descriptor into its
+        /// clean name plus the Invert and HalfAxis flags the current schema
+        /// stores as separate fields. The prefix-exempt families (IR Pointer
+        /// and friends, whose real names start with I) are left whole, which
+        /// is the whole reason this grammar needs one implementation rather
+        /// than a copy per caller.</summary>
+        public static string StripLegacyPrefix(string descriptor, out bool invert, out bool halfAxis)
+        {
+            invert = false; halfAxis = false;
+            string clean = descriptor ?? "";
+            if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+            { invert = true; halfAxis = true; return clean.Substring(2); }
+            if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1
+                && !char.IsDigit(clean[1]) && !IsPrefixExemptDescriptor(clean))
+            { invert = true; return clean.Substring(1); }
+            if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1
+                && !char.IsDigit(clean[1]))
+            { halfAxis = true; return clean.Substring(1); }
+            return clean;
+        }
+
         public static bool IsMidiDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && descriptor.StartsWith("Midi ", StringComparison.Ordinal);

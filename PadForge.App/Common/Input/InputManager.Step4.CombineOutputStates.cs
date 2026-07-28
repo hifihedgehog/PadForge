@@ -6,6 +6,14 @@ namespace PadForge.Common.Input
 {
     public partial class InputManager
     {
+        /// <summary>PER-SLOT buffer for the multi-device MIDI combine. Per slot,
+        /// not shared: one buffer across slots would make every slot's combine
+        /// write the same arrays, so a later slot would overwrite an earlier
+        /// one's result. Never published either, because the loop copies out of
+        /// it into CombinedMidiRawStates rather than assigning it, so the UI
+        /// thread never sees this buffer at all.</summary>
+        private readonly MidiRawState[] _midiCombineScratch = new MidiRawState[MaxPads];
+
         // ─────────────────────────────────────────────
         //  Step 4: CombineOutputStates
         //  Merges the mapped Gamepad states from all devices assigned to
@@ -173,7 +181,13 @@ namespace PadForge.Common.Input
                             }
                             else
                             {
-                                combinedMidi = MidiRawState.Combine(combinedMidi, us.MidiRawOutputState);
+                                // Reuses this slot's buffer. Safe to pass as
+                                // the destination while it is also the left
+                                // operand: the combine reads index i of both
+                                // inputs before writing index i of the result.
+                                combinedMidi = MidiRawState.CombineInto(
+                                    combinedMidi, us.MidiRawOutputState, _midiCombineScratch[padIndex]);
+                                _midiCombineScratch[padIndex] = combinedMidi;
                             }
                         }
 

@@ -349,10 +349,32 @@ namespace PadForge.Engine
         /// Combines two MIDI raw states. CCs take the value furthest from center; notes are OR'd.
         /// </summary>
         public static MidiRawState Combine(MidiRawState a, MidiRawState b)
+            => CombineInto(a, b, default);
+
+        /// <summary>Combine writing into a caller-owned <paramref name="dest"/>,
+        /// so a repeated combine can reuse one buffer instead of allocating a
+        /// byte[] and a bool[] per call. Pass default to allocate, which is
+        /// what the two-argument overload does.
+        ///
+        /// <para>MidiRawState is a STRUCT holding array references, so the
+        /// "allocate one" sentinel is default (null arrays), and writing through
+        /// result.CcValues mutates the arrays the caller owns, which is the
+        /// point.</para>
+        ///
+        /// <para>dest MAY be the same instance as <paramref name="a"/>: both
+        /// loops read index i from a and b and then write index i of the
+        /// result, with no cross-index reads, so an in-place destination cannot
+        /// disturb a value still to be read. dest must NOT be a device's
+        /// published state, nor anything another slot or thread reads. The
+        /// caller owns it.</para></summary>
+        public static MidiRawState CombineInto(MidiRawState a, MidiRawState b, MidiRawState dest)
         {
             int ccCount = a.CcValues?.Length ?? b.CcValues?.Length ?? 0;
             int noteCount = a.Notes?.Length ?? b.Notes?.Length ?? 0;
-            var result = Create(ccCount, noteCount);
+            var result = (dest.CcValues != null && dest.CcValues.Length == ccCount
+                          && dest.Notes != null && dest.Notes.Length == noteCount)
+                ? dest
+                : Create(ccCount, noteCount);
 
             for (int i = 0; i < ccCount; i++)
             {

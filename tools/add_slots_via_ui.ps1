@@ -1,4 +1,4 @@
-# Restore PadForge.xml backup, then add 4 more slot types via UI automation.
+﻿# Restore PadForge.xml backup, then add 4 more slot types via UI automation.
 $logFile = "C:\PadForge\add_slots_log.txt"
 "START $(Get-Date -Format HH:mm:ss)" | Out-File $logFile -Encoding ascii
 try {

@@ -1,4 +1,4 @@
-## vJoy Live UI Automation Test
+﻿## vJoy Live UI Automation Test
 ## Self-elevating -- will pop UAC if not already admin.
 ## Tests live vJoy operations via Windows UI Automation while PadForge is running:
 ##   1. Add a vJoy controller

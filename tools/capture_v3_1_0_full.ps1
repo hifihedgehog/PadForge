@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Full v3.1.0 screenshot capture: prep PadForge.xml with one slot of
     every type (Xbox/PlayStation/Extended/KBM/MIDI), inject sample
@@ -68,8 +68,15 @@ if (-not (Test-Path $XmlPath)) {
     Stop-Transcript | Out-Null
     exit 1
 }
-Copy-Item $XmlPath "$XmlPath.bak-capture" -Force
-Write-Host "  Backed up to $XmlPath.bak-capture"
+# Never overwrite an existing backup: with -Force, a re-run after a failed
+# capture copied the already-prepped synthetic config over the only copy of
+# the real settings. The first backup is the pristine one, so it wins.
+if (Test-Path -LiteralPath "$XmlPath.bak-capture") {
+    Write-Host "  Keeping existing backup $XmlPath.bak-capture (already prepped once)"
+} else {
+    Copy-Item -LiteralPath $XmlPath -Destination "$XmlPath.bak-capture"
+    Write-Host "  Backed up to $XmlPath.bak-capture"
+}
 
 [xml]$xml = Get-Content $XmlPath
 $ns = $xml.PadForgeSettings

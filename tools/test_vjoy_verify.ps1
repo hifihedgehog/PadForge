@@ -184,7 +184,7 @@ if ($mappingsTab) {
             $rowCells = $rows[$i].FindAll($tree::Children, $true_cond)
             $cellNames = @()
             foreach ($cell in $rowCells) { $cellNames += $cell.Current.Name }
-            Log "    Row $i: $($cellNames -join ' | ')"
+            Log "    Row ${i}: $($cellNames -join ' | ')"
         }
     } else {
         # Maybe it's not a DataGrid, check for any content
@@ -242,7 +242,7 @@ if ($padNavItems.Count -ge 2) {
         Start-Sleep -Milliseconds 500
 
         $rows2 = $mainWin.FindAll($tree::Descendants, $dgCond)
-        Log "  DataItem rows on $pad2Name: $($rows2.Count)"
+        Log "  DataItem rows on ${pad2Name}: $($rows2.Count)"
         if ($rows2.Count -gt 0) { Pass "Second pad Mappings has $($rows2.Count) rows" }
         else { Fail "Second pad Mappings appears EMPTY" }
     }

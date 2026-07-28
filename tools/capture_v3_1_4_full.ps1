@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Full v3.1.4 screenshot capture in one atomic run. Produces every PNG
     used by the wiki, README, and padforge.org:

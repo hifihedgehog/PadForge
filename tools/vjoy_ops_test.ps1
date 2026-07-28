@@ -1,4 +1,4 @@
-## Direct vJoy Operations Test
+﻿## Direct vJoy Operations Test
 ## Tests registry writes + pnputil enable/disable/restart — same ops as PadForge
 ## Self-elevating. No PadForge UI needed.
 

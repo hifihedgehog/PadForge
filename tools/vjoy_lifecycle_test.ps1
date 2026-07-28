@@ -1,4 +1,4 @@
-## Comprehensive vJoy lifecycle test via PadForge
+﻿## Comprehensive vJoy lifecycle test via PadForge
 ## Tests remove+recreate approach with scan-devices cleanup
 param([switch]$Elevated)
 

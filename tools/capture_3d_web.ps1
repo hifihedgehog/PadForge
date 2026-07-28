@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Captures pad-controller-3d, pad-controller-2d, and web screenshots.
     Assumes PadForge is running with a slot. Must run elevated.

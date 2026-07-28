@@ -1,4 +1,4 @@
-# vJoy UI Automation Test
+﻿# vJoy UI Automation Test
 # Changes vJoy config via PadForge's UI controls (elevated)
 # Must run elevated to interact with elevated PadForge.
 

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Captures the v3.1.0 user-facing pages without wiping the user's
     PadForge.xml. Assumes a slot exists with a DualSense assigned so

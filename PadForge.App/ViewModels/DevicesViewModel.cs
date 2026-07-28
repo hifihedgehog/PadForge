@@ -573,7 +573,6 @@ namespace PadForge.ViewModels
                 {
                     if (_selectedDevice != null)
                     {
-                        _selectedDevice.IsHidden = true;
                         HideDeviceRequested?.Invoke(this, _selectedDevice.InstanceGuid);
                     }
                 },

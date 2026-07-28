@@ -173,15 +173,6 @@ namespace PadForge.ViewModels
             }
         }
 
-        private bool _isHidden;
-
-        /// <summary>Whether the device is hidden from the UI.</summary>
-        public bool IsHidden
-        {
-            get => _isHidden;
-            set => SetProperty(ref _isHidden, value);
-        }
-
         /// <summary>Status text for display.</summary>
         public string StatusText
         {

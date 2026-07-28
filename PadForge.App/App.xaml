@@ -51,7 +51,6 @@
                     <SolidColorBrush x:Key="EmberTextBrush" Color="#FF6B2C"/>
                     <SolidColorBrush x:Key="ColdMutedBrush" Color="#9E58B6E4"/>
                     <SolidColorBrush x:Key="SteelGroundBrush" Color="#0B0E14"/>
-                    <SolidColorBrush x:Key="SteelCardBrush" Color="#111623"/>
                     <SolidColorBrush x:Key="SteelRaisedBrush" Color="#1B2333"/>
                     <SolidColorBrush x:Key="SteelLineBrush" Color="#253049"/>
                     <!-- Crucible card ground: dark default; EmberTheme swaps

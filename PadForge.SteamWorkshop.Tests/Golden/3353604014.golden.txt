@@ -50,37 +50,37 @@ xbox activators: 1
   Cycle  cycle=Base | Button 11 | name=When Trigger is pressed
 kbm rows: 0
 macros: 18
-  macro SetLightbarColor OnPress | Set LED (button_a) | btns=0x1000 layer=Base rgb=(255,0,0) bright=43% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (button_a) | btns=0x0000 in=[Gamepad ButtonA] layer=Base strength=33%
-  macro SetLightbarColor OnPress | Set LED (button_b) | btns=0x2000 layer=Base rgb=(255,0,0) bright=67% sat=100% setting=1
-  macro SetLightbarColor OnPress | Set LED (button_x) | btns=0x4000 layer=Base rgb=(255,0,0) bright=100% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (button_x) | btns=0x0000 in=[Gamepad ButtonX] layer=Base strength=100%
-  macro SetLightbarColor OnPress | Set LED (button_y) | btns=0x8000 layer=Base rgb=(217,255,0) bright=100% sat=100% setting=1
-  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0040 layer=Base rgb=(255,0,0) bright=51% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0000 axis=LeftTrigger@75% layer=Base rgb=(13,255,0) bright=100% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0080 layer=Base rgb=(255,0,0) bright=51% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0000 axis=RightTrigger@75% layer=Base rgb=(255,0,0) bright=79% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro SetLightbarColor OnPress | Set LED (left_bumper) | btns=0x0100 layer=Base rgb=(255,0,0) bright=43% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (left_bumper) | btns=0x0000 in=[Gamepad LeftShoulder] layer=Base strength=33%
-  macro SetLightbarColor OnPress | Set LED (right_bumper) | btns=0x0200 layer=Base rgb=(255,0,0) bright=43% sat=100% setting=1
-  macro RumblePulse OnPress | Haptic pulse (right_bumper) | btns=0x0000 in=[Gamepad RightShoulder] layer=Base strength=33%
+  macro SetLightbarColor OnPress | Set LED (ButtonA) | btns=0x1000 layer=Base rgb=(255,0,0) bright=43% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (ButtonA) | btns=0x0000 in=[Gamepad ButtonA] layer=Base strength=33%
+  macro SetLightbarColor OnPress | Set LED (ButtonB) | btns=0x2000 layer=Base rgb=(255,0,0) bright=67% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (ButtonX) | btns=0x4000 layer=Base rgb=(255,0,0) bright=100% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (ButtonX) | btns=0x0000 in=[Gamepad ButtonX] layer=Base strength=100%
+  macro SetLightbarColor OnPress | Set LED (ButtonY) | btns=0x8000 layer=Base rgb=(217,255,0) bright=100% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (LeftStick) | btns=0x0040 layer=Base rgb=(255,0,0) bright=51% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro SetLightbarColor OnPress | Set LED (LeftTrigger) | btns=0x0000 axis=LeftTrigger@75% layer=Base rgb=(13,255,0) bright=100% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro SetLightbarColor OnPress | Set LED (RightStick) | btns=0x0080 layer=Base rgb=(255,0,0) bright=51% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro SetLightbarColor OnPress | Set LED (RightTrigger) | btns=0x0000 axis=RightTrigger@75% layer=Base rgb=(255,0,0) bright=79% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro SetLightbarColor OnPress | Set LED (LeftShoulder) | btns=0x0100 layer=Base rgb=(255,0,0) bright=43% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (LeftShoulder) | btns=0x0000 in=[Gamepad LeftShoulder] layer=Base strength=33%
+  macro SetLightbarColor OnPress | Set LED (RightShoulder) | btns=0x0200 layer=Base rgb=(255,0,0) bright=43% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (RightShoulder) | btns=0x0000 in=[Gamepad RightShoulder] layer=Base strength=33%
 report: v26 rows:x20+k0 macros:18 menus:0 layers:1 clean:35 partial:0 skipped:0 errors:0
-  Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_a/Full_Press => Set LED macro
-  Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_b/Full_Press => Set LED macro
-  Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_x/Full_Press => Set LED macro
-  Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_y/Full_Press => Set LED macro
-  Clean MacroEmitted @ When Trigger is pressed/joystick/group 30 (joystick_move)/click/Full_Press => Set LED macro
+  Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_a/Full_Press => Set LED macro <- Gamepad ButtonA
+  Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_b/Full_Press => Set LED macro <- Gamepad ButtonB
+  Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_x/Full_Press => Set LED macro <- Gamepad ButtonX
+  Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_y/Full_Press => Set LED macro <- Gamepad ButtonY
+  Clean MacroEmitted @ When Trigger is pressed/joystick/group 30 (joystick_move)/click/Full_Press => Set LED macro <- Gamepad LeftStick
   Clean RowEmitted @ When Trigger is pressed/left_trackpad/group 27 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
-  Clean MacroEmitted @ When Trigger is pressed/left_trigger/group 15 (trigger)/click/Full_Press => Set LED macro
-  Clean MacroEmitted @ When Trigger is pressed/right_joystick/group 31 (joystick_move)/click/Full_Press => Set LED macro
+  Clean MacroEmitted @ When Trigger is pressed/left_trigger/group 15 (trigger)/click/Full_Press => Set LED macro <- Gamepad LeftTrigger
+  Clean MacroEmitted @ When Trigger is pressed/right_joystick/group 31 (joystick_move)/click/Full_Press => Set LED macro <- Gamepad RightStick
   Clean RowEmitted @ When Trigger is pressed/right_trackpad/group 28 (single_button)/click/Full_Press => ButtonStart <- Touchpad 0 Click
-  Clean MacroEmitted @ When Trigger is pressed/right_trigger/group 16 (trigger)/click/Full_Press => Set LED macro
-  Clean MacroEmitted @ When Trigger is pressed/switch/group 17 (switches)/left_bumper/Full_Press => Set LED macro
-  Clean MacroEmitted @ When Trigger is pressed/switch/group 17 (switches)/right_bumper/Full_Press => Set LED macro
+  Clean MacroEmitted @ When Trigger is pressed/right_trigger/group 16 (trigger)/click/Full_Press => Set LED macro <- Gamepad RightTrigger
+  Clean MacroEmitted @ When Trigger is pressed/switch/group 17 (switches)/left_bumper/Full_Press => Set LED macro <- Gamepad LeftShoulder
+  Clean MacroEmitted @ When Trigger is pressed/switch/group 17 (switches)/right_bumper/Full_Press => Set LED macro <- Gamepad RightShoulder
   Clean RowEmitted @ When Trigger is pressed/joystick/group 30 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
   Clean RowEmitted @ When Trigger is pressed/joystick/group 30 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
   Clean RowEmitted @ When Trigger is pressed/left_trigger/group 15 (trigger) => LeftTrigger <- Gamepad LeftTrigger
@@ -103,4 +103,4 @@ report: v26 rows:x20+k0 macros:18 menus:0 layers:1 clean:35 partial:0 skipped:0 
   Clean RowEmitted @ When Trigger is pressed/switch/group 17 (switches)/button_menu/Full_Press => ButtonBack <- Gamepad ButtonBack
   Clean RowEmitted @ When Trigger is pressed/switch/group 17 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
   Clean RowEmitted @ When Trigger is pressed/switch/group 17 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
-  Clean ShiftLayerEmitted(When Trigger is pressed) @ When Trigger is pressed/switch/group 17 (switches)/button_capture/Full_Press => Cycle -> Base
+  Clean ShiftLayerEmitted(When Trigger is pressed) @ When Trigger is pressed/switch/group 17 (switches)/button_capture/Full_Press => Cycle When Trigger is pressed <- Button 11

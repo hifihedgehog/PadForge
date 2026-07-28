@@ -97,16 +97,16 @@ kbm rows: 42
 kbm activators: 1
   Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle2 | name=Controls - Landing party / Controls - Enterprise
 macros: 10
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
-  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Layer_2790927974_1 strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Layer_2790927974_1 strength=66%
-  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] layer=Layer_2790927974_1 vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightStick) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Layer_2790927974_1 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Layer_2790927974_1 strength=66%
+  macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Layer_2790927974_1 vk=0x2C
 menus: 2
   menu 1 Radial | Touchpad 0 | Base | fire=Click cells=6 | name=Radial Menu 1
     [1] T
@@ -133,7 +133,7 @@ report: v26 rows:x0+k42 macros:10 menus:2 layers:2 clean:50 partial:0 skipped:0 
   Clean RowEmitted @ Controls - Enterprise/dpad/group 9 (dpad)/dpad_west/Full_Press => KbmKey31 <- Gamepad DPadLeft
   Clean RowEmitted @ Controls - Enterprise/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey21 <- Gamepad LeftStickY (lower half)
   Clean RowEmitted @ Controls - Enterprise/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey22 <- Gamepad LeftStickY (upper half)
-  Clean MenuEmitted(6) @ Controls - Enterprise/left_trackpad/group 7 (radial_menu) => Radial menu 1 on Touchpad 0: 6 bound cells
+  Clean MenuEmitted(6) @ Controls - Enterprise/left_trackpad/group 7 (radial_menu) => Radial menu 1: 6 bound cells <- Touchpad 0
   Clean RowEmitted @ Controls - Enterprise/left_trackpad/group 7 (radial_menu)/touch_menu_button_1/Full_Press => KbmKey54 <- Menu 1 Item 1
   Clean RowEmitted @ Controls - Enterprise/left_trackpad/group 7 (radial_menu)/touch_menu_button_2/Full_Press => KbmKey4F <- Menu 1 Item 2
   Clean RowEmitted @ Controls - Enterprise/left_trackpad/group 7 (radial_menu)/touch_menu_button_3/Full_Press => KbmKey4E <- Menu 1 Item 3
@@ -158,7 +158,7 @@ report: v26 rows:x0+k42 macros:10 menus:2 layers:2 clean:50 partial:0 skipped:0 
   Clean RowEmitted @ Controls - Landing party/button_diamond/group 12 (four_buttons)/button_a/Full_Press => KbmKey0D <- Gamepad ButtonA
   Clean RowEmitted @ Controls - Landing party/button_diamond/group 12 (four_buttons)/button_x/Full_Press => KbmKey1B <- Gamepad ButtonX
   Clean RowEmitted @ Controls - Landing party/button_diamond/group 12 (four_buttons)/button_y/Full_Press => KbmKey49 <- Gamepad ButtonY
-  Clean MenuEmitted(6) @ Controls - Landing party/left_trackpad/group 17 (radial_menu) => Radial menu 2 on Touchpad 0: 6 bound cells
+  Clean MenuEmitted(6) @ Controls - Landing party/left_trackpad/group 17 (radial_menu) => Radial menu 2: 6 bound cells <- Touchpad 0
   Clean RowEmitted @ Controls - Landing party/left_trackpad/group 17 (radial_menu)/touch_menu_button_0/Full_Press => KbmKey1B <- Menu 2 Item 0
   Clean RowEmitted @ Controls - Landing party/left_trackpad/group 17 (radial_menu)/touch_menu_button_1/Full_Press => KbmKey57 <- Menu 2 Item 1
   Clean RowEmitted @ Controls - Landing party/left_trackpad/group 17 (radial_menu)/touch_menu_button_2/Full_Press => KbmKey54 <- Menu 2 Item 2
@@ -172,4 +172,4 @@ report: v26 rows:x0+k42 macros:10 menus:2 layers:2 clean:50 partial:0 skipped:0 
   Clean RowEmitted @ Controls - Landing party/right_trigger/group 14 (trigger)/click/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Controls - Landing party/switch/group 15 (switches)/button_escape/Full_Press => KbmKey09 <- Gamepad ButtonStart
   Clean RowEmitted @ Controls - Landing party/switch/group 15 (switches)/button_menu/Full_Press => KbmKey50 <- Gamepad ButtonBack
-  Clean ShiftLayerEmitted(Controls - Landing party / Controls - Enterprise) @ Controls - Enterprise/switch/group 6 (switches)/button_back_left/Full_Press => Cycle -> Layer_2790927974_1|Base
+  Clean ShiftLayerEmitted(Controls - Landing party / Controls - Enterprise) @ Controls - Enterprise/switch/group 6 (switches)/button_back_left/Full_Press => Cycle Controls - Landing party / Controls - Enterprise <- Gamepad Paddle2

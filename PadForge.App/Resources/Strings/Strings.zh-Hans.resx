@@ -2491,7 +2491,7 @@
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} 上的模式切换引用了缺失的组 {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>配置引用了缺失的预设 {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>组 {0} 存在循环引用</value></data>
-  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer 近似为切换关闭</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>“移除层”近似为切换关闭</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>此输入无法用于激活层</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} 槽位的行数已超出上限</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>没有绑定切换到预设 {0}</value></data>

@@ -2491,7 +2491,7 @@
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} のモードシフトが存在しないグループ {1} を参照しています</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>コンフィグが存在しないプリセット {0} を参照しています</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>グループ {0} で参照の循環</value></data>
-  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer はトグルオフとして近似</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>「レイヤー削除」はトグルオフとして近似</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>この入力ではレイヤーアクティベーターを駆動できません</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} スロットの行数上限を超過</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>プリセット {0} へ切り替えるバインドがありません</value></data>

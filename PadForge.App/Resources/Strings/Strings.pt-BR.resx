@@ -2491,7 +2491,7 @@
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>a mudança de modo em {0} referencia o grupo ausente {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>a configuração referencia a predefinição ausente {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>ciclo de referências no grupo {0}</value></data>
-  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer aproximado como desativação</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>«Remover camada» aproximado como desativação</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>esta entrada não pode acionar um ativador de camada</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>limite de linhas excedido para o slot {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>nenhuma atribuição muda para a predefinição {0}</value></data>

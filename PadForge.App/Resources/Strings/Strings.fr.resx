@@ -2491,7 +2491,7 @@
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>le changement de mode sur {0} référence le groupe manquant {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>la configuration référence le préréglage manquant {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>cycle de références au groupe {0}</value></data>
-  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer approximé en désactivation</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>« Retirer la couche » approximé en désactivation</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>cette entrée ne peut pas piloter un activateur de couche</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>plafond de lignes dépassé pour l'emplacement {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>aucune assignation ne bascule vers le préréglage {0}</value></data>

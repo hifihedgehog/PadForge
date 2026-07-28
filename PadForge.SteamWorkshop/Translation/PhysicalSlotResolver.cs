@@ -126,6 +126,41 @@ namespace PadForge.SteamWorkshop.Translation
             _ => SteamSlot.Unknown,
         };
 
+        /// <summary><para>The slot named for a person, keyed by the same
+        /// token <see cref="ParseSlot"/> takes. Steam's tokens are wire
+        /// grammar, and the names it gives its slots are not PadForge's
+        /// names for the same hardware: Steam's <c>joystick</c> is the LEFT
+        /// stick (see the menu-host resolution, which reads exactly that
+        /// way), and <c>button_diamond</c> is the face-button cluster.
+        /// Translating token to token would keep the jargon; this maps to
+        /// the words the rest of the app already uses.</para>
+        /// <para>Reached by anything a user can read: the shift layer names
+        /// written into the imported profile (they show on the layer
+        /// flyout), and the manifest's group headers. An unknown token
+        /// passes through rather than being guessed at.</para></summary>
+        public static string SlotDisplayName(string token)
+        {
+            var slot = ParseSlot(token);
+            return slot == SteamSlot.Unknown ? token : SlotDisplayName(slot);
+        }
+
+        /// <inheritdoc cref="SlotDisplayName(string)"/>
+        public static string SlotDisplayName(SteamSlot slot) => slot switch
+        {
+            SteamSlot.ButtonDiamond => "Face Buttons",
+            SteamSlot.Switch => "System Buttons",
+            SteamSlot.Dpad => "D-Pad",
+            SteamSlot.Joystick => "Left Stick",
+            SteamSlot.RightJoystick => "Right Stick",
+            SteamSlot.LeftTrackpad => "Left Trackpad",
+            SteamSlot.RightTrackpad => "Right Trackpad",
+            SteamSlot.CenterTrackpad => "Center Trackpad",
+            SteamSlot.LeftTrigger => "Left Trigger",
+            SteamSlot.RightTrigger => "Right Trigger",
+            SteamSlot.Gyro => "Gyro",
+            _ => "Input",
+        };
+
         /// <summary>PadForge touchpad index for a trackpad slot: left=0,
         /// right=1, center=2 (Steam Controller). -1 for non-trackpads.</summary>
         public static int TrackpadIndex(SteamSlot slot) => slot switch

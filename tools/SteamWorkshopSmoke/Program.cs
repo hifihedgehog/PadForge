@@ -133,8 +133,14 @@ internal static class Program
         var response = await client.SearchAsync(appId, (EPublishedFileQueryType)queryType, page, perPage,
             requiredTag == null ? null : new[] { requiredTag });
         Console.WriteLine($"total={response.total} returned={response.publishedfiledetails.Count}");
+        // The engagement counters are printed because the browse dialog renders
+        // them: whether QueryFiles actually POPULATES subscriptions for the
+        // 241100 controller-config bucket is a query-shape fact, and this
+        // harness is where those get grounded live rather than assumed.
         foreach (var file in response.publishedfiledetails)
-            Console.WriteLine($"  {file.publishedfileid,-12} {file.title}");
+            Console.WriteLine($"  {file.publishedfileid,-12} subs={file.subscriptions,-7} " +
+                $"life={file.lifetime_subscriptions,-7} fav={file.favorited,-6} views={file.views,-7} " +
+                $"up={file.vote_data?.votes_up ?? 0,-5} dn={file.vote_data?.votes_down ?? 0,-5} {file.title}");
     }
 
     private static async Task CmDetailsAsync(ISteamWorkshopGate gate, ulong fileId)

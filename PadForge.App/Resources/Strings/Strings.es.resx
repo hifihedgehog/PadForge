@@ -2491,7 +2491,7 @@
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>el cambio de modo en {0} hace referencia al grupo faltante {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>la configuración hace referencia al preajuste faltante {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>ciclo de referencias en el grupo {0}</value></data>
-  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer aproximado como desactivación</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>«Quitar capa» aproximado como desactivación</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>esta entrada no puede accionar un activador de capa</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>límite de filas superado para la ranura {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ninguna asignación cambia al preajuste {0}</value></data>

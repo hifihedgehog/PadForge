@@ -135,9 +135,16 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal("Gamepad ButtonA", act.Descriptor);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.MissingPreset);
+            // The report line names the ring by the layer's DISPLAY name and
+            // the input that drives it. It used to read "Cycle -> Base",
+            // which put the internal mask vocabulary on the user's screen
+            // through the manifest's target column, and named no input at
+            // all, which pushed the row onto the manifest's raw-binding
+            // fallback. The activator's own state is asserted above and is
+            // unchanged: only the report string moved.
             Assert.Contains(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ShiftLayerEmitted
-                && e.Emitted == "Cycle -> Base");
+                && e.Emitted == "Cycle Default <- Gamepad ButtonA");
         }
 
         // ─── Genuine danglers keep the note ─────────────────────────────

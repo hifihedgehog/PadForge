@@ -121,48 +121,48 @@ kbm activators: 4
   Toggle Layer_3353173512_2 | Menu 1 Item 7 | inherit | name=Picker Dollies
   Cycle Layer_3353173512_2 cycle=Layer_3353173512_2+Base | Menu 3 Item 8 | inherit | name=Picker Dollies
 macros: 42
-  macro ShowOnScreenKeyboard OnPress | On-screen keyboard (button_x) | btns=0x0000 in=[Gamepad ButtonX] layer=Base
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower layer=Base strength=33%
-  macro HoldKey OnPress | Hold LEFT_CONTROL (touch_menu_button_8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base vk=0xA2 delayEnd=200ms
-  macro HoldKey OnPress | Hold C (touch_menu_button_8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base vk=0x43 delayStart=50ms delayEnd=100ms
-  macro HoldKey OnPress | Hold LEFT_CONTROL (touch_menu_button_9) | btns=0x0000 in=[Menu 1 Item 9] layer=Base vk=0xA2 delayEnd=200ms
-  macro HoldKey OnPress | Hold X (touch_menu_button_9) | btns=0x0000 in=[Menu 1 Item 9] layer=Base vk=0x58 delayStart=50ms delayEnd=100ms
-  macro HoldKey OnPress | Hold LEFT_CONTROL (touch_menu_button_10) | btns=0x0000 in=[Menu 1 Item 10] layer=Base vk=0xA2 delayEnd=200ms
-  macro HoldKey OnPress | Hold V (touch_menu_button_10) | btns=0x0000 in=[Menu 1 Item 10] layer=Base vk=0x56 delayStart=50ms delayEnd=100ms
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=16 layer=Base strength=100%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad RightStickX] in-half=upper layer=Base strength=66%
-  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (dpad_north) | btns=0x0000 in=[Gamepad RightStickY] in-half=lower layer=Base ticks=1 interval=50ms
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad RightStickY] in-half=lower layer=Base strength=66%
-  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (dpad_south) | btns=0x0000 in=[Gamepad RightStickY] in-half=upper layer=Base ticks=-1 interval=50ms
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad RightStickY] in-half=upper layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad RightStickX] in-half=lower layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=16 layer=Base strength=100%
-  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
-  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] layer=Layer_3353173512_1 vk=0x2C
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_0) | btns=0x0000 in=[Menu 3 Item 0] layer=Layer_3353173512_2 strength=66%
-  macro HoldKey OnPress | Hold UP_ARROW (touch_menu_button_1) | btns=0x0000 in=[Menu 3 Item 1] layer=Layer_3353173512_2 vk=0x26 delayStart=50ms delayEnd=100ms
-  macro HoldKey OnPress | Hold LEFT_SHIFT (touch_menu_button_1) | btns=0x0000 in=[Menu 3 Item 1] layer=Layer_3353173512_2 vk=0xA0 delayEnd=200ms
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_1) | btns=0x0000 in=[Menu 3 Item 1] layer=Layer_3353173512_2 strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_2) | btns=0x0000 in=[Menu 3 Item 2] layer=Layer_3353173512_2 strength=66%
-  macro HoldKey OnPress | Hold LEFT_ARROW (touch_menu_button_3) | btns=0x0000 in=[Menu 3 Item 3] layer=Layer_3353173512_2 vk=0x25 delayStart=50ms delayEnd=100ms
-  macro HoldKey OnPress | Hold LEFT_SHIFT (touch_menu_button_3) | btns=0x0000 in=[Menu 3 Item 3] layer=Layer_3353173512_2 vk=0xA0 delayEnd=200ms
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_3) | btns=0x0000 in=[Menu 3 Item 3] layer=Layer_3353173512_2 strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_4) | btns=0x0000 in=[Menu 3 Item 4] layer=Layer_3353173512_2 strength=66%
-  macro HoldKey OnPress | Hold RIGHT_ARROW (touch_menu_button_5) | btns=0x0000 in=[Menu 3 Item 5] layer=Layer_3353173512_2 vk=0x27 delayStart=50ms delayEnd=100ms
-  macro HoldKey OnPress | Hold LEFT_SHIFT (touch_menu_button_5) | btns=0x0000 in=[Menu 3 Item 5] layer=Layer_3353173512_2 vk=0xA0 delayEnd=200ms
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_5) | btns=0x0000 in=[Menu 3 Item 5] layer=Layer_3353173512_2 strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_6) | btns=0x0000 in=[Menu 3 Item 6] layer=Layer_3353173512_2 strength=66%
-  macro HoldKey OnPress | Hold DOWN_ARROW (touch_menu_button_7) | btns=0x0000 in=[Menu 3 Item 7] layer=Layer_3353173512_2 vk=0x28 delayStart=50ms delayEnd=100ms
-  macro HoldKey OnPress | Hold LEFT_SHIFT (touch_menu_button_7) | btns=0x0000 in=[Menu 3 Item 7] layer=Layer_3353173512_2 vk=0xA0 delayEnd=200ms
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_7) | btns=0x0000 in=[Menu 3 Item 7] layer=Layer_3353173512_2 strength=66%
-  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] layer=Layer_3353173512_2 vk=0x2C
+  macro ShowOnScreenKeyboard OnPress | On-screen keyboard (ButtonX) | btns=0x0000 in=[Gamepad ButtonX] layer=Base
+  macro RumblePulse OnPress | Haptic pulse (DPadRight) | btns=0x0000 in=[Gamepad DPadRight] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadDown) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickX) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickX) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower layer=Base strength=33%
+  macro HoldKey OnPress | Hold Left Ctrl (Menu 1 Item 8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base vk=0xA2 delayEnd=200ms
+  macro HoldKey OnPress | Hold C (Menu 1 Item 8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base vk=0x43 delayStart=50ms delayEnd=100ms
+  macro HoldKey OnPress | Hold Left Ctrl (Menu 1 Item 9) | btns=0x0000 in=[Menu 1 Item 9] layer=Base vk=0xA2 delayEnd=200ms
+  macro HoldKey OnPress | Hold X (Menu 1 Item 9) | btns=0x0000 in=[Menu 1 Item 9] layer=Base vk=0x58 delayStart=50ms delayEnd=100ms
+  macro HoldKey OnPress | Hold Left Ctrl (Menu 1 Item 10) | btns=0x0000 in=[Menu 1 Item 10] layer=Base vk=0xA2 delayEnd=200ms
+  macro HoldKey OnPress | Hold V (Menu 1 Item 10) | btns=0x0000 in=[Menu 1 Item 10] layer=Base vk=0x56 delayStart=50ms delayEnd=100ms
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=16 layer=Base strength=100%
+  macro RumblePulse OnPress | Haptic pulse (RightStick) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightStickX) | btns=0x0000 in=[Gamepad RightStickX] in-half=upper layer=Base strength=66%
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (RightStickY) | btns=0x0000 in=[Gamepad RightStickY] in-half=lower layer=Base ticks=1 interval=50ms
+  macro RumblePulse OnPress | Haptic pulse (RightStickY) | btns=0x0000 in=[Gamepad RightStickY] in-half=lower layer=Base strength=66%
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (RightStickY) | btns=0x0000 in=[Gamepad RightStickY] in-half=upper layer=Base ticks=-1 interval=50ms
+  macro RumblePulse OnPress | Haptic pulse (RightStickY) | btns=0x0000 in=[Gamepad RightStickY] in-half=upper layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightStickX) | btns=0x0000 in=[Gamepad RightStickX] in-half=lower layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=16 layer=Base strength=100%
+  macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
+  macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Layer_3353173512_1 vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (Menu 3 Item 0) | btns=0x0000 in=[Menu 3 Item 0] layer=Layer_3353173512_2 strength=66%
+  macro HoldKey OnPress | Hold Up Arrow (Menu 3 Item 1) | btns=0x0000 in=[Menu 3 Item 1] layer=Layer_3353173512_2 vk=0x26 delayStart=50ms delayEnd=100ms
+  macro HoldKey OnPress | Hold Left Shift (Menu 3 Item 1) | btns=0x0000 in=[Menu 3 Item 1] layer=Layer_3353173512_2 vk=0xA0 delayEnd=200ms
+  macro RumblePulse OnPress | Haptic pulse (Menu 3 Item 1) | btns=0x0000 in=[Menu 3 Item 1] layer=Layer_3353173512_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 3 Item 2) | btns=0x0000 in=[Menu 3 Item 2] layer=Layer_3353173512_2 strength=66%
+  macro HoldKey OnPress | Hold Left Arrow (Menu 3 Item 3) | btns=0x0000 in=[Menu 3 Item 3] layer=Layer_3353173512_2 vk=0x25 delayStart=50ms delayEnd=100ms
+  macro HoldKey OnPress | Hold Left Shift (Menu 3 Item 3) | btns=0x0000 in=[Menu 3 Item 3] layer=Layer_3353173512_2 vk=0xA0 delayEnd=200ms
+  macro RumblePulse OnPress | Haptic pulse (Menu 3 Item 3) | btns=0x0000 in=[Menu 3 Item 3] layer=Layer_3353173512_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 3 Item 4) | btns=0x0000 in=[Menu 3 Item 4] layer=Layer_3353173512_2 strength=66%
+  macro HoldKey OnPress | Hold Right Arrow (Menu 3 Item 5) | btns=0x0000 in=[Menu 3 Item 5] layer=Layer_3353173512_2 vk=0x27 delayStart=50ms delayEnd=100ms
+  macro HoldKey OnPress | Hold Left Shift (Menu 3 Item 5) | btns=0x0000 in=[Menu 3 Item 5] layer=Layer_3353173512_2 vk=0xA0 delayEnd=200ms
+  macro RumblePulse OnPress | Haptic pulse (Menu 3 Item 5) | btns=0x0000 in=[Menu 3 Item 5] layer=Layer_3353173512_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 3 Item 6) | btns=0x0000 in=[Menu 3 Item 6] layer=Layer_3353173512_2 strength=66%
+  macro HoldKey OnPress | Hold Down Arrow (Menu 3 Item 7) | btns=0x0000 in=[Menu 3 Item 7] layer=Layer_3353173512_2 vk=0x28 delayStart=50ms delayEnd=100ms
+  macro HoldKey OnPress | Hold Left Shift (Menu 3 Item 7) | btns=0x0000 in=[Menu 3 Item 7] layer=Layer_3353173512_2 vk=0xA0 delayEnd=200ms
+  macro RumblePulse OnPress | Haptic pulse (Menu 3 Item 7) | btns=0x0000 in=[Menu 3 Item 7] layer=Layer_3353173512_2 strength=66%
+  macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Layer_3353173512_2 vk=0x2C
 menus: 3
   menu 1 Grid | Touchpad 0 | Base | fire=Click cells=12 scale=150% | name=Menu Commands
     [0] Remote View icon=ghost_040_act_0311.png
@@ -217,7 +217,7 @@ report: v26 rows:x0+k51 macros:42 menus:3 layers:8 clean:78 partial:7 skipped:0 
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
-  Clean MenuEmitted(11) @ Default/left_trackpad/group 12 (touch_menu) => Grid menu 1 on Touchpad 0: 11 bound cells
+  Clean MenuEmitted(11) @ Default/left_trackpad/group 12 (touch_menu) => Grid menu 1: 11 bound cells <- Touchpad 0
   Clean RowEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey4D <- Menu 1 Item 0
   Clean RowEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey4F <- Menu 1 Item 1
   Clean RowEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey54 <- Menu 1 Item 2
@@ -225,18 +225,18 @@ report: v26 rows:x0+k51 macros:42 menus:3 layers:8 clean:78 partial:7 skipped:0 
   Clean RowEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_4/Full_Press => KbmKey4C <- Menu 1 Item 4
   Clean RowEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_5/Full_Press => KbmKey50 <- Menu 1 Item 5
   Partial LayerReleaseEdgeApproximated(ADD_LAYER) @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_7/release :: controller_action add_layer 3 1 1, Picker Dollies Submenu, ghost_080_input_0210....
-  Clean MacroEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_8/Full_Press => Hold LEFT_CONTROL macro
-  Clean MacroEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_8/Full_Press => Hold C macro
-  Clean MacroEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_9/Full_Press => Hold LEFT_CONTROL macro
-  Clean MacroEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_9/Full_Press => Hold X macro
-  Clean MacroEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_10/Full_Press => Hold LEFT_CONTROL macro
-  Clean MacroEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_10/Full_Press => Hold V macro
+  Clean MacroEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_8/Full_Press => Hold Left Ctrl macro <- Menu 1 Item 8
+  Clean MacroEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_8/Full_Press => Hold C macro <- Menu 1 Item 8
+  Clean MacroEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_9/Full_Press => Hold Left Ctrl macro <- Menu 1 Item 9
+  Clean MacroEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_9/Full_Press => Hold X macro <- Menu 1 Item 9
+  Clean MacroEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_10/Full_Press => Hold Left Ctrl macro <- Menu 1 Item 10
+  Clean MacroEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_10/Full_Press => Hold V macro <- Menu 1 Item 10
   Clean RowEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_11/Full_Press => KbmKey42 <- Menu 1 Item 11
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/click/Full_Press => KbmMBtn2 <- Gamepad RightStick
   Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/dpad_east/Full_Press => KbmKey6B <- Gamepad RightStickX (upper half)
-  Clean MacroEmitted @ Default/right_joystick/group 11 (dpad)/dpad_north/Full_Press => Turbo wheel macro (50 ms)
-  Clean MacroEmitted @ Default/right_joystick/group 11 (dpad)/dpad_south/Full_Press => Turbo wheel macro (50 ms)
+  Clean MacroEmitted @ Default/right_joystick/group 11 (dpad)/dpad_north/Full_Press => Turbo wheel macro (50 ms) <- Gamepad RightStickY
+  Clean MacroEmitted @ Default/right_joystick/group 11 (dpad)/dpad_south/Full_Press => Turbo wheel macro (50 ms) <- Gamepad RightStickY
   Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/dpad_west/Full_Press => KbmKey6D <- Gamepad RightStickX (lower half)
   Partial MouseModeTuningDropped(mouse_dampening_trigger) @ Default/right_trackpad/group 2 (absolute_mouse)
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
@@ -251,7 +251,7 @@ report: v26 rows:x0+k51 macros:42 menus:3 layers:8 clean:78 partial:7 skipped:0 
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey4D <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmKey52 <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 6 (switches)/right_bumper/Full_Press => KbmKey20 <- Gamepad RightShoulder
-  Clean MenuEmitted(16) @ Numpad/left_trackpad/group 45 (touch_menu) => Grid menu 2 on Touchpad 0: 16 bound cells
+  Clean MenuEmitted(16) @ Numpad/left_trackpad/group 45 (touch_menu) => Grid menu 2: 16 bound cells <- Touchpad 0
   Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey37 <- Menu 2 Item 0
   Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey38 <- Menu 2 Item 1
   Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey39 <- Menu 2 Item 2
@@ -269,23 +269,23 @@ report: v26 rows:x0+k51 macros:42 menus:3 layers:8 clean:78 partial:7 skipped:0 
   Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_14/Full_Press => KbmKey0D <- Menu 2 Item 14
   Partial RemoveLayerApproximated @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_15/release :: controller_action remove_layer 2 1 1, Back Menu, ghost_050_menu_0306.png, #23232...
   Partial LayerReleaseEdgeApproximated(REMOVE_LAYER) @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_15/release :: controller_action remove_layer 2 1 1, Back Menu, ghost_050_menu_0306.png, #23232...
-  Clean MenuEmitted(9) @ Picker Dollies/left_trackpad/group 43 (touch_menu) => Grid menu 3 on Touchpad 0: 9 bound cells
+  Clean MenuEmitted(9) @ Picker Dollies/left_trackpad/group 43 (touch_menu) => Grid menu 3: 9 bound cells <- Touchpad 0
   Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey52 <- Menu 3 Item 0
   Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_0/Full_Press => KbmKeyA0 <- Menu 3 Item 0
-  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press => Hold UP_ARROW macro
-  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press => Hold LEFT_SHIFT macro
+  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press => Hold Up Arrow macro <- Menu 3 Item 1
+  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press => Hold Left Shift macro <- Menu 3 Item 1
   Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey52 <- Menu 3 Item 2
-  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press => Hold LEFT_ARROW macro
-  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press => Hold LEFT_SHIFT macro
+  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press => Hold Left Arrow macro <- Menu 3 Item 3
+  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press => Hold Left Shift macro <- Menu 3 Item 3
   Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_4/Full_Press => KbmKey73 <- Menu 3 Item 4
-  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press => Hold RIGHT_ARROW macro
-  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press => Hold LEFT_SHIFT macro
+  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press => Hold Right Arrow macro <- Menu 3 Item 5
+  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press => Hold Left Shift macro <- Menu 3 Item 5
   Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_6/Full_Press => KbmKey6A <- Menu 3 Item 6
-  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press => Hold DOWN_ARROW macro
-  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press => Hold LEFT_SHIFT macro
+  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press => Hold Down Arrow macro <- Menu 3 Item 7
+  Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press => Hold Left Shift macro <- Menu 3 Item 7
   Partial RemoveLayerApproximated @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_8/release :: controller_action remove_layer 3 1 1, Back Menu, ghost_050_menu_0306.png, #23232...
   Partial LayerReleaseEdgeApproximated(REMOVE_LAYER) @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_8/release :: controller_action remove_layer 3 1 1, Back Menu, ghost_050_menu_0306.png, #23232...
-  Clean ShiftLayerEmitted(Numpad) @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_3/release => Toggle -> Layer_3353173512_1
-  Clean ShiftLayerEmitted(Numpad) @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_15/release => Cycle -> Layer_3353173512_1|Base
-  Clean ShiftLayerEmitted(Picker Dollies) @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_7/release => Toggle -> Layer_3353173512_2
-  Clean ShiftLayerEmitted(Picker Dollies) @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_8/release => Cycle -> Layer_3353173512_2|Base
+  Clean ShiftLayerEmitted(Numpad) @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_3/release => Toggle Numpad <- Menu 1 Item 3
+  Clean ShiftLayerEmitted(Numpad) @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_15/release => Cycle Numpad <- Menu 2 Item 15
+  Clean ShiftLayerEmitted(Picker Dollies) @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_7/release => Toggle Picker Dollies <- Menu 1 Item 7
+  Clean ShiftLayerEmitted(Picker Dollies) @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_8/release => Cycle Picker Dollies <- Menu 3 Item 8

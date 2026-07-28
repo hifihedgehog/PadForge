@@ -696,7 +696,8 @@
                                                         <TextBlock Text="{Binding SubsText}" Margin="12,0,0,0"
                                                                    FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
                                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                   VerticalAlignment="Center"/>
+                                                                   VerticalAlignment="Center"
+                                                                   Visibility="{Binding HasSubs, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">

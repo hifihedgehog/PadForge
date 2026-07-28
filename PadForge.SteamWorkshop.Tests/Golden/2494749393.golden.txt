@@ -53,16 +53,16 @@ kbm rows: 1
   Base | KbmKey74
     <- Gamepad ButtonStart
 macros: 10
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad DPadUp] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (button_escape) | btns=0x0000 in=[Gamepad ButtonStart] layer=Base strength=33%
-  macro HoldKey DoublePress | Hold F9 (button_escape) | btns=0x0010 dbl=442ms layer=Base vk=0x78
-  macro KeyTap OnPress | Screenshot key (button_menu) | btns=0x0000 in=[Gamepad ButtonBack] layer=Base vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (DPadRight) | btns=0x0000 in=[Gamepad DPadRight] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadUp) | btns=0x0000 in=[Gamepad DPadUp] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadDown) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadLeft) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (ButtonStart) | btns=0x0000 in=[Gamepad ButtonStart] layer=Base strength=33%
+  macro HoldKey DoublePress | Hold F9 (ButtonStart) | btns=0x0010 dbl=442ms layer=Base vk=0x78
+  macro KeyTap OnPress | Screenshot key (ButtonBack) | btns=0x0000 in=[Gamepad ButtonBack] layer=Base vk=0x2C
 report: v26 rows:x20+k1 macros:10 menus:0 layers:0 clean:28 partial:0 skipped:0 errors:0
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => RightThumbAxisX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => RightThumbAxisY <- Gyro Pitch
@@ -71,7 +71,7 @@ report: v26 rows:x20+k1 macros:10 menus:0 layers:0 clean:28 partial:0 skipped:0 
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_escape/Full_Press => KbmKey74 <- Gamepad ButtonStart
-  Clean MacroEmitted @ Default/switch/group 8 (switches)/button_escape/Double_Press => Hold F9 macro
+  Clean MacroEmitted @ Default/switch/group 8 (switches)/button_escape/Double_Press => Hold F9 macro <- Gamepad ButtonStart
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger) => LeftTrigger <- Gamepad LeftTrigger

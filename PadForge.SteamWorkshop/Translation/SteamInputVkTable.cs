@@ -42,6 +42,47 @@ namespace PadForge.SteamWorkshop.Translation
         /// (<c>"KbmKey{vk:X2}"</c>, the PadViewModel/InputManager form).</summary>
         public static string KbmKeyTarget(byte vk) => $"KbmKey{vk:X2}";
 
+        /// <summary>Awkward spellings, where mechanically un-underscoring
+        /// the token reads worse than the name the key actually goes by.
+        /// Everything not listed spells fine on its own.</summary>
+        private static readonly Dictionary<string, string> KeyNameOverrides =
+            new(StringComparer.OrdinalIgnoreCase)
+            {
+                ["CAPSLOCK"] = "Caps Lock",
+                ["BACK_TICK"] = "Backtick",
+                ["FORWARD_SLASH"] = "Forward Slash",
+                ["LEFT_CONTROL"] = "Left Ctrl",
+                ["RIGHT_CONTROL"] = "Right Ctrl",
+                ["KEYPAD_DASH"] = "Keypad Minus",
+                ["KEYPAD_ASTERISK"] = "Keypad Multiply",
+                ["KEYPAD_FORWARD_SLASH"] = "Keypad Divide",
+                ["RETURN"] = "Enter",
+                ["ESCAPE"] = "Esc",
+                ["PAGE_UP"] = "Page Up",
+                ["PAGE_DOWN"] = "Page Down",
+            };
+
+        /// <summary><para>The Steam key token spelled as a key name
+        /// ("LEFT_CONTROL" becomes "Left Ctrl"). Steam's tokens are
+        /// SCREAMING_SNAKE wire grammar, and they were reaching the user
+        /// verbatim through macro names saved into the imported profile
+        /// ("Hold LEFT_CONTROL (click)") and through the translation
+        /// manifest's target column.</para>
+        /// <para>Unlocalized on purpose. This project has no resource
+        /// context, and the strings it composes here are the same
+        /// unlocalized English as the surrounding macro-name vocabulary
+        /// ("Warp cursor", "Recenter gyro"). The App localizes the key
+        /// names it renders itself, via the VK this table resolves.</para>
+        /// </summary>
+        public static string KeyDisplayName(string steamKeyName)
+        {
+            if (string.IsNullOrWhiteSpace(steamKeyName)) return steamKeyName;
+            string token = steamKeyName.Trim();
+            return KeyNameOverrides.TryGetValue(token, out var nice)
+                ? nice
+                : SteamVocabulary.SpellToken(token);
+        }
+
         /// <summary>Steam Input mouse-button name to the KbM
         /// <c>KbmMBtn{0-4}</c> target (LMB, RMB, MMB, X1, X2).</summary>
         public static bool TryResolveMouseButton(string name, out string target)

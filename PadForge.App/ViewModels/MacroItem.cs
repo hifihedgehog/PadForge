@@ -1279,8 +1279,28 @@ namespace PadForge.ViewModels
             }
             set
             {
+                // Leave the field NULL when there is nothing to parse, which
+                // is the normal shape for a legacy macro on the XML load path.
+                // Allocating an empty list here made
+                // EnsureTriggerInputEntries' `if (_triggerInputEntries != null)
+                // return;` guard see a populated field and skip the legacy
+                // migration permanently, so a macro whose trigger lived in the
+                // old TriggerDeviceGuid + TriggerRawButtons / TriggerPovs
+                // fields still FIRED (the engine reads those) while the editor
+                // showed "Not set".
+                if (string.IsNullOrEmpty(value))
+                {
+                    _triggerInputEntries = null;
+                    OnPropertyChanged(nameof(TriggerInputs));
+                    OnPropertyChanged(nameof(UsesRawTrigger));
+                    OnPropertyChanged(nameof(UsesPovTrigger));
+                    OnPropertyChanged(nameof(UsesGestureTrigger));
+                    OnPropertyChanged(nameof(UsesDescriptorTrigger));
+                    OnPropertyChanged(nameof(TriggerDisplayText));
+                    return;
+                }
+
                 _triggerInputEntries = new List<TriggerInputEntry>();
-                if (!string.IsNullOrEmpty(value))
                 {
                     foreach (var s in value.Split('|'))
                     {

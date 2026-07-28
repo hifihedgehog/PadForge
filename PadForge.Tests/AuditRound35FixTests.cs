@@ -297,6 +297,52 @@ namespace PadForge.Tests
             Assert.Equal(2, macro.CurrentActionIndex);
         }
 
+        // ── Legacy trigger migration must survive the XML load path ──
+
+        /// <summary>The TriggerInputs setter allocated an empty list before
+        /// testing its input, and EnsureTriggerInputEntries skips the legacy
+        /// migration whenever that field is non-null. So an XML load, which
+        /// sets TriggerInputs to null for a legacy macro, permanently blocked
+        /// the migration: the macro still FIRED, because the engine reads the
+        /// old fields, while the editor showed "Not set".</summary>
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void LegacyTrigger_StillMigrates_AfterTheLoadPathSetsTriggerInputs(string loaded)
+        {
+            var macro = new PadForge.ViewModels.MacroItem
+            {
+                TriggerDeviceGuid = Guid.NewGuid(),
+                TriggerRawButtons = new[] { 3, 7 },
+            };
+
+            // What the XML deserializer does for a macro with no <TriggerInputs>.
+            macro.TriggerInputs = loaded;
+
+            var entries = macro.GetTriggerInputEntries();
+            Assert.Equal(2, entries.Count);
+            Assert.Contains(entries, e => e.RawButton == 3);
+            Assert.Contains(entries, e => e.RawButton == 7);
+        }
+
+        /// <summary>Positive control: a real TriggerInputs payload must still
+        /// parse, or the fix could just be "never populate the list".</summary>
+        [Fact]
+        public void RealTriggerInputsPayload_StillParses()
+        {
+            var g = Guid.NewGuid();
+            var seed = new PadForge.ViewModels.MacroItem
+            {
+                TriggerDeviceGuid = g,
+                TriggerRawButtons = new[] { 5 },
+            };
+            string spec = seed.TriggerInputs;
+            Assert.False(string.IsNullOrEmpty(spec));
+
+            var loadedMacro = new PadForge.ViewModels.MacroItem { TriggerInputs = spec };
+            Assert.Single(loadedMacro.GetTriggerInputEntries());
+        }
+
         // ── Per-mapping dictionaries: lock parity across all five families ──
 
         /// <summary>

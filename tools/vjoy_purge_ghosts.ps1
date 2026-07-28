@@ -67,7 +67,7 @@ $pnp = pnputil /enum-devices /class HIDClass 2>&1
 $currentId = $null
 foreach ($line in ($pnp -split "`n")) {
     $t = $line.Trim()
-    if ($t -match 'Instance ID\s*:\s*(ROOT\\HIDCLASS\\\d+)') { $currentId = $matches[1].Trim() }
+    if ($t -match '(ROOT\\HIDCLASS\\\d+)') { $currentId = $matches[1].Trim() }
     elseif ($t -match 'Status\s*:\s*(.+)' -and $currentId) {
         $out += "  $currentId | $($matches[1].Trim())"
         $currentId = $null

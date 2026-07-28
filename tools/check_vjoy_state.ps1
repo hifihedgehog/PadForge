@@ -19,7 +19,7 @@ $pnpOutput = & pnputil /enum-devices /class HIDClass 2>&1 | Out-String
 $lines = $pnpOutput -split "`n"
 $inVjoy = $false
 foreach ($line in $lines) {
-    if ($line -match 'Instance ID') { $currentId = $line }
+    if ($line -match ':\s*[A-Z][A-Z0-9]*\\') { $currentId = $line }
     if ($line -match 'vJoy' -or $line -match 'vjoy') {
         $inVjoy = $true
         Write-Host $currentId.Trim()

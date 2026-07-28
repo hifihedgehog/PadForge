@@ -9,7 +9,7 @@ $pnp = pnputil /enum-devices /class HIDClass 2>&1
 $currentId = $null
 foreach ($line in ($pnp -split "`n")) {
     $t = $line.Trim()
-    if ($t -match 'Instance ID\s*:\s*(ROOT\\HIDCLASS\\\d+)') { $currentId = $matches[1].Trim() }
+    if ($t -match '(ROOT\\HIDCLASS\\\d+)') { $currentId = $matches[1].Trim() }
     elseif ($currentId -and $t -match 'vJoy') {
         Write-Host "Removing $currentId..."
         pnputil /remove-device $currentId /subtree 2>&1 | Out-Null

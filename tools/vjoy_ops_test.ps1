@@ -41,7 +41,7 @@ function Get-VJoyNodeId {
     $currentId = $null
     foreach ($line in $output -split "`n") {
         $trimmed = $line.Trim()
-        if ($trimmed -match 'Instance ID:\s+(.+)') {
+        if ($trimmed -match ':\s*([A-Z][A-Z0-9]*\\S*)\s*$') {
             $currentId = $matches[1].Trim()
         }
         elseif ($currentId -and $trimmed -match 'vJoy' -and $currentId -match '^ROOT\\HIDCLASS\\') {

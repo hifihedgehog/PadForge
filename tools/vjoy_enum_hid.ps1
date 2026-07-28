@@ -22,7 +22,7 @@ $currentId = $null
 $currentDesc = $null
 foreach ($line in ($pnp -split "`n")) {
     $trimmed = $line.Trim()
-    if ($trimmed -match 'Instance ID\s*:\s*(.+)') { $currentId = $matches[1].Trim(); $currentDesc = $null }
+    if ($trimmed -match ':\s*([A-Z][A-Z0-9]*\\S*)\s*$') { $currentId = $matches[1].Trim(); $currentDesc = $null }
     elseif ($trimmed -match 'Device Description\s*:\s*(.+)') { $currentDesc = $matches[1].Trim() }
     elseif ($trimmed -match 'Status\s*:\s*(.+)' -and $currentId -like 'HID\*' -and $currentDesc -like '*joystick*') {
         $results += "  $currentId | $currentDesc | $($matches[1].Trim())"

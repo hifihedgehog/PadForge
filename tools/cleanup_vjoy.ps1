@@ -10,12 +10,23 @@ Write-Host "`n[1/8] Removing driver store entries..." -ForegroundColor Yellow
 $pnpOutput = pnputil /enum-drivers 2>&1 | Out-String
 $currentOem = $null
 $isVJoy = $false
+$deleted = 0
+
+# Key the record delimiter off the oemNN.inf token, never off the "Published
+# Name" label. pnputil localizes its field labels, so the label match found
+# nothing on a non-English Windows: no record ever opened, step 1 deleted
+# nothing, and the script still printed "fully removed" at the end. The
+# oemNN.inf token is locale-invariant and unique to the published-name line
+# (Original Name carries the source inf, e.g. vjoy.inf, never oemNN.inf).
+# This is the same fix already applied to DriverInstaller.FindExtendedOemInfs
+# and vJoy/Test/Program.cs FindVJoyOemInfs.
 foreach ($line in $pnpOutput -split "`n") {
     $trimmed = $line.Trim()
-    if ($trimmed -match '^Published\s*[Nn]ame\s*:\s*(oem\d+\.inf)') {
+    if ($trimmed -match '(oem\d+\.inf)') {
         if ($isVJoy -and $currentOem) {
             Write-Host "  Deleting $currentOem"
             pnputil /delete-driver $currentOem /uninstall /force 2>&1 | Out-Null
+            $deleted++
         }
         $currentOem = $Matches[1]
         $isVJoy = $false
@@ -27,7 +38,9 @@ foreach ($line in $pnpOutput -split "`n") {
 if ($isVJoy -and $currentOem) {
     Write-Host "  Deleting $currentOem"
     pnputil /delete-driver $currentOem /uninstall /force 2>&1 | Out-Null
+    $deleted++
 }
+if ($deleted -eq 0) { Write-Host "  No vJoy driver-store entries found" }
 
 # 2. Stop and delete the vjoy service
 Write-Host "`n[2/8] Stopping and deleting vjoy service..." -ForegroundColor Yellow
@@ -116,7 +129,28 @@ if (Test-Path $classPath) {
     }
 }
 
-Write-Host "`n=== Done ===" -ForegroundColor Green
-Write-Host "Legacy vJoy installation has been fully removed."
-Write-Host "You can now install vJoy cleanly through PadForge."
+# Re-check the artifacts rather than asserting success. Every step above runs
+# under ErrorActionPreference=SilentlyContinue, so a failed removal is silent,
+# and this used to announce "fully removed" unconditionally. Telling an
+# operator the machine is clean when the driver is still installed sends them
+# on to a vJoy install that then fails for reasons the message ruled out.
+Write-Host "`n=== Verifying ===" -ForegroundColor Yellow
+$remaining = @()
+if ((pnputil /enum-drivers 2>&1 | Out-String) -match 'vjoy|shaul') { $remaining += "driver store entry" }
+if ((sc.exe query vjoy 2>&1 | Out-String) -notmatch 'does not exist|1060') { $remaining += "vjoy service" }
+foreach ($f in @("vjoy.sys", "hidkmdf.sys")) {
+    if (Test-Path (Join-Path $env:SystemRoot "System32\drivers\$f")) { $remaining += $f }
+}
+if (Test-Path (Join-Path $env:ProgramFiles "vJoy")) { $remaining += "Program Files\vJoy" }
+
+if ($remaining.Count -eq 0) {
+    Write-Host "`n=== Done ===" -ForegroundColor Green
+    Write-Host "Legacy vJoy installation has been fully removed."
+    Write-Host "You can now install vJoy cleanly through PadForge."
+} else {
+    Write-Host "`n=== INCOMPLETE ===" -ForegroundColor Red
+    Write-Host "These survived the cleanup:"
+    $remaining | ForEach-Object { Write-Host "  - $_" }
+    Write-Host "Re-run elevated, or remove them by hand before installing vJoy."
+}
 Read-Host "`nPress Enter to close"

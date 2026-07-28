@@ -52,7 +52,7 @@ $currentDesc = $null
 $currentStatus = $null
 foreach ($line in ($pnp -split "`n")) {
     $t = $line.Trim()
-    if ($t -match 'Instance ID\s*:\s*(.+)') { $currentId = $matches[1].Trim(); $currentDesc = $null; $currentStatus = $null }
+    if ($t -match ':\s*([A-Z][A-Z0-9]*\\S*)\s*$') { $currentId = $matches[1].Trim(); $currentDesc = $null; $currentStatus = $null }
     elseif ($t -match 'Device Description\s*:\s*(.+)') { $currentDesc = $matches[1].Trim() }
     elseif ($t -match 'Status\s*:\s*(.+)') {
         $currentStatus = $matches[1].Trim()

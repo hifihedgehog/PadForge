@@ -25,7 +25,7 @@ namespace PadForge.Tests
         /// throw and must never hang. Pre-fix this is the exact shape that
         /// could corrupt a HashSet walk.</summary>
         [Fact]
-        public void ConcurrentReadDuringRebuild_NeverThrows()
+        public async Task ConcurrentReadDuringRebuild_NeverThrows()
         {
             InputManager.ClearAllShiftRuntime();
 
@@ -56,7 +56,8 @@ namespace PadForge.Tests
             }
 
             cts.Cancel();
-            Assert.True(reader.Wait(10_000), "reader did not finish: a spin inside the set walk");
+            var finished = await Task.WhenAny(reader, Task.Delay(10_000));
+            Assert.Same(reader, finished);   // a spin inside the set walk never finishes
             Assert.Empty(faults);
         }
 

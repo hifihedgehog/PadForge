@@ -155,5 +155,28 @@ namespace PadForge.Tests
             Assert.Equal(src.ParamMin, first, 6);
             Assert.Equal(first, second, 6);
         }
+    
+        [Fact]
+        public void ResetForSlot_DropsTheAccumulator_NotJustTheReplayStamp()
+        {
+            // A wholesale row replacement invalidates every state family
+            // keyed on (slot, target, srcIdx). Clearing the frame-replay
+            // stamp while leaving the accumulated value just meant the
+            // re-authored row resumed the previous occupant's cruise
+            // position on the very next tick.
+            var rt = new SourceKindRuntime();
+            var held = StateWith(up: true, down: false);
+            for (int f = 0; f < 20; f++) { rt.FrameSeq++; rt.TickIncremental(0, "T", 0, Incremental(), held, 0.05); }
+
+            rt.FrameSeq++;
+            double before = rt.TickIncremental(0, "T", 0, Incremental(), held, 0.05);
+            Assert.True(before > 0.4, $"fixture never accumulated (v={before})");
+
+            rt.ResetForSlot(0);
+            rt.FrameSeq++;
+            double after = rt.TickIncremental(0, "T", 0, Incremental(), held, 0.05);
+            Assert.True(after < before,
+                $"ResetForSlot left the Incremental accumulator behind ({before} -> {after})");
+        }
     }
 }

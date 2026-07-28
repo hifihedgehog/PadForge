@@ -1173,8 +1173,9 @@ namespace PadForge.Engine
                     // full pressure for a resting finger and would otherwise
                     // read as clicked on touch.
                     bool pressureClick = false;
-                    for (int f = 0; f < nf; f++)
-                        if (tp.FingerDown[f] && tp.FingerPressure[f] > 0.75f) { pressureClick = true; break; }
+                    if (IsSteamControllerGen1)
+                        for (int f = 0; f < nf; f++)
+                            if (tp.FingerDown[f] && tp.FingerPressure[f] > 0.75f) { pressureClick = true; break; }
 
                     if (p == 0)
                     {
@@ -1390,6 +1391,18 @@ namespace PadForge.Engine
         private const double DeckRumbleHeadroom = 54394.0 / 65535.0;
 
         private bool IsSteamDeck => VendorId == 0x28DE && ProductId == 0x1205;
+
+        /// <summary>Gen-1 Steam Controller (CHELL 0x1101, wired D0G 0x1102,
+        /// BT D0G 0x1105/0x1106, dongle 0x1142), the same PID set
+        /// HapticToneService gates on. Its driver is the ONLY one that
+        /// encodes a pad click in touchpad pressure: 0.5 for a finger down
+        /// plus another 0.5 when clicked (SDL_hidapi_steam.c 1498-1500 and
+        /// 1518-1520). Every other driver sends a flat 1.0 for a plain touch
+        /// (ps4 1062, ps5 1428, shield 392) or a raw analog value (sinput
+        /// 1045), so a pressure-derived click must never be inferred for
+        /// them.</summary>
+        private bool IsSteamControllerGen1 => VendorId == 0x28DE
+            && ProductId is 0x1101 or 0x1102 or 0x1105 or 0x1106 or 0x1142;
 
         /// <summary>
         /// Sends rumble to the device via SDL_RumbleJoystick.

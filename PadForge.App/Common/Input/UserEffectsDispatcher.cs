@@ -1273,15 +1273,9 @@ namespace PadForge.Common.Input
             // doesn't snap to black between ticks. The synthesizer
             // ignores the peak when the active mode doesn't read it.
             float rawAudioPeak = AudioPeakProvider?.Invoke() ?? 0f;
-            // Per-device peak scaling happens inside the device loop (each
-            // device has its own AudioLightbarSensitivity); this fallback
-            // uses the slot's "anchor" config sensitivity for the
-            // non-tick path's pre-loop default.
-            float peakForSynthDefault = audioPeak >= 0f
-                ? audioPeak
-                : Math.Clamp(
-                    rawAudioPeak * (float)cfg.AudioLightbarSensitivity,
-                    0f, 1f);
+            // Peak scaling happens per device inside the loop below, each
+            // against its own AudioLightbarSensitivity. There is no pre-loop
+            // default: the local that used to hold one was never read.
             long nowMs = Environment.TickCount64;
 
             // Test-rumble target for this slot. When set, only the matching

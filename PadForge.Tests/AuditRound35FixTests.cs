@@ -256,6 +256,47 @@ namespace PadForge.Tests
             }
         }
 
+        // ── Disabling a macro must end its RUN, not just its latches ──
+
+        /// <summary>The disable lane cleared the five action latch bits but
+        /// left the sequence mid-flight, so re-enabling resumed at
+        /// CurrentActionIndex and injected the remaining actions with no
+        /// trigger press.</summary>
+        [Fact]
+        public void DisablingAMacro_EndsTheRunNotJustTheLatches()
+        {
+            var macro = new PadForge.ViewModels.MacroItem { IsEnabled = true };
+            macro.Actions.Add(new PadForge.ViewModels.MacroAction { VcToggleLatched = true });
+            macro.Actions.Add(new PadForge.ViewModels.MacroAction());
+
+            macro.IsExecuting = true;
+            macro.CurrentActionIndex = 1;
+            macro.ComboResumeIndex = 1;
+
+            macro.IsEnabled = false;
+
+            Assert.False(macro.IsExecuting);
+            Assert.Equal(0, macro.CurrentActionIndex);
+            Assert.Equal(0, macro.ComboResumeIndex);
+            // The original latch clear must still happen.
+            Assert.False(macro.Actions[0].VcToggleLatched);
+        }
+
+        /// <summary>Positive control: enabling must not wipe run state, or the
+        /// test above would pass on a setter that resets unconditionally.</summary>
+        [Fact]
+        public void EnablingAMacro_DoesNotTouchRunState()
+        {
+            var macro = new PadForge.ViewModels.MacroItem { IsEnabled = false };
+            macro.IsExecuting = true;
+            macro.CurrentActionIndex = 2;
+
+            macro.IsEnabled = true;
+
+            Assert.True(macro.IsExecuting);
+            Assert.Equal(2, macro.CurrentActionIndex);
+        }
+
         // ── Per-mapping dictionaries: lock parity across all five families ──
 
         /// <summary>

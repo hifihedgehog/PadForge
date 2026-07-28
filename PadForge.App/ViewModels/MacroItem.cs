@@ -138,6 +138,17 @@ namespace PadForge.ViewModels
                         action.VcAxisToggleLatched = false;
                         action.WheelToggleLatched = false;
                     }
+
+                    // End the RUN too, not just the latches. Clearing the five
+                    // latch bits stopped the held outputs but left the sequence
+                    // mid-flight, so re-enabling resumed at CurrentActionIndex
+                    // and injected the remaining actions with no trigger press.
+                    // Mirrors the ViewModel-reachable half of the engine's
+                    // EndMacroRun (Step4b.EvaluateMacros.cs:1014).
+                    IsExecuting = false;
+                    CurrentActionIndex = 0;
+                    ComboResumeIndex = 0;
+                    RunReleasedFireToCompletion = false;
                 }
             }
         }

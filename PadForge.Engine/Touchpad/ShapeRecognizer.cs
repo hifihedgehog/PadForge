@@ -447,7 +447,14 @@ namespace PadForge.Engine.Touchpad
                     if (d2 < best) best = d2;
                 }
             }
-            return best;
+            // minSoFar is a BORROWED floor, the best score some OTHER template
+            // already achieved, and it is used purely to prune. Returning it
+            // unchanged reported this template as having scored what that other
+            // template scored. A template with a looser ThresholdOverride could
+            // then clear its own threshold on a borrowed number and be named the
+            // match without ever having fitted the candidate. Report
+            // non-improvement as no match instead.
+            return best < minSoFar ? best : float.MaxValue;
         }
 
         /// <summary>Matches <paramref name="candidate"/> against the

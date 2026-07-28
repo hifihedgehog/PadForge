@@ -46,9 +46,9 @@ public class W3W {
     Start-Sleep -Seconds 18
     "PadForge launched" | Out-File $logFile -Encoding ascii -Append
 
-    # Find local IP
-    $localIp = (Test-NetConnection -ComputerName 8.8.8.8 -InformationLevel Quiet -EA SilentlyContinue) |
-        Out-Null
+    # Find local IP. The probe to 8.8.8.8 that used to sit here assigned the
+    # result of "| Out-Null", so it was always $null and was overwritten by the
+    # next line regardless. It only cost an outbound connection.
     $localIp = (Get-NetIPAddress -AddressFamily IPv4 -PrefixOrigin Dhcp -EA SilentlyContinue |
         Where-Object { $_.IPAddress -notlike '169.*' } | Select-Object -First 1).IPAddress
     if (-not $localIp) { $localIp = "127.0.0.1" }
@@ -107,18 +107,31 @@ public class W3W {
     Start-Sleep -Seconds 5
     Cap-Web "web-controller"
 
-    # Cleanup: close Edge, disable web server
-    Stop-Process -Name msedge -Force -EA SilentlyContinue
-    Start-Sleep -Seconds 2
-
-    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
-    Start-Sleep -Seconds 3
-    [xml]$xml = Get-Content $XmlPath
-    $app = $xml.PadForgeSettings.AppSettings
-    $node = $app.SelectSingleNode("EnableWebController")
-    if ($node) { $node.InnerText = "false" }
-    $xml.Save($XmlPath)
-    Start-Process $ExePath
-    "Cleanup done" | Out-File $logFile -Encoding ascii -Append
-} catch { "FATAL: $_" | Out-File $logFile -Encoding ascii -Append }
+} catch {
+    "FATAL: $_" | Out-File $logFile -Encoding ascii -Append
+} finally {
+    # This cleanup used to sit at the end of the try block, so any failure
+    # after EnableWebController was set to true left the web controller
+    # ENABLED. That is a network service listening on the machine, switched on
+    # by a screenshot script and never switched back, with only a line in a log
+    # file to say so. It runs on every exit path now.
+    try {
+        Stop-Process -Name msedge -Force -EA SilentlyContinue
+        Start-Sleep -Seconds 2
+        Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
+        Start-Sleep -Seconds 3
+        if (Test-Path $XmlPath) {
+            [xml]$xmlOff = Get-Content $XmlPath
+            $appOff = $xmlOff.PadForgeSettings.AppSettings
+            $nodeOff = $appOff.SelectSingleNode("EnableWebController")
+            if ($nodeOff) { $nodeOff.InnerText = "false" }
+            $xmlOff.Save($XmlPath)
+            "EnableWebController set back to false" | Out-File $logFile -Encoding ascii -Append
+        }
+        Start-Process $ExePath
+        "Cleanup done" | Out-File $logFile -Encoding ascii -Append
+    } catch {
+        "!! CLEANUP FAILED -- EnableWebController may still be TRUE: $_" | Out-File $logFile -Encoding ascii -Append
+    }
+}
 "END" | Out-File $logFile -Encoding ascii -Append

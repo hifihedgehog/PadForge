@@ -116,11 +116,6 @@ namespace PadForge.ViewModels
                 RebuildLayerTabs(slotSetsForCulture != null && PadIndex >= 0 && PadIndex < slotSetsForCulture.Length
                     ? slotSetsForCulture[PadIndex]?.ShiftActivators
                     : null);
-            }
-            finally
-            {
-                SuppressSettingsDirty = prevSuppress;
-            }
 
             Title = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
             SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
@@ -143,6 +138,17 @@ namespace PadForge.ViewModels
             // the memo and the cached config both re-localize.
             _matchPresetCache.Clear();
             _pipelineChipsConfigDirty = true;
+            }
+            finally
+            {
+                // The suppression covers the WHOLE culture refresh, not just
+                // RebuildLayerTabs. Title / SlotLabel are SetProperty-backed
+                // and RebuildMappings raises plenty more, all of which
+                // reached this VM's dirty hook and scheduled a settings write
+                // for 16 slots on every language switch, exactly what the
+                // comment above says must not happen (round 34).
+                SuppressSettingsDirty = prevSuppress;
+            }
         }
 
         /// <summary>Zero-based pad slot index (0–15).</summary>

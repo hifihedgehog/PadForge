@@ -1572,6 +1572,19 @@ namespace PadForge.Common.Input
         /// Applies deadzone, anti-deadzone, and linear scaling to a pair
         /// of thumbstick axes (X and Y) using the specified deadzone shape algorithm.
         /// </summary>
+        /// <summary>Test seam for <see cref="ApplyDeadZone"/>. Same
+        /// arguments, no behavior of its own.</summary>
+        internal static void ApplyDeadZoneForTest(ref short axisX, ref short axisY,
+            double deadZoneX, double deadZoneY,
+            double antiDeadZoneX, double antiDeadZoneY, double linear,
+            double maxRangeX, double maxRangeY,
+            double maxRangeXNeg, double maxRangeYNeg,
+            double[] lutX, double[] lutY,
+            DeadZoneShape shape)
+            => ApplyDeadZone(ref axisX, ref axisY, deadZoneX, deadZoneY,
+                antiDeadZoneX, antiDeadZoneY, linear, maxRangeX, maxRangeY,
+                maxRangeXNeg, maxRangeYNeg, lutX, lutY, shape);
+
         private static void ApplyDeadZone(ref short axisX, ref short axisY,
             double deadZoneX, double deadZoneY,
             double antiDeadZoneX, double antiDeadZoneY, double linear,
@@ -1641,7 +1654,16 @@ namespace PadForge.Common.Input
         private static short ApplyPostDeadZone(double remapped, double sign,
             double antiDeadZone, double linear, double[] lut)
         {
-            if (remapped <= 0 && antiDeadZone <= 0)
+            // No deflection means no output, anti-deadzone or not. The
+            // shaped paths hand back remapped == 0 for a stick inside its
+            // deadzone, and the old guard only short-circuited when the
+            // anti-deadzone was also zero: with one configured, a resting
+            // stick emitted +/-antiDeadZone%, and since the sign comes from
+            // the raw reading it flipped with sensor noise, so the axis
+            // oscillated between the two at rest. ApplySingleDeadZone, the
+            // Axial sibling of this pipeline, returns 0 inside the deadzone
+            // unconditionally; this now matches it.
+            if (remapped <= 0)
                 return 0;
 
             if (lut != null)

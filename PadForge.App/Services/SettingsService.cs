@@ -3604,12 +3604,13 @@ namespace PadForge.Services
         internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,
             bool[] slotCreated, int[] slotControllerTypes)
         {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm, out _);
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm, out int nintendo);
             item.XboxCount = xbox;
             item.PlayStationCount = playstation;
             item.ExtendedCount = extendedCount;
             item.MidiCount = midi;
             item.KbmCount = kbm;
+            item.NintendoCount = nintendo;
             item.TopologyLabel = FormatTopologyLabel(slotCreated, slotControllerTypes);
         }
 

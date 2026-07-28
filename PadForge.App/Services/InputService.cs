@@ -245,11 +245,22 @@ namespace PadForge.Services
 
         /// <summary>True while a caller has swapped the domain mapping
         /// sets but has not yet reconciled the ViewModels against them
-        /// (ApplyProfile's window). The adoption drain must not push the
-        /// ViewModels into the domain during that window: they still
-        /// describe the OUTGOING profile and would overwrite the incoming
-        /// one (round eleven).</summary>
-        private bool _vmMappingsStale;
+        /// (ApplyProfile's window). NO ONE may push the ViewModels into the
+        /// domain during that window: they still describe the OUTGOING
+        /// profile and would overwrite the incoming one (round eleven).
+        ///
+        /// <para>Read by <see cref="SettingsService.PushUiExtraSourcesIntoSlotMappingSets"/>
+        /// itself, not by each caller. It was a private field guarding ONE of
+        /// the four call sites, the adoption drain, while the push that
+        /// actually fires inside ApplyProfile went through
+        /// OnSelectedDeviceChanged, which UpdatePadDeviceInfo raises when it
+        /// rebuilds the pad device lists mid-swap. That push recreated the
+        /// MappingSet ApplyProfile had just nulled and refilled it from the
+        /// outgoing profile's grid, so an authored-empty profile came up
+        /// owning the previous profile's rows and a revert to default came
+        /// back on the other profile's device. Static and UI-thread-only for
+        /// the same reason as <see cref="SuppressMappingEditPush"/>.</para></summary>
+        internal static bool VmMappingsStale;
         // Bounded retry ledger (round seven, R3): a released pass has no
         // natural next event (UpdatePadDeviceInfo is edge-driven), so a
         // release schedules one delayed re-poke, capped per ps epoch so a
@@ -10493,8 +10504,12 @@ namespace PadForge.Services
             // would write the OUTGOING profile's rows over the incoming
             // profile's. ApplyProfile does its own refresh, so the drain
             // limits itself to the re-key passes there.
-            bool vmUsable = !_vmMappingsStale;
-            if (vmUsable) _settingsService?.PushUiExtraSourcesIntoSlotMappingSets();
+            // The push consults VmMappingsStale itself now, so every call
+            // site is covered, not just this one. The local stays for the
+            // domain-to-ViewModel refresh below, which ApplyProfile also owns
+            // during its window and must not be duplicated here.
+            bool vmUsable = !VmMappingsStale;
+            _settingsService?.PushUiExtraSourcesIntoSlotMappingSets();
 
             // Apply each re-key as its OWN single-hop pass, in queue order
             // (round ten, replacing round nine's chain collapse). The
@@ -13253,7 +13268,7 @@ namespace PadForge.Services
             // Authoritative Workshop set whose rows all carry a concrete
             // DeviceGuid and raw "Button N" descriptors, with not one
             // abstract "Gamepad ..." source left in the file.
-            _vmMappingsStale = true;
+            VmMappingsStale = true;
             try
             {
             UpdatePadDeviceInfo();
@@ -13331,7 +13346,7 @@ namespace PadForge.Services
                     padVm.ClearPerDeviceConfigsForUncreatedSlot();
             }
             }
-            finally { _vmMappingsStale = false; }
+            finally { VmMappingsStale = false; }
 
             // Refresh Devices page slot labels.
             SyncDevicesList();

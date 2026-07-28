@@ -871,5 +871,86 @@ namespace PadForge.Tests
                 "reverting to default left the other profile's rows live, so the "
                 + "default profile now owns that profile's device bindings.");
         }
+
+        /// <summary>The owner's 2026-07-28 reproduction, driven through the
+        /// SAME entry points the UI uses: CreateEmptyProfile, LoadProfile,
+        /// assign a pad, RevertToDefaultProfile. Present since at least 3.6.1.
+        ///
+        /// <para>The PROFDIAG trace showed the empty profile coming out of
+        /// ApplyProfile still holding the DEFAULT profile's 22 rows on the
+        /// default's device, with every assignment already cleared. An
+        /// authored-empty profile owns zero mappings, so slot 0 must be empty
+        /// the instant it is applied. Whatever it inherits, it later persists
+        /// as its own and hands back to the default on revert.</para></summary>
+        [Fact]
+        public void LoadingAnEmptyProfile_DoesNotInheritTheDefaultProfilesRows()
+        {
+            var (vm, svc, ss) = Arrange();
+            AddPad(SteamGuid, "Steam Controller");
+            AssignTo(SteamGuid, 0);
+            MapButtonA(0, SteamGuid, "Button 0");
+            svc.UpdatePadDeviceInfo();
+            InputService.RefreshMappingsToViewModel(vm.Pads[0]);
+
+            // Positive control: the default really does own a row right now.
+            Assert.Single(SettingsManager.SlotMappingSets[0].Rows);
+
+            var created = svc.CreateEmptyProfile("Empty", "");
+            Assert.NotNull(created.SlotMappingSets);
+            Assert.Null(created.SlotMappingSets[0]);
+
+            svc.LoadProfile(created.Id);
+
+            var live = SettingsManager.SlotMappingSets[0];
+            int rows = live?.Rows?.Count ?? 0;
+            Assert.True(rows == 0,
+                $"an authored-empty profile came up owning {rows} inherited row(s); "
+                + "first source = "
+                + (live?.Rows?.FirstOrDefault()?.Sources?.FirstOrDefault()?.DeviceGuid ?? "<none>"));
+        }
+
+        /// <summary>The second half of the same reproduction. After the empty
+        /// profile is given its own pad, going back to default must restore
+        /// the default's own rows on the default's own device.</summary>
+        [Fact]
+        public void RevertingFromAnEmptyProfile_RestoresTheDefaultsOwnRows()
+        {
+            var (vm, svc, ss) = Arrange();
+            AddPad(SteamGuid, "Steam Controller");
+            AddPad(XboxPadGuid, "Xbox pad");
+            AssignTo(SteamGuid, 0);
+            MapButtonA(0, SteamGuid, "Button 0");
+            svc.UpdatePadDeviceInfo();
+            InputService.RefreshMappingsToViewModel(vm.Pads[0]);
+
+            var created = svc.CreateEmptyProfile("Empty", "");
+            svc.LoadProfile(created.Id);
+
+            // The user builds the new profile up: its own slot, its own pad.
+            // ORDER MATTERS, and getting it wrong makes this test vacuous:
+            // UpdatePadDeviceInfo pushes the grid into the domain, so running
+            // it AFTER authoring the row overwrites the row with the grid's
+            // still-empty one and the ViewModel never carries the new pad.
+            // The clobber under test needs the grid to actually hold the new
+            // profile's device, which is what the user's does.
+            SettingsManager.SlotCreated[0] = true;
+            SettingsManager.SlotEnabled[0] = true;
+            AssignTo(XboxPadGuid, 0);
+            svc.UpdatePadDeviceInfo();
+            MapButtonA(0, XboxPadGuid, "Button 0");
+            InputService.RefreshMappingsToViewModel(vm.Pads[0]);
+            Assert.Equal(XboxPadGuid.ToString(),
+                vm.Pads[0].Mappings.First(m => m.TargetSettingName == "ButtonA").PrimarySourceDeviceGuid,
+                ignoreCase: true);
+
+            svc.RevertToDefaultProfile();
+
+            var guid = SettingsManager.SlotMappingSets[0]?.Rows
+                ?.FirstOrDefault(r => r.Target == "ButtonA")
+                ?.Sources?.FirstOrDefault()?.DeviceGuid;
+            Assert.True(string.Equals(guid, SteamGuid.ToString(), StringComparison.OrdinalIgnoreCase),
+                $"back on the default profile, ButtonA reads device {guid ?? "<none>"}; "
+                + $"the default's own device is {SteamGuid}.");
+        }
     }
 }

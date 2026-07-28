@@ -2258,8 +2258,7 @@ Write-Host "[$(Next)/$total] Add Controller popup -- already captured in Step 2b
 Write-Host ""
 Write-Host "=== STEP 3b: 3.6.0 new sections ===" -ForegroundColor Cyan
 
-Start-Sleep -Milliseconds 500
-Start-Sleep -Milliseconds 600
+Start-Sleep -Milliseconds 1100
 
 $li36 = New-Object System.Windows.Automation.PropertyCondition(
     [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
@@ -2562,7 +2561,13 @@ if ($pairBtn) {
     # enumeration does not surface it (the 2026-07-12 run logged "Pair dialog window
     # not found", left it stuck, and corrupted the NFC shots).
     $pairDlg = Get-ForegroundDialogHwnd
-    Cap "wii-pair"
+    # Only capture if the modal actually opened. This shot was taken
+    # unconditionally, so a Pair button that failed to open its dialog
+    # overwrote wii-pair.png with whatever was on screen, which is the Devices
+    # page. The gesture-recorder block above already guards for exactly this
+    # reason. Skipping keeps the previous good screenshot.
+    if ($pairDlg -ne [IntPtr]::Zero) { Cap "wii-pair" }
+    else { Write-Host "  !! Pair dialog did not open; keeping the existing wii-pair.png" -ForegroundColor Yellow }
     # DualShock 3 family (v4, WiiPair_FamilyDs3): the Controller Family combo is a
     # 2-item ComboBox (Nintendo Wii = index 0, Sony DualShock 3 = index 1). Drive it by
     # a dialog-rect-relative coordinate (the modal is centered + fixed width): open the
@@ -2607,7 +2612,10 @@ if (Select-DeviceByName36 "NFC") {
         # capture, then close with WM_CLOSE so it can't survive and hang the
         # web-capture step (Close-AnyModal can't see these FluentWindow modals).
         $nfcDlg = Get-ForegroundDialogHwnd
-        Cap "nfc-register"
+        # Same guard as wii-pair and the gesture recorder: if the modal did not
+        # open, this saved the Devices page as nfc-register.png.
+        if ($nfcDlg -ne [IntPtr]::Zero) { Cap "nfc-register" }
+        else { Write-Host "  !! NFC register dialog did not open; keeping the existing nfc-register.png" -ForegroundColor Yellow }
         Close-DialogHwnd $nfcDlg
         Close-AnyModal | Out-Null
     }

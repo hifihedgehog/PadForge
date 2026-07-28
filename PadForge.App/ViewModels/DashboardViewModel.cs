@@ -433,6 +433,29 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _enableMenuOverlay, value);
         }
 
+        private bool _enableShiftLayerFlyout = true;
+
+        /// <summary>Whether the shift-layer flyout appears while a slot is on
+        /// a non-Base layer. Default on. Purely a display of engagement state
+        /// the poll thread already computes, so turning it off changes nothing
+        /// about which layer is active or how rows resolve.</summary>
+        public bool EnableShiftLayerFlyout
+        {
+            get => _enableShiftLayerFlyout;
+            set => SetProperty(ref _enableShiftLayerFlyout, value);
+        }
+
+        private bool _enableProfileOverlay = true;
+
+        /// <summary>Whether the profile-switch overlay appears when a profile
+        /// changes. Default on. The switch itself still happens when off, this
+        /// only suppresses the announcement.</summary>
+        public bool EnableProfileOverlay
+        {
+            get => _enableProfileOverlay;
+            set => SetProperty(ref _enableProfileOverlay, value);
+        }
+
         private double _touchpadOverlayOpacity = 0.25;
 
         /// <summary>Surface opacity of the touchpad overlay (0.0–1.0).</summary>

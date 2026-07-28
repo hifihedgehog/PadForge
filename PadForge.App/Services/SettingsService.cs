@@ -2030,6 +2030,8 @@ namespace PadForge.Services
             // Load touchpad overlay settings.
             _mainVm.Dashboard.EnableTouchpadOverlay = appSettings.EnableTouchpadOverlay;
             _mainVm.Dashboard.EnableMenuOverlay = appSettings.EnableMenuOverlay;
+            _mainVm.Dashboard.EnableShiftLayerFlyout = appSettings.EnableShiftLayerFlyout;
+            _mainVm.Dashboard.EnableProfileOverlay = appSettings.EnableProfileOverlay;
             _mainVm.Dashboard.TouchpadOverlayOpacity = appSettings.TouchpadOverlayOpacity;
             _mainVm.Dashboard.TouchpadOverlayMonitor = appSettings.TouchpadOverlayMonitor;
             _mainVm.Dashboard.TouchpadOverlayLeft = appSettings.TouchpadOverlayLeft;
@@ -3468,6 +3470,8 @@ namespace PadForge.Services
                     _mainVm.Dashboard.WebControllerPort = active.WebControllerPort;
                 _mainVm.Dashboard.EnableTouchpadOverlay = active.EnableTouchpadOverlay;
                 _mainVm.Dashboard.EnableMenuOverlay = active.EnableMenuOverlay;
+                _mainVm.Dashboard.EnableShiftLayerFlyout = active.EnableShiftLayerFlyout;
+                _mainVm.Dashboard.EnableProfileOverlay = active.EnableProfileOverlay;
                 _mainVm.Dashboard.TouchpadOverlayOpacity = active.TouchpadOverlayOpacity;
                 _mainVm.Dashboard.TouchpadOverlayMonitor = active.TouchpadOverlayMonitor;
                 _mainVm.Dashboard.TouchpadOverlayLeft = active.TouchpadOverlayLeft;
@@ -3563,6 +3567,8 @@ namespace PadForge.Services
             profile.WebControllerPort = _mainVm.Dashboard.WebControllerPort;
             profile.EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay;
             profile.EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay;
+            profile.EnableShiftLayerFlyout = _mainVm.Dashboard.EnableShiftLayerFlyout;
+            profile.EnableProfileOverlay = _mainVm.Dashboard.EnableProfileOverlay;
             profile.TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity;
             profile.TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor;
             profile.TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft;
@@ -3918,6 +3924,8 @@ namespace PadForge.Services
                 RemoteLinkPort = _mainVm.Dashboard.RemoteLinkPort,
                 EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay,
                 EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay,
+                EnableShiftLayerFlyout = _mainVm.Dashboard.EnableShiftLayerFlyout,
+                EnableProfileOverlay = _mainVm.Dashboard.EnableProfileOverlay,
                 TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
                 TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
                 TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft,
@@ -5392,6 +5400,16 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableMenuOverlay { get; set; } = true;
 
+        /// <summary>Whether the shift-layer flyout appears while a slot is on a
+        /// non-Base layer. Default on. Display only, the layer still engages.</summary>
+        [XmlElement]
+        public bool EnableShiftLayerFlyout { get; set; } = true;
+
+        /// <summary>Whether the profile-switch overlay appears on a profile
+        /// change. Default on. The switch still happens when off.</summary>
+        [XmlElement]
+        public bool EnableProfileOverlay { get; set; } = true;
+
         /// <summary>Default profile's custom touchpad gestures.
         /// Named profiles store theirs under each profile's
         /// <c>ProfileData.TouchpadGestures</c>; when the default profile
@@ -6178,6 +6196,16 @@ namespace PadForge.Services
         /// copy. Default on.</summary>
         [XmlElement]
         public bool EnableMenuOverlay { get; set; } = true;
+
+        /// <summary>Whether the shift-layer flyout appears while a slot is on a
+        /// non-Base layer. Default on. Display only, the layer still engages.</summary>
+        [XmlElement]
+        public bool EnableShiftLayerFlyout { get; set; } = true;
+
+        /// <summary>Whether the profile-switch overlay appears on a profile
+        /// change. Default on. The switch still happens when off.</summary>
+        [XmlElement]
+        public bool EnableProfileOverlay { get; set; } = true;
 
         [XmlElement]
         public double TouchpadOverlayOpacity { get; set; } = 0.25;

@@ -2776,6 +2776,10 @@
   <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Associata tramite righe di Mappature</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cella {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Overlay menu</value></data>
+  <data name="Dashboard_Overlays" xml:space="preserve"><value>Sovrapposizioni</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indicatori a schermo che PadForge mostra durante il gioco. Disattivarne uno non cambia mai il comportamento, solo se viene annunciato.</value></data>
+  <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Riquadro livello Shift</value></data>
+  <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Sovrapposizione cambio profilo</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra l'anello o la griglia su schermo mentre un menu radiale o touch è attivo. I menu si attivano anche con l'overlay disattivato.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu su schermo creato ({0} celle assegnate)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>il menu non ha celle assegnate</value></data>

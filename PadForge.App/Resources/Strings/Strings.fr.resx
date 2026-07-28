@@ -2754,6 +2754,10 @@
   <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Liée via les lignes de Mappages</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} case {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Superposition de menu</value></data>
+  <data name="Dashboard_Overlays" xml:space="preserve"><value>Superpositions</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indicateurs affichés par PadForge pendant le jeu. En désactiver un ne change jamais le comportement, seulement son annonce.</value></data>
+  <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Info-bulle de couche Shift</value></data>
+  <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Superposition de changement de profil</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Affiche l'anneau ou la grille à l'écran tant qu'un menu radial ou tactile est actif. Les menus se déclenchent même si la superposition est désactivée.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu à l'écran créé ({0} cases affectées)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>le menu n'a aucune case affectée</value></data>

@@ -2754,6 +2754,10 @@
   <data name="Menu_Binding_RowBound" xml:space="preserve"><value>マッピング行経由でバインド</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>メニュー {0} セル {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>メニューオーバーレイ</value></data>
+  <data name="Dashboard_Overlays" xml:space="preserve"><value>オーバーレイ</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>プレイ中に PadForge が表示する画面インジケーター。オフにしても動作は変わらず、表示されるかどうかだけが変わります。</value></data>
+  <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>シフト レイヤー フライアウト</value></data>
+  <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>プロファイル切り替えオーバーレイ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ラジアルメニューまたはタッチメニューが作動している間、画面上のリングまたはグリッドを表示します。オーバーレイがオフでもメニューは発動します。</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>画面上メニューを作成 ({0} 個の割り当て済みセル)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>メニューに割り当て済みセルがありません</value></data>

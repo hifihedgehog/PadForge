@@ -2357,7 +2357,10 @@ namespace PadForge.Services
                     _foregroundMonitor.SetManualOverride(SettingsManager.ActiveProfileId);
 
                 OnProfileSwitchRequired(pendingSwitch);
-                ShowProfileSwitchOverlay(pendingSwitch);
+                // Display only. The switch above has already happened, so
+                // suppressing this changes nothing but the announcement.
+                if (_mainVm.Dashboard.EnableProfileOverlay)
+                    ShowProfileSwitchOverlay(pendingSwitch);
                 _settingsService?.MarkDirty();
             }
 
@@ -8995,6 +8998,23 @@ namespace PadForge.Services
         private void UpdateShiftLayerFlyout()
         {
             var sets = SettingsManager.SlotMappingSets;
+
+            // Gated INSIDE the method, not at the call site: turning the
+            // setting off while a flyout is on screen has to take it down,
+            // and skipping the call would strand it there. Same shape as the
+            // no-mapping-sets branch below. Display only, so the engaged layer
+            // and every row that resolves against it are unaffected.
+            if (!_mainVm.Dashboard.EnableShiftLayerFlyout)
+            {
+                if (_shiftLayerFlyoutLastSlot >= 0)
+                {
+                    _shiftLayerFlyout?.HideFlyout();
+                    _shiftLayerFlyoutLastSlot = -1;
+                    _shiftLayerFlyoutLastShown = "Base";
+                }
+                return;
+            }
+
             if (sets == null)
             {
                 if (_shiftLayerFlyoutLastSlot >= 0)
@@ -12392,6 +12412,8 @@ namespace PadForge.Services
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
                 EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay,
                 EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay,
+                EnableShiftLayerFlyout = _mainVm.Dashboard.EnableShiftLayerFlyout,
+                EnableProfileOverlay = _mainVm.Dashboard.EnableProfileOverlay,
                 TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
                 TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
                 TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft,
@@ -13313,6 +13335,8 @@ namespace PadForge.Services
             // ── Apply touchpad overlay settings ──
             _mainVm.Dashboard.EnableTouchpadOverlay = profile.EnableTouchpadOverlay;
             _mainVm.Dashboard.EnableMenuOverlay = profile.EnableMenuOverlay;
+            _mainVm.Dashboard.EnableShiftLayerFlyout = profile.EnableShiftLayerFlyout;
+            _mainVm.Dashboard.EnableProfileOverlay = profile.EnableProfileOverlay;
             _mainVm.Dashboard.TouchpadOverlayOpacity = profile.TouchpadOverlayOpacity;
             _mainVm.Dashboard.TouchpadOverlayMonitor = profile.TouchpadOverlayMonitor;
             _mainVm.Dashboard.TouchpadOverlayLeft = profile.TouchpadOverlayLeft;
@@ -13587,6 +13611,8 @@ namespace PadForge.Services
                     profile.WebControllerPort = snapshot.WebControllerPort;
                     profile.EnableTouchpadOverlay = snapshot.EnableTouchpadOverlay;
                     profile.EnableMenuOverlay = snapshot.EnableMenuOverlay;
+                    profile.EnableShiftLayerFlyout = snapshot.EnableShiftLayerFlyout;
+                    profile.EnableProfileOverlay = snapshot.EnableProfileOverlay;
                     profile.TouchpadOverlayOpacity = snapshot.TouchpadOverlayOpacity;
                     profile.TouchpadOverlayMonitor = snapshot.TouchpadOverlayMonitor;
                     profile.TouchpadOverlayLeft = snapshot.TouchpadOverlayLeft;

@@ -1724,20 +1724,27 @@
                 </StackPanel>
             </Border>
 
-            <!-- ═══ Menu Overlay (#9 B-17) ═══ -->
+            <!-- ═══ Overlays (menu #9 B-17, shift layer, profile switch) ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <!-- E700 = Segoe MDL2 GlobalNavButton, the canonical menu glyph. -->
                 <TextBlock Text="&#xE700;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+                <TextBlock Text="{Binding Dashboard_Overlays, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
                 <StackPanel>
-                    <TextBlock Text="{Binding Dashboard_MenuOverlayDescription, Source={x:Static strings:Strings.Instance}}"
+                    <TextBlock Text="{Binding Dashboard_OverlaysDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <CheckBox Content="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}}"
                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableMenuOverlay}"/>
+                              ToolTip="{Binding Dashboard_MenuOverlayDescription, Source={x:Static strings:Strings.Instance}}"
+                              IsChecked="{Binding EnableMenuOverlay}" Margin="0,0,0,6"/>
+                    <CheckBox Content="{Binding Dashboard_ShiftLayerFlyout, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding EnableShiftLayerFlyout}" Margin="0,0,0,6"/>
+                    <CheckBox Content="{Binding Dashboard_ProfileOverlay, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding EnableProfileOverlay}"/>
                 </StackPanel>
             </Border>
 

@@ -2972,7 +2972,15 @@ namespace PadForge
             // Type switcher returns to the rail (user direction, iteration 15):
             // the dashboard segment in mini form. Active type is ember-filled;
             // the card rebuilds on OutputType change via RefreshNavControllerItems.
-            bool hasMidi = DriverInstaller.IsMidiServicesInstalled();
+            // Read the cached status, not the live probe. This method runs once
+            // per rail card, and DriverInstaller.IsMidiServicesInstalled()
+            // enumerates the whole HKLM uninstall key under BOTH the 64-bit and
+            // 32-bit registry views, so a 16-slot rail rebuild paid 32 hive
+            // walks on the UI thread. RefreshMidiServicesStatus() keeps this
+            // property current on a 5 s timer and runs in the constructor
+            // before the rail's first build, so the value here is the same
+            // answer at worst five seconds older.
+            bool hasMidi = _viewModel.Settings.IsMidiServicesInstalled;
             var segRow = new System.Windows.Controls.StackPanel
             {
                 Orientation = System.Windows.Controls.Orientation.Horizontal,

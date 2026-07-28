@@ -7,7 +7,6 @@ try {
     $ae  = [System.Windows.Automation.AutomationElement]
     $ct  = [System.Windows.Automation.ControlType]
     $tree = [System.Windows.Automation.TreeScope]
-    $true_cond = [System.Windows.Automation.Condition]::TrueCondition
 
     Add-Type @"
 using System;

@@ -8,9 +8,8 @@ $proc = Get-Process PadForge -ErrorAction SilentlyContinue | Select-Object -Firs
 if (-not $proc) { Write-Host "ERROR: PadForge not running"; exit 1 }
 
 $root = [System.Windows.Automation.AutomationElement]::FromHandle($proc.MainWindowHandle)
-$treeCond = [System.Windows.Automation.Condition]::TrueCondition
 
-function Find-ElementByName($parent, $name, $depth = 8) {
+function Find-ElementByName($parent, $name) {
     $cond = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::NameProperty, $name)
     return $parent.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $cond)
@@ -18,10 +17,23 @@ function Find-ElementByName($parent, $name, $depth = 8) {
 
 function Click-Element($el) {
     if (-not $el) { Write-Host "  ERROR: Element not found"; return $false }
-    $invokePat = $el.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern)
-    if ($invokePat) { $invokePat.Invoke(); return $true }
+    # GetCurrentPattern THROWS "Unsupported Pattern" when the element does not
+    # support it; it does not return $null. So the `if ($invokePat)` test never
+    # ran on the failing case and the coordinate fallback below was
+    # unreachable: the exception escaped Click-Element entirely. Every sibling
+    # helper in this folder wraps this call.
+    try {
+        $invokePat = $el.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern)
+        if ($invokePat) { $invokePat.Invoke(); return $true }
+    } catch { }
     # Fallback: click at center
+    Add-Type -AssemblyName System.Windows.Forms
     $rect = $el.Current.BoundingRectangle
+    # Rect.Empty reports X as +Infinity and [int] on it throws.
+    if ($rect.IsEmpty -or $rect.Width -le 0 -or $rect.Height -le 0) {
+        Write-Host "  ERROR: element has no usable bounds"
+        return $false
+    }
     $x = [int]($rect.X + $rect.Width / 2)
     $y = [int]($rect.Y + $rect.Height / 2)
     [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($x, $y)

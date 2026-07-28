@@ -23,11 +23,23 @@ function Log($msg) {
     Add-Content -Path $logFile -Value $line
 }
 function Get-JoyCplVJoyCount {
+    # Counts vJoy nodes, which means it has to check for vJoy. This matched
+    # ROOT\HIDCLASS\NNNN and counted EVERY root-enumerated HID node, vJoy or
+    # not: that path is a slot number, not an identity. The test's success
+    # condition compares this against reg+1, so any unrelated root HID device
+    # on the machine could satisfy it and report a scaling success that never
+    # happened. Walk records and require the vJoy marker, the same shape
+    # remove_recreate_test.ps1 and vjoy_driver_test.ps1 already use.
     $count = 0
     try {
-        $ids = (pnputil /enum-devices /class HIDClass 2>$null) -join "`n"
-        $found = [regex]::Matches($ids, 'ROOT\\HIDCLASS\\(\d+)')
-        foreach ($m in $found) { $count++ }
+        $lines = (pnputil /enum-devices /class HIDClass 2>$null) -split "`n"
+        $currentId = $null
+        foreach ($line in $lines) {
+            $t = $line.Trim()
+            if ($t -match '(ROOT\\HIDCLASS\\\d+)') { $currentId = $Matches[1] }
+            elseif ($currentId -and $t -match 'vJoy') { $count++; $currentId = $null }
+            elseif ([string]::IsNullOrWhiteSpace($t)) { $currentId = $null }
+        }
     } catch {}
     return $count
 }
@@ -69,12 +81,22 @@ foreach ($p in $patterns) {
     } catch {}
 }
 if (-not $clicked) {
-    # Fallback: click by coordinates
+    # Fallback: click by coordinates.
+    #
+    # Add-Type FIRST. This loaded System.Windows.Forms on the line AFTER the
+    # one that used [System.Windows.Forms.Cursor], so the fallback threw
+    # "Unable to find type" every time it was reached, which is verifiable in
+    # a fresh shell. The whole fallback was dead.
+    Add-Type -AssemblyName System.Windows.Forms
     $rect = $addBtn.Current.BoundingRectangle
+    # Rect.Empty reports X as +Infinity and [int] on it throws.
+    if ($rect.IsEmpty -or $rect.Width -le 0 -or $rect.Height -le 0) {
+        Log "ERROR: 'Add Controller' has no usable bounds; cannot click it"
+        exit 1
+    }
     $x = [int]($rect.X + $rect.Width / 2)
     $y = [int]($rect.Y + $rect.Height / 2)
     [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($x, $y)
-    Add-Type -AssemblyName System.Windows.Forms
     Start-Sleep -Milliseconds 100
     Add-Type -MemberDefinition '[DllImport("user32.dll")] public static extern void mouse_event(int f,int dx,int dy,int d,int e);' -Name 'Mouse' -Namespace 'U' -ErrorAction SilentlyContinue
     [U.Mouse]::mouse_event(2,0,0,0,0)  # LBUTTONDOWN

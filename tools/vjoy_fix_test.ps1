@@ -28,6 +28,16 @@ $status = pnputil /enum-devices /instanceid "$nodeId" 2>&1 | Out-String
 Log "Current state:"
 foreach ($l in ($status -split "`n")) { if ($l.Trim()) { Log "  $l" } }
 
+# Confirm this node is actually vJoy before the destructive tests below.
+# ROOT\HIDCLASS\0000 is a slot number, not an identity: whichever root-enumerated
+# HID device came first holds it. Test 2 calls /remove-device on it unconditionally,
+# so on a machine where something else owns slot 0000 this removed that instead.
+if ($status -notmatch 'vJoy|VID_1234') {
+    Log "ABORT: $nodeId does not look like a vJoy node. Refusing to run the remove/disable tests against it."
+    Log "=== Done (no changes made) ==="
+    exit 1
+}
+
 # Test 1: Try /restart-device
 Log ""
 Log "--- Test 1: pnputil /restart-device ---"

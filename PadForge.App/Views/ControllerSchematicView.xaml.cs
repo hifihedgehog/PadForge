@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -514,6 +514,25 @@ namespace PadForge.Views
             Canvas.SetTop(arrowCanvas, y);
             SchematicCanvas.Children.Add(arrowCanvas);
 
+            // The repaint loop steers this arrow by mutating this ONE
+            // transform (w.Rotate). It is created here, before the hover
+            // handlers, so those handlers can mutate it too: assigning a
+            // fresh RotateTransform to RenderTransform detaches w.Rotate and
+            // every later repaint then turns an object nothing renders.
+            var rotate = new RotateTransform(0, PovSize / 2, PovSize / 2);
+            arrowCanvas.RenderTransform = rotate;
+            var widget = new PovWidget
+            {
+                PovIndex = index,
+                Arrow = arrow,
+                ArrowCanvas = arrowCanvas,
+                Outer = outer,
+                CenterX = x + PovSize / 2,
+                CenterY = y + PovSize / 2,
+                Rotate = rotate,
+                FlashPrefix = $"RawPov{index}"
+            };
+
             // Label
             string povLabel = _vm.ExtendedConfig.PovCount == 1 ? Strings.Instance.Preview_DPad : string.Format(Strings.Instance.Preview_POV_Format, index + 1);
             var label = CreateLabel(povLabel, x, y - LabelHeight);
@@ -533,8 +552,7 @@ namespace PadForge.Views
                     angle = hy > 0 ? 180 : 0;
                 arrow.Visibility = Visibility.Visible;
                 arrow.Fill = HoverBrush;
-                arrowCanvas.RenderTransform = new RotateTransform(angle,
-                    PovSize / 2, PovSize / 2);
+                rotate.Angle = angle;
                 outer.Stroke = HoverBrush;
                 outer.StrokeThickness = 2.5;
             };
@@ -544,6 +562,11 @@ namespace PadForge.Views
                 arrow.Visibility = Visibility.Collapsed;
                 outer.SetResourceReference(Shape.StrokeProperty, DimKey);
                 outer.StrokeThickness = 1.5;
+                // Hover stomped visibility, fill, and angle. The repaint loop
+                // is transition-only, so a POV held engaged across a hover
+                // would stay hidden and hover-tinted until its value changed.
+                // Invalidate the gate the same way ApplyFlashState does.
+                widget.LastPov = int.MinValue;
             };
 
             // Click-to-record: detect direction by click position relative to center
@@ -561,19 +584,7 @@ namespace PadForge.Views
                 e.Handled = true;
             };
 
-            var rotate = new RotateTransform(0, PovSize / 2, PovSize / 2);
-            arrowCanvas.RenderTransform = rotate;
-            return new PovWidget
-            {
-                PovIndex = index,
-                Arrow = arrow,
-                ArrowCanvas = arrowCanvas,
-                Outer = outer,
-                CenterX = x + PovSize / 2,
-                CenterY = y + PovSize / 2,
-                Rotate = rotate,
-                FlashPrefix = $"RawPov{index}"
-            };
+            return widget;
         }
 
         // ─────────────────────────────────────────────

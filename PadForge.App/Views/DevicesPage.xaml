@@ -205,9 +205,11 @@
                 </Grid.RowDefinitions>
 
                 <!-- Type facet chips (#175 phase 2 item 13): filter the list
-                     by type family. GAMEPAD covers the stick classes
-                     (gamepad, joystick, wheel, flight stick, first person,
-                     supplemental); OTHER is everything else. Tokens are
+                     by type family. GAMEPAD is gamepad, first person, and
+                     supplemental only. Joysticks and flight sticks bucket
+                     under JOYSTICK and wheels under WHEEL, per the
+                     2026-07-06 split. KEYBOARD and MOUSE stand alone and
+                     OTHER takes the rest. Tokens are
                      hair-space letterspaced literals; counts come from the
                      VM on the same cadence as the header counter. -->
                 <WrapPanel Margin="6,0,0,4">

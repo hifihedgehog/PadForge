@@ -1250,6 +1250,14 @@ namespace PadForge.Common.Input
 
                     if (_constantForceScratch == null) _constantForceScratch = new Vibration();
                     var effective = ConstantForceEvaluator.Resolve(withMacro, devicePs, _constantForceScratch);
+                    // The hardware path runs this second evaluator right after
+                    // the first, and the meter did not, so a slot using
+                    // Constant Trigger Force drove real trigger actuators while
+                    // the FFB tab's trigger meters sat at whatever the raw
+                    // frame carried. The meter is supposed to show what the
+                    // device is being sent.
+                    if (_constantTriggerForceScratch == null) _constantTriggerForceScratch = new Vibration();
+                    effective = ConstantTriggerForceEvaluator.Resolve(effective, devicePs, _constantTriggerForceScratch);
 
                     ScaleRumbleForDevice(effective.LeftMotorSpeed, effective.RightMotorSpeed,
                         devicePs, out ushort scaledL, out ushort scaledR);
@@ -1266,7 +1274,11 @@ namespace PadForge.Common.Input
                     if (scaledL > bestL) bestL = scaledL;
                     if (scaledR > bestR) bestR = scaledR;
 
-                    ScaleTriggerRumbleForDevice(raw.LeftTriggerMotorSpeed, raw.RightTriggerMotorSpeed,
+                    // effective, not raw: the hardware path scales the
+                    // post-evaluator values, and reading raw here meant the
+                    // meter ignored every trigger-force contribution even once
+                    // the evaluator above had computed it.
+                    ScaleTriggerRumbleForDevice(effective.LeftTriggerMotorSpeed, effective.RightTriggerMotorSpeed,
                         devicePs, out ushort scaledLT, out ushort scaledRT);
 
                     if (scaledLT > bestLT) bestLT = scaledLT;

@@ -803,7 +803,14 @@ namespace PadForge.Services
                     // rebuilt rows) from disappearing across save
                     // round-trips when a non-gamepad device authored
                     // the primary descriptor.
-                    row.Sources.Clear();
+                    // Rebuild into a DETACHED list and swap the reference once the
+                    // row is complete. The poll thread reads row.Sources every
+                    // frame without a lock, so clearing and refilling in place
+                    // let it observe a half-built row: an empty read at best, an
+                    // ArgumentOutOfRangeException between a stale Count and the
+                    // indexer at worst, which aborts the whole mapping pass for
+                    // that frame. Same discipline as the shift-activator swap.
+                    var rebuiltSources = new List<MappingSource>();
 
                     // Push the primary as Sources[0] when present.
                     // Cross-device mappings are intentional — a keyboard
@@ -824,7 +831,7 @@ namespace PadForge.Services
                         // Non-Direct primary kind (Incremental / Ramped / InvertOnHold,
                         // #111 follow-up). The descriptor is unused; persist the kind and
                         // its params as Sources[0] so the load reads it as the primary.
-                        row.Sources.Add(mapping.PrimaryKindSource.ToDomain());
+                        rebuiltSources.Add(mapping.PrimaryKindSource.ToDomain());
                     }
                     else if (!string.IsNullOrEmpty(primaryDesc))
                     {
@@ -842,7 +849,7 @@ namespace PadForge.Services
                         else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
                         { half = true; clean = clean.Substring(1); }
 
-                        row.Sources.Add(new MappingSource
+                        rebuiltSources.Add(new MappingSource
                         {
                             Kind = "Direct",
                             DeviceGuid = mapping.PrimarySourceDeviceGuid ?? "",
@@ -875,7 +882,7 @@ namespace PadForge.Services
                             { nhalf = true; ncl = ncl.Substring(1); }
                             // Negative source: flip Invert relative to
                             // primary's encoded inversion.
-                            row.Sources.Add(new MappingSource
+                            rebuiltSources.Add(new MappingSource
                             {
                                 Kind = "Direct",
                                 DeviceGuid = mapping.PrimarySourceDeviceGuid ?? "",
@@ -894,8 +901,11 @@ namespace PadForge.Services
 
                     foreach (var extra in mapping.ExtraSources)
                     {
-                        if (extra != null) row.Sources.Add(extra.ToDomain());
+                        if (extra != null) rebuiltSources.Add(extra.ToDomain());
                     }
+
+                    // Publish the finished row in one atomic reference assignment.
+                    row.Sources = rebuiltSources;
 
                     // Steering source kind (#94): steering is a per-stick GLOBAL, not a
                     // per-layer mapping, so it has to live on the Base row that normal

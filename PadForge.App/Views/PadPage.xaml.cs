@@ -1252,8 +1252,18 @@ namespace PadForge.Views
             // Splice the new activator into the slot's MappingSet, rebuild
             // the tab strip, switch to the new tab, mark settings dirty.
             slotMs = GetOrCreateSlotMappingSet(_currentPadVm.PadIndex);
-            slotMs.ShiftActivators ??= new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
-            slotMs.ShiftActivators.Add(dlg.Result);
+            // Build a new list and swap the reference, never Add in place.
+            // The poll thread enumerates slotMs.ShiftActivators every frame
+            // without our lock (ApplyMappingSetToGamepad and
+            // ResolveActiveLayerMask), so an in-place Add could throw
+            // "collection was modified" inside its foreach and lose the whole
+            // mapping pass for that frame. This is the discipline
+            // ApplyShiftLayerSnapshot already documents and follows; the Add
+            // and Remove paths here were the two that bypassed it.
+            slotMs.ShiftActivators = new System.Collections.Generic.List<Engine.Data.ShiftActivator>(
+                slotMs.ShiftActivators ?? (System.Collections.Generic.IEnumerable<Engine.Data.ShiftActivator>)
+                    System.Array.Empty<Engine.Data.ShiftActivator>())
+                { dlg.Result };
             _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
             _currentPadVm.ActiveLayerMask = dlg.Result.LayerMask;
             _currentPadVm.ConfigItemDirtyCallback?.Invoke();
@@ -1870,7 +1880,15 @@ namespace PadForge.Views
             string mask,
             System.Collections.Generic.IEnumerable<PadViewModel> padVms)
         {
-            slotMs.ShiftActivators.Remove(activator);
+            // Swap, don't Remove in place: same poll-thread enumeration
+            // hazard as the Add path above.
+            if (slotMs.ShiftActivators != null)
+            {
+                var trimmed = new System.Collections.Generic.List<PadForge.Engine.Data.ShiftActivator>(
+                    slotMs.ShiftActivators);
+                trimmed.Remove(activator);
+                slotMs.ShiftActivators = trimmed;
+            }
             if (string.Equals(mask, "Base", StringComparison.Ordinal))
                 return;
 

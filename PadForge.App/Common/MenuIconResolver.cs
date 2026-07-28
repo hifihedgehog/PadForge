@@ -97,9 +97,16 @@ namespace PadForge.Common
                     img.Freeze();
                     return img;
                 }
+                // FileFormatException is the one WPF's own decoder raises for a
+                // truncated or corrupt image, which is exactly the case this
+                // catch exists for, and it was the one type the filter did not
+                // list. Since this method's contract is "never throws" and it
+                // runs on the 30 Hz UI tick, the omission turned one bad PNG in
+                // a Steam icon directory into an aborted tick.
                 catch (Exception ex) when (ex is IOException or UnauthorizedAccessException
                     or NotSupportedException or ArgumentException or UriFormatException
-                    or InvalidOperationException or System.Security.SecurityException)
+                    or InvalidOperationException or System.Security.SecurityException
+                    or System.IO.FileFormatException)
                 {
                     // Unreadable or undecodable file: fall through to the
                     // next directory, then cache the miss.

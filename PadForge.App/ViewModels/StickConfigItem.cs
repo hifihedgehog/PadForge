@@ -556,6 +556,9 @@ namespace PadForge.ViewModels
             DeadZoneShape = DeadZoneShape.ScaledRadial;
             CenterOffsetX = 0; CenterOffsetY = 0;
             if (IsCalibratingBoundary) StopBoundaryCalibration(commit: false);
+            // Centre calibration is the other in-flight run this reset has to
+            // cancel, and it was the one that got missed.
+            if (IsCalibrating) StopCalibration();
             BoundaryMap = ""; // #174: Reset All clears the boundary calibration too
             DeadZoneX = 0; DeadZoneY = 0;
             AntiDeadZoneX = 0; AntiDeadZoneY = 0;
@@ -606,7 +609,11 @@ namespace PadForge.ViewModels
 
             var samplesX = new List<short>(15);
             var samplesY = new List<short>(15);
-            var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
+            // Held in a field so StopCalibration can reach it. As a local, the
+            // run was unstoppable: Reset All zeroed CenterOffsetX/Y and the
+            // still-ticking timer wrote its averaged drift back about half a
+            // second later, silently undoing the reset.
+            var timer = _centerTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
             timer.Tick += (s, e) =>
             {
                 try
@@ -638,6 +645,20 @@ namespace PadForge.ViewModels
                 }
             };
             timer.Start();
+        }
+
+        private DispatcherTimer _centerTimer;
+
+        /// <summary>Aborts an in-flight centre calibration without committing
+        /// its samples. Twin of StopBoundaryCalibration(commit: false).</summary>
+        public void StopCalibration()
+        {
+            if (_centerTimer != null)
+            {
+                try { _centerTimer.Stop(); } catch { }
+                _centerTimer = null;
+            }
+            IsCalibrating = false;
         }
 
         // ────────────────────────────────────────────────

@@ -69,10 +69,21 @@ namespace PadForge.Tests
             => Assert.Equal(expected, ForceFeedbackState.PeriodicWaveformAtPhase(
                 FfbEffectTypes.SawDown, phase), 6);
 
-        /// <summary>THE CONTRACT. Every waveform is a -1..+1 multiplier
-        /// across the whole phase domain. The caller multiplies the
-        /// gain-scaled peak by this, so a value outside the range is
-        /// directly a force larger than the effect asked for.</summary>
+        /// <summary>THE CONTRACT, and note its exact scope: every waveform is
+        /// a -1..+1 multiplier across the DEFINED phase domain, [0, 1], which
+        /// is what this sweeps. The caller multiplies the gain-scaled peak by
+        /// this, so a value outside the range is directly a force larger than
+        /// the effect asked for.
+        ///
+        /// <para>It said "across the whole phase domain" and swept only [0, 1],
+        /// which its own neighbour below disproves: the function has no phase
+        /// normalization, so an out-of-domain input leaves the range. Those two
+        /// tests contradicted each other, and the overclaim is the one that was
+        /// wrong. The function is NOT hardened here on purpose. Since the
+        /// caller moved to TickCount64 no reachable input is out of domain, and
+        /// changing working code for an unreachable hazard is how audit rounds
+        /// inject regressions. The guard belongs here only if a caller ever
+        /// gains the ability to produce one.</para></summary>
         [Theory]
         [InlineData(FfbEffectTypes.Square)]
         [InlineData(FfbEffectTypes.Sine)]

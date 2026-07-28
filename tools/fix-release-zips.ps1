@@ -52,10 +52,30 @@ foreach ($rel in $releases) {
     $newSize = [math]::Round((Get-Item $newZip).Length / 1MB, 1)
     Write-Host "  Old: ${oldSize}MB -> New: ${newSize}MB"
 
-    # Delete old asset and upload new one
-    Write-Host "  Deleting old asset..."
-    gh release delete-asset $tag $zipName -R hifihedgehog/PadForge --yes 2>$null
-    Write-Host "  Uploading clean zip..."
+    # Verify the replacement BEFORE destroying the published asset. This
+    # deleted first and uploaded second, so an empty or corrupt Compress-Archive
+    # result, or an upload that failed, left a published release with no
+    # download at all. Nothing here could put it back: the original was already
+    # gone from the release and only survived in $WorkDir.
+    $verifyOk = $false
+    try {
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        $probe = [System.IO.Compression.ZipFile]::OpenRead($newZip)
+        $verifyOk = @($probe.Entries | Where-Object { $_.FullName -eq 'PadForge.exe' -and $_.Length -gt 0 }).Count -eq 1
+        $probe.Dispose()
+    } catch { $verifyOk = $false }
+    if (-not $verifyOk) {
+        Write-Host "  !! New zip does not contain a single non-empty PadForge.exe -- leaving the release asset alone" -ForegroundColor Red
+        continue
+    }
+
+    # --clobber replaces an existing asset of the same name, so the delete is
+    # not needed and only opens a window where the release has no download.
+    Write-Host "  Uploading clean zip (replaces in place)..."
     gh release upload $tag $newZip -R hifihedgehog/PadForge --clobber
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "  !! Upload FAILED for $tag. Original asset left in place." -ForegroundColor Red
+        continue
+    }
     Write-Host "  Done!" -ForegroundColor Green
 }

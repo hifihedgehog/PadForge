@@ -5670,7 +5670,15 @@ namespace PadForge.Services
                     string encoded = ReencodePrefixForLegacy(
                         primary.Descriptor, primary.Invert, primary.HalfAxis);
                     mapping.LoadDescriptor(encoded);
-                    if (primary.DeadZone > 0) mapping.MappingDeadZone = primary.DeadZone;
+                    // Unconditional, like every sibling on this block. The
+                    // conditional form left the PREVIOUS row's deadzone in
+                    // the ViewModel whenever this row's primary carried 0
+                    // (the inherit value), so the grid showed a stale number
+                    // and the next save could write it back onto the row. 50
+                    // is the engine's neutral sentinel: SourceCoercion treats
+                    // 0 and 50 alike as "use the global threshold"
+                    // (round 34).
+                    mapping.MappingDeadZone = primary.DeadZone > 0 ? primary.DeadZone : 50;
                     mapping.IsBidirectional = primary.Bidirectional;
                     mapping.GyroSensitivity = primary.GyroSensitivity > 0 ? primary.GyroSensitivity : 1.0;
                     mapping.MouseCursorSensitivity = primary.MouseCursorSensitivity > 0 ? primary.MouseCursorSensitivity : 1.0;

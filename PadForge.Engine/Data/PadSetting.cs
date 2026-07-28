@@ -1038,34 +1038,50 @@ namespace PadForge.Engine.Data
         private Dictionary<string, string> _mappingDeadZoneDict;
         private readonly object _mappingDeadZoneDictLock = new();
 
+        // Same hazard and same remedy as the raw / MIDI / KBM triples above:
+        // the poll thread reads these per mapping row per device per tick
+        // while the UI thread writes them on save, and a plain Dictionary
+        // corrupts under concurrent read+write. This family and the
+        // Bidirectional twin below were the only two of the five that never
+        // took their lock. Reuses the dict's OWN lock object, already declared
+        // above for the double-checked init, so creation and access serialize
+        // against one another rather than against two unrelated monitors.
+
         public string GetMappingDeadZone(string key)
         {
             EnsureMappingDeadZoneDict();
-            return _mappingDeadZoneDict.TryGetValue(key, out var val) ? val : "";
+            lock (_mappingDeadZoneDictLock)
+                return _mappingDeadZoneDict.TryGetValue(key, out var val) ? val : "";
         }
 
         public void SetMappingDeadZone(string key, string value)
         {
             EnsureMappingDeadZoneDict();
-            if (string.IsNullOrEmpty(value) || value == "0" || value == "50")
-                _mappingDeadZoneDict.Remove(key);
-            else
-                _mappingDeadZoneDict[key] = value;
+            lock (_mappingDeadZoneDictLock)
+            {
+                if (string.IsNullOrEmpty(value) || value == "0" || value == "50")
+                    _mappingDeadZoneDict.Remove(key);
+                else
+                    _mappingDeadZoneDict[key] = value;
+            }
         }
 
         public void FlushMappingDeadZones()
         {
             if (_mappingDeadZoneDict == null) return;
-            if (_mappingDeadZoneDict.Count == 0)
+            lock (_mappingDeadZoneDictLock)
             {
-                MappingDeadZoneEntries = null;
-                return;
+                if (_mappingDeadZoneDict.Count == 0)
+                {
+                    MappingDeadZoneEntries = null;
+                    return;
+                }
+                var entries = new RawMappingEntry[_mappingDeadZoneDict.Count];
+                int i = 0;
+                foreach (var kvp in _mappingDeadZoneDict)
+                    entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                MappingDeadZoneEntries = entries;
             }
-            var entries = new RawMappingEntry[_mappingDeadZoneDict.Count];
-            int i = 0;
-            foreach (var kvp in _mappingDeadZoneDict)
-                entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
-            MappingDeadZoneEntries = entries;
         }
 
         private void EnsureMappingDeadZoneDict()
@@ -1109,34 +1125,44 @@ namespace PadForge.Engine.Data
         private Dictionary<string, string> _mappingBidirectionalDict;
         private readonly object _mappingBidirectionalDictLock = new();
 
+        // Twin of the dead-zone family above. Same poll-thread read / UI-thread
+        // write hazard, same lock discipline as the raw / MIDI / KBM triples.
+
         public string GetMappingBidirectional(string key)
         {
             EnsureMappingBidirectionalDict();
-            return _mappingBidirectionalDict.TryGetValue(key, out var val) ? val : "";
+            lock (_mappingBidirectionalDictLock)
+                return _mappingBidirectionalDict.TryGetValue(key, out var val) ? val : "";
         }
 
         public void SetMappingBidirectional(string key, string value)
         {
             EnsureMappingBidirectionalDict();
-            if (string.IsNullOrEmpty(value) || value == "0")
-                _mappingBidirectionalDict.Remove(key);
-            else
-                _mappingBidirectionalDict[key] = value;
+            lock (_mappingBidirectionalDictLock)
+            {
+                if (string.IsNullOrEmpty(value) || value == "0")
+                    _mappingBidirectionalDict.Remove(key);
+                else
+                    _mappingBidirectionalDict[key] = value;
+            }
         }
 
         public void FlushMappingBidirectional()
         {
             if (_mappingBidirectionalDict == null) return;
-            if (_mappingBidirectionalDict.Count == 0)
+            lock (_mappingBidirectionalDictLock)
             {
-                MappingBidirectionalEntries = null;
-                return;
+                if (_mappingBidirectionalDict.Count == 0)
+                {
+                    MappingBidirectionalEntries = null;
+                    return;
+                }
+                var entries = new RawMappingEntry[_mappingBidirectionalDict.Count];
+                int i = 0;
+                foreach (var kvp in _mappingBidirectionalDict)
+                    entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                MappingBidirectionalEntries = entries;
             }
-            var entries = new RawMappingEntry[_mappingBidirectionalDict.Count];
-            int i = 0;
-            foreach (var kvp in _mappingBidirectionalDict)
-                entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
-            MappingBidirectionalEntries = entries;
         }
 
         private void EnsureMappingBidirectionalDict()
@@ -1281,6 +1307,11 @@ namespace PadForge.Engine.Data
             sb.Append(RightThumbAntiDeadZoneY); sb.Append('|');
             sb.Append(LeftThumbLinear); sb.Append('|');
             sb.Append(RightThumbLinear); sb.Append('|');
+            // Without these two, a PadSetting that differs ONLY in stick
+            // sensitivity hashes identically to its neighbour, and the
+            // checksum-keyed dedup then treats them as the same row.
+            sb.Append(LeftThumbSensitivity); sb.Append('|');
+            sb.Append(RightThumbSensitivity); sb.Append('|');
             sb.Append(LeftThumbSensitivityCurveX); sb.Append('|');
             sb.Append(LeftThumbSensitivityCurveY); sb.Append('|');
             sb.Append(RightThumbSensitivityCurveX); sb.Append('|');
@@ -1449,14 +1480,20 @@ namespace PadForge.Engine.Data
 
             // Per-mapping deadzones (sorted for deterministic checksum)
             EnsureMappingDeadZoneDict();
-            if (_mappingDeadZoneDict.Count > 0)
+            // Under the dict's lock like every other access: this walks the
+            // keys and indexes back into the dict, so a concurrent UI-thread
+            // Set would otherwise invalidate the enumeration mid-checksum.
+            lock (_mappingDeadZoneDictLock)
             {
-                sb.Append("MDZ:");
-                var mdzKeys = new List<string>(_mappingDeadZoneDict.Keys);
-                mdzKeys.Sort(StringComparer.Ordinal);
-                foreach (var key in mdzKeys)
+                if (_mappingDeadZoneDict.Count > 0)
                 {
-                    sb.Append(key); sb.Append('='); sb.Append(_mappingDeadZoneDict[key]); sb.Append('|');
+                    sb.Append("MDZ:");
+                    var mdzKeys = new List<string>(_mappingDeadZoneDict.Keys);
+                    mdzKeys.Sort(StringComparer.Ordinal);
+                    foreach (var key in mdzKeys)
+                    {
+                        sb.Append(key); sb.Append('='); sb.Append(_mappingDeadZoneDict[key]); sb.Append('|');
+                    }
                 }
             }
 
@@ -1465,14 +1502,17 @@ namespace PadForge.Engine.Data
             // per-mapping Bidirectional flag collide on SaveToFile's dedup and
             // the dropped device inherits the survivor's flag.
             EnsureMappingBidirectionalDict();
-            if (_mappingBidirectionalDict.Count > 0)
+            lock (_mappingBidirectionalDictLock)
             {
-                sb.Append("MBD:");
-                var mbdKeys = new List<string>(_mappingBidirectionalDict.Keys);
-                mbdKeys.Sort(StringComparer.Ordinal);
-                foreach (var key in mbdKeys)
+                if (_mappingBidirectionalDict.Count > 0)
                 {
-                    sb.Append(key); sb.Append('='); sb.Append(_mappingBidirectionalDict[key]); sb.Append('|');
+                    sb.Append("MBD:");
+                    var mbdKeys = new List<string>(_mappingBidirectionalDict.Keys);
+                    mbdKeys.Sort(StringComparer.Ordinal);
+                    foreach (var key in mbdKeys)
+                    {
+                        sb.Append(key); sb.Append('='); sb.Append(_mappingBidirectionalDict[key]); sb.Append('|');
+                    }
                 }
             }
 
@@ -1824,6 +1864,12 @@ namespace PadForge.Engine.Data
             nameof(LeftThumbAntiDeadZoneX), nameof(LeftThumbAntiDeadZoneY),
             nameof(RightThumbAntiDeadZoneX), nameof(RightThumbAntiDeadZoneY),
             nameof(LeftThumbLinear), nameof(RightThumbLinear),
+            // The two BARE sensitivity knobs, not just their curve twins. They
+            // were the only 2 of 168 persisted [XmlElement] string properties
+            // missing from this list AND from ComputeChecksum, so CloneDeep
+            // dropped them and the keyboard-and-mouse Mouse/Scroll Speed knob
+            // reverted to "1" on every load.
+            nameof(LeftThumbSensitivity), nameof(RightThumbSensitivity),
             nameof(LeftThumbSensitivityCurveX), nameof(LeftThumbSensitivityCurveY),
             nameof(RightThumbSensitivityCurveX), nameof(RightThumbSensitivityCurveY),
             nameof(LeftTriggerSensitivityCurve), nameof(RightTriggerSensitivityCurve),

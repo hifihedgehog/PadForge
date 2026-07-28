@@ -1637,13 +1637,6 @@ namespace PadForge.Services
             // filtered by `MapTo == slotIndex && InstanceGuid == device`,
             // the same (slot, device, pad) key TouchpadGestureSettingsProvider
             // uses since the May 2026 slot-collapse fix.
-            // Mapping rows derive their device subtitle from their own
-            // stored GUID through this, rather than carrying a separately
-            // assigned label that a profile switch could leave pointing at
-            // the outgoing profile's controller.
-            ViewModels.MappingItem.DeviceLabelResolver = ResolveDeviceLabel;
-            ViewModels.MappingSourceItem.DeviceLabelResolver = ResolveDeviceLabel;
-
             PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider =
                 (slotIndex, deviceGuid, padIdx) =>
             {
@@ -12160,8 +12153,12 @@ namespace PadForge.Services
                     if (ud == null || !ud.IsOnline || ud.InputState == null) continue;
                     var rawAxes = ud.InputState.Axis;
                     if (rawAxes == null || rawAxes.Length < 6) continue;
+                    // UNSIGNED 0..65535, 32768 at rest. See the banner on
+                    // Step4b's ReadExpressionVariable. Shifting again put the
+                    // macro-trigger recording baseline half a range high, so a
+                    // recorded axis threshold never matched what the engine read.
                     for (int i = 0; i < 6 && i < rawAxes.Length; i++)
-                        result[i] = (rawAxes[i] + 32768f) / 65535f;
+                        result[i] = rawAxes[i] / 65535f;
                     return result;
                 }
                 return null;

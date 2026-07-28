@@ -1567,11 +1567,6 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Resolves a device GUID to its friendly name. Wired by
-        /// InputService. Retained for MappingSourceItem's twin; the primary
-        /// label below is stored, not derived (see the note there).</summary>
-        public static System.Func<string, string> DeviceLabelResolver { get; set; }
-
         private string _primarySourceDeviceLabel = "";
         /// <summary>Human-friendly device name for the primary source,
         /// STORED and stamped by the load path from the row's GUID.

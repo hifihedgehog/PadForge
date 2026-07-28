@@ -265,9 +265,21 @@ namespace PadForge.Tests
         /// MappingBidirectional locked none, so a save racing a poll could
         /// corrupt the Dictionary walk or throw.
         ///
-        /// <para>Inherently probabilistic, so it hammers hard enough that the
-        /// unguarded version fails reliably. A pass here is meaningful only
-        /// because the pre-fix code was observed to fail it.</para>
+        /// <para>HONEST LIMITATION, stated because a green test that cannot
+        /// fail is worse than no test. This does NOT lock the contract. Both
+        /// locks were removed and this still passed, twice, including a
+        /// strengthened version using 256 distinct keys to force repeated
+        /// dictionary growth and shrink. A plain Dictionary read racing a write
+        /// corrupts or throws only nondeterministically, and it did not
+        /// reproduce inside a bounded run on this machine.</para>
+        ///
+        /// <para>So treat this as a smoke test, not proof. The lock fix rests
+        /// on parity instead: the three sibling families (raw / MIDI / KBM)
+        /// lock every Get, Set and Flush, these two locked none, and the
+        /// hazard is documented on the raw family as "the poll thread reads
+        /// while the UI thread writes; a plain Dictionary corrupts under
+        /// concurrent read+write". If someone later finds a deterministic
+        /// harness for this, replace this comment with it.</para>
         /// </summary>
         [Theory]
         [InlineData("deadzone")]
@@ -278,15 +290,20 @@ namespace PadForge.Tests
             using var cts = new System.Threading.CancellationTokenSource();
             var faults = new System.Collections.Generic.List<string>();
 
+            // Distinct keys, so the writer repeatedly GROWS and shrinks the
+            // dictionary. A concurrent read during a resize is what actually
+            // corrupts a plain Dictionary; churning a fixed key set mostly
+            // does not, which is why the first cut of this test passed even
+            // with the locks removed.
             var reader = System.Threading.Tasks.Task.Run(() =>
             {
                 try
                 {
                     while (!cts.IsCancellationRequested)
-                        for (int k = 0; k < 32; k++)
+                        for (int k = 0; k < 256; k++)
                             _ = family == "deadzone"
-                                ? ps.GetMappingDeadZone("ButtonA" + k)
-                                : ps.GetMappingBidirectional("ButtonA" + k);
+                                ? ps.GetMappingDeadZone("Key" + k)
+                                : ps.GetMappingBidirectional("Key" + k);
                 }
                 catch (Exception ex) { lock (faults) faults.Add(ex.GetType().Name); }
             });
@@ -295,14 +312,23 @@ namespace PadForge.Tests
             {
                 try
                 {
-                    for (int i = 0; i < 20000; i++)
-                        for (int k = 0; k < 32; k++)
+                    for (int i = 0; i < 4000; i++)
+                    {
+                        for (int k = 0; k < 256; k++)
                         {
                             if (family == "deadzone")
-                                ps.SetMappingDeadZone("ButtonA" + k, (i % 2 == 0) ? "25" : "");
+                                ps.SetMappingDeadZone("Key" + k, "25");
                             else
-                                ps.SetMappingBidirectional("ButtonA" + k, (i % 2 == 0) ? "1" : "");
+                                ps.SetMappingBidirectional("Key" + k, "1");
                         }
+                        for (int k = 0; k < 256; k++)
+                        {
+                            if (family == "deadzone")
+                                ps.SetMappingDeadZone("Key" + k, "");
+                            else
+                                ps.SetMappingBidirectional("Key" + k, "");
+                        }
+                    }
                 }
                 catch (Exception ex) { lock (faults) faults.Add(ex.GetType().Name); }
             });

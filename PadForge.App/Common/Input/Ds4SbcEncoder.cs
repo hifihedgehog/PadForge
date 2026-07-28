@@ -115,12 +115,6 @@ namespace PadForge.Common.Input
         private readonly int[,] _bits = new int[2, Subbands];
         private readonly bool[] _join = new bool[Subbands];
 
-        public void Reset()
-        {
-            Array.Clear(_histL, 0, _histL.Length);
-            Array.Clear(_histR, 0, _histR.Length);
-        }
-
         /// <summary>Encodes 256 interleaved stereo s16 samples (128 per
         /// channel) into one 109-byte SBC frame at <paramref name="dst"/>.
         /// Returns the frame length (always 109).</summary>

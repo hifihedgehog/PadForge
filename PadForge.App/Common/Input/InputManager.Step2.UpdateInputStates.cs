@@ -1153,12 +1153,6 @@ namespace PadForge.Common.Input
                 System.Globalization.CultureInfo.InvariantCulture, out float result) ? result : defaultValue;
         }
 
-        private static int TryParseInt(string value, int defaultValue)
-        {
-            return int.TryParse(value, System.Globalization.NumberStyles.Integer,
-                System.Globalization.CultureInfo.InvariantCulture, out int result) ? result : defaultValue;
-        }
-
         private static bool TryParseBool(string value)
         {
             return value == "1" || string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);

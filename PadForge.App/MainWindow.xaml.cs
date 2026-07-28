@@ -5441,36 +5441,6 @@ namespace PadForge
             }
         }
 
-        private static T FindVisualChildByType<T>(DependencyObject parent, Func<T, bool> predicate) where T : DependencyObject
-        {
-            int count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < count; i++)
-            {
-                var child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i);
-                if (child is T match && predicate(match))
-                    return match;
-                var result = FindVisualChildByType(child, predicate);
-                if (result != null)
-                    return result;
-            }
-            return null;
-        }
-
-        private static T FindVisualChild<T>(DependencyObject parent, string name) where T : FrameworkElement
-        {
-            int count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < count; i++)
-            {
-                var child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i);
-                if (child is T fe && fe.Name == name)
-                    return fe;
-                var result = FindVisualChild<T>(child, name);
-                if (result != null)
-                    return result;
-            }
-            return null;
-        }
-
         /// <summary>
         /// Re-renders controller nav item content in-place (no collection modification)
         /// to refresh driver availability cursors/tooltips.
@@ -5550,9 +5520,6 @@ namespace PadForge
         [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         private static extern IntPtr CreateWindowEx(int exStyle, string className, string windowName, int style,
             int x, int y, int w, int h, IntPtr parent, IntPtr menu, IntPtr instance, IntPtr param);
-
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern bool DestroyWindow(IntPtr hWnd);
 
         [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         private struct TOOLINFO

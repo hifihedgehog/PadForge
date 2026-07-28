@@ -1058,7 +1058,17 @@ namespace PadForge.ViewModels
                 if (string.Equals(existing.Descriptor ?? "", clean, StringComparison.OrdinalIgnoreCase)
                     && string.Equals(existing.DeviceGuid ?? "", deviceGuid, StringComparison.OrdinalIgnoreCase)
                     && existing.Invert == effectiveInvert)
+                {
+                    // Clear on this path too. The equivalent clear below exists
+                    // so the save path doesn't double-emit the Neg, once from
+                    // NegSourceDescriptor and once from ExtraSources, and the
+                    // load path clears NegSourceDescriptor then rebuilds
+                    // ExtraSources from Sources[1..]. Returning early here on an
+                    // already-present source skipped it, so a re-add of an
+                    // existing Neg left both carriers populated.
+                    NegSourceDescriptor = string.Empty;
                     return;
+                }
             }
 
             ExtraSources.Insert(0, new MappingSourceItem

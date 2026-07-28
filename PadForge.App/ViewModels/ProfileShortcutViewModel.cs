@@ -156,10 +156,14 @@ namespace PadForge.ViewModels
                 foreach (var p in profiles)
                     _profileChoices.Add(new ProfileChoice(p.Id, p.Name));
             }
-            // Re-notify so the ComboBox re-matches against the rebuilt list
-            // (it would otherwise hold the cleared null from Clear()).
-            OnPropertyChanged(nameof(TargetProfileId));
+            // Restore FIRST, then notify. The notify makes the ComboBox re-read
+            // TargetProfileId, so raising it while Data still held the value a
+            // binding write-back had cleared made the box re-match against that
+            // cleared value. The restore on the next line then fixed the model
+            // with nothing left to tell the view, so the selection rendered
+            // empty until something else raised the property.
             Data.TargetProfileId = currentId; // restore in case binding write-back overwrote it
+            OnPropertyChanged(nameof(TargetProfileId));
         }
 
         // ─────────────────────────────────────────────

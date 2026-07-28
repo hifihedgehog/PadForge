@@ -13239,9 +13239,24 @@ namespace PadForge.Services
             // the drain's MarkDirty would have persisted the loss. This
             // is exactly the clobber the comment below names, one call
             // frame earlier.
+            // Hold the stale flag across the WHOLE reconciliation, not just
+            // UpdatePadDeviceInfo. The guard's own rationale is that between
+            // swapping SlotMappingSets and rebuilding the ViewModels, a push
+            // writes the OUTGOING profile's rows over the incoming profile's.
+            // That window does not close when UpdatePadDeviceInfo returns: it
+            // closes when the last pad has run RefreshMappingsToViewModel,
+            // ~40 lines below. Clearing it early left every pad stale-but-
+            // pushable, and any autosave landing in that window rewrote the
+            // imported set from the outgoing profile's MappingItems. The
+            // owner's "sonic campaign" profile is the receipt: an
+            // Authoritative Workshop set whose rows all carry a concrete
+            // DeviceGuid and raw "Button N" descriptors, with not one
+            // abstract "Gamepad ..." source left in the file.
             _vmMappingsStale = true;
-            try { UpdatePadDeviceInfo(); }
-            finally { _vmMappingsStale = false; }
+            try
+            {
+            UpdatePadDeviceInfo();
+
 
             // Reload ViewModels with new PadSettings (after device lists are rebuilt).
             // LoadPadSettingToViewModel loads per-device TUNING only; mapping
@@ -13314,6 +13329,8 @@ namespace PadForge.Services
                 if (!(i < SettingsManager.SlotCreated.Length && SettingsManager.SlotCreated[i]))
                     padVm.ClearPerDeviceConfigsForUncreatedSlot();
             }
+            }
+            finally { _vmMappingsStale = false; }
 
             // Refresh Devices page slot labels.
             SyncDevicesList();

@@ -130,7 +130,7 @@ namespace PadForge.SteamWorkshop.Cache
             {
                 value = File.ReadAllBytes(path);
             }
-            catch (IOException)
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
                 value = null;
                 return false;
@@ -161,7 +161,7 @@ namespace PadForge.SteamWorkshop.Cache
             {
                 value = File.ReadAllBytes(path);
             }
-            catch (IOException)
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
                 value = null;
                 stale = false;
@@ -289,7 +289,7 @@ namespace PadForge.SteamWorkshop.Cache
                     File.SetLastWriteTimeUtc(finalPath, stamp);
                     File.SetLastAccessTimeUtc(finalPath, stamp);
                 }
-                catch (IOException)
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
                 {
                     // Timestamp stamping is best-effort; a failure only affects eviction ordering.
                 }
@@ -331,12 +331,26 @@ namespace PadForge.SteamWorkshop.Cache
                         fi = new FileInfo(file);
                         if (!fi.Exists) continue;
                     }
-                    catch (IOException)
+                    catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
                     {
                         continue;
                     }
-                    // Skip in-flight temp files from a concurrent write.
-                    if (fi.Name.Contains(".tmp-")) continue;
+                    // Skip in-flight temp files from a concurrent write. An
+                    // ORPHAN (process killed between WriteAllBytes and Move)
+                    // would otherwise be skipped forever and never counted
+                    // against the cache budget, so disk use grew without
+                    // bound. Anything older than an hour cannot still be
+                    // in flight; reap it (round 34).
+                    if (fi.Name.Contains(".tmp-"))
+                    {
+                        try
+                        {
+                            if (_clock().UtcDateTime - fi.LastWriteTimeUtc > TimeSpan.FromHours(1))
+                                fi.Delete();
+                        }
+                        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }
+                        continue;
+                    }
                     yield return fi;
                 }
             }
@@ -348,7 +362,7 @@ namespace PadForge.SteamWorkshop.Cache
             {
                 File.SetLastAccessTimeUtc(path, _clock().UtcDateTime);
             }
-            catch (IOException)
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
                 // Best-effort recency update.
             }
@@ -367,7 +381,7 @@ namespace PadForge.SteamWorkshop.Cache
                 if (File.Exists(path)) File.Delete(path);
                 return true;
             }
-            catch (IOException)
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
                 return false;
             }

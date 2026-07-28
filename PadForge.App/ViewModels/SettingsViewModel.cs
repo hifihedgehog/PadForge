@@ -427,6 +427,14 @@ namespace PadForge.ViewModels
         /// <summary>True if the OS meets the minimum version for Windows MIDI Services (Win11 24H2, build 26100).</summary>
         public static bool IsMidiOsSupported => Environment.OSVersion.Version.Build >= 26100;
 
+        /// <summary>Instance forwarder for XAML. A Binding path resolves
+        /// against the DataContext INSTANCE and cannot reach a static member,
+        /// so SettingsPage's `{Binding IsMidiOsSupported}` DataTrigger never
+        /// evaluated and the Win11-24H2-required tooltip was never set. Bind
+        /// this instead. Never raises PropertyChanged because the OS build
+        /// cannot change while the app runs.</summary>
+        public bool MidiOsSupported => IsMidiOsSupported;
+
         /// <summary>Command to download and install Windows MIDI Services.</summary>
         public RelayCommand InstallMidiServicesCommand =>
             _installMidiServicesCommand ??= new RelayCommand(

@@ -964,18 +964,30 @@ namespace PadForge.Common.Input
                 RawHidOutput.ResetDevice(ud.DevicePath);
             }
 
+            NeutralizeMappedOutputsFor(ud);
+        }
+
+        /// <summary>Clears runtime state and neutralizes the device's per-slot
+        /// mapped outputs. Step 3 skips offline devices and "keeps the last
+        /// OutputState" (a guard against transient read glitches), so whatever
+        /// was stamped on the final frames before a confirmed disconnect would
+        /// otherwise persist for as long as the slot stays active: a detached
+        /// pedal's recentered read (inverted trigger -> ~32767 = 50% engaged),
+        /// or a button the user was holding at unplug. Step 4 copies
+        /// OutputState into the slot's combined output and the per-device
+        /// Triggers/Sticks preview reads RawMappedState, so both must go
+        /// neutral (Gamepad default: triggers released, sticks centered).
+        ///
+        /// <para>Split out of MarkDeviceOffline so the MIDI and NFC teardown
+        /// lanes can share it. Those two dispose their own endpoint object and
+        /// so cannot call MarkDeviceOffline (it would double-dispose), which is
+        /// exactly why they were silently skipping this step and freezing a
+        /// held note or CC into the slot after the endpoint vanished.</para></summary>
+        private static void NeutralizeMappedOutputsFor(UserDevice ud)
+        {
+            if (ud == null) return;
             ud.ClearRuntimeState();
 
-            // Neutralize the device's per-slot mapped outputs. Step 3 skips
-            // offline devices and "keeps the last OutputState" (a guard against
-            // transient read glitches), so whatever was stamped on the final
-            // frames before this confirmed disconnect would otherwise persist
-            // for as long as the slot stays active: a detached pedal's
-            // recentered read (inverted trigger -> ~32767 = 50% engaged), or a
-            // button/pedal the user was holding at unplug. Step 4 copies
-            // OutputState into the slot's combined output and the per-device
-            // Triggers/Sticks preview reads RawMappedState, so both must go
-            // neutral (Gamepad default: triggers released, sticks centered).
             var allSettings = SettingsManager.UserSettings;
             if (allSettings != null)
             {
@@ -1382,6 +1394,10 @@ namespace PadForge.Common.Input
                         {
                             ud.IsOnline = false;
                             ud.Device = null;
+                            // Same neutralize MarkDeviceOffline performs. Without
+                            // it a note or CC held when the endpoint vanished
+                            // stayed stamped on the slot's combined output.
+                            NeutralizeMappedOutputsFor(ud);
                         }
                         dev.Dispose();
                         _openedMidiInputs.Remove(id);
@@ -1502,6 +1518,10 @@ namespace PadForge.Common.Input
                         {
                             ud.IsOnline = false;
                             ud.Device = null;
+                            // Same neutralize MarkDeviceOffline performs. Without
+                            // it a note or CC held when the endpoint vanished
+                            // stayed stamped on the slot's combined output.
+                            NeutralizeMappedOutputsFor(ud);
                         }
                         dev.Dispose();
                         _openedNfcReaders.Remove(reader);

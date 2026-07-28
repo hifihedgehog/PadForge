@@ -13521,10 +13521,60 @@ namespace PadForge.Services
         /// Applies the default profile snapshot, reverting to the state before
         /// any named profile was loaded.
         /// </summary>
+        /// <summary>Test seam: reproduces the post-restart state where no
+        /// default snapshot was ever persisted.</summary>
+        internal void ClearDefaultProfileSnapshotForTest()
+        {
+            _defaultProfileSnapshot = null;
+            SettingsManager.PendingDefaultSnapshot = null;
+        }
+
         public void ApplyDefaultProfile()
         {
             if (_defaultProfileSnapshot != null)
+            {
                 ApplyProfile(_defaultProfileSnapshot);
+                return;
+            }
+
+            // NEVER return silently here. Doing nothing leaves the OUTGOING
+            // profile's entire live state in place while ActiveProfileId now
+            // says default: the user is looking at another profile's rows,
+            // bound to another profile's devices, under the default's
+            // identity, and the next autosave persists them as the default.
+            // The owner's PadForge.xml caught it: live slot 0 held 21 sources
+            // on a device that appears in no UserSetting at all, beside the
+            // single row he had re-picked by hand on the one device that IS
+            // assigned.
+            //
+            // With no snapshot the default's authored mappings are genuinely
+            // unknown, so rebuild the default state the same way a first run
+            // does, from the per-device PadSetting canon, rather than
+            // inheriting a foreign profile's. Slots the default never created
+            // clear outright.
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                "PROFILE: revert-to-default with no snapshot; rebuilding from legacy canon");
+
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets != null)
+                for (int i = 0; i < sets.Length; i++)
+                    sets[i] = null;
+
+            SettingsService.RefreshMappingSetsFromLegacy();
+
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                RefreshMappingsToViewModel(_mainVm.Pads[i]);
+                PopulateAvailableInputs(_mainVm.Pads[i],
+                    _mainVm.Pads[i].SelectedMappedDevice is { } sel && sel.InstanceGuid != Guid.Empty
+                        ? FindUserDevice(sel.InstanceGuid)
+                        : null);
+            }
+
+            // Capture what we just rebuilt so the next revert has a snapshot
+            // and this path fires once, not on every switch back.
+            _defaultProfileSnapshot = SnapshotCurrentProfile();
+            SettingsManager.PendingDefaultSnapshot = _defaultProfileSnapshot;
         }
 
         /// <summary>

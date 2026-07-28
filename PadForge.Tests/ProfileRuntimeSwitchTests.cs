@@ -815,5 +815,61 @@ namespace PadForge.Tests
             var row = vm.Pads[0].Mappings.First(m => m.TargetSettingName == "ButtonA");
             Assert.Equal(SteamGuid.ToString(), row.PrimarySourceDeviceGuid, ignoreCase: true);
         }
+    
+        /// <summary>Reverting to the default profile must never leave the
+        /// OUTGOING profile's mappings live under the default's identity.
+        ///
+        /// <para>ApplyDefaultProfile is "if (_defaultProfileSnapshot != null)
+        /// ApplyProfile(...)". With no snapshot it does nothing at all, so
+        /// RevertToDefaultProfile saves the outgoing profile, clears
+        /// ActiveProfileId, and leaves that profile's SlotMappingSets in
+        /// place. The user is now "on default" looking at the other
+        /// profile's rows, and the next save persists them as the default
+        /// state.</para>
+        ///
+        /// <para>Receipt from the owner's PadForge.xml: live slot 0 carried
+        /// 21 sources on device a5ca845e, which appears in no UserSetting at
+        /// all, beside a single row on the one device that IS assigned. The
+        /// single row was the one he had re-picked by hand.</para></summary>
+        [Fact]
+        public void RevertToDefault_WithNoSnapshot_DoesNotStrandTheOtherProfilesRows()
+        {
+            var (vm, svc, ss) = Arrange();
+            AddPad(SteamGuid, "Steam Controller");
+            AddPad(XboxPadGuid, "Xbox pad");
+            AssignTo(SteamGuid, 0);
+            MapButtonA(0, SteamGuid, "Button 0");
+
+            var other = IncomingProfile();
+            var otherSets = new MappingSet[InputManager.MaxPads];
+            otherSets[0] = new MappingSet();
+            otherSets[0].Rows.Add(new MappingRow
+            {
+                Target = "ButtonA",
+                LayerMask = "Base",
+                Sources = { new MappingSource
+                    { Kind = "Direct", Descriptor = "Button 0", DeviceGuid = XboxPadGuid.ToString() } },
+            });
+            other.SlotMappingSets = otherSets;
+            SettingsManager.Profiles.Add(other);
+
+            svc.LoadProfile(other.Id);
+            Assert.Equal(XboxPadGuid.ToString(),
+                SettingsManager.SlotMappingSets[0].Rows.First(r => r.Target == "ButtonA")
+                    .Sources.First().DeviceGuid, ignoreCase: true);
+
+            // The state Start() would leave after a restart that never
+            // persisted a default snapshot.
+            svc.ClearDefaultProfileSnapshotForTest();
+
+            svc.RevertToDefaultProfile();
+
+            var live = SettingsManager.SlotMappingSets[0];
+            var guid = live?.Rows?.FirstOrDefault(r => r.Target == "ButtonA")
+                ?.Sources?.FirstOrDefault()?.DeviceGuid;
+            Assert.False(string.Equals(guid, XboxPadGuid.ToString(), StringComparison.OrdinalIgnoreCase),
+                "reverting to default left the other profile's rows live, so the "
+                + "default profile now owns that profile's device bindings.");
+        }
     }
 }

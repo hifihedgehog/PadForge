@@ -1044,7 +1044,15 @@ namespace PadForge.Engine
             var extPresent = _extButtonPresent;
             for (int pos = 11; pos <= 21; pos++)
             {
-                if (pos == 16) continue;
+                // The touchpad block below owns position 16 when a touchpad
+                // surface exists, so both readers see one coherent click
+                // sample. Without one it owns nothing: HasTouchpad comes from
+                // SDL_GetNumGamepadTouchpads while the position is advertised
+                // from SDL_GamepadHasButton, a MAPPING check, so a mapping
+                // that declares the touchpad button on a device SDL registers
+                // no pad for left "Touchpad 0 Click" in the picker reading
+                // false forever. Read it here in exactly that case.
+                if (pos == 16 && HasTouchpad) continue;
                 if (extPresent != null && !extPresent[pos]) continue;
                 state.Buttons[pos] = SDL_GetGamepadButton(GameController, GamepadButtonForPosition(pos));
             }
@@ -1136,13 +1144,37 @@ namespace PadForge.Engine
                     // devices like the Triton (Steam Controller 2026) expose
                     // additional pad clicks through MISC2..MISC6 per the
                     // touchpad-click-as-button recipe; map them here too.
+                    // Pressure fallback for a pad whose click SDL's mapping
+                    // does not bind. The gen-1 Steam Controller is the case:
+                    // its generated mapping is paddle1/paddle2 only, no
+                    // touchpad and no misc2 (SDL_gamepad.c:1263, against the
+                    // Deck's and Triton's touchpad:b17,misc2:b16 at 1266 and
+                    // 1269), while its driver registers two pads and encodes
+                    // the click purely in pressure: 0.5 for a finger down,
+                    // plus another 0.5 when clicked (SDL_hidapi_steam.c
+                    // 1498-1500 for the left pad, 1518-1520 for the right).
+                    // Both its "Touchpad N Click" descriptors therefore read
+                    // false forever while the pads physically click. Gated on
+                    // the button being unmapped, because a DualSense reports
+                    // full pressure for a resting finger and would otherwise
+                    // read as clicked on touch.
+                    bool pressureClick = false;
+                    for (int f = 0; f < nf; f++)
+                        if (tp.FingerDown[f] && tp.FingerPressure[f] > 0.75f) { pressureClick = true; break; }
+
                     if (p == 0)
                     {
-                        primaryClick = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_TOUCHPAD);
+                        bool mapped = _extButtonPresent != null && _extButtonPresent.Length > 16 && _extButtonPresent[16];
+                        primaryClick = mapped
+                            ? SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_TOUCHPAD)
+                            : pressureClick;
                         tp.Clicked = primaryClick;
                     }
                     else if (p == 1 && state.Buttons.Length > 17)
-                        tp.Clicked = state.Buttons[17]; // MISC2 — second pad click
+                    {
+                        bool mapped = _extButtonPresent != null && _extButtonPresent.Length > 17 && _extButtonPresent[17];
+                        tp.Clicked = mapped ? state.Buttons[17] : pressureClick;
+                    }
                     state.Touchpads[p] = tp;
                 }
 

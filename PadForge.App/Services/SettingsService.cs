@@ -704,6 +704,22 @@ namespace PadForge.Services
         /// </summary>
         internal void PushUiExtraSourcesIntoSlotMappingSets()
         {
+            // THE VIEWMODELS ARE NOT A SOURCE OF TRUTH MID-SWAP.
+            // ApplyProfile installs the incoming profile's MappingSets and
+            // only reconciles the grids ~40 lines later; anything that pushes
+            // in between writes the OUTGOING profile's rows over them, and the
+            // `sets[slot] ?? (sets[slot] = new MappingSet())` below happily
+            // RESURRECTS a slot the incoming profile deliberately left null.
+            // That is how an authored-empty profile came up owning the default
+            // profile's mappings, rebound to whatever pad was assigned next,
+            // and how reverting to default came back on the other profile's
+            // device. The flag existed and read correctly; it just guarded the
+            // adoption drain's call site instead of this method, and the push
+            // that fires inside ApplyProfile arrives via
+            // OnSelectedDeviceChanged, raised by UpdatePadDeviceInfo when it
+            // rebuilds the pad device lists. Guard the writer, not the callers.
+            if (InputService.VmMappingsStale) return;
+
             var pads = _mainVm?.Pads;
             if (pads == null) return;
             var sets = SettingsManager.SlotMappingSets;

@@ -117,7 +117,7 @@ $lines = $devs -split "`n"
 $currentId = $null
 foreach ($line in $lines) {
     $trimmed = $line.Trim()
-    if ($trimmed -match ':\s*([A-Z][A-Z0-9]*\\S*)\s*$') {
+    if ($trimmed -match ':\s*([A-Z][A-Z0-9]*\\\S*)\s*$') {
         $currentId = $matches[1].Trim()
     }
     elseif ($currentId -and $trimmed -match 'vJoy' -and $currentId -match '^ROOT\\HIDCLASS\\') {

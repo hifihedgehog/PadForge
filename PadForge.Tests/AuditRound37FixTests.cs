@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -75,30 +75,36 @@ namespace PadForge.Tests
 
         // ── Serialless pads must not cross-bind during a disconnect debounce ──
 
-        /// <summary>The serialless cross-bind stays OPEN, deliberately, and
-        /// this pins why so the next round does not re-attempt the same wrong
-        /// fix. Deleting the "exact != null" disjunct does stop two same-model
-        /// serialless pads cross-binding, and it also breaks
+        /// <summary>With an empty serial the rebind scan's row test degenerates
+        /// to "" == "", so admitting it on "exact != null" let two same-model
+        /// serialless pads cross-bind. Deleting the disjunct outright is the
+        /// WRONG fix: it also breaks
         /// FlappedTwin_InsideTheDebounce_RebindsToItsOwnRow, the round-seven
-        /// contract that one unit re-identifying inside the debounce must find
-        /// its own row. Both cases reach the same guard with an empty serial,
-        /// so they can only be separated on whether `exact` is a live-twin
-        /// collision. That is an owner call.</summary>
+        /// contract that one unit re-identifying inside its debounce must find
+        /// its own row, because both cases arrive with an empty serial.
+        ///
+        /// <para>liveTwinCollision separates them. Re-identifying, the exact
+        /// row is held by the live sibling, so the scan is the only way home.
+        /// Cross-binding, the exact row is the arriving pad's OWN row with
+        /// nobody on it, so the scan can only do harm.</para></summary>
         [Fact]
-        public void FlappedUnitRebind_KeepsTheDisjunct_WithTheTradeoffRecorded()
+        public void FlappedUnitRebind_IsGatedOnALiveTwinCollision()
         {
             string src = Src("PadForge.App/Common/Input/InputManager.Step1.UpdateDevices.cs");
 
             // Positive control: the guard must still exist to be checked.
             Assert.Contains("livePresentSdlIds != null", src);
 
-            // The disjunct stays, because removing it breaks the round-seven
-            // rebind contract.
-            Assert.Contains("&& (exact != null || !string.IsNullOrEmpty(incomingSerial))", src);
+            // The bare "exact != null" escape is gone.
+            Assert.DoesNotContain("&& (exact != null || !string.IsNullOrEmpty(incomingSerial))", src);
 
-            // And the open tradeoff is recorded at the guard, not just in a
-            // report that scrolls away.
-            Assert.Contains("OPEN (round 37)", src);
+            // Replaced by the collision test, which must be computed BEFORE the
+            // scan to be usable by it.
+            Assert.Contains("(liveTwinCollision || !string.IsNullOrEmpty(incomingSerial))", src);
+            Assert.True(
+                src.IndexOf("bool liveTwinCollision", StringComparison.Ordinal)
+                    < src.IndexOf("(liveTwinCollision || !string.IsNullOrEmpty", StringComparison.Ordinal),
+                "liveTwinCollision must be declared above the scan that gates on it.");
         }
 
         // ── A vanished mouse must not pin the merged handle's buttons ──

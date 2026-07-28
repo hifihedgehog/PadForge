@@ -69,7 +69,24 @@ namespace PadForge.Common.Input
                             var singleRaw = _padIndexBuffer[0].RawHidOutputState;
                             CopyRawInto(ref CombinedRawHidStates[padIndex], ref singleRaw);
                         }
-                        if (isMidi) CombinedMidiRawStates[padIndex] = _padIndexBuffer[0].MidiRawOutputState;
+                        if (isMidi)
+                        {
+                            // COPY, never alias, for the same reason the raw
+                            // lane above documents. MidiRawState carries a
+                            // byte[] and a bool[], so a bare struct assign
+                            // shares them with the DEVICE's published state,
+                            // and the slotCount == 0 branch at the top of this
+                            // loop calls Clear() on the combined state, which
+                            // writes 64 into every CC and false into every
+                            // note. Unassigning the last MIDI device from a
+                            // slot therefore reached back and wiped that
+                            // device's own live arrays.
+                            //
+                            // KbmRawState needs no such copy: it is all value
+                            // fields, so its struct assign already copies.
+                            var singleMidi = _padIndexBuffer[0].MidiRawOutputState;
+                            CopyMidiInto(ref CombinedMidiRawStates[padIndex], ref singleMidi);
+                        }
                         if (isKbm) CombinedKbmRawStates[padIndex] = _padIndexBuffer[0].KbmRawOutputState;
                         if (isDs4)
                         {
@@ -377,6 +394,14 @@ namespace PadForge.Common.Input
             CopyArray(ref dst.Buttons, src.Buttons);
             CopyArray(ref dst.Povs, src.Povs);
             CopyArray(ref dst.HardwareAxes, src.HardwareAxes);
+        }
+
+        /// <summary>Midi twin of <see cref="CopyRawInto"/>. See the call site
+        /// for why the combined MIDI state must not alias a device's.</summary>
+        internal static void CopyMidiInto(ref MidiRawState dst, ref MidiRawState src)
+        {
+            CopyArray(ref dst.CcValues, src.CcValues);
+            CopyArray(ref dst.Notes, src.Notes);
         }
 
         private static void CopyArray<T>(ref T[] dst, T[] src)

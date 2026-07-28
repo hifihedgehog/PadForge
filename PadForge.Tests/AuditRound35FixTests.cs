@@ -829,6 +829,40 @@ namespace PadForge.Tests
                 + "never fitted the candidate is credited with another template's score.");
         }
 
+        // ── Combined MIDI state must not alias the device's ──
+
+        /// <summary>MidiRawState carries a byte[] and a bool[], so a bare
+        /// struct assign shares them. Step 4's single-device path assigned that
+        /// way while the empty-slot branch calls Clear() on the combined state,
+        /// which writes 64 into every CC and false into every note. Unassigning
+        /// the last MIDI device from a slot therefore reached back through the
+        /// shared arrays and wiped the DEVICE's own live state.
+        ///
+        /// <para>Drives the production copy helper, not a local reimplementation.</para></summary>
+        [Fact]
+        public void CombinedMidiState_DoesNotAliasTheDevicesArrays()
+        {
+            var device = MidiRawState.Create(8, 8);
+            device.CcValues[3] = 127;
+            device.Notes[5] = true;
+
+            MidiRawState combined = default;
+            PadForge.Common.Input.InputManager.CopyMidiInto(ref combined, ref device);
+
+            // Positive control: the copy carried the values, so a Clear that
+            // changes nothing cannot make this test pass by accident.
+            Assert.Equal(127, combined.CcValues[3]);
+            Assert.True(combined.Notes[5]);
+
+            // The empty-slot path.
+            combined.Clear();
+
+            Assert.Equal(127, device.CcValues[3]);
+            Assert.True(device.Notes[5]);
+            Assert.Equal(64, combined.CcValues[3]);
+            Assert.False(combined.Notes[5]);
+        }
+
         [Fact]
         public void ImpulseTriggerPids_StillRejectNonImpulsePads()
         {

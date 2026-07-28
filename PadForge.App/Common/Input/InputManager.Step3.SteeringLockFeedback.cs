@@ -86,7 +86,21 @@ namespace PadForge.Common.Input
             // rather than zeroing it. This pass is not the slot's authority
             // while another device is the test target, and zeroing would fight
             // the value that device just published.
-            if (!deviceAllowed) return;
+            //
+            // Unless nothing on this slot IS the target. The old line zeroed
+            // the value on every not-allowed device, so an absent target still
+            // ended the tick at zero. With the plain return above, an absent
+            // target means NO pass writes the value and the last non-zero
+            // reading sticks forever, leaving UserEffectsDispatcher applying
+            // adaptive-trigger resistance that nothing is driving. Only the
+            // not-allowed path pays for this lookup, and that path exists only
+            // while a test target is set, never during normal polling.
+            if (!deviceAllowed)
+            {
+                if (FindSlotDeviceByInstanceGuid(testTarget, slotIndex) == null)
+                    SteeringAtResistance[slotIndex] = 0f;
+                return;
+            }
 
             int pulseMs        = ParsePositiveInt(ps.SteeringLockPulseMs, 80);          // rumble / trigger pulse
             int lightbarHoldMs = ParsePositiveInt(ps.SteeringLockLightbarHoldMs, 80);   // lightbar hold (its own)

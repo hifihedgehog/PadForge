@@ -710,7 +710,13 @@ namespace PadForge.Engine.Common.Mapping
             public readonly float[] Values = new float[6];
             public readonly ulong[] Seq = new ulong[6];
         }
-        private static readonly Dictionary<string, GyroEmaState> _gyroSmoothingState = new();
+        // Tuple key, NOT a composed string: the lookup below runs per axis
+        // per gyro row per poll (up to 1 kHz), and building
+        // "guid|slot" there allocated a string every single call. Same
+        // per-tick-allocation pattern earlier rounds banned elsewhere
+        // (round 34). The tuple also makes the slot prune below an equality
+        // check instead of parsing the key's tail.
+        private static readonly Dictionary<(string Device, int Slot), GyroEmaState> _gyroSmoothingState = new();
 
         /// <summary>Zeroes every accumulated gyro-rate reference held for a
         /// slot (the GyroRecenter macro action, issue #9 wave 1b): the
@@ -734,13 +740,10 @@ namespace PadForge.Engine.Common.Mapping
                 }
             }
 
-            // EMA keys are "deviceGuid|slotIndex"; parse the tail rather than
-            // suffix-match ("|1" would also match slot 11).
-            List<string> deadEma = null;
+            List<(string Device, int Slot)> deadEma = null;
             foreach (var k in _gyroSmoothingState.Keys)
             {
-                int bar = k.LastIndexOf('|');
-                if (bar >= 0 && int.TryParse(k.AsSpan(bar + 1), out int keySlot) && keySlot == slotIndex)
+                if (k.Slot == slotIndex)
                     (deadEma ??= new()).Add(k);
             }
             if (deadEma != null)
@@ -752,7 +755,7 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (alpha <= 0f) return rawRate;
             if (alpha > 0.99f) alpha = 0.99f; // pinning at 1 freezes the output
-            string key = (deviceGuid ?? "") + "|" + slotIndex;
+            var key = (deviceGuid ?? "", slotIndex);
             if (!_gyroSmoothingState.TryGetValue(key, out var st))
             {
                 st = new GyroEmaState();

@@ -711,6 +711,58 @@ namespace PadForge.ViewModels
         /// "Button 0" on the DualSense and a "Button 0" on a keyboard
         /// (which auto-mapping might have stamped) don't get confused.
         /// </summary>
+        /// <summary>Replaces the picker's item list and re-resolves the
+        /// selection, with the SelectedInput setter suppressed across BOTH
+        /// steps.
+        ///
+        /// <para>The clear-then-refill has to be inside the suppression, not
+        /// merely followed by it. A live ComboBox bound TwoWay to
+        /// SelectedInput reacts to its ItemsSource emptying and refilling by
+        /// driving SelectedItem, and that write lands in the setter, which
+        /// stamps the chosen entry's DeviceGuid onto PrimarySourceDeviceGuid
+        /// and runs LoadDescriptor. On a Workshop-imported row, whose stored
+        /// source is device-free, that silently rebinds the row to whichever
+        /// concrete device the picker happened to settle on, and the next
+        /// save writes the rebound row into the slot's MappingSet. The old
+        /// shape suppressed only SyncSelectedInputFromDescriptor, so the two
+        /// list mutations ran wide open. No test caught it because the
+        /// provocation needs a real ComboBox: with no visual tree nothing
+        /// ever writes back.</para></summary>
+        internal void ReplaceAvailableInputs(System.Collections.Generic.IEnumerable<InputChoice> choices)
+        {
+            _suppressSelectionSync = true;
+            try
+            {
+                AvailableInputs.Clear();
+                if (choices != null)
+                    foreach (var c in choices) AvailableInputs.Add(c);
+            }
+            finally { _suppressSelectionSync = false; }
+
+            // Resolve the selection from the row's OWN stored descriptor and
+            // GUID, which is the only authority for what this row points at.
+            SyncSelectedInputFromDescriptor();
+        }
+
+        /// <summary>Test seam: runs <paramref name="duringRebuild"/> at the
+        /// exact point a live ComboBox would write its SelectedItem back,
+        /// so the suppression can be asserted without a visual tree.</summary>
+        internal void ReplaceAvailableInputsForTest(
+            System.Collections.Generic.IEnumerable<InputChoice> choices,
+            System.Action duringRebuild)
+        {
+            _suppressSelectionSync = true;
+            try
+            {
+                AvailableInputs.Clear();
+                if (choices != null)
+                    foreach (var c in choices) AvailableInputs.Add(c);
+                duringRebuild?.Invoke();
+            }
+            finally { _suppressSelectionSync = false; }
+            SyncSelectedInputFromDescriptor();
+        }
+
         public void SyncSelectedInputFromDescriptor()
         {
             _suppressSelectionSync = true;

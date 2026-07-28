@@ -502,5 +502,57 @@ namespace PadForge.Tests
                 "the replacement dropped Workshop ownership, which un-gates the "
                 + "automap merge for every later device assignment.");
         }
+    
+        /// <summary>The picker rebuild must not be able to rebind a row.
+        ///
+        /// <para>A live ComboBox bound TwoWay to SelectedInput drives
+        /// SelectedItem when its ItemsSource is cleared and refilled, and
+        /// that write reaches the setter, which stamps the entry's DeviceGuid
+        /// onto the row and reloads its descriptor. On an imported
+        /// device-free row that is a silent rebind to a concrete device, and
+        /// the next save persists it. No harness reproduces the provocation,
+        /// so this asserts the invariant the suppression exists to hold: a
+        /// write arriving mid-rebuild changes nothing.</para></summary>
+        [Fact]
+        public void PickerRebuild_IgnoresASelectionWriteMidFlight()
+        {
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            ImportAndApplyWorkshopProfile(svc);
+
+            var row = mainVm.Pads[0].Mappings.First(m => m.TargetSettingName == "ButtonA");
+            string guidBefore = row.PrimarySourceDeviceGuid;
+            string descBefore = row.SourceDescriptor;
+
+            // What WPF does mid-rebuild: assign a concrete-device entry.
+            row.SelectedInput = new InputChoice
+            {
+                Descriptor = "Button 0",
+                DisplayName = "A",
+                DeviceGuid = XboxGuid.ToString(),
+                DeviceLabel = "Xbox pad",
+            };
+
+            // Outside a rebuild this IS a real user pick and must apply.
+            Assert.Equal(XboxGuid.ToString(), row.PrimarySourceDeviceGuid, ignoreCase: true);
+
+            // Restore, then prove the same write is inert during a rebuild.
+            row.PrimarySourceDeviceGuid = guidBefore;
+            row.LoadDescriptor(descBefore);
+
+            var choices = new List<InputChoice>(row.AvailableInputs);
+            row.ReplaceAvailableInputsForTest(choices, () =>
+                row.SelectedInput = new InputChoice
+                {
+                    Descriptor = "Button 0",
+                    DisplayName = "A",
+                    DeviceGuid = XboxGuid.ToString(),
+                    DeviceLabel = "Xbox pad",
+                });
+
+            Assert.Equal(descBefore, row.SourceDescriptor);
+            Assert.True(string.IsNullOrEmpty(row.PrimarySourceDeviceGuid),
+                $"a mid-rebuild selection write rebound the row to "
+                + $"'{row.PrimarySourceDeviceGuid}'.");
+        }
     }
 }

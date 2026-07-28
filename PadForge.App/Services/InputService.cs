@@ -6245,10 +6245,11 @@ namespace PadForge.Services
                 mapping.InputSelectedFromDropdown -= OnInputSelectedFromDropdown;
                 mapping.InputSelectedFromDropdown += OnInputSelectedFromDropdown;
 
-                mapping.AvailableInputs.Clear();
-                foreach (var c in flat)
-                    mapping.AvailableInputs.Add(c);
-                mapping.SyncSelectedInputFromDescriptor();
+                // Clear + refill + re-sync as ONE suppressed operation. Doing
+                // the list mutations outside the suppression let a live
+                // ComboBox write its own SelectedItem back through the TwoWay
+                // binding and rebind the row to a concrete device.
+                mapping.ReplaceAvailableInputs(flat);
                 mapping.RefreshAllExtraSourceInputs();
             }
 

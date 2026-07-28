@@ -108,7 +108,7 @@ foreach ($key in $existing) {
 
 # Verify
 $devKeys = Get-ChildItem $base | Where-Object { $_.PSChildName -match '^Device\d+$' }
-Write-Host "  Registry now has $($devKeys.Count) DeviceNN key(s)"
+Write-Host "  Registry now has $(@($devKeys).Count) DeviceNN key(s)"
 
 # Step 2: Remove existing device nodes
 Write-Host "`nStep 2: Cleaning existing device nodes..."
@@ -192,22 +192,22 @@ Start-Sleep -Seconds 5
 
 # VJOYRAWPDO
 $rawPdo = Get-CimInstance Win32_PnPEntity | Where-Object { $_.DeviceID -like '*VJOYRAWPDO*' }
-Write-Host "`nVJOYRAWPDO devices: $($rawPdo.Count)"
+Write-Host "`nVJOYRAWPDO devices: $(@($rawPdo).Count)"
 $rawPdo | ForEach-Object { Write-Host "  $($_.DeviceID) [$($_.Status)] err=$($_.ConfigManagerErrorCode)" }
 
 # HID collection children
 $hidDevices = Get-CimInstance Win32_PnPEntity | Where-Object { $_.DeviceID -like 'HID\VID_1234&PID_BEAD*' }
-Write-Host "HID vJoy collection devices: $($hidDevices.Count)"
+Write-Host "HID vJoy collection devices: $(@($hidDevices).Count)"
 $hidDevices | ForEach-Object { Write-Host "  $($_.DeviceID) [$($_.Status)] err=$($_.ConfigManagerErrorCode) name=$($_.Name)" }
 
 # ROOT\HIDCLASS nodes
 $rootNodes = Get-CimInstance Win32_PnPEntity | Where-Object { $_.DeviceID -like 'ROOT\HIDCLASS\*' -and $_.Name -like '*vJoy*' }
-Write-Host "ROOT\HIDCLASS vJoy nodes: $($rootNodes.Count)"
+Write-Host "ROOT\HIDCLASS vJoy nodes: $(@($rootNodes).Count)"
 $rootNodes | ForEach-Object { Write-Host "  $($_.DeviceID) [$($_.Status)] err=$($_.ConfigManagerErrorCode)" }
 
 # Registry
 $devKeys2 = Get-ChildItem $base | Where-Object { $_.PSChildName -match '^Device\d+$' }
-Write-Host "Registry DeviceNN keys: $($devKeys2.Count)"
+Write-Host "Registry DeviceNN keys: $(@($devKeys2).Count)"
 
 # WinMM
 Add-Type @'
@@ -244,9 +244,9 @@ for ($i = 0; $i -lt $numDevs; $i++) {
 Write-Host "vJoy joysticks in WinMM: $vjoyCount"
 
 Write-Host "`n=== SUMMARY ==="
-Write-Host "Registry descriptors: $($devKeys2.Count)"
-Write-Host "VJOYRAWPDO (sideband): $($rawPdo.Count)"
-Write-Host "HID collections (actual joysticks): $($hidDevices.Count)"
+Write-Host "Registry descriptors: $(@($devKeys2).Count)"
+Write-Host "VJOYRAWPDO (sideband): $(@($rawPdo).Count)"
+Write-Host "HID collections (actual joysticks): $(@($hidDevices).Count)"
 Write-Host "WinMM joysticks: $vjoyCount"
 
 Stop-Transcript | Out-Null

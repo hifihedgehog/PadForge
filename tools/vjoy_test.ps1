@@ -44,12 +44,12 @@ function Check-VJoyState($label) {
     $baseKey = 'HKLM:\SYSTEM\CurrentControlSet\services\vjoy\Parameters'
     if (Test-Path $baseKey) {
         $subkeys = Get-ChildItem $baseKey -ErrorAction SilentlyContinue | Where-Object { $_.PSChildName -match '^Device\d+$' }
-        Write-Host "  Registry DeviceNN keys: $($subkeys.Count)"
+        Write-Host "  Registry DeviceNN keys: $(@($subkeys).Count)"
     } else {
         Write-Host "  Registry: vjoy Parameters key not found"
     }
     $vjoyEntities = Get-CimInstance Win32_PnPEntity -ErrorAction SilentlyContinue | Where-Object { $_.Name -like '*vJoy*' }
-    Write-Host "  PnP vJoy entities: $($vjoyEntities.Count)"
+    Write-Host "  PnP vJoy entities: $(@($vjoyEntities).Count)"
     foreach ($e in $vjoyEntities) {
         Write-Host "    $($e.Name) | Status=$($e.Status) | Error=$($e.ConfigManagerErrorCode)"
     }

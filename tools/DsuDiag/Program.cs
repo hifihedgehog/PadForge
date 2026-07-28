@@ -17,8 +17,6 @@ using var udp = new UdpClient();
 udp.Client.ReceiveTimeout = 2000;
 var server = new IPEndPoint(IPAddress.Loopback, Port);
 
-uint packetId = 0;
-
 // Send version request
 SendPacket(0x100000, Array.Empty<byte>());
 Console.WriteLine("Sent version request to 127.0.0.1:26760...");
@@ -127,7 +125,6 @@ void SendPacket(uint msgType, byte[] payload)
     BinaryPrimitives.WriteUInt32LittleEndian(packet.AsSpan(8), crc);
 
     udp.Send(packet, packet.Length, new IPEndPoint(IPAddress.Loopback, Port));
-    packetId++;
 }
 
 float ReadFloat(byte[] data, int offset) => BitConverter.ToSingle(data, offset);

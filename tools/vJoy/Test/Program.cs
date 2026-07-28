@@ -348,6 +348,15 @@ class Program
         Console.WriteLine("    previously created device still works after adding the next.");
         Console.WriteLine("    Tests PadForge's incremental creation pattern.");
         Console.WriteLine();
+        Console.WriteLine("  VJoyTest battery");
+        Console.WriteLine("    Automated permutation tests with WinMM readback.");
+        Console.WriteLine();
+        Console.WriteLine("  VJoyTest padforge [N]");
+        Console.WriteLine("    Replicate PadForge's exact startup sequence for N devices.");
+        Console.WriteLine();
+        Console.WriteLine("  VJoyTest diag");
+        Console.WriteLine("    Single device, deep data-flow investigation.");
+        Console.WriteLine();
         Console.WriteLine("  VJoyTest freshinstall");
         Console.WriteLine("    Full DriverInstaller-style cleanup + reinstall + data flow test.");
         Console.WriteLine("    Replicates the exact cleanup that PadForge's DriverInstaller.cs does:");
@@ -1057,11 +1066,20 @@ class Program
             for (int i = 0; i < lines.Length; i++)
             {
                 string line = lines[i].Trim();
-                if (line.StartsWith("Published", StringComparison.OrdinalIgnoreCase) && line.Contains(":"))
+                // Detect the block by its VALUE, not the "Published Name" label,
+                // which pnputil localizes. Keying on the English word made this
+                // whole parse return nothing on a non-English Windows, so the
+                // cleanup silently skipped every OEM inf. Same fix as
+                // DriverInstaller.FindExtendedOemInfs, which this method's
+                // header says it mirrors.
+                var oemHit = System.Text.RegularExpressions.Regex.Match(
+                    line, @"oem\d+\.inf",
+                    System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                if (oemHit.Success)
                 {
                     if (isVJoyBlock && currentOem != null)
                         results.Add(currentOem);
-                    currentOem = line.Substring(line.IndexOf(':') + 1).Trim();
+                    currentOem = oemHit.Value;
                     isVJoyBlock = false;
                 }
                 else if (currentOem != null &&

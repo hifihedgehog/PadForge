@@ -237,6 +237,16 @@ internal static class Program
         var needed = BrightnessKeys.Concat(PatternKeys).Concat(MicKeys)
             .Concat(LightbarKeys).Concat(InputReactiveKeys).ToHashSet();
         _strings = needed.ToDictionary(k => k, _ => new Dictionary<string, string>());
+        // "en" MUST be processed first: the per-key fallback below reads the
+        // already-loaded English value, so a reordered Locales array would make
+        // every missing key fall back to the KEY NAME instead, silently
+        // widening the measurement. Assert the ordering rather than depending
+        // on it by convention.
+        if (Locales.Length == 0 || Locales[0].tag != "en")
+            throw new InvalidOperationException(
+                "Locales[0] must be \"en\": the missing-key fallback reads the English value "
+                + "that this loop has already stored.");
+
         foreach (var (tag, file) in Locales)
         {
             var doc = XDocument.Load(IOPath.Combine(ResxDir, file));

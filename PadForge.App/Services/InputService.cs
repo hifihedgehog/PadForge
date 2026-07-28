@@ -1626,6 +1626,13 @@ namespace PadForge.Services
             // filtered by `MapTo == slotIndex && InstanceGuid == device`,
             // the same (slot, device, pad) key TouchpadGestureSettingsProvider
             // uses since the May 2026 slot-collapse fix.
+            // Mapping rows derive their device subtitle from their own
+            // stored GUID through this, rather than carrying a separately
+            // assigned label that a profile switch could leave pointing at
+            // the outgoing profile's controller.
+            ViewModels.MappingItem.DeviceLabelResolver = ResolveDeviceLabel;
+            ViewModels.MappingSourceItem.DeviceLabelResolver = ResolveDeviceLabel;
+
             PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider =
                 (slotIndex, deviceGuid, padIdx) =>
             {

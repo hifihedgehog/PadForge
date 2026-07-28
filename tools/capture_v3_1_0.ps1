@@ -262,7 +262,8 @@ if (SelectFirstSlot) {
             # Coord-click so TabBtn_Click fires (UIA SelectionItem.Select skips it).
             $cr = $tabs[0].Current.BoundingRectangle
             [W32]::ForceFG($hwnd); Start-Sleep -Milliseconds 200
-            [W32]::ClickAt([int]($cr.X + $cr.Width / 2), [int]($cr.Y + $cr.Height / 2))
+            # Rect.Empty reports X as +Infinity and [int] on it throws.
+            if (-not ($cr.IsEmpty -or $cr.Width -le 0 -or $cr.Height -le 0)) { [W32]::ClickAt([int]($cr.X + $cr.Width / 2), [int]($cr.Y + $cr.Height / 2)) }
             Start-Sleep -Milliseconds 1500
         }
         Write-Host "  Tabs visible to UIA: $($tabs.Count)"

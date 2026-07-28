@@ -1,4 +1,4 @@
-using PadForge.Engine;
+﻿using PadForge.Engine;
 using Xunit;
 
 namespace PadForge.Tests
@@ -206,9 +206,22 @@ namespace PadForge.Tests
         public void TriggerMotorsAloneStillProduceRumble()
         {
             var v = new Vibration { LeftTriggerMotorSpeed = 40000, DeviceGain = 255 };
+            // Sample across WALL-CLOCK time, not loop iterations. The level is
+            // mag * sin(phase) with phase = TickCount64 % 120 / 120, and
+            // TickCount64 does not advance during a tight 400-iteration loop:
+            // every iteration saw ONE tick, so whenever that tick landed on a
+            // sine zero crossing (% 120 == 0 or 60, about 1.7% of ticks) all
+            // 400 samples truncated to 0 and the test failed. That is the
+            // intermittent this suite carried since round 20; the production
+            // code is right, a zero at an exact zero crossing is what a sine
+            // does (named by TRX hammer, round 34).
             bool nonZeroSeen = false;
-            for (int i = 0; i < 400 && !nonZeroSeen; i++)
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            while (!nonZeroSeen && sw.ElapsedMilliseconds < 500)
+            {
                 if (ForceFeedbackState.ComputeWheelRumbleLevel(v, 100) != 0) nonZeroSeen = true;
+                else System.Threading.Thread.Sleep(1);
+            }
             Assert.True(nonZeroSeen, "trigger-only rumble never produced a wheel level");
         }
 

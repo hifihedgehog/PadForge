@@ -4797,6 +4797,13 @@ namespace PadForge.Common.Input
             bool isTrigger = action.AxisTarget == MacroAxisTarget.LeftTrigger
                 || action.AxisTarget == MacroAxisTarget.RightTrigger;
             raw.Axes[axisIndex] = isTrigger
+                // Doubling is the FAMILY convention: the Add twins at
+                // ~3513 / ~3516 / ~4827 all use it, so a 100% editor value
+                // lands at 32766, one LSB short of full scale, everywhere
+                // alike. Round 34 tried exact 65535/32767 scaling here and
+                // reverted it: making one member exact while its siblings
+                // double is a real inconsistency, and the shortfall is
+                // 0.0015% with no consumer that tests for exact maximum.
                 ? (short)Math.Clamp(short.MinValue + (int)action.AxisValue * 2, short.MinValue, short.MaxValue)
                 : action.AxisValue;
         }

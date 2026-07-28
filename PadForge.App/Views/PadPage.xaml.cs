@@ -584,6 +584,15 @@ namespace PadForge.Views
                     vm.SelectedConfigTab = 0;
                 else if (isKbm && vm.SelectedConfigTab == 4)
                     vm.SelectedConfigTab = 0;
+                // Triggers (4) also hides for a raw device with no trigger
+                // axes, and Force Feedback (5) hides whenever the device has
+                // none. Both were absent from this chain, so a user sitting
+                // on either when the device changed was left on a collapsed
+                // tab with no selected button (round 34).
+                else if (vm.SelectedConfigTab == 4 && rawNoTriggers)
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == 5 && !hasForceFeedback)
+                    vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 6 && !hasAdaptiveTriggers)
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 7 && !hasLightbar)

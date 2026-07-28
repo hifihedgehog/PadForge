@@ -61,17 +61,55 @@ namespace PadForge.Tests
             Assert.Empty(faults);
         }
 
+        /// <summary>The reader-visible contract: whatever the preview captured
+        /// stays valid across a clear.
+        ///
+        /// <para>This asserted only that an UNSUPPRESSED source reads
+        /// unsuppressed, before and after. The fixture never populated the
+        /// suppression set, so both assertions were true of an empty set and
+        /// the test passed with ClearShiftRuntime turned into a complete no-op.
+        /// A test asserting that something did NOT change needs a positive
+        /// control proving the fixture can produce the changed state at
+        /// all.</para></summary>
         [Fact]
         public void ClearingASlot_DoesNotMutateAPreviouslyPublishedSnapshot()
         {
-            // The reader-visible contract: whatever the preview captured
-            // stays valid. Exercised through the public surface, since the
-            // published arrays are private.
             InputManager.ClearAllShiftRuntime();
-            Assert.False(InputManager.IsSourceSuppressedPostpone(0, "dev-a", "Button 3"));
 
+            // Arm a real postpone activator so the LIVE published set is
+            // populated. ResolveActiveLayerMask rebuilds and publishes it at
+            // its tail, which is the only way in: the published arrays are
+            // private and AddPostponeKey fills a caller-supplied set, not the
+            // live one. PostponeMapping stays false, which is what opts an
+            // activator INTO suppressing its own source row.
+            var ms = new MappingSet();
+            ms.ShiftActivators.Add(new ShiftActivator
+            {
+                LayerMask = "Shift1",
+                LayerName = "Shift1",
+                Mode = "Hold",
+                Descriptor = "Button 8",
+                DeviceGuid = "dev-a",
+            });
+
+            var st = new PadForge.Engine.CustomInputState();
+            st.Buttons[8] = true;                       // activator held
+            InputManager.ResolveActiveLayerMask(0, ms, st, "dev-a");
+
+            // POSITIVE CONTROL. The live reader must SEE the suppression, or
+            // every "not suppressed" assertion below is vacuously true. This
+            // is exactly what the test lacked: it asserted only that an
+            // unsuppressed source read unsuppressed, which held of an empty
+            // set and passed with ClearShiftRuntime made a total no-op.
+            Assert.True(InputManager.IsSourceSuppressedPostpone(0, "dev-a", "Button 8"),
+                "fixture failed to arm: the rest of this test would be vacuous");
+
+            // The reader-visible contract: clearing the slot releases it.
             InputManager.ClearShiftRuntime(0);
-            Assert.False(InputManager.IsSourceSuppressedPostpone(0, "dev-a", "Button 3"));
+            Assert.False(InputManager.IsSourceSuppressedPostpone(0, "dev-a", "Button 8"));
+
+            // And an unrelated slot was never affected either way.
+            Assert.False(InputManager.IsSourceSuppressedPostpone(1, "dev-a", "Button 8"));
         }
 
         [Fact]

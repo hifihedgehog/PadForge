@@ -359,13 +359,25 @@ namespace PadForge.Tests
                 // Engage Ring2 (the later stop) on the OWN slot.
                 var st = new PadForge.Engine.CustomInputState();
                 InputManager.ResolveActiveLayerMask(0, ownSet, st, "");
-                // A macro scoped to the later stop opens while that stop is
-                // this slot's engaged layer, and stays closed otherwise;
-                // the point of R25a is that the stop is a real declared
-                // scope, which PipeListContains-through-SlotDeclaresMask
-                // already proves at the gate. Here just assert the ring
-                // membership the picker now surfaces.
-                Assert.True(InputManager.PipeListContains("Ring1|Ring2", "Ring2"));
+
+                // This used to end at Assert.True(PipeListContains("Ring1|Ring2",
+                // "Ring2")), two string LITERALS. The whole ownSet fixture and
+                // the ResolveActiveLayerMask call above were dead, the named
+                // "own slot gate" was never called, and deleting the cycle-stop
+                // branch it claims to pin left the test green. Run the gate the
+                // name promises, the way the round-three sibling does.
+                var im = new InputManager();
+                var macros = new[] { Macro(MacroTriggerMode.OnPress, layerMask: "Ring2", pad: 0) };
+
+                // Ring2 is a stop in slot 0's OWN cycle ring, so slot 0
+                // declares it and a macro scoped to it is reachable rather
+                // than gated shut. Pre-fix the stop was invisible to the
+                // declaration check and the gate fell back to the any-slot
+                // walk this scoping exists to retire.
+                Assert.True(InputManager.PipeListContains(
+                    ownSet.ShiftActivators[0].CycleLayers, "Ring2"),
+                    "the ring must still contain the stop this test is about");
+                Tick(im, macros, held: true);
             }
             finally
             {

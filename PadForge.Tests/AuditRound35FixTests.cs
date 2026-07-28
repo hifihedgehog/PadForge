@@ -904,6 +904,38 @@ namespace PadForge.Tests
                 + string.Join(", ", offenders));
         }
 
+        /// <summary>CombineInto is allowed to take the same instance as its
+        /// left operand AND its destination, which is what lets Step 4 reuse
+        /// one per-slot buffer across a multi-device combine. That only holds
+        /// because both loops read index i of a and b before writing index i of
+        /// the result. Pins it, since a future cross-index read would break the
+        /// reuse silently and only on three-plus-device slots.</summary>
+        [Fact]
+        public void CombineInto_AcceptsItsOwnLeftOperandAsDestination()
+        {
+            var a = MidiRawState.Create(4, 4);
+            var b = MidiRawState.Create(4, 4);
+            a.CcValues[0] = 127; a.CcValues[1] = 64;  a.Notes[0] = true;
+            b.CcValues[0] = 64;  b.CcValues[1] = 0;   b.Notes[1] = true;
+
+            // Reference result, allocating.
+            var expected = MidiRawState.Combine(a, b);
+
+            // Same inputs, but writing into a. Distance-from-centre wins on CC,
+            // OR on notes, so the expected answer is independent of aliasing.
+            var inPlace = MidiRawState.CombineInto(a, b, a);
+
+            Assert.Equal(expected.CcValues[0], inPlace.CcValues[0]);
+            Assert.Equal(expected.CcValues[1], inPlace.CcValues[1]);
+            Assert.Equal(expected.Notes[0], inPlace.Notes[0]);
+            Assert.Equal(expected.Notes[1], inPlace.Notes[1]);
+
+            // Positive control: the combine actually did something, so equal
+            // outputs are not both untouched defaults.
+            Assert.Equal(127, expected.CcValues[0]);
+            Assert.True(expected.Notes[0] && expected.Notes[1]);
+        }
+
         [Fact]
         public void ImpulseTriggerPids_StillRejectNonImpulsePads()
         {

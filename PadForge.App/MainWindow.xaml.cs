@@ -207,6 +207,9 @@ namespace PadForge
 
             // Wire NavigationView events in code-behind (WPF UI uses TypedEventHandler).
             NavView.SelectionChanged += NavView_SelectionChanged;
+            // ItemInvoked fires even when SelectsOnInvoked=false (used for
+            // AddController). Wired here ONLY. BuildNavigationItems used to
+            // subscribe it a second time.
             NavView.ItemInvoked += NavView_ItemInvoked;
 
             // Fade compact icons in when pane closes, fade out when it opens.
@@ -579,6 +582,17 @@ namespace PadForge
             _viewModel.Settings.WhitelistChanged += (s, e) =>
             {
                 _inputService?.ApplyDeviceHiding();
+                // And persist it. The whitelist took effect immediately but
+                // never marked the settings dirty, so a session whose only
+                // change was a whitelist edit discarded it on close and the
+                // path was gone on next launch.
+                //
+                // Marked HERE rather than at the mutation site because this
+                // event is the funnel every whitelist change already raises,
+                // and the LOAD path (SettingsService's Clear-and-repopulate)
+                // deliberately does not raise it, so this cannot dirty the
+                // file merely by reading it.
+                _settingsService?.MarkDirty();
             };
 
             // Wire MIDI Services install/uninstall commands.
@@ -2453,8 +2467,10 @@ namespace PadForge
             NavView.PreviewMouseLeftButtonUp += OnNavViewDragEnd;
             NavView.PreviewKeyDown += OnNavViewDragKeyDown;
 
-            // ItemInvoked fires even when SelectsOnInvoked=false (used for AddController).
-            NavView.ItemInvoked += NavView_ItemInvoked;
+            // ItemInvoked is already wired once with the other NavigationView
+            // events during construction. Subscribing again here made the
+            // handler run TWICE per nav click, so NavigateToTag and its
+            // mapping-grid rehydration both ran twice.
 
             NavView.MenuItems.Clear();
 

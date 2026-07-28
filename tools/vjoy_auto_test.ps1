@@ -449,6 +449,18 @@ if (Test-Path $diagLogPath) { Remove-Item $diagLogPath -Force }
 # Delete config for a clean start (no pre-existing virtual controllers)
 $configPath = "C:\PadForge\PadForge.xml"
 $configBackup = "C:\PadForge\PadForge.xml.autotest.bak"
+
+# The restore at the end of this script removes the backup, so a leftover one
+# means an earlier run was interrupted and that file holds the USER'S REAL
+# SETTINGS. The interrupted run had already launched PadForge, which
+# regenerates a clean-start PadForge.xml, so on a re-run the backup copy below
+# would overwrite the real settings with that residue. Restore first, exactly
+# as capture_all.ps1 does after the same bug destroyed a settings file on
+# 2026-07-12.
+if (Test-Path $configBackup) {
+    Log "!! Leftover .autotest.bak from an interrupted run; restoring it before re-backup"
+    Copy-Item $configBackup $configPath -Force
+}
 if (Test-Path $configPath) {
     Copy-Item $configPath $configBackup -Force
     Remove-Item $configPath -Force

@@ -476,6 +476,11 @@ namespace PadForge.Views
         private async Task OpenGameAsync(WorkshopGameItem g)
         {
             if (g == null) return;
+            // Opening a DIFFERENT game drops the query. Re-entering for the
+            // same game is how the sort and the search themselves refetch, so
+            // those must not clear what they just set. The tag filter resets
+            // either way: its chips are rebuilt from the new result set.
+            if (!ReferenceEquals(g, _selectedGame)) ResetConfigQuery();
             _selectedGame = g;
             _activeTag = null;
             SetState(WsState.Browse);
@@ -702,7 +707,84 @@ namespace PadForge.Views
             WorkshopGameItem g, string requiredTag, int page, CancellationToken ct)
         {
             var tags = requiredTag == null ? null : new[] { requiredTag };
-            return _workshop.SearchAsync(g.AppId, SortOrders[_sortIndex].Query, page, ConfigsPageSize, tags, ct);
+            return _workshop.SearchAsync(g.AppId, SortOrders[_sortIndex].Query, page, ConfigsPageSize,
+                tags, ct, _configQuery);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Search within the game
+        // ─────────────────────────────────────────────
+
+        /// <summary>The live query, sent to Steam as the QueryFiles
+        /// search_text filter. Null when the box is empty.</summary>
+        private string _configQuery;
+
+        private DispatcherTimer _configSearchDebounce;
+
+        /// <summary>Debounced so a refetch fires once the typing settles
+        /// rather than once per keystroke. Steam is a network round trip and
+        /// this dialog already throttles itself against it.</summary>
+        private void ConfigSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ConfigSearchPlaceholder.Visibility = string.IsNullOrEmpty(ConfigSearchBox.Text)
+                ? Visibility.Visible : Visibility.Collapsed;
+
+            _configSearchDebounce ??= CreateConfigSearchDebounce();
+            _configSearchDebounce.Stop();
+            _configSearchDebounce.Start();
+        }
+
+        private DispatcherTimer CreateConfigSearchDebounce()
+        {
+            var t = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(420) };
+            t.Tick += (_, __) =>
+            {
+                t.Stop();
+                ApplyConfigQuery();
+            };
+            return t;
+        }
+
+        /// <summary>Enter searches immediately; Escape clears back to the
+        /// full list.</summary>
+        private void ConfigSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                _configSearchDebounce?.Stop();
+                ApplyConfigQuery();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Escape && ConfigSearchBox.Text.Length > 0)
+            {
+                ConfigSearchBox.Clear();
+                _configSearchDebounce?.Stop();
+                ApplyConfigQuery();
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>Refetches the game room under the current query. A
+        /// refetch rather than a local filter: the point is to reach the
+        /// configs that were never paged in, which is the whole problem on a
+        /// game carrying thousands of them.</summary>
+        /// <summary>Clears the query and the box without triggering a
+        /// refetch: the caller is already about to fetch.</summary>
+        private void ResetConfigQuery()
+        {
+            _configSearchDebounce?.Stop();
+            _configQuery = null;
+            if (ConfigSearchBox != null && ConfigSearchBox.Text.Length > 0)
+                ConfigSearchBox.Clear();
+        }
+
+        private void ApplyConfigQuery()
+        {
+            string next = ConfigSearchBox.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(next)) next = null;
+            if (string.Equals(next, _configQuery, StringComparison.Ordinal)) return;
+            _configQuery = next;
+            if (_selectedGame != null) _ = OpenGameAsync(_selectedGame);
         }
 
         // ─────────────────────────────────────────────

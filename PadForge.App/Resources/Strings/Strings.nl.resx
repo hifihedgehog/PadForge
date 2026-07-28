@@ -2453,6 +2453,7 @@
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Configuratie lezen van Steam…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>gesorteerd op beoordeling</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>gesorteerd op</value></data>
+  <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Deze configuraties doorzoeken</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Beoordeling</value></data>
   <data name="Workshop_Sort_Trend" xml:space="preserve"><value>Trending</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Nieuwste</value></data>

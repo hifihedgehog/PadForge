@@ -2433,6 +2433,7 @@
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Steam에서 구성을 읽는 중…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>평점순 정렬</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>정렬</value></data>
+  <data name="Workshop_SearchConfigs" xml:space="preserve"><value>이 구성 검색</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>평가</value></data>
   <data name="Workshop_Sort_Trend" xml:space="preserve"><value>인기</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>최신</value></data>

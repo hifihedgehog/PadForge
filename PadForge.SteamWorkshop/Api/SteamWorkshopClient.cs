@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -202,9 +202,10 @@ namespace PadForge.SteamWorkshop.Api
             int page = 1,
             int perPage = 30,
             IReadOnlyCollection<string> requiredTags = null,
-            CancellationToken ct = default)
+            CancellationToken ct = default,
+            string searchText = null)
         {
-            var cacheKey = BuildSearchKey(appId, queryType, page, perPage, requiredTags);
+            var cacheKey = BuildSearchKey(appId, queryType, page, perPage, requiredTags, searchText);
 
             if (_cache != null &&
                 _cache.TryGetBytes(CacheCategory.Search, cacheKey, CacheTtls.Search, out var cachedBytes))
@@ -214,7 +215,7 @@ namespace PadForge.SteamWorkshop.Api
             }
 
             var task = _inflight.GetOrAdd(cacheKey,
-                key => FetchAndCacheAsync(appId, queryType, page, perPage, requiredTags, key));
+                key => FetchAndCacheAsync(appId, queryType, page, perPage, requiredTags, key, searchText));
             try
             {
                 return await task.WaitAsync(ct).ConfigureAwait(false);
@@ -245,7 +246,7 @@ namespace PadForge.SteamWorkshop.Api
 
         private async Task<CPublishedFile_QueryFiles_Response> FetchAndCacheAsync(
             int appId, EPublishedFileQueryType queryType, int page, int perPage,
-            IReadOnlyCollection<string> requiredTags, string cacheKey)
+            IReadOnlyCollection<string> requiredTags, string cacheKey, string searchText)
         {
             await EnsureLoggedOnAsync(CancellationToken.None).ConfigureAwait(false);
             await ThrottleAsync(CancellationToken.None).ConfigureAwait(false);
@@ -274,6 +275,14 @@ namespace PadForge.SteamWorkshop.Api
                 return_details = true,
                 return_playtime_stats = 30,
             };
+
+            // Free-text filter INSIDE the game's configs, for the games with
+            // thousands of them. Kept as a filter rather than switching the
+            // query to RankedByTextSearch, so the sort the user picked still
+            // decides the order of what matches: search and sort compose
+            // instead of one silently overriding the other.
+            if (!string.IsNullOrWhiteSpace(searchText))
+                request.search_text = searchText.Trim();
 
             request.required_kv_tags.Add(new CPublishedFile_QueryFiles_Request.KVTag
             {
@@ -343,7 +352,7 @@ namespace PadForge.SteamWorkshop.Api
         }
 
         private static string BuildSearchKey(int appId, EPublishedFileQueryType queryType, int page, int perPage,
-            IReadOnlyCollection<string> requiredTags)
+            IReadOnlyCollection<string> requiredTags, string searchText = null)
         {
             var tagKey = string.Empty;
             if (requiredTags != null && requiredTags.Count > 0)
@@ -352,7 +361,15 @@ namespace PadForge.SteamWorkshop.Api
                 tags.Sort(StringComparer.Ordinal);
                 tagKey = string.Join("+", tags);
             }
-            return $"{appId}_{(uint)queryType}_{page}_{perPage}_{tagKey}";
+            // The search text is part of a page's identity. Leaving it out
+            // would serve an UNFILTERED page from cache the moment someone
+            // typed a query against an (appid, sort, page) already fetched.
+            var textKey = string.IsNullOrWhiteSpace(searchText)
+                ? string.Empty
+                : "_q" + Convert.ToHexString(
+                    System.Security.Cryptography.SHA256.HashData(
+                        System.Text.Encoding.UTF8.GetBytes(searchText.Trim().ToLowerInvariant())))[..16];
+            return $"{appId}_{(uint)queryType}_{page}_{perPage}_{tagKey}{textKey}";
         }
 
         private static byte[] TrySerialize(CPublishedFile_QueryFiles_Response response)

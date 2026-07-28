@@ -1160,8 +1160,18 @@ for ($delPass = 0; $delPass -lt 16; $delPass++) {
         $slotBtns = $existingSlots[0].FindAll($TC, (New-Object System.Windows.Automation.PropertyCondition(
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::Button)))
+        # This used to assign every button in turn and keep whichever came last,
+        # on the assumption that the X is always last, then click it up to 16
+        # times. Nothing checked what it was clicking. Try the same name match
+        # the primary path uses, scoped to the card this time, and only fall
+        # back to the last button while SAYING which one that is, so a wrong
+        # click shows up in the log instead of silently happening 16 times.
         foreach ($b in $slotBtns) {
-            $delBtn = $b  # Last button in card is typically the X
+            if ($b.Current.Name -match "Delete|Remove|Close") { $delBtn = $b; break }
+        }
+        if (-not $delBtn -and $slotBtns.Count -gt 0) {
+            $delBtn = $slotBtns[$slotBtns.Count - 1]
+            Write-Host "  (fallback) clicking last card button: '$($delBtn.Current.Name)'" -ForegroundColor Yellow
         }
     }
     if ($delBtn) {

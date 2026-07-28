@@ -75,6 +75,18 @@ namespace PadForge.Common.Input
             // Test-target scoping: when a device is the slot's test target, only it acts.
             Guid testTarget = TestRumbleTargetGuid[slotIndex];
             bool deviceAllowed = testTarget == Guid.Empty || (ud != null && ud.InstanceGuid == testTarget);
+            // Leave before the row loop, not inside it. This method runs once
+            // per assigned device per tick, and TryGetLockEdgeTransition is
+            // DESTRUCTIVE: it clears PendingEdge as it reads. Checking
+            // deviceAllowed after that call meant a non-target device consumed
+            // the edge the test target was about to act on, so whether the
+            // pulse fired depended on device iteration order.
+            //
+            // Returning here deliberately leaves SteeringAtResistance alone
+            // rather than zeroing it. This pass is not the slot's authority
+            // while another device is the test target, and zeroing would fight
+            // the value that device just published.
+            if (!deviceAllowed) return;
 
             int pulseMs        = ParsePositiveInt(ps.SteeringLockPulseMs, 80);          // rumble / trigger pulse
             int lightbarHoldMs = ParsePositiveInt(ps.SteeringLockLightbarHoldMs, 80);   // lightbar hold (its own)
@@ -103,7 +115,6 @@ namespace PadForge.Common.Input
                     }
 
                     var edge = runtime.TryGetLockEdgeTransition(slotIndex, row.Target, si, out _);
-                    if (!deviceAllowed) continue;
                     if (edge == SourceKindRuntime.LockEdge.Enter)
                     {
                         // Channel 1: grip-motor rumble pulse.
@@ -128,7 +139,7 @@ namespace PadForge.Common.Input
 
             // Channel 4: continuous AT resistance, the max approach across the slot's
             // steering rows. UserEffectsDispatcher reads this when the toggle is on.
-            SteeringAtResistance[slotIndex] = (atRes && deviceAllowed) ? maxApproach : 0f;
+            SteeringAtResistance[slotIndex] = atRes ? maxApproach : 0f;
         }
 
         // Pulses every per-device lightbar on the slot to the lock color through the

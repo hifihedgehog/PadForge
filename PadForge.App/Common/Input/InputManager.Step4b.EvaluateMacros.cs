@@ -1439,7 +1439,11 @@ namespace PadForge.Common.Input
                 int axisIndex = AxisTargetToDeviceIndex(v.AxisTarget);
                 var axes = ud.InputState.Axis;
                 if (axes == null || axisIndex < 0 || axisIndex >= axes.Length) return 0f;
-                return (axes[axisIndex] + 32768f) / 65535f;
+                // Axis is unsigned 0..65535 (32768 = rest); see
+                // ReadAxisFromDevice's banner. Adding 32768 again shifted the
+                // documented "sticks -> 0..1, 0.5 = rest" contract to
+                // 0.5..1.5 with rest at 1.0 (round 34).
+                return axes[axisIndex] / 65535f;
             }
             return 0f;
         }
@@ -5042,7 +5046,17 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Reads an axis value from a physical input device's raw InputState.
-        /// Returns 0.0–1.0 (normalized from short -32768..32767).
+        /// Returns 0.0-1.0.
+        ///
+        /// <para>CustomInputState.Axis is UNSIGNED 0..65535 with 32768 at
+        /// rest: every writer stores it that way (SdlDeviceWrapper's
+        /// "(ushort)(v - short.MinValue)" and trigger "v * 65535 / 32767",
+        /// SdlMouseWrapper's AxisCenter clamp). The old body added another
+        /// 32768 as if the value were a signed short, which mapped the real
+        /// range onto 0.5..1.5: rest read 1.0, full negative read 0.5, and
+        /// full positive saturated past 1. Volume macros sat pinned near
+        /// maximum and the mouse twin below could never produce a negative
+        /// deflection (round 34).</para>
         /// </summary>
         private float ReadAxisFromDevice(MacroAction action)
         {
@@ -5052,7 +5066,7 @@ namespace PadForge.Common.Input
             if (device == null || device.InputState == null || device.InputState.Axis == null
                 || action.SourceDeviceAxisIndex >= device.InputState.Axis.Length)
                 return 0f;
-            return (device.InputState.Axis[action.SourceDeviceAxisIndex] + 32768f) / 65535f;
+            return device.InputState.Axis[action.SourceDeviceAxisIndex] / 65535f;
         }
 
         /// <summary>

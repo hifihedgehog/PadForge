@@ -672,6 +672,37 @@ namespace PadForge.Common.Input
         /// source's normal mapping — reWASD parity for the
         /// "Postpone the mapping" option (here surfaced as
         /// "Also fire activator's own mapping").</summary>
+        // Poll-thread scratch. The published sets above are treated as
+        // IMMUTABLE once assigned, because the Triggers-tab preview reads
+        // them from the UI thread (EvaluatePerDeviceTriggerPreview). A
+        // HashSet.Contains racing a Clear plus re-Add can return a wrong
+        // answer, throw, or spin on a resize, and the preview's catch would
+        // turn the first two into a silently blank readout. So each rebuild
+        // fills the scratch and publishes only when the CONTENT changed,
+        // which is a press or release edge, never every tick. That keeps the
+        // 1 kHz path allocation-free on the common unchanged tick.
+        private static System.Collections.Generic.HashSet<(string Guid, string Desc)>[] _suppressedScratchBySlot
+            = new System.Collections.Generic.HashSet<(string Guid, string Desc)>[MaxPads];
+        private static System.Collections.Generic.HashSet<(string Guid, string Desc)>[] _consumedScratchBySlot
+            = new System.Collections.Generic.HashSet<(string Guid, string Desc)>[MaxPads];
+
+        /// <summary>Publishes <paramref name="scratch"/> into
+        /// <paramref name="published"/> at <paramref name="slot"/> only when
+        /// its contents differ, as a fresh set nothing will mutate again.</summary>
+        private static void PublishKeySetIfChanged(
+            System.Collections.Generic.HashSet<(string Guid, string Desc)>[] published,
+            System.Collections.Generic.HashSet<(string Guid, string Desc)> scratch, int slot)
+        {
+            var current = published[slot];
+            if (scratch == null || scratch.Count == 0)
+            {
+                if (current != null && current.Count != 0) published[slot] = null;
+                return;
+            }
+            if (current != null && current.Count == scratch.Count && current.SetEquals(scratch)) return;
+            published[slot] = new System.Collections.Generic.HashSet<(string Guid, string Desc)>(scratch, PostponeKeyComparer.Instance);
+        }
+
         internal static bool IsSourceSuppressedPostpone(int slotIndex, string deviceGuid, string descriptor)
         {
             if (slotIndex < 0 || slotIndex >= _suppressedSourcesBySlot.Length) return false;
@@ -816,8 +847,16 @@ namespace PadForge.Common.Input
             for (int slot = 0; slot < MaxPads; slot++)
             {
                 var macros = MacroSnapshots[slot];
-                _consumedTriggerSourcesBySlot[slot]?.Clear();
-                if (macros == null || macros.Length == 0) continue;
+                var consumedScratch = _consumedScratchBySlot[slot];
+                if (consumedScratch == null)
+                    _consumedScratchBySlot[slot] = consumedScratch =
+                        new System.Collections.Generic.HashSet<(string Guid, string Desc)>(PostponeKeyComparer.Instance);
+                consumedScratch.Clear();
+                if (macros == null || macros.Length == 0)
+                {
+                    PublishKeySetIfChanged(_consumedTriggerSourcesBySlot, consumedScratch, slot);
+                    continue;
+                }
                 for (int m = 0; m < macros.Length; m++)
                 {
                     var macro = macros[m];
@@ -878,6 +917,7 @@ namespace PadForge.Common.Input
                                 AddConsumedRawButton(slot, macro.TriggerDeviceGuid, raws[i]);
                     }
                 }
+                PublishKeySetIfChanged(_consumedTriggerSourcesBySlot, consumedScratch, slot);
             }
         }
 
@@ -958,7 +998,7 @@ namespace PadForge.Common.Input
 
         private static void AddConsumedKey(int slot, string deviceGuid, string desc)
         {
-            (_consumedTriggerSourcesBySlot[slot]
+            (_consumedScratchBySlot[slot]
                 ??= new System.Collections.Generic.HashSet<(string Guid, string Desc)>(PostponeKeyComparer.Instance))
                 .Add((deviceGuid ?? "", desc));
         }
@@ -975,7 +1015,8 @@ namespace PadForge.Common.Input
                 // (audit 2026-07-25, C35): a profile/topology transition
                 // that un-engages every activator must drop its keys too,
                 // or a held activator's suppression outlives the activator.
-                _suppressedSourcesBySlot[i]?.Clear();
+                _suppressedSourcesBySlot[i] = null;
+                _suppressedScratchBySlot[i]?.Clear();
             }
         }
 
@@ -987,7 +1028,10 @@ namespace PadForge.Common.Input
             if (slotIndex < 0 || slotIndex >= _shiftRuntime.Length) return;
             _shiftRuntime[slotIndex]?.Clear();
             // Same rule as ClearAllShiftRuntime (audit 2026-07-25, C35).
-            _suppressedSourcesBySlot[slotIndex]?.Clear();
+            // Drop the published reference rather than clearing it: a UI
+            // reader may be holding it.
+            _suppressedSourcesBySlot[slotIndex] = null;
+            _suppressedScratchBySlot[slotIndex]?.Clear();
         }
 
         /// <summary>Inspect-only snapshot of the active engaged layer for a
@@ -1098,7 +1142,8 @@ namespace PadForge.Common.Input
                 // to preserve keys from the PREVIOUS profile's activators
                 // forever, and a source held across a profile switch stayed
                 // suppressed with nothing left to release it.
-                _suppressedSourcesBySlot[slotIndex]?.Clear();
+                _suppressedSourcesBySlot[slotIndex] = null;
+                _suppressedScratchBySlot[slotIndex]?.Clear();
                 return "Base";
             }
             var activators = mappingSet.ShiftActivators;
@@ -1129,9 +1174,9 @@ namespace PadForge.Common.Input
             // the tail of UpdateActivatorState. PostponeMapping=true on
             // an activator opts OUT of suppression — its own source row
             // fires alongside the layer change.
-            var suppressed = _suppressedSourcesBySlot[slotIndex];
+            var suppressed = _suppressedScratchBySlot[slotIndex];
             if (suppressed == null)
-                _suppressedSourcesBySlot[slotIndex] = suppressed =
+                _suppressedScratchBySlot[slotIndex] = suppressed =
                     new System.Collections.Generic.HashSet<(string Guid, string Desc)>(PostponeKeyComparer.Instance);
             suppressed.Clear();
             for (int i = 0; i < activators.Count; i++)
@@ -1159,6 +1204,7 @@ namespace PadForge.Common.Input
                     AddPostponeKey(suppressed, a.ChordSecondDeviceGuid, a.ChordSecondDescriptor);
                 }
             }
+            PublishKeySetIfChanged(_suppressedSourcesBySlot, suppressed, slotIndex);
 
             // Snapshot the cross-thread fields under the runtime's lock,
             // then resolve outside the lock to keep contention short.
@@ -2159,9 +2205,11 @@ namespace PadForge.Common.Input
         /// Ramped sources short-circuit to 0 (see
         /// <see cref="SourceEvaluator.EvaluateForTriggerTarget"/>) without ticking
         /// the live slot accumulators the polling thread owns, so calling this from
-        /// the UI refresh can never double-advance them. No shared static buffers
-        /// are touched and the row walk is mutation-guarded, so it is safe to call
-        /// off the polling thread.</para>
+        /// the UI refresh can never double-advance them. The row walk is
+        /// mutation-guarded, and the two suppression key sets this consults are
+        /// published as immutable snapshots (see PublishKeySetIfChanged) rather
+        /// than cleared and refilled in place, so reading them here cannot race
+        /// the poll thread's rebuild. Safe to call off the polling thread.</para>
         /// </summary>
         internal static ushort EvaluatePerDeviceTriggerPreview(
             CustomInputState state, MappingSet mappingSet, string deviceGuid, string target, int slotIndex)

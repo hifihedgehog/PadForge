@@ -68,15 +68,17 @@ if (-not (Test-Path $XmlPath)) {
     Stop-Transcript | Out-Null
     exit 1
 }
-# Never overwrite an existing backup: with -Force, a re-run after a failed
-# capture copied the already-prepped synthetic config over the only copy of
-# the real settings. The first backup is the pristine one, so it wins.
+# A re-run after a failed capture used to copy the already-prepped synthetic
+# config over the only copy of the real settings. Follow the pattern
+# capture_all.ps1 adopted after that destroyed a settings file on 2026-07-12:
+# a leftover backup means an earlier run never restored, so it holds the real
+# settings and the live file is capture residue. Restore, then re-back up.
 if (Test-Path -LiteralPath "$XmlPath.bak-capture") {
-    Write-Host "  Keeping existing backup $XmlPath.bak-capture (already prepped once)"
-} else {
-    Copy-Item -LiteralPath $XmlPath -Destination "$XmlPath.bak-capture"
-    Write-Host "  Backed up to $XmlPath.bak-capture"
+    Write-Host "  !! Leftover backup from an interrupted run; restoring it before re-backup" -ForegroundColor Yellow
+    Copy-Item -LiteralPath "$XmlPath.bak-capture" -Destination $XmlPath -Force
 }
+Copy-Item -LiteralPath $XmlPath -Destination "$XmlPath.bak-capture" -Force
+Write-Host "  Backed up to $XmlPath.bak-capture"
 
 [xml]$xml = Get-Content $XmlPath
 $ns = $xml.PadForgeSettings

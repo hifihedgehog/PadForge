@@ -965,6 +965,12 @@ namespace PadForge.Common.Input
             }
 
             NeutralizeMappedOutputsFor(ud);
+
+            // Any confirmed disconnect can reshuffle the synthetic "XInput#N"
+            // paths the impulse writer caches its handles under, and a stale
+            // entry whose handle is still valid writes to the wrong pad
+            // without ever failing into the self-heal path.
+            XboxImpulseHidWriter.InvalidateCachedTargets();
         }
 
         /// <summary>Clears runtime state and neutralizes the device's per-slot

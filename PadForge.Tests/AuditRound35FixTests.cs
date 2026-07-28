@@ -256,6 +256,65 @@ namespace PadForge.Tests
             }
         }
 
+        // ── Per-mapping dictionaries: lock parity across all five families ──
+
+        /// <summary>
+        /// The poll thread reads these per mapping row per device per tick
+        /// while the UI thread writes them on save. Three of the five families
+        /// (raw / MIDI / KBM) locked every operation; MappingDeadZone and
+        /// MappingBidirectional locked none, so a save racing a poll could
+        /// corrupt the Dictionary walk or throw.
+        ///
+        /// <para>Inherently probabilistic, so it hammers hard enough that the
+        /// unguarded version fails reliably. A pass here is meaningful only
+        /// because the pre-fix code was observed to fail it.</para>
+        /// </summary>
+        [Theory]
+        [InlineData("deadzone")]
+        [InlineData("bidirectional")]
+        public async System.Threading.Tasks.Task PerMappingDicts_SurviveConcurrentReadWrite(string family)
+        {
+            var ps = new PadSetting();
+            using var cts = new System.Threading.CancellationTokenSource();
+            var faults = new System.Collections.Generic.List<string>();
+
+            var reader = System.Threading.Tasks.Task.Run(() =>
+            {
+                try
+                {
+                    while (!cts.IsCancellationRequested)
+                        for (int k = 0; k < 32; k++)
+                            _ = family == "deadzone"
+                                ? ps.GetMappingDeadZone("ButtonA" + k)
+                                : ps.GetMappingBidirectional("ButtonA" + k);
+                }
+                catch (Exception ex) { lock (faults) faults.Add(ex.GetType().Name); }
+            });
+
+            var writer = System.Threading.Tasks.Task.Run(() =>
+            {
+                try
+                {
+                    for (int i = 0; i < 20000; i++)
+                        for (int k = 0; k < 32; k++)
+                        {
+                            if (family == "deadzone")
+                                ps.SetMappingDeadZone("ButtonA" + k, (i % 2 == 0) ? "25" : "");
+                            else
+                                ps.SetMappingBidirectional("ButtonA" + k, (i % 2 == 0) ? "1" : "");
+                        }
+                }
+                catch (Exception ex) { lock (faults) faults.Add(ex.GetType().Name); }
+            });
+
+            await writer;
+            cts.Cancel();
+            var finished = await System.Threading.Tasks.Task.WhenAny(
+                reader, System.Threading.Tasks.Task.Delay(15_000));
+            Assert.Same(reader, finished);   // a spin inside the walk never returns
+            Assert.Empty(faults);
+        }
+
         // ── Every chromeless FluentWindow must be movable ──
 
         /// <summary>

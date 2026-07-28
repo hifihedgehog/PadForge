@@ -118,6 +118,12 @@ namespace PadForge.ViewModels
             if (defaultItem != null)
                 defaultItem.Name = Strings.Instance.Profile_Default;
 
+            // And every item's localized rule summary, which the line above
+            // does not cover: it renames one item, while the auto-switch chip
+            // text is culture-dependent on all of them.
+            foreach (var item in ProfileItems)
+                item?.RaiseCultureDependentText();
+
             // Refresh the active profile header when the default profile is active.
             if (string.IsNullOrEmpty(SettingsManager.ActiveProfileId))
                 _activeProfileInfo = Strings.Instance.Common_Default;
@@ -1168,6 +1174,14 @@ namespace PadForge.ViewModels
         public string AutoSwitchRuleSummary => string.IsNullOrEmpty(_executables)
             ? string.Empty
             : string.Format(Strings.Instance.Profiles_AutoSwitchRule_Format, _executables);
+
+        /// <summary>Re-raises this item's culture-dependent text. The summary
+        /// above formats through Strings.Instance, so a language switch changes
+        /// its value with nothing to announce it: the chips kept the old
+        /// language until the list was rebuilt for some other reason. The
+        /// owning ViewModel calls this for every item from OnCultureChanged.</summary>
+        internal void RaiseCultureDependentText()
+            => OnPropertyChanged(nameof(AutoSwitchRuleSummary));
 
         private string _topologyLabel;
         public string TopologyLabel

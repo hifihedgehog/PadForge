@@ -236,6 +236,13 @@ namespace PadForge.Views
             if (_isDragging)
             {
                 EndDrag(false);
+                // Stop the release bubbling any further. AddControllerCard
+                // listens on MouseLeftButtonUp, so finishing a card drag with
+                // the pointer over it added a controller the user never asked
+                // for. Marking it handled covers that card and any other
+                // release handler upstream, rather than teaching one of them
+                // about drag state.
+                e.Handled = true;
             }
             else if (_dragSourceCard != null && _dragSourceCard.Tag is int padIndex)
             {

@@ -2390,6 +2390,13 @@ namespace PadForge.Common.Input
             // kernel slot, or destroy it. Snapshot the per-VC state at
             // the same time so we can move it with the VC.
             var reuseAtPosition = new IVirtualController[n];
+            // This method runs on the UI thread. IsSlotActive's parameterless
+            // overload reads through _padIndexBuffer, the POLL thread's
+            // preallocated scratch, and the buffer-explicit overload's own doc
+            // states the rule: any other thread must pass its own buffer or its
+            // read races the poll thread's reuse and misclassifies eligibility.
+            // One allocation per reorder, which is a user action, not a tick.
+            var slotScanBuffer = new Engine.Data.UserSetting[64];
             var stateExtendedAppliedProductString = new string[n];
             var stateExtendedAppliedLayout = new CustomControllerLayout[n];
             var stateExtendedAppliedFfbEnabled = new bool[n];
@@ -2419,7 +2426,7 @@ namespace PadForge.Common.Input
                 // oldPad's VC just because the profile slug on an inactive
                 // neighbor differs. The visual order changes, but the kernel
                 // VC stays at oldPad's pad index.
-                if (_virtualControllers[newPad] == null && !IsSlotActive(newPad))
+                if (_virtualControllers[newPad] == null && !IsSlotActive(newPad, slotScanBuffer))
                     continue;
 
                 string oldProfile = (oldVC is HMaestroVirtualController hmOld) ? hmOld.ProfileId : null;

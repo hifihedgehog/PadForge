@@ -1077,7 +1077,7 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
                         composite_filename, prefix,
                         face_btn_filenames, dpad_filenames,
                         bumper_filenames, trigger_filenames,
-                        stick_filenames, stick_click_filename,
+                        stick_filenames, stick_click_filenames,
                         guide_filename, menu_filename, view_filename,
                         share_filename=None,
                         bumper_width_frac=0.202,
@@ -1169,12 +1169,15 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
     left_bbox = get_element_pixel_bbox(root, "Left Stick", scale)
     right_bbox = get_element_pixel_bbox(root, "Right Stick", scale)
     if left_bbox:
-        pos = fit_overlay_to_bbox(left_bbox, os.path.join(ov_dir, stick_click_filename))
-        results.append((stick_click_filename, "LeftThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
+        # Per-stick click art. This used to take ONE filename for both, so
+        # the right thumb button rendered the LEFT stick's click PNG at the
+        # right stick's position. A pair, like stick_filenames alongside it.
+        pos = fit_overlay_to_bbox(left_bbox, os.path.join(ov_dir, stick_click_filenames[0]))
+        results.append((stick_click_filenames[0], "LeftThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {'LeftThumbButton':20s} ({'Left Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
     if right_bbox:
-        pos = fit_overlay_to_bbox(right_bbox, os.path.join(ov_dir, stick_click_filename))
-        results.append((stick_click_filename, "RightThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
+        pos = fit_overlay_to_bbox(right_bbox, os.path.join(ov_dir, stick_click_filenames[1]))
+        results.append((stick_click_filenames[1], "RightThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {'RightThumbButton':20s} ({'Right Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
 
     # D-PAD — same group-split approach as bumpers, but four quadrants.
@@ -1242,7 +1245,7 @@ def process_xbox_one_s():
         trigger_filenames={"L": "XB1_LeftTrigger_Active.png", "LLabel": "Left Trigger",
                            "R": "XB1_RightTrigger_Active.png", "RLabel": "Right Triggers"},
         stick_filenames={"L": "XB1_LeftStick.png", "R": "XB1_RightStick.png"},
-        stick_click_filename="XB1_LeftStick_Click.png",
+        stick_click_filenames=("XB1_LeftStick_Click.png", "XB1_RightStick_Click.png"),
         guide_filename="XB1_HomeButton.png",
         menu_filename="XB1_MenuButton.png",
         view_filename="XB1_ViewButton.png",
@@ -1335,7 +1338,7 @@ def process_xbox_series():
         trigger_filenames={"L": "XBSeries_LeftTrigger_Active.png", "LLabel": "Left Trigger",
                            "R": "XBSeries_RightTrigger_Active.png", "RLabel": "Right Trigger"},
         stick_filenames={"L": "XBSeries_LeftStick.png", "R": "XBSeries_RightStick.png"},
-        stick_click_filename="XBSeries_LeftStick_Click.png",
+        stick_click_filenames=("XBSeries_LeftStick_Click.png", "XBSeries_RightStick_Click.png"),
         guide_filename="XBSeries_HomeButton.png",
         menu_filename="XBSeries_MenuButton.png",
         view_filename="XBSeries_ViewButton.png",

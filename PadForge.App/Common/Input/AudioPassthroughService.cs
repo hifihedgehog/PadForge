@@ -139,9 +139,6 @@ namespace PadForge.Common.Input
             public int Ds5Seq;
             public byte Ds5PktCounter;
 
-            /// <summary>BT idle-gate state (BT thread only).</summary>
-            public bool BtStreaming;
-
             // ── DualShock 4 BT lane (SBC over report 0x17) — BT thread only.
             /// <summary>Clean-room SBC encoder (32 kHz JS/SNR/bitpool 48).</summary>
             public Ds4SbcEncoder Ds4Sbc;
@@ -1016,7 +1013,6 @@ namespace PadForge.Common.Input
             s.BtHandle = new IntPtr(-1);
             s.Tx = null;
             s.Ds5OpusEncoder = null;   // rebuilt sinks start with a fresh encoder
-            s.BtStreaming = false;  // and a fresh stream clock
             s.Ds4Sbc = null;
             s.Ds4Frames = null;
             s.Ds4PendingCount = 0;
@@ -1431,7 +1427,6 @@ namespace PadForge.Common.Input
                             // pad's radio and our CPU rest; the read above keeps
                             // the ring cursor live and the activity stamp fresh.
                             bool audible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
-                            s.BtStreaming = audible;
                             if (!audible) continue;
 
                             if (s.IsDs4)
@@ -1599,11 +1594,14 @@ namespace PadForge.Common.Input
         /// s16 (persistent-phase linear, exact 3:2 so pitch is exact; the
         /// drift trim arrives through <paramref name="inFrames"/> like the
         /// DS5 lane), encode full 256-sample blocks to 109-byte SBC frames,
-        /// and ship at most ONE 4-frame report 0x17 per tick — the DS5
-        /// hardware experiments showed Sony firmware drops bursts, so the
-        /// same skip-not-burst discipline applies here as the conservative
-        /// default until DS4 hardware says otherwise. Steady state: 2.67
-        /// frames produced per 10.667 ms tick, one report per ~16 ms.</summary>
+        /// then drain the queue the way ds4mac does: wait for four buffered
+        /// frames, then ship reports while at least two remain, 4-frame 0x17
+        /// preferred and 2-frame 0x14 as the fallback. That means a tick
+        /// after a stall sends more than one report on purpose, which is the
+        /// reference's proven recovery. The DS5's one-report-per-tick rule
+        /// is a DS5 finding and is deliberately not projected here (see the
+        /// drain loop's own note). Steady state: 2.67 frames produced per
+        /// 10.667 ms tick, one report per ~16 ms.</summary>
         private static void Ds4BtTick(Sink s, float[] pull, int inFrames)
         {
             if (s.Ds4Sbc == null || s.Ds4Pending == null || s.Ds4Frames == null) return;

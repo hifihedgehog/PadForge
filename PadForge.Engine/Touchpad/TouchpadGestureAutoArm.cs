@@ -48,6 +48,11 @@ namespace PadForge.Engine.Touchpad
             public bool LongPress;
             public bool RadialZones;
             public int RadialZoneCount;  // 0 = no referenced zone count
+            // Two descriptors on the same slot naming DIFFERENT zone counts
+            // ("RadialZone8_3" beside "RadialZone4_1"). One setting cannot
+            // serve both, so the merge records the clash instead of letting
+            // whichever descriptor happened to be enumerated last decide.
+            public bool RadialZoneCountConflict;
             public bool PinchSpread;
             public bool Rotate;
             public bool Joystick;        // StickX/StickY and the D-pad wedges
@@ -66,7 +71,19 @@ namespace PadForge.Engine.Touchpad
                 TouchSpots |= other.TouchSpots;
                 LongPress |= other.LongPress;
                 RadialZones |= other.RadialZones;
-                if (other.RadialZoneCount > 0) RadialZoneCount = other.RadialZoneCount;
+                if (other.RadialZoneCount > 0)
+                {
+                    if (RadialZoneCount > 0 && RadialZoneCount != other.RadialZoneCount)
+                    {
+                        RadialZoneCountConflict = true;
+                        // Keep the lower count so the outcome is the same
+                        // whichever order the descriptors arrive in.
+                        if (other.RadialZoneCount < RadialZoneCount)
+                            RadialZoneCount = other.RadialZoneCount;
+                    }
+                    else RadialZoneCount = other.RadialZoneCount;
+                }
+                RadialZoneCountConflict |= other.RadialZoneCountConflict;
                 PinchSpread |= other.PinchSpread;
                 Rotate |= other.Rotate;
                 Joystick |= other.Joystick;
@@ -153,7 +170,13 @@ namespace PadForge.Engine.Touchpad
             if (need.RadialZones)
             {
                 armed.EnableRadialZones = true;
-                if (need.RadialZoneCount > 0) armed.RadialZoneCount = need.RadialZoneCount;
+                // With a conflict, no count satisfies every descriptor, so
+                // an existing explicit setting is left alone: the user's own
+                // pick keeps working instead of being overwritten by
+                // whichever descriptor the walk reached first.
+                if (need.RadialZoneCount > 0
+                    && (!need.RadialZoneCountConflict || armed.RadialZoneCount <= 0))
+                    armed.RadialZoneCount = need.RadialZoneCount;
             }
             if (need.PinchSpread) armed.EnablePinchSpread = true;
             if (need.Rotate) armed.EnableRotate = true;
@@ -187,7 +210,12 @@ namespace PadForge.Engine.Touchpad
             if (need.RadialZones)
             {
                 if (!s.EnableRadialZones) return false;
-                if (need.RadialZoneCount > 0 && s.RadialZoneCount != need.RadialZoneCount) return false;
+                // An unsatisfiable count demand must not report "not
+                // satisfied" forever, or every call clones a fresh settings
+                // object to chase a target no single value can hit.
+                if (need.RadialZoneCount > 0 && !need.RadialZoneCountConflict
+                    && s.RadialZoneCount != need.RadialZoneCount) return false;
+                if (need.RadialZoneCountConflict && s.RadialZoneCount <= 0) return false;
             }
             if (need.PinchSpread && !s.EnablePinchSpread) return false;
             if (need.Rotate && !s.EnableRotate) return false;

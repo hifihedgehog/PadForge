@@ -3846,13 +3846,6 @@ namespace PadForge
                 System.Windows.Media.PixelFormats.Pbgra32);
             rtb.Render(visual);
 
-            var img = new System.Windows.Controls.Image
-            {
-                Source = rtb,
-                Width = 36,
-                Height = 36
-            };
-
             return new Wpf.Ui.Controls.ImageIcon { Source = rtb };
         }
 

@@ -535,6 +535,10 @@ namespace PadForge.Services
         /// authoritative source for descriptors and the legacy fields stop
         /// being consulted on subsequent loads.
         /// </summary>
+        /// <summary>Test seam for the startup load path.</summary>
+        internal static void LoadOrMigrateSlotMappingSetsForTest(MappingSet[] persisted)
+            => LoadOrMigrateSlotMappingSets(persisted);
+
         private static void LoadOrMigrateSlotMappingSets(MappingSet[] persisted)
         {
             var sets = SettingsManager.SlotMappingSets;

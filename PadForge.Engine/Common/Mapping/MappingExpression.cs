@@ -420,6 +420,17 @@ namespace PadForge.Engine.Common.Mapping
                                 { Advance(); args.Add(ParseExpression()); }
                             }
                             Expect(TokenKind.RParen, FormatError(ParseError.ExpectedRParenAfterArgs));
+                            // Reject an unknown function name HERE rather than
+                            // letting CallNode.Eval's `default: return 0` swallow
+                            // it. The parser already raises UnknownIdentifier for
+                            // a bare unknown name, so `pow` alone errored while
+                            // `pow(a,2)` compiled with IsValid = true, rendered
+                            // the green "valid" status in the editor, and then
+                            // evaluated to a constant 0 forever with no error
+                            // anywhere. Same error and same localized string as
+                            // the bare-identifier arm below.
+                            if (!CallNode.IsKnownFunction(t.Text))
+                                throw new ParseException(FormatError(ParseError.UnknownIdentifier, t.Text, t.Position));
                             return new CallNode { Name = t.Text, Args = args };
                         }
                         // Indexed source `s[i]`
@@ -626,6 +637,21 @@ namespace PadForge.Engine.Common.Mapping
                 }
             }
             private static bool Need(int n, int expected) => n == expected;
+
+            /// <summary>Every name the Eval switch above answers. Kept beside
+            /// that switch on purpose: a function added there and not here
+            /// stops parsing, which is a loud failure, while the reverse
+            /// (here but not there) is the silent constant-0 this guards
+            /// against.</summary>
+            private static readonly System.Collections.Generic.HashSet<string> KnownFunctions =
+                new(System.StringComparer.Ordinal)
+                {
+                    "abs", "min", "max", "clamp", "sign", "floor", "ceil",
+                    "round", "sqrt", "sin", "cos", "tan", "atan2", "lerp",
+                };
+
+            internal static bool IsKnownFunction(string name)
+                => !string.IsNullOrEmpty(name) && KnownFunctions.Contains(name);
             public override void Walk(ref Compiled c)
             {
                 if (Args != null) foreach (var a in Args) a?.Walk(ref c);

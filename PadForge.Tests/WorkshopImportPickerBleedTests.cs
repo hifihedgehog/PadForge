@@ -427,5 +427,80 @@ namespace PadForge.Tests
                 $"a grid push rebound an Authoritative row to '{src.DeviceGuid}' "
                 + $"with descriptor '{src.Descriptor}'. The Workshop import owns its rows.");
         }
+    
+        /// <summary>The owner's second symptom, verbatim: "When I assign a
+        /// device with automapping to it, it replaces the mapping in the
+        /// profile."
+        ///
+        /// <para>Assignment writes an auto-mapped legacy PadSetting for the
+        /// device, then the legacy merge runs. Commit 7cf6c17b gated both of
+        /// that merge's write operations behind !current.Authoritative so an
+        /// import owns its rows outright. The owner's file says both ran
+        /// anyway: 20 translated rows became 22, and every source carries the
+        /// assigned pad's GUID instead of the empty one.</para></summary>
+        [Fact]
+        public void AssigningAnAutomappableDevice_DoesNotRewriteAnImportedSet()
+        {
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            ImportAndApplyWorkshopProfile(svc);
+
+            var before = SettingsManager.SlotMappingSets[0];
+            Assert.True(before.Authoritative, "precondition: the imported set owns its rows");
+            int rowsBefore = before.Rows.Count;
+
+            // Assign the pad to slot 0 the way DeviceService does: a legacy
+            // PadSetting carrying the automap's concrete descriptors.
+            var ps = new PadSetting();
+            ps.ButtonA = "Button 0";
+            ps.ButtonB = "Button 1";
+            ps.ButtonX = "Button 2";
+            ps.ButtonY = "Button 3";
+            lock (SettingsManager.UserSettings.SyncRoot)
+            {
+                foreach (var us in SettingsManager.UserSettings.Items)
+                    if (us.InstanceGuid == XboxGuid) { us.MapTo = 0; us.SetPadSetting(ps); }
+            }
+
+            SettingsService.RefreshMappingSetsFromLegacy();
+
+            var after = SettingsManager.SlotMappingSets[0];
+            Assert.True(after.Authoritative, "the merge dropped Workshop ownership");
+            Assert.Equal(rowsBefore, after.Rows.Count);
+
+            var src = after.Rows.First(r => r.Target == "ButtonA").Sources.First();
+            Assert.Equal("Gamepad ButtonA", src.Descriptor);
+            Assert.True(string.IsNullOrEmpty(src.DeviceGuid),
+                $"assignment rebound an imported row to '{src.DeviceGuid}' "
+                + $"with descriptor '{src.Descriptor}'.");
+        }
+    
+        /// <summary>Workshop ownership must survive every replacement of the
+        /// live set, not only the merge's normal path.
+        ///
+        /// <para>The owner's XML caught the split that matters: the LIVE
+        /// slot-0 set read Authoritative="false" with all 22 sources bound to
+        /// the assigned pad, while the profile's stored copy still read true.
+        /// Both merge guards key on current.Authoritative, so once the live
+        /// flag is lost the automap is free to rebind every imported row and
+        /// add its own. Any path that swaps the live set has to carry the
+        /// flag.</para></summary>
+        [Fact]
+        public void LegacyMerge_CarriesAuthoritativeAcrossASetReplacement()
+        {
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            ImportAndApplyWorkshopProfile(svc);
+
+            // The replacement branch: a live set flagged Authoritative whose
+            // Rows list is null, which hands the rebuilt legacy set over.
+            var live = SettingsManager.SlotMappingSets[0];
+            Assert.True(live.Authoritative);
+            live.Rows = null;
+
+            SettingsService.RefreshMappingSetsFromLegacy();
+
+            Assert.True(SettingsManager.SlotMappingSets[0].Authoritative,
+                "the replacement dropped Workshop ownership, which un-gates the "
+                + "automap merge for every later device assignment.");
+        }
     }
 }

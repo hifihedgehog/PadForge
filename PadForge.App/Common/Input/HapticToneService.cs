@@ -1004,9 +1004,27 @@ namespace PadForge.Common.Input
                                 || (staleNow - s.RemoteUntilMs) > 10_000;
                             if (!superseded && !stale) continue;
                         }
-                        else if (desired.Exists(d => d.Guid == s.DeviceGuid && d.Slot == s.Slot))
+                        else
                         {
-                            continue;
+                            // Keep the sink, but re-point it at the CURRENT
+                            // hardware. Matching on (guid, slot) alone and
+                            // continuing left the sink holding the handle and
+                            // path it was built with, so a device that
+                            // reconnected under the same guid kept a sink
+                            // writing to the dead handle: tones stopped and the
+                            // lane looked alive because the sink still existed.
+                            int keep = desired.FindIndex(
+                                d => d.Guid == s.DeviceGuid && d.Slot == s.Slot);
+                            if (keep >= 0)
+                            {
+                                var d = desired[keep];
+                                s.Family = d.Fam;
+                                s.HidPath = d.Path;
+                                s.GamepadHandle = d.Gamepad;
+                                s.Remote = d.Path != null
+                                    && d.Path.StartsWith("peer://", StringComparison.Ordinal);
+                                continue;
+                            }
                         }
                         toTeardown.Add(s);
                         _sinks.RemoveAt(i);

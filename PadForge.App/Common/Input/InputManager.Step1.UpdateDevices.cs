@@ -725,8 +725,34 @@ namespace PadForge.Common.Input
                 // fixes the second and breaks the first, so the two cases need
                 // separating on whether `exact` is a live-twin collision
                 // rather than on the serial. Owner call, not a mechanical fix.
+                // Is the row we would otherwise return already CLAIMED by a
+                // live, present device? Computed here rather than after the
+                // scan because the scan needs it: it is what separates the two
+                // serialless cases, which the serial cannot.
+                bool liveTwinCollision = exact != null
+                    && livePresentSdlIds != null
+                    && exact.IsOnline
+                    && exact.Device != null
+                    && livePresentSdlIds.Contains(exact.Device.SdlInstanceId);
+
+                // With an EMPTY serial the row test below degenerates to
+                // "" == "", so admitting this scan on "exact != null" alone let
+                // any online same-product row whose SDL instance had lapsed
+                // match. Two same-model serialless pads, one inside its 2 s
+                // disconnect debounce while the other re-identified, cross-bound:
+                // the returning unit was stamped with the absent unit's identity
+                // and inherited its slot, mappings and calibration.
+                //
+                // The serial cannot separate that from the case round seven
+                // pins (ONE unit re-identifying inside its own debounce must
+                // find its own row), because both arrive with an empty serial.
+                // liveTwinCollision can. Re-identifying, the exact row is held
+                // by the live sibling, so returning it is impossible and the
+                // scan is the only way home. Cross-binding, the exact row is
+                // the arriving pad's OWN row with nobody on it, so there is
+                // nothing to search for and the scan can only do harm.
                 if (livePresentSdlIds != null && productGuid != Guid.Empty
-                    && (exact != null || !string.IsNullOrEmpty(incomingSerial)))
+                    && (liveTwinCollision || !string.IsNullOrEmpty(incomingSerial)))
                 {
                     for (int i = 0; i < devices.Items.Count; i++)
                     {
@@ -742,11 +768,6 @@ namespace PadForge.Common.Input
                     }
                 }
 
-                bool liveTwinCollision = exact != null
-                    && livePresentSdlIds != null
-                    && exact.IsOnline
-                    && exact.Device != null
-                    && livePresentSdlIds.Contains(exact.Device.SdlInstanceId);
                 if (exact != null && !liveTwinCollision)
                     return exact;
 

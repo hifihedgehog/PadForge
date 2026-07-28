@@ -302,6 +302,52 @@ namespace PadForge.Tests
         /// twin's assignment (no output) and left its stale wrapper to the
         /// debounce path's unconditional dispose, re-opening the shared
         /// HIDAPI-context churn the 2026-07-11 audit fixed.</summary>
+        /// <summary>The INVERSE of the test below, and the reason the rebind
+        /// scan is gated on a live-twin collision rather than on the serial.
+        /// Two same-model SERIALLESS pads, each with its own row. Pad A's SDL
+        /// instance drops and its row stays online through the 2 s debounce.
+        /// Pad B then re-resolves on its own guid. With an empty serial the
+        /// scan's row test is "" == "", so admitting the scan whenever an exact
+        /// row existed matched A's row and stamped A's identity onto B, which
+        /// inherited A's slot, mappings and calibration.
+        ///
+        /// <para>Here B's own row is unclaimed, so there is no collision, and
+        /// the scan must not run at all.</para></summary>
+        [Fact]
+        public void TwoSeriallessPads_DoNotCrossBindDuringADebounce()
+        {
+            using var _ = new DeviceListScope();
+            var im = new InputManager();
+
+            var guidA = Guid.NewGuid();
+            var rowA = im.FindOrCreateUserDevice(guidA, SteamProductGuid);
+            rowA.ProductGuid = SteamProductGuid;
+            rowA.SerialNumber = "";                 // the 2015 Steam Controller shape
+            rowA.IsOnline = true;                   // still inside its debounce
+            rowA.Device = new SdlDeviceWrapper { SdlInstanceId = 7 };
+
+            var guidB = Guid.NewGuid();
+            var rowB = im.FindOrCreateUserDevice(guidB, SteamProductGuid);
+            rowB.ProductGuid = SteamProductGuid;
+            rowB.SerialNumber = "";
+            rowB.IsOnline = true;
+            rowB.Device = new SdlDeviceWrapper { SdlInstanceId = 9 };
+
+            // Positive control: two distinct rows exist, so "did not
+            // cross-bind" cannot be vacuously true.
+            Assert.NotEqual(rowA.InstanceGuid, rowB.InstanceGuid);
+
+            // Both units' old instances have departed (A is unplugged and
+            // inside its debounce, B flapped and is re-identifying). B comes
+            // back as 11. Pre-fix, B's resolve walked past its OWN row and
+            // matched A's on "" == "", stamping A's identity onto B.
+            var got = im.FindOrCreateUserDevice(guidB, SteamProductGuid,
+                new HashSet<uint> { 11 });
+
+            Assert.Same(rowB, got);
+            Assert.Equal(guidB, got.InstanceGuid);
+        }
+
         [Fact]
         public void FlappedTwin_InsideTheDebounce_RebindsToItsOwnRow()
         {

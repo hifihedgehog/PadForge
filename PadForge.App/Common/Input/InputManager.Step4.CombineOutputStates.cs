@@ -199,7 +199,13 @@ namespace PadForge.Common.Input
                     // frame, which is what the old `= combinedRaw` default
                     // did here.
                     if (isExtended && firstRaw) CombinedRawHidStates[padIndex] = default;
-                    if (isMidi) CombinedMidiRawStates[padIndex] = combinedMidi;
+                    // Copy here too. combinedMidi is a fresh Combine result
+                    // only when TWO OR MORE devices on this slot contributed
+                    // MIDI. With several devices assigned but only one of them
+                    // MIDI, no Combine ever runs and combinedMidi is still that
+                    // device's published state, so a bare assign aliases it and
+                    // the empty-slot Clear() writes through.
+                    if (isMidi) CopyMidiInto(ref CombinedMidiRawStates[padIndex], ref combinedMidi);
                     if (isKbm) CombinedKbmRawStates[padIndex] = combinedKbm;
 
                     // Touchpad: first device with active finger wins (single-source).

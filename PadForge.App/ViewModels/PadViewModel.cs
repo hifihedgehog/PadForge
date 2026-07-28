@@ -3753,6 +3753,13 @@ namespace PadForge.ViewModels
             LeftStickSensitivity = 1.0;
             LeftCenterOffsetX = 0; LeftCenterOffsetY = 0;
             LeftMaxRangeX = 100; LeftMaxRangeY = 100;
+            // The Neg twins and the calibration boundary map are part of the
+            // same per-stick state the load mirror carries, so a slot delete
+            // that skipped them handed the NEXT controller created at this
+            // index the previous one's negative ranges and calibration
+            // (round 34).
+            LeftMaxRangeXNeg = 100; LeftMaxRangeYNeg = 100;
+            LeftThumbBoundaryMap = "";
             RightDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
             RightDeadZoneX = 0; RightDeadZoneY = 0;
             RightAntiDeadZoneX = 0; RightAntiDeadZoneY = 0;
@@ -3760,6 +3767,8 @@ namespace PadForge.ViewModels
             RightStickSensitivity = 1.0;
             RightCenterOffsetX = 0; RightCenterOffsetY = 0;
             RightMaxRangeX = 100; RightMaxRangeY = 100;
+            RightMaxRangeXNeg = 100; RightMaxRangeYNeg = 100;
+            RightThumbBoundaryMap = "";
             LeftTriggerDeadZone = 0; LeftTriggerAntiDeadZone = 0; LeftTriggerMaxRange = 100;
             RightTriggerDeadZone = 0; RightTriggerAntiDeadZone = 0; RightTriggerMaxRange = 100;
         }

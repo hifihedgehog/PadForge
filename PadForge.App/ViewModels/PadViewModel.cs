@@ -1267,8 +1267,40 @@ namespace PadForge.ViewModels
             "RightThumbAxisY" => RightSensitivityCurveY,
             "LeftTrigger" => LeftTriggerSensitivityCurve,
             "RightTrigger" => RightTriggerSensitivityCurve,
-            _ => null,
+            _ => CurveStringForRawAxisTarget(target),
         };
+
+        /// <summary>Curve for a RawAxis{n} target, which is what an Extended or
+        /// Nintendo slot's rows carry instead of the six named ones above.
+        /// Without this the curve pipeline chip never lit on those slots: the
+        /// switch fell to null and the row read as having no curve, however
+        /// non-linear its stick or trigger actually was.
+        ///
+        /// <para>Resolved against the axis indices the config items already
+        /// STORE (AxisXIndex / AxisYIndex / AxisIndex), which RebuildStickConfigs
+        /// fills from the slot's own ComputeAxisLayout. Deliberately not a
+        /// hardcoded 0..5 map: the Extended layout interleaves sticks and
+        /// triggers by count, so a fixed table would be right only for the
+        /// common shape and silently wrong for the rest.</para></summary>
+        private string CurveStringForRawAxisTarget(string target)
+        {
+            if (string.IsNullOrEmpty(target)
+                || !target.StartsWith("RawAxis", StringComparison.Ordinal)
+                || !int.TryParse(target.AsSpan("RawAxis".Length), out int axis))
+                return null;
+
+            foreach (var st in StickConfigs)
+            {
+                if (st == null) continue;
+                if (st.AxisXIndex == axis) return st.SensitivityCurveX;
+                if (st.AxisYIndex == axis) return st.SensitivityCurveY;
+            }
+            foreach (var tr in TriggerConfigs)
+            {
+                if (tr != null && tr.AxisIndex == axis) return tr.SensitivityCurve;
+            }
+            return null;
+        }
 
         // Config-derived chip state (Active flags, tooltip listings,
         // owning rows, MatchPreset lookups) only moves on user edits, so it

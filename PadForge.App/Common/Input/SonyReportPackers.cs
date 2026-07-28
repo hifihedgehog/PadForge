@@ -267,8 +267,14 @@ namespace PadForge.Common.Input
             dest[8] = b8;
 
             byte b9 = 0;
-            if (gp.IsButtonPressed(Gamepad.GUIDE)) b9 |= 0x01; // PS
-            if (tp.Click)                          b9 |= 0x02; // Touchpad click
+            if (gp.IsButtonPressed(Gamepad.GUIDE))    b9 |= 0x01; // PS
+            // Both sources, matching the DS4 packer. tp.Click is the PHYSICAL
+            // touchpad press; Gamepad.TOUCHPAD is a mapped or macro-driven one.
+            // Only the physical source was honoured here, so a macro bound to
+            // Touchpad reached the host on a virtual DS4 and silently did
+            // nothing on a virtual DualSense.
+            if (gp.IsButtonPressed(Gamepad.TOUCHPAD)) b9 |= 0x02;
+            if (tp.Click)                             b9 |= 0x02; // Touchpad click
             // bit 0x04 = Mute (mic), bits 0x10-0x80 = DualSense Edge function /
             // paddle buttons. Left at 0 — wiring MISC1 / paddles into the
             // virtual output requires plumbing state.Buttons[11..15] into the

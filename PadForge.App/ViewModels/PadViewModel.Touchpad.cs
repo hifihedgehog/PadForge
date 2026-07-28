@@ -16,9 +16,10 @@ namespace PadForge.ViewModels
     /// surfaced to the Touchpad tab. Mirrors the same load/sync rhythm as
     /// the gyro tuning partial — Load* reads PadSetting.TouchpadSettings[]
     /// into VM fields under <c>_loadingTouchpadGestures</c> guard, setters
-    /// push back to the same entry, and InputService.SyncViewModelToPadSetting
-    /// calls SyncTouchpadGestureSettingsToActiveDevice on the live polling
-    /// rhythm so the gesture engine sees changes immediately.
+    /// push back to the same entry. The push to the live gesture engine
+    /// happens at the setter tail (PushIfNotLoading) and on the device-tab
+    /// switch in MainWindow, NOT from InputService.SyncViewModelToPadSetting,
+    /// which never calls it.
     /// </summary>
     public partial class PadViewModel
     {

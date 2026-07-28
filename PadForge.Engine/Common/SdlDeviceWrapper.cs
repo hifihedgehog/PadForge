@@ -576,6 +576,20 @@ namespace PadForge.Engine
             _nfcPrevUid = null;
             if (_nfcPulseUntil != null) Array.Clear(_nfcPulseUntil, 0, _nfcPulseUntil.Length);
 
+            // Same reason, wider scope: every capability flag and probe
+            // result below is stamped by Open from the handle it just got.
+            // A reopen that lands on a device without gyro, a touchpad, or
+            // the extended buttons would otherwise keep the previous
+            // connection's answers, and the read paths gate on exactly these.
+            HasGyro = false;
+            HasAccel = false;
+            HasGyroAux = false;
+            HasAccelAux = false;
+            HasTouchpad = false;
+            _padFingerCounts = null;
+            _capSenseChannels = null;
+            _extButtonPresent = null;
+
             SdlInstanceId = 0;
         }
 
@@ -1170,10 +1184,24 @@ namespace PadForge.Engine
                             : pressureClick;
                         tp.Clicked = primaryClick;
                     }
-                    else if (p == 1 && state.Buttons.Length > 17)
+                    else
                     {
-                        bool mapped = _extButtonPresent != null && _extButtonPresent.Length > 17 && _extButtonPresent[17];
-                        tp.Clicked = mapped ? state.Buttons[17] : pressureClick;
+                        // Pads 1..5 continue through MISC2..MISC6, which is
+                        // positions 17..21. The comment above has promised
+                        // this since the touchpad-click-as-button recipe, but
+                        // only p == 1 was implemented, so a third pad's click
+                        // could never go true on a device that exposes one.
+                        int pos = 16 + p;
+                        if (pos <= 21 && state.Buttons.Length > pos)
+                        {
+                            bool mapped = _extButtonPresent != null
+                                && _extButtonPresent.Length > pos && _extButtonPresent[pos];
+                            tp.Clicked = mapped ? state.Buttons[pos] : pressureClick;
+                        }
+                        else
+                        {
+                            tp.Clicked = pressureClick;
+                        }
                     }
                     state.Touchpads[p] = tp;
                 }

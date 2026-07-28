@@ -2455,6 +2455,7 @@
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Lettura della configurazione da Steam…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>ordinate per valutazione</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>ordinato per</value></data>
+  <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Cerca in queste configurazioni</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Valutazione</value></data>
   <data name="Workshop_Sort_Trend" xml:space="preserve"><value>Di tendenza</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Più recenti</value></data>

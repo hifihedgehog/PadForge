@@ -620,34 +620,64 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
+                                <!-- Header. Title and count on one line, the search box and
+                                     the sort controls on their own, because the pane is a
+                                     fixed width and one horizontal run of all four clipped
+                                     the direction chip off the right edge. -->
                                 <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                                        Padding="14,11">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="C&#8202;O&#8202;N&#8202;F&#8202;I&#8202;G&#8202;S"
-                                                   Style="{StaticResource WsPaneHeaderText}"
-                                                   Foreground="{DynamicResource EmberBrush}" FontWeight="Bold"/>
-                                        <TextBlock Style="{StaticResource WsPaneHeaderText}" Margin="8,0,0,0"
-                                                   Text="{Binding Workshop_SortedBy, Source={x:Static strings:Strings.Instance}}"/>
-                                        <!-- Sort key. Each entry is a Steam query type, so the
-                                             ORDER IS STEAM'S over the whole result set, not a
-                                             re-shuffle of the page already loaded. -->
-                                        <Border x:Name="SortChip" Style="{StaticResource WsFilterChip}"
-                                                Margin="6,0,0,0" MouseLeftButtonUp="SortChip_Click">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock x:Name="SortChipText"
+                                        Padding="14,11,14,10">
+                                    <StackPanel>
+                                        <DockPanel LastChildFill="False">
+                                            <TextBlock DockPanel.Dock="Left"
+                                                       Text="C&#8202;O&#8202;N&#8202;F&#8202;I&#8202;G&#8202;S"
+                                                       Style="{StaticResource WsPaneHeaderText}"
+                                                       Foreground="{DynamicResource EmberBrush}" FontWeight="Bold"/>
+                                            <TextBlock x:Name="ConfigsFoundText" DockPanel.Dock="Right"
+                                                       Style="{StaticResource WsPaneHeaderText}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </DockPanel>
+                                        <!-- Search WITHIN this game's configs. A game can carry
+                                             thousands, and paging to them is not finding them. -->
+                                        <Border Margin="0,9,0,0" CornerRadius="7" Padding="9,4"
+                                                Background="{DynamicResource SteelGroundBrush}"
+                                                BorderThickness="1" BorderBrush="{DynamicResource SteelLineBrush}">
+                                            <Grid>
+                                                <TextBox x:Name="ConfigSearchBox" Background="Transparent"
+                                                         BorderThickness="0" Padding="0" FontSize="12"
+                                                         Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                                         CaretBrush="{DynamicResource EmberBrush}"
+                                                         TextChanged="ConfigSearch_TextChanged"
+                                                         KeyDown="ConfigSearch_KeyDown"/>
+                                                <TextBlock x:Name="ConfigSearchPlaceholder" IsHitTestVisible="False"
+                                                           FontSize="12" VerticalAlignment="Center"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           Text="{Binding Workshop_SearchConfigs, Source={x:Static strings:Strings.Instance}}"/>
+                                            </Grid>
+                                        </Border>
+                                        <WrapPanel Margin="0,9,0,0" Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource WsPaneHeaderText}"
+                                                       VerticalAlignment="Center" Margin="0,0,6,4"
+                                                       Text="{Binding Workshop_SortedBy, Source={x:Static strings:Strings.Instance}}"/>
+                                            <!-- Sort key. Each entry is a Steam query type, so the
+                                                 ORDER IS STEAM'S over the whole result set, not a
+                                                 re-shuffle of the page already loaded. -->
+                                            <Border x:Name="SortChip" Style="{StaticResource WsFilterChip}"
+                                                    MouseLeftButtonUp="SortChip_Click">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock x:Name="SortChipText"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
+                                                    <TextBlock Text="&#x25BE;" Margin="5,0,0,0" FontSize="9"
+                                                               VerticalAlignment="Center" Opacity="0.7"/>
+                                                </StackPanel>
+                                            </Border>
+                                            <!-- Direction. Steam only ever ranks descending, so this
+                                                 reverses what has been loaded. -->
+                                            <Border x:Name="SortDirChip" Style="{StaticResource WsFilterChip}"
+                                                    MouseLeftButtonUp="SortDir_Click">
+                                                <TextBlock x:Name="SortDirText"
                                                            FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
-                                                <TextBlock Text="&#x25BE;" Margin="5,0,0,0" FontSize="9"
-                                                           VerticalAlignment="Center" Opacity="0.7"/>
-                                            </StackPanel>
-                                        </Border>
-                                        <!-- Direction. Steam only ever ranks descending, so this
-                                             reverses what has been loaded. -->
-                                        <Border x:Name="SortDirChip" Style="{StaticResource WsFilterChip}"
-                                                Margin="4,0,0,0" MouseLeftButtonUp="SortDir_Click">
-                                            <TextBlock x:Name="SortDirText"
-                                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
-                                        </Border>
-                                        <TextBlock x:Name="ConfigsFoundText" Style="{StaticResource WsPaneHeaderText}" Margin="8,0,0,0"/>
+                                            </Border>
+                                        </WrapPanel>
                                     </StackPanel>
                                 </Border>
                                 <!-- Filter chips from live result tags -->

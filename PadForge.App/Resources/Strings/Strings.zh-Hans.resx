@@ -2433,6 +2433,7 @@
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>正在从 Steam 读取配置…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>按评分排序</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>排序方式</value></data>
+  <data name="Workshop_SearchConfigs" xml:space="preserve"><value>搜索这些配置</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>评分</value></data>
   <data name="Workshop_Sort_Trend" xml:space="preserve"><value>热门</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>最新</value></data>

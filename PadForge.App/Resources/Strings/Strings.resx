@@ -2583,6 +2583,7 @@
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Reading config from Steam…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>sorted by rating</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>sorted by</value></data>
+  <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Search these configs</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Rating</value></data>
   <data name="Workshop_Sort_Trend" xml:space="preserve"><value>Trending</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Newest</value></data>

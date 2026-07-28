@@ -2521,6 +2521,7 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_ReadingConfig => Get("Workshop_ReadingConfig");
     public string Workshop_SortedByRating => Get("Workshop_SortedByRating");
     public string Workshop_SortedBy => Get("Workshop_SortedBy");
+    public string Workshop_SearchConfigs => Get("Workshop_SearchConfigs");
     public string Workshop_Sort_Rating => Get("Workshop_Sort_Rating");
     public string Workshop_Sort_Trend => Get("Workshop_Sort_Trend");
     public string Workshop_Sort_Newest => Get("Workshop_Sort_Newest");

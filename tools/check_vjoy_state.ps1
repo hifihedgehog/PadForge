@@ -3,7 +3,7 @@ Write-Host "=== vJoy Registry Descriptors ==="
 $baseKey = 'HKLM:\SYSTEM\CurrentControlSet\services\vjoy\Parameters'
 if (Test-Path $baseKey) {
     $subkeys = Get-ChildItem $baseKey -ErrorAction SilentlyContinue | Where-Object { $_.PSChildName -match '^Device\d+$' }
-    Write-Host "DeviceNN keys: $($subkeys.Count)"
+    Write-Host "DeviceNN keys: $(@($subkeys).Count)"
     foreach ($k in $subkeys) {
         $desc = $k.GetValue('HidReportDescriptor')
         $size = if ($desc) { $desc.Length } else { 0 }

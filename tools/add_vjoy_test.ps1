@@ -61,24 +61,24 @@ Write-Host "`n=== Post-add HID Check ==="
 
 # VJOYRAWPDO count
 $rawPdo = Get-CimInstance Win32_PnPEntity | Where-Object { $_.DeviceID -like '*VJOYRAWPDO*' }
-Write-Host "VJOYRAWPDO devices: $($rawPdo.Count)"
+Write-Host "VJOYRAWPDO devices: $(@($rawPdo).Count)"
 $rawPdo | ForEach-Object { Write-Host "  $($_.DeviceID) [$($_.Status)] err=$($_.ConfigManagerErrorCode)" }
 
 # HID devices with vJoy VID/PID
 $hidDevices = Get-CimInstance Win32_PnPEntity | Where-Object { $_.DeviceID -like 'HID\VID_1234&PID_BEAD*' }
-Write-Host "HID vJoy collection devices: $($hidDevices.Count)"
+Write-Host "HID vJoy collection devices: $(@($hidDevices).Count)"
 $hidDevices | ForEach-Object { Write-Host "  $($_.DeviceID) [$($_.Status)] err=$($_.ConfigManagerErrorCode) name=$($_.Name)" }
 
 # ROOT\HIDCLASS nodes
 $rootNodes = Get-CimInstance Win32_PnPEntity | Where-Object { $_.DeviceID -like 'ROOT\HIDCLASS\*' -and $_.Name -like '*vJoy*' }
-Write-Host "ROOT\HIDCLASS vJoy nodes: $($rootNodes.Count)"
+Write-Host "ROOT\HIDCLASS vJoy nodes: $(@($rootNodes).Count)"
 $rootNodes | ForEach-Object { Write-Host "  $($_.DeviceID) [$($_.Status)] err=$($_.ConfigManagerErrorCode)" }
 
 # Registry
 $base = 'HKLM:\SYSTEM\CurrentControlSet\services\vjoy\Parameters'
 if (Test-Path $base) {
     $devKeys = Get-ChildItem $base | Where-Object { $_.PSChildName -match '^Device\d+$' }
-    Write-Host "Registry DeviceNN keys: $($devKeys.Count)"
+    Write-Host "Registry DeviceNN keys: $(@($devKeys).Count)"
     $devKeys | ForEach-Object { Write-Host "  $($_.PSChildName)" }
 }
 

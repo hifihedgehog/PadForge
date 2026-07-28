@@ -186,7 +186,7 @@ Write-Host ""
 # 8. Check PnP entities (joy.cpl visible)
 Write-Host "=== PnP vJoy Entities ==="
 $vjoyEntities = Get-CimInstance Win32_PnPEntity -ErrorAction SilentlyContinue | Where-Object { $_.Name -like '*vJoy*' }
-Write-Host "  Count: $($vjoyEntities.Count)"
+Write-Host "  Count: $(@($vjoyEntities).Count)"
 foreach ($e in $vjoyEntities) {
     Write-Host "  $($e.Name) | Status=$($e.Status) | Error=$($e.ConfigManagerErrorCode) | DeviceID=$($e.DeviceID)"
 }

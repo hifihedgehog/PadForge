@@ -2783,6 +2783,13 @@ namespace PadForge.Common.Input
                     Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
                     Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
                     ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
+                // Scroll speed, exactly as the vertical block above applies it.
+                // This was the one rate lane that skipped the knob, so the
+                // Sticks-tab speed moved mouse and vertical scroll while the
+                // tilt wheel kept running at 1x. scrollHy is the dummy the
+                // deadzone call needs; only ScrollDeltaH ships.
+                ApplyKbmStickSpeed(ref raw.ScrollDeltaH, ref scrollHy,
+                    TryParseDoubleStatic(ps.RightThumbSensitivity, 1));
             }
 
             return raw;

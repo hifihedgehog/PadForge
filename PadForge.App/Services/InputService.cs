@@ -13440,6 +13440,11 @@ namespace PadForge.Services
         /// default snapshot if no named profile is active).  Call before
         /// switching away from any profile so changes are preserved.
         /// </summary>
+        /// <summary>Test seam: the grid-to-set push the debounced save runs
+        /// immediately before SaveActiveProfileState.</summary>
+        internal void PushUiIntoSlotMappingSetsForTest()
+            => _settingsService?.PushUiExtraSourcesIntoSlotMappingSets();
+
         public void SaveActiveProfileState()
         {
             var snapshot = SnapshotCurrentProfile();

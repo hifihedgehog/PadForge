@@ -360,5 +360,72 @@ namespace PadForge.Tests
                 $"an Authoritative row was rebound to a concrete device ('{src.DeviceGuid}'): "
                 + "the imported abstract source was clobbered.");
         }
+    
+        /// <summary>The round-trip the owner actually performs: import,
+        /// apply, then let the debounced save run. The save pushes the live
+        /// grid into SlotMappingSets and SaveActiveProfileState snapshots
+        /// those sets back onto the stored profile, so a stale grid does not
+        /// merely LOOK wrong, it overwrites the imported profile on disk.
+        ///
+        /// <para>Receipt: the owner's PadForge.xml, written three seconds
+        /// after ImportedAt, held an Authoritative set with zero
+        /// "Gamepad ..." sources and 23 rows bound to the assigned
+        /// controller, byte-identical to that profile's own legacy
+        /// per-device descriptors.</para></summary>
+        [Fact]
+        public void WorkshopImport_SurvivesTheSaveRoundTrip()
+        {
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            var profile = ImportAndApplyWorkshopProfile(svc);
+
+            // The debounced save: grid -> live sets, then live -> profile.
+            svc.PushUiIntoSlotMappingSetsForTest();
+            svc.SaveActiveProfileState();
+
+            var stored = profile.SlotMappingSets?[0];
+            Assert.NotNull(stored);
+            Assert.True(stored.Authoritative, "the stored set lost its Workshop ownership flag");
+
+            var row = stored.Rows.FirstOrDefault(r => r.Target == "ButtonA");
+            Assert.NotNull(row);
+            var src = row.Sources.First();
+            Assert.Equal("Gamepad ButtonA", src.Descriptor);
+            Assert.True(string.IsNullOrEmpty(src.DeviceGuid),
+                $"the save round-trip rebound an imported row to '{src.DeviceGuid}'. "
+                + "This is the shape that reached the owner's XML.");
+        }
+    
+        /// <summary>The grid push must not rebind an Authoritative set's
+        /// device-free sources, even when the grid rows carry a concrete
+        /// device. This is the shape that reached the owner's XML: slot 0
+        /// still flagged Authoritative, all 22 sources rewritten from
+        /// "Gamepad ..." with an empty GUID to the assigned pad's raw
+        /// "Button N".</summary>
+        [Fact]
+        public void GridPush_CannotRebindAnAuthoritativeSetToADevice()
+        {
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            ImportAndApplyWorkshopProfile(svc);
+
+            // Simulate the stale grid the owner sees: the row carries the
+            // assigned pad's concrete descriptor instead of the abstract one.
+            var pad0 = mainVm.Pads[0];
+            var row = pad0.Mappings.First(m => m.TargetSettingName == "ButtonA");
+            row.PrimarySourceDeviceGuid = XboxGuid.ToString();
+            row.SourceDescriptor = "Button 0";
+            // The push short-circuits on !MappingsViewLoaded. RefreshMappingsCore
+            // sets it in the real app, so without this the test passes
+            // vacuously by never reaching the rebuild it means to exercise.
+            pad0.MappingsViewLoaded = true;
+
+            svc.PushUiIntoSlotMappingSetsForTest();
+
+            var src = SettingsManager.SlotMappingSets[0].Rows
+                .First(r => r.Target == "ButtonA").Sources.First();
+            Assert.Equal("Gamepad ButtonA", src.Descriptor);
+            Assert.True(string.IsNullOrEmpty(src.DeviceGuid),
+                $"a grid push rebound an Authoritative row to '{src.DeviceGuid}' "
+                + $"with descriptor '{src.Descriptor}'. The Workshop import owns its rows.");
+        }
     }
 }

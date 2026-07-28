@@ -1003,7 +1003,11 @@
                             </CheckBox.Style>
                         </CheckBox>
 
-                        <Separator Margin="0,4,0,8"/>
+                        <!-- Follows the section it divides. A bare separator sat
+                             visible on devices where every control above it was
+                             hidden, drawing a rule under nothing. -->
+                        <Separator Margin="0,4,0,8"
+                                   Visibility="{Binding SelectedDevice.ShowInputModeOrHidingSection, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <!-- ─── Power (#162, wireless controllers only) ─── -->
                         <StackPanel Visibility="{Binding SelectedDevice.ShowIdleDisconnect, Converter={StaticResource BoolToVisibilityConverter}}">

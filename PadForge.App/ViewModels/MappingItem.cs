@@ -469,6 +469,20 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsCombineExpressionWarning));
                     OnPropertyChanged(nameof(IsTrivialDirect));
                     RefreshVariableAliases();
+                    // Re-resolve the picker selection against the descriptor
+                    // that just arrived. PopulateAvailableInputs syncs once,
+                    // right after it fills AvailableInputs, which is correct
+                    // only when the descriptors are already loaded. On a
+                    // profile switch the picker was filled first and the sync
+                    // saw an empty descriptor, took its early return, and left
+                    // SelectedInput null: an imported row rendered with a
+                    // blank picker even though its "(Any device)" entry was
+                    // sitting in the list. Re-syncing here makes the order
+                    // stop mattering. The sync is a scan of AvailableInputs
+                    // and runs under _suppressSelectionSync, so it cannot
+                    // recurse back into this setter.
+                    if (!_suppressSelectionSync && AvailableInputs != null && AvailableInputs.Count > 0)
+                        SyncSelectedInputFromDescriptor();
                 }
             }
         }
@@ -1501,13 +1515,36 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>Resolves a device GUID to its friendly name. Wired by
+        /// InputService to its own ResolveDeviceLabel, which answers
+        /// "(Any device)" for the empty GUID.</summary>
+        public static System.Func<string, string> DeviceLabelResolver { get; set; }
+
         private string _primarySourceDeviceLabel = "";
         /// <summary>Human-friendly device name for the primary source.
-        /// Resolved by the InputService load path against the user's
-        /// known UserDevices.</summary>
+        ///
+        /// <para>DERIVED from <see cref="PrimarySourceDeviceGuid"/>, never
+        /// trusted as stored state. It used to be an independently assigned
+        /// string kept in step with the GUID by every writer, and a profile
+        /// switch could leave the two disagreeing: the owner's Workshop
+        /// import showed rows whose stored DeviceGuid was empty (the abstract
+        /// "Gamepad ButtonA" family) while this subtitle still read the
+        /// OUTGOING profile's controller. A label that cannot be set
+        /// independently cannot go stale. The setter stays so existing
+        /// writers compile, and is honoured only as a fallback when no
+        /// resolver is wired (early startup, tests).</para></summary>
         public string PrimarySourceDeviceLabel
         {
-            get => _primarySourceDeviceLabel;
+            get
+            {
+                var resolver = DeviceLabelResolver;
+                if (resolver != null)
+                {
+                    try { return resolver(_primarySourceDeviceGuid) ?? ""; }
+                    catch { /* fall through to the stored value */ }
+                }
+                return _primarySourceDeviceLabel;
+            }
             set
             {
                 if (SetProperty(ref _primarySourceDeviceLabel, value ?? ""))

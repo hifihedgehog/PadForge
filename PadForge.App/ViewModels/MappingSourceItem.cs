@@ -243,7 +243,11 @@ namespace PadForge.ViewModels
         public string DeviceGuid
         {
             get => _deviceGuid;
-            set => SetProperty(ref _deviceGuid, value ?? "");
+            set
+            {
+                if (SetProperty(ref _deviceGuid, value ?? ""))
+                    OnPropertyChanged(nameof(DeviceLabel));
+            }
         }
 
         private string _deviceLabel = "";
@@ -254,9 +258,27 @@ namespace PadForge.ViewModels
         /// the source is hydrated / synced; setting directly via the
         /// SelectedInput picker also updates it via the InputChoice's
         /// DeviceLabel field.</summary>
+        /// <summary>Resolves a device GUID to its friendly name. Wired by
+        /// InputService, same resolver the primary row uses.</summary>
+        public static System.Func<string, string> DeviceLabelResolver { get; set; }
+
+        /// <summary>DERIVED from <see cref="DeviceGuid"/> when a resolver is
+        /// wired, for the reason the primary's twin documents: a separately
+        /// assigned label can outlive the GUID it described and render the
+        /// previous profile's controller under an empty-GUID source. The
+        /// stored value remains the fallback for early startup and tests.</summary>
         public string DeviceLabel
         {
-            get => _deviceLabel;
+            get
+            {
+                var resolver = DeviceLabelResolver;
+                if (resolver != null)
+                {
+                    try { return resolver(_deviceGuid) ?? ""; }
+                    catch { /* fall through to the stored value */ }
+                }
+                return _deviceLabel;
+            }
             set => SetProperty(ref _deviceLabel, value ?? "");
         }
 

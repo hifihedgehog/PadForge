@@ -121,6 +121,14 @@ if (-not $pad2Exists) {
     Start-Sleep -Seconds 2
     
     $padForgeXml = 'C:\PadForge\PadForge.xml'
+
+    # Back up the real settings before this test rewrites slot types and
+    # created flags. Nothing here restored them, so a run left the user's
+    # slot layout replaced by test values permanently.
+    $xmlBak = "$padForgeXml.swap-test-bak"
+    if (Test-Path -LiteralPath $xmlBak) { Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force }
+    elseif (Test-Path -LiteralPath $padForgeXml) { Copy-Item -LiteralPath $padForgeXml -Destination $xmlBak -Force }
+
     [xml]$xml = Get-Content $padForgeXml
     # Set slot 1 to vJoy + created
     $xml.PadForgeSettings.AppSettings.SlotControllerTypes.ChildNodes[1].InnerText = '2'

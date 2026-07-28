@@ -49,6 +49,14 @@ public class W32B {
 "@
 
 $XmlPath = "C:\PadForge\PadForge.xml"
+
+# Back up the real settings before this test rewrites slot types and
+# created flags. Nothing here restored them, so a run left the user's
+# slot layout replaced by test values permanently.
+$xmlBak = "$XmlPath.cap2d-bak"
+if (Test-Path -LiteralPath $xmlBak) { Copy-Item -LiteralPath $xmlBak -Destination $XmlPath -Force }
+elseif (Test-Path -LiteralPath $XmlPath) { Copy-Item -LiteralPath $XmlPath -Destination $xmlBak -Force }
+
 $ExePath = "C:\PadForge\PadForge.exe"
 $OutputDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge.wiki\images"
 

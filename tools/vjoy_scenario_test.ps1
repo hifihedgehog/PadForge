@@ -42,7 +42,7 @@ function Start-PadForgeAndWait($waitSeconds = 12) {
     if (Test-Path $diagLog) { Remove-Item $diagLog -Force }
     Start-Process "C:\PadForge\PadForge.exe"
     Start-Sleep -Seconds $waitSeconds
-    return (Get-Process PadForge -ErrorAction SilentlyContinue) -ne $null
+    return $null -ne (Get-Process PadForge -ErrorAction SilentlyContinue)
 }
 
 function Get-VJoyNodeId {

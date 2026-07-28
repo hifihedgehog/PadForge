@@ -227,6 +227,27 @@ Log "═════════════════════════
 
 Kill-PadForge
 
+# Back up the real settings before wiping them. The reset below sets ALL
+# SIXTEEN slots to uncreated and injects a deliberately bad Custom/99-button
+# config, and nothing here ever put the user's own slot layout back.
+$xmlBak = "$padForgeXml.e2e-bak"
+if (Test-Path -LiteralPath $xmlBak) {
+    Log "!! Leftover backup from an interrupted run; restoring it before re-backup"
+    Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force
+}
+if (Test-Path -LiteralPath $padForgeXml) {
+    Copy-Item -LiteralPath $padForgeXml -Destination $xmlBak -Force
+    Log "Backed up real settings to $xmlBak"
+}
+function Restore-Xml {
+    if (Test-Path -LiteralPath $xmlBak) {
+        Kill-PadForge
+        Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force
+        Remove-Item -LiteralPath $xmlBak -Force -ErrorAction SilentlyContinue
+        Log "Restored real settings from backup"
+    }
+}
+
 # Reset XML: no slots, clear stale vJoy configs
 [xml]$xml = Get-Content $padForgeXml
 for ($i = 0; $i -lt 16; $i++) {
@@ -246,7 +267,7 @@ foreach ($cfg in $xml.PadForgeSettings.AppSettings.VJoyConfigs.ChildNodes) {
 $xml.Save($padForgeXml)
 Log "Reset XML: all slots uncreated, injected stale Custom/99btn at slot 0"
 
-if (-not (Launch-PadForge)) { Log "FATAL: PadForge not found"; exit 1 }
+if (-not (Launch-PadForge)) { Log "FATAL: PadForge not found"; Restore-Xml; exit 1 }
 Log "PadForge launched"
 
 # ═══════════════════════════════════════════════════════
@@ -514,7 +535,7 @@ Log ""
 Log "--- TEST 6: Restart PadForge - configs survive ---"
 
 Kill-PadForge
-if (-not (Launch-PadForge)) { Log "FATAL: PadForge not found after restart"; exit 1 }
+if (-not (Launch-PadForge)) { Log "FATAL: PadForge not found after restart"; Restore-Xml; exit 1 }
 Log "PadForge restarted"
 
 # Check Pad1
@@ -557,6 +578,7 @@ if (Navigate "Pad2") {
 #  RESULTS
 # ═══════════════════════════════════════════════════════
 Log ""
+Restore-Xml
 Log "═══════════════════════════════════════════════════"
 Log "  RESULTS: $($global:passed) passed, $($global:failed) failed out of $($global:passed + $global:failed) tests"
 Log "═══════════════════════════════════════════════════"

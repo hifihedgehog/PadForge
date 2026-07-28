@@ -78,7 +78,7 @@ function Start-PadForgeClean {
     if (Test-Path $diagLog) { Remove-Item $diagLog -Force }
     Start-Process "C:\PadForge\PadForge.exe"
     Start-Sleep -Seconds 10
-    return (Get-Process PadForge -ErrorAction SilentlyContinue) -ne $null
+    return $null -ne (Get-Process PadForge -ErrorAction SilentlyContinue)
 }
 
 function Get-DiagLogEntries {
@@ -92,7 +92,7 @@ function Show-State($label) {
     $nodeId = Get-VJoyNodeId
     $jc = Get-JoyCplCount
     $reg = Get-RegDeviceCount
-    $pf = (Get-Process PadForge -ErrorAction SilentlyContinue) -ne $null
+    $pf = $null -ne (Get-Process PadForge -ErrorAction SilentlyContinue)
     Log ("  [$label] node=" + $nodeId + " joyCpl=" + $jc + " reg=" + $reg + " padforge=" + $pf)
     return @{ Node = $nodeId; JoyCpl = $jc; Reg = $reg; PadForge = $pf }
 }

@@ -27,6 +27,36 @@ function Log($msg) { $msg | Out-File $logFile -Append -Encoding utf8; Write-Host
 "" | Out-File $logFile -Encoding utf8 -Force
 Log "=== vJoy Stale Config Verification $(Get-Date) ==="
 
+# This test writes DELIBERATELY BAD config into the live settings: a stale
+# Custom/77-button vJoy block whose whole purpose is to be wrong. It took no
+# backup and never restored, so a run left that in PadForge.xml permanently,
+# and each of the five early exits below abandoned it there.
+$xmlBak = "$padForgeXml.stale-verify-bak"
+if (-not (Test-Path -LiteralPath $padForgeXml)) {
+    Log "FAIL: $padForgeXml not found. Nothing changed."
+    exit 1
+}
+if (Test-Path -LiteralPath $xmlBak) {
+    # Leftover backup means an earlier run never restored. It holds the real
+    # settings; the live file is this test's residue.
+    Log "!! Leftover backup from an interrupted run; restoring it before re-backup"
+    Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force
+}
+Copy-Item -LiteralPath $padForgeXml -Destination $xmlBak -Force
+Log "Backed up real settings to $xmlBak"
+
+function Restore-Xml {
+    if (Test-Path -LiteralPath $xmlBak) {
+        Stop-Process -Name PadForge -Force -ErrorAction SilentlyContinue
+        Start-Sleep -Seconds 2
+        Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force
+        Remove-Item -LiteralPath $xmlBak -Force -ErrorAction SilentlyContinue
+        Log "Restored real settings from backup"
+    }
+}
+
+function Stop-Test($msg) { Log $msg; Restore-Xml; exit 1 }
+
 Stop-Process -Name PadForge -Force -ErrorAction SilentlyContinue
 Start-Sleep -Seconds 2
 
@@ -75,7 +105,7 @@ $tree = [System.Windows.Automation.TreeScope]
 
 $cond = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, "PadForge")
 $mainWin = $ae::RootElement.FindFirst($tree::Children, $cond)
-if (-not $mainWin) { Log "FAIL: PadForge not found"; exit 1 }
+if (-not $mainWin) { Stop-Test "FAIL: PadForge not found" }
 Log "Found PadForge"
 
 # Test A: Pad1 (slot 0) should have loaded Custom/32
@@ -83,14 +113,14 @@ Log ""
 Log "--- Test A: Created vJoy slot loads saved config ---"
 $navCond = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, "Pad1")
 $pad1 = $mainWin.FindFirst($tree::Descendants, $navCond)
-if (-not $pad1) { Log "FAIL: Pad1 not found"; exit 1 }
+if (-not $pad1) { Stop-Test "FAIL: Pad1 not found" }
 $sel = $pad1.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern)
 $sel.Select()
 Start-Sleep -Seconds 2
 
 $comboCond = New-Object System.Windows.Automation.PropertyCondition($ae::AutomationIdProperty, "VJoyPresetCombo")
 $combo = $mainWin.FindFirst($tree::Descendants, $comboCond)
-if (-not $combo) { Log "FAIL: VJoyPresetCombo not found on Pad1"; exit 1 }
+if (-not $combo) { Stop-Test "FAIL: VJoyPresetCombo not found on Pad1" }
 
 $selPattern = $combo.GetCurrentPattern([System.Windows.Automation.SelectionPattern]::Pattern)
 $selected = $selPattern.Current.GetSelection()
@@ -144,11 +174,11 @@ Start-Process $padForgeExe
 Start-Sleep -Seconds 6
 
 $mainWin2 = $ae::RootElement.FindFirst($tree::Children, $cond)
-if (-not $mainWin2) { Log "FAIL: PadForge not found after relaunch"; exit 1 }
+if (-not $mainWin2) { Stop-Test "FAIL: PadForge not found after relaunch" }
 
 $navCond2 = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, "Pad2")
 $pad2 = $mainWin2.FindFirst($tree::Descendants, $navCond2)
-if (-not $pad2) { Log "FAIL: Pad2 not found"; exit 1 }
+if (-not $pad2) { Stop-Test "FAIL: Pad2 not found" }
 $sel2 = $pad2.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern)
 $sel2.Select()
 Start-Sleep -Seconds 2
@@ -174,5 +204,6 @@ if ($combo2) {
     Log "FAIL: VJoyPresetCombo not found on Pad2"
 }
 
+Restore-Xml
 Log ""
 Log "=== All Tests Complete ==="

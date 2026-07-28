@@ -629,10 +629,30 @@ namespace PadForge.Engine.Common.Mapping
         /// gravX argument is unused (the player-space formula only
         /// needs gravity's Y and Z components) but kept in the
         /// signature for symmetry with WorldSpaceProject.</summary>
+        /// <summary>Normalizes the gravity vector the space projections
+        /// consume. GamepadMotion.hpp's CalculateWorldSpaceGyro /
+        /// PlayerSpace math assumes UNIT gravity, and the no-data sentinel
+        /// (0, 0, -1) is unit length, but the live provider stores the
+        /// EMA-filtered accelerometer in m/s2 (InputService writes
+        /// st.Accel straight through), so real gravity arrived about 9.8x
+        /// too long. Player space then saturated its own
+        /// Math.Min(|worldYaw|, yzMag) clamp and returned full local yaw
+        /// magnitude instead of the projected fraction, defeating the point
+        /// of the projection; world space scaled its yaw the same way.
+        /// Zero-length input falls back to the sentinel (round 34).</summary>
+        private static (float x, float y, float z) NormalizeGravity(float gx, float gy, float gz)
+        {
+            float len = (float)Math.Sqrt(gx * gx + gy * gy + gz * gz);
+            if (len < 1e-6f) return (0f, 0f, -1f);
+            return (gx / len, gy / len, gz / len);
+        }
+
         private static (float yaw, float pitch) PlayerSpaceProject(
             float gPitch, float gYaw, float gRoll,
             float _gravX, float gravY, float gravZ, float yawRelax)
         {
+            var gn = NormalizeGravity(_gravX, gravY, gravZ);
+            gravY = gn.y; gravZ = gn.z;
             // worldYaw = -(gravY * gyroY + gravZ * gyroZ)
             float worldYaw = -(gravY * gYaw + gravZ * gRoll);
             float worldSign = worldYaw < 0f ? -1f : 1f;
@@ -648,6 +668,8 @@ namespace PadForge.Engine.Common.Mapping
             float gPitch, float gYaw, float gRoll,
             float gravX, float gravY, float gravZ, float sideReduce)
         {
+            var gnw = NormalizeGravity(gravX, gravY, gravZ);
+            gravX = gnw.x; gravY = gnw.y; gravZ = gnw.z;
             float worldYaw = -gravX * gPitch - gravY * gYaw - gravZ * gRoll;
 
             // pitchAxis = (1 - gravX*gravX, -gravY*gravX, -gravZ*gravX), normalized

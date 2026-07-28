@@ -15,6 +15,15 @@ namespace PadForge.Views
         public RemoteLinkPairDialog(string sas, string fingerprintHex)
         {
             InitializeComponent();
+            // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
+            // WindowChrome.CaptionHeight, and this dialog declares no
+            // <ui:TitleBar>, so no point in the window was non-client and it
+            // could not be moved at all. Same remedy MainWindow uses on its
+            // branding bar. Controls that need the click (Button, TextBox,
+            // ListBoxItem) mark this bubbling event handled, so the drag only
+            // starts on inert chrome.
+            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
+
             SasText.Text = FormatSas(sas);
             IdentityText.Text = FormatFingerprint(fingerprintHex);
         }

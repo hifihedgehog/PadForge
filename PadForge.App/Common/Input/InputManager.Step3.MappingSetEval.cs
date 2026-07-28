@@ -1668,6 +1668,30 @@ namespace PadForge.Common.Input
         /// so the defaults were dead as well as dangerous. Requiring them
         /// moves the check from a future audit round to the
         /// compiler.</para></summary>
+
+        /// <summary>Per-thread synthetic source for the two readers below.
+        /// They ran on the 1 kHz Step 3 path and allocated a MappingSource on
+        /// every call, six call sites per slot per tick.
+        ///
+        /// <para>Reuse is safe, checked rather than assumed. The evaluator
+        /// mutates exactly three things on the source it is handed: the two
+        /// gate caches, both unreachable here because this source carries no
+        /// GateDescriptor or Gate2Descriptor, and the menu-parse cache, which
+        /// is guarded by a ReferenceEquals on the descriptor and therefore
+        /// re-parses correctly when the descriptor changes between calls.
+        /// Nothing anywhere retains the instance past the call. ThreadStatic
+        /// rather than a plain field so a non-poll caller cannot share it.</para></summary>
+        [ThreadStatic] private static MappingSource _syntheticDirectScratch;
+
+        private static MappingSource SyntheticDirect(string descriptor, string deviceGuid)
+        {
+            var src = _syntheticDirectScratch ??= new MappingSource();
+            src.Kind = "Direct";
+            src.Descriptor = descriptor ?? "";
+            src.DeviceGuid = deviceGuid ?? "";
+            return src;
+        }
+
         private static float SourceKindRuntimeReadAxisLikeFloat(CustomInputState state, string descriptor,
             string deviceGuid, int slotIndex)
             => SourceEvaluator.EvaluateForBipolarAxisTarget(
@@ -1675,7 +1699,7 @@ namespace PadForge.Common.Input
                 // DeviceGuid rides along so per-device engine families
                 // ("IR Offscreen"'s debounce store, the IR EMA keys) never
                 // collapse onto a shared empty-string key (#203 review).
-                new MappingSource { Kind = "Direct", Descriptor = descriptor ?? "", DeviceGuid = deviceGuid ?? "" },
+                SyntheticDirect(descriptor, deviceGuid),
                 slotIndex, "", 0, null, 0);
 
         // Reuses the Engine's button-like reader without going through the
@@ -1691,7 +1715,7 @@ namespace PadForge.Common.Input
             string deviceGuid, int slotIndex)
             => SourceEvaluator.EvaluateForButtonTarget(
                 state,
-                new MappingSource { Kind = "Direct", Descriptor = descriptor ?? "", DeviceGuid = deviceGuid ?? "" },
+                SyntheticDirect(descriptor, deviceGuid),
                 50, slotIndex, "", 0, null, 0);
 
         // ─────────────────────────────────────────────

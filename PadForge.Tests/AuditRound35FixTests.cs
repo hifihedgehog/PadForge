@@ -719,6 +719,47 @@ namespace PadForge.Tests
                 $"A set whose only authoring is {property} reads as empty, so cold load drops it.");
         }
 
+        // ── Every trigger-combo edit drops the armed windows ──
+
+        /// <summary>FAMILY guard. Changing a macro's trigger combo mid-hold has
+        /// to invalidate the armed windows, or the OLD combo's hold, streak and
+        /// last-sample state gets credited to the new one. SetTriggerInputEntries
+        /// did this inline and the three legacy removal paths, which edit the
+        /// same combo, did none of it. Keyed off the method names so a fourth
+        /// editing path that forgets the call fails here.</summary>
+        [Fact]
+        public void EveryTriggerComboEdit_ClearsTheArmedWindows()
+        {
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                RepoRoot(), "PadForge.App", "ViewModels", "MacroItem.cs"));
+
+            string[] editors =
+            {
+                "SetTriggerInputEntries",
+                "RemoveLegacyTriggerButton",
+                "RemoveLegacyCustomButton",
+                "RemoveLegacyAxisTarget",
+            };
+
+            var offenders = new System.Collections.Generic.List<string>();
+            foreach (var name in editors)
+            {
+                int at = src.IndexOf("private void " + name, StringComparison.Ordinal);
+                if (at < 0) at = src.IndexOf("public void " + name, StringComparison.Ordinal);
+                Assert.True(at > 0, name + " not found. Test is stale.");
+
+                // Body runs to the next member declaration; a generous window
+                // is fine because the call must appear near the top anyway.
+                string body = src.Substring(at, Math.Min(1200, src.Length - at));
+                if (!body.Contains("ClearArmedTriggerWindows", StringComparison.Ordinal))
+                    offenders.Add(name);
+            }
+
+            Assert.True(offenders.Count == 0,
+                "Trigger-combo edits that leave an armed window credited to the old combo: "
+                + string.Join(", ", offenders));
+        }
+
         [Fact]
         public void ImpulseTriggerPids_StillRejectNonImpulsePads()
         {

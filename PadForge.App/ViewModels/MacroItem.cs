@@ -1374,19 +1374,7 @@ namespace PadForge.ViewModels
         /// finalizing a multi-device combo.</summary>
         public void SetTriggerInputEntries(List<TriggerInputEntry> entries)
         {
-            // Editing the trigger combo mid-hold invalidates every armed
-            // window: the old entries' state must not be credited to the
-            // new entries (audit 2026-07-25 round four, R15). Mirrors the
-            // TriggerMode setter's clears.
-            TriggerHoldStartUtc = DateTime.MinValue;
-            TriggerHoldFired = false;
-            TriggerPressStreak = 0;
-            TriggerLastPressUtc = DateTime.MinValue;
-            // The previous sample belonged to the OLD trigger (round five,
-            // X15): swapping to a trigger already held would otherwise read
-            // as a fresh observed edge.
-            LastEvaluatedUtc = DateTime.MinValue;
-            WasTriggerActive = false;
+            ClearArmedTriggerWindows();
 
             _triggerInputEntries = entries ?? new List<TriggerInputEntry>();
             WireTriggerInputEntries();
@@ -1548,15 +1536,38 @@ namespace PadForge.ViewModels
             SetTriggerInputEntries(list);   // raises TriggerDisplayText / TriggerInputItems / ...
         }
 
+        /// <summary>Drops every armed trigger window. Editing the trigger combo
+        /// mid-hold invalidates all of them: the OLD combo's state must not be
+        /// credited to the new one (audit 2026-07-25 round four, R15), and the
+        /// previous sample belonged to the old trigger, so swapping to one
+        /// already held would otherwise read as a fresh observed edge (round
+        /// five, X15). Mirrors the TriggerMode setter's clears.
+        ///
+        /// <para>Extracted because the three legacy removal paths below change
+        /// the trigger combo exactly as SetTriggerInputEntries does, and none of
+        /// them cleared any of this. Removing a legacy trigger button mid-hold
+        /// left the armed window credited to the smaller combo.</para></summary>
+        private void ClearArmedTriggerWindows()
+        {
+            TriggerHoldStartUtc = DateTime.MinValue;
+            TriggerHoldFired = false;
+            TriggerPressStreak = 0;
+            TriggerLastPressUtc = DateTime.MinValue;
+            LastEvaluatedUtc = DateTime.MinValue;
+            WasTriggerActive = false;
+        }
+
         private void RemoveLegacyTriggerButton(ushort flag)
         {
             StopRecordingBeforeTriggerEdit();
+            ClearArmedTriggerWindows();
             TriggerButtons = (ushort)(_triggerButtons & ~flag);
         }
 
         private void RemoveLegacyCustomButton(int index)
         {
             StopRecordingBeforeTriggerEdit();
+            ClearArmedTriggerWindows();
             var words = (uint[])_triggerCustomButtonWords.Clone();
             int word = index / 32, bit = index % 32;
             if (word < words.Length) words[word] &= ~(uint)(1 << bit);
@@ -1567,6 +1578,7 @@ namespace PadForge.ViewModels
         {
             if (index < 0 || index >= _triggerAxisTargets.Length) return;
             StopRecordingBeforeTriggerEdit();
+            ClearArmedTriggerWindows();
             var targets = _triggerAxisTargets.ToList();
             targets.RemoveAt(index);
             var dirs = _triggerAxisDirections.ToList();

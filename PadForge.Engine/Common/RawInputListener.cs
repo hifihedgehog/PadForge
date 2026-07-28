@@ -1285,19 +1285,30 @@ namespace PadForge.Engine
                     // 0..65535 jump as a delta produces wild spurious
                     // motion. Match SDL3 / XInput behaviour and
                     // ignore these events.
-                    if ((mouse.usFlags & 1) != 0) return;
+                    // Skip only the DELTA, not the whole packet. This used to
+                    // `return` outright, which also threw away the button and
+                    // wheel state carried in the SAME report, so an
+                    // absolute-mode pointer (RDP's virtual mouse, a VM's guest
+                    // additions, a tablet, some KVMs) lost its clicks and its
+                    // scroll entirely rather than just its bogus jump. The
+                    // reasoning above applies to lLastX/lLastY and to nothing
+                    // else in this structure.
+                    bool absoluteMove = (mouse.usFlags & 1) != 0;
 
                     MouseDeviceState state = _mouseStates.GetOrAdd(hDevice, _ => new MouseDeviceState());
 
-                    if (mouse.lLastX != 0)
+                    if (!absoluteMove)
                     {
-                        Interlocked.Add(ref state.DeltaX, mouse.lLastX);
-                        Interlocked.Add(ref _aggregateMouseState.DeltaX, mouse.lLastX);
-                    }
-                    if (mouse.lLastY != 0)
-                    {
-                        Interlocked.Add(ref state.DeltaY, mouse.lLastY);
-                        Interlocked.Add(ref _aggregateMouseState.DeltaY, mouse.lLastY);
+                        if (mouse.lLastX != 0)
+                        {
+                            Interlocked.Add(ref state.DeltaX, mouse.lLastX);
+                            Interlocked.Add(ref _aggregateMouseState.DeltaX, mouse.lLastX);
+                        }
+                        if (mouse.lLastY != 0)
+                        {
+                            Interlocked.Add(ref state.DeltaY, mouse.lLastY);
+                            Interlocked.Add(ref _aggregateMouseState.DeltaY, mouse.lLastY);
+                        }
                     }
 
                     ushort flags = mouse.usButtonFlags;

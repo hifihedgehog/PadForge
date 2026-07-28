@@ -878,7 +878,13 @@ namespace PadForge.Views
             if (DataContext is not PadViewModel vm) return;
             var tags = new List<int>();
             foreach (var rb in FindVisualChildren<RadioButton>(this))
-                if (rb.GroupName == "PadTab" && rb.IsVisible && rb.IsEnabled && TryGetTagIndex(rb, out int idx))
+                // Both tiers. The device-tier tabs sit in their own radio group
+                // ("PadTabDevice") so WPF never auto-unchecks across tiers, and
+                // filtering on the base group alone made Ctrl+Tab skip every
+                // one of them: the strip showed tabs the keyboard could not
+                // reach.
+                if ((rb.GroupName == "PadTab" || rb.GroupName == "PadTabDevice")
+                    && rb.IsVisible && rb.IsEnabled && TryGetTagIndex(rb, out int idx))
                     tags.Add(idx);
             if (tags.Count == 0) return;
             int cur = tags.IndexOf(vm.SelectedConfigTab);

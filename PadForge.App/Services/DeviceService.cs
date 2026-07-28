@@ -506,6 +506,13 @@ namespace PadForge.Services
             // bubble-down cascade in InputService.OnSlotDeleted.
             var deletedType = _mainVm.Pads[slotIndex].OutputType;
             int oldPosition = SettingsManager.SlotOrders.GetOrderFor(deletedType).IndexOf(slotIndex);
+            // The toast's slot number belongs in this same capture. It was the
+            // one status message in this file using the raw slotIndex + 1 while
+            // its three siblings resolve the DISPLAY number, so a reordered
+            // slot was announced as deleted under a number the user never saw.
+            // Resolving it after the removal below would not work either: the
+            // slot is gone from the order by then.
+            int displayNo = ResolveDisplaySlotNumber(slotIndex);
 
             SettingsManager.SlotCreated[slotIndex] = false;
             SettingsManager.SlotEnabled[slotIndex] = true; // Reset to default.
@@ -545,7 +552,7 @@ namespace PadForge.Services
             }
 
             _settingsService.MarkDirty();
-            _mainVm.StatusText = string.Format(Strings.Instance.Status_VCDeleted_Format, slotIndex + 1);
+            _mainVm.StatusText = string.Format(Strings.Instance.Status_VCDeleted_Format, displayNo);
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
             return new SlotDeletionInfo(deletedType, oldPosition);
         }

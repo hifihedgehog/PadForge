@@ -4021,7 +4021,10 @@ namespace PadForge.Engine.Common.Mapping
             public float FrameDelta;
         }
 
-        private static readonly ConcurrentDictionary<string, TouchpadAxisDelta> _touchpadDeltas = new();
+        // Tuple key: the composed string version allocated on every
+        // relative-delta read (poll path). See the device component's note
+        // at the key site (round 34).
+        private static readonly ConcurrentDictionary<(int Slot, string Device, int Pad, int Finger, int Axis, int Half), TouchpadAxisDelta> _touchpadDeltas = new();
 
         /// <summary>Per-frame multiplier applied to (current - previous)
         /// touchpad position to convert pad fraction into bipolar source
@@ -4087,7 +4090,16 @@ namespace PadForge.Engine.Common.Mapping
             // slot reads a zero delta. The half window joins the key so a
             // "X Left" row and a whole-pad "X" row on the same finger keep
             // independent previous-frame state (#9 B-1).
-            string key = slotIndex + "|" + deviceGuid + "|" + padIdx + "|" + fingerIdx + "|" + axisOffset + "|" + half;
+            // EFFECTIVE device guid, not the raw src.DeviceGuid. A
+            // device-free source on a multi-device slot is evaluated once
+            // per device each poll, so keying on the empty raw guid gave
+            // both devices ONE tracker and the second device's delta was
+            // measured against the first device's previous position. This
+            // file's own GetMouseFeelState doc already calls that "the
+            // _touchpadDeltas pattern", describing behavior this key did
+            // not actually have (round 34).
+            string trackerDevice = string.IsNullOrEmpty(deviceGuid) ? (evaluatedDeviceGuid ?? "") : deviceGuid;
+            var key = (slotIndex, trackerDevice, padIdx, fingerIdx, axisOffset, half);
 
             // Lifted finger → reset delta tracker, return 0. A finger
             // outside the descriptor's half window gates the same way

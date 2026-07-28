@@ -863,6 +863,47 @@ namespace PadForge.Tests
             Assert.False(combined.Notes[5]);
         }
 
+        /// <summary>The test above proves CopyMidiInto copies. It does NOT
+        /// prove Step 4 calls it, and Step 4's bare assign was the actual bug:
+        /// reverting the call site leaves that test green. This guards the call
+        /// site itself.
+        ///
+        /// <para>Every array-carrying combined state in Step 4 must be copied
+        /// into, never assigned from a device's published state, because the
+        /// empty-slot branch calls Clear() on it.</para></summary>
+        [Fact]
+        public void Step4_CopiesArrayCarryingStates_NeverAliasesTheDevice()
+        {
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                RepoRoot(), "PadForge.App", "Common", "Input",
+                "InputManager.Step4.CombineOutputStates.cs"));
+
+            // Positive control: the file really is the one with the combine.
+            Assert.Contains("CombinedMidiRawStates", src, StringComparison.Ordinal);
+            Assert.Contains("CopyRawInto", src, StringComparison.Ordinal);
+
+            // The two lanes whose state carries arrays. KbmRawState is all
+            // value fields, so its plain assign is correct and is not listed.
+            // `= default` is a reset, not an alias, and is allowed.
+            var offenders = new System.Collections.Generic.List<string>();
+            foreach (string lane in new[] { "CombinedMidiRawStates", "CombinedRawHidStates" })
+            {
+                foreach (System.Text.RegularExpressions.Match m in
+                         System.Text.RegularExpressions.Regex.Matches(
+                             src, lane + @"\[padIndex\] = (?<rhs>[^;]+);"))
+                {
+                    string rhs = m.Groups["rhs"].Value.Trim();
+                    if (rhs == "default") continue;
+                    offenders.Add(lane + " = " + rhs);
+                }
+            }
+
+            Assert.True(offenders.Count == 0,
+                "Combined state assigned from a device's published state instead of copied, so "
+                + "the empty-slot Clear() writes through into that device's own arrays: "
+                + string.Join(", ", offenders));
+        }
+
         [Fact]
         public void ImpulseTriggerPids_StillRejectNonImpulsePads()
         {

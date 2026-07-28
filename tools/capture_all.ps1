@@ -1396,7 +1396,11 @@ Start-Sleep -Milliseconds 2000
 Write-Host ""
 Write-Host "=== STEP 3: Capture pages ===" -ForegroundColor Cyan
 $n = 0
-$total = 62
+# Count of NUMBERED blocks below, which is what Next() advances, not the number
+# of screenshots (76 distinct Cap names, since several blocks take more than
+# one shot). This read 62, so a complete run ended on "[34/62]" and looked like
+# it had skipped 28 steps on a script that runs for many minutes.
+$total = 34
 
 function Next { $script:n++; return $script:n }
 

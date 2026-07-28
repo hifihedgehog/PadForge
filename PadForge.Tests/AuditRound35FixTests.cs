@@ -256,6 +256,54 @@ namespace PadForge.Tests
             }
         }
 
+        // ── Every chromeless FluentWindow must be movable ──
+
+        /// <summary>
+        /// A FluentWindow with ExtendsContentIntoTitleBar has
+        /// WindowChrome.CaptionHeight = 0, so unless it declares a
+        /// &lt;ui:TitleBar&gt; or wires a drag itself, NO point in the window is
+        /// non-client and the dialog cannot be moved at all. Twelve shipped
+        /// that way. This is the family guard: a thirteenth fails here on
+        /// arrival instead of after a release.
+        /// </summary>
+        [Fact]
+        public void EveryChromelessFluentWindow_CanBeDragged()
+        {
+            string root = RepoRoot();
+            var offenders = new System.Collections.Generic.List<string>();
+            int checkedCount = 0;
+
+            foreach (var xaml in System.IO.Directory.EnumerateFiles(
+                         System.IO.Path.Combine(root, "PadForge.App"), "*.xaml",
+                         System.IO.SearchOption.AllDirectories))
+            {
+                string markup = System.IO.File.ReadAllText(xaml);
+                if (!markup.Contains("FluentWindow")) continue;
+                if (!markup.Contains("ExtendsContentIntoTitleBar=\"True\"")) continue;
+                checkedCount++;
+
+                // A real <ui:TitleBar> element supplies the drag region.
+                if (System.Text.RegularExpressions.Regex.IsMatch(markup, @"<\w+:TitleBar\b")) continue;
+                // Or the markup wires a drag handler directly.
+                if (markup.Contains("MouseLeftButtonDown=")) continue;
+                // Or the code-behind does.
+                string cb = xaml + ".cs";
+                if (System.IO.File.Exists(cb))
+                {
+                    string code = System.IO.File.ReadAllText(cb);
+                    if (code.Contains("DragMove()") || code.Contains("MouseLeftButtonDown")) continue;
+                }
+                offenders.Add(System.IO.Path.GetFileName(xaml));
+            }
+
+            // Positive control: if the scan matched nothing, "no offenders"
+            // would be vacuously true.
+            Assert.True(checkedCount > 0, "found no chromeless FluentWindow to check");
+            Assert.True(offenders.Count == 0,
+                "these chromeless FluentWindows have no drag region and cannot be moved: "
+                + string.Join(", ", offenders));
+        }
+
         // ── Xbox impulse-trigger PIDs ──
 
         /// <summary>The BLE re-enumerations of the Xbox One S and Elite Series

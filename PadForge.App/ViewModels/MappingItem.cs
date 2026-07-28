@@ -1822,8 +1822,8 @@ namespace PadForge.ViewModels
                 ? positionLabel + " — " + PadForge.Resources.Strings.Strings.Instance.Pad_Formula_Var_NotYetMapped
                 : positionLabel + " · " + alias;
 
-        /// <summary>The sources that occupy a Custom formula's positional
-        /// slots, in order, mirroring what the engine's contribution builder
+        /// <summary>Walks the sources that occupy a Custom formula's
+        /// positional slots, mirroring what the engine's contribution builder
         /// does. Two classes are skipped there with NO placeholder, so they
         /// shift every later letter:
         ///
@@ -1837,20 +1837,30 @@ namespace PadForge.ViewModels
         ///
         /// <para>The UI used to count the primary plus ExtraSources.Count
         /// flat. Since the load path materializes Sources[1..] as visible
-        /// ExtraSources rows, including the promoted Neg pair, that count
-        /// ran ahead of the engine's: a formula referencing the last letter
+        /// ExtraSources rows, including the promoted Neg pair, that count ran
+        /// ahead of the engine's: a formula referencing the last letter
         /// validated green in the editor and silently read nothing at
-        /// runtime, and the chip aliases named the wrong physical input.
-        /// Entries are null for the primary slot.</para></summary>
-        internal System.Collections.Generic.List<MappingSourceItem> PositionalSources()
+        /// runtime, and the chip aliases named the wrong physical input.</para>
+        ///
+        /// <para>Allocation-free: this walks and either counts
+        /// (<paramref name="wanted"/> below zero) or returns the source at
+        /// that slot. Both entry points below are UI getters that re-fire on
+        /// every source change, so materializing a list per read was pure
+        /// churn.</para></summary>
+        private MappingSourceItem WalkPositionalSlots(int wanted, out int count)
         {
-            var slots = new System.Collections.Generic.List<MappingSourceItem>(4);
+            count = 0;
+            MappingSourceItem hit = null;
             bool primaryIsModifier = string.Equals(
                 PrimaryKindSource?.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal);
             bool primaryExists = !string.IsNullOrEmpty(_sourceDescriptor) || primaryIsModifier;
-            if (primaryExists && !primaryIsModifier) slots.Add(null);
+            if (primaryExists && !primaryIsModifier)
+            {
+                if (count == wanted) hit = null;   // slot 0 IS the primary
+                count++;
+            }
 
-            if (ExtraSources == null) return slots;
+            if (ExtraSources == null) return hit;
 
             // The engine's neg-pair test, on the same two facts: Sources[1]
             // shares the primary's device and its Invert is flipped.
@@ -1874,15 +1884,19 @@ namespace PadForge.ViewModels
                 if (extra != null && string.Equals(extra.Kind ?? "Direct", "InvertOnHold",
                         StringComparison.Ordinal))
                     continue;
-                slots.Add(extra);
+                if (count == wanted) hit = extra;
+                count++;
             }
-            return slots;
+            return hit;
         }
 
         /// <summary>How many letters a Custom formula may reference on this
-        /// row. See <see cref="PositionalSources"/> for why this is not
+        /// row. See <see cref="WalkPositionalSlots"/> for why this is not
         /// simply the primary plus ExtraSources.Count.</summary>
-        internal int PositionalSourceCount => PositionalSources().Count;
+        internal int PositionalSourceCount
+        {
+            get { WalkPositionalSlots(-1, out int n); return n; }
+        }
 
         /// <summary>Returns "DeviceLabel · InputName" for the source
         /// at the given position (0 = primary, 1+ = ExtraSources in
@@ -1896,10 +1910,9 @@ namespace PadForge.ViewModels
                 return string.IsNullOrEmpty(_primarySourceDeviceLabel)
                     ? name : _primarySourceDeviceLabel + " · " + name;
             }
-            var slots = PositionalSources();
-            if (index < 0 || index >= slots.Count) return "";
-            var extra = slots[index];
-            if (extra == null) return "";
+            if (index < 0) return "";
+            var extra = WalkPositionalSlots(index, out int slotCount);
+            if (index >= slotCount || extra == null) return "";
             if (extra == null || string.IsNullOrEmpty(extra.Descriptor)) return "";
             string ename = extra.SelectedInput?.DisplayName ?? extra.Descriptor;
             return string.IsNullOrEmpty(extra.DeviceLabel)

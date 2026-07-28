@@ -419,11 +419,28 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Per-stick speed multiplier for the KEYBOARD AND MOUSE
-        /// lane only. Stick 0 there is mouse movement and stick 1 is the
-        /// scroll wheel: both are rate outputs, so a multiplier is the
+        /// lane only, called from <see cref="MapInputToKbmRaw"/>: stick 0 is
+        /// mouse movement (MouseDeltaX/Y) and stick 1 is the scroll wheel
+        /// (ScrollDelta). Both are rate outputs, so a multiplier is the
         /// natural control and there is no fixed full-scale for it to clamp
         /// against the way there is on a gamepad stick, where the per-axis
-        /// response curves own the shaping instead.</summary>
+        /// response curves own the shaping instead.
+        ///
+        /// <para>Deliberately NOT called from MapInputToExtendedRaw. That
+        /// function serves Extended and Nintendo raw-HID slots, whose sticks
+        /// are absolute-position gamepad sticks. A first cut of this change
+        /// put the call there by mistake, which scaled exactly the sticks the
+        /// owner had ruled out while still leaving the KBM rate outputs
+        /// untouched.</para></summary>
+        /// <summary>Test seam for <see cref="ApplyKbmStickSpeed"/>.</summary>
+        internal static void ApplyKbmStickSpeedForTest(ref short x, ref short y, double sens)
+            => ApplyKbmStickSpeed(ref x, ref y, sens);
+
+        /// <summary>Test seam for <see cref="EnsureRawShape"/>, so a guard
+        /// test can size a RawHidState the way Step 3 does.</summary>
+        internal static void EnsureRawShapeForTest(ref RawHidState raw, CustomControllerLayout cfg)
+            => EnsureRawShape(ref raw, cfg);
+
         private static void ApplyKbmStickSpeed(ref short x, ref short y, double sens)
         {
             if (sens <= 0 || Math.Abs(sens - 1.0) < 1e-6) return;
@@ -2184,15 +2201,13 @@ namespace PadForge.Common.Input
                     Common.StickBoundary.GetOrBuild(boundaryMap));
                 ApplyDeadZone(ref raw.Axes[xi], ref raw.Axes[yi],
                     dzX, dzY, adzX, adzY, lin, mrX, mrY, mrXN, mrYN, lutX, lutY, dzShape);
-                // Speed knob, applied after the deadzone / range / curve
-                // stage so the Sticks tab scales what the mapping table
-                // produced. KBM stick 0 is mouse movement and stick 1 is the
-                // scroll wheel, both rate outputs, which is the one place
-                // this multiplier is the right instrument. The field carried
-                // no engine reader at all before this.
-                ApplyKbmStickSpeed(ref raw.Axes[xi], ref raw.Axes[yi],
-                    TryParseDoubleStatic(
-                        g == 0 ? ps.LeftThumbSensitivity : ps.RightThumbSensitivity, 1));
+                // NO speed multiplier here. This function serves Extended and
+                // Nintendo raw-HID slots, whose sticks are absolute-position
+                // gamepad sticks: the stage above has already mapped full
+                // deflection to full scale, so a multiplier can only rescale
+                // partial deflections and clip. The per-axis response curves
+                // own the shaping (owner ruling 2026-07-27). The keyboard-and-
+                // mouse rate outputs get the knob, in MapInputToKbmRaw.
             }
 
             for (int g = 0; g < cfg.Triggers; g++)
@@ -2658,6 +2673,11 @@ namespace PadForge.Common.Input
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveY),
                 ParseDeadZoneShape(ps.LeftThumbDeadZoneShape));
+            // Mouse-movement speed (Sticks tab, stick 0 on a KBM slot).
+            // Applied after the deadzone / range / curve stage so the tab
+            // scales what the mapping table produced.
+            ApplyKbmStickSpeed(ref raw.MouseDeltaX, ref raw.MouseDeltaY,
+                TryParseDoubleStatic(ps.LeftThumbSensitivity, 1));
 
             // ── Wii pointer modes (issue #203) ──
             // Placed AFTER the relative lane's deadzone so FPS Mouse's
@@ -2710,6 +2730,10 @@ namespace PadForge.Common.Input
                     Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
                     Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
                     ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
+                // Scroll speed (Sticks tab, stick 1 on a KBM slot). scrollX is
+                // the dummy the deadzone call needs; only ScrollDelta ships.
+                ApplyKbmStickSpeed(ref scrollX, ref raw.ScrollDelta,
+                    TryParseDoubleStatic(ps.RightThumbSensitivity, 1));
             }
 
             // ── Horizontal scroll (issue #154, office-mouse tilt wheel) ──

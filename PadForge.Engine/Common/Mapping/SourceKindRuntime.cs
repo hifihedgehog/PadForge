@@ -127,6 +127,13 @@ namespace PadForge.Engine.Common.Mapping
             RemoveWhere(_windingState, slot, null);
             RemoveWhere(_lockState, slot, null);
             RemoveWhere(_flickState, slot, null);
+            // The accumulators, not only their frame-replay stamps. All five
+            // dictionaries key on (slot, target, srcIdx), so a wholesale row
+            // replacement invalidates every one of them: dropping the stamp
+            // while leaving the value just meant the re-authored row resumed
+            // the previous occupant's cruise position on the next tick.
+            RemoveWhere(_incrementalAccum, slot, null);
+            RemoveWhere(_rampedAccum, slot, null);
             RemoveWhere(_incrementalReplay, slot, null);
             RemoveWhere(_rampedReplay, slot, null);
         }
@@ -141,6 +148,10 @@ namespace PadForge.Engine.Common.Mapping
         {
             RemoveWhere(_windingState, slot, target ?? "");
             RemoveWhere(_lockState, slot, target ?? "");
+            RemoveWhere(_incrementalAccum, slot, target ?? "");
+            RemoveWhere(_rampedAccum, slot, target ?? "");
+            RemoveWhere(_incrementalReplay, slot, target ?? "");
+            RemoveWhere(_rampedReplay, slot, target ?? "");
         }
 
         /// <summary>Drops the captured MotionLean neutral orientations (the

@@ -214,7 +214,8 @@ namespace PadForge.Common.Input
         /// joins a specific left to a specific right. What this does
         /// guarantee is one writer per physical Joy-Con and coils for every
         /// assigned pair.</para></summary>
-        private static (string Left, string Right) ResolveUnclaimedPairChildren(Sink self)
+        /// <summary>Child paths every OTHER live pair sink currently holds.</summary>
+        private static HashSet<string> ClaimedPairPaths(Sink self)
         {
             var claimed = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             lock (_lock)
@@ -226,6 +227,12 @@ namespace PadForge.Common.Input
                     if (!string.IsNullOrEmpty(x.PairSecondPath)) claimed.Add(x.PairSecondPath);
                 }
             }
+            return claimed;
+        }
+
+        private static (string Left, string Right) ResolveUnclaimedPairChildren(Sink self)
+        {
+            var claimed = ClaimedPairPaths(self);
             return (FirstUnclaimed(FindHidPaths(NintendoVid, 0x2006), claimed),
                     FirstUnclaimed(FindHidPaths(NintendoVid, 0x2007), claimed));
         }
@@ -1067,12 +1074,19 @@ namespace PadForge.Common.Input
                     && (string.IsNullOrEmpty(x.HidPath)
                         || !x.HidPath.StartsWith(@"\\?\", StringComparison.Ordinal))).ToList();
             }
+            // ONE enumeration for the whole pass. FindHidPaths walks every
+            // present HID interface and opens each one to read its
+            // attributes, with no early exit, so calling it per candidate
+            // (twice, for both PIDs) meant a full device-wide open sweep per
+            // pair sink every 3 s. The claim set is recomputed per candidate
+            // from these lists, which is the part that has to stay per-sink.
+            var leftAll = FindHidPaths(NintendoVid, 0x2006);
+            var rightAll = FindHidPaths(NintendoVid, 0x2007);
             foreach (var s in candidates)
             {
                 // The missing child is the primary's opposite side.
                 ushort pid = s.PairPrimaryIsRight ? (ushort)0x2006 : (ushort)0x2007;
-                var (leftPath, rightPath) = ResolveUnclaimedPairChildren(s);
-                string path = pid == 0x2006 ? leftPath : rightPath;
+                string path = FirstUnclaimed(pid == 0x2006 ? leftAll : rightAll, ClaimedPairPaths(s));
                 if (path == null) continue;
                 s.PairSecondPath = path;
                 IntPtr h2 = OpenPairSecondChild(s, path);

@@ -655,6 +655,47 @@ namespace PadForge.Tests
                 + string.Join(", ", offenders));
         }
 
+        // ── Menu-context snapshot cannot go stale ──
+
+        /// <summary>FAMILY guard. The fired-provider loops walk a cached array
+        /// instead of enumerating the ConcurrentDictionary, which allocated an
+        /// enumerator once per direct-bound item per 1 kHz tick. Correctness of
+        /// that cache rests entirely on every site that changes the SET of
+        /// contexts invalidating it. A site that adds a context without
+        /// invalidating strands a menu: the context exists, and the fired
+        /// provider cannot see it. Silent, and it survives any behavioural
+        /// test that happens to invalidate first.</summary>
+        [Fact]
+        public void EveryMenuContextMutation_InvalidatesTheSnapshot()
+        {
+            string path = System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Common",
+                "Input", "InputManager.MenuRuntime.cs");
+            var lines = System.IO.File.ReadAllLines(path);
+
+            var offenders = new System.Collections.Generic.List<int>();
+            int sites = 0;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string l = lines[i];
+                bool mutates = l.Contains("MenuContexts.Clear()", StringComparison.Ordinal)
+                    || l.Contains("MenuContexts.TryRemove", StringComparison.Ordinal)
+                    || l.Contains("MenuContexts[key] =", StringComparison.Ordinal);
+                if (!mutates) continue;
+                sites++;
+                string window = string.Join("\n", lines.Skip(Math.Max(0, i - 2)).Take(11));
+                if (!window.Contains("InvalidateMenuContextsSnapshot", StringComparison.Ordinal))
+                    offenders.Add(i + 1);
+            }
+
+            // Positive control: the sweep must actually be finding the sites.
+            Assert.True(sites >= 4, $"Only found {sites} mutation sites. Test is stale.");
+
+            Assert.True(offenders.Count == 0,
+                "MenuContexts mutations that leave the cached snapshot stale, so a menu "
+                + "context exists but the fired provider cannot see it, at lines: "
+                + string.Join(", ", offenders));
+        }
+
         [Fact]
         public void ImpulseTriggerPids_StillRejectNonImpulsePads()
         {

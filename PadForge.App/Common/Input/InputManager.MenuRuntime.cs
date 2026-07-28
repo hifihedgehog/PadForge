@@ -29,6 +29,54 @@ namespace PadForge.Common.Input
         internal readonly ConcurrentDictionary<(int Slot, Guid Device, int MenuId), MenuTickContext>
             MenuContexts = new();
 
+        private readonly object _menuCtxSnapshotLock = new();
+        private KeyValuePair<(int Slot, Guid Device, int MenuId), MenuTickContext>[] _menuCtxSnapshotCache;
+
+        /// <summary>Cached array of the live menu contexts, rebuilt only when
+        /// the SET of contexts changes.
+        ///
+        /// <para>The two fired-provider loops used to foreach the
+        /// ConcurrentDictionary directly, which allocates a class-based
+        /// enumerator on every call, once per direct-bound item per 1 kHz
+        /// tick. The IsEmpty early-out those loops carried did not save it:
+        /// UpdateMenuContexts re-stamps a context for every enabled menu on
+        /// every assigned slot on every tick, so a single authored menu keeps
+        /// the dictionary permanently non-empty and the guard never fires.</para>
+        ///
+        /// <para>Same shape as RestrictedSnapshot in Step1: lazily built and
+        /// invalidated, both under one lock, so an invalidation cannot be
+        /// overwritten by a rebuild that started before it. Entries are the
+        /// live MenuTickContext references, so readers still observe per-tick
+        /// LastTickMs and State mutation exactly as the direct enumeration
+        /// did. Only the membership is snapshotted.</para></summary>
+        private KeyValuePair<(int Slot, Guid Device, int MenuId), MenuTickContext>[] MenuContextsSnapshot()
+        {
+            lock (_menuCtxSnapshotLock)
+            {
+                var cached = _menuCtxSnapshotCache;
+                if (cached != null) return cached;
+
+                var a = new KeyValuePair<(int Slot, Guid Device, int MenuId), MenuTickContext>[MenuContexts.Count];
+                int n = 0;
+                foreach (var kv in MenuContexts)
+                {
+                    if (n >= a.Length) break;   // grew during the copy
+                    a[n++] = kv;
+                }
+                if (n != a.Length) Array.Resize(ref a, n);
+                _menuCtxSnapshotCache = a;
+                return a;
+            }
+        }
+
+        /// <summary>Drops the cached array. Called from every site that adds
+        /// or removes a context. Missing one would strand a menu whose context
+        /// exists but is invisible to the fired provider.</summary>
+        private void InvalidateMenuContextsSnapshot()
+        {
+            lock (_menuCtxSnapshotLock) _menuCtxSnapshotCache = null;
+        }
+
         /// <summary>A menu's tick state plus its cached host reads. The
         /// MappingSource wrappers are rebuilt only when the definition's
         /// host changes, so the 1 kHz tick never allocates.</summary>
@@ -75,6 +123,7 @@ namespace PadForge.Common.Input
         internal void ResetMenuRuntime()
         {
             MenuContexts.Clear();
+            InvalidateMenuContextsSnapshot();
             _activeMenuOverlay = null;
         }
 
@@ -85,9 +134,11 @@ namespace PadForge.Common.Input
         /// inject one last key.</summary>
         internal void PurgeMenuContextsForDevice(Guid device)
         {
+            bool removed = false;
             foreach (var kv in MenuContexts)
                 if (kv.Key.Device == device)
-                    MenuContexts.TryRemove(kv.Key, out _);
+                    removed |= MenuContexts.TryRemove(kv.Key, out _);
+            if (removed) InvalidateMenuContextsSnapshot();
             var cur = _activeMenuOverlay;
             if (cur != null && cur.Device == device)
                 _activeMenuOverlay = null;
@@ -136,9 +187,11 @@ namespace PadForge.Common.Input
             if (nowMs - _menuCtxLastPurgeMs > 5000)
             {
                 _menuCtxLastPurgeMs = nowMs;
+                bool purged = false;
                 foreach (var kv in MenuContexts)
                     if (nowMs - kv.Value.LastTickMs > 10000)
-                        MenuContexts.TryRemove(kv.Key, out _);
+                        purged |= MenuContexts.TryRemove(kv.Key, out _);
+                if (purged) InvalidateMenuContextsSnapshot();
             }
 
             foreach (int slot in assignedSlots)
@@ -175,6 +228,11 @@ namespace PadForge.Common.Input
                     {
                         ctx = new MenuTickContext();
                         MenuContexts[key] = ctx;
+                        // New membership, so the cached array is stale. Only on
+                        // the create path: the re-stamp below runs every tick
+                        // and must not invalidate anything, which is the whole
+                        // point of caching by SET rather than by contents.
+                        InvalidateMenuContextsSnapshot();
                     }
                     EnsureMenuSources(ctx, def);
                     ctx.LastTickMs = nowMs;
@@ -474,10 +532,12 @@ namespace PadForge.Common.Input
             // No live contexts (no menus open anywhere): skip the
             // enumerator allocation — this runs per direct-bound item
             // per 1 kHz tick.
-            if (MenuContexts.IsEmpty) return false;
+            var snap = MenuContextsSnapshot();
+            if (snap.Length == 0) return false;
 
-            foreach (var kv in MenuContexts)
+            for (int i = 0; i < snap.Length; i++)
             {
+                ref readonly var kv = ref snap[i];
                 if (kv.Key.Slot != slotIndex || kv.Key.MenuId != menuId) continue;
                 var ctx = kv.Value;
                 if (nowMs - ctx.LastTickMs > MenuContextStaleMs) continue;
@@ -494,10 +554,12 @@ namespace PadForge.Common.Input
         private bool IsMenuItemFiredByUnrestricted(
             int slotIndex, int menuId, int itemIndex, Guid[] restrictedDevices)
         {
-            if (MenuContexts.IsEmpty) return false;
+            var snap = MenuContextsSnapshot();
+            if (snap.Length == 0) return false;
             long nowMs = Environment.TickCount64;
-            foreach (var kv in MenuContexts)
+            for (int i = 0; i < snap.Length; i++)
             {
+                ref readonly var kv = ref snap[i];
                 if (kv.Key.Slot != slotIndex || kv.Key.MenuId != menuId) continue;
                 if (restrictedDevices != null
                     && Array.IndexOf(restrictedDevices, kv.Key.Device) >= 0) continue;

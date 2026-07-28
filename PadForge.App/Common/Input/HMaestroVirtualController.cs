@@ -1053,7 +1053,15 @@ namespace PadForge.Common.Input
                 // there and only the length leg bites.
                 if (_ds5Dispatcher != null
                     && _profile.VendorId == SonyVid
-                    && e.RawBytes.Length == declaredSize
+                    // AT LEAST, not exactly, and > 0 so a profile with no
+                    // declared report fails closed. See SonyMotorsValid: an
+                    // equality here was unsatisfiable on every Bluetooth Sony
+                    // profile, because Windows sizes the host write to the
+                    // LARGEST declared output report (547) and the driver caps
+                    // its slot at 256, so RawBytes never equalled the 78-byte
+                    // declared size and every effect frame was dropped.
+                    && declaredSize > 0
+                    && e.RawBytes.Length >= declaredSize
                     && e.CrcValid
                     && e.Fields.TryGetValue("effectPayload", out var epObj)
                     && epObj is byte[] effectPayload
@@ -1255,9 +1263,27 @@ namespace PadForge.Common.Input
         /// of range), CRC valid, and the motor-valid flag asserted (DS4
         /// mask 0x01, DS5 mask 0x03, per linux-hid hid-playstation.c). A
         /// failing gate means PRESERVE previous motors, never stop.</summary>
+        /// <para>The length leg is AT LEAST, not exactly. Its job is to prove
+        /// the declared report's bytes are all present so the CRC footer is in
+        /// range, and an equality made that unsatisfiable on Bluetooth. A BT
+        /// DualSense descriptor declares nine output reports (0x31..0x39, up to
+        /// 546 payload bytes), so Windows requires every host write to be
+        /// OutputReportByteLength = 547 whichever report is being sent. The
+        /// driver forwards wrSize-1 = 546 clamped to its 256-byte slot cap, so
+        /// RawBytes arrives at 257 against a declaredSize of 78 and the
+        /// equality could never hold. That silently failed the gate on every
+        /// BT frame: no rumble, no lightbar, no adaptive triggers, and no
+        /// VibrationStates write for any device on the slot. USB is unaffected
+        /// either way (one 48-byte report, 48 == 48 == >=48).</para>
+        ///
+        /// <para>declaredSize &gt; 0 is required, not decorative: it is -1 when
+        /// the profile declares no extended output report, and a bare
+        /// "&gt;= -1" would fail OPEN for exactly the profiles that have no
+        /// report to validate against.</para>
         internal static bool SonyMotorsValid(
             int rawByteCount, int declaredSize, bool crcValid, object validFlag0, byte motorMask)
-            => rawByteCount == declaredSize
+            => declaredSize > 0
+            && rawByteCount >= declaredSize
             && crcValid
             && validFlag0 is byte vf
             && (vf & motorMask) != 0;

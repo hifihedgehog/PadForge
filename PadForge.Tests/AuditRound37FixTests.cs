@@ -263,6 +263,60 @@ namespace PadForge.Tests
             Assert.Contains("return improved ? best : float.MaxValue;", src);
         }
 
+        // ── Bluetooth Sony effect frames must not be dropped wholesale ──
+
+        /// <summary>The Sony trust gate tested the arriving byte count for
+        /// EQUALITY against the profile's declared extended-output-report size.
+        /// On Bluetooth that is unsatisfiable, so every effect frame was
+        /// dropped: no rumble, no lightbar, no adaptive triggers, and no
+        /// VibrationStates write for any device on the slot.
+        ///
+        /// <para>Numbers are from primary sources, not inferred. The BT
+        /// DualSense native descriptor declares nine output reports
+        /// (0x31..0x39) with a 546-byte maximum payload, so Windows sizes every
+        /// host write to OutputReportByteLength = 547 whichever report is being
+        /// sent. The driver forwards wrSize-1 = 546 clamped to its 256-byte
+        /// slot cap (HM_OUTPUT_SLOT_DATA_CAP), so RawBytes arrives at 257
+        /// against a declaredSize of 78.</para>
+        ///
+        /// <para>The leg's real job is to prove the declared report's bytes are
+        /// present so the CRC footer is in range, which AT LEAST satisfies and
+        /// EQUALS does not.</para></summary>
+        [Theory]
+        // BT DualSense: capped 257-byte buffer, 78-byte declared report.
+        [InlineData(257, 78, true)]
+        // USB DualSense: exact fit, unaffected by the change.
+        [InlineData(48, 48, true)]
+        // Genuinely SHORT report: the footer is out of range, still rejected.
+        [InlineData(40, 78, false)]
+        // No declared extended output report: must fail CLOSED, not open.
+        [InlineData(257, -1, false)]
+        public void SonyMotorTrust_AcceptsACappedButCompleteReport(
+            int rawByteCount, int declaredSize, bool expected)
+        {
+            // validFlag0 with the DS5 motor mask asserted, and a valid CRC, so
+            // the LENGTH leg is the only thing under test here.
+            bool got = HMaestroVirtualController.SonyMotorsValid(
+                rawByteCount, declaredSize, crcValid: true,
+                validFlag0: (byte)0x03, motorMask: 0x03);
+
+            Assert.Equal(expected, got);
+        }
+
+        /// <summary>Positive control for the theory above: with the length leg
+        /// satisfied, the OTHER legs must still be able to reject. Otherwise
+        /// "accepts a capped report" would be indistinguishable from "accepts
+        /// everything".</summary>
+        [Fact]
+        public void SonyMotorTrust_StillRejectsBadCrcAndClearedFlag()
+        {
+            Assert.False(HMaestroVirtualController.SonyMotorsValid(
+                257, 78, crcValid: false, validFlag0: (byte)0x03, motorMask: 0x03));
+
+            Assert.False(HMaestroVirtualController.SonyMotorsValid(
+                257, 78, crcValid: true, validFlag0: (byte)0x00, motorMask: 0x03));
+        }
+
         // ── The unsigned-axis contract, guarded on the WRITER side ──
 
         /// <summary>CustomInputState.Axis is UNSIGNED 0..65535 with 32768 at

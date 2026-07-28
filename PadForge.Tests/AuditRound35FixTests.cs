@@ -240,18 +240,42 @@ namespace PadForge.Tests
         public void UnsignedAxisReaders_DoNotReAddTheRestOffset(string relPath, string method)
         {
             string src = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), relPath));
-            int at = src.IndexOf(" " + method + "(", StringComparison.Ordinal);
-            Assert.True(at >= 0, $"{method} not found in {relPath}; rename the test with the code.");
+
+            // Anchor on the DECLARATION, not the first textual occurrence. The
+            // old anchor was IndexOf(" " + method + "("), which for
+            // ReadAxisFromDevice and ReadCurrentAxes matched a CALL SITE
+            // hundreds of lines above the real method. The window then ran to
+            // an unrelated closing brace, contained no "65535f" line at all,
+            // and the loop below never executed: two of the four cases asserted
+            // nothing and stayed green with the bug reintroduced.
+            var decl = System.Text.RegularExpressions.Regex.Match(
+                src,
+                @"^\s*(?:private|internal|public|protected)[^\r\n=;]*?\b"
+                    + System.Text.RegularExpressions.Regex.Escape(method) + @"\s*\(",
+                System.Text.RegularExpressions.RegexOptions.Multiline);
+            Assert.True(decl.Success,
+                $"{method} declaration not found in {relPath}; rename the test with the code.");
+            int at = decl.Index;
 
             // Body window: from the signature to the next same-indent close.
             int end = src.IndexOf("\n        }", at, StringComparison.Ordinal);
             if (end < 0) end = Math.Min(src.Length, at + 4000);
             string body = src.Substring(at, end - at);
 
-            foreach (var line in body.Split('\n'))
+            // POSITIVE CONTROL. Without this the test is vacuously true whenever
+            // the window misses the method: no "65535f" line means no assertion
+            // runs. Every one of these four readers normalizes by 65535f, so an
+            // empty window is a broken test, not a passing one.
+            var normalizing = body.Split('\n')
+                .Select(l => l.Split(new[] { "//" }, StringSplitOptions.None)[0])
+                .Where(c => c.Contains("65535f"))
+                .ToList();
+            Assert.True(normalizing.Count > 0,
+                $"{relPath} :: {method} window contains no 65535f normalization, so this "
+                + "test would assert nothing. The anchor or the window is wrong.");
+
+            foreach (var code in normalizing)
             {
-                string code = line.Split(new[] { "//" }, StringSplitOptions.None)[0];
-                if (!code.Contains("65535f")) continue;
                 Assert.False(code.Contains("32768"),
                     $"{relPath} :: {method} normalizes an unsigned axis with a 32768 shift: "
                     + code.Trim());

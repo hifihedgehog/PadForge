@@ -1019,6 +1019,14 @@ namespace PadForge.Engine
                 }
                 ds.FrameExpected = 0;
                 ds.FrameSeen = 0;
+                // The lift tally is part of the frame counter, so it resets with
+                // it. Leaving it set here let a lift from the frame just
+                // committed count toward the NEXT frame's completion test
+                // (FrameSeen + FrameLifted >= FrameExpected), which fired that
+                // frame early: on a pad that carries two contacts per report, a
+                // three-finger frame completed on its first report with two
+                // fingers and the third committed as a frame of its own.
+                ds.FrameLifted = 0;
             }
         }
 

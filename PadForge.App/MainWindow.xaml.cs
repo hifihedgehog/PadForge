@@ -1913,6 +1913,18 @@ namespace PadForge
                 pad.CopyMacroFromRequested += (s, e) => OnCopyMacroFrom(capturedPad);
             }
 
+            // MIDI availability must be probed BEFORE the rail is built. The
+            // rail's type-switcher reads the cached
+            // Settings.IsMidiServicesInstalled rather than probing the registry
+            // per card, and that property starts false, so building first meant
+            // a machine WITH Windows MIDI Services installed painted its first
+            // rail without the MIDI segment. The 5 s driver timer then updates
+            // the property but deliberately does not rebuild on its baseline
+            // sweep, so the segment stayed missing until an unrelated rebuild.
+            // Safe this early: the method only writes the two view-models and
+            // null-guards _navDashboard, which BuildNavigationItems creates.
+            RefreshMidiServicesStatus();
+
             // Build the sidebar navigation items dynamically.
             BuildNavigationItems();
 
@@ -2111,10 +2123,11 @@ namespace PadForge
             // SlotOrders.RebuildFromCurrentTopology in SettingsService).
             // Nothing to do here at startup.
 
-            // Detect drivers early (before sidebar rebuild) so power icons show correct
-            // colors even when starting minimized to tray (where OnLoaded never fires).
+            // Detect drivers early so power icons show correct colors even when
+            // starting minimized to tray (where OnLoaded never fires).
+            // RefreshMidiServicesStatus already ran above the rail build, which
+            // is where it has to be: the rail reads its cached result.
             RefreshHidHideStatus();
-            RefreshMidiServicesStatus();
             StartDriverStatusTimer();
 
             // Status decay (#175 item 7): every StatusText write cancels any
@@ -3025,9 +3038,9 @@ namespace PadForge
             // enumerates the whole HKLM uninstall key under BOTH the 64-bit and
             // 32-bit registry views, so a 16-slot rail rebuild paid 32 hive
             // walks on the UI thread. RefreshMidiServicesStatus() keeps this
-            // property current on a 5 s timer and runs in the constructor
-            // before the rail's first build, so the value here is the same
-            // answer at worst five seconds older.
+            // property current on a 5 s timer, and the constructor calls it
+            // immediately before the rail's first build, so the value here is
+            // the same answer at worst five seconds older.
             bool hasMidi = _viewModel.Settings.IsMidiServicesInstalled;
             var segRow = new System.Windows.Controls.StackPanel
             {

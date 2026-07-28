@@ -188,14 +188,30 @@ namespace PadForge.Tests
 
         /// <summary>Translation invariance falls out of centring, and it is
         /// what lets the same gesture score identically anywhere on the
-        /// pad.</summary>
+        /// pad.
+        ///
+        /// <para>This test built BOTH clouds from the same untranslated
+        /// Circle(16), so it compared a deterministic function to itself and
+        /// could not fail under any mutation. The second cloud is now actually
+        /// displaced.</para>
+        ///
+        /// <para>Mutation-checked, and the result is worth recording:
+        /// NormalizeCloud removes translation TWICE, once via the min/max
+        /// rescale and again via the centroid subtraction, so breaking either
+        /// alone leaves this green. It reddens only when both are broken. That
+        /// is redundancy in the implementation rather than weakness in the
+        /// test, but it means this test is not the guard for either step on its
+        /// own; NormalizeCloud_CentresTheCentroid covers the centring.</para>
+        /// </summary>
         [Fact]
         public void NormalizeCloud_IsTranslationInvariant()
         {
+            var offset = new Vector2(7f, -3f);
             var here = ShapeRecognizer.NormalizeCloud(
                 ShapeRecognizer.Resample(Circle(16), 32));
             var there = ShapeRecognizer.NormalizeCloud(
-                ShapeRecognizer.Resample(Circle(16), 32));
+                ShapeRecognizer.Resample(
+                    Circle(16).Select(p => p + offset).ToList(), 32));
             for (int i = 0; i < here.Length; i++)
             {
                 Assert.Equal(here[i].X, there[i].X, 4);

@@ -1732,6 +1732,14 @@ namespace PadForge.SteamWorkshop.Translation
                 foreach (var activator in input.Activators)
                 {
                     string actPath = $"{inputPath}/{(activator.Type ?? "").Trim()}";
+                    // Every other activator walk in this file closes with these
+                    // two (both swipe groups, the tap walk, the d-pad walk).
+                    // This one ran the binding walk alone, so a detent
+                    // activator carrying a haptic pulse or a delay lost both:
+                    // the wheel scrolled, and the feedback the profile asked
+                    // for never came with it.
+                    int macrosBefore = run.Profile.Macros.Count;
+                    int activatorsBefore = run.Activators.Count;
                     foreach (var binding in activator.Bindings)
                     {
                         // Only the wheel-shaped bindings can ride a
@@ -1765,6 +1773,8 @@ namespace PadForge.SteamWorkshop.Translation
                             input.Name);
                         emitted = true;
                     }
+                    EmitHapticPulse(run, activator, tapSource, input.Name, actPath, "OnPress", holdMs: 0);
+                    ConsumeActivatorDelays(run, activator, actPath, macrosBefore, activatorsBefore);
                 }
             }
 

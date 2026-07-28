@@ -417,10 +417,16 @@ namespace PadForge.Common.Input
             {
                 lock (devices.SyncRoot)
                 {
-                    int idx = devices.Items.FindIndex(d => d.InstanceGuid == instanceGuid);
-                    if (idx >= 0)
+                    // Remove EVERY record with this GUID, not just the first.
+                    // FindDeviceByInstanceGuid exists precisely because a
+                    // mid-session duplicate can appear, and it scans all
+                    // matches to prefer the capability-rich one. Removing one
+                    // of a duplicate pair left the other behind, so the
+                    // finder kept resolving a device the caller just deleted.
+                    for (int i = devices.Items.Count - 1; i >= 0; i--)
                     {
-                        devices.Items.RemoveAt(idx);
+                        if (devices.Items[i]?.InstanceGuid != instanceGuid) continue;
+                        devices.Items.RemoveAt(i);
                         removed = true;
                     }
                 }

@@ -242,7 +242,13 @@ namespace PadForge.Engine.Data
             for (int i = 0; i < _kbmButtonKeys.Length; i++)
                 if (name == _kbmButtonKeys[i]) return new(ControlCategory.Button, i);
 
-            // Generic KbmKey or KbmMBtn not in the table — assign by index
+            // Generic KbmMBtn outside the table, assigned by its own index.
+            // KbmKey has no equivalent arm on purpose: its position IS the
+            // table index (GetKbmPropertyName maps a Button position straight
+            // back through _kbmButtonKeys), so an off-table KbmKey has no
+            // position that round-trips and returning one would translate it
+            // into whichever key happens to sit at that index. The comment
+            // used to promise KbmKey handling that was never here.
             if (name.StartsWith("KbmMBtn") && int.TryParse(name.AsSpan(7), out int mbIdx))
                 return new(ControlCategory.Button, mbIdx);
 

@@ -386,7 +386,7 @@ namespace PadForge.Common.Input
                 // Re-kick while silent (DsHidMini re-sends the enable after 1 s of no input).
                 if (!_everGotInput && kicks < 5 && now - lastKick >= 1000)
                 {
-                    _log($"DS3(BT): no input yet - re-kick #{kicks + 1}");
+                    _log($"DS3({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input yet - re-kick #{kicks + 1}");
                     Kick(); kicks++; lastKick = now;
                     continue;
                 }
@@ -431,7 +431,12 @@ namespace PadForge.Common.Input
                 }
                 else
                 {
-                    // BT enable: 0x53 (SET_REPORT|OUTPUT class prefix) F4 42 03 00 00.
+                    // BT enable: 0x53 (SET_REPORT | FEATURE, report id 0xF4)
+                    // then F4 42 03 00 00. In the Bluetooth HID transport
+                    // header SET_REPORT is 0x50 and the low nibble is the
+                    // report type, 1 input / 2 output / 3 feature, so the 3
+                    // here is FEATURE. The bytes were always right; the
+                    // comment named the wrong type.
                     byte[] en = { 0x53, 0xF4, 0x42, 0x03, 0x00, 0x00 };
                     IntPtr h; lock (_outLock) h = _writePdo;
                     if (h != IntPtr.Zero && h != INVALID_HANDLE)
@@ -641,7 +646,11 @@ namespace PadForge.Common.Input
                 desc.version = (uint)Marshal.SizeOf<SDL.SDL_VirtualJoystickDesc>();
 
                 _instanceId = SDL.SDL_AttachVirtualJoystick(ref desc);
-                if (_instanceId == 0) { _log("DS3(BT): SDL_AttachVirtualJoystick failed."); return false; }
+                if (_instanceId == 0)
+                {
+                    _log($"DS3({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): SDL_AttachVirtualJoystick failed.");
+                    return false;
+                }
                 _sdlJoystick = SDL.SDL_OpenJoystick(_instanceId);
                 return _sdlJoystick != IntPtr.Zero;
             }

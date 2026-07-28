@@ -57,6 +57,14 @@ function Stop-PadForge {
 
 function Set-PadForgeVJoyConfig([array]$slots) {
     [xml]$xml = Get-Content $padForgeXml
+
+# Back up the real settings before this test rewrites slot types and
+# created flags. Nothing here restored them, so a run left the user's
+# slot layout replaced by test values permanently.
+$xmlBak = "$padForgeXml.config-test-bak"
+if (Test-Path -LiteralPath $xmlBak) { Copy-Item -LiteralPath $xmlBak -Destination $padForgeXml -Force }
+elseif (Test-Path -LiteralPath $padForgeXml) { Copy-Item -LiteralPath $padForgeXml -Destination $xmlBak -Force }
+
     $appSettings = $xml.PadForgeSettings.AppSettings
 
     $typeNodes = $appSettings.SlotControllerTypes.ChildNodes
@@ -94,7 +102,7 @@ function Start-PadForgeAndWait([int]$expectedDevices = 1) {
         if (-not $p) { continue }
         if ($i -ge 8) { return $true }
     }
-    return (Get-Process -Name PadForge -ErrorAction SilentlyContinue) -ne $null
+    return $null -ne (Get-Process -Name PadForge -ErrorAction SilentlyContinue)
 }
 
 function Query-VJoyDevice([int]$deviceId, [int]$retries = 3) {

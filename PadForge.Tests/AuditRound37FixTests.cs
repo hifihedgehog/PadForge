@@ -354,6 +354,49 @@ namespace PadForge.Tests
                 src);
         }
 
+        // ── Every string key has a property, and vice versa ──
+
+        /// <summary>Strings.Instance exposes each resx key as an explicit
+        /// property, and XAML binds those properties by name. A binding to a
+        /// property that does not exist fails SILENTLY at runtime, so the build
+        /// stays green and the label simply renders blank. Get() returns the
+        /// key name on a resource miss, so the mirror failure in the other
+        /// direction renders the raw key on screen instead.
+        ///
+        /// <para>Both directions shipped. Four keys added for the Overlays
+        /// card had no properties and the labels came up empty, which is how
+        /// this test exists. The reverse had been shipping for longer: a label
+        /// bound Pad_RawSticks, which no resx carried, so the Extended layout
+        /// row displayed the literal text "Pad_RawSticks". Its siblings in the
+        /// same row all bound Pad_Extended*, and Pad_ExtendedSticks was sitting
+        /// there localized and unused.</para></summary>
+        [Fact]
+        public void EveryStringKey_HasAProperty_AndEveryPropertyHasAKey()
+        {
+            string resx = Src("PadForge.App/Resources/Strings/Strings.resx");
+            string designer = Src("PadForge.App/Resources/Strings/Strings.Designer.cs");
+
+            var keys = Regex.Matches(resx, @"<data name=""([A-Za-z_0-9]+)""")
+                .Select(m => m.Groups[1].Value).ToHashSet(StringComparer.Ordinal);
+            var props = Regex.Matches(designer, @"public string ([A-Za-z_0-9]+) => Get\(")
+                .Select(m => m.Groups[1].Value).ToHashSet(StringComparer.Ordinal);
+
+            // Positive control: both sides must be populated, or the set
+            // differences below are trivially empty.
+            Assert.True(keys.Count > 2000, $"only {keys.Count} resx keys parsed; the format changed.");
+            Assert.True(props.Count > 2000, $"only {props.Count} designer properties parsed; the format changed.");
+
+            var missing = keys.Except(props).OrderBy(s => s).ToList();
+            Assert.True(missing.Count == 0,
+                "resx keys with no Strings property (any binding to these renders BLANK): "
+                + string.Join(", ", missing));
+
+            var orphaned = props.Except(keys).OrderBy(s => s).ToList();
+            Assert.True(orphaned.Count == 0,
+                "Strings properties with no resx key (these render the KEY NAME on screen): "
+                + string.Join(", ", orphaned));
+        }
+
         // ── Every overlay toggle crosses every persistence leg ──
 
         /// <summary>The three overlay toggles are a family, and a setting that

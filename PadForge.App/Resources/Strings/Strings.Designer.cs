@@ -860,7 +860,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_InputHold => Get("Pad_Lighting_InputHold");
     public string Pad_Lighting_InputDecay => Get("Pad_Lighting_InputDecay");
     public string Pad_Preset => Get("Pad_Preset");
-    public string Pad_RawSticks => Get("Pad_RawSticks");
+    public string Pad_ExtendedSticks => Get("Pad_ExtendedSticks");
     public string Pad_ExtendedTriggers => Get("Pad_ExtendedTriggers");
     public string Pad_ExtendedPOVs => Get("Pad_ExtendedPOVs");
     public string Pad_ExtendedButtons => Get("Pad_ExtendedButtons");
@@ -2674,6 +2674,10 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_MenuItem_Format => Get("Mapping_MenuItem_Format");
     public string Dashboard_MenuOverlay => Get("Dashboard_MenuOverlay");
     public string Dashboard_MenuOverlayDescription => Get("Dashboard_MenuOverlayDescription");
+    public string Dashboard_Overlays => Get("Dashboard_Overlays");
+    public string Dashboard_OverlaysDescription => Get("Dashboard_OverlaysDescription");
+    public string Dashboard_ShiftLayerFlyout => Get("Dashboard_ShiftLayerFlyout");
+    public string Dashboard_ProfileOverlay => Get("Dashboard_ProfileOverlay");
     public string Workshop_Tr_MenuEmitted => Get("Workshop_Tr_MenuEmitted");
     public string Workshop_Tr_MenuEmpty => Get("Workshop_Tr_MenuEmpty");
     public string Workshop_Tr_MenuSurfaceNotSupported => Get("Workshop_Tr_MenuSurfaceNotSupported");

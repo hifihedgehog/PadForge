@@ -99,10 +99,11 @@ function Capture-2D {
         [System.Windows.Automation.AutomationElement]::NameProperty, "Dashboard")))
     if ($nav) {
         $r = $nav.Current.BoundingRectangle
-        # Rect.Empty reports X as +Infinity and [int] on it throws, so guard
+        # Rect.Empty reports X as +Infinity and [int] on it throws.
+        if (-not ($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0)) { # Rect.Empty reports X as +Infinity and [int] on it throws, so guard
         # before converting.
         if ($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0) { return $false }
-        [W32B]::ClickAt([int]($r.X + $r.Width/2), [int]($r.Y + $r.Height/2))
+        [W32B]::ClickAt([int]($r.X + $r.Width/2), [int]($r.Y + $r.Height/2)) }
         Start-Sleep -Milliseconds 1500
     }
     # Click slot 0
@@ -112,7 +113,8 @@ function Capture-2D {
         $cards = $slots.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)
         if ($cards.Count -gt 0) {
             $cr = $cards[0].Current.BoundingRectangle
-            [W32B]::ClickAt([int]($cr.X + $cr.Width/2), [int]($cr.Y + $cr.Height/2))
+            # Rect.Empty reports X as +Infinity and [int] on it throws.
+            if (-not ($cr.IsEmpty -or $cr.Width -le 0 -or $cr.Height -le 0)) { [W32B]::ClickAt([int]($cr.X + $cr.Width/2), [int]($cr.Y + $cr.Height/2)) }
             Start-Sleep -Milliseconds 2500
         }
     }
@@ -126,7 +128,8 @@ function Capture-2D {
         $tabs = $padPage.FindAll($TC, $rbCond)
         if ($tabs.Count -gt 0) {
             $tr = $tabs[0].Current.BoundingRectangle
-            [W32B]::ClickAt([int]($tr.X + $tr.Width/2), [int]($tr.Y + $tr.Height/2))
+            # Rect.Empty reports X as +Infinity and [int] on it throws.
+            if (-not ($tr.IsEmpty -or $tr.Width -le 0 -or $tr.Height -le 0)) { [W32B]::ClickAt([int]($tr.X + $tr.Width/2), [int]($tr.Y + $tr.Height/2)) }
             Start-Sleep -Milliseconds 1500
         }
     }

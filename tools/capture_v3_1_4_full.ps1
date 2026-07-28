@@ -305,22 +305,36 @@ if (SelectSlot 0 "Xbox Series") {
     Tab "Mappings"   | Out-Null; Start-Sleep -Milliseconds 600; Cap "pad-mappings"
     if (Tab "Sticks") {
         Start-Sleep -Milliseconds 600
-        $pp = (FindByAid "PadPageView").Current.BoundingRectangle
+        # FindByAid returns $null when the element is absent, and .Current on
+            # $null throws outright. Fall back to the window rect so the
+            # coordinate block below degrades to a harmless miss instead of
+            # ending the capture run.
+            $ppEl = FindByAid "PadPageView"
+            if (-not $ppEl) { Write-Host "  !! PadPageView not found; Sticks coordinates will be off" -ForegroundColor Yellow }
+            $pp = if ($ppEl) { $ppEl.Current.BoundingRectangle } else { $uiaWin.Current.BoundingRectangle }
         [W32]::SetCursorPos([int]($pp.X + 800), [int]($pp.Y + 800))
         Start-Sleep -Milliseconds 100
         for ($i = 0; $i -lt 20; $i++) { [W32]::WheelAt([int]($pp.X + 800), [int]($pp.Y + 800), 120); Start-Sleep -Milliseconds 30 }
         Start-Sleep -Milliseconds 500
         Cap "pad-sticks"
-        [W32]::ClickAt([int]($pp.X + 455), [int]($pp.Y + 560)); Start-Sleep -Milliseconds 1000
+        # Rect.Empty reports X as +Infinity and [int] on it throws.
+        if (-not ($pp.IsEmpty -or $pp.Width -le 0 -or $pp.Height -le 0)) { [W32]::ClickAt([int]($pp.X + 455), [int]($pp.Y + 560)) }; Start-Sleep -Milliseconds 1000
         Cap "pad-sticks-deadzone-dropdown" -KeepCursor $true
         [System.Windows.Forms.SendKeys]::SendWait("{ESC}"); Start-Sleep -Milliseconds 400
-        [W32]::ClickAt([int]($pp.X + 455), [int]($pp.Y + 900)); Start-Sleep -Milliseconds 1000
+        # Rect.Empty reports X as +Infinity and [int] on it throws.
+        if (-not ($pp.IsEmpty -or $pp.Width -le 0 -or $pp.Height -le 0)) { [W32]::ClickAt([int]($pp.X + 455), [int]($pp.Y + 900)) }; Start-Sleep -Milliseconds 1000
         Cap "pad-sticks-sensitivity-dropdown" -KeepCursor $true
         [System.Windows.Forms.SendKeys]::SendWait("{ESC}"); Start-Sleep -Milliseconds 400
     }
     if (Tab "Triggers") {
         Start-Sleep -Milliseconds 600
-        $pp = (FindByAid "PadPageView").Current.BoundingRectangle
+        # FindByAid returns $null when the element is absent, and .Current on
+            # $null throws outright. Fall back to the window rect so the
+            # coordinate block below degrades to a harmless miss instead of
+            # ending the capture run.
+            $ppEl = FindByAid "PadPageView"
+            if (-not $ppEl) { Write-Host "  !! PadPageView not found; Triggers coordinates will be off" -ForegroundColor Yellow }
+            $pp = if ($ppEl) { $ppEl.Current.BoundingRectangle } else { $uiaWin.Current.BoundingRectangle }
         for ($i = 0; $i -lt 12; $i++) { [W32]::WheelAt([int]($pp.X + 800), [int]($pp.Y + 800), 120); Start-Sleep -Milliseconds 40 }
         Start-Sleep -Milliseconds 500
         Cap "pad-triggers"

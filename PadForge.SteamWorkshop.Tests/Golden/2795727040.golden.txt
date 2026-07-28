@@ -79,7 +79,7 @@ macros: 20
   macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 6) | btns=0x0000 in=[Menu 1 Item 6] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 7) | btns=0x0000 in=[Menu 1 Item 7] layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base strength=66%
-  macro HoldMouseButton OnPress | Hold mouse LEFT (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base mbtn=0 delayEnd=10ms
+  macro HoldMouseButton OnPress | Hold mouse Left (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base mbtn=0 delayEnd=10ms
   macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
   macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
 menus: 1
@@ -120,7 +120,7 @@ report: v26 rows:x0+k27 macros:20 menus:1 layers:0 clean:33 partial:0 skipped:0 
   Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_8/Full_Press => KbmKey38 <- Menu 1 Item 8
   Clean RowEmitted @ Default/right_trackpad/group 13 (mouse_region) => KbmMouseX <- Touchpad 1 Pointer X
   Clean RowEmitted @ Default/right_trackpad/group 13 (mouse_region) => KbmMouseY <- Touchpad 1 Pointer Y
-  Clean MacroEmitted @ Default/right_trackpad/group 13 (mouse_region)/click/Full_Press => Long-press hold macro: mouse button 0 <- Touchpad 1 Click
+  Clean MacroEmitted @ Default/right_trackpad/group 13 (mouse_region)/click/Full_Press => Hold mouse Left <- Touchpad 1 Click
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_escape/Full_Press => KbmKey79 <- Gamepad ButtonStart
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey75 <- Gamepad ButtonBack

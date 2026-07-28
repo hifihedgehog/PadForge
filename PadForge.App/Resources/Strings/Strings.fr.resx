@@ -2432,6 +2432,15 @@
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Lecture des configurations depuis Steam…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Lecture de la configuration depuis Steam…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>triées par note</value></data>
+  <data name="Workshop_SortedBy" xml:space="preserve"><value>trié par</value></data>
+  <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Évaluation</value></data>
+  <data name="Workshop_Sort_Trend" xml:space="preserve"><value>Tendance</value></data>
+  <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Plus récent</value></data>
+  <data name="Workshop_Sort_Subscribers" xml:space="preserve"><value>Abonnés</value></data>
+  <data name="Workshop_Sort_Votes" xml:space="preserve"><value>Plus de votes</value></data>
+  <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Croissant</value></data>
+  <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Décroissant</value></data>
+  <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} affectations</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} trouvées</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{0} sur {1} affichées</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configurations</value></data>

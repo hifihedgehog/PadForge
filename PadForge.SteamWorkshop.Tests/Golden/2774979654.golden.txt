@@ -50,8 +50,8 @@ macros: 4
   macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
   macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
 report: v26 rows:x19+k0 macros:4 menus:0 layers:0 clean:23 partial:1 skipped:0 errors:0
-  Clean MacroEmitted @ Default/button_diamond/group 3 (four_buttons)/button_y/Double_Press => Double-press hold macro: LeftThumbButton <- Gamepad ButtonY
-  Partial ToggleLatchEmitted(ButtonB) @ Default/joystick/group 6 (joystick_move)/click/Full_Press => Toggle ButtonB latch macro <- Gamepad LeftStick
+  Clean MacroEmitted @ Default/button_diamond/group 3 (four_buttons)/button_y/Double_Press => Double press LeftThumbButton <- Gamepad ButtonY
+  Partial ToggleLatchEmitted(ButtonB) @ Default/joystick/group 6 (joystick_move)/click/Full_Press => Toggle ButtonB <- Gamepad LeftStick
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move)/click/Full_Press => ButtonB <- Gamepad LeftStick
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY

@@ -164,9 +164,9 @@ report: v26 rows:x0+k34 macros:23 menus:3 layers:4 clean:46 partial:1 skipped:0 
   Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_8/Full_Press => KbmKey38 <- Menu 3 Item 8
   Clean RowEmitted @ Preset 0/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_back_left/Full_Press => KbmKeyA2 <- Gamepad Paddle2
-  Clean MacroEmitted @ Preset 0/switch/group 20 (switches)/button_back_left/Long_Press => Hold F macro <- Gamepad Paddle2
+  Clean MacroEmitted @ Preset 0/switch/group 20 (switches)/button_back_left/Long_Press => Hold F <- Gamepad Paddle2
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_back_right/Full_Press => KbmKey45 <- Gamepad Paddle1
-  Clean MacroEmitted @ Preset 0/switch/group 20 (switches)/button_back_right/Long_Press => Hold Space macro <- Gamepad Paddle1
+  Clean MacroEmitted @ Preset 0/switch/group 20 (switches)/button_back_right/Long_Press => Hold Space <- Gamepad Paddle1
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_escape/Full_Press => KbmKey4A <- Gamepad ButtonStart
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_menu/Full_Press => KbmKey54 <- Gamepad ButtonBack
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/left_bumper/Full_Press => KbmKeyA4 <- Gamepad LeftShoulder

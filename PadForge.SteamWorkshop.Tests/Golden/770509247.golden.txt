@@ -62,8 +62,8 @@ report: v26 rows:x0+k10 macros:11 menus:1 layers:0 clean:16 partial:2 skipped:1 
   Clean RowEmitted @ In-Game Controls/right_trigger/group 2 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ In-Game Controls/switch/group 10 (switches)/button_back_right/Full_Press => KbmKey0D <- Gamepad Paddle1
   Clean RowEmitted @ In-Game Controls/switch/group 10 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
-  Clean MacroEmitted @ In-Game Controls/switch/group 10 (switches)/left_bumper/Full_Press => Turbo wheel macro (100 ms) <- Gamepad LeftShoulder
-  Clean MacroEmitted @ In-Game Controls/switch/group 10 (switches)/right_bumper/Full_Press => Turbo wheel macro (100 ms) <- Gamepad RightShoulder
+  Clean MacroEmitted @ In-Game Controls/switch/group 10 (switches)/left_bumper/Full_Press => Turbo wheel <- Gamepad LeftShoulder
+  Clean MacroEmitted @ In-Game Controls/switch/group 10 (switches)/right_bumper/Full_Press => Turbo wheel <- Gamepad RightShoulder
   Skipped GameActionsNotSupported(15) @ In-Game Controls
   Partial ShiftLayerEmpty(Left Trackpad shift) @ In-Game Controls/switch/group 10 (switches)/button_back_left/Full_Press
   Partial ShiftLayerEmpty(Right Trackpad shift) @ In-Game Controls/switch/group 10 (switches)/left_trigger/Full_Press

@@ -121,6 +121,18 @@ namespace PadForge.ViewModels
         /// mapping grid: per-row it made the grid's raw and out readouts
         /// agree (the scale was folded in before the readout) and its slider
         /// sat in a column too narrow to show it.</summary>
+        /// <summary>Vestigial. A flat per-stick multiplier duplicates what
+        /// the per-axis response curves on this same tab already do, and it
+        /// can only clip: the deadzone stage has already mapped full physical
+        /// deflection to full scale, so scaling above 1 changes partial
+        /// deflections and clamps at the top, which reads as no effect when
+        /// you test by pushing the stick to the corner. It carried no engine
+        /// reader from the March 2026 curve work until a 2026-07-27 UI move
+        /// briefly wired it up; that is reverted. The property and its
+        /// PadSetting field stay so existing profiles round-trip unchanged.
+        /// Per-source Sensitivity on the mapping rows is a different field
+        /// and is still live, for the rate-based sources it was built for:
+        /// mouse, gyro, IR pointer, touchpad.</summary>
         public double Sensitivity
         {
             get => _sensitivity;

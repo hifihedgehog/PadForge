@@ -230,7 +230,19 @@ namespace PadForge.Views
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) => PopulateDevices();
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e) => DialogResult = false;
+        /// <summary>Reports whether anything was imported, rather than a flat
+        /// false. The two import lanes end differently on purpose: the device
+        /// lane sets DialogResult = true and closes, while the FILE lane stays
+        /// open (it refreshes the list and writes a status line) so several
+        /// files can be imported in one visit. That left the file lane's
+        /// ImportedProfileId unreachable, because the only way out was this
+        /// button and it always answered false, so the caller's
+        /// `ShowDialog() == true` gate discarded it and the imported profile
+        /// was never auto-selected on the slot. The caller also checks
+        /// ImportedProfileId itself, so returning true here cannot select
+        /// nothing.</summary>
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+            => DialogResult = !string.IsNullOrWhiteSpace(ImportedProfileId);
 
         private void TryImport()
         {

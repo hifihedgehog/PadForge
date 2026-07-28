@@ -1356,7 +1356,11 @@ namespace PadForge.Common.Input
             // the lock: the writer opens its own handle, and every value below
             // is either a captured string/reference or a per-iteration
             // allocation.
-            var pending = new List<(string Path, HMProfile Profile, IReadOnlyDictionary<string, object> Fields, long Seq)>();
+            // SpeakerCleared carries the device whose speaker-path-cleared
+            // one-shot this payload is spending, or Guid.Empty. The one-shot is
+            // only consumed after the write for this entry actually lands, so a
+            // stale-skip or a failed write leaves it armed for the next tick.
+            var pending = new List<(string Path, HMProfile Profile, IReadOnlyDictionary<string, object> Fields, long Seq, Guid SpeakerCleared)>();
 
             lock (devices.SyncRoot)
             {
@@ -1703,6 +1707,7 @@ namespace PadForge.Common.Input
                         //     declare the byte).
                         // When routing switches away, restore the headphone
                         // path once so the speaker doesn't stay latched.
+                        Guid speakerCleared = Guid.Empty;
                         if (isDs5)
                         {
                             if (AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid))
@@ -1717,12 +1722,13 @@ namespace PadForge.Common.Input
                                 fields["audioControlFlags"] = (byte)(3 << 4);
                                 fields["audioControl2"] = (byte)3;
                             }
-                            else if (AudioPassthroughService.TryConsumeSpeakerPathCleared(ud.InstanceGuid))
+                            else if (AudioPassthroughService.PeekSpeakerPathCleared(ud.InstanceGuid))
                             {
                                 fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0x80);
                                 fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
                                 fields["audioControlFlags"] = (byte)0;
                                 fields["audioControl2"] = (byte)0;
+                                speakerCleared = ud.InstanceGuid;
                             }
                         }
 
@@ -1731,7 +1737,8 @@ namespace PadForge.Common.Input
                         // thread. The write loop below uses it to drop a
                         // capture that a newer one has already superseded.
                         pending.Add((path, profile, fields,
-                            System.Threading.Interlocked.Increment(ref s_dispatchSeq)));
+                            System.Threading.Interlocked.Increment(ref s_dispatchSeq),
+                            speakerCleared));
                     }
                     catch
                     {
@@ -1763,6 +1770,14 @@ namespace PadForge.Common.Input
                             continue;
                         s_lastWriteSeq[w.Path] = w.Seq;
                         PlayStationEffectWriter.Write(w.Path, w.Profile, w.Fields);
+                        // The headphone-path restore actually reached the pad,
+                        // so spend the one-shot now. Reaching here past both the
+                        // stale-skip above and the catch below is the only proof
+                        // the bytes went out; consuming at build time burned it
+                        // on payloads that were then dropped, and the speaker
+                        // stayed latched with nothing left to restore it.
+                        if (w.SpeakerCleared != Guid.Empty)
+                            AudioPassthroughService.TryConsumeSpeakerPathCleared(w.SpeakerCleared);
                     }
                     catch
                     {

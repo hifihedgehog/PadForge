@@ -686,6 +686,19 @@ namespace PadForge.Common.Input
                     && !VendorAudioTestActive_NoLock(deviceGuid);
         }
 
+        /// <summary>Non-consuming read of the one-shot below. The dispatcher
+        /// builds its payload under one lock and performs the blocking HID
+        /// write later under another, and that write can be dropped as stale or
+        /// fail outright. Consuming at build time therefore armed the flag,
+        /// dropped the write, and left the firmware speaker path asserted with
+        /// nothing left to restore it. Peek while building, consume only once
+        /// the write has actually landed.</summary>
+        public static bool PeekSpeakerPathCleared(Guid deviceGuid)
+        {
+            lock (_lock)
+                return _speakerPathCleared.Contains(deviceGuid);
+        }
+
         /// <summary>One-shot per device after its sink is torn down, so the
         /// dispatcher restores the firmware headphone path once.</summary>
         public static bool TryConsumeSpeakerPathCleared(Guid deviceGuid)

@@ -662,7 +662,12 @@ namespace PadForge.Views
         private void ClearSwapHighlight()
         {
             if (_dragSwapHighlight == null) return;
-            _dragSwapHighlight.BorderBrush = Brushes.Transparent;
+            // ClearValue, not a hardcoded Transparent. A local value set this
+            // way outranks the Style setter and every trigger on the card for
+            // the rest of its life, so the border a theme or hover state was
+            // supposed to draw stayed invisible after the first drag. Clearing
+            // the local value hands control back to the style.
+            _dragSwapHighlight.ClearValue(Border.BorderBrushProperty);
             _dragSwapHighlight = null;
         }
 

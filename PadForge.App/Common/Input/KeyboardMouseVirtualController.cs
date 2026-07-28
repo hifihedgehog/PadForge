@@ -16,7 +16,6 @@ namespace PadForge.Common.Input
     {
         private bool _connected;
         private bool _disposed;
-        private readonly int _padIndex;
 
         // Change detection: previous key states (4 × 64 bits = 256 VK codes)
         private ulong _prevKeys0, _prevKeys1, _prevKeys2, _prevKeys3;
@@ -61,7 +60,6 @@ namespace PadForge.Common.Input
 
         public KeyboardMouseVirtualController(int padIndex)
         {
-            _padIndex = padIndex;
         }
 
         public void Connect()

@@ -7,15 +7,22 @@ $png.Save('C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\docs\images\macros.
 $png.Dispose()
 Write-Host 'JPG saved'
 
-# This restored 'PadForge.xml.bak', which nothing in this repo has ever
-# written. Every backup writer here (prep_xml_for_capture.ps1,
-# capture_v3_1_0_full.ps1, add_slots_via_ui.ps1) writes '.bak-capture'. The
-# copy therefore failed on a missing source every time and the next line
-# announced success regardless, so the synthetic capture config stayed live as
-# the user's real settings with nothing on screen to say so.
+# The restore is unconditional no longer. Two capture flows write two
+# different backup names: capture_all.ps1 writes '<xml>.bak', while
+# prep_xml_for_capture.ps1 and capture_v3_1_0_full.ps1 write '.bak-capture'.
+# This restored '.bak' and then printed "XML backup restored" whether or not
+# the copy succeeded, so after a prep-based capture it announced success while
+# the synthetic config stayed live as the user's real settings.
+#
+# Pick the most RECENTLY written backup rather than a fixed preference. With
+# both names present, a fixed order restores whichever flow is named first
+# rather than whichever actually ran, which is how stale settings come back.
 $XmlPath = 'C:\PadForge\PadForge.xml'
 $candidates = @("$XmlPath.bak-capture", "$XmlPath.bak")
-$bak = $candidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+$bak = $candidates |
+    Where-Object { Test-Path -LiteralPath $_ } |
+    Sort-Object { (Get-Item -LiteralPath $_).LastWriteTimeUtc } -Descending |
+    Select-Object -First 1
 
 if (-not $bak) {
     Write-Host "XML NOT restored: no backup found. Looked for:"

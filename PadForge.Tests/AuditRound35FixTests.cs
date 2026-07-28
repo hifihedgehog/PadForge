@@ -523,6 +523,97 @@ namespace PadForge.Tests
                 XboxControllerIdentity.MicrosoftVid, (ushort)pid));
         }
 
+        // ── Dirty-gate coverage for the stick-config mirror ──
+
+        /// <summary>FAMILY guard, not a point test. OnStickConfigPropertyChanged
+        /// mirrors each changed StickConfigItem property back onto the
+        /// ViewModel, and a parallel HashSet decides whether that change also
+        /// marks the document dirty. Any property present in the mirror switch
+        /// but absent from the set is silently non-persisting: the user moves
+        /// the control, the value reaches the ViewModel, nothing flags dirty,
+        /// and save drops it.
+        ///
+        /// <para>Sensitivity (the stick speed knob, live for keyboard-and-mouse
+        /// sticks) was exactly that. Asserting on Sensitivity alone would pin
+        /// today's instance; this asserts the INVARIANT, so the next property
+        /// added to the switch without a set entry fails here.</para></summary>
+        [Fact]
+        public void EveryMirroredStickConfigProperty_AlsoMarksTheDocumentDirty()
+        {
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                RepoRoot(), "PadForge.App", "ViewModels", "PadViewModel.cs"));
+
+            var setBlock = System.Text.RegularExpressions.Regex.Match(
+                src, @"StickConfigPropertyNames\s*=\s*new\(\)\s*\{(.*?)\};",
+                System.Text.RegularExpressions.RegexOptions.Singleline);
+            Assert.True(setBlock.Success, "StickConfigPropertyNames not found. Test is stale.");
+
+            var gated = System.Text.RegularExpressions.Regex
+                .Matches(setBlock.Groups[1].Value, @"nameof\(StickConfigItem\.(\w+)\)")
+                .Select(m => m.Groups[1].Value).ToHashSet(StringComparer.Ordinal);
+
+            int handler = src.IndexOf("private void OnStickConfigPropertyChanged", StringComparison.Ordinal);
+            Assert.True(handler > 0, "OnStickConfigPropertyChanged not found. Test is stale.");
+            var mirrored = System.Text.RegularExpressions.Regex
+                .Matches(src.Substring(handler, Math.Min(9000, src.Length - handler)),
+                         @"case nameof\(StickConfigItem\.(\w+)\)")
+                .Select(m => m.Groups[1].Value).ToHashSet(StringComparer.Ordinal);
+
+            // Positive control: a zero-match sweep must not read as a pass.
+            Assert.True(gated.Count > 10, $"Only parsed {gated.Count} gated names.");
+            Assert.True(mirrored.Count > 10, $"Only parsed {mirrored.Count} mirror cases.");
+            Assert.Contains("Sensitivity", mirrored);
+
+            var ungated = mirrored.Except(gated).OrderBy(x => x, StringComparer.Ordinal).ToList();
+            Assert.True(ungated.Count == 0,
+                "Mirrored but never marks dirty, so the value is lost on save: "
+                + string.Join(", ", ungated));
+        }
+
+        // ── Xbox-slot demand covers every VC-writing macro action ──
+
+        /// <summary>FAMILY guard. MacroNeedsXboxSlot decides whether a
+        /// translated macro forces an Xbox slot. Every action that WRITES a
+        /// virtual-controller target needs one; the list had six of the eight
+        /// and omitted ToggleVcAxis and RepeatVcAxisWhileHeld, both emitted by
+        /// this same translator. Keyed off the enum so a new Vc* action that
+        /// skips the list fails here rather than in a user's profile.</summary>
+        [Fact]
+        public void MacroNeedsXboxSlot_CoversEveryVcWritingAction()
+        {
+            string root = RepoRoot();
+            string enumSrc = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                root, "PadForge.SteamWorkshop", "Translation", "TranslatedProfile.cs"));
+            string xlat = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                root, "PadForge.SteamWorkshop", "Translation", "ConfigTranslator.cs"));
+
+            var enumBlock = System.Text.RegularExpressions.Regex.Match(
+                enumSrc, @"enum TranslatedMacroAction\s*\{(.*?)\n\s*\}",
+                System.Text.RegularExpressions.RegexOptions.Singleline);
+            Assert.True(enumBlock.Success, "TranslatedMacroAction not found. Test is stale.");
+
+            var vcActions = System.Text.RegularExpressions.Regex
+                .Matches(enumBlock.Groups[1].Value, @"^\s*(\w+)\s*=\s*\d+",
+                         System.Text.RegularExpressions.RegexOptions.Multiline)
+                .Select(m => m.Groups[1].Value)
+                .Where(n => n.Contains("Vc", StringComparison.Ordinal))
+                .ToList();
+
+            int at = xlat.IndexOf("private static bool MacroNeedsXboxSlot", StringComparison.Ordinal);
+            Assert.True(at > 0, "MacroNeedsXboxSlot not found. Test is stale.");
+            string body = xlat.Substring(at, Math.Min(1400, xlat.Length - at));
+
+            // Positive control: prove the sweep matches known members.
+            Assert.True(vcActions.Count >= 8, $"Only found {vcActions.Count} Vc actions.");
+            Assert.Contains("HoldVcButton", vcActions);
+
+            var missing = vcActions
+                .Where(a => !body.Contains("TranslatedMacroAction." + a, StringComparison.Ordinal))
+                .ToList();
+            Assert.True(missing.Count == 0,
+                "VC-writing actions that never demand an Xbox slot: " + string.Join(", ", missing));
+        }
+
         [Fact]
         public void ImpulseTriggerPids_StillRejectNonImpulsePads()
         {

@@ -4214,6 +4214,15 @@ namespace PadForge.ViewModels
             nameof(StickConfigItem.DeadZoneX), nameof(StickConfigItem.DeadZoneY),
             nameof(StickConfigItem.AntiDeadZoneX), nameof(StickConfigItem.AntiDeadZoneY),
             nameof(StickConfigItem.Linear),
+            // The stick speed knob. Curves own the response shape for gamepad
+            // sticks, but keyboard-and-mouse sticks are RATE outputs and this
+            // is their live control, so it is a persisted user-config value
+            // like every other entry here. It was the one member of the
+            // OnStickConfigPropertyChanged switch missing from this set, so
+            // moving the slider mirrored into Left/RightStickSensitivity and
+            // never flagged the document dirty. The new speed was discarded
+            // on save and the knob snapped back on next load.
+            nameof(StickConfigItem.Sensitivity),
             nameof(StickConfigItem.SensitivityCurveX), nameof(StickConfigItem.SensitivityCurveY),
             nameof(StickConfigItem.MaxRangeX), nameof(StickConfigItem.MaxRangeY),
             nameof(StickConfigItem.MaxRangeXNeg), nameof(StickConfigItem.MaxRangeYNeg),

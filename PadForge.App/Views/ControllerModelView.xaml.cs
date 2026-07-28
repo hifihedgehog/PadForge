@@ -1054,6 +1054,14 @@ namespace PadForge.Views
                 Mouse.Capture(null);
                 SetAnnotationsDragHidden(false);
             }
+            // End the left gesture outright. Leaving this set meant that
+            // re-entering with the button still held re-promoted to dragging
+            // against the ORIGINAL press point, which is always past the
+            // threshold, and then rotated by p - _rightDragLast, a stale
+            // position from the moment of exit. The model snapped by the
+            // whole exit-to-re-entry cursor distance. Capture is already
+            // released above, so the gesture really is over.
+            _leftMouseActive = false;
             ClearHover();
         }
 

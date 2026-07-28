@@ -50,9 +50,12 @@ public class W32B {
 
 $XmlPath = "C:\PadForge\PadForge.xml"
 
-# Back up the real settings before this test rewrites slot types and
-# created flags. Nothing here restored them, so a run left the user's
-# slot layout replaced by test values permanently.
+# Back up the real settings before the run flips Use2DControllerView.
+#
+# The script does revert that flag itself at Step 3, so this is not the
+# unrestored-write case the other capture scripts had. It is insurance for the
+# path where the run dies between Step 1 and Step 3: the flag would be left
+# true, and PadForge would keep opening on the 2D view with nothing saying why.
 $xmlBak = "$XmlPath.cap2d-bak"
 if (Test-Path -LiteralPath $xmlBak) { Copy-Item -LiteralPath $xmlBak -Destination $XmlPath -Force }
 elseif (Test-Path -LiteralPath $XmlPath) { Copy-Item -LiteralPath $XmlPath -Destination $xmlBak -Force }

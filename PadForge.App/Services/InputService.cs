@@ -11282,7 +11282,12 @@ namespace PadForge.Services
                 if (_testPulseGeneration[padIndex] != myGen) return;
                 if (left) vib.LeftMotorSpeed = 0;
                 if (right) vib.RightMotorSpeed = 0;
-                if (isExtended)
+                // Same condition the SET above uses. Clearing under the looser
+                // `isExtended` alone meant the both-motors Test Rumble path
+                // (left and right together, so the set was skipped) still wiped
+                // four directional fields it never wrote, on a shared
+                // VibrationStates entry that another writer may own.
+                if (isExtended && (left != right))
                 {
                     vib.HasDirectionalData = false;
                     vib.SignedMagnitude = 0;

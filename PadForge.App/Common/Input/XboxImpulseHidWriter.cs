@@ -319,21 +319,6 @@ namespace PadForge.Common.Input
         //  HID write (synchronous, no overlapped — matches X1nput)
         // ─────────────────────────────────────────────
 
-        private static (bool ok, int err) WriteRawDiag(string devicePath, byte[] buf)
-        {
-            using var handle = CreateFileSafe(
-                devicePath,
-                GENERIC_READ | GENERIC_WRITE,
-                FILE_SHARE_READ | FILE_SHARE_WRITE,
-                0); // synchronous open — matches X1nput
-
-            if (handle.IsInvalid)
-                return (false, Marshal.GetLastWin32Error());
-
-            bool ok = WriteFile(handle, buf, (uint)buf.Length, out _, IntPtr.Zero);
-            return (ok, ok ? 0 : Marshal.GetLastWin32Error());
-        }
-
         private static SafeFileHandle CreateFileSafe(
             string path, uint access, uint share, uint flags)
         {

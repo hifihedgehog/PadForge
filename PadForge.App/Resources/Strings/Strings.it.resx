@@ -1109,6 +1109,7 @@
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Levetta {0}</value></data>
   <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="Preview_Buttons" xml:space="preserve"><value>Pulsanti</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_LeftStickX" xml:space="preserve"><value>Levetta sinistra X</value></data>
   <data name="DevObj_LeftStickY" xml:space="preserve"><value>Levetta sinistra Y</value></data>

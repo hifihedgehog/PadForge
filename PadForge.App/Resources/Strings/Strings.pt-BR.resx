@@ -865,6 +865,7 @@
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Analógico {0}</value></data>
   <data name="Preview_Trigger_Format" xml:space="preserve"><value>G{0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
+  <data name="Preview_Buttons" xml:space="preserve"><value>Botões</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
   <data name="Pad_DeadZoneX" xml:space="preserve"><value>Deadzone X</value></data>

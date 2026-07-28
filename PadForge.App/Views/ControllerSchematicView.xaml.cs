@@ -236,7 +236,7 @@ namespace PadForge.Views
             double btnStartY = topY + Math.Max(StickSize, TriggerHeight) + SectionGap + LabelHeight;
 
             // Section label
-            var btnSectionLabel = CreateLabel("Buttons", btnStartX, btnStartY - LabelHeight - 2);
+            var btnSectionLabel = CreateLabel(Strings.Instance.Preview_Buttons, btnStartX, btnStartY - LabelHeight - 2);
             SchematicCanvas.Children.Add(btnSectionLabel);
 
             for (int i = 0; i < cfg.ButtonCount; i++)

@@ -5458,13 +5458,13 @@ namespace PadForge
         private void NavView_ItemInvoked(NavigationView sender,
             RoutedEventArgs args)
         {
-            // Check for AddController click.
-            if (args.OriginalSource is NavigationViewItem nvi
-                && nvi.Tag?.ToString() == "AddController")
-            {
-                ShowControllerTypePopup(nvi);
-                return;
-            }
+            // The AddController check that used to sit here is gone. It cast
+            // args.OriginalSource straight to NavigationViewItem, and for
+            // ItemInvoked that source is the inner content element, never the
+            // item itself, so the branch could not fire. The click is handled
+            // by the PreviewMouseLeftButtonDown handler in the constructor,
+            // which walks UP the visual tree to find the item and is why the
+            // feature works at all.
 
             // Fallback navigation: if SelectionChanged didn't fire, handle it here.
             if (sender.SelectedItem is NavigationViewItem selected)

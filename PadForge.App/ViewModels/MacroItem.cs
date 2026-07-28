@@ -3619,21 +3619,6 @@ namespace PadForge.ViewModels
             return codes.ToArray();
         }
 
-        /// <summary>Formats VK codes into "{Key1}{Key2}..." string.</summary>
-        public static string FormatKeyString(int[] keyCodes)
-        {
-            if (keyCodes == null || keyCodes.Length == 0) return "";
-            var sb = new StringBuilder();
-            foreach (var code in keyCodes)
-            {
-                if (Enum.IsDefined(typeof(VirtualKey), code))
-                    sb.Append($"{{{(VirtualKey)code}}}");
-                else
-                    sb.Append($"{{0x{code:X2}}}");
-            }
-            return sb.ToString();
-        }
-
         private VirtualKey _selectedKeyToAdd;
 
         /// <summary>
@@ -5096,8 +5081,8 @@ namespace PadForge.ViewModels
                     MacroActionType.KeyPress => string.Format(Strings.Instance.MacroAction_KeyPress_Format, keyDisplay, _durationMs),
                     MacroActionType.KeyRelease => string.Format(Strings.Instance.MacroAction_KeyRelease_Format, keyDisplay),
                     MacroActionType.Delay => string.Format(Strings.Instance.MacroAction_Wait_Format, _durationMs),
-                    MacroActionType.AxisSet => string.Format(Strings.Instance.MacroAction_SetAxis_Format, _axisTarget, _axisValue),
-                    MacroActionType.AxisHold => string.Format(Strings.Instance.MacroAction_HoldAxis_Format, _axisTarget, _axisValue, _durationMs) + yieldMark,
+                    MacroActionType.AxisSet => string.Format(Strings.Instance.MacroAction_SetAxis_Format, _axisTarget.DisplayName(), _axisValue),
+                    MacroActionType.AxisHold => string.Format(Strings.Instance.MacroAction_HoldAxis_Format, _axisTarget.DisplayName(), _axisValue, _durationMs) + yieldMark,
                     MacroActionType.MouseWheelTap => Strings.Instance.MacroAction_Type_MouseWheelTap,
                     MacroActionType.MouseNudge => string.Format(
                         Strings.Instance.MacroAction_MouseNudge_Format, _nudgeDx, _nudgeDy),
@@ -5187,10 +5172,10 @@ namespace PadForge.ViewModels
                         MacroMouseButtonDisplayName(_mouseButton)),
                     MacroActionType.ToggleVcAxis => string.Format(
                         Strings.Instance.MacroAction_ToggleVcAxis_Format,
-                        _axisTarget, _axisValue) + yieldMark,
+                        _axisTarget.DisplayName(), _axisValue) + yieldMark,
                     MacroActionType.RepeatVcAxisWhileHeld => string.Format(
                         Strings.Instance.MacroAction_RepeatVcAxisWhileHeld_Format,
-                        _axisTarget, _axisValue, _intervalMs) + yieldMark,
+                        _axisTarget.DisplayName(), _axisValue, _intervalMs) + yieldMark,
                     MacroActionType.ToggleWheel => string.Format(
                         Strings.Instance.MacroAction_ToggleWheel_Format,
                         _axisValue, _intervalMs),

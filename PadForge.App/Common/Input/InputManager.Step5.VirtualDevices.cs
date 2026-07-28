@@ -717,11 +717,17 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly bool[] _slotInitializing = new bool[MaxPads];
 
-        // Minimum wall-clock time the initializing flag must remain true after
-        // being set, so the UI overlay's "Initializing → Active" animation is
-        // visible even when HIDMaestro creates a controller synchronously in
-        // <10ms. Without this guard the flag flips in one poll cycle and the
-        // overlay never gets to render the initializing stage.
+        // Raises the initializing flag. NOTE: this used to be prefaced by a
+        // comment describing a minimum wall-clock hold, so the overlay's
+        // "Initializing → Active" animation would still be visible when
+        // HIDMaestro creates a controller synchronously in under 10 ms. No such
+        // hold is implemented here or at any of the four sites that clear the
+        // flag, and there is no timestamp anywhere to implement it from. The
+        // comment described an intention, and reading it as a guarantee would
+        // mean debugging a missed animation by looking everywhere except the
+        // place that is supposed to cause it. Left unimplemented rather than
+        // invented: adding a hold changes how long the overlay sits on screen,
+        // which is an owner-visible timing decision.
         private void BeginInitializing(int padIndex)
         {
             _slotInitializing[padIndex] = true;

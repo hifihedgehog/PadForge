@@ -269,16 +269,7 @@ namespace PadForge.ViewModels
         /// stored value remains the fallback for early startup and tests.</summary>
         public string DeviceLabel
         {
-            get
-            {
-                var resolver = DeviceLabelResolver;
-                if (resolver != null)
-                {
-                    try { return resolver(_deviceGuid) ?? ""; }
-                    catch { /* fall through to the stored value */ }
-                }
-                return _deviceLabel;
-            }
+            get => _deviceLabel;
             set => SetProperty(ref _deviceLabel, value ?? "");
         }
 

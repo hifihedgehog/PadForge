@@ -2841,9 +2841,15 @@ try {
         param([string]$Url, [string]$Name, [int]$WaitMs = 5000)
         # Kill only our temp-profile Edge processes (not the user's main browser).
         # We identify them by command line containing our temp profile path.
-        Get-Process msedge -EA SilentlyContinue | Where-Object {
-            try { $_.CommandLine -like "*PadForge_EdgeCapture*" } catch { $false }
-        } | Stop-Process -Force -EA SilentlyContinue
+        #
+        # Via Get-CimInstance, NOT Get-Process. Process objects only carry a
+        # CommandLine property on PowerShell 7+; on the 5.1 this repo runs under
+        # it does not exist, so $_.CommandLine was always empty, the -like never
+        # matched, and this kill kept nothing from a previous run from lingering.
+        # The two kills further down this same function already use the CIM form.
+        Get-CimInstance Win32_Process -Filter "Name='msedge.exe'" -EA SilentlyContinue |
+            Where-Object { $_.CommandLine -like "*PadForge_EdgeCapture*" } |
+            ForEach-Object { Stop-Process -Id $_.ProcessId -Force -EA SilentlyContinue }
         Start-Sleep -Milliseconds 1500
         # Launch Edge with an isolated temp profile — never touches the default profile.
         Start-Process $edgePath "--user-data-dir=`"$edgeTempProfile`" --no-first-run --disable-sync --disable-session-crashed-bubble --disable-features=msEdgeSyncService,msEdgeAccountSSO --no-default-browser-check --app=$Url"

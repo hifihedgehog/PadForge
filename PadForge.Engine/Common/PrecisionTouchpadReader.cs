@@ -626,6 +626,19 @@ namespace PadForge.Engine
                     }
                     _valueCapsCache.Remove(removed);
                     _rangeCache.Remove(removed);
+                    // And the device state itself. Dropping only the three
+                    // caches left the _deviceStates entry behind, and that
+                    // dictionary is what GetDevices enumerates, so an
+                    // unplugged precision touchpad stayed enumerated and
+                    // reported Online for the rest of the session. Step 1's
+                    // disconnect branch keys on the device vanishing from that
+                    // enumeration, so it was unreachable for touchpads.
+                    // _stateLock, the same monitor every other _deviceStates
+                    // access takes. The three caches above are message-loop
+                    // only, but this dictionary is read from other threads
+                    // (GetDevices, the per-device readers).
+                    lock (_stateLock)
+                        _deviceStates.Remove(removed);
                 }
                 return IntPtr.Zero;
             }

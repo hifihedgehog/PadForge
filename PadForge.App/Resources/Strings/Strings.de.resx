@@ -2805,4 +2805,13 @@
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Tippe einen Tag auf deinen Switch-Controller…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Kalibrierung fehlgeschlagen. Controller ablegen und erneut versuchen.</value></data>
   <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>Verbleibenden Layer-Eintrag "{0}" entfernen? Deine Base-Zuordnungen und Makros bleiben unberührt.</value></data>
+  <data name="Common_KeepLegacyDrivers" xml:space="preserve"><value>Behalten</value></data>
+  <data name="LegacyCleanup_Title" xml:space="preserve"><value>Bereinigung alter Treiber</value></data>
+  <data name="LegacyCleanup_Prompt_Format" xml:space="preserve"><value>PadForge v3 verwendet HIDMaestro und benötigt die folgenden alten Treiber nicht mehr: {0}.
+
+Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann einen Moment dauern.</value></data>
+  <data name="LegacyCleanup_Failed_Format" xml:space="preserve"><value>Bei der Bereinigung ist ein Fehler aufgetreten: {0}
+
+Du kannst es später in den Einstellungen erneut versuchen.</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Beenden</value></data>
 </root>

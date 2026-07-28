@@ -2827,4 +2827,13 @@
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Avvicina un tag al tuo controller Switch…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Calibrazione non riuscita. Appoggia il controller e riprova.</value></data>
   <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>Rimuovere la voce di livello residua "{0}"? Le mappature e le macro di Base non verranno toccate.</value></data>
+  <data name="Common_KeepLegacyDrivers" xml:space="preserve"><value>Mantieni</value></data>
+  <data name="LegacyCleanup_Title" xml:space="preserve"><value>Pulizia dei driver legacy</value></data>
+  <data name="LegacyCleanup_Prompt_Format" xml:space="preserve"><value>PadForge v3 usa HIDMaestro e non ha più bisogno dei seguenti driver legacy: {0}.
+
+Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e può richiedere un momento.</value></data>
+  <data name="LegacyCleanup_Failed_Format" xml:space="preserve"><value>Si è verificato un errore durante la pulizia: {0}
+
+Puoi riprovare più tardi dalle Impostazioni.</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Esci</value></data>
 </root>

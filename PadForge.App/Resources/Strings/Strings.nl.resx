@@ -2825,4 +2825,13 @@
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Tik een tag tegen je Switch-controller…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Kalibreren mislukt. Leg de controller neer en probeer het opnieuw.</value></data>
   <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>Overgebleven laagvermelding "{0}" verwijderen? Je Base-toewijzingen en macro’s blijven onaangetast.</value></data>
+  <data name="Common_KeepLegacyDrivers" xml:space="preserve"><value>Behouden</value></data>
+  <data name="LegacyCleanup_Title" xml:space="preserve"><value>Oude stuurprogramma's opruimen</value></data>
+  <data name="LegacyCleanup_Prompt_Format" xml:space="preserve"><value>PadForge v3 gebruikt HIDMaestro en heeft de volgende oude stuurprogramma's niet meer nodig: {0}.
+
+Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en het kan even duren.</value></data>
+  <data name="LegacyCleanup_Failed_Format" xml:space="preserve"><value>Er is een fout opgetreden bij het opruimen: {0}
+
+Je kunt het later opnieuw proberen via Instellingen.</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Afsluiten</value></data>
 </root>

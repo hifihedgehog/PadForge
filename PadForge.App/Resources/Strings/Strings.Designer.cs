@@ -137,6 +137,11 @@ public class Strings : INotifyPropertyChanged
     public string Common_OK => Get("Common_OK");
     public string Common_Install => Get("Common_Install");
     public string Common_Uninstall => Get("Common_Uninstall");
+    public string Common_KeepLegacyDrivers => Get("Common_KeepLegacyDrivers");
+    public string LegacyCleanup_Title => Get("LegacyCleanup_Title");
+    public string LegacyCleanup_Prompt_Format => Get("LegacyCleanup_Prompt_Format");
+    public string LegacyCleanup_Failed_Format => Get("LegacyCleanup_Failed_Format");
+    public string Tray_Exit => Get("Tray_Exit");
     public string Common_Refresh => Get("Common_Refresh");
     public string Common_Copy => Get("Common_Copy");
     public string Common_Paste => Get("Common_Paste");

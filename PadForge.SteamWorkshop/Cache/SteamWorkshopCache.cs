@@ -385,10 +385,6 @@ namespace PadForge.SteamWorkshop.Cache
             {
                 return false;
             }
-            catch (UnauthorizedAccessException)
-            {
-                return false;
-            }
         }
 
         /// <summary>

@@ -429,7 +429,6 @@ namespace PadForge.Engine.RemoteLink
                 PeerUdpEndpoint = peerUdpEndpoint,
                 Tcp = client,
                 PeerFingerprintHex = result.PeerFingerprintHex,
-                ExposedLocal = exposeLocal?.ToArray() ?? Array.Empty<RemotePeerDeviceInfo>(),
                 LastActivityTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
             };
             // Key each device by the owner's STABLE slot (carried in the device list), so a
@@ -681,7 +680,6 @@ namespace PadForge.Engine.RemoteLink
             public volatile IPEndPoint PeerUdpEndpoint;
             public TcpClient Tcp;
             public string PeerFingerprintHex;
-            public RemotePeerDeviceInfo[] ExposedLocal;
             public long LastActivityTicks; // QPC; updated on each verified datagram, read by the reaper
         }
     }

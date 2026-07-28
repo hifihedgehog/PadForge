@@ -356,11 +356,12 @@
                             <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding InstallMidiServicesCommand}"
                                     Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
+                                    ToolTipService.ShowOnDisabled="True"
                                     Margin="0,0,8,0">
                                 <Button.Style>
                                     <Style TargetType="Button" BasedOn="{StaticResource EmberAccentButton}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMidiOsSupported}" Value="False">
+                                            <DataTrigger Binding="{Binding MidiOsSupported}" Value="False">
                                                 <Setter Property="ToolTip" Value="{Binding Settings_MidiOsRequired, Source={x:Static strings:Strings.Instance}}"/>
                                             </DataTrigger>
                                         </Style.Triggers>

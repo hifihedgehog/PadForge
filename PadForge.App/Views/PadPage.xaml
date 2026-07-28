@@ -4504,6 +4504,7 @@
                                                                       ToolTip="{Binding Pad_Mapping_ExtraSourcePickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                       BorderBrush="#4D58B6E4" Background="#0D58B6E4"
                                                                       PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                                      IsSynchronizedWithCurrentItem="False"
                                                                 <ComboBox.GroupStyle>
                                                                     <GroupStyle>
                                                                         <GroupStyle.HeaderTemplate>
@@ -4561,6 +4562,7 @@
                                                                           MinWidth="240" Padding="4,2"
                                                                           ToolTip="{Binding Pad_Mapping_Modifier_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                                          IsSynchronizedWithCurrentItem="False"
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
                                                                             <GroupStyle.HeaderTemplate>
@@ -4751,6 +4753,7 @@
                                                                           MinWidth="180" Padding="4,2"
                                                                           ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                                          IsSynchronizedWithCurrentItem="False"
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
                                                                             <GroupStyle.HeaderTemplate>
@@ -4801,6 +4804,7 @@
                                                                           MinWidth="180" Padding="4,2"
                                                                           ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                                          IsSynchronizedWithCurrentItem="False"
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
                                                                             <GroupStyle.HeaderTemplate>
@@ -4883,6 +4887,7 @@
                                                                           MinWidth="180" Padding="4,2"
                                                                           ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                                          IsSynchronizedWithCurrentItem="False"
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
                                                                             <GroupStyle.HeaderTemplate>
@@ -4933,6 +4938,7 @@
                                                                           MinWidth="180" Padding="4,2"
                                                                           ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                                          IsSynchronizedWithCurrentItem="False"
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
                                                                             <GroupStyle.HeaderTemplate>
@@ -5121,6 +5127,7 @@
                                                       Foreground="{DynamicResource ColdBrush}"
                                                       BorderBrush="#4D58B6E4" Background="#0D58B6E4"
                                                       PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                      IsSynchronizedWithCurrentItem="False"
                                                 <ComboBox.GroupStyle>
                                                     <GroupStyle>
                                                         <GroupStyle.HeaderTemplate>
@@ -5204,6 +5211,7 @@
                                                                   DisplayMemberPath="DisplayName" MinWidth="150" MinHeight="28" Padding="4,2" VerticalAlignment="Center"
                                                                   ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                                  IsSynchronizedWithCurrentItem="False"
                                                             <ComboBox.GroupStyle>
                                                                 <GroupStyle>
                                                                     <GroupStyle.HeaderTemplate>
@@ -5244,6 +5252,7 @@
                                                                   DisplayMemberPath="DisplayName" MinWidth="150" MinHeight="28" Padding="4,2" VerticalAlignment="Center"
                                                                   ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                                  IsSynchronizedWithCurrentItem="False"
                                                             <ComboBox.GroupStyle>
                                                                 <GroupStyle>
                                                                     <GroupStyle.HeaderTemplate>
@@ -5284,6 +5293,7 @@
                                                                   DisplayMemberPath="DisplayName" MinWidth="150" MinHeight="28" Padding="4,2" VerticalAlignment="Center"
                                                                   ToolTip="{Binding Pad_Mapping_Modifier_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                                  IsSynchronizedWithCurrentItem="False"
                                                             <ComboBox.GroupStyle>
                                                                 <GroupStyle>
                                                                     <GroupStyle.HeaderTemplate>

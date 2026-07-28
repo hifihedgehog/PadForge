@@ -2679,11 +2679,24 @@ namespace PadForge.Common.Input
             // Alt+F4 is the only exit. Unlike a drifting gamepad stick, this
             // failure takes the machine away from them, so the mouse lane
             // gets a non-zero default that the gamepad lane does not.
-            // An explicit value in the Sticks tab still wins in both
-            // directions; only "unset" is floored. Known trade-off: a real
-            // "Mouse Motion" source routed to the mouse target is also
-            // deadzoned, which this lane already did with whatever the user
-            // had set.
+            // LIMIT, stated because the original comment here promised the
+            // opposite and could not deliver it. An explicit Sticks-tab value
+            // wins only when it is ABOVE the floor. It cannot express a
+            // deliberate zero: LeftThumbDeadZoneX/Y initialize to the string
+            // "0" (PadSetting.cs) and XmlSerializer leaves an absent element
+            // at its initializer, so "never touched" and "the user typed 0"
+            // are byte-identical here. There is no value that turns the floor
+            // off. Making zero expressible means changing that initializer to
+            // "", which the gamepad left-stick lane also reads, so it is an
+            // owner call rather than a local fix.
+            //
+            // Scope, for the record: this floor only reaches the DELTA lane.
+            // IR and touchpad pointer sources write raw.MouseAbsX/Y and never
+            // pass through ApplyDeadZone, so they are unaffected. Gyro shares
+            // this lane and MUST keep the floor, since bias drift creeps the
+            // cursor exactly the way stick drift does. The one family that
+            // rests at exactly zero, and is therefore floored for nothing, is
+            // a physical "Mouse Motion" source routed here.
             const double KbmMouseDefaultDeadZonePercent = 10.0;
             double kbmDzX = TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0);
             double kbmDzY = TryParseDoubleStatic(ps.LeftThumbDeadZoneY, 0);

@@ -714,6 +714,17 @@ namespace PadForge.Common.Input
                 // because BuildInstanceGuid falls through to the
                 // per-unit device path when it is empty, so two
                 // serialless units never derive the same identity.
+                // OPEN (round 37): the "exact != null" disjunct admits this
+                // scan for SERIALLESS units, where the row test below
+                // degenerates to "" == "". That is load-bearing for the case
+                // FlappedTwin_InsideTheDebounce_RebindsToItsOwnRow pins (one
+                // unit re-identifying inside the debounce must find its OWN
+                // row, not mint a new one), and it is also what lets two
+                // same-model serialless pads cross-bind when one is inside its
+                // debounce while the other enumerates. Removing the disjunct
+                // fixes the second and breaks the first, so the two cases need
+                // separating on whether `exact` is a live-twin collision
+                // rather than on the serial. Owner call, not a mechanical fix.
                 if (livePresentSdlIds != null && productGuid != Guid.Empty
                     && (exact != null || !string.IsNullOrEmpty(incomingSerial)))
                 {

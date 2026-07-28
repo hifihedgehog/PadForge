@@ -1,0 +1,231 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using PadForge.Common.Input;
+using Xunit;
+
+namespace PadForge.Tests
+{
+    /// <summary>
+    /// Round 37: defects the earlier audit rounds shipped, plus the repairs to
+    /// tests those rounds left unable to fail. Every test here is
+    /// mutation-checked, and every source-scanning test carries a POSITIVE
+    /// CONTROL so a window that stops matching fails loudly instead of
+    /// asserting nothing.
+    /// </summary>
+    public class AuditRound37FixTests
+    {
+        private static string RepoRoot()
+        {
+            var dir = AppContext.BaseDirectory;
+            for (int i = 0; i < 10 && dir != null; i++)
+            {
+                if (File.Exists(Path.Combine(dir, "PadForge.sln"))) return dir;
+                dir = Path.GetDirectoryName(dir);
+            }
+            throw new InvalidOperationException("PadForge.sln not found above " + AppContext.BaseDirectory);
+        }
+
+        private static string Src(string rel) => File.ReadAllText(Path.Combine(RepoRoot(), rel));
+
+        // ── A pinned activator must not suppress another pad's button ──
+
+        /// <summary>The postpone suppression set carries an activator's own
+        /// key plus a twin so it also reaches an "(Any device)" ROW. Round 35
+        /// spelled that twin as the empty guid, which is ALSO the authored
+        /// value for "this activator pins no device", and the lookup's
+        /// fallback for that case matches a row on any device. Composed, a
+        /// shift activator pinned to pad A suppressed pad B's identically
+        /// spelled button on the same slot. Descriptors are device-agnostic
+        /// strings ("Button 4"), so the collision is the normal case on a
+        /// multi-device slot.</summary>
+        [Fact]
+        public void PinnedActivator_DoesNotSuppressAnotherDevicesRow()
+        {
+            const string padA = "11111111-1111-1111-1111-111111111111";
+            const string padB = "22222222-2222-2222-2222-222222222222";
+
+            var set = new HashSet<(string Guid, string Desc)>();
+            InputManager.AddPostponeKey(set, padA, "Button 4");
+
+            // Positive control: the activator's OWN device is suppressed, so a
+            // "not suppressed" result below cannot be vacuously true.
+            Assert.Contains((padA, "Button 4"), set);
+            // And the any-row twin exists, so direction 1 still works.
+            Assert.Contains((InputManager.AnyRowTwinGuid, "Button 4"), set);
+
+            // The regression: pad B must be reachable, not swallowed.
+            Assert.DoesNotContain((padB, "Button 4"), set);
+            Assert.DoesNotContain(("", "Button 4"), set);
+        }
+
+        /// <summary>Direction 2 stays intact: an activator that pins NO device
+        /// authors the empty key, which the lookup deliberately matches for a
+        /// row pinned to any device.</summary>
+        [Fact]
+        public void AnyDeviceActivator_StillAuthorsTheEmptyKey()
+        {
+            var set = new HashSet<(string Guid, string Desc)>();
+            InputManager.AddPostponeKey(set, "", "Button 4");
+            Assert.Contains(("", "Button 4"), set);
+            Assert.Single(set);
+        }
+
+        // ── Serialless pads must not cross-bind during a disconnect debounce ──
+
+        /// <summary>The serialless cross-bind stays OPEN, deliberately, and
+        /// this pins why so the next round does not re-attempt the same wrong
+        /// fix. Deleting the "exact != null" disjunct does stop two same-model
+        /// serialless pads cross-binding, and it also breaks
+        /// FlappedTwin_InsideTheDebounce_RebindsToItsOwnRow, the round-seven
+        /// contract that one unit re-identifying inside the debounce must find
+        /// its own row. Both cases reach the same guard with an empty serial,
+        /// so they can only be separated on whether `exact` is a live-twin
+        /// collision. That is an owner call.</summary>
+        [Fact]
+        public void FlappedUnitRebind_KeepsTheDisjunct_WithTheTradeoffRecorded()
+        {
+            string src = Src("PadForge.App/Common/Input/InputManager.Step1.UpdateDevices.cs");
+
+            // Positive control: the guard must still exist to be checked.
+            Assert.Contains("livePresentSdlIds != null", src);
+
+            // The disjunct stays, because removing it breaks the round-seven
+            // rebind contract.
+            Assert.Contains("&& (exact != null || !string.IsNullOrEmpty(incomingSerial))", src);
+
+            // And the open tradeoff is recorded at the guard, not just in a
+            // report that scrolls away.
+            Assert.Contains("OPEN (round 37)", src);
+        }
+
+        // ── A vanished mouse must not pin the merged handle's buttons ──
+
+        /// <summary>Raw Input synthesizes no button-up when a mouse disappears
+        /// mid-click, and nothing shrinks the per-device map at runtime. Round
+        /// 35 changed the merged handle from a copy of a last-writer-wins
+        /// bitmask into an OR over every entry, which removed the accidental
+        /// self-heal (a click on any surviving mouse used to clear the bit) and
+        /// left the mapped output stuck ON for the process lifetime.</summary>
+        [Fact]
+        public void MouseEnumeration_ReleasesButtonsHeldByVanishedDevices()
+        {
+            string src = Src("PadForge.Engine/Common/RawInputListener.cs");
+
+            // Positive control: both halves must be present, or this asserts
+            // nothing about the pairing.
+            Assert.Contains("EnumerateMice()", src);
+            Assert.Contains("_mouseStatesValues", src);
+
+            var body = Regex.Match(src,
+                @"public static DeviceInfo\[\] EnumerateMice\(\)\s*\r?\n\s*\{(.*?)\r?\n        \}",
+                RegexOptions.Singleline);
+            Assert.True(body.Success, "EnumerateMice moved; update this test with it.");
+
+            string b = body.Groups[1].Value;
+            Assert.Contains("_mouseStates", b);
+            Assert.Contains("Array.Clear", b);
+            // IntPtr.Zero is the synthetic injected-input key and never
+            // enumerates, so clearing it would break PadForge's own injection.
+            Assert.Contains("IntPtr.Zero", b);
+        }
+
+        // ── The KBM mouse floor documents what it can actually deliver ──
+
+        /// <summary>The floor's original comment promised "an explicit value in
+        /// the Sticks tab still wins in both directions; only 'unset' is
+        /// floored". That is unimplementable: the backing property initializes
+        /// to the string "0" and XmlSerializer leaves an absent element at its
+        /// initializer, so unset and a deliberate zero are byte-identical. The
+        /// floor stays (an owner-accepted safety tradeoff); the false promise
+        /// does not.</summary>
+        [Fact]
+        public void KbmMouseDeadZoneFloor_DoesNotPromiseAnEscapeItCannotDeliver()
+        {
+            string src = Src("PadForge.App/Common/Input/InputManager.Step3.UpdateOutputStates.cs");
+
+            // Positive control: the floor must still be there.
+            Assert.Contains("KbmMouseDefaultDeadZonePercent", src);
+
+            // Anchors are single-line phrases: the comment wraps, so a
+            // multi-word search spanning a line break silently never matches
+            // and the assertion becomes decorative.
+            Assert.DoesNotContain("still wins in both directions", src);
+            Assert.Contains("wins only when it is ABOVE the floor", src);
+            Assert.Contains("There is no value that turns the floor", src);
+            // The scope note matters as much as the retraction: gyro shares
+            // this lane and must keep the floor.
+            Assert.Contains("this lane and MUST keep the floor", src);
+        }
+
+        // ── Engine start clears every RUNTIME latch, and only those ──
+
+        /// <summary>The two tests that named this contract hand-copied the
+        /// field list into their own bodies and never called Start(), so the
+        /// suite stayed green with Start's reset loop deleted. The real
+        /// discriminator is the ACCESS MODIFIER: runtime latches are internal,
+        /// while PulseWhileLatched is a public serialized user setting that
+        /// must NOT be reset. This pins the parity in both directions, so a
+        /// sixth runtime latch added without a matching clear fails on
+        /// arrival.</summary>
+        [Fact]
+        public void EngineStart_ClearsEveryRuntimeLatchOnMacroActions()
+        {
+            string vm = Src("PadForge.App/ViewModels/MacroItem.cs");
+            string svc = Src("PadForge.App/Services/InputService.cs");
+
+            var declared = Regex.Matches(vm, @"internal bool ([A-Za-z]+Latched)\s*\{\s*get;\s*set;\s*\}")
+                .Select(m => m.Groups[1].Value).ToHashSet(StringComparer.Ordinal);
+
+            // Positive control: if the declaration shape changes this must fail
+            // loudly rather than compare an empty set to an empty set.
+            Assert.True(declared.Count >= 5,
+                $"expected at least 5 internal runtime latches, found {declared.Count}.");
+
+            var cleared = Regex.Matches(svc, @"act\.([A-Za-z]+Latched) = false;")
+                .Select(m => m.Groups[1].Value).ToHashSet(StringComparer.Ordinal);
+
+            Assert.Equal(declared.OrderBy(s => s), cleared.OrderBy(s => s));
+
+            // The serialized user setting must never be swept in with them.
+            Assert.DoesNotContain("PulseWhileLatched", cleared);
+            Assert.Contains("public bool PulseWhileLatched", vm);
+        }
+
+        // ── The unsigned-axis contract, guarded on the WRITER side ──
+
+        /// <summary>CustomInputState.Axis is UNSIGNED 0..65535 with 32768 at
+        /// rest. The file that claimed to pin this reimplemented the
+        /// conversion in its own test body and named the writer only in a
+        /// comment, so switching the writer to signed storage left all twelve
+        /// tests green. This reads the real writer.</summary>
+        [Fact]
+        public void SdlDeviceWrapper_StoresEveryAxisUnsigned()
+        {
+            string src = Src("PadForge.Engine/Common/SdlDeviceWrapper.cs");
+
+            var writes = Regex.Matches(src, @"\.Axis\[[^\]]+\]\s*=\s*([^;]+);")
+                .Select(m => m.Groups[1].Value.Trim()).ToList();
+
+            // Positive control: an empty match set would make the loop below
+            // vacuously true, which is exactly how the old file passed.
+            Assert.True(writes.Count >= 6,
+                $"expected at least 6 Axis writes in SdlDeviceWrapper, found {writes.Count}.");
+
+            foreach (var rhs in writes)
+            {
+                bool stickShaped = rhs.Contains("short.MinValue");
+                bool triggerShaped = rhs.Contains("65535L / 32767");
+                // One site assigns a local that was itself converted; accept it
+                // only when that local's own definition does the conversion.
+                bool viaProvenLocal = Regex.IsMatch(rhs, @"^[A-Za-z_][A-Za-z0-9_]*$")
+                    && Regex.IsMatch(src, @"\b" + Regex.Escape(rhs) + @"\s*=[^;]*short\.MinValue");
+
+                Assert.True(stickShaped || triggerShaped || viaProvenLocal,
+                    "an Axis write stores a value that is not provably unsigned: " + rhs);
+            }
+        }
+    }
+}

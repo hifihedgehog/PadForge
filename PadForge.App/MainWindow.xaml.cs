@@ -1498,8 +1498,14 @@ namespace PadForge
                         // Down captured (or single-shot modifier, or Down failed to
                         // start): the sequence is done. Drop the row's Stop state.
                         _kindRecordStage = KindRecStage.None;
-                        _kindRecordMapping.IsRecording = false;
-                        _kindRecordMapping = null;
+                        // Re-check. StartRecordingExtraSourceParam above can run
+                        // callbacks that clear this field, so the null test at
+                        // the top of the block does not still hold here.
+                        if (_kindRecordMapping != null)
+                        {
+                            _kindRecordMapping.IsRecording = false;
+                            _kindRecordMapping = null;
+                        }
                     }
 
                     if (activePad.IsMapAllActive)
@@ -2649,6 +2655,15 @@ namespace PadForge
                             or nameof(NavControllerItemViewModel.SlotNumber)
                             or nameof(NavControllerItemViewModel.ConnectedDeviceCount)
                             or nameof(NavControllerItemViewModel.IsInitializing)
+                            // Both of these steer the rendered output and were
+                            // missing from the refresh list: ComputeFlameHeat
+                            // branches on MappedDeviceCount, and the power
+                            // tooltip chain branches on both. Changing either
+                            // left the rail showing the previous flame and the
+                            // previous tooltip until some OTHER property
+                            // happened to fire.
+                            or nameof(NavControllerItemViewModel.MappedDeviceCount)
+                            or nameof(NavControllerItemViewModel.IsCreateFailed)
                             or nameof(NavControllerItemViewModel.IsVirtualControllerConnected))
                         {
                             UpdateControllerNavItemContent(capturedMenuItem, capturedNavItem);

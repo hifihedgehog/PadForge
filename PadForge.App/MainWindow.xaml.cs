@@ -2614,8 +2614,17 @@ namespace PadForge
         /// </summary>
         private void RebuildControllerSection()
         {
-            if (_rebuildingControllerSection || _isDraggingCard)
+            if (_rebuildingControllerSection) return;
+            if (_isDraggingCard)
+            {
+                // Queue it, the way the fading branch below does. Dropping the
+                // request outright meant a rebuild raised mid-drag (a device
+                // arriving, a slot changing type) was lost, and the rail kept
+                // showing the pre-change cards until something else asked for
+                // a rebuild. EndCardDrag replays this.
+                _rebuildPendingAfterFade = true;
                 return;
+            }
             if (_isCardFading)
             {
                 _rebuildPendingAfterFade = true;
@@ -4545,6 +4554,16 @@ namespace PadForge
             }
 
             _cardDragSource = null;
+
+            // Replay a rebuild that was requested while the drag was in
+            // progress. Deliberately last: the reorder work above calls
+            // RebuildControllerSection itself, and replaying earlier would
+            // rebuild against a half-applied reorder.
+            if (_rebuildPendingAfterFade)
+            {
+                _rebuildPendingAfterFade = false;
+                RebuildControllerSection();
+            }
         }
 
         // ── Helpers ──

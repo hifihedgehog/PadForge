@@ -46,6 +46,10 @@ namespace PadForge.Engine
         /// below advances only on success, which re-enters that block
         /// forever while a write keeps failing).</summary>
         private bool _lastEmitFailed;
+        /// <summary>Directional/condition twin of <see cref="_lastEmitFailed"/>,
+        /// so a persistently failing write logs once per run rather than per
+        /// poll.</summary>
+        private bool _lastDirFailed;
 
         private ushort _cachedLeftMotorSpeed;
         private ushort _cachedRightMotorSpeed;
@@ -273,6 +277,19 @@ namespace PadForge.Engine
                 {
                     success = false;
                 }
+
+                // Same throttle the scalar path uses below. The directional
+                // and condition writes had NO failure logging at all, so a
+                // wheel whose effect never landed produced complete silence
+                // while the cache stayed unadvanced and the write retried every
+                // poll. Log once per failure run; a success re-arms it.
+                bool dirLogWorthy = success || !_lastDirFailed;
+                _lastDirFailed = !success;
+                if (!success && dirLogWorthy)
+                    SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG directional write FAILED type={v.EffectType}"
+                        + $" mag={v.SignedMagnitude} dir={v.Direction}"
+                        + $" cond={v.HasConditionData} viaHaptic={device.HasHaptic}");
 
                 if (success)
                 {

@@ -4855,8 +4855,22 @@ namespace PadForge.Common.Input
         //  System volume control for SystemVolume macro action
         // ─────────────────────────────────────────────
 
+        /// <summary>Back-off between COM retries after an audio failure.
+        /// Long enough that a persistently broken audio stack is not
+        /// hammered every polling tick, short enough that plugging a
+        /// headset back in restores volume macros on its own.</summary>
+        private const long AudioComRetryCooldownMs = 2000;
+
         private IAudioEndpointVolume _audioEndpointVolume;
-        private bool _audioEndpointFailed;
+        // Retry deadline, not a permanent latch. A COM failure here is
+        // usually TRANSIENT (audio service restart, default-device switch,
+        // a device unplugged mid-call), and latching a bool killed every
+        // volume macro for the rest of the session with no way back short of
+        // restarting PadForge. On failure the cached interface is dropped so
+        // the retry re-resolves the CURRENT default endpoint, which also
+        // fixes volume macros silently driving the OLD device after the user
+        // switched outputs (round 34).
+        private long _audioEndpointRetryAtMs;
         private float _lastSetVolume = -1f;
         private DateTime _lastOsdTriggerTime;
 
@@ -4880,7 +4894,7 @@ namespace PadForge.Common.Input
                 return;
             _lastSetVolume = volume;
 
-            if (_audioEndpointFailed) return;
+            if (Environment.TickCount64 < _audioEndpointRetryAtMs) return;
 
             try
             {
@@ -4917,7 +4931,10 @@ namespace PadForge.Common.Input
             }
             catch
             {
-                _audioEndpointFailed = true;
+                // Drop the (possibly stale or dead) endpoint and back off
+                // briefly instead of disabling the feature forever.
+                _audioEndpointVolume = null;
+                _audioEndpointRetryAtMs = Environment.TickCount64 + AudioComRetryCooldownMs;
             }
         }
 
@@ -4926,7 +4943,7 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         private IAudioSessionManager2 _audioSessionManager;
-        private bool _audioSessionFailed;
+        private long _audioSessionRetryAtMs;
 
         /// <summary>
         /// Per-process change-detection: tracks the last volume set for each process name
@@ -4947,7 +4964,7 @@ namespace PadForge.Common.Input
                 return;
             _lastAppVolumes[processName] = volume;
 
-            if (_audioSessionFailed) return;
+            if (Environment.TickCount64 < _audioSessionRetryAtMs) return;
 
             try
             {
@@ -4998,7 +5015,9 @@ namespace PadForge.Common.Input
             }
             catch
             {
-                _audioSessionFailed = true;
+                // Same retry-not-latch policy as the master endpoint above.
+                _audioSessionManager = null;
+                _audioSessionRetryAtMs = Environment.TickCount64 + AudioComRetryCooldownMs;
             }
         }
 
@@ -5574,8 +5593,14 @@ namespace PadForge.Common.Input
                 if (ud.DevicePath != null && ud.DevicePath.StartsWith("aggregate://")) continue;
                 if (entry.DeviceProductGuid != Guid.Empty && ud.ProductGuid != entry.DeviceProductGuid)
                     continue;
+                // Direction must be passed here exactly as the
+                // single-device arm passes it. Defaulting to Positive made a
+                // NEGATIVE-direction binding compare "normalized >=
+                // threshold" against a threshold that encodes a LOW value
+                // (0.25 for stick-left), so a resting stick at 0.5 satisfied
+                // it and the macro fired continuously (round 34).
                 bool active = entry.IsAxis
-                    ? CheckAxisActive(ud.InputState, entry.AxisIndex, entry.AxisThreshold)
+                    ? CheckAxisActive(ud.InputState, entry.AxisIndex, entry.AxisThreshold, entry.AxisDirection)
                     : CheckButtonActive(ud.InputState, entry.ButtonIndex);
                 if (active) return true;
             }

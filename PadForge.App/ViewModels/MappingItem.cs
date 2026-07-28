@@ -304,8 +304,25 @@ namespace PadForge.ViewModels
         /// the last contributing secondary goes away while the primary is InvertOnHold,
         /// the primary would be inert, so revert it to Direct. Re-fires the options so
         /// the dropdown updates.</summary>
+        /// <summary>Set while a reload is repopulating this row. The gate
+        /// below reads ExtraSources, and a reload empties that collection
+        /// before refilling it, so every firing point saw "no contributing
+        /// secondary" mid-load and reverted a perfectly valid stored
+        /// InvertOnHold primary to Direct. The loader brackets the row and
+        /// runs the gate once at the end, against the finished state.</summary>
+        private bool _suppressPrimaryKindGate;
+
+        internal void BeginLoadRow() => _suppressPrimaryKindGate = true;
+
+        internal void EndLoadRow()
+        {
+            _suppressPrimaryKindGate = false;
+            EnforcePrimaryKindGate();
+        }
+
         private void EnforcePrimaryKindGate()
         {
+            if (_suppressPrimaryKindGate) return;
             if (!HasContributingExtraSource
                 && string.Equals(PrimaryKindSource?.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal))
             {

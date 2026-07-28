@@ -5646,6 +5646,13 @@ namespace PadForge.Services
 
             foreach (var mapping in padVm.Mappings)
             {
+                // The primary kind loads before ExtraSources is refilled, so
+                // the InvertOnHold gate would judge this row against an empty
+                // secondary list and revert a stored config. Bracket the row
+                // and let the gate run once on the finished state.
+                mapping.BeginLoadRow();
+                try
+                {
                 string target = mapping.TargetSettingName;
                 UserDevice primaryUd = null;
 
@@ -5754,6 +5761,8 @@ namespace PadForge.Services
                         }
                     }
                 }
+                }
+                finally { mapping.EndLoadRow(); }
             }
 
             // Mappings now mirror the slot's authoritative MappingSet. Clears the

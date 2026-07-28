@@ -62,26 +62,26 @@ kbm rows: 27
     <- Gamepad LeftShoulder
     <- Gamepad RightShoulder [inverted]
 macros: 20
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad DPadUp] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_1) | btns=0x0000 in=[Menu 1 Item 1] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_2) | btns=0x0000 in=[Menu 1 Item 2] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_3) | btns=0x0000 in=[Menu 1 Item 3] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_4) | btns=0x0000 in=[Menu 1 Item 4] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_6) | btns=0x0000 in=[Menu 1 Item 6] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_7) | btns=0x0000 in=[Menu 1 Item 7] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (touch_menu_button_8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base strength=66%
-  macro HoldMouseButton OnPress | Hold mouse LEFT (click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base mbtn=0 delayEnd=10ms
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
-  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (DPadRight) | btns=0x0000 in=[Gamepad DPadRight] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadUp) | btns=0x0000 in=[Gamepad DPadUp] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadDown) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadLeft) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickX) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickX) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 1) | btns=0x0000 in=[Menu 1 Item 1] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 2) | btns=0x0000 in=[Menu 1 Item 2] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 3) | btns=0x0000 in=[Menu 1 Item 3] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 4) | btns=0x0000 in=[Menu 1 Item 4] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 6) | btns=0x0000 in=[Menu 1 Item 6] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 7) | btns=0x0000 in=[Menu 1 Item 7] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base strength=66%
+  macro HoldMouseButton OnPress | Hold mouse LEFT (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base mbtn=0 delayEnd=10ms
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
 menus: 1
   menu 1 Radial | Gamepad RightStick | Base | fire=Click cells=8 pos=(95%,70%) opacity=100% | name=Radial Menu 1
     [1] 1
@@ -109,7 +109,7 @@ report: v26 rows:x0+k27 macros:20 menus:1 layers:0 clean:33 partial:0 skipped:0 
   Clean RowEmitted @ Default/left_trackpad/group 11 (mouse_region) => KbmMouseY <- Touchpad 0 Pointer Y
   Clean RowEmitted @ Default/left_trackpad/group 11 (mouse_region)/click/Full_Press => KbmMBtn0 <- Touchpad 0 Click
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
-  Clean MenuEmitted(8) @ Default/right_joystick/group 12 (radial_menu) => Radial menu 1 on Gamepad RightStick: 8 bound cells
+  Clean MenuEmitted(8) @ Default/right_joystick/group 12 (radial_menu) => Radial menu 1: 8 bound cells <- Gamepad RightStick
   Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_1/Full_Press => KbmKey31 <- Menu 1 Item 1
   Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_2/Full_Press => KbmKey32 <- Menu 1 Item 2
   Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_3/Full_Press => KbmKey33 <- Menu 1 Item 3
@@ -120,7 +120,7 @@ report: v26 rows:x0+k27 macros:20 menus:1 layers:0 clean:33 partial:0 skipped:0 
   Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_8/Full_Press => KbmKey38 <- Menu 1 Item 8
   Clean RowEmitted @ Default/right_trackpad/group 13 (mouse_region) => KbmMouseX <- Touchpad 1 Pointer X
   Clean RowEmitted @ Default/right_trackpad/group 13 (mouse_region) => KbmMouseY <- Touchpad 1 Pointer Y
-  Clean MacroEmitted @ Default/right_trackpad/group 13 (mouse_region)/click/Full_Press => Long-press hold macro: mouse button 0
+  Clean MacroEmitted @ Default/right_trackpad/group 13 (mouse_region)/click/Full_Press => Long-press hold macro: mouse button 0 <- Touchpad 1 Click
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_escape/Full_Press => KbmKey79 <- Gamepad ButtonStart
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey75 <- Gamepad ButtonBack

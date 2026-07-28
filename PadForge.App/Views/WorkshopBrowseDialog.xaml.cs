@@ -768,7 +768,18 @@ namespace PadForge.Views
             uint down = d.vote_data?.votes_down ?? 0;
             bool hasVotes = up + down > 0;
             double ratio = hasVotes ? (double)up / (up + down) : 0;
+            // Steam retired the subscribe step for controller configs during
+            // 2023. Measured over the response cache (979 items, 908 unique):
+            // every config created 2015-2022 carries a subscriber count, 2023
+            // is the transition year at 18 of 93, and NOT ONE of the 556
+            // created 2024 or later has a single subscriber. A modern layout
+            // is applied straight from Steam's in-game config picker, and
+            // nothing subscribes. So the count is real history where it
+            // exists and a permanent zero on anything current, which is why
+            // it only renders when it has something to say. Same rule the
+            // vote bar beside it already follows.
             ulong subs = Math.Max(d.subscriptions, d.lifetime_subscriptions);
+            bool hasSubs = subs > 0;
 
             var tags = (d.tags ?? new List<SkPublishedFileDetails.Tag>())
                 .Where(t => t.tag != null && t.tag.StartsWith("controller_", StringComparison.OrdinalIgnoreCase))
@@ -793,7 +804,10 @@ namespace PadForge.Views
                 HasVotes = hasVotes,
                 VoteBarWidth = Math.Round(ratio * 64.0),
                 VotePercentText = hasVotes ? ((int)Math.Round(ratio * 100)).ToString(CultureInfo.InvariantCulture) + "%" : string.Empty,
-                SubsText = string.Format(Strings.Instance.Workshop_Subs_Format, CompactCount(subs)),
+                HasSubs = hasSubs,
+                SubsText = hasSubs
+                    ? string.Format(Strings.Instance.Workshop_Subs_Format, CompactCount(subs))
+                    : string.Empty,
                 ByLine = string.Format(Strings.Instance.Workshop_ByLine_Format, "…", RelativeTime(d.time_updated)),
                 Tags = tags,
             };
@@ -1302,7 +1316,7 @@ namespace PadForge.Views
                     lastGroup = group;
                 }
 
-                var (source, target) = SourceAndTarget(entry);
+                var (source, target, resolved) = SourceAndTarget(entry);
                 // SourceAndTarget DECORATES the source: the translator's
                 // half-axis/invert parenthetical plus a " . activator"
                 // annotation. Both the art anchor and the friendly-name table
@@ -1310,11 +1324,17 @@ namespace PadForge.Views
                 // undecorated stem or they match nothing. The decoration is
                 // re-attached to the display string only.
                 var (bare, decoration) = SplitSourceDecoration(source);
+                // FriendlySource runs ONLY over a resolved descriptor. Its
+                // SpaceIdentifier tail splits on every lower-to-upper
+                // boundary, which is right for "LeftStickX" and destructive
+                // for prose already in display form ("D-Pad Up" comes back
+                // as "D- Pad Up"). A skipped row arrives pre-humanized from
+                // FriendlyBinding, so it must not be run through twice.
                 rows.Add(new WorkshopManifestRowItem
                 {
-                    Source = FriendlySource(bare) + decoration,
-                    Target = FriendlySource(target),
-                    ArtAnchor = ArtAnchorFor(bare),
+                    Source = (resolved ? FriendlySource(bare) : bare) + decoration,
+                    Target = resolved ? FriendlySource(target) : target,
+                    ArtAnchor = resolved ? ArtAnchorFor(bare) : null,
                     Reason = ReasonText(entry),
                     DotBrush = entry.Status switch
                     {
@@ -1351,9 +1371,17 @@ namespace PadForge.Views
             return multiPreset ? segments[0] + " · " + cluster : cluster;
         }
 
+        /// <summary>Group header for a Steam slot token. Un-underscoring the
+        /// token is not the same as naming the slot: it yielded "Joystick"
+        /// for the thing PadForge calls the Left Stick, and "Button diamond"
+        /// for the face buttons. The shared table names it the way the rest
+        /// of the app does, and only a token that table does not know falls
+        /// back to the mechanical spelling.</summary>
         private static string PrettifySlotToken(string token)
         {
             if (string.IsNullOrWhiteSpace(token)) return Strings.Instance.Workshop_GroupOther;
+            string named = PhysicalSlotResolver.SlotDisplayName(token);
+            if (!string.Equals(named, token, StringComparison.Ordinal)) return named;
             var body = token.Replace('_', ' ').Trim();
             return char.ToUpperInvariant(body[0]) + body.Substring(1);
         }
@@ -1361,9 +1389,15 @@ namespace PadForge.Views
         /// <summary>Source and target columns. Emitted rows carry
         /// <c>"{target} &lt;- {descriptor}"</c>: the PadForge-side source
         /// descriptor is the cyan column and the target is what it drives.
-        /// Non-emitted entries show the raw Steam binding against an em
+        /// Non-emitted entries show the binding Steam wanted against an em
         /// dash, exactly the design's skipped-row read.</summary>
-        private static (string Source, string Target) SourceAndTarget(TranslationEntry entry)
+        /// <para><c>Resolved</c> says which of the two branches ran, because
+        /// the caller must treat them differently. A resolved descriptor is
+        /// an ENGINE IDENTIFIER ("LeftStickX") and still needs the friendly-
+        /// name pass; the skip branch returns finished display prose and
+        /// must not be put through that pass a second time.</para>
+        private static (string Source, string Target, bool Resolved) SourceAndTarget(
+            TranslationEntry entry)
         {
             string emitted = entry.Emitted ?? string.Empty;
             int arrow = emitted.IndexOf(" <- ", StringComparison.Ordinal);
@@ -1373,15 +1407,21 @@ namespace PadForge.Views
                 string source = emitted.Substring(arrow + 4);
                 string activator = ActivatorAnnotation(entry.SourcePath);
                 if (activator != null) source += " · " + activator;
-                return (source, target);
+                return (source, target, true);
             }
 
+            // Reached only by a SKIP. Every successful translation carries
+            // its resolved descriptor after the arrow, rows and macros
+            // alike (ConfigTranslator.MacroEmit), so this branch never
+            // renders something PadForge actually mapped. The binding is
+            // spelled as words on the way out: Steam's wire grammar is not
+            // a vocabulary to show anyone using this app.
             string fallback = !string.IsNullOrWhiteSpace(entry.Binding)
-                ? entry.Binding
-                : PathTail(entry.SourcePath);
+                ? FriendlyBinding(entry.Binding)
+                : FriendlySource(PathTail(entry.SourcePath));
             // U+2014 is the design's skipped-row target glyph (a data
             // token in the manifest column, not punctuation).
-            return (fallback, emitted.Length > 0 ? HumanizeKbmTarget(emitted) : "\u2014");
+            return (fallback, emitted.Length > 0 ? HumanizeKbmTarget(emitted) : "\u2014", false);
         }
 
         /// <summary>Renders a keyboard/mouse mapping target as the key a
@@ -1441,6 +1481,146 @@ namespace PadForge.Views
             };
         }
 
+        /// <summary>The <c>xinput_button</c> tokens of Steam's binding
+        /// grammar. Corpus-grounded: these are every value the fixtures
+        /// carry for that type.</summary>
+        private static readonly Dictionary<string, string> XInputButtonNames =
+            new(StringComparer.OrdinalIgnoreCase)
+            {
+                ["A"] = "A", ["B"] = "B", ["X"] = "X", ["Y"] = "Y",
+                ["DPAD_UP"] = "D-Pad Up", ["DPAD_DOWN"] = "D-Pad Down",
+                ["DPAD_LEFT"] = "D-Pad Left", ["DPAD_RIGHT"] = "D-Pad Right",
+                ["SHOULDER_LEFT"] = "Left Bumper", ["SHOULDER_RIGHT"] = "Right Bumper",
+                ["TRIGGER_LEFT"] = "Left Trigger", ["TRIGGER_RIGHT"] = "Right Trigger",
+                ["JOYSTICK_LEFT"] = "Left Stick Click", ["JOYSTICK_RIGHT"] = "Right Stick Click",
+                ["LSTICK_DOWN"] = "Left Stick Down",
+                ["START"] = "Menu", ["SELECT"] = "View",
+            };
+
+        /// <summary>The <c>controller_action</c> verbs spelled the way a
+        /// person reads them. Steam's own grammar is SCREAMING_SNAKE and
+        /// belongs in the config file, never on screen. Unlocalized English
+        /// on purpose, matching <see cref="InputNames"/>: same display-
+        /// vocabulary layer, and every row carrying one of these has a
+        /// localized Reason beside it doing the explaining.</summary>
+        private static readonly Dictionary<string, string> ActionVerbNames =
+            new(StringComparer.OrdinalIgnoreCase)
+            {
+                ["SET_LED"] = "Set light color",
+                ["CAMERA_RESET"] = "Recenter camera",
+                ["MOUSE_POSITION"] = "Warp cursor",
+                ["MOUSE_DELTA"] = "Nudge cursor",
+                ["SCREENSHOT"] = "Screenshot",
+                ["SHOW_KEYBOARD"] = "On-screen keyboard",
+                ["CHANGE_PRESET"] = "Switch preset",
+                ["ADD_LAYER"] = "Add layer",
+                ["REMOVE_LAYER"] = "Remove layer",
+                ["HOLD_LAYER"] = "Hold layer",
+                ["CHANGE_PLAYER_NUMBER"] = "Change player number",
+                ["EMPTY_BINDING"] = "Unbound",
+                ["EMPTY_SUB_COMMAND"] = "Unbound",
+                ["TOGGLE_LIZARD"] = "Toggle desktop mode",
+                ["TOGGLE_LIZARD_MODE"] = "Toggle desktop mode",
+                ["SYSTEM_KEY_0"] = "Steam system key",
+                ["SYSTEM_KEY_1"] = "Steam system key",
+                ["TOGGLE_MAGNIFIER"] = "Toggle magnifier",
+                ["BRIGHTNESS_UP"] = "Brightness up",
+                ["BRIGHTNESS_DOWN"] = "Brightness down",
+                ["CONTROLLER_POWEROFF"] = "Power off controller",
+                ["OPEN_CONFIGURATOR"] = "Open Steam configurator",
+                ["OPEN_QUICKMENU"] = "Open Steam quick menu",
+                ["QUIT_APPLICATION"] = "Quit game",
+                ["TOGGLE_HAPTICS"] = "Toggle haptics",
+                ["TOGGLE_HUD"] = "Toggle Steam HUD",
+                ["TOGGLE_RUMBLE"] = "Toggle rumble",
+                ["FORCE_GUIDE_UP"] = "Force Guide button",
+                ["DOTS_PER_360_CALIBRATION_SPIN"] = "Gyro calibration spin",
+                ["TURN_TO_FACE_DIRECTION"] = "Turn to face direction",
+            };
+
+        /// <summary><para>Renders a raw Steam <c>binding</c> value as words.
+        /// Only a genuinely SKIPPED row reaches this: everything PadForge
+        /// translated carries its own resolved descriptor (see
+        /// <c>ConfigTranslator.MacroEmit</c>). A skip still has to say what
+        /// Steam wanted, and saying it as
+        /// <c>"controller_action set_led 242 25 0 100 255 1"</c> hands the
+        /// user a wire format they have no reason to know.</para>
+        /// <para>The binding's own grammar is
+        /// <c>&lt;type&gt; &lt;param...&gt;, &lt;label&gt;, &lt;icon&gt;</c>,
+        /// and the label is the config author's own name for the binding
+        /// ("key_press 1, Weapon 1"). Nothing this method can synthesize
+        /// beats the words the author chose, so the label wins outright when
+        /// there is one. Steam's own localization tokens ("#ChangeClass")
+        /// are not words, so they do not count as one.</para></summary>
+        internal static string FriendlyBinding(string rawBinding)
+        {
+            if (string.IsNullOrWhiteSpace(rawBinding)) return rawBinding;
+
+            SteamInputBinding b;
+            try { b = SteamInputBinding.Parse(rawBinding); }
+            catch (ArgumentException) { return rawBinding; }
+
+            string label = (b.ActionName ?? string.Empty).Trim();
+            if (label.Length > 0 && label[0] != '#') return label;
+
+            var parts = (b.Param ?? string.Empty)
+                .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string first = parts.Length > 0 ? parts[0] : string.Empty;
+
+            switch ((b.Type ?? string.Empty).ToLowerInvariant())
+            {
+                case "key_press":
+                    // Through the same VK table the macro editor's key
+                    // picker uses, so one key reads identically everywhere.
+                    return SteamInputVkTable.TryResolve(first, out byte vk, out _)
+                        ? HumanizeKbmTarget(SteamInputVkTable.KbmKeyTarget(vk))
+                        : TitleFromToken(first);
+
+                case "mouse_button":
+                    return SteamInputVkTable.TryResolveMouseButtonIndex(first, out int mb)
+                        ? HumanizeKbmTarget("KbmMBtn" + mb.ToString(CultureInfo.InvariantCulture))
+                        : TitleFromToken(first);
+
+                case "xinput_button":
+                    return XInputButtonNames.TryGetValue(first, out var xb)
+                        ? xb : TitleFromToken(first);
+
+                case "controller_action":
+                    return ActionVerbNames.TryGetValue(first, out var verb)
+                        ? verb : TitleFromToken(first);
+
+                case "game_action":
+                    // "game_action FPSControls attack": the action itself,
+                    // not the action-set token that scopes it.
+                    return TitleFromToken(parts.Length > 1 ? parts[parts.Length - 1] : first);
+
+                // mouse_wheel SCROLL_UP, and mode_shift's hosting slot.
+                default:
+                    return first.Length > 0 ? TitleFromToken(first) : TitleFromToken(b.Type);
+            }
+        }
+
+        /// <summary>"LEFT_SHIFT" -> "Left Shift", "left_trackpad" -> "Left
+        /// Trackpad". Steam's token separator is the underscore, so the
+        /// words are already there and only need the casing.</summary>
+        internal static string TitleFromToken(string token)
+        {
+            if (string.IsNullOrWhiteSpace(token)) return token;
+            var words = token.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+            var sb = new System.Text.StringBuilder(token.Length + 2);
+            foreach (var w in words)
+            {
+                if (sb.Length > 0) sb.Append(' ');
+                sb.Append(char.ToUpperInvariant(w[0]));
+                // Lower the tail only when the token was SCREAMING_SNAKE;
+                // a mixed-case word ("DPad") keeps the author's shape.
+                sb.Append(w.Length > 1
+                    ? (w.ToUpperInvariant() == w ? w.Substring(1).ToLowerInvariant() : w.Substring(1))
+                    : string.Empty);
+            }
+            return sb.ToString();
+        }
+
         /// <summary>The activator variant, lowercased ("long-press"), when it
         /// isn't a plain full press.</summary>
         private static string ActivatorAnnotation(string sourcePath)
@@ -1480,15 +1660,85 @@ namespace PadForge.Views
 
             string raw = Strings.Get(entry.ReasonKey);
             if (entry.ReasonArgs == null || entry.ReasonArgs.Count == 0) return raw;
+            // The localized sentence is prose; the arguments dropped into it
+            // are not. For the keys listed in TokenArgReasons those slots
+            // carry Steam's own grammar, and a reason that reads "controller
+            // action TOGGLE_MAGNIFIER not supported" hands the user a token
+            // out of a config file. Spell it.
+            object[] args = TokenArgReasons.Contains(entry.ReasonKey)
+                ? entry.ReasonArgs.Select(a => (object)SpellTokenList(a)).ToArray()
+                : entry.ReasonArgs.ToArray();
             try
             {
-                return string.Format(CultureInfo.CurrentCulture, raw, entry.ReasonArgs.ToArray());
+                return string.Format(CultureInfo.CurrentCulture, raw, args);
             }
             catch (FormatException)
             {
                 return raw;
             }
         }
+
+        /// <summary>The reason keys whose format arguments are Steam's own
+        /// grammar (a verb, a slot, an input, a setting key) rather than
+        /// author text, a PadForge descriptor, or a number. Membership is
+        /// explicit, not pattern-matched, because the three excluded kinds
+        /// must survive verbatim: an author's layer name is THEIR writing
+        /// and underscores in it are theirs to keep, a descriptor belongs to
+        /// <see cref="FriendlySource"/>'s table instead, and a number has
+        /// nothing to spell.</summary>
+        private static readonly HashSet<string> TokenArgReasons = new(StringComparer.Ordinal)
+        {
+            TranslationReasons.SteamSystemAction,
+            TranslationReasons.UnsupportedControllerAction,
+            TranslationReasons.LayerReleaseEdgeApproximated,
+            TranslationReasons.UnknownBindingType,
+            TranslationReasons.UnknownKey,
+            TranslationReasons.UnsupportedKey,
+            TranslationReasons.LongPressKeyTap,
+            TranslationReasons.UnknownMouseButton,
+            TranslationReasons.UnknownXInputButton,
+            TranslationReasons.UnknownPhysicalInput,
+            TranslationReasons.MobileTouchSurfaceOnly,
+            TranslationReasons.UnknownGroupMode,
+            TranslationReasons.UnknownActivatorType,
+            TranslationReasons.MissingModeShiftGroup,
+            TranslationReasons.RowCapExceeded,
+            TranslationReasons.MenuSurfaceNotSupported,
+            TranslationReasons.ResponseCurveNotSupported,
+            TranslationReasons.DeadZoneRadialResidual,
+            TranslationReasons.RotationNonlinearWithheld,
+            TranslationReasons.MouseRegionTuningDropped,
+            TranslationReasons.MouseModeTuningDropped,
+            TranslationReasons.AxisInversionNotApplied,
+            TranslationReasons.GyroButtonMaskDropped,
+        };
+
+        /// <summary>Spells one Steam token, or a comma-joined run of them
+        /// ("curve_exponent, custom_curve_exponent"), as words. Anything
+        /// already carrying a space is prose rather than a token, and a
+        /// number is left exactly as the translator computed it.</summary>
+        internal static string SpellTokenList(string arg)
+        {
+            if (string.IsNullOrWhiteSpace(arg)) return arg;
+            var parts = arg.Split(',');
+            for (int i = 0; i < parts.Length; i++)
+            {
+                string t = parts[i].Trim();
+                if (t.Length == 0 || t.IndexOf(' ') >= 0
+                    || double.TryParse(t, NumberStyles.Any, CultureInfo.InvariantCulture, out _))
+                    continue;
+                parts[i] = SpellSteamToken(t);
+            }
+            return string.Join(", ", parts.Select(s => s.Trim()));
+        }
+
+        /// <summary>One token, through the named tables first so a verb
+        /// reads as what it does ("Set light color") rather than as its
+        /// spelled-out identifier ("Set Led").</summary>
+        internal static string SpellSteamToken(string token)
+            => ActionVerbNames.TryGetValue(token, out var verb) ? verb
+             : XInputButtonNames.TryGetValue(token, out var xb) ? xb
+             : TitleFromToken(token);
 
         // ─────────────────────────────────────────────
         //  Art plumbing
@@ -1884,6 +2134,7 @@ namespace PadForge.Views
         public bool HasVotes { get; init; }
         public double VoteBarWidth { get; init; }
         public string VotePercentText { get; init; }
+        public bool HasSubs { get; init; }
         public string SubsText { get; init; }
         public List<WorkshopTagChipItem> Tags { get; init; }
 

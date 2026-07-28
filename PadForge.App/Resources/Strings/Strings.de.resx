@@ -2491,7 +2491,7 @@
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>Mode-Shift auf {0} verweist auf fehlende Gruppe {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>Konfiguration verweist auf fehlendes Preset {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>Referenzzyklus bei Gruppe {0}</value></data>
-  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer als Ausschalten angenähert</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>„Ebene entfernen“ als Ausschalten angenähert</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>diese Eingabe kann keinen Ebenen-Aktivator ansteuern</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>Zeilenlimit für den {0}-Slot überschritten</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>keine Bindung wechselt zu Preset {0}</value></data>

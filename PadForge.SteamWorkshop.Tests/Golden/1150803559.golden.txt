@@ -53,8 +53,8 @@ xbox rows: 22
   Layer_1150803559_0_MS_right_trackpad_9 | LeftThumbAxisY
     <- Touchpad 0 Finger 0 Y Right rangeOuter=0.317
 xbox activators: 2
-  Hold Layer_1150803559_0_MS_right_joystick_14 | Gamepad RightShoulder | inherit | name=right_joystick shift
-  Hold Layer_1150803559_0_MS_right_trackpad_9 | Gamepad RightShoulder | delay=224ms | inherit | name=right_trackpad shift
+  Hold Layer_1150803559_0_MS_right_joystick_14 | Gamepad RightShoulder | inherit | name=Right Stick shift
+  Hold Layer_1150803559_0_MS_right_trackpad_9 | Gamepad RightShoulder | delay=224ms | inherit | name=Right Trackpad shift
 kbm rows: 2
   Base | KbmMouseX | Sum
     <- Gyro Yaw gyroSens=2.56
@@ -65,16 +65,16 @@ kbm rows: 2
     <- Gamepad RightStickY sens=3.725
     <- Touchpad 0 Finger 0 Y Right sens=5.96
 macros: 10
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad DPadUp] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=100%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 0 Click; Touchpad 0 TouchRight] layer=Base strength=100%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
-  macro RumblePulse HoldForMs | Haptic pulse (right_bumper) | btns=0x0000 in=[Gamepad RightShoulder] hold=224ms layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadRight) | btns=0x0000 in=[Gamepad DPadRight] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadUp) | btns=0x0000 in=[Gamepad DPadUp] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadDown) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadLeft) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightStick) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=100%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Click) | btns=0x0000 in=[Touchpad 0 Click; Touchpad 0 TouchRight] layer=Base strength=100%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse HoldForMs | Haptic pulse (RightShoulder) | btns=0x0000 in=[Gamepad RightShoulder] hold=224ms layer=Base strength=33%
 report: v26 rows:x22+k2 macros:10 menus:0 layers:2 clean:35 partial:1 skipped:0 errors:0
   Clean RowEmitted @ Default/gyro/group 8 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 8 (absolute_mouse) => KbmMouseY <- Gyro Pitch
@@ -110,5 +110,5 @@ report: v26 rows:x22+k2 macros:10 menus:0 layers:2 clean:35 partial:1 skipped:0 
   Clean RowEmitted @ Default/switch/group 10 (switches)/button_menu/Full_Press => ButtonBack <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 10 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 10 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
-  Clean ShiftLayerEmitted(right_joystick shift) @ Default/switch/group 10 (switches)/right_bumper/Full_Press => Hold -> Layer_1150803559_0_MS_right_joystick_14
-  Clean ShiftLayerEmitted(right_trackpad shift) @ Default/switch/group 10 (switches)/right_bumper/Long_Press => Hold -> Layer_1150803559_0_MS_right_trackpad_9
+  Clean ShiftLayerEmitted(Right Stick shift) @ Default/switch/group 10 (switches)/right_bumper/Full_Press => Hold Right Stick shift <- Gamepad RightShoulder
+  Clean ShiftLayerEmitted(Right Trackpad shift) @ Default/switch/group 10 (switches)/right_bumper/Long_Press => Hold Right Trackpad shift <- Gamepad RightShoulder

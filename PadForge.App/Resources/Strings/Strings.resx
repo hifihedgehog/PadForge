@@ -2594,7 +2594,7 @@
   <data name="Workshop_TimeDays_Format" xml:space="preserve"><value>{0} d ago</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} mo ago</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} yr ago</value></data>
-  <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} subs</value></data>
+  <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} subscribers</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>All</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>No configs for this game yet</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop has no community controller configs for {0}. You can be the first: build one in Steam, and it appears here.</value></data>
@@ -2641,7 +2641,7 @@
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>mode shift on {0} references missing group {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>config references missing preset {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>reference cycle at group {0}</value></data>
-  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer approximated as toggle-off</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>"Remove layer" approximated as toggle-off</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>this input cannot drive a layer activator</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>row cap exceeded for the {0} slot</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>no binding switches to preset {0}</value></data>

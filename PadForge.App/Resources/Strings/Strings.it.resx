@@ -2513,7 +2513,7 @@
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>il cambio modalità su {0} fa riferimento al gruppo mancante {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>la configurazione fa riferimento al preset mancante {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>ciclo di riferimenti al gruppo {0}</value></data>
-  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer approssimato come disattivazione</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>«Rimuovi livello» approssimato come disattivazione</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>questo input non può pilotare un attivatore di livello</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>limite di righe superato per lo slot {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>nessuna associazione passa al preset {0}</value></data>

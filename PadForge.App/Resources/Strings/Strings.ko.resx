@@ -2491,7 +2491,7 @@
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0}의 모드 시프트가 없는 그룹 {1}을(를) 참조합니다</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>구성이 없는 프리셋 {0}을(를) 참조합니다</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>그룹 {0}에서 참조 순환</value></data>
-  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer를 토글 해제로 근사</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>'레이어 제거'를 토글 해제로 근사</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>이 입력은 레이어 활성화에 사용할 수 없습니다</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} 슬롯의 행 제한 초과</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>프리셋 {0}(으)로 전환하는 바인딩이 없습니다</value></data>

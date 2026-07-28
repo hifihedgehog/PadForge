@@ -77,7 +77,7 @@ function Find1 {
 function ClickEl($el,[int]$d=800,[string]$lbl) {
     if(-not $el){Write-Host "  !! NOT FOUND: $lbl" -ForegroundColor Red;return $false}
     $r=$el.Current.BoundingRectangle
-    if($r.IsEmpty -or $r.Width -le 0){Write-Host "  !! EMPTY: $lbl" -ForegroundColor Red;return $false}
+    if($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0){Write-Host "  !! EMPTY: $lbl" -ForegroundColor Red;return $false}
     $cx=[int]($r.X+$r.Width/2);$cy=[int]($r.Y+$r.Height/2)
     Write-Host "  Click '$lbl' at ($cx,$cy)"
     [W32]::ForceFG($script:hwnd);Start-Sleep -Milliseconds 100

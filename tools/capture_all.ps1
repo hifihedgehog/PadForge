@@ -169,7 +169,10 @@ function Click-El {
     )
     if (-not $El) { Write-Host "  !! NOT FOUND: $Label" -ForegroundColor Red; return $false }
     $r = $El.Current.BoundingRectangle
-    if ($r.IsEmpty -or $r.Width -le 0) {
+    # Height is checked alongside Width. IsEmpty does not catch a rect with
+    # width but no height, and such an element passed the guard and got clicked
+    # at its top edge, which lands on whatever is above it.
+    if ($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0) {
         Write-Host "  !! EMPTY BOUNDS: $Label" -ForegroundColor Red; return $false
     }
     $cx = [int]($r.X + $r.Width / 2); $cy = [int]($r.Y + $r.Height / 2)
@@ -2056,7 +2059,7 @@ if ($slotsHost) {
             $recBtn = $null; $recByName = $null; $bestY = -1e9
             foreach ($b in $script:uiaWin.FindAll($TD, $recBtnCT)) {
                 $rb = $b.Current.BoundingRectangle
-                if ($rb.IsEmpty -or $rb.Width -le 0) { continue }
+                if ($rb.IsEmpty -or $rb.Width -le 0 -or $rb.Height -le 0) { continue }
                 if ($b.Current.Name -match "Record New Gesture") { $recByName = $b }
                 if ($rb.X -gt ($wrTp.Left + 0.14 * $tpw) -and $rb.Y -gt ($wrTp.Top + 0.16 * $tph)) {
                     $by = $rb.Y + $rb.Height
@@ -2671,7 +2674,7 @@ function Click-DlgEl {
     param($DlgHwnd, [System.Windows.Automation.AutomationElement]$El, [int]$Delay = 700, [string]$Label)
     if (-not $El) { Write-Host "  !! ws NOT FOUND: $Label" -ForegroundColor Yellow; return $false }
     $r = $El.Current.BoundingRectangle
-    if ($r.IsEmpty -or $r.Width -le 0) { Write-Host "  !! ws EMPTY BOUNDS: $Label" -ForegroundColor Yellow; return $false }
+    if ($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0) { Write-Host "  !! ws EMPTY BOUNDS: $Label" -ForegroundColor Yellow; return $false }
     [Win32]::SetForegroundWindow([IntPtr]$DlgHwnd) | Out-Null
     Start-Sleep -Milliseconds 150
     [Win32]::ClickAt([int]($r.X + $r.Width / 2), [int]($r.Y + $r.Height / 2))

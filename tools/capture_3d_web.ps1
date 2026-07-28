@@ -79,7 +79,7 @@ function Find1 {
 function ClickEl($el,[int]$d=800,[string]$lbl) {
     if(-not $el){Log "  !! NOT FOUND: $lbl";return $false}
     $r=$el.Current.BoundingRectangle
-    if($r.IsEmpty -or $r.Width -le 0){Log "  !! EMPTY: $lbl";return $false}
+    if($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0){Log "  !! EMPTY: $lbl";return $false}
     $cx=[int]($r.X+$r.Width/2);$cy=[int]($r.Y+$r.Height/2)
     Log("  Click '$lbl' at ($cx,$cy) [$([int]$r.Width)x$([int]$r.Height)]")
     [W32]::ForceFG($script:hwnd);Start-Sleep -Milliseconds 100

@@ -1670,6 +1670,17 @@ namespace PadForge.Services
 
                 if (current?.Rows == null)
                 {
+                    // Carry Workshop ownership across the replacement. The
+                    // rebuilt set is built from the legacy per-device canon
+                    // and has the flag at its default false, so handing it
+                    // over bare silently un-gates every later merge: the two
+                    // guards below both key on current.Authoritative, and an
+                    // import that lost the flag gets its rows rebound to the
+                    // assigned pad and gains the automap's unmatched rows.
+                    // The owner's file showed exactly that split, a live set
+                    // reading Authoritative="false" beside the profile copy
+                    // that still read true.
+                    if (current != null) rebuilt.Authoritative = current.Authoritative;
                     sets[slot] = rebuilt;
                     continue;
                 }

@@ -1,4 +1,4 @@
-<UserControl x:Class="PadForge.Views.DevicesPage"
+﻿<UserControl x:Class="PadForge.Views.DevicesPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -1164,9 +1164,19 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
+                                    <!-- ToolTip is object-typed, so a StringFormat on the
+                                         attribute form is IGNORED and the tooltip rendered the
+                                         bare number. Hosting a TextBlock puts the format on a
+                                         string target where it applies, and lets the word come
+                                         from resources instead of a hardcoded English literal
+                                         (round 34). -->
                                     <Border Width="24" Height="24" CornerRadius="12" Margin="1"
-                                            Style="{StaticResource RawCellBorder}"
-                                            ToolTip="{Binding DisplayNumber, StringFormat='Button {0}'}">
+                                            Style="{StaticResource RawCellBorder}">
+                                        <Border.ToolTip>
+                                            <TextBlock>
+                                                <Run Text="{Binding Pad_Shift_KindButton, Source={x:Static strings:Strings.Instance}, Mode=OneWay}"/><Run Text=" "/><Run Text="{Binding DisplayNumber, Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </Border.ToolTip>
                                         <TextBlock Text="{Binding DisplayNumber}" FontSize="8"
                                                    Style="{StaticResource RawCellLabel}"
                                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>

@@ -5108,16 +5108,13 @@ namespace PadForge.Common.Input
         /// </summary>
         internal static float ReadAxisAsVolumeRaw(in RawHidState raw, MacroAxisTarget target)
         {
-            int axisIndex = target switch
-            {
-                MacroAxisTarget.LeftStickX => 0,
-                MacroAxisTarget.LeftStickY => 1,
-                MacroAxisTarget.RightStickX => 3,
-                MacroAxisTarget.RightStickY => 4,
-                MacroAxisTarget.LeftTrigger => 2,
-                MacroAxisTarget.RightTrigger => 5,
-                _ => -1
-            };
+            // Layout-aware, exactly like every macro axis WRITE. The hardcoded
+            // LX0/LY1/LT2/RX3/RY4/RT5 map this used is only correct for a
+            // 2-stick/2-trigger shape, so on any other Extended layout the read
+            // landed on a different channel than the write. MacroAxisTargetToRawIndex
+            // falls back to that same table when no layout is set, so nothing
+            // changes for the common case.
+            int axisIndex = MacroAxisTargetToRawIndex(target);
             if (axisIndex < 0 || raw.Axes == null || axisIndex >= raw.Axes.Length)
                 return 0f;
             // Raw axes are short (-32768..32767) → 0..1
@@ -5368,16 +5365,8 @@ namespace PadForge.Common.Input
 
         private static float ReadAxisAsMouseRaw(in RawHidState raw, MacroAxisTarget target)
         {
-            int axisIndex = target switch
-            {
-                MacroAxisTarget.LeftStickX   => 0,
-                MacroAxisTarget.LeftStickY   => 1,
-                MacroAxisTarget.RightStickX  => 3,
-                MacroAxisTarget.RightStickY  => 4,
-                MacroAxisTarget.LeftTrigger   => 2,
-                MacroAxisTarget.RightTrigger  => 5,
-                _ => -1
-            };
+            // Same layout-aware resolution as its volume twin above.
+            int axisIndex = MacroAxisTargetToRawIndex(target);
             if (axisIndex < 0 || raw.Axes == null || axisIndex >= raw.Axes.Length) return 0f;
             return raw.Axes[axisIndex] / 32767f;
         }

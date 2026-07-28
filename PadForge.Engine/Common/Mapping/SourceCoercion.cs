@@ -4203,7 +4203,17 @@ namespace PadForge.Engine.Common.Mapping
             // Falls back to 1.0× / non-inverted when the provider isn't
             // wired (engine standalone tests, early startup before
             // InputService binds).
-            var tpSettings = TouchpadMouseSettingsProvider?.Invoke(slotIndex, deviceGuid, padIdx);
+            // EffectiveDeviceGuid, not the bare source guid. This is the
+            // contract the NOTE above EffectiveDeviceGuid states for every
+            // provider lookup: an empty source guid is the documented "the
+            // device on this slot" form that the Workshop translator emits,
+            // and the providers are keyed by a CONCRETE guid. Passing the bare
+            // value made Touchpad-tab Mouse Sensitivity X/Y and Invert X/Y
+            // inert on every device-free row, which is all of them on an
+            // imported profile. The sibling ApplySyntheticPressure call fifty
+            // lines up already resolves it this way.
+            var tpSettings = TouchpadMouseSettingsProvider?.Invoke(
+                slotIndex, EffectiveDeviceGuid(src, evaluatedDeviceGuid), padIdx);
             float sens = (axisOffset == 0)
                 ? (tpSettings?.MouseSensitivityX ?? 1.0f)
                 : (tpSettings?.MouseSensitivityY ?? 1.0f);

@@ -6966,6 +6966,13 @@ namespace PadForge.Services
                 copy.Rows.Add(rc);
             }
             SettingsManager.SlotMappingSets[padIndex] = copy;
+
+            // A wholesale row replacement is exactly the structural change
+            // SourceKindRuntime.ResetForSlot was written for: without it a
+            // winding accumulator or a steering lock keyed on
+            // (slot, target, srcIdx) survives, and the re-authored row starts
+            // at whatever lock the old one had reached.
+            Common.Input.InputManager.ResetSourceKindRuntimeForSlot(padIndex);
         }
 
         /// <summary>

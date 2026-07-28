@@ -297,6 +297,37 @@ namespace PadForge.Tests
             Assert.Equal(2, macro.CurrentActionIndex);
         }
 
+        // ── Both Sony packers honour a mapped Touchpad press ──
+
+        /// <summary>tp.Click is the PHYSICAL touchpad press; Gamepad.TOUCHPAD
+        /// is a mapped or macro-driven one. The DS4 packer honoured both and
+        /// the DualSense packer only the physical source, so a macro bound to
+        /// Touchpad reached the host on a virtual DS4 and silently did nothing
+        /// on a virtual DualSense.</summary>
+        [Theory]
+        [InlineData("dualshock-4-v1", 6)]
+        [InlineData("dualsense", 9)]
+        [InlineData("dualsense-edge", 9)]
+        public void SonyPackers_HonourAMappedTouchpadPress(string profileId, int buttonByte)
+        {
+            var packer = PadForge.Common.Input.SonyReportPackers.ForProfile(profileId);
+            Assert.NotNull(packer);
+
+            var gp = new PadForge.Engine.Gamepad();
+            var tp = new PadForge.Engine.TouchpadState();   // NOT clicked
+            var motion = new PadForge.Services.MotionSnapshot();
+
+            var idle = new byte[63];
+            packer(in gp, in tp, in motion, 100, false, 0, idle);
+
+            gp.Buttons |= PadForge.Engine.Gamepad.TOUCHPAD;
+            var pressed = new byte[63];
+            packer(in gp, in tp, in motion, 100, false, 0, pressed);
+
+            Assert.Equal(0, idle[buttonByte] & 0x02);
+            Assert.Equal(0x02, pressed[buttonByte] & 0x02);
+        }
+
         // ── Legacy trigger migration must survive the XML load path ──
 
         /// <summary>The TriggerInputs setter allocated an empty list before

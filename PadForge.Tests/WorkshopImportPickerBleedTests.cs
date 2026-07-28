@@ -330,5 +330,35 @@ namespace PadForge.Tests
                 $"row kept the outgoing profile's device ('{buttonA.PrimarySourceDeviceGuid}'): "
                 + "the deviceless slot never reloaded its mapping rows.");
         }
+    
+        /// <summary>The persisted-artifact invariant, checked the way the
+        /// owner's PadForge.xml revealed the bug: an Authoritative (Workshop)
+        /// set must keep its abstract, device-free sources.
+        ///
+        /// <para>The shipped file had the opposite: every row of the
+        /// "sonic campaign" Authoritative set carried a concrete DeviceGuid
+        /// and a raw "Button N" descriptor, with zero "Gamepad ..." sources
+        /// left. ApplyProfile held its stale-ViewModel guard only around
+        /// UpdatePadDeviceInfo, so an autosave landing anywhere in the ~40
+        /// lines before the per-pad refresh rewrote the imported set from the
+        /// OUTGOING profile's MappingItems, which is the clobber that
+        /// function's own comment warns about.</para></summary>
+        [Fact]
+        public void WorkshopApply_AuthoritativeSet_KeepsItsDeviceFreeSources()
+        {
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            ImportAndApplyWorkshopProfile(svc);
+
+            var set = SettingsManager.SlotMappingSets[0];
+            Assert.NotNull(set);
+            Assert.True(set.Authoritative, "the imported set lost its Workshop ownership flag");
+
+            var row = set.Rows.First(r => r.Target == "ButtonA");
+            var src = row.Sources.First();
+            Assert.Equal("Gamepad ButtonA", src.Descriptor);
+            Assert.True(string.IsNullOrEmpty(src.DeviceGuid),
+                $"an Authoritative row was rebound to a concrete device ('{src.DeviceGuid}'): "
+                + "the imported abstract source was clobbered.");
+        }
     }
 }

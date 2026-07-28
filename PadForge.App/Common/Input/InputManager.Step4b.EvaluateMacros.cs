@@ -4800,8 +4800,20 @@ namespace PadForge.Common.Input
         /// resolves RightStickX to 2 and drops the trigger targets instead
         /// of corrupting a stick channel.</summary>
         internal static int MacroAxisTargetToRawIndex(MacroAxisTarget target)
+            => MacroAxisTargetToRawIndex(target, _currentRawLayout);
+
+        /// <summary>Layout-explicit overload. The ambient
+        /// <see cref="_currentRawLayout"/> is only correct for callers running
+        /// INSIDE EvaluateSlotMacrosExtended for that same slot: it is a static
+        /// stamped from the first non-null macro's PadIndex and it still holds
+        /// that value after the call returns. The macro RECORDER reads these
+        /// axes from the UI thread for an unrelated pad, so it must pass its
+        /// own slot's layout or it resolves the previous Extended slot's
+        /// interleave and records the wrong channel.</summary>
+        internal static int MacroAxisTargetToRawIndex(MacroAxisTarget target,
+            PadForge.Engine.CustomControllerLayout? layout)
         {
-            var layOpt = _currentRawLayout;
+            var layOpt = layout;
             if (layOpt == null)
             {
                 return target switch
@@ -5119,6 +5131,14 @@ namespace PadForge.Common.Input
         /// and returns it as a 0.0–1.0 float suitable for volume.
         /// </summary>
         internal static float ReadAxisAsVolumeRaw(in RawHidState raw, MacroAxisTarget target)
+            => ReadAxisAsVolumeRaw(in raw, target, _currentRawLayout);
+
+        /// <summary>Layout-explicit overload, for callers that are NOT running
+        /// inside EvaluateSlotMacrosExtended for the slot being read. See
+        /// MacroAxisTargetToRawIndex's overload for why the ambient static is
+        /// wrong off the poll thread.</summary>
+        internal static float ReadAxisAsVolumeRaw(in RawHidState raw, MacroAxisTarget target,
+            PadForge.Engine.CustomControllerLayout? layout)
         {
             // Layout-aware, exactly like every macro axis WRITE. The hardcoded
             // LX0/LY1/LT2/RX3/RY4/RT5 map this used is only correct for a
@@ -5126,7 +5146,7 @@ namespace PadForge.Common.Input
             // landed on a different channel than the write. MacroAxisTargetToRawIndex
             // falls back to that same table when no layout is set, so nothing
             // changes for the common case.
-            int axisIndex = MacroAxisTargetToRawIndex(target);
+            int axisIndex = MacroAxisTargetToRawIndex(target, layout);
             if (axisIndex < 0 || raw.Axes == null || axisIndex >= raw.Axes.Length)
                 return 0f;
             // Raw axes are short (-32768..32767) → 0..1

@@ -12227,8 +12227,21 @@ namespace PadForge.Services
                     MacroAxisTarget.RightStickX, MacroAxisTarget.RightStickY,
                     MacroAxisTarget.LeftTrigger, MacroAxisTarget.RightTrigger
                 };
+                // Resolve THIS pad's layout explicitly. The layout-free
+                // overload reads an ambient static that the poll thread stamps
+                // from whichever Extended slot it last evaluated, and this
+                // runs on the UI thread for macro recording on a slot that has
+                // nothing to do with it. With two Extended slots on differing
+                // layouts that resolved the wrong interleave, so recording an
+                // axis trigger captured a different channel than the engine
+                // later evaluates. Same default-struct test the poll thread
+                // uses: a 0-stick/0-trigger layout means "never populated" and
+                // falls back to the fixed LX0/LY1/LT2/RX3/RY4/RT5 map.
+                var slotLayout = _inputManager.SlotCustomLayouts[padIndex];
+                PadForge.Engine.CustomControllerLayout? layoutOpt =
+                    (slotLayout.Sticks > 0 || slotLayout.Triggers > 0) ? slotLayout : null;
                 for (int i = 0; i < axes.Length; i++)
-                    result[i] = InputManager.ReadAxisAsVolumeRaw(in rawState, axes[i]);
+                    result[i] = InputManager.ReadAxisAsVolumeRaw(in rawState, axes[i], layoutOpt);
                 return result;
             }
             else

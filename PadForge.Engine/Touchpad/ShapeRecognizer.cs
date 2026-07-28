@@ -411,7 +411,8 @@ namespace PadForge.Engine.Touchpad
         /// Caller supplies the candidate's LUT pre-built (once per
         /// <see cref="Match"/> call) so it isn't rebuilt per template.</summary>
         public static float CloudMatch(Vector2[] candidate,
-            ushort[] candidateLut, ShapeTemplate template, float minSoFar)
+            ushort[] candidateLut, ShapeTemplate template, float minSoFar,
+            float effThreshold = 0f)
         {
             if (candidate == null || template == null) return float.MaxValue;
             if (template.PointCloud == null || template.LookupTable == null) return float.MaxValue;
@@ -432,29 +433,38 @@ namespace PadForge.Engine.Touchpad
             var lb2 = ComputeLowerBound(template.PointCloud, candidate, step,
                 candidateLut, lutSize);
 
-            float best = minSoFar;
+            // Never prune tighter than THIS template's own acceptance gate.
+            // minSoFar is another template's running best, so on its own it
+            // abandoned the sweep for a template whose looser
+            // ThresholdOverride would still have accepted the distance, and
+            // the caller then saw MaxValue and dropped a legitimate match.
+            // Max, not Min: Min prunes harder and loses more.
+            float floor = effThreshold > minSoFar ? effThreshold : minSoFar;
+
+            float best = floor;
+            bool improved = false;
             int j = 0;
             for (int i = 0; i < n; i += step, j++)
             {
                 if (lb1[j] < best)
                 {
                     float d1 = CloudDistance(candidate, template.PointCloud, i, best);
-                    if (d1 < best) best = d1;
+                    if (d1 < best) { best = d1; improved = true; }
                 }
                 if (lb2[j] < best)
                 {
                     float d2 = CloudDistance(template.PointCloud, candidate, i, best);
-                    if (d2 < best) best = d2;
+                    if (d2 < best) { best = d2; improved = true; }
                 }
             }
-            // minSoFar is a BORROWED floor, the best score some OTHER template
-            // already achieved, and it is used purely to prune. Returning it
-            // unchanged reported this template as having scored what that other
-            // template scored. A template with a looser ThresholdOverride could
-            // then clear its own threshold on a borrowed number and be named the
-            // match without ever having fitted the candidate. Report
-            // non-improvement as no match instead.
-            return best < minSoFar ? best : float.MaxValue;
+            // The floor is BORROWED (another template's best, or this
+            // template's own gate), and it is used purely to prune. Returning
+            // it unchanged reported this template as having scored a number it
+            // never earned, so a looser ThresholdOverride could clear its own
+            // threshold on a borrowed value and be named the match without
+            // fitting the candidate. Track improvement separately from the
+            // floor value so raising the floor cannot resurrect that.
+            return improved ? best : float.MaxValue;
         }
 
         /// <summary>Matches <paramref name="candidate"/> against the
@@ -496,7 +506,7 @@ namespace PadForge.Engine.Touchpad
                 if (tpl.LookupTableSize != DefaultLookupTableSize) continue;
                 float effThreshold = tpl.ThresholdOverride > 0f
                     ? tpl.ThresholdOverride : threshold;
-                float d = CloudMatch(candidate, candidateLut, tpl, bestScore);
+                float d = CloudMatch(candidate, candidateLut, tpl, bestScore, effThreshold);
                 if (d < bestScore) bestScore = d;
                 if (d <= effThreshold && d < bestValidScore)
                 {

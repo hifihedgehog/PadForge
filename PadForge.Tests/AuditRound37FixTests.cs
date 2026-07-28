@@ -194,6 +194,61 @@ namespace PadForge.Tests
             Assert.Contains("public bool PulseWhileLatched", vm);
         }
 
+        // ── The macro recorder must not read another slot's axis layout ──
+
+        /// <summary>MacroAxisTargetToRawIndex resolved through a static that
+        /// EvaluateSlotMacrosExtended stamps from the first non-null macro's
+        /// PadIndex and never clears afterwards. That is correct for callers
+        /// running inside that evaluation, and wrong for the macro RECORDER,
+        /// which reads these axes from the UI thread for an unrelated pad. With
+        /// two Extended slots on differing layouts the recorder resolved the
+        /// other slot's interleave and captured a different channel than the
+        /// engine later evaluates. The UI path now passes its own layout.</summary>
+        [Fact]
+        public void MacroAxisRecorder_ResolvesItsOwnSlotsLayout()
+        {
+            string svc = Src("PadForge.App/Services/InputService.cs");
+            string ev = Src("PadForge.App/Common/Input/InputManager.Step4b.EvaluateMacros.cs");
+
+            // Positive control: both halves must exist, or the pairing below
+            // asserts nothing.
+            Assert.Contains("ReadAxisAsVolumeRaw", svc);
+            Assert.Contains("_currentRawLayout", ev);
+
+            // A layout-explicit overload exists for off-poll-thread callers.
+            Assert.Contains("MacroAxisTargetToRawIndex(MacroAxisTarget target,", ev);
+
+            // And the recorder uses it, resolving the layout from ITS pad.
+            Assert.Contains("_inputManager.SlotCustomLayouts[padIndex]", svc);
+            Assert.Contains("ReadAxisAsVolumeRaw(in rawState, axes[i], layoutOpt)", svc);
+        }
+
+        // ── A gesture template is judged against its OWN threshold ──
+
+        /// <summary>CloudMatch's prune floor was another template's running
+        /// best. A template whose true distance exceeded that floor but sat
+        /// inside its own looser ThresholdOverride abandoned the sweep and
+        /// returned MaxValue, so the caller dropped a legitimate match. The
+        /// floor is now the LOOSER of the two (Max, not Min: Min prunes harder
+        /// and loses more), with improvement tracked separately so raising the
+        /// floor cannot resurrect the borrowed-score bug that shape replaced.</summary>
+        [Fact]
+        public void GesturePruneFloor_IsNeverTighterThanTheTemplatesOwnThreshold()
+        {
+            string src = Src("PadForge.Engine/Touchpad/ShapeRecognizer.cs");
+
+            // Positive control: the prune must still exist.
+            Assert.Contains("float minSoFar", src);
+
+            // The template's own gate reaches CloudMatch.
+            Assert.Contains("float effThreshold = 0f", src);
+            Assert.Contains("CloudMatch(candidate, candidateLut, tpl, bestScore, effThreshold)", src);
+
+            // Looser of the two wins, and improvement is tracked separately.
+            Assert.Contains("effThreshold > minSoFar ? effThreshold : minSoFar", src);
+            Assert.Contains("return improved ? best : float.MaxValue;", src);
+        }
+
         // ── The unsigned-axis contract, guarded on the WRITER side ──
 
         /// <summary>CustomInputState.Axis is UNSIGNED 0..65535 with 32768 at

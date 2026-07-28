@@ -6579,7 +6579,19 @@ namespace PadForge.ViewModels
             double dzXn = deadZoneX / 100.0, dzYn = deadZoneY / 100.0;
             // Pick max range based on direction of input (mirrors Step3 pipeline).
             double mrXn = (sx >= 0 ? maxRangeX : maxRangeXNeg) / 100.0;
-            double mrYn = (sy >= 0 ? maxRangeY : maxRangeYNeg) / 100.0;
+            // Max-range selection must ask the ENGINE's question. Step 3
+            // picks on ny = axisY / 32768, which is raw SDL Y where POSITIVE
+            // IS DOWN. The two gamepad callers hand us screen-up-positive Y
+            // (DeviceThumbLY = 1 - norm), so their sy is inverted relative to
+            // that, and selecting on the bare sy applied MaxRangeY to up and
+            // MaxRangeYNeg to down: the preview's OUT dot disagreed with the
+            // game whenever the two Y ranges differed (round 34). The
+            // Extended caller already previews in the raw.Axes frame and
+            // says so via boundaryMapInInputFrame, the same flag the
+            // boundary-map warp below uses to decide whether to flip. X
+            // needs no equivalent: DeviceThumbLX carries no flip.
+            double engineSy = boundaryMapInInputFrame ? sy : -sy;
+            double mrYn = (engineSy >= 0 ? maxRangeY : maxRangeYNeg) / 100.0;
             if (mrXn <= dzXn) mrXn = Math.Min(dzXn + 0.01, 1.0);
             if (mrYn <= dzYn) mrYn = Math.Min(dzYn + 0.01, 1.0);
 

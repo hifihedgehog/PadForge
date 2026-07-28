@@ -595,7 +595,12 @@ namespace PadForge.Views
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 6 && !hasAdaptiveTriggers)
                     vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == 7 && !hasLightbar)
+                // Must match TabLighting's visibility predicate exactly
+                // (hasLightbar || hasGuideLed). Testing only hasLightbar
+                // bounced guide-LED-only devices (Xbox pads, the 2015 Steam
+                // Controller, Switch) straight off a tab that was visible and
+                // populated for them.
+                else if (vm.SelectedConfigTab == 7 && !(hasLightbar || hasGuideLed))
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 8 && !hasGyro)
                     vm.SelectedConfigTab = 0;
@@ -603,7 +608,11 @@ namespace PadForge.Views
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 10 && !hasTouchpad)
                     vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == 11 && !hasWheel)
+                // Same shape as the Lighting tab above: TabWheel shows on
+                // (hasWheel || hasGenericWheel), so a generic SDL force-feedback
+                // wheel could not stay on its own tab to reach the auto-centre
+                // slider.
+                else if (vm.SelectedConfigTab == 11 && !(hasWheel || hasGenericWheel))
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 12 && !hasAudio) // 12 = Audio
                     vm.SelectedConfigTab = 0;

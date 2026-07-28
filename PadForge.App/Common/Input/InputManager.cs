@@ -2794,9 +2794,15 @@ namespace PadForge.Common.Input
                 // mid-motion and the virtual pad kept reporting that angular
                 // rate for the whole suspension.
                 MotionSnapshots[i] = default;
-                var midi = CombinedMidiRawStates[i];
-                if (midi.CcValues != null) Array.Clear(midi.CcValues, 0, midi.CcValues.Length);
-                if (midi.Notes != null) Array.Clear(midi.Notes, 0, midi.Notes.Length);
+                // MidiRawState.Clear(), not Array.Clear. The neutral CC value
+                // is 64 (centre), and Array.Clear writes 0, which is the
+                // MINIMUM. Alt-tabbing with background polling off therefore
+                // slammed every mapped CC to zero instead of releasing it to
+                // centre, while the other two neutralize sites for this same
+                // array produced 64. CcValues and Notes are arrays, so
+                // clearing through the local struct copy still reaches the
+                // shared buffers.
+                CombinedMidiRawStates[i].Clear();
             }
         }
 

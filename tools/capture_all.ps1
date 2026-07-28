@@ -1398,9 +1398,12 @@ Write-Host "=== STEP 3: Capture pages ===" -ForegroundColor Cyan
 $n = 0
 # Count of NUMBERED blocks below, which is what Next() advances, not the number
 # of screenshots (76 distinct Cap names, since several blocks take more than
-# one shot). This read 62, so a complete run ended on "[34/62]" and looked like
-# it had skipped 28 steps on a script that runs for many minutes.
-$total = 34
+# one shot). This read 62, so a complete run ended far short of its own total
+# and looked like it had skipped steps on a script that runs for many minutes.
+#
+# 36, not the 34 Next calls written in the source: the one inside the Gyro /
+# Audio / Touchpad loop runs three times, so it contributes 3 rather than 1.
+$total = 36
 
 function Next { $script:n++; return $script:n }
 
@@ -2102,15 +2105,15 @@ if ($slotsHost) {
             Close-AnyModal | Out-Null
         } else {
             Write-Host "  !! PadPageView not found after PS slot click" -ForegroundColor Yellow
-            $n += 2
+            $n += 6   # PS block advances Next() six times (Gyro/Audio/Touchpad loop is three)
         }
     } else {
         Write-Host "  !! Only $($cards.Count) slot cards on Dashboard" -ForegroundColor Yellow
-        $n += 2
+        $n += 6
     }
 } else {
     Write-Host "  !! SlotsItemsControl not found" -ForegroundColor Yellow
-    $n += 2
+    $n += 6
 }
 
 # ---- 14. Extended slot ----
@@ -2243,7 +2246,7 @@ if ($cards.Count -gt $kbmIdx) {
     } else { Write-Host "  !! Mouse tab not found on the KBM slot" -ForegroundColor Yellow }
 } else {
     Write-Host "  !! KBM slot not found" -ForegroundColor Yellow
-    $n++
+    $n += 3   # preview + SOCD + mouse gestures
 }
 
 # ---- 17. MIDI slot ----

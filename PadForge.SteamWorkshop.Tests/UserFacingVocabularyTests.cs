@@ -236,6 +236,71 @@ namespace PadForge.SteamWorkshop.Tests
         public void SlotDisplayName_NamesTheSlotTheWayTheAppDoes(string token, string expected)
             => Assert.Equal(expected, PhysicalSlotResolver.SlotDisplayName(token));
 
+        // ── rear buttons ──────────────────────────────────────────────────
+
+        /// <summary>PadForge's paddle numbering follows the SDL button order
+        /// it maps onto (SourceCoercion: Paddle1..4 = buttons 12..15 =
+        /// RPaddle1 / LPaddle1 / RPaddle2 / LPaddle2), and SDL_gamepad.h
+        /// names those Steam Controller buttons outright: PADDLE1 is the
+        /// UPPER pair (L4 / R4), PADDLE2 the LOWER (L5 / R5). So
+        /// Paddle1=R4, Paddle2=L4, Paddle3=R5, Paddle4=L5, which is where
+        /// the generated Deck overlay draws them.</summary>
+        [Theory]
+        // Four rear buttons (Deck, SC 2026): the upper pair carries the
+        // _upper token, so the plain token is the LOWER pair.
+        [InlineData("button_back_left_upper", true, "Gamepad Paddle2")]   // L4
+        [InlineData("button_back_right_upper", true, "Gamepad Paddle1")]  // R4
+        [InlineData("button_back_left", true, "Gamepad Paddle4")]         // L5
+        [InlineData("button_back_right", true, "Gamepad Paddle3")]        // R5
+        // Two rear buttons: the plain token is the only pair, so primary.
+        [InlineData("button_back_left", false, "Gamepad Paddle2")]
+        [InlineData("button_back_right", false, "Gamepad Paddle1")]
+        public void RearButton_ResolvesToThePaddleTheUserActuallyPresses(
+            string token, bool fourRear, string expected)
+        {
+            var src = PhysicalSlotResolver.Resolve(
+                SteamSlot.Switch, token, nintendoLabels: false,
+                singlePadTrackpads: false, fourRearButtons: fourRear);
+            Assert.Equal(expected, src?.Descriptor);
+        }
+
+        [Fact]
+        public void FourRearButtons_IsTrueForExactlyTheTypesTheCorpusProves()
+        {
+            // The _upper tokens appear on these two types and on no other
+            // across the committed fixtures. A type wrongly marked here
+            // silently moves every plain rear binding to the other paddle.
+            Assert.True(PhysicalSlotResolver.UsesFourRearButtons("controller_neptune"));
+            Assert.True(PhysicalSlotResolver.UsesFourRearButtons("controller_triton"));
+            foreach (var two in new[]
+                     {
+                         "controller_steamcontroller_gordon", "controller_xboxone",
+                         "controller_xbox360", "controller_ps4", "controller_ps5",
+                         "controller_switch_pro", "controller_switch_joycon_pair", "",
+                     })
+                Assert.False(PhysicalSlotResolver.UsesFourRearButtons(two), two);
+        }
+
+        [Fact]
+        public void EveryFixtureUsingUpperTokens_IsAFourRearButtonType()
+        {
+            // Footprint closure against the corpus rather than against the
+            // table above, so a fixture added later with _upper members on a
+            // type this build calls two-paddle fails here instead of quietly
+            // importing onto the wrong buttons.
+            foreach (var path in TestFixtures.AllVdfPaths())
+            {
+                string text = File.ReadAllText(path);
+                if (!text.Contains("button_back_left_upper", StringComparison.Ordinal)
+                    && !text.Contains("button_back_right_upper", StringComparison.Ordinal))
+                    continue;
+                var config = SteamInputConfig.FromVdf(VdfParser.Parse(text));
+                Assert.True(PhysicalSlotResolver.UsesFourRearButtons(config.ControllerType),
+                    $"{Path.GetFileName(path)} binds an _upper rear button but its type "
+                    + $"'{config.ControllerType}' is not marked as having four of them");
+            }
+        }
+
         [Fact]
         public void SlotDisplayName_PassesAnUnknownTokenThrough()
         {

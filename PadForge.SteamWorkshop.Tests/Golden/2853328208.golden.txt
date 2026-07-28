@@ -8,7 +8,7 @@ kbm rows: 23
   Base | KbmKey1B
     <- Gamepad LeftShoulder
   Base | KbmKey20
-    <- Gamepad Paddle1
+    <- Gamepad Paddle3
   Base | KbmKey43
     <- Gamepad ButtonX
   Base | KbmKey44
@@ -37,12 +37,12 @@ kbm rows: 23
   Base | KbmKey57
     <- Gamepad ButtonA
   Base | KbmKeyA0
-    <- Gamepad Paddle3
+    <- Gamepad Paddle1
   Base | KbmKeyA2
-    <- Gamepad Paddle4
+    <- Gamepad Paddle2
   Base | KbmKeyA4
     <- Touchpad 1 Click
-    <- Gamepad Paddle2
+    <- Gamepad Paddle4
   Base | KbmMBtn0
     <- Gamepad RightTrigger [upper-half] dz=15
   Base | KbmMBtn1
@@ -87,10 +87,10 @@ report: v26 rows:x0+k23 macros:9 menus:0 layers:0 clean:29 partial:0 skipped:0 e
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Soft_Press => KbmKeyA4 <- Touchpad 1 Click
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
-  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left/Full_Press => KbmKeyA4 <- Gamepad Paddle2
-  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKeyA2 <- Gamepad Paddle4
-  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right/Full_Press => KbmKey20 <- Gamepad Paddle1
-  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right_upper/Full_Press => KbmKeyA0 <- Gamepad Paddle3
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left/Full_Press => KbmKeyA4 <- Gamepad Paddle4
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKeyA2 <- Gamepad Paddle2
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right/Full_Press => KbmKey20 <- Gamepad Paddle3
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right_upper/Full_Press => KbmKeyA0 <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_escape/Full_Press => KbmKey4F <- Gamepad ButtonStart
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey45 <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmKey1B <- Gamepad LeftShoulder

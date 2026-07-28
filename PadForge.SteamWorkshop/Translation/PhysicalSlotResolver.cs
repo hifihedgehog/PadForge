@@ -241,6 +241,27 @@ namespace PadForge.SteamWorkshop.Translation
                 _ => false,
             };
 
+        /// <summary><para>True for the controllers with FOUR rear buttons
+        /// rather than two, which decides what Steam's plain
+        /// <c>button_back_left</c> / <c>button_back_right</c> tokens mean.
+        /// </para>
+        /// <para>Corpus-grounded, and the grounding is clean: across the
+        /// committed fixtures the <c>_upper</c> tokens appear on
+        /// <c>controller_neptune</c> and <c>controller_triton</c> and on
+        /// nothing else, while every two-paddle type (the 2015 Steam
+        /// Controller, Xbox, DualShock/DualSense, Switch) carries the plain
+        /// token alone. So on a two-paddle controller the plain token IS the
+        /// only pair and resolves to SDL's PADDLE1 (the primary); on a
+        /// four-button controller it is the LOWER pair, because the upper
+        /// pair has its own <c>_upper</c> token.</para></summary>
+        public static bool UsesFourRearButtons(string controllerType)
+            => (controllerType ?? "").Trim().ToLowerInvariant() switch
+            {
+                "controller_neptune" => true,   // Steam Deck: L4/L5 + R4/R5
+                "controller_triton" => true,    // Steam Controller (2026)
+                _ => false,
+            };
+
         public static bool IsTrackpad(SteamSlot slot) => TrackpadIndex(slot) >= 0;
 
         public static bool IsStick(SteamSlot slot)
@@ -289,7 +310,7 @@ namespace PadForge.SteamWorkshop.Translation
         /// no source for it (caller reports Skipped/UnknownPhysicalInput or
         /// a more specific reason).</summary>
         public static ResolvedSource Resolve(SteamSlot slot, string inputName, bool nintendoLabels,
-            bool singlePadTrackpads = false)
+            bool singlePadTrackpads = false, bool fourRearButtons = false)
         {
             string name = (inputName ?? "").Trim().ToLowerInvariant();
             switch (slot)
@@ -366,12 +387,29 @@ namespace PadForge.SteamWorkshop.Translation
                         "button_menu" => Btn("Gamepad ButtonBack", "ButtonBack", Gamepad.BACK),
                         "left_bumper" => Btn("Gamepad LeftShoulder", "LeftShoulder", Gamepad.LEFT_SHOULDER),
                         "right_bumper" => Btn("Gamepad RightShoulder", "RightShoulder", Gamepad.RIGHT_SHOULDER),
-                        // Paddles: primary pair = SDL *_PADDLE1, upper pair =
-                        // *_PADDLE2. No automap target and no Xbox output bit.
-                        "button_back_left" => new ResolvedSource { Descriptor = "Gamepad Paddle2" },
-                        "button_back_right" => new ResolvedSource { Descriptor = "Gamepad Paddle1" },
-                        "button_back_left_upper" => new ResolvedSource { Descriptor = "Gamepad Paddle4" },
-                        "button_back_right_upper" => new ResolvedSource { Descriptor = "Gamepad Paddle3" },
+                        // Rear buttons. No automap target and no Xbox output
+                        // bit. SDL's PADDLE1 is the UPPER pair and PADDLE2
+                        // the LOWER one, and PadForge's numbering follows the
+                        // SDL button order it maps onto (SourceCoercion:
+                        // Paddle1..4 = buttons 12..15 = RPaddle1 / LPaddle1 /
+                        // RPaddle2 / LPaddle2), so Paddle1=R4, Paddle2=L4,
+                        // Paddle3=R5, Paddle4=L5. SDL_gamepad.h names those
+                        // Steam Controller buttons outright.
+                        //
+                        // Steam's plain token is NOT a fixed paddle. On a
+                        // two-paddle controller it is the only pair and means
+                        // the primary (PADDLE1). On a four-button controller
+                        // the upper pair has its own _upper token, so the
+                        // plain one is the LOWER pair (PADDLE2). Reading it
+                        // as PADDLE1 everywhere put L4's bindings on L5 and
+                        // R4's on R5 for every Deck config, in the preview
+                        // and in the imported profile alike.
+                        "button_back_left" => new ResolvedSource
+                        { Descriptor = fourRearButtons ? "Gamepad Paddle4" : "Gamepad Paddle2" },
+                        "button_back_right" => new ResolvedSource
+                        { Descriptor = fourRearButtons ? "Gamepad Paddle3" : "Gamepad Paddle1" },
+                        "button_back_left_upper" => new ResolvedSource { Descriptor = "Gamepad Paddle2" },
+                        "button_back_right_upper" => new ResolvedSource { Descriptor = "Gamepad Paddle1" },
                         // Steam Controller pad clicks appear as switch
                         // members in SC-era configs (mode_shift carriers).
                         // Single-pad controllers (#9 B-1) have ONE physical

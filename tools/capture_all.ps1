@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Captures ALL PadForge screenshots for wiki and README.
 .DESCRIPTION

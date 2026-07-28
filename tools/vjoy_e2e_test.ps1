@@ -1,4 +1,4 @@
-# End-to-end vJoy test: fresh start, add slots, verify configs, mappings, reorder
+﻿# End-to-end vJoy test: fresh start, add slots, verify configs, mappings, reorder
 # Must run elevated (PadForge runs as admin with vJoy installed)
 
 $padForgeXml = 'C:\PadForge\PadForge.xml'

@@ -1,4 +1,4 @@
-# Prep PadForge.xml: 5 slot types (Xbox/PS/Extended/KBM/MIDI) + sample macros.
+﻿# Prep PadForge.xml: 5 slot types (Xbox/PS/Extended/KBM/MIDI) + sample macros.
 # Stops PadForge, edits the XML, restarts. Backup at PadForge.xml.bak-capture.
 
 $XmlPath = "C:\PadForge\PadForge.xml"
@@ -16,7 +16,18 @@ if ($proc) {
 }
 
 if (-not (Test-Path $XmlPath)) { Write-Host "!! Missing $XmlPath" -ForegroundColor Red; exit 1 }
-Copy-Item $XmlPath "$XmlPath.bak-capture" -Force
+
+# Never overwrite an existing backup. This ran with -Force, so a second run
+# (after a capture failed, which is the normal reason to re-run) copied the
+# ALREADY-PREPPED synthetic config over the only copy of the real settings and
+# put them beyond recovery. The first backup is the pristine one, so it wins.
+$BakPath = "$XmlPath.bak-capture"
+if (Test-Path -LiteralPath $BakPath) {
+    Write-Host "Keeping existing backup $BakPath (already prepped once)."
+} else {
+    Copy-Item -LiteralPath $XmlPath -Destination $BakPath
+    Write-Host "Backed up real settings to $BakPath"
+}
 
 [xml]$xml = Get-Content $XmlPath
 $ns = $xml.PadForgeSettings

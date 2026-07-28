@@ -1,4 +1,4 @@
-# vJoy Config Test via PadForge
+﻿# vJoy Config Test via PadForge
 # Modifies PadForge.xml, launches PadForge, queries vJoyInterface.dll in fresh process.
 # Must run elevated (PadForge runs elevated when vJoy installed).
 

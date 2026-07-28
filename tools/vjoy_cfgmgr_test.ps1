@@ -1,4 +1,4 @@
-## Test CfgMgr32 disable/enable on vJoy device node
+﻿## Test CfgMgr32 disable/enable on vJoy device node
 ## Tests whether CM_Disable_DevNode / CM_Enable_DevNode work
 ## even when pnputil is stuck in reboot-pending state.
 param([switch]$Elevated)

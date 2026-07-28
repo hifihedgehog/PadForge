@@ -1,4 +1,4 @@
-$logFile = "C:\PadForge\capture_web_log.txt"
+﻿$logFile = "C:\PadForge\capture_web_log.txt"
 "START $(Get-Date -Format HH:mm:ss)" | Out-File $logFile -Encoding ascii
 try {
     Add-Type -AssemblyName System.Drawing

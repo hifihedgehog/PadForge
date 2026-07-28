@@ -677,10 +677,23 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>True when a group's curve cluster lands on the emitted
         /// analog rows. MUST stay the same predicate the emitters use to
         /// stamp, or the drop note and the stamps drift apart.</summary>
-        private static bool CurveChannelApplies(SteamSlot slot, string mode)
-            => (PhysicalSlotResolver.IsStick(slot) || PhysicalSlotResolver.IsTrackpad(slot)
+        internal static bool CurveChannelApplies(SteamSlot slot, string mode)
+            => ((PhysicalSlotResolver.IsStick(slot) || PhysicalSlotResolver.IsTrackpad(slot)
                     || slot == SteamSlot.Gyro)
-                && CurveChannelModes.Contains(mode);
+                && CurveChannelModes.Contains(mode))
+            // gyro_to_joystick on the GYRO slot, scoped rather than added to
+            // CurveChannelModes. A Gyro-slot group of this mode reaches
+            // EmitMouseJoystickAxes with curveChannel false, so its authored
+            // curve cluster parsed to nothing and never stamped.
+            //
+            // Scoped on purpose. Putting the mode in CurveChannelModes would
+            // also turn the channel on for STICK slots, and the emitter's
+            // `!curveChannel` outer-radius rescue exists precisely because
+            // gyro_to_joystick hand-bound to a stick is the one mode that
+            // reaches it OUTSIDE the channel; without that arm the authored
+            // outer radius arms the geometry and then vanishes. This keeps
+            // both: the gyro slot stamps, the stick slot keeps its rescue.
+            || (slot == SteamSlot.Gyro && mode == "gyro_to_joystick");
 
         /// <summary>True when the group's output is a virtual thumb PAIR,
         /// so Steam's deadzone_shape lands on the engine's pair-shaped

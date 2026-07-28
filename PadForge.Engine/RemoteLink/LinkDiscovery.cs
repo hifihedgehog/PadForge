@@ -65,11 +65,29 @@ namespace PadForge.Engine.RemoteLink
             _beacon = BuildBeacon(linkPort, displayName, fingerprintHex);
             _cts = new CancellationTokenSource();
 
-            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-            _socket.EnableBroadcast = true;
-            try { _socket.IOControl(unchecked((int)0x9800000C) /* SIO_UDP_CONNRESET */, new byte[4], null); } catch { }
-            _socket.Bind(new IPEndPoint(IPAddress.Any, DiscoveryPort));
+            try
+            {
+                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                _socket.EnableBroadcast = true;
+                try { _socket.IOControl(unchecked((int)0x9800000C) /* SIO_UDP_CONNRESET */, new byte[4], null); } catch { }
+                _socket.Bind(new IPEndPoint(IPAddress.Any, DiscoveryPort));
+            }
+            catch
+            {
+                // Bind can fail, most obviously when the discovery port is
+                // already held. IsRunning is only set below, and both Stop and
+                // Dispose gate on it, so a failure here used to strand the
+                // socket and the CancellationTokenSource with no reachable
+                // path to release them: every retry leaked another pair.
+                // Clean up here, then rethrow so the caller still sees the
+                // failure rather than a silently dead discovery service.
+                try { _socket?.Dispose(); } catch { /* best effort */ }
+                _socket = null;
+                try { _cts?.Dispose(); } catch { /* best effort */ }
+                _cts = null;
+                throw;
+            }
 
             IsRunning = true;
             _ = ReceiveLoopAsync(_cts.Token);

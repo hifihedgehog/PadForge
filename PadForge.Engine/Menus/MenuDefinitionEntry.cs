@@ -238,6 +238,11 @@ namespace PadForge.Engine.Menus
                 LayerMask = LayerMask,
                 FireType = FireType,
                 CellCount = CellCount,
+                // Was the one persisted [XmlAttribute] this Clone did not
+                // carry, out of 30. Every profile snapshot / apply and every
+                // Copy From Slot silently reset In-Menu Sensitivity to its
+                // 100 default and then persisted the 100.
+                SensitivityPercent = SensitivityPercent,
                 HasCenter = HasCenter,
                 ShowLabels = ShowLabels,
                 PosXPercent = PosXPercent,

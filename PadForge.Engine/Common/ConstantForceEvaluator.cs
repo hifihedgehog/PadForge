@@ -78,6 +78,14 @@ namespace PadForge.Engine
 
             scratch.LeftMotorSpeed = leftMotor;
             scratch.RightMotorSpeed = rightMotor;
+            // Carry the game's impulse-trigger motors through untouched.
+            // The gameForce gate above tests only the two main motors and the
+            // directional/condition flags, so a title driving ONLY the trigger
+            // motors falls through to here, and a scratch that never set these
+            // handed the writer two zeroes. Constant force owns the main
+            // motors; it has no claim on the triggers.
+            scratch.LeftTriggerMotorSpeed = raw.LeftTriggerMotorSpeed;
+            scratch.RightTriggerMotorSpeed = raw.RightTriggerMotorSpeed;
             scratch.HasDirectionalData = true;
             scratch.HasConditionData = false;
             scratch.EffectType = FfbEffectTypes.Const;

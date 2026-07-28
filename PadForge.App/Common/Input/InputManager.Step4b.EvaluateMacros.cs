@@ -1478,7 +1478,13 @@ namespace PadForge.Common.Input
                 int axisIndex = AxisTargetToDeviceIndex(v.AxisTarget);
                 var axes = ud.InputState.Axis;
                 if (axes == null || axisIndex < 0 || axisIndex >= axes.Length) return 0f;
-                return (axes[axisIndex] + 32768f) / 65535f;
+                // CustomInputState.Axis is UNSIGNED 0..65535 with 32768 at rest
+                // (CustomInputState.cs:8,48). Adding 32768 again mapped the real
+                // range onto 0.5..1.5, so a resting stick read 1.0 and any
+                // ">= 0.5" custom-expression formula was true with nothing
+                // touched. Round 34 fixed the Gamepad twin fourteen lines above
+                // and left this one. Same shape, same fix.
+                return axes[axisIndex] / 65535f;
             }
             return 0f;
         }
@@ -3811,10 +3817,58 @@ namespace PadForge.Common.Input
                     if (macro.UsesAxisTrigger)
                     {
                         float threshold = macro.TriggerAxisThreshold / 100f;
-                        foreach (var axTarget in macro.TriggerAxisTargets)
+                        // Legacy slot-combined axes. Direction-aware, mirroring
+                        // the Gamepad twin: the old form ignored
+                        // GetAxisDirection entirely, so a recorded Negative
+                        // trigger got the Positive comparison and was therefore
+                        // ACTIVE at rest and released when the user pushed.
+                        for (int ai = 0; ai < macro.TriggerAxisTargets.Length; ai++)
                         {
-                            if (ReadAxisAsVolumeRaw(in raw, axTarget) < threshold)
-                            { axisOk = false; break; }
+                            var axTarget = macro.TriggerAxisTargets[ai];
+                            var dir = macro.GetAxisDirection(ai);
+                            float val = ReadAxisAsVolumeRaw(in raw, axTarget);
+
+                            if (dir == MacroAxisDirection.Positive)
+                            {
+                                if (val < 0.5f + threshold * 0.5f)
+                                { axisOk = false; break; }
+                            }
+                            else if (dir == MacroAxisDirection.Negative)
+                            {
+                                if (val > 0.5f - threshold * 0.5f)
+                                { axisOk = false; break; }
+                            }
+                            else
+                            {
+                                if (val < threshold)
+                                { axisOk = false; break; }
+                            }
+                        }
+                    }
+
+                    // Per-device axis entries, same block the Gamepad path runs.
+                    // UsesAxisTrigger is true when EITHER the legacy array is
+                    // non-empty OR any TriggerInputEntry carries an axis
+                    // (MacroItem.cs:2086-2092), so an entry-ONLY axis trigger
+                    // used to run the legacy loop for zero iterations, leave
+                    // axisOk at its default true, and drop the axis condition
+                    // out of triggerActive entirely.
+                    if (axisOk)
+                    {
+                        var axisEntries = macro.GetTriggerInputEntries();
+                        for (int i = 0; i < axisEntries.Count; i++)
+                        {
+                            var e = axisEntries[i];
+                            if (e.AxisTarget == MacroAxisTarget.None) continue;
+                            bool active;
+                            if (e.DeviceGuid == Guid.Empty)
+                                active = AnySlotDeviceAxisEntryActive(macro.PadIndex, e);
+                            else
+                            {
+                                var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
+                                active = TriggerAxisEntryActive(ud, e);
+                            }
+                            if (!active) { axisOk = false; break; }
                         }
                     }
 

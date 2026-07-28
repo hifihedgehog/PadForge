@@ -258,10 +258,6 @@ namespace PadForge.ViewModels
         /// the source is hydrated / synced; setting directly via the
         /// SelectedInput picker also updates it via the InputChoice's
         /// DeviceLabel field.</summary>
-        /// <summary>Resolves a device GUID to its friendly name. Wired by
-        /// InputService, same resolver the primary row uses.</summary>
-        public static System.Func<string, string> DeviceLabelResolver { get; set; }
-
         /// <summary>DERIVED from <see cref="DeviceGuid"/> when a resolver is
         /// wired, for the reason the primary's twin documents: a separately
         /// assigned label can outlive the GUID it described and render the

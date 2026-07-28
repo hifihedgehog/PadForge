@@ -5,6 +5,7 @@ using PadForge.Engine.Common;
 using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 using PadForge.Engine.Menus;
+using PadForge.Engine.Touchpad;
 using Xunit;
 
 namespace PadForge.Tests
@@ -774,6 +775,58 @@ namespace PadForge.Tests
             Assert.True(offenders.Count == 0,
                 "Trigger-combo edits that leave an armed window credited to the old combo: "
                 + string.Join(", ", offenders));
+        }
+
+        // ── CloudMatch must not hand back a borrowed floor ──
+
+        /// <summary>minSoFar is the best score some OTHER template already
+        /// achieved, passed in purely so the search can prune. Returning it
+        /// unchanged reported THIS template as having scored what that other
+        /// template scored, and a template with a looser ThresholdOverride
+        /// could then clear its own threshold on a number it never earned.</summary>
+        [Fact]
+        public void CloudMatch_ReportsNoMatchInsteadOfTheBorrowedFloor()
+        {
+            // Two clearly different shapes: a flat line and a steep zigzag.
+            var line = new System.Collections.Generic.List<System.Numerics.Vector2>();
+            var zig = new System.Collections.Generic.List<System.Numerics.Vector2>();
+            for (int i = 0; i <= 16; i++)
+            {
+                float x = i / 16f;
+                line.Add(new System.Numerics.Vector2(x, 0.5f));
+                zig.Add(new System.Numerics.Vector2(x, (i % 2 == 0) ? 0f : 1f));
+            }
+
+            var candidate = ShapeRecognizer.BuildCloud(
+                new System.Collections.Generic.List<System.Collections.Generic.IReadOnlyList<System.Numerics.Vector2>> { line }, 32);
+            var candidateLut = ShapeRecognizer.BuildLookupTable(
+                candidate, ShapeRecognizer.DefaultLookupTableSize);
+
+            var far = new ShapeTemplate
+            {
+                Name = "Zigzag",
+                FingerCount = 1,
+                Enabled = true,
+                PointCloud = ShapeRecognizer.BuildCloud(
+                    new System.Collections.Generic.List<System.Collections.Generic.IReadOnlyList<System.Numerics.Vector2>> { zig }, 32),
+            };
+            far.LookupTable = ShapeRecognizer.BuildLookupTable(
+                far.PointCloud, ShapeRecognizer.DefaultLookupTableSize);
+            far.LookupTableSize = ShapeRecognizer.DefaultLookupTableSize;
+
+            // Positive control: with no floor to borrow, the mismatch scores a
+            // real, finite distance. Without this the assertion below would
+            // also pass on a CloudMatch that returned MaxValue for everything.
+            float unbounded = ShapeRecognizer.CloudMatch(candidate, candidateLut, far, float.MaxValue);
+            Assert.True(unbounded < float.MaxValue, "The mismatch should still produce a real distance.");
+
+            // Now hand it a floor it cannot beat. It must report no match
+            // rather than echoing the floor back as its own score.
+            float borrowed = 0.0001f;
+            float bounded = ShapeRecognizer.CloudMatch(candidate, candidateLut, far, borrowed);
+            Assert.True(bounded > borrowed,
+                $"CloudMatch returned {bounded} for a floor of {borrowed}, so a template that "
+                + "never fitted the candidate is credited with another template's score.");
         }
 
         [Fact]

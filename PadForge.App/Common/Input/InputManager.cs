@@ -2739,10 +2739,20 @@ namespace PadForge.Common.Input
         /// product decision, and it makes this change a strict preference
         /// re-ordering, so nothing that resolves today stops resolving.</para></summary>
         private static void BuildMotionRowCandidates(
-            MappingSet ms, string targetName, int slotIndex, MappingRow[] buf, out int count)
+            MappingSet ms, string targetName, int slotIndex, ref MappingRow[] buf, out int count)
         {
             count = 0;
             if (ms?.Rows == null) return;
+            // Grow the scratch to hold every row that could name this target.
+            // It was fixed at three, which after the active row and Base left
+            // room for exactly ONE other layer's row, so a slot with motion
+            // rows on Base plus three shift layers silently dropped the last
+            // two. Motion then went dark whenever the earlier candidates'
+            // devices were offline and a later one was live, which is the
+            // hand-off this walk exists to provide. Layers are open-ended, so
+            // the bound has to come from the row count, not a constant.
+            int needed = ms.Rows.Count + 2;
+            if (buf == null || buf.Length < needed) buf = new MappingRow[needed];
 
             var activeRow = FindActiveRowForTarget(ms, targetName, slotIndex, out _);
             if (activeRow != null) buf[count++] = activeRow;
@@ -2792,14 +2802,14 @@ namespace PadForge.Common.Input
 
         /// <summary>Scratch for <see cref="BuildMotionRowCandidates"/>. Poll
         /// thread only, so the candidate walk allocates nothing per tick.</summary>
-        private readonly MappingRow[] _motionRowCandidateBuf = new MappingRow[3];
+        private MappingRow[] _motionRowCandidateBuf = new MappingRow[8];
 
         private (UserDevice Ud, MappingSource Src) ResolveMotionSource(
             MappingSet ms, string targetName, bool requireGyro, int slotIndex)
         {
             if (ms?.Rows == null) return (null, null);
+            BuildMotionRowCandidates(ms, targetName, slotIndex, ref _motionRowCandidateBuf, out int count);
             var buf = _motionRowCandidateBuf;
-            BuildMotionRowCandidates(ms, targetName, slotIndex, buf, out int count);
             try
             {
                 for (int c = 0; c < count; c++)

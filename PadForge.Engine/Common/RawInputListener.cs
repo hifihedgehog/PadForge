@@ -339,6 +339,9 @@ namespace PadForge.Engine
         /// <summary>Same aggregate-merge snapshot as _keyboardStatesValues.</summary>
         private static volatile bool[][] _consumerStatesValues = Array.Empty<bool[]>();
 
+        /// <summary>Same aggregate-merge snapshot, for the mouse button OR.</summary>
+        private static volatile MouseDeviceState[] _mouseStatesValues = Array.Empty<MouseDeviceState>();
+
         /// <summary>Per-handle preparsed HID data for HidP_GetUsages, fetched
         /// once on first report (mirrors PrecisionTouchpadReader's cache).
         /// AllocHGlobal buffers, freed on Stop. A hot-unplugged handle's entry
@@ -405,6 +408,7 @@ namespace PadForge.Engine
             _keyboardStates.Clear();
             _keyboardStatesValues = Array.Empty<bool[]>();
             _mouseStates.Clear();
+            _mouseStatesValues = Array.Empty<MouseDeviceState>();
             _consumerStates.Clear();
             _consumerStatesValues = Array.Empty<bool[]>();
             _consumerMaxUsages.Clear();
@@ -1089,7 +1093,28 @@ namespace PadForge.Engine
 
             if (hDevice == AggregateMouseHandle)
             {
-                Array.Copy(_aggregateMouseState.Buttons, dest, n);
+                // Merge at READ time over the live per-device states, the way
+                // the keyboard aggregate does. The packet-time bitmask this
+                // used to copy was last-writer-wins, not the OR this method
+                // documents: one mouse's button-up cleared the shared bit while
+                // another mouse was still holding that button. It also had no
+                // way back down after an unplug, so a device that vanished
+                // mid-press left the bit asserted with nothing left to clear it.
+                // Clear first. The branch below overwrites dest wholesale via
+                // Array.Copy, and the sole caller reuses one field buffer
+                // across polls without clearing it, so an OR that merely adds
+                // trues would latch a released button forever.
+                Array.Clear(dest, 0, n);
+                var states = _mouseStatesValues;
+                for (int k = 0; k < states.Length; k++)
+                {
+                    bool[] buttons = states[k].Buttons;
+                    for (int i = 0; i < n; i++)
+                    {
+                        if (buttons[i])
+                            dest[i] = true;
+                    }
+                }
                 return;
             }
 
@@ -1296,6 +1321,8 @@ namespace PadForge.Engine
                     bool absoluteMove = (mouse.usFlags & 1) != 0;
 
                     MouseDeviceState state = _mouseStates.GetOrAdd(hDevice, _ => new MouseDeviceState());
+                    if (_mouseStatesValues.Length != _mouseStates.Count)
+                        _mouseStatesValues = System.Linq.Enumerable.ToArray(_mouseStates.Values);
 
                     if (!absoluteMove)
                     {

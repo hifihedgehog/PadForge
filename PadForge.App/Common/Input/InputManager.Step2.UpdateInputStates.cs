@@ -1080,6 +1080,29 @@ namespace PadForge.Common.Input
         // reference let the next slot's Resolve overwrite the captured
         // force in place.
         private Vibration _directionalCaptureScratch;
+        /// <summary>Meter-path twins of <see cref="_directionalCaptureScratch"/>.
+        /// Two of them, because the combined and the selected-device meters can
+        /// capture from different slots in the same pass.</summary>
+        private Vibration _meterDirectionalScratch;
+        private Vibration _meterSelectedDirectionalScratch;
+
+        /// <summary>Copies the directional / condition field set the two
+        /// meter copy-outs read. Same set, same order, so a field added to one
+        /// is visibly missing here.</summary>
+        private static Vibration CaptureDirectional(Vibration src, ref Vibration scratch)
+        {
+            if (scratch == null) scratch = new Vibration();
+            scratch.HasDirectionalData = src.HasDirectionalData;
+            scratch.HasConditionData = src.HasConditionData;
+            scratch.EffectType = src.EffectType;
+            scratch.SignedMagnitude = src.SignedMagnitude;
+            scratch.Direction = src.Direction;
+            scratch.Period = src.Period;
+            scratch.DeviceGain = src.DeviceGain;
+            scratch.ConditionAxisCount = src.ConditionAxisCount;
+            scratch.ConditionAxes = src.ConditionAxes;
+            return scratch;
+        }
 
         // Same shape as _constantForceScratch but for the macro rumble
         // merge layer that runs ahead of constant-force resolution.
@@ -1288,7 +1311,13 @@ namespace PadForge.Common.Input
 
                     if (directionalSource == null
                         && (effective.HasDirectionalData || effective.HasConditionData))
-                        directionalSource = effective;
+                        // COPY, never alias, exactly as the hardware path a
+                        // thousand lines up spells out. `effective` is a shared
+                        // per-tick scratch that the NEXT slot's Resolve
+                        // overwrites in place, so holding the reference made
+                        // the copy-out below emit the LAST resolving slot's
+                        // force while the == null guard promises the FIRST.
+                        directionalSource = CaptureDirectional(effective, ref _meterDirectionalScratch);
 
                     // Capture the selected device's own scaled output for
                     // the FFB-tab meter.
@@ -1299,7 +1328,7 @@ namespace PadForge.Common.Input
                         selLT = (ushort)System.Math.Max(scaledLT, routedLT);
                         selRT = (ushort)System.Math.Max(scaledRT, routedRT);
                         if (effective.HasDirectionalData || effective.HasConditionData)
-                            selectedDirectional = effective;
+                            selectedDirectional = CaptureDirectional(effective, ref _meterSelectedDirectionalScratch);
                     }
                 }
 

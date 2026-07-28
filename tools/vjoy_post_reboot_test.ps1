@@ -47,7 +47,7 @@ function Get-NodeId {
     $currentId = $null
     foreach ($line in $output -split "`n") {
         $t = $line.Trim()
-        if ($t -match ':\s*([A-Z][A-Z0-9]*\\S*)\s*$') { $currentId = $matches[1].Trim() }
+        if ($t -match ':\s*([A-Z][A-Z0-9]*\\\S*)\s*$') { $currentId = $matches[1].Trim() }
         elseif ($currentId -and $t -match 'vJoy' -and $currentId -match '^ROOT\\HIDCLASS\\') { return $currentId }
         elseif ([string]::IsNullOrWhiteSpace($t)) { $currentId = $null }
     }

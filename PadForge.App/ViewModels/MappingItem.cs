@@ -1989,9 +1989,20 @@ namespace PadForge.ViewModels
         /// UI order). Empty if no source occupies that slot.</summary>
         private string GetVariableAlias(int index)
         {
-            if (index == 0)
+            // Slot 0 is the primary ONLY when the primary actually occupies a
+            // positional slot. WalkPositionalSlots already encodes when it does
+            // not: an empty descriptor, or an InvertOnHold primary, which is a
+            // modifier rather than a source. In those cases slot 0 belongs to
+            // the first eligible ExtraSource, and returning early here handed
+            // the formula editor an empty alias for a letter that does refer to
+            // something. PositionalSourceCount counts that slot, so the letter
+            // was offered and then could not be named.
+            bool primaryIsModifier = string.Equals(
+                PrimaryKindSource?.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal);
+            bool primaryOwnsSlotZero = !string.IsNullOrEmpty(_sourceDescriptor) && !primaryIsModifier;
+
+            if (index == 0 && primaryOwnsSlotZero)
             {
-                if (string.IsNullOrEmpty(_sourceDescriptor)) return "";
                 string name = _selectedInput?.DisplayName ?? _resolvedSourceText ?? _sourceDescriptor;
                 return string.IsNullOrEmpty(_primarySourceDeviceLabel)
                     ? name : _primarySourceDeviceLabel + " · " + name;

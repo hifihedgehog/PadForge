@@ -2181,6 +2181,15 @@ namespace PadForge.Common.Input
                 GyroRatchetHeld[i] = false;
                 _prevAimEngageButtonDown[i] = false;
             }
+            // Force an immediate re-snapshot on the next poll, the same
+            // reason ResetTriggerRouteEngageStates does: the engage config
+            // cache is 250 ms-cadenced, so without this the next tick would
+            // settle the NEW profile's engage state from the OLD profile's
+            // snapshot (descriptor, mode, ratchets) for up to a quarter
+            // second. A new profile that gates gyro behind an engage button
+            // would aim freely for that window, and a Toggle carried over
+            // from a profile with no button would re-stick immediately.
+            _gyroEngageCfgRefreshTick = 0;
         }
 
         /// <summary>Clears both trigger-route per-slot engaged bits and the
@@ -2405,6 +2414,12 @@ namespace PadForge.Common.Input
             MouseGestureContexts.Clear();
             SwipePulseStates.Clear();
             TouchpadPulseService.Clear();
+            // The gesture lanes route through the 250 ms device-to-slot
+            // snapshot, and a profile switch is exactly when that mapping
+            // changes. Same invalidation the trigger-route and gyro engage
+            // resets do: without it a gesture completed in the next quarter
+            // second fires on the OLD profile's slot assignment.
+            _assignedSlotsRefreshTick = 0;
         }
 
         /// <summary>Mouse-gesture recognizer walk (issue #200), sibling of

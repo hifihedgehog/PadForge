@@ -306,7 +306,17 @@ namespace PadForge.Common.Input
                         if (_ptpHandleToGuid.TryGetValue(h, out var guid))
                         {
                             var ud = FindOnlineDeviceByInstanceGuid(guid);
-                            if (ud != null) ud.IsOnline = false;
+                            if (ud != null)
+                            {
+                                ud.IsOnline = false;
+                                // Same neutralize the MIDI and NFC removal
+                                // paths perform. A click-bar press or a mapped
+                                // contact asserted when the touchpad vanished
+                                // stayed stamped on the slot's combined output,
+                                // because Step 3 keeps the last OutputState for
+                                // an offline device.
+                                NeutralizeMappedOutputsFor(ud);
+                            }
                             _ptpHandleToGuid.Remove(h);
                         }
                         disconnected.Add(h);
@@ -378,7 +388,14 @@ namespace PadForge.Common.Input
             else if (_ptpMergedCreated)
             {
                 var mergedUd = FindOnlineDeviceByInstanceGuid(PtpMergedGuid);
-                if (mergedUd != null) mergedUd.IsOnline = false;
+                if (mergedUd != null)
+                {
+                    mergedUd.IsOnline = false;
+                    // This one fires on a live config change (merging turned
+                    // off), not just at shutdown, so a held input on the merged
+                    // surface would latch on the slot exactly as above.
+                    NeutralizeMappedOutputsFor(mergedUd);
+                }
                 _ptpMergedCreated = false;
                 changed = true;
             }
@@ -1227,6 +1244,13 @@ namespace PadForge.Common.Input
                     {
                         ud.IsOnline = false;
                         ud.Device = null;
+                        // Same neutralize the unplug path performs. This is not
+                        // only an app-shutdown path: it also runs before a
+                        // Windows MIDI Services uninstall, with the app still
+                        // live, and Step 3 keeps the last OutputState for an
+                        // offline device. A note or CC held at that moment
+                        // stayed stamped on the slot's combined output.
+                        NeutralizeMappedOutputsFor(ud);
                     }
                     kvp.Value.Dispose();
                 }
@@ -1270,6 +1294,11 @@ namespace PadForge.Common.Input
                     {
                         ud.IsOnline = false;
                         ud.Device = null;
+                        // Closing one endpoint while the app runs on. Same
+                        // neutralize the unplug path performs, for the same
+                        // reason: without it a held note or CC survives the
+                        // close on the slot's combined output.
+                        NeutralizeMappedOutputsFor(ud);
                     }
                     dev.Dispose();
                     _openedMidiInputs.Remove(id);
@@ -1431,6 +1460,11 @@ namespace PadForge.Common.Input
                     {
                         ud.IsOnline = false;
                         ud.Device = null;
+                        // Same neutralize the reader-removed path performs.
+                        // Step 3 keeps the last OutputState for an offline
+                        // device, so a tag-presence input asserted at teardown
+                        // stayed stamped on the slot's combined output.
+                        NeutralizeMappedOutputsFor(ud);
                     }
                     kvp.Value.Dispose();
                 }

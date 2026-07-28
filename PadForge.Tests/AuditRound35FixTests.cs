@@ -614,6 +614,47 @@ namespace PadForge.Tests
                 "VC-writing actions that never demand an Xbox slot: " + string.Join(", ", missing));
         }
 
+        // ── Every device-offline site neutralizes its mapped outputs ──
+
+        /// <summary>FAMILY guard. Step 3 keeps the last OutputState for a
+        /// device that has gone offline ("InputState is not cleared on
+        /// disconnect"), so whatever was asserted at the moment of teardown
+        /// stays stamped on the slot's combined output. Every site that takes
+        /// a device offline must therefore neutralize its mapped outputs.
+        ///
+        /// <para>Two of the seven sites had the call and five did not, which is
+        /// the shape this whole round kept finding: the sibling that already
+        /// does it right IS the missing half. Keyed off the assignment itself
+        /// so a NEW offline path that forgets the call fails here.</para></summary>
+        [Fact]
+        public void EveryDeviceOfflineSite_NeutralizesItsMappedOutputs()
+        {
+            string path = System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Common",
+                "Input", "InputManager.Step1.UpdateDevices.cs");
+            var lines = System.IO.File.ReadAllLines(path);
+
+            var offenders = new System.Collections.Generic.List<int>();
+            int sites = 0;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (!lines[i].Contains("IsOnline = false", StringComparison.Ordinal)) continue;
+                sites++;
+                // The neutralize belongs in the same block as the assignment.
+                string window = string.Join("\n", lines.Skip(i).Take(16));
+                if (!window.Contains("NeutralizeMappedOutputsFor", StringComparison.Ordinal))
+                    offenders.Add(i + 1);
+            }
+
+            // Positive control: prove the sweep actually located the sites.
+            // A rename would otherwise make this test vacuously green.
+            Assert.True(sites >= 7, $"Only found {sites} offline sites. Test is stale.");
+
+            Assert.True(offenders.Count == 0,
+                "Device-offline sites that leave the last OutputState stamped on the slot, "
+                + "so a held input latches after teardown, at lines: "
+                + string.Join(", ", offenders));
+        }
+
         [Fact]
         public void ImpulseTriggerPids_StillRejectNonImpulsePads()
         {

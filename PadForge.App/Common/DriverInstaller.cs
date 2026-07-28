@@ -293,16 +293,22 @@ namespace PadForge.Common
                 {
                     string line = lines[i].Trim();
 
-                    // Detect "Published Name : oemXX.inf" or "Published name: oemXX.inf"
-                    if (line.StartsWith("Published", StringComparison.OrdinalIgnoreCase) &&
-                        line.Contains(":"))
+                    // Detect the block start by its VALUE, not its label. The
+                    // label is "Published Name" only on an English Windows;
+                    // pnputil localizes it, so keying on that word made this
+                    // whole parse return nothing on a German or Japanese
+                    // machine and legacy drivers went undetected rather than
+                    // reported. The value, "oemNN.inf", is locale-independent.
+                    var oemHit = System.Text.RegularExpressions.Regex.Match(
+                        line, @"oem\d+\.inf",
+                        System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                    if (oemHit.Success)
                     {
                         // Save any previous match.
                         if (isExtendedBlock && currentOem != null)
                             results.Add(currentOem);
 
-                        string value = line.Substring(line.IndexOf(':') + 1).Trim();
-                        currentOem = value;
+                        currentOem = oemHit.Value;
                         isExtendedBlock = false;
                     }
                     // Check if this block mentions Shaul or vjoy.

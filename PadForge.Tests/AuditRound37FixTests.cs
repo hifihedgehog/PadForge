@@ -317,6 +317,75 @@ namespace PadForge.Tests
                 257, 78, crcValid: true, validFlag0: (byte)0x00, motorMask: 0x03));
         }
 
+        // ── Each finger-count checkbox is its own opt-in ──
+
+        /// <summary>The In-Box Gestures card renders every gesture family as a
+        /// flat list of peer checkboxes. Nothing on screen says that
+        /// "Three-Finger Gestures" also needs "Two-Finger Swipes" and
+        /// "Tap / Double Tap / Triple Tap" ticked, but the recognizer required
+        /// exactly that, so ticking the three-finger box alone enabled nothing.
+        /// Round 35 then made the picker mirror those gates honestly, which
+        /// turned "listed but dead" into "missing from the dropdown" and is how
+        /// the owner hit it.
+        ///
+        /// <para>The count toggle is now the whole opt-in in BOTH places. The
+        /// family's own gate still suppresses everything when unticked.</para>
+        /// </summary>
+        [Fact]
+        public void MultiFingerGestures_AreNotCrossGatedOnOtherFamilies()
+        {
+            string rec = Src("PadForge.Engine/Touchpad/GestureRecognizer.cs");
+            string pick = Src("PadForge.App/Common/MappingDisplayResolver.cs");
+
+            // Positive control: both files must still contain the families, or
+            // the absence checks below pass vacuously.
+            Assert.Contains("EnableThreeFingerGestures", rec);
+            Assert.Contains("ThreeFingerSwipeUp", pick);
+            Assert.Contains("ThreeFingerTap", pick);
+
+            // The recognizer's multi-finger emit arms must not consult the
+            // one/two-finger switches. Those names still appear legitimately in
+            // the 1- and 2-finger blocks, so scope the check to the multi-finger
+            // region that starts at the "fingerCount >= 3" gate.
+            int at = rec.IndexOf("if (fingerCount >= 3)", StringComparison.Ordinal);
+            Assert.True(at > 0, "the multi-finger block moved; update this test with it.");
+            string multi = rec.Substring(at);
+            Assert.DoesNotContain("settings.EnableTwoFingerSwipes", multi);
+            Assert.DoesNotContain("settings.EnableTaps", multi);
+
+            // And the picker must not hide them behind those same switches.
+            Assert.DoesNotContain("max >= 5 && gateFive && gateTaps", pick);
+            int three = pick.IndexOf("max >= 3 && gateThree", StringComparison.Ordinal);
+            Assert.True(three > 0, "the three-finger picker block moved.");
+            int four = pick.IndexOf("max >= 4 && gateFour", StringComparison.Ordinal);
+            string threeBlock = pick.Substring(three, four - three);
+            Assert.DoesNotContain("gateTwoSwipe", threeBlock);
+            Assert.DoesNotContain("gateTaps", threeBlock);
+        }
+
+        // ── A laptop trackpad has no pressure sensor ──
+
+        /// <summary>The HID PTP spec carries a tip switch, contact ID and X/Y,
+        /// and no pressure usage, so PrecisionTouchpadReader synthesizes
+        /// pressure as "1.0 while down, else 0.0". Offering it as an analog axis
+        /// shipped an exact duplicate of "Finger N Down" under a different name,
+        /// plus nine windowed pressure zones that can only ever read fully-in or
+        /// fully-out. Real analog pressure is SDL-backed only.</summary>
+        [Fact]
+        public void PrecisionTouchpads_AreNotOfferedAPressureAxis()
+        {
+            string src = Src("PadForge.App/Common/MappingDisplayResolver.cs");
+
+            // Positive control: the pressure descriptors must still exist for
+            // the devices that DO have a sensor.
+            Assert.Contains("Finger {f} Pressure", src);
+
+            // Gated on the same discriminator the Click block already uses for
+            // laptop trackpads.
+            Assert.Contains("bool ptpNoPressure = ud.IsTouchpad && ud.Device == null;", src);
+            Assert.Contains("if (!ptpNoPressure)", src);
+        }
+
         // ── The unsigned-axis contract, guarded on the WRITER side ──
 
         /// <summary>CustomInputState.Axis is UNSIGNED 0..65535 with 32768 at

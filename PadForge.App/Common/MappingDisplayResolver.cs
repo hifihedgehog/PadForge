@@ -1555,6 +1555,17 @@ namespace PadForge.Common
                 // Touchpad 2 Finger 1 X". One row per finger the pad
                 // actually reports (FingerCount), so single-finger pads
                 // don't list a dead second finger.
+                // A laptop trackpad has NO pressure sensor. The HID PTP spec
+                // carries a tip switch, contact ID and X/Y, and no pressure
+                // usage, so PrecisionTouchpadReader synthesizes the field as
+                // "1.0 while the finger is down, else 0.0". Offering it as an
+                // analog axis therefore shipped an exact duplicate of
+                // "Finger N Down" wearing a different name, plus nine windowed
+                // pressure zones that can only ever read fully-in or fully-out.
+                // Real analog pressure comes from SDL-backed pads only.
+                // Same discriminator the Click block below uses.
+                bool ptpNoPressure = ud.IsTouchpad && ud.Device == null;
+
                 for (int p = 0; p < numPads; p++)
                 {
                     int fingers = FingerCount(p);
@@ -1563,22 +1574,25 @@ namespace PadForge.Common
                         list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} X",        DisplayName = string.Format(si.Mapping_TouchpadFingerX_Format,        p + 1, f + 1) });
                         list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Y",        DisplayName = string.Format(si.Mapping_TouchpadFingerY_Format,        p + 1, f + 1) });
                         list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Down",     DisplayName = string.Format(si.Mapping_TouchpadFingerTouch_Format,    p + 1, f + 1) });
-                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Pressure", DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, f + 1) });
-                        // Windowed Pressure (#239): the nine zone reads,
-                        // offered per pad and finger with NO single-pad
-                        // gate (unlike the v18 halves below): the
-                        // five-zone DS3-sim lives per physical pad, so a
-                        // Steam Controller needs the zones on both pads
-                        // (left pad = D-pad, right pad = face buttons).
-                        // Display names match ResolveDescriptorText
-                        // exactly (the mirror-closure convention).
-                        foreach (var w in TouchpadPressureZoneTokens)
-                            list.Add(new InputChoice
-                            {
-                                Descriptor = $"Touchpad {p} Finger {f} Pressure {w}",
-                                DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, f + 1)
-                                    + " (" + TouchpadPressureZonePhrase(w) + ")",
-                            });
+                        if (!ptpNoPressure)
+                        {
+                            list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Pressure", DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, f + 1) });
+                            // Windowed Pressure (#239): the nine zone reads,
+                            // offered per pad and finger with NO single-pad
+                            // gate (unlike the v18 halves below): the
+                            // five-zone DS3-sim lives per physical pad, so a
+                            // Steam Controller needs the zones on both pads
+                            // (left pad = D-pad, right pad = face buttons).
+                            // Display names match ResolveDescriptorText
+                            // exactly (the mirror-closure convention).
+                            foreach (var w in TouchpadPressureZoneTokens)
+                                list.Add(new InputChoice
+                                {
+                                    Descriptor = $"Touchpad {p} Finger {f} Pressure {w}",
+                                    DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, f + 1)
+                                        + " (" + TouchpadPressureZonePhrase(w) + ")",
+                                });
+                        }
                         // Region-windowed halves (#9 B-1): only single-pad
                         // devices (DS4 / DualSense) offer them. Their one
                         // physical pad is what Steam splits into left/right
@@ -2058,40 +2072,30 @@ namespace PadForge.Common
                 }
                 if (max >= 3 && gateThree)
                 {
-                    // The recognizer gates these two families separately: the
-                    // multi-finger swipe on EnableTwoFingerSwipes, the tap on
-                    // EnableTaps. Listing both behind the finger-count gate
-                    // alone offered descriptors that could never fire, the same
-                    // split the one- and two-finger blocks above already keep.
-                    if (gateTwoSwipe)
-                    {
-                        AddGesture(list, p, "ThreeFingerSwipeUp",    PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeUp));
-                        AddGesture(list, p, "ThreeFingerSwipeDown",  PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeDown));
-                        AddGesture(list, p, "ThreeFingerSwipeLeft",  PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeLeft));
-                        AddGesture(list, p, "ThreeFingerSwipeRight", PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeRight));
-                    }
-                    if (gateTaps)
-                        AddGesture(list, p, "ThreeFingerTap",        PadWrap(si.Mapping_TouchpadGesture_ThreeFingerTap));
+                    // The finger-count toggle is the WHOLE opt-in for this
+                    // family, matching the recognizer. Both arms used to also
+                    // require the one- and two-finger families' switches
+                    // (EnableTwoFingerSwipes for the swipes, EnableTaps for the
+                    // tap), so turning on "Three-Finger Gestures" listed nothing
+                    // at all and read as broken.
+                    AddGesture(list, p, "ThreeFingerSwipeUp",    PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeUp));
+                    AddGesture(list, p, "ThreeFingerSwipeDown",  PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeDown));
+                    AddGesture(list, p, "ThreeFingerSwipeLeft",  PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeLeft));
+                    AddGesture(list, p, "ThreeFingerSwipeRight", PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeRight));
+                    AddGesture(list, p, "ThreeFingerTap",        PadWrap(si.Mapping_TouchpadGesture_ThreeFingerTap));
                 }
                 if (max >= 4 && gateFour)
                 {
-                    // The recognizer gates these two families separately: the
-                    // multi-finger swipe on EnableTwoFingerSwipes, the tap on
-                    // EnableTaps. Listing both behind the finger-count gate
-                    // alone offered descriptors that could never fire, the same
-                    // split the one- and two-finger blocks above already keep.
-                    if (gateTwoSwipe)
-                    {
-                        AddGesture(list, p, "FourFingerSwipeUp",    PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeUp));
-                        AddGesture(list, p, "FourFingerSwipeDown",  PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeDown));
-                        AddGesture(list, p, "FourFingerSwipeLeft",  PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeLeft));
-                        AddGesture(list, p, "FourFingerSwipeRight", PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeRight));
-                    }
-                    if (gateTaps)
-                        AddGesture(list, p, "FourFingerTap",        PadWrap(si.Mapping_TouchpadGesture_FourFingerTap));
+                    // Same as the three-finger family above: the count toggle
+                    // is the whole opt-in.
+                    AddGesture(list, p, "FourFingerSwipeUp",    PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeUp));
+                    AddGesture(list, p, "FourFingerSwipeDown",  PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeDown));
+                    AddGesture(list, p, "FourFingerSwipeLeft",  PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeLeft));
+                    AddGesture(list, p, "FourFingerSwipeRight", PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeRight));
+                    AddGesture(list, p, "FourFingerTap",        PadWrap(si.Mapping_TouchpadGesture_FourFingerTap));
                 }
-                // Tap-only family, so the tap gate is the whole condition.
-                if (max >= 5 && gateFive && gateTaps)
+                // Tap-only family, so the count toggle is the whole condition.
+                if (max >= 5 && gateFive)
                 {
                     AddGesture(list, p, "FiveFingerTap", PadWrap(si.Mapping_TouchpadGesture_FiveFingerTap));
                 }

@@ -107,7 +107,7 @@ public static class W {
         if (-not $el) { return $false }
         try {
             $r = $el.Current.BoundingRectangle
-            if ($r.Width -le 0) { return $false }
+            if ($r.Width -le 0 -or $r.Height -le 0) { return $false }
             Click-At ([int]($r.X + $r.Width * $fx)) ([int]($r.Y + $r.Height * $fy))
             return $true
         } catch { return $false }

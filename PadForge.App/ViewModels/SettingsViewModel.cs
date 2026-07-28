@@ -96,6 +96,12 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Settings_Title;
             OnPropertyChanged(nameof(HidHideStatusText));
             OnPropertyChanged(nameof(MidiServicesStatusText));
+            // Both build their text from Strings.Instance, so they are exactly
+            // as culture-dependent as the two above and were the pair this
+            // handler missed. The Remote Link protection picker and its hint
+            // kept the previous language until something else re-read them.
+            OnPropertyChanged(nameof(IdentityProtectionModes));
+            OnPropertyChanged(nameof(IdentityProtectionHint));
 
             // Refresh the default profile's display name in the list.
             var defaultItem = ProfileItems.FirstOrDefault(p => p.IsDefault);

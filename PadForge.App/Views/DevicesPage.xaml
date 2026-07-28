@@ -967,6 +967,7 @@
                                   IsEnabled="{Binding SelectedDevice.IsHidHideAvailable}"
                                   Visibility="{Binding SelectedDevice.IsInternalVirtual, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
                                   Click="HidingToggle_Click"
+                                  ToolTipService.ShowOnDisabled="True"
                                   Margin="0,0,0,4">
                             <CheckBox.ToolTip>
                                 <TextBlock>

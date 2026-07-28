@@ -1087,7 +1087,15 @@ namespace PadForge.Common.Input
                 bool anyAudioPulseRainbow = (perDeviceCfgs != null && perDeviceCfgs.Count > 0)
                     ? AnyDeviceMode(perDeviceCfgs, LightbarMode.AudioPulseRainbow)
                     : cfg.LightbarMode == LightbarMode.AudioPulseRainbow;
-                if (!zeroCrossing && !rumbleChanged && delta < 0.004f && !anyAudioPulseRainbow)
+                // The two reactive terms belong here for the same reason they
+                // are in the tick-skip gate at the top of this method: an
+                // input-reactive overlay and a decaying Reactive macro override
+                // BOTH need a tick even when the audio peak is flat. Without
+                // them a steady peak, which includes silence, suppressed the
+                // whole dispatch, so button flashes and macro lightbar
+                // overrides simply never rendered while nothing was playing.
+                if (!zeroCrossing && !rumbleChanged && delta < 0.004f && !anyAudioPulseRainbow
+                    && !anyReactiveRunning && !anyInputReactiveOverlay)
                     return;
                 _lastDispatchedPeak = scaled;
                 _lastDispatchedRumbleR = rRight;

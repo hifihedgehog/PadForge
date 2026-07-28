@@ -501,7 +501,18 @@ namespace PadForge.ViewModels
             _perDeviceSlotConfigs.TryAdd(newGuid, cfg);
         }
         private DeviceSlotConfig _deviceConfig = new();
-        private static readonly DeviceSlotConfig _emptyDeviceConfigSentinel = new();
+        /// <summary>Throwaway config bound while this slot has no selected
+        /// device, so UI edits and profile applies land somewhere harmless
+        /// instead of on a real device's config.
+        ///
+        /// <para>PER INSTANCE, not static. A single shared instance was
+        /// bound by EVERY deviceless slot at once, and
+        /// SettingsService.ApplyDeviceSlotConfigs writes
+        /// padVm.DeviceConfig unconditionally, so applying a profile stamped
+        /// one slot's anchor lighting / adaptive-trigger state into the
+        /// object every other deviceless slot was also showing and editing
+        /// (round 34).</para></summary>
+        private readonly DeviceSlotConfig _emptyDeviceConfigSentinel = new();
 
         /// <summary>Per-(slot, device) lighting tab configs keyed by
         /// physical device InstanceGuid. Always populated for every
@@ -7020,16 +7031,28 @@ namespace PadForge.ViewModels
                 if (hasX) { stick.LiveX = vx; stick.RawX = (short)Math.Clamp((ox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue); }
                 if (hasY) { stick.LiveY = vy; stick.RawY = (short)Math.Clamp((0.5 - oy) * 2.0 * 32767, short.MinValue, short.MaxValue); }
 
-                UpdateStickCurveDots(stick, stick.LiveX, stick.LiveY);
+                // normX/normY (pre-pipeline), NOT LiveX/LiveY: this feeds
+                // the curve editor's live INPUT dot, and LiveX/LiveY were
+                // just assigned the post-deadzone/curve OUTPUT, so the
+                // Extended path drew the input dot at the output position.
+                // Both gamepad callers pass DeviceThumb* raw norms
+                // (round 34).
+                UpdateStickCurveDots(stick, normX, normY);
             }
 
             // Sync trigger config items from raw axes
             foreach (var trig in TriggerConfigs)
             {
-                if (trig.AxisIndex >= 0 && raw.Axes != null && trig.AxisIndex < raw.Axes.Length)
+                // hwAxes, not raw.Axes: raw.Axes is already post-deadzone /
+                // post-curve, so feeding it to ProcessTriggerForPreview
+                // applied the pipeline TWICE and published a tuned value as
+                // RawNorm / RawValue. The stick block above was fixed to read
+                // HardwareAxes for exactly this reason; the trigger block was
+                // left behind (round 34).
+                if (trig.AxisIndex >= 0 && hwAxes != null && trig.AxisIndex < hwAxes.Length)
                 {
                     // Trigger axes are signed short (-32768..32767), normalize to 0.0-1.0
-                    double rawNorm = (raw.Axes[trig.AxisIndex] - (double)short.MinValue) / 65535.0;
+                    double rawNorm = (hwAxes[trig.AxisIndex] - (double)short.MinValue) / 65535.0;
                     var processed = ProcessTriggerForPreview(rawNorm, trig);
                     trig.LiveValue = processed;
                     trig.RawNorm = rawNorm;

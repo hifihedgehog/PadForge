@@ -290,5 +290,45 @@ namespace PadForge.Tests
             Assert.Equal("Gamepad ButtonA", buttonARow.SelectedInput.Descriptor);
             Assert.True(string.IsNullOrEmpty(buttonARow.SelectedInput.DeviceGuid));
         }
+    
+        /// <summary>The row DATA itself must be reloaded on a deviceless
+        /// slot, not only the picker.
+        ///
+        /// <para>The apply tail called LoadPadSettingToViewModel only when a
+        /// device was selected. A Workshop import carries no assignments by
+        /// design, so on every imported slot the mapping refresh inside that
+        /// call never ran and the grid kept the OUTGOING profile's
+        /// MappingItems: the owner saw the default profile's controller on
+        /// rows whose stored DeviceGuid is empty. The picker tests above all
+        /// passed the whole time, because the picker WAS rebuilt. Only the
+        /// rows were stale.</para></summary>
+        [Fact]
+        public void WorkshopApply_DevicelessSlots_ReloadTheRowsThemselves()
+        {
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            var pad0 = mainVm.Pads[0];
+            var buttonA = pad0.Mappings.First(m => m.TargetSettingName == "ButtonA");
+
+            // Stamp the outgoing profile's device onto the row, the state
+            // that used to survive the switch. The fixture's default profile
+            // leaves this empty, so setting it explicitly is what makes the
+            // stale-vs-reloaded distinction observable at all.
+            buttonA.PrimarySourceDeviceGuid = XboxGuid.ToString();
+
+            ImportAndApplyWorkshopProfile(svc);
+
+            // Re-query rather than reuse the captured instance: if the apply
+            // rebuilds the Mappings collection, the old object is orphaned
+            // and would report its stale value forever, which would make this
+            // test lie about the product.
+            buttonA = pad0.Mappings.First(m => m.TargetSettingName == "ButtonA");
+
+            // The imported row stores an empty GUID. If the reload was
+            // skipped, this still reads the Xbox pad's GUID and the grid
+            // renders that controller's name under an abstract source.
+            Assert.True(string.IsNullOrEmpty(buttonA.PrimarySourceDeviceGuid),
+                $"row kept the outgoing profile's device ('{buttonA.PrimarySourceDeviceGuid}'): "
+                + "the deviceless slot never reloaded its mapping rows.");
+        }
     }
 }

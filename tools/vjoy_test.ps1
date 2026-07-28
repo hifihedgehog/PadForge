@@ -16,12 +16,6 @@ function Find-ElementByName($parent, $name, $depth = 8) {
     return $parent.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $cond)
 }
 
-function Find-ElementByAid($parent, $aid) {
-    $cond = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::AutomationIdProperty, $aid)
-    return $parent.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $cond)
-}
-
 function Click-Element($el) {
     if (-not $el) { Write-Host "  ERROR: Element not found"; return $false }
     $invokePat = $el.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern)

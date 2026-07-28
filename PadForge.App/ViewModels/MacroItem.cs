@@ -4314,6 +4314,13 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _lightbarPaletteCsv, value ?? string.Empty))
                 {
+                    // Drop the parsed cache FIRST. The getter returns
+                    // _lightbarPaletteCache whenever it is non-null, so
+                    // raising LightbarPalette without clearing it re-handed
+                    // the UI the palette parsed from the PREVIOUS csv, and a
+                    // macro switch or paste showed the old colors
+                    // (round 34).
+                    _lightbarPaletteCache = null;
                     OnPropertyChanged(nameof(LightbarPalette));
                     OnPropertyChanged(nameof(IsLightbarPaletteVisible));
                     OnPropertyChanged(nameof(DisplayText));

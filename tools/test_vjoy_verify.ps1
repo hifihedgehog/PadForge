@@ -291,3 +291,10 @@ Log "RESULTS: $passed PASSED, $failed FAILED"
 Log "=============================="
 
 $out | Out-File $outFile -Encoding utf8
+
+# Signal the outcome to whoever ran this. The results line was printed and
+# then the script exited 0 regardless, so a wrapper, a scheduled run or a
+# CI step saw every failing run as a pass. The two runner scripts in this
+# folder both exit 0 unconditionally for the same reason.
+if ($failed -gt 0) { exit 1 }
+exit 0

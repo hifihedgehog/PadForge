@@ -697,8 +697,15 @@ if ($xboxTypeBtns.Count -gt 0) {
     Log "  Clicked Xbox 360 type button"
     Start-Sleep -Seconds 8
     $state5 = Log-State "AFTER TYPE SWITCH"
-    # Should have 1 fewer registry Device key (one vJoy became Xbox)
-    Assert ($state5.Reg -lt $regBefore -or $state5.Reg -eq $regBefore) "Registry device count adjusted"
+    # Should have 1 fewer registry Device key (one vJoy became Xbox).
+    #
+    # This asserted "-lt $regBefore -or -eq $regBefore", which is just -le and
+    # therefore passed when the count did not move at all. A type switch that
+    # silently failed to remove the vJoy device is exactly what this test
+    # exists to catch, and it was the one outcome the assertion could not fail
+    # on. It now requires the drop the comment describes, and reports both
+    # numbers so a failure says what happened.
+    Assert ($state5.Reg -lt $regBefore) "Registry device count dropped after type switch ($regBefore -> $($state5.Reg))"
     Log-DiagFile
 } else {
     Log "  Trying sidebar type buttons..."
@@ -1033,3 +1040,10 @@ if (Test-Path $diagLogPath) {
     Log "=== FULL vjoy_diag.log ==="
     Get-Content $diagLogPath | ForEach-Object { Log "  $_" }
 }
+
+# Signal the outcome to whoever ran this. The results line was printed and
+# then the script exited 0 regardless, so a wrapper, a scheduled run or a
+# CI step saw every failing run as a pass. The two runner scripts in this
+# folder both exit 0 unconditionally for the same reason.
+if ($fail -gt 0) { exit 1 }
+exit 0

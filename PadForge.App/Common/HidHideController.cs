@@ -170,7 +170,14 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Gets the current device blacklist (device instance IDs).
+        /// Gets the current device blacklist (device instance IDs), or NULL if
+        /// the driver could not be read.
+        ///
+        /// <para>Null and empty mean different things here and callers must not
+        /// conflate them. Every consumer does read-modify-write, so treating a
+        /// failed read as "the list is empty" writes an empty list back and
+        /// destroys entries the user set outside PadForge. That is exactly what
+        /// SyncManagedDevices promises never to do.</para>
         /// </summary>
         public static List<string> GetBlacklist()
         {
@@ -241,6 +248,9 @@ namespace PadForge.Common
                 if (_managedDeviceIds.Count == 0) return;
 
                 var list = GetBlacklist();
+                // Bail on a failed read. Writing back what we could not read
+                // would clear the user's whole blacklist.
+                if (list == null) return;
                 list.RemoveAll(id => _managedDeviceIds.Contains(id));
                 SetBlacklist(list);
                 _managedDeviceIds.Clear();
@@ -273,6 +283,10 @@ namespace PadForge.Common
                 if (toAdd.Count == 0 && toRemove.Count == 0) return;
 
                 var list = GetBlacklist();
+                // Same bail. This method's own contract is "never clears the
+                // entire blacklist", and a failed read that fell through to
+                // SetBlacklist did precisely that.
+                if (list == null) return;
                 foreach (var id in toRemove)
                     list.RemoveAll(x => string.Equals(x, id, StringComparison.OrdinalIgnoreCase));
                 foreach (var id in toAdd)
@@ -681,14 +695,16 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Reads a multi-SZ string list from HidHide via a GET IOCTL.
+        /// Reads a multi-SZ string list from HidHide via a GET IOCTL, or
+        /// returns NULL when the driver could not be read. An empty list is a
+        /// successful read of an empty list, which is a different fact.
         /// </summary>
         private static List<string> GetMultiSzList(uint ioctl)
         {
             var result = new List<string>();
 
             using var handle = OpenDevice();
-            if (handle == null || handle.IsInvalid) return result;
+            if (handle == null || handle.IsInvalid) return null;
 
             // First call with small buffer to get required size.
             byte[] outBuffer = new byte[4096];
@@ -699,11 +715,13 @@ namespace PadForge.Common
                 outBuffer = new byte[65536];
                 if (!DeviceIoControl(handle, ioctl, null, 0,
                     outBuffer, outBuffer.Length, out bytesReturned, IntPtr.Zero))
-                    return result;
+                    return null;
             }
 
+            // A short or odd byte count is a malformed reply, not an empty
+            // list, so it reports failure for the same reason.
             if (bytesReturned < 4 || bytesReturned % 2 != 0) // At minimum double-null terminator (4 bytes in UTF-16)
-                return result;
+                return null;
 
             // Parse multi-SZ: null-separated UTF-16 strings, double-null terminated.
             string fullString = Encoding.Unicode.GetString(outBuffer, 0, bytesReturned);

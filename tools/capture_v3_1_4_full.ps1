@@ -91,6 +91,15 @@ $EdgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 
 # ─── Step 0: backup XML ───
 Write-Host "=== STEP 0: Backup XML ==="
+# A leftover backup means an earlier run never reached its restore, so that
+# file holds the USER'S REAL SETTINGS and the live xml is capture residue.
+# Backing up over it destroys the only copy, which is what happened on
+# 2026-07-12 (recovered from a shadow copy). Restore first, then re-back up,
+# matching capture_all.ps1.
+if (Test-Path -LiteralPath $XmlBak) {
+    Write-Host "  !! Leftover backup from an interrupted run; restoring it before re-backup" -ForegroundColor Yellow
+    Copy-Item $XmlBak $XmlPath -Force
+}
 Copy-Item $XmlPath $XmlBak -Force
 
 # ─── Step 1: stop PadForge ───

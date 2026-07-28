@@ -2805,4 +2805,13 @@
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Touchez un tag avec votre manette Switch…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Échec du calibrage. Posez la manette et réessayez.</value></data>
   <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>Supprimer l’entrée de calque résiduelle « {0} » ? Vos mappages et macros de Base ne seront pas touchés.</value></data>
+  <data name="Common_KeepLegacyDrivers" xml:space="preserve"><value>Conserver</value></data>
+  <data name="LegacyCleanup_Title" xml:space="preserve"><value>Nettoyage des anciens pilotes</value></data>
+  <data name="LegacyCleanup_Prompt_Format" xml:space="preserve"><value>PadForge v3 utilise HIDMaestro et n'a plus besoin des anciens pilotes suivants : {0}.
+
+Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessite une élévation et peut prendre un moment.</value></data>
+  <data name="LegacyCleanup_Failed_Format" xml:space="preserve"><value>Une erreur s'est produite lors du nettoyage : {0}
+
+Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Quitter</value></data>
 </root>

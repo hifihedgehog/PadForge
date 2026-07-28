@@ -2805,4 +2805,13 @@
   <data name="Nfc_WaitingController" xml:space="preserve"><value>用 Switch 手柄轻触标签…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>校准失败。请放稳手柄后重试。</value></data>
   <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>移除遗留的图层条目"{0}"？Base 的映射和宏不会受到影响。</value></data>
+  <data name="Common_KeepLegacyDrivers" xml:space="preserve"><value>保留</value></data>
+  <data name="LegacyCleanup_Title" xml:space="preserve"><value>旧驱动程序清理</value></data>
+  <data name="LegacyCleanup_Prompt_Format" xml:space="preserve"><value>PadForge v3 使用 HIDMaestro，不再需要以下旧驱动程序：{0}。
+
+现在卸载它们吗？此操作需要管理员权限，可能需要一点时间。</value></data>
+  <data name="LegacyCleanup_Failed_Format" xml:space="preserve"><value>清理时发生错误：{0}
+
+你可以稍后在设置中重试。</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>退出</value></data>
 </root>

@@ -2323,12 +2323,11 @@ namespace PadForge
 
                 var dialog = new Wpf.Ui.Controls.MessageBox
                 {
-                    Title = "Legacy Driver Cleanup",
-                    Content =
-                        $"PadForge v3 uses HIDMaestro and no longer needs the legacy driver(s): {string.Join(", ", found)}.\n\n" +
-                        "Would you like PadForge to uninstall them now? This requires elevation and may take a moment.",
-                    PrimaryButtonText = "Uninstall",
-                    CloseButtonText = "Keep",
+                    Title = Strings.Instance.LegacyCleanup_Title,
+                    Content = string.Format(
+                        Strings.Instance.LegacyCleanup_Prompt_Format, string.Join(", ", found)),
+                    PrimaryButtonText = Strings.Instance.Common_Uninstall,
+                    CloseButtonText = Strings.Instance.Common_KeepLegacyDrivers,
                 };
 
                 var result = await dialog.ShowDialogAsync();
@@ -2367,9 +2366,10 @@ namespace PadForge
                     {
                         var err = new Wpf.Ui.Controls.MessageBox
                         {
-                            Title = "Legacy Driver Cleanup",
-                            Content = $"Cleanup encountered an error: {cleanupError.Message}\n\nYou can retry later from Settings.",
-                            CloseButtonText = "OK",
+                            Title = Strings.Instance.LegacyCleanup_Title,
+                            Content = string.Format(
+                                Strings.Instance.LegacyCleanup_Failed_Format, cleanupError.Message),
+                            CloseButtonText = Strings.Instance.Common_OK,
                         };
                         _ = await err.ShowDialogAsync();
                     }
@@ -6792,7 +6792,7 @@ namespace PadForge
 
             var exitItem = new System.Windows.Controls.MenuItem
             {
-                Header = "Exit",
+                Header = Strings.Instance.Tray_Exit,
             };
             exitItem.Click += (s, e) => { _notifyIcon.Visible = false; Close(); };
             menu.Items.Add(exitItem);

@@ -201,6 +201,61 @@ namespace PadForge.Tests
             Assert.Equal(expected, SourceEvaluator.IsRelativeMotionTarget(target));
         }
 
+        // ── The round-34 sibling family, guarded at the source ──
+
+        /// <summary>Walks up from the test binary to the repo root.</summary>
+        private static string RepoRoot()
+        {
+            var dir = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
+            while (dir != null && !System.IO.File.Exists(System.IO.Path.Combine(dir.FullName, "PadForge.sln")))
+                dir = dir.Parent;
+            Assert.NotNull(dir);
+            return dir.FullName;
+        }
+
+        /// <summary>
+        /// `CustomInputState.Axis` is UNSIGNED 0..65535 with 32768 at rest, so
+        /// normalizing it is a plain divide. Adding 32768 first maps the real
+        /// range onto 0.5..1.5, and a resting stick then reads 1.0.
+        ///
+        /// <para>Round 34 found this family, fixed two of the four sites, and
+        /// shipped a test that asserted against a LOCAL reimplementation of the
+        /// formula. That test could not see call sites at all, so the two it
+        /// missed survived until this round. This one reads the SOURCE, so it
+        /// covers every member of the family including ones added later.</para>
+        ///
+        /// <para>Deliberately NOT a blanket ban on `+ 32768f`: the same
+        /// expression is CORRECT on a signed short (gp.ThumbLX, RawHidState.Axes),
+        /// which is why a naive sweep would either miss these or condemn those.
+        /// The discriminator is the operand's type, so this pins the specific
+        /// readers that consume CustomInputState.Axis.</para>
+        /// </summary>
+        [Theory]
+        [InlineData("PadForge.App/Common/Input/InputManager.Step4b.EvaluateMacros.cs", "ReadExpressionVariable")]
+        [InlineData("PadForge.App/Common/Input/InputManager.Step4b.EvaluateMacros.cs", "ReadExpressionVariableRaw")]
+        [InlineData("PadForge.App/Common/Input/InputManager.Step4b.EvaluateMacros.cs", "ReadAxisFromDevice")]
+        [InlineData("PadForge.App/Services/InputService.cs", "ReadCurrentAxes")]
+        public void UnsignedAxisReaders_DoNotReAddTheRestOffset(string relPath, string method)
+        {
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), relPath));
+            int at = src.IndexOf(" " + method + "(", StringComparison.Ordinal);
+            Assert.True(at >= 0, $"{method} not found in {relPath}; rename the test with the code.");
+
+            // Body window: from the signature to the next same-indent close.
+            int end = src.IndexOf("\n        }", at, StringComparison.Ordinal);
+            if (end < 0) end = Math.Min(src.Length, at + 4000);
+            string body = src.Substring(at, end - at);
+
+            foreach (var line in body.Split('\n'))
+            {
+                string code = line.Split(new[] { "//" }, StringSplitOptions.None)[0];
+                if (!code.Contains("65535f")) continue;
+                Assert.False(code.Contains("32768"),
+                    $"{relPath} :: {method} normalizes an unsigned axis with a 32768 shift: "
+                    + code.Trim());
+            }
+        }
+
         // ── Xbox impulse-trigger PIDs ──
 
         /// <summary>The BLE re-enumerations of the Xbox One S and Elite Series

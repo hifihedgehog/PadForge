@@ -18,11 +18,14 @@ Write-Host "=== vJoy Device Nodes (pnputil) ==="
 $pnpOutput = & pnputil /enum-devices /class HIDClass 2>&1 | Out-String
 $lines = $pnpOutput -split "`n"
 $inVjoy = $false
+$currentId = $null
 foreach ($line in $lines) {
     if ($line -match ':\s*[A-Z][A-Z0-9]*\\') { $currentId = $line }
     if ($line -match 'vJoy' -or $line -match 'vjoy') {
         $inVjoy = $true
-        Write-Host $currentId.Trim()
+        # $currentId was never initialised, so a vJoy match before the first
+        # instance-ID line called .Trim() on null and threw.
+        if ($currentId) { Write-Host $currentId.Trim() }
         Write-Host $line.Trim()
     }
     if ($inVjoy -and $line -match 'Status') {

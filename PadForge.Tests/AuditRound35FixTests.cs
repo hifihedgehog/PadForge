@@ -6,6 +6,7 @@ using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 using PadForge.Engine.Menus;
 using PadForge.Engine.Touchpad;
+using PadForge.SteamWorkshop.Translation;
 using Xunit;
 
 namespace PadForge.Tests
@@ -967,6 +968,31 @@ namespace PadForge.Tests
                 "MIDI combine buffer indexed by something other than padIndex, so slots share "
                 + "one buffer and a later slot overwrites an earlier one's combine: "
                 + string.Join(", ", constIndexed));
+        }
+
+        // ── gyro_to_joystick reaches the curve channel on the gyro slot ──
+
+        /// <summary>A Gyro-slot gyro_to_joystick group reached
+        /// EmitMouseJoystickAxes with curveChannel false, so its authored curve
+        /// cluster parsed to nothing and never stamped. The curve was simply
+        /// absent from the translated profile, silently.
+        ///
+        /// <para>The second case is the point of the scoping. The same mode
+        /// hand-bound to a STICK slot must stay OUTSIDE the channel, because
+        /// the emitter's `!curveChannel` outer-radius rescue exists for exactly
+        /// that combination. Fixing the first by adding the mode to
+        /// CurveChannelModes would have broken the second.</para></summary>
+        [Theory]
+        // slot,                              mode,                  expected
+        [InlineData(SteamSlot.Gyro,           "gyro_to_joystick",    true)]
+        [InlineData(SteamSlot.LeftTrackpad,   "gyro_to_joystick",    false)]
+        [InlineData(SteamSlot.Gyro,           "gyro_to_mouse",       true)]
+        [InlineData(SteamSlot.Gyro,           "absolute_mouse",      true)]
+        [InlineData(SteamSlot.Gyro,           "not_a_curve_mode",    false)]
+        public void CurveChannel_CoversGyroToJoystickOnTheGyroSlotOnly(
+            SteamSlot slot, string mode, bool expected)
+        {
+            Assert.Equal(expected, ConfigTranslator.CurveChannelApplies(slot, mode));
         }
 
         [Fact]

@@ -1049,7 +1049,14 @@ namespace PadForge.Common.Input
                         // to 16 ms, and the reverse stretched it).
                         _slotInactiveSinceMs[padIndex] = Environment.TickCount64;
                     }
-                    _slotInactiveCounter[padIndex]++;
+                    // Saturate rather than wrap. Only the zero/non-zero
+                    // distinction is read (Pass 2's eligibility test), and an
+                    // unbounded increment passes back through 0 after 2^32
+                    // ticks, roughly 49.7 days at 1 kHz on a tool people
+                    // leave running. Elapsed time comes from
+                    // _slotInactiveSinceMs, so clamping loses nothing.
+                    if (_slotInactiveCounter[padIndex] < int.MaxValue)
+                        _slotInactiveCounter[padIndex]++;
                     long inactiveMs = Environment.TickCount64 - _slotInactiveSinceMs[padIndex];
 
                     // No create can proceed while every mapped device is
@@ -1237,6 +1244,24 @@ namespace PadForge.Common.Input
                     if (_virtualControllers[padIndex] == null &&
                         _slotInactiveCounter[padIndex] == 0)
                     {
+                        // Never build a VC for a slot the user deleted or
+                        // switched off. Pass 1's disable branch destroys the
+                        // VC, zeroes the inactive counter, clears the failure
+                        // latch and continues, which left the slot matching
+                        // the two conditions above in the SAME tick. For a
+                        // KeyboardMouse slot that produced a livelock: Pass 2
+                        // walks ascending, so a disabled low slot was rebuilt
+                        // and broke the loop before the slot actually waiting
+                        // on a create ever got one, and Pass 1 tore it down
+                        // again next tick, forever. The type gate below only
+                        // covers the HIDMaestro types, so nothing else caught
+                        // it. It also closes the counter-wrap window, where a
+                        // disabled MIDI or KBM slot passed the counter test
+                        // for one tick after ~49.7 days of uptime.
+                        if (!SettingsManager.SlotCreated[padIndex]
+                            || !SettingsManager.SlotEnabled[padIndex])
+                            continue;
+
                         // All HIDMaestro-backed slots (Xbox / PlayStation / Extended)
                         // only get a VC when at least one assigned device is
                         // online. Unlike v2 ViGEm — which was cheap enough to
@@ -2692,6 +2717,19 @@ namespace PadForge.Common.Input
             var midiVc = vc as MidiVirtualController;
             midiVc?.MarkClosing();
 
+            // MIDI always goes async, whatever the caller asked for. The
+            // teardown talks to Windows MIDI Services over WinRT, and an
+            // inline MIDI service call on the 1 kHz polling thread wedged
+            // both the engine and the close path (owner repro 2026-07-23);
+            // the 250 ms beat below is also what keeps the same-process
+            // service wedge from firing. Every deliberate MIDI call site
+            // already passes true, including shutdown, whose own comment
+            // says a hung service must not hang Stop. Two paths reached
+            // here with false anyway: the all-devices-unassigned destroy,
+            // which only asked for async when the VC was HM, and the
+            // inactivity timeout, which uses the parameterless overload.
+            if (midiVc != null) asyncDispose = true;
+
             if (asyncDispose)
             {
                 // Null the pointer so Step 5 / Dashboard see the slot as empty
@@ -2719,10 +2757,8 @@ namespace PadForge.Common.Input
             {
                 try
                 {
-                    // Every MIDI call site uses asyncDispose, so no sleep is
-                    // needed here; the close alone is belt-and-braces.
-                    if (midiVc != null)
-                        CloseMidiInputsForEndpoint(midiVc.UniqueEndpointId);
+                    // MIDI never reaches here (forced async above), so this
+                    // branch is the HM / KBM / stub path only.
                     vc.Disconnect();
                     vc.Dispose();
                 }

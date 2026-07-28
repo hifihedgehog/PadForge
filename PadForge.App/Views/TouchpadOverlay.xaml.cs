@@ -207,6 +207,23 @@ namespace PadForge.Views
             UpdateClickBarVisual();
         }
 
+        /// <summary>Touch twin of <see cref="ClickBar_MouseLeave"/>. A touch
+        /// that presses the bar and then slides OFF it never delivers TouchUp
+        /// to the bar, so the held flag latched true with no recovery short of
+        /// hiding the overlay, and the virtual touchpad click stayed asserted
+        /// the whole time. The mouse path has had this release since it was
+        /// written; the touch path never got it.</summary>
+        private void ClickBar_TouchLeave(object sender, TouchEventArgs e)
+        {
+            lock (_stateLock)
+            {
+                if (_clickBarTouchId != e.TouchDevice.Id) return;
+                _clickBarTouchId = null;
+                _clickBarHeld = false;
+            }
+            UpdateClickBarVisual();
+        }
+
         private void UpdateClickBarVisual()
         {
             Dispatcher.BeginInvoke(() =>

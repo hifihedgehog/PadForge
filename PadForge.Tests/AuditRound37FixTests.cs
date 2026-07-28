@@ -317,6 +317,43 @@ namespace PadForge.Tests
                 257, 78, crcValid: true, validFlag0: (byte)0x00, motorMask: 0x03));
         }
 
+        // ── Removing a whitelisted app must actually unwhitelist it ──
+
+        /// <summary>Settings &gt; Whitelisted Applications lets the user add an
+        /// app that may still see hidden devices, and remove it again. Removal
+        /// only strips entries PadForge considers its own, and that record is a
+        /// per-process set that starts empty and is never seeded from disk,
+        /// while the driver's whitelist persists across restarts.
+        ///
+        /// <para>Round 34 narrowed the ownership claim to "only what we
+        /// inserted this run". After any restart the path is already present,
+        /// so nothing is inserted, nothing is claimed, and removal silently
+        /// stopped working: the app vanished from PadForge's list and stayed
+        /// whitelisted in the driver forever. The claim is unconditional again,
+        /// which is what it was before round 34 and what the owner remembers
+        /// working.</para></summary>
+        [Fact]
+        public void WhitelistOwnership_IsClaimedEverySync_NotOnlyOnInsert()
+        {
+            string src = Src("PadForge.App/Services/InputService.cs");
+
+            // Positive control: both halves of the sync must still exist.
+            Assert.Contains("_managedWhitelistDosPaths", src);
+            Assert.Contains("desiredDosPaths", src);
+
+            // The claim happens for every desired path, BEFORE and outside the
+            // "is it already present" test. Matching the pair verbatim keeps
+            // this specific.
+            Assert.Contains(
+                "foreach (var dosPath in desiredDosPaths)\r\n            {\r\n                _managedWhitelistDosPaths.Add(dosPath);",
+                src.Replace("\n", "\n").Replace("\r\n", "\r\n"));
+
+            // And it is NOT nested inside the insert branch any more.
+            Assert.DoesNotContain(
+                "currentWhitelist.Add(dosPath);\r\n                    _managedWhitelistDosPaths.Add(dosPath);",
+                src);
+        }
+
         // ── An empty HidHide list is a successful read, not a failure ──
 
         /// <summary>Round 35 made the HidHide list reader return null on a

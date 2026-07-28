@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Buffers.Binary;
 using System.IO;
 using System.Threading;
@@ -16,23 +16,30 @@ namespace PadForge.Engine.RemoteLink
     {
         private const int MaxMessage = 64 * 1024; // handshake + device list are tiny
         private readonly Stream _stream;
-        private readonly byte[] _lenBuf = new byte[4];
+        // Separate send / receive length buffers. One shared field was
+        // written by SendAsync's prefix and read by ReceiveAsync's prefix,
+        // so any overlap between a send and a pending receive corrupted the
+        // framing of both. The handshake happens to alternate today, but a
+        // duplex channel must not depend on that, and four bytes is not a
+        // price worth the hazard (round 34).
+        private readonly byte[] _sendLenBuf = new byte[4];
+        private readonly byte[] _recvLenBuf = new byte[4];
 
         public TcpControlChannel(Stream stream) => _stream = stream ?? throw new ArgumentNullException(nameof(stream));
 
         public async Task SendAsync(byte[] message, CancellationToken ct)
         {
             if (message.Length > MaxMessage) throw new LinkConnectionException("Control message too large.");
-            BinaryPrimitives.WriteUInt32BigEndian(_lenBuf, (uint)message.Length);
-            await _stream.WriteAsync(_lenBuf, ct);
+            BinaryPrimitives.WriteUInt32BigEndian(_sendLenBuf, (uint)message.Length);
+            await _stream.WriteAsync(_sendLenBuf, ct);
             await _stream.WriteAsync(message, ct);
             await _stream.FlushAsync(ct);
         }
 
         public async Task<byte[]> ReceiveAsync(CancellationToken ct)
         {
-            await ReadExactlyAsync(_lenBuf, 4, ct);
-            uint len = BinaryPrimitives.ReadUInt32BigEndian(_lenBuf);
+            await ReadExactlyAsync(_recvLenBuf, 4, ct);
+            uint len = BinaryPrimitives.ReadUInt32BigEndian(_recvLenBuf);
             if (len > MaxMessage) throw new LinkConnectionException("Control message too large.");
             var buf = new byte[len];
             await ReadExactlyAsync(buf, (int)len, ct);

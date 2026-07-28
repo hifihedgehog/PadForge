@@ -100,14 +100,12 @@
                     <RowDefinition Height="Auto"/>  <!-- 10 mode label -->
                     <RowDefinition Height="Auto"/>  <!-- 11 mode combo -->
                     <RowDefinition Height="Auto"/>  <!-- 12 inherit-unmapped checkbox -->
-                    <RowDefinition Height="Auto"/>  <!-- 13 jump label -->
-                    <RowDefinition Height="Auto"/>  <!-- 14 jump combo -->
-                    <RowDefinition Height="Auto"/>  <!-- 15 cycle label -->
-                    <RowDefinition Height="Auto"/>  <!-- 16 cycle list -->
-                    <RowDefinition Height="Auto"/>  <!-- 17 delay grid -->
-                    <RowDefinition Height="Auto"/>  <!-- 18 color grid -->
-                    <RowDefinition Height="Auto"/>  <!-- 19 validation hint -->
-                    <RowDefinition Height="Auto"/>  <!-- 20 buttons -->
+                    <RowDefinition Height="Auto"/>  <!-- 13 cycle label -->
+                    <RowDefinition Height="Auto"/>  <!-- 14 cycle list -->
+                    <RowDefinition Height="Auto"/>  <!-- 15 delay grid -->
+                    <RowDefinition Height="Auto"/>  <!-- 16 color grid -->
+                    <RowDefinition Height="Auto"/>  <!-- 17 validation hint -->
+                    <RowDefinition Height="Auto"/>  <!-- 18 buttons -->
                 </Grid.RowDefinitions>
 
                 <!-- Layer name + icon picker. Icon is a square button on the
@@ -436,7 +434,7 @@
                 <!-- Cycle layers (Mode=Cycle). Checkbox list of existing
                      layers; check the ones to include in the rotation. Order
                      follows the source list. -->
-                <StackPanel Grid.Row="15" x:Name="CycleHeaderRow" Margin="0,0,0,4">
+                <StackPanel Grid.Row="13" x:Name="CycleHeaderRow" Margin="0,0,0,4">
                     <TextBlock VerticalAlignment="Center"
                                Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"/>
                     <!-- Cycle wrap + Base inclusion (#119). Wrap loops the ends together,
@@ -451,7 +449,7 @@
                                   ToolTip="{Binding Pad_Shift_CycleIncludeBase_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                     </StackPanel>
                 </StackPanel>
-                <ListBox Grid.Row="16" x:Name="CycleLayersList" Margin="0,0,0,12"
+                <ListBox Grid.Row="14" x:Name="CycleLayersList" Margin="0,0,0,12"
                          MinHeight="80" MaxHeight="160"
                          ScrollViewer.VerticalScrollBarVisibility="Visible"
                          ItemContainerStyle="{StaticResource EmberSelectListItem}"
@@ -469,7 +467,7 @@
                      the switch fires once when the hold crosses it
                      (#206). Rows 2-3 are the auto-cancel companion,
                      Toggle only, hidden per mode in ApplyModeVisibility. -->
-                <Grid Grid.Row="17" x:Name="DelayRow" Margin="0,0,0,12">
+                <Grid Grid.Row="15" x:Name="DelayRow" Margin="0,0,0,12">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -515,7 +513,7 @@
                      HSV plate, swatch + hex entry, RGB sliders with per-channel
                      reset icons, plus a section-level reset that clears the
                      color entirely (no tab tint, default flyout dot). -->
-                <Grid Grid.Row="18" Margin="0,0,0,12">
+                <Grid Grid.Row="16" Margin="0,0,0,12">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -601,14 +599,14 @@
 
                 <!-- Validation hint, surfaced on Save with a missing / duplicate
                      layer name or unselected input. Hidden by default. -->
-                <TextBlock Grid.Row="19" x:Name="HintText"
+                <TextBlock Grid.Row="17" x:Name="HintText"
                            Foreground="{DynamicResource SystemFillColorCautionBrush}"
                            TextWrapping="Wrap"
                            Visibility="Collapsed"/>
 
                 <!-- Footer band (#175 dialog language): Save is the dialog's
                      primary affirmative and wears the ember accent. -->
-                <StackPanel Grid.Row="20" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
+                <StackPanel Grid.Row="18" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
                     <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
                             MinWidth="90" Margin="0,0,8,0"
                             IsDefault="True" Click="SaveButton_Click"

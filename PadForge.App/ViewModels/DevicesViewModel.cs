@@ -116,10 +116,10 @@ namespace PadForge.ViewModels
                 _devicesView.Filter = o => o is DeviceRowViewModel d && FacetOf(d) == facet;
         }
 
-        /// <summary>Facet bucket for a row. GAMEPAD covers the stick classes
-        /// (everything InputService keys off a joystick-family CapType);
-        /// OTHER is whatever is left (touchpads, MIDI, NFC, consumer
-        /// collections, unclassified).</summary>
+        /// <summary>Facet bucket for a row. GAMEPAD is the gamepad-shaped
+        /// classes only. Joysticks and wheels carry their own facets. OTHER
+        /// is whatever is left (touchpads, MIDI, NFC, consumer collections,
+        /// unclassified).</summary>
         private static string FacetOf(DeviceRowViewModel d) => d.DeviceTypeKey switch
         {
             "Gamepad" or "FirstPerson" or "Supplemental" => "GAMEPAD",

@@ -20,12 +20,39 @@ public static class CfgMgr {
     [DllImport("cfgmgr32.dll")]
     public static extern int CM_Query_And_Remove_SubTreeW(int dnDevInst, out int pVetoType, StringBuilder pszVetoName, int ulNameLength, int ulFlags);
 
+    // Needed to identify a node before uninstalling it. Works on phantom
+    // nodes too, which pnputil /enum-devices does not list at all.
+    [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+    public static extern int CM_Get_DevNode_Registry_PropertyW(
+        int dnDevInst, int ulProperty, out int pulRegDataType,
+        StringBuilder Buffer, ref int pulLength, int ulFlags);
+
     public const int CM_LOCATE_DEVNODE_NORMAL = 0;
     public const int CM_LOCATE_DEVNODE_PHANTOM = 1;
     public const int CM_REMOVE_NO_RESTART = 2;
+    // Verified against cfgmgr32 on this machine: 0x01 returns the device
+    // description, 0x02 the hardware ID. They are NOT the same value.
+    public const int CM_DRP_DEVICEDESC = 0x01;
+    public const int CM_DRP_HARDWAREID = 0x02;
     public const int CR_SUCCESS = 0;
 }
 '@
+
+# Read a node's description and hardware ID so the purge can tell a vJoy node
+# from whatever else happens to occupy that slot number. Both are checked: the
+# description carries the product name, the hardware ID carries VID_1234.
+function Get-NodeIdentity {
+    param([int]$DevInst)
+    $parts = @()
+    foreach ($prop in @([CfgMgr]::CM_DRP_DEVICEDESC, [CfgMgr]::CM_DRP_HARDWAREID)) {
+        $sb = New-Object System.Text.StringBuilder 1024
+        $len = 1024
+        $type = 0
+        $cr = [CfgMgr]::CM_Get_DevNode_Registry_PropertyW($DevInst, $prop, [ref]$type, $sb, [ref]$len, 0)
+        if ($cr -eq 0 -and $sb.Length -gt 0) { $parts += $sb.ToString() }
+    }
+    return ($parts -join ' | ')
+}
 
 # Try to locate and uninstall each ghost node
 for ($i = 0; $i -le 10; $i++) {
@@ -42,6 +69,17 @@ for ($i = 0; $i -le 10; $i++) {
     $status = 0; $problem = 0
     [CfgMgr]::CM_Get_DevNode_Status([ref]$status, [ref]$problem, $devInst, 0) | Out-Null
     $out += "Found $nodeId (devInst=$devInst status=0x$($status.ToString('X')) problem=$problem)"
+
+    # Identify the node before uninstalling it. ROOT\HIDCLASS\NNNN is a slot
+    # number, not an identity, and this loop walked 0000 through 0010 calling
+    # CM_Query_And_Remove_SubTree and CM_Uninstall_DevNode on every node it
+    # could locate, vJoy or not. CM_Uninstall_DevNode is permanent.
+    $hwid = Get-NodeIdentity $devInst
+    if ($hwid -notmatch 'vJoy|VID_1234') {
+        $out += "  SKIP: hardware ID '$hwid' is not vJoy. Not touching this node."
+        continue
+    }
+    $out += "  identified as vJoy: '$hwid'"
 
     # Try CM_Query_And_Remove_SubTreeW first
     $vetoType = 0

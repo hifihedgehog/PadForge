@@ -166,18 +166,29 @@ namespace PadForge.Tests
                 0, "99999999-9999-9999-9999-999999999999", "Button 0"));
         }
 
+        /// <summary>A pinned activator authors its own key plus a twin that
+        /// reaches an "(Any device)" ROW. The twin must NOT be the empty
+        /// string: empty is a real authored value meaning "this activator pins
+        /// no device", and the lookup's fallback for that case matches a row on
+        /// any device. Sharing one key made a pinned activator on pad A
+        /// suppress pad B's identically-spelled button on the same slot.</summary>
         [Fact]
-        public void AddPostponeKey_AddsTheEmptyGuidTwin()
+        public void AddPostponeKey_AddsADistinctAnyRowTwin()
         {
             var set = new HashSet<(string Guid, string Desc)>();
             InputManager.AddPostponeKey(set, DevGuidStr, "Button 0");
             Assert.Contains((DevGuidStr, "Button 0"), set);
-            Assert.Contains(("", "Button 0"), set);
+            Assert.Contains((InputManager.AnyRowTwinGuid, "Button 0"), set);
+
+            // The twin is NOT the empty key, or a row pinned to a different
+            // device would match it through the any-device fallback.
+            Assert.DoesNotContain(("", "Button 0"), set);
 
             // An any-device activator authors the empty key once, not twice.
             var set2 = new HashSet<(string Guid, string Desc)>();
             InputManager.AddPostponeKey(set2, "", "Button 0");
             Assert.Single(set2);
+            Assert.Contains(("", "Button 0"), set2);
         }
     }
 

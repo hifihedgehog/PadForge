@@ -730,10 +730,18 @@ namespace PadForge.Common.Input
                 // is held). Both member strings already exist.
                 canon = CanonicalPostponeDescriptor(descriptor);
                 if (set.Contains((guid, canon))) return true;
-                // Empty-key fallback (2026-07-25 audit): an any-device
-                // activator/trigger suppresses the control regardless of
-                // which device a row pins. Same consume-means-consume
-                // tradeoff the population comments document.
+                // The two directions AddPostponeKey documents, and ONLY those
+                // two. They need separate keys: sharing the empty string for
+                // both made a pinned activator on pad A suppress pad B's
+                // identically-spelled button on the same slot, since B's
+                // fallback could not tell A's twin from an authored
+                // any-device key. Descriptors are device-agnostic strings
+                // ("Button 4"), so that collision is the normal case on a
+                // multi-device slot, not a corner.
+                //
+                // 1. Pinned activator reaching an "(Any device)" ROW.
+                if (guid.Length == 0 && set.Contains((AnyRowTwinGuid, canon))) return true;
+                // 2. Any-device activator reaching a device-pinned row.
                 if (guid.Length != 0 && set.Contains(("", canon))) return true;
             }
             // Consume-armed macro triggers (2026-07-25) ride the same
@@ -786,13 +794,24 @@ namespace PadForge.Common.Input
         /// suppressed too. The inverse direction (any-device activator vs
         /// a device-pinned row) is covered at lookup, which falls back to
         /// the empty key.</summary>
+        /// <summary>Sentinel guid for the twin an activator authors so it can
+        /// also reach an "(Any device)" ROW. It must not be the empty string:
+        /// the empty string is a real authored value meaning "this activator
+        /// pins no device", and the lookup's fallback for THAT case matches
+        /// any row on any device. Sharing one key for both made a pinned
+        /// activator on pad A suppress pad B's identically-spelled button on
+        /// the same slot, which is neither direction this method documents.
+        /// Parentheses keep it outside the guid namespace, which is hex and
+        /// dashes only.</summary>
+        internal const string AnyRowTwinGuid = "(any-row-twin)";
+
         internal static void AddPostponeKey(
             System.Collections.Generic.HashSet<(string Guid, string Desc)> set,
             string deviceGuid, string descriptor)
         {
             string canon = CanonicalPostponeDescriptor(descriptor);
             set.Add((deviceGuid ?? "", canon));
-            if (!string.IsNullOrEmpty(deviceGuid)) set.Add(("", canon));
+            if (!string.IsNullOrEmpty(deviceGuid)) set.Add((AnyRowTwinGuid, canon));
         }
 
         // ── Consume for raw-button / descriptor macro triggers ──

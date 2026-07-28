@@ -230,6 +230,15 @@
                     if (now - lastTap < 300) {
                         send({ type: 'input', kind: 'button', code: 16, value: 1 });
                         setTimeout(function () {
+                            // Code 16 has TWO producers on this page and the
+                            // server's UpdateButton is last-write-wins with no
+                            // refcount, so this timer must not release a click
+                            // the dedicated button is currently holding. Both
+                            // the touch and mouse paths maintain the 'active'
+                            // class, which makes it the reliable test; a
+                            // clearTimeout on the touch id would miss the
+                            // mouse path entirely.
+                            if (clickButton.classList.contains('active')) return;
                             send({ type: 'input', kind: 'button', code: 16, value: 0 });
                         }, 100);
                         lastTap = 0;

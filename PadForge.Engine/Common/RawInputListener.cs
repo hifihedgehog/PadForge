@@ -468,6 +468,33 @@ namespace PadForge.Engine
         {
             var devices = EnumerateDevicesByType(RIM_TYPEMOUSE);
 
+            // Release buttons still held by mice that are GONE. Raw Input
+            // synthesizes no button-up when a device disappears mid-click, and
+            // nothing shrinks _mouseStates at runtime (only RIDEV_INPUTSINK is
+            // registered, so no WM_INPUT_DEVICE_CHANGE ever arrives). The
+            // merged handle ORs every entry, so one dead entry pins the mapped
+            // output ON for the process lifetime. This used to self-heal by
+            // accident: the aggregate was a copy of a last-writer-wins bitmask,
+            // so the next click on any surviving mouse cleared it. Reading it
+            // as an OR removed that, which is why the sweep has to be explicit.
+            //
+            // Clear in place rather than removing the entry: the snapshot array
+            // holds the same MouseDeviceState references, so the latch dies
+            // whether or not that array has been rebuilt, and no Length/Count
+            // staleness race is introduced. IntPtr.Zero is skipped because it
+            // is the synthetic injected-input key, which never enumerates.
+            if (devices != null && !_mouseStates.IsEmpty)
+            {
+                var present = new HashSet<IntPtr>();
+                for (int i = 0; i < devices.Length; i++) present.Add(devices[i].Handle);
+                foreach (var kv in _mouseStates)
+                {
+                    if (kv.Key == IntPtr.Zero || present.Contains(kv.Key)) continue;
+                    var buttons = kv.Value?.Buttons;
+                    if (buttons != null) Array.Clear(buttons, 0, buttons.Length);
+                }
+            }
+
             // Always prepend the aggregate device.
             var result = new DeviceInfo[devices.Length + 1];
             result[0] = new DeviceInfo

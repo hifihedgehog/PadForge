@@ -9024,7 +9024,14 @@ namespace PadForge.Services
             // No-op when (slot, mask) tuple hasn't changed since last tick.
             if (engagedSlot == prevSlot
                 && string.Equals(engagedMask, prevShown, System.StringComparison.Ordinal))
+            {
+                // Except: keep a still-engaged layer's flyout alive. This
+                // branch is the steady state of a HELD layer, and without the
+                // keep-alive the flyout retired two seconds in while the layer
+                // was still engaged.
+                if (engagedSlot >= 0) _shiftLayerFlyout?.KeepAlive();
                 return;
+            }
 
             if (engagedSlot >= 0)
             {

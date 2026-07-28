@@ -96,45 +96,16 @@ $nodeId2 = Get-VJoyNodeId
 $jc2 = Get-JoyCplCount
 Log ("After remove: node=" + $nodeId2 + " joyCpl=" + $jc2)
 
-# Step 2: Recreate the node via SetupAPI PowerShell (same as PadForge's CreateVJoyDevices)
+# Step 2: Let the PnP subsystem re-enumerate and put the node back.
+#
+# This step used to open with a 30-line SetupAPI P/Invoke block (7 imports,
+# 3 constants) for creating the node by hand, followed by a comment giving up
+# on it: "Actually, let's just use pnputil to scan for hardware changes
+# instead". The block was never called by anything. It declared a class the
+# script had already decided not to use, so every reader had to work out that
+# 30 lines of device-installation API were decoration.
 Log ""
-Log "--- Step 2: Recreate node via SetupAPI ---"
-
-Add-Type -TypeDefinition @"
-using System;
-using System.Runtime.InteropServices;
-public class SetupAPI {
-    [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-    public static extern IntPtr SetupDiCreateDeviceInfoList(ref Guid ClassGuid, IntPtr hwndParent);
-
-    [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-    public static extern bool SetupDiCreateDeviceInfoW(IntPtr DeviceInfoSet, string DeviceName,
-        ref Guid ClassGuid, string DeviceDescription, IntPtr hwndParent, int CreationFlags, IntPtr DeviceInfoData);
-
-    [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-    public static extern bool SetupDiSetDeviceRegistryPropertyW(IntPtr DeviceInfoSet, IntPtr DeviceInfoData,
-        int Property, byte[] PropertyBuffer, int PropertyBufferSize);
-
-    [DllImport("setupapi.dll", SetLastError = true)]
-    public static extern bool SetupDiCallClassInstaller(int InstallFunction, IntPtr DeviceInfoSet, IntPtr DeviceInfoData);
-
-    [DllImport("setupapi.dll", SetLastError = true)]
-    public static extern bool SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
-
-    [DllImport("newdev.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-    public static extern bool UpdateDriverForPlugAndPlayDevicesW(IntPtr hwndParent, string HardwareId,
-        string FullInfPath, int InstallFlags, IntPtr pRebootRequired);
-
-    public const int DICD_GENERATE_ID = 1;
-    public const int SPDRP_HARDWAREID = 1;
-    public const int DIF_REGISTERDEVICE = 0x19;
-}
-"@ -ErrorAction SilentlyContinue
-
-# Actually, let's just use pnputil to scan for hardware changes instead
-# The node creation is complex via SetupAPI from PowerShell. Let's see if PadForge can do it.
-
-# Alternative: just use devcon or pnputil /scan-devices
+Log "--- Step 2: Recreate node via pnputil /scan-devices ---"
 Log "Running pnputil /scan-devices..."
 $result = pnputil /scan-devices 2>&1 | Out-String
 Log ("scan-devices: " + $result.Trim())

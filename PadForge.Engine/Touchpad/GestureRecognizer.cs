@@ -840,14 +840,23 @@ namespace PadForge.Engine.Touchpad
                 }
                 if (contributing == 0) return;
 
-                if (parallel && firstNorm != Vector2.Zero
-                    && settings.EnableTwoFingerSwipes)
+                // The finger-count toggle is the WHOLE opt-in for this family.
+                // These two arms used to also require EnableTwoFingerSwipes and
+                // EnableTaps, which are the one- and two-finger families'
+                // switches, so "Three-Finger Gestures" on its own enabled
+                // nothing and the picker (which mirrors these gates honestly)
+                // listed nothing. A user who turns on Three-Finger Gestures has
+                // opted in to three-finger gestures; making that conditional on
+                // two unrelated-sounding switches, with nothing on screen
+                // saying so, is the defect. Turning the family off still
+                // suppresses both arms, via the `gate` check above.
+                if (parallel && firstNorm != Vector2.Zero)
                 {
                     string dir = ClassifyDirection(sumDelta / contributing, settings.EnableEightWaySwipes);
                     if (dir != null)
                         ctx.FiredGesturesThisFrame.Add($"Touchpad {padIdx} {countWord}Swipe{dir}");
                 }
-                if (allShort && elapsed <= settings.TapTimeWindowMs && settings.EnableTaps)
+                if (allShort && elapsed <= settings.TapTimeWindowMs)
                 {
                     ctx.FiredGesturesThisFrame.Add($"Touchpad {padIdx} {countWord}Tap");
                 }

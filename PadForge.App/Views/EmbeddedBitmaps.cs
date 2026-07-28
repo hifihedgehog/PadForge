@@ -38,19 +38,21 @@ namespace PadForge.Views
         private static BitmapImage LoadUncached(string resourcePath)
         {
             var asm = System.Reflection.Assembly.GetExecutingAssembly();
-            string resName = resourcePath.Replace('/', '.').Replace('\\', '.').ToLowerInvariant();
-
-            // WPF resources are in "<assemblyname>.g.resources" → find via ResourceManager.
+            // WPF resources live in "<assemblyname>.g.resources" and are keyed
+            // by the forward-slash lowercase path.
+            //
+            // This used to build a DOTTED name and then undo it with
+            // Replace('.', '/') for the lookup. That second replace hit the
+            // extension dot too, so "assets/icons/foo.png" went in as
+            // "assets/icons/foo/png" and the first lookup could never match
+            // anything with a file extension. Every call fell through to what
+            // was labelled a fallback and was in fact the only working path.
+            // One lookup now, in the form the resource table actually uses.
             var rm = new System.Resources.ResourceManager(
                 asm.GetName().Name + ".g", asm);
-            using var stream = rm.GetStream(resName.Replace('.', '/'));
-            if (stream == null)
-            {
-                // Fallback: try the original path as-is (forward slashes, lowercase).
-                using var stream2 = rm.GetStream(resourcePath.ToLowerInvariant());
-                return stream2 != null ? FromStream(stream2) : null;
-            }
-            return FromStream(stream);
+            using var stream = rm.GetStream(
+                resourcePath.Replace('\\', '/').ToLowerInvariant());
+            return stream != null ? FromStream(stream) : null;
         }
 
         private static BitmapImage FromStream(System.IO.Stream stream)

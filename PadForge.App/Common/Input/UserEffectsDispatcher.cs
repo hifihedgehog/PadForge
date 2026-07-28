@@ -1259,7 +1259,11 @@ namespace PadForge.Common.Input
             b = (byte)Math.Round((bp + m) * 255);
         }
 
-        private void DispatchSnapshot(float audioPeak = -1f)
+        // The audioPeak parameter is gone. All eight call sites invoked this
+        // with no argument, so it was always -1 and the "caller supplied a
+        // peak" branch below could never be taken. Keeping it implied an
+        // override path that did not exist.
+        private void DispatchSnapshot()
         {
             // Snapshot once (Dispose can null the field on the UI thread while a
             // timer-thread dispatch is mid-flight).
@@ -1561,11 +1565,9 @@ namespace PadForge.Common.Input
 
                     // Per-device peak scaling (each device has own
                     // AudioLightbarSensitivity).
-                    float devPeak = audioPeak >= 0f
-                        ? audioPeak
-                        : Math.Clamp(
-                            rawAudioPeak * (float)devCfg.AudioLightbarSensitivity,
-                            0f, 1f);
+                    float devPeak = Math.Clamp(
+                        rawAudioPeak * (float)devCfg.AudioLightbarSensitivity,
+                        0f, 1f);
 
                     // Per-device pulse colour + intensity (DrainInputPulses
                     // rolled per-device above).

@@ -79,10 +79,20 @@ namespace PadForge.ViewModels
             get
             {
                 if (_selectedLanguage != null) return _selectedLanguage;
-                var current = CultureInfo.CurrentUICulture.Name;
-                var match = AvailableLanguages.FirstOrDefault(c => c.Name == current)
-                         ?? AvailableLanguages[0];
-                return match;
+                // Walk the parent chain before giving up. An exact-name match
+                // alone sent de-DE, zh-Hans-CN and every other specific culture
+                // to AvailableLanguages[0], which is English, even when the
+                // neutral parent (de, zh-Hans) is right there in the list. A
+                // German user with a German Windows saw the picker say English.
+                for (var c = CultureInfo.CurrentUICulture;
+                     c != null && !string.IsNullOrEmpty(c.Name);
+                     c = c.Parent)
+                {
+                    var hit = AvailableLanguages.FirstOrDefault(a => a.Name == c.Name);
+                    if (hit != null) return hit;
+                    if (ReferenceEquals(c, c.Parent)) break;   // InvariantCulture is its own parent
+                }
+                return AvailableLanguages[0];
             }
             set
             {

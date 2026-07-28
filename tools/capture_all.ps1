@@ -151,16 +151,6 @@ function Find-UIA {
     return $Parent.FindFirst($TD, $c)
 }
 
-function Find-AllUIA {
-    param(
-        [System.Windows.Automation.AutomationElement]$Parent = $script:uiaWin,
-        [System.Windows.Automation.ControlType]$CT
-    )
-    $c = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty, $CT)
-    return $Parent.FindAll($TD, $c)
-}
-
 function Click-El {
     param(
         [System.Windows.Automation.AutomationElement]$El,
@@ -274,54 +264,6 @@ function Find-AllSlots {
     }
     Write-Host "  !! No slots after $Retries retries" -ForegroundColor Red
     return @()
-}
-
-function Find-SlotByType {
-    <#
-    .SYNOPSIS
-        Finds and selects a sidebar slot by controller type, returning the slot element.
-        Identifies type by selecting each slot and checking which PadPage elements are
-        present in the UIA tree (WPF Collapsed elements are removed from UIA):
-        - Extended: ExtendedStickCountBox AutomationId present (Extended-specific config UI)
-        - MIDI:     MidiConfigBar AutomationId present
-        - KBM:      KBMPreview AutomationId present (keyboard+mouse preview view)
-        - Xbox / PlayStation: none of the above config bars/previews
-    #>
-    param([string]$Type)  # "Xbox", "PlayStation", "Extended", "KBM", "MIDI"
-    $slots = @(Find-AllSlots)
-    foreach ($slot in $slots) {
-        Select-El $slot -Label "Probe $($slot.Current.Name)" -Delay 800
-        # Click the Controller tab so type-specific elements become visible in UIA
-        $padPage = Find-UIA -Aid "PadPageView"
-        if (-not $padPage) { continue }
-        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-            [System.Windows.Automation.ControlType]::RadioButton)
-        $probeTabs = $padPage.FindAll($TC, $rbCond)
-        if ($probeTabs.Count -gt 0) {
-            try { $probeTabs[0].GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke() } catch {}
-            Start-Sleep -Milliseconds 500
-        }
-        # WPF Collapsed elements are not in UIA tree, so presence = Visible
-        $hasExtended = $null -ne (Find-UIA -Parent $padPage -Aid "ExtendedStickCountBox")
-        $hasMidi = $null -ne (Find-UIA -Parent $padPage -Aid "MidiConfigBar")
-        $hasKbm  = $null -ne (Find-UIA -Parent $padPage -Aid "KBMPreview")
-        Write-Host "    $($slot.Current.Name): Extended=$hasExtended MIDI=$hasMidi KBM=$hasKbm"
-        $matched = $false
-        switch ($Type) {
-            "Extended"    { $matched = $hasExtended }
-            "MIDI"        { $matched = $hasMidi }
-            "KBM"         { $matched = $hasKbm }
-            "Xbox"        { $matched = -not $hasExtended -and -not $hasMidi -and -not $hasKbm }
-            "PlayStation" { $matched = -not $hasExtended -and -not $hasMidi -and -not $hasKbm }
-        }
-        if ($matched) {
-            Write-Host "  Found $Type slot: $($slot.Current.Name)" -ForegroundColor Green
-            return $slot
-        }
-    }
-    Write-Host "  !! Could not find $Type slot by content probing" -ForegroundColor Red
-    return $null
 }
 
 function Tab {

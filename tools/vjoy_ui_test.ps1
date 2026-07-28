@@ -36,12 +36,6 @@ function Find-Element([System.Windows.Automation.AutomationElement]$parent, [str
     return $parent.FindFirst($tree::Descendants, $cond)
 }
 
-function Find-ElementByName([System.Windows.Automation.AutomationElement]$parent, [string]$name) {
-    $cond = New-Object System.Windows.Automation.PropertyCondition(
-        $auto::NameProperty, $name)
-    return $parent.FindFirst($tree::Descendants, $cond)
-}
-
 function Set-TextBoxValue([System.Windows.Automation.AutomationElement]$element, [string]$value, [switch]$Apply) {
     $valuePattern = $element.GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern)
     $valuePattern.SetValue($value)

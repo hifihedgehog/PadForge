@@ -31,11 +31,6 @@ function Find-ById($id) {
     return $global:mainWin.FindFirst($tree::Descendants, $c)
 }
 
-function Find-ByName($name) {
-    $c = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, $name)
-    return $global:mainWin.FindFirst($tree::Descendants, $c)
-}
-
 function Navigate($name) {
     # Find all matching elements and pick the ListItem (NavigationViewItem)
     $nameCond = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, $name)
@@ -156,19 +151,6 @@ function Count-DataGridRows() {
     $rowCond = New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $ct::DataItem)
     $rows = $dg.FindAll($tree::Children, $rowCond)
     return $rows.Count
-}
-
-function Get-DataGridCellText($rowIndex, $colIndex) {
-    $dgCond = New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $ct::DataGrid)
-    $dg = $global:mainWin.FindFirst($tree::Descendants, $dgCond)
-    if (-not $dg) { return "NO_DATAGRID" }
-    $rowCond = New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $ct::DataItem)
-    $rows = $dg.FindAll($tree::Children, $rowCond)
-    if ($rows.Count -le $rowIndex) { return "NO_ROW" }
-    $row = $rows[$rowIndex]
-    $cells = $row.FindAll($tree::Children, [System.Windows.Automation.Condition]::TrueCondition)
-    if ($cells.Count -le $colIndex) { return "NO_CELL" }
-    return $cells[$colIndex].Current.Name
 }
 
 function Query-VJoyDevice($deviceId) {

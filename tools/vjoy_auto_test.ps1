@@ -74,12 +74,6 @@ function Find-ByName($parent, $name) {
     return $parent.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $cond)
 }
 
-function Find-AllByName($parent, $name) {
-    $cond = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::NameProperty, $name)
-    return $parent.FindAll([System.Windows.Automation.TreeScope]::Descendants, $cond)
-}
-
 function Find-ByAutomationId($parent, $aid) {
     $cond = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::AutomationIdProperty, $aid)

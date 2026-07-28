@@ -1209,7 +1209,15 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>Per-source generic Sensitivity multiplier, guarded like
         /// the specialized ones (a persisted 0 from a legacy row reads as
-        /// the 1.0 default rather than zeroing the source).</summary>
+        /// the 1.0 default rather than zeroing the source).
+        ///
+        /// <para>Do NOT neutralize this because the mapping GRID no longer
+        /// shows a slider for plain analog sources (the knob moved to the
+        /// Sticks tab, 2026-07-27). This field is also written by the
+        /// touchpad row surfaces and read by the half-axis / slider button
+        /// thresholds, and GenericSensitivityTests plus
+        /// TouchpadRowSensitivityTests cover exactly that. Stubbing it to
+        /// 1.0 fails twelve tests.</para></summary>
         private static float PerSourceSensitivity(MappingSource src)
             => (float)(src.Sensitivity > 0 ? src.Sensitivity : 1.0);
 

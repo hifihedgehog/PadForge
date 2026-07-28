@@ -554,5 +554,40 @@ namespace PadForge.Tests
                 $"a mid-rebuild selection write rebound the row to "
                 + $"'{row.PrimarySourceDeviceGuid}'.");
         }
+    
+        /// <summary>XML round-trip: an Authoritative set's device-free rows
+        /// must survive serialize and deserialize. Every deploy restarts the
+        /// app, so this path runs constantly in practice and no prior test
+        /// covered it.</summary>
+        [Fact]
+        public void AuthoritativeSet_SurvivesXmlRoundTrip()
+        {
+            var ms = new MappingSet { Authoritative = true };
+            var row = new MappingRow { Target = "ButtonA", LayerMask = "Base" };
+            row.Sources.Add(new MappingSource
+            { Kind = "Direct", Descriptor = "Gamepad ButtonA", DeviceGuid = "" });
+            ms.Rows.Add(row);
+
+            var ser = new System.Xml.Serialization.XmlSerializer(typeof(MappingSet));
+            string xml;
+            using (var sw = new System.IO.StringWriter())
+            {
+                ser.Serialize(sw, ms);
+                xml = sw.ToString();
+            }
+            Assert.Contains("Gamepad ButtonA", xml);
+            Assert.Contains("Authoritative=\"true\"", xml);
+
+            MappingSet back;
+            using (var sr = new System.IO.StringReader(xml))
+                back = (MappingSet)ser.Deserialize(sr);
+
+            Assert.True(back.Authoritative, "the flag did not survive the round trip");
+            Assert.NotNull(back.Rows);
+            Assert.Single(back.Rows);
+            var src = back.Rows[0].Sources.First();
+            Assert.Equal("Gamepad ButtonA", src.Descriptor);
+            Assert.True(string.IsNullOrEmpty(src.DeviceGuid));
+        }
     }
 }

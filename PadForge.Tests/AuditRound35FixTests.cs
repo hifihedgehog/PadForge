@@ -748,9 +748,25 @@ namespace PadForge.Tests
                 if (at < 0) at = src.IndexOf("public void " + name, StringComparison.Ordinal);
                 Assert.True(at > 0, name + " not found. Test is stale.");
 
-                // Body runs to the next member declaration; a generous window
-                // is fine because the call must appear near the top anyway.
-                string body = src.Substring(at, Math.Min(1200, src.Length - at));
+                // Bound the body by brace depth. A fixed-size window ran past
+                // the closing brace into the NEXT method, which also contains
+                // the call, so the guard passed with the call deleted. That is
+                // the vacuous-test failure this whole round keeps hunting.
+                int open = src.IndexOf('{', at);
+                Assert.True(open > 0, name + " has no body. Test is stale.");
+                int depth = 0, end = open;
+                for (int i = open; i < src.Length; i++)
+                {
+                    if (src[i] == '{') depth++;
+                    else if (src[i] == '}')
+                    {
+                        depth--;
+                        if (depth == 0) { end = i; break; }
+                    }
+                }
+                Assert.True(end > open, name + " body never closed. Test is stale.");
+
+                string body = src.Substring(open, end - open);
                 if (!body.Contains("ClearArmedTriggerWindows", StringComparison.Ordinal))
                     offenders.Add(name);
             }

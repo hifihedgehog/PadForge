@@ -103,11 +103,24 @@ namespace PadForge.Tests
             var held = StateWithTags(4, 0);
             double v = 0;
             for (int i = 0; i < 10; i++)
+            {
+                // One tick per FRAME. The runtime is frame-idempotent as of
+                // round 34: a second call inside the same frame is another
+                // device's pass over the same row, not another 50 ms.
+                rt.FrameSeq++;
                 v = rt.TickIncremental(0, "LeftTrigger", 0, src, held, 0.05);
+            }
             Assert.True(v > 0.4, $"tag-held ParamUp never ramped (v={v})");
+
+            // A second device's pass in the SAME frame replays the value
+            // rather than advancing it again. Pre-fix a two-device slot
+            // swept at twice the configured rate.
+            double samePass = rt.TickIncremental(0, "LeftTrigger", 0, src, held, 0.05);
+            Assert.Equal(v, samePass, 6);
 
             // Tag absent: the accumulator stops climbing.
             var idle = StateWithTags(4);
+            rt.FrameSeq++;
             double after = rt.TickIncremental(0, "LeftTrigger", 0, src, idle, 0.05);
             Assert.Equal(v, after, 3);
         }

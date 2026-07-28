@@ -150,6 +150,7 @@ namespace PadForge.Controls
         public CurveEditor()
         {
             InitializeComponent();
+            ChartCanvas.LostMouseCapture += Canvas_LostMouseCapture;
             Loaded += (_, _) => InitVisuals();
             // Full-width mode: the plot width follows the parent, so any
             // resize redraws by value change (no animation loop involved).
@@ -544,6 +545,19 @@ namespace PadForge.Controls
             }
         }
 
+        /// <summary>Capture can be taken away without a MouseLeftButtonUp
+        /// (an Alt-Tab, a modal opening, another control grabbing it). Without
+        /// this the drag flags stayed set and button-free mouse moves kept
+        /// editing the control point.</summary>
+        private void Canvas_LostMouseCapture(object sender, MouseEventArgs e)
+        {
+            if (!_isDragging) return;
+            _isDragging = false;
+            _dragIndex = -1;
+            HideDragReadout();
+            CommitPoints();
+        }
+
         private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (_isDragging)
@@ -559,7 +573,9 @@ namespace PadForge.Controls
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!_isDragging || _dragIndex < 0) return;
+            // Bounds on BOTH sides, like the UpdateLiveDot sibling above.
+            // A lower-bound-only guard let a stale index index past the end.
+            if (!_isDragging || _dragIndex < 0 || _dragIndex >= _controlPoints.Count) return;
 
             var pos = e.GetPosition(ChartCanvas);
             var (cx, cy) = PixelToCurve(pos.X, pos.Y);
@@ -598,6 +614,19 @@ namespace PadForge.Controls
             // Can only remove interior points (not endpoints)
             if (hit > 0 && hit < _controlPoints.Count - 1)
             {
+                // End any in-flight LEFT drag first. Removing a point shifts
+                // every later index down, so a drag on an index at or after
+                // `hit` was left pointing one past the end and the next
+                // MouseMove threw ArgumentOutOfRangeException on the UI
+                // thread. Cancelling is simpler than renumbering and matches
+                // what the user means by deleting the thing under the cursor.
+                if (_isDragging)
+                {
+                    _isDragging = false;
+                    _dragIndex = -1;
+                    ChartCanvas.ReleaseMouseCapture();
+                    HideDragReadout();
+                }
                 _controlPoints.RemoveAt(hit);
                 CommitPoints();
                 e.Handled = true;

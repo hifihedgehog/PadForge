@@ -1,7 +1,11 @@
 # Launch vjoy_ui_test.ps1 elevated with done marker
 $logFile = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_ui_test_log.txt'
 $doneFile = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_ui_test_done.txt'
-$wrapperScript = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\tools\vjoy_ui_wrapper_temp.ps1'
+# Generated wrapper goes to TEMP, not into the repo. It used to be written
+# beside the other scripts and only deleted on the success path, so a run that
+# timed out left a generated file in tools/ that nothing gitignores.
+# vjoy_ui_test_runner.ps1 already does it this way.
+$wrapperScript = Join-Path $env:TEMP 'vjoy_ui_wrapper_temp.ps1'
 
 Remove-Item $logFile -Force -ErrorAction SilentlyContinue
 Remove-Item $doneFile -Force -ErrorAction SilentlyContinue
@@ -48,3 +52,4 @@ for ($i = 0; $i -lt $timeout; $i++) {
 }
 Write-Host "TIMEOUT"
 if (Test-Path $logFile) { Get-Content $logFile }
+Remove-Item $wrapperScript -Force -ErrorAction SilentlyContinue

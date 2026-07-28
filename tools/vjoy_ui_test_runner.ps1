@@ -49,3 +49,4 @@ for ($i = 0; $i -lt $timeout; $i++) {
 }
 Write-Host "TIMEOUT after $timeout seconds"
 if (Test-Path $logFile) { Get-Content $logFile }
+Remove-Item $tmpScript -Force -ErrorAction SilentlyContinue

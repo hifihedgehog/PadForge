@@ -13529,6 +13529,46 @@ namespace PadForge.Services
             SettingsManager.PendingDefaultSnapshot = null;
         }
 
+        /// <summary>PROFDIAG: one line naming slot 0's first row, the
+        /// active profile, and the assigned devices. Called at every profile
+        /// lifecycle point so a single reproduction shows exactly which call
+        /// swaps a row's DeviceGuid. Diag-gated, so it costs nothing unless
+        /// PADFORGE_DIAG is set.</summary>
+        internal static void ProfDiag(string where)
+        {
+            try
+            {
+                var sets = SettingsManager.SlotMappingSets;
+                var ms = (sets != null && sets.Length > 0) ? sets[0] : null;
+                string rows = ms?.Rows == null ? "<null>" : ms.Rows.Count.ToString();
+                string first = "<none>";
+                if (ms?.Rows != null)
+                {
+                    var r = ms.Rows.Find(x => x?.Target == "ButtonA") ?? ms.Rows.Find(x => x != null);
+                    var src = (r?.Sources != null && r.Sources.Count > 0) ? r.Sources[0] : null;
+                    if (src != null)
+                    {
+                        string g = string.IsNullOrEmpty(src.DeviceGuid) ? "(any)" : src.DeviceGuid;
+                        if (g.Length > 8) g = g.Substring(0, 8);
+                        first = $"{r.Target}:{src.Descriptor}@{g}";
+                    }
+                }
+                var assigned = new System.Text.StringBuilder();
+                var usAll = SettingsManager.UserSettings;
+                if (usAll != null)
+                    lock (usAll.SyncRoot)
+                        foreach (var u in usAll.Items)
+                            if (u != null && u.MapTo >= 0)
+                                assigned.Append(u.InstanceGuid.ToString().Substring(0, 8))
+                                        .Append('/').Append(u.MapTo).Append(' ');
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"PROFDIAG {where} active={SettingsManager.ActiveProfileId ?? "<default>"}"
+                    + $" slot0rows={rows} auth={(ms?.Authoritative ?? false)} first={first}"
+                    + $" assigned=[{assigned.ToString().TrimEnd()}]");
+            }
+            catch { /* diagnostics must never break a transition */ }
+        }
+
         public void ApplyDefaultProfile()
         {
             if (_defaultProfileSnapshot != null)
@@ -13597,6 +13637,7 @@ namespace PadForge.Services
         /// </summary>
         public ProfileData CreateEmptyProfile(string name, string pipeSeparatedExePaths)
         {
+            ProfDiag("CreateEmptyProfile:enter");
             var profile = new ProfileData
             {
                 Id = Guid.NewGuid().ToString("N"),
@@ -13620,6 +13661,7 @@ namespace PadForge.Services
                 Macros = Array.Empty<MacroData>(),
             };
             SettingsManager.Profiles.Add(profile);
+            ProfDiag("CreateEmptyProfile:exit");
             return profile;
         }
 
@@ -13629,6 +13671,7 @@ namespace PadForge.Services
         /// </summary>
         public ProfileData CreateSnapshotProfile(string name, string pipeSeparatedExePaths)
         {
+            ProfDiag("CreateSnapshotProfile:enter");
             var snapshot = SnapshotCurrentProfile();
             snapshot.Id = Guid.NewGuid().ToString("N");
             snapshot.Name = name.Trim();
@@ -13677,10 +13720,13 @@ namespace PadForge.Services
             var profile = SettingsManager.Profiles.Find(p => p.Id == profileId);
             if (profile == null) return;
             if (SettingsManager.ActiveProfileId == profile.Id) return;
+            ProfDiag("LoadProfile:enter->" + profileId);
 
             SaveActiveProfileState();
+            ProfDiag("LoadProfile:afterSave");
             SettingsManager.ActiveProfileId = profile.Id;
             ApplyProfile(profile);
+            ProfDiag("LoadProfile:afterApply");
             // Same neutral-state contract as the auto (foreground-monitor)
             // lane; see ResetRuntimeStateForProfileSwitch.
             ResetRuntimeStateForProfileSwitch();
@@ -13692,9 +13738,11 @@ namespace PadForge.Services
         public void RevertToDefaultProfile()
         {
             if (SettingsManager.ActiveProfileId == null) return;
+            ProfDiag("Revert:enter");
             SaveActiveProfileState();
             SettingsManager.ActiveProfileId = null;
             ApplyDefaultProfile();
+            ProfDiag("Revert:afterApplyDefault");
             ResetRuntimeStateForProfileSwitch();
         }
 

@@ -353,6 +353,14 @@ namespace PadForge.Tests
             Assert.DoesNotContain("settings.EnableTwoFingerSwipes", multi);
             Assert.DoesNotContain("settings.EnableTaps", multi);
 
+            // The rule is written down at BOTH gate sites, so a future edit
+            // reads it before touching them. Deleting the contract is itself a
+            // regression: the cross-gating looked perfectly reasonable in code
+            // and was only wrong from the user's side of the screen.
+            Assert.Contains("GATING CONTRACT", rec);
+            Assert.Contains("never gate one", rec);
+            Assert.Contains("MIRROR GestureRecognizer's gating contract", pick);
+
             // And the picker must not hide them behind those same switches.
             Assert.DoesNotContain("max >= 5 && gateFive && gateTaps", pick);
             int three = pick.IndexOf("max >= 3 && gateThree", StringComparison.Ordinal);

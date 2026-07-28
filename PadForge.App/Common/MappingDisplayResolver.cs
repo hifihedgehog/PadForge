@@ -1977,6 +1977,23 @@ namespace PadForge.Common
                 bool gate8Way      = s?.EnableEightWaySwipes       ?? true;
                 bool gateRadial    = s?.EnableRadialZones          ?? true;
                 int  radialCount   = s?.RadialZoneCount             ?? 8;
+                // ─────────────────────────────────────────────────────────
+                //  These MIRROR GestureRecognizer's gating contract, which is
+                //  written out in full there. The short form: a family is
+                //  offered when the master switch is on, the in-box lane is
+                //  allowed, and THAT FAMILY'S OWN checkbox is ticked. Never
+                //  gate one family on another family's checkbox.
+                //
+                //  A finger-count test (max >= 2, max >= 3) is hardware
+                //  capability and is fine. gateTaps and gateTwoSwipe legitimately
+                //  appear under the max >= 2 block because the one- and
+                //  two-finger taps/swipes ARE those families.
+                //
+                //  This list is a flat row of peer checkboxes on screen. If a
+                //  gate here stops matching the recognizer, the user sees an
+                //  empty dropdown with no explanation, which is exactly the bug
+                //  that made this comment necessary.
+                // ─────────────────────────────────────────────────────────
                 bool gateTaps      = s?.EnableTaps                 ?? true;
                 bool gateLongPress = s?.EnableLongPress            ?? true;
                 bool gateTwoSwipe  = s?.EnableTwoFingerSwipes      ?? true;

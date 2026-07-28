@@ -568,13 +568,21 @@ namespace PadForge.Engine.Common.Mapping
         // Keyed (deviceGuid, slot, aux). The aux member replaced a "|aux"
         // string suffix (audit 2026-07-25, C5): the suffix allocated per
         // call on the poll path, which this file's own key comments forbid.
-        private static readonly Dictionary<(string, int, bool), (float x, float y)[]> _gyroSampleBuffers = new();
-        private static readonly Dictionary<(string, int, bool), int> _gyroSampleHeads = new();
-        private static readonly Dictionary<(string, int, bool), ulong> _gyroSampleFrames = new();
+        // Fourth tuple element is the CHANNEL: 0 = gyro mapping, 1 = passthrough
+        // aim, 2 = passthrough roll. It exists so callers stop composing a
+        // string key to separate those lanes. The passthrough caller used to
+        // build (deviceGuid + "pt") and then (that + "roll") on every call,
+        // which is two string allocations per tick per device on the 1 kHz
+        // path: exactly the shape the comment on _gyroSmoothingState says
+        // earlier rounds banned, in the same file.
+        private static readonly Dictionary<(string, int, bool, int), (float x, float y)[]> _gyroSampleBuffers = new();
+        private static readonly Dictionary<(string, int, bool, int), int> _gyroSampleHeads = new();
+        private static readonly Dictionary<(string, int, bool, int), ulong> _gyroSampleFrames = new();
 
         // Internal for the poll-frame-gate test pins (PadForge.Tests).
         internal static (float, float) ApplyDualThresholdSmoothing(
-            string deviceGuid, int slotIndex, float yaw, float pitch, GyroTuning tuning, bool aux = false)
+            string deviceGuid, int slotIndex, float yaw, float pitch, GyroTuning tuning, bool aux = false,
+            int channel = 0)
         {
             float bottom = tuning.TighteningRadPerSec;
             float top    = tuning.SmoothingThresholdRadPerSec;
@@ -594,7 +602,7 @@ namespace PadForge.Engine.Common.Mapping
             // so it takes its own ring: a shared key would let one sensor
             // consume the other's window and its once-per-poll advance.
             // aux rides the key tuple, zero-alloc (audit 2026-07-25, C5).
-            var key = (deviceGuid ?? "", slotIndex, aux);
+            var key = (deviceGuid ?? "", slotIndex, aux, channel);
             if (!_gyroSampleBuffers.TryGetValue(key, out var buf) || buf.Length != N)
             {
                 buf = new (float x, float y)[N];
@@ -716,7 +724,10 @@ namespace PadForge.Engine.Common.Mapping
         // per-tick-allocation pattern earlier rounds banned elsewhere
         // (round 34). The tuple also makes the slot prune below an equality
         // check instead of parsing the key's tail.
-        private static readonly Dictionary<(string Device, int Slot), GyroEmaState> _gyroSmoothingState = new();
+        // Channel rides the tuple for the same reason the ring buffers'
+        // does: the passthrough lane used to pass a COMPOSED key string here
+        // to separate itself from the gyro-mapping lane, allocating per tick.
+        private static readonly Dictionary<(string Device, int Slot, int Channel), GyroEmaState> _gyroSmoothingState = new();
 
         /// <summary>Zeroes every accumulated gyro-rate reference held for a
         /// slot (the GyroRecenter macro action, issue #9 wave 1b): the
@@ -727,7 +738,7 @@ namespace PadForge.Engine.Common.Mapping
         /// sample, exactly like a fresh (device, slot) pair.</summary>
         public static void ResetGyroAimStateForSlot(int slotIndex)
         {
-            List<(string, int, bool)> deadRings = null;
+            List<(string, int, bool, int)> deadRings = null;
             foreach (var k in _gyroSampleBuffers.Keys)
                 if (k.Item2 == slotIndex) (deadRings ??= new()).Add(k);
             if (deadRings != null)
@@ -740,7 +751,7 @@ namespace PadForge.Engine.Common.Mapping
                 }
             }
 
-            List<(string Device, int Slot)> deadEma = null;
+            List<(string Device, int Slot, int Channel)> deadEma = null;
             foreach (var k in _gyroSmoothingState.Keys)
             {
                 if (k.Slot == slotIndex)
@@ -751,11 +762,11 @@ namespace PadForge.Engine.Common.Mapping
         }
 
         // Internal for the poll-frame-gate test pins (PadForge.Tests).
-        internal static float ApplyGyroSmoothing(string deviceGuid, int slotIndex, int axis, float rawRate, float alpha)
+        internal static float ApplyGyroSmoothing(string deviceGuid, int slotIndex, int axis, float rawRate, float alpha, int channel = 0)
         {
             if (alpha <= 0f) return rawRate;
             if (alpha > 0.99f) alpha = 0.99f; // pinning at 1 freezes the output
-            var key = (deviceGuid ?? "", slotIndex);
+            var key = (deviceGuid ?? "", slotIndex, channel);
             if (!_gyroSmoothingState.TryGetValue(key, out var st))
             {
                 st = new GyroEmaState();
@@ -2691,16 +2702,17 @@ namespace PadForge.Engine.Common.Mapping
             // chains, so the passthrough takes a distinct key suffix —
             // the bare deviceGuid would advance the shared buffer twice
             // per frame on a slot running both, halving the window.
-            string smKey = (deviceGuid ?? "") + (aux ? "pt|aux" : "pt");
+            // No composed key. The aux flag and the channel both ride the
+            // tuple, so this path allocates nothing per tick.
             bool useDualThreshold =
                 tuning.TighteningRadPerSec > 0f || tuning.SmoothingThresholdRadPerSec > 0f;
             if (useDualThreshold)
             {
                 (pYaw, pPitch) = ApplyDualThresholdSmoothing(
-                    smKey, slotIndex, pYaw, pPitch, tuning);
+                    deviceGuid, slotIndex, pYaw, pPitch, tuning, aux, channel: 1);
                 if (local)
                     (pRoll, _) = ApplyDualThresholdSmoothing(
-                        smKey + "roll", slotIndex, pRoll, 0f, tuning);
+                        deviceGuid, slotIndex, pRoll, 0f, tuning, aux, channel: 2);
             }
             else if (tuning.SmoothingAlpha > 0f)
             {
@@ -2708,10 +2720,10 @@ namespace PadForge.Engine.Common.Mapping
                 // slot) like the mapping path's, and the bare "pt" key shared
                 // (and double-advanced) one EMA across two slots running
                 // passthrough on the same device.
-                pYaw   = ApplyGyroSmoothing(smKey, slotIndex, 1, pYaw,   tuning.SmoothingAlpha);
-                pPitch = ApplyGyroSmoothing(smKey, slotIndex, 0, pPitch, tuning.SmoothingAlpha);
+                pYaw   = ApplyGyroSmoothing(deviceGuid, slotIndex, 1, pYaw,   tuning.SmoothingAlpha, channel: aux ? 2 : 1);
+                pPitch = ApplyGyroSmoothing(deviceGuid, slotIndex, 0, pPitch, tuning.SmoothingAlpha, channel: aux ? 2 : 1);
                 if (local)
-                    pRoll = ApplyGyroSmoothing(smKey, slotIndex, 2, pRoll, tuning.SmoothingAlpha);
+                    pRoll = ApplyGyroSmoothing(deviceGuid, slotIndex, 2, pRoll, tuning.SmoothingAlpha, channel: aux ? 2 : 1);
             }
 
             float rwc = tuning.RealWorldCalibration > 0f ? tuning.RealWorldCalibration : 1f;

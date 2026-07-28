@@ -806,9 +806,17 @@ namespace PadForge.Engine.Touchpad
                 int contributing = 0;
                 long startTs = ctx.FingerStartTimestampsMs.Count > 0 ? ctx.FingerStartTimestampsMs[0] : nowMs;
                 long elapsed = nowMs - startTs;
-                for (int i = 0; i < ctx.FingerPaths.Count; i++)
+                // Iterate the REPRESENTATIVE paths, the way the one- and
+                // two-finger branches and the shape matcher all do. Walking
+                // ctx.FingerPaths directly took in paths the selection exists
+                // to exclude, so a lifted finger's stale delta still fed
+                // sumDelta and the allShort tap test: a three-finger swipe
+                // could be pulled off-axis, or classified as a tap, by a
+                // finger that was no longer down.
+                int repCount = SelectRepresentativePaths(ctx, fingerCount, repBuf);
+                for (int r = 0; r < repCount; r++)
                 {
-                    var p = ctx.FingerPaths[i];
+                    var p = ctx.FingerPaths[repBuf[r]];
                     if (p == null || p.Count == 0) continue;
                     Vector2 d = p[p.Count - 1] - p[0];
                     sumDelta += d;

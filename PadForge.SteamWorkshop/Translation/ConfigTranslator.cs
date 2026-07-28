@@ -167,6 +167,11 @@ namespace PadForge.SteamWorkshop.Translation
             /// three separate pads.</summary>
             public readonly bool SinglePadTrackpads;
 
+            /// <summary>Four rear buttons rather than two, which decides
+            /// whether Steam's plain button_back_* token means the upper
+            /// pair or the lower one.</summary>
+            public readonly bool FourRearButtons;
+
             public Run(SteamInputConfig config, TranslationOptions options)
             {
                 Config = config;
@@ -176,6 +181,7 @@ namespace PadForge.SteamWorkshop.Translation
                 Report.ControllerType = config.ControllerType ?? "";
                 NintendoLabels = PhysicalSlotResolver.UsesNintendoLabels(config.ControllerType);
                 SinglePadTrackpads = PhysicalSlotResolver.UsesSinglePadTrackpads(config.ControllerType);
+                FourRearButtons = PhysicalSlotResolver.UsesFourRearButtons(config.ControllerType);
                 foreach (var g in config.Groups)
                     if (!GroupsById.ContainsKey(g.Id))
                         GroupsById[g.Id] = g;
@@ -1486,7 +1492,7 @@ namespace PadForge.SteamWorkshop.Translation
                 if (input.Activators.Count == 0) continue;
 
                 var source = PhysicalSlotResolver.Resolve(slot, inputName, run.NintendoLabels,
-                    run.SinglePadTrackpads);
+                    run.SinglePadTrackpads, run.FourRearButtons);
                 // Outer Ring edge members (v16 whole-pad, v17 sticks, v26
                 // trackpad rings): Steam's edge member fires while the
                 // finger / stick is outside edge_binding_radius, or inside
@@ -1511,7 +1517,7 @@ namespace PadForge.SteamWorkshop.Translation
                     if (IsWholePadEdgeZone(settings))
                     {
                         source = PhysicalSlotResolver.Resolve(slot, "touch", run.NintendoLabels,
-                            run.SinglePadTrackpads);
+                            run.SinglePadTrackpads, run.FourRearButtons);
                     }
                     else
                     {
@@ -1913,7 +1919,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // normal walk (v12); only members PadForge has no
                     // source for keep the skip.
                     var member = PhysicalSlotResolver.Resolve(slot, inputName,
-                        run.NintendoLabels, run.SinglePadTrackpads);
+                        run.NintendoLabels, run.SinglePadTrackpads, run.FourRearButtons);
                     if (member != null)
                     {
                         TranslateInput(run, preset, input, member, clickGate: null, layer, inputPath);
@@ -1966,7 +1972,7 @@ namespace PadForge.SteamWorkshop.Translation
                 string inputPath = $"{path}/{inputName}";
 
                 var source = PhysicalSlotResolver.Resolve(slot, inputName,
-                    run.NintendoLabels, run.SinglePadTrackpads);
+                    run.NintendoLabels, run.SinglePadTrackpads, run.FourRearButtons);
                 if (source == null)
                 {
                     foreach (var act in input.Activators)

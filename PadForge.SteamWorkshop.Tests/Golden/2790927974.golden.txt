@@ -3,7 +3,7 @@ description: Your modified layout for this game.
 slots: xbox kbm
 xbox rows: 0
 xbox activators: 1
-  Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle2 | name=Controls - Landing party / Controls - Enterprise
+  Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle4 | name=Controls - Landing party / Controls - Enterprise
 kbm rows: 42
   Base | KbmKey09
     <- Gamepad ButtonStart
@@ -26,7 +26,7 @@ kbm rows: 42
   Base | KbmKey41
     <- Gamepad ButtonY
   Base | KbmKey42
-    <- Gamepad Paddle1
+    <- Gamepad Paddle3
   Base | KbmKey43
     <- Menu 1 Item 5
   Base | KbmKey44
@@ -51,9 +51,9 @@ kbm rows: 42
     <- Gamepad RightStick
     <- Touchpad 1 Click
   Base | KbmKeyBC
-    <- Gamepad Paddle4
+    <- Gamepad Paddle2
   Base | KbmKeyBE
-    <- Gamepad Paddle3
+    <- Gamepad Paddle1
   Base | KbmKeyC0
     <- Gamepad DPadDown
   Base | KbmMBtn0
@@ -95,7 +95,7 @@ kbm rows: 42
   Layer_2790927974_1 | KbmMouseY
     <- Touchpad 1 Finger 0 Y
 kbm activators: 1
-  Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle2 | name=Controls - Landing party / Controls - Enterprise
+  Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle4 | name=Controls - Landing party / Controls - Enterprise
 macros: 10
   macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Base strength=33%
   macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Base strength=33%
@@ -148,9 +148,9 @@ report: v26 rows:x0+k42 macros:10 menus:2 layers:2 clean:50 partial:0 skipped:0 
   Clean RowEmitted @ Controls - Enterprise/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Controls - Enterprise/right_trackpad/group 2 (absolute_mouse)/click/Soft_Press => KbmKey65 <- Touchpad 1 Click
   Clean RowEmitted @ Controls - Enterprise/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
-  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKeyBC <- Gamepad Paddle4
-  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_right/Full_Press => KbmKey42 <- Gamepad Paddle1
-  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_right_upper/Full_Press => KbmKeyBE <- Gamepad Paddle3
+  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKeyBC <- Gamepad Paddle2
+  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_right/Full_Press => KbmKey42 <- Gamepad Paddle3
+  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_right_upper/Full_Press => KbmKeyBE <- Gamepad Paddle1
   Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_escape/Full_Press => KbmKey09 <- Gamepad ButtonStart
   Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_menu/Full_Press => KbmKey50 <- Gamepad ButtonBack
   Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/left_bumper/Full_Press => KbmKey2D <- Gamepad LeftShoulder
@@ -172,4 +172,4 @@ report: v26 rows:x0+k42 macros:10 menus:2 layers:2 clean:50 partial:0 skipped:0 
   Clean RowEmitted @ Controls - Landing party/right_trigger/group 14 (trigger)/click/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Controls - Landing party/switch/group 15 (switches)/button_escape/Full_Press => KbmKey09 <- Gamepad ButtonStart
   Clean RowEmitted @ Controls - Landing party/switch/group 15 (switches)/button_menu/Full_Press => KbmKey50 <- Gamepad ButtonBack
-  Clean ShiftLayerEmitted(Controls - Landing party / Controls - Enterprise) @ Controls - Enterprise/switch/group 6 (switches)/button_back_left/Full_Press => Cycle Controls - Landing party / Controls - Enterprise <- Gamepad Paddle2
+  Clean ShiftLayerEmitted(Controls - Landing party / Controls - Enterprise) @ Controls - Enterprise/switch/group 6 (switches)/button_back_left/Full_Press => Cycle Controls - Landing party / Controls - Enterprise <- Gamepad Paddle4

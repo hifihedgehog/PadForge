@@ -138,10 +138,22 @@ namespace PadForge.Views
             // WindowChrome.CaptionHeight, and this dialog declares no
             // <ui:TitleBar>, so no point in the window was non-client and it
             // could not be moved at all. Same remedy MainWindow uses on its
-            // branding bar. Controls that need the click (Button, TextBox,
-            // ListBoxItem) mark this bubbling event handled, so the drag only
-            // starts on inert chrome.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
+            // branding bar.
+            //
+            // The guard is not optional. Standard controls (Button, TextBox,
+            // ListBoxItem) mark this bubbling event handled and so never
+            // reach here, but THIS dialog drives several bare Borders as
+            // buttons (the back chip, the tag chips, the preset chips) and a
+            // Border marks nothing. DragMove hands the mouse to the OS move
+            // loop, which swallows the release, so the MouseLeftButtonUp
+            // those Borders listen for never arrives and every one of them
+            // goes dead. That is exactly what shipped: "Search Games" stopped
+            // responding the moment this window became draggable.
+            MouseLeftButtonDown += (_, e) =>
+            {
+                if (PressLandedOnSomethingClickable(e.OriginalSource as DependencyObject)) return;
+                try { DragMove(); } catch { }
+            };
 
 
             ShelfList.ItemsSource = Games;
@@ -419,6 +431,36 @@ namespace PadForge.Views
         // ─────────────────────────────────────────────
         //  Game room (hero art + config list)
         // ─────────────────────────────────────────────
+
+        /// <summary><para>True when a press landed on anything the user can
+        /// click, so the window drag must stand down and let the control have
+        /// its release.</para>
+        /// <para>Two tests, and both are needed. The standard controls are
+        /// named outright. Everything else is caught by the hand cursor,
+        /// which is this dialog's own convention for "this Border is a
+        /// button" and, more to the point, is what the USER is shown before
+        /// they click: if the pointer says the thing is pressable, pressing
+        /// it must not drag the window instead. All three of this dialog's
+        /// Border-buttons set it, two of them through their shared chip
+        /// styles, so a new chip inherits the exemption for free.</para>
+        /// </summary>
+        private static bool PressLandedOnSomethingClickable(DependencyObject hit)
+        {
+            for (var d = hit; d != null;)
+            {
+                if (d is System.Windows.Controls.Primitives.ButtonBase
+                    or System.Windows.Controls.Primitives.TextBoxBase
+                    or System.Windows.Controls.Primitives.Selector
+                    or System.Windows.Controls.Primitives.ScrollBar
+                    or System.Windows.Controls.Primitives.Thumb
+                    or ScrollViewer or ComboBox or Slider or MenuItem)
+                    return true;
+                if (d is FrameworkElement fe && fe.Cursor == Cursors.Hand)
+                    return true;
+                d = d is Visual ? VisualTreeHelper.GetParent(d) : LogicalTreeHelper.GetParent(d);
+            }
+            return false;
+        }
 
         private void BackToSearch_Click(object sender, MouseButtonEventArgs e)
         {
@@ -1158,14 +1200,80 @@ namespace PadForge.Views
                 PresetChips.Add(new WorkshopPresetChipItem
                 {
                     Id = preset.Id,
-                    // Same fallback shape the translator uses in its report
-                    // paths, so chips and manifest groups agree.
-                    Label = string.IsNullOrWhiteSpace(preset.Name)
-                        ? "Preset " + preset.Id.ToString(CultureInfo.InvariantCulture)
-                        : preset.Name,
+                    Label = PresetLabel(parsed, preset),
                     IsIncluded = true,
                 });
             }
+        }
+
+        /// <summary><para>The name the config's author gave this preset.</para>
+        /// <para>A preset's <c>name</c> is a SET TOKEN, not a label. Steam
+        /// writes <c>"name" "Preset_1000001"</c> on the preset and carries
+        /// the author's actual words on the matching entry of the
+        /// <c>action_layers</c> block (<c>"title" "Deactivate trackpad"</c>),
+        /// which the parser already collects into
+        /// <see cref="SteamInputConfig.ActionSetTitles"/> keyed by that
+        /// token. Rendering the token was how the chips came out reading
+        /// "Preset_1000001" and "Preset_1000002" for a config whose two
+        /// layers are named "Deactivate trackpad" and "Menu save".</para>
+        /// <para>The title may itself be a <c>#token</c> into the config's
+        /// localization block, so it resolves through there the same way the
+        /// translator's own PresetDisplayName does. Chips and manifest groups
+        /// have to agree, and now they read from the same two sources in the
+        /// same order.</para></summary>
+        private static string PresetLabel(SteamInputConfig parsed, SteamInputPreset preset)
+        {
+            string token = (preset.Name ?? string.Empty).Trim();
+            string fallback = token.Length == 0
+                ? "Preset " + preset.Id.ToString(CultureInfo.InvariantCulture)
+                : token;
+            if (token.Length == 0
+                || parsed?.ActionSetTitles == null
+                || !parsed.ActionSetTitles.TryGetValue(token, out var title)
+                || string.IsNullOrWhiteSpace(title))
+                return fallback;
+
+            title = title.Trim();
+            if (!title.StartsWith("#", StringComparison.Ordinal)) return title;
+
+            // A #token indexes the config's own localization table. Prefer
+            // the running UI language, then English, then any language that
+            // carries it, before giving up and showing the token.
+            foreach (var lang in PreferredConfigLanguages())
+            {
+                if (parsed.Localization != null
+                    && parsed.Localization.TryGetValue(lang, out var strings)
+                    && strings != null
+                    && strings.TryGetValue(title.Substring(1), out var localized)
+                    && !string.IsNullOrWhiteSpace(localized))
+                    return localized.Trim();
+            }
+            foreach (var strings in parsed.Localization?.Values
+                     ?? Enumerable.Empty<IReadOnlyDictionary<string, string>>())
+            {
+                if (strings != null
+                    && strings.TryGetValue(title.Substring(1), out var any)
+                    && !string.IsNullOrWhiteSpace(any))
+                    return any.Trim();
+            }
+            return fallback;
+        }
+
+        /// <summary>Config-localization language keys to try, best first.
+        /// Steam names them in English ("english", "german"), not as culture
+        /// codes, so the running culture maps through its English name.</summary>
+        private static IEnumerable<string> PreferredConfigLanguages()
+        {
+            var culture = CultureInfo.CurrentUICulture;
+            string steamName = culture.TwoLetterISOLanguageName switch
+            {
+                "de" => "german",   "es" => "spanish",  "fr" => "french",
+                "it" => "italian",  "ja" => "japanese", "ko" => "koreana",
+                "nl" => "dutch",    "pt" => "brazilian", "zh" => "schinese",
+                _ => "english",
+            };
+            yield return steamName;
+            if (steamName != "english") yield return "english";
         }
 
         private void PresetChip_Click(object sender, MouseButtonEventArgs e)

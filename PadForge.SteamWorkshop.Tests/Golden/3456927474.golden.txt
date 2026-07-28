@@ -8,7 +8,7 @@ xbox activators: 5
   Toggle Layer_3456927474_1 | Gamepad RightShoulder | inherit | name=Deactivate trackpad
   Toggle Layer_3456927474_1 | Menu 1 Item 1 | inherit | name=Deactivate trackpad
   Toggle Layer_3456927474_1 | Menu 2 Item 1 | inherit | name=Deactivate trackpad
-  Toggle Layer_3456927474_2 | Gamepad Paddle1 | inherit | name=Menu save
+  Toggle Layer_3456927474_2 | Gamepad Paddle3 | inherit | name=Menu save
 kbm rows: 19
   Base | KbmKey08
     <- Gamepad DPadLeft
@@ -44,11 +44,11 @@ kbm rows: 19
     <- Menu 1 Item 10
     <- Menu 1 Item 12
     <- Touchpad 1 Click
-    <- Gamepad Paddle4
+    <- Gamepad Paddle2
     <- Gamepad LeftShoulder
   Base | KbmMBtn1
     <- Gamepad ButtonB
-    <- Gamepad Paddle3
+    <- Gamepad Paddle1
   Base | KbmMBtn2
     <- Gamepad RightStickRing [lower-half] dz=100
   Base | KbmMouseX | Sum
@@ -75,7 +75,7 @@ kbm activators: 5
   Toggle Layer_3456927474_1 | Gamepad RightShoulder | inherit | name=Deactivate trackpad
   Toggle Layer_3456927474_1 | Menu 1 Item 1 | inherit | name=Deactivate trackpad
   Toggle Layer_3456927474_1 | Menu 2 Item 1 | inherit | name=Deactivate trackpad
-  Toggle Layer_3456927474_2 | Gamepad Paddle1 | inherit | name=Menu save
+  Toggle Layer_3456927474_2 | Gamepad Paddle3 | inherit | name=Menu save
 macros: 67
   macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 1 Item 1) | btns=0x0000 in=[Menu 1 Item 1] layer=Base norm=(10667,1473)
   macro HoldMouseButton OnPress | Hold mouse LEFT (Menu 1 Item 1) | btns=0x0000 in=[Menu 1 Item 1] layer=Base mbtn=0 delayStart=1ms
@@ -114,7 +114,7 @@ macros: 67
   macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (RightTrigger) | btns=0x0000 axis=RightTrigger@75% layer=Base ticks=1 interval=125ms
   macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (RightTrigger) | btns=0x0000 axis=RightTrigger@15% layer=Base ticks=1 interval=250ms
   macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
-  macro MoveMouseToScreenPosition OnPress | Warp cursor (Paddle4) | btns=0x0000 in=[Gamepad Paddle4] layer=Base norm=(16384,16384)
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Paddle2) | btns=0x0000 in=[Gamepad Paddle2] layer=Base norm=(16384,16384)
   macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
   macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Layer_3456927474_1 vk=0x2C
   macro MouseButtonTap OnRelease | Click mouse RIGHT (RightShoulder) | btns=0x0200 layer=Layer_3456927474_1 mbtn=1
@@ -213,9 +213,9 @@ report: v26 rows:x0+k19 macros:67 menus:2 layers:10 clean:82 partial:5 skipped:0
   Clean MacroEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => Turbo wheel macro (125 ms) <- Gamepad RightTrigger
   Clean MacroEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => Turbo wheel macro (250 ms) <- Gamepad RightTrigger
   Partial RemoveLayerApproximated @ Default/switch/group 8 (switches)/button_back_left/Full_Press :: controller_action remove_layer 3 1 1, , 
-  Clean MacroEmitted @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press => Cursor warp macro <- Gamepad Paddle4
-  Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press => KbmMBtn0 <- Gamepad Paddle4
-  Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_right_upper/Full_Press => KbmMBtn1 <- Gamepad Paddle3
+  Clean MacroEmitted @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press => Cursor warp macro <- Gamepad Paddle2
+  Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press => KbmMBtn0 <- Gamepad Paddle2
+  Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_right_upper/Full_Press => KbmMBtn1 <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_menu/Full_Press => KbmKey09 <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 8 (switches)/left_bumper/Full_Press => KbmMBtn0 <- Gamepad LeftShoulder
@@ -250,4 +250,4 @@ report: v26 rows:x0+k19 macros:67 menus:2 layers:10 clean:82 partial:5 skipped:0
   Clean ShiftLayerEmitted(Deactivate trackpad) @ Default/switch/group 8 (switches)/right_bumper/Start_Press => Toggle Deactivate trackpad <- Gamepad RightShoulder
   Clean ShiftLayerEmitted(Deactivate trackpad) @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_1/Full_Press => Toggle Deactivate trackpad <- Menu 1 Item 1
   Clean ShiftLayerEmitted(Deactivate trackpad) @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_1/Full_Press => Toggle Deactivate trackpad <- Menu 2 Item 1
-  Clean ShiftLayerEmitted(Menu save) @ Default/switch/group 8 (switches)/button_back_right/Full_Press => Toggle Menu save <- Gamepad Paddle1
+  Clean ShiftLayerEmitted(Menu save) @ Default/switch/group 8 (switches)/button_back_right/Full_Press => Toggle Menu save <- Gamepad Paddle3

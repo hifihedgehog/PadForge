@@ -108,6 +108,14 @@ function ClickEl {
             $sp.Select()
         } catch {
             $r = $El.Current.BoundingRectangle
+            # An element with no rendered bounds reports Rect.Empty, whose X is
+            # +Infinity. [int] on that THROWS, and nothing above this catches it,
+            # so the fallback killed the whole capture run instead of reporting
+            # a miss. debug_toggle.ps1 already skips such elements.
+            if ($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0) {
+                Write-Host "  !! EMPTY BOUNDS: $Lbl" -ForegroundColor Red
+                return $false
+            }
             [W32]::ClickAt([int]($r.X + $r.Width / 2), [int]($r.Y + $r.Height / 2))
         }
     }

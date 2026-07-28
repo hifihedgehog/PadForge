@@ -99,6 +99,9 @@ function Capture-2D {
         [System.Windows.Automation.AutomationElement]::NameProperty, "Dashboard")))
     if ($nav) {
         $r = $nav.Current.BoundingRectangle
+        # Rect.Empty reports X as +Infinity and [int] on it throws, so guard
+        # before converting.
+        if ($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0) { return $false }
         [W32B]::ClickAt([int]($r.X + $r.Width/2), [int]($r.Y + $r.Height/2))
         Start-Sleep -Milliseconds 1500
     }

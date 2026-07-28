@@ -718,9 +718,23 @@ namespace PadForge.Common
                     return null;
             }
 
-            // A short or odd byte count is a malformed reply, not an empty
-            // list, so it reports failure for the same reason.
-            if (bytesReturned < 4 || bytesReturned % 2 != 0) // At minimum double-null terminator (4 bytes in UTF-16)
+            // An EMPTY list is a 2-byte reply, and calling that malformed broke
+            // hiding outright. The driver serializes a list as each string plus
+            // its terminator plus ONE multi-string terminator, so zero entries
+            // is exactly one L'\0' (HidHide Logic.c OnControlDeviceIoGetBlacklist
+            // completes with neededSizeInCharacters * sizeof(WCHAR), and
+            // Config.c HidHideCollectionToMultiString computes 0 + 1 characters
+            // for an empty collection). The old "< 4, at minimum a double-null"
+            // assumption therefore misread every successful empty read as a
+            // failed read, and the null-bail consumers this round added then
+            // skipped SetBlacklist forever. Engine start makes the state
+            // routine, since the stale-cloak purge CLEARS the blacklist, so
+            // nothing was ever hidden again: the owner's DualSense stayed
+            // visible to games with "hide" flagged on.
+            //
+            // Zero bytes or an odd count IS malformed: the driver always
+            // reports at least the terminator character.
+            if (bytesReturned < 2 || bytesReturned % 2 != 0)
                 return null;
 
             // Parse multi-SZ: null-separated UTF-16 strings, double-null terminated.

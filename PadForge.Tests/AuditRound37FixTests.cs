@@ -317,6 +317,38 @@ namespace PadForge.Tests
                 257, 78, crcValid: true, validFlag0: (byte)0x00, motorMask: 0x03));
         }
 
+        // ── An empty HidHide list is a successful read, not a failure ──
+
+        /// <summary>Round 35 made the HidHide list reader return null on a
+        /// failed read so consumers stop wiping the user's lists, and drew the
+        /// malformed line at "under 4 bytes". The driver serializes an EMPTY
+        /// list as exactly one UTF-16 null, 2 bytes: Logic.c's
+        /// OnControlDeviceIoGetBlacklist completes with
+        /// neededSizeInCharacters * sizeof(WCHAR), and Config.c's
+        /// HidHideCollectionToMultiString computes 0 + 1 characters for an
+        /// empty collection. So every successful read of an empty blacklist
+        /// was misread as a failure, every consumer bailed before
+        /// SetBlacklist, and nothing was ever hidden. Engine start makes the
+        /// empty state routine, because the stale-cloak purge clears the
+        /// blacklist. The owner's DualSense stayed visible to games with
+        /// "hide" flagged on.</summary>
+        [Fact]
+        public void HidHideEmptyListReply_IsAnEmptyList_NotAFailedRead()
+        {
+            string src = Src("PadForge.App/Common/HidHideController.cs");
+
+            // Positive control: the malformed-reply guard must still exist.
+            Assert.Contains("bytesReturned % 2 != 0", src);
+
+            // The threshold admits the 2-byte empty reply.
+            Assert.Contains("bytesReturned < 2", src);
+            Assert.DoesNotContain("bytesReturned < 4", src);
+
+            // And the null-for-failure contract this round rightly added must
+            // stay: an unreadable driver still returns null, never empty.
+            Assert.Contains("return null;", src);
+        }
+
         // ── Each finger-count checkbox is its own opt-in ──
 
         /// <summary>The In-Box Gestures card renders every gesture family as a

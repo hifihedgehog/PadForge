@@ -170,6 +170,30 @@ namespace PadForge.Engine.Touchpad
                 ctx.FiredGesturesThisFrame.Clear();
             }
 
+            // ─────────────────────────────────────────────────────────────
+            //  GATING CONTRACT. Do not add a fourth level, and never gate one
+            //  gesture family on ANOTHER family's checkbox. There are exactly
+            //  three levels, in this order:
+            //
+            //    1. settings.Enabled          the master switch
+            //    2. InBoxAllowed(settings)    in-box / custom / both
+            //    3. that family's OWN toggle  EnableTaps, EnableTwoFingerSwipes,
+            //                                 EnableThreeFingerGestures, ...
+            //
+            //  A finger-count test (ActiveFingerCount == 1, fingerCount >= 3)
+            //  is hardware capability, not a fourth level, and is fine.
+            //
+            //  WHY THIS IS WRITTEN DOWN: the three/four/five-finger families
+            //  used to ALSO require EnableTwoFingerSwipes for their swipe and
+            //  EnableTaps for their tap. The In-Box Gestures card renders every
+            //  family as a flat list of peer checkboxes with nothing hinting at
+            //  a dependency, so ticking "Three-Finger Gestures" on its own
+            //  enabled nothing and the picker (which mirrors these gates) went
+            //  empty. The owner reported it as gestures missing from the
+            //  dropdown. Cross-gating is invisible to the person using the app.
+            //  If a family needs a prerequisite, the UI has to say so, and this
+            //  card does not.
+            // ─────────────────────────────────────────────────────────────
             bool inBoxAllowed = gesturesEnabled && InBoxAllowed(settings);
 
             // Tier 1 mid-gesture fires (touch spots, radial zone entry,

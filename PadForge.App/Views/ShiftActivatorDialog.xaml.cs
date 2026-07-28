@@ -75,6 +75,7 @@ namespace PadForge.Views
         private bool _suppressColorPickerWriteback;
         private bool _recordingPrimary;
         private bool _recordingChord;
+        private EventHandler _recorderTimedOut;
         private bool _baseMode;   // #119: editing only the Base layer's flyout appearance
         private string _selectedIcon = "";
 
@@ -182,6 +183,27 @@ namespace PadForge.Views
             InitializeComponent();
             _recorder = recorder;
             _padIndex = padIndex;
+
+            // A freeform recording that TIMES OUT never calls its callback:
+            // RecorderService.CancelRecording nulls _freeformCallback and
+            // raises RecordingTimedOut instead. Both record buttons here set
+            // their flag and swap to the Stop glyph on start and clear it in
+            // that callback, so without this the timeout left the button
+            // showing Stop with _recordingPrimary/_recordingChord latched true,
+            // and the next click read as "cancel" instead of starting a new
+            // recording. MainWindow subscribes for exactly this reason and
+            // hand-heals its own freeform consumers. This dialog is the
+            // consumer that was missed. Recorder ticks on a DispatcherTimer
+            // (its own thread-model note), so this arrives on the UI thread.
+            if (_recorder != null)
+            {
+                _recorderTimedOut = (_, __) =>
+                {
+                    if (_recordingPrimary) SetPrimaryRecording(false);
+                    if (_recordingChord) SetChordRecording(false);
+                };
+                _recorder.RecordingTimedOut += _recorderTimedOut;
+            }
 
             // Split the cross-device input list into button-class (Button,
             // POV-direction) and axis-class (Axis, Slider).
@@ -337,6 +359,14 @@ namespace PadForge.Views
             {
                 if (_recordingPrimary || _recordingChord)
                     _recorder?.CancelRecording();
+                // Matching detach for the timeout subscription above. The
+                // recorder outlives this dialog, so leaving it attached would
+                // hold the closed window alive and fire glyph writes into it.
+                if (_recorderTimedOut != null && _recorder != null)
+                {
+                    _recorder.RecordingTimedOut -= _recorderTimedOut;
+                    _recorderTimedOut = null;
+                }
                 if (_onRgbHandler != null)
                 {
                     _redDpd?.RemoveValueChanged(ColorPicker, _onRgbHandler);

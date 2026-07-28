@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -111,7 +111,17 @@ namespace PadForge.SteamWorkshop.Cache
                 var age = _clock().UtcDateTime - File.GetLastWriteTimeUtc(path);
                 if (age > ttl.Value)
                 {
-                    TryDelete(path);
+                    // Under _writeLock, and re-checked inside it. Every write
+                    // takes that lock; this delete did not, so a writer that
+                    // refreshed the entry between the age read above and the
+                    // delete had its FRESH file erased (round 34). Still
+                    // reports a miss when the re-check says fresh, which
+                    // costs one refetch and never costs data.
+                    lock (_writeLock)
+                    {
+                        var ageNow = _clock().UtcDateTime - File.GetLastWriteTimeUtc(path);
+                        if (ageNow > ttl.Value) TryDelete(path);
+                    }
                     return false;
                 }
             }

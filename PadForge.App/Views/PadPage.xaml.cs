@@ -3192,6 +3192,13 @@ namespace PadForge.Views
                 vm.ExtendedConfig.PovCount = profile.HasHat ? 1 : 0;
                 vm.ExtendedConfig.ButtonCount = profile.ButtonCount;
                 vm.ExtendedConfig.OemNameOverride = false;
+                // VID / PID are override fields too, and the handler's own
+                // comment promises every one of them is snapped back. Left
+                // set, a reset produced a "default" config still wearing the
+                // previous device's identity, which is exactly what
+                // ExtendedSlotConfig's own reset helper zeroes (round 34).
+                vm.ExtendedConfig.VendorId = 0;
+                vm.ExtendedConfig.ProductId = 0;
             }
             finally { _syncingExtendedConfig = false; }
 

@@ -13610,24 +13610,39 @@ namespace PadForge.Services
             PadForge.Engine.SdlDiagLog.WriteLine(
                 "PROFILE: revert-to-default with no snapshot; rebuilding from legacy canon");
 
-            var sets = SettingsManager.SlotMappingSets;
-            if (sets != null)
-                for (int i = 0; i < sets.Length; i++)
-                    sets[i] = null;
-
-            SettingsService.RefreshMappingSetsFromLegacy();
-
-            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            // This branch swaps the domain sets exactly like ApplyProfile does,
+            // so it needs the same window. Between the null-out and the per-pad
+            // reconcile the grids still describe the OUTGOING profile, and the
+            // legacy rebuild raises the AfterMappingSetsRefreshed hook in the
+            // middle of it. Without the flag, anything that pushes in there
+            // writes the outgoing rows straight back over the canon rebuild
+            // this branch exists to produce.
+            VmMappingsStale = true;
+            try
             {
-                RefreshMappingsToViewModel(_mainVm.Pads[i]);
-                PopulateAvailableInputs(_mainVm.Pads[i],
-                    _mainVm.Pads[i].SelectedMappedDevice is { } sel && sel.InstanceGuid != Guid.Empty
-                        ? FindUserDevice(sel.InstanceGuid)
-                        : null);
+                var sets = SettingsManager.SlotMappingSets;
+                if (sets != null)
+                    for (int i = 0; i < sets.Length; i++)
+                        sets[i] = null;
+
+                SettingsService.RefreshMappingSetsFromLegacy();
+
+                for (int i = 0; i < _mainVm.Pads.Count; i++)
+                {
+                    RefreshMappingsToViewModel(_mainVm.Pads[i]);
+                    PopulateAvailableInputs(_mainVm.Pads[i],
+                        _mainVm.Pads[i].SelectedMappedDevice is { } sel && sel.InstanceGuid != Guid.Empty
+                            ? FindUserDevice(sel.InstanceGuid)
+                            : null);
+                }
             }
+            finally { VmMappingsStale = false; }
 
             // Capture what we just rebuilt so the next revert has a snapshot
-            // and this path fires once, not on every switch back.
+            // and this path fires once, not on every switch back. Outside the
+            // window on purpose: the grids were just reconciled against the
+            // rebuilt sets, so the snapshot's own push has nothing stale left
+            // to write and must be allowed to flush.
             _defaultProfileSnapshot = SnapshotCurrentProfile();
             SettingsManager.PendingDefaultSnapshot = _defaultProfileSnapshot;
         }

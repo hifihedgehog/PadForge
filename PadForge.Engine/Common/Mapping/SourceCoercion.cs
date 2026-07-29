@@ -2997,8 +2997,12 @@ namespace PadForge.Engine.Common.Mapping
                 // Decay per unit TIME, not per poll, so the glide lasts the
                 // same wall-clock duration at any polling rate. The stored
                 // figure is the fraction of speed kept per 10 ms.
-                float keep = Math.Clamp(tpNow.MouseMomentumDecay, 0.50f, 0.98f);
-                coast.Velocity *= MathF.Pow(keep, dtSeconds / 0.010f);
+                // 1.00 keeps the speed exactly: a frictionless ball that
+                // spins until caught. Touching down is the stop, and the
+                // down edge already handles that.
+                float keep = Math.Clamp(tpNow.MouseMomentumDecay, 0.80f, 1.00f);
+                if (keep < 1.00f)
+                    coast.Velocity *= MathF.Pow(keep, dtSeconds / 0.010f);
                 // Below a pixel every few polls the glide is over. Ending it
                 // outright stops a vanishing remainder creeping for seconds.
                 if (Math.Abs(coast.Velocity) * TouchCountsPerPadWidth < 0.05f)

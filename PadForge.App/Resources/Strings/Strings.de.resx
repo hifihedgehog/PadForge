@@ -1706,7 +1706,7 @@
   <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>Der Zeiger bewegt sich nach dem Abheben des Fingers weiter und läuft aus, wie bei einem Trackball.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Schwung zurücksetzen</value></data>
   <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Nachlauf</value></data>
-  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Wie lange der Nachlauf dauert. Höher läuft weiter.</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Wie weit der Zeiger nachläuft. Am oberen Ende läuft er weiter, bis Sie das Touchpad wieder berühren.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Nachlauf zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Stick- / Steuerkreuz-Ausgabe zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Gesten zurücksetzen</value></data>

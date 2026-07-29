@@ -1705,7 +1705,7 @@
   <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>抬起手指后光标继续移动并逐渐停下，就像轨迹球。</value></data>
   <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>重置惯性</value></data>
   <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>滑行距离</value></data>
-  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>滑行持续多久。越高滑得越远。</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>光标滑行的距离。调到最大时会一直滑行，直到你再次触碰触控板。</value></data>
   <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>重置滑行距离</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>重置摇杆 / 方向键输出</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>重置手势</value></data>

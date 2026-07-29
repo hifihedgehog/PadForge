@@ -431,7 +431,7 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _touchpadMouseMomentum, value)) PushIfNotLoading(); }
         }
 
-        private double _touchpadMouseMomentumDecay = 0.82;
+        private double _touchpadMouseMomentumDecay = 0.90;
         /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseMomentumDecay"/>:
         /// the fraction of speed kept per 10 ms of coast. Higher glides
         /// longer. Clamped to the band the engine reads.</summary>
@@ -440,7 +440,7 @@ namespace PadForge.ViewModels
             get => _touchpadMouseMomentumDecay;
             set
             {
-                double v = Math.Clamp(value, 0.50, 0.98);
+                double v = Math.Clamp(value, 0.80, 1.00);
                 if (SetProperty(ref _touchpadMouseMomentumDecay, v)) PushIfNotLoading();
             }
         }
@@ -762,7 +762,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetTouchpadMouseMomentumDecayCommand;
         public RelayCommand ResetTouchpadMouseMomentumDecayCommand =>
-            _resetTouchpadMouseMomentumDecayCommand ??= new RelayCommand(() => TouchpadMouseMomentumDecay = 0.82);
+            _resetTouchpadMouseMomentumDecayCommand ??= new RelayCommand(() => TouchpadMouseMomentumDecay = 0.90);
 
         private RelayCommand _resetTouchpadMouseJitterReductionCommand;
         public RelayCommand ResetTouchpadMouseJitterReductionCommand =>
@@ -779,7 +779,7 @@ namespace PadForge.ViewModels
                 TouchpadMouseInvertX = false;
                 TouchpadMouseInvertY = false;
                 TouchpadMouseMomentum = false;
-                TouchpadMouseMomentumDecay = 0.82;
+                TouchpadMouseMomentumDecay = 0.90;
                 TouchpadMouseJitterReduction = true;
             });
 

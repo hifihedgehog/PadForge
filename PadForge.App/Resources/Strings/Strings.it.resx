@@ -1728,7 +1728,7 @@
   <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>Il cursore prosegue dopo aver alzato il dito e rallenta fino a fermarsi, come una trackball.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Reimposta inerzia</value></data>
   <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Scorrimento</value></data>
-  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Quanto dura lo scorrimento. Più alto va più lontano.</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Quanto scorre il cursore. Al massimo prosegue finché non tocchi di nuovo il touchpad.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Reimposta scorrimento</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Ripristina Uscita Stick / D-Pad</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Ripristina gesti</value></data>

@@ -268,6 +268,12 @@ namespace PadForge.SteamWorkshop.Tests
                 sb.Append("  ").Append(row.LayerMask).Append(" | ").Append(row.Target);
                 if (!string.IsNullOrEmpty(row.CombineMode))
                     sb.Append(" | ").Append(row.CombineMode);
+                // The expression, not just the mode. Printing "Custom" alone
+                // would record that a row combines custom-ly while leaving WHAT
+                // it computes unverified, which is how a gate rewrite could
+                // change behavior with every golden still matching.
+                if (!string.IsNullOrEmpty(row.CombineExpression))
+                    sb.Append(" | ").Append(row.CombineExpression);
                 sb.Append('\n');
                 foreach (var s in row.Sources)
                     sb.Append("    <- ").Append(RenderSource(s)).Append('\n');

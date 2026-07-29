@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using PadForge.SteamWorkshop.Model;
 using PadForge.SteamWorkshop.Translation;
 using PadForge.SteamWorkshop.Vdf;
@@ -245,9 +245,9 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "switch active"))
                 + "}\n";
             var p = Translate(vdf);
-            var src = Assert.Single(Assert.Single(p.KbmMappingSet.Rows).Sources);
-            Assert.Equal("Gamepad LeftShoulder", src.Descriptor);
-            Assert.Equal("Gamepad LeftGripTouch", src.GateDescriptor);
+            Assert.Equal("Gamepad LeftShoulder",
+                Assert.Single(p.KbmMappingSet.Rows).Sources[0].Descriptor);
+            GateAssert.Gated(p.KbmMappingSet, "Gamepad LeftShoulder", "Gamepad LeftGripTouch");
         }
 
         // ─── Physical dpad edge / click / scroll ────────────────────────
@@ -429,12 +429,11 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             Assert.DoesNotContain(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.UnknownActivatorType);
-            var src = p.KbmMappingSet.Rows.SelectMany(r => r.Sources)
-                .Single(s => s.Descriptor == "Touchpad 0 DPadUp");
-            // requires_click defaults ON for dpad groups: the primary gate
-            // is the half-windowed click, the partner rides Gate2.
-            Assert.Equal("Touchpad 0 Click Left", src.GateDescriptor);
-            Assert.Equal("Gamepad RightShoulder", src.Gate2Descriptor);
+            // requires_click defaults ON for dpad groups, so the direction
+            // carries TWO gates: the half-windowed click and the chord
+            // partner. Both are real sources, ANDed in order.
+            GateAssert.Gated(p.KbmMappingSet, "Touchpad 0 DPadUp",
+                "Touchpad 0 Click Left", "Gamepad RightShoulder");
         }
 
         // ─── Analog activator ───────────────────────────────────────────

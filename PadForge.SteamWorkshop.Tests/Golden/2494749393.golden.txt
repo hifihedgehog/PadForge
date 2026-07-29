@@ -8,10 +8,12 @@ xbox rows: 20
     <- Gamepad ButtonA
   Base | ButtonB
     <- Gamepad ButtonB
-  Base | ButtonBack
-    <- Touchpad 0 Click gate=[Touchpad 0 TouchLeft]
-  Base | ButtonStart
-    <- Touchpad 0 Click gate=[Touchpad 0 TouchRight]
+  Base | ButtonBack | Custom | (s[0] && s[1])
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchLeft
+  Base | ButtonStart | Custom | (s[0] && s[1])
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchRight
   Base | ButtonX
     <- Gamepad Paddle1
     <- Gamepad ButtonX

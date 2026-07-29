@@ -38,8 +38,9 @@ xbox rows: 22
     <- Gamepad LeftTrigger [upper-half] dz=75
   Base | RightShoulder
     <- Gamepad RightShoulder
-  Base | RightThumbButton
-    <- Touchpad 0 Click gate=[Touchpad 0 TouchRight]
+  Base | RightThumbButton | Custom | (s[0] && s[1]) || s[2]
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchRight
     <- Gamepad RightStick
   Base | RightTrigger
     <- Gamepad RightTrigger

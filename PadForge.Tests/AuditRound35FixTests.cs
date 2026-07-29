@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using PadForge.Engine;
 using PadForge.Engine.Common;
@@ -29,9 +29,14 @@ namespace PadForge.Tests
         /// <summary>An unknown name compiled with IsValid = true, rendered the
         /// green "valid" status in the editor, and evaluated to a constant 0
         /// forever. The parser already rejected a BARE unknown identifier, so
-        /// `pow` errored while `pow(a,2)` did not.</summary>
+        /// `pow` errored while `pow(a,2)` did not.
+        /// <para>pow(a,2) was this test's original example and is no longer
+        /// one: pow joined the registry so response curves can be written in
+        /// a combine expression instead of riding a hidden per-source field.
+        /// Replaced with atan(a), still absent (atan2 is the two-arg form).
+        /// The behavior under test is unchanged.</para></summary>
         [Theory]
-        [InlineData("pow(a,2)")]
+        [InlineData("atan(a)")]
         [InlineData("sqr(a)")]
         [InlineData("exp(a)")]
         [InlineData("log(a)")]

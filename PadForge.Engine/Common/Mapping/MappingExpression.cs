@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -46,7 +46,19 @@ namespace PadForge.Engine.Common.Mapping
     /// <para>
     /// Functions (fixed registry): <c>abs, min, max, clamp(x,lo,hi),
     /// sign, floor, ceil, round, sqrt, sin, cos, tan, atan2(y,x),
-    /// lerp(a,b,t)</c>.
+    /// lerp(a,b,t), pow(x,y), hypot(x,y), deadzone(x,inner,outer)</c>.
+    /// </para>
+    ///
+    /// <para>
+    /// The last three exist so the transforms PadForge already applies
+    /// internally can be written HERE, where the user can see and edit
+    /// them, instead of riding hidden per-source fields:
+    /// <c>pow</c> is a response curve exponent, <c>hypot</c> is a stick
+    /// pair's radial magnitude (the input to a radial dead zone or a
+    /// circular shape), and <c>deadzone</c> is the single most common
+    /// input transform: it rescales the magnitude from [inner, outer] to
+    /// [0, 1] and re-applies the sign, so a lone call replaces an inner
+    /// radius and an outer range together.
     /// </para>
     ///
     /// <para>
@@ -625,6 +637,35 @@ namespace PadForge.Engine.Common.Mapping
                     case "ceil":  return Need(n, 1) ? Math.Ceiling(Args[0].Eval(sources, activeFlags)) : 0;
                     case "round": return Need(n, 1) ? Math.Round(Args[0].Eval(sources, activeFlags)) : 0;
                     case "sqrt":  return Need(n, 1) ? Math.Sqrt(Args[0].Eval(sources, activeFlags)) : 0;
+                    case "pow":
+                        return Need(n, 2)
+                            ? Math.Pow(Args[0].Eval(sources, activeFlags),
+                                       Args[1].Eval(sources, activeFlags))
+                            : 0;
+                    case "hypot":
+                        if (!Need(n, 2)) return 0;
+                        {
+                            double hx = Args[0].Eval(sources, activeFlags);
+                            double hy = Args[1].Eval(sources, activeFlags);
+                            return Math.Sqrt(hx * hx + hy * hy);
+                        }
+                    case "deadzone":
+                        // Magnitude rescaled from [inner, outer] to [0, 1],
+                        // sign re-applied. Inside the inner radius reads 0,
+                        // at or past the outer reads full. Degenerate or
+                        // inverted bounds pass the input through rather than
+                        // dividing by zero.
+                        if (!Need(n, 3)) return 0;
+                        {
+                            double dv = Args[0].Eval(sources, activeFlags);
+                            double lo = Args[1].Eval(sources, activeFlags);
+                            double hi = Args[2].Eval(sources, activeFlags);
+                            if (hi <= lo) return dv;
+                            double mag = Math.Abs(dv);
+                            if (mag <= lo) return 0;
+                            double scaled = Math.Min(1.0, (mag - lo) / (hi - lo));
+                            return dv < 0 ? -scaled : scaled;
+                        }
                     case "sin":   return Need(n, 1) ? Math.Sin(Args[0].Eval(sources, activeFlags)) : 0;
                     case "cos":   return Need(n, 1) ? Math.Cos(Args[0].Eval(sources, activeFlags)) : 0;
                     case "tan":   return Need(n, 1) ? Math.Tan(Args[0].Eval(sources, activeFlags)) : 0;
@@ -648,6 +689,7 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     "abs", "min", "max", "clamp", "sign", "floor", "ceil",
                     "round", "sqrt", "sin", "cos", "tan", "atan2", "lerp",
+                    "pow", "hypot", "deadzone",
                 };
 
             internal static bool IsKnownFunction(string name)

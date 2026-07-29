@@ -1,4 +1,4 @@
-﻿name: XCOM2 Configuration Xbox
+name: XCOM2 Configuration Xbox
 description: Your modified configuration for this game.
 slots: kbm
 xbox rows: 0

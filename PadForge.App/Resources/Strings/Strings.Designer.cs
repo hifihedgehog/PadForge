@@ -2089,6 +2089,7 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GyroAimEngageMode_Tooltip => Get("Settings_GyroAimEngageMode_Tooltip");
     public string Settings_GyroAimEngageMode_Hold => Get("Settings_GyroAimEngageMode_Hold");
     public string Settings_GyroAimEngageMode_Toggle => Get("Settings_GyroAimEngageMode_Toggle");
+    public string Settings_GyroAimEngageMode_ReleaseToEngage => Get("Settings_GyroAimEngageMode_ReleaseToEngage");
     public string Settings_GyroEngageStickSide => Get("Settings_GyroEngageStickSide");
     public string Settings_GyroEngageStickSide_Tooltip => Get("Settings_GyroEngageStickSide_Tooltip");
     public string Settings_GyroEngageStickSide_Right => Get("Settings_GyroEngageStickSide_Right");

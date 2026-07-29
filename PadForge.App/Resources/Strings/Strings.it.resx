@@ -1235,6 +1235,7 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Tieni premuto: il giroscopio si attiva mentre il pulsante di attivazione è premuto. Attiva/disattiva: ogni pressione attiva o disattiva il giroscopio, e il rilascio non fa nulla. Attiva/disattiva è persistente per ciclo di polling e si reimposta al cambio di profilo.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Tieni premuto</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Attiva/disattiva</value></data>
+  <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Rilascia per mirare</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>Stick di attivazione</value></data>
   <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Quale stick controlla la soglia di Easy Aim. Destro (predefinito) lascia invariati i profili esistenti. Entrambi usa lo stick spostato di più.</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Stick destro</value></data>

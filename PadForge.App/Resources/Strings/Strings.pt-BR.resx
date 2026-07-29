@@ -1215,6 +1215,7 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Segurar: o giroscópio dispara enquanto o botão de ativação é segurado. Alternar: cada pressionamento liga ou desliga o giroscópio. Soltar não faz nada. Alternar é persistente entre ciclos de polling e reseta na troca de perfil.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Segurar</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Alternar</value></data>
+  <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Soltar para mirar</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>Analógico de Ativação</value></data>
   <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Qual analógico controla o limiar do Easy Aim. Direito (padrão) mantém os perfis existentes inalterados. Qualquer um usa o analógico mais deslocado.</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Analógico Direito</value></data>

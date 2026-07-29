@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using PadForge.Common;
 using PadForge.Resources.Strings;
@@ -226,6 +226,13 @@ namespace PadForge.Services
             {
                 FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType);
             }
+
+            // A Workshop import parks its device tuning on the slot
+            // because it runs before any device exists. Now that one
+            // does, fold those stamps into the device's OWN settings so
+            // the existing cards show and edit them, and the engine has
+            // one place to read instead of an invisible override.
+            WorkshopTuningApplier.ApplyToAssignedDevice(slotIndex, us.GetPadSetting());
 
             row.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
 

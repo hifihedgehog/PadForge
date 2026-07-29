@@ -1215,6 +1215,7 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Maintenir : le gyroscope fonctionne tant que le bouton d'activation est maintenu. Bascule : chaque pression active ou désactive le gyroscope, et le relâchement n'a aucun effet. Bascule est persistante d'un cycle d'interrogation à l'autre et se réinitialise lors du changement de profil.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Maintenir</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Bascule</value></data>
+  <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Relâcher pour viser</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>Stick d'activation</value></data>
   <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Quel stick conditionne le seuil Easy Aim. Droit (par défaut) laisse les profils existants inchangés. Les deux utilisent le stick le plus déplacé.</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Stick droit</value></data>

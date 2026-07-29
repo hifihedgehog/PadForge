@@ -7410,6 +7410,7 @@
                                     <ComboBox SelectedValue="{Binding LeftTriggerRouteActivatorMode, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
                                         <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Hold, Source={x:Static strings:Strings.Instance}}" Tag="Hold"/>
                                         <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="Toggle"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_ReleaseToEngage, Source={x:Static strings:Strings.Instance}}" Tag="ReleaseToEngage"/>
                                         <ComboBoxItem Content="{Binding Pad_TriggerRouting_ActivatorMode_AlwaysOn, Source={x:Static strings:Strings.Instance}}" Tag="AlwaysOn"/>
                                     </ComboBox>
                                     <ui:Button Command="{Binding ResetLeftTriggerRouteActivatorModeCommand}" Style="{StaticResource ResetButton}"
@@ -7499,6 +7500,7 @@
                                     <ComboBox SelectedValue="{Binding RightTriggerRouteActivatorMode, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
                                         <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Hold, Source={x:Static strings:Strings.Instance}}" Tag="Hold"/>
                                         <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="Toggle"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_ReleaseToEngage, Source={x:Static strings:Strings.Instance}}" Tag="ReleaseToEngage"/>
                                         <ComboBoxItem Content="{Binding Pad_TriggerRouting_ActivatorMode_AlwaysOn, Source={x:Static strings:Strings.Instance}}" Tag="AlwaysOn"/>
                                     </ComboBox>
                                     <ui:Button Command="{Binding ResetRightTriggerRouteActivatorModeCommand}" Style="{StaticResource ResetButton}"
@@ -9835,6 +9837,7 @@
                                               ToolTip="{Binding Settings_GyroAimEngageMode_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                         <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Hold, Source={x:Static strings:Strings.Instance}}" Tag="Hold"/>
                                         <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="Toggle"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_ReleaseToEngage, Source={x:Static strings:Strings.Instance}}" Tag="ReleaseToEngage"/>
                                     </ComboBox>
                                     <ui:Button Command="{Binding ResetGyroAimEngageModeCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroAimEngageMode, Source={x:Static strings:Strings.Instance}}"/>

@@ -349,6 +349,21 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void ACurveTheUserAlreadyDrewSurvives()
+        {
+            // The curve needs its own case: it is guarded by IsLinear rather
+            // than a percent compare, and mutation testing found that guard
+            // unlocked while the anti-deadzone one beside it was covered.
+            var set = ArrangeRow("LeftThumbAxisX", s => s.ParamCurveExponent = 2.0);
+            var ps = new PadSetting { LeftThumbSensitivityCurveX = "0,0;0.5,0.9;1,1" };
+
+            WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps);
+
+            Assert.Equal("0,0;0.5,0.9;1,1", ps.LeftThumbSensitivityCurveX);
+            Assert.Equal(0.0, set.Rows[0].Sources[0].ParamCurveExponent);
+        }
+
+        [Fact]
         public void AnUnshapedTargetIsLeftAlone()
         {
             // A button target has no curve card, and the params should not be

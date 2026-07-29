@@ -2552,11 +2552,15 @@
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>West-Quadrant</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Mitte</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absoluter Zeiger</value></data>
-  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Stimmt die Touchpad-Zeiger-X/Y-Quellen ab, die den Cursor an die Position deines Fingers auf dem Pad versetzen (auf Maus X/Y eines virtuellen Tastatur/Maus-Controllers zuordnen). Bei 1.0 wird das Pad 1:1 auf den Bildschirm abgebildet. Erhöhe die Dehnung, um die Bildschirmränder zu erreichen, bevor der Daumen den Pad-Rand erreicht.</value></data>
-  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>Zeiger-Dehnung X</value></data>
-  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>Horizontale Rand-Dehnung um die Pad-Mitte. 1.5 erreicht die Bildschirmränder bei zwei Dritteln des physischen Wegs.</value></data>
-  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>Zeiger-Dehnung Y</value></data>
-  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>Vertikale Rand-Dehnung um die Pad-Mitte.</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Stellt die Touchpad-Zeiger-X/Y-Quellen ein, die den Cursor an die Fingerposition auf dem Pad setzen (auf Maus X/Y eines Tastatur-/Maus-Controllers legen). Größe 1,00 mit Mitte 0,50 bildet das Pad auf den ganzen Bildschirm ab. Kleinere Größe beschränkt den Cursor auf einen Ausschnitt, die Mitte legt ihn fest.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Bereichsbreite</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Breite des Bildschirmbereichs, auf den dieses Pad abgebildet wird, als Anteil der Bildschirmbreite. 1,00 deckt die volle Breite ab; 0,50 beschränkt den Zeiger auf die halbe Breite.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Bereichshöhe</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Höhe des Bildschirmbereichs, als Anteil der Bildschirmhöhe.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Bereichsmitte X</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX_Tooltip" xml:space="preserve"><value>Waagerechte Lage dieses Bereichs. 0,00 ist der linke Rand, 0,50 die Mitte, 1,00 der rechte Rand.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY" xml:space="preserve"><value>Bereichsmitte Y</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>Senkrechte Lage. 0,00 ist der obere Rand, 0,50 die Mitte, 1,00 der untere Rand.</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Wisch-Haptik</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pulsiert die Haptik des Controllers, während der Finger über dieses Touchpad fährt, wie die Trackpad-Ticks von Steam Input. Steam Controller und Steam Deck ticken mit dem Aktuator unter dem Pad; DualSense und DualShock 4 pulsieren die Rumble-Motoren.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Wisch-Haptik aktivieren</value></data>
@@ -2572,8 +2576,10 @@
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>Absoluten Zeiger zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Wisch-Haptik zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>Synthetischen Druck zurücksetzen</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>Zeiger-Dehnung X zurücksetzen</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>Zeiger-Dehnung Y zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeX" xml:space="preserve"><value>Bereichsbreite zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeY" xml:space="preserve"><value>Bereichshöhe zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterX" xml:space="preserve"><value>Bereichsmitte X zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterY" xml:space="preserve"><value>Bereichsmitte Y zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Wisch-Haptik aktivieren zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Puls-Intensität zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>Synthetischen Druck aktivieren zurücksetzen</value></data>

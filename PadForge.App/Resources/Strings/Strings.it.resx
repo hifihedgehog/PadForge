@@ -2574,11 +2574,15 @@
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>Quadrante ovest</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Centro</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Puntatore assoluto</value></data>
-  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Regola le sorgenti Touchpad puntatore X/Y, che portano il cursore alla posizione del dito sul pad (mappale su Mouse X/Y in un controller virtuale Tastiera / Mouse). A 1.0 il pad corrisponde 1:1 allo schermo. Aumenta l'allungamento per raggiungere i bordi dello schermo prima che il pollice raggiunga il bordo del pad.</value></data>
-  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>Allungamento del puntatore X</value></data>
-  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>Allungamento orizzontale del margine attorno al centro del pad. 1.5 raggiunge i bordi dello schermo a due terzi della corsa fisica.</value></data>
-  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>Allungamento del puntatore Y</value></data>
-  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>Allungamento verticale del margine attorno al centro del pad.</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Regola le sorgenti Puntatore X/Y del touchpad, che portano il cursore alla posizione del dito sul pad (mappale su mouse X/Y di un controller virtuale tastiera / mouse). Dimensione 1,00 con centro 0,50 mappa il pad sull'intero schermo. Riduci la dimensione per confinare il cursore a una parte e sposta il centro per collocarla.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Larghezza Area</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Larghezza dell'area dello schermo su cui si mappa questo pad, come frazione della larghezza schermo. 1,00 copre tutta la larghezza; 0,50 confina il cursore a metà.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Altezza Area</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Altezza dell'area dello schermo, come frazione dell'altezza schermo.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Centro Area X</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX_Tooltip" xml:space="preserve"><value>Posizione orizzontale dell'area. 0,00 è il bordo sinistro, 0,50 il centro, 1,00 il bordo destro.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY" xml:space="preserve"><value>Centro Area Y</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>Posizione verticale. 0,00 è il bordo superiore, 0,50 il centro, 1,00 il bordo inferiore.</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Feedback aptico di scorrimento</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Fa pulsare il feedback aptico del controller mentre il dito percorre questo touchpad, come i tick del trackpad di Steam Input. Gli Steam Controller e lo Steam Deck fanno scattare l'attuatore sotto il pad; DualSense e DualShock 4 pulsano i motori di vibrazione.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Abilita feedback aptico di scorrimento</value></data>
@@ -2594,8 +2598,10 @@
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>Ripristina puntatore assoluto</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Ripristina feedback aptico di scorrimento</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>Ripristina pressione sintetica</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>Ripristina allungamento del puntatore X</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>Ripristina allungamento del puntatore Y</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeX" xml:space="preserve"><value>Reimposta larghezza area</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeY" xml:space="preserve"><value>Reimposta altezza area</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterX" xml:space="preserve"><value>Reimposta centro area X</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterY" xml:space="preserve"><value>Reimposta centro area Y</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Ripristina abilita feedback aptico di scorrimento</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Ripristina intensità dell'impulso</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>Ripristina abilita pressione sintetica</value></data>

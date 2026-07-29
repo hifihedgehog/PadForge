@@ -1165,11 +1165,15 @@ namespace PadForge
                         nameof(PadViewModel.TouchpadMouseSensitivityY) or
                         nameof(PadViewModel.TouchpadMouseInvertX) or
                         nameof(PadViewModel.TouchpadMouseInvertY) or
-                        // Absolute-pointer stretch (#9 B-15). Without these
+                        // Absolute-pointer region (#9 B-15). Without these
                         // the card's edits never mark dirty and revert on
                         // restart (the Motion Lean lesson, audit lens 1m F2).
-                        nameof(PadViewModel.TouchpadPointerStretchX) or
-                        nameof(PadViewModel.TouchpadPointerStretchY) or
+                        // All FOUR: a center-only edit is just as losable as
+                        // a size-only one.
+                        nameof(PadViewModel.TouchpadPointerRegionSizeX) or
+                        nameof(PadViewModel.TouchpadPointerRegionSizeY) or
+                        nameof(PadViewModel.TouchpadPointerRegionCenterX) or
+                        nameof(PadViewModel.TouchpadPointerRegionCenterY) or
                         nameof(PadViewModel.TouchpadSwipeHapticsEnabled) or
                         nameof(PadViewModel.TouchpadSwipeHapticsIntensity);
 

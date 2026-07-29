@@ -5239,24 +5239,21 @@ namespace PadForge.Engine.Common.Mapping
         /// <list type="number">
         /// <item>Half renormalize: pad fraction [0..1] within the window
         /// (<see cref="RenormalizeTouchpadHalf"/>).</item>
-        /// <item>Margin stretch (pad space, around the pad center):
-        /// <c>0.5 + (v - 0.5) * stretch</c>, clamped. The Wii aim map ships
-        /// the same concept as IrMarginStretchX/Y because tracked aim cannot
-        /// reach the camera edges; on a touchpad the finger CAN reach the
-        /// edges, so the default is 1.0 (Steam's 1:1 mouse_region map) and
-        /// the Touchpad-tab knob raises it for thumbs that stop short of the
-        /// bezel. Per (slot, device, pad) via
-        /// <see cref="TouchpadMouseSettingsProvider"/>
-        /// (<see cref="PadForge.Engine.Touchpad.TouchpadGestureSettings.PointerStretchX"/>/Y),
-        /// looked up with the EFFECTIVE device guid (the IR pointer's
-        /// convention) so translated empty-guid rows read the assigned
-        /// device's tuning.</item>
-        /// <item>Region window (screen space, per source):
-        /// <c>(2*ParamPointerCenter - 1) + v * ParamPointerExtent</c>, the
-        /// translator's channel for Steam mouse_region position_x/position_y
-        /// (region center, percent of screen) and scale x
-        /// sensitivity_horiz/vert_scale (region extent). Defaults 0.5 / 1.0
-        /// are the identity full-screen map.</item>
+        /// <item>Region window (screen space):
+        /// <c>(2*center - 1) + v * size</c>, clamped. The screen rectangle
+        /// the pad maps onto, from the pad's own settings per
+        /// (slot, device, pad) via <see cref="TouchpadMouseSettingsProvider"/>
+        /// (<see cref="PadForge.Engine.Touchpad.TouchpadGestureSettings.PointerRegionCenterX"/>
+        /// and PointerRegionSizeX/Y), looked up with the EFFECTIVE device
+        /// guid (the IR pointer's convention) so translated empty-guid rows
+        /// read the assigned device's tuning. Defaults 0.5 / 1.0 are the
+        /// identity full-screen map, which is Steam's mouse_region default.
+        /// Size subsumes the old PointerStretch: the two were algebraically
+        /// identical and stretch could not go below 1.0, so it could express
+        /// only regions LARGER than the screen while most authored configs
+        /// want smaller. The translator's mouse_region channel
+        /// (position_x/position_y for center, scale x
+        /// sensitivity_horiz/vert_scale for size) lands here.</item>
         /// </list>
         /// Invert is applied by the public Evaluate* wrappers, matching the
         /// IR pointer path.</summary>
@@ -5275,20 +5272,41 @@ namespace PadForge.Engine.Common.Mapping
             if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
             raw = RenormalizeTouchpadHalf(raw, axisOffset, half);
 
+            // The screen rectangle is ONE setting, and it lives on the pad's
+            // own settings where the user can see and edit it. It used to be
+            // two: a per-pad PointerStretch with a UI and a floor of 1.0, and
+            // a per-source ParamPointerCenter/Extent with no UI at all, which
+            // is where every imported Steam mouse_region landed. They were the
+            // same quantity (stretch S and extent S both yield clamp(u*S)),
+            // so the pad could be tuned only in the direction the importer
+            // never used.
             var tp = TouchpadMouseSettingsProvider?.Invoke(slotIndex, deviceGuid ?? "", padIdx);
-            float stretch = axisOffset == 0
-                ? (tp?.PointerStretchX ?? 1.0f)
-                : (tp?.PointerStretchY ?? 1.0f);
-            if (stretch != 1f)
+            float size = axisOffset == 0
+                ? (tp?.PointerRegionSizeX ?? 1.0f)
+                : (tp?.PointerRegionSizeY ?? 1.0f);
+            float centerFrac = axisOffset == 0
+                ? (tp?.PointerRegionCenterX ?? 0.5f)
+                : (tp?.PointerRegionCenterY ?? 0.5f);
+
+            // Handover, NOT a second stage: exactly one of the two applies,
+            // never both composed. An imported Steam mouse_region carries its
+            // geometry on the source because import runs before any device is
+            // assigned and the per-device settings are keyed by device guid.
+            // The source drives until the user touches the Absolute Pointer
+            // card, at which point the pad settings own the region forever.
+            //
+            // Keyed on the flag rather than on "the pad is still at 0.5/1.0",
+            // because a user who deliberately sets the region back to full
+            // screen hits that value test and would silently get the imported
+            // rectangle back with no way to undo it.
+            if (tp == null || !tp.PointerRegionAuthored)
             {
-                raw = 0.5f + (raw - 0.5f) * stretch;
-                if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
+                size = (float)src.ParamPointerExtent;
+                centerFrac = (float)src.ParamPointerCenter;
             }
 
             float v = raw * 2f - 1f;
-            float center = (float)src.ParamPointerCenter * 2f - 1f;
-            float extent = (float)src.ParamPointerExtent;
-            v = center + v * extent;
+            v = (centerFrac * 2f - 1f) + v * size;
             if (v < -1f) v = -1f;
             else if (v > 1f) v = 1f;
             return v;

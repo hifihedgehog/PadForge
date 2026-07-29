@@ -10343,11 +10343,14 @@
                         </Border>
 
                         <!-- ─── Absolute Pointer card (#9 B-15) ───
-                             Margin stretch for the "Touchpad N Pointer X/Y"
-                             absolute cursor sources. 1.0 = Steam's 1:1
-                             pad-to-screen mouse_region map; higher values
-                             reach the screen edges before the pad bezel
-                             (the Wii aim map's margin-stretch concept). -->
+                             The screen rectangle the "Touchpad N Pointer X/Y"
+                             absolute cursor sources map onto. Size 1.0 with
+                             center 0.5 is Steam's full-screen 1:1
+                             mouse_region map; a smaller size confines the
+                             cursor to part of the screen and the center
+                             places that part. Size below 1.0 is the case an
+                             earlier stretch-only knob could not express, so
+                             imported regions were invisible AND uneditable. -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -10363,28 +10366,52 @@
                                            Style="{StaticResource CardDescription}"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_PointerStretchX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <Slider Value="{Binding TouchpadPointerStretchX, Mode=TwoWay}"
-                                            Style="{StaticResource DzSlider}" Minimum="1" Maximum="3" TickFrequency="0.05"
-                                            ToolTip="{Binding Pad_Touchpad_PointerStretchX_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <TextBox Text="{Binding TouchpadPointerStretchX, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                    <TextBlock Text="{Binding Pad_Touchpad_PointerRegionSizeX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding TouchpadPointerRegionSizeX, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="0.05" Maximum="3" TickFrequency="0.05"
+                                            ToolTip="{Binding Pad_Touchpad_PointerRegionSizeX_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadPointerRegionSizeX, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Style="{StaticResource DzValueEdit}"
-                                             ToolTip="{Binding Pad_Touchpad_PointerStretchX_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                             ToolTip="{Binding Pad_Touchpad_PointerRegionSizeX_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
-                                    <ui:Button Command="{Binding ResetTouchpadPointerStretchXCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadPointerStretchX, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadPointerRegionSizeXCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadPointerRegionSizeX, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_PointerStretchY, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <Slider Value="{Binding TouchpadPointerStretchY, Mode=TwoWay}"
-                                            Style="{StaticResource DzSlider}" Minimum="1" Maximum="3" TickFrequency="0.05"
-                                            ToolTip="{Binding Pad_Touchpad_PointerStretchY_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <TextBox Text="{Binding TouchpadPointerStretchY, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                    <TextBlock Text="{Binding Pad_Touchpad_PointerRegionSizeY, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding TouchpadPointerRegionSizeY, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="0.05" Maximum="3" TickFrequency="0.05"
+                                            ToolTip="{Binding Pad_Touchpad_PointerRegionSizeY_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadPointerRegionSizeY, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Style="{StaticResource DzValueEdit}"
-                                             ToolTip="{Binding Pad_Touchpad_PointerStretchY_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                             ToolTip="{Binding Pad_Touchpad_PointerRegionSizeY_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
-                                    <ui:Button Command="{Binding ResetTouchpadPointerStretchYCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadPointerStretchY, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadPointerRegionSizeYCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadPointerRegionSizeY, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Touchpad_PointerRegionCenterX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding TouchpadPointerRegionCenterX, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="0" Maximum="1" TickFrequency="0.01"
+                                            ToolTip="{Binding Pad_Touchpad_PointerRegionCenterX_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadPointerRegionCenterX, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Style="{StaticResource DzValueEdit}"
+                                             ToolTip="{Binding Pad_Touchpad_PointerRegionCenterX_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadPointerRegionCenterXCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadPointerRegionCenterX, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Touchpad_PointerRegionCenterY, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding TouchpadPointerRegionCenterY, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="0" Maximum="1" TickFrequency="0.01"
+                                            ToolTip="{Binding Pad_Touchpad_PointerRegionCenterY_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadPointerRegionCenterY, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Style="{StaticResource DzValueEdit}"
+                                             ToolTip="{Binding Pad_Touchpad_PointerRegionCenterY_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadPointerRegionCenterYCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadPointerRegionCenterY, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

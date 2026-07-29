@@ -2552,11 +2552,15 @@
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>Quadrant ouest</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Centre</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Pointeur absolu</value></data>
-  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Règle les sources Pavé tactile pointeur X/Y, qui placent le curseur à la position du doigt sur le pavé (affectez-les à Souris X/Y sur une manette virtuelle Clavier / Souris). À 1.0, le pavé correspond 1:1 à l'écran. Augmentez l'étirement pour atteindre les bords de l'écran avant que le pouce n'atteigne le bord du pavé.</value></data>
-  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>Étirement du pointeur X</value></data>
-  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>Étirement horizontal de la marge autour du centre du pavé. 1.5 atteint les bords de l'écran aux deux tiers de la course physique.</value></data>
-  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>Étirement du pointeur Y</value></data>
-  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>Étirement vertical de la marge autour du centre du pavé.</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Règle les sources Pointeur X/Y du pavé tactile, qui placent le curseur à la position du doigt sur le pad (à mapper sur souris X/Y d'une manette virtuelle clavier / souris). Taille 1,00 avec centre 0,50 fait correspondre le pad à tout l'écran. Réduisez la taille pour confiner le curseur à une partie, et déplacez le centre pour la situer.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Largeur de la Zone</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Largeur de la zone d'écran à laquelle ce pad correspond, en fraction de la largeur d'écran. 1,00 couvre toute la largeur ; 0,50 confine le curseur à la moitié.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Hauteur de la Zone</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Hauteur de la zone d'écran, en fraction de la hauteur d'écran.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Centre de la Zone X</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX_Tooltip" xml:space="preserve"><value>Position horizontale de cette zone. 0,00 est le bord gauche, 0,50 le milieu, 1,00 le bord droit.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY" xml:space="preserve"><value>Centre de la Zone Y</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>Position verticale. 0,00 est le bord supérieur, 0,50 le milieu, 1,00 le bord inférieur.</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptique de balayage</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Fait vibrer l'haptique de la manette pendant que le doigt parcourt ce pavé tactile, comme les tics de trackpad de Steam Input. Les Steam Controller et le Steam Deck font tiquer l'actionneur sous le pavé ; DualSense et DualShock 4 pulsent les moteurs de vibration.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Activer l'haptique de balayage</value></data>
@@ -2572,8 +2576,10 @@
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>Réinitialiser le pointeur absolu</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Réinitialiser l'haptique de balayage</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>Réinitialiser la pression synthétique</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>Réinitialiser l'étirement du pointeur X</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>Réinitialiser l'étirement du pointeur Y</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeX" xml:space="preserve"><value>Réinitialiser la largeur de la zone</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeY" xml:space="preserve"><value>Réinitialiser la hauteur de la zone</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterX" xml:space="preserve"><value>Réinitialiser le centre de la zone X</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterY" xml:space="preserve"><value>Réinitialiser le centre de la zone Y</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Réinitialiser l'activation de l'haptique de balayage</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Réinitialiser l'intensité des impulsions</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>Réinitialiser l&apos;activation de la pression synthétique</value></data>

@@ -2552,11 +2552,15 @@
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>西区域</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>中心</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>绝对指针</value></data>
-  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>调整触控板指针 X/Y 源，它们会把光标直接移动到手指在触控板上的位置（请在键盘 / 鼠标虚拟控制器上将其映射到鼠标 X/Y）。1.0 时触控板与屏幕 1:1 对应。调高拉伸可在拇指到达触控板边缘之前到达屏幕边缘。</value></data>
-  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>指针拉伸 X</value></data>
-  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>以触控板中心为基准的水平边距拉伸。1.5 时在实际移动三分之二处即可到达屏幕边缘。</value></data>
-  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>指针拉伸 Y</value></data>
-  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>以触控板中心为基准的垂直边距拉伸。</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>调整触控板指针 X/Y 源，它会把光标移动到手指在触控板上的位置（请将其映射到键盘 / 鼠标虚拟控制器的鼠标 X/Y）。大小 1.00、中心 0.50 时触控板对应整个屏幕。缩小大小可将光标限制在屏幕的一部分，并用中心确定其位置。</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>区域宽度</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>此触控板映射到的屏幕区域宽度，以屏幕宽度的比例表示。1.00 覆盖整个宽度；0.50 将光标限制在半屏内。</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>区域高度</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>屏幕区域的高度，以屏幕高度的比例表示。</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>区域中心 X</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX_Tooltip" xml:space="preserve"><value>该区域的水平位置。0.00 为左边缘，0.50 为中间，1.00 为右边缘。</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY" xml:space="preserve"><value>区域中心 Y</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>垂直位置。0.00 为上边缘，0.50 为中间，1.00 为下边缘。</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>滑动触觉反馈</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>当手指在此触控板上滑动时使手柄的触觉反馈产生脉冲，类似 Steam Input 的触控板咔嗒反馈。Steam Controller 和 Steam Deck 通过触控板下方的致动器产生咔嗒；DualSense 和 DualShock 4 则脉冲震动马达。</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>启用滑动触觉反馈</value></data>
@@ -2572,8 +2576,10 @@
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>重置绝对指针</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>重置滑动触觉反馈</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>重置合成压力</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>重置指针拉伸 X</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>重置指针拉伸 Y</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeX" xml:space="preserve"><value>重置区域宽度</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeY" xml:space="preserve"><value>重置区域高度</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterX" xml:space="preserve"><value>重置区域中心 X</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterY" xml:space="preserve"><value>重置区域中心 Y</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>重置启用滑动触觉反馈</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>重置脉冲强度</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>重置启用合成压力</value></data>

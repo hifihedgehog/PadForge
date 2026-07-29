@@ -2552,11 +2552,15 @@
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>西ゾーン</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>中央</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>絶対ポインター</value></data>
-  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>カーソルをパッド上の指の位置へ移動させるタッチパッド ポインター X/Y ソースを調整します (キーボード / マウスの仮想コントローラーでマウス X/Y に割り当ててください)。1.0 ではパッドが画面に 1:1 で対応します。親指がパッドの端に届く前に画面の端へ届くようにするには、ストレッチを上げてください。</value></data>
-  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>ポインターストレッチ X</value></data>
-  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>パッド中心を基準にした水平方向のマージンストレッチです。1.5 では物理移動量の 3 分の 2 で画面の端に到達します。</value></data>
-  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>ポインターストレッチ Y</value></data>
-  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>パッド中心を基準にした垂直方向のマージンストレッチです。</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>タッチパッド ポインター X/Y ソースを調整します。これはパッド上の指の位置にカーソルを移動させます (キーボード / マウス仮想コントローラーのマウス X/Y に割り当ててください)。サイズ 1.00、中心 0.50 でパッドが画面全体に対応します。サイズを小さくするとカーソルが画面の一部に制限され、中心でその位置を決めます。</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>領域の幅</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>このパッドを割り当てる画面領域の幅を、画面幅に対する割合で指定します。1.00 で全幅、0.50 でカーソルを画面の半分に制限します。</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>領域の高さ</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>画面領域の高さを、画面の高さに対する割合で指定します。</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>領域の中心 X</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX_Tooltip" xml:space="preserve"><value>領域の水平位置。0.00 が左端、0.50 が中央、1.00 が右端です。</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY" xml:space="preserve"><value>領域の中心 Y</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>垂直位置。0.00 が上端、0.50 が中央、1.00 が下端です。</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>スワイプハプティクス</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Steam Input のトラックパッドのティックのように、指がこのタッチパッド上を移動するあいだコントローラーのハプティクスをパルスさせます。Steam Controller と Steam Deck はパッド下のアクチュエーターをティックし、DualSense と DualShock 4 は振動モーターをパルスします。</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>スワイプハプティクスを有効化</value></data>
@@ -2572,8 +2576,10 @@
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>絶対ポインターをリセット</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>スワイプハプティクスをリセット</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>合成圧力をリセット</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>ポインターストレッチ X をリセット</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>ポインターストレッチ Y をリセット</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeX" xml:space="preserve"><value>領域の幅をリセット</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeY" xml:space="preserve"><value>領域の高さをリセット</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterX" xml:space="preserve"><value>領域の中心 X をリセット</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterY" xml:space="preserve"><value>領域の中心 Y をリセット</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>スワイプハプティクスの有効化をリセット</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>パルス強度をリセット</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>合成圧力の有効化をリセット</value></data>

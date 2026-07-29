@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using PadForge.Common.Input;
 using PadForge.Engine.Data;
 using PadForge.Services;
+using System.Linq;
 using Xunit;
 
 namespace PadForge.Tests
@@ -42,6 +43,49 @@ namespace PadForge.Tests
             sets[Slot] = set;
             SettingsManager.SlotMappingSets = sets;
             return set;
+        }
+
+        [Fact]
+        public void EveryDeviceAssignmentPathAppliesTheStamps()
+        {
+            // Grep-as-a-test, and it exists because the first cut wired the
+            // applier into ONE of the two assignment paths. The runtime
+            // overlays it replaced applied on every path by construction, so
+            // an entry point that assigns a device without folding the stamps
+            // silently drops the imported tuning for whichever path the user
+            // takes. A third path added later fails here on arrival.
+            var src = System.IO.File.ReadAllText(
+                System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Services", "DeviceService.cs"));
+
+            // Split into member bodies on the indentation marker. Plain
+            // string splitting on purpose: no regex, no escape literals.
+            var methods = src.Split(
+                new[] { "        private ", "        public ", "        internal " },
+                StringSplitOptions.None);
+
+            var assigners = methods
+                .Where(m => m.Contains("SettingsManager.AssignDeviceToSlot("))
+                .ToList();
+            Assert.True(assigners.Count >= 2,
+                "expected at least 2 assignment paths, found " + assigners.Count);
+
+            var unguarded = assigners
+                .Where(m => !m.Contains("WorkshopTuningApplier.ApplyToAssignedDevice"))
+                .Select(m => new string(m.TakeWhile(c => c != '(').ToArray()).Trim())
+                .ToList();
+
+            Assert.True(unguarded.Count == 0,
+                "these assignment paths never fold the Workshop stamps into the "
+                + "device's own settings: " + string.Join(" | ", unguarded));
+        }
+
+        private static string RepoRoot()
+        {
+            var d = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
+            while (d != null && !System.IO.File.Exists(System.IO.Path.Combine(d.FullName, "PadForge.sln")))
+                d = d.Parent;
+            Assert.NotNull(d);
+            return d.FullName;
         }
 
         [Fact]

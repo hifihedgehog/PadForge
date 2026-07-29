@@ -2528,10 +2528,28 @@ namespace PadForge.Engine.Common.Mapping
             else // Local
             {
                 pitch = gPitch;
+                // ROLL ENTERS THE YAW LANE NEGATED. Both are horizontal-aim
+                // sources and they have to agree, or the same turn drives the
+                // view one way through yaw and the other through roll, and
+                // the Horizontal blend flips direction the moment roll
+                // overtakes yaw.
+                //
+                // They do NOT agree raw. SDL's frame (SDL_sensor.h): +Z
+                // points toward the player and positive rotation is
+                // counter-clockwise seen from a positive location on the
+                // axis, so +roll tilts the controller's top to the LEFT while
+                // +yaw turns its nose to the LEFT. Those are opposite
+                // steering intents: tilting the top left banks you right the
+                // way leaning a wheel does, which is how it reads in the
+                // hand and how it was reported.
+                //
+                // Mapping path only. The passthrough / DSU chain is
+                // ShapePassthroughAxis and keeps SDL's native frame, which
+                // the motion-snapshot contract requires.
                 if (isHorizontal)
-                    yaw = Math.Abs(gYaw) >= Math.Abs(gRoll) ? gYaw : gRoll;
+                    yaw = Math.Abs(gYaw) >= Math.Abs(gRoll) ? gYaw : -gRoll;
                 else if (isRollSource)
-                    yaw = gRoll;
+                    yaw = -gRoll;
                 else
                     yaw = gYaw;
             }

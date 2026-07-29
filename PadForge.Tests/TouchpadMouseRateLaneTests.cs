@@ -262,6 +262,59 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void LandingElsewhereMidCoast_DoesNotJump()
+        {
+            // The coasting entry OUTLIVES the lift, which is what makes it
+            // coast. So the next touchdown finds a stored position from the
+            // last lift, and reading the gap to the new spot as motion threw
+            // the cursor across the screen. It is not motion; it is two
+            // different places.
+            UseSettings(momentum: true, decay: 0.90f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.60f), TicksAt(0.004f), src, slot);
+                Assert.True(Counts(PadAt(0.60f, down: false), TicksAt(0.005f), src, slot) > 0f,
+                    "harness produced no coast to interrupt");
+
+                // Finger returns at the far end of the pad, mid-glide.
+                float onLanding = Counts(PadAt(0.05f), TicksAt(0.010f), src, slot);
+                Assert.Equal(0f, onLanding);
+
+                // And it tracks normally from the NEW spot, not the old one.
+                float after = Counts(PadAt(0.07f), TicksAt(0.014f), src, slot);
+                Assert.True(after > 0f, "tracking did not resume after re-contact");
+                float sane = Counts(PadAt(0.09f), TicksAt(0.018f), src, slot);
+                Assert.True(Math.Abs(after - sane) < Math.Abs(after) * 0.5f,
+                    $"re-contact left a distorted velocity: {after} then {sane}");
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void TouchingDownStopsTheGlide()
+        {
+            // Catching the ball stops it, which the feel chain's trackball
+            // already documents. Without this the old glide keeps adding to
+            // the new drag.
+            UseSettings(momentum: true, decay: 0.95f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.62f), TicksAt(0.004f), src, slot);
+                Assert.True(Counts(PadAt(0.62f, down: false), TicksAt(0.005f), src, slot) > 0f);
+
+                // Land and hold perfectly still: no coast may leak through.
+                Counts(PadAt(0.30f), TicksAt(0.010f), src, slot);
+                Assert.Equal(0f, Counts(PadAt(0.30f), TicksAt(0.011f), src, slot));
+                Assert.Equal(0f, Counts(PadAt(0.30f), TicksAt(0.012f), src, slot));
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
         public void MomentumGlide_LastsLongerAtAHigherDecay()
         {
             // What the slider is for: the knob has to change the distance.

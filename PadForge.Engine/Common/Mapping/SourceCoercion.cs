@@ -2899,6 +2899,12 @@ namespace PadForge.Engine.Common.Mapping
             public float Velocity;          // pad fraction per second
             public float LastRaw;
             public long LastReportTicks;
+            /// <summary>Whether the finger was on the pad last poll. Without
+            /// momentum the entry dies on lift and re-contact re-seeds, but a
+            /// coasting entry OUTLIVES the lift, so the down-edge has to be
+            /// detected or the first poll after landing measures the distance
+            /// between where the finger left and where it returned.</summary>
+            public bool WasDown;
         }
 
         private static readonly ConcurrentDictionary<
@@ -3001,6 +3007,7 @@ namespace PadForge.Engine.Common.Mapping
                     return (0f, 0f);
                 }
                 coast.LastReportTicks = nowTicks;
+                coast.WasDown = false;
                 _touchVelocity[key] = coast;
                 return EmitTouchCounts(coast.Velocity, src, tpNow, axisOffset, dtSeconds, forX);
             }
@@ -3011,7 +3018,27 @@ namespace PadForge.Engine.Common.Mapping
             // Deferring that threw the first motion after every touchdown
             // away, which a test caught.
             var st = _touchVelocity.GetOrAdd(key,
-                _ => new TouchVelocity { LastRaw = raw, LastReportTicks = nowTicks });
+                _ => new TouchVelocity { LastRaw = raw, LastReportTicks = nowTicks, WasDown = true });
+
+            if (!st.WasDown)
+            {
+                // DOWN EDGE onto a still-coasting entry. Re-seed at wherever
+                // the finger actually landed: its old position is from the
+                // last lift and the gap between them is not motion, it is
+                // just two different places. Reading it as motion threw the
+                // cursor across the screen whenever momentum was on and the
+                // finger came back down somewhere else.
+                //
+                // Stopping the glide here is also the right behaviour, and
+                // the one the feel chain's trackball already documents:
+                // catching the ball stops it.
+                st.Velocity = 0f;
+                st.LastRaw = raw;
+                st.LastReportTicks = nowTicks;
+                st.WasDown = true;
+                _touchVelocity[key] = st;
+                return (0f, 0f);
+            }
 
             if (raw != st.LastRaw)
             {

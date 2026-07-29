@@ -1240,9 +1240,7 @@ namespace PadForge.Services
                 // the first pad-page save.
                 if (s == null
                     || (s.ParamCurveExponent <= 0 && s.ParamRangeOuter <= 0
-                        && s.ParamAntiDeadzone <= 0 && s.ParamSmoothingAlpha <= 0
-                        && s.ParamMoveThreshold <= 0 && s.ParamAccel <= 0
-                        && s.ParamTrackballDecay <= 0
+                        && s.ParamAntiDeadzone <= 0 && s.ParamAccel <= 0
                         && string.IsNullOrEmpty(s.GateDescriptor)
                         && string.IsNullOrEmpty(s.Gate2Descriptor)
                         && s.ParamStickDeadZoneShape == 0
@@ -1277,10 +1275,7 @@ namespace PadForge.Services
                         if (p.stamp.ParamCurveExponent > 0) src.ParamCurveExponent = p.stamp.ParamCurveExponent;
                         if (p.stamp.ParamRangeOuter > 0) src.ParamRangeOuter = p.stamp.ParamRangeOuter;
                         if (p.stamp.ParamAntiDeadzone > 0) src.ParamAntiDeadzone = p.stamp.ParamAntiDeadzone;
-                        if (p.stamp.ParamSmoothingAlpha > 0) src.ParamSmoothingAlpha = p.stamp.ParamSmoothingAlpha;
-                        if (p.stamp.ParamMoveThreshold > 0) src.ParamMoveThreshold = p.stamp.ParamMoveThreshold;
                         if (p.stamp.ParamAccel > 0) src.ParamAccel = p.stamp.ParamAccel;
-                        if (p.stamp.ParamTrackballDecay > 0) src.ParamTrackballDecay = p.stamp.ParamTrackballDecay;
                         if (!string.IsNullOrEmpty(p.stamp.GateDescriptor)) src.GateDescriptor = p.stamp.GateDescriptor;
                         if (!string.IsNullOrEmpty(p.stamp.Gate2Descriptor)) src.Gate2Descriptor = p.stamp.Gate2Descriptor;
                         if (p.stamp.ParamStickDeadZoneShape != 0) src.ParamStickDeadZoneShape = p.stamp.ParamStickDeadZoneShape;

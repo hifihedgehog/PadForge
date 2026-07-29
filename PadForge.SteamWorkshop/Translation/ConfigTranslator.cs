@@ -890,11 +890,18 @@ namespace PadForge.SteamWorkshop.Translation
             /// (rotation is row structure, not a source knob).</summary>
             public void StampFeel(MappingSource src, bool isX)
             {
-                if (SmoothingAlpha > 0) src.ParamSmoothingAlpha = SmoothingAlpha;
+                // Only what PadForge exposes. A setting the user cannot see
+                // or change is not a feature, it is invisible behavior, and
+                // importing it means an imported profile feels different from
+                // an identical hand-built one with no way to tell why.
+                //
+                // Dropped here: mouse_smoothing, mouse_move_threshold and
+                // trackball friction. Touchpad glide IS supported, through
+                // the Touchpad tab's own Momentum card, which the mouse lane
+                // reads; the per-source exponential decay was a second
+                // implementation of it reachable only when a pad drove
+                // something other than the mouse.
                 if (Accel > 0) src.ParamAccel = Accel;
-                if (MoveThreshold > 0) src.ParamMoveThreshold = MoveThreshold;
-                double decay = isX ? TrackballDecayX : TrackballDecayY;
-                if (decay > 0) src.ParamTrackballDecay = decay;
             }
         }
 

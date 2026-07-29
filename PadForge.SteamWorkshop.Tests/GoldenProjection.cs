@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 using PadForge.Engine.Data;
 using PadForge.SteamWorkshop.Translation;
@@ -349,14 +349,8 @@ namespace PadForge.SteamWorkshop.Tests
                 sb.Append(" anti=").Append(s.ParamAntiDeadzone.ToString("0.###", CultureInfo.InvariantCulture));
             if (s.ParamFlickTime != 0.1)
                 sb.Append(" flickTime=").Append(s.ParamFlickTime.ToString("0.###", CultureInfo.InvariantCulture));
-            if (s.ParamSmoothingAlpha != 0)
-                sb.Append(" smooth=").Append(s.ParamSmoothingAlpha.ToString("0.###", CultureInfo.InvariantCulture));
             if (s.ParamAccel != 0)
                 sb.Append(" accel=").Append(s.ParamAccel.ToString("0.###", CultureInfo.InvariantCulture));
-            if (s.ParamMoveThreshold != 0)
-                sb.Append(" moveThresh=").Append(s.ParamMoveThreshold.ToString("0.###", CultureInfo.InvariantCulture));
-            if (s.ParamTrackballDecay != 0)
-                sb.Append(" trackball=").Append(s.ParamTrackballDecay.ToString("0.####", CultureInfo.InvariantCulture));
             // v25: the stick deadzone geometry stamp (deadzone_shape on
             // stick-hosted mouse pairs). Non-default only, same
             // byte-stability rule.

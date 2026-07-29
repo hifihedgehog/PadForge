@@ -40,9 +40,6 @@ may take but not how far it may travel.
 | `ParamCurveExponent` | **Preserve-only** (`SettingsService:1277`) |
 | `ParamRangeOuter` | **Preserve-only** (`:1278`) |
 | `ParamAntiDeadzone` | **Preserve-only** (`:1279`) |
-| `ParamSmoothingAlpha` | **Preserve-only** (`:1280`) |
-| `ParamMoveThreshold` | **Preserve-only** (`:1281`) |
-| `ParamTrackballDecay` | **Preserve-only** (`:1283`) |
 | `GateDescriptor` | **Preserve-only** (`:1284`) |
 | `Gate2Descriptor` | **Preserve-only** (`:1285`) |
 | `ParamStickDeadZoneInner` | **Preserve-only** (`:1287`) |
@@ -67,6 +64,22 @@ may take but not how far it may travel.
 ## MappingRow (8 persisted)
 
 All eight have cards.
+
+## The rule
+
+A setting PadForge does not expose is not imported. Not parked, not applied
+invisibly, not reported. An imported profile must be reachable through the
+same cards as a hand-built one, or the two feel different with nothing on
+screen to explain why.
+
+Removed under this rule: `mouse_smoothing`, `mouse_move_threshold` and
+trackball `friction`. Touchpad glide IS supported, through the Touchpad tab's
+Momentum card; the per-source decay was a second implementation of it on a
+different physical model, reachable only when a pad drove a non-mouse target.
+
+Binding STRUCTURE is not a setting and stays: `GateDescriptor` carries Steam's
+`requires_click`, so dropping it would stop bindings firing rather than remove
+a knob.
 
 ## The pattern
 

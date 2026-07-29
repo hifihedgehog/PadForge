@@ -1,4 +1,4 @@
-name: SkyrimSE Perfected: KB/M Precision + Gyro + Convenient Touch Menus
+﻿name: SkyrimSE Perfected: KB/M Precision + Gyro + Convenient Touch Menus
 description: A fully labelled and carefully tweaked config that features precise aiming and convenient touch menu...
 slots: xbox kbm
 xbox rows: 0
@@ -51,12 +51,12 @@ kbm rows: 34
     <- Gamepad LeftTrigger [upper-half] dz=15
   Base | KbmMouseX | Sum
     <- Gyro Yaw gyroSens=1.1 accel=0.5
-    <- Touchpad 1 Finger 0 X sens=2.736 smooth=0.19
-    <- Touchpad 1 Finger 0 Y [inverted] sens=0.682 smooth=0.19
+    <- Touchpad 1 Finger 0 X sens=2.736
+    <- Touchpad 1 Finger 0 Y [inverted] sens=0.682
   Base | KbmMouseY | Sum
     <- Gyro Pitch gyroSens=1.1 accel=0.5
-    <- Touchpad 1 Finger 0 X sens=0.682 smooth=0.19
-    <- Touchpad 1 Finger 0 Y sens=2.736 smooth=0.19
+    <- Touchpad 1 Finger 0 X sens=0.682
+    <- Touchpad 1 Finger 0 Y sens=2.736
   Layer_789818086_0_MS_left_trackpad_17 | KbmKey74
     <- Menu 1 Item 0
   Layer_789818086_0_MS_left_trackpad_17 | KbmKey78

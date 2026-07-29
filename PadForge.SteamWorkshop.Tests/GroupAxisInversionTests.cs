@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using PadForge.SteamWorkshop.Model;
 using PadForge.SteamWorkshop.Translation;
@@ -207,7 +207,10 @@ namespace PadForge.SteamWorkshop.Tests
             var xRow = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseX");
             Assert.Equal(2, xRow.Sources.Count); // cos leg + sin leg
             Assert.Equal("Sum", xRow.CombineMode);
-            Assert.All(xRow.Sources, s => Assert.Equal(0.22, s.ParamSmoothingAlpha, 6));
+            // mouse_smoothing is no longer imported: it had no card, so it
+            // gave an imported profile feel the user could not see or change.
+            // The rotation lowering itself is what this test is about, and it
+            // still emits both legs.
         }
 
         [Fact]

@@ -1445,8 +1445,6 @@ namespace PadForge.ViewModels
         // TouchpadIndex-only match never checked DeviceGuid, a latent
         // two-device-one-slot bug). Funnels through the same shared resolver
         // as every runtime read seam.
-        private static TouchpadGestureSettings ResolveTouchpadGestureSettings(PadSetting ps, string guidStr)
-            => TouchpadGestureSettings.ResolveForDevice(ps?.TouchpadSettings, guidStr);
     }
 
     /// <summary>Payload carried by

@@ -1828,47 +1828,6 @@ namespace PadForge.Views
         /// on purpose, matching <see cref="InputNames"/>: same display-
         /// vocabulary layer, and every row carrying one of these has a
         /// localized Reason beside it doing the explaining.</summary>
-        private static readonly Dictionary<string, string> ActionVerbNames =
-            new(StringComparer.OrdinalIgnoreCase)
-            {
-                ["SET_LED"] = "Set light color",
-                ["CAMERA_RESET"] = "Recenter camera",
-                ["MOUSE_POSITION"] = "Warp cursor",
-                ["MOUSE_DELTA"] = "Nudge cursor",
-                ["SCREENSHOT"] = "Screenshot",
-                ["SHOW_KEYBOARD"] = "On-screen keyboard",
-                // Steam calls these presets and layers. PadForge calls
-                // both SHIFT LAYERS, and the translator lowers Steam sets
-                // AND action_layers onto exactly that, so say what the
-                // user will find on the Mappings tab rather than echoing
-                // Steam's own vocabulary. "Add layer" in particular told
-                // a user nothing: not which layer, and not that our name
-                // for the thing is a shift layer.
-                ["CHANGE_PRESET"] = "Switch shift layer",
-                ["ADD_LAYER"] = "Turn on a shift layer",
-                ["REMOVE_LAYER"] = "Turn off a shift layer",
-                ["HOLD_LAYER"] = "Hold a shift layer",
-                ["CHANGE_PLAYER_NUMBER"] = "Change player number",
-                ["EMPTY_BINDING"] = "Unbound",
-                ["EMPTY_SUB_COMMAND"] = "Unbound",
-                ["TOGGLE_LIZARD"] = "Toggle desktop mode",
-                ["TOGGLE_LIZARD_MODE"] = "Toggle desktop mode",
-                ["SYSTEM_KEY_0"] = "Steam system key",
-                ["SYSTEM_KEY_1"] = "Steam system key",
-                ["TOGGLE_MAGNIFIER"] = "Toggle magnifier",
-                ["BRIGHTNESS_UP"] = "Brightness up",
-                ["BRIGHTNESS_DOWN"] = "Brightness down",
-                ["CONTROLLER_POWEROFF"] = "Power off controller",
-                ["OPEN_CONFIGURATOR"] = "Open Steam configurator",
-                ["OPEN_QUICKMENU"] = "Open Steam quick menu",
-                ["QUIT_APPLICATION"] = "Quit game",
-                ["TOGGLE_HAPTICS"] = "Toggle haptics",
-                ["TOGGLE_HUD"] = "Toggle Steam HUD",
-                ["TOGGLE_RUMBLE"] = "Toggle rumble",
-                ["FORCE_GUIDE_UP"] = "Force Guide button",
-                ["DOTS_PER_360_CALIBRATION_SPIN"] = "Gyro calibration spin",
-                ["TURN_TO_FACE_DIRECTION"] = "Turn to face direction",
-            };
 
         /// <summary><para>Renders a raw Steam <c>binding</c> value as words.
         /// Only a genuinely SKIPPED row reaches this: everything PadForge
@@ -1918,8 +1877,8 @@ namespace PadForge.Views
                         ? xb : TitleFromToken(first);
 
                 case "controller_action":
-                    return ActionVerbNames.TryGetValue(first, out var verb)
-                        ? verb : TitleFromToken(first);
+                    return PadForge.SteamWorkshop.Translation.SteamVocabulary
+                        .CommandLabel(first) ?? TitleFromToken(first);
 
                 case "game_action":
                     // "game_action FPSControls attack": the action itself,
@@ -2068,9 +2027,9 @@ namespace PadForge.Views
         /// reads as what it does ("Set light color") rather than as its
         /// spelled-out identifier ("Set Led").</summary>
         internal static string SpellSteamToken(string token)
-            => ActionVerbNames.TryGetValue(token, out var verb) ? verb
-             : XInputButtonNames.TryGetValue(token, out var xb) ? xb
-             : TitleFromToken(token);
+            => PadForge.SteamWorkshop.Translation.SteamVocabulary.CommandLabel(token)
+             ?? (XInputButtonNames.TryGetValue(token, out var xb) ? xb
+             : TitleFromToken(token));
 
         // ─────────────────────────────────────────────
         //  Art plumbing

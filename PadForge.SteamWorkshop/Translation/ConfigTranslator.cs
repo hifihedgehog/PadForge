@@ -2424,7 +2424,15 @@ namespace PadForge.SteamWorkshop.Translation
                 foreach (var b in act.Bindings)
                 {
                     string p = FirstToken(b.Param);
-                    if (p.Length > 0) return p;
+                    if (p.Length == 0) continue;
+                    // The parameter IS the raw verb for a
+                    // controller_action cell, so returning it printed
+                    // "MOUSE_POSITION" and "add_layer" as cell labels in
+                    // the Menus editor. Name the command, and fall back
+                    // to plain spelling for a key or button parameter
+                    // ("F5" and "A" stay themselves, which is what Steam
+                    // shows when no label is set).
+                    return SteamVocabulary.CommandLabel(p) ?? SteamVocabulary.SpellToken(p);
                 }
             }
             return "";

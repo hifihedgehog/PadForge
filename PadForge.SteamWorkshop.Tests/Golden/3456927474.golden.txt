@@ -144,23 +144,23 @@ macros: 67
   macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Layer_3456927474_2 vk=0x2C
 menus: 2
   menu 1 Radial | Touchpad 0 | Base | fire=Click cells=12 | name=Menu
-    [1] add_layer icon=ghost_050_menu_0302.png
-    [2] MOUSE_POSITION icon=ghost_050_menu_0306.png
-    [3] MOUSE_POSITION icon=ghost_040_act_0324.png
-    [5] MOUSE_POSITION icon=ghost_070_setting_0030.png
-    [8] MOUSE_POSITION icon=ghost_040_act_0320.png
-    [9] MOUSE_POSITION icon=ghost_040_act_0327.png
-    [10] MOUSE_POSITION icon=ghost_040_act_0307.png
-    [12] MOUSE_POSITION icon=ghost_050_menu_0306.png
+    [1] Turn on a shift layer icon=ghost_050_menu_0302.png
+    [2] Warp cursor icon=ghost_050_menu_0306.png
+    [3] Warp cursor icon=ghost_040_act_0324.png
+    [5] Warp cursor icon=ghost_070_setting_0030.png
+    [8] Warp cursor icon=ghost_040_act_0320.png
+    [9] Warp cursor icon=ghost_040_act_0327.png
+    [10] Warp cursor icon=ghost_040_act_0307.png
+    [12] Warp cursor icon=ghost_050_menu_0306.png
   menu 2 Radial | Touchpad 0 | Layer_3456927474_2 | fire=Click cells=12 | name=Menu
-    [1] add_layer icon=ghost_050_menu_0302.png
-    [2] MOUSE_POSITION icon=ghost_050_menu_0306.png
-    [3] MOUSE_POSITION icon=ghost_040_act_0324.png
-    [5] MOUSE_POSITION icon=ghost_070_setting_0030.png
-    [8] MOUSE_POSITION icon=ghost_040_act_0320.png
-    [9] MOUSE_POSITION icon=ghost_040_act_0327.png
-    [10] MOUSE_POSITION icon=ghost_040_act_0307.png
-    [12] MOUSE_POSITION icon=ghost_050_menu_0306.png
+    [1] Turn on a shift layer icon=ghost_050_menu_0302.png
+    [2] Warp cursor icon=ghost_050_menu_0306.png
+    [3] Warp cursor icon=ghost_040_act_0324.png
+    [5] Warp cursor icon=ghost_070_setting_0030.png
+    [8] Warp cursor icon=ghost_040_act_0320.png
+    [9] Warp cursor icon=ghost_040_act_0327.png
+    [10] Warp cursor icon=ghost_040_act_0307.png
+    [12] Warp cursor icon=ghost_050_menu_0306.png
 report: v26 rows:x0+k19 macros:67 menus:2 layers:8 clean:81 partial:5 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB

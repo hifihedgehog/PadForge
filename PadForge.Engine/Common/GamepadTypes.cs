@@ -1,4 +1,4 @@
-namespace PadForge.Engine
+﻿namespace PadForge.Engine
 {
     /// <summary>
     /// Minimal Gamepad struct matching XInput XINPUT_GAMEPAD layout.
@@ -229,6 +229,15 @@ namespace PadForge.Engine
         /// represent).</summary>
         public int MouseFlickX;
 
+        /// <summary>Gyro mouse motion in exact mouse counts for this poll,
+        /// its own lane beside MouseFlickX and for the same reason: the
+        /// value is calibrated counts, not a [-1..+1] deflection. Fractional
+        /// because the sub-count part is what small rotations live in; the
+        /// KBM controller carries the remainder. See
+        /// SourceCoercion.ReadGyroMouseCounts.</summary>
+        public float MouseGyroX;
+        public float MouseGyroY;
+
         public bool GetKey(byte vk)
         {
             int word = vk / 64;
@@ -276,6 +285,7 @@ namespace PadForge.Engine
             MouseAbsValid = false;
             MouseAbsXValid = MouseAbsYValid = false;
             MouseFlickX = 0;
+            MouseGyroX = MouseGyroY = 0f;
         }
 
         /// <summary>
@@ -297,6 +307,11 @@ namespace PadForge.Engine
                 // frame-sequence guard), so max-abs merges duplicates without
                 // double-counting.
                 MouseFlickX = Math.Abs(a.MouseFlickX) >= Math.Abs(b.MouseFlickX) ? a.MouseFlickX : b.MouseFlickX,
+                // Counts SUM rather than taking the larger: two gyros aimed
+                // at one slot each contribute their real motion, the way two
+                // hands on one controller would.
+                MouseGyroX = a.MouseGyroX + b.MouseGyroX,
+                MouseGyroY = a.MouseGyroY + b.MouseGyroY,
                 ScrollDelta = Math.Abs(a.ScrollDelta) >= Math.Abs(b.ScrollDelta) ? a.ScrollDelta : b.ScrollDelta,
                 MouseButtons = (byte)(a.MouseButtons | b.MouseButtons),
                 PreDzMouseDeltaX = Math.Abs(a.PreDzMouseDeltaX) >= Math.Abs(b.PreDzMouseDeltaX) ? a.PreDzMouseDeltaX : b.PreDzMouseDeltaX,

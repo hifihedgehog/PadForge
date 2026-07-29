@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using PadForge.Engine;
 
@@ -41,6 +41,13 @@ namespace PadForge.Common.Input
 
         // Mouse sensitivity: pixels per frame at full axis deflection.
         private const float MouseSensitivity = 15.0f;
+
+        // Gyro's own sub-count remainder. Separate from the deflection
+        // lane's so a stick and a gyro on the same axis do not trade
+        // fractional motion, and so the direction-flip reset only discards
+        // gyro's own carry.
+        private float _gxAccumulator;
+        private float _gyAccumulator;
 
         // Scroll sensitivity: lines per frame at full axis deflection.
         private const float ScrollSensitivity = 3.0f;
@@ -95,6 +102,10 @@ namespace PadForge.Common.Input
             _myAccumulator = 0f;
             _scrollAccumulator = 0f;
             _scrollAccumulatorH = 0f;
+            // Same reason as the others: a stale sub-count carry must not
+            // survive a reconnect and spend itself on the first new poll.
+            _gxAccumulator = 0f;
+            _gyAccumulator = 0f;
         }
 
         /// <summary>
@@ -159,6 +170,33 @@ namespace PadForge.Common.Input
                 _myAccumulator -= dy;
                 if (dx != 0 || dy != 0)
                     InputManager.AccumulateMouseMoveInput(dx, dy);
+            }
+
+            // --- Gyro exact counts (#79 feel) ---
+            // Its own accumulator, not the deflection one above: this lane
+            // is already in mouse counts and already time-scaled, so running
+            // it through MouseSensitivity would re-apply a per-poll spend the
+            // engine has just removed.
+            if (raw.MouseGyroX != 0f || raw.MouseGyroY != 0f)
+            {
+                // Drop the remainder when the direction reverses, so a flick
+                // back the other way does not first spend sub-count motion
+                // still pointing the old way. DS4Windows does exactly this
+                // (MouseCursor.cs: hRemainder / vRemainder sign check), and
+                // it is what keeps a reversal feeling immediate.
+                if (raw.MouseGyroX == 0f || (_gxAccumulator > 0f) != (raw.MouseGyroX > 0f))
+                    _gxAccumulator = 0f;
+                if (raw.MouseGyroY == 0f || (_gyAccumulator > 0f) != (raw.MouseGyroY > 0f))
+                    _gyAccumulator = 0f;
+
+                _gxAccumulator += raw.MouseGyroX;
+                _gyAccumulator += -raw.MouseGyroY;   // lane is +up, screen is +down
+                int gdx = (int)_gxAccumulator;
+                int gdy = (int)_gyAccumulator;
+                _gxAccumulator -= gdx;
+                _gyAccumulator -= gdy;
+                if (gdx != 0 || gdy != 0)
+                    InputManager.AccumulateMouseMoveInput(gdx, gdy);
             }
 
             // --- Flick stick exact counts (#225) ---

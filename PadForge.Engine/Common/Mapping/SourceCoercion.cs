@@ -2872,6 +2872,126 @@ namespace PadForge.Engine.Common.Mapping
         /// extended axes all want this). Default is absolute because
         /// the relative case is the narrower one — only the KBM mouse
         /// path opts in.</para></summary>
+        // ─────────────────────────────────────────────
+        //  Gyro → mouse: a RATE, not a deflection (#79)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Set while the mouse target's deflection lane is being
+        /// combined, so gyro sources contribute ZERO there and are counted
+        /// once, on the rate lane. Gyro still reads normally for every other
+        /// target: a Gyro-to-right-stick row is unaffected.</summary>
+        [ThreadStatic] private static bool _suppressGyroForMouseLane;
+
+        /// <summary>Scopes <see cref="_suppressGyroForMouseLane"/> around one
+        /// combine. Thread-static because slots may evaluate concurrently.</summary>
+        public readonly struct GyroMouseLaneScope : IDisposable
+        {
+            private readonly bool _prev;
+            public GyroMouseLaneScope(bool suppress)
+            { _prev = _suppressGyroForMouseLane; _suppressGyroForMouseLane = suppress; }
+            public void Dispose() => _suppressGyroForMouseLane = _prev;
+        }
+
+        /// <summary>Mouse counts one unit of normalized deflection was worth
+        /// on the old lane: the KBM controller's per-poll spend at full
+        /// scale. Keeps the rate lane calibrated to the feel users already
+        /// tuned.</summary>
+        private const float GyroCountsPerUnitAxis = 15.0f;
+
+        /// <summary>The poll interval the old fixed per-poll spend silently
+        /// assumed. PollingRateMs defaults to 1, so dividing by this leaves
+        /// the default cadence bit-identical and corrects every other one.</summary>
+        private const float GyroNominalPollSeconds = 0.001f;
+
+        /// <summary>Constant nudge added to any non-zero gyro motion, so the
+        /// smallest rotation a user can make still moves the cursor instead
+        /// of dying in the sub-count remainder. DS4Windows calls this
+        /// mouseOffset and ships 0.2 counts (DS4Device.cs:175).</summary>
+        private const float GyroMouseOffsetCounts = 0.2f;
+
+        /// <summary>Jitter compensation, DS4Windows' curve verbatim
+        /// (MouseCursor.cs, jitterCompensation): below the threshold the
+        /// magnitude is bent by pow(x/t, 1.408)*t, which suppresses hand
+        /// tremor WITHOUT the discontinuity a deadzone cut leaves. Applied
+        /// per axis against that axis's share of the motion vector.</summary>
+        private const float GyroJitterThreshold = 0.26f;
+        private const float GyroJitterExponent = 1.408f;
+
+        /// <summary><para>Gyro rotation as MOUSE COUNTS for one poll: the
+        /// rate-to-counts read the mouse lane needs, instead of the
+        /// normalized deflection every other target takes.</para>
+        /// <para>Riding the [-1..+1] axis to the mouse broke gyro aim two
+        /// ways. It SATURATED, because <see cref="GyroScale"/> puts full
+        /// scale at 500 deg/s and the axis clamps there while an ordinary
+        /// aiming flick is 300-800 deg/s and a fast one passes 1500, so past
+        /// the ceiling the hand kept turning and the cursor did not. And it
+        /// was CADENCE-COUPLED, because the KBM controller spends a fixed
+        /// 15 px per poll at full deflection, so the same wrist motion
+        /// travelled sixteen times as far at a 1 ms poll interval as at
+        /// 16 ms.</para>
+        /// <para>Both references this feature was built against do neither.
+        /// DS4Windows, named in issue #79 as the thing to match, multiplies
+        /// the RAW gyro value by elapsed time with no full-scale and no
+        /// clamp (MouseCursor.cs sixaxisMoved). JoyShockMapper does the same
+        /// through REAL_WORLD_CALIBRATION and deltaTime (main.cpp:1124). Both
+        /// then carry the sub-count remainder. Flick stick already
+        /// established the shape inside PadForge: it reports exact counts on
+        /// its own lane because "its output is calibrated counts, not a
+        /// [-1..+1] deflection". Gyro is the same kind of signal.</para>
+        /// <para>Calibrated to be INDISTINGUISHABLE from the old path below
+        /// the old ceiling at the default 1 ms poll, so tuned profiles keep
+        /// their feel and get back the motion they were losing at both ends:
+        /// the clamp at the top, the sub-count floor at the bottom.</para>
+        /// </summary>
+        public static (float X, float Y) ReadGyroMouseCounts(
+            CustomInputState state, MappingSource src, int slotIndex,
+            string deviceGuid, float dtSeconds, bool forX)
+        {
+            if (state == null || src == null) return (0f, 0f);
+            var s = src.Descriptor;
+            if (string.IsNullOrEmpty(s) || !s.StartsWith("Gyro ", StringComparison.Ordinal)) return (0f, 0f);
+            if (IsGyroLeanDescriptor(s)) return (0f, 0f);   // a POSITION read, not a rate
+
+            // Read WITHOUT the mouse-lane suppression, which exists to keep
+            // the deflection combine from counting the same source twice.
+            using (new GyroMouseLaneScope(false))
+            {
+                float tunedRate = ReadTunedGyroRate(state, src, slotIndex, deviceGuid, out int gyroAxis, out var tuning);
+                if (gyroAxis < 0) return (0f, 0f);
+
+                // The same shaping chain, in the same order as the axis path.
+                // The curve and acceleration are defined over the normalized
+                // magnitude, so they still read it in those units. The clamp
+                // the axis path applies next is exactly what is dropped.
+                float v = tunedRate * GyroScale;
+                v = ApplyOutputCurve(v, tuning.OutputCurve);
+                v = ApplyGyroAcceleration(v, tuning.Acceleration);
+                v = ApplyPerSourceAccel(src, v);
+                v = ApplyPerSourceSmoothing(src, v, deviceGuid);
+                v = ApplyCurveRangeShaping(v, src);
+
+                float counts = v * GyroCountsPerUnitAxis
+                               * (dtSeconds / GyroNominalPollSeconds);
+                if (counts == 0f) return (0f, 0f);
+
+                counts = ApplyGyroJitterCompensation(counts);
+                counts += MathF.Sign(counts) * GyroMouseOffsetCounts;
+                return forX ? (counts, 0f) : (0f, counts);
+            }
+        }
+
+        /// <summary>DS4Windows' jitter curve on one axis. Above the
+        /// threshold the value passes through untouched, so only the tremor
+        /// band is shaped and fast motion stays exactly linear.</summary>
+        private static float ApplyGyroJitterCompensation(float counts)
+        {
+            float abs = Math.Abs(counts);
+            if (abs <= 0f || abs > GyroJitterThreshold) return counts;
+            return MathF.Sign(counts)
+                   * MathF.Pow(abs / GyroJitterThreshold, GyroJitterExponent)
+                   * GyroJitterThreshold;
+        }
+
         public static float EvaluateForBipolarAxisTarget(
             CustomInputState state, MappingSource src, int slotIndex = -1,
             bool relativeTouchpad = false, string evaluatedDeviceGuid = null)
@@ -3439,6 +3559,10 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
+                // The mouse target counts gyro on its own rate lane
+                // (ReadGyroMouseCounts), so contributing here too would move
+                // the cursor twice. Every other target reads gyro normally.
+                if (_suppressGyroForMouseLane) return 0f;
                 float tunedRate = ReadTunedGyroRate(state, src, slotIndex, deviceGuid, out int gyroAxis, out var tuning);
                 if (gyroAxis < 0) return 0f;
                 float v = tunedRate * GyroScale;
@@ -3683,6 +3807,7 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
+                if (_suppressGyroForMouseLane) return 0f;   // see the bipolar twin
                 float tunedRate = ReadTunedGyroRate(state, src, slotIndex, deviceGuid, out int gyroAxis, out var tuning);
                 if (gyroAxis < 0) return 0f;
                 float v = Math.Abs(tunedRate) * GyroScale;

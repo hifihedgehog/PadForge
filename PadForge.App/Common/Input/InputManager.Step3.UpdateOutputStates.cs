@@ -855,6 +855,70 @@ namespace PadForge.Common.Input
         /// the family is newer than the MappingSet grid, so no pre-grid
         /// config can carry it.
         /// </summary>
+        /// <summary>The mouse target's deflection combine, with gyro sources
+        /// reading zero. They are counted once, on the rate lane, and a row
+        /// mixing gyro with a stick still sums the stick here exactly as
+        /// before.</summary>
+        private static bool EvaluateMouseAxisWithoutGyro(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid,
+            int slotIndex, string targetName, out short value)
+        {
+            using (new PadForge.Engine.Common.Mapping.SourceCoercion.GyroMouseLaneScope(true))
+                return TryEvaluateMappingSetBipolarAxis(
+                    state, mappingSet, thisDeviceGuid, slotIndex, targetName, out value);
+        }
+
+        /// <summary>Sums the gyro rate lane for both mouse axes. Mirrors
+        /// <see cref="TickFlickStickSources"/>: walks the active row for each
+        /// mouse target and takes only the sources whose output is calibrated
+        /// counts rather than a deflection.</summary>
+        private static (float X, float Y) TickGyroMouseSources(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
+        {
+            float gx = 0f, gy = 0f;
+            // dt is the poll's own measured delta. ComputeAndAdvanceDelta is
+            // a pure read of the once-per-poll cache, so calling it for both
+            // axes is safe and gives them the same frame time.
+            float dt = (float)ComputeAndAdvanceDelta(slotIndex);
+            if (dt <= 0f) return (0f, 0f);
+
+            for (int axis = 0; axis < 2; axis++)
+            {
+                bool forX = axis == 0;
+                var row = FindActiveRowForTarget(mappingSet, forX ? "KbmMouseX" : "KbmMouseY",
+                    slotIndex, out bool shiftSuppressed);
+                if (shiftSuppressed) continue;
+                var sources = row?.Sources;
+                if (sources == null) continue;
+
+                for (int i = 0; i < sources.Count; i++)
+                {
+                    var src = sources[i];
+                    if (src == null) continue;
+                    var d = src.Descriptor;
+                    if (string.IsNullOrEmpty(d) || !d.StartsWith("Gyro ", StringComparison.Ordinal))
+                        continue;
+                    // Consume/postpone parity with the row evaluators: a
+                    // suppressed source must not keep driving the cursor
+                    // while its press is being eaten.
+                    if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                        continue;
+
+                    // Offline-contributes-zero, as everywhere else.
+                    var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                        ? state : LookupDeviceState(src.DeviceGuid);
+                    if (devState == null) continue;
+
+                    var (cx, cy) = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .ReadGyroMouseCounts(devState, src, slotIndex,
+                            string.IsNullOrEmpty(src.DeviceGuid) ? thisDeviceGuid : src.DeviceGuid,
+                            dt, forX);
+                    gx += cx; gy += cy;
+                }
+            }
+            return (gx, gy);
+        }
+
         private static int TickFlickStickSources(
             CustomInputState state, MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
         {
@@ -2561,6 +2625,17 @@ namespace PadForge.Common.Input
             // gyro+flick row still sums its other sources normally.
             raw.MouseFlickX = TickFlickStickSources(state, mappingSet, thisDeviceGuid, slotIndex);
 
+            // Gyro (#79 feel): exact-counts mouse lane, the flick-stick
+            // shape for the same reason. On the [-1..+1] deflection lane
+            // gyro clamped at 500 deg/s, which an ordinary aiming flick
+            // passes, and spent a fixed 15 px per poll so the same wrist
+            // motion moved sixteen times as far at a 1 ms poll as at 16 ms.
+            // Evaluated here rather than in the bipolar combine so a row
+            // mixing gyro with a stick still sums the stick normally, with
+            // the combine below scoped to skip gyro so it counts once.
+            (raw.MouseGyroX, raw.MouseGyroY) =
+                TickGyroMouseSources(state, mappingSet, thisDeviceGuid, slotIndex);
+
             // Map mouse X axis (bidirectional)
             {
                 string posDesc = ps.GetKbmMapping("KbmMouseX");
@@ -2600,7 +2675,7 @@ namespace PadForge.Common.Input
                             evaluatedDeviceGuid: thisDeviceGuid);
                     raw.MouseAbsValid = true; raw.MouseAbsXValid = true;
                 }
-                else if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                else if (EvaluateMouseAxisWithoutGyro(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmMouseX", out short msxValue))
                 {
                     raw.MouseDeltaX = msxValue;
@@ -2639,7 +2714,7 @@ namespace PadForge.Common.Input
                             evaluatedDeviceGuid: thisDeviceGuid);
                     raw.MouseAbsValid = true; raw.MouseAbsYValid = true;
                 }
-                else if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                else if (EvaluateMouseAxisWithoutGyro(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmMouseY", out short msyValue))
                 {
                     // KbmMouseY convention is positive = UP (the VC negates it to

@@ -2572,11 +2572,15 @@
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>Westkwadrant</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Midden</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absolute aanwijzer</value></data>
-  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Stemt de bronnen Touchpad aanwijzer X/Y af, die de cursor naar de positie van je vinger op het pad verplaatsen (wijs ze toe aan muis X/Y op een virtuele toetsenbord/muis-controller). Bij 1.0 komt het pad 1:1 met het scherm overeen. Verhoog de rek om de schermranden te bereiken voordat je duim de padrand bereikt.</value></data>
-  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>Aanwijzerrek X</value></data>
-  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>Horizontale margerek rond het midden van het pad. 1.5 bereikt de schermranden op twee derde van de fysieke afstand.</value></data>
-  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>Aanwijzerrek Y</value></data>
-  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>Verticale margerek rond het midden van het pad.</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Stelt de Touchpad Pointer X/Y-bronnen in, die de cursor naar de vingerpositie op het pad brengen (koppel ze aan muis X/Y op een toetsenbord- / muis-controller). Grootte 1,00 met centrum 0,50 beeldt het pad af op het hele scherm. Verklein de grootte om de cursor tot een deel te beperken en verplaats het centrum om dat deel te kiezen.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Gebiedsbreedte</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Breedte van het schermgebied waarop dit pad wordt afgebeeld, als fractie van de schermbreedte. 1,00 beslaat de volle breedte; 0,50 beperkt de cursor tot de helft.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Gebiedshoogte</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Hoogte van het schermgebied, als fractie van de schermhoogte.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Gebiedscentrum X</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX_Tooltip" xml:space="preserve"><value>Horizontale plaatsing van dat gebied. 0,00 is de linkerrand, 0,50 het midden, 1,00 de rechterrand.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY" xml:space="preserve"><value>Gebiedscentrum Y</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>Verticale plaatsing. 0,00 is de bovenrand, 0,50 het midden, 1,00 de onderrand.</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Veeghaptiek</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Laat de haptiek van de controller pulseren terwijl je vinger over dit touchpad beweegt, zoals de trackpad-tikken van Steam Input. Steam Controllers en de Steam Deck tikken met de actuator onder het pad; DualSense en DualShock 4 pulseren de trilmotoren.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Veeghaptiek inschakelen</value></data>
@@ -2592,8 +2596,10 @@
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>Absolute aanwijzer resetten</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Veeghaptiek resetten</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>Synthetische druk resetten</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>Aanwijzerrek X resetten</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>Aanwijzerrek Y resetten</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeX" xml:space="preserve"><value>Gebiedsbreedte herstellen</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeY" xml:space="preserve"><value>Gebiedshoogte herstellen</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterX" xml:space="preserve"><value>Gebiedscentrum X herstellen</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterY" xml:space="preserve"><value>Gebiedscentrum Y herstellen</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Veeghaptiek inschakelen resetten</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Pulsintensiteit resetten</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>Synthetische druk inschakelen resetten</value></data>

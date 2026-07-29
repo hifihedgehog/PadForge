@@ -264,14 +264,80 @@ namespace PadForge.Engine.Touchpad
         // same place on the screen"), which needs no stretch because a
         // finger CAN reach the pad edges.
 
-        /// <summary>Horizontal margin stretch for the absolute pointer,
-        /// applied around the pad center in pad space. 1.0 = 1:1 (the
-        /// Steam mouse_region default); 1.5 reaches the screen edges at
-        /// 2/3 of the physical travel.</summary>
-        [XmlAttribute] public float PointerStretchX { get; set; } = 1.0f;
+        /// <summary><para>Width of the screen rectangle this pad maps onto,
+        /// as a fraction of screen width. 1.0 is the full-screen 1:1 map;
+        /// 0.5 confines the cursor to the middle half; 1.2 runs the region
+        /// wider than the screen so the edges are reached before the pad
+        /// bezel.</para>
+        /// <para>SUPERSEDES PointerStretchX, which was the same quantity
+        /// under a worse name and a floor of 1.0. The two are algebraically
+        /// identical at the default center: with u = 2*raw-1, a stretch S
+        /// gives clamp(u*S) and an extent S gives clamp(u*S). The floor was
+        /// the live defect, since it could not express any region SMALLER
+        /// than the screen, which is what most Steam mouse_region configs
+        /// author (5 of the 6 extents in the translation corpus are below
+        /// 1.0). Old profiles migrate in SettingsService.</para></summary>
+        [XmlAttribute] public float PointerRegionSizeX { get; set; } = 1.0f;
 
-        /// <summary>Vertical margin stretch for the absolute pointer.</summary>
-        [XmlAttribute] public float PointerStretchY { get; set; } = 1.0f;
+        /// <summary>Height of the screen rectangle, as a fraction of screen
+        /// height. Supersedes PointerStretchY.</summary>
+        [XmlAttribute] public float PointerRegionSizeY { get; set; } = 1.0f;
+
+        /// <summary>Horizontal center of the screen rectangle, 0 = left
+        /// edge, 1 = right edge. Steam's mouse_region position_x. Had no
+        /// representation at all before, so an imported corner region (AOE
+        /// II maps a pad to the bottom-left menu at 0.09/0.90) could be
+        /// imported but never seen or edited.</summary>
+        [XmlAttribute] public float PointerRegionCenterX { get; set; } = 0.5f;
+
+        /// <summary>Vertical center, 0 = TOP edge, 1 = bottom. Note the
+        /// origin: Steam's position_y is bottom-origin and the translator
+        /// flips it (1 - y/100) on the way in, matching sc-controller's
+        /// importer (scc/foreign/vdf.py "y = 1.0 - (y/100.0)").</summary>
+        [XmlAttribute] public float PointerRegionCenterY { get; set; } = 0.5f;
+
+        /// <summary><para>True once the user has touched the Absolute Pointer
+        /// card, which hands this pad's region to the pad settings for good.
+        /// </para>
+        /// <para>It exists to keep a RESET honest. An imported Steam
+        /// mouse_region carries its geometry on the mapping source (import
+        /// runs before any device is assigned, so per-device settings cannot
+        /// be written yet), and the engine reads that source geometry until
+        /// the card is used. Were the handover keyed on "the pad's region is
+        /// still 0.5/1.0" instead of this flag, a user who deliberately set
+        /// the region back to full screen would land on exactly that
+        /// condition and silently get the imported rectangle back, with no
+        /// way to ever undo it.</para></summary>
+        [XmlAttribute] public bool PointerRegionAuthored { get; set; }
+
+        // ── Legacy read path for the superseded stretch pair ──
+        //
+        // A profile saved before the region rename carries PointerStretchX/Y.
+        // Without these shims XmlSerializer drops the unknown attributes and
+        // the user's tuning vanishes on first load. Deserialize-only: both
+        // ShouldSerialize hooks return false, so nothing ever writes them
+        // back and the file converges to the region names after one save.
+        // Safe because stretch S and region size S are the same quantity.
+
+        // Both setters claim authorship. A profile that carried a stretch had
+        // a region the user chose, so it must keep winning over whatever an
+        // imported mapping source says; without this the old value would
+        // deserialize correctly and then be ignored by the read.
+        [XmlAttribute] public float PointerStretchX
+        {
+            get => PointerRegionSizeX;
+            set { PointerRegionSizeX = value; PointerRegionAuthored = true; }
+        }
+
+        [XmlAttribute] public float PointerStretchY
+        {
+            get => PointerRegionSizeY;
+            set { PointerRegionSizeY = value; PointerRegionAuthored = true; }
+        }
+
+        public bool ShouldSerializePointerStretchX() => false;
+
+        public bool ShouldSerializePointerStretchY() => false;
 
         // ─── Swipe haptics (discussion #219) ───────────────────────────
         //
@@ -336,8 +402,11 @@ namespace PadForge.Engine.Touchpad
                 MouseMomentum = MouseMomentum,
                 MouseMomentumDecay = MouseMomentumDecay,
                 MouseJitterReduction = MouseJitterReduction,
-                PointerStretchX = PointerStretchX,
-                PointerStretchY = PointerStretchY,
+                PointerRegionSizeX = PointerRegionSizeX,
+                PointerRegionSizeY = PointerRegionSizeY,
+                PointerRegionAuthored = PointerRegionAuthored,
+                PointerRegionCenterX = PointerRegionCenterX,
+                PointerRegionCenterY = PointerRegionCenterY,
                 EnableSwipeHaptics = EnableSwipeHaptics,
                 SwipeHapticsIntensity = SwipeHapticsIntensity,
             };
@@ -435,8 +504,11 @@ namespace PadForge.Engine.Touchpad
                 || s.MouseSensitivityY != d.MouseSensitivityY
                 || s.MouseInvertX != d.MouseInvertX
                 || s.MouseInvertY != d.MouseInvertY
-                || s.PointerStretchX != d.PointerStretchX
-                || s.PointerStretchY != d.PointerStretchY
+                || s.PointerRegionSizeX != d.PointerRegionSizeX
+                || s.PointerRegionSizeY != d.PointerRegionSizeY
+                || s.PointerRegionAuthored != d.PointerRegionAuthored
+                || s.PointerRegionCenterX != d.PointerRegionCenterX
+                || s.PointerRegionCenterY != d.PointerRegionCenterY
                 || s.EnableSwipeHaptics != d.EnableSwipeHaptics
                 || s.SwipeHapticsIntensity != d.SwipeHapticsIntensity;
         }

@@ -1570,9 +1570,17 @@ namespace PadForge.Engine.Data
                     sb.Append(s.MouseMomentum).Append(',').Append(s.MouseMomentumDecay).Append(',');
                     sb.Append(s.MouseJitterReduction).Append(',');
                     sb.Append(s.EnableSwipeHaptics).Append(',').Append(s.SwipeHapticsIntensity).Append(',');
-                    // Absolute-pointer stretch (#9 B-15): same dedup-by-
-                    // checksum trap as every field above.
-                    sb.Append(s.PointerStretchX).Append(',').Append(s.PointerStretchY);
+                    // Absolute-pointer region (#9 B-15): same dedup-by-
+                    // checksum trap as every field above. All FOUR, not just
+                    // the size pair: two pads differing only in region center
+                    // would otherwise collide and the second silently adopt
+                    // the first's rectangle.
+                    sb.Append(s.PointerRegionSizeX).Append(',').Append(s.PointerRegionSizeY).Append(',');
+                    sb.Append(s.PointerRegionCenterX).Append(',').Append(s.PointerRegionCenterY).Append(',');
+                    // Authored too: it decides whether the region comes from
+                    // here or from an imported mapping source, so two pads
+                    // differing only in it are genuinely different pads.
+                    sb.Append(s.PointerRegionAuthored);
                     sb.Append('|');
                 }
             }

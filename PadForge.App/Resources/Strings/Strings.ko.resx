@@ -2552,11 +2552,15 @@
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>서쪽 구역</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>중앙</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>절대 포인터</value></data>
-  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>커서를 패드 위 손가락 위치로 이동시키는 터치패드 포인터 X/Y 소스를 조정합니다(키보드 / 마우스 가상 컨트롤러에서 마우스 X/Y에 매핑하세요). 1.0에서는 패드가 화면에 1:1로 대응합니다. 엄지가 패드 가장자리에 닿기 전에 화면 가장자리에 도달하려면 스트레치를 높이세요.</value></data>
-  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>포인터 스트레치 X</value></data>
-  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>패드 중심을 기준으로 한 가로 여백 스트레치입니다. 1.5는 실제 이동량의 3분의 2 지점에서 화면 가장자리에 도달합니다.</value></data>
-  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>포인터 스트레치 Y</value></data>
-  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>패드 중심을 기준으로 한 세로 여백 스트레치입니다.</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>터치패드 포인터 X/Y 소스를 조정합니다. 이 소스는 패드 위 손가락 위치로 커서를 옮깁니다 (키보드 / 마우스 가상 컨트롤러의 마우스 X/Y에 매핑하세요). 크기 1.00, 중심 0.50이면 패드가 화면 전체에 대응합니다. 크기를 줄이면 커서가 화면 일부로 제한되고, 중심으로 그 위치를 정합니다.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>영역 너비</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>이 패드가 대응하는 화면 영역의 너비이며 화면 너비에 대한 비율입니다. 1.00은 전체 너비, 0.50은 커서를 화면 절반으로 제한합니다.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>영역 높이</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>화면 영역의 높이이며 화면 높이에 대한 비율입니다.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>영역 중심 X</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX_Tooltip" xml:space="preserve"><value>해당 영역의 가로 위치입니다. 0.00은 왼쪽 가장자리, 0.50은 가운데, 1.00은 오른쪽 가장자리입니다.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY" xml:space="preserve"><value>영역 중심 Y</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>세로 위치입니다. 0.00은 위쪽 가장자리, 0.50은 가운데, 1.00은 아래쪽 가장자리입니다.</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>스와이프 햅틱</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Steam Input의 트랙패드 틱처럼, 손가락이 이 터치패드 위를 이동하는 동안 컨트롤러의 햅틱을 진동시킵니다. Steam Controller와 Steam Deck은 패드 아래 액추에이터를 틱하고, DualSense와 DualShock 4는 진동 모터를 울립니다.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>스와이프 햅틱 사용</value></data>
@@ -2572,8 +2576,10 @@
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>절대 포인터 재설정</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>스와이프 햅틱 재설정</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>합성 압력 재설정</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>포인터 스트레치 X 재설정</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>포인터 스트레치 Y 재설정</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeX" xml:space="preserve"><value>영역 너비 초기화</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeY" xml:space="preserve"><value>영역 높이 초기화</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterX" xml:space="preserve"><value>영역 중심 X 초기화</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterY" xml:space="preserve"><value>영역 중심 Y 초기화</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>스와이프 햅틱 사용 재설정</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>펄스 강도 재설정</value></data>
   <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>합성 압력 사용 재설정</value></data>

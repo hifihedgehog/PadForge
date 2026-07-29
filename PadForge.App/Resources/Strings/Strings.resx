@@ -1344,11 +1344,15 @@
 
   <!-- Absolute Pointer card (#9 B-15) -->
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absolute Pointer</value></data>
-  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Tunes the Touchpad Pointer X/Y sources, which warp the cursor to your finger's position on the pad (map them to mouse X/Y on a Keyboard / Mouse virtual controller). At 1.0 the pad maps 1:1 to the screen. Raise the stretch to reach the screen edges before your thumb reaches the pad edge.</value></data>
-  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>Pointer Stretch X</value></data>
-  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>Horizontal margin stretch around the pad center. 1.5 reaches the screen edges at two thirds of the physical travel.</value></data>
-  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>Pointer Stretch Y</value></data>
-  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>Vertical margin stretch around the pad center.</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Tunes the Touchpad Pointer X/Y sources, which warp the cursor to your finger's position on the pad (map them to mouse X/Y on a Keyboard / Mouse virtual controller). Size 1.00 with center 0.50 maps the pad to the whole screen. Shrink the size to confine the cursor to part of the screen, and move the center to place it.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Region Width</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Width of the screen area this pad maps onto, as a fraction of screen width. 1.00 covers the full width; 0.50 confines the cursor to half the screen.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Region Height</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Height of the screen area, as a fraction of screen height.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Region Center X</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX_Tooltip" xml:space="preserve"><value>Horizontal placement of that area. 0.00 is the left edge, 0.50 the middle, 1.00 the right edge.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY" xml:space="preserve"><value>Region Center Y</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>Vertical placement. 0.00 is the top edge, 0.50 the middle, 1.00 the bottom edge.</value></data>
 
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Swipe Haptics</value></data>
@@ -1396,8 +1400,10 @@
   <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Reset Momentum Glide</value></data>
 
   <!-- Per-row Reset tooltips for absolute-pointer card (#9 B-15) -->
-  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>Reset Pointer Stretch X</value></data>
-  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>Reset Pointer Stretch Y</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeX" xml:space="preserve"><value>Reset Region Width</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeY" xml:space="preserve"><value>Reset Region Height</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterX" xml:space="preserve"><value>Reset Region Center X</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterY" xml:space="preserve"><value>Reset Region Center Y</value></data>
 
   <!-- Per-row Reset tooltips for swipe-haptics card -->
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Reset Enable Swipe Haptics</value></data>

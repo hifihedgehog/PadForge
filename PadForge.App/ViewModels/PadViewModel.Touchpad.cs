@@ -458,33 +458,87 @@ namespace PadForge.ViewModels
 
         // ─── Absolute pointer card (#9 B-15) ──────────────────────────
 
-        private double _touchpadPointerStretchX = 1.0;
+        /// <summary>Mirrors TouchpadGestureSettings.PointerRegionAuthored.
+        /// Not a slider: set by the four region setters below, read by the
+        /// engine to decide whether this pad's region comes from these
+        /// settings or from an imported mapping source.</summary>
+        private bool _touchpadPointerRegionAuthored;
 
-        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerStretchX"/>:
-        /// margin stretch for the "Touchpad N Pointer X" absolute cursor
-        /// sources. 1.0 = Steam's 1:1 pad-to-screen map; higher values
-        /// reach the screen edges before the pad bezel (the Wii aim
-        /// map's margin-stretch concept).</summary>
-        public double TouchpadPointerStretchX
+        private double _touchpadPointerRegionSizeX = 1.0;
+
+        /// <summary><para>Mirrors <see cref="TouchpadGestureSettings.PointerRegionSizeX"/>:
+        /// the width of the screen rectangle the "Touchpad N Pointer X"
+        /// absolute cursor sources map onto, as a fraction of screen width.
+        /// 1.0 is Steam's full-screen 1:1 map.</para>
+        /// <para>The floor is 0.05, NOT the 1.0 the superseded stretch knob
+        /// used. A region smaller than the screen is the common authored
+        /// case (an imported config confining a pad to a menu strip), and
+        /// the old floor made every one of them unrepresentable.</para></summary>
+        public double TouchpadPointerRegionSizeX
         {
-            get => _touchpadPointerStretchX;
+            get => _touchpadPointerRegionSizeX;
             set
             {
-                var v = Math.Clamp(value, 1.0, 3.0);
-                if (SetProperty(ref _touchpadPointerStretchX, v)) PushIfNotLoading();
+                var v = Math.Clamp(value, 0.05, 3.0);
+                if (!SetProperty(ref _touchpadPointerRegionSizeX, v)) return;
+                // A user edit hands this pad's region over from the
+                // imported source geometry to these settings.
+                if (!_loadingTouchpadGestures) _touchpadPointerRegionAuthored = true;
+                PushIfNotLoading();
             }
         }
 
-        private double _touchpadPointerStretchY = 1.0;
+        private double _touchpadPointerRegionSizeY = 1.0;
 
-        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerStretchY"/>.</summary>
-        public double TouchpadPointerStretchY
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerRegionSizeY"/>.</summary>
+        public double TouchpadPointerRegionSizeY
         {
-            get => _touchpadPointerStretchY;
+            get => _touchpadPointerRegionSizeY;
             set
             {
-                var v = Math.Clamp(value, 1.0, 3.0);
-                if (SetProperty(ref _touchpadPointerStretchY, v)) PushIfNotLoading();
+                var v = Math.Clamp(value, 0.05, 3.0);
+                if (!SetProperty(ref _touchpadPointerRegionSizeY, v)) return;
+                // A user edit hands this pad's region over from the
+                // imported source geometry to these settings.
+                if (!_loadingTouchpadGestures) _touchpadPointerRegionAuthored = true;
+                PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadPointerRegionCenterX = 0.5;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerRegionCenterX"/>:
+        /// where the rectangle sits horizontally, 0 = left edge, 1 = right.</summary>
+        public double TouchpadPointerRegionCenterX
+        {
+            get => _touchpadPointerRegionCenterX;
+            set
+            {
+                var v = Math.Clamp(value, 0.0, 1.0);
+                if (!SetProperty(ref _touchpadPointerRegionCenterX, v)) return;
+                // A user edit hands this pad's region over from the
+                // imported source geometry to these settings.
+                if (!_loadingTouchpadGestures) _touchpadPointerRegionAuthored = true;
+                PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadPointerRegionCenterY = 0.5;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerRegionCenterY"/>:
+        /// 0 = TOP edge, 1 = bottom. Top-origin, unlike Steam's authored
+        /// position_y, which the translator flips on the way in.</summary>
+        public double TouchpadPointerRegionCenterY
+        {
+            get => _touchpadPointerRegionCenterY;
+            set
+            {
+                var v = Math.Clamp(value, 0.0, 1.0);
+                if (!SetProperty(ref _touchpadPointerRegionCenterY, v)) return;
+                // A user edit hands this pad's region over from the
+                // imported source geometry to these settings.
+                if (!_loadingTouchpadGestures) _touchpadPointerRegionAuthored = true;
+                PushIfNotLoading();
             }
         }
 
@@ -785,22 +839,33 @@ namespace PadForge.ViewModels
 
         // ─── Absolute-pointer card reset commands (#9 B-15) ─────
 
-        private RelayCommand _resetTouchpadPointerStretchXCommand;
-        public RelayCommand ResetTouchpadPointerStretchXCommand =>
-            _resetTouchpadPointerStretchXCommand ??= new RelayCommand(() => TouchpadPointerStretchX = 1.0);
+        private RelayCommand _resetTouchpadPointerRegionSizeXCommand;
+        public RelayCommand ResetTouchpadPointerRegionSizeXCommand =>
+            _resetTouchpadPointerRegionSizeXCommand ??= new RelayCommand(() => TouchpadPointerRegionSizeX = 1.0);
 
-        private RelayCommand _resetTouchpadPointerStretchYCommand;
-        public RelayCommand ResetTouchpadPointerStretchYCommand =>
-            _resetTouchpadPointerStretchYCommand ??= new RelayCommand(() => TouchpadPointerStretchY = 1.0);
+        private RelayCommand _resetTouchpadPointerRegionSizeYCommand;
+        public RelayCommand ResetTouchpadPointerRegionSizeYCommand =>
+            _resetTouchpadPointerRegionSizeYCommand ??= new RelayCommand(() => TouchpadPointerRegionSizeY = 1.0);
+
+        private RelayCommand _resetTouchpadPointerRegionCenterXCommand;
+        public RelayCommand ResetTouchpadPointerRegionCenterXCommand =>
+            _resetTouchpadPointerRegionCenterXCommand ??= new RelayCommand(() => TouchpadPointerRegionCenterX = 0.5);
+
+        private RelayCommand _resetTouchpadPointerRegionCenterYCommand;
+        public RelayCommand ResetTouchpadPointerRegionCenterYCommand =>
+            _resetTouchpadPointerRegionCenterYCommand ??= new RelayCommand(() => TouchpadPointerRegionCenterY = 0.5);
 
         private RelayCommand _resetTouchpadPointerCardCommand;
 
-        /// <summary>Reset every Absolute-pointer card field to defaults.</summary>
+        /// <summary>Reset every Absolute-pointer card field to defaults, i.e.
+        /// back to the full-screen 1:1 map.</summary>
         public RelayCommand ResetTouchpadPointerCardCommand =>
             _resetTouchpadPointerCardCommand ??= new RelayCommand(() =>
             {
-                TouchpadPointerStretchX = 1.0;
-                TouchpadPointerStretchY = 1.0;
+                TouchpadPointerRegionSizeX = 1.0;
+                TouchpadPointerRegionSizeY = 1.0;
+                TouchpadPointerRegionCenterX = 0.5;
+                TouchpadPointerRegionCenterY = 0.5;
             });
 
         // ─── Swipe-haptics card reset commands ────────
@@ -919,12 +984,73 @@ namespace PadForge.ViewModels
                 TouchpadMouseMomentum = s.MouseMomentum;
                 TouchpadMouseMomentumDecay = s.MouseMomentumDecay;
                 TouchpadMouseJitterReduction = s.MouseJitterReduction;
-                TouchpadPointerStretchX = s.PointerStretchX;
-                TouchpadPointerStretchY = s.PointerStretchY;
+                _touchpadPointerRegionAuthored = s.PointerRegionAuthored;
+                TouchpadPointerRegionSizeX = s.PointerRegionSizeX;
+                TouchpadPointerRegionSizeY = s.PointerRegionSizeY;
+                TouchpadPointerRegionCenterX = s.PointerRegionCenterX;
+                TouchpadPointerRegionCenterY = s.PointerRegionCenterY;
+                if (!_touchpadPointerRegionAuthored)
+                    SeedPointerRegionFromMappingSources();
                 TouchpadSwipeHapticsEnabled = s.EnableSwipeHaptics;
                 TouchpadSwipeHapticsIntensity = s.SwipeHapticsIntensity;
             }
             finally { _loadingTouchpadGestures = false; }
+        }
+
+        /// <summary><para>Show an imported region's REAL numbers in the card
+        /// before the user has authored one.</para>
+        /// <para>A Steam mouse_region import writes its geometry onto the
+        /// mapping source, because import runs before a device is assigned
+        /// and the per-device settings are keyed by device guid. The engine
+        /// reads it from there until the card is used. Without this seed the
+        /// card would sit at the 1.00 / 0.50 full-screen default while the
+        /// cursor visibly obeyed a different rectangle, and the first touch
+        /// of any region slider would author THAT default and silently
+        /// discard the imported region.</para>
+        /// <para>Assigns the backing fields directly: routing through the
+        /// setters would mark the region authored and perform the very
+        /// handover this is meant to defer.</para></summary>
+        private void SeedPointerRegionFromMappingSources()
+        {
+            var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            if (sets == null || PadIndex < 0 || PadIndex >= sets.Length) return;
+            var rows = sets[PadIndex]?.Rows;
+            if (rows == null) return;
+
+            int pad = _selectedTouchpadIndex;
+            foreach (var row in rows)
+            {
+                if (row?.Sources == null) continue;
+                bool isX = string.Equals(row.Target, "KbmMouseX", StringComparison.Ordinal);
+                bool isY = string.Equals(row.Target, "KbmMouseY", StringComparison.Ordinal);
+                if (!isX && !isY) continue;
+
+                foreach (var src in row.Sources)
+                {
+                    var d = src?.Descriptor;
+                    if (string.IsNullOrEmpty(d)) continue;
+                    // "Touchpad {p} Pointer X" plus the half-window suffixes.
+                    if (!d.StartsWith("Touchpad " + pad.ToString(
+                                          System.Globalization.CultureInfo.InvariantCulture)
+                                      + " Pointer ", StringComparison.Ordinal)) continue;
+                    if (isX)
+                    {
+                        _touchpadPointerRegionSizeX = src.ParamPointerExtent;
+                        _touchpadPointerRegionCenterX = src.ParamPointerCenter;
+                    }
+                    else
+                    {
+                        _touchpadPointerRegionSizeY = src.ParamPointerExtent;
+                        _touchpadPointerRegionCenterY = src.ParamPointerCenter;
+                    }
+                    break;
+                }
+            }
+
+            OnPropertyChanged(nameof(TouchpadPointerRegionSizeX));
+            OnPropertyChanged(nameof(TouchpadPointerRegionSizeY));
+            OnPropertyChanged(nameof(TouchpadPointerRegionCenterX));
+            OnPropertyChanged(nameof(TouchpadPointerRegionCenterY));
         }
 
         /// <summary>Writes VM fields back to the per-(device, pad)
@@ -1012,8 +1138,11 @@ namespace PadForge.ViewModels
             s.MouseMomentum = TouchpadMouseMomentum;
             s.MouseMomentumDecay = (float)TouchpadMouseMomentumDecay;
             s.MouseJitterReduction = TouchpadMouseJitterReduction;
-            s.PointerStretchX = (float)TouchpadPointerStretchX;
-            s.PointerStretchY = (float)TouchpadPointerStretchY;
+            s.PointerRegionAuthored = _touchpadPointerRegionAuthored;
+            s.PointerRegionSizeX = (float)TouchpadPointerRegionSizeX;
+            s.PointerRegionSizeY = (float)TouchpadPointerRegionSizeY;
+            s.PointerRegionCenterX = (float)TouchpadPointerRegionCenterX;
+            s.PointerRegionCenterY = (float)TouchpadPointerRegionCenterY;
             s.EnableSwipeHaptics = TouchpadSwipeHapticsEnabled;
             s.SwipeHapticsIntensity = (float)TouchpadSwipeHapticsIntensity;
             entry.Settings = s;

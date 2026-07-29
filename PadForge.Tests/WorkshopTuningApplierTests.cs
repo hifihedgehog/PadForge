@@ -207,5 +207,168 @@ namespace PadForge.Tests
             SettingsManager.SlotMappingSets = null;
             Assert.False(WorkshopTuningApplier.ApplyToAssignedDevice(Slot, new PadSetting()));
         }
+
+        // ── per-source response shaping ───────────────────────────────────
+        //
+        // Curve exponent, outer range and anti-deadzone were stamped on the
+        // ROWS by the import and read by the engine at row read, while the
+        // device cards for those same three knobs sat at their defaults. So
+        // the values were live and invisible: nothing on screen showed them
+        // and editing the card fought a stamp the user could not see.
+        //
+        // They move here now. Move, not copy: both layers are live, so a
+        // stamp left in place beside a populated card applies the curve
+        // TWICE.
+
+        private static MappingSet ArrangeRow(string target, Action<MappingSource> tune)
+        {
+            return ArrangeSlot(s =>
+            {
+                var src = new MappingSource { Descriptor = "Gamepad LeftStickX" };
+                tune(src);
+                s.Rows.Add(new MappingRow { Target = target, Sources = { src } });
+            });
+        }
+
+        [Fact]
+        public void CurveExponentBecomesControlPointsOnTheCard()
+        {
+            var set = ArrangeRow("LeftThumbAxisX", s => s.ParamCurveExponent = 2.0);
+            var ps = new PadSetting();
+
+            Assert.True(WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps));
+
+            // Control points, NOT the legacy single number. That form is read
+            // on a 4^(-v/100) scale, so a bare "2" would land at very nearly
+            // linear and quietly discard the curve.
+            Assert.Contains(";", ps.LeftThumbSensitivityCurveX);
+            Assert.False(PadForge.Common.CurveLut.IsLinear(ps.LeftThumbSensitivityCurveX));
+
+            // And the shape is really x^2: half deflection gives a quarter.
+            var lut = PadForge.Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveX);
+            Assert.Equal(0.25, PadForge.Common.CurveLut.Lookup(lut, 0.5), 2);
+
+            // Moved, so the engine's row read no longer applies it.
+            Assert.Equal(0.0, set.Rows[0].Sources[0].ParamCurveExponent);
+        }
+
+        [Fact]
+        public void AntiDeadZoneAndOuterRangeBecomePercents()
+        {
+            var set = ArrangeRow("LeftThumbAxisX", s =>
+            {
+                s.ParamAntiDeadzone = 0.15;
+                s.ParamRangeOuter = 0.80;
+            });
+            var ps = new PadSetting();
+
+            Assert.True(WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps));
+
+            Assert.Equal("15", ps.LeftThumbAntiDeadZoneX);
+            Assert.Equal("80", ps.LeftThumbMaxRangeX);
+            Assert.Equal(0.0, set.Rows[0].Sources[0].ParamAntiDeadzone);
+            Assert.Equal(0.0, set.Rows[0].Sources[0].ParamRangeOuter);
+        }
+
+        [Fact]
+        public void OuterRangeStaysPutWhenAStickGeometryOwnsIt()
+        {
+            // THE trap in this fold. With a shape stamped, the engine spends
+            // ParamRangeOuter as the deadzone's outer radius inside
+            // ApplyStickDeadZoneShape and suppresses its own scalar tail (its
+            // hasOuter requires shape == 0). Folding the radius into MaxRange
+            // would strip the geometry of the bound it still needs, so a
+            // Circle deadzone import would lose its outer edge.
+            var set = ArrangeRow("LeftThumbAxisX", s =>
+            {
+                s.ParamStickDeadZoneShape = 2;      // Steam Circle
+                s.ParamStickDeadZoneInner = 0.10;
+                s.ParamRangeOuter = 0.80;
+            });
+            var ps = new PadSetting();
+
+            WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps);
+
+            Assert.Equal("100", ps.LeftThumbMaxRangeX);                     // card untouched
+            Assert.Equal(0.80, set.Rows[0].Sources[0].ParamRangeOuter);     // radius preserved
+            Assert.Equal(2, set.Rows[0].Sources[0].ParamStickDeadZoneShape);
+        }
+
+        [Fact]
+        public void TheTargetPicksTheCardNotTheSourceDescriptor()
+        {
+            // The card applies to the OUTPUT axis, so a config that redirects
+            // the left stick onto the right pair (Steam's output_joystick)
+            // must land on the RIGHT stick's card. Keying off the source
+            // descriptor would tune the wrong stick.
+            var set = ArrangeSlot(s => s.Rows.Add(new MappingRow
+            {
+                Target = "RightThumbAxisY",
+                Sources = { new MappingSource
+                {
+                    Descriptor = "Gamepad LeftStickX",   // left INPUT
+                    ParamAntiDeadzone = 0.20,
+                } },
+            }));
+            var ps = new PadSetting();
+
+            Assert.True(WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps));
+
+            Assert.Equal("20", ps.RightThumbAntiDeadZoneY);
+            Assert.Equal("0", ps.LeftThumbAntiDeadZoneX);
+        }
+
+        [Theory]
+        [InlineData("LeftTrigger")]
+        [InlineData("RightTrigger")]
+        public void TriggerTargetsFoldToTriggerCards(string target)
+        {
+            // The corpus stamps these on trigger hosts as well as sticks, and
+            // triggers own the same three fields.
+            ArrangeRow(target, s => s.ParamAntiDeadzone = 0.25);
+            var ps = new PadSetting();
+
+            Assert.True(WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps));
+
+            Assert.Equal("25", target == "LeftTrigger"
+                ? ps.LeftTriggerAntiDeadZone : ps.RightTriggerAntiDeadZone);
+        }
+
+        [Fact]
+        public void AValueTheUserAlreadyChoseSurvives()
+        {
+            var set = ArrangeRow("LeftThumbAxisX", s => s.ParamAntiDeadzone = 0.15);
+            var ps = new PadSetting { LeftThumbAntiDeadZoneX = "5" };   // user's own
+
+            WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps);
+
+            Assert.Equal("5", ps.LeftThumbAntiDeadZoneX);
+            // Still cleared: a stamp offered once has done its job, and
+            // leaving it would re-apply after a deliberate change back.
+            Assert.Equal(0.0, set.Rows[0].Sources[0].ParamAntiDeadzone);
+        }
+
+        [Fact]
+        public void AnUnshapedTargetIsLeftAlone()
+        {
+            // A button target has no curve card, and the params should not be
+            // silently eaten looking for one.
+            var set = ArrangeRow("ButtonA", s => s.ParamAntiDeadzone = 0.15);
+            var ps = new PadSetting();
+
+            Assert.False(WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps));
+            Assert.Equal(0.15, set.Rows[0].Sources[0].ParamAntiDeadzone);
+        }
+
+        [Fact]
+        public void PositiveControl_ADefaultPadSettingReallyReadsAsUnset()
+        {
+            // Without this, every "the user had not chosen" guard above could
+            // be passing because the guard never fires at all.
+            var ps = new PadSetting();
+            Assert.True(PadForge.Common.CurveLut.IsLinear(ps.LeftThumbSensitivityCurveX));
+            Assert.Equal("100", ps.LeftThumbMaxRangeX);
+            Assert.Equal("0", ps.LeftThumbAntiDeadZoneX);
+        }
     }
 }

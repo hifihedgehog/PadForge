@@ -2858,7 +2858,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(host default)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(not set)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (not on this slot type)</value></data>
-  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Bound via mapping rows</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Set on the Mappings tab</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Cell {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu Overlay</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Overlays</value></data>

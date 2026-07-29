@@ -2803,7 +2803,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(기본값)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(설정 안 됨)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (이 슬롯 유형에서는 불가)</value></data>
-  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>매핑 행으로 바인딩됨</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>매핑 탭에서 설정됨</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>메뉴 {0} 셀 {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>메뉴 오버레이</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>오버레이</value></data>

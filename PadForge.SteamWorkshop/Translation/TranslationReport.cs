@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace PadForge.SteamWorkshop.Translation
@@ -856,10 +856,19 @@ namespace PadForge.SteamWorkshop.Translation
         // deleted.
 
         // ── Translator v8 (finding 1g) vocabulary ──
-        /// <summary>Mouse/region-mode feel settings with no PadForge channel:
-        /// rotation (a geometric rotation of the pad-to-cursor map),
-        /// friction, mouse_smoothing, trackball. The mouse rows translate;
-        /// these shape their response.</summary>
+        /// <summary><para>Mouse/region-mode feel settings with no PadForge
+        /// channel. The mouse rows translate, these would have shaped their
+        /// response.</para>
+        /// <para>Currently that is mouse_dampening_trigger alone (a trigger
+        /// that damps cursor speed while pulled), which is what every
+        /// occurrence in the translation corpus reports. The older list of
+        /// rotation / friction / mouse_smoothing / trackball is no longer
+        /// accurate and overstated what we drop: rotation lowers to two
+        /// summed legs with the trigonometric coefficients folded into the
+        /// per-source sensitivity, and friction / mouse_smoothing /
+        /// trackball are no longer IMPORTED at all rather than imported and
+        /// dropped here, because none had a card (see the import-only-what
+        /// -we-expose rule).</para></summary>
         public const string MouseModeTuningDropped = "Workshop_Tr_MouseModeTuningDropped";         // {0} setting keys
         /// <summary>A Steam axis inversion the emitter could not apply to a
         /// source the engine honors: invert_z (no third mouse-delta axis) or

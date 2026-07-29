@@ -1837,10 +1837,17 @@ namespace PadForge.Views
                 ["MOUSE_DELTA"] = "Nudge cursor",
                 ["SCREENSHOT"] = "Screenshot",
                 ["SHOW_KEYBOARD"] = "On-screen keyboard",
-                ["CHANGE_PRESET"] = "Switch preset",
-                ["ADD_LAYER"] = "Add layer",
-                ["REMOVE_LAYER"] = "Remove layer",
-                ["HOLD_LAYER"] = "Hold layer",
+                // Steam calls these presets and layers. PadForge calls
+                // both SHIFT LAYERS, and the translator lowers Steam sets
+                // AND action_layers onto exactly that, so say what the
+                // user will find on the Mappings tab rather than echoing
+                // Steam's own vocabulary. "Add layer" in particular told
+                // a user nothing: not which layer, and not that our name
+                // for the thing is a shift layer.
+                ["CHANGE_PRESET"] = "Switch shift layer",
+                ["ADD_LAYER"] = "Turn on a shift layer",
+                ["REMOVE_LAYER"] = "Turn off a shift layer",
+                ["HOLD_LAYER"] = "Hold a shift layer",
                 ["CHANGE_PLAYER_NUMBER"] = "Change player number",
                 ["EMPTY_BINDING"] = "Unbound",
                 ["EMPTY_SUB_COMMAND"] = "Unbound",

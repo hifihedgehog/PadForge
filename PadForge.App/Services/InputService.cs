@@ -3476,7 +3476,8 @@ namespace PadForge.Services
                             if (ts.Enabled) AddToken(parts, "GESTURES");
                             if (ts.EnableJoystickOutput) AddToken(parts, "JOYSTICK");
                             if (ts.MouseSensitivityX != 1.0f || ts.MouseSensitivityY != 1.0f
-                                || ts.MouseInvertX || ts.MouseInvertY)
+                                || ts.MouseInvertX || ts.MouseInvertY
+                                || ts.MouseMomentum || !ts.MouseJitterReduction)
                                 AddToken(parts, "MOUSE");
                         }
                     }

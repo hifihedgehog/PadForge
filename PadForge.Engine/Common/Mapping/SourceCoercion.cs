@@ -1475,18 +1475,6 @@ namespace PadForge.Engine.Common.Mapping
         /// preserved.</summary>
         public static Func<int, string, int, PadForge.Engine.Touchpad.TouchpadGestureSettings> TouchpadMouseSettingsProvider { get; set; }
 
-        /// <summary><para>Same shape, but resolved PER PAD, and read only by
-        /// the absolute pointer's screen region.</para>
-        /// <para>Mouse feel (sensitivity, glide, jitter) describes a user's
-        /// hands and stays device-wide through
-        /// <see cref="TouchpadMouseSettingsProvider"/>. The region is where
-        /// on screen one particular pad points, and a config routinely gives
-        /// two pads two different rectangles, so it has to resolve by pad or
-        /// the second pad's layout is lost.</para>
-        /// <para>Falls back to the device-wide provider when unwired, so the
-        /// read keeps working in tests and on any host that has not bound
-        /// this one.</para></summary>
-        public static Func<int, string, int, PadForge.Engine.Touchpad.TouchpadGestureSettings> TouchpadRegionSettingsProvider { get; set; }
 
         /// <summary>True for the bipolar continuous-axis gesture
         /// descriptors. These return a float value via
@@ -5293,8 +5281,7 @@ namespace PadForge.Engine.Common.Mapping
             // same quantity (stretch S and extent S both yield clamp(u*S)),
             // so the pad could be tuned only in the direction the importer
             // never used.
-            var tp = TouchpadRegionSettingsProvider?.Invoke(slotIndex, deviceGuid ?? "", padIdx)
-                     ?? TouchpadMouseSettingsProvider?.Invoke(slotIndex, deviceGuid ?? "", padIdx);
+            var tp = TouchpadMouseSettingsProvider?.Invoke(slotIndex, deviceGuid ?? "", padIdx);
             float size = axisOffset == 0
                 ? (tp?.PointerRegionSizeX ?? 1.0f)
                 : (tp?.PointerRegionSizeY ?? 1.0f);

@@ -1654,35 +1654,6 @@ namespace PadForge.Services
             // filtered by `MapTo == slotIndex && InstanceGuid == device`,
             // the same (slot, device, pad) key TouchpadGestureSettingsProvider
             // uses since the May 2026 slot-collapse fix.
-            // The absolute pointer's screen region, resolved PER PAD. Mouse
-            // feel below stays device-wide; the region is where on screen a
-            // particular pad points, and a config routinely gives two pads
-            // two different rectangles (AOE II's Steam Deck layout maps the
-            // left pad to a corner menu and the right pad to a wide band).
-            PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadRegionSettingsProvider =
-                (slotIndex, deviceGuid, padIdx) =>
-            {
-                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var rg)) return null;
-                var rsettings = SettingsManager.UserSettings;
-                if (rsettings == null) return null;
-                PadSetting rps = null;
-                lock (rsettings.SyncRoot)
-                {
-                    for (int i = 0; i < rsettings.Items.Count; i++)
-                    {
-                        var us = rsettings.Items[i];
-                        if (us == null) continue;
-                        if (us.MapTo != slotIndex) continue;
-                        if (us.InstanceGuid != rg) continue;
-                        rps = us.GetPadSetting();
-                        break;
-                    }
-                }
-                if (rps?.TouchpadSettings == null) return null;
-                return PadForge.Engine.Touchpad.TouchpadGestureSettings
-                    .ResolveEntryForPad(rps.TouchpadSettings, rg.ToString(), padIdx)?.Settings;
-            };
-
             PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider =
                 (slotIndex, deviceGuid, padIdx) =>
             {
@@ -1703,14 +1674,12 @@ namespace PadForge.Services
                     }
                 }
                 if (ps?.TouchpadSettings == null) return null;
-                // Per-device resolution, agreeing with the gesture provider
-                // above on which entry wins. Null on miss, so use
-                // ResolveEntryForDevice, not ResolveForDevice: mouse tuning
-                // has no Default() fallback. SourceCoercion applies unit
-                // scale when this returns null. padIdx is unused now that
-                // mouse tuning applies to every pad the device enumerates.
+                // Per (device, PAD), agreeing with the gesture provider and
+                // the Touchpad tab. Null on miss, so use ResolveEntryForPad
+                // rather than ResolveForPad: mouse tuning has no Default()
+                // fallback and SourceCoercion applies unit scale on null.
                 return PadForge.Engine.Touchpad.TouchpadGestureSettings
-                    .ResolveEntryForDevice(ps.TouchpadSettings, g.ToString())?.Settings;
+                    .ResolveEntryForPad(ps.TouchpadSettings, g.ToString(), padIdx)?.Settings;
             };
 
             // — per-(slot, device, pad) touchpad gesture settings.
@@ -1845,12 +1814,13 @@ namespace PadForge.Services
             // Guid.ToString() must not run per poll.
             var touchpadGestureSnapshot = new ProviderSnapshot<(int, Guid, int), PadForge.Engine.Touchpad.TouchpadGestureSettings>(key =>
             {
-                // Touchpad gesture settings resolve per-DEVICE now: enabling
-                // a setting applies to every pad the device enumerates, so
-                // the padIdx in the snapshot key no longer selects an entry
-                // (it only keeps the cache keyed per pad). ResolveForDevice
-                // coalesces any legacy per-pad array to one winner per device.
-                var (slotIndex, deviceGuid, _) = key;
+                // Per (device, PAD). The pad index in the key SELECTS the
+                // entry, it does not merely partition the cache. Resolving
+                // per device here is why swipe haptics stayed device-wide
+                // while its card sat on a per-pad tab: the UI stored the
+                // toggle on the selected pad and the engine read whichever
+                // entry won across the device.
+                var (slotIndex, deviceGuid, padIdx) = key;
                 var settings = SettingsManager.UserSettings;
                 if (settings == null) return PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
                 PadSetting ps = null;
@@ -1868,8 +1838,8 @@ namespace PadForge.Services
                 }
                 var resolved = ps?.TouchpadSettings == null
                     ? PadForge.Engine.Touchpad.TouchpadGestureSettings.Default()
-                    : PadForge.Engine.Touchpad.TouchpadGestureSettings.ResolveForDevice(
-                        ps.TouchpadSettings, deviceGuid.ToString());
+                    : PadForge.Engine.Touchpad.TouchpadGestureSettings.ResolveForPad(
+                        ps.TouchpadSettings, deviceGuid.ToString(), padIdx);
                 // Workshop imports self-arm (translator v14): an
                 // authoritative slot's referenced gesture descriptors turn
                 // their feature families on without a Touchpad-tab toggle
@@ -2217,7 +2187,6 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.MenuItemFiredProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureAxisProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider = null;
-                PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadRegionSettingsProvider = null;
                 // #241: unhook the NFC providers and power the MCU down.
                 PadForge.Engine.SdlDeviceWrapper.NfcArmedProvider = null;
                 PadForge.Engine.SdlDeviceWrapper.NfcTagButtonResolver = null;

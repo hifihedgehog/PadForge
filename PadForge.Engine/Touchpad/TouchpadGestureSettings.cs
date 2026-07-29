@@ -456,6 +456,34 @@ namespace PadForge.Engine.Touchpad
         public static TouchpadGestureSettings ResolveForDevice(TouchpadSettingsEntry[] entries, string guidStr)
             => ResolveEntryForDevice(entries, guidStr)?.Settings ?? Default();
 
+        /// <summary><para>The entry whose POINTER REGION governs one specific
+        /// pad. Everything else on this class is per device by design, and
+        /// <see cref="ResolveEntryForDevice"/> stays the seam for it: gesture
+        /// thresholds and mouse feel describe a user's hands, so they should
+        /// not change between a controller's left and right pads.</para>
+        /// <para>The region is different in kind. It is WHERE ON SCREEN one
+        /// particular pad points, and a config routinely gives two pads two
+        /// different rectangles. AOE II's Steam Deck layout maps the left pad
+        /// to the bottom-left menu (center 0.09/0.90, size 0.11 x 0.07) and
+        /// the right pad to a wide shallow band. Collapsing those to one
+        /// device-wide rectangle loses the layout.</para>
+        /// <para>Exact pad match first, then the device-wide entry, so a
+        /// device that has never had a per-pad region authored behaves
+        /// exactly as before.</para></summary>
+        public static TouchpadSettingsEntry ResolveRegionEntryForPad(
+            TouchpadSettingsEntry[] entries, string guidStr, int padIdx)
+        {
+            if (entries == null || string.IsNullOrEmpty(guidStr)) return null;
+            foreach (var e in entries)
+            {
+                if (e?.Settings == null) continue;
+                if (e.TouchpadIndex != padIdx) continue;
+                if (!string.Equals(e.DeviceGuid, guidStr, System.StringComparison.OrdinalIgnoreCase)) continue;
+                if (e.Settings.PointerRegionAuthored) return e;
+            }
+            return ResolveEntryForDevice(entries, guidStr);
+        }
+
         /// <summary>True when <paramref name="s"/> differs from
         /// <see cref="Default"/> in any user-facing way: any enable toggle
         /// on, any mouse / pointer / haptic tuning moved off its default,

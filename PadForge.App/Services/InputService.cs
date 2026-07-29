@@ -1654,6 +1654,35 @@ namespace PadForge.Services
             // filtered by `MapTo == slotIndex && InstanceGuid == device`,
             // the same (slot, device, pad) key TouchpadGestureSettingsProvider
             // uses since the May 2026 slot-collapse fix.
+            // The absolute pointer's screen region, resolved PER PAD. Mouse
+            // feel below stays device-wide; the region is where on screen a
+            // particular pad points, and a config routinely gives two pads
+            // two different rectangles (AOE II's Steam Deck layout maps the
+            // left pad to a corner menu and the right pad to a wide band).
+            PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadRegionSettingsProvider =
+                (slotIndex, deviceGuid, padIdx) =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var rg)) return null;
+                var rsettings = SettingsManager.UserSettings;
+                if (rsettings == null) return null;
+                PadSetting rps = null;
+                lock (rsettings.SyncRoot)
+                {
+                    for (int i = 0; i < rsettings.Items.Count; i++)
+                    {
+                        var us = rsettings.Items[i];
+                        if (us == null) continue;
+                        if (us.MapTo != slotIndex) continue;
+                        if (us.InstanceGuid != rg) continue;
+                        rps = us.GetPadSetting();
+                        break;
+                    }
+                }
+                if (rps?.TouchpadSettings == null) return null;
+                return PadForge.Engine.Touchpad.TouchpadGestureSettings
+                    .ResolveRegionEntryForPad(rps.TouchpadSettings, rg.ToString(), padIdx)?.Settings;
+            };
+
             PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider =
                 (slotIndex, deviceGuid, padIdx) =>
             {
@@ -2188,6 +2217,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.MenuItemFiredProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureAxisProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadRegionSettingsProvider = null;
                 // #241: unhook the NFC providers and power the MCU down.
                 PadForge.Engine.SdlDeviceWrapper.NfcArmedProvider = null;
                 PadForge.Engine.SdlDeviceWrapper.NfcTagButtonResolver = null;

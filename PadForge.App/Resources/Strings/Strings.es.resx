@@ -2551,6 +2551,21 @@
   <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>Cuadrante este</value></data>
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>Cuadrante oeste</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Centro</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion" xml:space="preserve"><value>Recorrido máx. del toque</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion_Tooltip" xml:space="preserve"><value>Cuánto puede moverse un dedo y seguir contando como toque, en anchos del pad. 0,04 es el 4% del pad.</value></data>
+  <data name="Pad_ResetTouchpadTapMaxMotion" xml:space="preserve"><value>Restablecer recorrido máx. del toque</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion" xml:space="preserve"><value>Recorrido máx. de pulsación larga</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion_Tooltip" xml:space="preserve"><value>Cuánto puede desviarse un dedo durante una pulsación larga y seguir contando como tal en vez de deslizamiento.</value></data>
+  <data name="Pad_ResetTouchpadLongPressMaxMotion" xml:space="preserve"><value>Restablecer recorrido máx. de pulsación larga</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle" xml:space="preserve"><value>Ángulo de dos dedos</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle_Tooltip" xml:space="preserve"><value>Ángulo máximo entre las direcciones de ambos dedos que sigue contando como deslizamiento de dos dedos en vez de pellizco o giro.</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipeAngularTolerance" xml:space="preserve"><value>Restablecer ángulo de dos dedos</value></data>
+  <data name="Pad_Touchpad_PinchThreshold" xml:space="preserve"><value>Umbral de pellizco</value></data>
+  <data name="Pad_Touchpad_PinchThreshold_Tooltip" xml:space="preserve"><value>Cuánto debe cambiar la distancia entre dos dedos antes de activar un pellizco.</value></data>
+  <data name="Pad_ResetTouchpadPinchThreshold" xml:space="preserve"><value>Restablecer umbral de pellizco</value></data>
+  <data name="Pad_Touchpad_RotateThreshold" xml:space="preserve"><value>Umbral de giro</value></data>
+  <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Cuánto deben girar dos dedos antes de activar un giro.</value></data>
+  <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Restablecer umbral de giro</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Puntero absoluto</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Ajusta las fuentes Puntero X/Y del panel táctil, que llevan el cursor a la posición del dedo en el pad (asígnalas a ratón X/Y en un mando virtual de teclado y ratón). Tamaño 1,00 con centro 0,50 asigna el pad a toda la pantalla. Reduce el tamaño para limitar el cursor a una parte y mueve el centro para situarla.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Ancho de la Región</value></data>

@@ -492,6 +492,85 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _touchpadMouseJitterReduction, value)) PushIfNotLoading(); }
         }
 
+        private double _touchpadTapMaxMotion = 0.04;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.TapMaxMotion"/>:
+        /// How far a finger may travel and still count as a tap, in pad widths.
+        /// Its sibling TapTimeWindowMs caps how LONG the tap may take. Both
+        /// bound the same gesture, so exposing only the time half let a user
+        /// widen the window while a drifting finger still failed the
+        /// distance test with nothing on screen to explain why.</summary>
+        public double TouchpadTapMaxMotion
+        {
+            get => _touchpadTapMaxMotion;
+            set
+            {
+                var v = Math.Clamp(value, 0.01, 0.30);
+                if (SetProperty(ref _touchpadTapMaxMotion, v)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadLongPressMaxMotion = 0.05;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.LongPressMaxMotion"/>:
+        /// How far a finger may drift during a hold and still count as a long
+        /// press rather than a swipe. Needs more headroom than a tap because
+        /// drift accumulates over the longer window.</summary>
+        public double TouchpadLongPressMaxMotion
+        {
+            get => _touchpadLongPressMaxMotion;
+            set
+            {
+                var v = Math.Clamp(value, 0.01, 0.30);
+                if (SetProperty(ref _touchpadLongPressMaxMotion, v)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadTwoFingerSwipeAngularTolerance = 25;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.TwoFingerSwipeAngularTolerance"/>:
+        /// Maximum angle between the two fingers' motion vectors for a
+        /// two-finger swipe. Wider tolerance accepts sloppier swipes at the
+        /// cost of stealing gestures from pinch and rotate.</summary>
+        public double TouchpadTwoFingerSwipeAngularTolerance
+        {
+            get => _touchpadTwoFingerSwipeAngularTolerance;
+            set
+            {
+                var v = Math.Clamp(value, 5, 90);
+                if (SetProperty(ref _touchpadTwoFingerSwipeAngularTolerance, v)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadPinchThreshold = 0.25;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PinchThreshold"/>:
+        /// Fractional change in the distance between two fingers before a
+        /// pinch or spread fires.</summary>
+        public double TouchpadPinchThreshold
+        {
+            get => _touchpadPinchThreshold;
+            set
+            {
+                var v = Math.Clamp(value, 0.05, 1.00);
+                if (SetProperty(ref _touchpadPinchThreshold, v)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadRotateThresholdDegrees = 20;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.RotateThresholdDegrees"/>:
+        /// Angular change before a rotate fires.</summary>
+        public double TouchpadRotateThresholdDegrees
+        {
+            get => _touchpadRotateThresholdDegrees;
+            set
+            {
+                var v = Math.Clamp(value, 5, 90);
+                if (SetProperty(ref _touchpadRotateThresholdDegrees, v)) PushIfNotLoading();
+            }
+        }
+
         // ─── Absolute pointer card (#9 B-15) ──────────────────────────
 
         /// <summary>Mirrors TouchpadGestureSettings.PointerRegionAuthored.
@@ -873,6 +952,26 @@ namespace PadForge.ViewModels
                 TouchpadMouseJitterReduction = true;
             });
 
+        private RelayCommand _resetTouchpadTapMaxMotionCommand;
+        public RelayCommand ResetTouchpadTapMaxMotionCommand =>
+            _resetTouchpadTapMaxMotionCommand ??= new RelayCommand(() => TouchpadTapMaxMotion = 0.04);
+
+        private RelayCommand _resetTouchpadLongPressMaxMotionCommand;
+        public RelayCommand ResetTouchpadLongPressMaxMotionCommand =>
+            _resetTouchpadLongPressMaxMotionCommand ??= new RelayCommand(() => TouchpadLongPressMaxMotion = 0.05);
+
+        private RelayCommand _resetTouchpadTwoFingerSwipeAngularToleranceCommand;
+        public RelayCommand ResetTouchpadTwoFingerSwipeAngularToleranceCommand =>
+            _resetTouchpadTwoFingerSwipeAngularToleranceCommand ??= new RelayCommand(() => TouchpadTwoFingerSwipeAngularTolerance = 25);
+
+        private RelayCommand _resetTouchpadPinchThresholdCommand;
+        public RelayCommand ResetTouchpadPinchThresholdCommand =>
+            _resetTouchpadPinchThresholdCommand ??= new RelayCommand(() => TouchpadPinchThreshold = 0.25);
+
+        private RelayCommand _resetTouchpadRotateThresholdDegreesCommand;
+        public RelayCommand ResetTouchpadRotateThresholdDegreesCommand =>
+            _resetTouchpadRotateThresholdDegreesCommand ??= new RelayCommand(() => TouchpadRotateThresholdDegrees = 20);
+
         // ─── Absolute-pointer card reset commands (#9 B-15) ─────
 
         private RelayCommand _resetTouchpadPointerRegionSizeXCommand;
@@ -1013,6 +1112,11 @@ namespace PadForge.ViewModels
                 TouchpadJoystickInnerDeadzone = s.JoystickInnerDeadzone;
                 TouchpadJoystickDPadMode = s.JoystickDPadMode ?? "FourWay";
                 TouchpadJoystickDPadActivationThreshold = s.JoystickDPadActivationThreshold;
+                TouchpadTapMaxMotion = s.TapMaxMotion;
+                TouchpadLongPressMaxMotion = s.LongPressMaxMotion;
+                TouchpadTwoFingerSwipeAngularTolerance = s.TwoFingerSwipeAngularTolerance;
+                TouchpadPinchThreshold = s.PinchThreshold;
+                TouchpadRotateThresholdDegrees = s.RotateThresholdDegrees;
                 TouchpadMouseSensitivityX = s.MouseSensitivityX;
                 TouchpadMouseSensitivityY = s.MouseSensitivityY;
                 TouchpadMouseInvertX = s.MouseInvertX;
@@ -1223,6 +1327,11 @@ namespace PadForge.ViewModels
             s.JoystickInnerDeadzone = (float)TouchpadJoystickInnerDeadzone;
             s.JoystickDPadMode = string.IsNullOrEmpty(TouchpadJoystickDPadMode) ? "FourWay" : TouchpadJoystickDPadMode;
             s.JoystickDPadActivationThreshold = (float)TouchpadJoystickDPadActivationThreshold;
+            s.TapMaxMotion = (float)TouchpadTapMaxMotion;
+            s.LongPressMaxMotion = (float)TouchpadLongPressMaxMotion;
+            s.TwoFingerSwipeAngularTolerance = (float)TouchpadTwoFingerSwipeAngularTolerance;
+            s.PinchThreshold = (float)TouchpadPinchThreshold;
+            s.RotateThresholdDegrees = (float)TouchpadRotateThresholdDegrees;
             s.MouseSensitivityX = (float)TouchpadMouseSensitivityX;
             s.MouseSensitivityY = (float)TouchpadMouseSensitivityY;
             s.MouseInvertX = TouchpadMouseInvertX;

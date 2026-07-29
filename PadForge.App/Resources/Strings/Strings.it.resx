@@ -2573,6 +2573,21 @@
   <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>Quadrante est</value></data>
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>Quadrante ovest</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Centro</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion" xml:space="preserve"><value>Percorso max. del tocco</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion_Tooltip" xml:space="preserve"><value>Quanto può muoversi un dito restando un tocco, in larghezze del pad. 0,04 è il 4% del pad.</value></data>
+  <data name="Pad_ResetTouchpadTapMaxMotion" xml:space="preserve"><value>Reimposta percorso max. del tocco</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion" xml:space="preserve"><value>Percorso max. pressione lunga</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion_Tooltip" xml:space="preserve"><value>Quanto può spostarsi un dito durante una pressione prolungata restando tale invece di uno scorrimento.</value></data>
+  <data name="Pad_ResetTouchpadLongPressMaxMotion" xml:space="preserve"><value>Reimposta percorso max. pressione lunga</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle" xml:space="preserve"><value>Angolo a due dita</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle_Tooltip" xml:space="preserve"><value>Angolo massimo tra le direzioni delle due dita che conta ancora come scorrimento a due dita invece di pizzico o rotazione.</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipeAngularTolerance" xml:space="preserve"><value>Reimposta angolo a due dita</value></data>
+  <data name="Pad_Touchpad_PinchThreshold" xml:space="preserve"><value>Soglia del pizzico</value></data>
+  <data name="Pad_Touchpad_PinchThreshold_Tooltip" xml:space="preserve"><value>Di quanto deve cambiare la distanza tra due dita prima che scatti un pizzico.</value></data>
+  <data name="Pad_ResetTouchpadPinchThreshold" xml:space="preserve"><value>Reimposta soglia del pizzico</value></data>
+  <data name="Pad_Touchpad_RotateThreshold" xml:space="preserve"><value>Soglia di rotazione</value></data>
+  <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Di quanto devono ruotare due dita prima che scatti una rotazione.</value></data>
+  <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Reimposta soglia di rotazione</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Puntatore assoluto</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Regola le sorgenti Puntatore X/Y del touchpad, che portano il cursore alla posizione del dito sul pad (mappale su mouse X/Y di un controller virtuale tastiera / mouse). Dimensione 1,00 con centro 0,50 mappa il pad sull'intero schermo. Riduci la dimensione per confinare il cursore a una parte e sposta il centro per collocarla.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Larghezza Area</value></data>

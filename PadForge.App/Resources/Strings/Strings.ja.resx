@@ -2551,6 +2551,21 @@
   <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>東ゾーン</value></data>
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>西ゾーン</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>中央</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion" xml:space="preserve"><value>タップ最大移動距離</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion_Tooltip" xml:space="preserve"><value>指が動いてもタップとみなされる最大距離 (パッド幅比)。0.04 はパッドの 4% です。</value></data>
+  <data name="Pad_ResetTouchpadTapMaxMotion" xml:space="preserve"><value>タップ最大移動距離をリセット</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion" xml:space="preserve"><value>長押し最大移動距離</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion_Tooltip" xml:space="preserve"><value>長押し中に指がずれてもスワイプではなく長押しとみなされる最大距離。</value></data>
+  <data name="Pad_ResetTouchpadLongPressMaxMotion" xml:space="preserve"><value>長押し最大移動距離をリセット</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle" xml:space="preserve"><value>2 本指の角度</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle_Tooltip" xml:space="preserve"><value>2 本の指の向きの差がこの角度以内なら、ピンチや回転ではなく 2 本指スワイプとみなします。</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipeAngularTolerance" xml:space="preserve"><value>2 本指の角度をリセット</value></data>
+  <data name="Pad_Touchpad_PinchThreshold" xml:space="preserve"><value>ピンチのしきい値</value></data>
+  <data name="Pad_Touchpad_PinchThreshold_Tooltip" xml:space="preserve"><value>ピンチと判定されるまでに 2 本指の間隔が変化する必要のある割合。</value></data>
+  <data name="Pad_ResetTouchpadPinchThreshold" xml:space="preserve"><value>ピンチのしきい値をリセット</value></data>
+  <data name="Pad_Touchpad_RotateThreshold" xml:space="preserve"><value>回転のしきい値</value></data>
+  <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>回転と判定されるまでに 2 本指が回る必要のある角度。</value></data>
+  <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>回転のしきい値をリセット</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>絶対ポインター</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>タッチパッド ポインター X/Y ソースを調整します。これはパッド上の指の位置にカーソルを移動させます (キーボード / マウス仮想コントローラーのマウス X/Y に割り当ててください)。サイズ 1.00、中心 0.50 でパッドが画面全体に対応します。サイズを小さくするとカーソルが画面の一部に制限され、中心でその位置を決めます。</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>領域の幅</value></data>

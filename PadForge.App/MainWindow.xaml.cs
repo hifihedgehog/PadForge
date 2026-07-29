@@ -1170,6 +1170,11 @@ namespace PadForge
                         // restart (the Motion Lean lesson, audit lens 1m F2).
                         // All FOUR: a center-only edit is just as losable as
                         // a size-only one.
+                        nameof(PadViewModel.TouchpadTapMaxMotion) or
+                        nameof(PadViewModel.TouchpadLongPressMaxMotion) or
+                        nameof(PadViewModel.TouchpadTwoFingerSwipeAngularTolerance) or
+                        nameof(PadViewModel.TouchpadPinchThreshold) or
+                        nameof(PadViewModel.TouchpadRotateThresholdDegrees) or
                         nameof(PadViewModel.TouchpadPointerRegionSizeX) or
                         nameof(PadViewModel.TouchpadPointerRegionSizeY) or
                         nameof(PadViewModel.TouchpadPointerRegionCenterX) or

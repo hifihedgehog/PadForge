@@ -2551,6 +2551,21 @@
   <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>东区域</value></data>
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>西区域</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>中心</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion" xml:space="preserve"><value>点按最大位移</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion_Tooltip" xml:space="preserve"><value>手指移动多远仍算作点按，以触控板宽度为单位。0.04 即触控板的 4%。</value></data>
+  <data name="Pad_ResetTouchpadTapMaxMotion" xml:space="preserve"><value>重置点按最大位移</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion" xml:space="preserve"><value>长按最大位移</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion_Tooltip" xml:space="preserve"><value>长按过程中手指可以偏移多远，仍算作长按而非滑动。</value></data>
+  <data name="Pad_ResetTouchpadLongPressMaxMotion" xml:space="preserve"><value>重置长按最大位移</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle" xml:space="preserve"><value>双指夹角</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle_Tooltip" xml:space="preserve"><value>两指方向之间的最大夹角，在此范围内仍算作双指滑动而非缩放或旋转。</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipeAngularTolerance" xml:space="preserve"><value>重置双指夹角</value></data>
+  <data name="Pad_Touchpad_PinchThreshold" xml:space="preserve"><value>缩放阈值</value></data>
+  <data name="Pad_Touchpad_PinchThreshold_Tooltip" xml:space="preserve"><value>两指间距需要变化多少才会触发缩放。</value></data>
+  <data name="Pad_ResetTouchpadPinchThreshold" xml:space="preserve"><value>重置缩放阈值</value></data>
+  <data name="Pad_Touchpad_RotateThreshold" xml:space="preserve"><value>旋转阈值</value></data>
+  <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>两指需要转动多少才会触发旋转。</value></data>
+  <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>重置旋转阈值</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>绝对指针</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>调整触控板指针 X/Y 源，它会把光标移动到手指在触控板上的位置（请将其映射到键盘 / 鼠标虚拟控制器的鼠标 X/Y）。大小 1.00、中心 0.50 时触控板对应整个屏幕。缩小大小可将光标限制在屏幕的一部分，并用中心确定其位置。</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>区域宽度</value></data>

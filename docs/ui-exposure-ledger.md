@@ -18,11 +18,11 @@ Audit run 2026-07-29 against `v4-dev`.
 
 | Field | Status |
 |---|---|
-| `TapMaxMotion` | **NO UI**. Zero app references |
-| `LongPressMaxMotion` | **NO UI**. Zero app references |
-| `TwoFingerSwipeAngularTolerance` | **NO UI**. Zero app references |
-| `PinchThreshold` | **NO UI**. Zero app references |
-| `RotateThresholdDegrees` | **NO UI**. Zero app references |
+| `TapMaxMotion` | Card as of `cacf627c+`. Touchpad tab, beside its own toggle |
+| `LongPressMaxMotion` | Card as of `cacf627c+`. Touchpad tab, beside its own toggle |
+| `TwoFingerSwipeAngularTolerance` | Card as of `cacf627c+`. Touchpad tab, beside its own toggle |
+| `PinchThreshold` | Card as of `cacf627c+`. Touchpad tab, beside its own toggle |
+| `RotateThresholdDegrees` | Card as of `cacf627c+`. Touchpad tab, beside its own toggle |
 | `PointerRegionAuthored` | Internal. The handover flag, set by the region setters |
 | `PointerStretchX/Y` | Internal. Deserialize-only legacy shims |
 | all others | Card |
@@ -67,6 +67,14 @@ may take but not how far it may travel.
 ## MappingRow (8 persisted)
 
 All eight have cards.
+
+## Closed so far
+
+- Pointer region (center + size): card, per pad, `5e1f0567` / `c9cfa0ac`.
+- The five gesture thresholds: cards, `cacf627c+`.
+
+Still open: the MappingSource preserve-only family and the six MappingSet
+`Workshop*` stamps. Those are the next batch.
 
 ## Standing rule
 

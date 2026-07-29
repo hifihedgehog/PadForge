@@ -55,6 +55,10 @@ namespace PadForge.Tests
 
         private static float Counts(CustomInputState st, long ticks, MappingSource src, int slot)
         {
+            // The ball advances ONCE per poll frame and serves both axes from
+            // that, so a poll never integrates twice. Each call here is one
+            // poll, so it advances the frame exactly as the loop does.
+            SourceCoercion.BeginPollFrame();
             var (x, _) = SourceCoercion.ReadTouchpadMouseCounts(
                 st, src, slot, deviceGuid: "", dtSeconds: PollDt,
                 forX: true, nowTicks: ticks, ticksPerSecond: Freq);
@@ -310,6 +314,145 @@ namespace PadForge.Tests
                 Counts(PadAt(0.30f), TicksAt(0.010f), src, slot);
                 Assert.Equal(0f, Counts(PadAt(0.30f), TicksAt(0.011f), src, slot));
                 Assert.Equal(0f, Counts(PadAt(0.30f), TicksAt(0.012f), src, slot));
+            }
+            finally { ClearSettings(); }
+        }
+
+        // ── the ball model (sc-controller BallModifier) ───────────────────
+
+        [Fact]
+        public void TheFlingFollowsTheStretchOfTravel_NotTheLastSampleAlone()
+        {
+            // THE complaint, stated as a test. A finger never leaves a pad
+            // cleanly: the last report or two are slow and often point
+            // somewhere else. Taking the last delta alone let one stray
+            // sample steer the whole fling. The release velocity is the mean
+            // of the recent window, so a long rightward drag followed by one
+            // small leftward twitch still flings RIGHT.
+            UseSettings(momentum: true, decay: 0.90f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                float x = 0.20f, t = 0f;
+                Counts(PadAt(x), TicksAt(t), src, slot);
+                for (int i = 0; i < 8; i++)   // a firm drag to the right
+                {
+                    x += 0.05f; t += 0.004f;
+                    Counts(PadAt(x), TicksAt(t), src, slot);
+                }
+                // One last twitch back the other way, then lift.
+                x -= 0.004f; t += 0.004f;
+                Counts(PadAt(x), TicksAt(t), src, slot);
+
+                float fling = Counts(PadAt(x, down: false), TicksAt(t + 0.001f), src, slot);
+                Assert.True(fling > 0f,
+                    $"the fling followed the final twitch instead of the drag: {fling}");
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void ASlowLiftDoesNotFling()
+        {
+            // sc-controller's MIN_LIFT_VELOCITY. Setting a finger down and
+            // picking it up must not throw the cursor on whatever residue
+            // the last sample happened to hold.
+            UseSettings(momentum: true, decay: 0.95f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.500f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.5004f), TicksAt(0.010f), src, slot);   // a crawl
+                Assert.Equal(0f, Counts(PadAt(0.5004f, down: false), TicksAt(0.011f), src, slot));
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void FrictionIsConstantDeceleration_SoTheBallActuallyStops()
+        {
+            // A real ball sheds a fixed amount of speed per unit time and
+            // therefore arrives at zero. Exponential decay only approaches
+            // it, which is the long mushy tail. Successive speed DROPS must
+            // be roughly equal, not proportional to the speed left.
+            UseSettings(momentum: true, decay: 0.85f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.20f), TicksAt(0.000f), src, slot);
+                float x = 0.20f, t = 0f;
+                for (int i = 0; i < 6; i++) { x += 0.05f; t += 0.004f; Counts(PadAt(x), TicksAt(t), src, slot); }
+
+                // Sample the WHOLE coast. A short window cannot tell the two
+                // models apart: over a few milliseconds an exponential curve
+                // is locally straight, and an earlier version of this test
+                // passed with exponential decay for exactly that reason.
+                var v = new System.Collections.Generic.List<float>();
+                for (int i = 0; i < 20000; i++)
+                {
+                    float c = Counts(PadAt(x, down: false), TicksAt(t + 0.001f * (i + 1)), src, slot);
+                    if (c <= 0f) break;
+                    v.Add(c);
+                }
+                Assert.True(v.Count > 40, $"the coast was only {v.Count} polls; too short to characterise");
+
+                // Compare the drop near the START against the drop near the
+                // END of the same coast. Constant deceleration keeps them
+                // equal; exponential decay makes the late one a small
+                // fraction of the early one, because it scales with what is
+                // left rather than with time.
+                int a0 = v.Count / 10, b0 = (v.Count * 9) / 10;
+                float dropEarly = v[a0] - v[a0 + 1];
+                float dropLate = v[b0] - v[b0 + 1];
+                Assert.True(dropEarly > 0f, "speed did not fall at all");
+                Assert.True(Math.Abs(dropLate - dropEarly) < dropEarly * 0.25f,
+                    $"decay looks exponential, not constant: {dropEarly} early, {dropLate} late");
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void FrictionNeverPushesTheBallBackwards()
+        {
+            // The deceleration is capped at the speed remaining. Uncapped it
+            // would overshoot zero on the final tick and reverse the cursor.
+            UseSettings(momentum: true, decay: 0.80f);   // strongest friction
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.20f), TicksAt(0.000f), src, slot);
+                float x = 0.20f, t = 0f;
+                for (int i = 0; i < 6; i++) { x += 0.05f; t += 0.004f; Counts(PadAt(x), TicksAt(t), src, slot); }
+                for (int i = 0; i < 500; i++)
+                {
+                    float c = Counts(PadAt(x, down: false), TicksAt(t + 0.001f * (i + 1)), src, slot);
+                    Assert.True(c >= 0f, $"the ball reversed on poll {i}: {c}");
+                    if (c == 0f) return;
+                }
+                Assert.Fail("the ball never stopped under full friction");
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void APauseBeforeLiftingDoesNotFlingStaleSamples()
+        {
+            // Drag, stop, hold, then lift. The hand had come to rest, so
+            // there is nothing to fling: the history must not survive the
+            // pause and resurrect the earlier motion.
+            UseSettings(momentum: true, decay: 0.95f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.20f), TicksAt(0.000f), src, slot);
+                float x = 0.20f, t = 0f;
+                for (int i = 0; i < 6; i++) { x += 0.05f; t += 0.004f; Counts(PadAt(x), TicksAt(t), src, slot); }
+
+                // Held perfectly still, well past the rest window.
+                for (int i = 0; i < 60; i++)
+                    Counts(PadAt(x), TicksAt(t + 0.001f * (i + 1)), src, slot);
+
+                Assert.Equal(0f, Counts(PadAt(x, down: false), TicksAt(t + 0.100f), src, slot));
             }
             finally { ClearSettings(); }
         }

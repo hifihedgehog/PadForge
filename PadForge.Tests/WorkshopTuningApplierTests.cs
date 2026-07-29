@@ -271,14 +271,13 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void OuterRangeStaysPutWhenAStickGeometryOwnsIt()
+        public void AStampedGeometryMovesAsOneUnit()
         {
-            // THE trap in this fold. With a shape stamped, the engine spends
-            // ParamRangeOuter as the deadzone's outer radius inside
-            // ApplyStickDeadZoneShape and suppresses its own scalar tail (its
-            // hasOuter requires shape == 0). Folding the radius into MaxRange
-            // would strip the geometry of the bound it still needs, so a
-            // Circle deadzone import would lose its outer edge.
+            // Shape, inner radius and outer radius are ONE band in the engine
+            // (mag <= inner zeroes, then (mag-inner)/(outer-inner) rescales),
+            // so they travel together. Folding the inner while leaving the
+            // outer would hand the row read a band with no floor and the card
+            // a floor with no band.
             var set = ArrangeRow("LeftThumbAxisX", s =>
             {
                 s.ParamStickDeadZoneShape = 2;      // Steam Circle
@@ -287,11 +286,87 @@ namespace PadForge.Tests
             });
             var ps = new PadSetting();
 
+            Assert.True(WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps));
+
+            Assert.Equal("10", ps.LeftThumbDeadZoneX);
+            Assert.Equal("80", ps.LeftThumbMaxRangeX);
+            Assert.Equal("2", ps.LeftThumbDeadZoneShape);   // ScaledRadial
+
+            var src = set.Rows[0].Sources[0];
+            Assert.Equal(0, src.ParamStickDeadZoneShape);
+            Assert.Equal(0.0, src.ParamStickDeadZoneInner);
+            Assert.Equal(0.0, src.ParamRangeOuter);
+        }
+
+        [Fact]
+        public void SteamCrossBecomesTheAxialShape()
+        {
+            // Engine shape 1 is Steam's Cross / Square, a per-axis check. The
+            // card calls that Axial ("0"), and its ApplySingleDeadZone runs
+            // the same (mag-dz)/(maxRange-dz) band in one dimension. This is
+            // the mapping the slot-level deadzone_shape stamp already uses.
+            ArrangeRow("LeftThumbAxisX", s =>
+            {
+                s.ParamStickDeadZoneShape = 1;
+                s.ParamStickDeadZoneInner = 0.20;
+            });
+            var ps = new PadSetting();
+
+            Assert.True(WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps));
+
+            Assert.Equal("0", ps.LeftThumbDeadZoneShape);
+            Assert.Equal("20", ps.LeftThumbDeadZoneX);
+        }
+
+        [Fact]
+        public void ThePairLandsAsACircleBecauseBothRowsCarryTheSameRadius()
+        {
+            // Steam authored one circular deadzone. Each row writes only its
+            // own axis, so the circle only survives if both rows of the pair
+            // fold: dzX == dzY is what makes ComputeRadial's ellipse collapse
+            // back to the circle Steam meant.
+            ArrangeSlot(s =>
+            {
+                foreach (var target in new[] { "LeftThumbAxisX", "LeftThumbAxisY" })
+                {
+                    s.Rows.Add(new MappingRow
+                    {
+                        Target = target,
+                        Sources = { new MappingSource
+                        {
+                            Descriptor = "Gamepad LeftStick" + target[^1],
+                            ParamStickDeadZoneShape = 2,
+                            ParamStickDeadZoneInner = 0.15,
+                        } },
+                    });
+                }
+            });
+            var ps = new PadSetting();
+
             WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps);
 
-            Assert.Equal("100", ps.LeftThumbMaxRangeX);                     // card untouched
-            Assert.Equal(0.80, set.Rows[0].Sources[0].ParamRangeOuter);     // radius preserved
-            Assert.Equal(2, set.Rows[0].Sources[0].ParamStickDeadZoneShape);
+            Assert.Equal("15", ps.LeftThumbDeadZoneX);
+            Assert.Equal("15", ps.LeftThumbDeadZoneY);
+            Assert.Equal("2", ps.LeftThumbDeadZoneShape);
+        }
+
+        [Fact]
+        public void AGeometryIsClearedEvenWhenTheUserOwnsTheDeadZone()
+        {
+            // One writer is the whole point: a geometry left on the source
+            // beside a user-set card would apply the band twice.
+            var set = ArrangeRow("LeftThumbAxisX", s =>
+            {
+                s.ParamStickDeadZoneShape = 2;
+                s.ParamStickDeadZoneInner = 0.10;
+            });
+            var ps = new PadSetting { LeftThumbDeadZoneX = "5" };
+
+            WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps);
+
+            Assert.Equal("5", ps.LeftThumbDeadZoneX);
+            Assert.Equal(0, set.Rows[0].Sources[0].ParamStickDeadZoneShape);
+            Assert.Equal(0.0, set.Rows[0].Sources[0].ParamStickDeadZoneInner);
         }
 
         [Fact]

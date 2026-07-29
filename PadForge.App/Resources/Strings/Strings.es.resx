@@ -1215,6 +1215,7 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Mantener: el giroscopio se activa mientras se mantiene presionado el botón de activación. Alternar: cada pulsación enciende o apaga el giroscopio, y soltar no hace nada. Alternar es persistente durante el ciclo de muestreo y se restablece al cambiar de perfil.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Mantener</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Alternar</value></data>
+  <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Soltar para apuntar</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>Stick de activación</value></data>
   <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Qué stick controla el umbral de Easy Aim. Derecho (predeterminado) mantiene los perfiles existentes sin cambios. Cualquiera usa el stick que se desplace más.</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Stick derecho</value></data>

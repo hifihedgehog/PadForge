@@ -1215,6 +1215,7 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>保持：按住激活按钮时陀螺仪开启。切换：每次按下切换陀螺仪开关。释放无效。切换在轮询周期之间持续，切换配置文件时重置。</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>保持</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>切换</value></data>
+  <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>松开以瞄准</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>激活摇杆</value></data>
   <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Easy Aim 阈值由哪个摇杆门控。右（默认）保持现有配置不变。任一使用偏移更大的摇杆。</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>右摇杆</value></data>

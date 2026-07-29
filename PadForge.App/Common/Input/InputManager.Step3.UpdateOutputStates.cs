@@ -463,18 +463,12 @@ namespace PadForge.Common.Input
         /// touchpad gesture auto-arm.</summary>
         private static DeadZoneShape ResolveThumbDeadZoneShape(int slotIndex, bool left, PadSetting ps)
         {
-            var sets = SettingsManager.SlotMappingSets;
-            if (slotIndex >= 0 && sets != null && slotIndex < sets.Length)
-            {
-                var set = sets[slotIndex];
-                if (set != null && set.Authoritative)
-                {
-                    string stamp = left
-                        ? set.WorkshopLeftStickDeadZoneShape
-                        : set.WorkshopRightStickDeadZoneShape;
-                    if (!string.IsNullOrEmpty(stamp)) return ParseDeadZoneShape(stamp);
-                }
-            }
+            // No Workshop overlay here any more. An import's deadzone
+            // shape is folded into this PadSetting when the device is
+            // assigned (WorkshopTuningApplier), so the user's own Dead
+            // Zone Shape control is the single source of truth. Reading
+            // the slot stamp first meant editing that control did
+            // nothing on an imported profile, silently.
             return ParseDeadZoneShape(left ? ps.LeftThumbDeadZoneShape : ps.RightThumbDeadZoneShape);
         }
 

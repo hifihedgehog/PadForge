@@ -1215,6 +1215,7 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ホールド: 起動ボタンを押している間、ジャイロが作動します。トグル: ボタンを押すたびにジャイロのオン/オフが切り替わります。離しても何も起こりません。トグルはポーリング間で維持され、プロファイル切り替え時にリセットされます。</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>ホールド</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>トグル</value></data>
+  <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>離して照準</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>起動スティック</value></data>
   <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Easy Aim しきい値をどのスティックでゲートするか。右（既定）は既存のプロファイルをそのまま維持します。両方はより大きく傾けたスティックを使用します。</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>右スティック</value></data>

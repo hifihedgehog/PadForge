@@ -1679,7 +1679,6 @@ namespace PadForge.Common.Input
             public string Descriptor = "";
             public string DeviceGuid = "";
             public string Mode = "Hold";
-            public bool WorkshopInvert;
             public string[] Ratchets;
             public string[] SlotGuids = System.Array.Empty<string>();
         }
@@ -1720,21 +1719,11 @@ namespace PadForge.Common.Input
                 }
                 cfg.SlotGuids = _gyroEngageGuidScratch.ToArray();
 
-                // Workshop overlay (v18): an Authoritative slot with an
-                // authored gyro_button stamp engages on that device-free
-                // descriptor when no user PadSetting configured one. The
-                // invert flag flips the held sense (Steam
-                // gyro_button_invert: gyro fires while NOT held);
-                // gyro_button_invert 2 (translator v25) rides the Toggle arm.
-                if (cfg.Descriptor.Length == 0
-                    && wsSet != null
-                    && !string.IsNullOrEmpty(wsSet.WorkshopGyroEngageDescriptor))
-                {
-                    cfg.Descriptor = wsSet.WorkshopGyroEngageDescriptor;
-                    cfg.WorkshopInvert = wsSet.WorkshopGyroEngageInvert;
-                    cfg.DeviceGuid = "";
-                    cfg.Mode = wsSet.WorkshopGyroEngageToggle ? "Toggle" : "Hold";
-                }
+                // The Workshop gyro_button stamp is folded into the
+                // device's own GyroAimEngageButton when the device is
+                // assigned (WorkshopTuningApplier), so there is no
+                // runtime overlay left to consult and the Gyro card is
+                // the single source of truth.
 
                 // Workshop ratchet clutch (v22) descriptors, resolved
                 // per tick against SlotGuids.
@@ -1771,7 +1760,9 @@ namespace PadForge.Common.Input
                 string descriptor = cfg.Descriptor;
                 string deviceGuid = cfg.DeviceGuid;
                 string mode = cfg.Mode;
-                bool workshopInvert = cfg.WorkshopInvert;
+                // "ReleaseToEngage": gyro fires while the button is NOT
+                // held. Steam spells this gyro_button_invert; it used to
+                // ride a hidden per-slot flag no card could reach.
 
                 bool buttonDown = false;
                 if (descriptor.Length > 0)
@@ -1810,7 +1801,8 @@ namespace PadForge.Common.Input
                     // no engage button = no gating from this source.
                     GyroEngagedFromButton[slot] = string.IsNullOrEmpty(descriptor)
                         ? true
-                        : (workshopInvert ? !buttonDown : buttonDown);
+                        : (string.Equals(mode, "ReleaseToEngage", StringComparison.Ordinal)
+                            ? !buttonDown : buttonDown);
                 }
                 _prevAimEngageButtonDown[slot] = buttonDown;
 

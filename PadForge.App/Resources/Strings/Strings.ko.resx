@@ -1215,6 +1215,7 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>유지: 활성화 버튼을 누르고 있는 동안 자이로가 작동합니다. 토글: 누를 때마다 자이로가 켜지거나 꺼지며, 떼는 동작은 영향을 주지 않습니다. 토글은 폴링 틱 사이에 유지되며 프로필 전환 시 초기화됩니다.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>유지</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>토글</value></data>
+  <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>놓아서 조준</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>활성화 스틱</value></data>
   <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Easy Aim 임계값을 게이트할 스틱. 오른쪽(기본값)은 기존 프로필을 그대로 유지합니다. 둘 다는 더 많이 기울어진 스틱을 사용합니다.</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>오른쪽 스틱</value></data>

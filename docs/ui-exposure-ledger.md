@@ -62,19 +62,34 @@ may take but not how far it may travel.
 | `BaseLayerName` / `BaseColor` / `BaseIcon` | Card. Layer tab appearance (#119) |
 | `SocdMode` / `SocdPairs` | Card. The SOCD card (#240) |
 | `Authoritative` | Internal. An import flag |
-| `Workshop*` (6 fields) | **Preserve-only**. Slot-level stamps an import writes |
+| `Workshop*` (6 fields) | Folded into the device's OWN settings at assignment (`WorkshopTuningApplier`). The runtime overlays are gone |
 
 ## MappingRow (8 persisted)
 
 All eight have cards.
+
+## The pattern
+
+A Steam config assumes ONE controller, so its tuning is per physical input.
+PadForge already owns settings for those things, with cards. The import
+cannot write them because it runs before a device is assigned and they are
+keyed by device guid. Parking them somewhere else and reading the parking
+spot at runtime is what creates a second, invisible settings system.
+
+The fix is always the same shape: apply at assignment, into the user's own
+setting, then clear the carrier. `WorkshopTuningApplier` is that seam. The
+remaining per-source `Param*` family should join it rather than growing
+cards of its own.
 
 ## Closed so far
 
 - Pointer region (center + size): card, per pad, `5e1f0567` / `c9cfa0ac`.
 - The five gesture thresholds: cards, `cacf627c+`.
 
-Still open: the MappingSource preserve-only family and the six MappingSet
-`Workshop*` stamps. Those are the next batch.
+- The six `Workshop*` slot stamps: applied at assignment, `WorkshopTuningApplier`.
+
+Still open: the per-source `MappingSource` `Param*` family, which should route
+through the same applier rather than gaining its own cards.
 
 ## Standing rule
 

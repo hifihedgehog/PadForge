@@ -1550,6 +1550,7 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Hold: gyro fires while the engage button is held. Toggle: each press flips gyro on or off, and release does nothing. Toggle is sticky across the polling tick and resets on profile switch.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Hold</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Release to Aim</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>Engage Stick</value></data>
   <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Which stick's deflection the Easy Aim threshold gates on. Right (the default) keeps existing profiles unchanged. Either gates on whichever stick moves further.</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Right Stick</value></data>

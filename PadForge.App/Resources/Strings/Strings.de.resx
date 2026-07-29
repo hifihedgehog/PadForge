@@ -1252,6 +1252,7 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Halten: Gyro aktiv, solange die Aktivierungstaste gedrückt ist. Umschalten: Jeder Tastendruck schaltet den Gyro um; Loslassen hat keine Wirkung. Umschalten ist über den Polling-Tick hinweg persistent und setzt beim Profilwechsel zurück.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Halten</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Umschalten</value></data>
+  <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Loslassen zum Zielen</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>Aktivierungs-Stick</value></data>
   <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Welcher Stick die Easy-Aim-Schwelle steuert. Rechts (Standard) lässt vorhandene Profile unverändert. Beide steuert über den Stick, der weiter ausgelenkt wird.</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Rechter Stick</value></data>

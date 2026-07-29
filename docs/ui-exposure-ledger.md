@@ -40,8 +40,8 @@ may take but not how far it may travel.
 | `ParamCurveExponent` | **Preserve-only** (`SettingsService:1277`) |
 | `ParamRangeOuter` | **Preserve-only** (`:1278`) |
 | `ParamAntiDeadzone` | **Preserve-only** (`:1279`) |
-| `GateDescriptor` | **Preserve-only** (`:1284`) |
-| `Gate2Descriptor` | **Preserve-only** (`:1285`) |
+| `GateDescriptor` | Card as of the gate expansion: a real source plus the row's Custom expression |
+| `Gate2Descriptor` | Card, same expansion (second ANDed gate source) |
 | `ParamStickDeadZoneInner` | **Preserve-only** (`:1287`) |
 | `ParamStickDeadZoneShape` | **Preserve-only** (read at `:1248`) |
 | `ParamFlickRotationOffsetDeg` | **Preserve-only** (read at `:1250`) |
@@ -77,9 +77,19 @@ trackball `friction`. Touchpad glide IS supported, through the Touchpad tab's
 Momentum card; the per-source decay was a second implementation of it on a
 different physical model, reachable only when a pad drove a non-mouse target.
 
-Binding STRUCTURE is not a setting and stays: `GateDescriptor` carries Steam's
-`requires_click`, so dropping it would stop bindings firing rather than remove
-a knob.
+Binding STRUCTURE is not a setting either, but that does not exempt it from
+needing a surface. `GateDescriptor` carried Steam's `requires_click`, so
+dropping it would stop bindings firing rather than remove a knob. It got the
+surface instead: the gate is now a real source plus a Custom combine
+expression, both of which the user can already see and edit.
+
+`pow`, `hypot` and `deadzone` joined the expression registry for the same
+reason. The transforms the engine applies internally should be writable where
+the user can reach them. That makes most of the remaining per-source `Param*`
+family expressible as an expression rather than needing a card each:
+`ParamRangeOuter` and `ParamStickDeadZoneInner` collapse into one `deadzone`
+call, `ParamCurveExponent` is `pow`, `ParamStickDeadZoneShape` is `hypot` over
+the pair.
 
 ## The pattern
 

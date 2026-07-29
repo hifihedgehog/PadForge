@@ -1706,7 +1706,7 @@
   <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>指を離したあともカーソルが動き続け、トラックボールのように止まります。</value></data>
   <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>情性をリセット</value></data>
   <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>滑走</value></data>
-  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>滑走の長さ。高いほど遠くまで進みます。</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>カーソルが滑走する距離。最大では、再度タッチパッドに触れるまで進み続けます。</value></data>
   <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>滑走をリセット</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>スティック／方向キー出力をリセット</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>ジェスチャーをリセット</value></data>

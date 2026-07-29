@@ -206,7 +206,7 @@ namespace PadForge.Tests
 
         private static PadForge.Engine.Touchpad.TouchpadGestureSettings _tp;
 
-        private static void UseSettings(bool momentum = false, float decay = 0.82f,
+        private static void UseSettings(bool momentum = false, float decay = 0.90f,
                                         bool jitter = true)
         {
             _tp = new PadForge.Engine.Touchpad.TouchpadGestureSettings
@@ -335,29 +335,70 @@ namespace PadForge.Tests
             }
             try
             {
-                int shortGlide = CoastPolls(0.60f);
+                int shortGlide = CoastPolls(0.80f);
                 int longGlide = CoastPolls(0.95f);
                 Assert.True(shortGlide > 0 && longGlide > shortGlide,
-                    $"glide did not lengthen: {shortGlide} polls at 0.60, {longGlide} at 0.95");
+                    $"glide did not lengthen: {shortGlide} polls at 0.80, {longGlide} at 0.95");
             }
             finally { ClearSettings(); }
         }
 
         [Fact]
-        public void MomentumDecayIsClamped_SoAPersistedExtremeCannotCoastForever()
+        public void AtFullGlide_TheBallIsFrictionless_AndTouchingDownIsTheStop()
         {
-            UseSettings(momentum: true, decay: 1.0f);   // past the band
+            // 1.00 keeps the speed exactly. That is deliberate, the way a
+            // spun trackball runs until you catch it, and it is only safe
+            // because the down edge stops it. Both halves are asserted here
+            // so neither can be removed on its own.
+            UseSettings(momentum: true, decay: 1.00f);
             try
             {
                 var src = XSource(); int slot = NewSlot();
                 Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
                 Counts(PadAt(0.60f), TicksAt(0.004f), src, slot);
-                float last = 1f;
-                for (int i = 0; i < 20000 && last != 0f; i++)
-                    last = Counts(PadAt(0.60f, down: false), TicksAt(0.005f + i * 0.001f), src, slot);
-                Assert.Equal(0f, last);
+
+                float first = Counts(PadAt(0.60f, down: false), TicksAt(0.005f), src, slot);
+                Assert.True(first > 0f, "no coast at full glide");
+
+                // Still going, undiminished, a long way later.
+                float later = 0f;
+                for (int i = 0; i < 2000; i++)
+                    later = Counts(PadAt(0.60f, down: false), TicksAt(0.006f + i * 0.001f), src, slot);
+                Assert.Equal(first, later, 4);
+
+                // And a touch stops it dead.
+                Counts(PadAt(0.30f), TicksAt(3.000f), src, slot);
+                Assert.Equal(0f, Counts(PadAt(0.30f), TicksAt(3.001f), src, slot));
             }
             finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void MomentumDecayIsClampedIntoTheBand()
+        {
+            // A persisted value outside the band must not make the toggle
+            // inert or the glide wild. Below the floor still glides.
+            UseSettings(momentum: true, decay: 0.10f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.60f), TicksAt(0.004f), src, slot);
+                Assert.True(Counts(PadAt(0.60f, down: false), TicksAt(0.005f), src, slot) > 0f,
+                    "a persisted value under the floor killed the glide entirely");
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void TheDefaultGlideSitsAtTheMidpointOfTheBand()
+        {
+            // The default is meant to BE the middle of the slider, so the
+            // knob has equal room either way. Pinned so the band and the
+            // default cannot drift apart.
+            var fresh = new PadForge.Engine.Touchpad.TouchpadGestureSettings();
+            Assert.Equal(0.90f, fresh.MouseMomentumDecay, 3);
+            Assert.Equal(0.90f, (0.80f + 1.00f) / 2f, 3);
         }
 
         [Fact]

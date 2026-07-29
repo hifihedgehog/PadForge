@@ -1706,7 +1706,7 @@
   <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>손가락을 떼어도 커서가 계속 움직이다가 트랙볼처럼 멈춥니다.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>관성 초기화</value></data>
   <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>활강 거리</value></data>
-  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>활강이 얼마나 오래가는지. 높을수록 멀리 갑니다.</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>커서가 미끄러지는 거리. 최대치에서는 터치패드를 다시 만질 때까지 계속 진행합니다.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>활강 거리 초기화</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>스틱 / 방향키 출력 재설정</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>제스처 재설정</value></data>

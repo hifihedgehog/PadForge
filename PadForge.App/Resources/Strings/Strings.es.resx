@@ -1706,7 +1706,7 @@
   <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>El cursor sigue moviéndose al levantar el dedo y se detiene poco a poco, como un trackball.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Restablecer inercia</value></data>
   <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Deslizamiento</value></data>
-  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Cuánto dura el deslizamiento. Más alto llega más lejos.</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Cuánto se desliza el cursor. En el extremo superior sigue hasta que vuelva a tocar el panel.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Restablecer deslizamiento</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Restablecer Salida Stick / Cruceta</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Restablecer gestos</value></data>

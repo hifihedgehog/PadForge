@@ -1726,7 +1726,7 @@
   <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>De cursor beweegt door nadat u uw vinger optilt en rolt uit, net als een trackball.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Momentum herstellen</value></data>
   <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Uitloop</value></data>
-  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Hoe lang de uitloop duurt. Hoger komt verder.</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Hoe ver de cursor uitloopt. Op de hoogste stand gaat hij door tot u de touchpad weer aanraakt.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Uitloop herstellen</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Stick / D-pad-uitvoer resetten</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Gebaren resetten</value></data>

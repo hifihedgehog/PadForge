@@ -1392,7 +1392,7 @@
   <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>The cursor keeps travelling after you lift your finger and coasts to a stop, like a trackball.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Reset Momentum</value></data>
   <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Momentum Glide</value></data>
-  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>How long the coast lasts. Higher glides further.</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>How far the cursor coasts. At the top of the range it keeps going until you touch the pad again.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Reset Momentum Glide</value></data>
 
   <!-- Per-row Reset tooltips for absolute-pointer card (#9 B-15) -->

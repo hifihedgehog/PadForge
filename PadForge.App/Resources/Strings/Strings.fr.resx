@@ -1706,7 +1706,7 @@
   <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>Le curseur continue après le lever du doigt et ralentit jusqu’à l’arrêt, comme un trackball.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Réinitialiser l’inertie</value></data>
   <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Glissement</value></data>
-  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Durée du glissement. Plus haut va plus loin.</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Distance de glissement du curseur. Au maximum, il continue jusqu’à ce que vous retouchiez le pavé.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Réinitialiser le glissement</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Réinitialiser Sortie Stick / Croix directionnelle</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Réinitialiser les gestes</value></data>

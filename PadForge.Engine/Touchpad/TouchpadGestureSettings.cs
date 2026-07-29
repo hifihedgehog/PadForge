@@ -229,13 +229,17 @@ namespace PadForge.Engine.Touchpad
         /// </summary>
         [XmlAttribute] public bool MouseMomentum { get; set; }
 
-        /// <summary>How long the coast lasts, as the fraction of speed kept
-        /// after each 10 ms of travel. 0.90 is a long glide, 0.70 a short
-        /// one. Clamped into a sane band on read so a persisted 1.0 cannot
-        /// coast forever and a persisted 0 cannot make the toggle inert.
-        /// Expressed per unit time rather than per poll so the glide lasts
-        /// the same wall-clock duration at any polling rate.</summary>
-        [XmlAttribute] public float MouseMomentumDecay { get; set; } = 0.82f;
+        /// <summary><para>How long the coast lasts: the fraction of speed
+        /// kept after each 10 ms of travel. The band is 0.80 to 1.00 and the
+        /// default 0.90 sits at its midpoint, which glides about twice as far
+        /// as the first cut did.</para>
+        /// <para>1.00 is FRICTIONLESS. The cursor keeps its speed until you
+        /// touch the pad again, which is what a real trackball does when you
+        /// spin it and let go, and touching down stops it. That is the only
+        /// stop at 1.00, by design.</para>
+        /// <para>Per unit TIME rather than per poll, so the glide lasts the
+        /// same wall-clock duration at any polling rate.</para></summary>
+        [XmlAttribute] public float MouseMomentumDecay { get; set; } = 0.90f;
 
         /// <summary><para>Jitter reduction: bends motion below the threshold
         /// down a power curve instead of cutting it off, so resting-hand

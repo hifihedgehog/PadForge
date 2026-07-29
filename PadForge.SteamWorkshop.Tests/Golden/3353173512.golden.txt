@@ -176,7 +176,7 @@ menus: 3
     [9] Cut icon=ghost_040_act_0331.png
     [10] Paste icon=ghost_070_setting_0302.png
     [11] Blueprints icon=ghost_030_inv_0311.png
-  menu 2 Grid | Touchpad 0 | Layer_3353173512_1 | fire=Click cells=16 opacity=89% | name=Num Pad Menu
+  menu 2 Grid | Touchpad 0 | Layer_3353173512_1 | fire=Click cells=16 opacity=89% | name=Num Pad Menu (Numpad)
     [0] 7
     [1] 8
     [2] 9
@@ -193,7 +193,7 @@ menus: 3
     [13] Period
     [14] Keypad Enter
     [15] Back Menu icon=ghost_050_menu_0306.png
-  menu 3 Grid | Touchpad 0 | Layer_3353173512_2 | fire=Click cells=9 | name=Dollies
+  menu 3 Grid | Touchpad 0 | Layer_3353173512_2 | fire=Click cells=9 | name=Dollies (Picker Dollies)
     [0] Rotate Counterclockwise icon=ghost_070_setting_0300.png
     [1] Move Up
     [2] Rotate Clockwise icon=ghost_070_setting_0301.png

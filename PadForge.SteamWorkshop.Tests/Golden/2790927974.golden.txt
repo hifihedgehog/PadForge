@@ -115,7 +115,7 @@ menus: 2
     [4] H
     [5] C
     [6] K
-  menu 2 Radial | Touchpad 0 | Layer_2790927974_1 | fire=Click cells=5+center | name=Radial Menu 2
+  menu 2 Radial | Touchpad 0 | Layer_2790927974_1 | fire=Click cells=5+center | name=Radial Menu 2 (Controls - Landing party)
     [0] Escape
     [1] W
     [2] T

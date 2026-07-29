@@ -189,8 +189,17 @@ namespace PadForge.Common.Input
                 if (raw.MouseGyroY == 0f || (_gyAccumulator > 0f) != (raw.MouseGyroY > 0f))
                     _gyAccumulator = 0f;
 
-                _gxAccumulator += raw.MouseGyroX;
-                _gyAccumulator += -raw.MouseGyroY;   // lane is +up, screen is +down
+                // BOTH axes negate into screen space. SDL's gyro frame is
+                // nose-relative: positive yaw is nose LEFT and positive pitch
+                // is nose UP (SDL_sensor.h, and the sign note on the gyro
+                // button read). Screen space is the opposite on both counts,
+                // +X right and +Y down. Turning the controller left has to
+                // move the cursor left, so yaw negates exactly like pitch
+                // does; leaving X alone pointed the cursor the wrong way,
+                // which is a thing you feel immediately and a thing no
+                // amount of sensitivity tuning fixes.
+                _gxAccumulator += -raw.MouseGyroX;
+                _gyAccumulator += -raw.MouseGyroY;
                 int gdx = (int)_gxAccumulator;
                 int gdy = (int)_gyAccumulator;
                 _gxAccumulator -= gdx;

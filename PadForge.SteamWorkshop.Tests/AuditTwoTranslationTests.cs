@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using PadForge.SteamWorkshop.Model;
 using PadForge.SteamWorkshop.Translation;
 using PadForge.SteamWorkshop.Vdf;
@@ -214,7 +214,8 @@ namespace PadForge.SteamWorkshop.Tests
                 Assert.Equal(0, s.ParamCurveExponent);
                 Assert.Equal(0, s.ParamAntiDeadzone);
                 Assert.Equal(0, s.ParamAccel);
-                Assert.Equal(0.1, s.ParamSmoothingAlpha, 3); // linear knob stays
+                // mouse_smoothing used to survive the rotation lowering as the
+                // one linear knob. It is not imported at all now.
             });
             var note = Assert.Single(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.RotationNonlinearWithheld);

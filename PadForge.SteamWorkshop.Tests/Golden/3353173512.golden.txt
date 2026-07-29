@@ -1,4 +1,4 @@
-name: Factorio Steam Deck by Zirbs for Space Age / v2.0
+﻿name: Factorio Steam Deck by Zirbs for Space Age / v2.0
 description: New for Space Age / v2.0! Uses default keyboard binds, and leverages your KB and Deck muscle memory ...
 slots: xbox kbm
 gyroEngage: Gamepad LeftTrigger
@@ -73,9 +73,9 @@ kbm rows: 51
   Base | KbmMBtn2
     <- Gamepad RightStick
   Base | KbmMouseX
-    <- Touchpad 1 Finger 0 X sens=1.9 smooth=0.14 accel=1.5 moveThresh=0.002
+    <- Touchpad 1 Finger 0 X sens=1.9 accel=1.5
   Base | KbmMouseY
-    <- Touchpad 1 Finger 0 Y sens=1.9 smooth=0.14 accel=1.5 moveThresh=0.002
+    <- Touchpad 1 Finger 0 Y sens=1.9 accel=1.5
   Layer_3353173512_1 | KbmKey08
     <- Menu 2 Item 3
   Layer_3353173512_1 | KbmKey0D

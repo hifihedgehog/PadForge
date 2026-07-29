@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace PadForge.Engine.Data
 {
@@ -369,31 +369,11 @@ namespace PadForge.Engine.Data
         /// unauthored source. 0 (default) = no inner deadzone.</summary>
         [XmlAttribute] public double ParamStickDeadZoneInner { get; set; }
 
-        /// <summary>Per-source EMA smoothing factor 0..0.99 (v18, Steam's
-        /// mouse_smoothing / 100 clamp). One EMA step per poll frame per
-        /// source, the GyroTuning.SmoothingAlpha per-tick contract.
-        /// Applied on the analog mouse lanes (touchpad delta, stick /
-        /// gesture axes, gyro rate). 0 = off.</summary>
-        [XmlAttribute] public double ParamSmoothingAlpha { get; set; }
-
-        /// <summary>Minimum per-frame delta magnitude 0..1 (v18, Steam's
-        /// mouse_move_threshold): touchpad deltas below it read 0, gating
-        /// idle finger jitter. 0 = off. Touchpad relative lane only.</summary>
-        [XmlAttribute] public double ParamMoveThreshold { get; set; }
-
         /// <summary>Rate-dependent gain (v18, Steam's acceleration on the
         /// mouse modes): the touchpad delta scales by 1 + accel * |v|,
         /// the ApplyGyroAcceleration formula on the cursor lane.
         /// 0 = off.</summary>
         [XmlAttribute] public double ParamAccel { get; set; }
-
-        /// <summary>Trackball momentum decay per poll frame (v18, Steam's
-        /// trackball + friction on absolute_mouse): after finger lift the
-        /// touchpad relative lane keeps emitting the last delta, decayed
-        /// by this factor per frame until it falls under the rest
-        /// epsilon. 0 (default) = trackball off; 1 would never decay and
-        /// is clamped to 0.999 (Steam friction 0 = spin forever).</summary>
-        [XmlAttribute] public double ParamTrackballDecay { get; set; }
 
         /// <summary>Optional per-source AND companion (v18): the source
         /// contributes only while this second descriptor reads true on

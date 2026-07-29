@@ -1,4 +1,4 @@
-using PadForge.Engine;
+﻿using PadForge.Engine;
 using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 using Xunit;
@@ -240,45 +240,6 @@ namespace PadForge.Tests
         }
 
         // ── Per-device feel state (audit 2026-07-17 P4) ──
-
-        [Fact]
-        public void PerSourceSmoothing_TwoDevices_KeepIndependentFilters()
-        {
-            // A device-free source on a two-device slot evaluates once per
-            // device each poll. The single per-source scalar handed device B
-            // device A's smoothed value through the seq gate; the per-device
-            // map must keep the filters apart.
-            var saved = SourceCoercion.TouchpadGestureAxisProvider;
-            try
-            {
-                SourceCoercion.TouchpadGestureAxisProvider =
-                    (slot, dev, pad, name) => dev == "p4-dev-a" ? 1f : 0f;
-                var src = new MappingSource
-                {
-                    Descriptor = "Touchpad 0 StickX",
-                    ParamSmoothingAlpha = 0.5,
-                };
-                var s = new CustomInputState();
-
-                SourceCoercion.BeginPollFrame();
-                float a = SourceCoercion.EvaluateForBipolarAxisTarget(s, src, 0, false, "p4-dev-a");
-                float b = SourceCoercion.EvaluateForBipolarAxisTarget(s, src, 0, false, "p4-dev-b");
-
-                Assert.Equal(0.5f, a, 3); // 0 -> 1 through alpha 0.5
-                Assert.Equal(0f, b, 3);   // device B's own filter, not A's replay
-
-                // Same device re-read in the same poll still replays (the
-                // seq-gate contract survives the keying change).
-                float aAgain = SourceCoercion.EvaluateForBipolarAxisTarget(s, src, 0, false, "p4-dev-a");
-                Assert.Equal(a, aAgain, 5);
-            }
-            finally
-            {
-                SourceCoercion.TouchpadGestureAxisProvider = saved;
-            }
-        }
-
-        // ── Gyro lanes consume ParamAccel (audit 2026-07-17 T4) ──
 
         [Fact]
         public void GyroLanes_ConsumeParamAccel_WithTheTouchpadFeelFormula()

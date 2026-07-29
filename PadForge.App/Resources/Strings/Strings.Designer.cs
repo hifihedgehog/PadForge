@@ -1791,6 +1791,15 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetTouchpadMouseSensitivityY => Get("Pad_ResetTouchpadMouseSensitivityY");
     public string Pad_ResetTouchpadMouseInvertX => Get("Pad_ResetTouchpadMouseInvertX");
     public string Pad_ResetTouchpadMouseInvertY => Get("Pad_ResetTouchpadMouseInvertY");
+    public string Pad_Touchpad_MouseJitterReduction => Get("Pad_Touchpad_MouseJitterReduction");
+    public string Pad_Touchpad_MouseJitterReduction_Tooltip => Get("Pad_Touchpad_MouseJitterReduction_Tooltip");
+    public string Pad_ResetTouchpadMouseJitterReduction => Get("Pad_ResetTouchpadMouseJitterReduction");
+    public string Pad_Touchpad_MouseMomentum => Get("Pad_Touchpad_MouseMomentum");
+    public string Pad_Touchpad_MouseMomentum_Tooltip => Get("Pad_Touchpad_MouseMomentum_Tooltip");
+    public string Pad_ResetTouchpadMouseMomentum => Get("Pad_ResetTouchpadMouseMomentum");
+    public string Pad_Touchpad_MouseMomentumDecay => Get("Pad_Touchpad_MouseMomentumDecay");
+    public string Pad_Touchpad_MouseMomentumDecay_Tooltip => Get("Pad_Touchpad_MouseMomentumDecay_Tooltip");
+    public string Pad_ResetTouchpadMouseMomentumDecay => Get("Pad_ResetTouchpadMouseMomentumDecay");
     public string Pad_Touchpad_Pointer_Header => Get("Pad_Touchpad_Pointer_Header");
     public string Pad_Touchpad_Pointer_Subtitle => Get("Pad_Touchpad_Pointer_Subtitle");
     public string Pad_Touchpad_PointerStretchX => Get("Pad_Touchpad_PointerStretchX");

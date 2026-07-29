@@ -1719,6 +1719,15 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Muisgevoeligheid Y resetten</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Muis X inverteren resetten</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Muis Y inverteren resetten</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Trillingsreductie</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Dempt het trillen van een rustende hand zonder dode zone, zodat kleine bedoelde bewegingen wel doorkomen.</value></data>
+  <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Trillingsreductie herstellen</value></data>
+  <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Momentum</value></data>
+  <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>De cursor beweegt door nadat u uw vinger optilt en rolt uit, net als een trackball.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Momentum herstellen</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Uitloop</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Hoe lang de uitloop duurt. Hoger komt verder.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Uitloop herstellen</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Stick / D-pad-uitvoer resetten</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Gebaren resetten</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Herkennen resetten</value></data>

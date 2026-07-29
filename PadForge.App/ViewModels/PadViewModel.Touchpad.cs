@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -421,6 +421,41 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _touchpadMouseInvertY, value)) PushIfNotLoading(); }
         }
 
+        private bool _touchpadMouseMomentum;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseMomentum"/>:
+        /// the cursor coasts on after the finger lifts instead of stopping
+        /// dead, the trackball feel the Steam Controller's lizard mode has.</summary>
+        public bool TouchpadMouseMomentum
+        {
+            get => _touchpadMouseMomentum;
+            set { if (SetProperty(ref _touchpadMouseMomentum, value)) PushIfNotLoading(); }
+        }
+
+        private double _touchpadMouseMomentumDecay = 0.82;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseMomentumDecay"/>:
+        /// the fraction of speed kept per 10 ms of coast. Higher glides
+        /// longer. Clamped to the band the engine reads.</summary>
+        public double TouchpadMouseMomentumDecay
+        {
+            get => _touchpadMouseMomentumDecay;
+            set
+            {
+                double v = Math.Clamp(value, 0.50, 0.98);
+                if (SetProperty(ref _touchpadMouseMomentumDecay, v)) PushIfNotLoading();
+            }
+        }
+
+        private bool _touchpadMouseJitterReduction = true;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseJitterReduction"/>:
+        /// bends the tremor band down a curve rather than cutting it, so a
+        /// resting hand stops shivering the cursor without fine movement
+        /// going dead.</summary>
+        public bool TouchpadMouseJitterReduction
+        {
+            get => _touchpadMouseJitterReduction;
+            set { if (SetProperty(ref _touchpadMouseJitterReduction, value)) PushIfNotLoading(); }
+        }
+
         // ─── Absolute pointer card (#9 B-15) ──────────────────────────
 
         private double _touchpadPointerStretchX = 1.0;
@@ -721,6 +756,18 @@ namespace PadForge.ViewModels
         public RelayCommand ResetTouchpadMouseInvertYCommand =>
             _resetTouchpadMouseInvertYCommand ??= new RelayCommand(() => TouchpadMouseInvertY = false);
 
+        private RelayCommand _resetTouchpadMouseMomentumCommand;
+        public RelayCommand ResetTouchpadMouseMomentumCommand =>
+            _resetTouchpadMouseMomentumCommand ??= new RelayCommand(() => TouchpadMouseMomentum = false);
+
+        private RelayCommand _resetTouchpadMouseMomentumDecayCommand;
+        public RelayCommand ResetTouchpadMouseMomentumDecayCommand =>
+            _resetTouchpadMouseMomentumDecayCommand ??= new RelayCommand(() => TouchpadMouseMomentumDecay = 0.82);
+
+        private RelayCommand _resetTouchpadMouseJitterReductionCommand;
+        public RelayCommand ResetTouchpadMouseJitterReductionCommand =>
+            _resetTouchpadMouseJitterReductionCommand ??= new RelayCommand(() => TouchpadMouseJitterReduction = true);
+
         private RelayCommand _resetTouchpadMouseCardCommand;
 
         /// <summary>Reset every Mouse-output card field to defaults.</summary>
@@ -731,6 +778,9 @@ namespace PadForge.ViewModels
                 TouchpadMouseSensitivityY = 1.0;
                 TouchpadMouseInvertX = false;
                 TouchpadMouseInvertY = false;
+                TouchpadMouseMomentum = false;
+                TouchpadMouseMomentumDecay = 0.82;
+                TouchpadMouseJitterReduction = true;
             });
 
         // ─── Absolute-pointer card reset commands (#9 B-15) ─────
@@ -866,6 +916,9 @@ namespace PadForge.ViewModels
                 TouchpadMouseSensitivityY = s.MouseSensitivityY;
                 TouchpadMouseInvertX = s.MouseInvertX;
                 TouchpadMouseInvertY = s.MouseInvertY;
+                TouchpadMouseMomentum = s.MouseMomentum;
+                TouchpadMouseMomentumDecay = s.MouseMomentumDecay;
+                TouchpadMouseJitterReduction = s.MouseJitterReduction;
                 TouchpadPointerStretchX = s.PointerStretchX;
                 TouchpadPointerStretchY = s.PointerStretchY;
                 TouchpadSwipeHapticsEnabled = s.EnableSwipeHaptics;
@@ -956,6 +1009,9 @@ namespace PadForge.ViewModels
             s.MouseSensitivityY = (float)TouchpadMouseSensitivityY;
             s.MouseInvertX = TouchpadMouseInvertX;
             s.MouseInvertY = TouchpadMouseInvertY;
+            s.MouseMomentum = TouchpadMouseMomentum;
+            s.MouseMomentumDecay = (float)TouchpadMouseMomentumDecay;
+            s.MouseJitterReduction = TouchpadMouseJitterReduction;
             s.PointerStretchX = (float)TouchpadPointerStretchX;
             s.PointerStretchY = (float)TouchpadPointerStretchY;
             s.EnableSwipeHaptics = TouchpadSwipeHapticsEnabled;

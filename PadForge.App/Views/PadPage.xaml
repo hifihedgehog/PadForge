@@ -10311,6 +10311,34 @@
                                     <ui:Button Command="{Binding ResetTouchpadMouseInvertYCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadMouseInvertY, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_MouseJitterReduction, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadMouseJitterReduction, Mode=TwoWay}"
+                                              ToolTip="{Binding Pad_Touchpad_MouseJitterReduction_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              VerticalAlignment="Center"/>
+                                    <ui:Button Command="{Binding ResetTouchpadMouseJitterReductionCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMouseJitterReduction, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_MouseMomentum, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadMouseMomentum, Mode=TwoWay}"
+                                              ToolTip="{Binding Pad_Touchpad_MouseMomentum_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              VerticalAlignment="Center"/>
+                                    <ui:Button Command="{Binding ResetTouchpadMouseMomentumCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMouseMomentum, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                            IsEnabled="{Binding TouchpadMouseMomentum}">
+                                    <TextBlock Text="{Binding Pad_Touchpad_MouseMomentumDecay, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_Touchpad_MouseMomentumDecay_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Minimum="0.50" Maximum="0.98" TickFrequency="0.01" IsSnapToTickEnabled="True"
+                                            Value="{Binding TouchpadMouseMomentumDecay, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}"/>
+                                    <TextBlock Text="{Binding TouchpadMouseMomentumDecay, StringFormat={}{0:0.00}}" Style="{StaticResource DzValue}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadMouseMomentumDecayCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMouseMomentumDecay, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
 

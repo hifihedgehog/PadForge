@@ -1698,6 +1698,15 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>重置鼠标灵敏度 Y</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>重置反转鼠标 X</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>重置反转鼠标 Y</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>抖动抑制</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>无需死区即可抑制手部抖动，细小的有意移动仍然有效。</value></data>
+  <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>重置抖动抑制</value></data>
+  <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>惯性</value></data>
+  <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>抬起手指后光标继续移动并逐渐停下，就像轨迹球。</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>重置惯性</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>滑行距离</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>滑行持续多久。越高滑得越远。</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>重置滑行距离</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>重置摇杆 / 方向键输出</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>重置手势</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>重置识别</value></data>

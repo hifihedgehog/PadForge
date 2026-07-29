@@ -1699,6 +1699,15 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Réinitialiser la sensibilité de la souris Y</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Réinitialiser inverser souris X</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Réinitialiser inverser souris Y</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Réduction du tremblement</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Atténue le tremblement de la main au repos sans zone morte, pour que les petits mouvements voulus passent quand même.</value></data>
+  <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Réinitialiser la réduction du tremblement</value></data>
+  <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Inertie</value></data>
+  <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>Le curseur continue après le lever du doigt et ralentit jusqu’à l’arrêt, comme un trackball.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Réinitialiser l’inertie</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Glissement</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Durée du glissement. Plus haut va plus loin.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Réinitialiser le glissement</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Réinitialiser Sortie Stick / Croix directionnelle</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Réinitialiser les gestes</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Réinitialiser la reconnaissance</value></data>

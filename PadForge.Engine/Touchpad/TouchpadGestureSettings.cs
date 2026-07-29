@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace PadForge.Engine.Touchpad
 {
@@ -219,6 +219,34 @@ namespace PadForge.Engine.Touchpad
         /// cursor up when on.</summary>
         [XmlAttribute] public bool MouseInvertY { get; set; }
 
+        /// <summary><para>Momentum: the cursor keeps travelling after the
+        /// finger lifts, coasting to a stop instead of halting dead. This is
+        /// the trackball feel the Steam Controller's own lizard mode has, and
+        /// it is most of why flicking across a pad there covers ground a
+        /// finger-length swipe cannot.</para>
+        /// <para>Off by default. A cursor that keeps moving after release is
+        /// a deliberate choice, not something to surprise anyone with.</para>
+        /// </summary>
+        [XmlAttribute] public bool MouseMomentum { get; set; }
+
+        /// <summary>How long the coast lasts, as the fraction of speed kept
+        /// after each 10 ms of travel. 0.90 is a long glide, 0.70 a short
+        /// one. Clamped into a sane band on read so a persisted 1.0 cannot
+        /// coast forever and a persisted 0 cannot make the toggle inert.
+        /// Expressed per unit time rather than per poll so the glide lasts
+        /// the same wall-clock duration at any polling rate.</summary>
+        [XmlAttribute] public float MouseMomentumDecay { get; set; } = 0.82f;
+
+        /// <summary><para>Jitter reduction: bends motion below the threshold
+        /// down a power curve instead of cutting it off, so resting-hand
+        /// tremor is damped while fine movement stays continuous. Same shape
+        /// the gyro lane uses, which came from DS4Windows'
+        /// jitterCompensation.</para>
+        /// <para>A deadzone would delete the small motion outright, which is
+        /// what makes fine cursor work feel dead. This keeps it, just
+        /// smaller.</para></summary>
+        [XmlAttribute] public bool MouseJitterReduction { get; set; } = true;
+
         // ─── Absolute pointer output (#9 B-15) ─────────────────────────
         //
         // Applied by SourceCoercion.ReadTunedTouchpadPointer when a
@@ -301,6 +329,9 @@ namespace PadForge.Engine.Touchpad
                 MouseSensitivityY = MouseSensitivityY,
                 MouseInvertX = MouseInvertX,
                 MouseInvertY = MouseInvertY,
+                MouseMomentum = MouseMomentum,
+                MouseMomentumDecay = MouseMomentumDecay,
+                MouseJitterReduction = MouseJitterReduction,
                 PointerStretchX = PointerStretchX,
                 PointerStretchY = PointerStretchY,
                 EnableSwipeHaptics = EnableSwipeHaptics,

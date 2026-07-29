@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -1046,9 +1046,16 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Sentinel binding-kind value: no direct binding on the
-        /// cell, but a Mappings row source or macro trigger reads this
-        /// cell's "Menu N Item K" descriptor (the Workshop-import form).</summary>
+        /// <summary><para>Sentinel binding-kind value: no direct binding on
+        /// the cell, but a Mappings row source or macro trigger reads this
+        /// cell's "Menu N Item K" descriptor (the Workshop-import form).</para>
+        /// <para>READ-ONLY and DERIVED, which is why the label says the item
+        /// is used rather than set: choosing it authors nothing (the setter
+        /// returns early), and RowBoundProvider rescans for a listener each
+        /// time, so the option appears and disappears with the row or macro
+        /// that references the item. It exists so an imported menu item that
+        /// carries no key or button of its own does not read as empty, which
+        /// would look like the import had lost it.</para></summary>
         internal const int RowBoundKind = 3;
 
         /// <summary>Binding kinds, DYNAMIC per slot type: None and

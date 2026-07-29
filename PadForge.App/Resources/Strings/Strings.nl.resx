@@ -2823,7 +2823,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(standaard van opener)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(niet ingesteld)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (niet bij dit slottype)</value></data>
-  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Ingesteld op het tabblad Toewijzingen</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Gebruikt door een toewijzing of macro</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cel {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu-overlay</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Overlays</value></data>

@@ -334,36 +334,55 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void SeedFindsARegionOnAnyPad_BecauseTheseSettingsArePerDevice()
+        public void SeedShowsNothingForAPadTheConfigDoesNotMap()
         {
-            // The card is per DEVICE, not per pad: the push forces
-            // TouchpadIndex 0 and the pad combo drives only the recorder and
-            // preview. So a region authored on the RIGHT pad must show even
-            // while the combo sits on the left one. Requiring the two to
-            // match is what left the imported values invisible.
+            // The region is PER PAD. A pad the config never mapped has no
+            // rectangle, and the honest answer is the full-screen default.
+            // An earlier cut fell back to any pad here, so selecting pad 1 or
+            // pad 2 displayed the same rectangle and the per-pad card looked
+            // broken. RCT3 Weno V0.1 maps only the right pad.
+            var sets = new[]
+            {
+                SetWithPointerRow("KbmMouseX", "Touchpad 1 Pointer X", 0.5, 1.2),
+            };
+            Assert.False(PadForge.ViewModels.PadViewModel.FindPointerRegionAxis(
+                sets, pad: 0, wantX: true, out double size, out double center));
+            Assert.Equal(1.0, size, 3);
+            Assert.Equal(0.5, center, 3);
+        }
+
+        [Fact]
+        public void SeedShowsTheRegionForThePadThatDoesCarryOne()
+        {
+            // The other half of the pair, so the test above cannot pass on a
+            // search that simply never finds anything.
             var sets = new[]
             {
                 SetWithPointerRow("KbmMouseX", "Touchpad 1 Pointer X", 0.5, 1.2),
             };
             Assert.True(PadForge.ViewModels.PadViewModel.FindPointerRegionAxis(
-                sets, pad: 0, wantX: true, out double size, out double center));
+                sets, pad: 1, wantX: true, out double size, out _));
             Assert.Equal(1.2, size, 3);
         }
 
         [Fact]
-        public void SeedPrefersTheSelectedPadWhenBothCarryARegion()
+        public void TwoPadsWithTwoRegionsReadBackDifferently()
         {
-            // Any-pad is the FALLBACK, not the first choice. Without the
-            // preference the test above would pass on a search that ignored
-            // the pad index entirely and grabbed whichever row came first.
+            // The user-visible contract: switch the pad combo, see different
+            // numbers.
             var sets = new[]
             {
-                SetWithPointerRow("KbmMouseX", "Touchpad 1 Pointer X", 0.5, 1.2),
-                SetWithPointerRow("KbmMouseX", "Touchpad 0 Pointer X", 0.5, 0.4),
+                SetWithPointerRow("KbmMouseX", "Touchpad 0 Pointer X", 0.09, 0.11),
+                SetWithPointerRow("KbmMouseX", "Touchpad 1 Pointer X", 0.50, 1.20),
             };
-            Assert.True(PadForge.ViewModels.PadViewModel.FindPointerRegionAxis(
-                sets, pad: 0, wantX: true, out double size, out _));
-            Assert.Equal(0.4, size, 3);
+            PadForge.ViewModels.PadViewModel.FindPointerRegionAxis(
+                sets, pad: 0, wantX: true, out double s0, out double c0);
+            PadForge.ViewModels.PadViewModel.FindPointerRegionAxis(
+                sets, pad: 1, wantX: true, out double s1, out double c1);
+            Assert.Equal(0.11, s0, 3);
+            Assert.Equal(0.09, c0, 3);
+            Assert.Equal(1.20, s1, 3);
+            Assert.Equal(0.50, c1, 3);
         }
 
         [Fact]

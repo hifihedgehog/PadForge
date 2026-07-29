@@ -35,8 +35,23 @@ namespace PadForge.Services
     /// </summary>
     public static class WorkshopTuningApplier
     {
-        /// <summary>Folds the slot's import stamps into <paramref name="ps"/>.
-        /// Returns true when anything changed, so the caller can mark dirty.</summary>
+        /// <summary><para>Folds the slot's import stamps into
+        /// <paramref name="ps"/>. Returns true when anything changed, so the
+        /// caller can mark dirty.</para>
+        /// <para>Call this from EVERY path that assigns a device to a slot.
+        /// The runtime overlays this replaced applied on every path by
+        /// construction, so wiring it into one assignment entry point and not
+        /// its sibling silently dropped the tuning for the other. There are
+        /// two today, DeviceService.OnAssignToSlot (the device list's assign
+        /// command) and DeviceService.AssignDeviceToSlot (drag-drop and
+        /// programmatic), and a third added later must not have to know this
+        /// exists. It is idempotent and cheap, so calling it too often is
+        /// free and calling it too seldom is a silent regression.</para>
+        /// <para>N/A by design: WorkshopGyroRatchetDescriptors is the one
+        /// Workshop stamp NOT folded here. There is no ratchet field on
+        /// PadSetting and no ratchet control in any view, so there is no
+        /// user-facing setting to fold it into. It stays a runtime overlay
+        /// (InputManager's gyro engage config) until a card exists.</para></summary>
         public static bool ApplyToAssignedDevice(int slotIndex, PadSetting ps)
         {
             if (ps == null) return false;

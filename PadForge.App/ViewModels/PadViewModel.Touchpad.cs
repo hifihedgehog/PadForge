@@ -1054,10 +1054,10 @@ namespace PadForge.ViewModels
                         ps?.TouchpadSettings, guid.ToString(), _selectedTouchpadIndex)?.Settings
                     ?? TouchpadGestureSettings.Default();
 
-            // One-time repair of the authored-but-default state a
-            // short-lived build wrote. Without it the seed stays
-            // suppressed and the card shows 1.00 / 0.50 forever.
-            s.RepairRegionSchema();
+            // The authored-but-default repair now lives inside
+            // ResolveEntryForPad, which every read seam funnels through,
+            // including the engine's. Calling it again here would only ever
+            // hit the Default() throwaway on a miss.
             _loadingTouchpadGestures = true;
             try
             {
@@ -1322,6 +1322,15 @@ namespace PadForge.ViewModels
             s.MouseMomentum = TouchpadMouseMomentum;
             s.MouseMomentumDecay = (float)TouchpadMouseMomentumDecay;
             s.MouseJitterReduction = TouchpadMouseJitterReduction;
+            // Stamp the entry as post-repair. Anything this push writes is
+            // current user intent by definition, so the one-time
+            // authored-but-default repair must never touch it. Only
+            // entries deserialized from pre-schema XML carry 0, which is
+            // what makes the repair fire exactly once, on exactly them.
+            // Without this a deliberate reset to full screen (authored
+            // true at the identity region) reads as the poisoned shape
+            // and gets cleared on the next resolve.
+            s.RegionSchema = 1;
             s.PointerRegionAuthored = _touchpadPointerRegionAuthored;
             s.PointerRegionSizeX = (float)TouchpadPointerRegionSizeX;
             s.PointerRegionSizeY = (float)TouchpadPointerRegionSizeY;

@@ -326,8 +326,17 @@ namespace PadForge.Engine.Touchpad
             PointerRegionSizeX == 1.0f && PointerRegionSizeY == 1.0f
             && PointerRegionCenterX == 0.5f && PointerRegionCenterY == 0.5f;
 
-        /// <summary>One-time repair of the authored-but-default state. Returns
-        /// true when it changed something.</summary>
+        /// <summary><para>One-time repair of the authored-but-default state.
+        /// Returns true when it changed something.</para>
+        /// <para>Called from ResolveEntryForPad, which runs on the poll
+        /// thread as well as the UI thread, so it is reachable concurrently.
+        /// That is safe rather than merely unlikely: the whole body is gated
+        /// on an aligned int that only ever moves 0 to 1, the two writes are
+        /// individually atomic, and the values written do not depend on what
+        /// the other thread observed. Two threads racing both perform the
+        /// identical repair and converge. It cannot be placed on a
+        /// single-threaded load seam because the XML path deserializes
+        /// TouchpadSettings through [XmlArray] with no hook.</para></summary>
         public bool RepairRegionSchema()
         {
             if (RegionSchema >= 1)
@@ -511,9 +520,21 @@ namespace PadForge.Engine.Touchpad
                 if (e?.Settings == null) continue;
                 if (e.TouchpadIndex != padIdx) continue;
                 if (string.Equals(e.DeviceGuid, guidStr, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    // Repair HERE, at the shared resolve seam, not in the VM
+                    // loader. The engine reads PointerRegionAuthored through
+                    // its own provider and never opens the Touchpad tab, so a
+                    // repair living on the UI path left a poisoned entry
+                    // suppressing the imported region until the user happened
+                    // to select that exact pad. Idempotent and gated on
+                    // RegionSchema, so running it per resolve is free.
+                    e.Settings.RepairRegionSchema();
                     return e;
+                }
             }
-            return ResolveEntryForDevice(entries, guidStr);
+            var fallback = ResolveEntryForDevice(entries, guidStr);
+            fallback?.Settings?.RepairRegionSchema();
+            return fallback;
         }
 
         /// <summary>Settings for one pad, or <see cref="Default"/> on a
@@ -570,6 +591,15 @@ namespace PadForge.Engine.Touchpad
                 || s.MouseSensitivityY != d.MouseSensitivityY
                 || s.MouseInvertX != d.MouseInvertX
                 || s.MouseInvertY != d.MouseInvertY
+                // Momentum and jitter are mouse tuning too. This method's own
+                // doc says "any mouse / pointer / haptic tuning moved off its
+                // default" counts, and these three were the only Mouse* fields
+                // it did not compare, so a pad configured with nothing but a
+                // glide setting read as pristine and lost the winner
+                // comparison to an untouched sibling.
+                || s.MouseMomentum != d.MouseMomentum
+                || s.MouseMomentumDecay != d.MouseMomentumDecay
+                || s.MouseJitterReduction != d.MouseJitterReduction
                 || s.PointerRegionSizeX != d.PointerRegionSizeX
                 || s.PointerRegionSizeY != d.PointerRegionSizeY
                 || s.PointerRegionAuthored != d.PointerRegionAuthored

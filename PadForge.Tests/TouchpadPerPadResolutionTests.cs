@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using PadForge.Engine.Touchpad;
@@ -28,6 +28,11 @@ namespace PadForge.Tests
         private static TouchpadSettingsEntry Entry(int pad, Action<TouchpadGestureSettings> tune)
         {
             var s = TouchpadGestureSettings.Default();
+            // Match what the push writes: a persisted entry is always
+            // post-repair. Leaving schema 0 here would arm the one-time
+            // authored-but-default repair inside the resolver and test a
+            // state production never persists.
+            s.RegionSchema = 1;
             tune(s);
             return new TouchpadSettingsEntry { DeviceGuid = Dev, TouchpadIndex = pad, Settings = s };
         }
@@ -119,6 +124,50 @@ namespace PadForge.Tests
             Assert.True(TouchpadGestureSettings.ResolveForPad(entries, Dev, 0).EnableSwipeHaptics);
             Assert.True(TouchpadGestureSettings.ResolveForPad(entries, Dev, 1).EnableSwipeHaptics);
             Assert.True(TouchpadGestureSettings.ResolveForPad(entries, Dev, 2).EnableSwipeHaptics);
+        }
+
+        [Fact]
+        public void ADeliberateFullScreenResetSurvivesTheResolver()
+        {
+            // Caught by the suite during this audit. Moving the one-time
+            // authored-but-default repair INTO the resolver made it fire on
+            // freshly authored entries, because a new entry starts at schema
+            // 0. That cleared a user's deliberate reset to full screen, which
+            // is the precise bug PointerRegionAuthored exists to prevent.
+            // The push stamps schema 1, so only pre-schema XML is repaired.
+            var authored = Entry(0, s =>
+            {
+                s.PointerRegionAuthored = true;   // identity region on purpose
+            });
+
+            var got = TouchpadGestureSettings.ResolveEntryForPad(
+                new[] { authored }, Dev, 0);
+
+            Assert.True(got.Settings.PointerRegionAuthored,
+                "the resolver's repair cleared a deliberately authored full-screen region");
+        }
+
+        [Fact]
+        public void APreSchemaPoisonedEntryIsStillRepaired()
+        {
+            // The other half of the pair. Without it the test above could be
+            // satisfied by deleting the repair entirely.
+            var poisoned = new TouchpadSettingsEntry
+            {
+                DeviceGuid = Dev,
+                TouchpadIndex = 0,
+                Settings = new TouchpadGestureSettings
+                {
+                    PointerRegionAuthored = true,
+                    RegionSchema = 0,            // pre-schema XML
+                },
+            };
+
+            var got = TouchpadGestureSettings.ResolveEntryForPad(
+                new[] { poisoned }, Dev, 0);
+
+            Assert.False(got.Settings.PointerRegionAuthored);
+            Assert.Equal(1, got.Settings.RegionSchema);
         }
 
         [Fact]

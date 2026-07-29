@@ -147,6 +147,15 @@ namespace PadForge.Services
                 FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType);
             }
 
+            // A Workshop import parks its device tuning on the slot because it
+            // runs before any device exists. Now that one does, fold those
+            // stamps into the device's OWN settings. This is the SIBLING of
+            // the call in AssignDeviceToSlot: the runtime overlays it replaced
+            // applied on every assignment path by construction, so covering
+            // one entry point and not the other silently drops the tuning for
+            // whichever path the user happens to take.
+            WorkshopTuningApplier.ApplyToAssignedDevice(slotIndex, us.GetPadSetting());
+
             // Update the row display.
             selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
 

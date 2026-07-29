@@ -2825,7 +2825,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(predefinito dell'opener)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(non impostato)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (non su questo tipo di slot)</value></data>
-  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Impostato nella scheda Mappature</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Usato da una mappatura o da un macro</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cella {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Overlay menu</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Sovrapposizioni</value></data>

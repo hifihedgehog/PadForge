@@ -6320,6 +6320,120 @@ namespace PadForge.SteamWorkshop.Translation
                 StatusFor(source), ReasonFor(source), path, binding);
         }
 
+        /// <summary><para>Turns each source's AND companion into a REAL source
+        /// on the row plus a Custom combine expression.</para>
+        /// <para>The gate used to ride MappingSource.GateDescriptor, which no
+        /// card binds, so an imported trackpad D-pad that requires a click
+        /// behaved differently from a hand-built one with nothing on screen to
+        /// say why. PadForge already exposes the capability: CombineMode
+        /// "Custom" evaluates a sandboxed expression over the row's sources,
+        /// and it has the operators to preserve every default exactly. So the
+        /// gate becomes a source the user can see in the grid and an
+        /// expression they can edit, instead of a hidden field.</para>
+        /// <para>Indexed with <c>s[i]</c> rather than the a..z variables
+        /// because gates double the source count and a wide row would run past
+        /// the 26-letter ceiling.</para>
+        /// <para>Semantics per original combine mode, so the rewrite is
+        /// behavior-preserving: a button gate is <c>&amp;&amp;</c>, an axis
+        /// gate is multiplication by the gate's 0/1 read, and the terms then
+        /// combine the way the row already said. MaxAbs folds pairwise through
+        /// the ternary.</para></summary>
+        private static void ExpandGatesIntoCombineExpression(MappingRow row, bool isAxis)
+        {
+            if (row?.Sources == null || row.Sources.Count == 0) return;
+            bool anyGate = false;
+            foreach (var s in row.Sources)
+            {
+                if (!string.IsNullOrEmpty(s?.GateDescriptor)
+                    || !string.IsNullOrEmpty(s?.Gate2Descriptor)) { anyGate = true; break; }
+            }
+            if (!anyGate) return;
+
+            string originalMode = row.CombineMode ?? "";
+            var expanded = new List<MappingSource>();
+            var terms = new List<string>();
+
+            foreach (var src in row.Sources)
+            {
+                if (src == null) continue;
+                int selfIdx = expanded.Count;
+                var gates = new List<string>();
+                if (!string.IsNullOrEmpty(src.GateDescriptor)) gates.Add(src.GateDescriptor);
+                if (!string.IsNullOrEmpty(src.Gate2Descriptor)) gates.Add(src.Gate2Descriptor);
+
+                // The source itself, with the gate fields cleared: nothing is
+                // hidden on the source any more.
+                src.GateDescriptor = "";
+                src.Gate2Descriptor = "";
+                expanded.Add(src);
+
+                var gateIdx = new List<int>();
+                foreach (var g in gates)
+                {
+                    gateIdx.Add(expanded.Count);
+                    expanded.Add(new MappingSource
+                    {
+                        // The gate reads on the SAME device as the source it
+                        // gates, which is the contract the old per-source field
+                        // documented.
+                        DeviceGuid = src.DeviceGuid,
+                        Descriptor = g,
+                    });
+                }
+
+                string term = "s[" + selfIdx.ToString(CultureInfo.InvariantCulture) + "]";
+                foreach (int gi in gateIdx)
+                {
+                    string gv = "s[" + gi.ToString(CultureInfo.InvariantCulture) + "]";
+                    term = isAxis ? "(" + term + " * " + gv + ")" : "(" + term + " && " + gv + ")";
+                }
+                terms.Add(term);
+            }
+
+            row.Sources.Clear();
+            row.Sources.AddRange(expanded);
+            row.CombineMode = "Custom";
+            row.CombineExpression = JoinTerms(terms, originalMode, isAxis);
+        }
+
+        /// <summary>Combines the gated terms the way the row's original mode
+        /// did, so expanding a gate never changes how the sources merge.</summary>
+        private static string JoinTerms(List<string> terms, string originalMode, bool isAxis)
+        {
+            if (terms.Count == 1) return terms[0];
+            switch (originalMode)
+            {
+                case "Sum": return string.Join(" + ", terms);
+                case "Average":
+                    return "((" + string.Join(" + ", terms) + ") / "
+                           + terms.Count.ToString(CultureInfo.InvariantCulture) + ")";
+                case "AND": return string.Join(" && ", terms);
+                case "XOR":
+                    // Odd number of truthy terms, which is what XOR means for
+                    // more than two inputs in the engine's button combine.
+                    return "((" + string.Join(" + ", terms.ConvertAll(t => "(" + t + " != 0)"))
+                           + ") % 2 != 0)";
+                case "OR": return string.Join(" || ", terms);
+                case "MaxAbs": return FoldMaxAbs(terms);
+                default:
+                    // Empty = the per-target-type default: MaxAbs for axes,
+                    // OR for buttons (MappingRow.CombineMode).
+                    return isAxis ? FoldMaxAbs(terms) : string.Join(" || ", terms);
+            }
+        }
+
+        /// <summary>Pairwise max-by-magnitude, sign preserved, through the
+        /// expression language's ternary.</summary>
+        private static string FoldMaxAbs(List<string> terms)
+        {
+            string acc = terms[0];
+            for (int i = 1; i < terms.Count; i++)
+            {
+                acc = "(abs(" + acc + ") >= abs(" + terms[i] + ") ? " + acc + " : " + terms[i] + ")";
+            }
+            return acc;
+        }
+
         private void AddRowSource(Run run, bool isKbm, string layer, string target,
             MappingSource src, bool isAxis, TranslationStatus status, string reason,
             string path, string binding = "", string args = null)
@@ -6545,7 +6659,7 @@ namespace PadForge.SteamWorkshop.Translation
                 // identity, a bumper-as-trigger binding) ride on top of
                 // a clean analog pull instead of summing into overdrive.
                 // Multi-source buttons keep the engine's OR default.
-                // Click gates ride each source's GateDescriptor (v18).
+                ExpandGatesIntoCombineExpression(row, pending.IsAxis);
 
                 (key.Kbm ? profile.KbmMappingSet : profile.XboxMappingSet).Rows.Add(row);
             }

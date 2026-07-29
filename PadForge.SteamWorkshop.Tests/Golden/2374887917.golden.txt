@@ -9,11 +9,13 @@ xbox rows: 32
     <- Gamepad ButtonA
   Base | ButtonB
     <- Gamepad ButtonB
-  Base | ButtonBack
-    <- Touchpad 0 Click gate=[Touchpad 0 TouchLeft]
+  Base | ButtonBack | Custom | (s[0] && s[1]) || s[2]
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchLeft
     <- Gamepad ButtonBack
-  Base | ButtonStart
-    <- Touchpad 0 Click gate=[Touchpad 0 TouchRight]
+  Base | ButtonStart | Custom | (s[0] && s[1]) || s[2]
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchRight
     <- Gamepad ButtonStart
   Base | ButtonX
     <- Gamepad Paddle1
@@ -54,8 +56,9 @@ xbox rows: 32
     <- Gamepad RightStick
   Layer_2374887917_1 | ButtonB
     <- Gamepad ButtonB
-  Layer_2374887917_1 | ButtonBack
-    <- Touchpad 0 Click gate=[Touchpad 0 TouchLeft]
+  Layer_2374887917_1 | ButtonBack | Custom | (s[0] && s[1]) || s[2]
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchLeft
     <- Gamepad ButtonBack
   Layer_2374887917_1 | LeftThumbAxisX
     <- Gamepad LeftStickX

@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using PadForge.Engine;
 using PadForge.SteamWorkshop.Model;
 using PadForge.SteamWorkshop.Translation;
@@ -178,12 +178,11 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "right_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
-            // v18: the half gate rides the source's own GateDescriptor
-            // instead of a second AND source.
+            // The half gate is a REAL source ANDed through the row's Custom
+            // expression, so the user can see and edit it.
             var row = Assert.Single(p.KbmMappingSet.Rows);
-            var src = Assert.Single(row.Sources);
-            Assert.Equal("Touchpad 0 Click", src.Descriptor);
-            Assert.Equal("Touchpad 0 TouchRight", src.GateDescriptor);
+            Assert.Equal("Touchpad 0 Click", row.Sources[0].Descriptor);
+            GateAssert.Gated(p.KbmMappingSet, "Touchpad 0 Click", "Touchpad 0 TouchRight");
         }
 
         [Fact]
@@ -196,12 +195,15 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "switch active"))
                 + "}\n";
             var p = Translate(vdf);
+            // Both halves gate their own click, each on its own row.
             var q = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey51");
-            var qs = Assert.Single(q.Sources);
-            Assert.Equal("Touchpad 0 Click", qs.Descriptor);
-            Assert.Equal("Touchpad 0 TouchLeft", qs.GateDescriptor);
+            Assert.Equal("Touchpad 0 Click", q.Sources[0].Descriptor);
+            Assert.Equal("Touchpad 0 TouchLeft", q.Sources[1].Descriptor);
+            Assert.Equal("Custom", q.CombineMode);
+            Assert.Equal("(s[0] && s[1])", q.CombineExpression);
             var e = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey45");
-            Assert.Equal("Touchpad 0 TouchRight", Assert.Single(e.Sources).GateDescriptor);
+            Assert.Equal("Touchpad 0 TouchRight", e.Sources[1].Descriptor);
+            Assert.Equal("(s[0] && s[1])", e.CombineExpression);
         }
 
         [Fact]
@@ -297,9 +299,9 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var w = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey57");
-            var src = Assert.Single(w.Sources);
-            Assert.Equal("Touchpad 0 DPadUp", src.Descriptor);
-            Assert.Equal("Touchpad 0 Finger 0 Down Right", src.GateDescriptor);
+            Assert.Equal("Touchpad 0 DPadUp", w.Sources[0].Descriptor);
+            GateAssert.Gated(p.KbmMappingSet, "Touchpad 0 DPadUp",
+                "Touchpad 0 Finger 0 Down Right");
         }
 
         [Fact]
@@ -314,9 +316,9 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var w = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey57");
-            var src = Assert.Single(w.Sources);
-            Assert.Equal("Touchpad 0 DPadUp", src.Descriptor);
-            Assert.Equal("Touchpad 0 Click Right", src.GateDescriptor);
+            Assert.Equal("Touchpad 0 DPadUp", w.Sources[0].Descriptor);
+            GateAssert.Gated(p.KbmMappingSet, "Touchpad 0 DPadUp",
+                "Touchpad 0 Click Right");
         }
 
         // ─── Device-free macro triggers (part 1 conversions) ────────────

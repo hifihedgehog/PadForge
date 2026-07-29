@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using PadForge.SteamWorkshop.Model;
 using PadForge.SteamWorkshop.Translation;
 using PadForge.SteamWorkshop.Vdf;
@@ -117,9 +117,8 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var row = Assert.Single(p.KbmMappingSet.Rows);
-            var src = Assert.Single(row.Sources);
-            Assert.Equal("Gamepad LeftShoulder", src.Descriptor);
-            Assert.Equal("Gamepad ButtonY", src.GateDescriptor);
+            Assert.Equal("Gamepad LeftShoulder", row.Sources[0].Descriptor);
+            GateAssert.Gated(p.KbmMappingSet, "Gamepad LeftShoulder", "Gamepad ButtonY");
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.UnknownActivatorType);
         }
@@ -137,9 +136,8 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var row = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "ButtonA");
-            var src = Assert.Single(row.Sources);
-            Assert.Equal("Gamepad ButtonA", src.Descriptor);
-            Assert.Equal("Gamepad LeftShoulder", src.GateDescriptor);
+            Assert.Equal("Gamepad ButtonA", row.Sources[0].Descriptor);
+            GateAssert.Gated(p.XboxMappingSet, "Gamepad ButtonA", "Gamepad LeftShoulder");
         }
 
         [Fact]
@@ -195,9 +193,7 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             // The absolute_mouse mode emits its own pointer rows; find the
             // chord row by its folded source.
-            var src = p.KbmMappingSet.Rows.SelectMany(r => r.Sources)
-                .Single(s => s.Descriptor == "Touchpad 0 Click Right");
-            Assert.Equal("Gamepad ButtonY", src.GateDescriptor);
+            GateAssert.Gated(p.KbmMappingSet, "Touchpad 0 Click Right", "Gamepad ButtonY");
         }
 
         [Fact]

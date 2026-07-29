@@ -41,10 +41,12 @@ kbm rows: 33
     <- Gamepad ButtonA
   Base | KbmMBtn1
     <- Gamepad ButtonB
-  Base | KbmMBtn2
+  Base | KbmMBtn2 | Custom | s[0] || (s[1] && s[2]) || (s[3] && s[4])
     <- Touchpad 0 Click
-    <- Touchpad 0 Click gate=[Touchpad 0 TouchLeft]
-    <- Touchpad 0 Click gate=[Touchpad 0 TouchRight]
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchLeft
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchRight
   Base | KbmMouseX | Sum
     <- Touchpad 0 Finger 0 X
     <- Gamepad RightStickX sens=1.238

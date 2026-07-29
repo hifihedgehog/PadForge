@@ -45,8 +45,9 @@ xbox rows: 19
     <- Gamepad RightTrigger
     <- Gamepad RightTrigger [upper-half] dz=75
 kbm rows: 1
-  Base | KbmKey4E
-    <- Touchpad 0 DPadLeft gate=[Touchpad 0 Click Right]
+  Base | KbmKey4E | Custom | (s[0] && s[1])
+    <- Touchpad 0 DPadLeft
+    <- Touchpad 0 Click Right
 macros: 10
   macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=66%
   macro SetLightbarColor OnPress | Set LED (Touchpad 0 DPadRight) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click Left] layer=Base rgb=(255,6,0) bright=100% sat=100% setting=1

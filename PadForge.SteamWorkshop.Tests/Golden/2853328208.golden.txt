@@ -18,8 +18,9 @@ kbm rows: 23
   Base | KbmKey47
     <- Gamepad ButtonY
     <- Gamepad DPadDown
-  Base | KbmKey48
-    <- Touchpad 0 DPadDown gate=[Touchpad 0 Click]
+  Base | KbmKey48 | Custom | (s[0] && s[1])
+    <- Touchpad 0 DPadDown
+    <- Touchpad 0 Click
   Base | KbmKey49
     <- Gamepad DPadLeft
   Base | KbmKey4C
@@ -30,8 +31,9 @@ kbm rows: 23
     <- Gamepad ButtonStart
   Base | KbmKey53
     <- Gamepad LeftStick
-  Base | KbmKey54
-    <- Touchpad 0 DPadUp gate=[Touchpad 0 Click]
+  Base | KbmKey54 | Custom | (s[0] && s[1])
+    <- Touchpad 0 DPadUp
+    <- Touchpad 0 Click
   Base | KbmKey55
     <- Gamepad DPadRight
   Base | KbmKey57

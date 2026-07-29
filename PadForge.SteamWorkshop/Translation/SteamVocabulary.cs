@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 
 namespace PadForge.SteamWorkshop.Translation
@@ -39,6 +39,61 @@ namespace PadForge.SteamWorkshop.Translation
             }
             return sb.ToString();
         }
+
+
+        /// <summary><para>A Steam controller_action verb as a phrase a person
+        /// reads: <c>MOUSE_POSITION</c> becomes "Warp cursor",
+        /// <c>add_layer</c> becomes "Turn on a shift layer". Null when the
+        /// verb is unknown, so the caller can fall back to plain spelling
+        /// rather than print a confident wrong name.</para>
+        /// <para>Lives HERE rather than in the browse dialog because the
+        /// translator needs it too. A menu cell with no author label falls
+        /// back to its binding's first parameter, and that parameter is the
+        /// raw verb, so an imported radial menu showed cells reading
+        /// "MOUSE_POSITION" and "add_layer" in the Menus editor. The dialog
+        /// had a humanizer for exactly these tokens and the translator could
+        /// not reach it, which made this class's own claim to be "the one
+        /// place that converts" false.</para></summary>
+        public static string CommandLabel(string token)
+        {
+            if (string.IsNullOrWhiteSpace(token)) return null;
+            return CommandLabels.TryGetValue(token.Trim(), out var name) ? name : null;
+        }
+
+        private static readonly System.Collections.Generic.Dictionary<string, string> CommandLabels =
+            new(StringComparer.OrdinalIgnoreCase)
+            {
+            ["SET_LED"] = "Set light color",
+            ["CAMERA_RESET"] = "Recenter camera",
+            ["MOUSE_POSITION"] = "Warp cursor",
+            ["MOUSE_DELTA"] = "Nudge cursor",
+            ["SCREENSHOT"] = "Screenshot",
+            ["SHOW_KEYBOARD"] = "On-screen keyboard",
+            ["CHANGE_PRESET"] = "Switch shift layer",
+            ["ADD_LAYER"] = "Turn on a shift layer",
+            ["REMOVE_LAYER"] = "Turn off a shift layer",
+            ["HOLD_LAYER"] = "Hold a shift layer",
+            ["CHANGE_PLAYER_NUMBER"] = "Change player number",
+            ["EMPTY_BINDING"] = "Unbound",
+            ["EMPTY_SUB_COMMAND"] = "Unbound",
+            ["TOGGLE_LIZARD"] = "Toggle desktop mode",
+            ["TOGGLE_LIZARD_MODE"] = "Toggle desktop mode",
+            ["SYSTEM_KEY_0"] = "Steam system key",
+            ["SYSTEM_KEY_1"] = "Steam system key",
+            ["TOGGLE_MAGNIFIER"] = "Toggle magnifier",
+            ["BRIGHTNESS_UP"] = "Brightness up",
+            ["BRIGHTNESS_DOWN"] = "Brightness down",
+            ["CONTROLLER_POWEROFF"] = "Power off controller",
+            ["OPEN_CONFIGURATOR"] = "Open Steam configurator",
+            ["OPEN_QUICKMENU"] = "Open Steam quick menu",
+            ["QUIT_APPLICATION"] = "Quit game",
+            ["TOGGLE_HAPTICS"] = "Toggle haptics",
+            ["TOGGLE_HUD"] = "Toggle Steam HUD",
+            ["TOGGLE_RUMBLE"] = "Toggle rumble",
+            ["FORCE_GUIDE_UP"] = "Force Guide button",
+            ["DOTS_PER_360_CALIBRATION_SPIN"] = "Gyro calibration spin",
+            ["TURN_TO_FACE_DIRECTION"] = "Turn to face direction",
+            };
 
         /// <summary><para>Names the control a macro hangs off, for the
         /// parenthetical in the macro's saved name ("Set LED (Left Trigger)").

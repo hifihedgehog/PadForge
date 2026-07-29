@@ -6625,10 +6625,84 @@ namespace PadForge.SteamWorkshop.Translation
                 && m.CycleSteps.Any(s => s.Kind == TranslatedCycleStepKind.VcButtonTap
                     || s.Kind == TranslatedCycleStepKind.VcAxisTap));
 
+        /// <summary><para>Drops a hosted <c>remove_layer</c> Cycle when the
+        /// SAME input already engages the SAME layer.</para>
+        /// <para>Steam spells a layer's on and off as two halves on one
+        /// button: an <c>add_layer</c> or <c>hold_layer</c> in the set
+        /// below, and a <c>remove_layer</c> on that same button inside the
+        /// layer. Each half lowers on its own, giving one button two
+        /// activators, and they then fight: the engaging one turns the layer
+        /// off (Toggle) or drops it on release (Hold) while the Cycle steps
+        /// its own ring, so a press could need a second press to land
+        /// anywhere. The remove arm's own note conceded as much, calling
+        /// itself "its own stepper beside whatever engaged the layer".</para>
+        /// <para>Both engage modes already carry the return, so where one
+        /// exists on that input for that layer the Cycle is not an
+        /// approximation of anything. It is a duplicate, and the config
+        /// reads correctly with it gone. Two corpus shapes: RCT3 Weno's
+        /// right bumper adds in Default and removes inside the layer
+        /// (Toggle + Cycle), and 3725174032's rear paddles hold in Base and
+        /// remove inside (Hold + Cycle).</para>
+        /// <para>Scope is deliberately narrow. Only the exact single-stop
+        /// return ring qualifies: a Cycle with a longer ring is a real
+        /// multi-stop stepper and stays, as does a remove on any input that
+        /// does not itself engage the layer, which is the case where the
+        /// Cycle is the only way back and the original note still holds.
+        /// </para></summary>
+        private static void DropRemovesCoveredByTheirOwnToggle(Run run)
+        {
+            // Toggle and Hold are the two ENGAGE modes. A Cycle is not one:
+            // it is a stepper, and two steppers on one input is the merge
+            // path's business, not this one's.
+            var engaged = new HashSet<(string Layer, string Descriptor)>();
+            foreach (var a in run.Activators)
+            {
+                if ((string.Equals(a.Mode, "Toggle", StringComparison.Ordinal)
+                        || string.Equals(a.Mode, "Hold", StringComparison.Ordinal))
+                    && !string.IsNullOrEmpty(a.LayerMask)
+                    && !string.IsNullOrEmpty(a.Descriptor))
+                    engaged.Add((a.LayerMask, a.Descriptor));
+            }
+            if (engaged.Count == 0) return;
+
+            var dropped = run.Activators.Where(a =>
+                string.Equals(a.Mode, "Cycle", StringComparison.Ordinal)
+                && a.CycleIncludeBase
+                // The single-stop return ring the remove arm builds: its
+                // own layer, plus Base.
+                && string.Equals(a.CycleLayers, a.LayerMask, StringComparison.Ordinal)
+                && !string.IsNullOrEmpty(a.Descriptor)
+                && engaged.Contains((a.LayerMask, a.Descriptor))).ToList();
+            if (dropped.Count == 0) return;
+
+            foreach (var a in dropped) run.Activators.Remove(a);
+
+            // The remove arm reported itself Partial, "approximated as
+            // toggle-off", which was true of the stepper it used to build.
+            // It is not true now: the Toggle on that same input carries the
+            // return exactly. Leaving the note would count a binding that
+            // lowers perfectly against the config's Partial tally, which is
+            // the number a user reads to judge how well it imported.
+            foreach (var a in dropped)
+            {
+                foreach (var e in run.Report.Entries)
+                {
+                    if (e.ReasonKey != TranslationReasons.RemoveLayerApproximated) continue;
+                    if (!string.Equals(e.SourcePath, a.Path, StringComparison.Ordinal)) continue;
+                    e.Status = TranslationStatus.Clean;
+                    e.ReasonKey = TranslationReasons.ShiftLayerEmitted;
+                    e.ReasonArgs = new List<string> { a.LayerName ?? a.LayerMask ?? "" };
+                    e.Emitted = MacroEmit(a.LayerName ?? a.LayerMask, a.Descriptor);
+                    break;
+                }
+            }
+        }
+
         private void EmitActivators(Run run)
         {
             MergeSameInputJumpsIntoCycles(run);
             LowerUnmergedJumps(run);
+            DropRemovesCoveredByTheirOwnToggle(run);
 
             var seen = new HashSet<string>(StringComparer.Ordinal);
             foreach (var req in run.Activators

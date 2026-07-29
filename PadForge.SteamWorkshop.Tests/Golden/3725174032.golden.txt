@@ -72,10 +72,8 @@ xbox rows: 32
     <- Gamepad LeftTrigger
   Layer_3725174032_2 | RightTrigger
     <- Gamepad RightTrigger
-xbox activators: 4
-  Cycle Layer_3725174032_1 cycle=Layer_3725174032_1+Base | Gamepad Paddle2 | inherit | name=Quick Item
+xbox activators: 2
   Hold Layer_3725174032_1 | Gamepad Paddle2 | inherit | name=Quick Item
-  Cycle Layer_3725174032_2 cycle=Layer_3725174032_2+Base | Gamepad Paddle4 | inherit | name=Quick Equip
   Hold Layer_3725174032_2 | Gamepad Paddle4 | inherit | name=Quick Equip
 kbm rows: 3
   Base | KbmKeyA0
@@ -96,7 +94,7 @@ macros: 9
   macro HoldVcButton HoldForMs | Long press ButtonY (Paddle3) | btns=0x0000 in=[Gamepad Paddle3] hold=500ms layer=Base target=0x8000
   macro HoldVcButton HoldForMs | Long press LeftShoulder (Paddle3) | btns=0x0000 in=[Gamepad Paddle3] hold=500ms layer=Base target=0x0100
   macro HoldVcButton HoldForMs | Long press ButtonY (Paddle2) | btns=0x0000 in=[Gamepad Paddle2] hold=500ms layer=Layer_3725174032_1 target=0x8000
-report: v26 rows:x32+k3 macros:9 menus:0 layers:4 clean:53 partial:4 skipped:0 errors:0
+report: v26 rows:x32+k3 macros:9 menus:0 layers:2 clean:51 partial:4 skipped:0 errors:0
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseY <- Gyro Pitch
   Clean MacroEmitted @ Default/joystick/group 6 (joystick_move)/click/Double_Press => Double press LeftThumbButton <- Gamepad LeftStick
@@ -115,14 +113,14 @@ report: v26 rows:x32+k3 macros:9 menus:0 layers:4 clean:53 partial:4 skipped:0 e
   Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_x/Full_Press => ButtonY <- Gamepad ButtonX
   Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_x/Full_Press => DPadLeft <- Gamepad ButtonX
   Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_y/Full_Press => DPadUp <- Gamepad ButtonY
-  Partial RemoveLayerApproximated @ Quick Item/switch/group 18 (switches)/button_back_left_upper/release :: controller_action remove_layer 2 0 0, , 
+  Clean ShiftLayerEmitted(Quick Item) @ Quick Item/switch/group 18 (switches)/button_back_left_upper/release => Quick Item <- Gamepad Paddle2
   Partial LayerReleaseEdgeApproximated(REMOVE_LAYER) @ Quick Item/switch/group 18 (switches)/button_back_left_upper/release :: controller_action remove_layer 2 0 0, , 
   Clean MacroEmitted @ Quick Item/switch/group 18 (switches)/button_back_left_upper/Long_Press => Long press ButtonY <- Gamepad Paddle2
   Clean RowEmitted @ Quick Equip/button_diamond/group 26 (four_buttons)/button_a/Full_Press => DPadDown <- Gamepad ButtonA
   Clean RowEmitted @ Quick Equip/button_diamond/group 26 (four_buttons)/button_b/Full_Press => DPadRight <- Gamepad ButtonB
   Clean RowEmitted @ Quick Equip/button_diamond/group 26 (four_buttons)/button_x/Full_Press => DPadLeft <- Gamepad ButtonX
   Clean RowEmitted @ Quick Equip/button_diamond/group 26 (four_buttons)/button_y/Full_Press => DPadUp <- Gamepad ButtonY
-  Partial RemoveLayerApproximated @ Quick Equip/switch/group 29 (switches)/button_back_left/release :: controller_action remove_layer 3 0 0, , 
+  Clean ShiftLayerEmitted(Quick Equip) @ Quick Equip/switch/group 29 (switches)/button_back_left/release => Quick Equip <- Gamepad Paddle4
   Partial LayerReleaseEdgeApproximated(REMOVE_LAYER) @ Quick Equip/switch/group 29 (switches)/button_back_left/release :: controller_action remove_layer 3 0 0, , 
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
@@ -150,7 +148,5 @@ report: v26 rows:x32+k3 macros:9 menus:0 layers:4 clean:53 partial:4 skipped:0 e
   Clean RowEmitted @ Default/switch/group 0 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 0 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
   Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_y/Full_Press => ButtonY <- Gamepad ButtonY
-  Clean ShiftLayerEmitted(Quick Item) @ Quick Item/switch/group 18 (switches)/button_back_left_upper/release => Cycle Quick Item <- Gamepad Paddle2
   Clean ShiftLayerEmitted(Quick Item) @ Default/switch/group 0 (switches)/button_back_left_upper/Start_Press => Hold Quick Item <- Gamepad Paddle2
-  Clean ShiftLayerEmitted(Quick Equip) @ Quick Equip/switch/group 29 (switches)/button_back_left/release => Cycle Quick Equip <- Gamepad Paddle4
   Clean ShiftLayerEmitted(Quick Equip) @ Default/switch/group 0 (switches)/button_back_left/Start_Press => Hold Quick Equip <- Gamepad Paddle4

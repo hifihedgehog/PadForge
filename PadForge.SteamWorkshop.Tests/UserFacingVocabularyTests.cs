@@ -236,6 +236,80 @@ namespace PadForge.SteamWorkshop.Tests
         public void SlotDisplayName_NamesTheSlotTheWayTheAppDoes(string token, string expected)
             => Assert.Equal(expected, PhysicalSlotResolver.SlotDisplayName(token));
 
+        // ── one activator per intent ──────────────────────────────────────
+
+        [Fact]
+        public void NoInputBothTogglesAndCyclesTheSameLayer()
+        {
+            // Steam spells a toggleable layer as two halves on one button:
+            // add_layer in the set below, remove_layer inside the layer.
+            // Lowering each half independently gave that button a Toggle AND
+            // a Cycle for the same layer, which fight at runtime and drew
+            // the layer twice in the shift-layer strip. RCT3 Weno showed
+            // five layers for a config declaring two.
+            var offenders = new List<string>();
+            int pairs = 0;
+            foreach (long id in AllIds())
+            {
+                var profile = new ConfigTranslator().Translate(
+                    SteamInputConfig.FromVdf(VdfParser.Parse(
+                        File.ReadAllText(TestFixtures.Path_(id)))),
+                    new TranslationOptions { FileId = id });
+
+                foreach (var set in new[] { profile.XboxMappingSet, profile.KbmMappingSet })
+                {
+                    var byInputLayer = set.ShiftActivators
+                        .Where(a => !string.IsNullOrEmpty(a.LayerMask) && !string.IsNullOrEmpty(a.Descriptor))
+                        .GroupBy(a => (a.LayerMask, a.Descriptor));
+                    foreach (var g in byInputLayer)
+                    {
+                        pairs++;
+                        var modes = g.Select(a => a.Mode).ToList();
+                        if (modes.Count > 1)
+                            offenders.Add($"{id}: {g.Key.Descriptor} drives {g.Key.LayerMask} "
+                                + $"{modes.Count} ways ({string.Join(", ", modes)})");
+                    }
+                }
+            }
+            Assert.True(pairs > 20, $"harness saw only {pairs} (input, layer) pairs");
+            Assert.True(offenders.Count == 0,
+                "One input drives one layer through more than one activator, so the two fight and "
+                + "the layer draws more than once:\n  " + string.Join("\n  ", offenders.Take(20)));
+        }
+
+        [Fact]
+        public void EveryLayerAConfigDeclares_ProducesExactlyOneDistinctMask()
+        {
+            // The count a user sees in the shift-layer strip is the number
+            // of DISTINCT masks, so pin that against the config's own layer
+            // count rather than against the activator count, which is
+            // legitimately larger when several inputs reach one layer.
+            foreach (long id in AllIds())
+            {
+                var config = SteamInputConfig.FromVdf(VdfParser.Parse(
+                    File.ReadAllText(TestFixtures.Path_(id))));
+                var profile = new ConfigTranslator().Translate(
+                    config, new TranslationOptions { FileId = id });
+
+                // Preset-backed masks only: mode-shift layers are a
+                // separate construct with their own _MS_ masks.
+                var masks = profile.XboxMappingSet.ShiftActivators
+                    .Concat(profile.KbmMappingSet.ShiftActivators)
+                    .Select(a => a.LayerMask ?? "")
+                    .Where(m => m.StartsWith($"Layer_{id}_", StringComparison.Ordinal)
+                                && !m.Contains("_MS_", StringComparison.Ordinal))
+                    .Distinct(StringComparer.Ordinal)
+                    .ToList();
+
+                // Never more distinct preset layers than the config has
+                // presets past Base.
+                int presetsPastBase = Math.Max(0, config.Presets.Count - 1);
+                Assert.True(masks.Count <= presetsPastBase,
+                    $"{id}: {masks.Count} distinct preset layers from a config with "
+                    + $"{presetsPastBase} presets past Base: {string.Join(", ", masks)}");
+            }
+        }
+
         // ── one name per macro ────────────────────────────────────────────
 
         [Fact]

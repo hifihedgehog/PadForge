@@ -60,17 +60,11 @@ namespace PadForge.Services
         /// PadSetting and no ratchet control in any view, so there is no
         /// user-facing setting to fold it into. It stays a runtime overlay
         /// (InputManager's gyro engage config) until a card exists.</para>
-        /// <para>ParamStickDeadZoneShape / ParamStickDeadZoneInner stay on the
-        /// source. The thumb-pair modes (joystick_move, mouse_joystick)
-        /// already reach the Dead Zone Shape card through the slot-level
-        /// stamp above, and the stick-hosted mouse modes that use the
-        /// per-source geometry instead need it applied radially over the pair
-        /// at row read. Their inner radius is consequently NOT visible on a
-        /// card for those modes, which is a real remaining gap and not a
-        /// deliberate exclusion.</para>
-        /// <para>ParamFlickRotationOffsetDeg has no card either. It is read
-        /// by the flick-stick angle path (SourceKindRuntime) and there is no
-        /// rotation-offset control to fold it into.</para></summary>
+        /// <para>ParamFlickRotationOffsetDeg has no card. It is read by the
+        /// flick-stick angle path (SourceKindRuntime) and there is no
+        /// rotation-offset control to fold it into, so it stays on the source
+        /// until one exists. That is a real remaining gap, not a deliberate
+        /// exclusion.</para></summary>
         public static bool ApplyToAssignedDevice(int slotIndex, PadSetting ps)
         {
             if (ps == null) return false;
@@ -202,8 +196,11 @@ namespace PadForge.Services
                         src.ParamAntiDeadzone = 0.0;
                     }
 
-                    if (src.ParamStickDeadZoneShape == 0
-                        && src.ParamRangeOuter > 0.0 && src.ParamRangeOuter < 1.0)
+                    if (src.ParamStickDeadZoneShape != 0)
+                    {
+                        changed |= FoldStickGeometry(src, card);
+                    }
+                    else if (src.ParamRangeOuter > 0.0 && src.ParamRangeOuter < 1.0)
                     {
                         if (IsPercent(card.GetRange(), 100))
                         {
@@ -217,7 +214,74 @@ namespace PadForge.Services
             return changed;
         }
 
-        /// <summary>The three card fields for a row target, or null when the
+        /// <summary><para>Moves a stamped stick deadzone geometry (shape, inner
+        /// radius, outer radius) onto the stick's own Dead Zone / Dead Zone
+        /// Shape / Max Range cards, as one unit.</para>
+        ///
+        /// <para>The three travel together or not at all. The engine reads them
+        /// as a single band in ApplyStickDeadZoneShape (<c>mag &lt;= inner</c>
+        /// zeroes, then <c>(mag-inner)/(outer-inner)</c> rescales), so folding
+        /// the inner radius while leaving the outer behind would hand the row
+        /// read a band with no floor and the card a floor with no band.</para>
+        ///
+        /// <para>Equivalence was checked against both card paths, not assumed.
+        /// Steam Circle is engine shape 2, and Step3's ComputeRadial scaled
+        /// branch computes <c>(rawMag - dzR)/(mrR - dzR)</c> where dzR is the
+        /// deadzone ellipse radius along the input direction, which collapses
+        /// to plain dz once both axes carry the same value, giving the same
+        /// circle and the same band. Steam Cross / Square is engine shape 1,
+        /// and the Axial path's ApplySingleDeadZone computes
+        /// <c>(magnitude - dz)/(maxRange - dz)</c> per axis, which is that
+        /// same band in one dimension. The shape mapping (Circle to card "2",
+        /// Cross / Square to card "0") is the one the slot-level deadzone_shape
+        /// stamp already uses.</para>
+        ///
+        /// <para>Each axis writes only its own Dead Zone field, and the pair's
+        /// two rows carry the same stamped value, so the pair lands as
+        /// dzX == dzY: the circle Steam authored. The shape field is per stick
+        /// rather than per axis, so whichever row arrives first sets it and the
+        /// second agrees.</para></summary>
+        private static bool FoldStickGeometry(MappingSource src, ShapingCard card)
+        {
+            bool changed = false;
+
+            // Shape first, so a card left at its ScaledRadial default is
+            // switched to Axial before the radii that ride it are written.
+            if (card.SetShape != null && IsDefaultShape(card.GetShape()))
+            {
+                string mapped = src.ParamStickDeadZoneShape == 2 ? "2" : "0";
+                if (!string.Equals(card.GetShape(), mapped, StringComparison.Ordinal))
+                {
+                    card.SetShape(mapped);
+                    changed = true;
+                }
+            }
+
+            if (src.ParamStickDeadZoneInner > 0.0 && src.ParamStickDeadZoneInner < 1.0
+                && IsPercent(card.GetDeadZone(), 0))
+            {
+                card.SetDeadZone(Percent(src.ParamStickDeadZoneInner));
+                changed = true;
+            }
+
+            if (src.ParamRangeOuter > 0.0 && src.ParamRangeOuter < 1.0
+                && IsPercent(card.GetRange(), 100))
+            {
+                card.SetRange(Percent(src.ParamRangeOuter));
+                changed = true;
+            }
+
+            // Cleared as a unit, including the shape: leaving the shape would
+            // keep ApplyStickDeadZoneShape live over radii it no longer has,
+            // and leaving the outer would keep it out of the scalar tail's
+            // reach too (that guard reads shape == 0).
+            src.ParamStickDeadZoneShape = 0;
+            src.ParamStickDeadZoneInner = 0.0;
+            src.ParamRangeOuter = 0.0;
+            return changed;
+        }
+
+        /// <summary>The card fields for a row target, or null when the
         /// target is not one of the six shaped inputs. Named targets only:
         /// a RawAxis{n} target's stick is resolved from the slot's own axis
         /// layout, which lives on the view model, not here.</summary>
@@ -226,27 +290,43 @@ namespace PadForge.Services
             "LeftThumbAxisX" => new ShapingCard(
                 () => ps.LeftThumbSensitivityCurveX, v => ps.LeftThumbSensitivityCurveX = v,
                 () => ps.LeftThumbMaxRangeX, v => ps.LeftThumbMaxRangeX = v,
-                () => ps.LeftThumbAntiDeadZoneX, v => ps.LeftThumbAntiDeadZoneX = v),
+                () => ps.LeftThumbAntiDeadZoneX, v => ps.LeftThumbAntiDeadZoneX = v,
+                () => ps.LeftThumbDeadZoneX, v => ps.LeftThumbDeadZoneX = v,
+                () => ps.LeftThumbDeadZoneShape, v => ps.LeftThumbDeadZoneShape = v),
             "LeftThumbAxisY" => new ShapingCard(
                 () => ps.LeftThumbSensitivityCurveY, v => ps.LeftThumbSensitivityCurveY = v,
                 () => ps.LeftThumbMaxRangeY, v => ps.LeftThumbMaxRangeY = v,
-                () => ps.LeftThumbAntiDeadZoneY, v => ps.LeftThumbAntiDeadZoneY = v),
+                () => ps.LeftThumbAntiDeadZoneY, v => ps.LeftThumbAntiDeadZoneY = v,
+                () => ps.LeftThumbDeadZoneY, v => ps.LeftThumbDeadZoneY = v,
+                () => ps.LeftThumbDeadZoneShape, v => ps.LeftThumbDeadZoneShape = v),
             "RightThumbAxisX" => new ShapingCard(
                 () => ps.RightThumbSensitivityCurveX, v => ps.RightThumbSensitivityCurveX = v,
                 () => ps.RightThumbMaxRangeX, v => ps.RightThumbMaxRangeX = v,
-                () => ps.RightThumbAntiDeadZoneX, v => ps.RightThumbAntiDeadZoneX = v),
+                () => ps.RightThumbAntiDeadZoneX, v => ps.RightThumbAntiDeadZoneX = v,
+                () => ps.RightThumbDeadZoneX, v => ps.RightThumbDeadZoneX = v,
+                () => ps.RightThumbDeadZoneShape, v => ps.RightThumbDeadZoneShape = v),
             "RightThumbAxisY" => new ShapingCard(
                 () => ps.RightThumbSensitivityCurveY, v => ps.RightThumbSensitivityCurveY = v,
                 () => ps.RightThumbMaxRangeY, v => ps.RightThumbMaxRangeY = v,
-                () => ps.RightThumbAntiDeadZoneY, v => ps.RightThumbAntiDeadZoneY = v),
+                () => ps.RightThumbAntiDeadZoneY, v => ps.RightThumbAntiDeadZoneY = v,
+                () => ps.RightThumbDeadZoneY, v => ps.RightThumbDeadZoneY = v,
+                () => ps.RightThumbDeadZoneShape, v => ps.RightThumbDeadZoneShape = v),
+            // A trigger is one-dimensional, so it has a Dead Zone but no Dead
+            // Zone Shape. The import never stamps a geometry on one anyway
+            // (the translator gates stickShape on IsStick), so the null shape
+            // setter is belt and braces rather than a live path.
             "LeftTrigger" => new ShapingCard(
                 () => ps.LeftTriggerSensitivityCurve, v => ps.LeftTriggerSensitivityCurve = v,
                 () => ps.LeftTriggerMaxRange, v => ps.LeftTriggerMaxRange = v,
-                () => ps.LeftTriggerAntiDeadZone, v => ps.LeftTriggerAntiDeadZone = v),
+                () => ps.LeftTriggerAntiDeadZone, v => ps.LeftTriggerAntiDeadZone = v,
+                () => ps.LeftTriggerDeadZone, v => ps.LeftTriggerDeadZone = v,
+                null, null),
             "RightTrigger" => new ShapingCard(
                 () => ps.RightTriggerSensitivityCurve, v => ps.RightTriggerSensitivityCurve = v,
                 () => ps.RightTriggerMaxRange, v => ps.RightTriggerMaxRange = v,
-                () => ps.RightTriggerAntiDeadZone, v => ps.RightTriggerAntiDeadZone = v),
+                () => ps.RightTriggerAntiDeadZone, v => ps.RightTriggerAntiDeadZone = v,
+                () => ps.RightTriggerDeadZone, v => ps.RightTriggerDeadZone = v,
+                null, null),
             _ => null,
         };
 
@@ -254,11 +334,15 @@ namespace PadForge.Services
         {
             public ShapingCard(Func<string> getCurve, Action<string> setCurve,
                 Func<string> getRange, Action<string> setRange,
-                Func<string> getAnti, Action<string> setAnti)
+                Func<string> getAnti, Action<string> setAnti,
+                Func<string> getDeadZone, Action<string> setDeadZone,
+                Func<string> getShape, Action<string> setShape)
             {
                 GetCurve = getCurve; SetCurve = setCurve;
                 GetRange = getRange; SetRange = setRange;
                 GetAnti = getAnti; SetAnti = setAnti;
+                GetDeadZone = getDeadZone; SetDeadZone = setDeadZone;
+                GetShape = getShape; SetShape = setShape;
             }
 
             public Func<string> GetCurve { get; }
@@ -267,6 +351,12 @@ namespace PadForge.Services
             public Action<string> SetRange { get; }
             public Func<string> GetAnti { get; }
             public Action<string> SetAnti { get; }
+            public Func<string> GetDeadZone { get; }
+            public Action<string> SetDeadZone { get; }
+
+            /// <summary>Null on a one-dimensional input, which has no shape.</summary>
+            public Func<string> GetShape { get; }
+            public Action<string> SetShape { get; }
         }
 
         /// <summary>A 0..1 fraction as the card's percent string.</summary>

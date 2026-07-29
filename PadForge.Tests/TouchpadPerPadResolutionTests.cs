@@ -171,6 +171,48 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void APadConfiguredOnlyWithGlideBeatsAPristineSibling()
+        {
+            // IsConfigured decides the winner when ResolveEntryForPad falls
+            // back to the device. Its doc says "any mouse / pointer / haptic
+            // tuning moved off its default" counts, and momentum / jitter were
+            // the only Mouse* fields it did not compare, so a pad the user set
+            // up with nothing but a glide read as pristine and lost.
+            var pristine = new TouchpadSettingsEntry
+            {
+                DeviceGuid = Dev,
+                TouchpadIndex = 0,
+                Settings = TouchpadGestureSettings.Default(),
+            };
+            var glideOnly = new TouchpadSettingsEntry
+            {
+                DeviceGuid = Dev,
+                TouchpadIndex = 1,
+                Settings = TouchpadGestureSettings.Default(),
+            };
+            glideOnly.Settings.MouseMomentum = !glideOnly.Settings.MouseMomentum;
+
+            // Pad 2 has no entry, so this exercises the device fallback.
+            var got = TouchpadGestureSettings.ResolveEntryForPad(
+                new[] { pristine, glideOnly }, Dev, 2);
+
+            Assert.Equal(1, got.TouchpadIndex);
+        }
+
+        [Fact]
+        public void PositiveControl_LowestIndexWinsWhenNeitherIsConfigured()
+        {
+            // Proves the test above measures IsConfigured and not merely the
+            // array order: with both pristine, the tie-break picks index 0.
+            var a = new TouchpadSettingsEntry { DeviceGuid = Dev, TouchpadIndex = 0,
+                Settings = TouchpadGestureSettings.Default() };
+            var b = new TouchpadSettingsEntry { DeviceGuid = Dev, TouchpadIndex = 1,
+                Settings = TouchpadGestureSettings.Default() };
+            Assert.Equal(0, TouchpadGestureSettings.ResolveEntryForPad(
+                new[] { a, b }, Dev, 2).TouchpadIndex);
+        }
+
+        [Fact]
         public void NoProviderStillResolvesPerDevice()
         {
             // Grep-as-a-test. The three engine seams (gesture snapshot, mouse

@@ -22,6 +22,7 @@ namespace PadForge.Tests
     /// loop does the equivalent: each report becomes a velocity, spent every
     /// poll until the next refreshes it.</para>
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class TouchpadMouseRateLaneTests
     {
         private const long Freq = 10_000_000;      // 100 ns ticks

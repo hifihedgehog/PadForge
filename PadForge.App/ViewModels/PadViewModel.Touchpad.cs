@@ -1013,44 +1013,95 @@ namespace PadForge.ViewModels
         private void SeedPointerRegionFromMappingSources()
         {
             var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
-            if (sets == null || PadIndex < 0 || PadIndex >= sets.Length) return;
-            var rows = sets[PadIndex]?.Rows;
-            if (rows == null) return;
+            if (sets == null) return;
 
+            // ANY pad, not the selector's. Touchpad settings are per DEVICE
+            // (the push forces TouchpadIndex 0 and drops duplicates, and the
+            // pad combo drives only the recorder and preview, per the card's
+            // own contract in PadPage.xaml). Keying the search on the
+            // selector looked for "Touchpad 0 Pointer" while an imported
+            // Steam Deck config puts its region on the right pad, "Touchpad
+            // 1 Pointer", so nothing matched and the card sat at the
+            // full-screen default with the imported values invisible.
             int pad = _selectedTouchpadIndex;
-            foreach (var row in rows)
-            {
-                if (row?.Sources == null) continue;
-                bool isX = string.Equals(row.Target, "KbmMouseX", StringComparison.Ordinal);
-                bool isY = string.Equals(row.Target, "KbmMouseY", StringComparison.Ordinal);
-                if (!isX && !isY) continue;
+            bool gotX = FindPointerRegionAxis(sets, pad, wantX: true, out double sx, out double cx);
+            bool gotY = FindPointerRegionAxis(sets, pad, wantX: false, out double sy, out double cy);
+            if (gotX) { _touchpadPointerRegionSizeX = sx; _touchpadPointerRegionCenterX = cx; }
+            if (gotY) { _touchpadPointerRegionSizeY = sy; _touchpadPointerRegionCenterY = cy; }
 
-                foreach (var src in row.Sources)
-                {
-                    var d = src?.Descriptor;
-                    if (string.IsNullOrEmpty(d)) continue;
-                    // "Touchpad {p} Pointer X" plus the half-window suffixes.
-                    if (!d.StartsWith("Touchpad " + pad.ToString(
-                                          System.Globalization.CultureInfo.InvariantCulture)
-                                      + " Pointer ", StringComparison.Ordinal)) continue;
-                    if (isX)
-                    {
-                        _touchpadPointerRegionSizeX = src.ParamPointerExtent;
-                        _touchpadPointerRegionCenterX = src.ParamPointerCenter;
-                    }
-                    else
-                    {
-                        _touchpadPointerRegionSizeY = src.ParamPointerExtent;
-                        _touchpadPointerRegionCenterY = src.ParamPointerCenter;
-                    }
-                    break;
-                }
-            }
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"PTRSEED slot={PadIndex} pad={pad} sets={sets.Length} gotX={gotX} gotY={gotY} "
+                + $"sizeX={_touchpadPointerRegionSizeX:0.###} sizeY={_touchpadPointerRegionSizeY:0.###} "
+                + $"cx={_touchpadPointerRegionCenterX:0.###} cy={_touchpadPointerRegionCenterY:0.###}");
 
             OnPropertyChanged(nameof(TouchpadPointerRegionSizeX));
             OnPropertyChanged(nameof(TouchpadPointerRegionSizeY));
             OnPropertyChanged(nameof(TouchpadPointerRegionCenterX));
             OnPropertyChanged(nameof(TouchpadPointerRegionCenterY));
+        }
+
+        /// <summary><para>One axis of the imported-region search, across EVERY
+        /// slot's mapping set.</para>
+        /// <para>Internal so a test can reproduce the layout that broke it.
+        /// An imported Steam config's pointer rows target KbmMouseX/Y and
+        /// therefore live in the KEYBOARD/MOUSE slot's set, which is generally
+        /// NOT the slot whose pad page is open. Scoping the search to
+        /// PadIndex found the region only when the user happened to be on
+        /// that one slot's tab and showed the full-screen default
+        /// everywhere else. The region belongs to the PAD, which is a
+        /// property of the device, so every set is fair game.</para>
+        /// <para>Returns false and leaves the full-screen identity in the
+        /// out params when nothing matches, so a miss never shows a stale
+        /// or another pad's rectangle.</para></summary>
+        internal static bool FindPointerRegionAxis(
+            Engine.Data.MappingSet[] sets, int pad, bool wantX,
+            out double size, out double center)
+        {
+            size = 1.0;
+            center = 0.5;
+            if (sets == null) return false;
+
+            // Preferred pad first so a device that DOES carry a region on the
+            // selected pad wins, then any pad, because the settings this
+            // seeds are per-device and a config's region commonly sits on a
+            // pad other than the one the recorder happens to target.
+            if (ScanForRegion(sets, pad, wantX, ref size, ref center)) return true;
+            return ScanForRegion(sets, -1, wantX, ref size, ref center);
+        }
+
+        /// <summary>One pass of the region search. <paramref name="pad"/> of
+        /// -1 matches any pad index.</summary>
+        private static bool ScanForRegion(Engine.Data.MappingSet[] sets, int pad,
+            bool wantX, ref double size, ref double center)
+        {
+            string prefix = pad < 0
+                ? "Touchpad "
+                : "Touchpad " + pad.ToString(System.Globalization.CultureInfo.InvariantCulture) + " ";
+            string axis = wantX ? "Pointer X" : "Pointer Y";
+            string target = wantX ? "KbmMouseX" : "KbmMouseY";
+
+            foreach (var set in sets)
+            {
+                var rows = set?.Rows;
+                if (rows == null) continue;
+                foreach (var row in rows)
+                {
+                    if (row?.Sources == null) continue;
+                    if (!string.Equals(row.Target, target, StringComparison.Ordinal)) continue;
+                    foreach (var src in row.Sources)
+                    {
+                        var d = src?.Descriptor;
+                        if (string.IsNullOrEmpty(d)) continue;
+                        // "Touchpad {p} Pointer X" plus the half-window suffixes.
+                        if (!d.StartsWith(prefix, StringComparison.Ordinal)) continue;
+                        if (d.IndexOf(axis, StringComparison.Ordinal) < 0) continue;
+                        size = src.ParamPointerExtent;
+                        center = src.ParamPointerCenter;
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         /// <summary>Writes VM fields back to the per-(device, pad)

@@ -1274,7 +1274,8 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Per-touchpad input. Gestures (swipes, taps, pinches, shapes) and continuous output modes (virtual stick / D-pad, mouse) become mapping sources you can bind on the Mappings tab.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_RecordTargetLabel" xml:space="preserve"><value>Record / Preview Pad</value></data>
+  <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Touchpad Number</value></data>
+  <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Which touchpad on this controller the settings below apply to. Each touchpad keeps its own gestures, mouse feel and pointer region.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gesture Detection</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Enable Gestures on This Touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Master toggle for this touchpad. When off, no gesture descriptors fire for this touchpad. Existing finger / click / position mappings still work.</value></data>

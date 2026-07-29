@@ -1628,7 +1628,8 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrada por touchpad. Los gestos (deslizar, tocar, pellizcar, formas) y los modos de salida continuos (palanca virtual / cruceta, ratón) se convierten en fuentes de mapeo que puedes vincular en la pestaña Mapeos.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_RecordTargetLabel" xml:space="preserve"><value>Panel para grabar / previsualizar</value></data>
+  <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Número de panel táctil</value></data>
+  <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>A qué panel táctil de este mando se aplican los ajustes de abajo. Cada panel conserva sus propios gestos, comportamiento del ratón y región del puntero.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detección de gestos</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Activar gestos en este touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Conmutador principal de este touchpad. Cuando está desactivado, no se dispara ningún descriptor de gesto para este touchpad. Las asignaciones existentes de dedo / clic / posición siguen funcionando.</value></data>

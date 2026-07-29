@@ -10130,17 +10130,19 @@
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
-                        <!-- Record / preview pad selector. Visible only on
-                             multi-pad devices. Settings are per-device, so this
-                             no longer pivots the cards below; it only targets
-                             the gesture recorder and the live input preview. -->
+                        <!-- Touchpad selector. Visible only on multi-pad
+                             devices. Settings are per (device, pad), so this
+                             pivots EVERY card below as well as aiming the
+                             gesture recorder and the live input preview. -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,12"
                                     Visibility="{Binding HasMultipleTouchpads, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_RecordTargetLabel, Source={x:Static strings:Strings.Instance}}"
-                                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_SelectedTouchpad, Source={x:Static strings:Strings.Instance}}"
+                                       VerticalAlignment="Center" Margin="0,0,8,0"
+                                       ToolTip="{Binding Pad_Touchpad_SelectedTouchpad_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                             <ComboBox ItemsSource="{Binding TouchpadIndexOptions}"
                                       SelectedItem="{Binding SelectedTouchpadIndex, Mode=TwoWay}"
                                       Width="120" VerticalAlignment="Center"
+                                      ToolTip="{Binding Pad_Touchpad_SelectedTouchpad_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                       ScrollViewer.VerticalScrollBarVisibility="Visible">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>

@@ -1627,7 +1627,8 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>触控板</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>按触控板的输入。手势（滑动、点按、捏合、形状）和连续输出模式（虚拟摇杆 / 方向键、鼠标）成为可在“映射”选项卡中绑定的映射来源。</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>触控板</value></data>
-  <data name="Pad_Touchpad_RecordTargetLabel" xml:space="preserve"><value>录制 / 预览触控板</value></data>
+  <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>触控板编号</value></data>
+  <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>下方设置适用于此手柄上的哪块触控板。每块触控板各自保留手势、鼠标手感和指针区域。</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>手势检测</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>在此触控板上启用手势</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>此触控板的总开关。关闭时，此触控板不触发任何手势描述符。现有的手指、点击与位置映射仍正常工作。</value></data>

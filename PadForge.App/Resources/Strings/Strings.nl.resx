@@ -1648,7 +1648,8 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Invoer per touchpad. Gebaren (vegen, tikken, knijpen, vormen) en continue uitvoermodi (virtuele stick / D-pad, muis) worden mapping-bronnen die je op het tabblad Mappings kunt binden.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_RecordTargetLabel" xml:space="preserve"><value>Pad voor opnemen / voorbeeld</value></data>
+  <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Touchpadnummer</value></data>
+  <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Op welk touchpad van deze controller de onderstaande instellingen van toepassing zijn. Elk touchpad houdt zijn eigen gebaren, muisgedrag en aanwijzergebied.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gebarendetectie</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Gebaren op dit touchpad inschakelen</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Hoofdschakelaar voor dit touchpad. Bij uitschakeling activeert dit touchpad geen gebaardescriptoren. Bestaande vinger-, klik- en positietoewijzingen blijven werken.</value></data>

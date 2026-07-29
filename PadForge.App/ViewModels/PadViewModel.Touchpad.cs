@@ -42,8 +42,44 @@ namespace PadForge.ViewModels
             set
             {
                 if (value < 0) value = 0;
-                SetProperty(ref _selectedTouchpadIndex, value);
+                if (!SetProperty(ref _selectedTouchpadIndex, value)) return;
+                // The Absolute Pointer card DOES pivot on this, unlike every
+                // other card: a pad's screen region belongs to that pad. Pull
+                // the newly selected pad's rectangle in, or the card would go
+                // on showing the previous pad's numbers and the next edit
+                // would write them onto the wrong pad.
+                if (!_loadingTouchpadGestures) ReloadPointerRegionForSelectedPad();
             }
+        }
+
+        /// <summary>Re-reads just the region quad for the selected pad,
+        /// without disturbing the per-device fields the rest of the tab
+        /// shows.</summary>
+        private void ReloadPointerRegionForSelectedPad()
+        {
+            var us = GetActiveUserSettingForTouchpad(out var guid);
+            var ps = us?.GetPadSetting();
+            bool prior = _loadingTouchpadGestures;
+            _loadingTouchpadGestures = true;
+            try
+            {
+                var entry = TouchpadGestureSettings.ResolveRegionEntryForPad(
+                    ps?.TouchpadSettings, guid.ToString(), _selectedTouchpadIndex);
+                var rs = entry?.Settings;
+                _touchpadPointerRegionAuthored = rs?.PointerRegionAuthored ?? false;
+                _touchpadPointerRegionSizeX = rs?.PointerRegionSizeX ?? 1.0f;
+                _touchpadPointerRegionSizeY = rs?.PointerRegionSizeY ?? 1.0f;
+                _touchpadPointerRegionCenterX = rs?.PointerRegionCenterX ?? 0.5f;
+                _touchpadPointerRegionCenterY = rs?.PointerRegionCenterY ?? 0.5f;
+                if (!_touchpadPointerRegionAuthored)
+                    SeedPointerRegionFromMappingSources();
+            }
+            finally { _loadingTouchpadGestures = prior; }
+
+            OnPropertyChanged(nameof(TouchpadPointerRegionSizeX));
+            OnPropertyChanged(nameof(TouchpadPointerRegionSizeY));
+            OnPropertyChanged(nameof(TouchpadPointerRegionCenterX));
+            OnPropertyChanged(nameof(TouchpadPointerRegionCenterY));
         }
 
         private int _maxTouchpadIndex = 1;
@@ -984,11 +1020,16 @@ namespace PadForge.ViewModels
                 TouchpadMouseMomentum = s.MouseMomentum;
                 TouchpadMouseMomentumDecay = s.MouseMomentumDecay;
                 TouchpadMouseJitterReduction = s.MouseJitterReduction;
-                _touchpadPointerRegionAuthored = s.PointerRegionAuthored;
-                TouchpadPointerRegionSizeX = s.PointerRegionSizeX;
-                TouchpadPointerRegionSizeY = s.PointerRegionSizeY;
-                TouchpadPointerRegionCenterX = s.PointerRegionCenterX;
-                TouchpadPointerRegionCenterY = s.PointerRegionCenterY;
+                // The region resolves PER PAD while everything above is per
+                // device, so it reads its own entry rather than `s`.
+                var regionEntry = TouchpadGestureSettings.ResolveRegionEntryForPad(
+                    ps?.TouchpadSettings, guid.ToString(), _selectedTouchpadIndex);
+                var rs = regionEntry?.Settings ?? s;
+                _touchpadPointerRegionAuthored = rs.PointerRegionAuthored;
+                TouchpadPointerRegionSizeX = rs.PointerRegionSizeX;
+                TouchpadPointerRegionSizeY = rs.PointerRegionSizeY;
+                TouchpadPointerRegionCenterX = rs.PointerRegionCenterX;
+                TouchpadPointerRegionCenterY = rs.PointerRegionCenterY;
                 if (!_touchpadPointerRegionAuthored)
                     SeedPointerRegionFromMappingSources();
                 TouchpadSwipeHapticsEnabled = s.EnableSwipeHaptics;
@@ -1198,14 +1239,64 @@ namespace PadForge.ViewModels
             s.SwipeHapticsIntensity = (float)TouchpadSwipeHapticsIntensity;
             entry.Settings = s;
 
-            // Canonicalize to exactly one entry per device, stamped index 0.
-            // Stamp UNCONDITIONALLY (not only in the new-entry branch) so a
-            // legacy [pad1, pad0] array can't leave the survivor at index 1,
-            // then prune any other same-device sibling so no stale entry
-            // shadows the per-device resolver.
+            // The device-wide entry stays index 0 and stays the ONE entry the
+            // per-device resolver sees. Stamp UNCONDITIONALLY (not only in the
+            // new-entry branch) so a legacy [pad1, pad0] array can't leave the
+            // survivor at index 1.
             entry.TouchpadIndex = 0;
-            list.RemoveAll(e => e != null && !ReferenceEquals(e, entry)
-                && string.Equals(e.DeviceGuid, guidStr, StringComparison.OrdinalIgnoreCase));
+
+            // The pointer REGION is the one exception to per-device. It is
+            // where on screen one particular pad points, and a config
+            // routinely gives two pads two different rectangles, so a pad
+            // other than 0 keeps its own sibling entry carrying ONLY the
+            // region. Everything else on that sibling is kept in lockstep
+            // with the device-wide entry, so gesture and mouse tuning still
+            // behaves as one setting per device.
+            var siblings = new List<TouchpadSettingsEntry>();
+            foreach (var e in list)
+            {
+                if (e == null || ReferenceEquals(e, entry)) continue;
+                if (!string.Equals(e.DeviceGuid, guidStr, StringComparison.OrdinalIgnoreCase)) continue;
+                siblings.Add(e);
+            }
+
+            int pad = _selectedTouchpadIndex;
+            if (pad > 0 && _touchpadPointerRegionAuthored)
+            {
+                TouchpadSettingsEntry padEntry = null;
+                foreach (var e in siblings)
+                    if (e.TouchpadIndex == pad) { padEntry = e; break; }
+                if (padEntry == null)
+                {
+                    padEntry = new TouchpadSettingsEntry { DeviceGuid = guidStr, TouchpadIndex = pad };
+                    siblings.Add(padEntry);
+                    list.Add(padEntry);
+                }
+                padEntry.Settings = s.Clone();
+                // The device-wide entry must NOT keep this pad's rectangle,
+                // or pad 0 silently inherits whatever pad 1 was given.
+                s.PointerRegionAuthored = false;
+                s.PointerRegionSizeX = 1.0f;
+                s.PointerRegionSizeY = 1.0f;
+                s.PointerRegionCenterX = 0.5f;
+                s.PointerRegionCenterY = 0.5f;
+            }
+
+            // Mirror every non-region field onto the siblings, and drop any
+            // sibling left carrying nothing of its own.
+            foreach (var e in siblings)
+            {
+                if (e.TouchpadIndex == pad && pad > 0) continue;
+                var keepAuthored = e.Settings?.PointerRegionAuthored ?? false;
+                if (!keepAuthored) { list.Remove(e); continue; }
+                var mirrored = s.Clone();
+                mirrored.PointerRegionAuthored = true;
+                mirrored.PointerRegionSizeX = e.Settings.PointerRegionSizeX;
+                mirrored.PointerRegionSizeY = e.Settings.PointerRegionSizeY;
+                mirrored.PointerRegionCenterX = e.Settings.PointerRegionCenterX;
+                mirrored.PointerRegionCenterY = e.Settings.PointerRegionCenterY;
+                e.Settings = mirrored;
+            }
 
             ps.TouchpadSettings = list.ToArray();
         }

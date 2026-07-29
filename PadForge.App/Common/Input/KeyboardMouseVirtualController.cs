@@ -48,6 +48,8 @@ namespace PadForge.Common.Input
         // gyro's own carry.
         private float _gxAccumulator;
         private float _gyAccumulator;
+        private float _txAccumulator;
+        private float _tyAccumulator;
 
         // Scroll sensitivity: lines per frame at full axis deflection.
         private const float ScrollSensitivity = 3.0f;
@@ -106,6 +108,8 @@ namespace PadForge.Common.Input
             // survive a reconnect and spend itself on the first new poll.
             _gxAccumulator = 0f;
             _gyAccumulator = 0f;
+            _txAccumulator = 0f;
+            _tyAccumulator = 0f;
         }
 
         /// <summary>
@@ -206,6 +210,27 @@ namespace PadForge.Common.Input
                 _gyAccumulator -= gdy;
                 if (gdx != 0 || gdy != 0)
                     InputManager.AccumulateMouseMoveInput(gdx, gdy);
+            }
+
+            // --- Touchpad exact counts (the gyro lane's twin) ---
+            // Y negates into screen space the way every other touch read
+            // does; X is already screen-aligned (this is a finger on a pad,
+            // not a nose-relative sensor, so it needs no frame conversion).
+            if (raw.MouseTouchX != 0f || raw.MouseTouchY != 0f)
+            {
+                if (raw.MouseTouchX == 0f || (_txAccumulator > 0f) != (raw.MouseTouchX > 0f))
+                    _txAccumulator = 0f;
+                if (raw.MouseTouchY == 0f || (_tyAccumulator > 0f) != (raw.MouseTouchY > 0f))
+                    _tyAccumulator = 0f;
+
+                _txAccumulator += raw.MouseTouchX;
+                _tyAccumulator += raw.MouseTouchY;
+                int tdx = (int)_txAccumulator;
+                int tdy = (int)_tyAccumulator;
+                _txAccumulator -= tdx;
+                _tyAccumulator -= tdy;
+                if (tdx != 0 || tdy != 0)
+                    InputManager.AccumulateMouseMoveInput(tdx, tdy);
             }
 
             // --- Flick stick exact counts (#225) ---

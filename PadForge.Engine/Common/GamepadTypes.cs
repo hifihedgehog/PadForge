@@ -238,6 +238,15 @@
         public float MouseGyroX;
         public float MouseGyroY;
 
+        /// <summary>Touchpad mouse motion in exact counts for this poll, the
+        /// gyro lane's twin. The deflection lane recomputed a delta once per
+        /// poll from a position that only changes on a device report, so
+        /// three polls in four read zero and the fourth carried a burst that
+        /// was then clamped and rationed. See
+        /// SourceCoercion.ReadTouchpadMouseCounts.</summary>
+        public float MouseTouchX;
+        public float MouseTouchY;
+
         public bool GetKey(byte vk)
         {
             int word = vk / 64;
@@ -286,6 +295,7 @@
             MouseAbsXValid = MouseAbsYValid = false;
             MouseFlickX = 0;
             MouseGyroX = MouseGyroY = 0f;
+            MouseTouchX = MouseTouchY = 0f;
         }
 
         /// <summary>
@@ -312,6 +322,8 @@
                 // hands on one controller would.
                 MouseGyroX = a.MouseGyroX + b.MouseGyroX,
                 MouseGyroY = a.MouseGyroY + b.MouseGyroY,
+                MouseTouchX = a.MouseTouchX + b.MouseTouchX,
+                MouseTouchY = a.MouseTouchY + b.MouseTouchY,
                 ScrollDelta = Math.Abs(a.ScrollDelta) >= Math.Abs(b.ScrollDelta) ? a.ScrollDelta : b.ScrollDelta,
                 MouseButtons = (byte)(a.MouseButtons | b.MouseButtons),
                 PreDzMouseDeltaX = Math.Abs(a.PreDzMouseDeltaX) >= Math.Abs(b.PreDzMouseDeltaX) ? a.PreDzMouseDeltaX : b.PreDzMouseDeltaX,

@@ -864,6 +864,7 @@ namespace PadForge.Common.Input
             int slotIndex, string targetName, out short value)
         {
             using (new PadForge.Engine.Common.Mapping.SourceCoercion.GyroMouseLaneScope(true))
+            using (new PadForge.Engine.Common.Mapping.SourceCoercion.TouchMouseLaneScope(true))
                 return TryEvaluateMappingSetBipolarAxis(
                     state, mappingSet, thisDeviceGuid, slotIndex, targetName, out value);
         }
@@ -917,6 +918,52 @@ namespace PadForge.Common.Input
                 }
             }
             return (gx, gy);
+        }
+
+        /// <summary>Sums the touchpad rate lane for both mouse axes. The
+        /// gyro ticker's twin; the difference is the wall clock, because the
+        /// engine read measures the interval BETWEEN device reports to turn
+        /// a delta into a velocity.</summary>
+        private static (float X, float Y) TickTouchpadMouseSources(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
+        {
+            float tx = 0f, ty = 0f;
+            float dt = (float)ComputeAndAdvanceDelta(slotIndex);
+            if (dt <= 0f) return (0f, 0f);
+            long now = System.Diagnostics.Stopwatch.GetTimestamp();
+            long freq = System.Diagnostics.Stopwatch.Frequency;
+
+            for (int axis = 0; axis < 2; axis++)
+            {
+                bool forX = axis == 0;
+                var row = FindActiveRowForTarget(mappingSet, forX ? "KbmMouseX" : "KbmMouseY",
+                    slotIndex, out bool shiftSuppressed);
+                if (shiftSuppressed) continue;
+                var sources = row?.Sources;
+                if (sources == null) continue;
+
+                for (int i = 0; i < sources.Count; i++)
+                {
+                    var src = sources[i];
+                    if (src == null) continue;
+                    if (!PadForge.Engine.Common.Mapping.SourceCoercion
+                            .IsTouchpadFingerAxisDescriptor(src.Descriptor))
+                        continue;
+                    if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                        continue;
+
+                    var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                        ? state : LookupDeviceState(src.DeviceGuid);
+                    if (devState == null) continue;
+
+                    var (cx, cy) = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .ReadTouchpadMouseCounts(devState, src, slotIndex,
+                            string.IsNullOrEmpty(src.DeviceGuid) ? thisDeviceGuid : src.DeviceGuid,
+                            dt, forX, now, freq);
+                    tx += cx; ty += cy;
+                }
+            }
+            return (tx, ty);
         }
 
         private static int TickFlickStickSources(
@@ -2635,6 +2682,14 @@ namespace PadForge.Common.Input
             // the combine below scoped to skip gyro so it counts once.
             (raw.MouseGyroX, raw.MouseGyroY) =
                 TickGyroMouseSources(state, mappingSet, thisDeviceGuid, slotIndex);
+
+            // Touchpad: the same rate lane, for the same reason plus one. A
+            // pad reports near 250 Hz against a 1 kHz poll, so recomputing
+            // the delta per poll read zero three times in four and burst on
+            // the fourth. This turns each report into a velocity and spends
+            // it every poll until the next one arrives.
+            (raw.MouseTouchX, raw.MouseTouchY) =
+                TickTouchpadMouseSources(state, mappingSet, thisDeviceGuid, slotIndex);
 
             // Map mouse X axis (bidirectional)
             {

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Engine;
 using PadForge.Engine.Common;
 using PadForge.Engine.Common.Mapping;
@@ -144,6 +144,28 @@ namespace PadForge.Tests
                 new CustomInputState(), YawSource(), -1, "", NominalDt, true);
             Assert.Equal(0f, x);
             Assert.Equal(0f, y);
+        }
+
+        /// <summary>Gyro Horizontal is the yaw+roll auto-blend: it picks
+        /// whichever of the two is turning faster and reports it on the yaw
+        /// lane. It therefore has to carry yaw's sign, or the same physical
+        /// turn drives the cursor one way through "Gyro Yaw" and the other
+        /// through "Gyro Horizontal".</summary>
+        [Fact]
+        public void GyroHorizontal_CarriesTheSameSignAsGyroYaw()
+        {
+            var yawSrc = new MappingSource { Descriptor = "Gyro Yaw" };
+            var horzSrc = new MappingSource { Descriptor = "Gyro Horizontal" };
+
+            var (yawX, _) = SourceCoercion.ReadGyroMouseCounts(
+                StateWithYaw(600f), yawSrc, -1, "", NominalDt, true);
+            var (horzX, _) = SourceCoercion.ReadGyroMouseCounts(
+                StateWithYaw(600f), horzSrc, -1, "", NominalDt, true);
+
+            Assert.True(yawX != 0f && horzX != 0f, "harness produced no motion to compare");
+            Assert.True(Math.Sign(yawX) == Math.Sign(horzX),
+                $"Horizontal disagrees with Yaw on sign: yaw {yawX}, horizontal {horzX}");
+            Assert.Equal(yawX, horzX, 4);
         }
 
         [Fact]

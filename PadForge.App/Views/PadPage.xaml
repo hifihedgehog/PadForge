@@ -10329,13 +10329,13 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                             IsEnabled="{Binding TouchpadMouseMomentum}">
-                                    <TextBlock Text="{Binding Pad_Touchpad_MouseMomentumDecay, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource DzLabel}"
-                                               ToolTip="{Binding Pad_Touchpad_MouseMomentumDecay_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Slider Minimum="0.50" Maximum="0.98" TickFrequency="0.01" IsSnapToTickEnabled="True"
-                                            Value="{Binding TouchpadMouseMomentumDecay, Mode=TwoWay}"
-                                            Style="{StaticResource DzSlider}"/>
-                                    <TextBlock Text="{Binding TouchpadMouseMomentumDecay, StringFormat={}{0:0.00}}" Style="{StaticResource DzValue}"/>
+                                    <TextBlock Text="{Binding Pad_Touchpad_MouseMomentumDecay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding TouchpadMouseMomentumDecay, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="0.50" Maximum="0.98" TickFrequency="0.01"
+                                            ToolTip="{Binding Pad_Touchpad_MouseMomentumDecay_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadMouseMomentumDecay, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Style="{StaticResource DzValueEdit}"
+                                             ToolTip="{Binding Pad_Touchpad_MouseMomentumDecay_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ui:Button Command="{Binding ResetTouchpadMouseMomentumDecayCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadMouseMomentumDecay, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>

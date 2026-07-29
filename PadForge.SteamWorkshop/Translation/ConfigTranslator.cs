@@ -2320,8 +2320,17 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 DeviceGuid = "",
                 MenuId = menuId,
-                Name = string.IsNullOrWhiteSpace(group.Name)
-                    ? $"{(radial ? "Radial" : "Touch")} Menu {menuId}" : group.Name.Trim(),
+                // Qualified by the preset it belongs to, because an
+                // author's group name is NOT unique across presets and
+                // Steam needs one group per preset to offer the same menu
+                // in two action sets. RCT3 Weno V0.1 names both of its
+                // radial groups "Menu", so the Menus list showed two
+                // identical entries with nothing to tell them apart and
+                // no way to know which layer each drove. Merging them
+                // would be wrong: they are separate objects the user can
+                // edit apart, and a preset switch is meant to bring its
+                // own menu.
+                Name = MenuDisplayName(run, preset, group, radial, menuId, layer),
                 Kind = radial ? PadForge.Engine.Menus.MenuKind.Radial
                               : PadForge.Engine.Menus.MenuKind.Grid,
                 HostDescriptor = host,
@@ -6064,6 +6073,37 @@ namespace PadForge.SteamWorkshop.Translation
         /// config's localization (Valve's TF2 config titles its sets
         /// <c>#MenuControls</c>-style, community layers carry plain titles
         /// such as "Secondary"). Falls back to the raw token.</summary>
+        /// <summary>The menu's name in the Menus list: the author's group
+        /// name qualified by the preset that hosts it ("Menu (Menu save)"),
+        /// or the generated fallback when the group is unnamed.
+        ///
+        /// <para>The qualifier is not decoration. A group name is unique only
+        /// within its preset, and the list is flat, so two presets carrying a
+        /// same-named menu were indistinguishable. The preset is dropped when
+        /// it adds nothing, i.e. when the group name already contains it or the
+        /// config has a single preset.</para></summary>
+        private static string MenuDisplayName(Run run, SteamInputPreset preset,
+            SteamInputGroup group, bool radial, int menuId, string layer)
+        {
+            string bare = string.IsNullOrWhiteSpace(group.Name)
+                ? $"{(radial ? "Radial" : "Touch")} Menu {menuId}"
+                : group.Name.Trim();
+
+            if (run.Config?.Presets == null || run.Config.Presets.Count < 2) return bare;
+
+            // The BASE layer needs no qualifier: it is the profile's own
+            // menu, and tagging it "(Default)" is noise on every config
+            // rather than a distinction. Only a menu that arrives with a
+            // shift layer says which one.
+            if (string.IsNullOrEmpty(layer)
+                || string.Equals(layer, "Base", StringComparison.Ordinal)) return bare;
+
+            string set = PresetDisplayName(run, preset);
+            if (string.IsNullOrWhiteSpace(set)) return bare;
+            if (bare.IndexOf(set, StringComparison.OrdinalIgnoreCase) >= 0) return bare;
+            return $"{bare} ({set})";
+        }
+
         private static string PresetDisplayName(Run run, SteamInputPreset preset)
         {
             string raw = string.IsNullOrWhiteSpace(preset.Name)

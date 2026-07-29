@@ -38,7 +38,7 @@ macros: 11
   macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (LeftShoulder) | btns=0x0100 layer=Base ticks=-1 interval=100ms
   macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (RightShoulder) | btns=0x0200 layer=Base ticks=1 interval=100ms
 menus: 1
-  menu 1 Grid | Touchpad 0 | Layer_770509247_0_MS_left_trackpad_18 | fire=Click cells=9 pos=(17%,50%) | name=Touch Menu 1
+  menu 1 Grid | Touchpad 0 | Layer_770509247_0_MS_left_trackpad_18 | fire=Click cells=9 pos=(17%,50%) | name=Touch Menu 1 (In-Game Controls)
     [0] Move selected unit icon=ghost_045_move_0120.png
     [1] Attack with selected unit icon=ghost_040_act_0050.png
     [2] Ranged-attack with selected unit icon=ghost_040_act_0010.png

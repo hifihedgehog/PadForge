@@ -111,7 +111,7 @@ menus: 2
     [2] D icon=ghost_040_act_0080.png
     [3] F icon=ghost_035_magic_0328.png
     [4] A icon=ghost_100_target_0020.png
-  menu 2 Radial | Touchpad 0 | Layer_3451446931_1 | fire=Click cells=4 labels=off pos=(4%,75%) | name=Systems
+  menu 2 Radial | Touchpad 0 | Layer_3451446931_1 | fire=Click cells=4 labels=off pos=(4%,75%) | name=Systems (Secondary)
     [1] S icon=ghost_040_act_0315.png
     [2] D icon=ghost_040_act_0080.png
     [3] F icon=ghost_035_magic_0328.png

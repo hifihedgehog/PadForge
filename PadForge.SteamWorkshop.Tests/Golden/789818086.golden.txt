@@ -107,7 +107,7 @@ macros: 23
   macro HoldKey HoldForMs | Hold Space (Paddle1) | btns=0x0000 in=[Gamepad Paddle1] hold=222ms layer=Base vk=0x20
   macro RumblePulse HoldForMs | Haptic pulse (Paddle1) | btns=0x0000 in=[Gamepad Paddle1] hold=222ms layer=Base strength=100%
 menus: 3
-  menu 1 Grid | Touchpad 0 | Layer_789818086_0_MS_left_trackpad_17 | fire=Click cells=2 pos=(2%,2%) scale=74% opacity=89% | name=Touch Menu 1
+  menu 1 Grid | Touchpad 0 | Layer_789818086_0_MS_left_trackpad_17 | fire=Click cells=2 pos=(2%,2%) scale=74% opacity=89% | name=Touch Menu 1 (Preset 0)
     [0] Quick Save icon=ghost_075_utility_020.png
     [1] Quick Load icon=ghost_075_utility_010.png
   menu 2 Grid | Touchpad 0 | Base | fire=Click cells=4 labels=off pos=(2%,97%) scale=74% opacity=89% | name=Touch Menu 2
@@ -115,7 +115,7 @@ menus: 3
     [1] Quick Magic icon=ghost_030_inv_0140.png
     [2] Quick Stats icon=ghost_050_menu_0080.png
     [3] Quick Map icon=ghost_050_menu_0030.png
-  menu 3 Radial | Touchpad 1 | Layer_789818086_0_MS_right_trackpad_24 | fire=TouchRelease cells=8+center pos=(97%,97%) scale=99% opacity=89% | name=Radial Menu 3
+  menu 3 Radial | Touchpad 1 | Layer_789818086_0_MS_right_trackpad_24 | fire=TouchRelease cells=8+center pos=(97%,97%) scale=99% opacity=89% | name=Radial Menu 3 (Preset 0)
     [0] Q icon=ghost_040_act_0130.png
     [1] 1
     [2] 2

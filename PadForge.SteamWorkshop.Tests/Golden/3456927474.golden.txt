@@ -152,7 +152,7 @@ menus: 2
     [9] Warp cursor icon=ghost_040_act_0327.png
     [10] Warp cursor icon=ghost_040_act_0307.png
     [12] Warp cursor icon=ghost_050_menu_0306.png
-  menu 2 Radial | Touchpad 0 | Layer_3456927474_2 | fire=Click cells=12 | name=Menu
+  menu 2 Radial | Touchpad 0 | Layer_3456927474_2 | fire=Click cells=12 | name=Menu (Menu save)
     [1] Turn on a shift layer icon=ghost_050_menu_0302.png
     [2] Warp cursor icon=ghost_050_menu_0306.png
     [3] Warp cursor icon=ghost_040_act_0324.png

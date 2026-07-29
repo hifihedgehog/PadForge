@@ -1430,6 +1430,15 @@
                                     <Button Content="sign" Tag="sign(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Sign, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="lerp" Tag="lerp(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Lerp, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="round" Tag="round(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Round, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="pow" Tag="pow(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Pow, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="hypot" Tag="hypot(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Hypot, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="deadzone" Tag="deadzone(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Deadzone, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="floor" Tag="floor(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Floor, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="ceil" Tag="ceil(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Ceil, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="sin" Tag="sin(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Sin, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="cos" Tag="cos(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Cos, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="tan" Tag="tan(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Tan, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="atan2" Tag="atan2(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Atan2, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="sqrt" Tag="sqrt(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Sqrt, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="," Tag=", " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
                                 </WrapPanel>
@@ -4332,6 +4341,24 @@
                                                         Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Round, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="sqrt" Tag="sqrt(" Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Sqrt, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="pow" Tag="pow(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Pow, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="hypot" Tag="hypot(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Hypot, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="deadzone" Tag="deadzone(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Deadzone, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="floor" Tag="floor(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Floor, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="ceil" Tag="ceil(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Ceil, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="sin" Tag="sin(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Sin, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="cos" Tag="cos(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Cos, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="tan" Tag="tan(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Tan, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="atan2" Tag="atan2(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Atan2, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="," Tag=", " Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click"/>
                                             </WrapPanel>

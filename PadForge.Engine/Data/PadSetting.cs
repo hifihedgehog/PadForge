@@ -1581,6 +1581,7 @@ namespace PadForge.Engine.Data
                     // here or from an imported mapping source, so two pads
                     // differing only in it are genuinely different pads.
                     sb.Append(s.PointerRegionAuthored);
+                    sb.Append(',').Append(s.RegionSchema);
                     sb.Append('|');
                 }
             }

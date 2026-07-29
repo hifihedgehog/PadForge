@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Engine.Touchpad;
 using Xunit;
 
@@ -44,8 +44,8 @@ namespace PadForge.Tests
                 Entry(1, authored: true, sizeX: 1.20f, sizeY: 0.70f, cx: 0.50f, cy: 0.44f),
             };
 
-            var p0 = TouchpadGestureSettings.ResolveRegionEntryForPad(entries, Dev, 0).Settings;
-            var p1 = TouchpadGestureSettings.ResolveRegionEntryForPad(entries, Dev, 1).Settings;
+            var p0 = TouchpadGestureSettings.ResolveEntryForPad(entries, Dev, 0).Settings;
+            var p1 = TouchpadGestureSettings.ResolveEntryForPad(entries, Dev, 1).Settings;
 
             Assert.Equal(0.11f, p0.PointerRegionSizeX);
             Assert.Equal(0.09f, p0.PointerRegionCenterX);
@@ -65,8 +65,8 @@ namespace PadForge.Tests
                 Entry(1, authored: true, sizeX: 1.20f),
             };
             Assert.NotSame(
-                TouchpadGestureSettings.ResolveRegionEntryForPad(entries, Dev, 0),
-                TouchpadGestureSettings.ResolveRegionEntryForPad(entries, Dev, 1));
+                TouchpadGestureSettings.ResolveEntryForPad(entries, Dev, 0),
+                TouchpadGestureSettings.ResolveEntryForPad(entries, Dev, 1));
         }
 
         [Fact]
@@ -79,30 +79,32 @@ namespace PadForge.Tests
             {
                 Entry(0, authored: true, sizeX: 0.4f),
             };
-            var p1 = TouchpadGestureSettings.ResolveRegionEntryForPad(entries, Dev, 1);
+            var p1 = TouchpadGestureSettings.ResolveEntryForPad(entries, Dev, 1);
             Assert.NotNull(p1);
             Assert.Equal(0, p1.TouchpadIndex);
         }
 
         [Fact]
-        public void AnUnauthoredPadEntryDoesNotShadowTheDeviceEntry()
+        public void APadsOwnEntryWinsEvenWhenItsRegionIsUnauthored()
         {
-            // A stale index-1 entry with no authored region must not win over
-            // the device-wide one, or a pad the user never configured would
-            // read a full-screen default while the device carries a region.
+            // Every setting is per pad now, so pad 1's entry IS pad 1's
+            // settings. An unauthored region on it means that pad simply has
+            // no rectangle of its own, which the seed then fills from the
+            // profile. It must NOT silently defer to pad 0's entry.
             var entries = new[]
             {
                 Entry(0, authored: true, sizeX: 0.4f),
                 Entry(1, authored: false),
             };
-            var p1 = TouchpadGestureSettings.ResolveRegionEntryForPad(entries, Dev, 1);
-            Assert.Equal(0.4f, p1.Settings.PointerRegionSizeX);
+            var p1 = TouchpadGestureSettings.ResolveEntryForPad(entries, Dev, 1);
+            Assert.Equal(1, p1.TouchpadIndex);
+            Assert.False(p1.Settings.PointerRegionAuthored);
         }
 
         [Fact]
         public void UnknownDeviceResolvesToNothing()
         {
-            Assert.Null(TouchpadGestureSettings.ResolveRegionEntryForPad(
+            Assert.Null(TouchpadGestureSettings.ResolveEntryForPad(
                 new[] { Entry(0, authored: true) }, "some-other-device", 0));
         }
     }

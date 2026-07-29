@@ -310,6 +310,41 @@ namespace PadForge.Engine.Touchpad
         /// way to ever undo it.</para></summary>
         [XmlAttribute] public bool PointerRegionAuthored { get; set; }
 
+        /// <summary><para>Schema counter for one-time repairs to this entry.
+        /// 0 means it predates the per-pad split.</para>
+        /// <para>Exists because a short-lived build wrote
+        /// PointerRegionAuthored=true onto entries whose region fields it had
+        /// just reset to the defaults. Authored-but-default is
+        /// indistinguishable from a deliberate "I want the full screen"
+        /// choice, so the repair cannot be an every-load rule without making
+        /// that choice impossible to express. It runs once, keyed on this.</para></summary>
+        [XmlAttribute] public int RegionSchema { get; set; }
+
+        /// <summary>True when the region is exactly the full-screen identity
+        /// map, i.e. carries no information.</summary>
+        public bool RegionIsIdentity =>
+            PointerRegionSizeX == 1.0f && PointerRegionSizeY == 1.0f
+            && PointerRegionCenterX == 0.5f && PointerRegionCenterY == 0.5f;
+
+        /// <summary>One-time repair of the authored-but-default state. Returns
+        /// true when it changed something.</summary>
+        public bool RepairRegionSchema()
+        {
+            if (RegionSchema >= 1)
+            {
+                return false;
+            }
+            RegionSchema = 1;
+            if (PointerRegionAuthored && RegionIsIdentity)
+            {
+                // Nothing was ever really authored here, so hand the pad back
+                // to whatever its profile specifies.
+                PointerRegionAuthored = false;
+                return true;
+            }
+            return false;
+        }
+
         // ── Legacy read path for the superseded stretch pair ──
         //
         // A profile saved before the region rename carries PointerStretchX/Y.
@@ -405,6 +440,7 @@ namespace PadForge.Engine.Touchpad
                 PointerRegionSizeX = PointerRegionSizeX,
                 PointerRegionSizeY = PointerRegionSizeY,
                 PointerRegionAuthored = PointerRegionAuthored,
+                RegionSchema = RegionSchema,
                 PointerRegionCenterX = PointerRegionCenterX,
                 PointerRegionCenterY = PointerRegionCenterY,
                 EnableSwipeHaptics = EnableSwipeHaptics,
@@ -456,21 +492,17 @@ namespace PadForge.Engine.Touchpad
         public static TouchpadGestureSettings ResolveForDevice(TouchpadSettingsEntry[] entries, string guidStr)
             => ResolveEntryForDevice(entries, guidStr)?.Settings ?? Default();
 
-        /// <summary><para>The entry whose POINTER REGION governs one specific
-        /// pad. Everything else on this class is per device by design, and
-        /// <see cref="ResolveEntryForDevice"/> stays the seam for it: gesture
-        /// thresholds and mouse feel describe a user's hands, so they should
-        /// not change between a controller's left and right pads.</para>
-        /// <para>The region is different in kind. It is WHERE ON SCREEN one
-        /// particular pad points, and a config routinely gives two pads two
-        /// different rectangles. AOE II's Steam Deck layout maps the left pad
-        /// to the bottom-left menu (center 0.09/0.90, size 0.11 x 0.07) and
-        /// the right pad to a wide shallow band. Collapsing those to one
-        /// device-wide rectangle loses the layout.</para>
-        /// <para>Exact pad match first, then the device-wide entry, so a
-        /// device that has never had a per-pad region authored behaves
-        /// exactly as before.</para></summary>
-        public static TouchpadSettingsEntry ResolveRegionEntryForPad(
+        /// <summary><para>The entry governing one specific pad.</para>
+        /// <para>EVERY setting on this class is per (device, pad): a
+        /// controller's left and right pads are different pieces of hardware
+        /// in different places under different thumbs, so gesture thresholds,
+        /// mouse feel and the screen region all belong to the pad rather than
+        /// to the device.</para>
+        /// <para>Falls back to the device's lowest-indexed entry when the
+        /// exact pad has none, which is what carries a profile written before
+        /// the split: its single entry keeps applying to every pad until the
+        /// user tunes one of them apart.</para></summary>
+        public static TouchpadSettingsEntry ResolveEntryForPad(
             TouchpadSettingsEntry[] entries, string guidStr, int padIdx)
         {
             if (entries == null || string.IsNullOrEmpty(guidStr)) return null;
@@ -478,11 +510,17 @@ namespace PadForge.Engine.Touchpad
             {
                 if (e?.Settings == null) continue;
                 if (e.TouchpadIndex != padIdx) continue;
-                if (!string.Equals(e.DeviceGuid, guidStr, System.StringComparison.OrdinalIgnoreCase)) continue;
-                if (e.Settings.PointerRegionAuthored) return e;
+                if (string.Equals(e.DeviceGuid, guidStr, System.StringComparison.OrdinalIgnoreCase))
+                    return e;
             }
             return ResolveEntryForDevice(entries, guidStr);
         }
+
+        /// <summary>Settings for one pad, or <see cref="Default"/> on a
+        /// miss.</summary>
+        public static TouchpadGestureSettings ResolveForPad(
+            TouchpadSettingsEntry[] entries, string guidStr, int padIdx)
+            => ResolveEntryForPad(entries, guidStr, padIdx)?.Settings ?? Default();
 
         /// <summary>True when <paramref name="s"/> differs from
         /// <see cref="Default"/> in any user-facing way: any enable toggle
@@ -535,6 +573,7 @@ namespace PadForge.Engine.Touchpad
                 || s.PointerRegionSizeX != d.PointerRegionSizeX
                 || s.PointerRegionSizeY != d.PointerRegionSizeY
                 || s.PointerRegionAuthored != d.PointerRegionAuthored
+                || s.RegionSchema != d.RegionSchema
                 || s.PointerRegionCenterX != d.PointerRegionCenterX
                 || s.PointerRegionCenterY != d.PointerRegionCenterY
                 || s.EnableSwipeHaptics != d.EnableSwipeHaptics

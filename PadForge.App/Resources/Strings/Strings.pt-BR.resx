@@ -1699,6 +1699,15 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Restaurar Sensibilidade do Mouse Y</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Restaurar Inverter Mouse X</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Restaurar Inverter Mouse Y</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Redução de tremor</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Suaviza o tremor da mão parada sem zona morta, para que pequenos movimentos intencionais ainda passem.</value></data>
+  <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Redefinir redução de tremor</value></data>
+  <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Inércia</value></data>
+  <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>O cursor continua depois que você levanta o dedo e vai parando, como um trackball.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Redefinir inércia</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Desliza</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Quanto tempo dura o deslize. Mais alto vai mais longe.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Redefinir deslize</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Restaurar Saída Stick / D-Pad</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Restaurar Gestos</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Restaurar Reconhecer</value></data>

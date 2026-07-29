@@ -1699,6 +1699,15 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Mausempfindlichkeit Y zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Maus X invertieren zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Maus Y invertieren zurücksetzen</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Zitterreduzierung</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Dämpft das Zittern der ruhenden Hand ohne Totzone, sodass winzige gewollte Bewegungen weiterhin ankommen.</value></data>
+  <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Zitterreduzierung zurücksetzen</value></data>
+  <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Schwung</value></data>
+  <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>Der Zeiger bewegt sich nach dem Abheben des Fingers weiter und läuft aus, wie bei einem Trackball.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Schwung zurücksetzen</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Nachlauf</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Wie lange der Nachlauf dauert. Höher läuft weiter.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Nachlauf zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Stick- / Steuerkreuz-Ausgabe zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Gesten zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Erkennen zurücksetzen</value></data>

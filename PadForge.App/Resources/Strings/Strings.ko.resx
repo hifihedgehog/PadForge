@@ -1699,6 +1699,15 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>마우스 감도 Y 재설정</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>마우스 X 반전 재설정</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>마우스 Y 반전 재설정</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>떨림 감소</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>데드존 없이 손 떨림을 줄입니다. 의도한 작은 움직임은 그대로 전달됩니다.</value></data>
+  <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>떨림 감소 초기화</value></data>
+  <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>관성</value></data>
+  <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>손가락을 떼어도 커서가 계속 움직이다가 트랙볼처럼 멈춥니다.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>관성 초기화</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>활강 거리</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>활강이 얼마나 오래가는지. 높을수록 멀리 갑니다.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>활강 거리 초기화</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>스틱 / 방향키 출력 재설정</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>제스처 재설정</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>인식 재설정</value></data>

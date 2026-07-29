@@ -1699,6 +1699,15 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Restablecer sensibilidad del ratón Y</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Restablecer invertir ratón X</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Restablecer invertir ratón Y</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Reducción de temblor</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Amortigua el temblor de la mano en reposo sin zona muerta, para que los movimientos pequeños intencionados sigan registrándose.</value></data>
+  <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Restablecer reducción de temblor</value></data>
+  <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Inercia</value></data>
+  <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>El cursor sigue moviéndose al levantar el dedo y se detiene poco a poco, como un trackball.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Restablecer inercia</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Deslizamiento</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Cuánto dura el deslizamiento. Más alto llega más lejos.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Restablecer deslizamiento</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Restablecer Salida Stick / Cruceta</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Restablecer gestos</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Restablecer reconocer</value></data>

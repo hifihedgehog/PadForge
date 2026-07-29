@@ -1721,6 +1721,15 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Ripristina sensibilità mouse Y</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Ripristina inverti mouse X</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Ripristina inverti mouse Y</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Riduzione del tremolio</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Attenua il tremolio della mano ferma senza zona morta, così i piccoli movimenti voluti passano comunque.</value></data>
+  <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Reimposta riduzione del tremolio</value></data>
+  <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Inerzia</value></data>
+  <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>Il cursore prosegue dopo aver alzato il dito e rallenta fino a fermarsi, come una trackball.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Reimposta inerzia</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Scorrimento</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Quanto dura lo scorrimento. Più alto va più lontano.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Reimposta scorrimento</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Ripristina Uscita Stick / D-Pad</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Ripristina gesti</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Ripristina riconoscimento</value></data>

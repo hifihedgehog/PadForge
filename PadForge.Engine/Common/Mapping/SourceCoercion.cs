@@ -2910,12 +2910,18 @@ namespace PadForge.Engine.Common.Mapping
         /// and never reach this branch at all.</summary>
         [ThreadStatic] private static bool _suppressTouchForMouseLane;
 
-        /// <summary>Counts one pad-width of travel is worth. The old lane
-        /// scaled a per-poll delta by <see cref="TouchpadDeltaScale"/> into a
-        /// [-1..+1] deflection the KBM controller then spent at 15 px, so a
-        /// full-width sweep inside one report was worth 128 * 15. Preserving
-        /// that product preserves the sensitivity users already tuned.</summary>
-        private const float TouchCountsPerPadWidth = TouchpadDeltaScale * 15.0f;
+        /// <summary><para>Counts one pad-width of travel is worth.</para>
+        /// <para>Half the old lane's nominal product. That lane scaled a
+        /// per-poll delta by <see cref="TouchpadDeltaScale"/> into a
+        /// [-1..+1] deflection the KBM controller spent at 15 px, so a
+        /// full-width sweep in one report was nominally worth 128 * 15. It
+        /// never actually paid that out: the clamp and the per-poll ceiling
+        /// swallowed most of it, so the effective sensitivity was far below
+        /// the arithmetic. Carrying the nominal figure onto a lane with
+        /// neither limit made the cursor about twice as fast as it had been,
+        /// and 1.0 on the slider read as roughly the old 0.5. Halved so the
+        /// slider means what it says again.</para></summary>
+        private const float TouchCountsPerPadWidth = TouchpadDeltaScale * 7.5f;
 
         /// <summary>How long a velocity keeps driving the cursor after the
         /// last position change before the finger counts as resting. Long
@@ -2965,12 +2971,38 @@ namespace PadForge.Engine.Common.Mapping
             string dev = EffectiveDeviceGuid(src, deviceGuid);
             var key = (slotIndex, dev ?? "", padIdx, fingerIdx, axisOffset);
 
-            // A lifted finger has no velocity. Clearing rather than decaying
-            // keeps the release crisp; momentum is the trackball feature.
+            var tpNow = TouchpadMouseSettingsProvider?.Invoke(slotIndex, dev, padIdx);
+
             if (!pad.FingerDown[fingerIdx])
             {
-                _touchVelocity.TryRemove(key, out _);
-                return (0f, 0f);
+                // MOMENTUM. With it off the cursor stops dead on release,
+                // which is the safe default. With it on the last velocity
+                // keeps travelling and decays, the trackball feel the Steam
+                // Controller's lizard mode has and most of why a flick there
+                // covers more ground than a finger-length swipe can.
+                if (tpNow?.MouseMomentum != true
+                    || !_touchVelocity.TryGetValue(key, out var coast)
+                    || coast.Velocity == 0f)
+                {
+                    _touchVelocity.TryRemove(key, out _);
+                    return (0f, 0f);
+                }
+
+                // Decay per unit TIME, not per poll, so the glide lasts the
+                // same wall-clock duration at any polling rate. The stored
+                // figure is the fraction of speed kept per 10 ms.
+                float keep = Math.Clamp(tpNow.MouseMomentumDecay, 0.50f, 0.98f);
+                coast.Velocity *= MathF.Pow(keep, dtSeconds / 0.010f);
+                // Below a pixel every few polls the glide is over. Ending it
+                // outright stops a vanishing remainder creeping for seconds.
+                if (Math.Abs(coast.Velocity) * TouchCountsPerPadWidth < 0.05f)
+                {
+                    _touchVelocity.TryRemove(key, out _);
+                    return (0f, 0f);
+                }
+                coast.LastReportTicks = nowTicks;
+                _touchVelocity[key] = coast;
+                return EmitTouchCounts(coast.Velocity, src, tpNow, axisOffset, dtSeconds, forX);
             }
 
             float raw = axisOffset == 0 ? pad.FingerX[fingerIdx] : pad.FingerY[fingerIdx];
@@ -3002,13 +3034,31 @@ namespace PadForge.Engine.Common.Mapping
             }
 
             if (st.Velocity == 0f) return (0f, 0f);
+            return EmitTouchCounts(st.Velocity, src, tpNow, axisOffset, dtSeconds, forX);
+        }
 
-            var tp = TouchpadMouseSettingsProvider?.Invoke(slotIndex, dev, padIdx);
+        /// <summary>Turns a pad velocity into mouse counts: sensitivity,
+        /// invert, and the jitter bend, shared by the finger-down path and
+        /// the momentum coast so both feel identical.</summary>
+        private static (float X, float Y) EmitTouchCounts(
+            float velocity, MappingSource src, PadForge.Engine.Touchpad.TouchpadGestureSettings tp,
+            int axisOffset, float dtSeconds, bool forX)
+        {
             float sens = axisOffset == 0 ? (tp?.MouseSensitivityX ?? 1f) : (tp?.MouseSensitivityY ?? 1f);
             bool invert = axisOffset == 0 ? (tp?.MouseInvertX ?? false) : (tp?.MouseInvertY ?? false);
 
-            float counts = st.Velocity * dtSeconds * TouchCountsPerPadWidth * sens
+            float counts = velocity * dtSeconds * TouchCountsPerPadWidth * sens
                            * PerSourceSensitivity(src);
+
+            // JITTER REDUCTION. Bends the tremor band down a power curve
+            // rather than cutting it, so a resting hand stops shivering the
+            // cursor while fine movement stays continuous. A deadzone would
+            // delete that motion outright, which is what makes careful
+            // cursor work feel dead. Same curve the gyro lane uses, from
+            // DS4Windows' jitterCompensation.
+            if (tp?.MouseJitterReduction != false)
+                counts = ApplyGyroJitterCompensation(counts);
+
             if (invert) counts = -counts;
             if (counts == 0f) return (0f, 0f);
             return forX ? (counts, 0f) : (0f, counts);

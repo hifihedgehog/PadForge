@@ -202,6 +202,147 @@ namespace PadForge.Tests
             Assert.Equal(fwd, -back, 4);
         }
 
+        // ── momentum and jitter reduction ─────────────────────────────────
+
+        private static PadForge.Engine.Touchpad.TouchpadGestureSettings _tp;
+
+        private static void UseSettings(bool momentum = false, float decay = 0.82f,
+                                        bool jitter = true)
+        {
+            _tp = new PadForge.Engine.Touchpad.TouchpadGestureSettings
+            {
+                MouseMomentum = momentum,
+                MouseMomentumDecay = decay,
+                MouseJitterReduction = jitter,
+            };
+            SourceCoercion.TouchpadMouseSettingsProvider = (_, __, ___) => _tp;
+        }
+
+        private static void ClearSettings() => SourceCoercion.TouchpadMouseSettingsProvider = null;
+
+        [Fact]
+        public void MomentumOff_StopsTheCursorDeadOnRelease()
+        {
+            UseSettings(momentum: false);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.56f), TicksAt(0.004f), src, slot);
+                Assert.True(Counts(PadAt(0.56f), TicksAt(0.005f), src, slot) > 0f);
+                Assert.Equal(0f, Counts(PadAt(0.56f, down: false), TicksAt(0.006f), src, slot));
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void MomentumOn_CoastsAfterReleaseThenStops()
+        {
+            // The trackball feel: keep travelling, decay, end. It must END,
+            // or a flick leaves the cursor drifting forever.
+            UseSettings(momentum: true, decay: 0.82f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.60f), TicksAt(0.004f), src, slot);
+
+                float c1 = Counts(PadAt(0.60f, down: false), TicksAt(0.005f), src, slot);
+                float c2 = Counts(PadAt(0.60f, down: false), TicksAt(0.006f), src, slot);
+                Assert.True(c1 > 0f, "the cursor stopped dead with momentum on");
+                Assert.True(c2 > 0f && c2 < c1, $"the coast is not decaying: {c1} then {c2}");
+
+                // Run it out. It has to reach exactly zero, not merely small.
+                float last = c2;
+                for (int i = 0; i < 4000 && last != 0f; i++)
+                    last = Counts(PadAt(0.60f, down: false), TicksAt(0.007f + i * 0.001f), src, slot);
+                Assert.Equal(0f, last);
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void MomentumGlide_LastsLongerAtAHigherDecay()
+        {
+            // What the slider is for: the knob has to change the distance.
+            static int CoastPolls(float decay)
+            {
+                UseSettings(momentum: true, decay: decay);
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.60f), TicksAt(0.004f), src, slot);
+                int n = 0;
+                for (int i = 0; i < 4000; i++)
+                {
+                    if (Counts(PadAt(0.60f, down: false), TicksAt(0.005f + i * 0.001f), src, slot) == 0f)
+                        break;
+                    n++;
+                }
+                return n;
+            }
+            try
+            {
+                int shortGlide = CoastPolls(0.60f);
+                int longGlide = CoastPolls(0.95f);
+                Assert.True(shortGlide > 0 && longGlide > shortGlide,
+                    $"glide did not lengthen: {shortGlide} polls at 0.60, {longGlide} at 0.95");
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void MomentumDecayIsClamped_SoAPersistedExtremeCannotCoastForever()
+        {
+            UseSettings(momentum: true, decay: 1.0f);   // past the band
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.60f), TicksAt(0.004f), src, slot);
+                float last = 1f;
+                for (int i = 0; i < 20000 && last != 0f; i++)
+                    last = Counts(PadAt(0.60f, down: false), TicksAt(0.005f + i * 0.001f), src, slot);
+                Assert.Equal(0f, last);
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void JitterReduction_DampsTheTremorBandWithoutDeletingIt()
+        {
+            // The point of a curve over a dead zone: small motion is made
+            // SMALLER, never zero, so fine cursor work stays alive.
+            static float Tiny(bool jitter)
+            {
+                UseSettings(jitter: jitter);
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                return Counts(PadAt(0.50f + 0.0004f), TicksAt(0.004f), src, slot);
+            }
+            try
+            {
+                float on = Tiny(true), off = Tiny(false);
+                Assert.True(off > 0f, "harness produced no tremor-band motion");
+                Assert.True(on > 0f, "jitter reduction deleted the motion; that is a dead zone");
+                Assert.True(on < off, $"jitter reduction did not damp: {on} against {off}");
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void JitterReduction_LeavesRealMotionAlone()
+        {
+            static float Fast(bool jitter)
+            {
+                UseSettings(jitter: jitter);
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                return Counts(PadAt(0.56f), TicksAt(0.004f), src, slot);
+            }
+            try { Assert.Equal(Fast(false), Fast(true), 4); }
+            finally { ClearSettings(); }
+        }
+
         [Fact]
         public void PressureIsNotMotion()
         {

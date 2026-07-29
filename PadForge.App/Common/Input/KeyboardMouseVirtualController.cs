@@ -213,9 +213,16 @@ namespace PadForge.Common.Input
             }
 
             // --- Touchpad exact counts (the gyro lane's twin) ---
-            // Y negates into screen space the way every other touch read
-            // does; X is already screen-aligned (this is a finger on a pad,
-            // not a nose-relative sensor, so it needs no frame conversion).
+            // NEITHER axis negates, unlike the gyro lane above. A finger on a
+            // pad is already screen-aligned: SDL reports raw_y = 0 at the top,
+            // so a finger moving down yields a positive delta and screen-Y is
+            // positive-down too. The gyro needs its flip because SDL's frame
+            // is nose-relative (+yaw is nose LEFT, +pitch is nose UP), which
+            // is the opposite of the screen on both axes.
+            //
+            // Net parity with the old deflection lane is preserved: that path
+            // negated twice (Step 3 NegateAxis, then the VC) and arrived at
+            // the same sign this arrives at with none.
             if (raw.MouseTouchX != 0f || raw.MouseTouchY != 0f)
             {
                 if (raw.MouseTouchX == 0f || (_txAccumulator > 0f) != (raw.MouseTouchX > 0f))

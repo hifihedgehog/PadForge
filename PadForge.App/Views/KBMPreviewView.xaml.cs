@@ -342,13 +342,25 @@ namespace PadForge.Views
 
         /// <summary>Only the fields this preview actually draws. Comparing
         /// the whole struct would repaint on values nothing here shows.</summary>
+        /// <summary>Change gate for the preview repaint. It has to name EVERY
+        /// lane that can move the cursor, or motion arriving only on an
+        /// unlisted lane repaints nothing and the preview reports a still
+        /// cursor while the real one moves. Gyro and touchpad stopped writing
+        /// MouseDeltaX/Y when they moved to their own exact-counts lanes, so
+        /// listing only that pair left the preview blind to both; flick stick
+        /// had been invisible here since it got its lane.</summary>
         internal static bool SamePreviewState(in KbmRawState a, in KbmRawState b)
             => a.Keys0 == b.Keys0 && a.Keys1 == b.Keys1
             && a.Keys2 == b.Keys2 && a.Keys3 == b.Keys3
             && a.MouseButtons == b.MouseButtons
             && a.ScrollDelta == b.ScrollDelta
             && a.MouseDeltaX == b.MouseDeltaX
-            && a.MouseDeltaY == b.MouseDeltaY;
+            && a.MouseDeltaY == b.MouseDeltaY
+            && a.MouseGyroX == b.MouseGyroX
+            && a.MouseGyroY == b.MouseGyroY
+            && a.MouseTouchX == b.MouseTouchX
+            && a.MouseTouchY == b.MouseTouchY
+            && a.MouseFlickX == b.MouseFlickX;
 
         private string MappingLabel(string targetSettingName)
             => _vm?.Mappings?.FirstOrDefault(m => m.TargetSettingName == targetSettingName)?.TargetLabel ?? targetSettingName;
@@ -508,10 +520,31 @@ namespace PadForge.Views
                 double centerX = moveX + MoveSize / 2 - 5;
                 double centerY = MoveTop + MoveSize / 2 - 5;
                 double maxDeflect = MoveSize / 2 - 8;
-                short mx = kbm.MouseDeltaX, my = kbm.MouseDeltaY;
+                // Every lane that moves the cursor, not just the deflection
+                // one. The rate lanes (gyro, touchpad, flick) report mouse
+                // COUNTS rather than a [-1..+1] deflection, so they are
+                // normalised by the counts one full deflection is worth
+                // (KeyboardMouseVirtualController's per-poll spend) before
+                // being summed in. Sign matches what the VC sends: those
+                // lanes negate into screen space there, and screen-Y is
+                // positive-down while this dot's Y is positive-up.
+                // Signs derived per lane from what the VC actually sends, not
+                // assumed. This dot is positive-RIGHT and positive-UP, while
+                // the screen is positive-right and positive-DOWN.
+                //   deflection: dx = +DeltaX, dy = -DeltaY  -> +X, +Y here
+                //   gyro:       dx = -GyroX,  dy = -GyroY   -> -X, +Y here
+                //   touchpad:   dx = +TouchX, dy = +TouchY  -> +X, -Y here
+                //   flick:      dx = +FlickX                -> +X
+                const double RateCountsFullScale = 15.0;
+                double mx = kbm.MouseDeltaX / 32767.0
+                            + (-kbm.MouseGyroX + kbm.MouseTouchX + kbm.MouseFlickX) / RateCountsFullScale;
+                double my = kbm.MouseDeltaY / 32767.0
+                            + (kbm.MouseGyroY - kbm.MouseTouchY) / RateCountsFullScale;
+                mx = Math.Clamp(mx, -1.0, 1.0);
+                my = Math.Clamp(my, -1.0, 1.0);
 
-                double dotX = centerX + mx / 32767.0 * maxDeflect;
-                double dotY = centerY - my / 32767.0 * maxDeflect;
+                double dotX = centerX + mx * maxDeflect;
+                double dotY = centerY - my * maxDeflect;
 
                 Canvas.SetLeft(_movementDot, dotX);
                 Canvas.SetTop(_movementDot, dotY);

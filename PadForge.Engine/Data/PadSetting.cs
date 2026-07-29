@@ -1562,6 +1562,13 @@ namespace PadForge.Engine.Data
                     sb.Append(s.JoystickDPadMode).Append(',').Append(s.JoystickDPadActivationThreshold).Append(',');
                     sb.Append(s.MouseSensitivityX).Append(',').Append(s.MouseSensitivityY).Append(',');
                     sb.Append(s.MouseInvertX).Append(',').Append(s.MouseInvertY).Append(',');
+                    // Momentum / jitter: same dedup-by-checksum trap as every
+                    // field above. The profile snapshot stores ONE PadSetting
+                    // per distinct checksum and rejoins entries by it, so two
+                    // devices differing only here collide and the second
+                    // silently adopts the first's glide.
+                    sb.Append(s.MouseMomentum).Append(',').Append(s.MouseMomentumDecay).Append(',');
+                    sb.Append(s.MouseJitterReduction).Append(',');
                     sb.Append(s.EnableSwipeHaptics).Append(',').Append(s.SwipeHapticsIntensity).Append(',');
                     // Absolute-pointer stretch (#9 B-15): same dedup-by-
                     // checksum trap as every field above.

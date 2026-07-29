@@ -1206,12 +1206,18 @@ namespace PadForge.ViewModels
             center = 0.5;
             if (sets == null) return false;
 
-            // Preferred pad first so a device that DOES carry a region on the
-            // selected pad wins, then any pad, because the settings this
-            // seeds are per-device and a config's region commonly sits on a
-            // pad other than the one the recorder happens to target.
-            if (ScanForRegion(sets, pad, wantX, ref size, ref center)) return true;
-            return ScanForRegion(sets, -1, wantX, ref size, ref center);
+            // EXACTLY this pad. An earlier cut fell back to any pad, from
+            // when the region was still per device, and the effect was that
+            // every pad displayed whichever pad the config happened to
+            // configure: select pad 1 or pad 2 and the card read the same
+            // rectangle, so the per-pad card looked broken.
+            //
+            // A pad the config does not map has no region, and the honest
+            // answer for it is the full-screen default, NOT a neighbour's
+            // rectangle. RCT3 Weno V0.1 maps only the right pad, so the left
+            // pad's card should sit at 1.00 / 0.50 and the right pad's should
+            // read 1.20 / 0.70.
+            return ScanForRegion(sets, pad, wantX, ref size, ref center);
         }
 
         /// <summary>One pass of the region search. <paramref name="pad"/> of

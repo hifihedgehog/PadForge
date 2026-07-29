@@ -2894,21 +2894,63 @@ namespace PadForge.Engine.Common.Mapping
         //  Touchpad → mouse: a RATE, bridged across reports
         // ─────────────────────────────────────────────
 
-        private struct TouchVelocity
+        /// <summary>Number of recent samples averaged into the release
+        /// velocity. sc-controller's BallModifier keeps ten
+        /// (DEFAULT_MEAN_LEN) and means them, which is what stops one stray
+        /// final sample from steering the whole fling.</summary>
+        private const int TouchVelocityMeanLen = 10;
+
+        private sealed class TouchBall
         {
-            public float Velocity;          // pad fraction per second
-            public float LastRaw;
+            // Sample ring, in pad fractions per second, per axis.
+            public readonly float[] HistX = new float[TouchVelocityMeanLen];
+            public readonly float[] HistY = new float[TouchVelocityMeanLen];
+            public int HistCount;
+            public int HistNext;
+
+            public float VelX, VelY;        // pad fractions per second
+            public float LastRawX, LastRawY;
             public long LastReportTicks;
+
             /// <summary>Whether the finger was on the pad last poll. Without
-            /// momentum the entry dies on lift and re-contact re-seeds, but a
-            /// coasting entry OUTLIVES the lift, so the down-edge has to be
+            /// momentum the entry dies on lift and re-contact re-seeds, but
+            /// a coasting entry OUTLIVES the lift, so the down edge has to be
             /// detected or the first poll after landing measures the distance
             /// between where the finger left and where it returned.</summary>
             public bool WasDown;
+
+            /// <summary>The two mouse axes are read in separate calls inside
+            /// one poll. State advances on the first and both components are
+            /// served from here, so a poll never integrates twice.</summary>
+            public ulong FrameSeq;
+            public float FrameCountsX, FrameCountsY;
+
+            public void PushSample(float vx, float vy)
+            {
+                HistX[HistNext] = vx;
+                HistY[HistNext] = vy;
+                HistNext = (HistNext + 1) % TouchVelocityMeanLen;
+                if (HistCount < TouchVelocityMeanLen) HistCount++;
+            }
+
+            public void ClearSamples() { HistCount = 0; HistNext = 0; }
+
+            /// <summary>Mean of the samples held. This is the whole point:
+            /// a fling takes its direction from the last stretch of travel,
+            /// not from whichever single report happened to land last.</summary>
+            public (float X, float Y) MeanVelocity()
+            {
+                if (HistCount == 0) return (0f, 0f);
+                float sx = 0f, sy = 0f;
+                for (int i = 0; i < HistCount; i++) { sx += HistX[i]; sy += HistY[i]; }
+                return (sx / HistCount, sy / HistCount);
+            }
         }
 
+        // Keyed WITHOUT the axis: friction is direction-proportional, so the
+        // two axes have to decelerate as one vector rather than independently.
         private static readonly ConcurrentDictionary<
-            (int Slot, string Device, int Pad, int Finger, int Axis), TouchVelocity> _touchVelocity = new();
+            (int Slot, string Device, int Pad, int Finger), TouchBall> _touchVelocity = new();
 
         /// <summary>Set while a mouse target's deflection lane is combined, so
         /// touchpad delta sources contribute ZERO there and are counted once
@@ -2932,9 +2974,29 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>How long a velocity keeps driving the cursor after the
         /// last position change before the finger counts as resting. Long
         /// enough to bridge a report gap, short enough that a still finger
-        /// does not coast. Trackball momentum is a separate opt-in feature
-        /// applied by the feel chain, not here.</summary>
+        /// does not coast.</summary>
         private const float TouchVelocityHoldSeconds = 0.025f;
+
+        /// <summary><para>Below this lift speed the ball does not roll at
+        /// all. sc-controller calls it MIN_LIFT_VELOCITY and ships 0.2 rad/s
+        /// against a pad that spans 40 degrees (0.698 rad) end to end, so in
+        /// pad widths per second that is 0.2 / 0.698.</para>
+        /// <para>Without it, setting a finger down and lifting it flings the
+        /// cursor on whatever residue the last sample held.</para></summary>
+        private const float TouchMinLiftVelocity = 0.286f;
+
+        /// <summary><para>Friction as a constant DECELERATION in pad widths
+        /// per second squared, at the lowest glide setting.</para>
+        /// <para>A real ball loses a fixed amount of speed per unit time and
+        /// therefore stops, cleanly, at a predictable moment. Exponential
+        /// decay never quite arrives: it trails off asymptotically, which is
+        /// the long mushy tail the first cut had. sc-controller models the
+        /// ball properly (moment of inertia of a solid sphere,
+        /// I = 2*m*r^2/5, giving a = r*friction/I) and its defaults work out
+        /// to 15.6 rad/s^2, which over that same 0.698 rad pad is 22.4 pad
+        /// widths per second squared. The glide knob scales this to zero at
+        /// 1.00, where the ball becomes frictionless.</para></summary>
+        private const float TouchFrictionAtMinGlide = 44.8f;
 
         /// <summary>Clamp on the measured inter-report interval, so a stall
         /// (a dropped report, a debugger break) cannot divide a delta by a
@@ -2975,125 +3037,179 @@ namespace PadForge.Engine.Common.Mapping
                 return (0f, 0f);
 
             string dev = EffectiveDeviceGuid(src, deviceGuid);
-            var key = (slotIndex, dev ?? "", padIdx, fingerIdx, axisOffset);
+            var key = (slotIndex, dev ?? "", padIdx, fingerIdx);
+            var tp = TouchpadMouseSettingsProvider?.Invoke(slotIndex, dev, padIdx);
 
-            var tpNow = TouchpadMouseSettingsProvider?.Invoke(slotIndex, dev, padIdx);
-
-            if (!pad.FingerDown[fingerIdx])
+            if (!_touchVelocity.TryGetValue(key, out var ball))
             {
-                // MOMENTUM. With it off the cursor stops dead on release,
-                // which is the safe default. With it on the last velocity
-                // keeps travelling and decays, the trackball feel the Steam
-                // Controller's lizard mode has and most of why a flick there
-                // covers more ground than a finger-length swipe can.
-                if (tpNow?.MouseMomentum != true
-                    || !_touchVelocity.TryGetValue(key, out var coast)
-                    || coast.Velocity == 0f)
+                if (!pad.FingerDown[fingerIdx]) return (0f, 0f);
+                ball = new TouchBall
                 {
-                    _touchVelocity.TryRemove(key, out _);
-                    return (0f, 0f);
-                }
+                    LastRawX = pad.FingerX[fingerIdx],
+                    LastRawY = pad.FingerY[fingerIdx],
+                    LastReportTicks = nowTicks,
+                    WasDown = true,
+                };
+                _touchVelocity[key] = ball;
+                return (0f, 0f);   // contact alone is not motion
+            }
 
-                // Decay per unit TIME, not per poll, so the glide lasts the
-                // same wall-clock duration at any polling rate. The stored
-                // figure is the fraction of speed kept per 10 ms.
-                // 1.00 keeps the speed exactly: a frictionless ball that
-                // spins until caught. Touching down is the stop, and the
-                // down edge already handles that.
-                float keep = Math.Clamp(tpNow.MouseMomentumDecay, 0.80f, 1.00f);
-                if (keep < 1.00f)
-                    coast.Velocity *= MathF.Pow(keep, dtSeconds / 0.010f);
-                // Below a pixel every few polls the glide is over. Ending it
-                // outright stops a vanishing remainder creeping for seconds.
-                if (Math.Abs(coast.Velocity) * TouchCountsPerPadWidth < 0.05f)
+            // The two mouse axes are separate calls inside ONE poll. Advance
+            // on the first and serve the second from what that produced, or
+            // the ball integrates twice per tick and runs at double speed.
+            lock (ball)
+            {
+                if (ball.FrameSeq != _pollFrameSeq)
                 {
-                    _touchVelocity.TryRemove(key, out _);
-                    return (0f, 0f);
+                    ball.FrameSeq = _pollFrameSeq;
+                    AdvanceTouchBall(ball, pad, fingerIdx, tp, dtSeconds, nowTicks, ticksPerSecond, src);
                 }
-                coast.LastReportTicks = nowTicks;
-                coast.WasDown = false;
-                _touchVelocity[key] = coast;
-                return EmitTouchCounts(coast.Velocity, src, tpNow, axisOffset, dtSeconds, forX);
+                float cx = ball.FrameCountsX, cy = ball.FrameCountsY;
+                return forX ? (cx, 0f) : (0f, cy);
             }
-
-            float raw = axisOffset == 0 ? pad.FingerX[fingerIdx] : pad.FingerY[fingerIdx];
-            // Seeded AT CONTACT with the landing position and time, so the
-            // first movement already has a real interval to divide by.
-            // Deferring that threw the first motion after every touchdown
-            // away, which a test caught.
-            var st = _touchVelocity.GetOrAdd(key,
-                _ => new TouchVelocity { LastRaw = raw, LastReportTicks = nowTicks, WasDown = true });
-
-            if (!st.WasDown)
-            {
-                // DOWN EDGE onto a still-coasting entry. Re-seed at wherever
-                // the finger actually landed: its old position is from the
-                // last lift and the gap between them is not motion, it is
-                // just two different places. Reading it as motion threw the
-                // cursor across the screen whenever momentum was on and the
-                // finger came back down somewhere else.
-                //
-                // Stopping the glide here is also the right behaviour, and
-                // the one the feel chain's trackball already documents:
-                // catching the ball stops it.
-                st.Velocity = 0f;
-                st.LastRaw = raw;
-                st.LastReportTicks = nowTicks;
-                st.WasDown = true;
-                _touchVelocity[key] = st;
-                return (0f, 0f);
-            }
-
-            if (raw != st.LastRaw)
-            {
-                float interval = ticksPerSecond > 0
-                    ? (float)(nowTicks - st.LastReportTicks) / ticksPerSecond
-                    : TouchMinReportSeconds;
-                interval = Math.Clamp(interval, TouchMinReportSeconds, TouchMaxReportSeconds);
-                st.Velocity = (raw - st.LastRaw) / interval;
-                st.LastRaw = raw;
-                st.LastReportTicks = nowTicks;
-                _touchVelocity[key] = st;
-            }
-            else if (ticksPerSecond > 0
-                     && (float)(nowTicks - st.LastReportTicks) / ticksPerSecond > TouchVelocityHoldSeconds)
-            {
-                // No new position for longer than a report gap: the finger is
-                // resting, not between reports. Stop rather than coast.
-                st.Velocity = 0f;
-                _touchVelocity[key] = st;
-            }
-
-            if (st.Velocity == 0f) return (0f, 0f);
-            return EmitTouchCounts(st.Velocity, src, tpNow, axisOffset, dtSeconds, forX);
         }
 
-        /// <summary>Turns a pad velocity into mouse counts: sensitivity,
-        /// invert, and the jitter bend, shared by the finger-down path and
-        /// the momentum coast so both feel identical.</summary>
-        private static (float X, float Y) EmitTouchCounts(
-            float velocity, MappingSource src, PadForge.Engine.Touchpad.TouchpadGestureSettings tp,
-            int axisOffset, float dtSeconds, bool forX)
+        /// <summary><para>One tick of the ball, both axes together.</para>
+        /// <para>Ported from sc-controller's BallModifier, which is the
+        /// open implementation of the Steam Controller's own trackball.
+        /// Three things it does that a single-delta model does not.</para>
+        /// <para>The release velocity is the MEAN of the last ten samples,
+        /// not the last one. A finger never leaves the pad cleanly: the final
+        /// report or two are slow and often point somewhere else, so taking
+        /// the last delta alone lets one stray sample steer the whole fling.
+        /// Averaging the recent stretch is what makes a flick go where the
+        /// hand was actually going.</para>
+        /// <para>Friction is a constant DECELERATION applied along the
+        /// velocity vector, not an exponential decay. A real ball sheds a
+        /// fixed amount of speed per unit time and therefore stops, at a
+        /// predictable moment. Exponential decay only ever approaches zero,
+        /// which is the long mushy tail. The deceleration is split between
+        /// the axes in proportion to their share of the speed, and capped so
+        /// it can never push a component past zero into reverse.</para>
+        /// <para>And a lift slower than MIN_LIFT_VELOCITY does not roll at
+        /// all, so setting a finger down and picking it up cannot fling the
+        /// cursor on whatever residue the last sample held.</para></summary>
+        private static void AdvanceTouchBall(
+            TouchBall ball, TouchpadInputState pad, int fingerIdx,
+            PadForge.Engine.Touchpad.TouchpadGestureSettings tp,
+            float dtSeconds, long nowTicks, long ticksPerSecond, MappingSource src)
         {
-            float sens = axisOffset == 0 ? (tp?.MouseSensitivityX ?? 1f) : (tp?.MouseSensitivityY ?? 1f);
-            bool invert = axisOffset == 0 ? (tp?.MouseInvertX ?? false) : (tp?.MouseInvertY ?? false);
+            ball.FrameCountsX = 0f;
+            ball.FrameCountsY = 0f;
+            bool down = pad.FingerDown[fingerIdx];
 
-            float counts = velocity * dtSeconds * TouchCountsPerPadWidth * sens
-                           * PerSourceSensitivity(src);
+            if (down)
+            {
+                float rawX = pad.FingerX[fingerIdx];
+                float rawY = pad.FingerY[fingerIdx];
 
-            // JITTER REDUCTION. Bends the tremor band down a power curve
-            // rather than cutting it, so a resting hand stops shivering the
-            // cursor while fine movement stays continuous. A deadzone would
-            // delete that motion outright, which is what makes careful
-            // cursor work feel dead. Same curve the gyro lane uses, from
-            // DS4Windows' jitterCompensation.
-            if (tp?.MouseJitterReduction != false)
-                counts = ApplyGyroJitterCompensation(counts);
+                if (!ball.WasDown)
+                {
+                    // Down edge onto a coasting ball. Catching it stops it,
+                    // and its stored position is from the last lift, so the
+                    // gap to where the finger landed is not motion.
+                    ball.ClearSamples();
+                    ball.VelX = ball.VelY = 0f;
+                    ball.LastRawX = rawX; ball.LastRawY = rawY;
+                    ball.LastReportTicks = nowTicks;
+                    ball.WasDown = true;
+                    return;
+                }
 
-            if (invert) counts = -counts;
-            if (counts == 0f) return (0f, 0f);
-            return forX ? (counts, 0f) : (0f, counts);
+                if (rawX != ball.LastRawX || rawY != ball.LastRawY)
+                {
+                    float interval = ticksPerSecond > 0
+                        ? (float)(nowTicks - ball.LastReportTicks) / ticksPerSecond
+                        : TouchMinReportSeconds;
+                    interval = Math.Clamp(interval, TouchMinReportSeconds, TouchMaxReportSeconds);
+                    ball.PushSample((rawX - ball.LastRawX) / interval,
+                                    (rawY - ball.LastRawY) / interval);
+                    ball.LastRawX = rawX; ball.LastRawY = rawY;
+                    ball.LastReportTicks = nowTicks;
+                    var mean = ball.MeanVelocity();
+                    ball.VelX = mean.X; ball.VelY = mean.Y;
+                }
+                else if (ticksPerSecond > 0
+                         && (float)(nowTicks - ball.LastReportTicks) / ticksPerSecond > TouchVelocityHoldSeconds)
+                {
+                    // Resting, not between reports. Drop the history too, so
+                    // a pause before lifting cannot fling stale samples.
+                    ball.ClearSamples();
+                    ball.VelX = ball.VelY = 0f;
+                }
+
+                EmitBallCounts(ball, tp, dtSeconds, src);
+                return;
+            }
+
+            // ── finger is off the pad ──────────────────────────────────
+            if (ball.WasDown)
+            {
+                ball.WasDown = false;
+                var mean = ball.MeanVelocity();
+                ball.VelX = mean.X; ball.VelY = mean.Y;
+                ball.ClearSamples();
+
+                float lift = MathF.Sqrt(ball.VelX * ball.VelX + ball.VelY * ball.VelY);
+                if (tp?.MouseMomentum != true || lift < TouchMinLiftVelocity)
+                {
+                    ball.VelX = ball.VelY = 0f;
+                    return;
+                }
+            }
+
+            if (tp?.MouseMomentum != true || (ball.VelX == 0f && ball.VelY == 0f)) return;
+
+            // Constant deceleration along the velocity vector. Glide 1.00 is
+            // frictionless; 0.80 is the full rate.
+            float glide = Math.Clamp(tp.MouseMomentumDecay, 0.80f, 1.00f);
+            float decel = TouchFrictionAtMinGlide * ((1.00f - glide) / 0.20f);
+            if (decel > 0f)
+            {
+                float hyp = MathF.Sqrt(ball.VelX * ball.VelX + ball.VelY * ball.VelY);
+                float ax = hyp > 0f ? decel * (Math.Abs(ball.VelX) / hyp) : decel;
+                float ay = hyp > 0f ? decel * (Math.Abs(ball.VelY) / hyp) : decel;
+                // Capped at the remaining speed, so friction stops the ball
+                // rather than reversing it.
+                float dvx = Math.Min(Math.Abs(ball.VelX), ax * dtSeconds);
+                float dvy = Math.Min(Math.Abs(ball.VelY), ay * dtSeconds);
+                ball.VelX -= MathF.CopySign(dvx, ball.VelX);
+                ball.VelY -= MathF.CopySign(dvy, ball.VelY);
+            }
+
+            if (ball.VelX == 0f && ball.VelY == 0f) return;
+            EmitBallCounts(ball, tp, dtSeconds, src);
         }
+
+        /// <summary>Velocity to mouse counts: sensitivity, invert, and the
+        /// jitter bend, shared by the finger-down path and the coast so both
+        /// feel identical.</summary>
+        private static void EmitBallCounts(
+            TouchBall ball, PadForge.Engine.Touchpad.TouchpadGestureSettings tp,
+            float dtSeconds, MappingSource src)
+        {
+            float rowSens = PerSourceSensitivity(src);
+            float sx = (tp?.MouseSensitivityX ?? 1f) * rowSens;
+            float sy = (tp?.MouseSensitivityY ?? 1f) * rowSens;
+
+            float cx = ball.VelX * dtSeconds * TouchCountsPerPadWidth * sx;
+            float cy = ball.VelY * dtSeconds * TouchCountsPerPadWidth * sy;
+
+            // Bends the tremor band down a curve rather than cutting it, so a
+            // resting hand stops shivering the cursor while fine movement
+            // stays continuous. A dead zone would delete it outright.
+            if (tp?.MouseJitterReduction != false)
+            {
+                cx = ApplyGyroJitterCompensation(cx);
+                cy = ApplyGyroJitterCompensation(cy);
+            }
+
+            if (tp?.MouseInvertX == true) cx = -cx;
+            if (tp?.MouseInvertY == true) cy = -cy;
+            ball.FrameCountsX = cx;
+            ball.FrameCountsY = cy;
+        }
+
 
         /// <summary>Scopes <see cref="_suppressTouchForMouseLane"/>.</summary>
         public readonly struct TouchMouseLaneScope : IDisposable

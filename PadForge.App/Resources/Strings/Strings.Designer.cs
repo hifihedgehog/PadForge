@@ -1185,6 +1185,15 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Formula_Chip_Lerp => Get("Pad_Formula_Chip_Lerp");
     public string Pad_Formula_Chip_Round => Get("Pad_Formula_Chip_Round");
     public string Pad_Formula_Chip_Sqrt => Get("Pad_Formula_Chip_Sqrt");
+    public string Pad_Formula_Chip_Pow => Get("Pad_Formula_Chip_Pow");
+    public string Pad_Formula_Chip_Hypot => Get("Pad_Formula_Chip_Hypot");
+    public string Pad_Formula_Chip_Deadzone => Get("Pad_Formula_Chip_Deadzone");
+    public string Pad_Formula_Chip_Floor => Get("Pad_Formula_Chip_Floor");
+    public string Pad_Formula_Chip_Ceil => Get("Pad_Formula_Chip_Ceil");
+    public string Pad_Formula_Chip_Sin => Get("Pad_Formula_Chip_Sin");
+    public string Pad_Formula_Chip_Cos => Get("Pad_Formula_Chip_Cos");
+    public string Pad_Formula_Chip_Tan => Get("Pad_Formula_Chip_Tan");
+    public string Pad_Formula_Chip_Atan2 => Get("Pad_Formula_Chip_Atan2");
     public string Pad_Formula_Preset_HalfScale_Name => Get("Pad_Formula_Preset_HalfScale_Name");
     public string Pad_Formula_Preset_HalfScale_Tooltip => Get("Pad_Formula_Preset_HalfScale_Tooltip");
     public string Pad_Formula_Preset_QuarterScale_Name => Get("Pad_Formula_Preset_QuarterScale_Name");

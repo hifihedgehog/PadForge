@@ -907,6 +907,15 @@
   <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>Blend two values: lerp(a, b, mix0to1)</value></data>
   <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>Round to nearest whole number</value></data>
   <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>Square root</value></data>
+  <data name="Pad_Formula_Chip_Pow" xml:space="preserve"><value>Raise to a power: pow(value, exponent). A response curve.</value></data>
+  <data name="Pad_Formula_Chip_Hypot" xml:space="preserve"><value>Distance from centre for a pair: hypot(x, y). The input to a radial dead zone.</value></data>
+  <data name="Pad_Formula_Chip_Deadzone" xml:space="preserve"><value>Rescale past a dead zone: deadzone(value, inner, outer). Inside inner reads 0, outer reads full, sign kept.</value></data>
+  <data name="Pad_Formula_Chip_Floor" xml:space="preserve"><value>Round down: floor(value).</value></data>
+  <data name="Pad_Formula_Chip_Ceil" xml:space="preserve"><value>Round up: ceil(value).</value></data>
+  <data name="Pad_Formula_Chip_Sin" xml:space="preserve"><value>Sine of an angle in radians: sin(angle).</value></data>
+  <data name="Pad_Formula_Chip_Cos" xml:space="preserve"><value>Cosine of an angle in radians: cos(angle).</value></data>
+  <data name="Pad_Formula_Chip_Tan" xml:space="preserve"><value>Tangent of an angle in radians: tan(angle).</value></data>
+  <data name="Pad_Formula_Chip_Atan2" xml:space="preserve"><value>Angle of a pair in radians: atan2(y, x). Pairs with hypot for stick direction.</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>Half scale</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A at half strength</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Quarter scale</value></data>
@@ -983,7 +992,7 @@
   <data name="Macro_Always" xml:space="preserve"><value>Always</value></data>
   <data name="Macro_CustomExpression" xml:space="preserve"><value>Custom Expression</value></data>
   <data name="Macro_Expression_Header" xml:space="preserve"><value>Trigger Formula</value></data>
-  <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>Reference variables as a, b, c, … (or s[0], s[1], …). Supports + - * / &amp;&amp; || ?: and abs/min/max/clamp/sign/lerp. The macro fires on the rising edge when the formula's value crosses 0.5.</value></data>
+  <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>Reference variables as a, b, c, … (or s[0], s[1], …). Supports + - * / &amp;&amp; || ?: and every function on the chip row below. The macro fires on the rising edge when the formula's value crosses 0.5.</value></data>
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variables</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Add Variable</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Each row defines one variable letter (a, b, c, …). Choose Input Device to bind a button, POV, or axis on a physical device, or Output Controller to read a channel on the slot's combined virtual controller output.</value></data>

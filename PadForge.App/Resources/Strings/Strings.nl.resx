@@ -542,6 +542,15 @@
   <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>Twee waarden mengen: lerp(a, b, mix0to1)</value></data>
   <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>Afronden naar het dichtstbijzijnde gehele getal</value></data>
   <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>Vierkantswortel</value></data>
+  <data name="Pad_Formula_Chip_Pow" xml:space="preserve"><value>Tot een macht verheffen: pow(waarde, exponent). Een responscurve.</value></data>
+  <data name="Pad_Formula_Chip_Hypot" xml:space="preserve"><value>Afstand tot het midden voor een paar: hypot(x, y). De invoer voor een radiale dode zone.</value></data>
+  <data name="Pad_Formula_Chip_Deadzone" xml:space="preserve"><value>Herschalen voorbij een dode zone: deadzone(waarde, binnen, buiten). Binnen binnen geeft 0, buiten geeft vol, teken blijft.</value></data>
+  <data name="Pad_Formula_Chip_Floor" xml:space="preserve"><value>Naar beneden afronden: floor(waarde).</value></data>
+  <data name="Pad_Formula_Chip_Ceil" xml:space="preserve"><value>Naar boven afronden: ceil(waarde).</value></data>
+  <data name="Pad_Formula_Chip_Sin" xml:space="preserve"><value>Sinus van een hoek in radialen: sin(hoek).</value></data>
+  <data name="Pad_Formula_Chip_Cos" xml:space="preserve"><value>Cosinus van een hoek in radialen: cos(hoek).</value></data>
+  <data name="Pad_Formula_Chip_Tan" xml:space="preserve"><value>Tangens van een hoek in radialen: tan(hoek).</value></data>
+  <data name="Pad_Formula_Chip_Atan2" xml:space="preserve"><value>Hoek van een paar in radialen: atan2(y, x). Combineert met hypot voor de stickrichting.</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>Halve schaal</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A op halve sterkte</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Kwartschaal</value></data>
@@ -618,7 +627,7 @@
   <data name="Macro_Always" xml:space="preserve"><value>Altijd</value></data>
   <data name="Macro_CustomExpression" xml:space="preserve"><value>Aangepaste expressie</value></data>
   <data name="Macro_Expression_Header" xml:space="preserve"><value>Triggerformule</value></data>
-  <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>Verwijs naar variabelen als a, b, c, … (of s[0], s[1], …). Ondersteunt + - * / &amp;&amp; || ?: en abs/min/max/clamp/sign/lerp. De macro wordt geactiveerd op de stijgende flank wanneer de waarde van de formule 0.5 overschrijdt.</value></data>
+  <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>Verwijs naar variabelen als a, b, c, … (of s[0], s[1], …). Ondersteunt + - * / &amp;&amp; || ?: en elke functie op de chiprij hieronder. De macro vuurt op de stijgende flank wanneer de formulewaarde 0.5 overschrijdt.</value></data>
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variabelen</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Variabele toevoegen</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Elke rij definieert één variabeleletter (a, b, c, …). Kies Invoerapparaat om een knop, POV of as op een fysiek apparaat te koppelen, of Uitvoercontroller om een kanaal te lezen van de gecombineerde virtuele controller-uitvoer van het slot.</value></data>

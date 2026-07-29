@@ -542,6 +542,15 @@
   <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>Mélanger deux valeurs : lerp(a, b, mix0to1)</value></data>
   <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>Arrondir au nombre entier le plus proche</value></data>
   <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>Racine carrée</value></data>
+  <data name="Pad_Formula_Chip_Pow" xml:space="preserve"><value>Élever à une puissance : pow(valeur, exposant). Une courbe de réponse.</value></data>
+  <data name="Pad_Formula_Chip_Hypot" xml:space="preserve"><value>Distance au centre pour une paire : hypot(x, y). L'entrée d'une zone morte radiale.</value></data>
+  <data name="Pad_Formula_Chip_Deadzone" xml:space="preserve"><value>Remettre à l'échelle au-delà d'une zone morte : deadzone(valeur, intérieur, extérieur). En deçà de l'intérieur vaut 0, l'extérieur vaut le maximum, le signe est conservé.</value></data>
+  <data name="Pad_Formula_Chip_Floor" xml:space="preserve"><value>Arrondir à l'inférieur : floor(valeur).</value></data>
+  <data name="Pad_Formula_Chip_Ceil" xml:space="preserve"><value>Arrondir au supérieur : ceil(valeur).</value></data>
+  <data name="Pad_Formula_Chip_Sin" xml:space="preserve"><value>Sinus d'un angle en radians : sin(angle).</value></data>
+  <data name="Pad_Formula_Chip_Cos" xml:space="preserve"><value>Cosinus d'un angle en radians : cos(angle).</value></data>
+  <data name="Pad_Formula_Chip_Tan" xml:space="preserve"><value>Tangente d'un angle en radians : tan(angle).</value></data>
+  <data name="Pad_Formula_Chip_Atan2" xml:space="preserve"><value>Angle d'une paire en radians : atan2(y, x). Se combine à hypot pour la direction du stick.</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>Demi-échelle</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A à demi-intensité</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Quart d'échelle</value></data>
@@ -618,7 +627,7 @@
   <data name="Macro_Always" xml:space="preserve"><value>Toujours</value></data>
   <data name="Macro_CustomExpression" xml:space="preserve"><value>Expression personnalisée</value></data>
   <data name="Macro_Expression_Header" xml:space="preserve"><value>Formule de déclenchement</value></data>
-  <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>Référencez les variables avec a, b, c, … (ou s[0], s[1], …). Opérateurs pris en charge : + - * / &amp;&amp; || ?: et abs/min/max/clamp/sign/lerp. La macro se déclenche sur le front montant lorsque la valeur de la formule dépasse 0.5.</value></data>
+  <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>Référencez les variables par a, b, c, … (ou s[0], s[1], …). Prend en charge + - * / &amp;&amp; || ?: et toutes les fonctions de la rangée de pastilles ci-dessous. La macro se déclenche sur le front montant quand la valeur de la formule franchit 0.5.</value></data>
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variables</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Ajouter une variable</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Chaque ligne définit une lettre de variable (a, b, c, …). Choisissez Appareil d'entrée pour lier un bouton, un POV ou un axe d'un périphérique physique, ou Contrôleur de sortie pour lire un canal depuis la sortie combinée du contrôleur virtuel du slot.</value></data>

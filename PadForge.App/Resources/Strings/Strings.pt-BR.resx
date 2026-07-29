@@ -542,6 +542,15 @@
   <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>Misturar dois valores: lerp(a, b, mix0a1)</value></data>
   <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>Arredondar para o número inteiro mais próximo</value></data>
   <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>Raiz quadrada</value></data>
+  <data name="Pad_Formula_Chip_Pow" xml:space="preserve"><value>Elevar a uma potência: pow(valor, expoente). Uma curva de resposta.</value></data>
+  <data name="Pad_Formula_Chip_Hypot" xml:space="preserve"><value>Distância do centro para um par: hypot(x, y). A entrada de uma zona morta radial.</value></data>
+  <data name="Pad_Formula_Chip_Deadzone" xml:space="preserve"><value>Reescalar além de uma zona morta: deadzone(valor, interno, externo). Dentro do interno dá 0, o externo dá o máximo, o sinal é mantido.</value></data>
+  <data name="Pad_Formula_Chip_Floor" xml:space="preserve"><value>Arredondar para baixo: floor(valor).</value></data>
+  <data name="Pad_Formula_Chip_Ceil" xml:space="preserve"><value>Arredondar para cima: ceil(valor).</value></data>
+  <data name="Pad_Formula_Chip_Sin" xml:space="preserve"><value>Seno de um ângulo em radianos: sin(ângulo).</value></data>
+  <data name="Pad_Formula_Chip_Cos" xml:space="preserve"><value>Cosseno de um ângulo em radianos: cos(ângulo).</value></data>
+  <data name="Pad_Formula_Chip_Tan" xml:space="preserve"><value>Tangente de um ângulo em radianos: tan(ângulo).</value></data>
+  <data name="Pad_Formula_Chip_Atan2" xml:space="preserve"><value>Ângulo de um par em radianos: atan2(y, x). Combina com hypot para a direção do stick.</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>Escala metade</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A com metade da força</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Escala um quarto</value></data>
@@ -618,7 +627,7 @@
   <data name="Macro_Always" xml:space="preserve"><value>Sempre</value></data>
   <data name="Macro_CustomExpression" xml:space="preserve"><value>Expressão Personalizada</value></data>
   <data name="Macro_Expression_Header" xml:space="preserve"><value>Fórmula de Disparo</value></data>
-  <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>Referencie variáveis como a, b, c, … (ou s[0], s[1], …). Suporta + - * / &amp;&amp; || ?: e abs/min/max/clamp/sign/lerp. O macro dispara na borda de subida quando o valor da fórmula cruza 0.5.</value></data>
+  <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>Referencie variáveis como a, b, c, … (ou s[0], s[1], …). Suporta + - * / &amp;&amp; || ?: e todas as funções na linha de fichas abaixo. O macro dispara na borda de subida quando o valor da fórmula cruza 0.5.</value></data>
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variáveis</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Adicionar Variável</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Cada linha define uma letra de variável (a, b, c, …). Escolha Dispositivo de Entrada para vincular um botão, POV ou eixo em um dispositivo físico, ou Controle de Saída para ler um canal na saída combinada do controle virtual do slot.</value></data>

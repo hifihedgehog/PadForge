@@ -976,6 +976,9 @@ public class Strings : INotifyPropertyChanged
     public string Pad_RawAxisValue => Get("Pad_RawAxisValue");
     public string Pad_ResetFlickSmoothing => Get("Pad_ResetFlickSmoothing");
     public string Settings_FlickOnEngage => Get("Settings_FlickOnEngage");
+    public string Settings_FlickRotationOffset => Get("Settings_FlickRotationOffset");
+    public string Settings_FlickRotationOffset_Tooltip => Get("Settings_FlickRotationOffset_Tooltip");
+    public string Pad_ResetFlickRotationOffset => Get("Pad_ResetFlickRotationOffset");
     public string Settings_FlickOnEngage_Tooltip => Get("Settings_FlickOnEngage_Tooltip");
     public string Pad_ResetFlickOnEngage => Get("Pad_ResetFlickOnEngage");
     public string Pad_Steering_LockFeedback => Get("Pad_Steering_LockFeedback");

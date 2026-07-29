@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Engine;
 using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
@@ -379,6 +379,7 @@ namespace PadForge.Tests
                         ParamFlickDeadzoneAngle = 7,
                         ParamFlickSmooth = 0.02,
                         ParamFlickOnEngage = true,
+                        ParamFlickRotationOffsetDeg = -37.5,
                     },
                 },
             });
@@ -399,6 +400,83 @@ namespace PadForge.Tests
             Assert.Equal(7, s.ParamFlickDeadzoneAngle, 3);
             Assert.Equal(0.02, s.ParamFlickSmooth, 3);
             Assert.True(s.ParamFlickOnEngage);
+            Assert.Equal(-37.5, s.ParamFlickRotationOffsetDeg, 3);
+        }
+
+        /// <summary>Every flick param the engine reads must have a row on the
+        /// Flick Stick card, and that row must round-trip through the save
+        /// pipeline like its siblings.
+        ///
+        /// <para>The rotation offset is why this test exists. It was the only
+        /// member of the family with no row: SettingsService named it a
+        /// "no-VM-card field" and carried it in a capture-and-reapply net so a
+        /// pad-page save would not wipe it, which kept an imported value alive
+        /// while leaving the user no way to see or change it.</para></summary>
+        [Fact]
+        public void EveryFlickParamHasACardRowAndAResetButton()
+        {
+            var root = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
+            while (root != null && !System.IO.File.Exists(System.IO.Path.Combine(root.FullName, "PadForge.sln")))
+                root = root.Parent;
+            Assert.NotNull(root);
+
+            string xaml = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                root.FullName, "PadForge.App", "Views", "PadPage.xaml"));
+            string svc = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                root.FullName, "PadForge.App", "Services", "SettingsService.cs"));
+
+            // VM property per engine param, and the reset button the standing
+            // rule requires on every setting row.
+            var rows = new (string Param, string Vm)[]
+            {
+                ("ParamFlickCountsPer360", "FlickCountsPer360"),
+                ("ParamFlickTime", "FlickTime"),
+                ("ParamFlickThreshold", "FlickThreshold"),
+                ("ParamFlickSnapMode", "FlickSnapMode"),
+                ("ParamFlickSnapStrength", "FlickSnapStrength"),
+                ("ParamFlickDeadzoneAngle", "FlickForwardDeadzone"),
+                ("ParamFlickSmooth", "FlickSmoothing"),
+                ("ParamFlickOnEngage", "FlickOnEngage"),
+                ("ParamFlickRotationOffsetDeg", "FlickRotationOffset"),
+            };
+
+            var gaps = new System.Collections.Generic.List<string>();
+            foreach (var (param, vm) in rows)
+            {
+                if (!xaml.Contains("Binding " + vm + ",")) gaps.Add(vm + ": no card row");
+                if (!xaml.Contains("Reset" + vm + "Command")) gaps.Add(vm + ": no reset button");
+                if (!svc.Contains(param)) gaps.Add(param + ": not stamped by SettingsService");
+            }
+            Assert.True(gaps.Count == 0, string.Join("; ", gaps));
+        }
+
+        /// <summary>The save leg for real, not by grep. A grep for
+        /// "padVm.FlickRotationOffset" passes while any ONE of the five
+        /// round-trip sites is missing, since the other four still match;
+        /// this drives the actual persist and reads the value back.</summary>
+        [Fact]
+        public void RotationOffset_PersistsThroughTheCardSave()
+        {
+            var vm = new PadForge.ViewModels.PadViewModel(0) { FlickRotationOffset = -37.5 };
+            var ps = new PadSetting();
+
+            PadForge.Services.SettingsService.SaveFlickStickCard(vm, ps);
+
+            Assert.Equal("-37.5", ps.GetRawMapping("FlickStickRotationOffset"));
+
+            // Positive control: the sibling that already worked persists in the
+            // same call, so a wholesale save failure cannot read as a pass.
+            Assert.False(string.IsNullOrEmpty(ps.GetRawMapping("FlickStickTime")));
+        }
+
+        [Fact]
+        public void RotationOffset_ClampsToOneTurnEitherWay()
+        {
+            var vm = new PadForge.ViewModels.PadViewModel(0);
+            vm.FlickRotationOffset = 400;
+            Assert.Equal(180, vm.FlickRotationOffset);
+            vm.FlickRotationOffset = -400;
+            Assert.Equal(-180, vm.FlickRotationOffset);
         }
 
         [Fact]

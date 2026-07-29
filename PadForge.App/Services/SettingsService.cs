@@ -1234,10 +1234,12 @@ namespace PadForge.Services
                 // the per-source AND gate all ride the same no-VM-card
                 // capture. The captured source object itself is the stamp
                 // carrier (it is about to be discarded by the rebuild).
-                // v26 widened it again: the radial stick-deadzone stamps,
-                // the second AND gate, and the flick rotation offset are
-                // no-VM-card fields the rebuild would otherwise wipe on
-                // the first pad-page save.
+                // v26 widened it again: the radial stick-deadzone stamps
+                // and the second AND gate are no-VM-card fields the rebuild
+                // would otherwise wipe on the first pad-page save. The flick
+                // rotation offset HAS a card row now (Flick Stick card), but
+                // it stays in this net because the push is skipped while that
+                // card is unseeded, and the rebuild does not wait for it.
                 if (s == null
                     || (s.ParamCurveExponent <= 0 && s.ParamRangeOuter <= 0
                         && s.ParamAntiDeadzone <= 0 && s.ParamAccel <= 0
@@ -1377,6 +1379,7 @@ namespace PadForge.Services
                     src.ParamFlickDeadzoneAngle = padVm.FlickForwardDeadzone;
                     src.ParamFlickSmooth = padVm.FlickSmoothing;
                     src.ParamFlickOnEngage = padVm.FlickOnEngage;
+                    src.ParamFlickRotationOffsetDeg = padVm.FlickRotationOffset;
                     continue;
                 }
 
@@ -1398,6 +1401,7 @@ namespace PadForge.Services
                 src.ParamFlickDeadzoneAngle = D("FlickStickForwardDz", 0);
                 src.ParamFlickSmooth = D("FlickStickSmoothing", -1);
                 src.ParamFlickOnEngage = ps.GetRawMapping("FlickStickOnEngage") == "1";
+                src.ParamFlickRotationOffsetDeg = D("FlickStickRotationOffset", 0);
             }
         }
 
@@ -1430,6 +1434,7 @@ namespace PadForge.Services
                     padVm.FlickForwardDeadzone = seed.ParamFlickDeadzoneAngle;
                     padVm.FlickSmoothing = seed.ParamFlickSmooth;
                     padVm.FlickOnEngage = seed.ParamFlickOnEngage;
+                    padVm.FlickRotationOffset = seed.ParamFlickRotationOffsetDeg;
                     return;
                 }
             }
@@ -1445,6 +1450,7 @@ namespace PadForge.Services
             padVm.FlickForwardDeadzone = D("FlickStickForwardDz", 0);
             padVm.FlickSmoothing = D("FlickStickSmoothing", -1);
             padVm.FlickOnEngage = ps.GetRawMapping("FlickStickOnEngage") == "1";
+            padVm.FlickRotationOffset = D("FlickStickRotationOffset", 0);
         }
 
         /// <summary>Writes the Flick Stick card fields (#225) into a device's
@@ -1464,6 +1470,7 @@ namespace PadForge.Services
             ps.SetRawMapping("FlickStickForwardDz", padVm.FlickForwardDeadzone.ToString(ic));
             ps.SetRawMapping("FlickStickSmoothing", padVm.FlickSmoothing.ToString(ic));
             ps.SetRawMapping("FlickStickOnEngage", padVm.FlickOnEngage ? "1" : "0");
+            ps.SetRawMapping("FlickStickRotationOffset", padVm.FlickRotationOffset.ToString(ic));
         }
 
         /// <summary>First "Flick Stick ..." source in a slot's MappingSet, or

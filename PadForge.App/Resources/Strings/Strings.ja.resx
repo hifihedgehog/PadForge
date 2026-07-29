@@ -2646,6 +2646,9 @@
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>縁なぞり時のノイズを平滑化します。-1 は自動の段階ウィンドウを使用し、0 はスムージングをオフにし、大きい値ほどティックあたりの大きな回転を平滑化します。</value></data>
   <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>自動 (-1) にリセット</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>起動時のフリックを許可</value></data>
+  <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>回転オフセット</value></data>
+  <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>フリックマップ全体をこの角度だけ回転させます。正の値は時計回りです。スナップはオフセットの後に適用されます。</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>回転オフセットをリセット</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Flick Stick を含むレイヤーが、スティックが既に倒れた状態で起動した場合、すぐにフリックを発動します。オフの場合はカメラを動かさず、現在のスティック角度からの回転を追跡します。</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>オフにリセット</value></data>
   <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>カスタム</value></data>

@@ -151,6 +151,60 @@ namespace PadForge.Tests
         /// lane. It therefore has to carry yaw's sign, or the same physical
         /// turn drives the cursor one way through "Gyro Yaw" and the other
         /// through "Gyro Horizontal".</summary>
+        private static CustomInputState StateWithRoll(float degPerSec)
+        {
+            var s = new CustomInputState();
+            s.Gyro[2] = degPerSec * DegToRad;   // roll lane
+            return s;
+        }
+
+        private static float CountsFor(CustomInputState st, string descriptor)
+        {
+            var (x, _) = SourceCoercion.ReadGyroMouseCounts(
+                st, new MappingSource { Descriptor = descriptor }, -1, "", NominalDt, true);
+            return x;
+        }
+
+        /// <summary>Roll and yaw are both HORIZONTAL AIM sources, so they must
+        /// drive the cursor the same way for the same steering intent. Raw
+        /// they do not: SDL's +roll tilts the top LEFT while +yaw turns the
+        /// nose LEFT, which are opposite intents, so roll enters the yaw lane
+        /// negated. Without that, Gyro Roll aims backwards and Gyro
+        /// Horizontal reverses direction the instant roll overtakes yaw.
+        /// </summary>
+        [Fact]
+        public void GyroRoll_OpposesRawSdlRoll_SoItAgreesWithYawAsAimInput()
+        {
+            float yawTurn = CountsFor(StateWithYaw(600f), "Gyro Yaw");
+            float rollTurn = CountsFor(StateWithRoll(600f), "Gyro Roll");
+            Assert.True(yawTurn != 0f && rollTurn != 0f, "harness produced no motion");
+            Assert.True(Math.Sign(yawTurn) != Math.Sign(rollTurn),
+                $"raw +yaw and raw +roll are opposite steering intents and must not "
+                + $"produce the same cursor direction: yaw {yawTurn}, roll {rollTurn}");
+        }
+
+        [Fact]
+        public void GyroHorizontal_KeepsOneDirection_WhicheverAxisDominates()
+        {
+            // The blend picks the faster of yaw and roll. A turn that is
+            // mostly yaw and the SAME turn once roll overtakes it must not
+            // flip the cursor: that mid-motion reversal is what a raw blend
+            // produced, and it is the thing that felt broken.
+            var yawDominant = new CustomInputState();
+            yawDominant.Gyro[1] = 600f * DegToRad;    // +yaw: nose left
+            yawDominant.Gyro[2] = -100f * DegToRad;   // a little -roll: top right
+
+            var rollDominant = new CustomInputState();
+            rollDominant.Gyro[1] = 100f * DegToRad;
+            rollDominant.Gyro[2] = -600f * DegToRad;  // -roll now dominates
+
+            float a = CountsFor(yawDominant, "Gyro Horizontal");
+            float b = CountsFor(rollDominant, "Gyro Horizontal");
+            Assert.True(a != 0f && b != 0f, "harness produced no motion");
+            Assert.True(Math.Sign(a) == Math.Sign(b),
+                $"Horizontal reversed when roll overtook yaw: {a} then {b}");
+        }
+
         [Fact]
         public void GyroHorizontal_CarriesTheSameSignAsGyroYaw()
         {

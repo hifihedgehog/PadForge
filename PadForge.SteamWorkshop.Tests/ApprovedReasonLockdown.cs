@@ -75,7 +75,24 @@ namespace PadForge.SteamWorkshop.Tests
             // press-to-step Cycle beside whatever engaged the layer and
             // a press can need one extra step before Base. Proof at the
             // REMOVE_LAYER lowering (v10 G8).
-            "Workshop_Tr_RemoveLayerApproximated=12",
+            //
+            // 12 -> 8: four of these were never approximations. Where the
+            // SAME input also ENGAGES that layer (Steam's usual shape, an
+            // add_layer or hold_layer on a button below and a remove_layer
+            // on that same button inside the layer), the engaging activator
+            // already carries the return exactly: a Toggle turns the layer
+            // off, a Hold drops it on release. The Cycle was a duplicate
+            // that fought it rather than a construct standing in for a
+            // missing one. Those four now drop and report Clean as the
+            // layer emission they are, per
+            // DropRemovesCoveredByTheirOwnToggle. Two were Toggle-covered
+            // (2374887917, 3456927474) and two Hold-covered (3725174032,
+            // both rear paddles). The eight that remain are removes on
+            // inputs that do not engage the layer themselves, where the
+            // Cycle is the only way back and the note still holds.
+            // ShiftLayerEmitted is unchanged at 43: four activators left,
+            // four entries arrived.
+            "Workshop_Tr_RemoveLayerApproximated=8",
             // Impossibility proof in code (math): nonlinear per-leg
             // shaping does not commute with the rotation's two-source
             // Sum, so rotated legs carry only the linear knobs. Proof

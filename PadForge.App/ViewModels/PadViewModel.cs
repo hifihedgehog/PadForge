@@ -1741,6 +1741,37 @@ namespace PadForge.ViewModels
                 foreach (var a in activators)
                 {
                     if (a == null || string.IsNullOrEmpty(a.LayerMask)) continue;
+
+                    // ONE TAB PER LAYER, NOT PER ACTIVATOR. A layer is
+                    // identified by its LayerMask, and any number of
+                    // activators may engage the same one: a hold on a bumper
+                    // and a toggle on a menu item are two ways into one
+                    // scope, not two scopes. Adding a tab per activator drew
+                    // the same layer as several identical radio buttons, so
+                    // an imported Workshop config with four ways to reach
+                    // "Deactivate trackpad" showed five layers where the
+                    // config declares two. Hand-authored profiles rarely hit
+                    // it (one activator per layer is the usual shape), which
+                    // is why it survived until a config that does.
+                    //
+                    // The macro-scope picker fed from these tabs below has
+                    // deduped by mask since round six for the same reason.
+                    // This is that rule at the level it should have been.
+                    var existing = LayerTabs.FirstOrDefault(
+                        t => string.Equals(t.LayerMask, a.LayerMask, StringComparison.Ordinal));
+                    if (existing != null)
+                    {
+                        // A later activator fills in what the first left
+                        // blank, so a named or coloured one is not lost to
+                        // an unnamed one that happened to be first.
+                        if (string.Equals(existing.LayerName, existing.LayerMask, StringComparison.Ordinal)
+                            && !string.IsNullOrEmpty(a.LayerName))
+                            existing.LayerName = a.LayerName;
+                        if (string.IsNullOrEmpty(existing.Color) && !string.IsNullOrEmpty(a.Color))
+                            existing.Color = a.Color;
+                        continue;
+                    }
+
                     var info = new ShiftLayerInfo
                     {
                         LayerMask = a.LayerMask,

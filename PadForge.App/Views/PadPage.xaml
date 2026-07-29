@@ -1348,7 +1348,7 @@
                                            FontSize="10"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Margin="2,4,0,2"/>
-                                <WrapPanel Margin="0,0,0,4">
+                                <WrapPanel Margin="0,0,0,4" MaxWidth="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
                                     <WrapPanel.Resources>
                                         <Style x:Key="MacroFormulaChipStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                                             <Setter Property="Padding" Value="6,2"/>
@@ -1449,7 +1449,7 @@
                                            FontSize="10"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Margin="2,2,0,2"/>
-                                <WrapPanel Margin="0,0,0,6">
+                                <WrapPanel Margin="0,0,0,6" MaxWidth="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
                                     <WrapPanel.Resources>
                                         <Style x:Key="MacroFormulaPresetStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                                             <Setter Property="Padding" Value="8,3"/>
@@ -4194,7 +4194,7 @@
                                                        FontSize="10"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        Margin="2,4,0,2"/>
-                                            <WrapPanel Margin="0,0,0,4">
+                                            <WrapPanel Margin="0,0,0,4" MaxWidth="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
                                                 <WrapPanel.Resources>
                                                     <Style x:Key="FormulaChipStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                                         <Setter Property="Padding" Value="6,2"/>
@@ -4369,7 +4369,7 @@
                                             <TextBlock Text="{Binding Pad_Formula_StarterRecipes, Source={x:Static strings:Strings.Instance}}" FontSize="10"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        Margin="2,2,0,2"/>
-                                            <WrapPanel>
+                                            <WrapPanel MaxWidth="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
                                                 <WrapPanel.Resources>
                                                     <Style x:Key="FormulaPresetStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                                         <Setter Property="Padding" Value="8,3"/>

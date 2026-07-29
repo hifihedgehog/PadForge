@@ -10678,6 +10678,17 @@
                                     <ui:Button Command="{Binding ResetTouchpadMultiTapGapMsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadMultiTapGap, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_TapMaxMotion, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="270"
+                                               ToolTip="{Binding Pad_Touchpad_TapMaxMotion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadTapMaxMotion, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
+                                             Width="80" VerticalAlignment="Center"
+                                             ToolTip="{Binding Pad_Touchpad_TapMaxMotion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadTapMaxMotionCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadTapMaxMotion, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_LongPress, Source={x:Static strings:Strings.Instance}}"
@@ -10694,6 +10705,17 @@
                                     <ui:Button Command="{Binding ResetTouchpadLongPressTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadLongPressTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_LongPressMaxMotion, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="270"
+                                               ToolTip="{Binding Pad_Touchpad_LongPressMaxMotion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadLongPressMaxMotion, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
+                                             Width="80" VerticalAlignment="Center"
+                                             ToolTip="{Binding Pad_Touchpad_LongPressMaxMotion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadLongPressMaxMotionCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadLongPressMaxMotion, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_TwoFingerSwipes, Source={x:Static strings:Strings.Instance}}"
@@ -10701,17 +10723,50 @@
                                     <ui:Button Command="{Binding ResetTouchpadEnableTwoFingerSwipesCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadTwoFingerSwipes, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_TwoFingerAngle, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="270"
+                                               ToolTip="{Binding Pad_Touchpad_TwoFingerAngle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadTwoFingerSwipeAngularTolerance, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
+                                             Width="80" VerticalAlignment="Center"
+                                             ToolTip="{Binding Pad_Touchpad_TwoFingerAngle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="°" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadTwoFingerSwipeAngularToleranceCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadTwoFingerSwipeAngularTolerance, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_PinchSpread, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnablePinchSpread, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <ui:Button Command="{Binding ResetTouchpadEnablePinchSpreadCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadPinchSpread, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_PinchThreshold, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="270"
+                                               ToolTip="{Binding Pad_Touchpad_PinchThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadPinchThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
+                                             Width="80" VerticalAlignment="Center"
+                                             ToolTip="{Binding Pad_Touchpad_PinchThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadPinchThresholdCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadPinchThreshold, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_Rotate, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableRotate, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <ui:Button Command="{Binding ResetTouchpadEnableRotateCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadRotate, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_RotateThreshold, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="270"
+                                               ToolTip="{Binding Pad_Touchpad_RotateThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadRotateThresholdDegrees, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
+                                             Width="80" VerticalAlignment="Center"
+                                             ToolTip="{Binding Pad_Touchpad_RotateThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="°" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadRotateThresholdDegreesCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadRotateThresholdDegrees, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_ThreeFinger, Source={x:Static strings:Strings.Instance}}"

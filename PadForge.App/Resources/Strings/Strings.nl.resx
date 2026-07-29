@@ -2571,6 +2571,21 @@
   <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>Oostkwadrant</value></data>
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>Westkwadrant</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Midden</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion" xml:space="preserve"><value>Max. tikafstand</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion_Tooltip" xml:space="preserve"><value>Hoe ver een vinger mag bewegen en toch als tik telt, in padbreedtes. 0,04 is 4% van het pad.</value></data>
+  <data name="Pad_ResetTouchpadTapMaxMotion" xml:space="preserve"><value>Max. tikafstand herstellen</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion" xml:space="preserve"><value>Max. afstand lang indrukken</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion_Tooltip" xml:space="preserve"><value>Hoe ver een vinger mag afdwalen tijdens het vasthouden en toch als lang indrukken telt in plaats van vegen.</value></data>
+  <data name="Pad_ResetTouchpadLongPressMaxMotion" xml:space="preserve"><value>Max. afstand lang indrukken herstellen</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle" xml:space="preserve"><value>Tweevingerhoek</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle_Tooltip" xml:space="preserve"><value>Grootste hoek tussen de richtingen van beide vingers die nog als tweevingerveeg telt in plaats van knijpen of draaien.</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipeAngularTolerance" xml:space="preserve"><value>Tweevingerhoek herstellen</value></data>
+  <data name="Pad_Touchpad_PinchThreshold" xml:space="preserve"><value>Knijpdrempel</value></data>
+  <data name="Pad_Touchpad_PinchThreshold_Tooltip" xml:space="preserve"><value>Hoeveel de afstand tussen twee vingers moet veranderen voordat knijpen wordt uitgevoerd.</value></data>
+  <data name="Pad_ResetTouchpadPinchThreshold" xml:space="preserve"><value>Knijpdrempel herstellen</value></data>
+  <data name="Pad_Touchpad_RotateThreshold" xml:space="preserve"><value>Draaidrempel</value></data>
+  <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Hoe ver twee vingers moeten draaien voordat draaien wordt uitgevoerd.</value></data>
+  <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Draaidrempel herstellen</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absolute aanwijzer</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Stelt de Touchpad Pointer X/Y-bronnen in, die de cursor naar de vingerpositie op het pad brengen (koppel ze aan muis X/Y op een toetsenbord- / muis-controller). Grootte 1,00 met centrum 0,50 beeldt het pad af op het hele scherm. Verklein de grootte om de cursor tot een deel te beperken en verplaats het centrum om dat deel te kiezen.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Gebiedsbreedte</value></data>

@@ -1343,6 +1343,21 @@
   <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>Flip vertical motion. Finger down moves the cursor up.</value></data>
 
   <!-- Absolute Pointer card (#9 B-15) -->
+  <data name="Pad_Touchpad_TapMaxMotion" xml:space="preserve"><value>Tap Max Travel</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion_Tooltip" xml:space="preserve"><value>How far a finger may move and still count as a tap, in pad widths. 0.04 is 4% of the pad.</value></data>
+  <data name="Pad_ResetTouchpadTapMaxMotion" xml:space="preserve"><value>Reset Tap Max Travel</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion" xml:space="preserve"><value>Long Press Max Travel</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion_Tooltip" xml:space="preserve"><value>How far a finger may drift during a hold and still count as a long press rather than a swipe.</value></data>
+  <data name="Pad_ResetTouchpadLongPressMaxMotion" xml:space="preserve"><value>Reset Long Press Max Travel</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle" xml:space="preserve"><value>Two Finger Angle</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle_Tooltip" xml:space="preserve"><value>Widest angle between the two fingers' directions that still counts as a two-finger swipe rather than a pinch or rotate.</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipeAngularTolerance" xml:space="preserve"><value>Reset Two Finger Angle</value></data>
+  <data name="Pad_Touchpad_PinchThreshold" xml:space="preserve"><value>Pinch Threshold</value></data>
+  <data name="Pad_Touchpad_PinchThreshold_Tooltip" xml:space="preserve"><value>How much the distance between two fingers must change before a pinch or spread fires.</value></data>
+  <data name="Pad_ResetTouchpadPinchThreshold" xml:space="preserve"><value>Reset Pinch Threshold</value></data>
+  <data name="Pad_Touchpad_RotateThreshold" xml:space="preserve"><value>Rotate Threshold</value></data>
+  <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>How far two fingers must turn before a rotate fires.</value></data>
+  <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Reset Rotate Threshold</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absolute Pointer</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Tunes the Touchpad Pointer X/Y sources, which warp the cursor to your finger's position on the pad (map them to mouse X/Y on a Keyboard / Mouse virtual controller). Size 1.00 with center 0.50 maps the pad to the whole screen. Shrink the size to confine the cursor to part of the screen, and move the center to place it.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Region Width</value></data>

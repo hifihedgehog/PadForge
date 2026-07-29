@@ -2551,6 +2551,21 @@
   <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>Quadrante Leste</value></data>
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>Quadrante Oeste</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Centro</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion" xml:space="preserve"><value>Percurso máx. do toque</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion_Tooltip" xml:space="preserve"><value>Quanto um dedo pode se mover e ainda contar como toque, em larguras do pad. 0,04 é 4% do pad.</value></data>
+  <data name="Pad_ResetTouchpadTapMaxMotion" xml:space="preserve"><value>Redefinir percurso máx. do toque</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion" xml:space="preserve"><value>Percurso máx. do toque longo</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion_Tooltip" xml:space="preserve"><value>Quanto um dedo pode desviar durante um toque longo e ainda contar como tal em vez de deslize.</value></data>
+  <data name="Pad_ResetTouchpadLongPressMaxMotion" xml:space="preserve"><value>Redefinir percurso máx. do toque longo</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle" xml:space="preserve"><value>Ângulo de dois dedos</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle_Tooltip" xml:space="preserve"><value>Maior ângulo entre as direções dos dois dedos que ainda conta como deslize de dois dedos em vez de pinça ou giro.</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipeAngularTolerance" xml:space="preserve"><value>Redefinir ângulo de dois dedos</value></data>
+  <data name="Pad_Touchpad_PinchThreshold" xml:space="preserve"><value>Limite da pinça</value></data>
+  <data name="Pad_Touchpad_PinchThreshold_Tooltip" xml:space="preserve"><value>Quanto a distância entre dois dedos precisa mudar antes de disparar uma pinça.</value></data>
+  <data name="Pad_ResetTouchpadPinchThreshold" xml:space="preserve"><value>Redefinir limite da pinça</value></data>
+  <data name="Pad_Touchpad_RotateThreshold" xml:space="preserve"><value>Limite de giro</value></data>
+  <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Quanto dois dedos precisam girar antes de disparar um giro.</value></data>
+  <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Redefinir limite de giro</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Ponteiro Absoluto</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Ajusta as fontes Ponteiro X/Y do touchpad, que levam o cursor até a posição do dedo no pad (mapeie-as para mouse X/Y em um controle virtual de teclado / mouse). Tamanho 1,00 com centro 0,50 mapeia o pad para a tela inteira. Reduza o tamanho para confinar o cursor a uma parte e mova o centro para posicioná-la.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Largura da Região</value></data>

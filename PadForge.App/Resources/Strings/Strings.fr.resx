@@ -2551,6 +2551,21 @@
   <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>Quadrant est</value></data>
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>Quadrant ouest</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Centre</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion" xml:space="preserve"><value>Course max. du tap</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion_Tooltip" xml:space="preserve"><value>Distance qu'un doigt peut parcourir en restant un tap, en largeurs de pad. 0,04 vaut 4% du pad.</value></data>
+  <data name="Pad_ResetTouchpadTapMaxMotion" xml:space="preserve"><value>Réinitialiser la course max. du tap</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion" xml:space="preserve"><value>Course max. d'appui long</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion_Tooltip" xml:space="preserve"><value>Distance qu'un doigt peut dériver pendant un maintien en restant un appui long plutôt qu'un balayage.</value></data>
+  <data name="Pad_ResetTouchpadLongPressMaxMotion" xml:space="preserve"><value>Réinitialiser la course max. d'appui long</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle" xml:space="preserve"><value>Angle à deux doigts</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle_Tooltip" xml:space="preserve"><value>Angle maximal entre les directions des deux doigts qui compte encore comme balayage à deux doigts plutôt que pincement ou rotation.</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipeAngularTolerance" xml:space="preserve"><value>Réinitialiser l'angle à deux doigts</value></data>
+  <data name="Pad_Touchpad_PinchThreshold" xml:space="preserve"><value>Seuil de pincement</value></data>
+  <data name="Pad_Touchpad_PinchThreshold_Tooltip" xml:space="preserve"><value>Variation de distance entre deux doigts nécessaire pour déclencher un pincement.</value></data>
+  <data name="Pad_ResetTouchpadPinchThreshold" xml:space="preserve"><value>Réinitialiser le seuil de pincement</value></data>
+  <data name="Pad_Touchpad_RotateThreshold" xml:space="preserve"><value>Seuil de rotation</value></data>
+  <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Rotation nécessaire des deux doigts pour déclencher une rotation.</value></data>
+  <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Réinitialiser le seuil de rotation</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Pointeur absolu</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Règle les sources Pointeur X/Y du pavé tactile, qui placent le curseur à la position du doigt sur le pad (à mapper sur souris X/Y d'une manette virtuelle clavier / souris). Taille 1,00 avec centre 0,50 fait correspondre le pad à tout l'écran. Réduisez la taille pour confiner le curseur à une partie, et déplacez le centre pour la situer.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Largeur de la Zone</value></data>

@@ -2551,6 +2551,21 @@
   <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>동쪽 구역</value></data>
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>서쪽 구역</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>중앙</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion" xml:space="preserve"><value>탭 최대 이동</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion_Tooltip" xml:space="preserve"><value>손가락이 움직여도 탭으로 인정되는 최대 거리(패드 너비 기준). 0.04는 패드의 4%입니다.</value></data>
+  <data name="Pad_ResetTouchpadTapMaxMotion" xml:space="preserve"><value>탭 최대 이동 초기화</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion" xml:space="preserve"><value>길게 누르기 최대 이동</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion_Tooltip" xml:space="preserve"><value>길게 누르는 동안 손가락이 밀려도 스와이프가 아닌 길게 누르기로 인정되는 최대 거리.</value></data>
+  <data name="Pad_ResetTouchpadLongPressMaxMotion" xml:space="preserve"><value>길게 누르기 최대 이동 초기화</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle" xml:space="preserve"><value>두 손가락 각도</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle_Tooltip" xml:space="preserve"><value>두 손가락 방향의 차이가 이 각도 이내면 핀치나 회전이 아닌 두 손가락 스와이프로 봅니다.</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipeAngularTolerance" xml:space="preserve"><value>두 손가락 각도 초기화</value></data>
+  <data name="Pad_Touchpad_PinchThreshold" xml:space="preserve"><value>핀치 임계값</value></data>
+  <data name="Pad_Touchpad_PinchThreshold_Tooltip" xml:space="preserve"><value>핀치가 실행되기까지 두 손가락 사이 거리가 변해야 하는 비율.</value></data>
+  <data name="Pad_ResetTouchpadPinchThreshold" xml:space="preserve"><value>핀치 임계값 초기화</value></data>
+  <data name="Pad_Touchpad_RotateThreshold" xml:space="preserve"><value>회전 임계값</value></data>
+  <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>회전이 실행되기까지 두 손가락이 돌아야 하는 각도.</value></data>
+  <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>회전 임계값 초기화</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>절대 포인터</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>터치패드 포인터 X/Y 소스를 조정합니다. 이 소스는 패드 위 손가락 위치로 커서를 옮깁니다 (키보드 / 마우스 가상 컨트롤러의 마우스 X/Y에 매핑하세요). 크기 1.00, 중심 0.50이면 패드가 화면 전체에 대응합니다. 크기를 줄이면 커서가 화면 일부로 제한되고, 중심으로 그 위치를 정합니다.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>영역 너비</value></data>

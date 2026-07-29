@@ -2551,6 +2551,21 @@
   <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>Ost-Quadrant</value></data>
   <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>West-Quadrant</value></data>
   <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Mitte</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion" xml:space="preserve"><value>Max. Tipp-Weg</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion_Tooltip" xml:space="preserve"><value>Wie weit ein Finger sich bewegen darf und trotzdem als Tippen zählt, in Pad-Breiten. 0,04 sind 4% des Pads.</value></data>
+  <data name="Pad_ResetTouchpadTapMaxMotion" xml:space="preserve"><value>Max. Tipp-Weg zurücksetzen</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion" xml:space="preserve"><value>Max. Weg bei langem Druck</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion_Tooltip" xml:space="preserve"><value>Wie weit ein Finger während des Haltens abdriften darf und trotzdem als langer Druck statt als Wischen zählt.</value></data>
+  <data name="Pad_ResetTouchpadLongPressMaxMotion" xml:space="preserve"><value>Max. Weg bei langem Druck zurücksetzen</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle" xml:space="preserve"><value>Zwei-Finger-Winkel</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle_Tooltip" xml:space="preserve"><value>Größter Winkel zwischen den Richtungen beider Finger, der noch als Zwei-Finger-Wischen statt als Zoom oder Drehung zählt.</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipeAngularTolerance" xml:space="preserve"><value>Zwei-Finger-Winkel zurücksetzen</value></data>
+  <data name="Pad_Touchpad_PinchThreshold" xml:space="preserve"><value>Zoom-Schwelle</value></data>
+  <data name="Pad_Touchpad_PinchThreshold_Tooltip" xml:space="preserve"><value>Wie stark sich der Abstand zwischen zwei Fingern ändern muss, bevor Zoom auslöst.</value></data>
+  <data name="Pad_ResetTouchpadPinchThreshold" xml:space="preserve"><value>Zoom-Schwelle zurücksetzen</value></data>
+  <data name="Pad_Touchpad_RotateThreshold" xml:space="preserve"><value>Drehschwelle</value></data>
+  <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Wie weit zwei Finger sich drehen müssen, bevor eine Drehung auslöst.</value></data>
+  <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Drehschwelle zurücksetzen</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absoluter Zeiger</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Stellt die Touchpad-Zeiger-X/Y-Quellen ein, die den Cursor an die Fingerposition auf dem Pad setzen (auf Maus X/Y eines Tastatur-/Maus-Controllers legen). Größe 1,00 mit Mitte 0,50 bildet das Pad auf den ganzen Bildschirm ab. Kleinere Größe beschränkt den Cursor auf einen Ausschnitt, die Mitte legt ihn fest.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Bereichsbreite</value></data>

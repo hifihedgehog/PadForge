@@ -2873,6 +2873,139 @@ namespace PadForge.Engine.Common.Mapping
         /// the relative case is the narrower one — only the KBM mouse
         /// path opts in.</para></summary>
         // ─────────────────────────────────────────────
+        //  Touchpad → mouse: a RATE, bridged across reports
+        // ─────────────────────────────────────────────
+
+        private struct TouchVelocity
+        {
+            public float Velocity;          // pad fraction per second
+            public float LastRaw;
+            public long LastReportTicks;
+        }
+
+        private static readonly ConcurrentDictionary<
+            (int Slot, string Device, int Pad, int Finger, int Axis), TouchVelocity> _touchVelocity = new();
+
+        /// <summary>Set while a mouse target's deflection lane is combined, so
+        /// touchpad delta sources contribute ZERO there and are counted once
+        /// on the rate lane. Touchpad-to-stick rows read the ABSOLUTE variant
+        /// and never reach this branch at all.</summary>
+        [ThreadStatic] private static bool _suppressTouchForMouseLane;
+
+        /// <summary>Counts one pad-width of travel is worth. The old lane
+        /// scaled a per-poll delta by <see cref="TouchpadDeltaScale"/> into a
+        /// [-1..+1] deflection the KBM controller then spent at 15 px, so a
+        /// full-width sweep inside one report was worth 128 * 15. Preserving
+        /// that product preserves the sensitivity users already tuned.</summary>
+        private const float TouchCountsPerPadWidth = TouchpadDeltaScale * 15.0f;
+
+        /// <summary>How long a velocity keeps driving the cursor after the
+        /// last position change before the finger counts as resting. Long
+        /// enough to bridge a report gap, short enough that a still finger
+        /// does not coast. Trackball momentum is a separate opt-in feature
+        /// applied by the feel chain, not here.</summary>
+        private const float TouchVelocityHoldSeconds = 0.025f;
+
+        /// <summary>Clamp on the measured inter-report interval, so a stall
+        /// (a dropped report, a debugger break) cannot divide a delta by a
+        /// near-zero or enormous interval into a spike or a crawl.</summary>
+        private const float TouchMinReportSeconds = 0.002f;
+        private const float TouchMaxReportSeconds = 0.030f;
+
+        /// <summary><para>Touchpad motion as MOUSE COUNTS for one poll,
+        /// bridged across the gap between device reports.</para>
+        /// <para>The deflection lane recomputed its delta ONCE PER POLL from
+        /// a position that only changes when a report arrives. A DualSense
+        /// pad reports near 250 Hz against a 1 kHz poll, so three polls in
+        /// four saw no change and produced zero while the fourth carried the
+        /// whole movement. That burst was then clamped to +/-1 (any delta
+        /// past 1/128 of the pad saturated) and spent at the KBM
+        /// controller's fixed 15 px per poll, so even the poll holding the
+        /// motion could not deliver it. Quantised, clipped, and rationed.
+        /// </para>
+        /// <para>DS4Windows never has this problem because it is event
+        /// driven: TouchesMoved runs on the report itself and uses the
+        /// device's own DeltaX (MouseCursor.cs). A poll loop cannot borrow
+        /// that, so it does the equivalent: each report becomes a VELOCITY,
+        /// spent every poll until the next report refreshes it. The cursor
+        /// moves every poll instead of every fourth, which is the difference
+        /// being felt against Steam, reWASD and lizard mode.</para></summary>
+        public static (float X, float Y) ReadTouchpadMouseCounts(
+            CustomInputState state, MappingSource src, int slotIndex,
+            string deviceGuid, float dtSeconds, bool forX, long nowTicks, long ticksPerSecond)
+        {
+            if (state == null || src == null || dtSeconds <= 0f) return (0f, 0f);
+            if (!TryParseTouchpadAxis(CanonicalDescriptor(src.Descriptor),
+                    out int padIdx, out int fingerIdx, out int axisOffset, out _))
+                return (0f, 0f);
+            if (axisOffset != 0 && axisOffset != 1) return (0f, 0f);   // pressure is not motion
+
+            var pad = GetTouchpad(state, padIdx);
+            if (pad?.FingerDown == null || fingerIdx < 0 || fingerIdx >= pad.FingerDown.Length)
+                return (0f, 0f);
+
+            string dev = EffectiveDeviceGuid(src, deviceGuid);
+            var key = (slotIndex, dev ?? "", padIdx, fingerIdx, axisOffset);
+
+            // A lifted finger has no velocity. Clearing rather than decaying
+            // keeps the release crisp; momentum is the trackball feature.
+            if (!pad.FingerDown[fingerIdx])
+            {
+                _touchVelocity.TryRemove(key, out _);
+                return (0f, 0f);
+            }
+
+            float raw = axisOffset == 0 ? pad.FingerX[fingerIdx] : pad.FingerY[fingerIdx];
+            // Seeded AT CONTACT with the landing position and time, so the
+            // first movement already has a real interval to divide by.
+            // Deferring that threw the first motion after every touchdown
+            // away, which a test caught.
+            var st = _touchVelocity.GetOrAdd(key,
+                _ => new TouchVelocity { LastRaw = raw, LastReportTicks = nowTicks });
+
+            if (raw != st.LastRaw)
+            {
+                float interval = ticksPerSecond > 0
+                    ? (float)(nowTicks - st.LastReportTicks) / ticksPerSecond
+                    : TouchMinReportSeconds;
+                interval = Math.Clamp(interval, TouchMinReportSeconds, TouchMaxReportSeconds);
+                st.Velocity = (raw - st.LastRaw) / interval;
+                st.LastRaw = raw;
+                st.LastReportTicks = nowTicks;
+                _touchVelocity[key] = st;
+            }
+            else if (ticksPerSecond > 0
+                     && (float)(nowTicks - st.LastReportTicks) / ticksPerSecond > TouchVelocityHoldSeconds)
+            {
+                // No new position for longer than a report gap: the finger is
+                // resting, not between reports. Stop rather than coast.
+                st.Velocity = 0f;
+                _touchVelocity[key] = st;
+            }
+
+            if (st.Velocity == 0f) return (0f, 0f);
+
+            var tp = TouchpadMouseSettingsProvider?.Invoke(slotIndex, dev, padIdx);
+            float sens = axisOffset == 0 ? (tp?.MouseSensitivityX ?? 1f) : (tp?.MouseSensitivityY ?? 1f);
+            bool invert = axisOffset == 0 ? (tp?.MouseInvertX ?? false) : (tp?.MouseInvertY ?? false);
+
+            float counts = st.Velocity * dtSeconds * TouchCountsPerPadWidth * sens
+                           * PerSourceSensitivity(src);
+            if (invert) counts = -counts;
+            if (counts == 0f) return (0f, 0f);
+            return forX ? (counts, 0f) : (0f, counts);
+        }
+
+        /// <summary>Scopes <see cref="_suppressTouchForMouseLane"/>.</summary>
+        public readonly struct TouchMouseLaneScope : IDisposable
+        {
+            private readonly bool _prev;
+            public TouchMouseLaneScope(bool suppress)
+            { _prev = _suppressTouchForMouseLane; _suppressTouchForMouseLane = suppress; }
+            public void Dispose() => _suppressTouchForMouseLane = _prev;
+        }
+
+        // ─────────────────────────────────────────────
         //  Gyro → mouse: a RATE, not a deflection (#79)
         // ─────────────────────────────────────────────
 
@@ -4359,6 +4492,12 @@ namespace PadForge.Engine.Common.Mapping
                 : (tpSettings?.MouseInvertY ?? false);
             if (invert) delta = -delta;
 
+            // The mouse target counts touch motion on its own rate lane
+            // (ReadTouchpadMouseCounts), so contributing here too would move
+            // the cursor twice. Only THIS relative branch is scoped: the
+            // absolute variant serves stick and extended-axis targets and is
+            // untouched.
+            if (_suppressTouchForMouseLane) { bipolar = 0f; return true; }
             bipolar = delta * TouchpadDeltaScale * sens;
             // Generic per-source Sensitivity (#9 B-13) multiplies the delta
             // on top of the slot-level Touchpad-tab tuning, so per-row touch

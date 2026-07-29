@@ -192,6 +192,39 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void Push_StampsRegionSchema_SoADeliberateFullScreenResetSurvives()
+        {
+            // The load-bearing half of moving the authored-but-default repair
+            // into the resolver. Anything the push writes is current user
+            // intent, so it must be stamped post-repair. Without the stamp a
+            // freshly authored entry carries schema 0, the resolver repairs
+            // it, and a deliberate reset to full screen (authored true at the
+            // identity region) is cleared, which is the precise bug
+            // PointerRegionAuthored exists to prevent.
+            var ps = Arrange(null);
+            var vm = new PadViewModel(0);
+            vm.LoadTouchpadGestureSettingsForActiveDevice();
+
+            // Drag the region away and back, which is how a user
+            // deliberately lands on full screen. Assigning 1.0 straight
+            // onto the 1.0 default is a no-op: SetProperty returns false,
+            // nothing pushes, and the test would prove nothing.
+            vm.TouchpadPointerRegionSizeX = 0.6;
+            vm.TouchpadPointerRegionSizeX = 1.0;
+
+            Assert.NotNull(ps.TouchpadSettings);   // the push actually ran
+
+            var entry = ps.TouchpadSettings.Single(e => e.TouchpadIndex == 0);
+            Assert.True(entry.Settings.PointerRegionAuthored);
+            Assert.Equal(1, entry.Settings.RegionSchema);
+
+            // And it must survive the resolver, which is where the repair runs.
+            var resolved = TouchpadGestureSettings.ResolveEntryForPad(
+                ps.TouchpadSettings, Dev.ToString(), 0);
+            Assert.True(resolved.Settings.PointerRegionAuthored);
+        }
+
+        [Fact]
         public void Sync_WritesOneEntryPerPad_AndTheSelectorPivotsTheWholeTab()
         {
             // CONTRACT CHANGE. Settings used to collapse to one entry per

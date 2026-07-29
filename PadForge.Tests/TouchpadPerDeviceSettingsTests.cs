@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using PadForge.Common;
 using PadForge.Common.Input;
@@ -192,12 +192,15 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Sync_WritesSingleEntryPerDevice_StampedIndexZero()
+        public void Sync_WritesOneEntryPerPad_AndTheSelectorPivotsTheWholeTab()
         {
+            // CONTRACT CHANGE. Settings used to collapse to one entry per
+            // device, with the pad selector driving only the recorder and
+            // preview. They are now per (device, pad): a controller's left and
+            // right pads are different hardware in different places under
+            // different thumbs, and the owner asked for the whole tab to
+            // follow the selector rather than the screen region alone.
             string g = Dev.ToString();
-            // Legacy two-entry array whose FIRST DeviceGuid match is index 1,
-            // so a naive survivor would stay stamped 1 without the
-            // unconditional TouchpadIndex = 0.
             var ps = Arrange(new[]
             {
                 new TouchpadSettingsEntry { DeviceGuid = g, TouchpadIndex = 1,
@@ -208,28 +211,45 @@ namespace PadForge.Tests
 
             var vm = new PadViewModel(0);
             vm.LoadTouchpadGestureSettingsForActiveDevice();
-            Assert.True(vm.TouchpadGesturesEnabled);          // resolved the configured winner
-            Assert.False(vm.TouchpadEnableJoystickOutput);
 
-            // First push (formerly "pad 0"): toggle joystick output.
+            // Pad 0's own entry, not the "configured winner" across the device.
+            Assert.False(vm.TouchpadGesturesEnabled);
             vm.TouchpadEnableJoystickOutput = true;
 
-            var e1 = Assert.Single(ps.TouchpadSettings);
-            Assert.Equal(g, e1.DeviceGuid, ignoreCase: true);
-            Assert.Equal(0, e1.TouchpadIndex);               // stamped 0, not the survivor's legacy 1
-            Assert.True(e1.Settings.EnableJoystickOutput);
-            Assert.True(e1.Settings.Enabled);                // winner's other settings preserved
+            var pad0 = ps.TouchpadSettings.Single(e => e.TouchpadIndex == 0);
+            var pad1 = ps.TouchpadSettings.Single(e => e.TouchpadIndex == 1);
+            Assert.True(pad0.Settings.EnableJoystickOutput);
+            // Pad 1 is untouched: the edit belonged to pad 0 alone.
+            Assert.False(pad1.Settings.EnableJoystickOutput);
+            Assert.True(pad1.Settings.Enabled);
 
-            // Second push (formerly "pad 1"): moving the record/preview
-            // selector no longer partitions settings, so another edit still
-            // lands on the same single device entry.
+            // Switching pads pulls that pad's whole bundle in.
             vm.SelectedTouchpadIndex = 1;
-            vm.TouchpadEnableTaps = true;
+            Assert.True(vm.TouchpadGesturesEnabled);          // pad 1 had Enabled
+            Assert.False(vm.TouchpadEnableJoystickOutput);    // pad 0's edit did not leak
 
-            var e2 = Assert.Single(ps.TouchpadSettings);
-            Assert.Equal(0, e2.TouchpadIndex);
-            Assert.True(e2.Settings.EnableTaps);
-            Assert.True(e2.Settings.EnableJoystickOutput);
+            vm.TouchpadEnableTaps = true;
+            Assert.True(ps.TouchpadSettings.Single(e => e.TouchpadIndex == 1).Settings.EnableTaps);
+            Assert.False(ps.TouchpadSettings.Single(e => e.TouchpadIndex == 0).Settings.EnableTaps);
+        }
+
+        [Fact]
+        public void PositiveControl_BothPadEntriesSurviveAPush()
+        {
+            // Without this the test above could pass on a push that deleted
+            // the sibling instead of leaving it alone.
+            string g = Dev.ToString();
+            var ps = Arrange(new[]
+            {
+                new TouchpadSettingsEntry { DeviceGuid = g, TouchpadIndex = 0,
+                    Settings = TouchpadGestureSettings.Default() },
+                new TouchpadSettingsEntry { DeviceGuid = g, TouchpadIndex = 1,
+                    Settings = TouchpadGestureSettings.Default() },
+            });
+            var vm = new PadViewModel(0);
+            vm.LoadTouchpadGestureSettingsForActiveDevice();
+            vm.TouchpadEnableTaps = true;
+            Assert.Equal(2, ps.TouchpadSettings.Count(e => e.TouchpadIndex is 0 or 1));
         }
     }
 }

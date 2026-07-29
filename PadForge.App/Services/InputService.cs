@@ -1680,7 +1680,7 @@ namespace PadForge.Services
                 }
                 if (rps?.TouchpadSettings == null) return null;
                 return PadForge.Engine.Touchpad.TouchpadGestureSettings
-                    .ResolveRegionEntryForPad(rps.TouchpadSettings, rg.ToString(), padIdx)?.Settings;
+                    .ResolveEntryForPad(rps.TouchpadSettings, rg.ToString(), padIdx)?.Settings;
             };
 
             PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider =

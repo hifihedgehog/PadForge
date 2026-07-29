@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using PadForge.Common;
@@ -18,6 +18,7 @@ namespace PadForge.Tests
     /// quantity, so the only knob a user could reach moved in the one
     /// direction imports never used.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class PointerRegionCardTests
     {
         private const int Slot = 0;
@@ -278,6 +279,102 @@ namespace PadForge.Tests
             Assert.Equal(0.09f, c.PointerRegionCenterX);
             Assert.Equal(0.90f, c.PointerRegionCenterY);
             Assert.True(c.PointerRegionAuthored);
+        }
+
+        // ── The card must SHOW the imported region ───────────────────────
+
+        private static MappingSet SetWithPointerRow(string target, string descriptor,
+                                                    double center, double extent)
+        {
+            var row = new MappingRow { Target = target };
+            row.Sources.Add(new MappingSource
+            {
+                Descriptor = descriptor,
+                ParamPointerCenter = center,
+                ParamPointerExtent = extent,
+            });
+            var set = new MappingSet();
+            set.Rows.Add(row);
+            return set;
+        }
+
+        [Fact]
+        public void SeedFindsTheRegion_WhenTheRowsLiveInAnotherSlotsSet()
+        {
+            // The live layout that broke it, taken from the user's own
+            // PadForge.xml after importing RCT3 Weno V0.1: the pointer rows
+            // target KbmMouseX/Y and therefore sit in the KEYBOARD/MOUSE
+            // slot's set (index 1), while the pad page being viewed is a
+            // different slot. Searching only the current slot's set found
+            // nothing and the card showed the full-screen default.
+            var sets = new[]
+            {
+                new MappingSet(),                                                    // slot 0: Xbox
+                SetWithPointerRow("KbmMouseX", "Touchpad 1 Pointer X", 0.5, 1.2),    // slot 1: KbM
+            };
+
+            Assert.True(PadForge.ViewModels.PadViewModel.FindPointerRegionAxis(
+                sets, pad: 1, wantX: true, out double size, out double center));
+            Assert.Equal(1.2, size, 3);
+            Assert.Equal(0.5, center, 3);
+        }
+
+        [Fact]
+        public void SeedReadsTheRealRctValues()
+        {
+            var sets = new[]
+            {
+                new MappingSet(),
+                SetWithPointerRow("KbmMouseY", "Touchpad 1 Pointer Y", 0.44, 0.7),
+            };
+            Assert.True(PadForge.ViewModels.PadViewModel.FindPointerRegionAxis(
+                sets, pad: 1, wantX: false, out double size, out double center));
+            Assert.Equal(0.7, size, 3);
+            Assert.Equal(0.44, center, 3);
+        }
+
+        [Fact]
+        public void SeedFindsARegionOnAnyPad_BecauseTheseSettingsArePerDevice()
+        {
+            // The card is per DEVICE, not per pad: the push forces
+            // TouchpadIndex 0 and the pad combo drives only the recorder and
+            // preview. So a region authored on the RIGHT pad must show even
+            // while the combo sits on the left one. Requiring the two to
+            // match is what left the imported values invisible.
+            var sets = new[]
+            {
+                SetWithPointerRow("KbmMouseX", "Touchpad 1 Pointer X", 0.5, 1.2),
+            };
+            Assert.True(PadForge.ViewModels.PadViewModel.FindPointerRegionAxis(
+                sets, pad: 0, wantX: true, out double size, out double center));
+            Assert.Equal(1.2, size, 3);
+        }
+
+        [Fact]
+        public void SeedPrefersTheSelectedPadWhenBothCarryARegion()
+        {
+            // Any-pad is the FALLBACK, not the first choice. Without the
+            // preference the test above would pass on a search that ignored
+            // the pad index entirely and grabbed whichever row came first.
+            var sets = new[]
+            {
+                SetWithPointerRow("KbmMouseX", "Touchpad 1 Pointer X", 0.5, 1.2),
+                SetWithPointerRow("KbmMouseX", "Touchpad 0 Pointer X", 0.5, 0.4),
+            };
+            Assert.True(PadForge.ViewModels.PadViewModel.FindPointerRegionAxis(
+                sets, pad: 0, wantX: true, out double size, out _));
+            Assert.Equal(0.4, size, 3);
+        }
+
+        [Fact]
+        public void SeedIgnoresTheOtherAxis()
+        {
+            var sets = new[]
+            {
+                SetWithPointerRow("KbmMouseX", "Touchpad 1 Pointer X", 0.5, 1.2),
+            };
+            Assert.False(PadForge.ViewModels.PadViewModel.FindPointerRegionAxis(
+                sets, pad: 1, wantX: false, out _, out _));
         }
 
         [Fact]

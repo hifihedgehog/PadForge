@@ -2441,6 +2441,11 @@ namespace PadForge.ViewModels
         public double FlickForwardDeadzone { get => _flickForwardDeadzone; set => SetProperty(ref _flickForwardDeadzone, Math.Clamp(value, 0.0, 180.0)); }
         private double _flickSmoothing = -1;
         public double FlickSmoothing { get => _flickSmoothing; set => SetProperty(ref _flickSmoothing, Math.Clamp(value, -1.0, 0.5)); }
+        // Steam's flickstick "rotation": the whole input map turns, so the
+        // offset lands on the flick angle before snapping. Range is one full
+        // turn either way, which is what the engine's re-wrap accepts.
+        private double _flickRotationOffset;
+        public double FlickRotationOffset { get => _flickRotationOffset; set => SetProperty(ref _flickRotationOffset, Math.Clamp(value, -180.0, 180.0)); }
         private bool _flickOnEngage;
         public bool FlickOnEngage { get => _flickOnEngage; set => SetProperty(ref _flickOnEngage, value); }
 
@@ -2456,6 +2461,7 @@ namespace PadForge.ViewModels
         private RelayCommand _resetFlickCountsPer360Command, _resetFlickTimeCommand,
             _resetFlickThresholdCommand, _resetFlickSnapModeCommand, _resetFlickSnapStrengthCommand,
             _resetFlickForwardDeadzoneCommand, _resetFlickSmoothingCommand, _resetFlickOnEngageCommand,
+            _resetFlickRotationOffsetCommand,
             _resetFlickStickCardCommand;
         public RelayCommand ResetFlickCountsPer360Command => _resetFlickCountsPer360Command ??= new RelayCommand(() => FlickCountsPer360 = 14400);
         public RelayCommand ResetFlickTimeCommand => _resetFlickTimeCommand ??= new RelayCommand(() => FlickTime = 0.1);
@@ -2464,12 +2470,13 @@ namespace PadForge.ViewModels
         public RelayCommand ResetFlickSnapStrengthCommand => _resetFlickSnapStrengthCommand ??= new RelayCommand(() => FlickSnapStrength = 1.0);
         public RelayCommand ResetFlickForwardDeadzoneCommand => _resetFlickForwardDeadzoneCommand ??= new RelayCommand(() => FlickForwardDeadzone = 0);
         public RelayCommand ResetFlickSmoothingCommand => _resetFlickSmoothingCommand ??= new RelayCommand(() => FlickSmoothing = -1);
+        public RelayCommand ResetFlickRotationOffsetCommand => _resetFlickRotationOffsetCommand ??= new RelayCommand(() => FlickRotationOffset = 0);
         public RelayCommand ResetFlickOnEngageCommand => _resetFlickOnEngageCommand ??= new RelayCommand(() => FlickOnEngage = false);
         public RelayCommand ResetFlickStickCardCommand => _resetFlickStickCardCommand ??= new RelayCommand(() =>
         {
             FlickCountsPer360 = 14400; FlickTime = 0.1; FlickThreshold = 0.9;
             FlickSnapMode = "None"; FlickSnapStrength = 1.0; FlickForwardDeadzone = 0;
-            FlickSmoothing = -1; FlickOnEngage = false;
+            FlickSmoothing = -1; FlickOnEngage = false; FlickRotationOffset = 0;
         });
 
         private double _gyroPlayerSpaceYawRelaxFactor = 1.41;

@@ -2646,6 +2646,9 @@
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>가장자리 스윕의 노이즈를 평활화합니다. -1은 자동 단계 윈도우를 사용하고, 0은 스무딩을 끄며, 값이 클수록 틱당 더 큰 회전을 평활화합니다.</value></data>
   <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>자동(-1)으로 초기화</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>활성화 시 플릭 허용</value></data>
+  <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>회전 오프셋</value></data>
+  <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>플릭 맵 전체를 이 각도만큼 회전합니다. 양수는 시계 방향입니다. 스냅은 오프셋 다음에 적용됩니다.</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>회전 오프셋 초기화</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Flick Stick이 있는 레이어가 스틱이 이미 기울어진 상태에서 활성화되면 즉시 플릭을 실행합니다. 끄면 카메라를 그대로 두고 현재 스틱 각도부터 회전을 추적합니다.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>꺼짐으로 초기화</value></data>
   <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>사용자 지정</value></data>

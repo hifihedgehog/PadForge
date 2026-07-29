@@ -2646,6 +2646,9 @@
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>平滑沿边滑动的噪声。-1 使用自动分级窗口，0 关闭平滑，值越大可平滑每计数更大的旋转。</value></data>
   <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>重置为自动 (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>激活时允许甩杆</value></data>
+  <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>旋转偏移</value></data>
+  <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>将整个快速转向映射旋转此角度。正值为顺时针。吸附在偏移之后应用。</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>重置旋转偏移</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>当承载 Flick Stick 的层在摇杆已偏移时激活，立即执行甩杆。关闭时镜头保持不动，并从当前摇杆角度开始跟踪旋转。</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>重置为关闭</value></data>
   <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>自定义</value></data>

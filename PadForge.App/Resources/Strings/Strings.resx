@@ -2178,6 +2178,9 @@
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Smooths rim-sweep noise. -1 uses the automatic tiered window, 0 turns smoothing off, larger values smooth bigger per-tick rotations.</value></data>
   <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Reset to Automatic (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Allow Flick on Engage</value></data>
+  <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Rotation Offset</value></data>
+  <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Turns the whole flick map by this many degrees. Positive is clockwise. Snapping applies after the offset.</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Reset rotation offset</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>When the layer hosting Flick Stick engages with the stick already deflected, fire the flick immediately. Off keeps the camera still and tracks rotation from the current stick angle.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Reset to Off</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Steering Lock Feedback</value></data>

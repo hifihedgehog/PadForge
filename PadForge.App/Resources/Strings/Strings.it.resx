@@ -2668,6 +2668,9 @@
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Smussa il rumore della rotazione sul bordo. -1 usa la finestra a livelli automatica, 0 disattiva la smussatura, valori maggiori smussano rotazioni per tick più grandi.</value></data>
   <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Ripristina ad Automatico (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Consenti flick all'attivazione</value></data>
+  <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Scostamento di rotazione</value></data>
+  <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Ruota l'intera mappa flick di questi gradi. Positivo è in senso orario. Lo scatto si applica dopo lo scostamento.</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Reimposta lo scostamento di rotazione</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Quando il livello che ospita il Flick Stick si attiva con la levetta già deflessa, esegue subito il flick. Disattivato tiene ferma la telecamera e segue la rotazione dall'angolo attuale della levetta.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Ripristina a Disattivato</value></data>
   <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>Personalizzato</value></data>

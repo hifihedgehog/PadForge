@@ -2646,6 +2646,9 @@
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Glättet Rauschen beim Entlangfahren am Rand. -1 verwendet das automatische gestufte Fenster, 0 schaltet die Glättung aus, größere Werte glätten größere Drehungen pro Tick.</value></data>
   <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Auf Automatisch (-1) zurücksetzen</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Flick beim Aktivieren erlauben</value></data>
+  <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Rotationsversatz</value></data>
+  <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Dreht die gesamte Flick-Zuordnung um diese Gradzahl. Positiv ist im Uhrzeigersinn. Das Einrasten erfolgt nach dem Versatz.</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Rotationsversatz zurücksetzen</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Wenn die Ebene mit Flick Stick aktiviert wird, während der Stick bereits ausgelenkt ist, wird der Flick sofort ausgelöst. Aus hält die Kamera still und verfolgt die Drehung ab dem aktuellen Stick-Winkel.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Auf Aus zurücksetzen</value></data>
   <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>Benutzerdefiniert</value></data>

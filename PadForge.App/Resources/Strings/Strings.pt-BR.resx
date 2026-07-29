@@ -2646,6 +2646,9 @@
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Suaviza o ruído da varredura pela borda. -1 usa a janela escalonada automática, 0 desliga a suavização, valores maiores suavizam rotações por tick maiores.</value></data>
   <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Redefinir para Automático (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Permitir Flick na Ativação</value></data>
+  <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Deslocamento de rotação</value></data>
+  <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Gira todo o mapa de flick nestes graus. Positivo é no sentido horário. O encaixe se aplica após o deslocamento.</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Redefinir o deslocamento de rotação</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Quando a camada que hospeda o Flick Stick é ativada com o analógico já defletido, dispara o flick imediatamente. Desligado mantém a câmera parada e acompanha a rotação a partir do ângulo atual do analógico.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Redefinir para Desligado</value></data>
   <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>Personalizado</value></data>

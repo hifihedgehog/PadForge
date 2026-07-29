@@ -6800,6 +6800,13 @@
                                     <TextBox Text="{Binding FlickSmoothing, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                     <ui:Button Command="{Binding ResetFlickSmoothingCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickSmoothing, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Settings_FlickRotationOffset, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Settings_FlickRotationOffset_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding FlickRotationOffset, Mode=TwoWay}" Minimum="-180" Maximum="180" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding FlickRotationOffset, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <ui:Button Command="{Binding ResetFlickRotationOffsetCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickRotationOffset, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                     <TextBlock Text="{Binding Settings_FlickOnEngage, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                ToolTip="{Binding Settings_FlickOnEngage_Tooltip, Source={x:Static strings:Strings.Instance}}"/>

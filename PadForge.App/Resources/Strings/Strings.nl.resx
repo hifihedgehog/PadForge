@@ -2666,6 +2666,9 @@
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Vlakt ruis van het randvegen af. -1 gebruikt het automatische getrapte venster, 0 zet smoothing uit, grotere waarden vlakken grotere rotaties per tick af.</value></data>
   <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Herstellen naar Automatisch (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Flick bij activering toestaan</value></data>
+  <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Rotatieverschuiving</value></data>
+  <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Draait de hele flick-kaart met dit aantal graden. Positief is met de klok mee. Uitlijnen gebeurt na de verschuiving.</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Rotatieverschuiving herstellen</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Wanneer de laag met Flick Stick actief wordt terwijl de stick al is uitgeslagen, wordt de flick meteen uitgevoerd. Uit houdt de camera stil en volgt de rotatie vanaf de huidige stickhoek.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Herstellen naar Uit</value></data>
   <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>Aangepast</value></data>

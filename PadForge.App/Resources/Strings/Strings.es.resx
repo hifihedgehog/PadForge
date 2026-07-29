@@ -2646,6 +2646,9 @@
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Suaviza el ruido del barrido por el borde. -1 usa la ventana escalonada automática, 0 desactiva el suavizado, valores mayores suavizan rotaciones por tic más grandes.</value></data>
   <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Restablecer a Automático (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Permitir flick al activar</value></data>
+  <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Desplazamiento de rotación</value></data>
+  <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Gira todo el mapa de flick estos grados. Positivo es en sentido horario. El ajuste se aplica después del desplazamiento.</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Restablecer el desplazamiento de rotación</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Cuando la capa que aloja el Flick Stick se activa con la palanca ya desviada, dispara el flick de inmediato. Desactivado mantiene la cámara quieta y sigue la rotación desde el ángulo actual de la palanca.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Restablecer a Desactivado</value></data>
   <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>Personalizado</value></data>

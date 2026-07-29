@@ -2646,6 +2646,9 @@
   <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Lisse le bruit du balayage sur le bord. -1 utilise la fenêtre étagée automatique, 0 désactive le lissage, des valeurs plus grandes lissent de plus grandes rotations par tic.</value></data>
   <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Réinitialiser à Automatique (-1)</value></data>
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Autoriser le flick à l'activation</value></data>
+  <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Décalage de rotation</value></data>
+  <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Fait tourner toute la carte de flick de ce nombre de degrés. Positif = sens horaire. L'accrochage s'applique après le décalage.</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Réinitialiser le décalage de rotation</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Quand la couche hébergeant le Flick Stick s'active avec le stick déjà défléchi, déclenche le flick immédiatement. Désactivé garde la caméra immobile et suit la rotation depuis l'angle actuel du stick.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Réinitialiser à Désactivé</value></data>
   <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>Personnalisé</value></data>

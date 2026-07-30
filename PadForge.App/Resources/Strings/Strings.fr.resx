@@ -1712,6 +1712,17 @@
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Réinitialiser inverser souris Y</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Réduction du tremblement</value></data>
   <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>Accélération</value></data>
+  <data name="Pad_Touchpad_PointerResponse" xml:space="preserve"><value>Réponse</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Tooltip" xml:space="preserve"><value>Comment la vitesse du doigt devient la vitesse du curseur. Trackpad déplace aussi le curseur plus lentement que le doigt à faible vitesse, ce qui rend le positionnement fin naturel.</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Simple" xml:space="preserve"><value>Simple</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Trackpad" xml:space="preserve"><value>Trackpad</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold" xml:space="preserve"><value>Seuil de vitesse</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold_Tooltip" xml:space="preserve"><value>Vitesse du doigt (mm/s) à laquelle le curseur commence à accélérer. Plus bas accélère plus tôt.</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth" xml:space="preserve"><value>Largeur du pavé</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth_Tooltip" xml:space="preserve"><value>Largeur physique de ce pavé tactile en mm. Détermine si un mouvement lent atteint la plage de contrôle fin, donc réglez-la près de la taille réelle.</value></data>
+  <data name="Pad_ResetTouchpadPointerResponse" xml:space="preserve"><value>Réinitialiser la réponse</value></data>
+  <data name="Pad_ResetTouchpadTrackpadThreshold" xml:space="preserve"><value>Réinitialiser le seuil de vitesse</value></data>
+  <data name="Pad_ResetTouchpadTrackpadPadWidth" xml:space="preserve"><value>Réinitialiser la largeur du pavé</value></data>
   <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>Un glissement rapide parcourt plus d’écran qu’un glissement lent sur la même distance. 0 garde une vitesse de curseur constante.</value></data>
   <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>Réinitialiser l’accélération</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Atténue le tremblement de la main au repos sans zone morte, pour que les petits mouvements voulus passent quand même.</value></data>

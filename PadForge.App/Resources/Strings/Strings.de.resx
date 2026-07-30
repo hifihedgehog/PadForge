@@ -1712,6 +1712,17 @@
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Maus Y invertieren zurücksetzen</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Zitterreduzierung</value></data>
   <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>Beschleunigung</value></data>
+  <data name="Pad_Touchpad_PointerResponse" xml:space="preserve"><value>Reaktion</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Tooltip" xml:space="preserve"><value>Wie Fingergeschwindigkeit zu Zeigergeschwindigkeit wird. Trackpad bewegt den Zeiger bei langsamer Bewegung auch langsamer als den Finger, was feines Positionieren natürlich macht.</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Simple" xml:space="preserve"><value>Einfach</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Trackpad" xml:space="preserve"><value>Trackpad</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold" xml:space="preserve"><value>Geschwindigkeitsschwelle</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold_Tooltip" xml:space="preserve"><value>Fingergeschwindigkeit (mm/s), ab der der Zeiger beschleunigt. Niedriger beschleunigt früher.</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth" xml:space="preserve"><value>Pad-Breite</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth_Tooltip" xml:space="preserve"><value>Physische Breite dieses Touchpads in mm. Bestimmt, ob langsame Bewegung den Feinbereich überhaupt erreicht, also nahe der echten Größe einstellen.</value></data>
+  <data name="Pad_ResetTouchpadPointerResponse" xml:space="preserve"><value>Reaktion zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadTrackpadThreshold" xml:space="preserve"><value>Geschwindigkeitsschwelle zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadTrackpadPadWidth" xml:space="preserve"><value>Pad-Breite zurücksetzen</value></data>
   <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>Schnelle Bewegungen legen mehr Strecke auf dem Bildschirm zurück als langsame über dieselbe Distanz. 0 hält die Zeigergeschwindigkeit konstant.</value></data>
   <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>Beschleunigung zurücksetzen</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Dämpft das Zittern der ruhenden Hand ohne Totzone, sodass winzige gewollte Bewegungen weiterhin ankommen.</value></data>

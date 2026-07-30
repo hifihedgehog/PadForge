@@ -1732,6 +1732,17 @@
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Muis Y inverteren resetten</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Trillingsreductie</value></data>
   <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>Versnelling</value></data>
+  <data name="Pad_Touchpad_PointerResponse" xml:space="preserve"><value>Respons</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Tooltip" xml:space="preserve"><value>Hoe vingersnelheid cursorsnelheid wordt. Trackpad beweegt de cursor bij lage snelheid ook langzamer dan je vinger, en dat maakt nauwkeurig plaatsen natuurlijk.</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Simple" xml:space="preserve"><value>Eenvoudig</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Trackpad" xml:space="preserve"><value>Trackpad</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold" xml:space="preserve"><value>Snelheidsdrempel</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold_Tooltip" xml:space="preserve"><value>Vingersnelheid (mm/s) waarbij de cursor gaat versnellen. Lager versnelt eerder.</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth" xml:space="preserve"><value>Padbreedte</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth_Tooltip" xml:space="preserve"><value>Fysieke breedte van dit touchpad in mm. Bepaalt of langzame beweging het fijnregelbereik haalt, dus zet het dicht bij de echte maat.</value></data>
+  <data name="Pad_ResetTouchpadPointerResponse" xml:space="preserve"><value>Respons herstellen</value></data>
+  <data name="Pad_ResetTouchpadTrackpadThreshold" xml:space="preserve"><value>Snelheidsdrempel herstellen</value></data>
+  <data name="Pad_ResetTouchpadTrackpadPadWidth" xml:space="preserve"><value>Padbreedte herstellen</value></data>
   <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>Snel slepen legt meer schermafstand af dan langzaam slepen over dezelfde afstand. 0 houdt de cursorsnelheid vlak.</value></data>
   <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>Versnelling herstellen</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Dempt het trillen van een rustende hand zonder dode zone, zodat kleine bedoelde bewegingen wel doorkomen.</value></data>

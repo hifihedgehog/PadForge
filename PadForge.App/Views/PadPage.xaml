@@ -10367,6 +10367,45 @@
                                             ToolTip="{Binding Pad_ResetTouchpadMouseMomentum, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Touchpad_PointerResponse, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_Touchpad_PointerResponse_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBox SelectedValue="{Binding TouchpadPointerResponse, Mode=TwoWay}" SelectedValuePath="Tag"
+                                              MinWidth="150" VerticalAlignment="Center"
+                                              ToolTip="{Binding Pad_Touchpad_PointerResponse_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Tag="Simple" Content="{Binding Pad_Touchpad_PointerResponse_Simple, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Tag="Trackpad" Content="{Binding Pad_Touchpad_PointerResponse_Trackpad, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                    <ui:Button Command="{Binding ResetTouchpadPointerResponseCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadPointerResponse, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                            Visibility="{Binding TouchpadPointerResponseIsTrackpad, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Pad_Touchpad_TrackpadThreshold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_Touchpad_TrackpadThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding TouchpadTrackpadThreshold, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="20" Maximum="600" TickFrequency="10"
+                                            ToolTip="{Binding Pad_Touchpad_TrackpadThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadTrackpadThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F0}"
+                                             Style="{StaticResource DzValueEdit}"
+                                             ToolTip="{Binding Pad_Touchpad_TrackpadThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadTrackpadThresholdCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadTrackpadThreshold, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                            Visibility="{Binding TouchpadPointerResponseIsTrackpad, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Pad_Touchpad_TrackpadPadWidth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_Touchpad_TrackpadPadWidth_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding TouchpadTrackpadPadWidthMm, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="20" Maximum="150" TickFrequency="1"
+                                            ToolTip="{Binding Pad_Touchpad_TrackpadPadWidth_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadTrackpadPadWidthMm, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F0}"
+                                             Style="{StaticResource DzValueEdit}"
+                                             ToolTip="{Binding Pad_Touchpad_TrackpadPadWidth_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadTrackpadPadWidthCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadTrackpadPadWidth, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                            Visibility="{Binding TouchpadPointerResponseIsSimple, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Touchpad_MouseAcceleration, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                ToolTip="{Binding Pad_Touchpad_MouseAcceleration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding TouchpadMouseAcceleration, Mode=TwoWay}"

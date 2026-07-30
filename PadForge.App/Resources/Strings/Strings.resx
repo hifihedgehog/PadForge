@@ -1416,6 +1416,17 @@
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Reset Invert Mouse Y</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Jitter Reduction</value></data>
   <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>Acceleration</value></data>
+  <data name="Pad_Touchpad_PointerResponse" xml:space="preserve"><value>Response</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Tooltip" xml:space="preserve"><value>How finger speed becomes cursor speed. Trackpad also moves the cursor slower than your finger at low speed, which is what makes fine positioning feel natural.</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Simple" xml:space="preserve"><value>Simple</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Trackpad" xml:space="preserve"><value>Trackpad</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold" xml:space="preserve"><value>Speed threshold</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold_Tooltip" xml:space="preserve"><value>Finger speed (mm/s) where the cursor starts speeding up. Lower accelerates sooner.</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth" xml:space="preserve"><value>Pad width</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth_Tooltip" xml:space="preserve"><value>Physical width of this touchpad in mm. Decides whether slow movement can reach the fine-control range at all, so set it near the real size of the pad.</value></data>
+  <data name="Pad_ResetTouchpadPointerResponse" xml:space="preserve"><value>Reset response</value></data>
+  <data name="Pad_ResetTouchpadTrackpadThreshold" xml:space="preserve"><value>Reset speed threshold</value></data>
+  <data name="Pad_ResetTouchpadTrackpadPadWidth" xml:space="preserve"><value>Reset pad width</value></data>
   <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>Fast drags cover more screen than slow ones over the same distance. 0 keeps the cursor speed flat.</value></data>
   <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>Reset acceleration</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Damps resting-hand tremor without a dead zone, so tiny deliberate movements still register.</value></data>

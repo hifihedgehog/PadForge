@@ -450,6 +450,63 @@ namespace PadForge.ViewModels
             }
         }
 
+        private string _touchpadPointerResponse = "Simple";
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerResponse"/>.
+        /// Simple applies the Acceleration slider; Trackpad runs the ported
+        /// libinput curve, which is the only one of the two that can move the
+        /// cursor SLOWER than the finger for fine control.</summary>
+        public string TouchpadPointerResponse
+        {
+            get => _touchpadPointerResponse;
+            set
+            {
+                string x = string.IsNullOrEmpty(value) ? "Simple" : value;
+                if (SetProperty(ref _touchpadPointerResponse, x))
+                {
+                    OnPropertyChanged(nameof(TouchpadPointerResponseIsSimple));
+                    OnPropertyChanged(nameof(TouchpadPointerResponseIsTrackpad));
+                    PushIfNotLoading();
+                }
+            }
+        }
+
+        /// <summary>Row visibility: each profile's own knobs show only for it,
+        /// so the card never presents two competing models at once.</summary>
+        public bool TouchpadPointerResponseIsSimple =>
+            !string.Equals(_touchpadPointerResponse, "Trackpad", StringComparison.Ordinal);
+
+        public bool TouchpadPointerResponseIsTrackpad =>
+            string.Equals(_touchpadPointerResponse, "Trackpad", StringComparison.Ordinal);
+
+        private double _touchpadTrackpadThreshold = 130;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.TrackpadThresholdMmPerSec"/>.
+        /// libinput's own default and its single exposed tunable.</summary>
+        public double TouchpadTrackpadThreshold
+        {
+            get => _touchpadTrackpadThreshold;
+            set
+            {
+                double x = Math.Clamp(value, 20.0, 600.0);
+                if (SetProperty(ref _touchpadTrackpadThreshold, x)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadTrackpadPadWidthMm = 69;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.TrackpadPadWidthMm"/>.
+        /// Decides whether the precision region is reachable at all: a pad
+        /// cannot report slower than one coordinate unit per report, and on a
+        /// DS4 that quantum only falls under the curve's 7 mm/s knee below
+        /// about 54 mm. Range starts at 20 mm so small pads are expressible.</summary>
+        public double TouchpadTrackpadPadWidthMm
+        {
+            get => _touchpadTrackpadPadWidthMm;
+            set
+            {
+                double x = Math.Clamp(value, 20.0, 150.0);
+                if (SetProperty(ref _touchpadTrackpadPadWidthMm, x)) PushIfNotLoading();
+            }
+        }
+
         private double _touchpadMouseAcceleration;
         /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseAcceleration"/>:
         /// rate-dependent cursor gain, so a fast drag covers more screen than
@@ -918,6 +975,18 @@ namespace PadForge.ViewModels
         public RelayCommand ResetTouchpadMouseMomentumDecayCommand =>
             _resetTouchpadMouseMomentumDecayCommand ??= new RelayCommand(() => TouchpadMouseMomentumDecay = 0.90);
 
+        private RelayCommand _resetTouchpadPointerResponseCommand;
+        public RelayCommand ResetTouchpadPointerResponseCommand =>
+            _resetTouchpadPointerResponseCommand ??= new RelayCommand(() => TouchpadPointerResponse = "Simple");
+
+        private RelayCommand _resetTouchpadTrackpadThresholdCommand;
+        public RelayCommand ResetTouchpadTrackpadThresholdCommand =>
+            _resetTouchpadTrackpadThresholdCommand ??= new RelayCommand(() => TouchpadTrackpadThreshold = 130);
+
+        private RelayCommand _resetTouchpadTrackpadPadWidthCommand;
+        public RelayCommand ResetTouchpadTrackpadPadWidthCommand =>
+            _resetTouchpadTrackpadPadWidthCommand ??= new RelayCommand(() => TouchpadTrackpadPadWidthMm = 69);
+
         private RelayCommand _resetTouchpadMouseAccelerationCommand;
         public RelayCommand ResetTouchpadMouseAccelerationCommand =>
             _resetTouchpadMouseAccelerationCommand ??= new RelayCommand(() => TouchpadMouseAcceleration = 0);
@@ -940,6 +1009,9 @@ namespace PadForge.ViewModels
                 TouchpadMouseMomentumDecay = 0.90;
                 TouchpadMouseJitterReduction = true;
                 TouchpadMouseAcceleration = 0;
+                TouchpadPointerResponse = "Simple";
+                TouchpadTrackpadThreshold = 130;
+                TouchpadTrackpadPadWidthMm = 69;
             });
 
         private RelayCommand _resetTouchpadTapMaxMotionCommand;
@@ -1124,6 +1196,9 @@ namespace PadForge.ViewModels
                 TouchpadMouseMomentumDecay = s.MouseMomentumDecay;
                 TouchpadMouseJitterReduction = s.MouseJitterReduction;
                 TouchpadMouseAcceleration = s.MouseAcceleration;
+                TouchpadPointerResponse = string.IsNullOrEmpty(s.PointerResponse) ? "Simple" : s.PointerResponse;
+                TouchpadTrackpadThreshold = s.TrackpadThresholdMmPerSec;
+                TouchpadTrackpadPadWidthMm = s.TrackpadPadWidthMm;
                 var rs = s;
                 _touchpadPointerRegionAuthored = rs.PointerRegionAuthored;
                 TouchpadPointerRegionSizeX = rs.PointerRegionSizeX;
@@ -1345,6 +1420,9 @@ namespace PadForge.ViewModels
             s.MouseMomentumDecay = (float)TouchpadMouseMomentumDecay;
             s.MouseJitterReduction = TouchpadMouseJitterReduction;
             s.MouseAcceleration = (float)TouchpadMouseAcceleration;
+            s.PointerResponse = TouchpadPointerResponse;
+            s.TrackpadThresholdMmPerSec = (float)TouchpadTrackpadThreshold;
+            s.TrackpadPadWidthMm = (float)TouchpadTrackpadPadWidthMm;
             // Stamp the entry as post-repair. Anything this push writes is
             // current user intent by definition, so the one-time
             // authored-but-default repair must never touch it. Only

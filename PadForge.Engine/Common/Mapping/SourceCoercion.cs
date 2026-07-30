@@ -1006,7 +1006,13 @@ namespace PadForge.Engine.Common.Mapping
             float padWidthsPerSec, float thresholdMmPerSec, float padWidthMm)
         {
             const float baseline = 0.9f;          // libinput: const double baseline = 0.9
-            const float decelKnee = 7.0f;         // libinput: if (speed_in < 7.0)
+            // libinput: if (speed_in < 7.0). Not independently observable: the
+            // ramp below reaches the baseline at 6 mm/s and is clamped there, so
+            // any knee in [6, threshold) gives identical output. Mutation
+            // testing confirmed it (7 -> 20 survived the whole suite). Kept at
+            // the reference's value anyway, since matching the source is the
+            // point and a future edit to the ramp could make it matter.
+            const float decelKnee = 7.0f;
             const float decelSlope = 0.1f;        // libinput: 0.1 * speed_in + 0.3
             const float decelFloor = 0.3f;        // libinput: "down to 30% of input speed"
             const float inclineCoeff = 0.0025f;   // libinput: 0.0025 * (speed/thr) * (speed - thr)

@@ -1712,6 +1712,17 @@
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>マウス Y 反転をリセット</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>ぶれ低減</value></data>
   <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>加速</value></data>
+  <data name="Pad_Touchpad_PointerResponse" xml:space="preserve"><value>応答</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Tooltip" xml:space="preserve"><value>指の速さをカーソルの速さに変換する方法です。Trackpad は低速時にカーソルを指より遅く動かし、それが細かい位置合わせを自然にします。</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Simple" xml:space="preserve"><value>シンプル</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Trackpad" xml:space="preserve"><value>トラックパッド</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold" xml:space="preserve"><value>速度しきい値</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold_Tooltip" xml:space="preserve"><value>カーソルが加速し始める指の速さ (mm/s)。低いほど早く加速します。</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth" xml:space="preserve"><value>パッド幅</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth_Tooltip" xml:space="preserve"><value>このタッチパッドの実際の幅 (mm)。ゆっくりした動きが微調整域に届くかを決めるので、実寸に近い値にしてください。</value></data>
+  <data name="Pad_ResetTouchpadPointerResponse" xml:space="preserve"><value>応答をリセット</value></data>
+  <data name="Pad_ResetTouchpadTrackpadThreshold" xml:space="preserve"><value>速度しきい値をリセット</value></data>
+  <data name="Pad_ResetTouchpadTrackpadPadWidth" xml:space="preserve"><value>パッド幅をリセット</value></data>
   <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>同じ距離でも、速くなぞるほど画面上を大きく移動します。0 でカーソル速度は一定になります。</value></data>
   <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>加速をリセット</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>デッドゾーンなしで手のぶれを抑えます。意図した小さな動きはそのまま伝わります。</value></data>

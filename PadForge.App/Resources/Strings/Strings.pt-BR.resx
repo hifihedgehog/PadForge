@@ -1712,6 +1712,17 @@
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Restaurar Inverter Mouse Y</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Redução de tremor</value></data>
   <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>Aceleração</value></data>
+  <data name="Pad_Touchpad_PointerResponse" xml:space="preserve"><value>Resposta</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Tooltip" xml:space="preserve"><value>Como a velocidade do dedo se torna a velocidade do cursor. O Trackpad também move o cursor mais devagar que o dedo em baixa velocidade, e é isso que torna o posicionamento fino natural.</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Simple" xml:space="preserve"><value>Simples</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Trackpad" xml:space="preserve"><value>Trackpad</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold" xml:space="preserve"><value>Limite de velocidade</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold_Tooltip" xml:space="preserve"><value>Velocidade do dedo (mm/s) em que o cursor começa a acelerar. Mais baixo acelera antes.</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth" xml:space="preserve"><value>Largura do painel</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth_Tooltip" xml:space="preserve"><value>Largura física deste painel em mm. Determina se o movimento lento alcança a faixa de controle fino, então ajuste perto do tamanho real.</value></data>
+  <data name="Pad_ResetTouchpadPointerResponse" xml:space="preserve"><value>Redefinir a resposta</value></data>
+  <data name="Pad_ResetTouchpadTrackpadThreshold" xml:space="preserve"><value>Redefinir o limite de velocidade</value></data>
+  <data name="Pad_ResetTouchpadTrackpadPadWidth" xml:space="preserve"><value>Redefinir a largura do painel</value></data>
   <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>Arrastos rápidos percorrem mais tela do que os lentos na mesma distância. 0 mantém a velocidade do cursor constante.</value></data>
   <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>Redefinir a aceleração</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Suaviza o tremor da mão parada sem zona morta, para que pequenos movimentos intencionais ainda passem.</value></data>

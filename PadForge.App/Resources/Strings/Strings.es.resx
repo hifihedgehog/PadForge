@@ -950,6 +950,8 @@
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertido</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>semieje</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>Cualquier lado</value></data>
+  <data name="Pad_InvertOutput" xml:space="preserve"><value>Invertir salida</value></data>
+  <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>Invierte el resultado de esta entrada. En una fuente de medio eje, la casilla Invertir elige qué mitad del eje se lee, así que este control es el que voltea la dirección de la salida.</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>Con semieje activo, dispara al superar la zona muerta en cualquier dirección desde el centro (Invertido no tiene efecto).</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mapea continuamente el eje seleccionado (0–100 %) al volumen del sistema Windows, escalado al límite de volumen. Use con el activador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controla el volumen de una aplicación específica en el mezclador de volumen de Windows, escalado al límite. Ingrese el nombre del proceso (visible en el Administrador de tareas). Use con el activador "Siempre", o un botón/eje con "Mientras se mantiene" + "Hasta soltar".</value></data>

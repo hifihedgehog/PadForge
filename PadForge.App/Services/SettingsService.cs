@@ -797,16 +797,6 @@ namespace PadForge.Services
                     // reset the geometry to the full-screen identity map.
                     var preservedPointer = CaptureTouchpadPointerParams(row);
 
-                    // Same reason, same shape: preserve the half-axis output
-                    // flip across the clear+rebuild below. InvertOutput has no
-                    // VM card (the user cannot author it; only the Workshop
-                    // translator and the legacy migrator emit it), and the
-                    // rebuild reconstructs the primary from a legacy I/H
-                    // prefix string that has no third flag to carry it. Without
-                    // this, an imported source survived exactly until the first
-                    // autosave and then silently lost its inversion.
-                    var preservedInvertOutput = CaptureInvertOutputFlags(row);
-
                     // Same reason, same shape: preserve the response-curve /
                     // outer-range channel (translator v11) across the
                     // clear+rebuild. ParamCurveExponent / ParamRangeOuter have
@@ -877,6 +867,7 @@ namespace PadForge.Services
                             Invert = inv,
                             HalfAxis = half,
                             Bidirectional = mapping.IsBidirectional,
+                            InvertOutput = mapping.InvertOutput,
                             DeadZone = mapping.MappingDeadZone,
                             GyroSensitivity = mapping.GyroSensitivity > 0 ? mapping.GyroSensitivity : 1.0,
                             MouseCursorSensitivity = mapping.MouseCursorSensitivity > 0 ? mapping.MouseCursorSensitivity : 1.0,
@@ -951,7 +942,6 @@ namespace PadForge.Services
                     // the pre-rebuild values are re-stamped onto the matching
                     // rebuilt pointer sources.
                     ApplyTouchpadPointerParamsToRow(row, preservedPointer);
-                    ApplyInvertOutputFlagsToRow(row, preservedInvertOutput);
                     ApplyCurveRangeParamsToRow(row, preservedCurveRange);
                 }
 
@@ -1283,61 +1273,6 @@ namespace PadForge.Services
                         if (p.stamp.ParamStickDeadZoneShape != 0) src.ParamStickDeadZoneShape = p.stamp.ParamStickDeadZoneShape;
                         if (p.stamp.ParamStickDeadZoneInner > 0) src.ParamStickDeadZoneInner = p.stamp.ParamStickDeadZoneInner;
                         if (p.stamp.ParamFlickRotationOffsetDeg != 0) src.ParamFlickRotationOffsetDeg = p.stamp.ParamFlickRotationOffsetDeg;
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Captures the half-axis OUTPUT flip from a row's sources before the
-        // save rebuild clears them. Direct analog of CaptureTouchpadPointerParams
-        // above, for the same reason: MappingSource.InvertOutput has no VM card
-        // to re-stamp from, so the row's own pre-rebuild sources are the only
-        // source of truth.
-        //
-        // Why it needs preserving at all: the rebuild reconstructs each source
-        // from the VM's legacy prefix-encoded descriptor, whose grammar is only
-        // I / H / IH. There is no prefix for "select this half AND negate the
-        // result", which is exactly what InvertOutput expresses, so a straight
-        // rebuild drops it. MappingSourceItem.ToDomain / FromDomain omit it for
-        // the same reason (see the N/A note there): a field the UI cannot author
-        // is carried by a post-rebuild re-stamp instead.
-        //
-        // Keyed by (device, descriptor) so a multi-source / multi-device row
-        // restores each source's own flag. Returns an empty list for the common
-        // case of a row with no such source.
-        private static System.Collections.Generic.List<(string device, string desc)>
-            CaptureInvertOutputFlags(MappingRow row)
-        {
-            var list = new System.Collections.Generic.List<(string, string)>();
-            if (row?.Sources == null) return list;
-            foreach (var s in row.Sources)
-            {
-                if (s == null || !s.InvertOutput) continue;
-                list.Add((s.DeviceGuid ?? "", s.Descriptor ?? ""));
-            }
-            return list;
-        }
-
-        // Re-stamps the captured output flips onto the rebuilt sources. The
-        // rebuild strips the I/H prefix back off, so the rebuilt descriptor
-        // matches the captured (already-clean) one exactly. A source the user
-        // re-authored to a different descriptor no longer matches and correctly
-        // keeps the default: the translator's polarity was about the descriptor
-        // it was emitted for.
-        private static void ApplyInvertOutputFlagsToRow(MappingRow row,
-            System.Collections.Generic.List<(string device, string desc)> preserved)
-        {
-            if (row?.Sources == null || preserved == null || preserved.Count == 0) return;
-            foreach (var src in row.Sources)
-            {
-                if (src == null) continue;
-                foreach (var p in preserved)
-                {
-                    if (string.Equals(p.desc, src.Descriptor ?? "", StringComparison.Ordinal)
-                        && string.Equals(p.device ?? "", src.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
-                    {
-                        src.InvertOutput = true;
                         break;
                     }
                 }

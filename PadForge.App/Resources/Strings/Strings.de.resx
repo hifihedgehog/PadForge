@@ -950,6 +950,8 @@
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertiert</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>halbe Achse</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>Beide Richtungen</value></data>
+  <data name="Pad_InvertOutput" xml:space="preserve"><value>Ausgabe umkehren</value></data>
+  <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>Kehrt das Ergebnis dieses Eingangs um. Bei einer Halbachsen-Quelle wählt das Umkehren-Kästchen die gelesene Achsenhälfte, daher kippt dieses Steuerelement die Ausgaberichtung.</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>Wenn „halbe Achse" aktiv ist, wird ausgelöst, sobald die Achse in beliebiger Richtung vom Mittelpunkt die Totzone überschreitet. „Invertiert" hat dann keine Wirkung.</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Ordnet die gewählte Achse (0–100 %) kontinuierlich der Windows-Systemlautstärke zu, skaliert auf das Lautstärkelimit. Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden.</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Steuert die Lautstärke einer bestimmten Anwendung im Windows-Lautstärkemixer, skaliert auf das Lautstärkelimit. Prozessnamen eingeben (sichtbar im Task-Manager). Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden.</value></data>

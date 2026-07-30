@@ -1458,6 +1458,7 @@ namespace PadForge.Views
             existing.Color = dlg.Result.Color;
             existing.Icon = dlg.Result.Icon;
             existing.PostponeMapping = dlg.Result.PostponeMapping;
+            existing.FireOnRelease = dlg.Result.FireOnRelease;
 
             if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal))
             {

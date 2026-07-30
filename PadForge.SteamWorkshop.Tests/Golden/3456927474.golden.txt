@@ -161,7 +161,7 @@ menus: 2
     [9] Warp cursor icon=ghost_040_act_0327.png
     [10] Warp cursor icon=ghost_040_act_0307.png
     [12] Warp cursor icon=ghost_050_menu_0306.png
-report: v26 rows:x0+k19 macros:67 menus:2 layers:8 clean:81 partial:5 skipped:0 errors:0
+report: v26 rows:x0+k19 macros:67 menus:2 layers:8 clean:81 partial:4 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX
@@ -220,7 +220,6 @@ report: v26 rows:x0+k19 macros:67 menus:2 layers:8 clean:81 partial:5 skipped:0 
   Clean RowEmitted @ Deactivate trackpad/switch/group 22 (switches)/left_bumper/Full_Press => KbmMBtn1 <- Gamepad LeftShoulder
   Clean RowEmitted @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/Start_Press => KbmMBtn1 <- Gamepad RightShoulder
   Clean ShiftLayerEmitted(Deactivate trackpad) @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/release => Deactivate trackpad <- Gamepad RightShoulder
-  Partial LayerReleaseEdgeApproximated(REMOVE_LAYER) @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/release :: controller_action remove_layer 2 1 1, , 
   Clean MacroEmitted @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/release => Click mouse Right <- Gamepad RightShoulder
   Clean MenuEmitted(8) @ Menu save/left_trackpad/group 30 (radial_menu) => Radial menu 2: 8 bound cells <- Touchpad 0
   Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_1/Full_Press => Warp cursor <- Menu 2 Item 1

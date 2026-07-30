@@ -335,9 +335,10 @@ namespace PadForge.SteamWorkshop.Translation
         /// hosts name the radial deadzone residual
         /// (DeadZoneRadialResidual: inner never reaches the analog read,
         /// outer applies per axis) pending the companion-axis pair-read
-        /// channel. Release-hosted layer and preset verbs name their
-        /// press-edge approximation (LayerReleaseEdgeApproximated)
-        /// instead of lowering under silent Clean.
+        /// channel. Release-hosted layer and preset verbs lower exactly
+        /// on the release edge (ShiftActivator.FireOnRelease); only the
+        /// HOLD_LAYER Hold carrier still names its press-edge
+        /// approximation (LayerReleaseEdgeApproximated).
         /// v20: CHANGE_PRESET sentinel ids lower as commands, not preset
         /// references. 32766 (change to next action set) and 32765
         /// (previous) become one Cycle activator through every action set
@@ -676,7 +677,11 @@ namespace PadForge.SteamWorkshop.Translation
         /// (v19, T6). Every ShiftActivator mode keys on the press edge
         /// (Hold while held, Toggle / Cycle / Custom on press), so the
         /// change lowers one edge early; this names the shifted edge
-        /// instead of leaving the arm silent Clean. {0} = the verb.</summary>
+        /// instead of leaving the arm silent Clean. {0} = the verb.
+        /// Since Fire on Release (ShiftActivator.FireOnRelease) the
+        /// edge-driven carriers lower exactly, so this remains ONLY for a
+        /// release-hosted HOLD_LAYER, whose Hold carrier is level-driven
+        /// and has no single edge to move.</summary>
         public const string LayerReleaseEdgeApproximated = "Workshop_Tr_LayerReleaseEdgeApproximated"; // {0} verb
         public const string ActivatorInputNotSupported = "Workshop_Tr_ActivatorInputNotSupported";
         // ClickGateDropped retired in v18: the AND companion rides each

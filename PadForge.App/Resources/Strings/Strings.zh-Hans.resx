@@ -1520,6 +1520,8 @@
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>点击一次以激活。下次映射的按钮按下在层上触发,然后自动释放。</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>没有自己的按钮。将它加入循环控件的队列，循环就会到达它。</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>从基础继承未映射的目标</value></data>
+  <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>松开时触发</value></data>
+  <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>等到按钮被松开后此激活器才会触发。若设置了按住延迟，按下时长必须达到该值，松开才算数。</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>同时触发激活器自身的映射</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>选中时，激活器按钮继续驱动以它为源的任何行。一次按压同时切换层并触发按钮自身的映射。未选中（默认）时，按压仅被层切换消费。</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>选中时,此层未明确映射的目标会回退到基础层。未选中时(默认),层完全替换基础,未映射的目标保持关闭。</value></data>

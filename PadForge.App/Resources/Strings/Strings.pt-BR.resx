@@ -1521,6 +1521,8 @@
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Toque uma vez para ativar. A próxima pressão de botão mapeado dispara na camada, depois libera automaticamente.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Sem botão próprio. Adicione-a à fila de um controle de Ciclo e o ciclo a alcança.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Herdar Alvos Não Mapeados da Base</value></data>
+  <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Disparar ao soltar</value></data>
+  <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Espera o botão ser solto antes de este ativador disparar. Se houver um atraso de retenção, o pressionamento deve durar esse tempo para que o soltar conte.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Também Disparar o Mapeamento Próprio do Ativador</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Quando marcado, o botão ativador continua a impulsionar qualquer linha que o use como fonte. Um toque muda a camada E dispara o mapeamento próprio do botão. Quando desmarcado (padrão), o toque é consumido apenas pela mudança de camada.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Quando marcado, alvos que esta camada não mapeia explicitamente caem para a camada Base. Quando desmarcado (padrão), a camada substitui Base inteiramente e alvos não mapeados ficam desligados.</value></data>

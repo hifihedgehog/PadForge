@@ -2120,6 +2120,8 @@
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tap once to engage. The next mapped button press fires on the layer, then auto-releases.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>No button of its own. Add it to a Cycle control's queue, and the cycle reaches it.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Inherit Unmapped Targets From Base</value></data>
+  <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Fire on Release</value></data>
+  <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Waits until the button is let go before this activator fires. If a hold delay is set, the press must last that long for the release to count.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Also Fire Activator's Own Mapping</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>When checked, the activator button still drives any row that uses it as a source. One press both changes layer AND fires the button's own mapping. When unchecked (default), the activator press is consumed by the layer change only.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>When checked, targets this layer doesn't explicitly map fall through to the Base layer. When unchecked (default), the layer replaces Base entirely and unmapped targets stay off.</value></data>

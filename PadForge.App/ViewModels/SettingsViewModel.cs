@@ -675,6 +675,18 @@ namespace PadForge.ViewModels
             _browseCommunityConfigsCommand ??= new RelayCommand(
                 () => BrowseCommunityConfigsRequested?.Invoke(this, EventArgs.Empty));
 
+        private RelayCommand _browseStarterProfilesCommand;
+
+        /// <summary>Command to open the starter-profile gallery (#256). Always
+        /// enabled: the catalog ships in the box, so there is no opt-in, no
+        /// network, and nothing to be unavailable.</summary>
+        public RelayCommand BrowseStarterProfilesCommand =>
+            _browseStarterProfilesCommand ??= new RelayCommand(
+                () => BrowseStarterProfilesRequested?.Invoke(this, EventArgs.Empty));
+
+        /// <summary>Raised when the user opens the starter-profile gallery.</summary>
+        public event EventHandler BrowseStarterProfilesRequested;
+
         /// <summary>Raised when the user asks to purge the Workshop cache.</summary>
         public event EventHandler ClearWorkshopCacheRequested;
 

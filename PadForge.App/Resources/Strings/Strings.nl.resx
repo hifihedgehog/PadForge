@@ -2937,4 +2937,21 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Documentatie van het DualShock 4-audioprotocol: SBC-parameters en pakketindelingen, door khallmark. MIT.</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>Bureaublad</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>Bedien Windows vanaf de bank. Cursor, scrollen en klikken op de triggers.</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD en muis</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>Speel een toetsenbord-en-muisgame met een controller. Shooters en actiegames.</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>Actiebalk</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>Tweeëndertig vaardigheden achter twee triggers, voor MMO’s en vaardigheidsrijke games.</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>Emulatie</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch en zijn frontends. Houd Terug ingedrukt voor savestates, laden en snelheid.</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>Vechtspellen</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>Zesknopsindeling met toernooiwaardige SOCD-opschoning op beide assen.</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Toetsenbord + muis</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Startprofielen bekijken</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>Startprofielen</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>Kant-en-klare profielen voor een heel genre. Kies er een, wijs een willekeurige controller toe en speel. Opslaan voegt een gewoon, bewerkbaar profiel toe.</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>Profiel opslaan</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>Startprofiel “{0}” toegevoegd.</value></data>
 </root>

@@ -2917,4 +2917,21 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Dokumentation des DualShock-4-Audioprotokolls: SBC-Parameter und Paketlayouts, von khallmark. MIT.</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>Desktop</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>Windows vom Sofa aus bedienen. Zeiger, Scrollen und Klicks auf den Triggern.</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD und Maus</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>Ein Tastatur-und-Maus-Spiel mit dem Gamepad spielen. Shooter und Actionspiele.</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>Aktionsleiste</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>Zweiunddreißig Fähigkeiten auf zwei Triggern, für MMOs und fähigkeitslastige Spiele.</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>Emulation</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch und seine Frontends. Zurück halten für Spielstände, Laden und Tempo.</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>Kampfspiele</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>Sechs-Tasten-Layout mit turniertauglicher SOCD-Bereinigung auf beiden Achsen.</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Tastatur + Maus</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Startprofile durchsuchen</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>Startprofile</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>Fertige Profile für ein ganzes Genre. Eines auswählen, einen beliebigen Controller zuweisen und spielen. Beim Speichern entsteht ein normales, bearbeitbares Profil.</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>Profil speichern</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>Startprofil „{0}“ hinzugefügt.</value></data>
 </root>

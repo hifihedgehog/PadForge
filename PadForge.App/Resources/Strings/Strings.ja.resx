@@ -2917,4 +2917,21 @@
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 オーディオプロトコルの資料。SBC パラメーターとパケットレイアウト。作者: khallmark。MIT。</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>デスクトップ</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>ソファから Windows を操作します。カーソル、スクロール、トリガーでのクリック。</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD とマウス</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>キーボードとマウスのゲームをパッドで。シューターやアクションゲーム向け。</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>ホットバー</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>2 つのトリガーに 32 のアクション。MMO やスキルの多いゲーム向け。</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>エミュレーション</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch とそのフロントエンド。Back を押しながらセーブ、ロード、早送り。</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>格闘ゲーム</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>6 ボタン配置と、両軸でトーナメント準拠の SOCD クリーニング。</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>キーボード + マウス</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>ゲームパッド</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>スタータープロファイルを見る</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>スタータープロファイル</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>ジャンルまるごとに対応する既製プロファイルです。1 つ選んで任意のコントローラーを割り当てれば使えます。保存すると編集可能な通常のプロファイルが追加されます。</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>プロファイルを保存</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>スタータープロファイル「{0}」を追加しました。</value></data>
 </root>

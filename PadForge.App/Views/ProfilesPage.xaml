@@ -1,4 +1,4 @@
-<UserControl x:Class="PadForge.Views.ProfilesPage"
+﻿<UserControl x:Class="PadForge.Views.ProfilesPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -661,21 +661,29 @@
                          themselves while disabled: ToolTip is set only from
                          the two disabling states, so an enabled button shows
                          none. -->
-                    <StackPanel Orientation="Horizontal">
+                    <!-- WrapPanel, not StackPanel (#256): the strip already
+                         ran wider than the card at MinWidth 900 with eight
+                         English buttons, and longer locales overflow sooner.
+                         Wrapping reflows the clusters onto a second row
+                         instead of clipping the tail. Every button carries a
+                         bottom margin for the wrapped row, and the panel
+                         cancels it with a negative bottom margin so the
+                         unwrapped strip keeps its original height. -->
+                    <WrapPanel Orientation="Horizontal" Margin="0,0,0,-8">
                         <Button Content="{Binding Profiles_New, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding NewProfileCommand}"
-                                Margin="0,0,8,0"/>
+                                Margin="0,0,8,8"/>
                         <Button Content="{Binding Profiles_SaveAs, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding SaveAsProfileCommand}"
-                                Margin="0,0,16,0"/>
+                                Margin="0,0,16,8"/>
                         <Button Content="{Binding Profiles_Load, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding LoadProfileCommand}"
                                 Style="{StaticResource EmberAccentButton}"
-                                Margin="0,0,8,0"/>
+                                Margin="0,0,8,8"/>
                         <Button Content="{Binding Profiles_Edit, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding EditProfileCommand}"
                                 ToolTipService.ShowOnDisabled="True"
-                                Margin="0,0,16,0">
+                                Margin="0,0,16,8">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                     <Style.Triggers>
@@ -691,18 +699,26 @@
                         </Button>
                         <Button Content="{Binding Profiles_Export, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding ExportProfileCommand}"
-                                Margin="0,0,8,0"/>
+                                Margin="0,0,8,8"/>
                         <Button Content="{Binding Profiles_Import, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding ImportProfileCommand}"
-                                Margin="0,0,8,0"/>
+                                Margin="0,0,8,8"/>
+                        <!-- The two catalogs sit together (#256): starter
+                             profiles ship in the box, community configs come
+                             from the Workshop, and both end in an ordinary
+                             editable profile. Adjacent so the pairing reads. -->
+                        <Button Content="{Binding Profiles_BrowseStarters, Source={x:Static strings:Strings.Instance}}"
+                                Command="{Binding BrowseStarterProfilesCommand}"
+                                Margin="0,0,8,8"/>
                         <!-- Steam Workshop entry (#9): always enabled. With the
                              opt-in off, the dialog opens on its cold-forge state
                              and offers the enable action itself. -->
                         <Button Content="{Binding Profiles_BrowseCommunity, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding BrowseCommunityConfigsCommand}"
-                                Margin="0,0,8,0"/>
+                                Margin="0,0,8,8"/>
                         <Button Content="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding DeleteProfileCommand}"
+                                Margin="0,0,0,8"
                                 ToolTipService.ShowOnDisabled="True">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource EmberDestructiveButton}">
@@ -717,7 +733,7 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                    </StackPanel>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
 

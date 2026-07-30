@@ -2917,4 +2917,21 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Documentation du protocole audio de la DualShock 4 : paramètres SBC et formats de paquets, par khallmark. MIT.</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>Bureau</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>Pilotez Windows depuis le canapé. Curseur, défilement et clics sur les gâchettes.</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD et souris</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>Jouez à un jeu clavier-souris à la manette. FPS et jeux d’action.</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>Barre d’actions</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>Trente-deux capacités derrière deux gâchettes, pour les MMO et les jeux riches en compétences.</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>Émulation</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch et ses interfaces. Maintenez Retour pour les sauvegardes rapides et la vitesse.</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>Jeux de combat</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>Disposition à six boutons avec nettoyage SOCD homologué en tournoi sur les deux axes.</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Clavier + souris</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>Manette</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Parcourir les profils de départ</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>Profils de départ</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>Des profils prêts à l’emploi pour tout un genre. Choisissez-en un, affectez n’importe quelle manette et jouez. L’enregistrement crée un profil ordinaire, modifiable.</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>Enregistrer le profil</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>Profil de départ « {0} » ajouté.</value></data>
 </root>

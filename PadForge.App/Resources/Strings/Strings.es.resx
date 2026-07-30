@@ -2917,4 +2917,21 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Documentación del protocolo de audio del DualShock 4: parámetros SBC y disposición de paquetes, por khallmark. MIT.</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>Escritorio</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>Maneja Windows desde el sofá. Cursor, desplazamiento y clics en los gatillos.</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD y ratón</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>Juega un título de teclado y ratón con un mando. Shooters y juegos de acción.</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>Barra de acciones</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>Treinta y dos habilidades tras dos gatillos, para MMO y juegos con muchas habilidades.</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>Emulación</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch y sus interfaces. Mantén Atrás para estados guardados, carga y velocidad.</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>Juegos de lucha</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>Disposición de seis botones con limpieza SOCD apta para torneos en ambos ejes.</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Teclado + ratón</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>Mando</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Explorar perfiles iniciales</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>Perfiles iniciales</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>Perfiles listos para un género entero. Elige uno, asigna cualquier mando y juega. Al guardar se añade un perfil normal que puedes editar.</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>Guardar perfil</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>Perfil inicial «{0}» añadido.</value></data>
 </root>

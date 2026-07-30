@@ -500,6 +500,7 @@ namespace PadForge
             _viewModel.Settings.LoadProfileRequested += OnLoadProfile;
             _viewModel.Settings.RevertToDefaultRequested += OnRevertToDefault;
             _viewModel.Settings.BrowseCommunityConfigsRequested += OnBrowseCommunityConfigs;
+            _viewModel.Settings.BrowseStarterProfilesRequested += OnBrowseStarterProfiles;
             _viewModel.Settings.ClearWorkshopCacheRequested += OnClearWorkshopCache;
             _viewModel.Settings.CheckWorkshopUpdatesRequested += OnCheckWorkshopUpdates;
 
@@ -6017,6 +6018,23 @@ namespace PadForge
             {
                 _viewModel.StatusText = string.Format(Strings.Instance.Status_WorkshopImported_Format,
                     dlg.ImportedProfileName, dlg.ImportedClean, dlg.ImportedPartial, dlg.ImportedSkipped);
+            }
+        }
+
+        /// <summary>Opens the starter-profile gallery (#256). Saving routes
+        /// through the same sink the Workshop import uses, so a starter lands
+        /// as an ordinary editable profile through identical steps (name
+        /// dedup, registry add, list item with topology counts, MarkDirty).
+        /// Nothing about it stays special after the save.</summary>
+        private void OnBrowseStarterProfiles(object sender, EventArgs e)
+        {
+            var dlg = new Views.StarterProfilesDialog { Owner = this };
+            dlg.SaveSink = AddWorkshopProfile;
+            dlg.ShowDialog();
+            if (dlg.SavedProfileName != null)
+            {
+                _viewModel.StatusText = string.Format(
+                    Strings.Instance.Status_StarterImported_Format, dlg.SavedProfileName);
             }
         }
 

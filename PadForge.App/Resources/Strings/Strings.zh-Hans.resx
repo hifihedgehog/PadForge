@@ -2917,4 +2917,21 @@
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 音频协议文档：SBC 参数与数据包布局，作者 khallmark。MIT。</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>桌面</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>在沙发上操作 Windows。光标、滚动，扳机键点击。</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD 与鼠标</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>用手柄玩键鼠游戏。射击与动作游戏。</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>快捷栏</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>两个扳机键后面藏着三十二个技能，适合 MMO 和技能繁多的游戏。</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>模拟器</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch 及其前端。按住 Back 使用即时存档、读档和倍速。</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>格斗游戏</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>六键布局，双轴均采用符合赛事规则的 SOCD 清理。</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>键盘 + 鼠标</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>手柄</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>浏览入门配置</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>入门配置</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>面向整个游戏类型的现成配置。选择一个，分配任意手柄即可使用。保存后会添加一个可编辑的普通配置。</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>保存配置</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>已添加入门配置“{0}”。</value></data>
 </root>

@@ -868,6 +868,7 @@ namespace PadForge.Services
                             HalfAxis = half,
                             Bidirectional = mapping.IsBidirectional,
                             InvertOutput = mapping.InvertOutput,
+                            ParamAccel = mapping.ParamAccel,
                             DeadZone = mapping.MappingDeadZone,
                             GyroSensitivity = mapping.GyroSensitivity > 0 ? mapping.GyroSensitivity : 1.0,
                             MouseCursorSensitivity = mapping.MouseCursorSensitivity > 0 ? mapping.MouseCursorSensitivity : 1.0,
@@ -1230,9 +1231,14 @@ namespace PadForge.Services
                 // rotation offset HAS a card row now (Flick Stick card), but
                 // it stays in this net because the push is skipped while that
                 // card is unseeded, and the rebuild does not wait for it.
+                // ParamAccel LEFT the net (round 40 follow-up): the row
+                // editors author it now, it rides the VM round-trip like
+                // Invert / Bidirectional, and a net re-stamp would resurrect
+                // a value the user just zeroed, the exact defect the
+                // InvertOutput net was deleted for.
                 if (s == null
                     || (s.ParamCurveExponent <= 0 && s.ParamRangeOuter <= 0
-                        && s.ParamAntiDeadzone <= 0 && s.ParamAccel <= 0
+                        && s.ParamAntiDeadzone <= 0
                         && string.IsNullOrEmpty(s.GateDescriptor)
                         && string.IsNullOrEmpty(s.Gate2Descriptor)
                         && s.ParamStickDeadZoneShape == 0
@@ -1267,7 +1273,6 @@ namespace PadForge.Services
                         if (p.stamp.ParamCurveExponent > 0) src.ParamCurveExponent = p.stamp.ParamCurveExponent;
                         if (p.stamp.ParamRangeOuter > 0) src.ParamRangeOuter = p.stamp.ParamRangeOuter;
                         if (p.stamp.ParamAntiDeadzone > 0) src.ParamAntiDeadzone = p.stamp.ParamAntiDeadzone;
-                        if (p.stamp.ParamAccel > 0) src.ParamAccel = p.stamp.ParamAccel;
                         if (!string.IsNullOrEmpty(p.stamp.GateDescriptor)) src.GateDescriptor = p.stamp.GateDescriptor;
                         if (!string.IsNullOrEmpty(p.stamp.Gate2Descriptor)) src.Gate2Descriptor = p.stamp.Gate2Descriptor;
                         if (p.stamp.ParamStickDeadZoneShape != 0) src.ParamStickDeadZoneShape = p.stamp.ParamStickDeadZoneShape;

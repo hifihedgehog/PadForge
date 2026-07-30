@@ -6220,6 +6220,7 @@ namespace PadForge.ViewModels
                 // behavior change beyond what "clear the mappings" says.
                 m.IsBidirectional = false;
                 m.InvertOutput = false;
+                m.ParamAccel = 0;
                 m.MappingDeadZone = 50;
                 // Drop the device-origin tag too — leaving the GUID
                 // behind would surface a stale subtitle and make the

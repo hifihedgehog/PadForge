@@ -29,6 +29,7 @@ namespace PadForge.ViewModels
         private double _paramMax = 1;
         private string _paramModifier = "";
         private double _gyroSensitivity = 1.0;
+        private double _paramAccel;
         private double _mouseCursorSensitivity = 1.0;
         private double _paramAttackTime = 0.30;
         private double _paramReleaseTime = 0.30;
@@ -639,6 +640,21 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroSensitivity, System.Math.Clamp(value, 0.1, 10.0));
         }
 
+        /// <summary><para>Per-source rate-dependent gain
+        /// (MappingSource.ParamAccel): fast motion on this input is
+        /// amplified, slow passes through, as v x (1 + a x |v|) with a
+        /// symmetric clamp. 0 = off, a flat response.</para>
+        /// <para>Range 0..5 = the Workshop translator's maximum
+        /// (Steam's 0..10 x 0.5), so any importable value is expressible.
+        /// User-authorable now: it used to ride an invisible capture net,
+        /// and on stick-hosted mouse rows the engine did not even read it,
+        /// so a wild import's acceleration was stamped and dead.</para></summary>
+        public double ParamAccel
+        {
+            get => _paramAccel;
+            set => SetProperty(ref _paramAccel, System.Math.Clamp(value, 0.0, 5.0));
+        }
+
         /// <summary>Per-source mouse-cursor sensitivity (issue #107). Only applied
         /// for "Mouse Position X/Y" descriptors (see <see cref="IsMouseCursorSource"/>).
         /// Default 1.0 = full deflection at 10% of screen width from center.</summary>
@@ -960,6 +976,10 @@ namespace PadForge.ViewModels
         public RelayCommand ResetGyroSensitivityCommand =>
             _resetGyroSensitivityCommand ??= new RelayCommand(() => GyroSensitivity = 1.0);
 
+        private RelayCommand _resetParamAccelCommand;
+        public RelayCommand ResetParamAccelCommand =>
+            _resetParamAccelCommand ??= new RelayCommand(() => ParamAccel = 0.0);
+
         private RelayCommand _resetSensitivityCommand;
         public RelayCommand ResetSensitivityCommand =>
             _resetSensitivityCommand ??= new RelayCommand(() => Sensitivity = 1.0);
@@ -984,6 +1004,7 @@ namespace PadForge.ViewModels
             HalfAxis = _halfAxis,
             Bidirectional = _bidirectional,
             InvertOutput = _invertOutput,
+            ParamAccel = _paramAccel,
             DeadZone = _deadZone,
             ParamUp = _paramUp ?? "",
             ParamDown = _paramDown ?? "",
@@ -1016,6 +1037,7 @@ namespace PadForge.ViewModels
                 HalfAxis = src.HalfAxis,
                 Bidirectional = src.Bidirectional,
                 InvertOutput = src.InvertOutput,
+                ParamAccel = src.ParamAccel,
                 DeadZone = src.DeadZone,
                 ParamUp = src.ParamUp ?? "",
                 ParamDown = src.ParamDown ?? "",

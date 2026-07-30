@@ -951,6 +951,8 @@
   <data name="Macro_Axis_Half" xml:space="preserve"><value>半轴</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>任意方向</value></data>
   <data name="Pad_InvertOutput" xml:space="preserve"><value>反转输出</value></data>
+  <data name="Pad_Mapping_Accel" xml:space="preserve"><value>加速</value></data>
+  <data name="Pad_Mapping_Accel_Tooltip" xml:space="preserve"><value>此输入的快速动作会被放大，慢速动作原样通过。0 保持响应恒定。导入时，摇杆行上的 Steam 鼠标加速会落在这里。</value></data>
   <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>反转此输入的结果。在半轴源上，反转复选框用于选择读取轴的哪一半，因此由此控件来翻转输出方向。</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>启用"半轴"时，在任意方向偏移超过死区即触发（"反转"无效）。</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>将所选轴（0–100%）持续映射到 Windows 系统音量，并按音量限制缩放。与"始终"触发器一起使用，或与按钮/轴触发器配合"按住时"+"直到释放"使用。</value></data>

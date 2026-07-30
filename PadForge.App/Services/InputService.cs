@@ -5719,6 +5719,7 @@ namespace PadForge.Services
                     mapping.MappingDeadZone = primary.DeadZone > 0 ? primary.DeadZone : 50;
                     mapping.IsBidirectional = primary.Bidirectional;
                     mapping.InvertOutput = primary.InvertOutput;
+                    mapping.ParamAccel = primary.ParamAccel;
                     mapping.GyroSensitivity = primary.GyroSensitivity > 0 ? primary.GyroSensitivity : 1.0;
                     mapping.MouseCursorSensitivity = primary.MouseCursorSensitivity > 0 ? primary.MouseCursorSensitivity : 1.0;
                     mapping.IrPointerSensitivity = primary.IrPointerSensitivity > 0 ? primary.IrPointerSensitivity : 1.0;
@@ -5744,6 +5745,7 @@ namespace PadForge.Services
                     mapping.MappingDeadZone = 50;
                     mapping.IsBidirectional = false;
                     mapping.InvertOutput = false;
+                    mapping.ParamAccel = 0;
                     mapping.GyroSensitivity = 1.0;
                     mapping.MouseCursorSensitivity = 1.0;
                     mapping.IrPointerSensitivity = 1.0;

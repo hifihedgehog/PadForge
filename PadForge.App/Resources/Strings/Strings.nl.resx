@@ -950,6 +950,8 @@
   <data name="Macro_Axis_Half" xml:space="preserve"><value>halve as</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>Beide richtingen</value></data>
   <data name="Pad_InvertOutput" xml:space="preserve"><value>Uitvoer omkeren</value></data>
+  <data name="Pad_Mapping_Accel" xml:space="preserve"><value>Versnelling</value></data>
+  <data name="Pad_Mapping_Accel_Tooltip" xml:space="preserve"><value>Snelle beweging van deze invoer wordt versterkt, langzame gaat ongewijzigd door. 0 houdt de respons vlak. Imports zetten Steams muisversnelling hier op rijen met een stick.</value></data>
   <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>Keert het resultaat van deze invoer om. Bij een halve-asbron kiest het vakje Omkeren welke ashelft wordt gelezen, dus dit is de knop die de uitvoerrichting omdraait.</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>Als Halve as is ingeschakeld, activeert bij uitwijking voorbij de deadzone in beide richtingen vanuit het midden (Omgekeerd heeft geen effect).</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Wijst de geselecteerde as (0–100%) continu toe aan het Windows-systeemvolume, geschaald naar de volumelimiet. Gebruik met de "Altijd"-trigger, of een knop-/astrigger met "Tijdens ingedrukt houden" + "Tot loslaten".</value></data>

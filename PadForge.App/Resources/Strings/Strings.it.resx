@@ -950,6 +950,8 @@
   <data name="Macro_Axis_Half" xml:space="preserve"><value>mezzo asse</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>entrambe le direzioni</value></data>
   <data name="Pad_InvertOutput" xml:space="preserve"><value>Inverti uscita</value></data>
+  <data name="Pad_Mapping_Accel" xml:space="preserve"><value>Accelerazione</value></data>
+  <data name="Pad_Mapping_Accel_Tooltip" xml:space="preserve"><value>Il movimento veloce di questo ingresso viene amplificato, quello lento passa invariato. 0 mantiene la risposta piatta. Le importazioni mettono qui l’accelerazione del mouse di Steam sulle righe con stick.</value></data>
   <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>Inverte il risultato di questo ingresso. Su una sorgente a mezzo asse la casella Inverti sceglie quale metà dell’asse viene letta, quindi è questo controllo a capovolgere la direzione dell’uscita.</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>Con "mezzo asse" attivo, scatta quando lo spostamento supera la zona morta in entrambe le direzioni dal centro (Invertito non ha effetto).</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mappa continuamente l'asse selezionato (0–100%) al volume di sistema di Windows, scalato al limite di volume. Usa con attivatore "Sempre", oppure con un attivatore pulsante/asse con "Mentre tenuto" + "Fino al rilascio".</value></data>

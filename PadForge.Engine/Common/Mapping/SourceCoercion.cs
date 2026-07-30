@@ -929,6 +929,111 @@ namespace PadForge.Engine.Common.Mapping
             return ApplyCurveRangeShaping(delta, src);
         }
 
+        /// <summary><para>libinput's assumed touchpad width when the device
+        /// reports no resolution, which is exactly our case: the Linux
+        /// PlayStation driver defines the DS4 pad as 1920x942 units and never
+        /// calls input_abs_set_res, so nothing downstream knows its physical
+        /// size. libinput handles that in tp_init_default_resolution by
+        /// assuming 69 x 50 mm and deriving units/mm from it
+        /// (evdev-mt-touchpad.c: <c>touchpad_width_mm = 69</c>).</para>
+        ///
+        /// <para>Used here to turn pad-widths/sec into the mm/s the ported
+        /// curve is defined over. Borrowed rather than invented: an earlier
+        /// draft of this used a remembered "DS4 pad is 52 mm" figure, and
+        /// checking it showed 52 mm is the CONTROLLER's height, not the
+        /// touchpad's width. Since the real width is unpublished, the honest
+        /// move is to reuse the reference's own stated assumption and expose
+        /// the threshold for calibration.</para></summary>
+        internal const float TrackpadAssumedPadWidthMm = 69f;
+
+        /// <summary><para>Cursor gain for a finger speed, ported from
+        /// libinput's <c>touchpad_accel_profile_linear</c>
+        /// (src/filter-touchpad.c). Its shape, in libinput's own words, is "a
+        /// double incline with a plateau":</para>
+        /// <code>
+        ///   gain
+        ///     ^         ______
+        ///     |        )
+        ///     |  _____)        &lt;- plateau (baseline)
+        ///     | /
+        ///     |/               &lt;- deceleration: fine control
+        ///     +-------------&gt; finger speed
+        /// </code>
+        ///
+        /// <para>Every constant is the reference's, not a taste choice.
+        /// Deceleration below 7 mm/s runs <c>0.1x + 0.3</c>, so a nearly still
+        /// finger moves the cursor at 0.3x. The plateau is
+        /// <c>baseline = 0.9</c>. Above the threshold the incline is
+        /// <c>0.0025 * (v/thr) * (v - thr) + baseline</c>, capped at
+        /// <c>4 * thr</c> because past that "you're moving so fast that extra
+        /// acceleration doesn't help". libinput calls the second incline's
+        /// numbers "magic numbers obtained by trial-and-error", and copying
+        /// them verbatim is the point: they are what a trackpad feels
+        /// like.</para>
+        ///
+        /// <para>ONE deliberate divergence. libinput returns
+        /// <c>factor * speed_factor * TP_MAGIC_SLOWDOWN</c> (0.2968), an
+        /// ABSOLUTE scale entangled with its own delta normalization. PadForge
+        /// already owns that job through MouseSensitivityX/Y and
+        /// TouchCountsPerPadWidth, so applying libinput's scale would silently
+        /// rescale every existing user's pointer speed. This returns the gain
+        /// NORMALIZED to the 0.9 plateau instead, so a normal-speed drag comes
+        /// out at exactly 1.0 and unchanged, while the shape either side of it
+        /// (0.333x at rest, up to 5.333x at the cap) is libinput's
+        /// exactly.</para></summary>
+        /// <summary><para>Smallest non-zero finger speed a pad of the given
+        /// physical width can report, in mm/s, at one coordinate unit per
+        /// report. Below this the pad reads as stationary, so any part of the
+        /// gain curve under it is unreachable.</para>
+        ///
+        /// <para>Exists because that is not hypothetical. At libinput's assumed
+        /// 69 mm a DS4 pad (1920 units, ~250 Hz) has a quantum of 8.98 mm/s,
+        /// which is ABOVE the 7 mm/s deceleration knee: the entire precision
+        /// half of the curve would be dead, and the profile would only ever
+        /// accelerate, which is the exact failure it was added to fix. The knee
+        /// comes into range below about 54 mm. So the width is a real setting,
+        /// not a constant, and this helper is what the test asserts
+        /// against.</para></summary>
+        internal static float TrackpadSpeedQuantumMmPerSec(
+            float padWidthMm, int unitsAcrossPad, float reportIntervalSec)
+        {
+            if (unitsAcrossPad <= 0 || reportIntervalSec <= 0f) return 0f;
+            float padWidthsPerSec = 1f / unitsAcrossPad / reportIntervalSec;
+            return padWidthsPerSec * padWidthMm;
+        }
+
+        internal static float TrackpadPointerGain(
+            float padWidthsPerSec, float thresholdMmPerSec, float padWidthMm)
+        {
+            const float baseline = 0.9f;          // libinput: const double baseline = 0.9
+            const float decelKnee = 7.0f;         // libinput: if (speed_in < 7.0)
+            const float decelSlope = 0.1f;        // libinput: 0.1 * speed_in + 0.3
+            const float decelFloor = 0.3f;        // libinput: "down to 30% of input speed"
+            const float inclineCoeff = 0.0025f;   // libinput: 0.0025 * (speed/thr) * (speed - thr)
+            const float upperMultiple = 4.0f;     // libinput: threshold * 4.0
+
+            float thr = thresholdMmPerSec > 0f ? thresholdMmPerSec : 130f;
+            float w = padWidthMm > 0f ? padWidthMm : TrackpadAssumedPadWidthMm;
+            float mm = Math.Abs(padWidthsPerSec) * w;
+
+            float factor;
+            if (mm < decelKnee)
+            {
+                factor = Math.Min(baseline, decelSlope * mm + decelFloor);
+            }
+            else if (mm < thr)
+            {
+                factor = baseline;
+            }
+            else
+            {
+                float capped = Math.Min(mm, thr * upperMultiple);
+                factor = inclineCoeff * (capped / thr) * (capped - thr) + baseline;
+            }
+
+            return factor / baseline;   // the divergence documented above
+        }
+
         private static float ApplyGyroAcceleration(float normalized, float accel)
         {
             // Rate-dependent gain: slow movements pass through unchanged,
@@ -3170,15 +3275,38 @@ namespace PadForge.Engine.Common.Mapping
             // "mouse acceleration" was silently dropped on the cursor lane
             // while applying on the axis lane. One setting, one behavior, both
             // lanes.
-            float accel = tp?.MouseAcceleration ?? 0f;
-            if (accel > 0f)
+            // Isotropic on the VECTOR speed in both profiles, not per axis: a
+            // diagonal drag must not gain more on one axis and bend the
+            // pointer off the line the thumb drew.
+            float vx = ball.VelX, vy = ball.VelY;
+            float padSpeed = (float)Math.Sqrt(vx * vx + vy * vy);   // pad widths/sec
+
+            if (string.Equals(tp?.PointerResponse, "Trackpad", StringComparison.Ordinal))
             {
-                float dx = ball.VelX * dtSeconds;
-                float dy = ball.VelY * dtSeconds;
-                float speed = (float)Math.Sqrt(dx * dx + dy * dy);
-                float gain = 1f + accel * speed;
+                float gain = TrackpadPointerGain(
+                    padSpeed, tp.TrackpadThresholdMmPerSec, tp.TrackpadPadWidthMm);
                 cx *= gain;
                 cy *= gain;
+            }
+            else
+            {
+                // Simple, and the fallback for an absent or unrecognised value:
+                // this string round-trips through XML a user can hand-edit, so
+                // anything unknown must read as the default rather than
+                // throwing or silently picking the other profile. With
+                // acceleration at its 0 default this branch is the identity,
+                // which is why Simple is safe as the default.
+                //
+                // Measured on the frame's normalized displacement rather than
+                // on counts, which are unbounded and would make the gain depend
+                // on sensitivity.
+                float accel = tp?.MouseAcceleration ?? 0f;
+                if (accel > 0f)
+                {
+                    float gain = 1f + accel * padSpeed * dtSeconds;
+                    cx *= gain;
+                    cy *= gain;
+                }
             }
 
             // Bends the tremor band down a curve rather than cutting it, so a

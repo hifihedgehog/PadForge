@@ -265,6 +265,67 @@ namespace PadForge.Engine.Touchpad
         /// rather than a range widened on an existing one.</para></summary>
         [XmlAttribute] public float MouseAcceleration { get; set; }
 
+        /// <summary><para>Which transfer function turns finger speed into cursor
+        /// speed. <c>Simple</c> (default) applies
+        /// <see cref="MouseAcceleration"/> as a plain rate-dependent boost, so
+        /// the default of 0 is a constant gain and behaves exactly as the pad
+        /// did before this existed. <c>Trackpad</c> is the ported libinput
+        /// touchpad profile.</para>
+        ///
+        /// <para>A mode rather than two knobs stacked on each other: they are
+        /// competing models of the same thing, so layering would let a user
+        /// configure a contradiction.</para>
+        ///
+        /// <para>Deliberately NO separate "Flat" value. Simple with
+        /// acceleration 0 already IS flat, and offering both would be two
+        /// spellings of one behaviour, with the added trap that defaulting to
+        /// Flat would silently disable the acceleration slider for anyone who
+        /// had already set it.</para>
+        ///
+        /// <para>Trackpad exists because Simple cannot produce gain BELOW 1,
+        /// and that is where a laptop trackpad's precision comes from.
+        /// libinput decelerates to 0.3x of input at rest, holds a 0.9 plateau
+        /// through normal movement, then accelerates. A pad that can only ever
+        /// go faster feels clunky next to one that also goes finer, whatever
+        /// the boost is set to.</para></summary>
+        [XmlAttribute] public string PointerResponse { get; set; } = "Simple";
+
+        /// <summary><para>Finger speed, in mm/s, at which the Trackpad profile
+        /// leaves its plateau and starts accelerating. libinput's own default
+        /// and its single exposed tunable
+        /// (<c>filter-touchpad.c</c>, <c>filter-&gt;threshold = 130</c>).</para>
+        ///
+        /// <para>The calibration knob for this feature, and it needs to be one.
+        /// Converting a gamepad pad's normalized coordinates into mm/s needs a
+        /// physical pad width, and no authority publishes one: the Linux
+        /// PlayStation driver defines the DS4 pad as 1920x942 UNITS and never
+        /// calls input_abs_set_res, so even libinput does not know the size of
+        /// the pad it is accelerating. See
+        /// <see cref="TrackpadAssumedPadWidthMm"/>.</para></summary>
+        [XmlAttribute] public float TrackpadThresholdMmPerSec { get; set; } = 130f;
+
+        /// <summary><para>Physical width of this pad in mm, used to turn its
+        /// normalized coordinates into the mm/s the Trackpad profile is defined
+        /// over.</para>
+        ///
+        /// <para>A setting rather than a constant because it decides whether
+        /// the feature works at all. The profile's deceleration knee sits at
+        /// 7 mm/s, and a pad cannot report a speed slower than one coordinate
+        /// unit per report: on a DS4 (1920 units, ~250 Hz) that quantum is
+        /// 8.98 mm/s at a 69 mm width, so the whole precision half of the curve
+        /// would be unreachable and the profile could only ever accelerate. The
+        /// knee comes into range below roughly 54 mm.</para>
+        ///
+        /// <para>Defaults to libinput's own stated assumption for a touchpad
+        /// that reports no resolution, which is exactly our case (the Linux
+        /// PlayStation driver never calls input_abs_set_res for these pads):
+        /// tp_init_default_resolution assumes 69 x 50 mm. Kept as the default
+        /// because it is the one figure with a citation. No authority publishes
+        /// a DS4 touchpad's physical size, and a remembered "52 mm" turned out
+        /// to be the CONTROLLER's height, so lowering this is a calibration the
+        /// user makes by feel, on the pad in their hands.</para></summary>
+        [XmlAttribute] public float TrackpadPadWidthMm { get; set; } = 69f;
+
         // ─── Absolute pointer output (#9 B-15) ─────────────────────────
         //
         // Applied by SourceCoercion.ReadTunedTouchpadPointer when a
@@ -461,6 +522,9 @@ namespace PadForge.Engine.Touchpad
                 MouseMomentumDecay = MouseMomentumDecay,
                 MouseJitterReduction = MouseJitterReduction,
                 MouseAcceleration = MouseAcceleration,
+                PointerResponse = PointerResponse,
+                TrackpadThresholdMmPerSec = TrackpadThresholdMmPerSec,
+                TrackpadPadWidthMm = TrackpadPadWidthMm,
                 PointerRegionSizeX = PointerRegionSizeX,
                 PointerRegionSizeY = PointerRegionSizeY,
                 PointerRegionAuthored = PointerRegionAuthored,
@@ -616,6 +680,9 @@ namespace PadForge.Engine.Touchpad
                 || s.MouseMomentumDecay != d.MouseMomentumDecay
                 || s.MouseJitterReduction != d.MouseJitterReduction
                 || s.MouseAcceleration != d.MouseAcceleration
+                || !string.Equals(s.PointerResponse, d.PointerResponse, System.StringComparison.Ordinal)
+                || s.TrackpadThresholdMmPerSec != d.TrackpadThresholdMmPerSec
+                || s.TrackpadPadWidthMm != d.TrackpadPadWidthMm
                 || s.PointerRegionSizeX != d.PointerRegionSizeX
                 || s.PointerRegionSizeY != d.PointerRegionSizeY
                 || s.PointerRegionAuthored != d.PointerRegionAuthored

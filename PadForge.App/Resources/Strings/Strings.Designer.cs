@@ -1806,6 +1806,17 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetTouchpadMouseInvertY => Get("Pad_ResetTouchpadMouseInvertY");
     public string Pad_Touchpad_MouseJitterReduction => Get("Pad_Touchpad_MouseJitterReduction");
     public string Pad_Touchpad_MouseAcceleration => Get("Pad_Touchpad_MouseAcceleration");
+    public string Pad_Touchpad_PointerResponse => Get("Pad_Touchpad_PointerResponse");
+    public string Pad_Touchpad_PointerResponse_Tooltip => Get("Pad_Touchpad_PointerResponse_Tooltip");
+    public string Pad_Touchpad_PointerResponse_Simple => Get("Pad_Touchpad_PointerResponse_Simple");
+    public string Pad_Touchpad_PointerResponse_Trackpad => Get("Pad_Touchpad_PointerResponse_Trackpad");
+    public string Pad_Touchpad_TrackpadThreshold => Get("Pad_Touchpad_TrackpadThreshold");
+    public string Pad_Touchpad_TrackpadThreshold_Tooltip => Get("Pad_Touchpad_TrackpadThreshold_Tooltip");
+    public string Pad_Touchpad_TrackpadPadWidth => Get("Pad_Touchpad_TrackpadPadWidth");
+    public string Pad_Touchpad_TrackpadPadWidth_Tooltip => Get("Pad_Touchpad_TrackpadPadWidth_Tooltip");
+    public string Pad_ResetTouchpadPointerResponse => Get("Pad_ResetTouchpadPointerResponse");
+    public string Pad_ResetTouchpadTrackpadThreshold => Get("Pad_ResetTouchpadTrackpadThreshold");
+    public string Pad_ResetTouchpadTrackpadPadWidth => Get("Pad_ResetTouchpadTrackpadPadWidth");
     public string Pad_Touchpad_MouseAcceleration_Tooltip => Get("Pad_Touchpad_MouseAcceleration_Tooltip");
     public string Pad_ResetTouchpadMouseAcceleration => Get("Pad_ResetTouchpadMouseAcceleration");
     public string Pad_Touchpad_MouseJitterReduction_Tooltip => Get("Pad_Touchpad_MouseJitterReduction_Tooltip");

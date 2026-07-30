@@ -161,6 +161,38 @@ namespace PadForge.Tests
         }
 
 
+        [Fact]
+        public void TheRampMeetsThePlateauWithoutAStep()
+        {
+            // The observable property at the branch boundary, and the reason
+            // the knee's exact value is NOT observable: the ramp
+            // 0.1x + 0.3 reaches the 0.9 baseline at exactly 6 mm/s and is
+            // clamped there, so every speed from 6 up to the threshold returns
+            // the baseline whichever branch handles it. Moving libinput's knee
+            // anywhere in [6, threshold) is output-identical.
+            //
+            // Recorded because mutation testing proved it: shifting the knee
+            // from 7 to 20 survived the entire suite. That is an equivalent
+            // mutant rather than an untested guard, and the honest response is
+            // to pin what actually matters instead of contriving a test that
+            // can distinguish an unobservable constant.
+            //
+            // What DOES matter is continuity. A knee below 6 would cut the ramp
+            // short and leave a step up into the plateau, which reads as the
+            // cursor jerking as the finger speeds through it.
+            for (float mm = 5.0f; mm <= 9.0f; mm += 0.1f)
+            {
+                float here = Gain(mm);
+                float next = Gain(mm + 0.1f);
+                Assert.True(Math.Abs(next - here) < 0.02f,
+                    $"step of {next - here:F4} across the knee at {mm} mm/s");
+            }
+
+            // And both sides of the boundary sit exactly on the plateau.
+            Assert.Equal(1.0f, Gain(6.0f), 4);
+            Assert.Equal(1.0f, Gain(7.0f), 4);
+        }
+
         // ── reachability: the finding that made the width a setting ────────
 
         [Fact]

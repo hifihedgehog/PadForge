@@ -1711,6 +1711,17 @@
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>重置反转鼠标 Y</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>抖动抑制</value></data>
   <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>加速</value></data>
+  <data name="Pad_Touchpad_PointerResponse" xml:space="preserve"><value>响应</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Tooltip" xml:space="preserve"><value>手指速度如何转换为指针速度。Trackpad 在低速时会让指针比手指更慢，这正是精细定位手感自然的原因。</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Simple" xml:space="preserve"><value>简单</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Trackpad" xml:space="preserve"><value>触控板</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold" xml:space="preserve"><value>速度阈值</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold_Tooltip" xml:space="preserve"><value>指针开始加速时的手指速度（mm/s）。数值越低越早加速。</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth" xml:space="preserve"><value>触控板宽度</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth_Tooltip" xml:space="preserve"><value>此触控板的实际宽度（毫米）。它决定慢速移动能否进入精细控制区间，请设为接近真实尺寸的值。</value></data>
+  <data name="Pad_ResetTouchpadPointerResponse" xml:space="preserve"><value>重置响应</value></data>
+  <data name="Pad_ResetTouchpadTrackpadThreshold" xml:space="preserve"><value>重置速度阈值</value></data>
+  <data name="Pad_ResetTouchpadTrackpadPadWidth" xml:space="preserve"><value>重置触控板宽度</value></data>
   <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>同样的距离，滑动越快，指针在屏幕上移动得越远。0 表示指针速度恒定。</value></data>
   <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>重置加速</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>无需死区即可抑制手部抖动，细小的有意移动仍然有效。</value></data>

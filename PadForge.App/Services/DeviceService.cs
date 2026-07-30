@@ -154,7 +154,7 @@ namespace PadForge.Services
             // applied on every assignment path by construction, so covering
             // one entry point and not the other silently drops the tuning for
             // whichever path the user happens to take.
-            WorkshopTuningApplier.ApplyToAssignedDevice(slotIndex, us.GetPadSetting());
+            WorkshopTuningApplier.ApplyToAssignedDevice(slotIndex, us.GetPadSetting(), us.InstanceGuid.ToString());
 
             // Update the row display.
             selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
@@ -241,7 +241,7 @@ namespace PadForge.Services
             // does, fold those stamps into the device's OWN settings so
             // the existing cards show and edit them, and the engine has
             // one place to read instead of an invisible override.
-            WorkshopTuningApplier.ApplyToAssignedDevice(slotIndex, us.GetPadSetting());
+            WorkshopTuningApplier.ApplyToAssignedDevice(slotIndex, us.GetPadSetting(), us.InstanceGuid.ToString());
 
             row.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
 

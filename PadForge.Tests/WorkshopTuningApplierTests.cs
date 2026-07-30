@@ -27,6 +27,7 @@ namespace PadForge.Tests
     public class WorkshopTuningApplierTests : IDisposable
     {
         private const int Slot = 0;
+        private const string Guid = "11111111-2222-3333-4444-555555555555";
 
         // SlotMappingSets is a STATIC. Replacing it without putting it back
         // leaks into every other test that reads it: doing so reddened five
@@ -448,6 +449,123 @@ namespace PadForge.Tests
 
             Assert.False(WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps));
             Assert.Equal(0.15, set.Rows[0].Sources[0].ParamAntiDeadzone);
+        }
+
+        // ── per-pad cursor acceleration ───────────────────────────────────
+        //
+        // Steam's mouse acceleration landed on MappingSource.ParamAccel, which
+        // the engine honoured while no card showed it: an imported pad felt
+        // accelerated with nothing on screen to say why and nothing to turn it
+        // off. It folds onto the pad's own Mouse Acceleration card now.
+
+        private static MappingSet ArrangeTouchpadRow(string descriptor, double accel)
+        {
+            return ArrangeSlot(s => s.Rows.Add(new MappingRow
+            {
+                // The target names no pad, which is why the fold reads the
+                // SOURCE descriptor. This is the real shape of an imported
+                // touchpad mouse row.
+                Target = "KbmMouseX",
+                Sources = { new MappingSource { Descriptor = descriptor, ParamAccel = accel } },
+            }));
+        }
+
+        [Fact]
+        public void AccelerationFoldsOntoThePadNamedByTheSource()
+        {
+            var set = ArrangeTouchpadRow("Touchpad 1 Finger 0 X", 1.5);
+            var ps = new PadSetting();
+
+            Assert.True(WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps, Guid));
+
+            var entry = Assert.Single(ps.TouchpadSettings);
+            Assert.Equal(1, entry.TouchpadIndex);          // pad 1, from the source
+            Assert.Equal(Guid, entry.DeviceGuid);
+            Assert.Equal(1.5f, entry.Settings.MouseAcceleration, 3);
+
+            // Moved, so the engine cannot apply it twice.
+            Assert.Equal(0.0, set.Rows[0].Sources[0].ParamAccel);
+        }
+
+        [Fact]
+        public void TwoPadsKeepSeparateAcceleration()
+        {
+            // Per-(device, pad), like every other touchpad setting: a
+            // controller's two pads must not share one value.
+            ArrangeSlot(s =>
+            {
+                s.Rows.Add(new MappingRow
+                {
+                    Target = "KbmMouseX",
+                    Sources = { new MappingSource { Descriptor = "Touchpad 0 Finger 0 X", ParamAccel = 0.5 } },
+                });
+                s.Rows.Add(new MappingRow
+                {
+                    Target = "KbmMouseY",
+                    Sources = { new MappingSource { Descriptor = "Touchpad 1 Finger 0 Y", ParamAccel = 2.0 } },
+                });
+            });
+            var ps = new PadSetting();
+
+            WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps, Guid);
+
+            Assert.Equal(2, ps.TouchpadSettings.Length);
+            Assert.Equal(0.5f, ps.TouchpadSettings.Single(e => e.TouchpadIndex == 0).Settings.MouseAcceleration, 3);
+            Assert.Equal(2.0f, ps.TouchpadSettings.Single(e => e.TouchpadIndex == 1).Settings.MouseAcceleration, 3);
+        }
+
+        [Fact]
+        public void AnAccelerationTheUserAlreadySetSurvives()
+        {
+            var set = ArrangeTouchpadRow("Touchpad 0 Finger 0 X", 1.5);
+            var ps = new PadSetting
+            {
+                TouchpadSettings = new[]
+                {
+                    new PadForge.Engine.Touchpad.TouchpadSettingsEntry
+                    {
+                        DeviceGuid = Guid,
+                        TouchpadIndex = 0,
+                        Settings = new PadForge.Engine.Touchpad.TouchpadGestureSettings { MouseAcceleration = 0.25f },
+                    },
+                },
+            };
+
+            WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps, Guid);
+
+            Assert.Equal(0.25f, ps.TouchpadSettings[0].Settings.MouseAcceleration, 3);
+            Assert.Equal(0.0, set.Rows[0].Sources[0].ParamAccel);
+        }
+
+        [Fact]
+        public void ANonTouchpadSourceKeepsItsAcceleration()
+        {
+            // Gyro hosts carry accel too, and their card is the Gyro
+            // Acceleration one, not a pad's. Eating the value here would
+            // silently drop it.
+            var set = ArrangeSlot(s => s.Rows.Add(new MappingRow
+            {
+                Target = "KbmMouseX",
+                Sources = { new MappingSource { Descriptor = "Gyro Yaw", ParamAccel = 0.5 } },
+            }));
+            var ps = new PadSetting();
+
+            WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps, Guid);
+
+            Assert.Equal(0.5, set.Rows[0].Sources[0].ParamAccel);
+            Assert.True(ps.TouchpadSettings == null || ps.TouchpadSettings.Length == 0);
+        }
+
+        [Fact]
+        public void WithoutADeviceGuidTheAccelerationStaysPut()
+        {
+            // The entry is keyed by (device, pad); with no device there is no
+            // entry to write, so the stamp must survive for the next call.
+            var set = ArrangeTouchpadRow("Touchpad 0 Finger 0 X", 1.5);
+
+            WorkshopTuningApplier.ApplyToAssignedDevice(Slot, new PadSetting(), null);
+
+            Assert.Equal(1.5, set.Rows[0].Sources[0].ParamAccel);
         }
 
         [Fact]

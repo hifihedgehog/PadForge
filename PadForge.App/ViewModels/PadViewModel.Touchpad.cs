@@ -450,6 +450,22 @@ namespace PadForge.ViewModels
             }
         }
 
+        private double _touchpadMouseAcceleration;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseAcceleration"/>:
+        /// rate-dependent cursor gain, so a fast drag covers more screen than
+        /// the same distance dragged slowly. 0 = off, a flat sensitivity.
+        /// Sensitivity cannot express this, which is why it is its own knob
+        /// and not a widened range on that one.</summary>
+        public double TouchpadMouseAcceleration
+        {
+            get => _touchpadMouseAcceleration;
+            set
+            {
+                double x = Math.Clamp(value, 0.0, 5.0);
+                if (SetProperty(ref _touchpadMouseAcceleration, x)) PushIfNotLoading();
+            }
+        }
+
         private bool _touchpadMouseJitterReduction = true;
         /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseJitterReduction"/>:
         /// bends the tremor band down a curve rather than cutting it, so a
@@ -902,6 +918,10 @@ namespace PadForge.ViewModels
         public RelayCommand ResetTouchpadMouseMomentumDecayCommand =>
             _resetTouchpadMouseMomentumDecayCommand ??= new RelayCommand(() => TouchpadMouseMomentumDecay = 0.90);
 
+        private RelayCommand _resetTouchpadMouseAccelerationCommand;
+        public RelayCommand ResetTouchpadMouseAccelerationCommand =>
+            _resetTouchpadMouseAccelerationCommand ??= new RelayCommand(() => TouchpadMouseAcceleration = 0);
+
         private RelayCommand _resetTouchpadMouseJitterReductionCommand;
         public RelayCommand ResetTouchpadMouseJitterReductionCommand =>
             _resetTouchpadMouseJitterReductionCommand ??= new RelayCommand(() => TouchpadMouseJitterReduction = true);
@@ -919,6 +939,7 @@ namespace PadForge.ViewModels
                 TouchpadMouseMomentum = false;
                 TouchpadMouseMomentumDecay = 0.90;
                 TouchpadMouseJitterReduction = true;
+                TouchpadMouseAcceleration = 0;
             });
 
         private RelayCommand _resetTouchpadTapMaxMotionCommand;
@@ -1102,6 +1123,7 @@ namespace PadForge.ViewModels
                 TouchpadMouseMomentum = s.MouseMomentum;
                 TouchpadMouseMomentumDecay = s.MouseMomentumDecay;
                 TouchpadMouseJitterReduction = s.MouseJitterReduction;
+                TouchpadMouseAcceleration = s.MouseAcceleration;
                 var rs = s;
                 _touchpadPointerRegionAuthored = rs.PointerRegionAuthored;
                 TouchpadPointerRegionSizeX = rs.PointerRegionSizeX;
@@ -1322,6 +1344,7 @@ namespace PadForge.ViewModels
             s.MouseMomentum = TouchpadMouseMomentum;
             s.MouseMomentumDecay = (float)TouchpadMouseMomentumDecay;
             s.MouseJitterReduction = TouchpadMouseJitterReduction;
+            s.MouseAcceleration = (float)TouchpadMouseAcceleration;
             // Stamp the entry as post-repair. Anything this push writes is
             // current user intent by definition, so the one-time
             // authored-but-default repair must never touch it. Only

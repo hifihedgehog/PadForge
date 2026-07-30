@@ -906,8 +906,24 @@ namespace PadForge.Engine.Common.Mapping
         /// (ReadTouchpadMouseCounts); the decay here was a second
         /// implementation of the same idea, on a different physical model,
         /// reachable only when a pad drove a non-mouse target.</para></summary>
-        private static float ApplyTouchpadFeel(MappingSource src, float delta, bool fingerDown, string deviceGuid)
+        /// <summary>Per-pad cursor feel. <paramref name="settingsAccel"/> is
+        /// the pad's own MouseAcceleration card; the per-source ParamAccel is
+        /// the pre-handover driver for an import whose value has not yet been
+        /// folded into that card, exactly as the pointer region resolves.
+        /// Applied through the SAME curve either way, so which one supplies
+        /// the number cannot change the feel.
+        ///
+        /// <para>fingerDown and deviceGuid used to be parameters here and went
+        /// unused when the EMA smoothing and trackball integrators were
+        /// removed. Dead parameters on a hot path invite the next reader to
+        /// wire something to them, so they are gone.</para></summary>
+        private static float ApplyTouchpadFeel(MappingSource src, float delta, float settingsAccel)
         {
+            if (settingsAccel > 0f)
+            {
+                delta *= 1f + settingsAccel * Math.Abs(delta);
+                if (delta < -1f) delta = -1f; else if (delta > 1f) delta = 1f;
+            }
             if (src == null) return delta;
             delta = ApplyPerSourceAccel(src, delta);
             return ApplyCurveRangeShaping(delta, src);
@@ -3137,6 +3153,34 @@ namespace PadForge.Engine.Common.Mapping
             float cx = ball.VelX * dtSeconds * TouchCountsPerPadWidth * sx;
             float cy = ball.VelY * dtSeconds * TouchCountsPerPadWidth * sy;
 
+            // Rate-dependent gain, before the jitter bend so the bend still
+            // judges the tremor band on its own scale.
+            //
+            // Measured on the frame's normalized displacement (pad widths, the
+            // same quantity the axis lane accelerates) rather than on counts,
+            // which are unbounded and would make the gain depend on
+            // sensitivity. Isotropic on the VECTOR speed, not per axis: a
+            // diagonal drag must not gain more on one axis and bend the
+            // pointer off the line the thumb drew.
+            //
+            // This lane previously ignored acceleration entirely. Steam
+            // configs carry it on exactly these rows (a touchpad finger
+            // driving Mouse X/Y), and the per-source ParamAccel that used to
+            // hold the imported value never reached here, so an imported
+            // "mouse acceleration" was silently dropped on the cursor lane
+            // while applying on the axis lane. One setting, one behavior, both
+            // lanes.
+            float accel = tp?.MouseAcceleration ?? 0f;
+            if (accel > 0f)
+            {
+                float dx = ball.VelX * dtSeconds;
+                float dy = ball.VelY * dtSeconds;
+                float speed = (float)Math.Sqrt(dx * dx + dy * dy);
+                float gain = 1f + accel * speed;
+                cx *= gain;
+                cy *= gain;
+            }
+
             // Bends the tremor band down a curve rather than cutting it, so a
             // resting hand stops shivering the cursor while fine movement
             // stays continuous. A dead zone would delete it outright.
@@ -4540,6 +4584,12 @@ namespace PadForge.Engine.Common.Mapping
             // file's own GetMouseFeelState doc already calls that "the
             // _touchpadDeltas pattern", describing behavior this key did
             // not actually have (round 34).
+            // The pad's own cursor-feel card, same (slot, device, pad) key
+            // the region read uses.
+            float padAccel = TouchpadMouseSettingsProvider?.Invoke(
+                slotIndex, string.IsNullOrEmpty(deviceGuid) ? (evaluatedDeviceGuid ?? "") : deviceGuid,
+                padIdx)?.MouseAcceleration ?? 0f;
+
             string trackerDevice = string.IsNullOrEmpty(deviceGuid) ? (evaluatedDeviceGuid ?? "") : deviceGuid;
             var key = (slotIndex, trackerDevice, padIdx, fingerIdx, axisOffset, half);
 
@@ -4555,7 +4605,7 @@ namespace PadForge.Engine.Common.Mapping
                 // v18 feel chain: with trackball stamped, the lift keeps
                 // the decaying momentum flowing; otherwise this is the
                 // same 0 the pre-v18 read returned (EMA of 0 included).
-                bipolar = ApplyTouchpadFeel(src, 0f, fingerDown: false, evaluatedDeviceGuid);
+                bipolar = ApplyTouchpadFeel(src, 0f, padAccel);
                 return true;
             }
 
@@ -4585,7 +4635,7 @@ namespace PadForge.Engine.Common.Mapping
                 _touchpadDeltas[key] = new TouchpadAxisDelta { PrevValue = raw, Seeded = true, FrameSeq = _pollFrameSeq };
                 // Seed frame reads 0; the touch also kills any trackball
                 // momentum (catching the ball stops it).
-                bipolar = ApplyTouchpadFeel(src, 0f, fingerDown: true, evaluatedDeviceGuid);
+                bipolar = ApplyTouchpadFeel(src, 0f, padAccel);
                 return true;
             }
             float delta;
@@ -4662,7 +4712,7 @@ namespace PadForge.Engine.Common.Mapping
             else if (bipolar > 1f) bipolar = 1f;
             // v18 feel chain (threshold / accel / trackball / smoothing /
             // curve shaping); every knob defaults off = pass-through.
-            if (src != null) bipolar = ApplyTouchpadFeel(src, bipolar, fingerDown: true, evaluatedDeviceGuid);
+            bipolar = ApplyTouchpadFeel(src, bipolar, padAccel);
             return true;
         }
 

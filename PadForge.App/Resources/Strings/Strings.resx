@@ -1415,6 +1415,9 @@
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Reset Invert Mouse X</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Reset Invert Mouse Y</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Jitter Reduction</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>Acceleration</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>Fast drags cover more screen than slow ones over the same distance. 0 keeps the cursor speed flat.</value></data>
+  <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>Reset acceleration</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Damps resting-hand tremor without a dead zone, so tiny deliberate movements still register.</value></data>
   <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Reset Jitter Reduction</value></data>
   <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Momentum</value></data>

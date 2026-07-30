@@ -1711,6 +1711,9 @@
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>マウス X 反転をリセット</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>マウス Y 反転をリセット</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>ぶれ低減</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>加速</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>同じ距離でも、速くなぞるほど画面上を大きく移動します。0 でカーソル速度は一定になります。</value></data>
+  <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>加速をリセット</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>デッドゾーンなしで手のぶれを抑えます。意図した小さな動きはそのまま伝わります。</value></data>
   <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>ぶれ低減をリセット</value></data>
   <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>情性</value></data>

@@ -1711,6 +1711,9 @@
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>마우스 X 반전 재설정</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>마우스 Y 반전 재설정</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>떨림 감소</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>가속</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>같은 거리라도 바르게 끌면 화면에서 더 많이 이동합니다. 0이면 커서 속도가 일정합니다.</value></data>
+  <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>가속 초기화</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>데드존 없이 손 떨림을 줄입니다. 의도한 작은 움직임은 그대로 전달됩니다.</value></data>
   <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>떨림 감소 초기화</value></data>
   <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>관성</value></data>

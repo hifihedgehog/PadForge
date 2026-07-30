@@ -1569,6 +1569,7 @@ namespace PadForge.Engine.Data
                     // silently adopts the first's glide.
                     sb.Append(s.MouseMomentum).Append(',').Append(s.MouseMomentumDecay).Append(',');
                     sb.Append(s.MouseJitterReduction).Append(',');
+                    sb.Append(s.MouseAcceleration).Append(',');
                     sb.Append(s.EnableSwipeHaptics).Append(',').Append(s.SwipeHapticsIntensity).Append(',');
                     // Absolute-pointer region (#9 B-15): same dedup-by-
                     // checksum trap as every field above. All FOUR, not just

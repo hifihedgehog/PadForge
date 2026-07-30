@@ -1731,6 +1731,9 @@
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Muis X inverteren resetten</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Muis Y inverteren resetten</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Trillingsreductie</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>Versnelling</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>Snel slepen legt meer schermafstand af dan langzaam slepen over dezelfde afstand. 0 houdt de cursorsnelheid vlak.</value></data>
+  <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>Versnelling herstellen</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Dempt het trillen van een rustende hand zonder dode zone, zodat kleine bedoelde bewegingen wel doorkomen.</value></data>
   <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Trillingsreductie herstellen</value></data>
   <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Momentum</value></data>

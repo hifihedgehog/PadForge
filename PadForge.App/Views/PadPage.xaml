@@ -4698,6 +4698,26 @@
                                                                      VerticalContentAlignment="Center"/>
                                                             <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <ui:Button Command="{Binding ResetGyroSensitivityCommand}" Style="{StaticResource ResetButton}"/>
+                                                        </StackPanel>
+                                                        <!-- Per-source acceleration: rate-dependent gain the
+                                                             engine applies at the shared bipolar/unipolar seam.
+                                                             Continuous sources only (the same family gate as
+                                                             Half), so buttons never see a knob that does
+                                                             nothing. Imports carry Steam's stick-hosted mouse
+                                                             acceleration here. -->
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0"
+                                                                    Visibility="{Binding IsHalfAxisApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Accel, Source={x:Static strings:Strings.Instance}}"
+                                                                       VerticalAlignment="Center" Margin="0,0,4,0"
+                                                                       ToolTip="{Binding Pad_Mapping_Accel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <Slider Value="{Binding ParamAccel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    Minimum="0" Maximum="5" SmallChange="0.05" LargeChange="0.5"
+                                                                    Width="90" VerticalAlignment="Center"
+                                                                    ToolTip="{Binding Pad_Mapping_Accel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <TextBox Text="{Binding ParamAccel, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                                     Width="44" Margin="4,0,4,0" Padding="2,1"
+                                                                     VerticalContentAlignment="Center"/>
+                                                            <ui:Button Command="{Binding ResetParamAccelCommand}" Style="{StaticResource ResetButton}"/>
                                                         </StackPanel>
                                                         <!-- Per-source mouse cursor sensitivity (#107). Only
                                                              renders for "Mouse Position X/Y" descriptors. -->
@@ -5473,6 +5493,24 @@
                                                          VerticalContentAlignment="Center"/>
                                                 <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <ui:Button Command="{Binding ResetGyroSensitivityCommand}" Style="{StaticResource ResetButton}"/>
+                                            </StackPanel>
+                                            <!-- Primary-source acceleration, the twin of the
+                                                 ExtraSources chip's control; same continuous-family
+                                                 gate. -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,4,0,0"
+                                                        Visibility="{Binding IsHalfAxisApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="11.5"
+                                                           Text="{Binding Pad_Mapping_Accel, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Margin="0,0,4,0"
+                                                           ToolTip="{Binding Pad_Mapping_Accel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Slider Value="{Binding ParamAccel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Minimum="0" Maximum="5" SmallChange="0.05" LargeChange="0.5"
+                                                        Width="90" VerticalAlignment="Center"
+                                                        ToolTip="{Binding Pad_Mapping_Accel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding ParamAccel, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                         Width="44" Margin="4,0,4,0" Padding="2,1"
+                                                         VerticalContentAlignment="Center"/>
+                                                <ui:Button Command="{Binding ResetParamAccelCommand}" Style="{StaticResource ResetButton}"/>
                                             </StackPanel>
                                             <!-- Per-source mouse cursor sensitivity for the primary
                                                  source (#107). Renders only for "Mouse Position X/Y". -->

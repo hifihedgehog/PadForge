@@ -151,9 +151,9 @@ namespace PadForge.Services
         /// (clamp(0..10) x 0.5), so the copy is lossless.</para>
         ///
         /// <para>Gyro descriptors only. A stick-hosted mouse row can carry
-        /// this stamp too (EmitMouseAxes serves joystick_mouse), and there is
-        /// no card for that one, so it stays per-source rather than being
-        /// eaten looking for a home.</para></summary>
+        /// this stamp too (EmitMouseAxes serves joystick_mouse); that one
+        /// stays per-source, where the row editors now show it as the
+        /// Acceleration control and the shared axis seam reads it.</para></summary>
         private static bool FoldGyroAcceleration(MappingSet set, PadSetting ps)
         {
             if (set.Rows == null) return false;

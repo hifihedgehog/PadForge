@@ -1131,6 +1131,22 @@ namespace PadForge.ViewModels
         /// checkbox's IsEnabled so an inert option is visibly inert.</summary>
         public bool IsInvertApplicable => !(_isHalfAxis && _isBidirectional);
 
+        private double _paramAccel;
+
+        /// <summary>The primary source's rate-dependent gain
+        /// (MappingSource.ParamAccel), the twin of the ExtraSources chip's
+        /// control. Hydrated from the row's primary and written back by the
+        /// save rebuild; 0 = off; 0..5 covers the translator's maximum.</summary>
+        public double ParamAccel
+        {
+            get => _paramAccel;
+            set => SetProperty(ref _paramAccel, Math.Clamp(value, 0.0, 5.0));
+        }
+
+        private RelayCommand _resetParamAccelCommand;
+        public RelayCommand ResetParamAccelCommand =>
+            _resetParamAccelCommand ??= new RelayCommand(() => ParamAccel = 0.0);
+
         private bool _invertOutput;
 
         /// <summary><para>Output flip for a primary whose Invert flag is

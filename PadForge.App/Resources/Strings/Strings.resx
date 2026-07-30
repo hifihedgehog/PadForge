@@ -1876,6 +1876,8 @@
   <data name="Macro_Axis_Half" xml:space="preserve"><value>half axis</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>Bidirectional</value></data>
   <data name="Pad_InvertOutput" xml:space="preserve"><value>Flip Output</value></data>
+  <data name="Pad_Mapping_Accel" xml:space="preserve"><value>Acceleration</value></data>
+  <data name="Pad_Mapping_Accel_Tooltip" xml:space="preserve"><value>Fast motion on this input is amplified, slow motion passes through unchanged. 0 keeps the response flat. Imports carry Steam’s mouse acceleration here on stick-hosted rows.</value></data>
   <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>Reverses this input’s result. On a half-axis source the Invert box selects which half of the axis is read, so this is the control that flips the output direction.</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>When Half is on, fire on deflection past the deadzone in either direction from center (Invert has no effect).</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Continuously maps the selected axis (0–100%) to the Windows system volume, scaled to the volume limit. Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release".</value></data>

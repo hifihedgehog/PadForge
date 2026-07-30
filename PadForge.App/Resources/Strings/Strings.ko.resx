@@ -951,6 +951,8 @@
   <data name="Macro_Axis_Half" xml:space="preserve"><value>절반 축</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>양방향</value></data>
   <data name="Pad_InvertOutput" xml:space="preserve"><value>출력 반전</value></data>
+  <data name="Pad_Mapping_Accel" xml:space="preserve"><value>가속</value></data>
+  <data name="Pad_Mapping_Accel_Tooltip" xml:space="preserve"><value>이 입력의 빠른 움직임은 증폭되고 느린 움직임은 그대로 통과합니다. 0이면 반응이 일정합니다. 가져오기시 스틱 행의 Steam 마우스 가속이 여기에 담깁니다.</value></data>
   <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>이 입력의 결과를 반전합니다. 반쪽 축 소스에서는 반전 체크가 읽을 축의 절반을 고르므로, 출력 방향을 뒤집는 것은 이 컨트롤입니다.</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>절반 축이 켜져 있을 때, 중립에서 어느 방향으로든 데드존을 초과하면 실행됩니다(반전은 적용되지 않음).</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>선택한 축(0–100%)을 Windows 시스템 볼륨에 지속적으로 매핑하며 볼륨 한도에 맞게 조정됩니다. "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요.</value></data>

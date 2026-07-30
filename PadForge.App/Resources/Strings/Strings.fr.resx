@@ -951,6 +951,8 @@
   <data name="Macro_Axis_Half" xml:space="preserve"><value>demi-axe</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>Les deux sens</value></data>
   <data name="Pad_InvertOutput" xml:space="preserve"><value>Inverser la sortie</value></data>
+  <data name="Pad_Mapping_Accel" xml:space="preserve"><value>Accélération</value></data>
+  <data name="Pad_Mapping_Accel_Tooltip" xml:space="preserve"><value>Le mouvement rapide de cette entrée est amplifié, le lent passe inchangé. 0 garde une réponse plate. Les imports placent ici l’accélération souris de Steam sur les lignes à stick.</value></data>
   <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>Inverse le résultat de cette entrée. Sur une source demi-axe, la case Inverser choisit la moitié d’axe lue, ce contrôle retourne donc la direction de la sortie.</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>Quand Demi-axe est activé, déclenche dès que la déviation dépasse la zone morte dans l'un ou l'autre sens depuis le centre (Inversé est sans effet).</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mappe en continu l'axe sélectionné (0–100 %) au volume système Windows, mis à l'échelle selon la limite de volume. Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Tant que maintenu » + « Jusqu'au relâchement ».</value></data>

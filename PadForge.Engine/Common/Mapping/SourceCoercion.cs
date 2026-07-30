@@ -4171,6 +4171,15 @@ namespace PadForge.Engine.Common.Mapping
             // double-shaped and every evaluator lane (Step 3 mapping-set
             // eval, menus steer, the MouseAbs routing) inherits it through
             // EvaluateForBipolarAxisTarget.
+            //
+            // Round 40 follow-up: the per-source acceleration joins the seam,
+            // accel before curve/range, the touchpad-feel order. Until now
+            // ONLY the touchpad and gyro lanes read ParamAccel, so a
+            // stick-hosted Steam mouse group's acceleration was stamped by
+            // the translator and then read by nothing: dead, not merely
+            // invisible. The specialized families above cannot double-apply
+            // it, since they return before reaching this tail.
+            axisValue = ApplyPerSourceAccel(src, axisValue);
             return ApplyCurveRangeShaping(axisValue, src);
         }
 
@@ -4409,6 +4418,11 @@ namespace PadForge.Engine.Common.Mapping
             // trigger-hosted Steam group's curve cluster shapes the pull
             // exactly like a stick's. Magnitude math, one seam; defaults
             // are pass-through.
+            //
+            // Acceleration joins here too (round 40 follow-up), keeping the
+            // two tails twins: accel before curve/range, and the [0,1]
+            // magnitude survives ApplyPerSourceAccel's symmetric clamp.
+            axisValue = ApplyPerSourceAccel(src, axisValue);
             return ApplyCurveRangeShaping(axisValue, src);
         }
 

@@ -2292,10 +2292,16 @@ namespace PadForge.ViewModels
         }
 
         private double _gyroAcceleration;
+        // Clamp 5, not 2: a Steam import can carry acceleration up to
+        // clamp(0..10) x 0.5 = 5, and the Workshop fold writes it onto this
+        // card. At the old 2 a folded value survived only until the Gyro tab
+        // first loaded it, then this setter silently degraded it on the
+        // round-trip. The card is the contract, so the range covers every
+        // importable value.
         public double GyroAcceleration
         {
             get => _gyroAcceleration;
-            set => SetProperty(ref _gyroAcceleration, Math.Clamp(value, 0, 2));
+            set => SetProperty(ref _gyroAcceleration, Math.Clamp(value, 0, 5));
         }
 
         private string _gyroOutputCurve = "Linear";

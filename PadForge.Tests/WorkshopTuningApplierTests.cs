@@ -538,11 +538,13 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ANonTouchpadSourceKeepsItsAcceleration()
+        public void GyroAccelerationLandsOnTheGyroCardNotAPad()
         {
             // Gyro hosts carry accel too, and their card is the Gyro
-            // Acceleration one, not a pad's. Eating the value here would
-            // silently drop it.
+            // Acceleration one. Before this fold the stamp stacked invisibly
+            // on the card AND rode a helper that hard-caps at full-scale,
+            // a ceiling the gyro rate lane deliberately does not have for the
+            // card's own value.
             var set = ArrangeSlot(s => s.Rows.Add(new MappingRow
             {
                 Target = "KbmMouseX",
@@ -550,10 +552,88 @@ namespace PadForge.Tests
             }));
             var ps = new PadSetting();
 
+            Assert.True(WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps, Guid));
+
+            Assert.Equal("0.50", ps.GyroAcceleration);   // the card's own F2 format
+            Assert.Equal(0.0, set.Rows[0].Sources[0].ParamAccel);
+            // And not misrouted to a pad's settings.
+            Assert.True(ps.TouchpadSettings == null || ps.TouchpadSettings.Length == 0);
+        }
+
+        [Fact]
+        public void TheYawPitchPairFoldsToOneCardValue()
+        {
+            // The translator stamps both rows of the pair with the same value
+            // (the corpus case: Gyro Yaw + Gyro Pitch at 0.5). One card, one
+            // value, both stamps cleared.
+            var set = ArrangeSlot(s =>
+            {
+                foreach (var d in new[] { "Gyro Yaw", "Gyro Pitch" })
+                {
+                    s.Rows.Add(new MappingRow
+                    {
+                        Target = d == "Gyro Yaw" ? "KbmMouseX" : "KbmMouseY",
+                        Sources = { new MappingSource { Descriptor = d, ParamAccel = 0.5 } },
+                    });
+                }
+            });
+            var ps = new PadSetting();
+
+            WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps, Guid);
+
+            Assert.Equal("0.50", ps.GyroAcceleration);
+            Assert.All(set.Rows, r => Assert.Equal(0.0, r.Sources[0].ParamAccel));
+        }
+
+        [Fact]
+        public void AGyroAccelerationTheUserAlreadySetSurvives()
+        {
+            var set = ArrangeRow("KbmMouseX", s => { });
+            set.Rows[0].Sources[0].Descriptor = "Gyro Yaw";
+            set.Rows[0].Sources[0].ParamAccel = 0.5;
+            var ps = new PadSetting { GyroAcceleration = "1.20" };
+
+            WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps, Guid);
+
+            Assert.Equal("1.20", ps.GyroAcceleration);
+            // Still cleared, so it cannot stack over the user's value at the
+            // next engine read, which is the defect this fold removes.
+            Assert.Equal(0.0, set.Rows[0].Sources[0].ParamAccel);
+        }
+
+        [Fact]
+        public void AStickHostedAccelerationIsLeftAlone()
+        {
+            // EmitMouseAxes serves stick-hosted mouse modes too, and there is
+            // no card for a stick's cursor acceleration. The stamp must stay
+            // per-source (where the axis read still honours it) rather than be
+            // eaten looking for a home or misrouted onto the gyro card.
+            var set = ArrangeSlot(s => s.Rows.Add(new MappingRow
+            {
+                Target = "KbmMouseX",
+                Sources = { new MappingSource { Descriptor = "Gamepad LeftStickX", ParamAccel = 0.5 } },
+            }));
+            var ps = new PadSetting();
+
             WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps, Guid);
 
             Assert.Equal(0.5, set.Rows[0].Sources[0].ParamAccel);
-            Assert.True(ps.TouchpadSettings == null || ps.TouchpadSettings.Length == 0);
+            Assert.Equal("0", ps.GyroAcceleration);
+        }
+
+        [Fact]
+        public void TheGyroCardRangeCoversEveryImportableValue()
+        {
+            // The translator admits Steam acceleration up to clamp(0..10) x 0.5
+            // = 5. The card's VM clamp was 2, so a folded value above it
+            // survived only until the Gyro tab first loaded it, then degraded
+            // silently on the round-trip. The card is the contract, so its
+            // range covers the import's maximum.
+            var vm = new PadForge.ViewModels.PadViewModel(0);
+            vm.GyroAcceleration = 5.0;
+            Assert.Equal(5.0, vm.GyroAcceleration);
+            vm.GyroAcceleration = 7.0;                    // beyond any import
+            Assert.Equal(5.0, vm.GyroAcceleration);
         }
 
         [Fact]

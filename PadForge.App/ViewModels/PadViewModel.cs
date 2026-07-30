@@ -6211,16 +6211,26 @@ namespace PadForge.ViewModels
                 m.NegSourceDescriptor = string.Empty;
                 m.IsInverted = false;
                 m.IsHalfAxis = false;
-                // The whole flag family, not just the two the original clear
-                // knew about: a stale Bidirectional or InvertOutput survived
-                // the clear and silently rode the next primary the user
-                // assigned to the row (round 40). The per-source
-                // sensitivities are left as-is deliberately; they are
-                // 1.0-defaulted scale factors, and resetting them is a
-                // behavior change beyond what "clear the mappings" says.
+                // The ENTIRE row surface, by owner ruling (2026-07-30):
+                // "EVERYTHING in the mapping tab table should be cleared
+                // with a clear all." Round 40 had already widened the clear
+                // to the flag family after a stale Bidirectional or
+                // InvertOutput rode the next primary; the sensitivities were
+                // briefly carved out as tuning, and the ruling closed that
+                // carve-out: a cleared row hands NOTHING to the next
+                // mapping, multipliers included.
                 m.IsBidirectional = false;
                 m.InvertOutput = false;
                 m.ParamAccel = 0;
+                m.GyroSensitivity = 1.0;
+                m.MouseCursorSensitivity = 1.0;
+                m.IrPointerSensitivity = 1.0;
+                m.Sensitivity = 1.0;
+                m.NoInherit = false;
+                // The stateful primary kind (Incremental / Ramped /
+                // InvertOnHold) resets to a plain Direct holder, the same
+                // reset hydration uses for an unmapped row.
+                m.LoadPrimaryKind(null);
                 m.MappingDeadZone = 50;
                 // Drop the device-origin tag too — leaving the GUID
                 // behind would surface a stale subtitle and make the

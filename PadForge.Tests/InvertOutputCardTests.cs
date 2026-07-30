@@ -163,17 +163,30 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ClearAllMappingsResetsTheWholeFlagFamily()
+        public void ClearAllMappingsResetsTheWholeRowSurface()
         {
-            // Round 40. The clear promised "the cleared row truly looks
-            // brand-new" but left Bidirectional and InvertOutput standing, so
-            // a stale flag silently rode the next primary the user assigned
-            // to the row. Driven through the real public command.
+            // Round 40 widened the clear to the flag family after a stale
+            // Bidirectional or InvertOutput rode the next primary. The owner
+            // then ruled (2026-07-30) that EVERYTHING in the mapping table
+            // clears: sensitivities, NoInherit, and the stateful primary
+            // kind included. A cleared row hands nothing to its next
+            // mapping. Driven through the real public command.
             var vm = new PadForge.ViewModels.PadViewModel(0);
             var m = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
             m.LoadDescriptor("IHAxis 2");
             m.IsBidirectional = true;
             m.InvertOutput = true;
+            m.GyroSensitivity = 3.0;
+            m.MouseCursorSensitivity = 2.0;
+            m.IrPointerSensitivity = 2.0;
+            m.Sensitivity = 0.5;
+            m.NoInherit = true;
+            m.LoadPrimaryKind(new PadForge.Engine.Data.MappingSource
+            {
+                Kind = "Incremental",
+                ParamUp = "Button 1",
+                ParamDown = "Button 2",
+            });
             vm.Mappings.Add(m);
 
             vm.ClearMappingsCommand.Execute(null);
@@ -183,6 +196,15 @@ namespace PadForge.Tests
             Assert.False(m.IsBidirectional);
             Assert.False(m.InvertOutput);
             Assert.Equal(string.Empty, m.SourceDescriptor);
+            Assert.Equal(1.0, m.GyroSensitivity, 3);
+            Assert.Equal(1.0, m.MouseCursorSensitivity, 3);
+            Assert.Equal(1.0, m.IrPointerSensitivity, 3);
+            Assert.Equal(1.0, m.Sensitivity, 3);
+            Assert.False(m.NoInherit);
+            // The kind holder falls back to a plain Direct primary, the same
+            // reset hydration applies to an unmapped row.
+            Assert.Equal("Direct", m.PrimaryKindSource?.Kind ?? "Direct");
+            Assert.Equal("", m.PrimaryKindSource?.ParamUp ?? "");
         }
 
         [Fact]

@@ -262,6 +262,17 @@ hitboxer
   cleaning modes. PadForge's state machine is original C#.
   Licensed under the MIT License
 
+libinput
+  https://gitlab.freedesktop.org/libinput/libinput
+  Copyright (c) 2006-2009 Simon Thum, (c) 2008-2012 Kristian Høgsberg,
+  (c) 2010-2012 Intel Corporation, (c) 2010-2011 Benjamin Franzke,
+  (c) 2011-2012 Collabora, Ltd., (c) 2013-2014 Jonas Ådahl,
+  (c) 2013-2015 Red Hat, Inc.
+  The trackpad pointer acceleration curve (touchpad_accel_profile_linear
+  in src/filter-touchpad.c), re-derived in original C# for the
+  touchpad-to-mouse output path. No libinput code ships.
+  Licensed under the MIT License
+
 SteamKit2
   https://github.com/SteamRE/SteamKit
   Copyright (C) 2018 Ryan Stecker & SteamRE Team

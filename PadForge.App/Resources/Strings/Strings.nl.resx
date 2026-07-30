@@ -2913,4 +2913,28 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
 
 Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Afsluiten</value></data>
+  <data name="About_Libinput" xml:space="preserve">
+    <value>libinput</value>
+  </data>
+  <data name="About_HandheldCompanion" xml:space="preserve">
+    <value>Handheld Companion</value>
+  </data>
+  <data name="About_GamepadAssetPack" xml:space="preserve">
+    <value>Gamepad-Asset-Pack</value>
+  </data>
+  <data name="About_Ds4Mac" xml:space="preserve">
+    <value>ds4mac</value>
+  </data>
+  <data name="About_LibinputDesc" xml:space="preserve">
+    <value>Versnellingscurve van de trackpadaanwijzer voor touchpad-naar-muis-uitvoer. C#-herafleiding van het touchpad-versnellingsprofiel van libinput. MIT.</value>
+  </data>
+  <data name="About_HandheldCompanionDesc" xml:space="preserve">
+    <value>3D-controllermodellen (Xbox 360, Xbox One, DualShock 4, DualSense), door CasperH2O, Lesueur Benjamin, trippyone. CC BY-NC-SA 4.0.</value>
+  </data>
+  <data name="About_GamepadAssetPackDesc" xml:space="preserve">
+    <value>2D-controllerschema's (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), door AL2009man. MIT.</value>
+  </data>
+  <data name="About_Ds4MacDesc" xml:space="preserve">
+    <value>Documentatie van het DualShock 4-audioprotocol: SBC-parameters en pakketindelingen, door khallmark. MIT.</value>
+  </data>
 </root>

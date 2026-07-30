@@ -2893,4 +2893,28 @@
 
 你可以稍后在设置中重试。</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>退出</value></data>
+  <data name="About_Libinput" xml:space="preserve">
+    <value>libinput</value>
+  </data>
+  <data name="About_HandheldCompanion" xml:space="preserve">
+    <value>Handheld Companion</value>
+  </data>
+  <data name="About_GamepadAssetPack" xml:space="preserve">
+    <value>Gamepad-Asset-Pack</value>
+  </data>
+  <data name="About_Ds4Mac" xml:space="preserve">
+    <value>ds4mac</value>
+  </data>
+  <data name="About_LibinputDesc" xml:space="preserve">
+    <value>用于触摸板转鼠标输出的指针加速曲线。以 C# 重新推导 libinput 的触摸板加速配置。MIT。</value>
+  </data>
+  <data name="About_HandheldCompanionDesc" xml:space="preserve">
+    <value>3D 手柄模型（Xbox 360、Xbox One、DualShock 4、DualSense），作者 CasperH2O、Lesueur Benjamin、trippyone。CC BY-NC-SA 4.0。</value>
+  </data>
+  <data name="About_GamepadAssetPackDesc" xml:space="preserve">
+    <value>2D 手柄示意图（Xbox 360、Xbox One S、Xbox Series、DualShock 4、DualSense），作者 AL2009man。MIT。</value>
+  </data>
+  <data name="About_Ds4MacDesc" xml:space="preserve">
+    <value>DualShock 4 音频协议文档：SBC 参数与数据包布局，作者 khallmark。MIT。</value>
+  </data>
 </root>

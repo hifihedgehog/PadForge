@@ -2893,4 +2893,28 @@
 
 나중에 설정에서 다시 시도할 수 있습니다.</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>종료</value></data>
+  <data name="About_Libinput" xml:space="preserve">
+    <value>libinput</value>
+  </data>
+  <data name="About_HandheldCompanion" xml:space="preserve">
+    <value>Handheld Companion</value>
+  </data>
+  <data name="About_GamepadAssetPack" xml:space="preserve">
+    <value>Gamepad-Asset-Pack</value>
+  </data>
+  <data name="About_Ds4Mac" xml:space="preserve">
+    <value>ds4mac</value>
+  </data>
+  <data name="About_LibinputDesc" xml:space="preserve">
+    <value>터치패드-마우스 출력을 위한 포인터 가속 곡선. libinput의 터치패드 가속 프로파일을 C#으로 재구현. MIT.</value>
+  </data>
+  <data name="About_HandheldCompanionDesc" xml:space="preserve">
+    <value>3D 컨트롤러 모델(Xbox 360, Xbox One, DualShock 4, DualSense). 제작: CasperH2O, Lesueur Benjamin, trippyone. CC BY-NC-SA 4.0.</value>
+  </data>
+  <data name="About_GamepadAssetPackDesc" xml:space="preserve">
+    <value>2D 컨트롤러 도식(Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense). 제작: AL2009man. MIT.</value>
+  </data>
+  <data name="About_Ds4MacDesc" xml:space="preserve">
+    <value>DualShock 4 오디오 프로토콜 문서: SBC 매개변수와 패킷 레이아웃. 작성: khallmark. MIT.</value>
+  </data>
 </root>

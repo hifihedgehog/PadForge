@@ -530,6 +530,14 @@ public class Strings : INotifyPropertyChanged
     public string About_WiimoteLibDesc => Get("About_WiimoteLibDesc");
     public string About_JoyconSinger => Get("About_JoyconSinger");
     public string About_JoyconSingerDesc => Get("About_JoyconSingerDesc");
+    public string About_Libinput => Get("About_Libinput");
+    public string About_LibinputDesc => Get("About_LibinputDesc");
+    public string About_HandheldCompanion => Get("About_HandheldCompanion");
+    public string About_HandheldCompanionDesc => Get("About_HandheldCompanionDesc");
+    public string About_GamepadAssetPack => Get("About_GamepadAssetPack");
+    public string About_GamepadAssetPackDesc => Get("About_GamepadAssetPackDesc");
+    public string About_Ds4Mac => Get("About_Ds4Mac");
+    public string About_Ds4MacDesc => Get("About_Ds4MacDesc");
     public string About_License => Get("About_License");
     public string About_LicenseText => Get("About_LicenseText");
     public string DeviceType_Gamepad => Get("DeviceType_Gamepad");

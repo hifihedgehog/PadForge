@@ -6,6 +6,7 @@ using PadForge.Engine;
 using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 using PadForge.Services;
+using PadForge.ViewModels;
 using Xunit;
 
 namespace PadForge.Tests
@@ -330,14 +331,38 @@ namespace PadForge.Tests
 
         /// <summary>Null Macros is the legacy sentinel meaning "leave the live
         /// macro set alone". A starter profile owns its state outright, so it
-        /// must carry an EMPTY array and clear whatever was there.</summary>
+        /// must carry a non-null array, EMPTY when it authors no macros.
+        ///
+        /// <para>Profiles legitimately DO carry macros now: the media
+        /// transport, the Windows key and Shift+Tab are all outside the row
+        /// engine's closed VK set, so they can only ride this lane. What must
+        /// hold is that every shipped macro is well formed and device-free,
+        /// since one that cannot bind is a silent dead binding.</para></summary>
         [Fact]
-        public void EveryProfile_CarriesEmptyMacrosNotNull()
+        public void EveryProfile_CarriesWellFormedMacros()
         {
             foreach (var (info, p) in Built())
             {
                 Assert.NotNull(p.Macros);
-                Assert.Empty(p.Macros);
+                foreach (var m in p.Macros)
+                {
+                    Assert.True(m.IsEnabled, $"starter '{info.Key}' macro '{m.Name}' is disabled");
+                    Assert.False(string.IsNullOrWhiteSpace(m.Name),
+                        $"starter '{info.Key}' has an unnamed macro");
+                    Assert.Equal(MacroTriggerSource.InputDevice, m.TriggerSource);
+                    Assert.False(string.IsNullOrEmpty(m.TriggerInputs),
+                        $"starter '{info.Key}' macro '{m.Name}' has no trigger, so it can never fire");
+                    Assert.NotNull(m.Actions);
+                    Assert.NotEmpty(m.Actions);
+                    // Press/release pairs: every key pressed is released.
+                    var pressed = m.Actions.Where(a => a.Type == MacroActionType.KeyPress)
+                                           .Select(a => a.KeyCode).OrderBy(k => k).ToList();
+                    var released = m.Actions.Where(a => a.Type == MacroActionType.KeyRelease)
+                                            .Select(a => a.KeyCode).OrderBy(k => k).ToList();
+                    Assert.Equal(pressed, released);
+                    Assert.False(m.ConsumeTriggerButtons,
+                        $"starter '{info.Key}' macro '{m.Name}' consumes its trigger, suppressing the row lane");
+                }
             }
         }
 

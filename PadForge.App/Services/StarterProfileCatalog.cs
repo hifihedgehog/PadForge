@@ -4,7 +4,9 @@ using System.Linq;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Engine.Menus;
 using PadForge.Resources.Strings;
+using PadForge.ViewModels;
 
 namespace PadForge.Services
 {
@@ -103,6 +105,7 @@ namespace PadForge.Services
         private const byte VkA = 0x41, VkC = 0x43, VkD = 0x44, VkE = 0x45, VkF = 0x46;
         private const byte VkG = 0x47, VkI = 0x49, VkM = 0x4D, VkQ = 0x51, VkR = 0x52;
         private const byte VkS = 0x53, VkV = 0x56, VkW = 0x57;
+        private const byte VkJ = 0x4A, VkL = 0x4C;
         private const byte VkF1 = 0x70, VkF2 = 0x71, VkF3 = 0x72, VkF4 = 0x73, VkF5 = 0x74;
         private const byte VkF6 = 0x75, VkF7 = 0x76, VkF8 = 0x77, VkF9 = 0x78;
         private const byte VkF10 = 0x79, VkF11 = 0x7A, VkF12 = 0x7B;
@@ -160,11 +163,20 @@ namespace PadForge.Services
         /// alongside as a rate cursor. While no finger is down the pointer
         /// contributes nothing and the stick drives; the moment a finger
         /// lands the row routes absolute.</summary>
-        private static IEnumerable<MappingRow> CursorRows() => new[]
+        private static IEnumerable<MappingRow> CursorRows(double stickSensitivity = 1.0)
         {
-            Row(MouseX, Src(Pad1PtrX), Src(Pad0PtrX), Src(PadRX)),
-            Row(MouseY, Src(Pad1PtrY), Src(Pad0PtrY), Src(PadRY)),
-        };
+            MappingSource Stick(string d)
+            {
+                var src = Src(d);
+                if (stickSensitivity != 1.0) src.MouseCursorSensitivity = stickSensitivity;
+                return src;
+            }
+            return new[]
+            {
+                Row(MouseX, Src(Pad1PtrX), Src(Pad0PtrX), Stick(PadRX)),
+                Row(MouseY, Src(Pad1PtrY), Src(Pad0PtrY), Stick(PadRY)),
+            };
+        }
 
         // ── Profile bodies ──────────────────────────────────────────────
 
@@ -194,9 +206,10 @@ namespace PadForge.Services
                 Row(MMiddle, Src(PadLS)),
 
                 Row(Key(VkReturn), Src(PadA)),
-                Row(Key(VkEscape), Src(PadB)),
+                Row(Key(VkEscape), Src(PadB), Src(PadStart)),
                 Row(Key(VkSpace), Src(PadY)),
-                Row(Key(VkBackspace), Src(PadX)),
+                // X is Show Keyboard, which Valve's desktop scheme puts here.
+                // It rides a macro because the Windows key is not a row target.
 
                 Row(Key(VkUp), Src(PadUp)),
                 Row(Key(VkDown), Src(PadDown)),
@@ -206,10 +219,32 @@ namespace PadForge.Services
                 Row(Key(VkControl), Src(PadLB)),
                 Row(Key(VkMenu), Src(PadRB)),
                 Row(Key(VkTab), Src(PadBack)),
+
+                // Valve's Deck paddle assignment, carried over where the pad
+                // has them. Paddle 1 is the Windows key, which is not a row
+                // target, so it rides the macro lane with the others.
+                Row(Key(VkShift), Src("Gamepad Paddle2")),
+                Row(Key(VkPageDown), Src("Gamepad Paddle3")),
+                Row(Key(VkPageUp), Src("Gamepad Paddle4")),
             });
             AddQuietLayer(set);
             return set;
         }
+
+        /// <summary>Desktop's two system keys, both unreachable as rows.
+        /// X opens the on-screen keyboard the way Windows does it
+        /// (Win+Ctrl+O), matching the Show Keyboard that Valve's desktop
+        /// scheme puts on X. Start taps the Windows key.
+        ///
+        /// <para>Start is a SHORT press on purpose: the quiet layer sits on a
+        /// long press of the same button, so a plain OnPress macro would fire
+        /// the Start menu every time the user reached for silence.</para>
+        /// </summary>
+        private static IEnumerable<MacroData> DesktopMacros() => new[]
+        {
+            Tap("Show Keyboard", PadX, VkLWin, VkCtrlChord, VkO),
+            Tap("Windows Key", "Gamepad Paddle1", VkLWin),
+        };
 
         /// <summary>WASD and Mouse: the shooter and action-game default.
         /// Read from Valve's wasd.vdf, the one non-gamepad template every
@@ -234,10 +269,14 @@ namespace PadForge.Services
                 Row(MRight, Src(PadLT)),
                 Row(MMiddle, Src(PadRS)),
 
-                Row(Key(VkSpace), Src(PadA)),   // Jump
-                Row(Key(VkE), Src(PadB)),       // Use
-                Row(Key(VkR), Src(PadX)),       // Reload
-                Row(Key(VkF), Src(PadY)),       // Flashlight
+                // Valve's Xbox Elite variant mirrors these same four actions
+                // onto the paddles, which is the whole point of a paddle: the
+                // action stays reachable without lifting a thumb. They are
+                // extra SOURCES on the existing rows, not duplicate rows.
+                Row(Key(VkSpace), Src(PadA), Src("Gamepad Paddle4")),   // Jump
+                Row(Key(VkE), Src(PadB), Src("Gamepad Paddle3")),       // Use
+                Row(Key(VkR), Src(PadX), Src("Gamepad Paddle1")),       // Reload
+                Row(Key(VkF), Src(PadY), Src("Gamepad Paddle2")),       // Flashlight
                 Row(Key(VkQ), Src(PadLB)),
                 Row(Key(VkG), Src(PadRB)),
                 Row(Key(VkShift), Src(PadLS)),  // Sprint
@@ -484,7 +523,9 @@ namespace PadForge.Services
         private static MappingSet BuildPointAndClick()
         {
             var set = NewKbmSet();
-            set.Rows.AddRange(CursorRows());
+            // Hotspots are small and static, so the stick trades speed for
+            // precision. The touchpad pointer is absolute and unaffected.
+            set.Rows.AddRange(CursorRows(stickSensitivity: 0.6));
             set.Rows.AddRange(new[]
             {
                 Row(MLeft, Src(PadRT), Src(PadA)),
@@ -495,11 +536,11 @@ namespace PadForge.Services
                 // Hold-to-reveal-hotspots is widespread but never
                 // standardised; implementations split between Tab and Space.
                 // Tab here, Space on Back for the skip-dialogue half.
-                Row(Key(VkTab), Src(PadY)),
+                // Tab both highlights hotspots (held) and cycles to the next
+                // one (tapped), so Y and RB share the row.
+                Row(Key(VkTab), Src(PadY), Src(PadRB)),
                 Row(Key(VkSpace), Src(PadBack)),
 
-                Row(Key(VkPageUp), Src(PadLB)),
-                Row(Key(VkPageDown), Src(PadRB)),
 
                 Row(Key(VkUp), Src(PadUp)),
                 Row(Key(VkDown), Src(PadDown)),
@@ -509,6 +550,13 @@ namespace PadForge.Services
             AddQuietLayer(set);
             return set;
         }
+
+        /// <summary>Point and Click's one chord: cycling hotspots BACKWARDS is
+        /// Shift+Tab, which no single row target can express.</summary>
+        private static IEnumerable<MacroData> PointAndClickMacros() => new[]
+        {
+            Tap("Previous Hotspot", PadLB, VkShift, VkTab),
+        };
 
         /// <summary>Strategy: RTS, 4X, grand strategy, city builders.
         ///
@@ -526,8 +574,8 @@ namespace PadForge.Services
             set.Rows.AddRange(new[]
             {
                 // Camera pan on the left stick, as arrow keys.
-                Row(Key(VkUp), Up(PadLY), Src(PadUp)),
-                Row(Key(VkDown), Down(PadLY), Src(PadDown)),
+                Row(Key(VkUp), Up(PadLY)),
+                Row(Key(VkDown), Down(PadLY)),
                 Row(Key(VkLeft), Left(PadLX), Src(PadLeft)),
                 Row(Key(VkRight), Right(PadLX), Src(PadRight)),
 
@@ -543,13 +591,17 @@ namespace PadForge.Services
                 Row(Key(VkEscape), Src(PadB)),
                 Row(Key(VkReturn), Src(PadX)),
                 Row(Key(VkTab), Src(PadY)),
-                Row(Key(VkOemMinus), Src(PadLS)),
+                // Zoom on the D-pad's vertical, which is where both verified
+                // references put camera verbs.
+                Row(Key(VkOemMinus), Src(PadDown)),
+                Row(Key(VkOemPlus), Src(PadUp)),
             });
-            // The hotbar bank is why this profile exists: ten number keys on a
-            // held modifier is the difference between the genre being playable
-            // on a pad and not.
-            AddBank(set, "Hotbar", PadBack, doublePressMs: 0,
-                new[] { Vk1, Vk2, Vk3, Vk4, Vk5, Vk6, Vk7, Vk8 });
+            // Ten number keys on a held modifier is the difference between the
+            // genre being playable on a pad and not: hold RB, flick the right
+            // stick, release on the cell.
+            AddRadial(set, 1, "Hotbar", PadRB, PadRS, "Hotbar",
+                ("1", Vk1), ("2", Vk2), ("3", Vk3), ("4", Vk4), ("5", Vk5),
+                ("6", Vk6), ("7", Vk7), ("8", Vk8), ("9", Vk9), ("0", Vk0));
             AddQuietLayer(set);
             return set;
         }
@@ -570,24 +622,39 @@ namespace PadForge.Services
                 // because this drives a mouse-only game.
                 Row(Key(VkUp), Up(PadLY)),
                 Row(Key(VkDown), Down(PadLY)),
-                Row(Key(VkLeft), Left(PadLX)),
-                Row(Key(VkRight), Right(PadLX)),
+                Row(Key(VkLeft), Left(PadLX), Src(PadLeft)),
+                Row(Key(VkRight), Right(PadLX), Src(PadRight)),
 
                 Row(MLeft, Src(PadRT)),
                 Row(MRight, Src(PadLT)),
 
-                Row(Key(VkSpace), Src(PadA)),   // pause, the genre's most-pressed key
+                Row(Key(VkSpace), Src(PadA), Src(PadUp)),   // pause, and jump on the D-pad
                 Row(Key(VkEscape), Src(PadB)),
                 Row(Key(VkI), Src(PadX)),       // inventory
                 Row(Key(VkReturn), Src(PadY)),  // Larian's End Turn
                 Row(Key(VkTab), Src(PadRS)),    // highlight interactables
-                Row(Key(VkC), Src(PadLB)),      // character
-                Row(Key(VkM), Src(PadRB)),      // map
 
+                // Larian's bumpers PAGE the action wheels rather than opening
+                // menus, so they step the hotbar instead of carrying verbs.
+                Row(Key(VkOemMinus), Src(PadLB)),
+                Row(Key(VkOemPlus), Src(PadRB)),
+
+                // Larian's D-pad examines and toggles stealth. Cycling
+                // interactables shares the camera's arrow rows below, and
+                // jump shares A's Space row, so neither duplicates a target.
+                Row(Key(VkV), Src(PadDown)),       // examine
                 Row(Key(VkF5), Src(PadStart)),   // quicksave
             });
-            AddBank(set, "Hotbar", PadBack, doublePressMs: 0,
-                new[] { Vk1, Vk2, Vk3, Vk4, Vk5, Vk6, Vk7, Vk8 });
+
+            // Larian's two wheels, on the triggers exactly as Divinity ships
+            // them: "radial menus (accessed with the triggers) give you all
+            // your skills, items, and actions without needing a hotbar".
+            AddRadial(set, 1, "Party", PadLT, PadRS, "Party",
+                ("Next", VkTab), ("Char", VkC), ("Journal", VkJ),
+                ("Map", VkM), ("Rest", VkR), ("Group", VkG));
+            AddRadial(set, 2, "Shortcuts", PadRT, PadRS, "Shortcuts",
+                ("1", Vk1), ("2", Vk2), ("3", Vk3), ("4", Vk4),
+                ("5", Vk5), ("6", Vk6), ("7", Vk7), ("8", Vk8));
             AddQuietLayer(set);
             return set;
         }
@@ -631,44 +698,67 @@ namespace PadForge.Services
 
         /// <summary>Media Remote: playback, seeking, and a cursor for the
         /// ten-foot experience. Kodi ships a joystick keymap with a distinct
-        /// fullscreen-video context and Valve ships videoplayer.vdf; they
-        /// agree on the shape and differ only on which player keys they emit.
+        /// fullscreen-video context and Valve ships videoplayer.vdf, and they
+        /// agree on the shape.
         ///
-        /// <para>Deliberately built from keys the KbM row engine actually
-        /// carries. Space, the arrows, F and M are what every web and desktop
-        /// player listens for. The SYSTEM media keys (volume, next / previous
-        /// track, browser back) sit outside the row engine's closed VK set and
-        /// would each need a paired hold macro, so they are left out rather
-        /// than shipped as rows that silently never fire.</para></summary>
+        /// <para>The transport runs on REAL system media keys through macros,
+        /// not on in-page letter keys, so play/pause, track skip, volume and
+        /// mute work with the player unfocused or minimised. Those keys sit
+        /// outside the row engine's closed VK set, which is why they ride the
+        /// macro lane rather than rows.</para>
+        ///
+        /// <para>Deliberately NOT Desktop with different letters. The left
+        /// stick scrubs instead of scrolling, the bumpers skip tracks instead
+        /// of holding modifiers, and the D-pad carries volume and seek instead
+        /// of arrows.</para></summary>
         private static MappingSet BuildMediaRemote()
         {
             var set = NewKbmSet();
             set.Rows.AddRange(CursorRows());
             set.Rows.AddRange(new[]
             {
-                Row(Key(VkSpace), Src(PadA)),      // play / pause, near-universal
-                Row(Key(VkBackspace), Src(PadB)),  // back / up
-                Row(Key(VkM), Src(PadX)),          // mute
-                Row(Key(VkF), Src(PadY)),          // fullscreen
+                // Scrub with the left stick. Arrow keys are what every in-page
+                // and desktop player binds seeking to.
+                Row(Key(VkLeft), Left(PadLX)),
+                Row(Key(VkRight), Right(PadLX)),
 
-                // Seek on left/right, volume on up/down, which is what every
-                // in-page player binds the arrows to.
-                Row(Key(VkLeft), Src(PadLeft), Left(PadLX)),
-                Row(Key(VkRight), Src(PadRight), Right(PadLX)),
-                Row(Key(VkUp), Src(PadUp), Up(PadLY)),
-                Row(Key(VkDown), Src(PadDown), Down(PadLY)),
+                // Y is fullscreen and LS is play/pause for the players that
+                // ignore media keys (most in-page video responds to F and
+                // Space). The macro lane covers the rest.
+                Row(Key(VkF), Src(PadY)),
+                Row(Key(VkSpace), Src(PadLS)),
 
-                Row(Key(VkPageUp), Src(PadLB)),
-                Row(Key(VkPageDown), Src(PadRB)),
+                // Rewind and fast-forward. J and L are what YouTube, VLC and
+                // mpv all bind seeking to, and Valve puts skip on the
+                // triggers in videoplayer.vdf.
+                Row(Key(VkJ), Src(PadLT)),
+                Row(Key(VkL), Src(PadRT)),
 
-                Row(MLeft, Src(PadRT)),
-                Row(MRight, Src(PadLT)),
-                Row(Key(VkEscape), Src(PadStart)),
+                Row(MLeft, Src(PadRS)),
+                Row(Key(VkI), Src(PadStart)),   // info / OSD
                 Row(Key(VkTab), Src(PadBack)),
             });
             AddQuietLayer(set);
             return set;
         }
+
+        /// <summary>Media Remote's transport. Every one of these is a system
+        /// media key, so it reaches the player whether or not it has focus,
+        /// which is the whole difference between a media remote and a desktop
+        /// profile that happens to press Space.</summary>
+        private static IEnumerable<MacroData> MediaRemoteMacros() => new[]
+        {
+            Tap("Play / Pause", PadA, VkMediaPlayPause),
+            Tap("Back", PadB, VkBrowserBack),
+            Tap("Mute", PadX, VkVolumeMute),
+            Tap("Previous Track", PadLB, VkMediaPrevTrack),
+            Tap("Next Track", PadRB, VkMediaNextTrack),
+            Tap("Volume Up", PadUp, VkVolumeUp),
+            Tap("Volume Down", PadDown, VkVolumeDown),
+            Tap("Seek Back", PadLeft, VkLeft),
+            Tap("Seek Forward", PadRight, VkRight),
+            Tap("Stop", PadGuide, VkMediaStop),
+        };
 
         /// <summary>Racing: finer throttle and brake, calmer steering, on any
         /// pad. A pad gives about a centimetre of travel to cover full lock,
@@ -771,6 +861,140 @@ namespace PadForge.Services
             set.WorkshopGyroEngageDescriptor = PadLT;
             return set;
         }
+
+        // ── Radial menus ────────────────────────────────────────────────
+
+        /// <summary>A radial menu hosted on a stick and gated behind a held
+        /// button, which is the "hold RB, then flick the right stick" shape
+        /// the proposal specifies for the strategy and CRPG hotbars.
+        ///
+        /// <para>The menu's own <see cref="MenuDefinitionEntry.LayerMask"/>
+        /// is what gates it: "anything else engages the menu only while that
+        /// layer is held". So the layer needs an activator, and the opener
+        /// button's own Base binding is blocked while it is held, the same
+        /// way a bank blocks what it consumes.</para></summary>
+        private static void AddRadial(MappingSet set, int menuId, string layer,
+            string opener, string host, string name, params (string Label, byte Vk)[] cells)
+        {
+            var menu = new MenuDefinitionEntry
+            {
+                DeviceGuid = "",
+                MenuId = menuId,
+                Name = name,
+                Kind = MenuKind.Radial,
+                HostDescriptor = host,
+                LayerMask = layer,
+                // Fires when the hosting layer ends, i.e. when the held
+                // opener is released. The configurator's own wording:
+                // "when the trackpad is no longer touched or when the
+                // mode shift button is released".
+                FireType = MenuFireType.TouchRelease,
+                CellCount = cells.Length,
+                HasCenter = false,
+                ShowLabels = true,
+            };
+            for (int i = 0; i < cells.Length; i++)
+            {
+                menu.Items.Add(new MenuItemDefinition
+                {
+                    Index = i,
+                    Label = cells[i].Label,
+                    VirtualKey = cells[i].Vk,
+                });
+            }
+            set.Menus.Add(menu);
+
+            set.ShiftActivators.Add(new ShiftActivator
+            {
+                DeviceGuid = "",
+                Descriptor = opener,
+                Mode = "Hold",
+                LayerMask = layer,
+                LayerName = name,
+                InheritUnmapped = true,
+            });
+            // The opener must not also fire its Base binding while held.
+            BlockInheritedTargets(set, layer, new HashSet<string>(StringComparer.Ordinal) { opener });
+        }
+
+        // ── Macros: the keys the row engine cannot reach ────────────────
+
+        /// <summary>
+        /// Builds a device-free macro that taps one or more virtual keys when
+        /// an abstract pad input fires.
+        ///
+        /// <para>This exists because the KbM row engine's key set is CLOSED.
+        /// The media transport (play/pause, stop, next/previous track), the
+        /// volume trio, the browser keys and the Windows key are all outside
+        /// it, so a ROW naming them is silently dead. Macros are the lane that
+        /// does reach them, via SendInput, and a starter profile can carry
+        /// them because <see cref="ProfileData.Macros"/> rides the profile.</para>
+        ///
+        /// <para>The trigger is DEVICE-FREE, the same way the rows are: the
+        /// descriptor is an abstract <c>Gamepad *</c> alias and the choice's
+        /// DeviceGuid is empty, so it resolves onto whichever pad is assigned.
+        /// The spec is built by <see cref="MacroItem.TryBuildTriggerEntry"/>
+        /// rather than hand-forged, so this cannot drift from the engine's own
+        /// grammar.</para>
+        ///
+        /// <para>Returns null when the descriptor cannot be resolved, and the
+        /// caller drops it. A macro that cannot bind is never shipped.</para>
+        /// </summary>
+        private static MacroData KeyMacro(string name, string descriptor,
+            MacroTriggerMode mode, params byte[] keys)
+        {
+            var choice = new ViewModels.InputChoice
+            {
+                Descriptor = descriptor,
+                DeviceGuid = string.Empty,
+            };
+            if (!MacroItem.TryBuildTriggerEntry(choice, out var entry)) return null;
+            string spec = entry.Spec;
+            if (string.IsNullOrEmpty(spec)) return null;
+
+            // Press every key in order, then release in reverse, so a chord
+            // (Win+Ctrl+O) holds its modifiers across the final key and a
+            // single key is a plain tap.
+            var actions = new List<ActionData>(keys.Length * 2);
+            foreach (var vk in keys)
+                actions.Add(new ActionData { Type = MacroActionType.KeyPress, KeyCode = vk });
+            for (int i = keys.Length - 1; i >= 0; i--)
+                actions.Add(new ActionData { Type = MacroActionType.KeyRelease, KeyCode = keys[i] });
+
+            return new MacroData
+            {
+                PadIndex = 0,
+                Name = name,
+                IsEnabled = true,
+                TriggerSource = MacroTriggerSource.InputDevice,
+                TriggerInputs = spec,
+                TriggerButtons = 0,
+                TriggerAxisTargets = null,
+                // The row lane may also bind this button; consuming the
+                // trigger here would suppress it.
+                ConsumeTriggerButtons = false,
+                TriggerMode = mode,
+                Actions = actions.ToArray(),
+            };
+        }
+
+        /// <summary>A plain tap: fires the moment the button goes down.</summary>
+        private static MacroData Tap(string name, string descriptor, params byte[] keys)
+            => KeyMacro(name, descriptor, MacroTriggerMode.OnPress, keys);
+
+        /// <summary>A tap that does NOT fire on a long press, so the same
+        /// button can carry a hold-activated shift layer underneath it.</summary>
+        private static MacroData ShortTap(string name, string descriptor, params byte[] keys)
+            => KeyMacro(name, descriptor, MacroTriggerMode.ShortPress, keys);
+
+        // Media transport, volume, browser and system keys. Every one of these
+        // is OUTSIDE the KbM row engine's closed VK set, which is exactly why
+        // they ride macros.
+        private const byte VkMediaPlayPause = 0xB3, VkMediaStop = 0xB2;
+        private const byte VkMediaNextTrack = 0xB0, VkMediaPrevTrack = 0xB1;
+        private const byte VkVolumeMute = 0xAD, VkVolumeDown = 0xAE, VkVolumeUp = 0xAF;
+        private const byte VkBrowserBack = 0xA6;
+        private const byte VkLWin = 0x5B, VkCtrlChord = 0xA2, VkO = 0x4F;
 
         // ── Shared structure ────────────────────────────────────────────
 
@@ -908,14 +1132,21 @@ namespace PadForge.Services
         /// ExecutableNames stays empty: an archetype has no executable, so it
         /// never auto-switches and is always chosen by hand.</summary>
         private static ProfileData Wrap(string name, VirtualControllerType type, MappingSet set)
-            => Wrap(name, (type, set));
+            => Wrap(name, null, (type, set));
+
+        /// <summary>Wraps a single-slot profile that also carries macros. Any
+        /// macro that failed to bind its trigger comes through as null and is
+        /// dropped, so a profile never ships a macro that cannot fire.</summary>
+        private static ProfileData Wrap(string name, VirtualControllerType type,
+            MappingSet set, IEnumerable<MacroData> macros)
+            => Wrap(name, macros, (type, set));
 
         /// <summary>Wraps one or more slots as a profile. A SPLIT config (a pad
         /// slot plus a keyboard slot) is the shape the Workshop importer already
         /// produces whenever a config needs both output kinds, and Emulation
         /// needs it because its hotkey verbs are keyboard keys that a gamepad
         /// slot cannot send. Slots are claimed in argument order.</summary>
-        private static ProfileData Wrap(string name,
+        private static ProfileData Wrap(string name, IEnumerable<MacroData> macros,
             params (VirtualControllerType Type, MappingSet Set)[] slots)
         {
             int maxPads = InputManager.MaxPads;
@@ -942,7 +1173,7 @@ namespace PadForge.Services
                 SlotControllerTypes = types,
                 SlotProfileIds = ids,
                 SlotMappingSets = sets,
-                Macros = Array.Empty<MacroData>(),
+                Macros = macros?.Where(m => m != null).ToArray() ?? Array.Empty<MacroData>(),
                 ExecutableNames = string.Empty,
             };
         }
@@ -956,7 +1187,7 @@ namespace PadForge.Services
         {
             new("desktop", VirtualControllerType.KeyboardMouse,
                 () => Wrap(Strings.Instance.Starter_Desktop_Name,
-                    VirtualControllerType.KeyboardMouse, BuildDesktop()),
+                    VirtualControllerType.KeyboardMouse, BuildDesktop(), DesktopMacros()),
                 s => s.Starter_Desktop_Name, s => s.Starter_Desktop_Description),
 
             new("wasd", VirtualControllerType.KeyboardMouse,
@@ -971,7 +1202,7 @@ namespace PadForge.Services
 
             new("pointclick", VirtualControllerType.KeyboardMouse,
                 () => Wrap(Strings.Instance.Starter_PointClick_Name,
-                    VirtualControllerType.KeyboardMouse, BuildPointAndClick()),
+                    VirtualControllerType.KeyboardMouse, BuildPointAndClick(), PointAndClickMacros()),
                 s => s.Starter_PointClick_Name, s => s.Starter_PointClick_Description),
 
             new("strategy", VirtualControllerType.KeyboardMouse,
@@ -991,11 +1222,11 @@ namespace PadForge.Services
 
             new("media", VirtualControllerType.KeyboardMouse,
                 () => Wrap(Strings.Instance.Starter_Media_Name,
-                    VirtualControllerType.KeyboardMouse, BuildMediaRemote()),
+                    VirtualControllerType.KeyboardMouse, BuildMediaRemote(), MediaRemoteMacros()),
                 s => s.Starter_Media_Name, s => s.Starter_Media_Description),
 
             new("emulation", VirtualControllerType.Xbox,
-                () => Wrap(Strings.Instance.Starter_Emulation_Name,
+                () => Wrap(Strings.Instance.Starter_Emulation_Name, null,
                     (VirtualControllerType.Xbox, BuildEmulation()),
                     (VirtualControllerType.KeyboardMouse, BuildEmulationHotkeys())),
                 s => s.Starter_Emulation_Name, s => s.Starter_Emulation_Description),

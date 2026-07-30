@@ -15,6 +15,7 @@
   <a href="https://somsubhra.github.io/github-release-stats/?username=hifihedgehog&repository=PadForge"><img src="https://img.shields.io/github/downloads/hifihedgehog/PadForge/total" alt="Total downloads"></a>
   <a href="https://discord.gg/qawTZHVhNH"><img src="https://img.shields.io/discord/1507059039844962425?label=Discord&logo=discord&logoColor=white&color=5865F2" alt="Discord"></a>
   <a href="https://padforge.org/"><img src="https://img.shields.io/badge/website-padforge.org-blue" alt="Website"></a>
+  <a href="https://padforge.org/docs/"><img src="https://img.shields.io/badge/docs-padforge.org%2Fdocs-blue" alt="Documentation"></a>
   <a href="https://github.com/hifihedgehog"><img src="https://img.shields.io/github/followers/hifihedgehog?style=social&label=Follow" alt="GitHub followers"></a>
   <a href="https://x.com/hifihedgehog"><img src="https://img.shields.io/badge/X-@hifihedgehog-black?logo=x&logoColor=white" alt="Follow on X"></a>
 </p>
@@ -26,10 +27,6 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on SDL3, [H
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
 <p align="center"><b>16</b> virtual controllers at once · <b>225+</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
-
-<p align="center">
-  <a href="https://padforge.org/"><b>Website</b></a> · <a href="https://padforge.org/docs/"><b>Docs</b></a> · <a href="https://github.com/hifihedgehog/PadForge/releases/latest"><b>Download</b></a> · <a href="https://discord.gg/qawTZHVhNH"><b>Discord</b></a>
-</p>
 
 ![Dashboard](screenshots/dashboard.jpg)
 

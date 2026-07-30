@@ -2944,4 +2944,8 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Shooters vus de dessus. Déplacement à gauche, visée à droite.</value></data>
   <data name="Starter_Media_Name" xml:space="preserve"><value>Télécommande multimédia</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>Lecture, navigation et un curseur pour le canapé.</value></data>
+  <data name="Starter_Racing_Name" xml:space="preserve"><value>Course</value></data>
+  <data name="Starter_Racing_Description" xml:space="preserve"><value>Direction plus calme et contrôle fin près du centre, sur n’importe quelle manette.</value></data>
+  <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Visée gyroscopique</value></data>
+  <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Le mouvement pour la visée fine, sur la gâchette gauche, stick toujours actif.</value></data>
 </root>

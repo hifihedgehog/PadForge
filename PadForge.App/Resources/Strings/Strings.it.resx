@@ -2966,4 +2966,8 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Sparatutto dall’alto. Ci si muove con la sinistra, si mira con la destra.</value></data>
   <data name="Starter_Media_Name" xml:space="preserve"><value>Telecomando multimediale</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>Riproduzione, ricerca e un cursore per il divano.</value></data>
+  <data name="Starter_Racing_Name" xml:space="preserve"><value>Corse</value></data>
+  <data name="Starter_Racing_Description" xml:space="preserve"><value>Sterzo più calmo e controllo fine vicino al centro, su qualsiasi pad.</value></data>
+  <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Mira giroscopica</value></data>
+  <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Movimento per la mira fine sul grilletto sinistro, con la levetta attiva.</value></data>
 </root>

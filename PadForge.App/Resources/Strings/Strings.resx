@@ -2999,4 +2999,8 @@ You can retry later from Settings.</value></data>
   <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Top-down shooters. Move with the left stick, aim with the right.</value></data>
   <data name="Starter_Media_Name" xml:space="preserve"><value>Media Remote</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>Playback, seeking, and a cursor for the ten-foot experience.</value></data>
+  <data name="Starter_Racing_Name" xml:space="preserve"><value>Racing</value></data>
+  <data name="Starter_Racing_Description" xml:space="preserve"><value>Calmer steering and finer control near centre, on any pad.</value></data>
+  <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Gyro Aim</value></data>
+  <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Motion for fine aim, on the left trigger, with the stick still live.</value></data>
 </root>

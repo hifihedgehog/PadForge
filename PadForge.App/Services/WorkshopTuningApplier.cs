@@ -128,29 +128,6 @@ namespace PadForge.Services
         }
 
 
-        /// <summary><para>Moves a stamped cursor acceleration onto the pad's own
-        /// Mouse Acceleration card.</para>
-        ///
-        /// <para>Keyed off the SOURCE descriptor, not the row target, which is
-        /// the opposite of the stick fold above and for a concrete reason: the
-        /// target of a touchpad mouse row is Mouse X or Mouse Y, which names no
-        /// pad. "Touchpad 1 Finger 0 X" names pad 1, and the setting is
-        /// per-(device, pad), so the source is the only end of the row that
-        /// identifies the card.</para>
-        ///
-        /// <para>NOT behaviour-preserving on the cursor lane, deliberately.
-        /// ReadTouchpadMouseCounts never applied ParamAccel at all, so an
-        /// import whose acceleration rode a touchpad-finger row into Mouse X
-        /// or Mouse Y had it silently DROPPED, while the same stamp on an axis
-        /// row did apply. The pad setting is read by both lanes, so folding
-        /// makes the imported value take effect on the cursor for the first
-        /// time. That is the point: the alternative is a value Steam authored,
-        /// PadForge stored, and nothing honoured.</para>
-        ///
-        /// <para>On the axis lane it IS exactly preserving: the same
-        /// v x (1 + accel x |v|) curve, and the fold only runs while the card
-        /// sits at 0 where that curve is the identity. Nothing stacks either
-        /// way, because the stamp is cleared.</para></summary>
         /// <summary><para>Moves a gyro source's stamped acceleration onto the
         /// Gyro Acceleration card.</para>
         ///
@@ -205,6 +182,29 @@ namespace PadForge.Services
             return changed;
         }
 
+        /// <summary><para>Moves a stamped cursor acceleration onto the pad's own
+        /// Mouse Acceleration card.</para>
+        ///
+        /// <para>Keyed off the SOURCE descriptor, not the row target, which is
+        /// the opposite of the stick fold above and for a concrete reason: the
+        /// target of a touchpad mouse row is Mouse X or Mouse Y, which names no
+        /// pad. "Touchpad 1 Finger 0 X" names pad 1, and the setting is
+        /// per-(device, pad), so the source is the only end of the row that
+        /// identifies the card.</para>
+        ///
+        /// <para>NOT behaviour-preserving on the cursor lane, deliberately.
+        /// ReadTouchpadMouseCounts never applied ParamAccel at all, so an
+        /// import whose acceleration rode a touchpad-finger row into Mouse X
+        /// or Mouse Y had it silently DROPPED, while the same stamp on an axis
+        /// row did apply. The pad setting is read by both lanes, so folding
+        /// makes the imported value take effect on the cursor for the first
+        /// time. That is the point: the alternative is a value Steam authored,
+        /// PadForge stored, and nothing honoured.</para>
+        ///
+        /// <para>On the axis lane it IS exactly preserving: the same
+        /// v x (1 + accel x |v|) curve, and the fold only runs while the card
+        /// sits at 0 where that curve is the identity. Nothing stacks either
+        /// way, because the stamp is cleared.</para></summary>
         private static bool FoldTouchpadAcceleration(MappingSet set, PadSetting ps, string deviceGuid)
         {
             if (set.Rows == null || string.IsNullOrEmpty(deviceGuid)) return false;

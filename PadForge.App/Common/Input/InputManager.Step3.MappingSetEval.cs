@@ -1440,10 +1440,16 @@ namespace PadForge.Common.Input
                         prevDown = SourceKindRuntimeReadButtonLikeBool(prevState, act.CyclePrevDescriptor, prevGuid, slotIndex);
                     }
 
-                    // Cycle steps on a press edge; Delay (a hold-to-engage
-                    // debounce) doesn't apply to a press-to-step control.
-                    bool nextRising = inputDown && !rt.WasDown[actIdx];
-                    bool prevRising = prevDown && !rt.CyclePrevWasDown[actIdx];
+                    // The step edges. Cycle deliberately ignores DelayMs (a
+                    // hold-to-engage debounce makes no sense on a
+                    // press-to-step control), which is why it does not ride
+                    // fireEdge / ComputeActivatorFire. Fire on Release still
+                    // has to move BOTH legs to the falling edge though:
+                    // round 40 found this case stepping on the press while
+                    // the translator stamped release-hosted remove_layer
+                    // imports onto Cycle activators and reported them exact.
+                    bool nextRising = CycleStepEdge(inputDown, rt.WasDown[actIdx], act.FireOnRelease);
+                    bool prevRising = CycleStepEdge(prevDown, rt.CyclePrevWasDown[actIdx], act.FireOnRelease);
 
                     if ((nextRising || prevRising) && layers != null && layers.Length > 0)
                     {
@@ -1648,6 +1654,14 @@ namespace PadForge.Common.Input
         /// crosses the threshold; <paramref name="longPressFired"/> is
         /// the once-per-hold latch, cleared on release. Pure so the
         /// state machine is testable frame by frame.</summary>
+        /// <summary>One Cycle step edge: the press edge normally, the release
+        /// edge under Fire on Release. Cycle keeps its no-DelayMs contract in
+        /// both modes (a hold-to-engage debounce makes no sense on a
+        /// press-to-step control), which is why it has its own edge read
+        /// instead of riding <see cref="ComputeActivatorFire"/>.</summary>
+        internal static bool CycleStepEdge(bool down, bool wasDown, bool fireOnRelease)
+            => fireOnRelease ? (!down && wasDown) : (down && !wasDown);
+
         internal static bool ComputeActivatorFire(
             bool inputDown, bool wasDown, long heldMs, int delayMs,
             ref bool longPressFired, bool fireOnRelease = false)

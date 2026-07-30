@@ -6211,6 +6211,15 @@ namespace PadForge.ViewModels
                 m.NegSourceDescriptor = string.Empty;
                 m.IsInverted = false;
                 m.IsHalfAxis = false;
+                // The whole flag family, not just the two the original clear
+                // knew about: a stale Bidirectional or InvertOutput survived
+                // the clear and silently rode the next primary the user
+                // assigned to the row (round 40). The per-source
+                // sensitivities are left as-is deliberately; they are
+                // 1.0-defaulted scale factors, and resetting them is a
+                // behavior change beyond what "clear the mappings" says.
+                m.IsBidirectional = false;
+                m.InvertOutput = false;
                 m.MappingDeadZone = 50;
                 // Drop the device-origin tag too — leaving the GUID
                 // behind would surface a stale subtitle and make the

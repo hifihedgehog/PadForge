@@ -1,8 +1,9 @@
-Add-Type -AssemblyName System.Drawing
+﻿Add-Type -AssemblyName System.Drawing
 $srcDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge.wiki\images"
 $dstDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\screenshots"
 
 $map = @{
+    'profiles-starter-gallery' = 'starter-profiles'
     "dashboard"              = "dashboard"
     "pad-controller-3d"      = "controller"
     "pad-controller-2d"      = "controller-2d"

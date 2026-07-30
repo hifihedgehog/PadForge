@@ -3003,4 +3003,5 @@ You can retry later from Settings.</value></data>
   <data name="Starter_Racing_Description" xml:space="preserve"><value>Calmer steering and finer control near centre, on any pad.</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Gyro Aim</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Motion for fine aim, on the left trigger, with the stick still live.</value></data>
+  <data name="Starter_QuietLayerName" xml:space="preserve"><value>Quiet (nothing sends)</value></data>
 </root>

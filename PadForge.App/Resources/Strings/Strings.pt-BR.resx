@@ -2948,4 +2948,5 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Starter_Racing_Description" xml:space="preserve"><value>Direção mais calma e controle fino perto do centro, em qualquer controle.</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Mira por giroscópio</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Movimento para mira fina no gatilho esquerdo, com o analógico ativo.</value></data>
+  <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silencioso (não envia nada)</value></data>
 </root>

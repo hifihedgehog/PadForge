@@ -2934,4 +2934,14 @@
   <data name="Starter_Intro" xml:space="preserve"><value>ジャンルまるごとに対応する既製プロファイルです。1 つ選んで任意のコントローラーを割り当てれば使えます。保存すると編集可能な通常のプロファイルが追加されます。</value></data>
   <data name="Starter_Save" xml:space="preserve"><value>プロファイルを保存</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>スタータープロファイル「{0}」を追加しました。</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>ポイントアンドクリック</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>アドベンチャーと、カーソルと 2 つの操作で進むゲーム向け。</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>ストラテジー</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>RTS、4X、都市建設。片方のスティックでカメラ、もう片方でカーソル。</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>クォータービュー RPG</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>パーティ RPG とターン制タクティクス。ポーズ、所持品、ホットバー。</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>ツインスティック</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>見下ろしシューティング。左で移動し、右で照準。</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>メディアリモコン</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>再生、シーク、そしてソファ向けのカーソル。</value></data>
 </root>

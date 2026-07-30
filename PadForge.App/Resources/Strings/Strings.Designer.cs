@@ -2581,6 +2581,16 @@ public class Strings : INotifyPropertyChanged
     public string Status_WorkshopCacheCleared => Get("Status_WorkshopCacheCleared");
     public string Profiles_BrowseCommunity => Get("Profiles_BrowseCommunity");
     public string Starter_Desktop_Name => Get("Starter_Desktop_Name");
+    public string Starter_PointClick_Name => Get("Starter_PointClick_Name");
+    public string Starter_PointClick_Description => Get("Starter_PointClick_Description");
+    public string Starter_Strategy_Name => Get("Starter_Strategy_Name");
+    public string Starter_Strategy_Description => Get("Starter_Strategy_Description");
+    public string Starter_Isometric_Name => Get("Starter_Isometric_Name");
+    public string Starter_Isometric_Description => Get("Starter_Isometric_Description");
+    public string Starter_TwinStick_Name => Get("Starter_TwinStick_Name");
+    public string Starter_TwinStick_Description => Get("Starter_TwinStick_Description");
+    public string Starter_Media_Name => Get("Starter_Media_Name");
+    public string Starter_Media_Description => Get("Starter_Media_Description");
     public string Starter_Desktop_Description => Get("Starter_Desktop_Description");
     public string Starter_Wasd_Name => Get("Starter_Wasd_Name");
     public string Starter_Wasd_Description => Get("Starter_Wasd_Description");

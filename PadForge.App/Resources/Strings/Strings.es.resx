@@ -2934,4 +2934,14 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Starter_Intro" xml:space="preserve"><value>Perfiles listos para un género entero. Elige uno, asigna cualquier mando y juega. Al guardar se añade un perfil normal que puedes editar.</value></data>
   <data name="Starter_Save" xml:space="preserve"><value>Guardar perfil</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Perfil inicial «{0}» añadido.</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>Apuntar y hacer clic</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>Aventuras gráficas y todo lo que se maneja con un cursor y dos verbos.</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>Estrategia</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>RTS, 4X y constructores de ciudades. Cámara en un stick, cursor en el otro.</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>RPG isométrico</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>RPG de grupo y tácticas por turnos. Pausa, inventario y barra de acciones.</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>Doble stick</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Shooters cenitales. Muévete con el izquierdo, apunta con el derecho.</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>Mando multimedia</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>Reproducción, búsqueda y un cursor para el sofá.</value></data>
 </root>

@@ -96,12 +96,13 @@ namespace PadForge.Services
         private const byte VkControl = 0xA2;  // VK_LCONTROL
         private const byte VkMenu = 0xA4;     // VK_LMENU (Alt)
         private const byte VkLeft = 0x25, VkUp = 0x26, VkRight = 0x27, VkDown = 0x28;
+        private const byte VkPageUp = 0x21, VkPageDown = 0x22;
         private const byte Vk0 = 0x30, Vk1 = 0x31, Vk2 = 0x32, Vk3 = 0x33, Vk4 = 0x34;
         private const byte Vk5 = 0x35, Vk6 = 0x36, Vk7 = 0x37, Vk8 = 0x38, Vk9 = 0x39;
         private const byte VkA = 0x41, VkC = 0x43, VkD = 0x44, VkE = 0x45, VkF = 0x46;
         private const byte VkG = 0x47, VkI = 0x49, VkM = 0x4D, VkQ = 0x51, VkR = 0x52;
         private const byte VkS = 0x53, VkV = 0x56, VkW = 0x57;
-        private const byte VkF1 = 0x70, VkF2 = 0x71, VkF3 = 0x72, VkF4 = 0x73;
+        private const byte VkF1 = 0x70, VkF2 = 0x71, VkF3 = 0x72, VkF4 = 0x73, VkF5 = 0x74;
         private const byte VkOemMinus = 0xBD, VkOemPlus = 0xBB;
 
         // Abstract pad descriptors. Every one of these is a member of
@@ -390,6 +391,204 @@ namespace PadForge.Services
             return set;
         }
 
+        /// <summary>Point and Click: adventure games, hidden object, anything
+        /// driven by a cursor and two verbs. Ron Gilbert published Thimbleweed
+        /// Park's controller design, the only first-party writeup of this
+        /// genre's problem, and his stated goal was that the game stays
+        /// playable with one thumbstick and the A button.
+        ///
+        /// <para>Clicks sit on the triggers rather than the bumpers on
+        /// purpose: pressing a bumper jogs the thumb resting on the pointing
+        /// surface, which breaks click-and-drag.</para></summary>
+        private static MappingSet BuildPointAndClick()
+        {
+            var set = NewKbmSet();
+            set.Rows.AddRange(CursorRows());
+            set.Rows.AddRange(new[]
+            {
+                Row(MLeft, Src(PadRT), Src(PadA)),
+                Row(MRight, Src(PadLT)),
+
+                Row(Key(VkEscape), Src(PadB), Src(PadStart)),
+                Row(Key(VkI), Src(PadX)),
+                // Hold-to-reveal-hotspots is widespread but never
+                // standardised; implementations split between Tab and Space.
+                // Tab here, Space on Back for the skip-dialogue half.
+                Row(Key(VkTab), Src(PadY)),
+                Row(Key(VkSpace), Src(PadBack)),
+
+                Row(Key(VkPageUp), Src(PadLB)),
+                Row(Key(VkPageDown), Src(PadRB)),
+
+                Row(Key(VkUp), Src(PadUp)),
+                Row(Key(VkDown), Src(PadDown)),
+                Row(Key(VkLeft), Src(PadLeft)),
+                Row(Key(VkRight), Src(PadRight)),
+            });
+            AddQuietLayer(set);
+            return set;
+        }
+
+        /// <summary>Strategy: RTS, 4X, grand strategy, city builders.
+        ///
+        /// <para>The camera goes on the LEFT stick and the cursor on the
+        /// right, which is what both verified references do (the AntiMicroX
+        /// Civilization V profile and a fully specified Command and Conquer
+        /// layout), and what Valve's own strategy guidance implies by putting
+        /// the camera on a directional surface. Clicks stay on the triggers so
+        /// the pointing device and the click button are physically
+        /// independent, which is the only way box-select works.</para></summary>
+        private static MappingSet BuildStrategy()
+        {
+            var set = NewKbmSet();
+            set.Rows.AddRange(CursorRows());
+            set.Rows.AddRange(new[]
+            {
+                // Camera pan on the left stick, as arrow keys.
+                Row(Key(VkUp), Up(PadLY), Src(PadUp)),
+                Row(Key(VkDown), Down(PadLY), Src(PadDown)),
+                Row(Key(VkLeft), Left(PadLX), Src(PadLeft)),
+                Row(Key(VkRight), Right(PadLX), Src(PadRight)),
+
+                Row(MLeft, Src(PadRT)),
+                Row(MRight, Src(PadLT)),
+                Row(MMiddle, Src(PadRS)),
+
+                // The two modifiers the genre lives on.
+                Row(Key(VkShift), Src(PadLB)),
+                Row(Key(VkControl), Src(PadRB)),
+
+                Row(Key(VkSpace), Src(PadA)),
+                Row(Key(VkEscape), Src(PadB)),
+                Row(Key(VkReturn), Src(PadX)),
+                Row(Key(VkTab), Src(PadY)),
+                Row(Key(VkOemMinus), Src(PadLS)),
+            });
+            // The hotbar bank is why this profile exists: ten number keys on a
+            // held modifier is the difference between the genre being playable
+            // on a pad and not.
+            AddBank(set, "Hotbar", PadBack, doublePressMs: 0,
+                new[] { Vk1, Vk2, Vk3, Vk4, Vk5, Vk6, Vk7, Vk8 });
+            AddQuietLayer(set);
+            return set;
+        }
+
+        /// <summary>Isometric RPG: party-based CRPGs, real-time-with-pause,
+        /// turn-based tactics. Larian shipped controller layouts for both
+        /// Baldur's Gate 3 and Divinity: Original Sin 2 and they share one
+        /// skeleton, whose structural moves are the bumpers paging the action
+        /// wheels, a stick click toggling a free cursor, and a held stick
+        /// click highlighting every interactable.</summary>
+        private static MappingSet BuildIsometricRpg()
+        {
+            var set = NewKbmSet();
+            set.Rows.AddRange(CursorRows());
+            set.Rows.AddRange(new[]
+            {
+                // Camera pan on the left stick; the cursor is always live
+                // because this drives a mouse-only game.
+                Row(Key(VkUp), Up(PadLY)),
+                Row(Key(VkDown), Down(PadLY)),
+                Row(Key(VkLeft), Left(PadLX)),
+                Row(Key(VkRight), Right(PadLX)),
+
+                Row(MLeft, Src(PadRT)),
+                Row(MRight, Src(PadLT)),
+
+                Row(Key(VkSpace), Src(PadA)),   // pause, the genre's most-pressed key
+                Row(Key(VkEscape), Src(PadB)),
+                Row(Key(VkI), Src(PadX)),       // inventory
+                Row(Key(VkReturn), Src(PadY)),  // Larian's End Turn
+                Row(Key(VkTab), Src(PadRS)),    // highlight interactables
+                Row(Key(VkC), Src(PadLB)),      // character
+                Row(Key(VkM), Src(PadRB)),      // map
+
+                Row(Key(VkF5), Src(PadStart)),   // quicksave
+            });
+            AddBank(set, "Hotbar", PadBack, doublePressMs: 0,
+                new[] { Vk1, Vk2, Vk3, Vk4, Vk5, Vk6, Vk7, Vk8 });
+            AddQuietLayer(set);
+            return set;
+        }
+
+        /// <summary>Twin-Stick: top-down shooters and roguelites that only
+        /// accept keys to move and a mouse to aim.
+        ///
+        /// <para>On a controller with a touchpad this is exact, because the
+        /// absolute pointer maps the pad 1:1 to the screen, which is what
+        /// aiming with space means. On a stick-only pad the cursor is a rate
+        /// and the profile aims with time instead, which is what every
+        /// stick-only twin-stick setup has always done.</para></summary>
+        private static MappingSet BuildTwinStick()
+        {
+            var set = NewKbmSet();
+            set.Rows.AddRange(CursorRows());
+            set.Rows.AddRange(new[]
+            {
+                Row(Key(VkW), Up(PadLY)),
+                Row(Key(VkS), Down(PadLY)),
+                Row(Key(VkA), Left(PadLX)),
+                Row(Key(VkD), Right(PadLX)),
+
+                Row(MLeft, Src(PadRT)),
+                Row(MRight, Src(PadLT)),
+
+                Row(Key(VkSpace), Src(PadA)),   // dash
+                Row(Key(VkShift), Src(PadB)),   // roll
+                Row(Key(VkR), Src(PadX)),       // reload
+                Row(Key(VkE), Src(PadY)),       // interact
+                Row(Key(VkQ), Src(PadLB)),
+                Row(Key(VkF), Src(PadRB)),
+                Row(Key(VkEscape), Src(PadStart)),
+                Row(Key(VkTab), Src(PadBack)),
+            });
+            set.SocdMode = "Neutral";
+            set.SocdPairs = SocdKeyPairs(VkA, VkD, VkW, VkS);
+            AddQuietLayer(set);
+            return set;
+        }
+
+        /// <summary>Media Remote: playback, seeking, and a cursor for the
+        /// ten-foot experience. Kodi ships a joystick keymap with a distinct
+        /// fullscreen-video context and Valve ships videoplayer.vdf; they
+        /// agree on the shape and differ only on which player keys they emit.
+        ///
+        /// <para>Deliberately built from keys the KbM row engine actually
+        /// carries. Space, the arrows, F and M are what every web and desktop
+        /// player listens for. The SYSTEM media keys (volume, next / previous
+        /// track, browser back) sit outside the row engine's closed VK set and
+        /// would each need a paired hold macro, so they are left out rather
+        /// than shipped as rows that silently never fire.</para></summary>
+        private static MappingSet BuildMediaRemote()
+        {
+            var set = NewKbmSet();
+            set.Rows.AddRange(CursorRows());
+            set.Rows.AddRange(new[]
+            {
+                Row(Key(VkSpace), Src(PadA)),      // play / pause, near-universal
+                Row(Key(VkBackspace), Src(PadB)),  // back / up
+                Row(Key(VkM), Src(PadX)),          // mute
+                Row(Key(VkF), Src(PadY)),          // fullscreen
+
+                // Seek on left/right, volume on up/down, which is what every
+                // in-page player binds the arrows to.
+                Row(Key(VkLeft), Src(PadLeft), Left(PadLX)),
+                Row(Key(VkRight), Src(PadRight), Right(PadLX)),
+                Row(Key(VkUp), Src(PadUp), Up(PadLY)),
+                Row(Key(VkDown), Src(PadDown), Down(PadLY)),
+
+                Row(Key(VkPageUp), Src(PadLB)),
+                Row(Key(VkPageDown), Src(PadRB)),
+
+                Row(MLeft, Src(PadRT)),
+                Row(MRight, Src(PadLT)),
+                Row(Key(VkEscape), Src(PadStart)),
+                Row(Key(VkTab), Src(PadBack)),
+            });
+            AddQuietLayer(set);
+            return set;
+        }
+
         // ── Shared structure ────────────────────────────────────────────
 
         private static MappingSet NewKbmSet() => new() { Authoritative = true };
@@ -503,6 +702,31 @@ namespace PadForge.Services
                 () => Wrap(Strings.Instance.Starter_Hotbar_Name,
                     VirtualControllerType.KeyboardMouse, BuildHotbar()),
                 s => s.Starter_Hotbar_Name, s => s.Starter_Hotbar_Description),
+
+            new("pointclick", VirtualControllerType.KeyboardMouse,
+                () => Wrap(Strings.Instance.Starter_PointClick_Name,
+                    VirtualControllerType.KeyboardMouse, BuildPointAndClick()),
+                s => s.Starter_PointClick_Name, s => s.Starter_PointClick_Description),
+
+            new("strategy", VirtualControllerType.KeyboardMouse,
+                () => Wrap(Strings.Instance.Starter_Strategy_Name,
+                    VirtualControllerType.KeyboardMouse, BuildStrategy()),
+                s => s.Starter_Strategy_Name, s => s.Starter_Strategy_Description),
+
+            new("isometric", VirtualControllerType.KeyboardMouse,
+                () => Wrap(Strings.Instance.Starter_Isometric_Name,
+                    VirtualControllerType.KeyboardMouse, BuildIsometricRpg()),
+                s => s.Starter_Isometric_Name, s => s.Starter_Isometric_Description),
+
+            new("twinstick", VirtualControllerType.KeyboardMouse,
+                () => Wrap(Strings.Instance.Starter_TwinStick_Name,
+                    VirtualControllerType.KeyboardMouse, BuildTwinStick()),
+                s => s.Starter_TwinStick_Name, s => s.Starter_TwinStick_Description),
+
+            new("media", VirtualControllerType.KeyboardMouse,
+                () => Wrap(Strings.Instance.Starter_Media_Name,
+                    VirtualControllerType.KeyboardMouse, BuildMediaRemote()),
+                s => s.Starter_Media_Name, s => s.Starter_Media_Description),
 
             new("emulation", VirtualControllerType.Xbox,
                 () => Wrap(Strings.Instance.Starter_Emulation_Name,

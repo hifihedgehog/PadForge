@@ -2934,4 +2934,14 @@
   <data name="Starter_Intro" xml:space="preserve"><value>面向整个游戏类型的现成配置。选择一个，分配任意手柄即可使用。保存后会添加一个可编辑的普通配置。</value></data>
   <data name="Starter_Save" xml:space="preserve"><value>保存配置</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>已添加入门配置“{0}”。</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>指向点击</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>冒险游戏，以及一切靠光标和两个动作推进的游戏。</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>策略</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>即时策略、4X 和城市建设。一个摇杆控镜头，另一个控光标。</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>等距视角 RPG</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>队伍 RPG 和回合制战术。暂停、背包和快捷栏。</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>双摇杆</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>俯视角射击。左杆移动，右杆矄准。</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>媒体遥控</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>播放、快进，以及一个适合沙发的光标。</value></data>
 </root>

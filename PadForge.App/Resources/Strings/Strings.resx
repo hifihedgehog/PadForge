@@ -2989,4 +2989,14 @@ You can retry later from Settings.</value></data>
   <data name="Starter_Intro" xml:space="preserve"><value>Ready-made profiles for a whole genre. Pick one, assign any controller, and play. Saving adds an ordinary profile you can edit.</value></data>
   <data name="Starter_Save" xml:space="preserve"><value>Save Profile</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Added starter profile "{0}".</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>Point and Click</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>Adventure games and anything driven by a cursor and two verbs.</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>Strategy</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>RTS, 4X, and city builders. Camera on one stick, cursor on the other.</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>Isometric RPG</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>Party RPGs and turn-based tactics. Pause, inventory, and a hotbar.</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>Twin-Stick</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Top-down shooters. Move with the left stick, aim with the right.</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>Media Remote</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>Playback, seeking, and a cursor for the ten-foot experience.</value></data>
 </root>

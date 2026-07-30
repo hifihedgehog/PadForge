@@ -120,6 +120,12 @@ namespace PadForge.Services
         private const string PadRX = "Gamepad RightStickX", PadRY = "Gamepad RightStickY";
         private const string PadLT = "Gamepad LeftTrigger", PadRT = "Gamepad RightTrigger";
 
+        // Primary gyro channels. Pitch is the nose-up/down rate and yaw the
+        // horizontal sweep; the engine also carries an aux pair ("Gyro L *")
+        // for the left Joy-Con, which a device-agnostic profile must not
+        // assume exists.
+        private const string GyroPitch = "Gyro Pitch", GyroYaw = "Gyro Yaw";
+
         // Absolute touchpad pointer. Grammar is "Touchpad N Pointer X|Y"
         // (whole pad; the optional 5th token selects a half). A pointer
         // source whose pad index does not exist on the assigned device
@@ -589,6 +595,108 @@ namespace PadForge.Services
             return set;
         }
 
+        /// <summary>Racing: finer throttle and brake, calmer steering, on any
+        /// pad. A pad gives about a centimetre of travel to cover full lock,
+        /// so a linear map makes small corrections at speed impossible.
+        ///
+        /// <para>The steering curve is an exponent above 1, which shrinks
+        /// small deflections and leaves full lock reachable: fine control
+        /// near centre, unchanged at the edge. The anti-deadzone is a floor
+        /// on the output magnitude, which pre-compensates for the deadzone
+        /// most racing games apply on top of the pad's own. Exact centre
+        /// still reads zero, so the car does not creep.</para>
+        ///
+        /// <para>Numbers are a shape, not a truth. Every engine names these
+        /// transforms differently and they disagree on which value means
+        /// linear (F1 treats 0 as linear, EA WRC 5, Forza 50, Assetto Corsa's
+        /// gamma 1.0), so this ships a sane starting point to nudge rather
+        /// than a claim about any particular title.</para></summary>
+        private static MappingSet BuildRacing()
+        {
+            var set = NewPadSet();
+
+            var steerX = Src(PadLX);
+            steerX.ParamCurveExponent = 1.5;   // between linear and x squared
+            steerX.ParamAntiDeadzone = 0.05;   // floor, so the first degree of lock registers
+
+            set.Rows.AddRange(new[]
+            {
+                Row("LeftThumbAxisX", steerX),
+                Row("LeftThumbAxisY", Src(PadLY)),
+                Row("RightThumbAxisX", Src(PadRX)),
+                Row("RightThumbAxisY", Src(PadRY)),
+
+                // Throttle and brake pass straight through. The pedal feel
+                // that matters is the game's own trigger curve, and a second
+                // shaping layer here would fight it.
+                Row("RightTrigger", Src(PadRT)),
+                Row("LeftTrigger", Src(PadLT)),
+
+                Row("ButtonA", Src(PadA)),
+                Row("ButtonB", Src(PadB)),
+                Row("ButtonX", Src(PadX)),
+                Row("ButtonY", Src(PadY)),
+                Row("LeftShoulder", Src(PadLB)),
+                Row("RightShoulder", Src(PadRB)),
+                Row("ButtonBack", Src(PadBack)),
+                Row("ButtonStart", Src(PadStart)),
+                Row("ButtonGuide", Src(PadGuide)),
+                Row("LeftThumbButton", Src(PadLS)),
+                Row("RightThumbButton", Src(PadRS)),
+                Row("DPadUp", Src(PadUp)),
+                Row("DPadDown", Src(PadDown)),
+                Row("DPadLeft", Src(PadLeft)),
+                Row("DPadRight", Src(PadRight)),
+            });
+            return set;
+        }
+
+        /// <summary>Gyro Aim: motion for fine aim in games that only ever
+        /// expected a stick. The gyro drives the right stick alongside the
+        /// stick itself rather than replacing it, so motion adds precision
+        /// instead of taking the stick away.
+        ///
+        /// <para>Engage sits on the left trigger. JoyShockMapper's reference
+        /// configs ship gyro OFF and switch it on deliberately, because
+        /// always-on motion reads as drift during normal play, and aiming is
+        /// exactly when you want it.</para></summary>
+        private static MappingSet BuildGyroAim()
+        {
+            var set = NewPadSet();
+            set.Rows.AddRange(new[]
+            {
+                Row("LeftThumbAxisX", Src(PadLX)),
+                Row("LeftThumbAxisY", Src(PadLY)),
+
+                // Gyro and stick on the same axis row. Yaw is the horizontal
+                // sweep, pitch the vertical.
+                Row("RightThumbAxisX", Src(GyroYaw), Src(PadRX)),
+                Row("RightThumbAxisY", Src(GyroPitch), Src(PadRY)),
+
+                Row("RightTrigger", Src(PadRT)),
+                Row("LeftTrigger", Src(PadLT)),
+                Row("ButtonA", Src(PadA)),
+                Row("ButtonB", Src(PadB)),
+                Row("ButtonX", Src(PadX)),
+                Row("ButtonY", Src(PadY)),
+                Row("LeftShoulder", Src(PadLB)),
+                Row("RightShoulder", Src(PadRB)),
+                Row("ButtonBack", Src(PadBack)),
+                Row("ButtonStart", Src(PadStart)),
+                Row("ButtonGuide", Src(PadGuide)),
+                Row("LeftThumbButton", Src(PadLS)),
+                Row("RightThumbButton", Src(PadRS)),
+                Row("DPadUp", Src(PadUp)),
+                Row("DPadDown", Src(PadDown)),
+                Row("DPadLeft", Src(PadLeft)),
+                Row("DPadRight", Src(PadRight)),
+            });
+            // Slot-level engage gate: motion only steers while the left
+            // trigger is held.
+            set.WorkshopGyroEngageDescriptor = PadLT;
+            return set;
+        }
+
         // ── Shared structure ────────────────────────────────────────────
 
         private static MappingSet NewKbmSet() => new() { Authoritative = true };
@@ -737,6 +845,16 @@ namespace PadForge.Services
                 () => Wrap(Strings.Instance.Starter_Fighting_Name,
                     VirtualControllerType.Xbox, BuildFightingGames()),
                 s => s.Starter_Fighting_Name, s => s.Starter_Fighting_Description),
+
+            new("racing", VirtualControllerType.Xbox,
+                () => Wrap(Strings.Instance.Starter_Racing_Name,
+                    VirtualControllerType.Xbox, BuildRacing()),
+                s => s.Starter_Racing_Name, s => s.Starter_Racing_Description),
+
+            new("gyroaim", VirtualControllerType.Xbox,
+                () => Wrap(Strings.Instance.Starter_GyroAim_Name,
+                    VirtualControllerType.Xbox, BuildGyroAim()),
+                s => s.Starter_GyroAim_Name, s => s.Starter_GyroAim_Description),
         };
 
         /// <summary>Looks a starter profile up by its stable key.</summary>

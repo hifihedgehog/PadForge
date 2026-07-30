@@ -2944,4 +2944,8 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Tiro com visão superior. Mova com o esquerdo, mire com o direito.</value></data>
   <data name="Starter_Media_Name" xml:space="preserve"><value>Controle de mídia</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>Reprodução, avanço e um cursor para o sofá.</value></data>
+  <data name="Starter_Racing_Name" xml:space="preserve"><value>Corrida</value></data>
+  <data name="Starter_Racing_Description" xml:space="preserve"><value>Direção mais calma e controle fino perto do centro, em qualquer controle.</value></data>
+  <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Mira por giroscópio</value></data>
+  <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Movimento para mira fina no gatilho esquerdo, com o analógico ativo.</value></data>
 </root>

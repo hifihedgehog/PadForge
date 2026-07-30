@@ -2944,4 +2944,8 @@
   <data name="Starter_TwinStick_Description" xml:space="preserve"><value>見下ろしシューティング。左で移動し、右で照準。</value></data>
   <data name="Starter_Media_Name" xml:space="preserve"><value>メディアリモコン</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>再生、シーク、そしてソファ向けのカーソル。</value></data>
+  <data name="Starter_Racing_Name" xml:space="preserve"><value>レース</value></data>
+  <data name="Starter_Racing_Description" xml:space="preserve"><value>どのパッドでも、落ち着いたステアリングと中心付近の精密な操作。</value></data>
+  <data name="Starter_GyroAim_Name" xml:space="preserve"><value>ジャイロエイム</value></data>
+  <data name="Starter_GyroAim_Description" xml:space="preserve"><value>左トリガーでモーション照準。スティックもそのまま使えます。</value></data>
 </root>

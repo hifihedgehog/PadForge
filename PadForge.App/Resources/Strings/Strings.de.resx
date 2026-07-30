@@ -2944,4 +2944,8 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Draufsicht-Shooter. Bewegen mit links, zielen mit rechts.</value></data>
   <data name="Starter_Media_Name" xml:space="preserve"><value>Medien-Fernbedienung</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>Wiedergabe, Spulen und ein Zeiger für die Couch.</value></data>
+  <data name="Starter_Racing_Name" xml:space="preserve"><value>Rennen</value></data>
+  <data name="Starter_Racing_Description" xml:space="preserve"><value>Ruhigeres Lenken und feinere Kontrolle um die Mitte, auf jedem Pad.</value></data>
+  <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Gyro-Zielen</value></data>
+  <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Bewegungssteuerung auf dem linken Trigger, der Stick bleibt aktiv.</value></data>
 </root>

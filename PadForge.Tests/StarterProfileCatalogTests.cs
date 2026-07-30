@@ -31,6 +31,13 @@ namespace PadForge.Tests
                 .Where(s => s != null)
                 .Select(s => (b.Info.Key, s)));
 
+        /// <summary>The primary gyro channels a device-agnostic profile may
+        /// name. The aux pair ("Gyro L Pitch" and friends) is left out on
+        /// purpose: it exists only on a Joy-Con pair, so a starter profile
+        /// must not assume it.</summary>
+        private static readonly HashSet<string> GyroChannels =
+            new(StringComparer.Ordinal) { "Gyro Pitch", "Gyro Yaw", "Gyro Roll" };
+
         /// <summary>Ordinal comparer for the (layer, target) grouping key.
         /// Declared rather than relying on the default so the grouping is
         /// case-sensitive, matching how the engine compares layer masks.</summary>
@@ -96,7 +103,8 @@ namespace PadForge.Tests
             foreach (var (key, row, src) in Sources())
             {
                 bool ok = aliases.Contains(src.Descriptor)
-                       || SourceCoercion.IsTouchpadPointerDescriptor(src.Descriptor);
+                       || SourceCoercion.IsTouchpadPointerDescriptor(src.Descriptor)
+                       || GyroChannels.Contains(src.Descriptor);
                 Assert.True(ok,
                     $"starter '{key}' row '{row.Target}' uses unresolvable descriptor '{src.Descriptor}'");
             }

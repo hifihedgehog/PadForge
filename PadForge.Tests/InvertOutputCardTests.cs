@@ -163,6 +163,29 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void ClearAllMappingsResetsTheWholeFlagFamily()
+        {
+            // Round 40. The clear promised "the cleared row truly looks
+            // brand-new" but left Bidirectional and InvertOutput standing, so
+            // a stale flag silently rode the next primary the user assigned
+            // to the row. Driven through the real public command.
+            var vm = new PadForge.ViewModels.PadViewModel(0);
+            var m = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
+            m.LoadDescriptor("IHAxis 2");
+            m.IsBidirectional = true;
+            m.InvertOutput = true;
+            vm.Mappings.Add(m);
+
+            vm.ClearMappingsCommand.Execute(null);
+
+            Assert.False(m.IsInverted);
+            Assert.False(m.IsHalfAxis);
+            Assert.False(m.IsBidirectional);
+            Assert.False(m.InvertOutput);
+            Assert.Equal(string.Empty, m.SourceDescriptor);
+        }
+
+        [Fact]
         public void BothEditorsOfferTheCheckboxGatedOnApplicability()
         {
             // Two sites, deliberately: the grid row's primary and the

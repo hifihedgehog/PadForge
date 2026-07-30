@@ -4720,9 +4720,18 @@ namespace PadForge.Engine.Common.Mapping
             // not actually have (round 34).
             // The pad's own cursor-feel card, same (slot, device, pad) key
             // the region read uses.
-            float padAccel = TouchpadMouseSettingsProvider?.Invoke(
+            // The pad's cursor-feel card, same (slot, device, pad) key the
+            // region read uses. Acceleration is Simple-profile-only on BOTH
+            // lanes: the Trackpad profile replaces it and the card hides the
+            // slider there, so applying the leftover value here would run an
+            // invisible setting the user can neither see nor clear. Round 40
+            // found this lane ignoring the profile and doing exactly that.
+            var tpFeel = TouchpadMouseSettingsProvider?.Invoke(
                 slotIndex, string.IsNullOrEmpty(deviceGuid) ? (evaluatedDeviceGuid ?? "") : deviceGuid,
-                padIdx)?.MouseAcceleration ?? 0f;
+                padIdx);
+            float padAccel = (tpFeel != null
+                && !string.Equals(tpFeel.PointerResponse, "Trackpad", StringComparison.Ordinal))
+                ? tpFeel.MouseAcceleration : 0f;
 
             string trackerDevice = string.IsNullOrEmpty(deviceGuid) ? (evaluatedDeviceGuid ?? "") : deviceGuid;
             var key = (slotIndex, trackerDevice, padIdx, fingerIdx, axisOffset, half);

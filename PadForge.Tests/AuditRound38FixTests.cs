@@ -75,12 +75,18 @@ namespace PadForge.Tests
             // Footprint closure rather than a literal list: the next field
             // added to the mouse-output family fails here on the day it is
             // added, instead of shipping as a silent dedup collision.
+            // Mouse* by prefix, plus the pointer-profile family by name: the
+            // trio does not share the prefix, and round 40 found it riding
+            // the checksum on manual inclusion alone, one deletion away from
+            // a silent dedup collision.
             var mouseFields = typeof(TouchpadGestureSettings)
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.Name.StartsWith("Mouse", StringComparison.Ordinal)
+                .Where(p => (p.Name.StartsWith("Mouse", StringComparison.Ordinal)
+                             || p.Name == "PointerResponse"
+                             || p.Name.StartsWith("Trackpad", StringComparison.Ordinal))
                             && p.CanRead && p.CanWrite)
                 .ToList();
-            Assert.True(mouseFields.Count >= 7, $"only {mouseFields.Count} Mouse* settings found");
+            Assert.True(mouseFields.Count >= 10, $"only {mouseFields.Count} mouse/pointer settings found");
 
             foreach (var f in mouseFields)
             {
@@ -96,6 +102,8 @@ namespace PadForge.Tests
                     f.SetValue(ts, !(bool)f.GetValue(ts));
                 else if (f.PropertyType == typeof(float))
                     f.SetValue(ts, (float)f.GetValue(ts) + 0.37f);
+                else if (f.PropertyType == typeof(string))
+                    f.SetValue(ts, (f.GetValue(ts) as string ?? "") + "X");
                 else continue;
                 altered.TouchpadSettings = new[]
                 { new TouchpadSettingsEntry { DeviceGuid = "dev", TouchpadIndex = 0, Settings = ts } };

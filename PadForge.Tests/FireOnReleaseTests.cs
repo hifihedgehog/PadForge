@@ -82,6 +82,42 @@ namespace PadForge.Tests
             Assert.True(InputManager.ComputeActivatorFire(false, true, 5000, 500, ref latch, fireOnRelease: true));
         }
 
+        // ── the Cycle mode's own edge (round 40) ────────────────────────────
+        //
+        // Cycle deliberately ignores DelayMs, so it never rode
+        // ComputeActivatorFire. The first Fire on Release cut therefore
+        // missed it entirely: release-hosted remove_layer imports were
+        // stamped onto Cycle activators, reported exact, and still stepped
+        // on the press. The mode has its own edge read now, and these pin it.
+
+        [Theory]
+        // press mode: rising edge only
+        [InlineData(false, true, false, true)]
+        [InlineData(false, true, true, false)]
+        [InlineData(false, false, true, false)]
+        [InlineData(false, false, false, false)]
+        // release mode: falling edge only
+        [InlineData(true, true, false, false)]
+        [InlineData(true, true, true, false)]
+        [InlineData(true, false, true, true)]
+        [InlineData(true, false, false, false)]
+        public void CycleStepEdge_PicksTheRightEdge(bool fireOnRelease, bool down, bool wasDown, bool expected)
+        {
+            Assert.Equal(expected, InputManager.CycleStepEdge(down, wasDown, fireOnRelease));
+        }
+
+        [Fact]
+        public void BothCycleLegsRideTheSharedEdge()
+        {
+            // Next AND Previous: a release-mode cycle whose Previous button
+            // still stepped on the press would walk the ring in opposite
+            // directions on opposite edges of the same interaction.
+            string src = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Common", "Input", "InputManager.Step3.MappingSetEval.cs"));
+            Assert.Contains("CycleStepEdge(inputDown, rt.WasDown[actIdx], act.FireOnRelease)", src);
+            Assert.Contains("CycleStepEdge(prevDown, rt.CyclePrevWasDown[actIdx], act.FireOnRelease)", src);
+        }
+
         // ── persistence ─────────────────────────────────────────────────────
 
         [Fact]

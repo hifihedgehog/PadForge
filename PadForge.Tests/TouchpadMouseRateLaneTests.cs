@@ -486,6 +486,54 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void TrackpadProfile_DisablesSimpleAccelerationOnTheAxisLaneToo()
+        {
+            // Round 40. The AXIS lane (touchpad finger driving a stick axis)
+            // read MouseAcceleration without consulting PointerResponse, so a
+            // pad switched to Trackpad kept applying the leftover Simple
+            // value on axis rows while the card HID the acceleration slider:
+            // an invisible setting the user could neither see nor clear.
+            float Drag(PadForge.Engine.Touchpad.TouchpadGestureSettings tp)
+            {
+                _tp = tp;
+                if (tp != null)
+                    SourceCoercion.TouchpadMouseSettingsProvider = (_, __, ___) => _tp;
+                try
+                {
+                    var src = XSource(); int slot = NewSlot();
+                    Deflection(PadAt(0.500f), src, slot);          // seed
+                    // 0.002 pad widths: the relative lane reaches full scale
+                    // at 1/128 of the pad, so anything bigger clamps at 1.0
+                    // with or without acceleration and the comparison reads
+                    // 1 vs 1 (this test's own positive control caught that).
+                    return Deflection(PadAt(0.502f), src, slot);
+                }
+                finally { ClearSettings(); }
+            }
+
+            float plain = Drag(null);
+            Assert.True(plain > 0f, "the baseline drag produced no deflection");
+
+            // Positive control: with Simple, the acceleration really reaches
+            // this lane, so the Trackpad assertion below cannot pass vacuously.
+            float simple = Drag(new PadForge.Engine.Touchpad.TouchpadGestureSettings
+            {
+                PointerResponse = "Simple",
+                MouseAcceleration = 5f,
+            });
+            Assert.True(simple > plain * 1.01f,
+                $"Simple acceleration did not reach the axis lane: {simple} vs {plain}");
+
+            // The find: a leftover acceleration under Trackpad must be inert.
+            float trackpad = Drag(new PadForge.Engine.Touchpad.TouchpadGestureSettings
+            {
+                PointerResponse = "Trackpad",
+                MouseAcceleration = 5f,
+            });
+            Assert.Equal(plain, trackpad, 4);
+        }
+
+        [Fact]
         public void MomentumOff_StopsTheCursorDeadOnRelease()
         {
             UseSettings(momentum: false);

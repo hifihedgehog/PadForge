@@ -5,6 +5,7 @@ using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
+using PadForge.Engine.Menus;
 using PadForge.Services;
 using PadForge.ViewModels;
 using Xunit;
@@ -645,6 +646,120 @@ namespace PadForge.Tests
                 Assert.True(quiet != null, $"starter '{info.Key}' has no quiet layer");
             }
             Assert.True(checkedProfiles >= 8, $"only {checkedProfiles} KBM profiles checked");
+        }
+
+        /// <summary>Returns every virtual key a profile's macros press.</summary>
+        private static HashSet<int> MacroKeys(ProfileData p)
+            => p.Macros.SelectMany(m => m.Actions)
+                       .Where(a => a.Type == MacroActionType.KeyPress)
+                       .Select(a => a.KeyCode)
+                       .ToHashSet();
+
+        /// <summary>
+        /// Media Remote must carry the SYSTEM transport, which is the whole
+        /// difference between a media remote and a desktop profile that
+        /// happens to press Space.
+        ///
+        /// <para>It first shipped with none of these: the profile was Desktop
+        /// with different letters, measured at 41% identical bindings by
+        /// physical input, and the omission was documented in a comment rather
+        /// than fixed. These keys are outside the row engine's closed VK set,
+        /// so the macro lane is the only way to reach them.</para></summary>
+        [Fact]
+        public void MediaRemote_CarriesTheSystemTransport()
+        {
+            var p = StarterProfileCatalog.Find("media").Build();
+            var keys = MacroKeys(p);
+
+            var required = new (int Vk, string What)[]
+            {
+                (0xB3, "play/pause"), (0xB2, "stop"),
+                (0xB0, "next track"), (0xB1, "previous track"),
+                (0xAF, "volume up"), (0xAE, "volume down"), (0xAD, "mute"),
+            };
+            foreach (var (vk, what) in required)
+                Assert.True(keys.Contains(vk),
+                    $"Media Remote has no {what} (VK 0x{vk:X2}), so it is not a media remote");
+
+            // And they must be reachable from real buttons, not orphaned.
+            Assert.All(p.Macros, m => Assert.False(string.IsNullOrEmpty(m.TriggerInputs)));
+        }
+
+        /// <summary>Desktop must reach the two system keys no row target can:
+        /// Valve's Show Keyboard on X (Win+Ctrl+O) and the Windows key. Both
+        /// were dropped as "not reachable" when the profile first shipped.
+        /// </summary>
+        [Fact]
+        public void Desktop_ReachesShowKeyboardAndTheWindowsKey()
+        {
+            var p = StarterProfileCatalog.Find("desktop").Build();
+            Assert.NotEmpty(p.Macros);
+
+            var chord = p.Macros.FirstOrDefault(m =>
+                m.Actions.Count(a => a.Type == MacroActionType.KeyPress) == 3);
+            Assert.True(chord != null, "Desktop has no Show Keyboard chord");
+            var pressed = chord.Actions.Where(a => a.Type == MacroActionType.KeyPress)
+                                       .Select(a => a.KeyCode).ToList();
+            Assert.Contains(0x5B, pressed);   // Win
+            Assert.Contains(0xA2, pressed);   // Ctrl
+            Assert.Contains(0x4F, pressed);   // O
+
+            Assert.Contains(p.Macros, m =>
+                m.Actions.Count(a => a.Type == MacroActionType.KeyPress) == 1
+                && m.Actions.Any(a => a.KeyCode == 0x5B));
+        }
+
+        /// <summary>Point and Click cycles hotspots BACKWARDS with Shift+Tab,
+        /// a chord no single row target can express.</summary>
+        [Fact]
+        public void PointAndClick_CarriesTheBackwardsCycleChord()
+        {
+            var p = StarterProfileCatalog.Find("pointclick").Build();
+            Assert.Contains(p.Macros, m =>
+            {
+                var k = m.Actions.Where(a => a.Type == MacroActionType.KeyPress)
+                                 .Select(a => a.KeyCode).ToList();
+                return k.Count == 2 && k.Contains(0xA0) && k.Contains(0x09);
+            });
+        }
+
+        /// <summary>
+        /// Strategy and Isometric RPG were specified with RADIAL MENUS, and
+        /// shipped with shift-layer banks standing in for them. Larian ships
+        /// exactly the radial shape: "radial menus (accessed with the
+        /// triggers) give you all your skills, items, and actions without
+        /// needing a hotbar".
+        ///
+        /// <para>A radial gated behind a held opener needs three things
+        /// together: the menu, its layer, and an activator engaging that
+        /// layer. Any one missing and it never opens.</para></summary>
+        [Theory]
+        [InlineData("strategy", 1, 10)]
+        [InlineData("isometric", 2, 6)]
+        public void RadialProfiles_CarryTheirMenus(string key, int menuCount, int firstCellCount)
+        {
+            var set = StarterProfileCatalog.Find(key).Build().SlotMappingSets[0];
+
+            Assert.Equal(menuCount, set.Menus.Count);
+            foreach (var menu in set.Menus)
+            {
+                Assert.Equal(MenuKind.Radial, menu.Kind);
+                Assert.NotEmpty(menu.Items);
+                Assert.Equal(menu.CellCount, menu.Items.Count);
+                Assert.All(menu.Items, i => Assert.True(i.VirtualKey > 0,
+                    $"'{key}' radial cell '{i.Label}' emits no key"));
+                Assert.All(menu.Items, i => Assert.False(string.IsNullOrWhiteSpace(i.Label)));
+
+                // The menu is gated behind a held opener, so its layer needs
+                // an activator or it can never open.
+                Assert.False(string.IsNullOrEmpty(menu.LayerMask),
+                    $"'{key}' radial '{menu.Name}' is not gated behind a layer");
+                Assert.Contains(set.ShiftActivators,
+                    a => a.LayerMask == menu.LayerMask && a.Mode == "Hold");
+                // Firing on release is what makes hold-flick-release work.
+                Assert.Equal(MenuFireType.TouchRelease, menu.FireType);
+            }
+            Assert.Equal(firstCellCount, set.Menus[0].CellCount);
         }
 
         /// <summary>Names and descriptions must be real localized strings, not

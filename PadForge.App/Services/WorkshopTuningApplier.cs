@@ -121,6 +121,9 @@ namespace PadForge.Services
             // ── per-pad cursor acceleration ───────────────────────────────
             changed |= FoldTouchpadAcceleration(set, ps, deviceGuid);
 
+            // ── gyro cursor acceleration ──────────────────────────────────
+            changed |= FoldGyroAcceleration(set, ps);
+
             return changed;
         }
 
@@ -148,6 +151,60 @@ namespace PadForge.Services
         /// v x (1 + accel x |v|) curve, and the fold only runs while the card
         /// sits at 0 where that curve is the identity. Nothing stacks either
         /// way, because the stamp is cleared.</para></summary>
+        /// <summary><para>Moves a gyro source's stamped acceleration onto the
+        /// Gyro Acceleration card.</para>
+        ///
+        /// <para>The gyro mouse lane runs both accelerations back to back
+        /// (ApplyGyroAcceleration with the card's value, then
+        /// ApplyPerSourceAccel with the stamp), so an import stacked invisibly
+        /// on whatever the user set. Worse, ApplyPerSourceAccel hard-caps its
+        /// result at full-scale because it is shared with deflection lanes,
+        /// while the gyro lane is a RATE output whose own comment says that
+        /// clamp is deliberately dropped ("a fast spin past the curve's
+        /// reference rate must stay a fast spin"). So the imported value was
+        /// also throttled by an accident of code sharing. After the fold it
+        /// rides the card's own uncapped path, which means imported configs'
+        /// fast flicks travel further than they did before: the ceiling was
+        /// the artifact, not the fix.</para>
+        ///
+        /// <para>Same units both sides, verified not assumed: the card is
+        /// parsed by TryParseFloatPs with no scaling (InputService, the gyro
+        /// tuning build) and both formulas are 1 + accel x |v|. The card's
+        /// range was widened to 5 to cover the translator's maximum
+        /// (clamp(0..10) x 0.5), so the copy is lossless.</para>
+        ///
+        /// <para>Gyro descriptors only. A stick-hosted mouse row can carry
+        /// this stamp too (EmitMouseAxes serves joystick_mouse), and there is
+        /// no card for that one, so it stays per-source rather than being
+        /// eaten looking for a home.</para></summary>
+        private static bool FoldGyroAcceleration(MappingSet set, PadSetting ps)
+        {
+            if (set.Rows == null) return false;
+
+            bool changed = false;
+            foreach (var row in set.Rows)
+            {
+                if (row?.Sources == null) continue;
+                foreach (var src in row.Sources)
+                {
+                    if (src == null || src.ParamAccel <= 0.0) continue;
+                    if (!(src.Descriptor ?? "").StartsWith("Gyro ", StringComparison.Ordinal))
+                        continue;
+
+                    if (IsPercent(ps.GyroAcceleration, 0))
+                    {
+                        // F2 invariant, the card's own save format
+                        // (InputService writes GyroAcceleration.ToString("F2", ic)).
+                        ps.GyroAcceleration = src.ParamAccel.ToString("F2",
+                            CultureInfo.InvariantCulture);
+                        changed = true;
+                    }
+                    src.ParamAccel = 0.0;
+                }
+            }
+            return changed;
+        }
+
         private static bool FoldTouchpadAcceleration(MappingSet set, PadSetting ps, string deviceGuid)
         {
             if (set.Rows == null || string.IsNullOrEmpty(deviceGuid)) return false;

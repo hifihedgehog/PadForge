@@ -9696,7 +9696,7 @@
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroAcceleration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroAcceleration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.5"
+                                            Minimum="0" Maximum="5" SmallChange="0.05" LargeChange="0.5"
                                             Width="200" VerticalAlignment="Center"
                                             ToolTip="{Binding Settings_GyroAcceleration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding GyroAcceleration, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"

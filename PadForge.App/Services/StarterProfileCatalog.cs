@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
@@ -103,6 +104,16 @@ namespace PadForge.Services
         private const byte VkG = 0x47, VkI = 0x49, VkM = 0x4D, VkQ = 0x51, VkR = 0x52;
         private const byte VkS = 0x53, VkV = 0x56, VkW = 0x57;
         private const byte VkF1 = 0x70, VkF2 = 0x71, VkF3 = 0x72, VkF4 = 0x73, VkF5 = 0x74;
+        private const byte VkF6 = 0x75, VkF7 = 0x76, VkF8 = 0x77, VkF9 = 0x78;
+        private const byte VkF10 = 0x79, VkF11 = 0x7A, VkF12 = 0x7B;
+        // Numpad 1-8 (0x61..0x68), a bank of keys almost nothing else claims.
+        private const byte VkNum1 = 0x61, VkNum2 = 0x62, VkNum3 = 0x63, VkNum4 = 0x64;
+        private const byte VkNum5 = 0x65, VkNum6 = 0x66, VkNum7 = 0x67, VkNum8 = 0x68;
+
+        /// <summary>Valve's shipped double_tap_time, and the value the
+        /// Workshop translator already uses for Steam's Double_Press
+        /// activator.</summary>
+        private const int DoubleTapMs = 442;
         private const byte VkOemMinus = 0xBD, VkOemPlus = 0xBB;
 
         // Abstract pad descriptors. Every one of these is a member of
@@ -169,10 +180,12 @@ namespace PadForge.Services
             set.Rows.AddRange(CursorRows());
             set.Rows.AddRange(new[]
             {
-                // Scroll on the left stick. Step 3 negates the scroll axis
-                // (KbmScroll positive = up after that negation), so the
-                // stick's raw sign is inverted here to make pushing up
-                // scroll up.
+                // Scroll on the left stick, with NO invert, which is the
+                // non-obvious part. SDL's +Y is DOWN, and Step 3 negates the
+                // scroll axis on the way out (KbmScroll positive = up after
+                // that negation). The two cancel, so the raw stick value
+                // already scrolls up when pushed up. Adding an invert here
+                // would reverse it.
                 Row(Scroll, Src(PadLY)),
                 Row(ScrollH, Src(PadLX)),
 
@@ -277,13 +290,25 @@ namespace PadForge.Services
             set.SocdMode = "Neutral";
             set.SocdPairs = SocdKeyPairs(VkA, VkD, VkW, VkS);
 
-            // Bank 1: hold LT. Four D-pad slots plus four face slots.
+            // Hold LT for eight slots, hold RT for a different eight.
             AddBank(set, "Bank1", PadLT, doublePressMs: 0,
                 new[] { Vk1, Vk2, Vk3, Vk4, Vk5, Vk6, Vk7, Vk8 });
-            // Bank 2: hold RT.
             AddBank(set, "Bank2", PadRT, doublePressMs: 0,
                 new[] { Vk9, Vk0, VkOemMinus, VkOemPlus, VkF1, VkF2, VkF3, VkF4 });
 
+            // Double-tap-and-hold either trigger for sixteen more. This is the
+            // Double Cross Hotbar, and DoublePressMs is what makes it a real
+            // activator: the input counts as engaged only on the SECOND press
+            // of a press-release-press pair, and Hold then holds from that
+            // second press until its release. Both tiers can be engaged at
+            // once during the second press; last-engaged wins, which is the
+            // double-tap bank, so the plain bank does not shadow it.
+            AddBank(set, "Bank3", PadLT, doublePressMs: DoubleTapMs,
+                new[] { VkF5, VkF6, VkF7, VkF8, VkF9, VkF10, VkF11, VkF12 });
+            AddBank(set, "Bank4", PadRT, doublePressMs: DoubleTapMs,
+                new[] { VkNum1, VkNum2, VkNum3, VkNum4, VkNum5, VkNum6, VkNum7, VkNum8 });
+
+            AddQuietLayer(set);
             return set;
         }
 
@@ -330,21 +355,79 @@ namespace PadForge.Services
                 Row("RightThumbAxisY", Src(PadRY)),
             });
 
-            // Hotkey layer: hold Back. InheritUnmapped keeps every unlisted
-            // target falling through to Base, which is what RetroArch's
-            // input_enable_hotkey does (the modifier gates the hotkeys and
-            // leaves everything else alone).
-            set.ShiftActivators.Add(new ShiftActivator
+            // Hotkey layer: hold Back, then a second button picks the verb.
+            // That is RetroArch's own input_enable_hotkey shape, and the
+            // consensus of RetroPie, EmuDeck, RetroDECK, Batocera and
+            // RetroBat.
+            //
+            // The VERBS are keyboard keys, which a gamepad slot cannot send,
+            // so this profile is a SPLIT CONFIG: an Xbox slot for the pad and
+            // a keyboard slot for the hotkeys, which is the same shape the
+            // Workshop importer produces for configs that need both. This set
+            // is the pad half, and its job on the layer is only to STOP the
+            // gamepad outputs those buttons drive, so holding Back and
+            // tapping RB saves a state instead of also pressing RB in game.
+            foreach (var target in new[]
+                     {
+                         "ButtonBack", "ButtonY", "ButtonStart",
+                         "LeftShoulder", "RightShoulder",
+                         "LeftTrigger", "RightTrigger",
+                         "DPadLeft", "DPadRight",
+                     })
             {
-                DeviceGuid = "",
-                Descriptor = PadBack,
-                Mode = "Hold",
-                LayerMask = "Hotkey",
-                LayerName = "Hotkey",
-                InheritUnmapped = true,
-            });
+                set.Rows.Add(new MappingRow
+                {
+                    Target = target, LayerMask = "Hotkey", NoInherit = true,
+                });
+            }
+
+            set.ShiftActivators.Add(HotkeyActivator());
             return set;
         }
+
+        /// <summary>The keyboard half of the Emulation split config. Only the
+        /// hotkey layer carries rows: with nothing on Base this slot is silent
+        /// until Back is held, so it never types into the emulator during
+        /// play.
+        ///
+        /// <para>The verbs are RetroArch's DEFAULT keyboard hotkeys, so they
+        /// work against a stock install with no remapping: F2 save state, F4
+        /// load state, F6 and F7 to step the state slot, Space fast-forward,
+        /// R rewind, F1 menu, Escape exit.</para></summary>
+        private static MappingSet BuildEmulationHotkeys()
+        {
+            var set = NewKbmSet();
+            var hotkeys = new (byte Vk, string Button)[]
+            {
+                (VkF2, PadRB),        // save state
+                (VkF4, PadLB),        // load state
+                (VkF7, PadRight),     // next state slot
+                (VkF6, PadLeft),      // previous state slot
+                (VkSpace, PadRT),     // fast-forward
+                (VkR, PadLT),         // rewind
+                (VkF1, PadY),         // menu
+                (VkEscape, PadStart), // exit content
+            };
+            foreach (var (vk, button) in hotkeys)
+                set.Rows.Add(LayerRow("Hotkey", Key(vk), Src(button)));
+
+            set.ShiftActivators.Add(HotkeyActivator());
+            return set;
+        }
+
+        /// <summary>The shared Back-held activator both halves of the
+        /// Emulation split config carry. A shift layer is per mapping set, so
+        /// each slot needs its own copy of the same activator for the two
+        /// halves to engage together.</summary>
+        private static ShiftActivator HotkeyActivator() => new()
+        {
+            DeviceGuid = "",
+            Descriptor = PadBack,
+            Mode = "Hold",
+            LayerMask = "Hotkey",
+            LayerName = "Hotkey",
+            InheritUnmapped = true,
+        };
 
         /// <summary>Fighting Games: tournament-legal out of the box.
         ///
@@ -711,15 +794,59 @@ namespace PadForge.Services
 
         /// <summary>Adds one held ability bank on the given trigger: four
         /// D-pad slots then four face slots, which is the Cross Hotbar's own
-        /// arrangement. InheritUnmapped is FALSE so the bank replaces the
-        /// base bindings on those eight buttons while held, instead of
-        /// firing both.</summary>
+        /// arrangement.
+        ///
+        /// <para><b>InheritUnmapped is TRUE, and that alone would double-fire.</b>
+        /// The layer must inherit, or holding the bank would kill the cursor,
+        /// the movement keys and everything else the profile maps. But
+        /// inheriting means a target the bank does NOT remap still falls
+        /// through to Base, and the bank's buttons usually DO drive a Base
+        /// target: on Hotbar, A is "5" on the layer and Space on Base, so one
+        /// press emitted both.</para>
+        ///
+        /// <para>The fix is per-target, and the resolver states it exactly:
+        /// "a zero-source layer row still BLOCKS Base fallthrough when it's an
+        /// explicit NoInherit declaration". So for every Base target one of
+        /// this bank's buttons drives, and for the activator's own button, add
+        /// a sourceless NoInherit row on the layer. The bank keys fire, the
+        /// inherited base bindings for those buttons do not, and everything
+        /// else still inherits.</para>
+        ///
+        /// <para>The block set is COMPUTED from the set's own Base rows rather
+        /// than hand-listed per profile, so a profile that later rebinds a face
+        /// button cannot drift out of sync with its bank.</para></summary>
         private static void AddBank(MappingSet set, string layer, string activator,
             int doublePressMs, byte[] keys)
         {
             string[] buttons = { PadUp, PadDown, PadLeft, PadRight, PadA, PadB, PadX, PadY };
-            for (int i = 0; i < buttons.Length && i < keys.Length; i++)
+            int n = Math.Min(buttons.Length, keys.Length);
+
+            for (int i = 0; i < n; i++)
                 set.Rows.Add(LayerRow(layer, Key(keys[i]), Src(buttons[i])));
+
+            // Every physical input this bank consumes: its eight slots plus the
+            // trigger that opens it (holding LT to reach the bank must not also
+            // hold the left click LT drives on Base).
+            var consumed = new HashSet<string>(StringComparer.Ordinal) { activator };
+            for (int i = 0; i < n; i++) consumed.Add(buttons[i]);
+
+            // Block each Base target those inputs drive, unless the bank
+            // already remaps that same target with sources.
+            var banked = new HashSet<string>(
+                set.Rows.Where(r => r.LayerMask == layer).Select(r => r.Target),
+                StringComparer.Ordinal);
+
+            foreach (var target in set.Rows
+                         .Where(r => (r.LayerMask ?? "Base") == "Base"
+                                  && r.Sources.Any(s => consumed.Contains(s.Descriptor)))
+                         .Select(r => r.Target)
+                         .Distinct(StringComparer.Ordinal)
+                         .ToList())
+            {
+                if (banked.Contains(target)) continue;
+                var block = new MappingRow { Target = target, LayerMask = layer, NoInherit = true };
+                set.Rows.Add(block);
+            }
 
             set.ShiftActivators.Add(new ShiftActivator
             {
@@ -770,6 +897,15 @@ namespace PadForge.Services
         /// ExecutableNames stays empty: an archetype has no executable, so it
         /// never auto-switches and is always chosen by hand.</summary>
         private static ProfileData Wrap(string name, VirtualControllerType type, MappingSet set)
+            => Wrap(name, (type, set));
+
+        /// <summary>Wraps one or more slots as a profile. A SPLIT config (a pad
+        /// slot plus a keyboard slot) is the shape the Workshop importer already
+        /// produces whenever a config needs both output kinds, and Emulation
+        /// needs it because its hotkey verbs are keyboard keys that a gamepad
+        /// slot cannot send. Slots are claimed in argument order.</summary>
+        private static ProfileData Wrap(string name,
+            params (VirtualControllerType Type, MappingSet Set)[] slots)
         {
             int maxPads = InputManager.MaxPads;
             var created = new bool[maxPads];
@@ -778,11 +914,14 @@ namespace PadForge.Services
             var ids = new string[maxPads];
             var sets = new MappingSet[maxPads];
 
-            created[0] = true;
-            enabled[0] = true;
-            types[0] = (int)type;
-            ids[0] = InputManager.GetDefaultProfileId(type);
-            sets[0] = set;
+            for (int i = 0; i < slots.Length && i < maxPads; i++)
+            {
+                created[i] = true;
+                enabled[i] = true;
+                types[i] = (int)slots[i].Type;
+                ids[i] = InputManager.GetDefaultProfileId(slots[i].Type);
+                sets[i] = slots[i].Set;
+            }
 
             return new ProfileData
             {
@@ -846,7 +985,8 @@ namespace PadForge.Services
 
             new("emulation", VirtualControllerType.Xbox,
                 () => Wrap(Strings.Instance.Starter_Emulation_Name,
-                    VirtualControllerType.Xbox, BuildEmulation()),
+                    (VirtualControllerType.Xbox, BuildEmulation()),
+                    (VirtualControllerType.KeyboardMouse, BuildEmulationHotkeys())),
                 s => s.Starter_Emulation_Name, s => s.Starter_Emulation_Description),
 
             new("fighting", VirtualControllerType.Xbox,

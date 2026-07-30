@@ -296,10 +296,24 @@ namespace PadForge.Tests
                 Assert.Equal(InputManager.MaxPads, p.SlotControllerTypes.Length);
                 Assert.Equal(InputManager.MaxPads, p.SlotMappingSets.Length);
 
-                Assert.Equal(1, p.SlotCreated.Count(c => c));
-                Assert.True(p.SlotCreated[0], $"starter '{info.Key}' does not claim slot 0");
-                Assert.True(p.SlotEnabled[0], $"starter '{info.Key}' slot 0 is disabled");
-                Assert.NotNull(p.SlotMappingSets[0]);
+                // Most starters claim exactly one slot. A SPLIT config (a pad
+                // slot plus a keyboard slot) is legitimate and is the shape the
+                // Workshop importer produces when a config needs both output
+                // kinds; Emulation needs it because its hotkey verbs are
+                // keyboard keys a gamepad slot cannot send. Whatever the count,
+                // the claimed slots must be contiguous from 0, all enabled, and
+                // all carrying a set.
+                int claimed = p.SlotCreated.Count(c => c);
+                Assert.InRange(claimed, 1, 2);
+                for (int i = 0; i < claimed; i++)
+                {
+                    Assert.True(p.SlotCreated[i], $"starter '{info.Key}' slot {i} not claimed");
+                    Assert.True(p.SlotEnabled[i], $"starter '{info.Key}' slot {i} is disabled");
+                    Assert.NotNull(p.SlotMappingSets[i]);
+                }
+                for (int i = claimed; i < p.SlotCreated.Length; i++)
+                    Assert.False(p.SlotCreated[i], $"starter '{info.Key}' claims a non-contiguous slot {i}");
+
                 Assert.Equal((int)info.OutputType, p.SlotControllerTypes[0]);
 
                 // The slot's HIDMaestro profile id must match what the engine
@@ -307,8 +321,10 @@ namespace PadForge.Tests
                 // for keyboard/mouse and MIDI, which do not route through
                 // HIDMaestro at all, so asserting "non-empty" here would be
                 // asserting the opposite of the contract.
-                Assert.Equal(InputManager.GetDefaultProfileId(info.OutputType),
-                    p.SlotProfileIds[0]);
+                for (int i = 0; i < claimed; i++)
+                    Assert.Equal(
+                        InputManager.GetDefaultProfileId((VirtualControllerType)p.SlotControllerTypes[i]),
+                        p.SlotProfileIds[i]);
             }
         }
 
@@ -473,6 +489,137 @@ namespace PadForge.Tests
                 Assert.True(src.HalfAxis,
                     $"starter '{key}' drives key row '{row.Target}' from a whole stick axis");
             }
+        }
+
+        /// <summary>
+        /// A held bank must not double-fire. The bank layer inherits (it has
+        /// to, or holding it would kill the cursor and the movement keys), and
+        /// inheriting means a target the bank does NOT remap still falls
+        /// through to Base. The bank's own buttons usually DO drive a Base
+        /// target, so without an explicit block one press emitted both: on
+        /// Hotbar, holding LT and pressing A sent "5" AND Space.
+        ///
+        /// <para>The resolver's rule is that a zero-source layer row blocks the
+        /// fallthrough only when it is an explicit NoInherit declaration, so
+        /// this asserts one exists for every Base target the bank's buttons and
+        /// its own activator drive.</para>
+        /// </summary>
+        [Fact]
+        public void BankLayers_BlockTheBaseBindingsOfEveryButtonTheyConsume()
+        {
+            int banksChecked = 0;
+
+            foreach (var (key, set) in Sets())
+            {
+                foreach (var act in set.ShiftActivators)
+                {
+                    if (act.LayerMask == "Quiet" || act.LayerMask == "Hotkey") continue;
+                    banksChecked++;
+
+                    var layerRows = set.Rows.Where(r => r.LayerMask == act.LayerMask).ToList();
+                    var consumed = new HashSet<string>(StringComparer.Ordinal) { act.Descriptor };
+                    foreach (var s in layerRows.SelectMany(r => r.Sources))
+                        consumed.Add(s.Descriptor);
+
+                    foreach (var baseRow in set.Rows.Where(r =>
+                                 (r.LayerMask ?? "Base") == "Base"
+                                 && r.Sources.Any(s => consumed.Contains(s.Descriptor))))
+                    {
+                        var block = layerRows.FirstOrDefault(r => r.Target == baseRow.Target);
+                        bool blocked = block != null
+                            && (block.NoInherit || block.Sources.Count > 0);
+                        Assert.True(blocked,
+                            $"starter '{key}' layer '{act.LayerMask}' leaves Base target " +
+                            $"'{baseRow.Target}' inheriting, so its buttons double-fire");
+                    }
+                }
+            }
+
+            Assert.True(banksChecked >= 4, $"only {banksChecked} banks checked; the sweep is not covering them");
+        }
+
+        /// <summary>Emulation's whole differentiator is the hotkey layer. It
+        /// shipped with an activator and ZERO rows, so holding Back did
+        /// nothing at all while the description promised save states.
+        ///
+        /// <para>The verbs are keyboard keys, which a gamepad slot cannot
+        /// send, so the profile is a split config: the pad half blocks the
+        /// gamepad outputs and the keyboard half emits the keys. Both halves
+        /// need their own copy of the activator, because a shift layer is per
+        /// mapping set.</para></summary>
+        [Fact]
+        public void Emulation_HotkeyLayer_HasVerbsAndEngagesBothHalves()
+        {
+            var info = StarterProfileCatalog.Find("emulation");
+            Assert.NotNull(info);
+            var p = info.Build();
+
+            var sets = p.SlotMappingSets.Where(s => s != null).ToList();
+            Assert.Equal(2, sets.Count);
+
+            foreach (var set in sets)
+                Assert.Contains(set.ShiftActivators, a => a.LayerMask == "Hotkey" && a.Mode == "Hold");
+
+            var kbm = p.SlotMappingSets[1];
+            var verbs = kbm.Rows
+                .Where(r => r.LayerMask == "Hotkey" && r.Sources.Count > 0)
+                .ToList();
+            Assert.True(verbs.Count >= 6,
+                $"the hotkey layer carries only {verbs.Count} verbs, so holding Back does almost nothing");
+            Assert.All(verbs, r => Assert.StartsWith("KbmKey", r.Target, StringComparison.Ordinal));
+
+            // The keyboard half must be SILENT until Back is held, or it would
+            // type into the emulator during play.
+            Assert.DoesNotContain(kbm.Rows, r => (r.LayerMask ?? "Base") == "Base");
+
+            // The pad half must stop the gamepad outputs those buttons drive.
+            var pad = p.SlotMappingSets[0];
+            Assert.Contains(pad.Rows, r => r.LayerMask == "Hotkey" && r.NoInherit);
+        }
+
+        /// <summary>Hotbar's headline is thirty-two abilities behind two
+        /// triggers, which needs FOUR banks: a plain hold on each trigger and
+        /// a double-tap-and-hold on each. It shipped with two, so the shipped
+        /// description overstated it by half.</summary>
+        [Fact]
+        public void Hotbar_HasBothTiers_AndThirtyTwoSlots()
+        {
+            var set = StarterProfileCatalog.Find("hotbar").Build().SlotMappingSets[0];
+
+            var banks = set.ShiftActivators.Where(a => a.LayerMask != "Quiet").ToList();
+            Assert.Equal(4, banks.Count);
+            Assert.Equal(2, banks.Count(a => a.DoublePressMs > 0));
+            Assert.Equal(2, banks.Count(a => a.DoublePressMs == 0));
+
+            // Both tiers on both triggers.
+            foreach (var trigger in new[] { "Gamepad LeftTrigger", "Gamepad RightTrigger" })
+            {
+                Assert.Contains(banks, a => a.Descriptor == trigger && a.DoublePressMs == 0);
+                Assert.Contains(banks, a => a.Descriptor == trigger && a.DoublePressMs > 0);
+            }
+
+            int slots = banks.Sum(a => set.Rows.Count(r =>
+                r.LayerMask == a.LayerMask && r.Sources.Count > 0));
+            Assert.Equal(32, slots);
+        }
+
+        /// <summary>Every keyboard-and-mouse starter carries the quiet layer.
+        /// Hotbar was the one exception, against a docs claim that says
+        /// "every". A missing escape hatch means the pad keeps typing into
+        /// whatever the user alt-tabs to.</summary>
+        [Fact]
+        public void EveryKeyboardMouseProfile_HasAQuietLayer()
+        {
+            int checkedProfiles = 0;
+            foreach (var (info, p) in Built())
+            {
+                if (info.OutputType != VirtualControllerType.KeyboardMouse) continue;
+                checkedProfiles++;
+                var set = p.SlotMappingSets[0];
+                var quiet = set.ShiftActivators.SingleOrDefault(a => a.LayerMask == "Quiet");
+                Assert.True(quiet != null, $"starter '{info.Key}' has no quiet layer");
+            }
+            Assert.True(checkedProfiles >= 8, $"only {checkedProfiles} KBM profiles checked");
         }
 
         /// <summary>Names and descriptions must be real localized strings, not

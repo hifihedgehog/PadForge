@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Captures ALL PadForge screenshots for wiki and README.
 .DESCRIPTION
@@ -45,6 +45,7 @@ public class Win32 {
     [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);
     [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr h, out RECT r);
     [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr h, int cmd);
+    [DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
     [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr h, IntPtr a, int x, int y, int cx, int cy, uint f);
     [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
     [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
@@ -1032,6 +1033,18 @@ Write-Host "=== STEP 2: Setup window ===" -ForegroundColor Cyan
 ## click/Cap is the mechanism; TOPMOST pins PadForge over the user's other
 ## windows and a mid-script failure leaves it stuck there.
 [Win32]::ForceFG($hwnd)
+# The elevated console is OUR window and it must never appear in a shot.
+# Cap calls ForceFG first, but ForceFG can lose to Windows' foreground-lock
+# rules and Cap does not verify it won, so a losing race put the console on
+# top of devices.png and devices-facet-chips.png in the 4.1.0 set (both
+# shipped to the repo, the website and the docs before anyone looked).
+# Hiding it outright removes the race instead of narrowing it.
+$script:consoleWnd = [Win32]::GetConsoleWindow()
+if ($script:consoleWnd -ne [IntPtr]::Zero) {
+    [Win32]::ShowWindow($script:consoleWnd, 0) | Out-Null  # SW_HIDE
+    Write-Host "Console hidden for the capture run."
+}
+
 [Win32]::ShowWindow($hwnd, 3) | Out-Null  # SW_MAXIMIZE
 Start-Sleep -Milliseconds 700
 
@@ -2915,6 +2928,9 @@ ScrollContent -Clicks 60
 # ---- 23-24. Web controller ----
 Write-Host "[$(Next)/$total] Web controller screenshots"
 # Minimize PadForge so it doesn't cover Edge (never TOPMOST anywhere)
+if ($script:consoleWnd -and $script:consoleWnd -ne [IntPtr]::Zero) {
+    [Win32]::ShowWindow($script:consoleWnd, 5) | Out-Null  # SW_SHOW
+}
 [Win32]::ShowWindow($hwnd, 6) | Out-Null  # SW_MINIMIZE
 Start-Sleep -Milliseconds 500
 $webPort = 8080

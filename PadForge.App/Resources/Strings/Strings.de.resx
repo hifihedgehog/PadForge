@@ -1711,6 +1711,9 @@
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Maus X invertieren zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Maus Y invertieren zurücksetzen</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Zitterreduzierung</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>Beschleunigung</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>Schnelle Bewegungen legen mehr Strecke auf dem Bildschirm zurück als langsame über dieselbe Distanz. 0 hält die Zeigergeschwindigkeit konstant.</value></data>
+  <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>Beschleunigung zurücksetzen</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Dämpft das Zittern der ruhenden Hand ohne Totzone, sodass winzige gewollte Bewegungen weiterhin ankommen.</value></data>
   <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Zitterreduzierung zurücksetzen</value></data>
   <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Schwung</value></data>

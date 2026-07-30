@@ -1710,6 +1710,9 @@
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>重置反转鼠标 X</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>重置反转鼠标 Y</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>抖动抑制</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>加速</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>同样的距离，滑动越快，指针在屏幕上移动得越远。0 表示指针速度恒定。</value></data>
+  <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>重置加速</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>无需死区即可抑制手部抖动，细小的有意移动仍然有效。</value></data>
   <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>重置抖动抑制</value></data>
   <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>惯性</value></data>

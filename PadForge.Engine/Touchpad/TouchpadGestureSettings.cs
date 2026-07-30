@@ -251,6 +251,20 @@ namespace PadForge.Engine.Touchpad
         /// smaller.</para></summary>
         [XmlAttribute] public bool MouseJitterReduction { get; set; } = true;
 
+        /// <summary><para>Rate-dependent cursor gain: slow drags pass through
+        /// unchanged, fast ones amplify, as v x (1 + accel x |v|). 0 = off.
+        /// The same curve the gyro lane's Acceleration uses
+        /// (SourceCoercion.ApplyGyroAcceleration), on the touchpad's cursor
+        /// lane.</para>
+        /// <para>Exists as a per-pad setting because a Workshop import wrote
+        /// it invisibly. Steam's mouse "acceleration" landed on
+        /// MappingSource.ParamAccel, which the engine honoured while no card
+        /// showed it, so an imported pad felt accelerated with nothing on
+        /// screen to say why and nothing to turn it off. Sensitivity is a
+        /// flat multiplier and cannot express it, so this is its own knob
+        /// rather than a range widened on an existing one.</para></summary>
+        [XmlAttribute] public float MouseAcceleration { get; set; }
+
         // ─── Absolute pointer output (#9 B-15) ─────────────────────────
         //
         // Applied by SourceCoercion.ReadTunedTouchpadPointer when a
@@ -446,6 +460,7 @@ namespace PadForge.Engine.Touchpad
                 MouseMomentum = MouseMomentum,
                 MouseMomentumDecay = MouseMomentumDecay,
                 MouseJitterReduction = MouseJitterReduction,
+                MouseAcceleration = MouseAcceleration,
                 PointerRegionSizeX = PointerRegionSizeX,
                 PointerRegionSizeY = PointerRegionSizeY,
                 PointerRegionAuthored = PointerRegionAuthored,
@@ -600,6 +615,7 @@ namespace PadForge.Engine.Touchpad
                 || s.MouseMomentum != d.MouseMomentum
                 || s.MouseMomentumDecay != d.MouseMomentumDecay
                 || s.MouseJitterReduction != d.MouseJitterReduction
+                || s.MouseAcceleration != d.MouseAcceleration
                 || s.PointerRegionSizeX != d.PointerRegionSizeX
                 || s.PointerRegionSizeY != d.PointerRegionSizeY
                 || s.PointerRegionAuthored != d.PointerRegionAuthored

@@ -212,18 +212,160 @@ namespace PadForge.Tests
         private static PadForge.Engine.Touchpad.TouchpadGestureSettings _tp;
 
         private static void UseSettings(bool momentum = false, float decay = 0.90f,
-                                        bool jitter = true)
+                                        bool jitter = true, float accel = 0f)
         {
             _tp = new PadForge.Engine.Touchpad.TouchpadGestureSettings
             {
                 MouseMomentum = momentum,
                 MouseMomentumDecay = decay,
                 MouseJitterReduction = jitter,
+                MouseAcceleration = accel,
             };
             SourceCoercion.TouchpadMouseSettingsProvider = (_, __, ___) => _tp;
         }
 
         private static void ClearSettings() => SourceCoercion.TouchpadMouseSettingsProvider = null;
+
+
+        // ── cursor acceleration (per-pad card) ────────────────────────────
+        //
+        // Steam's mouse acceleration arrived on MappingSource.ParamAccel and
+        // the engine honoured it with no card showing it. The value lives on
+        // the pad's own Mouse Acceleration setting now, so these tests prove
+        // the ENGINE reads that setting: a card that saves a value the engine
+        // ignores is the same defect one step further along.
+
+        private static float DragCounts(float from, float to, float accel)
+        {
+            UseSettings(accel: accel);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(from), TicksAt(0.000f), src, slot);
+                return Counts(PadAt(to), TicksAt(0.004f), src, slot);
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void Acceleration_AmplifiesTheDrag()
+        {
+            float plain = DragCounts(0.50f, 0.80f, accel: 0f);
+            float boosted = DragCounts(0.50f, 0.80f, accel: 2f);
+
+            Assert.True(plain > 0f, "the baseline drag produced no motion, so the comparison is vacuous");
+            Assert.True(boosted > plain,
+                $"acceleration did not reach the engine: {boosted} vs {plain}");
+        }
+
+        [Fact]
+        public void Acceleration_IsRateDependentNotAFlatMultiplier()
+        {
+            // The whole reason this is its own knob and not a wider
+            // sensitivity range: the gain must grow with speed. So the fast
+            // drag gains proportionally MORE than the slow one.
+            float slowPlain = DragCounts(0.50f, 0.55f, accel: 0f);
+            float slowBoost = DragCounts(0.50f, 0.55f, accel: 2f);
+            float fastPlain = DragCounts(0.50f, 0.90f, accel: 0f);
+            float fastBoost = DragCounts(0.50f, 0.90f, accel: 2f);
+
+            Assert.True(slowPlain > 0f && fastPlain > 0f, "a baseline drag produced no motion");
+            double slowGain = slowBoost / slowPlain;
+            double fastGain = fastBoost / fastPlain;
+            Assert.True(fastGain > slowGain,
+                $"gain did not grow with speed: slow x{slowGain:F3}, fast x{fastGain:F3}");
+        }
+
+        [Fact]
+        public void Acceleration_Zero_IsExactlyIdentity()
+        {
+            // The default must not perturb the lane at all, so nobody's
+            // existing feel changes when this setting appears.
+            float withProvider = DragCounts(0.50f, 0.80f, accel: 0f);
+
+            ClearSettings();                       // no provider at all
+            var src = XSource(); int slot = NewSlot();
+            Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+            float withoutProvider = Counts(PadAt(0.80f), TicksAt(0.004f), src, slot);
+
+            Assert.Equal(withoutProvider, withProvider, 4);
+        }
+
+
+        [Fact]
+        public void Acceleration_KeepsADiagonalOnItsLine()
+        {
+            // The gain rides the VECTOR speed, so a diagonal drag gains the
+            // same factor on both axes and the pointer follows the line the
+            // thumb drew. A per-axis gain would boost the longer axis more and
+            // bow the path, which is invisible in any X-only test: this one
+            // exists because a per-axis mutation survived the whole
+            // acceleration suite.
+            static (float X, float Y) Diagonal(float accel)
+            {
+                _tp = new PadForge.Engine.Touchpad.TouchpadGestureSettings { MouseAcceleration = accel };
+                SourceCoercion.TouchpadMouseSettingsProvider = (_, __, ___) => _tp;
+                try
+                {
+                    var src = XSource(); int slot = NewSlot();
+                    // A drag with UNEQUAL components, so a per-axis gain
+                    // cannot coincidentally match the isotropic one.
+                    ReadBoth(PadAtXY(0.50f, 0.50f), TicksAt(0.000f), src, slot);
+                    return ReadBoth(PadAtXY(0.80f, 0.60f), TicksAt(0.004f), src, slot);
+                }
+                finally { ClearSettings(); }
+            }
+
+            var plain = Diagonal(0f);
+            var boosted = Diagonal(2f);
+
+            Assert.True(Math.Abs(plain.X) > 0f && Math.Abs(plain.Y) > 0f,
+                "the baseline diagonal moved on only one axis, so the test proves nothing");
+
+            // Same direction: the X:Y ratio must survive the gain.
+            double plainRatio = plain.Y / plain.X;
+            double boostedRatio = boosted.Y / boosted.X;
+            Assert.Equal(plainRatio, boostedRatio, 3);
+
+            // And it really did accelerate, so the ratio did not hold merely
+            // because nothing happened.
+            Assert.True(Math.Abs(boosted.X) > Math.Abs(plain.X) * 1.001,
+                $"no acceleration applied: {boosted.X} vs {plain.X}");
+        }
+
+        private static CustomInputState PadAtXY(float x, float y, bool down = true)
+        {
+            var s = new CustomInputState();
+            s.Touchpads = new[]
+            {
+                new TouchpadInputState
+                {
+                    MaxFingers = 2,
+                    FingerX = new[] { x, 0f },
+                    FingerY = new[] { y, 0f },
+                    FingerPressure = new[] { 1f, 0f },
+                    FingerDown = new[] { down, false },
+                },
+            };
+            return s;
+        }
+
+        /// <summary>Both axes from ONE poll. The lane returns a single axis per
+        /// call (forX picks which, the other comes back 0), so both components
+        /// take two reads inside ONE BeginPollFrame, exactly as the production
+        /// caller does. A second BeginPollFrame here would advance the ball
+        /// twice and desynchronise the pair.</summary>
+        private static (float X, float Y) ReadBoth(CustomInputState st, long ticks, MappingSource src, int slot)
+        {
+            SourceCoercion.BeginPollFrame();
+            var (x, _) = SourceCoercion.ReadTouchpadMouseCounts(
+                st, src, slot, deviceGuid: "", dtSeconds: PollDt,
+                forX: true, nowTicks: ticks, ticksPerSecond: Freq);
+            var (_, y) = SourceCoercion.ReadTouchpadMouseCounts(
+                st, src, slot, deviceGuid: "", dtSeconds: PollDt,
+                forX: false, nowTicks: ticks, ticksPerSecond: Freq);
+            return (x, y);
+        }
 
         [Fact]
         public void MomentumOff_StopsTheCursorDeadOnRelease()

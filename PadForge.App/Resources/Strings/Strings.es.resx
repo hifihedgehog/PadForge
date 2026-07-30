@@ -1711,6 +1711,9 @@
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Restablecer invertir ratón X</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Restablecer invertir ratón Y</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Reducción de temblor</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>Aceleración</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>Los desplazamientos rápidos recorren más pantalla que los lentos en la misma distancia. 0 mantiene constante la velocidad del cursor.</value></data>
+  <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>Restablecer la aceleración</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Amortigua el temblor de la mano en reposo sin zona muerta, para que los movimientos pequeños intencionados sigan registrándose.</value></data>
   <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Restablecer reducción de temblor</value></data>
   <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Inercia</value></data>

@@ -10366,6 +10366,18 @@
                                     <ui:Button Command="{Binding ResetTouchpadMouseMomentumCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadMouseMomentum, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Touchpad_MouseAcceleration, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_Touchpad_MouseAcceleration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding TouchpadMouseAcceleration, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="0" Maximum="5" TickFrequency="0.1"
+                                            ToolTip="{Binding Pad_Touchpad_MouseAcceleration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadMouseAcceleration, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Style="{StaticResource DzValueEdit}"
+                                             ToolTip="{Binding Pad_Touchpad_MouseAcceleration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadMouseAccelerationCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMouseAcceleration, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                             IsEnabled="{Binding TouchpadMouseMomentum}">
                                     <TextBlock Text="{Binding Pad_Touchpad_MouseMomentumDecay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>

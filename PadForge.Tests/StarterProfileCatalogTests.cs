@@ -31,6 +31,19 @@ namespace PadForge.Tests
                 .Where(s => s != null)
                 .Select(s => (b.Info.Key, s)));
 
+        /// <summary>Ordinal comparer for the (layer, target) grouping key.
+        /// Declared rather than relying on the default so the grouping is
+        /// case-sensitive, matching how the engine compares layer masks.</summary>
+        private sealed class StringTupleComparer : IEqualityComparer<(string, string)>
+        {
+            public static readonly StringTupleComparer Instance = new();
+            public bool Equals((string, string) a, (string, string) b)
+                => string.Equals(a.Item1, b.Item1, StringComparison.Ordinal)
+                && string.Equals(a.Item2, b.Item2, StringComparison.Ordinal);
+            public int GetHashCode((string, string) v)
+                => HashCode.Combine(v.Item1, v.Item2);
+        }
+
         private static IEnumerable<(string Key, MappingRow Row, MappingSource Source)> Sources()
             => Sets().SelectMany(t => t.Set.Rows.SelectMany(r =>
                 r.Sources.Select(s => (t.Key, r, s))));
@@ -132,6 +145,45 @@ namespace PadForge.Tests
                     Assert.True(engaged.Contains(layer),
                         $"starter '{key}' has rows on layer '{layer}' that no activator engages");
                 }
+            }
+        }
+
+        /// <summary>Two rows for the same target on the same layer is
+        /// ambiguous: which one wins is an implementation detail nobody
+        /// authoring a profile should be relying on.</summary>
+        [Fact]
+        public void NoLayer_BindsTheSameTargetTwice()
+        {
+            foreach (var (key, set) in Sets())
+            {
+                var dupes = set.Rows
+                    .GroupBy(r => ((r.LayerMask ?? "Base"), r.Target), StringTupleComparer.Instance)
+                    .Where(g => g.Count() > 1)
+                    .Select(g => $"{g.Key.Item1}/{g.Key.Item2}")
+                    .ToList();
+                Assert.True(dupes.Count == 0,
+                    $"starter '{key}' binds these targets twice on one layer: {string.Join(", ", dupes)}");
+            }
+        }
+
+        /// <summary>The quiet layer is the deliberate empty one: an activator
+        /// that engages a layer with NO rows and InheritUnmapped false, so
+        /// every target reads zero while it is held. If a row ever lands on
+        /// it, the pad stops going silent and the escape hatch is gone.
+        /// </summary>
+        [Fact]
+        public void QuietLayer_StaysEmptyAndReplacesBase()
+        {
+            foreach (var (key, set) in Sets())
+            {
+                var quiet = set.ShiftActivators.SingleOrDefault(a => a.LayerMask == "Quiet");
+                if (quiet == null) continue;
+
+                Assert.False(quiet.InheritUnmapped,
+                    $"starter '{key}' quiet layer inherits Base, so it would not silence anything");
+                Assert.DoesNotContain(set.Rows, r => (r.LayerMask ?? "Base") == "Quiet");
+                Assert.True(quiet.DelayMs > 0,
+                    $"starter '{key}' quiet layer has no long-press delay, so a tap would mute the pad");
             }
         }
 

@@ -85,9 +85,8 @@ namespace PadForge.Services
 
         // Virtual-key constants, named so the tables below read as bindings
         // rather than as hex. Values are the Windows VK_* codes.
-        private const byte VkBack = 0x08, VkTab = 0x09, VkReturn = 0x0D, VkShift = 0x10;
+        private const byte VkTab = 0x09, VkReturn = 0x0D, VkShift = 0x10;
         private const byte VkControl = 0x11, VkMenu = 0x12, VkEscape = 0x1B, VkSpace = 0x20;
-        private const byte VkPageUp = 0x21, VkPageDown = 0x22, VkEnd = 0x23, VkHome = 0x24;
         private const byte VkLeft = 0x25, VkUp = 0x26, VkRight = 0x27, VkDown = 0x28;
         private const byte Vk0 = 0x30, Vk1 = 0x31, Vk2 = 0x32, Vk3 = 0x33, Vk4 = 0x34;
         private const byte Vk5 = 0x35, Vk6 = 0x36, Vk7 = 0x37, Vk8 = 0x38, Vk9 = 0x39;

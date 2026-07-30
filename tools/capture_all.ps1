@@ -13,7 +13,13 @@
 param(
     [string]$OutputDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge.wiki\images",
     [string]$PadForgeExe = "C:\PadForge\PadForge.exe",
-    [string]$PadForgeXml = "C:\PadForge\PadForge.xml"
+    [string]$PadForgeXml = "C:\PadForge\PadForge.xml",
+    # Tail mode: reuse the capture-configured PadForge.xml an aborted full
+    # run left behind (slots + dummies + assignments intact, owner backup
+    # still in .bak) and jump straight to the STEP 3b tail on a FRESH app
+    # process. Exists because the WPF UIA tree degrades over a marathon
+    # run and late-run device FindAlls hang (2026-07-30, twice).
+    [switch]$SkipToTail
 )
 
 Set-StrictMode -Version Latest
@@ -534,6 +540,16 @@ Write-Host "  Toast notifications suppressed for the run"
 Write-Host ""
 Write-Host "=== STEP 0: Inject test data ===" -ForegroundColor Cyan
 
+if ($SkipToTail) {
+    if (-not (Test-Path "$PadForgeXml.bak")) {
+        Write-Host "  !! Tail mode needs the leftover $PadForgeXml.bak (owner settings). Aborting." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "  Tail mode: keeping the existing capture-configured xml; killing for a fresh process"
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 3
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 2
+}
+if (-not $SkipToTail) {
 if (-not (Test-Path $OutputDir)) { New-Item -ItemType Directory -Path $OutputDir | Out-Null }
 
 # Kill PadForge if running (double-kill pattern — may auto-restart via startup entry)
@@ -966,6 +982,7 @@ if ($appSettings) {
 
 $xml.Save($PadForgeXml)
 Write-Host "  Saved modified PadForge.xml" -ForegroundColor Green
+}
 
 # ==============================================================================
 # STEP 1: Start PadForge
@@ -1077,6 +1094,7 @@ function Add-SlotViaPopup {
     return $true
 }
 
+if (-not $SkipToTail) {
 # Delete all existing slots to ensure a clean start
 Write-Host "  Removing any existing slots..."
 for ($delPass = 0; $delPass -lt 16; $delPass++) {
@@ -1126,14 +1144,18 @@ for ($delPass = 0; $delPass -lt 16; $delPass++) {
 $remainingSlots = @(Find-AllSlots)
 Write-Host "  Slots remaining after cleanup: $($remainingSlots.Count)"
 
-# Create: Xbox, PlayStation, KBM, Extended, MIDI (order matters for slot indices).
-# AutomationIds AddXbox360Btn / AddDS4Btn are kept verbatim from v2 for stable
-# automation hookup; the buttons' accessibility labels are now Xbox / PlayStation.
+# Create: Xbox, PlayStation, Nintendo, KBM, Extended, MIDI. SlotNumber and
+# dashboard-card order follow VirtualControllerGroups.InOrder regardless of
+# creation order: Xbox 1, PlayStation 2, Nintendo 3, Extended 4, KBM 5,
+# MIDI 6. AutomationIds AddXbox360Btn / AddDS4Btn are kept verbatim from v2
+# for stable automation hookup. 4.1.0 renamed the Extended button's id to
+# AddRawBtn and added the Nintendo type (virtual Switch Pro, #246).
 $slotTypes = @(
     @{ Aid = "AddXbox360Btn"; Label = "Xbox" },
     @{ Aid = "AddDS4Btn"; Label = "PlayStation" },
+    @{ Aid = "AddNintendoBtn"; Label = "Nintendo" },
     @{ Aid = "AddKeyboardMouseBtn"; Label = "Keyboard+Mouse" },
-    @{ Aid = "AddExtendedBtn"; Label = "Extended" },
+    @{ Aid = "AddRawBtn"; Label = "Extended" },
     @{ Aid = "AddMidiBtn"; Label = "MIDI" }
 )
 foreach ($st in $slotTypes) {
@@ -1163,10 +1185,41 @@ Write-Host "  Slots after creation: $($slots.Count)"
 Write-Host ""
 Write-Host "--- Assign DualSense to Xbox + PlayStation slots ---" -ForegroundColor Yellow
 Nav "Devices"; Start-Sleep -Milliseconds 1500
+}
+
+function Reset-DeviceTypeFilter {
+    # The 4.1.0 Devices page carries type-filter chips (ALL / GAMEPAD /
+    # KEYBOARD / ...) right under the header. A stray click leaves a family
+    # filter active, which hides every non-matching card, and each later
+    # device find becomes a full 24-retry scroll miss. The 2026-07-30 runs
+    # stranded on KEYBOARD this way. Probe-verified UIA shape: each chip
+    # label is a LETTER-SPACED TextBlock ('A L L') with the count in a
+    # separate sibling, and no Button/ListItem wrapper exposes a pattern.
+    # So match on the space-stripped text and click the label's rect.
+    $txtC = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::Text)
+    $wrF = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wrF) | Out-Null
+    foreach ($el in $script:uiaWin.FindAll($TD, $txtC)) {
+        try {
+            if (($el.Current.Name -replace '\s', '') -ne 'ALL') { continue }
+            $r = $el.Current.BoundingRectangle
+            if ($r.IsEmpty) { continue }
+            # Constrain to the chip band near the page top so a stray
+            # 'ALL' elsewhere can't be clicked.
+            if (($r.Y - $wrF.Top) -gt 350) { continue }
+            Click-El $el -Label "ALL device-type chip" -Delay 600 | Out-Null
+            return $true
+        } catch {}
+    }
+    return $false
+}
 
 function Assign-DeviceToSlot {
     param([string]$DeviceNamePart, [string]$SlotNumberLabel, [switch]$Unassign)
     $searchIn = $script:uiaWin
+    Reset-DeviceTypeFilter | Out-Null
     $liCond = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
         [System.Windows.Automation.ControlType]::ListItem)
@@ -1185,6 +1238,14 @@ function Assign-DeviceToSlot {
     for ($stry = 0; $stry -lt 24 -and (-not $target); $stry++) {
         $found = $null
         $items = $searchIn.FindAll($TD, $liCond)
+        # Wheel at the card list's OWN center-x, read from any realized row.
+        # The 4.1.0 Devices page layout moved the list, and the old fixed
+        # Left+400 landed outside its scroll viewer, so every below-the-fold
+        # device (Xbox GIP, All Mice, Wii Remote) went unreachable.
+        foreach ($it in $items) {
+            $ir = $it.Current.BoundingRectangle
+            if (-not $ir.IsEmpty) { $lx = [int]($ir.X + $ir.Width / 2); break }
+        }
         foreach ($it in $items) {
             if ($it.Current.Name -like "*$DeviceNamePart*") { $found = $it; break }
         }
@@ -1225,15 +1286,21 @@ function Assign-DeviceToSlot {
     $wrB = New-Object Win32+RECT
     [Win32]::GetWindowRect($script:hwnd, [ref]$wrB) | Out-Null
     $midX = ($wrB.Left + $wrB.Right) / 2
-    $allButtons = $searchIn.FindAll($TD, $btnCond)
+    # The detail pane can realize its toggles a beat after the card click
+    # (the 2026-07-30 run enumerated 0 toggles on a found Wii Remote card
+    # and the assignment silently failed). One re-enumerate after a wait.
     $toggles = @()
-    foreach ($b in $allButtons) {
-        try {
-            $null = $b.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern)
-            $r = $b.Current.BoundingRectangle
-            $cx = $r.X + $r.Width / 2
-            if ($cx -gt $midX) { $toggles += $b }   # detail panel only, exclude sidebar
-        } catch {}
+    for ($tenum = 0; $tenum -lt 2 -and $toggles.Count -eq 0; $tenum++) {
+        if ($tenum -gt 0) { Start-Sleep -Milliseconds 1500 }
+        $allButtons = $searchIn.FindAll($TD, $btnCond)
+        foreach ($b in $allButtons) {
+            try {
+                $null = $b.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern)
+                $r = $b.Current.BoundingRectangle
+                $cx = $r.X + $r.Width / 2
+                if ($cx -gt $midX) { $toggles += $b }   # detail panel only, exclude sidebar
+            } catch {}
+        }
     }
     # Key each detail-panel toggle by its child SlotNumber (digits).
     $slotOf = @{}
@@ -1294,6 +1361,7 @@ function Assign-DeviceToSlot {
     return $false
 }
 
+if (-not $SkipToTail) {
 Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "1" | Out-Null
 Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "2" | Out-Null
 # Also put the Xbox Series X and the synthetic G29 wheel on the Xbox slot
@@ -1308,7 +1376,7 @@ Assign-DeviceToSlot -DeviceNamePart "Logitech G29" -SlotNumberLabel "1" | Out-Nu
 # slot with no device assigned surfaces no Mouse tab. "All Mice (Merged)" is a
 # first-class UserDevice (CapType 18) in the cache, so assigning + selecting it
 # lights TabMouse, the same shape the Wheel tab uses (assign G29, select it).
-Assign-DeviceToSlot -DeviceNamePart "All Mice (Merged)" -SlotNumberLabel "4" | Out-Null
+Assign-DeviceToSlot -DeviceNamePart "All Mice (Merged)" -SlotNumberLabel "5" | Out-Null
 # Assign the Wii Remote to the Extended slot so its Pointer / Gyro tabs are
 # reachable for the 3.6.0 Pointer-tab capture (issue #146). SlotNumber follows
 # DevicesViewModel.RefreshSlotButtons, which walks slots in TYPE-GROUP order
@@ -1318,7 +1386,7 @@ Assign-DeviceToSlot -DeviceNamePart "All Mice (Merged)" -SlotNumberLabel "4" | O
 # tabs, which is why assigning the Wii to 4 left the Pointer tab unreachable).
 # The Wii Remote's IR-camera capability is identity-derived (VID 0x057E + name),
 # so the tab is offered whether the placeholder device is online or not.
-Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "3" | Out-Null
+Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "4" | Out-Null
 # The 3 Wii source-picker devices are NOT assigned here. They must NOT ride the
 # Xbox slot during STEP 3, or auto-map would combine every slot device into
 # multi-source rows and busy the pad-mappings shot. The source-picker block in
@@ -1330,7 +1398,8 @@ Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "3" | Out-Null
 # gating to flip on for the affected slots.
 Start-Sleep -Milliseconds 2000
 
-# Web controller server is enabled via XML injection in Step 0 — no UI click needed.
+# Web controller server is enabled via XML injection in Step 0. No UI click needed.
+}
 
 # ==============================================================================
 # STEP 3: Capture all pages
@@ -1349,6 +1418,7 @@ $total = 36
 
 function Next { $script:n++; return $script:n }
 
+if (-not $SkipToTail) {
 # ---- 1. Dashboard ----
 Write-Host "[$(Next)/$total] Dashboard"
 Nav "Dashboard"; Start-Sleep -Milliseconds 500; Cap "dashboard"
@@ -1382,6 +1452,10 @@ if ($autoSw) {
 Write-Host "[$(Next)/$total] Devices"
 Nav "Devices"
 Start-Sleep -Milliseconds 500
+# The canonical devices shots must show the UNFILTERED list: reset any
+# leftover type-filter chip before capturing.
+Reset-DeviceTypeFilter | Out-Null
+Start-Sleep -Milliseconds 400
 # Type-filter chips (Devices.md): the chip row sits above the card list and is
 # visible with no device selected, so capture it before clicking a card.
 Cap "devices-facet-chips"
@@ -2058,11 +2132,31 @@ if ($slotsHost) {
     $n += 6
 }
 
+# ---- 13c. Nintendo slot (virtual Switch Pro, #246, 4.1.0) ----
+# Card index 2 after the type-group reorder (Xbox 0, PlayStation 1,
+# Nintendo 2). One shot: the Switch Pro config bar + controller view.
+Write-Host ""
+Write-Host "--- Nintendo Slot ---" -ForegroundColor Yellow
+Nav "Dashboard"; Start-Sleep -Milliseconds 1000
+$slotsHost = Find-UIA -Aid "SlotsItemsControl"
+$cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
+if ($cards.Count -gt 2) {
+    Write-Host "[$(Next)/$total] Nintendo config bar"
+    Click-El $cards[2] -Label "Nintendo Slot card" -Delay 4000 | Out-Null
+    $padPage = Find-UIA -Aid "PadPageView"
+    if ($padPage) {
+        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+            [System.Windows.Automation.ControlType]::RadioButton)
+        $tabs = $padPage.FindAll($TC, $rbCond)
+        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "Nintendo Controller Tab" -Delay 2500 | Out-Null }
+        Cap "pad-nintendo-configbar"
+    } else { Write-Host "  !! PadPageView not found for the Nintendo slot" -ForegroundColor Yellow }
+} else { Write-Host "  !! Nintendo slot card not found" -ForegroundColor Yellow }
+
 # ---- 14. Extended slot ----
-# After type-group reorder, order from end is always: ...Extended, KBM, MIDI.
-# Use offsets from end to handle variable number of Xbox / PlayStation slots.
-# Use Dashboard slot cards (SlotsItemsControl) instead of sidebar nav —
-# sidebar NavigationViewItems virtualize out of the UIA tree after the
+# Use Dashboard slot cards (SlotsItemsControl) instead of sidebar nav.
+# Sidebar NavigationViewItems virtualize out of the UIA tree after the
 # Xbox-slot tab pass, but Dashboard cards stay materialized.
 Write-Host ""
 Write-Host "--- Extended Slot ---" -ForegroundColor Yellow
@@ -2070,11 +2164,10 @@ Nav "Dashboard"; Start-Sleep -Milliseconds 1000
 $slotsHost = Find-UIA -Aid "SlotsItemsControl"
 $cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
 # Positive index, NOT from-end. The dashboard SlotsItemsControl carries a
-# trailing "Add Controller" card, so cards.Count is 6 for 5 slots and the old
-# Count-3 landed on the KBM slot (pad-extended-configbar captured the KBM keyboard
-# preview). Slots are always Xbox 0, PlayStation 1, Extended 2, KBM 3, MIDI 4 after
-# the type-group reorder, then the Add card at 5.
-$extendedIdx = 2
+# trailing "Add Controller" card. Slots are always Xbox 0, PlayStation 1,
+# Nintendo 2, Extended 3, KBM 4, MIDI 5 after the type-group reorder, then
+# the Add card at 6.
+$extendedIdx = 3
 if ($cards.Count -gt $extendedIdx) {
     Write-Host "[$(Next)/$total] Extended config bar"
     Click-El $cards[$extendedIdx] -Label "Extended Slot card" -Delay 1500 | Out-Null
@@ -2157,7 +2250,7 @@ Write-Host "--- KBM Slot ---" -ForegroundColor Yellow
 Nav "Dashboard"; Start-Sleep -Milliseconds 1000
 $slotsHost = Find-UIA -Aid "SlotsItemsControl"
 $cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
-$kbmIdx = 3  # Xbox 0, PlayStation 1, Extended 2, KBM 3 (Add Controller card at 5);
+$kbmIdx = 4  # Xbox 0, PlayStation 1, Nintendo 2, Extended 3, KBM 4 (Add card at 6);
              # old Count-2 landed on the MIDI slot (pad-kbm-preview showed MIDI).
 if ($cards.Count -gt $kbmIdx) {
     Write-Host "[$(Next)/$total] Keyboard+Mouse preview"
@@ -2197,7 +2290,7 @@ Write-Host "--- MIDI Slot ---" -ForegroundColor Yellow
 Nav "Dashboard"; Start-Sleep -Milliseconds 1000
 $slotsHost = Find-UIA -Aid "SlotsItemsControl"
 $cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
-$midiIdx = 4  # Xbox 0, PlayStation 1, Extended 2, KBM 3, MIDI 4 (Add card at 5);
+$midiIdx = 5  # Xbox 0, PlayStation 1, Nintendo 2, Extended 3, KBM 4, MIDI 5 (Add card at 6);
               # old Count-1 landed on the Add Controller card (opened the type picker).
 if ($cards.Count -gt $midiIdx) {
     Write-Host "[$(Next)/$total] MIDI config bar"
@@ -2250,7 +2343,7 @@ Nav "About"; Cap "about"
 
 # ---- 22. Add Controller popup (already captured in Step 2b) ----
 Write-Host "[$(Next)/$total] Add Controller popup -- already captured in Step 2b"
-
+}
 
 # ==============================================================================
 # STEP 3b: New 3.6.0 sections (Pointer tab, NFC, Consumer Control, Power/battery)
@@ -2274,6 +2367,7 @@ $btn36 = New-Object System.Windows.Automation.PropertyCondition(
 # follows ScrollContent: positive = up, negative = down.
 function Select-DeviceByName36 {
     param([string]$NamePart)
+    Reset-DeviceTypeFilter | Out-Null
     $wr = New-Object Win32+RECT
     [Win32]::GetWindowRect($script:hwnd, [ref]$wr) | Out-Null
     $listX = [int]($wr.Left + 400)
@@ -2298,6 +2392,15 @@ function Select-DeviceByName36 {
     return $false
 }
 
+if ($SkipToTail) {
+    # Tail mode: the middle pass is skipped. The xml already carries the
+    # full run's assignments, except the Wii Remote one that failed in the
+    # aborted run. Make it on the fresh UIA tree (idempotent: the toggle
+    # short-circuits when already on).
+    Nav "Devices"; Start-Sleep -Milliseconds 1200
+    Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "4" | Out-Null
+}
+
 # --- Pointer tab (Wii Remote on the Extended slot) ---
 # Use the SlotsItemsControl cards (proven to work late in the run for the
 # KBM/MIDI captures) rather than Find-AllSlots, which returns nothing here.
@@ -2313,10 +2416,10 @@ Nav "Dashboard"; Start-Sleep -Milliseconds 1200
 $slotsHostP = Find-UIA -Aid "SlotsItemsControl"
 $cardCountP = if ($slotsHostP) { @($slotsHostP.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)).Count } else { 0 }
 Write-Host "  Pointer: $cardCountP slot card(s)"
-# Cap at 5 real slots: the 6th card is "Add Controller" and clicking it opens the
+# Cap at 6 real slots: the 7th card is "Add Controller" and clicking it opens the
 # type-picker popup. The Wii Remote (now injected) rides the Extended slot (card
-# index 2), so the probe finds the Pointer tab well before the Add card anyway.
-$realSlots = [math]::Min($cardCountP, 5)
+# index 3), so the probe finds the Pointer tab well before the Add card anyway.
+$realSlots = [math]::Min($cardCountP, 6)
 for ($ci = 0; $ci -lt $realSlots -and -not $ptrDone; $ci++) {
     # Re-navigate to the Dashboard and re-find the cards EACH iteration. After
     # a card click we're on the PadPage, so a stale card reference clicks a
@@ -2427,7 +2530,15 @@ $wiiPick = @(
 )
 foreach ($wp in $wiiPick) {
     Nav "Devices"; Start-Sleep -Milliseconds 600
-    Assign-DeviceToSlot -DeviceNamePart $wp.Dev -SlotNumberLabel "1" | Out-Null
+    # Skip the whole picker on a failed assign. The 2026-07-30 run hung
+    # inside the follow-up Unassign of a device the assign never found
+    # (UIA FindAll blocked with no bound), and the rest of the tail
+    # (DS3, devices details, workshop, web) never ran.
+    $wpOk = Assign-DeviceToSlot -DeviceNamePart $wp.Dev -SlotNumberLabel "1"
+    if (-not $wpOk) {
+        Write-Host "  !! skipping picker for $($wp.Dev): assign failed" -ForegroundColor Yellow
+        continue
+    }
     Start-Sleep -Milliseconds 800
     Nav "Dashboard"; Start-Sleep -Milliseconds 900
     $shS = Find-UIA -Aid "SlotsItemsControl"

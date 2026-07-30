@@ -15,6 +15,7 @@ $map = @{
     "pad-midi-configbar"     = "midi"
     "pad-extended-schematic" = "extended"
     "pad-playstation-configbar" = "playstation"
+    "pad-nintendo-configbar" = "nintendo"
     "pad-adaptive-triggers"  = "adaptive-triggers"
     "pad-lighting"           = "lighting"
     "pad-gyro"               = "gyro"

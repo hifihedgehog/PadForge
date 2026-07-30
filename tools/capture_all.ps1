@@ -336,10 +336,21 @@ function Select-MappedDeviceOnce {
 }
 
 # Toggle the PadPage 2D/3D view. The button carries AutomationId
-# "ViewModeToggle" (PadPage.xaml); prefer that over the legacy blind
-# (ppRect+52,+124) coordinate, which is what produced the rejected v4.0.0
-# pad-controller-2d frame. Falls back to the coordinate if the peer is
-# missing (Helix host occlusion made Aid lookups flaky on 2026-07-12).
+# "ViewModeToggle" (PadPage.xaml:955) but usually has NO UIA PEER AT ALL:
+# the Helix viewport host strips its whole subtree from the automation
+# tree, so neither the Aid lookup nor an all-Buttons scan of that corner
+# finds anything (probed empirically 2026-07-30). The coordinate is
+# therefore the normal path, not the exception.
+#
+# The 4.1.0 prep shipped a WRONG pad-controller-2d because the old blind
+# offset (ppRect+52,+124) missed the button and the "2D" shot showed the
+# 3D model. Measured position on the maximized window (2582x1550):
+# window-relative (431, 249), which is ppRect + (41, 61).
+#
+# DETERMINISTIC ALTERNATIVE, preferred when a run can control the xml:
+# the view is a PERSISTED SETTING (AppSettings/Use2DControllerView, flipped
+# by PadPage.xaml.cs:206). Writing it in STEP 0 opens the PadPage in 2D
+# with no click at all. Use that when adding a new 2D capture.
 function Toggle-ViewMode {
     $vmBtn = Find-UIA -Aid "ViewModeToggle"
     if (-not $vmBtn) {
@@ -349,13 +360,13 @@ function Toggle-ViewMode {
         $vmBtn = Find-UIA -Aid "ViewModeToggle"
     }
     if ($vmBtn) { return (Click-El $vmBtn -Label "ViewModeToggle" -Delay 700) }
-    Write-Host "  ViewModeToggle not in UIA; coordinate fallback" -ForegroundColor DarkGray
+    Write-Host "  ViewModeToggle has no UIA peer (expected); measured coordinate" -ForegroundColor DarkGray
     $pp = Find-UIA -Aid "PadPageView"
     if (-not $pp) { Write-Host "  !! Toggle-ViewMode: no PadPageView" -ForegroundColor Red; return $false }
     $pr = $pp.Current.BoundingRectangle
     [Win32]::ForceFG($script:hwnd); Start-Sleep -Milliseconds 100
-    [Win32]::ClickAt([int]($pr.X + 52), [int]($pr.Y + 124))
-    Start-Sleep -Milliseconds 700
+    [Win32]::ClickAt([int]($pr.X + 41), [int]($pr.Y + 61))
+    Start-Sleep -Milliseconds 900
     return $true
 }
 
@@ -1377,6 +1388,15 @@ Assign-DeviceToSlot -DeviceNamePart "Logitech G29" -SlotNumberLabel "1" | Out-Nu
 # first-class UserDevice (CapType 18) in the cache, so assigning + selecting it
 # lights TabMouse, the same shape the Wheel tab uses (assign G29, select it).
 Assign-DeviceToSlot -DeviceNamePart "All Mice (Merged)" -SlotNumberLabel "5" | Out-Null
+# WHEN THIS KEEPS FAILING, STOP DRIVING THE UI. A device assignment is
+# nothing but `UserSetting.MapTo = slotIndex` in PadForge.xml: clone an
+# existing <Setting>, override InstanceGuid / ProductGuid / MapTo, and
+# append it under <UserSettings>. That skips the whole flaky chain (device
+# card scroll, detail-pane realize, toggle enumeration) which stranded
+# pad-pointer and wii-pointer-mode across four runs on 2026-07-30. It
+# cannot live in STEP 0 as written, because the slots are created through
+# the UI afterwards, so a targeted recapture script is the place for it.
+#
 # Assign the Wii Remote to the Extended slot so its Pointer / Gyro tabs are
 # reachable for the 3.6.0 Pointer-tab capture (issue #146). SlotNumber follows
 # DevicesViewModel.RefreshSlotButtons, which walks slots in TYPE-GROUP order
@@ -2452,9 +2472,16 @@ for ($ci = 0; $ci -lt $realSlots -and -not $ptrDone; $ci++) {
         Start-Sleep -Milliseconds 800; Cap "pad-pointer"; $ptrDone = $true
         # Pointer Mode card set to FPS Mouse (Wii-Controllers.md): switch the
         # Pointer Mode dropdown to "FPS Mouse" so the card shows the mode combo
-        # plus the FPS Speed slider (the slider is FpsMouse-only). This combo is a
-        # plain StackPanel ComboBox with real UIA peers (unlike the grid cells),
-        # so find the one whose items include "FPS Mouse" and select it.
+        # plus the FPS Speed slider (the slider is FpsMouse-only).
+        #
+        # CORRECTED 2026-07-30: this combo has NO UIA PEER. Only the config
+        # bar's DEVICE and Preset combos expose peers; every combo inside the
+        # IR Pointer card is stripped from the tree with its card template.
+        # The loop below therefore finds nothing to expand and silently skips
+        # the shot. What works: CLICK the combo's measured position (window-
+        # relative 631, 721 on the maximized 2582x1550 window), after which
+        # the popup's ListItem peers DO realize at the window root and
+        # "FPS Mouse" can be selected normally.
         $liP = New-Object System.Windows.Automation.PropertyCondition(
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::ListItem)

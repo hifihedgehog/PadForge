@@ -2954,4 +2954,14 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Starter_Intro" xml:space="preserve"><value>Kant-en-klare profielen voor een heel genre. Kies er een, wijs een willekeurige controller toe en speel. Opslaan voegt een gewoon, bewerkbaar profiel toe.</value></data>
   <data name="Starter_Save" xml:space="preserve"><value>Profiel opslaan</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Startprofiel “{0}” toegevoegd.</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>Wijzen en klikken</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>Avonturengames en alles wat draait om een cursor en twee werkwoorden.</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>Strategie</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>RTS, 4X en city builders. Camera op de ene stick, cursor op de andere.</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>Isometrische RPG</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>Party-RPG’s en turn-based tactiek. Pauze, inventaris en actiebalk.</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>Twin-stick</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Shooters van bovenaf. Bewegen met links, richten met rechts.</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>Mediaknoppen</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>Afspelen, zoeken en een cursor voor op de bank.</value></data>
 </root>

@@ -2934,4 +2934,14 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Starter_Intro" xml:space="preserve"><value>Des profils prêts à l’emploi pour tout un genre. Choisissez-en un, affectez n’importe quelle manette et jouez. L’enregistrement crée un profil ordinaire, modifiable.</value></data>
   <data name="Starter_Save" xml:space="preserve"><value>Enregistrer le profil</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Profil de départ « {0} » ajouté.</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>Pointer et cliquer</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>Jeux d’aventure et tout ce qui se joue avec un curseur et deux verbes.</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>Stratégie</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>RTS, 4X et city-builders. Caméra sur un stick, curseur sur l’autre.</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>RPG isométrique</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>RPG de groupe et tactique au tour par tour. Pause, inventaire et barre d’actions.</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>Twin-stick</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Shooters vus de dessus. Déplacement à gauche, visée à droite.</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>Télécommande multimédia</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>Lecture, navigation et un curseur pour le canapé.</value></data>
 </root>

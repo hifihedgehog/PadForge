@@ -2934,4 +2934,14 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Starter_Intro" xml:space="preserve"><value>Fertige Profile für ein ganzes Genre. Eines auswählen, einen beliebigen Controller zuweisen und spielen. Beim Speichern entsteht ein normales, bearbeitbares Profil.</value></data>
   <data name="Starter_Save" xml:space="preserve"><value>Profil speichern</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Startprofil „{0}“ hinzugefügt.</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>Zeigen und Klicken</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>Adventures und alles, was von einem Zeiger und zwei Verben lebt.</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>Strategie</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>Echtzeit, 4X und Aufbauspiele. Kamera auf einem Stick, Zeiger auf dem anderen.</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>Isometrisches Rollenspiel</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>Gruppen-Rollenspiele und Rundentaktik. Pause, Inventar und Aktionsleiste.</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>Twin-Stick</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Draufsicht-Shooter. Bewegen mit links, zielen mit rechts.</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>Medien-Fernbedienung</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>Wiedergabe, Spulen und ein Zeiger für die Couch.</value></data>
 </root>

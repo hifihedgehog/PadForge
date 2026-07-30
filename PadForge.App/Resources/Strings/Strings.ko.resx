@@ -2934,4 +2934,14 @@
   <data name="Starter_Intro" xml:space="preserve"><value>장르 전체를 위한 완성된 프로필입니다. 하나를 고르고 아무 컨트롤러나 할당하면 바로 사용할 수 있습니다. 저장하면 편집 가능한 일반 프로필이 추가됩니다.</value></data>
   <data name="Starter_Save" xml:space="preserve"><value>프로필 저장</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>시작 프로필 “{0}”을(를) 추가했습니다.</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>포인트 앤 클릭</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>어드벤처 게임과 커서와 두 가지 동작으로 진행하는 게임용.</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>전략</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>RTS, 4X, 도시 건설. 한쪽 스틱은 카메라, 반대쪽은 커서.</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>쿠오터뷰 RPG</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>파티 RPG와 턴제 전술. 일시정지, 소지품, 단축 바.</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>트윈 스틱</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>탑다운 슈팅. 왼쪽으로 이동하고 오른쪽으로 조준.</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>미디어 리모컨</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>재생, 탐색, 그리고 소파용 커서.</value></data>
 </root>

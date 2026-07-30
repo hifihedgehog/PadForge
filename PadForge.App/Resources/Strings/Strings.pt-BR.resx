@@ -2934,4 +2934,14 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Starter_Intro" xml:space="preserve"><value>Perfis prontos para um gênero inteiro. Escolha um, atribua qualquer controle e jogue. Salvar adiciona um perfil comum que você pode editar.</value></data>
   <data name="Starter_Save" xml:space="preserve"><value>Salvar perfil</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Perfil inicial “{0}” adicionado.</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>Apontar e clicar</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>Jogos de aventura e tudo que se joga com um cursor e dois verbos.</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>Estratégia</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>RTS, 4X e construtores de cidades. Câmera em um analógico, cursor no outro.</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>RPG isométrico</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>RPGs de grupo e tática por turnos. Pausa, inventário e barra de ações.</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>Twin-stick</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Tiro com visão superior. Mova com o esquerdo, mire com o direito.</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>Controle de mídia</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>Reprodução, avanço e um cursor para o sofá.</value></data>
 </root>

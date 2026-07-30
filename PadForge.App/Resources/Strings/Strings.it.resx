@@ -2956,4 +2956,14 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Starter_Intro" xml:space="preserve"><value>Profili pronti per un intero genere. Scegline uno, assegna qualsiasi controller e gioca. Il salvataggio crea un normale profilo modificabile.</value></data>
   <data name="Starter_Save" xml:space="preserve"><value>Salva profilo</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Profilo iniziale «{0}» aggiunto.</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>Punta e clicca</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>Avventure grafiche e tutto ciò che si gioca con un cursore e due verbi.</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>Strategia</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>RTS, 4X e city builder. Telecamera su una levetta, cursore sull’altra.</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>GDR isometrico</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>GDR di gruppo e tattica a turni. Pausa, inventario e barra delle azioni.</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>Twin-stick</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Sparatutto dall’alto. Ci si muove con la sinistra, si mira con la destra.</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>Telecomando multimediale</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>Riproduzione, ricerca e un cursore per il divano.</value></data>
 </root>

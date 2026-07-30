@@ -285,6 +285,7 @@ namespace PadForge.Views
                 AutoCancelSlider.Value = existing.AutoCancelMs;
                 InheritUnmappedBox.IsChecked = existing.InheritUnmapped;
                 PostponeMappingBox.IsChecked = existing.PostponeMapping;
+                FireOnReleaseBox.IsChecked = existing.FireOnRelease;
 
                 // Color: parse hex into picker RGB; set _colorSet flag.
                 if (!string.IsNullOrEmpty(existing.Color))
@@ -700,6 +701,10 @@ namespace PadForge.Views
             bool isToggle = mode == "Toggle";
             AutoCancelLabel.Visibility = isToggle ? Visibility.Visible : Visibility.Collapsed;
             AutoCancelRow.Visibility = isToggle ? Visibility.Visible : Visibility.Collapsed;
+            // Fire on Release is edge-mode only: Hold is level-driven (both
+            // edges already have jobs) and Passive has no button at all.
+            bool edgeMode = mode == "Toggle" || mode == "Custom" || mode == "Cycle" || mode == "Sticky";
+            FireOnReleaseBox.Visibility = edgeMode ? Visibility.Visible : Visibility.Collapsed;
             PostponeMappingBox.Visibility = isPassive ? Visibility.Collapsed : Visibility.Visible;
 
             if (isPassive)
@@ -855,6 +860,11 @@ namespace PadForge.Views
                 DelayMs = (int)Math.Round(DelaySlider.Value),
                 AutoCancelMs = mode == "Toggle" ? (int)Math.Round(AutoCancelSlider.Value) : 0,
                 PostponeMapping = PostponeMappingBox.IsChecked == true,
+                // Zeroed for the non-edge modes exactly like AutoCancelMs: a
+                // Hold activator must not carry a hidden flag that springs to
+                // life if the user later switches the mode.
+                FireOnRelease = (mode == "Toggle" || mode == "Custom" || mode == "Cycle" || mode == "Sticky")
+                    && FireOnReleaseBox.IsChecked == true,
                 Color = colorHex,
                 Icon = _selectedIcon ?? "",
             };

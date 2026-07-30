@@ -1318,9 +1318,17 @@ namespace PadForge.Common.Input
             // dead code for DelayMs > 0 (the edge frame can never satisfy
             // the delay, and later frames are no longer edges), so Toggle
             // / Latch / Sticky with a delay simply never fired.
+            // Release-frame hold length: EngageStartTicks still holds the
+            // ended press's start (it is only rewritten on the next rising
+            // edge), so Fire on Release can honor DelayMs as "the press that
+            // arms the release". A zeroed tick (runtime clear mid-hold) reads
+            // as 0 ms so a delay-gated release misses rather than misfires.
+            long endedHeldMs = (!inputDown && rt.WasDown[actIdx] && rt.EngageStartTicks[actIdx] > 0)
+                ? (nowTicks - rt.EngageStartTicks[actIdx]) / System.TimeSpan.TicksPerMillisecond
+                : heldMs;
             bool fireEdge = ComputeActivatorFire(
-                inputDown, rt.WasDown[actIdx], heldMs, act.DelayMs,
-                ref rt.LongPressFired[actIdx]);
+                inputDown, rt.WasDown[actIdx], endedHeldMs, act.DelayMs,
+                ref rt.LongPressFired[actIdx], act.FireOnRelease);
 
             string mode = act.Mode ?? "Hold";
             switch (mode)
@@ -1641,8 +1649,23 @@ namespace PadForge.Common.Input
         /// the once-per-hold latch, cleared on release. Pure so the
         /// state machine is testable frame by frame.</summary>
         internal static bool ComputeActivatorFire(
-            bool inputDown, bool wasDown, long heldMs, int delayMs, ref bool longPressFired)
+            bool inputDown, bool wasDown, long heldMs, int delayMs,
+            ref bool longPressFired, bool fireOnRelease = false)
         {
+            if (fireOnRelease)
+            {
+                // Fire on Release: nothing fires while the input is down; the
+                // fire lands on the frame it goes up. DelayMs gates the press
+                // that ARMS the release ("long-press, then let go"), read from
+                // heldMs, which the caller carries across the release frame.
+                if (inputDown)
+                {
+                    longPressFired = false;   // the latch belongs to the press path
+                    return false;
+                }
+                if (!wasDown) return false;
+                return delayMs <= 0 || heldMs >= delayMs;
+            }
             if (!inputDown)
             {
                 longPressFired = false;

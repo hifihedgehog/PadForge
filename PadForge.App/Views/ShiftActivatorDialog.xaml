@@ -1,4 +1,4 @@
-<ui:FluentWindow x:Class="PadForge.Views.ShiftActivatorDialog"
+﻿<ui:FluentWindow x:Class="PadForge.Views.ShiftActivatorDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -417,6 +417,14 @@
                     <CheckBox x:Name="InheritUnmappedBox"
                               Content="{Binding Pad_Shift_InheritUnmapped, Source={x:Static strings:Strings.Instance}}"
                               ToolTip="{Binding Pad_Shift_InheritUnmapped_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                              Margin="0,0,0,4"/>
+                    <!-- Fire on Release: the edge modes fire when the input is
+                         let go instead of pressed (Steam's release-hosted
+                         activators). Hidden for Hold (level-driven, both edges
+                         already) and Passive (no button); see ApplyModeVisibility. -->
+                    <CheckBox x:Name="FireOnReleaseBox"
+                              Content="{Binding Pad_Shift_FireOnRelease, Source={x:Static strings:Strings.Instance}}"
+                              ToolTip="{Binding Pad_Shift_FireOnRelease_Tooltip, Source={x:Static strings:Strings.Instance}}"
                               Margin="0,0,0,4"/>
                     <!-- v2 PostponeMapping: when checked, the activator's own
                          descriptor still drives any row that uses it as a

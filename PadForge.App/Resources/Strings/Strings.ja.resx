@@ -1521,6 +1521,8 @@
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>1 回タップで有効化。次にマッピング済みボタンを押すとレイヤー上で発火し、自動的に解除されます。</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>専用のボタンはありません。サイクルコントロールのキューに追加すると、サイクルがこのレイヤーに到達します。</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>未割り当てターゲットをベースから継承</value></data>
+  <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>離したときに発動</value></data>
+  <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>ボタンを離すまでこのアクティベーターは発動しません。ホールド遅延が設定されている場合、その時間以上押していないと離しても発動しません。</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>アクティベーター自身のマッピングも発火</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>有効にすると、アクティベーターのボタンはそれをソースとして使用するすべての行を引き続き駆動します。1回押すとレイヤーが変更され、ボタン自身のマッピングも発火します。無効(既定)にすると、押下はレイヤー変更でのみ消費されます。</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーが明示的に割り当てていないターゲットはベース レイヤーにフォールスルーします。オフ(既定)にすると、レイヤーはベースを完全に置き換え、未割り当てターゲットはオフのままになります。</value></data>

@@ -53,7 +53,6 @@ namespace PadForge.SteamWorkshop.Tests
             // mode keys on the press edge (ReadActivatorInput has no
             // release-edge trigger), so release-hosted layer verbs
             // lower one edge early under this name (v19 T6).
-            "Workshop_Tr_LayerReleaseEdgeApproximated=7",
             // Clean emission record, not a residual.
             "Workshop_Tr_MacroEmitted=90",
             // Clean emission record, not a residual.

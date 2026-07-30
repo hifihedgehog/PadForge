@@ -243,7 +243,12 @@ namespace PadForge.SteamWorkshop.Translation
             /// Long_Press layer carries set it to the activator's
             /// long_press_time; 0 = instant.</summary>
             public int DelayMs;
-            /// <summary>Release linger, ms (ShiftActivator.ReleaseDelayMs,
+            /// <summary>Fire on Release (ShiftActivator.FireOnRelease): a
+        /// release-hosted layer / preset verb fires when the input is let
+        /// go, the exact edge Steam authored, instead of one edge early on
+        /// the press.</summary>
+        public bool FireOnRelease;
+        /// <summary>Release linger, ms (ShiftActivator.ReleaseDelayMs,
             /// v22): a Hold-mode carrier's delay_end. The layer stays
             /// engaged this long past the release; a re-press cancels the
             /// pending disengage. 0 = instant disengage.</summary>
@@ -5660,6 +5665,7 @@ namespace PadForge.SteamWorkshop.Translation
                                 DoublePressMs = doublePressMs,
                                 CycleLayers = layer,
                                 CycleIncludeBase = true,
+                                FireOnRelease = onRelease,
                                 Path = path,
                             };
                             FillActivatorInput(removeReq, source);
@@ -5670,18 +5676,9 @@ namespace PadForge.SteamWorkshop.Translation
                         // can need one extra step before it lands on Base.
                         run.Report.Add(TranslationStatus.Partial, TranslationReasons.RemoveLayerApproximated,
                             path, binding.Raw);
-                        // v19 (T6): a release-hosted remove steps on the
-                        // press edge instead (the Cycle activator has no
-                        // release-edge trigger); name the shifted edge.
-                        // Only when the Cycle actually lowered: the
-                        // unhosted arm emits nothing, so the note-only
-                        // Partial above already covers it whole.
-                        if (onRelease && hosted)
-                        {
-                            run.Report.Add(TranslationStatus.Partial,
-                                TranslationReasons.LayerReleaseEdgeApproximated,
-                                path, binding.Raw, args: "REMOVE_LAYER");
-                        }
+                        // A release-hosted remove fires on the exact release
+                        // edge now (FireOnRelease above), so there is no
+                        // shifted-edge note left to name.
                         return;
                     }
                     if (!TryResolvePresetIndex(run, presetIndex, out int presetId))
@@ -5696,6 +5693,12 @@ namespace PadForge.SteamWorkshop.Translation
                             path, binding.Raw);
                         return;
                     }
+                    // The Hold carrier is level-driven (engaged while the input is
+                    // down) and has no single edge to move, so a release host
+                    // stays approximated there. Every other carrier is
+                    // edge-driven and takes the exact release edge instead.
+                    bool holdCarrier = action.Equals("HOLD_LAYER", StringComparison.OrdinalIgnoreCase)
+                        && !toggle && !oneShotHost;
                     var layerReq = new ActivatorRequest
                     {
                         LayerMask = $"Layer_{run.Options.FileId}_{presetId}",
@@ -5704,24 +5707,21 @@ namespace PadForge.SteamWorkshop.Translation
                         // unless the activator's toggle setting latches it
                         // (wave 2A) or the host is a one-shot flick (v15:
                         // nothing is held on a flick, so it latches).
-                        Mode = action.Equals("HOLD_LAYER", StringComparison.OrdinalIgnoreCase)
-                            && !toggle && !oneShotHost
-                            ? "Hold" : "Toggle",
+                        Mode = holdCarrier ? "Hold" : "Toggle",
                         InheritUnmapped = true, // Steam action layers overlay the set below
+                        FireOnRelease = onRelease && !holdCarrier,
                         DelayMs = activatorDelayMs,
                         DoublePressMs = doublePressMs,
                         Path = path,
                     };
                     FillActivatorInput(layerReq, source);
                     run.Activators.Add(layerReq);
-                    // v19 (T6): a release-hosted add_layer / hold_layer
-                    // engages on the press edge instead. Every
-                    // ShiftActivator mode keys on the press edge (Hold
-                    // while held, Toggle / Cycle / Custom on press), so a
-                    // release edge is inexpressible; the layer change
-                    // still lowers, one edge early, under a named Partial
-                    // instead of a silent Clean.
-                    if (onRelease)
+                    // The edge-driven arm fires on the exact release edge
+                    // now (FireOnRelease above). Only the Hold carrier keeps
+                    // the shifted-edge note: it is level-driven, engaged
+                    // while the input is down, so a release host still
+                    // lowers one edge early with nothing to move.
+                    if (onRelease && holdCarrier)
                     {
                         run.Report.Add(TranslationStatus.Partial,
                             TranslationReasons.LayerReleaseEdgeApproximated,
@@ -5788,19 +5788,14 @@ namespace PadForge.SteamWorkshop.Translation
                         DelayMs = activatorDelayMs,
                         DoublePressMs = doublePressMs,
                         HostLayer = layer,
+                        FireOnRelease = onRelease,
                         Path = path,
                     };
                     FillActivatorInput(jumpReq, source);
                     run.Activators.Add(jumpReq);
-                    // v19 (T6): a release-hosted preset jump fires on the
-                    // press edge instead (Custom / Cycle activators key on
-                    // the press edge only); named Partial, not silent Clean.
-                    if (onRelease)
-                    {
-                        run.Report.Add(TranslationStatus.Partial,
-                            TranslationReasons.LayerReleaseEdgeApproximated,
-                            path, binding.Raw, args: "CHANGE_PRESET");
-                    }
+                    // A release-hosted preset jump fires on the exact
+                    // release edge now (FireOnRelease above); no shifted-edge
+                    // note remains.
                     return;
                 }
 
@@ -6972,6 +6967,7 @@ namespace PadForge.SteamWorkshop.Translation
                     DelayMs = req.DelayMs,
                     ReleaseDelayMs = req.ReleaseDelayMs,
                     DoublePressMs = req.DoublePressMs,
+                    FireOnRelease = req.FireOnRelease,
                     CycleLayers = req.CycleLayers,
                     CycleIncludeBase = req.CycleIncludeBase,
                 };

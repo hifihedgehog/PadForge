@@ -2558,6 +2558,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_ModeSticky_Subtitle => Get("Pad_Shift_ModeSticky_Subtitle");
     public string Pad_Shift_ModePassive_Subtitle => Get("Pad_Shift_ModePassive_Subtitle");
     public string Pad_Shift_InheritUnmapped => Get("Pad_Shift_InheritUnmapped");
+    public string Pad_Shift_FireOnRelease => Get("Pad_Shift_FireOnRelease");
+    public string Pad_Shift_FireOnRelease_Tooltip => Get("Pad_Shift_FireOnRelease_Tooltip");
     public string Pad_Shift_InheritUnmapped_Tooltip => Get("Pad_Shift_InheritUnmapped_Tooltip");
     public string Settings_CommunityConfigs => Get("Settings_CommunityConfigs");
     public string Settings_CommunityConfigsDesc => Get("Settings_CommunityConfigsDesc");

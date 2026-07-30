@@ -1521,6 +1521,8 @@
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Einmal tippen zum Aktivieren. Der nächste zugewiesene Tastendruck feuert auf der Ebene, dann automatisches Lösen.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Keine eigene Taste. Fügen Sie sie der Warteschlange einer Zyklus-Steuerung hinzu, dann wird sie vom Zyklus erreicht.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Nicht zugewiesene Ziele von Basis erben</value></data>
+  <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Beim Loslassen auslösen</value></data>
+  <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Wartet, bis die Taste losgelassen wird, bevor dieser Aktivator auslöst. Ist eine Halteverzögerung gesetzt, muss der Druck so lange dauern, damit das Loslassen zählt.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Auch eigenes Mapping des Auslösers feuern</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Wenn aktiviert, treibt die Auslöser-Taste weiterhin jede Zeile an, die sie als Quelle verwendet. Ein Druck wechselt die Ebene UND feuert das eigene Mapping der Taste. Wenn deaktiviert (Standard), wird der Druck nur vom Ebenenwechsel verbraucht.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Wenn aktiviert, fallen Ziele, die diese Ebene nicht explizit zuweist, auf die Basis-Ebene zurück. Wenn deaktiviert (Standard), ersetzt die Ebene Basis vollständig und nicht zugewiesene Ziele bleiben aus.</value></data>

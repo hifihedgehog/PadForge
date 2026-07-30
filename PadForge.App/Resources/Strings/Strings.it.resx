@@ -1541,6 +1541,8 @@
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tocca una volta per attivare. La prossima pressione di pulsante mappato si attiva sul livello, quindi si rilascia automaticamente.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Nessun pulsante proprio. Aggiungilo alla coda di un controllo Ciclo e il ciclo lo raggiunge.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Eredita obiettivi non assegnati da Base</value></data>
+  <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Attiva al rilascio</value></data>
+  <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Attende che il pulsante venga rilasciato prima che questo attivatore scatti. Se è impostato un ritardo di pressione, la pressione deve durare quel tempo perché il rilascio conti.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Attiva anche la mappatura propria dell'attivatore</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Se selezionato, il pulsante attivatore continua a guidare ogni riga che lo usa come sorgente. Una pressione cambia livello E attiva la mappatura propria del pulsante. Se non selezionato (predefinito), la pressione è consumata solo dal cambio di livello.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Quando selezionato, gli obiettivi che questo livello non assegna esplicitamente ricadono sul livello Base. Quando deselezionato (predefinito), il livello sostituisce completamente Base e gli obiettivi non assegnati rimangono spenti.</value></data>

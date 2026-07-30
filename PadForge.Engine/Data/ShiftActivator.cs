@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace PadForge.Engine.Data
 {
@@ -91,6 +91,18 @@ namespace PadForge.Engine.Data
         /// rising edge, and single presses engage nothing. <c>0</c>
         /// (default) = plain read, no gate.</summary>
         [XmlAttribute] public int DoublePressMs { get; set; } = 0;
+
+        /// <summary><para>Fire on Release: the edge modes (Toggle / Custom /
+        /// Cycle / Sticky) fire when the input is let GO instead of when it
+        /// goes down. Matches Steam's release-hosted activators, where any
+        /// verb can wait for the lift.</para>
+        /// <para><see cref="DelayMs"/> gates the press that ARMS the release,
+        /// so a delay-gated activator reads "long-press, then let go".
+        /// <see cref="DoublePressMs"/> composes upstream of the edge read, so
+        /// the fire lands on the second press's release. Ignored by Hold
+        /// (level-driven, already defined by both edges) and Passive (no
+        /// button).</para></summary>
+        [XmlAttribute] public bool FireOnRelease { get; set; }
 
         /// <summary>v6 release linger (translator v22, Steam's activator
         /// <c>delay_end</c> on a layer switch: "wait for this period of

@@ -239,8 +239,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── T6: release-hosted layer / preset verbs ────────────────────
 
         [Fact]
-        public void ReleaseHostedAddLayer_EmitsActivator_AndNamesThePressEdge()
+        public void ReleaseHostedAddLayer_FiresOnTheReleaseEdge()
         {
+            // Fire on Release: the Toggle carrier takes the exact edge Steam
+            // authored, so the shifted-edge note is gone. This test asserted
+            // the note when the edge was inexpressible; the assertion flipped
+            // the day the activator gained the flag.
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "controller_action ADD_LAYER 2", activator: "Release")))
@@ -251,15 +255,14 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
 
             var act = Assert.Single(p.KbmMappingSet.ShiftActivators);
-            Assert.Equal("Toggle", act.Mode); // still lowers, one edge early
-            var note = Assert.Single(p.Report.Entries, e =>
+            Assert.Equal("Toggle", act.Mode);
+            Assert.True(act.FireOnRelease, "the release host did not reach the activator");
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.LayerReleaseEdgeApproximated);
-            Assert.Equal(TranslationStatus.Partial, note.Status);
-            Assert.Equal("ADD_LAYER", Assert.Single(note.ReasonArgs));
         }
 
         [Fact]
-        public void ReleaseHostedChangePreset_NamesThePressEdge()
+        public void ReleaseHostedChangePreset_FiresOnTheReleaseEdge()
         {
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
@@ -271,9 +274,37 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
 
             Assert.NotEmpty(p.KbmMappingSet.ShiftActivators);
+            Assert.Contains(p.KbmMappingSet.ShiftActivators,
+                a => a.FireOnRelease && a.Mode == "Custom");
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.LayerReleaseEdgeApproximated);
+        }
+
+        [Fact]
+        public void ReleaseHostedHoldLayer_KeepsThePressEdgeNote()
+        {
+            // The one carrier Fire on Release cannot cover. HOLD_LAYER lowers
+            // to Hold, which is level-driven: engaged while the input is
+            // down, both edges already have jobs. A release host there still
+            // lowers one edge early and must keep saying so, and the flag
+            // must NOT be stamped on it (the runtime would ignore it, and a
+            // later mode switch in the dialog must not spring a hidden flag).
+            string vdf = Head
+                + Group(1, "four_buttons", Inputs(
+                    Inp("button_a", "controller_action HOLD_LAYER 2", activator: "Release")))
+                + Group(2, "four_buttons", Inputs(Inp("button_b", "key_press Q")))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + Preset(1, "Alt", (2, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            var act = Assert.Single(p.KbmMappingSet.ShiftActivators);
+            Assert.Equal("Hold", act.Mode);
+            Assert.False(act.FireOnRelease);
             var note = Assert.Single(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.LayerReleaseEdgeApproximated);
-            Assert.Equal("CHANGE_PRESET", Assert.Single(note.ReasonArgs));
+            Assert.Equal(TranslationStatus.Partial, note.Status);
+            Assert.Equal("HOLD_LAYER", Assert.Single(note.ReasonArgs));
         }
 
         [Fact]
@@ -289,6 +320,9 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.LayerReleaseEdgeApproximated);
+            // And the flag stays off: a press host must not gain the release
+            // edge as a side effect.
+            Assert.All(p.KbmMappingSet.ShiftActivators, a => Assert.False(a.FireOnRelease));
         }
     }
 }

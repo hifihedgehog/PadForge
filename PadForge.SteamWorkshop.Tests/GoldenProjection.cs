@@ -284,6 +284,7 @@ namespace PadForge.SteamWorkshop.Tests
                 foreach (var a in set.ShiftActivators)
                 {
                     sb.Append("  ").Append(a.Mode).Append(' ').Append(a.LayerMask);
+                    if (a.FireOnRelease) sb.Append(" onRelease");
                     if (!string.IsNullOrEmpty(a.JumpToLayer)) sb.Append(" -> ").Append(a.JumpToLayer);
                     if (!string.IsNullOrEmpty(a.CycleLayers))
                     {

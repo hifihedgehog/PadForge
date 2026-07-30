@@ -367,6 +367,124 @@ namespace PadForge.Tests
             return (x, y);
         }
 
+
+        // ── the Trackpad profile, end to end ──────────────────────────────
+
+        // 45 mm, not the 69 mm default. At 69 the slowest movement a pad can
+        // report already exceeds libinput's 7 mm/s deceleration knee, so the
+        // precision half of the curve is unreachable and a deceleration test
+        // would silently measure the plateau instead. That is a real property
+        // of the feature, pinned by
+        // TrackpadPointerGainTests.AtLibinputsAssumedWidth_TheDecelerationKneeIsOutOfReach;
+        // here it just means the width has to be set for the test to reach the
+        // branch it is about.
+        private const float NarrowPadMm = 45f;
+
+        private static float TrackpadDrag(float from, float to,
+                                          float thresholdMm = 130f,
+                                          float padWidthMm = NarrowPadMm)
+        {
+            _tp = new PadForge.Engine.Touchpad.TouchpadGestureSettings
+            {
+                PointerResponse = "Trackpad",
+                TrackpadThresholdMmPerSec = thresholdMm,
+                TrackpadPadWidthMm = padWidthMm,
+            };
+            SourceCoercion.TouchpadMouseSettingsProvider = (_, __, ___) => _tp;
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(from), TicksAt(0.000f), src, slot);
+                return Counts(PadAt(to), TicksAt(0.004f), src, slot);
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void Trackpad_DeceleratesASlowDrag_WhichSimpleCannotDo()
+        {
+            // THE point of the profile. libinput decelerates to 0.3x at rest,
+            // and that sub-unity region is where a laptop trackpad's precision
+            // lives. Simple's gain starts at 1 and only climbs, so no value of
+            // it can produce this.
+            // 0.0002 pad widths over 4 ms = 0.05 pad/s = 2.25 mm/s at 45 mm,
+            // inside the sub-7 mm/s deceleration ramp.
+            float flat = DragCounts(0.5000f, 0.5002f, accel: 0f);
+            float trackpad = TrackpadDrag(0.5000f, 0.5002f);
+
+            Assert.True(flat > 0f, "the baseline slow drag produced no motion");
+            Assert.True(trackpad < flat,
+                $"a slow drag was not decelerated: {trackpad} vs flat {flat}");
+        }
+
+        [Fact]
+        public void Trackpad_AcceleratesAFastDrag()
+        {
+            float flat = DragCounts(0.10f, 0.95f, accel: 0f);        // big, fast
+            float trackpad = TrackpadDrag(0.10f, 0.95f);
+
+            Assert.True(flat > 0f, "the baseline fast drag produced no motion");
+            Assert.True(trackpad > flat,
+                $"a fast drag was not accelerated: {trackpad} vs flat {flat}");
+        }
+
+        [Fact]
+        public void Trackpad_SpansBothDirectionsFromNeutral()
+        {
+            // Same profile, same pad: slow decelerates AND fast accelerates.
+            // Checking them together catches a sign or normalization error that
+            // either test alone would pass.
+            float slowFlat = DragCounts(0.5000f, 0.5002f, accel: 0f);
+            float slowTp = TrackpadDrag(0.5000f, 0.5002f);
+            float fastFlat = DragCounts(0.10f, 0.95f, accel: 0f);
+            float fastTp = TrackpadDrag(0.10f, 0.95f);
+
+            Assert.True(slowTp / slowFlat < 1.0f, "slow end did not decelerate");
+            Assert.True(fastTp / fastFlat > 1.0f, "fast end did not accelerate");
+        }
+
+        [Fact]
+        public void TheDefaultProfileIsBehaviourPreserving()
+        {
+            // Simple with acceleration 0 is the identity, which is what makes
+            // it safe as the default: a pad that has never touched these
+            // settings must feel exactly as it did before they existed.
+            _tp = new PadForge.Engine.Touchpad.TouchpadGestureSettings();   // all defaults
+            SourceCoercion.TouchpadMouseSettingsProvider = (_, __, ___) => _tp;
+            float withDefaults;
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                withDefaults = Counts(PadAt(0.80f), TicksAt(0.004f), src, slot);
+            }
+            finally { ClearSettings(); }
+
+            var src2 = XSource(); int slot2 = NewSlot();
+            Counts(PadAt(0.50f), TicksAt(0.000f), src2, slot2);
+            float withNoProvider = Counts(PadAt(0.80f), TicksAt(0.004f), src2, slot2);
+
+            Assert.Equal(withNoProvider, withDefaults, 4);
+        }
+
+        [Fact]
+        public void AnUnknownProfileNameReadsAsTheDefault()
+        {
+            // The value round-trips through hand-editable XML.
+            _tp = new PadForge.Engine.Touchpad.TouchpadGestureSettings { PointerResponse = "Nonsense" };
+            SourceCoercion.TouchpadMouseSettingsProvider = (_, __, ___) => _tp;
+            float unknown;
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                unknown = Counts(PadAt(0.80f), TicksAt(0.004f), src, slot);
+            }
+            finally { ClearSettings(); }
+
+            Assert.Equal(DragCounts(0.50f, 0.80f, accel: 0f), unknown, 4);
+        }
+
         [Fact]
         public void MomentumOff_StopsTheCursorDeadOnRelease()
         {

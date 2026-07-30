@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using PadForge.Engine;
 
@@ -39,8 +40,19 @@ namespace PadForge.Common.Input
         private int _lastAbsCursorX = int.MinValue;
         private int _lastAbsCursorY = int.MinValue;
 
-        // Mouse sensitivity: pixels per frame at full axis deflection.
-        private const float MouseSensitivity = 15.0f;
+        // Cursor speed at full axis deflection, in pixels per SECOND.
+        //
+        // Time-based, not per-poll. The old constant was 15 px per POLL,
+        // which made cursor speed a function of the polling-interval
+        // setting, and at the default 1 ms interval put full deflection at
+        // 15,000 px/s: the owner's report was "I barely nudge it and it
+        // almost instantly hits the other side of the screen". The proven
+        // desktop-cursor reference is DS4Windows' stick-as-mouse, which is
+        // velocity x timeDelta with a default full-scale of
+        // sensitivity 25 x MOUSESPEEDFACTOR 48 = 1,200 px/s
+        // (DS4Windows Mapping.cs:829, :5437). The per-stick KBM speed knob
+        // upstream scales from here.
+        private const float MouseFullScalePxPerSec = 1200f;
 
         // Gyro's own sub-count remainder. Separate from the deflection
         // lane's so a stick and a gyro on the same axis do not trade
@@ -51,8 +63,41 @@ namespace PadForge.Common.Input
         private float _txAccumulator;
         private float _tyAccumulator;
 
-        // Scroll sensitivity: lines per frame at full axis deflection.
-        private const float ScrollSensitivity = 3.0f;
+        // Scroll speed at full axis deflection, in wheel notches per SECOND.
+        //
+        // Same fix as the cursor lane: the old constant was 3 notches per
+        // POLL, i.e. 3,000/s at the default 1 ms interval and poll-rate-
+        // dependent besides. Nobody felt that only because a linear rate
+        // lets a barely-tilted stick self-regulate. The reference is
+        // DS4Windows' stick-wheel: a 10 ms cadence with full deflection
+        // counting one notch per three runs, ~33 notches/s
+        // (Mapping.cs GetMouseWheelMapping: "Use 3 runs as a full mouse
+        // wheel tick" on a 10 ms gate). The KBM speed knob scales from
+        // here.
+        private const float ScrollFullScaleNotchesPerSec = 100f / 3f;
+
+        // Wall-clock between SubmitKbmState calls, so the rate lanes above
+        // are poll-rate-independent. Clamped so a stall (debugger, suspend)
+        // cannot spend as one giant delta on resume.
+        private long _lastSubmitTimestamp;
+        private float _submitDt;
+
+        /// <summary>Seconds credited to one submit: never negative, capped at
+        /// 50 ms so a stall resumes gently instead of leaping.</summary>
+        internal static float ClampSubmitDt(double seconds)
+            => seconds <= 0 ? 0f : (float)Math.Min(seconds, 0.05);
+
+        /// <summary>Pixels one submit contributes for a stick deflection:
+        /// deflection fraction x full-scale px/s x dt. Pure, so the rate
+        /// contract (time-based, poll-rate-independent, DS4Windows-scaled)
+        /// is directly testable.</summary>
+        internal static float MouseStickPixels(short deflection, float dtSeconds)
+            => deflection / 32767.0f * MouseFullScalePxPerSec * dtSeconds;
+
+        /// <summary>The scroll twin of <see cref="MouseStickPixels"/>, in
+        /// wheel notches.</summary>
+        internal static float ScrollStickNotches(short deflection, float dtSeconds)
+            => deflection / 32767.0f * ScrollFullScaleNotchesPerSec * dtSeconds;
 
         // SOCD cleaner (discussion #205, Snap Tap). Transforms the logical
         // key bitset before change detection; no-op while mode is Off.
@@ -77,6 +122,10 @@ namespace PadForge.Common.Input
             _connected = true;
             _prevKeys0 = _prevKeys1 = _prevKeys2 = _prevKeys3 = 0;
             _prevMouseButtons = 0;
+            // Fresh time base: the first submit after a (re)connect credits
+            // zero seconds instead of the idle gap (the dt clamp would cap
+            // that gap anyway; this just makes the contract exact).
+            _lastSubmitTimestamp = 0;
             _socd.Reset();
         }
 
@@ -123,6 +172,15 @@ namespace PadForge.Common.Input
         /// </summary>
         public void SubmitKbmState(KbmRawState raw)
         {
+            // Wall-clock dt for the rate lanes (cursor, scroll): measured
+            // here rather than passed in, so the contract cannot drift when a
+            // caller forgets, and the first submit credits zero.
+            long nowTs = Stopwatch.GetTimestamp();
+            _submitDt = ClampSubmitDt(_lastSubmitTimestamp == 0
+                ? 0.0
+                : (nowTs - _lastSubmitTimestamp) / (double)Stopwatch.Frequency);
+            _lastSubmitTimestamp = nowTs;
+
             if (!_connected) return;
 
             // --- SOCD cleaning (discussion #205) ---
@@ -166,8 +224,8 @@ namespace PadForge.Common.Input
             // and grew the injector thread; this lane rides the same one.
             if (raw.MouseDeltaX != 0 || raw.MouseDeltaY != 0)
             {
-                _mxAccumulator += raw.MouseDeltaX / 32767.0f * MouseSensitivity;
-                _myAccumulator += -(raw.MouseDeltaY / 32767.0f * MouseSensitivity);
+                _mxAccumulator += MouseStickPixels(raw.MouseDeltaX, _submitDt);
+                _myAccumulator += -MouseStickPixels(raw.MouseDeltaY, _submitDt);
                 int dx = (int)_mxAccumulator;
                 int dy = (int)_myAccumulator;
                 _mxAccumulator -= dx;
@@ -179,7 +237,7 @@ namespace PadForge.Common.Input
             // --- Gyro exact counts (#79 feel) ---
             // Its own accumulator, not the deflection one above: this lane
             // is already in mouse counts and already time-scaled, so running
-            // it through MouseSensitivity would re-apply a per-poll spend the
+            // it through the cursor rate would re-apply a spend the
             // engine has just removed.
             if (raw.MouseGyroX != 0f || raw.MouseGyroY != 0f)
             {
@@ -241,8 +299,8 @@ namespace PadForge.Common.Input
             }
 
             // --- Flick stick exact counts (#225) ---
-            // Same injector lane, forwarded 1:1. NOT scaled by
-            // MouseSensitivity and NOT run through the accumulator: the
+            // Same injector lane, forwarded 1:1. NOT scaled by the
+            // cursor rate above and NOT run through the accumulator: the
             // engine tick already calibrated the value in mouse counts
             // (counts-per-360 on the source) and carries its own sub-count
             // residual. Scaling here would break the flick = exact camera
@@ -297,7 +355,7 @@ namespace PadForge.Common.Input
             // --- Mouse scroll (deadzone already applied in Step 3) ---
             if (raw.ScrollDelta != 0)
             {
-                _scrollAccumulator += raw.ScrollDelta / 32767.0f * ScrollSensitivity;
+                _scrollAccumulator += ScrollStickNotches(raw.ScrollDelta, _submitDt);
                 int scroll = (int)_scrollAccumulator;
                 _scrollAccumulator -= scroll;
                 if (scroll != 0)
@@ -309,7 +367,7 @@ namespace PadForge.Common.Input
             //     matching MOUSEEVENTF_HWHEEL's positive direction. ---
             if (raw.ScrollDeltaH != 0)
             {
-                _scrollAccumulatorH += raw.ScrollDeltaH / 32767.0f * ScrollSensitivity;
+                _scrollAccumulatorH += ScrollStickNotches(raw.ScrollDeltaH, _submitDt);
                 int scrollH = (int)_scrollAccumulatorH;
                 _scrollAccumulatorH -= scrollH;
                 if (scrollH != 0)

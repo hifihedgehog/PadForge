@@ -102,6 +102,94 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>
+        /// Every keyboard target must be a key the KbM row engine actually
+        /// carries. Its VK set is CLOSED, built once in the InputManager
+        /// static constructor, and a row naming a key outside it is silently
+        /// dead: no error, no warning, the binding simply never fires.
+        ///
+        /// <para>This caught four real dead rows on arrival. The set holds only
+        /// the SIDED modifiers (0xA0..0xA5), so the unsided VK_SHIFT 0x10,
+        /// VK_CONTROL 0x11 and VK_MENU 0x12 are all absent, and VK_LWIN 0x5B is
+        /// absent entirely. Desktop had authored Ctrl, Alt and the Windows key,
+        /// and both WASD and Hotbar had authored Shift.</para>
+        ///
+        /// <para>Reads the engine's own table by reflection rather than
+        /// restating it, because a copied list would drift and then agree with
+        /// itself forever.</para>
+        /// </summary>
+        [Fact]
+        public void EveryKeyTarget_IsInTheEnginesClosedVkSet()
+        {
+            var field = typeof(InputManager).GetField("KbmKeyVkCodes",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            Assert.True(field != null, "InputManager.KbmKeyVkCodes not found; the KbM key table moved");
+            var supported = ((byte[])field.GetValue(null)).ToHashSet();
+            Assert.True(supported.Count > 60, "the KbM key table looks truncated");
+
+            foreach (var (key, set) in Sets())
+            {
+                foreach (var row in set.Rows)
+                {
+                    if (!row.Target.StartsWith("KbmKey", StringComparison.Ordinal)) continue;
+                    string hex = row.Target.Substring("KbmKey".Length);
+                    Assert.True(byte.TryParse(hex,
+                            System.Globalization.NumberStyles.HexNumber,
+                            System.Globalization.CultureInfo.InvariantCulture, out byte vk),
+                        $"starter '{key}' target '{row.Target}' is not KbmKey + two hex digits");
+                    Assert.True(supported.Contains(vk),
+                        $"starter '{key}' binds '{row.Target}' (VK 0x{vk:X2}), which the KbM row " +
+                        "engine does not carry, so the row is dead");
+                }
+            }
+        }
+
+        /// <summary>Non-key KbM targets must be ones the engine routes.</summary>
+        [Fact]
+        public void EveryNonKeyKbmTarget_IsRecognised()
+        {
+            var known = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "KbmMouseX", "KbmMouseXNeg", "KbmMouseY", "KbmMouseYNeg",
+                "KbmScroll", "KbmScrollNeg", "KbmScrollH", "KbmScrollHNeg",
+                "KbmMBtn0", "KbmMBtn1", "KbmMBtn2", "KbmMBtn3", "KbmMBtn4",
+            };
+            foreach (var (key, set) in Sets())
+                foreach (var row in set.Rows)
+                {
+                    if (!row.Target.StartsWith("Kbm", StringComparison.Ordinal)) continue;
+                    if (row.Target.StartsWith("KbmKey", StringComparison.Ordinal)) continue;
+                    Assert.True(known.Contains(row.Target),
+                        $"starter '{key}' uses unrecognised KbM target '{row.Target}'");
+                }
+        }
+
+        /// <summary>Gamepad-output profiles must name real mapping targets, or
+        /// the row goes nowhere. Checked against the migrator's canonical
+        /// list, which is the engine's own vocabulary.</summary>
+        [Fact]
+        public void EveryGamepadTarget_IsAKnownMappingTarget()
+        {
+            var known = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "ButtonA", "ButtonB", "ButtonX", "ButtonY",
+                "LeftShoulder", "RightShoulder",
+                "ButtonBack", "ButtonStart", "ButtonGuide", "ButtonShare",
+                "LeftThumbButton", "RightThumbButton",
+                "DPadUp", "DPadDown", "DPadLeft", "DPadRight",
+                "LeftThumbAxisX", "LeftThumbAxisY",
+                "RightThumbAxisX", "RightThumbAxisY",
+                "LeftTrigger", "RightTrigger",
+            };
+            foreach (var (info, p) in Built())
+            {
+                if (info.OutputType == VirtualControllerType.KeyboardMouse) continue;
+                foreach (var row in p.SlotMappingSets[0].Rows)
+                    Assert.True(known.Contains(row.Target),
+                        $"starter '{info.Key}' uses unknown gamepad target '{row.Target}'");
+            }
+        }
+
         /// <summary>Shift activators name real inputs too, and every one must
         /// carry the layer it engages.</summary>
         [Fact]

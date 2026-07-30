@@ -19,6 +19,20 @@
   <a href="https://x.com/hifihedgehog"><img src="https://img.shields.io/badge/X-@hifihedgehog-black?logo=x&logoColor=white" alt="Follow on X"></a>
 </p>
 
+**PadForge makes any input look like any controller.** Plug in a steering wheel. The game sees a PlayStation pad. Use a DualSense. The game sees an Xbox 360. Map your keyboard. The game sees a flight stick. Open a tab on your phone. That tab becomes a gamepad your PC games can use.
+
+Free Windows app. No subscription. No paywall. No nag screens. Built on SDL3, [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro), [OpenXInput](https://github.com/hifihedgehog/OpenXinput), HidHide, Windows MIDI Services, HelixToolkit, WPF UI, and .NET 10.
+
+PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
+
+<p align="center"><b>16</b> virtual controllers at once · <b>225+</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
+
+<p align="center">
+  <a href="https://padforge.org/"><b>Website</b></a> · <a href="https://padforge.org/docs/"><b>Docs</b></a> · <a href="https://github.com/hifihedgehog/PadForge/releases/latest"><b>Download</b></a> · <a href="https://discord.gg/qawTZHVhNH"><b>Discord</b></a>
+</p>
+
+![Dashboard](screenshots/dashboard.jpg)
+
 <p align="center">
   <a href="https://www.softpedia.com/get/Gaming-Related/PadForge.shtml">
     <img src="screenshots/softpedia-excellent-editors-review-award.png" alt="Softpedia Editor's Pick: rated 5 out of 5, Excellent" height="120">
@@ -27,14 +41,6 @@
 
 <p align="center"><b>Softpedia Editor's Pick: rated 5/5, Excellent.</b><br>
 <i>"PadForge shines best in its incredibly vast range of supported controller types."</i> (<a href="https://www.softpedia.com/get/Gaming-Related/PadForge.shtml">Softpedia's editor review</a>)</p>
-
-**PadForge makes any input look like any controller.** Plug in a steering wheel. The game sees a PlayStation pad. Use a DualSense. The game sees an Xbox 360. Map your keyboard. The game sees a flight stick. Open a tab on your phone. That tab becomes a gamepad your PC games can use.
-
-Free Windows app. No subscription. No paywall. No nag screens. Built on SDL3, [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro), [OpenXInput](https://github.com/hifihedgehog/OpenXinput), HidHide, Windows MIDI Services, HelixToolkit, WPF UI, and .NET 10.
-
-PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
-
-> **New in 4.1.0.** **Steam Workshop config import** browses the community controller configs on the Steam Workshop and translates the one you pick into a PadForge profile, over an anonymous Steam connection with no account. A new look and a stack of new hardware. **DualShock 3 controllers** now work: plug one in over USB and PadForge binds it with WinUSB on the spot, or pair it over Bluetooth from the Devices page, which installs a signed BthPS3 driver on demand. Sixaxis motion, ten pressure axes, rumble, the player LED, and battery all report. **Wii pointer modes** turn the Wii Remote's IR camera into an on-screen pointer, with an FPS-mouse mode, aspect-corrected border modes, and a freeze that holds position when the sensor bar leaves view instead of snapping to a corner. **Mouse gestures** let you hold a mouse button and flick up, down, left, or right to fire an action. **Stick Trim** lets a stick ramp a held digital trigger into a smooth analog press. **SOCD cleaning** resolves opposite key presses on the Keyboard & Mouse controller with last-wins (Snap Tap), first-wins, or neutral. **Guide button LED brightness** dims the Xbox button on Xbox One, Elite, and Series pads over USB, and the 2015 Steam Controller's home LED, fixed or following the battery. **Shift layers** gain a long-press activation delay and an inactivity auto-cancel. Plus a **Text Block** macro action that types text a character at a time, **Clone Device** to copy a device's controls onto an Extended slot in one click, raw Axis N sources up to 24 axes, and a visual overhaul: Ember accent, an instrument-cluster status bar, an active-profile pill, and slot-card heat. Carrying forward from 3.5 and 3.6: Wii Bluetooth pairing, Remote Link across PCs, native wheel force feedback, MIDI in and out, and controller-speaker audio. [Wiki](https://github.com/hifihedgehog/PadForge/wiki).
 
 <p align="center">
   <a href="https://github.com/hifihedgehog/HIDMaestro">
@@ -47,33 +53,55 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
   <em>Powered by HIDMaestro. One driver, 225+ device profiles.</em>
 </p>
 
+<details>
+<summary><b>New in 4.1.0:</b> Steam Workshop config import, DualShock 3, Wii pointer modes, and a new look</summary>
+
+- **Steam Workshop config import.** Browse the community controller configs on the Steam Workshop and translate the one you pick into a PadForge profile, over an anonymous Steam connection with no account.
+- **DualShock 3 controllers.** Plug one in over USB and PadForge binds it with WinUSB on the spot, or pair it over Bluetooth from the Devices page, which installs a signed BthPS3 driver on demand. Sixaxis motion, ten pressure axes, rumble, the player LED, and battery all report.
+- **Wii pointer modes.** The Wii Remote's IR camera becomes an on-screen pointer, with an FPS-mouse mode, aspect-corrected border modes, and a freeze that holds position when the sensor bar leaves view instead of snapping to a corner.
+- **Mouse gestures.** Hold a mouse button and flick up, down, left, or right to fire an action.
+- **Stick Trim.** A stick ramps a held digital trigger into a smooth analog press.
+- **SOCD cleaning.** Opposite key presses on the Keyboard & Mouse controller resolve with last-wins (Snap Tap), first-wins, or neutral.
+- **Guide button LED brightness.** Dim the Xbox button on Xbox One, Elite, and Series pads over USB, and the 2015 Steam Controller's home LED, fixed or following the battery.
+- **Shift layers** gain a long-press activation delay and an inactivity auto-cancel.
+- **Text Block macro action** types text a character at a time.
+- **Clone Device** copies a device's controls onto an Extended slot in one click.
+- **Raw Axis N sources** up to 24 axes.
+- **A visual overhaul.** Ember accent, an instrument-cluster status bar, an active-profile pill, and slot-card heat.
+- Carrying forward from 3.5 and 3.6: Wii Bluetooth pairing, Remote Link across PCs, native wheel force feedback, MIDI in and out, and controller-speaker audio.
+
+Full documentation at [padforge.org/docs](https://padforge.org/docs/).
+
+</details>
+
 ---
 
-## What PadForge does for you
+## Quick start
 
-### That game that won't read your wheel? It will now.
+1. Download `PadForge.exe` from the [latest release](https://github.com/hifihedgehog/PadForge/releases/latest).
+2. Run it. PadForge always runs elevated, so Windows shows the UAC prompt at startup. The first launch installs HIDMaestro inside that same elevated session.
+3. Click **Add Controller** on the Dashboard. Pick Xbox, PlayStation, Extended, MIDI, or Keyboard + Mouse.
+4. On the new slot, drag a physical device onto it from the sidebar.
+5. Most controllers auto-map on assign. For the rest, click **Map All** to walk every button in one pass, or use the **Mappings** tab to bind one at a time.
+6. Launch your game. The game sees the virtual controller as real hardware.
+
+Most games "just work" after step 5. If a game sees both your physical and virtual controller at once, install HidHide from **Settings → Drivers** to hide the physical one.
+
+---
+
+## Remap: that game that won't read your wheel? It will now.
 
 PadForge translates a PS5 DualSense into the Xbox pad a Steam game expects. A Logitech G29 wheel into the gamepad a racing game accepts. A Saitek HOTAS into the gamepad a flight game stubbornly insists on. The game never knows the difference.
 
 ![Mappings tab](screenshots/mappings.jpg)
 
-### Your wheel fights back.
-
-Plug a Logitech, Fanatec, or Thrustmaster wheel into a slot and PadForge drives its force feedback in the wheel's own native protocol: constant force plus spring, damper, and friction straight from the game. A dedicated Wheel tab sets rotation range in degrees, auto-center strength, and the RPM shift LEDs. A racing game that only knows how to talk to an Xbox pad now loads your wheel up with real road feel.
-
-![Wheel tab](screenshots/wheel.jpg)
-
 ### Pedals, wheel, and HOTAS throttle. One virtual stick.
 
 One mapping row can read from any number of physical inputs across any number of physical devices. Six combine modes (Strongest, Combined, Average, Either, Both, Only one) plus a drag-and-drop custom formula editor. Cross-device chords so a button on the wheel and a button on the shifter trigger one virtual press. A Primary Mode dropdown sets how the main source reads: Direct, Incremental, Invert On Hold, or Ramp. Ramp builds a stick axis from two keyboard keys. The Up key drives toward +1 and the Down key toward -1, each over an Attack time. Release ramps back to center over a Release time when Autocenter is on, or holds where you left it when off. A Reverse multiplier sets how fast it returns when you press the opposite key.
 
-![Multi-source mapping row with combine modes and formula editor](screenshots/mappings.jpg)
-
 ### Squeeze a digital trigger like it's analog.
 
 Stick Trim is a combine mode on the mapping row. Hold a digital trigger to arm it, then a stick sets how hard it presses, from a feather to full. Each row gets its own deadzone and ramp rate, and you choose whether it snaps back to zero the moment you let go. A keyboard bumper becomes a trigger you can modulate.
-
-![Stick Trim combine mode in the mapping row](screenshots/mappings.jpg)
 
 ### Copy a controller onto a slot, one to one.
 
@@ -91,25 +119,13 @@ Point PadForge at a game and it browses the community controller configs publish
 
 Each slot can carry extra mapping tables that turn on while a button, chord, or axis fires. Six activation modes: Hold, Toggle, Latch, Cycle, Sticky, and No Button. Latch presses a layer on and leaves it on. Press it again for Base, or press a different Latch button to switch. Cycle puts a queue of layers under one control. The activator steps forward, a second Previous button steps back through the same list, and that Previous button can sit on another device. Wrap Around loops past the last layer to the first. Include Base folds the resting layer into the rotation or leaves it out. A No Button layer has no activator of its own and exists only to ride a Cycle queue. Each layer carries its own color and emoji icon, and a Win11-style flyout confirms the active layer the moment it engages.
 
-![Shift layer tab strip above the mapping grid](screenshots/mappings.jpg)
-
 ### Tap for one thing, hold for another.
 
 A shift-layer button can wait for a long press. Set a hold-to-fire delay on a Toggle, Latch, or Sticky activator, and a quick tap does its normal job while a hold flips the layer. A Toggle layer can also cancel itself: leave it untouched for the time you set and it drops back to Base on its own, so you never get stranded on the wrong layer.
 
-![Long-press and auto-cancel on a shift layer](screenshots/mappings.jpg)
-
-### Aim with the controller, not the stick.
-
-Reference frames (Local, Player, World). Dual-threshold smoothing. Real-world calibration. A cross-device Aim Engage button, plus a stick gate that wakes the gyro from any stick and any direction, read before the stick's own deadzone so a nudge the game ignores still arms it. Tuning saves per pad per slot, so the same pad on two slots can feel two different ways. Gyro Pitch / Yaw / Roll bind as first-class sources in the mapping table.
-
-![Gyro tab](screenshots/gyro.jpg)
-
 ### Move the mouse, move the stick.
 
 Two new mapping sources, Mouse Position X and Mouse Position Y, read where the desktop cursor sits on screen. Center reads zero, and distance from center pushes the stick toward its edge. (That differs from the Mouse Speed X/Y sources, which read how fast the mouse moves.) Each row using a Mouse Position source gets its own Sensitivity, from 0.1 to 5.0. At 1.0 the stick reaches full deflection when the cursor sits 10% of the screen width from center. Raise it for less cursor travel, lower it for more. A Mouse Position source can drive a stick axis, a trigger, or a button. Primary monitor only.
-
-![Mouse Position source in the mapping row](screenshots/mappings.jpg)
 
 ### Flick the mouse. Fire an action.
 
@@ -122,6 +138,26 @@ Hold any mouse button and flick. Up, down, left, and right each fire their own a
 Press two opposite keys together and SOCD cleaning decides what the Keyboard & Mouse controller reports. Last-wins (Snap Tap) takes the key you pressed most recently, first-wins holds the one you pressed first, and neutral cancels both. It runs across every key you've mapped, so left/right and up/down both stay clean.
 
 ![SOCD cleaning modes on the Keyboard & Mouse controller](screenshots/kbm-socd.jpg)
+
+### Turn the DualSense pad into a mouse, a stick, or a D-pad.
+
+A Touchpad tab on every slot whose source carries a touchpad surface (DualSense, DualSense Edge, DS4, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Map a finger to mouse X/Y with per-axis sensitivity and invert. Anchor a virtual analog stick where your finger lands. Drop a wedge-thresholded D-pad on top. The gesture stack covers 4-way and 8-way swipes, taps, longpress, pinch, rotate, two- to five-finger gestures, and shape templates (Square, Triangle, Z, Checkmark, and Circle in either direction). Every toggle saves per slot.
+
+![Touchpad tab](screenshots/touchpad.jpg)
+
+### A macro that types for you.
+
+Drop a Text Block into a macro's action sequence and it types out plain text, one character at a time, at a delay you set. Bind it to a button and a chat line, a spawn command, or a wall of config drops in without touching the keyboard.
+
+![Text Block macro action](screenshots/macros.jpg)
+
+---
+
+## Feel: your wheel fights back.
+
+Plug a Logitech, Fanatec, or Thrustmaster wheel into a slot and PadForge drives its force feedback in the wheel's own native protocol: constant force plus spring, damper, and friction straight from the game. A dedicated Wheel tab sets rotation range in degrees, auto-center strength, and the RPM shift LEDs. A racing game that only knows how to talk to an Xbox pad now loads your wheel up with real road feel.
+
+![Wheel tab](screenshots/wheel.jpg)
 
 ### Forza, Gears, and Halo on your real Xbox pad.
 
@@ -148,37 +184,13 @@ The DualSense and DualShock 4 have a speaker built into the pad, and PadForge ca
 
 ![Audio tab](screenshots/audio.jpg)
 
-### Turn the DualSense pad into a mouse, a stick, or a D-pad.
+---
 
-A Touchpad tab on every slot whose source carries a touchpad surface (DualSense, DualSense Edge, DS4, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Map a finger to mouse X/Y with per-axis sensitivity and invert. Anchor a virtual analog stick where your finger lands. Drop a wedge-thresholded D-pad on top. The gesture stack covers 4-way and 8-way swipes, taps, longpress, pinch, rotate, two- to five-finger gestures, and shape templates (Square, Triangle, Z, Checkmark, and Circle in either direction). Every toggle saves per slot.
+## Motion: aim with the controller, not the stick.
 
-![Touchpad tab](screenshots/touchpad.jpg)
+Reference frames (Local, Player, World). Dual-threshold smoothing. Real-world calibration. A cross-device Aim Engage button, plus a stick gate that wakes the gyro from any stick and any direction, read before the stick's own deadzone so a nudge the game ignores still arms it. Tuning saves per pad per slot, so the same pad on two slots can feel two different ways. Gyro Pitch / Yaw / Roll bind as first-class sources in the mapping table.
 
-### Open a browser. Press buttons.
-
-PadForge runs a tiny web server. Any device with a browser on your Wi-Fi can load it, pick a layout (Xbox 360, DualShock 4, or multi-touch touchpad), and play. Up to 16 phones at once, each a separate virtual pad. Touch buttons, dual analog sticks, an 8-way D-pad. Rumble feedback through the Vibration API. No app to install on the phone.
-
-No phone handy? Turn on **Touchpad Overlay** from the Dashboard. A transparent on-screen touch surface pins to any monitor and drives the DS4 or DualSense touchpad directly.
-
-![Web controller](screenshots/web-controller.jpg)
-
-### Local co-op without limits.
-
-Two sim racers on two wheels at once. A flight stick plus throttle plus rudder pedals as one virtual HOTAS. Mixed gamepad types in one session. Up to 16 controllers. One combo press toggles every virtual controller on or off when you need to step away.
-
-![Dashboard with multiple slots](screenshots/dashboard.jpg)
-
-### The PlayStation 3 pad, wired or wireless.
-
-Plug a DualShock 3 in over USB and PadForge binds it with WinUSB on the spot, no manual driver dance. To go wireless, open the Devices page and pair it over Bluetooth. PadForge installs a signed BthPS3 driver on demand, and the radio keeps working for everything else. Sixaxis motion runs through the gyro pipeline, and the ten pressure axes, rumble, the player LED, and battery all report. Unplug the pad and PadForge tears the pairing down behind it.
-
-![Pair a DualShock 3](screenshots/ds3-pair.jpg)
-
-### Pair a Wii Remote over Bluetooth, in-app.
-
-A Wii controller's Bluetooth PIN is six raw bytes, not a string, and it changes with which sync button you press. The Windows pairing prompt can't supply that, so PadForge runs the pairing itself. Open the Devices page, click **Pair**, and press the red SYNC button under the battery cover. The controller bonds, so it reconnects on any button press from then on. (Hold 1 and 2 instead for a temporary pairing that lasts the session.) The Wii Remote, Remote plus Nunchuk, Classic Controller, and Wii U Pro Controller all map as normal pads through SDL. Accelerometer and Wii Motion Plus gyro run through the gyro pipeline, so gyro-to-mouse, gyro-to-stick, and motion mapping work. Swap a Nunchuk on or off mid-session and PadForge re-identifies it without a restart. Needs a Bluetooth radio on the PC. A Wii Balance Board reports total weight and left-right / front-back lean as mapping sources.
-
-![Pair a Wii controller](screenshots/wii-pair.jpg)
+![Gyro tab](screenshots/gyro.jpg)
 
 ### Point at the screen like a Wii menu.
 
@@ -186,17 +198,29 @@ The Wii Remote's IR camera drives an on-screen pointer, mapped to the mouse or a
 
 ![Wii pointer modes](screenshots/pointer.jpg)
 
+### Gyro into Cemu, Dolphin, Yuzu, and Ryujinx.
+
+The built-in DSU / Cemuhook server broadcasts gyroscope and accelerometer on UDP port 26760 so emulators can use real motion for Splatoon, Wii titles, 3DS games, and anything else that asks for it. DualSense, DualShock 4, Switch Pro, and 2026 Steam Controller sources all work out of the box.
+
+### The Joy-Con 2 is a mouse. So use it like one.
+
+A Nintendo Switch 2 Joy-Con has an optical sensor on its face. Set it on a desk and slide it. Two new sources, Mouse Motion X and Mouse Motion Y, drive a stick for mouse-look, a button, or the scroll wheel, each with its own Sensitivity from 0.1 to 5.0. The right Joy-Con's IR camera also reports a brightness value you can map, so covering the sensor works like a button.
+
+---
+
+## Anywhere: open a browser. Press buttons.
+
+PadForge runs a tiny web server. Any device with a browser on your Wi-Fi can load it, pick a layout (Xbox 360, DualShock 4, or multi-touch touchpad), and play. Up to 16 phones at once, each a separate virtual pad. Touch buttons, dual analog sticks, an 8-way D-pad. Rumble feedback through the Vibration API. No app to install on the phone.
+
+No phone handy? Turn on **Touchpad Overlay** from the Dashboard. A transparent on-screen touch surface pins to any monitor and drives the DS4 or DualSense touchpad directly.
+
+![Web controller](screenshots/web-controller.jpg)
+
 ### The controller is on the other PC. The game doesn't care.
 
 Remote Link shares devices across the PadForge PCs on your network. A controller, wheel, or HOTAS plugged into one PC shows up in another's PadForge as an ordinary mapping source, takes a slot, and drives a virtual controller the game reads as real hardware. Connect as many PCs as you like, and one shared controller can drive games on several of them at once. It runs both directions at once, and the feedback comes home: rumble, force feedback, adaptive triggers, lightbar, player LEDs, and the controller speaker all play on the physical device wherever it lives. Pair once by matching a six-digit code on both screens, then trusted PCs reconnect on their own the moment they see each other. A gamepad-only switch keeps a paired PC from ever reaching your keyboard, mouse, or macros. It finds PCs on your home network on its own, and reaches across the internet when the PCs share a VPN like ZeroTier.
 
 ![Remote Link](screenshots/remote-link.jpg)
-
-### Gyro into Cemu, Dolphin, Yuzu, and Ryujinx.
-
-The built-in DSU / Cemuhook server broadcasts gyroscope and accelerometer on UDP port 26760 so emulators can use real motion for Splatoon, Wii titles, 3DS games, and anything else that asks for it. DualSense, DualShock 4, Switch Pro, and 2026 Steam Controller sources all work out of the box.
-
-![Dashboard Motion Server section with port and enable toggle](screenshots/dashboard.jpg)
 
 ### A 16-channel MIDI controller, no extra hardware.
 
@@ -216,23 +240,29 @@ Plug in an NFC reader (any PC/SC contactless reader, like an ACR122U) and a tag 
 
 ![NFC reader and registered tags on the Devices page](screenshots/devices.jpg)
 
-### A macro that types for you.
+---
 
-Drop a Text Block into a macro's action sequence and it types out plain text, one character at a time, at a delay you set. Bind it to a button and a chat line, a spawn command, or a wall of config drops in without touching the keyboard.
+## Every device: local co-op without limits.
 
-![Text Block macro action](screenshots/macros.jpg)
+Two sim racers on two wheels at once. A flight stick plus throttle plus rudder pedals as one virtual HOTAS. Mixed gamepad types in one session. Up to 16 controllers. One combo press toggles every virtual controller on or off when you need to step away.
 
-### The Joy-Con 2 is a mouse. So use it like one.
+![Dashboard with multiple slots](screenshots/dashboard.jpg)
 
-A Nintendo Switch 2 Joy-Con has an optical sensor on its face. Set it on a desk and slide it. Two new sources, Mouse Motion X and Mouse Motion Y, drive a stick for mouse-look, a button, or the scroll wheel, each with its own Sensitivity from 0.1 to 5.0. The right Joy-Con's IR camera also reports a brightness value you can map, so covering the sensor works like a button.
+### The PlayStation 3 pad, wired or wireless.
 
-![Mouse Motion source in the mapping grid](screenshots/mappings.jpg)
+Plug a DualShock 3 in over USB and PadForge binds it with WinUSB on the spot, no manual driver dance. To go wireless, open the Devices page and pair it over Bluetooth. PadForge installs a signed BthPS3 driver on demand, and the radio keeps working for everything else. Sixaxis motion runs through the gyro pipeline, and the ten pressure axes, rumble, the player LED, and battery all report. Unplug the pad and PadForge tears the pairing down behind it.
+
+![Pair a DualShock 3](screenshots/ds3-pair.jpg)
+
+### Pair a Wii Remote over Bluetooth, in-app.
+
+A Wii controller's Bluetooth PIN is six raw bytes, not a string, and it changes with which sync button you press. The Windows pairing prompt can't supply that, so PadForge runs the pairing itself. Open the Devices page, click **Pair**, and press the red SYNC button under the battery cover. The controller bonds, so it reconnects on any button press from then on. (Hold 1 and 2 instead for a temporary pairing that lasts the session.) The Wii Remote, Remote plus Nunchuk, Classic Controller, and Wii U Pro Controller all map as normal pads through SDL. Accelerometer and Wii Motion Plus gyro run through the gyro pipeline, so gyro-to-mouse, gyro-to-stick, and motion mapping work. Swap a Nunchuk on or off mid-session and PadForge re-identifies it without a restart. Needs a Bluetooth radio on the PC. A Wii Balance Board reports total weight and left-right / front-back lean as mapping sources.
+
+![Pair a Wii controller](screenshots/wii-pair.jpg)
 
 ### Your keyboard's media keys, mapped.
 
 The media row on a keyboard, a media remote, a headset's transport buttons: PadForge reads them as their own device with named button chips. Map Play/Pause, Mute, Volume, or Next and Previous Track to a virtual button or a macro trigger, same as any other input.
-
-![Consumer Control device with named media chips](screenshots/devices.jpg)
 
 ### See the charge. Sleep it when idle.
 
@@ -243,6 +273,11 @@ Every wireless pad that reports a battery shows its charge on the Devices page, 
 ---
 
 ## PadForge vs other controller mappers
+
+Comparison reflects each tool's shipping release as of July 2026. Verified against each project's own docs and source: x360ce v4.17.15.0 (last release Nov 2020), XOutput v3.32 (archived and deprecated Dec 2024), reWASD v9.4.0 (May 2026), ds4windowsapp/DS4Windows v3.5 (Feb 2026), and Steamworks Documentation (Action Set Layers / Activators / Mode Shifting / Input Source Modes). ⚠️ means the feature exists but is limited or unverified at the level of detail PadForge implements it.
+
+<details>
+<summary><b>Feature by feature</b></summary>
 
 | | PadForge | x360ce | XOutput | reWASD | DS4Windows | Steam Input |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -290,24 +325,14 @@ Every wireless pad that reports a battery shows its charge on the Devices page, 
 | DualShock 3 support | ✅ USB + in-app Bluetooth pairing, sixaxis, pressure, rumble | ❌ | ❌ | ✅ input + gyro | ✅ input, accel pitch/roll | ✅ native, no gyro |
 | Wii Remote / Nunchuk / Classic / Wii U Pro as a source | ✅ all four forms, in-app pairing, IR pointer | ❌ | ❌ | ✅ pairing, no IR pointer (v9.4+) | ❌ | ❌ |
 
-Comparison reflects each tool's shipping release as of July 2026. Verified against each project's own docs and source: x360ce v4.17.15.0 (last release Nov 2020), XOutput v3.32 (archived and deprecated Dec 2024), reWASD v9.4.0 (May 2026), ds4windowsapp/DS4Windows v3.5 (Feb 2026), and Steamworks Documentation (Action Set Layers / Activators / Mode Shifting / Input Source Modes). ⚠️ means the feature exists but is limited or unverified at the level of detail PadForge implements it.
-
----
-
-## Quick start
-
-1. Download `PadForge.exe` from the [latest release](https://github.com/hifihedgehog/PadForge/releases/latest).
-2. Run it. PadForge always runs elevated, so Windows shows the UAC prompt at startup. The first launch installs HIDMaestro inside that same elevated session.
-3. Click **Add Controller** on the Dashboard. Pick Xbox, PlayStation, Extended, MIDI, or Keyboard + Mouse.
-4. On the new slot, drag a physical device onto it from the sidebar.
-5. Most controllers auto-map on assign. For the rest, click **Map All** to walk every button in one pass, or use the **Mappings** tab to bind one at a time.
-6. Launch your game. The game sees the virtual controller as real hardware.
-
-Most games "just work" after step 5. If a game sees both your physical and virtual controller at once, install HidHide from **Settings → Drivers** to hide the physical one.
+</details>
 
 ---
 
 ## Screenshots
+
+<details>
+<summary><b>Every page, in screenshots</b></summary>
 
 ### Dashboard
 ![Dashboard](screenshots/dashboard.jpg)
@@ -441,6 +466,8 @@ Pair your PCs and share their controllers every way. A wheel on one drives a gam
 ![Settings](screenshots/settings.jpg)
 Language (10 locales, live-switch with no restart). Theme (System / Light / Dark). Polling interval (1-16 ms). Auto-start at login, minimize to tray, master input-hiding toggle.
 
+</details>
+
 ---
 
 ## Known limits
@@ -478,7 +505,7 @@ dotnet publish PadForge.App/PadForge.App.csproj -c Release
 
 Output: `PadForge.App/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/PadForge.exe`
 
-See [BUILD.md](BUILD.md) for project structure, architecture notes, and developer reference. See the [wiki](https://github.com/hifihedgehog/PadForge/wiki) for deeper dives into the input pipeline, virtual controller backends, settings file format, and visualization renderer.
+See [BUILD.md](BUILD.md) for project structure, architecture notes, and developer reference. See the [Technical Reference](https://padforge.org/docs/reference/) for deeper dives into the input pipeline, virtual controller backends, settings file format, and visualization renderer.
 
 ---
 

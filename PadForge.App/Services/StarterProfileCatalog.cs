@@ -367,19 +367,11 @@ namespace PadForge.Services
             // is the pad half, and its job on the layer is only to STOP the
             // gamepad outputs those buttons drive, so holding Back and
             // tapping RB saves a state instead of also pressing RB in game.
-            foreach (var target in new[]
-                     {
-                         "ButtonBack", "ButtonY", "ButtonStart",
-                         "LeftShoulder", "RightShoulder",
-                         "LeftTrigger", "RightTrigger",
-                         "DPadLeft", "DPadRight",
-                     })
+            var hotkeyButtons = new HashSet<string>(StringComparer.Ordinal)
             {
-                set.Rows.Add(new MappingRow
-                {
-                    Target = target, LayerMask = "Hotkey", NoInherit = true,
-                });
-            }
+                PadBack, PadY, PadStart, PadLB, PadRB, PadLT, PadRT, PadLeft, PadRight,
+            };
+            BlockInheritedTargets(set, "Hotkey", hotkeyButtons);
 
             set.ShiftActivators.Add(HotkeyActivator());
             return set;
@@ -792,6 +784,41 @@ namespace PadForge.Services
         private static string SocdKeyPairs(byte a, byte b, byte c, byte d)
             => $"{a}:{b}|{c}:{d}";
 
+        /// <summary>Stops an inheriting layer from ALSO firing the Base
+        /// bindings of the buttons it consumes.
+        ///
+        /// <para>The resolver's rule, verbatim: "a zero-source layer row still
+        /// BLOCKS Base fallthrough when it's an explicit NoInherit
+        /// declaration". So for every Base target one of the consumed inputs
+        /// drives, and which this layer does not already remap with sources,
+        /// add a sourceless NoInherit row.</para>
+        ///
+        /// <para>The set is COMPUTED from the set's own Base rows rather than
+        /// hand-listed, so a profile that later rebinds a button cannot drift
+        /// out of sync with the layer that borrows it.</para></summary>
+        private static void BlockInheritedTargets(MappingSet set, string layer,
+            HashSet<string> consumed)
+        {
+            var remapped = new HashSet<string>(
+                set.Rows.Where(r => r.LayerMask == layer && r.Sources.Count > 0)
+                        .Select(r => r.Target),
+                StringComparer.Ordinal);
+
+            foreach (var target in set.Rows
+                         .Where(r => (r.LayerMask ?? "Base") == "Base"
+                                  && r.Sources.Any(x => consumed.Contains(x.Descriptor)))
+                         .Select(r => r.Target)
+                         .Distinct(StringComparer.Ordinal)
+                         .ToList())
+            {
+                if (remapped.Contains(target)) continue;
+                set.Rows.Add(new MappingRow
+                {
+                    Target = target, LayerMask = layer, NoInherit = true,
+                });
+            }
+        }
+
         /// <summary>Adds one held ability bank on the given trigger: four
         /// D-pad slots then four face slots, which is the Cross Hotbar's own
         /// arrangement.
@@ -830,23 +857,7 @@ namespace PadForge.Services
             var consumed = new HashSet<string>(StringComparer.Ordinal) { activator };
             for (int i = 0; i < n; i++) consumed.Add(buttons[i]);
 
-            // Block each Base target those inputs drive, unless the bank
-            // already remaps that same target with sources.
-            var banked = new HashSet<string>(
-                set.Rows.Where(r => r.LayerMask == layer).Select(r => r.Target),
-                StringComparer.Ordinal);
-
-            foreach (var target in set.Rows
-                         .Where(r => (r.LayerMask ?? "Base") == "Base"
-                                  && r.Sources.Any(s => consumed.Contains(s.Descriptor)))
-                         .Select(r => r.Target)
-                         .Distinct(StringComparer.Ordinal)
-                         .ToList())
-            {
-                if (banked.Contains(target)) continue;
-                var block = new MappingRow { Target = target, LayerMask = layer, NoInherit = true };
-                set.Rows.Add(block);
-            }
+            BlockInheritedTargets(set, layer, consumed);
 
             set.ShiftActivators.Add(new ShiftActivator
             {

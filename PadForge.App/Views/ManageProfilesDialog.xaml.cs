@@ -70,6 +70,15 @@ namespace PadForge.Views
         {
             _settingsService = settingsService;
             InitializeComponent();
+            // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
+            // WindowChrome.CaptionHeight, and this dialog declares no
+            // <ui:TitleBar>, so no point in the window was non-client and it
+            // could not be moved at all. Same remedy MainWindow uses on its
+            // branding bar. Controls that need the click (Button, TextBox,
+            // ListBoxItem) mark this bubbling event handled, so the drag only
+            // starts on inert chrome.
+            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
+
             Loaded += (_, _) =>
             {
                 RefreshImportedList();
@@ -221,7 +230,19 @@ namespace PadForge.Views
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) => PopulateDevices();
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e) => DialogResult = false;
+        /// <summary>Reports whether anything was imported, rather than a flat
+        /// false. The two import lanes end differently on purpose: the device
+        /// lane sets DialogResult = true and closes, while the FILE lane stays
+        /// open (it refreshes the list and writes a status line) so several
+        /// files can be imported in one visit. That left the file lane's
+        /// ImportedProfileId unreachable, because the only way out was this
+        /// button and it always answered false, so the caller's
+        /// `ShowDialog() == true` gate discarded it and the imported profile
+        /// was never auto-selected on the slot. The caller also checks
+        /// ImportedProfileId itself, so returning true here cannot select
+        /// nothing.</summary>
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+            => DialogResult = !string.IsNullOrWhiteSpace(ImportedProfileId);
 
         private void TryImport()
         {

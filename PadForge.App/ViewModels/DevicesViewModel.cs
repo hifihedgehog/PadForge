@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -116,10 +116,10 @@ namespace PadForge.ViewModels
                 _devicesView.Filter = o => o is DeviceRowViewModel d && FacetOf(d) == facet;
         }
 
-        /// <summary>Facet bucket for a row. GAMEPAD covers the stick classes
-        /// (everything InputService keys off a joystick-family CapType);
-        /// OTHER is whatever is left (touchpads, MIDI, NFC, consumer
-        /// collections, unclassified).</summary>
+        /// <summary>Facet bucket for a row. GAMEPAD is the gamepad-shaped
+        /// classes only. Joysticks and wheels carry their own facets. OTHER
+        /// is whatever is left (touchpads, MIDI, NFC, consumer collections,
+        /// unclassified).</summary>
         private static string FacetOf(DeviceRowViewModel d) => d.DeviceTypeKey switch
         {
             "Gamepad" or "FirstPerson" or "Supplemental" => "GAMEPAD",
@@ -402,6 +402,18 @@ namespace PadForge.ViewModels
         public double AccelAuxY { get => _accelAuxY; set => SetProperty(ref _accelAuxY, value); }
         public double AccelAuxZ { get => _accelAuxZ; set => SetProperty(ref _accelAuxZ, value); }
 
+        // Aux (left-side) gyro preview (#252): the left Joy-Con of a pair.
+        // Paired with the accel readout above so a user can see WHICH half
+        // a reading comes from before binding it.
+
+        private bool _hasGyroAuxData;
+        public bool HasGyroAuxData { get => _hasGyroAuxData; set => SetProperty(ref _hasGyroAuxData, value); }
+
+        private double _gyroAuxX, _gyroAuxY, _gyroAuxZ;
+        public double GyroAuxX { get => _gyroAuxX; set => SetProperty(ref _gyroAuxX, value); }
+        public double GyroAuxY { get => _gyroAuxY; set => SetProperty(ref _gyroAuxY, value); }
+        public double GyroAuxZ { get => _gyroAuxZ; set => SetProperty(ref _gyroAuxZ, value); }
+
         // v3.3 — gyro UI moved to the Pad page Gyro tab. Calibration
         // label, live rate readouts, sensitivity / deadzone / smoothing
         // / acceleration / curve / units sliders all live on PadViewModel
@@ -516,6 +528,7 @@ namespace PadForge.ViewModels
             HasGyroData = false;
             HasAccelData = false;
             HasAccelAuxData = false;
+            HasGyroAuxData = false;
             HasTouchpadData = false;
             HasSecondTouchpadData = false;
             LastRawStateDeviceGuid = Guid.Empty;
@@ -560,7 +573,6 @@ namespace PadForge.ViewModels
                 {
                     if (_selectedDevice != null)
                     {
-                        _selectedDevice.IsHidden = true;
                         HideDeviceRequested?.Invoke(this, _selectedDevice.InstanceGuid);
                     }
                 },

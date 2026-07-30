@@ -102,6 +102,17 @@ namespace PadForge.ViewModels
             get => _isVirtualControllerConnected;
             set => SetProperty(ref _isVirtualControllerConnected, value);
         }
+
+        private bool _isCreateFailed;
+        /// <summary>Whether the slot's latest virtual-controller create
+        /// attempt failed (engine createFailed latch). Distinct from
+        /// awaiting devices: the flame tooltip must not blame absent
+        /// devices for a failed create.</summary>
+        public bool IsCreateFailed
+        {
+            get => _isCreateFailed;
+            set => SetProperty(ref _isCreateFailed, value);
+        }
     }
 
     /// <summary>
@@ -213,6 +224,7 @@ namespace PadForge.ViewModels
             // Compute global slot number and per-type instance numbers.
             int xboxCount = 0;
             int playstationCount = 0;
+            int nintendoCount = 0;
             int extendedCount = 0;
             int midiCount = 0;
             int kbmCount = 0;
@@ -233,6 +245,11 @@ namespace PadForge.ViewModels
                         playstationCount++;
                         instanceNum = playstationCount;
                         iconKey = "DS4ControllerIcon";
+                        break;
+                    case VirtualControllerType.Nintendo:
+                        nintendoCount++;
+                        instanceNum = nintendoCount;
+                        iconKey = "NintendoControllerIcon";
                         break;
                     case VirtualControllerType.Extended:
                         extendedCount++;

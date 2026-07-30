@@ -139,9 +139,6 @@ namespace PadForge.Common.Input
             public int Ds5Seq;
             public byte Ds5PktCounter;
 
-            /// <summary>BT idle-gate state (BT thread only).</summary>
-            public bool BtStreaming;
-
             // ── DualShock 4 BT lane (SBC over report 0x17) — BT thread only.
             /// <summary>Clean-room SBC encoder (32 kHz JS/SNR/bitpool 48).</summary>
             public Ds4SbcEncoder Ds4Sbc;
@@ -689,6 +686,19 @@ namespace PadForge.Common.Input
                     && !VendorAudioTestActive_NoLock(deviceGuid);
         }
 
+        /// <summary>Non-consuming read of the one-shot below. The dispatcher
+        /// builds its payload under one lock and performs the blocking HID
+        /// write later under another, and that write can be dropped as stale or
+        /// fail outright. Consuming at build time therefore armed the flag,
+        /// dropped the write, and left the firmware speaker path asserted with
+        /// nothing left to restore it. Peek while building, consume only once
+        /// the write has actually landed.</summary>
+        public static bool PeekSpeakerPathCleared(Guid deviceGuid)
+        {
+            lock (_lock)
+                return _speakerPathCleared.Contains(deviceGuid);
+        }
+
         /// <summary>One-shot per device after its sink is torn down, so the
         /// dispatcher restores the firmware headphone path once.</summary>
         public static bool TryConsumeSpeakerPathCleared(Guid deviceGuid)
@@ -1016,7 +1026,6 @@ namespace PadForge.Common.Input
             s.BtHandle = new IntPtr(-1);
             s.Tx = null;
             s.Ds5OpusEncoder = null;   // rebuilt sinks start with a fresh encoder
-            s.BtStreaming = false;  // and a fresh stream clock
             s.Ds4Sbc = null;
             s.Ds4Frames = null;
             s.Ds4PendingCount = 0;
@@ -1386,12 +1395,20 @@ namespace PadForge.Common.Input
                 long next = DateTime.UtcNow.Ticks + cadTicks;
                 var me = Thread.CurrentThread;
 
+                // Reused scratch: the LINQ Where().ToList() pair allocated
+                // an enumerator + list ~94 times a second on this
+                // Highest-priority thread even with a stable sink set.
+                var btSinks = new List<Sink>();
+                var peerSinks = new List<Sink>();
+                var minusOne = new IntPtr(-1);
                 while (_running && ReferenceEquals(_btThread, me))
                 {
-                    List<Sink> btSinks;
+                    btSinks.Clear();
                     lock (_lock)
-                        btSinks = _sinks.Values.Where(s => s.IsBt && !s.TransportFailed && s.BtHandle != new IntPtr(-1)
-                                                        && !VendorAudioTestActive_NoLock(s.DeviceGuid)).ToList();
+                        foreach (var s in _sinks.Values)
+                            if (s.IsBt && !s.TransportFailed && s.BtHandle != minusOne
+                                && !VendorAudioTestActive_NoLock(s.DeviceGuid))
+                                btSinks.Add(s);
 
                     foreach (var s in btSinks)
                     {
@@ -1423,7 +1440,6 @@ namespace PadForge.Common.Input
                             // pad's radio and our CPU rest; the read above keeps
                             // the ring cursor live and the activity stamp fresh.
                             bool audible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
-                            s.BtStreaming = audible;
                             if (!audible) continue;
 
                             if (s.IsDs4)
@@ -1458,9 +1474,11 @@ namespace PadForge.Common.Input
                     // silence included — at the same 48 kHz pull as the BT lanes, so
                     // the owner's ring stays primed and the next sound starts gapless;
                     // the owner's own idle gate rests the radio when the audio is silent.
-                    List<Sink> peerSinks;
-                    lock (_lock)
-                        peerSinks = _running ? _sinks.Values.Where(s => s.IsPeer).ToList() : new List<Sink>();
+                    peerSinks.Clear();
+                    if (_running)
+                        lock (_lock)
+                            foreach (var s in _sinks.Values)
+                                if (s.IsPeer) peerSinks.Add(s);
                     foreach (var s in peerSinks)
                     {
                         try { ShipPeerAudioTick(s, pull); }
@@ -1589,11 +1607,14 @@ namespace PadForge.Common.Input
         /// s16 (persistent-phase linear, exact 3:2 so pitch is exact; the
         /// drift trim arrives through <paramref name="inFrames"/> like the
         /// DS5 lane), encode full 256-sample blocks to 109-byte SBC frames,
-        /// and ship at most ONE 4-frame report 0x17 per tick — the DS5
-        /// hardware experiments showed Sony firmware drops bursts, so the
-        /// same skip-not-burst discipline applies here as the conservative
-        /// default until DS4 hardware says otherwise. Steady state: 2.67
-        /// frames produced per 10.667 ms tick, one report per ~16 ms.</summary>
+        /// then drain the queue the way ds4mac does: wait for four buffered
+        /// frames, then ship reports while at least two remain, 4-frame 0x17
+        /// preferred and 2-frame 0x14 as the fallback. That means a tick
+        /// after a stall sends more than one report on purpose, which is the
+        /// reference's proven recovery. The DS5's one-report-per-tick rule
+        /// is a DS5 finding and is deliberately not projected here (see the
+        /// drain loop's own note). Steady state: 2.67 frames produced per
+        /// 10.667 ms tick, one report per ~16 ms.</summary>
         private static void Ds4BtTick(Sink s, float[] pull, int inFrames)
         {
             if (s.Ds4Sbc == null || s.Ds4Pending == null || s.Ds4Frames == null) return;

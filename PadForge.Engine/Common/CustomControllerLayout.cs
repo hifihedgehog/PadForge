@@ -24,6 +24,16 @@ namespace PadForge.Engine
         /// <summary>Number of triggers (each consumes 1 of the Axes count).</summary>
         public int Triggers;
 
+        /// <summary>Bit i set = raw button i is a digital trigger-click
+        /// per the active HIDMaestro profile layout's button roles
+        /// (LeftTriggerClick / RightTriggerClick, e.g. ZL/ZR on the
+        /// Switch Pro). Trigger-click buttons fed by a physical trigger
+        /// AXIS fire at press detection rather than the generic 50%
+        /// axis-to-button midpoint, matching how PlayStation pads assert
+        /// their digital trigger followers. Derived at slot sync from
+        /// the profile; zero when the layout declares no such roles.</summary>
+        public int TriggerClickButtonMask;
+
         /// <summary>
         /// Returns <c>true</c> when <paramref name="axisIndex"/> in this layout
         /// holds a trigger axis (Z / Rz on the wire), <c>false</c> when it holds

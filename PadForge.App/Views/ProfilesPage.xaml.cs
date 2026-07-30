@@ -146,6 +146,11 @@ namespace PadForge.Views
         private ProfileShortcutViewModel _recordingShortcut;
         private DispatcherTimer _recordTimer;
         private TriggerButtonEntry[] _lastRecordedEntries;
+        /// <summary>The combo that was on the shortcut before recording began.
+        /// Starting a Learn clears TriggerEntries so the capture starts from
+        /// empty, and without this the existing combo was simply destroyed:
+        /// cancelling or timing out left the shortcut with no trigger at all.</summary>
+        private TriggerButtonEntry[] _preRecordEntries;
         private Dictionary<Guid, int[]> _recordAxisBaselines;
         private const float AxisRecordDeltaThreshold = 0.25f;
         private DateTime _recordStartTime;
@@ -175,6 +180,7 @@ namespace PadForge.Views
 
             _recordingShortcut = shortcut;
             _lastRecordedEntries = null;
+            _preRecordEntries = shortcut.Data.TriggerEntries;
             shortcut.IsRecording = true;
             shortcut.Data.TriggerEntries = null;
 
@@ -205,9 +211,25 @@ namespace PadForge.Views
         {
             _recordTimer?.Stop();
             if (_recordingShortcut != null && _lastRecordedEntries != null && _lastRecordedEntries.Length > 0)
+            {
                 _recordingShortcut.SetLearnedButtons(_lastRecordedEntries);
+            }
             else
+            {
+                // Sibling of the restore in CancelRecording, and the one that
+                // actually fires most often: this is the TIMEOUT path, where
+                // the user pressed nothing. Learn cleared TriggerEntries at
+                // start, so without putting the backup back the shortcut is
+                // left with no trigger at all.
+                if (_recordingShortcut != null
+                    && (_recordingShortcut.Data.TriggerEntries == null
+                        || _recordingShortcut.Data.TriggerEntries.Length == 0))
+                {
+                    _recordingShortcut.Data.TriggerEntries = _preRecordEntries;
+                }
                 _recordingShortcut?.CancelRecording();
+            }
+            _preRecordEntries = null;
             _recordingShortcut = null;
             _lastRecordedEntries = null;
             _recordAxisBaselines = null;
@@ -319,6 +341,16 @@ namespace PadForge.Views
         private void CancelRecording()
         {
             _recordTimer?.Stop();
+            // Put back what Learn cleared. Both exits from a recording that
+            // captured nothing, the explicit cancel and the timeout, land
+            // here, and neither restored the combo the user already had.
+            if (_recordingShortcut != null
+                && (_recordingShortcut.Data.TriggerEntries == null
+                    || _recordingShortcut.Data.TriggerEntries.Length == 0))
+            {
+                _recordingShortcut.Data.TriggerEntries = _preRecordEntries;
+            }
+            _preRecordEntries = null;
             _recordingShortcut?.CancelRecording();
             _recordingShortcut = null;
             _recordAxisBaselines = null;

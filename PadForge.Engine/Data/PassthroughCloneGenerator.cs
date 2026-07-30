@@ -29,7 +29,7 @@ namespace PadForge.Engine.Data
     /// axis layout (<c>ExtendedSlotConfig.ComputeAxisLayout</c>, replicated
     /// below) places trigger slots at the same flat indices the gamepad uses,
     /// so identity holds there too: a standard 6-axis pad clones as
-    /// ExtendedAxis0..5 ← Axis 0..5 with 2 and 5 as triggers.</para>
+    /// RawAxis0..5 ← Axis 0..5 with 2 and 5 as triggers.</para>
     ///
     /// <para>Extended tops out at 8 axes, 128 buttons, and 4 POVs (DirectInput
     /// limits); anything the device exposes beyond those caps is reported as
@@ -56,8 +56,8 @@ namespace PadForge.Engine.Data
                 Descriptor = descriptor;
             }
 
-            /// <summary>Extended output key, e.g. <c>"ExtendedAxis0"</c>,
-            /// <c>"ExtendedBtn3"</c>, <c>"ExtendedPov0Up"</c>.</summary>
+            /// <summary>Extended output key, e.g. <c>"RawAxis0"</c>,
+            /// <c>"RawBtn3"</c>, <c>"RawPov0Up"</c>.</summary>
             public string Target { get; }
 
             /// <summary>Source descriptor, e.g. <c>"Axis 0"</c>, <c>"Button 3"</c>,
@@ -153,9 +153,9 @@ namespace PadForge.Engine.Data
                 triggerSlots.Add(slotOffset++);
 
             for (int k = 0; k < stickAxesMapped; k++)
-                result.Rows.Add(new CloneRow($"ExtendedAxis{stickSlots[k]}", axisDescriptors[k]));
+                result.Rows.Add(new CloneRow($"RawAxis{stickSlots[k]}", axisDescriptors[k]));
             for (int k = 0; k < triggersMapped; k++)
-                result.Rows.Add(new CloneRow($"ExtendedAxis{triggerSlots[k]}", triggerDescriptors[k]));
+                result.Rows.Add(new CloneRow($"RawAxis{triggerSlots[k]}", triggerDescriptors[k]));
 
             // ── Buttons ──
             result.ButtonsAvailable = buttonDescriptors.Count;
@@ -163,7 +163,7 @@ namespace PadForge.Engine.Data
             result.ButtonsMapped = buttonsMapped;
             result.Buttons = buttonsMapped;
             for (int k = 0; k < buttonsMapped; k++)
-                result.Rows.Add(new CloneRow($"ExtendedBtn{k}", buttonDescriptors[k]));
+                result.Rows.Add(new CloneRow($"RawBtn{k}", buttonDescriptors[k]));
 
             // ── POVs (four directions each) ──
             result.PovsAvailable = povInputIndices.Count;
@@ -174,7 +174,7 @@ namespace PadForge.Engine.Data
             {
                 int srcHat = povInputIndices[k];
                 foreach (string dir in PovDirections)
-                    result.Rows.Add(new CloneRow($"ExtendedPov{k}{dir}", $"POV {srcHat} {dir}"));
+                    result.Rows.Add(new CloneRow($"RawPov{k}{dir}", $"POV {srcHat} {dir}"));
             }
 
             return result;

@@ -101,6 +101,9 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(VendorIdHex));
                     OnPropertyChanged(nameof(HasVidPid));
+                    OnPropertyChanged(nameof(ShowRegisterNfcTag));
+                    OnPropertyChanged(nameof(HasNfcCapabilityChip));
+                    OnPropertyChanged(nameof(CapabilitiesSummary));
                     // Transport depends on VID/PID for the fork BLE Switch 2
                     // case (empty DevicePath never fires its own notify).
                     OnPropertyChanged(nameof(IsBluetoothLink));
@@ -120,6 +123,9 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(ProductIdHex));
                     OnPropertyChanged(nameof(HasVidPid));
+                    OnPropertyChanged(nameof(ShowRegisterNfcTag));
+                    OnPropertyChanged(nameof(HasNfcCapabilityChip));
+                    OnPropertyChanged(nameof(CapabilitiesSummary));
                     OnPropertyChanged(nameof(IsBluetoothLink));
                 }
             }
@@ -165,15 +171,6 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _isEnabled, value))
                     OnPropertyChanged(nameof(StatusText));
             }
-        }
-
-        private bool _isHidden;
-
-        /// <summary>Whether the device is hidden from the UI.</summary>
-        public bool IsHidden
-        {
-            get => _isHidden;
-            set => SetProperty(ref _isHidden, value);
         }
 
         /// <summary>Status text for display.</summary>
@@ -511,8 +508,16 @@ namespace PadForge.ViewModels
         /// CC preview on the Devices page (issue #128).</summary>
         public bool IsMidiDevice => DeviceTypeKey == "Midi";
 
-        /// <summary>Whether to show the "Consume mapped inputs" toggle (keyboards and mice only).</summary>
-        public bool ShowConsumeToggle => DeviceTypeKey == "Keyboard" || DeviceTypeKey == "Mouse";
+        /// <summary>Whether to show the "Consume mapped inputs" toggle (real
+        /// keyboards and mice only). Consumption works by suppressing the
+        /// source at the raw/descriptor layer, which exists only for a real
+        /// Windows HID device, so an internal virtual source (a web touchpad,
+        /// the on-screen overlay) has nothing to consume and the toggle did
+        /// nothing there. Its neighbours in the same panel already carry this
+        /// term (ShowInputHidingSection, ShowInputModeSection); this was the
+        /// member of that family that missed it.</summary>
+        public bool ShowConsumeToggle =>
+            (DeviceTypeKey == "Keyboard" || DeviceTypeKey == "Mouse") && !IsInternalVirtual;
 
         /// <summary>True for PadForge-internal virtual sources (web controllers, web
         /// touchpads, the on-screen touchpad overlay). Identified by a URI-scheme
@@ -561,8 +566,16 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsInternalVirtual));
                     OnPropertyChanged(nameof(ShowInputHidingSection));
                     OnPropertyChanged(nameof(ShowInputModeSection));
+                    // ShowConsumeToggle now gates on IsInternalVirtual, which
+                    // is path-derived, so it belongs in this refresh group
+                    // with the other path-derived siblings.
+                    OnPropertyChanged(nameof(ShowConsumeToggle));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
                     OnPropertyChanged(nameof(IsBluetoothLink));
+                    // ShowRegisterNfcTag's controller branch now gates on
+                    // IsBluetoothLink, which is path-derived, so a link
+                    // change must refresh the button too.
+                    OnPropertyChanged(nameof(ShowRegisterNfcTag));
                     OnPropertyChanged(nameof(DossierConnectionPath));
                 }
             }
@@ -614,8 +627,40 @@ namespace PadForge.ViewModels
         public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc";
 
         /// <summary>True for an NFC reader (issue #150): shows the "Register/Manage
-        /// NFC Tags" button, which opens the tap-to-name registration flow.</summary>
-        public bool ShowRegisterNfcTag => DeviceTypeKey == "Nfc";
+        /// NFC Tags" button, which opens the tap-to-name registration flow.
+        /// Also true for a Switch right Joy-Con / Pro Controller (issue #241),
+        /// whose own NFC reader registers tags through the same dialog. Without
+        /// this, a controller-only user could never open the dialog, so the
+        /// MCU never armed and no tag could ever be captured (Codex #1). The
+        /// dialog opening arms the reader via RegistrationCaptureActive.
+        /// Controller readers are gated to Bluetooth links: their NFC MCU is
+        /// a Bluetooth-only capability (SDL#15, cite-verified 2026-07-24), so
+        /// a USB-linked controller offers no registration, matching the
+        /// arming gate in InputService.RefreshSwitchNfcArming. Standalone
+        /// PC/SC readers (DeviceTypeKey == "Nfc") are USB and keep the
+        /// button.</summary>
+        public bool ShowRegisterNfcTag =>
+            (DeviceTypeKey == "Nfc"
+             || (VendorId == 0x057E && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009)
+                 && IsBluetoothLink))
+            // Remote rows (reader or controller) keep the owner's identity,
+            // but the tap event that feeds registration never crosses the
+            // link (the wire carries resolved tag bits, not UIDs), so
+            // offering the dialog there was a dead button (#248 audit).
+            // Register on the owner.
+            && !(DevicePath != null && DevicePath.StartsWith("peer://", System.StringComparison.Ordinal));
+
+        /// <summary>Whether to show the "NFC" capability chip in the summary:
+        /// a controller that carries an NFC reader (Switch right Joy-Con
+        /// 0x2007, combined pair 0x2008, Pro 0x2009), where NFC is a secondary
+        /// capability listed beside Rumble and Gyro. A standalone PC/SC reader
+        /// (DeviceTypeKey "Nfc") is excluded: its device type already conveys
+        /// NFC, so a chip would be redundant. Hardware capability, not the
+        /// transport-gated arming state (SDL#15), so it reads true whether the
+        /// controller is currently linked over Bluetooth or USB.</summary>
+        public bool HasNfcCapabilityChip =>
+            VendorId == 0x057E
+            && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009);
 
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary
@@ -636,6 +681,13 @@ namespace PadForge.ViewModels
                 if (_hasAccel) Append(Strings.Instance.Devices_Accel);
                 // Only show "Touchpad" capability on non-touchpad-type devices (e.g. DualSense gamepad).
                 if (_hasTouchpad && !isTouchpadType) Append(Strings.Instance.Btn_Touchpad);
+                // NFC reader as a secondary capability of a controller (Switch
+                // right Joy-Con / combined pair / Pro), shown beside Rumble and
+                // Gyro. A standalone PC/SC reader's own type already reads NFC,
+                // so it is not repeated as a capability chip (the touchpad
+                // pattern above). Hardware presence, not transport: the reader
+                // exists regardless of how the controller is linked.
+                if (HasNfcCapabilityChip) Append(Strings.Instance.Devices_Nfc);
 
                 return sb.Length > 0 ? sb.ToString() : Strings.Instance.Btn_Touchpad;
             }
@@ -688,6 +740,7 @@ namespace PadForge.ViewModels
     {
         private static readonly System.Windows.Media.Geometry XboxGeometry = ParseFrozen(Common.ControllerIcons.XboxSvgPath);
         private static readonly System.Windows.Media.Geometry PlayStationGeometry = ParseFrozen(Common.ControllerIcons.DS4SvgPath);
+        private static readonly System.Windows.Media.Geometry NintendoGeometry = ParseFrozen(Common.ControllerIcons.SwitchSvgPath);
         private static readonly System.Windows.Media.Geometry ExtendedGeometry = ParseFrozen(Common.ControllerIcons.ExtendedSvgPath);
 
         private static System.Windows.Media.Geometry ParseFrozen(string pathData)
@@ -701,6 +754,7 @@ namespace PadForge.ViewModels
         public static System.Windows.Media.Geometry GeometryFor(Engine.VirtualControllerType type) => type switch
         {
             Engine.VirtualControllerType.PlayStation => PlayStationGeometry,
+            Engine.VirtualControllerType.Nintendo => NintendoGeometry,
             Engine.VirtualControllerType.Extended => ExtendedGeometry,
             Engine.VirtualControllerType.Midi => null,
             Engine.VirtualControllerType.KeyboardMouse => null,

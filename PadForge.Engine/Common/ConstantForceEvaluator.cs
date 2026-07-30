@@ -78,6 +78,14 @@ namespace PadForge.Engine
 
             scratch.LeftMotorSpeed = leftMotor;
             scratch.RightMotorSpeed = rightMotor;
+            // Carry the game's impulse-trigger motors through untouched.
+            // The gameForce gate above tests only the two main motors and the
+            // directional/condition flags, so a title driving ONLY the trigger
+            // motors falls through to here, and a scratch that never set these
+            // handed the writer two zeroes. Constant force owns the main
+            // motors; it has no claim on the triggers.
+            scratch.LeftTriggerMotorSpeed = raw.LeftTriggerMotorSpeed;
+            scratch.RightTriggerMotorSpeed = raw.RightTriggerMotorSpeed;
             scratch.HasDirectionalData = true;
             scratch.HasConditionData = false;
             scratch.EffectType = FfbEffectTypes.Const;
@@ -91,13 +99,25 @@ namespace PadForge.Engine
         private static bool IsEnabled(string s)
             => s == "1" || string.Equals(s, "true", StringComparison.OrdinalIgnoreCase);
 
+        // Memoized: ConstantForceX/Y change only on user edit, but this
+        // parses per device per slot per 1 kHz tick while constant force
+        // is enabled. Same capped-invariant policy as the Step 3 tuning
+        // parse memos.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, double>
+            s_normCache = new(StringComparer.Ordinal);
+
         private static double ParseNorm(string s)
         {
             if (string.IsNullOrEmpty(s)) return 0.0;
-            if (!double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out double v))
-                return 0.0;
-            if (double.IsNaN(v) || double.IsInfinity(v)) return 0.0;
-            return Math.Clamp(v, -1.0, 1.0);
+            if (s_normCache.TryGetValue(s, out double cached)) return cached;
+            double result;
+            if (!double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out double v)
+                || double.IsNaN(v) || double.IsInfinity(v))
+                result = 0.0;
+            else
+                result = Math.Clamp(v, -1.0, 1.0);
+            if (s_normCache.Count < 4096) s_normCache[s] = result;
+            return result;
         }
     }
 }

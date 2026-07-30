@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -40,6 +41,16 @@ namespace PadForge
         /// <summary>Suppressed error count since last shown popup.</summary>
         private int _suppressedErrorCount;
 
+        /// <summary>Occurrences per dispatcher-exception signature this
+        /// session. A storyboard that dies during template application is
+        /// retried and rethrown by every subsequent layout pass (the
+        /// 2026-07-13 workshop forge-bar storm logged 300k+ identical
+        /// entries and re-showed the same dialog every 3 seconds), so the
+        /// dialog shows once per signature per session and crash.log keeps
+        /// the first three full entries plus a periodic one-line counter.
+        /// Dispatcher-thread only.</summary>
+        private readonly Dictionary<string, int> _dispatcherErrorSignatures = new();
+
         /// <summary>Set when GPU render thread is zombied. Suppresses all cascading exceptions.</summary>
         private bool _gpuLost;
 
@@ -59,11 +70,14 @@ namespace PadForge
         /// Background task sweeping HIDMaestro virtual controllers orphaned
         /// by a prior session that didn't cleanly dispose (crash, force-kill,
         /// power loss). Kicked off during OnStartup so the main window can
-        /// render immediately; awaited from <see cref="InputManager.InitializeSdl"/>
-        /// before SDL enumerates devices so the orphans never surface in
-        /// Devices list or XInput slots. By the time the user's engine Start
-        /// fires, the sweep is typically already complete; the Wait there
-        /// is the safety catch when a heavy kernel cleanup runs long.
+        /// render immediately. Nothing awaits it for correctness anymore
+        /// (an earlier InitializeSdl await was removed when the SDL3 fork
+        /// grew its own HM filter; round 33, C3 retired the stale claim
+        /// here): the ordering property lives INSIDE the task, which ends
+        /// with a bounded wait (up to 5 s) for the HIDMAESTRO devnodes to
+        /// be genuinely ABSENT, so a same-session VC create cannot adopt a
+        /// dying node, and logs ORPHANSWEEP when one lingers past the
+        /// bound. MainWindow only watches it to show the startup overlay.
         /// </summary>
         public static System.Threading.Tasks.Task OrphanSweepTask { get; private set; }
 
@@ -197,6 +211,21 @@ namespace PadForge
             {
                 try { HIDMaestro.HMContext.RemoveAllVirtualControllers(); }
                 catch { /* best effort — continue without sweep */ }
+                // HM#38 consumer-side ordering hygiene: RemoveAll returns when
+                // the CALL completes, not when PnP removal completes, and a
+                // create racing an in-flight removal was one of the freeze's
+                // trigger windows. Wait (bounded) for the devnodes to actually
+                // be gone before the first enumeration proceeds. Purely an
+                // ordering barrier: with the v1.3.22 driver the freeze itself
+                // is structurally fixed, and if something genuinely cannot be
+                // removed we log and proceed rather than block startup.
+                for (int i = 0; i < 25; i++)
+                {
+                    if (!Common.SetupApiInterop.AnyPresentHidMaestroDevice()) return;
+                    System.Threading.Thread.Sleep(200);
+                }
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    "ORPHANSWEEP devnodes still present after 5 s; proceeding");
             });
 
             // Reconcile BthPS3 PSM patching to the crash-safe state once per
@@ -427,20 +456,41 @@ namespace PadForge
         {
             e.Handled = true;
 
-            try { System.IO.File.AppendAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log"),
-                $"[{DateTime.Now:HH:mm:ss}] DISPATCHER: {ExceptionMessageChain(e.Exception)}\n{ExceptionStackChain(e.Exception)}\n\n"
-                // Before startup completes, a dispatcher exception is a
-                // failed launch (OnStartup aborted): flush the diagnostics
-                // ring like the fatal DOMAIN path does. Steady-state
-                // dispatcher errors skip the appendix so an exception storm
-                // doesn't snowball crash.log.
-                + (!_startupUiReady
-                    ? "-- recent diagnostics --\n" + Engine.SdlDiagLog.Snapshot() + "\n\n"
-                    : string.Empty)); }
+            string signature = ExceptionMessageChain(e.Exception);
+            _dispatcherErrorSignatures.TryGetValue(signature, out int priorHits);
+            int hits = priorHits + 1;
+            _dispatcherErrorSignatures[signature] = hits;
+
+            // Storm bound: full entries for the first three hits of a
+            // signature, then a one-line counter every 500th, nothing in
+            // between. A layout-retry storm otherwise appends the same
+            // multi-kilobyte stack thousands of times.
+            try
+            {
+                string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log");
+                if (hits <= 3)
+                {
+                    System.IO.File.AppendAllText(logPath,
+                        $"[{DateTime.Now:HH:mm:ss}] DISPATCHER{(hits > 1 ? $" (hit {hits})" : string.Empty)}: {signature}\n{ExceptionStackChain(e.Exception)}\n\n"
+                        // Before startup completes, a dispatcher exception is a
+                        // failed launch (OnStartup aborted): flush the diagnostics
+                        // ring like the fatal DOMAIN path does. Steady-state
+                        // dispatcher errors skip the appendix so an exception storm
+                        // doesn't snowball crash.log.
+                        + (!_startupUiReady
+                            ? "-- recent diagnostics --\n" + Engine.SdlDiagLog.Snapshot() + "\n\n"
+                            : string.Empty));
+                }
+                else if (hits == 4 || hits % 500 == 0)
+                {
+                    System.IO.File.AppendAllText(logPath,
+                        $"[{DateTime.Now:HH:mm:ss}] DISPATCHER (hit {hits}, further identical entries suppressed): {signature.Split('\n')[0]}\n\n");
+                }
+            }
             catch { }
 
             // Once the render thread is zombied, suppress ALL cascading exceptions
-            // silently — they're all downstream failures from the same GPU device loss.
+            // silently: they're all downstream failures from the same GPU device loss.
             if (_gpuLost)
                 return;
 
@@ -452,6 +502,18 @@ namespace PadForge
                 return;
             }
 
+            // One dialog per signature per session. A storyboard that dies
+            // during template application rethrows on every layout retry,
+            // and the 3-second limiter alone re-shows the same dialog for
+            // as long as the storm lasts.
+            if (hits > 1)
+            {
+                _suppressedErrorCount++;
+                if (!_startupUiReady)
+                    Shutdown(1);
+                return;
+            }
+
             // Rate-limit: if an error was shown in the last 3 seconds, suppress
             // the popup to prevent the infinite MessageBox loop that occurs when
             // the 30Hz DispatcherTimer fires during the modal MessageBox.Show()
@@ -459,6 +521,8 @@ namespace PadForge
             if (_lastErrorTime.IsRunning && _lastErrorTime.ElapsedMilliseconds < 3000)
             {
                 _suppressedErrorCount++;
+                if (!_startupUiReady)
+                    Shutdown(1);
                 return;
             }
 
@@ -470,7 +534,7 @@ namespace PadForge
 
             MessageBox.Show(
                 string.Format(Strings.Instance.App_UnexpectedError_Format,
-                    ExceptionMessageChain(e.Exception), ExceptionStackChain(e.Exception)) + suppressed,
+                    signature, ExceptionStackChain(e.Exception)) + suppressed,
                 Strings.Instance.App_Error,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);

@@ -237,7 +237,18 @@ namespace PadForge.Engine
         /// <summary>Sets the connection state.</summary>
         public void SetConnected(bool connected) => _connected = connected;
 
-        public CustomInputState GetCurrentState(bool forceRaw = false) => _currentState.Clone();
+        // Pooled per-tick output. The publisher is strict copy-on-write
+        // (every mutator clones, edits, swaps), so a single volatile grab
+        // plus CopyInto needs no lock.
+        private PadForge.Engine.PooledInputStatePair _statePool;
+
+        public CustomInputState GetCurrentState(bool forceRaw = false)
+        {
+            var src = _currentState;
+            var dst = _statePool.Next();
+            src.CopyInto(dst);
+            return dst;
+        }
 
         public DeviceObjectItem[] GetDeviceObjects()
         {

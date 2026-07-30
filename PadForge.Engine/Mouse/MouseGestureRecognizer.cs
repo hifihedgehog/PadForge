@@ -1,4 +1,5 @@
 using System;
+using PadForge.Engine.Common.Mapping;
 
 namespace PadForge.Engine.Mouse
 {
@@ -11,6 +12,10 @@ namespace PadForge.Engine.Mouse
     /// THAT button; below the threshold the release fires that button's
     /// Click. Each button is an independent session with its own cooldown,
     /// so different gesture buttons carry different mapping combos.
+    /// Session index 5 is the Custom activation (discussion #216): a
+    /// recorded cross-device input (key / gamepad button / axis past the
+    /// button threshold) arms it through <see cref="ComposePressedMask"/>,
+    /// then classifies identically to a mouse button's session.
     ///
     /// <para>Fired keys latch in
     /// <see cref="MouseGestureContext.FiredGesturesThisFrame"/> as
@@ -56,6 +61,37 @@ namespace PadForge.Engine.Mouse
                     keys[b][g] = b + " " + GestureNames[g];
             }
             return keys;
+        }
+
+        /// <summary>Composes the pressed mask <see cref="Update"/> consumes
+        /// for a tick (discussion #216): the raw mouse buttons clamped to
+        /// the five physical indices, plus the Custom bit when the
+        /// settings' recorded cross-device input is held. The held read is
+        /// <see cref="SourceCoercion.ButtonHeldProvider"/>, the same reader
+        /// the Aim Engage / trigger-route / haptic-mirror engage settles
+        /// use, so buttons hold while pressed and axis descriptors hold
+        /// past the button threshold. The provider's empty-descriptor
+        /// pass-through convention (unconfigured = true) is deliberately
+        /// bypassed: an unconfigured Custom button must stay inert, so the
+        /// provider is only consulted when the Custom bit is selected AND a
+        /// descriptor is recorded. Poll thread only, zero extra work when
+        /// Custom is unselected or the card is disabled (Update ignores
+        /// the mask in that state, so the read would be dead work).</summary>
+        public static int ComposePressedMask(
+            int mouseButtonsMask, MouseGestureSettings settings, int slotIndex)
+        {
+            int mask = mouseButtonsMask & ((1 << MouseGestureContext.MouseButtonCount) - 1);
+            if (settings != null
+                && settings.Enabled
+                && (settings.GestureButtons & (1 << MouseGestureContext.CustomButtonIndex)) != 0
+                && !string.IsNullOrEmpty(settings.CustomEngageButton)
+                && (SourceCoercion.ButtonHeldProvider?.Invoke(
+                        settings.CustomEngageDeviceGuid ?? "",
+                        settings.CustomEngageButton, slotIndex) ?? false))
+            {
+                mask |= 1 << MouseGestureContext.CustomButtonIndex;
+            }
+            return mask;
         }
 
         public static void Update(

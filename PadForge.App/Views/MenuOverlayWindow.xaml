@@ -1,0 +1,26 @@
+<Window x:Class="PadForge.Views.MenuOverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="NoResize"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        Focusable="False"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="Manual"
+        Background="Transparent">
+
+    <!--
+        Radial / touch menu overlay (#9 B-17). Click-through HUD following
+        the ShiftLayerFlyout precedent: WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW
+        | WS_EX_TRANSPARENT applied on Loaded, so it never steals focus
+        from the game and never eats a click. Content is built in code
+        (wedge paths for radial rings, bordered cells for grids) and only
+        the hover highlight is restyled per UI tick.
+    -->
+    <Grid>
+        <Canvas x:Name="MenuCanvas"/>
+    </Grid>
+</Window>

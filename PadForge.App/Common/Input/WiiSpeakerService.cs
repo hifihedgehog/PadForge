@@ -367,21 +367,33 @@ namespace PadForge.Common.Input
                 var settings = SettingsManager.UserSettings;
                 if (settings != null)
                 {
-                    var seen = new HashSet<Guid>();
-                    var assigned = new List<(int MapTo, Guid Guid)>();
+                    // One sink per DEVICE: a remote has one speaker, and the
+                    // sole-writer rule says one lane owns it. When the same
+                    // remote is assigned to several slots, the LOWEST slot
+                    // wins rather than whichever UserSetting happened to sit
+                    // first in Items, which is an ordering the user cannot
+                    // see or control and which could change under an
+                    // unrelated edit.
+                    var lowestSlot = new Dictionary<Guid, int>();
                     lock (settings.SyncRoot)
                     {
                         foreach (var us in settings.Items)
                         {
                             if (us == null || us.MapTo < 0) continue;
-                            if (!seen.Add(us.InstanceGuid)) continue;
-                            assigned.Add((us.MapTo, us.InstanceGuid));
+                            if (!lowestSlot.TryGetValue(us.InstanceGuid, out int prior)
+                                || us.MapTo < prior)
+                                lowestSlot[us.InstanceGuid] = us.MapTo;
                         }
                     }
+                    var assigned = new List<(int MapTo, Guid Guid)>(lowestSlot.Count);
+                    foreach (var kvp in lowestSlot)
+                        assigned.Add((kvp.Value, kvp.Key));
+                    assigned.Sort((a, b) => a.MapTo.CompareTo(b.MapTo));
                     // Resolve devices OUTSIDE the UserSettings lock. FindDeviceByInstanceGuid
                     // takes UserDevices.SyncRoot, and holding UserSettings.SyncRoot while
-                    // acquiring it inverts UpdateDashboard's order (UserDevices then
-                    // UserSettings) and deadlocks. Same snapshot-then-resolve shape as
+                    // acquiring it inverts the canonical lock order (UserDevices before
+                    // UserSettings), which deadlocks against any canonical-order nester.
+                    // Same snapshot-then-resolve shape as
                     // AudioPassthroughService.EnumerateAssignedSonyPads.
                     foreach (var (mapTo, guid) in assigned)
                     {
@@ -900,6 +912,16 @@ namespace PadForge.Common.Input
                         while (s.Running && (next - sw.ElapsedTicks) > spinTicks) Thread.Sleep(1);
                         while (s.Running && sw.ElapsedTicks < next) Thread.SpinWait(16);
                         next += intervalTicks;
+                        // Accumulate, but not without bound. A long stall (a
+                        // blocked write, a suspended thread) left next far in
+                        // the past, and the two waits above then fell straight
+                        // through for every missed interval, firing a burst of
+                        // back-to-back writes at the speaker with no pacing.
+                        // Catch-up is still what happens for ordinary overruns;
+                        // past a few intervals behind, re-base instead.
+                        long behind = sw.ElapsedTicks - next;
+                        if (behind > intervalTicks * 4)
+                            next = sw.ElapsedTicks + intervalTicks;
                     }
                     else
                     {

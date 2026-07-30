@@ -68,6 +68,13 @@ namespace PadForge
         private MappingItem _pendingNegMapping;
         /// <summary>Saved positive descriptor while recording the negative direction.</summary>
         private string _savedPosDescriptor;
+        /// <summary>Set when the neg-first quadrant chain starts its second
+        /// (positive) phase. PromoteNegDescriptorToExtraSource empties
+        /// NegSourceDescriptor at the end of phase one, so the normal-path
+        /// "neg isn't already mapped" emptiness check would re-prompt for the
+        /// direction that was just recorded. The flag marks the row whose
+        /// chain is already complete; consumed by the next completion.</summary>
+        private MappingItem _negChainCompletedMapping;
 
         // #111 single-button recording for a non-Direct primary kind. The one
         // row Record button records the kind's own inputs. Ramp / Incremental
@@ -200,6 +207,9 @@ namespace PadForge
 
             // Wire NavigationView events in code-behind (WPF UI uses TypedEventHandler).
             NavView.SelectionChanged += NavView_SelectionChanged;
+            // ItemInvoked fires even when SelectsOnInvoked=false (used for
+            // AddController). Wired here ONLY. BuildNavigationItems used to
+            // subscribe it a second time.
             NavView.ItemInvoked += NavView_ItemInvoked;
 
             // Fade compact icons in when pane closes, fade out when it opens.
@@ -489,6 +499,9 @@ namespace PadForge
             _viewModel.Settings.EditProfileRequested += OnEditProfile;
             _viewModel.Settings.LoadProfileRequested += OnLoadProfile;
             _viewModel.Settings.RevertToDefaultRequested += OnRevertToDefault;
+            _viewModel.Settings.BrowseCommunityConfigsRequested += OnBrowseCommunityConfigs;
+            _viewModel.Settings.ClearWorkshopCacheRequested += OnClearWorkshopCache;
+            _viewModel.Settings.CheckWorkshopUpdatesRequested += OnCheckWorkshopUpdates;
 
             // Persist Settings VM changes (theme, polling, checkboxes) and handle login toggle.
             _viewModel.Settings.PropertyChanged += (s, e) =>
@@ -507,24 +520,37 @@ namespace PadForge
                      or nameof(SettingsViewModel.EnableInputHiding)
                      or nameof(SettingsViewModel.KeepHidHideCloaksBetweenLaunches)
                      or nameof(SettingsViewModel.Use2DControllerView)
-                     or nameof(SettingsViewModel.EnableAutoProfileSwitching))
+                     or nameof(SettingsViewModel.EnableAutoProfileSwitching)
+                     or nameof(SettingsViewModel.EnableCommunityConfigLookup)
+                     or nameof(SettingsViewModel.ShowLegacyWorkshopConfigs))
                     _settingsService.MarkDirty();
             };
 
-            // Persist DSU / web controller server settings on change (Dashboard VM).
+            // Persist DSU / Remote Link / web controller / overlay settings on
+            // change (Dashboard VM). This list must cover every Dashboard
+            // property LoadAppSettings restores and BuildAppSettings writes:
+            // a persisted property missing here changes live state but never
+            // marks the file dirty, so a normal close (which saves only when
+            // IsDirty) silently discards it. The Remote Link trio was missing.
             _viewModel.Dashboard.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName is nameof(DashboardViewModel.EnableDsuMotionServer)
                      or nameof(DashboardViewModel.DsuMotionServerPort)
                      or nameof(DashboardViewModel.EnableWebController)
                      or nameof(DashboardViewModel.WebControllerPort)
+                     or nameof(DashboardViewModel.EnableRemoteLink)
+                     or nameof(DashboardViewModel.AutoReconnect)
+                     or nameof(DashboardViewModel.RemoteLinkPort)
                      or nameof(DashboardViewModel.EnableTouchpadOverlay)
                      or nameof(DashboardViewModel.TouchpadOverlayOpacity)
                      or nameof(DashboardViewModel.TouchpadOverlayMonitor)
                      or nameof(DashboardViewModel.TouchpadOverlayLeft)
                      or nameof(DashboardViewModel.TouchpadOverlayTop)
                      or nameof(DashboardViewModel.TouchpadOverlayWidth)
-                     or nameof(DashboardViewModel.TouchpadOverlayHeight))
+                     or nameof(DashboardViewModel.TouchpadOverlayHeight)
+                     or nameof(DashboardViewModel.EnableMenuOverlay)
+                     or nameof(DashboardViewModel.EnableShiftLayerFlyout)
+                     or nameof(DashboardViewModel.EnableProfileOverlay))
                     _settingsService.MarkDirty();
             };
 
@@ -558,6 +584,17 @@ namespace PadForge
             _viewModel.Settings.WhitelistChanged += (s, e) =>
             {
                 _inputService?.ApplyDeviceHiding();
+                // And persist it. The whitelist took effect immediately but
+                // never marked the settings dirty, so a session whose only
+                // change was a whitelist edit discarded it on close and the
+                // path was gone on next launch.
+                //
+                // Marked HERE rather than at the mutation site because this
+                // event is the funnel every whitelist change already raises,
+                // and the LOAD path (SettingsService's Clear-and-repopulate)
+                // deliberately does not raise it, so this cannot dirty the
+                // file merely by reading it.
+                _settingsService?.MarkDirty();
             };
 
             // Wire MIDI Services install/uninstall commands.
@@ -771,9 +808,13 @@ namespace PadForge
                 // are per-(device, slot) on the PadSetting; the handlers
                 // look up the slot's PadSetting via the same key the
                 // mapping editor uses (InstanceGuid + slot index).
-                pad.GyroCalibrateRequested += (s, e) =>
+                pad.GyroCalibrateRequested += async (s, e) =>
                 {
                     if (s is not PadViewModel pvm) return;
+                    // Busy-guard (round eight, R6): the MaxValue hold IS
+                    // the in-flight flag, so a double-click cannot start
+                    // two samplers racing each other's labels and writes.
+                    if (pvm.GyroCalibrationLabelHoldUntilUtc == DateTime.MaxValue) return;
                     var selected = pvm.SelectedMappedDevice;
                     if (selected == null || selected.InstanceGuid == Guid.Empty) return;
                     var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(selected.InstanceGuid);
@@ -781,8 +822,81 @@ namespace PadForge
                     var us = PadForge.Common.Input.SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, pvm.PadIndex);
                     var ps = us?.GetPadSetting();
                     if (ps == null) return;
+                    var calibratedGuid = selected.InstanceGuid;
+                    int generation = pvm.GyroCalibrationGeneration;
+                    // A pass already owns this profile (round eleven).
+                    // Auto-calibration fires on device connect and runs
+                    // 1.5 s, which is exactly when a user plugs in a gyro
+                    // pad and reaches for this button, and the calibrator
+                    // refuses a second concurrent pass. Reporting that
+                    // refusal as "Couldn't calibrate" blamed a healthy,
+                    // stationary pad for the most likely gesture on the
+                    // tab. Round nine introduced the refusal and round
+                    // ten taught the auto lane and the Reset handler what
+                    // it means; this caller was never taught. Show the
+                    // run that IS happening instead.
+                    if (GyroCalibratorService.IsSampling(ps))
+                    {
+                        pvm.GyroCalibrationLabel =
+                            PadForge.Resources.Strings.Strings.Instance.Settings_GyroCalibrating;
+                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.UtcNow.AddSeconds(2);
+                        return;
+                    }
+                    // Hold the label for the run (round seven, R1): the
+                    // 30 Hz tick otherwise clobbers "Calibrating…" within
+                    // one frame, and a motion-rejected run looked exactly
+                    // like nothing happening, so the Calibrate button read
+                    // as dead.
+                    pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MaxValue;
                     pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroCalibrating;
-                    _ = _inputService.GyroCalibrator.RecalibrateAsync(ud, ps);
+                    bool ok = false;
+                    try { ok = await _inputService.GyroCalibrator.RecalibrateAsync(ud, ps); }
+                    catch { }
+                    // Post-await re-validation (round eight, R6): if the
+                    // pad's selection moved to a DIFFERENT device during
+                    // the run, neither banner belongs to what is now on
+                    // screen. Just release the hold; the tick shows the
+                    // current device's own state.
+                    // A Reset during the run voids this result (round
+                    // nine, R5): the write-guard already discarded the
+                    // measurement, so reporting "Couldn't calibrate"
+                    // would blame the user's own abort, and would sit on
+                    // top of whatever the Reset's own auto-fire produced.
+                    if (pvm.SelectedMappedDevice?.InstanceGuid != calibratedGuid
+                        || pvm.GyroCalibrationGeneration != generation)
+                    {
+                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MinValue;
+                        return;
+                    }
+                    if (ok)
+                    {
+                        // Write the fresh label DIRECTLY (round eight,
+                        // R6): the 30 Hz tick is skipped while the window
+                        // is minimized, the page hidden, or the selection
+                        // non-motion, and delegating to it left
+                        // "Calibrating…" pinned indefinitely in those
+                        // states.
+                        // Format from the stamp the run just wrote, not
+                        // DateTime.Now (round nine, R10): the two are read
+                        // an instant apart and disagree across a minute
+                        // boundary, and after an aux-only upgrade (which
+                        // leaves the primary stamp untouched) "now" would
+                        // claim a calibration that was never stamped.
+                        var shown = DateTime.TryParse(ps.GyroCalibratedAtUtc,
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            System.Globalization.DateTimeStyles.RoundtripKind, out var stamped)
+                            ? stamped.ToLocalTime()
+                            : DateTime.Now;
+                        pvm.GyroCalibrationLabel = string.Format(
+                            PadForge.Resources.Strings.Strings.Instance.Settings_GyroLastCalibrated_Format,
+                            shown);
+                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MinValue;
+                    }
+                    else
+                    {
+                        pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroCalibrateFailed;
+                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.UtcNow.AddSeconds(5);
+                    }
                 };
                 pad.GyroResetCalibrationRequested += (s, e) =>
                 {
@@ -794,9 +908,33 @@ namespace PadForge
                     var us = PadForge.Common.Input.SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, pvm.PadIndex);
                     var ps = us?.GetPadSetting();
                     if (ps == null) return;
+                    // Void any in-flight manual run BEFORE clearing the
+                    // data, so its completion releases quietly instead of
+                    // blaming the user for their own abort (round nine,
+                    // R5), and release the label hold so the tick governs
+                    // again.
+                    pvm.GyroCalibrationGeneration++;
+                    // Release the label hold ONLY when no manual run owns
+                    // it (round ten): the MaxValue hold doubles as the
+                    // busy-guard, so clearing it mid-run re-admitted the
+                    // Calibrate button, whose start was then refused by
+                    // the per-profile in-flight guard and rendered as
+                    // "Couldn't calibrate" on a perfectly healthy pad.
+                    // A run that owns the hold releases it itself, and
+                    // the generation bump above already voids its result.
+                    if (pvm.GyroCalibrationLabelHoldUntilUtc != DateTime.MaxValue)
+                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MinValue;
                     _inputService.GyroCalibrator.ResetCalibration(ps);
                     _inputService.ClearGyroAutoCalibLatch(ud.InstanceGuid, pvm.PadIndex);
                     pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroNeverCalibrated;
+                    // Keep the tooltip's promise (round eight, R8): fire
+                    // the auto-calibration scan now instead of waiting for
+                    // the next incidental device event. Any in-flight run
+                    // is refused by the calibrator's per-profile
+                    // in-flight guard, and its own result is discarded by
+                    // the write-guard, so this cannot double-sample or
+                    // revert the reset (round nine, R4/R5).
+                    _inputService.RequestGyroAutoCalibration();
                 };
 
                 // Record button on the Aim Engage picker. Toggles like
@@ -821,6 +959,63 @@ namespace PadForge
                         pvm.GyroAimEngageButton = descriptor ?? "";
                         pvm.GyroAimEngageDeviceGuid = deviceGuid ?? "";
                         pvm.GyroAimEngageRecording = false;
+                        _settingsService.MarkDirty();
+                    });
+                };
+
+                // Record button on the Menus tab's host picker (#9 B-17).
+                // Same freeform-recorder toggle as the Aim Engage picker
+                // above; the recorded descriptor folds onto a host choice
+                // (stick axes / stick click pick the stick, any touchpad
+                // read picks the pad) and inputs with no hover surface are
+                // ignored.
+                pad.MenuHostRecordRequested += (s, e) =>
+                {
+                    if (s is not PadViewModel pvm) return;
+                    var menu = pvm.SelectedMenu;
+                    if (menu == null) return;
+                    if (menu.HostRecording)
+                    {
+                        _recorderService.CancelRecording();
+                        menu.HostRecording = false;
+                        return;
+                    }
+                    // Four targets share the one freeform recorder: the
+                    // opener fold, the Custom steer axes, and the Click
+                    // input. The command aimed PendingRecordTarget before
+                    // raising; capture it so a re-aim mid-record cannot
+                    // misroute the callback.
+                    var target = menu.PendingRecordTarget;
+                    menu.BeginRecord(target);
+                    _recorderService.StartRecordingFreeform(pvm.PadIndex, (deviceGuid, descriptor) =>
+                    {
+                        menu.HostRecording = false;
+                        if (menu.TryApplyRecorded(target, descriptor))
+                            _settingsService.MarkDirty();
+                    });
+                };
+
+                // Record button on the Mouse Gestures card's custom
+                // activation picker (discussion #216). Same freeform-recorder
+                // toggle as the Aim Engage picker above; the VM setters push
+                // the pair into the active mouse's MouseGestureSettings entry
+                // and the PropertyChanged hook marks dirty + refreshes the
+                // Mappings-tab picker.
+                pad.MouseGestureCustomEngageRecordRequested += (s, e) =>
+                {
+                    if (s is not PadViewModel pvm) return;
+                    if (pvm.MouseGestureCustomEngageRecording)
+                    {
+                        _recorderService.CancelRecording();
+                        pvm.MouseGestureCustomEngageRecording = false;
+                        return;
+                    }
+                    pvm.MouseGestureCustomEngageRecording = true;
+                    _recorderService.StartRecordingFreeform(pvm.PadIndex, (deviceGuid, descriptor) =>
+                    {
+                        pvm.MouseGestureCustomEngageButton = descriptor ?? "";
+                        pvm.MouseGestureCustomEngageDeviceGuid = deviceGuid ?? "";
+                        pvm.MouseGestureCustomEngageRecording = false;
                         _settingsService.MarkDirty();
                     });
                 };
@@ -969,7 +1164,23 @@ namespace PadForge
                         nameof(PadViewModel.TouchpadMouseSensitivityX) or
                         nameof(PadViewModel.TouchpadMouseSensitivityY) or
                         nameof(PadViewModel.TouchpadMouseInvertX) or
-                        nameof(PadViewModel.TouchpadMouseInvertY);
+                        nameof(PadViewModel.TouchpadMouseInvertY) or
+                        // Absolute-pointer region (#9 B-15). Without these
+                        // the card's edits never mark dirty and revert on
+                        // restart (the Motion Lean lesson, audit lens 1m F2).
+                        // All FOUR: a center-only edit is just as losable as
+                        // a size-only one.
+                        nameof(PadViewModel.TouchpadTapMaxMotion) or
+                        nameof(PadViewModel.TouchpadLongPressMaxMotion) or
+                        nameof(PadViewModel.TouchpadTwoFingerSwipeAngularTolerance) or
+                        nameof(PadViewModel.TouchpadPinchThreshold) or
+                        nameof(PadViewModel.TouchpadRotateThresholdDegrees) or
+                        nameof(PadViewModel.TouchpadPointerRegionSizeX) or
+                        nameof(PadViewModel.TouchpadPointerRegionSizeY) or
+                        nameof(PadViewModel.TouchpadPointerRegionCenterX) or
+                        nameof(PadViewModel.TouchpadPointerRegionCenterY) or
+                        nameof(PadViewModel.TouchpadSwipeHapticsEnabled) or
+                        nameof(PadViewModel.TouchpadSwipeHapticsIntensity);
 
                     if (isTouchpadField)
                     {
@@ -996,6 +1207,8 @@ namespace PadForge
                     bool isMouseGestureField = e.PropertyName is
                         nameof(PadViewModel.MouseGesturesEnabled) or
                         nameof(PadViewModel.MouseGestureButtons) or
+                        nameof(PadViewModel.MouseGestureCustomEngageButton) or
+                        nameof(PadViewModel.MouseGestureCustomEngageDeviceGuid) or
                         nameof(PadViewModel.MouseGestureFlickThreshold) or
                         nameof(PadViewModel.MouseGestureCooldownMs);
 
@@ -1099,7 +1312,17 @@ namespace PadForge
                         // lost on exit (audit lens 1m, F2).
                         nameof(PadViewModel.MotionSteerInnerDz) or
                         nameof(PadViewModel.MotionSteerOuterDz) or
-                        nameof(PadViewModel.MotionSteerOrientIndex))
+                        nameof(PadViewModel.MotionSteerOrientIndex) or
+                        // Flick Stick card tunables (#225), same per-(device,
+                        // slot) extended-mapping persistence as Motion Lean.
+                        nameof(PadViewModel.FlickCountsPer360) or
+                        nameof(PadViewModel.FlickTime) or
+                        nameof(PadViewModel.FlickThreshold) or
+                        nameof(PadViewModel.FlickSnapMode) or
+                        nameof(PadViewModel.FlickSnapStrength) or
+                        nameof(PadViewModel.FlickForwardDeadzone) or
+                        nameof(PadViewModel.FlickSmoothing) or
+                        nameof(PadViewModel.FlickOnEngage))
                     {
                         _settingsService.MarkDirty();
                     }
@@ -1107,6 +1330,12 @@ namespace PadForge
 
                 // Extended custom stick/trigger config changes (indices 2+) trigger autosave.
                 pad.ConfigItemDirtyCallback = () => _settingsService.MarkDirty();
+
+                // Structural menu edits (add / remove / duplicate, kind,
+                // cell count, center, enabled) change which "Menu N Item K"
+                // descriptors exist, so the slot's input pickers rebuild.
+                // Label / name typing does not fire this.
+                pad.MenusStructureChanged = () => _inputService?.RefreshAvailableInputsForSlot(capturedPad);
 
                 // Steering-mode change (incl. Reset all) re-stamps the engine MappingSets now
                 // so the stick stops/starts steering immediately, not on the 2s autosave.
@@ -1117,6 +1346,13 @@ namespace PadForge
 
                 // KbmConfig property changes (SOCD mode / pairs) trigger autosave.
                 pad.KbmConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
+
+                // MidiConfig property changes (channel, velocity, CC/note ranges)
+                // trigger autosave. The PadPage MIDI fields write straight into
+                // this nested object, which raises PropertyChanged on itself and
+                // not on the PadViewModel, so without this anchor a MIDI-only
+                // edit never marked the file dirty and close discarded it.
+                pad.MidiConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
 
                 // DeviceConfig changes (Lighting tab, Adaptive Triggers tab)
                 // — autosave + sync audio capture when audio-to-lightbar
@@ -1273,8 +1509,14 @@ namespace PadForge
                         // Down captured (or single-shot modifier, or Down failed to
                         // start): the sequence is done. Drop the row's Stop state.
                         _kindRecordStage = KindRecStage.None;
-                        _kindRecordMapping.IsRecording = false;
-                        _kindRecordMapping = null;
+                        // Re-check. StartRecordingExtraSourceParam above can run
+                        // callbacks that clear this field, so the null test at
+                        // the top of the block does not still hold here.
+                        if (_kindRecordMapping != null)
+                        {
+                            _kindRecordMapping.IsRecording = false;
+                            _kindRecordMapping = null;
+                        }
                     }
 
                     if (activePad.IsMapAllActive)
@@ -1365,7 +1607,10 @@ namespace PadForge
 
                         // Start recording — result will go to SourceDescriptor via normal path.
                         // Neutralize baseline so the previous POV/button press doesn't block detection.
+                        // Mark the chain so the pos completion doesn't re-prompt
+                        // for the neg that phase one just promoted into extras.
                         _savedPosDescriptor = null;
+                        _negChainCompletedMapping = negMapping;
                         _recorderService.StartRecording(negMapping, activePad.PadIndex, deviceGuid, neutralizeBaseline: true);
                         return;
                     }
@@ -1396,6 +1641,8 @@ namespace PadForge
                 }
 
                 // ── Normal recording ──
+                bool negChainDone = ReferenceEquals(result.Mapping, _negChainCompletedMapping);
+                _negChainCompletedMapping = null;
                 var rgNormal = ResolveGuidFor(result.Mapping);
                 if (rgNormal != Guid.Empty)
                     InputService.ResolveDisplayText(result.Mapping, rgNormal);
@@ -1405,7 +1652,8 @@ namespace PadForge
                 // auto-prompt for neg direction (but only if neg isn't already mapped — avoids
                 // re-prompting after a neg-quadrant click that already auto-prompted for pos).
                 if (result.Type != MapType.Axis && result.Mapping.HasNegDirection
-                    && string.IsNullOrEmpty(result.Mapping.NegSourceDescriptor))
+                    && string.IsNullOrEmpty(result.Mapping.NegSourceDescriptor)
+                    && !negChainDone)
                 {
                     // Save the positive descriptor before the recorder overwrites it.
                     _savedPosDescriptor = result.Mapping.SourceDescriptor;
@@ -1461,6 +1709,22 @@ namespace PadForge
                     _pendingNegMapping.SourceDescriptor = _savedPosDescriptor;
                 _pendingNegMapping = null;
                 _savedPosDescriptor = null;
+                _negChainCompletedMapping = null;
+
+                // #111 kind recording (Ramp / Incremental / Invert-On-Hold):
+                // the row's IsRecording is set by hand at the start site
+                // because RecorderService only marks the param extraSource,
+                // and CancelRecording deliberately leaves the mapping alone
+                // when an extraSource is active. Without this, a timed-out
+                // kind record left the row's button stuck showing Stop and
+                // the stale mapping latched until an unrelated recording
+                // completed (round 34).
+                if (_kindRecordMapping != null)
+                {
+                    _kindRecordMapping.IsRecording = false;
+                    _kindRecordMapping = null;
+                    _kindRecordStage = KindRecStage.None;
+                }
 
                 var activePad = _viewModel.SelectedPad;
                 if (activePad != null)
@@ -1481,6 +1745,17 @@ namespace PadForge
                     // Haptic-mirror engage record button (#185).
                     if (activePad.MirrorEngageRecording)
                         activePad.MirrorEngageRecording = false;
+                    // Mouse-gesture custom activation record button (#216).
+                    if (activePad.MouseGestureCustomEngageRecording)
+                        activePad.MouseGestureCustomEngageRecording = false;
+                    // Menus tab host / steer / click recording (#9). Its
+                    // freeform completion callback is what normally clears
+                    // this, and CancelRecording drops that callback without
+                    // invoking it, so a timeout left the button stuck at Stop
+                    // and consumed the user's next click as a cancel
+                    // (round 34).
+                    if (activePad.SelectedMenu != null && activePad.SelectedMenu.HostRecording)
+                        activePad.SelectedMenu.HostRecording = false;
                 }
             };
 
@@ -1489,6 +1764,9 @@ namespace PadForge
             {
                 var padVm = _viewModel.SelectedPad;
                 if (padVm == null) return;
+
+                // Any new click abandons a half-finished quadrant chain.
+                _negChainCompletedMapping = null;
 
                 // Toggle: if already recording this element, cancel.
                 if (padVm.CurrentRecordingTarget == targetName)
@@ -1590,6 +1868,7 @@ namespace PadForge
                         && (mapping.TargetSettingName.Contains("AxisY")
                             || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
                     bool isYFirstPhase = isYAxis && !capturedPad.MapAllRecordingNeg;
+                    _negChainCompletedMapping = null;
                     if (isYFirstPhase)
                         _pendingNegMapping = mapping;
 
@@ -1644,6 +1923,18 @@ namespace PadForge
                 pad.PasteMacroRequested += (s, e) => OnPasteMacro(capturedPad);
                 pad.CopyMacroFromRequested += (s, e) => OnCopyMacroFrom(capturedPad);
             }
+
+            // MIDI availability must be probed BEFORE the rail is built. The
+            // rail's type-switcher reads the cached
+            // Settings.IsMidiServicesInstalled rather than probing the registry
+            // per card, and that property starts false, so building first meant
+            // a machine WITH Windows MIDI Services installed painted its first
+            // rail without the MIDI segment. The 5 s driver timer then updates
+            // the property but deliberately does not rebuild on its baseline
+            // sweep, so the segment stayed missing until an unrelated rebuild.
+            // Safe this early: the method only writes the two view-models and
+            // null-guards _navDashboard, which BuildNavigationItems creates.
+            RefreshMidiServicesStatus();
 
             // Build the sidebar navigation items dynamically.
             BuildNavigationItems();
@@ -1726,17 +2017,23 @@ namespace PadForge
 
             DashboardPageView.SlotTypeChangeRequested += (s, args) =>
             {
-                // Re-automap devices before setting OutputType so that when
-                // RebuildMappings fires, the PadSetting already has correct mappings.
+                // Order is load-bearing (2026-07-22 automap-loss root
+                // cause): ReAutoMapSlot authors the per-device legacy
+                // PadSettings, and the MERGE must fold them into the
+                // slot MappingSet BEFORE OutputType is set, because the
+                // setter's RebuildMappings rebuilds the grid view from
+                // the set, and the save pipeline REGENERATES settings
+                // from that view. With the old order (type first, merge
+                // after) the view rebuilt from the pre-merge set showed
+                // every new-type target as a sourceless skeleton, and
+                // the next view-driven save persisted that skeleton over
+                // the merged truth and regenerated the SELECTED device's
+                // PadSetting raw-less. Multi-controller Nintendo
+                // switches lost their automaps exactly this way.
                 SettingsManager.ReAutoMapSlot(args.SlotIndex, args.Type);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
                 _inputService.MoveSlotToGroupTail(args.SlotIndex);
-                // ReAutoMapSlot rewrites the PadSettings; the per-slot
-                // MappingSet still references the prior shape. Re-merge so
-                // newly-auto-mapped fields (Motion passthrough on Sony,
-                // touchpad rows on Sony, etc.) populate as MappingSet rows
-                // without waiting for a save+reload.
-                SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
                 // RefreshDeviceList below can re-select the slot's device and fire the
                 // mapping-persisting save; the flag keeps it from writing the pre-change view.
@@ -1778,6 +2075,10 @@ namespace PadForge
             // decide whether to show the window at all (start-minimized-to-tray).
             _settingsService.Initialize();
 
+            // Only now does RemoteLink.IdentityProtection hold the persisted
+            // choice, so this is the earliest point the dropdown can show it.
+            _inputService?.SeedIdentityProtectionDisplay();
+
             // Load profile shortcuts after settings are loaded.
             LoadProfileShortcuts();
 
@@ -1787,10 +2088,28 @@ namespace PadForge
 
             // Restore main window position/size/state.
             var mw = _viewModel.Settings;
-            if (mw.MainWindowLeft >= 0 && mw.MainWindowTop >= 0)
+            // (-1, -1) is the legacy "never saved" sentinel (SettingsViewModel
+            // defaults). ANY other value is a real saved position, negative
+            // coordinates included: a monitor left of or above the primary has
+            // negative virtual-desktop coordinates, and the old "both >= 0"
+            // gate silently discarded those users' position on every launch
+            // while still restoring size (round 34). Requiring the restored
+            // rect to intersect the CURRENT virtual screen also stops a
+            // position saved on a since-removed monitor from stranding the
+            // window offscreen, which the old gate could not catch either.
+            if (mw.MainWindowLeft != -1 || mw.MainWindowTop != -1)
             {
-                Left = mw.MainWindowLeft;
-                Top = mw.MainWindowTop;
+                double rw = mw.MainWindowWidth > 0 ? mw.MainWindowWidth : Width;
+                double rh = mw.MainWindowHeight > 0 ? mw.MainWindowHeight : Height;
+                var saved = new Rect(mw.MainWindowLeft, mw.MainWindowTop, rw, rh);
+                var desktop = new Rect(
+                    SystemParameters.VirtualScreenLeft, SystemParameters.VirtualScreenTop,
+                    SystemParameters.VirtualScreenWidth, SystemParameters.VirtualScreenHeight);
+                if (saved.IntersectsWith(desktop))
+                {
+                    Left = mw.MainWindowLeft;
+                    Top = mw.MainWindowTop;
+                }
             }
             if (mw.MainWindowWidth > 0) Width = mw.MainWindowWidth;
             if (mw.MainWindowHeight > 0) Height = mw.MainWindowHeight;
@@ -1815,10 +2134,11 @@ namespace PadForge
             // SlotOrders.RebuildFromCurrentTopology in SettingsService).
             // Nothing to do here at startup.
 
-            // Detect drivers early (before sidebar rebuild) so power icons show correct
-            // colors even when starting minimized to tray (where OnLoaded never fires).
+            // Detect drivers early so power icons show correct colors even when
+            // starting minimized to tray (where OnLoaded never fires).
+            // RefreshMidiServicesStatus already ran above the rail build, which
+            // is where it has to be: the rail reads its cached result.
             RefreshHidHideStatus();
-            RefreshMidiServicesStatus();
             StartDriverStatusTimer();
 
             // Status decay (#175 item 7): every StatusText write cancels any
@@ -1830,6 +2150,17 @@ namespace PadForge
                 {
                     StatusMessageText.BeginAnimation(UIElement.OpacityProperty, null);
                     StatusMessageText.Opacity = 1.0;
+                }
+                // The nav flames read engine-level state (IsEngineRunning
+                // and the idle-following HasActiveSlots) but re-render only
+                // on per-slot property changes, so an engine idle/stop
+                // transition alone left every flame stale at its last heat
+                // (part of the owner's 2026-07-24 idle-vs-forging
+                // contradiction). Re-render the rail on those transitions.
+                else if (e.PropertyName is nameof(MainViewModel.HasActiveSlots)
+                         or nameof(MainViewModel.IsEngineRunning))
+                {
+                    RefreshAllControllerNavItems();
                 }
             };
 
@@ -1932,6 +2263,27 @@ namespace PadForge
                 FullScreenIcon.Text = "\uE73F";
             }
 
+            // Ambient-motion gate: the always-on breathes (rail heat ring,
+            // dashboard/profiles auras, selection pulses) pay WPF's fixed
+            // per-animation-frame pipeline cost (~18% of a core per breathe
+            // at 60fps, measured in isolation 2026-07-16) even when the app
+            // is buried behind a game. Foreground state flips the probe; the
+            // XAML breathes react through their trigger conditions and the
+            // code-built rail ring re-evaluates via the section rebuild.
+            // Every effect stays exactly as designed whenever the app is
+            // visible and focused.
+            Activated += (_, _) => SetAmbientMotion(true);
+            Deactivated += (_, _) => SetAmbientMotion(false);
+            StateChanged += (_, _) =>
+            {
+                bool minimized = WindowState == WindowState.Minimized;
+                // Code-side rate gates (dashboard publisher) throttle harder
+                // when nothing can render at all vs merely unfocused.
+                PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized = minimized;
+                if (minimized) SetAmbientMotion(false);
+                else if (IsActive) SetAmbientMotion(true);
+            };
+
             SetupNativeTooltip();
 
             // Driver detection and timer are initialized in the constructor so they
@@ -1995,29 +2347,53 @@ namespace PadForge
 
                 var dialog = new Wpf.Ui.Controls.MessageBox
                 {
-                    Title = "Legacy Driver Cleanup",
-                    Content =
-                        $"PadForge v3 uses HIDMaestro and no longer needs the legacy driver(s): {string.Join(", ", found)}.\n\n" +
-                        "Would you like PadForge to uninstall them now? This requires elevation and may take a moment.",
-                    PrimaryButtonText = "Uninstall",
-                    CloseButtonText = "Keep",
+                    Title = Strings.Instance.LegacyCleanup_Title,
+                    Content = string.Format(
+                        Strings.Instance.LegacyCleanup_Prompt_Format, string.Join(", ", found)),
+                    PrimaryButtonText = Strings.Instance.Common_Uninstall,
+                    CloseButtonText = Strings.Instance.Common_KeepLegacyDrivers,
                 };
 
                 var result = await dialog.ShowDialogAsync();
                 if (result == Wpf.Ui.Controls.MessageBoxResult.Primary)
                 {
-                    try
-                    {
-                        if (hasViGEm) DriverInstaller.UninstallViGEmBus();
-                        if (hasExtended) DriverInstaller.UninstallVJoy();
-                    }
-                    catch (Exception ex)
+                    // Both uninstalls used to run right here, on the UI thread.
+                    // This method is entered via Dispatcher.BeginInvoke and the
+                    // continuation after ShowDialogAsync resumes on the
+                    // dispatcher, so a driver removal (elevation prompt, service
+                    // stop, device-node teardown) froze the whole window with no
+                    // overlay and no progress until it returned. Route them
+                    // through the same helper every other driver operation uses:
+                    // it shows the overlay, runs the work on a worker thread and
+                    // restores status afterwards.
+                    //
+                    // The helper reports failures as status text and does not
+                    // rethrow, so the exception is captured inside the operation
+                    // to keep this flow's modal error. It is a one-time offer
+                    // whose failure needs to be seen, not a line of status that
+                    // scrolls past.
+                    Exception cleanupError = null;
+                    await RunDriverOperationAsync(
+                        "Removing legacy drivers...",
+                        () =>
+                        {
+                            try
+                            {
+                                if (hasViGEm) DriverInstaller.UninstallViGEmBus();
+                                if (hasExtended) DriverInstaller.UninstallVJoy();
+                            }
+                            catch (Exception ex) { cleanupError = ex; }
+                        },
+                        () => { });
+
+                    if (cleanupError != null)
                     {
                         var err = new Wpf.Ui.Controls.MessageBox
                         {
-                            Title = "Legacy Driver Cleanup",
-                            Content = $"Cleanup encountered an error: {ex.Message}\n\nYou can retry later from Settings.",
-                            CloseButtonText = "OK",
+                            Title = Strings.Instance.LegacyCleanup_Title,
+                            Content = string.Format(
+                                Strings.Instance.LegacyCleanup_Failed_Format, cleanupError.Message),
+                            CloseButtonText = Strings.Instance.Common_OK,
                         };
                         _ = await err.ShowDialogAsync();
                     }
@@ -2054,6 +2430,14 @@ namespace PadForge
                 WindowState = WindowState.Normal;
             }
 
+            // Commit an in-progress TextBox edit before the dirty check:
+            // closing from the title bar never moves focus, so an
+            // UpdateSourceTrigger=LostFocus Text binding still holds the
+            // typed value and the save below would drop it (the
+            // DevicesPage.IdleDisconnect_LostFocus force-commit pattern).
+            if (System.Windows.Input.Keyboard.FocusedElement is TextBox focusedTb)
+                focusedTb.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+
             // Save settings synchronously (fast, UI-bound data).
             if (_settingsService.IsDirty)
                 _settingsService.Save();
@@ -2061,6 +2445,9 @@ namespace PadForge
             // Stop driver status polling.
             _driverStatusTimer?.Stop();
             _driverStatusTimer = null;
+
+            // Cancel any in-flight Workshop update check.
+            _workshopUpdateCts?.Cancel();
 
             // Stop the SDL event pump BEFORE the disposal Task.Run below reaches
             // SDL_Quit: the 100ms pump fires SDL_PumpEvents/SDL_UpdateJoysticks on
@@ -2106,6 +2493,7 @@ namespace PadForge
         // SVG path data for controller type icons — shared via ControllerIcons static class.
         private const string XboxSvgPath = Common.ControllerIcons.XboxSvgPath;
         private const string DS4SvgPath = Common.ControllerIcons.DS4SvgPath;
+        private const string SwitchSvgPath = Common.ControllerIcons.SwitchSvgPath;
         private const string ExtendedSvgPath = Common.ControllerIcons.ExtendedSvgPath;
 
 
@@ -2133,8 +2521,10 @@ namespace PadForge
             NavView.PreviewMouseLeftButtonUp += OnNavViewDragEnd;
             NavView.PreviewKeyDown += OnNavViewDragKeyDown;
 
-            // ItemInvoked fires even when SelectsOnInvoked=false (used for AddController).
-            NavView.ItemInvoked += NavView_ItemInvoked;
+            // ItemInvoked is already wired once with the other NavigationView
+            // events during construction. Subscribing again here made the
+            // handler run TWICE per nav click, so NavigateToTag and its
+            // mapping-grid rehydration both ran twice.
 
             NavView.MenuItems.Clear();
 
@@ -2248,8 +2638,17 @@ namespace PadForge
         /// </summary>
         private void RebuildControllerSection()
         {
-            if (_rebuildingControllerSection || _isDraggingCard)
+            if (_rebuildingControllerSection) return;
+            if (_isDraggingCard)
+            {
+                // Queue it, the way the fading branch below does. Dropping the
+                // request outright meant a rebuild raised mid-drag (a device
+                // arriving, a slot changing type) was lost, and the rail kept
+                // showing the pre-change cards until something else asked for
+                // a rebuild. EndCardDrag replays this.
+                _rebuildPendingAfterFade = true;
                 return;
+            }
             if (_isCardFading)
             {
                 _rebuildPendingAfterFade = true;
@@ -2289,6 +2688,15 @@ namespace PadForge
                             or nameof(NavControllerItemViewModel.SlotNumber)
                             or nameof(NavControllerItemViewModel.ConnectedDeviceCount)
                             or nameof(NavControllerItemViewModel.IsInitializing)
+                            // Both of these steer the rendered output and were
+                            // missing from the refresh list: ComputeFlameHeat
+                            // branches on MappedDeviceCount, and the power
+                            // tooltip chain branches on both. Changing either
+                            // left the rail showing the previous flame and the
+                            // previous tooltip until some OTHER property
+                            // happened to fire.
+                            or nameof(NavControllerItemViewModel.MappedDeviceCount)
+                            or nameof(NavControllerItemViewModel.IsCreateFailed)
                             or nameof(NavControllerItemViewModel.IsVirtualControllerConnected))
                         {
                             UpdateControllerNavItemContent(capturedMenuItem, capturedNavItem);
@@ -2383,6 +2791,15 @@ namespace PadForge
             else if (navItem.MappedDeviceCount == 0) { lit = false; cooling = false; }
             else if (!_viewModel.IsEngineRunning) { lit = false; cooling = true; }
             else if (!navItem.IsVirtualControllerConnected) { lit = false; cooling = true; }
+            // Engine idle with the VC parked (inactivity timeout 0 = never
+            // destroy, all devices offline): idle is not forging. Gold,
+            // agreeing with the instrument line's Idle instead of
+            // contradicting it (owner repro 2026-07-24). Ordered after the
+            // VC check so the ordinary awaiting state keeps its own gold.
+            // With the timeout armed this state is transient: the engine
+            // stays awake through the grace and the teardown lands here as
+            // the not-connected branch above.
+            else if (!_viewModel.HasActiveSlots) { lit = false; cooling = true; }
             else { lit = true; cooling = false; }
         }
 
@@ -2457,6 +2874,7 @@ namespace PadForge
             string iconKey = navItem.IconKey;
             bool isXbox = iconKey == "XboxControllerIcon";
             bool isPlayStation = iconKey == "DS4ControllerIcon";
+            bool isNintendo = iconKey == "NintendoControllerIcon";
             bool isExtended = iconKey == "ExtendedControllerIcon";
             bool isMidi = iconKey == "MidiControllerIcon";
             bool isKbm = iconKey == "KeyboardMouseControllerIcon";
@@ -2527,9 +2945,26 @@ namespace PadForge
             {
                 powerTooltip = Strings.Instance.Main_Initializing;
             }
+            else if (navItem.MappedDeviceCount == 0)
+            {
+                // Mirror ComputeFlameHeat's nothing-mapped branch, which the
+                // tooltip chain lacked: an EMPTY slot showed the cold outline
+                // flame while its tooltip read "Awaiting devices", claiming it
+                // was waiting for devices it does not have (round 34). The
+                // flame's own comment says these two states must not look
+                // alike, and the text has to agree with it.
+                powerTooltip = Strings.Instance.Dashboard_NoDevice;
+                isInitializing = false;
+            }
             else if (!_viewModel.IsEngineRunning)
             {
                 powerTooltip = Strings.Instance.Main_EngineStopped;
+            }
+            else if (navItem.IsCreateFailed)
+            {
+                // The truth outranks the awaiting-devices default: a failed
+                // create with online devices is not waiting for anything.
+                powerTooltip = Strings.Instance.Main_VcFailed;
             }
             else if (!navItem.IsVirtualControllerConnected)
             {
@@ -2538,6 +2973,13 @@ namespace PadForge
                 // the grace period the VC is still alive even with devices
                 // offline, so the flame stays ember until teardown.
                 powerTooltip = Strings.Instance.Main_AwaitingDevices;
+            }
+            else if (!_viewModel.HasActiveSlots)
+            {
+                // Engine idle with the VC parked (timeout 0, devices
+                // offline): idle, not forging, matching ComputeFlameHeat's
+                // parked branch and the instrument line.
+                powerTooltip = Strings.Instance.Common_Idle;
             }
             else
             {
@@ -2602,7 +3044,15 @@ namespace PadForge
             // Type switcher returns to the rail (user direction, iteration 15):
             // the dashboard segment in mini form. Active type is ember-filled;
             // the card rebuilds on OutputType change via RefreshNavControllerItems.
-            bool hasMidi = DriverInstaller.IsMidiServicesInstalled();
+            // Read the cached status, not the live probe. This method runs once
+            // per rail card, and DriverInstaller.IsMidiServicesInstalled()
+            // enumerates the whole HKLM uninstall key under BOTH the 64-bit and
+            // 32-bit registry views, so a 16-slot rail rebuild paid 32 hive
+            // walks on the UI thread. RefreshMidiServicesStatus() keeps this
+            // property current on a 5 s timer, and the constructor calls it
+            // immediately before the rail's first build, so the value here is
+            // the same answer at worst five seconds older.
+            bool hasMidi = _viewModel.Settings.IsMidiServicesInstalled;
             var segRow = new System.Windows.Controls.StackPanel
             {
                 Orientation = System.Windows.Controls.Orientation.Horizontal,
@@ -2674,6 +3124,7 @@ namespace PadForge
 
             segRow.Children.Add(MakeTypeButton(TypeLogo(XboxSvgPath, isXbox), isXbox, OnSidebarTypeXbox, Strings.Instance.ControllerType_Xbox, true));
             segRow.Children.Add(MakeTypeButton(TypeLogo(DS4SvgPath, isPlayStation), isPlayStation, OnSidebarTypePlayStation, Strings.Instance.ControllerType_PlayStation, true));
+            segRow.Children.Add(MakeTypeButton(TypeLogo(SwitchSvgPath, isNintendo), isNintendo, OnSidebarTypeNintendo, Strings.Instance.ControllerType_Nintendo, true));
             segRow.Children.Add(MakeTypeButton(TypeLogo(ExtendedSvgPath, isExtended), isExtended, OnSidebarTypeExtended, Strings.Instance.ControllerType_Extended, true));
             segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE961", isKbm), isKbm, OnSidebarTypeKeyboardMouse, Strings.Instance.ControllerType_KeyboardMouse, true));
             segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE8D6", isMidi), isMidi, OnSidebarTypeMidi, hasMidi ? Strings.Instance.ControllerType_MIDI : Strings.Instance.Main_MIDI_RequiresMidiServices, hasMidi || isMidi));
@@ -2715,11 +3166,12 @@ namespace PadForge
                 Padding = new Thickness(10, 6, 10, 6),
                 BorderThickness = new Thickness(1),
                 // Fixed width, not MinWidth (user 2026-07-06): stacked cards
-                // must read congruent whatever their digit count. 212 =
-                // worst-case row 185.34 (slot 16 + "#16", iteration 107
-                // math) + 20 padding + 2 border + headroom, inside the 215
-                // outer cap the pane budget allows.
-                Width = 212,
+                // must read congruent whatever their digit count. 233 =
+                // worst-case row 204.34 (slot 16 + "#16" + the SIX-tile
+                // type segment, Nintendo added 2026-07-19; iteration 107
+                // math + 19) + 20 padding + 2 border + 6.7 headroom,
+                // inside the 236 outer cap the widened 244 pane allows.
+                Width = 233,
                 Child = row,
                 Tag = navItem.PadIndex,
                 // Glow clearance (#175 clip report): the rail clips at the
@@ -2747,8 +3199,11 @@ namespace PadForge
                 card.Effect = ring;
                 // Reduced motion (#175 item 98): breathe swaps for a static
                 // glow pinned near the spec's rgba(...,0.22) point of the
-                // 0.25-0.60 breathe range.
-                if (MotionEnabled)
+                // 0.25-0.60 breathe range. The ambient gate swaps the same
+                // way while the app is backgrounded (see SetAmbientMotion):
+                // a static ring is visually the breathe's midpoint, and the
+                // rebuild on re-activation restarts the phase-locked loop.
+                if (MotionEnabled && PadForge.Common.AmbientMotionProbe.Instance.IsAppActive)
                 {
                     var breathe = new System.Windows.Media.Animation.DoubleAnimation
                     {
@@ -2765,6 +3220,16 @@ namespace PadForge
                         BeginTime = System.TimeSpan.FromMilliseconds(
                             -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 3200.0)),
                     };
+                    // 30fps ambient rate. Every animation frame pays WPF's
+                    // fixed pipeline cost (measured 2026-07-16: ~18% of a
+                    // core per permanent breathe at the default 60fps,
+                    // independent of caching or which property animates), so
+                    // halving the rate halves that budget. A 1.6s ease-in-out
+                    // sine on a soft blur has no spatial motion; 30 samples a
+                    // second is beyond what the fade can show. This is a
+                    // considered rate for ambient loops, not the earlier
+                    // blanket 15fps cap that stood in for unfixed mechanisms.
+                    System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(breathe, 30);
                     ring.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, breathe);
                 }
                 else
@@ -2791,6 +3256,22 @@ namespace PadForge
             {
                 card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
             }
+
+            // Cache placement follows WPF's rule that a CacheMode on the SAME
+            // node as an Effect is ignored for the effect path (learned the
+            // hard way twice tonight, profiled both times). Effect-bearing
+            // pills (lit ring, cooling bloom) cache their CONTENT, so the
+            // animated ring's per-frame ApplyEffect re-renders "chrome +
+            // one texture blit" instead of re-tessellating every glyph in
+            // the row. Effect-free pills cache the whole card, chrome
+            // included, so a neighbor's blur pad recomposes them as blits.
+            // Cards rebuild wholesale on any content change, so staleness is
+            // impossible; the hover-lift transform rides the card, which a
+            // BitmapCache survives without invalidating.
+            if (card.Effect != null)
+                row.CacheMode = new System.Windows.Media.BitmapCache();
+            else
+                card.CacheMode = new System.Windows.Media.BitmapCache();
 
             // Selection = focus. The focused pill gets a bright pulsing ember/gold
             // rounded-rect border PLUS a wide pulsing bloom, color and pace tracking
@@ -2869,6 +3350,14 @@ namespace PadForge
             // Never touch Icon here — PaneClosed/PaneOpened handlers manage it exclusively.
             // Re-rendering the bitmap on every 30Hz update causes visual flashing.
         }
+
+        /// <summary>Re-renders every controller nav card in its CURRENT pane
+        /// mode. The flames read engine-level inputs (stopped, idle) that
+        /// change without any per-slot property firing, so those transitions
+        /// re-render here rather than leaving each flame stale at its last
+        /// heat (the 2026-07-24 idle-vs-forging contradiction).</summary>
+        private void RefreshAllControllerNavItems()
+            => UpdateAllControllerCardMode(compact: !NavView.IsPaneOpen);
 
         /// <summary>
         /// Swaps all controller NavigationViewItem cards between full and compact mode.
@@ -2989,6 +3478,20 @@ namespace PadForge
             };
         }
 
+        /// <summary>Drives <see cref="PadForge.Common.AmbientMotionProbe"/>
+        /// from window activation/minimize and rebuilds the controller rail
+        /// so the code-built heat rings re-evaluate their gate. XAML breathes
+        /// react on their own through trigger conditions. Guarded on actual
+        /// state change: dialogs toggle activation constantly and the rail
+        /// rebuild is not free.</summary>
+        private void SetAmbientMotion(bool active)
+        {
+            var probe = PadForge.Common.AmbientMotionProbe.Instance;
+            if (probe.IsAppActive == active) return;
+            probe.IsAppActive = active;
+            RebuildControllerSection();
+        }
+
         /// <summary>True when this tag is the focused controller page (a "PadN"
         /// tag equal to the app-wide selection).</summary>
         private bool IsControllerTagSelected(string tag)
@@ -3016,7 +3519,7 @@ namespace PadForge
                 Opacity = 0.6,
             };
             icon.Effect = glow;
-            if (MotionEnabled)
+            if (MotionEnabled && PadForge.Common.AmbientMotionProbe.Instance.IsAppActive)
             {
                 var pulse = new System.Windows.Media.Animation.DoubleAnimation(0.5, 0.95,
                     System.TimeSpan.FromMilliseconds(1200))
@@ -3028,6 +3531,12 @@ namespace PadForge
                     BeginTime = System.TimeSpan.FromMilliseconds(
                         -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 2400.0)),
                 };
+                // 30fps ambient rate + foreground gate: same measured
+                // rationale as the heat ring (every permanent animation frame
+                // pays the fixed pipeline cost; a soft pulse cannot show 60
+                // samples a second). The static glow above remains while
+                // backgrounded.
+                System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(pulse, 30);
                 glow.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, pulse);
             }
         }
@@ -3064,23 +3573,30 @@ namespace PadForge
                 layer.Add(adorner);
                 _selGlowAdorner = adorner;
                 _selGlowLayer = layer;
-                if (MotionEnabled)
+                if (MotionEnabled && PadForge.Common.AmbientMotionProbe.Instance.IsAppActive)
                 {
                     double lo = lit ? 0.55 : cooling ? 0.45 : 0.35;
                     double periodMs = lit ? 1100 : cooling ? 1600 : 2200;
                     var phase = System.TimeSpan.FromMilliseconds(
                         -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % (periodMs * 2.0)));
-                    // Opacity is a composite-time pulse (no per-frame reblur of the effect).
-                    adorner.BeginAnimation(System.Windows.UIElement.OpacityProperty,
-                        new System.Windows.Media.Animation.DoubleAnimation(lo, 1.0,
-                            System.TimeSpan.FromMilliseconds(periodMs))
-                        {
-                            AutoReverse = true,
-                            RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
-                            EasingFunction = new System.Windows.Media.Animation.SineEase
-                            { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
-                            BeginTime = phase,
-                        });
+                    // NOTE (corrected 2026-07-16): element Opacity is a
+                    // DEPENDENT animation in WPF, not composite-time. The old
+                    // claim here was wrong. The adorner carries a BitmapCache
+                    // so each tick recomposes a cached texture instead of
+                    // re-rasterizing the stroke. Gated on foreground +
+                    // 30fps for the same measured reasons as the heat ring;
+                    // the ungated static adorner keeps the selection visible.
+                    var selBreathe = new System.Windows.Media.Animation.DoubleAnimation(lo, 1.0,
+                        System.TimeSpan.FromMilliseconds(periodMs))
+                    {
+                        AutoReverse = true,
+                        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
+                        EasingFunction = new System.Windows.Media.Animation.SineEase
+                        { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
+                        BeginTime = phase,
+                    };
+                    System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(selBreathe, 30);
+                    adorner.BeginAnimation(System.Windows.UIElement.OpacityProperty, selBreathe);
                 }
             }
             if (card.IsLoaded && card.ActualWidth > 0)
@@ -3144,6 +3660,9 @@ namespace PadForge
             private readonly Visual _root;
             private readonly System.Windows.Media.Color _color;
             private readonly double _radius, _borderThickness, _pad;
+            private System.Windows.Media.SolidColorBrush _padBrush;
+            private System.Windows.Media.Pen _borderPen;
+            private static T Frozen<T>(T f) where T : System.Windows.Freezable { f.Freeze(); return (T)(object)f; }
             private readonly Func<bool> _shouldRender;
             private EventHandler _onLayout;
 
@@ -3160,6 +3679,13 @@ namespace PadForge
                 IsHitTestVisible = false;
                 Effect = new System.Windows.Media.Effects.DropShadowEffect
                 { Color = color, BlurRadius = blur, ShadowDepth = 0, Opacity = opacity };
+                // The breathe animates this adorner's ELEMENT Opacity, which is
+                // a DEPENDENT animation (ordinary UIPropertyMetadata): each
+                // tick dirties the adorner and, uncached, re-rasterized the
+                // rounded-rect pen stroke every frame. Cached, the tick
+                // recomposes a texture. The Effect stays outside the cache by
+                // WPF's rules and keeps blooming.
+                CacheMode = new System.Windows.Media.BitmapCache();
                 _onLayout = (s, e) => InvalidateVisual();
                 _target.LayoutUpdated += _onLayout;
             }
@@ -3188,14 +3714,23 @@ namespace PadForge
                 // Near-invisible padding rect (alpha 1): widens the adorner's drawn-content
                 // bounds so the DropShadowEffect's blur is not clipped to the border rect.
                 // It casts a negligible shadow of its own.
-                dc.DrawRectangle(new System.Windows.Media.SolidColorBrush(
-                    System.Windows.Media.Color.FromArgb(1, _color.R, _color.G, _color.B)), null,
+                // Frozen, hoisted resources: color and thickness are
+                // ctor-fixed, and LayoutUpdated re-renders this adorner on
+                // every dispatcher layout pass while a pill wears the glow.
+                _padBrush ??= Frozen(new System.Windows.Media.SolidColorBrush(
+                    System.Windows.Media.Color.FromArgb(1, _color.R, _color.G, _color.B)));
+                if (_borderPen == null)
+                {
+                    _borderPen = new System.Windows.Media.Pen(
+                        Frozen(new System.Windows.Media.SolidColorBrush(_color)), _borderThickness);
+                    _borderPen.Freeze();
+                }
+                dc.DrawRectangle(_padBrush, null,
                     new Rect(tl.X - _pad, tl.Y - _pad, w + 2 * _pad, h + 2 * _pad));
 
                 // The ember border: outlines the pill and is the source the effect blooms.
                 double t = _borderThickness / 2;
-                dc.DrawRoundedRectangle(null,
-                    new System.Windows.Media.Pen(new System.Windows.Media.SolidColorBrush(_color), _borderThickness),
+                dc.DrawRoundedRectangle(null, _borderPen,
                     new Rect(tl.X + t, tl.Y + t, w - _borderThickness, h - _borderThickness),
                     _radius, _radius);
             }
@@ -3329,7 +3864,7 @@ namespace PadForge
             {
                 // Exact mini-card pill footprint so the entry stacks congruently
                 // and the dashed outline (plus its hover glow) traces the same
-                // rectangle a solid pill does: radius 10, width 212, 3/2 margin,
+                // rectangle a solid pill does: radius 10, width 233, 3/2 margin,
                 // and MinHeight 36 = the pill's rendered height (the fixed 22 px
                 // delete-button row + 12 px padding + 2 px border in
                 // UpdateControllerNavItemContent). NO Padding here: like the
@@ -3337,7 +3872,7 @@ namespace PadForge
                 // not sit inset. Inset shrinks the box and makes the glow hug a
                 // smaller inner outline.
                 CornerRadius = new CornerRadius(10),
-                Width = 212,
+                Width = 233,
                 MinHeight = 36,
                 Margin = new Thickness(3, 2, 3, 2),
                 Background = System.Windows.Media.Brushes.Transparent,
@@ -3407,13 +3942,6 @@ namespace PadForge
                 System.Windows.Media.PixelFormats.Pbgra32);
             rtb.Render(visual);
 
-            var img = new System.Windows.Controls.Image
-            {
-                Source = rtb,
-                Width = 36,
-                Height = 36
-            };
-
             return new Wpf.Ui.Controls.ImageIcon { Source = rtb };
         }
 
@@ -3455,10 +3983,12 @@ namespace PadForge
             var row2 = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
 
             string iconKey = navItem.IconKey;
-            if (iconKey == "XboxControllerIcon" || iconKey == "DS4ControllerIcon" || iconKey == "ExtendedControllerIcon")
+            if (iconKey == "XboxControllerIcon" || iconKey == "DS4ControllerIcon"
+                || iconKey == "NintendoControllerIcon" || iconKey == "ExtendedControllerIcon")
             {
                 string svgPath = iconKey == "XboxControllerIcon" ? XboxSvgPath
-                    : iconKey == "DS4ControllerIcon" ? DS4SvgPath : ExtendedSvgPath;
+                    : iconKey == "DS4ControllerIcon" ? DS4SvgPath
+                    : iconKey == "NintendoControllerIcon" ? SwitchSvgPath : ExtendedSvgPath;
                 var path = new System.Windows.Shapes.Path
                 {
                     Data = System.Windows.Media.Geometry.Parse(svgPath),
@@ -3533,10 +4063,13 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox;
                 _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view: the rebuild above re-auto-mapped
                 // the slot, but the OutputType setter's RebuildMappings reloaded the
                 // ViewModel from the pre-change MappingSet. Same guard as the device-
@@ -3553,10 +4086,13 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
                 _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view (see OnSidebarTypeXbox).
                 _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
@@ -3569,10 +4105,32 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
                 _inputService.MoveSlotToGroupTail(padIndex);
+                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar Nintendo type button click.</summary>
+        private void OnSidebarTypeNintendo(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Nintendo);
                 SettingsService.RefreshMappingSetsFromLegacy();
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Nintendo;
+                _inputService.MoveSlotToGroupTail(padIndex);
                 // Stale-guard the Mappings view (see OnSidebarTypeXbox).
                 _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
@@ -3585,10 +4143,13 @@ namespace PadForge
             e.Handled = true;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
                 _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view (see OnSidebarTypeXbox).
                 _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
@@ -3602,10 +4163,13 @@ namespace PadForge
             if (!DriverInstaller.IsMidiServicesInstalled()) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
                 _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view (see OnSidebarTypeXbox).
                 _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
@@ -4014,6 +4578,16 @@ namespace PadForge
             }
 
             _cardDragSource = null;
+
+            // Replay a rebuild that was requested while the drag was in
+            // progress. Deliberately last: the reorder work above calls
+            // RebuildControllerSection itself, and replaying earlier would
+            // rebuild against a half-applied reorder.
+            if (_rebuildPendingAfterFade)
+            {
+                _rebuildPendingAfterFade = false;
+                RebuildControllerSection();
+            }
         }
 
         // ── Helpers ──
@@ -4341,10 +4915,10 @@ namespace PadForge
             var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
 
             // Total active slots is the binding constraint (MaxPads = 16
-            // across all five groups). When the global total is at the cap
+            // across all six groups). When the global total is at the cap
             // every "Add" button disables uniformly. Per-type counts are
             // kept for the at-capacity tooltip text.
-            int xboxCount = 0, playstationCount = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
+            int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
             int totalActive = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
@@ -4354,6 +4928,7 @@ namespace PadForge
                 {
                     case VirtualControllerType.Xbox: xboxCount++; break;
                     case VirtualControllerType.PlayStation: playstationCount++; break;
+                    case VirtualControllerType.Nintendo: nintendoCount++; break;
                     case VirtualControllerType.Extended: extendedCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
                     case VirtualControllerType.KeyboardMouse: kbmCount++; break;
@@ -4440,6 +5015,45 @@ namespace PadForge
             };
             stack.Children.Add(playstationBtn);
 
+            // Nintendo button, theme-aware icon fill. Uses the Switch logo
+            // to represent the Nintendo family in the UI.
+            var nintendoPopupPath = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(SwitchSvgPath),
+                Width = 28,
+                Height = 28,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            nintendoPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
+            bool nintendoAtCapacity = nintendoCount >= SettingsManager.MaxNintendoSlots;
+            bool nintendoDisabled = globalAtCapacity || nintendoAtCapacity;
+            if (nintendoDisabled) nintendoPopupPath.Opacity = 0.35;
+            var nintendoBtn = new System.Windows.Controls.Button
+            {
+                Content = nintendoPopupPath,
+                ToolTip = nintendoAtCapacity
+                        ? string.Format(Strings.Instance.Main_Nintendo_Max_Format, SettingsManager.MaxNintendoSlots)
+                        : Strings.Instance.ControllerType_Nintendo,
+                Background = System.Windows.Media.Brushes.Transparent,
+                BorderThickness = new Thickness(0),
+                Padding = new Thickness(8),
+                MinWidth = 0,
+                Cursor = nintendoDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
+            };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(nintendoBtn, "AddNintendoBtn");
+            nintendoBtn.Click += (s, e) =>
+            {
+                if (nintendoDisabled) return;
+                popup.IsOpen = false;
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Nintendo);
+                if (newSlot >= 0)
+                {
+                    int nav = FindLastSlotOfType(VirtualControllerType.Nintendo);
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
+                }
+            };
+            stack.Children.Add(nintendoBtn);
+
             // Extended button — theme-aware icon fill.
             var extendedPopupPath = new System.Windows.Shapes.Path
             {
@@ -4464,7 +5078,7 @@ namespace PadForge
                 MinWidth = 0,
                 Cursor = extendedDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
             };
-            System.Windows.Automation.AutomationProperties.SetAutomationId(extendedBtn, "AddExtendedBtn");
+            System.Windows.Automation.AutomationProperties.SetAutomationId(extendedBtn, "AddRawBtn");
             extendedBtn.Click += (s, e) =>
             {
                 if (extendedDisabled) return;
@@ -4797,12 +5411,29 @@ namespace PadForge
         }
 
         /// <summary>
-        /// Returns the last created slot index of the given type, or -1 if none.
-        /// Used after CreateSlot to navigate to the newly added slot, which is
-        /// always the tail of its group's order list.
+        /// Returns the slot at the TAIL of the type's group order list, or -1
+        /// if none. Used after CreateSlot to navigate to the newly added slot,
+        /// which CreateSlot appends to that order list.
+        ///
+        /// <para>Pad INDEX order is not group order: CreateSlot reuses the
+        /// first free pad index, so after a middle-slot delete the new slot's
+        /// index is lower than its same-type siblings. Scanning indices then
+        /// returned a pre-existing slot and the Add-Controller handlers
+        /// navigated the user to someone else's config (round 34).</para>
         /// </summary>
         private int FindLastSlotOfType(VirtualControllerType type)
         {
+            var order = SettingsManager.SlotOrders.GetOrderFor(type);
+            for (int p = order.Count - 1; p >= 0; p--)
+            {
+                int pad = order[p];
+                if (pad >= 0 && pad < InputManager.MaxPads
+                    && SettingsManager.SlotCreated[pad]
+                    && _viewModel.Pads[pad].OutputType == type)
+                    return pad;
+            }
+            // Types with no order list (MIDI / KeyboardMouse) keep the old
+            // index scan: they have no group-order concept to be wrong about.
             int last = -1;
             for (int i = 0; i < InputManager.MaxPads; i++)
                 if (SettingsManager.SlotCreated[i] && _viewModel.Pads[i].OutputType == type)
@@ -4851,13 +5482,13 @@ namespace PadForge
         private void NavView_ItemInvoked(NavigationView sender,
             RoutedEventArgs args)
         {
-            // Check for AddController click.
-            if (args.OriginalSource is NavigationViewItem nvi
-                && nvi.Tag?.ToString() == "AddController")
-            {
-                ShowControllerTypePopup(nvi);
-                return;
-            }
+            // The AddController check that used to sit here is gone. It cast
+            // args.OriginalSource straight to NavigationViewItem, and for
+            // ItemInvoked that source is the inner content element, never the
+            // item itself, so the branch could not fire. The click is handled
+            // by the PreviewMouseLeftButtonDown handler in the constructor,
+            // which walks UP the visual tree to find the item and is why the
+            // feature works at all.
 
             // Fallback navigation: if SelectionChanged didn't fire, handle it here.
             if (sender.SelectedItem is NavigationViewItem selected)
@@ -4866,36 +5497,6 @@ namespace PadForge
                 if (!_rebuildingControllerSection)
                     NavigateToTag(tag);
             }
-        }
-
-        private static T FindVisualChildByType<T>(DependencyObject parent, Func<T, bool> predicate) where T : DependencyObject
-        {
-            int count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < count; i++)
-            {
-                var child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i);
-                if (child is T match && predicate(match))
-                    return match;
-                var result = FindVisualChildByType(child, predicate);
-                if (result != null)
-                    return result;
-            }
-            return null;
-        }
-
-        private static T FindVisualChild<T>(DependencyObject parent, string name) where T : FrameworkElement
-        {
-            int count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < count; i++)
-            {
-                var child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i);
-                if (child is T fe && fe.Name == name)
-                    return fe;
-                var result = FindVisualChild<T>(child, name);
-                if (result != null)
-                    return result;
-            }
-            return null;
         }
 
         /// <summary>
@@ -4978,9 +5579,6 @@ namespace PadForge
         private static extern IntPtr CreateWindowEx(int exStyle, string className, string windowName, int style,
             int x, int y, int w, int h, IntPtr parent, IntPtr menu, IntPtr instance, IntPtr param);
 
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern bool DestroyWindow(IntPtr hWnd);
-
         [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         private struct TOOLINFO
         {
@@ -5034,6 +5632,17 @@ namespace PadForge
 
             // Add a non-tracking tool with the button's client rect.
             AddNativeTooltipTool(source.Handle);
+
+            // The tool's hit rect is BAKED at registration, and the title-bar
+            // button moves with the window's right edge, so a single
+            // registration went stale on the first resize: the relayed
+            // WM_MOUSEMOVE carries current coordinates that no longer fall
+            // inside the recorded rect, and the tooltip stopped appearing
+            // (round 34). Re-register on geometry and DPI changes.
+            // AddNativeTooltipTool already sends TTM_DELTOOL before
+            // TTM_ADDTOOL, which is exactly what makes this safe to repeat.
+            SizeChanged += (s, ev) => AddNativeTooltipTool(source.Handle);
+            DpiChanged += (s, ev) => AddNativeTooltipTool(source.Handle);
 
             // Relay mouse messages so the tooltip handles delay/positioning natively.
             FullScreenBtn.MouseMove += (s, ev) => RelayMouseMessage(source.Handle, 0x0200); // WM_MOUSEMOVE
@@ -5393,6 +6002,181 @@ namespace PadForge
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileImported_Format, profile.Name, packages.Count);
         }
 
+        /// <summary>Opens the Steam Workshop browse dialog (#9). Always opens:
+        /// with the opt-in off, the dialog presents its cold-forge state and
+        /// the enable action flips the same persisted setting the Settings
+        /// card toggles.</summary>
+        private void OnBrowseCommunityConfigs(object sender, EventArgs e)
+        {
+            var dlg = new Views.WorkshopBrowseDialog(_viewModel.Settings) { Owner = this };
+            dlg.ImportSink = AddWorkshopProfile;
+            dlg.ShowDialog();
+            // Post-import, the dossier summary rides the status line
+            // (design flow step 4: what came across, in one line).
+            if (dlg.ImportedProfileName != null)
+            {
+                _viewModel.StatusText = string.Format(Strings.Instance.Status_WorkshopImported_Format,
+                    dlg.ImportedProfileName, dlg.ImportedClean, dlg.ImportedPartial, dlg.ImportedSkipped);
+            }
+        }
+
+        /// <summary>Purges the Workshop cache directory (Settings card button).</summary>
+        private void OnClearWorkshopCache(object sender, EventArgs e)
+        {
+            try
+            {
+                new PadForge.SteamWorkshop.Cache.SteamWorkshopCache().Clear();
+                _viewModel.StatusText = Strings.Instance.Status_WorkshopCacheCleared;
+            }
+            catch (Exception ex)
+            {
+                _viewModel.SetStatus(ex.Message, persist: true);
+            }
+        }
+
+        /// <summary>Non-null while an update check runs. Doubles as the
+        /// reentrancy guard and is cancelled by OnClosing so an in-flight
+        /// Steam query never outlives shutdown.</summary>
+        private System.Threading.CancellationTokenSource _workshopUpdateCts;
+
+        /// <summary>Checks every Workshop-imported profile for a newer
+        /// Workshop version (#9 Phase D): batch-queries
+        /// GetPublishedFileDetails over the stored SteamWorkshopSource ids
+        /// and compares time_updated. Results ride the status line, except
+        /// when something is stale, which gets a dialog listing the profiles
+        /// and offering Browse Community Configs as the re-import route.
+        /// With the opt-in off this never touches the network.</summary>
+        private async void OnCheckWorkshopUpdates(object sender, EventArgs e)
+        {
+            if (!_viewModel.Settings.EnableCommunityConfigLookup)
+            {
+                _viewModel.StatusText = Strings.Instance.Status_WorkshopUpdatesOptInRequired;
+                return;
+            }
+            if (_workshopUpdateCts != null) return;
+
+            var imported = SettingsManager.Profiles
+                .Where(p => p.WorkshopSource != null && p.WorkshopSource.PublishedFileId != 0)
+                .Select(p => (p.Name, Source: p.WorkshopSource))
+                .ToList();
+            if (imported.Count == 0)
+            {
+                _viewModel.StatusText = Strings.Instance.Status_WorkshopNoImportedProfiles;
+                return;
+            }
+
+            _workshopUpdateCts = new System.Threading.CancellationTokenSource();
+            var ct = _workshopUpdateCts.Token;
+            _viewModel.StatusText = Strings.Instance.Status_WorkshopCheckingUpdates;
+            try
+            {
+                var gate = new PadForge.SteamWorkshop.DelegateSteamWorkshopGate(
+                    () => _viewModel.Settings.EnableCommunityConfigLookup);
+                var client = new PadForge.SteamWorkshop.Api.SteamRemoteStorageClient(gate);
+                var ids = imported.Select(x => (long)x.Source.PublishedFileId).Distinct().ToList();
+                var details = await client.GetDetailsAsync(ids, ct);
+                if (ct.IsCancellationRequested) return;
+
+                var freshById = new Dictionary<ulong, PadForge.SteamWorkshop.Api.Dto.PublishedFileDetails>();
+                foreach (var d in details)
+                {
+                    // Per-item result 1 is OK. Removed or banned items come
+                    // back with another code and stay unreported.
+                    if (d.Result == 1 && ulong.TryParse(d.PublishedFileId, out var id))
+                        freshById[id] = d;
+                }
+
+                var stale = new List<string>();
+                foreach (var (name, source) in imported)
+                {
+                    if (freshById.TryGetValue(source.PublishedFileId, out var fresh) &&
+                        fresh.TimeUpdated > source.TimeUpdated)
+                    {
+                        string title = string.IsNullOrWhiteSpace(fresh.Title) ? source.Title : fresh.Title;
+                        stale.Add(string.Format(Strings.Instance.Workshop_UpdateRow_Format, name, title));
+                    }
+                }
+
+                if (stale.Count == 0)
+                {
+                    _viewModel.StatusText = string.Format(
+                        Strings.Instance.Status_WorkshopProfilesCurrent_Format, imported.Count);
+                    return;
+                }
+
+                _viewModel.StatusText = string.Empty;
+                var dialog = new Wpf.Ui.Controls.MessageBox
+                {
+                    Title = Strings.Instance.Workshop_UpdatesTitle,
+                    Content = Strings.Instance.Workshop_UpdatesBody + "\n\n" + string.Join("\n", stale),
+                    PrimaryButtonText = Strings.Instance.Profiles_BrowseCommunity,
+                    CloseButtonText = Strings.Instance.Common_Close,
+                };
+                var result = await dialog.ShowDialogAsync();
+                if (result == Wpf.Ui.Controls.MessageBoxResult.Primary)
+                    OnBrowseCommunityConfigs(this, EventArgs.Empty);
+            }
+            catch (OperationCanceledException) when (ct.IsCancellationRequested)
+            {
+                // Shutdown cancelled the query. Nothing to report.
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                _viewModel.SetStatus(Strings.Instance.Workshop_ErrorBody, persist: true);
+            }
+            catch (System.Threading.Tasks.TaskCanceledException)
+            {
+                // HttpClient timeout, not user cancellation (that case is
+                // filtered above). Same calm connectivity sentence as the
+                // browse dialog's error matrix.
+                _viewModel.SetStatus(Strings.Instance.Workshop_ErrorBody, persist: true);
+            }
+            catch (Exception ex)
+            {
+                _viewModel.SetStatus(ex.Message, persist: true);
+            }
+            finally
+            {
+                _workshopUpdateCts?.Dispose();
+                _workshopUpdateCts = null;
+            }
+        }
+
+        /// <summary>Registers a Workshop-translated profile through the same
+        /// steps the .pfprofile Import path takes (name dedup, registry add,
+        /// list item with topology counts, MarkDirty), then optionally loads
+        /// it as the active profile. Returns the deduped display name.</summary>
+        private string AddWorkshopProfile(Services.ProfileData profile, bool applyAfter)
+        {
+            string baseName = string.IsNullOrWhiteSpace(profile.Name) ? "Imported profile" : profile.Name.Trim();
+            string name = baseName;
+            int n = 2;
+            while (SettingsManager.Profiles.Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)))
+                name = $"{baseName} ({n++})";
+            profile.Name = name;
+
+            SettingsManager.Profiles.Add(profile);
+            var listItem = new ViewModels.ProfileListItem
+            {
+                Id = profile.Id,
+                Name = profile.Name,
+                Executables = InputService.FormatExePaths(profile.ExecutableNames ?? string.Empty),
+                ExecutablePaths = profile.ExecutableNames ?? string.Empty,
+            };
+            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
+            _viewModel.Settings.ProfileItems.Add(listItem);
+            _settingsService.MarkDirty();
+
+            if (applyAfter)
+            {
+                _inputService.LoadProfile(profile.Id);
+                _viewModel.Settings.ActiveProfileInfo = profile.Name;
+                _settingsService.MarkDirty();
+            }
+
+            return profile.Name;
+        }
+
         private void OnEditProfile(object sender, EventArgs e)
         {
             var selected = _viewModel.Settings.SelectedProfile;
@@ -5526,7 +6310,7 @@ namespace PadForge
 
                     // Y axes: record neg (up in game) first due to NegateAxis inversion.
                     // For standard gamepad: TargetSettingName contains "AxisY".
-                    // For Extended custom sticks: TargetSettingName is "ExtendedAxisN" — check label for "Y".
+                    // For Extended custom sticks: TargetSettingName is "RawAxisN" — check label for "Y".
                     //
                     // negRecording=true on Y axes is what makes ShouldAutoInvert
                     // return axisPositive (instead of !axisPositive) so an UP
@@ -5576,6 +6360,7 @@ namespace PadForge
                     or nameof(MappingItem.GyroSensitivity)
                     or nameof(MappingItem.MouseCursorSensitivity)
                     or nameof(MappingItem.IrPointerSensitivity)
+                    or nameof(MappingItem.Sensitivity)
                     or nameof(MappingItem.PrimarySourceDeviceGuid)
                     or nameof(MappingItem.CombineMode)
                     or nameof(MappingItem.CombineExpression)
@@ -5661,6 +6446,7 @@ namespace PadForge
                         or nameof(MappingSourceItem.GyroSensitivity)
                         or nameof(MappingSourceItem.MouseCursorSensitivity)
                         or nameof(MappingSourceItem.IrPointerSensitivity)
+                        or nameof(MappingSourceItem.Sensitivity)
                         or nameof(MappingSourceItem.Kind)
                         or nameof(MappingSourceItem.ParamUp)
                         or nameof(MappingSourceItem.ParamDown)
@@ -5705,8 +6491,10 @@ namespace PadForge
                 d = d.Substring(1);
             else if (d.StartsWith("H", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1]))
                 d = d.Substring(1);
-            return d.StartsWith("Axis ", StringComparison.Ordinal)
-                || d.StartsWith("Slider ", StringComparison.Ordinal);
+            // "Axis N" / "Slider N" plus the abstract Gamepad sticks /
+            // triggers that canonicalize to one (#9), so a recording over
+            // an alias primary joins it instead of overwriting it.
+            return PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(d);
         }
 
         private void WireMacroRecording(MacroItem macro, int padIndex)
@@ -6028,7 +6816,7 @@ namespace PadForge
 
             var exitItem = new System.Windows.Controls.MenuItem
             {
-                Header = "Exit",
+                Header = Strings.Instance.Tray_Exit,
             };
             exitItem.Click += (s, e) => { _notifyIcon.Visible = false; Close(); };
             menu.Items.Add(exitItem);
@@ -6050,10 +6838,15 @@ namespace PadForge
                 _viewModel.Settings.MainWindowState = (int)WindowState;
                 _settingsService.MarkDirty();
             }
+
+            ScheduleSelectionGlowReattach();
         }
 
         private void OnLocationOrSizeChanged(object sender, EventArgs e)
         {
+            if (sender != null && e is SizeChangedEventArgs)
+                ScheduleSelectionGlowReattach();
+
             // Only save when in Normal state (Maximized position/size is system-managed).
             if (WindowState != WindowState.Normal) return;
             var mw = _viewModel.Settings;
@@ -6062,6 +6855,35 @@ namespace PadForge
             mw.MainWindowWidth = Width;
             mw.MainWindowHeight = Height;
             _settingsService.MarkDirty();
+        }
+
+        private System.Windows.Threading.DispatcherTimer _glowReattachTimer;
+
+        /// <summary>Rebuilds the selected mini card's glow adorner after a
+        /// window state change or resize. The adorner's cached texture and the
+        /// adorner layer's arrange can land a frame apart across those
+        /// transitions, leaving the pill border drawn at a stale offset until
+        /// the next selection change. Debounced so a drag-resize re-attaches
+        /// once at the end, not per tick.</summary>
+        private void ScheduleSelectionGlowReattach()
+        {
+            if (_glowSelectedControllerTag == null) return;
+            if (_glowReattachTimer == null)
+            {
+                _glowReattachTimer = new System.Windows.Threading.DispatcherTimer
+                { Interval = TimeSpan.FromMilliseconds(150) };
+                _glowReattachTimer.Tick += (_, _) =>
+                {
+                    _glowReattachTimer.Stop();
+                    if (_glowSelectedControllerTag == null) return;
+                    // Defeat the change gate so the same pill re-attaches at
+                    // its current geometry.
+                    _glowSelectedControllerTag = null;
+                    RefreshControllerSelectionVisuals();
+                };
+            }
+            _glowReattachTimer.Stop();
+            _glowReattachTimer.Start();
         }
 
         private bool _isRestoring;
@@ -6124,8 +6946,9 @@ namespace PadForge
             try
             {
                 var copyOutputType = padVm.OutputType;
-                bool copyIsExtended = copyOutputType == VirtualControllerType.Extended
-                    /* Extended always uses dynamic layout */;
+                bool copyIsExtended = copyOutputType is VirtualControllerType.Extended
+                    or VirtualControllerType.Nintendo
+                    /* raw-surface types always use the dynamic layout */;
 
                 // Snapshot the slot's full MappingSet so Copy → Paste carries
                 // every device's contribution — not just the slot's currently-
@@ -6159,6 +6982,11 @@ namespace PadForge
                 // Carry the slot's shift authoring (activators + Base appearance)
                 // so Copy / Paste includes shift layers like Copy From (#119).
                 ps.SlotShiftActivatorsJson = InputService.BuildShiftLayerSnapshotJson(padVm.PadIndex);
+
+                // Carry the slot's menus (#9 B-17) the same way. Menus live on
+                // the MappingSet like shift authoring, so Copy must snapshot
+                // them or Paste loses the Menus tab.
+                ps.SlotMenusJson = InputService.BuildMenusSnapshotJson(padVm.PadIndex);
 
                 // Bundle EVERY device's PadSetting on the source slot so
                 // per-device tuning (deadzones, sensitivity, FFB, Gyro,
@@ -6195,8 +7023,9 @@ namespace PadForge
                 }
 
                 var targetType = padVm.OutputType;
-                bool targetIsExtended = targetType == VirtualControllerType.Extended
-                    /* Extended always uses dynamic layout */;
+                bool targetIsExtended = targetType is VirtualControllerType.Extended
+                    or VirtualControllerType.Nintendo
+                    /* raw-surface types always use the dynamic layout */;
 
                 // Whole-slot snapshot → replace the target's MappingSet
                 // wholesale BEFORE the PadSetting tuning copy. Preserves
@@ -6220,6 +7049,16 @@ namespace PadForge
                     && MappingTranslation.IsSameLayout(srcType, srcIsExtended, targetType, targetIsExtended))
                 {
                     InputService.ApplyShiftLayerSnapshotJson(padVm.PadIndex, ps.SlotShiftActivatorsJson);
+                }
+
+                // Restore the slot's menus after the row replace, same gate and
+                // ordering as the shift authoring above. Wiped otherwise: the
+                // fresh rows-only MappingSet from ApplySlotMappingSetFromRows
+                // carries no menus (#9 B-17 clipboard round-trip).
+                if (!string.IsNullOrEmpty(ps.SlotMenusJson)
+                    && MappingTranslation.IsSameLayout(srcType, srcIsExtended, targetType, targetIsExtended))
+                {
+                    InputService.ApplyMenusSnapshotJson(padVm.PadIndex, ps.SlotMenusJson);
                 }
 
                 _inputService.ApplyPadSettingToCurrentDeviceTranslated(
@@ -6295,6 +7134,17 @@ namespace PadForge
                     && padVm.PadIndex >= 0 && padVm.PadIndex < SettingsManager.SlotMappingSets.Length
                     ? SettingsManager.SlotMappingSets[padVm.PadIndex] : null;
                 padVm.RebuildLayerTabs(pastedMs?.ShiftActivators);
+                // Refresh the Menus tab from the restored set so pasted menus
+                // show up immediately instead of staying invisible until relaunch.
+                padVm.ReloadMenus();
+                // Same for the Bass Shakers tab (#236). Note the data flow:
+                // the paste deliberately PRESERVES the destination's
+                // rumble-audio config (ApplySlotMappingSetFromRows), so the
+                // reload re-anchors the card onto the fresh set object that
+                // now carries the destination's own config.
+                padVm.ReloadRumbleAudio();
+                // And the SOCD card (#240), same lifetime.
+                padVm.ReloadSocd();
 
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsPasted;
@@ -6323,6 +7173,49 @@ namespace PadForge
             }
         }
 
+        /// <summary>True when ANY slot's layer set declares the mask, so a
+        /// copied or pasted macro may keep its scope. Round four (R11)
+        /// widened this from destination-only: the runtime gate honors a
+        /// mask the macro's own slot does not declare (the split-config
+        /// fallback), so the old rule stripped scopes the engine supports,
+        /// including on a SAME-slot paste of an imported macro, ungating
+        /// it globally. Only a true orphan (no slot declares it) is
+        /// stripped, and missing machinery fails OPEN, matching the gate:
+        /// keeping a scope is never data loss, destroying one is.</summary>
+        private static bool DestinationDeclaresLayer(PadForge.ViewModels.PadViewModel padVm, string mask)
+        {
+            if (string.IsNullOrEmpty(mask)) return true;
+            if (string.Equals(mask, "Base", StringComparison.Ordinal)) return true;
+            var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            if (sets == null) return true; // no layer machinery: fail open, like the gate
+            var destSet = padVm != null && padVm.PadIndex >= 0 && padVm.PadIndex < sets.Length
+                ? sets[padVm.PadIndex] : null;
+            foreach (var set in sets)
+            {
+                var acts = set?.ShiftActivators;
+                if (acts == null) continue;
+                bool declares = false;
+                foreach (var a in acts)
+                {
+                    if (a == null) continue;
+                    if (string.Equals(a.LayerMask, mask, StringComparison.Ordinal)
+                        || PadForge.Common.Input.InputManager.PipeListContains(a.CycleLayers, mask))
+                    { declares = true; break; }
+                }
+                if (!declares) continue;
+                // The destination's own set always counts. A FOREIGN slot
+                // counts only when it is the same import (round five, X17):
+                // keeping a mask an unrelated pad happens to own leaves the
+                // macro gated by that pad's controller and unrepresentable
+                // in the destination's own picker.
+                if (ReferenceEquals(set, destSet)) return true;
+                if (destSet != null
+                    && PadForge.Common.Input.InputManager.SlotSharesImportDomain(destSet, mask))
+                    return true;
+            }
+            return false;
+        }
+
         private void OnPasteMacro(PadViewModel padVm)
         {
             try
@@ -6332,8 +7225,15 @@ namespace PadForge
                 MacroItem last = null;
                 foreach (var md in env.Macros)
                 {
-                    var macro = SettingsService.LoadMacroFromData(md, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount);
+                    var macro = SettingsService.LoadMacroFromData(md, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount, padVm.ProfileId);
                     macro.PadIndex = padVm.PadIndex;
+                    // A layer scope belongs to the SOURCE slot's layer set
+                    // (audit 2026-07-25, C8). Carrying it across slots left
+                    // the copy gated on a foreign slot's layer through the
+                    // split-config fallback, and on a slot with no layers
+                    // the picker could not show or clear it. Keep the mask
+                    // only when the destination declares it.
+                    if (!DestinationDeclaresLayer(padVm, macro.LayerMask)) macro.LayerMask = "";
                     padVm.Macros.Add(macro);
                     last = macro;
                 }
@@ -6367,6 +7267,7 @@ namespace PadForge
         {
             VirtualControllerType.Xbox          => Strings.Instance.ControllerType_Xbox,
             VirtualControllerType.PlayStation   => Strings.Instance.ControllerType_PlayStation,
+            VirtualControllerType.Nintendo      => Strings.Instance.ControllerType_Nintendo,
             VirtualControllerType.Extended      => Strings.Instance.ControllerType_Extended,
             VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
             VirtualControllerType.Midi          => Strings.Instance.ControllerType_MIDI,
@@ -6413,8 +7314,10 @@ namespace PadForge
             foreach (var macro in source.Macros.ToList())
             {
                 var data = SettingsService.BuildMacroDataForMacro(macro, padVm.PadIndex);
-                var clone = SettingsService.LoadMacroFromData(data, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount);
+                var clone = SettingsService.LoadMacroFromData(data, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount, padVm.ProfileId);
                 clone.PadIndex = padVm.PadIndex;
+                // Same rule as the paste path above (audit C8).
+                if (!DestinationDeclaresLayer(padVm, clone.LayerMask)) clone.LayerMask = "";
                 padVm.Macros.Add(clone);
                 last = clone;
             }
@@ -6516,7 +7419,8 @@ namespace PadForge
                 {
                     var srcPad = _viewModel.Pads[us.MapTo];
                     outputType = srcPad.OutputType;
-                    isExtended = outputType == VirtualControllerType.Extended;
+                    isExtended = outputType is VirtualControllerType.Extended
+                        or VirtualControllerType.Nintendo;
                 }
 
                 // Primary line identifies the SLOT, not the device. The
@@ -6562,8 +7466,9 @@ namespace PadForge
             {
                 var srcEntry = dialog.SelectedEntry;
                 var targetOutputType = padVm.OutputType;
-                bool targetIsExtended = targetOutputType == VirtualControllerType.Extended
-                    /* Extended always uses dynamic layout */;
+                bool targetIsExtended = targetOutputType is VirtualControllerType.Extended
+                    or VirtualControllerType.Nintendo
+                    /* raw-surface types always use the dynamic layout */;
 
                 // Issue #61 — "Copy From" is a SLOT-level copy. Replace this
                 // slot's per-VC MappingSet with the SOURCE slot's wholesale
@@ -6659,6 +7564,14 @@ namespace PadForge
                     && padVm.PadIndex >= 0 && padVm.PadIndex < SettingsManager.SlotMappingSets.Length
                     ? SettingsManager.SlotMappingSets[padVm.PadIndex] : null;
                 padVm.RebuildLayerTabs(targetMs?.ShiftActivators);
+                // Refresh the Menus tab so menus carried by ReplaceSlotMappingSet
+                // show up immediately instead of staying invisible until relaunch.
+                padVm.ReloadMenus();
+                // Same for the Bass Shakers tab (#236): its config rides the
+                // copied MappingSet.
+                padVm.ReloadRumbleAudio();
+                // And the SOCD card (#240), same lifetime.
+                padVm.ReloadSocd();
 
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopiedFromDevice;

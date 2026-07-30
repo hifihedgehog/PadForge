@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace PadForge.Engine.Touchpad
 {
@@ -219,6 +219,263 @@ namespace PadForge.Engine.Touchpad
         /// cursor up when on.</summary>
         [XmlAttribute] public bool MouseInvertY { get; set; }
 
+        /// <summary><para>Momentum: the cursor keeps travelling after the
+        /// finger lifts, coasting to a stop instead of halting dead. This is
+        /// the trackball feel the Steam Controller's own lizard mode has, and
+        /// it is most of why flicking across a pad there covers ground a
+        /// finger-length swipe cannot.</para>
+        /// <para>Off by default. A cursor that keeps moving after release is
+        /// a deliberate choice, not something to surprise anyone with.</para>
+        /// </summary>
+        [XmlAttribute] public bool MouseMomentum { get; set; }
+
+        /// <summary><para>How long the coast lasts: the fraction of speed
+        /// kept after each 10 ms of travel. The band is 0.80 to 1.00 and the
+        /// default 0.90 sits at its midpoint, which glides about twice as far
+        /// as the first cut did.</para>
+        /// <para>1.00 is FRICTIONLESS. The cursor keeps its speed until you
+        /// touch the pad again, which is what a real trackball does when you
+        /// spin it and let go, and touching down stops it. That is the only
+        /// stop at 1.00, by design.</para>
+        /// <para>Per unit TIME rather than per poll, so the glide lasts the
+        /// same wall-clock duration at any polling rate.</para></summary>
+        [XmlAttribute] public float MouseMomentumDecay { get; set; } = 0.90f;
+
+        /// <summary><para>Jitter reduction: bends motion below the threshold
+        /// down a power curve instead of cutting it off, so resting-hand
+        /// tremor is damped while fine movement stays continuous. Same shape
+        /// the gyro lane uses, which came from DS4Windows'
+        /// jitterCompensation.</para>
+        /// <para>A deadzone would delete the small motion outright, which is
+        /// what makes fine cursor work feel dead. This keeps it, just
+        /// smaller.</para></summary>
+        [XmlAttribute] public bool MouseJitterReduction { get; set; } = true;
+
+        /// <summary><para>Rate-dependent cursor gain: slow drags pass through
+        /// unchanged, fast ones amplify, as v x (1 + accel x |v|). 0 = off.
+        /// The same curve the gyro lane's Acceleration uses
+        /// (SourceCoercion.ApplyGyroAcceleration), on the touchpad's cursor
+        /// lane.</para>
+        /// <para>Exists as a per-pad setting because a Workshop import wrote
+        /// it invisibly. Steam's mouse "acceleration" landed on
+        /// MappingSource.ParamAccel, which the engine honoured while no card
+        /// showed it, so an imported pad felt accelerated with nothing on
+        /// screen to say why and nothing to turn it off. Sensitivity is a
+        /// flat multiplier and cannot express it, so this is its own knob
+        /// rather than a range widened on an existing one.</para></summary>
+        [XmlAttribute] public float MouseAcceleration { get; set; }
+
+        /// <summary><para>Which transfer function turns finger speed into cursor
+        /// speed. <c>Simple</c> (default) applies
+        /// <see cref="MouseAcceleration"/> as a plain rate-dependent boost, so
+        /// the default of 0 is a constant gain and behaves exactly as the pad
+        /// did before this existed. <c>Trackpad</c> is the ported libinput
+        /// touchpad profile.</para>
+        ///
+        /// <para>A mode rather than two knobs stacked on each other: they are
+        /// competing models of the same thing, so layering would let a user
+        /// configure a contradiction.</para>
+        ///
+        /// <para>Deliberately NO separate "Flat" value. Simple with
+        /// acceleration 0 already IS flat, and offering both would be two
+        /// spellings of one behaviour, with the added trap that defaulting to
+        /// Flat would silently disable the acceleration slider for anyone who
+        /// had already set it.</para>
+        ///
+        /// <para>Trackpad exists because Simple cannot produce gain BELOW 1,
+        /// and that is where a laptop trackpad's precision comes from.
+        /// libinput decelerates to 0.3x of input at rest, holds a 0.9 plateau
+        /// through normal movement, then accelerates. A pad that can only ever
+        /// go faster feels clunky next to one that also goes finer, whatever
+        /// the boost is set to.</para></summary>
+        [XmlAttribute] public string PointerResponse { get; set; } = "Simple";
+
+        /// <summary><para>Finger speed, in mm/s, at which the Trackpad profile
+        /// leaves its plateau and starts accelerating. libinput's own default
+        /// and its single exposed tunable
+        /// (<c>filter-touchpad.c</c>, <c>filter-&gt;threshold = 130</c>).</para>
+        ///
+        /// <para>The calibration knob for this feature, and it needs to be one.
+        /// Converting a gamepad pad's normalized coordinates into mm/s needs a
+        /// physical pad width, and no authority publishes one: the Linux
+        /// PlayStation driver defines the DS4 pad as 1920x942 UNITS and never
+        /// calls input_abs_set_res, so even libinput does not know the size of
+        /// the pad it is accelerating. See
+        /// <see cref="TrackpadAssumedPadWidthMm"/>.</para></summary>
+        [XmlAttribute] public float TrackpadThresholdMmPerSec { get; set; } = 130f;
+
+        /// <summary><para>Physical width of this pad in mm, used to turn its
+        /// normalized coordinates into the mm/s the Trackpad profile is defined
+        /// over.</para>
+        ///
+        /// <para>A setting rather than a constant because it decides whether
+        /// the feature works at all. The profile's deceleration knee sits at
+        /// 7 mm/s, and a pad cannot report a speed slower than one coordinate
+        /// unit per report: on a DS4 (1920 units, ~250 Hz) that quantum is
+        /// 8.98 mm/s at a 69 mm width, so the whole precision half of the curve
+        /// would be unreachable and the profile could only ever accelerate. The
+        /// knee comes into range below roughly 54 mm.</para>
+        ///
+        /// <para>Defaults to libinput's own stated assumption for a touchpad
+        /// that reports no resolution, which is exactly our case (the Linux
+        /// PlayStation driver never calls input_abs_set_res for these pads):
+        /// tp_init_default_resolution assumes 69 x 50 mm. Kept as the default
+        /// because it is the one figure with a citation. No authority publishes
+        /// a DS4 touchpad's physical size, and a remembered "52 mm" turned out
+        /// to be the CONTROLLER's height, so lowering this is a calibration the
+        /// user makes by feel, on the pad in their hands.</para></summary>
+        [XmlAttribute] public float TrackpadPadWidthMm { get; set; } = 69f;
+
+        // ─── Absolute pointer output (#9 B-15) ─────────────────────────
+        //
+        // Applied by SourceCoercion.ReadTunedTouchpadPointer when a
+        // "Touchpad N Pointer X/Y" descriptor feeds a KBM mouse target
+        // (the absolute cursor lane). The margin stretch is the Wii aim
+        // map's concept (SourceCoercion.IrMarginStretchX/Y, the Touchmote
+        // pointer_margins lineage): values above 1.0 let a thumb that
+        // stops short of the pad bezel still reach the screen edges.
+        // Default 1.0 = Steam's 1:1 mouse_region map ("touching a
+        // particular place on the pad will always put the cursor in the
+        // same place on the screen"), which needs no stretch because a
+        // finger CAN reach the pad edges.
+
+        /// <summary><para>Width of the screen rectangle this pad maps onto,
+        /// as a fraction of screen width. 1.0 is the full-screen 1:1 map;
+        /// 0.5 confines the cursor to the middle half; 1.2 runs the region
+        /// wider than the screen so the edges are reached before the pad
+        /// bezel.</para>
+        /// <para>SUPERSEDES PointerStretchX, which was the same quantity
+        /// under a worse name and a floor of 1.0. The two are algebraically
+        /// identical at the default center: with u = 2*raw-1, a stretch S
+        /// gives clamp(u*S) and an extent S gives clamp(u*S). The floor was
+        /// the live defect, since it could not express any region SMALLER
+        /// than the screen, which is what most Steam mouse_region configs
+        /// author (5 of the 6 extents in the translation corpus are below
+        /// 1.0). Old profiles migrate in SettingsService.</para></summary>
+        [XmlAttribute] public float PointerRegionSizeX { get; set; } = 1.0f;
+
+        /// <summary>Height of the screen rectangle, as a fraction of screen
+        /// height. Supersedes PointerStretchY.</summary>
+        [XmlAttribute] public float PointerRegionSizeY { get; set; } = 1.0f;
+
+        /// <summary>Horizontal center of the screen rectangle, 0 = left
+        /// edge, 1 = right edge. Steam's mouse_region position_x. Had no
+        /// representation at all before, so an imported corner region (AOE
+        /// II maps a pad to the bottom-left menu at 0.09/0.90) could be
+        /// imported but never seen or edited.</summary>
+        [XmlAttribute] public float PointerRegionCenterX { get; set; } = 0.5f;
+
+        /// <summary>Vertical center, 0 = TOP edge, 1 = bottom. Note the
+        /// origin: Steam's position_y is bottom-origin and the translator
+        /// flips it (1 - y/100) on the way in, matching sc-controller's
+        /// importer (scc/foreign/vdf.py "y = 1.0 - (y/100.0)").</summary>
+        [XmlAttribute] public float PointerRegionCenterY { get; set; } = 0.5f;
+
+        /// <summary><para>True once the user has touched the Absolute Pointer
+        /// card, which hands this pad's region to the pad settings for good.
+        /// </para>
+        /// <para>It exists to keep a RESET honest. An imported Steam
+        /// mouse_region carries its geometry on the mapping source (import
+        /// runs before any device is assigned, so per-device settings cannot
+        /// be written yet), and the engine reads that source geometry until
+        /// the card is used. Were the handover keyed on "the pad's region is
+        /// still 0.5/1.0" instead of this flag, a user who deliberately set
+        /// the region back to full screen would land on exactly that
+        /// condition and silently get the imported rectangle back, with no
+        /// way to ever undo it.</para></summary>
+        [XmlAttribute] public bool PointerRegionAuthored { get; set; }
+
+        /// <summary><para>Schema counter for one-time repairs to this entry.
+        /// 0 means it predates the per-pad split.</para>
+        /// <para>Exists because a short-lived build wrote
+        /// PointerRegionAuthored=true onto entries whose region fields it had
+        /// just reset to the defaults. Authored-but-default is
+        /// indistinguishable from a deliberate "I want the full screen"
+        /// choice, so the repair cannot be an every-load rule without making
+        /// that choice impossible to express. It runs once, keyed on this.</para></summary>
+        [XmlAttribute] public int RegionSchema { get; set; }
+
+        /// <summary>True when the region is exactly the full-screen identity
+        /// map, i.e. carries no information.</summary>
+        public bool RegionIsIdentity =>
+            PointerRegionSizeX == 1.0f && PointerRegionSizeY == 1.0f
+            && PointerRegionCenterX == 0.5f && PointerRegionCenterY == 0.5f;
+
+        /// <summary><para>One-time repair of the authored-but-default state.
+        /// Returns true when it changed something.</para>
+        /// <para>Called from ResolveEntryForPad, which runs on the poll
+        /// thread as well as the UI thread, so it is reachable concurrently.
+        /// That is safe rather than merely unlikely: the whole body is gated
+        /// on an aligned int that only ever moves 0 to 1, the two writes are
+        /// individually atomic, and the values written do not depend on what
+        /// the other thread observed. Two threads racing both perform the
+        /// identical repair and converge. It cannot be placed on a
+        /// single-threaded load seam because the XML path deserializes
+        /// TouchpadSettings through [XmlArray] with no hook.</para></summary>
+        public bool RepairRegionSchema()
+        {
+            if (RegionSchema >= 1)
+            {
+                return false;
+            }
+            RegionSchema = 1;
+            if (PointerRegionAuthored && RegionIsIdentity)
+            {
+                // Nothing was ever really authored here, so hand the pad back
+                // to whatever its profile specifies.
+                PointerRegionAuthored = false;
+                return true;
+            }
+            return false;
+        }
+
+        // ── Legacy read path for the superseded stretch pair ──
+        //
+        // A profile saved before the region rename carries PointerStretchX/Y.
+        // Without these shims XmlSerializer drops the unknown attributes and
+        // the user's tuning vanishes on first load. Deserialize-only: both
+        // ShouldSerialize hooks return false, so nothing ever writes them
+        // back and the file converges to the region names after one save.
+        // Safe because stretch S and region size S are the same quantity.
+
+        // Both setters claim authorship. A profile that carried a stretch had
+        // a region the user chose, so it must keep winning over whatever an
+        // imported mapping source says; without this the old value would
+        // deserialize correctly and then be ignored by the read.
+        [XmlAttribute] public float PointerStretchX
+        {
+            get => PointerRegionSizeX;
+            set { PointerRegionSizeX = value; PointerRegionAuthored = true; }
+        }
+
+        [XmlAttribute] public float PointerStretchY
+        {
+            get => PointerRegionSizeY;
+            set { PointerRegionSizeY = value; PointerRegionAuthored = true; }
+        }
+
+        public bool ShouldSerializePointerStretchX() => false;
+
+        public bool ShouldSerializePointerStretchY() => false;
+
+        // ─── Swipe haptics (discussion #219) ───────────────────────────
+        //
+        // Steam-Input-style trackpad feel: a short haptic tick fires each
+        // time the finger travels a fixed distance across the pad
+        // (SwipeHapticsEvaluator accumulates travel per finger and emits
+        // detents). Delivery is per device family. The Steam Controller
+        // family pulses the pad-side actuator, Sony pads pulse the rumble
+        // motors through the effects dispatcher.
+
+        /// <summary>Master enable for swipe-haptic ticks on this pad.
+        /// Off by default. The feature is opt-in per (device, pad).</summary>
+        [XmlAttribute] public bool EnableSwipeHaptics { get; set; }
+
+        /// <summary>Tick strength 0..1. 0.5 mirrors the Medium step of
+        /// DS4MapperTest's HapticsIntensity ladder (Light 0.3 / Medium
+        /// 0.5 / Heavy 0.8 / Full 1.0, MapAction.cs GetHapticsIntensityRatio).</summary>
+        [XmlAttribute] public float SwipeHapticsIntensity { get; set; } = 0.5f;
+
         public TouchpadGestureSettings Clone()
         {
             return new TouchpadGestureSettings
@@ -261,9 +518,179 @@ namespace PadForge.Engine.Touchpad
                 MouseSensitivityY = MouseSensitivityY,
                 MouseInvertX = MouseInvertX,
                 MouseInvertY = MouseInvertY,
+                MouseMomentum = MouseMomentum,
+                MouseMomentumDecay = MouseMomentumDecay,
+                MouseJitterReduction = MouseJitterReduction,
+                MouseAcceleration = MouseAcceleration,
+                PointerResponse = PointerResponse,
+                TrackpadThresholdMmPerSec = TrackpadThresholdMmPerSec,
+                TrackpadPadWidthMm = TrackpadPadWidthMm,
+                PointerRegionSizeX = PointerRegionSizeX,
+                PointerRegionSizeY = PointerRegionSizeY,
+                PointerRegionAuthored = PointerRegionAuthored,
+                RegionSchema = RegionSchema,
+                PointerRegionCenterX = PointerRegionCenterX,
+                PointerRegionCenterY = PointerRegionCenterY,
+                EnableSwipeHaptics = EnableSwipeHaptics,
+                SwipeHapticsIntensity = SwipeHapticsIntensity,
             };
         }
 
         public static TouchpadGestureSettings Default() => new TouchpadGestureSettings();
+
+        // ─── Per-device resolution ─────────────────────────────────────
+        //
+        // Touchpad gesture / gating settings are per-DEVICE: enabling a
+        // setting applies to every touchpad the device enumerates (a Steam
+        // Controller has 2 pads). The per-pad distinction survives only in
+        // the output descriptor strings ("Touchpad 0 StickX" vs "Touchpad 1
+        // StickX") the user picks in the mapping grid. The on-disk shape
+        // keeps the TouchpadIndex attribute (no schema break); these
+        // selectors collapse the array to one winner per device so every
+        // read seam agrees mid-migration with legacy per-pad arrays.
+
+        /// <summary>Winner-selection shared by every read seam. Among the
+        /// entries whose DeviceGuid matches <paramref name="guidStr"/>, a
+        /// user-configured entry beats a fresh <see cref="Default"/> one.
+        /// Ties break to the lowest <c>TouchpadIndex</c>. Owner-accepted
+        /// merge policy: two pads configured differently collapse to the
+        /// lowest-index tuning, and the higher pad's tuning is dropped.
+        /// Returns null when no entry matches.</summary>
+        public static TouchpadSettingsEntry ResolveEntryForDevice(TouchpadSettingsEntry[] entries, string guidStr)
+        {
+            if (entries == null || string.IsNullOrEmpty(guidStr)) return null;
+            TouchpadSettingsEntry best = null;
+            foreach (var e in entries)
+            {
+                if (e?.Settings == null) continue;
+                if (!string.Equals(e.DeviceGuid, guidStr, System.StringComparison.OrdinalIgnoreCase)) continue;
+                if (best == null) { best = e; continue; }
+                bool eCfg = IsConfigured(e.Settings), bCfg = IsConfigured(best.Settings);
+                if (eCfg != bCfg) { if (eCfg) best = e; }
+                else if (e.TouchpadIndex < best.TouchpadIndex) best = e;
+            }
+            return best;
+        }
+
+        /// <summary>The resolved settings bundle for a device, or
+        /// <see cref="Default"/> when no entry matches. Every runtime read
+        /// seam (gesture provider, mouse provider, VM loader, picker)
+        /// funnels through this so they agree on which pad's tuning a
+        /// device uses.</summary>
+        public static TouchpadGestureSettings ResolveForDevice(TouchpadSettingsEntry[] entries, string guidStr)
+            => ResolveEntryForDevice(entries, guidStr)?.Settings ?? Default();
+
+        /// <summary><para>The entry governing one specific pad.</para>
+        /// <para>EVERY setting on this class is per (device, pad): a
+        /// controller's left and right pads are different pieces of hardware
+        /// in different places under different thumbs, so gesture thresholds,
+        /// mouse feel and the screen region all belong to the pad rather than
+        /// to the device.</para>
+        /// <para>Falls back to the device's lowest-indexed entry when the
+        /// exact pad has none, which is what carries a profile written before
+        /// the split: its single entry keeps applying to every pad until the
+        /// user tunes one of them apart.</para></summary>
+        public static TouchpadSettingsEntry ResolveEntryForPad(
+            TouchpadSettingsEntry[] entries, string guidStr, int padIdx)
+        {
+            if (entries == null || string.IsNullOrEmpty(guidStr)) return null;
+            foreach (var e in entries)
+            {
+                if (e?.Settings == null) continue;
+                if (e.TouchpadIndex != padIdx) continue;
+                if (string.Equals(e.DeviceGuid, guidStr, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    // Repair HERE, at the shared resolve seam, not in the VM
+                    // loader. The engine reads PointerRegionAuthored through
+                    // its own provider and never opens the Touchpad tab, so a
+                    // repair living on the UI path left a poisoned entry
+                    // suppressing the imported region until the user happened
+                    // to select that exact pad. Idempotent and gated on
+                    // RegionSchema, so running it per resolve is free.
+                    e.Settings.RepairRegionSchema();
+                    return e;
+                }
+            }
+            var fallback = ResolveEntryForDevice(entries, guidStr);
+            fallback?.Settings?.RepairRegionSchema();
+            return fallback;
+        }
+
+        /// <summary>Settings for one pad, or <see cref="Default"/> on a
+        /// miss.</summary>
+        public static TouchpadGestureSettings ResolveForPad(
+            TouchpadSettingsEntry[] entries, string guidStr, int padIdx)
+            => ResolveEntryForPad(entries, guidStr, padIdx)?.Settings ?? Default();
+
+        /// <summary>True when <paramref name="s"/> differs from
+        /// <see cref="Default"/> in any user-facing way: any enable toggle
+        /// on, any mouse / pointer / haptic tuning moved off its default,
+        /// any threshold retuned. A configured entry outranks a pristine
+        /// Default entry when the resolver picks a winner, so a pad the user
+        /// set up mouse-only (masters off) still beats an untouched sibling.</summary>
+        internal static bool IsConfigured(TouchpadGestureSettings s)
+        {
+            if (s == null) return false;
+            var d = Default();
+            return s.Enabled != d.Enabled
+                || !string.Equals(s.Mode, d.Mode, System.StringComparison.Ordinal)
+                || s.CooldownMs != d.CooldownMs
+                || s.SwipeDistanceThreshold != d.SwipeDistanceThreshold
+                || s.SwipeTimeWindowMs != d.SwipeTimeWindowMs
+                || s.EnableFourWaySwipes != d.EnableFourWaySwipes
+                || s.EnableEightWaySwipes != d.EnableEightWaySwipes
+                || s.EnableRadialZones != d.EnableRadialZones
+                || s.RadialZoneCount != d.RadialZoneCount
+                || s.RadialCenterDeadzone != d.RadialCenterDeadzone
+                || s.EnableTouchSpots != d.EnableTouchSpots
+                || s.EnableTaps != d.EnableTaps
+                || s.TapTimeWindowMs != d.TapTimeWindowMs
+                || s.TapMaxMotion != d.TapMaxMotion
+                || s.MultiTapGapMs != d.MultiTapGapMs
+                || s.EnableLongPress != d.EnableLongPress
+                || s.LongPressTimeWindowMs != d.LongPressTimeWindowMs
+                || s.LongPressMaxMotion != d.LongPressMaxMotion
+                || s.EnableTwoFingerSwipes != d.EnableTwoFingerSwipes
+                || s.TwoFingerSwipeAngularTolerance != d.TwoFingerSwipeAngularTolerance
+                || s.EnablePinchSpread != d.EnablePinchSpread
+                || s.PinchThreshold != d.PinchThreshold
+                || s.EnableRotate != d.EnableRotate
+                || s.RotateThresholdDegrees != d.RotateThresholdDegrees
+                || s.EnableThreeFingerGestures != d.EnableThreeFingerGestures
+                || s.EnableFourFingerGestures != d.EnableFourFingerGestures
+                || s.EnableFiveFingerGestures != d.EnableFiveFingerGestures
+                || s.EnableShapeGestures != d.EnableShapeGestures
+                || s.GestureMatchThreshold != d.GestureMatchThreshold
+                || s.EnableJoystickOutput != d.EnableJoystickOutput
+                || s.JoystickMaxRadius != d.JoystickMaxRadius
+                || s.JoystickInnerDeadzone != d.JoystickInnerDeadzone
+                || !string.Equals(s.JoystickDPadMode, d.JoystickDPadMode, System.StringComparison.Ordinal)
+                || s.JoystickDPadActivationThreshold != d.JoystickDPadActivationThreshold
+                || s.MouseSensitivityX != d.MouseSensitivityX
+                || s.MouseSensitivityY != d.MouseSensitivityY
+                || s.MouseInvertX != d.MouseInvertX
+                || s.MouseInvertY != d.MouseInvertY
+                // Momentum and jitter are mouse tuning too. This method's own
+                // doc says "any mouse / pointer / haptic tuning moved off its
+                // default" counts, and these three were the only Mouse* fields
+                // it did not compare, so a pad configured with nothing but a
+                // glide setting read as pristine and lost the winner
+                // comparison to an untouched sibling.
+                || s.MouseMomentum != d.MouseMomentum
+                || s.MouseMomentumDecay != d.MouseMomentumDecay
+                || s.MouseJitterReduction != d.MouseJitterReduction
+                || s.MouseAcceleration != d.MouseAcceleration
+                || !string.Equals(s.PointerResponse, d.PointerResponse, System.StringComparison.Ordinal)
+                || s.TrackpadThresholdMmPerSec != d.TrackpadThresholdMmPerSec
+                || s.TrackpadPadWidthMm != d.TrackpadPadWidthMm
+                || s.PointerRegionSizeX != d.PointerRegionSizeX
+                || s.PointerRegionSizeY != d.PointerRegionSizeY
+                || s.PointerRegionAuthored != d.PointerRegionAuthored
+                || s.RegionSchema != d.RegionSchema
+                || s.PointerRegionCenterX != d.PointerRegionCenterX
+                || s.PointerRegionCenterY != d.PointerRegionCenterY
+                || s.EnableSwipeHaptics != d.EnableSwipeHaptics
+                || s.SwipeHapticsIntensity != d.SwipeHapticsIntensity;
+        }
     }
 }

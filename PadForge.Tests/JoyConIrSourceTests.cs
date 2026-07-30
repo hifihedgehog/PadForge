@@ -13,6 +13,7 @@ namespace PadForge.Tests
     /// normalizes that to CustomInputState.JoyConIrIntensity in 0..1, which is
     /// the surface these tests drive.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class JoyConIrSourceTests
     {
         private static MappingSource Src(int deadZone = 0, bool invert = false) => new()

@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace PadForge.Engine.Data
 {
@@ -48,6 +48,24 @@ namespace PadForge.Engine.Data
         /// half-axis (only the positive or negative half maps to the
         /// 0..+1 output range, depending on <see cref="Invert"/>).</summary>
         [XmlAttribute] public bool HalfAxis { get; set; }
+
+        /// <summary>Output-side sign flip for sources whose
+        /// <see cref="Invert"/> is already spoken for.
+        ///
+        /// <para>On a half-axis read of a centered <c>"Axis N"</c> (or a
+        /// Mouse Motion source), <see cref="Invert"/> is consumed INSIDE the
+        /// read as the half SELECTOR (lower half instead of upper), so the
+        /// evaluators must not also negate with it or the flag would
+        /// double-apply. That left such a source unable to express "select
+        /// this half AND flip the result": a caller that needed the flip
+        /// could only get it by overwriting Invert, which silently destroyed
+        /// the half selection. This carries the flip separately.</para>
+        ///
+        /// <para>Applies ONLY where Invert is consumed as a selector. Everywhere
+        /// else Invert already IS the output flip and this stays false, so old
+        /// XML (which never carries the attribute) keeps its exact
+        /// behavior.</para></summary>
+        [XmlAttribute] public bool InvertOutput { get; set; }
 
         /// <summary>When <c>true</c> AND <see cref="HalfAxis"/> is also
         /// <c>true</c>, the axis-to-button check fires on absolute
@@ -148,6 +166,20 @@ namespace PadForge.Engine.Data
         /// starts with "IR Pointer ".</summary>
         [XmlAttribute] public double IrPointerSensitivity { get; set; } = 1.0;
 
+        /// <summary>Generic per-source sensitivity multiplier (issue #9).
+        /// Applied to the coerced value of a plain analog source (an
+        /// <c>"Axis N"</c> / <c>"Slider N"</c> read, including the abstract
+        /// Gamepad sticks and triggers that canonicalize to one) during
+        /// bipolar / trigger coercion, then re-clamped to the target range.
+        /// Default 1.0 = unchanged. Values &gt; 1.0 reach full deflection
+        /// with less travel; values &lt; 1.0 need more. The specialized
+        /// families (gyro / mouse cursor / IR pointer) carry their own
+        /// sensitivity above and are unaffected by this knob, so a source
+        /// only ever exposes one sensitivity slider. Rides every copy leg the
+        /// specialized sensitivities ride (memberwise <see cref="Clone"/> plus
+        /// the hand-listed VM / push / reload mirrors).</summary>
+        [XmlAttribute] public double Sensitivity { get; set; } = 1.0;
+
         /// <summary>
         /// v3.3 per-source Do-not-inherit slot. Reserved in the schema for
         /// future per-source / per-zone fall-through suppression
@@ -193,11 +225,249 @@ namespace PadForge.Engine.Data
         [XmlAttribute] public double ParamMotionOuterDz  { get; set; } = 135;
         [XmlAttribute] public string ParamControllerOrientation { get; set; } = "Forward";
 
-        /// <summary>Full-field copy. Every field is a string / value type (strings are
-        /// immutable), so a memberwise clone is a complete deep copy. Use this at clone
-        /// sites instead of hand-listing fields, so a new Param* can't silently drop on
-        /// profile switch / slot reassign (the bug that dropped the steering params and,
-        /// before that, GyroSensitivity / NoInherit).</summary>
-        public MappingSource Clone() => (MappingSource)MemberwiseClone();
+        // ─── Flick stick (#225, descriptor family "Flick Stick Right"/"Flick
+        // Stick Left" on a KbmMouseX row). Math ported from JoyShockMapper
+        // JoyShock.cpp handleFlickStick (:852-1017), read then written
+        // original. Defaults mirror JSM's registered settings (main.cpp)
+        // except where named. Tuning is per-source so a Workshop import's
+        // per-group values survive materialization; the pad-page card
+        // re-stamps these on save (ApplyFlickStickParamsToRow, the Motion
+        // Steering push pattern). ───
+
+        /// <summary>Flick easing duration in seconds for a full 180° flick
+        /// (shorter turns complete in the same time; JSM FLICK_TIME,
+        /// main.cpp:2262 default 0.1).</summary>
+        [XmlAttribute] public double ParamFlickTime { get; set; } = 0.1;
+
+        /// <summary>Mouse counts emitted per full 360° camera turn (Steam
+        /// "Dots Per 360°"; the wild corpus stores it in the group's
+        /// "sensitivity" key). JSM expresses the same scale as
+        /// REAL_WORLD_CALIBRATION counts-per-degree (default 40,
+        /// main.cpp:2190) → 40 × 360 = 14400 here.</summary>
+        [XmlAttribute] public double ParamFlickCountsPer360 { get; set; } = 14400;
+
+        /// <summary>Stick deflection (raw magnitude, 0..1) at which a flick
+        /// engages. JSM checks length ≥ 1.0 on a deadzone-remapped read
+        /// (JoyShock.cpp:864-869) whose outer deadzone defaults to 0.1
+        /// (main.cpp:2334), i.e. raw ≥ 0.9; the remap is folded into this
+        /// knob directly. JSM's 0.9× release hysteresis is applied on top
+        /// while flicking (JoyShock.cpp:865-868).</summary>
+        [XmlAttribute] public double ParamFlickThreshold { get; set; } = 0.9;
+
+        /// <summary>Flick snap mode: "None" (default), "Forward", "Half",
+        /// "Four", "Sixths", "Eight". JSM FLICK_SNAP_MODE ships
+        /// NONE/FOUR/EIGHT (JoyShockMapper.h:300-306, default NONE
+        /// main.cpp:2144) with a 180° snap interval as the switch fallback
+        /// (JoyShock.cpp:883); "Half"/"Sixths"/"Forward" complete Steam's
+        /// snap vocabulary (NoSnap/ForwardOnly/Half/Quarter/Sixths/Eighths)
+        /// through the same round-to-interval math. String, not a
+        /// serialized enum, so the value set stays append-only.</summary>
+        [XmlAttribute] public string ParamFlickSnapMode { get; set; } = "None";
+
+        /// <summary>Snap lerp strength 0..1 (JSM FLICK_SNAP_STRENGTH,
+        /// main.cpp:2420 default 1.0 = full snap).</summary>
+        [XmlAttribute] public double ParamFlickSnapStrength { get; set; } = 1.0;
+
+        /// <summary>Forward angle deadzone in degrees: a flick whose angle is
+        /// within this of dead-ahead reads as 0° (JSM FLICK_DEADZONE_ANGLE,
+        /// main.cpp:2322 default 0; Steam "Front Angle Deadzone").</summary>
+        [XmlAttribute] public double ParamFlickDeadzoneAngle { get; set; } = 0;
+
+        /// <summary>Rotation smoothing threshold in radians-per-tick.
+        /// Negative (default) = JSM's automatic tiered window (full
+        /// smoothing at 0.02 rad/tick, none above 0.04, JoyShock.cpp:927-933);
+        /// 0 disables smoothing; positive overrides the lower threshold
+        /// (upper = 2×). JSM ROTATE_SMOOTH_OVERRIDE, main.cpp:2414
+        /// default -1.</summary>
+        [XmlAttribute] public double ParamFlickSmooth { get; set; } = -1;
+
+        /// <summary>Constant rotation added to the flick angle, in degrees
+        /// (positive = clockwise / rightward). Steam's flickstick
+        /// "rotation" group setting: the whole input map rotates, so the
+        /// offset lands on the flick angle before snapping; rim-rotation
+        /// deltas are invariant under a constant offset. Default 0.</summary>
+        [XmlAttribute] public double ParamFlickRotationOffsetDeg { get; set; } = 0;
+
+        // ─── Absolute touchpad pointer region window (#9 B-15, descriptor
+        // family "Touchpad N Pointer X/Y[ Left|Right]"). The translator's
+        // channel for Steam's mouse_region geometry: position_x/position_y
+        // (region center as percent of screen; shipped configurator ids
+        // PositionXMouse / PositionYMouse) and scale x
+        // sensitivity_horiz/vert_scale (region size per axis; ids
+        // ScaleMouseRegion / Horizontal-/VerticalSensitivityMouseRegion).
+        // Each source drives ONE axis, so one center + one extent per
+        // source. Defaults are the identity full-screen map. ───
+
+        /// <summary>Region center along this source's screen axis,
+        /// normalized 0..1 (0.5 = screen center). Only read by the
+        /// "Touchpad N Pointer ..." family.</summary>
+        [XmlAttribute] public double ParamPointerCenter { get; set; } = 0.5;
+
+        /// <summary>Region extent along this source's screen axis as a
+        /// fraction of the full axis (1.0 = the whole screen, 0.1 = a
+        /// minimap-sized band). The tuned pad position scales by this
+        /// around the region center, then clamps to the screen.</summary>
+        [XmlAttribute] public double ParamPointerExtent { get; set; } = 1.0;
+
+        // ─── Response curve / outer range (translator v11). The Workshop
+        // translator's per-source lane for Steam's stick response-curve
+        // cluster: curve_exponent / custom_curve_exponent land on
+        // ParamCurveExponent, deadzone_outer_radius on ParamRangeOuter.
+        // Applied ONLY in the generic bipolar tail of
+        // SourceCoercion.ReadAsBipolar, after Sensitivity, outer range
+        // first and then the exponent, sign carried via magnitude math.
+        // Defaults are 0 = off, so existing XML and every hand-authored
+        // source keep exact pass-through behavior. ───
+
+        /// <summary>Sign-preserving output shaping: magnitude maps
+        /// |x| to |x|^e, sign carried through unchanged. 0 (default) and
+        /// 1 mean off. The engine's named curve presets correspond to
+        /// e = 0.5 (Relaxed), 1.5 (Wide), 2 (Aggressive), 2.5 (ExtraWide),
+        /// the same shapes as SourceCoercion.ApplyOutputCurve.</summary>
+        [XmlAttribute] public double ParamCurveExponent { get; set; }
+
+        /// <summary>Outer range as a 0..1 fraction of full deflection.
+        /// The output magnitude rescales v = min(1, |v| / outer), so full
+        /// deflection is reached AT this radius (Steam's
+        /// deadzone_outer_radius / 32767). 0 (default) = off.</summary>
+        [XmlAttribute] public double ParamRangeOuter { get; set; }
+
+        /// <summary>Output anti-deadzone floor as a 0..1 fraction (v18,
+        /// Steam's anti_deadzone / 32767): a non-zero shaped magnitude is
+        /// remapped to floor + (1 - floor) * mag, so the smallest real
+        /// input starts at the floor. Applied inside the same
+        /// curve/range shaping seam, after the exponent. 0 = off.</summary>
+        [XmlAttribute] public double ParamAntiDeadzone { get; set; }
+
+        /// <summary>Stick-read deadzone geometry (translator v25, Steam's
+        /// deadzone_shape on the stick-hosted analog pair modes): 0
+        /// (default) = off, the untouched read. 1 = axial:
+        /// <see cref="ParamStickDeadZoneInner"/> and ParamRangeOuter
+        /// rescale this axis by its own magnitude (Steam Cross / Square,
+        /// the per-axis check). 2 = radial: the rescale factor is
+        /// computed from the stick PAIR magnitude (this axis and its
+        /// companion, Axis 0/1 or 3/4), so the dead region is a circle
+        /// and diagonals shape correctly (Steam Circle). Applied inside
+        /// the generic bipolar Axis read before sensitivity; when set,
+        /// ParamRangeOuter is consumed here instead of the per-axis
+        /// shaping tail. Retires the v19 "no per-source companion-axis
+        /// channel" residual for every stick-hosted pair emitter (mouse
+        /// lanes since v25, thumb pairs since the round-six completion).
+        /// CODING TRAP: this 1 = axial / 2 = radial coding is per-source
+        /// only. The slot-level DeadZoneShape enum codes Axial = 0 /
+        /// Radial = 1 / ScaledRadial = 2, so the value 1 means opposite
+        /// things in the two channels; never copy one into the
+        /// other.</summary>
+        [XmlAttribute] public int ParamStickDeadZoneShape { get; set; }
+
+        /// <summary>Inner radius for <see cref="ParamStickDeadZoneShape"/>
+        /// as a 0..1 fraction of full deflection (Steam's
+        /// deadzone_inner_radius / 32767). Its own field on purpose:
+        /// <see cref="DeadZone"/> defaults to 50 as the BUTTON coercion's
+        /// "engine default threshold" sentinel, so reading it as an analog
+        /// inner radius would put a silent 50 percent hole in every
+        /// unauthored source. 0 (default) = no inner deadzone.</summary>
+        [XmlAttribute] public double ParamStickDeadZoneInner { get; set; }
+
+        /// <summary>Rate-dependent gain (v18, Steam's acceleration on the
+        /// mouse modes): the touchpad delta scales by 1 + accel * |v|,
+        /// the ApplyGyroAcceleration formula on the cursor lane.
+        /// 0 = off.</summary>
+        [XmlAttribute] public double ParamAccel { get; set; }
+
+        /// <summary>Optional per-source AND companion (v18): the source
+        /// contributes only while this second descriptor reads true on
+        /// the same device, evaluated through the chord-second-leg
+        /// button read. Carries Steam's requires_click D-pad gate and
+        /// the single-pad click-on-half gates without spending the
+        /// row-level combine, so multi-source rows keep per-source
+        /// gates. Empty = ungated.</summary>
+        [XmlAttribute] public string GateDescriptor { get; set; } = "";
+
+        /// <summary>Second AND companion (v26): a chord partner on a host
+        /// whose primary gate slot is already spent (a single-pad trackpad
+        /// D-pad wedge gated on its half's contact, chorded with another
+        /// button). Both gates must hold. Empty = no second gate.</summary>
+        [XmlAttribute] public string Gate2Descriptor { get; set; } = "";
+
+        /// <summary>Arm behavior when evaluation (re)starts with the stick
+        /// already past the threshold (the shift-layer engage case, #225).
+        /// <c>false</c> (default): arm at the current angle and track
+        /// rotation from there, firing no flick. <c>true</c>: fire the
+        /// flick immediately, JSM's behavior (is_flicking starts false, so
+        /// a deflected stick is a "new flick!", JoyShock.cpp:873-876) and
+        /// Steam's "Allow Flick on Awake" ON. The default diverges from
+        /// JSM deliberately: PadForge's layer host means the same stick is
+        /// usually live on the Base layer at engage time, and JSM itself
+        /// suppresses mode-shift transition artifacts on its return path
+        /// (Stick.h:84-87 ignore_stick_mode, "Modeshifting the stick mode
+        /// can create quirky behaviours on transition").</summary>
+        [XmlAttribute] public bool ParamFlickOnEngage { get; set; } = false;
+
+        // ─── Runtime "Menu {id} Item {k}" parse cache (not serialized:
+        // XmlSerializer ignores non-public members). The per-tick readers
+        // re-split the descriptor per row per tick on the poll thread;
+        // caching the parse here makes the hot read a reference compare
+        // (SourceCoercion.TryParseMenuItemCached). Poll thread is the only
+        // reader and writer. The UI thread can swap Descriptor mid-tick,
+        // so the key is compared by reference and a one-tick stale parse
+        // is accepted. MemberwiseClone copying the fields stays valid:
+        // the clone shares the same Descriptor reference. ───
+        internal string MenuParseKey;
+        internal int MenuParseMenuId = -1;
+        internal int MenuParseItemIndex = -1;
+
+        // ─── Runtime gate-source cache (v18, not serialized): the
+        // synthetic Direct source the evaluators read GateDescriptor
+        // through, rebuilt only when the descriptor reference changes
+        // (same reference-compare contract as the menu parse cache). ───
+        internal MappingSource GateSourceCache;
+        internal string GateSourceCacheKey;
+        internal MappingSource Gate2SourceCache;
+        internal string Gate2SourceCacheKey;
+
+        // ─── Runtime mouse-feel state (v18, not serialized): per-source
+        // EMA value and trackball velocity, advanced once per poll frame
+        // (seq-gated like the gyro EMA). Keyed by the EVALUATED device
+        // guid (the _touchpadDeltas pattern): a device-free source on a
+        // multi-device slot is evaluated once per device each poll, and
+        // a single scalar served the second device the first device's
+        // smoothed value. Poll thread is the only reader and writer.
+        // Clone() drops the map so a cloned row starts cold. ───
+        internal System.Collections.Generic.Dictionary<string, MouseFeelState> MouseFeelByDevice;
+
+        /// <summary>Full-field copy. Every serialized field is a string / value type
+        /// (strings are immutable), so a memberwise clone is a complete deep copy.
+        /// Use this at clone sites instead of hand-listing fields, so a new Param*
+        /// can't silently drop on profile switch / slot reassign (the bug that
+        /// dropped the steering params and, before that, GyroSensitivity /
+        /// NoInherit). Runtime caches do NOT travel: the gate-source cache holds
+        /// a synthetic source built with the ORIGINAL's device guid, so a clone
+        /// that is retargeted to another device would keep evaluating its gate
+        /// against the stale device, and the mouse-feel map is per-evaluated-
+        /// device filter state the clone must rebuild cold. The menu parse cache
+        /// stays: it is keyed by Descriptor reference, which the clone shares.</summary>
+        public MappingSource Clone()
+        {
+            var copy = (MappingSource)MemberwiseClone();
+            copy.GateSourceCache = null;
+            copy.GateSourceCacheKey = null;
+            copy.Gate2SourceCache = null;
+            copy.Gate2SourceCacheKey = null;
+            copy.MouseFeelByDevice = null;
+            return copy;
+        }
+    }
+
+    /// <summary>Per-(source, evaluated device) mouse-feel runtime state
+    /// (v18): the per-source EMA filter value and the trackball momentum,
+    /// each seq-gated to one advance per poll frame. Lives in
+    /// <see cref="MappingSource.MouseFeelByDevice"/>, never serialized.</summary>
+    internal sealed class MouseFeelState
+    {
+        public float EmaValue;
+        public ulong EmaSeq;
+        public float TrackballVelocity;
+        public ulong TrackballSeq;
     }
 }

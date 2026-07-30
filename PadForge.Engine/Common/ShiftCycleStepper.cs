@@ -1,4 +1,4 @@
-namespace PadForge.Engine.Common
+﻿namespace PadForge.Engine.Common
 {
     /// <summary>
     /// Pure stepping math for a Shift Cycle activator's cursor (#119).
@@ -20,6 +20,16 @@ namespace PadForge.Engine.Common
         public static int Step(int pos, int n, bool previous, bool wrap, bool includeBase)
         {
             if (n < 1) return 0;
+
+            // A cursor left over from a longer ring must not survive the
+            // step. Editing an activator's CycleLayers down (three layers to
+            // one) changes n without touching the stored cursor, and both the
+            // layers-only Previous branch and the clamped includeBase branch
+            // would then hand back a position past the end, which the caller
+            // uses as layers[pos - 1]. Normalize here so Step's result is
+            // always a valid stop in [0..n] for the n it was given.
+            if (pos > n) pos = n;
+            else if (pos < 0) pos = 0;
 
             if (includeBase)
             {

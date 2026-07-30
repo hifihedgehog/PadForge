@@ -14,7 +14,7 @@ namespace PadForge.Common.Input
     /// <para>Wire protocol verified against <c>berarma/new-lg4ff</c>
     /// (<c>hid-lg4ff.c</c>) 2026-06-01 — bytes are unprotectable Logitech
     /// hardware facts; this is an original C# implementation, no GPL source
-    /// translation. Mirrors <see cref="SonyEffectWriter"/>'s overlapped raw-HID
+    /// translation. Mirrors <see cref="PlayStationEffectWriter"/>'s overlapped raw-HID
     /// write plumbing (the current raw-HID-output writer pattern; the old
     /// <c>Ds5RawHidWriter</c>/vJoy model is gone as of v3).</para>
     ///

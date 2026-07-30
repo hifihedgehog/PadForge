@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace PadForge.Engine
 {
@@ -90,6 +90,17 @@ namespace PadForge.Engine
         public float[] AccelAux;
 
         /// <summary>
+        /// Auxiliary (left-side) gyroscope data: [pitch, yaw, roll] in
+        /// radians per second, SDL native frame (issue #252). SDL delivers
+        /// this as SDL_SENSOR_GYRO_L, which ONLY the Switch drivers register:
+        /// the LEFT Joy-Con of a combined pair, gen 1 and gen 2, whose
+        /// primary Gyro is the right half. The Wii Nunchuk has no gyro, so
+        /// unlike <see cref="AccelAux"/> this never carries a Nunchuk.
+        /// Zeroed for devices without the sensor.
+        /// </summary>
+        public float[] GyroAux;
+
+        /// <summary>
         /// Per-touchpad finger state. One <see cref="TouchpadInputState"/>
         /// per physical touchpad surface the device exposes (1 for DS4 /
         /// DualSense / Shield / PTP, 2 for Steam Controller 2026 / Steam
@@ -150,6 +161,30 @@ namespace PadForge.Engine
         public int MouseRawDX;
         public int MouseRawDY;
 
+        /// <summary>Capacitive touch channels from the SDL fork's
+        /// SDL_GetGamepadCapSense (SDL_gamepad.h since 3.6.0): index by the
+        /// SDL_GAMEPAD_CAPSENSE_* constants (0 = left stick top, 1 = right
+        /// stick top, 2 = left grip, 3 = right grip). True while touched.
+        /// Null when the device exposes no capsense channel (the wrapper
+        /// allocates at device-open only when SDL_GamepadHasCapSense says
+        /// at least one channel exists), same nullable cost model as
+        /// <see cref="Touchpads"/>.</summary>
+        public bool[] CapSense;
+
+        /// <summary>NFC tag buttons for a Switch right Joy-Con / Pro
+        /// Controller reader (issue #241, fork SDL#15). Index 0 = "Any NFC
+        /// Tag" (any tag present pulses it); index N = the tag whose stable
+        /// <see cref="PadForge.Common.Input.NfcTagRegistry"/> button is N.
+        /// True while a matching tag is held (pulsed by SdlDeviceWrapper
+        /// from SDL_GetGamepadNfcTagUid). Null until NFC first arms on a
+        /// device that has a reader; thereafter retained (cleared all-false)
+        /// across disarm rather than re-nulled, which the Remote Link codec
+        /// omits so consumers still read "no NFC" either way. Same nullable
+        /// cost model as <see cref="CapSense"/>. The controller IS the reader
+        /// identity, so tags surface here rather than on a synthetic device,
+        /// and <see cref="Buttons"/> stays the gamepad buttons.</summary>
+        public bool[] NfcTag;
+
         /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).
         /// Refreshed periodically by SdlDeviceWrapper, not every frame.</summary>
         public int BatteryPercent;
@@ -171,6 +206,7 @@ namespace PadForge.Engine
             Gyro = new float[3];
             Accel = new float[3];
             AccelAux = new float[3];
+            GyroAux = new float[3];
             // Touchpads starts null. Device wrappers allocate the per-pad
             // TouchpadState[] at device-open time with the right pad count
             // and per-pad finger slot count for the actual hardware. Null
@@ -189,29 +225,117 @@ namespace PadForge.Engine
         public CustomInputState Clone()
         {
             var clone = new CustomInputState();
-            Array.Copy(Axis, clone.Axis, MaxAxis);
-            Array.Copy(Sliders, clone.Sliders, MaxSliders);
-            Array.Copy(Povs, clone.Povs, MaxPovs);
-            Array.Copy(Buttons, clone.Buttons, MaxButtons);
-            Array.Copy(Gyro, clone.Gyro, 3);
-            Array.Copy(Accel, clone.Accel, 3);
-            Array.Copy(AccelAux, clone.AccelAux, 3);
-            if (Touchpads != null)
-            {
-                clone.Touchpads = new TouchpadInputState[Touchpads.Length];
-                for (int i = 0; i < Touchpads.Length; i++)
-                    clone.Touchpads[i] = Touchpads[i]?.Clone();
-            }
-            clone.Midi = Midi?.Clone();
-            clone.Ir = Ir; // value type copy (X/Y/Detected)
-            clone.JoyConIrIntensity = JoyConIrIntensity;
-            clone.JoyCon2MouseDX = JoyCon2MouseDX;
-            clone.JoyCon2MouseDY = JoyCon2MouseDY;
-            clone.MouseRawDX = MouseRawDX;
-            clone.MouseRawDY = MouseRawDY;
-            clone.BatteryPercent = BatteryPercent;
-            clone.BatteryCharging = BatteryCharging;
+            CopyInto(clone);
             return clone;
+        }
+
+        /// <summary>Deep-copies this state into <paramref name="dst"/>,
+        /// reallocating nested Touchpads/CapSense/Midi only on a shape
+        /// change. Clone delegates here so the class has exactly ONE
+        /// full-field mirror (guarded by a reflection round-trip test:
+        /// a field added to the class without joining this copy fails
+        /// CustomInputStateMirrorTests the day it lands).</summary>
+        public void CopyInto(CustomInputState dst)
+        {
+            Array.Copy(Axis, dst.Axis, MaxAxis);
+            Array.Copy(Sliders, dst.Sliders, MaxSliders);
+            Array.Copy(Povs, dst.Povs, MaxPovs);
+            Array.Copy(Buttons, dst.Buttons, MaxButtons);
+            Array.Copy(Gyro, dst.Gyro, 3);
+            Array.Copy(Accel, dst.Accel, 3);
+            Array.Copy(AccelAux, dst.AccelAux, 3);
+            Array.Copy(GyroAux, dst.GyroAux, 3);
+            if (Touchpads == null)
+            {
+                dst.Touchpads = null;
+            }
+            else
+            {
+                if (dst.Touchpads == null || dst.Touchpads.Length != Touchpads.Length)
+                    dst.Touchpads = new TouchpadInputState[Touchpads.Length];
+                for (int i = 0; i < Touchpads.Length; i++)
+                {
+                    var src = Touchpads[i];
+                    if (src == null) { dst.Touchpads[i] = null; continue; }
+                    dst.Touchpads[i] ??= new TouchpadInputState(src.MaxFingers);
+                    src.CopyInto(dst.Touchpads[i]);
+                }
+            }
+            if (CapSense == null)
+            {
+                dst.CapSense = null;
+            }
+            else
+            {
+                if (dst.CapSense == null || dst.CapSense.Length != CapSense.Length)
+                    dst.CapSense = new bool[CapSense.Length];
+                Array.Copy(CapSense, dst.CapSense, CapSense.Length);
+            }
+            if (NfcTag == null)
+            {
+                dst.NfcTag = null;
+            }
+            else
+            {
+                if (dst.NfcTag == null || dst.NfcTag.Length != NfcTag.Length)
+                    dst.NfcTag = new bool[NfcTag.Length];
+                Array.Copy(NfcTag, dst.NfcTag, NfcTag.Length);
+            }
+            if (Midi == null)
+            {
+                dst.Midi = null;
+            }
+            else
+            {
+                dst.Midi ??= new MidiInputState();
+                Midi.CopyInto(dst.Midi);
+            }
+            dst.Ir = Ir; // value type copy (X/Y/Detected)
+            dst.JoyConIrIntensity = JoyConIrIntensity;
+            dst.JoyCon2MouseDX = JoyCon2MouseDX;
+            dst.JoyCon2MouseDY = JoyCon2MouseDY;
+            dst.MouseRawDX = MouseRawDX;
+            dst.MouseRawDY = MouseRawDY;
+            dst.BatteryPercent = BatteryPercent;
+            dst.BatteryCharging = BatteryCharging;
+        }
+
+        /// <summary>Returns this instance to the exact fresh-constructed
+        /// state WITHOUT dropping nested allocations (Touchpads / CapSense
+        /// arrays keep their device-open shape and are cleared in place).
+        /// Buffer-reuse support: a pooled state that passes through this is
+        /// semantically identical to <c>new CustomInputState()</c> plus the
+        /// wrapper's open-time shape setup, so read paths that rely on
+        /// fresh-zero fields (early-returning decoders, capability-gated
+        /// writes) stay correct. Guarded by the same reflection mirror
+        /// test as <see cref="CopyInto"/>.</summary>
+        public void ResetForReuse()
+        {
+            Array.Clear(Axis, 0, MaxAxis);
+            Array.Clear(Sliders, 0, MaxSliders);
+            Array.Clear(Buttons, 0, MaxButtons);
+            Array.Clear(Gyro, 0, 3);
+            Array.Clear(Accel, 0, 3);
+            Array.Clear(AccelAux, 0, 3);
+            Array.Clear(GyroAux, 0, 3);
+            for (int i = 0; i < Povs.Length; i++)
+                Povs[i] = -1;
+            if (Touchpads != null)
+                for (int i = 0; i < Touchpads.Length; i++)
+                    Touchpads[i]?.ResetForReuse();
+            if (CapSense != null)
+                Array.Clear(CapSense, 0, CapSense.Length);
+            if (NfcTag != null)
+                Array.Clear(NfcTag, 0, NfcTag.Length);
+            Midi?.ResetForReuse();
+            Ir = default;
+            JoyConIrIntensity = 0f;
+            JoyCon2MouseDX = 0f;
+            JoyCon2MouseDY = 0f;
+            MouseRawDX = 0;
+            MouseRawDY = 0;
+            BatteryPercent = -1;
+            BatteryCharging = false;
         }
 
         // ─────────────────────────────────────────────
@@ -271,6 +395,27 @@ namespace PadForge.Engine
     /// <see cref="Detected"/> is true. When no dot is seen this frame the producer
     /// clears <see cref="Detected"/> and every consumer reads the source as centered
     /// for that frame (X/Y are not carried over; the state is rebuilt each tick).</summary>
+    /// <summary>Two-instance CustomInputState pool for per-tick device
+    /// reads (single reader thread per wrapper by contract). Two buffers
+    /// because the published instance must survive exactly one tick
+    /// (the OldInputState idle compare); no consumer retains it longer
+    /// (retainer footprint, perf audit 2026-07-20). Next() hands back the
+    /// spare restored to exact fresh-construction semantics.</summary>
+    public struct PooledInputStatePair
+    {
+        private CustomInputState _a, _b;
+        private bool _useB;
+
+        public CustomInputState Next()
+        {
+            var s = _useB ? (_b ??= new CustomInputState())
+                          : (_a ??= new CustomInputState());
+            _useB = !_useB;
+            s.ResetForReuse();
+            return s;
+        }
+    }
+
     public struct WiiIrState
     {
         public float X;

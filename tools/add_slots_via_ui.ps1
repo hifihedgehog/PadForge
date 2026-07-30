@@ -1,4 +1,4 @@
-# Restore PadForge.xml backup, then add 4 more slot types via UI automation.
+﻿# Restore PadForge.xml backup, then add 4 more slot types via UI automation.
 $logFile = "C:\PadForge\add_slots_log.txt"
 "START $(Get-Date -Format HH:mm:ss)" | Out-File $logFile -Encoding ascii
 try {
@@ -32,20 +32,6 @@ try {
 
     $TD = [System.Windows.Automation.TreeScope]::Descendants
 
-    function Click-Anything {
-        param($El)
-        try { $El.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke(); return $true } catch {}
-        try { $El.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select(); return $true } catch {}
-        # Coordinate click as last resort
-        try {
-            $r = $El.Current.BoundingRectangle
-            Add-Type -AssemblyName System.Windows.Forms
-            [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point([int]($r.X + $r.Width/2), [int]($r.Y + $r.Height/2))
-            Start-Sleep -Milliseconds 100
-            # Use mouse_event via Win32 if possible (we already have W32 type below but not in this scope)
-            return $true
-        } catch { return $false }
-    }
     function Add-SlotByName {
         param([string]$ByName, [string]$Label)
         $addCond = New-Object System.Windows.Automation.PropertyCondition(

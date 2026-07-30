@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -90,7 +90,21 @@ namespace PadForge.Views
         public ControllerSchematicView()
         {
             InitializeComponent();
-            CompositionTarget.Rendering += OnRendering;
+            // Rendering rides tree presence, matching MousePreviewControl.
+            // CompositionTarget.Rendering is a STATIC event, so a ctor-lifetime
+            // subscription is a permanent GC root: the view never dies, its
+            // per-frame callback keeps invalidating layout for the life of the
+            // process, and every fresh visit to the hosting page adds another
+            // one. Measured 2026-07-15: one pad-page visit took the process
+            // from 13% of a core to 125%, and it stayed there after navigating
+            // away. The -= before += guards repeated Loaded without an
+            // intervening Unloaded.
+            Loaded += (s, e) =>
+            {
+                CompositionTarget.Rendering -= OnRendering;
+                CompositionTarget.Rendering += OnRendering;
+            };
+            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
         }
 
         // ─────────────────────────────────────────────
@@ -139,7 +153,7 @@ namespace PadForge.Views
 
         private void OnVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(PadViewModel.ExtendedOutputSnapshot))
+            if (e.PropertyName == nameof(PadViewModel.RawHidOutputSnapshot))
             {
                 _dirty = true;
                 return;
@@ -222,7 +236,7 @@ namespace PadForge.Views
             double btnStartY = topY + Math.Max(StickSize, TriggerHeight) + SectionGap + LabelHeight;
 
             // Section label
-            var btnSectionLabel = CreateLabel("Buttons", btnStartX, btnStartY - LabelHeight - 2);
+            var btnSectionLabel = CreateLabel(Strings.Instance.Preview_Buttons, btnStartX, btnStartY - LabelHeight - 2);
             SchematicCanvas.Children.Add(btnSectionLabel);
 
             for (int i = 0; i < cfg.ButtonCount; i++)
@@ -363,9 +377,9 @@ namespace PadForge.Views
                 double cy = pos.Y - StickSize / 2;
                 string target;
                 if (Math.Abs(cx) > Math.Abs(cy))
-                    target = cx > 0 ? $"ExtendedAxis{axisXIdx}" : $"ExtendedAxis{axisXIdx}Neg";
+                    target = cx > 0 ? $"RawAxis{axisXIdx}" : $"RawAxis{axisXIdx}Neg";
                 else
-                    target = cy > 0 ? $"ExtendedAxis{axisYIdx}" : $"ExtendedAxis{axisYIdx}Neg";
+                    target = cy > 0 ? $"RawAxis{axisYIdx}" : $"RawAxis{axisYIdx}Neg";
                 ControllerElementRecordRequested?.Invoke(this, target);
             };
 
@@ -437,7 +451,7 @@ namespace PadForge.Views
             // Click-to-record
             bg.MouseLeftButtonDown += (s, e) =>
             {
-                ControllerElementRecordRequested?.Invoke(this, $"ExtendedAxis{axisIdx}");
+                ControllerElementRecordRequested?.Invoke(this, $"RawAxis{axisIdx}");
             };
 
             return new TriggerWidget
@@ -500,6 +514,22 @@ namespace PadForge.Views
             Canvas.SetTop(arrowCanvas, y);
             SchematicCanvas.Children.Add(arrowCanvas);
 
+            // The repaint loop steers this arrow by mutating this ONE
+            // transform (w.Rotate). It is created here, before the hover
+            // handlers, so those handlers can mutate it too: assigning a
+            // fresh RotateTransform to RenderTransform detaches w.Rotate and
+            // every later repaint then turns an object nothing renders.
+            var rotate = new RotateTransform(0, PovSize / 2, PovSize / 2);
+            arrowCanvas.RenderTransform = rotate;
+            var widget = new PovWidget
+            {
+                PovIndex = index,
+                Arrow = arrow,
+                Outer = outer,
+                Rotate = rotate,
+                FlashPrefix = $"RawPov{index}"
+            };
+
             // Label
             string povLabel = _vm.ExtendedConfig.PovCount == 1 ? Strings.Instance.Preview_DPad : string.Format(Strings.Instance.Preview_POV_Format, index + 1);
             var label = CreateLabel(povLabel, x, y - LabelHeight);
@@ -519,8 +549,7 @@ namespace PadForge.Views
                     angle = hy > 0 ? 180 : 0;
                 arrow.Visibility = Visibility.Visible;
                 arrow.Fill = HoverBrush;
-                arrowCanvas.RenderTransform = new RotateTransform(angle,
-                    PovSize / 2, PovSize / 2);
+                rotate.Angle = angle;
                 outer.Stroke = HoverBrush;
                 outer.StrokeThickness = 2.5;
             };
@@ -530,6 +559,11 @@ namespace PadForge.Views
                 arrow.Visibility = Visibility.Collapsed;
                 outer.SetResourceReference(Shape.StrokeProperty, DimKey);
                 outer.StrokeThickness = 1.5;
+                // Hover stomped visibility, fill, and angle. The repaint loop
+                // is transition-only, so a POV held engaged across a hover
+                // would stay hidden and hover-tinted until its value changed.
+                // Invalidate the gate the same way ApplyFlashState does.
+                widget.LastPov = int.MinValue;
             };
 
             // Click-to-record: detect direction by click position relative to center
@@ -543,19 +577,11 @@ namespace PadForge.Views
                     dir = cx > 0 ? "Right" : "Left";
                 else
                     dir = cy > 0 ? "Down" : "Up";
-                ControllerElementRecordRequested?.Invoke(this, $"ExtendedPov{index}{dir}");
+                ControllerElementRecordRequested?.Invoke(this, $"RawPov{index}{dir}");
                 e.Handled = true;
             };
 
-            return new PovWidget
-            {
-                PovIndex = index,
-                Arrow = arrow,
-                ArrowCanvas = arrowCanvas,
-                Outer = outer,
-                CenterX = x + PovSize / 2,
-                CenterY = y + PovSize / 2
-            };
+            return widget;
         }
 
         // ─────────────────────────────────────────────
@@ -608,7 +634,7 @@ namespace PadForge.Views
 
             circle.MouseLeftButtonDown += (s, e) =>
             {
-                ControllerElementRecordRequested?.Invoke(this, $"ExtendedBtn{index}");
+                ControllerElementRecordRequested?.Invoke(this, $"RawBtn{index}");
             };
 
             return new ButtonWidget { ButtonIndex = index, Circle = circle };
@@ -629,6 +655,12 @@ namespace PadForge.Views
 
             // Reset previous flash element
             ApplyFlashState(false);
+
+            // Invalidate the transition gates: the flash stomped fills,
+            // visibility, and angles, and with change-detected snapshots
+            // an idle pad may never get another dirty frame to repaint.
+            foreach (var w in _povWidgets) w.LastPov = int.MinValue;
+            foreach (var w in _buttonWidgets) w.LastPressed = -1;
 
             _flashTarget = target;
 
@@ -654,13 +686,13 @@ namespace PadForge.Views
             // Strip "Neg" suffix for matching
             string baseTarget = t.EndsWith("Neg", StringComparison.Ordinal) ? t[..^3] : t;
 
-            // Check sticks (match ExtendedAxisN where N is either X or Y index)
+            // Check sticks (match RawAxisN where N is either X or Y index)
             foreach (var w in _stickWidgets)
             {
-                if (baseTarget == $"ExtendedAxis{w.AxisXIndex}" || baseTarget == $"ExtendedAxis{w.AxisYIndex}")
+                if (baseTarget == $"RawAxis{w.AxisXIndex}" || baseTarget == $"RawAxis{w.AxisYIndex}")
                 {
                     bool isNeg = t.EndsWith("Neg", StringComparison.Ordinal);
-                    bool isX = baseTarget == $"ExtendedAxis{w.AxisXIndex}";
+                    bool isX = baseTarget == $"RawAxis{w.AxisXIndex}";
                     // Determine arrow angle: right=90, left=270, up=0, down=180
                     // Y: Neg = up (top of stick in WPF), non-Neg = down (bottom)
                     double angle;
@@ -689,7 +721,7 @@ namespace PadForge.Views
             // flash until the user pressed the source.
             foreach (var w in _triggerWidgets)
             {
-                if (baseTarget == $"ExtendedAxis{w.AxisIndex}")
+                if (baseTarget == $"RawAxis{w.AxisIndex}")
                 {
                     if (highlight) w.Background.Stroke = FlashBrush;
                     else w.Background.SetResourceReference(Shape.StrokeProperty, DimKey);
@@ -701,7 +733,7 @@ namespace PadForge.Views
             // Check buttons
             foreach (var w in _buttonWidgets)
             {
-                if (t == $"ExtendedBtn{w.ButtonIndex}")
+                if (t == $"RawBtn{w.ButtonIndex}")
                 {
                     if (highlight) w.Circle.Stroke = FlashBrush;
                     else w.Circle.SetResourceReference(Shape.StrokeProperty, DimKey);
@@ -710,10 +742,10 @@ namespace PadForge.Views
                 }
             }
 
-            // Check POVs (match ExtendedPov{N}Up/Down/Left/Right)
+            // Check POVs (match RawPov{N}Up/Down/Left/Right)
             foreach (var w in _povWidgets)
             {
-                if (t.StartsWith($"ExtendedPov{w.PovIndex}", StringComparison.Ordinal))
+                if (t.StartsWith($"RawPov{w.PovIndex}", StringComparison.Ordinal))
                 {
                     if (highlight) w.Arrow.Fill = FlashBrush;
                     else w.Arrow.SetResourceReference(Shape.FillProperty, AccentKey);
@@ -722,7 +754,7 @@ namespace PadForge.Views
                     // actually perceptible against a centered POV.
                     w.Arrow.Visibility = highlight ? Visibility.Visible : Visibility.Collapsed;
                     // Show arrow pointing in the target direction
-                    string dir = t.Substring($"ExtendedPov{w.PovIndex}".Length);
+                    string dir = t.Substring($"RawPov{w.PovIndex}".Length);
                     double angle = dir switch
                     {
                         "Up" => 0,
@@ -731,8 +763,10 @@ namespace PadForge.Views
                         "Left" => 270,
                         _ => 0
                     };
-                    w.ArrowCanvas.RenderTransform = new RotateTransform(angle,
-                        PovSize / 2, PovSize / 2);
+                    // Mutate the retained transform: replacing
+                    // RenderTransform would orphan the repaint loop's
+                    // w.Rotate binding.
+                    w.Rotate.Angle = angle;
                     return;
                 }
             }
@@ -744,10 +778,16 @@ namespace PadForge.Views
 
         private void OnRendering(object sender, EventArgs e)
         {
+            // Retained-page guard (same as MidiPreviewView's input path): the
+            // page is visibility-toggled, not unloaded, so skip the repaint
+            // while hidden. _dirty stays set, so the first visible frame
+            // catches up.
+            // Iconic gate: IsVisible stays TRUE while minimized.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             if (!_dirty || _vm == null || !_layoutBuilt) return;
             _dirty = false;
 
-            var raw = _vm.ExtendedOutputSnapshot;
+            var raw = _vm.RawHidOutputSnapshot;
 
             // Update sticks
             foreach (var w in _stickWidgets)
@@ -788,29 +828,38 @@ namespace PadForge.Views
             foreach (var w in _povWidgets)
             {
                 if (w.Outer.IsMouseOver) continue;
-                if (_flashTarget != null && _flashTarget.StartsWith($"ExtendedPov{w.PovIndex}", StringComparison.Ordinal)) continue;
+                if (_flashTarget != null && _flashTarget.StartsWith(w.FlashPrefix, StringComparison.Ordinal)) continue;
 
                 int povValue = -1;
                 if (raw.Povs != null && w.PovIndex < raw.Povs.Length)
                     povValue = raw.Povs[w.PovIndex];
 
-                if (povValue < 0 || povValue > 36000)
+                bool engaged = povValue >= 0 && povValue <= 36000;
+                bool wasEngaged = w.LastPov >= 0 && w.LastPov <= 36000;
+                if (povValue == w.LastPov) continue;
+                w.LastPov = povValue;
+
+                if (!engaged)
                 {
                     w.Arrow.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     w.Arrow.Visibility = Visibility.Visible;
-                    w.Arrow.SetResourceReference(Shape.FillProperty, AccentKey);
-                    w.ArrowCanvas.RenderTransform = new RotateTransform(povValue / 100.0,
-                        PovSize / 2, PovSize / 2);
+                    if (!wasEngaged)
+                        w.Arrow.SetResourceReference(Shape.FillProperty, AccentKey);
+                    w.Rotate.Angle = povValue / 100.0;
                 }
             }
 
-            // Update buttons
+            // Update buttons (transition-only: SetResourceReference installs
+            // and re-resolves a resource expression on every call).
             foreach (var w in _buttonWidgets)
             {
                 bool pressed = raw.IsButtonPressed(w.ButtonIndex);
+                int p = pressed ? 1 : 0;
+                if (p == w.LastPressed) continue;
+                w.LastPressed = p;
                 w.Circle.SetResourceReference(Shape.FillProperty, pressed ? AccentKey : BgKey);
                 // Pressed ring blooms ember (#175). Unpressed: none.
                 SetGlow(w.Circle, pressed ? EmberGlow : null);
@@ -861,19 +910,29 @@ namespace PadForge.Views
             public double X, Y;
         }
 
-        private struct PovWidget
+        private sealed class PovWidget
         {
             public int PovIndex;
             public Polygon Arrow;
-            public Canvas ArrowCanvas;
             public Ellipse Outer;
-            public double CenterX, CenterY;
+            /// <summary>Retained transform, mutated per change (a fresh
+            /// RotateTransform per repaint frame was pure churn).</summary>
+            public RotateTransform Rotate;
+            /// <summary>Prebuilt "RawPovN" flash prefix (the interpolation
+            /// allocated per POV per repaint while a flash was active).</summary>
+            public string FlashPrefix;
+            /// <summary>Last painted POV value; int.MinValue = unknown.
+            /// SetResourceReference re-resolves the key on every call with
+            /// no equality short-circuit, so paint only on transitions.</summary>
+            public int LastPov = int.MinValue;
         }
 
-        private struct ButtonWidget
+        private sealed class ButtonWidget
         {
             public int ButtonIndex;
             public Ellipse Circle;
+            /// <summary>-1 unknown, else 0/1: transition-only repaint.</summary>
+            public int LastPressed = -1;
         }
     }
 }

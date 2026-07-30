@@ -127,8 +127,9 @@ namespace PadForge.Engine.Haptics
         /// is a real protocol quirk (the split desyncs from a clean low/high byte at
         /// byte boundaries), but it is confirmed byte-identical to the proven
         /// SteamControllerSinger main.cpp:129-134 on all six bytes (e.g. period
-        /// 0x0466 -> LSB 0x67, which 0x100 would render 0x66). Do not "fix" it to
-        /// 0x100; that would diverge from the only same-transport reference.</summary>
+        /// 0x0166 = 358: % 0xFF gives LSB 0x67 where 0x100 would give 0x66).
+        /// Do not "fix" it to 0x100; that would diverge from the only
+        /// same-transport reference.</summary>
         public static byte[] EncodeSteamClassic(float freqHz, double durationSeconds, int haptic = 0)
         {
             var blob = new byte[64];
@@ -141,17 +142,23 @@ namespace PadForge.Engine.Haptics
             // only the repeat count is zeroed (main.cpp:114-134). Reproduce that
             // exactly: a stop is "this tone, repeated zero times", not a blank
             // packet. Use the same 8.1758 Hz note-0 frequency.
-            if (freqHz <= 0f)
+            if (!float.IsFinite(freqHz) || freqHz <= 0f)
             {
                 freqHz = 8.1758f;
                 durationSeconds = 0.0;
             }
 
             double period = 1.0 / freqHz;
-            ushort periodCommand = (ushort)(period * SteamMagicPeriodRatio);
-            ushort repeatCount = durationSeconds >= 0.0
-                ? (ushort)(durationSeconds / period)
-                : (ushort)0x7FFF;
+            // Clamp before the ushort narrowing (round 33, S7): below
+            // ~7.6 Hz the period command exceeds 65535 and the raw cast
+            // wraps to arbitrary wire bytes. 65535 = the lowest tone the
+            // 16-bit field can express, the honest floor.
+            double pc = period * SteamMagicPeriodRatio;
+            ushort periodCommand = pc >= 65535.0 ? (ushort)65535 : (ushort)pc;
+            double rc = durationSeconds >= 0.0 ? durationSeconds / period : -1.0;
+            ushort repeatCount = rc < 0.0
+                ? (ushort)0x7FFF
+                : rc >= 65535.0 ? (ushort)65535 : (ushort)rc;
 
             blob[2] = (byte)haptic;
             blob[3] = (byte)(periodCommand % 0xFF); // LSB pulse-high
@@ -160,6 +167,73 @@ namespace PadForge.Engine.Haptics
             blob[6] = (byte)(periodCommand / 0xFF); // MSB pulse-low
             blob[7] = (byte)(repeatCount % 0xFF);   // LSB repeat
             blob[8] = (byte)(repeatCount / 0xFF);   // MSB repeat
+            return blob;
+        }
+
+        // ─────────────────────────────────────────────────────────────
+        //  Steam Controller 2015 / Deck one-shot haptic pulse (0x8F)
+        //  for touchpad swipe ticks (discussion #219).
+        //  Ground truth: DS4MapperTest's TouchpadCircular feedback path,
+        //  the working per-detent haptic on this hardware. Its packet
+        //  builder (SteamControllerDevice.cs PrepareHapticsData,
+        //  :404-489) writes PT_FEEDBACK 0x8F, PL 0x07, position
+        //  (HAPTIC_POS_LEFT = 0x01, HAPTIC_POS_RIGHT = 0x00, :101-102),
+        //  then amplitude u16 LE, period u16 LE, count u16 LE. Fields
+        //  match Valve's MsgFireHapticPulse (SDL controller_structs.h
+        //  :72-80: which_pad, pulse_duration, pulse_interval,
+        //  pulse_count; the trailing dBgain/priority stay zero). The
+        //  side codes agree with SteamControllerSinger's own comment
+        //  ("Trackpad select : 0x01 = left, 0x00 = right", main.cpp:102).
+        //  Unlike the tone path above, the reference writes clean
+        //  little-endian u16s (no % 0xFF quirk), so this encoder does too.
+        // ─────────────────────────────────────────────────────────────
+
+        /// <summary>0x8F which_pad code for the LEFT actuator
+        /// (DS4MapperTest SteamControllerDevice.cs:101).</summary>
+        public const byte SteamPulsePadLeft = 0x01;
+
+        /// <summary>0x8F which_pad code for the RIGHT actuator
+        /// (DS4MapperTest SteamControllerDevice.cs:102).</summary>
+        public const byte SteamPulsePadRight = 0x00;
+
+        /// <summary>Fixed pulse off-time in µs. DS4MapperTest sends
+        /// period_command = 600 for every active feedback pulse
+        /// (SteamControllerDevice.cs:455).</summary>
+        public const int SteamPulseOffTimeUs = 600;
+
+        /// <summary>Intensity → pulse on-time in µs: (1200 − 200) ×
+        /// ratio + 200, DS4MapperTest SteamControllerDevice.cs:433. The
+        /// 2015 pulse encodes strength as on-duration.</summary>
+        public static int SteamPulseOnTimeUs(float amp)
+        {
+            if (amp < 0f) amp = 0f;
+            if (amp > 1f) amp = 1f;
+            return (int)((1200 - 200) * amp + 200);
+        }
+
+        /// <summary>Encodes one one-shot haptic pulse for a Steam
+        /// Controller 2015 / Steam Deck actuator into the 64-byte 0x8F
+        /// feature blob (report id prepended by the caller's send path,
+        /// same as <see cref="EncodeSteamClassic"/>).</summary>
+        public static byte[] EncodeSteamClassicPulse(byte whichPad, int onTimeUs, int offTimeUs, int count)
+        {
+            if (onTimeUs < 0) onTimeUs = 0;
+            if (onTimeUs > 0xFFFF) onTimeUs = 0xFFFF;
+            if (offTimeUs < 0) offTimeUs = 0;
+            if (offTimeUs > 0xFFFF) offTimeUs = 0xFFFF;
+            if (count < 0) count = 0;
+            if (count > 0x7FFF) count = 0x7FFF;
+
+            var blob = new byte[64];
+            blob[0] = 0x8F;               // PT_FEEDBACK
+            blob[1] = 0x07;               // PL_FEEDBACK
+            blob[2] = whichPad;           // 0x01 left, 0x00 right
+            blob[3] = (byte)(onTimeUs & 0xFF);
+            blob[4] = (byte)(onTimeUs >> 8);
+            blob[5] = (byte)(offTimeUs & 0xFF);
+            blob[6] = (byte)(offTimeUs >> 8);
+            blob[7] = (byte)(count & 0xFF);
+            blob[8] = (byte)(count >> 8);
             return blob;
         }
 
@@ -191,6 +265,22 @@ namespace PadForge.Engine.Haptics
         /// 0,1,3,4 (the 0x83 byte-1 field): 0/1 = trackpads, 3/4 = grips. (Index 2
         /// is skipped by the reference's <c>haptic + (haptic &gt;&gt; 1)</c> map.)</summary>
         public static readonly int[] TritonActuators = { 0, 1, 3, 4 };
+
+        /// <summary>The SERIALIZED-DELIVERY tone set (wired 0x1302 AND the
+        /// Proteus/Nereid puck 0x1304/0x1305): one trackpad + one grip.
+        /// The puck relays one message per RF poll turn, so its quads arrive
+        /// spread out and garble like the wired quad (owner bench
+        /// 2026-07-27); only batched direct BLE renders quads clean.
+        /// Standalone-probe verdict (2026-07-27, owner-heard, PadForge/SDL/Steam
+        /// all out of the process, SteamHapticsSinger's exact bytes and write
+        /// style): four simultaneous actuators garble over USB whether the arms
+        /// are back-to-back or paced, a single actuator is clean but quiet, and
+        /// this pad+grip pair is clean and loud enough -- with garbled quads on
+        /// both sides of it in the same run. Four-tone wired is firmware-
+        /// unstable regardless of sender; the pair is the proven wired shape.
+        /// BLE keeps all four (hardware-clean there).</summary>
+        public static readonly int[] TritonActuatorsWired = { 0, 3 };
+
         public static bool TritonIsGrip(int haptic) => haptic > 2;
 
         // SteamHapticsSinger's per-note drive-frequency tables (main.cpp:36-37). The
@@ -298,14 +388,68 @@ namespace PadForge.Engine.Haptics
         /// (ID_OUT_REPORT_HAPTIC_RUMBLE) with the whole payload zero, byte-identical
         /// to SDL's HIDAPI_DriverSteamTriton_RumbleJoystick with both speeds 0
         /// (SDL_hidapi_steam_triton.c: type 0, intensity 0, left/right speed 0,
-        /// gain 0). Sent before arming a fresh tone cue because a plain rumble
-        /// write is what clears the haptic engine's wedged/garbled state on real
-        /// hardware (observed 2026-07-01).</summary>
+        /// gain 0). BLE ONLY: sent before arming a fresh tone cue because a plain
+        /// rumble write is what cleared the haptic engine's wedged state on real
+        /// hardware over BLE (observed 2026-07-01). NEVER send on the wired pad
+        /// (PID 0x1302): the owner-benched 2026-07-27 matrix showed a zero 0x80,
+        /// leading OR trailing, leaves wired firmware garbling the next 0x83 cue.
+        /// No reference mixes 0x80 with 0x83 on one pad; only BLE tolerates it.</summary>
         public static byte[] EncodeTritonRumbleClear()
         {
             var b = new byte[10];
             b[0] = 0x80; // ID_OUT_REPORT_HAPTIC_RUMBLE, payload all zero
             return b;
+        }
+
+        // ─────────────────────────────────────────────────────────────
+        //  Triton one-shot tick command (OUTPUT report 0x82, 4 bytes)
+        //  for touchpad swipe ticks (discussion #219).
+        //  Ground truth: SteamlessController, the working Steam-Input-
+        //  feel implementation on the SC 2026. Its movement tick sends
+        //  OUT_HAPTIC_COMMAND 0x82 as [id, side, command, gainDb]
+        //  (SteamController.cpp:320-331) with command
+        //  HAPTIC_COMMAND_TICK = 1 and gain TRACKPAD_MOVE_GAIN_DB = -50
+        //  (:47, :51, :274-277). Layout matches Valve's MsgHapticCommand
+        //  (SDL controller_structs.h:185-191: side u8, command u8,
+        //  gain_db i8) and the side codes match the MsgTriggerHaptic
+        //  comment (:106, "0x01 = L, 0x02 = R, 0x03 = Both") plus
+        //  OpenPuck's captured click [0x82, 01, 01, gain].
+        // ─────────────────────────────────────────────────────────────
+
+        public const byte TritonSideLeft = 0x01;
+        public const byte TritonSideRight = 0x02;
+
+        /// <summary>The reference tick level: SteamlessController's
+        /// TRACKPAD_MOVE_GAIN_DB (SteamController.cpp:51).</summary>
+        public const int TritonTickBaseGainDb = -50;
+
+        /// <summary>Intensity → 0x82 tick gain: the reference −50 dB at
+        /// full intensity, tracking the envelope below via 20·log10(amp)
+        /// (the <see cref="AmpToGainDb"/> shape), floored at −90 dB.
+        /// amp ≤ 0 returns −128 (silent).</summary>
+        public static int TritonTickGainDb(float amp)
+        {
+            if (amp <= 0f) return -128;
+            if (amp > 1f) amp = 1f;
+            double db = TritonTickBaseGainDb + 20.0 * Math.Log10(amp);
+            if (db < -90.0) db = -90.0;
+            return (int)Math.Round(db, MidpointRounding.AwayFromZero);
+        }
+
+        /// <summary>Encodes the Triton's named tick effect: 0x82
+        /// MsgHapticCommand with command 1 (tick). <paramref name="sideMask"/>
+        /// is 0x01 left, 0x02 right, 0x03 both.</summary>
+        public static byte[] EncodeTritonTickCommand(int sideMask, int gainDb)
+        {
+            if (gainDb < -128) gainDb = -128;
+            if (gainDb > 127) gainDb = 127;
+            return new byte[]
+            {
+                0x82,                       // ID_OUT_REPORT_HAPTIC_COMMAND
+                (byte)(sideMask & 0x03),    // side bitmask
+                0x01,                       // HAPTIC_COMMAND_TICK
+                (byte)(sbyte)gainDb,
+            };
         }
 
         /// <summary>Maps amplitude 0..1 to the Steam haptic <c>gain_db</c> field: 0 dB

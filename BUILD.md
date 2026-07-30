@@ -149,7 +149,6 @@ PadForge.sln
     ├── Ds4InputDump/             Raw DualShock 4 input dump for the PlayStation VC path
     │   ├── Ds4InputDump.csproj
     │   └── Program.cs
-    ├── vJoy/                     Legacy v2 vJoy diagnostic harnesses (kept for history; v3 uses HIDMaestro)
     └── overlay_positions.py      Extract 2D overlay positions from SVG assets
 ```
 

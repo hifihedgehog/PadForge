@@ -1,0 +1,1409 @@
+"controller_mappings"
+{
+	"version"		"3"
+	"title"		"#Library_ControllerSaveDefaultTitle"
+	"description"		"#Library_ControllerSaveDefaultDescription"
+	"creator"		"76561198021673170"
+	"actions"
+	{
+		"InGameControls"
+		{
+			"title"		"#Set_Ingame"
+			"legacy_set"		"0"
+			"Button"
+			{
+				"ToggleTechTree"		"#Action_ToggleTechTree"
+				"ToggleCivicsTree"		"#Action_ToggleCivicsTree"
+				"ToggleGovernment"		"#Action_ToggleGovernment"
+				"ToggleReligion"		"#Action_ToggleReligion"
+				"ToggleGreatPeople"		"#Action_ToggleGreatPeople"
+				"ToggleGreatWorks"		"#Action_ToggleGreatWorks"
+				"ToggleRankings"		"#Action_ToggleRankings"
+				"ToggleCityStates"		"#Action_ToggleCityStates"
+				"ToggleEspionage"		"#Action_ToggleEspionage"
+				"ToggleTradeRoutes"		"#Action_ToggleTradeRoutes"
+				"OpenCivilopedia"		"#Action_OpenCivilopedia"
+				"FoundCity"		"#Action_FoundCity"
+				"MoveTo"		"#Action_MoveTo"
+				"Fortify"		"#Action_Fortify"
+				"DeleteUnit"		"#Action_DeleteUnit"
+				"Attack"		"#Action_Attack"
+				"RangedAttack"		"#Action_RangedAttack"
+				"AutoExplore"		"#Action_AutoExplore"
+				"SkipTurn"		"#Action_SkipTurn"
+				"Sleep"		"#Action_Sleep"
+				"EndTurn"		"#Action_EndTurn"
+				"LensReligion"		"#Action_LensReligion"
+				"LensContinent"		"#Action_LensContinent"
+				"LensAppeal"		"#Action_LensAppeal"
+				"LensSettler"		"#Action_LensSettler"
+				"LensGovernment"		"#Action_LensGovernment"
+				"LensPolitical"		"#Action_LensPolitical"
+			}
+		}
+	}
+	"Localization"
+	{
+		"english"
+		{
+			"Title_Config1"		"Official Configuration"
+			"Description_Config1"		"This config was created by Firaxis."
+			"Set_Ingame"		"In-Game Controls"
+			"Action_ToggleTechTree"		"Toggle the Tech Tree"
+			"Action_ToggleCivicsTree"		"Toggle the Civics Tree"
+			"Action_ToggleGovernment"		"Toggle the Government overview"
+			"Action_ToggleReligion"		"Toggle the Religion overview"
+			"Action_ToggleGreatPeople"		"Toggle the Great Person overview"
+			"Action_ToggleGreatWorks"		"Toggle the Great Works overview"
+			"Action_ToggleRankings"		"Toggle the World Rankings overview"
+			"Action_ToggleCityStates"		"Toggle the City-State overview"
+			"Action_ToggleEspionage"		"Toggle the Espionage overview"
+			"Action_ToggleTradeRoutes"		"Toggle the Trade Route overview"
+			"Action_OpenCivilopedia"		"Toggle the Civilopedia"
+			"Action_FoundCity"		"Found a city"
+			"Action_MoveTo"		"Move selected unit"
+			"Action_Fortify"		"Fortify selected unit"
+			"Action_DeleteUnit"		"Delete selected unit"
+			"Action_Attack"		"Attack with selected unit"
+			"Action_RangedAttack"		"Ranged-attack with selected unit"
+			"Action_AutoExplore"		"Auto-explore"
+			"Action_SkipTurn"		"Skip Turn"
+			"Action_Sleep"		"Sleep"
+			"Action_EndTurn"		"End Turn"
+			"Action_LensReligion"		"Toggle the Religion lens"
+			"Action_LensContinent"		"Toggle the Continent lens"
+			"Action_LensAppeal"		"Toggle the Appeal lens"
+			"Action_LensSettler"		"Toggle the Settler lens"
+			"Action_LensGovernment"		"Toggle the Government lens"
+			"Action_LensPolitical"		"Toggle the Political lens"
+		}
+		"french"
+		{
+			"Title_Config1"		"Configuration officielle"
+			"Description_Config1"		"Cette configuration a été créé par Firaxis."
+			"Set_Ingame"		"Commandes en jeu"
+			"Action_ToggleTechTree"		"Afficher l'arbre des technologies"
+			"Action_ToggleCivicsTree"		"Afficher l'arbre des dogmes"
+			"Action_ToggleGovernment"		"Afficher le portail de gouvernement"
+			"Action_ToggleReligion"		"Afficher le portail de religion"
+			"Action_ToggleGreatPeople"		"Afficher le portail de Personnages illustres"
+			"Action_ToggleGreatWorks"		"Afficher le portail  des Chefs-d'œuvre"
+			"Action_ToggleRankings"		"Afficher le portail des Classements mondiaux"
+			"Action_ToggleCityStates"		"Afficher le portail des Cités-états"
+			"Action_ToggleEspionage"		"Afficher le portail de l'Espionnage"
+			"Action_ToggleTradeRoutes"		"Afficher le portail commercial"
+			"Action_OpenCivilopedia"		"Afficher la Civilopédia"
+			"Action_FoundCity"		"Fonder une ville"
+			"Action_MoveTo"		"Déplacer l'unité sélectionnée"
+			"Action_Fortify"		"Retrancher l'unité sélectionnée"
+			"Action_DeleteUnit"		"Retirer l'unité sélectionnée"
+			"Action_Attack"		"Attaquer avec l'unité sélectionnée"
+			"Action_RangedAttack"		"Attaquer à distance avec l'unité sélectionnée"
+			"Action_AutoExplore"		"Exploration automatique"
+			"Action_SkipTurn"		"Passer son tour"
+			"Action_Sleep"		"Dormir"
+			"Action_EndTurn"		"Fin du tour"
+			"Action_LensReligion"		"Afficher ou masquer le filtre des religions"
+			"Action_LensContinent"		"Afficher ou masquer le filtre des continents"
+			"Action_LensAppeal"		"Afficher ou masquer le filtre de l'attrait"
+			"Action_LensSettler"		"Afficher ou masquer le filtre des colons"
+			"Action_LensGovernment"		"Afficher ou masquer le filtre des gouvernements"
+			"Action_LensPolitical"		"Afficher ou masquer le filtre politique"
+		}
+		"german"
+		{
+			"Title_Config1"		"Offizielle Konfiguration"
+			"Description_Config1"		"Diese Konfiguration wurde von Firaxis erstellt."
+			"Set_Ingame"		"Spiel-Steuerung"
+			"Action_ToggleTechTree"		"Technologiebaum"
+			"Action_ToggleCivicsTree"		"Ausrichtungsbaum"
+			"Action_ToggleGovernment"		"Regierungs-Bildschirm"
+			"Action_ToggleReligion"		"Religions-Bildschirm"
+			"Action_ToggleGreatPeople"		"Große Persönlichkeiten"
+			"Action_ToggleGreatWorks"		"Große-Werke-Bildschirm"
+			"Action_ToggleRankings"		"Ranglisten-Bildschirm"
+			"Action_ToggleCityStates"		"Stadtstaaten-Bildschirm"
+			"Action_ToggleEspionage"		"Spionagebildschirm"
+			"Action_ToggleTradeRoutes"		"Handelswege-Bildschirm"
+			"Action_OpenCivilopedia"		"Zivilopädie"
+			"Action_FoundCity"		"Stadt gründen"
+			"Action_MoveTo"		"Ausgewählte Einheit bewegen"
+			"Action_Fortify"		"Ausgewählte Einheit verschanzen"
+			"Action_DeleteUnit"		"Ausgewählte Einheit entfernen"
+			"Action_Attack"		"Mit ausgewählter Einheit angreifen"
+			"Action_RangedAttack"		"Fernangriff mit ausgewählter Einheit"
+			"Action_AutoExplore"		"Automatisch erkunden"
+			"Action_SkipTurn"		"Runde überspringen"
+			"Action_Sleep"		"Ausruhen"
+			"Action_EndTurn"		"Runde beenden"
+			"Action_LensReligion"		"Religions-Linse umschalten"
+			"Action_LensContinent"		"Kontinent-Linse umschalten"
+			"Action_LensAppeal"		"Anziehungskraft-Linse umschalten"
+			"Action_LensSettler"		"Siedler-Linse umschalten"
+			"Action_LensGovernment"		"Regierungs-Linse umschalten"
+			"Action_LensPolitical"		"Politik-Linse umschalten"
+		}
+		"spanish"
+		{
+			"Title_Config1"		"Configuración Oficial"
+			"Description_Config1"		"Esta configuración fue creada por Firaxix."
+			"Set_Ingame"		"Controles del juego"
+			"Action_ToggleTechTree"		"Alternar árbol tecnológico"
+			"Action_ToggleCivicsTree"		"Alternar árbol de principios"
+			"Action_ToggleGovernment"		"Alternar resumen de gobierno"
+			"Action_ToggleReligion"		"Alternar resumen de religión"
+			"Action_ToggleGreatPeople"		"Alternar resumen de grandes personajes"
+			"Action_ToggleGreatWorks"		"Alternar resumen de grandes obras"
+			"Action_ToggleRankings"		"Alternar resumen de clasificación mundial"
+			"Action_ToggleCityStates"		"Alternar resumen de ciudad-estado"
+			"Action_ToggleEspionage"		"Alternar resumen de espionaje"
+			"Action_ToggleTradeRoutes"		"Alternar rutas comerciales"
+			"Action_OpenCivilopedia"		"Alternar Civilopedia"
+			"Action_FoundCity"		"Ciudad encontrada"
+			"Action_MoveTo"		"Mover unidad seleccionada"
+			"Action_Fortify"		"Fortificar unidad seleccionada"
+			"Action_DeleteUnit"		"Borrar unidad seleccionada"
+			"Action_Attack"		"Atacar con unidad seleccionada"
+			"Action_RangedAttack"		"Atacar a distancia con unidad seleccionada"
+			"Action_AutoExplore"		"Exploración automática"
+			"Action_SkipTurn"		"Saltar turno"
+			"Action_Sleep"		"Dormir"
+			"Action_EndTurn"		"Terminar turno"
+			"Action_LensReligion"		"Alternar lupa de religión"
+			"Action_LensContinent"		"Alternar lupa de continente"
+			"Action_LensAppeal"		"Alternar lupa de atractivo"
+			"Action_LensSettler"		"Alternar lupa de colonos"
+			"Action_LensGovernment"		"Alternar lupa de gobiernos"
+			"Action_LensPolitical"		"Alternar lupa de política"
+		}
+		"italian"
+		{
+			"Title_Config1"		"Configurazione Ufficiale"
+			"Description_Config1"		"Questa configurazione è stata creata da Firaxis."
+			"Set_Ingame"		"Controlli di Gioco"
+			"Action_ToggleTechTree"		"Albero Tecnologie"
+			"Action_ToggleCivicsTree"		"Albero Progressi Civici"
+			"Action_ToggleGovernment"		"Schermata Governo"
+			"Action_ToggleReligion"		"Schermata Religione"
+			"Action_ToggleGreatPeople"		"Schermata Grandi Personaggi"
+			"Action_ToggleGreatWorks"		"Schermata Capolavori"
+			"Action_ToggleRankings"		"Schermata Classifiche"
+			"Action_ToggleCityStates"		"Schermata Città-stato"
+			"Action_ToggleEspionage"		"Schermata Spionaggio"
+			"Action_ToggleTradeRoutes"		"Schermata Rotte Commerciali"
+			"Action_OpenCivilopedia"		"Civilopedia"
+			"Action_FoundCity"		"Fonda Città"
+			"Action_MoveTo"		"Muovi Unità"
+			"Action_Fortify"		"Fortifica Unità"
+			"Action_DeleteUnit"		"Elimina Unità"
+			"Action_Attack"		"Attacca"
+			"Action_RangedAttack"		"Attacco a Distanza"
+			"Action_AutoExplore"		"Esplorazione Automatica"
+			"Action_SkipTurn"		"Salta Turno"
+			"Action_Sleep"		"Addormenta Unità"
+			"Action_EndTurn"		"Fine Turno"
+			"Action_LensReligion"		"Lente Religione"
+			"Action_LensContinent"		"Lente Continente"
+			"Action_LensAppeal"		"Lente Appeal"
+			"Action_LensSettler"		"Lente Colono"
+			"Action_LensGovernment"		"Lente Governo"
+			"Action_LensPolitical"		"Lente Politica"
+		}
+		"russian"
+		{
+			"Title_Config1"		"Официальная конфигурация"
+			"Description_Config1"		"Эта конфигурация была создана Firaxis."
+			"Set_Ingame"		"Управление в игре"
+			"Action_ToggleTechTree"		"Вкл/Выкл Дерево Технологий"
+			"Action_ToggleCivicsTree"		"Вкл/Выкл дерево соц. институтов"
+			"Action_ToggleGovernment"		"Вкл/Выкл панель правительства"
+			"Action_ToggleReligion"		"Вкл/Выкл панель религии"
+			"Action_ToggleGreatPeople"		"Вкл/Выкл панель великих людей"
+			"Action_ToggleGreatWorks"		"Вкл/Выкл панель шедевров"
+			"Action_ToggleRankings"		"Вкл/Выкл панель всемирного рейтинга"
+			"Action_ToggleCityStates"		"Вкл/Выкл панель городов-государств"
+			"Action_ToggleEspionage"		"Вкл/Выкл панель шпионажа"
+			"Action_ToggleTradeRoutes"		"Вкл/Выкл панель торговых путей"
+			"Action_OpenCivilopedia"		"Вкл/Выкл Цивилопедию"
+			"Action_FoundCity"		"Основать город"
+			"Action_MoveTo"		"Передвинуть выбраный юнит"
+			"Action_Fortify"		"Укрепить выбраный юнит"
+			"Action_DeleteUnit"		"Удалить выбраный юнит"
+			"Action_Attack"		"Атаковать выбраным юнитом"
+			"Action_RangedAttack"		"Обстрелять выбраным юнитом"
+			"Action_AutoExplore"		"Автоматизир. Исследование"
+			"Action_SkipTurn"		"Пропустить ход"
+			"Action_Sleep"		"Отдых"
+			"Action_EndTurn"		"Закончить ход"
+			"Action_LensReligion"		"Вкл/Выкл линзу религии"
+			"Action_LensContinent"		"Вкл/Выкл линзу континентов"
+			"Action_LensAppeal"		"Вкл/Выкл линзу престижа"
+			"Action_LensSettler"		"Вкл/Выкл линзу поселенцев"
+			"Action_LensGovernment"		"Вкл/Выкл линзу правительства"
+			"Action_LensPolitical"		"Вкл/Выкл линзу политики"
+		}
+		"japanese"
+		{
+			"Title_Config1"		"公式配置"
+			"Description_Config1"		"この配置は、Firaxisによって作成されました。"
+			"Set_Ingame"		"ゲーム内のコントロール"
+			"Action_ToggleTechTree"		"技術ツリーの切り替え"
+			"Action_ToggleCivicsTree"		"社会制度ツリーの切り替え"
+			"Action_ToggleGovernment"		"政府概要の切り替え"
+			"Action_ToggleReligion"		"宗教概要の切り替え"
+			"Action_ToggleGreatPeople"		"偉人概要の切り替え"
+			"Action_ToggleGreatWorks"		"傑作概要の切り替え"
+			"Action_ToggleRankings"		"世界ランキング概要の切り替え"
+			"Action_ToggleCityStates"		"都市国家概要の切り替え"
+			"Action_ToggleEspionage"		"スパイ活動概要の切り替え"
+			"Action_ToggleTradeRoutes"		"交易路概要の切り替え"
+			"Action_OpenCivilopedia"		"シヴィロペディアの切り替え"
+			"Action_FoundCity"		"都市の建設"
+			"Action_MoveTo"		"選択したユニットを移動"
+			"Action_Fortify"		"選択したユニットに守りを固めさせる"
+			"Action_DeleteUnit"		"選択したユニットを消去"
+			"Action_Attack"		"選択したユニットで攻撃"
+			"Action_RangedAttack"		"選択したユニットで長距離攻撃"
+			"Action_AutoExplore"		"自動探索"
+			"Action_SkipTurn"		"ターンをスキップ"
+			"Action_Sleep"		"休眠"
+			"Action_EndTurn"		"ターン終了"
+			"Action_LensReligion"		"宗教レンズの切り替え"
+			"Action_LensContinent"		"大陸レンズの切り替え"
+			"Action_LensAppeal"		"アピールレンズの切り替え"
+			"Action_LensSettler"		"開拓者レンズの切り替え"
+			"Action_LensGovernment"		"政府レンズの切り替え"
+			"Action_LensPolitical"		"政治レンズの切り替え"
+		}
+		"polish"
+		{
+			"Title_Config1"		"Oficjalna konfiguracja"
+			"Description_Config1"		"Ta konfiguracja została stworzona przez Firaxis."
+			"Set_Ingame"		"Ustawienia klawiszy"
+			"Action_ToggleTechTree"		"Włącz/wyłącz drzewo technologii"
+			"Action_ToggleCivicsTree"		"Włącz/wyłącz drzewo idei"
+			"Action_ToggleGovernment"		"Włącz/wyłącz przegląd ustrojów"
+			"Action_ToggleReligion"		"Włącz/wyłącz przegląd religii"
+			"Action_ToggleGreatPeople"		"Włącz/wyłącz przegląd wielkich ludzi"
+			"Action_ToggleGreatWorks"		"Włącz/wyłącz przegląd wielkich dzieł"
+			"Action_ToggleRankings"		"Włącz/wyłącz podgląd rankingu światowego"
+			"Action_ToggleCityStates"		"Włącz/wyłącz przegląd miast-państw"
+			"Action_ToggleEspionage"		"Włącz/wyłącz podgląd wywiadu"
+			"Action_ToggleTradeRoutes"		"Włącz/wyłącz przegląd szlaków handlowych"
+			"Action_OpenCivilopedia"		"Włącz/wyłącz Civilopedię"
+			"Action_FoundCity"		"Załóż miasto"
+			"Action_MoveTo"		"Wykonaj ruch wybraną jednostką"
+			"Action_Fortify"		"Ufortyfikuj wybraną jednostkę"
+			"Action_DeleteUnit"		"Usuń wybraną jednostkę"
+			"Action_Attack"		"Atak przy pomocy wybranej jednostki"
+			"Action_RangedAttack"		"Atak dystansowy przy pomocy wybranej jednostki"
+			"Action_AutoExplore"		"Automatyczna eksploracja"
+			"Action_SkipTurn"		"Pominięcie tury"
+			"Action_Sleep"		"Uśpienie"
+			"Action_EndTurn"		"Koniec tury"
+			"Action_LensReligion"		"Włączenie/wyłączenie filtra religii"
+			"Action_LensContinent"		"Włączenie/wyłączenie filtra kontynentów"
+			"Action_LensAppeal"		"Włączenie/wyłączenie filtra atrakcyjności"
+			"Action_LensSettler"		"Włączenie/wyłączenie filtra osadników"
+			"Action_LensGovernment"		"Włączenie/wyłączenie filtra ustrojów"
+			"Action_LensPolitical"		"Włączenie/wyłączenie filtra polityki"
+		}
+		"koreana"
+		{
+			"Title_Config1"		"공식 구성"
+			"Description_Config1"		"이 구성은 Firaxis가 만들었습니다."
+			"Set_Ingame"		"인게임 컨트롤"
+			"Action_ToggleTechTree"		"기술 발전표 전환"
+			"Action_ToggleCivicsTree"		"사회 제도표 전환"
+			"Action_ToggleGovernment"		"정부 개요 전환"
+			"Action_ToggleReligion"		"종교 개요 전환"
+			"Action_ToggleGreatPeople"		"위인 개요 전환"
+			"Action_ToggleGreatWorks"		"걸작 개요 전환"
+			"Action_ToggleRankings"		"세계 랭킹 개요 전환"
+			"Action_ToggleCityStates"		"도시 국가 개요 전환"
+			"Action_ToggleEspionage"		"첩보 개요 전환"
+			"Action_ToggleTradeRoutes"		"교역로 개요 전환"
+			"Action_OpenCivilopedia"		"문명 백과사전 전환"
+			"Action_FoundCity"		"도시 건설"
+			"Action_MoveTo"		"선택한 유닛으로 이동"
+			"Action_Fortify"		"선택한 유닛을 요새화"
+			"Action_DeleteUnit"		"선택한 유닛 삭제"
+			"Action_Attack"		"선택한 유닛으로 공격"
+			"Action_RangedAttack"		"선택한 유닛으로 원거리 공격"
+			"Action_AutoExplore"		"자동 탐험"
+			"Action_SkipTurn"		"턴 건너뛰기"
+			"Action_Sleep"		"비활성화"
+			"Action_EndTurn"		"턴 종료"
+			"Action_LensReligion"		"종교 렌즈 전환"
+			"Action_LensContinent"		"대륙 렌즈 전환"
+			"Action_LensAppeal"		"매력 렌즈 전환"
+			"Action_LensSettler"		"개척자 렌즈 전환"
+			"Action_LensGovernment"		"정부 렌즈 전환"
+			"Action_LensPolitical"		"정치 렌즈 전환"
+		}
+		"tchinese"
+		{
+			"Title_Config1"		"官方配置"
+			"Description_Config1"		"製作者：Firaxis"
+			"Set_Ingame"		"遊戲內控制說明"
+			"Action_ToggleTechTree"		"切換至科技樹"
+			"Action_ToggleCivicsTree"		"切換至市政樹"
+			"Action_ToggleGovernment"		"切換至政體概覽"
+			"Action_ToggleReligion"		"切換至宗教概覽"
+			"Action_ToggleGreatPeople"		"切換至偉人概覽"
+			"Action_ToggleGreatWorks"		"切換至偉大作品概覽"
+			"Action_ToggleRankings"		"切換至世界排名概覽"
+			"Action_ToggleCityStates"		"切換至城邦概覽"
+			"Action_ToggleEspionage"		"切換至間諜活動概覽"
+			"Action_ToggleTradeRoutes"		"切換至貿易路線概覽"
+			"Action_OpenCivilopedia"		"切換至文明百科"
+			"Action_FoundCity"		"建立城市"
+			"Action_MoveTo"		"移動所選單位"
+			"Action_Fortify"		"駐紮所選單位"
+			"Action_DeleteUnit"		"刪除所選單位"
+			"Action_Attack"		"攻擊所選單位"
+			"Action_RangedAttack"		"遠程攻擊所選單位"
+			"Action_AutoExplore"		"自動探索"
+			"Action_SkipTurn"		"跳過回合"
+			"Action_Sleep"		"休眠"
+			"Action_EndTurn"		"結束回合"
+			"Action_LensReligion"		"切換宗教鏡頭"
+			"Action_LensContinent"		"切換大陸鏡頭"
+			"Action_LensAppeal"		"切換魅力鏡頭"
+			"Action_LensSettler"		"切換開拓者鏡頭"
+			"Action_LensGovernment"		"切換政體鏡頭"
+			"Action_LensPolitical"		"切換政治鏡頭"
+		}
+		"schinese"
+		{
+			"Title_Config1"		"官方配置"
+			"Description_Config1"		"此配置由Firaxis创建"
+			"Set_Ingame"		"游戏内操作"
+			"Action_ToggleTechTree"		"切换科技树"
+			"Action_ToggleCivicsTree"		"切换市政树"
+			"Action_ToggleGovernment"		"切换政体界面"
+			"Action_ToggleReligion"		"切换宗教界面"
+			"Action_ToggleGreatPeople"		"切换伟人界面"
+			"Action_ToggleGreatWorks"		"切换巨作界面"
+			"Action_ToggleRankings"		"切换世界排名界面"
+			"Action_ToggleCityStates"		"切换城邦界面"
+			"Action_ToggleEspionage"		"切换间谍活动界面"
+			"Action_ToggleTradeRoutes"		"切换贸易路线界面"
+			"Action_OpenCivilopedia"		"切换文明百科"
+			"Action_FoundCity"		"建立城市"
+			"Action_MoveTo"		"移动所选单位"
+			"Action_Fortify"		"让所选单位驻扎"
+			"Action_DeleteUnit"		"删除所选单位"
+			"Action_Attack"		"用所选单位攻击"
+			"Action_RangedAttack"		"用所选单位远程攻击"
+			"Action_AutoExplore"		"自动探索"
+			"Action_SkipTurn"		"跳过此回合"
+			"Action_Sleep"		"休眠"
+			"Action_EndTurn"		"结束回合"
+			"Action_LensReligion"		"切换宗教滤镜"
+			"Action_LensContinent"		"切换大陆滤镜"
+			"Action_LensAppeal"		"切换魅力滤镜"
+			"Action_LensSettler"		"切换开拓者滤镜"
+			"Action_LensGovernment"		"切换政体滤镜"
+			"Action_LensPolitical"		"切换政治滤镜"
+		}
+		"brazilian"
+		{
+			"Title_Config1"		"Configuração Oficial"
+			"Description_Config1"		"Esta configuração foi criada pela Firaxis"
+			"Set_Ingame"		"Controles do jogo"
+			"Action_ToggleTechTree"		"Tela Árvore de Tecnologias"
+			"Action_ToggleCivicsTree"		"Tela Árvore Cívica"
+			"Action_ToggleGovernment"		"Tela Governo"
+			"Action_ToggleReligion"		"Tela Religião"
+			"Action_ToggleGreatPeople"		"Tela Grande Personalidade"
+			"Action_ToggleGreatWorks"		"Tela Grandes Obras"
+			"Action_ToggleRankings"		"Tela Classificações Mundiais"
+			"Action_ToggleCityStates"		"Tela Cidades-Estado"
+			"Action_ToggleEspionage"		"Tela Espionagem"
+			"Action_ToggleTradeRoutes"		"Tela Rotas Comerciais"
+			"Action_OpenCivilopedia"		"Civilopedia"
+			"Action_FoundCity"		"Fundar Cidade"
+			"Action_MoveTo"		"Mover unidade selecionada"
+			"Action_Fortify"		"Fortificar unidade selecionada"
+			"Action_DeleteUnit"		"Excluir unidade selecionada"
+			"Action_Attack"		"Atacar com a unidade selecionada"
+			"Action_RangedAttack"		"Atacar a distância com a unidade selecionada"
+			"Action_AutoExplore"		"Auto-explorar"
+			"Action_SkipTurn"		"Pular Turno"
+			"Action_Sleep"		"Dormir"
+			"Action_EndTurn"		"Terminar Turno"
+			"Action_LensReligion"		"Alterna  a lente de Religião"
+			"Action_LensContinent"		"Alterna a lente de Continente"
+			"Action_LensAppeal"		"Alterna a lente de Apelo"
+			"Action_LensSettler"		"Alterna a lente de Colono"
+			"Action_LensGovernment"		"Alterna a lente de Governo"
+			"Action_LensPolitical"		"Alterna a lente Política"
+		}
+	}
+	"group"
+	{
+		"id"		"0"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+			"button_A"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT"
+						}
+					}
+				}
+			}
+			"button_B"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press ESCAPE"
+						}
+					}
+				}
+			}
+			"button_X"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleCivicsTree, Toggle the Civics Tree"
+						}
+					}
+				}
+			}
+			"button_Y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleTechTree, Toggle the Tech Tree"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"1"
+		"mode"		"trigger"
+		"inputs"
+		{
+			"edge"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"2"
+		"mode"		"trigger"
+		"inputs"
+		{
+			"edge"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button RIGHT"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"adaptive_threshold"		"0"
+		}
+	}
+	"group"
+	{
+		"id"		"3"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"4"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"5"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"6"
+		"mode"		"joystick_move"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
+	}
+	"group"
+	{
+		"id"		"7"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+			"button_A"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleGreatWorks, Toggle the Great Works overview"
+						}
+					}
+				}
+			}
+			"button_B"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleReligion, Toggle the Religion overview"
+						}
+					}
+				}
+			}
+			"button_X"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleGreatPeople, Toggle the Great Person overview"
+						}
+					}
+				}
+			}
+			"button_Y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleGovernment, Toggle the Government overview"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"8"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleGovernment, Toggle the Government overview"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleGreatWorks, Toggle the Great Works overview"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleReligion, Toggle the Religion overview"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleGreatPeople, Toggle the Great Person overview"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"layout"		"0"
+		}
+	}
+	"group"
+	{
+		"id"		"9"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"12"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"13"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press UP_ARROW"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press DOWN_ARROW"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press RIGHT_ARROW"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press LEFT_ARROW"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"14"
+		"mode"		"joystick_camera"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"15"
+		"mode"		"touch_menu"
+		"inputs"
+		{
+			"touch_menu_button_0"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleTechTree, Toggle the Tech Tree"
+						}
+					}
+				}
+			}
+			"touch_menu_button_1"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleCivicsTree, Toggle the Civics Tree"
+						}
+					}
+				}
+			}
+			"touch_menu_button_2"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleGovernment, Toggle the Government overview"
+						}
+					}
+				}
+			}
+			"touch_menu_button_3"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleReligion, Toggle the Religion overview"
+						}
+					}
+				}
+			}
+			"touch_menu_button_4"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleGreatPeople, Toggle the Great Person overview"
+						}
+					}
+				}
+			}
+			"touch_menu_button_5"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleGreatWorks, Toggle the Great Works overview"
+						}
+					}
+				}
+			}
+			"touch_menu_button_6"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls ToggleRankings, Toggle the World Rankings overview"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"touch_menu_button_count"		"16"
+			"touch_menu_position_x"		"8"
+			"touch_menu_position_y"		"81"
+		}
+	}
+	"group"
+	{
+		"id"		"16"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"17"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+			"button_A"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press DOWN_ARROW"
+						}
+					}
+				}
+			}
+			"button_B"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press RIGHT_ARROW"
+						}
+					}
+				}
+			}
+			"button_X"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press LEFT_ARROW"
+						}
+					}
+				}
+			}
+			"button_Y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press UP_ARROW"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"requires_click"		"0"
+			"button_size"		"32767"
+			"button_dist"		"9349"
+		}
+	}
+	"group"
+	{
+		"id"		"18"
+		"mode"		"touch_menu"
+		"inputs"
+		{
+			"touch_menu_button_0"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls MoveTo, Move selected unit, ghost_045_move_0120.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_1"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls Attack, Attack with selected unit, ghost_040_act_0050.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_2"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls RangedAttack, Ranged-attack with selected unit, ghost_040_act_0010.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_3"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls Fortify, Fortify selected unit, ghost_030_inv_0010.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_4"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls Fortify, Fortify selected unit, ghost_030_inv_0010.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_5"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls Sleep, Sleep, ghost_050_menu_0130.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_6"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls SkipTurn, Skip Turn, ghost_045_move_0070.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_7"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls FoundCity, Found a city, ghost_045_move_0200.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"touch_menu_button_count"		"9"
+			"touch_menu_position_x"		"17"
+		}
+	}
+	"group"
+	{
+		"id"		"19"
+		"mode"		"touch_menu"
+		"inputs"
+		{
+			"touch_menu_button_0"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls MoveTo, Move selected unit, ghost_045_move_0120.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_1"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls Attack, Attack with selected unit, ghost_040_act_0050.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_2"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls RangedAttack, Ranged-attack with selected unit, ghost_040_act_0010.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_3"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls Fortify, Fortify selected unit, ghost_030_inv_0010.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_4"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls Fortify, Fortify selected unit, ghost_040_act_0080.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_5"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls Sleep, Sleep, ghost_050_menu_0130.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_6"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls SkipTurn, Skip Turn, ghost_045_move_0070.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_7"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls FoundCity, Found a city, ghost_045_move_0200.png #232323 #E4E4E4"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"touch_menu_button_count"		"9"
+		}
+	}
+	"group"
+	{
+		"id"		"10"
+		"mode"		"switches"
+		"inputs"
+		{
+			"button_escape"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press ESCAPE"
+						}
+					}
+				}
+			}
+			"button_menu"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls OpenCivilopedia, Toggle the Civilopedia"
+						}
+					}
+				}
+			}
+			"left_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_wheel SCROLL_DOWN"
+						}
+						"settings"
+						{
+							"hold_repeats"		"1"
+						}
+					}
+				}
+			}
+			"right_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_wheel SCROLL_UP"
+						}
+						"settings"
+						{
+							"hold_repeats"		"1"
+						}
+					}
+				}
+			}
+			"button_back_left"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mode_shift left_trackpad 18"
+						}
+					}
+				}
+			}
+			"button_back_right"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press RETURN"
+						}
+					}
+				}
+			}
+			"left_trigger"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mode_shift right_trackpad 19"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"11"
+		"mode"		"switches"
+		"inputs"
+		{
+		}
+	}
+	"preset"
+	{
+		"id"		"0"
+		"name"		"InGameControls"
+		"group_source_bindings"
+		{
+			"10"		"switch active"
+			"7"		"left_trackpad inactive"
+			"8"		"left_trackpad active"
+			"15"		"left_trackpad inactive"
+			"18"		"left_trackpad active modeshift"
+			"6"		"right_trackpad inactive"
+			"9"		"right_trackpad active"
+			"19"		"right_trackpad inactive modeshift"
+			"0"		"button_diamond active"
+			"1"		"left_trigger active"
+			"16"		"left_trigger active modeshift"
+			"2"		"right_trigger active"
+			"12"		"right_trigger active modeshift"
+			"13"		"joystick active"
+			"14"		"joystick inactive"
+			"17"		"joystick inactive"
+		}
+	}
+	"preset"
+	{
+		"id"		"1"
+		"name"		"MenuControls"
+		"group_source_bindings"
+		{
+			"11"		"switch active"
+			"3"		"button_diamond active"
+			"4"		"left_trigger active"
+			"5"		"right_trigger active"
+		}
+	}
+	"settings"
+	{
+	}
+}

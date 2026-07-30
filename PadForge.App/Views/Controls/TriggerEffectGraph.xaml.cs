@@ -397,7 +397,7 @@ namespace PadForge.Views.Controls
             // we still scale a little with frequency so the user can
             // see freq changes register).
             int cycles = Math.Max(4, Math.Min(20, 4 + Frequency / 4));
-            DrawWave(x0, x1, plotH, strH, cycles, dashed: false);
+            DrawWave(x0, x1, plotH, strH, cycles);
         }
 
         private void DrawPulsingVibration(double x0, double x1, double plotH, double strH)
@@ -416,11 +416,11 @@ namespace PadForge.Views.Controls
                 double zx0 = w * i / 10.0;
                 double zx1 = w * (i + 1) / 10.0;
                 int zoneCycles = Math.Max(2, Math.Min(6, 2 + Frequency / 8));
-                DrawWave(zx0 + 1, zx1 - 1, plotH, strH, zoneCycles, dashed: false);
+                DrawWave(zx0 + 1, zx1 - 1, plotH, strH, zoneCycles);
             }
         }
 
-        private void DrawWave(double x0, double x1, double plotH, double strH, int cycles, bool dashed)
+        private void DrawWave(double x0, double x1, double plotH, double strH, int cycles)
         {
             if (x1 <= x0) return;
             const int samplesPerCycle = 12;
@@ -441,8 +441,6 @@ namespace PadForge.Views.Controls
                 StrokeThickness = 2,
                 StrokeLineJoin = PenLineJoin.Round
             };
-            if (dashed)
-                poly.StrokeDashArray = new DoubleCollection { 3, 2 };
             poly.SetResourceReference(Shape.StrokeProperty, "AccentFillColorSecondaryBrush");
             GraphCanvas.Children.Add(poly);
         }

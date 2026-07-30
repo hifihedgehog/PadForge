@@ -69,6 +69,9 @@ namespace PadForge.Common.Input
         /// <summary>Maximum number of Extended virtual controllers (Extended driver limit).</summary>
         public const int MaxExtendedSlots = 16;
 
+        /// <summary>Maximum number of Nintendo virtual controllers.</summary>
+        public const int MaxNintendoSlots = InputManager.MaxPads;
+
         /// <summary>Maximum number of MIDI virtual controllers.</summary>
         public const int MaxMidiSlots = InputManager.MaxPads;
 
@@ -102,6 +105,7 @@ namespace PadForge.Common.Input
         /// </summary>
         public static List<int> XboxSlotOrder { get; set; } = new();
         public static List<int> PlayStationSlotOrder { get; set; } = new();
+        public static List<int> NintendoSlotOrder { get; set; } = new();
         public static List<int> ExtendedSlotOrder { get; set; } = new();
         public static List<int> KeyboardMouseSlotOrder { get; set; } = new();
         public static List<int> MidiSlotOrder { get; set; } = new();
@@ -114,7 +118,7 @@ namespace PadForge.Common.Input
         /// </summary>
         public static class SlotOrders
         {
-            /// <summary>Guards the five order lists for the readers
+            /// <summary>Guards the six order lists for the readers
             /// that run off the UI thread: GetGlobalSlotNumber (the Sony
             /// effects dispatcher calls it per dispatch from its
             /// anim-timer and the polling thread, #191) and the Step 5
@@ -129,7 +133,7 @@ namespace PadForge.Common.Input
 
             /// <summary>Returns the 1-based global slot number for
             /// <paramref name="padIndex"/>, walking type-group order
-            /// (Xbox → PlayStation → Extended → KbM → MIDI) so it matches
+            /// (Xbox → PlayStation → Nintendo → Extended → KbM → MIDI) so it matches
             /// the dashboard cards, sidebar, Pad page header, and the
             /// Devices-page assignment badges. Returns 0 when the slot
             /// isn't created or isn't in any group's order list (caller
@@ -206,6 +210,7 @@ namespace PadForge.Common.Input
             {
                 Engine.VirtualControllerType.Xbox     => XboxSlotOrder,
                 Engine.VirtualControllerType.PlayStation   => PlayStationSlotOrder,
+                Engine.VirtualControllerType.Nintendo      => NintendoSlotOrder,
                 Engine.VirtualControllerType.Extended      => ExtendedSlotOrder,
                 Engine.VirtualControllerType.KeyboardMouse => KeyboardMouseSlotOrder,
                 Engine.VirtualControllerType.Midi          => MidiSlotOrder,
@@ -301,10 +306,12 @@ namespace PadForge.Common.Input
                 int[] persistedPlayStation = null,
                 int[] persistedExtended = null,
                 int[] persistedKbm = null,
-                int[] persistedMidi = null)
+                int[] persistedMidi = null,
+                int[] persistedNintendo = null)
             {
                 Reconcile(XboxSlotOrder,          persistedXbox,        slotType, Engine.VirtualControllerType.Xbox);
                 Reconcile(PlayStationSlotOrder,   persistedPlayStation, slotType, Engine.VirtualControllerType.PlayStation);
+                Reconcile(NintendoSlotOrder,      persistedNintendo,    slotType, Engine.VirtualControllerType.Nintendo);
                 Reconcile(ExtendedSlotOrder,      persistedExtended,    slotType, Engine.VirtualControllerType.Extended);
                 Reconcile(KeyboardMouseSlotOrder, persistedKbm,         slotType, Engine.VirtualControllerType.KeyboardMouse);
                 Reconcile(MidiSlotOrder,          persistedMidi,        slotType, Engine.VirtualControllerType.Midi);
@@ -377,7 +384,23 @@ namespace PadForge.Common.Input
 
             lock (devices.SyncRoot)
             {
-                return devices.Items.FirstOrDefault(d => d.InstanceGuid == instanceGuid);
+                // Duplicate-guid defense: the load path dedupes ghost
+                // records, but a mid-session duplicate (whatever lane
+                // minted it) must not let a capability-less ghost shadow
+                // the real record for automap and identity decisions.
+                // Prefer the record that actually carries capabilities.
+                UserDevice best = null;
+                foreach (var d in devices.Items)
+                {
+                    if (d == null || d.InstanceGuid != instanceGuid) continue;
+                    if (best == null) { best = d; continue; }
+                    bool dRich = d.CapType != 0
+                        || (d.DeviceObjects != null && d.DeviceObjects.Length > 0);
+                    bool bestRich = best.CapType != 0
+                        || (best.DeviceObjects != null && best.DeviceObjects.Length > 0);
+                    if (dRich && !bestRich) best = d;
+                }
+                return best;
             }
         }
 
@@ -394,10 +417,16 @@ namespace PadForge.Common.Input
             {
                 lock (devices.SyncRoot)
                 {
-                    int idx = devices.Items.FindIndex(d => d.InstanceGuid == instanceGuid);
-                    if (idx >= 0)
+                    // Remove EVERY record with this GUID, not just the first.
+                    // FindDeviceByInstanceGuid exists precisely because a
+                    // mid-session duplicate can appear, and it scans all
+                    // matches to prefer the capability-rich one. Removing one
+                    // of a duplicate pair left the other behind, so the
+                    // finder kept resolving a device the caller just deleted.
+                    for (int i = devices.Items.Count - 1; i >= 0; i--)
                     {
-                        devices.Items.RemoveAt(idx);
+                        if (devices.Items[i]?.InstanceGuid != instanceGuid) continue;
+                        devices.Items.RemoveAt(i);
                         removed = true;
                     }
                 }
@@ -645,6 +674,59 @@ namespace PadForge.Common.Input
                     return ps;
                 }
 
+                if (outputType == Engine.VirtualControllerType.Nintendo)
+                {
+                    // Nintendo (switch-pro) positional automap: the physical
+                    // PLACEMENT of the source pad's controls lands on the
+                    // same placement on the virtual Switch Pro (owner
+                    // direction 2026-07-19), matching SDL's own positional
+                    // gamepad semantics. SDL button indices are positional
+                    // (0=south 1=east 2=west 3=north), and switch-pro raw
+                    // indices letter B0 A1 Y2 X3 (see NintendoExtendedLabel),
+                    // so index N maps straight to RawBtnN and the
+                    // letters land Xbox A on Switch B, Xbox X on Switch Y.
+                    // Sticks: the profile has no analog triggers, so
+                    // ComputeAxisLayout packs LX LY RX RY at 0-3. Physical
+                    // trigger PULLS press the digital ZL/ZR buttons through
+                    // the standard axis-as-button coercion.
+                    if (HasAxis(0)) ps.SetRawMapping("RawAxis0", "Axis 0");
+                    if (HasAxis(1)) ps.SetRawMapping("RawAxis1", "Axis 1");
+                    if (HasAxis(3)) ps.SetRawMapping("RawAxis2", "Axis 3");
+                    if (HasAxis(4)) ps.SetRawMapping("RawAxis3", "Axis 4");
+
+                    if (HasButton(0)) ps.SetRawMapping("RawBtn0", "Button 0");   // south → B
+                    if (HasButton(1)) ps.SetRawMapping("RawBtn1", "Button 1");   // east  → A
+                    if (HasButton(2)) ps.SetRawMapping("RawBtn2", "Button 2");   // west  → Y
+                    if (HasButton(3)) ps.SetRawMapping("RawBtn3", "Button 3");   // north → X
+                    if (HasButton(4)) ps.SetRawMapping("RawBtn4", "Button 4");   // LB → L
+                    if (HasButton(5)) ps.SetRawMapping("RawBtn5", "Button 5");   // RB → R
+                    if (HasAxis(2)) ps.SetRawMapping("RawBtn6", "Axis 2");       // LT pull → ZL
+                    if (HasAxis(5)) ps.SetRawMapping("RawBtn7", "Axis 5");       // RT pull → ZR
+                    if (HasButton(6)) ps.SetRawMapping("RawBtn8", "Button 6");   // Back → Minus
+                    if (HasButton(7)) ps.SetRawMapping("RawBtn9", "Button 7");   // Start → Plus
+                    if (HasButton(8)) ps.SetRawMapping("RawBtn10", "Button 8");  // LS click
+                    if (HasButton(9)) ps.SetRawMapping("RawBtn11", "Button 9");  // RS click
+                    if (HasButton(10)) ps.SetRawMapping("RawBtn12", "Button 10"); // Guide → Home
+                    // Misc1 (Xbox Share / DualSense Mic / Switch Capture,
+                    // SDL index 11) → Capture, gated on the device
+                    // actually exposing it like the Xbox Share automap.
+                    bool hasCaptureSource = ud.DeviceObjects != null
+                        && ud.DeviceObjects.Any(o => o != null
+                            && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
+                            && o.InputIndex == 11);
+                    if (hasCaptureSource) ps.SetRawMapping("RawBtn13", "Button 11");
+
+                    if (HasHat())
+                    {
+                        ps.SetRawMapping("RawPov0Up", "POV 0 Up");
+                        ps.SetRawMapping("RawPov0Down", "POV 0 Down");
+                        ps.SetRawMapping("RawPov0Left", "POV 0 Left");
+                        ps.SetRawMapping("RawPov0Right", "POV 0 Right");
+                    }
+                    ps.FlushRawMappings();
+                }
+                else
+                {
                 // Sticks and triggers (SDL3 axis order LX/LY/LT/RX/RY/RT).
                 if (HasAxis(0)) ps.LeftThumbAxisX = "Axis 0";
                 if (HasAxis(1)) ps.LeftThumbAxisY = "Axis 1";
@@ -674,6 +756,7 @@ namespace PadForge.Common.Input
                 if (HasButton(8)) ps.LeftThumbButton = "Button 8";
                 if (HasButton(9)) ps.RightThumbButton = "Button 9";
                 if (HasButton(10)) ps.ButtonGuide = "Button 10";
+                }
 
                 // Xbox Share auto-map: any controller that exposes
                 // SDL_GAMEPAD_BUTTON_MISC1 (Xbox Share, DualSense Mic,
@@ -720,14 +803,17 @@ namespace PadForge.Common.Input
                     ps.TouchpadClick = "Touchpad 0 Click";
                 }
 
-                // Motion passthrough auto-mapping for PlayStation output +
-                // sensor-capable device. The bundled-source descriptor
+                // Motion passthrough auto-mapping for motion-capable
+                // output families (PlayStation; Nintendo since the virtual
+                // Switch Pro's IMU surface, HM v1.3.18) + sensor-capable
+                // device. The bundled-source descriptor
                 // markers ("Motion Gyro" / "Motion Accel") flag this
                 // device as contributing its sensor stream to the
                 // slot's motion channel. EnsureMotionRows mirrors the
                 // marker into the per-slot MappingSet so the engine
                 // sees the row.
-                if (outputType == Engine.VirtualControllerType.PlayStation)
+                if (outputType is Engine.VirtualControllerType.PlayStation
+                    or Engine.VirtualControllerType.Nintendo)
                 {
                     if (ud.HasGyro)  ps.MotionGyro  = "Motion Gyro";
                     if (ud.HasAccel) ps.MotionAccel = "Motion Accel";
@@ -799,6 +885,22 @@ namespace PadForge.Common.Input
                 var ps = CreateDefaultPadSetting(ud, outputType);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
+                // Permanent automap-decision diagnostics (2026-07-22): a
+                // type switch that authors an EMPTY PadSetting is silent
+                // and latent until the user notices dead inputs. Name the
+                // gate that decided, every time.
+                // All three dictionary siblings, not raw alone: a MIDI or
+                // KBM slot's automap logged rawRows=0 with rows authored,
+                // defeating this line's own purpose (audit 2026-07-24,
+                // lens 1r).
+                int rawCount = (ps.RawMappingEntries?.Length ?? 0)
+                    + (ps.MidiMappingEntries?.Length ?? 0)
+                    + (ps.KbmMappingEntries?.Length ?? 0);
+                Engine.SdlDiagLog.WriteLine(
+                    $"AUTOMAP slot={padIndex} type={outputType} guid={us.InstanceGuid.ToString().Substring(0, 8)}"
+                    + (ud == null
+                        ? " device=NOT-FOUND -> empty defaults"
+                        : $" cap={ud.CapType} forceRaw={ud.ForceRawJoystickMode} objs={ud.DeviceObjects?.Length ?? 0} rawRows={rawCount}"));
             }
         }
 

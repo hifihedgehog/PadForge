@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -102,6 +102,7 @@
   <!-- ═══ Controller Types ═══ -->
   <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox</value></data>
   <data name="ControllerType_PlayStation" xml:space="preserve"><value>PlayStation</value></data>
+  <data name="ControllerType_Nintendo" xml:space="preserve"><value>Nintendo</value></data>
   <data name="ControllerType_Extended" xml:space="preserve"><value>Extended</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>キーボード + マウス</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
@@ -118,6 +119,7 @@
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>仮想コントローラー {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>エンジン停止中</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>デバイス待機中</value></data>
+  <data name="Main_VcFailed" xml:space="preserve"><value>仮想コントローラーの作成に失敗しました</value></data>
   <data name="Main_Active" xml:space="preserve"><value>アクティブ</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>初期化中</value></data>
   <data name="Main_VCsEnabled" xml:space="preserve"><value>仮想コントローラーを有効化</value></data>
@@ -125,6 +127,7 @@
   <data name="Main_ControllersOffline" xml:space="preserve"><value>1 台以上のコントローラーがオフライン</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (最大 {0} 台)</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (最大 {0} 台)</value></data>
+  <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (最大 {0} 台)</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Extended (最大 {0} 台)</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>キーボード + マウス (最大 {0} 台)</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (Windows MIDI Services が必要です)</value></data>
@@ -297,7 +300,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>データバインディング用の CommunityToolkit.Mvvm。MIT。</value></data>
   <data name="About_License" xml:space="preserve"><value>ライセンス</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>本ソフトウェアは CC BY-NC-SA 4.0 (Creative Commons 表示-非営利-継承 4.0 国際) の下でライセンスされています。3D コントローラーモデルは Handheld Companion (CC BY-NC-SA 4.0) から派生しています。2D コントローラーアセットは AL2009man による Gamepad-Asset-Pack (MIT) です。元のコードベースは x360ce (MIT) からフォークされました。SDL3 は zlib ライセンスの下でライセンスされています。HIDMaestro、Windows MIDI Services、HidHide、HelixToolkit、および WPF UI は MIT ライセンスの下でライセンスされています。OpenXInput は上流プロジェクトの商標免責事項のみを含み、同条件のもとでそのまま再配布されます。</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>本ソフトウェアは CC BY-NC-SA 4.0 (Creative Commons 表示-非営利-継承 4.0 国際) の下でライセンスされています。3D コントローラーモデルは Handheld Companion (CC BY-NC-SA 4.0) から派生しています。2D コントローラーアセットは AL2009man による Gamepad-Asset-Pack (MIT) です。元のコードベースは x360ce (MIT) からフォークされました。SDL3 は zlib ライセンスの下でライセンスされています。HIDMaestro、Windows MIDI Services、HidHide、HelixToolkit、および WPF UI は MIT ライセンスの下でライセンスされています。OpenXInput は上流プロジェクトの商標免責事項のみを含み、同条件のもとでそのまま再配布されます。 Mouse artwork from Zergatul.Obs.InputOverlay by Igor Budzhak (MIT).</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>ゲームパッド</value></data>
@@ -349,6 +352,7 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>振動</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>ジャイロ</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>加速度</value></data>
+  <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>このデバイスをすべてのアプリケーションから非表示に</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>このデバイスからのマッピング済み入力をブロック</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (接続中のすべての{0}に対して)</value></data>
@@ -437,6 +441,7 @@
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>クリップボードからマッピングと設定を貼り付けます</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>コピー元...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>他の設定済みデバイスから設定をコピーします</value></data>
+  <data name="Pad_RawAxisValue" xml:space="preserve"><value>生の軸値</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>すべてリセット</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>すべてクリア</value></data>
   <data name="Pad_HeaderOutput" xml:space="preserve"><value>出力</value></data>
@@ -537,6 +542,15 @@
   <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>2つの値をブレンド: lerp(a, b, mix0to1)</value></data>
   <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>最も近い整数に丸める</value></data>
   <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>平方根</value></data>
+  <data name="Pad_Formula_Chip_Pow" xml:space="preserve"><value>べき乗: pow(値, 指数)。応答カーブに使います。</value></data>
+  <data name="Pad_Formula_Chip_Hypot" xml:space="preserve"><value>ペアの中心からの距離: hypot(x, y)。放射状デッドゾーンの入力です。</value></data>
+  <data name="Pad_Formula_Chip_Deadzone" xml:space="preserve"><value>デッドゾーンの外側を再スケール: deadzone(値, 内側, 外側)。内側は 0、外側で最大、符号は保持します。</value></data>
+  <data name="Pad_Formula_Chip_Floor" xml:space="preserve"><value>切り捨て: floor(値)。</value></data>
+  <data name="Pad_Formula_Chip_Ceil" xml:space="preserve"><value>切り上げ: ceil(値)。</value></data>
+  <data name="Pad_Formula_Chip_Sin" xml:space="preserve"><value>ラジアン角のサイン: sin(角度)。</value></data>
+  <data name="Pad_Formula_Chip_Cos" xml:space="preserve"><value>ラジアン角のコサイン: cos(角度)。</value></data>
+  <data name="Pad_Formula_Chip_Tan" xml:space="preserve"><value>ラジアン角のタンジェント: tan(角度)。</value></data>
+  <data name="Pad_Formula_Chip_Atan2" xml:space="preserve"><value>ペアの角度 (ラジアン): atan2(y, x)。スティックの向きは hypot と組み合わせます。</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>半分のスケール</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>Aを半分の強度で</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>4分の1のスケール</value></data>
@@ -613,7 +627,7 @@
   <data name="Macro_Always" xml:space="preserve"><value>常時</value></data>
   <data name="Macro_CustomExpression" xml:space="preserve"><value>カスタム式</value></data>
   <data name="Macro_Expression_Header" xml:space="preserve"><value>トリガー式</value></data>
-  <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>変数は a, b, c, … (または s[0], s[1], …) で参照します。+ - * / &amp;&amp; || ?: および abs/min/max/clamp/sign/lerp をサポート。式の値が 0.5 を超えた立ち上がりエッジでマクロが発火します。</value></data>
+  <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>変数は a, b, c, …（または s[0], s[1], …）で参照します。+ - * / &amp;&amp; || ?: と、下のチップ列にあるすべての関数に対応します。マクロは数式の値が 0.5 を超えた立ち上がりで発火します。</value></data>
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>変数</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ 変数を追加</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>各行が変数文字 (a, b, c, …) を一つ定義します。物理デバイスのボタン・POV・軸をバインドするには「入力デバイス」を、スロットの結合された仮想コントローラー出力のチャンネルを読み取るには「出力コントローラー」を選択してください。</value></data>
@@ -632,6 +646,10 @@
   <data name="Macro_OutputController" xml:space="preserve"><value>仮想コントローラー</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>しきい値</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>トリガーボタンを消費する (ゲームから隠す)</value></data>
+  <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>トリガー入力を食べて、ゲームに渡さないようにします。仮想コントローラーのボタン、実機のボタン、タッチパッドやジャイロ系の入力に対応します。軸のしきい値・POV・ジェスチャーのトリガーは消費されません。</value></data>
+  <data name="Macro_Layer" xml:space="preserve"><value>レイヤー</value></data>
+  <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>このマクロが属するシフトレイヤーです。「すべてのレイヤー」は有効なレイヤーに関係なく発動します。ベースと名前付きレイヤーは、マッピング行と同じくそのレイヤーが有効な間だけ発動します。</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>すべてのレイヤー</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>この仮想コントローラーがアクティブな間、継続的に実行されます。トリガーボタンは不要です。</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>アクションシーケンス</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>アクションを追加</value></data>
@@ -791,6 +809,7 @@
   <data name="POV_DownLeft" xml:space="preserve"><value>左下</value></data>
   <data name="POV_Left" xml:space="preserve"><value>左</value></data>
   <data name="POV_UpLeft" xml:space="preserve"><value>左上</value></data>
+  <data name="POV_Any" xml:space="preserve"><value>任意の方向</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>未マッピング</value></data>
@@ -855,6 +874,7 @@
   <data name="Preview_Stick_Format" xml:space="preserve"><value>スティック {0}</value></data>
   <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>十字キー</value></data>
+  <data name="Preview_Buttons" xml:space="preserve"><value>ボタン</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
   <data name="Pad_DeadZoneX" xml:space="preserve"><value>デッドゾーン X</value></data>
@@ -930,6 +950,10 @@
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>反転</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>ハーフ軸</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>どちら向きでも</value></data>
+  <data name="Pad_InvertOutput" xml:space="preserve"><value>出力を反転</value></data>
+  <data name="Pad_Mapping_Accel" xml:space="preserve"><value>加速</value></data>
+  <data name="Pad_Mapping_Accel_Tooltip" xml:space="preserve"><value>この入力の速い動きは増幅され、遅い動きはそのまま通ります。0 で応答は一定です。インポートではスティック行の Steam マウス加速がここに入ります。</value></data>
+  <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>この入力の結果を反転します。ハーフ軸のソースでは反転チェックが読み取る軸の半分を選ぶため、出力方向を反転するのはこのコントロールです。</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>「ハーフ軸」が有効な場合、中央からどちらの方向にデッドゾーンを超えて動かしても発動します（「反転」は無効です）。</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>選択した軸 (0–100%) を Windows のシステム音量に継続的にマップし、音量上限に合わせてスケーリングします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」を組み合わせて使用してください。</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windows の音量ミキサーで特定アプリケーションの音量を、音量上限に合わせてスケーリングして制御します。プロセス名を入力してください (タスクマネージャーで確認できます)。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」を組み合わせて使用してください。</value></data>
@@ -978,6 +1002,14 @@
   <data name="Btn_Options" xml:space="preserve"><value>オプション</value></data>
   <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
   <data name="Btn_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
+  <data name="Btn_L" xml:space="preserve"><value>L</value></data>
+  <data name="Btn_R" xml:space="preserve"><value>R</value></data>
+  <data name="Btn_ZL" xml:space="preserve"><value>ZL</value></data>
+  <data name="Btn_ZR" xml:space="preserve"><value>ZR</value></data>
+  <data name="Btn_Minus" xml:space="preserve"><value>マイナス</value></data>
+  <data name="Btn_Plus" xml:space="preserve"><value>プラス</value></data>
+  <data name="Btn_Home" xml:space="preserve"><value>HOME</value></data>
+  <data name="Btn_Capture" xml:space="preserve"><value>キャプチャー</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>マウス左ボタン</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>マウス右ボタン</value></data>
@@ -1134,9 +1166,19 @@
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>左モーターをリセット</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>右モーターをリセット</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>ジャイロ ピッチ</value></data>
+  <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>左Joy-Con ジャイロ ピッチ</value></data>
+  <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>左Joy-Con ジャイロ ヨー</value></data>
+  <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>左Joy-Con ジャイロ ロール</value></data>
+  <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>左Joy-Con モーションジャイロ</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>ジャイロ ヨー</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>ジャイロ ロール</value></data>
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>ジャイロ水平 (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroLeanX" xml:space="preserve"><value>ジャイロ傾き X</value></data>
+  <data name="Mapping_GyroLeanY" xml:space="preserve"><value>ジャイロ傾き Y</value></data>
+  <data name="Mapping_CapSenseLeftStickTouch" xml:space="preserve"><value>左スティック タッチ</value></data>
+  <data name="Mapping_CapSenseRightStickTouch" xml:space="preserve"><value>右スティック タッチ</value></data>
+  <data name="Mapping_CapSenseLeftGripTouch" xml:space="preserve"><value>左グリップ タッチ</value></data>
+  <data name="Mapping_CapSenseRightGripTouch" xml:space="preserve"><value>右グリップ タッチ</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>ジャイロを較正</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>コントローラーを平らな面に置いて「ジャイロを較正」をクリックすると、約 1.5 秒間静止時の値をサンプリングします。生の読み取り値から差し引かれるため、コントローラーが静止しているときにジャイロ マッピングがマウス / スティックを漂流させません。</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>最後の較正: {0:yyyy-MM-dd HH:mm}</value></data>
@@ -1186,6 +1228,7 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ホールド: 起動ボタンを押している間、ジャイロが作動します。トグル: ボタンを押すたびにジャイロのオン/オフが切り替わります。離しても何も起こりません。トグルはポーリング間で維持され、プロファイル切り替え時にリセットされます。</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>ホールド</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>トグル</value></data>
+  <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>離して照準</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>起動スティック</value></data>
   <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Easy Aim しきい値をどのスティックでゲートするか。右（既定）は既存のプロファイルをそのまま維持します。両方はより大きく傾けたスティックを使用します。</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>右スティック</value></data>
@@ -1274,7 +1317,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>停止しています…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>エンジンを停止中…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>非アクティブタイムアウト</value></data>
-  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>マッピングされたすべてのデバイスがオフラインのときに、仮想コントローラーが破棄されるまでの秒数。0 で無効になります。残ったコントローラーは隙間を埋めるために上にシフトし、低い XInput スロットに再バインドされます。</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>マッピングされたすべてのデバイスがオフラインのときに、仮想コントローラーが破棄されるまでの秒数。0 で無効になります。残った同じ種類のコントローラーは隙間を埋めるために上にシフトし、低いスロットに再バインドされます。</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>秒 (0 = 無効)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ユーザーモードの仮想 HID コントローラーエンジン (ViGEmBus と vJoy を置き換え)。MIT。</value></data>
@@ -1480,6 +1523,8 @@
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>1 回タップで有効化。次にマッピング済みボタンを押すとレイヤー上で発火し、自動的に解除されます。</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>専用のボタンはありません。サイクルコントロールのキューに追加すると、サイクルがこのレイヤーに到達します。</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>未割り当てターゲットをベースから継承</value></data>
+  <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>離したときに発動</value></data>
+  <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>ボタンを離すまでこのアクティベーターは発動しません。ホールド遅延が設定されている場合、その時間以上押していないと離しても発動しません。</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>アクティベーター自身のマッピングも発火</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>有効にすると、アクティベーターのボタンはそれをソースとして使用するすべての行を引き続き駆動します。1回押すとレイヤーが変更され、ボタン自身のマッピングも発火します。無効(既定)にすると、押下はレイヤー変更でのみ消費されます。</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーが明示的に割り当てていないターゲットはベース レイヤーにフォールスルーします。オフ(既定)にすると、レイヤーはベースを完全に置き換え、未割り当てターゲットはオフのままになります。</value></data>
@@ -1599,6 +1644,8 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>タッチパッドごとの入力。ジェスチャー（スワイプ、タップ、ピンチ、シェイプ）と連続出力モード（仮想スティック / 方向キー、マウス）がマッピングソースになり、マッピングタブで割り当てられます。</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>タッチパッド</value></data>
+  <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>タッチパッド番号</value></data>
+  <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>以下の設定を適用するこのコントローラーのタッチパッド。タッチパッドごとにジェスチャー、マウスの挙動、ポインター領域を個別に保持します。</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>ジェスチャー検出</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>このタッチパッドでジェスチャーを有効にする</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>このタッチパッドのマスタートグルです。オフの場合、このタッチパッドではジェスチャーディスクリプタを発火しません。指 / クリック / 位置のマッピングはそのまま動作します。</value></data>
@@ -1669,6 +1716,29 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>マウス感度 Y をリセット</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>マウス X 反転をリセット</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>マウス Y 反転をリセット</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>ぶれ低減</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>加速</value></data>
+  <data name="Pad_Touchpad_PointerResponse" xml:space="preserve"><value>応答</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Tooltip" xml:space="preserve"><value>指の速さをカーソルの速さに変換する方法です。Trackpad は低速時にカーソルを指より遅く動かし、それが細かい位置合わせを自然にします。</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Simple" xml:space="preserve"><value>シンプル</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Trackpad" xml:space="preserve"><value>トラックパッド</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold" xml:space="preserve"><value>速度しきい値</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold_Tooltip" xml:space="preserve"><value>カーソルが加速し始める指の速さ (mm/s)。低いほど早く加速します。</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth" xml:space="preserve"><value>パッド幅</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth_Tooltip" xml:space="preserve"><value>このタッチパッドの実際の幅 (mm)。ゆっくりした動きが微調整域に届くかを決めるので、実寸に近い値にしてください。</value></data>
+  <data name="Pad_ResetTouchpadPointerResponse" xml:space="preserve"><value>応答をリセット</value></data>
+  <data name="Pad_ResetTouchpadTrackpadThreshold" xml:space="preserve"><value>速度しきい値をリセット</value></data>
+  <data name="Pad_ResetTouchpadTrackpadPadWidth" xml:space="preserve"><value>パッド幅をリセット</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>同じ距離でも、速くなぞるほど画面上を大きく移動します。0 でカーソル速度は一定になります。</value></data>
+  <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>加速をリセット</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>デッドゾーンなしで手のぶれを抑えます。意図した小さな動きはそのまま伝わります。</value></data>
+  <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>ぶれ低減をリセット</value></data>
+  <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>情性</value></data>
+  <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>指を離したあともカーソルが動き続け、トラックボールのように止まります。</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>情性をリセット</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>滑走</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>カーソルが滑走する距離。最大では、再度タッチパッドに触れるまで進み続けます。</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>滑走をリセット</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>スティック／方向キー出力をリセット</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>ジェスチャーをリセット</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>認識対象をリセット</value></data>
@@ -2261,6 +2331,7 @@
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>左Joy-Conリーン</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>補助モーションリーン</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>補助加速度センサー</value></data>
+  <data name="Devices_GyroAux" xml:space="preserve"><value>補助ジャイロスコープ</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>ヌンチャク加速度センサー</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>左Joy-Con加速度センサー</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>補助モーション加速度センサー</value></data>
@@ -2298,14 +2369,13 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>ガイドLEDの明るさ: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>スロット上の対応する各コントローラーに対して、ガイドまたはホームボタンの LED の明るさを設定します。Xbox コントローラーは USB 接続時のみ受け付けます。</value></data>
   <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>ガイドLEDの明るさを設定</value></data>
-  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB 接続の Xbox コントローラーと 2015 年版 Steam Controller に適用されます。このアクションを 2 つ組み合わせると、マクロ開始時に LED を点滅させ、終了時に元へ戻せます。</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB 接続の Xbox コントローラー、2015 年版 Steam Controller、ホームボタン LED を備えた Switch コントローラーに適用されます。このアクションを 2 つ組み合わせると、マクロ開始時に LED を点滅させ、終了時に元へ戻せます。</value></data>
   <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>行の最後のソースがトリム用スティックになります。他のソースがトリガーを保持している間、スティックを上に倒すと保持レベルが上がり、下に倒すと下がります。アナログトリガーのないパッドでスロットルとブレーキを細かく操作するための機能です。</value></data>
   <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>スティックトリム</value></data>
   <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>ペアを追加</value></data>
   <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>対向するキーペアをもう 1 組追加します。</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>対向ペアの 1 つ目のキー。</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>対向ペアの 2 つ目のキー。</value></data>
-  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>同時反対方向入力</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>先に押したキーが、離されるまで勝ち続けます。</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>先押し優先</value></data>
   <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>最後に押したキーが勝ちます。離すと、まだ押されている反対側のキーが再び押されます。</value></data>
@@ -2315,16 +2385,37 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>両方のキーがそのまま通過します。</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>オフ</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>このキーペアを削除します。</value></data>
-  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>同時反対方向入力をリセット</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同時反対方向入力 (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>このスロットの仮想コントローラー出力で、同時に押されたボタンペアを解決します。ペアの両方が押されているとき、選んだルールがゲームに見せる入力を決めます。</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>同時反対方向入力をリセット</value></data>
+  <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>モード</value></data>
+  <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>押しっぱなしのペアをどう解決するか。スロットの最終的な合成出力に適用されるため、物理・マッピング・マクロの入力がすべて等しく処理されます。</value></data>
+  <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>モードをリセット</value></data>
+  <data name="Pad_Socd_Mode_Off_Description" xml:space="preserve"><value>両方のボタンがそのまま通過します。</value></data>
+  <data name="Pad_Socd_Mode_LastWins_Description" xml:space="preserve"><value>最後に押したボタンが勝ちます。離すと、まだ押されている相方のボタンが再び押されます。</value></data>
+  <data name="Pad_Socd_Mode_Neutral_Description" xml:space="preserve"><value>両方のボタンを押し続けると、どちらかを離すまで両方とも解除されます。</value></data>
+  <data name="Pad_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>先に押したボタンが、離されるまで勝ち続けます。</value></data>
+  <data name="Pad_Socd_Pairs_Label" xml:space="preserve"><value>ボタンペア</value></data>
+  <data name="Pad_Socd_Pairs_Tooltip" xml:space="preserve"><value>ルールが処理するボタンペア。各ペアは個別に追跡されます。</value></data>
+  <data name="Pad_Socd_ButtonA_Tooltip" xml:space="preserve"><value>ペアの 1 つ目のボタン。</value></data>
+  <data name="Pad_Socd_ButtonB_Tooltip" xml:space="preserve"><value>ペアの 2 つ目のボタン。</value></data>
+  <data name="Pad_Socd_IndexA_Tooltip" xml:space="preserve"><value>ペアの 1 つ目の生ボタン番号 (0 から 127)。番号 0 はマッピング表のボタン 1 です。</value></data>
+  <data name="Pad_Socd_IndexB_Tooltip" xml:space="preserve"><value>ペアの 2 つ目の生ボタン番号 (0 から 127)。番号 0 はマッピング表のボタン 1 です。</value></data>
+  <data name="Pad_Socd_AddPair" xml:space="preserve"><value>ペアを追加</value></data>
+  <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>ボタンペアをもう一つ追加します。</value></data>
+  <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>このボタンペアを削除します。</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>対向ペアの両方のキーが同時に押されたときの競合を Snap Tap のように解決します。このスロットの仮想キーボード出力に適用されます。</value></data>
+  <data name="Pad_Kbm_Socd_Card_Desc" xml:space="preserve"><value>このスロットの仮想キーボード出力で、同時に押されたキーペアを Snap Tap のように解決します。ペアの両方が押されているとき、選んだルールがゲームに見せる入力を決めます。</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>キーペア</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>ルールが処理するキーペア。各ペアは個別に追跡されます。</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>ガイドボタン LED</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>バッテリー残量</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>明るさ</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>ガイドボタン LED の明るさを 0% (消灯) から 100% (最大) まで設定します。モードが固定の明るさの間だけ適用されます。</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>デバイスの既定</value></data>
   <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>固定の明るさ</value></data>
-  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>デバイスの既定は、コントローラーのファームウェアが設定したままの LED にします。固定の明るさは下のレベルを維持します。バッテリー残量は、バッテリーが多いほど明るくなり、10% を下回ることはありません。Xbox コントローラーはガイド LED コマンドを USB 接続時のみ受け付けるため、Bluetooth 接続ではこの設定は効果がありません。</value></data>
-  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>光るガイドまたはホームボタンの明るさ。Xbox One 以降のコントローラーは USB 接続時に受け付けます。2015 年版 Steam Controller はどの接続でも受け付け、すべての Steam Controller で 1 つの明るさを共有します。</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>デバイスの既定は、コントローラーのファームウェアが設定したままの LED にします。固定の明るさは下のレベルを維持します。バッテリー残量は、バッテリーが多いほど明るくなり、10% を下回ることはありません。Xbox コントローラーはガイド LED コマンドを USB 接続時のみ受け付けるため、Bluetooth 接続ではこの設定は効果がありません。Switch コントローラーはホーム LED コマンドをどの接続でも受け付けます。</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>光るガイドまたはホームボタンの明るさ。Xbox One 以降のコントローラーは USB 接続時に受け付けます。2015 年版 Steam Controller はどの接続でも受け付け、すべての Steam Controller で 1 つの明るさを共有します。Switch の Proコントローラーと右Joy-Con (単体、ペア、充電グリップ装着時) はどの接続でも受け付けます。</value></data>
   <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>トリムデッドゾーン</value></data>
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>この割合未満のスティックの倒し込みは無視されるため、同じスティックでの操舵が保持中のトリガーレベルを揺らすことはありません。スティックを縦方向へ強く倒したときだけ調整されます。</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>トリム速度</value></data>
@@ -2342,5 +2433,488 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>レイヤーがトグルでオンの間、レイヤー自身にマッピングされた入力が何もアクティブでない状態がこのミリ秒続くと、自動的にオフへ戻ります。タイマーはレイヤーの有効化時に開始し、レイヤーへの入力があるたびにやり直されます。0 なら自分でオフに切り替えるまでオンのままです。</value></data>
   <data name="Pad_ResetShiftDelay" xml:space="preserve">
     <value>遅延を 0 にリセット (レイヤーは即座に反応)。</value>
+  </data>
+  <data name="MacroAction_Type_MoveMouseToScreenPosition" xml:space="preserve"><value>マウスを位置へ移動</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Tooltip" xml:space="preserve"><value>押すとデスクトップのカーソルを画面上の固定位置へ移動します。「画面上で選択」を使うと、カーソルで位置を取得できます。</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Format" xml:space="preserve"><value>マウスを {0}, {1} へ移動</value></data>
+  <data name="MacroAction_Type_RepeatKeyWhileHeld" xml:space="preserve"><value>押している間キーをリピート</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Tooltip" xml:space="preserve"><value>トリガーを押している間、一定間隔でキーを送信します (連射 / ターボ)。</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>{0} を {1} ms ごとにリピート</value></data>
+  <data name="Macro_MouseX_Label" xml:space="preserve"><value>マウス X</value></data>
+  <data name="Macro_MouseY_Label" xml:space="preserve"><value>マウス Y</value></data>
+  <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>間隔</value></data>
+  <data name="Macro_PickOnScreen" xml:space="preserve"><value>画面上で選択</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>あと {0} 秒でキャプチャ...</value></data>
+  <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>クリックしてから、カーソルを目標の位置へ移動してください。短いカウントダウンの後に位置が取得されます。</value></data>
+  <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} 圧力</value></data>
+  <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} リング</value></data>
+  <data name="Mapping_Sensitivity" xml:space="preserve"><value>感度</value></data>
+  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>通常の軸、スライダー、ゲームパッドのスティック / トリガーに対するソースごとの感度です。1.0 は入力をそのまま通します。1.0 より大きい値では少ない操作量で最大に到達します。1.0 より小さい値ではより多くの操作量が必要です。</value></data>
+  <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>ゲームパッド {0}</value></data>
+  <data name="Settings_CommunityConfigs" xml:space="preserve"><value>コミュニティコンフィグ</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>コミュニティ製の Steam Input コントローラーコンフィグを閲覧し、PadForge プロファイルへ変換します。PadForge が Steam (store.steampowered.com、api.steampowered.com、steamcommunity.com、cdn.steamusercontent.com、cdn.cloudflare.steamstatic.com、avatars.fastly.steamstatic.com) に直接接続するのは、検索したときとコンフィグを開いたときだけです。送信されるデータは検索テキストと選択したコンフィグのみです。テレメトリーなし、サードパーティサービスなし、Steam サインイン不要です。</value></data>
+  <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>コミュニティコンフィグを有効にする</value></data>
+  <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>レガシーワークショップコンフィグを表示</value></data>
+  <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>2017 年より前のコンフィグには Steam の CDN にダウンロード可能なファイルがありません。PadForge はレガシーバッジ付きで一覧に表示し、代わりに Steam ワークショップで開きます。</value></data>
+  <data name="Settings_ClearWorkshopCache" xml:space="preserve"><value>キャッシュ済みコンフィグをクリア</value></data>
+  <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>インポート済みプロファイルの更新を確認</value></data>
+  <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>ワークショップキャッシュをクリアしました</value></data>
+  <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>コミュニティコンフィグを閲覧</value></data>
+  <data name="Workshop_DialogTitle" xml:space="preserve"><value>コミュニティコンフィグを閲覧</value></data>
+  <data name="Workshop_DialogPath" xml:space="preserve"><value>プロファイル · Steam ワークショップ</value></data>
+  <data name="Workshop_ColdTitle" xml:space="preserve"><value>炉は冷えています</value></data>
+  <data name="Workshop_ColdBody" xml:space="preserve"><value>コミュニティコンフィグの閲覧時のみ PadForge は Steam に直接接続します。検索したときだけで、起動時には接続しません。</value></data>
+  <data name="Workshop_EnableButton" xml:space="preserve"><value>コミュニティコンフィグを有効にする</value></data>
+  <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>ゲームを検索</value></data>
+  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} 件のゲーム</value></data>
+  <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Steam ストアでゲームが見つかりませんでした。</value></data>
+  <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Steam を検索しています…</value></data>
+  <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Steam からコンフィグを読み込んでいます…</value></data>
+  <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Steam からコンフィグを読み込んでいます…</value></data>
+  <data name="Workshop_SortedByRating" xml:space="preserve"><value>評価順</value></data>
+  <data name="Workshop_SortedBy" xml:space="preserve"><value>並べ替え</value></data>
+  <data name="Workshop_SearchConfigs" xml:space="preserve"><value>これらのコンフィグを検索</value></data>
+  <data name="Workshop_Sort_Rating" xml:space="preserve"><value>評価</value></data>
+  <data name="Workshop_Sort_Trend" xml:space="preserve"><value>注目</value></data>
+  <data name="Workshop_Sort_Newest" xml:space="preserve"><value>新着</value></data>
+  <data name="Workshop_Sort_Subscribers" xml:space="preserve"><value>登録者</value></data>
+  <data name="Workshop_Sort_Votes" xml:space="preserve"><value>投票数</value></data>
+  <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>昇順</value></data>
+  <data name="Workshop_Sort_Descending" xml:space="preserve"><value>降順</value></data>
+  <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>割り当て {0}</value></data>
+  <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} 件見つかりました</value></data>
+  <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} 件中 {0} 件を表示</value></data>
+  <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} 件のコンフィグ</value></data>
+  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>件のコミュニティコンフィグ</value></data>
+  <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>フルコントローラーサポート</value></data>
+  <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>部分的なコントローラーサポート</value></data>
+  <data name="Workshop_BackToSearch" xml:space="preserve"><value>ゲームを検索</value></data>
+  <data name="Workshop_ByLine_Format" xml:space="preserve"><value>作者: {0} · 更新: {1}</value></data>
+  <data name="Workshop_TimeToday" xml:space="preserve"><value>今日</value></data>
+  <data name="Workshop_TimeDays_Format" xml:space="preserve"><value>{0} 日前</value></data>
+  <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} か月前</value></data>
+  <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} 年前</value></data>
+  <data name="Workshop_Subs_Format" xml:space="preserve"><value>登録者 {0}</value></data>
+  <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} 票</value></data>
+  <data name="Workshop_TagAll" xml:space="preserve"><value>すべて</value></data>
+  <data name="Workshop_EmptyTitle" xml:space="preserve"><value>このゲームのコンフィグはまだありません</value></data>
+  <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam ワークショップには {0} のコミュニティ製コントローラーコンフィグがありません。最初の作成者になれます。Steam で作成すれば、ここに表示されます。</value></data>
+  <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam に接続できません</value></data>
+  <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam に到達できませんでした。接続を確認してください。インポート済みのプロファイルはこの PC に保存されているため、引き続き使用できます。</value></data>
+  <data name="Workshop_Retry" xml:space="preserve"><value>再試行</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>この 2016 年前後のコンフィグは Steam のコンフィグ CDN より前のものです。Steam でサブスクライブすると、PadForge が Steam フォルダーから読み込みます。</value></data>
+  <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam ワークショップで開く</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>コンフィグを選択すると変換マニフェストを読み込みます。</value></data>
+  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>{0} 件のバインドを読み込みました</value></data>
+  <data name="Workshop_StatClean" xml:space="preserve"><value>完全</value></data>
+  <data name="Workshop_StatPartial" xml:space="preserve"><value>部分</value></data>
+  <data name="Workshop_StatSkipped" xml:space="preserve"><value>スキップ</value></data>
+  <data name="Workshop_SaveProfile" xml:space="preserve"><value>プロファイルを保存</value></data>
+  <data name="Workshop_SaveAndApply" xml:space="preserve"><value>保存して適用</value></data>
+  <data name="Workshop_GroupOther" xml:space="preserve"><value>バインド</value></data>
+  <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>「{0}」をインポートしました: 完全 {1}、部分 {2}、スキップ {3}</value></data>
+  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} 件のバインドは既定の自動マッピングでカバーされています</value></data>
+  <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>変換済み</value></data>
+  <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>マクロとして変換</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>レイヤー: {0}</value></data>
+  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>タッチパッドの調整は行ごとではなくパッドごとに適用されます</value></data>
+  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>トリガーしきい値を近似</value></data>
+  <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>この入力にはデバイス非依存のトリガーがありません</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} 件のゲーム内アクション、Steam 専用、ゲーム側フックなし</value></data>
+  <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam クライアントアクション {0}、対応するものがありません</value></data>
+  <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>コントローラーアクション {0} は未対応</value></data>
+  <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>不明なバインドタイプ {0}</value></data>
+  <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>不明なキー {0}</value></data>
+  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>キー {0} には Windows の対応キーがありません</value></data>
+  <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>不明なマウスボタン {0}</value></data>
+  <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>不明な XInput ボタン {0}</value></data>
+  <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} 上の不明な入力 {1}</value></data>
+  <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link の画面上コントロール {1}: 対応コントローラーに物理入力はありません</value></data>
+  <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>不明なグループモード {0}</value></data>
+  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>タッチメニューオーバーレイを破棄 ({0} セル)</value></data>
+  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>ラジアルメニューオーバーレイを破棄 ({0} セクター)</value></data>
+  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>カーソル領域の制限は未対応</value></data>
+  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>リリースアクティベーターはここでは未対応</value></data>
+  <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>長押しアクティベーターはここでは未対応</value></data>
+  <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>不明なアクティベーター {0}</value></data>
+  <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>コードアクティベーターにコードボタンが未設定です (発動できません)</value></data>
+  <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>コンフィグが存在しないグループ {0} を参照しています</value></data>
+  <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} のモードシフトが存在しないグループ {1} を参照しています</value></data>
+  <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>コンフィグが存在しないプリセット {0} を参照しています</value></data>
+  <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>グループ {0} で参照の循環</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>「レイヤー削除」はトグルオフとして近似</value></data>
+  <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>この入力ではレイヤーアクティベーターを駆動できません</value></data>
+  <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} スロットの行数上限を超過</value></data>
+  <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>プリセット {0} へ切り替えるバインドがありません</value></data>
+  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>デバイスの自動マッピングは引き続き {0} を {1} に割り当てます</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>レイヤー切り替えを破棄（{0} に変換結果がありません）</value></data>
+  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>ポインターの絶対位置指定は相対的なマウス移動として近似</value></data>
+  <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>更新を確認するにはコミュニティコンフィグを有効にしてください</value></data>
+  <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Steam ワークショップからインポートしたプロファイルはまだありません</value></data>
+  <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam ワークショップの更新を確認しています…</value></data>
+  <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>インポート済みプロファイルは最新です ({0} 件確認)</value></data>
+  <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>ワークショップの更新</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>これらのインポート済みプロファイルには Steam ワークショップに新しいバージョンがあります。「コミュニティコンフィグを閲覧」から再インポートすると変更を取り込めます。</value></data>
+  <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
+  <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
+  <data name="About_SteamKit2Desc" xml:space="preserve"><value>匿名セッションで Steam ワークショップのコントローラーコンフィグを取得する Steam ネットワーククライアント。Ryan Stecker と SteamRE Team による。LGPL-2.1。</value></data>
+  <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 が Steam の通信プロトコルに使用する Protocol Buffers シリアライザー。Marc Gravell による。Apache-2.0。</value></data>
+  <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 が Steam デポチャンクに使用する Zstandard 展開処理。Oleg Stepanischev による zstd ライブラリの C# 移植。MIT。</value></data>
+  <data name="Mapping_AnyDevice" xml:space="preserve"><value>(任意のデバイス)</value></data>
+  <data name="Mapping_TouchpadFingerXLeft_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} X (左半分)</value></data>
+  <data name="Mapping_TouchpadFingerXRight_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} X (右半分)</value></data>
+  <data name="Mapping_TouchpadFingerYLeft_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} Y (左半分)</value></data>
+  <data name="Mapping_TouchpadFingerYRight_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} Y (右半分)</value></data>
+  <data name="Mapping_TouchpadPointerX_Format" xml:space="preserve"><value>タッチパッド {0} ポインター X</value></data>
+  <data name="Mapping_TouchpadPointerY_Format" xml:space="preserve"><value>タッチパッド {0} ポインター Y</value></data>
+  <data name="Mapping_TouchpadPointerXLeft_Format" xml:space="preserve"><value>タッチパッド {0} ポインター X (左半分)</value></data>
+  <data name="Mapping_TouchpadPointerXRight_Format" xml:space="preserve"><value>タッチパッド {0} ポインター X (右半分)</value></data>
+  <data name="Mapping_TouchpadPointerYLeft_Format" xml:space="preserve"><value>タッチパッド {0} ポインター Y (左半分)</value></data>
+  <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>タッチパッド {0} ポインター Y (右半分)</value></data>
+  <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} タッチ (左半分)</value></data>
+  <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} タッチ (右半分)</value></data>
+  <data name="Mapping_TouchpadWindow_Upper" xml:space="preserve"><value>上半分</value></data>
+  <data name="Mapping_TouchpadWindow_Lower" xml:space="preserve"><value>下半分</value></data>
+  <data name="Mapping_TouchpadWindow_North" xml:space="preserve"><value>北ゾーン</value></data>
+  <data name="Mapping_TouchpadWindow_South" xml:space="preserve"><value>南ゾーン</value></data>
+  <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>東ゾーン</value></data>
+  <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>西ゾーン</value></data>
+  <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>中央</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion" xml:space="preserve"><value>タップ最大移動距離</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion_Tooltip" xml:space="preserve"><value>指が動いてもタップとみなされる最大距離 (パッド幅比)。0.04 はパッドの 4% です。</value></data>
+  <data name="Pad_ResetTouchpadTapMaxMotion" xml:space="preserve"><value>タップ最大移動距離をリセット</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion" xml:space="preserve"><value>長押し最大移動距離</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion_Tooltip" xml:space="preserve"><value>長押し中に指がずれてもスワイプではなく長押しとみなされる最大距離。</value></data>
+  <data name="Pad_ResetTouchpadLongPressMaxMotion" xml:space="preserve"><value>長押し最大移動距離をリセット</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle" xml:space="preserve"><value>2 本指の角度</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle_Tooltip" xml:space="preserve"><value>2 本の指の向きの差がこの角度以内なら、ピンチや回転ではなく 2 本指スワイプとみなします。</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipeAngularTolerance" xml:space="preserve"><value>2 本指の角度をリセット</value></data>
+  <data name="Pad_Touchpad_PinchThreshold" xml:space="preserve"><value>ピンチのしきい値</value></data>
+  <data name="Pad_Touchpad_PinchThreshold_Tooltip" xml:space="preserve"><value>ピンチと判定されるまでに 2 本指の間隔が変化する必要のある割合。</value></data>
+  <data name="Pad_ResetTouchpadPinchThreshold" xml:space="preserve"><value>ピンチのしきい値をリセット</value></data>
+  <data name="Pad_Touchpad_RotateThreshold" xml:space="preserve"><value>回転のしきい値</value></data>
+  <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>回転と判定されるまでに 2 本指が回る必要のある角度。</value></data>
+  <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>回転のしきい値をリセット</value></data>
+  <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>絶対ポインター</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>タッチパッド ポインター X/Y ソースを調整します。これはパッド上の指の位置にカーソルを移動させます (キーボード / マウス仮想コントローラーのマウス X/Y に割り当ててください)。サイズ 1.00、中心 0.50 でパッドが画面全体に対応します。サイズを小さくするとカーソルが画面の一部に制限され、中心でその位置を決めます。</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>領域の幅</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>このパッドを割り当てる画面領域の幅を、画面幅に対する割合で指定します。1.00 で全幅、0.50 でカーソルを画面の半分に制限します。</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>領域の高さ</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>画面領域の高さを、画面の高さに対する割合で指定します。</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>領域の中心 X</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX_Tooltip" xml:space="preserve"><value>領域の水平位置。0.00 が左端、0.50 が中央、1.00 が右端です。</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY" xml:space="preserve"><value>領域の中心 Y</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>垂直位置。0.00 が上端、0.50 が中央、1.00 が下端です。</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>スワイプハプティクス</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Steam Input のトラックパッドのティックのように、指がこのタッチパッド上を移動するあいだコントローラーのハプティクスをパルスさせます。Steam Controller と Steam Deck はパッド下のアクチュエーターをティックし、DualSense と DualShock 4 は振動モーターをパルスします。</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>スワイプハプティクスを有効化</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>このパッド上で指が設定距離を移動するたびに短いハプティックティックを発生させます。指を置いたりパッドをクリックしたりしてもティックは発生しません。既定ではオフです。</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>パルス強度</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>各ティックの強さです。ゲームの振動の方が強い場合は常にそちらが優先されます。</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>合成圧力</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>タッチを最大圧力として報告するパッド (DualShock 4、DualSense、Steam Controller 2015) で DualShock 2 / DualShock 3 の感圧ボタンをシミュレートします。有効な間、このデバイスの圧力マッピングソースは、タッチなしを 0%、静止したタッチをタッチ圧力レベル、パッドのクリックを 100% として読み取ります。</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>合成圧力を有効化</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>このデバイスの圧力マッピングソースを 3 段階に整形します。タッチなしは 0%、静止したタッチはタッチ圧力レベル、パッドのクリックは 100% になります。既定ではオフで、真のアナログ圧力を持つパッドは生の読み取り値を保持します。</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel" xml:space="preserve"><value>タッチ圧力レベル</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel_Tooltip" xml:space="preserve"><value>静止した (クリックしていない) タッチが報告する圧力。50% にするとパッドの完全なクリックまで均等な段差になります。</value></data>
+  <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>絶対ポインターをリセット</value></data>
+  <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>スワイプハプティクスをリセット</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>合成圧力をリセット</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeX" xml:space="preserve"><value>領域の幅をリセット</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeY" xml:space="preserve"><value>領域の高さをリセット</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterX" xml:space="preserve"><value>領域の中心 X をリセット</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterY" xml:space="preserve"><value>領域の中心 Y をリセット</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>スワイプハプティクスの有効化をリセット</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>パルス強度をリセット</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>合成圧力の有効化をリセット</value></data>
+  <data name="Pad_ResetTouchpadSyntheticTouchLevel" xml:space="preserve"><value>タッチ圧力レベルをリセット</value></data>
+  <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (右スティック)</value></data>
+  <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (左スティック)</value></data>
+  <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (タッチパッド {0})</value></data>
+  <data name="Mapping_LeftStickRing" xml:space="preserve"><value>左スティックリング</value></data>
+  <data name="Mapping_RightStickRing" xml:space="preserve"><value>右スティックリング</value></data>
+  <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick 入力の設定です。スティックを倒すとカメラがその方向へ回転し、縁をなぞると微調整できます。マッピングの入力ドロップダウンで "Flick Stick (右スティック)" をマウス X に割り当ててください。どのレイヤーでも使えます。</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick Stick の設定をすべてリセット</value></data>
+  <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° あたりのカウント</value></data>
+  <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>カメラを 360° 一回転させるのに必要なマウスカウントです。ゲームのマウス感度に依存します。フリックの回転が足りない場合は上げ、回りすぎる場合は下げてください。</value></data>
+  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400 にリセット</value></data>
+  <data name="Settings_FlickTime" xml:space="preserve"><value>フリック時間</value></data>
+  <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>180° の完全なフリックが完了するまでの時間です (イーズアウト付き)。より短い回転も同じ時間で完了します。</value></data>
+  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 s にリセット</value></data>
+  <data name="Settings_FlickThreshold" xml:space="preserve"><value>フリックしきい値</value></data>
+  <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>フリックを開始するスティックの倒し量です (最大倒し量に対する割合)。フリック中は解除ポイントがこの値の 90% に下がります。</value></data>
+  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9 にリセット</value></data>
+  <data name="Settings_FlickSnapMode" xml:space="preserve"><value>スナップ角度</value></data>
+  <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>フリックを固定角度にスナップして、回転を安定させます。前方のみはすべてのフリックを真正面にスナップします。</value></data>
+  <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>スナップなし</value></data>
+  <data name="Settings_FlickSnapMode_Forward" xml:space="preserve"><value>前方のみ</value></data>
+  <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 度</value></data>
+  <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 度</value></data>
+  <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 度</value></data>
+  <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 度</value></data>
+  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>スナップなしにリセット</value></data>
+  <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>スナップ強度</value></data>
+  <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>フリックがスナップ角度へ引き寄せられる強さです。1 で完全にスナップ、0 でスナップ無効、中間の値はブレンドします。</value></data>
+  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0 にリセット</value></data>
+  <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>前方角度デッドゾーン</value></data>
+  <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>真正面からこの角度以内のフリックでは回転しません。フリック回転なしで縁なぞりを開始できます。</value></data>
+  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0° にリセット</value></data>
+  <data name="Settings_FlickSmoothing" xml:space="preserve"><value>スイープのスムージング</value></data>
+  <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>縁なぞり時のノイズを平滑化します。-1 は自動の段階ウィンドウを使用し、0 はスムージングをオフにし、大きい値ほどティックあたりの大きな回転を平滑化します。</value></data>
+  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>自動 (-1) にリセット</value></data>
+  <data name="Settings_FlickOnEngage" xml:space="preserve"><value>起動時のフリックを許可</value></data>
+  <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>回転オフセット</value></data>
+  <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>フリックマップ全体をこの角度だけ回転させます。正の値は時計回りです。スナップはオフセットの後に適用されます。</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>回転オフセットをリセット</value></data>
+  <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Flick Stick を含むレイヤーが、スティックが既に倒れた状態で起動した場合、すぐにフリックを発動します。オフの場合はカメラを動かさず、現在のスティック角度からの回転を追跡します。</value></data>
+  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>オフにリセット</value></data>
+  <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>カスタム</value></data>
+  <data name="Pad_MouseGestures_Custom_Tooltip" xml:space="preserve"><value>マウスボタンの代わりに、任意のデバイスから記録した入力で認識を待機させます。キー、ゲームパッドのボタン、ペダルなどのアナログ入力が使えます。下で入力を記録してください。</value></data>
+  <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>カスタム起動入力</value></data>
+  <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>押している間カスタムジェスチャーセッションを待機させる入力で、このスロットの任意のデバイスから記録します。ボタンとキーは押している間待機させます。ペダルなどのアナログ入力はストロークの半分を超えると待機させます。</value></data>
+  <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>カスタム起動入力をリセット</value></data>
+  <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>レスポンスカーブと範囲の設定を破棄 ({0})</value></data>
+  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ジャイロ設定 {0}={1} を破棄 (この値に対応する読み取り可能なボタンがありません)</value></data>
+  <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>プレイヤー番号の変更は Steam クライアントアクションのため、対応するものがありません</value></data>
+  <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>リザードモード切替は Steam 内部のため、対応するものがありません</value></data>
+  <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>トグル押下は次の押下まで {0} を保持</value></data>
+  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>長押しはしきい値で {0} をタップ (Steam は離すまで保持)</value></data>
+  <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>カメラリセットはジャイロの再センタリングとして近似</value></data>
+  <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>マウス領域は中央基準のカーソル制限として近似 (画面の {0}%、領域中心 {1}%, {2}%)、サーフェスを押している間有効</value></data>
+  <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>マウス領域の起動/解除設定を破棄 ({0})</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>アナログペアのない面のフリックスティックをスキップしました</value></data>
+  <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>デッドゾーンは半径ではなく軸ごとに適用 ({0})</value></data>
+  <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>回転した軸では非線形レスポンスを保留 ({0})</value></data>
+  <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>リリース側の {0} は代わりに押下時に切り替え</value></data>
+  <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>マウスの調整設定を破棄 ({0})</value></data>
+  <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>軸の反転は未適用 ({0})</value></data>
+  <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>円形スクロールホイールを縦ドラッグで近似</value></data>
+  <data name="Macro_HoldForMs" xml:space="preserve"><value>長押し時</value></data>
+  <data name="Macro_ShortPress" xml:space="preserve"><value>短押し時</value></data>
+  <data name="Macro_ShortPress_Tooltip" xml:space="preserve"><value>保持時間が経過する前にトリガーを離すと一度発動します。しきい値を超えて押し続けると何も発動しないため、同じボタンの「長押し時」と組み合わせるとタップと長押しを使い分けられます。</value></data>
+  <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>トリガーを保持時間のあいだ押し続けると 1 回だけ発動します。それより短いタップでは何も起こりません。</value></data>
+  <data name="Macro_DoublePress" xml:space="preserve"><value>ダブルプレス時</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>連続プレス時間内に2回押すと発動します。2回目を押し続けると、離すまで有効のままです。</value></data>
+  <data name="Macro_SinglePress" xml:space="preserve"><value>シングルプレス時</value></data>
+  <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>プレスウィンドウ内に2回目の押下がない場合に発動します。同じボタンでダブルプレスやトリプルプレスと併用できます。「押した時」は即時に発動します。</value></data>
+  <data name="Macro_TriplePress" xml:space="preserve"><value>トリプルプレス時</value></data>
+  <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>連続プレス時間内に3回押すと発動します。3回目を押し続けると、離すまで有効のままです。</value></data>
+  <data name="Macro_Toggle" xml:space="preserve"><value>トグル</value></data>
+  <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>最初の押下でアクションが固定され、もう一度押すと解除されます。ホールドやリピートは 2 回目の押下まで有効なままです。</value></data>
+  <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
+  <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>トリガーを押している間、下の間隔でアクションを繰り返します。</value></data>
+  <data name="Macro_ToggleInterval_Tooltip" xml:space="preserve"><value>ラッチ中は、この間隔でアクションを繰り返します。</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>連続プレス時間</value></data>
+  <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持時間</value></data>
+  <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>押している間ボタンをリピート</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>トリガーを押している間、設定した間隔でコントローラーボタンのオン/オフを繰り返します (連射 / ターボ)。</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Format" xml:space="preserve"><value>{0} を {1} ms ごとにリピート</value></data>
+  <data name="MacroAction_Type_ToggleVcButton" xml:space="preserve"><value>ボタンをトグル</value></data>
+  <data name="MacroAction_ToggleVcButton_Tooltip" xml:space="preserve"><value>発動するたびにコントローラーボタンを押しっぱなしにするか解除します。保持されたボタンは、次の発動かマクロの無効化まで押されたままになります。</value></data>
+  <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>{0} をトグル</value></data>
+  <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>キーをトグル</value></data>
+  <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>発動するたびにキーを押しっぱなしにするか解除します。保持されたキーは、次の発動かマクロの無効化まで押されたままになります。</value></data>
+  <data name="MacroAction_Type_AxisHold" xml:space="preserve"><value>軸をホールド</value></data>
+  <data name="MacroAction_AxisHold_Tooltip" xml:space="preserve"><value>指定時間のあいだ毎フレーム軸の値を書き込みます。リピートを「離すまで」にすると、トリガーを離すまで軸が維持されます。</value></data>
+  <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>{0} = {1} をホールド ({2} ms)</value></data>
+  <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>ホイール1ノッチ</value></data>
+  <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>発火ごとにマウスホイールを1ノッチ送ります。値は符号付きのノッチ数です(正の値で上または右にスクロール)。</value></data>
+  <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>カーソルを少し移動</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>発火ごとにマウスカーソルを固定ピクセル数だけ移動します。Xの正は右、Yの正は下方向です。負の値も使えます。</value></data>
+  <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>カーソルを ({0}, {1}) px 移動</value></data>
+  <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>タップリスト巡回</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>発火ごとにリストの次のステップを実行して進みます。折り返しを有効にすると最後のステップの後に先頭へ戻ります。無効の場合は末尾で出力が止まります。</value></data>
+  <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>マウスボタンをトグル</value></data>
+  <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>発火のたびにマウスボタンを固定または解除します。固定中のボタンは次の発火かマクロの無効化まで押されたままになります。</value></data>
+  <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>マウス{0}をトグル</value></data>
+  <data name="MacroAction_Type_ToggleVcAxis" xml:space="preserve"><value>軸をトグル</value></data>
+  <data name="MacroAction_ToggleVcAxis_Tooltip" xml:space="preserve"><value>発火のたびに軸の値を固定または解除します。固定中は次の発火かマクロの無効化まで毎フレーム軸に書き込みます。</value></data>
+  <data name="MacroAction_ToggleVcAxis_Format" xml:space="preserve"><value>{0} = {1} をトグル</value></data>
+  <data name="MacroAction_Type_RepeatVcAxisWhileHeld" xml:space="preserve"><value>押している間軸をリピート</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Tooltip" xml:space="preserve"><value>トリガーを押している間、設定した間隔の矩形波で軸の値を繰り返し適用します。</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>{2}msごとに {0} = {1} をリピート</value></data>
+  <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>ホイールスクロールをトグル</value></data>
+  <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>発火のたびに連続スクロールを固定または解除します。固定中は次の発火かマクロの無効化まで間隔ごとにティック数を送信します。</value></data>
+  <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>ホイールをトグル（{1}msごとに{0}ティック）</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>固定中はパルス</value></data>
+  <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>固定中は出力を押しっぱなしにせず、リピート間隔でオンとオフを繰り返します。</value></data>
+  <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>軸を加算(相対)</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>指定時間のあいだ、マッピングが既に軸へ書き込んだ値に符号付きの値を毎フレーム加算します。負の値は減算します。トリガーは引き量のスケール(100% = 最大)で加算します。</value></data>
+  <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>軸を設定（ラッチ）</value></data>
+  <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>値を保持し、コンボブレイクをまたいでも維持します。同じ軸の別のラッチステップは値を置き換えるので、ブレイクで区切ったステップが押すたびの段階になります。「軸ラッチを解除」で物理操作に戻ります。</value></data>
+  <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>軸ラッチを解除</value></data>
+  <data name="MacroAction_AxisLatchRelease_Tooltip" xml:space="preserve"><value>選んだ軸（またはすべての軸）のラッチ値（ラッチステップと軸トグル）を、このスロットの全マクロから解除し、物理操作に戻します。</value></data>
+  <data name="MacroAction_Type_AxisScale" xml:space="preserve"><value>軸をスケール</value></data>
+  <data name="MacroAction_AxisScale_Tooltip" xml:space="preserve"><value>動作中、軸の現在値を乗算します。-50% で倒し量が半分（走りが歩きに）、+50% で 1.5 倍、フルスケールで制限。物理入力と合成されるため譲歩は不要です。</value></data>
+  <data name="MacroAction_AxisSetLatched_Format" xml:space="preserve"><value>{0} を {1}% でラッチ</value></data>
+  <data name="MacroAction_AxisLatchRelease_Format" xml:space="preserve"><value>ラッチ解除: {0}</value></data>
+  <data name="MacroAction_AxisScale_Format" xml:space="preserve"><value>{0} を {1}% スケール</value></data>
+  <data name="MacroAction_AllAxes" xml:space="preserve"><value>すべての軸</value></data>
+  <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>軸を加算: {0} {1}%</value></data>
+  <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>コンボブレイク</value></data>
+  <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>コンボはここで一時停止します。続けるにはトリガーをもう一度押してください。押しっぱなしのトリガーは一度離す必要があります。</value></data>
+  <data name="Macro_AxisYieldToPhysical" xml:space="preserve"><value>物理入力を優先</value></data>
+  <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>物理入力がしきい値を超えて対象を動かすと、その作動が終わるまでマクロは軸への書き込みを停止します。</value></data>
+  <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(物理入力優先)</value></data>
+  <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>タップリスト巡回({0} ステップ)</value></data>
+  <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>ステップ</value></data>
+  <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>折り返し</value></data>
+  <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>キー {0} をトグル</value></data>
+  <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ジャイロを再センタリング</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>押すと、パッドに蓄積されたジャイロ照準の基準をゼロにします。スムージング履歴がクリアされ、Motion Lean のニュートラルが再取得され、重力推定がコントローラーの現在の姿勢から再設定されます。</value></data>
+  <data name="Pad_Menus" xml:space="preserve"><value>メニュー</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>メニューは、物理的なスティックやタッチパッドを画面上のリングやグリッドに変えます。メニューを追加し、開く操作を選んでから、各セルにラベルと割り当てを設定してください。</value></data>
+  <data name="Menu_NewNameFormat" xml:space="preserve"><value>メニュー {0}</value></data>
+  <data name="Menu_Name" xml:space="preserve"><value>メニュー名</value></data>
+  <data name="Menu_Enabled" xml:space="preserve"><value>有効</value></data>
+  <data name="Menu_Style" xml:space="preserve"><value>スタイル</value></data>
+  <data name="Menu_Style_Radial" xml:space="preserve"><value>ラジアルリング</value></data>
+  <data name="Menu_Style_Grid" xml:space="preserve"><value>タッチグリッド</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>開く操作</value></data>
+  <data name="Menu_Host_LeftStick" xml:space="preserve"><value>左スティック</value></data>
+  <data name="Menu_Host_RightStick" xml:space="preserve"><value>右スティック</value></data>
+  <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>タッチパッド {0}</value></data>
+  <data name="Menu_HostHalf" xml:space="preserve"><value>パッドの半分</value></data>
+  <data name="Menu_Half_Whole" xml:space="preserve"><value>パッド全体</value></data>
+  <data name="Menu_Half_Left" xml:space="preserve"><value>左半分</value></data>
+  <data name="Menu_Half_Right" xml:space="preserve"><value>右半分</value></data>
+  <data name="Menu_FireMode" xml:space="preserve"><value>発動モード</value></data>
+  <data name="Menu_Fire_Click" xml:space="preserve"><value>クリック時</value></data>
+  <data name="Menu_Fire_ClickRelease" xml:space="preserve"><value>クリックを離した時</value></data>
+  <data name="Menu_Fire_TouchRelease" xml:space="preserve"><value>タッチを離した時</value></data>
+  <data name="Menu_Fire_Always" xml:space="preserve"><value>ホバー中</value></data>
+  <data name="Menu_Cells" xml:space="preserve"><value>セル</value></data>
+  <data name="Menu_HasCenter" xml:space="preserve"><value>中央セル</value></data>
+  <data name="Menu_ShowLabels" xml:space="preserve"><value>ラベルを表示</value></data>
+  <data name="Menu_Position" xml:space="preserve"><value>画面位置</value></data>
+  <data name="Menu_Scale" xml:space="preserve"><value>サイズ</value></data>
+  <data name="Menu_Opacity" xml:space="preserve"><value>不透明度</value></data>
+  <data name="Menu_Deadzone" xml:space="preserve"><value>起動デッドゾーン</value></data>
+  <data name="Menu_CellBindings" xml:space="preserve"><value>セルの割り当て</value></data>
+  <data name="Menu_CellIndex_Format" xml:space="preserve"><value>セル {0}</value></data>
+  <data name="Menu_CellCenter" xml:space="preserve"><value>中央</value></data>
+  <data name="Menu_Binding_None" xml:space="preserve"><value>なし</value></data>
+  <data name="Menu_Binding_Key" xml:space="preserve"><value>キーボードのキー</value></data>
+  <data name="Menu_Binding_Button" xml:space="preserve"><value>コントローラーボタン</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>放射リングは方向でセルを選びます(武器ホイールのように)。タッチグリッドは位置でセルを選びます。パッド上の指の位置、またはスティックの倒した先です。</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>このメニューを開いて操作する入力で、スロットに割り当てられた物理コントローラーから読み取られます。スティックは作動デッドゾーンを超えて倒すと開き、タッチパッドは触れると開きます。</value></data>
+  <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>このメニューをトラックパッドの半分に限定します。2つのメニューで1つのパッドを分け合えます。</value></data>
+  <data name="Menu_FireMode_Tip" xml:space="preserve"><value>ハイライトされたセルの割り当てがいつ発動するかです。各選択肢は下で説明されます。</value></data>
+  <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>スティックまたはトラックパッドを押し込んでいる間だけ発動します。セルに合わせてから、スティックを押し込む(スティッククリック)かトラックパッドをクリックします。クリックを離すまで割り当ては押されたままになります。</value></data>
+  <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>クリックを離した瞬間に1回発動します。セルに合わせ、スティックまたはトラックパッドを押し込み、クリックを離します。</value></data>
+  <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>手を離した瞬間に1回発動します。セルがハイライトされた状態で、指をパッドから離すか、スティックを中央に戻します。</value></data>
+  <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>セルがハイライトされている間ずっと割り当てが押されたままになります。クリックは不要です。</value></data>
+  <data name="Menu_Cells_Tip" xml:space="preserve"><value>メニューのセル数です。放射リングではリング部分のみを数え、中央セルは別扱いです。</value></data>
+  <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>中央セルを追加します。スティックまたは指が作動デッドゾーン内にある間、中央セルが選択されます。</value></data>
+  <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>スティックでは、どれだけ倒すとメニューが開いてリングのセルがハイライトされるかを決めます。放射メニューでは、スティックとタッチパッドの両方で中央領域にもなります。その内側では、中央セルがあればそれが選択されます。</value></data>
+  <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>画面オーバーレイに各セルのラベルを描画します。</value></data>
+  <data name="Menu_Position_Tip" xml:space="preserve"><value>オーバーレイの中心が画面のどこに置かれるか(パーセント)。50と50で中央です。</value></data>
+  <data name="Menu_Scale_Tip" xml:space="preserve"><value>オーバーレイの大きさ(通常サイズに対するパーセント)。</value></data>
+  <data name="Menu_Opacity_Tip" xml:space="preserve"><value>オーバーレイの不透明度。100%で完全に不透明です。</value></data>
+  <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>オーバーレイ上でこのセルに表示されるテキストです。</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>セルが発動したときの動作です。「キーボードのキー」はキーボードのキーを押し、「コントローラーボタン」はこのスロットの仮想コントローラーのボタンを押します。「なし」のセルも、マッピング行やマクロトリガー用のメニュー項目ソースとして発動します。</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>このスロットに割り当てられた物理コントローラーから読み取られます。仮想コントローラーのレイアウトではありません。下のセル割り当てがメニューの出力内容です。</value></data>
+  <data name="Menu_Host_Custom" xml:space="preserve"><value>カスタム軸</value></data>
+  <data name="Menu_CustomX" xml:space="preserve"><value>操作軸X</value></data>
+  <data name="Menu_CustomY" xml:space="preserve"><value>操作軸Y</value></data>
+  <data name="Menu_CustomAxis_Tip" xml:space="preserve"><value>任意の2軸を記録してメニューを操作します。作動デッドゾーンを超えて倒すと開きます。ジョイスティックやホイールなど、ゲームパッド以外のデバイスはこの方法でメニューを操作します。</value></data>
+  <data name="Menu_ClickInput" xml:space="preserve"><value>クリック入力</value></data>
+  <data name="Menu_ClickInput_Tip" xml:space="preserve"><value>「クリック時」と「クリックを離したとき」の発動モードが使うボタンで、割り当てられた任意のデバイスから記録できます。空欄なら開く操作の既定(スティッククリックまたはトラックパッドクリック)を使います。カスタム軸には既定がないため、これらのモードを使うにはボタンを記録してください。</value></data>
+  <data name="Menu_ClickDefault" xml:space="preserve"><value>(既定)</value></data>
+  <data name="Menu_NotRecorded" xml:space="preserve"><value>(未設定)</value></data>
+  <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0}(このスロットタイプでは不可)</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>マッピングまたはマクロが使用中</value></data>
+  <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>メニュー {0} セル {1}</value></data>
+  <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>メニューオーバーレイ</value></data>
+  <data name="Dashboard_Overlays" xml:space="preserve"><value>オーバーレイ</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>プレイ中に PadForge が表示する画面インジケーター。オフにしても動作は変わらず、表示されるかどうかだけが変わります。</value></data>
+  <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>シフト レイヤー フライアウト</value></data>
+  <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>プロファイル切り替えオーバーレイ</value></data>
+  <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ラジアルメニューまたはタッチメニューが作動している間、画面上のリングまたはグリッドを表示します。オーバーレイがオフでもメニューは発動します。</value></data>
+  <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>画面上メニューを作成 ({0} 個の割り当て済みセル)</value></data>
+  <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>メニューに割り当て済みセルがありません</value></data>
+  <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>メニューのホストサーフェスは未対応 ({0})</value></data>
+  <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>メニューセルのアイコンを認識できません ({0})。このセルはテキストラベルを表示します</value></data>
+  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>バスシェイカー</value></data>
+  <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>バスシェイカー</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>この仮想コントローラーが受け取るゲームの振動とフォースフィードバックを、バスシェイカーやサブウーファー向けの低周波トーンとしてオーディオ出力へ送ります。</value></data>
+  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振動をオーディオへ</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox、DualShock 4 / DualSense、Nintendo Switch Pro、およびレーシングホイールなどフォースフィードバック対応の Extended 仮想コントローラーで動作します。オーディオ出力に流れるのはゲームのフィードバックのみです。マクロやテストの振動はコントローラー側に残ります。</value></data>
+  <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>「振動をオーディオへ」をリセット</value></data>
+  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>振動をオーディオ出力へ送る</value></data>
+  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>この仮想コントローラーのゲーム振動とフォースフィードバックを、選んだオーディオ出力で低周波トーンとして再生します。オフにしても設定はすべて保持されます。</value></data>
+  <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>振動の送出をリセット</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>出力デバイス</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice_Tooltip" xml:space="preserve"><value>振動トーンを受け取る再生デバイスです。システム既定は Windows の既定の再生デバイスに従います。選んだデバイスが見つからない場合、戻るまで音は出ません。</value></data>
+  <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>出力デバイスをリセット</value></data>
+  <data name="Pad_RumbleAudio_Status_Inactive" xml:space="preserve"><value>オーディオ出力は動作していません。</value></data>
+  <data name="Pad_RumbleAudio_Status_Active_Format" xml:space="preserve"><value>{0} で再生中。</value></data>
+  <data name="Pad_RumbleAudio_Status_Missing" xml:space="preserve"><value>選んだ出力デバイスが利用できません。戻るまで音は出ません。</value></data>
+  <data name="Pad_RumbleAudio_BluetoothHint" xml:space="preserve"><value>Bluetooth オーディオ機器では目立つ遅延が生じます。</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode" xml:space="preserve"><value>チャンネルモード</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode_Tooltip" xml:space="preserve"><value>モノラルは各ボイスを全チャンネルで再生します。コントローラーステレオはコントローラーと同じ配置に分けます。低周波モーターと左トリガーは左、高周波モーターと右トリガーは右です。</value></data>
+  <data name="Pad_RumbleAudio_Mode_Mono" xml:space="preserve"><value>モノラル（全チャンネル）</value></data>
+  <data name="Pad_RumbleAudio_Mode_Stereo" xml:space="preserve"><value>コントローラーステレオ</value></data>
+  <data name="Pad_RumbleAudio_ResetChannelMode" xml:space="preserve"><value>チャンネルモードをリセット</value></data>
+  <data name="Pad_RumbleAudio_MasterGain" xml:space="preserve"><value>マスターゲイン</value></data>
+  <data name="Pad_RumbleAudio_MasterGain_Tooltip" xml:space="preserve"><value>各ボイスのゲインの後に適用される全体音量です。4 つのボイスが重なっても歪まないよう余裕を残してください。</value></data>
+  <data name="Pad_RumbleAudio_ResetMasterGain" xml:space="preserve"><value>マスターゲインをリセット</value></data>
+  <data name="Pad_RumbleAudio_Voice_Low" xml:space="preserve"><value>低周波モーター</value></data>
+  <data name="Pad_RumbleAudio_Voice_High" xml:space="preserve"><value>高周波モーター</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerLeft" xml:space="preserve"><value>左トリガー</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>右トリガー</value></data>
+  <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>このフィードバックチャンネルをトーンとして再生します。オフの間もゲインと周波数は保持されます。</value></data>
+  <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>このチャンネルのトーン周波数（20〜120 Hz）。周波数スイープでシェイカーが最も強く反応する所を探せます。</value></data>
+  <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>マスターゲイン前のこのチャンネルの音量です。</value></data>
+  <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>テスト</value></data>
+  <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>このチャンネルのトーンを設定ゲインで 1.5 秒再生します。</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>低周波モーターをリセット</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>高周波モーターをリセット</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>左トリガーをリセット</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>右トリガーをリセット</value></data>
+  <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>周波数スイープ</value></data>
+  <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>低周波モーターの経路で 20〜120 Hz のトーンを 8 秒かけて流します。シェイカーが最も強く反応した周波数を各ボイスに設定してください。</value></data>
+  <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>停止</value></data>
+  <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>テストトーンやスイープを停止します。</value></data>
+  <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>任意のNFCタグ</value></data>
+  <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFCタグ: {0}</value></data>
+  <data name="Nfc_WaitingController" xml:space="preserve"><value>Switchコントローラーにタグをタッチ…</value></data>
+  <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>キャリブレーションに失敗しました。コントローラーを置いてやり直してください。</value></data>
+  <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>残っているレイヤー項目「{0}」を削除しますか？Base のマッピングとマクロには影響しません。</value></data>
+  <data name="Common_KeepLegacyDrivers" xml:space="preserve"><value>保持</value></data>
+  <data name="LegacyCleanup_Title" xml:space="preserve"><value>以前のドライバーのクリーンアップ</value></data>
+  <data name="LegacyCleanup_Prompt_Format" xml:space="preserve"><value>PadForge v3 は HIDMaestro を使用するため、次の以前のドライバーは不要になりました: {0}。
+
+今すぐアンインストールしますか？ 管理者権限が必要で、少し時間がかかる場合があります。</value></data>
+  <data name="LegacyCleanup_Failed_Format" xml:space="preserve"><value>クリーンアップ中にエラーが発生しました: {0}
+
+後で設定から再試行できます。</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>終了</value></data>
+  <data name="About_Libinput" xml:space="preserve">
+    <value>libinput</value>
+  </data>
+  <data name="About_HandheldCompanion" xml:space="preserve">
+    <value>Handheld Companion</value>
+  </data>
+  <data name="About_GamepadAssetPack" xml:space="preserve">
+    <value>Gamepad-Asset-Pack</value>
+  </data>
+  <data name="About_Ds4Mac" xml:space="preserve">
+    <value>ds4mac</value>
+  </data>
+  <data name="About_LibinputDesc" xml:space="preserve">
+    <value>タッチパッドからマウス出力用のポインター加速カーブ。libinput のタッチパッド加速プロファイルを C# で再導出。MIT。</value>
+  </data>
+  <data name="About_HandheldCompanionDesc" xml:space="preserve">
+    <value>3D コントローラーモデル（Xbox 360、Xbox One、DualShock 4、DualSense）。作者: CasperH2O、Lesueur Benjamin、trippyone。CC BY-NC-SA 4.0。</value>
+  </data>
+  <data name="About_GamepadAssetPackDesc" xml:space="preserve">
+    <value>2D コントローラー図（Xbox 360、Xbox One S、Xbox Series、DualShock 4、DualSense）。作者: AL2009man。MIT。</value>
+  </data>
+  <data name="About_Ds4MacDesc" xml:space="preserve">
+    <value>DualShock 4 オーディオプロトコルの資料。SBC パラメーターとパケットレイアウト。作者: khallmark。MIT。</value>
   </data>
 </root>

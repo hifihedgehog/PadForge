@@ -45,11 +45,16 @@ namespace SDL3
         public const string SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS";
         public const string SDL_HINT_JOYSTICK_RAWINPUT = "SDL_JOYSTICK_RAWINPUT";
         public const string SDL_HINT_JOYSTICK_XINPUT = "SDL_JOYSTICK_XINPUT"; // was SDL_HINT_XINPUT_ENABLED
+        public const string SDL_HINT_HIDAPI_IGNORE_DEVICES = "SDL_HIDAPI_IGNORE_DEVICES";
         public const string SDL_HINT_JOYSTICK_HIDAPI_SWITCH2 = "SDL_JOYSTICK_HIDAPI_SWITCH2";
         public const string SDL_HINT_JOYSTICK_HIDAPI_WII = "SDL_JOYSTICK_HIDAPI_WII";
         public const string SDL_HINT_JOYSTICK_BLE_SWITCH2 = "SDL_JOYSTICK_BLE_SWITCH2";
         public const string SDL_HINT_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR = "SDL_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR";
         public const string SDL_HINT_JOYSTICK_BLE_SWITCH2_MOUSE = "SDL_JOYSTICK_BLE_SWITCH2_MOUSE";
+        // Fork addition (SDL#15): drive the right Joy-Con / Pro Controller
+        // NFC MCU and surface tag UIDs via SDL_GetGamepadNfcTagUid. Opt-in
+        // (MCU costs battery + changes report cadence); runtime-toggleable.
+        public const string SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC = "SDL_JOYSTICK_HIDAPI_SWITCH_NFC";
         public const string SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER = "SDL_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER";
         public const string SDL_HINT_VIDEO_ALLOW_SCREENSAVER = "SDL_VIDEO_ALLOW_SCREENSAVER";
 
@@ -556,6 +561,33 @@ namespace SDL3
             _SDL_GetGamepadSensorData(gamepad, type, data, num_values);
 
         // ─────────────────────────────────────────────
+        //  Gamepad capsense (stick-top / grip touch)
+        // ─────────────────────────────────────────────
+
+        // SDL_GamepadCapSenseType enum values (fork, SDL_gamepad.h since 3.6.0)
+        public const int SDL_GAMEPAD_CAPSENSE_LEFT_STICK = 0;
+        public const int SDL_GAMEPAD_CAPSENSE_RIGHT_STICK = 1;
+        public const int SDL_GAMEPAD_CAPSENSE_LEFT_GRIP = 2;
+        public const int SDL_GAMEPAD_CAPSENSE_RIGHT_GRIP = 3;
+        public const int SDL_GAMEPAD_CAPSENSE_COUNT = 4;
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GamepadHasCapSense")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GamepadHasCapSense(IntPtr gamepad, int type);
+
+        /// <summary>Returns true if the gamepad has the specified capsense channel.</summary>
+        public static bool SDL_GamepadHasCapSense(IntPtr gamepad, int type) =>
+            _SDL_GamepadHasCapSense(gamepad, type);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetGamepadCapSense")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GetGamepadCapSense(IntPtr gamepad, int type);
+
+        /// <summary>Reads a capsense channel: true while touched.</summary>
+        public static bool SDL_GetGamepadCapSense(IntPtr gamepad, int type) =>
+            _SDL_GetGamepadCapSense(gamepad, type);
+
+        // ─────────────────────────────────────────────
         //  Gamepad touchpad
         // ─────────────────────────────────────────────
 
@@ -581,6 +613,59 @@ namespace SDL3
             out bool down, out float x, out float y, out float pressure) =>
             _SDL_GetGamepadTouchpadFinger(gamepad, touchpad, finger,
                 out down, out x, out y, out pressure);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetGamepadNfcTagUid")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GetGamepadNfcTagUid(IntPtr gamepad, byte[] uid, int len);
+
+        // 0 = unprobed, 1 = present, -1 = absent (stock SDL). Process-wide.
+        // PADFORGE_NO_SWITCH_NFC=1 disables the path at launch (bisect switch).
+        private static int s_nfcProbe =
+            Environment.GetEnvironmentVariable("PADFORGE_NO_SWITCH_NFC") == "1" ? -1 : 0;
+
+        /// <summary>Longest UID is 10 bytes of hex = 20 chars + NUL, per the
+        /// fork's documented buffer guarantee (SDL_GetGamepadNfcTagUid).</summary>
+        public const int NfcTagUidBufferLength = 21;
+
+        /// <summary>Reads the NFC tag UID currently held against a Switch
+        /// right Joy-Con / Pro Controller reader (fork export). Returns true
+        /// with <paramref name="uid"/> set to lowercase hex when a tag is
+        /// present, false (and empty) otherwise. On stock SDL the export is
+        /// absent: returns false permanently after the first probe, so the
+        /// caller simply never sees a controller tag.</summary>
+        public static bool SDL_TryGetGamepadNfcTagUid(IntPtr gamepad, out string uid)
+        {
+            uid = string.Empty;
+            if (s_nfcProbe < 0) return false;
+            var buf = new byte[NfcTagUidBufferLength];
+            try
+            {
+                bool present = _SDL_GetGamepadNfcTagUid(gamepad, buf, buf.Length);
+                s_nfcProbe = 1;
+                if (!present) return false;
+                int n = System.Array.IndexOf(buf, (byte)0);
+                if (n < 0) n = buf.Length;
+                // Reject a malformed native payload rather than register
+                // junk (Codex #7): a real UID is 1..20 lowercase-hex chars,
+                // even length. An ABI-skewed export filling the buffer with
+                // non-terminated data fails this and reads as "no tag".
+                if (n == 0 || n > 20 || (n & 1) != 0) return false;
+                for (int i = 0; i < n; i++)
+                {
+                    byte c = buf[i];
+                    bool hex = (c >= (byte)'0' && c <= (byte)'9')
+                            || (c >= (byte)'a' && c <= (byte)'f');
+                    if (!hex) return false;
+                }
+                uid = System.Text.Encoding.ASCII.GetString(buf, 0, n);
+                return true;
+            }
+            catch (EntryPointNotFoundException)
+            {
+                s_nfcProbe = -1;
+                return false;
+            }
+        }
 
         // ─────────────────────────────────────────────
         //  Rumble / haptics
@@ -614,6 +699,24 @@ namespace SDL3
 
         public static bool SDL_SetJoystickPlayerIndex(IntPtr joystick, int player_index) =>
             _SDL_SetJoystickPlayerIndex(joystick, player_index);
+
+        /// <summary>
+        /// Set a joystick's LED color. The Switch HIDAPI driver treats
+        /// max(r, g, b), scaled 0-100, as HOME button LED brightness
+        /// (SDL_hidapi_switch.c HIDAPI_DriverSwitch_SetJoystickLED to
+        /// SetHomeLED, subcommand 0x38); the combined Joy-Con pair driver
+        /// forwards to both children and the right one acts
+        /// (SDL_hidapi_combined.c HIDAPI_DriverCombined_SetJoystickLED).
+        /// Drivers without an LED return false (SDL_Unsupported). SDL
+        /// core dedups same-value writes per joystick
+        /// (SDL_joystick.c SDL_SetJoystickLED led_red/green/blue cache).
+        /// </summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetJoystickLED")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_SetJoystickLED(IntPtr joystick, byte red, byte green, byte blue);
+
+        public static bool SDL_SetJoystickLED(IntPtr joystick, byte red, byte green, byte blue) =>
+            _SDL_SetJoystickLED(joystick, red, green, blue);
 
         // True iff the joystick is an SDL virtual joystick (its driver is the virtual
         // backend). Used to tell the two DS3 transports apart: they share VID/PID

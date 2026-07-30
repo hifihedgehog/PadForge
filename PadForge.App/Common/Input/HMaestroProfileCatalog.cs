@@ -35,6 +35,7 @@ namespace PadForge.Common.Input
         private static List<HMProfile> _allProfiles = new();
         private static List<HMProfile> _xboxProfiles = new();
         private static List<HMProfile> _playStationProfiles = new();
+        private static List<HMProfile> _nintendoProfiles = new();
         private static List<HMProfile> _extendedProfiles = new();
 
         /// <summary>
@@ -78,6 +79,14 @@ namespace PadForge.Common.Input
             get { EnsureInitialized(); return _playStationProfiles; }
         }
 
+        /// <summary>Nintendo-family controller profiles. The single
+        /// switch-pro profile for now; see IsNintendoProfile for the
+        /// deliberate scope. Mutually exclusive with the other buckets.</summary>
+        public static IReadOnlyList<HMProfile> NintendoProfiles
+        {
+            get { EnsureInitialized(); return _nintendoProfiles; }
+        }
+
         /// <summary>Profiles that don't match the strict Xbox or PlayStation
         /// filters above — third-party gamepads, flight sticks, wheels,
         /// HOTAS, plus any vendor-Microsoft / vendor-Sony profiles whose
@@ -111,6 +120,7 @@ namespace PadForge.Common.Input
                 _allProfiles = new();
                 _xboxProfiles = new();
                 _playStationProfiles = new();
+                _nintendoProfiles = new();
                 _extendedProfiles = new();
             }
             EnsureInitialized();
@@ -208,6 +218,10 @@ namespace PadForge.Common.Input
                         .Where(IsPlayStationProfile)
                         .ToList();
 
+                    _nintendoProfiles = _allProfiles
+                        .Where(IsNintendoProfile)
+                        .ToList();
+
                     // Extended = everything that's not Xbox or PlayStation,
                     // plus the synthetic "Custom" entry at the top so the
                     // user can define a fully custom VC without inheriting
@@ -225,7 +239,8 @@ namespace PadForge.Common.Input
                         .Where(p =>
                             p.Id != CustomProfileId &&
                             !IsXboxProfile(p) &&
-                            !IsPlayStationProfile(p)));
+                            !IsPlayStationProfile(p) &&
+                            !IsNintendoProfile(p)));
                     _extendedProfiles = extended;
                 }
                 catch
@@ -283,6 +298,17 @@ namespace PadForge.Common.Input
              || ContainsToken(p.Id, "dualshock") || ContainsToken(p.Id, "dualsense"));
 
         /// <summary>
+        /// True for the profiles the Nintendo category offers. Deliberately
+        /// the single switch-pro profile for now (owner call 2026-07-18:
+        /// "for now the only type be Switch Pro"). Switch 2 Pro, Joy-Cons,
+        /// the NSO retro pads, and the GameCube adapter stay in Extended
+        /// until the category is widened. Widening is an id-list edit here,
+        /// nothing else.
+        /// </summary>
+        private static bool IsNintendoProfile(HMProfile p) =>
+            string.Equals(p.Id, "switch-pro", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
         /// Resolve a profile id to the 2D + 3D asset folders PadForge should
         /// render for that controller. Profile-id prefixes match HM's catalog
         /// slugs (sony/, microsoft/) so adding a new profile in HM
@@ -317,6 +343,14 @@ namespace PadForge.Common.Input
             // Xbox 360 family + arcade-stick / dance-pad / wheel siblings.
             if (profileId.StartsWith("xbox-360", StringComparison.OrdinalIgnoreCase))
                 return ("XBOX360", "XBOX360");
+
+            // Nintendo Switch Pro family. 2D set from the asset pack;
+            // no dedicated 3D mesh yet (sourcing tracked with the owner),
+            // so Nintendo slots render the schematic view like Extended
+            // and the 3D name is never consulted.
+            if (profileId.StartsWith("switch-pro", StringComparison.OrdinalIgnoreCase)
+                || profileId.StartsWith("switch2-pro", StringComparison.OrdinalIgnoreCase))
+                return ("SWITCHPRO", null);
 
             // Fallback per slot type — preserves existing behavior for
             // Custom / Extended / unrecognized profiles.

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
@@ -108,6 +108,15 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public int RawButtonCount { get; set; }
 
+        /// <summary>Raw joystick axis count, axis twin of
+        /// <see cref="RawButtonCount"/>.</summary>
+        public int RawAxisCount { get; set; }
+
+        /// <summary>Device carries raw axes past the standard six that should
+        /// surface as generic "Axis N" sources. Not derivable from the counts:
+        /// it excludes devices whose extras are already sensor sources.</summary>
+        public bool HasExtraGenericAxes { get; set; }
+
         /// <summary>Number of POV hat switches on the device.</summary>
         [XmlElement]
         public int CapPovCount { get; set; }
@@ -130,6 +139,13 @@ namespace PadForge.Engine.Data
         /// <see cref="Common.ISdlInputDevice.HasAccelAux"/>.</summary>
         [XmlElement]
         public bool HasAccelAux { get; set; }
+
+        /// <summary>Whether the device exposes an auxiliary (left-side)
+        /// gyroscope (issue #252): the left half of a combined Joy-Con pair.
+        /// Never a Nunchuk (no gyro there). Mirrors
+        /// <see cref="Common.ISdlInputDevice.HasGyroAux"/>.</summary>
+        [XmlElement]
+        public bool HasGyroAux { get; set; }
 
         /// <summary>Whether the device is an IR-camera-capable Wii Remote (issue
         /// #146). Identity-derived from VID + name, so it is correct whether the
@@ -177,6 +193,20 @@ namespace PadForge.Engine.Data
         public bool HasJoyCon2Mouse => VendorId == 0x057E
             && (string.Equals(ProductName, "Nintendo Switch 2 Joy-Con (L)", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(ProductName, "Nintendo Switch 2 Joy-Con (R)", StringComparison.OrdinalIgnoreCase));
+
+        /// <summary>Whether the device has an NFC reader the SDL fork can
+        /// drive (issue #241/#248, SDL#15): the classic Switch right
+        /// Joy-Con (PID 0x2007), the Pro Controller (PID 0x2009), and the
+        /// combined Joy-Con pair (synthetic PID 0x2008), whose right child
+        /// carries the MCU and posts onto the pair's joystick. Keyed by PID
+        /// like the wrapper's HasNfcReader so the picker offers the
+        /// "Any NFC Tag" / tag sources exactly where the reader exists.
+        /// Switch 2 controllers are excluded: no reference reads their NFC
+        /// on PC and no working code exists over any transport (verified
+        /// 2026-07-24). Computed, not stored. Gates the picker offering.</summary>
+        [XmlIgnore]
+        public bool HasNfcReader => VendorId == 0x057E
+            && (ProdId == 0x2007 || ProdId == 0x2008 || ProdId == 0x2009);
 
         // Wii IR pointer tuning (sensor-bar position/compensation, smoothing)
         // moved to PadSetting (issue #146 follow-up) so each (device, slot)
@@ -293,6 +323,21 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlIgnore]
         public CustomInputState InputState { get; set; }
+
+        /// <summary>Monotonic publish counter, incremented by Step 2 each
+        /// time <see cref="InputState"/> is republished. Consumers that
+        /// dedup "have I folded this state yet" compare THIS, not the
+        /// reference: with pooled state buffers a reference can recur
+        /// with fresh content, so identity no longer proves sameness.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public long InputStateSeq;
+
+        /// <summary>Pooled state pair for the PTP touchpad read path,
+        /// which builds states outside any device wrapper (Step 2's
+        /// hDevice branch). Same two-buffer publish contract as the
+        /// wrapper pools.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public PadForge.Engine.PooledInputStatePair PtpStatePool;
 
         /// <summary>Last tick (Environment.TickCount64) this device's input was
         /// non-idle, for the #162 idle disconnect countdown. Written only by the
@@ -486,10 +531,19 @@ namespace PadForge.Engine.Data
             // Store the raw joystick button count (may exceed NumButtons for gamepad devices).
             RawButtonCount = Math.Max(wrapper.RawButtonCount, wrapper.NumButtons);
 
+            // Axis twin of the line above. Kept alongside the folded
+            // effectiveAxisCount because Remote Link ships the RAW count and
+            // the extras flag separately: a consumer cannot derive the flag
+            // from the counts, since HasExtraGenericAxes deliberately excludes
+            // devices whose extra axes are already sensor sources.
+            RawAxisCount = Math.Max(wrapper.RawAxisCount, wrapper.NumAxes);
+            HasExtraGenericAxes = wrapper.HasExtraGenericAxes;
+
             // Sensor capabilities.
             HasGyro = wrapper.HasGyro;
             HasAccel = wrapper.HasAccel;
             HasAccelAux = wrapper.HasAccelAux;
+            HasGyroAux = wrapper.HasGyroAux;
             HasTouchpad = wrapper.HasTouchpad;
             CapTouchpadCount = wrapper.NumTouchpads;
             CapTouchpadFingerCounts = wrapper.TouchpadFingerCounts;

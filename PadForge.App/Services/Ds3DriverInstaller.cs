@@ -290,7 +290,12 @@ namespace PadForge.Services
                     }
                     finally { LocalFree(admins); }
                 }
-                RegDeleteKey(HKLM, BthPortDevicesKey + deviceMacHex);
+                // Log a nonzero rc the way WriteLinkKeyAnchor does. Discarding
+                // it meant an unpair that silently left the device record in
+                // place reported success, and the next pair attempt then hit a
+                // stale record with nothing in the log to explain it.
+                int rcDel = RegDeleteKey(HKLM, BthPortDevicesKey + deviceMacHex);
+                if (rcDel != 0) log($"Removing the device record failed (rc={rcDel}).");
             }
             catch (Exception ex) { log("Removing the device record failed: " + ex.Message); }
             DeleteLinkKeyAnchor(radioMacBigEndian, deviceMacHex, log);
@@ -359,7 +364,17 @@ namespace PadForge.Services
             // its use-after-free-on-disconnect path (upstream #48, unfixed at
             // v2.10.470.0) is unreachable. AutoDisableFilter stays default (1):
             // deny-then-off is a fail-safe we keep.
-            key?.SetValue("AutoEnableFilter", 0, RegistryValueKind.DWord);
+            //
+            // NOT on a DsHidMini system (audit 2026-07-24, lens 1r): the
+            // coexistence policy says PadForge never owns arming there,
+            // because their DS3s connect only while patching is armed and
+            // leave no BTHPORT record for AnyDs3Paired to find. Writing the
+            // override here would re-take the ownership
+            // ReconcilePsmPatchForCrashSafety just repaired, and it
+            // outlives PadForge. The install/pair path is the one caller
+            // that reached this line without consulting the policy.
+            if (!IsDsHidMiniInstalled())
+                key?.SetValue("AutoEnableFilter", 0, RegistryValueKind.DWord);
         }
 
         private static void EnsurePsmPatch(Action<string> log) => SetPsmPatching(true, log);
@@ -368,6 +383,63 @@ namespace PadForge.Services
         /// (the stack that carries the DS3 over Bluetooth). Cheap registry-free
         /// SCM query; the crash-safety reconcile no-ops when this is false.</summary>
         public static bool IsBthPs3Installed() => IsServiceInstalled("BthPS3");
+
+        /// <summary>True when Nefarius DsHidMini is installed. DsHidMini is a
+        /// UMDF driver (its INF's AddService entries are the generic WUDFRd /
+        /// mshidumdf reflector, dshidmini.inf), so there is no "dshidmini"
+        /// service key to probe; the stable footprints are the installed
+        /// driver package (DriverDatabase\DriverPackages\dshidmini.inf_*) and
+        /// the driver's own config root (%ProgramData%\DsHidMini,
+        /// DsHidMini Configuration.c:680-716). Either marker counts. Gates
+        /// the PSM-patch crash policy: a DsHidMini system's DS3s connect
+        /// through BthPS3 patching, so PadForge must never disarm it there
+        /// (the 2026-07-24 coexistence audit: the startup disarm was breaking
+        /// foreign DsHidMini setups whose pads leave no BTHPORT VID/PID
+        /// record for AnyDs3Paired to find).</summary>
+        public static bool IsDsHidMiniInstalled()
+        {
+            try
+            {
+                using var pkgs = Registry.LocalMachine.OpenSubKey(
+                    @"SYSTEM\DriverDatabase\DriverPackages");
+                if (pkgs != null)
+                {
+                    foreach (string name in pkgs.GetSubKeyNames())
+                        if (name.StartsWith("dshidmini.inf_", StringComparison.OrdinalIgnoreCase))
+                            return true;
+                }
+            }
+            catch { /* fall through to the config-folder marker */ }
+            try
+            {
+                string pd = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                if (!string.IsNullOrEmpty(pd)
+                    && System.IO.Directory.Exists(System.IO.Path.Combine(pd, "DsHidMini")))
+                    return true;
+            }
+            catch { }
+            return false;
+        }
+
+        /// <summary>Restores BthPS3's own PSM-patch auto-arm by deleting the
+        /// AutoEnableFilter override (the driver default is TRUE,
+        /// BthPS3 Bluetooth.Context.c:279, read from the registry only when
+        /// present). The repair half of the DsHidMini coexistence policy: a
+        /// PadForge build before 2026-07-24 took sole ownership
+        /// (AutoEnableFilter=0) on every BthPS3 system, which left foreign
+        /// DsHidMini setups unable to re-arm on their own. Idempotent; no-op
+        /// when the value is absent. Takes effect on the next BthPS3 load;
+        /// SetPsmPatching drives the immediate state.</summary>
+        public static void RestoreBthPs3AutoArm()
+        {
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(BthPs3ParamsKey, writable: true);
+                if (key != null && key.GetValue("AutoEnableFilter") != null)
+                    key.DeleteValue("AutoEnableFilter", throwOnMissingValue: false);
+            }
+            catch { /* best effort; SetPsmPatching still governs the live state */ }
+        }
 
         /// <summary>Asserts AutoEnableFilter=0 on the BthPS3 Parameters key so
         /// BthPS3 stops auto-arming PSM patching on its own (issue #199): it

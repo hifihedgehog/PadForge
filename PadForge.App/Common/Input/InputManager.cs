@@ -44,6 +44,15 @@ namespace PadForge.Common.Input
         /// the bubble-up cascade so XInput indices stay contiguous.</summary>
         public int HmInactivityTimeoutSeconds { get; set; } = 60;
 
+        /// <summary>Devices SDL's hidapi layer must never enumerate or probe
+        /// (SDL_HIDAPI_IGNORE_DEVICES format: comma-separated 0xVVVV/0xPPPP).
+        /// Each entry is a pad whose HID interface wedges the Sony
+        /// third-party detection FEATURE report forever on Windows, freezing
+        /// the UI thread that runs enumeration (issue #235). Ignored pads
+        /// ride SDL's XInput / DirectInput lanes instead.
+        ///   0x146b/0x0603: Nacon PS4 Compact (BB4469), XInput-mode PS4 pad.</summary>
+        internal const string HidapiIgnoreDevices = "0x146b/0x0603";
+
         /// <summary>Raised on the polling thread when an HM VC has reached
         /// its inactivity timeout.  Listener (MainWindow) marshals to the
         /// UI thread and runs DeviceService.DeleteSlot + InputService.OnSlotDeleted with
@@ -75,12 +84,32 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         private Thread _pollingThread;
+
+        // Last tick the unconditional poll heartbeat was written. See the
+        // HEARTBEAT write in the poll loop for why an always-on line exists
+        // in a log where everything else is edge-gated.
+        private long _pollHeartbeatTick;
         // Injects accumulated macro mouse-move delta with a single SendInput per
         // tick, off the poll thread. See FlushPendingMouseMove: SendInput on the
         // 1000 Hz poll thread let a mouse-move macro drop the poll rate to ~200 Hz.
         private Thread _mouseInjectorThread;
         private volatile bool _running;
         private volatile bool _idle;
+
+        /// <summary>The engine half of "Continue polling when window loses
+        /// focus" (EnablePollingOnFocusLoss). True when the box is UNCHECKED:
+        /// the user has asked the engine itself to stop while PadForge is not
+        /// the foreground process. Written by the UI tick, read by the poll
+        /// thread.</summary>
+        public volatile bool SuspendWhenBackground;
+
+        /// <summary>Whether PadForge owns the foreground window. Probed on
+        /// the UI thread (user32 calls stay off the poll thread) and pushed
+        /// here every UI tick. Defaults true so a stalled UI timer can never
+        /// suspend the engine by accident.</summary>
+        public volatile bool HostIsForeground = true;
+
+        private bool _focusSuspended;
         private bool _sdlInitialized;
         private bool _disposed;
 
@@ -97,7 +126,12 @@ namespace PadForge.Common.Input
         // ── Pre-allocated snapshot buffers for hot path (avoid LINQ allocations) ──
         private UserDevice[] _deviceSnapshotBuffer = new UserDevice[16];
         private UserSetting[] _settingSnapshotBuffer = new UserSetting[16];
-        private readonly UserSetting[] _padIndexBuffer = new UserSetting[MaxPads];
+        // 64, not MaxPads: this buffer holds one SLOT's mappings, and
+        // FindByPadIndex silently truncates at the buffer's length, so a
+        // slot-count constant here capped per-slot device mappings at 16
+        // (round 33, S14). Poll thread only; the async create-failure
+        // validation passes its own buffer (see IsSlotActive's overload).
+        private readonly UserSetting[] _padIndexBuffer = new UserSetting[64];
         private readonly UserSetting[] _instanceGuidBuffer = new UserSetting[MaxPads];
 
         /// <summary>
@@ -110,7 +144,7 @@ namespace PadForge.Common.Input
         /// Combined Extended raw output states for custom Extended slots.
         /// Written by Step 4 (background thread), read by Step 5.
         /// </summary>
-        public ExtendedRawState[] CombinedExtendedRawStates { get; } = new ExtendedRawState[MaxPads];
+        public RawHidState[] CombinedRawHidStates { get; } = new RawHidState[MaxPads];
 
         /// <summary>
         /// Combined MIDI raw output states for MIDI slots.
@@ -150,6 +184,17 @@ namespace PadForge.Common.Input
         /// gesture doesn't carry across profiles.</summary>
         public readonly System.Collections.Concurrent.ConcurrentDictionary<(int Slot, System.Guid DeviceId, int PadIdx), Engine.Touchpad.TouchpadGestureContext> GestureContexts
             = new System.Collections.Concurrent.ConcurrentDictionary<(int, System.Guid, int), Engine.Touchpad.TouchpadGestureContext>();
+
+        /// <summary>Per-(slot, device, touchpad-pad-index) swipe-haptic
+        /// travel accumulators (discussion #219), sibling of
+        /// <see cref="GestureContexts"/> with the same key and lifecycle:
+        /// lazily created on the polling thread inside
+        /// <see cref="UpdateGestureContexts"/>, dropped wholesale by
+        /// <see cref="ResetGestureContexts"/>, and dropped per key the
+        /// moment the pad's settings disable the feature so a re-enable
+        /// starts from a fresh seed. Polling thread only.</summary>
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<(int Slot, System.Guid DeviceId, int PadIdx), Engine.Touchpad.SwipeHapticsState> SwipePulseStates
+            = new System.Collections.Concurrent.ConcurrentDictionary<(int, System.Guid, int), Engine.Touchpad.SwipeHapticsState>();
 
         /// <summary>Active shape templates ready for the gesture
         /// engine's point-cloud matcher (<see cref="Engine.Touchpad.ShapeRecognizer"/>).
@@ -435,10 +480,28 @@ namespace PadForge.Common.Input
         /// <see cref="GyroEngagedFromButton"/> by the gyro evaluators.</summary>
         public volatile bool[] GyroEngagedFromMacro = new bool[MaxPads];
 
+        /// <summary>Per-slot gyro ratchet clutch (translator v22, Steam's
+        /// gyro_ratchet_button_mask): true while any of the authoritative
+        /// set's stamped ratchet descriptors is held on any slot device.
+        /// Settled once per tick by <see cref="UpdateGyroEngageStates"/>
+        /// and ANDed-NOT into <see cref="SourceCoercion.AimEngageStateProvider"/>,
+        /// a separate lane the engage sources cannot fight: the OR of
+        /// button + macro engage decides "engaged", the ratchet alone
+        /// decides "clutched", so holding the ratchet always pauses gyro
+        /// and releasing it always restores whatever the engage sources
+        /// say.</summary>
+        public volatile bool[] GyroRatchetHeld = new bool[MaxPads];
+
         /// <summary>Previous-tick button state for each slot's engage
         /// button. Owned by <see cref="UpdateGyroEngageStates"/> as the
         /// edge-detection input for Toggle mode.</summary>
         private readonly bool[] _prevAimEngageButtonDown = new bool[MaxPads];
+
+        /// <summary>Reused scratch for the device-free gyro-engage walk
+        /// (P1): filled under the settings lock, read outside it, cleared
+        /// per use so the per-tick per-slot list allocation is gone. Poll
+        /// thread only.</summary>
+        private readonly List<string> _gyroEngageGuidScratch = new();
 
         /// <summary>Per-slot trigger-route engaged bits (issue #102), one each
         /// for the left and right trigger. Settled once per tick by
@@ -520,7 +583,9 @@ namespace PadForge.Common.Input
         /// When true, the polling loop skips the expensive pipeline steps and sleeps
         /// at a low rate (~20Hz) to minimize CPU usage. Device enumeration continues
         /// at a reduced rate so new controllers still appear on the Devices page.
-        /// Set by InputService when no virtual controller slots are created.
+        /// Set by InputService when no created+enabled slot has an ONLINE mapped
+        /// device (Step 5's own activity predicate). A slot whose every assigned
+        /// pad is asleep idles the engine instead of reading as "Forging".
         /// </summary>
         public bool IsIdle
         {
@@ -583,9 +648,37 @@ namespace PadForge.Common.Input
                 SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
                 // Allow SDL3 to enumerate XInput controllers (Xbox, etc.).
-                // Do NOT set SDL_HINT_JOYSTICK_RAWINPUT — it conflicts with
+                // Do NOT set SDL_HINT_JOYSTICK_RAWINPUT. It conflicts with
                 // XInput enumeration and prevents Xbox controllers from appearing.
                 SDL_SetHint(SDL_HINT_JOYSTICK_XINPUT, "1");
+
+                // Devices SDL's hidapi layer must never enumerate or probe
+                // (issue #235: connecting a Nacon PS4 Compact, 146B:0603,
+                // froze the app until unplug). Leading hypothesis, refined
+                // by the fork SDL#19 audit: the pad exposes a HID interface
+                // WITHOUT the xusb "&IG_" marker that swallows the Sony
+                // third-party capabilities FEATURE probe, and the Windows
+                // feature read waits forever (hid.c GetOverlappedResult
+                // wait=TRUE, no timeout) on the UI thread that runs
+                // enumeration (PumpSdlEvents). It cannot have been the xusb
+                // synthetic collection itself: hid_enumerate has skipped
+                // "&IG_" interfaces since upstream b6a88b0339 (2023-05-31),
+                // in every DLL PadForge ever shipped. If the freeze instead
+                // lives in another backend's arrival path (XInput / WGI /
+                // DirectInput detection shares the same UI-thread
+                // SDL_UpdateJoysticks), this hint does not cover it; a
+                // recurrence report is the discriminator, and the fork
+                // issue carries the bench protocol (interface-path capture
+                // + seatbelt-off repro) plus the bounded-read follow-up.
+                // The ignore cannot cost this PID anything: the Linux RFC
+                // for the BB4469 (linux-input msg83414) records a single
+                // vendor-class identity with no standard HID interfaces,
+                // and DS4Windows carries zero 146B entries. PID-scoped:
+                // other Nacon PIDs stay untouched until a report proves
+                // they share the wedge. The fork's xusb gates
+                // (60ed78a3ac + ae750868c8) are defense in depth beside
+                // this seatbelt; both stay.
+                SDL_SetHint(SDL_HINT_HIDAPI_IGNORE_DEVICES, HidapiIgnoreDevices);
 
                 // Enable Switch 2 Pro Controller HIDAPI driver (requires libusb-1.0.dll).
                 SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_SWITCH2, "1");
@@ -610,15 +703,15 @@ namespace PadForge.Common.Input
                 // (no Switch 2 hardware has validated it yet).
                 SDL_SetHint(SDL_HINT_JOYSTICK_BLE_SWITCH2, "1");
 
-                // Enable the SDL3 fork's right Joy-Con NIR camera scalar (issue
-                // #151, hifihedgehog/SDL#7, fork commit a31980950a). With the hint
-                // on, a STANDALONE right Joy-Con powers its IR MCU when sensors are
-                // enabled (PadForge enables sensors for gyro) and posts the MCU's
-                // average-intensity byte, buf[53] scaled 0..32767, on dedicated
-                // joystick axis 6. Covered sensor = bright = high value, so the
-                // "IR Brightness" source reads cover/proximity. Combined pairs are
-                // excluded by the fork (their shared joystick has no IR axis).
-                SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR, "1");
+                // The right Joy-Con NIR camera hint (issue #151, SDL#7) is NOT
+                // set here anymore. The camera and the NFC reader share the one
+                // MCU (camera = mode 5, NFC = mode 4, SDL_hidapi_switch.c
+                // UpdateNfc abandons while the camera streams), so a global
+                // always-on hint silently killed standalone right Joy-Con NFC
+                // (#248 audit). InputService.RefreshSwitchMcuArming now sets
+                // the hint only while an "IR Brightness" input is actually
+                // configured, mirroring the NFC hint's zero-cost-when-unused
+                // contract.
 
                 // Enable the SDL3 fork's Joy-Con 2 optical mouse axes (issue
                 // #154, hifihedgehog/SDL#8, fork commit 9b32ec13b8). With the
@@ -842,6 +935,15 @@ namespace PadForge.Common.Input
             }
             EmbeddedMappingsLoaded = applied;
             System.Diagnostics.Debug.WriteLine($"[InputManager] Applied {applied} embedded PadForge gamepad mapping(s).");
+            // Also to the real diagnostics channel. The Debug.WriteLine above
+            // is compiled out of Release, so in the shipping build this count
+            // reached nothing: not a log, and not a reader, while the property's
+            // own doc offers it as the way to tell whether the embed is
+            // reaching SDL at runtime. A zero here means the resource is
+            // missing or every line was blank, which is a build
+            // misconfiguration worth seeing in a user's log rather than only
+            // under a debugger.
+            Engine.SdlDiagLog.WriteLine($"MAPPINGS embedded applied={applied}");
         }
 
         // ─────────────────────────────────────────────
@@ -862,6 +964,8 @@ namespace PadForge.Common.Input
         /// that drops on a read hiccup never comes back and a freshly-plugged one
         /// never appears until an app restart re-enumerates from scratch.
         /// </summary>
+        private long _lastUiJoystickUpdateTicks;
+
         public void PumpSdlEvents()
         {
             if (!_sdlInitialized)
@@ -881,10 +985,24 @@ namespace PadForge.Common.Input
             long tsPump = Stopwatch.GetTimestamp();
             SDL_PumpEvents();
             long tsUpd = Stopwatch.GetTimestamp();
-            SDL_UpdateJoysticks();
-            long tsEnd = Stopwatch.GetTimestamp();
+            // The joystick update here exists ONLY for enumeration (new
+            // devices materialize on the init thread; state reads happen
+            // on the poll thread every tick). It shares SDL's joystick
+            // lock with that 1 kHz caller, and the diag harvest showed
+            // the two convoying (paired ~100 ms "STALL poll sdl=" /
+            // "STALL uipump" lines). 500 ms keeps hot-plug appearance
+            // sub-second while cutting the convoy exposure 5x. The pump
+            // above stays at the timer's 100 ms so WM_DEVICECHANGE
+            // dispatch stays prompt.
+            long updMs = 0;
+            long nowTicks = Stopwatch.GetTimestamp();
+            if (nowTicks - _lastUiJoystickUpdateTicks >= Stopwatch.Frequency / 2)
+            {
+                _lastUiJoystickUpdateTicks = nowTicks;
+                SDL_UpdateJoysticks();
+                updMs = (Stopwatch.GetTimestamp() - tsUpd) * 1000 / Stopwatch.Frequency;
+            }
             long pumpMs = (tsUpd - tsPump) * 1000 / Stopwatch.Frequency;
-            long updMs = (tsEnd - tsUpd) * 1000 / Stopwatch.Frequency;
             if (pumpMs >= 25 || updMs >= 25)
                 Engine.SdlDiagLog.WriteLine($"STALL uipump pump={pumpMs}ms upd={updMs}ms");
         }
@@ -933,6 +1051,12 @@ namespace PadForge.Common.Input
 
             RawInputListener.Start();
 
+            // Remove MIDI endpoint devnodes stranded by a previous run.
+            // Windows MIDI Services can leave them behind when its own
+            // teardown fails, and they otherwise sit in Device Manager
+            // forever and poison later MIDI slot creation.
+            MidiEndpointJanitor.ScheduleSweep(0);
+
             // PTP reader always runs so Devices page can preview touchpad input.
             // Note: on shared hardware (laptop trackpads), the digitizer registration
             // stops Windows from synthesizing mouse reports for the same device.
@@ -974,8 +1098,21 @@ namespace PadForge.Common.Input
         {
             while (_running)
             {
-                FlushPendingMouseInput();
-                Thread.Sleep(2);
+                bool injected = FlushPendingMouseInput();
+                if (injected)
+                {
+                    // Active: keep the 2 ms batch cadence so SendInput
+                    // stays coalesced exactly as before.
+                    Thread.Sleep(2);
+                    continue;
+                }
+                // Idle: park until the first accumulated delta signals.
+                // Disarm-then-recheck prevents the lost-wakeup race; the
+                // timeout is a safety net only.
+                System.Threading.Interlocked.Exchange(ref MouseWorkArmed, 0);
+                if (HasPendingMouseInput())
+                    continue;
+                MouseWorkSignal.WaitOne(500);
             }
             FlushPendingMouseInput(); // drain any final delta on shutdown
         }
@@ -990,8 +1127,27 @@ namespace PadForge.Common.Input
 
             _running = false;
 
-            // Macro sounds die with the engine — releases the WASAPI clients.
+            // Macro sounds die with the engine. Releases the WASAPI clients.
             SoundMacroService.StopAll();
+
+            // The Wii speaker and the Switch/Steam haptic-tone stream die
+            // with the ENGINE, not with a profile apply. StopAll no longer
+            // carries them (their _suppressed latch clears only in
+            // EnsureStarted, which runs at engine start), so engine stop
+            // tears them down here, mirroring RumbleAudioService below.
+            try { WiiSpeakerService.Shutdown(); } catch { }
+            try { HapticToneService.Shutdown(); } catch { }
+
+            // #236: engine stop is an explicit silence edge. _running is
+            // already false, so no in-flight poll can reassert a pack
+            // after this (and the per-slot generation discards a racing
+            // publish from the final tick). The renderer itself also dies
+            // with the engine HERE, not inside SoundMacroService.StopAll:
+            // that method runs on every profile apply via LoadMacros, and
+            // riding it silenced the shakers on every profile switch.
+            // EnsureStarted re-arms on the next engine start.
+            RumbleAudioService.SilenceAll();
+            RumbleAudioService.StopAll();
 
             if (_pollingThread != null && _pollingThread.IsAlive)
             {
@@ -1001,6 +1157,7 @@ namespace PadForge.Common.Input
 
             if (_mouseInjectorThread != null && _mouseInjectorThread.IsAlive)
             {
+                MouseWorkSignal.Set(); // unpark an idle injector for the join
                 _mouseInjectorThread.Join(timeout: TimeSpan.FromSeconds(1));
                 _mouseInjectorThread = null;
             }
@@ -1124,6 +1281,12 @@ namespace PadForge.Common.Input
                     {
                         try
                         {
+                            // #236: the feedback lane below never runs in
+                            // idle, so idle entry is an explicit silence
+                            // edge. Every idle iteration republishes it
+                            // (16 volatile writes at 20 Hz); without this
+                            // the last nonzero pack would sound forever.
+                            RumbleAudioService.SilenceAll();
                             long tsIdleSdl = Stopwatch.GetTimestamp();
                             SDL_UpdateJoysticks();
                             long idleSdlMs = (Stopwatch.GetTimestamp() - tsIdleSdl) * 1000 / Stopwatch.Frequency;
@@ -1149,6 +1312,15 @@ namespace PadForge.Common.Input
                             // Evaluate global macros (profile shortcuts) even in idle
                             // so the user can switch away from an empty profile.
                             EvaluateGlobalMacros();
+
+                            // The slot macro evaluator (and its ToggleKey
+                            // reconcile) doesn't run in idle, so release any
+                            // latched macro key (issue #9 wave 1b) rather
+                            // than leave it stuck down while PadForge is
+                            // inactive. Latch bits stay set on the actions;
+                            // the desired-set rebuild re-asserts them when
+                            // the pipeline wakes. No-op when nothing is held.
+                            ReleaseAllLatchedMacroKeys();
                         }
                         catch (Exception ex)
                         {
@@ -1166,6 +1338,64 @@ namespace PadForge.Common.Input
                         wallClock.Restart();
                         expectedTicks = 0;
                         continue;
+                    }
+
+                    // ── Focus suspend: the engine half of the background-
+                    //    polling setting. The user UNCHECKED "continue polling
+                    //    when window loses focus", so with PadForge behind
+                    //    another window the engine stops: no output evaluation,
+                    //    no VC submits, no macros, no Remote Link. The label is
+                    //    the contract. Distinct from _idle, which engages only
+                    //    when nothing is active; this engages BECAUSE things
+                    //    are active and the user wants them off while away.
+                    if (SuspendWhenBackground && !HostIsForeground)
+                    {
+                        if (!_focusSuspended)
+                        {
+                            _focusSuspended = true;
+                            try
+                            {
+                                // Neutral edge: zero every combined surface and
+                                // submit once, so the game we just left behind
+                                // is not stuck holding whatever was pressed at
+                                // the instant focus moved.
+                                NeutralizeCombinedOutputs();
+                                UpdateVirtualDevices();
+                                ReleaseAllLatchedMacroKeys();
+                            }
+                            catch (Exception ex)
+                            {
+                                RaiseError("Focus-suspend neutral edge", ex);
+                            }
+                            Engine.SdlDiagLog.WriteLine(
+                                "ENGINE suspended: unfocused and background polling disabled");
+                        }
+                        // Same silence-republish idle carries (#236): the
+                        // feedback lane is not running, so keep the audio lane
+                        // silenced every iteration rather than once.
+                        RumbleAudioService.SilenceAll();
+                        // Step 5 keeps running at this loop's 10 Hz, on neutral
+                        // state. Skipping it froze the create/dispose gates and
+                        // BOTH watchdogs for the whole suspension: a dispose
+                        // in flight when focus left stayed half-done, silently,
+                        // until refocus. Suspension stops the engine DRIVING
+                        // inputs; it must not stop the lifecycle machinery.
+                        try { UpdateVirtualDevices(); }
+                        catch (Exception ex) { RaiseError("Focus-suspend VC upkeep", ex); }
+                        CurrentFrequency = 0;
+                        _frequencyCounter = 0;
+                        _frequencyTimer.Restart();
+                        FrequencyUpdated?.Invoke(this, EventArgs.Empty);
+                        Thread.Sleep(100);
+                        firstCycle = true;
+                        wallClock.Restart();
+                        expectedTicks = 0;
+                        continue;
+                    }
+                    if (_focusSuspended)
+                    {
+                        _focusSuspended = false;
+                        Engine.SdlDiagLog.WriteLine("ENGINE resumed: foreground regained");
                     }
 
                     // Calculate target ticks each cycle so PollingIntervalMs can be
@@ -1220,12 +1450,37 @@ namespace PadForge.Common.Input
                         UpdateVirtualDevices();
                         RetrieveOutputStates();
                         UpdateDs3PlayerNumber();
+                        // #236: publish the per-slot inbound-feedback packs
+                        // for the rumble-to-audio renderer. Must follow
+                        // UpdateVirtualDevices so a slot destroyed this
+                        // tick publishes zeros the same tick.
+                        UpdateRumbleAudioLane();
 
                         // Stall watchdog report: only outliers write anything.
                         long cycleMs = cycleTimer.ElapsedMilliseconds;
                         if (sdlMs >= 25 || enumMs >= 25 || cycleMs >= 50)
                             Engine.SdlDiagLog.WriteLine(
                                 $"STALL poll sdl={sdlMs}ms enum={enumMs}ms cycle={cycleMs}ms");
+
+                        // Channel heartbeat, UNCONDITIONAL, every 10 s. Every
+                        // other line in this log is edge-gated or
+                        // threshold-gated, so an absence of lines has two
+                        // possible meanings: nothing happened, or the thing
+                        // that writes stopped. The 2026-07-26 VC
+                        // investigation could not tell those apart and drew
+                        // the wrong conclusion from silence. This line is
+                        // emitted from the poll loop itself, so if it is
+                        // present the loop AND the log are alive, and any
+                        // other silence is genuinely "no events". If it is
+                        // absent, the loop or the channel is dead. One line
+                        // per 10 s is ~8.6k lines a day, which the mirror
+                        // carries without trouble.
+                        if (Environment.TickCount64 - _pollHeartbeatTick > 10_000)
+                        {
+                            _pollHeartbeatTick = Environment.TickCount64;
+                            Engine.SdlDiagLog.WriteLine(
+                                $"HEARTBEAT poll hz={CurrentFrequency:F0} idle={(IsIdle ? 1 : 0)} cycle={cycleMs}ms");
+                        }
 
                         // Frequency measurement.
                         _frequencyCounter++;
@@ -1286,6 +1541,10 @@ namespace PadForge.Common.Input
                             if (SetWaitableTimerEx(hTimer, ref dueTime, 0,
                                 IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, 0))
                                 WaitForSingleObject(hTimer, INFINITE);
+                            else
+                                // Arm failure would otherwise fall through
+                                // to a FULL-remaining busy spin (~a core).
+                                Thread.Sleep(1);
                         }
                     }
                     else if (remaining > spinThresholdTicks && mmTimerEvent != null)
@@ -1307,6 +1566,12 @@ namespace PadForge.Common.Input
             }
             finally
             {
+                // A ToggleKey macro latch (issue #9 wave 1b) holds its key
+                // logically down between polls; the loop's exit must release
+                // whatever is still latched or the key stays pressed in the
+                // OS after the engine stops.
+                try { ReleaseAllLatchedMacroKeys(); } catch { }
+
                 if (hTimer != IntPtr.Zero)
                     CloseHandle(hTimer);
                 if (mmTimerId != 0)
@@ -1402,49 +1667,130 @@ namespace PadForge.Common.Input
         /// level. Configuring engage on two devices simultaneously is
         /// supported by editing the second device's PadSetting but only
         /// the first-listed wins at runtime.</para></summary>
-        private void UpdateGyroEngageStates()
+        /// <summary>Per-slot gyro-engage config snapshot, refreshed at 250 ms
+        /// like its two engage-family siblings (_triggerRouteCfg,
+        /// _mirrorEngageCfg): the SyncRoot lock + Items scan + GetPadSetting
+        /// string reads run at 4 Hz, not the ~1 kHz poll rate, while the
+        /// ENGAGE STATE itself still settles per tick for edge fidelity. A
+        /// config or device-list edit lands within a quarter second, which is
+        /// imperceptible and matches the siblings' contract.</summary>
+        private sealed class GyroEngageCfg
         {
-            var settings = SettingsManager.UserSettings;
-            if (settings == null) return;
+            public string Descriptor = "";
+            public string DeviceGuid = "";
+            public string Mode = "Hold";
+            public string[] Ratchets;
+            public string[] SlotGuids = System.Array.Empty<string>();
+        }
+        private readonly GyroEngageCfg[] _gyroEngageCfg = new GyroEngageCfg[MaxPads];
+        private long _gyroEngageCfgRefreshTick;
 
+        private void RefreshGyroEngageCfg(SettingsCollection settings)
+        {
+            var wsSets = SettingsManager.SlotMappingSets;
             for (int slot = 0; slot < MaxPads; slot++)
             {
-                if (!SettingsManager.SlotCreated[slot])
-                {
-                    GyroEngagedFromButton[slot] = false;
-                    _prevAimEngageButtonDown[slot] = false;
-                    continue;
-                }
+                if (!SettingsManager.SlotCreated[slot]) { _gyroEngageCfg[slot] = null; continue; }
 
+                var wsSet = wsSets != null && slot < wsSets.Length ? wsSets[slot] : null;
+                if (wsSet != null && !wsSet.Authoritative) wsSet = null;
+
+                var cfg = new GyroEngageCfg();
                 // First device on the slot with a configured engage button
-                // wins. Empty descriptor everywhere → always-on (Hold-default).
-                string descriptor = "";
-                string deviceGuid = "";
-                string mode = "Hold";
+                // wins (per-slot ergonomic, storage order, see the method
+                // doc above). Slot guids are captured for the device-free
+                // descriptor and ratchet walks.
+                _gyroEngageGuidScratch.Clear();
                 lock (settings.SyncRoot)
                 {
                     for (int i = 0; i < settings.Items.Count; i++)
                     {
                         var us = settings.Items[i];
                         if (us == null || us.MapTo != slot) continue;
+                        _gyroEngageGuidScratch.Add(us.InstanceGuidString);
+                        if (cfg.Descriptor.Length > 0) continue;
                         var ps = us.GetPadSetting();
                         if (ps == null) continue;
                         if (string.IsNullOrEmpty(ps.GyroAimEngageButton)) continue;
-                        descriptor = ps.GyroAimEngageButton;
-                        deviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
-                        mode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
-                        break;
+                        cfg.Descriptor = ps.GyroAimEngageButton;
+                        cfg.DeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
+                        cfg.Mode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
                     }
                 }
+                cfg.SlotGuids = _gyroEngageGuidScratch.ToArray();
 
-                bool buttonDown = !string.IsNullOrEmpty(descriptor)
-                    && (SourceCoercion.ButtonHeldProvider?.Invoke(deviceGuid, descriptor, slot) ?? false);
+                // The Workshop gyro_button stamp is folded into the
+                // device's own GyroAimEngageButton when the device is
+                // assigned (WorkshopTuningApplier), so there is no
+                // runtime overlay left to consult and the Gyro card is
+                // the single source of truth.
+
+                // Workshop ratchet clutch (v22) descriptors, resolved
+                // per tick against SlotGuids.
+                var ratchets = wsSet?.WorkshopGyroRatchetList;
+                cfg.Ratchets = ratchets != null && ratchets.Length > 0 ? ratchets : null;
+
+                _gyroEngageCfg[slot] = cfg;
+            }
+        }
+
+        private void UpdateGyroEngageStates()
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
+
+            long nowCfg = Environment.TickCount64;
+            if (nowCfg - _gyroEngageCfgRefreshTick >= 250)
+            {
+                _gyroEngageCfgRefreshTick = nowCfg;
+                RefreshGyroEngageCfg(settings);
+            }
+
+            for (int slot = 0; slot < MaxPads; slot++)
+            {
+                var cfg = _gyroEngageCfg[slot];
+                if (!SettingsManager.SlotCreated[slot] || cfg == null)
+                {
+                    GyroEngagedFromButton[slot] = false;
+                    GyroRatchetHeld[slot] = false;
+                    _prevAimEngageButtonDown[slot] = false;
+                    continue;
+                }
+
+                string descriptor = cfg.Descriptor;
+                string deviceGuid = cfg.DeviceGuid;
+                string mode = cfg.Mode;
+                // "ReleaseToEngage": gyro fires while the button is NOT
+                // held. Steam spells this gyro_button_invert; it used to
+                // ride a hidden per-slot flag no card could reach.
+
+                bool buttonDown = false;
+                if (descriptor.Length > 0)
+                {
+                    if (deviceGuid.Length > 0)
+                    {
+                        buttonDown = SourceCoercion.ButtonHeldProvider?.Invoke(deviceGuid, descriptor, slot) ?? false;
+                    }
+                    else
+                    {
+                        // Device-free (workshop) descriptor: any slot device
+                        // holding it engages. The guid list comes from the
+                        // 250 ms snapshot; the provider reads device state
+                        // and must never nest inside UserSettings.SyncRoot
+                        // (lock-order discipline), which the snapshot walk
+                        // already honors.
+                        var guids = cfg.SlotGuids;
+                        for (int i = 0; i < guids.Length && !buttonDown; i++)
+                            buttonDown = SourceCoercion.ButtonHeldProvider?.Invoke(
+                                guids[i], descriptor, slot) ?? false;
+                    }
+                }
 
                 if (mode == "Toggle")
                 {
                     // Rising edge → flip the sticky bit. Falling edge,
                     // empty descriptor, and held state all leave the bit
-                    // alone — Toggle never auto-disengages.
+                    // alone. Toggle never auto-disengages.
                     if (buttonDown && !_prevAimEngageButtonDown[slot])
                         GyroEngagedFromButton[slot] = !GyroEngagedFromButton[slot];
                 }
@@ -1453,9 +1799,28 @@ namespace PadForge.Common.Input
                     // Hold mode (default). Empty descriptor reads as
                     // always-on to preserve the pre-v3.2.4 behavior where
                     // no engage button = no gating from this source.
-                    GyroEngagedFromButton[slot] = string.IsNullOrEmpty(descriptor) ? true : buttonDown;
+                    GyroEngagedFromButton[slot] = string.IsNullOrEmpty(descriptor)
+                        ? true
+                        : (string.Equals(mode, "ReleaseToEngage", StringComparison.Ordinal)
+                            ? !buttonDown : buttonDown);
                 }
                 _prevAimEngageButtonDown[slot] = buttonDown;
+
+                // Workshop ratchet clutch (v22): any stamped descriptor
+                // held on any slot device pauses the slot's gyro. Guid
+                // list and descriptors come from the 250 ms snapshot; the
+                // provider runs outside any lock as before.
+                bool ratchetHeld = false;
+                var ratchets = cfg.Ratchets;
+                if (ratchets != null)
+                {
+                    var guids = cfg.SlotGuids;
+                    for (int g = 0; g < guids.Length && !ratchetHeld; g++)
+                        for (int r = 0; r < ratchets.Length && !ratchetHeld; r++)
+                            ratchetHeld = SourceCoercion.ButtonHeldProvider?.Invoke(
+                                guids[g], ratchets[r], slot) ?? false;
+                }
+                GyroRatchetHeld[slot] = ratchetHeld;
             }
         }
 
@@ -1814,8 +2179,18 @@ namespace PadForge.Common.Input
             {
                 GyroEngagedFromButton[i] = false;
                 GyroEngagedFromMacro[i] = false;
+                GyroRatchetHeld[i] = false;
                 _prevAimEngageButtonDown[i] = false;
             }
+            // Force an immediate re-snapshot on the next poll, the same
+            // reason ResetTriggerRouteEngageStates does: the engage config
+            // cache is 250 ms-cadenced, so without this the next tick would
+            // settle the NEW profile's engage state from the OLD profile's
+            // snapshot (descriptor, mode, ratchets) for up to a quarter
+            // second. A new profile that gates gyro behind an engage button
+            // would aim freely for that window, and a Toggle carried over
+            // from a profile with no button would re-stick immediately.
+            _gyroEngageCfgRefreshTick = 0;
         }
 
         /// <summary>Clears both trigger-route per-slot engaged bits and the
@@ -1946,11 +2321,21 @@ namespace PadForge.Common.Input
                     {
                         if (GestureContexts.TryGetValue((slot, ud.InstanceGuid, p), out var ctxR))
                             ctxR.Reset();
+                        // Drop the swipe-haptic accumulator too: it would
+                        // otherwise freeze across the recording and count
+                        // the position gap as travel on resume, firing a
+                        // spurious tick burst the moment recording stops.
+                        SwipePulseStates.TryRemove((slot, ud.InstanceGuid, p), out _);
                     }
                     var tickHandler = RecordingTick;
                     if (tickHandler != null)
                     {
-                        try { tickHandler(pad); }
+                        // Clone: the dialog marshals via Dispatcher.
+                        // BeginInvoke, so the reference sits in the queue
+                        // while the pooled buffer underneath keeps being
+                        // rewritten. Only allocates while the recorder
+                        // dialog is actively capturing.
+                        try { tickHandler(pad.Clone()); }
                         catch { /* dialog teardown can race — ignore */ }
                     }
                     continue;
@@ -1971,8 +2356,54 @@ namespace PadForge.Common.Input
                     Engine.Touchpad.GestureRecognizer.Update(
                         padIdx: p, ctx: ctx, pad: pad, settings: settings,
                         nowMs: nowMs, shapeTemplates: _shapeTemplates);
+
+                    // Swipe-haptic ticks (#219): independent of the
+                    // gesture master switch. The pulse toggle stands
+                    // alone, like the joystick-output channel.
+                    UpdateSwipeHaptics(slot, ud, p, pad, settings);
                 }
             }
+        }
+
+        /// <summary>Ticks the swipe-haptic travel accumulator for one
+        /// (slot, device, pad) and routes any earned detent to the
+        /// device's haptic lane (discussion #219). Steam Controller
+        /// family devices get a per-side actuator tick through
+        /// <see cref="HapticToneService.QueueTouchpadPulse"/> (pad 0 =
+        /// left actuator, pad 1 = right; the bundled SDL fork's Steam
+        /// drivers all send the left pad as touchpad index 0). Sony pads
+        /// raise a <see cref="TouchpadPulseService"/> burst that the
+        /// effects dispatcher mixes with game rumble, preserving the
+        /// sole-writer architecture. Ticks earned in one frame coalesce
+        /// into one pulse (the sink-side 40 ms cap would merge them
+        /// anyway). Amplitude is the fixed per-pad intensity setting;
+        /// both references fire fixed-strength ticks (SteamlessController
+        /// TRACKPAD_MOVE_GAIN_DB, DS4MapperTest hapticsIntensityRatio),
+        /// so no speed scaling.</summary>
+        private void UpdateSwipeHaptics(int slot, Engine.Data.UserDevice ud, int padIdx,
+            Engine.TouchpadInputState pad, Engine.Touchpad.TouchpadGestureSettings settings)
+        {
+            var key = (slot, ud.InstanceGuid, padIdx);
+            float amp = settings.SwipeHapticsIntensity;
+            if (!settings.EnableSwipeHaptics || amp <= 0f)
+            {
+                // Drop stale state so a later re-enable seeds fresh
+                // instead of ticking on the accumulated gap.
+                SwipePulseStates.TryRemove(key, out _);
+                return;
+            }
+            if (!SwipePulseStates.TryGetValue(key, out var st))
+            {
+                st = new Engine.Touchpad.SwipeHapticsState();
+                SwipePulseStates[key] = st;
+            }
+            if (Engine.Touchpad.SwipeHapticsEvaluator.Update(st, pad) <= 0) return;
+
+            if (amp > 1f) amp = 1f;
+            if (HapticToneService.DeviceHasHaptics(ud))
+                HapticToneService.QueueTouchpadPulse(ud.InstanceGuid, padIdx, amp);
+            else if (TouchpadPulseService.IsSonyRumblePad(ud))
+                TouchpadPulseService.Pulse(slot, ud.InstanceGuid, amp);
         }
 
         /// <summary>Drops every gesture context. Called on profile
@@ -1982,6 +2413,14 @@ namespace PadForge.Common.Input
         {
             GestureContexts.Clear();
             MouseGestureContexts.Clear();
+            SwipePulseStates.Clear();
+            TouchpadPulseService.Clear();
+            // The gesture lanes route through the 250 ms device-to-slot
+            // snapshot, and a profile switch is exactly when that mapping
+            // changes. Same invalidation the trigger-route and gyro engage
+            // resets do: without it a gesture completed in the next quarter
+            // second fires on the OLD profile's slot assignment.
+            _assignedSlotsRefreshTick = 0;
         }
 
         /// <summary>Mouse-gesture recognizer walk (issue #200), sibling of
@@ -2024,12 +2463,21 @@ namespace PadForge.Common.Input
 
                 // Each selected gesture button runs its own session; hand
                 // the recognizer the raw pressed mask and let it fan out.
+                // Only the five PHYSICAL indices read from the mouse: a
+                // sixth-plus mouse button must not arm the Custom session.
                 int pressedMask = 0;
-                for (int b = 0; b < Engine.Mouse.MouseGestureContext.ButtonCount
+                for (int b = 0; b < Engine.Mouse.MouseGestureContext.MouseButtonCount
                     && b < newState.Buttons.Length; b++)
                 {
                     if (newState.Buttons[b]) pressedMask |= 1 << b;
                 }
+
+                // Custom activation (discussion #216): the recognizer's
+                // composer ORs in bit 5 while the recorded cross-device
+                // input is held (ButtonHeldProvider, the same reader the
+                // gyro / trigger-route / haptic-mirror engage settles use).
+                pressedMask = Engine.Mouse.MouseGestureRecognizer.ComposePressedMask(
+                    pressedMask, settings, slot);
 
                 Engine.Mouse.MouseGestureRecognizer.Update(
                     ctx, settings, pressedMask, dxCounts, dyCounts, nowMs);
@@ -2063,6 +2511,29 @@ namespace PadForge.Common.Input
         /// the engine walks each row's sources in order every tick and
         /// the first online one wins.</para>
         /// </summary>
+        // F5g gate state (poll thread only).
+        private readonly object[] _motionRowsSetRef = new object[MaxPads];
+        private readonly long[] _motionRowsCheckedTick = new long[MaxPads];
+        private readonly bool[] _motionHasGyroRow = new bool[MaxPads];
+        private readonly bool[] _motionHasAccelRow = new bool[MaxPads];
+
+        /// <summary>Permissive row-presence scan: true when ANY row names
+        /// the target, regardless of sources/online state, so the gate can
+        /// only skip walks that provably return null.</summary>
+        private static bool HasRowForTarget(PadForge.Engine.Data.MappingSet ms, string target)
+        {
+            var rows = ms?.Rows;
+            if (rows == null) return false;
+            int count = rows.Count;
+            for (int i = 0; i < count && i < rows.Count; i++)
+            {
+                var r = rows[i];
+                if (r != null && string.Equals(r.Target, target, System.StringComparison.Ordinal))
+                    return true;
+            }
+            return false;
+        }
+
         private void UpdateMotionSnapshots()
         {
             var settings = SettingsManager.UserSettings;
@@ -2134,10 +2605,28 @@ namespace PadForge.Common.Input
                     && padIndex < SettingsManager.SlotMappingSets.Length)
                     ? SettingsManager.SlotMappingSets[padIndex] : null;
 
-                var gyroSrc  = ResolveMotionSource(ms, MappingSetMigrator.MotionGyroTarget,
-                    requireGyro: true);
-                var accelSrc = ResolveMotionSource(ms, MappingSetMigrator.MotionAccelTarget,
-                    requireGyro: false);
+                // 250 ms row-presence gate (engage-lane cadence): slots
+                // whose MappingSet has no motion rows at all (every
+                // non-Sony slot) skip both per-tick row walks. Permissive
+                // scan (target match only), so a row that exists but is
+                // offline keeps the per-tick failover walk it always had.
+                // A set-reference change re-scans immediately.
+                long nowMotionTick = Environment.TickCount64;
+                if (!ReferenceEquals(_motionRowsSetRef[padIndex], ms)
+                    || nowMotionTick - _motionRowsCheckedTick[padIndex] >= 250)
+                {
+                    _motionRowsSetRef[padIndex] = ms;
+                    _motionRowsCheckedTick[padIndex] = nowMotionTick;
+                    _motionHasGyroRow[padIndex] = HasRowForTarget(ms, MappingSetMigrator.MotionGyroTarget);
+                    _motionHasAccelRow[padIndex] = HasRowForTarget(ms, MappingSetMigrator.MotionAccelTarget);
+                }
+
+                var gyroSrc = _motionHasGyroRow[padIndex]
+                    ? ResolveMotionSource(ms, MappingSetMigrator.MotionGyroTarget, requireGyro: true, padIndex)
+                    : default;
+                var accelSrc = _motionHasAccelRow[padIndex]
+                    ? ResolveMotionSource(ms, MappingSetMigrator.MotionAccelTarget, requireGyro: false, padIndex)
+                    : default;
 
                 if (gyroSrc.Ud == null && accelSrc.Ud == null)
                 {
@@ -2194,11 +2683,16 @@ namespace PadForge.Common.Input
                 if (gyroSrc.Ud != null)
                 {
                     var s = gyroSrc.Ud.InputState;
-                    if (s.Gyro != null && s.Gyro.Length >= 3)
+                    // "Motion Gyro L" (#252) streams the LEFT Joy-Con's gyro
+                    // instead of the body gyro, the twin of what
+                    // "Motion Accel L" already does for the accel above.
+                    bool gyroAux = MappingSetMigrator.IsMotionGyroAuxDescriptor(gyroSrc.Src?.Descriptor);
+                    var gyroArr = gyroAux ? s.GyroAux : s.Gyro;
+                    if (gyroArr != null && gyroArr.Length >= 3)
                     {
                         SourceCoercion.GetPassthroughGyro(
                             s, gyroSrc.Ud.InstanceGuidString, padIndex,
-                            out float tunedPitch, out float tunedYaw, out float tunedRoll);
+                            out float tunedPitch, out float tunedYaw, out float tunedRoll, gyroAux);
                         gx = tunedPitch * RadToDeg;
                         gy = tunedYaw * RadToDeg;
                         gz = tunedRoll * RadToDeg;
@@ -2230,29 +2724,140 @@ namespace PadForge.Common.Input
         /// per-tick walk + first-online wins gives natural hand-off when
         /// devices come and go without restarting the engine.
         /// </summary>
+        /// <summary>Motion row candidates for the slot's engaged layer, in
+        /// preference order: the layer's own row, then Base, then any other
+        /// row naming the target.
+        ///
+        /// <para>Layer resolution is delegated ENTIRELY to the #221 resolver;
+        /// this only decides fallback ORDER, so there is no second
+        /// layer-resolution path to drift.</para>
+        ///
+        /// <para>The resolver's <c>suppressed</c> flag is deliberately
+        /// discarded here. Layers default to REPLACE semantics
+        /// (ShiftActivator.InheritUnmapped is false), so honouring suppression
+        /// would silence gyro and accel the moment a layer without a motion
+        /// row engaged. Motion never goes dark because of a layer: that is a
+        /// product decision, and it makes this change a strict preference
+        /// re-ordering, so nothing that resolves today stops resolving.</para></summary>
+        private static void BuildMotionRowCandidates(
+            MappingSet ms, string targetName, int slotIndex, ref MappingRow[] buf, out int count)
+        {
+            count = 0;
+            if (ms?.Rows == null) return;
+            // Grow the scratch to hold every row that could name this target.
+            // It was fixed at three, which after the active row and Base left
+            // room for exactly ONE other layer's row, so a slot with motion
+            // rows on Base plus three shift layers silently dropped the last
+            // two. Motion then went dark whenever the earlier candidates'
+            // devices were offline and a later one was live, which is the
+            // hand-off this walk exists to provide. Layers are open-ended, so
+            // the bound has to come from the row count, not a constant.
+            int needed = ms.Rows.Count + 2;
+            if (buf == null || buf.Length < needed) buf = new MappingRow[needed];
+
+            var activeRow = FindActiveRowForTarget(ms, targetName, slotIndex, out _);
+            if (activeRow != null) buf[count++] = activeRow;
+
+            var baseRow = FindBaseRowForTarget(ms, targetName);
+            if (baseRow != null && !ReferenceEquals(baseRow, activeRow)) buf[count++] = baseRow;
+
+            var rows = ms.Rows;
+            for (int r = 0; r < rows.Count && count < buf.Length; r++)
+            {
+                var row = rows[r];
+                if (row == null) continue;
+                if (!string.Equals(row.Target, targetName, StringComparison.Ordinal)) continue;
+                if (ReferenceEquals(row, activeRow) || ReferenceEquals(row, baseRow)) continue;
+                buf[count++] = row;
+            }
+        }
+
+        /// <summary>Zeroes every combined output surface Step 5 submits.
+        ///
+        /// <para>The focus-suspend neutral edge: called once when the engine
+        /// stops because PadForge left the foreground with background polling
+        /// disabled, then Step 5 runs once more so the neutral state actually
+        /// reaches the virtual devices. Array-carrying structs are cleared in
+        /// place (RawHidState.Clear handles its own arrays, MidiRawState's
+        /// arrays are wiped per element) because a default-assign would null
+        /// the arrays and break Step 5's readers.</para></summary>
+        private void NeutralizeCombinedOutputs()
+        {
+            for (int i = 0; i < MaxPads; i++)
+            {
+                CombinedOutputStates[i] = default;
+                CombinedRawHidStates[i].Clear();
+                CombinedKbmRawStates[i] = default;
+                CombinedTouchpadStates[i] = default;
+                // Motion rides beside the raw surface on every Step 5 submit
+                // (HasMotion=false submits zeroes), so leaving it out froze
+                // the LAST gyro/accel sample into the driver: tab away
+                // mid-motion and the virtual pad kept reporting that angular
+                // rate for the whole suspension.
+                MotionSnapshots[i] = default;
+                // MidiRawState.Clear(), not Array.Clear. The neutral CC value
+                // is 64 (centre), and Array.Clear writes 0, which is the
+                // MINIMUM. Alt-tabbing with background polling off therefore
+                // slammed every mapped CC to zero instead of releasing it to
+                // centre, while the other two neutralize sites for this same
+                // array produced 64. CcValues and Notes are arrays, so
+                // clearing through the local struct copy still reaches the
+                // shared buffers.
+                CombinedMidiRawStates[i].Clear();
+            }
+        }
+
+        /// <summary>Scratch for <see cref="BuildMotionRowCandidates"/>. Poll
+        /// thread only, so the candidate walk allocates nothing per tick.</summary>
+        private MappingRow[] _motionRowCandidateBuf = new MappingRow[8];
+
         private (UserDevice Ud, MappingSource Src) ResolveMotionSource(
-            MappingSet ms, string targetName, bool requireGyro)
+            MappingSet ms, string targetName, bool requireGyro, int slotIndex)
         {
             if (ms?.Rows == null) return (null, null);
-            for (int r = 0; r < ms.Rows.Count; r++)
+            BuildMotionRowCandidates(ms, targetName, slotIndex, ref _motionRowCandidateBuf, out int count);
+            var buf = _motionRowCandidateBuf;
+            try
             {
-                var row = ms.Rows[r];
-                if (row == null || row.Target != targetName || row.Sources == null) continue;
-                for (int i = 0; i < row.Sources.Count; i++)
+                for (int c = 0; c < count; c++)
                 {
-                    var src = row.Sources[i];
+                    var hit = ResolveMotionSourceFromRow(buf[c], requireGyro);
+                    if (hit.Ud != null) return hit;
+                }
+                return (null, null);
+            }
+            finally
+            {
+                // Don't let the scratch pin rows (and through them devices)
+                // past the tick that used it.
+                for (int k = 0; k < count; k++) buf[k] = null;
+            }
+        }
+
+        private (UserDevice Ud, MappingSource Src) ResolveMotionSourceFromRow(
+            MappingRow row, bool requireGyro)
+        {
+            var sources = row?.Sources;
+            if (sources != null)
+            {
+                for (int i = 0; i < sources.Count; i++)
+                {
+                    var src = sources[i];
                     if (src == null) continue;
                     if (!SourceCoercion.IsMotionDescriptor(src.Descriptor)) continue;
                     if (string.IsNullOrEmpty(src.DeviceGuid)) continue;
-                    if (!Guid.TryParse(src.DeviceGuid, out var guid)) continue;
+                    if (!TryParseGuidCached(src.DeviceGuid, out var guid)) continue;
                     var ud = FindOnlineDeviceByInstanceGuid(guid);
                     if (ud == null || !ud.IsOnline || ud.Device == null) continue;
                     if (ud.InputState == null) continue;
                     // "Motion Accel L" needs the aux (Nunchuk / left Joy-Con)
                     // sensor, not the body accelerometer (#199 follow-up).
-                    bool wantsAux = !requireGyro
-                        && MappingSetMigrator.IsMotionAccelAuxDescriptor(src.Descriptor);
-                    if (requireGyro ? !ud.Device.HasGyro
+                    // "Motion Gyro L" is the gyro twin (#252): the left half
+                    // of a combined pair, whose capability is its own.
+                    bool wantsAux = requireGyro
+                        ? MappingSetMigrator.IsMotionGyroAuxDescriptor(src.Descriptor)
+                        : MappingSetMigrator.IsMotionAccelAuxDescriptor(src.Descriptor);
+                    if (requireGyro ? (wantsAux ? !ud.Device.HasGyroAux : !ud.Device.HasGyro)
                         : (wantsAux ? !ud.Device.HasAccelAux : !ud.Device.HasAccel)) continue;
                     return (ud, src);
                 }
@@ -2316,7 +2921,7 @@ namespace PadForge.Common.Input
         private static extern IntPtr CreateWaitableTimerExW(
             IntPtr lpTimerAttributes, IntPtr lpTimerName, uint dwFlags, uint dwDesiredAccess);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32.dll", SetLastError = false)]
         private static extern bool SetWaitableTimerEx(
             IntPtr hTimer, ref long lpDueTime, int lPeriod,
             IntPtr pfnCompletionRoutine, IntPtr lpArgToCompletionRoutine,

@@ -231,6 +231,42 @@ namespace PadForge.Common.Input
         // overlapping (non-serialized) timer callbacks could double-insert.
         private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, DeviceState> _deviceStates = new();
 
+        // ── Write ordering across concurrent dispatches ──────────────────
+        //
+        // DispatchSnapshot runs from the UI thread (ApplyOnce /
+        // OnConfigChanged), the ~1 kHz polling thread (OnPollingTickInstance /
+        // NotifyBatteryPercentChanged), the 33 ms animation timer, and the
+        // audio callback. It is NOT serialized as a whole. _animTickBusy only
+        // excludes timer-vs-timer overlap.
+        //
+        // While the HID write still happened inside devices.SyncRoot, that lock
+        // made capture+write one unit and the last writer was necessarily the
+        // last capturer. The write now runs outside that lock (a synchronous
+        // ~1 kHz-blocking HID write had no business holding the poll thread's
+        // lock), which re-opens the ordering: two dispatches can capture in one
+        // order and land their writes in the other. The concrete loss is a
+        // latched motor. A timer dispatch captures nonzero rumble, the poll
+        // dispatch that stops the timer captures and writes the final zero
+        // frame, then the timer's stale nonzero write lands last and no
+        // further dispatch is coming to correct it.
+        //
+        // Fix: stamp every captured payload with a monotonic sequence INSIDE
+        // devices.SyncRoot (so sequence order == capture order), then drop any
+        // write whose capture is older than one already written to that device.
+        // Newest capture wins regardless of thread scheduling.
+        //
+        // s_writeGate is a LEAF lock: taken only after devices.SyncRoot has
+        // been released, and it acquires nothing while held. That is
+        // deliberate. An outer "serialize the whole dispatch" lock would nest
+        // above devices.SyncRoot and deadlock the moment any caller poked a
+        // dispatch while holding it. It also restores the cross-dispatcher write
+        // serialization that devices.SyncRoot used to provide for one physical
+        // pad shared by two slots.
+        private static readonly object s_writeGate = new();
+        private static long s_dispatchSeq;
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> s_lastWriteSeq =
+            new(StringComparer.OrdinalIgnoreCase);
+
         // Per-device flag remembering whether PadForge's last dispatched
         // packet carried non-zero rumble. Drives the validFlag0 bit-0
         // gating: assert the rumble enable bit when current frame has
@@ -252,6 +288,24 @@ namespace PadForge.Common.Input
         // past our mirror grace.
         private readonly Dictionary<Guid, bool> _prevPadForgeWantsRightTrig = new();
         private readonly Dictionary<Guid, bool> _prevPadForgeWantsLeftTrig = new();
+
+        // Devices this dispatcher wrote on its previous dispatch as their
+        // OWNER (single-writer ownership, owner facts 2026-07-20). On the
+        // first owned dispatch of a device the prev-state maps above are
+        // seeded TRUE so the enable/drop-frame machinery emits the
+        // mandatory stop/disengage frame even when the current frame is
+        // zero: a prior owner (or a dead prior process) may have left
+        // rumble or an AT effect latched in firmware. Accessed only inside
+        // devices.SyncRoot during DispatchSnapshot, like _prevHadRumble.
+        private readonly HashSet<Guid> _ownedLastDispatch = new();
+
+        // Union bitmask of slots sharing any of this slot's assigned Sony
+        // devices (self bit always set). Refreshed by DispatchSnapshot from
+        // the same settings walk that resolves ownership; read by the
+        // audio-mode early-exit so a steady peak cannot starve rumble
+        // onset/stop originating on a sharing slot. One tick of staleness
+        // delays a merged edge by at most 33 ms.
+        private volatile int _groupSlotsMask;
 
         // Per-device timestamp of the last non-zero impulse-trigger sample
         // for the right / left trigger. Drives the linger window for the
@@ -358,14 +412,23 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Called by <c>HMaestroVirtualController.OutputDecoded</c>
-        /// for every external host write to a Sony virtual. Inspects the
-        /// 47-byte USB-shape effect payload's validFlag bits to identify
+        /// for every external host write to a Sony virtual.
+        ///
+        /// <para>DualSense-shaped payloads ONLY. Every offset below is the
+        /// DS5 output-report layout: validFlags at [0] and [1], motors at
+        /// [2] and [3], the two 11-byte trigger blocks at [10] and [21].
+        /// A DualShock 4 effect report has none of that, which is why the
+        /// caller gates on a live DS5 dispatcher and why a DS4 virtual gets
+        /// no per-subsystem mirror. Firing this for DS4 would capture
+        /// garbage, not fix a gap. A DS4 mirror needs its own parser.</para>
+        ///
+        /// <para>Inspects the 47-byte USB-shape effect payload's validFlag bits to identify
         /// which subsystems the writer touched; captures their bytes and
         /// refreshes a per-subsystem timestamp. Subsequent
         /// <see cref="DispatchSnapshot"/> calls within the grace window
         /// mirror those bytes (per subsystem, independently) so PadForge
         /// keeps animating subsystems the writer didn't touch while
-        /// preserving the writer's intent for the ones it did.</summary>
+        /// preserving the writer's intent for the ones it did.</para></summary>
         public static void NotifyExternalSubsystems(int padIndex, ReadOnlySpan<byte> effectPayload)
         {
             if (effectPayload.Length < 47) return;
@@ -465,10 +528,18 @@ namespace PadForge.Common.Input
                     ov.RumbleRight = st.RumbleRight;
                     ov.RumbleLeft  = st.RumbleLeft;
                 }
+                // Copy, don't alias. st.RightTrig / st.LeftTrig are reused
+                // buffers that OnOutputPacket rewrites IN PLACE under this same
+                // lock on every external effect packet. Handing the caller the
+                // live array let a packet arriving between the read and the
+                // encode rewrite bytes the caller had already decided to send,
+                // producing a frame that is neither the old nor the new effect.
+                // The lightbar case below has always allocated for this reason;
+                // these two were the outliers.
                 if (now - st.RightTrigTick < ExternalSubsystemGraceMs && st.RightTrig != null)
-                    ov.RightTriggerEffect = st.RightTrig;
+                    ov.RightTriggerEffect = (byte[])st.RightTrig.Clone();
                 if (now - st.LeftTrigTick < ExternalSubsystemGraceMs && st.LeftTrig != null)
-                    ov.LeftTriggerEffect = st.LeftTrig;
+                    ov.LeftTriggerEffect = (byte[])st.LeftTrig.Clone();
                 if (now - st.MicLedTick < ExternalSubsystemGraceMs)
                     ov.MuteLed = st.MicLed;
                 if (now - st.LightbarTick < ExternalSubsystemGraceMs)
@@ -515,6 +586,39 @@ namespace PadForge.Common.Input
             UpdateAnimTimer();
         }
 
+        /// <summary>Pure core of the single-writer ownership walk
+        /// (owner facts, 2026-07-20), extracted so the tests can lock
+        /// it. For every settings row whose device is in
+        /// <paramref name="guids"/>: fold the row's slot into the
+        /// share-group mask, and elect the device's owner as the lowest
+        /// live-dispatcher slot among its rows (falling back to
+        /// <paramref name="padIndex"/>). Caller holds the settings lock.</summary>
+        internal static void ResolveOwnersAndGroup(
+            System.Collections.Generic.IList<UserSetting> items,
+            System.Collections.Generic.List<Guid> guids,
+            int padIndex,
+            Func<int, bool> slotLive,
+            System.Collections.Generic.Dictionary<Guid, int> owners,
+            ref int groupMask)
+        {
+            if (items == null) return;
+            for (int i = 0; i < items.Count; i++)
+            {
+                var us = items[i];
+                if (us == null) continue;
+                int slot = us.MapTo;
+                if (slot < 0 || slot >= InputManager.MaxPads) continue;
+                if (us.InstanceGuid == Guid.Empty) continue;
+                if (!guids.Contains(us.InstanceGuid)) continue;
+                groupMask |= 1 << slot;
+                if (!owners.TryGetValue(us.InstanceGuid, out int cur))
+                    cur = padIndex;
+                if (slot < cur && slotLive(slot))
+                    cur = slot;
+                owners[us.InstanceGuid] = cur;
+            }
+        }
+
         /// <summary>Polling-thread broadcast — Step 2 calls this every
         /// tick for each slot with the current "any reason to keep the
         /// dispatcher's effect-packet timer alive" inputs. The dispatcher
@@ -548,6 +652,12 @@ namespace PadForge.Common.Input
         public void Rebind(DeviceSlotConfig config)
         {
             if (_disposed) return;
+            // Reclaim the registry key. The spare-VC race registers the
+            // spare's dispatcher over this one at construction; when the
+            // spare loses and disposes, its removal leaves the slot key
+            // EMPTY and pokes/battery/sound notifications go nowhere.
+            // Rebind is the winner's re-attach path, so re-assert.
+            _instances[_padIndex] = this;
             if (_config != null)
                 _config.PropertyChanged -= OnConfigChanged;
             _config = config;
@@ -591,9 +701,10 @@ namespace PadForge.Common.Input
             // Only remove from the registry if WE are still the registered
             // instance — a fresh dispatcher could have replaced us mid-life
             // (rebind during VC reset) and we shouldn't yank its slot key.
-            _instances.TryGetValue(_padIndex, out var current);
-            if (ReferenceEquals(current, this))
-                _instances.TryRemove(_padIndex, out _);
+            // Atomic pair-remove: the old TryGetValue + key-only TryRemove
+            // could evict a replacement that registered between the two.
+            ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>>)_instances)
+                .Remove(new System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>(_padIndex, this));
         }
 
         private void OnConfigChanged(object sender, PropertyChangedEventArgs e)
@@ -954,25 +1065,66 @@ namespace PadForge.Common.Input
                 // detection; per-device scaling happens later in the
                 // device loop via SlotRumbleForDeviceProvider.
                 var r = SlotRawRumbleProvider?.Invoke(_padIndex) ?? ((byte)0, (byte)0);
-                bool rumbleChanged = r.right != _lastDispatchedRumbleR || r.left != _lastDispatchedRumbleL;
+                byte rRight = r.right, rLeft = r.left;
+                // Group-aware change detect (owner facts, 2026-07-20): this
+                // slot may own a pad whose rumble originates on ANOTHER
+                // sharing slot, and a steady audio peak must not starve
+                // that onset/stop. Max the raw bytes across the share
+                // group resolved by the last DispatchSnapshot.
+                int grp = _groupSlotsMask;
+                for (int gs = 0; grp != 0 && gs < InputManager.MaxPads; gs++)
+                {
+                    if (gs == _padIndex || (grp & (1 << gs)) == 0) continue;
+                    var go = SlotRawRumbleProvider?.Invoke(gs) ?? ((byte)0, (byte)0);
+                    if (go.right > rRight) rRight = go.right;
+                    if (go.left > rLeft) rLeft = go.left;
+                }
+                bool rumbleChanged = rRight != _lastDispatchedRumbleR || rLeft != _lastDispatchedRumbleL;
 
                 // Suppress the rainbow-pulse mode's special-case
                 // anti-skip only when ANY device is on AudioPulseRainbow
                 // — keeps that mode's per-tick hue rotation alive.
-                bool anyAudioPulseRainbow = AnyDeviceMode(perDeviceCfgs, LightbarMode.AudioPulseRainbow);
-                if (!zeroCrossing && !rumbleChanged && delta < 0.004f && !anyAudioPulseRainbow)
+                bool anyAudioPulseRainbow = (perDeviceCfgs != null && perDeviceCfgs.Count > 0)
+                    ? AnyDeviceMode(perDeviceCfgs, LightbarMode.AudioPulseRainbow)
+                    : cfg.LightbarMode == LightbarMode.AudioPulseRainbow;
+                // The two reactive terms belong here for the same reason they
+                // are in the tick-skip gate at the top of this method: an
+                // input-reactive overlay and a decaying Reactive macro override
+                // BOTH need a tick even when the audio peak is flat. Without
+                // them a steady peak, which includes silence, suppressed the
+                // whole dispatch, so button flashes and macro lightbar
+                // overrides simply never rendered while nothing was playing.
+                if (!zeroCrossing && !rumbleChanged && delta < 0.004f && !anyAudioPulseRainbow
+                    && !anyReactiveRunning && !anyInputReactiveOverlay)
                     return;
                 _lastDispatchedPeak = scaled;
-                _lastDispatchedRumbleR = r.right;
-                _lastDispatchedRumbleL = r.left;
+                _lastDispatchedRumbleR = rRight;
+                _lastDispatchedRumbleL = rLeft;
             }
 
-            DispatchSnapshot(scaled);
+            // Dispatch WITHOUT a pre-scaled peak, so each device rescales the
+            // raw peak by its OWN AudioLightbarSensitivity in the device loop.
+            // Passing `scaled` here handed every Sony device on the slot the
+            // peak computed from maxSensitivity, so a device deliberately set
+            // low flashed exactly as hard as the most sensitive one beside it
+            // and its own slider did nothing on the 30 Hz path. maxSensitivity
+            // is still right for the onset and early-exit decisions above:
+            // those gate whether ANY device renders, and must not suppress a
+            // device more sensitive than the anchor.
+            DispatchSnapshot();
         }
 
         /// <summary>True when any device's config on the slot is in the
         /// given <see cref="LightbarMode"/>. Used by tick-suppression
         /// special-cases (e.g. AudioPulseRainbow's per-tick rotation).</summary>
+        /// <summary>True when any per-device config on the slot is in
+        /// <paramref name="mode"/>. With no per-device configs the caller
+        /// must fall back to the anchor _config, exactly as the other
+        /// per-tick aggregates in OnAnimTickCore do: this returning false on
+        /// an empty map dropped the AudioPulseRainbow anti-skip exception on
+        /// a slot that had not built per-device configs yet, and the mode's
+        /// per-tick hue rotation stalled whenever the audio delta was
+        /// small.</summary>
         private static bool AnyDeviceMode(IReadOnlyDictionary<Guid, DeviceSlotConfig> cfgs, LightbarMode mode)
         {
             if (cfgs == null) return false;
@@ -1107,7 +1259,11 @@ namespace PadForge.Common.Input
             b = (byte)Math.Round((bp + m) * 255);
         }
 
-        private void DispatchSnapshot(float audioPeak = -1f)
+        // The audioPeak parameter is gone. All eight call sites invoked this
+        // with no argument, so it was always -1 and the "caller supplied a
+        // peak" branch below could never be taken. Keeping it implied an
+        // override path that did not exist.
+        private void DispatchSnapshot()
         {
             // Snapshot once (Dispose can null the field on the UI thread while a
             // timer-thread dispatch is mid-flight).
@@ -1129,15 +1285,9 @@ namespace PadForge.Common.Input
             // doesn't snap to black between ticks. The synthesizer
             // ignores the peak when the active mode doesn't read it.
             float rawAudioPeak = AudioPeakProvider?.Invoke() ?? 0f;
-            // Per-device peak scaling happens inside the device loop (each
-            // device has its own AudioLightbarSensitivity); this fallback
-            // uses the slot's "anchor" config sensitivity for the
-            // non-tick path's pre-loop default.
-            float peakForSynthDefault = audioPeak >= 0f
-                ? audioPeak
-                : Math.Clamp(
-                    rawAudioPeak * (float)cfg.AudioLightbarSensitivity,
-                    0f, 1f);
+            // Peak scaling happens per device inside the loop below, each
+            // against its own AudioLightbarSensitivity. There is no pre-loop
+            // default: the local that used to hold one was never read.
             long nowMs = Environment.TickCount64;
 
             // Test-rumble target for this slot. When set, only the matching
@@ -1175,8 +1325,14 @@ namespace PadForge.Common.Input
             var devices = SettingsManager.UserDevices;
             if (settings == null || devices == null) return;
 
-            // Resolve assigned DS5 GUIDs.
+            // Resolve assigned DS5 GUIDs plus, in the SAME settings
+            // snapshot so ownership can never disagree with the guid list
+            // (the stale-assignment write window), each device's owner
+            // slot and the union share-group mask. Owner = lowest slot
+            // among the device's assignment rows with a live dispatcher.
             var guids = new System.Collections.Generic.List<Guid>(4);
+            var owners = new System.Collections.Generic.Dictionary<Guid, int>(4);
+            int groupMask = 1 << _padIndex;
             lock (settings.SyncRoot)
             {
                 foreach (var us in settings.Items)
@@ -1186,8 +1342,29 @@ namespace PadForge.Common.Input
                     if (us.InstanceGuid == Guid.Empty) continue;
                     guids.Add(us.InstanceGuid);
                 }
+                if (guids.Count > 0)
+                    ResolveOwnersAndGroup(settings.Items, guids, _padIndex,
+                        static slot => _instances.ContainsKey(slot),
+                        owners, ref groupMask);
             }
+            _groupSlotsMask = groupMask;
             if (guids.Count == 0) return;
+
+            // Payloads are built under the device lock and written after it.
+            // PlayStationEffectWriter.Write does CreateFileW + WriteFile with a 1000 ms
+            // wait and then an untimed completion drain, and the ~1 kHz poll
+            // thread needs this same lock every cycle to read input. Writing
+            // under it meant one animated pad (a 33 ms timer) held the poll
+            // thread out for the duration of a synchronous HID write, and a
+            // stalled write could hold it out indefinitely. Nothing here needs
+            // the lock: the writer opens its own handle, and every value below
+            // is either a captured string/reference or a per-iteration
+            // allocation.
+            // SpeakerCleared carries the device whose speaker-path-cleared
+            // one-shot this payload is spending, or Guid.Empty. The one-shot is
+            // only consumed after the write for this entry actually lands, so a
+            // stale-skip or a failed write leaves it armed for the next tick.
+            var pending = new List<(string Path, HMProfile Profile, IReadOnlyDictionary<string, object> Fields, long Seq, Guid SpeakerCleared)>();
 
             lock (devices.SyncRoot)
             {
@@ -1204,6 +1381,31 @@ namespace PadForge.Common.Input
                     if (!guids.Contains(ud.InstanceGuid)) continue;
                     if (!ud.IsOnline) continue;
                     if (!isPs) continue;
+
+                    // Single-writer ownership (owner facts, 2026-07-20):
+                    // the lowest live-dispatcher slot among this device's
+                    // assignment rows makes every write; the other slots'
+                    // dispatchers skip it. Resolved from the same settings
+                    // snapshot as `guids`, checked after the cheap gates so
+                    // non-Sony devices never pay for it. On losing
+                    // ownership the seed entry drops so a later re-own
+                    // reseeds the stop-frame state below.
+                    if (owners.TryGetValue(ud.InstanceGuid, out int ownSlot) && ownSlot != _padIndex)
+                    {
+                        _ownedLastDispatch.Remove(ud.InstanceGuid);
+                        continue;
+                    }
+                    // First dispatch as this device's owner: seed the
+                    // prev-state maps TRUE so the enable/drop-frame logic
+                    // emits the mandatory stop/disengage frame even when
+                    // this frame is zero (a prior owner may have left
+                    // rumble or an AT effect latched in firmware).
+                    if (_ownedLastDispatch.Add(ud.InstanceGuid))
+                    {
+                        _prevHadRumble[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsLeftTrig[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsRightTrig[ud.InstanceGuid] = true;
+                    }
 
                     // Identity precedence: a pad shared across virtual
                     // controllers takes the winning (smallest displayed)
@@ -1226,12 +1428,12 @@ namespace PadForge.Common.Input
 
                     string path = ud.DevicePath;
                     if (string.IsNullOrEmpty(path)) continue;
-                    bool isBluetooth = SonyEffectWriter.IsBluetoothPath(path);
+                    bool isBluetooth = PlayStationEffectWriter.IsBluetoothPath(path);
 
                     // Resolve the HM profile whose extendedOutputReport spec
                     // describes this device's wire format. The synthesizer
                     // emits semantic fields (rightMotor / leftMotor /
-                    // lightbar / triggers / ...); SonyEffectWriter feeds them
+                    // lightbar / triggers / ...); PlayStationEffectWriter feeds them
                     // through HMOutputEncoder to produce the on-wire bytes
                     // including BT framing and CRC32 footer where the spec
                     // declares them.
@@ -1363,11 +1565,9 @@ namespace PadForge.Common.Input
 
                     // Per-device peak scaling (each device has own
                     // AudioLightbarSensitivity).
-                    float devPeak = audioPeak >= 0f
-                        ? audioPeak
-                        : Math.Clamp(
-                            rawAudioPeak * (float)devCfg.AudioLightbarSensitivity,
-                            0f, 1f);
+                    float devPeak = Math.Clamp(
+                        rawAudioPeak * (float)devCfg.AudioLightbarSensitivity,
+                        0f, 1f);
 
                     // Per-device pulse colour + intensity (DrainInputPulses
                     // rolled per-device above).
@@ -1438,7 +1638,7 @@ namespace PadForge.Common.Input
                         // SDL_RumbleJoystick calls the SDL path carries the
                         // audio-mixed rumble bytes from
                         // ForceFeedbackState.SetDeviceForces. Two writers,
-                        // same device: per SonyEffectWriter's docstring,
+                        // same device: per PlayStationEffectWriter's docstring,
                         // "the firmware applies whichever WriteFile lands
                         // most recently."
                         //
@@ -1504,11 +1704,12 @@ namespace PadForge.Common.Input
                         //     valid_flag1 bit 7 (AUDIO_CONTROL2_ENABLE); value
                         //     3 per dualsensectl's reference snippet. Without
                         //     it the speaker tops out well below what the PS5
-                        //     drives it to. Encoded by SonyEffectWriter's
+                        //     drives it to. Encoded by PlayStationEffectWriter's
                         //     audioControl2 poke (the HM profile doesn't
                         //     declare the byte).
                         // When routing switches away, restore the headphone
                         // path once so the speaker doesn't stay latched.
+                        Guid speakerCleared = Guid.Empty;
                         if (isDs5)
                         {
                             if (AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid))
@@ -1523,22 +1724,67 @@ namespace PadForge.Common.Input
                                 fields["audioControlFlags"] = (byte)(3 << 4);
                                 fields["audioControl2"] = (byte)3;
                             }
-                            else if (AudioPassthroughService.TryConsumeSpeakerPathCleared(ud.InstanceGuid))
+                            else if (AudioPassthroughService.PeekSpeakerPathCleared(ud.InstanceGuid))
                             {
                                 fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0x80);
                                 fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
                                 fields["audioControlFlags"] = (byte)0;
                                 fields["audioControl2"] = (byte)0;
+                                speakerCleared = ud.InstanceGuid;
                             }
                         }
 
-                        SonyEffectWriter.Write(path, profile, fields);
+                        // Sequence stamped under devices.SyncRoot, so sequence
+                        // order is capture order across every dispatching
+                        // thread. The write loop below uses it to drop a
+                        // capture that a newer one has already superseded.
+                        pending.Add((path, profile, fields,
+                            System.Threading.Interlocked.Increment(ref s_dispatchSeq),
+                            speakerCleared));
                     }
                     catch
                     {
-                        // Best-effort: a failed write on one device shouldn't
+                        // Best-effort: a failed synthesis on one device shouldn't
                         // prevent the dispatcher from servicing the rest of
                         // the slot's mapped Sony pads on the next tick.
+                    }
+                }
+            }
+
+            // Lock released. Do the blocking HID I/O here, serialized against
+            // every other dispatch's writes and ordered by capture sequence so
+            // the newest captured frame is the one that survives on each
+            // device. See the s_writeGate notes at the field declaration for
+            // why this gate is a leaf and not an outer dispatch lock.
+            if (pending.Count == 0) return;
+            lock (s_writeGate)
+            {
+                foreach (var w in pending)
+                {
+                    try
+                    {
+                        // A newer capture already landed on this device: this
+                        // frame is stale and writing it would undo the newer
+                        // one. That is the latched-rumble case, where the stale
+                        // frame carries motor bytes the newer one just zeroed
+                        // and no further dispatch is scheduled to correct it.
+                        if (s_lastWriteSeq.TryGetValue(w.Path, out var last) && last > w.Seq)
+                            continue;
+                        s_lastWriteSeq[w.Path] = w.Seq;
+                        PlayStationEffectWriter.Write(w.Path, w.Profile, w.Fields);
+                        // The headphone-path restore actually reached the pad,
+                        // so spend the one-shot now. Reaching here past both the
+                        // stale-skip above and the catch below is the only proof
+                        // the bytes went out; consuming at build time burned it
+                        // on payloads that were then dropped, and the speaker
+                        // stayed latched with nothing left to restore it.
+                        if (w.SpeakerCleared != Guid.Empty)
+                            AudioPassthroughService.TryConsumeSpeakerPathCleared(w.SpeakerCleared);
+                    }
+                    catch
+                    {
+                        // Same best-effort contract as the synthesis loop: one
+                        // device's failed write must not skip the others.
                     }
                 }
             }

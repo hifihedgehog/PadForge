@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PadForge.Engine.Common;
 using Xunit;
 
@@ -87,6 +87,75 @@ namespace PadForge.Tests
         {
             // The reporter's broken setup: a one-item list has nothing to walk to.
             Assert.Equal(new[] { 1, 1, 1 }, Walk(1, previous: false, wrap: true, includeBase: false, presses: 3));
+        }
+    
+        // ── Round 34: a cursor left over from a longer ring ──────────────
+        // Editing CycleLayers from "A|B|C" down to "A" changes n without
+        // touching the stored cursor. Both of these returned a position past
+        // the end, and the caller uses the result as layers[pos - 1], so the
+        // next Previous press threw IndexOutOfRangeException on the poll
+        // thread and the device lost its whole mapping evaluation for that
+        // frame. Every result must now be a valid stop in [0..n].
+
+        [Theory]
+        [InlineData(3, 1)]
+        [InlineData(9, 2)]
+        [InlineData(2, 1)]
+        public void StaleCursor_LayersOnlyPrevious_StaysInRange(int stale, int n)
+        {
+            foreach (bool wrap in new[] { true, false })
+            {
+                int r = ShiftCycleStepper.Step(stale, n, previous: true, wrap, includeBase: false);
+                Assert.InRange(r, 1, n);
+            }
+        }
+
+        [Theory]
+        [InlineData(3, 1)]
+        [InlineData(9, 2)]
+        public void StaleCursor_IncludeBase_StaysInRange(int stale, int n)
+        {
+            foreach (bool wrap in new[] { true, false })
+                foreach (bool prev in new[] { true, false })
+                {
+                    int r = ShiftCycleStepper.Step(stale, n, prev, wrap, includeBase: true);
+                    Assert.InRange(r, 0, n);
+                }
+        }
+
+        [Fact]
+        public void StaleCursor_Next_StaysInRange()
+        {
+            foreach (bool wrap in new[] { true, false })
+            {
+                int r = ShiftCycleStepper.Step(5, 2, previous: false, wrap, includeBase: false);
+                Assert.InRange(r, 1, 2);
+            }
+        }
+
+        [Fact]
+        public void NegativeCursor_IsTreatedAsBase()
+        {
+            // Nothing writes a negative cursor today; the clamp covers it so
+            // the range guarantee holds for every input, not just the one
+            // that was observed.
+            Assert.Equal(1, ShiftCycleStepper.Step(-4, 3, previous: false, wrap: false, includeBase: false));
+            Assert.Equal(0, ShiftCycleStepper.Step(-4, 3, previous: true, wrap: false, includeBase: true));
+        }
+
+        [Fact]
+        public void InRangeCursor_BehaviorIsUnchangedByTheClamp()
+        {
+            // The clamp must not move any cursor that was already valid.
+            for (int n = 1; n <= 4; n++)
+                for (int pos = 0; pos <= n; pos++)
+                    foreach (bool wrap in new[] { true, false })
+                        foreach (bool prev in new[] { true, false })
+                            foreach (bool inc in new[] { true, false })
+                            {
+                                int r = ShiftCycleStepper.Step(pos, n, prev, wrap, inc);
+                                Assert.InRange(r, inc ? 0 : (pos == 0 && !prev ? 1 : 0), n);
+                            }
         }
     }
 }

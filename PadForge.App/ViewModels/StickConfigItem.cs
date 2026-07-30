@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
@@ -21,10 +21,20 @@ namespace PadForge.ViewModels
         public static string[] CurvePresetNames { get; private set; } =
             Common.CurveLut.BuildPresetDisplayNames();
 
-        static StickConfigItem()
+        // LCID-stamped rebuild, no handler-order dependence: the previous
+        // static-ctor lambda landed in CultureChanged's weak list (compiler
+        // instance target) and could run AFTER the instance re-raises, so
+        // the preset combo re-read the OLD-language list against the NEW
+        // localized PresetName and the selection went blank (Codex audit
+        // 2026-07-16).
+        private static int s_presetLcid = System.Globalization.CultureInfo.CurrentUICulture.LCID;
+
+        internal static void EnsurePresetsCultureCurrent()
         {
-            Resources.Strings.Strings.CultureChanged += () =>
-                CurvePresetNames = Common.CurveLut.BuildPresetDisplayNames();
+            int lcid = System.Globalization.CultureInfo.CurrentUICulture.LCID;
+            if (lcid == s_presetLcid) return;
+            s_presetLcid = lcid;
+            CurvePresetNames = Common.CurveLut.BuildPresetDisplayNames();
         }
 
         public string PresetNameX => Common.CurveLut.MatchPreset(SensitivityCurveX);
@@ -102,6 +112,33 @@ namespace PadForge.ViewModels
         {
             get => _linear;
             set { if (SetProperty(ref _linear, Math.Clamp(value, 0, 100))) RebuildCurvePoints(); }
+        }
+
+        private double _sensitivity = 1.0;
+        /// <summary>Output sensitivity multiplier for this stick. Applied
+        /// after the deadzone / range / curve stage, so it scales what the
+        /// mapping table already produced. Lives here rather than in the
+        /// mapping grid: per-row it made the grid's raw and out readouts
+        /// agree (the scale was folded in before the readout) and its slider
+        /// sat in a column too narrow to show it.</summary>
+        /// <summary>Speed multiplier for the KEYBOARD AND MOUSE lane's two
+        /// pointer sticks (mouse movement, scroll wheel), where the output is
+        /// a rate and a multiplier is the natural control. Surfaced only when
+        /// <see cref="IsPointerStick"/> is true.
+        ///
+        /// <para>Deliberately NOT offered on a gamepad stick. There the
+        /// deadzone stage has already mapped full physical deflection to full
+        /// scale, so a multiplier above 1 changes only partial deflections and
+        /// clamps at the top, which reads as no effect when you test by
+        /// pushing the stick to the corner. The per-axis response curves on
+        /// the same tab do that job properly. See the 2026-07-27 ruling.</para>
+        ///
+        /// <para>Per-source Sensitivity on the mapping rows is a different
+        /// field, live for mouse, gyro, IR pointer, and touchpad.</para></summary>
+        public double Sensitivity
+        {
+            get => _sensitivity;
+            set => SetProperty(ref _sensitivity, Math.Clamp(value, 0.1, 5.0));
         }
 
         private string _sensitivityCurveX = "0,0;1,1";
@@ -383,10 +420,10 @@ namespace PadForge.ViewModels
         /// <summary>Unprocessed hardware value for calibration (not affected by offset/deadzone).</summary>
         public short HardwareRawY { get; set; }
 
-        /// <summary>Raw axis index for X in ExtendedRawState.Axes (custom Extended only, -1 for gamepad).</summary>
+        /// <summary>Raw axis index for X in RawHidState.Axes (custom Extended only, -1 for gamepad).</summary>
         public int AxisXIndex { get; }
 
-        /// <summary>Raw axis index for Y in ExtendedRawState.Axes (custom Extended only, -1 for gamepad).</summary>
+        /// <summary>Raw axis index for Y in RawHidState.Axes (custom Extended only, -1 for gamepad).</summary>
         public int AxisYIndex { get; }
 
         // ── Sensitivity curve charts (using CurveEditor UserControl now) ──
@@ -407,6 +444,13 @@ namespace PadForge.ViewModels
             return CurveLut.Lookup(lut, Math.Clamp(magnitude, 0, 1));
         }
 
+        /// <summary>True on a keyboard-and-mouse slot, where stick 0 is
+        /// mouse movement and stick 1 is the scroll wheel. Those are rate
+        /// outputs, so the speed multiplier row applies there and only
+        /// there: on a gamepad stick the per-axis response curves own the
+        /// shaping and a flat multiplier can only clip.</summary>
+        public bool IsPointerStick { get; init; }
+
         public StickConfigItem(int index, string title, int axisXIndex = -1, int axisYIndex = -1,
             string iconLabel = "", bool supportsBoundaryCalibration = false)
         {
@@ -416,6 +460,23 @@ namespace PadForge.ViewModels
             AxisYIndex = axisYIndex;
             IconLabel = iconLabel ?? string.Empty;
             SupportsBoundaryCalibration = supportsBoundaryCalibration;
+            // Weak event: no unsubscribe needed.
+            Resources.Strings.Strings.CultureChanged += OnCultureChanged;
+        }
+
+        /// <summary>Instance accessor over <see cref="CurvePresetNames"/>.
+        /// The XAML previously bound the static via x:Static, which WPF
+        /// evaluates exactly once, so the static-ctor rebuild above never
+        /// reached open views and the preset dropdown kept the old language
+        /// after a live switch (owner report 2026-07-16).</summary>
+        public string[] CurvePresetChoices => CurvePresetNames;
+
+        private void OnCultureChanged()
+        {
+            EnsurePresetsCultureCurrent();
+            OnPropertyChanged(nameof(CurvePresetChoices));
+            OnPropertyChanged(nameof(PresetNameX));
+            OnPropertyChanged(nameof(PresetNameY));
         }
 
         // ── Steering mode (v3.4 #94) ──
@@ -495,10 +556,14 @@ namespace PadForge.ViewModels
             DeadZoneShape = DeadZoneShape.ScaledRadial;
             CenterOffsetX = 0; CenterOffsetY = 0;
             if (IsCalibratingBoundary) StopBoundaryCalibration(commit: false);
+            // Centre calibration is the other in-flight run this reset has to
+            // cancel, and it was the one that got missed.
+            if (IsCalibrating) StopCalibration();
             BoundaryMap = ""; // #174: Reset All clears the boundary calibration too
             DeadZoneX = 0; DeadZoneY = 0;
             AntiDeadZoneX = 0; AntiDeadZoneY = 0;
             Linear = 0;
+            Sensitivity = 1.0;
             SensitivityCurveX = "0,0;1,1"; SensitivityCurveY = "0,0;1,1";
             MaxRangeX = 100; MaxRangeY = 100;
             MaxRangeXNeg = 100; MaxRangeYNeg = 100;
@@ -522,6 +587,8 @@ namespace PadForge.ViewModels
         private ICommand _resetLinearCommand;
         public ICommand ResetLinearCommand => _resetLinearCommand ??= new RelayCommand(() => Linear = 0);
         private ICommand _resetSensitivityXCommand, _resetSensitivityYCommand;
+        private ICommand _resetStickSensitivityCommand;
+        public ICommand ResetStickSensitivityCommand => _resetStickSensitivityCommand ??= new RelayCommand(() => Sensitivity = 1.0);
         public ICommand ResetSensitivityXCommand => _resetSensitivityXCommand ??= new RelayCommand(() => SensitivityCurveX = "0,0;1,1");
         public ICommand ResetSensitivityYCommand => _resetSensitivityYCommand ??= new RelayCommand(() => SensitivityCurveY = "0,0;1,1");
         private ICommand _resetMaxRangeXCommand, _resetMaxRangeYCommand;
@@ -542,7 +609,11 @@ namespace PadForge.ViewModels
 
             var samplesX = new List<short>(15);
             var samplesY = new List<short>(15);
-            var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
+            // Held in a field so StopCalibration can reach it. As a local, the
+            // run was unstoppable: Reset All zeroed CenterOffsetX/Y and the
+            // still-ticking timer wrote its averaged drift back about half a
+            // second later, silently undoing the reset.
+            var timer = _centerTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
             timer.Tick += (s, e) =>
             {
                 try
@@ -574,6 +645,20 @@ namespace PadForge.ViewModels
                 }
             };
             timer.Start();
+        }
+
+        private DispatcherTimer _centerTimer;
+
+        /// <summary>Aborts an in-flight centre calibration without committing
+        /// its samples. Twin of StopBoundaryCalibration(commit: false).</summary>
+        public void StopCalibration()
+        {
+            if (_centerTimer != null)
+            {
+                try { _centerTimer.Stop(); } catch { }
+                _centerTimer = null;
+            }
+            IsCalibrating = false;
         }
 
         // ────────────────────────────────────────────────

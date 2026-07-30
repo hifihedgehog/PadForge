@@ -421,6 +421,41 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _enableTouchpadOverlay, value);
         }
 
+        private bool _enableMenuOverlay = true;
+
+        /// <summary>Whether the radial / touch menu overlay renders while
+        /// a menu is engaged (#9 B-17). Default on; menus still hover and
+        /// commit blind when off (the runtime never depends on the
+        /// window).</summary>
+        public bool EnableMenuOverlay
+        {
+            get => _enableMenuOverlay;
+            set => SetProperty(ref _enableMenuOverlay, value);
+        }
+
+        private bool _enableShiftLayerFlyout = true;
+
+        /// <summary>Whether the shift-layer flyout appears while a slot is on
+        /// a non-Base layer. Default on. Purely a display of engagement state
+        /// the poll thread already computes, so turning it off changes nothing
+        /// about which layer is active or how rows resolve.</summary>
+        public bool EnableShiftLayerFlyout
+        {
+            get => _enableShiftLayerFlyout;
+            set => SetProperty(ref _enableShiftLayerFlyout, value);
+        }
+
+        private bool _enableProfileOverlay = true;
+
+        /// <summary>Whether the profile-switch overlay appears when a profile
+        /// changes. Default on. The switch itself still happens when off, this
+        /// only suppresses the announcement.</summary>
+        public bool EnableProfileOverlay
+        {
+            get => _enableProfileOverlay;
+            set => SetProperty(ref _enableProfileOverlay, value);
+        }
+
         private double _touchpadOverlayOpacity = 0.25;
 
         /// <summary>Surface opacity of the touchpad overlay (0.0–1.0).</summary>
@@ -611,6 +646,22 @@ namespace PadForge.ViewModels
             }
         }
 
+        private bool _isCreateFailed;
+
+        /// <summary>Whether the slot's latest virtual-controller create
+        /// attempt failed (engine createFailed latch). Its own status:
+        /// a failed slot with online devices is neither forging nor
+        /// awaiting devices.</summary>
+        public bool IsCreateFailed
+        {
+            get => _isCreateFailed;
+            set
+            {
+                if (SetProperty(ref _isCreateFailed, value))
+                    OnPropertyChanged(nameof(StatusText));
+            }
+        }
+
         private int _mappedDeviceCount;
 
         /// <summary>Number of devices mapped to this slot.</summary>
@@ -663,6 +714,8 @@ namespace PadForge.ViewModels
             {
                 if (_isEnabled && !_isInitializing)
                 {
+                    if (_isCreateFailed)
+                        return Strings.Instance.Main_VcFailed;
                     if (_mappedDeviceCount == 0)
                         return Strings.Instance.Dashboard_StatusCold;
                     if (_connectedDeviceCount == 0 && !_isVirtualControllerConnected)

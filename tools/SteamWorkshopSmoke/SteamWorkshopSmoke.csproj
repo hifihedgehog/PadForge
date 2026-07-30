@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Manually-run smoke harness for the Steam Workshop network paths. Standalone (not in
+       PadForge.sln), same as the other tools/. There are no live-network tests in the
+       suite; run this by hand to exercise the real Steam endpoints end to end. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>SteamWorkshopSmoke</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\PadForge.SteamWorkshop\PadForge.SteamWorkshop.csproj" />
+  </ItemGroup>
+
+</Project>

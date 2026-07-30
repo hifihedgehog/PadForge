@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using PadForge.Engine;
 using PadForge.Engine.RemoteLink;
 
@@ -435,6 +435,35 @@ namespace PadForge.Tests
             Assert.Equal(-1, rt.BatteryPercent);
         }
 
+        [Fact]
+        public void CapSense_RoundTrips_AndOmitsTheUntouchedFrame()
+        {
+            // Touched channels ride the one-byte bitmask block (v26).
+            var s = new CustomInputState { CapSense = new bool[4] };
+            s.CapSense[0] = true;  // left stick top
+            s.CapSense[3] = true;  // right grip
+            var rt = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(s, NoSensors));
+            Assert.NotNull(rt.CapSense);
+            Assert.True(rt.CapSense[0]);
+            Assert.False(rt.CapSense[1]);
+            Assert.False(rt.CapSense[2]);
+            Assert.True(rt.CapSense[3]);
+
+            // All-untouched omits the block: an omitted block decodes to
+            // "nothing touched" (null array reads false everywhere),
+            // exactly the neutral the encoder skipped.
+            var idle = new CustomInputState { CapSense = new bool[4] };
+            var rtIdle = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(idle, NoSensors));
+            Assert.Null(rtIdle.CapSense);
+
+            // A malformed follow-up frame resets a previously-touched
+            // target to neutral (the decode contract).
+            var target = new CustomInputState { CapSense = new bool[4] };
+            target.CapSense[2] = true;
+            Assert.False(CustomInputStateCodec.DecodeInto(new byte[] { 1, 0 }, target));
+            Assert.All(target.CapSense, b => Assert.False(b));
+        }
+
         /// <summary>
         /// Mirror-surface tripwire (code-audit lens 1m). CustomInputState's
         /// public field list must exactly match the set the codec knowingly
@@ -445,16 +474,65 @@ namespace PadForge.Tests
         /// dead over Remote Link for a month without any test noticing.
         /// </summary>
         [Fact]
+        public void NfcTag_RoundTrips_AndOmitsTheIdleFrame()
+        {
+            // Span 5 (Any + 4 tag buttons); buttons 0 and 3 held.
+            var s = new CustomInputState { NfcTag = new bool[5] };
+            s.NfcTag[0] = true;  // Any NFC Tag
+            s.NfcTag[3] = true;  // a registered tag
+            var rt = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(s, NoSensors));
+            Assert.NotNull(rt.NfcTag);
+            Assert.True(rt.NfcTag[0]);
+            Assert.False(rt.NfcTag[1]);
+            Assert.False(rt.NfcTag[2]);
+            Assert.True(rt.NfcTag[3]);
+
+            // An all-clear NFC array is omitted, so it decodes back to null,
+            // exactly the neutral the encoder skipped (the CapSense contract).
+            var idle = new CustomInputState { NfcTag = new bool[5] };
+            var rtIdle = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(idle, NoSensors));
+            Assert.Null(rtIdle.NfcTag);
+        }
+
+        [Fact]
+        public void NfcTag_CarriesTheHighestButton255()
+        {
+            // The registry allows buttons 1..255 (a 256-element array).
+            // The span byte stores span-1 so index 255 survives the wire
+            // (Codex #3: a naive 255 clamp dropped it).
+            var s = new CustomInputState { NfcTag = new bool[256] };
+            s.NfcTag[255] = true;
+            var rt = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(s, NoSensors));
+            Assert.NotNull(rt.NfcTag);
+            Assert.Equal(256, rt.NfcTag.Length);
+            Assert.True(rt.NfcTag[255]);
+            Assert.False(rt.NfcTag[0]);
+        }
+
+        [Fact]
         public void EveryStateField_IsAccountedForByTheCodec()
         {
             var known = new[]
             {
                 "Axis", "Sliders", "Povs", "Buttons", "Gyro", "Accel",
                 "AccelAux",
+                // #252 aux gyro (SDL_SENSOR_GYRO_L, left Joy-Con of a pair):
+                // wired into Encode / DecodeInto through the EXTENSION tail
+                // (the u16 presence mask was full at Block.Nfc), plus
+                // ResetToNeutral and Clone.
+                "GyroAux",
                 "Touchpads", "Midi", "Ir", "JoyConIrIntensity",
                 "JoyCon2MouseDX", "JoyCon2MouseDY",
                 "MouseRawDX", "MouseRawDY",
                 "BatteryPercent", "BatteryCharging",
+                // v26 capsense (the fork's SDL_GetGamepadCapSense): wired
+                // into Encode (Block.CapSense bitmask byte), DecodeInto,
+                // ResetToNeutral, and Clone.
+                "CapSense",
+                // #241 NFC tag buttons (the fork's SDL_GetGamepadNfcTagUid):
+                // wired into Encode (Block.Nfc span + bitmask), DecodeInto,
+                // ResetToNeutral, and Clone.
+                "NfcTag",
             };
             var actual = typeof(CustomInputState)
                 .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -34,6 +34,13 @@ namespace PadForge.Common.Input
         /// SDL3: instance IDs are uint (0 = invalid).
         /// </summary>
         private readonly Dictionary<uint, SdlDeviceWrapper> _openedSdlInstanceIds = new Dictionary<uint, SdlDeviceWrapper>();
+
+        // SDL instance IDs identified as OUR OWN HM virtuals and rejected
+        // by the self-readback guard; kept so each enumeration pass skips
+        // them instead of re-opening and re-probing every 2 s. Cleared
+        // implicitly on process restart; SDL instance IDs are unique per
+        // connection so a REAL device never inherits a suppressed id.
+        private readonly HashSet<uint> _suppressedSelfVirtualIds = new();
 
         /// <summary>
         /// First-observed tick (UTC) per SDL instance ID for which the
@@ -116,6 +123,11 @@ namespace PadForge.Common.Input
                     if (_openedSdlInstanceIds.ContainsKey(instanceId))
                         continue;
 
+                    // Previously rejected self-virtual: don't reopen it on
+                    // every enumeration pass.
+                    if (_suppressedSelfVirtualIds.Contains(instanceId))
+                        continue;
+
                     // Open the device by instance ID. The SDL3 fork already
                     // dropped HIDMaestro HIDs from hid_enumerate and any HM-
                     // only XInput slot from SDL_XINPUT_JoystickDetect, so
@@ -127,10 +139,54 @@ namespace PadForge.Common.Input
                         continue;
                     }
 
+                    // Self-readback guard (2026-07-20): PadForge must NEVER
+                    // open its own HM virtuals. The fork-side enumeration
+                    // filter and the cloak both exist, but a driver upgrade
+                    // recreates the virtual devnodes with fresh instance
+                    // paths and can slip past both (observed live: the SDL
+                    // switch driver then FIGHTS the virtual Switch Pro's
+                    // protocol responder, cyclically resetting its inputs
+                    // and interleaving rumble). Coverage is narrower than
+                    // it looks: SDL's HIDAPI drivers overwrite the hid-level
+                    // "HM-CTL-<n>" serial with the fabricated MAC during
+                    // their identity handshake, and non-Xbox virtuals'
+                    // interface paths carry no HIDMAESTRO marker (the fork
+                    // filter reads DEVPKEY hardware IDs for that reason).
+                    // So this guard catches failed-handshake and
+                    // serial-preserving cases only; the fork enumeration
+                    // filter remains the primary defense, and the XInput
+                    // backend leak (no serial, no path marker) is out of
+                    // scope here entirely.
+                    bool selfVirtual =
+                        (wrapper.SerialNumber != null
+                         && wrapper.SerialNumber.StartsWith("HM-CTL-", StringComparison.Ordinal))
+                        || (wrapper.DevicePath != null
+                            && wrapper.DevicePath.IndexOf("HIDMAESTRO", StringComparison.OrdinalIgnoreCase) >= 0);
+                    if (selfVirtual)
+                    {
+                        Engine.SdlDiagLog.WriteLine(
+                            $"DEV self-virtual suppressed SDL#{instanceId} {wrapper.VendorId:X4}:{wrapper.ProductId:X4} serial={wrapper.SerialNumber}");
+                        _suppressedSelfVirtualIds.Add(instanceId);
+                        wrapper.Dispose();
+                        continue;
+                    }
+
                     Debug.WriteLine($"[Step1] Accepted device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
                     Engine.SdlDiagLog.WriteLine($"DEV + SDL#{instanceId} {wrapper.VendorId:X4}:{wrapper.ProductId:X4} {wrapper.Name}");
 
-                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid);
+                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid,
+                        currentInstanceIds, wrapper.SerialNumber);
+
+                    // Same-serial twin (owner-approved 2026-07-25): the
+                    // resolver bound this connection to a row whose
+                    // identity differs from the wrapper's serial-derived
+                    // GUID (an adopted or rebound twin row keeping its
+                    // persisted identity, or a first-ever minted one).
+                    // The wrapper must carry that identity BEFORE
+                    // LoadFromSdlDevice, which stamps the row's
+                    // InstanceGuid from the wrapper.
+                    if (ud.InstanceGuid != wrapper.InstanceGuid)
+                        wrapper.OverrideInstanceGuid(ud.InstanceGuid);
 
                     // Populate from the SDL device.
                     ud.LoadFromSdlDevice(wrapper);
@@ -250,7 +306,17 @@ namespace PadForge.Common.Input
                         if (_ptpHandleToGuid.TryGetValue(h, out var guid))
                         {
                             var ud = FindOnlineDeviceByInstanceGuid(guid);
-                            if (ud != null) ud.IsOnline = false;
+                            if (ud != null)
+                            {
+                                ud.IsOnline = false;
+                                // Same neutralize the MIDI and NFC removal
+                                // paths perform. A click-bar press or a mapped
+                                // contact asserted when the touchpad vanished
+                                // stayed stamped on the slot's combined output,
+                                // because Step 3 keeps the last OutputState for
+                                // an offline device.
+                                NeutralizeMappedOutputsFor(ud);
+                            }
                             _ptpHandleToGuid.Remove(h);
                         }
                         disconnected.Add(h);
@@ -322,7 +388,14 @@ namespace PadForge.Common.Input
             else if (_ptpMergedCreated)
             {
                 var mergedUd = FindOnlineDeviceByInstanceGuid(PtpMergedGuid);
-                if (mergedUd != null) mergedUd.IsOnline = false;
+                if (mergedUd != null)
+                {
+                    mergedUd.IsOnline = false;
+                    // This one fires on a live config change (merging turned
+                    // off), not just at shutdown, so a held input on the merged
+                    // surface would latch on the slot exactly as above.
+                    NeutralizeMappedOutputsFor(mergedUd);
+                }
                 _ptpMergedCreated = false;
                 changed = true;
             }
@@ -462,6 +535,22 @@ namespace PadForge.Common.Input
         /// Finds a UserDevice by its instance GUID.
         /// Uses a manual loop to avoid LINQ closure allocations in the hot path.
         /// </summary>
+        /// <summary>Capped memo for config Guid strings parsed on the
+        /// 1 kHz path (motion-source resolution). Same policy as the
+        /// tuning parse memos.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, Guid>
+            s_guidParseCache = new(System.StringComparer.Ordinal);
+
+        internal static bool TryParseGuidCached(string text, out Guid guid)
+        {
+            if (string.IsNullOrEmpty(text)) { guid = Guid.Empty; return false; }
+            if (s_guidParseCache.TryGetValue(text, out guid)) return guid != Guid.Empty;
+            bool ok = Guid.TryParse(text, out guid);
+            if (s_guidParseCache.Count < 4096)
+                s_guidParseCache[text] = ok ? guid : Guid.Empty;
+            return ok;
+        }
+
         private UserDevice FindOnlineDeviceByInstanceGuid(Guid instanceGuid)
         {
             var devices = SettingsManager.UserDevices?.Items;
@@ -530,24 +619,247 @@ namespace PadForge.Common.Input
         /// When a fallback match is found, migrates the old device and its
         /// UserSetting to the new InstanceGuid.
         /// </summary>
-        private UserDevice FindOrCreateUserDevice(Guid instanceGuid, Guid productGuid = default)
+        // Internal so the same-model adoption path is testable end to end.
+        // Pinning only the serial predicate left the CALL SITE unguarded:
+        // deleting the gate from the loop kept every predicate test green.
+        //
+        // livePresentSdlIds (same-serial twin gate, owner-approved
+        // 2026-07-25): the SDL sweep passes the instance IDs SDL reports
+        // present RIGHT NOW. Serial outranks device path in
+        // BuildInstanceGuid, so two units reporting the identical serial
+        // string (a real clone-pad shape) build the SAME InstanceGuid, and
+        // without this gate the second unit stole the first one's row and
+        // disposed its live wrapper, violating the process-time
+        // distinctness rule. An exact-GUID row is treated as a LIVE TWIN's
+        // row only when its claiming wrapper's SDL instance is still in
+        // the present set: a same-unit reconnect always arrives under a
+        // NEW instance id while the old one has left the set (one physical
+        // device cannot be two present instances), so the rebind flow the
+        // disconnect debounce relies on is untouched. Every non-SDL caller
+        // passes null and keeps today's semantics exactly.
+        internal UserDevice FindOrCreateUserDevice(Guid instanceGuid, Guid productGuid = default,
+            HashSet<uint> livePresentSdlIds = null, string serialNumber = null)
         {
             var devices = SettingsManager.UserDevices;
-            if (devices == null) return new UserDevice();
+            if (devices == null) return new UserDevice { InstanceGuid = instanceGuid };
 
             lock (devices.SyncRoot)
             {
                 // 1. Exact match by InstanceGuid.
+                UserDevice exact = null;
                 for (int i = 0; i < devices.Items.Count; i++)
                 {
                     if (devices.Items[i].InstanceGuid == instanceGuid)
-                        return devices.Items[i];
+                    { exact = devices.Items[i]; break; }
+                }
+                // The flapped-unit rebind, HOISTED above every other
+                // resolution (round eight, R11). A same-product,
+                // SAME-SERIAL row still marked online while its claiming
+                // wrapper's SDL instance has LEFT the present set is this
+                // same physical unit re-identifying inside the disconnect
+                // debounce: its old connection is gone, and one physical
+                // device is never two present instances. It outranks the
+                // exact-match return in BOTH directions: (1) when the
+                // exact row is a live sibling (the twin collision), the
+                // flapped twin must get its own row back; (2) when the
+                // exact row is OFFLINE, adopting it would move a LIVE
+                // unit onto different assignments mid-session, breaking
+                // in-process identity stability. The serial constraint is
+                // load-bearing (round eight): without it, a THIRD
+                // same-model unit sitting inside its own disconnect
+                // debounce was hijacked and the two units swapped
+                // identities. Rows with no serial (path/sdlguid derived
+                // identities) compare as empty == empty, which stays
+                // inside the drawer policy for indistinguishable shells.
+                //
+                // Dispose truth (round eight, R12, correcting round
+                // seven's claim): returning this row means
+                // LoadFromSdlDevice swaps the wrapper IN PLACE and
+                // disposes the stale one right there
+                // (UserDevice.LoadFromDevice), the same flow every
+                // exact-guid rebind has used since 54b572b9.
+                // DeviceLiveUnderNewWrapper does NOT shield that dispose;
+                // it is consulted only in the orphan sweep, which this
+                // precedes. The two 2026-07-11 commits embody opposing
+                // policies (dispose-at-rebind to keep handles off the
+                // finalizer thread vs leave-to-finalizer to protect
+                // shared fork HIDAPI contexts); dispose-at-rebind is the
+                // long-established behavior, including the
+                // hardware-validated Wii re-identify, so it stands.
+                // WATCHED RESIDUAL: if fork-driver re-identify churn ever
+                // recurs, the in-place dispose at rebind time is the
+                // first suspect.
+                // The scan runs ANCHOR-FREE (round nine, R7): it used to
+                // require an exact-GUID row to read the incoming serial
+                // from, so deleting a twin's offline sibling row (the
+                // Devices page allows it, with no online gate) left a
+                // flapped LIVE twin with no anchor, no zombie match, and
+                // a freshly minted row that orphaned its own. The
+                // wrapper's serial is the quantity the constraint always
+                // meant; exact.SerialNumber was only ever a proxy for it.
+                // Empty serials still compare equal to each other, which
+                // keeps path-derived identities inside the drawer policy
+                // for indistinguishable shells.
+                string incomingSerial = serialNumber ?? exact?.SerialNumber ?? "";
+                // A NON-EMPTY serial is required when there is no anchor
+                // (round ten). Empty == empty carries zero identity
+                // information, so anchor-free it matched ANY online
+                // same-product row whose claimant had lapsed: a
+                // genuinely new serialless pad, enumerated in the same
+                // sweep as a momentarily-absent sibling, adopted that
+                // sibling's row, mappings and calibration, and the two
+                // pads swapped when the first returned. Round nine's
+                // deleted-sibling fix is untouched by this: a twin
+                // COLLISION only exists when the serial is non-empty,
+                // because BuildInstanceGuid falls through to the
+                // per-unit device path when it is empty, so two
+                // serialless units never derive the same identity.
+                // OPEN (round 37): the "exact != null" disjunct admits this
+                // scan for SERIALLESS units, where the row test below
+                // degenerates to "" == "". That is load-bearing for the case
+                // FlappedTwin_InsideTheDebounce_RebindsToItsOwnRow pins (one
+                // unit re-identifying inside the debounce must find its OWN
+                // row, not mint a new one), and it is also what lets two
+                // same-model serialless pads cross-bind when one is inside its
+                // debounce while the other enumerates. Removing the disjunct
+                // fixes the second and breaks the first, so the two cases need
+                // separating on whether `exact` is a live-twin collision
+                // rather than on the serial. Owner call, not a mechanical fix.
+                // Is the row we would otherwise return already CLAIMED by a
+                // live, present device? Computed here rather than after the
+                // scan because the scan needs it: it is what separates the two
+                // serialless cases, which the serial cannot.
+                bool liveTwinCollision = exact != null
+                    && livePresentSdlIds != null
+                    && exact.IsOnline
+                    && exact.Device != null
+                    && livePresentSdlIds.Contains(exact.Device.SdlInstanceId);
+
+                // With an EMPTY serial the row test below degenerates to
+                // "" == "", so admitting this scan on "exact != null" alone let
+                // any online same-product row whose SDL instance had lapsed
+                // match. Two same-model serialless pads, one inside its 2 s
+                // disconnect debounce while the other re-identified, cross-bound:
+                // the returning unit was stamped with the absent unit's identity
+                // and inherited its slot, mappings and calibration.
+                //
+                // The serial cannot separate that from the case round seven
+                // pins (ONE unit re-identifying inside its own debounce must
+                // find its own row), because both arrive with an empty serial.
+                // liveTwinCollision can. Re-identifying, the exact row is held
+                // by the live sibling, so returning it is impossible and the
+                // scan is the only way home. Cross-binding, the exact row is
+                // the arriving pad's OWN row with nobody on it, so there is
+                // nothing to search for and the scan can only do harm.
+                if (livePresentSdlIds != null && productGuid != Guid.Empty
+                    && (liveTwinCollision || !string.IsNullOrEmpty(incomingSerial)))
+                {
+                    for (int i = 0; i < devices.Items.Count; i++)
+                    {
+                        var d = devices.Items[i];
+                        if (d.IsOnline && d.ProductGuid == productGuid
+                            && d.InstanceGuid != Guid.Empty
+                            && d.InstanceGuid != instanceGuid
+                            && d.Device != null
+                            && !livePresentSdlIds.Contains(d.Device.SdlInstanceId)
+                            && string.Equals(d.SerialNumber ?? "", incomingSerial,
+                                StringComparison.Ordinal))
+                            return d;
+                    }
+                }
+
+                if (exact != null && !liveTwinCollision)
+                    return exact;
+
+                if (liveTwinCollision)
+                {
+                    // TWIN RESOLUTION (round seven R4/R5, zombie rebind
+                    // hoisted above in round eight).
+                    if (productGuid != Guid.Empty)
+                    {
+                        // (b) The drawer adoption, KEEPING the row's own
+                        // identity (round seven, R5). The incoming
+                        // serial-derived GUID is unusable here (it collides
+                        // with the live sibling), and minting a fresh one
+                        // per resolve re-keyed the twin EVERY LAUNCH: its
+                        // per-device slot configs (lighting, triggers,
+                        // audio) could never persist and grew a dead saved
+                        // entry per launch, device-pinned mapping rows died
+                        // on every reconnect, and Remote Link's
+                        // PeerLocalDeviceId broke its documented stability
+                        // contract. The adopted row's existing GUID is what
+                        // its UserSettings and every other GUID-keyed store
+                        // already reference, so identity is NOT restamped
+                        // and nothing is migrated; the caller pushes the
+                        // row's GUID onto the wrapper instead. Ordinary
+                        // non-collision adoption keeps restamping, because
+                        // there the incoming GUID is the device's true
+                        // stable identity. The asymmetry is deliberate.
+                        for (int i = 0; i < devices.Items.Count; i++)
+                        {
+                            var d = devices.Items[i];
+                            // Empty-guid rows (corrupt persisted data) are
+                            // never adopted as a twin identity (round
+                            // eight, R11): the caller's wrapper override
+                            // no-ops on Guid.Empty and the row would then
+                            // be restamped with the COLLIDING serial GUID.
+                            if (!d.IsOnline && d.ProductGuid == productGuid
+                                && d.InstanceGuid != Guid.Empty)
+                                return d;
+                        }
+                    }
+
+                    // (c) First-ever twin: a session-minted identity,
+                    // stable from the next launch on via (b). Same-serial
+                    // hardware with NO usable product identity (VID/PID
+                    // 0000) cannot take (a)/(b), because an Empty-product
+                    // scan would match across device classes, so it
+                    // re-mints per launch; accepted degenerate-hardware
+                    // limitation. WATCHED RESIDUAL: if SDL ever listed a
+                    // re-identifying device's old and new instance ids in
+                    // ONE snapshot, the collision predicate above would
+                    // read it as a live sibling and (a) would not match.
+                    // No evidence SDL produces that shape; if
+                    // single-device duplicate rows ever appear, this gate
+                    // is the first suspect.
+                    // ProductGuid stamped at creation (round eight, R11):
+                    // LoadFromSdlDevice normally stamps it right after,
+                    // but a failed load used to leave the row
+                    // product-less and therefore invisible to every
+                    // adoption scan forever.
+                    var twin = new UserDevice
+                    { InstanceGuid = Guid.NewGuid(), ProductGuid = productGuid };
+                    devices.Items.Add(twin);
+                    return twin;
                 }
 
                 // 2. Fallback: find an offline device with the same ProductGuid.
                 //    This handles BT controllers that reconnect with a new device path.
+                //    ProductGuid is VID+PID only, so it cannot tell two units of
+                //    the same model apart, and that is DELIBERATE (owner decision,
+                //    2026-07-25). Identical controllers are physically
+                //    indistinguishable to their owner: you cannot tell which unit
+                //    you pulled out of the drawer without labelling the shell. So
+                //    identity here follows CONNECTION ORDER, not hardware. The
+                //    first unit powered on claims the stored entry and its
+                //    mappings, whichever unit it happens to be.
+                //    A serial gate was tried here and REVERTED: it blocked the
+                //    adoption when the serials differed, which is exactly the
+                //    drawer case, and the second controller came up blank instead
+                //    of inheriting the config the user had already built.
+                //    Serial-pinned identity is right only where the user has a
+                //    mental model of a specific pairing (DualShock 3, Wii), which
+                //    is a separate, per-device-class decision and is NOT this
+                //    generic path.
                 if (productGuid != Guid.Empty)
                 {
+                    // No Guid.Empty exclusion here, unlike the twin lane
+                    // above: on this ordinary path the row is RESTAMPED
+                    // with the incoming identity, so adopting a corrupt
+                    // empty-guid row repairs it instead of creating the
+                    // duplicate the twin lane must avoid (where the
+                    // wrapper override no-ops on Empty). The asymmetry is
+                    // deliberate.
                     UserDevice fallback = null;
                     for (int i = 0; i < devices.Items.Count; i++)
                     {
@@ -565,20 +877,42 @@ namespace PadForge.Common.Input
                         Guid oldGuid = fallback.InstanceGuid;
                         fallback.InstanceGuid = instanceGuid;
 
-                        // Also migrate the linked UserSetting so slot assignment
-                        // and PadSetting are preserved.
+                        // Also migrate the linked UserSettings so slot
+                        // assignments and PadSettings are preserved.
                         MigrateUserSettingGuid(oldGuid, instanceGuid);
+
+                        // Device-PINNED references (mapping-row sources,
+                        // activator legs, menu entries, per-pad slot
+                        // configs) live in UI-owned structures this poll
+                        // thread must not touch, so the re-key is queued
+                        // and UpdatePadDeviceInfo drains it on the UI
+                        // thread through the same remap helper
+                        // ApplyProfile's rebind lane uses (round eight,
+                        // R13: without this, a re-keyed device's pinned
+                        // rows produced no output and its lighting reset).
+                        lock (PendingDeviceGuidMigrationsLock)
+                            PendingDeviceGuidMigrations.Add((oldGuid, instanceGuid));
 
                         return fallback;
                     }
                 }
 
-                // 3. No match — create a new device.
+                // 3. No match: create a new device.
                 var ud = new UserDevice { InstanceGuid = instanceGuid };
                 devices.Items.Add(ud);
                 return ud;
             }
         }
+
+        /// <summary>Adoption re-keys queued by the poll thread for the UI
+        /// thread to drain (round eight, R13). InputService's
+        /// UpdatePadDeviceInfo rewrites the device-pinned mapping-row /
+        /// activator / menu guids and moves the per-pad slot configs;
+        /// those structures are UI-owned and must never be walked from
+        /// here.</summary>
+        internal static readonly System.Collections.Generic.List<(Guid Old, Guid New)>
+            PendingDeviceGuidMigrations = new();
+        internal static readonly object PendingDeviceGuidMigrationsLock = new();
 
         /// <summary>
         /// Updates a UserSetting's InstanceGuid when the physical device's
@@ -591,20 +925,35 @@ namespace PadForge.Common.Input
 
             lock (settings.SyncRoot)
             {
-                for (int i = 0; i < settings.Items.Count; i++)
+                // A device may be assigned to several slots at once (one
+                // UserSetting per slot, same InstanceGuid, different
+                // MapTo), so EVERY matching row follows the device. The
+                // old first-match break silently orphaned slots 2..N on
+                // any adoption (round seven, R6; pre-existing since
+                // v2.0.0-beta, its comment claimed one row per device).
+                // When a (newGuid, MapTo) row ALREADY exists (an orphaned
+                // setting colliding with the adoption target), the
+                // existing destination row is the live truth and the old
+                // row is dropped instead of rewritten, so the migration
+                // can never manufacture duplicate (guid, slot) rows
+                // (round eight, R5).
+                var items = settings.Items;
+                for (int i = items.Count - 1; i >= 0; i--)
                 {
-                    if (settings.Items[i].InstanceGuid == oldGuid)
+                    if (items[i].InstanceGuid != oldGuid) continue;
+                    int mapTo = items[i].MapTo;
+                    bool twinExists = false;
+                    for (int j = 0; j < items.Count; j++)
                     {
-                        settings.Items[i].InstanceGuid = newGuid;
-                        break; // One UserSetting per device.
+                        if (j != i && items[j].InstanceGuid == newGuid && items[j].MapTo == mapTo)
+                        { twinExists = true; break; }
                     }
+                    if (twinExists) items.RemoveAt(i);
+                    else items[i].InstanceGuid = newGuid;
                 }
             }
         }
 
-        /// <summary>
-        /// Marks a device as offline, disposes its SDL handle, and clears runtime state.
-        /// </summary>
         /// <summary>True when the physical device behind <paramref name="orphan"/>
         /// is still online through a DIFFERENT wrapper (the driver re-identify
         /// rebind: same InstanceGuid, new SDL instance id). Disposing the stale
@@ -627,6 +976,9 @@ namespace PadForge.Common.Input
             return false;
         }
 
+        /// <summary>
+        /// Marks a device as offline, disposes its SDL handle, and clears runtime state.
+        /// </summary>
         private void MarkDeviceOffline(UserDevice ud)
         {
             if (ud == null) return;
@@ -661,18 +1013,36 @@ namespace PadForge.Common.Input
                 RawHidOutput.ResetDevice(ud.DevicePath);
             }
 
+            NeutralizeMappedOutputsFor(ud);
+
+            // Any confirmed disconnect can reshuffle the synthetic "XInput#N"
+            // paths the impulse writer caches its handles under, and a stale
+            // entry whose handle is still valid writes to the wrong pad
+            // without ever failing into the self-heal path.
+            XboxImpulseHidWriter.InvalidateCachedTargets();
+        }
+
+        /// <summary>Clears runtime state and neutralizes the device's per-slot
+        /// mapped outputs. Step 3 skips offline devices and "keeps the last
+        /// OutputState" (a guard against transient read glitches), so whatever
+        /// was stamped on the final frames before a confirmed disconnect would
+        /// otherwise persist for as long as the slot stays active: a detached
+        /// pedal's recentered read (inverted trigger -> ~32767 = 50% engaged),
+        /// or a button the user was holding at unplug. Step 4 copies
+        /// OutputState into the slot's combined output and the per-device
+        /// Triggers/Sticks preview reads RawMappedState, so both must go
+        /// neutral (Gamepad default: triggers released, sticks centered).
+        ///
+        /// <para>Split out of MarkDeviceOffline so the MIDI and NFC teardown
+        /// lanes can share it. Those two dispose their own endpoint object and
+        /// so cannot call MarkDeviceOffline (it would double-dispose), which is
+        /// exactly why they were silently skipping this step and freezing a
+        /// held note or CC into the slot after the endpoint vanished.</para></summary>
+        private static void NeutralizeMappedOutputsFor(UserDevice ud)
+        {
+            if (ud == null) return;
             ud.ClearRuntimeState();
 
-            // Neutralize the device's per-slot mapped outputs. Step 3 skips
-            // offline devices and "keeps the last OutputState" (a guard against
-            // transient read glitches), so whatever was stamped on the final
-            // frames before this confirmed disconnect would otherwise persist
-            // for as long as the slot stays active: a detached pedal's
-            // recentered read (inverted trigger -> ~32767 = 50% engaged), or a
-            // button/pedal the user was holding at unplug. Step 4 copies
-            // OutputState into the slot's combined output and the per-device
-            // Triggers/Sticks preview reads RawMappedState, so both must go
-            // neutral (Gamepad default: triggers released, sticks centered).
             var allSettings = SettingsManager.UserSettings;
             if (allSettings != null)
             {
@@ -906,6 +1276,13 @@ namespace PadForge.Common.Input
                     {
                         ud.IsOnline = false;
                         ud.Device = null;
+                        // Same neutralize the unplug path performs. This is not
+                        // only an app-shutdown path: it also runs before a
+                        // Windows MIDI Services uninstall, with the app still
+                        // live, and Step 3 keeps the last OutputState for an
+                        // offline device. A note or CC held at that moment
+                        // stayed stamped on the slot's combined output.
+                        NeutralizeMappedOutputsFor(ud);
                     }
                     kvp.Value.Dispose();
                 }
@@ -920,6 +1297,47 @@ namespace PadForge.Common.Input
         /// controller endpoints are deliberately included — assigning one
         /// as an input to another slot is the no-hardware loopback path.
         /// </summary>
+        private readonly Dictionary<string, long> _midiOpenFailedAt = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Closes any open loopback input connections to the
+        /// given PadForge MIDI endpoint. MUST run before that endpoint's
+        /// device-side teardown: tearing down a virtual endpoint while
+        /// this process still holds a client connection to it is the
+        /// deterministic midisrv wedge (bench 2026-07-23: every switch
+        /// away from a working MIDI slot with the loopback open left the
+        /// service hung past SCM control). Callers demote the endpoint's
+        /// registry claim first (MidiVirtualController.MarkClosing) so
+        /// the scanner cannot reopen it in this window.</summary>
+        internal void CloseMidiInputsForEndpoint(string uniqueEndpointId)
+        {
+            if (string.IsNullOrEmpty(uniqueEndpointId)) return;
+            lock (_midiInputsLock)
+            {
+                List<string> matches = null;
+                foreach (var kvp in _openedMidiInputs)
+                    if (kvp.Key.IndexOf(uniqueEndpointId, StringComparison.OrdinalIgnoreCase) >= 0)
+                        (matches ??= new List<string>()).Add(kvp.Key);
+                if (matches == null) return;
+                foreach (var id in matches)
+                {
+                    var dev = _openedMidiInputs[id];
+                    var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
+                    if (ud != null)
+                    {
+                        ud.IsOnline = false;
+                        ud.Device = null;
+                        // Closing one endpoint while the app runs on. Same
+                        // neutralize the unplug path performs, for the same
+                        // reason: without it a held note or CC survives the
+                        // close on the slot's combined output.
+                        NeutralizeMappedOutputsFor(ud);
+                    }
+                    dev.Dispose();
+                    _openedMidiInputs.Remove(id);
+                }
+            }
+        }
+
         private bool UpdateMidiInputDevices()
         {
             if (_midiInputsSuppressed)
@@ -955,9 +1373,32 @@ namespace PadForge.Common.Input
                 if (_midiInputsSuppressed)
                     return false;
 
+                long midiNow = Environment.TickCount64;
                 foreach (var (id, name) in endpoints)
                 {
                     current.Add(id);
+
+                    // PadForge's own virtual-controller endpoints (the
+                    // documented no-hardware loopback path) open ONLY while
+                    // the owning MidiVirtualController in this process
+                    // reports its device side fully connected. That is the
+                    // authoritative state, not a name-plus-settle-time
+                    // heuristic: a PadForge-shaped endpoint with no ready
+                    // owner is either mid-create (the owner will flag ready
+                    // when the service finishes) or a corpse stranded by a
+                    // failed service-side teardown, and opening a corpse
+                    // re-animates it inside the service (see
+                    // MidiEndpointJanitor, which removes them instead).
+                    if (MidiEndpointJanitor.IsPadForgeEndpointId(id)
+                        && !_openedMidiInputs.ContainsKey(id)
+                        && !MidiVirtualController.IsReadyEndpointInstance(id))
+                        continue;
+
+                    // A recent failed open backs off instead of re-poking a
+                    // sick service every sweep.
+                    if (_midiOpenFailedAt.TryGetValue(id, out long failedAt)
+                        && midiNow - failedAt < 60_000)
+                        continue;
 
                     if (_openedMidiInputs.TryGetValue(id, out var existing))
                     {
@@ -977,8 +1418,10 @@ namespace PadForge.Common.Input
                         if (!dev.Open())
                         {
                             dev.Dispose();
+                            _midiOpenFailedAt[id] = midiNow;
                             continue;
                         }
+                        _midiOpenFailedAt.Remove(id);
 
                         UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
                         ud.LoadFromExternalDevice(dev);
@@ -998,6 +1441,16 @@ namespace PadForge.Common.Input
                     if (!current.Contains(kvp.Key))
                         (gone ??= new List<string>()).Add(kvp.Key);
 
+                // Forget cooldown tracking for vanished ids so a
+                // re-created endpoint starts fresh.
+                if (_midiOpenFailedAt.Count > 0)
+                {
+                    List<string> stale = null;
+                    foreach (var key in _midiOpenFailedAt.Keys)
+                        if (!current.Contains(key)) (stale ??= new List<string>()).Add(key);
+                    if (stale != null) foreach (var key in stale) _midiOpenFailedAt.Remove(key);
+                }
+
                 if (gone != null)
                 {
                     foreach (var id in gone)
@@ -1008,6 +1461,10 @@ namespace PadForge.Common.Input
                         {
                             ud.IsOnline = false;
                             ud.Device = null;
+                            // Same neutralize MarkDeviceOffline performs. Without
+                            // it a note or CC held when the endpoint vanished
+                            // stayed stamped on the slot's combined output.
+                            NeutralizeMappedOutputsFor(ud);
                         }
                         dev.Dispose();
                         _openedMidiInputs.Remove(id);
@@ -1035,6 +1492,11 @@ namespace PadForge.Common.Input
                     {
                         ud.IsOnline = false;
                         ud.Device = null;
+                        // Same neutralize the reader-removed path performs.
+                        // Step 3 keeps the last OutputState for an offline
+                        // device, so a tag-presence input asserted at teardown
+                        // stayed stamped on the slot's combined output.
+                        NeutralizeMappedOutputsFor(ud);
                     }
                     kvp.Value.Dispose();
                 }
@@ -1128,6 +1590,10 @@ namespace PadForge.Common.Input
                         {
                             ud.IsOnline = false;
                             ud.Device = null;
+                            // Same neutralize MarkDeviceOffline performs. Without
+                            // it a note or CC held when the endpoint vanished
+                            // stayed stamped on the slot's combined output.
+                            NeutralizeMappedOutputsFor(ud);
                         }
                         dev.Dispose();
                         _openedNfcReaders.Remove(reader);
@@ -1289,10 +1755,17 @@ namespace PadForge.Common.Input
         {
             lock (_restrictedLock)
             {
-                if (restricted) _restrictedDevices.Add(instanceGuid);
-                else _restrictedDevices.Remove(instanceGuid);
+                bool changed = restricted
+                    ? _restrictedDevices.Add(instanceGuid)
+                    : _restrictedDevices.Remove(instanceGuid);
+                if (changed) _restrictedSnapshotCache = null;
             }
         }
+
+        // Rebuilt only when the set changes: while a Remote Link
+        // gamepad-only restriction was active, the old shape allocated a
+        // Guid[] per poll tick (menu walk + per-macro-slot checks).
+        private Guid[] _restrictedSnapshotCache;
 
         /// <summary>Snapshot of restricted device GUIDs, or null when none (early-out).</summary>
         private Guid[] RestrictedSnapshot()
@@ -1300,8 +1773,11 @@ namespace PadForge.Common.Input
             lock (_restrictedLock)
             {
                 if (_restrictedDevices.Count == 0) return null;
+                var cached = _restrictedSnapshotCache;
+                if (cached != null) return cached;
                 var a = new Guid[_restrictedDevices.Count];
                 _restrictedDevices.CopyTo(a);
+                _restrictedSnapshotCache = a;
                 return a;
             }
         }
@@ -1352,12 +1828,12 @@ namespace PadForge.Common.Input
             if (devices == null) return;
 
             // Resolve under the devices lock, but mark offline OUTSIDE it.
-            // MarkDeviceOffline takes the UserSettings lock to neutralize the
-            // device's per-slot outputs; holding UserDevices while acquiring
-            // UserSettings here (a ThreadPool websocket-disconnect thread)
-            // would form an ABBA pair with the UI-thread sites that nest the
-            // same locks Settings-first. The lock only guards the scan; the
-            // marking itself needs no collection lock.
+            // MarkDeviceOffline takes the UserSettings lock to neutralize
+            // the device's per-slot outputs. Nesting devices->settings here
+            // would be legal under the lock canon (devices before settings,
+            // never the reverse; no Settings-first nesting site exists in
+            // the repo as of the 2026-07-20 audit sweep), but the marking
+            // needs no collection lock, so keep it outside on principle.
             UserDevice target = null;
             lock (devices.SyncRoot)
             {
@@ -1374,6 +1850,13 @@ namespace PadForge.Common.Input
 
             if (target != null)
                 MarkDeviceOffline(target);
+
+            // Drop the device's menu runtime contexts NOW: a fired context
+            // stays credible for the staleness window, and a restricted
+            // peer's restriction is cleared at disconnect, so leaving the
+            // context alive allowed one last key injection after the gate
+            // was gone.
+            PurgeMenuContextsForDevice(instanceGuid);
 
             DevicesUpdated?.Invoke(this, EventArgs.Empty);
         }

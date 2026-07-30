@@ -260,7 +260,7 @@ namespace PadForge.Common.Input
         /// surfaces agree.</summary>
         public static bool IsDisconnectTarget(string devicePath)
         {
-            if (SonyEffectWriter.IsBluetoothPath(devicePath)) return true;
+            if (PlayStationEffectWriter.IsBluetoothPath(devicePath)) return true;
             return TryParseXInputSlot(devicePath, out _);
         }
 

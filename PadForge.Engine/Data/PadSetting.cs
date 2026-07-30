@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -171,9 +171,23 @@ namespace PadForge.Engine.Data
         /// Left stick linear response curve (0–100%). 0 = default, 100 = fully linear.
         /// </summary>
         [XmlElement] public string LeftThumbLinear { get; set; } = "0";
+        /// <summary>Per-stick output sensitivity multiplier (1 = unchanged).
+        /// Applied AFTER the deadzone / range / curve stage, so the Sticks
+        /// tab scales what the mapping table already produced. This is the
+        /// home of the sensitivity knob; the mapping grid does not carry
+        /// one for plain analog sources.</summary>
+        [XmlElement] public string LeftThumbSensitivity { get; set; } = "1";
+
 
         /// <summary>Right stick linear response curve (0–100%).</summary>
         [XmlElement] public string RightThumbLinear { get; set; } = "0";
+        /// <summary>Per-stick output sensitivity multiplier (1 = unchanged).
+        /// Applied AFTER the deadzone / range / curve stage, so the Sticks
+        /// tab scales what the mapping table already produced. This is the
+        /// home of the sensitivity knob; the mapping grid does not carry
+        /// one for plain analog sources.</summary>
+        [XmlElement] public string RightThumbSensitivity { get; set; } = "1";
+
 
         /// <summary>Left stick X-axis sensitivity curve (-100 to 100). 0 = linear, +100 = exponential, -100 = logarithmic.</summary>
         [XmlElement] public string LeftThumbSensitivityCurveX { get; set; } = "0";
@@ -580,6 +594,18 @@ namespace PadForge.Engine.Data
         /// <summary>At-rest bias for Roll axis (rad/s).</summary>
         [XmlElement] public string GyroBiasRoll { get; set; } = "0";
 
+        /// <summary>At-rest bias for the AUX gyro's Pitch axis (rad/s,
+        /// issue #252). The left Joy-Con of a pair is a separate physical
+        /// sensor with its own drift, so it never shares the primary's
+        /// triple above. Sampled by the same calibration pass.</summary>
+        [XmlElement] public string GyroAuxBiasPitch { get; set; } = "0";
+
+        /// <summary>At-rest bias for the AUX gyro's Yaw axis (rad/s).</summary>
+        [XmlElement] public string GyroAuxBiasYaw { get; set; } = "0";
+
+        /// <summary>At-rest bias for the AUX gyro's Roll axis (rad/s).</summary>
+        [XmlElement] public string GyroAuxBiasRoll { get; set; } = "0";
+
         /// <summary>UTC timestamp of the most recent successful
         /// calibration for this (device, slot). Default
         /// (DateTime.MinValue) flags "uncalibrated; auto-calibrate on
@@ -763,72 +789,88 @@ namespace PadForge.Engine.Data
         [XmlArrayItem("Settings")]
         public PadForge.Engine.Mouse.MouseGestureSettingsEntry[] MouseGestureSettings { get; set; }
 
+
         // ─────────────────────────────────────────────
         //  Extended custom mappings (dictionary-based)
         //  Used for custom Extended configurations with arbitrary axis/button/POV counts.
-        //  Keys use target names like "ExtendedAxis0", "ExtendedAxis0Neg", "ExtendedBtn0",
-        //  "ExtendedPov0Up", etc. Values are mapping descriptors (same format as above).
+        //  Keys use target names like "RawAxis0", "RawAxis0Neg", "RawBtn0",
+        //  "RawPov0Up", etc. Values are mapping descriptors (same format as above).
         // ─────────────────────────────────────────────
 
         /// <summary>Serializable array for XML persistence of Extended mappings.</summary>
         [XmlArray("ExtendedMappings")]
         [XmlArrayItem("Map")]
-        public ExtendedMappingEntry[] ExtendedMappingEntries { get; set; }
+        public RawMappingEntry[] RawMappingEntries { get; set; }
 
         [XmlIgnore]
-        private Dictionary<string, string> _extendedMappingDict;
+        private Dictionary<string, string> _rawMappingDict;
 
-        /// <summary>Gets an Extended mapping value by key (e.g., "ExtendedAxis0", "ExtendedBtn5").</summary>
-        public string GetExtendedMapping(string key)
+        /// <summary>Gets an Extended mapping value by key (e.g., "RawAxis0", "RawBtn5").</summary>
+        public string GetRawMapping(string key)
         {
-            EnsureExtendedDict();
-            return _extendedMappingDict.TryGetValue(key, out var val) ? val : "";
+            EnsureRawMappingDict();
+            // Under the lock: the poll thread reads (Step 3 raw eval) while
+            // the UI thread writes (grid edits, tuning saves); a plain
+            // Dictionary corrupts under concurrent read+write.
+            lock (_rawDictLock)
+                return _rawMappingDict.TryGetValue(key, out var val) ? val : "";
         }
 
-        /// <summary>Sets an Extended mapping value by key.</summary>
-        public void SetExtendedMapping(string key, string value)
+        /// <summary>Sets a raw-surface mapping value by key.</summary>
+        public void SetRawMapping(string key, string value)
         {
-            EnsureExtendedDict();
-            if (string.IsNullOrEmpty(value))
-                _extendedMappingDict.Remove(key);
-            else
-                _extendedMappingDict[key] = value;
+            EnsureRawMappingDict();
+            lock (_rawDictLock)
+            {
+                if (string.IsNullOrEmpty(value))
+                    _rawMappingDict.Remove(key);
+                else
+                    _rawMappingDict[key] = value;
+            }
         }
 
         /// <summary>Flushes the Extended mapping dict back to the serializable array.</summary>
-        public void FlushExtendedMappings()
+        public void FlushRawMappings()
         {
-            if (_extendedMappingDict == null) return; // Not initialized — array is canonical.
-            if (_extendedMappingDict.Count == 0)
+            if (_rawMappingDict == null) return; // Not initialized — array is canonical.
+            lock (_rawDictLock)
             {
-                ExtendedMappingEntries = null;
-                return;
+                if (_rawMappingDict.Count == 0)
+                {
+                    RawMappingEntries = null;
+                    return;
+                }
+                var entries = new RawMappingEntry[_rawMappingDict.Count];
+                int i = 0;
+                foreach (var kvp in _rawMappingDict)
+                    entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                RawMappingEntries = entries;
             }
-            var entries = new ExtendedMappingEntry[_extendedMappingDict.Count];
-            int i = 0;
-            foreach (var kvp in _extendedMappingDict)
-                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
-            ExtendedMappingEntries = entries;
         }
 
-        private readonly object _extendedDictLock = new();
+        private readonly object _rawDictLock = new();
 
-        private void EnsureExtendedDict()
+        private void EnsureRawMappingDict()
         {
-            if (_extendedMappingDict != null) return;
-            lock (_extendedDictLock)
+            if (_rawMappingDict != null) return;
+            lock (_rawDictLock)
             {
-                if (_extendedMappingDict != null) return;
+                if (_rawMappingDict != null) return;
                 var dict = new Dictionary<string, string>(StringComparer.Ordinal);
-                if (ExtendedMappingEntries != null)
+                if (RawMappingEntries != null)
                 {
-                    foreach (var e in ExtendedMappingEntries)
+                    foreach (var e in RawMappingEntries)
                     {
                         if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
-                            dict[e.Key] = e.Value;
+                            // Legacy raw-surface keys (pre-rename
+                            // "Extended*" spellings) normalize to the
+                            // current "Raw*" grammar on first read, so
+                            // saves written before the rename load
+                            // unchanged and re-save upgraded.
+                            dict[MappingSetMigrator.NormalizeRawToken(e.Key)] = e.Value;
                     }
                 }
-                _extendedMappingDict = dict;
+                _rawMappingDict = dict;
             }
         }
 
@@ -841,39 +883,52 @@ namespace PadForge.Engine.Data
 
         [XmlArray("MidiMappings")]
         [XmlArrayItem("Map")]
-        public ExtendedMappingEntry[] MidiMappingEntries { get; set; }
+        public RawMappingEntry[] MidiMappingEntries { get; set; }
 
         [XmlIgnore]
         private Dictionary<string, string> _midiMappingDict;
 
+        // The lock guards the dictionary OPERATIONS, not just the lazy
+        // construction it originally wrapped: the poll thread reads these
+        // while the UI thread edits mappings, which is the identical shape
+        // the raw twin locks on every access (_rawDictLock). Unlocked, a
+        // concurrent write can corrupt the buckets and hang a later
+        // TryGetValue on the 1 kHz thread (round 34).
         public string GetMidiMapping(string key)
         {
             EnsureMidiDict();
-            return _midiMappingDict.TryGetValue(key, out var val) ? val : "";
+            lock (_midiDictLock)
+                return _midiMappingDict.TryGetValue(key, out var val) ? val : "";
         }
 
         public void SetMidiMapping(string key, string value)
         {
             EnsureMidiDict();
-            if (string.IsNullOrEmpty(value))
-                _midiMappingDict.Remove(key);
-            else
-                _midiMappingDict[key] = value;
+            lock (_midiDictLock)
+            {
+                if (string.IsNullOrEmpty(value))
+                    _midiMappingDict.Remove(key);
+                else
+                    _midiMappingDict[key] = value;
+            }
         }
 
         public void FlushMidiMappings()
         {
-            if (_midiMappingDict == null) return; // Not initialized — array is canonical.
-            if (_midiMappingDict.Count == 0)
+            if (_midiMappingDict == null) return; // Not initialized. Array is canonical.
+            lock (_midiDictLock)
             {
-                MidiMappingEntries = null;
-                return;
+                if (_midiMappingDict.Count == 0)
+                {
+                    MidiMappingEntries = null;
+                    return;
+                }
+                var entries = new RawMappingEntry[_midiMappingDict.Count];
+                int i = 0;
+                foreach (var kvp in _midiMappingDict)
+                    entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                MidiMappingEntries = entries;
             }
-            var entries = new ExtendedMappingEntry[_midiMappingDict.Count];
-            int i = 0;
-            foreach (var kvp in _midiMappingDict)
-                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
-            MidiMappingEntries = entries;
         }
 
         private readonly object _midiDictLock = new();
@@ -906,39 +961,48 @@ namespace PadForge.Engine.Data
 
         [XmlArray("KbmMappings")]
         [XmlArrayItem("Map")]
-        public ExtendedMappingEntry[] KbmMappingEntries { get; set; }
+        public RawMappingEntry[] KbmMappingEntries { get; set; }
 
         [XmlIgnore]
         private Dictionary<string, string> _kbmMappingDict;
 
+        // Locked per operation for the same reason as the MIDI and raw
+        // twins above (round 34).
         public string GetKbmMapping(string key)
         {
             EnsureKbmDict();
-            return _kbmMappingDict.TryGetValue(key, out var val) ? val : "";
+            lock (_kbmDictLock)
+                return _kbmMappingDict.TryGetValue(key, out var val) ? val : "";
         }
 
         public void SetKbmMapping(string key, string value)
         {
             EnsureKbmDict();
-            if (string.IsNullOrEmpty(value))
-                _kbmMappingDict.Remove(key);
-            else
-                _kbmMappingDict[key] = value;
+            lock (_kbmDictLock)
+            {
+                if (string.IsNullOrEmpty(value))
+                    _kbmMappingDict.Remove(key);
+                else
+                    _kbmMappingDict[key] = value;
+            }
         }
 
         public void FlushKbmMappings()
         {
             if (_kbmMappingDict == null) return;
-            if (_kbmMappingDict.Count == 0)
+            lock (_kbmDictLock)
             {
-                KbmMappingEntries = null;
-                return;
+                if (_kbmMappingDict.Count == 0)
+                {
+                    KbmMappingEntries = null;
+                    return;
+                }
+                var entries = new RawMappingEntry[_kbmMappingDict.Count];
+                int i = 0;
+                foreach (var kvp in _kbmMappingDict)
+                    entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                KbmMappingEntries = entries;
             }
-            var entries = new ExtendedMappingEntry[_kbmMappingDict.Count];
-            int i = 0;
-            foreach (var kvp in _kbmMappingDict)
-                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
-            KbmMappingEntries = entries;
         }
 
         private readonly object _kbmDictLock = new();
@@ -968,40 +1032,56 @@ namespace PadForge.Engine.Data
 
         [XmlArray("MappingDeadZones")]
         [XmlArrayItem("Map")]
-        public ExtendedMappingEntry[] MappingDeadZoneEntries { get; set; }
+        public RawMappingEntry[] MappingDeadZoneEntries { get; set; }
 
         [XmlIgnore]
         private Dictionary<string, string> _mappingDeadZoneDict;
         private readonly object _mappingDeadZoneDictLock = new();
 
+        // Same hazard and same remedy as the raw / MIDI / KBM triples above:
+        // the poll thread reads these per mapping row per device per tick
+        // while the UI thread writes them on save, and a plain Dictionary
+        // corrupts under concurrent read+write. This family and the
+        // Bidirectional twin below were the only two of the five that never
+        // took their lock. Reuses the dict's OWN lock object, already declared
+        // above for the double-checked init, so creation and access serialize
+        // against one another rather than against two unrelated monitors.
+
         public string GetMappingDeadZone(string key)
         {
             EnsureMappingDeadZoneDict();
-            return _mappingDeadZoneDict.TryGetValue(key, out var val) ? val : "";
+            lock (_mappingDeadZoneDictLock)
+                return _mappingDeadZoneDict.TryGetValue(key, out var val) ? val : "";
         }
 
         public void SetMappingDeadZone(string key, string value)
         {
             EnsureMappingDeadZoneDict();
-            if (string.IsNullOrEmpty(value) || value == "0" || value == "50")
-                _mappingDeadZoneDict.Remove(key);
-            else
-                _mappingDeadZoneDict[key] = value;
+            lock (_mappingDeadZoneDictLock)
+            {
+                if (string.IsNullOrEmpty(value) || value == "0" || value == "50")
+                    _mappingDeadZoneDict.Remove(key);
+                else
+                    _mappingDeadZoneDict[key] = value;
+            }
         }
 
         public void FlushMappingDeadZones()
         {
             if (_mappingDeadZoneDict == null) return;
-            if (_mappingDeadZoneDict.Count == 0)
+            lock (_mappingDeadZoneDictLock)
             {
-                MappingDeadZoneEntries = null;
-                return;
+                if (_mappingDeadZoneDict.Count == 0)
+                {
+                    MappingDeadZoneEntries = null;
+                    return;
+                }
+                var entries = new RawMappingEntry[_mappingDeadZoneDict.Count];
+                int i = 0;
+                foreach (var kvp in _mappingDeadZoneDict)
+                    entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                MappingDeadZoneEntries = entries;
             }
-            var entries = new ExtendedMappingEntry[_mappingDeadZoneDict.Count];
-            int i = 0;
-            foreach (var kvp in _mappingDeadZoneDict)
-                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
-            MappingDeadZoneEntries = entries;
         }
 
         private void EnsureMappingDeadZoneDict()
@@ -1016,7 +1096,12 @@ namespace PadForge.Engine.Data
                     foreach (var e in MappingDeadZoneEntries)
                     {
                         if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
-                            dict[e.Key] = e.Value;
+                            // Legacy raw-surface keys ("ExtendedBtn7"-style,
+                            // pre-rename saves) normalize to the current
+                            // "Raw*" grammar on first read, matching
+                            // EnsureRawMappingDict. Non-raw keys
+                            // ("ButtonA") pass through unchanged.
+                            dict[MappingSetMigrator.NormalizeRawToken(e.Key)] = e.Value;
                     }
                 }
                 _mappingDeadZoneDict = dict;
@@ -1034,40 +1119,50 @@ namespace PadForge.Engine.Data
 
         [XmlArray("MappingBidirectional")]
         [XmlArrayItem("Map")]
-        public ExtendedMappingEntry[] MappingBidirectionalEntries { get; set; }
+        public RawMappingEntry[] MappingBidirectionalEntries { get; set; }
 
         [XmlIgnore]
         private Dictionary<string, string> _mappingBidirectionalDict;
         private readonly object _mappingBidirectionalDictLock = new();
 
+        // Twin of the dead-zone family above. Same poll-thread read / UI-thread
+        // write hazard, same lock discipline as the raw / MIDI / KBM triples.
+
         public string GetMappingBidirectional(string key)
         {
             EnsureMappingBidirectionalDict();
-            return _mappingBidirectionalDict.TryGetValue(key, out var val) ? val : "";
+            lock (_mappingBidirectionalDictLock)
+                return _mappingBidirectionalDict.TryGetValue(key, out var val) ? val : "";
         }
 
         public void SetMappingBidirectional(string key, string value)
         {
             EnsureMappingBidirectionalDict();
-            if (string.IsNullOrEmpty(value) || value == "0")
-                _mappingBidirectionalDict.Remove(key);
-            else
-                _mappingBidirectionalDict[key] = value;
+            lock (_mappingBidirectionalDictLock)
+            {
+                if (string.IsNullOrEmpty(value) || value == "0")
+                    _mappingBidirectionalDict.Remove(key);
+                else
+                    _mappingBidirectionalDict[key] = value;
+            }
         }
 
         public void FlushMappingBidirectional()
         {
             if (_mappingBidirectionalDict == null) return;
-            if (_mappingBidirectionalDict.Count == 0)
+            lock (_mappingBidirectionalDictLock)
             {
-                MappingBidirectionalEntries = null;
-                return;
+                if (_mappingBidirectionalDict.Count == 0)
+                {
+                    MappingBidirectionalEntries = null;
+                    return;
+                }
+                var entries = new RawMappingEntry[_mappingBidirectionalDict.Count];
+                int i = 0;
+                foreach (var kvp in _mappingBidirectionalDict)
+                    entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                MappingBidirectionalEntries = entries;
             }
-            var entries = new ExtendedMappingEntry[_mappingBidirectionalDict.Count];
-            int i = 0;
-            foreach (var kvp in _mappingBidirectionalDict)
-                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
-            MappingBidirectionalEntries = entries;
         }
 
         private void EnsureMappingBidirectionalDict()
@@ -1082,7 +1177,9 @@ namespace PadForge.Engine.Data
                     foreach (var e in MappingBidirectionalEntries)
                     {
                         if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
-                            dict[e.Key] = e.Value;
+                            // Same legacy-key normalization as the
+                            // dead-zone dict above.
+                            dict[MappingSetMigrator.NormalizeRawToken(e.Key)] = e.Value;
                     }
                 }
                 _mappingBidirectionalDict = dict;
@@ -1210,6 +1307,11 @@ namespace PadForge.Engine.Data
             sb.Append(RightThumbAntiDeadZoneY); sb.Append('|');
             sb.Append(LeftThumbLinear); sb.Append('|');
             sb.Append(RightThumbLinear); sb.Append('|');
+            // Without these two, a PadSetting that differs ONLY in stick
+            // sensitivity hashes identically to its neighbour, and the
+            // checksum-keyed dedup then treats them as the same row.
+            sb.Append(LeftThumbSensitivity); sb.Append('|');
+            sb.Append(RightThumbSensitivity); sb.Append('|');
             sb.Append(LeftThumbSensitivityCurveX); sb.Append('|');
             sb.Append(LeftThumbSensitivityCurveY); sb.Append('|');
             sb.Append(RightThumbSensitivityCurveX); sb.Append('|');
@@ -1297,6 +1399,9 @@ namespace PadForge.Engine.Data
             sb.Append(GyroBiasPitch); sb.Append('|');
             sb.Append(GyroBiasYaw); sb.Append('|');
             sb.Append(GyroBiasRoll); sb.Append('|');
+            sb.Append(GyroAuxBiasPitch); sb.Append('|');
+            sb.Append(GyroAuxBiasYaw); sb.Append('|');
+            sb.Append(GyroAuxBiasRoll); sb.Append('|');
             sb.Append(GyroCalibratedAtUtc); sb.Append('|');
             sb.Append(GyroSpace); sb.Append('|');
             sb.Append(GyroPlayerSpaceYawRelaxFactor); sb.Append('|');
@@ -1338,14 +1443,14 @@ namespace PadForge.Engine.Data
             sb.Append(MotionAccel); sb.Append('|');
 
             // Extended custom mappings (sorted for deterministic checksum)
-            EnsureExtendedDict();
-            if (_extendedMappingDict.Count > 0)
+            EnsureRawMappingDict();
+            if (_rawMappingDict.Count > 0)
             {
-                var keys = new List<string>(_extendedMappingDict.Keys);
+                var keys = new List<string>(_rawMappingDict.Keys);
                 keys.Sort(StringComparer.Ordinal);
                 foreach (var key in keys)
                 {
-                    sb.Append(key); sb.Append('='); sb.Append(_extendedMappingDict[key]); sb.Append('|');
+                    sb.Append(key); sb.Append('='); sb.Append(_rawMappingDict[key]); sb.Append('|');
                 }
             }
 
@@ -1375,14 +1480,20 @@ namespace PadForge.Engine.Data
 
             // Per-mapping deadzones (sorted for deterministic checksum)
             EnsureMappingDeadZoneDict();
-            if (_mappingDeadZoneDict.Count > 0)
+            // Under the dict's lock like every other access: this walks the
+            // keys and indexes back into the dict, so a concurrent UI-thread
+            // Set would otherwise invalidate the enumeration mid-checksum.
+            lock (_mappingDeadZoneDictLock)
             {
-                sb.Append("MDZ:");
-                var mdzKeys = new List<string>(_mappingDeadZoneDict.Keys);
-                mdzKeys.Sort(StringComparer.Ordinal);
-                foreach (var key in mdzKeys)
+                if (_mappingDeadZoneDict.Count > 0)
                 {
-                    sb.Append(key); sb.Append('='); sb.Append(_mappingDeadZoneDict[key]); sb.Append('|');
+                    sb.Append("MDZ:");
+                    var mdzKeys = new List<string>(_mappingDeadZoneDict.Keys);
+                    mdzKeys.Sort(StringComparer.Ordinal);
+                    foreach (var key in mdzKeys)
+                    {
+                        sb.Append(key); sb.Append('='); sb.Append(_mappingDeadZoneDict[key]); sb.Append('|');
+                    }
                 }
             }
 
@@ -1391,14 +1502,17 @@ namespace PadForge.Engine.Data
             // per-mapping Bidirectional flag collide on SaveToFile's dedup and
             // the dropped device inherits the survivor's flag.
             EnsureMappingBidirectionalDict();
-            if (_mappingBidirectionalDict.Count > 0)
+            lock (_mappingBidirectionalDictLock)
             {
-                sb.Append("MBD:");
-                var mbdKeys = new List<string>(_mappingBidirectionalDict.Keys);
-                mbdKeys.Sort(StringComparer.Ordinal);
-                foreach (var key in mbdKeys)
+                if (_mappingBidirectionalDict.Count > 0)
                 {
-                    sb.Append(key); sb.Append('='); sb.Append(_mappingBidirectionalDict[key]); sb.Append('|');
+                    sb.Append("MBD:");
+                    var mbdKeys = new List<string>(_mappingBidirectionalDict.Keys);
+                    mbdKeys.Sort(StringComparer.Ordinal);
+                    foreach (var key in mbdKeys)
+                    {
+                        sb.Append(key); sb.Append('='); sb.Append(_mappingBidirectionalDict[key]); sb.Append('|');
+                    }
                 }
             }
 
@@ -1447,7 +1561,30 @@ namespace PadForge.Engine.Data
                     sb.Append(s.EnableJoystickOutput).Append(',').Append(s.JoystickMaxRadius).Append(',').Append(s.JoystickInnerDeadzone).Append(',');
                     sb.Append(s.JoystickDPadMode).Append(',').Append(s.JoystickDPadActivationThreshold).Append(',');
                     sb.Append(s.MouseSensitivityX).Append(',').Append(s.MouseSensitivityY).Append(',');
-                    sb.Append(s.MouseInvertX).Append(',').Append(s.MouseInvertY);
+                    sb.Append(s.MouseInvertX).Append(',').Append(s.MouseInvertY).Append(',');
+                    // Momentum / jitter: same dedup-by-checksum trap as every
+                    // field above. The profile snapshot stores ONE PadSetting
+                    // per distinct checksum and rejoins entries by it, so two
+                    // devices differing only here collide and the second
+                    // silently adopts the first's glide.
+                    sb.Append(s.MouseMomentum).Append(',').Append(s.MouseMomentumDecay).Append(',');
+                    sb.Append(s.MouseJitterReduction).Append(',');
+                    sb.Append(s.MouseAcceleration).Append(',');
+                    sb.Append(s.PointerResponse).Append(',').Append(s.TrackpadThresholdMmPerSec).Append(',');
+                    sb.Append(s.TrackpadPadWidthMm).Append(',');
+                    sb.Append(s.EnableSwipeHaptics).Append(',').Append(s.SwipeHapticsIntensity).Append(',');
+                    // Absolute-pointer region (#9 B-15): same dedup-by-
+                    // checksum trap as every field above. All FOUR, not just
+                    // the size pair: two pads differing only in region center
+                    // would otherwise collide and the second silently adopt
+                    // the first's rectangle.
+                    sb.Append(s.PointerRegionSizeX).Append(',').Append(s.PointerRegionSizeY).Append(',');
+                    sb.Append(s.PointerRegionCenterX).Append(',').Append(s.PointerRegionCenterY).Append(',');
+                    // Authored too: it decides whether the region comes from
+                    // here or from an imported mapping source, so two pads
+                    // differing only in it are genuinely different pads.
+                    sb.Append(s.PointerRegionAuthored);
+                    sb.Append(',').Append(s.RegionSchema);
                     sb.Append('|');
                 }
             }
@@ -1470,6 +1607,11 @@ namespace PadForge.Engine.Data
                     sb.Append(entry.DeviceGuid ?? ""); sb.Append(':');
                     sb.Append(s.Enabled).Append(',').Append(s.GestureButtons).Append(',');
                     sb.Append(s.FlickThresholdCounts).Append(',').Append(s.CooldownMs);
+                    // Custom activation (discussion #216): same dedup trap.
+                    // Without these two, devices differing only in the
+                    // recorded custom input collide and one gets dropped.
+                    sb.Append(',').Append(s.CustomEngageButton ?? "");
+                    sb.Append(',').Append(s.CustomEngageDeviceGuid ?? "");
                     sb.Append('|');
                 }
             }
@@ -1530,8 +1672,8 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(TouchpadContact1) ||
             !string.IsNullOrEmpty(TouchpadContact2) ||
             !string.IsNullOrEmpty(TouchpadClick) ||
-            (ExtendedMappingEntries != null && ExtendedMappingEntries.Length > 0) ||
-            (_extendedMappingDict != null && _extendedMappingDict.Count > 0) ||
+            (RawMappingEntries != null && RawMappingEntries.Length > 0) ||
+            (_rawMappingDict != null && _rawMappingDict.Count > 0) ||
             (MidiMappingEntries != null && MidiMappingEntries.Length > 0) ||
             (_midiMappingDict != null && _midiMappingDict.Count > 0) ||
             (KbmMappingEntries != null && KbmMappingEntries.Length > 0) ||
@@ -1545,22 +1687,58 @@ namespace PadForge.Engine.Data
         /// leftovers from a previous mapping layout (e.g., switching Xbox preset →
         /// custom Extended).
         /// </summary>
-        public void ClearMappingDescriptors()
+        /// <param name="seed">Optional final values, keyed by property name. When
+        /// supplied, each standard descriptor property is assigned its seeded value
+        /// (or "" when absent) in a SINGLE pass instead of being blanked for the
+        /// caller to refill. That matters because the ~1 kHz poll thread reads these
+        /// properties directly (InputManager.Step3.UpdateOutputStates reads ButtonA,
+        /// GetMappingDeadZone("ButtonA"), and the same triple for every target), so a
+        /// blank-then-refill leaves a window in which a tick sees empty descriptors
+        /// and drives the pad to neutral for that frame. Callers on a frequent path
+        /// MUST pass a seed. Callers that genuinely want everything cleared pass
+        /// null.</param>
+        public void ClearMappingDescriptors(IReadOnlyDictionary<string, string> seed = null)
         {
-            // Standard mapping properties.
-            ButtonA = ButtonB = ButtonX = ButtonY = "";
-            LeftShoulder = RightShoulder = "";
-            ButtonBack = ButtonStart = ButtonGuide = "";
-            LeftThumbButton = RightThumbButton = "";
-            ButtonShare = "";
-            DPad = DPadUp = DPadDown = DPadLeft = DPadRight = "";
-            LeftTrigger = RightTrigger = "";
-            LeftThumbAxisX = LeftThumbAxisY = "";
-            RightThumbAxisX = RightThumbAxisY = "";
-            LeftThumbAxisXNeg = LeftThumbAxisYNeg = "";
-            RightThumbAxisXNeg = RightThumbAxisYNeg = "";
-            TouchpadX1 = TouchpadY1 = TouchpadX2 = TouchpadY2 = "";
-            TouchpadContact1 = TouchpadContact2 = TouchpadClick = "";
+            // Standard mapping properties. Assigned once each, from the seed when
+            // the caller supplied one, so no property is ever transiently empty
+            // when it is about to be repopulated.
+            string V(string name) =>
+                seed != null && seed.TryGetValue(name, out var v) && v != null ? v : "";
+
+            ButtonA = V(nameof(ButtonA));
+            ButtonB = V(nameof(ButtonB));
+            ButtonX = V(nameof(ButtonX));
+            ButtonY = V(nameof(ButtonY));
+            LeftShoulder = V(nameof(LeftShoulder));
+            RightShoulder = V(nameof(RightShoulder));
+            ButtonBack = V(nameof(ButtonBack));
+            ButtonStart = V(nameof(ButtonStart));
+            ButtonGuide = V(nameof(ButtonGuide));
+            LeftThumbButton = V(nameof(LeftThumbButton));
+            RightThumbButton = V(nameof(RightThumbButton));
+            ButtonShare = V(nameof(ButtonShare));
+            DPad = V(nameof(DPad));
+            DPadUp = V(nameof(DPadUp));
+            DPadDown = V(nameof(DPadDown));
+            DPadLeft = V(nameof(DPadLeft));
+            DPadRight = V(nameof(DPadRight));
+            LeftTrigger = V(nameof(LeftTrigger));
+            RightTrigger = V(nameof(RightTrigger));
+            LeftThumbAxisX = V(nameof(LeftThumbAxisX));
+            LeftThumbAxisY = V(nameof(LeftThumbAxisY));
+            RightThumbAxisX = V(nameof(RightThumbAxisX));
+            RightThumbAxisY = V(nameof(RightThumbAxisY));
+            LeftThumbAxisXNeg = V(nameof(LeftThumbAxisXNeg));
+            LeftThumbAxisYNeg = V(nameof(LeftThumbAxisYNeg));
+            RightThumbAxisXNeg = V(nameof(RightThumbAxisXNeg));
+            RightThumbAxisYNeg = V(nameof(RightThumbAxisYNeg));
+            TouchpadX1 = V(nameof(TouchpadX1));
+            TouchpadY1 = V(nameof(TouchpadY1));
+            TouchpadX2 = V(nameof(TouchpadX2));
+            TouchpadY2 = V(nameof(TouchpadY2));
+            TouchpadContact1 = V(nameof(TouchpadContact1));
+            TouchpadContact2 = V(nameof(TouchpadContact2));
+            TouchpadClick = V(nameof(TouchpadClick));
 
             // Extended mapping dict: clear only the input-routing descriptors and PRESERVE
             // per-device tuning that shares this dict (steering Stick{g}Steer*, Extended
@@ -1569,17 +1747,17 @@ namespace PadForge.Engine.Data
             // device-switch flush): the steering keys vanished and read back as Direct on the
             // next load. Stick deadzone/range live in named properties, which is why only
             // steering (and Extended tuning) hit this.
-            if (_extendedMappingDict != null
-                || (ExtendedMappingEntries != null && ExtendedMappingEntries.Length > 0))
+            if (_rawMappingDict != null
+                || (RawMappingEntries != null && RawMappingEntries.Length > 0))
             {
-                EnsureExtendedDict();
+                EnsureRawMappingDict();
                 var preserved = new Dictionary<string, string>(StringComparer.Ordinal);
-                foreach (var kvp in _extendedMappingDict)
+                foreach (var kvp in _rawMappingDict)
                     if (IsPerDeviceTuningKey(kvp.Key))
                         preserved[kvp.Key] = kvp.Value;
-                _extendedMappingDict = preserved;
+                _rawMappingDict = preserved;
             }
-            ExtendedMappingEntries = null; // re-flushed from the dict on save
+            RawMappingEntries = null; // re-flushed from the dict on save
 
             // MIDI/KBM mapping dictionaries and arrays (no tuning shares these).
             MidiMappingEntries = null;
@@ -1614,9 +1792,15 @@ namespace PadForge.Engine.Data
             // to defaults on every device-switch save.
             if (k.StartsWith("MotionSteer", StringComparison.Ordinal))
                 return true;
-            if (k.StartsWith("ExtendedStick", StringComparison.Ordinal))
+            // Flick Stick card tuning (#225): FlickStickDots / Time /
+            // Threshold / SnapMode / SnapStrength / ForwardDz / Smoothing /
+            // OnEngage. Per-device tuning, not input routing, same as the
+            // Motion Steering keys above.
+            if (k.StartsWith("FlickStick", StringComparison.Ordinal))
                 return true;
-            if (k.StartsWith("ExtendedTrigger", StringComparison.Ordinal)
+            if (k.StartsWith("RawStick", StringComparison.Ordinal))
+                return true;
+            if (k.StartsWith("RawTrigger", StringComparison.Ordinal)
                 && (k.EndsWith("Dz", StringComparison.Ordinal) || k.EndsWith("Adz", StringComparison.Ordinal)
                     || k.EndsWith("Mr", StringComparison.Ordinal) || k.EndsWith("Curve", StringComparison.Ordinal)))
                 return true;
@@ -1658,9 +1842,9 @@ namespace PadForge.Engine.Data
             Add(TouchpadClick);
 
             // Extended custom mappings
-            if (ExtendedMappingEntries != null)
+            if (RawMappingEntries != null)
             {
-                foreach (var e in ExtendedMappingEntries)
+                foreach (var e in RawMappingEntries)
                     Add(e.Value);
             }
 
@@ -1735,6 +1919,12 @@ namespace PadForge.Engine.Data
             nameof(LeftThumbAntiDeadZoneX), nameof(LeftThumbAntiDeadZoneY),
             nameof(RightThumbAntiDeadZoneX), nameof(RightThumbAntiDeadZoneY),
             nameof(LeftThumbLinear), nameof(RightThumbLinear),
+            // The two BARE sensitivity knobs, not just their curve twins. They
+            // were the only 2 of 168 persisted [XmlElement] string properties
+            // missing from this list AND from ComputeChecksum, so CloneDeep
+            // dropped them and the keyboard-and-mouse Mouse/Scroll Speed knob
+            // reverted to "1" on every load.
+            nameof(LeftThumbSensitivity), nameof(RightThumbSensitivity),
             nameof(LeftThumbSensitivityCurveX), nameof(LeftThumbSensitivityCurveY),
             nameof(RightThumbSensitivityCurveX), nameof(RightThumbSensitivityCurveY),
             nameof(LeftTriggerSensitivityCurve), nameof(RightTriggerSensitivityCurve),
@@ -1791,6 +1981,7 @@ namespace PadForge.Engine.Data
             nameof(IrSensorBarPos), nameof(IrSensorBarComp), nameof(IrSmoothing),
             nameof(PointerMode), nameof(PointerFpsSpeed),
             nameof(GyroBiasPitch), nameof(GyroBiasYaw), nameof(GyroBiasRoll),
+            nameof(GyroAuxBiasPitch), nameof(GyroAuxBiasYaw), nameof(GyroAuxBiasRoll),
             nameof(GyroCalibratedAtUtc),
             nameof(GyroSpace), nameof(GyroPlayerSpaceYawRelaxFactor),
             nameof(GyroWorldSpaceSideReductionThreshold),
@@ -1876,6 +2067,13 @@ namespace PadForge.Engine.Data
         [System.Text.Json.Serialization.JsonIgnore]
         public string SlotShiftActivatorsJson { get; set; }
 
+        /// <summary>Opaque JSON payload for the slot's radial / touch menu
+        /// definitions (#9 B-17, MappingSet.Menus), so Copy / Paste carries
+        /// the Menus-tab state like the shift authoring above.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string SlotMenusJson { get; set; }
+
         /// <summary>Opaque JSON payload carrying every device's PadSetting
         /// on the source slot. The outer PadSetting that wraps this field
         /// still carries the originally-selected device's tuning (legacy
@@ -1900,7 +2098,7 @@ namespace PadForge.Engine.Data
         public string ToJson(VirtualControllerType outputType = VirtualControllerType.Xbox, bool isExtended = false)
         {
             // Flush live dicts to arrays before serializing.
-            FlushExtendedMappings();
+            FlushRawMappings();
             FlushMidiMappings();
             FlushKbmMappings();
             FlushMappingDeadZones();
@@ -1921,10 +2119,10 @@ namespace PadForge.Engine.Data
             }
 
             // Include Extended/MIDI/KBM mapping arrays if present.
-            if (ExtendedMappingEntries != null && ExtendedMappingEntries.Length > 0)
+            if (RawMappingEntries != null && RawMappingEntries.Length > 0)
             {
                 var extendedList = new List<Dictionary<string, string>>();
-                foreach (var e in ExtendedMappingEntries)
+                foreach (var e in RawMappingEntries)
                     extendedList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
                 dict["__ExtendedMappings"] = JsonSerializer.Serialize(extendedList);
             }
@@ -1976,6 +2174,7 @@ namespace PadForge.Engine.Data
                 dict["__MouseGestureSettings"] = JsonSerializer.Serialize(MouseGestureSettings);
             }
 
+
             // Opaque per-slot config snapshots (the per-(slot, device)
             // lighting / trigger / audio bag, custom layout for Extended,
             // CC + note layout for MIDI). The caller serialises the
@@ -1992,6 +2191,8 @@ namespace PadForge.Engine.Data
                 dict["__SlotKbmConfig"] = SlotKbmConfigJson;
             if (!string.IsNullOrEmpty(SlotShiftActivatorsJson))
                 dict["__SlotShiftActivators"] = SlotShiftActivatorsJson;
+            if (!string.IsNullOrEmpty(SlotMenusJson))
+                dict["__SlotMenus"] = SlotMenusJson;
             if (!string.IsNullOrEmpty(SlotPerDeviceSettingsJson))
                 dict["__SlotPerDeviceSettings"] = SlotPerDeviceSettingsJson;
 
@@ -2058,13 +2259,23 @@ namespace PadForge.Engine.Data
                     if (kvp.Key.StartsWith("__"))
                     {
                         if (kvp.Key == "__ExtendedMappings")
-                            ps.ExtendedMappingEntries = DeserializeMappingArray(kvp.Value);
+                        {
+                            // Clipboard JSON from a pre-rename build carries
+                            // legacy raw keys; normalize on entry so the
+                            // translated-copy reads see current grammar.
+                            var arr = DeserializeMappingArray(kvp.Value);
+                            if (arr != null)
+                                foreach (var e in arr)
+                                    if (e != null && !string.IsNullOrEmpty(e.Key))
+                                        e.Key = MappingSetMigrator.NormalizeRawToken(e.Key);
+                            ps.RawMappingEntries = arr;
+                        }
                         else if (kvp.Key == "__MidiMappings")
                             ps.MidiMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__KbmMappings")
                             ps.KbmMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__MappingDeadZones")
-                            ps.MappingDeadZoneEntries = DeserializeMappingArray(kvp.Value);
+                            ps.MappingDeadZoneEntries = NormalizeRawKeys(DeserializeMappingArray(kvp.Value));
                         else if (kvp.Key == "__MultiSourceRows")
                         {
                             try
@@ -2086,7 +2297,7 @@ namespace PadForge.Engine.Data
                             catch { /* malformed — paste falls back to device-scoped or single-source */ }
                         }
                         else if (kvp.Key == "__MappingBidirectional")
-                            ps.MappingBidirectionalEntries = DeserializeMappingArray(kvp.Value);
+                            ps.MappingBidirectionalEntries = NormalizeRawKeys(DeserializeMappingArray(kvp.Value));
                         else if (kvp.Key == "__TouchpadSettings")
                         {
                             try
@@ -2118,6 +2329,8 @@ namespace PadForge.Engine.Data
                             ps.SlotKbmConfigJson = kvp.Value;
                         else if (kvp.Key == "__SlotShiftActivators")
                             ps.SlotShiftActivatorsJson = kvp.Value;
+                        else if (kvp.Key == "__SlotMenus")
+                            ps.SlotMenusJson = kvp.Value;
                         else if (kvp.Key == "__SlotPerDeviceSettings")
                             ps.SlotPerDeviceSettingsJson = kvp.Value;
                         continue;
@@ -2135,16 +2348,29 @@ namespace PadForge.Engine.Data
             }
         }
 
-        private static ExtendedMappingEntry[] DeserializeMappingArray(string json)
+        /// <summary>Normalizes legacy "Extended*" raw-surface keys in a
+        /// clipboard-deserialized entry array to the current "Raw*"
+        /// grammar. Pre-rename copies paste correctly; current-grammar
+        /// keys pass through unchanged.</summary>
+        private static RawMappingEntry[] NormalizeRawKeys(RawMappingEntry[] arr)
+        {
+            if (arr != null)
+                foreach (var e in arr)
+                    if (e != null && !string.IsNullOrEmpty(e.Key))
+                        e.Key = MappingSetMigrator.NormalizeRawToken(e.Key);
+            return arr;
+        }
+
+        private static RawMappingEntry[] DeserializeMappingArray(string json)
         {
             try
             {
                 var list = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(json);
                 if (list == null) return null;
-                var arr = new ExtendedMappingEntry[list.Count];
+                var arr = new RawMappingEntry[list.Count];
                 for (int i = 0; i < list.Count; i++)
                 {
-                    arr[i] = new ExtendedMappingEntry
+                    arr[i] = new RawMappingEntry
                     {
                         Key = list[i].TryGetValue("Key", out var k) ? k : "",
                         Value = list[i].TryGetValue("Value", out var v) ? v : ""
@@ -2177,7 +2403,7 @@ namespace PadForge.Engine.Data
         /// <summary>
         /// Copies mappings from another PadSetting with cross-layout translation.
         /// When source and target use the same layout, delegates to <see cref="CopyFrom"/>.
-        /// When layouts differ, translates mapping positions (e.g., ButtonA → ExtendedBtn0)
+        /// When layouts differ, translates mapping positions (e.g., ButtonA → RawBtn0)
         /// and copies non-mapping settings (deadzones, sensitivity, FFB) directly.
         /// </summary>
         public void CopyFromTranslated(PadSetting source,
@@ -2193,7 +2419,7 @@ namespace PadForge.Engine.Data
                 return;
             }
 
-            source.FlushExtendedMappings();
+            source.FlushRawMappings();
             source.FlushMidiMappings();
             source.FlushKbmMappings();
 
@@ -2228,7 +2454,8 @@ namespace PadForge.Engine.Data
             // Read from gamepad properties (Xbox / PlayStation / Extended gamepad preset source)
             if (sourceType != VirtualControllerType.Midi &&
                 sourceType != VirtualControllerType.KeyboardMouse &&
-                !(sourceType == VirtualControllerType.Extended && sourceIsExtended))
+                !(sourceType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
+                  && sourceIsExtended))
             {
                 foreach (string propName in MappingPropertyNames)
                 {
@@ -2244,10 +2471,11 @@ namespace PadForge.Engine.Data
             }
 
             // Read from Extended dictionary (Extended custom source)
-            if (sourceType == VirtualControllerType.Extended && sourceIsExtended
-                && source.ExtendedMappingEntries != null)
+            if (sourceType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
+                && sourceIsExtended
+                && source.RawMappingEntries != null)
             {
-                foreach (var e in source.ExtendedMappingEntries)
+                foreach (var e in source.RawMappingEntries)
                 {
                     if (string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
                     var slot = MappingTranslation.GetPosition(e.Key, sourceType, true);
@@ -2283,10 +2511,11 @@ namespace PadForge.Engine.Data
             // Step 3: Write translated positions to target layout.
 
             // Clear existing target mappings first.
-            if (targetType == VirtualControllerType.Extended && targetIsExtended)
+            if (targetType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
+                && targetIsExtended)
             {
-                ExtendedMappingEntries = null;
-                _extendedMappingDict = null;
+                RawMappingEntries = null;
+                _rawMappingDict = null;
             }
             else if (targetType == VirtualControllerType.Midi)
             {
@@ -2315,8 +2544,9 @@ namespace PadForge.Engine.Data
                 string targetKey = MappingTranslation.GetPropertyName(kvp.Key, targetType, targetIsExtended);
                 if (targetKey == null) continue; // No equivalent in target layout — silently dropped.
 
-                if (targetType == VirtualControllerType.Extended && targetIsExtended)
-                    SetExtendedMapping(targetKey, kvp.Value);
+                if (targetType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
+                    && targetIsExtended)
+                    SetRawMapping(targetKey, kvp.Value);
                 else if (targetType == VirtualControllerType.Midi)
                     SetMidiMapping(targetKey, kvp.Value);
                 else if (targetType == VirtualControllerType.KeyboardMouse)
@@ -2331,7 +2561,7 @@ namespace PadForge.Engine.Data
             }
 
             // Flush dictionaries to arrays for persistence.
-            FlushExtendedMappings();
+            FlushRawMappings();
             FlushMidiMappings();
             FlushKbmMappings();
             FlushMappingDeadZones();
@@ -2354,16 +2584,16 @@ namespace PadForge.Engine.Data
             }
 
             // Flush source dicts to arrays so we copy the latest live data
-            // (SetExtendedMapping/SetMidiMapping update the dict, not the array).
-            source.FlushExtendedMappings();
+            // (SetRawMapping/SetMidiMapping update the dict, not the array).
+            source.FlushRawMappings();
             source.FlushMidiMappings();
             source.FlushKbmMappings();
             source.FlushMappingDeadZones();
             source.FlushMappingBidirectional();
 
             // Deep-copy arrays and invalidate our cached dictionaries.
-            ExtendedMappingEntries = DeepCopyMappings(source.ExtendedMappingEntries);
-            _extendedMappingDict = null;
+            RawMappingEntries = DeepCopyMappings(source.RawMappingEntries);
+            _rawMappingDict = null;
             MidiMappingEntries = DeepCopyMappings(source.MidiMappingEntries);
             _midiMappingDict = null;
             KbmMappingEntries = DeepCopyMappings(source.KbmMappingEntries);
@@ -2426,12 +2656,12 @@ namespace PadForge.Engine.Data
             return arr;
         }
 
-        private static ExtendedMappingEntry[] DeepCopyMappings(ExtendedMappingEntry[] src)
+        private static RawMappingEntry[] DeepCopyMappings(RawMappingEntry[] src)
         {
             if (src == null || src.Length == 0) return null;
-            var arr = new ExtendedMappingEntry[src.Length];
+            var arr = new RawMappingEntry[src.Length];
             for (int i = 0; i < src.Length; i++)
-                arr[i] = new ExtendedMappingEntry { Key = src[i].Key, Value = src[i].Value };
+                arr[i] = new RawMappingEntry { Key = src[i].Key, Value = src[i].Value };
             return arr;
         }
 
@@ -2450,7 +2680,7 @@ namespace PadForge.Engine.Data
     /// <summary>
     /// Key-value entry for Extended/MIDI mapping persistence in XML.
     /// </summary>
-    public class ExtendedMappingEntry
+    public class RawMappingEntry
     {
         [XmlAttribute] public string Key { get; set; } = "";
         [XmlAttribute] public string Value { get; set; } = "";

@@ -60,12 +60,30 @@ namespace PadForge.Engine
         public MidiInputState Clone()
         {
             var clone = new MidiInputState();
-            Array.Copy(Notes, clone.Notes, NoteCount);
-            Array.Copy(Cc, clone.Cc, CcCount);
-            Array.Copy(CcUp, clone.CcUp, CcCount);
-            Array.Copy(CcDown, clone.CcDown, CcCount);
-            clone.PitchBend = PitchBend;
+            CopyInto(clone);
             return clone;
+        }
+
+        /// <summary>Deep-copies into <paramref name="dst"/> (fixed-shape
+        /// arrays, no allocation). Clone delegates here so the field list
+        /// exists once.</summary>
+        /// <summary>Fresh-constructed state without dropping arrays.</summary>
+        public void ResetForReuse()
+        {
+            Array.Clear(Notes, 0, NoteCount);
+            Array.Clear(Cc, 0, CcCount);
+            Array.Clear(CcUp, 0, CcCount);
+            Array.Clear(CcDown, 0, CcCount);
+            PitchBend = PitchBendCenter;
+        }
+
+        public void CopyInto(MidiInputState dst)
+        {
+            Array.Copy(Notes, dst.Notes, NoteCount);
+            Array.Copy(Cc, dst.Cc, CcCount);
+            Array.Copy(CcUp, dst.CcUp, CcCount);
+            Array.Copy(CcDown, dst.CcDown, CcCount);
+            dst.PitchBend = PitchBend;
         }
     }
 }

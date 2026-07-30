@@ -79,10 +79,20 @@ namespace PadForge.ViewModels
             get
             {
                 if (_selectedLanguage != null) return _selectedLanguage;
-                var current = CultureInfo.CurrentUICulture.Name;
-                var match = AvailableLanguages.FirstOrDefault(c => c.Name == current)
-                         ?? AvailableLanguages[0];
-                return match;
+                // Walk the parent chain before giving up. An exact-name match
+                // alone sent de-DE, zh-Hans-CN and every other specific culture
+                // to AvailableLanguages[0], which is English, even when the
+                // neutral parent (de, zh-Hans) is right there in the list. A
+                // German user with a German Windows saw the picker say English.
+                for (var c = CultureInfo.CurrentUICulture;
+                     c != null && !string.IsNullOrEmpty(c.Name);
+                     c = c.Parent)
+                {
+                    var hit = AvailableLanguages.FirstOrDefault(a => a.Name == c.Name);
+                    if (hit != null) return hit;
+                    if (ReferenceEquals(c, c.Parent)) break;   // InvariantCulture is its own parent
+                }
+                return AvailableLanguages[0];
             }
             set
             {
@@ -96,11 +106,23 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Settings_Title;
             OnPropertyChanged(nameof(HidHideStatusText));
             OnPropertyChanged(nameof(MidiServicesStatusText));
+            // Both build their text from Strings.Instance, so they are exactly
+            // as culture-dependent as the two above and were the pair this
+            // handler missed. The Remote Link protection picker and its hint
+            // kept the previous language until something else re-read them.
+            OnPropertyChanged(nameof(IdentityProtectionModes));
+            OnPropertyChanged(nameof(IdentityProtectionHint));
 
             // Refresh the default profile's display name in the list.
             var defaultItem = ProfileItems.FirstOrDefault(p => p.IsDefault);
             if (defaultItem != null)
                 defaultItem.Name = Strings.Instance.Profile_Default;
+
+            // And every item's localized rule summary, which the line above
+            // does not cover: it renames one item, while the auto-switch chip
+            // text is culture-dependent on all of them.
+            foreach (var item in ProfileItems)
+                item?.RaiseCultureDependentText();
 
             // Refresh the active profile header when the default profile is active.
             if (string.IsNullOrEmpty(SettingsManager.ActiveProfileId))
@@ -427,6 +449,14 @@ namespace PadForge.ViewModels
         /// <summary>True if the OS meets the minimum version for Windows MIDI Services (Win11 24H2, build 26100).</summary>
         public static bool IsMidiOsSupported => Environment.OSVersion.Version.Build >= 26100;
 
+        /// <summary>Instance forwarder for XAML. A Binding path resolves
+        /// against the DataContext INSTANCE and cannot reach a static member,
+        /// so SettingsPage's `{Binding IsMidiOsSupported}` DataTrigger never
+        /// evaluated and the Win11-24H2-required tooltip was never set. Bind
+        /// this instead. Never raises PropertyChanged because the OS build
+        /// cannot change while the app runs.</summary>
+        public bool MidiOsSupported => IsMidiOsSupported;
+
         /// <summary>Command to download and install Windows MIDI Services.</summary>
         public RelayCommand InstallMidiServicesCommand =>
             _installMidiServicesCommand ??= new RelayCommand(
@@ -586,6 +616,73 @@ namespace PadForge.ViewModels
             get => _keepHidHideCloaksBetweenLaunches;
             set => SetProperty(ref _keepHidHideCloaksBetweenLaunches, value);
         }
+
+        // ─────────────────────────────────────────────
+        //  Community Configs (Steam Workshop, issue #9)
+        // ─────────────────────────────────────────────
+
+        private bool _enableCommunityConfigLookup;
+
+        /// <summary>
+        /// Master opt-in for the Steam Workshop feature. Off by default: no
+        /// PadForge network traffic to Steam ever happens while this is
+        /// false (every PadForge.SteamWorkshop client constructor throws on
+        /// a cold gate as defense in depth).
+        /// </summary>
+        public bool EnableCommunityConfigLookup
+        {
+            get => _enableCommunityConfigLookup;
+            set => SetProperty(ref _enableCommunityConfigLookup, value);
+        }
+
+        private bool _showLegacyWorkshopConfigs;
+
+        /// <summary>
+        /// Sub-toggle: list 2016-era Workshop entries that have no CDN
+        /// file_url. They wear a Legacy badge and route through the
+        /// Steam-subscribe fallback instead of a direct download.
+        /// </summary>
+        public bool ShowLegacyWorkshopConfigs
+        {
+            get => _showLegacyWorkshopConfigs;
+            set => SetProperty(ref _showLegacyWorkshopConfigs, value);
+        }
+
+        private RelayCommand _clearWorkshopCacheCommand;
+
+        /// <summary>Command to purge %LOCALAPPDATA%\PadForge\SteamWorkshopCache.</summary>
+        public RelayCommand ClearWorkshopCacheCommand =>
+            _clearWorkshopCacheCommand ??= new RelayCommand(
+                () => ClearWorkshopCacheRequested?.Invoke(this, EventArgs.Empty));
+
+        private RelayCommand _checkWorkshopUpdatesCommand;
+
+        /// <summary>
+        /// Command for "check imported profiles for updates" (#9 Phase D):
+        /// MainWindow walks the SteamWorkshopSource-stamped profiles and
+        /// compares each stored time_updated against a fresh Steam read.
+        /// </summary>
+        public RelayCommand CheckWorkshopUpdatesCommand =>
+            _checkWorkshopUpdatesCommand ??= new RelayCommand(
+                () => CheckWorkshopUpdatesRequested?.Invoke(this, EventArgs.Empty));
+
+        private RelayCommand _browseCommunityConfigsCommand;
+
+        /// <summary>Command to open the Browse Community Configs dialog. Always
+        /// enabled: with the opt-in off, the dialog opens on its cold-forge
+        /// state and offers the enable action itself.</summary>
+        public RelayCommand BrowseCommunityConfigsCommand =>
+            _browseCommunityConfigsCommand ??= new RelayCommand(
+                () => BrowseCommunityConfigsRequested?.Invoke(this, EventArgs.Empty));
+
+        /// <summary>Raised when the user asks to purge the Workshop cache.</summary>
+        public event EventHandler ClearWorkshopCacheRequested;
+
+        /// <summary>Raised when the user asks to re-check imported profiles (Phase D).</summary>
+        public event EventHandler CheckWorkshopUpdatesRequested;
+
+        /// <summary>Raised when the user opens the Browse Community Configs dialog.</summary>
+        public event EventHandler BrowseCommunityConfigsRequested;
 
         // ─────────────────────────────────────────────
         //  Settings file
@@ -1078,6 +1175,14 @@ namespace PadForge.ViewModels
             ? string.Empty
             : string.Format(Strings.Instance.Profiles_AutoSwitchRule_Format, _executables);
 
+        /// <summary>Re-raises this item's culture-dependent text. The summary
+        /// above formats through Strings.Instance, so a language switch changes
+        /// its value with nothing to announce it: the chips kept the old
+        /// language until the list was rebuilt for some other reason. The
+        /// owning ViewModel calls this for every item from OnCultureChanged.</summary>
+        internal void RaiseCultureDependentText()
+            => OnPropertyChanged(nameof(AutoSwitchRuleSummary));
+
         private string _topologyLabel;
         public string TopologyLabel
         {
@@ -1085,7 +1190,7 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _topologyLabel, value)) OnPropertyChanged(nameof(HasNoSlots)); }
         }
 
-        public bool HasNoSlots => XboxCount == 0 && PlayStationCount == 0 && ExtendedCount == 0 && MidiCount == 0 && KbmCount == 0;
+        public bool HasNoSlots => XboxCount == 0 && PlayStationCount == 0 && ExtendedCount == 0 && MidiCount == 0 && KbmCount == 0 && NintendoCount == 0;
 
         private int _xboxCount;
         public int XboxCount
@@ -1120,6 +1225,18 @@ namespace PadForge.ViewModels
         {
             get => _kbmCount;
             set => SetProperty(ref _kbmCount, value);
+        }
+
+        /// <summary>Nintendo slot count. The topology counter always produced
+        /// it, but UpdateTopologyCounts discarded it with `out _` while setting
+        /// the other five, so a profile whose slots are Nintendo showed an
+        /// empty chip strip and, with no other type present, the "no slots"
+        /// fallback badge.</summary>
+        private int _nintendoCount;
+        public int NintendoCount
+        {
+            get => _nintendoCount;
+            set => SetProperty(ref _nintendoCount, value);
         }
     }
 }

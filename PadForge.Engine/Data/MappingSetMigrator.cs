@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -81,6 +81,24 @@ namespace PadForge.Engine.Data
         public static bool IsMotionAccelAuxDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && string.Equals(descriptor.Trim(), MotionAccelAuxSourceDescriptor, StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>Aux (left-side) GYRO variant for the MotionGyro row
+        /// (issue #252): sources the slot's single IMU stream from a
+        /// combined Joy-Con pair's LEFT half instead of the body gyro
+        /// (which on a pair is the right half). The accel twin above has
+        /// shipped since #199; without this one a slot could passthrough
+        /// the left accelerometer but not the left gyro, so DSU and a
+        /// virtual DualSense saw a mismatched pair of halves. Same
+        /// exact-match grammar as "Motion Accel L": ParseMotionSubChannel
+        /// returns -1 for "Gyro L", so it cannot be read as the primary.
+        /// Never a Nunchuk, which has no gyro.</summary>
+        public const string MotionGyroAuxSourceDescriptor = "Motion Gyro L";
+
+        /// <summary>True when the descriptor is
+        /// <see cref="MotionGyroAuxSourceDescriptor"/>.</summary>
+        public static bool IsMotionGyroAuxDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && string.Equals(descriptor.Trim(), MotionGyroAuxSourceDescriptor, StringComparison.OrdinalIgnoreCase);
 
         // Touchpad output targets. Stored as plain string properties on
         // PadSetting (TouchpadX1, TouchpadY1, …, TouchpadClick), reached via
@@ -198,7 +216,232 @@ namespace PadForge.Engine.Data
             foreach (var target in TouchpadTargets)
                 AppendSimpleRow(ms, target, devicesAndPadSettings, gamepadOnly: false);
 
+            // Raw-surface targets (profile-driven slots: Nintendo, Extended
+            // custom): per-device mappings live in the PadSetting's raw
+            // mapping dictionary under the persisted raw target grammar.
+            // Without this lane those mappings evaluate only through the
+            // engine's per-device fallback and never surface as rows, so
+            // the Mappings grid showed nothing for them (the Nintendo
+            // positional automap was invisible). The dictionary also
+            // carries non-mapping tuning keys (deadzone shapes, steering,
+            // flick stick), so only exact raw-target keys translate.
+            AppendRawSurfaceRows(ms, devicesAndPadSettings);
+
+            // MIDI and KBM surfaces are the raw surface's dictionary
+            // siblings and rot the same way without a lane here, but
+            // WORSE: the save pipeline regenerates every device's
+            // PadSetting from the grid view, so a merge that drops these
+            // rows turns the next save into a wipe of the authored
+            // mappings (the MIDI automap "didn't stick", 2026-07-23).
+            AppendDictionarySurfaceRows(ms, devicesAndPadSettings,
+                MidiTargetKey, MidiAxisTargetPrefixes, ps => ps?.MidiMappingEntries,
+                (ps, key) => ps?.GetMidiMapping(key));
+            AppendDictionarySurfaceRows(ms, devicesAndPadSettings,
+                KbmTargetKey, KbmAxisTargetPrefixes, ps => ps?.KbmMappingEntries,
+                (ps, key) => ps?.GetKbmMapping(key));
+
             return ms;
+        }
+
+        private static readonly System.Text.RegularExpressions.Regex RawTargetKey =
+            new(@"^Raw(Axis\d+|Btn\d+|Pov\d+(Up|Down|Left|Right))$",
+                System.Text.RegularExpressions.RegexOptions.Compiled);
+
+        // MIDI surface grammar (MidiVirtualController targets): CC slots
+        // are axis-like (Neg legs fold), note slots are button-like.
+        private static readonly System.Text.RegularExpressions.Regex MidiTargetKey =
+            new(@"^Midi(CC\d+|Note\d+)$",
+                System.Text.RegularExpressions.RegexOptions.Compiled);
+        private static readonly string[] MidiAxisTargetPrefixes = { "MidiCC" };
+
+        // KBM surface grammar (KeyboardMouseVirtualController targets):
+        // keys and mouse buttons are button-like; mouse axes and scroll
+        // are axis-like.
+        // ScrollH is the horizontal wheel and is a REAL target
+        // (MappingTranslation: KbmScrollH / KbmScrollHNeg). Without the
+        // optional H the regex rejected it, the merge rebuilt no row for
+        // it, and the clear-then-rewrite save then wiped the authored
+        // binding: the same data-loss shape the MIDI/KBM lanes were added
+        // to stop (2026-07-23), one target deeper (audit 2026-07-24,
+        // lens 1r). The Neg legs strip their suffix before matching, so
+        // KbmScrollHNeg reaches this as KbmScrollH.
+        private static readonly System.Text.RegularExpressions.Regex KbmTargetKey =
+            new(@"^Kbm(Key[0-9A-Fa-f]+|MBtn\d+|MouseX|MouseY|Scroll|ScrollH)$",
+                System.Text.RegularExpressions.RegexOptions.Compiled);
+        // KbmScroll is a prefix of KbmScrollH, so the existing entry already
+        // classifies both as axis-like; listed explicitly for the reader.
+        private static readonly string[] KbmAxisTargetPrefixes = { "KbmMouseX", "KbmMouseY", "KbmScroll" };
+
+        /// <summary>Rewrites legacy raw-surface tokens (the pre-2026-07-19
+        /// "Extended*" spellings) to the current "Raw*" grammar. Applies to
+        /// one token (a row target or a dictionary key); returns the input
+        /// unchanged when it is not a legacy raw token. The raw surface is
+        /// category-neutral (Nintendo and Extended slots both ride it), so
+        /// its grammar no longer wears the Extended category's name.</summary>
+        public static string NormalizeRawToken(string token)
+        {
+            if (string.IsNullOrEmpty(token)) return token;
+            if (!token.StartsWith("Extended", StringComparison.Ordinal)) return token;
+            string rest = token.Substring("Extended".Length);
+            if (rest.StartsWith("Axis", StringComparison.Ordinal)
+                || rest.StartsWith("Btn", StringComparison.Ordinal)
+                || rest.StartsWith("Pov", StringComparison.Ordinal)
+                || rest.StartsWith("Stick", StringComparison.Ordinal)
+                || rest.StartsWith("Trigger", StringComparison.Ordinal))
+                return "Raw" + rest;
+            return token;
+        }
+
+        /// <summary>Normalizes every row target in <paramref name="ms"/>
+        /// through <see cref="NormalizeRawToken"/>. Idempotent; called at
+        /// every lane persisted MappingSets enter the process (settings
+        /// load, profile apply, legacy merge) so saves written before the
+        /// grammar rename keep working and re-save upgraded.</summary>
+        public static void NormalizeRawSurfaceTargets(MappingSet ms)
+        {
+            if (ms?.Rows == null) return;
+            foreach (var row in ms.Rows)
+            {
+                if (row == null || string.IsNullOrEmpty(row.Target)) continue;
+                row.Target = NormalizeRawToken(row.Target);
+            }
+        }
+
+        /// <summary>Shared lane for the dictionary-backed target surfaces
+        /// (MIDI, KBM). Same shape as <see cref="AppendRawSurfaceRows"/>:
+        /// collect exact-grammar targets in first-seen order across the
+        /// slot's devices, emit one row per target with one source per
+        /// contributing device, and fold "{target}Neg" legs into the
+        /// axis-like targets' rows with the bipolar polarity rule.</summary>
+        private static void AppendDictionarySurfaceRows(
+            MappingSet ms,
+            IReadOnlyList<(string DeviceGuid, PadSetting PadSetting, bool IsGamepadEligible)> devices,
+            System.Text.RegularExpressions.Regex targetKey,
+            string[] axisTargetPrefixes,
+            Func<PadSetting, RawMappingEntry[]> getEntries,
+            Func<PadSetting, string, string> getMapping)
+        {
+            var targets = new List<string>();
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var (_, ps, _) in devices)
+            {
+                var entries = getEntries(ps);
+                if (entries == null) continue;
+                foreach (var e in entries)
+                {
+                    if (e == null || string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
+                    string target = e.Key.EndsWith("Neg", StringComparison.Ordinal)
+                        ? e.Key.Substring(0, e.Key.Length - 3)
+                        : e.Key;
+                    if (!targetKey.IsMatch(target)) continue;
+                    if (seen.Add(target)) targets.Add(target);
+                }
+            }
+
+            foreach (var target in targets)
+            {
+                bool axisLike = false;
+                foreach (var prefix in axisTargetPrefixes)
+                {
+                    if (target.StartsWith(prefix, StringComparison.Ordinal)) { axisLike = true; break; }
+                }
+
+                var sources = new List<MappingSource>();
+                foreach (var (guid, ps, _) in devices)
+                {
+                    string desc = getMapping(ps, target);
+                    if (!string.IsNullOrEmpty(desc))
+                    {
+                        var src = BuildSource(guid, desc, ps?.GetMappingDeadZone(target));
+                        if (src != null) sources.Add(src);
+                    }
+
+                    if (!axisLike) continue;
+                    string negDesc = getMapping(ps, target + "Neg");
+                    if (string.IsNullOrEmpty(negDesc)) continue;
+                    var negSrc = BuildSource(guid, negDesc, ps?.GetMappingDeadZone(target));
+                    if (negSrc == null) continue;
+                    // Same polarity rule as AppendBipolarRow's negative leg.
+                    if (Common.Mapping.SourceCoercion.InvertConsumedByHalfAxisRead(negSrc))
+                        negSrc.InvertOutput = !negSrc.InvertOutput;
+                    else
+                        negSrc.Invert = !negSrc.Invert;
+                    sources.Add(negSrc);
+                }
+                if (sources.Count == 0) continue;
+
+                ms.Rows.Add(new MappingRow
+                {
+                    Target = target,
+                    LayerMask = "Base",
+                    CombineMode = "",
+                    Sources = sources,
+                });
+            }
+        }
+
+        private static void AppendRawSurfaceRows(
+            MappingSet ms,
+            IReadOnlyList<(string DeviceGuid, PadSetting PadSetting, bool IsGamepadEligible)> devices)
+        {
+            // Targets present on any device, in first-seen order. Negative
+            // axis legs ("RawAxis{N}Neg") fold into their positive
+            // target's row below, mirroring AppendBipolarRow.
+            var targets = new List<string>();
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var (_, ps, _) in devices)
+            {
+                var entries = ps?.RawMappingEntries;
+                if (entries == null) continue;
+                foreach (var e in entries)
+                {
+                    if (e == null || string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
+                    // Pre-rename saves still carry legacy array keys here
+                    // (the array only re-flushes on save); normalize before
+                    // the new-grammar filter or their rows silently drop.
+                    string key = NormalizeRawToken(e.Key);
+                    string target = key.EndsWith("Neg", StringComparison.Ordinal)
+                        ? key.Substring(0, key.Length - 3)
+                        : key;
+                    if (!RawTargetKey.IsMatch(target)) continue;
+                    if (seen.Add(target)) targets.Add(target);
+                }
+            }
+
+            foreach (var target in targets)
+            {
+                var sources = new List<MappingSource>();
+                foreach (var (guid, ps, _) in devices)
+                {
+                    string raw = ps?.GetRawMapping(target);
+                    if (!string.IsNullOrEmpty(raw))
+                    {
+                        var src = BuildSource(guid, raw, ps?.GetMappingDeadZone(target));
+                        if (src != null) sources.Add(src);
+                    }
+
+                    if (!target.StartsWith("RawAxis", StringComparison.Ordinal)) continue;
+                    string rawNeg = ps?.GetRawMapping(target + "Neg");
+                    if (string.IsNullOrEmpty(rawNeg)) continue;
+                    var negSrc = BuildSource(guid, rawNeg, ps?.GetMappingDeadZone(target));
+                    if (negSrc == null) continue;
+                    // Same polarity rule as AppendBipolarRow's negative leg.
+                    if (Common.Mapping.SourceCoercion.InvertConsumedByHalfAxisRead(negSrc))
+                        negSrc.InvertOutput = !negSrc.InvertOutput;
+                    else
+                        negSrc.Invert = !negSrc.Invert;
+                    sources.Add(negSrc);
+                }
+                if (sources.Count == 0) continue;
+
+                ms.Rows.Add(new MappingRow
+                {
+                    Target = target,
+                    LayerMask = "Base",
+                    CombineMode = "",
+                    Sources = sources,
+                });
+            }
         }
 
         private static void AppendSimpleRow(
@@ -254,10 +497,25 @@ namespace PadForge.Engine.Data
                         var src = BuildSource(guid, rawNeg, ps?.GetMappingDeadZone(target));
                         if (src != null)
                         {
-                            // Negative source: flip Invert relative to the
-                            // descriptor's encoded inversion. Net effect:
+                            // Negative source: flip the OUTPUT sign relative to
+                            // the descriptor's encoded inversion. Net effect:
                             // pressed → -1 instead of +1 on a button source.
-                            src.Invert = !src.Invert;
+                            //
+                            // Which field carries that flip is not a free
+                            // choice. On a half-axis read of a centered
+                            // "Axis N" the engine consumes Invert INSIDE the
+                            // read as the half SELECTOR, so assigning the
+                            // polarity there does not negate anything: it
+                            // silently moves the source to the other half.
+                            // A legacy "HAxis 6" negative leg came out reading
+                            // the lower half and emitting POSITIVE, i.e. wrong
+                            // in both halves of its job. Ask the engine's own
+                            // predicate which field is free rather than
+                            // re-deriving the rule here.
+                            if (Common.Mapping.SourceCoercion.InvertConsumedByHalfAxisRead(src))
+                                src.InvertOutput = !src.InvertOutput;
+                            else
+                                src.Invert = !src.Invert;
                             sources.Add(src);
                         }
                     }
@@ -393,11 +651,13 @@ namespace PadForge.Engine.Data
         {
             if (ms == null || devices == null || devices.Count == 0) return;
 
-            // Sony-class only. slotType integer encoding matches the
-            // VirtualControllerType enum's underlying values (PlayStation=1).
-            // Encoded as int here so PadForge.Engine.Data doesn't need a
+            // Motion-capable slot families only. slotType integer encoding
+            // matches the VirtualControllerType enum's underlying values
+            // (PlayStation=1, Nintendo=5; the virtual Switch Pro gained a
+            // real IMU surface in HIDMaestro v1.3.18, HM#33). Encoded as
+            // int here so PadForge.Engine.Data doesn't need a
             // back-reference to PadForge.Engine for the enum type.
-            if (slotType != 1) return;
+            if (slotType != 1 && slotType != 5) return;
 
             EnsureMotionRowForSensor(ms, MotionGyroTarget,  MotionGyroSourceDescriptor,
                 devices, dev => dev.HasGyro);
@@ -410,15 +670,27 @@ namespace PadForge.Engine.Data
             IReadOnlyList<(string DeviceGuid, bool HasGyro, bool HasAccel)> devices,
             Func<(string DeviceGuid, bool HasGyro, bool HasAccel), bool> capCheck)
         {
-            // Find or create the target's row.
+            // Find or create the target's BASE row.
+            //
+            // Pinned to Base deliberately. Motion rows follow shift layers as
+            // of the layer-aware resolve, and this backfill runs on load for
+            // newly-assigned devices. Matching layer-blind let it append a
+            // slot's real motion sources to whichever row happened to come
+            // first -- a shift-layer row if one existed -- so no Base row was
+            // ever created and the slot lost motion outside that layer. The
+            // create branch below already stamps LayerMask = "Base"; this
+            // makes the find agree with it.
+            //
+            // The "Base" coalesce is not redundant with MappingRow's default:
+            // hand-edited XML and imported profiles can deliver a null mask.
             MappingRow row = null;
             for (int i = 0; i < ms.Rows.Count; i++)
             {
-                if (ms.Rows[i] != null && ms.Rows[i].Target == target)
-                {
-                    row = ms.Rows[i];
-                    break;
-                }
+                var candidate = ms.Rows[i];
+                if (candidate == null || candidate.Target != target) continue;
+                if (!string.Equals(candidate.LayerMask ?? "Base", "Base", StringComparison.Ordinal)) continue;
+                row = candidate;
+                break;
             }
 
             // Collect already-represented device guids for this target so we

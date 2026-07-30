@@ -17,6 +17,7 @@ namespace PadForge.Tests
     /// round-trip, and the evaluator's intact handling, plus the legacy
     /// prefix grammar's continued correct operation for real prefixes.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class DescriptorGrammarTests
     {
         // ─── The exemption predicate itself ───

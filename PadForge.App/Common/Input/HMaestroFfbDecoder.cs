@@ -28,11 +28,33 @@ namespace PadForge.Common.Input
         private const ushort RamPoolSize = 0xFFFF;
 
         private readonly Dictionary<byte, EffectState> _effects = new();
+        // (left << 16) | right, written atomically because Apply also
+        // runs on the SDK receive thread while TickFfb reads on the
+        // poll thread.
+        private int _lastComputedPack;
+
+        /// <summary>The last game-authored motor pair Apply computed
+        /// from the PID effect set (#236 LFE parity). Never sourced
+        /// from the shared Vibration object, so the bass-shaker path
+        /// inherits the decoder's provenance.</summary>
+        public (ushort Left, ushort Right) LastComputedMotors
+        {
+            get
+            {
+                int p = System.Threading.Volatile.Read(ref _lastComputedPack);
+                return ((ushort)(p >> 16), (ushort)p);
+            }
+        }
+
         private byte _deviceGain = 255;
         private readonly object _lock = new();
         private readonly HMController _controller;
         private byte _lastEbi;
         private PidStateFlags _stateFlags = PidStateFlags.ActuatorsEnabled | PidStateFlags.ActuatorPower;
+        // Wall-clock anchor of the current Device Pause; 0 when not paused.
+        // Continue shifts every running effect's StartTicks past the paused
+        // span so durations freeze instead of expiring mid-pause.
+        private long _pauseStartTicks;
 
         // Per-report magnitude scaling, derived from the descriptor at construction.
         // Canonical PID FFB descriptors declare Magnitude as 16-bit signed with
@@ -130,6 +152,7 @@ namespace PadForge.Common.Input
         /// dictionary.</summary>
         public void OnHidFeature(byte reportId, ReadOnlySpan<byte> data)
         {
+            _applyDirty = true;
             if (_controller == null) return;
             if (reportId != HMaestroFfbDescriptor.OutputReportId.SetEffect) return;
             if (data.Length < 1) return;
@@ -182,6 +205,7 @@ namespace PadForge.Common.Input
 
         public void OnHidOutput(byte reportId, ReadOnlySpan<byte> data)
         {
+            _applyDirty = true;
             try
             {
                 lock (_lock)
@@ -235,9 +259,34 @@ namespace PadForge.Common.Input
 
         /// <summary>Aggregate running effects into the supplied Vibration.
         /// Mirrors the v2 ApplyMotorOutput polar-split + dominant-effect-passthrough.</summary>
+        // Recompute gate: game packets mark dirty (OnHidFeature/OnHidOutput
+        // mutate effect state), and finite-duration effects need one apply
+        // at their earliest expiry. Between those points, re-running Apply
+        // recomputed the identical projection under the lock at poll rate.
+        // x64: aligned long reads/writes are atomic; Volatile pairs the
+        // publish with the poll-thread read.
+        private volatile bool _applyDirty = true;
+        private long _nextExpiryTick;   // 0 = none pending
+
+        /// <summary>Poll-tick entry: runs the full Apply only when effect
+        /// state changed or a finite effect's expiry is due. Skipping is
+        /// byte-identical: vib retains the last computed values and
+        /// LastComputedMotors is unchanged.</summary>
+        public void ApplyIfDue(Vibration vib)
+        {
+            if (!_applyDirty)
+            {
+                long exp = System.Threading.Volatile.Read(ref _nextExpiryTick);
+                if (exp == 0 || Environment.TickCount64 < exp) return;
+            }
+            Apply(vib);
+        }
+
         public void Apply(Vibration vib)
         {
             if (vib == null) return;
+            _applyDirty = false;
+            long earliestExpiry = 0;
 
             double leftSum = 0, rightSum = 0;
             uint dominantType = 0;
@@ -249,9 +298,26 @@ namespace PadForge.Common.Input
 
             lock (_lock)
             {
+                // Device Pause (2026-07-25 audit): playback AND effect
+                // clocks freeze. Skipping the whole loop keeps every sum
+                // and dominant at zero (the projection below then writes
+                // silence to the motors, the LFE pack, and the directional
+                // and condition blocks), advances no expiry, and leaves
+                // EffectPlaying untouched. Continue shifts StartTicks and
+                // re-Applies, so nothing here needs a wake tick.
+                bool paused = (_stateFlags & PidStateFlags.DeviceIsPaused) != 0;
+                // Actuators disabled: a mute, not a stop. Effects keep
+                // running and EXPIRING below (unlike pause), and only the
+                // final projection is masked to zero. Scope: this mutes
+                // the PID producer only; PadForge-local overlays (macro
+                // rumble, constant force) are downstream merges and stay
+                // governed by their own settings.
+                bool actuatorsOff = (_stateFlags & PidStateFlags.ActuatorsEnabled) == 0;
+
                 bool anyExpired = false;
                 foreach (var kv in _effects)
                 {
+                    if (paused) break;
                     var es = kv.Value;
                     if (!es.Running) continue;
 
@@ -264,12 +330,15 @@ namespace PadForge.Common.Input
                     if (es.Duration != 0 && es.Duration != 0xFFFF && es.LoopCount != 0xFF)
                     {
                         long totalMs = (long)es.Duration * Math.Max((byte)1, es.LoopCount);
-                        if (Environment.TickCount64 - es.StartTicks >= totalMs)
+                        long expiresAt = es.StartTicks + totalMs;
+                        if (Environment.TickCount64 >= expiresAt)
                         {
                             es.Running = false;
                             anyExpired = true;
                             continue;
                         }
+                        if (earliestExpiry == 0 || expiresAt < earliestExpiry)
+                            earliestExpiry = expiresAt;
                     }
 
                     double absMag = Math.Abs(es.Magnitude);
@@ -306,6 +375,18 @@ namespace PadForge.Common.Input
                     rightSum += mag * rightScale;
                 }
 
+                if (actuatorsOff)
+                {
+                    // Mask the whole projection: motors, LFE pack (via the
+                    // zeroed leftVal/rightVal below), directional block,
+                    // and condition block. State above stays live so
+                    // Enable Actuators resumes mid-effect.
+                    leftSum = 0; rightSum = 0;
+                    dominantMag = 0; dominantType = 0; dominantSignedMag = 0;
+                    dominantDir = 0; dominantPeriod = 0;
+                    conditionEffect = null;
+                }
+
                 double gainFactor = _deviceGain / 255.0;
                 leftSum  *= gainFactor;
                 rightSum *= gainFactor;
@@ -315,6 +396,14 @@ namespace PadForge.Common.Input
 
                 vib.LeftMotorSpeed = leftVal;
                 vib.RightMotorSpeed = rightVal;
+
+                // #236 (owner directive: every feedback source we support
+                // is an LFE source): expose the game-authored pair for
+                // the inbound rumble pack. Computed purely from the PID
+                // effect set the GAME uploaded (gains included), so
+                // test-rumble writes to VibrationStates stay out.
+                System.Threading.Volatile.Write(ref _lastComputedPack,
+                    (leftVal << 16) | rightVal);
 
                 vib.HasDirectionalData = dominantMag > 0;
                 if (vib.HasDirectionalData)
@@ -359,6 +448,7 @@ namespace PadForge.Common.Input
                     vib.ConditionAxisCount = 0;
                 }
 
+                System.Threading.Volatile.Write(ref _nextExpiryTick, earliestExpiry);
                 if (anyExpired && !AnyEffectRunningLocked())
                 {
                     _stateFlags &= ~PidStateFlags.EffectPlaying;
@@ -669,9 +759,14 @@ namespace PadForge.Common.Input
                     _stateFlags |= PidStateFlags.ActuatorsEnabled;
                     break;
                 case 2: // disable actuators
-                    foreach (var kv in _effects) kv.Value.Running = false;
+                    // PID semantics (hid-pidff.c, HMPidState): actuators-off
+                    // is a MUTE with effect state preserved, distinct from
+                    // Stop All. The old Running=false loop destroyed the
+                    // effect set, so Enable restored nothing and a
+                    // SETACTUATORSOFF/ON round trip left permanent silence
+                    // (2026-07-25 audit). Effects keep playing (and keep
+                    // expiring) internally; Apply masks the projection.
                     _stateFlags &= ~PidStateFlags.ActuatorsEnabled;
-                    _stateFlags &= ~PidStateFlags.EffectPlaying;
                     break;
                 case 3: // stop all
                     foreach (var kv in _effects) kv.Value.Running = false;
@@ -683,12 +778,35 @@ namespace PadForge.Common.Input
                     _deviceGain = 255;
                     _lastEbi = 0;
                     _stateFlags = PidStateFlags.ActuatorsEnabled | PidStateFlags.ActuatorPower;
+                    _pauseStartTicks = 0;
                     break;
-                case 5: // device pause
-                    _stateFlags |= PidStateFlags.DeviceIsPaused;
+                case 5: // device pause (idempotent: a second Pause must not
+                        // move the freeze anchor)
+                    if ((_stateFlags & PidStateFlags.DeviceIsPaused) == 0)
+                    {
+                        _stateFlags |= PidStateFlags.DeviceIsPaused;
+                        _pauseStartTicks = Environment.TickCount64;
+                    }
                     break;
-                case 6: // device continue
-                    _stateFlags &= ~PidStateFlags.DeviceIsPaused;
+                case 6: // device continue: un-freeze effect lifetimes by
+                        // shifting each running effect's start forward by
+                        // the span it sat paused. An effect (re)started
+                        // DURING the pause anchors at its own start, so it
+                        // resumes with zero elapsed rather than over-shifted
+                        // (2026-07-25 audit; PID pause freezes playback AND
+                        // effect clocks, it never truncates durations).
+                    if ((_stateFlags & PidStateFlags.DeviceIsPaused) != 0)
+                    {
+                        _stateFlags &= ~PidStateFlags.DeviceIsPaused;
+                        long now = Environment.TickCount64;
+                        foreach (var kv in _effects)
+                        {
+                            var es = kv.Value;
+                            if (!es.Running) continue;
+                            es.StartTicks += now - Math.Max(_pauseStartTicks, es.StartTicks);
+                        }
+                        _pauseStartTicks = 0;
+                    }
                     break;
             }
             _controller?.PublishPidState(_lastEbi, _stateFlags);

@@ -61,6 +61,13 @@ namespace PadForge.Engine.Common
 
             if (PointerOrMouseActive(s)) return false;
 
+            // An NFC tag held on the reader is a deliberate user action, so
+            // it keeps a Bluetooth controller alive rather than letting it
+            // idle-disconnect mid-tap (Codex #9).
+            if (s.NfcTag != null)
+                for (int i = 0; i < s.NfcTag.Length; i++)
+                    if (s.NfcTag[i]) return false;
+
             return true;
         }
 

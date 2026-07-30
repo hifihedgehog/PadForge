@@ -61,7 +61,17 @@ namespace PadForge.Views
         public ControllerModel2DView()
         {
             InitializeComponent();
-            CompositionTarget.Rendering += OnRendering;
+            // Rendering rides tree presence, matching MousePreviewControl. A
+            // ctor-lifetime subscription to the STATIC CompositionTarget.Rendering
+            // roots the view forever and keeps its per-frame callback
+            // invalidating layout even when the hosting page is swapped out.
+            // See the note in ControllerSchematicView for the measurement.
+            Loaded += (s, e) =>
+            {
+                CompositionTarget.Rendering -= OnRendering;
+                CompositionTarget.Rendering += OnRendering;
+            };
+            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
             // Annotation overlay (#175): anchors move only when the Viewbox
             // rescales, so a size change is the one geometry trigger the 2D
             // layer needs (no camera, no timer-driven re-projection).
@@ -172,6 +182,11 @@ namespace PadForge.Views
                     basePath = XboxSeriesXLayout.BasePath; overlays = XboxSeriesXLayout.Overlays;
                     _stickMaxTravel = XboxSeriesXLayout.StickMaxTravel;
                     break;
+                case "SWITCHPRO":
+                    baseW = SwitchProLayout.BaseWidth; baseH = SwitchProLayout.BaseHeight;
+                    basePath = SwitchProLayout.BasePath; overlays = SwitchProLayout.Overlays;
+                    _stickMaxTravel = SwitchProLayout.StickMaxTravel;
+                    break;
                 default:
                     baseW = Xbox360Layout.BaseWidth; baseH = Xbox360Layout.BaseHeight;
                     basePath = Xbox360Layout.BasePath; overlays = Xbox360Layout.Overlays;
@@ -260,6 +275,13 @@ namespace PadForge.Views
                     Cursor = Cursors.Hand,
                     Tag = ov.TargetName,
                 };
+                // Per-pixel hit zone: the generator traces each overlay's
+                // opaque region into polygons, and UIElement.Clip bounds
+                // hit-testing as well as rendering, so hover/click only
+                // fire where the art actually shows (a trigger's thin arc,
+                // not the empty box around it).
+                if (!string.IsNullOrEmpty(ov.HitPath))
+                    hitRect.Clip = BuildHitGeometry(ov.HitPath, ov.Width, ov.Height);
                 Canvas.SetLeft(hitRect, ov.X);
                 Canvas.SetTop(hitRect, ov.Y);
                 Panel.SetZIndex(hitRect, 10);
@@ -377,7 +399,8 @@ namespace PadForge.Views
             // visibility on the same rectangle, and writing here every render
             // frame would race with it.
             bool flashClaimsTouchpad = _flashTarget == "TouchpadClick";
-            if (_hoverTarget != "Touchpad" && !flashClaimsTouchpad)
+            if (_hoverTarget != "Touchpad" && _hoverTarget != "TouchpadClick"
+                && !flashClaimsTouchpad)
             {
                 _touchpadClickHighlight.Visibility = _vm.TouchpadClickPressed
                     ? Visibility.Visible : Visibility.Collapsed;
@@ -403,6 +426,34 @@ namespace PadForge.Views
             double cy = _touchpadOverlay.Y + normY * _touchpadOverlay.Height;
             Canvas.SetLeft(dot, cx - dot.Width / 2);
             Canvas.SetTop(dot, cy - dot.Height / 2);
+        }
+
+        /// <summary>Builds the hit-zone clip from the generator's normalized
+        /// polygon groups ("x,y x,y ...;x,y ..."), scaled to the rendered
+        /// entry size. Culture-invariant parse; frozen for sharing.</summary>
+        private static Geometry BuildHitGeometry(string hitPath, double w, double h)
+        {
+            var sg = new StreamGeometry { FillRule = FillRule.Nonzero };
+            using (var ctx = sg.Open())
+            {
+                foreach (var poly in hitPath.Split(';'))
+                {
+                    var pts = poly.Split(' ');
+                    Point Parse(string t)
+                    {
+                        int c = t.IndexOf(',');
+                        return new Point(
+                            double.Parse(t.Substring(0, c), System.Globalization.CultureInfo.InvariantCulture) * w,
+                            double.Parse(t.Substring(c + 1), System.Globalization.CultureInfo.InvariantCulture) * h);
+                    }
+                    if (pts.Length < 3) continue;
+                    ctx.BeginFigure(Parse(pts[0]), isFilled: true, isClosed: true);
+                    for (int i = 1; i < pts.Length; i++)
+                        ctx.LineTo(Parse(pts[i]), isStroked: false, isSmoothJoin: false);
+                }
+            }
+            sg.Freeze();
+            return sg;
         }
 
         private static Image CreateImage(string resourcePath, double x, double y, double w, double h)
@@ -434,6 +485,13 @@ namespace PadForge.Views
 
         private void OnRendering(object sender, EventArgs e)
         {
+            // Retained-page guard (see ControllerModelView.OnRendering): skip
+            // the overlay repaint while hidden; _dirty catches up on the first
+            // visible frame.
+            // Iconic gate: IsVisible stays TRUE while the window is
+            // minimized, so without this the overlay repainted per display
+            // frame while nothing could render (the marquee mechanism).
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             if (!_dirty || _vm == null || _loadedModel == null)
                 return;
             _dirty = false;
@@ -574,8 +632,7 @@ namespace PadForge.Views
 
         private void HitArea_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (sender is Rectangle rect && rect.Tag is string target &&
-                _overlayImages.TryGetValue(target, out var img))
+            if (sender is Rectangle rect && rect.Tag is string target)
             {
                 _elementTypes.TryGetValue(target, out var elemType);
 
@@ -585,16 +642,25 @@ namespace PadForge.Views
 
                 if (_flashTarget == target) return;
 
-                // Touchpad has no per-element overlay image (zone is rendered
-                // by the click highlight rectangle in BuildTouchpadPreview).
-                // Show that rectangle at low opacity for the hover affordance.
-                if (elemType == OverlayElementType.Touchpad && _touchpadClickHighlight != null)
+                // Touchpad family has no per-element overlay image (the zone
+                // is rendered by the click highlight rectangle from
+                // BuildTouchpadPreview), and the click strip's hit rect
+                // extends above the pad surface, so both targets show that
+                // rectangle at low opacity for the hover affordance. This
+                // must run before the overlay-image lookup: the strip has no
+                // image, and bailing there left its exclusive band with a
+                // hand cursor and no highlight.
+                if ((elemType == OverlayElementType.Touchpad || target == "TouchpadClick")
+                    && _touchpadClickHighlight != null)
                 {
                     _hoverTarget = target;
                     _touchpadClickHighlight.Visibility = Visibility.Visible;
                     _touchpadClickHighlight.Opacity = 0.4;
                     return;
                 }
+
+                if (!_overlayImages.TryGetValue(target, out var img))
+                    return;
 
                 _hoverTarget = target;
                 img.Visibility = Visibility.Visible;
@@ -677,6 +743,15 @@ namespace PadForge.Views
         {
             StopFlash();
             if (string.IsNullOrEmpty(target)) return;
+
+            // A Nintendo slot's CurrentRecordingTarget is a raw grid name
+            // (RawBtn1, RawAxis0Neg); the flash machinery below speaks the
+            // preview element grammar. Translate back before resolving.
+            if (target.StartsWith("Raw", StringComparison.Ordinal))
+            {
+                target = NintendoPreviewMap.ToPreview(target);
+                if (string.IsNullOrEmpty(target)) return;
+            }
 
             _flashRawTarget = target;
             _flashTarget = ResolveFlashTarget(target);
@@ -777,15 +852,24 @@ namespace PadForge.Views
                 {
                     img.Opacity = _flashOn ? 1.0 : 0.2;
                 }
+                else if (_triggerClips.TryGetValue(_flashTarget, out var clip))
+                {
+                    // A trigger flashes through its CLIP, full to empty, the
+                    // same channel its live level uses. Toggling Visibility
+                    // here instead left the image Collapsed whenever the
+                    // flash happened to stop on an off phase, because the
+                    // restore path's trigger branch only resets the clip and
+                    // never puts Visibility back.
+                    img.Visibility = Visibility.Visible;
+                    img.Opacity = 1.0;
+                    clip.Rect = _flashOn
+                        ? new Rect(0, 0, img.Width, img.Height)
+                        : new Rect(0, img.Height, img.Width, 0);
+                }
                 else
                 {
                     img.Visibility = _flashOn ? Visibility.Visible : Visibility.Collapsed;
-                    if (_flashOn)
-                    {
-                        img.Opacity = 1.0;
-                        if (_triggerClips.TryGetValue(_flashTarget, out var clip))
-                            clip.Rect = new Rect(0, 0, img.Width, img.Height);
-                    }
+                    if (_flashOn) img.Opacity = 1.0;
                 }
             }
         }

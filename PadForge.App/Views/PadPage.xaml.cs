@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -105,11 +105,13 @@ namespace PadForge.Views
             PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
             PadForge.Common.SoundPackageManager.RegistryChanged += OnSoundPackageRegistryChanged;
             RefreshSoundPackages();
+            SyncBassShakerMeterTimer();
         }
 
         private void PadPage_Unloaded(object sender, RoutedEventArgs e)
         {
             PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
+            _bassShakerMeterTimer?.Stop();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -162,6 +164,9 @@ namespace PadForge.Views
             SyncLightbarHexBox();
             SyncLightbarPreview();
             SyncAudioHexBoxes();
+            // Slot switch: the meter timer follows the NEW slot's selected
+            // tab (a different slot may sit on a different tab).
+            SyncBassShakerMeterTimer();
 
             // Re-apply the profile dropdowns' SelectedValue after ItemsSource
             // populates. WPF's ComboBox with SelectedValuePath can land on a
@@ -259,6 +264,18 @@ namespace PadForge.Views
                 KBMPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
+            else if (DataContext is PadViewModel nvm
+                     && nvm.OutputType == Engine.VirtualControllerType.Nintendo)
+            {
+                // Nintendo: SWITCHPRO 2D set only (no 3D mesh yet), so the
+                // 2D view is fixed and the 2D/3D toggle hides.
+                ControllerSchematic.Visibility = Visibility.Collapsed;
+                MidiPreview.Visibility = Visibility.Collapsed;
+                KBMPreview.Visibility = Visibility.Collapsed;
+                ControllerModel3D.Visibility = Visibility.Collapsed;
+                ControllerModel2D.Visibility = Visibility.Visible;
+                ViewModeToggle.Visibility = Visibility.Collapsed;
+            }
             else
             {
                 // Gamepad preset: standard 2D/3D toggle
@@ -289,7 +306,23 @@ namespace PadForge.Views
             // hides both Sticks and Triggers because its mapping surface is
             // CC + note, not stick/trigger.
             TabSticks.Visibility = isMidi ? Visibility.Collapsed : Visibility.Visible;
-            TabTriggers.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
+            // Raw-surface slots whose profile declares no analog triggers
+            // (the Switch Pro's ZL/ZR are digital buttons) have nothing
+            // for the Triggers tab to show; hide it like the other
+            // no-surface gates instead of presenting an empty tab.
+            bool rawNoTriggers = DataContext is PadViewModel tvm
+                && tvm.OutputType is Engine.VirtualControllerType.Extended
+                    or Engine.VirtualControllerType.Nintendo
+                && (tvm.ExtendedConfig?.TriggerCount ?? 0) == 0;
+            TabTriggers.Visibility = (isMidi || isKbm || rawNoTriggers)
+                ? Visibility.Collapsed : Visibility.Visible;
+
+            // Flick Stick tuning card (#225): keyboard/mouse slots only.
+            // The flick output is relative mouse movement, so the
+            // "Flick Stick ..." sources it tunes (on Mouse X) only
+            // evaluate there.
+            if (FlickStickCard != null)
+                FlickStickCard.Visibility = isKbm ? Visibility.Visible : Visibility.Collapsed;
 
             // Adaptive Triggers, Lighting, and Force Feedback tabs all
             // reflect what the currently-SELECTED physical device on this
@@ -314,9 +347,12 @@ namespace PadForge.Views
             bool hasIndicatorLeds = false;
             // Guide Button LED (#209): XInput-pathed pads (the \\.\XboxGIP
             // GIP LED lane, USB only, though Bluetooth pads share the
-            // synthetic path and simply no-op) and the 2015 Steam
-            // Controller (SDL home-LED hint). Puts the Lighting tab up for
-            // those devices with only the Guide LED card visible.
+            // synthetic path and simply no-op), the 2015 Steam
+            // Controller (SDL home-LED hint), and the Switch home LED
+            // population (#226: Pro Controller, right Joy-Con, the
+            // combined pair, the charging grip; per-device
+            // SDL_SetJoystickLED). Puts the Lighting tab up for those
+            // devices with only the Guide LED card visible.
             bool hasGuideLed = false;
             bool hasForceFeedback = false;
             bool hasGyro = false;
@@ -359,7 +395,8 @@ namespace PadForge.Views
                         hasTouchpad = ud.HasTouchpad;
                         hasGuideLed =
                             PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud)
-                         || PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId);
+                         || PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId)
+                         || PadForge.Common.Input.SwitchHomeLedSetter.IsSwitchHomeLedDevice(ud.VendorId, ud.ProdId);
                         // Native-FFB wheel → the Wheel tab (rotation range, auto-center,
                         // RPM LEDs). Same VID/PID gates the wheel HID writers use.
                         hasWheel =
@@ -382,13 +419,14 @@ namespace PadForge.Views
                         // = 2 (Triton); original Steam Controller = 3.
                         if (hasTouchpad)
                         {
-                            try
-                            {
-                                var st = ud.Device?.GetCurrentState();
-                                numTouchpads = st?.Touchpads?.Length ?? 1;
-                                if (numTouchpads <= 0) numTouchpads = 1;
-                            }
-                            catch { numTouchpads = 1; }
+                            // Published snapshot, never Device.GetCurrentState:
+                            // the poll thread is the sole reader of the pooled
+                            // wrapper buffers, and a UI-thread read would be a
+                            // second writer into them.
+                            var st = ud.InputState;
+                            numTouchpads = st?.Touchpads?.Length
+                                ?? (ud.CapTouchpadCount > 0 ? ud.CapTouchpadCount : 1);
+                            if (numTouchpads <= 0) numTouchpads = 1;
                         }
 
                         if (ud.VendorId == 0x054C)
@@ -433,7 +471,8 @@ namespace PadForge.Views
             if (TabLighting != null)
                 TabLighting.Visibility = (hasLightbar || hasGuideLed) ? Visibility.Visible : Visibility.Collapsed;
             // Lightbar-specific content hides when the tab is up for a
-            // guide-LED-only device (Xbox / 2015 Steam Controller).
+            // guide-LED-only device (Xbox / 2015 Steam Controller / Switch
+            // home-LED devices, #226).
             if (LightbarModeCard != null)
                 LightbarModeCard.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
             if (LightingLightbarSubtitle != null)
@@ -504,42 +543,64 @@ namespace PadForge.Views
             // Sync the per-pad pivot to the active device. PadViewModel
             // recomputes MaxTouchpadIndex / SelectedTouchpadIndex and
             // triggers a settings reload for the new (device, pad).
+            // The zero-reset is the else of THIS branch, not the mouse one
+            // below: keyed on hasMouse it fired for every non-mouse device,
+            // wiping the count set two lines earlier, so a DualSense or Steam
+            // Controller reported zero touchpads and the multi-pad selector
+            // never appeared.
             if (DataContext is PadViewModel vmTouch && hasTouchpad)
             {
                 vmTouch.RecomputeTouchpadCountForActiveDevice(numTouchpads);
                 vmTouch.LoadTouchpadGestureSettingsForActiveDevice();
+            }
+            else if (DataContext is PadViewModel vmNoTouch)
+            {
+                vmNoTouch.RecomputeTouchpadCountForActiveDevice(0);
             }
 
             // Mouse tab (#200): reload the per-(slot, device) gesture
             // settings whenever the active device changes.
             if (DataContext is PadViewModel vmMouse && hasMouse)
                 vmMouse.LoadMouseGestureSettingsForActiveDevice();
-            else if (DataContext is PadViewModel vmNoTouch)
-            {
-                vmNoTouch.RecomputeTouchpadCountForActiveDevice(0);
-            }
 
             if (MotorBarsGrid != null)
                 MotorBarsGrid.Visibility = Visibility.Visible;
 
             // SelectedConfigTab tag values: 0 Controller, 1 Macros, 2 Mappings,
             // 3 Sticks, 4 Triggers, 5 Force Feedback, 6 Adaptive Triggers,
-            // 7 Lighting, 8 Gyro, 9 Impulse Triggers, 10 Touchpad, 11 Wheel.
+            // 7 Lighting, 8 Gyro, 9 Impulse Triggers, 10 Touchpad, 11 Wheel,
+            // 12 Audio, 13 Pointer, 14 Mouse, 15 Menus, 16 Bass Shakers.
             // Macros, Mappings, and
             // Force Feedback are visible for every VC type. MIDI hides
             // Sticks and Triggers; K+M hides Triggers only. Adaptive
             // Triggers, Lighting, Gyro, and Impulse Triggers are gated on
-            // the selected device's capabilities above. Kick the user back
-            // to the Controller tab if they're sitting on a now-hidden one.
+            // the selected device's capabilities above. Bass Shakers is a
+            // SLOT-TYPE gate (Xbox / PlayStation only, #236). Kick the user
+            // back to the Controller tab if they're sitting on a now-hidden
+            // one.
             if (DataContext is PadViewModel vm)
             {
                 if (isMidi && (vm.SelectedConfigTab == 3 || vm.SelectedConfigTab == 4))
                     vm.SelectedConfigTab = 0;
                 else if (isKbm && vm.SelectedConfigTab == 4)
                     vm.SelectedConfigTab = 0;
+                // Triggers (4) also hides for a raw device with no trigger
+                // axes, and Force Feedback (5) hides whenever the device has
+                // none. Both were absent from this chain, so a user sitting
+                // on either when the device changed was left on a collapsed
+                // tab with no selected button (round 34).
+                else if (vm.SelectedConfigTab == 4 && rawNoTriggers)
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == 5 && !hasForceFeedback)
+                    vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 6 && !hasAdaptiveTriggers)
                     vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == 7 && !hasLightbar)
+                // Must match TabLighting's visibility predicate exactly
+                // (hasLightbar || hasGuideLed). Testing only hasLightbar
+                // bounced guide-LED-only devices (Xbox pads, the 2015 Steam
+                // Controller, Switch) straight off a tab that was visible and
+                // populated for them.
+                else if (vm.SelectedConfigTab == 7 && !(hasLightbar || hasGuideLed))
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 8 && !hasGyro)
                     vm.SelectedConfigTab = 0;
@@ -547,13 +608,20 @@ namespace PadForge.Views
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 10 && !hasTouchpad)
                     vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == 11 && !hasWheel)
+                // Same shape as the Lighting tab above: TabWheel shows on
+                // (hasWheel || hasGenericWheel), so a generic SDL force-feedback
+                // wheel could not stay on its own tab to reach the auto-centre
+                // slider.
+                else if (vm.SelectedConfigTab == 11 && !(hasWheel || hasGenericWheel))
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 12 && !hasAudio) // 12 = Audio
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 13 && !hasIrPointer) // 13 = Pointer
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 14 && !hasMouse) // 14 = Mouse (#200)
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == PadViewModel.BassShakersTabIndex
+                         && !vm.RumbleAudioTabVisible) // 16 = Bass Shakers (#236)
                     vm.SelectedConfigTab = 0;
             }
         }
@@ -563,7 +631,12 @@ namespace PadForge.Views
             bool isMidi = IsMidi();
             bool isKBM = IsKBM();
             bool isSchematic = IsExtended();
-            bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
+            // Nintendo has a full SWITCHPRO 2D asset set but no 3D mesh
+            // yet, so it always takes the 2D view regardless of the
+            // Use2DControllerView setting.
+            bool isNintendo = DataContext is PadViewModel pv
+                && pv.OutputType == Engine.VirtualControllerType.Nintendo;
+            bool is2D = isNintendo || (GetSettingsVm()?.Use2DControllerView ?? false);
 
             // Unbind all first
             ControllerModel3D.Unbind();
@@ -618,6 +691,17 @@ namespace PadForge.Views
 
         private void OnModelRecordRequested(object sender, string targetName)
         {
+            // Nintendo slots ride the raw surface: the preview art speaks
+            // the Xbox-style element grammar ("ButtonA", "LeftThumbAxisXNeg")
+            // but the mapping grid's rows are RawBtn/RawAxis/RawPov, so the
+            // record handler's row lookup would miss every click. Translate
+            // at the funnel; an element with no raw counterpart is ignored.
+            if (DataContext is PadViewModel vm
+                && vm.OutputType == Engine.VirtualControllerType.Nintendo)
+            {
+                targetName = Models2D.NintendoPreviewMap.ToRaw(targetName);
+                if (targetName == null) return;
+            }
             ControllerElementRecordRequested?.Invoke(this, targetName);
         }
 
@@ -750,14 +834,16 @@ namespace PadForge.Views
             int selected = vm.SelectedConfigTab;
 
             // Two-tier grammar (#175 artifact): tier 1 (slot: Preview/Macros/
-            // Mappings, tags 0-2) and tier 2 (device tabs, tags 3+). Exactly
-            // one tab is checked across BOTH tiers (#175 item 18): a checked
-            // tier-1 pivot over an active device tab lied about what's on
-            // screen. The idle tier drops to hover affordance (both tab
-            // styles keep their IsMouseOver triggers when unchecked).
-            // Navigation rides Click (not Checked), so re-clicking a
-            // still-checked tab still switches back.
-            bool slotTier = selected <= 2;
+            // Mappings, tags 0-2, plus Menus at tag 15, #9 B-17, and Bass
+            // Shakers at tag 16, #236) and tier 2 (device tabs, tags 3-14).
+            // Exactly one tab is checked across
+            // BOTH tiers (#175 item 18): a checked tier-1 pivot over an
+            // active device tab lied about what's on screen. The idle tier
+            // drops to hover affordance (both tab styles keep their
+            // IsMouseOver triggers when unchecked). Navigation rides Click
+            // (not Checked), so re-clicking a still-checked tab still
+            // switches back.
+            bool slotTier = selected <= 2 || selected == 15 || selected == 16;
             foreach (var rb in FindVisualChildren<RadioButton>(this))
             {
                 if (!TryGetTagIndex(rb, out int idx)) continue;
@@ -792,7 +878,13 @@ namespace PadForge.Views
             if (DataContext is not PadViewModel vm) return;
             var tags = new List<int>();
             foreach (var rb in FindVisualChildren<RadioButton>(this))
-                if (rb.GroupName == "PadTab" && rb.IsVisible && rb.IsEnabled && TryGetTagIndex(rb, out int idx))
+                // Both tiers. The device-tier tabs sit in their own radio group
+                // ("PadTabDevice") so WPF never auto-unchecks across tiers, and
+                // filtering on the base group alone made Ctrl+Tab skip every
+                // one of them: the strip showed tabs the keyboard could not
+                // reach.
+                if ((rb.GroupName == "PadTab" || rb.GroupName == "PadTabDevice")
+                    && rb.IsVisible && rb.IsEnabled && TryGetTagIndex(rb, out int idx))
                     tags.Add(idx);
             if (tags.Count == 0) return;
             int cur = tags.IndexOf(vm.SelectedConfigTab);
@@ -849,6 +941,87 @@ namespace PadForge.Views
         /// source dropdown opens, so hot-plugged devices show up.</summary>
         private void MirrorSource_DropDownOpened(object sender, EventArgs e)
             => _currentPadVm?.RefreshMirrorSources();
+
+        /// <summary>Same hot-plug refresh for the Bass Shakers output
+        /// picker (#236).</summary>
+        private void RumbleAudioEndpoint_DropDownOpened(object sender, EventArgs e)
+            => _currentPadVm?.RefreshRumbleAudioEndpoints();
+
+        // ─────────────────────────────────────────────
+        //  Bass Shakers meters (#236)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Drives the four voice-activity meters and the endpoint
+        /// status line while the Bass Shakers tab is on screen. Runs ONLY
+        /// while the page is loaded AND tab 16 is selected; every other
+        /// state stops the timer so a background page costs nothing.</summary>
+        private System.Windows.Threading.DispatcherTimer _bassShakerMeterTimer;
+
+        private void SyncBassShakerMeterTimer()
+        {
+            bool wanted = IsLoaded && _currentPadVm != null
+                && _currentPadVm.SelectedConfigTab == PadViewModel.BassShakersTabIndex;
+            if (!wanted)
+            {
+                _bassShakerMeterTimer?.Stop();
+                return;
+            }
+            if (_bassShakerMeterTimer == null)
+            {
+                _bassShakerMeterTimer = new System.Windows.Threading.DispatcherTimer
+                {
+                    Interval = TimeSpan.FromMilliseconds(100),
+                };
+                _bassShakerMeterTimer.Tick += (s, e) =>
+                {
+                    // Iconic gate: the tab flag does not flip on minimize.
+                    if (PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
+                    UpdateBassShakerMeters();
+                };
+            }
+            _bassShakerMeterTimer.Start();
+            // Immediate paint so the status line never shows a 100 ms blank.
+            UpdateBassShakerMeters();
+        }
+
+        private void UpdateBassShakerMeters()
+        {
+            var vm = _currentPadVm;
+            if (vm == null)
+            {
+                _bassShakerMeterTimer?.Stop();
+                return;
+            }
+
+            // Published game-feedback pack only. Test tones live outside the
+            // packs by design (provenance rule in RumbleAudioService), so the
+            // meters show what the game sends, not the Test buttons.
+            long pack = PadForge.Common.Input.RumbleAudioService.ReadPack(vm.PadIndex);
+            var voices = vm.RumbleAudioVoices;
+            for (int i = 0; i < voices.Count && i < 4; i++)
+                voices[i].MeterLevel = PadForge.Engine.Common.LfeOutputState.Voice(pack, i) / 655.35;
+
+            if (BassShakerStatusText == null) return;
+            string status = PadForge.Common.Input.RumbleAudioService.GetSlotStatus(vm.PadIndex);
+            if (string.IsNullOrEmpty(status))
+            {
+                BassShakerStatusText.Text = Strings.Instance.Pad_RumbleAudio_Status_Inactive;
+                BassShakerStatusText.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
+            }
+            else if (status == "!missing")
+            {
+                // Fail-closed marker: the configured endpoint is gone. The
+                // selection is preserved, nothing renders until it returns.
+                BassShakerStatusText.Text = Strings.Instance.Pad_RumbleAudio_Status_Missing;
+                BassShakerStatusText.SetResourceReference(TextBlock.ForegroundProperty, "SystemFillColorCautionBrush");
+            }
+            else
+            {
+                BassShakerStatusText.Text = string.Format(
+                    Strings.Instance.Pad_RumbleAudio_Status_Active_Format, status);
+                BassShakerStatusText.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
+            }
+        }
 
         /// <summary>Choose a sound for the Play Sound action card. When packages
         /// are added, the sounds inside them are offered directly — a filesystem
@@ -1094,8 +1267,18 @@ namespace PadForge.Views
             // Splice the new activator into the slot's MappingSet, rebuild
             // the tab strip, switch to the new tab, mark settings dirty.
             slotMs = GetOrCreateSlotMappingSet(_currentPadVm.PadIndex);
-            slotMs.ShiftActivators ??= new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
-            slotMs.ShiftActivators.Add(dlg.Result);
+            // Build a new list and swap the reference, never Add in place.
+            // The poll thread enumerates slotMs.ShiftActivators every frame
+            // without our lock (ApplyMappingSetToGamepad and
+            // ResolveActiveLayerMask), so an in-place Add could throw
+            // "collection was modified" inside its foreach and lose the whole
+            // mapping pass for that frame. This is the discipline
+            // ApplyShiftLayerSnapshot already documents and follows; the Add
+            // and Remove paths here were the two that bypassed it.
+            slotMs.ShiftActivators = new System.Collections.Generic.List<Engine.Data.ShiftActivator>(
+                slotMs.ShiftActivators ?? (System.Collections.Generic.IEnumerable<Engine.Data.ShiftActivator>)
+                    System.Array.Empty<Engine.Data.ShiftActivator>())
+                { dlg.Result };
             _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
             _currentPadVm.ActiveLayerMask = dlg.Result.LayerMask;
             _currentPadVm.ConfigItemDirtyCallback?.Invoke();
@@ -1252,6 +1435,8 @@ namespace PadForge.Views
             // renames; if so, retag every MappingRow on the old mask to
             // the new mask so the existing authoring stays attached.
             string oldMask = existing.LayerMask;
+            string oldMode = existing.Mode;   // round five, X12 inverse
+            string oldCycle = existing.CycleLayers;
             existing.LayerName = dlg.Result.LayerName;
             existing.LayerMask = dlg.Result.LayerMask;
             existing.DeviceGuid = dlg.Result.DeviceGuid;
@@ -1273,20 +1458,91 @@ namespace PadForge.Views
             existing.Color = dlg.Result.Color;
             existing.Icon = dlg.Result.Icon;
             existing.PostponeMapping = dlg.Result.PostponeMapping;
+            existing.FireOnRelease = dlg.Result.FireOnRelease;
 
-            if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal)
-                && slotMs.Rows != null)
+            if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal))
             {
-                foreach (var r in slotMs.Rows)
-                {
-                    if (r != null && string.Equals(r.LayerMask, oldMask, StringComparison.Ordinal))
-                        r.LayerMask = existing.LayerMask;
-                }
+                // A mask change renames the LOGICAL layer, and mask
+                // equality is the layer identity across slots (audit
+                // 2026-07-25 round four, R10/R19/R28). Split-config imports
+                // clone the same activator and cycle ring onto both member
+                // slots, so a current-slot-only rewrite left the twin
+                // split-brained: its ring stepped onto the dead mask while
+                // the globally-retagged macros waited on the new one. The
+                // rename therefore follows the mask EVERYWHERE: activators,
+                // cycle rings, rows, menus, and macros on every slot. For
+                // two independently hand-authored same-named layers this
+                // co-renames both, which is visible and non-lossy; the
+                // half-global alternative silently broke imports.
+                RenameMaskEverywhere(oldMask, existing.LayerMask, existing);
+
+                // Drop engagement so nothing stays parked on a mask that no
+                // longer exists (R12). Scoped to the slots the rename
+                // actually touched (round five, X12): the all-slots reset
+                // wiped every OTHER pad's live engagement too, which for
+                // Toggle re-fired an edge and for Cycle lost the ring
+                // position, on a pad whose owner did nothing.
+                ClearShiftRuntimeForTouchedSlots(oldMask, existing.LayerMask);
+
+                // Sibling tab strips and pickers mirror their own slot
+                // activators; rebuild them all so the rename shows
+                // everywhere it landed.
+                RebuildAllPadLayerTabs(oldMask, existing.LayerMask);
+            }
+
+            else if (!string.Equals(oldMode, existing.Mode, StringComparison.Ordinal))
+            {
+                // A MODE change with an unchanged mask strands this slot's
+                // runtime just as badly (round five, X12 inverse): Latch and
+                // Cycle park a mask string that only their own mode's tick
+                // rewrites, so Latch -> Hold left the slot stuck engaged.
+                PadForge.Common.Input.InputManager.ClearShiftRuntime(_currentPadVm.PadIndex);
+            }
+
+            else if (!string.Equals(oldCycle, existing.CycleLayers, StringComparison.Ordinal))
+            {
+                // Same mask, same mode, different ring. The live cursor
+                // indexes the OLD list, so shortening the ring leaves it
+                // pointing past the end and the next press evaluates a stop
+                // that no longer exists. ShiftCycleStepper clamps so this
+                // cannot throw, but a cursor rebased by a clamp lands the
+                // user somewhere they did not choose. Reset it instead.
+                PadForge.Common.Input.InputManager.ClearShiftRuntime(_currentPadVm.PadIndex);
             }
 
             _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
+            // Macros retag LAST (round six, R2): every pad's picker
+            // choices now hold the new mask, so the SelectedValue each
+            // retag pushes resolves instead of blanking the picker.
+            if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal))
+                RetagMacrosEverywhere(AllPadViewModels(), oldMask, existing.LayerMask);
             _currentPadVm.ActiveLayerMask = existing.LayerMask;
             _currentPadVm.ConfigItemDirtyCallback?.Invoke();
+        }
+
+        /// <summary>Clears the shift runtime only for slots a mask rename
+        /// touched, plus the edited slot (round five, X12).</summary>
+        private void ClearShiftRuntimeForTouchedSlots(string oldMask, string newMask)
+        {
+            if (_currentPadVm != null)
+                PadForge.Common.Input.InputManager.ClearShiftRuntime(_currentPadVm.PadIndex);
+            var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            if (sets == null) return;
+            for (int i = 0; i < sets.Length; i++)
+            {
+                var set = sets[i];
+                if (set?.ShiftActivators == null) continue;
+                if (_currentPadVm != null && i == _currentPadVm.PadIndex) continue;
+                bool touched = false;
+                foreach (var a in set.ShiftActivators)
+                {
+                    if (a == null) continue;
+                    if (string.Equals(a.LayerMask, newMask, StringComparison.Ordinal)
+                        || PadForge.Common.Input.InputManager.PipeListContains(a.CycleLayers, newMask))
+                    { touched = true; break; }
+                }
+                if (touched) PadForge.Common.Input.InputManager.ClearShiftRuntime(i);
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -1302,6 +1558,15 @@ namespace PadForge.Views
 
         private void ShiftLayer_Rename_Click(object sender, RoutedEventArgs e)
         {
+            // The Base tab's Rename edits the base APPEARANCE (name,
+            // color, icon) through the same dialog Configure reroutes to;
+            // without this the menu item was a silent no-op on any config
+            // with no legacy "Base" activator (round eight, R14).
+            if (string.Equals(TagToLayerMask(sender), "Base", StringComparison.Ordinal))
+            {
+                ShiftLayer_Configure_Click(sender, e);
+                return;
+            }
             if (_currentPadVm == null) return;
             string mask = TagToLayerMask(sender);
             if (string.IsNullOrEmpty(mask)) return;
@@ -1478,8 +1743,17 @@ namespace PadForge.Views
             // Drop existing rows on this layer first so paste is a
             // replace rather than a merge — matches user expectation of
             // "paste rows into layer" overwriting the destination.
-            slotMs.Rows.RemoveAll(
-                r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
+            // One reference swap, not an in-place edit. The poll thread reads
+            // Rows every tick without taking a lock, so a RemoveAll followed by
+            // a run of Adds exposed it to a list that was missing the old rows
+            // and did not yet have the new ones.
+            var pasted = new System.Collections.Generic.List<Engine.Data.MappingRow>(slotMs.Rows.Count);
+            foreach (var keep in slotMs.Rows)
+            {
+                if (keep != null && string.Equals(keep.LayerMask, mask, StringComparison.Ordinal))
+                    continue;
+                pasted.Add(keep);
+            }
 
             foreach (var r in _shiftLayerClipboard)
             {
@@ -1499,8 +1773,13 @@ namespace PadForge.Views
                 if (r.Sources != null)
                     foreach (var s in r.Sources)
                         if (s != null) rc.Sources.Add(CloneSource(s));
-                slotMs.Rows.Add(rc);
+                pasted.Add(rc);
             }
+
+            // The swap itself. Everything above built the replacement off to
+            // the side; this is the single point where the poll thread's view
+            // changes, and it changes from one complete list to another.
+            slotMs.Rows = pasted;
 
             // Force the DataGrid to reflect the pasted rows by triggering
             // a refresh on the active layer.
@@ -1522,8 +1801,13 @@ namespace PadForge.Views
             var slotMs = GetSlotMappingSet(_currentPadVm.PadIndex);
             if (slotMs?.Rows == null) return;
 
-            slotMs.Rows.RemoveAll(
-                r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
+            // Reference swap, same reason as the paste handler above.
+            slotMs.Rows = slotMs.Rows.FindAll(
+                r => !(r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal)));
+            // #254 A-3: Clear empties the layer's ROWS only, by design.
+            // Macros keep their mask: the layer still exists, so they
+            // remain live and re-authoring rows around them is the
+            // expected flow.
 
             if (string.Equals(_currentPadVm.ActiveLayerMask, mask, StringComparison.Ordinal))
             {
@@ -1550,28 +1834,155 @@ namespace PadForge.Views
             // MessageBox.Show — the Mica-styled host clashes with the
             // legacy gray system dialog and breaks the visual continuity
             // the rest of PadForge keeps.
+            // The Base-mask delete HEALS (removes only the bogus legacy
+            // activator, never rows or macros), so it gets its own honest
+            // confirm text; the standard string promises row deletion
+            // that deliberately does not happen there (round eight, R14).
+            string confirmText = string.Equals(mask, "Base", StringComparison.Ordinal)
+                ? string.Format(Strings.Instance.Pad_Shift_DeleteConfirmBase_Format, layerName)
+                : string.Format(Strings.Instance.Pad_Shift_DeleteConfirm_Format, layerName);
             var dialog = new Wpf.Ui.Controls.MessageBox
             {
                 Title = Strings.Instance.Pad_Shift_DeleteConfirmTitle,
-                Content = string.Format(Strings.Instance.Pad_Shift_DeleteConfirm_Format, layerName),
+                Content = confirmText,
                 PrimaryButtonText = Strings.Instance.Pad_Shift_Delete,
                 CloseButtonText = Strings.Instance.Common_Cancel,
             };
+            // Capture the pad VM BEFORE the await (audit 2026-07-25 round
+            // four, R20): the confirm is not application-modal, so the user
+            // can switch slots while it is up, and _currentPadVm would then
+            // point at the NEW slot while slotMs still belongs to the old
+            // one. Everything after the await targets this capture.
+            var padVmAtOpen = _currentPadVm;
+
             var result = await dialog.ShowDialogAsync();
             if (result != Wpf.Ui.Controls.MessageBoxResult.Primary) return;
 
-            slotMs.ShiftActivators.Remove(activator);
-            if (slotMs.Rows != null)
-            {
-                slotMs.Rows.RemoveAll(
-                    r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
-            }
+            // Re-validate after the await (R20): a Configure or a second
+            // delete may have removed or renamed the activator while the
+            // confirm was up. The activator REFERENCE is the identity; a
+            // stale mask capture must not sweep rows or macros.
+            // The captured set can itself be stale: a profile switch while
+            // the confirm was up replaces SlotMappingSets entries with
+            // clones, so membership in the captured list proves nothing
+            // about the live configuration (round five, X16).
+            var liveSet = GetSlotMappingSet(padVmAtOpen.PadIndex);
+            if (!ReferenceEquals(liveSet, slotMs)) return;
+            if (!slotMs.ShiftActivators.Contains(activator)) return;
+            mask = activator.LayerMask;
+
+            ExecuteLayerDelete(slotMs, activator, mask, AllPadViewModels());
+
+            // The engine's shift runtime may still be ENGAGED on the deleted
+            // mask (round four, R12: Latch/Toggle/Cycle park the mask string
+            // until their own activator's tick rewrites it, and that
+            // activator is gone). Removing an activator also shifts every
+            // later activator's INDEX down, and the runtime is index-parallel,
+            // so this slot's state must be dropped either way. Slot-scoped
+            // (round five, X12): the all-slots reset also wiped unrelated
+            // pads' live engagement.
+            PadForge.Common.Input.InputManager.ClearShiftRuntime(padVmAtOpen.PadIndex);
 
             // Snap the active tab back to Base; RebuildLayerTabs will
             // also recover if the active mask no longer matches a tab.
-            _currentPadVm.ActiveLayerMask = "Base";
-            _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
-            _currentPadVm.ConfigItemDirtyCallback?.Invoke();
+            padVmAtOpen.ActiveLayerMask = "Base";
+            padVmAtOpen.RebuildLayerTabs(slotMs.ShiftActivators);
+            padVmAtOpen.ConfigItemDirtyCallback?.Invoke();
+        }
+
+        /// <summary>The data half of a layer delete, after the user
+        /// confirmed and the handler re-validated. Internal static so the
+        /// legacy-"Base" healing below is testable without driving the
+        /// dialog (the round-six lesson: pinning only a predicate leaves
+        /// the call site unguarded).
+        ///
+        /// LEGACY-"BASE" HEALING (round seven, R7): a pre-round-six layer
+        /// whose persisted MASK is literally "Base" collides with the
+        /// base-set identity. Its rows are indistinguishable from base
+        /// rows (MappingRow.LayerMask defaults to "Base"), so the normal
+        /// sweep below would delete EVERY base mapping on the slot, and
+        /// macros scoped "Base" carry the #254 base-set contract, not
+        /// this layer. Deleting such an activator therefore removes ONLY
+        /// the bogus activator, healing the data; rows, macros, menus,
+        /// and rings stay untouched.</summary>
+        internal static void ExecuteLayerDelete(
+            PadForge.Engine.Data.MappingSet slotMs,
+            PadForge.Engine.Data.ShiftActivator activator,
+            string mask,
+            System.Collections.Generic.IEnumerable<PadViewModel> padVms)
+        {
+            // Swap, don't Remove in place: same poll-thread enumeration
+            // hazard as the Add path above.
+            if (slotMs.ShiftActivators != null)
+            {
+                var trimmed = new System.Collections.Generic.List<PadForge.Engine.Data.ShiftActivator>(
+                    slotMs.ShiftActivators);
+                trimmed.Remove(activator);
+                slotMs.ShiftActivators = trimmed;
+            }
+            if (string.Equals(mask, "Base", StringComparison.Ordinal))
+                return;
+
+            if (slotMs.Rows != null)
+            {
+                // Reference swap, same reason as the two handlers above.
+                slotMs.Rows = slotMs.Rows.FindAll(
+                    r => !(r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal)));
+            }
+
+            // Scrub the deleted mask from THIS slot's cycle rings FIRST
+            // (round five, X9). Running it after the declare scan let a
+            // same-slot ring satisfy the scan and spare the macros, and then
+            // the scrub removed that very stop: the macros kept a mask
+            // nothing declared and went permanently dark, which is the exact
+            // failure the scan exists to prevent.
+            foreach (var a in slotMs.ShiftActivators)
+            {
+                if (a == null || string.IsNullOrEmpty(a.CycleLayers)) continue;
+                var stops = a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries);
+                var kept = new System.Collections.Generic.List<string>(stops.Length);
+                foreach (var stop in stops)
+                    if (!string.Equals(stop, mask, StringComparison.Ordinal)) kept.Add(stop);
+                if (kept.Count != stops.Length) a.CycleLayers = string.Join("|", kept);
+            }
+
+            // Does a RELATED slot still declare this mask? Only a slot from
+            // the same import counts (round five, X10): keeping the macros
+            // alive because an UNRELATED pad happens to own a same-named
+            // hand-authored layer handed that pad's controller remote
+            // control over these macros through the gate's fallback, which
+            // is the coupling this audit lineage removed from the Base
+            // branch. Import masks share a "Layer_{fileId}_" domain; a
+            // hand-authored mask matches no domain and never counts.
+            bool maskStillDeclared = RelatedSlotStillDeclares(
+                PadForge.Common.Input.SettingsManager.SlotMappingSets, slotMs, mask);
+
+            if (!maskStillDeclared)
+            {
+                // #254 A-3: deleting a layer keeps its macros (rows die with
+                // the layer because they ARE its content; macros are
+                // standalone authoring). They are DISABLED FIRST and only
+                // then untagged (round four, R18): the engine reads these
+                // shared instances live on the poll thread, and the old
+                // order opened a window where the macro was enabled and
+                // ungated between the two writes, firing once globally
+                // during the delete. Disabled preserves the authoring;
+                // "" clears the dead mask.
+                foreach (var padVm in padVms)
+                {
+                    foreach (var mac in padVm.Macros)
+                    {
+                        if (mac == null || !string.Equals(mac.LayerMask, mask, StringComparison.Ordinal))
+                            continue;
+                        mac.IsEnabled = false;
+                        mac.LayerMask = "";
+                    }
+                }
+                // Layer-scoped menus on the deleted mask stay tagged: they
+                // have no disable field, an untag would silently broaden
+                // them to always-available, and a same-named layer re-add
+                // revives them (hand-authored masks are name-derived).
+            }
         }
 
         // Full memberwise copy. The previous hand-listed clone silently dropped
@@ -1581,6 +1992,172 @@ namespace PadForge.Views
         // says to use at clone sites.
         private static Engine.Data.MappingSource CloneSource(Engine.Data.MappingSource s)
             => s?.Clone();
+
+        /// <summary>True when a slot RELATED to <paramref name="ownSet"/>
+        /// still declares <paramref name="mask"/> after a delete, so the
+        /// layer's macros must be left alone (round five, X10). Related
+        /// means the same import domain: keeping macros alive because an
+        /// unrelated pad owns a same-named hand-authored layer handed that
+        /// pad's controller remote control over them through the gate's
+        /// fallback. Internal so the policy is testable without driving the
+        /// delete dialog.</summary>
+        internal static bool RelatedSlotStillDeclares(
+            PadForge.Engine.Data.MappingSet[] allSets,
+            PadForge.Engine.Data.MappingSet ownSet,
+            string mask)
+        {
+            if (allSets == null || string.IsNullOrEmpty(mask)) return false;
+            foreach (var set in allSets)
+            {
+                if (set?.ShiftActivators == null) continue;
+                foreach (var a in set.ShiftActivators)
+                {
+                    if (a == null) continue;
+                    bool declares = string.Equals(a.LayerMask, mask, StringComparison.Ordinal)
+                        || PadForge.Common.Input.InputManager.PipeListContains(a.CycleLayers, mask);
+                    if (!declares) continue;
+                    // The own slot's own remaining declarations count, and so
+                    // does any slot from the same import. Nothing else.
+                    if (ReferenceEquals(set, ownSet)) return true;
+                    if (PadForge.Common.Input.InputManager.SlotSharesImportDomain(ownSet, mask))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>Renames a layer mask across the persisted
+        /// configuration: every slot activators list, cycle rings,
+        /// mapping rows, and layer-scoped menus (audit 2026-07-25 round
+        /// four, R10/R19/R28). Mask equality is layer identity across
+        /// slots; see the Configure caller for the policy note.
+        /// MACROS ARE DELIBERATELY NOT HERE (round six, R2): their masks
+        /// feed the editor's Layer picker through a SelectedValue
+        /// binding, and WPF resolves a changed value only against the
+        /// choices that exist at write time. Retagging them before the
+        /// tab rebuilds pushed the new mask into pickers that did not
+        /// hold it yet, and an item added later never re-resolves a null
+        /// selection, so every rename blanked the picker over intact
+        /// data. <see cref="RetagMacrosEverywhere"/> runs AFTER all tab
+        /// rebuilds instead.</summary>
+        private void RenameMaskEverywhere(string oldMask, string newMask, PadForge.Engine.Data.ShiftActivator renamed)
+        {
+            var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            if (sets != null)
+            {
+                foreach (var set in sets)
+                {
+                    if (set == null) continue;
+                    if (set.ShiftActivators != null)
+                    {
+                        foreach (var a in set.ShiftActivators)
+                        {
+                            if (a == null) continue;
+                            if (!ReferenceEquals(a, renamed)
+                                && string.Equals(a.LayerMask, oldMask, StringComparison.Ordinal))
+                            {
+                                // Mask only. LayerName is documented on
+                                // ShiftActivator as independently editable
+                                // ("LayerMask=Shift1, LayerName=Pit Stop"),
+                                // so copying this activator's name over a
+                                // sibling slot's was unrecoverable data loss
+                                // (round five, X7).
+                                a.LayerMask = newMask;
+                            }
+                            if (string.IsNullOrEmpty(a.CycleLayers)) continue;
+                            var stops = a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries);
+                            bool touched = false;
+                            for (int si = 0; si < stops.Length; si++)
+                            {
+                                if (!string.Equals(stops[si], oldMask, StringComparison.Ordinal)) continue;
+                                stops[si] = newMask;
+                                touched = true;
+                            }
+                            if (touched) a.CycleLayers = string.Join("|", stops);
+                        }
+                    }
+                    if (set.Rows != null)
+                    {
+                        foreach (var r in set.Rows)
+                            if (r != null && string.Equals(r.LayerMask, oldMask, StringComparison.Ordinal))
+                                r.LayerMask = newMask;
+                    }
+                    if (set.Menus != null)
+                    {
+                        // Menus are the retag family fourth member (R28):
+                        // they persist a LayerMask and the runtime requires
+                        // exact engagement equality, so a menu left on the
+                        // old mask would never open again.
+                        foreach (var mn in set.Menus)
+                            if (mn != null && string.Equals(mn.LayerMask, oldMask, StringComparison.Ordinal))
+                                mn.LayerMask = newMask;
+                    }
+                }
+            }
+        }
+
+        /// <summary>The macro half of a mask rename (round four R10,
+        /// repositioned round six R2). Must run only after EVERY pad's
+        /// tabs (and therefore its MacroLayerChoices) have been rebuilt
+        /// with the new mask: the picker's SelectedValue binding resolves
+        /// the retagged value at write time, so the matching choice has
+        /// to exist first. Internal static so the walk is testable
+        /// without constructing the page.</summary>
+        internal static void RetagMacrosEverywhere(
+            System.Collections.Generic.IEnumerable<PadForge.ViewModels.PadViewModel> padVms,
+            string oldMask, string newMask)
+        {
+            if (padVms == null) return;
+            foreach (var padVm in padVms)
+            {
+                if (padVm?.Macros == null) continue;
+                foreach (var mac in padVm.Macros)
+                {
+                    if (mac != null && string.Equals(mac.LayerMask, oldMask, StringComparison.Ordinal))
+                        mac.LayerMask = newMask;
+                }
+            }
+        }
+
+        /// <summary>Rebuilds every OTHER pad layer tabs from its own slot
+        /// activators after a cross-slot mask edit (round four).</summary>
+        private void RebuildAllPadLayerTabs(string oldMask = null, string newMask = null)
+        {
+            var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            foreach (var padVm in AllPadViewModels())
+            {
+                if (ReferenceEquals(padVm, _currentPadVm)) continue;
+                // A pad AUTHORING the renamed layer must follow the rename
+                // (round five, X8). Its activator was just rewritten, so the
+                // stale ActiveLayerMask would match no tab and RebuildLayerTabs
+                // would snap it to Base and reload its grid from Base rows,
+                // silently moving another pad's authoring target.
+                if (oldMask != null
+                    && string.Equals(padVm.ActiveLayerMask, oldMask, StringComparison.Ordinal))
+                    padVm.ActiveLayerMask = newMask;
+                var ms = sets != null && padVm.PadIndex >= 0 && padVm.PadIndex < sets.Length
+                    ? sets[padVm.PadIndex] : null;
+                padVm.RebuildLayerTabs(ms?.ShiftActivators);
+            }
+        }
+
+        /// <summary>Every pad view-model, for the layer-retag walks (audit
+        /// 2026-07-25, C7). Macros on OTHER slots can legitimately carry
+        /// this slot's mask through the gate's split-config fallback, and
+        /// they are exactly the ones a current-slot-only walk orphans.
+        /// Falls back to the current pad alone when the main window is not
+        /// reachable (design-time, detached host).</summary>
+        private System.Collections.Generic.IEnumerable<PadViewModel> AllPadViewModels()
+        {
+            if (Application.Current?.MainWindow?.DataContext is MainViewModel mainVm
+                && mainVm.Pads != null)
+            {
+                foreach (var p in mainVm.Pads)
+                    if (p?.Macros != null) yield return p;
+                yield break;
+            }
+            if (_currentPadVm?.Macros != null) yield return _currentPadVm;
+        }
 
         /// <summary>Reads the slot's MappingSet from
         /// <see cref="Common.SettingsManager.SlotMappingSets"/> by pad index.
@@ -1752,7 +2329,11 @@ namespace PadForge.Views
         private void OnPadVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(PadViewModel.SelectedConfigTab))
+            {
                 SyncTabStripSelection();
+                // Bass Shakers meters (#236) run only while tab 16 shows.
+                SyncBassShakerMeterTimer();
+            }
             else if (e.PropertyName == nameof(PadViewModel.OutputType))
             {
                 SyncExtendedConfigBar();
@@ -1921,20 +2502,20 @@ namespace PadForge.Views
                 int sticks = System.Math.Min(axes, 4) / 2;
                 int triggers = System.Math.Max(0, axes - sticks * 2);
 
-                ExtendedStickCountBox.Text = sticks.ToString();
+                RawStickCountBox.Text = sticks.ToString();
                 ExtendedTriggerCountBox.Text = triggers.ToString();
-                ExtendedPovCountBox.Text = (profile.HasHat ? 1 : 0).ToString();
-                ExtendedButtonCountBox.Text = profile.ButtonCount.ToString();
+                RawPovCountBox.Text = (profile.HasHat ? 1 : 0).ToString();
+                RawButtonCountBox.Text = profile.ButtonCount.ToString();
             }
             else
             {
                 // No profile resolved (e.g. catalog not loaded yet) — fall
                 // back to the persisted ExtendedConfig so the UI has something
                 // to show rather than blank fields.
-                ExtendedStickCountBox.Text = vm.ExtendedConfig.ThumbstickCount.ToString();
+                RawStickCountBox.Text = vm.ExtendedConfig.ThumbstickCount.ToString();
                 ExtendedTriggerCountBox.Text = vm.ExtendedConfig.TriggerCount.ToString();
-                ExtendedPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
-                ExtendedButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
+                RawPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
+                RawButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
             }
         }
 
@@ -2673,6 +3254,13 @@ namespace PadForge.Views
                 vm.ExtendedConfig.PovCount = profile.HasHat ? 1 : 0;
                 vm.ExtendedConfig.ButtonCount = profile.ButtonCount;
                 vm.ExtendedConfig.OemNameOverride = false;
+                // VID / PID are override fields too, and the handler's own
+                // comment promises every one of them is snapped back. Left
+                // set, a reset produced a "default" config still wearing the
+                // previous device's identity, which is exactly what
+                // ExtendedSlotConfig's own reset helper zeroes (round 34).
+                vm.ExtendedConfig.VendorId = 0;
+                vm.ExtendedConfig.ProductId = 0;
             }
             finally { _syncingExtendedConfig = false; }
 
@@ -2768,20 +3356,20 @@ namespace PadForge.Views
         {
             if (DataContext is not PadViewModel vm) return;
 
-            if (int.TryParse(ExtendedStickCountBox.Text, out int sticks))
+            if (int.TryParse(RawStickCountBox.Text, out int sticks))
                 vm.ExtendedConfig.ThumbstickCount = sticks;
             if (int.TryParse(ExtendedTriggerCountBox.Text, out int triggers))
                 vm.ExtendedConfig.TriggerCount = triggers;
-            if (int.TryParse(ExtendedPovCountBox.Text, out int povs))
+            if (int.TryParse(RawPovCountBox.Text, out int povs))
                 vm.ExtendedConfig.PovCount = povs;
-            if (int.TryParse(ExtendedButtonCountBox.Text, out int buttons))
+            if (int.TryParse(RawButtonCountBox.Text, out int buttons))
                 vm.ExtendedConfig.ButtonCount = buttons;
 
             // Reflect clamped values back into text boxes
-            ExtendedStickCountBox.Text = vm.ExtendedConfig.ThumbstickCount.ToString();
+            RawStickCountBox.Text = vm.ExtendedConfig.ThumbstickCount.ToString();
             ExtendedTriggerCountBox.Text = vm.ExtendedConfig.TriggerCount.ToString();
-            ExtendedPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
-            ExtendedButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
+            RawPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
+            RawButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
         }
 
         private void ExtendedImportBtn_Click(object sender, RoutedEventArgs e)
@@ -2925,10 +3513,10 @@ namespace PadForge.Views
             try
             {
                 ExtendedCustomizeChk.IsChecked = true;
-                ExtendedStickCountBox.Text = cfg.ThumbstickCount.ToString();
+                RawStickCountBox.Text = cfg.ThumbstickCount.ToString();
                 ExtendedTriggerCountBox.Text = cfg.TriggerCount.ToString();
-                ExtendedPovCountBox.Text = cfg.PovCount.ToString();
-                ExtendedButtonCountBox.Text = cfg.ButtonCount.ToString();
+                RawPovCountBox.Text = cfg.PovCount.ToString();
+                RawButtonCountBox.Text = cfg.ButtonCount.ToString();
             }
             finally { _syncingExtendedConfig = false; }
 
@@ -2993,6 +3581,7 @@ namespace PadForge.Views
                 mi.GyroSensitivity = 1.0;
                 mi.MouseCursorSensitivity = 1.0;
                 mi.IrPointerSensitivity = 1.0;
+                mi.Sensitivity = 1.0;
 
                 if (demote)
                 {
@@ -3145,10 +3734,16 @@ namespace PadForge.Views
         // back in that case dirties the config without any user action, so
         // each handler skips the write when the stored curve already
         // normalizes to the picked preset.
+        //
+        // Each handler also requires DataContext and Tag to agree on the row:
+        // during container recycling the two rebind in separate passes, and
+        // between them a binding-driven SelectionChanged pairs the new row's
+        // preset name with the old row's item.
         private void StickPresetX_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is StickConfigItem item)
             {
+                if (!ReferenceEquals(cb.DataContext, item)) return;
                 var serialized = FindPresetSerialized(name);
                 if (serialized != null && CurveLut.Normalize(item.SensitivityCurveX) != CurveLut.Normalize(serialized))
                     item.SensitivityCurveX = serialized;
@@ -3159,6 +3754,7 @@ namespace PadForge.Views
         {
             if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is StickConfigItem item)
             {
+                if (!ReferenceEquals(cb.DataContext, item)) return;
                 var serialized = FindPresetSerialized(name);
                 if (serialized != null && CurveLut.Normalize(item.SensitivityCurveY) != CurveLut.Normalize(serialized))
                     item.SensitivityCurveY = serialized;
@@ -3169,6 +3765,7 @@ namespace PadForge.Views
         {
             if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is TriggerConfigItem item)
             {
+                if (!ReferenceEquals(cb.DataContext, item)) return;
                 var serialized = FindPresetSerialized(name);
                 if (serialized != null && CurveLut.Normalize(item.SensitivityCurve) != CurveLut.Normalize(serialized))
                     item.SensitivityCurve = serialized;
@@ -3243,14 +3840,24 @@ namespace PadForge.Views
             int slotIndex = _currentPadVm.PadIndex;
             var devices = new List<PadForge.Engine.Data.UserDevice>();
 
-            foreach (var setting in SettingsManager.UserSettings.Items)
+            // Both collections are mutated by the polling thread's device /
+            // settings passes, so this UI-thread walk takes their SyncRoots
+            // exactly as the same file already does at lines ~377 and ~3351.
+            // Unlocked, a concurrent Add could throw out of the enumeration
+            // or let Find read a torn list (round 34). Lock order is
+            // UserDevices BEFORE UserSettings, the codebase-wide rule.
+            lock (SettingsManager.UserDevices.SyncRoot)
+            lock (SettingsManager.UserSettings.SyncRoot)
             {
-                if (setting.MapTo != slotIndex)
-                    continue;
-                var ud = SettingsManager.UserDevices.Items
-                    .Find(d => d.InstanceGuid == setting.InstanceGuid);
-                if (ud != null && !devices.Contains(ud))
-                    devices.Add(ud);
+                foreach (var setting in SettingsManager.UserSettings.Items)
+                {
+                    if (setting.MapTo != slotIndex)
+                        continue;
+                    var ud = SettingsManager.UserDevices.Items
+                        .Find(d => d.InstanceGuid == setting.InstanceGuid);
+                    if (ud != null && !devices.Contains(ud))
+                        devices.Add(ud);
+                }
             }
 
             cb.ItemsSource = devices;
@@ -3271,8 +3878,11 @@ namespace PadForge.Views
                 return;
             }
 
-            var ud = SettingsManager.UserDevices.Items
-                .Find(d => d.InstanceGuid == action.SourceDeviceGuid);
+            // Same SyncRoot discipline as the sibling picker above.
+            PadForge.Engine.Data.UserDevice ud;
+            lock (SettingsManager.UserDevices.SyncRoot)
+                ud = SettingsManager.UserDevices.Items
+                    .Find(d => d.InstanceGuid == action.SourceDeviceGuid);
             if (ud?.DeviceObjects == null)
             {
                 cb.ItemsSource = null;

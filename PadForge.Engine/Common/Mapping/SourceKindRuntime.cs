@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using PadForge.Engine.Data;
 
@@ -23,13 +23,13 @@ namespace PadForge.Engine.Common.Mapping
         // Target+sourceIndex is what most users edit incrementally; on
         // wholesale row removal the state lingers harmlessly until the
         // dictionary is cleared (profile switch / engine stop).
-        private readonly Dictionary<(int slot, string target, int srcIdx), double> _incrementalAccum
+        private Dictionary<(int slot, string target, int srcIdx), double> _incrementalAccum
             = new();
 
         // Ramped axis envelope accumulator (v3.5 #111), bipolar [-1, +1], same
         // (slot, target, srcIdx) key as Incremental so two ramped sources on one
         // row keep independent state.
-        private readonly Dictionary<(int slot, string target, int srcIdx), double> _rampedAccum
+        private Dictionary<(int slot, string target, int srcIdx), double> _rampedAccum
             = new();
 
         // ── Steering kinds (v3.4 #94) ──
@@ -40,17 +40,57 @@ namespace PadForge.Engine.Common.Mapping
         private struct LockState { public LockSide Side; public LockEdge PendingEdge; public bool PendingLeft; public double LastAbs; }
 
         // Signed winding accumulator per row (deg, NOT clamped — overshoot is intentional).
-        private readonly Dictionary<(int slot, string target, int srcIdx), WindingState> _windingState = new();
+        private Dictionary<(int slot, string target, int srcIdx), WindingState> _windingState = new();
         // At-lock edge tracking per row, drives the haptic feedback layer.
-        private readonly Dictionary<(int slot, string target, int srcIdx), LockState> _lockState = new();
+        private Dictionary<(int slot, string target, int srcIdx), LockState> _lockState = new();
 
         // Per-device captured neutral orientation (down-convention unit vector) for
         // MotionLean. The resting grip is a few degrees off true level, so without
         // this the centre reads non-zero and the off-axis tilt bleeds into steering.
         // Faithful to JSM's neutralQuat (main.cpp:421-435, 891): captured once when
         // the steering source first sees real gravity for a device, held until profile
-        // switch (Clear). Keyed by device GUID — the resting pose is physical, not per-slot.
-        private readonly Dictionary<string, (double x, double y, double z)> _motionNeutral = new();
+        // switch (Clear). Keyed by device GUID. The resting pose is physical, not per-slot.
+        private Dictionary<string, (double x, double y, double z)> _motionNeutral = new();
+
+        // ── Flick stick (#225) ──
+        // Per-row flick stick state, JSM's Stick flick fields (Stick.h:75-90)
+        // plus the frame-sequence guards the StickTrim state uses (the KBM
+        // evaluator runs once per assigned DEVICE per frame, and a shift
+        // layer's row simply stops being evaluated while its layer is off).
+        private sealed class FlickState
+        {
+            public bool IsFlicking;                     // JSM Stick.is_flicking
+            public double LastX, LastY;                 // JSM Stick.lastX/lastY (raw normalized, SDL frame)
+            public double DeltaFlick;                   // JSM Stick.delta_flick (rad)
+            public double FlickProgressSeconds;         // JSM time-since-started_flick, dt-accumulated
+            public double FlickPercentDone = 1.0;       // JSM Stick.flick_percent_done; 1 = no easing pending
+            public double CountRemainder;               // sub-count residual (KBM VC accumulator idiom)
+            public long LastSeq = -1;                   // frame idempotence + layer-suppression gap detection
+            public int LastOutput;                      // replay for the 2nd+ device pass in one frame
+            public readonly float[] Samples = new float[FlickNumSamples]; // JSM _flickSamples
+            public int FrontSample;                     // JSM _frontSample
+        }
+
+        // JSM NUM_SAMPLES (JoyShock.h:123). The live window is capped at
+        // 64 ms of ticks per tick (JoyShock.cpp:926), so this is the
+        // 1000 Hz-poll ceiling, same as JSM's.
+        private const int FlickNumSamples = 256;
+
+        private Dictionary<(int slot, string target, int srcIdx), FlickState> _flickState = new();
+
+        /// <summary>Frame counter, stamped by the caller once per polling
+        /// frame. The Extended/KBM/MIDI evaluators run once per assigned
+        /// DEVICE per frame, and a source with an empty device GUID matches
+        /// every device, so a two-device slot reaches the same accumulator
+        /// twice in one frame. FlickStick and StickTrim already gate on a
+        /// frame sequence for exactly this; Incremental and Ramped did not,
+        /// and advanced by the full frame dt on each pass (a 2 s sweep ran
+        /// in 1 s on two devices, 0.66 s on three).</summary>
+        public long FrameSeq;
+
+        private sealed class TickReplay { public long Seq = -1; public double Output; }
+        private Dictionary<(int slot, string target, int srcIdx), TickReplay> _incrementalReplay = new();
+        private Dictionary<(int slot, string target, int srcIdx), TickReplay> _rampedReplay = new();
 
         // Saturation band for the lock state machine — avoids float-edge thrash at ±1.
         private const double LockEpsilon = 1e-3;
@@ -59,37 +99,92 @@ namespace PadForge.Engine.Common.Mapping
         /// stop. Cruise control snaps to neutral on next read.</summary>
         public void Clear()
         {
-            _incrementalAccum.Clear();
-            _rampedAccum.Clear();
-            _windingState.Clear();
-            _lockState.Clear();
-            _motionNeutral.Clear();
+            // SWAP, never Clear-in-place. These dictionaries are mutated by
+            // the 1 kHz polling thread while this runs on the UI thread
+            // (profile switch, engine stop), and clearing a plain Dictionary
+            // under a concurrent writer can corrupt its buckets and hang a
+            // subsequent lookup in an infinite loop -- the exact failure the
+            // XboxImpulseHidWriter fix chased (audit round 24). Publishing a
+            // fresh instance means no two threads ever mutate the SAME
+            // dictionary: a poll tick still holding the old reference writes
+            // into an orphan that is about to be collected, which is
+            // precisely the state this method wanted dropped. Costs one
+            // field read on the hot path, versus ConcurrentDictionary's
+            // per-access overhead on a 1 kHz loop (round 34).
+            _incrementalAccum = new();
+            _rampedAccum = new();
+            _windingState = new();
+            _lockState = new();
+            _motionNeutral = new();
+            _flickState = new();
+            _incrementalReplay = new();
+            _rampedReplay = new();
         }
 
-        /// <summary>Drops all steering state for a slot. Called on profile switch.</summary>
+        /// <summary>Drops all steering + flick state for a slot. Called on profile switch.</summary>
         public void ResetForSlot(int slot)
         {
-            RemoveWhere(_windingState, slot, null);
-            RemoveWhere(_lockState, slot, null);
+            _windingState = Without(_windingState, slot, null);
+            _lockState = Without(_lockState, slot, null);
+            _flickState = Without(_flickState, slot, null);
+            // The accumulators, not only their frame-replay stamps. All five
+            // dictionaries key on (slot, target, srcIdx), so a wholesale row
+            // replacement invalidates every one of them: dropping the stamp
+            // while leaving the value just meant the re-authored row resumed
+            // the previous occupant's cruise position on the next tick.
+            _incrementalAccum = Without(_incrementalAccum, slot, null);
+            _rampedAccum = Without(_rampedAccum, slot, null);
+            _incrementalReplay = Without(_incrementalReplay, slot, null);
+            _rampedReplay = Without(_rampedReplay, slot, null);
         }
 
-        /// <summary>Drops steering state for one (slot, target). Called on row reorder
-        /// so a winding accumulator does not survive a structural mapping change.</summary>
+        /// <summary>Drops steering state for one (slot, target). The
+        /// finer-grained twin of <see cref="ResetForSlot"/>, which is what
+        /// the row-replacement path actually calls: PadForge replaces a
+        /// slot's rows wholesale rather than editing one in place, so there
+        /// is no single-row structural change to hook. Kept for a caller
+        /// that edits one row without rebuilding the set.</summary>
         public void ResetForRow(int slot, string target)
         {
-            RemoveWhere(_windingState, slot, target ?? "");
-            RemoveWhere(_lockState, slot, target ?? "");
+            _windingState = Without(_windingState, slot, target ?? "");
+            _lockState = Without(_lockState, slot, target ?? "");
+            _incrementalAccum = Without(_incrementalAccum, slot, target ?? "");
+            _rampedAccum = Without(_rampedAccum, slot, target ?? "");
+            _incrementalReplay = Without(_incrementalReplay, slot, target ?? "");
+            _rampedReplay = Without(_rampedReplay, slot, target ?? "");
         }
 
-        private static void RemoveWhere<TVal>(
+        /// <summary>Drops the captured MotionLean neutral orientations (the
+        /// GyroRecenter macro action, issue #9 wave 1b) so the next real
+        /// gravity sample re-captures the controller's CURRENT grip as
+        /// neutral, the same re-reference a profile switch's Clear() causes.
+        /// Covers the aux ("|L") captures too; they live in the same dict.
+        /// Instance state, so the per-slot runtime scopes this to its slot.</summary>
+        public void ResetMotionNeutral() => _motionNeutral.Clear();
+
+        /// <summary>Returns a COPY with the matching entries dropped, for the
+        /// caller to publish. Swap, never remove-in-place: this runs on the UI
+        /// thread (paste, row replacement) while the 1 kHz poll thread mutates
+        /// the same dictionaries, and mutating a plain Dictionary under a
+        /// concurrent writer can corrupt its buckets and hang a later lookup in
+        /// an infinite loop. Clear() states this rule verbatim and these two
+        /// reset paths were the ones that broke it. Returns the original
+        /// instance when nothing matched, so the common no-op costs no
+        /// allocation and no publish.</summary>
+        private static Dictionary<(int slot, string target, int srcIdx), TVal> Without<TVal>(
             Dictionary<(int slot, string target, int srcIdx), TVal> dict, int slot, string target)
         {
-            List<(int, string, int)> dead = null;
+            if (dict == null || dict.Count == 0) return dict;
+            bool any = false;
             foreach (var k in dict.Keys)
-                if (k.slot == slot && (target == null || k.target == target))
-                    (dead ??= new()).Add(k);
-            if (dead != null)
-                foreach (var k in dead) dict.Remove(k);
+                if (k.slot == slot && (target == null || k.target == target)) { any = true; break; }
+            if (!any) return dict;
+
+            var copy = new Dictionary<(int slot, string target, int srcIdx), TVal>(dict.Count);
+            foreach (var kv in dict)
+                if (!(kv.Key.slot == slot && (target == null || kv.Key.target == target)))
+                    copy.Add(kv.Key, kv.Value);
+            return copy;
         }
 
         /// <summary>
@@ -107,6 +202,12 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (src == null || state == null) return 0;
             var key = (slotIndex, target ?? "", sourceIndex);
+            if (!_incrementalReplay.TryGetValue(key, out var replay))
+                _incrementalReplay[key] = replay = new TickReplay();
+            // Second per-device pass in the same frame: replay this frame's
+            // value instead of advancing the accumulator again.
+            if (replay.Seq == FrameSeq) return replay.Output;
+            replay.Seq = FrameSeq;
             _incrementalAccum.TryGetValue(key, out double current);
 
             // Clamp to declared range (handles user re-narrowing the range
@@ -146,6 +247,7 @@ namespace PadForge.Engine.Common.Mapping
             // hold last value.
 
             _incrementalAccum[key] = current;
+            replay.Output = current;
             return current;
         }
 
@@ -172,6 +274,11 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (src == null || state == null) return 0;
             var key = (slotIndex, target ?? "", sourceIndex);
+            if (!_rampedReplay.TryGetValue(key, out var replay))
+                _rampedReplay[key] = replay = new TickReplay();
+            // Second per-device pass in the same frame: replay, don't re-ramp.
+            if (replay.Seq == FrameSeq) return replay.Output;
+            replay.Seq = FrameSeq;
             _rampedAccum.TryGetValue(key, out double v);
 
             bool up = ReadButtonLikeBool(state, src.ParamUp);     // positive direction
@@ -224,6 +331,7 @@ namespace PadForge.Engine.Common.Mapping
 
             if (v < -1) v = -1; else if (v > 1) v = 1;
             _rampedAccum[key] = v;
+            replay.Output = v;
             return v;
         }
 
@@ -257,7 +365,20 @@ namespace PadForge.Engine.Common.Mapping
             // the stick left when a wheel turns right. (Angle-to-axis modes don't get this
             // treatment: AngleToAxisX uses Abs(y), and AngleToAxisY's down-positive Y
             // cancels against the Y-target write negation, so both are already correct.)
-            if (len > 0 && ws.LastX != 0 && ws.LastY != 0)
+            // Deliberate divergence from JoyShock.cpp:1247, which reads
+            // `stickLength > 0.f && stick.lastX != 0.f && stick.lastY != 0.f`.
+            // JSM only ever sees a physical analog stick, where landing
+            // exactly on an axis is a measure-zero event. PadForge also
+            // drives winding from digital sources (keys and buttons mapped
+            // onto a stick axis) and from radial deadzones that can emit an
+            // exact zero on one channel, and there the AND form skipped
+            // accrual on every pure cardinal hold: winding accumulated on
+            // diagonals only. OR is equivalent for analog input, since it
+            // differs only when exactly one channel is exactly zero, and
+            // atan2 is well defined with one zero component. The only case
+            // still skipped is a previous sample at dead centre, where no
+            // angle exists to difference against.
+            if (len > 0 && (ws.LastX != 0 || ws.LastY != 0))
             {
                 double cur = Math.Atan2(-x, -y);
                 double last = Math.Atan2(-ws.LastX, -ws.LastY);
@@ -385,6 +506,284 @@ namespace PadForge.Engine.Common.Mapping
             return output;
         }
 
+        // ── Flick stick tick (#225) ──
+        // Ported from JoyShockMapper JoyShock.cpp handleFlickStick
+        // (:852-1017, mouse output path) and getSmoothedStickRotation
+        // (:353-392), read then written original. Differences from JSM are
+        // named inline. Output is relative mouse X counts for this tick
+        // (positive = rightward turn), already integer-quantized with the
+        // fractional residual carried in state, so the caller feeds it to
+        // the injector unscaled.
+
+        /// <summary>
+        /// Advances one flick stick source and returns the mouse X counts to
+        /// emit this tick. <paramref name="frameSeq"/> is the caller's
+        /// monotonic once-per-polling-frame sequence: a repeated value
+        /// replays this frame's output (the KBM evaluator runs once per
+        /// assigned device per frame), and a skipped value re-arms the state
+        /// (the row was suppressed, i.e. its shift layer was off, or is
+        /// new). Re-arming with the stick already past the threshold follows
+        /// <see cref="MappingSource.ParamFlickOnEngage"/>: fire the flick
+        /// (JSM's behavior, JoyShock.cpp:873-876; Steam "Allow Flick on
+        /// Awake" ON) or arm at the current angle with no flick and track
+        /// rotation from there (default; #225's layer-host requirement).
+        /// Layer EXIT needs no call: an unevaluated row emits nothing, and
+        /// the next engage re-arms, so a mid-flight easing tail dies with
+        /// the layer. That is a named divergence from JSM, which forces
+        /// FLICK_ONLY until an in-flight flick completes on a chord change
+        /// (JoyShock.h:168-190); #225 requires no residual camera motion
+        /// after layer exit.
+        /// </summary>
+        public int TickFlickStick(int slotIndex, string target, int sourceIndex,
+            MappingSource src, CustomInputState state, double deltaSeconds, long frameSeq)
+        {
+            if (src == null || state == null) return 0;
+            // Touch-surface flick (v26): the finger's centered vector plays
+            // the stick pair's role (same frame, +Y down); lifting the
+            // finger reads (0,0), which is the below-threshold release.
+            bool isPadFlick = SourceCoercion.TryGetFlickStickTouchpad(
+                src.Descriptor, out int fsPad, out int fsHalf);
+            string xDesc = null, yDesc = null;
+            if (!isPadFlick
+                && !SourceCoercion.TryGetFlickStickAxes(src.Descriptor, out xDesc, out yDesc))
+                return 0;
+
+            var key = (slotIndex, target ?? "", sourceIndex);
+            if (!_flickState.TryGetValue(key, out var st))
+                _flickState[key] = st = new FlickState();
+
+            // Second per-device pass in the same frame: replay, never re-advance.
+            if (st.LastSeq == frameSeq) return st.LastOutput;
+            bool rearm = st.LastSeq < 0 || frameSeq - st.LastSeq > 1;
+            st.LastSeq = frameSeq;
+
+            // Raw normalized stick, SDL frame (+Y down). The flick threshold
+            // is checked on the RAW magnitude: JSM tests length >= 1.0 after
+            // an inner+outer deadzone remap whose outer default 0.1 makes
+            // that raw >= 0.9 (JoyShock.cpp:864-869, processStick:1048-1057,
+            // main.cpp:2334); ParamFlickThreshold folds the remap into the
+            // knob. atan2 is scale-invariant, so no deadzone shaping is
+            // needed for the angle.
+            double rx, ry;
+            if (isPadFlick)
+                (rx, ry) = SourceCoercion.ReadTouchpadFlickVector(state, fsPad, fsHalf);
+            else
+            {
+                rx = ReadNormAxis(state, xDesc);
+                ry = ReadNormAxis(state, yDesc);
+            }
+            double len = Math.Sqrt(rx * rx + ry * ry);
+
+            double threshold = src.ParamFlickThreshold > 0 && src.ParamFlickThreshold <= 1
+                ? src.ParamFlickThreshold : 0.9;
+            double countsPer360 = src.ParamFlickCountsPer360 > 0 ? src.ParamFlickCountsPer360 : 14400;
+            double countsPerRad = countsPer360 / (2.0 * Math.PI);
+            double flickTime = src.ParamFlickTime > 0 ? src.ParamFlickTime : 0.1;
+
+            if (rearm)
+            {
+                ResetFlickSmoothing(st);
+                st.CountRemainder = 0;
+                st.FlickPercentDone = 1.0; // kill any pre-suppression easing tail
+                st.DeltaFlick = 0;
+                st.FlickProgressSeconds = 0;
+                st.LastX = rx; st.LastY = ry;
+                if (len >= threshold && !src.ParamFlickOnEngage)
+                {
+                    // Arm as already-flicking with the current angle as the
+                    // rotation baseline; no flick fires. Rotation tracking is
+                    // live from the next tick.
+                    st.IsFlicking = true;
+                    st.LastOutput = 0;
+                    return 0;
+                }
+                // Below threshold, or ParamFlickOnEngage: arm idle and fall
+                // through. With the stick already past the threshold the
+                // block below sees !IsFlicking and fires the flick, which is
+                // exactly JSM's toggle-mid-deflection behavior.
+                st.IsFlicking = false;
+            }
+
+            // 0.9x release hysteresis while flicking (JoyShock.cpp:864-868).
+            double effThreshold = st.IsFlicking ? threshold * 0.9 : threshold;
+
+            double rotationCounts = 0;
+            bool justFlicked = false;
+
+            if (len >= effThreshold)
+            {
+                // JSM stickAngle = atan2f(-x, y) in its up-positive stick
+                // frame (JoyShock.cpp:871) == Atan2(-x, -y) in the SDL
+                // down-positive frame, the same fold the winding port uses
+                // (TickWindingStick above, JoyShock.cpp:1250). Forward = 0,
+                // right = -PI/2.
+                double stickAngle = Math.Atan2(-rx, -ry);
+                if (!st.IsFlicking)
+                {
+                    // "bam! new flick!" (JoyShock.cpp:873-908)
+                    st.IsFlicking = true;
+                    // Constant rotation offset (v26, Steam's flickstick
+                    // "rotation" setting): the whole input map rotates, so
+                    // the offset lands on the FLICK angle only. Rim
+                    // rotation deltas are invariant under a constant
+                    // offset, and the tracking branch below compares raw
+                    // angles, so the offset must not leak there or the
+                    // first tracked tick would see a spurious delta.
+                    // Positive = clockwise/right; the JSM angle frame is
+                    // counterclockwise-positive with right = -PI/2, so the
+                    // offset lands negated, then re-wraps to (-PI, PI].
+                    if (src.ParamFlickRotationOffsetDeg != 0)
+                    {
+                        stickAngle -= src.ParamFlickRotationOffsetDeg * (Math.PI / 180.0);
+                        stickAngle = (stickAngle + Math.PI) % (2.0 * Math.PI);
+                        if (stickAngle < 0) stickAngle += 2.0 * Math.PI;
+                        stickAngle -= Math.PI;
+                    }
+                    double snapInterval = FlickSnapIntervalRad(src.ParamFlickSnapMode);
+                    if (snapInterval > 0)
+                    {
+                        // C round() rounds halves away from zero; match it
+                        // (Math.Round defaults to banker's rounding). The
+                        // Forward interval (2 PI) folds to 0 explicitly: a
+                        // back flick sits exactly on the round(0.5) boundary
+                        // and would otherwise snap to a full 360-degree spin
+                        // instead of "no turn".
+                        double snapped = snapInterval >= 2.0 * Math.PI
+                            ? 0.0
+                            : Math.Round(stickAngle / snapInterval,
+                                MidpointRounding.AwayFromZero) * snapInterval;
+                        double strength = Math.Clamp(src.ParamFlickSnapStrength, 0.0, 1.0);
+                        stickAngle = stickAngle * (1.0 - strength) + snapped * strength;
+                    }
+                    if (Math.Abs(stickAngle) * (180.0 / Math.PI) < src.ParamFlickDeadzoneAngle)
+                        stickAngle = 0.0; // forward deadzone (JoyShock.cpp:897-900)
+
+                    st.DeltaFlick = stickAngle;
+                    st.FlickProgressSeconds = 0;
+                    st.FlickPercentDone = 0;
+                    ResetFlickSmoothing(st); // JSM resetSmoothSample (JoyShock.cpp:905)
+                    justFlicked = true;
+                }
+                else
+                {
+                    // Rotation tracking at the rim (JoyShock.cpp:910-944).
+                    double lastAngle = Math.Atan2(-st.LastX, -st.LastY);
+                    double angleChange = stickAngle - lastAngle;
+                    // Wrap to the shortest arc in (-PI, PI] (JoyShock.cpp:916-921).
+                    angleChange = (angleChange + Math.PI) % (2.0 * Math.PI);
+                    if (angleChange < 0) angleChange += 2.0 * Math.PI;
+                    angleChange -= Math.PI;
+                    double flickSpeed = -(angleChange * countsPerRad); // JoyShock.cpp:923-924
+                    // 64 ms max smoothing window (JoyShock.cpp:926).
+                    int maxSamples = Math.Min(FlickNumSamples,
+                        (int)Math.Ceiling(0.064 / Math.Max(deltaSeconds, 0.0001)));
+                    const double stepSize = 0.01; // rad, ~minimum stick resolution (JoyShock.cpp:927)
+                    double smooth = src.ParamFlickSmooth;
+                    rotationCounts = smooth < 0
+                        ? GetFlickSmoothedRotation(st, flickSpeed,
+                            countsPerRad * stepSize * 2.0, countsPerRad * stepSize * 4.0, maxSamples)  // JoyShock.cpp:932
+                        : GetFlickSmoothedRotation(st, flickSpeed,
+                            countsPerRad * smooth, countsPerRad * smooth * 2.0, maxSamples);           // JoyShock.cpp:936
+                }
+            }
+            else if (st.IsFlicking)
+            {
+                // Released below threshold: rotation stops; a running flick
+                // easing still completes below (JoyShock.cpp:947-955; the
+                // flick_rotation_counter calibration helper is not ported).
+                st.IsFlicking = false;
+            }
+
+            // Flick easing, every tick regardless of rim state
+            // (JoyShock.cpp:957-982): ease-out x -> 1-(1-x)^2, emitting the
+            // per-tick difference of the shaped percent. FLICK_TIME_EXPONENT
+            // is omitted (JSM default 0 disables its pow() scaling,
+            // main.cpp:2268, JoyShock.cpp:963-966).
+            if (!justFlicked) st.FlickProgressSeconds += deltaSeconds;
+            double flickCounts = 0;
+            if (st.FlickPercentDone < 1.0)
+            {
+                double newPercent = st.FlickProgressSeconds / flickTime;
+                if (newPercent > 1.0) newPercent = 1.0;
+                double oldShaped = 1.0 - st.FlickPercentDone;
+                oldShaped *= oldShaped;
+                oldShaped = 1.0 - oldShaped;
+                st.FlickPercentDone = newPercent;
+                double newShaped = 1.0 - newPercent;
+                newShaped *= newShaped;
+                newShaped = 1.0 - newShaped;
+                // Sign seam (grounded JoyShock.cpp:979 and :923-924): a
+                // rightward flick has angle -PI/2, and the negated
+                // counts-per-radian scale makes that POSITIVE mouse X =
+                // rightward turn, matching SendInput's +dx = right. This is
+                // the ONLY place flick output sign is set; the KBM VC and
+                // injector pass counts through unflipped.
+                flickCounts = (newShaped - oldShaped) * st.DeltaFlick * -countsPerRad;
+            }
+
+            st.LastX = rx; st.LastY = ry;
+
+            double total = rotationCounts + flickCounts + st.CountRemainder;
+            int emit = (int)total; // truncate; residual carries (KBM VC _mxAccumulator idiom)
+            st.CountRemainder = total - emit;
+            st.LastOutput = emit;
+            return emit;
+        }
+
+        /// <summary>Snap-mode name to snap interval in radians; 0 = no
+        /// snapping. NONE/FOUR/EIGHT and the 180-degree fallback interval are
+        /// JSM's (JoyShockMapper.h:300-306, JoyShock.cpp:883-891);
+        /// Forward/Half/Sixths complete Steam's snap vocabulary
+        /// (NoSnap/ForwardOnly/Half/Quarter/Sixths/Eighths) through the same
+        /// round-to-interval math. Unknown values read as None so a newer
+        /// profile degrades gracefully.</summary>
+        internal static double FlickSnapIntervalRad(string mode) => mode switch
+        {
+            "Forward" => 2.0 * Math.PI,
+            "Half"    => Math.PI,
+            "Four"    => Math.PI / 2.0,
+            "Sixths"  => Math.PI / 3.0,
+            "Eight"   => Math.PI / 4.0,
+            _         => 0.0,
+        };
+
+        private static void ResetFlickSmoothing(FlickState st)
+        {
+            st.FrontSample = 0;
+            Array.Clear(st.Samples, 0, st.Samples.Length);
+        }
+
+        // JSM getSmoothedStickRotation (JoyShock.cpp:353-392) on the per-row
+        // circular buffer: input above topThreshold passes through
+        // immediately, below bottomThreshold it is fully averaged over the
+        // window, and the band between blends linearly.
+        private static double GetFlickSmoothedRotation(FlickState st, double value,
+            double bottomThreshold, double topThreshold, int maxSamples)
+        {
+            st.FrontSample--;
+            if (st.FrontSample < 0) st.FrontSample = FlickNumSamples - 1;
+
+            double length = Math.Abs(value);
+            double immediateFactor;
+            if (topThreshold <= bottomThreshold)
+                immediateFactor = 1.0;
+            else
+                immediateFactor = (length - bottomThreshold) / (topThreshold - bottomThreshold);
+            if (immediateFactor < 0.0) immediateFactor = 0.0;
+            else if (immediateFactor > 1.0) immediateFactor = 1.0;
+            double smoothFactor = 1.0 - immediateFactor;
+
+            if (maxSamples < 1) maxSamples = 1;
+            double frontSample = st.Samples[st.FrontSample] = (float)(value * smoothFactor);
+            double result = frontSample / maxSamples;
+            for (int i = 1; i < maxSamples; i++)
+            {
+                int rotatedIndex = (st.FrontSample + i) % FlickNumSamples;
+                result += st.Samples[rotatedIndex] / (double)maxSamples;
+            }
+            return result + value * immediateFactor;
+        }
+
         /// <summary>Returns and clears any pending at-lock edge for this row, for the
         /// lock-feedback layer. <paramref name="isLeft"/> is set on an Enter edge.</summary>
         public LockEdge TryGetLockEdgeTransition(int slotIndex, string target, int sourceIndex, out bool isLeft)
@@ -437,7 +836,9 @@ namespace PadForge.Engine.Common.Mapping
         // angle phi away from neutral lands phi away from down, so the downstream math
         // measures lean relative to the grip rather than to absolute level. This is the
         // numerically-exact form of JSM's neutralQuat.Inverse() application (main.cpp:891).
-        private static (double x, double y, double z) RealignToDown(
+        // Internal so SourceCoercion's "Gyro Lean X/Y" pair read shares the
+        // exact realignment math instead of duplicating it.
+        internal static (double x, double y, double z) RealignToDown(
             double vx, double vy, double vz, double nx, double ny, double nz)
         {
             // a = neutral (unit), b = (0,-1,0). axis k = a×b = (nz, 0, -nx); cos = a·b = -ny.
@@ -477,7 +878,10 @@ namespace PadForge.Engine.Common.Mapping
         private static double ReadNormAxis(CustomInputState state, string descriptor)
         {
             if (state == null || string.IsNullOrWhiteSpace(descriptor)) return 0;
-            string s = descriptor.Trim();
+            // Fold "Gamepad LeftStickX"-style aliases to their canonical
+            // "Axis N" form so the Param pickers' abstract entries (#9)
+            // read the same axis the raw entry would.
+            string s = SourceCoercion.CanonicalDescriptor(descriptor);
             if (!s.StartsWith("Axis", StringComparison.Ordinal)) return 0;
             var parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int idx)) return 0;
@@ -493,7 +897,9 @@ namespace PadForge.Engine.Common.Mapping
         private static bool ReadButtonLikeBool(CustomInputState state, string descriptor)
         {
             if (state == null || string.IsNullOrWhiteSpace(descriptor)) return false;
-            string s = descriptor.Trim();
+            // Fold "Gamepad ButtonA" / "Gamepad DPadUp" aliases (#9) to
+            // their canonical "Button N" / "POV 0 Dir" form.
+            string s = SourceCoercion.CanonicalDescriptor(descriptor);
 
             if (s.StartsWith("Button ", StringComparison.Ordinal))
             {
@@ -524,7 +930,13 @@ namespace PadForge.Engine.Common.Mapping
                 return false;
             }
 
-            return false;
+            // Not Button/POV: the pickers offer the full input list, so a
+            // gate or Incremental/Ramped param can name a hardware-bool
+            // family (capsense, NFC tag, touchpad contact). Route those
+            // through the shared descriptor read; Path A NFC tags never hit
+            // this (the PC/SC reader exposes them as raw buttons), which is
+            // how the gap shipped unnoticed (#248 audit).
+            return SourceCoercion.ReadHardwareBoolDescriptor(state, s);
         }
     }
 }

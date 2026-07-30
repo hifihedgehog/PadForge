@@ -99,9 +99,12 @@ namespace PadForge.Engine
             return true;
         }
 
+        // Pooled per-tick state (poll thread is the sole caller).
+        private PooledInputStatePair _statePool;
+
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
-            var state = new CustomInputState();
+            var state = _statePool.Next();
             RawInputListener.GetKeyboardState(_rawInputHandle, state.Buttons, state.Buttons.Length);
             // Merge keys captured by the low-level hook. WH_KEYBOARD_LL runs
             // in the RIT before WM_INPUT is generated, so suppressed keys never

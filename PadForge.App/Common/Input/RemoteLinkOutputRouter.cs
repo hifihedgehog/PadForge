@@ -42,6 +42,37 @@ namespace PadForge.Common.Input
         public static Action<string, byte, byte[]> SendOutput { get; set; }
         public static Action<string, byte, byte[]> SendAudio { get; set; }
 
+        /// <summary>Wired by InputService to LinkServer.PushSourceDemand (#241).</summary>
+        public static Action<string, byte, byte[]> SendSourceDemand { get; set; }
+
+        /// <summary>Demand kinds for <see cref="ShipNfcDemand"/>'s payload byte.</summary>
+        public const byte DemandKindNfc = 1;
+
+        /// <summary>Consumer: report live NFC-reader demand for a peer device
+        /// to its owner (#241). Rate-bounded to one datagram per device per
+        /// second: the owner's arming window is seconds wide and treats each
+        /// arrival as a fresh stamp, so a per-tick send would be pure traffic.
+        /// Letting it lapse IS the "off" signal, matching the local demand
+        /// latch's own expiry contract.</summary>
+        public static void ShipNfcDemand(string peerDevicePath)
+        {
+            var send = SendSourceDemand;
+            if (send == null || !IsPeerPath(peerDevicePath)) return;
+            if (!_byPath.TryGetValue(peerDevicePath, out var route)) return;
+
+            long now = Environment.TickCount64;
+            long last = _lastNfcDemandMs.TryGetValue(peerDevicePath, out long v) ? v : 0;
+            if (now - last < NfcDemandIntervalMs) return;
+            _lastNfcDemandMs[peerDevicePath] = now;
+
+            try { send(route.Fingerprint, route.LinkSlot, new[] { DemandKindNfc }); }
+            catch { /* best effort: the next demand tick retries */ }
+        }
+
+        private static readonly ConcurrentDictionary<string, long> _lastNfcDemandMs =
+            new(StringComparer.OrdinalIgnoreCase);
+        private const long NfcDemandIntervalMs = 1000;
+
         public static int DeviceCount => _byPath.Count;
 
         public static bool IsPeerPath(string devicePath) =>
@@ -53,7 +84,7 @@ namespace PadForge.Common.Input
         // rumble commands), so exactly one source may feed the hardware. The lease
         // arbitrates with zero new protocol: a relayed output frame IS the claim.
         // OnRemoteOutputReceived stamps the LOCAL device path here per frame; while the
-        // stamp is fresh the owner's local output chokepoints (SonyEffectWriter / Step2)
+        // stamp is fresh the owner's local output chokepoints (PlayStationEffectWriter / Step2)
         // skip their writes, so the inbound relay is the sole writer. A fight needs both
         // sides active at once, but an active remote keeps the stamp fresh — so the remote
         // wins while active and the local pipeline resumes only after the remote falls
@@ -99,6 +130,7 @@ namespace PadForge.Common.Input
             _lastTone.TryRemove(devicePath, out _);
             _lastPlayerIndex.TryRemove(devicePath, out _);
             _lastGuideLed.TryRemove(devicePath, out _);
+            _lastNfcDemandMs.TryRemove(devicePath, out _);
         }
 
         public static void Clear()
@@ -106,6 +138,7 @@ namespace PadForge.Common.Input
             _byPath.Clear();
             _lastSony.Clear(); _lastVib.Clear(); _lastWheel.Clear(); _lastTone.Clear();
             _lastPlayerIndex.Clear(); _lastGuideLed.Clear();
+            _lastNfcDemandMs.Clear();
             // Drop output leases too, or a stale lease would keep the owner's local
             // output suppressed for up to OutputLeaseMs after Remote Link stops.
             _outputLease.Clear();

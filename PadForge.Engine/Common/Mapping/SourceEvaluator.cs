@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Engine.Data;
 
 namespace PadForge.Engine.Common.Mapping
@@ -20,6 +20,70 @@ namespace PadForge.Engine.Common.Mapping
     /// </summary>
     public static class SourceEvaluator
     {
+        /// <summary>Per-source AND gate (v18): when
+        /// <see cref="MappingSource.GateDescriptor"/> is set, the source
+        /// contributes only while that second descriptor reads true on the
+        /// same device state, evaluated through the exact button-like read
+        /// the chord second leg uses (a synthetic Direct source into
+        /// <see cref="SourceCoercion.EvaluateForButtonTarget"/>). The
+        /// synthetic source is cached on the owning source and rebuilt
+        /// only when the descriptor reference changes (the menu parse
+        /// cache contract), so the hot path is a reference compare. The
+        /// gate descriptor is canonicalized at cache-build time: a
+        /// "Gamepad ..." alias gate otherwise paid the alias Substring on
+        /// every tick, and the canonical form short-circuits the per-read
+        /// CanonicalDescriptor to a reference pass-through. An axis-natured
+        /// gate thresholds at <paramref name="thresholdPercent"/>: the
+        /// button lane forwards its caller's global threshold, the axis /
+        /// trigger lanes keep the 50 percent default (they carry no caller
+        /// threshold of their own).</summary>
+        private static bool GateHeld(CustomInputState state, MappingSource src,
+            int slotIndex, string evaluatedDeviceGuid, int thresholdPercent = 50)
+        {
+            string gate = src.GateDescriptor;
+            if (!string.IsNullOrEmpty(gate))
+            {
+                var cached = src.GateSourceCache;
+                if (cached == null || !ReferenceEquals(src.GateSourceCacheKey, gate))
+                {
+                    cached = new MappingSource
+                    {
+                        Kind = "Direct",
+                        Descriptor = SourceCoercion.CanonicalDescriptor(gate),
+                        DeviceGuid = src.DeviceGuid,
+                    };
+                    src.GateSourceCache = cached;
+                    src.GateSourceCacheKey = gate;
+                }
+                if (!SourceCoercion.EvaluateForButtonTarget(state, cached, thresholdPercent,
+                        slotIndex, evaluatedDeviceGuid))
+                    return false;
+            }
+            // Second AND companion (v26): a chord partner beside a spent
+            // primary gate (the single-pad wedge chord). Same synthetic-
+            // source cache contract as the first leg.
+            string gate2 = src.Gate2Descriptor;
+            if (!string.IsNullOrEmpty(gate2))
+            {
+                var cached2 = src.Gate2SourceCache;
+                if (cached2 == null || !ReferenceEquals(src.Gate2SourceCacheKey, gate2))
+                {
+                    cached2 = new MappingSource
+                    {
+                        Kind = "Direct",
+                        Descriptor = SourceCoercion.CanonicalDescriptor(gate2),
+                        DeviceGuid = src.DeviceGuid,
+                    };
+                    src.Gate2SourceCache = cached2;
+                    src.Gate2SourceCacheKey = gate2;
+                }
+                if (!SourceCoercion.EvaluateForButtonTarget(state, cached2, thresholdPercent,
+                        slotIndex, evaluatedDeviceGuid))
+                    return false;
+            }
+            return true;
+        }
+
         public static bool EvaluateForButtonTarget(
             CustomInputState state, MappingSource src,
             int globalThresholdPercent,
@@ -28,6 +92,7 @@ namespace PadForge.Engine.Common.Mapping
             string evaluatedDeviceGuid = null)
         {
             if (src == null) return false;
+            if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid, globalThresholdPercent)) return false;
 
             switch (src.Kind ?? "Direct")
             {
@@ -62,6 +127,7 @@ namespace PadForge.Engine.Common.Mapping
             string evaluatedDeviceGuid = null)
         {
             if (src == null) return 0f;
+            if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
             // Touchpad source readings differ between relative-motion
             // targets (KBM mouse / scroll consume per-frame deltas) and
@@ -180,7 +246,13 @@ namespace PadForge.Engine.Common.Mapping
             if (string.IsNullOrEmpty(target)) return false;
             return target == "KbmMouseX"
                 || target == "KbmMouseY"
-                || target == "KbmScroll";
+                || target == "KbmScroll"
+                // The horizontal wheel is a rate output exactly like its
+                // vertical twin. Omitting it made a touchpad source on
+                // KbmScrollH read ABSOLUTE pad position, so resting a finger
+                // anywhere off centre scrolled sideways continuously instead
+                // of scrolling by the per-frame delta.
+                || target == "KbmScrollH";
         }
 
         /// <summary>
@@ -216,8 +288,18 @@ namespace PadForge.Engine.Common.Mapping
             if (src == null) return false;
             if (target != "LeftThumbAxisX" && target != "RightThumbAxisX") return false;
             string desc = src.Descriptor ?? "";
+            // The gravity-lean pair (v26) is a POSITION already authored in
+            // the stick sign frame (Lean X positive = tilt right = stick
+            // right), not a right-hand-rule rate, so the rate correction
+            // must not touch it.
+            if (SourceCoercion.IsGyroLeanDescriptor(desc)) return false;
+            // Pitch is the one rate axis already in the stick frame, and the
+            // aux family (#252) spells it "Gyro L Pitch", so the exclusion
+            // matches the AXIS rather than the exact primary descriptor. A
+            // plain string compare against "Gyro Pitch" would have flipped
+            // the aux pitch while leaving the primary correct.
             return SourceCoercion.IsGyroDescriptor(desc)
-                && !desc.Trim().Equals("Gyro Pitch", StringComparison.OrdinalIgnoreCase);
+                && !SourceCoercion.IsGyroPitchAxisDescriptor(desc);
         }
 
         public static float EvaluateForTriggerTarget(
@@ -227,6 +309,7 @@ namespace PadForge.Engine.Common.Mapping
             string evaluatedDeviceGuid = null)
         {
             if (src == null) return 0f;
+            if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
             switch (src.Kind ?? "Direct")
             {
@@ -262,20 +345,20 @@ namespace PadForge.Engine.Common.Mapping
             }
         }
 
-        // Builds a shallow copy of <paramref name="src"/> with Kind forced
-        // to Direct and the specified Invert. Lets InvertOnHold reuse
-        // SourceCoercion's coercion table without mutating the original.
+        // Builds a copy of <paramref name="src"/> with Kind forced to Direct and
+        // the specified Invert. Lets InvertOnHold reuse SourceCoercion's coercion
+        // table without mutating the original. Uses the full memberwise
+        // MappingSource.Clone so no per-source field (the DeadZone, the gyro /
+        // mouse / IR sensitivities, and the #9 generic Sensitivity) silently drops
+        // for an axis inner source. Kind = Direct means the copied Param* fields
+        // are never read.
         private static MappingSource CloneAsDirect(MappingSource src, bool invertOverride)
-            => new MappingSource
-            {
-                Kind = "Direct",
-                DeviceGuid = src.DeviceGuid,
-                Descriptor = src.Descriptor,
-                Invert = invertOverride,
-                HalfAxis = src.HalfAxis,
-                Bidirectional = src.Bidirectional,
-                DeadZone = src.DeadZone,
-            };
+        {
+            var clone = src.Clone();
+            clone.Kind = "Direct";
+            clone.Invert = invertOverride;
+            return clone;
+        }
 
         // Mirrors SourceKindRuntime's button-like reader so the
         // InvertOnHold modifier-button check stays consistent with
@@ -283,7 +366,10 @@ namespace PadForge.Engine.Common.Mapping
         private static bool ReadButtonLikeBool(CustomInputState state, string descriptor)
         {
             if (state == null || string.IsNullOrWhiteSpace(descriptor)) return false;
-            string s = descriptor.Trim();
+            // Fold "Gamepad ButtonA" / "Gamepad DPadUp" aliases (#9) to
+            // their canonical "Button N" / "POV 0 Dir" form, mirroring
+            // SourceKindRuntime's reader.
+            string s = SourceCoercion.CanonicalDescriptor(descriptor);
 
             if (s.StartsWith("Button ", StringComparison.Ordinal))
             {
@@ -314,7 +400,10 @@ namespace PadForge.Engine.Common.Mapping
                 return false;
             }
 
-            return false;
+            // Not Button/POV: hardware-bool families (capsense, NFC tag,
+            // touchpad contact) are pickable as Invert-on-Hold modifiers
+            // too. Same fallback as SourceKindRuntime's reader (#248 audit).
+            return SourceCoercion.ReadHardwareBoolDescriptor(state, s);
         }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -253,6 +253,25 @@ namespace PadForge.Common.Input
             _currentMacroSlotRestricted = false; // global macros emit no keystrokes
             EvaluateGlobalMacros();
 
+            // Per-frame rebuild of the ToggleKey desired set (issue #9 wave
+            // 1b): the slot evaluators below add every latched key from every
+            // enabled macro, then the reconcile at the end diffs it against
+            // what is currently held down. Rebuild-and-diff (instead of
+            // sending inputs at flip time) is what releases a latched key
+            // when its macro is disabled, deleted, or replaced by a profile
+            // switch: the key simply stops appearing in the desired set.
+            _desiredLatchedKeys.Clear();
+            _desiredLatchedMouseButtons.Clear();
+
+            // Menu direct bindings (#9 B-17) run BEFORE the macro pass so a
+            // macro triggering on a virtual button can see and consume a
+            // button a menu cell pressed this frame, exactly as it would a
+            // physically-mapped button. (They previously ran after, so
+            // menu-pressed buttons were invisible to same-frame macro
+            // triggers, Codex audit 2026-07-16.) Keys still join the same
+            // desired-set reconcile below.
+            CollectMenuDirectOutputs();
+
             for (int i = 0; i < MaxPads; i++)
             {
                 var macros = MacroSnapshots[i];
@@ -265,8 +284,8 @@ namespace PadForge.Common.Input
                 _currentMacroSlotRestricted = IsSlotRestricted(i) || AnyMacroTriggerRestricted(macros);
                 try
                 {
-                    if (SlotExtendedIsCustom[i])
-                        EvaluateSlotMacrosExtended(ref CombinedExtendedRawStates[i], macros);
+                    if (SlotRawHidSurface[i])
+                        EvaluateSlotMacrosExtended(ref CombinedRawHidStates[i], macros);
                     else
                         EvaluateSlotMacros(ref CombinedOutputStates[i], macros);
                 }
@@ -275,31 +294,223 @@ namespace PadForge.Common.Input
                     RaiseError($"Macro error on pad {i}", ex);
                 }
             }
+
+            // Settle ToggleKey latches once per frame, after every slot has
+            // contributed its desired keys. Restriction was enforced at
+            // collection time (a restricted slot's latches never enter the
+            // set); the emission itself must not be suppressed by whatever
+            // restricted flag the LAST slot left behind, and a KeyUp must
+            // always be deliverable.
+            _currentMacroSlotRestricted = false;
+            // Release the cross-macro stash (audit 2026-07-25, C20): it is
+            // a per-evaluation transient, and leaving the last array
+            // referenced rooted the previous profile's whole MacroItem
+            // graph across profile swaps.
+            _evalMacros = null;
+            ReconcileLatchedKeys();
+            ReconcileLatchedMouseButtons();
+        }
+
+        // ── ToggleKey latch reconciliation (issue #9 wave 1b) ──
+
+        /// <summary>Keys the enabled macros' latched ToggleKey actions want
+        /// held down this frame. Rebuilt every frame by the slot evaluators;
+        /// internal for the PadForge.Tests dispatch pins. Poll thread only.</summary>
+        internal readonly HashSet<ushort> _desiredLatchedKeys = new();
+
+        /// <summary>Keys this engine currently holds logically down via the
+        /// reconcile. Internal for the PadForge.Tests dispatch pins. Poll
+        /// thread only (plus the engine-stop release).</summary>
+        internal readonly HashSet<ushort> _latchedKeysDown = new();
+
+        // Scratch for the removal pass (no per-frame alloc).
+        private readonly List<ushort> _latchReleaseScratch = new();
+
+        /// <summary>Diffs the desired latched-key set against what is held
+        /// down and sends the boundary transitions: one KeyUp per key that
+        /// left the set, one KeyDown per key that entered it. Steady-state
+        /// frames send nothing (the OS keeps an injected key logically down
+        /// until its KeyUp). Internal for the PadForge.Tests dispatch pins
+        /// (audit #2 M4: the hold-pair engine-stop test drives the real
+        /// reconcile with an inert VK).</summary>
+        internal void ReconcileLatchedKeys()
+        {
+            if (_latchedKeysDown.Count > 0)
+            {
+                _latchReleaseScratch.Clear();
+                foreach (var vk in _latchedKeysDown)
+                    if (!_desiredLatchedKeys.Contains(vk))
+                        _latchReleaseScratch.Add(vk);
+                for (int i = 0; i < _latchReleaseScratch.Count; i++)
+                {
+                    SendKeyInput(_latchReleaseScratch[i], keyUp: true);
+                    _latchedKeysDown.Remove(_latchReleaseScratch[i]);
+                }
+            }
+
+            foreach (var vk in _desiredLatchedKeys)
+            {
+                if (_latchedKeysDown.Add(vk))
+                    SendKeyInput(vk, keyUp: false);
+            }
+        }
+
+        /// <summary>Releases every key the ToggleKey reconcile is holding
+        /// down. Called when the polling loop exits so an engine stop (or
+        /// app shutdown) never strands a latched key logically pressed in
+        /// the OS.</summary>
+        internal void ReleaseAllLatchedMacroKeys()
+        {
+            _currentMacroSlotRestricted = false; // the ups must always deliver
+            if (_latchedKeysDown.Count > 0)
+            {
+                foreach (var vk in _latchedKeysDown)
+                    SendKeyInput(vk, keyUp: true);
+                _latchedKeysDown.Clear();
+            }
+            // v18: mouse-button latches release the same way so an engine
+            // stop never strands an injected button logically down.
+            if (_latchedMouseButtonsDown.Count > 0)
+            {
+                foreach (var b in _latchedMouseButtonsDown)
+                    SendMouseButtonInput(b, down: false);
+                _latchedMouseButtonsDown.Clear();
+            }
+            // Press fired-latches (M5) re-arm wholesale: the loop is gone,
+            // so every in-flight press leg starts fresh on the next engine
+            // start (and the set can't root dead actions across restarts).
+            _pressDownSent.Clear();
+            // #237: yield latches re-arm wholesale for the same reason
+            // (and the set can't root dead actions across restarts).
+            // Combo park positions are per-MacroItem volatiles; they die
+            // with the VM state on profile switch / restart, and a parked
+            // position surviving an idle wake is deliberate (the user's
+            // combo does not lose its place because the engine idled).
+            _axisYielded.Clear();
         }
 
         /// <summary>
         /// Evaluates all macros for a single pad slot.
         /// Instance method to allow raw button lookups via FindOnlineDeviceByInstanceGuid.
+        /// Internal for the PadForge.Tests dispatch pins.
         /// </summary>
-        private void EvaluateSlotMacros(ref Gamepad gp, MacroItem[] macros)
+        // #237 yield gate baseline (audit 2026-07-18): the "physical
+        // input" a yield-enabled write compares against is the state at
+        // EVALUATOR ENTRY, before ANY macro (not just the current one)
+        // wrote this frame. Captured once per slot per tick; poll-thread
+        // confined. The earlier per-macro snapshot still let macro A's
+        // latch write false-latch macro B's yield on a shared target.
+        private Gamepad _preMacroGp;
+
+        /// <summary>The macro array the current evaluator call is walking
+        /// (#251): AxisLatchRelease clears latches across ALL the slot's
+        /// macros, not just its own. Poll-thread transient, assigned at the
+        /// top of both evaluators.</summary>
+        private MacroItem[] _evalMacros;
+
+        /// <summary>The Extended slot layout the current raw evaluator call
+        /// resolves axis indices against (audit 2026-07-25, C34). The old
+        /// fixed LX0/LY1/LT2/RX3/RY4/RT5 map matches only the default
+        /// 2-stick/2-trigger layout; the packer interleaves by
+        /// min(Sticks, Triggers), so a 2/0 Nintendo layout puts RightStickX
+        /// at 2 and a 1/2 layout puts RightTrigger at 3. Poll-thread
+        /// transient, assigned at the raw evaluator's top; null falls back
+        /// to the default map (direct-call tests, primed slots).</summary>
+        private static PadForge.Engine.CustomControllerLayout? _currentRawLayout;
+        private readonly short[] _preMacroRawAxes = new short[8];
+
+        // Per-pass consume/output accumulators (audit 2026-07-25 round
+        // four, R1/R2). Consume used to strip gp INLINE per macro, so an
+        // earlier ShortPress with consume (the default) blinded every LATER
+        // macro's trigger read of the same button: the tap-vs-hold pair
+        // fired neither leg, order-dependently. Deferring the strip to the
+        // end of the pass gives every macro the same pre-consumption view
+        // (the raw-descriptor lane's documented model), and the OUTPUT
+        // overlay re-asserts bits macros generated so consuming trigger A
+        // cannot erase a macro's own ButtonPress A. Poll-thread only.
+        private ushort _macroPassConsumedButtons;
+        private ushort _macroPassOutputButtons;
+        // 4 words = 128 buttons, the ceiling RawHidState.Create and
+        // MacroItem.TriggerCustomButtonWords both enforce (round five, X20:
+        // the previous 8 was copied from the axis convention).
+        private readonly uint[] _macroPassConsumedWords = new uint[4];
+        private readonly uint[] _macroPassOutputWords = new uint[4];
+
+        internal void EvaluateSlotMacros(ref Gamepad gp, MacroItem[] macros)
         {
+            _macroPassConsumedButtons = 0;
+            _macroPassOutputButtons = 0;
+            // #251 AxisLatchRelease reaches across the slot's macros; the
+            // poll thread runs one evaluator at a time, so a transient
+            // stash is safe (the CancelExecutingPairTwin precedent, made
+            // reachable from the action executor).
+            _evalMacros = macros;
+            _preMacroGp = gp;
+            // Fresh slot-device resolution per evaluator call (#9 B-9):
+            // device-free trigger entries resolve against the slot's
+            // CURRENT online devices, refilled lazily on first need.
+            _slotTriggerDeviceSlot = -1;
+
             for (int m = 0; m < macros.Length; m++)
             {
                 var macro = macros[m];
                 if (macro == null || !macro.IsEnabled)
+                {
+                    // #237: disabling a macro resets its combo park and
+                    // yield latches, so a re-enable starts from the top.
+                    if (macro != null && (macro.ComboResumeIndex != 0 || macro.AwaitReleaseAfterBreak
+                        || macro.TriggerPressStreak != 0 || macro.TriggerHoldFired
+                        || macro.TriggerHoldStartUtc != DateTime.MinValue
+                        || macro.RunReleasedFireToCompletion
+                        || macro.ToggleTriggerLatched || macro.ToggleRawWasActive))
+                    {
+                        macro.ComboResumeIndex = 0;
+                        macro.AwaitReleaseAfterBreak = false;
+                        // #238: a disabled macro's press chain resets too,
+                        // so re-enable inside the window starts fresh. The
+                        // HoldForMs transients are the same family: without
+                        // the reset, disable mid-hold and re-enable while
+                        // still held fired instantly, crediting the
+                        // disabled span with no rising edge.
+                        macro.TriggerPressStreak = 0;
+                        macro.TriggerLastPressUtc = DateTime.MinValue;
+                        macro.TriggerHoldStartUtc = DateTime.MinValue;
+                        macro.TriggerHoldFired = false;
+                        macro.RunReleasedFireToCompletion = false;
+                        // #238 Toggle: disabling drops the latch, so a
+                        // re-enabled macro starts unlatched and the next
+                        // press is a fresh latch-on, never a surprise
+                        // latch-off.
+                        macro.ToggleTriggerLatched = false;
+                        macro.ToggleRawWasActive = false;
+                        ClearAxisYields(macro);
+                    }
+                    // OUTSIDE the transient-reset guard on purpose (round
+                    // five, X15): a disabled tick is an OBSERVATION GAP
+                    // whether or not any transient happened to be set, and
+                    // the guard above trips only when one was. Its own pin
+                    // caught this: an idle macro disabled mid-hold kept a
+                    // fresh stamp and re-armed a press it never saw.
+                    if (macro != null)
+                    {
+                        macro.LastEvaluatedUtc = DateTime.MinValue;
+                        macro.WasTriggerActive = false;
+                    }
                     continue;
+                }
 
                 // Skip macros with no trigger configured (unless Always /
-                // CustomExpression mode — Custom always has a formula that
+                // CustomExpression mode. Custom always has a formula that
                 // evaluates, even if the formula references no variables).
                 bool hasButtons = macro.UsesRawTrigger || macro.TriggerButtons != 0;
                 if (macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.TriggerMode != MacroTriggerMode.CustomExpression &&
                     !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons &&
-                    !macro.UsesGestureTrigger)
+                    !macro.UsesGestureTrigger && !macro.UsesDescriptorTrigger)
                     continue;
 
-                // Determine trigger state. Buttons, POVs, gestures, AND axes must all be active together.
+                // Determine trigger state. Buttons, POVs, gestures, descriptors,
+                // AND axes must all be active together.
                 bool triggerActive;
                 if (macro.TriggerMode == MacroTriggerMode.Always)
                     triggerActive = true;
@@ -310,6 +521,7 @@ namespace PadForge.Common.Input
                     bool buttonOk = true;
                     bool povOk = true;
                     bool gestureOk = true;
+                    bool descriptorOk = true;
                     bool axisOk = true;
 
                     if (hasButtons)
@@ -323,6 +535,8 @@ namespace PadForge.Common.Input
                         povOk = CheckRawPovTrigger(macro);
                     if (macro.UsesGestureTrigger)
                         gestureOk = CheckGestureTrigger(macro);
+                    if (macro.UsesDescriptorTrigger)
+                        descriptorOk = CheckDescriptorTrigger(macro);
                     if (macro.UsesAxisTrigger)
                     {
                         float threshold = macro.TriggerAxisThreshold / 100f;
@@ -355,7 +569,7 @@ namespace PadForge.Common.Input
                     // the same Invert / HalfAxis / DeadZone semantics the
                     // merge-mapping engine uses for axis-to-button sources
                     // (see PadForge.Engine.Common.Mapping.SourceCoercion).
-                    // No per-axis-target classification — every axis index
+                    // No per-axis-target classification. Every axis index
                     // is evaluated uniformly with the entry's three flags.
                     if (axisOk)
                     {
@@ -364,60 +578,69 @@ namespace PadForge.Common.Input
                         {
                             var e = entries[i];
                             if (e.AxisTarget == MacroAxisTarget.None) continue;
-                            var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
-                            if (ud == null || !ud.IsOnline || ud.InputState?.Axis == null)
-                            { axisOk = false; break; }
-                            int axIdx = e.AxisTarget switch
-                            {
-                                MacroAxisTarget.LeftStickX  => 0,
-                                MacroAxisTarget.LeftStickY  => 1,
-                                MacroAxisTarget.LeftTrigger => 2,
-                                MacroAxisTarget.RightStickX => 3,
-                                MacroAxisTarget.RightStickY => 4,
-                                MacroAxisTarget.RightTrigger=> 5,
-                                _ => -1
-                            };
-                            if (axIdx < 0 || axIdx >= ud.InputState.Axis.Length)
-                            { axisOk = false; break; }
-
-                            int av = ud.InputState.Axis[axIdx];
-                            double thresh = Math.Max(e.DeadZone, 1) / 100.0;
                             bool active;
-                            if (e.HalfAxis)
+                            if (e.DeviceGuid == Guid.Empty)
                             {
-                                if (e.Bidirectional)
-                                {
-                                    // Either side of center past deadzone counts —
-                                    // |av − 32768| > 32767 * thresh. Invert is
-                                    // irrelevant here (mirroring around center
-                                    // covers both directions already).
-                                    int delta = av - 32768;
-                                    if (delta < 0) delta = -delta;
-                                    active = delta > (int)(32767 * thresh);
-                                }
-                                else if (e.Invert)
-                                    active = av < (int)(32767 * (1.0 - thresh));
-                                else
-                                    active = av > (int)(32768 + 32767 * thresh);
+                                // Device-free entry (#9 B-9): satisfied when
+                                // ANY online device on the macro's slot
+                                // crosses the threshold, the macro-side
+                                // mirror of the mapping engine's empty-
+                                // DeviceGuid contract.
+                                active = AnySlotDeviceAxisEntryActive(macro.PadIndex, e);
                             }
                             else
                             {
-                                int hi = (int)(thresh * 65535);
-                                if (e.Invert)
-                                    active = av < 65535 - hi;
-                                else
-                                    active = av > hi;
+                                var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
+                                active = TriggerAxisEntryActive(ud, e);
                             }
-
                             if (!active) { axisOk = false; break; }
                         }
                     }
 
-                    triggerActive = buttonOk && povOk && gestureOk && axisOk;
+                    triggerActive = buttonOk && povOk && gestureOk && descriptorOk && axisOk;
+                }
+
+                // Shift-layer gate (translator v25, always_on_action): a
+                // layer-scoped macro's trigger only counts while its layer
+                // is engaged, so OnPress fires on the layer's ENGAGE edge
+                // (the gated trigger rises there) and UntilRelease shapes
+                // stop on disengage. Applied before the WasTriggerActive
+                // latch so re-engaging the layer is a fresh rising edge.
+                bool layerOpen = MacroLayerGateOpen(macro);
+                if (!layerOpen) triggerActive = false;
+
+                // Toggle mode (#238): a trigger-level latch. Each raw
+                // rising edge flips it, and downstream sees the LATCH as
+                // the trigger state, so the WhileHeld-shape evaluation,
+                // holds, and the release-stop all key on "pressed again"
+                // instead of the physical release. Layer close clears the
+                // latch (the gated trigger already reads inactive above,
+                // so a press inside a closed layer cannot flip it either).
+                if (macro.TriggerMode == MacroTriggerMode.Toggle)
+                {
+                    bool rawWas = macro.ToggleRawWasActive;
+                    macro.ToggleRawWasActive = triggerActive;
+                    if (!layerOpen)
+                        macro.ToggleTriggerLatched = false;
+                    else if (triggerActive && !rawWas)
+                        macro.ToggleTriggerLatched = !macro.ToggleTriggerLatched;
+                    triggerActive = macro.ToggleTriggerLatched;
                 }
 
                 bool wasTriggerActive = macro.WasTriggerActive;
+                // Continuity check BEFORE the latch, exactly like
+                // wasTriggerActive (round four, R13/R14): the previous
+                // sample is trustworthy only when it is RECENT. Any gap
+                // (engine stop, this macro disabled, its slot idle-skipped,
+                // a profile hot-retain) means an apparent edge on the first
+                // tick back may have happened entirely unwatched, and On
+                // Short Press must not arm from it. 250ms is two orders
+                // above the poll cadence, so only real gaps trip it.
+                var nowUtcForEdge = DateTime.UtcNow;
+                bool edgeObserved =
+                    (nowUtcForEdge - macro.LastEvaluatedUtc).TotalMilliseconds <= 250.0;
                 macro.WasTriggerActive = triggerActive;
+                macro.LastEvaluatedUtc = nowUtcForEdge;
 
                 // Determine if we should start execution based on trigger mode.
                 bool shouldStart = false;
@@ -432,21 +655,105 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.WhileHeld:
                         shouldStart = triggerActive;
                         break;
+                    case MacroTriggerMode.Toggle:
+                    case MacroTriggerMode.Turbo:
+                        // #238: both evaluate WhileHeld-style. Toggle's
+                        // triggerActive is its latch (transformed above);
+                        // Turbo's is the plain held state. Their forced
+                        // until-release stop and repeat pacing live in the
+                        // stop block and AdvanceMacroAction.
+                        shouldStart = triggerActive;
+                        break;
                     case MacroTriggerMode.Always:
-                        shouldStart = !macro.IsExecuting;
+                        shouldStart = !macro.IsExecuting && layerOpen;
                         break;
                     case MacroTriggerMode.CustomExpression:
                         // Rising edge of the formula result crossing 0.5,
                         // matching OnPress semantics for a synthetic boolean.
                         shouldStart = triggerActive && !wasTriggerActive;
                         break;
+                    case MacroTriggerMode.HoldForMs:
+                        shouldStart = EvaluateHoldForMsTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
+                    case MacroTriggerMode.ShortPress:
+                        // #253: fires at the falling edge when the hold
+                        // stayed under TriggerHoldMs, the HoldForMs twin.
+                        shouldStart = EvaluateShortPressTrigger(macro, triggerActive, wasTriggerActive, layerOpen, edgeObserved);
+                        break;
+                    case MacroTriggerMode.DoublePress:
+                        shouldStart = EvaluateDoublePressTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
+                    case MacroTriggerMode.TriplePress:
+                        shouldStart = EvaluateTriplePressTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
+                    case MacroTriggerMode.SinglePress:
+                        // A closed shift layer voids the pending single
+                        // outright: the LayerMask contract says the trigger
+                        // only counts while the layer is engaged, and the
+                        // deferred fire would otherwise land AFTER the
+                        // layer disengaged.
+                        if (!layerOpen)
+                        {
+                            macro.TriggerPressStreak = 0;
+                            macro.TriggerLastPressUtc = DateTime.MinValue;
+                            shouldStart = false;
+                        }
+                        else
+                        {
+                            shouldStart = EvaluateSinglePressTrigger(macro, triggerActive, wasTriggerActive);
+                        }
+                        break;
                 }
 
+                // #237 combo break: a parked sequence must not auto-resume
+                // while a hold-shaped trigger is still down; the break
+                // demands a fresh press. The guard opens on the first
+                // inactive tick.
+                // Toggle opens the guard on the RAW release (audit
+                // 2026-07-24): for that mode triggerActive is the latch, so
+                // the guard waited for an UNLATCH, and resuming a parked
+                // sequence cost three presses (latch, unlatch-to-open,
+                // relatch) instead of the documented "press the trigger
+                // again to continue".
+                bool breakGuardOpen = macro.TriggerMode == MacroTriggerMode.Toggle
+                    ? !macro.ToggleRawWasActive
+                    : !triggerActive;
+                if (macro.AwaitReleaseAfterBreak && breakGuardOpen)
+                    macro.AwaitReleaseAfterBreak = false;
+
                 // Start new execution if triggered and not already executing.
-                if (shouldStart && !macro.IsExecuting)
+                if (shouldStart && !macro.IsExecuting && !macro.AwaitReleaseAfterBreak
+                    // R5 (round four): an empty macro must never START. The
+                    // advance routine is gated on Actions.Count > 0, so a
+                    // start with zero actions wedged IsExecuting and the
+                    // deferred-completion flag forever, and the consume gate
+                    // then ate every later press of the trigger.
+                    && macro.Actions.Count > 0)
                 {
+                    // A starting hold-pair leg cancels its executing twin
+                    // (audit #2 M6): a re-press during the twin's pending
+                    // delay_end Delay would otherwise let the stale Clear
+                    // fire mid-hold and release the NEW hold. Runs at
+                    // start, not at the raw rising edge, so a HoldForMs
+                    // press leg cancels at its threshold crossing and a
+                    // pending release still legitimately ends the
+                    // PREVIOUS hold while the next press sits under the
+                    // threshold.
+                    if (macro.PairId != 0)
+                        CancelExecutingPairTwin(macros, macro);
                     macro.IsExecuting = true;
-                    macro.CurrentActionIndex = 0;
+                    // A deferred single firing with the button already up
+                    // must run its sequence ONE full pass: the UntilRelease
+                    // stop below would otherwise kill it the same frame
+                    // (the release already happened) and a quick tap ran
+                    // zero actions. The flag suppresses the release-stop
+                    // until the pass completes.
+                    macro.RunReleasedFireToCompletion =
+                        (macro.TriggerMode == MacroTriggerMode.SinglePress
+                         || macro.TriggerMode == MacroTriggerMode.ShortPress)
+                        && !triggerActive;
+                    // #237: resume from a combo-break park (0 = the top).
+                    macro.CurrentActionIndex = macro.ComboResumeIndex;
                     macro.ActionStartTime = DateTime.UtcNow;
                     macro.RemainingRepeats = macro.RepeatMode == MacroRepeatMode.FixedCount
                         ? macro.RepeatCount : 1;
@@ -455,31 +762,604 @@ namespace PadForge.Common.Input
 
                 // For WhileHeld + UntilRelease: stop when trigger is released.
                 // Always mode never stops via trigger release.
+                // Release linger (translator v22, Steam delay_end on
+                // autofire): the pulse train keeps running ReleaseLingerMs
+                // past the release; a re-press inside the window clears the
+                // pending stop (the M6 cancel-on-re-press shape applied to
+                // the stop leg).
+                if (triggerActive)
+                    macro.ReleaseLingerStartUtc = DateTime.MinValue;
                 if (macro.IsExecuting &&
                     macro.TriggerMode != MacroTriggerMode.Always &&
-                    macro.RepeatMode == MacroRepeatMode.UntilRelease &&
-                    !triggerActive)
+                    // #238: Toggle and Turbo carry until-release semantics
+                    // regardless of the authored RepeatMode; for Toggle,
+                    // triggerActive is the latch, so this fires on unlatch.
+                    (macro.RepeatMode == MacroRepeatMode.UntilRelease
+                     || macro.TriggerMode == MacroTriggerMode.Toggle
+                     || macro.TriggerMode == MacroTriggerMode.Turbo) &&
+                    !triggerActive
+                    && !macro.RunReleasedFireToCompletion
+                    && !WithinReleaseLinger(macro))
                 {
                     macro.IsExecuting = false;
                     macro.CurrentActionIndex = 0;
+                    // #237: an UntilRelease stop re-arms the combo from the
+                    // top and releases any yield latches.
+                    macro.ComboResumeIndex = 0;
+                    ClearAxisYields(macro);
+                    macro.ReleaseLingerStartUtc = DateTime.MinValue;
                     // Looping macro sounds are trigger-bound on this path:
                     // release stops them (one-shots play out).
                     SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
                 }
 
                 // Execute current action if macro is running.
+                // Deleting the last action of a RUNNING macro empties the
+                // live collection, and no completion path can then clear the
+                // run (round five, X14): IsExecuting stayed set forever and
+                // the consume gate ate every later press.
+                if (macro.IsExecuting && macro.Actions.Count == 0) EndMacroRun(macro);
                 if (macro.IsExecuting && macro.Actions.Count > 0)
                 {
                     ExecuteMacroActions(ref gp, macro);
                 }
 
-                // Consume trigger buttons if configured (only for Xbox bitmask triggers;
-                // raw device buttons aren't part of the combined Gamepad state).
-                if (macro.ConsumeTriggerButtons && triggerActive && macro.IsExecuting
-                    && !macro.UsesRawTrigger)
+                // Consume trigger buttons if configured. This strip handles
+                // Xbox bitmask triggers only; raw device-button and
+                // descriptor triggers are consumed at the SOURCE READ in
+                // Step 3 instead (RebuildConsumedTriggerSources, 2026-07-25),
+                // since the raw press lives on the device and its mapped
+                // output never has a single bitmask to strip here.
+                // Toggle consumes on the RAW button instead (#238 audit
+                // 2026-07-24): for that mode triggerActive is the latch and
+                // the unlatch press drives it false while the stop block
+                // clears IsExecuting, so both gate terms went false exactly
+                // when the physical button was down and the second press
+                // leaked through to the game. Consuming on the raw state
+                // keeps "the macro eats its trigger" true for both presses.
+                bool consumeNow = macro.TriggerMode == MacroTriggerMode.Toggle
+                    ? macro.ToggleRawWasActive
+                    // ShortPress consumes while the trigger is HELD (audit
+                    // 2026-07-25, C18). It starts on the falling edge, so
+                    // "active AND executing" is never simultaneously true
+                    // and the checkbox was silently inert for the mode.
+                    // Eating the press as it happens is also what the
+                    // tap-vs-hold pairing wants: the button's own binding
+                    // must not fire alongside either half.
+                    : macro.TriggerMode == MacroTriggerMode.ShortPress
+                        ? (triggerActive || macro.IsExecuting)
+                        : (triggerActive && macro.IsExecuting);
+                if (macro.ConsumeTriggerButtons && consumeNow && !macro.UsesRawTrigger)
                 {
-                    gp.Buttons &= (ushort)~macro.TriggerButtons;
+                    // Accumulate; the strip lands once, after the walk (R2).
+                    _macroPassConsumedButtons |= macro.TriggerButtons;
                 }
+
+                // Toggle latches apply every frame while the macro is enabled
+                // (issue #9 wave 1b), independent of IsExecuting. The consume
+                // no longer happens here: it accumulates above and strips ONCE
+                // after the walk, so a latched button survives by being in the
+                // output overlay, not by ordering (round five, X18 corrects a
+                // comment the deferral inverted). Any new latch branch that
+                // writes buttons MUST feed the overlay or it will be stripped.
+                ApplyMacroLatches(ref gp, macro);
+            }
+
+            // Deferred consume (R2) with output overlay (R1): strip the
+            // accumulated trigger bits once, then re-assert every bit a
+            // macro generated this pass, so consuming trigger A never
+            // erases a macro's own A output and never blinds a sibling.
+            if (_macroPassConsumedButtons != 0)
+                gp.Buttons = (ushort)((gp.Buttons & (ushort)~_macroPassConsumedButtons)
+                                      | _macroPassOutputButtons);
+        }
+
+        /// <summary>Shift-layer gate for layer-scoped macros (translator
+        /// v25 / #254). Semantics of <see cref="MacroItem.LayerMask"/>:
+        /// "" = ANY layer (ungated, every pre-#254 macro), "Base" = only
+        /// while Base is effectively engaged, honoring the engaged layer's
+        /// InheritUnmapped exactly like a Base ROW does, any other value =
+        /// only while that layer is engaged. Scoped to the MACRO'S OWN
+        /// slot (#254 A-4): the old any-slot walk was safe only while
+        /// masks were import-unique ("Layer_{fileId}_{presetId}"), and
+        /// hand-authored masks derive from layer names uniquified only
+        /// WITHIN a slot, so two slots both named "Shift" would
+        /// cross-trigger. The split-config case the walk existed for (twin
+        /// activators live on whichever set owns the layer's rows while
+        /// the macro rides the Xbox slot) survives as a fallback: when the
+        /// macro's own slot does not DECLARE the mask at all, any slot's
+        /// engagement still opens it. Reads engagement through the pure
+        /// <see cref="GetEngagedLayerMask"/> (no activator re-tick).</summary>
+        private static bool MacroLayerGateOpen(MacroItem macro)
+        {
+            string mask = macro.LayerMask;
+            if (string.IsNullOrEmpty(mask)) return true; // "" = any layer
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null) return true; // no layer machinery: fail open
+
+            int slot = macro.PadIndex;
+            if (slot < 0 || slot >= sets.Length)
+                return AnySlotEngages(sets, mask); // unset slot: legacy walk
+
+            var ownSet = sets[slot];
+            string engaged = ownSet != null ? GetEngagedLayerMask(slot, ownSet) : "Base";
+
+            if (string.Equals(mask, "Base", StringComparison.Ordinal))
+            {
+                // The Base-ROW contract (#221 family): open while Base is
+                // engaged on the MACRO'S OWN slot, and while a non-Base
+                // layer with InheritUnmapped lets Base fall through.
+                if (!string.Equals(engaged, "Base", StringComparison.Ordinal))
+                    return ownSet != null && LayerInheritsUnmapped(ownSet, engaged);
+
+                // Split-import fallback, scoped by IMPORT DOMAIN (round five).
+                // A Workshop import can put an action-set switch on the KBM
+                // slot while its macros ride the Xbox slot; a set engaged
+                // there REPLACES Base here, so a Base-scoped macro must
+                // close. Round three walked every slot unconditionally and
+                // coupled unrelated pads; round four removed the walk and
+                // pushed the job onto the translator, which could not help
+                // profiles that were already imported (nothing re-translates
+                // them) and mis-emitted activators besides. The domain check
+                // is the missing discriminator, and it needs no new data:
+                // import masks are "Layer_{fileId}_{presetId}", so the
+                // fileId segment already identifies which slots came from
+                // ONE import. Hand-authored masks are name-derived and never
+                // match that grammar, so two pads that both own "Shift"
+                // share no domain and stay independent.
+                if (ownSet == null) return true;
+                for (int s2 = 0; s2 < sets.Length; s2++)
+                {
+                    if (s2 == slot) continue;
+                    var other = sets[s2];
+                    if (other == null) continue;
+                    string otherEngaged = GetEngagedLayerMask(s2, other);
+                    if (string.Equals(otherEngaged, "Base", StringComparison.Ordinal)) continue;
+                    // An overlay layer leaves Base showing through; only a
+                    // replacing set closes it.
+                    if (LayerInheritsUnmapped(other, otherEngaged)) continue;
+                    if (!SlotSharesImportDomain(ownSet, otherEngaged)) continue;
+                    return false;
+                }
+                return true;
+            }
+
+            if (string.Equals(engaged, mask, StringComparison.Ordinal)) return true;
+
+            // Split-config fallback: only when the macro's own slot does
+            // not declare the mask. A same-named mask engaged on a foreign
+            // slot must NOT open a macro whose own slot declares it.
+            if (!SlotDeclaresMask(ownSet, mask))
+                return AnySlotEngages(sets, mask);
+            return false;
+        }
+
+        /// <summary>True when any slot's set currently engages the mask
+        /// (the pre-#254 walk, kept for the split-config and unset-slot
+        /// fallbacks).</summary>
+        private static bool AnySlotEngages(MappingSet[] sets, string mask)
+        {
+            for (int s = 0; s < sets.Length; s++)
+            {
+                var set = sets[s];
+                if (set == null) continue;
+                if (string.Equals(GetEngagedLayerMask(s, set), mask, StringComparison.Ordinal))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>True when the set carries a shift activator for the
+        /// mask, i.e. the slot OWNS that layer (#254 A-4).</summary>
+        /// <summary>Length of a mask's "Layer_{fileId}_" import-domain
+        /// prefix, or -1 when the mask is not import-grammar (round five).
+        /// The translator mints set masks as "Layer_{fileId}_{presetId}",
+        /// so the leading two segments identify the IMPORT that produced
+        /// them, which is exactly the "are these slots related" signal the
+        /// Base gate needs. Hand-authored masks derive from layer names and
+        /// never match, which is what keeps independent pads independent.</summary>
+        internal static int ImportDomainPrefixLength(string mask)
+        {
+            if (string.IsNullOrEmpty(mask)) return -1;
+            const string Head = "Layer_";
+            if (!mask.StartsWith(Head, StringComparison.Ordinal)) return -1;
+            int second = mask.IndexOf('_', Head.Length);
+            // Require a non-empty fileId segment and something after it.
+            if (second <= Head.Length || second + 1 >= mask.Length) return -1;
+            return second + 1;
+        }
+
+        /// <summary>True when the slot declares any mask from the same
+        /// import as <paramref name="foreignMask"/> (round five). Walks the
+        /// slot's own activators and cycle rings; allocation-free, because
+        /// this runs on the poll thread per Base-scoped macro.</summary>
+        internal static bool SlotSharesImportDomain(MappingSet set, string foreignMask)
+        {
+            int flen = ImportDomainPrefixLength(foreignMask);
+            if (flen < 0) return false;   // hand-authored: never a domain match
+            var acts = set?.ShiftActivators;
+            if (acts == null) return false;
+            for (int i = 0; i < acts.Count; i++)
+            {
+                var a = acts[i];
+                if (a == null) continue;
+                if (MaskSharesDomain(a.LayerMask, foreignMask, flen)) return true;
+                string ring = a.CycleLayers;
+                if (string.IsNullOrEmpty(ring)) continue;
+                int start = 0;
+                while (start < ring.Length)
+                {
+                    int sep = ring.IndexOf('|', start);
+                    int end = sep < 0 ? ring.Length : sep;
+                    if (end > start && MaskSharesDomain(ring, foreignMask, flen, start, end - start))
+                        return true;
+                    if (sep < 0) break;
+                    start = sep + 1;
+                }
+            }
+            return false;
+        }
+
+        private static bool MaskSharesDomain(string mask, string foreignMask, int flen)
+            => MaskSharesDomain(mask, foreignMask, flen, 0, mask?.Length ?? 0);
+
+        private static bool MaskSharesDomain(string mask, string foreignMask, int flen, int start, int len)
+        {
+            if (mask == null || len < flen) return false;
+            return string.CompareOrdinal(mask, start, foreignMask, 0, flen) == 0;
+        }
+
+        /// <summary>Ends a run and re-arms it, the shape every completion
+        /// path uses (round five, X14).</summary>
+        private void EndMacroRun(MacroItem macro)
+        {
+            macro.IsExecuting = false;
+            macro.CurrentActionIndex = 0;
+            macro.ComboResumeIndex = 0;
+            macro.RunReleasedFireToCompletion = false;
+            ClearAxisYields(macro);
+        }
+
+        /// <summary>Allocation-free membership test for a '|'-separated
+        /// mask list (round four, R27). Equivalent to splitting on '|' with
+        /// RemoveEmptyEntries and comparing Ordinal, without the per-call
+        /// array and token allocations the 1 kHz poll path cannot afford.</summary>
+        internal static bool PipeListContains(string list, string mask)
+        {
+            if (string.IsNullOrEmpty(list) || string.IsNullOrEmpty(mask)) return false;
+            int start = 0;
+            while (start < list.Length)
+            {
+                int sep = list.IndexOf('|', start);
+                int end = sep < 0 ? list.Length : sep;
+                if (end - start == mask.Length
+                    && string.CompareOrdinal(list, start, mask, 0, mask.Length) == 0)
+                    return true;
+                if (sep < 0) break;
+                start = sep + 1;
+            }
+            return false;
+        }
+
+        private static bool SlotDeclaresMask(MappingSet set, string mask)
+        {
+            var acts = set?.ShiftActivators;
+            if (acts == null) return false;
+            for (int i = 0; i < acts.Count; i++)
+            {
+                var a = acts[i];
+                if (a == null) continue;
+                if (string.Equals(a.LayerMask, mask, StringComparison.Ordinal)) return true;
+                // A Cycle activator ENGAGES every mask in its ring while
+                // carrying only the first as its own LayerMask (audit
+                // 2026-07-25, C5). Without this the slot looked like it
+                // did not own its own cycle stops, and the gate silently
+                // dropped to the any-slot walk #254 exists to retire.
+                // Allocation-free scan (round four, R27): this runs per
+                // scoped macro per poll tick, and Split allocated an array
+                // plus token strings at the loop rate.
+                if (PipeListContains(a.CycleLayers, mask)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Shared DoublePress trigger evaluation (translator v17,
+        /// Steam's Double_Press activator) for both slot evaluators. Fires
+        /// exactly once, on a rising edge whose predecessor rising edge lay
+        /// within <see cref="MacroItem.TriggerDoublePressMs"/>. Press,
+        /// release, press is inherent in two rising edges (the trigger must
+        /// drop between them). A single press only arms. A second press
+        /// outside the window re-arms as a fresh first press, and the
+        /// armed pair is consumed on fire so a triple press starts a new
+        /// sequence instead of firing twice. The trigger reads active
+        /// through the second press's hold, so UntilRelease action shapes
+        /// stop on its release, Valve's "if held on the second press, it
+        /// will remain pressed" semantics.</summary>
+        private static bool EvaluateDoublePressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
+        {
+            if (!triggerActive || wasTriggerActive) return false;
+            var now = DateTime.UtcNow;
+            var last = macro.TriggerLastPressUtc;
+            if (last != DateTime.MinValue
+                && (now - last).TotalMilliseconds <= macro.TriggerDoublePressMs)
+            {
+                macro.TriggerLastPressUtc = DateTime.MinValue;
+                return true;
+            }
+            macro.TriggerLastPressUtc = now;
+            return false;
+        }
+
+        /// <summary>Shared TriplePress trigger evaluation (#238) for both
+        /// slot evaluators. Counts rising edges whose successive presses
+        /// each land within <see cref="MacroItem.TriggerDoublePressMs"/> of
+        /// the previous one; the THIRD chained edge fires and consumes the
+        /// chain (six fast taps fire twice, never four times). A slower
+        /// press re-arms as a fresh first press. Shares the DoublePress
+        /// timestamp field: a macro has exactly one of the two modes, and
+        /// the streak counter is what distinguishes the chains.</summary>
+        private static bool EvaluateTriplePressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
+        {
+            if (!triggerActive || wasTriggerActive) return false;
+            var now = DateTime.UtcNow;
+            var last = macro.TriggerLastPressUtc;
+            bool chained = last != DateTime.MinValue
+                && (now - last).TotalMilliseconds <= macro.TriggerDoublePressMs;
+            macro.TriggerPressStreak = chained ? macro.TriggerPressStreak + 1 : 1;
+            macro.TriggerLastPressUtc = now;
+            if (macro.TriggerPressStreak >= 3)
+            {
+                macro.TriggerPressStreak = 0;
+                macro.TriggerLastPressUtc = DateTime.MinValue;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>Shared SinglePress trigger evaluation (#238): the
+        /// DEFERRED single. Chains rising edges through the shared press
+        /// window exactly like TriplePress; a chain of exactly ONE press
+        /// fires once when its window expires with no follow-up (held or
+        /// released), and a chain of two or more fires nothing here and
+        /// resets once quiet. Lets one button carry Single + Double +
+        /// Triple macros without the single firing on the chains.</summary>
+        /// <summary>How far past the press window a deferred single may
+        /// still fire. Live polling detects expiry within milliseconds
+        /// (idle mode within ~50 ms); beyond this the arm predates an
+        /// engine stop or process suspend and must not ghost-fire.</summary>
+        private const int SinglePressStaleGraceMs = 250;
+
+        private static bool EvaluateSinglePressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
+        {
+            var now = DateTime.UtcNow;
+            if (triggerActive && !wasTriggerActive)
+            {
+                bool chained = macro.TriggerLastPressUtc != DateTime.MinValue
+                    && (now - macro.TriggerLastPressUtc).TotalMilliseconds <= macro.TriggerDoublePressMs;
+                macro.TriggerPressStreak = chained ? macro.TriggerPressStreak + 1 : 1;
+                macro.TriggerLastPressUtc = now;
+                return false;
+            }
+            if (macro.TriggerLastPressUtc == DateTime.MinValue) return false;
+            double elapsedMs = (now - macro.TriggerLastPressUtc).TotalMilliseconds;
+            if (elapsedMs <= macro.TriggerDoublePressMs) return false;
+            if (macro.TriggerPressStreak == 1)
+            {
+                macro.TriggerPressStreak = 0;
+                macro.TriggerLastPressUtc = DateTime.MinValue;
+                // Stale-fire guard: a live pipeline detects expiry within
+                // a few ticks (idle mode within ~50 ms). A press whose
+                // window expired long ago means the engine was stopped or
+                // the process suspended mid-window; firing now would be a
+                // ghost action with no input. Reset instead.
+                return elapsedMs <= macro.TriggerDoublePressMs + SinglePressStaleGraceMs;
+            }
+            // Chain of 2+: reset without firing once the chain is quiet
+            // (window expired) and the button is up, so a held third
+            // press keeps its chain accounting intact.
+            if (!triggerActive)
+            {
+                macro.TriggerPressStreak = 0;
+                macro.TriggerLastPressUtc = DateTime.MinValue;
+            }
+            return false;
+        }
+
+        /// <summary>Shared HoldForMs trigger evaluation (issue #9 wave 1b,
+        /// B-8b) for both slot evaluators. Arms the per-macro hold timer on
+        /// the rising edge, fires exactly once when the continuous hold
+        /// crosses <see cref="MacroItem.TriggerHoldMs"/>, and re-arms on the
+        /// next press. A tap shorter than the threshold never fires.</summary>
+        private static bool EvaluateHoldForMsTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
+        {
+            if (triggerActive && !wasTriggerActive)
+            {
+                // Rising edge: arm a fresh hold window.
+                macro.TriggerHoldStartUtc = DateTime.UtcNow;
+                macro.TriggerHoldFired = false;
+            }
+            if (triggerActive && !macro.TriggerHoldFired
+                && macro.TriggerHoldStartUtc != DateTime.MinValue
+                && (DateTime.UtcNow - macro.TriggerHoldStartUtc).TotalMilliseconds >= macro.TriggerHoldMs)
+            {
+                macro.TriggerHoldFired = true;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>Shared On Short Press evaluation (#253): fires once at
+        /// the FALLING edge, only when the hold stayed under
+        /// <see cref="MacroItem.TriggerHoldMs"/>. Reuses the HoldForMs
+        /// transients on the TriplePress precedent (a macro has exactly one
+        /// mode, and both fields clear in every reset lane). A release with
+        /// no armed timestamp (engine started mid-hold, or the reset lanes
+        /// cleared it) never fires: the press's rising edge was never
+        /// witnessed, so its duration is unknowable.</summary>
+        private static bool EvaluateShortPressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive, bool layerOpen, bool edgeObserved)
+        {
+            if (triggerActive && !wasTriggerActive)
+            {
+                // Rising edge: arm the window, exactly like HoldForMs, but
+                // only when the previous sample was OBSERVED (audit
+                // 2026-07-25, C14). On the first tick after engine start or
+                // a profile load, WasTriggerActive is merely the field
+                // default, so a button already held looked like a fresh
+                // press and a long hold fired as a tap on release.
+                if (!edgeObserved) return false;
+                macro.TriggerHoldStartUtc = DateTime.UtcNow;
+                macro.TriggerHoldFired = false;
+                return false;
+            }
+            // A CLOSED shift layer forces triggerActive false upstream, so
+            // the disengage looks identical to a physical release (audit
+            // 2026-07-25, C15). Firing there would run the macro when the
+            // user let go of the LAYER, not of the macro's own button. The
+            // SinglePress arm carries the same guard for the same reason;
+            // the pending window is dropped so re-engaging starts fresh.
+            if (!layerOpen)
+            {
+                macro.TriggerHoldStartUtc = DateTime.MinValue;
+                return false;
+            }
+            if (!triggerActive && wasTriggerActive
+                && macro.TriggerHoldStartUtc != DateTime.MinValue
+                && !macro.TriggerHoldFired)
+            {
+                double heldMs = (DateTime.UtcNow - macro.TriggerHoldStartUtc).TotalMilliseconds;
+                macro.TriggerHoldStartUtc = DateTime.MinValue;
+                if (heldMs < macro.TriggerHoldMs)
+                {
+                    macro.TriggerHoldFired = true;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>Applies an enabled macro's volatile Toggle latches for
+        /// this frame (issue #9 wave 1b): latched ToggleVcButton targets OR
+        /// into the combined Gamepad exactly like a ButtonPress write, and
+        /// latched ToggleKey actions contribute their parsed keys to the
+        /// frame's desired latched-key set (a restricted peer's macros never
+        /// contribute, the same gate every keystroke emission has).</summary>
+        private void ApplyMacroLatches(ref Gamepad gp, MacroItem macro)
+        {
+            var actions = macro.Actions;
+            for (int i = 0; i < actions.Count; i++)
+            {
+                var a = actions[i];
+                if (a == null) continue;
+                if (a.Type == MacroActionType.ToggleVcButton)
+                {
+                    if (a.VcToggleLatched && LatchPhaseOn(a))
+                    {
+                        gp.Buttons |= a.ButtonFlags;
+                        _macroPassOutputButtons |= a.ButtonFlags; // R1 overlay
+                    }
+                }
+                else if (a.Type == MacroActionType.ToggleKey)
+                {
+                    if (a.KeyToggleLatched && LatchPhaseOn(a) && !_currentMacroSlotRestricted)
+                    {
+                        var codes = a.ParsedKeyCodes;
+                        for (int k = 0; k < codes.Length; k++)
+                            _desiredLatchedKeys.Add((ushort)codes[k]);
+                    }
+                }
+                else if (a.Type == MacroActionType.ToggleVcAxis || a.Type == MacroActionType.AxisSetLatched)
+                {
+                    // v18: a latched axis target re-writes its assert each
+                    // frame, the AxisHold shape. #237 yield gate applies:
+                    // the latch stays latched, only the write yields, and
+                    // unlatching re-arms the yield for the next latch.
+                    if (a.VcAxisToggleLatched && LatchPhaseOn(a) && !AxisWriteYields(in _preMacroGp, a))
+                        ApplyAxisHoldAction(ref gp, a);
+                    if (!a.VcAxisToggleLatched)
+                        _axisYielded.Remove(a);
+                }
+                else if (a.Type == MacroActionType.ToggleMouseButton)
+                {
+                    // LatchPhaseOn: PulseWhileLatched turbos the latched
+                    // mouse button exactly like the key / VC latches. The
+                    // OFF half drops the button from the desired set, so
+                    // the reconcile releases and re-presses it (M3: this
+                    // branch was the one latch that ignored the flag and
+                    // held solid).
+                    if (a.MouseToggleLatched && LatchPhaseOn(a) && !_currentMacroSlotRestricted)
+                        _desiredLatchedMouseButtons.Add(a.MouseButton);
+                }
+                else if (a.Type == MacroActionType.ToggleWheel)
+                {
+                    // v18: a latched wheel reproduces the held KbmScroll
+                    // row's continuous scroll as rate-limited detents.
+                    if (a.WheelToggleLatched && !_currentMacroSlotRestricted)
+                    {
+                        var now = DateTime.UtcNow;
+                        int interval = a.IntervalMs > 0 ? a.IntervalMs : 100;
+                        if ((now - a.RepeatKeyLastFireUtc).TotalMilliseconds >= interval)
+                        {
+                            a.RepeatKeyLastFireUtc = now;
+                            ExecuteMouseWheelTap(a);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>The latch's contribution phase (v18): solid ON for a
+        /// plain latch, the turbo square wave when
+        /// <see cref="MacroAction.PulseWhileLatched"/> composes Steam's
+        /// toggle + hold_repeats.</summary>
+        private static bool LatchPhaseOn(MacroAction a)
+            => !a.PulseWhileLatched || TickRepeatVcButtonPhase(a);
+
+        /// <summary>Mouse buttons the enabled macros' latched
+        /// ToggleMouseButton actions want held down this frame (v18).
+        /// Rebuilt every frame beside <see cref="_desiredLatchedKeys"/>;
+        /// poll thread only.</summary>
+        internal readonly HashSet<ViewModels.MacroMouseButton> _desiredLatchedMouseButtons = new();
+
+        /// <summary>Mouse buttons this engine currently holds down via the
+        /// reconcile (v18).</summary>
+        internal readonly HashSet<ViewModels.MacroMouseButton> _latchedMouseButtonsDown = new();
+
+        /// <summary>Sequential press legs whose Down has been sent for the
+        /// current pass (M5): the KeyPress / MouseButtonPress one-shot
+        /// latch, the CycleTapList CycleInjectionFired pattern. The old
+        /// actionElapsed &lt; 1 convention swallowed the Down whenever a
+        /// loaded frame arrived later than 1 ms after the action became
+        /// current (a Delay leg in front made that the common case), while
+        /// the Up at DurationMs still fired. Keyed by action reference
+        /// because the latch cannot live on MacroAction itself (that DTO's
+        /// file belongs to the macro editor batch). Entries are removed on
+        /// completion, on macro restart, and on engine stop. Poll thread
+        /// only. Internal for the PadForge.Tests dispatch pins.</summary>
+        internal readonly HashSet<ViewModels.MacroAction> _pressDownSent = new();
+
+        private readonly List<ViewModels.MacroMouseButton> _mouseLatchReleaseScratch = new();
+
+        /// <summary>Mouse-button twin of <see cref="ReconcileLatchedKeys"/>
+        /// (v18): one up per button that left the desired set, one down per
+        /// button that entered it.</summary>
+        private void ReconcileLatchedMouseButtons()
+        {
+            if (_latchedMouseButtonsDown.Count > 0)
+            {
+                _mouseLatchReleaseScratch.Clear();
+                foreach (var b in _latchedMouseButtonsDown)
+                    if (!_desiredLatchedMouseButtons.Contains(b))
+                        _mouseLatchReleaseScratch.Add(b);
+                for (int i = 0; i < _mouseLatchReleaseScratch.Count; i++)
+                {
+                    SendMouseButtonInput(_mouseLatchReleaseScratch[i], down: false);
+                    _latchedMouseButtonsDown.Remove(_mouseLatchReleaseScratch[i]);
+                }
+            }
+            foreach (var b in _desiredLatchedMouseButtons)
+            {
+                if (_latchedMouseButtonsDown.Add(b))
+                    SendMouseButtonInput(b, down: true);
             }
         }
 
@@ -512,7 +1392,7 @@ namespace PadForge.Common.Input
         /// <summary>Same as <see cref="EvaluateCustomExpressionTrigger"/> but for
         /// the Extended (custom controller) path. OutputController-bound variables
         /// resolve to 0 because there is no Xbox-shape gamepad on this code path.</summary>
-        private bool EvaluateCustomExpressionTriggerExtended(MacroItem macro, in ExtendedRawState raw)
+        private bool EvaluateCustomExpressionTriggerExtended(MacroItem macro, in RawHidState raw)
         {
             var compiled = macro.TriggerExpressionCompiled;
             if (compiled == null || !compiled.IsValid) return false;
@@ -559,7 +1439,11 @@ namespace PadForge.Common.Input
                 int axisIndex = AxisTargetToDeviceIndex(v.AxisTarget);
                 var axes = ud.InputState.Axis;
                 if (axes == null || axisIndex < 0 || axisIndex >= axes.Length) return 0f;
-                return (axes[axisIndex] + 32768f) / 65535f;
+                // Axis is unsigned 0..65535 (32768 = rest); see
+                // ReadAxisFromDevice's banner. Adding 32768 again shifted the
+                // documented "sticks -> 0..1, 0.5 = rest" contract to
+                // 0.5..1.5 with rest at 1.0 (round 34).
+                return axes[axisIndex] / 65535f;
             }
             return 0f;
         }
@@ -567,7 +1451,7 @@ namespace PadForge.Common.Input
         /// <summary>Same as <see cref="ReadExpressionVariable"/> but the
         /// OutputController arm reads 0 because Extended slots have no Xbox-shape
         /// combined state.</summary>
-        private float ReadExpressionVariableRaw(MacroExpressionVariable v, in ExtendedRawState raw, int slotIndex)
+        private float ReadExpressionVariableRaw(MacroExpressionVariable v, in RawHidState raw, int slotIndex)
         {
             if (v == null || !v.IsBound) return 0f;
             if (v.Source == MacroTriggerSource.OutputController) return 0f;
@@ -594,7 +1478,13 @@ namespace PadForge.Common.Input
                 int axisIndex = AxisTargetToDeviceIndex(v.AxisTarget);
                 var axes = ud.InputState.Axis;
                 if (axes == null || axisIndex < 0 || axisIndex >= axes.Length) return 0f;
-                return (axes[axisIndex] + 32768f) / 65535f;
+                // CustomInputState.Axis is UNSIGNED 0..65535 with 32768 at rest
+                // (CustomInputState.cs:8,48). Adding 32768 again mapped the real
+                // range onto 0.5..1.5, so a resting stick read 1.0 and any
+                // ">= 0.5" custom-expression formula was true with nothing
+                // touched. Round 34 fixed the Gamepad twin fourteen lines above
+                // and left this one. Same shape, same fix.
+                return axes[axisIndex] / 65535f;
             }
             return 0f;
         }
@@ -657,6 +1547,245 @@ namespace PadForge.Common.Input
             return FindOnlineDeviceByInstanceGuid(instanceGuid);
         }
 
+        // ── Device-free trigger entries (#9 B-9) ──
+        //
+        // A TriggerInputEntry with Guid.Empty means "the device on the
+        // macro's slot", the macro-side mirror of the mapping engine's
+        // empty MappingSource.DeviceGuid contract (the Workshop translator
+        // emits it on every binding). Where a mapping row evaluates against
+        // every device feeding the slot and max/OR-combines, a device-free
+        // entry is satisfied when ANY online device on the macro's slot
+        // satisfies it. A slot with no online devices satisfies nothing,
+        // matching the offline-concrete-device behavior.
+        //
+        // The slot's devices are resolved once per evaluator call into
+        // scratch arrays (poll thread only, no steady-state allocation).
+        // The guid snapshot happens under the UserSettings lock and the
+        // device resolution OUTSIDE it: FindOnlineDeviceByInstanceGuid
+        // takes UserDevices.SyncRoot, and the lock order is UserDevices
+        // before UserSettings, never nested the other way.
+
+        private Guid[] _slotTriggerGuidScratch = new Guid[8];
+        private Engine.Data.UserDevice[] _slotTriggerDeviceScratch = new Engine.Data.UserDevice[8];
+        private int _slotTriggerDeviceCount;
+        private int _slotTriggerDeviceSlot = -1;
+
+        /// <summary>Fills the scratch with the slot's online devices on
+        /// first need per evaluator call (the evaluators reset
+        /// <see cref="_slotTriggerDeviceSlot"/> on entry) and returns the
+        /// count. Repeat calls for the same slot re-serve the fill.</summary>
+        private int EnsureSlotTriggerDevices(int slotIndex)
+        {
+            if (_slotTriggerDeviceSlot == slotIndex) return _slotTriggerDeviceCount;
+            _slotTriggerDeviceSlot = slotIndex;
+            _slotTriggerDeviceCount = 0;
+
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return 0;
+            int guidCount = 0;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                {
+                    if (us.MapTo != slotIndex) continue;
+                    if (guidCount == _slotTriggerGuidScratch.Length)
+                        Array.Resize(ref _slotTriggerGuidScratch, _slotTriggerGuidScratch.Length * 2);
+                    _slotTriggerGuidScratch[guidCount++] = us.InstanceGuid;
+                }
+            }
+
+            for (int i = 0; i < guidCount; i++)
+            {
+                var ud = FindOnlineDeviceByInstanceGuid(_slotTriggerGuidScratch[i]);
+                if (ud == null || !ud.IsOnline || ud.InputState == null) continue;
+                if (_slotTriggerDeviceCount == _slotTriggerDeviceScratch.Length)
+                    Array.Resize(ref _slotTriggerDeviceScratch, _slotTriggerDeviceScratch.Length * 2);
+                _slotTriggerDeviceScratch[_slotTriggerDeviceCount++] = ud;
+            }
+            return _slotTriggerDeviceCount;
+        }
+
+        /// <summary>Per-device axis trigger entry test, extracted from the
+        /// Gamepad-path inline loop so the device-free resolution can run
+        /// the SAME math against each slot device. Semantics unchanged:
+        /// the entry's Invert / HalfAxis / Bidirectional / DeadZone flags
+        /// applied uniformly to any axis index, exactly as before.</summary>
+        private static bool TriggerAxisEntryActive(Engine.Data.UserDevice ud, MacroItem.TriggerInputEntry e)
+        {
+            if (ud == null || !ud.IsOnline || ud.InputState?.Axis == null) return false;
+            int axIdx = AxisTargetToDeviceIndex(e.AxisTarget);
+            if (axIdx < 0 || axIdx >= ud.InputState.Axis.Length) return false;
+
+            int av = ud.InputState.Axis[axIdx];
+            double thresh = Math.Max(e.DeadZone, 1) / 100.0;
+            if (e.HalfAxis)
+            {
+                if (e.Bidirectional)
+                {
+                    // Either side of center past deadzone counts:
+                    // |av − 32768| > 32767 * thresh. Invert is
+                    // irrelevant here (mirroring around center
+                    // covers both directions already).
+                    int delta = av - 32768;
+                    if (delta < 0) delta = -delta;
+                    return delta > (int)(32767 * thresh);
+                }
+                if (e.Invert)
+                    return av < (int)(32767 * (1.0 - thresh));
+                return av > (int)(32768 + 32767 * thresh);
+            }
+            int hi = (int)(thresh * 65535);
+            if (e.Invert)
+                return av < 65535 - hi;
+            return av > hi;
+        }
+
+        private bool AnySlotDeviceAxisEntryActive(int slotIndex, MacroItem.TriggerInputEntry e)
+        {
+            int n = EnsureSlotTriggerDevices(slotIndex);
+            for (int i = 0; i < n; i++)
+                if (TriggerAxisEntryActive(_slotTriggerDeviceScratch[i], e)) return true;
+            return false;
+        }
+
+        private bool AnySlotDeviceButtonDown(int slotIndex, int rawButton)
+        {
+            int n = EnsureSlotTriggerDevices(slotIndex);
+            for (int i = 0; i < n; i++)
+            {
+                var btns = _slotTriggerDeviceScratch[i].InputState?.Buttons;
+                if (btns != null && rawButton >= 0 && rawButton < btns.Length && btns[rawButton])
+                    return true;
+            }
+            return false;
+        }
+
+        private bool AnySlotDevicePovActive(int slotIndex, int povIdx, int targetCd)
+        {
+            int n = EnsureSlotTriggerDevices(slotIndex);
+            for (int i = 0; i < n; i++)
+            {
+                var povs = _slotTriggerDeviceScratch[i].InputState?.Povs;
+                if (povs == null || povIdx < 0 || povIdx >= povs.Length || povs[povIdx] < 0)
+                    continue;
+                int diff = Math.Abs(povs[povIdx] - targetCd);
+                if (diff > 18000) diff = 36000 - diff;
+                if (diff <= 2250) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Device-free gesture entry test: the entry fires when
+        /// the gesture is asserted for ANY online device on the slot. Uses
+        /// the devices' cached guid strings so the 1 kHz path stays
+        /// allocation-free like the concrete-guid path.</summary>
+        private bool AnySlotDeviceGestureFired(int slotIndex, MacroItem.TriggerInputEntry e)
+        {
+            int n = EnsureSlotTriggerDevices(slotIndex);
+            if (e.GestureDescriptor.StartsWith("Mouse Gesture ", StringComparison.Ordinal))
+            {
+                var mouseProvider = PadForge.Engine.Common.Mapping.SourceCoercion.MouseGestureFiredProvider;
+                if (mouseProvider == null) return false;
+                if (!TryResolveMouseGestureKey(e.GestureDescriptor, out string mgKey)) return false;
+                for (int i = 0; i < n; i++)
+                    if (mouseProvider(slotIndex, _slotTriggerDeviceScratch[i].InstanceGuidString, mgKey))
+                        return true;
+                return false;
+            }
+
+            var provider = PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider;
+            if (provider == null) return false;
+            if (!e.TryGetGestureParts(out int padIdx, out string gestureName)) return false;
+            for (int i = 0; i < n; i++)
+                if (provider(slotIndex, _slotTriggerDeviceScratch[i].InstanceGuidString, padIdx, gestureName))
+                    return true;
+            return false;
+        }
+
+        /// <summary>Resolves a "Mouse Gesture {buttonIndex} {Name}"
+        /// descriptor to the recognizer's precomposed fired-set key, so
+        /// the 1 kHz path never composes strings. Extracted from the
+        /// gesture checker's inline parse so the device-free loop shares
+        /// it.</summary>
+        private static bool TryResolveMouseGestureKey(string desc, out string mgKey)
+        {
+            mgKey = null;
+            const int prefixLen = 14; // "Mouse Gesture ".Length
+            if (desc.Length < prefixLen + 3) return false;
+            int btn = desc[prefixLen] - '0';
+            if (btn < 0 || btn >= PadForge.Engine.Mouse.MouseGestureContext.ButtonCount
+                || desc[prefixLen + 1] != ' ') return false;
+            int gIdx =
+                desc.EndsWith(" Left", StringComparison.Ordinal) ? 0 :
+                desc.EndsWith(" Right", StringComparison.Ordinal) ? 1 :
+                desc.EndsWith(" Up", StringComparison.Ordinal) ? 2 :
+                desc.EndsWith(" Down", StringComparison.Ordinal) ? 3 :
+                desc.EndsWith(" Click", StringComparison.Ordinal) ? 4 : -1;
+            if (gIdx < 0) return false;
+            mgKey = PadForge.Engine.Mouse.MouseGestureRecognizer.Keys[btn][gIdx];
+            return true;
+        }
+
+        // ── Descriptor trigger entries (#9 B-9) ──
+
+        /// <summary>Threshold percent handed to the descriptor-entry button
+        /// read as the global fallback (the entry's cached MappingSource
+        /// leaves DeadZone unset). 50 matches the mapping engine's
+        /// MappingSource.DeadZone default and the legacy axis-trigger
+        /// default, so a descriptor trigger fires where a mapping row with
+        /// default deadzone would. Gyro ignores it and keeps the engine's
+        /// own rate threshold.</summary>
+        private const int DescriptorTriggerThresholdPercent = 50;
+
+        /// <summary>
+        /// Checks whether every descriptor entry on the macro's trigger is
+        /// currently active (#9 B-9). Evaluated through the SAME reader the
+        /// mapping grid uses (SourceCoercion.EvaluateForButtonTarget), so
+        /// abstract "Gamepad ..." spellings canonicalize inside the read and
+        /// the gyro / touchpad families get the identical per-(device, slot)
+        /// tuning, thresholds, and engage gates a mapping row gets. Same
+        /// multi-device AND shape as the button / POV / gesture checkers;
+        /// device-free entries resolve per slot device.
+        /// </summary>
+        private bool CheckDescriptorTrigger(MacroItem macro)
+        {
+            var entries = macro.GetTriggerInputEntries();
+            for (int i = 0; i < entries.Count; i++)
+            {
+                var e = entries[i];
+                var src = e.DescriptorSource;
+                if (src == null) continue;
+                if (e.DeviceGuid == Guid.Empty)
+                {
+                    if (!AnySlotDeviceDescriptorActive(macro.PadIndex, src)) return false;
+                }
+                else
+                {
+                    var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
+                    if (ud == null || !ud.IsOnline || ud.InputState == null) return false;
+                    if (!PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForButtonTarget(
+                            ud.InputState, src, DescriptorTriggerThresholdPercent,
+                            macro.PadIndex, ud.InstanceGuidString))
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        private bool AnySlotDeviceDescriptorActive(int slotIndex, PadForge.Engine.Data.MappingSource src)
+        {
+            int n = EnsureSlotTriggerDevices(slotIndex);
+            for (int i = 0; i < n; i++)
+            {
+                var ud = _slotTriggerDeviceScratch[i];
+                if (PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForButtonTarget(
+                        ud.InputState, src, DescriptorTriggerThresholdPercent,
+                        slotIndex, ud.InstanceGuidString))
+                    return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Checks whether every raw-button entry on the macro's trigger is
         /// currently pressed on its respective assigned device. Walks the
@@ -677,6 +1806,13 @@ namespace PadForge.Common.Input
                 {
                     var e = entries[i];
                     if (e.RawButton < 0) continue; // POV entries handled by CheckRawPovTrigger
+                    if (e.DeviceGuid == Guid.Empty)
+                    {
+                        // Device-free entry (#9 B-9): ANY online device on
+                        // the macro's slot holding the button satisfies it.
+                        if (!AnySlotDeviceButtonDown(macro.PadIndex, e.RawButton)) return false;
+                        continue;
+                    }
                     var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
                     if (ud == null || !ud.IsOnline || ud.InputState?.Buttons == null) return false;
                     var btns = ud.InputState.Buttons;
@@ -717,6 +1853,13 @@ namespace PadForge.Common.Input
                     var e = entries[i];
                     if (string.IsNullOrEmpty(e.Pov)) continue; // button entries handled separately
                     if (!MacroItem.ParsePovTrigger(e.Pov, out int idx, out int targetCd)) return false;
+                    if (e.DeviceGuid == Guid.Empty)
+                    {
+                        // Device-free entry (#9 B-9): ANY online device on
+                        // the macro's slot in the sector satisfies it.
+                        if (!AnySlotDevicePovActive(macro.PadIndex, idx, targetCd)) return false;
+                        continue;
+                    }
                     var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
                     if (ud == null || !ud.IsOnline || ud.InputState?.Povs == null) return false;
                     var povs = ud.InputState.Povs;
@@ -770,6 +1913,19 @@ namespace PadForge.Common.Input
             {
                 var e = entries[i];
                 if (string.IsNullOrEmpty(e.GestureDescriptor)) continue;
+                if (e.DeviceGuid == Guid.Empty)
+                {
+                    // Device-free entry (#9 B-9): the gesture must be
+                    // asserted for ANY online device on the macro's slot.
+                    // The provider lookups run with each candidate device's
+                    // resolved guid, never the bare empty guid (the
+                    // providers are keyed by a concrete (slot, device, pad)
+                    // triple, so the bare form always missed; same seam the
+                    // 1087f9bb mapping fix closed). Online gating is
+                    // inherent: only online slot devices are enumerated.
+                    if (!AnySlotDeviceGestureFired(macro.PadIndex, e)) return false;
+                    continue;
+                }
                 // Same online/assignment gate the button and POV checkers
                 // apply. Without it a disconnect mid-touch leaves the
                 // device's gesture context frozen with the held spot key
@@ -789,20 +1945,7 @@ namespace PadForge.Common.Input
                     // "Mouse Gesture {buttonIndex} {Name}". The fired key is
                     // looked up from the recognizer's precomposed table so
                     // this 1 kHz path never composes strings.
-                    string desc = e.GestureDescriptor;
-                    const int prefixLen = 14; // "Mouse Gesture ".Length
-                    if (desc.Length < prefixLen + 3) return false;
-                    int btn = desc[prefixLen] - '0';
-                    if (btn < 0 || btn >= PadForge.Engine.Mouse.MouseGestureContext.ButtonCount
-                        || desc[prefixLen + 1] != ' ') return false;
-                    int gIdx =
-                        desc.EndsWith(" Left", StringComparison.Ordinal) ? 0 :
-                        desc.EndsWith(" Right", StringComparison.Ordinal) ? 1 :
-                        desc.EndsWith(" Up", StringComparison.Ordinal) ? 2 :
-                        desc.EndsWith(" Down", StringComparison.Ordinal) ? 3 :
-                        desc.EndsWith(" Click", StringComparison.Ordinal) ? 4 : -1;
-                    if (gIdx < 0) return false;
-                    string mgKey = PadForge.Engine.Mouse.MouseGestureRecognizer.Keys[btn][gIdx];
+                    if (!TryResolveMouseGestureKey(e.GestureDescriptor, out string mgKey)) return false;
                     if (!mouseProvider(macro.PadIndex, e.DeviceGuidString, mgKey))
                         return false;
                     continue;
@@ -821,7 +1964,10 @@ namespace PadForge.Common.Input
         /// <summary>Returns true for action types that run every frame without advancing.</summary>
         private static bool IsContinuousAction(MacroActionType type) =>
             type is MacroActionType.SystemVolume or MacroActionType.AppVolume
-                 or MacroActionType.MouseMove or MacroActionType.MouseScroll;
+                 or MacroActionType.MouseMove or MacroActionType.MouseScroll
+                 or MacroActionType.RepeatKeyWhileHeld
+                 or MacroActionType.RepeatVcButtonWhileHeld
+                 or MacroActionType.RepeatVcAxisWhileHeld;
 
         /// <summary>
         /// Advances and executes the macro's action sequence.
@@ -863,11 +2009,37 @@ namespace PadForge.Common.Input
                 if (!IsContinuousAction(macro.Actions[i].Type))
                 { allContinuous = false; break; }
             }
-            if (allContinuous) return; // Keep running — continuous actions handled above.
+            if (allContinuous)
+            {
+                // A run that started with the trigger ALREADY UP (ShortPress,
+                // deferred SinglePress) has no future release to stop it, so
+                // an all-continuous sequence must complete after its single
+                // pass regardless of RepeatMode (round four, R4: the
+                // round-three flag-clear-only shape stopped UntilRelease but
+                // left the hidden default Once pulsing forever). A held run
+                // keeps running as before and stops on release.
+                if (macro.RunReleasedFireToCompletion)
+                {
+                    macro.IsExecuting = false;
+                    macro.CurrentActionIndex = 0;
+                    macro.ComboResumeIndex = 0;
+                    macro.RunReleasedFireToCompletion = false;
+                    ClearAxisYields(macro);
+                }
+                return; // Keep running. Continuous actions handled above.
+            }
 
             macro.RemainingRepeats--;
             if (macro.RemainingRepeats > 0 ||
-                macro.RepeatMode == MacroRepeatMode.UntilRelease)
+                // #238: Toggle and Turbo repeat until-release regardless of
+                // the authored RepeatMode. Staying on THIS branch (instead
+                // of stopping and re-starting via shouldStart next tick) is
+                // what makes RepeatDelayMs pace the passes: the stop-then-
+                // restart path re-fires immediately, unpaced.
+                ((macro.RepeatMode == MacroRepeatMode.UntilRelease
+                  || macro.TriggerMode == MacroTriggerMode.Toggle
+                  || macro.TriggerMode == MacroTriggerMode.Turbo)
+                 && !macro.RunReleasedFireToCompletion))
             {
                 double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
                 if (elapsed >= macro.RepeatDelayMs)
@@ -881,6 +2053,11 @@ namespace PadForge.Common.Input
             {
                 macro.IsExecuting = false;
                 macro.CurrentActionIndex = 0;
+                // #237: normal completion re-arms the combo from the top
+                // and releases any yield latches.
+                macro.ComboResumeIndex = 0;
+                macro.RunReleasedFireToCompletion = false;
+                ClearAxisYields(macro);
             }
         }
 
@@ -933,7 +2110,71 @@ namespace PadForge.Common.Input
                         SendMouseScrollInput(delta * 120);
                     break;
                 }
+                case MacroActionType.RepeatKeyWhileHeld:
+                    ExecuteRepeatKeyWhileHeld(action);
+                    break;
+                case MacroActionType.RepeatVcButtonWhileHeld:
+                    // Turbo for a VC button (issue #9 wave 1b): the ON half of
+                    // the square wave ORs the target into the combined output
+                    // exactly like a ButtonPress; the OFF half writes nothing,
+                    // so the button reads released (gp is rebuilt per frame).
+                    if (TickRepeatVcButtonPhase(action))
+                    {
+                        gp.Buttons |= action.ButtonFlags;
+                        _macroPassOutputButtons |= action.ButtonFlags; // R1 overlay
+                    }
+                    break;
+                case MacroActionType.RepeatVcAxisWhileHeld:
+                    // Axis turbo (v18): the same square wave asserting an
+                    // axis-natured target (trigger pull, stick direction)
+                    // on the ON half. gp is rebuilt per frame, so the OFF
+                    // half reads released. #237 yield gate applies like
+                    // the plain hold.
+                    if (TickRepeatVcButtonPhase(action) && !AxisWriteYields(in _preMacroGp, action))
+                        ApplyAxisHoldAction(ref gp, action);
+                    break;
             }
+        }
+
+        /// <summary>Continuous autofire for RepeatKeyWhileHeld (issue #9): while the
+        /// macro trigger is held this runs every frame, and once the per-action
+        /// interval has elapsed it sends one full KeyDown+KeyUp pulse for each
+        /// parsed key. The timing state lives on the action (default MinValue) so
+        /// the first held frame fires immediately, then firing is rate-limited to
+        /// one pulse per <see cref="MacroAction.IntervalMs"/>.</summary>
+        private static void ExecuteRepeatKeyWhileHeld(MacroAction action)
+        {
+            var now = DateTime.UtcNow;
+            if ((now - action.RepeatKeyLastFireUtc).TotalMilliseconds < action.IntervalMs)
+                return;
+            var keyCodes = action.ParsedKeyCodes;
+            if (keyCodes.Length == 0) return;
+            action.RepeatKeyLastFireUtc = now;
+            for (int k = 0; k < keyCodes.Length; k++)
+                SendKeyInput((ushort)keyCodes[k], keyUp: false);
+            for (int k = keyCodes.Length - 1; k >= 0; k--)
+                SendKeyInput((ushort)keyCodes[k], keyUp: true);
+        }
+
+        /// <summary>Advances the RepeatVcButtonWhileHeld square wave (issue #9
+        /// wave 1b) and returns the current phase: true while the target
+        /// button should be written this frame. 50 % duty cycle with period
+        /// <see cref="MacroAction.IntervalMs"/>, so a game polling at any
+        /// sane rate sees a full press AND a full release inside each
+        /// interval (a 1-frame pulse at ~1 kHz would be invisible to a 60 Hz
+        /// poll, which is why this is a phase, not a RepeatKey-style one-shot).
+        /// Timing state lives on the action like <see cref="MacroAction.RepeatKeyLastFireUtc"/>;
+        /// the MinValue default flips the phase ON on the first held frame.
+        /// Internal for the PadForge.Tests dispatch pins.</summary>
+        internal static bool TickRepeatVcButtonPhase(MacroAction action)
+        {
+            var now = DateTime.UtcNow;
+            if ((now - action.RepeatVcLastToggleUtc).TotalMilliseconds >= action.IntervalMs * 0.5)
+            {
+                action.RepeatVcLastToggleUtc = now;
+                action.RepeatVcPulseOn = !action.RepeatVcPulseOn;
+            }
+            return action.RepeatVcPulseOn;
         }
 
         /// <summary>Executes a sequential (non-continuous) action with advance logic.</summary>
@@ -945,12 +2186,15 @@ namespace PadForge.Common.Input
             {
                 case MacroActionType.ButtonPress:
                     gp.Buttons |= action.ButtonFlags;
+                    _macroPassOutputButtons |= action.ButtonFlags; // R1 overlay
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
                     break;
 
                 case MacroActionType.ButtonRelease:
                     gp.Buttons &= (ushort)~action.ButtonFlags;
+                    // A same-pass release must not be re-asserted by the overlay.
+                    _macroPassOutputButtons &= (ushort)~action.ButtonFlags;
                     AdvanceAction(macro);
                     break;
 
@@ -958,7 +2202,12 @@ namespace PadForge.Common.Input
                 {
                     var keyCodes = action.ParsedKeyCodes;
                     if (keyCodes.Length == 0) { AdvanceAction(macro); break; }
-                    if (actionElapsed < 1)
+                    // One-shot latch, not the actionElapsed < 1 convention
+                    // (M5, the CycleTapList fired-latch pattern): a loaded
+                    // frame can arrive later than 1 ms after the action
+                    // became current, especially behind a Delay leg, which
+                    // swallowed the Down while the Up still fired.
+                    if (_pressDownSent.Add(action))
                     {
                         for (int k = 0; k < keyCodes.Length; k++)
                             SendKeyInput((ushort)keyCodes[k], keyUp: false);
@@ -967,6 +2216,7 @@ namespace PadForge.Common.Input
                     {
                         for (int k = keyCodes.Length - 1; k >= 0; k--)
                             SendKeyInput((ushort)keyCodes[k], keyUp: true);
+                        _pressDownSent.Remove(action); // re-arm for the next pass
                         AdvanceAction(macro);
                     }
                     break;
@@ -996,12 +2246,88 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
 
+                case MacroActionType.AxisHold:
+                    // Timed axis assert (v15): the value is re-written every
+                    // frame while the action is current, the ButtonPress
+                    // shape. gp is rebuilt per frame, so once the duration
+                    // elapses (or an UntilRelease macro stops) the axis
+                    // reads released again like a lifted button. The #237
+                    // yield gate runs BEFORE the write so the physical
+                    // pipeline's value survives when the user moves.
+                    if (!AxisWriteYields(in _preMacroGp, action))
+                        ApplyAxisHoldAction(ref gp, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisAdd:
+                    // Relative deflection (#237): summed with the mapped
+                    // value every frame while current, the AxisHold
+                    // duration shape. No yield gate: relative IS the
+                    // compose-with-physical mode.
+                    ApplyAxisAddAction(ref gp, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisScale:
+                    // Proportional deflection (#251): multiplies the axis's
+                    // current combined value, the AxisAdd shape otherwise.
+                    // No yield gate: proportional composes with physical by
+                    // construction.
+                    ApplyAxisScaleAction(ref gp, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ComboBreak:
+                    // #237: park the sequence after this fire; the next
+                    // trigger press resumes from the following action.
+                    // Hold-shaped triggers must release first (the start
+                    // gate honors AwaitReleaseAfterBreak).
+                    macro.ComboResumeIndex = macro.CurrentActionIndex + 1;
+                    macro.AwaitReleaseAfterBreak = true;
+                    macro.IsExecuting = false;
+                    macro.CurrentActionIndex = 0;
+                    ClearAxisYields(macro);
+                    break;
+
+                case MacroActionType.MouseWheelTap:
+                    // One discrete wheel detent per fire (v15): a single
+                    // WHEEL_DELTA tick, horizontal when the action says so.
+                    ExecuteMouseWheelTap(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.MouseNudge:
+                    // One fixed-pixel cursor nudge per fire (v16): the
+                    // signed delta joins the accumulate-and-flush mouse
+                    // lane once, so the injector thread batches it with
+                    // whatever else is pending and the poll thread stays
+                    // syscall-free.
+                    ExecuteMouseNudge(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.CycleTapList:
+                    // Steam's Scroll Wheel List (v16): fire the NEXT step
+                    // and advance the per-action index. VC-button / VC-axis
+                    // parts assert for the action's DurationMs so a game
+                    // poll sees them. Injection parts fire on the first
+                    // frame. The executor owns the index advance (wrap /
+                    // dead-end rules live there).
+                    if (ExecuteCycleTapList(ref gp, action, actionElapsed))
+                        AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.MouseButtonPress:
-                    if (actionElapsed < 1)
+                    // One-shot latch, the KeyPress rationale above (M5).
+                    if (_pressDownSent.Add(action))
                         SendMouseButtonInput(action.MouseButton, down: true);
                     if (actionElapsed >= action.DurationMs)
                     {
                         SendMouseButtonInput(action.MouseButton, down: false);
+                        _pressDownSent.Remove(action); // re-arm for the next pass
                         AdvanceAction(macro);
                     }
                     break;
@@ -1203,6 +2529,14 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.MoveMouseToScreenPosition:
+                    // System-wide cursor warp (#9): one SetCursorPos to the fixed
+                    // target on press. Coord is already clamped on-screen by the
+                    // action's MouseX / MouseY setters.
+                    CursorControlService.Active?.MoveCursorTo(action.MouseX, action.MouseY);
+                    AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.DisconnectController:
                     ExecuteDisconnectControllerAction(macro, action);
                     AdvanceAction(macro);
@@ -1212,6 +2546,265 @@ namespace PadForge.Common.Input
                     ExecuteRunProgramAction(action);
                     AdvanceAction(macro);
                     break;
+
+                case MacroActionType.ToggleVcButton:
+                    // Flip the volatile latch (issue #9 wave 1b). The
+                    // per-frame latch application in EvaluateSlotMacros
+                    // writes the target button while latched, independent of
+                    // the macro's execution state, so the button stays down
+                    // across trigger releases until the next fire unlatches.
+                    action.VcToggleLatched = !action.VcToggleLatched;
+                    if (action.VcToggleLatched) ResetLatchPulsePhase(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleKey:
+                    // Write the volatile key latch (issue #9 wave 1b;
+                    // direction audit #2 M4): Toggle flips, the hold-pair
+                    // legs Set / Clear.
+                    ApplyKeyLatchWrite(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                // v18 latch family: mouse buttons, axis-natured VC targets,
+                // and wheel detents write the same volatile latch shape; the
+                // per-frame effect lives in ApplyMacroLatches plus the
+                // mouse-button reconcile.
+                case MacroActionType.ToggleMouseButton:
+                    ApplyMouseLatchWrite(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleVcAxis:
+                    action.VcAxisToggleLatched = !action.VcAxisToggleLatched;
+                    if (action.VcAxisToggleLatched) ResetLatchPulsePhase(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisSetLatched:
+                    // #251 ladder step: SET semantics, not a flip. Clear the
+                    // sibling steps on the same axis first so a ladder
+                    // REPLACES the value press by press, then latch self.
+                    // The latch pass applies the value each frame, parked or
+                    // not, which is what makes a combo-break ladder hold.
+                    ExecuteAxisSetLatched(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisLatchRelease:
+                    // #251 nullify key: clear axis latches (ladder steps and
+                    // axis toggles) for the target, or ALL axes on None,
+                    // across every macro the evaluator is walking.
+                    ExecuteAxisLatchRelease(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleWheel:
+                    action.WheelToggleLatched = !action.WheelToggleLatched;
+                    if (action.WheelToggleLatched)
+                        action.RepeatKeyLastFireUtc = DateTime.MinValue;
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.GyroRecenter:
+                    ApplyGyroRecenterAction(macro);
+                    AdvanceAction(macro);
+                    break;
+            }
+        }
+
+        /// <summary>Set Axis (Latched) fire (#251): clears the sibling
+        /// ladder steps on the same axis, then latches this step. SET
+        /// semantics, so a ladder replaces the value instead of flipping
+        /// like Toggle Axis.</summary>
+        private static void ExecuteAxisSetLatched(MacroItem macro, MacroAction action)
+        {
+            var actions = macro.Actions;
+            for (int i = 0; i < actions.Count; i++)
+            {
+                var sib = actions[i];
+                if (sib == null || ReferenceEquals(sib, action)) continue;
+                // The clear-set matches Release Axis Latches' type list
+                // (audit 2026-07-25, C29): the latch pass applies actions
+                // in list order with last-write-wins, so a latched Toggle
+                // Axis LATER in the list permanently overwrote the ladder
+                // step, making it read dead. Both types share the axis
+                // latch namespace.
+                if ((sib.Type == MacroActionType.AxisSetLatched
+                        || sib.Type == MacroActionType.ToggleVcAxis)
+                    && sib.AxisTarget == action.AxisTarget)
+                    sib.VcAxisToggleLatched = false;
+            }
+            action.VcAxisToggleLatched = true;
+            ResetLatchPulsePhase(action);
+        }
+
+        /// <summary>Release Axis Latches fire (#251): clears Set Axis
+        /// (Latched) and Toggle Axis latches for the action's axis, or ALL
+        /// axes when the target is None, across every macro the current
+        /// evaluator call is walking (the slot's full set).</summary>
+        private void ExecuteAxisLatchRelease(MacroAction action)
+        {
+            var all = _evalMacros;
+            if (all == null) return;
+            for (int m = 0; m < all.Length; m++)
+            {
+                var mac = all[m];
+                if (mac == null) continue;
+                var acts = mac.Actions;
+                for (int i = 0; i < acts.Count; i++)
+                {
+                    var a2 = acts[i];
+                    if (a2 == null) continue;
+                    if (a2.Type != MacroActionType.AxisSetLatched
+                        && a2.Type != MacroActionType.ToggleVcAxis) continue;
+                    if (action.AxisTarget != MacroAxisTarget.None
+                        && a2.AxisTarget != action.AxisTarget) continue;
+                    a2.VcAxisToggleLatched = false;
+                }
+            }
+        }
+
+        /// <summary>Arms a latch's turbo phase so a fresh latch starts its
+        /// pulse train on the ON half immediately (v18 pulse-while-latched:
+        /// MinValue timing plus phase OFF makes the first ApplyMacroLatches
+        /// tick flip it ON).</summary>
+        private static void ResetLatchPulsePhase(MacroAction action)
+        {
+            if (!action.PulseWhileLatched) return;
+            action.RepeatVcPulseOn = false;
+            action.RepeatVcLastToggleUtc = DateTime.MinValue;
+        }
+
+        /// <summary>True while an UntilRelease macro's pending stop sits
+        /// inside its release-linger window (translator v22, Steam's
+        /// activator delay_end on autofire). Arms the window on the first
+        /// released tick; the caller clears
+        /// <see cref="MacroItem.ReleaseLingerStartUtc"/> on every
+        /// trigger-active tick, which is the re-press cancel.</summary>
+        private static bool WithinReleaseLinger(MacroItem macro)
+        {
+            if (macro.ReleaseLingerMs <= 0) return false;
+            var now = DateTime.UtcNow;
+            if (macro.ReleaseLingerStartUtc == DateTime.MinValue)
+                macro.ReleaseLingerStartUtc = now;
+            return (now - macro.ReleaseLingerStartUtc).TotalMilliseconds < macro.ReleaseLingerMs;
+        }
+
+        /// <summary>Stops any executing macro that shares the starting
+        /// leg's nonzero <see cref="MacroItem.PairId"/> (audit #2 M6). The
+        /// materializer's hold pairs are the only PairId authors: the
+        /// press leg SETs the latch, the OnRelease twin runs Delay + Clear.
+        /// Without the cancel, a re-press during that Delay leaves the
+        /// stale Clear in flight and it releases the NEW hold when the
+        /// delay elapses. Stopping the twin mid-sequence is the
+        /// UntilRelease stop shape: execution state only, latches stay
+        /// where they are.</summary>
+        private static void CancelExecutingPairTwin(MacroItem[] macros, MacroItem self)
+        {
+            for (int i = 0; i < macros.Length; i++)
+            {
+                var twin = macros[i];
+                if (twin == null || ReferenceEquals(twin, self)) continue;
+                if (twin.PairId != self.PairId || !twin.IsExecuting) continue;
+                twin.IsExecuting = false;
+                twin.CurrentActionIndex = 0;
+                // #237: a cancelled twin's combo state dies with it.
+                twin.ComboResumeIndex = 0;
+                twin.AwaitReleaseAfterBreak = false;
+                twin.RunReleasedFireToCompletion = false;
+                ClearAxisYields(twin);
+            }
+        }
+
+        /// <summary>ToggleKey latch write shared by both dispatch twins
+        /// (audit #2 M4): Toggle flips (issue #9 wave 1b behavior), On
+        /// sets, Off clears. The per-frame reconcile in EvaluateMacros
+        /// sends the actual KeyDown / KeyUp when the desired set changes.
+        /// The hold pairs Set on press and Clear on release instead of
+        /// flipping, because a two-macro flip decomposition alternates or
+        /// sticks; Off also clears the twin's latches, since each leg's
+        /// latch state lives on its own action instance and the press
+        /// leg's Set is what holds the key down.</summary>
+        private void ApplyKeyLatchWrite(MacroItem macro, MacroAction action)
+        {
+            switch (action.LatchDirection)
+            {
+                case MacroLatchDirection.On:
+                    // Idempotent: a re-fire (the press leg's UntilRelease
+                    // sequence restart) must not restart the pulse train.
+                    if (!action.KeyToggleLatched)
+                    {
+                        action.KeyToggleLatched = true;
+                        ResetLatchPulsePhase(action);
+                    }
+                    break;
+                case MacroLatchDirection.Off:
+                    action.KeyToggleLatched = false;
+                    ClearPairTwinLatches(macro, MacroActionType.ToggleKey);
+                    break;
+                default:
+                    action.KeyToggleLatched = !action.KeyToggleLatched;
+                    if (action.KeyToggleLatched) ResetLatchPulsePhase(action);
+                    break;
+            }
+        }
+
+        /// <summary>ToggleMouseButton twin of
+        /// <see cref="ApplyKeyLatchWrite"/> (audit #2 M4), shared by both
+        /// dispatch switches. The per-frame mouse-button reconcile sends
+        /// the boundary transitions.</summary>
+        private void ApplyMouseLatchWrite(MacroItem macro, MacroAction action)
+        {
+            switch (action.LatchDirection)
+            {
+                case MacroLatchDirection.On:
+                    if (!action.MouseToggleLatched)
+                    {
+                        action.MouseToggleLatched = true;
+                        ResetLatchPulsePhase(action);
+                    }
+                    break;
+                case MacroLatchDirection.Off:
+                    action.MouseToggleLatched = false;
+                    ClearPairTwinLatches(macro, MacroActionType.ToggleMouseButton);
+                    break;
+                default:
+                    action.MouseToggleLatched = !action.MouseToggleLatched;
+                    // Arm the turbo phase like every other latch (M3): a
+                    // fresh latch must start its pulse train on the ON half.
+                    if (action.MouseToggleLatched) ResetLatchPulsePhase(action);
+                    break;
+            }
+        }
+
+        /// <summary>Clears the given latch type on every macro sharing the
+        /// firing leg's nonzero PairId (audit #2 M4). The next frame's
+        /// desired-set rebuild stops seeing the key / button and the
+        /// reconcile sends the release. Sweeps the slot's own snapshot:
+        /// hold-pair legs always ride one slot.</summary>
+        private void ClearPairTwinLatches(MacroItem self, MacroActionType type)
+        {
+            if (self.PairId == 0) return;
+            int slot = self.PadIndex;
+            if ((uint)slot >= (uint)MaxPads) return;
+            var macros = MacroSnapshots[slot];
+            if (macros == null) return;
+            for (int i = 0; i < macros.Length; i++)
+            {
+                var twin = macros[i];
+                if (twin == null || ReferenceEquals(twin, self) || twin.PairId != self.PairId)
+                    continue;
+                var actions = twin.Actions;
+                for (int a = 0; a < actions.Count; a++)
+                {
+                    var act = actions[a];
+                    if (act == null || act.Type != type) continue;
+                    if (type == MacroActionType.ToggleKey)
+                        act.KeyToggleLatched = false;
+                    else
+                        act.MouseToggleLatched = false;
+                }
             }
         }
 
@@ -1634,6 +3227,36 @@ namespace PadForge.Common.Input
             GuideLedApply?.Invoke(slotIndex, action.GuideLedPercent);
         }
 
+        /// <summary>App-layer hop for the GyroRecenter action's gravity
+        /// re-seed (issue #9 wave 1b, B-18): (slot index). InputService
+        /// points this at a handler that drops the per-device gravity
+        /// low-pass entries for every device mapped to the slot, so the
+        /// estimator re-seeds from the instantaneous accelerometer sample on
+        /// its next tick (the same fast-converge path a fresh connect takes).
+        /// Invoked SYNCHRONOUSLY on the polling thread; the handler must only
+        /// touch state guarded by its own lock.</summary>
+        internal static Action<int> GyroRecenterApply;
+
+        /// <summary>Executes a GyroRecenter action (issue #9 wave 1b, B-18):
+        /// zeroes every accumulated gyro-aim reference the slot holds. The
+        /// engine-side resets run inline because those caches are polling-
+        /// thread-only (this IS the polling thread); the gravity estimator
+        /// lives in the app layer behind a lock and rides the
+        /// <see cref="GyroRecenterApply"/> hook. Concretely:
+        /// SourceCoercion's dual-threshold smoothing window + EMA rate
+        /// history for the slot, the slot runtime's captured MotionLean
+        /// neutral orientation (re-captured from the next real gravity
+        /// sample), and the app-side gravity filter re-seed.</summary>
+        private void ApplyGyroRecenterAction(MacroItem macro)
+        {
+            int slotIndex = macro.PadIndex;
+            if (slotIndex < 0 || slotIndex >= MaxPads) return;
+
+            PadForge.Engine.Common.Mapping.SourceCoercion.ResetGyroAimStateForSlot(slotIndex);
+            GetSlotSourceKindRuntime(slotIndex)?.ResetMotionNeutral();
+            GyroRecenterApply?.Invoke(slotIndex);
+        }
+
         /// <summary>Advances the action's cycle position and writes the
         /// resulting <c>LightbarMode</c> into every per-device PSConfig
         /// on the slot. Slot-level fan-out: every assigned device
@@ -1681,17 +3304,34 @@ namespace PadForge.Common.Input
             b = (byte)Math.Round((bp + m) * 255);
         }
 
-        /// <summary>Resets mouse accumulators on all actions when a macro starts/restarts.</summary>
-        private static void ResetMouseAccumulators(MacroItem macro)
+        /// <summary>Resets mouse accumulators on all actions when a macro
+        /// starts/restarts. Instance method because the press fired-latch
+        /// set lives on the manager (see <see cref="_pressDownSent"/>).</summary>
+        private void ResetMouseAccumulators(MacroItem macro)
         {
             foreach (var action in macro.Actions)
             {
                 action.MouseAccumulator = 0f;
+                // Press fired-latch (M5): a run interrupted between a press
+                // leg's Down and its DurationMs must re-arm, or the restart
+                // would skip the Down entirely.
+                _pressDownSent.Remove(action);
                 // TextBlock emission cursor rides the same lifecycle: a run
                 // interrupted mid-string (trigger released on an Until-Release
                 // macro) must start over from the first character, never
                 // resume from where it stopped.
                 action.TextEmitCursor = 0;
+                // RepeatVcButtonWhileHeld phase rides it too (issue #9 wave
+                // 1b): each fresh hold starts at the ON phase immediately
+                // (MinValue flips on the first tick) instead of resuming
+                // mid-wave from the previous hold.
+                action.RepeatVcLastToggleUtc = DateTime.MinValue;
+                action.RepeatVcPulseOn = false;
+                // CycleTapList injection latch (v16): a run interrupted
+                // mid-hold must not swallow the next fire's one-shot
+                // parts. The cycle POSITION deliberately survives (that
+                // is the whole primitive). Only the latch re-arms.
+                action.CycleInjectionFired = false;
             }
         }
 
@@ -1700,6 +3340,10 @@ namespace PadForge.Common.Input
         /// </summary>
         private static void AdvanceAction(MacroItem macro)
         {
+            // #237: leaving an action re-arms its yield latch so the next
+            // activation starts un-yielded.
+            if (macro.CurrentActionIndex >= 0 && macro.CurrentActionIndex < macro.Actions.Count)
+                _axisYielded.Remove(macro.Actions[macro.CurrentActionIndex]);
             macro.CurrentActionIndex++;
             macro.ActionStartTime = DateTime.UtcNow;
         }
@@ -1732,19 +3376,404 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>
+        /// Applies an AxisHold action to the gamepad (v15). Sticks share
+        /// AxisSet's signed-short write. Triggers read AxisValue on the
+        /// PULL scale (0..32767 = 0..100%) and double it onto the 0..65535
+        /// output so a full pull is expressible, which the short-typed
+        /// AxisSet write cannot reach; AxisSet keeps its legacy raw write
+        /// untouched.
+        /// </summary>
+        private static void ApplyAxisHoldAction(ref Gamepad gp, MacroAction action)
+        {
+            switch (action.AxisTarget)
+            {
+                case MacroAxisTarget.LeftTrigger:
+                    gp.LeftTrigger = TriggerPullFromAxisValue(action.AxisValue);
+                    break;
+                case MacroAxisTarget.RightTrigger:
+                    gp.RightTrigger = TriggerPullFromAxisValue(action.AxisValue);
+                    break;
+                default:
+                    ApplyAxisAction(ref gp, action);
+                    break;
+            }
+        }
+
+        /// <summary>0..32767 pull scale to the 0..65535 trigger output;
+        /// 32767 maps exactly to 65535 (full pull).</summary>
+        private static ushort TriggerPullFromAxisValue(short value)
+        {
+            if (value <= 0) return 0;
+            int scaled = value * 2 + 1;
+            return (ushort)Math.Min(scaled, 65535);
+        }
+
+        // ── #237 absolute-deflection yield (reWASD "Absolute deflection") ──
+        //
+        // Actions whose write is currently suppressed because the physical
+        // input moved their target past the yield threshold. LATCHED for
+        // the remainder of the activation ("the combo will go back to
+        // zero, and now your stick will have a higher priority"), cleared
+        // when the action advances, the macro stops, or the engine stops.
+        private static readonly HashSet<MacroAction> _axisYielded = new();
+
+        /// <summary>~12.5% stick deflection: above any sane deadzone's
+        /// noise floor, low enough that a deliberate push always yields.</summary>
+        private const int YieldStickThreshold = 4096;
+
+        /// <summary>~12.5% trigger pull on the 0..65535 output scale.</summary>
+        private const int YieldTriggerThreshold = 8192;
+
+        /// <summary>True when this frame's macro write must be suppressed:
+        /// the action opts in via <see cref="MacroAction.AxisYieldToPhysical"/>
+        /// and the target's ALREADY-MAPPED value (the physical pipeline's
+        /// result, present in <paramref name="gp"/> because Step 4b runs
+        /// after the mapping steps) exceeds the yield threshold, or did at
+        /// any earlier frame of this activation (latched).</summary>
+        private static bool AxisWriteYields(in Gamepad gp, MacroAction action)
+        {
+            if (!action.AxisYieldToPhysical) return false;
+            if (_axisYielded.Contains(action)) return true;
+            bool moved = action.AxisTarget switch
+            {
+                MacroAxisTarget.LeftStickX => Math.Abs((int)gp.ThumbLX) > YieldStickThreshold,
+                MacroAxisTarget.LeftStickY => Math.Abs((int)gp.ThumbLY) > YieldStickThreshold,
+                MacroAxisTarget.RightStickX => Math.Abs((int)gp.ThumbRX) > YieldStickThreshold,
+                MacroAxisTarget.RightStickY => Math.Abs((int)gp.ThumbRY) > YieldStickThreshold,
+                MacroAxisTarget.LeftTrigger => gp.LeftTrigger > YieldTriggerThreshold,
+                MacroAxisTarget.RightTrigger => gp.RightTrigger > YieldTriggerThreshold,
+                _ => false,
+            };
+            if (moved) _axisYielded.Add(action);
+            return moved;
+        }
+
+        /// <summary>Extended twin of <see cref="AxisWriteYields"/>: the
+        /// word-array frame is signed short on every index, so one stick
+        /// threshold applies to all six canonical axes.</summary>
+        /// <summary>Raw yield check against the per-tick entry snapshot
+        /// (see _preMacroRawAxes): earlier macros' writes this frame are
+        /// never mistaken for physical input.</summary>
+        private bool AxisWriteYieldsRawValueAt(int axisIndex, MacroAction action)
+        {
+            if (axisIndex < 0 || axisIndex >= _preMacroRawAxes.Length) return false;
+            return AxisWriteYieldsRawValue(action, _preMacroRawAxes[axisIndex]);
+        }
+
+        /// <summary>Value-based core of the raw yield test, shared with the
+        /// pre-latch snapshot path. Extended TRIGGER channels rest at
+        /// short.MinValue (the signed word frame,
+        /// Step3.UpdateOutputStates.cs:~1324), so deflection is measured
+        /// from that rest point; sticks rest at 0 and keep the plain
+        /// magnitude test. Without the split, |rest| = 32768
+        /// instant-latched the yield on every trigger activation.</summary>
+        private static bool AxisWriteYieldsRawValue(MacroAction action, short value)
+        {
+            if (!action.AxisYieldToPhysical) return false;
+            if (_axisYielded.Contains(action)) return true;
+            bool isTrigger = action.AxisTarget == MacroAxisTarget.LeftTrigger
+                || action.AxisTarget == MacroAxisTarget.RightTrigger;
+            // Deflection-from-rest is already on the same 0..65535 span
+            // the Gamepad path compares (audit: the earlier *2 conflated
+            // the AxisAdd pull scale with this normalized span and made
+            // the raw yield trip at 25% instead of 12.5%).
+            bool moved = isTrigger
+                ? value + 32768 > YieldTriggerThreshold
+                : Math.Abs((int)value) > YieldStickThreshold;
+            if (moved) _axisYielded.Add(action);
+            return moved;
+        }
+
+        /// <summary>Re-arms every yield latch of the macro's actions (macro
+        /// stopped, completed, or was cancelled).</summary>
+        private static void ClearAxisYields(MacroItem macro)
+        {
+            if (_axisYielded.Count == 0 || macro?.Actions == null) return;
+            for (int i = 0; i < macro.Actions.Count; i++)
+                _axisYielded.Remove(macro.Actions[i]);
+        }
+
+        /// <summary>Relative axis deflection (#237, reWASD "Relative
+        /// deflection"): ADDS the signed value onto whatever the mapping
+        /// pipeline already wrote, clamped to the target's range. Sticks
+        /// add in the signed short frame; triggers add on the pull scale
+        /// (AxisValue 32767 = +100% pull, negative subtracts).</summary>
+        private static void ApplyAxisAddAction(ref Gamepad gp, MacroAction action)
+        {
+            switch (action.AxisTarget)
+            {
+                case MacroAxisTarget.LeftStickX:
+                    gp.ThumbLX = (short)Math.Clamp(gp.ThumbLX + action.AxisValue, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.LeftStickY:
+                    gp.ThumbLY = (short)Math.Clamp(gp.ThumbLY + action.AxisValue, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.RightStickX:
+                    gp.ThumbRX = (short)Math.Clamp(gp.ThumbRX + action.AxisValue, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.RightStickY:
+                    gp.ThumbRY = (short)Math.Clamp(gp.ThumbRY + action.AxisValue, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.LeftTrigger:
+                    gp.LeftTrigger = (ushort)Math.Clamp(gp.LeftTrigger + action.AxisValue * 2, 0, 65535);
+                    break;
+                case MacroAxisTarget.RightTrigger:
+                    gp.RightTrigger = (ushort)Math.Clamp(gp.RightTrigger + action.AxisValue * 2, 0, 65535);
+                    break;
+            }
+        }
+
+        /// <summary>Proportional deflection (#251): scales the axis's
+        /// current combined value by (1 + AxisValue/32767). -50% halves,
+        /// +50% amplifies half again, -100% zeroes, clamped to full scale.
+        /// Triggers scale their unsigned pull directly; sticks scale the
+        /// signed deflection, so direction is preserved.</summary>
+        private static void ApplyAxisScaleAction(ref Gamepad gp, MacroAction action)
+        {
+            double factor = 1.0 + action.AxisValue / 32767.0;
+            if (factor < 0) factor = 0;
+            switch (action.AxisTarget)
+            {
+                case MacroAxisTarget.LeftStickX:
+                    gp.ThumbLX = (short)Math.Clamp(gp.ThumbLX * factor, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.LeftStickY:
+                    gp.ThumbLY = (short)Math.Clamp(gp.ThumbLY * factor, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.RightStickX:
+                    gp.ThumbRX = (short)Math.Clamp(gp.ThumbRX * factor, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.RightStickY:
+                    gp.ThumbRY = (short)Math.Clamp(gp.ThumbRY * factor, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.LeftTrigger:
+                    gp.LeftTrigger = (ushort)Math.Clamp(gp.LeftTrigger * factor, 0, 65535);
+                    break;
+                case MacroAxisTarget.RightTrigger:
+                    gp.RightTrigger = (ushort)Math.Clamp(gp.RightTrigger * factor, 0, 65535);
+                    break;
+            }
+        }
+
+        /// <summary>One discrete mouse-wheel detent (v15): AxisValue is the
+        /// signed tick count (0 reads as +1; positive = up / right), routed
+        /// through the same accumulate-and-flush lanes the continuous
+        /// scroll actions use so the poll thread stays syscall-free.</summary>
+        private static void ExecuteMouseWheelTap(MacroAction action)
+        {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no scroll
+            int ticks = action.AxisValue == 0 ? 1 : action.AxisValue;
+            if (action.WheelHorizontal)
+                AccumulateMouseScrollHInput(ticks * 120);
+            else
+                AccumulateMouseScrollInput(ticks * 120);
+        }
+
+        /// <summary>One fixed-pixel cursor nudge (v16): the signed
+        /// NudgeDx/NudgeDy delta joins the same accumulate-and-flush lane
+        /// the continuous MouseMove action feeds, exactly once per fire.
+        /// The injector thread flushes it batched, so the poll thread
+        /// stays syscall-free (the lane's whole point).</summary>
+        private static void ExecuteMouseNudge(MacroAction action)
+        {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no mouse
+            AccumulateMouseMoveInput(action.NudgeDx, action.NudgeDy);
+        }
+
+        /// <summary>Steam's Scroll Wheel List step (v16). Executes the
+        /// current step of the parsed cycle and returns true when the
+        /// action may advance. Injection parts (key tap, mouse click,
+        /// wheel tick) fire on the first frame only. VC-button and VC-axis
+        /// parts assert every frame until DurationMs elapses, the
+        /// ButtonPress shape, so a 60 Hz game poll sees the tap. The
+        /// per-action <see cref="MacroAction.CycleIndex"/> advances here:
+        /// wrap-on returns to step 0 past the end, wrap-off parks the
+        /// index past the end and later fires produce nothing (Steam's
+        /// "Wrap List - Off": no further output past the end, and the
+        /// forward-only lowering has no back-step to free it, which the
+        /// translator's group note covers).</summary>
+        private bool ExecuteCycleTapList(ref Gamepad gp, MacroAction action, double actionElapsed)
+        {
+            var steps = action.ParsedCycleSteps;
+            if (steps.Length == 0) return true;
+            int idx = action.CycleIndex;
+            if (idx >= steps.Length)
+            {
+                if (!action.CycleWrap) return true; // parked past the end
+                idx = 0;
+                action.CycleIndex = 0;
+            }
+            var parts = steps[idx];
+            bool held = false;
+            // One-shot latch, not the actionElapsed < 1 convention: a
+            // loaded frame can arrive later than 1 ms after the trigger
+            // stamp, which would swallow the injection parts entirely.
+            bool first = !action.CycleInjectionFired;
+            action.CycleInjectionFired = true;
+            for (int i = 0; i < parts.Length; i++)
+            {
+                var p = parts[i];
+                switch (p.Kind)
+                {
+                    case 'K':
+                        // One full tap, the RepeatKeyWhileHeld pulse shape.
+                        if (first)
+                        {
+                            SendKeyInput((ushort)p.Value, keyUp: false);
+                            SendKeyInput((ushort)p.Value, keyUp: true);
+                        }
+                        break;
+                    case 'M':
+                    {
+                        if (first)
+                        {
+                            var btn = (MacroMouseButton)Math.Clamp(p.Value, 0, 4);
+                            SendMouseButtonInput(btn, down: true);
+                            SendMouseButtonInput(btn, down: false);
+                        }
+                        break;
+                    }
+                    case 'W':
+                        if (first && !_currentMacroSlotRestricted)
+                            AccumulateMouseScrollInput((p.Value == 0 ? 1 : p.Value) * 120);
+                        break;
+                    case 'H':
+                        if (first && !_currentMacroSlotRestricted)
+                            AccumulateMouseScrollHInput((p.Value == 0 ? 1 : p.Value) * 120);
+                        break;
+                    case 'B':
+                        // NOT accumulated into the overlay (round five, X19).
+                        // The raw evaluator calls this helper with a THROWAWAY
+                        // scratch Gamepad so 'B' parts no-op on an Extended
+                        // slot; feeding the shared ushort accumulator there
+                        // recorded an output bit never written to real state,
+                        // in a lane that never clears it. The gamepad lane
+                        // needs no entry either: consume strips only TRIGGER
+                        // bits, which a cycle-tap step is not.
+                        gp.Buttons |= (ushort)p.Value;
+                        held = true;
+                        break;
+                    case 'A':
+                        WriteCycleAxisPart(ref gp, p);
+                        held = true;
+                        break;
+                }
+            }
+            if (held && actionElapsed < action.DurationMs)
+                return false; // keep asserting the held parts
+            action.CycleInjectionFired = false; // re-arm for the next step
+            action.CycleIndex = idx + 1;
+            if (action.CycleWrap && action.CycleIndex >= steps.Length)
+                action.CycleIndex = 0;
+            return true;
+        }
+
+        /// <summary>Writes one 'A' cycle part (v16): the AxisHold write
+        /// shape (triggers on the doubled pull scale, sticks signed).</summary>
+        private static void WriteCycleAxisPart(ref Gamepad gp, CycleStepPart p)
+        {
+            switch ((MacroAxisTarget)p.Value)
+            {
+                case MacroAxisTarget.LeftStickX:
+                    gp.ThumbLX = p.Value2;
+                    break;
+                case MacroAxisTarget.LeftStickY:
+                    gp.ThumbLY = p.Value2;
+                    break;
+                case MacroAxisTarget.RightStickX:
+                    gp.ThumbRX = p.Value2;
+                    break;
+                case MacroAxisTarget.RightStickY:
+                    gp.ThumbRY = p.Value2;
+                    break;
+                case MacroAxisTarget.LeftTrigger:
+                    gp.LeftTrigger = TriggerPullFromAxisValue(p.Value2);
+                    break;
+                case MacroAxisTarget.RightTrigger:
+                    gp.RightTrigger = TriggerPullFromAxisValue(p.Value2);
+                    break;
+            }
+        }
+
         // ─────────────────────────────────────────────
         //  Custom Extended macro evaluation
-        //  Mirrors EvaluateSlotMacros but operates on ExtendedRawState
+        //  Mirrors EvaluateSlotMacros but operates on RawHidState
         //  with uint[] button words instead of ushort Gamepad.Buttons.
         // ─────────────────────────────────────────────
 
-        private void EvaluateSlotMacrosExtended(ref ExtendedRawState raw, MacroItem[] macros)
+        // Internal for the PadForge.Tests dispatch pins.
+        internal void EvaluateSlotMacrosExtended(ref RawHidState raw, MacroItem[] macros)
         {
+            System.Array.Clear(_macroPassConsumedWords, 0, _macroPassConsumedWords.Length);
+            System.Array.Clear(_macroPassOutputWords, 0, _macroPassOutputWords.Length);
+            _evalMacros = macros;   // #251 cross-macro latch release, see above
+            // Resolve the slot's ACTUAL axis packing for this call (audit
+            // 2026-07-25, C34). All macros in a snapshot share the slot.
+            int laySlot = -1;
+            for (int lm = 0; lm < macros.Length; lm++)
+                if (macros[lm] != null) { laySlot = macros[lm].PadIndex; break; }
+            // A default (0-stick/0-trigger) struct means "layout never
+            // populated": fall back to the fixed map rather than resolving
+            // every target to -1.
+            if (laySlot >= 0 && laySlot < MaxPads
+                && (SlotCustomLayouts[laySlot].Sticks > 0 || SlotCustomLayouts[laySlot].Triggers > 0))
+                _currentRawLayout = SlotCustomLayouts[laySlot];
+            else
+                _currentRawLayout = null;
+            for (int k = 0; k < _preMacroRawAxes.Length; k++)
+                _preMacroRawAxes[k] = raw.Axes != null && k < raw.Axes.Length ? raw.Axes[k] : (short)0;
+            // Fresh slot-device resolution per evaluator call (#9 B-9),
+            // mirroring the Gamepad path.
+            _slotTriggerDeviceSlot = -1;
+
             for (int m = 0; m < macros.Length; m++)
             {
                 var macro = macros[m];
                 if (macro == null || !macro.IsEnabled)
+                {
+                    // #237: disabling a macro resets its combo park and
+                    // yield latches, so a re-enable starts from the top.
+                    if (macro != null && (macro.ComboResumeIndex != 0 || macro.AwaitReleaseAfterBreak
+                        || macro.TriggerPressStreak != 0 || macro.TriggerHoldFired
+                        || macro.TriggerHoldStartUtc != DateTime.MinValue
+                        || macro.RunReleasedFireToCompletion
+                        || macro.ToggleTriggerLatched || macro.ToggleRawWasActive))
+                    {
+                        macro.ComboResumeIndex = 0;
+                        macro.AwaitReleaseAfterBreak = false;
+                        // #238: a disabled macro's press chain resets too,
+                        // so re-enable inside the window starts fresh. The
+                        // HoldForMs transients are the same family: without
+                        // the reset, disable mid-hold and re-enable while
+                        // still held fired instantly, crediting the
+                        // disabled span with no rising edge.
+                        macro.TriggerPressStreak = 0;
+                        macro.TriggerLastPressUtc = DateTime.MinValue;
+                        macro.TriggerHoldStartUtc = DateTime.MinValue;
+                        macro.TriggerHoldFired = false;
+                        macro.RunReleasedFireToCompletion = false;
+                        // #238 Toggle: disabling drops the latch, so a
+                        // re-enabled macro starts unlatched and the next
+                        // press is a fresh latch-on, never a surprise
+                        // latch-off.
+                        macro.ToggleTriggerLatched = false;
+                        macro.ToggleRawWasActive = false;
+                        ClearAxisYields(macro);
+                    }
+                    // OUTSIDE the transient-reset guard on purpose (round
+                    // five, X15): a disabled tick is an OBSERVATION GAP
+                    // whether or not any transient happened to be set, and
+                    // the guard above trips only when one was. Its own pin
+                    // caught this: an idle macro disabled mid-hold kept a
+                    // fresh stamp and re-armed a press it never saw.
+                    if (macro != null)
+                    {
+                        macro.LastEvaluatedUtc = DateTime.MinValue;
+                        macro.WasTriggerActive = false;
+                    }
                     continue;
+                }
 
                 // Skip macros with no trigger configured (unless Always /
                 // CustomExpression mode).
@@ -1752,10 +3781,11 @@ namespace PadForge.Common.Input
                 if (macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.TriggerMode != MacroTriggerMode.CustomExpression &&
                     !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons &&
-                    !macro.UsesGestureTrigger)
+                    !macro.UsesGestureTrigger && !macro.UsesDescriptorTrigger)
                     continue;
 
-                // Check trigger condition. Buttons, POVs, gestures, AND axes must all be active together.
+                // Check trigger condition. Buttons, POVs, gestures, descriptors,
+                // AND axes must all be active together.
                 bool triggerActive;
                 if (macro.TriggerMode == MacroTriggerMode.Always)
                     triggerActive = true;
@@ -1766,6 +3796,7 @@ namespace PadForge.Common.Input
                     bool buttonOk = true;
                     bool povOk = true;
                     bool gestureOk = true;
+                    bool descriptorOk = true;
                     bool axisOk = true;
 
                     if (hasButtons)
@@ -1781,21 +3812,107 @@ namespace PadForge.Common.Input
                         povOk = CheckRawPovTrigger(macro);
                     if (macro.UsesGestureTrigger)
                         gestureOk = CheckGestureTrigger(macro);
+                    if (macro.UsesDescriptorTrigger)
+                        descriptorOk = CheckDescriptorTrigger(macro);
                     if (macro.UsesAxisTrigger)
                     {
                         float threshold = macro.TriggerAxisThreshold / 100f;
-                        foreach (var axTarget in macro.TriggerAxisTargets)
+                        // Legacy slot-combined axes. Direction-aware, mirroring
+                        // the Gamepad twin: the old form ignored
+                        // GetAxisDirection entirely, so a recorded Negative
+                        // trigger got the Positive comparison and was therefore
+                        // ACTIVE at rest and released when the user pushed.
+                        for (int ai = 0; ai < macro.TriggerAxisTargets.Length; ai++)
                         {
-                            if (ReadAxisAsVolumeRaw(in raw, axTarget) < threshold)
-                            { axisOk = false; break; }
+                            var axTarget = macro.TriggerAxisTargets[ai];
+                            var dir = macro.GetAxisDirection(ai);
+                            float val = ReadAxisAsVolumeRaw(in raw, axTarget);
+
+                            if (dir == MacroAxisDirection.Positive)
+                            {
+                                if (val < 0.5f + threshold * 0.5f)
+                                { axisOk = false; break; }
+                            }
+                            else if (dir == MacroAxisDirection.Negative)
+                            {
+                                if (val > 0.5f - threshold * 0.5f)
+                                { axisOk = false; break; }
+                            }
+                            else
+                            {
+                                if (val < threshold)
+                                { axisOk = false; break; }
+                            }
                         }
                     }
 
-                    triggerActive = buttonOk && povOk && gestureOk && axisOk;
+                    // Per-device axis entries, same block the Gamepad path runs.
+                    // UsesAxisTrigger is true when EITHER the legacy array is
+                    // non-empty OR any TriggerInputEntry carries an axis
+                    // (MacroItem.cs:2086-2092), so an entry-ONLY axis trigger
+                    // used to run the legacy loop for zero iterations, leave
+                    // axisOk at its default true, and drop the axis condition
+                    // out of triggerActive entirely.
+                    if (axisOk)
+                    {
+                        var axisEntries = macro.GetTriggerInputEntries();
+                        for (int i = 0; i < axisEntries.Count; i++)
+                        {
+                            var e = axisEntries[i];
+                            if (e.AxisTarget == MacroAxisTarget.None) continue;
+                            bool active;
+                            if (e.DeviceGuid == Guid.Empty)
+                                active = AnySlotDeviceAxisEntryActive(macro.PadIndex, e);
+                            else
+                            {
+                                var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
+                                active = TriggerAxisEntryActive(ud, e);
+                            }
+                            if (!active) { axisOk = false; break; }
+                        }
+                    }
+
+                    triggerActive = buttonOk && povOk && gestureOk && descriptorOk && axisOk;
+                }
+
+                // Shift-layer gate (translator v25), mirroring the Gamepad
+                // path: applied before the latch so re-engage is a fresh
+                // rising edge.
+                bool layerOpen = MacroLayerGateOpen(macro);
+                if (!layerOpen) triggerActive = false;
+
+                // Toggle mode (#238): a trigger-level latch. Each raw
+                // rising edge flips it, and downstream sees the LATCH as
+                // the trigger state, so the WhileHeld-shape evaluation,
+                // holds, and the release-stop all key on "pressed again"
+                // instead of the physical release. Layer close clears the
+                // latch (the gated trigger already reads inactive above,
+                // so a press inside a closed layer cannot flip it either).
+                if (macro.TriggerMode == MacroTriggerMode.Toggle)
+                {
+                    bool rawWas = macro.ToggleRawWasActive;
+                    macro.ToggleRawWasActive = triggerActive;
+                    if (!layerOpen)
+                        macro.ToggleTriggerLatched = false;
+                    else if (triggerActive && !rawWas)
+                        macro.ToggleTriggerLatched = !macro.ToggleTriggerLatched;
+                    triggerActive = macro.ToggleTriggerLatched;
                 }
 
                 bool wasTriggerActive = macro.WasTriggerActive;
+                // Continuity check BEFORE the latch, exactly like
+                // wasTriggerActive (round four, R13/R14): the previous
+                // sample is trustworthy only when it is RECENT. Any gap
+                // (engine stop, this macro disabled, its slot idle-skipped,
+                // a profile hot-retain) means an apparent edge on the first
+                // tick back may have happened entirely unwatched, and On
+                // Short Press must not arm from it. 250ms is two orders
+                // above the poll cadence, so only real gaps trip it.
+                var nowUtcForEdge = DateTime.UtcNow;
+                bool edgeObserved =
+                    (nowUtcForEdge - macro.LastEvaluatedUtc).TotalMilliseconds <= 250.0;
                 macro.WasTriggerActive = triggerActive;
+                macro.LastEvaluatedUtc = nowUtcForEdge;
 
                 bool shouldStart = false;
                 switch (macro.TriggerMode)
@@ -1809,48 +3926,234 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.WhileHeld:
                         shouldStart = triggerActive;
                         break;
+                    case MacroTriggerMode.Toggle:
+                    case MacroTriggerMode.Turbo:
+                        // #238: both evaluate WhileHeld-style. Toggle's
+                        // triggerActive is its latch (transformed above);
+                        // Turbo's is the plain held state. Their forced
+                        // until-release stop and repeat pacing live in the
+                        // stop block and AdvanceMacroAction.
+                        shouldStart = triggerActive;
+                        break;
                     case MacroTriggerMode.Always:
-                        shouldStart = !macro.IsExecuting;
+                        shouldStart = !macro.IsExecuting && layerOpen;
                         break;
                     case MacroTriggerMode.CustomExpression:
                         shouldStart = triggerActive && !wasTriggerActive;
                         break;
+                    case MacroTriggerMode.HoldForMs:
+                        shouldStart = EvaluateHoldForMsTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
+                    case MacroTriggerMode.ShortPress:
+                        // #253: fires at the falling edge when the hold
+                        // stayed under TriggerHoldMs, the HoldForMs twin.
+                        shouldStart = EvaluateShortPressTrigger(macro, triggerActive, wasTriggerActive, layerOpen, edgeObserved);
+                        break;
+                    case MacroTriggerMode.DoublePress:
+                        shouldStart = EvaluateDoublePressTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
+                    case MacroTriggerMode.TriplePress:
+                        shouldStart = EvaluateTriplePressTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
+                    case MacroTriggerMode.SinglePress:
+                        // A closed shift layer voids the pending single
+                        // outright: the LayerMask contract says the trigger
+                        // only counts while the layer is engaged, and the
+                        // deferred fire would otherwise land AFTER the
+                        // layer disengaged.
+                        if (!layerOpen)
+                        {
+                            macro.TriggerPressStreak = 0;
+                            macro.TriggerLastPressUtc = DateTime.MinValue;
+                            shouldStart = false;
+                        }
+                        else
+                        {
+                            shouldStart = EvaluateSinglePressTrigger(macro, triggerActive, wasTriggerActive);
+                        }
+                        break;
                 }
 
-                if (shouldStart && !macro.IsExecuting)
+                // #237 combo break guard, the Gamepad-path twin.
+                // Toggle opens the guard on the RAW release (audit
+                // 2026-07-24): for that mode triggerActive is the latch, so
+                // the guard waited for an UNLATCH, and resuming a parked
+                // sequence cost three presses (latch, unlatch-to-open,
+                // relatch) instead of the documented "press the trigger
+                // again to continue".
+                bool breakGuardOpen = macro.TriggerMode == MacroTriggerMode.Toggle
+                    ? !macro.ToggleRawWasActive
+                    : !triggerActive;
+                if (macro.AwaitReleaseAfterBreak && breakGuardOpen)
+                    macro.AwaitReleaseAfterBreak = false;
+
+                if (shouldStart && !macro.IsExecuting && !macro.AwaitReleaseAfterBreak
+                    // R5 (round four): an empty macro must never START. The
+                    // advance routine is gated on Actions.Count > 0, so a
+                    // start with zero actions wedged IsExecuting and the
+                    // deferred-completion flag forever, and the consume gate
+                    // then ate every later press of the trigger.
+                    && macro.Actions.Count > 0)
                 {
+                    // Hold-pair twin cancel (audit #2 M6), mirroring the
+                    // Gamepad-path start branch.
+                    if (macro.PairId != 0)
+                        CancelExecutingPairTwin(macros, macro);
                     macro.IsExecuting = true;
-                    macro.CurrentActionIndex = 0;
+                    // A deferred single firing with the button already up
+                    // must run its sequence ONE full pass: the UntilRelease
+                    // stop below would otherwise kill it the same frame
+                    // (the release already happened) and a quick tap ran
+                    // zero actions. The flag suppresses the release-stop
+                    // until the pass completes.
+                    macro.RunReleasedFireToCompletion =
+                        (macro.TriggerMode == MacroTriggerMode.SinglePress
+                         || macro.TriggerMode == MacroTriggerMode.ShortPress)
+                        && !triggerActive;
+                    // #237: resume from a combo-break park (0 = the top).
+                    macro.CurrentActionIndex = macro.ComboResumeIndex;
                     macro.ActionStartTime = DateTime.UtcNow;
                     macro.RemainingRepeats = macro.RepeatMode == MacroRepeatMode.FixedCount
                         ? macro.RepeatCount : 1;
                     ResetMouseAccumulators(macro);
                 }
 
-                // Always mode never stops via trigger release.
+                // Always mode never stops via trigger release. Release
+                // linger mirrors the Gamepad-path block (translator v22).
+                if (triggerActive)
+                    macro.ReleaseLingerStartUtc = DateTime.MinValue;
                 if (macro.IsExecuting &&
                     macro.TriggerMode != MacroTriggerMode.Always &&
-                    macro.RepeatMode == MacroRepeatMode.UntilRelease &&
-                    !triggerActive)
+                    // #238: Toggle and Turbo carry until-release semantics
+                    // regardless of the authored RepeatMode; for Toggle,
+                    // triggerActive is the latch, so this fires on unlatch.
+                    (macro.RepeatMode == MacroRepeatMode.UntilRelease
+                     || macro.TriggerMode == MacroTriggerMode.Toggle
+                     || macro.TriggerMode == MacroTriggerMode.Turbo) &&
+                    !triggerActive
+                    && !macro.RunReleasedFireToCompletion
+                    && !WithinReleaseLinger(macro))
                 {
                     macro.IsExecuting = false;
                     macro.CurrentActionIndex = 0;
+                    // #237: an UntilRelease stop re-arms the combo from the
+                    // top and releases any yield latches.
+                    macro.ComboResumeIndex = 0;
+                    ClearAxisYields(macro);
+                    macro.ReleaseLingerStartUtc = DateTime.MinValue;
                     // Looping macro sounds are trigger-bound on this path:
                     // release stops them (one-shots play out).
                     SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
                 }
 
+                if (macro.IsExecuting && macro.Actions.Count == 0) EndMacroRun(macro); // X14 twin
                 if (macro.IsExecuting && macro.Actions.Count > 0)
                     ExecuteMacroActionsExtended(ref raw, macro);
 
-                // Consume trigger buttons.
-                if (macro.ConsumeTriggerButtons && triggerActive && macro.IsExecuting
+                // Consume trigger buttons. Toggle keys on the RAW button for
+                // the same reason as the Gamepad loop above: its unlatch
+                // press drives the latch false and clears IsExecuting, so
+                // the gate went false exactly when the button was down and
+                // the second press leaked through (audit 2026-07-24).
+                bool consumeNowExtended = macro.TriggerMode == MacroTriggerMode.Toggle
+                    ? macro.ToggleRawWasActive
+                    // ShortPress twin of the gamepad loop's rule (C18).
+                    : macro.TriggerMode == MacroTriggerMode.ShortPress
+                        ? (triggerActive || macro.IsExecuting)
+                        : (triggerActive && macro.IsExecuting);
+                if (macro.ConsumeTriggerButtons && consumeNowExtended
                     && macro.UsesCustomTrigger)
                 {
+                    // Accumulate; the strip lands once, after the walk (R2).
                     var tw = macro.TriggerCustomButtonWords;
                     if (raw.Buttons != null)
-                        for (int w = 0; w < raw.Buttons.Length && w < tw.Length; w++)
-                            raw.Buttons[w] &= ~tw[w];
+                        for (int w = 0; w < raw.Buttons.Length
+                             && w < tw.Length && w < _macroPassConsumedWords.Length; w++)
+                            _macroPassConsumedWords[w] |= tw[w];
+                }
+
+                // Toggle latches apply every frame while the macro is enabled
+                // (issue #9 wave 1b). As on the Gamepad path, the consume is
+                // deferred to one post-walk strip and latched words survive
+                // via the output overlay, not via ordering (round five, X18).
+                ApplyMacroLatchesRaw(ref raw, macro);
+            }
+
+            // Deferred consume with output overlay, the Gamepad loop's twin
+            // (R1/R2): one strip after the walk, macro-generated words
+            // re-asserted.
+            if (raw.Buttons != null)
+                for (int w = 0; w < raw.Buttons.Length && w < _macroPassConsumedWords.Length; w++)
+                    if (_macroPassConsumedWords[w] != 0)
+                        raw.Buttons[w] = (raw.Buttons[w] & ~_macroPassConsumedWords[w])
+                                         | _macroPassOutputWords[w];
+        }
+
+        /// <summary>Extended twin of <see cref="ApplyMacroLatches"/> (issue #9
+        /// wave 1b): latched ToggleVcButton targets OR their wide button words
+        /// into the raw state, latched ToggleKey actions contribute to the
+        /// frame's desired latched-key set.</summary>
+        private void ApplyMacroLatchesRaw(ref RawHidState raw, MacroItem macro)
+        {
+            var actions = macro.Actions;
+            for (int i = 0; i < actions.Count; i++)
+            {
+                var a = actions[i];
+                if (a == null) continue;
+                if (a.Type == MacroActionType.ToggleVcButton)
+                {
+                    if (a.VcToggleLatched && LatchPhaseOn(a) && raw.Buttons != null)
+                    {
+                        var cw = a.CustomButtonWords;
+                        for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
+                        {
+                            raw.Buttons[w] |= cw[w];
+                            if (w < _macroPassOutputWords.Length)
+                                _macroPassOutputWords[w] |= cw[w]; // R1 overlay
+                        }
+                    }
+                }
+                else if (a.Type == MacroActionType.ToggleKey)
+                {
+                    if (a.KeyToggleLatched && LatchPhaseOn(a) && !_currentMacroSlotRestricted)
+                    {
+                        var codes = a.ParsedKeyCodes;
+                        for (int k = 0; k < codes.Length; k++)
+                            _desiredLatchedKeys.Add((ushort)codes[k]);
+                    }
+                }
+                else if (a.Type == MacroActionType.ToggleVcAxis || a.Type == MacroActionType.AxisSetLatched)
+                {
+                    // #237 yield gate, the Gamepad-path twin's rationale.
+                    if (a.VcAxisToggleLatched && LatchPhaseOn(a) && raw.Axes != null)
+                    {
+                        int yIdx = MacroAxisTargetToRawIndex(a.AxisTarget);
+                        bool yields = yIdx >= 0 && yIdx < _preMacroRawAxes.Length
+                            && AxisWriteYieldsRawValue(a, _preMacroRawAxes[yIdx]);
+                        if (!yields)
+                            ApplyAxisActionRaw(ref raw, a);
+                    }
+                    if (!a.VcAxisToggleLatched)
+                        _axisYielded.Remove(a);
+                }
+                else if (a.Type == MacroActionType.ToggleMouseButton)
+                {
+                    // LatchPhaseOn: the Gamepad-path twin's rationale (M3).
+                    if (a.MouseToggleLatched && LatchPhaseOn(a) && !_currentMacroSlotRestricted)
+                        _desiredLatchedMouseButtons.Add(a.MouseButton);
+                }
+                else if (a.Type == MacroActionType.ToggleWheel)
+                {
+                    if (a.WheelToggleLatched && !_currentMacroSlotRestricted)
+                    {
+                        var now = DateTime.UtcNow;
+                        int interval = a.IntervalMs > 0 ? a.IntervalMs : 100;
+                        if ((now - a.RepeatKeyLastFireUtc).TotalMilliseconds >= interval)
+                        {
+                            a.RepeatKeyLastFireUtc = now;
+                            ExecuteMouseWheelTap(a);
+                        }
+                    }
                 }
             }
         }
@@ -1858,7 +4161,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Checks whether all custom trigger buttons are currently pressed in the raw state.
         /// </summary>
-        private static bool CheckCustomButtonTrigger(in ExtendedRawState raw, MacroItem macro)
+        private static bool CheckCustomButtonTrigger(in RawHidState raw, MacroItem macro)
         {
             var tw = macro.TriggerCustomButtonWords;
             if (raw.Buttons == null) return false;
@@ -1874,10 +4177,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Executes macro actions against a ExtendedRawState (custom Extended button words).
+        /// Executes macro actions against a RawHidState (custom Extended button words).
         /// Same parallel-continuous pattern as ExecuteMacroActions.
         /// </summary>
-        private void ExecuteMacroActionsExtended(ref ExtendedRawState raw, MacroItem macro)
+        private void ExecuteMacroActionsExtended(ref RawHidState raw, MacroItem macro)
         {
             // 1. Always run ALL continuous actions every frame.
             for (int i = 0; i < macro.Actions.Count; i++)
@@ -1908,11 +4211,37 @@ namespace PadForge.Common.Input
                 if (!IsContinuousAction(macro.Actions[i].Type))
                 { allContinuous = false; break; }
             }
-            if (allContinuous) return;
+            if (allContinuous)
+            {
+                // A run that started with the trigger ALREADY UP (ShortPress,
+                // deferred SinglePress) has no future release to stop it, so
+                // an all-continuous sequence must complete after its single
+                // pass regardless of RepeatMode (round four, R4: the
+                // round-three flag-clear-only shape stopped UntilRelease but
+                // left the hidden default Once pulsing forever). A held run
+                // keeps running as before and stops on release.
+                if (macro.RunReleasedFireToCompletion)
+                {
+                    macro.IsExecuting = false;
+                    macro.CurrentActionIndex = 0;
+                    macro.ComboResumeIndex = 0;
+                    macro.RunReleasedFireToCompletion = false;
+                    ClearAxisYields(macro);
+                }
+                return; // Keep running. Continuous actions handled above.
+            }
 
             macro.RemainingRepeats--;
             if (macro.RemainingRepeats > 0 ||
-                macro.RepeatMode == MacroRepeatMode.UntilRelease)
+                // #238: Toggle and Turbo repeat until-release regardless of
+                // the authored RepeatMode. Staying on THIS branch (instead
+                // of stopping and re-starting via shouldStart next tick) is
+                // what makes RepeatDelayMs pace the passes: the stop-then-
+                // restart path re-fires immediately, unpaced.
+                ((macro.RepeatMode == MacroRepeatMode.UntilRelease
+                  || macro.TriggerMode == MacroTriggerMode.Toggle
+                  || macro.TriggerMode == MacroTriggerMode.Turbo)
+                 && !macro.RunReleasedFireToCompletion))
             {
                 double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
                 if (elapsed >= macro.RepeatDelayMs)
@@ -1926,11 +4255,16 @@ namespace PadForge.Common.Input
             {
                 macro.IsExecuting = false;
                 macro.CurrentActionIndex = 0;
+                // #237: normal completion re-arms the combo from the top
+                // and releases any yield latches.
+                macro.ComboResumeIndex = 0;
+                macro.RunReleasedFireToCompletion = false;
+                ClearAxisYields(macro);
             }
         }
 
         /// <summary>Executes a single continuous action for Extended raw state.</summary>
-        private void ExecuteSingleActionRaw(ref ExtendedRawState raw, MacroAction action)
+        private void ExecuteSingleActionRaw(ref RawHidState raw, MacroAction action)
         {
             bool useDevice = action.AxisSource == MacroAxisSource.InputDevice;
             switch (action.Type)
@@ -1978,11 +4312,39 @@ namespace PadForge.Common.Input
                         SendMouseScrollInput(delta * 120);
                     break;
                 }
+                case MacroActionType.RepeatKeyWhileHeld:
+                    ExecuteRepeatKeyWhileHeld(action);
+                    break;
+                case MacroActionType.RepeatVcButtonWhileHeld:
+                    // Extended twin of the Gamepad-path turbo (issue #9 wave
+                    // 1b): the ON half ORs the action's wide button words in,
+                    // mirroring the Extended ButtonPress case.
+                    if (TickRepeatVcButtonPhase(action) && raw.Buttons != null)
+                    {
+                        var cw = action.CustomButtonWords;
+                        for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
+                        {
+                            raw.Buttons[w] |= cw[w];
+                            if (w < _macroPassOutputWords.Length)
+                                _macroPassOutputWords[w] |= cw[w]; // R1 overlay
+                        }
+                    }
+                    break;
+                case MacroActionType.RepeatVcAxisWhileHeld:
+                    // Extended twin of the axis turbo (v18). #237 yield
+                    // gate applies like the plain hold.
+                    if (TickRepeatVcButtonPhase(action) && raw.Axes != null)
+                    {
+                        if (!AxisWriteYieldsRawValueAt(
+                                MacroAxisTargetToRawIndex(action.AxisTarget), action))
+                            ApplyAxisActionRaw(ref raw, action);
+                    }
+                    break;
             }
         }
 
         /// <summary>Executes a sequential action for Extended raw state.</summary>
-        private void ExecuteSequentialActionRaw(ref ExtendedRawState raw, MacroItem macro, MacroAction action)
+        private void ExecuteSequentialActionRaw(ref RawHidState raw, MacroItem macro, MacroAction action)
         {
             double actionElapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
 
@@ -1993,7 +4355,11 @@ namespace PadForge.Common.Input
                     {
                         var cw = action.CustomButtonWords;
                         for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
+                        {
                             raw.Buttons[w] |= cw[w];
+                            if (w < _macroPassOutputWords.Length)
+                                _macroPassOutputWords[w] |= cw[w]; // R1 overlay
+                        }
                     }
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
@@ -2004,7 +4370,12 @@ namespace PadForge.Common.Input
                     {
                         var cw = action.CustomButtonWords;
                         for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
+                        {
                             raw.Buttons[w] &= ~cw[w];
+                            // A same-pass release must not be re-asserted.
+                            if (w < _macroPassOutputWords.Length)
+                                _macroPassOutputWords[w] &= ~cw[w];
+                        }
                     }
                     AdvanceAction(macro);
                     break;
@@ -2013,7 +4384,8 @@ namespace PadForge.Common.Input
                 {
                     var keyCodes = action.ParsedKeyCodes;
                     if (keyCodes.Length == 0) { AdvanceAction(macro); break; }
-                    if (actionElapsed < 1)
+                    // One-shot latch (M5), the Gamepad-path executor's twin.
+                    if (_pressDownSent.Add(action))
                     {
                         for (int k = 0; k < keyCodes.Length; k++)
                             SendKeyInput((ushort)keyCodes[k], keyUp: false);
@@ -2022,6 +4394,7 @@ namespace PadForge.Common.Input
                     {
                         for (int k = keyCodes.Length - 1; k >= 0; k--)
                             SendKeyInput((ushort)keyCodes[k], keyUp: true);
+                        _pressDownSent.Remove(action); // re-arm for the next pass
                         AdvanceAction(macro);
                     }
                     break;
@@ -2052,12 +4425,88 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
 
+                case MacroActionType.AxisHold:
+                    // Extended twin of the Gamepad-path timed assert (v15):
+                    // straight signed write per frame (the Extended axis
+                    // frame is -32768..32767 on every index, so no trigger
+                    // rescale applies here). Same #237 yield gate as the
+                    // Gamepad path, on the raw word frame.
+                    if (raw.Axes != null)
+                    {
+                        if (!AxisWriteYieldsRawValueAt(
+                                MacroAxisTargetToRawIndex(action.AxisTarget), action))
+                            ApplyAxisActionRaw(ref raw, action);
+                    }
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisAdd:
+                    // Extended twin (#237): signed add in the word frame,
+                    // the AxisHold duration shape.
+                    if (raw.Axes != null)
+                        ApplyAxisAddActionRaw(ref raw, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisScale:
+                    // Proportional deflection (#251), the raw twin. The
+                    // null guard matches the Set/Hold/Add siblings (audit
+                    // 2026-07-25, C16): an Extended slot whose raw surface
+                    // has not materialized threw here every tick, and the
+                    // outer catch silently aborted the whole slot's macro
+                    // pass.
+                    if (raw.Axes != null)
+                        ApplyAxisScaleActionRaw(ref raw, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ComboBreak:
+                    // Extended twin (#237): park + await re-press, exactly
+                    // the Gamepad-path semantics.
+                    macro.ComboResumeIndex = macro.CurrentActionIndex + 1;
+                    macro.AwaitReleaseAfterBreak = true;
+                    macro.IsExecuting = false;
+                    macro.CurrentActionIndex = 0;
+                    ClearAxisYields(macro);
+                    break;
+
+                case MacroActionType.MouseWheelTap:
+                    ExecuteMouseWheelTap(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.MouseNudge:
+                    // Extended twin (v16): the nudge is pure injection, so
+                    // the Gamepad-path executor applies unchanged.
+                    ExecuteMouseNudge(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.CycleTapList:
+                {
+                    // Extended twin (v16): injection parts fire the same.
+                    // The VC-button ('B', an Xbox bitmask) and VC-axis
+                    // ('A', the Xbox axis frame) parts address the Xbox
+                    // output shape and have no meaning on an Extended
+                    // slot's word array, so they no-op here via the
+                    // scratch pad the executor writes into.
+                    var scratch = new Gamepad();
+                    if (ExecuteCycleTapList(ref scratch, action, actionElapsed))
+                        AdvanceAction(macro);
+                    break;
+                }
+
                 case MacroActionType.MouseButtonPress:
-                    if (actionElapsed < 1)
+                    // One-shot latch (M5), the Gamepad-path executor's twin.
+                    if (_pressDownSent.Add(action))
                         SendMouseButtonInput(action.MouseButton, down: true);
                     if (actionElapsed >= action.DurationMs)
                     {
                         SendMouseButtonInput(action.MouseButton, down: false);
+                        _pressDownSent.Remove(action); // re-arm for the next pass
                         AdvanceAction(macro);
                     }
                     break;
@@ -2138,6 +4587,12 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.MoveMouseToScreenPosition:
+                    // System-wide cursor warp (#9), identical to the Gamepad path.
+                    CursorControlService.Active?.MoveCursorTo(action.MouseX, action.MouseY);
+                    AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.DisconnectController:
                     ExecuteDisconnectControllerAction(macro, action);
                     AdvanceAction(macro);
@@ -2204,6 +4659,99 @@ namespace PadForge.Common.Input
                     ApplyGuideLedBrightnessAction(macro, action);
                     AdvanceAction(macro);
                     break;
+
+                case MacroActionType.ToggleVcButton:
+                    // Extended twin of the Gamepad-path latch flip (issue #9
+                    // wave 1b). Application happens per frame in
+                    // EvaluateSlotMacrosExtended via the wide button words.
+                    action.VcToggleLatched = !action.VcToggleLatched;
+                    if (action.VcToggleLatched) ResetLatchPulsePhase(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleKey:
+                    // Direction-aware latch write (audit #2 M4), the same
+                    // helper the Gamepad path uses.
+                    ApplyKeyLatchWrite(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                // v18 latch family, Extended twins.
+                case MacroActionType.ToggleMouseButton:
+                    ApplyMouseLatchWrite(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleVcAxis:
+                    action.VcAxisToggleLatched = !action.VcAxisToggleLatched;
+                    if (action.VcAxisToggleLatched) ResetLatchPulsePhase(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisSetLatched:
+                    // #251 ladder step: SET semantics, not a flip. Clear the
+                    // sibling steps on the same axis first so a ladder
+                    // REPLACES the value press by press, then latch self.
+                    // The latch pass applies the value each frame, parked or
+                    // not, which is what makes a combo-break ladder hold.
+                    ExecuteAxisSetLatched(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisLatchRelease:
+                    // #251 nullify key: clear axis latches (ladder steps and
+                    // axis toggles) for the target, or ALL axes on None,
+                    // across every macro the evaluator is walking.
+                    ExecuteAxisLatchRelease(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleWheel:
+                    action.WheelToggleLatched = !action.WheelToggleLatched;
+                    if (action.WheelToggleLatched)
+                        action.RepeatKeyLastFireUtc = DateTime.MinValue;
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.GyroRecenter:
+                    ApplyGyroRecenterAction(macro);
+                    AdvanceAction(macro);
+                    break;
+
+                // Slot-level actions, mirrored from the Gamepad loop. Both
+                // effects are output-type-independent (a global overlay
+                // request and a slot-keyed gyro latch, neither touching the
+                // Gamepad state), but slot routing is exclusive: a raw-HID
+                // surface runs THIS loop and never the Gamepad one. Without
+                // these cases the macro editor still offered both actions on
+                // an Extended slot and they silently did nothing.
+                case MacroActionType.ToggleTouchpadOverlay:
+                    ToggleTouchpadOverlayRequested = true;
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.SetGyroEngaged:
+                {
+                    int gyroSlot = macro.PadIndex;
+                    if (gyroSlot >= 0 && gyroSlot < MaxPads)
+                    {
+                        switch (action.SetGyroEngagedMode)
+                        {
+                            case MacroSetGyroEngagedMode.On:
+                                GyroEngagedFromMacro[gyroSlot] = true;
+                                break;
+                            case MacroSetGyroEngagedMode.Off:
+                                GyroEngagedFromMacro[gyroSlot] = false;
+                                break;
+                            case MacroSetGyroEngagedMode.Toggle:
+                            default:
+                                GyroEngagedFromMacro[gyroSlot] = !GyroEngagedFromMacro[gyroSlot];
+                                break;
+                        }
+                    }
+                    AdvanceAction(macro);
+                    break;
+                }
             }
         }
 
@@ -2242,29 +4790,160 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Applies an AxisSet action to a ExtendedRawState.</summary>
-        private static void ApplyAxisActionRaw(ref ExtendedRawState raw, MacroAction action)
+        /// <summary>The one canonical MacroAxisTarget → Extended word-array
+        /// index map. Every raw-path axis write and the #237 yield gates
+        /// resolve through this so the map can never drift between
+        /// siblings. -1 = unmapped. With no layout in scope this is the
+        /// default 2-stick/2-trigger packing (LX0 LY1 LT2 RX3 RY4 RT5);
+        /// with the slot's layout it follows ComputeAxisLayout's interleave
+        /// formula (audit 2026-07-25, C34), so a Nintendo 2/0 layout
+        /// resolves RightStickX to 2 and drops the trigger targets instead
+        /// of corrupting a stick channel.</summary>
+        internal static int MacroAxisTargetToRawIndex(MacroAxisTarget target)
+            => MacroAxisTargetToRawIndex(target, _currentRawLayout);
+
+        /// <summary>Layout-explicit overload. The ambient
+        /// <see cref="_currentRawLayout"/> is only correct for callers running
+        /// INSIDE EvaluateSlotMacrosExtended for that same slot: it is a static
+        /// stamped from the first non-null macro's PadIndex and it still holds
+        /// that value after the call returns. The macro RECORDER reads these
+        /// axes from the UI thread for an unrelated pad, so it must pass its
+        /// own slot's layout or it resolves the previous Extended slot's
+        /// interleave and records the wrong channel.</summary>
+        internal static int MacroAxisTargetToRawIndex(MacroAxisTarget target,
+            PadForge.Engine.CustomControllerLayout? layout)
         {
-            int axisIndex = action.AxisTarget switch
+            var layOpt = layout;
+            if (layOpt == null)
             {
-                MacroAxisTarget.LeftStickX => 0,
-                MacroAxisTarget.LeftStickY => 1,
-                MacroAxisTarget.RightStickX => 3,
-                MacroAxisTarget.RightStickY => 4,
-                MacroAxisTarget.LeftTrigger => 2,
-                MacroAxisTarget.RightTrigger => 5,
+                return target switch
+                {
+                    MacroAxisTarget.LeftStickX => 0,
+                    MacroAxisTarget.LeftStickY => 1,
+                    MacroAxisTarget.RightStickX => 3,
+                    MacroAxisTarget.RightStickY => 4,
+                    MacroAxisTarget.LeftTrigger => 2,
+                    MacroAxisTarget.RightTrigger => 5,
+                    _ => -1
+                };
+            }
+            var lay = layOpt.Value;
+            int sticks = lay.Sticks, trigs = lay.Triggers;
+            int interleave = System.Math.Min(sticks, trigs);
+            // Mirrors ExtendedSlotConfig.ComputeAxisLayout /
+            // CustomControllerLayout.IsTriggerSlot: interleaved
+            // (X, Y, trigger) groups, then trailing stick pairs, then
+            // trailing triggers one at a time.
+            int StickX(int n) => n < interleave ? n * 3 : interleave * 3 + (n - interleave) * 2;
+            int Trig(int n) => n < interleave
+                ? n * 3 + 2
+                : interleave * 3 + System.Math.Max(0, sticks - interleave) * 2 + (n - interleave);
+            return target switch
+            {
+                MacroAxisTarget.LeftStickX => sticks >= 1 ? StickX(0) : -1,
+                MacroAxisTarget.LeftStickY => sticks >= 1 ? StickX(0) + 1 : -1,
+                MacroAxisTarget.RightStickX => sticks >= 2 ? StickX(1) : -1,
+                MacroAxisTarget.RightStickY => sticks >= 2 ? StickX(1) + 1 : -1,
+                MacroAxisTarget.LeftTrigger => trigs >= 1 ? Trig(0) : -1,
+                MacroAxisTarget.RightTrigger => trigs >= 2 ? Trig(1) : -1,
                 _ => -1
             };
-            if (axisIndex >= 0 && axisIndex < raw.Axes.Length)
-                raw.Axes[axisIndex] = action.AxisValue;
+        }
+
+        private static void ApplyAxisActionRaw(ref RawHidState raw, MacroAction action)
+        {
+            int axisIndex = MacroAxisTargetToRawIndex(action.AxisTarget);
+            if (axisIndex < 0 || raw.Axes == null || axisIndex >= raw.Axes.Length) return;
+            // Trigger channels rest at short.MinValue and span the full
+            // signed word (audit 2026-07-25, C36): the editor's AxisValue
+            // is the 0..32767 pull scale, so writing it raw parked 0% at
+            // the channel MIDPOINT (half-pulled). Same doubling the Add
+            // twin ships; the Set/Hold/latch family routed through here
+            // was the only writer without it.
+            bool isTrigger = action.AxisTarget == MacroAxisTarget.LeftTrigger
+                || action.AxisTarget == MacroAxisTarget.RightTrigger;
+            raw.Axes[axisIndex] = isTrigger
+                // Doubling is the FAMILY convention: the Add twins at
+                // ~3513 / ~3516 / ~4827 all use it, so a 100% editor value
+                // lands at 32766, one LSB short of full scale, everywhere
+                // alike. Round 34 tried exact 65535/32767 scaling here and
+                // reverted it: making one member exact while its siblings
+                // double is a real inconsistency, and the shortfall is
+                // 0.0015% with no consumer that tests for exact maximum.
+                ? (short)Math.Clamp(short.MinValue + (int)action.AxisValue * 2, short.MinValue, short.MaxValue)
+                : action.AxisValue;
+        }
+
+        /// <summary>Extended twin of <see cref="ApplyAxisAddAction"/>
+        /// (#237): signed addition in the word-array frame, clamped.
+        /// Trigger channels rest at short.MinValue and span the full
+        /// signed word, so the add doubles onto that span exactly like
+        /// the Gamepad path's pull scale (audit 2026-07-25, C36: the
+        /// old text here claimed no rescale applies, and the Set/Hold
+        /// writer inherited that wrong frame).</summary>
+        private static void ApplyAxisAddActionRaw(ref RawHidState raw, MacroAction action)
+        {
+            int axisIndex = MacroAxisTargetToRawIndex(action.AxisTarget);
+            if (axisIndex < 0 || axisIndex >= raw.Axes.Length) return;
+            // Trigger channels span the full signed word from a MinValue
+            // rest, so the add doubles onto that span exactly like the
+            // Gamepad path's pull scale. Without it "+100%" only reached
+            // the midpoint from rest and the UI's percent lied per slot
+            // shape. Sticks add in the plain signed frame.
+            bool isTrigger = action.AxisTarget == MacroAxisTarget.LeftTrigger
+                || action.AxisTarget == MacroAxisTarget.RightTrigger;
+            int add = isTrigger ? action.AxisValue * 2 : action.AxisValue;
+            raw.Axes[axisIndex] = (short)Math.Clamp(
+                raw.Axes[axisIndex] + add, short.MinValue, short.MaxValue);
+        }
+
+        /// <summary>Proportional deflection (#251), the raw twin. The raw
+        /// trigger channels span the full signed word from a MinValue
+        /// rest, so the scale runs on the PULL (distance from MinValue),
+        /// not the raw signed value: scaling the signed frame directly
+        /// would move a resting trigger, and -100% must land at rest, not
+        /// at the span's midpoint.</summary>
+        private static void ApplyAxisScaleActionRaw(ref RawHidState raw, MacroAction action)
+        {
+            int axisIndex = MacroAxisTargetToRawIndex(action.AxisTarget);
+            if (axisIndex < 0 || axisIndex >= raw.Axes.Length) return;
+            double factor = 1.0 + action.AxisValue / 32767.0;
+            if (factor < 0) factor = 0;
+            bool isTrigger = action.AxisTarget == MacroAxisTarget.LeftTrigger
+                || action.AxisTarget == MacroAxisTarget.RightTrigger;
+            if (isTrigger)
+            {
+                double pull = raw.Axes[axisIndex] - (double)short.MinValue;
+                raw.Axes[axisIndex] = (short)Math.Clamp(
+                    short.MinValue + pull * factor, short.MinValue, short.MaxValue);
+            }
+            else
+            {
+                raw.Axes[axisIndex] = (short)Math.Clamp(
+                    raw.Axes[axisIndex] * factor, short.MinValue, short.MaxValue);
+            }
         }
 
         // ─────────────────────────────────────────────
         //  System volume control for SystemVolume macro action
         // ─────────────────────────────────────────────
 
+        /// <summary>Back-off between COM retries after an audio failure.
+        /// Long enough that a persistently broken audio stack is not
+        /// hammered every polling tick, short enough that plugging a
+        /// headset back in restores volume macros on its own.</summary>
+        private const long AudioComRetryCooldownMs = 2000;
+
         private IAudioEndpointVolume _audioEndpointVolume;
-        private bool _audioEndpointFailed;
+        // Retry deadline, not a permanent latch. A COM failure here is
+        // usually TRANSIENT (audio service restart, default-device switch,
+        // a device unplugged mid-call), and latching a bool killed every
+        // volume macro for the rest of the session with no way back short of
+        // restarting PadForge. On failure the cached interface is dropped so
+        // the retry re-resolves the CURRENT default endpoint, which also
+        // fixes volume macros silently driving the OLD device after the user
+        // switched outputs (round 34).
+        private long _audioEndpointRetryAtMs;
         private float _lastSetVolume = -1f;
         private DateTime _lastOsdTriggerTime;
 
@@ -2286,9 +4965,8 @@ namespace PadForge.Common.Input
             bool inCorrectionWindow = (DateTime.UtcNow - _lastOsdTriggerTime).TotalMilliseconds < 150;
             if (!inCorrectionWindow && Math.Abs(volume - _lastSetVolume) < 0.004f)
                 return;
-            _lastSetVolume = volume;
 
-            if (_audioEndpointFailed) return;
+            if (Environment.TickCount64 < _audioEndpointRetryAtMs) return;
 
             try
             {
@@ -2303,6 +4981,13 @@ namespace PadForge.Common.Input
 
                 var emptyGuid = Guid.Empty;
                 _audioEndpointVolume.SetMasterVolumeLevelScalar(volume, ref emptyGuid);
+                // Record only once the write has LANDED. Stamping it above the
+                // retry gate and the COM call meant a skipped or throwing write
+                // still registered the target as applied, and the dedup at the
+                // top then swallowed every retry at that same volume. The
+                // requested level was silently never reached until the user
+                // picked a different one.
+                _lastSetVolume = volume;
 
                 // Trigger the modern Windows volume flyout OSD by sending a
                 // net-zero VK_VOLUME_UP + VK_VOLUME_DOWN pair, then immediately
@@ -2325,7 +5010,10 @@ namespace PadForge.Common.Input
             }
             catch
             {
-                _audioEndpointFailed = true;
+                // Drop the (possibly stale or dead) endpoint and back off
+                // briefly instead of disabling the feature forever.
+                _audioEndpointVolume = null;
+                _audioEndpointRetryAtMs = Environment.TickCount64 + AudioComRetryCooldownMs;
             }
         }
 
@@ -2334,7 +5022,7 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         private IAudioSessionManager2 _audioSessionManager;
-        private bool _audioSessionFailed;
+        private long _audioSessionRetryAtMs;
 
         /// <summary>
         /// Per-process change-detection: tracks the last volume set for each process name
@@ -2353,9 +5041,8 @@ namespace PadForge.Common.Input
             // Change detection per process name.
             if (_lastAppVolumes.TryGetValue(processName, out float last) && Math.Abs(volume - last) < 0.004f)
                 return;
-            _lastAppVolumes[processName] = volume;
 
-            if (_audioSessionFailed) return;
+            if (Environment.TickCount64 < _audioSessionRetryAtMs) return;
 
             try
             {
@@ -2403,10 +5090,19 @@ namespace PadForge.Common.Input
                             Marshal.Release(pSession);
                     }
                 }
+
+                // Recorded only after the enumeration completed without
+                // throwing. Same reason as the master endpoint: stamping it
+                // above the retry gate let a skipped or failed pass register
+                // the level as applied, and the change detection then swallowed
+                // every retry for that process.
+                _lastAppVolumes[processName] = volume;
             }
             catch
             {
-                _audioSessionFailed = true;
+                // Same retry-not-latch policy as the master endpoint above.
+                _audioSessionManager = null;
+                _audioSessionRetryAtMs = Environment.TickCount64 + AudioComRetryCooldownMs;
             }
         }
 
@@ -2431,21 +5127,26 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Reads the current value of a source axis from a ExtendedRawState
+        /// Reads the current value of a source axis from a RawHidState
         /// and returns it as a 0.0–1.0 float suitable for volume.
         /// </summary>
-        internal static float ReadAxisAsVolumeRaw(in ExtendedRawState raw, MacroAxisTarget target)
+        internal static float ReadAxisAsVolumeRaw(in RawHidState raw, MacroAxisTarget target)
+            => ReadAxisAsVolumeRaw(in raw, target, _currentRawLayout);
+
+        /// <summary>Layout-explicit overload, for callers that are NOT running
+        /// inside EvaluateSlotMacrosExtended for the slot being read. See
+        /// MacroAxisTargetToRawIndex's overload for why the ambient static is
+        /// wrong off the poll thread.</summary>
+        internal static float ReadAxisAsVolumeRaw(in RawHidState raw, MacroAxisTarget target,
+            PadForge.Engine.CustomControllerLayout? layout)
         {
-            int axisIndex = target switch
-            {
-                MacroAxisTarget.LeftStickX => 0,
-                MacroAxisTarget.LeftStickY => 1,
-                MacroAxisTarget.RightStickX => 3,
-                MacroAxisTarget.RightStickY => 4,
-                MacroAxisTarget.LeftTrigger => 2,
-                MacroAxisTarget.RightTrigger => 5,
-                _ => -1
-            };
+            // Layout-aware, exactly like every macro axis WRITE. The hardcoded
+            // LX0/LY1/LT2/RX3/RY4/RT5 map this used is only correct for a
+            // 2-stick/2-trigger shape, so on any other Extended layout the read
+            // landed on a different channel than the write. MacroAxisTargetToRawIndex
+            // falls back to that same table when no layout is set, so nothing
+            // changes for the common case.
+            int axisIndex = MacroAxisTargetToRawIndex(target, layout);
             if (axisIndex < 0 || raw.Axes == null || axisIndex >= raw.Axes.Length)
                 return 0f;
             // Raw axes are short (-32768..32767) → 0..1
@@ -2454,7 +5155,17 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Reads an axis value from a physical input device's raw InputState.
-        /// Returns 0.0–1.0 (normalized from short -32768..32767).
+        /// Returns 0.0-1.0.
+        ///
+        /// <para>CustomInputState.Axis is UNSIGNED 0..65535 with 32768 at
+        /// rest: every writer stores it that way (SdlDeviceWrapper's
+        /// "(ushort)(v - short.MinValue)" and trigger "v * 65535 / 32767",
+        /// SdlMouseWrapper's AxisCenter clamp). The old body added another
+        /// 32768 as if the value were a signed short, which mapped the real
+        /// range onto 0.5..1.5: rest read 1.0, full negative read 0.5, and
+        /// full positive saturated past 1. Volume macros sat pinned near
+        /// maximum and the mouse twin below could never produce a negative
+        /// deflection (round 34).</para>
         /// </summary>
         private float ReadAxisFromDevice(MacroAction action)
         {
@@ -2464,7 +5175,7 @@ namespace PadForge.Common.Input
             if (device == null || device.InputState == null || device.InputState.Axis == null
                 || action.SourceDeviceAxisIndex >= device.InputState.Axis.Length)
                 return 0f;
-            return (device.InputState.Axis[action.SourceDeviceAxisIndex] + 32768f) / 65535f;
+            return device.InputState.Axis[action.SourceDeviceAxisIndex] / 65535f;
         }
 
         /// <summary>
@@ -2529,7 +5240,27 @@ namespace PadForge.Common.Input
             if (dx == 0 && dy == 0) return;
             Interlocked.Add(ref _pendingMouseDx, dx);
             Interlocked.Add(ref _pendingMouseDy, dy);
+            SignalMouseWork();
         }
+
+        /// <summary>Wakes the parked injector on the FIRST delta after an
+        /// idle period. The armed flag keeps the steady 1 kHz accumulate
+        /// path syscall-free: while the injector is actively batching, the
+        /// flag stays 1 and no kernel Set fires.</summary>
+        internal static int MouseWorkArmed;
+        internal static readonly System.Threading.AutoResetEvent MouseWorkSignal = new(false);
+
+        private static void SignalMouseWork()
+        {
+            if (Interlocked.CompareExchange(ref MouseWorkArmed, 1, 0) == 0)
+                MouseWorkSignal.Set();
+        }
+
+        internal static bool HasPendingMouseInput()
+            => System.Threading.Volatile.Read(ref _pendingMouseDx) != 0
+            || System.Threading.Volatile.Read(ref _pendingMouseDy) != 0
+            || System.Threading.Volatile.Read(ref _pendingScroll) != 0
+            || System.Threading.Volatile.Read(ref _pendingScrollH) != 0;
 
         /// <summary>Injector thread only: drain the accumulated mouse move + scroll
         /// deltas and inject them off the poll thread. Every MouseMove / MouseScroll
@@ -2537,8 +5268,9 @@ namespace PadForge.Common.Input
         /// SendInput syscall runs here on its own cadence instead of N times per poll
         /// on the rate-holding thread. Reuses one INPUT[] (no per-flush alloc).
         /// Single-threaded (the injector loop), so the shared buffer is safe.</summary>
-        internal static void FlushPendingMouseInput()
+        internal static bool FlushPendingMouseInput()
         {
+            bool injectedAny = false;
             int dx = Interlocked.Exchange(ref _pendingMouseDx, 0);
             int dy = Interlocked.Exchange(ref _pendingMouseDy, 0);
             if (dx != 0 || dy != 0)
@@ -2549,6 +5281,7 @@ namespace PadForge.Common.Input
                     u = new InputUnion { mi = new MOUSEINPUT { dx = dx, dy = dy, dwFlags = MOUSEEVENTF_MOVE } }
                 };
                 SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
+                injectedAny = true;
             }
 
             int scroll = Interlocked.Exchange(ref _pendingScroll, 0);
@@ -2560,6 +5293,7 @@ namespace PadForge.Common.Input
                     u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)scroll, dwFlags = MOUSEEVENTF_WHEEL } }
                 };
                 SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
+                injectedAny = true;
             }
 
             int scrollH = Interlocked.Exchange(ref _pendingScrollH, 0);
@@ -2571,7 +5305,9 @@ namespace PadForge.Common.Input
                     u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)scrollH, dwFlags = MOUSEEVENTF_HWHEEL } }
                 };
                 SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
+                injectedAny = true;
             }
+            return injectedAny;
         }
 
         private static void SendMouseButtonInput(MacroMouseButton button, bool down)
@@ -2615,6 +5351,7 @@ namespace PadForge.Common.Input
         {
             if (amount == 0) return;
             Interlocked.Add(ref _pendingScroll, amount);
+            SignalMouseWork();
         }
 
         /// <summary>Horizontal-scroll twin of
@@ -2624,7 +5361,24 @@ namespace PadForge.Common.Input
         {
             if (amount == 0) return;
             Interlocked.Add(ref _pendingScrollH, amount);
+            SignalMouseWork();
         }
+
+        /// <summary>Test pin (v15 MouseWheelTap): drains both pending
+        /// scroll lanes without SendInput, returning (vertical,
+        /// horizontal) in WHEEL_DELTA units. The injector thread normally
+        /// flushes these; the tests observe them here instead.</summary>
+        internal static (int Vertical, int Horizontal) DrainPendingScrollForTests()
+            => (Interlocked.Exchange(ref _pendingScroll, 0),
+                Interlocked.Exchange(ref _pendingScrollH, 0));
+
+        /// <summary>Test pin (v16 MouseNudge): drains the pending
+        /// mouse-move lane without SendInput, returning the batched
+        /// (dx, dy) in pixels. Same contract as
+        /// <see cref="DrainPendingScrollForTests"/>.</summary>
+        internal static (int Dx, int Dy) DrainPendingMouseMoveForTests()
+            => (Interlocked.Exchange(ref _pendingMouseDx, 0),
+                Interlocked.Exchange(ref _pendingMouseDy, 0));
 
         /// <summary>
         /// Reads a source axis as a signed float (-1.0..+1.0) for mouse delta calculation.
@@ -2641,18 +5395,10 @@ namespace PadForge.Common.Input
             _ => 0f
         };
 
-        private static float ReadAxisAsMouseRaw(in ExtendedRawState raw, MacroAxisTarget target)
+        private static float ReadAxisAsMouseRaw(in RawHidState raw, MacroAxisTarget target)
         {
-            int axisIndex = target switch
-            {
-                MacroAxisTarget.LeftStickX   => 0,
-                MacroAxisTarget.LeftStickY   => 1,
-                MacroAxisTarget.RightStickX  => 3,
-                MacroAxisTarget.RightStickY  => 4,
-                MacroAxisTarget.LeftTrigger   => 2,
-                MacroAxisTarget.RightTrigger  => 5,
-                _ => -1
-            };
+            // Same layout-aware resolution as its volume twin above.
+            int axisIndex = MacroAxisTargetToRawIndex(target);
             if (axisIndex < 0 || raw.Axes == null || axisIndex >= raw.Axes.Length) return 0f;
             return raw.Axes[axisIndex] / 32767f;
         }
@@ -2929,8 +5675,14 @@ namespace PadForge.Common.Input
                 if (ud.DevicePath != null && ud.DevicePath.StartsWith("aggregate://")) continue;
                 if (entry.DeviceProductGuid != Guid.Empty && ud.ProductGuid != entry.DeviceProductGuid)
                     continue;
+                // Direction must be passed here exactly as the
+                // single-device arm passes it. Defaulting to Positive made a
+                // NEGATIVE-direction binding compare "normalized >=
+                // threshold" against a threshold that encodes a LOW value
+                // (0.25 for stick-left), so a resting stick at 0.5 satisfied
+                // it and the macro fired continuously (round 34).
                 bool active = entry.IsAxis
-                    ? CheckAxisActive(ud.InputState, entry.AxisIndex, entry.AxisThreshold)
+                    ? CheckAxisActive(ud.InputState, entry.AxisIndex, entry.AxisThreshold, entry.AxisDirection)
                     : CheckButtonActive(ud.InputState, entry.ButtonIndex);
                 if (active) return true;
             }

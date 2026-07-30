@@ -1,4 +1,4 @@
-# Prep PadForge.xml: 5 slot types (Xbox/PS/Extended/KBM/MIDI) + sample macros.
+﻿# Prep PadForge.xml: 5 slot types (Xbox/PS/Extended/KBM/MIDI) + sample macros.
 # Stops PadForge, edits the XML, restarts. Backup at PadForge.xml.bak-capture.
 
 $XmlPath = "C:\PadForge\PadForge.xml"
@@ -16,7 +16,21 @@ if ($proc) {
 }
 
 if (-not (Test-Path $XmlPath)) { Write-Host "!! Missing $XmlPath" -ForegroundColor Red; exit 1 }
-Copy-Item $XmlPath "$XmlPath.bak-capture" -Force
+
+# This backed up with -Force, so a second run (the normal response to a failed
+# capture) copied the ALREADY-PREPPED synthetic config over the only copy of
+# the real settings. capture_all.ps1 already solves this, after the same thing
+# destroyed a settings file on 2026-07-12 and it had to be recovered from a
+# shadow copy: a leftover backup means an earlier run never restored, so that
+# backup is the real settings and the live file is capture residue. Restore it
+# first, then re-back it up. Same shape here.
+$BakPath = "$XmlPath.bak-capture"
+if (Test-Path -LiteralPath $BakPath) {
+    Write-Host "!! Leftover backup from an interrupted run; restoring it before re-backup" -ForegroundColor Yellow
+    Copy-Item -LiteralPath $BakPath -Destination $XmlPath -Force
+}
+Copy-Item -LiteralPath $XmlPath -Destination $BakPath -Force
+Write-Host "Backed up real settings to $BakPath"
 
 [xml]$xml = Get-Content $XmlPath
 $ns = $xml.PadForgeSettings

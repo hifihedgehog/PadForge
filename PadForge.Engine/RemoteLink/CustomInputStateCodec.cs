@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Buffers.Binary;
 
 namespace PadForge.Engine.RemoteLink
@@ -53,7 +53,47 @@ namespace PadForge.Engine.RemoteLink
             // Unclamped Raw Input mouse counts, issue #200. Appended after
             // AccelAux under the same mixed-version tail rule.
             MouseRaw = 1 << 13,
+            // Capsense touch channels (stick tops / grips, fork API).
+            // Appended after MouseRaw under the same mixed-version tail rule.
+            CapSense = 1 << 14,
+            // NFC tag buttons (Switch right Joy-Con / Pro reader, issue #241).
+            // Appended after CapSense under the same mixed-version tail rule.
+            // Variable-length: a span byte then ceil(span/8) bitmask bytes.
+            // Button 0 = "Any NFC Tag" is registry-independent and always
+            // meaningful remotely; per-tag buttons resolve against the
+            // consumer's own NfcTagRegistry, the shared-config assumption
+            // every remote binding already makes.
+            Nfc = 1 << 15,
+            // BIT 15 EXHAUSTS THIS MASK. Every further block rides the
+            // magic-guarded extension tail below, never a widened mask:
+            // widening would move the payload start and break every peer.
         }
+
+        /// <summary>Guards the extension tail. The presence mask above is a
+        /// FULL u16, so post-Nfc blocks live in a second section appended
+        /// after every v1 block: this magic byte, then a u16 ext mask, then
+        /// the ext payloads in <see cref="BlockExt"/> order. Old decoders
+        /// stop after their known blocks and their trailing
+        /// <c>o &lt;= payload.Length</c> check tolerates the tail, which is
+        /// the same compatibility rule the post-3.5.0 blocks already rely
+        /// on. Same shape as the DeviceList v2/v3 tails.</summary>
+        private const byte ExtMagic = 0xE6;
+
+        [Flags]
+        private enum BlockExt : ushort
+        {
+            None = 0,
+            /// <summary>Aux (left-side) gyroscope, issue #252: the left
+            /// Joy-Con of a combined pair. Capability-gated like Gyro /
+            /// Accel / AccelAux, because a zeroed array is a legitimate
+            /// reading (a still controller), not "absent".</summary>
+            GyroAux = 1 << 0,
+        }
+
+        /// <summary>Capsense channels carried on the wire (one byte,
+        /// one bit per channel). Encode and decode BOTH size from this.</summary>
+        private const int CapSenseWireSlots = 4;
+
 
         /// <summary>
         /// Which optional sensor blocks the device exposes. Gyro and accel arrays
@@ -64,12 +104,14 @@ namespace PadForge.Engine.RemoteLink
         /// </summary>
         public readonly struct Caps
         {
-            public Caps(bool gyro, bool accel, bool accelAux = false)
-            { Gyro = gyro; Accel = accel; AccelAux = accelAux; }
+            public Caps(bool gyro, bool accel, bool accelAux = false, bool gyroAux = false)
+            { Gyro = gyro; Accel = accel; AccelAux = accelAux; GyroAux = gyroAux; }
             public bool Gyro { get; }
             public bool Accel { get; }
             /// <summary>Aux (left-side) accelerometer: Nunchuk / left Joy-Con (#199).</summary>
             public bool AccelAux { get; }
+            /// <summary>Aux (left-side) gyroscope: left Joy-Con of a pair (#252).</summary>
+            public bool GyroAux { get; }
         }
 
         /// <summary>Neutral (idle) value for axis index <paramref name="i"/>:
@@ -254,6 +296,70 @@ namespace PadForge.Engine.RemoteLink
                 BinaryPrimitives.WriteInt32LittleEndian(destination.Slice(o, 4), state.MouseRawDY); o += 4;
             }
 
+            // Capsense channels: presence inferred from the state (an
+            // all-untouched frame omits the block, and an omitted block
+            // decodes back to "nothing touched", exactly the neutral the
+            // encoder skipped, per the header contract). One bit per
+            // SDL_GAMEPAD_CAPSENSE_* channel, low bit = channel 0.
+            if (state.CapSense != null)
+            {
+                // Width must match the decoder's slot count below: the
+                // byte carries CapSenseWireSlots channels, and a fork that
+                // grows SDL_GAMEPAD_CAPSENSE_COUNT must bump BOTH through
+                // the one constant or the extra channels ship encoded and
+                // get silently dropped on decode.
+                byte touched = 0;
+                int n = Math.Min(state.CapSense.Length, CapSenseWireSlots);
+                for (int i = 0; i < n; i++) if (state.CapSense[i]) touched |= (byte)(1 << i);
+                if (touched != 0)
+                {
+                    present |= Block.CapSense;
+                    destination[o++] = touched;
+                }
+            }
+
+            // NFC tag buttons (issue #241): omitted when nothing is held,
+            // and an omitted block decodes to "no tag", the neutral the
+            // encoder skipped. Framed span byte + ceil(span/8) bitmask.
+            if (state.NfcTag != null)
+            {
+                // Span up to 256 (registry buttons 0..255 = a 256-element
+                // array), stored as span-1 so the byte reaches index 255
+                // (Codex #3: clamping to 255 dropped the tag at button 255).
+                int span = Math.Min(state.NfcTag.Length, 256);
+                bool any = false;
+                for (int i = 0; i < span; i++) if (state.NfcTag[i]) { any = true; break; }
+                if (any)
+                {
+                    present |= Block.Nfc;
+                    destination[o++] = (byte)(span - 1);
+                    int bytes = (span + 7) / 8;
+                    for (int b = 0; b < bytes; b++)
+                    {
+                        byte mask = 0;
+                        for (int bit = 0; bit < 8; bit++)
+                        {
+                            int idx = b * 8 + bit;
+                            if (idx < span && state.NfcTag[idx]) mask |= (byte)(1 << bit);
+                        }
+                        destination[o++] = mask;
+                    }
+                }
+            }
+
+            // ── Extension tail (the presence mask above is full) ──
+            BlockExt ext = BlockExt.None;
+            if (caps.GyroAux) ext |= BlockExt.GyroAux;
+            if (ext != BlockExt.None)
+            {
+                destination[o++] = ExtMagic;
+                int extAt = o;
+                o += 2; // ext mask backfilled below
+                if ((ext & BlockExt.GyroAux) != 0)
+                    for (int i = 0; i < 3; i++) { BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.GyroAux[i]); o += 4; }
+                BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(extAt, 2), (ushort)ext);
+            }
+
             BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(presenceAt, 2), (ushort)present);
             return o;
         }
@@ -277,6 +383,7 @@ namespace PadForge.Engine.RemoteLink
             if (caps.Gyro) size += 12;
             if (caps.Accel) size += 12;
             if (caps.AccelAux) size += 12;
+            if (caps.GyroAux) size += 3 + 12; // ext magic + ext mask + 3 floats
             size += 2; // battery
             if (state?.Touchpads != null)
             {
@@ -284,7 +391,8 @@ namespace PadForge.Engine.RemoteLink
                 foreach (var pad in state.Touchpads) size += 2 + (pad?.MaxFingers ?? 0) * 9;
             }
             if (state?.Midi != null) size += 48 + 1 + MidiInputState.CcCount * 2 + 2;
-            size += 8 + 4 + 8 + 8; // Ir (2 floats) + JoyConIr (1 float) + JoyCon2Mouse (2 floats) + MouseRaw (2 int32)
+            size += 8 + 4 + 8 + 8 + 1; // Ir (2 floats) + JoyConIr (1 float) + JoyCon2Mouse (2 floats) + MouseRaw (2 int32) + CapSense (1 byte)
+            size += 1 + (255 / 8 + 1); // NFC: span byte + up to 32 bitmask bytes
             return size;
         }
 
@@ -471,6 +579,54 @@ namespace PadForge.Engine.RemoteLink
                     target.MouseRawDY = BinaryPrimitives.ReadInt32LittleEndian(payload.Slice(o, 4)); o += 4;
                 }
 
+                if ((present & Block.CapSense) != 0)
+                {
+                    byte touched = payload[o++];
+                    target.CapSense ??= new bool[CapSenseWireSlots];
+                    int n = Math.Min(target.CapSense.Length, CapSenseWireSlots);
+                    for (int i = 0; i < n; i++)
+                        target.CapSense[i] = (touched & (1 << i)) != 0;
+                }
+
+                if ((present & Block.Nfc) != 0)
+                {
+                    int span = payload[o++] + 1; // stored as span-1
+                    int bytes = (span + 7) / 8;
+                    if (target.NfcTag == null || target.NfcTag.Length < span)
+                        target.NfcTag = new bool[span];
+                    else
+                        Array.Clear(target.NfcTag, 0, target.NfcTag.Length);
+                    for (int b = 0; b < bytes; b++)
+                    {
+                        byte mask = payload[o++];
+                        for (int bit = 0; bit < 8; bit++)
+                        {
+                            int idx = b * 8 + bit;
+                            if (idx < span) target.NfcTag[idx] = (mask & (1 << bit)) != 0;
+                        }
+                    }
+                }
+
+                // ── Extension tail (post-Nfc blocks; the mask is full) ──
+                // Presence is positional: the tail exists only when the magic
+                // byte is the next thing in the frame. A peer that predates
+                // the tail simply never writes one, and a frame that ends here
+                // is complete, so this is a "maybe" read, never a required one.
+                if (o + 3 <= payload.Length && payload[o] == ExtMagic)
+                {
+                    o++;
+                    var ext = (BlockExt)BinaryPrimitives.ReadUInt16LittleEndian(payload.Slice(o, 2)); o += 2;
+                    if ((ext & BlockExt.GyroAux) != 0)
+                        for (int i = 0; i < 3; i++)
+                        {
+                            float v = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4)); o += 4;
+                            // Fail closed on non-finite, the AccelAux rule: a
+                            // hostile NaN must not reach the tuning chain.
+                            if (!float.IsFinite(v)) { ResetToNeutral(target); return false; }
+                            target.GyroAux[i] = v;
+                        }
+                }
+
                 return o <= payload.Length;
             }
             catch
@@ -494,6 +650,7 @@ namespace PadForge.Engine.RemoteLink
             Array.Clear(s.Gyro);
             Array.Clear(s.Accel);
             Array.Clear(s.AccelAux);
+            Array.Clear(s.GyroAux);
             s.BatteryPercent = -1;
             s.BatteryCharging = false;
             s.Ir = default;
@@ -502,6 +659,8 @@ namespace PadForge.Engine.RemoteLink
             s.JoyCon2MouseDY = 0f;
             s.MouseRawDX = 0;
             s.MouseRawDY = 0;
+            if (s.CapSense != null) Array.Clear(s.CapSense);
+            if (s.NfcTag != null) Array.Clear(s.NfcTag);
             if (s.Midi != null)
             {
                 // The decode contract promises "reset-to-neutral rather than

@@ -53,6 +53,26 @@ namespace PadForge.ViewModels
 
         private void OnPaletteCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            // Clear() raises Reset with NO OldItems, so the per-entry
+            // unsubscribe below never runs for a cleared palette: the
+            // dropped entries keep a live handler into this config and a
+            // re-added entry double-subscribes (its edits then fire the
+            // reactive lane twice). Both palette-replace paths Clear()
+            // before repopulating, so re-sync the whole hook set on Reset.
+            // The InputReactive twin in this file already tracks exactly
+            // this trap (audit 2026-07-24, lens 1q).
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+            {
+                if (sender is ObservableCollection<LightbarPaletteEntry> coll)
+                    foreach (var entry in coll)
+                        if (entry != null)
+                        {
+                            entry.PropertyChanged -= OnPaletteEntryChanged;
+                            entry.PropertyChanged += OnPaletteEntryChanged;
+                        }
+                OnPropertyChanged(nameof(LightbarPalette));
+                return;
+            }
             if (e.OldItems != null)
                 foreach (LightbarPaletteEntry old in e.OldItems)
                     if (old != null) old.PropertyChanged -= OnPaletteEntryChanged;
@@ -227,6 +247,30 @@ namespace PadForge.ViewModels
         {
             get => _audioMirrorSourceId;
             set => SetProperty(ref _audioMirrorSourceId, value ?? string.Empty);
+        }
+
+        private bool _touchpadSyntheticPressure;
+        /// <summary>Discussion #239. Synthesize DS2/DS3-style pressure
+        /// for pads whose hardware reports touch as pressure 1.0
+        /// (DualShock 4, DualSense, Steam Controller 2015): the mapping
+        /// reads see no touch = 0, touch = the configured level, pad
+        /// click = 100%. Per assigned device, off by default. Valve pads
+        /// with true analog pressure need no synthesis and keep raw
+        /// readings while this is off.</summary>
+        public bool TouchpadSyntheticPressure
+        {
+            get => _touchpadSyntheticPressure;
+            set => SetProperty(ref _touchpadSyntheticPressure, value);
+        }
+
+        private int _touchpadSyntheticTouchPercent = 50;
+        /// <summary>The touch stop of the #239 synthetic curve, percent
+        /// of full pressure a resting (unclicked) touch reads. Default 50
+        /// per the discussion's example; clamped 0..100.</summary>
+        public int TouchpadSyntheticTouchPercent
+        {
+            get => _touchpadSyntheticTouchPercent;
+            set => SetProperty(ref _touchpadSyntheticTouchPercent, Math.Clamp(value, 0, 100));
         }
 
         // ────────────────────────────────────────────────
@@ -557,15 +601,18 @@ namespace PadForge.ViewModels
         }
 
         private GuideLedMode _guideLedMode = GuideLedMode.DeviceDefault;
-        /// <summary>Guide/Home button LED handling (discussion #209).
-        /// DeviceDefault never writes, leaving the firmware's own
-        /// brightness untouched. Fixed holds <see cref="GuideLedBrightness"/>.
-        /// Battery re-maps the device's battery percent to brightness on a
-        /// slow cadence, floored at 10 so a low battery stays visible.
-        /// Xbox One and later pads take the GIP LED command over the
-        /// \\.\XboxGIP interface (USB only, XboxGipGuideLedWriter). The
-        /// 2015 Steam Controller takes SDL's process-global home-LED hint
-        /// (SteamHomeLedSetter).</summary>
+        /// <summary>Guide/Home button LED handling (discussion #209,
+        /// Switch home LED #226). DeviceDefault never writes, leaving the
+        /// firmware's own brightness untouched. Fixed holds
+        /// <see cref="GuideLedBrightness"/>. Battery re-maps the device's
+        /// battery percent to brightness on a slow cadence, floored at 10
+        /// so a low battery stays visible. Xbox One and later pads take
+        /// the GIP LED command over the \\.\XboxGIP interface (USB only,
+        /// XboxGipGuideLedWriter). The 2015 Steam Controller takes SDL's
+        /// process-global home-LED hint (SteamHomeLedSetter). Switch Pro
+        /// Controllers, right Joy-Cons, the combined pair, and the
+        /// charging grip take per-device SDL_SetJoystickLED
+        /// (SwitchHomeLedSetter).</summary>
         public GuideLedMode GuideLedMode
         {
             get => _guideLedMode;
@@ -584,7 +631,8 @@ namespace PadForge.ViewModels
         private int _guideLedBrightness = 100;
         /// <summary>Fixed-mode Guide LED brightness percent, 0 (off) to
         /// 100 (full). The writers scale it onto each device's own range
-        /// (0-47 for GIP per MS-GIPUSB, 0..1 for the SDL hint).</summary>
+        /// (0-47 for GIP per MS-GIPUSB, 0..1 for the SDL hint, a 4-bit
+        /// subcommand 0x38 intensity for the Switch home LED).</summary>
         public int GuideLedBrightness
         {
             get => _guideLedBrightness;
@@ -664,7 +712,14 @@ namespace PadForge.ViewModels
         /// user picking Cycle there gets the editor next to the dropdown
         /// they just used.</summary>
         public bool ShowPaletteForOverlay =>
-            _inputReactiveMode == InputReactiveMode.Cycle;
+            _inputReactiveMode == InputReactiveMode.Cycle
+            // The "AND ColorCycle isn't the base" half of this property's own
+            // doc was never implemented, so base=ColorCycle + overlay=Cycle
+            // rendered the palette editor TWICE, once above the InputReactive
+            // dropdown and once below it, both bound to the same colors. Three
+            // comments (here and at PadPage.xaml:8142) asserted the exclusion
+            // that this line now actually performs (round 34).
+            && _lightbarMode != LightbarMode.ColorCycle;
 
         /// <summary>True when the input-reactive overlay is the
         /// Fixed variant — the color picker for the per-press flash
@@ -1665,9 +1720,12 @@ namespace PadForge.ViewModels
         /// <summary>Step through the configured lightbar palette
         /// on each button press.</summary>
         Cycle = 2,
-        /// <summary>Flash the configured base RGB
-        /// (<see cref="DeviceSlotConfig.LightbarRed"/> et al.)
-        /// on each button press.</summary>
+        /// <summary>Flash one fixed colour on each button press, taken from
+        /// <see cref="DeviceSlotConfig.InputReactiveR"/> and friends. That is
+        /// deliberately NOT the base LightbarRed/Green/Blue, so a user can
+        /// layer a white flash over a blue Static base. This doc used to name
+        /// the base RGB, contradicting both IsInputReactiveFixed's own doc and
+        /// the consumer.</summary>
         Fixed = 3,
     }
 
@@ -1724,6 +1782,9 @@ namespace PadForge.ViewModels
         [XmlAttribute] public bool LightbarEnabled { get; set; }
         [XmlAttribute] public bool AudioPassthroughEnabled { get; set; }
         [XmlAttribute] public string AudioMirrorSourceId { get; set; } = string.Empty;
+        // Synthetic touchpad pressure (#239). Defaults match the VM: off / 50.
+        [XmlAttribute] public bool TouchpadSyntheticPressure { get; set; }
+        [XmlAttribute] public int TouchpadSyntheticTouchPercent { get; set; } = 50;
         // Haptic mirror engage gate (#185). Defaults match the VM: Always / 500 ms.
         [XmlAttribute] public string AudioMirrorEngageMode { get; set; } = "Always";
         [XmlAttribute] public string AudioMirrorEngageDeviceGuid { get; set; } = string.Empty;

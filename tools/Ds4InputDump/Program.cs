@@ -157,7 +157,11 @@ internal static class Program
     // DualSense USB Report 0x01 (PS5StatePacket_t shape).
     static void PrintDualSense(byte[] r, int len)
     {
-        if (len < 54) { Console.WriteLine($"short report ({len} bytes)"); return; }
+        // 55, not 54: the connect byte below is r[54], so a 54-byte report
+        // would read one past its own length. buf is 128 bytes, so that read
+        // never threw. It printed a stale byte from the PREVIOUS report as
+        // this one's connection state, which is worse than a crash.
+        if (len < 55) { Console.WriteLine($"short report ({len} bytes)"); return; }
         int LX = r[1], LY = r[2], RX = r[3], RY = r[4];
         int LT = r[5], RT = r[6];
         int counter = r[7];

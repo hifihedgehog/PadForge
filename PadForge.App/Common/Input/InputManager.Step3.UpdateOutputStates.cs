@@ -1,5 +1,6 @@
 ﻿using System;
 using PadForge.Engine;
+using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 
 namespace PadForge.Common.Input
@@ -33,6 +34,17 @@ namespace PadForge.Common.Input
         {
             var settings = SettingsManager.UserSettings?.Items;
             if (settings == null) return;
+
+            // New Step-3 pass: arm the per-pass device-state memo so
+            // multi-source foreign-device lookups lock UserDevices once per
+            // unique GUID per pass instead of once per source per row.
+            BeginDeviceStateMemo();
+
+            // Consume-armed macro trigger sources read as released in this
+            // pass's row evaluators (the raw/descriptor half of "Consume
+            // Trigger Buttons"). Rebuilt before any row eval so the first
+            // pressed tick is already suppressed.
+            RebuildConsumedTriggerSources();
 
             // Reset per-slot multi-source row evaluation tracking so
             // the new frame's first device pass triggers fresh cross-
@@ -130,12 +142,21 @@ namespace PadForge.Common.Input
                     // For custom Extended slots, also produce the raw Extended output state.
                     int slot = slotIndex;
                     if (slot >= 0 && slot < MaxPads &&
-                        SlotControllerTypes[slot] == VirtualControllerType.Extended &&
-                        SlotExtendedIsCustom[slot])
+                        SlotControllerTypes[slot] is VirtualControllerType.Extended
+                            or VirtualControllerType.Nintendo &&
+                        SlotRawHidSurface[slot])
                     {
                         var cfg = SlotCustomLayouts[slot];
-                        us.ExtendedRawOutputState = MapInputToExtendedRaw(
+                        // Build into the poll-owned scratch, publish a fresh
+                        // instance only on content change: published arrays
+                        // are read cross-thread by the UI (Combined aliases
+                        // them), so they must stay immutable after publish.
+                        // Idle slots allocate nothing.
+                        EnsureRawShape(ref us.RawHidScratch, cfg);
+                        MapInputToExtendedRaw(ref us.RawHidScratch,
                             ud.InputState, ps, cfg, ms, deviceGuidStr, slot);
+                        if (!RawContentEquals(in us.RawHidScratch, us.RawHidOutputState))
+                            us.RawHidOutputState = RawCopyOf(in us.RawHidScratch);
                     }
 
                     // For MIDI slots, produce the raw MIDI output state.
@@ -144,9 +165,20 @@ namespace PadForge.Common.Input
                     {
                         var mc = _midiConfigs[slot];
                         if (mc != null)
-                            us.MidiRawOutputState = MapInputToMidiRaw(
+                        {
+                            // Same scratch/publish-on-change contract as the
+                            // Extended raw map above.
+                            EnsureMidiShape(ref us.MidiRawScratch, mc.CcCount, mc.NoteCount);
+                            MapInputToMidiRaw(ref us.MidiRawScratch,
                                 ud.InputState, ps, mc.CcCount, mc.NoteCount,
                                 ms, deviceGuidStr, slot);
+                            if (!MidiContentEquals(in us.MidiRawScratch, us.MidiRawOutputState))
+                                us.MidiRawOutputState = new MidiRawState
+                                {
+                                    CcValues = (byte[])us.MidiRawScratch.CcValues.Clone(),
+                                    Notes = (bool[])us.MidiRawScratch.Notes.Clone(),
+                                };
+                        }
                     }
 
                     // For KeyboardMouse slots, produce the raw KBM output state.
@@ -168,11 +200,18 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    // Don't zero OutputState — keep last valid state to prevent
+                    // Don't zero OutputState. Keep last valid state to prevent
                     // transient glitches from propagating through the pipeline.
                     RaiseError($"Error mapping device {us.InstanceGuid}", ex);
                 }
             }
+
+            // Disarm the memo so nothing that runs on this thread after the
+            // pass (Step 4 macros, SOCD, tests driving eval helpers directly)
+            // can observe entries from a finished pass. The only path that
+            // skips this is an uncaught throw above, and the next pass's
+            // BeginDeviceStateMemo clears before arming anyway.
+            EndDeviceStateMemo();
         }
 
         // ─────────────────────────────────────────────
@@ -259,8 +298,8 @@ namespace PadForge.Common.Input
             }
 
             // ── Triggers ──
-            gp.LeftTrigger = MapToTrigger(state, ps.LeftTrigger);
-            gp.RightTrigger = MapToTrigger(state, ps.RightTrigger);
+            gp.LeftTrigger = MapToTrigger(state, ps.LeftTrigger, deviceGuid, slotIndex);
+            gp.RightTrigger = MapToTrigger(state, ps.RightTrigger, deviceGuid, slotIndex);
 
             // ── Thumbsticks ──
             gp.ThumbLX = MapToThumbAxisWithNeg(state, ps.LeftThumbAxisX, ps.LeftThumbAxisXNeg, deviceGuid, slotIndex);
@@ -272,7 +311,7 @@ namespace PadForge.Common.Input
             // for the UI preview so it can apply its own pipeline without double-processing.
             rawMapped = gp;
 
-            ApplyPadSettingTuning(ref gp, ps);
+            ApplyPadSettingTuning(ref gp, ps, slotIndex);
             return gp;
         }
 
@@ -302,9 +341,11 @@ namespace PadForge.Common.Input
             ApplyMappingSetToGamepad(state, mappingSet, thisDeviceGuid, gt, slotIndex, ref gp);
 
             rawMapped = gp;
-            ApplyPadSettingTuning(ref gp, ps);
+            ApplyPadSettingTuning(ref gp, ps, slotIndex);
             return gp;
         }
+
+
 
         /// <summary>
         /// Applies the per-(VC × Device) tuning shared by both Step 3
@@ -312,8 +353,10 @@ namespace PadForge.Common.Input
         /// stick deadzones / curves / shape. Today these read from
         /// <see cref="PadSetting"/>; Phase 1c-3 will move them to
         /// <see cref="DeviceTuning"/> while keeping this signature.
+        /// <paramref name="slotIndex"/> keys the Workshop deadzone-shape
+        /// overlay (v18); -1 keeps the plain PadSetting read.
         /// </summary>
-        private static void ApplyPadSettingTuning(ref Gamepad gp, PadSetting ps)
+        private static void ApplyPadSettingTuning(ref Gamepad gp, PadSetting ps, int slotIndex = -1)
         {
             if (ps == null) return;
 
@@ -344,6 +387,7 @@ namespace PadForge.Common.Input
             Common.StickBoundary.Reshape(ref gp.ThumbRX, ref gp.ThumbRY,
                 Common.StickBoundary.GetOrBuild(ps.RightThumbBoundaryMap));
 
+
             // ── Dead zones ──
             ApplyDeadZone(ref gp.ThumbLX, ref gp.ThumbLY,
                 TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0),
@@ -357,7 +401,7 @@ namespace PadForge.Common.Input
                 TryParseDoubleStatic(ps.LeftThumbMaxRangeYNeg, TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100)),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveY),
-                ParseDeadZoneShape(ps.LeftThumbDeadZoneShape));
+                ResolveThumbDeadZoneShape(slotIndex, left: true, ps));
 
             ApplyDeadZone(ref gp.ThumbRX, ref gp.ThumbRY,
                 TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0),
@@ -371,7 +415,61 @@ namespace PadForge.Common.Input
                 TryParseDoubleStatic(ps.RightThumbMaxRangeYNeg, TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100)),
                 Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
-                ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
+                ResolveThumbDeadZoneShape(slotIndex, left: false, ps));
+        }
+
+        /// <summary>Per-stick speed multiplier for the KEYBOARD AND MOUSE
+        /// lane only, called from <see cref="MapInputToKbmRaw"/>: stick 0 is
+        /// mouse movement (MouseDeltaX/Y) and stick 1 is the scroll wheel
+        /// (ScrollDelta). Both are rate outputs, so a multiplier is the
+        /// natural control and there is no fixed full-scale for it to clamp
+        /// against the way there is on a gamepad stick, where the per-axis
+        /// response curves own the shaping instead.
+        ///
+        /// <para>Deliberately NOT called from MapInputToExtendedRaw. That
+        /// function serves Extended and Nintendo raw-HID slots, whose sticks
+        /// are absolute-position gamepad sticks. A first cut of this change
+        /// put the call there by mistake, which scaled exactly the sticks the
+        /// owner had ruled out while still leaving the KBM rate outputs
+        /// untouched.</para></summary>
+        /// <summary>Test seam for <see cref="ApplyKbmStickSpeed"/>.</summary>
+        internal static void ApplyKbmStickSpeedForTest(ref short x, ref short y, double sens)
+            => ApplyKbmStickSpeed(ref x, ref y, sens);
+
+        /// <summary>Test seam for <see cref="EnsureRawShape"/>, so a guard
+        /// test can size a RawHidState the way Step 3 does.</summary>
+        internal static void EnsureRawShapeForTest(ref RawHidState raw, CustomControllerLayout cfg)
+            => EnsureRawShape(ref raw, cfg);
+
+        private static void ApplyKbmStickSpeed(ref short x, ref short y, double sens)
+        {
+            if (sens <= 0 || Math.Abs(sens - 1.0) < 1e-6) return;
+            x = ClampAxisToShort(x * sens);
+            y = ClampAxisToShort(y * sens);
+        }
+
+        private static short ClampAxisToShort(double v)
+        {
+            if (v > short.MaxValue) return short.MaxValue;
+            if (v < short.MinValue) return short.MinValue;
+            return (short)v;
+        }
+
+        /// <summary>Effective per-thumb deadzone shape (v18): the Workshop
+        /// slot-level stamp wins on an Authoritative slot (Steam's
+        /// deadzone_shape, carried on the imported MappingSet because an
+        /// imported profile has no device PadSetting to stamp), else the
+        /// device PadSetting's own shape. Same overlay contract as the
+        /// touchpad gesture auto-arm.</summary>
+        private static DeadZoneShape ResolveThumbDeadZoneShape(int slotIndex, bool left, PadSetting ps)
+        {
+            // No Workshop overlay here any more. An import's deadzone
+            // shape is folded into this PadSetting when the device is
+            // assigned (WorkshopTuningApplier), so the user's own Dead
+            // Zone Shape control is the single source of truth. Reading
+            // the slot stamp first meant editing that control did
+            // nothing on an imported profile, silently.
+            return ParseDeadZoneShape(left ? ps.LeftThumbDeadZoneShape : ps.RightThumbDeadZoneShape);
         }
 
         /// <summary>
@@ -423,6 +521,25 @@ namespace PadForge.Common.Input
             if (_descriptorCache.Count < DescriptorCacheCap)
                 _descriptorCache[descriptor] = result;
             return result;
+        }
+
+        /// <summary>'|' OR-descriptor split memo: legacy composed
+        /// descriptors re-split per poll on un-resaved configs. Parts are
+        /// pre-trimmed (every consumer immediately Trim()ed the raw
+        /// parts); empties are KEPT so "A||B" evaluates the same three
+        /// legs it always has. Same cap discipline as the descriptor
+        /// cache above.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<
+            string, string[]> _pipePartsCache = new();
+
+        private static string[] PipePartsCached(string descriptor)
+        {
+            if (_pipePartsCache.TryGetValue(descriptor, out var parts)) return parts;
+            parts = descriptor.Split('|');
+            for (int i = 0; i < parts.Length; i++) parts[i] = parts[i].Trim();
+            if (_pipePartsCache.Count < DescriptorCacheCap)
+                _pipePartsCache[descriptor] = parts;
+            return parts;
         }
 
         private static MappingDescriptor ParseDescriptorCore(string descriptor)
@@ -518,9 +635,9 @@ namespace PadForge.Common.Input
             // Support multiple descriptors separated by '|' (OR logic).
             if (descriptor.Contains('|'))
             {
-                foreach (string part in descriptor.Split('|'))
+                foreach (string part in PipePartsCached(descriptor))
                 {
-                    if (MapToButtonPressedSingle(state, part.Trim(), deviceGuid, slotIndex, deadZonePercent, globalThresholdPercent, bidirectional))
+                    if (MapToButtonPressedSingle(state, part, deviceGuid, slotIndex, deadZonePercent, globalThresholdPercent, bidirectional))
                         return true;
                 }
                 return false;
@@ -719,8 +836,175 @@ namespace PadForge.Common.Input
         /// device and state.Ir belongs to that device), then the legacy per-key
         /// descriptor. Returns null when the target is not IR-driven, which
         /// keeps the existing delta path untouched for every other source.</summary>
+        /// <summary>
+        /// Flick stick (#225): ticks every "Flick Stick ..." source on the
+        /// ACTIVE KbmMouseX row and returns the summed mouse X counts for
+        /// this frame. Layer-aware on purpose, unlike
+        /// <see cref="FindIrPointerSource"/>'s Base-only walk: #225's
+        /// headline is flick stick hosted on a shift layer, so the row
+        /// resolution must ride <see cref="FindActiveRowForTarget"/>. While
+        /// the hosting layer is off the row never evaluates, the tick's
+        /// frame-sequence gap detection re-arms on the next engage, and no
+        /// residual counts are emitted. No legacy per-key descriptor leg:
+        /// the family is newer than the MappingSet grid, so no pre-grid
+        /// config can carry it.
+        /// </summary>
+        /// <summary>The mouse target's deflection combine, with gyro sources
+        /// reading zero. They are counted once, on the rate lane, and a row
+        /// mixing gyro with a stick still sums the stick here exactly as
+        /// before.</summary>
+        private static bool EvaluateMouseAxisWithoutGyro(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid,
+            int slotIndex, string targetName, out short value)
+        {
+            using (new PadForge.Engine.Common.Mapping.SourceCoercion.GyroMouseLaneScope(true))
+            using (new PadForge.Engine.Common.Mapping.SourceCoercion.TouchMouseLaneScope(true))
+                return TryEvaluateMappingSetBipolarAxis(
+                    state, mappingSet, thisDeviceGuid, slotIndex, targetName, out value);
+        }
+
+        /// <summary>Sums the gyro rate lane for both mouse axes. Mirrors
+        /// <see cref="TickFlickStickSources"/>: walks the active row for each
+        /// mouse target and takes only the sources whose output is calibrated
+        /// counts rather than a deflection.</summary>
+        private static (float X, float Y) TickGyroMouseSources(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
+        {
+            float gx = 0f, gy = 0f;
+            // dt is the poll's own measured delta. ComputeAndAdvanceDelta is
+            // a pure read of the once-per-poll cache, so calling it for both
+            // axes is safe and gives them the same frame time.
+            float dt = (float)ComputeAndAdvanceDelta(slotIndex);
+            if (dt <= 0f) return (0f, 0f);
+
+            for (int axis = 0; axis < 2; axis++)
+            {
+                bool forX = axis == 0;
+                var row = FindActiveRowForTarget(mappingSet, forX ? "KbmMouseX" : "KbmMouseY",
+                    slotIndex, out bool shiftSuppressed);
+                if (shiftSuppressed) continue;
+                var sources = row?.Sources;
+                if (sources == null) continue;
+
+                for (int i = 0; i < sources.Count; i++)
+                {
+                    var src = sources[i];
+                    if (src == null) continue;
+                    var d = src.Descriptor;
+                    if (string.IsNullOrEmpty(d) || !d.StartsWith("Gyro ", StringComparison.Ordinal))
+                        continue;
+                    // Consume/postpone parity with the row evaluators: a
+                    // suppressed source must not keep driving the cursor
+                    // while its press is being eaten.
+                    if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                        continue;
+
+                    // Offline-contributes-zero, as everywhere else.
+                    var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                        ? state : LookupDeviceState(src.DeviceGuid);
+                    if (devState == null) continue;
+
+                    var (cx, cy) = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .ReadGyroMouseCounts(devState, src, slotIndex,
+                            string.IsNullOrEmpty(src.DeviceGuid) ? thisDeviceGuid : src.DeviceGuid,
+                            dt, forX);
+                    gx += cx; gy += cy;
+                }
+            }
+            return (gx, gy);
+        }
+
+        /// <summary>Sums the touchpad rate lane for both mouse axes. The
+        /// gyro ticker's twin; the difference is the wall clock, because the
+        /// engine read measures the interval BETWEEN device reports to turn
+        /// a delta into a velocity.</summary>
+        private static (float X, float Y) TickTouchpadMouseSources(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
+        {
+            float tx = 0f, ty = 0f;
+            float dt = (float)ComputeAndAdvanceDelta(slotIndex);
+            if (dt <= 0f) return (0f, 0f);
+            long now = System.Diagnostics.Stopwatch.GetTimestamp();
+            long freq = System.Diagnostics.Stopwatch.Frequency;
+
+            for (int axis = 0; axis < 2; axis++)
+            {
+                bool forX = axis == 0;
+                var row = FindActiveRowForTarget(mappingSet, forX ? "KbmMouseX" : "KbmMouseY",
+                    slotIndex, out bool shiftSuppressed);
+                if (shiftSuppressed) continue;
+                var sources = row?.Sources;
+                if (sources == null) continue;
+
+                for (int i = 0; i < sources.Count; i++)
+                {
+                    var src = sources[i];
+                    if (src == null) continue;
+                    if (!PadForge.Engine.Common.Mapping.SourceCoercion
+                            .IsTouchpadFingerAxisDescriptor(src.Descriptor))
+                        continue;
+                    if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                        continue;
+
+                    var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                        ? state : LookupDeviceState(src.DeviceGuid);
+                    if (devState == null) continue;
+
+                    var (cx, cy) = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .ReadTouchpadMouseCounts(devState, src, slotIndex,
+                            string.IsNullOrEmpty(src.DeviceGuid) ? thisDeviceGuid : src.DeviceGuid,
+                            dt, forX, now, freq);
+                    tx += cx; ty += cy;
+                }
+            }
+            return (tx, ty);
+        }
+
+        private static int TickFlickStickSources(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
+        {
+            var row = FindActiveRowForTarget(mappingSet, "KbmMouseX", slotIndex, out _);
+            var sources = row?.Sources;
+            if (sources == null || sources.Count == 0) return 0;
+
+            var runtime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
+                ? _slotSourceKindRuntime[slotIndex] : null;
+            if (runtime == null) return 0;
+            double dt = ComputeAndAdvanceDelta(slotIndex);
+
+            int counts = 0;
+            for (int i = 0; i < sources.Count; i++)
+            {
+                var src = sources[i];
+                if (src == null
+                    || !PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(src.Descriptor))
+                    continue;
+                // Consume/postpone parity with the row evaluators
+                // (2026-07-25 audit): a suppressed flick source must not
+                // keep ticking flick state while its press is being eaten.
+                if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                    continue;
+                // Same cross-device resolution the per-target evaluators use:
+                // the source's own DeviceGuid wins; empty = this pass's device.
+                CustomInputState devState;
+                if (string.IsNullOrEmpty(src.DeviceGuid))
+                    devState = state;
+                else
+                {
+                    devState = LookupDeviceState(src.DeviceGuid);
+                    // Offline-contributes-zero: don't tick flick state
+                    // from another device's axes.
+                    if (devState == null) continue;
+                }
+                counts += runtime.TickFlickStick(slotIndex, "KbmMouseX", i, src, devState,
+                    dt, _stickTrimFrameSeq);
+            }
+            return counts;
+        }
+
         private static PadForge.Engine.Data.MappingSource FindIrPointerSource(
-            MappingSet mappingSet, string targetName, string legacyDesc, string thisDeviceGuid)
+            MappingSet mappingSet, string targetName, string legacyDesc, string thisDeviceGuid,
+            int slotIndex)
         {
             var row = FindBaseRowForTarget(mappingSet, targetName);
             if (row?.Sources != null)
@@ -731,6 +1015,11 @@ namespace PadForge.Common.Input
                     if (!src.Descriptor.StartsWith("IR Pointer ", StringComparison.Ordinal)) continue;
                     if (!string.IsNullOrEmpty(src.DeviceGuid)
                         && !string.Equals(src.DeviceGuid, thisDeviceGuid, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    // Consume/postpone parity with the row evaluators
+                    // (2026-07-25 audit): a suppressed pointer source must
+                    // not keep steering the absolute cursor lane.
+                    if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                         continue;
                     return src;
                 }
@@ -743,7 +1032,8 @@ namespace PadForge.Common.Input
             // smoothing, EMA key) attributes to this device rather than "".
             if (!string.IsNullOrEmpty(legacyDesc)
                 && TryGetEngineOwnedSource(legacyDesc, out string legacyClean, out bool legacyInv, out bool legacyHalf)
-                && legacyClean.StartsWith("IR Pointer ", StringComparison.Ordinal))
+                && legacyClean.StartsWith("IR Pointer ", StringComparison.Ordinal)
+                && !IsSourceSuppressedPostpone(slotIndex, thisDeviceGuid, legacyClean))
                 return new PadForge.Engine.Data.MappingSource
                 {
                     Descriptor = legacyClean,
@@ -751,6 +1041,59 @@ namespace PadForge.Common.Input
                     HalfAxis = legacyHalf,
                     DeviceGuid = thisDeviceGuid,
                 };
+            return null;
+        }
+
+        /// <summary>Finds an ENGAGED "Touchpad N Pointer ..." source feeding
+        /// a KBM mouse target (#9 B-15), so the absolute touchpad pointer
+        /// routes to the absolute cursor channel (KbmRawState.MouseAbs*)
+        /// exactly like the Wii IR pointer above. LAYER-AWARE on purpose,
+        /// unlike FindIrPointerSource's Base-only walk: the Workshop
+        /// translator hosts mouse_region groups on action-set and
+        /// mode-shift layers, so the row resolution must ride
+        /// FindActiveRowForTarget (the flick-stick precedent).
+        /// <para>ENGAGEMENT-GATED, unlike the IR finder: a corpus row can
+        /// mix relative sources with pointer sources (gyro + stick + a
+        /// mouse_region pad summed onto KbmMouseX, fixture 3456927474), and
+        /// an unconditional absolute claim would silence the relative
+        /// sources even with no finger on the pad. While no pointer source
+        /// is engaged the caller falls through to the delta lane, where the
+        /// pointer family reads 0 (a position is not a delta), so gyro aim
+        /// stays live; the moment a finger lands in a source's window the
+        /// row routes absolute and warps the cursor, Steam's mouse_region
+        /// behavior. First engaged source wins when several pads' regions
+        /// share the row. A lifted finger leaves MouseAbsValid unset and
+        /// contributes no delta, so the cursor freezes either way.</para>
+        /// Same cross-device discipline as the IR finder: only sources
+        /// owned by <paramref name="thisDeviceGuid"/> (or the empty "device
+        /// on this slot" guid) match, because the engagement gate reads
+        /// THIS device's touchpad state. No legacy per-key leg: the family
+        /// is newer than the MappingSet grid, so no pre-grid config can
+        /// carry it.</summary>
+        private static PadForge.Engine.Data.MappingSource FindEngagedTouchpadPointerSource(
+            CustomInputState state, MappingSet mappingSet, string targetName,
+            int slotIndex, string thisDeviceGuid)
+        {
+            var row = FindActiveRowForTarget(mappingSet, targetName, slotIndex, out _);
+            if (row?.Sources == null) return null;
+            foreach (var src in row.Sources)
+            {
+                if (src?.Descriptor == null) continue;
+                if (!PadForge.Engine.Common.Mapping.SourceCoercion
+                        .IsTouchpadPointerDescriptor(src.Descriptor)) continue;
+                if (!string.IsNullOrEmpty(src.DeviceGuid)
+                    && !string.Equals(src.DeviceGuid, thisDeviceGuid, StringComparison.OrdinalIgnoreCase))
+                    continue;
+                // Consume/postpone parity with the row evaluators
+                // (2026-07-25 audit): a suppressed pointer source reads
+                // disengaged, so the caller falls through to the delta
+                // lane exactly as it does with no finger in the window.
+                if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                    continue;
+                if (!PadForge.Engine.Common.Mapping.SourceCoercion
+                        .IsTouchpadPointerEngaged(state, src.Descriptor)) continue;
+                return src;
+            }
             return null;
         }
 
@@ -825,6 +1168,14 @@ namespace PadForge.Common.Input
             string deviceGuid, int slotIndex,
             int deadZonePercent = 0, int globalThresholdPercent = 50, bool bidirectional = false)
         {
+            // Suppression parity for the legacy per-key path (audit
+            // 2026-07-25, C14): the mapping-set evaluators and the legacy
+            // IR-pointer fallback all consult the consume/postpone set;
+            // these singles were the remaining unguarded readers. Gate on
+            // the raw spelling: legacy I/H-prefixed strings miss the clean
+            // key and stay unsuppressed, an accepted residual of a
+            // migrated-away config shape.
+            if (IsSourceSuppressedPostpone(slotIndex, deviceGuid, descriptor)) return false;
             // Touchpad-typed descriptors that resolve to a bool. Parallel to the
             // "Touchpad N Finger M X/Y/Down" descriptors consumed by Step 3's
             // touchpad output path; here we recognize:
@@ -876,7 +1227,11 @@ namespace PadForge.Common.Input
                     if (desc.Index >= 0 && desc.Index < CustomInputState.MaxAxis)
                     {
                         int value = state.Axis[desc.Index];
-                        double t = Math.Max(deadZonePercent > 0 ? deadZonePercent : globalThresholdPercent, 1) / 100.0;
+                        // Floor 0, not 1: zero = strictly-positive
+                        // detection (any nonzero), the DS4/DualSense
+                        // digital trigger-follower contract. See the
+                        // trigger-click activation default below.
+                        double t = Math.Max(deadZonePercent > 0 ? deadZonePercent : globalThresholdPercent, 0) / 100.0;
                         if (desc.HalfAxis)
                         {
                             if (bidirectional)
@@ -903,7 +1258,11 @@ namespace PadForge.Common.Input
                     if (desc.Index >= 0 && desc.Index < CustomInputState.MaxSliders)
                     {
                         int value = state.Sliders[desc.Index];
-                        double t = Math.Max(deadZonePercent > 0 ? deadZonePercent : globalThresholdPercent, 1) / 100.0;
+                        // Floor 0, not 1: zero = strictly-positive
+                        // detection (any nonzero), the DS4/DualSense
+                        // digital trigger-follower contract. See the
+                        // trigger-click activation default below.
+                        double t = Math.Max(deadZonePercent > 0 ? deadZonePercent : globalThresholdPercent, 0) / 100.0;
                         if (desc.HalfAxis)
                         {
                             if (bidirectional)
@@ -948,27 +1307,19 @@ namespace PadForge.Common.Input
             // Centidegrees: 0=Up, 4500=UpRight, 9000=Right, 13500=DownRight,
             // 18000=Down, 22500=DownLeft, 27000=Left, 31500=UpLeft.
             // Cardinals use ±67.5° tolerance; diagonals use ±22.5° (exact sector).
-            switch (direction.ToLowerInvariant())
-            {
-                case "up":
-                    return povValue >= 29250 || povValue <= 6750;
-                case "right":
-                    return povValue >= 2250 && povValue <= 15750;
-                case "down":
-                    return povValue >= 11250 && povValue <= 24750;
-                case "left":
-                    return povValue >= 20250 && povValue <= 33750;
-                case "upright":
-                    return povValue >= 2250 && povValue <= 6750;
-                case "downright":
-                    return povValue >= 11250 && povValue <= 15750;
-                case "downleft":
-                    return povValue >= 20250 && povValue <= 24750;
-                case "upleft":
-                    return povValue >= 29250 && povValue <= 33750;
-                default:
-                    return false;
-            }
+            // OrdinalIgnoreCase compares: ToLowerInvariant allocated a
+            // string per call on the 1 kHz path (4x per combined-DPad
+            // config per device per tick).
+            const System.StringComparison IC = System.StringComparison.OrdinalIgnoreCase;
+            if (direction.Equals("up", IC)) return povValue >= 29250 || povValue <= 6750;
+            if (direction.Equals("right", IC)) return povValue >= 2250 && povValue <= 15750;
+            if (direction.Equals("down", IC)) return povValue >= 11250 && povValue <= 24750;
+            if (direction.Equals("left", IC)) return povValue >= 20250 && povValue <= 33750;
+            if (direction.Equals("upright", IC)) return povValue >= 2250 && povValue <= 6750;
+            if (direction.Equals("downright", IC)) return povValue >= 11250 && povValue <= 15750;
+            if (direction.Equals("downleft", IC)) return povValue >= 20250 && povValue <= 24750;
+            if (direction.Equals("upleft", IC)) return povValue >= 29250 && povValue <= 33750;
+            return false;
         }
 
         // ─────────────────────────────────────────────
@@ -987,9 +1338,9 @@ namespace PadForge.Common.Input
             // Support multiple descriptors separated by '|'.
             if (descriptor.Contains('|'))
             {
-                foreach (string part in descriptor.Split('|'))
+                foreach (string part in PipePartsCached(descriptor))
                 {
-                    MapDPadFromPovSingle(state, part.Trim(), ref gp);
+                    MapDPadFromPovSingle(state, part, ref gp);
                 }
                 return;
             }
@@ -1034,7 +1385,8 @@ namespace PadForge.Common.Input
         ///   "Axis 4"               → single source
         ///   "Axis 4|Button 8"      → max of axis value or button (0 or 65535)
         /// </summary>
-        private static ushort MapToTrigger(CustomInputState state, string descriptor)
+        private static ushort MapToTrigger(CustomInputState state, string descriptor,
+            string deviceGuid, int slotIndex)
         {
             if (string.IsNullOrWhiteSpace(descriptor))
                 return 0;
@@ -1043,23 +1395,51 @@ namespace PadForge.Common.Input
             if (descriptor.Contains('|'))
             {
                 ushort best = 0;
-                foreach (string part in descriptor.Split('|'))
+                foreach (string part in PipePartsCached(descriptor))
                 {
-                    ushort val = MapToTriggerSingle(state, part.Trim());
+                    ushort val = MapToTriggerSingle(state, part, deviceGuid, slotIndex);
                     if (val > best)
                         best = val;
                 }
                 return best;
             }
 
-            return MapToTriggerSingle(state, descriptor);
+            return MapToTriggerSingle(state, descriptor, deviceGuid, slotIndex);
         }
 
         /// <summary>
         /// Maps a single descriptor to a trigger value (0–65535).
         /// </summary>
-        private static ushort MapToTriggerSingle(CustomInputState state, string descriptor)
+        private static ushort MapToTriggerSingle(CustomInputState state, string descriptor,
+            string deviceGuid, int slotIndex)
         {
+            // Suppression parity with MapToButtonPressedSingle and
+            // MapToThumbAxisSingle. This was the ONE legacy per-key reader that
+            // never consulted the postpone/consume set, so "Consume Trigger
+            // Buttons" was inert for anything mapped to an analog trigger while
+            // it worked on every other target family.
+            if (IsSourceSuppressedPostpone(slotIndex, deviceGuid, descriptor)) return 0;
+
+            // Engine-owned families (IR Pointer / IR Brightness / Balance /
+            // Mouse Position / Midi), the other half of the parity with
+            // MapToThumbAxisSingle. ParseDescriptor does not recognise these,
+            // so without this they fell straight to the invalid return and any
+            // engine-owned source mapped to an analog TRIGGER read a flat zero,
+            // while the identical descriptor on a thumb axis worked.
+            //
+            // EvaluateForTriggerTarget, not the bipolar evaluator the axis twin
+            // uses: a trigger is unipolar, and running it through the [-1..+1]
+            // path would put rest at mid-pull.
+            if (!string.IsNullOrWhiteSpace(descriptor)
+                && TryGetEngineOwnedSource(descriptor, out string engClean, out bool engInv, out bool engHalf))
+            {
+                float v = PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForTriggerTarget(
+                    state,
+                    new PadForge.Engine.Data.MappingSource { Descriptor = engClean, DeviceGuid = deviceGuid, Invert = engInv, HalfAxis = engHalf },
+                    slotIndex);
+                return (ushort)Math.Clamp((int)(v * ushort.MaxValue), 0, ushort.MaxValue);
+            }
+
             var desc = ParseDescriptor(descriptor);
             if (!desc.IsValid)
                 return 0;
@@ -1117,9 +1497,9 @@ namespace PadForge.Common.Input
             if (descriptor.Contains('|'))
             {
                 short best = 0;
-                foreach (string part in descriptor.Split('|'))
+                foreach (string part in PipePartsCached(descriptor))
                 {
-                    short val = MapToThumbAxisSingle(state, part.Trim(), deviceGuid, slotIndex);
+                    short val = MapToThumbAxisSingle(state, part, deviceGuid, slotIndex);
                     if (Math.Abs(val) > Math.Abs(best))
                         best = val;
                 }
@@ -1135,6 +1515,9 @@ namespace PadForge.Common.Input
         private static short MapToThumbAxisSingle(CustomInputState state, string descriptor,
             string deviceGuid, int slotIndex)
         {
+            // Suppression parity (audit 2026-07-25, C14), see
+            // MapToButtonPressedSingle.
+            if (IsSourceSuppressedPostpone(slotIndex, deviceGuid, descriptor)) return 0;
             // Engine-owned families (IR Pointer / IR Brightness / Balance /
             // Mouse Position / Midi): bipolar [-1..+1] scaled to the signed
             // axis range, same evaluator the mapping grid uses.
@@ -1189,7 +1572,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Maps a Custom Extended trigger-axis input descriptor pair to a
         /// signed short suitable for a trigger slot in
-        /// <see cref="ExtendedRawState.Axes"/>. The companion to
+        /// <see cref="RawHidState.Axes"/>. The companion to
         /// <see cref="MapToThumbAxisWithNeg"/> for the trigger half of the
         /// dispatch in <see cref="MapInputToExtendedRaw"/>.
         ///
@@ -1227,9 +1610,15 @@ namespace PadForge.Common.Input
         /// reads as released. There's no "negative trigger" to push the
         /// value below released, unlike a stick's left/right pair.</para>
         /// </summary>
-        private static short MapToExtendedTriggerAxis(CustomInputState state, string posDescriptor, string negDescriptor,
+        private static short MapToRawTriggerAxis(CustomInputState state, string posDescriptor, string negDescriptor,
             string deviceGuid, int slotIndex)
         {
+            // Suppression parity (audit 2026-07-25, C14), see
+            // MapToButtonPressedSingle. Trigger rest is short.MinValue.
+            if (IsSourceSuppressedPostpone(slotIndex, deviceGuid, posDescriptor)
+                && (string.IsNullOrWhiteSpace(negDescriptor)
+                    || IsSourceSuppressedPostpone(slotIndex, deviceGuid, negDescriptor)))
+                return short.MinValue;
             if (string.IsNullOrWhiteSpace(negDescriptor))
             {
                 // Single descriptor: empty → released; valid → analog read;
@@ -1315,19 +1704,12 @@ namespace PadForge.Common.Input
 
             bool active = IsPovDirectionActive(povValue, direction);
 
-            switch (direction.ToLowerInvariant())
-            {
-                case "up":
-                case "left":
-                    return active ? 0 : 32767;
-
-                case "down":
-                case "right":
-                    return active ? 65535 : 32767;
-
-                default:
-                    return 32767;
-            }
+            const System.StringComparison IC = System.StringComparison.OrdinalIgnoreCase;
+            if (direction.Equals("up", IC) || direction.Equals("left", IC))
+                return active ? 0 : 32767;
+            if (direction.Equals("down", IC) || direction.Equals("right", IC))
+                return active ? 65535 : 32767;
+            return 32767;
         }
 
         // ─────────────────────────────────────────────
@@ -1338,6 +1720,19 @@ namespace PadForge.Common.Input
         /// Applies deadzone, anti-deadzone, and linear scaling to a pair
         /// of thumbstick axes (X and Y) using the specified deadzone shape algorithm.
         /// </summary>
+        /// <summary>Test seam for <see cref="ApplyDeadZone"/>. Same
+        /// arguments, no behavior of its own.</summary>
+        internal static void ApplyDeadZoneForTest(ref short axisX, ref short axisY,
+            double deadZoneX, double deadZoneY,
+            double antiDeadZoneX, double antiDeadZoneY, double linear,
+            double maxRangeX, double maxRangeY,
+            double maxRangeXNeg, double maxRangeYNeg,
+            double[] lutX, double[] lutY,
+            DeadZoneShape shape)
+            => ApplyDeadZone(ref axisX, ref axisY, deadZoneX, deadZoneY,
+                antiDeadZoneX, antiDeadZoneY, linear, maxRangeX, maxRangeY,
+                maxRangeXNeg, maxRangeYNeg, lutX, lutY, shape);
+
         private static void ApplyDeadZone(ref short axisX, ref short axisY,
             double deadZoneX, double deadZoneY,
             double antiDeadZoneX, double antiDeadZoneY, double linear,
@@ -1407,7 +1802,16 @@ namespace PadForge.Common.Input
         private static short ApplyPostDeadZone(double remapped, double sign,
             double antiDeadZone, double linear, double[] lut)
         {
-            if (remapped <= 0 && antiDeadZone <= 0)
+            // No deflection means no output, anti-deadzone or not. The
+            // shaped paths hand back remapped == 0 for a stick inside its
+            // deadzone, and the old guard only short-circuited when the
+            // anti-deadzone was also zero: with one configured, a resting
+            // stick emitted +/-antiDeadZone%, and since the sign comes from
+            // the raw reading it flipped with sensor noise, so the axis
+            // oscillated between the two at rest. ApplySingleDeadZone, the
+            // Axial sibling of this pipeline, returns 0 inside the deadzone
+            // unconditionally; this now matches it.
+            if (remapped <= 0)
                 return 0;
 
             if (lut != null)
@@ -1543,10 +1947,18 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Parses a DeadZoneShape from a string. Returns ScaledRadial for null/empty/invalid.
         /// </summary>
+        private static readonly int s_maxDeadZoneShape =
+            System.Linq.Enumerable.Max(
+                (int[])Enum.GetValues(typeof(DeadZoneShape)));
+
         internal static DeadZoneShape ParseDeadZoneShape(string value)
         {
             if (string.IsNullOrEmpty(value)) return DeadZoneShape.ScaledRadial;
-            if (int.TryParse(value, out int v) && Enum.IsDefined(typeof(DeadZoneShape), v))
+            // Range check instead of non-generic Enum.IsDefined, which
+            // boxes the int per call on the tuning path (per device per
+            // 1 kHz tick).
+            if (int.TryParse(value, out int v)
+                && v >= 0 && v <= s_maxDeadZoneShape)
                 return (DeadZoneShape)v;
             return DeadZoneShape.ScaledRadial;
         }
@@ -1647,19 +2059,54 @@ namespace PadForge.Common.Input
             return (ushort)Math.Clamp((int)(output * 65535.0), 0, 65535);
         }
 
+        // Poll-hot parse memo: ApplyPadSettingTuning re-parses ~26 tuning
+        // strings per device per tick, and the profiler put
+        // System.Number.TryParseFloat on the poll thread inside it. The
+        // distinct-string population is tiny (user-entered tuning values), so
+        // cache the parse outcome per string. Same shape as the shipped
+        // SourceCoercion.s_typeIndexCache. The null sentinel marks an
+        // unparseable string, so each call site still gets ITS OWN default.
+        //
+        // Capped: profile imports deserialize arbitrary strings into these
+        // fields, and an uncapped cache would root every distinct key until
+        // process exit. Past the cap, values still parse; they just stop
+        // being remembered. Ints parse invariant to match the double policy
+        // (memoizing a CurrentCulture-sensitive parse would make the first
+        // culture win globally).
+        private const int ParseCacheCap = 4096;
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, double?>
+            s_doubleParseCache = new(StringComparer.Ordinal);
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, int?>
+            s_intParseCache = new(StringComparer.Ordinal);
+
         private static double TryParseDoubleStatic(string value, double defaultValue)
         {
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
-            return double.TryParse(value, System.Globalization.NumberStyles.Float,
-                System.Globalization.CultureInfo.InvariantCulture, out double result) ? result : defaultValue;
+            if (!s_doubleParseCache.TryGetValue(value, out var parsed))
+            {
+                parsed = double.TryParse(value, System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out double result)
+                    ? result : (double?)null;
+                if (s_doubleParseCache.Count < ParseCacheCap)
+                    s_doubleParseCache[value] = parsed;
+            }
+            return parsed ?? defaultValue;
         }
 
         private static int TryParseIntStatic(string value, int defaultValue)
         {
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
-            return int.TryParse(value, out int result) ? result : defaultValue;
+            if (!s_intParseCache.TryGetValue(value, out var parsed))
+            {
+                parsed = int.TryParse(value, System.Globalization.NumberStyles.Integer,
+                    System.Globalization.CultureInfo.InvariantCulture, out int result)
+                    ? result : (int?)null;
+                if (s_intParseCache.Count < ParseCacheCap)
+                    s_intParseCache[value] = parsed;
+            }
+            return parsed ?? defaultValue;
         }
 
         // ─────────────────────────────────────────────
@@ -1667,15 +2114,68 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Maps a CustomInputState to a ExtendedRawState using the PadSetting's Extended
+        /// Maps a CustomInputState to a RawHidState using the PadSetting's Extended
         /// dictionary-based mappings. Used for custom Extended configurations with
         /// arbitrary numbers of axes, buttons, and POVs.
         /// </summary>
-        private static ExtendedRawState MapInputToExtendedRaw(CustomInputState state, PadSetting ps,
+        /// <summary>Ensures the scratch state's arrays match the layout
+        /// shape (reallocates only on a layout edit).</summary>
+        private static void EnsureRawShape(ref RawHidState raw, CustomControllerLayout cfg)
+        {
+            int nAxes = Math.Min(cfg.Axes, 8);
+            int nBtnWords = (Math.Min(cfg.Buttons, 128) + 31) / 32;
+            int nPovs = Math.Min(cfg.Povs, 4);
+            if (raw.Axes == null || raw.Axes.Length != nAxes) raw.Axes = new short[nAxes];
+            if (raw.Buttons == null || raw.Buttons.Length != nBtnWords) raw.Buttons = new uint[nBtnWords];
+            if (raw.Povs == null || raw.Povs.Length != nPovs) raw.Povs = new int[nPovs];
+            if (raw.HardwareAxes == null || raw.HardwareAxes.Length != nAxes) raw.HardwareAxes = new short[nAxes];
+        }
+
+        private static bool RawContentEquals(in RawHidState a, RawHidState b)
+        {
+            static bool Eq(short[] x, short[] y)
+            {
+                if (x == null || y == null || x.Length != y.Length) return false;
+                for (int i = 0; i < x.Length; i++) if (x[i] != y[i]) return false;
+                return true;
+            }
+            if (b.Axes == null && b.Buttons == null && b.Povs == null) return false;
+            if (!Eq(a.Axes, b.Axes) || !Eq(a.HardwareAxes, b.HardwareAxes)) return false;
+            if (a.Buttons == null || b.Buttons == null || a.Buttons.Length != b.Buttons.Length) return false;
+            for (int i = 0; i < a.Buttons.Length; i++) if (a.Buttons[i] != b.Buttons[i]) return false;
+            if (a.Povs == null || b.Povs == null || a.Povs.Length != b.Povs.Length) return false;
+            for (int i = 0; i < a.Povs.Length; i++) if (a.Povs[i] != b.Povs[i]) return false;
+            return true;
+        }
+
+        private static RawHidState RawCopyOf(in RawHidState src)
+        {
+            var dst = new RawHidState
+            {
+                Axes = (short[])src.Axes.Clone(),
+                Buttons = (uint[])src.Buttons.Clone(),
+                Povs = (int[])src.Povs.Clone(),
+                HardwareAxes = (short[])src.HardwareAxes.Clone(),
+            };
+            return dst;
+        }
+
+        /// <summary>Activation threshold for a physical trigger AXIS
+        /// feeding a digital trigger-click button (ZL/ZR): ZERO, meaning
+        /// strictly-positive detection. DS4/DualSense hardware asserts
+        /// the digital trigger follower on ANY nonzero analog value, and
+        /// HIDMaestro's own virtual DS4/DualSense derives the bit the
+        /// same way (HidReportBuilder trigger-to-button derivation:
+        /// "any nonzero trigger value automatically engages the
+        /// corresponding descriptor button", value &gt; 0). The eval
+        /// floors treat a zero effective threshold as value &gt; 0.</summary>
+        private const int TriggerClickActivationPercent = 0;
+
+        internal static void MapInputToExtendedRaw(ref RawHidState raw,
+            CustomInputState state, PadSetting ps,
             CustomControllerLayout cfg,
             MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
         {
-            var raw = ExtendedRawState.Create(cfg.Axes, cfg.Buttons, cfg.Povs);
             raw.Clear(); // POVs need to start centered
             int vgt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
 
@@ -1689,21 +2189,21 @@ namespace PadForge.Common.Input
             // type so an unmapped trigger doesn't sit at 50% on the wire.
             for (int i = 0; i < cfg.Axes && i < raw.Axes.Length; i++)
             {
-                string axisKey = CachedName(ref _extAxisNames, i, "ExtendedAxis");
+                string axisKey = CachedName(ref _extAxisNames, i, "RawAxis");
                 bool isTrigger = cfg.IsTriggerSlot(i);
                 short axisValue;
                 if (isTrigger
-                    ? TryEvaluateMappingSetExtendedTrigger(state, mappingSet, thisDeviceGuid, slotIndex, axisKey, out axisValue)
+                    ? TryEvaluateMappingSetRawTrigger(state, mappingSet, thisDeviceGuid, slotIndex, axisKey, out axisValue)
                     : TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid, slotIndex, axisKey, out axisValue))
                 {
                     raw.Axes[i] = axisValue;
                 }
                 else
                 {
-                    string posDesc = ps.GetExtendedMapping(axisKey);
-                    string negDesc = ps.GetExtendedMapping(CachedName(ref _extAxisNegNames, i, "ExtendedAxis", "Neg"));
+                    string posDesc = ps.GetRawMapping(axisKey);
+                    string negDesc = ps.GetRawMapping(CachedName(ref _extAxisNegNames, i, "RawAxis", "Neg"));
                     raw.Axes[i] = isTrigger
-                        ? MapToExtendedTriggerAxis(state, posDesc, negDesc, thisDeviceGuid, slotIndex)
+                        ? MapToRawTriggerAxis(state, posDesc, negDesc, thisDeviceGuid, slotIndex)
                         : MapToThumbAxisWithNeg(state, posDesc, negDesc, thisDeviceGuid, slotIndex);
                 }
             }
@@ -1711,17 +2211,27 @@ namespace PadForge.Common.Input
             // ── Buttons ──
             for (int i = 0; i < cfg.Buttons; i++)
             {
-                string key = CachedName(ref _extBtnNames, i, "ExtendedBtn");
+                string key = CachedName(ref _extBtnNames, i, "RawBtn");
+                // Trigger-click buttons (the profile layout's
+                // LeftTriggerClick / RightTriggerClick roles, e.g. ZL/ZR
+                // on the Switch Pro) fed by a physical trigger axis must
+                // fire at press DETECTION, the way PlayStation pads
+                // assert their digital trigger followers, not at the
+                // generic 50% axis-to-button midpoint. An explicit
+                // per-row threshold still wins; only the unset default
+                // changes.
+                int tgt = (cfg.TriggerClickButtonMask & (1 << i)) != 0
+                    ? TriggerClickActivationPercent : vgt;
                 bool pressed;
                 if (TryEvaluateMappingSetButton(state, mappingSet, thisDeviceGuid,
-                        slotIndex, key, vgt, out pressed))
+                        slotIndex, key, tgt, out pressed))
                 {
                     if (pressed) raw.SetButton(i, true);
                 }
                 else
                 {
-                    string desc = ps.GetExtendedMapping(key);
-                    if (MapToButtonPressed(state, desc, thisDeviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), vgt, ps.GetMappingBidirectional(key) == "1"))
+                    string desc = ps.GetRawMapping(key);
+                    if (MapToButtonPressed(state, desc, thisDeviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), tgt, ps.GetMappingBidirectional(key) == "1"))
                         raw.SetButton(i, true);
                 }
             }
@@ -1729,21 +2239,22 @@ namespace PadForge.Common.Input
             // ── POVs ──
             for (int p = 0; p < cfg.Povs && p < raw.Povs.Length; p++)
             {
-                string upKey = CachedName(ref _extPovUpNames, p, "ExtendedPov", "Up"),
-                       downKey = CachedName(ref _extPovDownNames, p, "ExtendedPov", "Down");
-                string leftKey = CachedName(ref _extPovLeftNames, p, "ExtendedPov", "Left"),
-                       rightKey = CachedName(ref _extPovRightNames, p, "ExtendedPov", "Right");
-                bool up = EvalExtendedDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, upKey, vgt);
-                bool down = EvalExtendedDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, downKey, vgt);
-                bool left = EvalExtendedDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, leftKey, vgt);
-                bool right = EvalExtendedDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, rightKey, vgt);
+                string upKey = CachedName(ref _extPovUpNames, p, "RawPov", "Up"),
+                       downKey = CachedName(ref _extPovDownNames, p, "RawPov", "Down");
+                string leftKey = CachedName(ref _extPovLeftNames, p, "RawPov", "Left"),
+                       rightKey = CachedName(ref _extPovRightNames, p, "RawPov", "Right");
+                bool up = EvalRawDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, upKey, vgt);
+                bool down = EvalRawDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, downKey, vgt);
+                bool left = EvalRawDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, leftKey, vgt);
+                bool right = EvalRawDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, rightKey, vgt);
 
                 raw.Povs[p] = DirectionToContinuousPov(up, down, left, right);
             }
 
             // Pre-tuning frame for calibration capture / preview cold dot:
-            // everything below mutates raw.Axes in place.
-            raw.HardwareAxes = (short[])raw.Axes.Clone();
+            // everything below mutates raw.Axes in place. Copy into the
+            // scratch's own buffer (EnsureRawShape sized it).
+            Array.Copy(raw.Axes, raw.HardwareAxes, raw.Axes.Length);
 
             // ── Deadzones ──
             // Apply stick/trigger deadzones using the same axis layout as
@@ -1800,20 +2311,20 @@ namespace PadForge.Common.Input
                         // Extended dictionary (key order documented at
                         // ExtStickKeys).
                         var sk = ExtStickKeys(g);
-                        dzShape = ParseDeadZoneShape(ps.GetExtendedMapping(sk[0]));
-                        dzX = TryParseDoubleStatic(ps.GetExtendedMapping(sk[1]), 0);
-                        dzY = TryParseDoubleStatic(ps.GetExtendedMapping(sk[2]), 0);
-                        adzX = TryParseDoubleStatic(ps.GetExtendedMapping(sk[3]), 0);
-                        adzY = TryParseDoubleStatic(ps.GetExtendedMapping(sk[4]), 0);
-                        lin = TryParseDoubleStatic(ps.GetExtendedMapping(sk[5]), 0);
-                        lutX = Common.CurveLut.GetOrBuild(ps.GetExtendedMapping(sk[6]));
-                        lutY = Common.CurveLut.GetOrBuild(ps.GetExtendedMapping(sk[7]));
-                        cofX = TryParseDoubleStatic(ps.GetExtendedMapping(sk[8]), 0);
-                        cofY = TryParseDoubleStatic(ps.GetExtendedMapping(sk[9]), 0);
-                        mrX = TryParseDoubleStatic(ps.GetExtendedMapping(sk[10]), 100);
-                        mrY = TryParseDoubleStatic(ps.GetExtendedMapping(sk[11]), 100);
-                        mrXN = TryParseDoubleStatic(ps.GetExtendedMapping(sk[12]), mrX);
-                        mrYN = TryParseDoubleStatic(ps.GetExtendedMapping(sk[13]), mrY);
+                        dzShape = ParseDeadZoneShape(ps.GetRawMapping(sk[0]));
+                        dzX = TryParseDoubleStatic(ps.GetRawMapping(sk[1]), 0);
+                        dzY = TryParseDoubleStatic(ps.GetRawMapping(sk[2]), 0);
+                        adzX = TryParseDoubleStatic(ps.GetRawMapping(sk[3]), 0);
+                        adzY = TryParseDoubleStatic(ps.GetRawMapping(sk[4]), 0);
+                        lin = TryParseDoubleStatic(ps.GetRawMapping(sk[5]), 0);
+                        lutX = Common.CurveLut.GetOrBuild(ps.GetRawMapping(sk[6]));
+                        lutY = Common.CurveLut.GetOrBuild(ps.GetRawMapping(sk[7]));
+                        cofX = TryParseDoubleStatic(ps.GetRawMapping(sk[8]), 0);
+                        cofY = TryParseDoubleStatic(ps.GetRawMapping(sk[9]), 0);
+                        mrX = TryParseDoubleStatic(ps.GetRawMapping(sk[10]), 100);
+                        mrY = TryParseDoubleStatic(ps.GetRawMapping(sk[11]), 100);
+                        mrXN = TryParseDoubleStatic(ps.GetRawMapping(sk[12]), mrX);
+                        mrYN = TryParseDoubleStatic(ps.GetRawMapping(sk[13]), mrY);
                         break;
                 }
                 raw.Axes[xi] = ApplyCenterOffset(raw.Axes[xi], cofX);
@@ -1824,6 +2335,13 @@ namespace PadForge.Common.Input
                     Common.StickBoundary.GetOrBuild(boundaryMap));
                 ApplyDeadZone(ref raw.Axes[xi], ref raw.Axes[yi],
                     dzX, dzY, adzX, adzY, lin, mrX, mrY, mrXN, mrYN, lutX, lutY, dzShape);
+                // NO speed multiplier here. This function serves Extended and
+                // Nintendo raw-HID slots, whose sticks are absolute-position
+                // gamepad sticks: the stage above has already mapped full
+                // deflection to full scale, so a multiplier can only rescale
+                // partial deflections and clip. The per-axis response curves
+                // own the shaping (owner ruling 2026-07-27). The keyboard-and-
+                // mouse rate outputs get the knob, in MapInputToKbmRaw.
             }
 
             for (int g = 0; g < cfg.Triggers; g++)
@@ -1852,10 +2370,10 @@ namespace PadForge.Common.Input
                         // Custom Extended triggers 2+: read from Extended
                         // dictionary (key order documented at ExtTriggerKeys).
                         var tk = ExtTriggerKeys(g);
-                        dz = TryParseDoubleStatic(ps.GetExtendedMapping(tk[0]), 0);
-                        adz = TryParseDoubleStatic(ps.GetExtendedMapping(tk[1]), 0);
-                        maxR = TryParseDoubleStatic(ps.GetExtendedMapping(tk[2]), 100);
-                        tlut = Common.CurveLut.GetOrBuild(ps.GetExtendedMapping(tk[3]));
+                        dz = TryParseDoubleStatic(ps.GetRawMapping(tk[0]), 0);
+                        adz = TryParseDoubleStatic(ps.GetRawMapping(tk[1]), 0);
+                        maxR = TryParseDoubleStatic(ps.GetRawMapping(tk[2]), 100);
+                        tlut = Common.CurveLut.GetOrBuild(ps.GetRawMapping(tk[3]));
                         break;
                 }
                 // Triggers use signed short in raw path; convert to unsigned 16-bit range,
@@ -1866,19 +2384,18 @@ namespace PadForge.Common.Input
                 raw.Axes[ti] = (short)(asUshort + short.MinValue);
             }
 
-            return raw;
         }
 
         /// <summary>Evaluates one Extended POV-direction button, preferring
         /// the per-VC MappingSet row when present.</summary>
-        private static bool EvalExtendedDirection(CustomInputState state, PadSetting ps,
+        private static bool EvalRawDirection(CustomInputState state, PadSetting ps,
             MappingSet mappingSet, string thisDeviceGuid, int slotIndex,
             string key, int globalThreshold)
         {
             if (TryEvaluateMappingSetButton(state, mappingSet, thisDeviceGuid,
                     slotIndex, key, globalThreshold, out bool pressed))
                 return pressed;
-            return MapToButtonPressed(state, ps.GetExtendedMapping(key),
+            return MapToButtonPressed(state, ps.GetRawMapping(key),
                 thisDeviceGuid, slotIndex,
                 TryParseIntStatic(ps.GetMappingDeadZone(key), 0), globalThreshold,
                 ps.GetMappingBidirectional(key) == "1");
@@ -1909,11 +2426,26 @@ namespace PadForge.Common.Input
         /// mappings. CC values are mapped from signed axis range to 0-127 MIDI range.
         /// Notes are mapped as boolean on/off.
         /// </summary>
-        private static MidiRawState MapInputToMidiRaw(CustomInputState state, PadSetting ps,
+        private static void EnsureMidiShape(ref MidiRawState raw, int ccCount, int noteCount)
+        {
+            if (raw.CcValues == null || raw.CcValues.Length != ccCount) raw.CcValues = new byte[ccCount];
+            if (raw.Notes == null || raw.Notes.Length != noteCount) raw.Notes = new bool[noteCount];
+        }
+
+        private static bool MidiContentEquals(in MidiRawState a, MidiRawState b)
+        {
+            if (b.CcValues == null || b.Notes == null) return false;
+            if (a.CcValues.Length != b.CcValues.Length || a.Notes.Length != b.Notes.Length) return false;
+            for (int i = 0; i < a.CcValues.Length; i++) if (a.CcValues[i] != b.CcValues[i]) return false;
+            for (int i = 0; i < a.Notes.Length; i++) if (a.Notes[i] != b.Notes[i]) return false;
+            return true;
+        }
+
+        private static void MapInputToMidiRaw(ref MidiRawState raw,
+            CustomInputState state, PadSetting ps,
             int ccCount, int noteCount,
             MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
         {
-            var raw = MidiRawState.Create(ccCount, noteCount);
             raw.Clear();
             int mgt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
 
@@ -1950,7 +2482,6 @@ namespace PadForge.Common.Input
                 raw.Notes[i] = pressed;
             }
 
-            return raw;
         }
 
         // ─────────────────────────────────────────────
@@ -1966,7 +2497,7 @@ namespace PadForge.Common.Input
 
         // ── Interpolated-key name tables (audit 1n) ──
         // The mapping dictionaries are keyed by a closed, index-driven
-        // vocabulary ("KbmKey41", "ExtendedAxis3", "MidiCC7", ...).
+        // vocabulary ("KbmKey41", "RawAxis3", "MidiCC7", ...).
         // Interpolating those keys per poll allocated ~100k strings/s of
         // gen0 on the poll thread; these tables cache each name on first
         // use. Poll-thread only, like the mappers that read them.
@@ -2009,7 +2540,7 @@ namespace PadForge.Common.Input
             System.Array.Copy(t, grown, t.Length);
             for (int i = t.Length; i < grown.Length; i++)
             {
-                string p = "ExtendedStick" + i.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                string p = "RawStick" + i.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 grown[i] = new[]
                 {
                     p + "DzShape", p + "DzX", p + "DzY", p + "AdzX", p + "AdzY",
@@ -2031,7 +2562,7 @@ namespace PadForge.Common.Input
             System.Array.Copy(t, grown, t.Length);
             for (int i = t.Length; i < grown.Length; i++)
             {
-                string p = "ExtendedTrigger" + i.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                string p = "RawTrigger" + i.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 grown[i] = new[] { p + "Dz", p + "Adz", p + "Mr", p + "Curve" };
             }
             _extTriggerKeys = grown;
@@ -2127,11 +2658,38 @@ namespace PadForge.Common.Input
             bool irPointerDrivesMouse = false;
             bool irDroveMouseX = false, irDroveMouseY = false;
 
+            // Flick stick (#225): exact-counts mouse X lane, additive and
+            // independent of the velocity/absolute chain below. Evaluated
+            // here (not in the bipolar combine) because its output is
+            // calibrated counts, not a [-1..+1] deflection; the same
+            // sources read as 0 through the coercion path, so a mixed
+            // gyro+flick row still sums its other sources normally.
+            raw.MouseFlickX = TickFlickStickSources(state, mappingSet, thisDeviceGuid, slotIndex);
+
+            // Gyro (#79 feel): exact-counts mouse lane, the flick-stick
+            // shape for the same reason. On the [-1..+1] deflection lane
+            // gyro clamped at 500 deg/s, which an ordinary aiming flick
+            // passes, and spent a fixed 15 px per poll so the same wrist
+            // motion moved sixteen times as far at a 1 ms poll as at 16 ms.
+            // Evaluated here rather than in the bipolar combine so a row
+            // mixing gyro with a stick still sums the stick normally, with
+            // the combine below scoped to skip gyro so it counts once.
+            (raw.MouseGyroX, raw.MouseGyroY) =
+                TickGyroMouseSources(state, mappingSet, thisDeviceGuid, slotIndex);
+
+            // Touchpad: the same rate lane, for the same reason plus one. A
+            // pad reports near 250 Hz against a 1 kHz poll, so recomputing
+            // the delta per poll read zero three times in four and burst on
+            // the fourth. This turns each report into a velocity and spends
+            // it every poll until the next one arrives.
+            (raw.MouseTouchX, raw.MouseTouchY) =
+                TickTouchpadMouseSources(state, mappingSet, thisDeviceGuid, slotIndex);
+
             // Map mouse X axis (bidirectional)
             {
                 string posDesc = ps.GetKbmMapping("KbmMouseX");
                 string negDesc = ps.GetKbmMapping("KbmMouseXNeg");
-                var irSrcX = FindIrPointerSource(mappingSet, "KbmMouseX", posDesc, thisDeviceGuid);
+                var irSrcX = FindIrPointerSource(mappingSet, "KbmMouseX", posDesc, thisDeviceGuid, slotIndex);
                 if (irSrcX != null)
                 {
                     // Wii IR pointing is ABSOLUTE aim (Touchmote-style): the
@@ -2146,7 +2704,27 @@ namespace PadForge.Common.Input
                     irPointerDrivesMouse = true;
                     irDroveMouseX = true;
                 }
-                else if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                else if (FindEngagedTouchpadPointerSource(state, mappingSet, "KbmMouseX",
+                        slotIndex, thisDeviceGuid) is { } tpSrcX)
+                {
+                    // Absolute touchpad pointer (#9 B-15): the finger's pad
+                    // position IS the cursor position, the same absolute
+                    // channel the IR pointer drives above. The finder
+                    // already gated on engagement (finger in contact inside
+                    // the source's half window), so the value is live by
+                    // construction; a lifted finger falls through to the
+                    // delta lane below, produces no delta, and the cursor
+                    // freezes at its last position (the Wii sight-loss
+                    // convention, and Steam's mouse_region behavior with
+                    // teleport_stop off). Never sets irPointerDrivesMouse:
+                    // the Wii pointer modes (FPS Mouse / borders) stay an
+                    // IR-only feature.
+                    raw.MouseAbsX = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .EvaluateForBipolarAxisTarget(state, tpSrcX, slotIndex,
+                            evaluatedDeviceGuid: thisDeviceGuid);
+                    raw.MouseAbsValid = true; raw.MouseAbsXValid = true;
+                }
+                else if (EvaluateMouseAxisWithoutGyro(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmMouseX", out short msxValue))
                 {
                     raw.MouseDeltaX = msxValue;
@@ -2159,7 +2737,7 @@ namespace PadForge.Common.Input
             {
                 string posDesc = ps.GetKbmMapping("KbmMouseY");
                 string negDesc = ps.GetKbmMapping("KbmMouseYNeg");
-                var irSrcY = FindIrPointerSource(mappingSet, "KbmMouseY", posDesc, thisDeviceGuid);
+                var irSrcY = FindIrPointerSource(mappingSet, "KbmMouseY", posDesc, thisDeviceGuid, slotIndex);
                 if (irSrcY != null)
                 {
                     // Absolute aim, same as the X block. state.Ir.Y is already
@@ -2172,7 +2750,20 @@ namespace PadForge.Common.Input
                     irPointerDrivesMouse = true;
                     irDroveMouseY = true;
                 }
-                else if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                else if (FindEngagedTouchpadPointerSource(state, mappingSet, "KbmMouseY",
+                        slotIndex, thisDeviceGuid) is { } tpSrcY)
+                {
+                    // Absolute pointer Y (#9 B-15), same as the X block. SDL
+                    // touchpad Y is already screen-aligned (0 = top edge, so
+                    // the tuned bipolar's +1 = bottom), matching the
+                    // MouseAbsY convention the VC consumes; no
+                    // velocity-convention negation here.
+                    raw.MouseAbsY = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .EvaluateForBipolarAxisTarget(state, tpSrcY, slotIndex,
+                            evaluatedDeviceGuid: thisDeviceGuid);
+                    raw.MouseAbsValid = true; raw.MouseAbsYValid = true;
+                }
+                else if (EvaluateMouseAxisWithoutGyro(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmMouseY", out short msyValue))
                 {
                     // KbmMouseY convention is positive = UP (the VC negates it to
@@ -2204,9 +2795,40 @@ namespace PadForge.Common.Input
             raw.MouseDeltaY = ApplyCenterOffset(raw.MouseDeltaY, TryParseDoubleStatic(ps.LeftThumbCenterOffsetY, 0));
 
             // ── Mouse movement deadzone + sensitivity (uses Left Thumb settings) ──
+            // SAFETY FLOOR. The stored default for these is "0", and a stick
+            // driving the SYSTEM CURSOR with no deadzone means the pointer
+            // creeps forever on any pad that does not have a generous
+            // mechanical deadzone of its own, which is nearly all of them.
+            // The user then cannot reach PadForge's own window to undo it:
+            // Alt+F4 is the only exit. Unlike a drifting gamepad stick, this
+            // failure takes the machine away from them, so the mouse lane
+            // gets a non-zero default that the gamepad lane does not.
+            // LIMIT, stated because the original comment here promised the
+            // opposite and could not deliver it. An explicit Sticks-tab value
+            // wins only when it is ABOVE the floor. It cannot express a
+            // deliberate zero: LeftThumbDeadZoneX/Y initialize to the string
+            // "0" (PadSetting.cs) and XmlSerializer leaves an absent element
+            // at its initializer, so "never touched" and "the user typed 0"
+            // are byte-identical here. There is no value that turns the floor
+            // off. Making zero expressible means changing that initializer to
+            // "", which the gamepad left-stick lane also reads, so it is an
+            // owner call rather than a local fix.
+            //
+            // Scope, for the record: this floor only reaches the DELTA lane.
+            // IR and touchpad pointer sources write raw.MouseAbsX/Y and never
+            // pass through ApplyDeadZone, so they are unaffected. Gyro shares
+            // this lane and MUST keep the floor, since bias drift creeps the
+            // cursor exactly the way stick drift does. The one family that
+            // rests at exactly zero, and is therefore floored for nothing, is
+            // a physical "Mouse Motion" source routed here.
+            const double KbmMouseDefaultDeadZonePercent = 10.0;
+            double kbmDzX = TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0);
+            double kbmDzY = TryParseDoubleStatic(ps.LeftThumbDeadZoneY, 0);
+            if (kbmDzX <= 0) kbmDzX = KbmMouseDefaultDeadZonePercent;
+            if (kbmDzY <= 0) kbmDzY = KbmMouseDefaultDeadZonePercent;
             ApplyDeadZone(ref raw.MouseDeltaX, ref raw.MouseDeltaY,
-                TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0),
-                TryParseDoubleStatic(ps.LeftThumbDeadZoneY, 0),
+                kbmDzX,
+                kbmDzY,
                 TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneX, 0),
                 TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneY, 0),
                 TryParseDoubleStatic(ps.LeftThumbLinear, 0),
@@ -2217,6 +2839,11 @@ namespace PadForge.Common.Input
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveY),
                 ParseDeadZoneShape(ps.LeftThumbDeadZoneShape));
+            // Mouse-movement speed (Sticks tab, stick 0 on a KBM slot).
+            // Applied after the deadzone / range / curve stage so the tab
+            // scales what the mapping table produced.
+            ApplyKbmStickSpeed(ref raw.MouseDeltaX, ref raw.MouseDeltaY,
+                TryParseDoubleStatic(ps.LeftThumbSensitivity, 1));
 
             // ── Wii pointer modes (issue #203) ──
             // Placed AFTER the relative lane's deadzone so FPS Mouse's
@@ -2269,6 +2896,10 @@ namespace PadForge.Common.Input
                     Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
                     Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
                     ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
+                // Scroll speed (Sticks tab, stick 1 on a KBM slot). scrollX is
+                // the dummy the deadzone call needs; only ScrollDelta ships.
+                ApplyKbmStickSpeed(ref scrollX, ref raw.ScrollDelta,
+                    TryParseDoubleStatic(ps.RightThumbSensitivity, 1));
             }
 
             // ── Horizontal scroll (issue #154, office-mouse tilt wheel) ──
@@ -2309,6 +2940,13 @@ namespace PadForge.Common.Input
                     Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
                     Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
                     ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
+                // Scroll speed, exactly as the vertical block above applies it.
+                // This was the one rate lane that skipped the knob, so the
+                // Sticks-tab speed moved mouse and vertical scroll while the
+                // tilt wheel kept running at 1x. scrollHy is the dummy the
+                // deadzone call needs; only ScrollDeltaH ships.
+                ApplyKbmStickSpeed(ref raw.ScrollDeltaH, ref scrollHy,
+                    TryParseDoubleStatic(ps.RightThumbSensitivity, 1));
             }
 
             return raw;
@@ -2593,7 +3231,7 @@ namespace PadForge.Common.Input
             {
                 // Try a "Touchpad N Finger M X|Y" parse; default to the
                 // expected slot (physicalFingerIdx, X or Y).
-                var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var parts = PadForge.Engine.Common.Mapping.SourceCoercion.SplitTokensCached(descriptor);
                 int padIdx = 0;
                 int fingerIdx = physicalFingerIdx;
                 int axisOffset = isY ? 1 : 0;
@@ -2630,57 +3268,20 @@ namespace PadForge.Common.Input
             descriptor.StartsWith("Touchpad", StringComparison.Ordinal);
 
         /// <summary>
-        /// Resolves bool-yielding touchpad descriptors against a CustomInputState.
-        /// Recognized forms:
-        ///   "Touchpad N Click"          — state.Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD;
-        ///                                  N is parsed but only N==0 currently
-        ///                                  has a backing slot — multi-touchpad
-        ///                                  devices route their extras through
-        ///                                  the SDL3 fork patch into other
-        ///                                  Buttons[] indices, not handled here)
-        ///   "Touchpad N Finger M Down"  — state.TouchpadDown[M], finger M's
-        ///                                  contact bool. N is parsed for
-        ///                                  symmetry with the X/Y descriptors.
-        /// Anything else returns false. The N==0 restriction matches the X/Y
-        /// descriptors elsewhere in Step 3 — PadForge models a single logical
-        /// touchpad with up to two fingers regardless of how many physical
-        /// touchpads SDL reports (multi-touchpad devices like the Steam Deck
-        /// fan their fingers into the same two slots).
+        /// Resolves bool-yielding touchpad descriptors against a
+        /// CustomInputState by delegating to
+        /// <see cref="SourceCoercion.ReadTouchpadBool"/>, the single owner
+        /// of the touchpad bool grammar ("Touchpad N Click" incl. the v18
+        /// windowed click, "Touchpad N Finger M Down" with every window
+        /// token, and the 7-token quadrant-in-half compose). This used to
+        /// be a hand-kept mirror of that reader and diverged on every v18
+        /// window token, so the same descriptor read true on a mapping-set
+        /// row and false on the legacy per-key path (audit 2026-07-17 G1).
+        /// X/Y descriptors still resolve false: a finger position has no
+        /// bool reading, so a stick X can't quietly become a button.
+        /// Internal for the PadForge.Tests twin-sync pins.
         /// </summary>
-        private static bool MapTouchpadButton(CustomInputState state, string descriptor)
-        {
-            // Format: "Touchpad N <suffix>", split on spaces.
-            var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length < 3) return false;
-            if (!int.TryParse(parts[1], out int touchpadIndex)) return false;
-
-            // Click: "Touchpad N Click" — 3 parts.
-            if (parts.Length == 3 && string.Equals(parts[2], "Click", StringComparison.Ordinal))
-            {
-                if (touchpadIndex != 0) return false;
-                if (state.Buttons == null || state.Buttons.Length <= 16) return false;
-                return state.Buttons[16];
-            }
-
-            // Finger down: "Touchpad N Finger M Down" — 5 parts.
-            if (parts.Length == 5
-                && string.Equals(parts[2], "Finger", StringComparison.Ordinal)
-                && string.Equals(parts[4], "Down", StringComparison.Ordinal)
-                && int.TryParse(parts[3], out int fingerIndex))
-            {
-                if (state.Touchpads == null
-                    || touchpadIndex < 0 || touchpadIndex >= state.Touchpads.Length) return false;
-                var pad = state.Touchpads[touchpadIndex];
-                if (pad == null || fingerIndex < 0 || fingerIndex >= pad.MaxFingers) return false;
-                return pad.FingerDown[fingerIndex];
-            }
-
-            // X/Y descriptors are handled by the touchpad output path in
-            // Step 3 directly (BuildTouchpadState reads state.Touchpads),
-            // not via MapToButtonPressed. They don't have a meaningful bool
-            // interpretation, so reject them here so the user can't quietly
-            // assign a stick X to a button.
-            return false;
-        }
+        internal static bool MapTouchpadButton(CustomInputState state, string descriptor)
+            => SourceCoercion.ReadTouchpadBool(state, descriptor);
     }
 }

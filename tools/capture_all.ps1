@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Captures ALL PadForge screenshots for wiki and README.
 .DESCRIPTION
@@ -13,7 +13,13 @@
 param(
     [string]$OutputDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge.wiki\images",
     [string]$PadForgeExe = "C:\PadForge\PadForge.exe",
-    [string]$PadForgeXml = "C:\PadForge\PadForge.xml"
+    [string]$PadForgeXml = "C:\PadForge\PadForge.xml",
+    # Tail mode: reuse the capture-configured PadForge.xml an aborted full
+    # run left behind (slots + dummies + assignments intact, owner backup
+    # still in .bak) and jump straight to the STEP 3b tail on a FRESH app
+    # process. Exists because the WPF UIA tree degrades over a marathon
+    # run and late-run device FindAlls hang (2026-07-30, twice).
+    [switch]$SkipToTail
 )
 
 Set-StrictMode -Version Latest
@@ -47,9 +53,18 @@ public class Win32 {
     [DllImport("user32.dll", SetLastError = true)]
     public static extern uint SendInput(uint n, INPUT[] inp, int sz);
     [DllImport("user32.dll")] public static extern bool PostMessage(IntPtr h, uint msg, IntPtr w, IntPtr l);
+    public delegate bool EnumProc(IntPtr h, IntPtr l);
+    [DllImport("user32.dll")] public static extern bool EnumWindows(EnumProc cb, IntPtr l);
+    [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr h);
 
-    public static readonly IntPtr TOPMOST = new IntPtr(-1);
-    public static readonly IntPtr NOTOPMOST = new IntPtr(-2);
+    // Top-level windows belonging to a PID (workshop/pair FluentWindow modals are
+    // UIA-shy from RootElement; EnumWindows + FromHandle is the proven discovery,
+    // same mechanic as tools/diag-sweep.ps1).
+    public static System.Collections.Generic.List<IntPtr> WindowsForPid(uint want) {
+        var r = new System.Collections.Generic.List<IntPtr>();
+        EnumWindows((h, l) => { uint p; GetWindowThreadProcessId(h, out p); if (p == want) r.Add(h); return true; }, IntPtr.Zero);
+        return r;
+    }
 
     [StructLayout(LayoutKind.Sequential)]
     public struct RECT { public int Left, Top, Right, Bottom; }
@@ -142,16 +157,6 @@ function Find-UIA {
     return $Parent.FindFirst($TD, $c)
 }
 
-function Find-AllUIA {
-    param(
-        [System.Windows.Automation.AutomationElement]$Parent = $script:uiaWin,
-        [System.Windows.Automation.ControlType]$CT
-    )
-    $c = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty, $CT)
-    return $Parent.FindAll($TD, $c)
-}
-
 function Click-El {
     param(
         [System.Windows.Automation.AutomationElement]$El,
@@ -160,7 +165,10 @@ function Click-El {
     )
     if (-not $El) { Write-Host "  !! NOT FOUND: $Label" -ForegroundColor Red; return $false }
     $r = $El.Current.BoundingRectangle
-    if ($r.IsEmpty -or $r.Width -le 0) {
+    # Height is checked alongside Width. IsEmpty does not catch a rect with
+    # width but no height, and such an element passed the guard and got clicked
+    # at its top edge, which lands on whatever is above it.
+    if ($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0) {
         Write-Host "  !! EMPTY BOUNDS: $Label" -ForegroundColor Red; return $false
     }
     $cx = [int]($r.X + $r.Width / 2); $cy = [int]($r.Y + $r.Height / 2)
@@ -264,54 +272,6 @@ function Find-AllSlots {
     return @()
 }
 
-function Find-SlotByType {
-    <#
-    .SYNOPSIS
-        Finds and selects a sidebar slot by controller type, returning the slot element.
-        Identifies type by selecting each slot and checking which PadPage elements are
-        present in the UIA tree (WPF Collapsed elements are removed from UIA):
-        - Extended: ExtendedStickCountBox AutomationId present (Extended-specific config UI)
-        - MIDI:     MidiConfigBar AutomationId present
-        - KBM:      KBMPreview AutomationId present (keyboard+mouse preview view)
-        - Xbox / PlayStation: none of the above config bars/previews
-    #>
-    param([string]$Type)  # "Xbox", "PlayStation", "Extended", "KBM", "MIDI"
-    $slots = @(Find-AllSlots)
-    foreach ($slot in $slots) {
-        Select-El $slot -Label "Probe $($slot.Current.Name)" -Delay 800
-        # Click the Controller tab so type-specific elements become visible in UIA
-        $padPage = Find-UIA -Aid "PadPageView"
-        if (-not $padPage) { continue }
-        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-            [System.Windows.Automation.ControlType]::RadioButton)
-        $probeTabs = $padPage.FindAll($TC, $rbCond)
-        if ($probeTabs.Count -gt 0) {
-            try { $probeTabs[0].GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke() } catch {}
-            Start-Sleep -Milliseconds 500
-        }
-        # WPF Collapsed elements are not in UIA tree, so presence = Visible
-        $hasExtended = $null -ne (Find-UIA -Parent $padPage -Aid "ExtendedStickCountBox")
-        $hasMidi = $null -ne (Find-UIA -Parent $padPage -Aid "MidiConfigBar")
-        $hasKbm  = $null -ne (Find-UIA -Parent $padPage -Aid "KBMPreview")
-        Write-Host "    $($slot.Current.Name): Extended=$hasExtended MIDI=$hasMidi KBM=$hasKbm"
-        $matched = $false
-        switch ($Type) {
-            "Extended"    { $matched = $hasExtended }
-            "MIDI"        { $matched = $hasMidi }
-            "KBM"         { $matched = $hasKbm }
-            "Xbox"        { $matched = -not $hasExtended -and -not $hasMidi -and -not $hasKbm }
-            "PlayStation" { $matched = -not $hasExtended -and -not $hasMidi -and -not $hasKbm }
-        }
-        if ($matched) {
-            Write-Host "  Found $Type slot: $($slot.Current.Name)" -ForegroundColor Green
-            return $slot
-        }
-    }
-    Write-Host "  !! Could not find $Type slot by content probing" -ForegroundColor Red
-    return $null
-}
-
 function Tab {
     param([string]$Name)
     $padPage = Find-UIA -Aid "PadPageView"
@@ -336,6 +296,15 @@ function Tab {
 # on the one whose items include the device name, so it never disturbs the
 # preset/profile combos.
 function Select-MappedDevice {
+    param([string]$NamePart, [int]$Retries = 3)
+    for ($smAttempt = 1; $smAttempt -le $Retries; $smAttempt++) {
+        if (Select-MappedDeviceOnce $NamePart) { return $true }
+        Write-Host "  Select-MappedDevice '$NamePart' attempt $smAttempt failed; retrying" -ForegroundColor DarkGray
+        Start-Sleep -Milliseconds 900
+    }
+    return $false
+}
+function Select-MappedDeviceOnce {
     param([string]$NamePart)
     $padPage = Find-UIA -Aid "PadPageView"
     if (-not $padPage) { Write-Host "  !! Select-MappedDevice: no PadPageView" -ForegroundColor Yellow; return $false }
@@ -366,6 +335,41 @@ function Select-MappedDevice {
     return $false
 }
 
+# Toggle the PadPage 2D/3D view. The button carries AutomationId
+# "ViewModeToggle" (PadPage.xaml:955) but usually has NO UIA PEER AT ALL:
+# the Helix viewport host strips its whole subtree from the automation
+# tree, so neither the Aid lookup nor an all-Buttons scan of that corner
+# finds anything (probed empirically 2026-07-30). The coordinate is
+# therefore the normal path, not the exception.
+#
+# The 4.1.0 prep shipped a WRONG pad-controller-2d because the old blind
+# offset (ppRect+52,+124) missed the button and the "2D" shot showed the
+# 3D model. Measured position on the maximized window (2582x1550):
+# window-relative (431, 249), which is ppRect + (41, 61).
+#
+# DETERMINISTIC ALTERNATIVE, preferred when a run can control the xml:
+# the view is a PERSISTED SETTING (AppSettings/Use2DControllerView, flipped
+# by PadPage.xaml.cs:206). Writing it in STEP 0 opens the PadPage in 2D
+# with no click at all. Use that when adding a new 2D capture.
+function Toggle-ViewMode {
+    $vmBtn = Find-UIA -Aid "ViewModeToggle"
+    if (-not $vmBtn) {
+        # Re-attach to the window; a stale cached element tree can hide
+        # freshly-realized peers.
+        $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$script:hwnd)
+        $vmBtn = Find-UIA -Aid "ViewModeToggle"
+    }
+    if ($vmBtn) { return (Click-El $vmBtn -Label "ViewModeToggle" -Delay 700) }
+    Write-Host "  ViewModeToggle has no UIA peer (expected); measured coordinate" -ForegroundColor DarkGray
+    $pp = Find-UIA -Aid "PadPageView"
+    if (-not $pp) { Write-Host "  !! Toggle-ViewMode: no PadPageView" -ForegroundColor Red; return $false }
+    $pr = $pp.Current.BoundingRectangle
+    [Win32]::ForceFG($script:hwnd); Start-Sleep -Milliseconds 100
+    [Win32]::ClickAt([int]($pr.X + 41), [int]($pr.Y + 61))
+    Start-Sleep -Milliseconds 900
+    return $true
+}
+
 # Capture a mapping row's Source ComboBox dropdown for the currently-mapped
 # device, with the gated Wii source (Balance / IR Brightness / Mouse Motion)
 # scrolled into view. The DataGrid cell ComboBoxes expose NO UIA peers (WPF-UI
@@ -384,21 +388,22 @@ function Capture-SourcePicker {
     [Win32]::GetWindowRect($script:hwnd, [ref]$wrP) | Out-Null
     $pw = $wrP.Right - $wrP.Left; $ph = $wrP.Bottom - $wrP.Top
     [Win32]::ForceFG($script:hwnd)
-    # The slot's mapping was auto-created for the earlier multi-device crowd, so it
-    # still lists stale sub-sources for devices no longer present. "Clear All"
-    # (~0.163 W, 0.174 H) empties it, then "Map All" (~0.33 W) regenerates clean
-    # single-source rows for the now-solo device. SendKeys Enter accepts any
-    # confirm dialog Clear All may raise (harmless on the grid if none appears).
-    [Win32]::ClickAt([int]($wrP.Left + 0.163 * $pw), [int]($wrP.Top + 0.174 * $ph)); Start-Sleep -Milliseconds 600
-    [System.Windows.Forms.SendKeys]::SendWait("{ENTER}"); Start-Sleep -Milliseconds 600
-    [Win32]::ClickAt([int]($wrP.Left + 0.33 * $pw), [int]($wrP.Top + 0.174 * $ph)); Start-Sleep -Milliseconds 1200
-    # First mapping row's Source-cell chevron: Source column right edge ~0.33 W,
-    # first data row ~0.245 H (read off the maximized-window Mappings screenshot).
-    $cx = [int]($wrP.Left + 0.33 * $pw)
-    $cy = [int]($wrP.Top  + 0.245 * $ph)
-    [Win32]::ClickAt($cx, $cy); Start-Sleep -Milliseconds 800   # open the Source dropdown
+    # HEAD geometry (measured off the committed 2582x1550 mappings.jpg + the
+    # expanded-row wii-balance-sources.jpg). No Clear All / Map All: their old
+    # left-toolbar fractions now land on Copy / "+ Shift Layer" (the toolbar
+    # was rearranged), and the rebuild is unnecessary anyway -- the DualSense
+    # stays assigned to slot 1 as the stable row PRIMARY, and each swap-on
+    # picker device contributes exactly one sub-source per row. Clicking a row
+    # expands the inline details editor: PRIMARY MODE (+0.050 H), COMBINE
+    # (+0.091 H), then the swap-on device's sub-source combo (+0.129 H).
+    # Rows start at 0.206 H, 0.0251 H apart; use the X row (output index 2).
+    $rowY = 0.206 + 2 * 0.0251
+    [Win32]::ClickAt([int]($wrP.Left + 0.25 * $pw), [int]($wrP.Top + $rowY * $ph)); Start-Sleep -Milliseconds 1000
+    # Sub-source combo of the expanded X row (the swap-on device's own picker):
+    # 0.329 W, 0.385 H on the reference shot.
+    [Win32]::ClickAt([int]($wrP.Left + 0.329 * $pw), [int]($wrP.Top + 0.385 * $ph)); Start-Sleep -Milliseconds 800
     [System.Windows.Forms.SendKeys]::SendWait($TypeAhead); Start-Sleep -Milliseconds 800  # type-ahead to the gated source
-    Write-Host "  picker: opened Source combo for '$DeviceNamePart', typed '$TypeAhead'" -ForegroundColor Green
+    Write-Host "  picker: expanded X row + opened '$DeviceNamePart' sub-source combo, typed '$TypeAhead'" -ForegroundColor Green
     Cap $ShotName
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}"); Start-Sleep -Milliseconds 400  # close dropdown
 }
@@ -499,12 +504,63 @@ function Close-DialogHwnd {
     Start-Sleep -Milliseconds 800
 }
 
+# Find a modal FluentWindow by Win32 EnumWindows: a visible PadForge-PID
+# top-level window that is not the main HWND and is dialog-sized. The pair /
+# NFC / workshop modals never surface in RootElement's child Window scan, so
+# this is the authoritative discovery (proven in tools/diag-sweep.ps1).
+# Complements Get-ForegroundDialogHwnd, which needs the modal to hold
+# foreground at call time.
+function Find-DialogHwndByEnum {
+    param([int]$MinW = 400, [int]$MinH = 300, [int]$Retries = 10, [int]$DelayMs = 800)
+    for ($i = 0; $i -lt $Retries; $i++) {
+        foreach ($h in [Win32]::WindowsForPid([uint32]$script:proc.Id)) {
+            if ([IntPtr]$h -eq [IntPtr]$script:hwnd) { continue }
+            if (-not [Win32]::IsWindowVisible($h)) { continue }
+            $r = New-Object Win32+RECT
+            [Win32]::GetWindowRect($h, [ref]$r) | Out-Null
+            if (($r.Right - $r.Left) -ge $MinW -and ($r.Bottom - $r.Top) -ge $MinH) { return $h }
+        }
+        Start-Sleep -Milliseconds $DelayMs
+    }
+    return [IntPtr]::Zero
+}
+
+# ==============================================================================
+# STEP -1: Suppress Windows toast notifications for the run (a toast once
+# landed on top of mid-run shots and the whole set had to be redone). Values
+# restored in STEP 4. Same user hive as this elevated session.
+# ==============================================================================
+$toastKeys = @(
+    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications"; Name = "ToastEnabled" },
+    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings"; Name = "NOC_GLOBAL_SETTING_TOASTS_ENABLED" }
+)
+$toastPrior = @{}
+foreach ($tk in $toastKeys) {
+    try {
+        if (-not (Test-Path $tk.Path)) { New-Item -Path $tk.Path -Force | Out-Null }
+        $cur = (Get-ItemProperty -Path $tk.Path -Name $tk.Name -EA SilentlyContinue).($tk.Name)
+        $toastPrior["$($tk.Path)|$($tk.Name)"] = $cur   # $null = value absent before
+        Set-ItemProperty -Path $tk.Path -Name $tk.Name -Value 0 -Type DWord
+    } catch { Write-Host "  !! toast suppress failed for $($tk.Name): $_" -ForegroundColor Yellow }
+}
+Write-Host "  Toast notifications suppressed for the run"
+
 # ==============================================================================
 # STEP 0: Inject test data into PadForge.xml
 # ==============================================================================
 Write-Host ""
 Write-Host "=== STEP 0: Inject test data ===" -ForegroundColor Cyan
 
+if ($SkipToTail) {
+    if (-not (Test-Path "$PadForgeXml.bak")) {
+        Write-Host "  !! Tail mode needs the leftover $PadForgeXml.bak (owner settings). Aborting." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "  Tail mode: keeping the existing capture-configured xml; killing for a fresh process"
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 3
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 2
+}
+if (-not $SkipToTail) {
 if (-not (Test-Path $OutputDir)) { New-Item -ItemType Directory -Path $OutputDir | Out-Null }
 
 # Kill PadForge if running (double-kill pattern — may auto-restart via startup entry)
@@ -826,13 +882,53 @@ if ($macrosNode.ChildNodes.Count -eq 0) {
   </Actions>
 </Macro>
 '@
+    # Macro 4: "Center Cursor" (#9). Single MoveMouseToScreenPosition action so
+    # the new editor (Mouse X / Mouse Y + "Pick on screen") renders for the
+    # macro-move-mouse capture. Trigger = both stick buttons (2 chips, keeping
+    # the trigger block the same height as Sleep Controller so the action-row
+    # coordinates below match across all three macro captures).
+    $m4Xml = @'
+<Macro PadIndex="0">
+  <Name>Center Cursor</Name>
+  <IsEnabled>true</IsEnabled>
+  <TriggerButtons>192</TriggerButtons>
+  <TriggerSource>OutputController</TriggerSource>
+  <TriggerMode>OnPress</TriggerMode>
+  <ConsumeTriggerButtons>true</ConsumeTriggerButtons>
+  <RepeatMode>Once</RepeatMode>
+  <Actions>
+    <Action><Type>MoveMouseToScreenPosition</Type><MouseX>960</MouseX><MouseY>540</MouseY></Action>
+  </Actions>
+</Macro>
+'@
+    # Macro 5: "Rapid Fire" (#9). Single RepeatKeyWhileHeld action so the
+    # interval editor + key-combo panel render for the macro-repeat-key capture.
+    # Trigger = both shoulders (2 chips, same layout parity).
+    $m5Xml = @'
+<Macro PadIndex="0">
+  <Name>Rapid Fire</Name>
+  <IsEnabled>true</IsEnabled>
+  <TriggerButtons>768</TriggerButtons>
+  <TriggerSource>OutputController</TriggerSource>
+  <TriggerMode>OnPress</TriggerMode>
+  <ConsumeTriggerButtons>true</ConsumeTriggerButtons>
+  <RepeatMode>Once</RepeatMode>
+  <Actions>
+    <Action><Type>RepeatKeyWhileHeld</Type><KeyCode>32</KeyCode><KeyString>{Space}</KeyString><IntervalMs>75</IntervalMs></Action>
+  </Actions>
+</Macro>
+'@
     $frag1 = $xml.CreateDocumentFragment(); $frag1.InnerXml = $m1Xml.Trim()
     $macrosNode.AppendChild($frag1) | Out-Null
     $frag2 = $xml.CreateDocumentFragment(); $frag2.InnerXml = $m2Xml.Trim()
     $macrosNode.AppendChild($frag2) | Out-Null
     $frag3 = $xml.CreateDocumentFragment(); $frag3.InnerXml = $m3Xml.Trim()
     $macrosNode.AppendChild($frag3) | Out-Null
-    Write-Host "  Injected 3 test macros"
+    $frag4 = $xml.CreateDocumentFragment(); $frag4.InnerXml = $m4Xml.Trim()
+    $macrosNode.AppendChild($frag4) | Out-Null
+    $frag5 = $xml.CreateDocumentFragment(); $frag5.InnerXml = $m5Xml.Trim()
+    $macrosNode.AppendChild($frag5) | Out-Null
+    Write-Host "  Injected 5 test macros"
 }
 
 # --- Ensure PadForge starts with window visible (not minimized to tray) ---
@@ -870,6 +966,20 @@ if ($appSettings) {
     }
     Write-Host "  Set EnableWebController=true for capture"
 
+    # Workshop gate (#9): seed the community-config opt-in OFF so the browse
+    # dialog opens on its cold-forge state for the workshop-cold capture. This
+    # is a TEMPORARY capture-xml toggle only: the owner's real setting lives in
+    # the backup and is restored untouched in STEP 4. The dialog's own Enable
+    # button flips this capture-xml copy for the search/manifest shots.
+    $ccNode = $appSettings.SelectSingleNode("EnableCommunityConfigLookup")
+    if ($ccNode) { $ccNode.InnerText = "false" }
+    else {
+        $ccNode = $xml.CreateElement("EnableCommunityConfigLookup")
+        $ccNode.InnerText = "false"
+        $appSettings.AppendChild($ccNode) | Out-Null
+    }
+    Write-Host "  Set EnableCommunityConfigLookup=false (workshop cold-forge shot)"
+
     # Force English language for screenshots (nav items use localized text)
     $langNode = $appSettings.SelectSingleNode("Language")
     if ($langNode) { $langNode.InnerText = "en" }
@@ -883,6 +993,7 @@ if ($appSettings) {
 
 $xml.Save($PadForgeXml)
 Write-Host "  Saved modified PadForge.xml" -ForegroundColor Green
+}
 
 # ==============================================================================
 # STEP 1: Start PadForge
@@ -917,11 +1028,12 @@ Write-Host "  PadForge PID=$($proc.Id) HWND=$hwnd" -ForegroundColor Green
 Write-Host ""
 Write-Host "=== STEP 2: Setup window ===" -ForegroundColor Cyan
 
+## No TOPMOST, ever (feedback_no_topmost_in_capture): ForceFG before each
+## click/Cap is the mechanism; TOPMOST pins PadForge over the user's other
+## windows and a mid-script failure leaves it stuck there.
 [Win32]::ForceFG($hwnd)
 [Win32]::ShowWindow($hwnd, 3) | Out-Null  # SW_MAXIMIZE
-Start-Sleep -Milliseconds 500
-[Win32]::SetWindowPos($hwnd, [Win32]::TOPMOST, 0, 0, 0, 0, 0x0003) | Out-Null
-Start-Sleep -Milliseconds 200
+Start-Sleep -Milliseconds 700
 
 $rect = New-Object Win32+RECT
 [Win32]::GetWindowRect($hwnd, [ref]$rect) | Out-Null
@@ -993,6 +1105,7 @@ function Add-SlotViaPopup {
     return $true
 }
 
+if (-not $SkipToTail) {
 # Delete all existing slots to ensure a clean start
 Write-Host "  Removing any existing slots..."
 for ($delPass = 0; $delPass -lt 16; $delPass++) {
@@ -1018,8 +1131,18 @@ for ($delPass = 0; $delPass -lt 16; $delPass++) {
         $slotBtns = $existingSlots[0].FindAll($TC, (New-Object System.Windows.Automation.PropertyCondition(
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::Button)))
+        # This used to assign every button in turn and keep whichever came last,
+        # on the assumption that the X is always last, then click it up to 16
+        # times. Nothing checked what it was clicking. Try the same name match
+        # the primary path uses, scoped to the card this time, and only fall
+        # back to the last button while SAYING which one that is, so a wrong
+        # click shows up in the log instead of silently happening 16 times.
         foreach ($b in $slotBtns) {
-            $delBtn = $b  # Last button in card is typically the X
+            if ($b.Current.Name -match "Delete|Remove|Close") { $delBtn = $b; break }
+        }
+        if (-not $delBtn -and $slotBtns.Count -gt 0) {
+            $delBtn = $slotBtns[$slotBtns.Count - 1]
+            Write-Host "  (fallback) clicking last card button: '$($delBtn.Current.Name)'" -ForegroundColor Yellow
         }
     }
     if ($delBtn) {
@@ -1032,14 +1155,18 @@ for ($delPass = 0; $delPass -lt 16; $delPass++) {
 $remainingSlots = @(Find-AllSlots)
 Write-Host "  Slots remaining after cleanup: $($remainingSlots.Count)"
 
-# Create: Xbox, PlayStation, KBM, Extended, MIDI (order matters for slot indices).
-# AutomationIds AddXbox360Btn / AddDS4Btn are kept verbatim from v2 for stable
-# automation hookup; the buttons' accessibility labels are now Xbox / PlayStation.
+# Create: Xbox, PlayStation, Nintendo, KBM, Extended, MIDI. SlotNumber and
+# dashboard-card order follow VirtualControllerGroups.InOrder regardless of
+# creation order: Xbox 1, PlayStation 2, Nintendo 3, Extended 4, KBM 5,
+# MIDI 6. AutomationIds AddXbox360Btn / AddDS4Btn are kept verbatim from v2
+# for stable automation hookup. 4.1.0 renamed the Extended button's id to
+# AddRawBtn and added the Nintendo type (virtual Switch Pro, #246).
 $slotTypes = @(
     @{ Aid = "AddXbox360Btn"; Label = "Xbox" },
     @{ Aid = "AddDS4Btn"; Label = "PlayStation" },
+    @{ Aid = "AddNintendoBtn"; Label = "Nintendo" },
     @{ Aid = "AddKeyboardMouseBtn"; Label = "Keyboard+Mouse" },
-    @{ Aid = "AddExtendedBtn"; Label = "Extended" },
+    @{ Aid = "AddRawBtn"; Label = "Extended" },
     @{ Aid = "AddMidiBtn"; Label = "MIDI" }
 )
 foreach ($st in $slotTypes) {
@@ -1069,10 +1196,41 @@ Write-Host "  Slots after creation: $($slots.Count)"
 Write-Host ""
 Write-Host "--- Assign DualSense to Xbox + PlayStation slots ---" -ForegroundColor Yellow
 Nav "Devices"; Start-Sleep -Milliseconds 1500
+}
+
+function Reset-DeviceTypeFilter {
+    # The 4.1.0 Devices page carries type-filter chips (ALL / GAMEPAD /
+    # KEYBOARD / ...) right under the header. A stray click leaves a family
+    # filter active, which hides every non-matching card, and each later
+    # device find becomes a full 24-retry scroll miss. The 2026-07-30 runs
+    # stranded on KEYBOARD this way. Probe-verified UIA shape: each chip
+    # label is a LETTER-SPACED TextBlock ('A L L') with the count in a
+    # separate sibling, and no Button/ListItem wrapper exposes a pattern.
+    # So match on the space-stripped text and click the label's rect.
+    $txtC = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::Text)
+    $wrF = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wrF) | Out-Null
+    foreach ($el in $script:uiaWin.FindAll($TD, $txtC)) {
+        try {
+            if (($el.Current.Name -replace '\s', '') -ne 'ALL') { continue }
+            $r = $el.Current.BoundingRectangle
+            if ($r.IsEmpty) { continue }
+            # Constrain to the chip band near the page top so a stray
+            # 'ALL' elsewhere can't be clicked.
+            if (($r.Y - $wrF.Top) -gt 350) { continue }
+            Click-El $el -Label "ALL device-type chip" -Delay 600 | Out-Null
+            return $true
+        } catch {}
+    }
+    return $false
+}
 
 function Assign-DeviceToSlot {
     param([string]$DeviceNamePart, [string]$SlotNumberLabel, [switch]$Unassign)
     $searchIn = $script:uiaWin
+    Reset-DeviceTypeFilter | Out-Null
     $liCond = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
         [System.Windows.Automation.ControlType]::ListItem)
@@ -1082,16 +1240,40 @@ function Assign-DeviceToSlot {
     $wrA = New-Object Win32+RECT
     [Win32]::GetWindowRect($script:hwnd, [ref]$wrA) | Out-Null
     $lx = [int]($wrA.Left + 400); $my = [int](($wrA.Top + $wrA.Bottom) / 2)
+    # Only accept a card whose rect is actually INSIDE the viewport. A
+    # virtualized row can report a rect above/below the visible list (the
+    # 2026-07-12 run clicked a DualSense card at Y=-749, the click landed
+    # nowhere, and the unassign silently no-oped). On an off-screen match,
+    # scroll TOWARD it and re-find instead of clicking a phantom rect.
     $target = $null
-    for ($stry = 0; $stry -lt 16 -and (-not $target); $stry++) {
+    for ($stry = 0; $stry -lt 24 -and (-not $target); $stry++) {
+        $found = $null
         $items = $searchIn.FindAll($TD, $liCond)
+        # Wheel at the card list's OWN center-x, read from any realized row.
+        # The 4.1.0 Devices page layout moved the list, and the old fixed
+        # Left+400 landed outside its scroll viewer, so every below-the-fold
+        # device (Xbox GIP, All Mice, Wii Remote) went unreachable.
         foreach ($it in $items) {
-            if ($it.Current.Name -like "*$DeviceNamePart*") { $target = $it; break }
+            $ir = $it.Current.BoundingRectangle
+            if (-not $ir.IsEmpty) { $lx = [int]($ir.X + $ir.Width / 2); break }
         }
-        if (-not $target) { [Win32]::ForceFG($script:hwnd); [Win32]::ScrollAt($lx, $my, -3); Start-Sleep -Milliseconds 350 }
+        foreach ($it in $items) {
+            if ($it.Current.Name -like "*$DeviceNamePart*") { $found = $it; break }
+        }
+        if ($found) {
+            $fr = $found.Current.BoundingRectangle
+            if (-not $fr.IsEmpty -and $fr.Y -ge ($wrA.Top + 120) -and ($fr.Y + $fr.Height) -le ($wrA.Bottom - 40)) {
+                $target = $found
+            } else {
+                $dir = if ($fr.IsEmpty -or $fr.Y -lt ($wrA.Top + 120)) { 3 } else { -3 }  # positive scrolls up
+                [Win32]::ForceFG($script:hwnd); [Win32]::ScrollAt($lx, $my, $dir); Start-Sleep -Milliseconds 350
+            }
+        } else {
+            [Win32]::ForceFG($script:hwnd); [Win32]::ScrollAt($lx, $my, -3); Start-Sleep -Milliseconds 350
+        }
     }
     if (-not $target) {
-        Write-Host "  !! Device matching '$DeviceNamePart' not found after scroll" -ForegroundColor Yellow
+        Write-Host "  !! Device matching '$DeviceNamePart' not found on-screen after scroll" -ForegroundColor Yellow
         return $false
     }
     Write-Host "  Found device card '$DeviceNamePart'"
@@ -1115,15 +1297,21 @@ function Assign-DeviceToSlot {
     $wrB = New-Object Win32+RECT
     [Win32]::GetWindowRect($script:hwnd, [ref]$wrB) | Out-Null
     $midX = ($wrB.Left + $wrB.Right) / 2
-    $allButtons = $searchIn.FindAll($TD, $btnCond)
+    # The detail pane can realize its toggles a beat after the card click
+    # (the 2026-07-30 run enumerated 0 toggles on a found Wii Remote card
+    # and the assignment silently failed). One re-enumerate after a wait.
     $toggles = @()
-    foreach ($b in $allButtons) {
-        try {
-            $null = $b.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern)
-            $r = $b.Current.BoundingRectangle
-            $cx = $r.X + $r.Width / 2
-            if ($cx -gt $midX) { $toggles += $b }   # detail panel only, exclude sidebar
-        } catch {}
+    for ($tenum = 0; $tenum -lt 2 -and $toggles.Count -eq 0; $tenum++) {
+        if ($tenum -gt 0) { Start-Sleep -Milliseconds 1500 }
+        $allButtons = $searchIn.FindAll($TD, $btnCond)
+        foreach ($b in $allButtons) {
+            try {
+                $null = $b.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern)
+                $r = $b.Current.BoundingRectangle
+                $cx = $r.X + $r.Width / 2
+                if ($cx -gt $midX) { $toggles += $b }   # detail panel only, exclude sidebar
+            } catch {}
+        }
     }
     # Key each detail-panel toggle by its child SlotNumber (digits).
     $slotOf = @{}
@@ -1184,6 +1372,7 @@ function Assign-DeviceToSlot {
     return $false
 }
 
+if (-not $SkipToTail) {
 Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "1" | Out-Null
 Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "2" | Out-Null
 # Also put the Xbox Series X and the synthetic G29 wheel on the Xbox slot
@@ -1198,7 +1387,16 @@ Assign-DeviceToSlot -DeviceNamePart "Logitech G29" -SlotNumberLabel "1" | Out-Nu
 # slot with no device assigned surfaces no Mouse tab. "All Mice (Merged)" is a
 # first-class UserDevice (CapType 18) in the cache, so assigning + selecting it
 # lights TabMouse, the same shape the Wheel tab uses (assign G29, select it).
-Assign-DeviceToSlot -DeviceNamePart "All Mice (Merged)" -SlotNumberLabel "4" | Out-Null
+Assign-DeviceToSlot -DeviceNamePart "All Mice (Merged)" -SlotNumberLabel "5" | Out-Null
+# WHEN THIS KEEPS FAILING, STOP DRIVING THE UI. A device assignment is
+# nothing but `UserSetting.MapTo = slotIndex` in PadForge.xml: clone an
+# existing <Setting>, override InstanceGuid / ProductGuid / MapTo, and
+# append it under <UserSettings>. That skips the whole flaky chain (device
+# card scroll, detail-pane realize, toggle enumeration) which stranded
+# pad-pointer and wii-pointer-mode across four runs on 2026-07-30. It
+# cannot live in STEP 0 as written, because the slots are created through
+# the UI afterwards, so a targeted recapture script is the place for it.
+#
 # Assign the Wii Remote to the Extended slot so its Pointer / Gyro tabs are
 # reachable for the 3.6.0 Pointer-tab capture (issue #146). SlotNumber follows
 # DevicesViewModel.RefreshSlotButtons, which walks slots in TYPE-GROUP order
@@ -1208,7 +1406,7 @@ Assign-DeviceToSlot -DeviceNamePart "All Mice (Merged)" -SlotNumberLabel "4" | O
 # tabs, which is why assigning the Wii to 4 left the Pointer tab unreachable).
 # The Wii Remote's IR-camera capability is identity-derived (VID 0x057E + name),
 # so the tab is offered whether the placeholder device is online or not.
-Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "3" | Out-Null
+Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "4" | Out-Null
 # The 3 Wii source-picker devices are NOT assigned here. They must NOT ride the
 # Xbox slot during STEP 3, or auto-map would combine every slot device into
 # multi-source rows and busy the pad-mappings shot. The source-picker block in
@@ -1220,7 +1418,8 @@ Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "3" | Out-Null
 # gating to flip on for the affected slots.
 Start-Sleep -Milliseconds 2000
 
-# Web controller server is enabled via XML injection in Step 0 — no UI click needed.
+# Web controller server is enabled via XML injection in Step 0. No UI click needed.
+}
 
 # ==============================================================================
 # STEP 3: Capture all pages
@@ -1228,10 +1427,18 @@ Start-Sleep -Milliseconds 2000
 Write-Host ""
 Write-Host "=== STEP 3: Capture pages ===" -ForegroundColor Cyan
 $n = 0
-$total = 55
+# Count of NUMBERED blocks below, which is what Next() advances, not the number
+# of screenshots (76 distinct Cap names, since several blocks take more than
+# one shot). This read 62, so a complete run ended far short of its own total
+# and looked like it had skipped steps on a script that runs for many minutes.
+#
+# 36, not the 34 Next calls written in the source: the one inside the Gyro /
+# Audio / Touchpad loop runs three times, so it contributes 3 rather than 1.
+$total = 36
 
 function Next { $script:n++; return $script:n }
 
+if (-not $SkipToTail) {
 # ---- 1. Dashboard ----
 Write-Host "[$(Next)/$total] Dashboard"
 Nav "Dashboard"; Start-Sleep -Milliseconds 500; Cap "dashboard"
@@ -1265,6 +1472,10 @@ if ($autoSw) {
 Write-Host "[$(Next)/$total] Devices"
 Nav "Devices"
 Start-Sleep -Milliseconds 500
+# The canonical devices shots must show the UNFILTERED list: reset any
+# leftover type-filter chip before capturing.
+Reset-DeviceTypeFilter | Out-Null
+Start-Sleep -Milliseconds 400
 # Type-filter chips (Devices.md): the chip row sits above the card list and is
 # visible with no device selected, so capture it before clicking a card.
 Cap "devices-facet-chips"
@@ -1323,6 +1534,13 @@ if ($slots.Count -ge 1) {
     # slot carries an auto-mapped multi-device grid, so chips have rows to draw.
     # AutomationId "AnnotationToggle" belongs to the 3D view's toggle button.
     $annBtn = Find-UIA -Aid "AnnotationToggle"
+    if (-not $annBtn) {
+        # Re-attach: a stale cached UIA tree can hide peers realized after the
+        # Helix viewport settles (both toggles carry AutomationIds at HEAD).
+        $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$script:hwnd)
+        Start-Sleep -Milliseconds 400
+        $annBtn = Find-UIA -Aid "AnnotationToggle"
+    }
     if ($annBtn) {
         Click-El $annBtn -Label "Annotation toggle (3D)" -Delay 900 | Out-Null
         Cap "pad-mapping-annotations"
@@ -1346,20 +1564,21 @@ if ($slots.Count -ge 1) {
         [Win32]::ClickAt($anX, $anY); Start-Sleep -Milliseconds 500   # toggle off
     }
 
-    # 5. Controller 2D view
+    # 5. Controller 2D view (weak-9 recapture: the old blind coordinate left
+    # the 3D view on screen; the ViewModeToggle Aid click is deterministic)
     Write-Host "[$(Next)/$total] Controller - 2D view"
-    $ppRect = $padPage.Current.BoundingRectangle
-    $toggleX = [int]($ppRect.X + 52)
-    $toggleY = [int]($ppRect.Y + 124)
-    [Win32]::ForceFG($script:hwnd)
-    Start-Sleep -Milliseconds 100
-    [Win32]::ClickAt($toggleX, $toggleY)
+    Toggle-ViewMode | Out-Null
     Start-Sleep -Milliseconds 600
     Cap "pad-controller-2d"
     # 5a. Annotation overlay on the 2D preview (2D-Overlay-System.md). The 2D
     # view has its own toggle (AutomationId "AnnotationToggle2D"), same top-right
     # spot. Toggle on, capture, toggle off before switching back to 3D.
     $annBtn2D = Find-UIA -Aid "AnnotationToggle2D"
+    if (-not $annBtn2D) {
+        $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$script:hwnd)
+        Start-Sleep -Milliseconds 400
+        $annBtn2D = Find-UIA -Aid "AnnotationToggle2D"
+    }
     if ($annBtn2D) {
         Click-El $annBtn2D -Label "Annotation toggle (2D)" -Delay 900 | Out-Null
         Cap "2d-annotation-overlay"
@@ -1379,7 +1598,7 @@ if ($slots.Count -ge 1) {
         [Win32]::ClickAt($a2X, $a2Y); Start-Sleep -Milliseconds 500   # toggle off
     }
     # Switch back to 3D
-    [Win32]::ClickAt($toggleX, $toggleY)
+    Toggle-ViewMode | Out-Null
     Start-Sleep -Milliseconds 500
 
     # 6. Macros (select first macro + first action)
@@ -1455,6 +1674,24 @@ if ($slots.Count -ge 1) {
     Write-Host "[$(Next)/$total] Mappings"
     Tab "Mappings"; Cap "pad-mappings"
 
+    # 7-0. Per-source Sensitivity slider (#9). The generic Sensitivity knob
+    # rides the selected row's editor strip when the primary descriptor is a
+    # plain "Axis N" / "Slider N" (SourceCoercion.IsGenericSensitivityDescriptor).
+    # The DualSense Left Stick X row stores "Axis 0" behind its friendly name,
+    # so selecting it (output index 18; rows start 0.206 H, 0.0251 H/row on the
+    # HEAD mappings.jpg) renders the slider in the expanded editor. MUST run
+    # BEFORE the Stick Trim block: an expanded row shifts every row BELOW it,
+    # and the Stick Trim block's Right Trigger row (index 17) sits above this
+    # one, so its coordinates stay valid while this row is expanded.
+    Write-Host "  Mapping: per-source Sensitivity slider (#9, Left Stick X row)"
+    Start-Sleep -Milliseconds 700
+    $wrSe = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wrSe) | Out-Null
+    $sew = $wrSe.Right - $wrSe.Left; $seh = $wrSe.Bottom - $wrSe.Top
+    [Win32]::ForceFG($script:hwnd)
+    [Win32]::ClickAt([int]($wrSe.Left + 0.22 * $sew), [int]($wrSe.Top + (0.206 + 18 * 0.0251) * $seh)); Start-Sleep -Milliseconds 1100
+    Cap "mapping-sensitivity"
+
     # 7a. Stick Trim combine (#155, Trigger-Deadzones/Settings). The Xbox slot is
     # still the multi-device crowd (DualSense + Xbox Series X, both gamepad-class
     # auto-mapped), so its trigger rows are multi-source and expose the Combine
@@ -1488,11 +1725,13 @@ if ($slots.Count -ge 1) {
         # RSB Dpad(4) LT RT LSX LSY RSX RSY. First row ~0.206 H, ~0.025 H/row, so
         # Right Trigger (index 17) sits ~0.632 H. Click it to select+expand the
         # multi-source detail editor (DataGridDetailsPresenter in PadPage.xaml).
-        [Win32]::ClickAt([int]($wrST.Left + 0.22 * $stw), [int]($wrST.Top + 0.632 * $sth)); Start-Sleep -Milliseconds 1000
-        # The Combine dropdown sits in the editor below the selected row. On the
-        # Guide-row precedent (row 0.415 H -> combine 0.497 H, +0.082 H) RT's
-        # combine is ~0.714 H, ~0.24 W. Open it, type-ahead to "Stick Trim", accept.
-        [Win32]::ClickAt([int]($wrST.Left + 0.24 * $stw), [int]($wrST.Top + 0.714 * $sth)); Start-Sleep -Milliseconds 800
+        [Win32]::ClickAt([int]($wrST.Left + 0.22 * $stw), [int]($wrST.Top + 0.633 * $sth)); Start-Sleep -Milliseconds 1000
+        # The COMBINE dropdown sits in the expanded editor below the selected
+        # row. Offsets measured off the HEAD expanded-row reference
+        # (wii-balance-sources.jpg): COMBINE combo center = row Y + 0.091 H at
+        # 0.2425 W. RT row 0.633 H -> combine 0.724 H. Open it, type-ahead to
+        # "Stick Trim", accept.
+        [Win32]::ClickAt([int]($wrST.Left + 0.2425 * $stw), [int]($wrST.Top + 0.724 * $sth)); Start-Sleep -Milliseconds 800
         [System.Windows.Forms.SendKeys]::SendWait("Stick"); Start-Sleep -Milliseconds 500
         [System.Windows.Forms.SendKeys]::SendWait("{ENTER}"); Start-Sleep -Milliseconds 1000
         Cap "pad-stick-trim"
@@ -1502,23 +1741,28 @@ if ($slots.Count -ge 1) {
     Write-Host "[$(Next)/$total] Sticks"
     Tab "Sticks"; Start-Sleep -Milliseconds 500; Cap "pad-sticks"
 
-    # 9. Sticks — deadzone shape dropdown open
-    # Original coords (946, 437) + 32px vertical offset for branding bar at 200% DPI
+    # 9. Sticks: deadzone shape dropdown open (weak-9 recapture). The old
+    # absolute pixels (946, 469) predate the v4 Sticks layout and landed on
+    # the Center Offset sliders. Window fractions measured off the committed
+    # HEAD sticks.jpg: Deadzone Shape combo center 0.3775 W / 0.4746 H.
     Write-Host "[$(Next)/$total] Sticks - deadzone shape dropdown"
+    $wrSt = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wrSt) | Out-Null
+    $stW = $wrSt.Right - $wrSt.Left; $stH = $wrSt.Bottom - $wrSt.Top
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
-    [Win32]::ClickAt(946, 469)
+    [Win32]::ClickAt([int]($wrSt.Left + 0.3775 * $stW), [int]($wrSt.Top + 0.4746 * $stH))
     Start-Sleep -Milliseconds 800
     Cap "pad-sticks-deadzone-dropdown"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
     Start-Sleep -Milliseconds 300
 
-    # 10. Sticks — sensitivity preset dropdown open
-    # Original coords (946, 1014) + 32px vertical offset
+    # 10. Sticks: sensitivity preset dropdown open (weak-9 recapture).
+    # Sensitivity X combo center 0.354 W / 0.7635 H on HEAD sticks.jpg.
     Write-Host "[$(Next)/$total] Sticks - sensitivity preset dropdown"
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
-    [Win32]::ClickAt(946, 1046)
+    [Win32]::ClickAt([int]($wrSt.Left + 0.354 * $stW), [int]($wrSt.Top + 0.7635 * $stH))
     Start-Sleep -Milliseconds 800
     Cap "pad-sticks-sensitivity-dropdown"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
@@ -1540,13 +1784,15 @@ if ($slots.Count -ge 1) {
     Write-Host "[$(Next)/$total] Triggers"
     Tab "Triggers"; Start-Sleep -Milliseconds 500; Cap "pad-triggers"
 
-    # 12. Triggers — sensitivity preset dropdown open
+    # 12. Triggers: sensitivity preset dropdown open (weak-9 recapture).
+    # Left Trigger Preset combo center 0.354 W / 0.4363 H on HEAD triggers.jpg.
     Write-Host "[$(Next)/$total] Triggers - sensitivity preset dropdown"
+    $wrTg = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wrTg) | Out-Null
+    $tgW = $wrTg.Right - $wrTg.Left; $tgH = $wrTg.Bottom - $wrTg.Top
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
-    $ppRect = (Find-UIA -Aid "PadPageView").Current.BoundingRectangle
-    # Original coords (946, 440) + 32px vertical offset for branding bar at 200% DPI
-    [Win32]::ClickAt(946, 472)
+    [Win32]::ClickAt([int]($wrTg.Left + 0.354 * $tgW), [int]($wrTg.Top + 0.4363 * $tgH))
     Start-Sleep -Milliseconds 800
     Cap "pad-triggers-sensitivity-dropdown"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
@@ -1636,8 +1882,13 @@ if ($slots.Count -ge 1) {
     [Win32]::GetWindowRect($script:hwnd, [ref]$wrMc) | Out-Null
     $mw = $wrMc.Right - $wrMc.Left; $mh = $wrMc.Bottom - $wrMc.Top
     [Win32]::ForceFG($script:hwnd)
-    [Win32]::ClickAt([int]($wrMc.Left + 0.18 * $mw), [int]($wrMc.Top + 0.343 * $mh)); Start-Sleep -Milliseconds 800  # Sleep Controller row
-    [Win32]::ClickAt([int]($wrMc.Left + 0.33 * $mw), [int]($wrMc.Top + 0.594 * $mh)); Start-Sleep -Milliseconds 800  # its Disconnect action row
+    # Macro list rows on HEAD macro-disconnect.jpg: first row 0.241 H, 0.0433 H
+    # per row, list x 0.215 W. Sleep Controller is row 3 (index 2). The action
+    # chips start at 0.654 H (x 0.383 W); the old 0.594 H fraction landed on
+    # the Add Action button and quietly appended a stray "Press (none)" action,
+    # which is what the committed v4.0.0 macro-disconnect frame shows.
+    [Win32]::ClickAt([int]($wrMc.Left + 0.215 * $mw), [int]($wrMc.Top + (0.241 + 2 * 0.0433) * $mh)); Start-Sleep -Milliseconds 800  # Sleep Controller row
+    [Win32]::ClickAt([int]($wrMc.Left + 0.383 * $mw), [int]($wrMc.Top + 0.654 * $mh)); Start-Sleep -Milliseconds 800  # its Disconnect action chip
     # Best effort: expand the Target combo (a StackPanel ComboBox in the editor,
     # not an opaque grid cell) so all four target modes show. Capture either way.
     $cbCondM = New-Object System.Windows.Automation.PropertyCondition(
@@ -1662,6 +1913,23 @@ if ($slots.Count -ge 1) {
     else { Write-Host "  Target combo not UIA-visible; capturing editor with Target field as-is" -ForegroundColor Yellow }
     Cap "macro-disconnect"
     if ($targetCombo) { try { $targetCombo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Collapse() } catch {} }
+
+    # New #9 macro editors, same terminal-macro-zone idiom and the same
+    # trigger-block height (2 chips) as Sleep Controller, so the action chip
+    # sits at the same 0.654 H. Selecting another macro row inside the Macros
+    # tab is safe; it is the NEXT TAB SWITCH that macro selection breaks, and
+    # the following section re-navs via Dashboard.
+    Write-Host "  Macro: Move Mouse to Position editor (#9)"
+    [Win32]::ForceFG($script:hwnd)
+    [Win32]::ClickAt([int]($wrMc.Left + 0.215 * $mw), [int]($wrMc.Top + (0.241 + 3 * 0.0433) * $mh)); Start-Sleep -Milliseconds 800  # Center Cursor row
+    [Win32]::ClickAt([int]($wrMc.Left + 0.383 * $mw), [int]($wrMc.Top + 0.654 * $mh)); Start-Sleep -Milliseconds 900  # its MoveMouse action chip
+    Cap "macro-move-mouse"
+
+    Write-Host "  Macro: Repeat Key While Held editor (#9)"
+    [Win32]::ForceFG($script:hwnd)
+    [Win32]::ClickAt([int]($wrMc.Left + 0.215 * $mw), [int]($wrMc.Top + (0.241 + 4 * 0.0433) * $mh)); Start-Sleep -Milliseconds 800  # Rapid Fire row
+    [Win32]::ClickAt([int]($wrMc.Left + 0.383 * $mw), [int]($wrMc.Top + 0.654 * $mh)); Start-Sleep -Milliseconds 900  # its RepeatKey action chip
+    Cap "macro-repeat-key"
 
 } else {
     Write-Host "  !! No controller slots found" -ForegroundColor Red
@@ -1761,12 +2029,11 @@ if ($slotsHost) {
             # (top-left of the model host, same offset the Xbox 2D shot uses),
             # capture, toggle back to 3D so the AT/Lighting shots stay on 3D.
             Write-Host "  PlayStation: 2D touchpad preview"
-            $ppRectPS = $padPage.Current.BoundingRectangle
-            $tglXps = [int]($ppRectPS.X + 52); $tglYps = [int]($ppRectPS.Y + 124)
-            [Win32]::ForceFG($script:hwnd); Start-Sleep -Milliseconds 100
-            [Win32]::ClickAt($tglXps, $tglYps); Start-Sleep -Milliseconds 700
+            Toggle-ViewMode | Out-Null
+            Start-Sleep -Milliseconds 700
             Cap "2d-touchpad-finger-dots"
-            [Win32]::ClickAt($tglXps, $tglYps); Start-Sleep -Milliseconds 500
+            Toggle-ViewMode | Out-Null
+            Start-Sleep -Milliseconds 500
 
             Write-Host "[$(Next)/$total] Adaptive Triggers"
             $atTab = $tabs | Where-Object { $_.Current.Name -eq "Adaptive Triggers" } | Select-Object -First 1
@@ -1845,7 +2112,7 @@ if ($slotsHost) {
             $recBtn = $null; $recByName = $null; $bestY = -1e9
             foreach ($b in $script:uiaWin.FindAll($TD, $recBtnCT)) {
                 $rb = $b.Current.BoundingRectangle
-                if ($rb.IsEmpty -or $rb.Width -le 0) { continue }
+                if ($rb.IsEmpty -or $rb.Width -le 0 -or $rb.Height -le 0) { continue }
                 if ($b.Current.Name -match "Record New Gesture") { $recByName = $b }
                 if ($rb.X -gt ($wrTp.Left + 0.14 * $tpw) -and $rb.Y -gt ($wrTp.Top + 0.16 * $tph)) {
                     $by = $rb.Y + $rb.Height
@@ -1874,22 +2141,42 @@ if ($slotsHost) {
             Close-AnyModal | Out-Null
         } else {
             Write-Host "  !! PadPageView not found after PS slot click" -ForegroundColor Yellow
-            $n += 2
+            $n += 6   # PS block advances Next() six times (Gyro/Audio/Touchpad loop is three)
         }
     } else {
         Write-Host "  !! Only $($cards.Count) slot cards on Dashboard" -ForegroundColor Yellow
-        $n += 2
+        $n += 6
     }
 } else {
     Write-Host "  !! SlotsItemsControl not found" -ForegroundColor Yellow
-    $n += 2
+    $n += 6
 }
 
+# ---- 13c. Nintendo slot (virtual Switch Pro, #246, 4.1.0) ----
+# Card index 2 after the type-group reorder (Xbox 0, PlayStation 1,
+# Nintendo 2). One shot: the Switch Pro config bar + controller view.
+Write-Host ""
+Write-Host "--- Nintendo Slot ---" -ForegroundColor Yellow
+Nav "Dashboard"; Start-Sleep -Milliseconds 1000
+$slotsHost = Find-UIA -Aid "SlotsItemsControl"
+$cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
+if ($cards.Count -gt 2) {
+    Write-Host "[$(Next)/$total] Nintendo config bar"
+    Click-El $cards[2] -Label "Nintendo Slot card" -Delay 4000 | Out-Null
+    $padPage = Find-UIA -Aid "PadPageView"
+    if ($padPage) {
+        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+            [System.Windows.Automation.ControlType]::RadioButton)
+        $tabs = $padPage.FindAll($TC, $rbCond)
+        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "Nintendo Controller Tab" -Delay 2500 | Out-Null }
+        Cap "pad-nintendo-configbar"
+    } else { Write-Host "  !! PadPageView not found for the Nintendo slot" -ForegroundColor Yellow }
+} else { Write-Host "  !! Nintendo slot card not found" -ForegroundColor Yellow }
+
 # ---- 14. Extended slot ----
-# After type-group reorder, order from end is always: ...Extended, KBM, MIDI.
-# Use offsets from end to handle variable number of Xbox / PlayStation slots.
-# Use Dashboard slot cards (SlotsItemsControl) instead of sidebar nav —
-# sidebar NavigationViewItems virtualize out of the UIA tree after the
+# Use Dashboard slot cards (SlotsItemsControl) instead of sidebar nav.
+# Sidebar NavigationViewItems virtualize out of the UIA tree after the
 # Xbox-slot tab pass, but Dashboard cards stay materialized.
 Write-Host ""
 Write-Host "--- Extended Slot ---" -ForegroundColor Yellow
@@ -1897,11 +2184,10 @@ Nav "Dashboard"; Start-Sleep -Milliseconds 1000
 $slotsHost = Find-UIA -Aid "SlotsItemsControl"
 $cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
 # Positive index, NOT from-end. The dashboard SlotsItemsControl carries a
-# trailing "Add Controller" card, so cards.Count is 6 for 5 slots and the old
-# Count-3 landed on the KBM slot (pad-extended-configbar captured the KBM keyboard
-# preview). Slots are always Xbox 0, PlayStation 1, Extended 2, KBM 3, MIDI 4 after
-# the type-group reorder, then the Add card at 5.
-$extendedIdx = 2
+# trailing "Add Controller" card. Slots are always Xbox 0, PlayStation 1,
+# Nintendo 2, Extended 3, KBM 4, MIDI 5 after the type-group reorder, then
+# the Add card at 6.
+$extendedIdx = 3
 if ($cards.Count -gt $extendedIdx) {
     Write-Host "[$(Next)/$total] Extended config bar"
     Click-El $cards[$extendedIdx] -Label "Extended Slot card" -Delay 1500 | Out-Null
@@ -1940,15 +2226,11 @@ if ($cards.Count -gt $extendedIdx) {
 
     # 15. Extended schematic view
     Write-Host "[$(Next)/$total] Extended schematic view"
-    $ppRect = (Find-UIA -Aid "PadPageView").Current.BoundingRectangle
-    $toggleX = [int]($ppRect.X + 52)
-    $toggleY = [int]($ppRect.Y + 124)
-    [Win32]::ForceFG($script:hwnd)
-    [Win32]::ClickAt($toggleX, $toggleY)
+    Toggle-ViewMode | Out-Null
     Start-Sleep -Milliseconds 600
     Cap "pad-extended-schematic"
     # Switch back
-    [Win32]::ClickAt($toggleX, $toggleY)
+    Toggle-ViewMode | Out-Null
     Start-Sleep -Milliseconds 500
 
     # 15a. Clone Device 1:1 confirm dialog (Button-and-Axis-Mappings.md). The
@@ -1988,7 +2270,7 @@ Write-Host "--- KBM Slot ---" -ForegroundColor Yellow
 Nav "Dashboard"; Start-Sleep -Milliseconds 1000
 $slotsHost = Find-UIA -Aid "SlotsItemsControl"
 $cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
-$kbmIdx = 3  # Xbox 0, PlayStation 1, Extended 2, KBM 3 (Add Controller card at 5);
+$kbmIdx = 4  # Xbox 0, PlayStation 1, Nintendo 2, Extended 3, KBM 4 (Add card at 6);
              # old Count-2 landed on the MIDI slot (pad-kbm-preview showed MIDI).
 if ($cards.Count -gt $kbmIdx) {
     Write-Host "[$(Next)/$total] Keyboard+Mouse preview"
@@ -2019,7 +2301,7 @@ if ($cards.Count -gt $kbmIdx) {
     } else { Write-Host "  !! Mouse tab not found on the KBM slot" -ForegroundColor Yellow }
 } else {
     Write-Host "  !! KBM slot not found" -ForegroundColor Yellow
-    $n++
+    $n += 3   # preview + SOCD + mouse gestures
 }
 
 # ---- 17. MIDI slot ----
@@ -2028,7 +2310,7 @@ Write-Host "--- MIDI Slot ---" -ForegroundColor Yellow
 Nav "Dashboard"; Start-Sleep -Milliseconds 1000
 $slotsHost = Find-UIA -Aid "SlotsItemsControl"
 $cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
-$midiIdx = 4  # Xbox 0, PlayStation 1, Extended 2, KBM 3, MIDI 4 (Add card at 5);
+$midiIdx = 5  # Xbox 0, PlayStation 1, Nintendo 2, Extended 3, KBM 4, MIDI 5 (Add card at 6);
               # old Count-1 landed on the Add Controller card (opened the type picker).
 if ($cards.Count -gt $midiIdx) {
     Write-Host "[$(Next)/$total] MIDI config bar"
@@ -2081,7 +2363,7 @@ Nav "About"; Cap "about"
 
 # ---- 22. Add Controller popup (already captured in Step 2b) ----
 Write-Host "[$(Next)/$total] Add Controller popup -- already captured in Step 2b"
-
+}
 
 # ==============================================================================
 # STEP 3b: New 3.6.0 sections (Pointer tab, NFC, Consumer Control, Power/battery)
@@ -2089,8 +2371,7 @@ Write-Host "[$(Next)/$total] Add Controller popup -- already captured in Step 2b
 Write-Host ""
 Write-Host "=== STEP 3b: 3.6.0 new sections ===" -ForegroundColor Cyan
 
-Start-Sleep -Milliseconds 500
-Start-Sleep -Milliseconds 600
+Start-Sleep -Milliseconds 1100
 
 $li36 = New-Object System.Windows.Automation.PropertyCondition(
     [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
@@ -2106,6 +2387,7 @@ $btn36 = New-Object System.Windows.Automation.PropertyCondition(
 # follows ScrollContent: positive = up, negative = down.
 function Select-DeviceByName36 {
     param([string]$NamePart)
+    Reset-DeviceTypeFilter | Out-Null
     $wr = New-Object Win32+RECT
     [Win32]::GetWindowRect($script:hwnd, [ref]$wr) | Out-Null
     $listX = [int]($wr.Left + 400)
@@ -2130,6 +2412,15 @@ function Select-DeviceByName36 {
     return $false
 }
 
+if ($SkipToTail) {
+    # Tail mode: the middle pass is skipped. The xml already carries the
+    # full run's assignments, except the Wii Remote one that failed in the
+    # aborted run. Make it on the fresh UIA tree (idempotent: the toggle
+    # short-circuits when already on).
+    Nav "Devices"; Start-Sleep -Milliseconds 1200
+    Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "4" | Out-Null
+}
+
 # --- Pointer tab (Wii Remote on the Extended slot) ---
 # Use the SlotsItemsControl cards (proven to work late in the run for the
 # KBM/MIDI captures) rather than Find-AllSlots, which returns nothing here.
@@ -2145,10 +2436,10 @@ Nav "Dashboard"; Start-Sleep -Milliseconds 1200
 $slotsHostP = Find-UIA -Aid "SlotsItemsControl"
 $cardCountP = if ($slotsHostP) { @($slotsHostP.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)).Count } else { 0 }
 Write-Host "  Pointer: $cardCountP slot card(s)"
-# Cap at 5 real slots: the 6th card is "Add Controller" and clicking it opens the
+# Cap at 6 real slots: the 7th card is "Add Controller" and clicking it opens the
 # type-picker popup. The Wii Remote (now injected) rides the Extended slot (card
-# index 2), so the probe finds the Pointer tab well before the Add card anyway.
-$realSlots = [math]::Min($cardCountP, 5)
+# index 3), so the probe finds the Pointer tab well before the Add card anyway.
+$realSlots = [math]::Min($cardCountP, 6)
 for ($ci = 0; $ci -lt $realSlots -and -not $ptrDone; $ci++) {
     # Re-navigate to the Dashboard and re-find the cards EACH iteration. After
     # a card click we're on the PadPage, so a stale card reference clicks a
@@ -2181,9 +2472,16 @@ for ($ci = 0; $ci -lt $realSlots -and -not $ptrDone; $ci++) {
         Start-Sleep -Milliseconds 800; Cap "pad-pointer"; $ptrDone = $true
         # Pointer Mode card set to FPS Mouse (Wii-Controllers.md): switch the
         # Pointer Mode dropdown to "FPS Mouse" so the card shows the mode combo
-        # plus the FPS Speed slider (the slider is FpsMouse-only). This combo is a
-        # plain StackPanel ComboBox with real UIA peers (unlike the grid cells),
-        # so find the one whose items include "FPS Mouse" and select it.
+        # plus the FPS Speed slider (the slider is FpsMouse-only).
+        #
+        # CORRECTED 2026-07-30: this combo has NO UIA PEER. Only the config
+        # bar's DEVICE and Preset combos expose peers; every combo inside the
+        # IR Pointer card is stripped from the tree with its card template.
+        # The loop below therefore finds nothing to expand and silently skips
+        # the shot. What works: CLICK the combo's measured position (window-
+        # relative 631, 721 on the maximized 2582x1550 window), after which
+        # the popup's ListItem peers DO realize at the window root and
+        # "FPS Mouse" can be selected normally.
         $liP = New-Object System.Windows.Automation.PropertyCondition(
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::ListItem)
@@ -2239,20 +2537,35 @@ if (-not $ptrDone) { Write-Host "  !! Pointer tab not reachable" -ForegroundColo
 # by now, so clearing it is safe; the config is restored from backup at the end.
 # The grid Source combos expose no UIA peers, so Capture-SourcePicker opens the
 # first row's combo by coordinate and type-aheads to the gated source.
-Write-Host "[3b] Mapping source picker (Wii-family sources)"
+Write-Host "[3b] Mapping source picker (Wii-family + abstract Gamepad sources)"
 Nav "Devices"; Start-Sleep -Milliseconds 800
-# Clear slot 1 (its DualSense stays on the PlayStation slot).
-Assign-DeviceToSlot -DeviceNamePart "DualSense"         -SlotNumberLabel "1" -Unassign | Out-Null
+# Slim slot 1 down to the DualSense alone. The DualSense INTENTIONALLY stays
+# assigned: it anchors every mapping row's PRIMARY source, so each swap-on
+# picker device contributes exactly one sub-source per row and the expanded-row
+# sub-source combo lands at the fixed 0.385 H Capture-SourcePicker clicks
+# (the geometry of the accepted v4.0.0 wii-balance-sources frame).
 Assign-DeviceToSlot -DeviceNamePart "Xbox Series X GIP" -SlotNumberLabel "1" -Unassign | Out-Null
 Assign-DeviceToSlot -DeviceNamePart "Logitech G29"      -SlotNumberLabel "1" -Unassign | Out-Null
 $wiiPick = @(
     @{ Dev = "Balance Board";    Type = "Balance";      Shot = "wii-balance-sources" },
     @{ Dev = "Joy-Con (R)";      Type = "IR Bright";    Shot = "joycon-ir-source" },
-    @{ Dev = "Switch 2 Joy-Con"; Type = "Mouse Motion"; Shot = "joycon2-mouse-sources" }
+    @{ Dev = "Switch 2 Joy-Con"; Type = "Mouse Motion"; Shot = "joycon2-mouse-sources" },
+    # Abstract Gamepad descriptor branch (#9): any CapType-Gamepad device's
+    # source combo carries the "Gamepad ..." family; type-ahead scrolls the
+    # open popup to it. The DS3 dummy is the swap-on device here.
+    @{ Dev = "PLAYSTATION(R)3";  Type = "Gamepad";      Shot = "gamepad-source-picker" }
 )
 foreach ($wp in $wiiPick) {
     Nav "Devices"; Start-Sleep -Milliseconds 600
-    Assign-DeviceToSlot -DeviceNamePart $wp.Dev -SlotNumberLabel "1" | Out-Null
+    # Skip the whole picker on a failed assign. The 2026-07-30 run hung
+    # inside the follow-up Unassign of a device the assign never found
+    # (UIA FindAll blocked with no bound), and the rest of the tail
+    # (DS3, devices details, workshop, web) never ran.
+    $wpOk = Assign-DeviceToSlot -DeviceNamePart $wp.Dev -SlotNumberLabel "1"
+    if (-not $wpOk) {
+        Write-Host "  !! skipping picker for $($wp.Dev): assign failed" -ForegroundColor Yellow
+        continue
+    }
     Start-Sleep -Milliseconds 800
     Nav "Dashboard"; Start-Sleep -Milliseconds 900
     $shS = Find-UIA -Aid "SlotsItemsControl"
@@ -2268,9 +2581,12 @@ foreach ($wp in $wiiPick) {
 }
 
 # --- DualShock 3 (v4): motion tab + Devices dossier ---
-# Same swap idiom as the Wii pickers: the DS3 dummy rides slot 1 alone.
+# The DS3 rides slot 1 ALONE for these shots, so unassign the anchoring
+# DualSense first (the Gyro tab and Devices dossier follow the selected
+# device either way, but a solo slot makes the selection deterministic).
 Write-Host "[3c] DualShock 3"
 Nav "Devices"; Start-Sleep -Milliseconds 600
+Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "1" -Unassign | Out-Null
 Assign-DeviceToSlot -DeviceNamePart "PLAYSTATION(R)3" -SlotNumberLabel "1" | Out-Null
 Start-Sleep -Milliseconds 800
 Nav "Dashboard"; Start-Sleep -Milliseconds 900
@@ -2383,7 +2699,13 @@ if ($pairBtn) {
     # enumeration does not surface it (the 2026-07-12 run logged "Pair dialog window
     # not found", left it stuck, and corrupted the NFC shots).
     $pairDlg = Get-ForegroundDialogHwnd
-    Cap "wii-pair"
+    # Only capture if the modal actually opened. This shot was taken
+    # unconditionally, so a Pair button that failed to open its dialog
+    # overwrote wii-pair.png with whatever was on screen, which is the Devices
+    # page. The gesture-recorder block above already guards for exactly this
+    # reason. Skipping keeps the previous good screenshot.
+    if ($pairDlg -ne [IntPtr]::Zero) { Cap "wii-pair" }
+    else { Write-Host "  !! Pair dialog did not open; keeping the existing wii-pair.png" -ForegroundColor Yellow }
     # DualShock 3 family (v4, WiiPair_FamilyDs3): the Controller Family combo is a
     # 2-item ComboBox (Nintendo Wii = index 0, Sony DualShock 3 = index 1). Drive it by
     # a dialog-rect-relative coordinate (the modal is centered + fixed width): open the
@@ -2428,17 +2750,171 @@ if (Select-DeviceByName36 "NFC") {
         # capture, then close with WM_CLOSE so it can't survive and hang the
         # web-capture step (Close-AnyModal can't see these FluentWindow modals).
         $nfcDlg = Get-ForegroundDialogHwnd
-        Cap "nfc-register"
+        # Same guard as wii-pair and the gesture recorder: if the modal did not
+        # open, this saved the Devices page as nfc-register.png.
+        if ($nfcDlg -ne [IntPtr]::Zero) { Cap "nfc-register" }
+        else { Write-Host "  !! NFC register dialog did not open; keeping the existing nfc-register.png" -ForegroundColor Yellow }
         Close-DialogHwnd $nfcDlg
         Close-AnyModal | Out-Null
     }
 }
 # Final safety: no leftover modal before the web-capture / cleanup steps.
 Close-AnyModal | Out-Null
+
+# ==============================================================================
+# STEP 3d: Steam Workshop community configs (#9, v4.1.0)
+# Owner-directed sequence: cold-forge opt-in, search performed with the game
+# selected (Sonic X Shadow Generations), the game's config list, the manifest
+# dossier for a selected config, then Save and Apply so the imported profile
+# shows on the Profiles page. The import mutates ONLY the regenerated capture
+# xml; the owner's real settings ride the backup and are restored in STEP 4.
+# The dialog is a FluentWindow modal, UIA-shy from RootElement, so all
+# in-dialog work goes through Find-DialogHwndByEnum + FromHandle and never
+# walks the (disabled) main window while the modal is up.
+# ==============================================================================
+Write-Host ""
+Write-Host "=== STEP 3d: Steam Workshop (#9) ===" -ForegroundColor Cyan
+
+function Click-DlgEl {
+    param($DlgHwnd, [System.Windows.Automation.AutomationElement]$El, [int]$Delay = 700, [string]$Label)
+    if (-not $El) { Write-Host "  !! ws NOT FOUND: $Label" -ForegroundColor Yellow; return $false }
+    $r = $El.Current.BoundingRectangle
+    if ($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0) { Write-Host "  !! ws EMPTY BOUNDS: $Label" -ForegroundColor Yellow; return $false }
+    [Win32]::SetForegroundWindow([IntPtr]$DlgHwnd) | Out-Null
+    Start-Sleep -Milliseconds 150
+    [Win32]::ClickAt([int]($r.X + $r.Width / 2), [int]($r.Y + $r.Height / 2))
+    Start-Sleep -Milliseconds $Delay
+    Write-Host "  ws click '$Label'"
+    return $true
+}
+
+$btnCondWs = New-Object System.Windows.Automation.PropertyCondition(
+    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+    [System.Windows.Automation.ControlType]::Button)
+$liCondWs = New-Object System.Windows.Automation.PropertyCondition(
+    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+    [System.Windows.Automation.ControlType]::ListItem)
+
+Nav "Profiles"; Start-Sleep -Milliseconds 1000
+$browseBtn = Find-UIA -Name "Browse Community Configs" -CT ([System.Windows.Automation.ControlType]::Button)
+if (-not $browseBtn) { $browseBtn = Find-UIA -Name "Browse Community Configs" }
+if ($browseBtn) {
+    Click-El $browseBtn -Label "Browse Community Configs" -Delay 1500 | Out-Null
+    $wsDlg = Find-DialogHwndByEnum -MinW 800 -MinH 500
+    if ($wsDlg -eq [IntPtr]::Zero) {
+        Write-Host "  !! workshop dialog HWND not found" -ForegroundColor Red
+    } else {
+        $wsUia = [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$wsDlg)
+        Write-Host "  workshop dialog hwnd=$wsDlg '$($wsUia.Current.Name)'" -ForegroundColor Green
+
+        # 1) Cold forge (EnableCommunityConfigLookup seeded false in STEP 0).
+        Start-Sleep -Milliseconds 700
+        Cap "workshop-cold"
+
+        # 2) Opt in from inside the dialog (flips the capture-xml copy only).
+        $enableBtn = $null
+        foreach ($b in $wsUia.FindAll($TD, $btnCondWs)) {
+            if ($b.Current.Name -eq "Enable Community Configs") { $enableBtn = $b; break }
+        }
+        if (Click-DlgEl $wsDlg $enableBtn -Delay 1000 -Label "Enable Community Configs") {
+
+            # 3) Search Sonic X Shadow Generations (live storesearch).
+            $searchEdit = $wsUia.FindFirst($TD, (New-Object System.Windows.Automation.PropertyCondition(
+                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+                [System.Windows.Automation.ControlType]::Edit)))
+            if ($searchEdit) {
+                Click-DlgEl $wsDlg $searchEdit -Delay 300 -Label "search box" | Out-Null
+                try { ($searchEdit.GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern)).SetValue("sonic x shadow generations") }
+                catch { Write-Host "  !! ws search SetValue failed: $_" -ForegroundColor Yellow }
+                # Debounce (500ms) + storesearch + cover art. Poll the shelf.
+                $tiles = $null
+                for ($w = 0; $w -lt 30; $w++) {
+                    Start-Sleep -Milliseconds 1000
+                    $tiles = $wsUia.FindAll($TD, $liCondWs)
+                    if ($tiles.Count -gt 0) { break }
+                }
+                Write-Host "  ws shelf tiles: $($tiles.Count)"
+                Start-Sleep -Milliseconds 2500   # portrait art settling
+                # Select the first tile from the keyboard so the ember
+                # selection ring is on for the shot (a mouse click would
+                # open the game on mouse-up before we can capture).
+                [Win32]::SetForegroundWindow([IntPtr]$wsDlg) | Out-Null
+                Start-Sleep -Milliseconds 200
+                [System.Windows.Forms.SendKeys]::SendWait("{DOWN}"); Start-Sleep -Milliseconds 600
+                Cap "workshop-search"
+
+                # 4) Open the game; wait for its config list.
+                [Win32]::SetForegroundWindow([IntPtr]$wsDlg) | Out-Null
+                Start-Sleep -Milliseconds 200
+                [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+                $cfgList = $null; $cfgRows = @()
+                for ($w = 0; $w -lt 40; $w++) {
+                    Start-Sleep -Milliseconds 1000
+                    $cfgList = $wsUia.FindFirst($TD, (New-Object System.Windows.Automation.PropertyCondition(
+                        [System.Windows.Automation.AutomationElement]::AutomationIdProperty, "ConfigList")))
+                    if ($cfgList) {
+                        $cfgRows = @($cfgList.FindAll($TD, $liCondWs))
+                        if ($cfgRows.Count -gt 0) { break }
+                    }
+                }
+                Write-Host "  ws config rows: $($cfgRows.Count)"
+                Start-Sleep -Milliseconds 2000   # avatars / vote bars settling
+                Cap "workshop-configs"
+                if ($cfgRows.Count -eq 0) {
+                    Write-Host "  !! no workshop configs listed for the game (captured the state as-is; NOT substituting another game per owner directive)" -ForegroundColor Yellow
+                } else {
+                    # 5) Select the top config; the dossier translates it.
+                    Click-DlgEl $wsDlg $cfgRows[0] -Delay 800 -Label "config row 0" | Out-Null
+                    $statEl = $null
+                    for ($w = 0; $w -lt 30; $w++) {
+                        Start-Sleep -Milliseconds 1000
+                        $statEl = $wsUia.FindFirst($TD, (New-Object System.Windows.Automation.PropertyCondition(
+                            [System.Windows.Automation.AutomationElement]::AutomationIdProperty, "StatCleanNum")))
+                        if ($statEl) { break }
+                    }
+                    if (-not $statEl) { Write-Host "  !! ws manifest stat blocks never appeared" -ForegroundColor Yellow }
+                    Start-Sleep -Milliseconds 1200
+                    Cap "workshop-manifest"
+
+                    # 6) Save and Apply -> dialog closes, profile lands in the
+                    # capture xml's Profiles and is applied.
+                    $applyBtn = $null
+                    foreach ($b in $wsUia.FindAll($TD, $btnCondWs)) {
+                        if ($b.Current.Name -eq "Save and Apply") { $applyBtn = $b; break }
+                    }
+                    if (Click-DlgEl $wsDlg $applyBtn -Delay 1800 -Label "Save and Apply") {
+                        if (-not [Win32]::IsWindowVisible([IntPtr]$wsDlg)) {
+                            Write-Host "  ws dialog closed after import" -ForegroundColor Green
+                        }
+                        Nav "Profiles"; Start-Sleep -Milliseconds 1500
+                        Cap "workshop-applied"
+                    } else {
+                        Write-Host "  !! Save and Apply not clickable (legacy config?)" -ForegroundColor Yellow
+                    }
+                }
+            } else { Write-Host "  !! ws search box not found" -ForegroundColor Yellow }
+        }
+        # Close the modal if it survived any branch above.
+        if ([Win32]::IsWindowVisible([IntPtr]$wsDlg)) { Close-DialogHwnd $wsDlg }
+        Close-AnyModal | Out-Null
+    }
+} else {
+    Write-Host "  !! Browse Community Configs button not found on Profiles" -ForegroundColor Red
+}
+
+# Settings card for the feature (#9): scroll the Settings page to the bottom
+# where the Community Configs card sits (opt-in now checked from the dialog
+# enable, so the dependent legacy checkbox and cache/update buttons show).
+Write-Host "[3d] Settings Community Configs card"
+Nav "Settings"; Start-Sleep -Milliseconds 900
+ScrollContent -Clicks -40
+Start-Sleep -Milliseconds 500
+Cap "settings-community-configs"
+ScrollContent -Clicks 60
+
 # ---- 23-24. Web controller ----
 Write-Host "[$(Next)/$total] Web controller screenshots"
-# Remove TOPMOST from PadForge and minimize it so it doesn't cover Edge
-[Win32]::SetWindowPos($hwnd, [Win32]::NOTOPMOST, 0, 0, 0, 0, 0x0003) | Out-Null
+# Minimize PadForge so it doesn't cover Edge (never TOPMOST anywhere)
 [Win32]::ShowWindow($hwnd, 6) | Out-Null  # SW_MINIMIZE
 Start-Sleep -Milliseconds 500
 $webPort = 8080
@@ -2456,9 +2932,15 @@ try {
         param([string]$Url, [string]$Name, [int]$WaitMs = 5000)
         # Kill only our temp-profile Edge processes (not the user's main browser).
         # We identify them by command line containing our temp profile path.
-        Get-Process msedge -EA SilentlyContinue | Where-Object {
-            try { $_.CommandLine -like "*PadForge_EdgeCapture*" } catch { $false }
-        } | Stop-Process -Force -EA SilentlyContinue
+        #
+        # Via Get-CimInstance, NOT Get-Process. Process objects only carry a
+        # CommandLine property on PowerShell 7+; on the 5.1 this repo runs under
+        # it does not exist, so $_.CommandLine was always empty, the -like never
+        # matched, and this kill kept nothing from a previous run from lingering.
+        # The two kills further down this same function already use the CIM form.
+        Get-CimInstance Win32_Process -Filter "Name='msedge.exe'" -EA SilentlyContinue |
+            Where-Object { $_.CommandLine -like "*PadForge_EdgeCapture*" } |
+            ForEach-Object { Stop-Process -Id $_.ProcessId -Force -EA SilentlyContinue }
         Start-Sleep -Milliseconds 1500
         # Launch Edge with an isolated temp profile — never touches the default profile.
         Start-Process $edgePath "--user-data-dir=`"$edgeTempProfile`" --no-first-run --disable-sync --disable-session-crashed-bubble --disable-features=msEdgeSyncService,msEdgeAccountSSO --no-default-browser-check --app=$Url"
@@ -2541,8 +3023,6 @@ try {
 Write-Host ""
 Write-Host "=== STEP 4: Cleanup ===" -ForegroundColor Cyan
 
-[Win32]::SetWindowPos($hwnd, [Win32]::NOTOPMOST, 0, 0, 0, 0, 0x0003) | Out-Null
-
 # Stop PadForge, restore XML
 Write-Host "  Stopping PadForge..."
 Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
@@ -2557,6 +3037,21 @@ if (Test-Path $edgeTempProfile) {
     Remove-Item $edgeTempProfile -Recurse -Force -EA SilentlyContinue
     Write-Host "  Cleaned up temporary Edge profile"
 }
+
+# Restore toast-notification settings to their pre-run values.
+foreach ($tk in $toastKeys) {
+    try {
+        $prior = $toastPrior["$($tk.Path)|$($tk.Name)"]
+        if ($null -eq $prior) { Remove-ItemProperty -Path $tk.Path -Name $tk.Name -EA SilentlyContinue }
+        else { Set-ItemProperty -Path $tk.Path -Name $tk.Name -Value $prior -Type DWord }
+    } catch { Write-Host "  !! toast restore failed for $($tk.Name): $_" -ForegroundColor Yellow }
+}
+Write-Host "  Toast notification settings restored"
+
+# Relaunch PadForge clean on the restored (owner) settings so the app is left
+# running exactly as before the run.
+Start-Process $PadForgeExe
+Write-Host "  Relaunched PadForge on restored settings" -ForegroundColor Green
 
 Stop-Transcript | Out-Null
 

@@ -79,10 +79,10 @@ namespace PadForge.Common.Input
                     // Combined gen-1 Joy-Con pair (SwitchJoyConPair, controller_list.h:589).
                     // SDL combines two Joy-Cons by default (HIDAPI_COMBINE_JOY_CONS = "1",
                     // SDL_hints.h:1623), so a paired set enumerates as 0x2008 -- without
-                    // this it would get no Audio tab. Two coils, same 0x10 packet as the
-                    // Pro (both halves filled). The handle reaches the Joy-Con its
-                    // DevicePath resolves to; full dual-coil drive would need the second
-                    // Joy-Con's path too, which the one-handle sink does not carry yet.
+                    // this it would get no Audio tab. The sink opens BOTH children and
+                    // drives both coils, routing the tone by the slot's commanded motor
+                    // sides (#223); with one child missing it degrades to that child's
+                    // coil alone (#184) until Reconcile resolves the other.
                     case 0x2008: return Family.JoyConPair;
                     case 0x2009: return Family.Pro;       // Switch Pro Controller
                     // Switch 2 (0x2066/0x2067/0x2068/0x2069) intentionally excluded:
@@ -129,6 +129,121 @@ namespace PadForge.Common.Input
         internal const int ToneFilterCut = 1;
         internal const int ToneFilterFold = 2;
         public static Func<int, Guid, (int Mode, int LimitHz)> ToneFilterProvider { get; set; }
+
+        // ── Combined-pair motor-side audio routing (discussion #223) ─────
+        // The reporter holds one Joy-Con per hand and wants the HD-haptic
+        // audio to follow the ACTIVE motor: left motor commanded -> left
+        // Joy-Con coil plays, right motor -> right. SDL routes the combined
+        // pair's rumble exactly that way (the combined driver fans both
+        // values to both children, SDL_hidapi_combined.c:109-121, and each
+        // child keeps only its own side: the left child zeroes
+        // high_frequency_rumble, the right child zeroes
+        // low_frequency_rumble, SDL_hidapi_switch.c:2148-2156), so "left
+        // motor" = low frequency = left child, "right motor" = high
+        // frequency = right child.
+        //
+        // Wired by InputService to the per-slot merged rumble snapshot
+        // (InputManager.FinalVibrationStates: game + macro rumble +
+        // per-device gain/swap/trigger routing, refreshed every poll tick).
+        // Plain field reads on preallocated Vibration objects, no locks;
+        // the pair sink's stream thread calls it once per 10 ms tick.
+        public static Func<int, (bool Left, bool Right)> SlotRumbleActiveProvider { get; set; }
+
+        /// <summary>How long a side stays hot after its motor drops. Game
+        /// rumble flaps at packet rate (SDL batches Switch writes on a 30 ms
+        /// cadence, RUMBLE_WRITE_FREQUENCY_MS in SDL_hidapi_switch.c), so a
+        /// pulsing motor would strobe the coil audio without a hold. Same
+        /// value as <see cref="HangoverMs"/>, this file's existing "quiet
+        /// dips inside a cue must not break the stream" constant, because it
+        /// smooths the same class of gap on the same stream.</summary>
+        internal const int PairSideHoldMs = 300;
+
+        /// <summary>The #223 side-routing decision, shared by the stream loop
+        /// and the unit tests (the HoldEngaged idiom). A side is hot while its
+        /// motor is commanded and for <paramref name="holdMs"/> after it drops.
+        /// NO motor commanded (or both holds expired) means BOTH coils play:
+        /// audio is not rumble, and macro sounds / the system-audio mirror /
+        /// remote frames arrive with no motor state at all, so motor state
+        /// only steers side emphasis while a game is actually rumbling. Both
+        /// motors active means both coils, matching SDL's own fan-out.</summary>
+        internal static (bool Left, bool Right) ResolvePairSides(
+            bool leftActive, bool rightActive, long nowMs,
+            ref long leftLastMs, ref long rightLastMs, int holdMs = PairSideHoldMs)
+        {
+            if (leftActive) leftLastMs = nowMs;
+            if (rightActive) rightLastMs = nowMs;
+            bool leftHot = leftActive || (nowMs - leftLastMs) <= holdMs;
+            bool rightHot = rightActive || (nowMs - rightLastMs) <= holdMs;
+            if (!leftHot && !rightHot) return (true, true);
+            return (leftHot, rightHot);
+        }
+
+        /// <summary>Picks the combined pair's primary child (left 0x2006
+        /// preferred, matching the #184 resolver order) and the second child
+        /// to fan writes to. Null paths mean "not present": with neither
+        /// child found the caller keeps the synthetic path, CreateFileW fails
+        /// as before, and the 3 s Reconcile retry stands. With one child the
+        /// sink degrades to the #184 single-coil behavior and Reconcile
+        /// retries the missing child every 3 s.</summary>
+        /// <summary>First path in <paramref name="candidates"/> that no OTHER
+        /// live pair sink has already claimed. Pure so the tests can drive it:
+        /// <paramref name="claimed"/> is the snapshot of every other sink's
+        /// primary and second child path.</summary>
+        internal static string FirstUnclaimed(List<string> candidates, HashSet<string> claimed)
+        {
+            if (candidates == null) return null;
+            foreach (var c in candidates)
+            {
+                if (string.IsNullOrEmpty(c)) continue;
+                if (claimed != null && claimed.Contains(c)) continue;
+                return c;
+            }
+            return null;
+        }
+
+        /// <summary>Child paths this pair sink may open: the first left and the
+        /// first right no other live pair sink holds. With one combined pair
+        /// this is identical to the old first-match resolve. With two, the
+        /// second sink gets the second pair's coils instead of stacking a
+        /// second writer onto the first pair's.
+        ///
+        /// <para>Residual, stated plainly: nothing here proves the left it
+        /// picks is the physical partner of the right it picks. SDL owns that
+        /// pairing (HIDAPI_COMBINE_JOY_CONS) and exposes only the combined
+        /// device, whose serial is empty, so no fact available to this layer
+        /// joins a specific left to a specific right. What this does
+        /// guarantee is one writer per physical Joy-Con and coils for every
+        /// assigned pair.</para></summary>
+        /// <summary>Child paths every OTHER live pair sink currently holds.</summary>
+        private static HashSet<string> ClaimedPairPaths(Sink self)
+        {
+            var claimed = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            lock (_lock)
+            {
+                foreach (var x in _sinks)
+                {
+                    if (ReferenceEquals(x, self) || x.Family != Family.JoyConPair) continue;
+                    if (!string.IsNullOrEmpty(x.PairPrimaryPath)) claimed.Add(x.PairPrimaryPath);
+                    if (!string.IsNullOrEmpty(x.PairSecondPath)) claimed.Add(x.PairSecondPath);
+                }
+            }
+            return claimed;
+        }
+
+        private static (string Left, string Right) ResolveUnclaimedPairChildren(Sink self)
+        {
+            var claimed = ClaimedPairPaths(self);
+            return (FirstUnclaimed(FindHidPaths(NintendoVid, 0x2006), claimed),
+                    FirstUnclaimed(FindHidPaths(NintendoVid, 0x2007), claimed));
+        }
+
+        internal static (string PrimaryPath, string SecondPath, bool PrimaryIsRight)
+            SelectPairChildPaths(string leftPath, string rightPath)
+        {
+            if (leftPath != null) return (leftPath, rightPath, false);
+            if (rightPath != null) return (rightPath, null, true);
+            return (null, null, false);
+        }
 
         /// <summary>The #202 high-tone transform, shared by the stream loop
         /// and the unit tests (the HoldEngaged idiom). Applies Cut or Fold
@@ -231,6 +346,31 @@ namespace PadForge.Common.Input
                     }
             }
             return found;
+        }
+
+        /// <summary>Queues one touchpad swipe-haptic tick (#219) for the
+        /// device's pad-side actuator. Pad 0 = left actuator, pad 1 =
+        /// right (the bundled SDL fork's Steam drivers all send the left
+        /// pad as touchpad index 0). Called from the polling thread; the
+        /// sink's stream thread drains and sends the family-specific
+        /// one-shot, so pulse writes never interleave with tone writes on
+        /// the same handle. Matches by device GUID alone: sinks dedup to
+        /// one per device (Reconcile's seen-set), while the tick's
+        /// per-(slot, device) enable was already applied by the caller.</summary>
+        public static void QueueTouchpadPulse(Guid deviceGuid, int padIdx, float amplitude)
+        {
+            if (deviceGuid == Guid.Empty || amplitude <= 0f) return;
+            if (amplitude > 1f) amplitude = 1f;
+            int bit = 1 << (padIdx == 0 ? 0 : 1);
+            lock (_lock)
+            {
+                foreach (var s in _sinks)
+                {
+                    if (s.DeviceGuid != deviceGuid) continue;
+                    if (amplitude > s.PulseAmp) s.PulseAmp = amplitude;
+                    Interlocked.Or(ref s.PulsePendingSides, bit);
+                }
+            }
         }
 
         // On-demand RemoteDriven sink creation state: one pending build at a
@@ -373,6 +513,41 @@ namespace PadForge.Common.Input
             // never static).
             public byte JoyConTimer;
 
+            // ── Combined-pair dual-coil state (discussion #223) ──
+            // A JoyConPair sink drives BOTH physical children when both resolve:
+            // Handle carries the PRIMARY child (left 0x2006 preferred),
+            // PairSecondHandle the other one. PairPrimaryIsRight records which
+            // side Handle drives, so per-child packets fill the correct half
+            // even when only the right child resolved first. Each child gets
+            // its own rolling timer / probed write path / OutputReportByteLength.
+            // That is stricter than joycon-singer's one global g_timer shared
+            // across both devices (main_pc.cpp:50): each child here sees a clean
+            // +1 sequence, the per-device-state rule above. Zero until the second
+            // child resolves; Reconcile retries the missing child every 3 s and
+            // publishes the handle last, so a stale first read at worst drops
+            // one tick (the file's torn-read tolerance).
+            public IntPtr PairSecondHandle = IntPtr.Zero;
+            public bool PairPrimaryIsRight;
+            // Which physical children this pair sink claimed. Two combined
+            // pairs would otherwise both resolve to the first-enumerated left
+            // and right: one physical pair driven by two writers with two
+            // independent rolling 4-bit timers (the counter corruption the
+            // per-sink-timer comment above exists to prevent), the other
+            // silent behind a sink that looks live.
+            public string PairPrimaryPath;
+            public string PairSecondPath;
+            public byte PairSecondTimer;
+            public bool PairSecondUseWriteFile;
+            public int PairSecondOutLen = 64;
+            // Motor-side routing state, stream-thread only: wall-clock of the
+            // last tick each slot motor was seen commanded (backs the
+            // PairSideHoldMs hold window) and the per-side hot/cold edge for
+            // the one-neutral-then-quiet stop (the JoyConWasStreaming idiom).
+            public long PairLeftMotorLastMs = long.MinValue / 2;
+            public long PairRightMotorLastMs = long.MinValue / 2;
+            public bool PairLeftWasHot;
+            public bool PairRightWasHot;
+
             // Output report length from HID caps (HidD_SetOutputReport / WriteFile
             // require EXACTLY this length; a short buffer is rejected with
             // ERROR_INVALID_PARAMETER). Queried, never hardcoded.
@@ -383,6 +558,40 @@ namespace PadForge.Common.Input
             // accepts it, else synchronous HidD_SetOutputReport (the BT-Joy-Con
             // err-87 case, same split as the Wii speaker).
             public bool UseWriteFile;
+            public bool WriteFailing;
+            // Triton SERIALIZED-DELIVERY lane (wired 0x1302 + puck
+            // 0x1304/0x1305). The one law all five 2026-07-27 benches fit:
+            // commands that arrive at the pad TOGETHER render quads clean
+            // (direct BLE batches a burst into one connection event), while
+            // commands that arrive SPREAD OUT garble quads (the wire
+            // serializes ~1 ms/report; the puck relays one message per RF
+            // poll turn -- its quad bench read mostly-garbled with lucky
+            // clean tones, the wired quad's exact signature). Serialized
+            // lanes drive the pair {0,3} bare; only batched BLE keeps the
+            // clear + quad. Stamped at build, never flipped by the
+            // write-path fallback.
+            public bool TritonSerialLane;
+            // Steam-2026 family lanes that deliberately chose WriteFile from
+            // reference grounding (wired 0x1302: SET_REPORT refused err=31;
+            // puck 0x1304/0x1305: SDL/Steam drive it with hid_write and
+            // SET_REPORT acceptance is unproven). The one-way
+            // WriteFile->SET_REPORT fallback latch never fires for these:
+            // each failed write still TRIES SET_REPORT once, visibly, but
+            // the next write returns to the reference style.
+            public bool TritonPinWriteFile;
+            // Edge latch for the pinned lane's WriteFile-specific failure
+            // log (S1): on the puck SET_REPORT can succeed while WriteFile
+            // fails every write, and the combined-result log would hide it.
+            public bool PinnedWfFailing;
+            // Set by teardown BEFORE its final stop fan. The stream thread
+            // checks it in TritonSend, so a tick already in flight when
+            // Join times out cannot re-arm an actuator after the teardown
+            // stop and leave it sounding on a dead sink (C18).
+            public volatile bool TornDown;
+            // A Triton arm burst failed; the next attempt waits for the
+            // 40 ms cadence instead of retrying per tick (the flood-wedge
+            // hazard the cap exists for). Cleared on a successful arm.
+            public bool ArmRetryPending;
 
             public long LastContentMs = long.MinValue / 2;
 
@@ -455,6 +664,16 @@ namespace PadForge.Common.Input
             public string MirrorSourceId = "";
             public WasapiLoopbackCapture MirrorCapture;
             public ISampleProvider MirrorInput;
+
+            // ── #219 touchpad swipe-haptic ticks ──
+            // One-shot per-side pulses queued from the polling thread and
+            // drained by the stream thread, the TestHz idiom. Sides is an
+            // Interlocked bitmask (bit0 = pad 0 / left actuator, bit1 =
+            // pad 1 / right); Amp follows the file's torn-read tolerance.
+            public int PulsePendingSides;
+            public float PulseAmp;
+            public long PulseLastSendMs;
+            public bool PulseRemoteZeroPending;
         }
 
         private static readonly object _lock = new();
@@ -473,7 +692,77 @@ namespace PadForge.Common.Input
                 _suppressed = false;
                 if (_reconcileTimer != null) return;
                 _reconcileTimer = new Timer(_ => { try { Reconcile(); } catch { } }, null, 0, 3000);
+                // Reading an NFC tag kills vibration on the controller until a
+                // power cycle (owner repro 2026-07-24: tap an amiibo, rumble
+                // dies and stays dead). SDL enables vibration exactly once, at
+                // device open (SetVibrationEnabled at SDL_hidapi_switch.c:2599),
+                // and its NFC machine never re-enables it, so nothing restores
+                // the state the MCU session clobbers. Re-assert enable-vibration
+                // (subcommand 0x48) on our own sole-writer handle after every
+                // tag read. Cheap (one 12-byte command per tap, not per tick)
+                // and self-healing: it also covers a tag read by any other
+                // consumer of the same reader.
+                NfcTagRegistry.ControllerTagDetected += OnControllerTagDetected;
             }
+        }
+
+        /// <summary>Re-assert enable-vibration after an NFC tag read. See the
+        /// subscription in <see cref="EnsureStarted"/> for why. Runs off the
+        /// caller's thread onto a worker so a tag event never blocks the
+        /// reader, and touches only live gen-1 Nintendo sinks.</summary>
+        private static void OnControllerTagDetected(string uid)
+        {
+            List<Sink> targets;
+            lock (_lock)
+            {
+                if (_suppressed) return;
+                // Gate on the handle this actually writes through. The old
+                // gate tested the raw HID handle, which the bench notes below
+                // took out of this path: two different objects with two
+                // different lifetimes, so a raw handle proved nothing about
+                // the gamepad handle the 0x48 goes to.
+                targets = _sinks.Where(x => IsJoyConGen1(x.Family) && !x.Remote
+                    && x.GamepadHandle != IntPtr.Zero).ToList();
+            }
+            if (targets.Count == 0) return;
+            Task.Run(() =>
+            {
+                foreach (var s in targets)
+                {
+                    try
+                    {
+                        // Re-check liveness: Reconcile may have torn the sink
+                        // down between the snapshot and this write. Capture the
+                        // gamepad handle under the lock and use that capture,
+                        // so the value written is the value checked.
+                        IntPtr gp;
+                        lock (_lock)
+                        {
+                            if (!_sinks.Contains(s) || s.GamepadHandle == IntPtr.Zero) continue;
+                            gp = s.GamepadHandle;
+                        }
+                        // Re-enable vibration through SDL's OWN write path, not
+                        // our raw handle. Two bench rounds killed the raw-handle
+                        // approach: 0x48 alone did nothing, and the full
+                        // mode-0x30 + 0x48 sequence did nothing either, while a
+                        // controller power cycle (which makes SDL re-open and
+                        // re-run SetVibrationEnabled) always works. That points
+                        // at our raw writes not landing on this pad, and rumble
+                        // surviving only because SDL enables vibration at open
+                        // (SDL_hidapi_switch.c:2599).
+                        //
+                        // SDL_SendGamepadEffect with a >=2-byte payload is the
+                        // driver's subcommand passthrough: payload[0] is the
+                        // subcommand id, the rest are its args, and it routes
+                        // through WriteSubcommand, the same proven path the open
+                        // sequence uses (HIDAPI_DriverSwitch_SendJoystickEffect,
+                        // the size >= 2 branch). Send enable-vibration there.
+                        SDL3.SDL.SDL_SendGamepadEffect(
+                            gp, new byte[] { 0x48, 0x01 }, 0, 2);
+                    }
+                    catch { /* best effort: a dead handle is Reconcile's problem */ }
+                }
+            });
         }
 
         // ── HID P/Invoke (same surface as the Wii speaker service) ──
@@ -544,19 +833,6 @@ namespace PadForge.Common.Input
         private struct SP_DEVICE_INTERFACE_DATA { public uint cbSize; public Guid InterfaceClassGuid; public uint Flags; public IntPtr Reserved; }
         private const uint DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10;
 
-        /// <summary>Resolves a real HID path for one of the combined pair's child
-        /// Joy-Cons (Left 0x2006 preferred, then Right 0x2007). Null if neither is
-        /// found, in which case BuildSink's CreateFileW fails as before.</summary>
-        private static string ResolveJoyConChildPath()
-        {
-            foreach (ushort pid in new ushort[] { 0x2006, 0x2007 })
-            {
-                string p = FindHidPath(NintendoVid, pid);
-                if (p != null) return p;
-            }
-            return null;
-        }
-
         /// <summary>Enumerates present HID device interfaces and returns the first
         /// whose HIDD_ATTRIBUTES match vid/pid. Standard SetupDi walk. Internal so
         /// BluetoothLinkHelper can resolve the combined pair's children too (#184):
@@ -565,9 +841,23 @@ namespace PadForge.Common.Input
         /// the disconnect path reads each child's own HID serial instead.</summary>
         internal static string FindHidPath(ushort vid, ushort pid)
         {
+            var all = FindHidPaths(vid, pid);
+            return all.Count > 0 ? all[0] : null;
+        }
+
+        /// <summary>Every present HID interface matching vid/pid, in enumeration
+        /// order. Two combined Joy-Con pairs expose two lefts and two rights, and
+        /// the first-match resolver above cannot tell them apart (the pair's SDL
+        /// serial is empty, and the two halves of a pair are separate Bluetooth
+        /// radios with no shared container ID, so no OS-level fact joins them).
+        /// The pair sinks claim children off this list instead, skipping paths a
+        /// live sink already holds.</summary>
+        internal static List<string> FindHidPaths(ushort vid, ushort pid)
+        {
+            var found = new List<string>();
             HidD_GetHidGuid(out Guid hidGuid);
             IntPtr set = SetupDiGetClassDevsW(ref hidGuid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-            if (set == INVALID || set == IntPtr.Zero) return null;
+            if (set == INVALID || set == IntPtr.Zero) return found;
             try
             {
                 var did = new SP_DEVICE_INTERFACE_DATA { cbSize = (uint)Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
@@ -593,16 +883,16 @@ namespace PadForge.Common.Input
                         {
                             var attr = new HIDD_ATTRIBUTES { Size = (uint)Marshal.SizeOf<HIDD_ATTRIBUTES>() };
                             if (HidD_GetAttributes(h, ref attr) && attr.VendorID == vid && attr.ProductID == pid)
-                                return devPath;
+                                found.Add(devPath);
                         }
                         finally { CloseHandle(h); }
                     }
                     finally { Marshal.FreeHGlobal(detail); }
                 }
             }
-            catch { /* enumeration failure -> null, sink falls back to failing open */ }
+            catch { /* enumeration failure -> what we have, sink falls back to failing open */ }
             finally { SetupDiDestroyDeviceInfoList(set); }
-            return null;
+            return found;
         }
 
         private static (int outLen, int featLen) QueryReportLens(IntPtr h)
@@ -659,8 +949,9 @@ namespace PadForge.Common.Input
                     }
                     // Resolve devices OUTSIDE the UserSettings lock. FindDeviceByInstanceGuid
                     // takes UserDevices.SyncRoot, and holding UserSettings.SyncRoot while
-                    // acquiring it inverts UpdateDashboard's order (UserDevices then
-                    // UserSettings) and deadlocks. Same snapshot-then-resolve shape as
+                    // acquiring it inverts the canonical lock order (UserDevices before
+                    // UserSettings), which deadlocks against any canonical-order nester.
+                    // Same snapshot-then-resolve shape as
                     // AudioPassthroughService.EnumerateAssignedSonyPads.
                     foreach (var (mapTo, guid) in assigned)
                     {
@@ -713,9 +1004,27 @@ namespace PadForge.Common.Input
                                 || (staleNow - s.RemoteUntilMs) > 10_000;
                             if (!superseded && !stale) continue;
                         }
-                        else if (desired.Exists(d => d.Guid == s.DeviceGuid && d.Slot == s.Slot))
+                        else
                         {
-                            continue;
+                            // Keep the sink, but re-point it at the CURRENT
+                            // hardware. Matching on (guid, slot) alone and
+                            // continuing left the sink holding the handle and
+                            // path it was built with, so a device that
+                            // reconnected under the same guid kept a sink
+                            // writing to the dead handle: tones stopped and the
+                            // lane looked alive because the sink still existed.
+                            int keep = desired.FindIndex(
+                                d => d.Guid == s.DeviceGuid && d.Slot == s.Slot);
+                            if (keep >= 0)
+                            {
+                                var d = desired[keep];
+                                s.Family = d.Fam;
+                                s.HidPath = d.Path;
+                                s.GamepadHandle = d.Gamepad;
+                                s.Remote = d.Path != null
+                                    && d.Path.StartsWith("peer://", StringComparison.Ordinal);
+                                continue;
+                            }
                         }
                         toTeardown.Add(s);
                         _sinks.RemoveAt(i);
@@ -742,12 +1051,79 @@ namespace PadForge.Common.Input
 
                 foreach (var s in toTeardown) TeardownSink(s);
                 foreach (var s in toBuild)
-                    if (!BuildSink(s))
+                {
+                    // HAPTICDIAG (2026-07-24, rumble-regression hunt): this
+                    // lane had NO diagnostics, so a dead sink was invisible
+                    // and the first diagnosis was a guess. Transition-only,
+                    // never per-tick.
+                    bool built = BuildSink(s);
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG build family={s.Family} slot={s.Slot} remote={s.Remote}"
+                        + $" handle={(s.Handle != IntPtr.Zero ? "OPEN" : "NULL")} result={(built ? "ok" : "FAILED")}");
+                    if (!built)
                         lock (_lock) _sinks.Remove(s);
+                }
 
+                RetryPairSecondHandles();
                 ReconcileMirrors();
             }
             finally { Interlocked.Exchange(ref _reconcileBusy, 0); }
+        }
+
+        /// <summary>Combined pair, missing-child retry (#223): a pair sink that
+        /// built single-coil (one child offline, or its open failed) picks up
+        /// the second coil on the same 3 s Reconcile cadence that retries a
+        /// fully-failed sink. Runs on the Reconcile timer thread, single-flight
+        /// under _reconcileBusy, so it never races another retry and never
+        /// blocks the stream loop (the init sleeps stay off that thread). The
+        /// handle publishes under _lock only while the sink is still live;
+        /// TeardownSink closes it from then on.</summary>
+        private static void RetryPairSecondHandles()
+        {
+            List<Sink> candidates;
+            lock (_lock)
+            {
+                if (_suppressed) return;
+                // Same synthetic-path gate as BuildSink's child resolution: only
+                // sinks whose handle came from the #184 child resolver can have
+                // a second child to attach.
+                candidates = _sinks.Where(x => x.Family == Family.JoyConPair && !x.Remote
+                    && x.Handle != IntPtr.Zero && x.PairSecondHandle == IntPtr.Zero
+                    && (string.IsNullOrEmpty(x.HidPath)
+                        || !x.HidPath.StartsWith(@"\\?\", StringComparison.Ordinal))).ToList();
+            }
+            // ONE enumeration for the whole pass. FindHidPaths walks every
+            // present HID interface and opens each one to read its
+            // attributes, with no early exit, so calling it per candidate
+            // (twice, for both PIDs) meant a full device-wide open sweep per
+            // pair sink every 3 s. The claim set is recomputed per candidate
+            // from these lists, which is the part that has to stay per-sink.
+            var leftAll = FindHidPaths(NintendoVid, 0x2006);
+            var rightAll = FindHidPaths(NintendoVid, 0x2007);
+            foreach (var s in candidates)
+            {
+                // The missing child is the primary's opposite side.
+                ushort pid = s.PairPrimaryIsRight ? (ushort)0x2006 : (ushort)0x2007;
+                string path = FirstUnclaimed(pid == 0x2006 ? leftAll : rightAll, ClaimedPairPaths(s));
+                if (path == null) continue;
+                s.PairSecondPath = path;
+                IntPtr h2 = OpenPairSecondChild(s, path);
+                if (h2 == IntPtr.Zero) continue;
+                lock (_lock)
+                {
+                    if (!_suppressed && _sinks.Contains(s) && s.PairSecondHandle == IntPtr.Zero)
+                    {
+                        s.PairSecondHandle = h2;
+                        h2 = IntPtr.Zero;
+                    }
+                }
+                // Race lost (sink torn down while opening): release the orphan.
+                if (h2 != IntPtr.Zero)
+                {
+                    try { CancelIoEx(h2, IntPtr.Zero); } catch { }
+                    try { CloseHandle(h2); } catch { }
+                }
+            }
         }
 
         // ── Haptic mirror engage gate (#185) ──
@@ -934,6 +1310,7 @@ namespace PadForge.Common.Input
         private static bool BuildSink(Sink s)
         {
             IntPtr h = IntPtr.Zero;
+            IntPtr h2 = IntPtr.Zero;
             try
             {
                 // The 2026 Triton is driven directly, like every other device:
@@ -958,15 +1335,26 @@ namespace PadForge.Common.Input
                     // ("nintendo_joycons_combined", SDL_hidapijoystick.c:1088), not a
                     // real \\?\HID#... path, so CreateFileW fails and the pair gets no
                     // tone (issue #184). Both physical Joy-Cons are still present as
-                    // real HID devices (0x057E/0x2006 L, 0x2007 R); resolve one real
-                    // path so the sink opens and plays on that coil. One handle drives
-                    // one coil; full dual-coil is a documented follow-up.
+                    // real HID devices (0x057E/0x2006 L, 0x2007 R); resolve BOTH real
+                    // paths and drive both coils (discussion #223), the same fan-out
+                    // joycon-singer runs for a separate L+R pair (main_pc.cpp:69-84).
+                    // One child missing degrades to the #184 single-coil sink; the
+                    // other child is retried by Reconcile every 3 s.
                     string path = s.HidPath;
+                    string pairSecondPath = null;
                     if (s.Family == Family.JoyConPair &&
                         (string.IsNullOrEmpty(path) || !path.StartsWith(@"\\?\", StringComparison.Ordinal)))
                     {
-                        string child = ResolveJoyConChildPath();
-                        if (child != null) path = child;
+                        var (leftPath, rightPath) = ResolveUnclaimedPairChildren(s);
+                        var (primary, second, primaryIsRight) = SelectPairChildPaths(leftPath, rightPath);
+                        if (primary != null)
+                        {
+                            path = primary;
+                            pairSecondPath = second;
+                            s.PairPrimaryIsRight = primaryIsRight;
+                            s.PairPrimaryPath = primary;
+                            s.PairSecondPath = second;
+                        }
                     }
                     h = CreateFileW(path, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
                         IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
@@ -976,6 +1364,56 @@ namespace PadForge.Common.Input
                     s.OutLen = capOut > 0 ? capOut : 64;
                     s.FeatLen = capFeat > 0 ? capFeat : 65;
 
+                    if (s.Family == Family.Steam2026)
+                    {
+                        // Transport split by PID, each half owner-verified on
+                        // hardware (2026-07-26/27 captures):
+                        //
+                        // BLE (0x1303): SET_REPORT (HidD_SetOutputReport) with
+                        // the phase-locked back-to-back burst -- the 3.6.1
+                        // shape, clean on current firmware. WriteFile GARBLES
+                        // over BLE and a 3 ms stagger de-phases the LRAs;
+                        // both were tried and reverted. UseWriteFile stays
+                        // false.
+                        //
+                        // USB (0x1302): the wired firmware REFUSES SET_REPORT
+                        // outright (err=31 on the first 0x80, old and new
+                        // firmware alike, caps declaring 64-byte output
+                        // reports all along). SDL, and therefore Steam,
+                        // drives the wired pad with WriteFile on the
+                        // interrupt pipe, and that is the only style it
+                        // accepts. WriteFile stays PINNED here: a failure
+                        // tries SET_REPORT for that one write and logs the
+                        // edge-gated pinned-wf-fail line, but never latches
+                        // the lane away from the reference style (round 33,
+                        // C1 retired the stale latch claim this comment
+                        // used to make).
+                        bool usbTriton = path != null
+                            && path.IndexOf("pid_1302", StringComparison.OrdinalIgnoreCase) >= 0;
+                        // Proteus/Nereid dongle (0x1304/0x1305): the real puck
+                        // RELAYS output reports 0x80-0x86 to the connected
+                        // pad's slot (OpenPuck PROTOCOL.md 9.1, from Windows
+                        // captures -- Steam's own test haptics ride non-0x82
+                        // ids through it), and SDL drives the dongle's slot
+                        // interfaces (2..5) with the same SDL_hid_write as
+                        // the wired pad. Steam's write style (WriteFile,
+                        // pinned -- SET_REPORT acceptance on the real puck is
+                        // unproven), and the SERIALIZED-lane shape: the relay
+                        // forwards one message per RF poll turn, so a quad
+                        // arrives spread out and garbles exactly like the
+                        // wired quad did (owner bench: mostly garbled, lucky
+                        // clean tones -- the quad-over-BLE-shape experiment,
+                        // refuted). See TritonSerialLane.
+                        bool puckTriton = path != null
+                            && (path.IndexOf("pid_1304", StringComparison.OrdinalIgnoreCase) >= 0
+                                || path.IndexOf("pid_1305", StringComparison.OrdinalIgnoreCase) >= 0);
+                        s.UseWriteFile = usbTriton || puckTriton;
+                        s.TritonPinWriteFile = usbTriton || puckTriton;
+                        s.TritonSerialLane = usbTriton || puckTriton;
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"HAPTICDIAG triton-build usb={(usbTriton ? 1 : 0)} puck={(puckTriton ? 1 : 0)} outlenCaps={capOut} featCaps={capFeat} path-tail={(path != null && path.Length > 24 ? path.Substring(path.Length - 24) : path)}");
+                    }
+
                     if (IsJoyConGen1(s.Family))
                     {
                         // Joy-Con gen-1 init: set input report mode 0x30 then enable
@@ -984,10 +1422,26 @@ namespace PadForge.Common.Input
                         // does set_input_mode (main_pc.cpp:131) then enable_vibration
                         // (132); reproduce that order.
                         s.UseWriteFile = ProbeWriteFile(h, s.OutLen);
-                        JoyConSendCommand(h, s, subcommand: 0x03, arg: 0x30); // input report mode 0x30
-                        Thread.Sleep(50);
+                        // When Switch NFC is armed, SDL runs the controller in
+                        // input mode 0x31 (NFC). Forcing 0x30 here would knock
+                        // it out of that mode and drop taps until the fork's
+                        // watchdog re-inits (#248 audit). 0x31 carries the full
+                        // input head plus rumble acks, so haptics work either
+                        // way; skip the mode write and leave the mode to SDL.
+                        if (!NfcTagRegistry.SwitchNfcArmed && !NfcTagRegistry.JoyConIrHintOn)
+                        {
+                            JoyConSendCommand(h, s, subcommand: 0x03, arg: 0x30); // input report mode 0x30
+                            Thread.Sleep(50);
+                        }
                         JoyConSendCommand(h, s, subcommand: 0x48, arg: 0x01); // enable vibration
                         Thread.Sleep(50);
+
+                        // Combined pair, second child (#223): open + probe + the
+                        // same 0x30/0x48 init, on its own timer/write-path state.
+                        // Failure leaves h2 zero and the sink runs single-coil;
+                        // Reconcile retries the missing child every 3 s.
+                        if (pairSecondPath != null)
+                            h2 = OpenPairSecondChild(s, pairSecondPath);
                     }
                     // Steam 2015 (no SDL gamepad) / Deck need no init: each feature
                     // write (HidD_SetFeature, report id 0x00) is self-contained.
@@ -1005,10 +1459,13 @@ namespace PadForge.Common.Input
                     {
                         try { CloseHandle(h); } catch { }
                         h = IntPtr.Zero;
+                        if (h2 != IntPtr.Zero) { try { CloseHandle(h2); } catch { } h2 = IntPtr.Zero; }
                         return true; // race lost: sink already dropped
                     }
                     s.Handle = h;
                     h = IntPtr.Zero;
+                    s.PairSecondHandle = h2;
+                    h2 = IntPtr.Zero;
                     s.MonoSource = resampled;
                     s.Reducer = new HapticToneReducer(ReduceRate);
                     s.Running = true;
@@ -1020,6 +1477,7 @@ namespace PadForge.Common.Input
             catch
             {
                 if (h != IntPtr.Zero && h != INVALID) { try { CloseHandle(h); } catch { } }
+                if (h2 != IntPtr.Zero && h2 != INVALID) { try { CloseHandle(h2); } catch { } }
                 TeardownSink(s);
                 return false;
             }
@@ -1052,12 +1510,35 @@ namespace PadForge.Common.Input
                     switch (s.Family)
                     {
                         case Family.Steam: SteamStop(s); break;     // 2015: classic 0x8f feature stop (both haptics)
-                        case Family.Steam2026: TritonStop(s); break; // Triton: 0x83 stop on all 4 actuators
+                        case Family.Steam2026:
+                            // Fence BEFORE the final stop (C18): a stream
+                            // tick still in flight after a timed-out Join
+                            // must not re-arm past this stop and leave an
+                            // actuator sounding on a dead sink. TritonStop
+                            // itself bypasses the fence via TritonSendCore.
+                            s.TornDown = true;
+                            TritonStop(s); // 0x83 stop on the lane's actuator set
+                            break;
                         case Family.SteamDeck:                       // Deck: 0x8F note-off on both haptics (same as 2015)
                             SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 0));
                             SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 1));
                             break;
-                        default: JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral()); break;
+                        default:
+                            // Joy-Con note-off. A dual-handle pair (#223) quiets
+                            // each child through its own handle (stop_all_rumble
+                            // fans neutral to both devices, main_pc.cpp:116-119);
+                            // everything else keeps the one-packet neutral.
+                            if (s.PairSecondHandle != IntPtr.Zero)
+                            {
+                                var n = HapticToneEncoder.JoyConNeutral();
+                                JoyConPairWriteSide(s, rightSide: false, n);
+                                JoyConPairWriteSide(s, rightSide: true, n);
+                            }
+                            else
+                            {
+                                JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral());
+                            }
+                            break;
                     }
                 }
                 catch { }
@@ -1068,8 +1549,20 @@ namespace PadForge.Common.Input
                     try { CancelIoEx(h, IntPtr.Zero); } catch { }
                     try { CloseHandle(h); } catch { }
                 }
+                var h2 = s.PairSecondHandle;
+                s.PairSecondHandle = IntPtr.Zero;
+                if (h2 != IntPtr.Zero)
+                {
+                    try { CancelIoEx(h2, IntPtr.Zero); } catch { }
+                    try { CloseHandle(h2); } catch { }
+                }
             }
             s.Handle = IntPtr.Zero;
+            s.PairSecondHandle = IntPtr.Zero;
+            // Release the child claims with the handles, so the next pair sink
+            // to build can take these coils.
+            s.PairPrimaryPath = null;
+            s.PairSecondPath = null;
             s.MonoSource = null;
         }
 
@@ -1129,10 +1622,15 @@ namespace PadForge.Common.Input
         // arg] padded to OutLen (main_pc.cpp:90-99 enable_vibration / 103-113
         // set_input_mode). The rolling timer advances per packet.
         private static void JoyConSendCommand(IntPtr h, Sink s, byte subcommand, byte arg)
+            => JoyConSendCommandTo(h, s.OutLen, ref s.JoyConTimer, subcommand, arg);
+
+        // Handle-explicit form so the combined pair's second child inits on its
+        // OWN OutputReportByteLength and rolling timer (#223).
+        private static void JoyConSendCommandTo(IntPtr h, int outLen, ref byte timer, byte subcommand, byte arg)
         {
-            var buf = new byte[s.OutLen < 12 ? 12 : s.OutLen];
+            var buf = new byte[outLen < 12 ? 12 : outLen];
             buf[0] = JoyConCommandReportId;
-            buf[1] = (byte)(s.JoyConTimer++ & 0x0F);
+            buf[1] = (byte)(timer++ & 0x0F);
             var neutral = HapticToneEncoder.JoyConNeutral();
             Array.Copy(neutral, 0, buf, 2, 4);
             Array.Copy(neutral, 0, buf, 6, 4);
@@ -1144,36 +1642,164 @@ namespace PadForge.Common.Input
             try { HidD_SetOutputReport(h, buf, buf.Length); } catch { }
         }
 
-        // Rumble packet: [0x10, timer&0x0F, left4, right4] padded to OutLen
-        // (main_pc.cpp:54-86). Single Joy-Cons get their 4 bytes in the correct
-        // half and neutral in the other; Pro sends the same tone in both halves.
+        /// <summary>Builds the 0x10 rumble report: [0x10, timer&amp;0x0F, left4,
+        /// right4] padded to outLen (joycon-singer main_pc.cpp:54-86; dekuNukem
+        /// bluetooth_hid_notes.md:45, "a timing byte, then 4 bytes of rumble
+        /// data for left Joy-Con, followed by 4 bytes for right Joy-Con").
+        /// Internal for the packet-half tests.</summary>
+        internal static byte[] BuildJoyConRumblePacket(byte timer, byte[] left4, byte[] right4, int outLen)
+        {
+            var buf = new byte[outLen < 10 ? 10 : outLen];
+            buf[0] = JoyConRumbleReportId;
+            buf[1] = (byte)(timer & 0x0F);
+            Array.Copy(left4, 0, buf, 2, 4);
+            Array.Copy(right4, 0, buf, 6, 4);
+            return buf;
+        }
+
+        // Rumble packet on the sink's primary handle. Single Joy-Cons get their
+        // 4 bytes in the correct half and neutral in the other (main_pc.cpp:
+        // 69-84); Pro and the degraded single-handle pair send the same tone in
+        // both halves, and each child only reads its own half.
         private static void JoyConWriteRumble(Sink s, byte[] group4)
         {
             if (s.Handle == IntPtr.Zero) return;
-            var buf = new byte[s.OutLen < 10 ? 10 : s.OutLen];
-            buf[0] = JoyConRumbleReportId;
-            buf[1] = (byte)(s.JoyConTimer++ & 0x0F);
             var neutral = HapticToneEncoder.JoyConNeutral();
             byte[] left = s.Family == Family.JoyConR ? neutral : group4;
             byte[] right = s.Family == Family.JoyConL ? neutral : group4;
-            Array.Copy(left, 0, buf, 2, 4);
-            Array.Copy(right, 0, buf, 6, 4);
-            HidOutputWrite(s, buf);
+            HidOutputWrite(s, BuildJoyConRumblePacket(s.JoyConTimer++, left, right, s.OutLen));
+        }
+
+        // One side of the DUAL-handle combined pair (#223): the child's own
+        // half carries half4, the other half neutral, exactly the packets
+        // joycon-singer sends to its separate g_dev_l / g_dev_r
+        // (main_pc.cpp:69-84). Resolves which physical handle serves the side
+        // via PairPrimaryIsRight and uses that handle's own timer, probed
+        // write path, and report length. No-ops while the side's handle is
+        // missing (degraded single-coil mode).
+        private static void JoyConPairWriteSide(Sink s, bool rightSide, byte[] half4)
+        {
+            bool primary = rightSide == s.PairPrimaryIsRight;
+            IntPtr h = primary ? s.Handle : s.PairSecondHandle;
+            if (h == IntPtr.Zero) return;
+            var neutral = HapticToneEncoder.JoyConNeutral();
+            byte timer = primary ? s.JoyConTimer++ : s.PairSecondTimer++;
+            var buf = BuildJoyConRumblePacket(timer,
+                rightSide ? neutral : half4,
+                rightSide ? half4 : neutral,
+                primary ? s.OutLen : s.PairSecondOutLen);
+            if (primary) HidOutputWriteTo(h, buf, ref s.UseWriteFile);
+            else HidOutputWriteTo(h, buf, ref s.PairSecondUseWriteFile);
         }
 
         // Output write with the probed path: overlapped WriteFile, else
         // synchronous HidD_SetOutputReport (BT-Joy-Con err-87 fallback). Used by
         // the Joy-Con 0x10 rumble lane and the Triton 0x80/0x83 output lane.
-        private static void HidOutputWrite(Sink s, byte[] buf)
+        private static bool HidOutputWrite(Sink s, byte[] buf)
         {
-            if (s.UseWriteFile)
+            bool ok;
+            if (s.TritonPinWriteFile)
             {
-                if (OverlappedWrite(s.Handle, buf)) return;
-                s.UseWriteFile = false; // fall back for the rest of the cue
+                // Wired/puck Triton: WriteFile is the reference style (see
+                // the field's banner), so the one-way WriteFile ->
+                // SET_REPORT fallback latch would turn ONE transient
+                // WriteFile failure into a permanently degraded lane. Try
+                // SET_REPORT for this write only, never latch, and make
+                // the WriteFile failure itself edge-visible: on the puck
+                // SET_REPORT may SUCCEED, and the combined-result log
+                // below would then hide that the reference lane is
+                // failing every write (round 33, S1).
+                bool wfOk = s.Handle != IntPtr.Zero && OverlappedWrite(s.Handle, buf);
+                if (!wfOk && !s.PinnedWfFailing)
+                {
+                    s.PinnedWfFailing = true;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG pinned-wf-fail family={s.Family} slot={s.Slot} err={Marshal.GetLastWin32Error()} id=0x{buf[0]:X2}");
+                }
+                else if (wfOk && s.PinnedWfFailing)
+                {
+                    s.PinnedWfFailing = false;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG pinned-wf-recover family={s.Family} slot={s.Slot}");
+                }
+                if (wfOk) ok = true;
+                else
+                {
+                    try { ok = s.Handle != IntPtr.Zero && HidD_SetOutputReport(s.Handle, buf, buf.Length); }
+                    catch { ok = false; }
+                }
+            }
+            else
+            {
+                ok = HidOutputWriteTo(s.Handle, buf, ref s.UseWriteFile);
+            }
+            // Edge-gated failure visibility (VC-freeze discipline applied
+            // here): a swallowed write failure is exactly how a garble
+            // stays undiagnosable. One line on the first failure, one on
+            // recovery, never per tick.
+            if (!ok && !s.WriteFailing)
+            {
+                s.WriteFailing = true;
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"HAPTICDIAG writefail family={s.Family} slot={s.Slot} err={Marshal.GetLastWin32Error()} len={buf.Length} id=0x{buf[0]:X2}");
+            }
+            else if (ok && s.WriteFailing)
+            {
+                s.WriteFailing = false;
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"HAPTICDIAG writerecover family={s.Family} slot={s.Slot}");
+            }
+            return ok;
+        }
+
+        // Handle-explicit form: the combined pair's two children each carry
+        // their own probed write-path flag (#223).
+        private static bool HidOutputWriteTo(IntPtr h, byte[] buf, ref bool useWriteFile)
+        {
+            if (h == IntPtr.Zero) return false;
+            if (useWriteFile)
+            {
+                if (OverlappedWrite(h, buf)) return true;
+                useWriteFile = false; // fall back for the rest of the cue
             }
             // Fire-and-forget rumble write: a dropped tick is inaudible, never a
-            // crash. Same swallow idiom as the OverlappedWrite/ProbeWriteFile path.
-            try { HidD_SetOutputReport(s.Handle, buf, buf.Length); } catch { }
+            // crash. The RESULT is surfaced (edge-gated) by HidOutputWrite.
+            try { return HidD_SetOutputReport(h, buf, buf.Length); } catch { return false; }
+        }
+
+        /// <summary>Opens and inits the combined pair's second child (#223):
+        /// CreateFileW on the child's real HID path, report lengths from ITS
+        /// caps, the write-path probe, then the same 0x30/0x48 init sequence
+        /// as the primary (open_controller order, main_pc.cpp:126-135), all on
+        /// the second child's own state fields. Returns IntPtr.Zero on any
+        /// failure; the caller keeps running single-coil. Runs on the
+        /// Reconcile timer / build path, never the stream thread (the two
+        /// 50 ms init sleeps would starve the 10 ms tick).</summary>
+        private static IntPtr OpenPairSecondChild(Sink s, string path)
+        {
+            IntPtr h2 = CreateFileW(path, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
+                IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
+            if (h2 == INVALID || h2 == IntPtr.Zero) return IntPtr.Zero;
+            try
+            {
+                var (capOut, _) = QueryReportLens(h2);
+                s.PairSecondOutLen = capOut > 0 ? capOut : 64;
+                s.PairSecondUseWriteFile = ProbeWriteFile(h2, s.PairSecondOutLen);
+                // Same NFC-armed guard as the primary init above (#248 audit).
+                if (!NfcTagRegistry.SwitchNfcArmed && !NfcTagRegistry.JoyConIrHintOn)
+                {
+                    JoyConSendCommandTo(h2, s.PairSecondOutLen, ref s.PairSecondTimer, subcommand: 0x03, arg: 0x30);
+                    Thread.Sleep(50);
+                }
+                JoyConSendCommandTo(h2, s.PairSecondOutLen, ref s.PairSecondTimer, subcommand: 0x48, arg: 0x01);
+                Thread.Sleep(50);
+                return h2;
+            }
+            catch
+            {
+                try { CloseHandle(h2); } catch { }
+                return IntPtr.Zero;
+            }
         }
 
         // Single in-order overlapped WriteFile that blocks until the write
@@ -1379,9 +2005,16 @@ namespace PadForge.Common.Input
                             // driver and OpenPuck's real-capture both drive it via output reports only).
                             case Family.Steam2026: StreamTritonTick(s, toneHz, amp, streaming); break;
                             case Family.SteamDeck: StreamSteamDeckTick(s, toneHz, amp, streaming); break;
-                            default: StreamJoyConTick(s, toneHz, amp, streaming); break;
+                            default: StreamJoyConTick(s, toneHz, amp, streaming, testActive, nowMs); break;
                         }
                     }
+
+                    // #219 touchpad swipe-haptic ticks, drained after the tone
+                    // dispatch so a pulse and a tone re-arm never land in the
+                    // same tick out of order.
+                    int pulseSides = Interlocked.Exchange(ref s.PulsePendingSides, 0);
+                    if (pulseSides != 0 || s.PulseRemoteZeroPending)
+                        SendTouchpadPulses(s, pulseSides, nowMs);
 
                     if (streaming)
                     {
@@ -1412,21 +2045,92 @@ namespace PadForge.Common.Input
             finally { if (fast) timeEndPeriod(1); }
         }
 
-        private static void StreamJoyConTick(Sink s, float toneHz, float amp, bool streaming)
+        private static void StreamJoyConTick(Sink s, float toneHz, float amp, bool streaming, bool testActive, long nowMs)
         {
+            // HAPTICDIAG: transition-only (streaming edge), never per-tick.
+            // Answers "is anything driving this coil at all", which no
+            // existing signal could (2026-07-24 rumble regression).
+            if (streaming != s.JoyConWasStreaming)
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"HAPTICDIAG stream={(streaming ? "ON" : "off")} family={s.Family} slot={s.Slot}"
+                    + $" handle={(s.Handle != IntPtr.Zero ? "OPEN" : "NULL")} tone={toneHz:F0}Hz amp={amp:F2} test={testActive}");
+            }
+            // Dual-coil combined pair (#223): both children live, so the tone
+            // routes by the slot's commanded motor sides. A degraded pair
+            // (second child unresolved) and every single Joy-Con / Pro keep the
+            // exact #184/#147 single-handle behavior below.
+            bool dual = s.Family == Family.JoyConPair && s.PairSecondHandle != IntPtr.Zero;
             if (streaming)
             {
-                // Cue active: drive the coil every tick (quiet dips included) so
-                // the firmware FIFO stays fed.
-                JoyConWriteRumble(s, HapticToneEncoder.EncodeJoyConRumble(toneHz, amp));
+                var tone4 = HapticToneEncoder.EncodeJoyConRumble(toneHz, amp);
+                if (dual)
+                {
+                    bool leftHot = true, rightHot = true;
+                    if (!testActive)
+                    {
+                        // The Audio-tab Test button is exempt: it diagnoses the
+                        // sink, so it must prove BOTH coils regardless of what a
+                        // game happens to be rumbling. Everything else consults
+                        // the slot's merged motor snapshot (RemoteDriven sinks
+                        // have Slot -1 and fall through to both-coils).
+                        bool leftActive = false, rightActive = false;
+                        var p = SlotRumbleActiveProvider;
+                        if (p != null && s.Slot >= 0)
+                        {
+                            try { (leftActive, rightActive) = p(s.Slot); } catch { }
+                        }
+                        (leftHot, rightHot) = ResolvePairSides(leftActive, rightActive, nowMs,
+                            ref s.PairLeftMotorLastMs, ref s.PairRightMotorLastMs);
+                    }
+                    // Hot side: drive its coil every tick (quiet dips included)
+                    // so the firmware FIFO stays fed. Cold side: ONE neutral on
+                    // the hot->cold edge, then quiet, the JoyConWasStreaming
+                    // idiom per side (no 100 Hz neutral spam on the shared link).
+                    StreamPairSide(s, rightSide: false, hot: leftHot, tone4, ref s.PairLeftWasHot);
+                    StreamPairSide(s, rightSide: true, hot: rightHot, tone4, ref s.PairRightWasHot);
+                }
+                else
+                {
+                    // Cue active: drive the coil every tick (quiet dips included)
+                    // so the firmware FIFO stays fed.
+                    JoyConWriteRumble(s, tone4);
+                }
                 s.JoyConWasStreaming = true;
             }
             else if (s.JoyConWasStreaming)
             {
                 // Cue just ended: stop the coil with ONE neutral, then go quiet
                 // (no 100 Hz neutral spam fighting SDL on the shared link).
-                JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral());
+                var neutral = HapticToneEncoder.JoyConNeutral();
+                if (dual)
+                {
+                    JoyConPairWriteSide(s, rightSide: false, neutral);
+                    JoyConPairWriteSide(s, rightSide: true, neutral);
+                    s.PairLeftWasHot = false;
+                    s.PairRightWasHot = false;
+                }
+                else
+                {
+                    JoyConWriteRumble(s, neutral);
+                }
                 s.JoyConWasStreaming = false;
+            }
+        }
+
+        // One side of the dual pair per tick: tone while hot, one neutral on
+        // the hot->cold edge, then silent until the side re-heats.
+        private static void StreamPairSide(Sink s, bool rightSide, bool hot, byte[] tone4, ref bool wasHot)
+        {
+            if (hot)
+            {
+                JoyConPairWriteSide(s, rightSide, tone4);
+                wasHot = true;
+            }
+            else if (wasHot)
+            {
+                JoyConPairWriteSide(s, rightSide, HapticToneEncoder.JoyConNeutral());
+                wasHot = false;
             }
         }
 
@@ -1481,46 +2185,109 @@ namespace PadForge.Common.Input
                 // wedges the haptic engine into a garbled state that persists into
                 // later cues (observed on hardware, 2026-07-01). A fresh cue always
                 // arms immediately.
-                if ((pitchShift || ampStep) && (firstArm || nowMs - s.SteamLastBurstMs >= 40))
+                // A fresh cue arms immediately unless the PREVIOUS attempt
+                // failed (ArmRetryPending): failed arms respect the 40 ms
+                // cadence too, or a refusing device would eat the burst at
+                // 100 Hz, the flood-wedge hazard the cap exists for (C17).
+                bool cadenceOk = firstArm && !s.ArmRetryPending
+                    || nowMs - s.SteamLastBurstMs >= 40;
+                if ((pitchShift || ampStep) && cadenceOk)
                 {
+                    bool allOk = true;
                     if (firstArm)
                     {
-                        // A plain zero rumble command resets the haptic engine out
-                        // of the wedged state (observed on hardware: a normal
-                        // rumble signal clears the garble). Same zero form SDL's
-                        // RumbleJoystick sends (report 0x80, payload all zero).
-                        TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
+                        // BLE ONLY. The wired bench matrix (2026-07-27, four
+                        // builds) tracks BURST SIZE, not the 0x80: 5-write and
+                        // 8-write bursts garbled most clicks whatever their
+                        // report mix, and the 4-write bare burst was mostly
+                        // clean. Wired stays minimal (bare arms); BLE keeps
+                        // the proven 2026-07-01 wedge reset, where the radio
+                        // batches the burst and the firmware drains it at
+                        // its own pace.
+                        if (!s.TritonSerialLane)
+                            allOk &= TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"HAPTICDIAG triton-arm slot={s.Slot} hz={toneHz:F0} amp={amp:F2} outlen={s.OutLen} wf={(s.UseWriteFile ? 1 : 0)} serial={(s.TritonSerialLane ? 1 : 0)}");
                     }
-                    foreach (int hap in HapticToneEncoder.TritonActuators)
-                        TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));
-                    s.SteamOn = true;
-                    s.SteamLastFreq = toneHz;
-                    s.SteamLastAmp = amp;
+                    // Bare arms, one 0x83 per actuator. Wired drives the
+                    // PROVEN PAIR only (see TritonActuatorsWired): the
+                    // standalone probe showed four-tone wired garbles at the
+                    // firmware regardless of burst shape, while pad+grip is
+                    // clean and loud enough.
+                    foreach (int hap in s.TritonSerialLane
+                        ? HapticToneEncoder.TritonActuatorsWired
+                        : HapticToneEncoder.TritonActuators)
+                        allOk &= TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));
+                    // Commit the armed state only when every write landed
+                    // (C17): committing a FAILED arm as "on" suppressed the
+                    // edge-only model's one retry, and a failed STOP left
+                    // the previous 0x7FFF sustain running while the state
+                    // said silent. The burst stamp commits either way so
+                    // the cadence holds.
                     s.SteamLastBurstMs = nowMs;
+                    s.ArmRetryPending = !allOk;
+                    if (allOk)
+                    {
+                        s.SteamOn = true;
+                        s.SteamLastFreq = toneHz;
+                        s.SteamLastAmp = amp;
+                    }
                 }
             }
             else if (s.SteamOn)
             {
-                TritonStop(s);
-                s.SteamOn = false;
-                s.SteamLastAmp = 0f;
+                if (TritonStop(s))
+                {
+                    s.SteamOn = false;
+                    s.SteamLastAmp = 0f;
+                }
+                // Failed stop: SteamOn stays true, so this branch retries
+                // next tick until the stop lands or Reconcile tears the
+                // sink down (a dead handle fails in microseconds and the
+                // writefail line is edge-gated).
             }
         }
 
-        private static void TritonSend(Sink s, byte[] report)
+        private static bool TritonSend(Sink s, byte[] report)
         {
-            if (s.Handle == IntPtr.Zero) return;
-            // Padded to the queried OutputReportByteLength (HID output writes require
-            // exactly that; SteamHapticsSinger writes the full 64-byte report).
-            HidOutputWrite(s, ResizeOut(report, Math.Max(report.Length, s.OutLen)));
+            // Teardown fence (C18): once teardown has sent its final stop,
+            // a stream tick still in flight must not re-arm the actuator.
+            // The teardown's own stop fan goes through TritonSendCore.
+            if (s.TornDown) return false;
+            return TritonSendCore(s, report);
         }
 
-        private static void TritonStop(Sink s)
+        private static bool TritonSendCore(Sink s, byte[] report)
         {
-            if (s.Handle == IntPtr.Zero) return;
+            if (s.Handle == IntPtr.Zero) return false;
+            // Back-to-back, no pacing: the best wired shape benched
+            // (2026-07-27 matrix). A 5 ms inter-write pacing experiment
+            // (c3d1dc9f) benched 0-in-30 clean and is reverted; wider
+            // actuator-start spread garbles MORE, so arms land as tight as
+            // the pipe allows, exactly like SteamHapticsSinger's chord
+            // writes (main.cpp:443-464, back-to-back hid_write per channel).
+            // Padded to the queried OutputReportByteLength (HID output writes require
+            // exactly that; SteamHapticsSinger writes the full 64-byte report).
+            return HidOutputWrite(s, ResizeOut(report, Math.Max(report.Length, s.OutLen)));
+        }
+
+        private static bool TritonStop(Sink s)
+        {
+            if (s.Handle == IntPtr.Zero) return false;
             // Per-actuator 0x83 stop form (gain 0x80), the reference note-off.
-            foreach (int hap in HapticToneEncoder.TritonActuators)
-                TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, 0f, 0f));
+            // Back-to-back like the arm: the four LRAs are driven
+            // phase-locked. A 3 ms stagger experiment (2026-07-26, aimed at
+            // an old-firmware pad) de-phased the actuators and read as
+            // garble on current firmware; reverted the same night.
+            bool allOk = true;
+            foreach (int hap in s.TritonSerialLane
+                ? HapticToneEncoder.TritonActuatorsWired
+                : HapticToneEncoder.TritonActuators)
+                allOk &= TritonSendCore(s, HapticToneEncoder.EncodeTritonTone(hap, 0f, 0f));
+            // NO 0x80 on the wired lane. This stop fan IS the reference
+            // teardown -- the Singer's abortPlaying sends exactly NOTE_STOP
+            // per channel (main.cpp:556-561), nothing else.
+            return allOk;
         }
 
 
@@ -1573,6 +2340,112 @@ namespace PadForge.Common.Input
             try { HidD_SetFeature(s.Handle, buf, buf.Length); } catch { }
         }
 
+        // ── #219 touchpad swipe-haptic tick delivery ──
+        // One-shot per-side pulses, family-specific:
+        //   Steam 2015 / Deck: 0x8F FireHapticPulse, on-time 200-1200 µs by
+        //     intensity, off 600 µs, count 1 (DS4MapperTest's TouchpadCircular
+        //     feedback packet, SteamControllerDevice.cs:404-489).
+        //   Triton: 0x82 HAPTIC_COMMAND tick at -50 dB base gain
+        //     (SteamlessController SteamController.cpp:274-331, Valve's
+        //     MsgHapticCommand). One command can address both sides (0x03).
+        //   Remote (peer:// consumer sink): no native tick crosses the link;
+        //     ship a one-frame tone blip through the #147 haptic-tone relay
+        //     and close it with a zero frame on the next tick.
+        // Runs on the sink's stream thread only, so pulse writes serialize
+        // with tone writes on the same handle.
+
+        /// <summary>Remote-blip pitch. 880 Hz, the TriggerTestTone default,
+        /// rendered for ~one stream tick so it lands as a short tick.</summary>
+        private const float PulseRemoteToneHz = 880f;
+
+        private static void SendTouchpadPulses(Sink s, int sides, long nowMs)
+        {
+            if (s.Remote)
+            {
+                if (sides != 0)
+                {
+                    float rAmp = Math.Clamp(s.PulseAmp, 0f, 1f);
+                    s.PulseAmp = 0f;
+                    RemoteLinkOutputRouter.ShipHapticTone(s.HidPath, PulseRemoteToneHz, rAmp);
+                    s.PulseRemoteZeroPending = true;
+                }
+                else if (s.PulseRemoteZeroPending)
+                {
+                    RemoteLinkOutputRouter.ShipHapticTone(s.HidPath, 0f, 0f);
+                    s.PulseRemoteZeroPending = false;
+                }
+                return;
+            }
+            if (sides == 0) return;
+            if (s.Handle == IntPtr.Zero && s.GamepadHandle == IntPtr.Zero) return;
+
+            // Same 40 ms re-arm cap as the tone paths (SDL's
+            // TRITON_RUMBLE_RESEND_INTERVAL_MS): a fast swipe coalesces
+            // instead of flooding the haptic engine (the 0x83 flood wedge,
+            // observed on hardware 2026-07-01, argues for capping every
+            // burst lane on this handle).
+            if (nowMs - s.PulseLastSendMs < 40)
+            {
+                // Put the drained bits back. StreamLoop takes them with an
+                // Interlocked.Exchange before calling in, so returning here
+                // without restoring them dropped the pulse outright instead
+                // of coalescing it, and no later iteration could resend
+                // (the sides == 0 gate above returns forever). PulseAmp is
+                // still latched and QueueTouchpadPulse is max-wins, so the
+                // deferred burst carries the loudest queued amplitude.
+                Interlocked.Or(ref s.PulsePendingSides, sides);
+                return;
+            }
+            s.PulseLastSendMs = nowMs;
+            float pAmp = Math.Clamp(s.PulseAmp, 0f, 1f);
+            s.PulseAmp = 0f;
+            if (pAmp <= 0f) return;
+
+            switch (s.Family)
+            {
+                case Family.Steam:
+                case Family.SteamDeck:
+                {
+                    int onUs = HapticToneEncoder.SteamPulseOnTimeUs(pAmp);
+                    if ((sides & 0x1) != 0)
+                    {
+                        var blob = HapticToneEncoder.EncodeSteamClassicPulse(
+                            HapticToneEncoder.SteamPulsePadLeft, onUs,
+                            HapticToneEncoder.SteamPulseOffTimeUs, 1);
+                        if (s.Family == Family.Steam) SteamSendBlob(s, blob);
+                        else SteamFeatureWrite(s, blob);
+                    }
+                    if ((sides & 0x2) != 0)
+                    {
+                        var blob = HapticToneEncoder.EncodeSteamClassicPulse(
+                            HapticToneEncoder.SteamPulsePadRight, onUs,
+                            HapticToneEncoder.SteamPulseOffTimeUs, 1);
+                        if (s.Family == Family.Steam) SteamSendBlob(s, blob);
+                        else SteamFeatureWrite(s, blob);
+                    }
+                    // The 0x8F pulse replaces whatever the channel was
+                    // playing, so a streaming square must re-arm. Clearing
+                    // SteamOn makes the next tone tick a fresh cue (the
+                    // TriggerTestTone idiom); an idle sink is unaffected.
+                    s.SteamOn = false;
+                    break;
+                }
+                case Family.Steam2026:
+                {
+                    // Side bits map 1:1 onto the 0x82 side bitmask
+                    // (0x01 = L, 0x02 = R, 0x03 = both). The named tick is
+                    // a one-shot that coexists with the 0x83 tone stream;
+                    // SteamlessController fires it alongside its rumble
+                    // heartbeat without re-arming, so no SteamOn reset.
+                    TritonSend(s, HapticToneEncoder.EncodeTritonTickCommand(
+                        sides & 0x3, HapticToneEncoder.TritonTickGainDb(pAmp)));
+                    break;
+                }
+                // Joy-Con families have no touchpad; nothing queues for them.
+                default: break;
+            }
+        }
+
         private static byte[] ResizeOut(byte[] report, int outLen)
         {
             if (report.Length >= outLen) return report;
@@ -1586,6 +2459,10 @@ namespace PadForge.Common.Input
         public static void Shutdown()
         {
             _suppressed = true;
+            // Paired with the subscription in EnsureStarted. Static event, so
+            // an un-removed handler would keep this class reachable and fire
+            // writes at torn-down handles after shutdown.
+            NfcTagRegistry.ControllerTagDetected -= OnControllerTagDetected;
             // Snapshot under the lock, tear down OUTSIDE it. TeardownSink does a
             // Thread.Join(3000) and a WASAPI capture dispose; holding _lock across
             // those stalls every other _lock caller (GetSlotSinkMixers macro playback,

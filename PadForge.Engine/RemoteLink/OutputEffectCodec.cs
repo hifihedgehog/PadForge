@@ -34,12 +34,14 @@ namespace PadForge.Engine.RemoteLink
     ///   shared pads (Nintendo, BT DS3), whose player LED is otherwise
     ///   machine-local. DualSense/DS4 already carry the player LED inside the
     ///   SonyEffect body, so they never send this kind.</item>
-    /// <item>GuideLed (#209) carries the consumer's configured Guide/Home button
-    ///   LED brightness (0-100 percent) for a shared Xbox GIP pad or 2015 Steam
-    ///   Controller, whose LED is otherwise driven only by the owner's local
-    ///   hardware writers. The owner re-applies it through the SAME writers the
-    ///   local path uses (XboxGipGuideLedWriter / SteamHomeLedSetter). Addressed
-    ///   to one peer device by the ship's device path, exactly as PlayerIndex.</item>
+    /// <item>GuideLed (#209, Switch #226) carries the consumer's configured
+    ///   Guide/Home button LED brightness (0-100 percent) for a shared Xbox GIP
+    ///   pad, 2015 Steam Controller, or Switch home-LED device, whose LED is
+    ///   otherwise driven only by the owner's local hardware writers. The owner
+    ///   re-applies it through the SAME writers the local path uses
+    ///   (XboxGipGuideLedWriter / SteamHomeLedSetter / SwitchHomeLedSetter).
+    ///   Addressed to one peer device by the ship's device path, exactly as
+    ///   PlayerIndex.</item>
     /// </list>
     /// Audio (the speaker sample stream) is carried out of band on its own
     /// <see cref="LinkMessageType.Audio"/> datagrams, not here.
@@ -63,11 +65,13 @@ namespace PadForge.Engine.RemoteLink
             // number). The owner routes it to SetPlayerIndex (Nintendo) /
             // SetPlayerNumber (BT DS3).
             PlayerIndex = 5,
-            // Guide / Home button LED brightness (#209) for a shared Xbox GIP
-            // pad or 2015 Steam Controller: the consumer's configured percent
-            // (0..100). The owner re-applies via the same writers the local
-            // path uses (XboxGipGuideLedWriter.TrySetBrightness /
-            // SteamHomeLedSetter.TrySet). One byte, PlayerIndex's exact shape.
+            // Guide / Home button LED brightness (#209, Switch #226) for a
+            // shared Xbox GIP pad, 2015 Steam Controller, or Switch home-LED
+            // device: the consumer's configured percent (0..100). The owner
+            // re-applies via the same writers the local path uses
+            // (XboxGipGuideLedWriter.TrySetBrightness /
+            // SteamHomeLedSetter.TrySet / SwitchHomeLedSetter.TrySet).
+            // One byte, PlayerIndex's exact shape.
             GuideLed = 6,
         }
 

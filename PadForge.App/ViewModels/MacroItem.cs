@@ -40,6 +40,10 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(RecordTriggerButtonText));
             OnPropertyChanged(nameof(RecordTriggerIcon));
             OnPropertyChanged(nameof(TriggerDisplayText));
+            OnPropertyChanged(nameof(TriggerPressWindowToolTip));
+            OnPropertyChanged(nameof(HoldTimeToolTip));
+            OnPropertyChanged(nameof(TriggerInputItems)); // C24: chip labels are localized too
+            OnPropertyChanged(nameof(InlineIntervalToolTip));
             _outputChannelOptions = null;
             OnPropertyChanged(nameof(OutputChannelOptions));
         }
@@ -57,7 +61,7 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public IList<MacroOutputChannelOption> OutputChannelOptions
         {
-            get => _outputChannelOptions ??= MacroOutputChannelNames.GetOptions(_buttonStyle);
+            get => _outputChannelOptions ??= MacroOutputChannelNames.GetOptions(_buttonStyle, _extendedProfileId);
         }
 
         private string _name = Strings.Instance.Macro_NewMacro;
@@ -78,13 +82,75 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public int PadIndex { get; set; } = -1;
 
+        /// <summary>Nonzero links the two legs of a materialized hold pair
+        /// (audit #2 M4/M6): the press leg SETs the ToggleKey /
+        /// ToggleMouseButton latch, the OnRelease twin CLEARs it, and the
+        /// shared id is how they reach each other at runtime. A starting
+        /// leg cancels its executing twin, so a re-press kills the twin's
+        /// pending delayed release before the stale Clear can cut the new
+        /// hold short, and an Off fire clears the twin's latches (each
+        /// leg's latch state lives on its own action instance). 0 =
+        /// unpaired, every macro the editor creates. Persisted via
+        /// <c>MacroData.PairId</c>, like <see cref="PadIndex"/>.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int PairId { get; set; }
+
+        /// <summary>Release linger for UntilRelease macros (translator v22,
+        /// Steam's activator <c>delay_end</c> on autofire: "wait for this
+        /// period of time after the button has been released before
+        /// deactivating"). When nonzero, the trigger's release does not stop
+        /// the executing macro immediately; the pulse train keeps running
+        /// this many milliseconds past the release, and a re-press inside
+        /// the window cancels the pending stop (the M6 cancel-on-re-press
+        /// shape applied to the pulse stop leg). 0 = stop at release, every
+        /// macro the editor creates. Persisted via
+        /// <c>MacroData.ReleaseLingerMs</c>, like <see cref="PairId"/>.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int ReleaseLingerMs { get; set; }
+
+        /// <summary>Runtime deadline of the pending linger stop (UTC).
+        /// MinValue = no pending stop. Owned by the Step4b evaluators.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public System.DateTime ReleaseLingerStartUtc { get; set; } = System.DateTime.MinValue;
+
         private bool _isEnabled = true;
 
-        /// <summary>Whether this macro is active.</summary>
+        /// <summary>Whether this macro is active. Disabling clears every
+        /// action's volatile Toggle latch (issue #9 wave 1b): the evaluator
+        /// skips disabled macros, so the per-frame latch application stops
+        /// immediately, and clearing the bits here keeps a later re-enable
+        /// from silently resurrecting a stale latched button or key. The
+        /// engine's per-frame key reconcile sends the matching KeyUp on the
+        /// next tick once the desired set no longer contains the key.</summary>
         public bool IsEnabled
         {
             get => _isEnabled;
-            set => SetProperty(ref _isEnabled, value);
+            set
+            {
+                if (SetProperty(ref _isEnabled, value) && !value)
+                {
+                    foreach (var action in Actions)
+                    {
+                        if (action == null) continue;
+                        action.VcToggleLatched = false;
+                        action.KeyToggleLatched = false;
+                        action.MouseToggleLatched = false;
+                        action.VcAxisToggleLatched = false;
+                        action.WheelToggleLatched = false;
+                    }
+
+                    // End the RUN too, not just the latches. Clearing the five
+                    // latch bits stopped the held outputs but left the sequence
+                    // mid-flight, so re-enabling resumed at CurrentActionIndex
+                    // and injected the remaining actions with no trigger press.
+                    // Mirrors the ViewModel-reachable half of the engine's
+                    // EndMacroRun (Step4b.EvaluateMacros.cs:1014).
+                    IsExecuting = false;
+                    CurrentActionIndex = 0;
+                    ComboResumeIndex = 0;
+                    RunReleasedFireToCompletion = false;
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -216,10 +282,20 @@ namespace PadForge.ViewModels
                             else if (!string.IsNullOrEmpty(entry.GestureDescriptor))
                             {
                                 inputs.Add(MappingDisplayResolver.ResolveDescriptorText(
-                                    entry.GestureDescriptor, null) ?? entry.GestureDescriptor);
+                                    entry.GestureDescriptor, null, padPrefixAlways: grp.Key == Guid.Empty) ?? entry.GestureDescriptor);
+                            }
+                            else if (!string.IsNullOrEmpty(entry.SourceDescriptor))
+                            {
+                                inputs.Add(MappingDisplayResolver.ResolveDescriptorText(
+                                    entry.SourceDescriptor, null, padPrefixAlways: grp.Key == Guid.Empty) ?? entry.SourceDescriptor);
                             }
                         }
-                        string deviceName = ResolveDeviceName(grp.Key);
+                        // Guid.Empty is a real group here (#9 B-9): the
+                        // device-free entries render under the same
+                        // "(Any device)" sentinel the mapping picker uses.
+                        string deviceName = grp.Key == Guid.Empty
+                            ? Strings.Instance.Mapping_AnyDevice
+                            : ResolveDeviceName(grp.Key);
                         if (!string.IsNullOrEmpty(deviceName))
                             parts.Add(deviceName + " [" + string.Join(" + ", inputs) + "]");
                         else
@@ -255,7 +331,12 @@ namespace PadForge.ViewModels
                         else if (!string.IsNullOrEmpty(entry.GestureDescriptor))
                         {
                             parts.Add(MappingDisplayResolver.ResolveDescriptorText(
-                                entry.GestureDescriptor, null) ?? entry.GestureDescriptor);
+                                entry.GestureDescriptor, null, padPrefixAlways: grp.Key == Guid.Empty) ?? entry.GestureDescriptor);
+                        }
+                        else if (!string.IsNullOrEmpty(entry.SourceDescriptor))
+                        {
+                            parts.Add(MappingDisplayResolver.ResolveDescriptorText(
+                                entry.SourceDescriptor, null, padPrefixAlways: grp.Key == Guid.Empty) ?? entry.SourceDescriptor);
                         }
                     }
                 }
@@ -273,11 +354,11 @@ namespace PadForge.ViewModels
                     }
                     else if (_buttonStyle == MacroButtonStyle.Numbered && UsesCustomTrigger)
                     {
-                        parts.Add(MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords));
+                        parts.Add(MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords, _extendedProfileId));
                     }
                     else if (_triggerButtons != 0)
                     {
-                        parts.Add(MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle));
+                        parts.Add(MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle, _extendedProfileId));
                     }
 
                     // POV part(s).
@@ -297,9 +378,9 @@ namespace PadForge.ViewModels
                 if (entries.Count > 0)
                 {
                     if (_buttonStyle == MacroButtonStyle.Numbered && UsesCustomTrigger)
-                        parts.Add(MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords));
+                        parts.Add(MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords, _extendedProfileId));
                     else if (_triggerButtons != 0)
-                        parts.Add(MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle));
+                        parts.Add(MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle, _extendedProfileId));
                 }
 
                 // Axis part(s) — always Xbox-output, no per-device split.
@@ -313,12 +394,22 @@ namespace PadForge.ViewModels
                 // Append source device name at end ONLY for single-device legacy /
                 // single-device new-list cases. Multi-device already shows names
                 // inline.
-                if (!multiDevice && (UsesRawTrigger || UsesPovTrigger || UsesAxisTrigger || UsesGestureTrigger))
+                if (!multiDevice && (UsesRawTrigger || UsesPovTrigger || UsesAxisTrigger
+                    || UsesGestureTrigger || UsesDescriptorTrigger))
                 {
                     Guid deviceGuid = entries.Count > 0 ? entries[0].DeviceGuid : _triggerDeviceGuid;
-                    string deviceName = ResolveDeviceName(deviceGuid);
-                    if (!string.IsNullOrEmpty(deviceName))
-                        result = $"{result} ({deviceName})";
+                    if (deviceGuid == Guid.Empty && entries.Count > 0)
+                    {
+                        // Device-free entries (#9 B-9). The sentinel already
+                        // carries its own parentheses, so it appends bare.
+                        result = $"{result} {Strings.Instance.Mapping_AnyDevice}";
+                    }
+                    else
+                    {
+                        string deviceName = ResolveDeviceName(deviceGuid);
+                        if (!string.IsNullOrEmpty(deviceName))
+                            result = $"{result} ({deviceName})";
+                    }
                 }
 
                 return result;
@@ -486,6 +577,22 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>True if this macro uses descriptor trigger entries
+        /// (#9 B-9): engine-read descriptors ("Gyro Pitch",
+        /// "Touchpad 0 Finger 0 Down") evaluated through SourceCoercion's
+        /// button read. Entry-list only, like the gesture trigger.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool UsesDescriptorTrigger
+        {
+            get
+            {
+                var entries = GetTriggerInputEntries();
+                for (int i = 0; i < entries.Count; i++)
+                    if (!string.IsNullOrEmpty(entries[i].SourceDescriptor)) return true;
+                return false;
+            }
+        }
+
         // ───────────────────────────────────────────────
         //  Multi-device trigger inputs
         //  Authoritative storage for cross-device button + POV combos
@@ -584,6 +691,62 @@ namespace PadForge.ViewModels
                 return _gestureName != null;
             }
 
+            /// <summary>Engine input descriptor evaluated through
+            /// SourceCoercion's button read ("Gyro Pitch",
+            /// "Touchpad 0 Finger 0 Down"), or null if this entry isn't a
+            /// descriptor entry (#9 B-9). Carries the trigger shapes that
+            /// have no raw-entry form: the readers canonicalize abstract
+            /// "Gamepad ..." spellings and evaluate the gyro / touchpad
+            /// families with the same per-(device, slot) tuning a mapping
+            /// row gets. Picked from the trigger dropdown, never recorded.</summary>
+            private string _sourceDescriptor;
+            public string SourceDescriptor
+            {
+                get => _sourceDescriptor;
+                set { if (SetProperty(ref _sourceDescriptor, value)) _descriptorSource = null; }
+            }
+
+            private PadForge.Engine.Data.MappingSource _descriptorSource;
+
+            /// <summary>Deadzone / threshold percent stamped onto the cached
+            /// <see cref="DescriptorSource"/> (v15). 0 (default) leaves the
+            /// source's DeadZone unset so axis-class descriptors read the
+            /// evaluator's default threshold and gyro keeps its engine-default
+            /// 30°/s rate. Distinct from <see cref="DeadZone"/>, whose 1..100
+            /// clamp cannot express "engine default" and whose 50 default
+            /// would silently retune every existing descriptor entry.</summary>
+            private int _descriptorDeadZone;
+            public int DescriptorDeadZone
+            {
+                get => _descriptorDeadZone;
+                set { if (SetProperty(ref _descriptorDeadZone, Math.Clamp(value, 0, 100))) _descriptorSource = null; }
+            }
+
+            /// <summary>Cached <see cref="PadForge.Engine.Data.MappingSource"/>
+            /// wrapper for <see cref="SourceDescriptor"/>, so the 1 kHz trigger
+            /// evaluation never allocates (mirrors <see cref="TryGetGestureParts"/>).
+            /// DeadZone is left at 0 (unset) unless a
+            /// <see cref="DescriptorDeadZone"/> was stamped, so axis-class
+            /// descriptors read the evaluator's default threshold and gyro
+            /// keeps its engine default. The entry's HalfAxis / Invert /
+            /// Bidirectional flags ride onto the source (v15): all default
+            /// false, so plain entries evaluate exactly as before, and a
+            /// stamped gyro entry reads ONE signed rotation direction through
+            /// the engine's half-aware gyro bool read. Null when this isn't a
+            /// descriptor entry.</summary>
+            [System.Xml.Serialization.XmlIgnore]
+            public PadForge.Engine.Data.MappingSource DescriptorSource
+                => string.IsNullOrEmpty(_sourceDescriptor)
+                    ? null
+                    : _descriptorSource ??= new PadForge.Engine.Data.MappingSource
+                    {
+                        Descriptor = _sourceDescriptor,
+                        DeadZone = _descriptorDeadZone,
+                        HalfAxis = _halfAxis,
+                        Invert = _invert,
+                        Bidirectional = _bidirectional,
+                    };
+
             /// <summary>Axis target on the device's standard SDL gamepad layout
             /// (0=LX, 1=LY, 2=LT, 3=RX, 4=RY, 5=RT). <c>None</c> if not an axis entry.</summary>
             private MacroAxisTarget _axisTarget = MacroAxisTarget.None;
@@ -603,8 +766,24 @@ namespace PadForge.ViewModels
             public bool HalfAxis
             {
                 get => _halfAxis;
-                set => SetProperty(ref _halfAxis, value);
+                set
+                {
+                    if (SetProperty(ref _halfAxis, value))
+                    {
+                        _descriptorSource = null;
+                        OnPropertyChanged(nameof(IsInvertApplicable));
+                    }
+                }
             }
+
+            /// <summary>Whether Invert does anything in the current
+            /// combination (round nine, R9): with Half + Either both on
+            /// the evaluator mirrors around center and Invert is inert,
+            /// exactly as in the two mapping editors. This third editor
+            /// was left ungated when those two were fixed, so the commit
+            /// that claimed "both mapping editors" was one short.</summary>
+            [System.Xml.Serialization.XmlIgnore]
+            public bool IsInvertApplicable => !(_halfAxis && _bidirectional);
 
             /// <summary>When true the axis reading is flipped (val → 1−val)
             /// before the deadzone test. Same semantics as
@@ -613,7 +792,7 @@ namespace PadForge.ViewModels
             public bool Invert
             {
                 get => _invert;
-                set => SetProperty(ref _invert, value);
+                set { if (SetProperty(ref _invert, value)) _descriptorSource = null; }
             }
 
             /// <summary>When true (and <see cref="HalfAxis"/> is also on) the
@@ -627,7 +806,14 @@ namespace PadForge.ViewModels
             public bool Bidirectional
             {
                 get => _bidirectional;
-                set => SetProperty(ref _bidirectional, value);
+                set
+                {
+                    if (SetProperty(ref _bidirectional, value))
+                    {
+                        _descriptorSource = null;
+                        OnPropertyChanged(nameof(IsInvertApplicable));
+                    }
+                }
             }
 
             /// <summary>Axis-to-button deadzone in percent (1..100). Default
@@ -672,13 +858,19 @@ namespace PadForge.ViewModels
             /// <summary>Compact tagged form for XML round-trip.
             /// Format: <c>in:GUID:ax:Target:HalfAxis:Invert:DeadZone:Bidirectional</c>
             /// (e.g. <c>in:GUID:ax:LeftStickX:1:0:50:1</c>). The trailing
-            /// Bidirectional field is optional — parser defaults to 0 when
-            /// reading older XML written before the flag existed.</summary>
+            /// Bidirectional field is optional. The parser defaults it to 0
+            /// when reading older XML written before the flag existed.
+            /// Descriptor entries write <c>sd:{descriptor}</c> when
+            /// unstamped and the v15 <c>sdh:h:i:b:dz:{descriptor}</c> form
+            /// when a half selector or explicit threshold rides along.
+            /// The GUID may be all-zero (#9 B-9): that is the persisted
+            /// "the device on the macro's slot" form, so an empty guid no
+            /// longer voids the spec. A payload-less entry still yields
+            /// "" and gets filtered by the TriggerInputs join.</summary>
             public string Spec
             {
                 get
                 {
-                    if (DeviceGuid == Guid.Empty) return "";
                     if (AxisTarget != MacroAxisTarget.None)
                         return $"in:{DeviceGuid}:ax:{AxisTarget}:{(HalfAxis ? 1 : 0)}:{(Invert ? 1 : 0)}:{DeadZone}:{(Bidirectional ? 1 : 0)}";
                     if (!string.IsNullOrEmpty(Pov)) return $"in:{DeviceGuid}:pov:{Pov}";
@@ -690,6 +882,23 @@ namespace PadForge.ViewModels
                     // '&' is rejected by the gesture-name validator).
                     if (!string.IsNullOrEmpty(GestureDescriptor))
                         return $"in:{DeviceGuid}:tg:{GestureDescriptor.Replace("|", "&P")}";
+                    // Descriptor entries (#9 B-9) ride the same
+                    // tail-escaping shape as gestures. A stamped entry
+                    // (v15: half selector and/or explicit threshold) takes
+                    // the extended "sdh" tag with the flags BEFORE the
+                    // descriptor tail so the tail re-join keeps working;
+                    // plain entries keep the byte-identical "sd" form.
+                    if (!string.IsNullOrEmpty(SourceDescriptor))
+                    {
+                        // v19 (G3): the extended form writes whenever ANY
+                        // stamp is non-default. The old HalfAxis-or-deadzone
+                        // gate dropped an Invert-only or Bidirectional-only
+                        // stamp back to the plain "sd" spelling, silently
+                        // shedding the flag on round-trip.
+                        if (HalfAxis || Invert || Bidirectional || DescriptorDeadZone > 0)
+                            return $"in:{DeviceGuid}:sdh:{(HalfAxis ? 1 : 0)}:{(Invert ? 1 : 0)}:{(Bidirectional ? 1 : 0)}:{DescriptorDeadZone}:{SourceDescriptor.Replace("|", "&P")}";
+                        return $"in:{DeviceGuid}:sd:{SourceDescriptor.Replace("|", "&P")}";
+                    }
                     return "";
                 }
             }
@@ -721,6 +930,33 @@ namespace PadForge.ViewModels
                             || !desc.StartsWith("Touchpad ", StringComparison.Ordinal))
                             return null;
                         entry.GestureDescriptor = desc;
+                        return entry;
+                    case "sd":
+                        // Descriptor entry (#9 B-9): same tail re-join and
+                        // unescape as "tg". Accepted as-is (no family gate)
+                        // so the spec stays forward-compatible; the engine
+                        // read simply evaluates false for descriptors it
+                        // doesn't recognize.
+                        string sd = string.Join(":", parts, 3, parts.Length - 3)
+                            .Replace("&P", "|");
+                        if (string.IsNullOrWhiteSpace(sd)) return null;
+                        entry.SourceDescriptor = sd;
+                        return entry;
+                    case "sdh":
+                        // Stamped descriptor entry (v15): HalfAxis, Invert,
+                        // Bidirectional, and the descriptor threshold ride
+                        // in front of the descriptor tail
+                        // (in:GUID:sdh:h:i:b:dz:{descriptor}).
+                        if (parts.Length < 8) return null;
+                        string sdh = string.Join(":", parts, 7, parts.Length - 7)
+                            .Replace("&P", "|");
+                        if (string.IsNullOrWhiteSpace(sdh)) return null;
+                        entry.SourceDescriptor = sdh;
+                        entry.HalfAxis = parts[3] == "1";
+                        entry.Invert = parts[4] == "1";
+                        entry.Bidirectional = parts[5] == "1";
+                        if (int.TryParse(parts[6], out int sdz))
+                            entry.DescriptorDeadZone = sdz;
                         return entry;
                     case "ax":
                         if (!Enum.TryParse<MacroAxisTarget>(parts[3], out var at) || at == MacroAxisTarget.None) return null;
@@ -764,16 +1000,28 @@ namespace PadForge.ViewModels
         /// <summary>Converts a picker <see cref="InputChoice"/> into a
         /// <see cref="TriggerInputEntry"/> for the macro trigger dropdown
         /// (#177). Returns false for descriptors the trigger engine has
-        /// no entry shape for (finger axes, sliders, continuous gesture
-        /// axes). Buttons, POV directions, gamepad-layout axes 0-5, the
-        /// touchpad click (raw button 16), and bool-valued touchpad
-        /// gestures all convert.</summary>
+        /// no entry shape for (finger position axes, sliders, continuous
+        /// gesture axes). Buttons, POV directions, gamepad-layout axes 0-5,
+        /// the touchpad click (raw button 16), bool-valued touchpad
+        /// gestures, gyro axes, and "Finger M Down" all convert.
+        /// An empty <see cref="InputChoice.DeviceGuid"/> converts too
+        /// (#9 B-9): it is the picker's "(Any device)" group and stores
+        /// <see cref="Guid.Empty"/>, the persisted "the device on the
+        /// macro's slot" form the evaluator resolves per slot device.</summary>
         public static bool TryBuildTriggerEntry(InputChoice choice, out TriggerInputEntry entry)
         {
             entry = null;
             string d = choice?.Descriptor;
             if (string.IsNullOrEmpty(d)) return false;
-            if (!Guid.TryParse(choice.DeviceGuid, out var g) || g == Guid.Empty) return false;
+            Guid g = Guid.Empty;
+            if (!string.IsNullOrEmpty(choice.DeviceGuid)
+                && !Guid.TryParse(choice.DeviceGuid, out g))
+                return false;
+
+            // Abstract Gamepad aliases (#9) fold to their canonical
+            // "Button N" / "POV 0 Dir" / "Axis N" form so the family's
+            // picker entries convert the same as the raw ones.
+            d = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
 
             if (d.StartsWith("Button ", StringComparison.Ordinal)
                 && int.TryParse(d.Substring(7), out int btn) && btn >= 0)
@@ -823,20 +1071,154 @@ namespace PadForge.ViewModels
             if (d.StartsWith("Touchpad ", StringComparison.Ordinal))
             {
                 var tp = d.Split(new[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
-                if (tp.Length < 3 || !int.TryParse(tp[1], out _)) return false;
+                if (tp.Length < 3 || !int.TryParse(tp[1], out int tpPad)) return false;
                 if (tp[2].Equals("Click", StringComparison.OrdinalIgnoreCase))
                 {
                     // Canonical touchpad click rides Buttons[16]
                     // (SDL_GAMEPAD_BUTTON_TOUCHPAD), same slot the
-                    // mapping recorder resolves it to.
-                    entry = new TriggerInputEntry { DeviceGuid = g, RawButton = 16 };
+                    // mapping recorder resolves it to. Pads past the
+                    // first have NO Buttons[16] backing (a multi-pad
+                    // device's second click surfaces as its own gamepad
+                    // button), so mapping them to 16 would fire on the
+                    // WRONG pad; they ride a descriptor entry instead,
+                    // which evaluates through the same touchpad bool
+                    // read a mapping row gets (quiet today, live when
+                    // the multi-touchpad click extension lands there).
+                    if (tpPad == 0)
+                    {
+                        entry = new TriggerInputEntry { DeviceGuid = g, RawButton = 16 };
+                        return true;
+                    }
+                    entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
                     return true;
                 }
-                if (tp[2].StartsWith("Finger", StringComparison.OrdinalIgnoreCase)) return false;
+                if (tp[2].StartsWith("Click ", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Windowed clicks (v19, M8): "Click {window}" is the
+                    // pad's click AND finger 0 inside the window, a bool
+                    // SourceCoercion.ReadTouchpadBool answers for every
+                    // pad index (pad 0 reads Buttons[16] inside it), so
+                    // the whole family rides a descriptor entry. The old
+                    // Equals("Click") test let these fall through to the
+                    // gesture catch-all, building a trigger the gesture
+                    // parser rejects: dead forever. Unknown window tokens
+                    // stay unconvertible.
+                    var ct = tp[2].Split(' ');
+                    if (ct.Length == 2 && IsTouchpadWindowToken(ct[1]))
+                    {
+                        entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                        return true;
+                    }
+                    return false;
+                }
+                if (tp[2].StartsWith("Finger", StringComparison.OrdinalIgnoreCase))
+                {
+                    // "Finger M Down" is a bool the engine's touchpad read
+                    // already answers, so it rides a descriptor entry
+                    // (#9 B-9). The windowed forms are the same contact
+                    // bool gated to one region of the pad and convert the
+                    // same way; the window grammar mirrors
+                    // SourceCoercion.ReadTouchpadBool (v19, M9): one
+                    // window token (halves #9 B-1, the v18 vertical
+                    // halves, or a diamond quadrant), or the v18 7-token
+                    // quadrant-in-half compose (quadrant first, then
+                    // Left / Right). Finger position axes (X / Y, whole
+                    // or half-windowed) stay unconvertible: no bool read
+                    // exists for them. PRESSURE converts since #239: the
+                    // bool branch reads it against the per-source
+                    // threshold, whole-pad or zone-windowed (Center
+                    // included).
+                    var ft = tp[2].Split(' ');
+                    if (ft.Length is 3 or 4
+                        && ft[0].Equals("Finger", StringComparison.OrdinalIgnoreCase)
+                        && ft[2].Equals("Pressure", StringComparison.Ordinal)
+                        && (ft.Length == 3 || IsTouchpadWindowToken(ft[3])
+                            || ft[3].Equals("Center", StringComparison.Ordinal)))
+                    {
+                        entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                        return true;
+                    }
+                    // Finger ring (v26): a bool the engine's ring read
+                    // answers (radius on DeadZone, Invert = inner), whole
+                    // pad or half-windowed, so it rides a descriptor entry
+                    // like the Down forms below.
+                    if (ft.Length is 3 or 4
+                        && ft[0].Equals("Finger", StringComparison.OrdinalIgnoreCase)
+                        && ft[2].Equals("Ring", StringComparison.Ordinal)
+                        && (ft.Length == 3 || IsTouchpadWindowToken(ft[3])))
+                    {
+                        entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                        return true;
+                    }
+                    if (ft.Length >= 3 && ft.Length <= 5
+                        && ft[0].Equals("Finger", StringComparison.OrdinalIgnoreCase)
+                        && ft[2].Equals("Down", StringComparison.Ordinal))
+                    {
+                        bool windowOk = ft.Length == 3
+                            || (ft.Length == 4 && IsTouchpadWindowToken(ft[3]))
+                            || (ft.Length == 5 && IsTouchpadQuadrantToken(ft[3])
+                                && (ft[4] == "Left" || ft[4] == "Right"));
+                        if (windowOk)
+                        {
+                            entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                // Absolute pointer axes (#9 B-15): positional analogs like
+                // the finger X/Y reads above, and NOT gesture names, so the
+                // gesture-fire catch-all below must not claim them (it
+                // would build a trigger the gesture parser rejects, dead
+                // forever). They stay mapping-only.
+                if (tp[2].StartsWith("Pointer", StringComparison.Ordinal)) return false;
                 // Continuous gesture axes have no bool entry in the
                 // fired set; they stay recording/mapping-only.
                 if (tp[2] is "PinchAxis" or "RotateAxis" or "StickX" or "StickY") return false;
                 entry = new TriggerInputEntry { DeviceGuid = g, GestureDescriptor = d };
+                return true;
+            }
+
+            // Bare gyro axes (#9 B-9): evaluated through SourceCoercion's
+            // button read (rate past the engine's default threshold), with
+            // the same per-(device, slot) Gyro-tab tuning a mapping row
+            // gets. Covers workshop configs whose bindings live on a gyro
+            // group.
+            if (d.StartsWith("Gyro ", StringComparison.Ordinal))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                return true;
+            }
+
+            // Stick deflection rings (translator v17): a bool the engine's
+            // ring read answers (magnitude vs the DeadZone radius, Invert =
+            // inner), so the family rides a descriptor entry exactly like
+            // the gyro axes. The check must come after the alias fold: the
+            // ring spelling is in the "Gamepad " namespace but is not an
+            // alias-table member, so the fold leaves it intact.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsStickRingDescriptor(d))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                return true;
+            }
+
+            // Capsense touch channels (translator v26): plain hardware
+            // bools the engine's capsense read answers, same non-alias
+            // "Gamepad " namespace rule as the rings.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsCapSenseDescriptor(d))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                return true;
+            }
+
+            // NFC tags (#241): "Any NFC Tag" / "NFC Tag N" are plain bools the
+            // engine's NFC read answers, so a tap-to-macro trigger rides a
+            // descriptor entry exactly like the capsense family. Without this
+            // branch the tag showed in the mapping picker but not the macro
+            // "add trigger from list" list (Codex #2).
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(d))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
                 return true;
             }
 
@@ -850,8 +1232,36 @@ namespace PadForge.ViewModels
                 return true;
             }
 
+            // Menu items (#9 B-17): "Menu {id} Item {k}" is a bool the
+            // engine's coercion read answers through the menu runtime's
+            // fired set (asserted / commit-pulsed), so it rides a
+            // descriptor entry exactly like the gyro family. Carries
+            // imported Workshop menu cells whose bindings are macro-shaped
+            // (cursor warps, latches).
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMenuItemDescriptor(d))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                return true;
+            }
+
             return false;
         }
+
+        /// <summary>The touchpad window-token vocabulary (v19, M8/M9),
+        /// mirroring <c>SourceCoercion.ParseTouchpadHalf</c>: horizontal
+        /// halves, the v18 vertical halves, and the v18 diamond
+        /// quadrants. Ordinal on purpose: the engine's parser is exact,
+        /// so a case-mangled token would build a dead trigger.</summary>
+        private static bool IsTouchpadWindowToken(string t)
+            => t is "Left" or "Right" or "Upper" or "Lower"
+                or "North" or "South" or "East" or "West";
+
+        /// <summary>The quadrant subset of the window vocabulary,
+        /// mirroring <c>SourceCoercion.ComposeTouchpadWindow</c>: only a
+        /// quadrant composes with a horizontal half in the 7-token
+        /// form.</summary>
+        private static bool IsTouchpadQuadrantToken(string t)
+            => t is "North" or "South" or "East" or "West";
 
         private List<TriggerInputEntry> _triggerInputEntries;
 
@@ -869,8 +1279,28 @@ namespace PadForge.ViewModels
             }
             set
             {
+                // Leave the field NULL when there is nothing to parse, which
+                // is the normal shape for a legacy macro on the XML load path.
+                // Allocating an empty list here made
+                // EnsureTriggerInputEntries' `if (_triggerInputEntries != null)
+                // return;` guard see a populated field and skip the legacy
+                // migration permanently, so a macro whose trigger lived in the
+                // old TriggerDeviceGuid + TriggerRawButtons / TriggerPovs
+                // fields still FIRED (the engine reads those) while the editor
+                // showed "Not set".
+                if (string.IsNullOrEmpty(value))
+                {
+                    _triggerInputEntries = null;
+                    OnPropertyChanged(nameof(TriggerInputs));
+                    OnPropertyChanged(nameof(UsesRawTrigger));
+                    OnPropertyChanged(nameof(UsesPovTrigger));
+                    OnPropertyChanged(nameof(UsesGestureTrigger));
+                    OnPropertyChanged(nameof(UsesDescriptorTrigger));
+                    OnPropertyChanged(nameof(TriggerDisplayText));
+                    return;
+                }
+
                 _triggerInputEntries = new List<TriggerInputEntry>();
-                if (!string.IsNullOrEmpty(value))
                 {
                     foreach (var s in value.Split('|'))
                     {
@@ -886,6 +1316,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(UsesRawTrigger));
                 OnPropertyChanged(nameof(UsesPovTrigger));
                 OnPropertyChanged(nameof(UsesGestureTrigger));
+                OnPropertyChanged(nameof(UsesDescriptorTrigger));
                 OnPropertyChanged(nameof(TriggerDisplayText));
             }
         }
@@ -943,6 +1374,8 @@ namespace PadForge.ViewModels
         /// finalizing a multi-device combo.</summary>
         public void SetTriggerInputEntries(List<TriggerInputEntry> entries)
         {
+            ClearArmedTriggerWindows();
+
             _triggerInputEntries = entries ?? new List<TriggerInputEntry>();
             WireTriggerInputEntries();
             OnPropertyChanged(nameof(TriggerInputs));
@@ -950,6 +1383,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(UsesPovTrigger));
             OnPropertyChanged(nameof(UsesAxisTrigger));
             OnPropertyChanged(nameof(UsesGestureTrigger));
+            OnPropertyChanged(nameof(UsesDescriptorTrigger));
             OnPropertyChanged(nameof(TriggerDisplayText));
             OnPropertyChanged(nameof(TriggerAxisEntries));
             OnPropertyChanged(nameof(HasTriggerAxisEntries));
@@ -991,14 +1425,14 @@ namespace PadForge.ViewModels
                         {
                             int idx = i;
                             yield return new MacroTriggerInputItem(
-                                string.Format(Strings.Instance.Macro_Btn_Format, idx + 1),
+                                MacroButtonNames.RawButtonShortLabel(_extendedProfileId, idx + 1),
                                 new RelayCommand(() => RemoveLegacyCustomButton(idx)));
                         }
                     }
                 }
                 else if (_triggerButtons != 0)
                 {
-                    foreach (var def in MacroButtonNames.GetButtonDefs(_buttonStyle))
+                    foreach (var def in MacroButtonNames.GetButtonDefs(_buttonStyle, _extendedProfileId))
                     {
                         if ((_triggerButtons & def.Flag) != 0)
                         {
@@ -1059,13 +1493,24 @@ namespace PadForge.ViewModels
             }
             else if (!string.IsNullOrEmpty(entry.GestureDescriptor))
             {
-                input = MappingDisplayResolver.ResolveDescriptorText(entry.GestureDescriptor, null) ?? entry.GestureDescriptor;
+                input = MappingDisplayResolver.ResolveDescriptorText(
+                    entry.GestureDescriptor, null, padPrefixAlways: entry.DeviceGuid == Guid.Empty) ?? entry.GestureDescriptor;
+            }
+            else if (!string.IsNullOrEmpty(entry.SourceDescriptor))
+            {
+                input = MappingDisplayResolver.ResolveDescriptorText(
+                    entry.SourceDescriptor, null, padPrefixAlways: entry.DeviceGuid == Guid.Empty) ?? entry.SourceDescriptor;
             }
             else
             {
                 input = "";
             }
-            string deviceName = ResolveDeviceName(entry.DeviceGuid);
+            // Device-free entries (#9 B-9) carry the same "(Any device)"
+            // sentinel the mapping picker's leading group uses, so the
+            // chip round-trips readably when the editor reopens.
+            string deviceName = entry.DeviceGuid == Guid.Empty
+                ? Strings.Instance.Mapping_AnyDevice
+                : ResolveDeviceName(entry.DeviceGuid);
             return !string.IsNullOrEmpty(deviceName) ? $"{deviceName}: {input}" : input;
         }
 
@@ -1091,15 +1536,38 @@ namespace PadForge.ViewModels
             SetTriggerInputEntries(list);   // raises TriggerDisplayText / TriggerInputItems / ...
         }
 
+        /// <summary>Drops every armed trigger window. Editing the trigger combo
+        /// mid-hold invalidates all of them: the OLD combo's state must not be
+        /// credited to the new one (audit 2026-07-25 round four, R15), and the
+        /// previous sample belonged to the old trigger, so swapping to one
+        /// already held would otherwise read as a fresh observed edge (round
+        /// five, X15). Mirrors the TriggerMode setter's clears.
+        ///
+        /// <para>Extracted because the three legacy removal paths below change
+        /// the trigger combo exactly as SetTriggerInputEntries does, and none of
+        /// them cleared any of this. Removing a legacy trigger button mid-hold
+        /// left the armed window credited to the smaller combo.</para></summary>
+        private void ClearArmedTriggerWindows()
+        {
+            TriggerHoldStartUtc = DateTime.MinValue;
+            TriggerHoldFired = false;
+            TriggerPressStreak = 0;
+            TriggerLastPressUtc = DateTime.MinValue;
+            LastEvaluatedUtc = DateTime.MinValue;
+            WasTriggerActive = false;
+        }
+
         private void RemoveLegacyTriggerButton(ushort flag)
         {
             StopRecordingBeforeTriggerEdit();
+            ClearArmedTriggerWindows();
             TriggerButtons = (ushort)(_triggerButtons & ~flag);
         }
 
         private void RemoveLegacyCustomButton(int index)
         {
             StopRecordingBeforeTriggerEdit();
+            ClearArmedTriggerWindows();
             var words = (uint[])_triggerCustomButtonWords.Clone();
             int word = index / 32, bit = index % 32;
             if (word < words.Length) words[word] &= ~(uint)(1 << bit);
@@ -1110,6 +1578,7 @@ namespace PadForge.ViewModels
         {
             if (index < 0 || index >= _triggerAxisTargets.Length) return;
             StopRecordingBeforeTriggerEdit();
+            ClearArmedTriggerWindows();
             var targets = _triggerAxisTargets.ToList();
             targets.RemoveAt(index);
             var dirs = _triggerAxisDirections.ToList();
@@ -1235,6 +1704,31 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _customButtonCount, Math.Max(1, value));
         }
 
+        private string _extendedProfileId;
+
+        /// <summary>
+        /// The Extended slot's HIDMaestro profile slug, stamped by
+        /// PadViewModel beside ButtonStyle (#215). Null on non-Extended
+        /// slots. Re-letters the Numbered labels on Switch Pro profiles;
+        /// the mask / index value spaces are untouched.
+        /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string RawProfileId
+        {
+            get => _extendedProfileId;
+            set
+            {
+                if (SetProperty(ref _extendedProfileId, value))
+                {
+                    OnPropertyChanged(nameof(TriggerDisplayText));
+                    _outputChannelOptions = null;
+                    OnPropertyChanged(nameof(OutputChannelOptions));
+                    foreach (var action in Actions)
+                        action.RawProfileId = value;
+                }
+            }
+        }
+
         // ─────────────────────────────────────────────
         //  Trigger options
         // ─────────────────────────────────────────────
@@ -1256,7 +1750,8 @@ namespace PadForge.ViewModels
 
         private MacroTriggerMode _triggerMode = MacroTriggerMode.OnPress;
 
-        /// <summary>When to fire: on press, on release, while held, always, or custom expression.</summary>
+        /// <summary>When to fire: on press, on release, while held, always, custom
+        /// expression, or after a continuous hold (<see cref="MacroTriggerMode.HoldForMs"/>).</summary>
         public MacroTriggerMode TriggerMode
         {
             get => _triggerMode;
@@ -1264,8 +1759,44 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _triggerMode, value))
                 {
+                    // Audit 2026-07-18: the evaluator reads this SAME
+                    // object live, so a mode switch must void every
+                    // transient the old mode armed. An armed SinglePress
+                    // timestamp otherwise fires DoublePress on its first
+                    // post-switch press, and a mid-hold switch keeps the
+                    // HoldForMs timer crediting the old mode's hold.
+                    TriggerLastPressUtc = DateTime.MinValue;
+                    TriggerPressStreak = 0;
+                    TriggerHoldStartUtc = DateTime.MinValue;
+                    TriggerHoldFired = false;
+                    RunReleasedFireToCompletion = false;
+                    // #238 Toggle: a mode switch drops the latch, same
+                    // transient-voiding contract as the lines above.
+                    ToggleTriggerLatched = false;
+                    ToggleRawWasActive = false;
+                    // ...and drops the RUN as well (audit 2026-07-24). The
+                    // lines above void what the old mode ARMED; without
+                    // this, what it STARTED outlived the switch. A latched
+                    // Toggle running an all-continuous sequence kept
+                    // IsExecuting through the change, and the new mode's
+                    // stop conditions never matched a run it did not begin
+                    // (a released OnPress never sees its own release edge),
+                    // so the actions asserted forever and no later press
+                    // could restart the macro. Ending the run is the same
+                    // contract the disable lane already applies.
+                    IsExecuting = false;
+                    CurrentActionIndex = 0;
+                    ComboResumeIndex = 0;
+                    AwaitReleaseAfterBreak = false;
                     OnPropertyChanged(nameof(IsNotAlwaysMode));
                     OnPropertyChanged(nameof(IsCustomExpressionMode));
+                    OnPropertyChanged(nameof(ShowsHoldTimeRow));
+                    OnPropertyChanged(nameof(HoldTimeToolTip));
+                    OnPropertyChanged(nameof(IsDoublePressMode));
+                    OnPropertyChanged(nameof(ShowsInlineIntervalRow));
+                    OnPropertyChanged(nameof(ShowsRepeatSection));
+                    OnPropertyChanged(nameof(InlineIntervalToolTip));
+                    OnPropertyChanged(nameof(TriggerPressWindowToolTip));
                     OnPropertyChanged(nameof(ShowsTriggerComboEditor));
                 }
             }
@@ -1276,14 +1807,252 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsNotAlwaysMode => _triggerMode != MacroTriggerMode.Always;
 
+        /// <summary>True when the shared hold-time ms row shows (#253):
+        /// HoldForMs fires AT the threshold, ShortPress fires at release
+        /// UNDER it. One row, one stored value, two directions (the
+        /// ShowsInlineIntervalRow precedent).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ShowsHoldTimeRow =>
+            _triggerMode == MacroTriggerMode.HoldForMs ||
+            _triggerMode == MacroTriggerMode.ShortPress;
+
+        /// <summary>Tooltip for the shared hold-time row, following the
+        /// active mode (the TriggerPressWindowToolTip idiom). Re-raised on
+        /// mode and culture changes.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string HoldTimeToolTip =>
+            _triggerMode == MacroTriggerMode.ShortPress
+                ? Strings.Instance.Macro_ShortPress_Tooltip
+                : Strings.Instance.Macro_HoldForMs_Tooltip;
+
+        /// <summary>True when the inline repeat-interval ms row shows
+        /// beside the Fire picker (#238): Turbo (the interval is the turbo
+        /// rate) and Toggle (while latched, the sequence re-runs at this
+        /// interval). Both modes force until-release repeats in the
+        /// engine, so the interval is their only live repeat setting and
+        /// it sits where the mode was chosen.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ShowsInlineIntervalRow =>
+            _triggerMode == MacroTriggerMode.Turbo ||
+            _triggerMode == MacroTriggerMode.Toggle;
+
+        /// <summary>False when the Repeat section (Mode / Count / Interval)
+        /// hides (#238): Turbo and Toggle override RepeatMode and
+        /// RepeatCount in the engine, so showing dead controls would let
+        /// the user author settings that silently do nothing. Their one
+        /// live knob, the interval, moves to the inline row beside the
+        /// Fire picker instead.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ShowsRepeatSection =>
+            _triggerMode != MacroTriggerMode.Turbo &&
+            _triggerMode != MacroTriggerMode.Toggle &&
+            // ShortPress starts with the trigger ALREADY released, so the
+            // deferred-completion flag is always set and the until-release
+            // repeat branch can never run (audit 2026-07-25, C17). Showing
+            // Repeat there let a user author a setting the engine provably
+            // ignores, the same dead-control class this gate exists for.
+            _triggerMode != MacroTriggerMode.ShortPress;
+
+        /// <summary>Tooltip for the inline interval row, following the
+        /// active mode (the TriggerPressWindowToolTip idiom): the turbo
+        /// rate for Turbo, the while-latched pacing for Toggle. Re-raised
+        /// on mode and culture changes.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string InlineIntervalToolTip =>
+            _triggerMode == MacroTriggerMode.Turbo
+                ? Strings.Instance.Macro_Turbo_Tooltip
+                : Strings.Instance.Macro_ToggleInterval_Tooltip;
+
+        /// <summary>True when TriggerMode is DoublePress (translator v17),
+        /// TriplePress, or SinglePress (#238, all three consume the same
+        /// press window: the chains chain through it, the single defers
+        /// by it). Gates the press-window ms row in the trigger editor.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsDoublePressMode =>
+            _triggerMode == MacroTriggerMode.DoublePress ||
+            _triggerMode == MacroTriggerMode.TriplePress ||
+            _triggerMode == MacroTriggerMode.SinglePress;
+
+        /// <summary>Tooltip for the shared press-window ms row (#238):
+        /// the double- or triple-press explanation, following the active
+        /// trigger mode. Re-raised on mode and culture changes.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string TriggerPressWindowToolTip =>
+            _triggerMode == MacroTriggerMode.TriplePress
+                ? Strings.Instance.Macro_TriplePress_Tooltip
+                : _triggerMode == MacroTriggerMode.SinglePress
+                    ? Strings.Instance.Macro_SinglePress_Tooltip
+                    : Strings.Instance.Macro_DoublePress_Tooltip;
+
         /// <summary>True when the standard trigger-combo recording UI should show
-        /// (i.e. one of OnPress / OnRelease / WhileHeld). Always mode has no
-        /// trigger; CustomExpression mode uses the formula editor instead.</summary>
+        /// (i.e. one of OnPress / OnRelease / WhileHeld / HoldForMs /
+        /// DoublePress / TriplePress / SinglePress / Toggle / Turbo).
+        /// Always mode has no trigger; CustomExpression mode uses the
+        /// formula editor instead.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool ShowsTriggerComboEditor =>
             _triggerMode == MacroTriggerMode.OnPress ||
             _triggerMode == MacroTriggerMode.OnRelease ||
-            _triggerMode == MacroTriggerMode.WhileHeld;
+            _triggerMode == MacroTriggerMode.WhileHeld ||
+            _triggerMode == MacroTriggerMode.HoldForMs ||
+            _triggerMode == MacroTriggerMode.DoublePress ||
+            _triggerMode == MacroTriggerMode.TriplePress ||
+            _triggerMode == MacroTriggerMode.SinglePress ||
+            _triggerMode == MacroTriggerMode.Toggle ||
+            _triggerMode == MacroTriggerMode.Turbo ||
+            _triggerMode == MacroTriggerMode.ShortPress;
+
+        private int _triggerHoldMs = 500;
+
+        /// <summary>Continuous-hold threshold in milliseconds for
+        /// <see cref="MacroTriggerMode.HoldForMs"/> (issue #9 wave 1b).
+        /// The macro fires once when the trigger combo has been held this
+        /// long; a shorter tap does nothing. Clamped to 50..10000;
+        /// default 500.</summary>
+        public int TriggerHoldMs
+        {
+            get => _triggerHoldMs;
+            set => SetProperty(ref _triggerHoldMs, Math.Clamp(value, 50, 10000));
+        }
+
+        private RelayCommand _resetTriggerHoldMsCommand;
+        /// <summary>Resets the hold-threshold to the 500 ms default (issue #9
+        /// wave 1b), pairing the ms box with the standard reset glyph.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetTriggerHoldMsCommand =>
+            _resetTriggerHoldMsCommand ??= new RelayCommand(() => TriggerHoldMs = 500);
+
+        private RelayCommand _resetRepeatDelayMsCommand;
+        /// <summary>Resets the repeat interval to the 100 ms default, for
+        /// the Turbo mode's inline interval row (#238).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetRepeatDelayMsCommand =>
+            _resetRepeatDelayMsCommand ??= new RelayCommand(() => RepeatDelayMs = 100);
+
+        private int _triggerDoublePressMs = 442;
+
+        /// <summary>Double-press window in milliseconds for
+        /// <see cref="MacroTriggerMode.DoublePress"/> (translator v17). The
+        /// macro fires on the second rising edge when it lands within this
+        /// window of the first. A slower second press re-arms as a fresh
+        /// first press. Clamped to 50..5000; default 442, the double-tap
+        /// window Valve's own shipped controller_base templates author
+        /// (basicui.vdf / basicui_neptune.vdf, "double_tap_time" "442").</summary>
+        public int TriggerDoublePressMs
+        {
+            get => _triggerDoublePressMs;
+            set => SetProperty(ref _triggerDoublePressMs, Math.Clamp(value, 50, 5000));
+        }
+
+        private RelayCommand _resetTriggerDoublePressMsCommand;
+        /// <summary>Resets the double-press window to the 442 ms default,
+        /// pairing the ms box with the standard reset glyph.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetTriggerDoublePressMsCommand =>
+            _resetTriggerDoublePressMsCommand ??= new RelayCommand(() => TriggerDoublePressMs = 442);
+
+        private string _layerMask = "";
+
+        /// <summary>Shift-layer gate (translator v25, Steam's
+        /// always_on_action): when non-empty and not "Base", the macro's
+        /// trigger only counts as active while this layer is the slot's
+        /// engaged layer, so a set-scoped always-on command fires at set
+        /// entry and stops at set exit. Empty (default) = ungated. A
+        /// translator-stamped field like ShiftActivator.AxisHalf: not
+        /// surfaced in the editor, carried through the DTO round-trip.</summary>
+        public string LayerMask
+        {
+            get => _layerMask;
+            set
+            {
+                // A NULL write is a picker artifact, never a user choice
+                // (audit 2026-07-25, C1). The editor's Layer ComboBox binds
+                // SelectedValue two-way over MacroLayerChoices; when the
+                // choice this macro selects disappears (a layer delete, or
+                // a reconcile tail-removal), WPF's Selector coerces
+                // SelectedValue to null and the binding pushes it here,
+                // silently downgrading a scoped macro to "" (Any layer)
+                // and persisting the loss through the dirty gate.
+                // Ignoring null is the same defense MappingItem.SelectedInput
+                // uses against its own picker rebuilds; the persisted mask
+                // stays the truth.
+                if (value == null) return;
+                if (SetProperty(ref _layerMask, value))
+                {
+                    OnPropertyChanged(nameof(HasLayerScope));
+                    OnPropertyChanged(nameof(ShowsLayerRow));
+                }
+            }
+        }
+
+        /// <summary>True when the macro is scoped to a layer or to Base
+        /// (#254 A-1), i.e. anything but the ungated "" default. Drives the
+        /// scope dot on the macro list.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool HasLayerScope => !string.IsNullOrEmpty(_layerMask);
+
+        /// <summary>True when the macro carries ANY scope (same predicate
+        /// as <see cref="HasLayerScope"/>; kept as a separate name because
+        /// the XAML visibility trigger binds a row-display contract, not
+        /// the scope-dot contract). The editor shows the Layer row whenever
+        /// this OR the slot's HasShiftLayers is true, so a scope that
+        /// arrived from an import or a cross-slot copy is always visible
+        /// and clearable rather than silently gating a macro the user
+        /// cannot inspect (audit 2026-07-25, C3; doc corrected round four,
+        /// R22: the earlier summary described a not-representable predicate
+        /// the code never implemented).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ShowsLayerRow => HasLayerScope;
+
+        /// <summary>UTC time of the last evaluator tick that OBSERVED this
+        /// macro's trigger (audit 2026-07-25 round four, replacing the
+        /// round-three sticky bool). <see cref="WasTriggerActive"/> is only
+        /// trustworthy when observation was CONTINUOUS: after any gap (engine
+        /// stop, the macro disabled, its slot idle-skipped, a profile
+        /// hot-retain), the previous sample is stale and an apparent edge on
+        /// the first tick back may have happened entirely unwatched. The
+        /// sticky bool modeled "sampled sometime", so every one of those gap
+        /// sources re-created the held-at-start bug it was added to fix. A
+        /// stamp self-heals them all: a rising edge only arms On Short Press
+        /// when the previous tick is recent. Poll-thread transient.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public DateTime LastEvaluatedUtc { get; set; } = DateTime.MinValue;
+
+        /// <summary>Transient timing state for
+        /// <see cref="MacroTriggerMode.DoublePress"/>: the UTC time of the
+        /// previous rising edge, or <see cref="DateTime.MinValue"/> when no
+        /// first press is armed. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal DateTime TriggerLastPressUtc { get; set; } = DateTime.MinValue;
+
+        /// <summary>TriplePress chain length so far (#238): how many
+        /// rising edges the current fast-press chain holds. Volatile
+        /// runtime state, reset when a press lands outside the window
+        /// and consumed on fire.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal int TriggerPressStreak { get; set; }
+
+        /// <summary>Transient timing state for <see cref="MacroTriggerMode.HoldForMs"/>:
+        /// the UTC time the trigger combo last went active (rising edge). The
+        /// evaluator arms it on each press and fires once the hold crosses
+        /// <see cref="TriggerHoldMs"/>. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal DateTime TriggerHoldStartUtc { get; set; } = DateTime.MinValue;
+
+        /// <summary>True once the current hold has fired, so a single hold
+        /// never double-fires. Re-armed (cleared) by the evaluator on the
+        /// next rising edge. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool TriggerHoldFired { get; set; }
+
+        /// <summary>Set when a deferred SinglePress fired with the button
+        /// already released (audit 2026-07-18): the activation runs its
+        /// sequence ONE full pass, with the UntilRelease release-stop
+        /// suppressed until the pass completes (the release already
+        /// happened before the fire). Cleared on completion, disable,
+        /// mode switch, and pair-cancel.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool RunReleasedFireToCompletion { get; set; }
 
         private bool _consumeTriggerButtons = true;
 
@@ -1627,10 +2396,21 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isRecordingExpressionVariable, value);
         }
 
+        /// <summary>Variable ceiling for a custom-expression macro. The
+        /// editor labels each row from the ItemsControl's AlternationIndex,
+        /// which WPF assigns cyclically, so past this count two rows would
+        /// carry the SAME letter while the evaluator still binds them
+        /// positionally: the user would edit one variable and the formula
+        /// would read the other (round 34). Keep in sync with
+        /// AlternationCount on the TriggerExpressionVariables ItemsControl
+        /// in PadPage.xaml.</summary>
+        public const int MaxExpressionVariables = 32;
+
         private RelayCommand _addExpressionVariableCommand;
         public RelayCommand AddExpressionVariableCommand =>
             _addExpressionVariableCommand ??= new RelayCommand(() =>
             {
+                if (TriggerExpressionVariables.Count >= MaxExpressionVariables) return;
                 TriggerExpressionVariables.Add(new MacroExpressionVariable());
                 OnPropertyChanged(nameof(CustomExpressionStatus));
                 OnPropertyChanged(nameof(IsCustomExpressionWarning));
@@ -1730,6 +2510,34 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool WasTriggerActive { get; set; }
 
+        /// <summary>Raw trigger state on the previous frame for the Toggle
+        /// mode's edge detector (#238). Separate from
+        /// <see cref="WasTriggerActive"/>, which stores the LATCH the
+        /// evaluator presents downstream. Runtime only.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ToggleRawWasActive { get; set; }
+
+        /// <summary>The Toggle mode's latch (#238): flipped on each raw
+        /// rising edge, presented downstream as the trigger state, cleared
+        /// on disable, mode switch, and layer close. Runtime only.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ToggleTriggerLatched { get; set; }
+
+        /// <summary>Combo-break park position (discussion #237): the action
+        /// index the NEXT start resumes from. 0 = start from the top. Set
+        /// by a <see cref="MacroActionType.ComboBreak"/> action, cleared on
+        /// normal sequence completion, UntilRelease stop, disable, profile
+        /// switch, engine stop, and app restart (volatile).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int ComboResumeIndex { get; set; }
+
+        /// <summary>Set when a combo break parks the sequence while the
+        /// trigger is still held: hold-shaped trigger modes (WhileHeld,
+        /// Always) must not auto-resume through the break, so the start
+        /// gate stays closed until the trigger reads inactive once.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool AwaitReleaseAfterBreak { get; set; }
+
         // ─────────────────────────────────────────────
         //  Commands
         // ─────────────────────────────────────────────
@@ -1775,7 +2583,7 @@ namespace PadForge.ViewModels
         public RelayCommand AddActionCommand =>
             _addActionCommand ??= new RelayCommand(() =>
             {
-                var action = new MacroAction { Type = MacroActionType.ButtonPress, ButtonStyle = _buttonStyle, CustomButtonCount = _customButtonCount };
+                var action = new MacroAction { Type = MacroActionType.ButtonPress, ButtonStyle = _buttonStyle, CustomButtonCount = _customButtonCount, RawProfileId = _extendedProfileId };
                 Actions.Add(action);
                 SelectedAction = action;
             });
@@ -1802,6 +2610,7 @@ namespace PadForge.ViewModels
                 var clone = SettingsService.BuildMacroAction(SettingsService.BuildActionData(_selectedAction));
                 clone.ButtonStyle = _buttonStyle;
                 clone.CustomButtonCount = _customButtonCount;
+                clone.RawProfileId = _extendedProfileId;
                 int idx = Actions.IndexOf(_selectedAction);
                 if (idx < 0) Actions.Add(clone); else Actions.Insert(idx + 1, clone);
                 SelectedAction = clone;
@@ -1858,7 +2667,16 @@ namespace PadForge.ViewModels
         private void OnCultureChanged()
         {
             OnPropertyChanged(nameof(DisplayText));
+            // The static list is rebuilt by RefreshVirtualKeyValues, but an
+            // x:Static binding never re-reads it; the instance accessor +
+            // this raise are what reach open views.
+            OnPropertyChanged(nameof(VirtualKeyChoices));
         }
+
+        /// <summary>Instance accessor over <see cref="VirtualKeyValues"/>.
+        /// x:Static ItemsSource bindings evaluate once and kept the old
+        /// language after a live switch (owner report 2026-07-16).</summary>
+        public List<KeyDisplayItem> VirtualKeyChoices => VirtualKeyValues;
 
         private MacroActionType _type = MacroActionType.ButtonPress;
 
@@ -1870,11 +2688,28 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _type, value))
                 {
+                    // A hidden pulse must not survive a retype (audit
+                    // 2026-07-25, C40): the latch pass consults
+                    // PulseWhileLatched for every latched axis action, but
+                    // the editor offers the checkbox only for
+                    // IsPulseCapableType. Switching ToggleVcAxis(pulse on)
+                    // to Set Axis (Latched) left the flag set with no UI to
+                    // see or clear it, so the "persistent" ladder value
+                    // oscillated on an invisible square wave.
+                    if (!IsPulseCapableType && _pulseWhileLatched)
+                    {
+                        _pulseWhileLatched = false;
+                        OnPropertyChanged(nameof(PulseWhileLatched));
+                    }
                     OnPropertyChanged(nameof(DisplayText));
                     OnPropertyChanged(nameof(IsButtonType));
                     OnPropertyChanged(nameof(IsKeyType));
+                    OnPropertyChanged(nameof(IsAnyKeyType));
                     OnPropertyChanged(nameof(IsDurationType));
                     OnPropertyChanged(nameof(IsAxisType));
+                    OnPropertyChanged(nameof(IsMouseWheelTapType));
+                    OnPropertyChanged(nameof(IsMouseNudgeType));
+                    OnPropertyChanged(nameof(IsCycleTapListType));
                     OnPropertyChanged(nameof(IsSystemVolumeType));
                     OnPropertyChanged(nameof(IsAppVolumeType));
                     OnPropertyChanged(nameof(IsMouseMoveType));
@@ -1908,6 +2743,28 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMouseRecenterType));
                     OnPropertyChanged(nameof(IsMouseFixPositionType));
                     OnPropertyChanged(nameof(IsMouseLimitRegionType));
+                    OnPropertyChanged(nameof(IsMoveMouseToScreenPositionType));
+                    OnPropertyChanged(nameof(IsRepeatKeyWhileHeldType));
+                    OnPropertyChanged(nameof(IsRepeatVcButtonWhileHeldType));
+                    OnPropertyChanged(nameof(IsToggleVcButtonType));
+                    OnPropertyChanged(nameof(IsToggleKeyType));
+                    OnPropertyChanged(nameof(IsGyroRecenterType));
+                    OnPropertyChanged(nameof(IsToggleMouseButtonType));
+                    OnPropertyChanged(nameof(IsToggleVcAxisType));
+                    OnPropertyChanged(nameof(IsRepeatVcAxisWhileHeldType));
+                    OnPropertyChanged(nameof(IsToggleWheelType));
+                    OnPropertyChanged(nameof(IsAxisAddType));
+                    OnPropertyChanged(nameof(IsAxisSetLatchedType));
+                    OnPropertyChanged(nameof(IsAxisScaleType));
+                    OnPropertyChanged(nameof(IsAxisLatchReleaseType));
+                    OnPropertyChanged(nameof(IsComboBreakType));
+                    OnPropertyChanged(nameof(IsAxisYieldCapableType));
+                    OnPropertyChanged(nameof(IsAnyMouseButtonType));
+                    OnPropertyChanged(nameof(IsAnyWheelTapType));
+                    OnPropertyChanged(nameof(IsAnyAxisValueType));
+                    OnPropertyChanged(nameof(IsPulseCapableType));
+                    OnPropertyChanged(nameof(IsAnyVcButtonType));
+                    OnPropertyChanged(nameof(IsRepeatIntervalType));
                     OnPropertyChanged(nameof(IsDisconnectControllerType));
                     OnPropertyChanged(nameof(IsDisconnectSpecificDevice));
                     OnPropertyChanged(nameof(DisconnectDeviceOptions));
@@ -1929,6 +2786,17 @@ namespace PadForge.ViewModels
                         CursorPinX = pcx;
                         CursorPinY = pcy;
                     }
+
+                    // Same rationale for a freshly-typed move-cursor action (#9):
+                    // seed the target to the primary-monitor center so an
+                    // unconfigured (0,0) doesn't warp the cursor to the corner.
+                    if (_type == MacroActionType.MoveMouseToScreenPosition
+                        && _mouseX == 0 && _mouseY == 0
+                        && CursorControlService.TryGetPrimaryCenter(out int mcx, out int mcy))
+                    {
+                        MouseX = mcx;
+                        MouseY = mcy;
+                    }
                 }
             }
         }
@@ -1942,17 +2810,33 @@ namespace PadForge.ViewModels
         public bool IsKeyType => _type == MacroActionType.KeyPress || _type == MacroActionType.KeyRelease;
 
         /// <summary>True when Type uses the generic <c>DurationMs</c>
-        /// field for its hold time — ButtonPress / KeyPress / Delay /
-        /// MouseButtonPress. LightbarColor uses its own
-        /// <c>LightbarHoldMs</c>/<c>LightbarFadeMs</c> pair instead so
-        /// the hold and fade sliders can be scaled and labeled
+        /// field for its hold time: ButtonPress / KeyPress / Delay /
+        /// MouseButtonPress / AxisHold / AxisAdd (the relative add rides
+        /// the AxisHold duration shape, discussion #237). LightbarColor
+        /// uses its own <c>LightbarHoldMs</c>/<c>LightbarFadeMs</c> pair
+        /// instead so the hold and fade sliders can be scaled and labeled
         /// separately from the generic ms field.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress;
+        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress || _type == MacroActionType.AxisHold || _type == MacroActionType.AxisAdd || _type == MacroActionType.AxisScale;
 
-        /// <summary>True when Type is AxisSet.</summary>
+        /// <summary>True when Type is AxisSet or AxisHold (both edit the
+        /// axis target + value pair; AxisHold adds the duration knob via
+        /// <see cref="IsDurationType"/>).</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsAxisType => _type == MacroActionType.AxisSet;
+        public bool IsAxisType => _type == MacroActionType.AxisSet || _type == MacroActionType.AxisHold
+            || _type == MacroActionType.AxisSetLatched || _type == MacroActionType.AxisScale;
+
+        /// <summary>True when Type is MouseWheelTap (v15).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMouseWheelTapType => _type == MacroActionType.MouseWheelTap;
+
+        /// <summary>True when Type is MouseNudge (v16).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMouseNudgeType => _type == MacroActionType.MouseNudge;
+
+        /// <summary>True when Type is CycleTapList (v16).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsCycleTapListType => _type == MacroActionType.CycleTapList;
 
         /// <summary>True when Type is SystemVolume.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -2041,6 +2925,168 @@ namespace PadForge.ViewModels
         /// Cursor Clamp Mode dropdown plus the Inset X / Inset Y spinboxes.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsMouseLimitRegionType => _type == MacroActionType.MouseLimitRegion;
+
+        /// <summary>True when Type is MoveMouseToScreenPosition (issue #9). Surfaces
+        /// the Mouse X / Mouse Y spinboxes plus the "Pick on screen" capture button.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMoveMouseToScreenPositionType => _type == MacroActionType.MoveMouseToScreenPosition;
+
+        /// <summary>True when Type is RepeatKeyWhileHeld (issue #9). Surfaces the
+        /// key picker (shared with Key Press) plus the Interval spinbox.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRepeatKeyWhileHeldType => _type == MacroActionType.RepeatKeyWhileHeld;
+
+        /// <summary>True when Type is RepeatVcButtonWhileHeld (issue #9 wave 1b).
+        /// Surfaces the button-target grid (shared with Button Press) plus the
+        /// Interval spinbox.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRepeatVcButtonWhileHeldType => _type == MacroActionType.RepeatVcButtonWhileHeld;
+
+        /// <summary>True when Type is ToggleVcButton (issue #9 wave 1b).
+        /// Surfaces the button-target grid (shared with Button Press).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsToggleVcButtonType => _type == MacroActionType.ToggleVcButton;
+
+        /// <summary>True when Type is ToggleKey (issue #9 wave 1b). Surfaces the
+        /// key picker (shared with Key Press).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsToggleKeyType => _type == MacroActionType.ToggleKey;
+
+        /// <summary>True when Type is GyroRecenter (issue #9 wave 1b, B-18).
+        /// Gates the parameter-less info card in the macro editor.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsGyroRecenterType => _type == MacroActionType.GyroRecenter;
+
+        /// <summary>True when Type is ToggleMouseButton (v19, M1). Surfaces
+        /// the mouse-button picker (shared with Mouse Button Press) plus the
+        /// pulse-while-latched row.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsToggleMouseButtonType => _type == MacroActionType.ToggleMouseButton;
+
+        /// <summary>True when Type is ToggleVcAxis (v19, M1). Surfaces the
+        /// axis target / value pair (shared with Set Axis) plus the
+        /// pulse-while-latched row.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsToggleVcAxisType => _type == MacroActionType.ToggleVcAxis;
+
+        /// <summary>True when Type is RepeatVcAxisWhileHeld (v19, M1).
+        /// Surfaces the axis target / value pair plus the Interval
+        /// spinbox.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRepeatVcAxisWhileHeldType => _type == MacroActionType.RepeatVcAxisWhileHeld;
+
+        /// <summary>True when Type is ToggleWheel (v19, M1). Surfaces the
+        /// wheel tick / horizontal pair (shared with Mouse Wheel Tick) plus
+        /// the Interval spinbox.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsToggleWheelType => _type == MacroActionType.ToggleWheel;
+
+        /// <summary>True when Type is AxisAdd (discussion #237). Surfaces
+        /// the signed-value hint under the shared axis target / value pair
+        /// (the value box already accepts the full -32768..32767 range, so
+        /// the relative add reuses it as is).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAxisAddType => _type == MacroActionType.AxisAdd;
+
+        /// <summary>True when Type is AxisSetLatched (#251). Gates the
+        /// ladder hint under the shared axis editor.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAxisSetLatchedType => _type == MacroActionType.AxisSetLatched;
+
+        /// <summary>True when Type is AxisScale (#251). Surfaces the
+        /// signed-percent hint under the shared axis target / value pair:
+        /// the value is the scale delta, -50% halves the current
+        /// deflection, +50% amplifies half again.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAxisScaleType => _type == MacroActionType.AxisScale;
+
+        /// <summary>True when Type is AxisLatchRelease (#251). Surfaces the
+        /// axis-target-only row (None reads as "all axes").</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAxisLatchReleaseType => _type == MacroActionType.AxisLatchRelease;
+
+        /// <summary>True when Type is ComboBreak (discussion #237). Gates
+        /// the parameter-less info card in the macro editor, the
+        /// GyroRecenter card shape.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsComboBreakType => _type == MacroActionType.ComboBreak;
+
+        /// <summary>True for the axis holds that honor
+        /// <see cref="AxisYieldToPhysical"/> (discussion #237): AxisHold,
+        /// ToggleVcAxis, and RepeatVcAxisWhileHeld. Gates the yield
+        /// checkbox row.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAxisYieldCapableType
+            => _type is MacroActionType.AxisHold or MacroActionType.ToggleVcAxis
+                or MacroActionType.RepeatVcAxisWhileHeld or MacroActionType.AxisSetLatched;
+
+        /// <summary>True when the mouse-button picker applies:
+        /// MouseButtonPress / MouseButtonRelease plus the v18
+        /// ToggleMouseButton latch, which addresses its target through the
+        /// same <see cref="MouseButton"/> knob (the IsAnyKeyType pattern
+        /// applied to the mouse-button picker, v19 M1).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyMouseButtonType => IsMouseButtonType || IsToggleMouseButtonType;
+
+        /// <summary>True when the wheel tick / horizontal editor applies:
+        /// MouseWheelTap plus the v18 ToggleWheel latch, both reading
+        /// <see cref="AxisValue"/> as the signed tick count and
+        /// <see cref="WheelHorizontal"/> as the lane (v19, M1).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyWheelTapType => IsMouseWheelTapType || IsToggleWheelType;
+
+        /// <summary>True when the axis target / value editor applies:
+        /// AxisSet / AxisHold plus the v18 ToggleVcAxis latch and
+        /// RepeatVcAxisWhileHeld turbo, which write the same
+        /// <see cref="AxisTarget"/> / <see cref="AxisValue"/> pair
+        /// (v19, M1). The AxisAdd relative deflection (discussion #237)
+        /// rides the same pair, with AxisValue read as the signed
+        /// per-frame add.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyAxisValueType => IsAxisType
+            || _type == MacroActionType.ToggleVcAxis
+            || _type == MacroActionType.RepeatVcAxisWhileHeld
+            || _type == MacroActionType.AxisAdd;
+
+        /// <summary>True for the latch actions whose held contribution can
+        /// pulse on the turbo square wave (<see cref="PulseWhileLatched"/>):
+        /// ToggleVcButton / ToggleKey plus the v18 ToggleMouseButton and
+        /// ToggleVcAxis. Gates the pulse checkbox row (v19, M1).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsPulseCapableType
+            => _type is MacroActionType.ToggleVcButton or MacroActionType.ToggleKey
+                or MacroActionType.ToggleMouseButton or MacroActionType.ToggleVcAxis;
+
+        /// <summary>True when the VC button-target checkbox grid applies:
+        /// ButtonPress / ButtonRelease plus the wave-1b RepeatVcButtonWhileHeld
+        /// turbo and ToggleVcButton latch, which reuse the same
+        /// <see cref="ButtonFlags"/> / <see cref="CustomButtonWords"/> target
+        /// pair (the IsAnyKeyType pattern applied to the button grid).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyVcButtonType => IsButtonType
+            || _type == MacroActionType.RepeatVcButtonWhileHeld
+            || _type == MacroActionType.ToggleVcButton;
+
+        /// <summary>True when the Interval ms row applies: the turbo
+        /// actions (RepeatKeyWhileHeld, RepeatVcButtonWhileHeld, and the
+        /// v18 RepeatVcAxisWhileHeld), the ToggleWheel latch (one detent
+        /// per interval), and any pulse-capable latch whose
+        /// <see cref="PulseWhileLatched"/> is on. All share the
+        /// <see cref="IntervalMs"/> knob (v19, M1).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRepeatIntervalType => _type == MacroActionType.RepeatKeyWhileHeld
+            || _type == MacroActionType.RepeatVcButtonWhileHeld
+            || _type == MacroActionType.RepeatVcAxisWhileHeld
+            || _type == MacroActionType.ToggleWheel
+            || (IsPulseCapableType && _pulseWhileLatched);
+
+        /// <summary>True when the key-combo picker applies: KeyPress / KeyRelease,
+        /// the RepeatKeyWhileHeld autofire (issue #9), or the ToggleKey latch
+        /// (issue #9 wave 1b). All read <see cref="ParsedKeyCodes"/>.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyKeyType => IsKeyType
+            || _type == MacroActionType.RepeatKeyWhileHeld
+            || _type == MacroActionType.ToggleKey;
 
         /// <summary>True when Type is DisconnectController (issue #162). Surfaces
         /// the target-mode dropdown.</summary>
@@ -2197,10 +3243,35 @@ namespace PadForge.ViewModels
             }
         }
 
+        private string _extendedProfileId;
+
+        /// <summary>
+        /// The Extended slot's HIDMaestro profile slug, cascaded from the
+        /// owning MacroItem (#215). Re-letters the Numbered button labels
+        /// on Switch Pro profiles; display-only.
+        /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string RawProfileId
+        {
+            get => _extendedProfileId;
+            set
+            {
+                if (SetProperty(ref _extendedProfileId, value))
+                {
+                    _buttonOptions = null;
+                    OnPropertyChanged(nameof(ButtonOptions));
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
         private ushort _buttonFlags;
 
         /// <summary>
-        /// For ButtonPress/ButtonRelease with gamepad presets: Xbox bitmask flags.
+        /// For ButtonPress/ButtonRelease with gamepad presets: Xbox bitmask
+        /// flags. The wave-1b RepeatVcButtonWhileHeld / ToggleVcButton
+        /// actions address their target button through this same field
+        /// (and <see cref="CustomButtonWords"/> on Extended slots).
         /// </summary>
         public ushort ButtonFlags
         {
@@ -2343,15 +3414,16 @@ namespace PadForge.ViewModels
                 {
                     if (_buttonStyle == MacroButtonStyle.Numbered)
                     {
-                        // Dynamic list for custom Extended — N buttons from config.
+                        // Dynamic list for custom Extended. N buttons from
+                        // config, lettered per profile on Switch Pro (#215).
                         var list = new List<GamepadButtonOption>();
                         for (int i = 0; i < _customButtonCount; i++)
-                            list.Add(new GamepadButtonOption(this, string.Format(Strings.Instance.Macro_Btn_Format, i + 1), customIndex: i));
+                            list.Add(new GamepadButtonOption(this, MacroButtonNames.RawButtonShortLabel(_extendedProfileId, i + 1), customIndex: i));
                         _buttonOptions = list.AsReadOnly();
                     }
                     else
                     {
-                        var defs = MacroButtonNames.GetButtonDefs(_buttonStyle);
+                        var defs = MacroButtonNames.GetButtonDefs(_buttonStyle, _extendedProfileId);
                         _buttonOptions = defs
                             .Select(d => new GamepadButtonOption(this, d.Label, d.Flag))
                             .ToList().AsReadOnly();
@@ -2406,8 +3478,11 @@ namespace PadForge.ViewModels
             return items;
         }
 
-        /// <summary>Returns a user-friendly localized display name for a virtual key.</summary>
-        private static string VirtualKeyDisplayName(VirtualKey vk) => vk switch
+        /// <summary>Returns a user-friendly localized display name for a
+        /// virtual key. Internal: MappingDisplayResolver reuses this
+        /// vocabulary for keyboard-device keys the engine's invariant
+        /// table leaves as "Key 0xNN" hex.</summary>
+        internal static string VirtualKeyDisplayName(VirtualKey vk) => vk switch
         {
             VirtualKey.None => Strings.Instance.Macro_None,
             // Mouse buttons
@@ -2540,18 +3615,36 @@ namespace PadForge.ViewModels
             }
         }
 
+        private int[] _parsedKeyCodesCache;
+        private string _parsedKeyCodesCacheKeyString;
+        private int _parsedKeyCodesCacheKeyCode;
+
         /// <summary>
         /// Parses KeyString into an array of VK codes. Falls back to legacy KeyCode
-        /// if KeyString is empty but KeyCode is set.
+        /// if KeyString is empty but KeyCode is set. Memoized against the inputs it
+        /// was computed from because the macro executor reads this on the ~1000Hz
+        /// poll thread every held frame, where a per-call regex parse and array
+        /// allocation are not affordable.
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
         public int[] ParsedKeyCodes
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace(_keyString))
-                    return ParseKeyString(_keyString);
-                return _keyCode != 0 ? new[] { _keyCode } : Array.Empty<int>();
+                string keyString = _keyString;
+                int keyCode = _keyCode;
+                var cached = _parsedKeyCodesCache;
+                if (cached != null
+                    && _parsedKeyCodesCacheKeyCode == keyCode
+                    && string.Equals(_parsedKeyCodesCacheKeyString, keyString, StringComparison.Ordinal))
+                    return cached;
+                cached = !string.IsNullOrWhiteSpace(keyString)
+                    ? ParseKeyString(keyString)
+                    : (keyCode != 0 ? new[] { keyCode } : Array.Empty<int>());
+                _parsedKeyCodesCacheKeyString = keyString;
+                _parsedKeyCodesCacheKeyCode = keyCode;
+                _parsedKeyCodesCache = cached;
+                return cached;
             }
         }
 
@@ -2567,21 +3660,6 @@ namespace PadForge.ViewModels
                     codes.Add((int)vk);
             }
             return codes.ToArray();
-        }
-
-        /// <summary>Formats VK codes into "{Key1}{Key2}..." string.</summary>
-        public static string FormatKeyString(int[] keyCodes)
-        {
-            if (keyCodes == null || keyCodes.Length == 0) return "";
-            var sb = new StringBuilder();
-            foreach (var code in keyCodes)
-            {
-                if (Enum.IsDefined(typeof(VirtualKey), code))
-                    sb.Append($"{{{(VirtualKey)code}}}");
-                else
-                    sb.Append($"{{0x{code:X2}}}");
-            }
-            return sb.ToString();
         }
 
         private VirtualKey _selectedKeyToAdd;
@@ -2640,7 +3718,28 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _axisValue, value))
+                {
                     OnPropertyChanged(nameof(DisplayText));
+                    OnPropertyChanged(nameof(AxisValuePercent));
+                }
+            }
+        }
+
+        /// <summary>The editor-facing form of <see cref="AxisValue"/>: a
+        /// signed percent of full deflection (-100..100), the unit every
+        /// summary and tooltip already speaks. The raw -32768..32767 field
+        /// stays the persisted truth, so profiles and the clipboard are
+        /// untouched. Typing 75 means 75% of full scale, which is what a
+        /// human means by 75 (the raw box demanded 24575 for the same
+        /// thing, which nobody could know).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public double AxisValuePercent
+        {
+            get => Math.Round(_axisValue * 100.0 / 32767.0);
+            set
+            {
+                double clamped = Math.Clamp(value, -100.0, 100.0);
+                AxisValue = (short)Math.Round(clamped * 32767.0 / 100.0);
             }
         }
 
@@ -2667,6 +3766,109 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _invertAxis, value))
                     OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private bool _wheelHorizontal;
+
+        /// <summary>For MouseWheelTap (v15): tick the horizontal
+        /// (MOUSEEVENTF_HWHEEL) lane instead of the vertical wheel.</summary>
+        public bool WheelHorizontal
+        {
+            get => _wheelHorizontal;
+            set
+            {
+                if (SetProperty(ref _wheelHorizontal, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private string _cycleStepsCsv = "";
+
+        /// <summary>For CycleTapList (v16): the ordered step list. Steps
+        /// separated by ','; parts of one step joined '+' (they fire
+        /// together); part = kind ':' value. Kinds: K:{vk} key tap,
+        /// M:{0..4} mouse-button click, W:{ticks} vertical wheel,
+        /// H:{ticks} horizontal wheel, B:{mask} VC button flags,
+        /// A:{axisTarget}:{value} VC axis assert (MacroAxisTarget ordinal,
+        /// trigger targets on the AxisHold pull scale). Example:
+        /// "K:49,K:50,W:1+M:0".</summary>
+        public string CycleStepsCsv
+        {
+            get => _cycleStepsCsv;
+            set
+            {
+                if (SetProperty(ref _cycleStepsCsv, value ?? ""))
+                {
+                    OnPropertyChanged(nameof(DisplayText));
+                    OnPropertyChanged(nameof(ParsedCycleSteps));
+                }
+            }
+        }
+
+        private bool _cycleWrap = true;
+
+        /// <summary>For CycleTapList (v16): wrap past the last step back
+        /// to the first. Off = further fires produce nothing once the end
+        /// is reached (Steam's Wrap List - Off).</summary>
+        public bool CycleWrap
+        {
+            get => _cycleWrap;
+            set
+            {
+                if (SetProperty(ref _cycleWrap, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>CycleTapList runtime position (v16): index of the NEXT
+        /// step to fire. Per-action volatile like the ToggleVcButton
+        /// latch: lives with the loaded action, resets on profile switch
+        /// and app restart, never persisted.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int CycleIndex { get; set; }
+
+        /// <summary>Transient CycleTapList latch (v16): true once the
+        /// current step's injection parts (key / mouse / wheel) have
+        /// fired, cleared when the step completes. A latch instead of the
+        /// executor's usual actionElapsed &lt; 1 convention because a
+        /// loaded frame can arrive later than 1 ms after the trigger
+        /// stamp, which would silently swallow the one-shot parts. Never
+        /// serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool CycleInjectionFired { get; set; }
+
+        private CycleStepPart[][] _parsedCycleStepsCache;
+        private string _parsedCycleStepsCacheCsv;
+
+        /// <summary>Parses <see cref="CycleStepsCsv"/> into step parts,
+        /// memoized against the CSV (the executor reads this per fire on
+        /// the poll thread). Unparseable parts are dropped, and a step whose
+        /// parts all drop is dropped whole.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public CycleStepPart[][] ParsedCycleSteps
+        {
+            get
+            {
+                string csv = _cycleStepsCsv;
+                var cached = _parsedCycleStepsCache;
+                if (cached != null && ReferenceEquals(_parsedCycleStepsCacheCsv, csv))
+                    return cached;
+                var steps = new List<CycleStepPart[]>();
+                foreach (var stepText in (csv ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var parts = new List<CycleStepPart>();
+                    foreach (var partText in stepText.Split('+', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (CycleStepPart.TryParse(partText, out var part))
+                            parts.Add(part);
+                    }
+                    if (parts.Count > 0) steps.Add(parts.ToArray());
+                }
+                var result = steps.ToArray();
+                _parsedCycleStepsCache = result;
+                _parsedCycleStepsCacheCsv = csv;
+                return result;
             }
         }
 
@@ -3155,6 +4357,13 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _lightbarPaletteCsv, value ?? string.Empty))
                 {
+                    // Drop the parsed cache FIRST. The getter returns
+                    // _lightbarPaletteCache whenever it is non-null, so
+                    // raising LightbarPalette without clearing it re-handed
+                    // the UI the palette parsed from the PREVIOUS csv, and a
+                    // macro switch or paste showed the old colors
+                    // (round 34).
+                    _lightbarPaletteCache = null;
                     OnPropertyChanged(nameof(LightbarPalette));
                     OnPropertyChanged(nameof(IsLightbarPaletteVisible));
                     OnPropertyChanged(nameof(DisplayText));
@@ -3339,6 +4548,272 @@ namespace PadForge.ViewModels
         {
             get => _cursorPinY;
             set => SetProperty(ref _cursorPinY, ClampToPrimaryHeight(value));
+        }
+
+        private int _mouseX;
+        /// <summary>Target X coordinate (primary-monitor physical pixels) a
+        /// <see cref="MacroActionType.MoveMouseToScreenPosition"/> action warps the
+        /// cursor to on press (issue #9). Seeded to the primary-monitor center on
+        /// first type switch and pickable on screen. Clamped to the primary
+        /// monitor's width, mirroring <see cref="CursorPinX"/>.</summary>
+        public int MouseX
+        {
+            get => _mouseX;
+            set
+            {
+                if (SetProperty(ref _mouseX, ClampToPrimaryWidth(value)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _mouseY;
+        /// <summary>Target Y coordinate (primary-monitor physical pixels) a
+        /// <see cref="MacroActionType.MoveMouseToScreenPosition"/> action warps the
+        /// cursor to on press (issue #9). Seeded to the primary-monitor center on
+        /// first type switch and pickable on screen. Clamped to the primary
+        /// monitor's height, mirroring <see cref="CursorPinY"/>.</summary>
+        public int MouseY
+        {
+            get => _mouseY;
+            set
+            {
+                if (SetProperty(ref _mouseY, ClampToPrimaryHeight(value)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _nudgeDx;
+
+        /// <summary>Signed X pixel delta a
+        /// <see cref="MacroActionType.MouseNudge"/> action moves the cursor
+        /// by per fire (v16). Screen frame: positive = right. Deliberately
+        /// NOT the clamped <see cref="MouseX"/> warp coordinate: a nudge is
+        /// a relative offset and negative values are the point.</summary>
+        public int NudgeDx
+        {
+            get => _nudgeDx;
+            set
+            {
+                if (SetProperty(ref _nudgeDx, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _nudgeDy;
+
+        /// <summary>Signed Y pixel delta for
+        /// <see cref="MacroActionType.MouseNudge"/> (v16). Screen frame:
+        /// positive = down (the SendInput MOUSEEVENTF_MOVE convention).</summary>
+        public int NudgeDy
+        {
+            get => _nudgeDy;
+            set
+            {
+                if (SetProperty(ref _nudgeDy, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private bool _axisYieldToPhysical;
+        /// <summary>Yield-to-physical for the absolute axis holds
+        /// (discussion #237, reWASD's "Absolute deflection" contract:
+        /// "once you move your physical stick, the combo will go back to
+        /// zero, and now your stick will have a higher priority"). While
+        /// set on an <see cref="MacroActionType.AxisHold"/>,
+        /// <see cref="MacroActionType.ToggleVcAxis"/>, or
+        /// <see cref="MacroActionType.RepeatVcAxisWhileHeld"/> action,
+        /// the engine checks the target's already-mapped value each
+        /// frame BEFORE overwriting: the first frame the physical input
+        /// exceeds the yield threshold, the macro write is suppressed
+        /// and STAYS suppressed for the remainder of that activation
+        /// (latched, matching reWASD's "goes back to zero"), re-arming
+        /// when the action re-fires. Off by default so existing macros
+        /// keep their macro-wins semantics.</summary>
+        public bool AxisYieldToPhysical
+        {
+            get => _axisYieldToPhysical;
+            set
+            {
+                if (SetProperty(ref _axisYieldToPhysical, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _intervalMs = 100;
+        /// <summary>Repeat interval in milliseconds for
+        /// <see cref="MacroActionType.RepeatKeyWhileHeld"/> (issue #9): the pad
+        /// fires one KeyDown+KeyUp pulse each interval while the trigger is held.
+        /// Also the square-wave period for
+        /// <see cref="MacroActionType.RepeatVcButtonWhileHeld"/> (issue #9 wave
+        /// 1b), which holds its target button for half the interval and
+        /// releases it for the other half.
+        /// Clamped to 10..1000; default 100 (10 taps/second).</summary>
+        public int IntervalMs
+        {
+            get => _intervalMs;
+            set
+            {
+                if (SetProperty(ref _intervalMs, Math.Clamp(value, 10, 1000)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>Transient timing state for
+        /// <see cref="MacroActionType.RepeatKeyWhileHeld"/>: the UTC time the last
+        /// autofire pulse was sent. Reset to <see cref="DateTime.MinValue"/> so the
+        /// first held frame fires immediately. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal DateTime RepeatKeyLastFireUtc { get; set; } = DateTime.MinValue;
+
+        /// <summary>Transient timing state for
+        /// <see cref="MacroActionType.RepeatVcButtonWhileHeld"/> (issue #9 wave
+        /// 1b): the UTC time the pulse phase last flipped. MinValue makes the
+        /// first held frame flip to ON immediately, mirroring
+        /// <see cref="RepeatKeyLastFireUtc"/>. Reset on macro (re)start via
+        /// InputManager.ResetMouseAccumulators. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal DateTime RepeatVcLastToggleUtc { get; set; } = DateTime.MinValue;
+
+        /// <summary>Current phase of the RepeatVcButtonWhileHeld square wave:
+        /// true = the target button is written this half-period. Runtime
+        /// state beside <see cref="RepeatVcLastToggleUtc"/>. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool RepeatVcPulseOn { get; set; }
+
+        /// <summary>Volatile latch bit for <see cref="MacroActionType.ToggleVcButton"/>
+        /// (issue #9 wave 1b). While set, the engine ORs the action's target
+        /// button(s) into the slot's combined output every frame. Cleared when
+        /// the owning macro is disabled; fresh instances (profile switch / app
+        /// restart) start unlatched. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool VcToggleLatched { get; set; }
+
+        /// <summary>Volatile latch bit for <see cref="MacroActionType.ToggleKey"/>
+        /// (issue #9 wave 1b). While set, the engine's per-frame key reconcile
+        /// holds every parsed key logically down; clearing it (second fire,
+        /// macro disable, or instance discard) releases the key on the next
+        /// tick. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool KeyToggleLatched { get; set; }
+
+        /// <summary>Volatile latch bit for
+        /// <see cref="MacroActionType.ToggleMouseButton"/> (v18). While set,
+        /// the engine's per-frame mouse-button reconcile holds
+        /// <see cref="MouseButton"/> logically down. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool MouseToggleLatched { get; set; }
+
+        /// <summary>Volatile latch bit for
+        /// <see cref="MacroActionType.ToggleVcAxis"/> (v18). While set, the
+        /// engine re-writes the axis assert every frame. Never
+        /// serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool VcAxisToggleLatched { get; set; }
+
+        /// <summary>Volatile latch bit for
+        /// <see cref="MacroActionType.ToggleWheel"/> (v18). While set, the
+        /// engine sends one wheel detent per interval. Never
+        /// serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool WheelToggleLatched { get; set; }
+
+        private bool _pulseWhileLatched;
+        /// <summary>Composes Steam's toggle + hold_repeats (v18): while the
+        /// action's latch is engaged, the contribution pulses on the
+        /// <see cref="MacroActionType.RepeatVcButtonWhileHeld"/> square
+        /// wave (period <see cref="IntervalMs"/>) instead of holding
+        /// solid. Serialized; read by ToggleVcButton / ToggleKey /
+        /// ToggleVcAxis latch application.</summary>
+        public bool PulseWhileLatched
+        {
+            get => _pulseWhileLatched;
+            set
+            {
+                if (SetProperty(ref _pulseWhileLatched, value))
+                {
+                    // The Interval row shows for a pulsing latch (v19, M1).
+                    OnPropertyChanged(nameof(IsRepeatIntervalType));
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
+        private MacroLatchDirection _latchDirection;
+        /// <summary>How a ToggleKey / ToggleMouseButton fire writes the
+        /// volatile latch (audit #2 M4): Toggle flips (the classic
+        /// behavior and the serialized default), On sets, Off clears.
+        /// The Workshop materializer lowers HoldKey / HoldMouseButton
+        /// pairs to On on the press leg and Off on the release leg, so
+        /// the held key rides the per-frame reconcile and its
+        /// engine-stop / profile-switch release paths instead of a raw
+        /// KeyPress Down those paths cannot see. Serialized.</summary>
+        public MacroLatchDirection LatchDirection
+        {
+            get => _latchDirection;
+            set => SetProperty(ref _latchDirection, value);
+        }
+
+        private RelayCommand _resetIntervalMsCommand;
+        /// <summary>Resets the turbo interval to the 100 ms default (issue #9
+        /// wave 1b), pairing the shared Interval row with the standard reset
+        /// glyph.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetIntervalMsCommand =>
+            _resetIntervalMsCommand ??= new RelayCommand(() => IntervalMs = 100);
+
+        private System.Windows.Threading.DispatcherTimer _mousePickTimer;
+        private int _mousePickCountdown;
+
+        /// <summary>True while a MoveMouseToScreenPosition "Pick on screen" capture
+        /// countdown is running (issue #9).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsPickingMousePosition => _mousePickTimer != null;
+
+        /// <summary>Label for the "Pick on screen" button: the live countdown while
+        /// capturing, the idle prompt otherwise (issue #9).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string MousePickButtonText => _mousePickTimer != null
+            ? string.Format(Strings.Instance.Macro_PickOnScreen_Countdown_Format, _mousePickCountdown)
+            : Strings.Instance.Macro_PickOnScreen;
+
+        private RelayCommand _pickMousePositionCommand;
+        /// <summary>Starts a 3-second "pick on screen" countdown (issue #9); when it
+        /// elapses, the current desktop cursor position is captured into
+        /// <see cref="MouseX"/> / <see cref="MouseY"/>. The delay lets the user move
+        /// the cursor onto the target after clicking the button.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand PickMousePositionCommand =>
+            _pickMousePositionCommand ??= new RelayCommand(StartMousePositionPick);
+
+        private void StartMousePositionPick()
+        {
+            if (_mousePickTimer != null) return; // already picking
+            _mousePickCountdown = 3;
+            _mousePickTimer = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            _mousePickTimer.Tick += (_, _) =>
+            {
+                _mousePickCountdown--;
+                if (_mousePickCountdown > 0)
+                {
+                    OnPropertyChanged(nameof(MousePickButtonText));
+                    return;
+                }
+                _mousePickTimer.Stop();
+                _mousePickTimer = null;
+                if (CursorControlService.TryGetCursorPosition(out int cx, out int cy))
+                {
+                    MouseX = cx;
+                    MouseY = cy;
+                }
+                OnPropertyChanged(nameof(IsPickingMousePosition));
+                OnPropertyChanged(nameof(MousePickButtonText));
+            };
+            OnPropertyChanged(nameof(IsPickingMousePosition));
+            OnPropertyChanged(nameof(MousePickButtonText));
+            _mousePickTimer.Start();
         }
 
         private CursorClampMode _cursorClampMode = CursorClampMode.XAndY;
@@ -3639,11 +5114,16 @@ namespace PadForge.ViewModels
             {
                 var keyDisplay = !string.IsNullOrEmpty(_keyString) ? _keyString : ResolveKeyName(_keyCode);
                 string btnText = _buttonStyle == MacroButtonStyle.Numbered
-                    ? MacroButtonNames.FormatCustomButtons(_customButtonWords)
-                    : MacroButtonNames.FormatButtons(_buttonFlags, _buttonStyle);
+                    ? MacroButtonNames.FormatCustomButtons(_customButtonWords, _extendedProfileId)
+                    : MacroButtonNames.FormatButtons(_buttonFlags, _buttonStyle, _extendedProfileId);
                 string axisLabel = _axisSource == MacroAxisSource.InputDevice
                     ? string.Format(Strings.Instance.Macro_DeviceAxis_Format, _sourceDeviceAxisIndex)
                     : _axisTarget.DisplayName();
+                // Yield marker for the axis holds (discussion #237). Only
+                // the three yield-capable arms append it.
+                string yieldMark = _axisYieldToPhysical
+                    ? " " + Strings.Instance.MacroAction_YieldSuffix
+                    : string.Empty;
                 return _type switch
                 {
                     MacroActionType.ButtonPress => string.Format(Strings.Instance.MacroAction_Press_Format, btnText, _durationMs),
@@ -3651,7 +5131,13 @@ namespace PadForge.ViewModels
                     MacroActionType.KeyPress => string.Format(Strings.Instance.MacroAction_KeyPress_Format, keyDisplay, _durationMs),
                     MacroActionType.KeyRelease => string.Format(Strings.Instance.MacroAction_KeyRelease_Format, keyDisplay),
                     MacroActionType.Delay => string.Format(Strings.Instance.MacroAction_Wait_Format, _durationMs),
-                    MacroActionType.AxisSet => string.Format(Strings.Instance.MacroAction_SetAxis_Format, _axisTarget, _axisValue),
+                    MacroActionType.AxisSet => string.Format(Strings.Instance.MacroAction_SetAxis_Format, _axisTarget.DisplayName(), _axisValue),
+                    MacroActionType.AxisHold => string.Format(Strings.Instance.MacroAction_HoldAxis_Format, _axisTarget.DisplayName(), _axisValue, _durationMs) + yieldMark,
+                    MacroActionType.MouseWheelTap => Strings.Instance.MacroAction_Type_MouseWheelTap,
+                    MacroActionType.MouseNudge => string.Format(
+                        Strings.Instance.MacroAction_MouseNudge_Format, _nudgeDx, _nudgeDy),
+                    MacroActionType.CycleTapList => string.Format(
+                        Strings.Instance.MacroAction_CycleTapList_Format, ParsedCycleSteps.Length),
                     MacroActionType.SystemVolume => _volumeLimit < 100
                         ? string.Format(Strings.Instance.MacroAction_SysVolLimit_Format, axisLabel, _volumeLimit)
                         : string.Format(Strings.Instance.MacroAction_SysVol_Format, axisLabel),
@@ -3703,6 +5189,23 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseLimitRegion => string.Format(
                         Strings.Instance.MacroAction_MouseLimitRegion_Format,
                         CursorClampModeDisplayName(_cursorClampMode)),
+                    MacroActionType.MoveMouseToScreenPosition => string.Format(
+                        Strings.Instance.MacroAction_MoveMouseToScreenPosition_Format,
+                        _mouseX, _mouseY),
+                    MacroActionType.RepeatKeyWhileHeld => string.Format(
+                        Strings.Instance.MacroAction_RepeatKeyWhileHeld_Format,
+                        keyDisplay, _intervalMs),
+                    MacroActionType.RepeatVcButtonWhileHeld => string.Format(
+                        Strings.Instance.MacroAction_RepeatVcButtonWhileHeld_Format,
+                        btnText, _intervalMs),
+                    MacroActionType.ToggleVcButton => string.Format(
+                        Strings.Instance.MacroAction_ToggleVcButton_Format,
+                        btnText),
+                    MacroActionType.ToggleKey => string.Format(
+                        Strings.Instance.MacroAction_ToggleKey_Format,
+                        keyDisplay),
+                    MacroActionType.GyroRecenter =>
+                        Strings.Instance.MacroAction_Type_GyroRecenter,
                     MacroActionType.DisconnectController => string.Format(
                         Strings.Instance.MacroAction_DisconnectController_Format,
                         DisconnectTargetDisplayName()),
@@ -3712,9 +5215,54 @@ namespace PadForge.ViewModels
                     MacroActionType.TextBlock => string.Format(
                         Strings.Instance.MacroAction_TextBlock_Format,
                         TextBlockDisplayName()),
+                    // v19 (M1): the v18 latch / turbo family renders its
+                    // target instead of falling to the unknown label.
+                    MacroActionType.ToggleMouseButton => string.Format(
+                        Strings.Instance.MacroAction_ToggleMouseButton_Format,
+                        MacroMouseButtonDisplayName(_mouseButton)),
+                    MacroActionType.ToggleVcAxis => string.Format(
+                        Strings.Instance.MacroAction_ToggleVcAxis_Format,
+                        _axisTarget.DisplayName(), _axisValue) + yieldMark,
+                    MacroActionType.RepeatVcAxisWhileHeld => string.Format(
+                        Strings.Instance.MacroAction_RepeatVcAxisWhileHeld_Format,
+                        _axisTarget.DisplayName(), _axisValue, _intervalMs) + yieldMark,
+                    MacroActionType.ToggleWheel => string.Format(
+                        Strings.Instance.MacroAction_ToggleWheel_Format,
+                        _axisValue, _intervalMs),
+                    // Discussion #237: the relative add renders its signed
+                    // percent of the pull scale, the combo break its type
+                    // label (it carries no parameters).
+                    MacroActionType.AxisAdd => string.Format(
+                        Strings.Instance.MacroAction_AxisAdd_Format,
+                        _axisTarget.DisplayName(), FormatSignedPercent(_axisValue)),
+                    MacroActionType.AxisSetLatched => string.Format(
+                        Strings.Instance.MacroAction_AxisSetLatched_Format,
+                        _axisTarget.DisplayName(), FormatSignedPercent(_axisValue)),
+                    MacroActionType.AxisLatchRelease => string.Format(
+                        Strings.Instance.MacroAction_AxisLatchRelease_Format,
+                        _axisTarget == MacroAxisTarget.None
+                            ? Strings.Instance.MacroAction_AllAxes
+                            : _axisTarget.DisplayName()),
+                    MacroActionType.AxisScale => string.Format(
+                        Strings.Instance.MacroAction_AxisScale_Format,
+                        _axisTarget.DisplayName(), FormatSignedPercent(_axisValue)),
+                    MacroActionType.ComboBreak =>
+                        Strings.Instance.MacroAction_Type_ComboBreak,
                     _ => Strings.Instance.Macro_UnknownAction
                 };
             }
+        }
+
+        /// <summary>Signed percent of the pull scale for the Axis Add
+        /// summary (discussion #237): +32767 renders "+100" and -16384
+        /// renders "-50". The plus sign is explicit because the add
+        /// direction is the point.</summary>
+        private static string FormatSignedPercent(short value)
+        {
+            int pct = (int)Math.Round(value * 100.0 / 32767.0);
+            return pct >= 0
+                ? "+" + pct.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                : pct.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
 
         /// <summary>Short label for the Run Program summary: the program's file name
@@ -3962,6 +5510,11 @@ namespace PadForge.ViewModels
     //  Enums
     // ─────────────────────────────────────────────
 
+    // APPEND-ONLY: like MacroActionType below, this enum rides the macro
+    // clipboard (MacroData.TriggerMode inside SerializeMacrosToClipboard's
+    // System.Text.Json envelope), which serializes it NUMERICALLY. Inserting
+    // a member re-meanings previously copied payloads. New members go at the
+    // end with pinned ordinals.
     public enum MacroTriggerMode
     {
         /// <summary>Fire once when the trigger combo is first pressed.</summary>
@@ -3980,7 +5533,82 @@ namespace PadForge.ViewModels
         /// variables. Each variable binds to an input-device input or an
         /// virtual-controller-channel value; the compiled formula evaluates to a
         /// float per frame and "trigger active" is <c>result &gt;= 0.5</c>.</summary>
-        CustomExpression
+        CustomExpression,
+
+        /// <summary>Fire once when the trigger combo has been held continuously
+        /// for <see cref="MacroItem.TriggerHoldMs"/> milliseconds (issue #9
+        /// wave 1b, B-8b: the Steam Input Long_Press activator). A shorter
+        /// tap does nothing. Release re-arms, so the next qualifying hold
+        /// fires again. At the tail per the APPEND-ONLY rule above; ordinal
+        /// pinned.</summary>
+        HoldForMs = 5,
+
+        /// <summary>Fire once when the trigger combo sees press, release,
+        /// press within <see cref="MacroItem.TriggerDoublePressMs"/>
+        /// milliseconds (translator v17: the Steam Input Double_Press
+        /// activator, whose window key is double_tap_time in the
+        /// serializer's own token table). A single press, or a second
+        /// press outside the window, only re-arms as a fresh first press.
+        /// The trigger stays active through the second press's hold, so
+        /// UntilRelease shapes stop on its release ("If held on the second
+        /// press, it will remain pressed", Valve's shipped Double Press
+        /// string). At the tail per the APPEND-ONLY rule above; ordinal
+        /// pinned.</summary>
+        DoublePress = 6,
+
+        /// <summary>Fire once on the THIRD rising edge of a press chain
+        /// whose successive presses each land within
+        /// <see cref="MacroItem.TriggerDoublePressMs"/> of the previous
+        /// one (discussion #238, the reWASD / Steam "Triple Press"
+        /// activation mode). A slower press re-arms as a fresh first
+        /// press, and the chain is consumed on fire so six fast taps fire
+        /// twice, never four times. The trigger reads active through the
+        /// third press's hold, the DoublePress UntilRelease contract. At
+        /// the tail per the APPEND-ONLY rule above; ordinal pinned.</summary>
+        TriplePress = 7,
+
+        /// <summary>Fire once when a press is NOT followed by a second
+        /// press within <see cref="MacroItem.TriggerDoublePressMs"/>
+        /// (discussion #238, reWASD's "Single Press" as distinct from
+        /// "Start Press"). The DEFERRED counterpart of
+        /// <see cref="OnPress"/>: OnPress fires the instant the button
+        /// goes down (Start Press), SinglePress waits out the press
+        /// window so it can share a button with a DoublePress or
+        /// TriplePress macro without firing on their chains. A chain of
+        /// two or more fast presses fires nothing here. The fire lands
+        /// at window expiry whether the button is still held (hold
+        /// shapes keep working) or already released. At the tail per
+        /// the APPEND-ONLY rule above; ordinal pinned.</summary>
+        SinglePress = 8,
+
+        /// <summary>Latching trigger (discussion #238, the reWASD / Steam
+        /// "Toggle" activation mode): the first press latches the trigger
+        /// ACTIVE, the next press releases it. Downstream the macro
+        /// evaluates exactly like <see cref="WhileHeld"/> against the
+        /// latch, and the release-stop applies on unlatch regardless of
+        /// RepeatMode, so holds and repeats stay active until the button
+        /// is pressed again. Disabling the macro or closing its shift
+        /// layer clears the latch. At the tail per the APPEND-ONLY rule
+        /// above; ordinal pinned.</summary>
+        Toggle = 9,
+
+        /// <summary>Repeat-while-held (discussion #238, the classic
+        /// "Turbo" activation mode): the sequence re-runs at
+        /// <see cref="MacroItem.RepeatDelayMs"/> for as long as the
+        /// trigger is held, and stops on release regardless of
+        /// RepeatMode. The WhileHeld + Until Release composition as one
+        /// first-class mode, with the interval surfaced beside the Fire
+        /// picker. At the tail per the APPEND-ONLY rule above; ordinal
+        /// pinned.</summary>
+        Turbo = 10,
+
+        /// <summary>#253 "On Short Press": fires once at RELEASE, only when
+        /// the continuous hold stayed UNDER <see cref="MacroItem.TriggerHoldMs"/>.
+        /// The exact twin of <see cref="HoldForMs"/> ("On Long Press"),
+        /// sharing its threshold, so the pair composes tap-vs-hold on one
+        /// button. At the tail per the APPEND-ONLY rule above; ordinal
+        /// pinned.</summary>
+        ShortPress = 11
     }
 
     public enum MacroTriggerSource
@@ -4203,7 +5831,265 @@ namespace PadForge.ViewModels
         /// mode engages and restore it after. The Lighting tab's Battery
         /// mode reasserts on its next cadence. At the tail per the
         /// APPEND-ONLY rule above.</summary>
-        GuideLedBrightness
+        GuideLedBrightness,
+
+        /// <summary>Warps the desktop cursor to a fixed primary-monitor pixel
+        /// (issue #9). One press, one <c>SetCursorPos</c> write via
+        /// <see cref="CursorControlService"/>. <see cref="MacroAction.MouseX"/> /
+        /// <c>MouseY</c> hold the target, seeded to the primary-monitor center
+        /// on first type switch and pickable on screen from the editor. At the
+        /// tail per the APPEND-ONLY rule above.</summary>
+        MoveMouseToScreenPosition,
+
+        /// <summary>Turbo / autofire for a keyboard key (issue #9). While the
+        /// macro trigger is held, fires a full KeyDown+KeyUp pulse for
+        /// <see cref="MacroAction.KeyCode"/> every
+        /// <see cref="MacroAction.IntervalMs"/> milliseconds (10..1000, default
+        /// 100). A continuous action, so a macro whose only action is this one
+        /// keeps pulsing until release. At the tail per the APPEND-ONLY rule
+        /// above.</summary>
+        RepeatKeyWhileHeld = 34,
+
+        /// <summary>Turbo / autofire for a virtual controller button (issue
+        /// #9 wave 1b). While the macro trigger is held, pulses the target
+        /// button(s) on and off as a 50 % duty-cycle square wave with period
+        /// <see cref="MacroAction.IntervalMs"/> (the same 10..1000 ms knob
+        /// <see cref="RepeatKeyWhileHeld"/> uses). The target rides the same
+        /// <see cref="MacroAction.ButtonFlags"/> (Xbox bitmask) /
+        /// <see cref="MacroAction.CustomButtonWords"/> (Extended) pair
+        /// <see cref="ButtonPress"/> addresses a slot button with, and the
+        /// pulse ORs into the slot's combined output the same way ButtonPress
+        /// does. A continuous action. At the tail per the APPEND-ONLY rule
+        /// above; ordinal pinned.</summary>
+        RepeatVcButtonWhileHeld = 35,
+
+        /// <summary>Latch / unlatch a virtual controller button (issue #9
+        /// wave 1b). Each fire flips the action's volatile latch bit; while
+        /// latched, the target button(s) (<see cref="MacroAction.ButtonFlags"/>
+        /// / <see cref="MacroAction.CustomButtonWords"/>, the ButtonPress
+        /// addressing pair) are OR-written into the slot's combined output
+        /// every frame, independent of the macro's execution state. Latch is
+        /// per-action volatile: cleared when the macro is disabled and on
+        /// profile switch / app restart. At the tail per the APPEND-ONLY rule
+        /// above; ordinal pinned.</summary>
+        ToggleVcButton = 36,
+
+        /// <summary>Latch / unlatch a keyboard key (issue #9 wave 1b). Each
+        /// fire flips the action's volatile latch bit; while latched, every
+        /// key in <see cref="MacroAction.ParsedKeyCodes"/> is held logically
+        /// down via SendInput (the engine reconciles the desired set per
+        /// frame, sending one KeyDown when the latch engages and one KeyUp
+        /// when it releases, the macro disables, or the macro is removed).
+        /// Latch is per-action volatile like <see cref="ToggleVcButton"/>.
+        /// At the tail per the APPEND-ONLY rule above; ordinal pinned.</summary>
+        ToggleKey = 37,
+
+        /// <summary>Re-references the slot's gyro-aim state (issue #9 wave
+        /// 1b, B-18). One fire zeroes every accumulated gyro reference the
+        /// aim path holds for the slot: the dual-threshold smoothing window
+        /// and EMA rate history (SourceCoercion), the captured MotionLean
+        /// neutral orientation (SourceKindRuntime, re-captured from the next
+        /// real gravity sample), and the per-device gravity estimator
+        /// (re-seeded from the instantaneous accelerometer reading via
+        /// <c>InputManager.GyroRecenterApply</c>), so Player/World-space
+        /// projection and lean steering re-reference the controller's
+        /// CURRENT pose. At the tail per the APPEND-ONLY rule above;
+        /// ordinal pinned.</summary>
+        GyroRecenter = 38,
+
+        /// <summary>Timed axis assert (translator v15). Writes
+        /// <see cref="MacroAction.AxisValue"/> to
+        /// <see cref="MacroAction.AxisTarget"/> EVERY frame while the action
+        /// is current, advancing only when <see cref="MacroAction.DurationMs"/>
+        /// elapses, mirroring how ButtonPress keeps its flags asserted per
+        /// frame. The hold-until-release form rides
+        /// RepeatMode=UntilRelease + RepeatDelayMs=0, the HoldVcButton
+        /// lowering shape. Trigger targets read AxisValue on the pull scale
+        /// (0..32767 = 0..100%, doubled onto the 0..65535 output), so a
+        /// full pull IS reachable; sticks keep the signed short frame
+        /// AxisSet uses. At the tail per the APPEND-ONLY rule above;
+        /// ordinal pinned.</summary>
+        AxisHold = 39,
+
+        /// <summary>One discrete mouse-wheel detent per fire (translator
+        /// v15): a single WHEEL_DELTA SendInput tick.
+        /// <see cref="MacroAction.AxisValue"/> is the signed tick count
+        /// (positive = up / right, 0 reads as +1);
+        /// <see cref="MacroAction.WheelHorizontal"/> selects the
+        /// MOUSEEVENTF_HWHEEL lane. At the tail per the APPEND-ONLY rule
+        /// above; ordinal pinned.</summary>
+        MouseWheelTap = 40,
+
+        /// <summary>One fixed-pixel cursor nudge per fire (translator v16,
+        /// Steam's <c>mouse_delta</c> "Move by Amount").
+        /// <see cref="MacroAction.NudgeDx"/> / <see cref="MacroAction.NudgeDy"/>
+        /// are signed screen-frame pixels (+x right, +y down), enqueued
+        /// ONCE into the same accumulate-and-flush mouse lane the
+        /// continuous MouseMove action feeds, so the injector thread
+        /// batches it off the poll thread. At the tail per the APPEND-ONLY
+        /// rule above; ordinal pinned.</summary>
+        MouseNudge = 41,
+
+        /// <summary>Cycle through a list of one-shot taps (translator v16,
+        /// Steam's Scroll Wheel List): each fire executes the NEXT step of
+        /// <see cref="MacroAction.CycleStepsCsv"/> and advances the
+        /// per-action volatile <see cref="MacroAction.CycleIndex"/>,
+        /// wrapping when <see cref="MacroAction.CycleWrap"/> is set and
+        /// dead-ending past the last step otherwise. Step vocabulary in
+        /// the CSV doc. At the tail per the APPEND-ONLY rule above;
+        /// ordinal pinned.</summary>
+        CycleTapList = 42,
+
+        /// <summary>Latch / unlatch a mouse button (translator v18, Steam's
+        /// activator toggle on a mouse_button binding). Each fire flips the
+        /// action's volatile latch; the engine reconciles a desired
+        /// mouse-button set per frame exactly like <see cref="ToggleKey"/>
+        /// (one down on engage, one up on release / disable / removal /
+        /// engine stop). <see cref="MacroAction.MouseButton"/> picks the
+        /// button. At the tail per the APPEND-ONLY rule above; ordinal
+        /// pinned.</summary>
+        ToggleMouseButton = 43,
+
+        /// <summary>Latch / unlatch an axis-natured VC target (translator
+        /// v18, Steam's toggle on a trigger-pull / stick-direction
+        /// binding). While latched, <see cref="MacroAction.AxisValue"/> is
+        /// re-written to <see cref="MacroAction.AxisTarget"/> every frame,
+        /// the <see cref="AxisHold"/> shape driven by a latch instead of a
+        /// duration. At the tail per the APPEND-ONLY rule above; ordinal
+        /// pinned.</summary>
+        ToggleVcAxis = 44,
+
+        /// <summary>Turbo / autofire for an axis-natured VC target
+        /// (translator v18, Steam's hold_repeats on a trigger-pull /
+        /// stick-direction binding). While the macro trigger is held,
+        /// asserts <see cref="MacroAction.AxisTarget"/> on the ON half of
+        /// the <see cref="RepeatVcButtonWhileHeld"/> square wave. A
+        /// continuous action. At the tail per the APPEND-ONLY rule above;
+        /// ordinal pinned.</summary>
+        RepeatVcAxisWhileHeld = 45,
+
+        /// <summary>Latch / unlatch a continuous wheel scroll (translator
+        /// v18, Steam's toggle on a mouse_wheel binding). While latched,
+        /// sends one <see cref="MouseWheelTap"/>-shaped detent every
+        /// <see cref="MacroAction.IntervalMs"/> ms, reproducing the held
+        /// KbmScroll row's continuous scroll. At the tail per the
+        /// APPEND-ONLY rule above; ordinal pinned.</summary>
+        ToggleWheel = 46,
+
+        /// <summary>Relative axis deflection (discussion #237, reWASD's
+        /// "Axis Control: Relative deflection"). ADDS
+        /// <see cref="MacroAction.AxisValue"/> to whatever the mapping
+        /// pipeline already wrote to <see cref="MacroAction.AxisTarget"/>
+        /// this frame, clamped to the target's range, re-applied every
+        /// frame while the action is current (the <see cref="AxisHold"/>
+        /// duration shape). Negative values subtract, so a held -50%
+        /// on a stick axis turns a run into a walk while the physical
+        /// stick keeps steering. Trigger targets add on the pull scale
+        /// (0..32767 = 0..100%); sticks add in the signed short frame.
+        /// At the tail per the APPEND-ONLY rule above; ordinal pinned.</summary>
+        AxisAdd = 47,
+
+        /// <summary>Combo break (discussion #237, reWASD's "Combo break"
+        /// block). Divides the action list into parts: reaching the break
+        /// ends this fire and parks the sequence, and the NEXT trigger
+        /// press resumes from the action after the break. Completing the
+        /// final action (or an UntilRelease stop) re-arms from the top.
+        /// Hold-shaped triggers must be RELEASED and pressed again to
+        /// continue (a WhileHeld trigger never auto-resumes through a
+        /// break). Park position is volatile: it resets on app restart,
+        /// profile switch, and macro disable (idle and engine restarts
+        /// within a session deliberately preserve it, so a combo does
+        /// not lose its place because the engine napped). At the tail
+        /// per the APPEND-ONLY rule above; ordinal pinned.</summary>
+        ComboBreak = 48,
+
+        /// <summary>Set Axis (Latched) (discussion #237 use case 1, issue
+        /// #251): latches the axis at the value PERSISTENTLY, surviving
+        /// combo-break parks (the latch pass runs independent of
+        /// execution). Firing any Set Axis (Latched) step clears its
+        /// sibling steps on the same axis first, so a ladder of steps
+        /// separated by Combo Breaks REPLACES the value press by press
+        /// instead of flipping like Toggle Axis (whose second lap
+        /// unlatches). Honors Yield to physical. At the tail per the
+        /// APPEND-ONLY rule above; ordinal pinned.</summary>
+        AxisSetLatched = 49,
+
+        /// <summary>Release Axis Latches (discussion #237's "other key can
+        /// nullify", issue #251): clears every axis latch (Set Axis
+        /// (Latched) steps and Toggle Axis latches) for the chosen axis,
+        /// or ALL axes when the target is None, across all the slot's
+        /// macros, returning the axis to physical control. Latching zero
+        /// is not the same thing: that would force zero over the physical
+        /// input. At the tail; ordinal pinned.</summary>
+        AxisLatchRelease = 50,
+
+        /// <summary>Scale Axis (discussion #237 use case 2, issue #251):
+        /// proportional deflection. Multiplies the axis's current combined
+        /// value by (1 + value/32767) every frame while current, the
+        /// AxisHold duration shape: -50% halves the stick (run becomes
+        /// walk), +50% amplifies half again, clamped to full scale. No
+        /// yield gate, because proportional composes with the physical
+        /// input by construction. At the tail; ordinal pinned.</summary>
+        AxisScale = 51
+    }
+
+    /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>
+    /// step (v16). Kinds: 'K' key tap (Value = VK), 'M' mouse-button click
+    /// (Value = 0..4), 'W' vertical wheel ticks, 'H' horizontal wheel
+    /// ticks, 'B' VC button flags (Value = Xbox bitmask), 'A' VC axis
+    /// assert (Value = MacroAxisTarget ordinal, Value2 = axis value on the
+    /// AxisHold scale).</summary>
+    public readonly struct CycleStepPart
+    {
+        public CycleStepPart(char kind, int value, short value2 = 0)
+        {
+            Kind = kind;
+            Value = value;
+            Value2 = value2;
+        }
+
+        public char Kind { get; }
+
+        public int Value { get; }
+
+        public short Value2 { get; }
+
+        /// <summary>Parses "K:49", "B:4096", "A:2:32767" forms. Unknown
+        /// kinds and junk numbers fail rather than guessing.</summary>
+        public static bool TryParse(string text, out CycleStepPart part)
+        {
+            part = default;
+            var tokens = (text ?? "").Trim().Split(':');
+            if (tokens.Length < 2 || tokens[0].Length != 1) return false;
+            char kind = char.ToUpperInvariant(tokens[0][0]);
+            if (!int.TryParse(tokens[1], System.Globalization.NumberStyles.Integer,
+                    System.Globalization.CultureInfo.InvariantCulture, out int value))
+            {
+                return false;
+            }
+            switch (kind)
+            {
+                case 'K':
+                case 'M':
+                case 'W':
+                case 'H':
+                case 'B':
+                    if (tokens.Length != 2) return false;
+                    part = new CycleStepPart(kind, value);
+                    return true;
+                case 'A':
+                    if (tokens.Length != 3
+                        || !short.TryParse(tokens[2], System.Globalization.NumberStyles.Integer,
+                            System.Globalization.CultureInfo.InvariantCulture, out short axisValue))
+                    {
+                        return false;
+                    }
+                    part = new CycleStepPart(kind, value, axisValue);
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 
     /// <summary>Target selector for <see cref="MacroActionType.DisconnectController"/>
@@ -4275,6 +6161,27 @@ namespace PadForge.ViewModels
         /// <summary>Force the slot's macro-engaged bit true.</summary>
         On = 1,
         /// <summary>Force the slot's macro-engaged bit false.</summary>
+        Off = 2
+    }
+
+    /// <summary>Write mode for the volatile latch on
+    /// <see cref="MacroActionType.ToggleKey"/> and
+    /// <see cref="MacroActionType.ToggleMouseButton"/> (audit #2 M4).
+    /// Toggle keeps the classic flip. On and Off make the fire
+    /// idempotent, so a hold pair can SET the latch on its press leg and
+    /// CLEAR it on its release leg: a two-macro flip decomposition
+    /// alternates or sticks, because each fire inverts whatever state
+    /// the other leg left behind.</summary>
+    public enum MacroLatchDirection
+    {
+        /// <summary>Flip the latch. Each fire toggles.</summary>
+        Toggle = 0,
+        /// <summary>Force the latch on.</summary>
+        On = 1,
+        /// <summary>Force the latch off. On a hold-pair leg
+        /// (<see cref="MacroItem.PairId"/> nonzero) the clear also
+        /// reaches the twin's latches, because each leg's latch state
+        /// lives on its own action instance.</summary>
         Off = 2
     }
 
@@ -4737,7 +6644,9 @@ namespace PadForge.ViewModels
     /// dropdown reads the same way as the row labels users already know.</summary>
     public static class MacroOutputChannelNames
     {
-        public static string DisplayName(MacroOutputChannel channel, MacroButtonStyle style)
+        /// <summary>The optional profile id re-letters the Numbered button
+        /// labels on Switch Pro profiles (#215); other styles ignore it.</summary>
+        public static string DisplayName(MacroOutputChannel channel, MacroButtonStyle style, string profileId = null)
         {
             var s = Strings.Instance;
             // Stick axes + D-Pad: same label across all styles (matches the
@@ -4776,17 +6685,17 @@ namespace PadForge.ViewModels
                 case MacroButtonStyle.Numbered:
                     return channel switch
                     {
-                        MacroOutputChannel.A     => string.Format(s.Extended_Button_Format, 1),
-                        MacroOutputChannel.B     => string.Format(s.Extended_Button_Format, 2),
-                        MacroOutputChannel.X     => string.Format(s.Extended_Button_Format, 3),
-                        MacroOutputChannel.Y     => string.Format(s.Extended_Button_Format, 4),
-                        MacroOutputChannel.LB    => string.Format(s.Extended_Button_Format, 5),
-                        MacroOutputChannel.RB    => string.Format(s.Extended_Button_Format, 6),
-                        MacroOutputChannel.Back  => string.Format(s.Extended_Button_Format, 7),
-                        MacroOutputChannel.Start => string.Format(s.Extended_Button_Format, 8),
-                        MacroOutputChannel.LS    => string.Format(s.Extended_Button_Format, 9),
-                        MacroOutputChannel.RS    => string.Format(s.Extended_Button_Format, 10),
-                        MacroOutputChannel.Guide => string.Format(s.Extended_Button_Format, 11),
+                        MacroOutputChannel.A     => MacroButtonNames.RawButtonLabel(profileId, 1),
+                        MacroOutputChannel.B     => MacroButtonNames.RawButtonLabel(profileId, 2),
+                        MacroOutputChannel.X     => MacroButtonNames.RawButtonLabel(profileId, 3),
+                        MacroOutputChannel.Y     => MacroButtonNames.RawButtonLabel(profileId, 4),
+                        MacroOutputChannel.LB    => MacroButtonNames.RawButtonLabel(profileId, 5),
+                        MacroOutputChannel.RB    => MacroButtonNames.RawButtonLabel(profileId, 6),
+                        MacroOutputChannel.Back  => MacroButtonNames.RawButtonLabel(profileId, 7),
+                        MacroOutputChannel.Start => MacroButtonNames.RawButtonLabel(profileId, 8),
+                        MacroOutputChannel.LS    => MacroButtonNames.RawButtonLabel(profileId, 9),
+                        MacroOutputChannel.RS    => MacroButtonNames.RawButtonLabel(profileId, 10),
+                        MacroOutputChannel.Guide => MacroButtonNames.RawButtonLabel(profileId, 11),
                         MacroOutputChannel.LT    => s.Btn_LeftTrigger,
                         MacroOutputChannel.RT    => s.Btn_RightTrigger,
                         _ => channel.ToString()
@@ -4816,7 +6725,7 @@ namespace PadForge.ViewModels
         /// presentation order (face → shoulders → start/back/guide → sticks →
         /// d-pad → triggers → axes). The order mirrors the mapping table so
         /// users find what they're looking for in roughly the same place.</summary>
-        public static List<MacroOutputChannelOption> GetOptions(MacroButtonStyle style)
+        public static List<MacroOutputChannelOption> GetOptions(MacroButtonStyle style, string profileId = null)
         {
             var order = new[]
             {
@@ -4830,34 +6739,69 @@ namespace PadForge.ViewModels
             };
             var list = new List<MacroOutputChannelOption>(order.Length);
             foreach (var ch in order)
-                list.Add(new MacroOutputChannelOption { Value = ch, Name = DisplayName(ch, style) });
+                list.Add(new MacroOutputChannelOption { Value = ch, Name = DisplayName(ch, style, profileId) });
             return list;
         }
     }
 
     public static class MacroButtonNames
     {
+        /// <summary>The Numbered convention's mask order: numbered button N
+        /// (1-based) corresponds to NumberedMaskOrder[N-1]. This is exactly
+        /// the mapping BuildNumberedDefs labels (A = Button 1 ... Guide =
+        /// Button 11). Shared by the menu editor and delivery so a slot's
+        /// output-type switch translates an authored button instead of
+        /// stranding it.</summary>
+        public static readonly ushort[] NumberedMaskOrder =
+        {
+            0x1000, 0x2000, 0x4000, 0x8000, // A B X Y
+            0x0100, 0x0200,                 // LB RB
+            0x0020, 0x0010,                 // Back Start
+            0x0040, 0x0080,                 // LS RS
+            0x0400,                         // Guide
+        };
+
+        /// <summary>1-based numbered-button equivalent of the LOWEST set
+        /// mask bit, or 0 when none maps.</summary>
+        public static int NumberFromMask(int mask)
+        {
+            for (int i = 0; i < NumberedMaskOrder.Length; i++)
+                if ((mask & NumberedMaskOrder[i]) != 0) return i + 1;
+            return 0;
+        }
+
+        /// <summary>Mask equivalent of a 1-based numbered button, or 0 when
+        /// the number is outside the shared 1..11 range.</summary>
+        public static ushort MaskFromNumber(int number)
+            => number >= 1 && number <= NumberedMaskOrder.Length
+                ? NumberedMaskOrder[number - 1] : (ushort)0;
+
         /// <summary>
         /// Returns the button label/flag pairs for the given style.
         /// Flags are always the same Xbox-standard bitmask; only labels differ.
+        /// The optional profile id re-letters the Numbered labels on Switch
+        /// Pro profiles (#215); it is ignored for the other styles.
         /// </summary>
-        public static (string Label, ushort Flag)[] GetButtonDefs(MacroButtonStyle style) => style switch
+        public static (string Label, ushort Flag)[] GetButtonDefs(MacroButtonStyle style, string profileId = null) => style switch
         {
             MacroButtonStyle.DualShock4 => BuildDS4Defs(),
-            MacroButtonStyle.Numbered => BuildNumberedDefs(),
+            MacroButtonStyle.Numbered => BuildNumberedDefs(profileId),
             _ => BuildXboxDefs()
         };
 
-        /// <summary>Formats a button bitmask into a human-readable string.</summary>
-        public static string FormatButtons(ushort flags, MacroButtonStyle style)
+        /// <summary>Formats a button bitmask into a human-readable string.
+        /// The optional profile id re-letters Numbered labels on Switch Pro
+        /// profiles (#215).</summary>
+        public static string FormatButtons(ushort flags, MacroButtonStyle style, string profileId = null)
         {
             if (flags == 0) return Strings.Instance.Macro_None;
-            var defs = GetButtonDefs(style);
+            var defs = GetButtonDefs(style, profileId);
             return string.Join(" + ", defs.Where(d => (flags & d.Flag) != 0).Select(d => d.Label));
         }
 
-        /// <summary>Formats custom Extended button words into a human-readable string.</summary>
-        public static string FormatCustomButtons(uint[] words)
+        /// <summary>Formats custom Extended button words into a human-readable
+        /// string. The optional profile id re-letters Switch Pro buttons (#215).</summary>
+        public static string FormatCustomButtons(uint[] words, string profileId = null)
         {
             if (words == null || words.All(w => w == 0)) return Strings.Instance.Macro_None;
             var parts = new List<string>();
@@ -4866,7 +6810,7 @@ namespace PadForge.ViewModels
                 int word = i / 32;
                 int bit = i % 32;
                 if (word < words.Length && (words[word] & (uint)(1 << bit)) != 0)
-                    parts.Add(string.Format(Strings.Instance.Macro_Btn_Format, i + 1));
+                    parts.Add(RawButtonShortLabel(profileId, i + 1));
             }
             return parts.Count > 0 ? string.Join(" + ", parts) : Strings.Instance.Macro_None;
         }
@@ -4874,15 +6818,80 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Derives the button style from the output controller type. Extended
         /// slots show numbered labels (Btn1, Btn2, ...) since the active
-        /// HIDMaestro profile drives the layout — Xbox-style "A B X Y" labels
+        /// HIDMaestro profile drives the layout. Xbox-style "A B X Y" labels
         /// belong on Xbox slots, DualShock labels on PlayStation slots.
+        /// Switch Pro profiles keep the Numbered value space and re-letter
+        /// the labels per raw index (see <see cref="RawButtonLabel"/>).
         /// </summary>
         public static MacroButtonStyle DeriveStyle(VirtualControllerType outputType) => outputType switch
         {
             VirtualControllerType.PlayStation => MacroButtonStyle.DualShock4,
             VirtualControllerType.Extended    => MacroButtonStyle.Numbered,
+            // Nintendo rides the Numbered value space and re-letters per
+            // raw index through the switch-pro profile (#215), exactly
+            // like an Extended slot holding that profile.
+            VirtualControllerType.Nintendo    => MacroButtonStyle.Numbered,
             _                                 => MacroButtonStyle.Xbox360
         };
+
+        /// <summary>Nintendo lettering gate (#215): true when the Extended
+        /// slot's HIDMaestro profile is a Switch Pro family pad whose
+        /// descriptor button order is the Nintendo standard (B A Y X, L R,
+        /// ZL ZR, Minus Plus, stick clicks, Home, Capture). Grounded in the
+        /// switch-pro profile's layout roles. Covers "switch-pro" and the
+        /// "switch2-pro" id family ("switch2-pro-controller" in the current
+        /// catalog).</summary>
+        public static bool IsNintendoLetteredProfile(string profileId) =>
+            !string.IsNullOrEmpty(profileId)
+            && (string.Equals(profileId, "switch-pro", StringComparison.OrdinalIgnoreCase)
+                || profileId.StartsWith("switch2-pro", StringComparison.OrdinalIgnoreCase));
+
+        /// <summary>Count of role-mapped (lettered) buttons on the
+        /// switch-pro profile family: indices 0-13. The descriptor
+        /// declares 18 (the last four are the Joy-Con rail SL/SR bits),
+        /// but the SDK packer only emits role-mapped buttons, so
+        /// anything past this count is dead wire on the virtual pad.</summary>
+        public const int NintendoLetteredButtonCount = 14;
+
+        /// <summary>Nintendo name for a 0-based raw button index on
+        /// a Switch Pro profile, or null past the lettered range (callers
+        /// fall back to the numbered format). Index order matches the
+        /// switch-pro HID descriptor: face 0-3, bumpers 4-5, ZL/ZR 6-7,
+        /// Minus/Plus 8-9, stick clicks 10-11, Home 12, Capture 13.</summary>
+        public static string NintendoExtendedLabel(int index) => index switch
+        {
+            0 => "B",
+            1 => "A",
+            2 => "Y",
+            3 => "X",
+            4 => Strings.Instance.Btn_L,
+            5 => Strings.Instance.Btn_R,
+            6 => Strings.Instance.Btn_ZL,
+            7 => Strings.Instance.Btn_ZR,
+            8 => Strings.Instance.Btn_Minus,
+            9 => Strings.Instance.Btn_Plus,
+            10 => Strings.Instance.Btn_LeftStickButton,
+            11 => Strings.Instance.Btn_RightStickButton,
+            12 => Strings.Instance.Btn_Home,
+            13 => Strings.Instance.Btn_Capture,
+            _ => null,
+        };
+
+        /// <summary>Label for the 1-based Extended button N under the given
+        /// profile: Nintendo lettering on Switch Pro profiles, the "Button
+        /// {N}" format otherwise. The long-form twin of
+        /// <see cref="RawButtonShortLabel"/> (mapping grid, menu cell
+        /// picker, output-channel dropdown).</summary>
+        public static string RawButtonLabel(string profileId, int number) =>
+            (IsNintendoLetteredProfile(profileId) ? NintendoExtendedLabel(number - 1) : null)
+            ?? string.Format(Strings.Instance.Extended_Button_Format, number);
+
+        /// <summary>Compact-label twin of <see cref="RawButtonLabel"/>
+        /// ("Btn {N}" fallback) for the macro trigger chips and button
+        /// checkbox grid.</summary>
+        public static string RawButtonShortLabel(string profileId, int number) =>
+            (IsNintendoLetteredProfile(profileId) ? NintendoExtendedLabel(number - 1) : null)
+            ?? string.Format(Strings.Instance.Macro_Btn_Format, number);
 
         private static (string Label, ushort Flag)[] BuildXboxDefs() => new (string, ushort)[]
         {
@@ -4909,17 +6918,20 @@ namespace PadForge.ViewModels
 
         // Extended Custom: Xbox bitmask bits → Extended button numbers (see SubmitGamepadState mapping).
         // D-pad still shows direction names (they map to POV, not buttons).
-        private static (string Label, ushort Flag)[] BuildNumberedDefs()
+        // Switch Pro profiles letter each number per the descriptor's raw
+        // index (#215); the mask/number value space is unchanged.
+        private static (string Label, ushort Flag)[] BuildNumberedDefs(string profileId)
         {
             var s = Strings.Instance;
+            string L(int n) => RawButtonShortLabel(profileId, n);
             return new (string, ushort)[]
             {
-                (string.Format(s.Macro_Btn_Format, 1), 0x1000), (string.Format(s.Macro_Btn_Format, 2), 0x2000),
-                (string.Format(s.Macro_Btn_Format, 3), 0x4000), (string.Format(s.Macro_Btn_Format, 4), 0x8000),
-                (string.Format(s.Macro_Btn_Format, 5), 0x0100), (string.Format(s.Macro_Btn_Format, 6), 0x0200),
-                (string.Format(s.Macro_Btn_Format, 7), 0x0020), (string.Format(s.Macro_Btn_Format, 8), 0x0010),
-                (string.Format(s.Macro_Btn_Format, 9), 0x0040), (string.Format(s.Macro_Btn_Format, 10), 0x0080),
-                (string.Format(s.Macro_Btn_Format, 11), 0x0400),
+                (L(1), 0x1000), (L(2), 0x2000),
+                (L(3), 0x4000), (L(4), 0x8000),
+                (L(5), 0x0100), (L(6), 0x0200),
+                (L(7), 0x0020), (L(8), 0x0010),
+                (L(9), 0x0040), (L(10), 0x0080),
+                (L(11), 0x0400),
                 (s.Btn_Up, 0x0001), (s.Btn_Down, 0x0002),
                 (s.Btn_Left, 0x0004), (s.Btn_Right, 0x0008),
             };

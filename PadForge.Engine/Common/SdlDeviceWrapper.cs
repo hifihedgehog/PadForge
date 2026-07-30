@@ -28,8 +28,10 @@ namespace PadForge.Engine
         /// <summary>SDL Gamepad handle. May be IntPtr.Zero if the device is not recognized as a gamepad.</summary>
         public IntPtr GameController { get; private set; } = IntPtr.Zero;
 
-        /// <summary>SDL instance ID (unique per device connection session). 0 = invalid.</summary>
-        public uint SdlInstanceId { get; private set; }
+        /// <summary>SDL instance ID (unique per device connection session). 0 = invalid.
+        /// Internal setter so identity tests can fabricate a claimant wrapper
+        /// without opening a native device.</summary>
+        public uint SdlInstanceId { get; internal set; }
 
         /// <summary>Number of axes reported by SDL.</summary>
         public int NumAxes { get; private set; }
@@ -118,6 +120,37 @@ namespace PadForge.Engine
         /// on joystick axes 6/7 (SDL#8, raw axis count 8).</summary>
         public bool HasJoyCon2Mouse { get; private set; }
 
+        /// <summary>Cycles the motion sensors off and back on. The SDL
+        /// fork decides the right Joy-Con NIR camera's fate only at this
+        /// enable edge (SDL_hidapi_switch.c SetSensorsEnabled: hint set ->
+        /// EnableIRSensor, hint clear while active -> DisableIRSensor via
+        /// the disable leg), so a RUNTIME flip of the IR hint needs one
+        /// bounce to take effect without a reconnect (#248 audit round 2).
+        /// Gyro/accel streams resume immediately; one bounce costs a few
+        /// sensor frames.</summary>
+        public void BounceMotionSensors()
+        {
+            if (GameController == IntPtr.Zero) return;
+            if (HasGyro) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO, false);
+            if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, false);
+            if (HasGyroAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO_L, false);
+            if (HasAccelAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL_L, false);
+            if (HasGyro) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO, true);
+            if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, true);
+            if (HasGyroAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO_L, true);
+            if (HasAccelAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL_L, true);
+        }
+
+        /// <summary>Whether this device has an NFC reader the SDL fork can
+        /// drive (issue #241/#248, SDL#15): the classic Switch right
+        /// Joy-Con (PID 0x2007), the Pro Controller (PID 0x2009), and the
+        /// combined Joy-Con pair (synthetic PID 0x2008), whose right child
+        /// carries the MCU. The reader is only powered when NFC is armed
+        /// and the SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC hint is set; this
+        /// flag just says the hardware can. Read via
+        /// SDL_GetGamepadNfcTagUid.</summary>
+        public bool HasNfcReader { get; private set; }
+
         /// <summary>Total raw joystick axis count (before the gamepad layout pins
         /// <see cref="NumAxes"/> to 6). SDL's convention is that device-specific
         /// analog data beyond the six standard gamepad axes rides raw joystick axes
@@ -144,6 +177,16 @@ namespace PadForge.Engine
         /// pair.</summary>
         public bool HasAccelAux { get; private set; }
 
+        /// <summary>Whether the device exposes the auxiliary (left-side)
+        /// gyroscope, SDL_SENSOR_GYRO_L (issue #252): the left half of a
+        /// combined Joy-Con pair. Only the Switch drivers register it
+        /// (SDL_hidapi_switch.c SetEnhancedModeAvailable, and the gen-2
+        /// twin), and on a pair the PRIMARY gyro is the right half, so this
+        /// is the second physical sensor rather than a duplicate. The Wii
+        /// Nunchuk has no gyro, so unlike <see cref="HasAccelAux"/> this
+        /// never fires for a Nunchuk.</summary>
+        public bool HasGyroAux { get; private set; }
+
         /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
         public bool HasTouchpad { get; private set; }
 
@@ -158,6 +201,14 @@ namespace PadForge.Engine
         /// captured at open time. Persisted onto UserDevice so the picker offers
         /// only the fingers each pad actually supports, even when offline.</summary>
         public int[] TouchpadFingerCounts => _padFingerCounts ?? System.Array.Empty<int>();
+
+        /// <summary>Per-channel capsense capability from SDL_GamepadHasCapSense
+        /// (fork API, SDL_gamepad.h since 3.6.0), indexed by the
+        /// SDL_GAMEPAD_CAPSENSE_* constants (left stick / right stick /
+        /// left grip / right grip). Null when no channel exists, so the
+        /// per-frame fill and the CustomInputState allocation stay free for
+        /// the overwhelmingly common capsense-less device.</summary>
+        private bool[] _capSenseChannels;
 
         /// <summary>Human-readable device name.</summary>
         public string Name { get; private set; } = string.Empty;
@@ -186,6 +237,20 @@ namespace PadForge.Engine
         /// to physical devices.
         /// </summary>
         public Guid InstanceGuid { get; private set; } = Guid.Empty;
+
+        /// <summary>Replaces this connection's identity GUID with a
+        /// session-scoped one. Called by the device resolver ONLY when the
+        /// serial-derived identity collided with a DIFFERENT live device
+        /// (two units reporting the identical serial string, a real clone
+        /// pad shape, make the same GUID). The wrapper must carry the
+        /// minted identity BEFORE UserDevice.LoadFromSdlDevice runs,
+        /// because LoadInstance stamps the row's InstanceGuid from the
+        /// wrapper and would otherwise clobber the disambiguated row back
+        /// onto the colliding key.</summary>
+        public void OverrideInstanceGuid(Guid sessionGuid)
+        {
+            if (sessionGuid != Guid.Empty) InstanceGuid = sessionGuid;
+        }
 
         /// <summary>
         /// Product GUID derived from VID/PID for device identification
@@ -304,6 +369,13 @@ namespace PadForge.Engine
             // Check rumble support via properties system (replaces SDL_JoystickHasRumble).
             uint props = SDL_GetJoystickProperties(Joystick);
             HasRumble = props != 0 && SDL_GetBooleanProperty(props, SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN, false);
+            // HAPTICDIAG (2026-07-24 rumble regression): ForceFeedbackState
+            // .SetDeviceForces drops every rumble when HasRumble and
+            // HasHaptic are both false, silently. That gate was invisible,
+            // so log the capability once per open.
+            if (VendorId == 0x057E)
+                SdlDiagLog.WriteLine(
+                    $"HAPTICDIAG caps vid=057E pid={ProductId:X4} hasRumble={HasRumble} props={props != 0}");
             // Trigger rumble: SDL property OR'd with a hardware fact —
             // every Microsoft Xbox One+ controller has impulse-trigger
             // motors regardless of what SDL's current backend reports.
@@ -332,6 +404,24 @@ namespace PadForge.Engine
                 // pair's left child); PadForge simply never read it.
                 HasAccelAux = SDL_GamepadHasSensor(GameController, SDL_SENSOR_ACCEL_L);
                 if (HasAccelAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL_L, true);
+                // Auxiliary (left-side) gyroscope (issue #252): the left
+                // Joy-Con of a combined pair. Registered only by the Switch
+                // drivers; probing is the state-driven test, so no PID gate.
+                HasGyroAux = SDL_GamepadHasSensor(GameController, SDL_SENSOR_GYRO_L);
+                if (HasGyroAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO_L, true);
+
+                // Capacitive touch channels (fork API): stick-top touch on
+                // Steam Controller-family devices, grip capsense on the SC
+                // 2026. Probe once at open; only allocate the per-channel
+                // capability map when at least one channel exists.
+                for (int c = 0; c < SDL_GAMEPAD_CAPSENSE_COUNT; c++)
+                {
+                    if (SDL_GamepadHasCapSense(GameController, c))
+                    {
+                        _capSenseChannels ??= new bool[SDL_GAMEPAD_CAPSENSE_COUNT];
+                        _capSenseChannels[c] = true;
+                    }
+                }
 
                 int numPads = SDL_GetNumGamepadTouchpads(GameController);
                 HasTouchpad = numPads > 0;
@@ -395,6 +485,22 @@ namespace PadForge.Engine
             HasJoyCon2Mouse = VendorId == 0x057E
                 && (ProductId == 0x2066 || ProductId == 0x2067)
                 && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 8;
+
+            // NFC reader (issue #241/#248, SDL#15). The NFC/IR MCU lives on
+            // the classic Switch right Joy-Con (PID 0x2007) and Pro
+            // Controller (PID 0x2009). The combined pair (synthetic PID
+            // 0x2008, SDL_hidapijoystick.c:1090) contains a right Joy-Con,
+            // and SDL propagates the combined joystick to every child
+            // (SDL_hidapijoystick.c:784-787), so the right child posts the
+            // tag UID onto the pair's joystick exactly like its GYRO_R.
+            // Gated on GameController != 0 because the tag getter is a
+            // gamepad-layer call. Switch 2 controllers are excluded: no
+            // reference reads their NFC on PC and there is no working code
+            // over any transport (verified 2026-07-24), so PadForge offers
+            // no NFC affordance the fork cannot back.
+            HasNfcReader = VendorId == 0x057E
+                && (ProductId == 0x2007 || ProductId == 0x2008 || ProductId == 0x2009)
+                && GameController != IntPtr.Zero;
 
             // Generic extra joystick axes (issue #193). A gamepad-opened device may
             // report raw joystick axes beyond the standard six that carry ordinary
@@ -461,6 +567,28 @@ namespace PadForge.Engine
                 SDL_CloseJoystick(Joystick);
                 Joystick = IntPtr.Zero;
             }
+
+            // Reset NFC pulse/edge state so a wrapper that is closed and
+            // reopened (Open supports this) cannot inherit a stale press or
+            // suppress the first equal UID from the prior connection (Codex
+            // #11). Harmless when the app reconnect path makes a fresh
+            // wrapper instead.
+            _nfcPrevUid = null;
+            if (_nfcPulseUntil != null) Array.Clear(_nfcPulseUntil, 0, _nfcPulseUntil.Length);
+
+            // Same reason, wider scope: every capability flag and probe
+            // result below is stamped by Open from the handle it just got.
+            // A reopen that lands on a device without gyro, a touchpad, or
+            // the extended buttons would otherwise keep the previous
+            // connection's answers, and the read paths gate on exactly these.
+            HasGyro = false;
+            HasAccel = false;
+            HasGyroAux = false;
+            HasAccelAux = false;
+            HasTouchpad = false;
+            _padFingerCounts = null;
+            _capSenseChannels = null;
+            _extButtonPresent = null;
 
             SdlInstanceId = 0;
         }
@@ -586,7 +714,103 @@ namespace PadForge.Engine
             if (HasJoyCon2Mouse && state != null)
                 ReadJoyCon2Mouse(state);
 
+            // NFC tag reader (issue #241). Read gamepad-layer, gated on the
+            // arming provider so the MCU stays off (and this stays a no-op)
+            // until a slot arms an NFC trigger.
+            if (HasNfcReader && state != null)
+                ReadNfcTag(state);
+
             return state;
+        }
+
+        // ─── NFC tag reader (issue #241, SDL#15) ───
+        // The Engine wrapper cannot see the App-side NfcTagRegistry, so the
+        // App wires these providers at startup (the SourceCoercion provider
+        // idiom). All null until wired, which keeps the Engine standalone.
+
+        /// <summary>True when any slot has armed an NFC trigger, so the MCU
+        /// should be powered and the tag getter polled. App-wired.</summary>
+        public static Func<bool> NfcArmedProvider;
+        /// <summary>Resolves a tag UID to its stable NfcTagRegistry button
+        /// (0 = registered nowhere / use Any only, &gt;0 = that tag's button,
+        /// -1 = unregistered). App-wired to NfcTagRegistry.ButtonForUid.</summary>
+        public static Func<string, int> NfcTagButtonResolver;
+        /// <summary>Highest registry button in use, so the NfcTag array spans
+        /// every registered tag. App-wired to NfcTagRegistry.MaxButtonInUse.</summary>
+        public static Func<int> NfcTagSpanProvider;
+        /// <summary>Raised (rising edge only) when a controller reads a tag,
+        /// so the registration flow can capture a controller-sourced UID the
+        /// same way it captures a PC/SC reader's. App-wired.</summary>
+        public static Action<string> NfcTagDetectedForRegistration;
+
+        /// <summary>Tag-button hold, mirroring NfcReaderDevice.PulseMs: a
+        /// held tag streams present from the getter, so the button stays
+        /// pressed while the tag rests and releases this long after removal,
+        /// smoothing any single-poll gap into a clean momentary edge.</summary>
+        private const int NfcPulseMs = 175;
+        private long[] _nfcPulseUntil;
+        private string _nfcPrevUid;
+
+        private void ReadNfcTag(CustomInputState state)
+        {
+            long now = Environment.TickCount64;
+            var armed = NfcArmedProvider;
+            if (armed == null || !armed())
+            {
+                // Not armed: FULLY reset the pulse and edge state, not just
+                // the output array. A stale deadline left in _nfcPulseUntil
+                // would otherwise resurrect a false press when NFC re-arms
+                // (Codex #4). The array stays allocated (cleared) so the
+                // codec still omits it and consumers read "no NFC".
+                _nfcPrevUid = null;
+                if (_nfcPulseUntil != null) Array.Clear(_nfcPulseUntil, 0, _nfcPulseUntil.Length);
+                if (state.NfcTag != null) Array.Clear(state.NfcTag, 0, state.NfcTag.Length);
+                return;
+            }
+
+            _nfcPulseUntil ??= new long[CustomInputState.MaxButtons];
+
+            if (SDL_TryGetGamepadNfcTagUid(GameController, out string uid)
+                && !string.IsNullOrEmpty(uid))
+            {
+                // Rising edge for registration, tied to the SAME pulse window
+                // as the exposed button (Codex #5): raise only when the tag
+                // is different or the Any-tag pulse had lapsed (a real
+                // absence, not one dropped poll the fork's own 2 s debounce
+                // would bridge). A resting tag never re-raises.
+                bool anyPressed = _nfcPulseUntil[0] != 0 && now < _nfcPulseUntil[0];
+                if (!anyPressed || !string.Equals(uid, _nfcPrevUid, StringComparison.Ordinal))
+                {
+                    try { NfcTagDetectedForRegistration?.Invoke(uid); } catch { }
+                }
+                _nfcPrevUid = uid;
+                long until = now + NfcPulseMs;
+                _nfcPulseUntil[0] = until; // Any NFC Tag
+                int button = NfcTagButtonResolver?.Invoke(uid) ?? -1;
+                if (button > 0 && button < _nfcPulseUntil.Length)
+                    _nfcPulseUntil[button] = until;
+            }
+            // A single absent poll does NOT clear _nfcPrevUid: the pulse holds
+            // the button through a dropped poll, so the edge tracker holds too.
+            // It clears below once the Any pulse actually lapses.
+
+            // Expire deadlines across the WHOLE pulse array (not just the
+            // current span), so a span that shrank and later regrew cannot
+            // inherit a stale deadline on a reused button (Codex #4).
+            for (int b = 0; b < _nfcPulseUntil.Length; b++)
+                if (_nfcPulseUntil[b] != 0 && now >= _nfcPulseUntil[b])
+                    _nfcPulseUntil[b] = 0;
+
+            // Size the tag array to span every registered button (1 = "Any"
+            // plus the highest tag button) and write each button's state.
+            int span = 1 + Math.Max(0, NfcTagSpanProvider?.Invoke() ?? 0);
+            if (span > CustomInputState.MaxButtons) span = CustomInputState.MaxButtons;
+            if (state.NfcTag == null || state.NfcTag.Length != span)
+                state.NfcTag = new bool[span];
+            for (int b = 0; b < span; b++)
+                state.NfcTag[b] = _nfcPulseUntil[b] != 0;
+
+            if (_nfcPulseUntil[0] == 0) _nfcPrevUid = null;
         }
 
         // Joy-Con 2 optical mouse sensor (issue #154). The fork's BLE Switch 2
@@ -739,9 +963,24 @@ namespace PadForge.Engine
         ///            [6]=Back, [7]=Start, [8]=LS, [9]=RS, [10]=Guide
         ///   POV[0]: D-pad synthesized from gamepad D-pad buttons.
         /// </summary>
+        // ── Pooled state buffers (perf audit 2026-07-20) ──
+        // Two per-wrapper CustomInputState instances, alternated per read.
+        // Retainer footprint (agents, this audit): the published instance
+        // must stay intact for exactly one tick (ud.OldInputState's idle
+        // compare) and no consumer holds it longer, so two buffers
+        // suffice. ResetForReuse restores exact fresh-construction
+        // semantics (reflection-guarded by CustomInputStateMirrorTests),
+        // so decoders that rely on fresh-zero fields stay correct.
+        // Cross-thread preview readers may observe mixed-adjacent-tick
+        // values while a buffer is rewritten, the same acceptance
+        // GyroCalibratorService and TouchpadOverlayDevice document.
+        private PooledInputStatePair _statePool;
+
+        private CustomInputState NextPooledState() => _statePool.Next();
+
         private CustomInputState GetGamepadState()
         {
-            var state = new CustomInputState();
+            var state = NextPooledState();
 
             // --- Axes ---
             // Read standardized gamepad axes and reorder to match the auto-mapping layout:
@@ -809,21 +1048,28 @@ namespace PadForge.Engine
             // into POV[0] above). SDL_GetGamepadButton returns false on
             // devices that lack a given button, so this is harmless on a
             // plain Xbox 360 / DualShock 4.
-            state.Buttons[11] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC1);
-            state.Buttons[12] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1);
-            state.Buttons[13] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_LEFT_PADDLE1);
-            state.Buttons[14] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2);
-            state.Buttons[15] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_LEFT_PADDLE2);
-
-            // Buttons[16] is reserved for SDL_GAMEPAD_BUTTON_TOUCHPAD; written
-            // by the touchpad section below when HasTouchpad is true. Stays
-            // false on non-touchpad devices.
-
-            state.Buttons[17] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC2);
-            state.Buttons[18] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC3);
-            state.Buttons[19] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC4);
-            state.Buttons[20] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC5);
-            state.Buttons[21] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC6);
+            // Extended positions 11-21, gated by the open-time presence
+            // probe: reading an absent position returned constant false at
+            // ~10 crossings per pad per tick. ResetForReuse zeroed the
+            // buttons, so skipping absent positions is bit-identical.
+            // Position 16 is reserved for SDL_GAMEPAD_BUTTON_TOUCHPAD;
+            // written by the touchpad section below when HasTouchpad is
+            // true, false otherwise.
+            var extPresent = _extButtonPresent;
+            for (int pos = 11; pos <= 21; pos++)
+            {
+                // The touchpad block below owns position 16 when a touchpad
+                // surface exists, so both readers see one coherent click
+                // sample. Without one it owns nothing: HasTouchpad comes from
+                // SDL_GetNumGamepadTouchpads while the position is advertised
+                // from SDL_GamepadHasButton, a MAPPING check, so a mapping
+                // that declares the touchpad button on a device SDL registers
+                // no pad for left "Touchpad 0 Click" in the picker reading
+                // false forever. Read it here in exactly that case.
+                if (pos == 16 && HasTouchpad) continue;
+                if (extPresent != null && !extPresent[pos]) continue;
+                state.Buttons[pos] = SDL_GetGamepadButton(GameController, GamepadButtonForPosition(pos));
+            }
 
             // --- Extra raw buttons ---
             // Append raw joystick buttons beyond the 22 standardized gamepad
@@ -855,16 +1101,34 @@ namespace PadForge.Engine
                 SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL, state.Accel, 3);
             if (HasAccelAux)
                 SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL_L, state.AccelAux, 3);
+            if (HasGyroAux)
+                SDL_GetGamepadSensorData(GameController, SDL_SENSOR_GYRO_L, state.GyroAux, 3);
+
+            // --- Capsense (stick-top / grip touch, fork API) ---
+            if (_capSenseChannels != null)
+            {
+                if (state.CapSense == null || state.CapSense.Length != SDL_GAMEPAD_CAPSENSE_COUNT)
+                    state.CapSense = new bool[SDL_GAMEPAD_CAPSENSE_COUNT];
+                for (int c = 0; c < SDL_GAMEPAD_CAPSENSE_COUNT; c++)
+                {
+                    if (_capSenseChannels[c])
+                        state.CapSense[c] = SDL_GetGamepadCapSense(GameController, c);
+                }
+            }
 
             // --- Touchpad (DS4/DualSense/Steam Deck/Steam Controller/Triton) ---
             if (HasTouchpad && _padFingerCounts != null)
             {
                 int numPads = _padFingerCounts.Length;
-                state.Touchpads = new TouchpadInputState[numPads];
+                if (state.Touchpads == null || state.Touchpads.Length != numPads)
+                    state.Touchpads = new TouchpadInputState[numPads];
+                bool primaryClick = false;
                 for (int p = 0; p < numPads; p++)
                 {
                     int nf = _padFingerCounts[p];
-                    var tp = new TouchpadInputState(nf);
+                    var tp = state.Touchpads[p];
+                    if (tp == null || tp.MaxFingers != nf)
+                        tp = new TouchpadInputState(nf);
                     var currIds = _padCurrentContactIds[p];
                     for (int f = 0; f < nf; f++)
                     {
@@ -894,11 +1158,52 @@ namespace PadForge.Engine
                     // devices like the Triton (Steam Controller 2026) expose
                     // additional pad clicks through MISC2..MISC6 per the
                     // touchpad-click-as-button recipe; map them here too.
+                    // Pressure fallback for a pad whose click SDL's mapping
+                    // does not bind. The gen-1 Steam Controller is the case:
+                    // its generated mapping is paddle1/paddle2 only, no
+                    // touchpad and no misc2 (SDL_gamepad.c:1263, against the
+                    // Deck's and Triton's touchpad:b17,misc2:b16 at 1266 and
+                    // 1269), while its driver registers two pads and encodes
+                    // the click purely in pressure: 0.5 for a finger down,
+                    // plus another 0.5 when clicked (SDL_hidapi_steam.c
+                    // 1498-1500 for the left pad, 1518-1520 for the right).
+                    // Both its "Touchpad N Click" descriptors therefore read
+                    // false forever while the pads physically click. Gated on
+                    // the button being unmapped, because a DualSense reports
+                    // full pressure for a resting finger and would otherwise
+                    // read as clicked on touch.
+                    bool pressureClick = false;
+                    if (IsSteamControllerGen1)
+                        for (int f = 0; f < nf; f++)
+                            if (tp.FingerDown[f] && tp.FingerPressure[f] > 0.75f) { pressureClick = true; break; }
+
                     if (p == 0)
-                        tp.Clicked = SDL_GetGamepadButton(GameController,
-                            SDL_GAMEPAD_BUTTON_TOUCHPAD);
-                    else if (p == 1 && state.Buttons.Length > 17)
-                        tp.Clicked = state.Buttons[17]; // MISC2 — second pad click
+                    {
+                        bool mapped = _extButtonPresent != null && _extButtonPresent.Length > 16 && _extButtonPresent[16];
+                        primaryClick = mapped
+                            ? SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_TOUCHPAD)
+                            : pressureClick;
+                        tp.Clicked = primaryClick;
+                    }
+                    else
+                    {
+                        // Pads 1..5 continue through MISC2..MISC6, which is
+                        // positions 17..21. The comment above has promised
+                        // this since the touchpad-click-as-button recipe, but
+                        // only p == 1 was implemented, so a third pad's click
+                        // could never go true on a device that exposes one.
+                        int pos = 16 + p;
+                        if (pos <= 21 && state.Buttons.Length > pos)
+                        {
+                            bool mapped = _extButtonPresent != null
+                                && _extButtonPresent.Length > pos && _extButtonPresent[pos];
+                            tp.Clicked = mapped ? state.Buttons[pos] : pressureClick;
+                        }
+                        else
+                        {
+                            tp.Clicked = pressureClick;
+                        }
+                    }
                     state.Touchpads[p] = tp;
                 }
 
@@ -906,8 +1211,9 @@ namespace PadForge.Engine
                 // the gamepad button so existing readers (Touchpad 0 Click
                 // descriptor, virtual-DualSense output) continue to work
                 // unchanged.
-                state.Buttons[16] = SDL_GetGamepadButton(GameController,
-                    SDL_GAMEPAD_BUTTON_TOUCHPAD);
+                // Same value the p==0 branch just read; one SDL crossing
+                // and both readers see one coherent click sample.
+                state.Buttons[16] = primaryClick;
             }
 
             // --- Battery (refresh ~once per 5s; battery doesn't change at poll rate) ---
@@ -995,7 +1301,7 @@ namespace PadForge.Engine
         /// </summary>
         private CustomInputState GetJoystickState()
         {
-            var state = new CustomInputState();
+            var state = NextPooledState();
 
             // --- Axes ---
             // Raw joystick mode reads every axis the device actually exposes, not
@@ -1086,6 +1392,18 @@ namespace PadForge.Engine
 
         private bool IsSteamDeck => VendorId == 0x28DE && ProductId == 0x1205;
 
+        /// <summary>Gen-1 Steam Controller (CHELL 0x1101, wired D0G 0x1102,
+        /// BT D0G 0x1105/0x1106, dongle 0x1142), the same PID set
+        /// HapticToneService gates on. Its driver is the ONLY one that
+        /// encodes a pad click in touchpad pressure: 0.5 for a finger down
+        /// plus another 0.5 when clicked (SDL_hidapi_steam.c 1498-1500 and
+        /// 1518-1520). Every other driver sends a flat 1.0 for a plain touch
+        /// (ps4 1062, ps5 1428, shield 392) or a raw analog value (sinput
+        /// 1045), so a pressure-derived click must never be inferred for
+        /// them.</summary>
+        private bool IsSteamControllerGen1 => VendorId == 0x28DE
+            && ProductId is 0x1101 or 0x1102 or 0x1105 or 0x1106 or 0x1142;
+
         /// <summary>
         /// Sends rumble to the device via SDL_RumbleJoystick.
         /// </summary>
@@ -1139,6 +1457,45 @@ namespace PadForge.Engine
                 !SDL_IsJoystickVirtual(SdlInstanceId))
                 return SDL_SetJoystickPlayerIndex(Joystick, playerIndex);
             return false;
+        }
+
+        /// <summary>
+        /// HOME button LED brightness for the Switch family (#226, the
+        /// #209 Guide LED's Nintendo lane). Mechanism only: the family
+        /// gate lives in SwitchHomeLedSetter, whose worker is the sole
+        /// caller. SDL routes this to
+        /// HIDAPI_DriverSwitch_SetJoystickLED, which scales max(r,g,b)
+        /// onto 0-100 and holds subcommand 0x38's 4-bit intensity steady
+        /// (SDL_hidapi_switch.c SetHomeLED), so an equal-RGB write
+        /// carries plain brightness. The combined pair driver forwards
+        /// to both children and the right Joy-Con acts
+        /// (SDL_hidapi_combined.c). Devices without the home LED refuse
+        /// inside SDL's own type check and return false. The subcommand
+        /// ACK wait in the Switch driver blocks the caller ~30-100 ms
+        /// while holding SDL's global joystick lock, so call this from a
+        /// dedicated worker, never the poll or UI thread. A stale
+        /// closed handle fails safely (SDL_joystick.c
+        /// CHECK_JOYSTICK_MAGIC is an SDL_ObjectValid lookup, not a
+        /// deref).
+        /// </summary>
+        public bool SetHomeLedBrightness(int percent)
+        {
+            if (Joystick == IntPtr.Zero) return false;
+            byte v = HomeLedPercentToByte(percent);
+            return SDL_SetJoystickLED(Joystick, v, v, v);
+        }
+
+        /// <summary>0-100 percent to the equal-RGB LED byte. Ceiling is
+        /// deliberate: SDL recovers percent as (int)((v / 255.0f) *
+        /// 100.0f) (SDL_hidapi_switch.c
+        /// HIDAPI_DriverSwitch_SetJoystickLED), and v = ceil(p * 2.55)
+        /// makes that round-trip exact for every p in 0..100 (v/2.55 sits
+        /// in [p, p + 0.4), so the truncation lands on p), where plain
+        /// rounding slips to p-1 on some values (99 to 98).</summary>
+        internal static byte HomeLedPercentToByte(int percent)
+        {
+            percent = Math.Clamp(percent, 0, 100);
+            return (byte)Math.Ceiling(percent * 255 / 100.0);
         }
 
         /// <summary>
@@ -1734,6 +2091,10 @@ namespace PadForge.Engine
         /// (matches <see cref="GetGamepadState"/>'s passthrough loop).
         /// Non-gamepad devices get a dense 0..NumButtons-1 list.
         /// </summary>
+        /// <summary>Open-time presence of extended positions 11-21 (from
+        /// the SDL_GamepadHasButton probe); null before the probe runs.</summary>
+        private bool[] _extButtonPresent;
+
         private int[] ComputeSupportedButtonIndices()
         {
             int max = Math.Min(NumButtons, CustomInputState.MaxButtons);
@@ -1744,11 +2105,15 @@ namespace PadForge.Engine
                 for (int i = 0; i < 11 && i < max; i++)
                     list.Add(i);
 
+                _extButtonPresent = new bool[22];
                 for (int i = 11; i <= 21 && i < max; i++)
                 {
                     int sdlButton = GamepadButtonForPosition(i);
                     if (sdlButton >= 0 && SDL_GamepadHasButton(GameController, sdlButton))
+                    {
                         list.Add(i);
+                        _extButtonPresent[i] = true;
+                    }
                 }
 
                 int rawCount = Math.Min(RawButtonCount, CustomInputState.MaxButtons);

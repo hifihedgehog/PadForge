@@ -52,6 +52,7 @@ namespace PadForge.Converters
                 0, c - dzYn * c,
                 0, c + dzYn * c);
 
+            geo.Freeze(); // render-thread-friendly
             return geo;
         }
 

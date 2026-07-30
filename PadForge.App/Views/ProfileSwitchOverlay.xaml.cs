@@ -188,6 +188,11 @@ namespace PadForge.Views
 
             _dismissTimer.Tick -= OnDismissThenClose;
             _dismissTimer.Tick -= OnDismissThenMonitorInit;
+            // The third handler has to come off too. Its sibling sites detach
+            // all three before attaching one; this one detached two, so a
+            // pending CheckOffline stayed subscribed and fired alongside the
+            // MonitorInit handler on the next tick.
+            _dismissTimer.Tick -= OnDismissThenCheckOffline;
             _dismissTimer.Tick += OnDismissThenMonitorInit;
             _dismissTimer.Interval = TimeSpan.FromSeconds(2);
             _dismissTimer.Start();

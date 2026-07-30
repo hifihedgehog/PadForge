@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Globalization;
 using PadForge.Engine.Data;
 using PadForge.Engine.Common.Mapping;
@@ -17,8 +17,15 @@ namespace PadForge.Common.Input
             => t == "LeftThumbAxisX" || t == "LeftThumbAxisY"
             || t == "RightThumbAxisX" || t == "RightThumbAxisY";
 
+        // "MotionLeanAuxX" joined the family with the #199 aux lean (audit
+        // 2026-07-25, C9): the aux row runs the SAME TickMotionLean and
+        // stores lock state under the same (slot, target, sourceIndex)
+        // key, but its absence here left all four steering-lock feedback
+        // toggles silently dead for a Nunchuk / left Joy-Con steering
+        // source while the UI offered them.
         private static bool IsSteeringKind(string k)
-            => k == "WindingStick" || k == "AngleToAxisX" || k == "AngleToAxisY" || k == "MotionLeanX";
+            => k == "WindingStick" || k == "AngleToAxisX" || k == "AngleToAxisY"
+            || k == "MotionLeanX" || k == "MotionLeanAuxX";
 
         /// <summary>Per-slot continuous steering AT-resistance (0..1), set by the
         /// lock-feedback pass and read by UserEffectsDispatcher to ramp DualSense
@@ -68,6 +75,32 @@ namespace PadForge.Common.Input
             // Test-target scoping: when a device is the slot's test target, only it acts.
             Guid testTarget = TestRumbleTargetGuid[slotIndex];
             bool deviceAllowed = testTarget == Guid.Empty || (ud != null && ud.InstanceGuid == testTarget);
+            // Leave before the row loop, not inside it. This method runs once
+            // per assigned device per tick, and TryGetLockEdgeTransition is
+            // DESTRUCTIVE: it clears PendingEdge as it reads. Checking
+            // deviceAllowed after that call meant a non-target device consumed
+            // the edge the test target was about to act on, so whether the
+            // pulse fired depended on device iteration order.
+            //
+            // Returning here deliberately leaves SteeringAtResistance alone
+            // rather than zeroing it. This pass is not the slot's authority
+            // while another device is the test target, and zeroing would fight
+            // the value that device just published.
+            //
+            // Unless nothing on this slot IS the target. The old line zeroed
+            // the value on every not-allowed device, so an absent target still
+            // ended the tick at zero. With the plain return above, an absent
+            // target means NO pass writes the value and the last non-zero
+            // reading sticks forever, leaving UserEffectsDispatcher applying
+            // adaptive-trigger resistance that nothing is driving. Only the
+            // not-allowed path pays for this lookup, and that path exists only
+            // while a test target is set, never during normal polling.
+            if (!deviceAllowed)
+            {
+                if (FindSlotDeviceByInstanceGuid(testTarget, slotIndex) == null)
+                    SteeringAtResistance[slotIndex] = 0f;
+                return;
+            }
 
             int pulseMs        = ParsePositiveInt(ps.SteeringLockPulseMs, 80);          // rumble / trigger pulse
             int lightbarHoldMs = ParsePositiveInt(ps.SteeringLockLightbarHoldMs, 80);   // lightbar hold (its own)
@@ -84,7 +117,9 @@ namespace PadForge.Common.Input
                     // "Motion Lean" input, which steers with Kind=Direct — its
                     // lock state lives in the same SourceKindRuntime machine.
                     if (src == null
-                        || !(IsSteeringKind(src.Kind) || SourceCoercion.IsMotionLeanDescriptor(src.Descriptor)))
+                        || !(IsSteeringKind(src.Kind)
+                             || SourceCoercion.IsMotionLeanDescriptor(src.Descriptor)
+                             || SourceCoercion.IsMotionLeanAuxDescriptor(src.Descriptor)))
                         continue;
 
                     if (atRes)
@@ -94,7 +129,6 @@ namespace PadForge.Common.Input
                     }
 
                     var edge = runtime.TryGetLockEdgeTransition(slotIndex, row.Target, si, out _);
-                    if (!deviceAllowed) continue;
                     if (edge == SourceKindRuntime.LockEdge.Enter)
                     {
                         // Channel 1: grip-motor rumble pulse.
@@ -119,7 +153,7 @@ namespace PadForge.Common.Input
 
             // Channel 4: continuous AT resistance, the max approach across the slot's
             // steering rows. UserEffectsDispatcher reads this when the toggle is on.
-            SteeringAtResistance[slotIndex] = (atRes && deviceAllowed) ? maxApproach : 0f;
+            SteeringAtResistance[slotIndex] = atRes ? maxApproach : 0f;
         }
 
         // Pulses every per-device lightbar on the slot to the lock color through the
@@ -160,7 +194,13 @@ namespace PadForge.Common.Input
         private void FireSteeringSpeakerTone(int slotIndex) { /* #83 */ }
 
         private static int ParsePositiveInt(string s, int dflt)
-            => int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v) && v >= 0 ? v : dflt;
+        {
+            // Memoized via Step 3's capped invariant cache; these settings
+            // strings are parsed per device per 1 kHz tick while any
+            // steering-lock channel is enabled.
+            int v = TryParseIntStatic(s, int.MinValue);
+            return v >= 0 ? v : dflt;
+        }
 
         private static MacroLightbarColorSource ParseSteeringColorSource(string s)
             => Enum.TryParse<MacroLightbarColorSource>(s, out var v) ? v : MacroLightbarColorSource.Fixed;

@@ -2970,4 +2970,5 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Starter_Racing_Description" xml:space="preserve"><value>Sterzo più calmo e controllo fine vicino al centro, su qualsiasi pad.</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Mira giroscopica</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Movimento per la mira fine sul grilletto sinistro, con la levetta attiva.</value></data>
+  <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silenzio (non invia nulla)</value></data>
 </root>

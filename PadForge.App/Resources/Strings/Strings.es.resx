@@ -2948,4 +2948,5 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Starter_Racing_Description" xml:space="preserve"><value>Dirección más calmada y control fino cerca del centro, en cualquier mando.</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Apuntado por giroscopio</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Movimiento para apuntar fino en el gatillo izquierdo, con el stick activo.</value></data>
+  <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silencio (no envía nada)</value></data>
 </root>

@@ -2948,4 +2948,5 @@
   <data name="Starter_Racing_Description" xml:space="preserve"><value>어떤 패드에서도 차분한 조향과 중앙 근처의 정밀한 제어.</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>자이로 조준</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>왼쪽 트리거로 모션 조준. 스틱도 그대로 사용합니다.</value></data>
+  <data name="Starter_QuietLayerName" xml:space="preserve"><value>무음 (아무것도 보내지 않음)</value></data>
 </root>

@@ -733,13 +733,21 @@ namespace PadForge.Services
             });
         }
 
-        /// <summary>Every keyboard-and-mouse starter carries a silent layer
-        /// on a long-press of Start, so the pad can be muted without
-        /// unassigning it. Steam ships empty.vdf ("Empty Bindings, Use as
-        /// Base") for the same reason, and the Steam Deck reaches its
-        /// passthrough preset the same way. InheritUnmapped is false and the
-        /// layer holds no rows, so every target reads inert while it is
-        /// engaged.</summary>
+        /// <summary>Every keyboard-and-mouse starter carries a silent layer on a
+        /// long-press of Start, so the pad can be muted without unassigning it.
+        ///
+        /// <para><b>THE LAYER IS EMPTY ON PURPOSE. The emptiness IS the
+        /// mechanism.</b> With <see cref="ShiftActivator.InheritUnmapped"/>
+        /// false the layer REPLACES Base outright, and every target with no
+        /// row on it outputs zero. A layer that maps nothing therefore maps
+        /// EVERYTHING to nothing, which is exactly "the controller stops
+        /// sending". Adding rows here would defeat it.</para>
+        ///
+        /// <para>Steam ships <c>empty.vdf</c> ("Empty Bindings, Use as Base")
+        /// for the same reason, and AntiMicroX's Desktop and Civilization
+        /// profiles both reserve a deliberately blank set. The layer NAME
+        /// says so out loud, because an empty layer is otherwise
+        /// indistinguishable from an unfinished one.</para></summary>
         private static void AddQuietLayer(MappingSet set)
         {
             set.ShiftActivators.Add(new ShiftActivator
@@ -748,7 +756,7 @@ namespace PadForge.Services
                 Descriptor = PadStart,
                 Mode = "Toggle",
                 LayerMask = "Quiet",
-                LayerName = "Quiet",
+                LayerName = Strings.Instance.Starter_QuietLayerName,
                 InheritUnmapped = false,
                 DelayMs = 600,
             });

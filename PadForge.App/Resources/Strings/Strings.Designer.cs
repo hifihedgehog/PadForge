@@ -2581,6 +2581,7 @@ public class Strings : INotifyPropertyChanged
     public string Status_WorkshopCacheCleared => Get("Status_WorkshopCacheCleared");
     public string Profiles_BrowseCommunity => Get("Profiles_BrowseCommunity");
     public string Starter_Desktop_Name => Get("Starter_Desktop_Name");
+    public string Starter_QuietLayerName => Get("Starter_QuietLayerName");
     public string Starter_Racing_Name => Get("Starter_Racing_Name");
     public string Starter_Racing_Description => Get("Starter_Racing_Description");
     public string Starter_GyroAim_Name => Get("Starter_GyroAim_Name");

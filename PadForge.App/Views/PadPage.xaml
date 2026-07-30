@@ -4674,6 +4674,12 @@
                                                                       IsEnabled="{Binding HalfAxis}"
                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
                                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                            <CheckBox Content="{Binding Pad_InvertOutput, Source={x:Static strings:Strings.Instance}}"
+                                                                      ToolTip="{Binding Pad_InvertOutput_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                                      IsChecked="{Binding InvertOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                      Visibility="{Binding IsInvertOutputApplicable, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                                      Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
+                                                                      Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                         </StackPanel>
                                                         <!-- Per-source gyro sensitivity. Only renders for
                                                              gyro descriptors so non-gyro sources don't see a
@@ -5428,6 +5434,13 @@
                                                       ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding IsBidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       IsEnabled="{Binding IsHalfAxis}"
+                                                      Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
+                                                      Margin="0,0,6,0"
+                                                      VerticalAlignment="Center"/>
+                                            <CheckBox Content="{Binding Pad_InvertOutput, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_InvertOutput_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                      IsChecked="{Binding InvertOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Visibility="{Binding IsInvertOutputApplicable, Converter={StaticResource BoolToVisibilityConverter}}"
                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
                                                       Margin="0,0,6,0"
                                                       VerticalAlignment="Center"/>

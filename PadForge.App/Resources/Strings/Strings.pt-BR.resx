@@ -950,6 +950,8 @@
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertido</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>meio eixo</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>Qualquer Lado</value></data>
+  <data name="Pad_InvertOutput" xml:space="preserve"><value>Inverter saída</value></data>
+  <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>Inverte o resultado desta entrada. Em uma fonte de meio eixo, a caixa Inverter escolhe qual metade do eixo é lida, então é este controle que vira a direção da saída.</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>Quando Meio Eixo está ativo, dispara ao ultrapassar a zona morta em qualquer direção a partir do centro (Invertido não tem efeito).</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mapeia continuamente o eixo selecionado (0–100%) para o volume do sistema Windows, escalonado ao limite de volume. Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controla o volume de um aplicativo específico no mixer de volume do Windows, escalonado ao limite de volume. Insira o nome do processo (visível no Gerenciador de Tarefas). Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar".</value></data>

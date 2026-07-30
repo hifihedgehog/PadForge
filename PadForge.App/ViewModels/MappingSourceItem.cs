@@ -16,6 +16,7 @@ namespace PadForge.ViewModels
         private string _kind = "Direct";
         private string _deviceGuid = "";
         private string _descriptor = "";
+        private bool _invertOutput;
         private bool _invert;
         private bool _halfAxis;
         private bool _bidirectional;
@@ -294,6 +295,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(DirectionBadge));
                     OnPropertyChanged(nameof(IsDeadZoneApplicable));
                     OnPropertyChanged(nameof(IsHalfAxisApplicable));
+                    OnPropertyChanged(nameof(IsInvertOutputApplicable));
                     OnPropertyChanged(nameof(IsGyroSource));
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
@@ -389,7 +391,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _halfAxis, value))
+                {
                     OnPropertyChanged(nameof(IsInvertApplicable));
+                    OnPropertyChanged(nameof(IsInvertOutputApplicable));
+                }
             }
         }
 
@@ -399,6 +404,36 @@ namespace PadForge.ViewModels
         /// documented inert. Mirrors MappingItem.IsInvertApplicable on
         /// the grid-row twin.</summary>
         public bool IsInvertApplicable => !(_halfAxis && _bidirectional);
+
+        /// <summary><para>Output flip for a source whose Invert flag is spoken
+        /// for. On a half-axis read of a centered axis the engine consumes
+        /// Invert INSIDE the read as the half selector, so the output flip
+        /// rides this field instead: it is how a source can select a half AND
+        /// still invert.</para>
+        /// <para>User-authorable now. It used to be written only by the
+        /// Workshop translator and the legacy migrator and carried across
+        /// saves by a capture-and-reapply net, which meant an imported flip
+        /// was invisible, uneditable, and impossible to turn off: the net
+        /// re-stamped the captured value over any change.</para></summary>
+        public bool InvertOutput
+        {
+            get => _invertOutput;
+            set => SetProperty(ref _invertOutput, value);
+        }
+
+        /// <summary>True when the engine would actually read
+        /// <see cref="InvertOutput"/> for this source. Asks the engine's own
+        /// predicate rather than re-deriving the family rules: that predicate
+        /// is documented as the ONE definition of "Invert is spoken for on
+        /// this source", and a drifting copy here is exactly the failure it
+        /// warns about.</summary>
+        public bool IsInvertOutputApplicable =>
+            PadForge.Engine.Common.Mapping.SourceCoercion.InvertConsumedByHalfAxisRead(
+                new PadForge.Engine.Data.MappingSource
+                {
+                    Descriptor = _descriptor ?? "",
+                    HalfAxis = _halfAxis,
+                });
 
         /// <summary>True when the Half checkbox (and the dependent Either)
         /// is meaningful for this source. Half-axis only applies to
@@ -929,28 +964,17 @@ namespace PadForge.ViewModels
         public RelayCommand ResetSensitivityCommand =>
             _resetSensitivityCommand ??= new RelayCommand(() => Sensitivity = 1.0);
 
-        /// <summary>Builds a domain <see cref="Engine.Data.MappingSource"/>
-        /// from this VM's current values. Used by the Save pipeline.
-        /// N/A by design: the steering Param* set (ParamYDescriptor,
-        /// ParamStickDeadzone, ParamWind*, ParamAngle*, ParamMotion*,
-        /// ParamControllerOrientation), the flick Param* set (ParamFlick*),
-        /// the absolute-pointer geometry (ParamPointerCenter/Extent),
-        /// the curve/range channel (ParamCurveExponent/ParamRangeOuter,
-        /// preserved by CaptureCurveRangeParams / ApplyCurveRangeParamsToRow),
-        /// InvertOutput, and NoInherit are NOT round-tripped here. KindOptions
-        /// offers only Direct/Incremental/InvertOnHold/Ramped, so an ExtraSource
-        /// can never author those; the steering/flick kinds are re-stamped on the
-        /// row after the rebuild (ApplySteeringKindToRow /
-        /// ApplyFlickStickParamsToRow), the pointer geometry is preserved
-        /// across the rebuild (CaptureTouchpadPointerParams /
-        /// ApplyTouchpadPointerParamsToRow), InvertOutput likewise
-        /// (CaptureInvertOutputFlags / ApplyInvertOutputFlagsToRow) because the
-        /// UI has no card for it and the legacy I/H prefix grammar the primary
-        /// round-trips through cannot encode a third flag, and NoInherit lives on
-        /// MappingRow. Any new per-source Param* family that becomes
-        /// selectable here must be added to BOTH ToDomain and FromDomain, or
-        /// carried by a post-rebuild re-stamp, or it drops silently through
-        /// the VM round-trip.</summary>
+        /// <summary>Converts this VM to a domain
+        /// <see cref="Engine.Data.MappingSource"/>. NoInherit is NOT
+        /// round-tripped here (it lives on the row, not the source), and the
+        /// touchpad pointer-region params ride a post-rebuild re-stamp
+        /// (ApplyTouchpadPointerParamsToRow) because no control here authors
+        /// them. Everything user-selectable must be added to BOTH ToDomain and
+        /// FromDomain, or carried by a post-rebuild re-stamp, or it drops
+        /// silently through the VM round-trip. InvertOutput graduated from the
+        /// re-stamp to a real field here the day it got a checkbox: the
+        /// re-stamp preserved values but also resurrected them over an
+        /// uncheck, so an authorable field cannot ride it.</summary>
         public Engine.Data.MappingSource ToDomain() => new()
         {
             Kind = _kind ?? "Direct",
@@ -959,6 +983,7 @@ namespace PadForge.ViewModels
             Invert = _invert,
             HalfAxis = _halfAxis,
             Bidirectional = _bidirectional,
+            InvertOutput = _invertOutput,
             DeadZone = _deadZone,
             ParamUp = _paramUp ?? "",
             ParamDown = _paramDown ?? "",
@@ -990,6 +1015,7 @@ namespace PadForge.ViewModels
                 Invert = src.Invert,
                 HalfAxis = src.HalfAxis,
                 Bidirectional = src.Bidirectional,
+                InvertOutput = src.InvertOutput,
                 DeadZone = src.DeadZone,
                 ParamUp = src.ParamUp ?? "",
                 ParamDown = src.ParamDown ?? "",

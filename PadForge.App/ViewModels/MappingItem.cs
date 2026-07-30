@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -958,6 +958,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(IsInverted));
             _isHalfAxis = half;
             OnPropertyChanged(nameof(IsHalfAxis));
+            OnPropertyChanged(nameof(IsInvertOutputApplicable));
 
             // Then set the descriptor string.
             SourceDescriptor = d;
@@ -1117,6 +1118,7 @@ namespace PadForge.ViewModels
                     RebuildDescriptor();
                     OnPropertyChanged(nameof(IsTrivialDirect));
                     OnPropertyChanged(nameof(IsInvertApplicable));
+                    OnPropertyChanged(nameof(IsInvertOutputApplicable));
                 }
             }
         }
@@ -1128,6 +1130,34 @@ namespace PadForge.ViewModels
         /// both its neighbours carry applicability gates. Drives the
         /// checkbox's IsEnabled so an inert option is visibly inert.</summary>
         public bool IsInvertApplicable => !(_isHalfAxis && _isBidirectional);
+
+        private bool _invertOutput;
+
+        /// <summary><para>Output flip for a primary whose Invert flag is
+        /// spoken for: on a half-axis read of a centered axis the engine
+        /// consumes Invert inside the read as the half selector, and the
+        /// output flip rides this field (MappingSource.InvertOutput).</para>
+        /// <para>Hydrated from the row's primary source and written back by
+        /// the save rebuild, exactly like IsBidirectional, the previous
+        /// boolean to outgrow the legacy I/H descriptor prefixes.</para></summary>
+        public bool InvertOutput
+        {
+            get => _invertOutput;
+            set => SetProperty(ref _invertOutput, value);
+        }
+
+        /// <summary>True when the engine would actually read
+        /// <see cref="InvertOutput"/> for the current primary. Delegates to
+        /// the engine's own predicate (the ONE definition of "Invert is
+        /// spoken for"), probing with the prefix-stripped descriptor body
+        /// because the raw primary keeps its legacy I/H encoding.</summary>
+        public bool IsInvertOutputApplicable =>
+            PadForge.Engine.Common.Mapping.SourceCoercion.InvertConsumedByHalfAxisRead(
+                new PadForge.Engine.Data.MappingSource
+                {
+                    Descriptor = StripLegacyPrefix(SourceDescriptor),
+                    HalfAxis = _isHalfAxis,
+                });
 
         private bool _isBidirectional;
 

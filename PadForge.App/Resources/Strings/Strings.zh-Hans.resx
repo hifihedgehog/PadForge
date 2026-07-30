@@ -950,6 +950,8 @@
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>已反转</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>半轴</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>任意方向</value></data>
+  <data name="Pad_InvertOutput" xml:space="preserve"><value>反转输出</value></data>
+  <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>反转此输入的结果。在半轴源上，反转复选框用于选择读取轴的哪一半，因此由此控件来翻转输出方向。</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>启用"半轴"时，在任意方向偏移超过死区即触发（"反转"无效）。</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>将所选轴（0–100%）持续映射到 Windows 系统音量，并按音量限制缩放。与"始终"触发器一起使用，或与按钮/轴触发器配合"按住时"+"直到释放"使用。</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>控制 Windows 音量混合器中特定应用程序的音量，按限制缩放。输入进程名称（在任务管理器中可见）。与"始终"触发器一起使用，或与按钮/轴触发器配合"按住时"+"直到释放"使用。</value></data>

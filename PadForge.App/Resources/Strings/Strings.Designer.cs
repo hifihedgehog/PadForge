@@ -1331,6 +1331,8 @@ public class Strings : INotifyPropertyChanged
     public string Macro_Axis_Inverted => Get("Macro_Axis_Inverted");
     public string Macro_Axis_Half => Get("Macro_Axis_Half");
     public string Pad_Either => Get("Pad_Either");
+    public string Pad_InvertOutput => Get("Pad_InvertOutput");
+    public string Pad_InvertOutput_Tooltip => Get("Pad_InvertOutput_Tooltip");
     public string Pad_Either_Tooltip => Get("Pad_Either_Tooltip");
     public string Macro_SysVolumeHint => Get("Macro_SysVolumeHint");
     public string Macro_AppVolumeHint => Get("Macro_AppVolumeHint");

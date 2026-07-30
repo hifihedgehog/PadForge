@@ -943,12 +943,26 @@ namespace PadForge.Services
         private static MacroData KeyMacro(string name, string descriptor,
             MacroTriggerMode mode, params byte[] keys)
         {
-            var choice = new ViewModels.InputChoice
+            // DESCRIPTOR entry, not a raw-button one. TryBuildTriggerEntry
+            // deliberately folds an abstract alias to its canonical
+            // "Button N" so picker entries convert like raw ones, which
+            // stores RawButton = 0 for "Gamepad ButtonA". That still fires
+            // on a gamepad, because index 0 is A in the normalized array,
+            // but it throws away the abstraction: the macro editor then
+            // shows "Button 0" where every mapping row shows "Gamepad A",
+            // and a force-raw or non-gamepad device would read ITS index 0.
+            //
+            // The descriptor form is what abstract spellings are for. Per
+            // SourceDescriptor's own contract, those "have no raw-entry
+            // form: the readers canonicalize abstract 'Gamepad ...'
+            // spellings and evaluate ... with the same per-(device, slot)
+            // tuning a mapping row gets". Spec then writes "sd:{descriptor}"
+            // and the editor renders the friendly pad name.
+            var entry = new MacroItem.TriggerInputEntry
             {
-                Descriptor = descriptor,
-                DeviceGuid = string.Empty,
+                DeviceGuid = Guid.Empty,
+                SourceDescriptor = descriptor,
             };
-            if (!MacroItem.TryBuildTriggerEntry(choice, out var entry)) return null;
             string spec = entry.Spec;
             if (string.IsNullOrEmpty(spec)) return null;
 

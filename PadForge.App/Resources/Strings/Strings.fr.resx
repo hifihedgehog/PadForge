@@ -2893,4 +2893,28 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
 
 Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Quitter</value></data>
+  <data name="About_Libinput" xml:space="preserve">
+    <value>libinput</value>
+  </data>
+  <data name="About_HandheldCompanion" xml:space="preserve">
+    <value>Handheld Companion</value>
+  </data>
+  <data name="About_GamepadAssetPack" xml:space="preserve">
+    <value>Gamepad-Asset-Pack</value>
+  </data>
+  <data name="About_Ds4Mac" xml:space="preserve">
+    <value>ds4mac</value>
+  </data>
+  <data name="About_LibinputDesc" xml:space="preserve">
+    <value>Courbe d'accélération du pointeur pour la sortie touchpad vers souris. Redérivation en C# du profil d'accélération touchpad de libinput. MIT.</value>
+  </data>
+  <data name="About_HandheldCompanionDesc" xml:space="preserve">
+    <value>Modèles 3D de manettes (Xbox 360, Xbox One, DualShock 4, DualSense), par CasperH2O, Lesueur Benjamin, trippyone. CC BY-NC-SA 4.0.</value>
+  </data>
+  <data name="About_GamepadAssetPackDesc" xml:space="preserve">
+    <value>Schémas 2D de manettes (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), par AL2009man. MIT.</value>
+  </data>
+  <data name="About_Ds4MacDesc" xml:space="preserve">
+    <value>Documentation du protocole audio de la DualShock 4 : paramètres SBC et formats de paquets, par khallmark. MIT.</value>
+  </data>
 </root>

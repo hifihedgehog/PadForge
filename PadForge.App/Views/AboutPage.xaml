@@ -88,6 +88,10 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"/>
@@ -250,7 +254,23 @@
 
                     <TextBlock Grid.Row="40" Text="{Binding About_JoyconSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
                     <TextBlock Grid.Row="40" Grid.Column="1"
-                               Text="{Binding About_JoyconSingerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>                </Grid>
+                               Text="{Binding About_JoyconSingerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="41" Text="{Binding About_Libinput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="41" Grid.Column="1"
+                               Text="{Binding About_LibinputDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="42" Text="{Binding About_HandheldCompanion, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="42" Grid.Column="1"
+                               Text="{Binding About_HandheldCompanionDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="43" Text="{Binding About_GamepadAssetPack, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="43" Grid.Column="1"
+                               Text="{Binding About_GamepadAssetPackDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="44" Text="{Binding About_Ds4Mac, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="44" Grid.Column="1"
+                               Text="{Binding About_Ds4MacDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>                </Grid>
             </Border>
 
             <!-- License -->

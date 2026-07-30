@@ -129,6 +129,13 @@ namespace PadForge.Engine
 
             scratch.LeftMotorSpeed = Math.Max(raw.LeftMotorSpeed, macroL);
             scratch.RightMotorSpeed = Math.Max(raw.RightMotorSpeed, macroR);
+            // Sibling of ConstantForceEvaluator.Resolve: every other field is
+            // copied from raw below, and these two were the only omissions, so
+            // an active macro rumble override silently zeroed the game's
+            // impulse-trigger motors. A macro that drives the main motors makes
+            // no claim on the triggers.
+            scratch.LeftTriggerMotorSpeed = raw.LeftTriggerMotorSpeed;
+            scratch.RightTriggerMotorSpeed = raw.RightTriggerMotorSpeed;
             scratch.HasDirectionalData = raw.HasDirectionalData;
             scratch.HasConditionData = raw.HasConditionData;
             scratch.EffectType = raw.EffectType;

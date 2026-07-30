@@ -21,14 +21,23 @@ namespace PadForge.Converters
         {
             string hex = value as string;
             if (string.IsNullOrWhiteSpace(hex)) return Fallback;
+            if (s_brushCache.TryGetValue(hex, out var cached)) return cached;
             try
             {
                 if (ColorConverter.ConvertFromString(hex) is Color c)
-                    return new SolidColorBrush(c);
+                {
+                    var brush = new SolidColorBrush(c);
+                    brush.Freeze(); // shareable across threads, no churn
+                    if (s_brushCache.Count < 256) s_brushCache[hex] = brush;
+                    return brush;
+                }
             }
             catch { }
             return Fallback;
         }
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, SolidColorBrush> s_brushCache =
+            new(StringComparer.OrdinalIgnoreCase);
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => throw new NotSupportedException();

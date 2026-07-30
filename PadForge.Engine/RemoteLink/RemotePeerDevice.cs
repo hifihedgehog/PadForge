@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
@@ -38,6 +38,24 @@ namespace PadForge.Engine.RemoteLink
         /// NumButtons" (old peers, or a device with no extras).</summary>
         public int RawButtonCount { get; set; }
 
+        /// <summary>Raw HID axis count, the axis twin of
+        /// <see cref="RawButtonCount"/>. SDL puts device-specific analog data
+        /// beyond the six standard gamepad axes on raw joystick axes 6+, and
+        /// SdlDeviceWrapper already tracks this locally for exactly that
+        /// reason. Without it crossing the wire, a remote device's extra axes
+        /// were undiscoverable and the consumer's picker capped at NumAxes.
+        /// 0 means "same as NumAxes" (old peers, or a device with no
+        /// extras).</summary>
+        public int RawAxisCount { get; set; }
+
+        /// <summary>The raw axes past the standard six should surface as
+        /// generic "Axis N" sources. Carried separately because it is NOT
+        /// derivable from the counts: it deliberately excludes devices whose
+        /// extra axes are already dedicated sensor sources (Wii IR pointer,
+        /// Joy-Con NIR / mouse), where a raw coordinate would be noise in the
+        /// picker. Rides caps2 bit 2 in the v3 tail.</summary>
+        public bool HasExtraGenericAxes { get; set; }
+
         public bool HasRumble { get; set; }
         public bool HasRumbleTriggers { get; set; }
         /// <summary>The device exposes DirectInput-style haptic FFB (wheels, FFB sticks).
@@ -47,9 +65,19 @@ namespace PadForge.Engine.RemoteLink
         public bool HasGyro { get; set; }
         public bool HasAccel { get; set; }
         public bool HasAccelAux { get; set; }
+
+        /// <summary>Aux (left-side) gyro: left Joy-Con of a pair (#252).</summary>
+        public bool HasGyroAux { get; set; }
         public bool HasTouchpad { get; set; }
         public int NumTouchpads { get; set; }
         public int[] TouchpadFingerCounts { get; set; }
+
+        /// <summary>Whether the owner's device carries an NFC reader (#241).
+        /// Rides the v3 capability tail, because the v1 caps byte was
+        /// exhausted at bit 128. False from a peer that predates the tail,
+        /// which correctly hides the sources rather than offering ones the
+        /// old owner cannot serve.</summary>
+        public bool HasNfcReader { get; set; }
 
         /// <summary>The peer device's input-device-type constant (see InputDeviceType).</summary>
         public int InputDeviceType { get; set; } = PadForge.Engine.InputDeviceType.Gamepad;
@@ -171,6 +199,8 @@ namespace PadForge.Engine.RemoteLink
         public bool HasGyro => Info.HasGyro;
         public bool HasAccel => Info.HasAccel;
         public bool HasAccelAux => Info.HasAccelAux;
+        public bool HasGyroAux => Info.HasGyroAux;
+        public bool HasNfcReader => Info.HasNfcReader;
         public bool HasTouchpad => Info.HasTouchpad;
         public int NumTouchpads => Info.HasTouchpad ? Math.Max(1, Info.NumTouchpads) : 0;
         public int[] TouchpadFingerCounts => Info.TouchpadFingerCounts ?? Array.Empty<int>();
@@ -237,9 +267,19 @@ namespace PadForge.Engine.RemoteLink
                 // registered peer device doesn't flap offline while it waits.
                 if (_everReceived && (_nowTicks() - _lastFrameTicks) > _staleTicks)
                     return null;
-                return _currentState.Clone();
+                // Copy into the caller-facing pooled pair instead of a
+                // fresh Clone per 1 kHz poll. Under _stateLock because the
+                // receive thread swaps _currentState/_back mid-copy
+                // otherwise. The null-on-stale contract above is unchanged.
+                var dst = _statePool.Next();
+                _currentState.CopyInto(dst);
+                return dst;
             }
         }
+
+        // Pooled per-tick output (poll thread is the sole GetCurrentState
+        // caller once the UI reads ud.InputState instead).
+        private PadForge.Engine.PooledInputStatePair _statePool;
 
         public void SetConnected(bool connected) => _connected = connected;
 

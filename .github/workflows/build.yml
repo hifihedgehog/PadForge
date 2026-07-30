@@ -108,6 +108,17 @@ jobs:
         shell: bash
         run: |
           tag="latest-${{ github.ref_name }}"
+
+          # Confirm the artifact exists BEFORE deleting the published release.
+          # The delete removes the release and its tag, and the upload at the
+          # end of this step is the only thing that puts a download back. A
+          # missing or empty zip here left latest-<branch>, which is the link
+          # users actually follow, existing with nothing attached to it.
+          if [ ! -s "release/PadForge.zip" ]; then
+            echo "release/PadForge.zip is missing or empty. Refusing to delete $tag." >&2
+            exit 1
+          fi
+
           gh release delete "$tag" \
             --repo "${{ github.repository }}" \
             --cleanup-tag --yes 2>/dev/null || true

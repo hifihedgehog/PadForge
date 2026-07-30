@@ -13,8 +13,8 @@ namespace PadForge.Tests
     /// layout to fit, and reports anything past an Extended cap as unmapped.
     ///
     /// <para>The diff target is the reporter's hand-built PadForge.xml: a raw
-    /// joystick's slot 1 mapped ExtendedAxis0←Axis 0, ExtendedAxis1←Axis 1, and
-    /// ExtendedBtn0..35←Button 0..35, all sticks-only (TriggerCount 0). These tests
+    /// joystick's slot 1 mapped RawAxis0←Axis 0, RawAxis1←Axis 1, and
+    /// RawBtn0..35←Button 0..35, all sticks-only (TriggerCount 0). These tests
     /// assert the generator reproduces those rows and never emits a trigger.</para>
     /// </summary>
     public class PassthroughCloneGeneratorTests
@@ -85,9 +85,9 @@ namespace PadForge.Tests
             var rows = Lookup(r);
 
             for (int i = 0; i < 4; i++)
-                Assert.Equal($"Axis {i}", rows[$"ExtendedAxis{i}"]);
+                Assert.Equal($"Axis {i}", rows[$"RawAxis{i}"]);
             for (int i = 0; i < 6; i++)
-                Assert.Equal($"Button {i}", rows[$"ExtendedBtn{i}"]);
+                Assert.Equal($"Button {i}", rows[$"RawBtn{i}"]);
 
             // 4 axes → 2 sticks, no triggers; 6 buttons; 0 POVs.
             Assert.Equal(2, r.Sticks);
@@ -111,10 +111,10 @@ namespace PadForge.Tests
             var rows = Lookup(r);
 
             // The rows the reporter hand-authored must be present and identical.
-            Assert.Equal("Axis 0", rows["ExtendedAxis0"]);
-            Assert.Equal("Axis 1", rows["ExtendedAxis1"]);
+            Assert.Equal("Axis 0", rows["RawAxis0"]);
+            Assert.Equal("Axis 1", rows["RawAxis1"]);
             for (int i = 0; i <= 35; i++)
-                Assert.Equal($"Button {i}", rows[$"ExtendedBtn{i}"]);
+                Assert.Equal($"Button {i}", rows[$"RawBtn{i}"]);
 
             // Full clone: sticks-only layout, all 8 axes and all 64 buttons.
             Assert.Equal(4, r.Sticks);       // ceil(8/2)
@@ -137,10 +137,10 @@ namespace PadForge.Tests
             Assert.Equal(3, r.AxesMapped);
             Assert.Equal(4, r.LayoutAxes);   // what the confirm dialog reports
             var rows = Lookup(r);
-            Assert.Equal("Axis 0", rows["ExtendedAxis0"]);
-            Assert.Equal("Axis 1", rows["ExtendedAxis1"]);
-            Assert.Equal("Axis 2", rows["ExtendedAxis2"]);
-            Assert.False(rows.Has("ExtendedAxis3"));   // 4th slot exists but unmapped
+            Assert.Equal("Axis 0", rows["RawAxis0"]);
+            Assert.Equal("Axis 1", rows["RawAxis1"]);
+            Assert.Equal("Axis 2", rows["RawAxis2"]);
+            Assert.False(rows.Has("RawAxis3"));   // 4th slot exists but unmapped
         }
 
         // ── POV fans out to four directions, source hat index preserved ──
@@ -153,13 +153,13 @@ namespace PadForge.Tests
             var rows = Lookup(r);
 
             Assert.Equal(1, r.Povs);
-            Assert.Equal("POV 2 Up", rows["ExtendedPov0Up"]);
-            Assert.Equal("POV 2 Down", rows["ExtendedPov0Down"]);
-            Assert.Equal("POV 2 Left", rows["ExtendedPov0Left"]);
-            Assert.Equal("POV 2 Right", rows["ExtendedPov0Right"]);
+            Assert.Equal("POV 2 Up", rows["RawPov0Up"]);
+            Assert.Equal("POV 2 Down", rows["RawPov0Down"]);
+            Assert.Equal("POV 2 Left", rows["RawPov0Left"]);
+            Assert.Equal("POV 2 Right", rows["RawPov0Right"]);
         }
 
-        // ── Sliders append after axes, both feed ExtendedAxis ──
+        // ── Sliders append after axes, both feed RawAxis ──
 
         [Fact]
         public void Sliders_Append_After_Axes()
@@ -170,9 +170,9 @@ namespace PadForge.Tests
 
             Assert.Equal(3, r.AxesMapped);
             Assert.Equal(2, r.Sticks);
-            Assert.Equal("Axis 0", rows["ExtendedAxis0"]);
-            Assert.Equal("Axis 1", rows["ExtendedAxis1"]);
-            Assert.Equal("Slider 0", rows["ExtendedAxis2"]);
+            Assert.Equal("Axis 0", rows["RawAxis0"]);
+            Assert.Equal("Axis 1", rows["RawAxis1"]);
+            Assert.Equal("Slider 0", rows["RawAxis2"]);
         }
 
         // ── Overflow past Extended caps is reported, not dropped silently ──
@@ -198,12 +198,12 @@ namespace PadForge.Tests
             Assert.True(r.HasOverflow);
 
             var rows = Lookup(r);
-            Assert.True(rows.Has("ExtendedAxis7"));
-            Assert.False(rows.Has("ExtendedAxis8"));
-            Assert.True(rows.Has("ExtendedBtn127"));
-            Assert.False(rows.Has("ExtendedBtn128"));
-            Assert.True(rows.Has("ExtendedPov3Up"));
-            Assert.False(rows.Has("ExtendedPov4Up"));
+            Assert.True(rows.Has("RawAxis7"));
+            Assert.False(rows.Has("RawAxis8"));
+            Assert.True(rows.Has("RawBtn127"));
+            Assert.False(rows.Has("RawBtn128"));
+            Assert.True(rows.Has("RawPov3Up"));
+            Assert.False(rows.Has("RawPov4Up"));
         }
 
         // ── Offline device (no DeviceObjects) falls back to capability counts ──
@@ -225,9 +225,9 @@ namespace PadForge.Tests
             Assert.Equal(2, r.AxesMapped);
             Assert.Equal(1, r.Sticks);
             Assert.Equal(6, r.Buttons);
-            Assert.Equal("Axis 0", rows["ExtendedAxis0"]);
-            Assert.Equal("Axis 1", rows["ExtendedAxis1"]);
-            Assert.Equal("Button 5", rows["ExtendedBtn5"]);
+            Assert.Equal("Axis 0", rows["RawAxis0"]);
+            Assert.Equal("Axis 1", rows["RawAxis1"]);
+            Assert.Equal("Button 5", rows["RawBtn5"]);
         }
 
         // ── Empty and null devices are safe ──
@@ -272,7 +272,7 @@ namespace PadForge.Tests
             Assert.Equal(6, r.LayoutAxes);
             Assert.Equal(6, r.AxesMapped);
             for (int i = 0; i < 6; i++)
-                Assert.Equal($"Axis {i}", rows[$"ExtendedAxis{i}"]);
+                Assert.Equal($"Axis {i}", rows[$"RawAxis{i}"]);
         }
 
         [Fact]
@@ -289,7 +289,7 @@ namespace PadForge.Tests
             Assert.Equal(2, r.Triggers);
             Assert.Equal(8, r.LayoutAxes);
             for (int i = 0; i < 8; i++)
-                Assert.Equal($"Axis {i}", rows[$"ExtendedAxis{i}"]);
+                Assert.Equal($"Axis {i}", rows[$"RawAxis{i}"]);
             Assert.False(r.HasOverflow);
         }
 
@@ -306,8 +306,8 @@ namespace PadForge.Tests
             Assert.Equal(0, r.Sticks);
             Assert.Equal(2, r.Triggers);
             Assert.Equal(2, r.LayoutAxes);
-            Assert.Equal("Axis 2", rows["ExtendedAxis0"]);
-            Assert.Equal("Axis 5", rows["ExtendedAxis1"]);
+            Assert.Equal("Axis 2", rows["RawAxis0"]);
+            Assert.Equal("Axis 5", rows["RawAxis1"]);
         }
 
         [Fact]
@@ -327,7 +327,7 @@ namespace PadForge.Tests
             Assert.Equal(2, r.Sticks);
             Assert.Equal(2, r.Triggers);
             for (int i = 0; i < 6; i++)
-                Assert.Equal($"Axis {i}", rows[$"ExtendedAxis{i}"]);
+                Assert.Equal($"Axis {i}", rows[$"RawAxis{i}"]);
         }
 
         [Fact]
@@ -345,14 +345,14 @@ namespace PadForge.Tests
             Assert.Equal(3, r.Sticks);
             Assert.Equal(0, r.Triggers);
             for (int i = 0; i < 6; i++)
-                Assert.Equal($"Axis {i}", rows[$"ExtendedAxis{i}"]);
+                Assert.Equal($"Axis {i}", rows[$"RawAxis{i}"]);
         }
 
         // ── Non-contiguous enumerated indices compact positionally but keep
         // their original index in the DESCRIPTOR ──
         // SDL gamepads can skip phantom positions (GetDeviceObjects gates on
         // SDL_GamepadHasAxis/Button), so enumeration may yield indices 0, 3, 4.
-        // The k-th enumerated input lands on ExtendedAxis{k} (layout slots
+        // The k-th enumerated input lands on RawAxis{k} (layout slots
         // can't have holes) while the descriptor keeps the device's own index,
         // so the mapping still reads the right physical input. Raw joysticks
         // (the #196 population) enumerate densely, where this is plain identity.
@@ -367,10 +367,10 @@ namespace PadForge.Tests
             Assert.Equal(3, r.AxesMapped);
             Assert.Equal(2, r.Sticks);
             Assert.Equal(4, r.LayoutAxes);
-            Assert.Equal("Axis 0", rows["ExtendedAxis0"]);
-            Assert.Equal("Axis 3", rows["ExtendedAxis1"]);
-            Assert.Equal("Axis 4", rows["ExtendedAxis2"]);
-            Assert.False(rows.Has("ExtendedAxis3"));
+            Assert.Equal("Axis 0", rows["RawAxis0"]);
+            Assert.Equal("Axis 3", rows["RawAxis1"]);
+            Assert.Equal("Axis 4", rows["RawAxis2"]);
+            Assert.False(rows.Has("RawAxis3"));
         }
 
         // ── Interleaved DeviceObjects: axes still precede sliders ──
@@ -385,9 +385,9 @@ namespace PadForge.Tests
                 Device(new DeviceObjectItem[] { Axis(0), Slider(0), Axis(1) }));
             var rows = Lookup(r);
 
-            Assert.Equal("Axis 0", rows["ExtendedAxis0"]);
-            Assert.Equal("Axis 1", rows["ExtendedAxis1"]);
-            Assert.Equal("Slider 0", rows["ExtendedAxis2"]);
+            Assert.Equal("Axis 0", rows["RawAxis0"]);
+            Assert.Equal("Axis 1", rows["RawAxis1"]);
+            Assert.Equal("Slider 0", rows["RawAxis2"]);
         }
     }
 }

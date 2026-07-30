@@ -1,0 +1,2660 @@
+"controller_mappings"
+{
+	"version"		"3"
+	"title"		"XCOM2 Configuration Xbox "
+	"description"		"Your modified configuration for this game."
+	"creator"		"76561197978064855"
+	"controller_type"		"controller_xboxone"
+	"actions"
+	{
+		"TacticalControls"
+		{
+			"title"		"#Set_TacticalControls"
+			"legacy_set"		"0"
+			"StickPadGyro"
+			{
+				"TacticalCamera"
+				{
+					"title"		"#Action_Camera"
+					"input_mode"		"absolute_mouse"
+				}
+				"TacticalCursor"
+				{
+					"title"		"#Action_Cursor"
+					"input_mode"		"absolute_mouse"
+					"os_mouse"		"1"
+				}
+			}
+			"Button"
+			{
+				"NavigateUp"		"#NavigateUp"
+				"NavigateDown"		"#NavigateDown"
+				"NavigateLeft"		"#NavigateLeft"
+				"NavigateRight"		"#NavigateRight"
+				"QuickSave"		"#QuickSave"
+				"QuickLoad"		"#QuickLoad"
+				"PushToTalk"		"#PushToTalk"
+				"EnterShotHUD_Confirm"		"#EnterShotHUD_Confirm"
+				"Pause"		"#Pause"
+				"CancelTactical"		"#Cancel"
+				"path"		"#Path"
+				"Interact"		"#Interact"
+				"EndTurn"		"#EndTurn"
+				"Chat"		"#Chat"
+				"Waypoint"		"#Waypoint"
+				"CamCenterOnActiveUnit"		"#CamCenterOnActiveUnit"
+				"CamRotateLeft"		"#CamRotateLeft"
+				"CamRotateRight"		"#CamRotateRight"
+				"CamZoomIn"		"#CamZoomIn"
+				"CamZoomOut"		"#CamZoomOut"
+				"CamFreeZoom"		"#CamFreeZoom"
+				"CamToggleZoomLevel"		"#CamToggleZoomLevel"
+				"CursorUp"		"#CursorUp"
+				"CursorDown"		"#CursorDown"
+				"NextUnit"		"#NextUnit"
+				"PrevUnit"		"#PrevUnit"
+				"AbilityOverwatch"		"#AbilityOverwatch"
+				"AbilityReload"		"#AbilityReload"
+				"Ability1"		"#Ability1"
+				"Ability2"		"#Ability2"
+				"Ability3"		"#Ability3"
+				"Ability4"		"#Ability4"
+				"Ability5"		"#Ability5"
+				"Ability6"		"#Ability6"
+				"Ability7"		"#Ability7"
+				"Ability8"		"#Ability8"
+				"Ability9"		"#Ability9"
+				"Ability0"		"#Ability0"
+				"CommandAbility1"		"#CommandAbility1"
+				"CommandAbility2"		"#CommandAbility2"
+				"CommandAbility3"		"#CommandAbility3"
+				"CommandAbility4"		"#CommandAbility4"
+				"CommandAbility5"		"#CommandAbility5"
+			}
+		}
+		"MenuControls"
+		{
+			"title"		"#Set_MenuControls"
+			"legacy_set"		"0"
+			"StickPadGyro"
+			{
+				"MenuCursor"
+				{
+					"title"		"#MenuCursor"
+					"input_mode"		"absolute_mouse"
+					"os_mouse"		"1"
+				}
+			}
+			"Button"
+			{
+				"NavigateUp"		"#NavigateUp"
+				"NavigateDown"		"#NavigateDown"
+				"NavigateLeft"		"#NavigateLeft"
+				"NavigateRight"		"#NavigateRight"
+				"QuickSave"		"#QuickSave"
+				"QuickLoad"		"#QuickLoad"
+				"PushToTalk"		"#PushToTalk"
+				"Confirm"		"#Confirm"
+				"Cancel"		"#Cancel"
+				"Geoscape"		"#Geoscape"
+				"Research"		"#Research"
+				"Engineering"		"#Engineering"
+				"Barracks"		"#Barracks"
+				"CommandersQuarters"		"#CommandersQuarters"
+				"ShadowChamber"		"#ShadowChamber"
+			}
+		}
+		"GeoscapeControls"
+		{
+			"title"		"#Set_GeoscapeControls"
+			"legacy_set"		"0"
+			"StickPadGyro"
+			{
+				"GeoscapeGlobeRotation"
+				{
+					"title"		"#GeoscapeGlobeRotation"
+					"input_mode"		"absolute_mouse"
+				}
+				"GeoscapeGlobeZoom"
+				{
+					"title"		"#GeoscapeGlobeZoom"
+					"input_mode"		"absolute_mouse"
+				}
+				"GeoscapeCursor"
+				{
+					"title"		"#GeocapeCursor"
+					"input_mode"		"absolute_mouse"
+					"os_mouse"		"1"
+				}
+			}
+			"Button"
+			{
+				"NavigateUp"		"#NavigateUp"
+				"NavigateDown"		"#NavigateDown"
+				"NavigateLeft"		"#NavigateLeft"
+				"NavigateRight"		"#NavigateRight"
+				"QuickSave"		"#QuickSave"
+				"QuickLoad"		"#QuickLoad"
+				"PushToTalk"		"#PushToTalk"
+				"Confirm"		"#Confirm"
+				"Cancel"		"#Cancel"
+				"Geoscape"		"#Geoscape"
+				"Research"		"#Research"
+				"Engineering"		"#Engineering"
+				"Barracks"		"#Barracks"
+				"CommandersQuarters"		"#CommandersQuarters"
+				"ShadowChamber"		"#ShadowChamber"
+			}
+		}
+	}
+	"localization"
+	{
+		"english"
+		{
+			"Set_TacticalControls"		"Tactical"
+			"Set_MenuControls"		"Menus / Base"
+			"Set_GeoscapeControls"		"Geoscape"
+			"Action_Camera"		"Tactical Camera"
+			"Action_Cursor"		"Tactical Cursor"
+			"MenuCursor"		"Menu Cursor"
+			"GeoscapeGlobeRotation"		"Geoscape Camera"
+			"GeoscapeGlobeZoom"		"Geoscape Zoom"
+			"GeocapeCursor"		"Geoscape Cursor"
+			"NavigateUp"		"Navigate Up"
+			"NavigateDown"		"Navigate Down"
+			"NavigateLeft"		"Navigate Left"
+			"NavigateRight"		"Navigate Right"
+			"QuickSave"		"Quick Save"
+			"QuickLoad"		"Quick Load"
+			"PushToTalk"		"Push To Talk"
+			"Confirm"		"Confirm"
+			"Cancel"		"Cancel"
+			"EnterShotHUD_Confirm"		"Open Shot HUD"
+			"Pause"		"Pause"
+			"CancelTactical"		"Cancel"
+			"path"		"Move / Shoot"
+			"Interact"		"Interact With Objects"
+			"EndTurn"		"End Turn"
+			"Chat"		"Text Chat"
+			"Waypoint"		"Waypoint Mode"
+			"CamCenterOnActiveUnit"		"Center Camera On Active Unit"
+			"CamRotateLeft"		"Camera Rotate Left"
+			"CamRotateRight"		"Camera Rotate Right"
+			"CamZoomIn"		"Camera Zoon In"
+			"CamZoomOut"		"Camera Zoom Out"
+			"CamFreeZoom"		"Camera Free Zoom"
+			"CamToggleZoomLevel"		"Toggle Zoom Level"
+			"CursorUp"		"Ascend Floor"
+			"CursorDown"		"Descend Floor"
+			"NextUnit"		"Next Unit / Target"
+			"PrevUnit"		"Previous Unit / Target"
+			"AbilityOverwatch"		"Overwatch"
+			"AbilityReload"		"Reload"
+			"Ability1"		"Ability 1"
+			"Ability2"		"Ability 2"
+			"Ability3"		"Ability 3"
+			"Ability4"		"Ability 4"
+			"Ability5"		"Ability 5"
+			"Ability6"		"Ability 6"
+			"Ability7"		"Ability 7"
+			"Ability8"		"Ability 8"
+			"Ability9"		"Ability 9"
+			"Ability0"		"Ability 10"
+			"CommandAbility1"		"Command Ability 1"
+			"CommandAbility2"		"Command Ability 2"
+			"CommandAbility3"		"Command Ability 3"
+			"CommandAbility4"		"Command Ability 4"
+			"CommandAbility5"		"Command Ability 5"
+			"Geoscape"		"Geoscape"
+			"Research"		"Research"
+			"Engineering"		"Engineering"
+			"Barracks"		"Barracks"
+			"CommandersQuarters"		"CommandersQuarters"
+			"ShadowChamber"		"ShadowChamber"
+		}
+		"spanish"
+		{
+			"Set_TacticalControls"		"Táctica"
+			"Set_MenuControls"		"Menús / Base"
+			"Set_GeoscapeControls"		"Geovista"
+			"Action_Camera"		"Cámara Táctica"
+			"Action_Cursor"		"Cursor Táctico"
+			"MenuCursor"		"Cursor de Menú"
+			"GeoscapeGlobeRotation"		"Cámara de Geovista"
+			"GeoscapeGlobeZoom"		"Zoom de Geovista"
+			"GeocapeCursor"		"Cursor de Geovista"
+			"NavigateUp"		"Desplazarse arriba"
+			"NavigateDown"		"Desplazarse abajo"
+			"NavigateLeft"		"Desplazarse izquierda"
+			"NavigateRight"		"Desplazarse derecha"
+			"QuickSave"		"Guardado Rápido"
+			"QuickLoad"		"Carga Rápida"
+			"PushToTalk"		"Pulsar para hablar"
+			"Confirm"		"Confirmar"
+			"Cancel"		"Cancelar"
+			"EnterShotHUD_Confirm"		"Hud de disparo"
+			"Pause"		"Pausa"
+			"CancelTactical"		"Cancelar"
+			"path"		"Mover / Disparar"
+			"Interact"		"Manejar objetos"
+			"EndTurn"		"Terminar turno"
+			"Chat"		"Chat de texto"
+			"Waypoint"		"Modo de punto de ruta"
+			"CamCenterOnActiveUnit"		"Centrar cámara en unidad activa"
+			"CamRotateLeft"		"Girar cámara izq."
+			"CamRotateRight"		"Girar cámara der."
+			"CamZoomIn"		"Acercar vista de cámara"
+			"CamZoomOut"		"Alejar vista de cámara"
+			"CamFreeZoom"		"Zoom libre de cámara"
+			"CamToggleZoomLevel"		"Alternar nivel de zoom"
+			"CursorUp"		"Ascender nivel"
+			"CursorDown"		"Descender nivel"
+			"NextUnit"		"Sig. Unidad / Blanco"
+			"PrevUnit"		"Unidad / Blanco previo"
+			"AbilityOverwatch"		"Guardia"
+			"AbilityReload"		"Recargar"
+			"Ability1"		"Habilidad 1"
+			"Ability2"		"Habilidad 2"
+			"Ability3"		"Habilidad 3"
+			"Ability4"		"Habilidad 4"
+			"Ability5"		"Habilidad 5"
+			"Ability6"		"Habilidad 6"
+			"Ability7"		"Habilidad 7"
+			"Ability8"		"Habilidad 8"
+			"Ability9"		"Habilidad 9"
+			"Ability0"		"Habilidad 10"
+			"CommandAbility1"		"Habilidad de mando 1"
+			"CommandAbility2"		"Habilidad de mando 2"
+			"CommandAbility3"		"Habilidad de mando 3"
+			"CommandAbility4"		"Habilidad de mando 4"
+			"CommandAbility5"		"Habilidad de mando 5"
+			"Geoscape"		"Geovista"
+			"Research"		"Investigación"
+			"Engineering"		"Ingeniería"
+			"Barracks"		"Arsenal"
+			"CommandersQuarters"		"Dependencias del Comandante"
+			"ShadowChamber"		"Cámara de sombras"
+		}
+		"italian"
+		{
+			"Set_TacticalControls"		"Menu tattico"
+			"Set_MenuControls"		"Menu/Base"
+			"Set_GeoscapeControls"		"Planisfero"
+			"Action_Camera"		"Visuale tattica"
+			"Action_Cursor"		"Cursore tattico"
+			"MenuCursor"		"Cursore menu"
+			"GeoscapeGlobeRotation"		"Visuale planisfero"
+			"GeoscapeGlobeZoom"		"Zoom planisfero"
+			"GeocapeCursor"		"Cursore planisfero"
+			"NavigateUp"		"Muovi su"
+			"NavigateDown"		"Muovi giù"
+			"NavigateLeft"		"Muovi a sinistra"
+			"NavigateRight"		"Muovi a destra"
+			"QuickSave"		"Salvataggio rapido"
+			"QuickLoad"		"Caricamento rapido"
+			"PushToTalk"		"Premi per parlare"
+			"Confirm"		"Conferma"
+			"Cancel"		"Annulla"
+			"EnterShotHUD_Confirm"		"Interfaccia attacco"
+			"Pause"		"Pausa"
+			"CancelTactical"		"Annulla"
+			"path"		"Muovi/Spara"
+			"Interact"		"Interagisci con oggetti"
+			"EndTurn"		"Termina turno"
+			"Chat"		"Chat di testo"
+			"Waypoint"		"Modalità tappe"
+			"CamCenterOnActiveUnit"		"Visualizza l'unità attiva"
+			"CamRotateLeft"		"Ruota visuale a sx"
+			"CamRotateRight"		"Ruota visuale a dx"
+			"CamZoomIn"		"Aumenta zoom visuale"
+			"CamZoomOut"		"Riduci zoom visuale"
+			"CamFreeZoom"		"Zoom libero visuale"
+			"CamToggleZoomLevel"		"Cambia livello zoom"
+			"CursorUp"		"Piano superiore"
+			"CursorDown"		"Piano inferiore"
+			"NextUnit"		"Unità / Bersaglio successivi"
+			"PrevUnit"		"Unità / Bersaglio precedenti"
+			"AbilityOverwatch"		"Guardia"
+			"AbilityReload"		"Ricarica"
+			"Ability1"		"Abilità 1"
+			"Ability2"		"Abilità 2"
+			"Ability3"		"Abilità 3"
+			"Ability4"		"Abilità 4"
+			"Ability5"		"Abilità 5"
+			"Ability6"		"Abilità 6"
+			"Ability7"		"Abilità 7"
+			"Ability8"		"Abilità 8"
+			"Ability9"		"Abilità 9"
+			"Ability0"		"Abilità 10"
+			"CommandAbility1"		"Comando abilità 1"
+			"CommandAbility2"		"Comando abilità 2"
+			"CommandAbility3"		"Comando abilità 3"
+			"CommandAbility4"		"Comando abilità 4"
+			"CommandAbility5"		"Comando abilità 5"
+			"Geoscape"		"Planisfero"
+			"Research"		"Ricerca"
+			"Engineering"		"Reparto ingegneria"
+			"Barracks"		"Armeria"
+			"CommandersQuarters"		"Alloggi del comandante"
+			"ShadowChamber"		"Camera ombra"
+		}
+		"german"
+		{
+			"Set_TacticalControls"		"Taktik"
+			"Set_MenuControls"		"Menüs / Basis"
+			"Set_GeoscapeControls"		"Weltkarte"
+			"Action_Camera"		"Taktische Kamera"
+			"Action_Cursor"		"Taktischer Cursor"
+			"MenuCursor"		"Menü Cursor"
+			"GeoscapeGlobeRotation"		"Weltkarte-Kamera"
+			"GeoscapeGlobeZoom"		"Weltkarte-Zoom"
+			"GeocapeCursor"		"Weltkarte-Cursor"
+			"NavigateUp"		"Navigieren Oben"
+			"NavigateDown"		"Navigieren Unten"
+			"NavigateLeft"		"Navigieren Links"
+			"NavigateRight"		"Navigieren Rechts"
+			"QuickSave"		"Schnell Speichern"
+			"QuickLoad"		"Schnell Laden"
+			"PushToTalk"		"Push-To-Talk"
+			"Confirm"		"Bestätigen"
+			"Cancel"		"Abbrechen"
+			"EnterShotHUD_Confirm"		"Steuerung taktischer Kampf öffnen"
+			"Pause"		"Anhalten"
+			"CancelTactical"		"Abbrechen"
+			"path"		"Bewegen / Schießen"
+			"Interact"		"Mit Objekten interagieren"
+			"EndTurn"		"Runde beenden"
+			"Chat"		"Text Chat"
+			"Waypoint"		"Wegpunkt-Modus"
+			"CamCenterOnActiveUnit"		"Kamera auf aktiver Einheit zentrieren"
+			"CamRotateLeft"		"Kamera links drehen"
+			"CamRotateRight"		"Kamera rechts drehen"
+			"CamZoomIn"		"Kamera hereinzoomen"
+			"CamZoomOut"		"Kamera herauszoomen"
+			"CamFreeZoom"		"Kamera frei zoomen"
+			"CamToggleZoomLevel"		"Zoomstärke umschalten"
+			"CursorUp"		"Ebene nach unten"
+			"CursorDown"		"Ebene nach oben"
+			"NextUnit"		"Nächste Einheit / Nächstes Ziel"
+			"PrevUnit"		"Vorherige Einheit / Vorheriges Ziel"
+			"AbilityOverwatch"		"Feuerschutz"
+			"AbilityReload"		"Nachladen"
+			"Ability1"		"Fähigkeit 1"
+			"Ability2"		"Fähigkeit 2"
+			"Ability3"		"Fähigkeit 3"
+			"Ability4"		"Fähigkeit 4"
+			"Ability5"		"Fähigkeit 5"
+			"Ability6"		"Fähigkeit 6"
+			"Ability7"		"Fähigkeit 7"
+			"Ability8"		"Fähigkeit 8"
+			"Ability9"		"Fähigkeit 9"
+			"Ability0"		"Fähigkeit 10"
+			"CommandAbility1"		"Kommandofähigkeit 1"
+			"CommandAbility2"		"Kommandofähigkeit 2"
+			"CommandAbility3"		"Kommandofähigkeit 3"
+			"CommandAbility4"		"Kommandofähigkeit 4"
+			"CommandAbility5"		"Kommandofähigkeit 5"
+			"Geoscape"		"Weltkarte"
+			"Research"		"Forschung"
+			"Engineering"		"Technikabteilung"
+			"Barracks"		"Waffenkammer"
+			"CommandersQuarters"		"Commander-Quartier"
+			"ShadowChamber"		"Schattenkammer"
+		}
+		"french"
+		{
+			"Set_TacticalControls"		"Tactique"
+			"Set_MenuControls"		"Menus / Base"
+			"Set_GeoscapeControls"		"Geoscape"
+			"Action_Camera"		"Caméra Tactique"
+			"Action_Cursor"		"Curseur Tactique"
+			"MenuCursor"		"Curseur du menu"
+			"GeoscapeGlobeRotation"		"Caméra Geoscape"
+			"GeoscapeGlobeZoom"		"Zoom Geoscape"
+			"GeocapeCursor"		"Curseur Geoscape"
+			"NavigateUp"		"Naviguer vers le haut"
+			"NavigateDown"		"Naviguer vers le bas"
+			"NavigateLeft"		"Naviguer vers la gauche"
+			"NavigateRight"		"Naviguer vers la droite"
+			"QuickSave"		"Sauvegarde Rapide"
+			"QuickLoad"		"Chargement Rapide"
+			"PushToTalk"		"Appuyer pour parler"
+			"Confirm"		"Confirmer"
+			"Cancel"		"Annuler"
+			"EnterShotHUD_Confirm"		"Ouvrir interface de combat"
+			"Pause"		"Pause"
+			"CancelTactical"		"Annuler"
+			"path"		"Déplacement / Attaque"
+			"Interact"		"Interagir avec objets"
+			"EndTurn"		"Fin du tour"
+			"Chat"		"Chat textuel"
+			"Waypoint"		"Mode repères"
+			"CamCenterOnActiveUnit"		"Centrer caméra sur unité active"
+			"CamRotateLeft"		"Pivoter caméra à gauche"
+			"CamRotateRight"		"Pivoter caméra à droite"
+			"CamZoomIn"		"Zoom avant"
+			"CamZoomOut"		"Zoom arrière"
+			"CamFreeZoom"		"Zoom libre"
+			"CamToggleZoomLevel"		"Régler niveau de zoom"
+			"CursorUp"		"Monter niveau"
+			"CursorDown"		"Descendre niveau"
+			"NextUnit"		"Cible / Unité suivante"
+			"PrevUnit"		"Cible / Unité précédente"
+			"AbilityOverwatch"		"Vigilance"
+			"AbilityReload"		"Recharger"
+			"Ability1"		"Capacité 1"
+			"Ability2"		"Capacité 2"
+			"Ability3"		"Capacité 3"
+			"Ability4"		"Capacité 4"
+			"Ability5"		"Capacité 5"
+			"Ability6"		"Capacité 6"
+			"Ability7"		"Capacité 7"
+			"Ability8"		"Capacité 8"
+			"Ability9"		"Capacité 9"
+			"Ability0"		"Capacité 10"
+			"CommandAbility1"		"Capacité de commandement 1"
+			"CommandAbility2"		"Capacité de commandement 2"
+			"CommandAbility3"		"Capacité de commandement 3"
+			"CommandAbility4"		"Capacité de commandement 4"
+			"CommandAbility5"		"Capacité de commandement 5"
+			"Geoscape"		"Geoscape"
+			"Research"		"Recherche"
+			"Engineering"		"Ingénierie"
+			"Barracks"		"Armurerie"
+			"CommandersQuarters"		"Quartiers du commandant"
+			"ShadowChamber"		"Salle de décryptage"
+		}
+		"koreana"
+		{
+			"Set_TacticalControls"		"전술"
+			"Set_MenuControls"		"메뉴 / 기본"
+			"Set_GeoscapeControls"		"세계 지도 화면"
+			"Action_Camera"		"전술 카메라"
+			"Action_Cursor"		"전술 커서 "
+			"MenuCursor"		"메뉴 커서"
+			"GeoscapeGlobeRotation"		"세계 지도 화면 카메라"
+			"GeoscapeGlobeZoom"		"세계 지도 화면 확대/축소"
+			"GeocapeCursor"		"세계 지도 화면 커서"
+			"NavigateUp"		"위 탐색"
+			"NavigateDown"		"아래 탐색"
+			"NavigateLeft"		"왼쪽 탐색"
+			"NavigateRight"		"오른쪽 탐색"
+			"QuickSave"		"빠른 저장"
+			"QuickLoad"		"빠른 불러오기"
+			"PushToTalk"		"눌러서 대화"
+			"Confirm"		"확인"
+			"Cancel"		"취소"
+			"EnterShotHUD_Confirm"		"조준 모드 열기"
+			"Pause"		"일시 정지"
+			"CancelTactical"		"취소"
+			"path"		"이동 / 공격"
+			"Interact"		"사물 조작"
+			"EndTurn"		"턴 종료"
+			"Chat"		"문자 채팅"
+			"Waypoint"		"집결지 모드"
+			"CamCenterOnActiveUnit"		"선택 중인 유닛으로 화면 이동"
+			"CamRotateLeft"		"왼쪽으로 카메라 회전"
+			"CamRotateRight"		"오른쪽으로 카메라 회전"
+			"CamZoomIn"		"카메라 확대"
+			"CamZoomOut"		"카메라 축소"
+			"CamFreeZoom"		"자유롭게 카메라 축소/확대"
+			"CamToggleZoomLevel"		"확대/축소 레벨 조정"
+			"CursorUp"		"상위 지형으로 전환"
+			"CursorDown"		"하위 지형으로 전환"
+			"NextUnit"		"다음 유닛 / 목표"
+			"PrevUnit"		"이전 유닛 / 목표"
+			"AbilityOverwatch"		"경계"
+			"AbilityReload"		"재장전"
+			"Ability1"		"능력 1"
+			"Ability2"		"능력 2"
+			"Ability3"		"능력 3"
+			"Ability4"		"능력 4"
+			"Ability5"		"능력 5"
+			"Ability6"		"능력 6"
+			"Ability7"		"능력 7"
+			"Ability8"		"능력 8"
+			"Ability9"		"능력 9"
+			"Ability0"		"능력 10"
+			"CommandAbility1"		"명령 능력 1"
+			"CommandAbility2"		"명령 능력 2"
+			"CommandAbility3"		"명령 능력 3"
+			"CommandAbility4"		"명령 능력 4"
+			"CommandAbility5"		"명령 능력 5"
+			"Geoscape"		"세계 지도 화면"
+			"Research"		"연구실"
+			"Engineering"		"기술실"
+			"Barracks"		"병영"
+			"CommandersQuarters"		"사령관 숙소"
+			"ShadowChamber"		"섀도 체임버"
+		}
+		"japanese"
+		{
+			"Set_TacticalControls"		"戦術"
+			"Set_MenuControls"		"メニュー / 基地"
+			"Set_GeoscapeControls"		"ジオスケープ"
+			"Action_Camera"		"戦術 カメラ"
+			"Action_Cursor"		"戦術 カーソル"
+			"MenuCursor"		"メニュー カーソル"
+			"GeoscapeGlobeRotation"		"ジオスケープ カメラ"
+			"GeoscapeGlobeZoom"		"ジオスケープ　ズーム"
+			"GeocapeCursor"		"ジオスケープ カーソル"
+			"NavigateUp"		"上へ"
+			"NavigateDown"		"下へ"
+			"NavigateLeft"		"左へ"
+			"NavigateRight"		"右へ"
+			"QuickSave"		"クイックセーブ"
+			"QuickLoad"		"クイックロード"
+			"PushToTalk"		"プッシュ・ツー・トーク"
+			"Confirm"		"確認"
+			"Cancel"		"キャンセル"
+			"EnterShotHUD_Confirm"		"射撃HUDの起動"
+			"Pause"		"ポーズ"
+			"CancelTactical"		"キャンセル"
+			"path"		"移動 / 射撃"
+			"Interact"		"オブジェクトの操作"
+			"EndTurn"		"ターン終了"
+			"Chat"		"テキストチャット"
+			"Waypoint"		"ウェイポイント・モード"
+			"CamCenterOnActiveUnit"		"活動中のユニットにカメラを合わせる"
+			"CamRotateLeft"		"カメラアングルを左へ"
+			"CamRotateRight"		"カメラアングルを右へ"
+			"CamZoomIn"		"カメラズームイン"
+			"CamZoomOut"		"カメラズームアウト"
+			"CamFreeZoom"		"カメラフリーズーム"
+			"CamToggleZoomLevel"		"ズームレベルの切り替え"
+			"CursorUp"		"上に登る"
+			"CursorDown"		"下に降りる"
+			"NextUnit"		"次のユニット / ターゲット"
+			"PrevUnit"		"前のユニット / ターゲット"
+			"AbilityOverwatch"		"監視"
+			"AbilityReload"		"リロード"
+			"Ability1"		"アビリティ1"
+			"Ability2"		"アビリティ2"
+			"Ability3"		"アビリティ3"
+			"Ability4"		"アビリティ4"
+			"Ability5"		"アビリティ5"
+			"Ability6"		"アビリティ6"
+			"Ability7"		"アビリティ7"
+			"Ability8"		"アビリティ8"
+			"Ability9"		"アビリティ9"
+			"Ability0"		"アビリティ10"
+			"CommandAbility1"		"司令能力1"
+			"CommandAbility2"		"司令能力2"
+			"CommandAbility3"		"司令能力3"
+			"CommandAbility4"		"司令能力4"
+			"CommandAbility5"		"司令能力5"
+			"Geoscape"		"ジオスケープ"
+			"Research"		"研究"
+			"Engineering"		"エンジニアリング部"
+			"Barracks"		"兵舎"
+			"CommandersQuarters"		"コマンダーの営舎"
+			"ShadowChamber"		"シャドー・チャンバー"
+		}
+		"schinese"
+		{
+			"Set_TacticalControls"		"战术"
+			"Set_MenuControls"		"菜单/基地"
+			"Set_GeoscapeControls"		"地表全景"
+			"Action_Camera"		"战术镜头"
+			"Action_Cursor"		"战术光标"
+			"MenuCursor"		"菜单光标"
+			"GeoscapeGlobeRotation"		"地表全景镜头"
+			"GeoscapeGlobeZoom"		"地表全景缩放"
+			"GeocapeCursor"		"地表全景光标"
+			"NavigateUp"		"向上导航"
+			"NavigateDown"		"向下导航"
+			"NavigateLeft"		"向左导航"
+			"NavigateRight"		"向右导航"
+			"QuickSave"		"快速存档"
+			"QuickLoad"		"快速读取"
+			"PushToTalk"		"按键以通话"
+			"Confirm"		"确认"
+			"Cancel"		"取消"
+			"EnterShotHUD_Confirm"		"开启射击HUD"
+			"Pause"		"暂停"
+			"CancelTactical"		"取消"
+			"path"		"移动/射击"
+			"Interact"		"与物体互动"
+			"EndTurn"		"结束回合"
+			"Chat"		"文字聊天"
+			"Waypoint"		"路径点模式"
+			"CamCenterOnActiveUnit"		"视角锁定行动的士兵"
+			"CamRotateLeft"		"镜头左转"
+			"CamRotateRight"		"镜头右转"
+			"CamZoomIn"		"镜头放大"
+			"CamZoomOut"		"镜头缩小"
+			"CamFreeZoom"		"镜头自由缩放"
+			"CamToggleZoomLevel"		"切换缩放比例"
+			"CursorUp"		"镜头抬高"
+			"CursorDown"		"镜头降低"
+			"NextUnit"		"下一士兵/目标"
+			"PrevUnit"		"前一士兵/目标"
+			"AbilityOverwatch"		"监视"
+			"AbilityReload"		"装填弹药"
+			"Ability1"		"技能1"
+			"Ability2"		"技能2"
+			"Ability3"		"技能3"
+			"Ability4"		"技能4"
+			"Ability5"		"技能5"
+			"Ability6"		"技能6"
+			"Ability7"		"技能7"
+			"Ability8"		"技能8"
+			"Ability9"		"技能9"
+			"Ability0"		"技能10"
+			"CommandAbility1"		"指挥能力1"
+			"CommandAbility2"		"指挥能力2"
+			"CommandAbility3"		"指挥能力3"
+			"CommandAbility4"		"指挥能力4"
+			"CommandAbility5"		"指挥能力5"
+			"Geoscape"		"地表全景"
+			"Research"		"研究所"
+			"Engineering"		"工程部"
+			"Barracks"		"军械库"
+			"CommandersQuarters"		"指挥官舱室"
+			"ShadowChamber"		"暗影舱"
+		}
+		"tchinese"
+		{
+			"Set_TacticalControls"		"戰術"
+			"Set_MenuControls"		"選單/基地"
+			"Set_GeoscapeControls"		"地表全景"
+			"Action_Camera"		"戰術視角"
+			"Action_Cursor"		"戰術游標"
+			"MenuCursor"		"選單游標"
+			"GeoscapeGlobeRotation"		"地表全景視角"
+			"GeoscapeGlobeZoom"		"地表全景縮放"
+			"GeocapeCursor"		"地表全景游標"
+			"NavigateUp"		"向上瀏覽"
+			"NavigateDown"		"向下瀏覽"
+			"NavigateLeft"		"向左瀏覽"
+			"NavigateRight"		"向右瀏覽"
+			"QuickSave"		"快速儲存"
+			"QuickLoad"		"快速讀取"
+			"PushToTalk"		"按鍵通話"
+			"Confirm"		"確認"
+			"Cancel"		"取消"
+			"EnterShotHUD_Confirm"		"開啟射擊HUD"
+			"Pause"		"暫停"
+			"CancelTactical"		"取消"
+			"path"		"移動/射擊"
+			"Interact"		"與物體互動"
+			"EndTurn"		"結束回合"
+			"Chat"		"文字聊天"
+			"Waypoint"		"路徑點模式"
+			"CamCenterOnActiveUnit"		"視角鎖定行動的單位"
+			"CamRotateLeft"		"向左旋轉視角"
+			"CamRotateRight"		"向右旋轉視角"
+			"CamZoomIn"		"拉近視角"
+			"CamZoomOut"		"拉遠視角"
+			"CamFreeZoom"		"自由縮放視角"
+			"CamToggleZoomLevel"		"切換縮放比例"
+			"CursorUp"		"上層"
+			"CursorDown"		"下層"
+			"NextUnit"		"下一單位/目標"
+			"PrevUnit"		"上一單位/目標"
+			"AbilityOverwatch"		"監視"
+			"AbilityReload"		"裝填彈藥"
+			"Ability1"		"技能1"
+			"Ability2"		"技能2"
+			"Ability3"		"技能3"
+			"Ability4"		"技能4"
+			"Ability5"		"技能5"
+			"Ability6"		"技能6"
+			"Ability7"		"技能7"
+			"Ability8"		"技能8"
+			"Ability9"		"技能9"
+			"Ability0"		"技能10"
+			"CommandAbility1"		"指揮能力1"
+			"CommandAbility2"		"指揮能力2"
+			"CommandAbility3"		"指揮能力3"
+			"CommandAbility4"		"指揮能力4"
+			"CommandAbility5"		"指揮能力5"
+			"Geoscape"		"地表全景"
+			"Research"		"科研部"
+			"Engineering"		"工程部"
+			"Barracks"		"軍械庫"
+			"CommandersQuarters"		"指揮官居住艙"
+			"ShadowChamber"		"暗影艙"
+		}
+		"polish"
+		{
+			"Set_TacticalControls"		"Taktyczny"
+			"Set_MenuControls"		"Menu / Baza"
+			"Set_GeoscapeControls"		"Geowidok"
+			"Action_Camera"		"Kamera taktyczna"
+			"Action_Cursor"		"Kursor taktyczny"
+			"MenuCursor"		"Kursor menu"
+			"GeoscapeGlobeRotation"		"Kamera Geowidoku"
+			"GeoscapeGlobeZoom"		"Zoom Geowidoku"
+			"GeocapeCursor"		"Kursor Geowidoku"
+			"NavigateUp"		"Nawiguj w górę"
+			"NavigateDown"		"Nawiguj w dół"
+			"NavigateLeft"		"Nawiguj w lewo"
+			"NavigateRight"		"Nawiguj w prawo"
+			"QuickSave"		"Szybki zapis"
+			"QuickLoad"		"Szybki odczyt"
+			"PushToTalk"		"Naciśnij, aby rozmawiać"
+			"Confirm"		"Potwierdź"
+			"Cancel"		"Anuluj"
+			"EnterShotHUD_Confirm"		"Otwarcie menu strzału"
+			"Pause"		"Pauza"
+			"CancelTactical"		"Anuluj"
+			"path"		"Przesuń / Strzelaj"
+			"Interact"		"Interakcja z obiektami"
+			"EndTurn"		"Koniec tury"
+			"Chat"		"Czat tekstowy"
+			"Waypoint"		"Tryb trasy"
+			"CamCenterOnActiveUnit"		"Centrowanie kamery na aktywnej jednostce"
+			"CamRotateLeft"		"Obrót kamery w lewo"
+			"CamRotateRight"		"Obrót kamery w prawo"
+			"CamZoomIn"		"Zbliżenie kamery"
+			"CamZoomOut"		"Oddalenie kamery"
+			"CamFreeZoom"		"Swobodne przybliżanie kamery"
+			"CamToggleZoomLevel"		"Zmień poziom przybliżenia"
+			"CursorUp"		"Przesuń kursor wyżej"
+			"CursorDown"		"Przesuń kursor niżej"
+			"NextUnit"		"Następna jednostka / cel"
+			"PrevUnit"		"Poprzednia jednostka / cel"
+			"AbilityOverwatch"		"Warta"
+			"AbilityReload"		"Przeładowanie"
+			"Ability1"		"Zdolność 1"
+			"Ability2"		"Zdolność 2"
+			"Ability3"		"Zdolność 3"
+			"Ability4"		"Zdolność 4"
+			"Ability5"		"Zdolność 5"
+			"Ability6"		"Zdolność 6"
+			"Ability7"		"Zdolność 7"
+			"Ability8"		"Zdolność 8"
+			"Ability9"		"Zdolność 9"
+			"Ability0"		"Zdolność 10"
+			"CommandAbility1"		"Zdolność dowodzenia 1"
+			"CommandAbility2"		"Zdolność dowodzenia 2"
+			"CommandAbility3"		"Zdolność dowodzenia 3"
+			"CommandAbility4"		"Zdolność dowodzenia 4"
+			"CommandAbility5"		"Zdolność dowodzenia 5"
+			"Geoscape"		"Geowidok"
+			"Research"		"Laboratoria"
+			"Engineering"		"Dział techniczny"
+			"Barracks"		"Zbrojownia"
+			"CommandersQuarters"		"Kwatera dowódcy"
+			"ShadowChamber"		"Komora cienia"
+		}
+		"russian"
+		{
+			"Set_TacticalControls"		"Тактический режим"
+			"Set_MenuControls"		"Меню / База"
+			"Set_GeoscapeControls"		"Глобус"
+			"Action_Camera"		"Тактическая камера"
+			"Action_Cursor"		"Тактический курсор"
+			"MenuCursor"		"Курсор меню"
+			"GeoscapeGlobeRotation"		"Камера глобуса"
+			"GeoscapeGlobeZoom"		"Масштаб глобуса"
+			"GeocapeCursor"		"Курсор глобуса"
+			"NavigateUp"		"Вверх"
+			"NavigateDown"		"Вниз"
+			"NavigateLeft"		"Влево"
+			"NavigateRight"		"Вправо"
+			"QuickSave"		"Быстрое сохранение"
+			"QuickLoad"		"Быстрая загрузка"
+			"PushToTalk"		"Голосовой чат"
+			"Confirm"		"Подтвердить"
+			"Cancel"		"Отмена"
+			"EnterShotHUD_Confirm"		"Режим стрельбы"
+			"Pause"		"Пауза"
+			"CancelTactical"		"Отмена"
+			"path"		"Движение / Стрельба"
+			"Interact"		"Действие с объектами"
+			"EndTurn"		"Конец хода"
+			"Chat"		"Текстовый чат"
+			"Waypoint"		"Режим маршрута"
+			"CamCenterOnActiveUnit"		"Камеру на активного бойца"
+			"CamRotateLeft"		"Поворот камеры налево"
+			"CamRotateRight"		"Поворот камеры направо"
+			"CamZoomIn"		"Масштаб больше"
+			"CamZoomOut"		"Масштаб меньше"
+			"CamFreeZoom"		"Свободное масштабирование"
+			"CamToggleZoomLevel"		"Уровень приближения"
+			"CursorUp"		"На этаж выше"
+			"CursorDown"		"На этаж ниже"
+			"NextUnit"		"След. боец/цель"
+			"PrevUnit"		"Пред. боец/цель"
+			"AbilityOverwatch"		"Наблюдение"
+			"AbilityReload"		"Перезарядка"
+			"Ability1"		"Способность 1"
+			"Ability2"		"Способность 2"
+			"Ability3"		"Способность 3"
+			"Ability4"		"Способность 4"
+			"Ability5"		"Способность 5"
+			"Ability6"		"Способность 6"
+			"Ability7"		"Способность 7"
+			"Ability8"		"Способность 8"
+			"Ability9"		"Способность 9"
+			"Ability0"		"Способность 10"
+			"CommandAbility1"		"Командная способность 1"
+			"CommandAbility2"		"Командная способность 2"
+			"CommandAbility3"		"Командная способность 3"
+			"CommandAbility4"		"Командная способность 4"
+			"CommandAbility5"		"Командная способность 5"
+			"Geoscape"		"Глобус"
+			"Research"		"Исследовательский отсек"
+			"Engineering"		"Инженерный отсек"
+			"Barracks"		"Оружейная"
+			"CommandersQuarters"		"Штаб"
+			"ShadowChamber"		"Зал теней"
+		}
+	}
+	"group"
+	{
+		"id"		"0"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+			"button_A"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT"
+						}
+					}
+				}
+			}
+			"button_B"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls CancelTactical"
+						}
+					}
+				}
+			}
+			"button_X"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls AbilityReload"
+						}
+					}
+				}
+			}
+			"button_Y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls AbilityOverwatch"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"1"
+		"mode"		"trigger"
+		"inputs"
+		{
+			"edge"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button RIGHT"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"2"
+		"mode"		"trigger"
+		"inputs"
+		{
+			"edge"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"adaptive_threshold"		"0"
+		}
+	}
+	"group"
+	{
+		"id"		"3"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+			"button_A"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls Confirm"
+						}
+					}
+				}
+			}
+			"button_B"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls Cancel"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"4"
+		"mode"		"trigger"
+		"inputs"
+		{
+			"edge"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls Cancel"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"adaptive_threshold"		"0"
+		}
+	}
+	"group"
+	{
+		"id"		"5"
+		"mode"		"trigger"
+		"inputs"
+		{
+			"edge"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"adaptive_threshold"		"0"
+		}
+	}
+	"group"
+	{
+		"id"		"6"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls CursorUp"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls CursorDown"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls CamRotateRight"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls CamRotateLeft"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls CamCenterOnActiveUnit"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"layout"		"0"
+		}
+	}
+	"group"
+	{
+		"id"		"7"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls CamFreeZoom"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+			"sensitivity"		"197"
+			"invert_x"		"1"
+			"invert_y"		"1"
+			"haptic_intensity"		"2"
+			"rotation"		"-18"
+			"friction"		"1"
+			"mouse_smoothing"		"22"
+		}
+		"gameactions"
+		{
+			"TacticalControls"		"TacticalCamera"
+		}
+	}
+	"group"
+	{
+		"id"		"8"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
+		"gameactions"
+		{
+			"TacticalControls"		"TacticalCamera"
+		}
+	}
+	"group"
+	{
+		"id"		"9"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls path, Move / Shoot"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"haptic_intensity"		"2"
+			"friction"		"1"
+		}
+		"gameactions"
+		{
+			"TacticalControls"		"TacticalCursor"
+		}
+	}
+	"group"
+	{
+		"id"		"10"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
+	}
+	"group"
+	{
+		"id"		"11"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls NavigateUp"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls NavigateDown"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls NavigateRight"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls NavigateLeft"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"12"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"sensitivity"		"99"
+		}
+	}
+	"group"
+	{
+		"id"		"13"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"sensitivity"		"99"
+			"trackball"		"0"
+		}
+	}
+	"group"
+	{
+		"id"		"14"
+		"mode"		"touch_menu"
+		"inputs"
+		{
+			"touch_menu_button_0"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls Ability1"
+						}
+					}
+				}
+			}
+			"touch_menu_button_1"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls Ability2"
+						}
+					}
+				}
+			}
+			"touch_menu_button_2"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls Ability3"
+						}
+					}
+				}
+			}
+			"touch_menu_button_3"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls Ability4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_4"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls Ability5"
+						}
+					}
+				}
+			}
+			"touch_menu_button_5"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls Ability6"
+						}
+					}
+				}
+			}
+			"touch_menu_button_6"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls Ability7"
+						}
+					}
+				}
+			}
+			"touch_menu_button_7"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls Ability8"
+						}
+					}
+				}
+			}
+			"touch_menu_button_8"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls Ability9"
+						}
+					}
+				}
+			}
+			"touch_menu_button_9"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls Ability0"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"touch_menu_button_count"		"12"
+		}
+	}
+	"group"
+	{
+		"id"		"15"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+			"rotation"		"-21"
+			"friction"		"1"
+		}
+		"gameactions"
+		{
+			"GeoscapeControls"		"GeoscapeGlobeRotation"
+		}
+	}
+	"group"
+	{
+		"id"		"16"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+			"trackball"		"0"
+			"haptic_intensity"		"3"
+		}
+		"gameactions"
+		{
+			"GeoscapeControls"		"GeoscapeGlobeZoom"
+		}
+	}
+	"group"
+	{
+		"id"		"17"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"haptic_intensity"		"2"
+			"friction"		"1"
+		}
+		"gameactions"
+		{
+			"GeoscapeControls"		"GeoscapeCursor"
+		}
+	}
+	"group"
+	{
+		"id"		"18"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action GeoscapeControls NavigateUp"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action GeoscapeControls NavigateDown"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action GeoscapeControls NavigateRight"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action GeoscapeControls NavigateLeft"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"19"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"haptic_intensity"		"2"
+			"friction"		"1"
+		}
+		"gameactions"
+		{
+			"MenuControls"		"MenuCursor"
+		}
+	}
+	"group"
+	{
+		"id"		"20"
+		"mode"		"touch_menu"
+		"inputs"
+		{
+			"touch_menu_button_0"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press 1"
+						}
+					}
+				}
+			}
+			"touch_menu_button_1"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press 2"
+						}
+					}
+				}
+			}
+			"touch_menu_button_2"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press 3"
+						}
+					}
+				}
+			}
+			"touch_menu_button_3"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press 4"
+						}
+					}
+				}
+			}
+			"touch_menu_button_4"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press 5"
+						}
+					}
+				}
+			}
+			"touch_menu_button_5"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press 6"
+						}
+					}
+				}
+			}
+			"touch_menu_button_6"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press 7"
+						}
+					}
+				}
+			}
+			"touch_menu_button_7"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press 8"
+						}
+					}
+				}
+			}
+			"touch_menu_button_8"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press 9"
+						}
+					}
+				}
+			}
+			"touch_menu_button_9"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press 0"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"touch_menu_button_count"		"12"
+			"touch_menu_opacity"		"91"
+			"touch_menu_position_x"		"51"
+			"touch_menu_position_y"		"81"
+			"touch_menu_scale"		"60"
+		}
+	}
+	"group"
+	{
+		"id"		"21"
+		"mode"		"dpad"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"22"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"23"
+		"mode"		"mouse_joystick"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"24"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
+		"gameactions"
+		{
+			"TacticalControls"		"TacticalCamera"
+		}
+	}
+	"group"
+	{
+		"id"		"25"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+		}
+		"gameactions"
+		{
+			"TacticalControls"		"TacticalCursor"
+		}
+	}
+	"group"
+	{
+		"id"		"26"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"27"
+		"mode"		"dpad"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"28"
+		"mode"		"mouse_joystick"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"29"
+		"mode"		"joystick_move"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"output_joystick"		"2"
+		}
+	}
+	"group"
+	{
+		"id"		"30"
+		"mode"		"joystick_camera"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"31"
+		"mode"		"scrollwheel"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"32"
+		"mode"		"touch_menu"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"touch_menu_button_count"		"12"
+		}
+	}
+	"group"
+	{
+		"id"		"33"
+		"mode"		"mouse_region"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"output_joystick"		"3"
+		}
+	}
+	"group"
+	{
+		"id"		"34"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls NavigateUp"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls NavigateDown"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls NavigateRight"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls NavigateLeft"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"35"
+		"mode"		"trigger"
+		"inputs"
+		{
+			"edge"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action GeoscapeControls Cancel"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"adaptive_threshold"		"0"
+		}
+	}
+	"group"
+	{
+		"id"		"36"
+		"mode"		"trigger"
+		"inputs"
+		{
+			"edge"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"adaptive_threshold"		"0"
+		}
+	}
+	"group"
+	{
+		"id"		"37"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+			"button_A"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action GeoscapeControls Confirm"
+						}
+					}
+				}
+			}
+			"button_B"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action GeoscapeControls Cancel"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"38"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
+		"gameactions"
+		{
+			"GeoscapeControls"		"GeoscapeGlobeZoom"
+		}
+	}
+	"group"
+	{
+		"id"		"42"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls CursorUp, Ascend Floor"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls CursorDown, Descend Floor"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls CamRotateRight, Camera Rotate Right"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls CamRotateLeft, Camera Rotate Left"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"43"
+		"mode"		"dpad"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"44"
+		"mode"		"dpad"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"45"
+		"mode"		"joystick_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+			"output_joystick"		"2"
+		}
+		"gameactions"
+		{
+			"TacticalControls"		"TacticalCamera"
+		}
+	}
+	"group"
+	{
+		"id"		"46"
+		"mode"		"joystick_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls path, Move / Shoot"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"haptic_intensity"		"2"
+			"output_joystick"		"2"
+		}
+		"gameactions"
+		{
+			"TacticalControls"		"TacticalCursor"
+		}
+	}
+	"group"
+	{
+		"id"		"47"
+		"mode"		"joystick_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"output_joystick"		"2"
+		}
+	}
+	"group"
+	{
+		"id"		"48"
+		"mode"		"joystick_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"haptic_intensity"		"2"
+			"output_joystick"		"2"
+			"sensitivity"		"158"
+		}
+		"gameactions"
+		{
+			"MenuControls"		"MenuCursor"
+		}
+	}
+	"group"
+	{
+		"id"		"49"
+		"mode"		"joystick_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"haptic_intensity"		"2"
+			"output_joystick"		"2"
+		}
+		"gameactions"
+		{
+			"GeoscapeControls"		"GeoscapeCursor"
+		}
+	}
+	"group"
+	{
+		"id"		"50"
+		"mode"		"joystick_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+			"output_joystick"		"2"
+		}
+		"gameactions"
+		{
+			"GeoscapeControls"		"GeoscapeGlobeZoom"
+		}
+	}
+	"group"
+	{
+		"id"		"51"
+		"mode"		"joystick_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls CamCenterOnActiveUnit, Center Camera On Active Unit"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+			"output_joystick"		"2"
+			"invert_x"		"1"
+			"invert_y"		"1"
+		}
+		"gameactions"
+		{
+			"TacticalControls"		"TacticalCamera"
+		}
+	}
+	"group"
+	{
+		"id"		"39"
+		"mode"		"switches"
+		"inputs"
+		{
+			"button_escape"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls Pause"
+						}
+					}
+				}
+			}
+			"button_menu"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls EndTurn"
+						}
+					}
+				}
+			}
+			"left_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls PrevUnit"
+						}
+					}
+				}
+			}
+			"right_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls NextUnit"
+						}
+					}
+				}
+			}
+			"button_back_left"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mode_shift right_trackpad 20"
+						}
+					}
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mode_shift right_joystick 47"
+						}
+						"settings"
+						{
+							"interruptable"		"0"
+						}
+					}
+				}
+			}
+			"button_back_right"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action TacticalControls EnterShotHUD_Confirm"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"40"
+		"mode"		"switches"
+		"inputs"
+		{
+			"button_escape"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press ESCAPE"
+						}
+					}
+				}
+			}
+			"right_click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mode_shift left_trackpad 13"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"41"
+		"mode"		"switches"
+		"inputs"
+		{
+			"left_click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mode_shift right_trackpad 38"
+						}
+					}
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mode_shift right_joystick 50"
+						}
+						"settings"
+						{
+							"interruptable"		"0"
+						}
+					}
+				}
+			}
+			"right_click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mode_shift left_trackpad 16"
+						}
+					}
+				}
+			}
+		}
+	}
+	"preset"
+	{
+		"id"		"0"
+		"name"		"TacticalControls"
+		"group_source_bindings"
+		{
+			"39"		"switch active"
+			"8"		"right_trackpad inactive"
+			"9"		"right_trackpad active"
+			"20"		"right_trackpad active modeshift"
+			"45"		"right_joystick inactive"
+			"46"		"right_joystick active"
+			"47"		"right_joystick active modeshift"
+			"7"		"left_trackpad active"
+			"14"		"left_trackpad inactive modeshift"
+			"21"		"left_trackpad inactive modeshift"
+			"22"		"left_trackpad active modeshift"
+			"23"		"left_trackpad inactive modeshift"
+			"24"		"left_trackpad inactive modeshift"
+			"25"		"left_trackpad inactive modeshift"
+			"26"		"left_trackpad inactive modeshift"
+			"27"		"left_trackpad inactive"
+			"28"		"left_trackpad inactive"
+			"29"		"left_trackpad inactive"
+			"30"		"left_trackpad inactive"
+			"31"		"left_trackpad inactive"
+			"32"		"left_trackpad inactive"
+			"33"		"left_trackpad inactive"
+			"0"		"button_diamond active"
+			"1"		"left_trigger active"
+			"2"		"right_trigger active"
+			"6"		"joystick inactive"
+			"51"		"joystick active"
+			"42"		"dpad active"
+		}
+	}
+	"preset"
+	{
+		"id"		"1"
+		"name"		"MenuControls"
+		"group_source_bindings"
+		{
+			"40"		"switch active"
+			"19"		"right_trackpad active"
+			"48"		"right_joystick active"
+			"12"		"left_trackpad inactive"
+			"13"		"left_trackpad inactive modeshift"
+			"34"		"left_trackpad active"
+			"3"		"button_diamond active"
+			"4"		"left_trigger active"
+			"5"		"right_trigger active"
+			"10"		"joystick inactive"
+			"11"		"joystick active"
+			"43"		"dpad active"
+		}
+	}
+	"preset"
+	{
+		"id"		"2"
+		"name"		"GeoscapeControls"
+		"group_source_bindings"
+		{
+			"41"		"switch active"
+			"17"		"right_trackpad active"
+			"38"		"right_trackpad active modeshift"
+			"49"		"right_joystick active"
+			"50"		"right_joystick active modeshift"
+			"15"		"left_trackpad active"
+			"16"		"left_trackpad active modeshift"
+			"37"		"button_diamond active"
+			"35"		"left_trigger active"
+			"36"		"right_trigger active"
+			"18"		"joystick active"
+			"44"		"dpad active"
+		}
+	}
+	"settings"
+	{
+	}
+}

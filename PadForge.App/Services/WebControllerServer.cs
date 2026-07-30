@@ -130,6 +130,18 @@ namespace PadForge.Services
             try { _listener?.Stop(); _listener?.Close(); }
             catch { /* best effort */ }
 
+            // Snapshot the live devices BEFORE anything clears the registry.
+            // Each receive loop's teardown is gated on a conditional remove
+            // from _clients (so a browser reconnecting under the same id
+            // cannot evict the new session), and Stop cleared the dictionary
+            // out from under those loops. The remove then failed, the gate
+            // stayed shut, and the web pad was never marked offline: it sat in
+            // the device list as a phantom online controller for the rest of
+            // the session.
+            var stopping = new System.Collections.Generic.List<WebControllerDevice>();
+            foreach (var kvp in _clients)
+                if (kvp.Value?.Device != null) stopping.Add(kvp.Value.Device);
+
             // Close all client WebSockets.
             foreach (var kvp in _clients)
             {
@@ -141,6 +153,20 @@ namespace PadForge.Services
             _acceptThread = null;
             _listener = null;
             _clients.Clear();
+
+            // Fire the teardown ourselves, AFTER the clear. Doing it here
+            // rather than before is what keeps it exactly-once: with _clients
+            // already empty no receive loop can win its conditional remove, so
+            // this is the sole path that can raise DeviceDisconnected.
+            foreach (var dev in stopping)
+            {
+                try
+                {
+                    dev.SetConnected(false);
+                    DeviceDisconnected?.Invoke(dev);
+                }
+                catch { /* best effort */ }
+            }
             _clientPadIds.Clear();
             _typePadCounters.Clear();
 
@@ -706,10 +732,21 @@ namespace PadForge.Services
             };
             using var proc = Process.Start(psi);
             if (proc == null) return string.Empty;
-            string output = proc.StandardOutput.ReadToEnd();
+
+            // Start the read BEFORE waiting, and do not block on it. ReadToEnd
+            // returns only when the pipe closes, so a netsh that wedged without
+            // exiting hung here forever and the five-second timeout on the next
+            // line was unreachable. Kicking the read off asynchronously lets
+            // WaitForExit own the deadline, and the Kill closes the pipe, which
+            // is what completes the read.
+            var read = proc.StandardOutput.ReadToEndAsync();
             if (!proc.WaitForExit(5_000))
+            {
                 try { proc.Kill(); } catch { }
-            return output;
+            }
+
+            try { return read.Wait(2_000) ? read.Result : string.Empty; }
+            catch { return string.Empty; }
         }
 
         // ─────────────────────────────────────────────

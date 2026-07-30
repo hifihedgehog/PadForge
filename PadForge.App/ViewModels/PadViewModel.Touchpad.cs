@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,9 +16,10 @@ namespace PadForge.ViewModels
     /// surfaced to the Touchpad tab. Mirrors the same load/sync rhythm as
     /// the gyro tuning partial — Load* reads PadSetting.TouchpadSettings[]
     /// into VM fields under <c>_loadingTouchpadGestures</c> guard, setters
-    /// push back to the same entry, and InputService.SyncViewModelToPadSetting
-    /// calls SyncTouchpadGestureSettingsToActiveDevice on the live polling
-    /// rhythm so the gesture engine sees changes immediately.
+    /// push back to the same entry. The push to the live gesture engine
+    /// happens at the setter tail (PushIfNotLoading) and on the device-tab
+    /// switch in MainWindow, NOT from InputService.SyncViewModelToPadSetting,
+    /// which never calls it.
     /// </summary>
     public partial class PadViewModel
     {
@@ -28,18 +29,25 @@ namespace PadForge.ViewModels
 
         private int _selectedTouchpadIndex;
 
-        /// <summary>Which pad on the active device the tab is editing
-        /// (0..MaxTouchpadIndex-1). Devices with one pad pin this to 0
-        /// and hide the pivot. Changing the value reloads VM fields
-        /// from the corresponding TouchpadSettings entry.</summary>
+        /// <summary>Which pad on the active device the recorder / input
+        /// preview targets (0..MaxTouchpadIndex-1). Devices with one pad
+        /// pin this to 0 and hide the pivot. Gesture / gating settings are
+        /// per-device now (enabling one applies to every pad the device
+        /// enumerates), so changing this no longer repivots the settings
+        /// cards; it only redirects the recorder and the live input
+        /// preview to the chosen pad.</summary>
         public int SelectedTouchpadIndex
         {
             get => _selectedTouchpadIndex;
             set
             {
                 if (value < 0) value = 0;
-                if (SetProperty(ref _selectedTouchpadIndex, value))
-                    LoadTouchpadGestureSettingsForActiveDevice();
+                if (!SetProperty(ref _selectedTouchpadIndex, value)) return;
+                // EVERY card pivots on this. Settings are per (device, pad),
+                // so switching pads must pull that pad's whole bundle in or
+                // the tab would show the previous pad's values and the next
+                // edit would write them onto the wrong pad.
+                if (!_loadingTouchpadGestures) LoadTouchpadGestureSettingsForActiveDevice();
             }
         }
 
@@ -418,6 +426,307 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _touchpadMouseInvertY, value)) PushIfNotLoading(); }
         }
 
+        private bool _touchpadMouseMomentum;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseMomentum"/>:
+        /// the cursor coasts on after the finger lifts instead of stopping
+        /// dead, the trackball feel the Steam Controller's lizard mode has.</summary>
+        public bool TouchpadMouseMomentum
+        {
+            get => _touchpadMouseMomentum;
+            set { if (SetProperty(ref _touchpadMouseMomentum, value)) PushIfNotLoading(); }
+        }
+
+        private double _touchpadMouseMomentumDecay = 0.90;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseMomentumDecay"/>:
+        /// the fraction of speed kept per 10 ms of coast. Higher glides
+        /// longer. Clamped to the band the engine reads.</summary>
+        public double TouchpadMouseMomentumDecay
+        {
+            get => _touchpadMouseMomentumDecay;
+            set
+            {
+                double v = Math.Clamp(value, 0.80, 1.00);
+                if (SetProperty(ref _touchpadMouseMomentumDecay, v)) PushIfNotLoading();
+            }
+        }
+
+        private string _touchpadPointerResponse = "Simple";
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerResponse"/>.
+        /// Simple applies the Acceleration slider; Trackpad runs the ported
+        /// libinput curve, which is the only one of the two that can move the
+        /// cursor SLOWER than the finger for fine control.</summary>
+        public string TouchpadPointerResponse
+        {
+            get => _touchpadPointerResponse;
+            set
+            {
+                string x = string.IsNullOrEmpty(value) ? "Simple" : value;
+                if (SetProperty(ref _touchpadPointerResponse, x))
+                {
+                    OnPropertyChanged(nameof(TouchpadPointerResponseIsSimple));
+                    OnPropertyChanged(nameof(TouchpadPointerResponseIsTrackpad));
+                    PushIfNotLoading();
+                }
+            }
+        }
+
+        /// <summary>Row visibility: each profile's own knobs show only for it,
+        /// so the card never presents two competing models at once.</summary>
+        public bool TouchpadPointerResponseIsSimple =>
+            !string.Equals(_touchpadPointerResponse, "Trackpad", StringComparison.Ordinal);
+
+        public bool TouchpadPointerResponseIsTrackpad =>
+            string.Equals(_touchpadPointerResponse, "Trackpad", StringComparison.Ordinal);
+
+        private double _touchpadTrackpadThreshold = 130;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.TrackpadThresholdMmPerSec"/>.
+        /// libinput's own default and its single exposed tunable.</summary>
+        public double TouchpadTrackpadThreshold
+        {
+            get => _touchpadTrackpadThreshold;
+            set
+            {
+                double x = Math.Clamp(value, 20.0, 600.0);
+                if (SetProperty(ref _touchpadTrackpadThreshold, x)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadTrackpadPadWidthMm = 69;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.TrackpadPadWidthMm"/>.
+        /// Decides whether the precision region is reachable at all: a pad
+        /// cannot report slower than one coordinate unit per report, and on a
+        /// DS4 that quantum only falls under the curve's 7 mm/s knee below
+        /// about 54 mm. Range starts at 20 mm so small pads are expressible.</summary>
+        public double TouchpadTrackpadPadWidthMm
+        {
+            get => _touchpadTrackpadPadWidthMm;
+            set
+            {
+                double x = Math.Clamp(value, 20.0, 150.0);
+                if (SetProperty(ref _touchpadTrackpadPadWidthMm, x)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadMouseAcceleration;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseAcceleration"/>:
+        /// rate-dependent cursor gain, so a fast drag covers more screen than
+        /// the same distance dragged slowly. 0 = off, a flat sensitivity.
+        /// Sensitivity cannot express this, which is why it is its own knob
+        /// and not a widened range on that one.</summary>
+        public double TouchpadMouseAcceleration
+        {
+            get => _touchpadMouseAcceleration;
+            set
+            {
+                double x = Math.Clamp(value, 0.0, 5.0);
+                if (SetProperty(ref _touchpadMouseAcceleration, x)) PushIfNotLoading();
+            }
+        }
+
+        private bool _touchpadMouseJitterReduction = true;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseJitterReduction"/>:
+        /// bends the tremor band down a curve rather than cutting it, so a
+        /// resting hand stops shivering the cursor without fine movement
+        /// going dead.</summary>
+        public bool TouchpadMouseJitterReduction
+        {
+            get => _touchpadMouseJitterReduction;
+            set { if (SetProperty(ref _touchpadMouseJitterReduction, value)) PushIfNotLoading(); }
+        }
+
+        private double _touchpadTapMaxMotion = 0.04;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.TapMaxMotion"/>:
+        /// How far a finger may travel and still count as a tap, in pad widths.
+        /// Its sibling TapTimeWindowMs caps how LONG the tap may take. Both
+        /// bound the same gesture, so exposing only the time half let a user
+        /// widen the window while a drifting finger still failed the
+        /// distance test with nothing on screen to explain why.</summary>
+        public double TouchpadTapMaxMotion
+        {
+            get => _touchpadTapMaxMotion;
+            set
+            {
+                var v = Math.Clamp(value, 0.01, 0.30);
+                if (SetProperty(ref _touchpadTapMaxMotion, v)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadLongPressMaxMotion = 0.05;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.LongPressMaxMotion"/>:
+        /// How far a finger may drift during a hold and still count as a long
+        /// press rather than a swipe. Needs more headroom than a tap because
+        /// drift accumulates over the longer window.</summary>
+        public double TouchpadLongPressMaxMotion
+        {
+            get => _touchpadLongPressMaxMotion;
+            set
+            {
+                var v = Math.Clamp(value, 0.01, 0.30);
+                if (SetProperty(ref _touchpadLongPressMaxMotion, v)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadTwoFingerSwipeAngularTolerance = 25;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.TwoFingerSwipeAngularTolerance"/>:
+        /// Maximum angle between the two fingers' motion vectors for a
+        /// two-finger swipe. Wider tolerance accepts sloppier swipes at the
+        /// cost of stealing gestures from pinch and rotate.</summary>
+        public double TouchpadTwoFingerSwipeAngularTolerance
+        {
+            get => _touchpadTwoFingerSwipeAngularTolerance;
+            set
+            {
+                var v = Math.Clamp(value, 5, 90);
+                if (SetProperty(ref _touchpadTwoFingerSwipeAngularTolerance, v)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadPinchThreshold = 0.25;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PinchThreshold"/>:
+        /// Fractional change in the distance between two fingers before a
+        /// pinch or spread fires.</summary>
+        public double TouchpadPinchThreshold
+        {
+            get => _touchpadPinchThreshold;
+            set
+            {
+                var v = Math.Clamp(value, 0.05, 1.00);
+                if (SetProperty(ref _touchpadPinchThreshold, v)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadRotateThresholdDegrees = 20;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.RotateThresholdDegrees"/>:
+        /// Angular change before a rotate fires.</summary>
+        public double TouchpadRotateThresholdDegrees
+        {
+            get => _touchpadRotateThresholdDegrees;
+            set
+            {
+                var v = Math.Clamp(value, 5, 90);
+                if (SetProperty(ref _touchpadRotateThresholdDegrees, v)) PushIfNotLoading();
+            }
+        }
+
+        // ─── Absolute pointer card (#9 B-15) ──────────────────────────
+
+        /// <summary>Mirrors TouchpadGestureSettings.PointerRegionAuthored.
+        /// Not a slider: set by the four region setters below, read by the
+        /// engine to decide whether this pad's region comes from these
+        /// settings or from an imported mapping source.</summary>
+        private bool _touchpadPointerRegionAuthored;
+
+        private double _touchpadPointerRegionSizeX = 1.0;
+
+        /// <summary><para>Mirrors <see cref="TouchpadGestureSettings.PointerRegionSizeX"/>:
+        /// the width of the screen rectangle the "Touchpad N Pointer X"
+        /// absolute cursor sources map onto, as a fraction of screen width.
+        /// 1.0 is Steam's full-screen 1:1 map.</para>
+        /// <para>The floor is 0.05, NOT the 1.0 the superseded stretch knob
+        /// used. A region smaller than the screen is the common authored
+        /// case (an imported config confining a pad to a menu strip), and
+        /// the old floor made every one of them unrepresentable.</para></summary>
+        public double TouchpadPointerRegionSizeX
+        {
+            get => _touchpadPointerRegionSizeX;
+            set
+            {
+                var v = Math.Clamp(value, 0.05, 3.0);
+                if (!SetProperty(ref _touchpadPointerRegionSizeX, v)) return;
+                // A user edit hands this pad's region over from the
+                // imported source geometry to these settings.
+                if (!_loadingTouchpadGestures) _touchpadPointerRegionAuthored = true;
+                PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadPointerRegionSizeY = 1.0;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerRegionSizeY"/>.</summary>
+        public double TouchpadPointerRegionSizeY
+        {
+            get => _touchpadPointerRegionSizeY;
+            set
+            {
+                var v = Math.Clamp(value, 0.05, 3.0);
+                if (!SetProperty(ref _touchpadPointerRegionSizeY, v)) return;
+                // A user edit hands this pad's region over from the
+                // imported source geometry to these settings.
+                if (!_loadingTouchpadGestures) _touchpadPointerRegionAuthored = true;
+                PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadPointerRegionCenterX = 0.5;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerRegionCenterX"/>:
+        /// where the rectangle sits horizontally, 0 = left edge, 1 = right.</summary>
+        public double TouchpadPointerRegionCenterX
+        {
+            get => _touchpadPointerRegionCenterX;
+            set
+            {
+                var v = Math.Clamp(value, 0.0, 1.0);
+                if (!SetProperty(ref _touchpadPointerRegionCenterX, v)) return;
+                // A user edit hands this pad's region over from the
+                // imported source geometry to these settings.
+                if (!_loadingTouchpadGestures) _touchpadPointerRegionAuthored = true;
+                PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadPointerRegionCenterY = 0.5;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerRegionCenterY"/>:
+        /// 0 = TOP edge, 1 = bottom. Top-origin, unlike Steam's authored
+        /// position_y, which the translator flips on the way in.</summary>
+        public double TouchpadPointerRegionCenterY
+        {
+            get => _touchpadPointerRegionCenterY;
+            set
+            {
+                var v = Math.Clamp(value, 0.0, 1.0);
+                if (!SetProperty(ref _touchpadPointerRegionCenterY, v)) return;
+                // A user edit hands this pad's region over from the
+                // imported source geometry to these settings.
+                if (!_loadingTouchpadGestures) _touchpadPointerRegionAuthored = true;
+                PushIfNotLoading();
+            }
+        }
+
+        // ─── Swipe haptics card (discussion #219) ─────
+
+        private bool _touchpadSwipeHapticsEnabled;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.EnableSwipeHaptics"/>:
+        /// short haptic ticks as the finger travels across this pad.
+        /// Default off.</summary>
+        public bool TouchpadSwipeHapticsEnabled
+        {
+            get => _touchpadSwipeHapticsEnabled;
+            set { if (SetProperty(ref _touchpadSwipeHapticsEnabled, value)) PushIfNotLoading(); }
+        }
+
+        private double _touchpadSwipeHapticsIntensity = 0.5;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.SwipeHapticsIntensity"/>
+        /// (0..1). Default 0.5, the Medium step of DS4MapperTest's
+        /// intensity ladder.</summary>
+        public double TouchpadSwipeHapticsIntensity
+        {
+            get => _touchpadSwipeHapticsIntensity;
+            set
+            {
+                var v = Math.Clamp(value, 0.0, 1.0);
+                if (SetProperty(ref _touchpadSwipeHapticsIntensity, v)) PushIfNotLoading();
+            }
+        }
+
         // ─── Custom gestures card ─────────────────────
 
         /// <summary>Profile-scoped custom touchpad gestures filtered by
@@ -658,6 +967,34 @@ namespace PadForge.ViewModels
         public RelayCommand ResetTouchpadMouseInvertYCommand =>
             _resetTouchpadMouseInvertYCommand ??= new RelayCommand(() => TouchpadMouseInvertY = false);
 
+        private RelayCommand _resetTouchpadMouseMomentumCommand;
+        public RelayCommand ResetTouchpadMouseMomentumCommand =>
+            _resetTouchpadMouseMomentumCommand ??= new RelayCommand(() => TouchpadMouseMomentum = false);
+
+        private RelayCommand _resetTouchpadMouseMomentumDecayCommand;
+        public RelayCommand ResetTouchpadMouseMomentumDecayCommand =>
+            _resetTouchpadMouseMomentumDecayCommand ??= new RelayCommand(() => TouchpadMouseMomentumDecay = 0.90);
+
+        private RelayCommand _resetTouchpadPointerResponseCommand;
+        public RelayCommand ResetTouchpadPointerResponseCommand =>
+            _resetTouchpadPointerResponseCommand ??= new RelayCommand(() => TouchpadPointerResponse = "Simple");
+
+        private RelayCommand _resetTouchpadTrackpadThresholdCommand;
+        public RelayCommand ResetTouchpadTrackpadThresholdCommand =>
+            _resetTouchpadTrackpadThresholdCommand ??= new RelayCommand(() => TouchpadTrackpadThreshold = 130);
+
+        private RelayCommand _resetTouchpadTrackpadPadWidthCommand;
+        public RelayCommand ResetTouchpadTrackpadPadWidthCommand =>
+            _resetTouchpadTrackpadPadWidthCommand ??= new RelayCommand(() => TouchpadTrackpadPadWidthMm = 69);
+
+        private RelayCommand _resetTouchpadMouseAccelerationCommand;
+        public RelayCommand ResetTouchpadMouseAccelerationCommand =>
+            _resetTouchpadMouseAccelerationCommand ??= new RelayCommand(() => TouchpadMouseAcceleration = 0);
+
+        private RelayCommand _resetTouchpadMouseJitterReductionCommand;
+        public RelayCommand ResetTouchpadMouseJitterReductionCommand =>
+            _resetTouchpadMouseJitterReductionCommand ??= new RelayCommand(() => TouchpadMouseJitterReduction = true);
+
         private RelayCommand _resetTouchpadMouseCardCommand;
 
         /// <summary>Reset every Mouse-output card field to defaults.</summary>
@@ -668,6 +1005,115 @@ namespace PadForge.ViewModels
                 TouchpadMouseSensitivityY = 1.0;
                 TouchpadMouseInvertX = false;
                 TouchpadMouseInvertY = false;
+                TouchpadMouseMomentum = false;
+                TouchpadMouseMomentumDecay = 0.90;
+                TouchpadMouseJitterReduction = true;
+                TouchpadMouseAcceleration = 0;
+                TouchpadPointerResponse = "Simple";
+                TouchpadTrackpadThreshold = 130;
+                TouchpadTrackpadPadWidthMm = 69;
+            });
+
+        private RelayCommand _resetTouchpadTapMaxMotionCommand;
+        public RelayCommand ResetTouchpadTapMaxMotionCommand =>
+            _resetTouchpadTapMaxMotionCommand ??= new RelayCommand(() => TouchpadTapMaxMotion = 0.04);
+
+        private RelayCommand _resetTouchpadLongPressMaxMotionCommand;
+        public RelayCommand ResetTouchpadLongPressMaxMotionCommand =>
+            _resetTouchpadLongPressMaxMotionCommand ??= new RelayCommand(() => TouchpadLongPressMaxMotion = 0.05);
+
+        private RelayCommand _resetTouchpadTwoFingerSwipeAngularToleranceCommand;
+        public RelayCommand ResetTouchpadTwoFingerSwipeAngularToleranceCommand =>
+            _resetTouchpadTwoFingerSwipeAngularToleranceCommand ??= new RelayCommand(() => TouchpadTwoFingerSwipeAngularTolerance = 25);
+
+        private RelayCommand _resetTouchpadPinchThresholdCommand;
+        public RelayCommand ResetTouchpadPinchThresholdCommand =>
+            _resetTouchpadPinchThresholdCommand ??= new RelayCommand(() => TouchpadPinchThreshold = 0.25);
+
+        private RelayCommand _resetTouchpadRotateThresholdDegreesCommand;
+        public RelayCommand ResetTouchpadRotateThresholdDegreesCommand =>
+            _resetTouchpadRotateThresholdDegreesCommand ??= new RelayCommand(() => TouchpadRotateThresholdDegrees = 20);
+
+        // ─── Absolute-pointer card reset commands (#9 B-15) ─────
+
+        private RelayCommand _resetTouchpadPointerRegionSizeXCommand;
+        public RelayCommand ResetTouchpadPointerRegionSizeXCommand =>
+            _resetTouchpadPointerRegionSizeXCommand ??= new RelayCommand(() => TouchpadPointerRegionSizeX = 1.0);
+
+        private RelayCommand _resetTouchpadPointerRegionSizeYCommand;
+        public RelayCommand ResetTouchpadPointerRegionSizeYCommand =>
+            _resetTouchpadPointerRegionSizeYCommand ??= new RelayCommand(() => TouchpadPointerRegionSizeY = 1.0);
+
+        private RelayCommand _resetTouchpadPointerRegionCenterXCommand;
+        public RelayCommand ResetTouchpadPointerRegionCenterXCommand =>
+            _resetTouchpadPointerRegionCenterXCommand ??= new RelayCommand(() => TouchpadPointerRegionCenterX = 0.5);
+
+        private RelayCommand _resetTouchpadPointerRegionCenterYCommand;
+        public RelayCommand ResetTouchpadPointerRegionCenterYCommand =>
+            _resetTouchpadPointerRegionCenterYCommand ??= new RelayCommand(() => TouchpadPointerRegionCenterY = 0.5);
+
+        private RelayCommand _resetTouchpadPointerCardCommand;
+
+        /// <summary>Reset every Absolute-pointer card field to defaults, i.e.
+        /// back to the full-screen 1:1 map.</summary>
+        public RelayCommand ResetTouchpadPointerCardCommand =>
+            _resetTouchpadPointerCardCommand ??= new RelayCommand(() =>
+            {
+                TouchpadPointerRegionSizeX = 1.0;
+                TouchpadPointerRegionSizeY = 1.0;
+                TouchpadPointerRegionCenterX = 0.5;
+                TouchpadPointerRegionCenterY = 0.5;
+            });
+
+        // ─── Swipe-haptics card reset commands ────────
+
+        private RelayCommand _resetTouchpadSwipeHapticsEnabledCommand;
+        public RelayCommand ResetTouchpadSwipeHapticsEnabledCommand =>
+            _resetTouchpadSwipeHapticsEnabledCommand ??= new RelayCommand(() => TouchpadSwipeHapticsEnabled = false);
+
+        private RelayCommand _resetTouchpadSwipeHapticsIntensityCommand;
+        public RelayCommand ResetTouchpadSwipeHapticsIntensityCommand =>
+            _resetTouchpadSwipeHapticsIntensityCommand ??= new RelayCommand(() => TouchpadSwipeHapticsIntensity = 0.5);
+
+        private RelayCommand _resetTouchpadSwipeHapticsCardCommand;
+
+        /// <summary>Reset every Swipe-haptics card field to defaults.</summary>
+        public RelayCommand ResetTouchpadSwipeHapticsCardCommand =>
+            _resetTouchpadSwipeHapticsCardCommand ??= new RelayCommand(() =>
+            {
+                TouchpadSwipeHapticsEnabled = false;
+                TouchpadSwipeHapticsIntensity = 0.5;
+            });
+
+        // ─── Synthetic-pressure card reset commands (#239) ────────
+        // The two fields live on the per-device DeviceSlotConfig, so the
+        // resets write through the DeviceConfig anchor and follow the
+        // selected device (the ResetAudioMirrorCommand pattern).
+
+        private RelayCommand _resetTouchpadSyntheticPressureEnabledCommand;
+        public RelayCommand ResetTouchpadSyntheticPressureEnabledCommand =>
+            _resetTouchpadSyntheticPressureEnabledCommand ??= new RelayCommand(() =>
+            {
+                if (DeviceConfig != null) DeviceConfig.TouchpadSyntheticPressure = false;
+            });
+
+        private RelayCommand _resetTouchpadSyntheticTouchPercentCommand;
+        public RelayCommand ResetTouchpadSyntheticTouchPercentCommand =>
+            _resetTouchpadSyntheticTouchPercentCommand ??= new RelayCommand(() =>
+            {
+                if (DeviceConfig != null) DeviceConfig.TouchpadSyntheticTouchPercent = 50;
+            });
+
+        private RelayCommand _resetTouchpadSyntheticPressureCardCommand;
+
+        /// <summary>Reset every Synthetic Pressure card field to defaults.</summary>
+        public RelayCommand ResetTouchpadSyntheticPressureCardCommand =>
+            _resetTouchpadSyntheticPressureCardCommand ??= new RelayCommand(() =>
+            {
+                var cfg = DeviceConfig;
+                if (cfg == null) return;
+                cfg.TouchpadSyntheticPressure = false;
+                cfg.TouchpadSyntheticTouchPercent = 50;
             });
 
         // ─── Per-pad pivot / topology helpers ─────────
@@ -684,15 +1130,27 @@ namespace PadForge.ViewModels
 
         // ─── Load / sync against PadSetting.TouchpadSettings ──────
 
-        /// <summary>Reads the per-(device, pad) gesture settings from
-        /// <see cref="PadSetting.TouchpadSettings"/> into VM fields.
-        /// Called when the active device or selected touchpad index
-        /// changes. Sets <see cref="_loadingTouchpadGestures"/> for the
-        /// duration so setters don't ping-pong back to PadSetting.</summary>
+        /// <summary>Reads the per-device gesture settings from
+        /// <see cref="PadSetting.TouchpadSettings"/> into VM fields,
+        /// resolving the active device's winning entry via
+        /// <see cref="TouchpadGestureSettings.ResolveForDevice"/>. Called
+        /// when the active device / slot / tab changes. Sets
+        /// <see cref="_loadingTouchpadGestures"/> for the duration so
+        /// setters don't ping-pong back to PadSetting.</summary>
         public void LoadTouchpadGestureSettingsForActiveDevice()
         {
-            var ps = GetActivePadSettingForTouchpad();
-            var s = ResolveTouchpadGestureSettings(ps, _selectedTouchpadIndex);
+            var us = GetActiveUserSettingForTouchpad(out var guid);
+            var ps = us?.GetPadSetting();
+            // Per (device, PAD): every card on this tab belongs to the
+            // selected pad, so the whole bundle resolves by pad.
+            var s = TouchpadGestureSettings.ResolveEntryForPad(
+                        ps?.TouchpadSettings, guid.ToString(), _selectedTouchpadIndex)?.Settings
+                    ?? TouchpadGestureSettings.Default();
+
+            // The authored-but-default repair now lives inside
+            // ResolveEntryForPad, which every read seam funnels through,
+            // including the engine's. Calling it again here would only ever
+            // hit the Default() throwaway on a miss.
             _loadingTouchpadGestures = true;
             try
             {
@@ -725,12 +1183,147 @@ namespace PadForge.ViewModels
                 TouchpadJoystickInnerDeadzone = s.JoystickInnerDeadzone;
                 TouchpadJoystickDPadMode = s.JoystickDPadMode ?? "FourWay";
                 TouchpadJoystickDPadActivationThreshold = s.JoystickDPadActivationThreshold;
+                TouchpadTapMaxMotion = s.TapMaxMotion;
+                TouchpadLongPressMaxMotion = s.LongPressMaxMotion;
+                TouchpadTwoFingerSwipeAngularTolerance = s.TwoFingerSwipeAngularTolerance;
+                TouchpadPinchThreshold = s.PinchThreshold;
+                TouchpadRotateThresholdDegrees = s.RotateThresholdDegrees;
                 TouchpadMouseSensitivityX = s.MouseSensitivityX;
                 TouchpadMouseSensitivityY = s.MouseSensitivityY;
                 TouchpadMouseInvertX = s.MouseInvertX;
                 TouchpadMouseInvertY = s.MouseInvertY;
+                TouchpadMouseMomentum = s.MouseMomentum;
+                TouchpadMouseMomentumDecay = s.MouseMomentumDecay;
+                TouchpadMouseJitterReduction = s.MouseJitterReduction;
+                TouchpadMouseAcceleration = s.MouseAcceleration;
+                TouchpadPointerResponse = string.IsNullOrEmpty(s.PointerResponse) ? "Simple" : s.PointerResponse;
+                TouchpadTrackpadThreshold = s.TrackpadThresholdMmPerSec;
+                TouchpadTrackpadPadWidthMm = s.TrackpadPadWidthMm;
+                var rs = s;
+                _touchpadPointerRegionAuthored = rs.PointerRegionAuthored;
+                TouchpadPointerRegionSizeX = rs.PointerRegionSizeX;
+                TouchpadPointerRegionSizeY = rs.PointerRegionSizeY;
+                TouchpadPointerRegionCenterX = rs.PointerRegionCenterX;
+                TouchpadPointerRegionCenterY = rs.PointerRegionCenterY;
+                if (!_touchpadPointerRegionAuthored)
+                    SeedPointerRegionFromMappingSources();
+                TouchpadSwipeHapticsEnabled = s.EnableSwipeHaptics;
+                TouchpadSwipeHapticsIntensity = s.SwipeHapticsIntensity;
             }
             finally { _loadingTouchpadGestures = false; }
+        }
+
+        /// <summary><para>Show an imported region's REAL numbers in the card
+        /// before the user has authored one.</para>
+        /// <para>A Steam mouse_region import writes its geometry onto the
+        /// mapping source, because import runs before a device is assigned
+        /// and the per-device settings are keyed by device guid. The engine
+        /// reads it from there until the card is used. Without this seed the
+        /// card would sit at the 1.00 / 0.50 full-screen default while the
+        /// cursor visibly obeyed a different rectangle, and the first touch
+        /// of any region slider would author THAT default and silently
+        /// discard the imported region.</para>
+        /// <para>Assigns the backing fields directly: routing through the
+        /// setters would mark the region authored and perform the very
+        /// handover this is meant to defer.</para></summary>
+        private void SeedPointerRegionFromMappingSources()
+        {
+            var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            if (sets == null) return;
+
+            // ANY pad, not the selector's. Touchpad settings are per DEVICE
+            // (the push forces TouchpadIndex 0 and drops duplicates, and the
+            // pad combo drives only the recorder and preview, per the card's
+            // own contract in PadPage.xaml). Keying the search on the
+            // selector looked for "Touchpad 0 Pointer" while an imported
+            // Steam Deck config puts its region on the right pad, "Touchpad
+            // 1 Pointer", so nothing matched and the card sat at the
+            // full-screen default with the imported values invisible.
+            int pad = _selectedTouchpadIndex;
+            bool gotX = FindPointerRegionAxis(sets, pad, wantX: true, out double sx, out double cx);
+            bool gotY = FindPointerRegionAxis(sets, pad, wantX: false, out double sy, out double cy);
+            if (gotX) { _touchpadPointerRegionSizeX = sx; _touchpadPointerRegionCenterX = cx; }
+            if (gotY) { _touchpadPointerRegionSizeY = sy; _touchpadPointerRegionCenterY = cy; }
+
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"PTRSEED slot={PadIndex} pad={pad} sets={sets.Length} gotX={gotX} gotY={gotY} "
+                + $"sizeX={_touchpadPointerRegionSizeX:0.###} sizeY={_touchpadPointerRegionSizeY:0.###} "
+                + $"cx={_touchpadPointerRegionCenterX:0.###} cy={_touchpadPointerRegionCenterY:0.###}");
+
+            OnPropertyChanged(nameof(TouchpadPointerRegionSizeX));
+            OnPropertyChanged(nameof(TouchpadPointerRegionSizeY));
+            OnPropertyChanged(nameof(TouchpadPointerRegionCenterX));
+            OnPropertyChanged(nameof(TouchpadPointerRegionCenterY));
+        }
+
+        /// <summary><para>One axis of the imported-region search, across EVERY
+        /// slot's mapping set.</para>
+        /// <para>Internal so a test can reproduce the layout that broke it.
+        /// An imported Steam config's pointer rows target KbmMouseX/Y and
+        /// therefore live in the KEYBOARD/MOUSE slot's set, which is generally
+        /// NOT the slot whose pad page is open. Scoping the search to
+        /// PadIndex found the region only when the user happened to be on
+        /// that one slot's tab and showed the full-screen default
+        /// everywhere else. The region belongs to the PAD, which is a
+        /// property of the device, so every set is fair game.</para>
+        /// <para>Returns false and leaves the full-screen identity in the
+        /// out params when nothing matches, so a miss never shows a stale
+        /// or another pad's rectangle.</para></summary>
+        internal static bool FindPointerRegionAxis(
+            Engine.Data.MappingSet[] sets, int pad, bool wantX,
+            out double size, out double center)
+        {
+            size = 1.0;
+            center = 0.5;
+            if (sets == null) return false;
+
+            // EXACTLY this pad. An earlier cut fell back to any pad, from
+            // when the region was still per device, and the effect was that
+            // every pad displayed whichever pad the config happened to
+            // configure: select pad 1 or pad 2 and the card read the same
+            // rectangle, so the per-pad card looked broken.
+            //
+            // A pad the config does not map has no region, and the honest
+            // answer for it is the full-screen default, NOT a neighbour's
+            // rectangle. RCT3 Weno V0.1 maps only the right pad, so the left
+            // pad's card should sit at 1.00 / 0.50 and the right pad's should
+            // read 1.20 / 0.70.
+            return ScanForRegion(sets, pad, wantX, ref size, ref center);
+        }
+
+        /// <summary>One pass of the region search. <paramref name="pad"/> of
+        /// -1 matches any pad index.</summary>
+        private static bool ScanForRegion(Engine.Data.MappingSet[] sets, int pad,
+            bool wantX, ref double size, ref double center)
+        {
+            string prefix = pad < 0
+                ? "Touchpad "
+                : "Touchpad " + pad.ToString(System.Globalization.CultureInfo.InvariantCulture) + " ";
+            string axis = wantX ? "Pointer X" : "Pointer Y";
+            string target = wantX ? "KbmMouseX" : "KbmMouseY";
+
+            foreach (var set in sets)
+            {
+                var rows = set?.Rows;
+                if (rows == null) continue;
+                foreach (var row in rows)
+                {
+                    if (row?.Sources == null) continue;
+                    if (!string.Equals(row.Target, target, StringComparison.Ordinal)) continue;
+                    foreach (var src in row.Sources)
+                    {
+                        var d = src?.Descriptor;
+                        if (string.IsNullOrEmpty(d)) continue;
+                        // "Touchpad {p} Pointer X" plus the half-window suffixes.
+                        if (!d.StartsWith(prefix, StringComparison.Ordinal)) continue;
+                        if (d.IndexOf(axis, StringComparison.Ordinal) < 0) continue;
+                        size = src.ParamPointerExtent;
+                        center = src.ParamPointerCenter;
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         /// <summary>Writes VM fields back to the per-(device, pad)
@@ -758,16 +1351,19 @@ namespace PadForge.ViewModels
             if (ps == null) return;
 
             string guidStr = us.InstanceGuid.ToString();
-            int padIdx = _selectedTouchpadIndex;
 
             var list = ps.TouchpadSettings != null
                 ? new List<TouchpadSettingsEntry>(ps.TouchpadSettings)
                 : new List<TouchpadSettingsEntry>();
+            // Per (device, PAD). Every card on the tab belongs to the pad the
+            // selector names, so a controller's left and right pads carry
+            // independent tuning, not just independent screen regions.
+            int pad = _selectedTouchpadIndex;
             TouchpadSettingsEntry entry = null;
             foreach (var e in list)
             {
                 if (e == null) continue;
-                if (e.TouchpadIndex != padIdx) continue;
+                if (e.TouchpadIndex != pad) continue;
                 if (!string.Equals(e.DeviceGuid, guidStr, StringComparison.OrdinalIgnoreCase)) continue;
                 entry = e; break;
             }
@@ -776,7 +1372,7 @@ namespace PadForge.ViewModels
                 entry = new TouchpadSettingsEntry
                 {
                     DeviceGuid = guidStr,
-                    TouchpadIndex = padIdx,
+                    TouchpadIndex = pad,
                     Settings = TouchpadGestureSettings.Default(),
                 };
                 list.Add(entry);
@@ -811,11 +1407,53 @@ namespace PadForge.ViewModels
             s.JoystickInnerDeadzone = (float)TouchpadJoystickInnerDeadzone;
             s.JoystickDPadMode = string.IsNullOrEmpty(TouchpadJoystickDPadMode) ? "FourWay" : TouchpadJoystickDPadMode;
             s.JoystickDPadActivationThreshold = (float)TouchpadJoystickDPadActivationThreshold;
+            s.TapMaxMotion = (float)TouchpadTapMaxMotion;
+            s.LongPressMaxMotion = (float)TouchpadLongPressMaxMotion;
+            s.TwoFingerSwipeAngularTolerance = (float)TouchpadTwoFingerSwipeAngularTolerance;
+            s.PinchThreshold = (float)TouchpadPinchThreshold;
+            s.RotateThresholdDegrees = (float)TouchpadRotateThresholdDegrees;
             s.MouseSensitivityX = (float)TouchpadMouseSensitivityX;
             s.MouseSensitivityY = (float)TouchpadMouseSensitivityY;
             s.MouseInvertX = TouchpadMouseInvertX;
             s.MouseInvertY = TouchpadMouseInvertY;
+            s.MouseMomentum = TouchpadMouseMomentum;
+            s.MouseMomentumDecay = (float)TouchpadMouseMomentumDecay;
+            s.MouseJitterReduction = TouchpadMouseJitterReduction;
+            s.MouseAcceleration = (float)TouchpadMouseAcceleration;
+            s.PointerResponse = TouchpadPointerResponse;
+            s.TrackpadThresholdMmPerSec = (float)TouchpadTrackpadThreshold;
+            s.TrackpadPadWidthMm = (float)TouchpadTrackpadPadWidthMm;
+            // Stamp the entry as post-repair. Anything this push writes is
+            // current user intent by definition, so the one-time
+            // authored-but-default repair must never touch it. Only
+            // entries deserialized from pre-schema XML carry 0, which is
+            // what makes the repair fire exactly once, on exactly them.
+            // Without this a deliberate reset to full screen (authored
+            // true at the identity region) reads as the poisoned shape
+            // and gets cleared on the next resolve.
+            s.RegionSchema = 1;
+            s.PointerRegionAuthored = _touchpadPointerRegionAuthored;
+            s.PointerRegionSizeX = (float)TouchpadPointerRegionSizeX;
+            s.PointerRegionSizeY = (float)TouchpadPointerRegionSizeY;
+            s.PointerRegionCenterX = (float)TouchpadPointerRegionCenterX;
+            s.PointerRegionCenterY = (float)TouchpadPointerRegionCenterY;
+            s.EnableSwipeHaptics = TouchpadSwipeHapticsEnabled;
+            s.SwipeHapticsIntensity = (float)TouchpadSwipeHapticsIntensity;
             entry.Settings = s;
+
+            // No mirroring, no clearing, no pruning. The previous cut kept a
+            // device-wide entry AND a per-pad sibling for the region alone,
+            // copying fields between them and blanking the region on one side.
+            // That is where the values stopped sticking: a push could write
+            // PointerRegionAuthored=true onto an entry whose region fields had
+            // just been reset to their defaults, and an authored-but-default
+            // entry permanently suppresses the import seed, so the card sat at
+            // 1.00 / 0.50 with no way back.
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"TPPUSH pad={pad} authored={s.PointerRegionAuthored} "
+                + $"sx={s.PointerRegionSizeX:0.###} sy={s.PointerRegionSizeY:0.###} "
+                + $"cx={s.PointerRegionCenterX:0.###} cy={s.PointerRegionCenterY:0.###} "
+                + $"entries={list.Count}");
 
             ps.TouchpadSettings = list.ToArray();
         }
@@ -844,12 +1482,6 @@ namespace PadForge.ViewModels
         {
             if (_loadingTouchpadGestures) return;
             SyncTouchpadGestureSettingsToActiveDevice();
-        }
-
-        private PadSetting GetActivePadSettingForTouchpad()
-        {
-            var us = GetActiveUserSettingForTouchpad(out _);
-            return us?.GetPadSetting();
         }
 
         /// <summary>Pick the UserSetting whose finger paths the recorder
@@ -919,18 +1551,10 @@ namespace PadForge.ViewModels
             return chosen;
         }
 
-        private static TouchpadGestureSettings ResolveTouchpadGestureSettings(PadSetting ps, int padIdx)
-        {
-            if (ps?.TouchpadSettings == null) return TouchpadGestureSettings.Default();
-            for (int i = 0; i < ps.TouchpadSettings.Length; i++)
-            {
-                var e = ps.TouchpadSettings[i];
-                if (e == null) continue;
-                if (e.TouchpadIndex == padIdx)
-                    return e.Settings ?? TouchpadGestureSettings.Default();
-            }
-            return TouchpadGestureSettings.Default();
-        }
+        // Per-device resolution keyed by the active device guid (the prior
+        // TouchpadIndex-only match never checked DeviceGuid, a latent
+        // two-device-one-slot bug). Funnels through the same shared resolver
+        // as every runtime read seam.
     }
 
     /// <summary>Payload carried by

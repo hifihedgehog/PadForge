@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -43,10 +43,27 @@ namespace PadForge.ViewModels
     /// </summary>
     public partial class PadViewModel : ViewModelBase
     {
+        /// <summary>Set by any PropertyChanged on this VM; cleared by
+        /// InputService after SyncViewModelToPadSettings pushes the VM
+        /// into the selected device's PadSetting. Idle pads (no engine
+        /// feed changes, no user edits) raise nothing because every VM
+        /// write is SetProperty equality-guarded, so the 30 Hz sync's
+        /// ~80 string formats per pad skip entirely. Starts true so the
+        /// first tick always syncs. UI-thread only.</summary>
+        internal bool SettingsSyncDirty = true;
+
+        /// <summary>Set by InputService around its 30 Hz telemetry-mirror
+        /// block (live sticks/gyro/meters): those writes are display state,
+        /// not settings, and without this every frame of controller motion
+        /// re-armed the full ~80-format settings serialization. UI-thread
+        /// only, always cleared in a finally.</summary>
+        internal bool SuppressSettingsDirty;
+
         public PadViewModel(int padIndex)
         {
             PadIndex = padIndex;
             _slotNumber = padIndex + 1;
+            PropertyChanged += (_, __) => { if (!SuppressSettingsDirty) SettingsSyncDirty = true; };
             Title = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
             SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, padIndex + 1);
             _extendedConfig.PropertyChanged += OnExtendedConfigPropertyChanged;
@@ -59,6 +76,11 @@ namespace PadForge.ViewModels
             // with row edits and rebuilds. Hooked before the first
             // RebuildMappings so the initial rows are counted too.
             Mappings.CollectionChanged += OnMappingsChangedForDirectCount;
+            // Bass Shakers rows (#236): the four fixed voice items exist
+            // for the slot's lifetime. Built before RebuildMappings because
+            // its ReloadRumbleAudio leg re-seeds them from the slot set.
+            for (int i = 0; i < RumbleAudioConfig.SourceOrder.Length; i++)
+                RumbleAudioVoices.Add(new RumbleAudioVoiceItem(this, i));
             RebuildMappings();
             RebuildStickConfigs();
             RebuildTriggerConfigs();
@@ -76,6 +98,25 @@ namespace PadForge.ViewModels
 
         protected override void OnCultureChanged()
         {
+            // The layer picker's synthetic "Any layer" label is snapshotted
+            // into its entry at build time (audit 2026-07-25, C2), so a
+            // language switch left the previous wording standing until some
+            // unrelated layer edit rebuilt the tabs. Dirty suppression
+            // (round four, R24): the rebuild raises properties this VM's
+            // dirty hook listens to, and a language switch is a read-only
+            // action that must not schedule a settings write for 16 slots.
+            // (Round six, R7: the round-five X13 MacroItem suppress flag
+            // that used to wrap this call guarded a macro-side re-notify
+            // the in-place reconcile made unnecessary; both are gone.)
+            var slotSetsForCulture = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            bool prevSuppress = SuppressSettingsDirty;
+            SuppressSettingsDirty = true;
+            try
+            {
+                RebuildLayerTabs(slotSetsForCulture != null && PadIndex >= 0 && PadIndex < slotSetsForCulture.Length
+                    ? slotSetsForCulture[PadIndex]?.ShiftActivators
+                    : null);
+
             Title = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
             SlotLabel = string.Format(Strings.Instance.Main_VirtualController_Format, PadIndex + 1);
 
@@ -97,6 +138,17 @@ namespace PadForge.ViewModels
             // the memo and the cached config both re-localize.
             _matchPresetCache.Clear();
             _pipelineChipsConfigDirty = true;
+            }
+            finally
+            {
+                // The suppression covers the WHOLE culture refresh, not just
+                // RebuildLayerTabs. Title / SlotLabel are SetProperty-backed
+                // and RebuildMappings raises plenty more, all of which
+                // reached this VM's dirty hook and scheduled a settings write
+                // for 16 slots on every language switch, exactly what the
+                // comment above says must not happen (round 34).
+                SuppressSettingsDirty = prevSuppress;
+            }
         }
 
         /// <summary>Zero-based pad slot index (0–15).</summary>
@@ -162,6 +214,9 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(AvailableProfiles));
                     OnPropertyChanged(nameof(HasHMaestroProfileBar));
                     OnPropertyChanged(nameof(OutputTypeDisplayName));
+                    // Bass Shakers tab (#236): slot-type gate follows the
+                    // output type, never a physical-device capability.
+                    OnPropertyChanged(nameof(RumbleAudioTabVisible));
 
                     // Category change invalidates the previous HIDMaestro
                     // profile slug. Assign the new category's default so the
@@ -174,6 +229,14 @@ namespace PadForge.ViewModels
                     RebuildStickConfigs();
                     RebuildTriggerConfigs();
                     SyncMacroButtonStyle();
+                    // Preview handover: the raw bridge's change-detect
+                    // shadow must not survive a type switch, or a
+                    // re-switch to Nintendo whose first raw frames equal
+                    // the stale shadow leaves the previous era's preview
+                    // (a lit button, an off-center stick) frozen until an
+                    // input changes. Clearing the flag forces the next
+                    // raw push to rewrite the full preview surface.
+                    _hasLastRawSnapshot = false;
                 }
             }
         }
@@ -198,7 +261,11 @@ namespace PadForge.ViewModels
                     // so the UI reflects the profile's actual axes/buttons.
                     // Xbox / PlayStation slots have fixed layouts that don't
                     // vary per profile, so no rebuild is needed there.
-                    if (_outputType == VirtualControllerType.Extended)
+                    // Nintendo rides the same profile-driven resync (its
+                    // bucket has no synthetic Custom entry, so the
+                    // Customize force below can never fire for it).
+                    if (_outputType is VirtualControllerType.Extended
+                        or VirtualControllerType.Nintendo)
                     {
                         SyncExtendedConfigFromProfile();
                         // Force Customize on whenever the user picks the
@@ -211,6 +278,12 @@ namespace PadForge.ViewModels
                         RebuildMappings();
                         RebuildStickConfigs();
                         RebuildTriggerConfigs();
+                        // Macro / menu button lettering follows the profile
+                        // on Extended slots (#215, Switch Pro letters).
+                        SyncMacroButtonStyle();
+                        // Bass Shakers gate (#236): an uncustomized slot
+                        // follows the newly-picked profile's descriptor.
+                        RefreshRumbleAudioTabGate();
                     }
                     else if (_outputType == VirtualControllerType.Xbox)
                     {
@@ -256,7 +329,16 @@ namespace PadForge.ViewModels
             _extendedConfig.ThumbstickCount = profile.StickCount;
             _extendedConfig.TriggerCount = profile.TriggerCount;
             _extendedConfig.PovCount = profile.HasHat ? 1 : 0;
-            _extendedConfig.ButtonCount = profile.ButtonCount;
+            int buttons = profile.ButtonCount;
+            // switch-pro descriptors declare 18 buttons, but 15-18 are
+            // the Joy-Con rail SL/SR bits with no role in the profile
+            // layout, and the SDK packer only emits role-mapped buttons.
+            // Rows past the lettered 14 would map input onto dead wire,
+            // so the whole surface (grid, SOCD, macros, Step 3 bounds)
+            // clamps here at the sync seam.
+            if (MacroButtonNames.IsNintendoLetteredProfile(profile.Id))
+                buttons = System.Math.Min(buttons, MacroButtonNames.NintendoLetteredButtonCount);
+            _extendedConfig.ButtonCount = buttons;
         }
 
         /// <summary>
@@ -269,6 +351,7 @@ namespace PadForge.ViewModels
             {
                 VirtualControllerType.Xbox => HMaestroProfileCatalog.XboxProfiles,
                 VirtualControllerType.PlayStation => HMaestroProfileCatalog.PlayStationProfiles,
+                VirtualControllerType.Nintendo => HMaestroProfileCatalog.NintendoProfiles,
                 VirtualControllerType.Extended => HMaestroProfileCatalog.ExtendedProfiles,
                 _ => System.Array.Empty<HIDMaestro.HMProfile>()
             };
@@ -281,6 +364,7 @@ namespace PadForge.ViewModels
         public bool HasHMaestroProfileBar =>
             _outputType == VirtualControllerType.Xbox
             || _outputType == VirtualControllerType.PlayStation
+            || _outputType == VirtualControllerType.Nintendo
             || _outputType == VirtualControllerType.Extended;
 
         private string _typeInstanceLabel = "1";
@@ -301,6 +385,7 @@ namespace PadForge.ViewModels
         {
             VirtualControllerType.Xbox => Strings.Instance.ControllerType_Xbox,
             VirtualControllerType.PlayStation => Strings.Instance.ControllerType_PlayStation,
+            VirtualControllerType.Nintendo => Strings.Instance.ControllerType_Nintendo,
             VirtualControllerType.Extended => Strings.Instance.ControllerType_Extended,
             VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
             VirtualControllerType.Midi => Strings.Instance.ControllerType_MIDI,
@@ -361,6 +446,12 @@ namespace PadForge.ViewModels
                         RebuildMappings();
                         SyncMacroButtonStyle();
                         break;
+                    case nameof(ExtendedSlotConfig.ForceFeedbackEnabled):
+                    case nameof(ExtendedSlotConfig.Customize):
+                        // Bass Shakers rides the PID force feedback lane
+                        // (#236): the tab follows the effective FFB state.
+                        RefreshRumbleAudioTabGate();
+                        break;
                 }
             }
         }
@@ -391,11 +482,43 @@ namespace PadForge.ViewModels
         // ConcurrentDictionary so the polling thread (which iterates this
         // every dispatch tick + every macro lightbar action) doesn't race
         // with UI-thread mutations from device-map changes / settings
-        // load. Iteration on ConcurrentDictionary returns a moment-in-time
-        // snapshot rather than throwing InvalidOperationException.
+        // load. Iteration on ConcurrentDictionary never throws
+        // InvalidOperationException, which is the property relied on here.
+        // It is NOT a moment-in-time snapshot: the enumerator may or may not
+        // observe concurrent writes, so a consumer that needs a stable view
+        // must copy first (round 34 corrected this comment, which overclaimed
+        // the guarantee and would justify code that does not hold).
         private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, DeviceSlotConfig> _perDeviceSlotConfigs = new();
+
+        /// <summary>Moves a per-device slot config to a device's new
+        /// identity after an adoption re-key (round eight, R13). The
+        /// INSTANCE moves rather than being copied, so effect-dispatcher
+        /// subscriptions anchored to it stay valid. No-op when the old
+        /// key is absent. When the new key ALREADY holds a config that
+        /// entry is the newer truth and the old instance is dropped, so
+        /// subscriptions anchored to the dropped one do not survive: the
+        /// destination-wins policy matches the UserSetting migration's,
+        /// and the loss is bounded to a collision that only an orphaned
+        /// entry can produce.</summary>
+        internal void RekeyDeviceConfig(Guid oldGuid, Guid newGuid)
+        {
+            if (oldGuid == Guid.Empty || newGuid == Guid.Empty || oldGuid == newGuid) return;
+            if (!_perDeviceSlotConfigs.TryRemove(oldGuid, out var cfg)) return;
+            _perDeviceSlotConfigs.TryAdd(newGuid, cfg);
+        }
         private DeviceSlotConfig _deviceConfig = new();
-        private static readonly DeviceSlotConfig _emptyDeviceConfigSentinel = new();
+        /// <summary>Throwaway config bound while this slot has no selected
+        /// device, so UI edits and profile applies land somewhere harmless
+        /// instead of on a real device's config.
+        ///
+        /// <para>PER INSTANCE, not static. A single shared instance was
+        /// bound by EVERY deviceless slot at once, and
+        /// SettingsService.ApplyDeviceSlotConfigs writes
+        /// padVm.DeviceConfig unconditionally, so applying a profile stamped
+        /// one slot's anchor lighting / adaptive-trigger state into the
+        /// object every other deviceless slot was also showing and editing
+        /// (round 34).</para></summary>
+        private readonly DeviceSlotConfig _emptyDeviceConfigSentinel = new();
 
         /// <summary>Per-(slot, device) lighting tab configs keyed by
         /// physical device InstanceGuid. Always populated for every
@@ -698,6 +821,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
+                    OnPropertyChanged(nameof(SelectedDeviceHasTouchpadPulse));
                     // Pointer-tab tunables (IrSensorBarPos etc.) are per
                     // (device, slot) on PadSetting; the device-switch reload
                     // repopulates them through the same PadSetting load path
@@ -1143,8 +1267,40 @@ namespace PadForge.ViewModels
             "RightThumbAxisY" => RightSensitivityCurveY,
             "LeftTrigger" => LeftTriggerSensitivityCurve,
             "RightTrigger" => RightTriggerSensitivityCurve,
-            _ => null,
+            _ => CurveStringForRawAxisTarget(target),
         };
+
+        /// <summary>Curve for a RawAxis{n} target, which is what an Extended or
+        /// Nintendo slot's rows carry instead of the six named ones above.
+        /// Without this the curve pipeline chip never lit on those slots: the
+        /// switch fell to null and the row read as having no curve, however
+        /// non-linear its stick or trigger actually was.
+        ///
+        /// <para>Resolved against the axis indices the config items already
+        /// STORE (AxisXIndex / AxisYIndex / AxisIndex), which RebuildStickConfigs
+        /// fills from the slot's own ComputeAxisLayout. Deliberately not a
+        /// hardcoded 0..5 map: the Extended layout interleaves sticks and
+        /// triggers by count, so a fixed table would be right only for the
+        /// common shape and silently wrong for the rest.</para></summary>
+        private string CurveStringForRawAxisTarget(string target)
+        {
+            if (string.IsNullOrEmpty(target)
+                || !target.StartsWith("RawAxis", StringComparison.Ordinal)
+                || !int.TryParse(target.AsSpan("RawAxis".Length), out int axis))
+                return null;
+
+            foreach (var st in StickConfigs)
+            {
+                if (st == null) continue;
+                if (st.AxisXIndex == axis) return st.SensitivityCurveX;
+                if (st.AxisYIndex == axis) return st.SensitivityCurveY;
+            }
+            foreach (var tr in TriggerConfigs)
+            {
+                if (tr != null && tr.AxisIndex == axis) return tr.SensitivityCurve;
+            }
+            return null;
+        }
 
         // Config-derived chip state (Active flags, tooltip listings,
         // owning rows, MatchPreset lookups) only moves on user edits, so it
@@ -1381,7 +1537,7 @@ namespace PadForge.ViewModels
                 if (s == null) continue;
                 string name = (s.SelectedInput?.DisplayName ?? s.Descriptor ?? "").Trim();
                 if (name.Length == 0) continue;
-                string dev = (s.SelectedInput?.DeviceLabel ?? s.DeviceLabel ?? "").Trim();
+                string dev = (s.DisplayDeviceLabel ?? "").Trim();
                 parts.Add(dev.Length > 0 && !string.Equals(dev, primaryDevice, StringComparison.Ordinal)
                     ? dev + ": " + name : name);
             }
@@ -1505,6 +1661,15 @@ namespace PadForge.ViewModels
         /// <c>SettingsManager.SlotMappingSets[PadIndex].ShiftActivators</c>.</summary>
         public ObservableCollection<ShiftLayerInfo> LayerTabs { get; } = new();
 
+        /// <summary>Macro layer-scope choices (#254 A-1): a synthetic
+        /// "Any layer" entry (LayerMask = "", the ungated default every
+        /// pre-#254 macro carries) followed by Base and every shift layer.
+        /// A DEDICATED collection rather than a LayerTabs mutation, because
+        /// four other consumers read LayerTabs (the pipeline chip cycles
+        /// it) and none of them may see the synthetic entry. Rebuilt
+        /// alongside LayerTabs.</summary>
+        public ObservableCollection<ShiftLayerInfo> MacroLayerChoices { get; } = new();
+
         /// <summary>True when the slot has at least one shift activator
         /// authored, i.e. at least one tab beyond Base. Drives the nested
         /// tab strip's visibility (basic users without any shift layers see
@@ -1576,6 +1741,37 @@ namespace PadForge.ViewModels
                 foreach (var a in activators)
                 {
                     if (a == null || string.IsNullOrEmpty(a.LayerMask)) continue;
+
+                    // ONE TAB PER LAYER, NOT PER ACTIVATOR. A layer is
+                    // identified by its LayerMask, and any number of
+                    // activators may engage the same one: a hold on a bumper
+                    // and a toggle on a menu item are two ways into one
+                    // scope, not two scopes. Adding a tab per activator drew
+                    // the same layer as several identical radio buttons, so
+                    // an imported Workshop config with four ways to reach
+                    // "Deactivate trackpad" showed five layers where the
+                    // config declares two. Hand-authored profiles rarely hit
+                    // it (one activator per layer is the usual shape), which
+                    // is why it survived until a config that does.
+                    //
+                    // The macro-scope picker fed from these tabs below has
+                    // deduped by mask since round six for the same reason.
+                    // This is that rule at the level it should have been.
+                    var existing = LayerTabs.FirstOrDefault(
+                        t => string.Equals(t.LayerMask, a.LayerMask, StringComparison.Ordinal));
+                    if (existing != null)
+                    {
+                        // A later activator fills in what the first left
+                        // blank, so a named or coloured one is not lost to
+                        // an unnamed one that happened to be first.
+                        if (string.Equals(existing.LayerName, existing.LayerMask, StringComparison.Ordinal)
+                            && !string.IsNullOrEmpty(a.LayerName))
+                            existing.LayerName = a.LayerName;
+                        if (string.IsNullOrEmpty(existing.Color) && !string.IsNullOrEmpty(a.Color))
+                            existing.Color = a.Color;
+                        continue;
+                    }
+
                     var info = new ShiftLayerInfo
                     {
                         LayerMask = a.LayerMask,
@@ -1589,14 +1785,121 @@ namespace PadForge.ViewModels
             }
             if (!activeFound)
             {
-                // Active layer no longer exists; snap back to Base.
+                // Active layer no longer exists; snap back to Base. Raise
+                // LayerActivated too (audit 2026-07-25 round four, R23):
+                // the direct field write skipped the event, so the tab
+                // strip snapped to Base while the mapping grid kept
+                // rendering the vanished layer's rows.
                 _activeLayerMask = "Base";
                 LayerTabs[0].IsActive = true;
                 OnPropertyChanged(nameof(ActiveLayerMask));
+                LayerActivated?.Invoke(this, EventArgs.Empty);
             }
             OnPropertyChanged(nameof(HasShiftLayers));
             OnPropertyChanged(nameof(IsActiveLayerInheriting));
             OnPropertyChanged(nameof(ActiveLayerColor));
+
+            // #254 A-1: mirror the tabs into the macro-scope picker, with
+            // the "Any layer" sentinel first. Empty display name falls
+            // back to the mask per the codebase-wide rule; the sentinel
+            // carries its own localized label.
+            // RECONCILED IN PLACE, never Clear()ed (field repro 2026-07-25).
+            // Clearing made WPF drop the picker's SelectedItem, and because
+            // the macro's mask had not changed, re-pushing it set SelectedValue
+            // to the value the control ALREADY held. No change means no
+            // re-resolution against the new item instances, so SelectedItem
+            // stayed null and DisplayMemberPath had nothing to render: the
+            // picker went blank over intact data and a macro that still gated
+            // correctly. Keeping the instance whose LayerMask matches means the
+            // selection is never lost in the first place, and ShiftLayerInfo is
+            // observable so a renamed layer's new label just propagates.
+            var desired = new System.Collections.Generic.List<(string Mask, string Name, string Color)>
+            {
+                ("", PadForge.Resources.Strings.Strings.Instance.Macro_Layer_Any, ""),
+            };
+            foreach (var t in LayerTabs)
+            {
+                // Dedupe by mask, same as the cycle stops below (round
+                // six, R8): a persisted activator whose mask collides
+                // with the synthetic Base (pre-round-six data; the
+                // dialog now reserves "Base") would otherwise put two
+                // identical-valued entries in the picker, and reducing
+                // them later can drop the instance a picker has
+                // selected. One entry per mask; SelectedValuePath
+                // resolves by value, so one is all any picker needs.
+                bool dup = false;
+                foreach (var d in desired)
+                    if (string.Equals(d.Mask, t.LayerMask, StringComparison.Ordinal))
+                    { dup = true; break; }
+                if (!dup) desired.Add((t.LayerMask, t.LayerName, t.Color));
+            }
+
+            // A Cycle activator ENGAGES every stop in its ring while only
+            // the first is its own LayerMask, so later stops are real,
+            // engageable scopes with no tab (round four, R25a). Without
+            // these entries a macro scoped to a later stop rendered a
+            // blank picker and the scope could not be re-authored. The
+            // mask doubles as the display name: stops carry no name of
+            // their own.
+            if (activators != null)
+            {
+                foreach (var a in activators)
+                {
+                    if (a == null || string.IsNullOrEmpty(a.CycleLayers)) continue;
+                    foreach (var stop in a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        bool present = false;
+                        foreach (var d in desired)
+                            if (string.Equals(d.Mask, stop, StringComparison.Ordinal))
+                            { present = true; break; }
+                        if (!present)
+                            desired.Add((stop, stop, a.Color ?? ""));
+                    }
+                }
+            }
+
+            // Apply `desired` onto the live collection by INDEX, reusing the
+            // existing instance at each position so the item the picker has
+            // selected is never removed. Only genuine adds and removals touch
+            // the collection.
+            for (int i = 0; i < desired.Count; i++)
+            {
+                var (mask, name, color) = desired[i];
+                if (i < MacroLayerChoices.Count)
+                {
+                    var slot = MacroLayerChoices[i];
+                    if (string.Equals(slot.LayerMask, mask, StringComparison.Ordinal))
+                    {
+                        // Same entry: refresh its label and colour in place.
+                        slot.LayerName = name;
+                        slot.Color = color;
+                        continue;
+                    }
+                    // A different mask now belongs here. Look for the existing
+                    // instance carrying it and move that one, so a reorder does
+                    // not destroy the selected item either.
+                    int found = -1;
+                    for (int k = i + 1; k < MacroLayerChoices.Count; k++)
+                        if (string.Equals(MacroLayerChoices[k].LayerMask, mask, StringComparison.Ordinal))
+                        { found = k; break; }
+                    if (found >= 0)
+                    {
+                        MacroLayerChoices.Move(found, i);
+                        MacroLayerChoices[i].LayerName = name;
+                        MacroLayerChoices[i].Color = color;
+                        continue;
+                    }
+                    MacroLayerChoices.Insert(i, new ShiftLayerInfo
+                    { LayerMask = mask, LayerName = name, Color = color });
+                    continue;
+                }
+                MacroLayerChoices.Add(new ShiftLayerInfo
+                { LayerMask = mask, LayerName = name, Color = color });
+            }
+            // Drop any tail the new set no longer wants.
+            while (MacroLayerChoices.Count > desired.Count)
+                MacroLayerChoices.RemoveAt(MacroLayerChoices.Count - 1);
+
         }
 
         /// <summary>
@@ -1616,10 +1919,23 @@ namespace PadForge.ViewModels
                 InitializeKeyboardMouseMappings();
             else if (OutputType == VirtualControllerType.Midi)
                 InitializeMidiMappings();
-            else if (OutputType == VirtualControllerType.Extended)
-                InitializeExtendedCustomMappings();
+            else if (OutputType is VirtualControllerType.Extended
+                     or VirtualControllerType.Nintendo)
+                InitializeRawSurfaceMappings();
             else
                 InitializeGamepadMappings();
+
+            // Menus (#9 B-17) live on the same slot MappingSet the rows
+            // do, so every path that rebuilds the mapping view (profile
+            // apply, Workshop import, output-type change, Reset to
+            // Defaults) refreshes the Menus tab in the same breath.
+            ReloadMenus();
+            // The rumble-to-audio config (#236) shares that lifetime, so
+            // the Bass Shakers tab re-seeds from the set on the same paths.
+            ReloadRumbleAudio();
+            // The SOCD card (#240) lives on the same slot MappingSet and
+            // re-seeds on the same paths.
+            ReloadSocd();
 
             MappingsRebuilt?.Invoke(this, EventArgs.Empty);
         }
@@ -1838,7 +2154,7 @@ namespace PadForge.ViewModels
         /// Dynamic Extended Custom mappings — numbered buttons, sticks, triggers, POVs.
         /// Axis layout interleaves sticks and triggers: [Stick0 X,Y | Trig0 | Stick1 X,Y | Trig1 | ...].
         /// </summary>
-        private void InitializeExtendedCustomMappings()
+        private void InitializeRawSurfaceMappings()
         {
             var cfg = ExtendedConfig;
             int stickCount = cfg.ThumbstickCount;
@@ -1846,31 +2162,76 @@ namespace PadForge.ViewModels
 
             cfg.ComputeAxisLayout(out var stickAxisX, out var stickAxisY, out var triggerAxis);
 
+            if (_outputType == VirtualControllerType.Nintendo)
+            {
+                // Nintendo rows mirror the Xbox / PlayStation tables'
+                // arrangement (owner direction 2026-07-19): analogous
+                // controls in analogous positions. Face diamond first in
+                // POSITIONAL order (south, east, west, north = B A Y X,
+                // which is also raw index order), then bumpers, the
+                // Minus/Plus pair where Back/Start sit, Home where Guide
+                // sits, Capture where the Series Share row sits, stick
+                // clicks, D-pad, then ZL/ZR in the trigger rows'
+                // position (digital buttons on this wire), then the
+                // stick axes with the same labels the gamepad grids use.
+                void AddBtn(int i) => Mappings.Add(new MappingItem(
+                    MacroButtonNames.RawButtonLabel(ProfileId, i + 1), $"RawBtn{i}", MappingCategory.Buttons));
+
+                AddBtn(0); AddBtn(1); AddBtn(2); AddBtn(3);   // B A Y X
+                AddBtn(4); AddBtn(5);                          // L R
+                AddBtn(8); AddBtn(9);                          // Minus Plus
+                AddBtn(12);                                    // Home
+                AddBtn(13);                                    // Capture
+                AddBtn(10); AddBtn(11);                        // stick clicks
+
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadUp, "RawPov0Up", MappingCategory.DPad));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadDown, "RawPov0Down", MappingCategory.DPad));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadLeft, "RawPov0Left", MappingCategory.DPad));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadRight, "RawPov0Right", MappingCategory.DPad));
+
+                AddBtn(6); AddBtn(7);                          // ZL ZR
+
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickX, "RawAxis0", MappingCategory.LeftStick, "RawAxis0Neg"));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickY, "RawAxis1", MappingCategory.LeftStick, "RawAxis1Neg"));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickX, "RawAxis2", MappingCategory.RightStick, "RawAxis2Neg"));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickY, "RawAxis3", MappingCategory.RightStick, "RawAxis3Neg"));
+
+                // Motion passthrough, same tail position as the
+                // PlayStation grid.
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionGyro,  "MotionGyro",  MappingCategory.Motion));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionAccel, "MotionAccel", MappingCategory.Motion));
+                return;
+            }
+
             // Stick axes (paired)
             for (int i = 0; i < stickCount; i++)
             {
                 var cat = i == 0 ? MappingCategory.LeftStick : MappingCategory.RightStick;
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Stick_Format, i + 1), $"ExtendedAxis{stickAxisX[i]}", cat, $"ExtendedAxis{stickAxisX[i]}Neg"));
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_StickY_Format, i + 1), $"ExtendedAxis{stickAxisY[i]}", cat, $"ExtendedAxis{stickAxisY[i]}Neg"));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Stick_Format, i + 1), $"RawAxis{stickAxisX[i]}", cat, $"RawAxis{stickAxisX[i]}Neg"));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_StickY_Format, i + 1), $"RawAxis{stickAxisY[i]}", cat, $"RawAxis{stickAxisY[i]}Neg"));
             }
 
             // Trigger axes (unpaired)
             for (int i = 0; i < triggerCount; i++)
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Trigger_Format, i + 1), $"ExtendedAxis{triggerAxis[i]}", MappingCategory.Triggers));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Trigger_Format, i + 1), $"RawAxis{triggerAxis[i]}", MappingCategory.Triggers));
 
-            // Buttons
+            // Buttons. Switch Pro profiles letter each raw index in the
+            // Nintendo convention (#215) through the same MacroButtonNames
+            // seam the macro / menu pickers read; other profiles keep the
+            // numbered labels.
             for (int i = 0; i < cfg.ButtonCount; i++)
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Button_Format, i + 1), $"ExtendedBtn{i}", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(MacroButtonNames.RawButtonLabel(ProfileId, i + 1), $"RawBtn{i}", MappingCategory.Buttons));
 
             // POVs
             for (int i = 0; i < cfg.PovCount; i++)
             {
                 string label = cfg.PovCount == 1 ? Strings.Instance.Extended_DPad : string.Format(Strings.Instance.Extended_POV_Format, i + 1);
-                Mappings.Add(new MappingItem($"{label} Up", $"ExtendedPov{i}Up", MappingCategory.DPad));
-                Mappings.Add(new MappingItem($"{label} Down", $"ExtendedPov{i}Down", MappingCategory.DPad));
-                Mappings.Add(new MappingItem($"{label} Left", $"ExtendedPov{i}Left", MappingCategory.DPad));
-                Mappings.Add(new MappingItem($"{label} Right", $"ExtendedPov{i}Right", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Up", $"RawPov{i}Up", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Down", $"RawPov{i}Down", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Left", $"RawPov{i}Left", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Right", $"RawPov{i}Right", MappingCategory.DPad));
             }
+
         }
 
         // ═══════════════════════════════════════════════
@@ -1931,10 +2292,16 @@ namespace PadForge.ViewModels
         }
 
         private double _gyroAcceleration;
+        // Clamp 5, not 2: a Steam import can carry acceleration up to
+        // clamp(0..10) x 0.5 = 5, and the Workshop fold writes it onto this
+        // card. At the old 2 a folded value survived only until the Gyro tab
+        // first loaded it, then this setter silently degraded it on the
+        // round-trip. The card is the contract, so the range covers every
+        // importable value.
         public double GyroAcceleration
         {
             get => _gyroAcceleration;
-            set => SetProperty(ref _gyroAcceleration, Math.Clamp(value, 0, 2));
+            set => SetProperty(ref _gyroAcceleration, Math.Clamp(value, 0, 5));
         }
 
         private string _gyroOutputCurve = "Linear";
@@ -2013,14 +2380,15 @@ namespace PadForge.ViewModels
         public IReadOnlyList<(string Label, string XTarget, string YTarget)> GetSteerableSticks()
         {
             var list = new List<(string, string, string)>();
-            if (OutputType == VirtualControllerType.Extended)
+            if (OutputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo)
             {
                 ExtendedConfig.ComputeAxisLayout(out var sx, out var sy, out _);
                 for (int g = 0; g < sx.Length && g < sy.Length; g++)
                 {
                     string label = (g < StickConfigs.Count ? StickConfigs[g].Title : null)
                         ?? string.Format(Strings.Instance.Extended_Stick_Format, g + 1);
-                    list.Add((label, $"ExtendedAxis{sx[g]}", $"ExtendedAxis{sy[g]}"));
+                    list.Add((label, $"RawAxis{sx[g]}", $"RawAxis{sy[g]}"));
                 }
             }
             else
@@ -2058,6 +2426,63 @@ namespace PadForge.ViewModels
         public RelayCommand ResetMotionSteerAllCommand => _resetMotionSteerAllCommand ??= new RelayCommand(() =>
         {
             MotionSteerInnerDz = 15; MotionSteerOuterDz = 135; MotionSteerOrientIndex = 0;
+        });
+
+        // ── Flick Stick tuning (#225, wave 4a) ──
+        // Per-(slot, device) lens over the "Flick Stick ..." sources in this
+        // slot's KBM mapping set: the save pipeline stamps these onto every
+        // flick source (ApplyFlickStickParamsToRow, the Motion Steering push
+        // pattern) and persists them in the PadSetting extended-mapping bag
+        // ("FlickStick*" keys). Defaults mirror the MappingSource ParamFlick*
+        // defaults (JSM-grounded; see MappingSource.cs).
+        private double _flickCountsPer360 = 14400;
+        public double FlickCountsPer360 { get => _flickCountsPer360; set => SetProperty(ref _flickCountsPer360, Math.Clamp(value, 100, 100000)); }
+        private double _flickTime = 0.1;
+        public double FlickTime { get => _flickTime; set => SetProperty(ref _flickTime, Math.Clamp(value, 0.01, 2.0)); }
+        private double _flickThreshold = 0.9;
+        public double FlickThreshold { get => _flickThreshold; set => SetProperty(ref _flickThreshold, Math.Clamp(value, 0.1, 1.0)); }
+        private double _flickSnapStrength = 1.0;
+        public double FlickSnapStrength { get => _flickSnapStrength; set => SetProperty(ref _flickSnapStrength, Math.Clamp(value, 0.0, 1.0)); }
+        private double _flickForwardDeadzone;
+        public double FlickForwardDeadzone { get => _flickForwardDeadzone; set => SetProperty(ref _flickForwardDeadzone, Math.Clamp(value, 0.0, 180.0)); }
+        private double _flickSmoothing = -1;
+        public double FlickSmoothing { get => _flickSmoothing; set => SetProperty(ref _flickSmoothing, Math.Clamp(value, -1.0, 0.5)); }
+        // Steam's flickstick "rotation": the whole input map turns, so the
+        // offset lands on the flick angle before snapping. Range is one full
+        // turn either way, which is what the engine's re-wrap accepts.
+        private double _flickRotationOffset;
+        public double FlickRotationOffset { get => _flickRotationOffset; set => SetProperty(ref _flickRotationOffset, Math.Clamp(value, -180.0, 180.0)); }
+        private bool _flickOnEngage;
+        public bool FlickOnEngage { get => _flickOnEngage; set => SetProperty(ref _flickOnEngage, value); }
+
+        // Snap mode as a Tag-backed string (the GyroEngageStickSide combo
+        // pattern), value set = SourceKindRuntime.FlickSnapIntervalRad's.
+        private string _flickSnapMode = "None";
+        public string FlickSnapMode
+        {
+            get => _flickSnapMode;
+            set => SetProperty(ref _flickSnapMode, string.IsNullOrEmpty(value) ? "None" : value);
+        }
+
+        private RelayCommand _resetFlickCountsPer360Command, _resetFlickTimeCommand,
+            _resetFlickThresholdCommand, _resetFlickSnapModeCommand, _resetFlickSnapStrengthCommand,
+            _resetFlickForwardDeadzoneCommand, _resetFlickSmoothingCommand, _resetFlickOnEngageCommand,
+            _resetFlickRotationOffsetCommand,
+            _resetFlickStickCardCommand;
+        public RelayCommand ResetFlickCountsPer360Command => _resetFlickCountsPer360Command ??= new RelayCommand(() => FlickCountsPer360 = 14400);
+        public RelayCommand ResetFlickTimeCommand => _resetFlickTimeCommand ??= new RelayCommand(() => FlickTime = 0.1);
+        public RelayCommand ResetFlickThresholdCommand => _resetFlickThresholdCommand ??= new RelayCommand(() => FlickThreshold = 0.9);
+        public RelayCommand ResetFlickSnapModeCommand => _resetFlickSnapModeCommand ??= new RelayCommand(() => FlickSnapMode = "None");
+        public RelayCommand ResetFlickSnapStrengthCommand => _resetFlickSnapStrengthCommand ??= new RelayCommand(() => FlickSnapStrength = 1.0);
+        public RelayCommand ResetFlickForwardDeadzoneCommand => _resetFlickForwardDeadzoneCommand ??= new RelayCommand(() => FlickForwardDeadzone = 0);
+        public RelayCommand ResetFlickSmoothingCommand => _resetFlickSmoothingCommand ??= new RelayCommand(() => FlickSmoothing = -1);
+        public RelayCommand ResetFlickRotationOffsetCommand => _resetFlickRotationOffsetCommand ??= new RelayCommand(() => FlickRotationOffset = 0);
+        public RelayCommand ResetFlickOnEngageCommand => _resetFlickOnEngageCommand ??= new RelayCommand(() => FlickOnEngage = false);
+        public RelayCommand ResetFlickStickCardCommand => _resetFlickStickCardCommand ??= new RelayCommand(() =>
+        {
+            FlickCountsPer360 = 14400; FlickTime = 0.1; FlickThreshold = 0.9;
+            FlickSnapMode = "None"; FlickSnapStrength = 1.0; FlickForwardDeadzone = 0;
+            FlickSmoothing = -1; FlickOnEngage = false; FlickRotationOffset = 0;
         });
 
         private double _gyroPlayerSpaceYawRelaxFactor = 1.41;
@@ -2260,6 +2685,26 @@ namespace PadForge.ViewModels
             get => _gyroCalibrationLabel;
             set => SetProperty(ref _gyroCalibrationLabel, value);
         }
+
+        /// <summary>UTC gate before which the 30 Hz pad tick must not
+        /// overwrite <see cref="GyroCalibrationLabel"/> (round seven, R1).
+        /// The manual Calibrate flow owns the label while a pass runs and
+        /// briefly after a rejection: the tick pushes the memoized
+        /// timestamp label unconditionally, which otherwise clobbers
+        /// "Calibrating…" within one frame and makes a motion-rejected
+        /// run pixel-identical to nothing happening.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public DateTime GyroCalibrationLabelHoldUntilUtc { get; set; }
+
+        /// <summary>Bumped by Reset Calibration so an in-flight manual run
+        /// knows its result was voided (round nine, R5). Reset ignores the
+        /// busy flag by design (the user may want to abandon a run), and
+        /// without this the aborted manual pass pinned "Couldn't
+        /// calibrate" for five seconds over a profile that had just been
+        /// reset or re-calibrated. Same idiom as the auto latch's run
+        /// token and the handler's selection re-validation.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int GyroCalibrationGeneration { get; set; }
 
         /// <summary>Raised when the user clicks Calibrate Gyro on the
         /// Pad page's Gyro tab. MainWindow wires the handler to
@@ -3315,9 +3760,70 @@ namespace PadForge.ViewModels
             // Macros are bound to the slot, not the physical device, so a
             // slot deletion has to drop them. Otherwise the next VC created
             // at this pad index inherits the deleted slot's macros. Their
-            // sounds go with them — a looping sound would be unstoppable.
+            // sounds go with them. A looping sound would be unstoppable.
             PadForge.Common.Input.SoundMacroService.StopSlot(PadIndex);
             Macros.Clear();
+
+            // Menus (#9 B-17) are slot-scoped like macros: a slot deletion
+            // or Reset to Defaults must drop them, or the next VC at this
+            // index inherits the deleted slot's on-screen menus. The
+            // definitions live on the slot's MappingSet, so clear the live
+            // list too (Reset to Defaults already replaced the whole set;
+            // DeleteSlot reaches only through here).
+            {
+                var menuSets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+                if (menuSets != null && PadIndex >= 0 && PadIndex < menuSets.Length)
+                {
+                    menuSets[PadIndex]?.Menus?.Clear();
+                    // Rumble-audio config (#236) is slot-scoped the same
+                    // way: clear it AND publish synchronous silence, so
+                    // the shaker tone dies with the slot instead of
+                    // holding its last value until the poll lane's next
+                    // tick (or forever, if the engine is stopped).
+                    var delSet = menuSets[PadIndex];
+                    if (delSet != null)
+                    {
+                        delSet.RumbleAudio = null;
+                        // SOCD config (#240) is slot-scoped the same way:
+                        // the next VC at this index must not inherit the
+                        // deleted slot's pair cleaning.
+                        delSet.SocdMode = "";
+                        delSet.SocdPairs = "";
+                        // Shift layers are slot-scoped for exactly the same
+                        // reason as the three above, and were the one member
+                        // of that family this reset missed: the next VC at
+                        // this pad index inherited the deleted slot's
+                        // activators, so its rows evaluated against layers the
+                        // user never authored on it. The Base appearance trio
+                        // rides the same structure and is cleared with it.
+                        //
+                        // Swap the reference, never Clear() in place. The poll
+                        // thread enumerates ShiftActivators every frame without
+                        // our lock (ResolveActiveLayerMask,
+                        // ApplyMappingSetToGamepad), so mutating the live list
+                        // throws "collection was modified" inside its foreach
+                        // and costs that device its whole mapping pass. Deleting
+                        // a slot runs ResetAllSettings BEFORE unassigning its
+                        // devices, so the poll thread is still walking this very
+                        // set. Same discipline as the add/remove paths in
+                        // PadPage and ApplyShiftLayerSnapshot.
+                        delSet.ShiftActivators = new List<Engine.Data.ShiftActivator>();
+                        delSet.BaseLayerName = "";
+                        delSet.BaseColor = "";
+                        delSet.BaseIcon = "";
+                    }
+                }
+            }
+            PadForge.Common.Input.RumbleAudioService.SilenceSlot(PadIndex);
+            ReloadMenus();
+            ReloadRumbleAudio();
+            ReloadSocd();
+            // The ViewModel half of the shift-layer clear above. Menus,
+            // rumble-audio and SOCD each get their reload here; layers had
+            // none, so the tab strip kept showing the deleted slot's layers
+            // and ActiveLayerMask could still point at one of them.
+            ActiveLayerMask = "Base";
+            RebuildLayerTabs(null);
 
             // Per-device Lighting tab configs live in this PadViewModel's
             // dictionary, keyed by physical device InstanceGuid — not on
@@ -3331,6 +3837,22 @@ namespace PadForge.ViewModels
             DeviceConfig = new DeviceSlotConfig();
         }
 
+        /// <summary>Audit 2026-07-18 (transition-to-empty): clears the
+        /// per-device config dictionary for a slot that is NOT created
+        /// after a profile apply. Compaction shifts data down and the
+        /// former tail index kept its dictionary, so creating a new slot
+        /// there later and mapping the same device resurrected the old
+        /// lighting / adaptive / synthetic-pressure config via GetOrAdd,
+        /// the exact resurrection the DeleteSlot clear above prevents
+        /// for the deleted index. DeviceConfig replacement is anchor-safe
+        /// through the forwarder pattern.</summary>
+        public void ClearPerDeviceConfigsForUncreatedSlot()
+        {
+            if (_perDeviceSlotConfigs.Count == 0) return;
+            _perDeviceSlotConfigs.Clear();
+            DeviceConfig = new DeviceSlotConfig();
+        }
+
         /// <summary>Resets all deadzone, anti-deadzone, linear, and trigger settings to defaults.</summary>
         private void ResetDeadZoneSettings()
         {
@@ -3338,14 +3860,25 @@ namespace PadForge.ViewModels
             LeftDeadZoneX = 0; LeftDeadZoneY = 0;
             LeftAntiDeadZoneX = 0; LeftAntiDeadZoneY = 0;
             LeftLinear = 0;
+            LeftStickSensitivity = 1.0;
             LeftCenterOffsetX = 0; LeftCenterOffsetY = 0;
             LeftMaxRangeX = 100; LeftMaxRangeY = 100;
+            // The Neg twins and the calibration boundary map are part of the
+            // same per-stick state the load mirror carries, so a slot delete
+            // that skipped them handed the NEXT controller created at this
+            // index the previous one's negative ranges and calibration
+            // (round 34).
+            LeftMaxRangeXNeg = 100; LeftMaxRangeYNeg = 100;
+            LeftThumbBoundaryMap = "";
             RightDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
             RightDeadZoneX = 0; RightDeadZoneY = 0;
             RightAntiDeadZoneX = 0; RightAntiDeadZoneY = 0;
             RightLinear = 0;
+            RightStickSensitivity = 1.0;
             RightCenterOffsetX = 0; RightCenterOffsetY = 0;
             RightMaxRangeX = 100; RightMaxRangeY = 100;
+            RightMaxRangeXNeg = 100; RightMaxRangeYNeg = 100;
+            RightThumbBoundaryMap = "";
             LeftTriggerDeadZone = 0; LeftTriggerAntiDeadZone = 0; LeftTriggerMaxRange = 100;
             RightTriggerDeadZone = 0; RightTriggerAntiDeadZone = 0; RightTriggerMaxRange = 100;
         }
@@ -3369,6 +3902,8 @@ namespace PadForge.ViewModels
 
         private double _leftLinear;
         public double LeftLinear { get => _leftLinear; set => SetProperty(ref _leftLinear, Math.Clamp(value, 0, 100)); }
+        private double _leftStickSensitivity = 1.0;
+        public double LeftStickSensitivity { get => _leftStickSensitivity; set => SetProperty(ref _leftStickSensitivity, Math.Clamp(value, 0.1, 5.0)); }
 
         // ── Right Stick ──
         private int _rightDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
@@ -3388,6 +3923,8 @@ namespace PadForge.ViewModels
 
         private double _rightLinear;
         public double RightLinear { get => _rightLinear; set => SetProperty(ref _rightLinear, Math.Clamp(value, 0, 100)); }
+        private double _rightStickSensitivity = 1.0;
+        public double RightStickSensitivity { get => _rightStickSensitivity; set => SetProperty(ref _rightStickSensitivity, Math.Clamp(value, 0.1, 5.0)); }
 
         // ── Sensitivity Curves (per-axis for sticks, serialized control point strings) ──
         private string _leftSensitivityCurveX = "0,0;1,1";
@@ -3515,12 +4052,14 @@ namespace PadForge.ViewModels
             if (isKbm)
             {
                 // KBM: stick 0 = Mouse X/Y, stick 1 = Scroll Wheel (Y-axis only)
-                var mouse = new StickConfigItem(0, Strings.Instance.Pad_MouseMovement, -1, -1);
+                var mouse = new StickConfigItem(0, Strings.Instance.Pad_MouseMovement, -1, -1)
+                    { IsPointerStick = true };
                 SyncStickItemFromVm(mouse);
                 mouse.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(mouse);
 
-                var scroll = new StickConfigItem(1, Strings.Instance.Stick_ScrollWheel, -1, -1);
+                var scroll = new StickConfigItem(1, Strings.Instance.Stick_ScrollWheel, -1, -1)
+                    { IsPointerStick = true };
                 SyncStickItemFromVm(scroll);
                 scroll.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(scroll);
@@ -3531,7 +4070,8 @@ namespace PadForge.ViewModels
             // Extended takes its stick count from the active HIDMaestro
             // profile via ExtendedConfig.
             int count = 2;
-            bool isExtended = OutputType == VirtualControllerType.Extended;
+            bool isExtended = OutputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo;
             if (isExtended)
                 count = ExtendedConfig.ThumbstickCount;
 
@@ -3582,7 +4122,8 @@ namespace PadForge.ViewModels
             // Extended takes its trigger count from the active HIDMaestro
             // profile via ExtendedConfig.
             int count = 2;
-            bool isExtended = OutputType == VirtualControllerType.Extended;
+            bool isExtended = OutputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo;
             if (isExtended)
                 count = ExtendedConfig.TriggerCount;
 
@@ -3639,6 +4180,7 @@ namespace PadForge.ViewModels
                         item.AntiDeadZoneX = LeftAntiDeadZoneX;
                         item.AntiDeadZoneY = LeftAntiDeadZoneY;
                         item.Linear = LeftLinear;
+                        item.Sensitivity = LeftStickSensitivity;
                         item.SensitivityCurveX = LeftSensitivityCurveX;
                         item.SensitivityCurveY = LeftSensitivityCurveY;
                         item.MaxRangeX = LeftMaxRangeX;
@@ -3656,6 +4198,7 @@ namespace PadForge.ViewModels
                         item.AntiDeadZoneX = RightAntiDeadZoneX;
                         item.AntiDeadZoneY = RightAntiDeadZoneY;
                         item.Linear = RightLinear;
+                        item.Sensitivity = RightStickSensitivity;
                         item.SensitivityCurveX = RightSensitivityCurveX;
                         item.SensitivityCurveY = RightSensitivityCurveY;
                         item.MaxRangeX = RightMaxRangeX;
@@ -3758,6 +4301,15 @@ namespace PadForge.ViewModels
             nameof(StickConfigItem.DeadZoneX), nameof(StickConfigItem.DeadZoneY),
             nameof(StickConfigItem.AntiDeadZoneX), nameof(StickConfigItem.AntiDeadZoneY),
             nameof(StickConfigItem.Linear),
+            // The stick speed knob. Curves own the response shape for gamepad
+            // sticks, but keyboard-and-mouse sticks are RATE outputs and this
+            // is their live control, so it is a persisted user-config value
+            // like every other entry here. It was the one member of the
+            // OnStickConfigPropertyChanged switch missing from this set, so
+            // moving the slider mirrored into Left/RightStickSensitivity and
+            // never flagged the document dirty. The new speed was discarded
+            // on save and the knob snapped back on next load.
+            nameof(StickConfigItem.Sensitivity),
             nameof(StickConfigItem.SensitivityCurveX), nameof(StickConfigItem.SensitivityCurveY),
             nameof(StickConfigItem.MaxRangeX), nameof(StickConfigItem.MaxRangeY),
             nameof(StickConfigItem.MaxRangeXNeg), nameof(StickConfigItem.MaxRangeYNeg),
@@ -3797,6 +4349,7 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.AntiDeadZoneX): LeftAntiDeadZoneX = item.AntiDeadZoneX; break;
                         case nameof(StickConfigItem.AntiDeadZoneY): LeftAntiDeadZoneY = item.AntiDeadZoneY; break;
                         case nameof(StickConfigItem.Linear): LeftLinear = item.Linear; break;
+                        case nameof(StickConfigItem.Sensitivity): LeftStickSensitivity = item.Sensitivity; break;
                         case nameof(StickConfigItem.SensitivityCurveX): LeftSensitivityCurveX = item.SensitivityCurveX; break;
                         case nameof(StickConfigItem.SensitivityCurveY): LeftSensitivityCurveY = item.SensitivityCurveY; break;
                         case nameof(StickConfigItem.MaxRangeX): LeftMaxRangeX = item.MaxRangeX; break;
@@ -3818,6 +4371,7 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.AntiDeadZoneX): RightAntiDeadZoneX = item.AntiDeadZoneX; break;
                         case nameof(StickConfigItem.AntiDeadZoneY): RightAntiDeadZoneY = item.AntiDeadZoneY; break;
                         case nameof(StickConfigItem.Linear): RightLinear = item.Linear; break;
+                        case nameof(StickConfigItem.Sensitivity): RightStickSensitivity = item.Sensitivity; break;
                         case nameof(StickConfigItem.SensitivityCurveX): RightSensitivityCurveX = item.SensitivityCurveX; break;
                         case nameof(StickConfigItem.SensitivityCurveY): RightSensitivityCurveY = item.SensitivityCurveY; break;
                         case nameof(StickConfigItem.MaxRangeX): RightMaxRangeX = item.MaxRangeX; break;
@@ -3917,7 +4471,8 @@ namespace PadForge.ViewModels
                 {
                     PadIndex = PadIndex,
                     Name = $"Macro {Macros.Count + 1}",
-                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType)
+                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType),
+                    RawProfileId = SlotRawProfileId
                 };
                 Macros.Add(macro);
                 SelectedMacro = macro;
@@ -3944,7 +4499,7 @@ namespace PadForge.ViewModels
             {
                 if (_selectedMacro == null) return;
                 var data = SettingsService.BuildMacroDataForMacro(_selectedMacro, PadIndex);
-                var clone = SettingsService.LoadMacroFromData(data, OutputType, ExtendedConfig?.ButtonCount);
+                var clone = SettingsService.LoadMacroFromData(data, OutputType, ExtendedConfig?.ButtonCount, ProfileId);
                 clone.PadIndex = PadIndex;
                 clone.Name = string.Format(Strings.Instance.Macro_CopyNameFormat, _selectedMacro.Name);
                 Macros.Add(clone);
@@ -3975,6 +4530,165 @@ namespace PadForge.ViewModels
         public RelayCommand CopyMacroFromCommand =>
             _copyMacroFromCommand ??= new RelayCommand(
                 () => CopyMacroFromRequested?.Invoke(this, EventArgs.Empty));
+
+        // ═══════════════════════════════════════════════
+        //  Radial / touch menus (#9 B-17). Slot-level, like Macros.
+        //  The VM wraps the LIVE MenuDefinitionEntry list on this slot's
+        //  MappingSet (write-through); every edit fires
+        //  ConfigItemDirtyCallback so the autosave path persists the set.
+        // ═══════════════════════════════════════════════
+
+        /// <summary>Menus configured for this pad slot.</summary>
+        public ObservableCollection<MenuEditorItem> Menus { get; } = new();
+
+        /// <summary>
+        /// Callback invoked after a structural menu change (add / remove /
+        /// duplicate, kind, cell count, center cell, enabled) that changes
+        /// which "Menu N Item K" descriptors exist. Wired by MainWindow to
+        /// InputService.RefreshAvailableInputsForSlot so the Mappings and
+        /// macro pickers stop offering stale entries. Label / name typing
+        /// must NOT invoke it.
+        /// </summary>
+        public Action MenusStructureChanged { get; set; }
+
+        private MenuEditorItem _selectedMenu;
+
+        public MenuEditorItem SelectedMenu
+        {
+            get => _selectedMenu;
+            set
+            {
+                if (SetProperty(ref _selectedMenu, value))
+                {
+                    OnPropertyChanged(nameof(HasSelectedMenu));
+                    _removeMenuCommand?.NotifyCanExecuteChanged();
+                    _duplicateMenuCommand?.NotifyCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool HasSelectedMenu => _selectedMenu != null;
+
+        private PadForge.Engine.Data.MappingSet SlotMenuSet
+        {
+            get
+            {
+                var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+                if (sets == null || PadIndex < 0 || PadIndex >= sets.Length) return null;
+                return sets[PadIndex] ??= new PadForge.Engine.Data.MappingSet();
+            }
+        }
+
+        /// <summary>Rebuilds the Menus collection from this slot's live
+        /// MappingSet. Called from <see cref="RebuildMappings"/> so profile
+        /// applies, Workshop imports, and output-type changes all refresh
+        /// the tab (the reset-mirror leg: Reset to Defaults replaces the
+        /// slot sets and lands here too).</summary>
+        public void ReloadMenus()
+        {
+            Menus.Clear();
+            var set = SlotMenuSet;
+            if (set?.Menus != null)
+            {
+                foreach (var entry in set.Menus)
+                {
+                    if (entry == null) continue;
+                    var vm = new MenuEditorItem(entry);
+                    ApplyMenuButtonStyle(vm);
+                    vm.Changed += OnMenuEdited;
+                    Menus.Add(vm);
+                }
+            }
+            SelectedMenu = Menus.Count > 0 ? Menus[0] : null;
+        }
+
+        private void OnMenuEdited() => ConfigItemDirtyCallback?.Invoke();
+
+        private RelayCommand _addMenuCommand;
+        public RelayCommand AddMenuCommand =>
+            _addMenuCommand ??= new RelayCommand(() =>
+            {
+                var set = SlotMenuSet;
+                if (set == null) return;
+                int id = 1;
+                foreach (var m in set.Menus)
+                    if (m != null && m.MenuId >= id) id = m.MenuId + 1;
+                var entry = new PadForge.Engine.Menus.MenuDefinitionEntry
+                {
+                    MenuId = id,
+                    Name = string.Format(Strings.Instance.Menu_NewNameFormat, id),
+                };
+                set.Menus.Add(entry);
+                var vm = new MenuEditorItem(entry);
+                ApplyMenuButtonStyle(vm);
+                vm.Changed += OnMenuEdited;
+                Menus.Add(vm);
+                SelectedMenu = vm;
+                OnMenuEdited();
+                MenusStructureChanged?.Invoke();
+            });
+
+        private RelayCommand _removeMenuCommand;
+        public RelayCommand RemoveMenuCommand =>
+            _removeMenuCommand ??= new RelayCommand(() =>
+            {
+                var vm = _selectedMenu;
+                if (vm == null) return;
+                SlotMenuSet?.Menus.Remove(vm.Entry);
+                Menus.Remove(vm);
+                SelectedMenu = Menus.LastOrDefault();
+                OnMenuEdited();
+                MenusStructureChanged?.Invoke();
+            }, () => HasSelectedMenu);
+
+        private RelayCommand _duplicateMenuCommand;
+        public RelayCommand DuplicateMenuCommand =>
+            _duplicateMenuCommand ??= new RelayCommand(() =>
+            {
+                var vm = _selectedMenu;
+                var set = SlotMenuSet;
+                if (vm == null || set == null) return;
+                var clone = vm.Entry.Clone();
+                int id = 1;
+                foreach (var m in set.Menus)
+                    if (m != null && m.MenuId >= id) id = m.MenuId + 1;
+                clone.MenuId = id;
+                clone.Name = string.Format(Strings.Instance.Macro_CopyNameFormat, vm.Entry.Name);
+                set.Menus.Add(clone);
+                var cloneVm = new MenuEditorItem(clone);
+                ApplyMenuButtonStyle(cloneVm);
+                cloneVm.Changed += OnMenuEdited;
+                Menus.Add(cloneVm);
+                SelectedMenu = cloneVm;
+                OnMenuEdited();
+                MenusStructureChanged?.Invoke();
+            }, () => HasSelectedMenu);
+
+        /// <summary>Record button on the menu host picker: MainWindow runs
+        /// the freeform recorder and folds the recorded descriptor onto a
+        /// host choice, the Aim Engage record shape.</summary>
+        public event EventHandler MenuHostRecordRequested;
+        private RelayCommand _menuHostRecordCommand;
+        public RelayCommand MenuHostRecordCommand =>
+            _menuHostRecordCommand ??= new RelayCommand(() =>
+            {
+                SelectedMenu?.PrepareRecord(MenuEditorItem.MenuRecordTarget.Host);
+                MenuHostRecordRequested?.Invoke(this, EventArgs.Empty);
+            });
+
+        /// <summary>Record buttons for the Custom opener's steer axes and
+        /// the Click input: same freeform recorder, aimed by parameter
+        /// ("CustomX" / "CustomY" / "Click").</summary>
+        public CommunityToolkit.Mvvm.Input.RelayCommand<string> MenuRecordTargetCommand =>
+            _menuRecordTargetCommand ??= new CommunityToolkit.Mvvm.Input.RelayCommand<string>(p =>
+            {
+                var menu = SelectedMenu;
+                if (menu == null) return;
+                if (!Enum.TryParse<MenuEditorItem.MenuRecordTarget>(p, out var target)) return;
+                menu.PrepareRecord(target);
+                MenuHostRecordRequested?.Invoke(this, EventArgs.Empty);
+            });
+        private CommunityToolkit.Mvvm.Input.RelayCommand<string> _menuRecordTargetCommand;
 
         // ═══════════════════════════════════════════════
         //  Audio tab (issue #83) — per-slot sound output for macro sounds
@@ -4025,6 +4739,23 @@ namespace PadForge.ViewModels
                 if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
                 var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
                 return ud != null && PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud);
+            }
+        }
+
+        /// <summary>True when the SELECTED assigned device has a touchpad
+        /// AND a haptic lane the swipe-tick feature can drive (Steam
+        /// Controller family actuators, or a dispatcher-driven Sony pad).
+        /// Gates the Touchpad tab's Swipe Haptics card (#219) so devices
+        /// whose touchpads have no haptics (Precision Touchpads, the
+        /// overlay, web controllers) don't show a dead toggle.</summary>
+        public bool SelectedDeviceHasTouchpadPulse
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                return PadForge.Common.Input.TouchpadPulseService.DeviceHasSwipePulse(ud);
             }
         }
 
@@ -4425,7 +5156,8 @@ namespace PadForge.ViewModels
                 {
                     PadIndex = PadIndex,
                     Name = string.Format(Strings.Instance.Pad_Audio_SoundMacroName_Format, Macros.Count + 1),
-                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType)
+                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType),
+                    RawProfileId = SlotRawProfileId
                 };
                 macro.Actions.Add(new MacroAction { Type = MacroActionType.PlaySound });
                 Macros.Add(macro);
@@ -4441,20 +5173,924 @@ namespace PadForge.ViewModels
             SelectedConfigTab = 1;
         }
 
+        /// <summary>The slot's profile slug when it letters Extended button
+        /// labels (#215): the ProfileId on Extended slots, null elsewhere.
+        /// Xbox / PlayStation lettering keys on ButtonStyle alone.</summary>
+        private string SlotRawProfileId =>
+            _outputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo
+                ? _profileId : null;
+
         /// <summary>
         /// Syncs macro button display style to all macros when the output
-        /// controller type changes.
+        /// controller type (or an Extended slot's profile, #215) changes.
         /// </summary>
         private void SyncMacroButtonStyle()
         {
             var style = MacroButtonNames.DeriveStyle(_outputType);
-            int btnCount = (_outputType == VirtualControllerType.Extended ? _extendedConfig?.ButtonCount : null) ?? 11;
+            int btnCount = (_outputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo
+                ? _extendedConfig?.ButtonCount : null) ?? 11;
+            string letteredProfile = SlotRawProfileId;
             foreach (var macro in Macros)
             {
                 macro.ButtonStyle = style;
                 macro.CustomButtonCount = btnCount;
+                macro.RawProfileId = letteredProfile;
                 foreach (var action in macro.Actions)
                     action.CustomButtonCount = btnCount;
+            }
+            // The menu editor's cell pickers follow the same lettering.
+            foreach (var menu in Menus)
+                ApplyMenuButtonStyle(menu);
+        }
+
+        /// <summary>Stamps the slot's context onto a menu editor item: the
+        /// same button-lettering derivation and Extended button count the
+        /// macro editor uses (see <see cref="SyncMacroButtonStyle"/>).
+        /// The opener picker itself is device-agnostic (the mapping
+        /// table's "(Any device)" convention) and needs no slot caps.</summary>
+        private void ApplyMenuButtonStyle(MenuEditorItem vm)
+        {
+            vm.ButtonStyle = MacroButtonNames.DeriveStyle(_outputType);
+            vm.RawButtonCount =
+                (_outputType is VirtualControllerType.Extended
+                 or VirtualControllerType.Nintendo
+                 ? _extendedConfig?.ButtonCount : null) ?? 11;
+            vm.RawProfileId = SlotRawProfileId;
+            // MIDI / Keyboard-Mouse outputs cannot press controller
+            // buttons: their cells' binding-kind list omits the choice
+            // entirely instead of offering it plus a warning.
+            vm.SupportsControllerButtons = _outputType
+                is VirtualControllerType.Xbox
+                or VirtualControllerType.PlayStation
+                or VirtualControllerType.Nintendo
+                or VirtualControllerType.Extended;
+            vm.DescriptorDisplayProvider = ResolveInputDisplayName;
+            vm.InputChoicesProvider = () => SlotAvailableInputs;
+            vm.RowBoundProvider = IsMenuItemRowBound;
+            vm.StructureChanged = () => MenusStructureChanged?.Invoke();
+        }
+
+        /// <summary>True when a Mappings row source or a macro trigger on
+        /// this slot reads "Menu {menuId} Item {itemIndex}". Workshop
+        /// imports bind cells through rows instead of the cell's direct
+        /// binding, and the cell editor must not show "None" while those
+        /// rows fire (audit 2026-07-16 C12). Same unlocked UI-thread read
+        /// of the slot's MappingSet as SlotMenuSet.</summary>
+        internal bool IsMenuItemRowBound(int menuId, int itemIndex)
+        {
+            var rows = SlotMenuSet?.Rows;
+            if (rows != null)
+            {
+                foreach (var row in rows)
+                {
+                    var sources = row?.Sources;
+                    if (sources == null) continue;
+                    foreach (var src in sources)
+                        if (src != null
+                            && PadForge.Engine.Common.Mapping.SourceCoercion.TryParseMenuItem(
+                                src.Descriptor, out int m, out int k)
+                            && m == menuId && k == itemIndex)
+                            return true;
+                }
+            }
+            foreach (var macro in Macros)
+            {
+                if (macro == null) continue;
+                foreach (var entry in macro.GetTriggerInputEntries())
+                    if (entry != null
+                        && PadForge.Engine.Common.Mapping.SourceCoercion.TryParseMenuItem(
+                            entry.SourceDescriptor, out int m, out int k)
+                        && m == menuId && k == itemIndex)
+                        return true;
+            }
+            return false;
+        }
+
+        /// <summary>Re-raises every menu editor's Custom steer / Click
+        /// dropdowns after the slot's picker list repopulates. Called by
+        /// PopulateAvailableInputs beside the other per-feature selected-
+        /// input refreshers.</summary>
+        public void RefreshMenuInputChoices()
+        {
+            foreach (var menu in Menus)
+                menu.RefreshInputChoices();
+        }
+
+        /// <summary>Friendly name for a recorded raw descriptor: the
+        /// slot's picker choice when one matches, the raw descriptor
+        /// otherwise (a device family the picker does not list).</summary>
+        private string ResolveInputDisplayName(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return descriptor;
+            foreach (var c in SlotAvailableInputs)
+                if (c != null && string.Equals(c.Descriptor, descriptor, StringComparison.Ordinal))
+                    return c.DisplayName;
+            return descriptor;
+        }
+
+        // ═══════════════════════════════════════════════
+        //  Bass Shakers tab (issue #236, rumble to audio)
+        // ═══════════════════════════════════════════════
+
+        // The config lives on the slot's MappingSet (RumbleAudio), the
+        // same lifetime as the mapping rows, macros, and menus. Every
+        // setter writes the DTO in place, marks the settings dirty (the
+        // Menus tab's OnMenuEdited shape), and nudges the renderer off
+        // the UI thread so edits apply while the tone plays.
+
+        /// <summary>Tab-strip index of the Bass Shakers tab (#236).</summary>
+        public const int BassShakersTabIndex = 16;
+
+        /// <summary>Slot-type gate for the Bass Shakers tab. The feature
+        /// decodes the game feedback the virtual controller RECEIVES,
+        /// so every output path with a feedback surface shows it: Xbox
+        /// and Sony motor lanes plus the PID force feedback lane on
+        /// Extended slots (the sim-racing wheels that filed #234).
+        /// Extended without force feedback, Keyboard and Mouse, and
+        /// MIDI have no feedback surface and hide the tab. Never a
+        /// physical-device capability gate.</summary>
+        public bool RumbleAudioTabVisible
+        {
+            get
+            {
+                if (_outputType is VirtualControllerType.Xbox
+                    or VirtualControllerType.PlayStation
+                    // Nintendo: HM v1.3.18 decodes the virtual Switch
+                    // Pro's rumble outputs onto the OutputDecoded lane
+                    // (HM#33), so the slot has a real feedback source.
+                    or VirtualControllerType.Nintendo)
+                    return true;
+                if (_outputType != VirtualControllerType.Extended)
+                    return false;
+                // Mirrors the wire truth Step 5 builds: Customize on means
+                // the checkbox decides in both directions (the descriptor
+                // is rebuilt to match). Customize off means the catalog
+                // profile's own descriptor decides, and most catalog
+                // profiles ship without a PID block.
+                var cfg = ExtendedConfig;
+                if (cfg != null && cfg.Customize)
+                    return cfg.ForceFeedbackEnabled;
+                var profile = PadForge.Common.Input.HMaestroProfileCatalog
+                    .GetProfileById(ProfileId);
+                return PadForge.Common.Input.HMaestroVirtualController
+                    .DescriptorHasPidFfbBlock(profile?.DescriptorHex);
+            }
+        }
+
+        /// <summary>Re-evaluates the Bass Shakers tab gate and evicts a
+        /// now-hidden selection back to the first tab. Call from every
+        /// seam that changes the gate's inputs: the force feedback
+        /// checkbox, the Customize toggle, and an uncustomized profile
+        /// switch.</summary>
+        private void RefreshRumbleAudioTabGate()
+        {
+            OnPropertyChanged(nameof(RumbleAudioTabVisible));
+            if (!RumbleAudioTabVisible
+                && SelectedConfigTab == BassShakersTabIndex)
+                SelectedConfigTab = 0;
+        }
+
+        /// <summary>The slot's authored config, null until first enable.
+        /// Read-only here. Creation happens in the enable setter only.</summary>
+        private RumbleAudioConfig RumbleAudioCfg => SlotMenuSet?.RumbleAudio;
+
+        /// <summary>The four fixed voice rows (low, high, trigger left,
+        /// trigger right), built once in the constructor.</summary>
+        public ObservableCollection<RumbleAudioVoiceItem> RumbleAudioVoices { get; } = new();
+
+        /// <summary>Master enable. The first enable authors the config
+        /// with the four default voices. Disable keeps every authored
+        /// setting and only silences the renderer.</summary>
+        public bool RumbleAudioEnabled
+        {
+            get => RumbleAudioCfg?.Enabled ?? false;
+            set
+            {
+                var set = SlotMenuSet;
+                if (set == null) return;
+                var cfg = set.RumbleAudio;
+                if (cfg == null)
+                {
+                    if (!value) return;
+                    cfg = new RumbleAudioConfig();
+                    for (int i = 0; i < RumbleAudioConfig.SourceOrder.Length; i++)
+                        cfg.Voices.Add(new RumbleAudioVoice
+                        {
+                            Source = RumbleAudioConfig.SourceOrder[i],
+                            Enabled = true,
+                            GainPercent = 100,
+                            FrequencyHz = RumbleAudioConfig.DefaultFrequencyHz[i],
+                        });
+                    set.RumbleAudio = cfg;
+                }
+                if (cfg.Enabled == value) return;
+                cfg.Enabled = value;
+                OnPropertyChanged(nameof(RumbleAudioEnabled));
+                NotifyRumbleAudioConfigChanged();
+            }
+        }
+
+        private bool _refreshingRumbleAudioEndpoints;
+
+        /// <summary>ComboBox-facing endpoint id. Empty targets the system
+        /// default render endpoint. Guarded against the transient null
+        /// write-back during ItemsSource rebuilds (the mirror-source
+        /// picker documents the same hazard).</summary>
+        public string RumbleAudioEndpointId
+        {
+            get => RumbleAudioCfg?.EndpointId ?? string.Empty;
+            set
+            {
+                if (_refreshingRumbleAudioEndpoints || value == null) return;
+                var cfg = RumbleAudioCfg;
+                if (cfg == null || cfg.EndpointId == value) return;
+                cfg.EndpointId = value;
+                OnPropertyChanged(nameof(RumbleAudioEndpointId));
+                NotifyRumbleAudioConfigChanged();
+            }
+        }
+
+        /// <summary>Speaker placement. Empty = mono (every voice on all
+        /// channels), "Stereo" = controller stereo (low and left trigger
+        /// left, high and right trigger right).</summary>
+        public string RumbleAudioChannelMode
+        {
+            get => RumbleAudioCfg?.ChannelMode ?? string.Empty;
+            set
+            {
+                if (value == null) return;
+                var cfg = RumbleAudioCfg;
+                if (cfg == null || cfg.ChannelMode == value) return;
+                cfg.ChannelMode = value;
+                OnPropertyChanged(nameof(RumbleAudioChannelMode));
+                NotifyRumbleAudioConfigChanged();
+            }
+        }
+
+        /// <summary>Master gain percent, 0..100, applied after per-voice
+        /// gain. Default 50 keeps headroom for the four-voice sum.</summary>
+        public int RumbleAudioMasterGain
+        {
+            get => RumbleAudioCfg?.MasterGainPercent ?? 50;
+            set
+            {
+                var cfg = RumbleAudioCfg;
+                if (cfg == null) return;
+                int v = Math.Clamp(value, 0, 100);
+                if (cfg.MasterGainPercent == v) return;
+                cfg.MasterGainPercent = v;
+                OnPropertyChanged(nameof(RumbleAudioMasterGain));
+                NotifyRumbleAudioConfigChanged();
+            }
+        }
+
+        /// <summary>Active render endpoints for the output picker. Reuses
+        /// the mirror-source option shape (Id "" = system default).</summary>
+        public System.Collections.ObjectModel.ObservableCollection<MirrorSourceOption> RumbleAudioEndpointOptions { get; } = new();
+
+        /// <summary>Repopulates <see cref="RumbleAudioEndpointOptions"/>
+        /// from the active render endpoints. Diff-syncs in place so the
+        /// ComboBox selection rides through a refresh (never Clear()).
+        /// A configured endpoint that is currently absent stays listed as
+        /// unavailable so the fail-closed selection remains visible.</summary>
+        public void RefreshRumbleAudioEndpoints()
+        {
+            _refreshingRumbleAudioEndpoints = true;
+            try
+            {
+                string current = RumbleAudioEndpointId;
+                var desired = new System.Collections.Generic.List<MirrorSourceOption>
+                {
+                    new MirrorSourceOption { Id = string.Empty, Name = Strings.Instance.Pad_Audio_SystemDefault },
+                };
+                try
+                {
+                    using var en = new NAudio.CoreAudioApi.MMDeviceEnumerator();
+                    foreach (var dev in en.EnumerateAudioEndPoints(
+                        NAudio.CoreAudioApi.DataFlow.Render, NAudio.CoreAudioApi.DeviceState.Active))
+                    {
+                        using (dev)
+                            desired.Add(new MirrorSourceOption { Id = dev.ID, Name = dev.FriendlyName });
+                    }
+                }
+                catch { }
+                if (!string.IsNullOrEmpty(current)
+                    && !desired.Any(o => o.Id == current))
+                    desired.Add(new MirrorSourceOption { Id = current, Name = Strings.Instance.Pad_Audio_SourceUnavailable });
+
+                for (int i = 0; i < desired.Count; i++)
+                {
+                    int j = -1;
+                    for (int k = i; k < RumbleAudioEndpointOptions.Count; k++)
+                        if (RumbleAudioEndpointOptions[k].Id == desired[i].Id) { j = k; break; }
+                    if (j < 0) RumbleAudioEndpointOptions.Insert(i, desired[i]);
+                    else if (j != i) RumbleAudioEndpointOptions.Move(j, i);
+                }
+                while (RumbleAudioEndpointOptions.Count > desired.Count)
+                    RumbleAudioEndpointOptions.RemoveAt(RumbleAudioEndpointOptions.Count - 1);
+
+                OnPropertyChanged(nameof(RumbleAudioEndpointId));
+            }
+            finally { _refreshingRumbleAudioEndpoints = false; }
+        }
+
+        /// <summary>Rebuilds the Bass Shakers tab state from the slot's
+        /// live MappingSet. Called beside <see cref="ReloadMenus"/> from
+        /// every path that swaps or rewrites the slot set (profile apply,
+        /// Workshop import, output-type change, Reset to Defaults, paste,
+        /// Copy From Slot, slot delete).</summary>
+        public void ReloadRumbleAudio()
+        {
+            var cfg = RumbleAudioCfg;
+            for (int i = 0; i < RumbleAudioVoices.Count; i++)
+                RumbleAudioVoices[i].LoadFrom(cfg?.FindVoice(RumbleAudioConfig.SourceOrder[i]));
+            OnPropertyChanged(nameof(RumbleAudioEnabled));
+            OnPropertyChanged(nameof(RumbleAudioEndpointId));
+            OnPropertyChanged(nameof(RumbleAudioChannelMode));
+            OnPropertyChanged(nameof(RumbleAudioMasterGain));
+            OnPropertyChanged(nameof(RumbleAudioTabVisible));
+        }
+
+        /// <summary>Writes one voice row's edits into the DTO voice,
+        /// authoring the voice entry when the config predates it.</summary>
+        internal void WriteRumbleAudioVoice(int index, bool enabled, int gainPercent, int frequencyHz)
+        {
+            var cfg = RumbleAudioCfg;
+            if (cfg == null || (uint)index >= RumbleAudioConfig.SourceOrder.Length) return;
+            string source = RumbleAudioConfig.SourceOrder[index];
+            var voice = cfg.FindVoice(source);
+            if (voice == null)
+            {
+                voice = new RumbleAudioVoice { Source = source };
+                cfg.Voices.Add(voice);
+            }
+            voice.Enabled = enabled;
+            voice.GainPercent = Math.Clamp(gainPercent, 0, 100);
+            voice.FrequencyHz = Math.Clamp(frequencyHz,
+                RumbleAudioConfig.MinFrequencyHz, RumbleAudioConfig.MaxFrequencyHz);
+            NotifyRumbleAudioConfigChanged();
+        }
+
+        /// <summary>Every persisted edit funnels here. Marks the settings
+        /// dirty (without it the change never reaches disk) and reconciles
+        /// the renderer on a worker task. Reconcile touches WASAPI, so it
+        /// must never run on the UI thread's critical path.</summary>
+        // Debounced reconcile kick (audit: a gain-slider drag fired one
+        // Task.Run + full COM endpoint enumeration per notch). One shared
+        // 300 ms one-shot timer per VM: every change re-arms it, the
+        // trailing edge runs a single reconcile with the final values.
+        private System.Threading.Timer _rumbleAudioReconcileDebounce;
+
+        private void NotifyRumbleAudioConfigChanged()
+        {
+            ConfigItemDirtyCallback?.Invoke();
+            // Reconcile ONLY, never EnsureStarted: a debounce firing after
+            // the engine stopped must not resurrect the reconcile worker.
+            // ReconcileCore's commit gate rejects new players while the
+            // worker timer is null, so a post-stop fire builds nothing
+            // lasting, and the engine-start EnsureStarted re-arms the
+            // worker for the running case.
+            var timer = _rumbleAudioReconcileDebounce ??= new System.Threading.Timer(_ =>
+            {
+                try { RumbleAudioService.Reconcile(); }
+                catch { }
+            }, null, System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+            timer.Change(300, System.Threading.Timeout.Infinite);
+        }
+
+        private RelayCommand _resetRumbleAudioEnabledCommand;
+        /// <summary>Per-row reset for the enable toggle. Default is off.</summary>
+        public RelayCommand ResetRumbleAudioEnabledCommand =>
+            _resetRumbleAudioEnabledCommand ??= new RelayCommand(() => RumbleAudioEnabled = false);
+
+        private RelayCommand _resetRumbleAudioEndpointCommand;
+        public RelayCommand ResetRumbleAudioEndpointCommand =>
+            _resetRumbleAudioEndpointCommand ??= new RelayCommand(() => RumbleAudioEndpointId = string.Empty);
+
+        private RelayCommand _resetRumbleAudioChannelModeCommand;
+        public RelayCommand ResetRumbleAudioChannelModeCommand =>
+            _resetRumbleAudioChannelModeCommand ??= new RelayCommand(() => RumbleAudioChannelMode = string.Empty);
+
+        private RelayCommand _resetRumbleAudioMasterGainCommand;
+        public RelayCommand ResetRumbleAudioMasterGainCommand =>
+            _resetRumbleAudioMasterGainCommand ??= new RelayCommand(() => RumbleAudioMasterGain = 50);
+
+        private RelayCommand _resetRumbleAudioAllCommand;
+        /// <summary>Card-level Reset All: endpoint to system default, mono,
+        /// master gain 50, every voice to enabled / 100 / default carrier.
+        /// Keeps Enabled as it is (the enable row's own reset covers it).</summary>
+        public RelayCommand ResetRumbleAudioAllCommand =>
+            _resetRumbleAudioAllCommand ??= new RelayCommand(() =>
+            {
+                if (RumbleAudioCfg == null) return;
+                RumbleAudioEndpointId = string.Empty;
+                RumbleAudioChannelMode = string.Empty;
+                RumbleAudioMasterGain = 50;
+                foreach (var voice in RumbleAudioVoices)
+                    voice.ResetToDefault();
+            });
+
+        private RelayCommand _rumbleAudioSweepCommand;
+        /// <summary>Resonance finder: sweeps 20..120 Hz over eight seconds
+        /// on the low-voice routing.</summary>
+        public RelayCommand RumbleAudioSweepCommand =>
+            _rumbleAudioSweepCommand ??= new RelayCommand(() =>
+                RumbleAudioService.StartSweep(PadIndex, 8000));
+
+        private RelayCommand _rumbleAudioStopTestCommand;
+        public RelayCommand RumbleAudioStopTestCommand =>
+            _rumbleAudioStopTestCommand ??= new RelayCommand(() =>
+                RumbleAudioService.StopTest(PadIndex));
+
+        // ═══════════════════════════════════════════════
+        //  Simultaneous Press (SOCD), discussion #240
+        //  Authoring UI over MappingSet.SocdMode / SocdPairs, the
+        //  slot-scoped config Step 5 already applies to the FINAL combined
+        //  output (SlotButtonSocd). Same MappingSet lane as Menus and
+        //  RumbleAudio: reads and writes go through SlotMenuSet, every
+        //  persisted edit marks dirty, and ReloadSocd re-seeds the rows on
+        //  the same paths that reload those features.
+        // ═══════════════════════════════════════════════
+
+        /// <summary>Slot-type gate for the SOCD card. It shapes the slot's
+        /// virtual controller BUTTON output, so KeyboardMouse (its own
+        /// KbmConfig-bound twin card below) and MIDI (no button surface)
+        /// hide it.</summary>
+        public bool SocdCardVisible =>
+            _outputType is VirtualControllerType.Xbox
+            or VirtualControllerType.PlayStation
+            or VirtualControllerType.Nintendo
+            or VirtualControllerType.Extended;
+
+        /// <summary>Gate for the KBM twin of the SOCD card: same card
+        /// face, bound to KbmConfig (key pairs on the virtual keyboard
+        /// output, #205). Mutually exclusive with SocdCardVisible.</summary>
+        public bool KbmSocdCardVisible =>
+            _outputType == VirtualControllerType.KeyboardMouse;
+
+        /// <summary>True when the slot's pairs use the flat raw-index
+        /// grammar ("12:13"). Mirrors the engine gate exactly: Step 5
+        /// treats every Extended slot as raw-surface
+        /// (SlotRawHidSurface == OutputType is Extended), so Extended
+        /// pairs are indices and Xbox / PlayStation pairs are the
+        /// WriteBoolTarget names.</summary>
+        public bool SocdUsesRawIndices =>
+            _outputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo;
+
+        /// <summary>SOCD mode, locale-stable: "" (off), "LastWins",
+        /// "Neutral", "FirstWins". Stored on the slot's MappingSet so it
+        /// rides profiles, Copy From Slot, and the export container.</summary>
+        public string SocdMode
+        {
+            get => SlotMenuSet?.SocdMode ?? "";
+            set
+            {
+                if (value == null) return;
+                var set = SlotMenuSet;
+                if (set == null || string.Equals(set.SocdMode, value, StringComparison.Ordinal)) return;
+                set.SocdMode = value;
+                OnPropertyChanged(nameof(SocdMode));
+                ConfigItemDirtyCallback?.Invoke();
+            }
+        }
+
+        /// <summary>Mode dropdown options. Names are shared with the KBM
+        /// Snap Tap bar (same state machine); descriptions are worded for
+        /// buttons. Built fresh per read (tiny list) so a culture change
+        /// re-letters through the ReloadSocd raise.</summary>
+        public System.Collections.Generic.IReadOnlyList<SocdModeOption> AvailableSlotSocdModes
+        {
+            get
+            {
+                var s = Strings.Instance;
+                return new[]
+                {
+                    new SocdModeOption { Value = "",          Name = s.Pad_Kbm_Socd_Mode_Off_Name,       Description = s.Pad_Socd_Mode_Off_Description },
+                    new SocdModeOption { Value = "LastWins",  Name = s.Pad_Kbm_Socd_Mode_LastWins_Name,  Description = s.Pad_Socd_Mode_LastWins_Description },
+                    new SocdModeOption { Value = "Neutral",   Name = s.Pad_Kbm_Socd_Mode_Neutral_Name,   Description = s.Pad_Socd_Mode_Neutral_Description },
+                    new SocdModeOption { Value = "FirstWins", Name = s.Pad_Kbm_Socd_Mode_FirstWins_Name, Description = s.Pad_Socd_Mode_FirstWins_Description },
+                };
+            }
+        }
+
+        /// <summary>Pickable pair targets for Xbox / PlayStation slots: the
+        /// 15 WriteBoolTarget names in the mapping grid's own lettering
+        /// (PlayStation symbols on PlayStation slots). Values are the
+        /// locale-stable target-name grammar SlotButtonSocd parses.</summary>
+        public System.Collections.Generic.IReadOnlyList<GyroLabeledOption> SocdButtonOptions
+        {
+            get
+            {
+                var s = Strings.Instance;
+                if (_outputType == VirtualControllerType.Nintendo)
+                {
+                    // Lettered pickers over the raw-index grammar (the
+                    // engine parses "6:7"): Value is the index STRING so
+                    // Serialize's name branch emits the raw pair intact,
+                    // Display is the same lettering the mapping grid uses.
+                    var opts = new GyroLabeledOption[MacroButtonNames.NintendoLetteredButtonCount];
+                    for (int i = 0; i < opts.Length; i++)
+                    {
+                        int idx = i;
+                        opts[i] = new GyroLabeledOption(
+                            () => MacroButtonNames.RawButtonLabel(ProfileId, idx + 1),
+                            idx.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                    }
+                    return opts;
+                }
+                bool ps = _outputType == VirtualControllerType.PlayStation;
+                return new[]
+                {
+                    new GyroLabeledOption(() => ps ? "✕" : "A", "ButtonA"),
+                    new GyroLabeledOption(() => ps ? "○" : "B", "ButtonB"),
+                    new GyroLabeledOption(() => ps ? "◻" : "X", "ButtonX"),
+                    new GyroLabeledOption(() => ps ? "△" : "Y", "ButtonY"),
+                    new GyroLabeledOption(() => ps ? "L1" : s.Btn_LeftShoulder, "LeftShoulder"),
+                    new GyroLabeledOption(() => ps ? "R1" : s.Btn_RightShoulder, "RightShoulder"),
+                    new GyroLabeledOption(() => ps ? s.Btn_Share : s.Btn_Back, "ButtonBack"),
+                    new GyroLabeledOption(() => ps ? s.Btn_Options : s.Btn_Start, "ButtonStart"),
+                    new GyroLabeledOption(() => ps ? s.Btn_PS : s.Btn_Guide, "ButtonGuide"),
+                    new GyroLabeledOption(() => ps ? "L3" : s.Btn_LeftStickButton, "LeftThumbButton"),
+                    new GyroLabeledOption(() => ps ? "R3" : s.Btn_RightStickButton, "RightThumbButton"),
+                    new GyroLabeledOption(() => s.Btn_DPadUp, "DPadUp"),
+                    new GyroLabeledOption(() => s.Btn_DPadDown, "DPadDown"),
+                    new GyroLabeledOption(() => s.Btn_DPadLeft, "DPadLeft"),
+                    new GyroLabeledOption(() => s.Btn_DPadRight, "DPadRight"),
+                };
+            }
+        }
+
+        /// <summary>Editable projection of MappingSet.SocdPairs for the
+        /// card's pair rows.</summary>
+        public ObservableCollection<SlotSocdPairItem> SocdPairItems { get; } = new();
+
+        private bool _syncingSocdPairs;
+
+        /// <summary>Reserializes the rows into the pipe grammar. Called by
+        /// row setters and the add / remove / reset commands.</summary>
+        // Pair tokens the editor cannot display (the other slot type's
+        // grammar after an output-type switch, or unresolvable names).
+        // Preserved verbatim so an edit never erases them: the stored
+        // field's contract is "malformed entries are dropped at parse,
+        // never at save" (MappingSet.SocdPairs), and the engine already
+        // ignores them harmlessly at runtime.
+        private readonly System.Collections.Generic.List<string> _socdPreservedTokens = new();
+
+        internal void OnSocdPairEdited()
+        {
+            if (_syncingSocdPairs) return;
+            var set = SlotMenuSet;
+            if (set == null) return;
+            var sb = new System.Text.StringBuilder();
+            foreach (var p in SocdPairItems)
+            {
+                string token = p.Serialize();
+                if (token == null) continue;
+                if (sb.Length > 0) sb.Append('|');
+                sb.Append(token);
+            }
+            foreach (var kept in _socdPreservedTokens)
+            {
+                if (sb.Length > 0) sb.Append('|');
+                sb.Append(kept);
+            }
+            string pairs = sb.ToString();
+            if (string.Equals(set.SocdPairs, pairs, StringComparison.Ordinal)) return;
+            set.SocdPairs = pairs;
+            ConfigItemDirtyCallback?.Invoke();
+        }
+
+        /// <summary>Re-seeds the SOCD card from the slot's MappingSet.
+        /// Called on the same paths that reload Menus and RumbleAudio
+        /// (RebuildMappings, slot delete, Paste, Copy From Slot).</summary>
+        public void ReloadSocd()
+        {
+            _syncingSocdPairs = true;
+            try
+            {
+                SocdPairItems.Clear();
+                _socdPreservedTokens.Clear();
+                var set = SlotMenuSet;
+                bool extended = SocdUsesRawIndices;
+                if (set != null && !string.IsNullOrEmpty(set.SocdPairs))
+                {
+                    foreach (var token in set.SocdPairs.Split('|', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        int colon = token.IndexOf(':');
+                        if (colon <= 0 || colon >= token.Length - 1) { _socdPreservedTokens.Add(token); continue; }
+                        string a = token.Substring(0, colon).Trim();
+                        string b = token.Substring(colon + 1).Trim();
+                        if (extended)
+                        {
+                            if (!int.TryParse(a, out int ia) || !int.TryParse(b, out int ib)
+                                || ia is < 0 or > 127 || ib is < 0 or > 127)
+                            { _socdPreservedTokens.Add(token); continue; }
+                            if (_outputType == VirtualControllerType.Nintendo
+                                && ia < MacroButtonNames.NintendoLetteredButtonCount
+                                && ib < MacroButtonNames.NintendoLetteredButtonCount)
+                            {
+                                // Lettered picker row over the same raw
+                                // grammar; indices past the lettered range
+                                // keep the numeric editor below.
+                                SocdPairItems.Add(new SlotSocdPairItem(this,
+                                    ia.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                                    ib.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+                                continue;
+                            }
+                            SocdPairItems.Add(new SlotSocdPairItem(this, ia, ib));
+                        }
+                        else
+                        {
+                            // Display only names the engine resolves, the
+                            // same leniency SlotButtonSocd.ParsePairs
+                            // applies at runtime, but PRESERVE the token:
+                            // it may be the other slot type's grammar and
+                            // must survive a round trip through this
+                            // editor (the stored field's own contract).
+                            if (PadForge.Common.Input.SlotButtonSocd.ResolveGamepadMask(a) == 0
+                                || PadForge.Common.Input.SlotButtonSocd.ResolveGamepadMask(b) == 0)
+                            { _socdPreservedTokens.Add(token); continue; }
+                            SocdPairItems.Add(new SlotSocdPairItem(this, a, b));
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                _syncingSocdPairs = false;
+            }
+            OnPropertyChanged(nameof(SocdMode));
+            OnPropertyChanged(nameof(SocdCardVisible));
+            OnPropertyChanged(nameof(KbmSocdCardVisible));
+            OnPropertyChanged(nameof(SocdUsesRawIndices));
+            OnPropertyChanged(nameof(AvailableSlotSocdModes));
+            OnPropertyChanged(nameof(SocdButtonOptions));
+        }
+
+        private RelayCommand _addSocdPairCommand;
+        /// <summary>Appends a fresh pair for the user to retarget: the
+        /// D-Pad Left / Right opposites on gamepad slots, raw indices
+        /// 0 and 1 on Extended slots.</summary>
+        public RelayCommand AddSocdPairCommand =>
+            _addSocdPairCommand ??= new RelayCommand(() =>
+            {
+                SocdPairItems.Add(_outputType == VirtualControllerType.Nintendo
+                    ? new SlotSocdPairItem(this, "0", "1")
+                    : SocdUsesRawIndices
+                    ? new SlotSocdPairItem(this, 0, 1)
+                    : new SlotSocdPairItem(this, "DPadLeft", "DPadRight"));
+                OnSocdPairEdited();
+            });
+
+        private RelayCommand<SlotSocdPairItem> _removeSocdPairCommand;
+        public RelayCommand<SlotSocdPairItem> RemoveSocdPairCommand =>
+            _removeSocdPairCommand ??= new RelayCommand<SlotSocdPairItem>(item =>
+            {
+                if (item == null) return;
+                SocdPairItems.Remove(item);
+                OnSocdPairEdited();
+            });
+
+        private RelayCommand _resetSocdModeCommand;
+        /// <summary>Per-row reset for the mode combo. Default is off.</summary>
+        public RelayCommand ResetSocdModeCommand =>
+            _resetSocdModeCommand ??= new RelayCommand(() => SocdMode = "");
+
+        private RelayCommand _resetSocdCardCommand;
+        /// <summary>Card-level Reset All: mode off, every pair removed.</summary>
+        public RelayCommand ResetSocdCardCommand =>
+            _resetSocdCardCommand ??= new RelayCommand(() =>
+            {
+                SocdMode = "";
+                if (SocdPairItems.Count > 0)
+                {
+                    SocdPairItems.Clear();
+                    OnSocdPairEdited();
+                }
+            });
+
+        /// <summary>One editable SOCD pair row (#240). Gamepad rows carry
+        /// two target NAMES for the pickers; Extended rows carry two raw
+        /// button INDICES for the numeric boxes. Edits reserialize the
+        /// owning slot's MappingSet.SocdPairs.</summary>
+        public sealed class SlotSocdPairItem : ObservableObject
+        {
+            private readonly PadViewModel _owner;
+
+            /// <summary>Gamepad-name row.</summary>
+            internal SlotSocdPairItem(PadViewModel owner, string targetA, string targetB)
+            {
+                _owner = owner;
+                IsExtended = false;
+                _targetA = targetA;
+                _targetB = targetB;
+            }
+
+            /// <summary>Extended raw-index row.</summary>
+            internal SlotSocdPairItem(PadViewModel owner, int indexA, int indexB)
+            {
+                _owner = owner;
+                IsExtended = true;
+                _indexA = indexA;
+                _indexB = indexB;
+            }
+
+            /// <summary>True when this row edits flat raw indices (the
+            /// Extended grammar) instead of target names.</summary>
+            public bool IsExtended { get; }
+
+            private string _targetA;
+            public string TargetA
+            {
+                get => _targetA;
+                set
+                {
+                    // Ignore the transient null write-back a ComboBox emits
+                    // while its ItemsSource rebuilds. Removal is the row's
+                    // only sanctioned clear path.
+                    if (value == null) return;
+                    if (SetProperty(ref _targetA, value))
+                        _owner?.OnSocdPairEdited();
+                }
+            }
+
+            private string _targetB;
+            public string TargetB
+            {
+                get => _targetB;
+                set
+                {
+                    if (value == null) return;
+                    if (SetProperty(ref _targetB, value))
+                        _owner?.OnSocdPairEdited();
+                }
+            }
+
+            private int _indexA;
+            public int IndexA
+            {
+                get => _indexA;
+                set
+                {
+                    if (SetProperty(ref _indexA, Math.Clamp(value, 0, 127)))
+                        _owner?.OnSocdPairEdited();
+                }
+            }
+
+            private int _indexB;
+            public int IndexB
+            {
+                get => _indexB;
+                set
+                {
+                    if (SetProperty(ref _indexB, Math.Clamp(value, 0, 127)))
+                        _owner?.OnSocdPairEdited();
+                }
+            }
+
+            /// <summary>Items source for both pickers on gamepad rows.</summary>
+            public System.Collections.Generic.IReadOnlyList<GyroLabeledOption> ButtonOptions
+                => _owner?.SocdButtonOptions;
+
+            /// <summary>The row's "A:B" token, or null when the row is not
+            /// yet a valid pair (same-target or unresolved halves are kept
+            /// on screen for the user to finish, and dropped from the
+            /// persisted grammar exactly as the engine parser would drop
+            /// them).</summary>
+            internal string Serialize()
+            {
+                if (IsExtended)
+                {
+                    if (_indexA == _indexB) return null;
+                    return _indexA.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                        + ":" + _indexB.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                }
+                if (string.IsNullOrEmpty(_targetA) || string.IsNullOrEmpty(_targetB)) return null;
+                if (string.Equals(_targetA, _targetB, StringComparison.Ordinal)) return null;
+                return _targetA + ":" + _targetB;
+            }
+        }
+
+        /// <summary>One Bass Shakers voice row (#236). Keyed by voice
+        /// index into <see cref="RumbleAudioConfig.SourceOrder"/>. Edits
+        /// route through the owner so the row never holds a reference to
+        /// a DTO the profile-apply path may have replaced.</summary>
+        public sealed class RumbleAudioVoiceItem : ObservableObject
+        {
+            private readonly PadViewModel _owner;
+            private readonly int _index;
+            private bool _loading;
+            private bool _enabled = true;
+            private int _gainPercent = 100;
+            private int _frequencyHz;
+            private double _meterLevel;
+
+            internal RumbleAudioVoiceItem(PadViewModel owner, int index)
+            {
+                _owner = owner;
+                _index = index;
+                _frequencyHz = RumbleAudioConfig.DefaultFrequencyHz[index];
+            }
+
+            /// <summary>Localized row label, live lookup so a language
+            /// switch re-renders without rebuilding the list.</summary>
+            public string Label => _index switch
+            {
+                0 => Strings.Instance.Pad_RumbleAudio_Voice_Low,
+                1 => Strings.Instance.Pad_RumbleAudio_Voice_High,
+                2 => Strings.Instance.Pad_RumbleAudio_Voice_TriggerLeft,
+                _ => Strings.Instance.Pad_RumbleAudio_Voice_TriggerRight,
+            };
+
+            /// <summary>Per-row reset tooltip, "Reset {Row}" per canon.</summary>
+            public string ResetTooltip => _index switch
+            {
+                0 => Strings.Instance.Pad_RumbleAudio_ResetVoiceLow,
+                1 => Strings.Instance.Pad_RumbleAudio_ResetVoiceHigh,
+                2 => Strings.Instance.Pad_RumbleAudio_ResetVoiceTriggerLeft,
+                _ => Strings.Instance.Pad_RumbleAudio_ResetVoiceTriggerRight,
+            };
+
+            /// <summary>Per-voice enable. Gain and frequency stay authored
+            /// while muted.</summary>
+            public bool Enabled
+            {
+                get => _enabled;
+                set { if (SetProperty(ref _enabled, value)) Push(); }
+            }
+
+            /// <summary>Voice gain percent, 0..100, before master gain.</summary>
+            public int GainPercent
+            {
+                get => _gainPercent;
+                set
+                {
+                    int v = Math.Clamp(value, 0, 100);
+                    if (SetProperty(ref _gainPercent, v)) Push();
+                }
+            }
+
+            /// <summary>Sine carrier frequency in Hz, 20..120.</summary>
+            public int FrequencyHz
+            {
+                get => _frequencyHz;
+                set
+                {
+                    int v = Math.Clamp(value,
+                        RumbleAudioConfig.MinFrequencyHz, RumbleAudioConfig.MaxFrequencyHz);
+                    if (SetProperty(ref _frequencyHz, v)) Push();
+                }
+            }
+
+            /// <summary>Live activity 0..100 for the row meter, written by
+            /// the page's meter timer. Never persisted.</summary>
+            public double MeterLevel
+            {
+                get => _meterLevel;
+                set => SetProperty(ref _meterLevel, value);
+            }
+
+            private RelayCommand _testCommand;
+            /// <summary>Plays this voice for 1.5 seconds at authored gain.</summary>
+            public RelayCommand TestCommand =>
+                _testCommand ??= new RelayCommand(() =>
+                    RumbleAudioService.PulseTestVoice(_owner.PadIndex, _index, 1500));
+
+            private RelayCommand _resetCommand;
+            /// <summary>Row reset: enabled, gain 100, default carrier.</summary>
+            public RelayCommand ResetCommand =>
+                _resetCommand ??= new RelayCommand(ResetToDefault);
+
+            internal void ResetToDefault()
+            {
+                Enabled = true;
+                GainPercent = 100;
+                FrequencyHz = RumbleAudioConfig.DefaultFrequencyHz[_index];
+            }
+
+            /// <summary>Re-seeds the row from the DTO voice (null reads as
+            /// the source's default voice) without writing back.</summary>
+            internal void LoadFrom(RumbleAudioVoice voice)
+            {
+                _loading = true;
+                try
+                {
+                    Enabled = voice?.Enabled ?? true;
+                    GainPercent = voice?.GainPercent ?? 100;
+                    FrequencyHz = voice?.FrequencyHz ?? RumbleAudioConfig.DefaultFrequencyHz[_index];
+                }
+                finally { _loading = false; }
+                OnPropertyChanged(nameof(Label));
+                OnPropertyChanged(nameof(ResetTooltip));
+            }
+
+            private void Push()
+            {
+                if (_loading) return;
+                _owner.WriteRumbleAudioVoice(_index, _enabled, _gainPercent, _frequencyHz);
             }
         }
 
@@ -4472,7 +6108,8 @@ namespace PadForge.ViewModels
             get => _selectedConfigTab;
             set
             {
-                if (SetProperty(ref _selectedConfigTab, value) && value == AudioTabIndex)
+                if (!SetProperty(ref _selectedConfigTab, value)) return;
+                if (value == AudioTabIndex)
                 {
                     // Entering the Audio tab: re-derive the sound-macro list,
                     // the selected device's speaker capability, and the
@@ -4484,6 +6121,14 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
                     OnPropertyChanged(nameof(MirrorEngageSelectedInput));
                     RefreshMirrorSources();
+                }
+                else if (value == BassShakersTabIndex)
+                {
+                    // Entering the Bass Shakers tab: re-enumerate render
+                    // endpoints so hot-plugged devices show up, and re-seed
+                    // the rows from the slot set.
+                    RefreshRumbleAudioEndpoints();
+                    ReloadRumbleAudio();
                 }
             }
         }
@@ -4566,6 +6211,26 @@ namespace PadForge.ViewModels
                 m.NegSourceDescriptor = string.Empty;
                 m.IsInverted = false;
                 m.IsHalfAxis = false;
+                // The ENTIRE row surface, by owner ruling (2026-07-30):
+                // "EVERYTHING in the mapping tab table should be cleared
+                // with a clear all." Round 40 had already widened the clear
+                // to the flag family after a stale Bidirectional or
+                // InvertOutput rode the next primary; the sensitivities were
+                // briefly carved out as tuning, and the ruling closed that
+                // carve-out: a cleared row hands NOTHING to the next
+                // mapping, multipliers included.
+                m.IsBidirectional = false;
+                m.InvertOutput = false;
+                m.ParamAccel = 0;
+                m.GyroSensitivity = 1.0;
+                m.MouseCursorSensitivity = 1.0;
+                m.IrPointerSensitivity = 1.0;
+                m.Sensitivity = 1.0;
+                m.NoInherit = false;
+                // The stateful primary kind (Incremental / Ramped /
+                // InvertOnHold) resets to a plain Direct holder, the same
+                // reset hydration uses for an unmapped row.
+                m.LoadPrimaryKind(null);
                 m.MappingDeadZone = 50;
                 // Drop the device-origin tag too — leaving the GUID
                 // behind would surface a stale subtitle and make the
@@ -4696,6 +6361,31 @@ namespace PadForge.ViewModels
         private void StartMapAll()
         {
             if (Mappings.Count == 0) return;
+
+            // Ground-truth online recheck at click time. The command
+            // predicate reads MappedDeviceInfo.IsOnline, which refreshes on
+            // the dashboard lane (1 Hz-gated while the app is backgrounded),
+            // and a poll-read failure marks UserDevice.IsOnline false
+            // without raising DevicesUpdated. A click that reactivates the
+            // window can therefore pass a stale CanExecute; starting anyway
+            // walks every mapping into the recorder's no-device timeout.
+            var selGuid = SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+            if (selGuid != Guid.Empty)
+            {
+                bool live = false;
+                var devs = PadForge.Common.Input.SettingsManager.UserDevices;
+                if (devs?.Items != null)
+                {
+                    lock (devs.SyncRoot)
+                    {
+                        foreach (var d in devs.Items)
+                            if (d != null && d.InstanceGuid == selGuid && d.IsOnline)
+                            { live = true; break; }
+                    }
+                }
+                if (!live) return;
+            }
+
             IsMapAllActive = true;
             MapAllCurrentIndex = 0;
             _mapAllCommand?.NotifyCanExecuteChanged();
@@ -4732,7 +6422,7 @@ namespace PadForge.ViewModels
                 SelectedConfigTab = 0;
 
             // Detect Y axis: standard controllers use "AxisY" in the setting name,
-            // custom Extended uses "Stick N Y" in the label (setting name is "ExtendedAxisN").
+            // custom Extended uses "Stick N Y" in the label (setting name is "RawAxisN").
             bool isYAxis = mapping.TargetSettingName.Contains("AxisY")
                         || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal);
 
@@ -4823,6 +6513,16 @@ namespace PadForge.ViewModels
 
         public void UpdateFromEngineState(Gamepad gp, Engine.Vibration vibration, Engine.Vibration selectedDeviceVibration = null)
         {
+            // Nintendo slots: the gamepad surface is EMPTY by design (all
+            // input rides the raw surface) and UpdateNintendoPreviewFromRaw
+            // owns every gamepad-shaped preview property. Writing them from
+            // the empty surface here stomped the bridge's values on every
+            // tick the raw change-detect skipped, bouncing a held button's
+            // preview at analog-jitter cadence (#215 preview flicker). The
+            // vibration section below stays: the motor bars are fed by the
+            // feedback lane, not the raw bridge.
+            if (_outputType != VirtualControllerType.Nintendo)
+            {
             ButtonA = gp.IsButtonPressed(Gamepad.A);
             ButtonB = gp.IsButtonPressed(Gamepad.B);
             ButtonX = gp.IsButtonPressed(Gamepad.X);
@@ -4853,6 +6553,7 @@ namespace PadForge.ViewModels
             ThumbLY = 1.0 - ((gp.ThumbLY - (double)short.MinValue) / 65535.0);
             ThumbRX = (gp.ThumbRX - (double)short.MinValue) / 65535.0;
             ThumbRY = 1.0 - ((gp.ThumbRY - (double)short.MinValue) / 65535.0);
+            }
 
             if (vibration != null)
             {
@@ -5028,7 +6729,19 @@ namespace PadForge.ViewModels
             double dzXn = deadZoneX / 100.0, dzYn = deadZoneY / 100.0;
             // Pick max range based on direction of input (mirrors Step3 pipeline).
             double mrXn = (sx >= 0 ? maxRangeX : maxRangeXNeg) / 100.0;
-            double mrYn = (sy >= 0 ? maxRangeY : maxRangeYNeg) / 100.0;
+            // Max-range selection must ask the ENGINE's question. Step 3
+            // picks on ny = axisY / 32768, which is raw SDL Y where POSITIVE
+            // IS DOWN. The two gamepad callers hand us screen-up-positive Y
+            // (DeviceThumbLY = 1 - norm), so their sy is inverted relative to
+            // that, and selecting on the bare sy applied MaxRangeY to up and
+            // MaxRangeYNeg to down: the preview's OUT dot disagreed with the
+            // game whenever the two Y ranges differed (round 34). The
+            // Extended caller already previews in the raw.Axes frame and
+            // says so via boundaryMapInInputFrame, the same flag the
+            // boundary-map warp below uses to decide whether to flip. X
+            // needs no equivalent: DeviceThumbLX carries no flip.
+            double engineSy = boundaryMapInInputFrame ? sy : -sy;
+            double mrYn = (engineSy >= 0 ? maxRangeY : maxRangeYNeg) / 100.0;
             if (mrXn <= dzXn) mrXn = Math.Min(dzXn + 0.01, 1.0);
             if (mrYn <= dzYn) mrYn = Math.Min(dzYn + 0.01, 1.0);
 
@@ -5269,10 +6982,10 @@ namespace PadForge.ViewModels
         // ═══════════════════════════════════════════════
 
         /// <summary>
-        /// Latest ExtendedRawState snapshot for custom Extended display.
+        /// Latest RawHidState snapshot for custom Extended display.
         /// Updated at 30Hz alongside UpdateFromEngineState.
         /// </summary>
-        public ExtendedRawState ExtendedOutputSnapshot { get; private set; }
+        public RawHidState RawHidOutputSnapshot { get; private set; }
 
         /// <summary>
         /// Latest KbmRawState snapshot for KBM preview display.
@@ -5282,10 +6995,10 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Stores the combined virtual-controller output for the Extended
-        /// schematic preview. Writes <see cref="ExtendedOutputSnapshot"/>
+        /// schematic preview. Writes <see cref="RawHidOutputSnapshot"/>
         /// only — does not touch <see cref="StickConfigs"/> or
         /// <see cref="TriggerConfigs"/>, since those are driven by the
-        /// per-device <see cref="UpdateFromExtendedDeviceState"/> path so
+        /// per-device <see cref="UpdateFromRawDeviceState"/> path so
         /// the per-stick / per-trigger debug tabs can show device-specific
         /// values without colliding with the schematic's combined view.
         /// Pre-split this method also wrote the StickConfigs/TriggerConfigs
@@ -5295,22 +7008,145 @@ namespace PadForge.ViewModels
         /// <see cref="UpdateFromEngineState"/> (combined, schematic) and
         /// <see cref="UpdateDeviceState"/> (per-device, stick tab).
         /// </summary>
-        public void UpdateFromExtendedRawState(ExtendedRawState raw)
+        // UI-side shadow of the last published raw snapshot. An idle
+        // slot's combined output is byte-identical every tick, and the
+        // unconditional raise re-armed a full schematic repaint at 30 Hz
+        // (the preview views dirty on exactly this property name).
+        // Identical content paints identical pixels, so skipping the
+        // raise changes nothing visually.
+        private short[] _lastRawAxes, _lastRawHwAxes;
+        private uint[] _lastRawButtons;
+        private int[] _lastRawPovs;
+        private bool _hasLastRawSnapshot;
+
+        private static bool ArrEq(short[] a, short[] b)
         {
-            ExtendedOutputSnapshot = raw;
-            OnPropertyChanged(nameof(ExtendedOutputSnapshot));
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+            return true;
+        }
+        private static bool ArrEq(uint[] a, uint[] b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+            return true;
+        }
+        private static bool ArrEq(int[] a, int[] b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+            return true;
+        }
+        private static void ShadowCopy(short[] src, ref short[] dst)
+        {
+            if (src == null) { dst = null; return; }
+            if (dst == null || dst.Length != src.Length) dst = new short[src.Length];
+            System.Array.Copy(src, dst, src.Length);
+        }
+        private static void ShadowCopy(uint[] src, ref uint[] dst)
+        {
+            if (src == null) { dst = null; return; }
+            if (dst == null || dst.Length != src.Length) dst = new uint[src.Length];
+            System.Array.Copy(src, dst, src.Length);
+        }
+        private static void ShadowCopy(int[] src, ref int[] dst)
+        {
+            if (src == null) { dst = null; return; }
+            if (dst == null || dst.Length != src.Length) dst = new int[src.Length];
+            System.Array.Copy(src, dst, src.Length);
+        }
+
+        public void UpdateFromRawHidState(RawHidState raw)
+        {
+            if (_hasLastRawSnapshot
+                && ArrEq(raw.Axes, _lastRawAxes)
+                && ArrEq(raw.HardwareAxes, _lastRawHwAxes)
+                && ArrEq(raw.Buttons, _lastRawButtons)
+                && ArrEq(raw.Povs, _lastRawPovs))
+                return;
+            ShadowCopy(raw.Axes, ref _lastRawAxes);
+            ShadowCopy(raw.HardwareAxes, ref _lastRawHwAxes);
+            ShadowCopy(raw.Buttons, ref _lastRawButtons);
+            ShadowCopy(raw.Povs, ref _lastRawPovs);
+            _hasLastRawSnapshot = true;
+
+            RawHidOutputSnapshot = raw;
+            OnPropertyChanged(nameof(RawHidOutputSnapshot));
+
+            // Nintendo preview bridge: the SWITCHPRO 2D view reads the
+            // Gamepad-shaped preview properties, but a Nintendo slot's
+            // combined output is this raw state. Project it using the
+            // switch-pro descriptor's fixed button order (the same order
+            // MacroButtonNames.NintendoExtendedLabel documents: face
+            // B A Y X at 0-3, L R 4-5, ZL ZR 6-7, Minus Plus 8-9, stick
+            // clicks 10-11, Home 12, Capture 13; hat 0; axes LX LY RX RY).
+            if (_outputType == VirtualControllerType.Nintendo)
+                UpdateNintendoPreviewFromRaw(raw);
+        }
+
+        private void UpdateNintendoPreviewFromRaw(RawHidState raw)
+        {
+            ButtonB = raw.IsButtonPressed(0);
+            ButtonA = raw.IsButtonPressed(1);
+            ButtonY = raw.IsButtonPressed(2);
+            ButtonX = raw.IsButtonPressed(3);
+            LeftShoulder = raw.IsButtonPressed(4);
+            RightShoulder = raw.IsButtonPressed(5);
+            // ZL / ZR are digital on the hardware; render as a full pull.
+            LeftTrigger = raw.IsButtonPressed(6) ? 1.0 : 0.0;
+            RightTrigger = raw.IsButtonPressed(7) ? 1.0 : 0.0;
+            ButtonBack = raw.IsButtonPressed(8);
+            ButtonStart = raw.IsButtonPressed(9);
+            LeftThumbButton = raw.IsButtonPressed(10);
+            RightThumbButton = raw.IsButtonPressed(11);
+            ButtonGuide = raw.IsButtonPressed(12);
+            ButtonShare = raw.IsButtonPressed(13);
+
+            // Hat 0 in hundredths of degrees, -1 centered. A diagonal
+            // lights both cardinals, matching how the gamepad path
+            // renders D-pad combinations.
+            int pov = raw.Povs is { Length: > 0 } ? raw.Povs[0] : -1;
+            DPadUp = pov >= 0 && (pov > 27000 || pov < 9000);
+            DPadRight = pov > 0 && pov < 18000;
+            DPadDown = pov > 9000 && pov < 27000;
+            DPadLeft = pov > 18000 && pov < 36000;
+
+            // Raw axes are HID convention (positive = down); the preview's
+            // Gamepad convention is positive = up on Y. Negate with the
+            // short.MinValue guard.
+            short Ax(int i) => raw.Axes != null && i < raw.Axes.Length ? raw.Axes[i] : (short)0;
+            static short FlipY(short v) => v == short.MinValue ? short.MaxValue : (short)-v;
+            RawThumbLX = Ax(0);
+            RawThumbLY = FlipY(Ax(1));
+            RawThumbRX = Ax(2);
+            RawThumbRY = FlipY(Ax(3));
+
+            // Normalized stick + raw trigger displays: with the engine-state
+            // stomp gone (see UpdateFromEngineState), this bridge is the sole
+            // writer of the whole preview surface for Nintendo slots. Same
+            // formulas as the engine writer, applied to the flipped axes.
+            static double NormAx(short v) => (v - (double)short.MinValue) / 65535.0;
+            ThumbLX = NormAx(Ax(0));
+            ThumbLY = 1.0 - NormAx(FlipY(Ax(1)));
+            ThumbRX = NormAx(Ax(2));
+            ThumbRY = 1.0 - NormAx(FlipY(Ax(3)));
+            RawLeftTrigger = (ushort)(raw.IsButtonPressed(6) ? 65535 : 0);
+            RawRightTrigger = (ushort)(raw.IsButtonPressed(7) ? 65535 : 0);
         }
 
         /// <summary>
         /// Updates per-stick and per-trigger live values for the Extended
         /// stick/trigger debug tabs. Caller passes either the selected
-        /// device's <c>ExtendedRawOutputState</c> or, when no device is
+        /// device's <c>RawHidOutputState</c> or, when no device is
         /// selected, the combined slot raw state as a fallback so the tabs
         /// always show something. Does NOT write
-        /// <see cref="ExtendedOutputSnapshot"/> — that field is owned by
+        /// <see cref="RawHidOutputSnapshot"/> — that field is owned by
         /// the schematic preview path.
         /// </summary>
-        public void UpdateFromExtendedDeviceState(ExtendedRawState raw)
+        public void UpdateFromRawDeviceState(RawHidState raw)
         {
             // Sync stick config items from raw axes. Calibration capture and
             // the cold dot must read the PRE-tuning frame: raw.Axes has been
@@ -5357,16 +7193,28 @@ namespace PadForge.ViewModels
                 if (hasX) { stick.LiveX = vx; stick.RawX = (short)Math.Clamp((ox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue); }
                 if (hasY) { stick.LiveY = vy; stick.RawY = (short)Math.Clamp((0.5 - oy) * 2.0 * 32767, short.MinValue, short.MaxValue); }
 
-                UpdateStickCurveDots(stick, stick.LiveX, stick.LiveY);
+                // normX/normY (pre-pipeline), NOT LiveX/LiveY: this feeds
+                // the curve editor's live INPUT dot, and LiveX/LiveY were
+                // just assigned the post-deadzone/curve OUTPUT, so the
+                // Extended path drew the input dot at the output position.
+                // Both gamepad callers pass DeviceThumb* raw norms
+                // (round 34).
+                UpdateStickCurveDots(stick, normX, normY);
             }
 
             // Sync trigger config items from raw axes
             foreach (var trig in TriggerConfigs)
             {
-                if (trig.AxisIndex >= 0 && raw.Axes != null && trig.AxisIndex < raw.Axes.Length)
+                // hwAxes, not raw.Axes: raw.Axes is already post-deadzone /
+                // post-curve, so feeding it to ProcessTriggerForPreview
+                // applied the pipeline TWICE and published a tuned value as
+                // RawNorm / RawValue. The stick block above was fixed to read
+                // HardwareAxes for exactly this reason; the trigger block was
+                // left behind (round 34).
+                if (trig.AxisIndex >= 0 && hwAxes != null && trig.AxisIndex < hwAxes.Length)
                 {
                     // Trigger axes are signed short (-32768..32767), normalize to 0.0-1.0
-                    double rawNorm = (raw.Axes[trig.AxisIndex] - (double)short.MinValue) / 65535.0;
+                    double rawNorm = (hwAxes[trig.AxisIndex] - (double)short.MinValue) / 65535.0;
                     var processed = ProcessTriggerForPreview(rawNorm, trig);
                     trig.LiveValue = processed;
                     trig.RawNorm = rawNorm;
@@ -5382,8 +7230,50 @@ namespace PadForge.ViewModels
 
         public MidiRawState MidiOutputSnapshot { get; private set; }
 
+        // Same change-detect as the raw snapshot: identical MIDI output
+        // repaints identical pixels, so skip the raise (and the ~256-key
+        // preview repaint it re-arms).
+        private byte[] _lastMidiCc;
+        private bool[] _lastMidiNotes;
+        private bool _hasLastMidiSnapshot;
+
+        private static bool ArrEq(byte[] a, byte[] b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+            return true;
+        }
+        private static bool ArrEq(bool[] a, bool[] b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+            return true;
+        }
+
         public void UpdateFromMidiRawState(MidiRawState raw)
         {
+            if (_hasLastMidiSnapshot
+                && ArrEq(raw.CcValues, _lastMidiCc)
+                && ArrEq(raw.Notes, _lastMidiNotes))
+                return;
+            if (raw.CcValues == null) _lastMidiCc = null;
+            else
+            {
+                if (_lastMidiCc == null || _lastMidiCc.Length != raw.CcValues.Length)
+                    _lastMidiCc = new byte[raw.CcValues.Length];
+                System.Array.Copy(raw.CcValues, _lastMidiCc, raw.CcValues.Length);
+            }
+            if (raw.Notes == null) _lastMidiNotes = null;
+            else
+            {
+                if (_lastMidiNotes == null || _lastMidiNotes.Length != raw.Notes.Length)
+                    _lastMidiNotes = new bool[raw.Notes.Length];
+                System.Array.Copy(raw.Notes, _lastMidiNotes, raw.Notes.Length);
+            }
+            _hasLastMidiSnapshot = true;
+
             MidiOutputSnapshot = raw;
             OnPropertyChanged(nameof(MidiOutputSnapshot));
         }

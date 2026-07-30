@@ -13,7 +13,7 @@ namespace PadForge.Tests
     /// sensors on one shared device GUID never cross-contaminate each other's
     /// realignment (the recipe's mandatory cite-verify finding).
     /// </summary>
-    [Collection("GravityProviderSerial")]
+    [Collection("SettingsManagerStatics")]
     public class MotionLeanAuxTests
     {
         // Raw accelerometer convention (SourceCoercion.GravityProvider doc +

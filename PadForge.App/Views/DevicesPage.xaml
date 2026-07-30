@@ -1,4 +1,4 @@
-<UserControl x:Class="PadForge.Views.DevicesPage"
+﻿<UserControl x:Class="PadForge.Views.DevicesPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -81,8 +81,15 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <!-- NFC tag rows light on IsActive instead of IsPressed. -->
-        <Style x:Key="RawCellBorderActive" TargetType="Border" BasedOn="{StaticResource RawCellBorder}">
+        <!-- NFC tag rows light on IsActive instead of IsPressed. Deliberately
+             NOT BasedOn RawCellBorder: inheritance carried the base style's
+             IsPressed trigger along, and NfcTagDisplayItem has no IsPressed,
+             so every NFC row realization logged a BINDERR pair. Base setters
+             are duplicated instead. -->
+        <Style x:Key="RawCellBorderActive" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource SteelGroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsActive}" Value="True">
                     <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
@@ -198,9 +205,11 @@
                 </Grid.RowDefinitions>
 
                 <!-- Type facet chips (#175 phase 2 item 13): filter the list
-                     by type family. GAMEPAD covers the stick classes
-                     (gamepad, joystick, wheel, flight stick, first person,
-                     supplemental); OTHER is everything else. Tokens are
+                     by type family. GAMEPAD is gamepad, first person, and
+                     supplemental only. Joysticks and flight sticks bucket
+                     under JOYSTICK and wheels under WHEEL, per the
+                     2026-07-06 split. KEYBOARD and MOUSE stand alone and
+                     OTHER takes the rest. Tokens are
                      hair-space letterspaced literals; counts come from the
                      VM on the same cadence as the header counter. -->
                 <WrapPanel Margin="6,0,0,4">
@@ -958,6 +967,7 @@
                                   IsEnabled="{Binding SelectedDevice.IsHidHideAvailable}"
                                   Visibility="{Binding SelectedDevice.IsInternalVirtual, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
                                   Click="HidingToggle_Click"
+                                  ToolTipService.ShowOnDisabled="True"
                                   Margin="0,0,0,4">
                             <CheckBox.ToolTip>
                                 <TextBlock>
@@ -993,7 +1003,11 @@
                             </CheckBox.Style>
                         </CheckBox>
 
-                        <Separator Margin="0,4,0,8"/>
+                        <!-- Follows the section it divides. A bare separator sat
+                             visible on devices where every control above it was
+                             hidden, drawing a rule under nothing. -->
+                        <Separator Margin="0,4,0,8"
+                                   Visibility="{Binding SelectedDevice.ShowInputModeOrHidingSection, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <!-- ─── Power (#162, wireless controllers only) ─── -->
                         <StackPanel Visibility="{Binding SelectedDevice.ShowIdleDisconnect, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -1157,9 +1171,19 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
+                                    <!-- ToolTip is object-typed, so a StringFormat on the
+                                         attribute form is IGNORED and the tooltip rendered the
+                                         bare number. Hosting a TextBlock puts the format on a
+                                         string target where it applies, and lets the word come
+                                         from resources instead of a hardcoded English literal
+                                         (round 34). -->
                                     <Border Width="24" Height="24" CornerRadius="12" Margin="1"
-                                            Style="{StaticResource RawCellBorder}"
-                                            ToolTip="{Binding DisplayNumber, StringFormat='Button {0}'}">
+                                            Style="{StaticResource RawCellBorder}">
+                                        <Border.ToolTip>
+                                            <TextBlock>
+                                                <Run Text="{Binding Pad_Shift_KindButton, Source={x:Static strings:Strings.Instance}, Mode=OneWay}"/><Run Text=" "/><Run Text="{Binding DisplayNumber, Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </Border.ToolTip>
                                         <TextBlock Text="{Binding DisplayNumber}" FontSize="8"
                                                    Style="{StaticResource RawCellLabel}"
                                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -1489,6 +1513,38 @@
                                     <TextBlock Text="Z" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                Text="{Binding AccelAuxZ, StringFormat='{}{0:F3}'}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Aux gyro preview (#252): the left Joy-Con of a
+                             combined pair. Sits beside the aux accel so the
+                             two halves' readouts read together. -->
+                        <TextBlock Text="{Binding Devices_GyroAux, Source={x:Static strings:Strings.Instance}}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"
+                                   Visibility="{Binding HasGyroAuxData, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Border Visibility="{Binding HasGyroAuxData, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Background="{DynamicResource SteelGroundBrush}" BorderBrush="{DynamicResource SteelLineBrush}"
+                                BorderThickness="1" CornerRadius="6" Padding="10,6" Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="X" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                               Text="{Binding GyroAuxX, StringFormat='{}{0:F3}'}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Y" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                               Text="{Binding GyroAuxY, StringFormat='{}{0:F3}'}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Z" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                               Text="{Binding GyroAuxZ, StringFormat='{}{0:F3}'}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>

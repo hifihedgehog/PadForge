@@ -1,4 +1,4 @@
-namespace PadForge.Engine
+﻿namespace PadForge.Engine
 {
     /// <summary>
     /// Minimal Gamepad struct matching XInput XINPUT_GAMEPAD layout.
@@ -95,7 +95,7 @@ namespace PadForge.Engine
     /// Bypasses the fixed Gamepad struct to support arbitrary axis/button/POV counts.
     /// Axes are signed short range (-32768..32767), matching JoystickPositionV2 expectations.
     /// </summary>
-    public struct ExtendedRawState
+    public struct RawHidState
     {
         /// <summary>Up to 8 axes (short range). Index = axis number.</summary>
         public short[] Axes;
@@ -114,10 +114,10 @@ namespace PadForge.Engine
         /// not populate it, in which case consumers fall back to Axes.</summary>
         public short[] HardwareAxes;
 
-        /// <summary>Creates a zeroed ExtendedRawState with the specified capacities.</summary>
-        public static ExtendedRawState Create(int nAxes, int nButtons, int nPovs)
+        /// <summary>Creates a zeroed RawHidState with the specified capacities.</summary>
+        public static RawHidState Create(int nAxes, int nButtons, int nPovs)
         {
-            return new ExtendedRawState
+            return new RawHidState
             {
                 Axes = new short[Math.Min(nAxes, 8)],
                 Buttons = new uint[(Math.Min(nButtons, 128) + 31) / 32],
@@ -148,10 +148,14 @@ namespace PadForge.Engine
             return (Buttons[word] & (uint)(1 << bit)) != 0;
         }
 
-        /// <summary>Resets all axes to 0, buttons to 0, POVs to centered (-1).</summary>
+        /// <summary>Resets all axes to 0, buttons to 0, POVs to centered (-1).
+        /// HardwareAxes is the pre-tuning mirror of Axes and clears with it:
+        /// leaving it behind meant a cleared state still carried the last
+        /// stick sample, which the Pad page reads back as live input.</summary>
         public void Clear()
         {
             if (Axes != null) Array.Clear(Axes, 0, Axes.Length);
+            if (HardwareAxes != null) Array.Clear(HardwareAxes, 0, HardwareAxes.Length);
             if (Buttons != null) Array.Clear(Buttons, 0, Buttons.Length);
             if (Povs != null)
                 for (int i = 0; i < Povs.Length; i++)
@@ -215,6 +219,34 @@ namespace PadForge.Engine
         public bool MouseAbsXValid;
         public bool MouseAbsYValid;
 
+        /// <summary>Flick stick mouse X counts for this frame (#225):
+        /// EXACT relative counts, already calibrated by the source's
+        /// counts-per-360, positive = rightward turn. The KBM virtual
+        /// controller forwards these to the injector 1:1, bypassing the
+        /// <see cref="MouseDeltaX"/> velocity lane's sensitivity scale and
+        /// short clamp (a 180-degree flick at 14400 counts/360 needs ~7200
+        /// counts inside ~100 ms, far past what the velocity lane can
+        /// represent).</summary>
+        public int MouseFlickX;
+
+        /// <summary>Gyro mouse motion in exact mouse counts for this poll,
+        /// its own lane beside MouseFlickX and for the same reason: the
+        /// value is calibrated counts, not a [-1..+1] deflection. Fractional
+        /// because the sub-count part is what small rotations live in; the
+        /// KBM controller carries the remainder. See
+        /// SourceCoercion.ReadGyroMouseCounts.</summary>
+        public float MouseGyroX;
+        public float MouseGyroY;
+
+        /// <summary>Touchpad mouse motion in exact counts for this poll, the
+        /// gyro lane's twin. The deflection lane recomputed a delta once per
+        /// poll from a position that only changes on a device report, so
+        /// three polls in four read zero and the fourth carried a burst that
+        /// was then clamped and rationed. See
+        /// SourceCoercion.ReadTouchpadMouseCounts.</summary>
+        public float MouseTouchX;
+        public float MouseTouchY;
+
         public bool GetKey(byte vk)
         {
             int word = vk / 64;
@@ -261,6 +293,9 @@ namespace PadForge.Engine
             MouseAbsX = MouseAbsY = 0f;
             MouseAbsValid = false;
             MouseAbsXValid = MouseAbsYValid = false;
+            MouseFlickX = 0;
+            MouseGyroX = MouseGyroY = 0f;
+            MouseTouchX = MouseTouchY = 0f;
         }
 
         /// <summary>
@@ -277,6 +312,18 @@ namespace PadForge.Engine
                 Keys3 = a.Keys3 | b.Keys3,
                 MouseDeltaX = Math.Abs(a.MouseDeltaX) >= Math.Abs(b.MouseDeltaX) ? a.MouseDeltaX : b.MouseDeltaX,
                 MouseDeltaY = Math.Abs(a.MouseDeltaY) >= Math.Abs(b.MouseDeltaY) ? a.MouseDeltaY : b.MouseDeltaY,
+                // Flick counts: max-abs like the deltas. Every device pass in
+                // a frame replays the SAME per-row counts (TickFlickStick's
+                // frame-sequence guard), so max-abs merges duplicates without
+                // double-counting.
+                MouseFlickX = Math.Abs(a.MouseFlickX) >= Math.Abs(b.MouseFlickX) ? a.MouseFlickX : b.MouseFlickX,
+                // Counts SUM rather than taking the larger: two gyros aimed
+                // at one slot each contribute their real motion, the way two
+                // hands on one controller would.
+                MouseGyroX = a.MouseGyroX + b.MouseGyroX,
+                MouseGyroY = a.MouseGyroY + b.MouseGyroY,
+                MouseTouchX = a.MouseTouchX + b.MouseTouchX,
+                MouseTouchY = a.MouseTouchY + b.MouseTouchY,
                 ScrollDelta = Math.Abs(a.ScrollDelta) >= Math.Abs(b.ScrollDelta) ? a.ScrollDelta : b.ScrollDelta,
                 MouseButtons = (byte)(a.MouseButtons | b.MouseButtons),
                 PreDzMouseDeltaX = Math.Abs(a.PreDzMouseDeltaX) >= Math.Abs(b.PreDzMouseDeltaX) ? a.PreDzMouseDeltaX : b.PreDzMouseDeltaX,
@@ -329,10 +376,32 @@ namespace PadForge.Engine
         /// Combines two MIDI raw states. CCs take the value furthest from center; notes are OR'd.
         /// </summary>
         public static MidiRawState Combine(MidiRawState a, MidiRawState b)
+            => CombineInto(a, b, default);
+
+        /// <summary>Combine writing into a caller-owned <paramref name="dest"/>,
+        /// so a repeated combine can reuse one buffer instead of allocating a
+        /// byte[] and a bool[] per call. Pass default to allocate, which is
+        /// what the two-argument overload does.
+        ///
+        /// <para>MidiRawState is a STRUCT holding array references, so the
+        /// "allocate one" sentinel is default (null arrays), and writing through
+        /// result.CcValues mutates the arrays the caller owns, which is the
+        /// point.</para>
+        ///
+        /// <para>dest MAY be the same instance as <paramref name="a"/>: both
+        /// loops read index i from a and b and then write index i of the
+        /// result, with no cross-index reads, so an in-place destination cannot
+        /// disturb a value still to be read. dest must NOT be a device's
+        /// published state, nor anything another slot or thread reads. The
+        /// caller owns it.</para></summary>
+        public static MidiRawState CombineInto(MidiRawState a, MidiRawState b, MidiRawState dest)
         {
             int ccCount = a.CcValues?.Length ?? b.CcValues?.Length ?? 0;
             int noteCount = a.Notes?.Length ?? b.Notes?.Length ?? 0;
-            var result = Create(ccCount, noteCount);
+            var result = (dest.CcValues != null && dest.CcValues.Length == ccCount
+                          && dest.Notes != null && dest.Notes.Length == noteCount)
+                ? dest
+                : Create(ccCount, noteCount);
 
             for (int i = 0; i < ccCount; i++)
             {

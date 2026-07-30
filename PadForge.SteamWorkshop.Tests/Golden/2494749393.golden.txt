@@ -1,0 +1,96 @@
+name: Dualsence for Skyrim: SE
+description: The template works best for games that are designed with a gamepad in mind, but also support a deskt...
+slots: xbox kbm
+gyroEngage: Gamepad DPadRight
+xbox rows: 20
+  Base | ButtonA
+    <- Gamepad Paddle2
+    <- Gamepad ButtonA
+  Base | ButtonB
+    <- Gamepad ButtonB
+  Base | ButtonBack | Custom | (s[0] && s[1])
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchLeft
+  Base | ButtonStart | Custom | (s[0] && s[1])
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchRight
+  Base | ButtonX
+    <- Gamepad Paddle1
+    <- Gamepad ButtonX
+  Base | ButtonY
+    <- Gamepad ButtonY
+  Base | DPadDown
+    <- Gamepad DPadDown
+  Base | DPadLeft
+    <- Gamepad DPadLeft
+  Base | DPadRight
+    <- Gamepad DPadRight
+  Base | DPadUp
+    <- Gamepad DPadUp
+  Base | LeftShoulder
+    <- Gamepad LeftShoulder
+  Base | LeftThumbAxisX
+    <- Gamepad LeftStickX
+  Base | LeftThumbAxisY
+    <- Gamepad LeftStickY
+  Base | LeftThumbButton
+    <- Gamepad LeftStick
+  Base | LeftTrigger
+    <- Gamepad LeftTrigger
+    <- Gamepad LeftTrigger [upper-half] dz=75
+  Base | RightShoulder
+    <- Gamepad RightShoulder
+  Base | RightThumbAxisX
+    <- Gyro Yaw
+    <- Gamepad RightStickX
+  Base | RightThumbAxisY
+    <- Gyro Pitch
+    <- Gamepad RightStickY
+  Base | RightThumbButton
+    <- Gamepad RightStick
+  Base | RightTrigger
+    <- Gamepad RightTrigger
+    <- Gamepad RightTrigger [upper-half] dz=75
+kbm rows: 1
+  Base | KbmKey74
+    <- Gamepad ButtonStart
+macros: 10
+  macro RumblePulse OnPress | Haptic pulse (DPadRight) | btns=0x0000 in=[Gamepad DPadRight] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadUp) | btns=0x0000 in=[Gamepad DPadUp] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadDown) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadLeft) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (ButtonStart) | btns=0x0000 in=[Gamepad ButtonStart] layer=Base strength=33%
+  macro HoldKey DoublePress | Hold F9 (ButtonStart) | btns=0x0010 dbl=442ms layer=Base vk=0x78
+  macro KeyTap OnPress | Screenshot key (ButtonBack) | btns=0x0000 in=[Gamepad ButtonBack] layer=Base vk=0x2C
+report: v26 rows:x20+k1 macros:10 menus:0 layers:0 clean:28 partial:0 skipped:0 errors:0
+  Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => RightThumbAxisX <- Gyro Yaw
+  Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => RightThumbAxisY <- Gyro Pitch
+  Clean RowEmitted @ Default/left_trackpad/group 1 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
+  Clean RowEmitted @ Default/right_trackpad/group 2 (single_button)/click/Full_Press => ButtonStart <- Touchpad 0 Click
+  Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
+  Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
+  Clean RowEmitted @ Default/switch/group 8 (switches)/button_escape/Full_Press => KbmKey74 <- Gamepad ButtonStart
+  Clean MacroEmitted @ Default/switch/group 8 (switches)/button_escape/Double_Press => Hold F9 <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
+  Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger) => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Default/right_joystick/group 9 (joystick_move) => RightThumbAxisX <- Gamepad RightStickX
+  Clean RowEmitted @ Default/right_joystick/group 9 (joystick_move) => RightThumbAxisY <- Gamepad RightStickY
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger) => RightTrigger <- Gamepad RightTrigger
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => ButtonA <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => ButtonB <- Gamepad ButtonB
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => ButtonX <- Gamepad ButtonX
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => ButtonY <- Gamepad ButtonY
+  Clean RowEmitted @ Default/dpad/group 10 (dpad)/dpad_east/Full_Press => DPadRight <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 10 (dpad)/dpad_north/Full_Press => DPadUp <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 10 (dpad)/dpad_south/Full_Press => DPadDown <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 10 (dpad)/dpad_west/Full_Press => DPadLeft <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/joystick/group 3 (joystick_move)/click/Full_Press => LeftThumbButton <- Gamepad LeftStick
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Default/right_joystick/group 9 (joystick_move)/click/Full_Press => RightThumbButton <- Gamepad RightStick
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => RightTrigger <- Gamepad RightTrigger
+  Clean RowEmitted @ Default/switch/group 8 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default/switch/group 8 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder

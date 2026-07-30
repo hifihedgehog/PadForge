@@ -1,0 +1,150 @@
+name: Pan's Steam Deck & Steam Controller (2026)
+description: Your modified layout for this game.
+slots: xbox kbm
+gyroRatchet: Touchpad 1 Finger 0 Down
+xbox rows: 32
+  Base | ButtonA
+    <- Gamepad ButtonA
+  Base | ButtonB
+    <- Gamepad ButtonB
+  Base | ButtonBack
+    <- Gamepad ButtonBack
+  Base | ButtonStart
+    <- Gamepad ButtonStart
+  Base | ButtonX
+    <- Gamepad ButtonX
+  Base | ButtonY
+    <- Gamepad ButtonY
+  Base | DPadDown
+    <- Gamepad DPadDown
+  Base | DPadLeft
+    <- Gamepad DPadLeft
+  Base | DPadRight
+    <- Gamepad DPadRight
+  Base | DPadUp
+    <- Gamepad DPadUp
+  Base | LeftShoulder
+    <- Gamepad LeftShoulder
+  Base | LeftThumbAxisX
+    <- Gamepad LeftStickX
+  Base | LeftThumbAxisY
+    <- Gamepad LeftStickY
+  Base | LeftTrigger
+    <- Gamepad LeftTrigger
+    <- Gamepad LeftTrigger [upper-half] dz=75
+  Base | RightShoulder
+    <- Gamepad RightShoulder
+  Base | RightThumbAxisX
+    <- Gamepad RightStickX
+  Base | RightThumbAxisY
+    <- Gamepad RightStickY
+  Base | RightThumbButton
+    <- Gamepad RightStick
+  Base | RightTrigger
+    <- Gamepad RightTrigger
+    <- Gamepad RightTrigger [upper-half] dz=75
+  Layer_3725174032_1 | ButtonY
+    <- Gamepad ButtonA
+    <- Gamepad ButtonB
+    <- Gamepad ButtonX
+    <- Gamepad ButtonY
+  Layer_3725174032_1 | DPadDown
+    <- Gamepad ButtonA
+  Layer_3725174032_1 | DPadLeft
+    <- Gamepad ButtonX
+  Layer_3725174032_1 | DPadRight
+    <- Gamepad ButtonB
+  Layer_3725174032_1 | DPadUp
+    <- Gamepad ButtonY
+  Layer_3725174032_1 | LeftTrigger
+    <- Gamepad LeftTrigger
+  Layer_3725174032_1 | RightTrigger
+    <- Gamepad RightTrigger
+  Layer_3725174032_2 | DPadDown
+    <- Gamepad ButtonA
+  Layer_3725174032_2 | DPadLeft
+    <- Gamepad ButtonX
+  Layer_3725174032_2 | DPadRight
+    <- Gamepad ButtonB
+  Layer_3725174032_2 | DPadUp
+    <- Gamepad ButtonY
+  Layer_3725174032_2 | LeftTrigger
+    <- Gamepad LeftTrigger
+  Layer_3725174032_2 | RightTrigger
+    <- Gamepad RightTrigger
+xbox activators: 2
+  Hold Layer_3725174032_1 | Gamepad Paddle2 | inherit | name=Quick Item
+  Hold Layer_3725174032_2 | Gamepad Paddle4 | inherit | name=Quick Equip
+kbm rows: 3
+  Base | KbmKeyA0
+    <- Gamepad Paddle1
+  Base | KbmMouseX | Sum
+    <- Gyro Yaw
+    <- Touchpad 1 Finger 0 X
+  Base | KbmMouseY | Sum
+    <- Gyro Pitch
+    <- Touchpad 1 Finger 0 Y
+macros: 9
+  macro HoldVcButton DoublePress | Double press LeftThumbButton (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] dbl=442ms layer=Base target=0x0040
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro HoldVcButton HoldForMs | Long press ButtonY (Paddle2) | btns=0x0000 in=[Gamepad Paddle2] hold=500ms layer=Base target=0x8000
+  macro HoldVcButton DoublePress | Double press ButtonY (Paddle3) | btns=0x0000 in=[Gamepad Paddle3] dbl=442ms layer=Base target=0x8000
+  macro HoldVcButton DoublePress | Double press RightShoulder (Paddle3) | btns=0x0000 in=[Gamepad Paddle3] dbl=442ms layer=Base target=0x0200
+  macro HoldVcButton HoldForMs | Long press ButtonY (Paddle3) | btns=0x0000 in=[Gamepad Paddle3] hold=500ms layer=Base target=0x8000
+  macro HoldVcButton HoldForMs | Long press LeftShoulder (Paddle3) | btns=0x0000 in=[Gamepad Paddle3] hold=500ms layer=Base target=0x0100
+  macro HoldVcButton HoldForMs | Long press ButtonY (Paddle2) | btns=0x0000 in=[Gamepad Paddle2] hold=500ms layer=Layer_3725174032_1 target=0x8000
+report: v26 rows:x32+k3 macros:9 menus:0 layers:2 clean:51 partial:2 skipped:0 errors:0
+  Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseX <- Gyro Yaw
+  Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseY <- Gyro Pitch
+  Clean MacroEmitted @ Default/joystick/group 6 (joystick_move)/click/Double_Press => Double press LeftThumbButton <- Gamepad LeftStick
+  Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_left_upper/Long_Press => Long press ButtonY <- Gamepad Paddle2
+  Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_right/Double_Press => Double press ButtonY <- Gamepad Paddle3
+  Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_right/Double_Press => Double press RightShoulder <- Gamepad Paddle3
+  Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_right/Long_Press => Long press ButtonY <- Gamepad Paddle3
+  Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_right/Long_Press => Long press LeftShoulder <- Gamepad Paddle3
+  Clean RowEmitted @ Default/switch/group 0 (switches)/button_back_right_upper/Full_Press => KbmKeyA0 <- Gamepad Paddle1
+  Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_a/Full_Press => ButtonY <- Gamepad ButtonA
+  Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_a/Full_Press => DPadDown <- Gamepad ButtonA
+  Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_b/Full_Press => ButtonY <- Gamepad ButtonB
+  Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_b/Full_Press => DPadRight <- Gamepad ButtonB
+  Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_x/Full_Press => ButtonY <- Gamepad ButtonX
+  Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_x/Full_Press => DPadLeft <- Gamepad ButtonX
+  Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_y/Full_Press => DPadUp <- Gamepad ButtonY
+  Clean ShiftLayerEmitted(Quick Item) @ Quick Item/switch/group 18 (switches)/button_back_left_upper/release => Quick Item <- Gamepad Paddle2
+  Clean MacroEmitted @ Quick Item/switch/group 18 (switches)/button_back_left_upper/Long_Press => Long press ButtonY <- Gamepad Paddle2
+  Clean RowEmitted @ Quick Equip/button_diamond/group 26 (four_buttons)/button_a/Full_Press => DPadDown <- Gamepad ButtonA
+  Clean RowEmitted @ Quick Equip/button_diamond/group 26 (four_buttons)/button_b/Full_Press => DPadRight <- Gamepad ButtonB
+  Clean RowEmitted @ Quick Equip/button_diamond/group 26 (four_buttons)/button_x/Full_Press => DPadLeft <- Gamepad ButtonX
+  Clean RowEmitted @ Quick Equip/button_diamond/group 26 (four_buttons)/button_y/Full_Press => DPadUp <- Gamepad ButtonY
+  Clean ShiftLayerEmitted(Quick Equip) @ Quick Equip/switch/group 29 (switches)/button_back_left/release => Quick Equip <- Gamepad Paddle4
+  Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
+  Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
+  Clean RowEmitted @ Default/left_trigger/group 1 (trigger) => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Default/right_joystick/group 11 (joystick_move) => RightThumbAxisX <- Gamepad RightStickX
+  Clean RowEmitted @ Default/right_joystick/group 11 (joystick_move) => RightThumbAxisY <- Gamepad RightStickY
+  Clean RowEmitted @ Default/right_trigger/group 2 (trigger) => RightTrigger <- Gamepad RightTrigger
+  Clean RowEmitted @ Quick Item/left_trigger/group 16 (trigger) => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Quick Item/right_trigger/group 17 (trigger) => RightTrigger <- Gamepad RightTrigger
+  Clean RowEmitted @ Quick Equip/left_trigger/group 27 (trigger) => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Quick Equip/right_trigger/group 28 (trigger) => RightTrigger <- Gamepad RightTrigger
+  Clean RowEmitted @ Default/button_diamond/group 3 (four_buttons)/button_a/Full_Press => ButtonA <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 3 (four_buttons)/button_b/Full_Press => ButtonB <- Gamepad ButtonB
+  Clean RowEmitted @ Default/button_diamond/group 3 (four_buttons)/button_x/Full_Press => ButtonX <- Gamepad ButtonX
+  Clean RowEmitted @ Default/button_diamond/group 3 (four_buttons)/button_y/Full_Press => ButtonY <- Gamepad ButtonY
+  Clean RowEmitted @ Default/dpad/group 10 (dpad)/dpad_east/Full_Press => DPadRight <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 10 (dpad)/dpad_north/Full_Press => DPadUp <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 10 (dpad)/dpad_south/Full_Press => DPadDown <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 10 (dpad)/dpad_west/Full_Press => DPadLeft <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/left_trigger/group 1 (trigger)/click/Full_Press => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Default/right_joystick/group 11 (joystick_move)/click/Full_Press => RightThumbButton <- Gamepad RightStick
+  Clean RowEmitted @ Default/right_trigger/group 2 (trigger)/click/Full_Press => RightTrigger <- Gamepad RightTrigger
+  Clean RowEmitted @ Default/switch/group 0 (switches)/button_escape/Full_Press => ButtonStart <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/switch/group 0 (switches)/button_menu/Full_Press => ButtonBack <- Gamepad ButtonBack
+  Clean RowEmitted @ Default/switch/group 0 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default/switch/group 0 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
+  Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_y/Full_Press => ButtonY <- Gamepad ButtonY
+  Clean ShiftLayerEmitted(Quick Item) @ Default/switch/group 0 (switches)/button_back_left_upper/Start_Press => Hold Quick Item <- Gamepad Paddle2
+  Clean ShiftLayerEmitted(Quick Equip) @ Default/switch/group 0 (switches)/button_back_left/Start_Press => Hold Quick Equip <- Gamepad Paddle4

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -135,34 +135,65 @@ namespace PadForge.Common.Input
         /// the endpoint refuses the connection.</summary>
         public bool Open()
         {
-            try
+            // Every call here is Windows MIDI Services WinRT RPC, and this
+            // runs on the POLLING THREAD via the Step 1 sweep. A hung
+            // service wedged the whole engine through exactly this lane
+            // (live stack 2026-07-23: DisconnectEndpointConnection under
+            // UpdateMidiInputDevices under PollingLoop). Same event-bounded
+            // contract as the virtual-controller side; an event wait cannot
+            // inline the worker body.
+            MidiEndpointConnection conn = null;
+            bool ok = false;
+            var done = new System.Threading.ManualResetEventSlim(false);
+            var work = System.Threading.Tasks.Task.Run(() =>
             {
-                var session = MidiInputRuntime.Session;
-                if (session == null) return false;
-
-                _connection = session.CreateEndpointConnection(_endpointId);
-                if (_connection == null) return false;
-
-                _connection.MessageReceived += OnMessageReceived;
-                if (!_connection.Open())
+                try
                 {
-                    _connection.MessageReceived -= OnMessageReceived;
-                    // CreateEndpointConnection already registered this
-                    // connection in the session; undo that on the failure
-                    // path too (the success path does it in Dispose).
-                    MidiInputRuntime.Disconnect(_connection);
-                    _connection = null;
-                    return false;
+                    var session = MidiInputRuntime.Session;
+                    if (session == null) return;
+
+                    conn = session.CreateEndpointConnection(_endpointId);
+                    if (conn == null) return;
+
+                    conn.MessageReceived += OnMessageReceived;
+                    if (!conn.Open())
+                    {
+                        conn.MessageReceived -= OnMessageReceived;
+                        // CreateEndpointConnection already registered this
+                        // connection in the session; undo that on the
+                        // failure path too (the success path does it in
+                        // Dispose).
+                        MidiInputRuntime.Disconnect(conn);
+                        conn = null;
+                        return;
+                    }
+                    ok = true;
                 }
-                _attached = true;
-                return true;
-            }
-            catch
+                catch { conn = null; }
+                finally { done.Set(); }
+            });
+            if (!done.Wait(OpenTimeoutMs))
             {
-                _connection = null;
+                // Hung open: orphan it. If the RPC ever lands, tear the
+                // stray connection down on its own thread.
+                work.ContinueWith(_ =>
+                {
+                    var stray = conn;
+                    if (stray != null)
+                    {
+                        try { stray.MessageReceived -= OnMessageReceived; } catch { }
+                        MidiInputRuntime.Disconnect(stray);
+                    }
+                }, System.Threading.Tasks.TaskScheduler.Default);
                 return false;
             }
+            if (!ok) return false;
+            _connection = conn;
+            _attached = true;
+            return true;
         }
+
+        private const int OpenTimeoutMs = 3_000;
 
         public void Dispose()
         {
@@ -227,7 +258,9 @@ namespace PadForge.Common.Input
             }
         }
 
-        private void SetNote(int note, bool down)
+        // Internal for the audit test seam (2026-07-25): the WinRT
+        // callback is not constructible in tests.
+        internal void SetNote(int note, bool down)
         {
             if (note < 0 || note >= MidiInputState.NoteCount) return;
             lock (_stateLock)
@@ -238,7 +271,7 @@ namespace PadForge.Common.Input
             }
         }
 
-        private void SetCc(int cc, int value7)
+        internal void SetCc(int cc, int value7)
         {
             if (cc < 0 || cc >= MidiInputState.CcCount) return;
             int v = Math.Clamp(value7, 0, 127);
@@ -250,9 +283,33 @@ namespace PadForge.Common.Input
                 // Off (CC 123) silence every sounding note. Clear the note lanes so
                 // mapped note-buttons release. A controller that ends a phrase with
                 // one of these instead of per-note NoteOff would otherwise leave
-                // every mapped note latched on.
-                if (cc == 120 || cc == 123)
+                // every mapped note latched on. Omni Off/On and Mono/Poly
+                // (CC 124-127) carry All Notes Off semantics per MIDI 1.0,
+                // so they clear the lanes too (2026-07-25 audit). CC 122
+                // (Local Control) does not.
+                if (cc == 120 || (cc >= 123 && cc <= 127))
                     System.Array.Clear(s.Midi.Notes, 0, s.Midi.Notes.Length);
+                // CC 121 Reset All Controllers (RP-015, scoped to the lanes
+                // this consumer models): pitch bend recenters, mod wheel and
+                // the pedals drop, expression returns to full, RPN/NRPN
+                // selectors return to null. Bank/volume/pan/sound lanes are
+                // deliberately NOT reset, per RP-015. Without this, a
+                // keyboard panic (121+123) released mapped notes but left a
+                // mapped Pitch Bend axis frozen off-center forever.
+                if (cc == 121)
+                {
+                    s.Midi.PitchBend = 32768;
+                    s.Midi.Cc[1] = 0;                                  // mod wheel
+                    s.Midi.Cc[11] = 127;                               // expression
+                    for (int p = 64; p <= 67; p++) s.Midi.Cc[p] = 0;   // pedals
+                    for (int p = 98; p <= 101; p++) s.Midi.Cc[p] = 127; // (N)RPN null
+                    // Kill the reset lanes' queued/in-flight encoder pulses,
+                    // or CcUp/CcDown momentaries keep firing after the reset.
+                    ResetPulseLane(1);
+                    ResetPulseLane(11);
+                    for (int p = 64; p <= 67; p++) ResetPulseLane(p);
+                    for (int p = 98; p <= 101; p++) ResetPulseLane(p);
+                }
                 _state = s;
 
                 // Relative-encoder reading: a value near 0x40 is a signed
@@ -267,7 +324,23 @@ namespace PadForge.Common.Input
             }
         }
 
-        private void SetPitchBend(int scaled)
+        /// <summary>Clears one CC lane's encoder-pulse machine, both
+        /// directions: pending detents and any in-flight press/gap phase.
+        /// Caller holds _stateLock (the pulse arrays are lock-guarded).</summary>
+        private void ResetPulseLane(int cc)
+        {
+            int up = 2 * cc, down = 2 * cc + 1;
+            if (down >= _pulsePending.Length) return;
+            _pulsePending[up] = 0; _pulsePending[down] = 0;
+            _pulsePhase[up] = 0; _pulsePhase[down] = 0;
+            // Deadline stamps reset with their phase (audit 2026-07-25,
+            // C23): today every phase entry re-stamps before reading, but
+            // a reset that leaves a stale deadline is one future phase-0
+            // read away from replaying it.
+            _pulsePhaseUntil[up] = 0; _pulsePhaseUntil[down] = 0;
+        }
+
+        internal void SetPitchBend(int scaled)
         {
             lock (_stateLock)
             {
@@ -277,6 +350,13 @@ namespace PadForge.Common.Input
             }
         }
 
+        // Pooled per-tick snapshot (poll thread is the sole caller): the
+        // old shape deep-cloned TWICE per 1 kHz read (base clone + return
+        // clone). The base republish was redundant: every read rewrites
+        // ALL CcUp/CcDown stamps from the pulse machine's own state, so
+        // event writers never depended on the stamped base.
+        private PadForge.Engine.PooledInputStatePair _statePool;
+
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
             lock (_stateLock)
@@ -284,7 +364,8 @@ namespace PadForge.Common.Input
                 // Advance the encoder pulse machine and stamp the momentary
                 // CcUp/CcDown button states into the snapshot.
                 long now = Environment.TickCount64;
-                var s = _state.Clone();
+                var s = _statePool.Next();
+                _state.CopyInto(s);
                 for (int i = 0; i < _pulsePending.Length; i++)
                 {
                     bool pressed = false;
@@ -315,8 +396,7 @@ namespace PadForge.Common.Input
                     if ((i & 1) == 0) s.Midi.CcUp[cc] = pressed;
                     else s.Midi.CcDown[cc] = pressed;
                 }
-                _state = s;
-                return s.Clone();
+                return s;
             }
         }
 
@@ -349,28 +429,55 @@ namespace PadForge.Common.Input
                 if (!MidiVirtualController.IsAvailable()) return null;
                 lock (_lock)
                 {
-                    _session ??= MidiSession.Create("PadForge MIDI Input");
+                    if (_session != null) return _session;
+                    // Bounded like every other service touch; a hung
+                    // Create must not strand whichever thread first asks
+                    // for the session.
+                    MidiSession created = null;
+                    var done = new System.Threading.ManualResetEventSlim(false);
+                    System.Threading.Tasks.Task.Run(() =>
+                    {
+                        try { created = MidiSession.Create("PadForge MIDI Input"); }
+                        catch { }
+                        finally { done.Set(); }
+                    });
+                    if (!done.Wait(3_000)) return null;
+                    _session = created;
                     return _session;
                 }
             }
         }
 
+        /// <summary>Fire-and-forget: the disconnect RPC runs on a worker
+        /// and NOTHING waits on it. Teardown outcome is irrelevant to the
+        /// caller (the connection object is discarded either way), and a
+        /// hung service must never hold the polling thread again (live
+        /// stack 2026-07-23). At worst a hung RPC parks one thread-pool
+        /// thread until the service answers or the process exits.</summary>
         public static void Disconnect(MidiEndpointConnection connection)
         {
-            try
+            if (connection == null) return;
+            System.Threading.Tasks.Task.Run(() =>
             {
-                var session = _session;
-                if (session != null && connection != null)
-                    session.DisconnectEndpointConnection(connection.ConnectionId);
-            }
-            catch { }
+                try
+                {
+                    var session = _session;
+                    if (session != null)
+                        session.DisconnectEndpointConnection(connection.ConnectionId);
+                }
+                catch { }
+            });
         }
 
-        /// <summary>Enumerates connectable MIDI endpoints. Includes normal
-        /// hardware endpoints AND virtual-device endpoints (PadForge's own
-        /// MIDI virtual controllers among them — that is the no-hardware
-        /// loopback test path); excludes the diagnostics endpoints and the
-        /// in-box GM synth, which never produce input.</summary>
+        /// <summary>Enumerates connectable MIDI endpoints: normal message
+        /// endpoints only. PadForge's own MIDI virtual controllers stay
+        /// visible through their CLIENT-side twin, which the service
+        /// publishes as a normal endpoint (MIDI reference:
+        /// Midi2.VirtualMidiEndpointManager.cpp CreateClientVisibleEndpoint,
+        /// EndpointDeviceType = Normal). The device-side responder twin is
+        /// for the device host application only per the service's own
+        /// description string, and enumerating it is how the input lane
+        /// used to poke stranded responder corpses every sweep.</summary>
         public static List<(string Id, string Name)> EnumerateEndpoints()
         {
             var result = new List<(string Id, string Name)>();
@@ -383,8 +490,7 @@ namespace PadForge.Common.Input
                 {
                     if (ep == null) continue;
                     var purpose = ep.EndpointPurpose;
-                    if (purpose != MidiEndpointDevicePurpose.NormalMessageEndpoint
-                        && purpose != MidiEndpointDevicePurpose.VirtualDeviceResponder)
+                    if (purpose != MidiEndpointDevicePurpose.NormalMessageEndpoint)
                         continue;
                     string id = ep.EndpointDeviceId;
                     if (string.IsNullOrEmpty(id)) continue;

@@ -132,7 +132,17 @@ namespace PadForge.Views
         public MidiPreviewView()
         {
             InitializeComponent();
-            CompositionTarget.Rendering += OnRendering;
+            // Rendering rides tree presence, matching MousePreviewControl. A
+            // ctor-lifetime subscription to the STATIC CompositionTarget.Rendering
+            // roots the view forever and keeps its per-frame callback
+            // invalidating layout even when the hosting page is swapped out.
+            // See the note in ControllerSchematicView for the measurement.
+            Loaded += (s, e) =>
+            {
+                CompositionTarget.Rendering -= OnRendering;
+                CompositionTarget.Rendering += OnRendering;
+            };
+            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
         }
 
         public void Bind(PadViewModel vm)
@@ -563,7 +573,8 @@ namespace PadForge.Views
                 IsBlack = isBlack,
                 Rect = rect,
                 NormalBrush = normalBrush,
-                PressedBrush = pressedBrush
+                PressedBrush = pressedBrush,
+                FlashName = $"MidiNote{noteIndex}"
             };
         }
 
@@ -614,7 +625,7 @@ namespace PadForge.Views
             // Check piano keys
             foreach (var w in _keyWidgets)
             {
-                if (_flashTarget == $"MidiNote{w.NoteIndex}")
+                if (_flashTarget == w.FlashName)
                 {
                     w.Rect.Fill = highlight ? FlashBrush : w.NormalBrush;
                     return;
@@ -628,6 +639,12 @@ namespace PadForge.Views
 
         private void OnRendering(object sender, EventArgs e)
         {
+            // Visibility first (mirrors KBMPreviewView): the theme probe
+            // ran per frame against a hidden canvas on the retained page.
+            // The first visible frame catches a pending theme change.
+            // Iconic gate: IsVisible stays TRUE while minimized.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
+
             // Rebuild on theme change.
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_layoutBuilt && _lastTheme != currentTheme) RebuildLayout();
@@ -643,7 +660,7 @@ namespace PadForge.Views
                 // collapsed — the control stays bound (it's a persistent
                 // singleton), so without this the loop would run every frame
                 // against a hidden canvas.
-                if (!IsVisible) return;
+                if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
 
                 var midi = _inputSource?.Invoke();
                 long now = Environment.TickCount64;
@@ -694,6 +711,10 @@ namespace PadForge.Views
                 return;
             }
 
+            // Retained-page guard for the OUTPUT path, mirroring the input
+            // path's guard above: skip the repaint while the hosting page is
+            // hidden. _dirty stays set for the first visible frame.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             if (!_dirty || _vm == null) return;
             _dirty = false;
 
@@ -716,7 +737,7 @@ namespace PadForge.Views
             // Update piano keys (skip the flashing key during recording).
             foreach (var w in _keyWidgets)
             {
-                if (_flashTarget == $"MidiNote{w.NoteIndex}" && _flashOn)
+                if (_flashTarget == w.FlashName && _flashOn)
                     continue; // Don't overwrite flash highlight
 
                 bool pressed = raw.Notes != null && w.NoteIndex < raw.Notes.Length && raw.Notes[w.NoteIndex];
@@ -768,6 +789,9 @@ namespace PadForge.Views
             public Rectangle Rect;
             public Brush NormalBrush;
             public Brush PressedBrush;
+            /// <summary>Prebuilt "MidiNoteN": the flash compare
+            /// interpolated a string per key per rendered frame.</summary>
+            public string FlashName;
         }
     }
 }

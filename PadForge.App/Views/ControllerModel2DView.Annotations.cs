@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using PadForge.Models2D;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -170,6 +171,16 @@ namespace PadForge.Views
         /// fallback shape as the 3D ResolveAnnotationAnchor).</summary>
         private Point? ResolveAnnotationAnchor(string targetSettingName)
         {
+            // Nintendo rows are raw grid names (RawBtn0, RawAxis1); anchors
+            // are keyed by the preview element grammar. Translate first.
+            // Raw row names only occur here for Nintendo slots (Extended
+            // uses the schematic view, never this canvas).
+            if (targetSettingName.StartsWith("Raw", System.StringComparison.Ordinal))
+            {
+                targetSettingName = NintendoPreviewMap.ToPreview(targetSettingName);
+                if (targetSettingName == null)
+                    return null;
+            }
             if (_annotationAnchors.TryGetValue(targetSettingName, out var p))
                 return p;
             string ring = targetSettingName switch
@@ -334,7 +345,8 @@ namespace PadForge.Views
         /// label wins (it survives disconnects); the slot roster
         /// (_vm.MappedDevices) fills gaps and supplies the DeviceTypeGlyph
         /// vocabulary; the fallbacks mirror InputService.ResolveDeviceLabel
-        /// ("(Any device)" for unbound, truncated GUID for unknown).</summary>
+        /// (the localized "(Any device)" sentinel for unbound, truncated
+        /// GUID for unknown).</summary>
         private void ResolveAnnotationDevice(string deviceGuid, string storedLabel,
             out string name, out string glyph)
         {
@@ -356,7 +368,7 @@ namespace PadForge.Views
             if (name.Length == 0)
             {
                 name = string.IsNullOrEmpty(deviceGuid)
-                    ? "(Any device)"
+                    ? PadForge.Resources.Strings.Strings.Instance.Mapping_AnyDevice
                     : (deviceGuid.Length > 8 ? deviceGuid.Substring(0, 8) + "…" : deviceGuid);
             }
         }
@@ -424,7 +436,7 @@ namespace PadForge.Views
                 else if (src.Invert) name = s.Mapping_Inv + " " + name;
                 else if (src.HalfAxis) name = s.Mapping_Half + " " + name;
                 AppendAnnotationWire(rows, src.DeviceGuid,
-                    src.SelectedInput?.DeviceLabel ?? src.DeviceLabel, name);
+                    src.DisplayDeviceLabel, name);
             }
             if (src.IsInvertOnHoldKind)
                 AppendAnnotationParamWire(rows, src, src.ParamModifier, src.ParamModifierInputChoice);
@@ -853,6 +865,11 @@ namespace PadForge.Views
         {
             if (!_annotationsEnabled || _vm == null)
                 return;
+            // Retained visibility-toggled page: keep the 6.7 Hz chip work
+            // off hidden surfaces. Chips recompute from live state each
+            // tick, so the first visible tick catches up. Iconic gate:
+            // IsVisible stays TRUE while minimized.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
 
             var now = DateTime.UtcNow;
             foreach (var chip in _annotationChips)
@@ -904,6 +921,16 @@ namespace PadForge.Views
         private bool GetAnnotationButtonState(string prop)
         {
             if (_vm == null) return false;
+            // Nintendo rows arrive as raw grid names (RawBtn0, RawPov0Up),
+            // the same as they do for the anchor lookup a few methods up.
+            // Without the same translation every one of them fell to the
+            // default arm, so the ember output dot was permanently collapsed
+            // on the ONLY slot type that feeds raw names to this canvas.
+            if (prop != null && prop.StartsWith("Raw", System.StringComparison.Ordinal))
+            {
+                prop = Models2D.NintendoPreviewMap.ToPreview(prop);
+                if (prop == null) return false;
+            }
             return prop switch
             {
                 "ButtonA" => _vm.ButtonA,

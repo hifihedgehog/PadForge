@@ -41,6 +41,16 @@ namespace PadForge.Engine
         //  Cached motor speeds for change detection
         // ─────────────────────────────────────────────
 
+        /// <summary>Whether the last rumble emit failed, so the HAPTICDIAG
+        /// probe logs a failure run once instead of every poll (the cache
+        /// below advances only on success, which re-enters that block
+        /// forever while a write keeps failing).</summary>
+        private bool _lastEmitFailed;
+        /// <summary>Directional/condition twin of <see cref="_lastEmitFailed"/>,
+        /// so a persistently failing write logs once per run rather than per
+        /// poll.</summary>
+        private bool _lastDirFailed;
+
         private ushort _cachedLeftMotorSpeed;
         private ushort _cachedRightMotorSpeed;
         private ushort _cachedLeftTriggerMotorSpeed;
@@ -203,7 +213,7 @@ namespace PadForge.Engine
         /// for Sony VID 0x054C with DS5 / DS5 Edge / DS4 PIDs before this
         /// method is called. Sony pads receive their entire effect packet
         /// (rumble + lightbar + AT + mic LED) from
-        /// <c>UserEffectsDispatcher</c> via <c>SonyEffectWriter</c>. SDL is
+        /// <c>UserEffectsDispatcher</c> via <c>PlayStationEffectWriter</c>. SDL is
         /// the sole writer for Xbox / generic gamepads / FFB joysticks —
         /// never for Sony.</para>
         /// <para>If a future change wants to route Sony pads through this
@@ -267,6 +277,19 @@ namespace PadForge.Engine
                 {
                     success = false;
                 }
+
+                // Same throttle the scalar path uses below. The directional
+                // and condition writes had NO failure logging at all, so a
+                // wheel whose effect never landed produced complete silence
+                // while the cache stayed unadvanced and the write retried every
+                // poll. Log once per failure run; a success re-arms it.
+                bool dirLogWorthy = success || !_lastDirFailed;
+                _lastDirFailed = !success;
+                if (!success && dirLogWorthy)
+                    SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG directional write FAILED type={v.EffectType}"
+                        + $" mag={v.SignedMagnitude} dir={v.Direction}"
+                        + $" cond={v.HasConditionData} viaHaptic={device.HasHaptic}");
 
                 if (success)
                 {
@@ -347,6 +370,21 @@ namespace PadForge.Engine
                 {
                     scalarSuccess = device.SetRumble(finalLeft, finalRight, uint.MaxValue);
                 }
+
+                // HAPTICDIAG (2026-07-24 rumble regression): the emit's
+                // success was invisible, so a failing SDL write and a
+                // successful one that the firmware ignores were
+                // indistinguishable. Nintendo only. NOT transition-only on
+                // its own: the cache below advances only on success, so a
+                // persistently failing write re-enters this block every
+                // poll. Log the failure once per (device, value) run and
+                // let success re-arm it (audit 2026-07-24, lens 1n).
+                bool emitLogWorthy = scalarSuccess || !_lastEmitFailed;
+                _lastEmitFailed = !scalarSuccess;
+                if (ud != null && ud.VendorId == 0x057E && emitLogWorthy)
+                    SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG emit L={finalLeft} R={finalRight} ok={scalarSuccess}"
+                        + $" viaHaptic={device.HasHaptic} gamepadHandle={(device.GamepadHandle != IntPtr.Zero)}");
 
                 if (scalarSuccess)
                 {
@@ -435,8 +473,23 @@ namespace PadForge.Engine
         {
             if (periodMs == 0 || effectType < FfbEffectTypes.Square || effectType > FfbEffectTypes.SawDown)
                 return 1.0;
-            double phase = (Environment.TickCount % (long)periodMs) / (double)periodMs; // 0..1
-            return effectType switch
+            // TickCount64, never TickCount. The 32-bit counter wraps NEGATIVE
+            // after 24.9 days of uptime, and C# takes the sign of the dividend
+            // through %, so the phase went to (-1, 0] on any long-running
+            // machine. Every waveform below assumes [0, 1): triangle and both
+            // sawtooths then returned up to 3.0 instead of 1.0, tripling the
+            // force until the caller's clamp saturated it, and square stopped
+            // alternating and held +1. A wheel that had been buzzing started
+            // pulling to one side, and only a reboot fixed it.
+            double phase = (Environment.TickCount64 % (long)periodMs) / (double)periodMs; // 0..1
+            return PeriodicWaveformAtPhase(effectType, phase);
+        }
+
+        /// <summary>The waveform's shape alone, as an instantaneous -1..+1
+        /// multiplier for a normalized phase in [0, 1). Split out from the
+        /// clock so the shape is verifiable without one.</summary>
+        internal static double PeriodicWaveformAtPhase(uint effectType, double phase)
+            => effectType switch
             {
                 FfbEffectTypes.Square   => phase < 0.5 ? 1.0 : -1.0,
                 FfbEffectTypes.Sine     => Math.Sin(phase * 2.0 * Math.PI),
@@ -445,7 +498,6 @@ namespace PadForge.Engine
                 FfbEffectTypes.SawDown  => 1.0 - 2.0 * phase,                  // +1 -> -1
                 _ => 1.0,
             };
-        }
 
         /// <summary>Translates rumble (the main and impulse-trigger motors, from any
         /// virtual controller, Xbox or Sony) into a steering-axis vibration for
@@ -467,7 +519,11 @@ namespace PadForge.Engine
             int mag = (int)(Math.Min(Math.Max(heavy, light) >> 1, 32767) * gainScale);
             if (mag <= 0) return 0;
             int periodMs = heavy >= light ? 120 : 40; // heavy channel -> low freq, light -> high (matches SetHapticForces)
-            double phase = (Environment.TickCount % periodMs) / (double)periodMs;
+            // TickCount64 for the same wrap reason as PeriodicWaveform. Sine is
+            // odd-symmetric so a negative phase only inverted the buzz here,
+            // which is inaudible in a rumble, but the two clocks must not
+            // disagree about what "now" means.
+            double phase = (Environment.TickCount64 % periodMs) / (double)periodMs;
             return (short)Math.Clamp(mag * Math.Sin(phase * 2.0 * Math.PI), -32767, 32767);
         }
 

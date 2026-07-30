@@ -1,0 +1,278 @@
+name: Gyrospeck's Hearts of Iron 4 V2
+description: Updated June 21, 2016.  Nearly every shortcut is accessible.  The controls are simple, yet deep.  Ha...
+slots: xbox kbm
+gyroEngage: Touchpad 1 Finger 0 Down
+xbox rows: 0
+xbox activators: 2
+  Hold Layer_708227783_0_MS_left_trackpad_6 | Gamepad Paddle1 | inherit | name=Left Trackpad shift
+  Cycle Layer_708227783_1 cycle=Layer_708227783_1+Base | Gamepad ButtonY | name=Army Hotkeys / Default Config / Map Modes
+kbm rows: 69
+  Base | KbmKey1B
+    <- Gamepad ButtonX
+    <- Gamepad ButtonStart
+  Base | KbmKey20
+    <- Gamepad ButtonA
+    <- Gamepad ButtonBack
+  Base | KbmKey25
+    <- Gamepad LeftStickX [lower-half]
+  Base | KbmKey26
+    <- Gamepad LeftStickY [lower-half]
+  Base | KbmKey27
+    <- Gamepad LeftStickX [upper-half]
+  Base | KbmKey28
+    <- Gamepad LeftStickY [upper-half]
+  Base | KbmKey45
+    <- Menu 1 Item 2
+  Base | KbmKey49
+    <- Menu 1 Item 8
+  Base | KbmKey4C
+    <- Gamepad LeftShoulder
+  Base | KbmKey4F
+    <- Gamepad ButtonB
+  Base | KbmKey50
+    <- Gamepad RightShoulder
+  Base | KbmKey51
+    <- Menu 1 Item 0
+  Base | KbmKey52
+    <- Menu 1 Item 1
+  Base | KbmKey54
+    <- Menu 1 Item 3
+  Base | KbmKey55
+    <- Menu 1 Item 7
+  Base | KbmKey57
+    <- Menu 1 Item 6
+  Base | KbmKey59
+    <- Menu 1 Item 5
+  Base | KbmKey70
+    <- Touchpad 1 Click
+  Base | KbmKeyA0
+    <- Gamepad Paddle2
+  Base | KbmMBtn0
+    <- Gamepad RightTrigger [upper-half] dz=15
+  Base | KbmMBtn1
+    <- Gamepad LeftTrigger [upper-half] dz=15
+  Base | KbmMouseX
+    <- Touchpad 1 Finger 0 X sens=1.82
+  Base | KbmMouseY
+    <- Touchpad 1 Finger 0 Y sens=1.82
+  Layer_708227783_0_MS_button_diamond_11 | KbmKey71
+    <- Gamepad ButtonA
+  Layer_708227783_0_MS_button_diamond_11 | KbmKey72
+    <- Gamepad ButtonB
+  Layer_708227783_0_MS_button_diamond_11 | KbmKey73
+    <- Gamepad ButtonY
+  Layer_708227783_0_MS_button_diamond_11 | KbmKey74
+    <- Gamepad ButtonX
+  Layer_708227783_0_MS_gyro_10 | KbmMouseX
+    <- Gyro Yaw
+  Layer_708227783_0_MS_gyro_10 | KbmMouseY
+    <- Gyro Pitch
+  Layer_708227783_0_MS_joystick_12 | KbmKey75
+    <- Gamepad LeftStickY [upper-half]
+  Layer_708227783_0_MS_joystick_12 | KbmKey76
+    <- Gamepad LeftStickX [upper-half]
+  Layer_708227783_0_MS_joystick_12 | KbmKey77
+    <- Gamepad LeftStickY [lower-half]
+  Layer_708227783_0_MS_joystick_12 | KbmKey78
+    <- Gamepad LeftStickX [lower-half]
+  Layer_708227783_0_MS_left_trackpad_6 | KbmMBtn2
+    <- Touchpad 0 Click
+  Layer_708227783_0_MS_right_trackpad_13 | KbmScroll
+    <- Touchpad 1 Finger 0 Y [inverted]
+  Layer_708227783_1 | KbmKey1B
+    <- Gamepad ButtonX
+    <- Gamepad ButtonStart
+  Layer_708227783_1 | KbmKey20
+    <- Gamepad ButtonBack
+  Layer_708227783_1 | KbmKey25
+    <- Gamepad LeftStickX [lower-half]
+  Layer_708227783_1 | KbmKey26
+    <- Gamepad LeftStickY [lower-half]
+  Layer_708227783_1 | KbmKey27
+    <- Gamepad LeftStickX [upper-half]
+  Layer_708227783_1 | KbmKey28
+    <- Gamepad LeftStickY [upper-half]
+  Layer_708227783_1 | KbmKey2E
+    <- Touchpad 0 Finger 0 Down East
+  Layer_708227783_1 | KbmKey43
+    <- Touchpad 0 Finger 0 Down West
+  Layer_708227783_1 | KbmKey47
+    <- Gamepad RightShoulder
+  Layer_708227783_1 | KbmKey48
+    <- Touchpad 0 Finger 0 Down South
+  Layer_708227783_1 | KbmKey53
+    <- Gamepad LeftShoulder
+  Layer_708227783_1 | KbmKey56
+    <- Touchpad 0 Finger 0 Down North
+  Layer_708227783_1 | KbmKey58
+    <- Gamepad ButtonA
+  Layer_708227783_1 | KbmKey5A
+    <- Gamepad ButtonB
+  Layer_708227783_1 | KbmKeyA0
+    <- Gamepad Paddle2
+  Layer_708227783_1 | KbmKeyA2
+    <- Touchpad 0 Finger 0 Down South
+    <- Touchpad 0 Finger 0 Down South
+  Layer_708227783_1 | KbmKeyA4
+    <- Gamepad Paddle1
+  Layer_708227783_1 | KbmKeyBE
+    <- Touchpad 1 Click
+  Layer_708227783_1 | KbmMBtn0
+    <- Gamepad RightTrigger [upper-half] dz=15
+  Layer_708227783_1 | KbmMBtn1
+    <- Gamepad LeftTrigger [upper-half] dz=15
+  Layer_708227783_1 | KbmMouseX
+    <- Touchpad 1 Finger 0 X sens=1.82
+  Layer_708227783_1 | KbmMouseY
+    <- Touchpad 1 Finger 0 Y sens=1.82
+  Layer_708227783_1_MS_button_diamond_26 | KbmKey71
+    <- Gamepad ButtonA
+  Layer_708227783_1_MS_button_diamond_26 | KbmKey72
+    <- Gamepad ButtonB
+  Layer_708227783_1_MS_button_diamond_26 | KbmKey73
+    <- Gamepad ButtonY
+  Layer_708227783_1_MS_button_diamond_26 | KbmKey74
+    <- Gamepad ButtonX
+  Layer_708227783_1_MS_gyro_31 | KbmMouseX
+    <- Gyro Yaw
+  Layer_708227783_1_MS_gyro_31 | KbmMouseY
+    <- Gyro Pitch
+  Layer_708227783_1_MS_joystick_24 | KbmKey75
+    <- Gamepad LeftStickY [upper-half]
+  Layer_708227783_1_MS_joystick_24 | KbmKey76
+    <- Gamepad LeftStickX [upper-half]
+  Layer_708227783_1_MS_joystick_24 | KbmKey77
+    <- Gamepad LeftStickY [lower-half]
+  Layer_708227783_1_MS_joystick_24 | KbmKey78
+    <- Gamepad LeftStickX [lower-half]
+  Layer_708227783_1_MS_left_trackpad_21 | KbmMBtn2
+    <- Touchpad 0 Click
+  Layer_708227783_1_MS_right_trackpad_20 | KbmScroll
+    <- Touchpad 1 Finger 0 Y [inverted]
+kbm activators: 5
+  Hold Layer_708227783_0_MS_button_diamond_11 | Gamepad Paddle1 | inherit | name=Face Buttons shift
+  Hold Layer_708227783_0_MS_joystick_12 | Gamepad Paddle1 | inherit | name=Left Stick shift
+  Hold Layer_708227783_0_MS_left_trackpad_6 | Gamepad Paddle1 | inherit | name=Left Trackpad shift
+  Hold Layer_708227783_0_MS_right_trackpad_13 | Gamepad Paddle1 | inherit | name=Right Trackpad shift
+  Cycle Layer_708227783_1 cycle=Layer_708227783_1+Base | Gamepad ButtonY | name=Army Hotkeys / Default Config / Map Modes
+macros: 18
+  macro ShowOnScreenKeyboard OnPress | On-screen keyboard (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Base
+  macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickX) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickX) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower layer=Base strength=33%
+  macro KeyTap OnPress | Tap Keypad Plus (Touchpad 0 SwipeDown) | btns=0x0000 in=[Touchpad 0 SwipeDown] layer=Layer_708227783_0_MS_left_trackpad_6 vk=0x6B
+  macro KeyTap OnPress | Tap Keypad Minus (Touchpad 0 SwipeUp) | btns=0x0000 in=[Touchpad 0 SwipeUp] layer=Layer_708227783_0_MS_left_trackpad_6 vk=0x6D
+  macro HoldKey DoublePress | Hold Left Ctrl (Paddle2) | btns=0x0000 in=[Gamepad Paddle2] dbl=442ms layer=Base vk=0xA2
+  macro ShowOnScreenKeyboard OnPress | On-screen keyboard (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Layer_708227783_1
+  macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Layer_708227783_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickX) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper layer=Layer_708227783_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Layer_708227783_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Layer_708227783_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickX) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower layer=Layer_708227783_1 strength=33%
+  macro KeyTap OnPress | Tap Keypad Plus (Touchpad 0 SwipeDown) | btns=0x0000 in=[Touchpad 0 SwipeDown] layer=Layer_708227783_1_MS_left_trackpad_21 vk=0x6B
+  macro KeyTap OnPress | Tap Keypad Minus (Touchpad 0 SwipeUp) | btns=0x0000 in=[Touchpad 0 SwipeUp] layer=Layer_708227783_1_MS_left_trackpad_21 vk=0x6D
+  macro HoldKey DoublePress | Hold Left Ctrl (Paddle2) | btns=0x0000 in=[Gamepad Paddle2] dbl=442ms layer=Layer_708227783_1 vk=0xA2
+menus: 1
+  menu 1 Grid | Touchpad 0 | Base | fire=TouchRelease cells=9 scale=109% | name=Touch Menu 1
+    [0] Government
+    [1] Trade
+    [2] Diplomacy
+    [3] Constructions
+    [5] Production
+    [6] Research
+    [7] Recruit and Deploy
+    [8] Logistics
+report: v26 rows:x0+k69 macros:18 menus:1 layers:7 clean:85 partial:6 skipped:0 errors:0
+  Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmKey20 <- Gamepad ButtonA
+  Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey4F <- Gamepad ButtonB
+  Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 0 (four_buttons)/button_X/Full_Press => KbmKey1B <- Gamepad ButtonX
+  Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 11 (four_buttons)/button_A/Full_Press => KbmKey71 <- Gamepad ButtonA
+  Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 11 (four_buttons)/button_B/Full_Press => KbmKey72 <- Gamepad ButtonB
+  Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 11 (four_buttons)/button_X/Full_Press => KbmKey74 <- Gamepad ButtonX
+  Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 11 (four_buttons)/button_Y/Full_Press => KbmKey73 <- Gamepad ButtonY
+  Clean RowEmitted @ Default Config / Map Modes/gyro/group 10 (absolute_mouse) => KbmMouseX <- Gyro Yaw
+  Clean RowEmitted @ Default Config / Map Modes/gyro/group 10 (absolute_mouse) => KbmMouseY <- Gyro Pitch
+  Clean RowEmitted @ Default Config / Map Modes/joystick/group 3 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Default Config / Map Modes/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
+  Clean RowEmitted @ Default Config / Map Modes/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Default Config / Map Modes/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad LeftStickX (lower half)
+  Clean RowEmitted @ Default Config / Map Modes/joystick/group 12 (four_buttons)/button_A/Full_Press => KbmKey75 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Default Config / Map Modes/joystick/group 12 (four_buttons)/button_B/Full_Press => KbmKey76 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Default Config / Map Modes/joystick/group 12 (four_buttons)/button_X/Full_Press => KbmKey78 <- Gamepad LeftStickX (lower half)
+  Clean RowEmitted @ Default Config / Map Modes/joystick/group 12 (four_buttons)/button_Y/Full_Press => KbmKey77 <- Gamepad LeftStickY (lower half)
+  Clean MacroEmitted @ Default Config / Map Modes/left_trackpad/group 6 (scrollwheel)/scroll_clockwise/Full_Press => Tap Keypad Plus <- Touchpad 0 SwipeDown
+  Clean MacroEmitted @ Default Config / Map Modes/left_trackpad/group 6 (scrollwheel)/scroll_counterclockwise/Full_Press => Tap Keypad Minus <- Touchpad 0 SwipeUp
+  Partial ScrollWheelApproximated @ Default Config / Map Modes/left_trackpad/group 6 (scrollwheel)
+  Clean RowEmitted @ Default Config / Map Modes/left_trackpad/group 6 (scrollwheel)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
+  Clean MenuEmitted(8) @ Default Config / Map Modes/left_trackpad/group 9 (touch_menu) => Grid menu 1: 8 bound cells <- Touchpad 0
+  Clean RowEmitted @ Default Config / Map Modes/left_trackpad/group 9 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey51 <- Menu 1 Item 0
+  Clean RowEmitted @ Default Config / Map Modes/left_trackpad/group 9 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey52 <- Menu 1 Item 1
+  Clean RowEmitted @ Default Config / Map Modes/left_trackpad/group 9 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey45 <- Menu 1 Item 2
+  Clean RowEmitted @ Default Config / Map Modes/left_trackpad/group 9 (touch_menu)/touch_menu_button_3/Full_Press => KbmKey54 <- Menu 1 Item 3
+  Clean RowEmitted @ Default Config / Map Modes/left_trackpad/group 9 (touch_menu)/touch_menu_button_5/Full_Press => KbmKey59 <- Menu 1 Item 5
+  Clean RowEmitted @ Default Config / Map Modes/left_trackpad/group 9 (touch_menu)/touch_menu_button_6/Full_Press => KbmKey57 <- Menu 1 Item 6
+  Clean RowEmitted @ Default Config / Map Modes/left_trackpad/group 9 (touch_menu)/touch_menu_button_7/Full_Press => KbmKey55 <- Menu 1 Item 7
+  Clean RowEmitted @ Default Config / Map Modes/left_trackpad/group 9 (touch_menu)/touch_menu_button_8/Full_Press => KbmKey49 <- Menu 1 Item 8
+  Clean RowEmitted @ Default Config / Map Modes/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Partial MouseModeTuningDropped(mouse_dampening_trigger) @ Default Config / Map Modes/right_trackpad/group 2 (absolute_mouse)
+  Clean RowEmitted @ Default Config / Map Modes/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Default Config / Map Modes/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ Default Config / Map Modes/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => KbmKey70 <- Touchpad 1 Click
+  Clean RowEmitted @ Default Config / Map Modes/right_trackpad/group 13 (scrollwheel)/scroll_clockwise/Full_Press => KbmScroll <- Touchpad 1 Finger 0 Y (inverted)
+  Partial ScrollWheelApproximated @ Default Config / Map Modes/right_trackpad/group 13 (scrollwheel)
+  Clean RowEmitted @ Default Config / Map Modes/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_back_left/Full_Press => KbmKeyA0 <- Gamepad Paddle2
+  Clean MacroEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_back_left/Double_Press => Hold Left Ctrl <- Gamepad Paddle2
+  Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
+  Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_menu/Full_Press => KbmKey20 <- Gamepad ButtonBack
+  Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/left_bumper/Full_Press => KbmKey4C <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/right_bumper/Full_Press => KbmKey50 <- Gamepad RightShoulder
+  Clean RowEmitted @ Army Hotkeys/button_diamond/group 25 (four_buttons)/button_A/Full_Press => KbmKey58 <- Gamepad ButtonA
+  Clean RowEmitted @ Army Hotkeys/button_diamond/group 25 (four_buttons)/button_B/Full_Press => KbmKey5A <- Gamepad ButtonB
+  Clean RowEmitted @ Army Hotkeys/button_diamond/group 25 (four_buttons)/button_X/Full_Press => KbmKey1B <- Gamepad ButtonX
+  Clean RowEmitted @ Army Hotkeys/button_diamond/group 26 (four_buttons)/button_A/Full_Press => KbmKey71 <- Gamepad ButtonA
+  Clean RowEmitted @ Army Hotkeys/button_diamond/group 26 (four_buttons)/button_B/Full_Press => KbmKey72 <- Gamepad ButtonB
+  Clean RowEmitted @ Army Hotkeys/button_diamond/group 26 (four_buttons)/button_X/Full_Press => KbmKey74 <- Gamepad ButtonX
+  Clean RowEmitted @ Army Hotkeys/button_diamond/group 26 (four_buttons)/button_Y/Full_Press => KbmKey73 <- Gamepad ButtonY
+  Clean RowEmitted @ Army Hotkeys/gyro/group 31 (absolute_mouse) => KbmMouseX <- Gyro Yaw
+  Clean RowEmitted @ Army Hotkeys/gyro/group 31 (absolute_mouse) => KbmMouseY <- Gyro Pitch
+  Clean RowEmitted @ Army Hotkeys/joystick/group 23 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Army Hotkeys/joystick/group 23 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
+  Clean RowEmitted @ Army Hotkeys/joystick/group 23 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Army Hotkeys/joystick/group 23 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad LeftStickX (lower half)
+  Clean RowEmitted @ Army Hotkeys/joystick/group 24 (four_buttons)/button_A/Full_Press => KbmKey75 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Army Hotkeys/joystick/group 24 (four_buttons)/button_B/Full_Press => KbmKey76 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Army Hotkeys/joystick/group 24 (four_buttons)/button_X/Full_Press => KbmKey78 <- Gamepad LeftStickX (lower half)
+  Clean RowEmitted @ Army Hotkeys/joystick/group 24 (four_buttons)/button_Y/Full_Press => KbmKey77 <- Gamepad LeftStickY (lower half)
+  Clean MacroEmitted @ Army Hotkeys/left_trackpad/group 21 (scrollwheel)/scroll_clockwise/Full_Press => Tap Keypad Plus <- Touchpad 0 SwipeDown
+  Clean MacroEmitted @ Army Hotkeys/left_trackpad/group 21 (scrollwheel)/scroll_counterclockwise/Full_Press => Tap Keypad Minus <- Touchpad 0 SwipeUp
+  Partial ScrollWheelApproximated @ Army Hotkeys/left_trackpad/group 21 (scrollwheel)
+  Clean RowEmitted @ Army Hotkeys/left_trackpad/group 21 (scrollwheel)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
+  Clean RowEmitted @ Army Hotkeys/left_trackpad/group 32 (four_buttons)/button_A/Full_Press => KbmKeyA2 <- Touchpad 0 Finger 0 Down South
+  Clean RowEmitted @ Army Hotkeys/left_trackpad/group 32 (four_buttons)/button_A/Full_Press => KbmKeyA2 <- Touchpad 0 Finger 0 Down South
+  Clean RowEmitted @ Army Hotkeys/left_trackpad/group 32 (four_buttons)/button_A/Full_Press => KbmKey48 <- Touchpad 0 Finger 0 Down South
+  Clean RowEmitted @ Army Hotkeys/left_trackpad/group 32 (four_buttons)/button_B/Full_Press => KbmKey2E <- Touchpad 0 Finger 0 Down East
+  Clean RowEmitted @ Army Hotkeys/left_trackpad/group 32 (four_buttons)/button_X/Full_Press => KbmKey43 <- Touchpad 0 Finger 0 Down West
+  Clean RowEmitted @ Army Hotkeys/left_trackpad/group 32 (four_buttons)/button_Y/Full_Press => KbmKey56 <- Touchpad 0 Finger 0 Down North
+  Clean RowEmitted @ Army Hotkeys/left_trigger/group 27 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Partial MouseModeTuningDropped(mouse_dampening_trigger) @ Army Hotkeys/right_trackpad/group 19 (absolute_mouse)
+  Clean RowEmitted @ Army Hotkeys/right_trackpad/group 19 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Army Hotkeys/right_trackpad/group 19 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ Army Hotkeys/right_trackpad/group 19 (absolute_mouse)/click/Full_Press => KbmKeyBE <- Touchpad 1 Click
+  Clean RowEmitted @ Army Hotkeys/right_trackpad/group 20 (scrollwheel)/scroll_clockwise/Full_Press => KbmScroll <- Touchpad 1 Finger 0 Y (inverted)
+  Partial ScrollWheelApproximated @ Army Hotkeys/right_trackpad/group 20 (scrollwheel)
+  Clean RowEmitted @ Army Hotkeys/right_trigger/group 29 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/button_back_left/Full_Press => KbmKeyA0 <- Gamepad Paddle2
+  Clean MacroEmitted @ Army Hotkeys/switch/group 18 (switches)/button_back_left/Double_Press => Hold Left Ctrl <- Gamepad Paddle2
+  Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/button_back_right/Full_Press => KbmKeyA4 <- Gamepad Paddle1
+  Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
+  Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/button_menu/Full_Press => KbmKey20 <- Gamepad ButtonBack
+  Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/left_bumper/Full_Press => KbmKey53 <- Gamepad LeftShoulder
+  Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/right_bumper/Full_Press => KbmKey47 <- Gamepad RightShoulder
+  Clean ShiftLayerEmitted(Face Buttons shift) @ Default Config / Map Modes/switch/group 14 (switches)/button_back_right/Full_Press => Hold Face Buttons shift <- Gamepad Paddle1
+  Clean ShiftLayerEmitted(Left Stick shift) @ Default Config / Map Modes/switch/group 14 (switches)/button_back_right/Full_Press => Hold Left Stick shift <- Gamepad Paddle1
+  Clean ShiftLayerEmitted(Left Trackpad shift) @ Default Config / Map Modes/switch/group 14 (switches)/button_back_right/Full_Press => Hold Left Trackpad shift <- Gamepad Paddle1
+  Clean ShiftLayerEmitted(Right Trackpad shift) @ Default Config / Map Modes/switch/group 14 (switches)/button_back_right/Full_Press => Hold Right Trackpad shift <- Gamepad Paddle1
+  Clean ShiftLayerEmitted(Army Hotkeys / Default Config / Map Modes) @ Default Config / Map Modes/button_diamond/group 0 (four_buttons)/button_Y/Full_Press => Cycle Army Hotkeys / Default Config / Map Modes <- Gamepad ButtonY

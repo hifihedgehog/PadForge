@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -69,6 +69,11 @@ namespace PadForge.Engine.RemoteLink
         /// payload. InputService maps the slot to the physical device and drives it.</summary>
         public event Action<string, byte, byte[]> OutputReceived;
 
+        /// <summary>Raised on the OWNER when a consumer reports live demand
+        /// for one of our shared devices' demand-gated sources (#241 NFC).
+        /// Args: peer fingerprint, link slot, payload ([0] = demand kind).</summary>
+        public event Action<string, byte, byte[]> SourceDemandReceived;
+
         /// <summary>A paired peer sent a speaker PCM block (issue #138) for one of THIS
         /// PC's shared pads. Args: peer fingerprint, link slot, raw PCM block.</summary>
         public event Action<string, byte, byte[]> AudioReceived;
@@ -102,6 +107,8 @@ namespace PadForge.Engine.RemoteLink
         public int DiagDatagramsSent;
         public int DiagOutputSent;      // reverse-feedback frames we sealed+sent (#138 M2)
         public int DiagOutputReceived;  // reverse-feedback frames we opened+surfaced
+        public int DiagDemandSent;      // source-demand frames we sealed+sent (#241)
+        public int DiagDemandReceived;  // source-demand frames we opened+surfaced (#241)
         public int DiagAudioReceived;   // speaker PCM blocks we opened+surfaced (#138)
         public string DiagLastError;
 
@@ -249,9 +256,13 @@ namespace PadForge.Engine.RemoteLink
         /// <summary>Seal and send one exposed local device's state to every peer consuming it.</summary>
         public void PushLocalFrame(byte slot, CustomInputState state, CustomInputStateCodec.Caps caps, ulong timestampUs)
         {
-            byte[] payload = CustomInputStateCodec.Encode(state, caps);
             LinkPeerConnection[] conns;
             lock (_lock) conns = _connections.ToArray();
+            // Snapshot BEFORE encoding: with zero peers the encode (two
+            // allocations per call at 125 Hz per shared device) was pure
+            // waste.
+            if (conns.Length == 0) return;
+            byte[] payload = CustomInputStateCodec.Encode(state, caps);
             foreach (var c in conns)
             {
                 var ep = c.PeerUdpEndpoint;
@@ -298,6 +309,37 @@ namespace PadForge.Engine.RemoteLink
                 return;
             }
             if (matched) DiagLastError = "output: peer endpoint not learned yet";
+        }
+
+        /// <summary>Tell the device's OWNER that a live mapping on this side is
+        /// polling a demand-gated source (#241 NFC reader). Same addressing as
+        /// <see cref="PushOutputEffect"/> on its own datagram type. Fire it on
+        /// the consumer's demand cadence: the owner treats each arrival as a
+        /// fresh stamp and lets it lapse, so a deleted or disabled binding
+        /// stops arming the hardware without needing an explicit "off".</summary>
+        public void PushSourceDemand(string peerFingerprint, byte slot, byte[] payload)
+        {
+            if (string.IsNullOrEmpty(peerFingerprint) || payload == null) return;
+            LinkPeerConnection[] conns;
+            lock (_lock) conns = _connections.ToArray();
+            ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
+            foreach (var c in conns)
+            {
+                if (!string.Equals(c.PeerFingerprintHex, peerFingerprint, StringComparison.OrdinalIgnoreCase)) continue;
+                var ep = c.PeerUdpEndpoint;
+                // Same diag trailer as the PushOutputEffect twin (audit
+                // 2026-07-25, C32): a demand dropped for an unlearned
+                // endpoint was invisible in diagnostics.
+                if (ep == null) { DiagLastError = "demand: peer endpoint not learned yet"; continue; }
+                try
+                {
+                    _udp.SendTo(c.DataSession.Seal(LinkMessageType.SourceDemand, slot, ts, payload), ep);
+                    System.Threading.Interlocked.Increment(ref DiagDatagramsSent);
+                    System.Threading.Interlocked.Increment(ref DiagDemandSent);
+                }
+                catch (Exception ex) { DiagLastError = "demand: " + ex.Message; }
+                return;
+            }
         }
 
         /// <summary>Send one speaker PCM block (issue #138) to the peer that owns the
@@ -387,7 +429,6 @@ namespace PadForge.Engine.RemoteLink
                 PeerUdpEndpoint = peerUdpEndpoint,
                 Tcp = client,
                 PeerFingerprintHex = result.PeerFingerprintHex,
-                ExposedLocal = exposeLocal?.ToArray() ?? Array.Empty<RemotePeerDeviceInfo>(),
                 LastActivityTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
             };
             // Key each device by the owner's STABLE slot (carried in the device list), so a
@@ -418,7 +459,13 @@ namespace PadForge.Engine.RemoteLink
             while (!ct.IsCancellationRequested)
             {
                 SocketReceiveFromResult r;
-                try { r = await _udp.ReceiveFromAsync(buf, SocketFlags.None, any, ct); }
+                // ConfigureAwait(false), like every other await in this
+                // file and as its own banner at the top requires. Without it
+                // the loop captures whatever context started it (the UI
+                // thread, via the dashboard toggle), so RouteDatagram and
+                // the whole decode path below ran ON THE WPF DISPATCHER,
+                // one post per datagram (round 34).
+                try { r = await _udp.ReceiveFromAsync(buf, SocketFlags.None, any, ct).ConfigureAwait(false); }
                 catch (OperationCanceledException) { break; }
                 catch (ObjectDisposedException) { break; }
                 catch (Exception ex) { DiagLastError = "recv: " + ex.GetType().Name + " " + ex.Message; continue; }
@@ -462,6 +509,14 @@ namespace PadForge.Engine.RemoteLink
                     // drive the hardware (LinkServer is Engine-side, no UserDevices).
                     System.Threading.Interlocked.Increment(ref DiagOutputReceived);
                     OutputReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
+                }
+                else if (type == LinkMessageType.SourceDemand)
+                {
+                    // A consumer's live mapping wants a demand-gated source on
+                    // one of OUR devices (#241). Surface it so InputService can
+                    // map slot -> physical device and arm the hardware.
+                    System.Threading.Interlocked.Increment(ref DiagDemandReceived);
+                    SourceDemandReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
                 }
                 else if (type == LinkMessageType.Audio)
                 {
@@ -522,6 +577,26 @@ namespace PadForge.Engine.RemoteLink
                     }
                     if (!string.IsNullOrEmpty(info.SerialNumber))
                         existing.Info.SerialNumber = info.SerialNumber;
+                    // Capability bits refresh with the metadata (audit
+                    // 2026-07-25, C41): a capability appearing after
+                    // connect (a Joy-Con pair joining, a reader arming
+                    // rule flipping) never reached the consumer, since
+                    // the fresh-registration branch below runs only for
+                    // unknown device ids. Counts and flags are relayed
+                    // state, not identity.
+                    existing.Info.HasRumble = info.HasRumble;
+                    existing.Info.HasRumbleTriggers = info.HasRumbleTriggers;
+                    existing.Info.HasGyro = info.HasGyro;
+                    existing.Info.HasAccel = info.HasAccel;
+                    existing.Info.HasAccelAux = info.HasAccelAux;
+                    existing.Info.HasGyroAux = info.HasGyroAux;
+                    existing.Info.HasTouchpad = info.HasTouchpad;
+                    existing.Info.HasHaptic = info.HasHaptic;
+                    existing.Info.HasNfcReader = info.HasNfcReader;
+                    existing.Info.NumAxes = info.NumAxes;
+                    existing.Info.NumButtons = info.NumButtons;
+                    existing.Info.NumHats = info.NumHats;
+                    existing.Info.InputDeviceType = info.InputDeviceType;
                     next[info.Slot] = existing;
                     // Re-register only when the slot moved, so the slot-stamped output route refreshes.
                     if (slotChanged) DeviceConnected?.Invoke(existing);
@@ -562,11 +637,14 @@ namespace PadForge.Engine.RemoteLink
         public void PushDeviceList(IReadOnlyList<RemotePeerDeviceInfo> devices)
         {
             if (devices == null) return;
+            LinkPeerConnection[] conns;
+            lock (_lock) conns = _connections.ToArray();
+            // No peers: skip the ~KB device-list encode that otherwise
+            // ran every 2 s push with nobody to receive it.
+            if (conns.Length == 0) return;
             byte[] payload;
             try { payload = LinkConnection.EncodeDeviceList(devices); }
             catch (Exception ex) { DiagLastError = "devlist-enc: " + ex.Message; return; }
-            LinkPeerConnection[] conns;
-            lock (_lock) conns = _connections.ToArray();
             ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
             foreach (var c in conns)
             {
@@ -602,7 +680,6 @@ namespace PadForge.Engine.RemoteLink
             public volatile IPEndPoint PeerUdpEndpoint;
             public TcpClient Tcp;
             public string PeerFingerprintHex;
-            public RemotePeerDeviceInfo[] ExposedLocal;
             public long LastActivityTicks; // QPC; updated on each verified datagram, read by the reaper
         }
     }

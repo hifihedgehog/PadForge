@@ -101,6 +101,14 @@ namespace PadForge.Views
 
         private void SvCanvas_MouseMove(object sender, MouseEventArgs e)
         {
+            // A drag that ends outside the canvas (alt-tab, a capture stolen by
+            // another window) delivers no MouseUp here, so the flag latched and
+            // the swatch kept tracking the pointer with no button held.
+            if (e.LeftButton != MouseButtonState.Pressed)
+            {
+                if (_draggingSv) { _draggingSv = false; SvCanvas.ReleaseMouseCapture(); }
+                return;
+            }
             if (_draggingSv)
                 UpdateSvFromMouse(e.GetPosition(SvCanvas));
         }
@@ -134,6 +142,12 @@ namespace PadForge.Views
 
         private void HueCanvas_MouseMove(object sender, MouseEventArgs e)
         {
+            // Same latch, same remedy as the SV twin above.
+            if (e.LeftButton != MouseButtonState.Pressed)
+            {
+                if (_draggingHue) { _draggingHue = false; HueCanvas.ReleaseMouseCapture(); }
+                return;
+            }
             if (_draggingHue)
                 UpdateHueFromMouse(e.GetPosition(HueCanvas));
         }

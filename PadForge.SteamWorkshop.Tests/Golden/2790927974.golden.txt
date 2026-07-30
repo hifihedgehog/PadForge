@@ -1,0 +1,175 @@
+name: Steam Deck: The Gabe Generation
+description: Your modified layout for this game.
+slots: xbox kbm
+xbox rows: 0
+xbox activators: 1
+  Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle4 | name=Controls - Landing party / Controls - Enterprise
+kbm rows: 42
+  Base | KbmKey09
+    <- Gamepad ButtonStart
+  Base | KbmKey20
+    <- Gamepad LeftTrigger [upper-half] dz=15
+  Base | KbmKey21
+    <- Gamepad LeftStickY [lower-half]
+  Base | KbmKey22
+    <- Gamepad LeftStickY [upper-half]
+  Base | KbmKey2D
+    <- Gamepad LeftShoulder
+  Base | KbmKey2E
+    <- Gamepad RightShoulder
+  Base | KbmKey30
+    <- Gamepad DPadRight
+  Base | KbmKey31
+    <- Gamepad DPadLeft
+  Base | KbmKey35
+    <- Gamepad DPadUp
+  Base | KbmKey41
+    <- Gamepad ButtonY
+  Base | KbmKey42
+    <- Gamepad Paddle3
+  Base | KbmKey43
+    <- Menu 1 Item 5
+  Base | KbmKey44
+    <- Gamepad ButtonX
+  Base | KbmKey48
+    <- Menu 1 Item 4
+  Base | KbmKey4B
+    <- Menu 1 Item 6
+  Base | KbmKey4E
+    <- Menu 1 Item 3
+  Base | KbmKey4F
+    <- Menu 1 Item 2
+  Base | KbmKey50
+    <- Gamepad ButtonBack
+  Base | KbmKey53
+    <- Gamepad ButtonA
+  Base | KbmKey54
+    <- Menu 1 Item 1
+  Base | KbmKey57
+    <- Gamepad ButtonB
+  Base | KbmKey65
+    <- Gamepad RightStick
+    <- Touchpad 1 Click
+  Base | KbmKeyBC
+    <- Gamepad Paddle2
+  Base | KbmKeyBE
+    <- Gamepad Paddle1
+  Base | KbmKeyC0
+    <- Gamepad DPadDown
+  Base | KbmMBtn0
+    <- Gamepad RightTrigger [upper-half] dz=15
+  Base | KbmMouseX | Sum
+    <- Gamepad RightStickX sens=1.813
+    <- Touchpad 1 Finger 0 X sens=2.9
+  Base | KbmMouseY | Sum
+    <- Gamepad RightStickY sens=1.813
+    <- Touchpad 1 Finger 0 Y sens=2.9
+  Layer_2790927974_1 | KbmKey09
+    <- Gamepad ButtonStart
+  Layer_2790927974_1 | KbmKey0D
+    <- Gamepad ButtonA
+  Layer_2790927974_1 | KbmKey1B
+    <- Gamepad ButtonX
+    <- Menu 2 Item 0
+  Layer_2790927974_1 | KbmKey47
+    <- Menu 2 Item 4
+  Layer_2790927974_1 | KbmKey49
+    <- Gamepad ButtonY
+  Layer_2790927974_1 | KbmKey4C
+    <- Menu 2 Item 5
+  Layer_2790927974_1 | KbmKey50
+    <- Gamepad ButtonBack
+  Layer_2790927974_1 | KbmKey54
+    <- Menu 2 Item 2
+  Layer_2790927974_1 | KbmKey55
+    <- Menu 2 Item 3
+  Layer_2790927974_1 | KbmKey57
+    <- Menu 2 Item 1
+  Layer_2790927974_1 | KbmMBtn0
+    <- Touchpad 1 Click
+    <- Gamepad RightTrigger [upper-half] dz=75
+  Layer_2790927974_1 | KbmMBtn1
+    <- Gamepad LeftTrigger [upper-half] dz=75
+  Layer_2790927974_1 | KbmMouseX
+    <- Touchpad 1 Finger 0 X
+  Layer_2790927974_1 | KbmMouseY
+    <- Touchpad 1 Finger 0 Y
+kbm activators: 1
+  Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle4 | name=Controls - Landing party / Controls - Enterprise
+macros: 10
+  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStickY) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightStick) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Layer_2790927974_1 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Layer_2790927974_1 strength=66%
+  macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Layer_2790927974_1 vk=0x2C
+menus: 2
+  menu 1 Radial | Touchpad 0 | Base | fire=Click cells=6 | name=Radial Menu 1
+    [1] T
+    [2] O
+    [3] N
+    [4] H
+    [5] C
+    [6] K
+  menu 2 Radial | Touchpad 0 | Layer_2790927974_1 | fire=Click cells=5+center | name=Radial Menu 2 (Controls - Landing party)
+    [0] Escape
+    [1] W
+    [2] T
+    [3] U
+    [4] G
+    [5] L
+report: v26 rows:x0+k42 macros:10 menus:2 layers:2 clean:50 partial:0 skipped:0 errors:0
+  Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey53 <- Gamepad ButtonA
+  Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey57 <- Gamepad ButtonB
+  Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey44 <- Gamepad ButtonX
+  Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey41 <- Gamepad ButtonY
+  Clean RowEmitted @ Controls - Enterprise/dpad/group 9 (dpad)/dpad_east/Full_Press => KbmKey30 <- Gamepad DPadRight
+  Clean RowEmitted @ Controls - Enterprise/dpad/group 9 (dpad)/dpad_north/Full_Press => KbmKey35 <- Gamepad DPadUp
+  Clean RowEmitted @ Controls - Enterprise/dpad/group 9 (dpad)/dpad_south/Full_Press => KbmKeyC0 <- Gamepad DPadDown
+  Clean RowEmitted @ Controls - Enterprise/dpad/group 9 (dpad)/dpad_west/Full_Press => KbmKey31 <- Gamepad DPadLeft
+  Clean RowEmitted @ Controls - Enterprise/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey21 <- Gamepad LeftStickY (lower half)
+  Clean RowEmitted @ Controls - Enterprise/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey22 <- Gamepad LeftStickY (upper half)
+  Clean MenuEmitted(6) @ Controls - Enterprise/left_trackpad/group 7 (radial_menu) => Radial menu 1: 6 bound cells <- Touchpad 0
+  Clean RowEmitted @ Controls - Enterprise/left_trackpad/group 7 (radial_menu)/touch_menu_button_1/Full_Press => KbmKey54 <- Menu 1 Item 1
+  Clean RowEmitted @ Controls - Enterprise/left_trackpad/group 7 (radial_menu)/touch_menu_button_2/Full_Press => KbmKey4F <- Menu 1 Item 2
+  Clean RowEmitted @ Controls - Enterprise/left_trackpad/group 7 (radial_menu)/touch_menu_button_3/Full_Press => KbmKey4E <- Menu 1 Item 3
+  Clean RowEmitted @ Controls - Enterprise/left_trackpad/group 7 (radial_menu)/touch_menu_button_4/Full_Press => KbmKey48 <- Menu 1 Item 4
+  Clean RowEmitted @ Controls - Enterprise/left_trackpad/group 7 (radial_menu)/touch_menu_button_5/Full_Press => KbmKey43 <- Menu 1 Item 5
+  Clean RowEmitted @ Controls - Enterprise/left_trackpad/group 7 (radial_menu)/touch_menu_button_6/Full_Press => KbmKey4B <- Menu 1 Item 6
+  Clean RowEmitted @ Controls - Enterprise/left_trigger/group 4 (trigger)/edge/Full_Press => KbmKey20 <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ Controls - Enterprise/right_joystick/group 10 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ Controls - Enterprise/right_joystick/group 10 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean RowEmitted @ Controls - Enterprise/right_joystick/group 10 (joystick_mouse)/click/Full_Press => KbmKey65 <- Gamepad RightStick
+  Clean RowEmitted @ Controls - Enterprise/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Controls - Enterprise/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ Controls - Enterprise/right_trackpad/group 2 (absolute_mouse)/click/Soft_Press => KbmKey65 <- Touchpad 1 Click
+  Clean RowEmitted @ Controls - Enterprise/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKeyBC <- Gamepad Paddle2
+  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_right/Full_Press => KbmKey42 <- Gamepad Paddle3
+  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_right_upper/Full_Press => KbmKeyBE <- Gamepad Paddle1
+  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_escape/Full_Press => KbmKey09 <- Gamepad ButtonStart
+  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_menu/Full_Press => KbmKey50 <- Gamepad ButtonBack
+  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/left_bumper/Full_Press => KbmKey2D <- Gamepad LeftShoulder
+  Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/right_bumper/Full_Press => KbmKey2E <- Gamepad RightShoulder
+  Clean RowEmitted @ Controls - Landing party/button_diamond/group 12 (four_buttons)/button_a/Full_Press => KbmKey0D <- Gamepad ButtonA
+  Clean RowEmitted @ Controls - Landing party/button_diamond/group 12 (four_buttons)/button_x/Full_Press => KbmKey1B <- Gamepad ButtonX
+  Clean RowEmitted @ Controls - Landing party/button_diamond/group 12 (four_buttons)/button_y/Full_Press => KbmKey49 <- Gamepad ButtonY
+  Clean MenuEmitted(6) @ Controls - Landing party/left_trackpad/group 17 (radial_menu) => Radial menu 2: 6 bound cells <- Touchpad 0
+  Clean RowEmitted @ Controls - Landing party/left_trackpad/group 17 (radial_menu)/touch_menu_button_0/Full_Press => KbmKey1B <- Menu 2 Item 0
+  Clean RowEmitted @ Controls - Landing party/left_trackpad/group 17 (radial_menu)/touch_menu_button_1/Full_Press => KbmKey57 <- Menu 2 Item 1
+  Clean RowEmitted @ Controls - Landing party/left_trackpad/group 17 (radial_menu)/touch_menu_button_2/Full_Press => KbmKey54 <- Menu 2 Item 2
+  Clean RowEmitted @ Controls - Landing party/left_trackpad/group 17 (radial_menu)/touch_menu_button_3/Full_Press => KbmKey55 <- Menu 2 Item 3
+  Clean RowEmitted @ Controls - Landing party/left_trackpad/group 17 (radial_menu)/touch_menu_button_4/Full_Press => KbmKey47 <- Menu 2 Item 4
+  Clean RowEmitted @ Controls - Landing party/left_trackpad/group 17 (radial_menu)/touch_menu_button_5/Full_Press => KbmKey4C <- Menu 2 Item 5
+  Clean RowEmitted @ Controls - Landing party/left_trigger/group 13 (trigger)/click/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ Controls - Landing party/right_trackpad/group 16 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Controls - Landing party/right_trackpad/group 16 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ Controls - Landing party/right_trackpad/group 16 (absolute_mouse)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
+  Clean RowEmitted @ Controls - Landing party/right_trigger/group 14 (trigger)/click/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Controls - Landing party/switch/group 15 (switches)/button_escape/Full_Press => KbmKey09 <- Gamepad ButtonStart
+  Clean RowEmitted @ Controls - Landing party/switch/group 15 (switches)/button_menu/Full_Press => KbmKey50 <- Gamepad ButtonBack
+  Clean ShiftLayerEmitted(Controls - Landing party / Controls - Enterprise) @ Controls - Enterprise/switch/group 6 (switches)/button_back_left/Full_Press => Cycle Controls - Landing party / Controls - Enterprise <- Gamepad Paddle4

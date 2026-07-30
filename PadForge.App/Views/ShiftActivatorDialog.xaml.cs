@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -24,6 +24,48 @@ namespace PadForge.Views
 
         private readonly HashSet<string> _existingLayerNames;
         private readonly HashSet<string> _existingLayerMasks;
+
+        /// <summary>The mask identities a new or renamed layer may not
+        /// take: every OTHER activator's mask, plus the reserved "Base"
+        /// (round six, R8). "Base" is the synthetic base tab's mask AND
+        /// the #254 macro-scope contract ("fires while Base is
+        /// effectively engaged"), so a user layer whose IDENTITY is
+        /// literally Base collides with that semantic and duplicates the
+        /// picker entry. The display name may still read "Base"; the
+        /// derived mask uniquifies to Base_2. Internal static so the
+        /// reservation is testable without constructing the dialog.</summary>
+        internal static HashSet<string> BuildReservedMasks(
+            IEnumerable<ShiftActivator> otherActivators)
+        {
+            var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "Base" };
+            if (otherActivators != null)
+            {
+                foreach (var a in otherActivators)
+                    if (!string.IsNullOrEmpty(a?.LayerMask)) set.Add(a.LayerMask);
+            }
+            return set;
+        }
+
+        /// <summary>Derives a layer's persisted mask from its display
+        /// name: the name itself (whitespace-only falls back to "Shift"),
+        /// suffixed _2, _3... until it collides with nothing in
+        /// <paramref name="reserved"/>. Split out of the OK handler so
+        /// the Base reservation above is lockable by a test.</summary>
+        internal static string DeriveUniqueMask(string name, HashSet<string> reserved)
+        {
+            // No null tolerance (round seven): a caller that forgot
+            // BuildReservedMasks would silently skip the whole collision
+            // walk, including the Base reservation, which is this
+            // function's entire purpose. A null set therefore fails fast
+            // (NullReferenceException at the Contains) instead of
+            // succeeding wrongly.
+            string baseMask = string.IsNullOrWhiteSpace(name) ? "Shift" : name;
+            string mask = baseMask;
+            int suffix = 2;
+            while (reserved.Contains(mask))
+                mask = $"{baseMask}_{suffix++}";
+            return mask;
+        }
         private readonly IReadOnlyList<InputChoice> _buttonChoices;
         private readonly IReadOnlyList<InputChoice> _axisChoices;
         private readonly IReadOnlyList<ShiftActivator> _otherActivators;
@@ -33,6 +75,7 @@ namespace PadForge.Views
         private bool _suppressColorPickerWriteback;
         private bool _recordingPrimary;
         private bool _recordingChord;
+        private EventHandler _recorderTimedOut;
         private bool _baseMode;   // #119: editing only the Base layer's flyout appearance
         private string _selectedIcon = "";
 
@@ -54,6 +97,15 @@ namespace PadForge.Views
         public ShiftActivatorDialog(string baseName, string baseColor, string baseIcon)
         {
             InitializeComponent();
+            // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
+            // WindowChrome.CaptionHeight, and this dialog declares no
+            // <ui:TitleBar>, so no point in the window was non-client and it
+            // could not be moved at all. Same remedy MainWindow uses on its
+            // branding bar. Controls that need the click (Button, TextBox,
+            // ListBoxItem) mark this bubbling event handled, so the drag only
+            // starts on inert chrome.
+            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
+
             _baseMode = true;
             Title = Strings.Instance.Pad_Shift_BaseConfigTitle;
             // Only name + icon + color show in this mode; shrink from the full
@@ -132,6 +184,27 @@ namespace PadForge.Views
             _recorder = recorder;
             _padIndex = padIndex;
 
+            // A freeform recording that TIMES OUT never calls its callback:
+            // RecorderService.CancelRecording nulls _freeformCallback and
+            // raises RecordingTimedOut instead. Both record buttons here set
+            // their flag and swap to the Stop glyph on start and clear it in
+            // that callback, so without this the timeout left the button
+            // showing Stop with _recordingPrimary/_recordingChord latched true,
+            // and the next click read as "cancel" instead of starting a new
+            // recording. MainWindow subscribes for exactly this reason and
+            // hand-heals its own freeform consumers. This dialog is the
+            // consumer that was missed. Recorder ticks on a DispatcherTimer
+            // (its own thread-model note), so this arrives on the UI thread.
+            if (_recorder != null)
+            {
+                _recorderTimedOut = (_, __) =>
+                {
+                    if (_recordingPrimary) SetPrimaryRecording(false);
+                    if (_recordingChord) SetChordRecording(false);
+                };
+                _recorder.RecordingTimedOut += _recorderTimedOut;
+            }
+
             // Split the cross-device input list into button-class (Button,
             // POV-direction) and axis-class (Axis, Slider).
             var buttons = new List<InputChoice>();
@@ -140,8 +213,17 @@ namespace PadForge.Views
             {
                 if (c == null) continue;
                 var d = c.Descriptor ?? "";
+                // Abstract Gamepad stick/trigger aliases (#9) fold to their
+                // canonical "Axis N" form so they land in the axis class.
+                d = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
+                // Touchpad pressure (#239) is axis-class: it carries an
+                // analog magnitude, and the Axis-kind activator's
+                // threshold slider is exactly what makes "whole pad
+                // pressed 60% = layer" expressible. Landing it in the
+                // button class evaluated it at the fixed default 50.
                 if (d.StartsWith("Axis ", StringComparison.OrdinalIgnoreCase)
-                    || d.StartsWith("Slider ", StringComparison.OrdinalIgnoreCase))
+                    || d.StartsWith("Slider ", StringComparison.OrdinalIgnoreCase)
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPressureDescriptor(d))
                     axes.Add(c);
                 else
                     buttons.Add(c);
@@ -178,12 +260,11 @@ namespace PadForge.Views
 
             // Validation context.
             _existingLayerNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            _existingLayerMasks = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var a in _otherActivators)
             {
                 if (!string.IsNullOrEmpty(a.LayerName)) _existingLayerNames.Add(a.LayerName);
-                if (!string.IsNullOrEmpty(a.LayerMask)) _existingLayerMasks.Add(a.LayerMask);
             }
+            _existingLayerMasks = BuildReservedMasks(_otherActivators);
 
             // Bind the data-shaped option lists for the two two-line
             // dropdowns. Set ItemsSource BEFORE SelectedValue so the
@@ -204,6 +285,7 @@ namespace PadForge.Views
                 AutoCancelSlider.Value = existing.AutoCancelMs;
                 InheritUnmappedBox.IsChecked = existing.InheritUnmapped;
                 PostponeMappingBox.IsChecked = existing.PostponeMapping;
+                FireOnReleaseBox.IsChecked = existing.FireOnRelease;
 
                 // Color: parse hex into picker RGB; set _colorSet flag.
                 if (!string.IsNullOrEmpty(existing.Color))
@@ -278,6 +360,14 @@ namespace PadForge.Views
             {
                 if (_recordingPrimary || _recordingChord)
                     _recorder?.CancelRecording();
+                // Matching detach for the timeout subscription above. The
+                // recorder outlives this dialog, so leaving it attached would
+                // hold the closed window alive and fire glyph writes into it.
+                if (_recorderTimedOut != null && _recorder != null)
+                {
+                    _recorder.RecordingTimedOut -= _recorderTimedOut;
+                    _recorderTimedOut = null;
+                }
                 if (_onRgbHandler != null)
                 {
                     _redDpd?.RemoveValueChanged(ColorPicker, _onRgbHandler);
@@ -611,6 +701,10 @@ namespace PadForge.Views
             bool isToggle = mode == "Toggle";
             AutoCancelLabel.Visibility = isToggle ? Visibility.Visible : Visibility.Collapsed;
             AutoCancelRow.Visibility = isToggle ? Visibility.Visible : Visibility.Collapsed;
+            // Fire on Release is edge-mode only: Hold is level-driven (both
+            // edges already have jobs) and Passive has no button at all.
+            bool edgeMode = mode == "Toggle" || mode == "Custom" || mode == "Cycle" || mode == "Sticky";
+            FireOnReleaseBox.Visibility = edgeMode ? Visibility.Visible : Visibility.Collapsed;
             PostponeMappingBox.Visibility = isPassive ? Visibility.Collapsed : Visibility.Visible;
 
             if (isPassive)
@@ -712,17 +806,19 @@ namespace PadForge.Views
                 return;
             }
 
-            string baseMask = string.IsNullOrWhiteSpace(name) ? "Shift" : name;
-            string mask = baseMask;
-            int suffix = 2;
-            while (_existingLayerMasks.Contains(mask))
-                mask = $"{baseMask}_{suffix++}";
+            string mask = DeriveUniqueMask(name, _existingLayerMasks);
 
             // Latch (#119) has no jump target; it engages its own layer.
             string jumpToLayer = "";
 
             string cycleLayers = "";
-            if (CycleLayersList.SelectedItems != null && CycleLayersList.SelectedItems.Count > 0)
+            // Only a Cycle activator carries a ring (audit 2026-07-25 round
+            // four, R26). The list is merely HIDDEN when the mode is not
+            // Cycle, so serializing its lingering selection stamped a
+            // phantom ring onto a Hold/Latch/Toggle activator, and
+            // SlotDeclaresMask / the picker then treated those dead stops
+            // as engageable layers.
+            if (isCycle && CycleLayersList.SelectedItems != null && CycleLayersList.SelectedItems.Count > 0)
             {
                 // Walk Items (canonical display order), not SelectedItems
                 // (selection order), so the saved string is deterministic and
@@ -764,6 +860,11 @@ namespace PadForge.Views
                 DelayMs = (int)Math.Round(DelaySlider.Value),
                 AutoCancelMs = mode == "Toggle" ? (int)Math.Round(AutoCancelSlider.Value) : 0,
                 PostponeMapping = PostponeMappingBox.IsChecked == true,
+                // Zeroed for the non-edge modes exactly like AutoCancelMs: a
+                // Hold activator must not carry a hidden flag that springs to
+                // life if the user later switches the mode.
+                FireOnRelease = (mode == "Toggle" || mode == "Custom" || mode == "Cycle" || mode == "Sticky")
+                    && FireOnReleaseBox.IsChecked == true,
                 Color = colorHex,
                 Icon = _selectedIcon ?? "",
             };

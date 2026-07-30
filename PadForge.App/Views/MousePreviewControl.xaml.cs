@@ -14,46 +14,45 @@ namespace PadForge.Views
     /// </summary>
     public partial class MousePreviewControl : UserControl
     {
-        private Path _lmbPath, _rmbPath;
-        private Rectangle _scrollWheelPill;
+        private Shape _lmbPath, _rmbPath;
+        private Shape _scrollWheelPill;
         private Polygon _scrollUpArrow, _scrollDownArrow;
-        private Ellipse _movementDot, _moveCircle;
+        private Ellipse _movementDot;
 
         private static bool IsDarkTheme =>
             Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() == Wpf.Ui.Appearance.ApplicationTheme.Dark;
         private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
 
         private static readonly Brush _dimD = F(0x40,0x40,0x40), _dimL = F(0xB0,0xB0,0xB0);
-        private static readonly Brush _bodyD = F(0x50,0x50,0x50), _bodyL = F(0xC0,0xC0,0xC0);
         private static readonly Brush _btnD = F(0x60,0x60,0x60), _btnL = F(0xD0,0xD0,0xD0);
-        private static readonly Brush _mmbD = F(0x55,0x55,0x55), _mmbL = F(0xC8,0xC8,0xC8);
         private static readonly Brush _swD = F(0x38,0x38,0x38), _swL = F(0xA8,0xA8,0xA8);
         private static readonly Brush _dotD = F(0x88,0x88,0x88), _dotL = F(0x70,0x70,0x70);
 
         private static Brush DimBrush => IsDarkTheme ? _dimD : _dimL;
-        private static Brush MouseBodyBrush => IsDarkTheme ? _bodyD : _bodyL;
         private static Brush MouseButtonBrush => IsDarkTheme ? _btnD : _btnL;
-        private static Brush MmbBrush => IsDarkTheme ? _mmbD : _mmbL;
         private static Brush ScrollWheelBrush => IsDarkTheme ? _swD : _swL;
-        // Ember (#175): output preview surface.
-        private static readonly Brush AccentBrush = F(0xFF,0x6B,0x2C);
+        // Cold (#175): the Devices page is the INPUT preview surface, and
+        // every other device preview there lights pressed elements in the
+        // cold blue (#58B6E4) with the ColdDotGlow treatment. Ember belongs
+        // to the OUTPUT previews (the KBM virtual-controller view keeps it).
+        private static readonly Brush AccentBrush = F(0x58,0xB6,0xE4);
         private static Brush DotBrush => IsDarkTheme ? _dotD : _dotL;
 
         // Ember bloom (#175 glow sweep): pressed visuals carry a static
         // DropShadowEffect, attached alongside the brush swap and detached
         // when unlit. Frozen and shared, never animated. Small variant for
         // glyphs 14px and under (movement dot, scroll arrows, side buttons).
-        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlow = MakeEmberGlow(12);
         private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlowSmall = MakeEmberGlow(8);
 
         private static System.Windows.Media.Effects.DropShadowEffect MakeEmberGlow(double blur)
         {
             var fx = new System.Windows.Media.Effects.DropShadowEffect
             {
-                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
+                // Matches DevicesPage's ColdDotGlow (#58B6E4 @ 0.45).
+                Color = Color.FromRgb(0x58, 0xB6, 0xE4),
                 BlurRadius = blur,
                 ShadowDepth = 0,
-                Opacity = 0.5
+                Opacity = 0.45
             };
             fx.Freeze();
             return fx;
@@ -65,12 +64,11 @@ namespace PadForge.Views
                 element.Effect = glow;
         }
 
-        private const double MC = 80;
-        private const double MoveSize = 55;
-        private const double BtnBottom = 58;
-        private const double MoveTop = 86;
+        private const double MC = MouseGlyph.CenterX;
+        private const double MoveSize = MouseGlyph.MoveSize;
+        private const double MoveTop = MouseGlyph.MoveTop;
 
-        private Rectangle _x1Rect, _x2Rect;
+        private Shape _x1Rect, _x2Rect;
         private bool _built;
 
         private Wpf.Ui.Appearance.ApplicationTheme? _lastTheme;
@@ -99,135 +97,31 @@ namespace PadForge.Views
             _lastTheme = currentTheme;
             MouseCanvas.Children.Clear();
 
-            const double mW = 100;
-            double mL = MC - mW / 2;
-            double mR = MC + mW / 2;
-            const double mH = 185;
+            var parts = MouseGlyph.Build(MouseCanvas, IsDarkTheme, DimBrush,
+                MouseButtonBrush, ScrollWheelBrush, DotBrush);
+            _lmbPath = parts.Lmb; _rmbPath = parts.Rmb;
+            _x1Rect = parts.X1;   _x2Rect = parts.X2;
+            _scrollWheelPill = parts.Wheel;
+            _scrollUpArrow = parts.ScrollUp; _scrollDownArrow = parts.ScrollDown;
+            _movementDot = parts.MoveDot;
+            MouseGlyph.AddOutline(MouseCanvas, DimBrush);
 
-            const double swW = 14, swH = 36;
-            double swL = MC - swW / 2;
-            double swR = MC + swW / 2;
-            const double swTop = 13;
-            const double swBot = swTop + swH;
-
-            double gapL = swL - 1;
-            double gapR = swR + 1;
-
-            // Mouse body
-            MouseCanvas.Children.Add(new Path
-            {
-                Data = Geometry.Parse(
-                    $"M {mL},18 C {mL},6 {mL + 14},0 {MC},0 C {mR - 14},0 {mR},6 {mR},18" +
-                    $" L {mR},{mH - 18} C {mR},{mH - 4} {mR - 14},{mH} {MC},{mH}" +
-                    $" C {mL + 14},{mH} {mL},{mH - 4} {mL},{mH - 18} Z"),
-                Fill = MouseBodyBrush, Stroke = DimBrush, StrokeThickness = 2
-            });
-
-            // LMB
-            _lmbPath = new Path
-            {
-                Data = Geometry.Parse(
-                    $"M {MC - 2},2 Q {gapL},{swTop - 4} {gapL},{swTop + 4} " +
-                    $"L {gapL},{BtnBottom} L {mL + 2},{BtnBottom} L {mL + 2},18 " +
-                    $"C {mL + 2},8 {mL + 14},2 {MC - 2},2 Z"),
-                Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1
-            };
-            MouseCanvas.Children.Add(_lmbPath);
-
-            // RMB
-            _rmbPath = new Path
-            {
-                Data = Geometry.Parse(
-                    $"M {MC + 2},2 Q {gapR},{swTop - 4} {gapR},{swTop + 4} " +
-                    $"L {gapR},{BtnBottom} L {mR - 2},{BtnBottom} L {mR - 2},18 " +
-                    $"C {mR - 2},8 {mR - 14},2 {MC + 2},2 Z"),
-                Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1
-            };
-            MouseCanvas.Children.Add(_rmbPath);
-
-            // MMB channel
-            var mmbChannel = new Rectangle
-            {
-                Width = gapR - gapL, Height = BtnBottom - 2,
-                Fill = MmbBrush, RadiusX = 3, RadiusY = 3, IsHitTestVisible = false
-            };
-            Canvas.SetLeft(mmbChannel, gapL);
-            Canvas.SetTop(mmbChannel, 2);
-            MouseCanvas.Children.Add(mmbChannel);
-
-            // Scroll wheel pill
-            _scrollWheelPill = new Rectangle
-            {
-                Width = swW, Height = swH,
-                RadiusX = swW / 2, RadiusY = swW / 2,
-                Fill = ScrollWheelBrush, Stroke = DimBrush, StrokeThickness = 1
-            };
-            Canvas.SetLeft(_scrollWheelPill, swL);
-            Canvas.SetTop(_scrollWheelPill, swTop);
-            MouseCanvas.Children.Add(_scrollWheelPill);
-
-            // Scroll arrows
-            _scrollUpArrow = new Polygon
-            {
-                Points = new PointCollection { new Point(MC, swTop + 4), new Point(MC - 4, swTop + 10), new Point(MC + 4, swTop + 10) },
-                Fill = DimBrush
-            };
-            MouseCanvas.Children.Add(_scrollUpArrow);
-
-            _scrollDownArrow = new Polygon
-            {
-                Points = new PointCollection { new Point(MC, swBot - 4), new Point(MC - 4, swBot - 10), new Point(MC + 4, swBot - 10) },
-                Fill = DimBrush
-            };
-            MouseCanvas.Children.Add(_scrollDownArrow);
-
-            // Separator
-            MouseCanvas.Children.Add(new Line
-            {
-                X1 = mL + 8, Y1 = BtnBottom + 6, X2 = mR - 8, Y2 = BtnBottom + 6,
-                Stroke = DimBrush, StrokeThickness = 0.5
-            });
-
-            // Movement circle
-            double moveX = MC - MoveSize / 2;
-            _moveCircle = new Ellipse
-            {
-                Width = MoveSize, Height = MoveSize,
-                Fill = new SolidColorBrush(Color.FromArgb(0x18, 0x88, 0x88, 0x88)),
-                Stroke = DimBrush, StrokeThickness = 1.5
-            };
-            Canvas.SetLeft(_moveCircle, moveX);
-            Canvas.SetTop(_moveCircle, MoveTop);
-            MouseCanvas.Children.Add(_moveCircle);
-
-            _movementDot = new Ellipse { Width = 10, Height = 10, Fill = DotBrush, IsHitTestVisible = false };
-            Canvas.SetLeft(_movementDot, moveX + MoveSize / 2 - 5);
-            Canvas.SetTop(_movementDot, MoveTop + MoveSize / 2 - 5);
-            MouseCanvas.Children.Add(_movementDot);
-
-            // Side buttons
-            _x1Rect = new Rectangle
-            {
-                Width = 8, Height = 14, RadiusX = 2, RadiusY = 2,
-                Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1
-            };
-            Canvas.SetLeft(_x1Rect, mL - 4); Canvas.SetTop(_x1Rect, 70);
-            MouseCanvas.Children.Add(_x1Rect);
-
-            _x2Rect = new Rectangle
-            {
-                Width = 8, Height = 14, RadiusX = 2, RadiusY = 2,
-                Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1
-            };
-            Canvas.SetLeft(_x2Rect, mL - 4); Canvas.SetTop(_x2Rect, 88);
-            MouseCanvas.Children.Add(_x2Rect);
-
-            MouseCanvas.Height = mH + 6;
+            MouseCanvas.Height = MouseGlyph.BodyH + 6;
         }
+
+        // Retained scroll-arrow transforms (a fresh ScaleTransform per
+        // rendered frame while scrolling was Freezable churn).
+        private ScaleTransform _scrollUpScale, _scrollDownScale;
 
         private void OnRendering(object sender, EventArgs e)
         {
             if (!_built) return;
+            // Pages are retained and visibility-toggled, not unloaded, so this
+            // per-frame handler keeps firing after navigating away. Skip the
+            // widget rewrite while hidden (same guard as MidiPreviewView's
+            // input path); the next visible frame repaints from live state.
+            // Iconic gate: IsVisible stays TRUE while minimized.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             // Rebuild on theme change.
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_lastTheme != currentTheme) BuildMouse();
@@ -242,15 +136,10 @@ namespace PadForge.Views
             bool x2 = vm.RawButtons.Count > 4 && vm.RawButtons[4].IsPressed;
 
             _lmbPath.Fill = lmb ? AccentBrush : MouseButtonBrush;
-            SetGlow(_lmbPath, lmb ? EmberGlow : null);
             _rmbPath.Fill = rmb ? AccentBrush : MouseButtonBrush;
-            SetGlow(_rmbPath, rmb ? EmberGlow : null);
             _scrollWheelPill.Fill = mmb ? AccentBrush : ScrollWheelBrush;
-            SetGlow(_scrollWheelPill, mmb ? EmberGlow : null);
             _x1Rect.Fill = x1 ? AccentBrush : MouseButtonBrush;
-            SetGlow(_x1Rect, x1 ? EmberGlowSmall : null);
             _x2Rect.Fill = x2 ? AccentBrush : MouseButtonBrush;
-            SetGlow(_x2Rect, x2 ? EmberGlowSmall : null);
 
             // Movement dot
             double moveX = MC - MoveSize / 2;
@@ -273,7 +162,12 @@ namespace PadForge.Views
             {
                 _scrollUpArrow.Fill = AccentBrush;
                 _scrollUpArrow.Opacity = 0.3 + 0.7 * absScroll;
-                _scrollUpArrow.RenderTransform = new ScaleTransform(1.0 + 0.4 * absScroll, 1.0 + 0.4 * absScroll, MC, 7);
+                // Anchor on the arrow itself. These were literals from the
+                // hand-drawn glyph; the vendored art moved the arrows, so a
+                // pulse slid them down the wheel instead of growing in place.
+                _scrollUpScale ??= new ScaleTransform(1, 1, MC, MouseGlyph.WheelTop + 9);
+                _scrollUpScale.ScaleX = _scrollUpScale.ScaleY = 1.0 + 0.4 * absScroll;
+                _scrollUpArrow.RenderTransform = _scrollUpScale;
                 SetGlow(_scrollUpArrow, EmberGlowSmall);
                 _scrollDownArrow.Fill = DimBrush;
                 _scrollDownArrow.Opacity = 1.0;
@@ -284,7 +178,9 @@ namespace PadForge.Views
             {
                 _scrollDownArrow.Fill = AccentBrush;
                 _scrollDownArrow.Opacity = 0.3 + 0.7 * absScroll;
-                _scrollDownArrow.RenderTransform = new ScaleTransform(1.0 + 0.4 * absScroll, 1.0 + 0.4 * absScroll, MC, swBotConst - 7);
+                _scrollDownScale ??= new ScaleTransform(1, 1, MC, MouseGlyph.WheelBottom - 9);
+                _scrollDownScale.ScaleX = _scrollDownScale.ScaleY = 1.0 + 0.4 * absScroll;
+                _scrollDownArrow.RenderTransform = _scrollDownScale;
                 SetGlow(_scrollDownArrow, EmberGlowSmall);
                 _scrollUpArrow.Fill = DimBrush;
                 _scrollUpArrow.Opacity = 1.0;
@@ -304,6 +200,5 @@ namespace PadForge.Views
             }
         }
 
-        private const double swBotConst = 13 + 36; // swTop + swH
     }
 }

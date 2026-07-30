@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace PadForge.Engine.Data
 {
@@ -80,6 +80,43 @@ namespace PadForge.Engine.Data
         /// engaged before the layer change fires. <c>0</c> = instant.</summary>
         [XmlAttribute] public int DelayMs { get; set; } = 0;
 
+        /// <summary>v7 double-press gate (translator v25, Steam's
+        /// Double_Press activator hosting layer verbs / preset jumps /
+        /// mode shifts). When &gt; 0, the activator's input only counts as
+        /// engaged during the SECOND press of a press-release-press pair
+        /// whose presses land within this many milliseconds (Steam's
+        /// double_tap_time; Valve's shipped default 442). Every mode sees
+        /// the gated read: Hold holds from the second press until its
+        /// release, Toggle / Custom / Cycle fire on the second press's
+        /// rising edge, and single presses engage nothing. <c>0</c>
+        /// (default) = plain read, no gate.</summary>
+        [XmlAttribute] public int DoublePressMs { get; set; } = 0;
+
+        /// <summary><para>Fire on Release: the edge modes (Toggle / Custom /
+        /// Cycle / Sticky) fire when the input is let GO instead of when it
+        /// goes down. Matches Steam's release-hosted activators, where any
+        /// verb can wait for the lift.</para>
+        /// <para><see cref="DelayMs"/> gates the press that ARMS the release,
+        /// so a delay-gated activator reads "long-press, then let go".
+        /// <see cref="DoublePressMs"/> composes upstream of the edge read, so
+        /// the fire lands on the second press's release. Ignored by Hold
+        /// (level-driven, already defined by both edges) and Passive (no
+        /// button).</para></summary>
+        [XmlAttribute] public bool FireOnRelease { get; set; }
+
+        /// <summary>v6 release linger (translator v22, Steam's activator
+        /// <c>delay_end</c> on a layer switch: "wait for this period of
+        /// time after the button has been released before deactivating").
+        /// Hold mode keeps the layer engaged this many milliseconds past
+        /// the input's release; a re-press inside the window continues the
+        /// engagement seamlessly, so the pending disengage is cancelled by
+        /// the press (the audit-#2 M6 cancel-on-re-press shape, applied to
+        /// the layer machinery instead of a macro pair). Other modes
+        /// ignore it: their disengage is press-driven (Toggle / Cycle /
+        /// Custom), never release-driven, so a release delay has no edge
+        /// to move. <c>0</c> = instant disengage.</summary>
+        [XmlAttribute] public int ReleaseDelayMs { get; set; } = 0;
+
         /// <summary>v2 postpone-the-mapping: when true, the activator's
         /// own row (if any) still fires alongside the layer change. When
         /// false (default), the activator input is consumed by the layer
@@ -110,6 +147,22 @@ namespace PadForge.Engine.Data
         /// the layer. Normalized [-1, 1] absolute value; default 0.5 means
         /// |axis| &gt;= 0.5 engages.</summary>
         [XmlAttribute] public double AxisThreshold { get; set; } = 0.5;
+
+        /// <summary>v5 axis activator half selector (translator v15 swipe
+        /// flicks). When <c>false</c> (default) the Axis kind keeps its
+        /// legacy direction-blind |axis| &gt;= threshold test. When
+        /// <c>true</c> only ONE signed direction engages, with
+        /// <see cref="AxisInvert"/> picking which, so a stick wedge or a
+        /// signed gyro rate can drive a layer without its opposite
+        /// direction also firing.</summary>
+        [XmlAttribute] public bool AxisHalf { get; set; } = false;
+
+        /// <summary>v5 half selector for <see cref="AxisHalf"/>: false =
+        /// the positive direction (axis &gt;= threshold), true = the
+        /// negative direction (axis &lt;= -threshold). Same
+        /// half-selection contract as <c>MappingSource.HalfAxis</c> +
+        /// <c>Invert</c>.</summary>
+        [XmlAttribute] public bool AxisInvert { get; set; } = false;
 
         // ── v3 fields ──
 
@@ -151,6 +204,20 @@ namespace PadForge.Engine.Data
         /// universal Shift glyph <c>⇧</c>.</summary>
         [XmlAttribute] public string Icon { get; set; } = "";
 
+        // ── v8 fields (translator v26) ──
+
+        /// <summary>Gate companion for the Axis kind: a button-class
+        /// descriptor that must ALSO be held for the axis wedge to engage.
+        /// This is the activator-lane twin of the row side's
+        /// <c>MappingSource.GateDescriptor</c> (v18): a trackpad D-pad
+        /// wedge is an axis half PLUS its contact / windowed-click gate,
+        /// and without the gate leg a layer verb hosted on such a wedge
+        /// had no faithful activator shape. Read against the activator's
+        /// own device. Empty (default) = no gate. Ignored by the Button /
+        /// Chord kinds (Button reads one bool; Chord already has its
+        /// second leg).</summary>
+        [XmlAttribute] public string GateDescriptor { get; set; } = "";
+
         // ── v4 fields (#206) ──
 
         /// <summary>v4 auto-cancel (#206): Toggle mode only. While the
@@ -162,5 +229,14 @@ namespace PadForge.Engine.Data
         /// activity. Deliberately not offered for Latch: auto-unlatching
         /// was flagged as surprising by the requester.</summary>
         [XmlAttribute] public int AutoCancelMs { get; set; } = 0;
+
+        /// <summary>Full-field copy. Every field is a string / value type
+        /// (strings are immutable), so a memberwise clone is a complete deep
+        /// copy. Copy sites must use this instead of hand-listing fields:
+        /// the app's CopyShiftActivators hand-list dropped
+        /// <see cref="AxisHalf"/> / <see cref="AxisInvert"/> (the v15 swipe
+        /// direction stamps), making imported flick activators
+        /// direction-blind after a profile switch or Copy From Slot.</summary>
+        public ShiftActivator Clone() => (ShiftActivator)MemberwiseClone();
     }
 }

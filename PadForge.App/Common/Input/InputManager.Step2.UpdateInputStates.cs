@@ -86,7 +86,10 @@ namespace PadForge.Common.Input
                     if (ud.IsTouchpad && ud.Device == null && _ptpReader != null && _ptpReader.IsAvailable)
                     {
                         // Precision Touchpad (no SDL wrapper).
-                        newState = new CustomInputState();
+                        // Pooled per-device pair (the last per-tick
+                        // constructor the allocation trace showed after the
+                        // wrapper pooling landed).
+                        newState = ud.PtpStatePool.Next();
                         if (ud.InstanceGuid == PtpMergedGuid)
                             _ptpReader.ReadInto(newState); // merged: first device
                         else
@@ -117,6 +120,7 @@ namespace PadForge.Common.Input
 
                     // Atomic reference swap — safe for cross-thread reading.
                     ud.InputState = newState;
+                    ud.InputStateSeq++;
 
                     // Idle disconnect countdown (#162). Tracks last activity at
                     // poll rate, checks the countdown ~1 Hz, and hands the
@@ -135,6 +139,10 @@ namespace PadForge.Common.Input
                     // lane for mouse-class devices, which the touchpad walk
                     // above never enters.
                     UpdateMouseGestureContexts(ud, newState);
+
+                    // Radial / touch menu hover-commit state (#9 B-17).
+                    // Not gated on touchpads: sticks host menus too.
+                    UpdateMenuContexts(ud, newState);
 
                     // Apply force feedback (rumble) if applicable.
                     ApplyForceFeedback(ud);
@@ -187,6 +195,19 @@ namespace PadForge.Common.Input
             // mutations (device assignment, profile load) don't see
             // measurable contention.
             var settingsForPoke = SettingsManager.UserSettings;
+            // 250 ms snapshot refresh of the per-slot poke facts.
+            long pokeNow = System.Environment.TickCount64;
+            if (pokeNow - _sonyPokeCfgRefreshTick >= 250)
+            {
+                _sonyPokeCfgRefreshTick = pokeNow;
+                RefreshSonyPokeCfg(settingsForPoke);
+            }
+            // Pass 1 (owner facts, 2026-07-20): compute every slot's own
+            // need first; pass 2 pokes each dispatcher with the OR across
+            // its share group, so the OWNER slot's timer runs whenever any
+            // slot sharing its pad has a reason to rumble, and the final
+            // stop frame lands only when the whole group goes quiet.
+            int needGameMask = 0, needAudioMask = 0;
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
                 // Empty pad — no VC means no dispatcher to poke. Skip the
@@ -216,55 +237,34 @@ namespace PadForge.Common.Input
                 // actuators when nothing else is driving the slot.
                 if (!hasGameRumble && SteeringTrigVibOverrides[padIndex].IsActive)
                     hasGameRumble = true;
+                // A touchpad swipe-haptic burst (#219) rides the dispatcher's
+                // rumble bytes on Sony pads; while one is live the timer must
+                // run even on an otherwise idle slot, or the tick silently
+                // never reaches the motors.
+                if (!hasGameRumble && TouchpadPulseService.IsSlotActive(padIndex))
+                    hasGameRumble = true;
 
-                bool hasAudioRumbleEnabled = false;
-                if (settingsForPoke != null)
-                {
-                    lock (settingsForPoke.SyncRoot)
-                    {
-                        for (int i = 0; i < settingsForPoke.Items.Count; i++)
-                        {
-                            var us = settingsForPoke.Items[i];
-                            if (us == null || us.MapTo != padIndex) continue;
-                            var ps = us.GetPadSetting();
-                            if (ps == null) continue;
-                            // Either main-motor audio rumble OR audio-trigger
-                            // rumble keeps the dispatcher alive; both pull
-                            // from the same WASAPI capture / detector and
-                            // both need the per-tick dispatch to apply.
-                            if (ps.AudioRumbleEnabled == "1"
-                                || ps.AudioRumbleTriggersEnabled == "1")
-                                hasAudioRumbleEnabled = true;
-                            // Constant force: when any per-device PadSetting on
-                            // this slot has it enabled with nonzero X or Y,
-                            // treat as game-rumble-equivalent so the Sony
-                            // dispatcher's effect-packet timer runs and the
-                            // synthesized motor bytes from
-                            // ConstantForceEvaluator.Resolve actually reach
-                            // the wire. Without this poke, a slot that's
-                            // game-silent and lightbar-static parks the
-                            // dispatcher and constant force never fires on
-                            // DualSense / DS4.
-                            if (!hasGameRumble && ps.ConstantForceEnabled == "1"
-                                && (ParseConstantForceComponent(ps.ConstantForceX) != 0.0
-                                    || ParseConstantForceComponent(ps.ConstantForceY) != 0.0))
-                            {
-                                hasGameRumble = true;
-                            }
-                            // Constant trigger force: mirror the main-motor
-                            // keepalive — same shape, trigger-motor analogue.
-                            if (!hasGameRumble && ps.ConstantTriggerForceEnabled == "1"
-                                && (ParseConstantForceComponent(ps.ConstantTriggerForceLeft) != 0.0
-                                    || ParseConstantForceComponent(ps.ConstantTriggerForceRight) != 0.0))
-                            {
-                                hasGameRumble = true;
-                            }
-                            if (hasAudioRumbleEnabled && hasGameRumble) break;
-                        }
-                    }
-                }
+                // Config-derived poke facts come from the 250 ms snapshot
+                // below (the engage-family pattern): audio enables and
+                // constant-force values change only on user edit, and the
+                // per-tick lock + Items walk + string compares + parses ran
+                // per created slot at ~1 kHz. An edit lands within a
+                // quarter second, matching the sibling snapshots' contract.
+                var poke = _sonyPokeCfg[padIndex];
+                bool hasAudioRumbleEnabled = poke.audio;
+                if (!hasGameRumble && poke.cfPoke) hasGameRumble = true;
 
-                UserEffectsDispatcher.OnPollingTick(padIndex, hasGameRumble, hasAudioRumbleEnabled);
+                if (hasGameRumble) needGameMask |= 1 << padIndex;
+                if (hasAudioRumbleEnabled) needAudioMask |= 1 << padIndex;
+            }
+
+            // Pass 2: group-OR poke.
+            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            {
+                if (!SettingsManager.SlotCreated[padIndex]) continue;
+                var (needG, needA) = GroupNeed(needGameMask, needAudioMask,
+                    _sonyPokeCfg[padIndex].shareMask, padIndex);
+                UserEffectsDispatcher.OnPollingTick(padIndex, needG, needA);
             }
         }
 
@@ -272,6 +272,126 @@ namespace PadForge.Common.Input
         // (XmlElement-serialized). Parse defensively: anything we can't
         // turn into a number reads as zero so the dispatcher-timer poke
         // logic above never trips on a malformed setting.
+        // Per-slot dispatcher-poke config snapshot (see the 250 ms refresh
+        // in the caller): audio (either audio-rumble enable) and cfPoke
+        // (constant force or constant trigger force enabled with nonzero
+        // components, the game-rumble-equivalent keepalive that keeps the
+        // Sony dispatcher's effect-packet timer running on game-silent,
+        // lightbar-static slots).
+        private readonly (bool audio, bool cfPoke, int shareMask)[] _sonyPokeCfg =
+            new (bool, bool, int)[MaxPads];
+
+        // Scratch for RefreshSonyPokeCfg's share-group build (250 ms
+        // cadence, refresh thread only): Sony-vendor instance guids and
+        // per-guid slot masks. Reused to keep the refresh allocation-free.
+        private readonly System.Collections.Generic.HashSet<Guid> _sonyGuidScratch = new();
+        private readonly System.Collections.Generic.Dictionary<Guid, int> _sonyGuidSlotMask = new();
+        private long _sonyPokeCfgRefreshTick;
+
+        private void RefreshSonyPokeCfg(SettingsCollection settings)
+        {
+            for (int slot = 0; slot < MaxPads; slot++) _sonyPokeCfg[slot] = default;
+            if (settings == null) return;
+
+            // Share-group prep (owner facts, 2026-07-20): a Sony pad
+            // assigned to several slots is written only by its OWNER slot,
+            // whose own need can be false while a sharing slot rumbles.
+            // Collect Sony-vendor guids under the devices lock (taken and
+            // RELEASED before the settings lock; the canon order allows
+            // nesting devices->settings but never the reverse).
+            _sonyGuidScratch.Clear();
+            _sonyGuidSlotMask.Clear();
+            var devicesForMask = SettingsManager.UserDevices;
+            if (devicesForMask != null)
+            {
+                lock (devicesForMask.SyncRoot)
+                {
+                    foreach (var ud in devicesForMask.Items)
+                    {
+                        if (ud == null) continue;
+                        if (ud.VendorId != 0x054C) continue; // Sony VID
+                        if (ud.InstanceGuid == Guid.Empty) continue;
+                        _sonyGuidScratch.Add(ud.InstanceGuid);
+                    }
+                }
+            }
+
+            lock (settings.SyncRoot)
+            {
+                for (int i = 0; i < settings.Items.Count; i++)
+                {
+                    var us = settings.Items[i];
+                    if (us == null || us.MapTo < 0 || us.MapTo >= MaxPads) continue;
+                    var ps = us.GetPadSetting();
+                    if (ps == null) continue;
+                    var cur = _sonyPokeCfg[us.MapTo];
+                    if (!cur.audio
+                        && (ps.AudioRumbleEnabled == "1" || ps.AudioRumbleTriggersEnabled == "1"))
+                        cur.audio = true;
+                    if (!cur.cfPoke
+                        && ps.ConstantForceEnabled == "1"
+                        && (ParseConstantForceComponent(ps.ConstantForceX) != 0.0
+                            || ParseConstantForceComponent(ps.ConstantForceY) != 0.0))
+                        cur.cfPoke = true;
+                    if (!cur.cfPoke
+                        && ps.ConstantTriggerForceEnabled == "1"
+                        && (ParseConstantForceComponent(ps.ConstantTriggerForceLeft) != 0.0
+                            || ParseConstantForceComponent(ps.ConstantTriggerForceRight) != 0.0))
+                        cur.cfPoke = true;
+                    _sonyPokeCfg[us.MapTo] = cur;
+                }
+
+                // Second pass, same lock: per-guid slot masks for the
+                // Sony devices collected above.
+                for (int i = 0; i < settings.Items.Count; i++)
+                {
+                    var us = settings.Items[i];
+                    if (us == null) continue;
+                    int slot = us.MapTo;
+                    if (slot < 0 || slot >= MaxPads) continue;
+                    if (!_sonyGuidScratch.Contains(us.InstanceGuid)) continue;
+                    _sonyGuidSlotMask.TryGetValue(us.InstanceGuid, out int m);
+                    _sonyGuidSlotMask[us.InstanceGuid] = m | (1 << slot);
+                }
+            }
+
+            FoldShareMasks(_sonyGuidSlotMask, _sonyPokeCfg);
+        }
+
+        /// <summary>Pure fold, extracted for the tests: a slot's share
+        /// mask is the union of the slot masks of every Sony device
+        /// assigned to it (self bit included via the device's own row).
+        /// Slots with no Sony assignment keep 0 and the poke loop falls
+        /// back to their own bit.</summary>
+        internal static void FoldShareMasks(
+            System.Collections.Generic.Dictionary<Guid, int> guidSlotMasks,
+            (bool audio, bool cfPoke, int shareMask)[] cfg)
+        {
+            foreach (var kvp in guidSlotMasks)
+            {
+                int m = kvp.Value;
+                for (int slot = 0; slot < cfg.Length; slot++)
+                {
+                    if ((m & (1 << slot)) == 0) continue;
+                    var cur = cfg[slot];
+                    cur.shareMask |= m;
+                    cfg[slot] = cur;
+                }
+            }
+        }
+
+        /// <summary>Pure group-need decision, extracted for the tests
+        /// (owner facts, 2026-07-20): a slot is poked with the OR of
+        /// need across its share group; a slot with no Sony share group
+        /// falls back to its own bit.</summary>
+        internal static (bool game, bool audio) GroupNeed(
+            int needGameMask, int needAudioMask, int shareMask, int padIndex)
+        {
+            int m = shareMask;
+            if (m == 0) m = 1 << padIndex;
+            return ((needGameMask & m) != 0, (needAudioMask & m) != 0);
+        }
+
         private static double ParseConstantForceComponent(string s)
         {
             if (string.IsNullOrEmpty(s)) return 0.0;
@@ -346,6 +466,19 @@ namespace PadForge.Common.Input
             // countdown instead of hammering the radio every second.
             ud.LastActiveTick = now;
 
+            FireIdleDisconnect(ud);
+        }
+
+        /// <summary>The capturing tail of the idle-disconnect countdown,
+        /// extracted so the closure's display class allocates only when a
+        /// disconnect actually fires. Inside the caller the captured
+        /// locals sat in the method-body scope, so Roslyn allocated the
+        /// display class at METHOD ENTRY, per device per ~1 kHz tick,
+        /// even though every call early-returned at the 1 Hz gate
+        /// (dotnet-trace AllocationTick: ~675 KB/s, the process's single
+        /// largest allocator post-pooling).</summary>
+        private static void FireIdleDisconnect(UserDevice ud)
+        {
             ushort vid = ud.VendorId, pid = ud.ProdId;
             string path = ud.DevicePath, serial = ud.SerialNumber ?? string.Empty;
             string[] bthIds = ud.HidHideInstanceIds?.ToArray();
@@ -545,9 +678,33 @@ namespace PadForge.Common.Input
                     if (stv > combinedRT) combinedRT = stv;
                 }
 
+                // COPY, never alias. `effective` is usually one of the
+                // shared per-tick scratches (ConstantForceEvaluator fills
+                // its scratch, sets HasDirectionalData, and returns that
+                // same object), and the NEXT slot's Resolve overwrites it
+                // in place. Holding the reference made the copy-out below
+                // emit the LAST resolving slot's force while both the
+                // == null guard here and the comment there promise the
+                // FIRST, so two slots each running a constant force sent
+                // an order-dependent direction to the wheel. Field set is
+                // kept identical to the copy-out's.
                 if (directionalSource == null
                     && (effective.HasDirectionalData || effective.HasConditionData))
-                    directionalSource = effective;
+                {
+                    if (_directionalCaptureScratch == null)
+                        _directionalCaptureScratch = new Vibration();
+                    var dcap = _directionalCaptureScratch;
+                    dcap.HasDirectionalData = effective.HasDirectionalData;
+                    dcap.EffectType = effective.EffectType;
+                    dcap.SignedMagnitude = effective.SignedMagnitude;
+                    dcap.Direction = effective.Direction;
+                    dcap.Period = effective.Period;
+                    dcap.DeviceGain = effective.DeviceGain;
+                    dcap.HasConditionData = effective.HasConditionData;
+                    dcap.ConditionAxisCount = effective.ConditionAxisCount;
+                    dcap.ConditionAxes = effective.ConditionAxes;
+                    directionalSource = dcap;
+                }
 
                 if (firstPadSetting == null)
                     firstPadSetting = devicePs;
@@ -653,8 +810,11 @@ namespace PadForge.Common.Input
             // motors. ud.DevicePath is the openable HID interface path.
             if (isVendorFfb)
             {
-                int overallGain = int.TryParse(firstPadSetting?.ForceOverall, out int g)
-                    ? System.Math.Clamp(g, 0, 100) : 100;
+                // Memoized parse (Step 3's capped invariant cache): these
+                // strings change only on user edit but parsed per wheel
+                // per 1 kHz tick.
+                int overallGain = System.Math.Clamp(
+                    TryParseIntStatic(firstPadSetting?.ForceOverall, 100), 0, 100);
                 if (isFanatecPedal)
                 {
                     byte brake    = (byte)(combinedL >> 8); // XInput left  -> brake
@@ -682,7 +842,7 @@ namespace PadForge.Common.Input
                     // autocenter and ftec_set_range's f5 disables its stock spring, so
                     // Fanatec centering is a per-frame software spring (slot 1); Logitech
                     // and Thrustmaster use their firmware spring in the one-shot below.
-                    int desAc = int.TryParse(firstPadSetting.AutoCenterStrength, out int acp) ? System.Math.Clamp(acp, 0, 100) : 0;
+                    int desAc = System.Math.Clamp(TryParseIntStatic(firstPadSetting.AutoCenterStrength, 0), 0, 100);
                     int acMag = desAc * 0xffff / 100; // 0..100% -> 0..0xffff
                     // Skip the HID write when the force/condition is identical to last poll —
                     // the wheel holds it, so re-sending is pure per-poll churn (the 1000->500 Hz
@@ -703,8 +863,8 @@ namespace PadForge.Common.Input
                     // vendor writers' stateful upload/play caches must stay on the owner.
                     if (RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath))
                     {
-                        int peerRange = int.TryParse(firstPadSetting.RotationRange, out int prg)
-                            ? System.Math.Clamp(prg, 40, 2520) : 900;
+                        int peerRange = System.Math.Clamp(
+                            TryParseIntStatic(firstPadSetting.RotationRange, 900), 40, 2520);
                         bool ledsOn = firstPadSetting.WheelRpmLeds == "1";
                         int ledMask = 0;
                         if (ledsOn)
@@ -775,7 +935,7 @@ namespace PadForge.Common.Input
 
                     // Wheel settings (rotation range + auto-center) — one-shot,
                     // re-sent only when the persisted value changes.
-                    int desRange = int.TryParse(firstPadSetting.RotationRange, out int rg) ? System.Math.Clamp(rg, 40, 2520) : 900; // per-wheel max enforced in each writer's WriteRange
+                    int desRange = System.Math.Clamp(TryParseIntStatic(firstPadSetting.RotationRange, 900), 40, 2520); // per-wheel max enforced in each writer's WriteRange
                     if (!_appliedWheelSettings.TryGetValue(ud.DevicePath, out var prevWs) || prevWs.range != desRange || prevWs.ac != desAc)
                     {
                         bool applied;
@@ -840,8 +1000,32 @@ namespace PadForge.Common.Input
                 return;
             }
 
+            // HAPTICDIAG (2026-07-24 rumble regression): transition-only probe
+            // on the motors that actually reach the device. Distinguishes
+            // "nothing is commanding rumble" from "commands arrive but the
+            // write is dead", which no existing signal could.
+            if (ud.VendorId == 0x057E)
+            {
+                bool hot = _combinedVibration != null
+                    && (_combinedVibration.LeftMotorSpeed > 0 || _combinedVibration.RightMotorSpeed > 0);
+                // Per-DEVICE edge state: ApplyForceFeedback runs once per
+                // device per tick, so a single shared flag flapped between
+                // two Nintendo pads in different rumble states and logged
+                // at poll rate (audit 2026-07-24, lens 1n).
+                if (!_nintendoRumbleWasHot.TryGetValue(ud.InstanceGuid, out bool wasHot) || hot != wasHot)
+                {
+                    _nintendoRumbleWasHot[ud.InstanceGuid] = hot;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG motors={(hot ? "HOT" : "cold")} pid={ud.ProdId:X4}"
+                        + $" L={_combinedVibration?.LeftMotorSpeed ?? 0} R={_combinedVibration?.RightMotorSpeed ?? 0}"
+                        + $" hasRumble={ud.Device?.HasRumble}");
+                }
+            }
+
             ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, firstPadSetting, _combinedVibration);
         }
+
+        private readonly System.Collections.Generic.Dictionary<Guid, bool> _nintendoRumbleWasHot = new();
 
         private Vibration _combinedVibration;
 
@@ -885,10 +1069,40 @@ namespace PadForge.Common.Input
         // on every device with multi-slot mappings.
         private Vibration _constantForceScratch;
 
-        // Constant-trigger-force evaluator's scratch — same shape as
+        // Constant-trigger-force evaluator's scratch. Same shape as
         // _constantForceScratch but composes onto the post-main-constant-
         // force result so both layers can be active simultaneously.
         private Vibration _constantTriggerForceScratch;
+
+        // Holds the FIRST slot's directional/condition payload across the
+        // rest of the per-slot loop. It must be a COPY: the evaluators
+        // above return the very scratch they filled, so keeping a
+        // reference let the next slot's Resolve overwrite the captured
+        // force in place.
+        private Vibration _directionalCaptureScratch;
+        /// <summary>Meter-path twins of <see cref="_directionalCaptureScratch"/>.
+        /// Two of them, because the combined and the selected-device meters can
+        /// capture from different slots in the same pass.</summary>
+        private Vibration _meterDirectionalScratch;
+        private Vibration _meterSelectedDirectionalScratch;
+
+        /// <summary>Copies the directional / condition field set the two
+        /// meter copy-outs read. Same set, same order, so a field added to one
+        /// is visibly missing here.</summary>
+        private static Vibration CaptureDirectional(Vibration src, ref Vibration scratch)
+        {
+            if (scratch == null) scratch = new Vibration();
+            scratch.HasDirectionalData = src.HasDirectionalData;
+            scratch.HasConditionData = src.HasConditionData;
+            scratch.EffectType = src.EffectType;
+            scratch.SignedMagnitude = src.SignedMagnitude;
+            scratch.Direction = src.Direction;
+            scratch.Period = src.Period;
+            scratch.DeviceGain = src.DeviceGain;
+            scratch.ConditionAxisCount = src.ConditionAxisCount;
+            scratch.ConditionAxes = src.ConditionAxes;
+            return scratch;
+        }
 
         // Same shape as _constantForceScratch but for the macro rumble
         // merge layer that runs ahead of constant-force resolution.
@@ -918,24 +1132,27 @@ namespace PadForge.Common.Input
             {
                 if (mainSet && triggerSet) break;
                 Guid selected = SelectedDeviceGuids[padIndex];
-                var slotSettings = settings.FindByPadIndex(padIndex);
-                if (slotSettings == null || slotSettings.Count == 0) continue;
+                // Buffer overload: the List-returning FindByPadIndex
+                // allocates per call and this loop runs per slot per
+                // 1 kHz tick while audio features are enabled.
+                int slotCount = settings.FindByPadIndex(padIndex, _instanceGuidBuffer);
+                if (slotCount == 0) continue;
                 // Prefer SelectedMappedDevice's PadSetting (matches the
                 // tab the user is editing); fall back to the first
                 // mapped device on the slot.
                 PadSetting ps = null;
                 if (selected != Guid.Empty)
                 {
-                    for (int i = 0; i < slotSettings.Count; i++)
+                    for (int i = 0; i < slotCount; i++)
                     {
-                        if (slotSettings[i].InstanceGuid == selected)
+                        if (_instanceGuidBuffer[i].InstanceGuid == selected)
                         {
-                            ps = slotSettings[i].GetPadSetting();
+                            ps = _instanceGuidBuffer[i].GetPadSetting();
                             break;
                         }
                     }
                 }
-                if (ps == null) ps = slotSettings[0].GetPadSetting();
+                if (ps == null) ps = _instanceGuidBuffer[0].GetPadSetting();
                 if (ps == null) continue;
 
                 if (!mainSet && ps.AudioRumbleEnabled == "1")
@@ -957,12 +1174,6 @@ namespace PadForge.Common.Input
         {
             return float.TryParse(value, System.Globalization.NumberStyles.Float,
                 System.Globalization.CultureInfo.InvariantCulture, out float result) ? result : defaultValue;
-        }
-
-        private static int TryParseInt(string value, int defaultValue)
-        {
-            return int.TryParse(value, System.Globalization.NumberStyles.Integer,
-                System.Globalization.CultureInfo.InvariantCulture, out int result) ? result : defaultValue;
         }
 
         private static bool TryParseBool(string value)
@@ -1062,6 +1273,14 @@ namespace PadForge.Common.Input
 
                     if (_constantForceScratch == null) _constantForceScratch = new Vibration();
                     var effective = ConstantForceEvaluator.Resolve(withMacro, devicePs, _constantForceScratch);
+                    // The hardware path runs this second evaluator right after
+                    // the first, and the meter did not, so a slot using
+                    // Constant Trigger Force drove real trigger actuators while
+                    // the FFB tab's trigger meters sat at whatever the raw
+                    // frame carried. The meter is supposed to show what the
+                    // device is being sent.
+                    if (_constantTriggerForceScratch == null) _constantTriggerForceScratch = new Vibration();
+                    effective = ConstantTriggerForceEvaluator.Resolve(effective, devicePs, _constantTriggerForceScratch);
 
                     ScaleRumbleForDevice(effective.LeftMotorSpeed, effective.RightMotorSpeed,
                         devicePs, out ushort scaledL, out ushort scaledR);
@@ -1078,7 +1297,11 @@ namespace PadForge.Common.Input
                     if (scaledL > bestL) bestL = scaledL;
                     if (scaledR > bestR) bestR = scaledR;
 
-                    ScaleTriggerRumbleForDevice(raw.LeftTriggerMotorSpeed, raw.RightTriggerMotorSpeed,
+                    // effective, not raw: the hardware path scales the
+                    // post-evaluator values, and reading raw here meant the
+                    // meter ignored every trigger-force contribution even once
+                    // the evaluator above had computed it.
+                    ScaleTriggerRumbleForDevice(effective.LeftTriggerMotorSpeed, effective.RightTriggerMotorSpeed,
                         devicePs, out ushort scaledLT, out ushort scaledRT);
 
                     if (scaledLT > bestLT) bestLT = scaledLT;
@@ -1088,7 +1311,13 @@ namespace PadForge.Common.Input
 
                     if (directionalSource == null
                         && (effective.HasDirectionalData || effective.HasConditionData))
-                        directionalSource = effective;
+                        // COPY, never alias, exactly as the hardware path a
+                        // thousand lines up spells out. `effective` is a shared
+                        // per-tick scratch that the NEXT slot's Resolve
+                        // overwrites in place, so holding the reference made
+                        // the copy-out below emit the LAST resolving slot's
+                        // force while the == null guard promises the FIRST.
+                        directionalSource = CaptureDirectional(effective, ref _meterDirectionalScratch);
 
                     // Capture the selected device's own scaled output for
                     // the FFB-tab meter.
@@ -1099,7 +1328,7 @@ namespace PadForge.Common.Input
                         selLT = (ushort)System.Math.Max(scaledLT, routedLT);
                         selRT = (ushort)System.Math.Max(scaledRT, routedRT);
                         if (effective.HasDirectionalData || effective.HasConditionData)
-                            selectedDirectional = effective;
+                            selectedDirectional = CaptureDirectional(effective, ref _meterSelectedDirectionalScratch);
                     }
                 }
 
@@ -1206,9 +1435,9 @@ namespace PadForge.Common.Input
             bool swap = false;
             if (ps != null)
             {
-                overallGain = Math.Clamp(TryParseInt(ps.ImpulseOverallGain, 100), 0, 100);
-                leftGain = Math.Clamp(TryParseInt(ps.ImpulseLeftStrength, 100), 0, 100);
-                rightGain = Math.Clamp(TryParseInt(ps.ImpulseRightStrength, 100), 0, 100);
+                overallGain = Math.Clamp(TryParseIntStatic(ps.ImpulseOverallGain, 100), 0, 100);
+                leftGain = Math.Clamp(TryParseIntStatic(ps.ImpulseLeftStrength, 100), 0, 100);
+                rightGain = Math.Clamp(TryParseIntStatic(ps.ImpulseRightStrength, 100), 0, 100);
                 swap = TryParseBool(ps.ImpulseSwapTriggers);
             }
             double sL = baseL * (leftGain / 100.0) * (overallGain / 100.0);
@@ -1251,9 +1480,9 @@ namespace PadForge.Common.Input
             bool swap = false;
             if (ps != null)
             {
-                overallGain = Math.Clamp(TryParseInt(ps.ForceOverall, 100), 0, 100);
-                leftGain = Math.Clamp(TryParseInt(ps.LeftMotorStrength, 100), 0, 100);
-                rightGain = Math.Clamp(TryParseInt(ps.RightMotorStrength, 100), 0, 100);
+                overallGain = Math.Clamp(TryParseIntStatic(ps.ForceOverall, 100), 0, 100);
+                leftGain = Math.Clamp(TryParseIntStatic(ps.LeftMotorStrength, 100), 0, 100);
+                rightGain = Math.Clamp(TryParseIntStatic(ps.RightMotorStrength, 100), 0, 100);
                 swap = TryParseBool(ps.ForceSwapMotor);
             }
             double sL = baseL * (leftGain / 100.0) * (overallGain / 100.0);

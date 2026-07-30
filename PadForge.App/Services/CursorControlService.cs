@@ -86,16 +86,62 @@ namespace PadForge.Services
         /// while the engine is not running.</summary>
         internal static CursorControlService Active { get; private set; }
 
+        /// <summary>TickCount64 of the last MouseCursorProvider read.
+        /// 0 until something actually maps a Mouse Position source, so a
+        /// fresh engine start idles immediately.</summary>
+        private long _lastProviderReadMs;
+
+        /// <summary>Ticks with no provider read after which the sampler
+        /// idles. The first read after an idle stretch sees at most one
+        /// stale sample (the next 5 ms tick refreshes), which matches
+        /// the documented torn-pair tolerance.</summary>
+        private const long ProviderIdleMs = 2000;
+
         public CursorControlService()
         {
             Active = this;
-            SourceCoercion.MouseCursorProvider = () => (_normX, _normY);
+            SourceCoercion.MouseCursorProvider = () =>
+            {
+                System.Threading.Volatile.Write(ref _lastProviderReadMs, Environment.TickCount64);
+                WakeSampler();
+                return (_normX, _normY);
+            };
             _timer = new Timer(_ => Tick(), null, 0, SampleIntervalMs);
+        }
+
+        /// <summary>True while the sampler timer runs at the slow idle
+        /// period instead of the 5 ms sample period. dotnet-counters showed
+        /// the 200 Hz timer WAKES themselves (~200 threadpool work items/s)
+        /// were the residual cost after the syscall demand-gate landed, so
+        /// idling lengthens the period itself. Any provider read or a
+        /// pin/clamp engage restores the fast period immediately.</summary>
+        private volatile bool _samplerIdle;
+        private const int IdleIntervalMs = 250;
+
+        private void WakeSampler()
+        {
+            if (!_samplerIdle || _disposed) return;
+            _samplerIdle = false;
+            try { _timer?.Change(0, SampleIntervalMs); } catch (ObjectDisposedException) { }
         }
 
         private void Tick()
         {
             if (_disposed) return;
+            // Demand gate: the monitor+cursor syscalls (and the 200 Hz wake
+            // itself) run only while something consumes Mouse Position or a
+            // pin/clamp is engaged.
+            if (!_isPinned && !_isClamped
+                && Environment.TickCount64 - System.Threading.Volatile.Read(ref _lastProviderReadMs) > ProviderIdleMs)
+            {
+                if (!_samplerIdle)
+                {
+                    _samplerIdle = true;
+                    try { _timer?.Change(IdleIntervalMs, IdleIntervalMs); } catch (ObjectDisposedException) { }
+                }
+                return;
+            }
+            if (_samplerIdle) WakeSampler();
             if (!TryGetPrimaryRect(out RECT r)) return;
 
             // Enforce the cursor-write contracts before sampling so the published
@@ -147,6 +193,16 @@ namespace PadForge.Services
             SetCursorPos(centerX ? cx : p.X, centerY ? cy : p.Y);
         }
 
+        /// <summary>Warps the desktop cursor to an absolute primary-monitor pixel
+        /// (issue #9). Fired once per macro press by the MoveMouseToScreenPosition
+        /// action. The coordinate is already clamped on-screen by the action's
+        /// MouseX / MouseY setters, so this is a straight SetCursorPos.</summary>
+        public void MoveCursorTo(int x, int y)
+        {
+            if (_disposed) return;
+            SetCursorPos(x, y);
+        }
+
         /// <summary>Toggles the sticky cursor pin (issue #109). First call engages
         /// the pin at (<paramref name="x"/>, <paramref name="y"/>) for the selected
         /// axes; the next 200 Hz tick starts writing the cursor there before
@@ -160,6 +216,9 @@ namespace PadForge.Services
             _pinX = x;
             _pinY = y;
             _isPinned = true;
+            // Restore the 5 ms period at once so the first pin write does
+            // not wait out an idle interval.
+            WakeSampler();
         }
 
         /// <summary>Toggles the cursor region clamp (issue #110). First call engages
@@ -174,6 +233,7 @@ namespace PadForge.Services
             _clampInsetX = insetX;
             _clampInsetY = insetY;
             _isClamped = true;
+            WakeSampler();
         }
 
         /// <summary>Writes the cursor to the pin target on the pinned axes (#109).
@@ -218,6 +278,17 @@ namespace PadForge.Services
             if (!TryGetPrimaryRect(out RECT r)) return false;
             x = (r.Left + r.Right) / 2;
             y = (r.Top + r.Bottom) / 2;
+            return true;
+        }
+
+        /// <summary>Current desktop cursor position in physical pixels (issue #9).
+        /// Used by the MoveMouseToScreenPosition editor's "Pick on screen" capture.
+        /// Static so the macro editor can read it without a running engine.</summary>
+        public static bool TryGetCursorPosition(out int x, out int y)
+        {
+            x = 0; y = 0;
+            if (!GetCursorPos(out POINT p)) return false;
+            x = p.X; y = p.Y;
             return true;
         }
 

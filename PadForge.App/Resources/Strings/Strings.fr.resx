@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -102,6 +102,7 @@
   <!-- ═══ Controller Types ═══ -->
   <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox</value></data>
   <data name="ControllerType_PlayStation" xml:space="preserve"><value>PlayStation</value></data>
+  <data name="ControllerType_Nintendo" xml:space="preserve"><value>Nintendo</value></data>
   <data name="ControllerType_Extended" xml:space="preserve"><value>Étendu</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Clavier + Souris</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
@@ -118,6 +119,7 @@
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Contrôleur virtuel {0}</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Moteur arrêté</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>En attente d'appareils</value></data>
+  <data name="Main_VcFailed" xml:space="preserve"><value>Échec du contrôleur virtuel</value></data>
   <data name="Main_Active" xml:space="preserve"><value>Actif</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>Initialisation</value></data>
   <data name="Main_VCsEnabled" xml:space="preserve"><value>Contrôleurs virtuels activés</value></data>
@@ -125,6 +127,7 @@
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Un ou plusieurs contrôleurs hors ligne</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max {0})</value></data>
+  <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (max {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Étendu (max {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Clavier + Souris (max {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (nécessite Windows MIDI Services)</value></data>
@@ -297,7 +300,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm pour la liaison de données. MIT.</value></data>
   <data name="About_License" xml:space="preserve"><value>Licence</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>Ce logiciel est distribué sous licence CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). Les modèles 3D de contrôleurs sont adaptés de Handheld Companion (CC BY-NC-SA 4.0). Les assets 2D de contrôleurs proviennent de Gamepad-Asset-Pack par AL2009man (MIT). La base de code originale est un fork de x360ce (MIT). SDL3 est distribué sous licence zlib. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit et WPF UI sont distribués sous licence MIT. OpenXInput ne contient qu'une clause de non-responsabilité de marque de son projet en amont. Redistribué tel quel selon les mêmes conditions.</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>Ce logiciel est distribué sous licence CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). Les modèles 3D de contrôleurs sont adaptés de Handheld Companion (CC BY-NC-SA 4.0). Les assets 2D de contrôleurs proviennent de Gamepad-Asset-Pack par AL2009man (MIT). Mouse artwork from Zergatul.Obs.InputOverlay by Igor Budzhak (MIT). La base de code originale est un fork de x360ce (MIT). SDL3 est distribué sous licence zlib. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit et WPF UI sont distribués sous licence MIT. OpenXInput ne contient qu'une clause de non-responsabilité de marque de son projet en amont. Redistribué tel quel selon les mêmes conditions.</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>Manette</value></data>
@@ -349,6 +352,7 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibration</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Accél</value></data>
+  <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>masquer cet appareil de toutes les applications</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloquer les entrées assignées de cet appareil</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> pour tous les appareils {0} connectés</value></data>
@@ -437,6 +441,7 @@
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Coller les mappings et paramètres depuis le presse-papiers</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Copier depuis...</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Copier les paramètres d'un autre appareil configuré</value></data>
+  <data name="Pad_RawAxisValue" xml:space="preserve"><value>Valeur d'axe brute</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Tout réinitialiser</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Tout effacer</value></data>
   <data name="Pad_HeaderOutput" xml:space="preserve"><value>Sortie</value></data>
@@ -537,6 +542,15 @@
   <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>Mélanger deux valeurs : lerp(a, b, mix0to1)</value></data>
   <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>Arrondir au nombre entier le plus proche</value></data>
   <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>Racine carrée</value></data>
+  <data name="Pad_Formula_Chip_Pow" xml:space="preserve"><value>Élever à une puissance : pow(valeur, exposant). Une courbe de réponse.</value></data>
+  <data name="Pad_Formula_Chip_Hypot" xml:space="preserve"><value>Distance au centre pour une paire : hypot(x, y). L'entrée d'une zone morte radiale.</value></data>
+  <data name="Pad_Formula_Chip_Deadzone" xml:space="preserve"><value>Remettre à l'échelle au-delà d'une zone morte : deadzone(valeur, intérieur, extérieur). En deçà de l'intérieur vaut 0, l'extérieur vaut le maximum, le signe est conservé.</value></data>
+  <data name="Pad_Formula_Chip_Floor" xml:space="preserve"><value>Arrondir à l'inférieur : floor(valeur).</value></data>
+  <data name="Pad_Formula_Chip_Ceil" xml:space="preserve"><value>Arrondir au supérieur : ceil(valeur).</value></data>
+  <data name="Pad_Formula_Chip_Sin" xml:space="preserve"><value>Sinus d'un angle en radians : sin(angle).</value></data>
+  <data name="Pad_Formula_Chip_Cos" xml:space="preserve"><value>Cosinus d'un angle en radians : cos(angle).</value></data>
+  <data name="Pad_Formula_Chip_Tan" xml:space="preserve"><value>Tangente d'un angle en radians : tan(angle).</value></data>
+  <data name="Pad_Formula_Chip_Atan2" xml:space="preserve"><value>Angle d'une paire en radians : atan2(y, x). Se combine à hypot pour la direction du stick.</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>Demi-échelle</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A à demi-intensité</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Quart d'échelle</value></data>
@@ -613,7 +627,7 @@
   <data name="Macro_Always" xml:space="preserve"><value>Toujours</value></data>
   <data name="Macro_CustomExpression" xml:space="preserve"><value>Expression personnalisée</value></data>
   <data name="Macro_Expression_Header" xml:space="preserve"><value>Formule de déclenchement</value></data>
-  <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>Référencez les variables avec a, b, c, … (ou s[0], s[1], …). Opérateurs pris en charge : + - * / &amp;&amp; || ?: et abs/min/max/clamp/sign/lerp. La macro se déclenche sur le front montant lorsque la valeur de la formule dépasse 0.5.</value></data>
+  <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>Référencez les variables par a, b, c, … (ou s[0], s[1], …). Prend en charge + - * / &amp;&amp; || ?: et toutes les fonctions de la rangée de pastilles ci-dessous. La macro se déclenche sur le front montant quand la valeur de la formule franchit 0.5.</value></data>
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variables</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Ajouter une variable</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Chaque ligne définit une lettre de variable (a, b, c, …). Choisissez Appareil d'entrée pour lier un bouton, un POV ou un axe d'un périphérique physique, ou Contrôleur de sortie pour lire un canal depuis la sortie combinée du contrôleur virtuel du slot.</value></data>
@@ -632,6 +646,10 @@
   <data name="Macro_OutputController" xml:space="preserve"><value>Contrôleur virtuel</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Seuil </value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consommer les boutons déclencheurs (masquer du jeu)</value></data>
+  <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Consomme l'entrée du déclencheur pour que le jeu ne la voie jamais. Fonctionne avec les boutons de manette virtuelle, les boutons physiques et les entrées pavé tactile ou gyroscope. Les déclencheurs par seuil d'axe, POV et gestes ne sont pas consommés.</value></data>
+  <data name="Macro_Layer" xml:space="preserve"><value>Calque</value></data>
+  <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>À quel calque de bascule cette macro appartient. « Tout calque » se déclenche quel que soit le calque actif. Base et les calques nommés ne se déclenchent que lorsque ce calque est actif, exactement comme une ligne de mappage.</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>Tout calque</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>S'exécute en continu tant que ce contrôleur virtuel est actif. Aucun bouton déclencheur requis.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Séquence d'actions</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Ajouter une action</value></data>
@@ -791,6 +809,7 @@
   <data name="POV_DownLeft" xml:space="preserve"><value>Bas-Gauche</value></data>
   <data name="POV_Left" xml:space="preserve"><value>Gauche</value></data>
   <data name="POV_UpLeft" xml:space="preserve"><value>Haut-Gauche</value></data>
+  <data name="POV_Any" xml:space="preserve"><value>Toute direction</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Non assigné</value></data>
@@ -855,6 +874,7 @@
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
   <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>Croix dir.</value></data>
+  <data name="Preview_Buttons" xml:space="preserve"><value>Boutons</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
   <data name="Pad_DeadZoneX" xml:space="preserve"><value>Zone morte X </value></data>
@@ -930,6 +950,10 @@
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>inversé</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>demi-axe</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>Les deux sens</value></data>
+  <data name="Pad_InvertOutput" xml:space="preserve"><value>Inverser la sortie</value></data>
+  <data name="Pad_Mapping_Accel" xml:space="preserve"><value>Accélération</value></data>
+  <data name="Pad_Mapping_Accel_Tooltip" xml:space="preserve"><value>Le mouvement rapide de cette entrée est amplifié, le lent passe inchangé. 0 garde une réponse plate. Les imports placent ici l’accélération souris de Steam sur les lignes à stick.</value></data>
+  <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>Inverse le résultat de cette entrée. Sur une source demi-axe, la case Inverser choisit la moitié d’axe lue, ce contrôle retourne donc la direction de la sortie.</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>Quand Demi-axe est activé, déclenche dès que la déviation dépasse la zone morte dans l'un ou l'autre sens depuis le centre (Inversé est sans effet).</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mappe en continu l'axe sélectionné (0–100 %) au volume système Windows, mis à l'échelle selon la limite de volume. Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Tant que maintenu » + « Jusqu'au relâchement ».</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Contrôle le volume d'une application spécifique dans le mixeur Windows, mis à l'échelle selon la limite. Entrez le nom du processus (visible dans le Gestionnaire des tâches). Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Tant que maintenu » + « Jusqu'au relâchement ».</value></data>
@@ -978,6 +1002,14 @@
   <data name="Btn_Options" xml:space="preserve"><value>Options</value></data>
   <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
   <data name="Btn_Touchpad" xml:space="preserve"><value>Pavé tactile</value></data>
+  <data name="Btn_L" xml:space="preserve"><value>L</value></data>
+  <data name="Btn_R" xml:space="preserve"><value>R</value></data>
+  <data name="Btn_ZL" xml:space="preserve"><value>ZL</value></data>
+  <data name="Btn_ZR" xml:space="preserve"><value>ZR</value></data>
+  <data name="Btn_Minus" xml:space="preserve"><value>Moins</value></data>
+  <data name="Btn_Plus" xml:space="preserve"><value>Plus</value></data>
+  <data name="Btn_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Btn_Capture" xml:space="preserve"><value>Capture</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Bouton gauche de la souris</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>Bouton droit de la souris</value></data>
@@ -1134,9 +1166,19 @@
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Réinitialiser le moteur gauche</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Réinitialiser le moteur droit</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Tangage</value></data>
+  <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>Tangage du gyroscope Joy-Con gauche</value></data>
+  <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>Lacet du gyroscope Joy-Con gauche</value></data>
+  <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>Roulis du gyroscope Joy-Con gauche</value></data>
+  <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>Gyroscope de mouvement Joy-Con gauche</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Lacet</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roulis</value></data>
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Gyro Horizontal (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroLeanX" xml:space="preserve"><value>Inclinaison gyro X</value></data>
+  <data name="Mapping_GyroLeanY" xml:space="preserve"><value>Inclinaison gyro Y</value></data>
+  <data name="Mapping_CapSenseLeftStickTouch" xml:space="preserve"><value>Toucher du stick gauche</value></data>
+  <data name="Mapping_CapSenseRightStickTouch" xml:space="preserve"><value>Toucher du stick droit</value></data>
+  <data name="Mapping_CapSenseLeftGripTouch" xml:space="preserve"><value>Toucher de la poignée gauche</value></data>
+  <data name="Mapping_CapSenseRightGripTouch" xml:space="preserve"><value>Toucher de la poignée droite</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrer le gyro</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Pose la manette sur une surface plane et clique sur Calibrer le gyro pour échantillonner la lecture au repos pendant ~1,5 seconde. Soustrait des lectures brutes afin que les mappings gyro ne fassent pas dériver la souris / le stick quand la manette est immobile.</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Dernier étalonnage : {0:yyyy-MM-dd HH:mm}</value></data>
@@ -1186,6 +1228,7 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Maintenir : le gyroscope fonctionne tant que le bouton d'activation est maintenu. Bascule : chaque pression active ou désactive le gyroscope, et le relâchement n'a aucun effet. Bascule est persistante d'un cycle d'interrogation à l'autre et se réinitialise lors du changement de profil.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Maintenir</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Bascule</value></data>
+  <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Relâcher pour viser</value></data>
   <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>Stick d'activation</value></data>
   <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Quel stick conditionne le seuil Easy Aim. Droit (par défaut) laisse les profils existants inchangés. Les deux utilisent le stick le plus déplacé.</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Stick droit</value></data>
@@ -1274,7 +1317,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Arrêt en cours…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Arrêt du moteur…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Délai d'inactivité</value></data>
-  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Secondes avant qu'un contrôleur virtuel soit détruit lorsque tous les appareils mappés sont hors ligne. 0 désactive. Les contrôleurs restants remontent pour combler le vide et se relient aux slots XInput inférieurs.</value></data>
+  <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Secondes avant qu'un contrôleur virtuel soit détruit lorsque tous les appareils mappés sont hors ligne. 0 désactive. Les contrôleurs restants du même type remontent pour combler le vide et se relient aux slots inférieurs.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>secondes (0 = jamais)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Moteur de contrôleur HID virtuel en mode utilisateur (remplace ViGEmBus et vJoy). MIT.</value></data>
@@ -1480,6 +1523,8 @@
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tapotez une fois pour activer. La prochaine pression de bouton mappé se déclenche sur la couche, puis se libère automatiquement.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Aucun bouton propre. Ajoutez-la à la file d'un contrôle de Cycle, et le cycle l'atteint.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Hériter les cibles non affectées de Base</value></data>
+  <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Déclencher au relâchement</value></data>
+  <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Attend que le bouton soit relâché avant que cet activateur se déclenche. Si un délai de maintien est défini, l’appui doit durer ce temps pour que le relâchement compte.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Déclencher aussi le mapping propre de l'activateur</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Si coché, le bouton activateur continue de piloter toute ligne qui l'utilise comme source. Une pression change la couche ET déclenche le mapping propre du bouton. Si non coché (par défaut), la pression est consommée uniquement par le changement de couche.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Lorsque coché, les cibles que cette couche n'affecte pas explicitement retombent sur la couche Base. Lorsque décoché (par défaut), la couche remplace entièrement Base et les cibles non affectées restent désactivées.</value></data>
@@ -1599,6 +1644,8 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Pavé tactile</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrée par pavé tactile. Les gestes (glissé, tap, pincement, formes) et les modes de sortie continus (stick virtuel / croix directionnelle, souris) deviennent des sources de mappage à lier dans l'onglet Mappages.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Pavé tactile</value></data>
+  <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numéro de pavé tactile</value></data>
+  <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Le pavé tactile de cette manette auquel s'appliquent les réglages ci-dessous. Chaque pavé garde ses propres gestes, son comportement de souris et sa zone de pointeur.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Détection des gestes</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Activer les gestes sur ce pavé tactile</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Bascule principale pour ce pavé tactile. Désactivé, aucun descripteur de geste n'est déclenché pour ce pavé tactile. Les affectations doigt / clic / position existantes continuent de fonctionner.</value></data>
@@ -1669,6 +1716,29 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Réinitialiser la sensibilité de la souris Y</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Réinitialiser inverser souris X</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Réinitialiser inverser souris Y</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Réduction du tremblement</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>Accélération</value></data>
+  <data name="Pad_Touchpad_PointerResponse" xml:space="preserve"><value>Réponse</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Tooltip" xml:space="preserve"><value>Comment la vitesse du doigt devient la vitesse du curseur. Trackpad déplace aussi le curseur plus lentement que le doigt à faible vitesse, ce qui rend le positionnement fin naturel.</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Simple" xml:space="preserve"><value>Simple</value></data>
+  <data name="Pad_Touchpad_PointerResponse_Trackpad" xml:space="preserve"><value>Trackpad</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold" xml:space="preserve"><value>Seuil de vitesse</value></data>
+  <data name="Pad_Touchpad_TrackpadThreshold_Tooltip" xml:space="preserve"><value>Vitesse du doigt (mm/s) à laquelle le curseur commence à accélérer. Plus bas accélère plus tôt.</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth" xml:space="preserve"><value>Largeur du pavé</value></data>
+  <data name="Pad_Touchpad_TrackpadPadWidth_Tooltip" xml:space="preserve"><value>Largeur physique de ce pavé tactile en mm. Détermine si un mouvement lent atteint la plage de contrôle fin, donc réglez-la près de la taille réelle.</value></data>
+  <data name="Pad_ResetTouchpadPointerResponse" xml:space="preserve"><value>Réinitialiser la réponse</value></data>
+  <data name="Pad_ResetTouchpadTrackpadThreshold" xml:space="preserve"><value>Réinitialiser le seuil de vitesse</value></data>
+  <data name="Pad_ResetTouchpadTrackpadPadWidth" xml:space="preserve"><value>Réinitialiser la largeur du pavé</value></data>
+  <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>Un glissement rapide parcourt plus d’écran qu’un glissement lent sur la même distance. 0 garde une vitesse de curseur constante.</value></data>
+  <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>Réinitialiser l’accélération</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Atténue le tremblement de la main au repos sans zone morte, pour que les petits mouvements voulus passent quand même.</value></data>
+  <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Réinitialiser la réduction du tremblement</value></data>
+  <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Inertie</value></data>
+  <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>Le curseur continue après le lever du doigt et ralentit jusqu’à l’arrêt, comme un trackball.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Réinitialiser l’inertie</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Glissement</value></data>
+  <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>Distance de glissement du curseur. Au maximum, il continue jusqu’à ce que vous retouchiez le pavé.</value></data>
+  <data name="Pad_ResetTouchpadMouseMomentumDecay" xml:space="preserve"><value>Réinitialiser le glissement</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Réinitialiser Sortie Stick / Croix directionnelle</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Réinitialiser les gestes</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Réinitialiser la reconnaissance</value></data>
@@ -2261,6 +2331,7 @@
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Inclinaison du Joy-Con gauche</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>Inclinaison de mouvement auxiliaire</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>Accéléromètre auxiliaire</value></data>
+  <data name="Devices_GyroAux" xml:space="preserve"><value>Gyroscope auxiliaire</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Accéléromètre du Nunchuk</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>Accéléromètre du Joy-Con gauche</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>Accéléromètre de mouvement auxiliaire</value></data>
@@ -2298,14 +2369,13 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Luminosité de la LED Guide : {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Définit la luminosité de la LED du bouton Guide ou Home pour chaque manette compatible du slot. Les manettes Xbox ne l'acceptent qu'en USB.</value></data>
   <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>Définir la luminosité de la LED Guide</value></data>
-  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>S'applique aux manettes Xbox en USB et au Steam Controller de 2015. Associez deux de ces actions pour faire clignoter la LED au début d'une macro et la restaurer à la fin.</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>S'applique aux manettes Xbox en USB, au Steam Controller de 2015 et aux manettes Switch dotées d'une LED du bouton Home. Associez deux de ces actions pour faire clignoter la LED au début d'une macro et la restaurer à la fin.</value></data>
   <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>La dernière source de la ligne est un stick de trim. Pendant que les autres sources maintiennent la gâchette, pousser le stick vers le haut augmente le niveau retenu et le tirer vers le bas le diminue. Conçu pour doser finement l'accélérateur et le frein sur les manettes sans gâchettes analogiques.</value></data>
   <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>Trim au stick</value></data>
   <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>Ajouter une paire</value></data>
   <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>Ajoute une autre paire de touches opposées.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Première touche de la paire opposée.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Seconde touche de la paire opposée.</value></data>
-  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Directions opposées simultanées</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>L'appui le plus ancien continue de gagner jusqu'à son relâchement.</value></data>
   <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>La première gagne</value></data>
   <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>L'appui le plus récent gagne. Son relâchement réappuie la touche opposée encore maintenue.</value></data>
@@ -2315,16 +2385,37 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>Les deux touches passent sans modification.</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Désactivé</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Retire cette paire de touches.</value></data>
-  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Réinitialiser les directions opposées simultanées</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Directions cardinales opposées simultanées (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Résout les paires de boutons maintenues en même temps sur la sortie de la manette virtuelle de cet emplacement. Quand les deux boutons d&apos;une paire sont enfoncés, la règle choisie décide quel appui le jeu voit.</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser les directions cardinales opposées simultanées</value></data>
+  <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>Comment une paire maintenue se résout. S&apos;applique à la sortie finale combinée de l&apos;emplacement, donc les appuis physiques, mappés et de macro sont tous nettoyés.</value></data>
+  <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>Réinitialiser le mode</value></data>
+  <data name="Pad_Socd_Mode_Off_Description" xml:space="preserve"><value>Les deux boutons passent sans modification.</value></data>
+  <data name="Pad_Socd_Mode_LastWins_Description" xml:space="preserve"><value>L&apos;appui le plus récent gagne. Son relâchement réappuie le bouton partenaire encore maintenu.</value></data>
+  <data name="Pad_Socd_Mode_Neutral_Description" xml:space="preserve"><value>Maintenir les deux boutons les relâche tous les deux jusqu&apos;à ce que l&apos;un soit lâché.</value></data>
+  <data name="Pad_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>L&apos;appui le plus ancien continue de gagner jusqu&apos;à son relâchement.</value></data>
+  <data name="Pad_Socd_Pairs_Label" xml:space="preserve"><value>Paires de boutons</value></data>
+  <data name="Pad_Socd_Pairs_Tooltip" xml:space="preserve"><value>Les paires de boutons que la règle nettoie. Chaque paire est suivie séparément.</value></data>
+  <data name="Pad_Socd_ButtonA_Tooltip" xml:space="preserve"><value>Premier bouton de la paire.</value></data>
+  <data name="Pad_Socd_ButtonB_Tooltip" xml:space="preserve"><value>Second bouton de la paire.</value></data>
+  <data name="Pad_Socd_IndexA_Tooltip" xml:space="preserve"><value>Premier index brut de bouton de la paire, de 0 à 127. L&apos;index 0 correspond au Bouton 1 de la table de mappage.</value></data>
+  <data name="Pad_Socd_IndexB_Tooltip" xml:space="preserve"><value>Second index brut de bouton de la paire, de 0 à 127. L&apos;index 0 correspond au Bouton 1 de la table de mappage.</value></data>
+  <data name="Pad_Socd_AddPair" xml:space="preserve"><value>Ajouter une paire</value></data>
+  <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>Ajoute une autre paire de boutons.</value></data>
+  <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Retire cette paire de boutons.</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Résout le maintien simultané des deux touches d'une paire opposée, comme Snap Tap. S'applique à la sortie clavier virtuel de ce slot.</value></data>
+  <data name="Pad_Kbm_Socd_Card_Desc" xml:space="preserve"><value>Résout les paires de touches maintenues en même temps sur la sortie clavier virtuel de cet emplacement, comme Snap Tap. Quand les deux touches d'une paire sont enfoncées, la règle choisie décide quel appui le jeu voit.</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Label" xml:space="preserve"><value>Paires de touches</value></data>
+  <data name="Pad_Kbm_Socd_Pairs_Tooltip" xml:space="preserve"><value>Les paires de touches que la règle nettoie. Chaque paire est suivie séparément.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED du bouton Guide</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Niveau de batterie</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Luminosité</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>Luminosité de la LED du bouton Guide de 0% (éteinte) à 100% (pleine). S'applique tant que le mode est Luminosité fixe.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Par défaut de l'appareil</value></data>
   <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Luminosité fixe</value></data>
-  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Par défaut de l'appareil laisse la LED exactement comme le firmware de la manette l'a réglée. Luminosité fixe maintient le niveau ci-dessous. Niveau de batterie rend la LED plus lumineuse quand la batterie est plus pleine et ne descend jamais sous 10%. Les manettes Xbox n'acceptent les commandes de LED Guide qu'en USB, ce réglage n'a donc aucun effet en Bluetooth.</value></data>
-  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Luminosité du bouton lumineux Guide ou Home. Les manettes Xbox One et ultérieures l'acceptent en USB. Le Steam Controller de 2015 l'accepte sur toute connexion, et tous les Steam Controller partagent une même luminosité.</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Par défaut de l'appareil laisse la LED exactement comme le firmware de la manette l'a réglée. Luminosité fixe maintient le niveau ci-dessous. Niveau de batterie rend la LED plus lumineuse quand la batterie est plus pleine et ne descend jamais sous 10%. Les manettes Xbox n'acceptent les commandes de LED Guide qu'en USB, ce réglage n'a donc aucun effet en Bluetooth. Les manettes Switch acceptent les commandes de LED Home sur toute connexion.</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Luminosité du bouton lumineux Guide ou Home. Les manettes Xbox One et ultérieures l'acceptent en USB. Le Steam Controller de 2015 l'accepte sur toute connexion, et tous les Steam Controller partagent une même luminosité. Les manettes Switch Pro et les Joy-Con droits (seuls, appariés ou dans le support de charge) l'acceptent sur toute connexion.</value></data>
   <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>Zone morte du trim</value></data>
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>La déflexion du stick sous ce pourcentage est ignorée, pour que diriger avec le même stick ne décale jamais le niveau retenu de la gâchette. Seules les poussées verticales plus franches du stick l'ajustent.</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>Vitesse du trim</value></data>
@@ -2342,5 +2433,488 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Tant que la couche est activée par bascule, elle se désactive d'elle-même après ce nombre de millisecondes sans aucune des entrées mappées propres à la couche. Le minuteur démarre à l'activation de la couche et repart à chaque entrée de la couche. 0 garde la couche active jusqu'à ce que vous la désactiviez vous-même.</value></data>
   <data name="Pad_ResetShiftDelay" xml:space="preserve">
     <value>Réinitialiser le délai à 0 (la couche réagit instantanément).</value>
+  </data>
+  <data name="MacroAction_Type_MoveMouseToScreenPosition" xml:space="preserve"><value>Déplacer la souris vers une position</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Tooltip" xml:space="preserve"><value>Téléporte le curseur du bureau vers une position fixe de l'écran lors de l'appui. Utilisez Choisir à l'écran pour capturer un point avec le curseur.</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Format" xml:space="preserve"><value>Déplacer la souris vers {0}, {1}</value></data>
+  <data name="MacroAction_Type_RepeatKeyWhileHeld" xml:space="preserve"><value>Répéter la touche tant que maintenu</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Tooltip" xml:space="preserve"><value>Envoie la touche à intervalle fixe tant que le déclencheur est maintenu (autofire / turbo).</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Répéter {0} toutes les {1} ms</value></data>
+  <data name="Macro_MouseX_Label" xml:space="preserve"><value>Souris X</value></data>
+  <data name="Macro_MouseY_Label" xml:space="preserve"><value>Souris Y</value></data>
+  <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervalle</value></data>
+  <data name="Macro_PickOnScreen" xml:space="preserve"><value>Choisir à l'écran</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Capture dans {0}...</value></data>
+  <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Cliquez, puis placez le curseur sur la cible. Sa position est capturée après un court compte à rebours.</value></data>
+  <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} pression</value></data>
+  <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} anneau</value></data>
+  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensibilité</value></data>
+  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Sensibilité par source pour un axe simple, un curseur ou un stick / une gâchette de manette. 1.0 laisse l'entrée inchangée. Les valeurs supérieures à 1.0 atteignent la pleine déflexion avec moins de course. Les valeurs inférieures à 1.0 en demandent davantage.</value></data>
+  <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Manette {0}</value></data>
+  <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Configurations de la communauté</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Parcourez les configurations de manette Steam Input créées par la communauté et traduisez-les en profils PadForge. PadForge se connecte directement à Steam (store.steampowered.com, api.steampowered.com, steamcommunity.com, cdn.steamusercontent.com, cdn.cloudflare.steamstatic.com, avatars.fastly.steamstatic.com) uniquement lorsque vous recherchez et lorsque vous ouvrez une configuration. Votre texte de recherche et la configuration choisie sont les seules données envoyées. Pas de télémétrie, pas de service tiers, pas de connexion à Steam.</value></data>
+  <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Activer les configurations de la communauté</value></data>
+  <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Afficher les anciennes configurations du Workshop</value></data>
+  <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Les configurations antérieures à 2017 n'ont pas de fichier téléchargeable sur le CDN de Steam. PadForge les affiche avec un badge Legacy et les ouvre dans le Steam Workshop à la place.</value></data>
+  <data name="Settings_ClearWorkshopCache" xml:space="preserve"><value>Effacer les configurations en cache</value></data>
+  <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>Vérifier les mises à jour des profils importés</value></data>
+  <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Cache du Workshop vidé</value></data>
+  <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>Parcourir les configurations de la communauté</value></data>
+  <data name="Workshop_DialogTitle" xml:space="preserve"><value>Parcourir les configurations de la communauté</value></data>
+  <data name="Workshop_DialogPath" xml:space="preserve"><value>Profils · Steam Workshop</value></data>
+  <data name="Workshop_ColdTitle" xml:space="preserve"><value>La forge est froide</value></data>
+  <data name="Workshop_ColdBody" xml:space="preserve"><value>Parcourir les configurations de la communauté connecte PadForge directement à Steam, uniquement lors d'une recherche, jamais au démarrage.</value></data>
+  <data name="Workshop_EnableButton" xml:space="preserve"><value>Activer les configurations de la communauté</value></data>
+  <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Rechercher des jeux</value></data>
+  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} jeux</value></data>
+  <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Aucun jeu trouvé sur la boutique Steam.</value></data>
+  <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Recherche sur Steam…</value></data>
+  <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Lecture des configurations depuis Steam…</value></data>
+  <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Lecture de la configuration depuis Steam…</value></data>
+  <data name="Workshop_SortedByRating" xml:space="preserve"><value>triées par note</value></data>
+  <data name="Workshop_SortedBy" xml:space="preserve"><value>trié par</value></data>
+  <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Rechercher dans ces configurations</value></data>
+  <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Évaluation</value></data>
+  <data name="Workshop_Sort_Trend" xml:space="preserve"><value>Tendance</value></data>
+  <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Plus récent</value></data>
+  <data name="Workshop_Sort_Subscribers" xml:space="preserve"><value>Abonnés</value></data>
+  <data name="Workshop_Sort_Votes" xml:space="preserve"><value>Plus de votes</value></data>
+  <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Croissant</value></data>
+  <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Décroissant</value></data>
+  <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} affectations</value></data>
+  <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} trouvées</value></data>
+  <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{0} sur {1} affichées</value></data>
+  <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configurations</value></data>
+  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>configurations de la communauté</value></data>
+  <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>prise en charge complète de la manette</value></data>
+  <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>prise en charge partielle de la manette</value></data>
+  <data name="Workshop_BackToSearch" xml:space="preserve"><value>Rechercher des jeux</value></data>
+  <data name="Workshop_ByLine_Format" xml:space="preserve"><value>par {0} · mise à jour {1}</value></data>
+  <data name="Workshop_TimeToday" xml:space="preserve"><value>aujourd'hui</value></data>
+  <data name="Workshop_TimeDays_Format" xml:space="preserve"><value>il y a {0} j</value></data>
+  <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>il y a {0} mois</value></data>
+  <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>il y a {0} an(s)</value></data>
+  <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} abonnés</value></data>
+  <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} votes</value></data>
+  <data name="Workshop_TagAll" xml:space="preserve"><value>Tous</value></data>
+  <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Pas encore de configuration pour ce jeu</value></data>
+  <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Le Steam Workshop n'a aucune configuration de manette communautaire pour {0}. Vous pouvez être le premier : créez-en une dans Steam, et elle apparaîtra ici.</value></data>
+  <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam est inaccessible</value></data>
+  <data name="Workshop_ErrorBody" xml:space="preserve"><value>Impossible de joindre Steam. Vérifiez votre connexion. Les profils déjà importés continuent de fonctionner : ils résident sur ce PC.</value></data>
+  <data name="Workshop_Retry" xml:space="preserve"><value>Réessayer</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Cette configuration de 2016 est antérieure au CDN de configurations de Steam. Abonnez-vous-y dans Steam, et PadForge la lira depuis votre dossier Steam.</value></data>
+  <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Ouvrir dans le Steam Workshop</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Sélectionnez une configuration pour lire son manifeste de traduction.</value></data>
+  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>{0} assignations lues</value></data>
+  <data name="Workshop_StatClean" xml:space="preserve"><value>Propres</value></data>
+  <data name="Workshop_StatPartial" xml:space="preserve"><value>Partielles</value></data>
+  <data name="Workshop_StatSkipped" xml:space="preserve"><value>Ignorées</value></data>
+  <data name="Workshop_SaveProfile" xml:space="preserve"><value>Enregistrer le profil</value></data>
+  <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Enregistrer et appliquer</value></data>
+  <data name="Workshop_GroupOther" xml:space="preserve"><value>Assignations</value></data>
+  <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>« {0} » importé : {1} propres, {2} partielles, {3} ignorées</value></data>
+  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} assignations couvertes par le mappage automatique par défaut</value></data>
+  <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>traduite</value></data>
+  <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>traduite en macro</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>couche : {0}</value></data>
+  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>le réglage du pavé tactile s'applique par pavé, pas par ligne</value></data>
+  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>seuil de gâchette approximé</value></data>
+  <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>aucun déclencheur sans périphérique pour cette entrée</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} actions en jeu, réservées à Steam, sans point d'accroche côté jeu</value></data>
+  <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>action du client Steam {0}, sans équivalent</value></data>
+  <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>action de manette {0} non prise en charge</value></data>
+  <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>type d'assignation inconnu {0}</value></data>
+  <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>touche inconnue {0}</value></data>
+  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>la touche {0} n'a pas d'équivalent Windows</value></data>
+  <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>bouton de souris inconnu {0}</value></data>
+  <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>bouton XInput inconnu {0}</value></data>
+  <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>entrée inconnue {1} sur {0}</value></data>
+  <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Commande à l&apos;écran Steam Link {1} : aucune entrée physique sur les manettes prises en charge</value></data>
+  <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>mode de groupe inconnu {0}</value></data>
+  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>superposition de menu tactile abandonnée ({0} cases)</value></data>
+  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>superposition de menu radial abandonnée ({0} secteurs)</value></data>
+  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>contrainte de zone du curseur non prise en charge</value></data>
+  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>activateur au relâchement non pris en charge ici</value></data>
+  <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>activateur d'appui long non pris en charge ici</value></data>
+  <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>activateur inconnu {0}</value></data>
+  <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>activateur d&apos;accord sans bouton d&apos;accord défini (ne peut pas se déclencher)</value></data>
+  <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>la configuration référence le groupe manquant {0}</value></data>
+  <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>le changement de mode sur {0} référence le groupe manquant {1}</value></data>
+  <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>la configuration référence le préréglage manquant {0}</value></data>
+  <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>cycle de références au groupe {0}</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>« Retirer la couche » approximé en désactivation</value></data>
+  <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>cette entrée ne peut pas piloter un activateur de couche</value></data>
+  <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>plafond de lignes dépassé pour l'emplacement {0}</value></data>
+  <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>aucune assignation ne bascule vers le préréglage {0}</value></data>
+  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>le mappage automatique de l'appareil dirige toujours {0} vers {1}</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>bascule de couche abandonnée ({0} n'a produit aucune traduction)</value></data>
+  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>positionnement absolu du pointeur approximé en mouvement relatif de la souris</value></data>
+  <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Activez les configurations de la communauté pour vérifier les mises à jour</value></data>
+  <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Aucun profil importé depuis le Steam Workshop pour l'instant</value></data>
+  <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Vérification des mises à jour sur le Steam Workshop…</value></data>
+  <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>Les profils importés sont à jour ({0} vérifiés)</value></data>
+  <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Mises à jour du Workshop</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ces profils importés ont des versions plus récentes sur le Steam Workshop. Réimportez-les depuis Parcourir les configurations de la communauté pour récupérer les changements.</value></data>
+  <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
+  <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
+  <data name="About_SteamKit2Desc" xml:space="preserve"><value>Client réseau Steam qui récupère les configurations de manette du Steam Workshop via une session anonyme, par Ryan Stecker et la SteamRE Team. LGPL-2.1.</value></data>
+  <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Sérialiseur Protocol Buffers que SteamKit2 utilise pour le protocole réseau de Steam, par Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Décompression Zstandard que SteamKit2 utilise pour les chunks de dépôt Steam, un portage C# de la bibliothèque zstd par Oleg Stepanischev. MIT.</value></data>
+  <data name="Mapping_AnyDevice" xml:space="preserve"><value>(N&apos;importe quel appareil)</value></data>
+  <data name="Mapping_TouchpadFingerXLeft_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} X (moitié gauche)</value></data>
+  <data name="Mapping_TouchpadFingerXRight_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} X (moitié droite)</value></data>
+  <data name="Mapping_TouchpadFingerYLeft_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} Y (moitié gauche)</value></data>
+  <data name="Mapping_TouchpadFingerYRight_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} Y (moitié droite)</value></data>
+  <data name="Mapping_TouchpadPointerX_Format" xml:space="preserve"><value>Pavé tactile {0} pointeur X</value></data>
+  <data name="Mapping_TouchpadPointerY_Format" xml:space="preserve"><value>Pavé tactile {0} pointeur Y</value></data>
+  <data name="Mapping_TouchpadPointerXLeft_Format" xml:space="preserve"><value>Pavé tactile {0} pointeur X (moitié gauche)</value></data>
+  <data name="Mapping_TouchpadPointerXRight_Format" xml:space="preserve"><value>Pavé tactile {0} pointeur X (moitié droite)</value></data>
+  <data name="Mapping_TouchpadPointerYLeft_Format" xml:space="preserve"><value>Pavé tactile {0} pointeur Y (moitié gauche)</value></data>
+  <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>Pavé tactile {0} pointeur Y (moitié droite)</value></data>
+  <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} toucher (moitié gauche)</value></data>
+  <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} toucher (moitié droite)</value></data>
+  <data name="Mapping_TouchpadWindow_Upper" xml:space="preserve"><value>Moitié supérieure</value></data>
+  <data name="Mapping_TouchpadWindow_Lower" xml:space="preserve"><value>Moitié inférieure</value></data>
+  <data name="Mapping_TouchpadWindow_North" xml:space="preserve"><value>Quadrant nord</value></data>
+  <data name="Mapping_TouchpadWindow_South" xml:space="preserve"><value>Quadrant sud</value></data>
+  <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>Quadrant est</value></data>
+  <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>Quadrant ouest</value></data>
+  <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Centre</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion" xml:space="preserve"><value>Course max. du tap</value></data>
+  <data name="Pad_Touchpad_TapMaxMotion_Tooltip" xml:space="preserve"><value>Distance qu'un doigt peut parcourir en restant un tap, en largeurs de pad. 0,04 vaut 4% du pad.</value></data>
+  <data name="Pad_ResetTouchpadTapMaxMotion" xml:space="preserve"><value>Réinitialiser la course max. du tap</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion" xml:space="preserve"><value>Course max. d'appui long</value></data>
+  <data name="Pad_Touchpad_LongPressMaxMotion_Tooltip" xml:space="preserve"><value>Distance qu'un doigt peut dériver pendant un maintien en restant un appui long plutôt qu'un balayage.</value></data>
+  <data name="Pad_ResetTouchpadLongPressMaxMotion" xml:space="preserve"><value>Réinitialiser la course max. d'appui long</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle" xml:space="preserve"><value>Angle à deux doigts</value></data>
+  <data name="Pad_Touchpad_TwoFingerAngle_Tooltip" xml:space="preserve"><value>Angle maximal entre les directions des deux doigts qui compte encore comme balayage à deux doigts plutôt que pincement ou rotation.</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipeAngularTolerance" xml:space="preserve"><value>Réinitialiser l'angle à deux doigts</value></data>
+  <data name="Pad_Touchpad_PinchThreshold" xml:space="preserve"><value>Seuil de pincement</value></data>
+  <data name="Pad_Touchpad_PinchThreshold_Tooltip" xml:space="preserve"><value>Variation de distance entre deux doigts nécessaire pour déclencher un pincement.</value></data>
+  <data name="Pad_ResetTouchpadPinchThreshold" xml:space="preserve"><value>Réinitialiser le seuil de pincement</value></data>
+  <data name="Pad_Touchpad_RotateThreshold" xml:space="preserve"><value>Seuil de rotation</value></data>
+  <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Rotation nécessaire des deux doigts pour déclencher une rotation.</value></data>
+  <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Réinitialiser le seuil de rotation</value></data>
+  <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Pointeur absolu</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Règle les sources Pointeur X/Y du pavé tactile, qui placent le curseur à la position du doigt sur le pad (à mapper sur souris X/Y d'une manette virtuelle clavier / souris). Taille 1,00 avec centre 0,50 fait correspondre le pad à tout l'écran. Réduisez la taille pour confiner le curseur à une partie, et déplacez le centre pour la situer.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Largeur de la Zone</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Largeur de la zone d'écran à laquelle ce pad correspond, en fraction de la largeur d'écran. 1,00 couvre toute la largeur ; 0,50 confine le curseur à la moitié.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Hauteur de la Zone</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Hauteur de la zone d'écran, en fraction de la hauteur d'écran.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Centre de la Zone X</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterX_Tooltip" xml:space="preserve"><value>Position horizontale de cette zone. 0,00 est le bord gauche, 0,50 le milieu, 1,00 le bord droit.</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY" xml:space="preserve"><value>Centre de la Zone Y</value></data>
+  <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>Position verticale. 0,00 est le bord supérieur, 0,50 le milieu, 1,00 le bord inférieur.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptique de balayage</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Fait vibrer l'haptique de la manette pendant que le doigt parcourt ce pavé tactile, comme les tics de trackpad de Steam Input. Les Steam Controller et le Steam Deck font tiquer l'actionneur sous le pavé ; DualSense et DualShock 4 pulsent les moteurs de vibration.</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Activer l'haptique de balayage</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Émet un bref tic haptique chaque fois que le doigt parcourt une distance définie sur ce pavé. Poser un doigt ou cliquer sur le pavé ne fait jamais tiquer. Désactivé par défaut.</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intensité des impulsions</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Force de chaque tic. La vibration du jeu gagne toujours quand elle est plus forte.</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Pression synthétique</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simule les boutons sensibles à la pression des DualShock 2 / DualShock 3 sur les pavés qui signalent un toucher comme une pression complète (DualShock 4, DualSense, Steam Controller 2015). Tant qu&apos;elle est activée, les sources de mappage de pression de cet appareil lisent l&apos;absence de toucher comme 0%, un toucher au repos comme le niveau de pression du toucher et un clic du pavé comme 100%.</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Activer la pression synthétique</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Façonne les sources de mappage de pression de cet appareil en trois paliers : l&apos;absence de toucher lit 0%, un toucher au repos lit le niveau de pression du toucher et un clic du pavé lit 100%. Désactivée par défaut, ce qui conserve les lectures brutes sur les pavés à vraie pression analogique.</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel" xml:space="preserve"><value>Niveau de pression du toucher</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel_Tooltip" xml:space="preserve"><value>Quantité de pression signalée par un toucher au repos (sans clic). 50% laisse un palier égal jusqu&apos;au clic complet du pavé.</value></data>
+  <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>Réinitialiser le pointeur absolu</value></data>
+  <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Réinitialiser l'haptique de balayage</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>Réinitialiser la pression synthétique</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeX" xml:space="preserve"><value>Réinitialiser la largeur de la zone</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionSizeY" xml:space="preserve"><value>Réinitialiser la hauteur de la zone</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterX" xml:space="preserve"><value>Réinitialiser le centre de la zone X</value></data>
+  <data name="Pad_ResetTouchpadPointerRegionCenterY" xml:space="preserve"><value>Réinitialiser le centre de la zone Y</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Réinitialiser l'activation de l'haptique de balayage</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Réinitialiser l'intensité des impulsions</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>Réinitialiser l&apos;activation de la pression synthétique</value></data>
+  <data name="Pad_ResetTouchpadSyntheticTouchLevel" xml:space="preserve"><value>Réinitialiser le niveau de pression du toucher</value></data>
+  <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (stick droit)</value></data>
+  <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (stick gauche)</value></data>
+  <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (pavé tactile {0})</value></data>
+  <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Anneau du stick gauche</value></data>
+  <data name="Mapping_RightStickRing" xml:space="preserve"><value>Anneau du stick droit</value></data>
+  <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Réglages des entrées Flick Stick : pointez le stick et la caméra tourne pour correspondre, longez le bord pour affiner la rotation. Affectez « Flick Stick (stick droit) » à Souris X depuis la liste d'entrées dans Mappings, sur n'importe quelle couche.</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Réinitialiser tous les réglages du Flick Stick</value></data>
+  <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Pas par 360°</value></data>
+  <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Pas de souris pour un tour de caméra complet de 360°. Dépend de la sensibilité de la souris du jeu : augmentez si un flick tourne trop peu, diminuez s'il tourne trop.</value></data>
+  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Réinitialiser à 14400</value></data>
+  <data name="Settings_FlickTime" xml:space="preserve"><value>Durée du flick</value></data>
+  <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Durée nécessaire pour terminer un flick complet de 180°, avec une sortie adoucie. Les rotations plus courtes se terminent dans le même temps.</value></data>
+  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Réinitialiser à 0.1 s</value></data>
+  <data name="Settings_FlickThreshold" xml:space="preserve"><value>Seuil de flick</value></data>
+  <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Déflexion du stick qui démarre un flick, en fraction de la déflexion complète. Pendant le flick, le point de relâchement descend à 90% de cette valeur.</value></data>
+  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Réinitialiser à 0.9</value></data>
+  <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Angle d'accrochage</value></data>
+  <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Accroche le flick à des angles fixes pour des rotations plus régulières. Avant uniquement accroche chaque flick droit devant.</value></data>
+  <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Pas d'accrochage</value></data>
+  <data name="Settings_FlickSnapMode_Forward" xml:space="preserve"><value>Avant uniquement</value></data>
+  <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 degrés</value></data>
+  <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 degrés</value></data>
+  <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 degrés</value></data>
+  <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 degrés</value></data>
+  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Réinitialiser à Pas d'accrochage</value></data>
+  <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Force d'accrochage</value></data>
+  <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Force avec laquelle un flick est attiré vers l'angle accroché. 1 accroche complètement, 0 désactive l'accrochage, les valeurs intermédiaires mélangent.</value></data>
+  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Réinitialiser à 1.0</value></data>
+  <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Zone morte de l'angle avant</value></data>
+  <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Un flick dans cet angle autour de l'avant ne tourne pas. Permet de commencer un balayage sans rotation de flick.</value></data>
+  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Réinitialiser à 0°</value></data>
+  <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Lissage du balayage</value></data>
+  <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Lisse le bruit du balayage sur le bord. -1 utilise la fenêtre étagée automatique, 0 désactive le lissage, des valeurs plus grandes lissent de plus grandes rotations par tic.</value></data>
+  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Réinitialiser à Automatique (-1)</value></data>
+  <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Autoriser le flick à l'activation</value></data>
+  <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Décalage de rotation</value></data>
+  <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Fait tourner toute la carte de flick de ce nombre de degrés. Positif = sens horaire. L'accrochage s'applique après le décalage.</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Réinitialiser le décalage de rotation</value></data>
+  <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Quand la couche hébergeant le Flick Stick s'active avec le stick déjà défléchi, déclenche le flick immédiatement. Désactivé garde la caméra immobile et suit la rotation depuis l'angle actuel du stick.</value></data>
+  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Réinitialiser à Désactivé</value></data>
+  <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>Personnalisé</value></data>
+  <data name="Pad_MouseGestures_Custom_Tooltip" xml:space="preserve"><value>Arme le détecteur avec une entrée enregistrée depuis n'importe quel appareil au lieu d'un bouton de souris : une touche, un bouton de manette ou une entrée analogique comme une pédale. Enregistrez l'entrée ci-dessous.</value></data>
+  <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>Entrée d'activation personnalisée</value></data>
+  <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>L'entrée qui arme la session de gestes Personnalisé tant qu'elle est maintenue, enregistrée depuis n'importe quel appareil de ce slot. Les boutons et touches arment tant qu'ils sont enfoncés. Les entrées analogiques comme une pédale arment au-delà de la moitié de la course.</value></data>
+  <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>Réinitialiser l'entrée d'activation personnalisée</value></data>
+  <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>réglages de courbe de réponse et de plage abandonnés ({0})</value></data>
+  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>réglage du gyroscope {0}={1} abandonné (aucun bouton lisible derrière cette valeur)</value></data>
+  <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>le changement de numéro de joueur est une action du client Steam, sans équivalent</value></data>
+  <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>la bascule du mode lizard est interne à Steam, sans équivalent</value></data>
+  <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>l'appui à bascule maintient {0} jusqu'au prochain appui</value></data>
+  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>l'appui long tape {0} au seuil (Steam le maintient jusqu'au relâchement)</value></data>
+  <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>réinitialisation de caméra approximée comme un recentrage du gyroscope</value></data>
+  <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>zone de souris approximée comme une limitation centrée du curseur ({0}% de l'écran, centre de la zone {1}%, {2}%) tant que la surface est maintenue</value></data>
+  <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>réglages d'activation/relâchement de la zone de souris abandonnés ({0})</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick sur une surface sans paire analogique ignoré</value></data>
+  <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>les zones mortes s'appliquent par axe, pas radialement ({0})</value></data>
+  <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>réponse non linéaire retenue sur les axes pivotés ({0})</value></data>
+  <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>{0} hébergé au relâchement bascule à l'appui à la place</value></data>
+  <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>réglages de la souris abandonnés ({0})</value></data>
+  <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversion des axes non appliquée ({0})</value></data>
+  <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>molette circulaire approximée par un glissement vertical</value></data>
+  <data name="Macro_HoldForMs" xml:space="preserve"><value>Sur appui long</value></data>
+  <data name="Macro_ShortPress" xml:space="preserve"><value>Sur appui bref</value></data>
+  <data name="Macro_ShortPress_Tooltip" xml:space="preserve"><value>Se déclenche une fois quand le déclencheur est relâché avant la fin du temps de maintien. Maintenir au-delà du seuil ne déclenche rien ; associé à « Sur appui long » sur le même bouton, cela donne tape-ou-maintien.</value></data>
+  <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se déclenche une fois lorsque le déclencheur a été maintenu en continu pendant la durée de maintien. Un appui plus court ne fait rien.</value></data>
+  <data name="Macro_DoublePress" xml:space="preserve"><value>Sur double appui</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Se déclenche quand la commande est appuyée deux fois dans la fenêtre d&apos;appui. Si le second appui est maintenu, elle reste active jusqu&apos;au relâchement.</value></data>
+  <data name="Macro_SinglePress" xml:space="preserve"><value>Sur appui simple</value></data>
+  <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>Se déclenche quand aucun second appui ne suit dans la fenêtre d'appui, ce qui permet de partager un bouton avec l'appui double ou triple. « À l'appui » se déclenche immédiatement.</value></data>
+  <data name="Macro_TriplePress" xml:space="preserve"><value>Sur triple appui</value></data>
+  <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Se déclenche quand la commande est appuyée trois fois dans la fenêtre d&apos;appui. Si le troisième appui est maintenu, elle reste active jusqu&apos;au relâchement.</value></data>
+  <data name="Macro_Toggle" xml:space="preserve"><value>Bascule</value></data>
+  <data name="Macro_Toggle_Tooltip" xml:space="preserve"><value>Le premier appui verrouille les actions. Appuyez de nouveau pour relâcher. Les maintiens et répétitions restent actifs jusqu’au second appui.</value></data>
+  <data name="Macro_Turbo" xml:space="preserve"><value>Turbo</value></data>
+  <data name="Macro_Turbo_Tooltip" xml:space="preserve"><value>Répète les actions à l’intervalle ci-dessous tant que le déclencheur est maintenu.</value></data>
+  <data name="Macro_ToggleInterval_Tooltip" xml:space="preserve"><value>Tant que le verrou est actif, les actions se répètent à cet intervalle.</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Fenêtre d&apos;appui</value></data>
+  <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Durée de maintien</value></data>
+  <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Répéter le bouton tant que maintenu</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>Active et relâche le bouton de la manette à l'intervalle défini tant que le déclencheur est maintenu (autofire / turbo).</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Format" xml:space="preserve"><value>Répéter {0} toutes les {1} ms</value></data>
+  <data name="MacroAction_Type_ToggleVcButton" xml:space="preserve"><value>Basculer le bouton</value></data>
+  <data name="MacroAction_ToggleVcButton_Tooltip" xml:space="preserve"><value>Chaque déclenchement verrouille ou déverrouille le bouton de la manette. Un bouton verrouillé reste enfoncé jusqu'au prochain déclenchement ou jusqu'à la désactivation de la macro.</value></data>
+  <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>Basculer {0}</value></data>
+  <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>Basculer la touche</value></data>
+  <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>Chaque déclenchement verrouille ou déverrouille la touche. Une touche verrouillée reste enfoncée jusqu'au prochain déclenchement ou jusqu'à la désactivation de la macro.</value></data>
+  <data name="MacroAction_Type_AxisHold" xml:space="preserve"><value>Maintenir l'axe</value></data>
+  <data name="MacroAction_AxisHold_Tooltip" xml:space="preserve"><value>Écrit la valeur de l'axe à chaque trame pendant la durée. Avec la répétition Jusqu'au relâchement, l'axe reste maintenu jusqu'au relâchement du déclencheur.</value></data>
+  <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>Maintenir {0} = {1} ({2} ms)</value></data>
+  <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Cran de molette</value></data>
+  <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Envoie un cran discret de molette par déclenchement. La valeur est le nombre de crans signé (positif fait défiler vers le haut ou la droite).</value></data>
+  <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Décaler le curseur</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Déplace le curseur de la souris d'un nombre fixe de pixels à chaque déclenchement. X positif vers la droite, Y positif vers le bas. Les valeurs négatives sont autorisées.</value></data>
+  <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Décaler le curseur de ({0}, {1}) px</value></data>
+  <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Liste de frappes cyclique</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Chaque déclenchement exécute l'étape suivante de la liste puis avance. Avec le bouclage, la liste recommence après la dernière étape. Sans lui, la sortie s'arrête en fin de liste.</value></data>
+  <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Basculer le bouton de souris</value></data>
+  <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Chaque déclenchement verrouille ou libère le bouton de souris. Un bouton verrouillé reste enfoncé jusqu'au prochain déclenchement ou jusqu'à la désactivation de la macro.</value></data>
+  <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Basculer souris {0}</value></data>
+  <data name="MacroAction_Type_ToggleVcAxis" xml:space="preserve"><value>Basculer l'axe</value></data>
+  <data name="MacroAction_ToggleVcAxis_Tooltip" xml:space="preserve"><value>Chaque déclenchement verrouille ou libère la valeur d'axe. Tant qu'elle est verrouillée, l'axe est écrit à chaque trame jusqu'au prochain déclenchement ou jusqu'à la désactivation de la macro.</value></data>
+  <data name="MacroAction_ToggleVcAxis_Format" xml:space="preserve"><value>Basculer {0} = {1}</value></data>
+  <data name="MacroAction_Type_RepeatVcAxisWhileHeld" xml:space="preserve"><value>Répéter l'axe tant que maintenu</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Tooltip" xml:space="preserve"><value>Tant que le déclencheur est maintenu, applique la valeur d'axe en créneau à l'intervalle réglé.</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>Répéter {0} = {1} toutes les {2} ms</value></data>
+  <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Basculer le défilement molette</value></data>
+  <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Chaque déclenchement verrouille ou libère un défilement continu. Tant qu'il est verrouillé, envoie les crans une fois par intervalle jusqu'au prochain déclenchement ou jusqu'à la désactivation de la macro.</value></data>
+  <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Basculer molette ({0} crans toutes les {1} ms)</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulser tant que verrouillé</value></data>
+  <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Tant que c'est verrouillé, alterne la sortie au rythme de l'intervalle de répétition au lieu de la maintenir.</value></data>
+  <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Ajout d&apos;axe (relatif)</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Ajoute la valeur signée à ce que le mappage a déjà écrit sur l&apos;axe, à chaque trame pendant la durée. Les valeurs négatives soustraient. Les gâchettes ajoutent sur l&apos;échelle de pression (100% = pression complète).</value></data>
+  <data name="MacroAction_Type_AxisSetLatched" xml:space="preserve"><value>Définir l’axe (verrouillé)</value></data>
+  <data name="MacroAction_AxisSetLatched_Tooltip" xml:space="preserve"><value>Maintient l’axe à la valeur, y compris à travers les coupures de combo. Un autre pas verrouillé sur le même axe remplace la valeur : des pas séparés par des coupures forment une échelle appui par appui. « Relâcher les verrous d’axe » rend l’axe au contrôle physique.</value></data>
+  <data name="MacroAction_Type_AxisLatchRelease" xml:space="preserve"><value>Relâcher les verrous d’axe</value></data>
+  <data name="MacroAction_AxisLatchRelease_Tooltip" xml:space="preserve"><value>Efface les valeurs d’axe verrouillées (pas verrouillés et bascules d’axe) pour l’axe choisi, ou tous les axes, dans toutes les macros de cet emplacement, et rend l’axe au contrôle physique.</value></data>
+  <data name="MacroAction_Type_AxisScale" xml:space="preserve"><value>Mettre l’axe à l’échelle</value></data>
+  <data name="MacroAction_AxisScale_Tooltip" xml:space="preserve"><value>Multiplie la valeur actuelle de l’axe tant qu’actif : -50 % divise la déflexion par deux (courir devient marcher), +50 % amplifie de moitié, borné à l’échelle complète. Se compose avec l’entrée physique, aucun lâcher nécessaire.</value></data>
+  <data name="MacroAction_AxisSetLatched_Format" xml:space="preserve"><value>Verrouiller {0} à {1} %</value></data>
+  <data name="MacroAction_AxisLatchRelease_Format" xml:space="preserve"><value>Relâcher verrous : {0}</value></data>
+  <data name="MacroAction_AxisScale_Format" xml:space="preserve"><value>Mettre {0} à l’échelle de {1} %</value></data>
+  <data name="MacroAction_AllAxes" xml:space="preserve"><value>Tous les axes</value></data>
+  <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>Ajout d&apos;axe : {0} {1}%</value></data>
+  <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>Interruption de combo</value></data>
+  <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>Le combo se met en pause ici. Appuyez de nouveau sur le déclencheur pour continuer. Un déclencheur maintenu doit d&apos;abord être relâché.</value></data>
+  <data name="Macro_AxisYieldToPhysical" xml:space="preserve"><value>Céder à l&apos;entrée physique</value></data>
+  <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Quand le mouvement physique fait passer la cible au-delà du seuil, la macro cesse d&apos;écrire l&apos;axe pour le reste de l&apos;activation.</value></data>
+  <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(cède à l&apos;entrée physique)</value></data>
+  <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Liste de frappes cyclique ({0} étapes)</value></data>
+  <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Étapes</value></data>
+  <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Bouclage</value></data>
+  <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Basculer les touches {0}</value></data>
+  <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentrer le gyroscope</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Remet à zéro les références de visée gyroscopique accumulées du pad à l'appui. L'historique de lissage s'efface, le neutre du Motion Lean se recapture et l'estimation de gravité se réinitialise depuis la pose actuelle de la manette.</value></data>
+  <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Les menus transforment un stick ou un pavé tactile physique en anneau ou grille à l'écran. Ajoutez un menu, choisissez ce qui l'ouvre, puis étiquetez chaque cellule et donnez-lui une affectation.</value></data>
+  <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
+  <data name="Menu_Name" xml:space="preserve"><value>Nom du menu</value></data>
+  <data name="Menu_Enabled" xml:space="preserve"><value>Activé</value></data>
+  <data name="Menu_Style" xml:space="preserve"><value>Style</value></data>
+  <data name="Menu_Style_Radial" xml:space="preserve"><value>Anneau radial</value></data>
+  <data name="Menu_Style_Grid" xml:space="preserve"><value>Grille tactile</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>S'ouvre avec</value></data>
+  <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Stick gauche</value></data>
+  <data name="Menu_Host_RightStick" xml:space="preserve"><value>Stick droit</value></data>
+  <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>Pavé tactile {0}</value></data>
+  <data name="Menu_HostHalf" xml:space="preserve"><value>Moitié du pavé</value></data>
+  <data name="Menu_Half_Whole" xml:space="preserve"><value>Pavé entier</value></data>
+  <data name="Menu_Half_Left" xml:space="preserve"><value>Moitié gauche</value></data>
+  <data name="Menu_Half_Right" xml:space="preserve"><value>Moitié droite</value></data>
+  <data name="Menu_FireMode" xml:space="preserve"><value>Mode de déclenchement</value></data>
+  <data name="Menu_Fire_Click" xml:space="preserve"><value>Au clic</value></data>
+  <data name="Menu_Fire_ClickRelease" xml:space="preserve"><value>Au relâchement du clic</value></data>
+  <data name="Menu_Fire_TouchRelease" xml:space="preserve"><value>Au relâchement du toucher</value></data>
+  <data name="Menu_Fire_Always" xml:space="preserve"><value>Tant que survolé</value></data>
+  <data name="Menu_Cells" xml:space="preserve"><value>Cases</value></data>
+  <data name="Menu_HasCenter" xml:space="preserve"><value>Case centrale</value></data>
+  <data name="Menu_ShowLabels" xml:space="preserve"><value>Afficher les libellés</value></data>
+  <data name="Menu_Position" xml:space="preserve"><value>Position à l'écran</value></data>
+  <data name="Menu_Scale" xml:space="preserve"><value>Taille</value></data>
+  <data name="Menu_Opacity" xml:space="preserve"><value>Opacité</value></data>
+  <data name="Menu_Deadzone" xml:space="preserve"><value>Zone morte d'activation</value></data>
+  <data name="Menu_CellBindings" xml:space="preserve"><value>Affectations des cases</value></data>
+  <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Case {0}</value></data>
+  <data name="Menu_CellCenter" xml:space="preserve"><value>Centre</value></data>
+  <data name="Menu_Binding_None" xml:space="preserve"><value>Aucune</value></data>
+  <data name="Menu_Binding_Key" xml:space="preserve"><value>Touche du clavier</value></data>
+  <data name="Menu_Binding_Button" xml:space="preserve"><value>Bouton de manette</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Anneau radial choisit une cellule par direction, comme une roue d'armes. Grille tactile choisit une cellule par position : là où le doigt se pose sur le pavé, ou là où pointe le stick.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>L'entrée qui ouvre et dirige ce menu, lue sur les manettes physiques assignées à l'emplacement. Un stick l'ouvre quand on le pousse au-delà de la zone morte d'activation. Un pavé tactile l'ouvre au toucher.</value></data>
+  <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limite ce menu à une moitié du pavé tactile, pour que deux menus puissent se partager le pavé.</value></data>
+  <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Quand la cellule en surbrillance déclenche son affectation. Chaque choix est expliqué ci-dessous.</value></data>
+  <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Déclenche tant que le stick ou le pavé tactile est enfoncé : visez la cellule, puis enfoncez le stick (clic de stick) ou cliquez le pavé. L'affectation reste tenue jusqu'au relâchement du clic.</value></data>
+  <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Déclenche une fois au relâchement du clic : visez la cellule, enfoncez le stick ou le pavé, puis relâchez le clic.</value></data>
+  <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Déclenche une fois quand vous lâchez : levez le doigt du pavé, ou laissez le stick revenir au centre pendant qu'une cellule est en surbrillance.</value></data>
+  <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>L'affectation reste tenue tant que la cellule est en surbrillance. Aucun clic nécessaire.</value></data>
+  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Combien de cellules le menu contient. Pour un anneau radial, seul l'anneau compte ; la cellule centrale est à part.</value></data>
+  <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Ajoute une cellule centrale, sélectionnée tant que le stick ou le doigt reste dans la zone morte d'activation.</value></data>
+  <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Pour les sticks : la distance à pousser avant que le menu s'ouvre et que les cellules de l'anneau se surlignent. Sur les menus radiaux, c'est aussi la zone centrale pour les sticks et les pavés tactiles : à l'intérieur, la cellule centrale est sélectionnée si elle existe.</value></data>
+  <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Affiche l'étiquette de chaque cellule sur la superposition à l'écran.</value></data>
+  <data name="Menu_Position_Tip" xml:space="preserve"><value>Position du centre de la superposition à l'écran, en pourcentage. 50 et 50 correspond au milieu.</value></data>
+  <data name="Menu_Scale_Tip" xml:space="preserve"><value>Taille de la superposition, en pourcentage de sa taille normale.</value></data>
+  <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacité de la superposition. 100 % est entièrement opaque.</value></data>
+  <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Texte affiché sur cette cellule dans la superposition.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Ce que fait cette cellule quand elle se déclenche : "Touche du clavier" presse une touche du clavier, "Bouton de manette" presse un bouton de la manette virtuelle de cet emplacement. Une cellule sur "Aucune" se déclenche quand même comme source d'élément de menu pour les lignes de Mappages et les déclencheurs de macros.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Lu sur les manettes physiques assignées à cet emplacement, pas sur la disposition de la manette virtuelle. Les affectations de cellules ci-dessous sont ce que le menu émet.</value></data>
+  <data name="Menu_Host_Custom" xml:space="preserve"><value>Axes personnalisés</value></data>
+  <data name="Menu_CustomX" xml:space="preserve"><value>Direction X</value></data>
+  <data name="Menu_CustomY" xml:space="preserve"><value>Direction Y</value></data>
+  <data name="Menu_CustomAxis_Tip" xml:space="preserve"><value>Enregistrez deux axes quelconques pour diriger le menu : poussez au-delà de la zone morte d'activation pour l'ouvrir. C'est ainsi que les joysticks, volants et autres périphériques non-manettes hébergent des menus.</value></data>
+  <data name="Menu_ClickInput" xml:space="preserve"><value>Entrée de clic</value></data>
+  <data name="Menu_ClickInput_Tip" xml:space="preserve"><value>Le bouton utilisé par les modes Au clic et Au relâchement du clic, enregistrable depuis n'importe quel périphérique assigné. Vide conserve la valeur par défaut de l'ouvreur : clic du stick ou du pavé tactile. Les axes personnalisés n'ont pas de valeur par défaut, enregistrez-en un pour utiliser ces modes.</value></data>
+  <data name="Menu_ClickDefault" xml:space="preserve"><value>(défaut de l'ouvreur)</value></data>
+  <data name="Menu_NotRecorded" xml:space="preserve"><value>(non défini)</value></data>
+  <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (pas sur ce type d'emplacement)</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Utilisé par une affectation ou une macro</value></data>
+  <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} case {1}</value></data>
+  <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Superposition de menu</value></data>
+  <data name="Dashboard_Overlays" xml:space="preserve"><value>Superpositions</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indicateurs affichés par PadForge pendant le jeu. En désactiver un ne change jamais le comportement, seulement son annonce.</value></data>
+  <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Info-bulle de couche Shift</value></data>
+  <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Superposition de changement de profil</value></data>
+  <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Affiche l'anneau ou la grille à l'écran tant qu'un menu radial ou tactile est actif. Les menus se déclenchent même si la superposition est désactivée.</value></data>
+  <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu à l'écran créé ({0} cases affectées)</value></data>
+  <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>le menu n'a aucune case affectée</value></data>
+  <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>surface hôte du menu non prise en charge ({0})</value></data>
+  <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>icône de case du menu non reconnue ({0}), la case conserve donc son libellé texte</value></data>
+  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
+  <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Route la vibration et le retour de force de jeu reçus par cette manette virtuelle vers une sortie audio sous forme de sons basse fréquence pour bass shakers et caissons de basses.</value></data>
+  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibration vers audio</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Fonctionne avec les manettes virtuelles Xbox, DualShock 4 / DualSense et Nintendo Switch Pro, ainsi que les manettes virtuelles Étendu à retour de force, comme les volants de course. Seul le retour du jeu passe par la sortie audio. Les vibrations de macro et de test restent sur la manette.</value></data>
+  <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser la vibration vers audio</value></data>
+  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Router la vibration vers une sortie audio</value></data>
+  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Joue la vibration et le retour de force de jeu de cette manette virtuelle sous forme de sons basse fréquence sur la sortie audio choisie. La désactivation conserve tous les réglages.</value></data>
+  <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>Réinitialiser le routage de la vibration</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Périphérique de sortie</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice_Tooltip" xml:space="preserve"><value>Le périphérique de lecture qui reçoit les sons de vibration. Par défaut du système suit le périphérique de lecture par défaut de Windows. Si le périphérique choisi disparaît, l'audio reste muet jusqu'à son retour.</value></data>
+  <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>Réinitialiser le périphérique de sortie</value></data>
+  <data name="Pad_RumbleAudio_Status_Inactive" xml:space="preserve"><value>La sortie audio est à l'arrêt.</value></data>
+  <data name="Pad_RumbleAudio_Status_Active_Format" xml:space="preserve"><value>Lecture sur {0}.</value></data>
+  <data name="Pad_RumbleAudio_Status_Missing" xml:space="preserve"><value>Le périphérique de sortie choisi est indisponible. L'audio reste muet jusqu'à son retour.</value></data>
+  <data name="Pad_RumbleAudio_BluetoothHint" xml:space="preserve"><value>Les périphériques audio Bluetooth ajoutent une latence sensible.</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode" xml:space="preserve"><value>Mode des canaux</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode_Tooltip" xml:space="preserve"><value>Mono joue chaque voix sur tous les canaux. Stéréo manette les répartit comme sur la manette : moteur basse fréquence et gâchette gauche à gauche, moteur haute fréquence et gâchette droite à droite.</value></data>
+  <data name="Pad_RumbleAudio_Mode_Mono" xml:space="preserve"><value>Mono (tous les canaux)</value></data>
+  <data name="Pad_RumbleAudio_Mode_Stereo" xml:space="preserve"><value>Stéréo manette</value></data>
+  <data name="Pad_RumbleAudio_ResetChannelMode" xml:space="preserve"><value>Réinitialiser le mode des canaux</value></data>
+  <data name="Pad_RumbleAudio_MasterGain" xml:space="preserve"><value>Gain général</value></data>
+  <data name="Pad_RumbleAudio_MasterGain_Tooltip" xml:space="preserve"><value>Volume global appliqué après le gain de chaque voix. Gardez de la marge pour que les quatre voix ne saturent pas ensemble.</value></data>
+  <data name="Pad_RumbleAudio_ResetMasterGain" xml:space="preserve"><value>Réinitialiser le gain général</value></data>
+  <data name="Pad_RumbleAudio_Voice_Low" xml:space="preserve"><value>Moteur basse fréquence</value></data>
+  <data name="Pad_RumbleAudio_Voice_High" xml:space="preserve"><value>Moteur haute fréquence</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerLeft" xml:space="preserve"><value>Gâchette gauche</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>Gâchette droite</value></data>
+  <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Joue ce canal de retour sous forme de son. Le gain et la fréquence sont conservés quand il est désactivé.</value></data>
+  <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Fréquence du son de ce canal, de 20 à 120 Hz. Lancez le balayage de fréquence pour trouver où votre shaker répond le plus fort.</value></data>
+  <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Volume de ce canal avant le gain général.</value></data>
+  <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Tester</value></data>
+  <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Joue le son de ce canal pendant 1,5 seconde à son gain réglé.</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Réinitialiser le moteur basse fréquence</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Réinitialiser le moteur haute fréquence</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Réinitialiser la gâchette gauche</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Réinitialiser la gâchette droite</value></data>
+  <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Balayage de fréquence</value></data>
+  <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Balaye un son de 20 à 120 Hz pendant huit secondes sur la voie du moteur basse fréquence. Notez où votre shaker répond le plus fort et réglez-y les fréquences des voix.</value></data>
+  <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Arrêter</value></data>
+  <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Arrête le son de test ou le balayage.</value></data>
+  <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>N'importe quel tag NFC</value></data>
+  <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Tag NFC : {0}</value></data>
+  <data name="Nfc_WaitingController" xml:space="preserve"><value>Touchez un tag avec votre manette Switch…</value></data>
+  <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Échec du calibrage. Posez la manette et réessayez.</value></data>
+  <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>Supprimer l’entrée de calque résiduelle « {0} » ? Vos mappages et macros de Base ne seront pas touchés.</value></data>
+  <data name="Common_KeepLegacyDrivers" xml:space="preserve"><value>Conserver</value></data>
+  <data name="LegacyCleanup_Title" xml:space="preserve"><value>Nettoyage des anciens pilotes</value></data>
+  <data name="LegacyCleanup_Prompt_Format" xml:space="preserve"><value>PadForge v3 utilise HIDMaestro et n'a plus besoin des anciens pilotes suivants : {0}.
+
+Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessite une élévation et peut prendre un moment.</value></data>
+  <data name="LegacyCleanup_Failed_Format" xml:space="preserve"><value>Une erreur s'est produite lors du nettoyage : {0}
+
+Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Quitter</value></data>
+  <data name="About_Libinput" xml:space="preserve">
+    <value>libinput</value>
+  </data>
+  <data name="About_HandheldCompanion" xml:space="preserve">
+    <value>Handheld Companion</value>
+  </data>
+  <data name="About_GamepadAssetPack" xml:space="preserve">
+    <value>Gamepad-Asset-Pack</value>
+  </data>
+  <data name="About_Ds4Mac" xml:space="preserve">
+    <value>ds4mac</value>
+  </data>
+  <data name="About_LibinputDesc" xml:space="preserve">
+    <value>Courbe d'accélération du pointeur pour la sortie touchpad vers souris. Redérivation en C# du profil d'accélération touchpad de libinput. MIT.</value>
+  </data>
+  <data name="About_HandheldCompanionDesc" xml:space="preserve">
+    <value>Modèles 3D de manettes (Xbox 360, Xbox One, DualShock 4, DualSense), par CasperH2O, Lesueur Benjamin, trippyone. CC BY-NC-SA 4.0.</value>
+  </data>
+  <data name="About_GamepadAssetPackDesc" xml:space="preserve">
+    <value>Schémas 2D de manettes (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), par AL2009man. MIT.</value>
+  </data>
+  <data name="About_Ds4MacDesc" xml:space="preserve">
+    <value>Documentation du protocole audio de la DualShock 4 : paramètres SBC et formats de paquets, par khallmark. MIT.</value>
   </data>
 </root>

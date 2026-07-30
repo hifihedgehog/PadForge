@@ -17,10 +17,16 @@ namespace PadForge.ViewModels
         public static string[] CurvePresetNames { get; private set; } =
             Common.CurveLut.BuildPresetDisplayNames();
 
-        static TriggerConfigItem()
+        // LCID-stamped rebuild, no handler-order dependence (see the
+        // StickConfigItem twin for the ordering defect this replaces).
+        private static int s_presetLcid = System.Globalization.CultureInfo.CurrentUICulture.LCID;
+
+        internal static void EnsurePresetsCultureCurrent()
         {
-            Resources.Strings.Strings.CultureChanged += () =>
-                CurvePresetNames = Common.CurveLut.BuildPresetDisplayNames();
+            int lcid = System.Globalization.CultureInfo.CurrentUICulture.LCID;
+            if (lcid == s_presetLcid) return;
+            s_presetLcid = lcid;
+            CurvePresetNames = Common.CurveLut.BuildPresetDisplayNames();
         }
 
         public string PresetName => Common.CurveLut.MatchPreset(SensitivityCurve);
@@ -115,7 +121,7 @@ namespace PadForge.ViewModels
         /// axis-unit format as RawDisplay, derived from LiveValue (0..1).</summary>
         public string OutDisplay => $"{(int)System.Math.Round(_liveValue * 65535.0)} ({_liveValue * 100.0:F1}%)";
 
-        /// <summary>Raw axis index in ExtendedRawState.Axes (custom Extended only, -1 for gamepad).</summary>
+        /// <summary>Raw axis index in RawHidState.Axes (custom Extended only, -1 for gamepad).</summary>
         public int AxisIndex { get; }
 
         // ── Reset commands ──
@@ -141,6 +147,20 @@ namespace PadForge.ViewModels
             AxisIndex = axisIndex;
             IconLabel = iconLabel ?? string.Empty;
             IconRightSide = iconRightSide;
+            // Weak event: no unsubscribe needed.
+            Resources.Strings.Strings.CultureChanged += OnCultureChanged;
+        }
+
+        /// <summary>Instance accessor over <see cref="CurvePresetNames"/>.
+        /// x:Static bindings evaluate once and never see the static-ctor
+        /// rebuild; see the StickConfigItem twin.</summary>
+        public string[] CurvePresetChoices => CurvePresetNames;
+
+        private void OnCultureChanged()
+        {
+            EnsurePresetsCultureCurrent();
+            OnPropertyChanged(nameof(CurvePresetChoices));
+            OnPropertyChanged(nameof(PresetName));
         }
     }
 }

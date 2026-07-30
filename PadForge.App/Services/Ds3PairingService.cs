@@ -81,24 +81,47 @@ namespace PadForge.Services
             return false;
         }
 
-        /// <summary>Drives BthPS3 PSM patching to the crash-safe state (issue
-        /// #199): armed only while a DS3 is actually paired, off otherwise.
-        /// With patching off BthPS3 sees no incoming Bluetooth connections, so
-        /// its use-after-free-on-disconnect path (upstream nefarius/BthPS3 #48,
-        /// unfixed at the bundled v2.10.470.0) is unreachable, which is what
-        /// turned a stray Wii Remote connect into a 0x50 bugcheck on
-        /// 2026-07-10. No-op when BthPS3 isn't installed. Idempotent; the IOCTL
-        /// toggle contacts no radio and needs no <see cref="_radioGate"/>.</summary>
+        /// <summary>The pure PSM-patch policy (issue #199 crash safety +
+        /// the 2026-07-24 DsHidMini coexistence audit). Returns whether
+        /// PadForge takes sole ownership of arming (AutoEnableFilter=0)
+        /// and whether patching should be on.
+        ///
+        /// <para>With DsHidMini installed, that stack IS the system's DS3
+        /// story and its pads connect only while BthPS3 patching is armed.
+        /// Its pads leave NO BTHPORT VID/PID record (nothing in the
+        /// Nefarius ecosystem writes one; BthPS3 identifies by remote name,
+        /// BusLogic.c), so the AnyDs3Paired probe reads false there and the
+        /// old policy disarmed patching at PadForge startup, breaking the
+        /// foreign setup persistently (AutoEnableFilter=0 outlived
+        /// PadForge). Policy now: never own, always armed, and the caller
+        /// repairs any earlier ownership grab.</para>
+        ///
+        /// <para>Without DsHidMini, the crash-safety policy stands: PadForge
+        /// owns arming, on only while a DS3 is actually paired. Patching off
+        /// makes BthPS3's use-after-free-on-disconnect path (upstream
+        /// nefarius/BthPS3 #48, unfixed at the bundled v2.10.470.0)
+        /// unreachable, which is what turned a stray Wii Remote connect
+        /// into a 0x50 bugcheck on 2026-07-10.</para></summary>
+        internal static (bool TakeOwnership, bool Patching) PsmPatchPolicy(
+            bool dsHidMiniInstalled, bool anyDs3Paired)
+            => dsHidMiniInstalled ? (false, true) : (true, anyDs3Paired);
+
+        /// <summary>Drives BthPS3 PSM patching to the policy state (see
+        /// <see cref="PsmPatchPolicy"/>). No-op when BthPS3 isn't installed.
+        /// Idempotent; the IOCTL toggle contacts no radio and needs no
+        /// <see cref="_radioGate"/>.</summary>
         public static void ReconcilePsmPatchForCrashSafety(string reason)
         {
             try
             {
                 if (!Ds3DriverInstaller.IsBthPs3Installed()) return;
-                // Take sole ownership first (AutoEnableFilter=0) so the state we
-                // set below can't be undone by BthPS3's own auto-arm.
-                Ds3DriverInstaller.EnsurePadForgeOwnsPsmPatch();
-                bool wantPatching = AnyDs3Paired();
-                LogLine($"PSM patch reconcile ({reason}): DS3 paired={wantPatching}.");
+                bool dshm = Ds3DriverInstaller.IsDsHidMiniInstalled();
+                var (takeOwnership, wantPatching) = PsmPatchPolicy(dshm, AnyDs3Paired());
+                if (takeOwnership)
+                    Ds3DriverInstaller.EnsurePadForgeOwnsPsmPatch();
+                else
+                    Ds3DriverInstaller.RestoreBthPs3AutoArm();
+                LogLine($"PSM patch reconcile ({reason}): dshidmini={dshm} patching={wantPatching}.");
                 Ds3DriverInstaller.SetPsmPatching(wantPatching, LogLine);
             }
             catch (Exception ex) { LogLine("PSM patch reconcile failed: " + ex.Message); }

@@ -60,9 +60,14 @@ namespace PadForge.Engine.Touchpad
         /// finger snapshot, and fires gestures into
         /// <see cref="TouchpadGestureContext.FiredGesturesThisFrame"/>.
         ///
-        /// <para>Caller should clear <c>FiredGesturesThisFrame</c> before
-        /// calling, then read it after; this method appends to it but
-        /// does not clear so the caller can compose multiple sources.</para>
+        /// <para>Callers must NOT clear <c>FiredGesturesThisFrame</c>: the
+        /// set deliberately latches through the cooldown window so slower
+        /// consumers catch the rising edge, and held sources (radial
+        /// zones, touch spots) add and remove their keys explicitly. The
+        /// recognizer clears it itself at cooldown expiry and at
+        /// fresh-gesture start. (An earlier version of this doc said the
+        /// opposite; following it would break every latched consumer.
+        /// Round 33, S6.)</para>
         ///
         /// <para>Shape-gesture matching (Tier 3) is delegated to
         /// <paramref name="shapeTemplates"/>: pass null to skip Tier 3
@@ -111,9 +116,17 @@ namespace PadForge.Engine.Touchpad
             bool joystickEnabled = settings.EnableJoystickOutput;
             if (!gesturesEnabled && !joystickEnabled)
             {
-                ctx.Reset();
+                // One reset per transition: re-clearing an already-clean
+                // context was per-tick churn on every assigned touchpad
+                // with gestures off (the default).
+                if (!ctx.IsCleanReset)
+                {
+                    ctx.Reset();
+                    ctx.IsCleanReset = true;
+                }
                 return;
             }
+            ctx.IsCleanReset = false;
             if (ctx.State == GestureState.Cooldown)
             {
                 if (nowMs >= ctx.CooldownUntilTimestampMs)
@@ -123,6 +136,17 @@ namespace PadForge.Engine.Touchpad
                 }
                 else
                 {
+                    // The cooldown gates GESTURE recognition, not the
+                    // joystick surface. Round-33 audit: returning before
+                    // path tracking blacked out joystick-only mode for
+                    // CooldownMs after every lift, and a touch landing in
+                    // the window got its anchor planted at whatever
+                    // position tracking eventually resumed at. Track paths
+                    // through the cooldown when the joystick is on, so
+                    // ComputeJoystickAxis follows the finger from its true
+                    // touchdown; skip all detectors either way.
+                    if (joystickEnabled)
+                        UpdateActivePaths(ctx, pad, nowMs);
                     return;
                 }
             }
@@ -136,12 +160,40 @@ namespace PadForge.Engine.Touchpad
             {
                 ctx.State = GestureState.Accumulating;
                 ctx.GestureStartTimestampMs = nowMs;
-                // Fresh gesture begins — discard any leftover latched
+                // A cooldown-window touch (joystick path above) may have
+                // already accumulated peak state; the gesture's own peak
+                // starts from the CURRENT contacts.
+                ctx.PeakActiveFingerCount = ctx.ActiveFingerCount;
+                // Fresh gesture begins. Discard any leftover latched
                 // fires from the prior gesture so they don't bleed into
                 // this one's recognition window.
                 ctx.FiredGesturesThisFrame.Clear();
             }
 
+            // ─────────────────────────────────────────────────────────────
+            //  GATING CONTRACT. Do not add a fourth level, and never gate one
+            //  gesture family on ANOTHER family's checkbox. There are exactly
+            //  three levels, in this order:
+            //
+            //    1. settings.Enabled          the master switch
+            //    2. InBoxAllowed(settings)    in-box / custom / both
+            //    3. that family's OWN toggle  EnableTaps, EnableTwoFingerSwipes,
+            //                                 EnableThreeFingerGestures, ...
+            //
+            //  A finger-count test (ActiveFingerCount == 1, fingerCount >= 3)
+            //  is hardware capability, not a fourth level, and is fine.
+            //
+            //  WHY THIS IS WRITTEN DOWN: the three/four/five-finger families
+            //  used to ALSO require EnableTwoFingerSwipes for their swipe and
+            //  EnableTaps for their tap. The In-Box Gestures card renders every
+            //  family as a flat list of peer checkboxes with nothing hinting at
+            //  a dependency, so ticking "Three-Finger Gestures" on its own
+            //  enabled nothing and the picker (which mirrors these gates) went
+            //  empty. The owner reported it as gestures missing from the
+            //  dropdown. Cross-gating is invisible to the person using the app.
+            //  If a family needs a prerequisite, the UI has to say so, and this
+            //  card does not.
+            // ─────────────────────────────────────────────────────────────
             bool inBoxAllowed = gesturesEnabled && InBoxAllowed(settings);
 
             // Tier 1 mid-gesture fires (touch spots, radial zone entry,
@@ -186,6 +238,9 @@ namespace PadForge.Engine.Touchpad
                 ctx.FingerStartTimestampsMs.Clear();
                 ctx.FingerContactIds.Clear();
                 ctx.FingerSlotIndices.Clear();
+                ctx.FingerPathLive.Clear();
+                ctx.FingerPathLastLiveMs.Clear();
+                ctx.PeakActiveFingerCount = 0;
                 ctx.CurrentRadialZone = -1;
             }
         }
@@ -206,6 +261,12 @@ namespace PadForge.Engine.Touchpad
             // the path as ended (ActiveFingerCount drops; the path data
             // stays so end-of-gesture recognition can read it).
             int active = 0;
+            // Liveness recompute: every path defaults to dead this tick and
+            // is re-marked below when its (slot, contact id) is still down.
+            // The flags are what lets every selector distinguish a live
+            // finger's path from a lifted one's frozen tail (round 33).
+            for (int i = 0; i < ctx.FingerPathLive.Count; i++)
+                ctx.FingerPathLive[i] = false;
             for (int s = 0; s < pad.MaxFingers; s++)
             {
                 bool down = pad.FingerDown[s];
@@ -225,11 +286,13 @@ namespace PadForge.Engine.Touchpad
 
                 if (down && pathIdx < 0 && cid >= 0)
                 {
-                    // New contact on this slot — open a fresh path.
+                    // New contact on this slot. Open a fresh path.
                     ctx.FingerPaths.Add(new List<Vector2>());
                     ctx.FingerStartTimestampsMs.Add(nowMs);
                     ctx.FingerContactIds.Add(cid);
                     ctx.FingerSlotIndices.Add(s);
+                    ctx.FingerPathLive.Add(false);
+                    ctx.FingerPathLastLiveMs.Add(nowMs);
                     pathIdx = ctx.FingerPaths.Count - 1;
                 }
 
@@ -260,13 +323,18 @@ namespace PadForge.Engine.Touchpad
                             compact.Add(path[p]);
                         ctx.FingerPaths[pathIdx] = compact;
                     }
+                    ctx.FingerPathLive[pathIdx] = true;
+                    ctx.FingerPathLastLiveMs[pathIdx] = nowMs;
                     active++;
                 }
-                // No special handling for lifts — the path stays in the
-                // list with its terminal positions; ActiveFingerCount
-                // tracks how many slots are currently down.
+                // No special handling for lifts. The path stays in the
+                // list with its terminal positions (FingerPathLive[i]
+                // false), and ActiveFingerCount tracks how many slots
+                // are currently down.
             }
             ctx.ActiveFingerCount = active;
+            if (active > ctx.PeakActiveFingerCount)
+                ctx.PeakActiveFingerCount = active;
         }
 
         /// <summary>Pie-menu semantics. Holds exactly one zone at a
@@ -285,8 +353,9 @@ namespace PadForge.Engine.Touchpad
             TouchpadGestureContext ctx, TouchpadInputState pad,
             TouchpadGestureSettings settings)
         {
-            if (ctx.FingerPaths.Count == 0) return;
-            var path = ctx.FingerPaths[0];
+            int liveIdx = NthLivePathIndex(ctx, 0);
+            if (liveIdx < 0) return;
+            var path = ctx.FingerPaths[liveIdx];
             if (path.Count < 2) return;
 
             int zones = settings.RadialZoneCount;
@@ -426,21 +495,42 @@ namespace PadForge.Engine.Touchpad
         /// <summary>Fires <c>Touchpad N LongPress</c> when a single
         /// finger has been down for at least the configured threshold
         /// and the path stayed within the max-motion bound.</summary>
+        private static string[] s_longPressKeys = new string[4];
+        private static string LongPressKey(int padIdx)
+        {
+            var keys = s_longPressKeys;
+            if ((uint)padIdx < (uint)keys.Length && keys[padIdx] != null)
+                return keys[padIdx];
+            string key = $"Touchpad {padIdx} LongPress";
+            if ((uint)padIdx >= (uint)keys.Length)
+            {
+                var grown = new string[padIdx + 1];
+                System.Array.Copy(keys, grown, keys.Length);
+                s_longPressKeys = keys = grown;
+            }
+            keys[padIdx] = key;
+            return key;
+        }
+
         private static void DetectLongPress(int padIdx,
             TouchpadGestureContext ctx, TouchpadInputState pad,
             TouchpadGestureSettings settings, long nowMs)
         {
-            if (ctx.FingerPaths.Count != 1) return;
-            string key = $"Touchpad {padIdx} LongPress";
-            // One-shot per gesture: skip if already fired this gesture
-            // (LastTapPosition is repurposed as a "fired LongPress this
-            // session" sentinel via the X-coord).
+            // Exactly one LIVE finger, and the hold is timed from ITS
+            // touchdown: after a contact bounce the fresh contact restarts
+            // the hold rather than inheriting the dead path's clock.
+            int liveIdx = NthLivePathIndex(ctx, 0);
+            if (liveIdx < 0 || NthLivePathIndex(ctx, 1) >= 0) return;
+            // Cached per pad: the interpolation allocated a string every
+            // ~1 kHz frame a single finger was touching.
+            string key = LongPressKey(padIdx);
+            // One-shot per gesture: skip if already fired this gesture.
             if (ctx.FiredGesturesThisFrame.Contains(key)) return;
 
-            long elapsed = nowMs - ctx.FingerStartTimestampsMs[0];
+            long elapsed = nowMs - ctx.FingerStartTimestampsMs[liveIdx];
             if (elapsed < settings.LongPressTimeWindowMs) return;
 
-            var path = ctx.FingerPaths[0];
+            var path = ctx.FingerPaths[liveIdx];
             if (path.Count < 2) return;
 
             // "Recent stillness" gate rather than "max distance from
@@ -487,15 +577,13 @@ namespace PadForge.Engine.Touchpad
             TouchpadGestureContext ctx, TouchpadInputState pad,
             TouchpadGestureSettings settings, long nowMs)
         {
-            int firstIdx = -1, secondIdx = -1;
-            // Pick the two oldest active paths (longest-held = primary,
-            // most-recent = secondary). Indices into ctx.FingerPaths.
-            for (int i = 0; i < ctx.FingerPaths.Count; i++)
-            {
-                if (ctx.FingerPaths[i].Count == 0) continue;
-                if (firstIdx < 0) firstIdx = i;
-                else if (secondIdx < 0) { secondIdx = i; break; }
-            }
+            // Pick the two oldest LIVE paths (longest-held = primary,
+            // most-recent = secondary). Selecting merely non-empty paths
+            // paired a lifted finger's frozen endpoint with the live one
+            // after an A+B, A-lifts, C-lands sequence, so pinch/rotate
+            // baselines tracked a dead contact (round 33).
+            int firstIdx = NthLivePathIndex(ctx, 0);
+            int secondIdx = NthLivePathIndex(ctx, 1);
             if (firstIdx < 0 || secondIdx < 0) return;
 
             var p0 = ctx.FingerPaths[firstIdx][ctx.FingerPaths[firstIdx].Count - 1];
@@ -514,6 +602,8 @@ namespace PadForge.Engine.Touchpad
                 ctx.TwoFingerSessionActive = true;
                 ctx.TwoFingerInitialDistance = dist;
                 ctx.TwoFingerInitialAngle = ang;
+                ctx.TwoFingerLastAngle = ang;
+                ctx.TwoFingerAccumRotateRad = 0f;
                 return;
             }
 
@@ -538,10 +628,19 @@ namespace PadForge.Engine.Touchpad
 
             if (settings.EnableRotate)
             {
-                float angDelta = ang - ctx.TwoFingerInitialAngle;
-                // Wrap into -π..+π.
-                while (angDelta > MathF.PI) angDelta -= 2f * MathF.PI;
-                while (angDelta < -MathF.PI) angDelta += 2f * MathF.PI;
+                // Per-frame unwrap. Folding the TOTAL delta into -PI..+PI
+                // (the old scheme) made a continuous rotation past 180
+                // degrees wrap negative and fire the opposite direction
+                // on top of the already-fired one, with CurrentRotateAxis
+                // jumping discontinuously from +1 toward -1 (round 33).
+                // Per-frame steps at ~1 kHz are tiny, so wrapping the STEP
+                // and accumulating is exact and unbounded.
+                float step = ang - ctx.TwoFingerLastAngle;
+                while (step > MathF.PI) step -= 2f * MathF.PI;
+                while (step < -MathF.PI) step += 2f * MathF.PI;
+                ctx.TwoFingerLastAngle = ang;
+                ctx.TwoFingerAccumRotateRad += step;
+                float angDelta = ctx.TwoFingerAccumRotateRad;
                 ctx.CurrentRotateAxis = Math.Clamp(angDelta / MathF.PI, -1f, 1f);
 
                 float threshRad = settings.RotateThresholdDegrees * MathF.PI / 180f;
@@ -577,24 +676,35 @@ namespace PadForge.Engine.Touchpad
             if (ctx.FiredGesturesThisFrame.Contains($"Touchpad {padIdx} LongPress"))
                 return;
 
-            // Count fingers in this gesture by counting non-empty paths.
-            int fingerCount = 0;
-            for (int i = 0; i < ctx.FingerPaths.Count; i++)
-                if (ctx.FingerPaths[i].Count > 0) fingerCount++;
+            // Classify by PEAK SIMULTANEOUS contacts, not accumulated path
+            // count: a finger that bounces (lift + re-land, new contact id)
+            // opens a second path, and counting paths turned a two-finger
+            // swipe into a "three finger" gesture that no branch below
+            // handles (round 33). The representative paths are the FINAL
+            // contacts (selection from the end); with no bounce that is
+            // exactly the old front-to-back selection.
+            int fingerCount = ctx.PeakActiveFingerCount;
+            if (fingerCount == 0)
+                for (int i = 0; i < ctx.FingerPaths.Count; i++)
+                    if (ctx.FingerPaths[i].Count > 0) { fingerCount = 1; break; }
 
             if (fingerCount == 0) return;
 
             bool inBoxAllowed = InBoxAllowed(settings);
 
+            var repBuf = new int[Math.Max(1, fingerCount)];
+
             // Single-finger end-of-gesture: swipe vs tap.
             if (fingerCount == 1)
             {
-                var path = FirstNonEmptyPath(ctx);
-                if (path == null || path.Count < 1) return;
+                if (SelectRepresentativePaths(ctx, 1, repBuf) < 1) return;
+                int pIdx = repBuf[0];
+                var path = ctx.FingerPaths[pIdx];
+                if (path.Count < 1) return;
                 Vector2 start = path[0];
                 Vector2 end = path[path.Count - 1];
                 float dist = (end - start).Length();
-                long startTs = ctx.FingerStartTimestampsMs[0];
+                long startTs = ctx.FingerStartTimestampsMs[pIdx];
                 long elapsed = nowMs - startTs;
 
                 // Tap branch: short, no significant motion.
@@ -607,7 +717,6 @@ namespace PadForge.Engine.Touchpad
                     if (gap > settings.MultiTapGapMs) ctx.RecentTapCount = 0;
                     ctx.RecentTapCount++;
                     ctx.LastTapEndTimestampMs = nowMs;
-                    ctx.LastTapPosition = end;
                     string tapName = ctx.RecentTapCount switch
                     {
                         1 => "Tap",
@@ -642,8 +751,9 @@ namespace PadForge.Engine.Touchpad
             {
                 if (inBoxAllowed && settings.EnableTwoFingerSwipes)
                 {
-                    var firstPath = FirstNonEmptyPath(ctx);
-                    var secondPath = NthNonEmptyPath(ctx, 1);
+                    int got = SelectRepresentativePaths(ctx, 2, repBuf);
+                    var firstPath = got >= 1 ? ctx.FingerPaths[repBuf[0]] : null;
+                    var secondPath = got >= 2 ? ctx.FingerPaths[repBuf[1]] : null;
                     if (firstPath != null && secondPath != null
                         && firstPath.Count > 0 && secondPath.Count > 0)
                     {
@@ -664,9 +774,10 @@ namespace PadForge.Engine.Touchpad
                 if (inBoxAllowed && settings.EnableTaps)
                 {
                     // 2-finger tap: both paths short + small motion.
-                    var firstPath = FirstNonEmptyPath(ctx);
-                    var secondPath = NthNonEmptyPath(ctx, 1);
-                    long startTs = ctx.FingerStartTimestampsMs[0];
+                    int got = SelectRepresentativePaths(ctx, 2, repBuf);
+                    var firstPath = got >= 1 ? ctx.FingerPaths[repBuf[0]] : null;
+                    var secondPath = got >= 2 ? ctx.FingerPaths[repBuf[1]] : null;
+                    long startTs = got >= 1 ? ctx.FingerStartTimestampsMs[repBuf[0]] : nowMs;
                     long elapsed = nowMs - startTs;
                     if (elapsed <= settings.TapTimeWindowMs
                         && firstPath != null && secondPath != null
@@ -719,9 +830,17 @@ namespace PadForge.Engine.Touchpad
                 int contributing = 0;
                 long startTs = ctx.FingerStartTimestampsMs.Count > 0 ? ctx.FingerStartTimestampsMs[0] : nowMs;
                 long elapsed = nowMs - startTs;
-                for (int i = 0; i < ctx.FingerPaths.Count; i++)
+                // Iterate the REPRESENTATIVE paths, the way the one- and
+                // two-finger branches and the shape matcher all do. Walking
+                // ctx.FingerPaths directly took in paths the selection exists
+                // to exclude, so a lifted finger's stale delta still fed
+                // sumDelta and the allShort tap test: a three-finger swipe
+                // could be pulled off-axis, or classified as a tap, by a
+                // finger that was no longer down.
+                int repCount = SelectRepresentativePaths(ctx, fingerCount, repBuf);
+                for (int r = 0; r < repCount; r++)
                 {
-                    var p = ctx.FingerPaths[i];
+                    var p = ctx.FingerPaths[repBuf[r]];
                     if (p == null || p.Count == 0) continue;
                     Vector2 d = p[p.Count - 1] - p[0];
                     sumDelta += d;
@@ -745,14 +864,23 @@ namespace PadForge.Engine.Touchpad
                 }
                 if (contributing == 0) return;
 
-                if (parallel && firstNorm != Vector2.Zero
-                    && settings.EnableTwoFingerSwipes)
+                // The finger-count toggle is the WHOLE opt-in for this family.
+                // These two arms used to also require EnableTwoFingerSwipes and
+                // EnableTaps, which are the one- and two-finger families'
+                // switches, so "Three-Finger Gestures" on its own enabled
+                // nothing and the picker (which mirrors these gates honestly)
+                // listed nothing. A user who turns on Three-Finger Gestures has
+                // opted in to three-finger gestures; making that conditional on
+                // two unrelated-sounding switches, with nothing on screen
+                // saying so, is the defect. Turning the family off still
+                // suppresses both arms, via the `gate` check above.
+                if (parallel && firstNorm != Vector2.Zero)
                 {
                     string dir = ClassifyDirection(sumDelta / contributing, settings.EnableEightWaySwipes);
                     if (dir != null)
                         ctx.FiredGesturesThisFrame.Add($"Touchpad {padIdx} {countWord}Swipe{dir}");
                 }
-                if (allShort && elapsed <= settings.TapTimeWindowMs && settings.EnableTaps)
+                if (allShort && elapsed <= settings.TapTimeWindowMs)
                 {
                     ctx.FiredGesturesThisFrame.Add($"Touchpad {padIdx} {countWord}Tap");
                 }
@@ -824,17 +952,21 @@ namespace PadForge.Engine.Touchpad
             // Tier 1 (swipes / taps / longpress / radial) and Tier 2
             // (pinch / rotate / two-finger) are unaffected — they have
             // no in-box-vs-custom split.
+            // Every other Mode read in the app is case-insensitive
+            // (InBoxAllowed above, MappingDisplayResolver, the VM); a
+            // hand-edited PadForge.xml Mode="customonly" must not silently
+            // fall back to Both here (round 33).
             string mode = settings.Mode ?? "Both";
-            List<ShapeTemplate> filtered = null;
-            if (mode == "InBoxOnly" || mode == "CustomOnly")
+            bool wantInBoxOnly = string.Equals(mode, "InBoxOnly", StringComparison.OrdinalIgnoreCase);
+            bool wantCustomOnly = string.Equals(mode, "CustomOnly", StringComparison.OrdinalIgnoreCase);
+            if (wantInBoxOnly || wantCustomOnly)
             {
-                filtered = new List<ShapeTemplate>(templates.Count);
-                bool wantCustom = mode == "CustomOnly";
+                var filtered = new List<ShapeTemplate>(templates.Count);
                 for (int i = 0; i < templates.Count; i++)
                 {
                     var t = templates[i];
                     if (t == null) continue;
-                    if (t.IsCustom != wantCustom) continue;
+                    if (t.IsCustom != wantCustomOnly) continue;
                     filtered.Add(t);
                 }
                 templates = filtered;
@@ -844,14 +976,32 @@ namespace PadForge.Engine.Touchpad
             if (!settings.EnableShapeGestures && !HasCustomFingerCount(templates, fingerCount))
                 return;
 
-            // Collect this gesture's normalized finger paths.
-            var fingerPaths = new List<List<Vector2>>(fingerCount);
-            for (int i = 0; i < ctx.FingerPaths.Count; i++)
+            // With shape gestures OFF, only CUSTOM templates may match.
+            // The angular matcher below always had this gate per template;
+            // the point-cloud matcher received the unfiltered list, so an
+            // enabled custom gesture sharing the finger count let IN-BOX
+            // shapes (Circle etc.) fire with EnableShapeGestures off
+            // (round 33). Filter the cloud list to the same rule.
+            if (!settings.EnableShapeGestures)
             {
-                var p = ctx.FingerPaths[i];
-                if (p != null && p.Count > 0) fingerPaths.Add(p);
+                var customOnly = new List<ShapeTemplate>(templates.Count);
+                for (int i = 0; i < templates.Count; i++)
+                {
+                    var t = templates[i];
+                    if (t != null && t.IsCustom) customOnly.Add(t);
+                }
+                templates = customOnly;
+                if (templates.Count == 0) return;
             }
-            if (fingerPaths.Count != fingerCount) return;
+
+            // Collect this gesture's finger paths: the fingerCount contacts
+            // that were live LATEST, in touchdown order (see
+            // RunEndOfGestureRecognition's peak-count note).
+            var shapeBuf = new int[fingerCount];
+            if (SelectRepresentativePaths(ctx, fingerCount, shapeBuf) != fingerCount) return;
+            var fingerPaths = new List<List<Vector2>>(fingerCount);
+            for (int n = 0; n < fingerCount; n++)
+                fingerPaths.Add(ctx.FingerPaths[shapeBuf[n]]);
 
             string cloudMatchName = ShapeRecognizer.MatchByFingerCount(
                 fingerPaths, templates, fingerCount,
@@ -895,7 +1045,7 @@ namespace PadForge.Engine.Touchpad
                         IsDirectionAgnostic = t.AngularIsDirectionAgnostic,
                     });
                 }
-                var path = FirstNonEmptyPath(ctx);
+                var path = fingerPaths.Count > 0 ? fingerPaths[0] : null;
                 if (path != null && angTemplates.Count > 0)
                 {
                     (angName, angScore) = AngularMarginRecognizer.Match(path, angTemplates);
@@ -916,11 +1066,61 @@ namespace PadForge.Engine.Touchpad
             return false;
         }
 
-        private static List<Vector2> FirstNonEmptyPath(TouchpadGestureContext ctx)
+        /// <summary>Index of the Nth (0-based) path whose contact is still
+        /// DOWN this tick, or -1. The mid-gesture detectors and the
+        /// joystick output select by liveness so a lifted finger's frozen
+        /// tail never drives them while a live finger is ignored
+        /// (round 33: radial zones, the two-finger pair, and both
+        /// joystick APIs all had exactly that bug).</summary>
+        private static int NthLivePathIndex(TouchpadGestureContext ctx, int n)
         {
+            int seen = 0;
+            for (int i = 0; i < ctx.FingerPaths.Count && i < ctx.FingerPathLive.Count; i++)
+            {
+                if (!ctx.FingerPathLive[i] || ctx.FingerPaths[i].Count == 0) continue;
+                if (seen == n) return i;
+                seen++;
+            }
+            return -1;
+        }
+
+        /// <summary>Fills <paramref name="dst"/> with the indices of the
+        /// <paramref name="n"/> non-empty paths whose contacts were live
+        /// LATEST (FingerPathLastLiveMs), ordered oldest-touchdown first.
+        /// End-of-gesture classification pairs this with
+        /// PeakActiveFingerCount: after a contact bounce the fragment
+        /// sits later in LIST order than the other finger's path, so
+        /// positional selection picks the dead fragment. Recency
+        /// selection picks the contacts that actually finished the
+        /// gesture. With no bounce this selects exactly the paths
+        /// front-to-back selection did. Returns the count filled.</summary>
+        private static int SelectRepresentativePaths(TouchpadGestureContext ctx, int n, int[] dst)
+        {
+            int count = 0;
             for (int i = 0; i < ctx.FingerPaths.Count; i++)
-                if (ctx.FingerPaths[i].Count > 0) return ctx.FingerPaths[i];
-            return null;
+            {
+                if (ctx.FingerPaths[i].Count == 0) continue;
+                long live = i < ctx.FingerPathLastLiveMs.Count ? ctx.FingerPathLastLiveMs[i] : 0;
+                // Insertion by descending last-live; capacity n.
+                int at = count < n ? count : -1;
+                for (int j = 0; j < count; j++)
+                {
+                    long other = ctx.FingerPathLastLiveMs[dst[j]];
+                    if (live > other) { at = j; break; }
+                }
+                if (at < 0) continue;
+                int limit = Math.Min(count + 1, n);
+                for (int j = limit - 1; j > at; j--) dst[j] = dst[j - 1];
+                dst[at] = i;
+                if (count < n) count++;
+            }
+            // Present in touchdown order (primary = oldest), the order the
+            // pre-fix front-to-back selection produced for the no-bounce case.
+            for (int a = 0; a < count; a++)
+                for (int b = a + 1; b < count; b++)
+                    if (ctx.FingerStartTimestampsMs[dst[b]] < ctx.FingerStartTimestampsMs[dst[a]])
+                        (dst[a], dst[b]) = (dst[b], dst[a]);
+            return count;
         }
 
         // ─── Joystick / D-pad output ──────────────────────────────────
@@ -948,8 +1148,13 @@ namespace PadForge.Engine.Touchpad
         {
             if (ctx == null || settings == null || !settings.EnableJoystickOutput)
                 return (0f, 0f);
-            var path = FirstNonEmptyPath(ctx);
-            if (path == null || path.Count < 1) return (0f, 0f);
+            // LIVE path only: reading the first non-empty path froze the
+            // stick at a lifted finger's last deflection while another
+            // finger was still down (round 33).
+            int liveIdx = NthLivePathIndex(ctx, 0);
+            if (liveIdx < 0) return (0f, 0f);
+            var path = ctx.FingerPaths[liveIdx];
+            if (path.Count < 1) return (0f, 0f);
             Vector2 anchor = path[0];
             Vector2 cur = path[path.Count - 1];
             float dx = cur.X - anchor.X;
@@ -991,8 +1196,11 @@ namespace PadForge.Engine.Touchpad
             string mode = settings.JoystickDPadMode ?? "FourWay";
             if (string.Equals(mode, "Off", StringComparison.OrdinalIgnoreCase))
                 return (false, false, false, false);
-            var path = FirstNonEmptyPath(ctx);
-            if (path == null || path.Count < 1) return (false, false, false, false);
+            // LIVE path only, same rule as ComputeJoystickAxis (round 33).
+            int liveIdx = NthLivePathIndex(ctx, 0);
+            if (liveIdx < 0) return (false, false, false, false);
+            var path = ctx.FingerPaths[liveIdx];
+            if (path.Count < 1) return (false, false, false, false);
             Vector2 anchor = path[0];
             Vector2 cur = path[path.Count - 1];
             float dx = cur.X - anchor.X;
@@ -1041,18 +1249,5 @@ namespace PadForge.Engine.Touchpad
             }
         }
 
-        private static List<Vector2> NthNonEmptyPath(TouchpadGestureContext ctx, int n)
-        {
-            int seen = 0;
-            for (int i = 0; i < ctx.FingerPaths.Count; i++)
-            {
-                if (ctx.FingerPaths[i].Count > 0)
-                {
-                    if (seen == n) return ctx.FingerPaths[i];
-                    seen++;
-                }
-            }
-            return null;
-        }
     }
 }

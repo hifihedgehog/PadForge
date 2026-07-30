@@ -1,0 +1,10 @@
+<UserControl x:Class="PadForge.Views.WorkshopControllerPreview"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Viewbox so the pad scales to whatever width the dossier gives it
+         while the layout keeps working in the art's own pixel space, which
+         is what ControllerOverlayLayout's coordinates are expressed in. -->
+    <Viewbox Stretch="Uniform" StretchDirection="DownOnly" Margin="0,4,0,8">
+        <Canvas x:Name="ModelCanvas" Background="Transparent"/>
+    </Viewbox>
+</UserControl>

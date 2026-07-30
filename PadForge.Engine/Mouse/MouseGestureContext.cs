@@ -6,13 +6,26 @@ namespace PadForge.Engine.Mouse
     /// Per-(slot, device) mouse-gesture recognizer state (issue #200).
     /// Each of the five mouse buttons runs its own independent gesture
     /// session, so "hold X1 and flick left" and "hold X2 and flick left"
-    /// are distinct one-shot inputs. Owned by the polling thread: created
-    /// lazily by the InputManager walk, mutated only by
-    /// <see cref="MouseGestureRecognizer.Update"/>.
+    /// are distinct one-shot inputs. Session index 5 is the Custom
+    /// activation (discussion #216): a recorded cross-device input held
+    /// past the button threshold arms it exactly like a mouse button.
+    /// Owned by the polling thread: created lazily by the InputManager
+    /// walk, mutated only by <see cref="MouseGestureRecognizer.Update"/>.
     /// </summary>
     public sealed class MouseGestureContext
     {
-        public const int ButtonCount = 5;
+        /// <summary>Physical mouse buttons (Left/Middle/Right/X1/X2).
+        /// Only these indices may be armed from the mouse's own button
+        /// state; a sixth-plus physical mouse button must never bleed
+        /// into the Custom session below.</summary>
+        public const int MouseButtonCount = 5;
+
+        /// <summary>The Custom activation's session index (discussion
+        /// #216). Armed exclusively from the settings' recorded
+        /// cross-device descriptor, never from the mouse itself.</summary>
+        public const int CustomButtonIndex = 5;
+
+        public const int ButtonCount = 6;
 
         /// <summary>Per-button held state last tick, for edge detection.</summary>
         public readonly bool[] ButtonWasDown = new bool[ButtonCount];

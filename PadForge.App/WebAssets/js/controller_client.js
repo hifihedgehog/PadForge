@@ -199,9 +199,6 @@
     }
 
     // ── Touch zones ──
-    // Track which touch identifier is on which zone to prevent cross-finger bugs.
-    var activeTouches = {}; // touch.identifier → { zone, cleanup }
-
     // Small meta-buttons that should always be on top of d-pad/trigger zones.
     var smallButtons = ["ButtonBack", "ButtonStart", "ButtonGuide", "TouchpadClick"];
 
@@ -475,7 +472,20 @@
         function updateDpad(e) {
             e.preventDefault();
             var rect = zone.getBoundingClientRect();
-            var touch = e.touches ? e.touches[0] : e;
+            // changedTouches, NOT touches. e.touches lists every contact point
+            // on the SCREEN, so with a face button already held that finger is
+            // touches[0] and the d-pad computed its direction from a position
+            // outside its own rect, emitting a direction the user never
+            // pressed. Holding a button while working the d-pad is ordinary
+            // gamepad use, so this fired constantly.
+            //
+            // Touch events dispatch to the element the touch STARTED on, so on
+            // this zone changedTouches only ever holds d-pad touches. The
+            // touchpad zone above already tracks identifiers for the same
+            // reason. Mouse events carry neither list and fall through to e.
+            var touch = (e.changedTouches && e.changedTouches.length) ? e.changedTouches[0]
+                      : (e.touches && e.touches.length) ? e.touches[0]
+                      : e;
             if (!touch) return;
             var dx = (touch.clientX - rect.left) / rect.width - 0.5;
             var dy = (touch.clientY - rect.top) / rect.height - 0.5;

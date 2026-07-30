@@ -128,6 +128,108 @@ namespace PadForge.Common.Input
         /// Null entries are slots without an active VC.</summary>
         public IVirtualController[] GetVirtualControllers() => _virtualControllers;
 
+        /// <summary>The slot's inbound game-feedback pack (issue #236),
+        /// resolved through the CURRENT <c>_virtualControllers</c> position
+        /// so a reorder's array re-point retargets the read atomically
+        /// with the VC move (the pack is controller-local; see
+        /// HMaestroVirtualController.InboundRumblePack). 0 for empty /
+        /// non-HM / freshly-created slots.</summary>
+        public long GetInboundRumblePack(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return 0L;
+            return (_virtualControllers[padIndex] as HMaestroVirtualController)
+                ?.InboundRumblePack ?? 0L;
+        }
+
+        // ── Button SOCD (#240) ──
+        // Per-slot cleaners for the final combined output, configured
+        // lazily from the slot's MappingSet each tick (Configure is a
+        // no-op on identical strings, the SocdCleaner contract, so the
+        // per-tick refresh costs two string compares).
+        private readonly SlotButtonSocd[] _slotButtonSocd = new SlotButtonSocd[MaxPads];
+
+        /// <summary>Returns the slot's configured button-SOCD cleaner, or
+        /// null when the slot authors no active SOCD. Poll thread only.</summary>
+        private SlotButtonSocd ResolveSlotSocd(int padIndex, bool extendedIndices)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || padIndex < 0 || padIndex >= sets.Length) return null;
+            var ms = sets[padIndex];
+            if (ms == null) return null;
+            string mode = ms.SocdMode;
+            string pairs = ms.SocdPairs;
+            if (string.IsNullOrEmpty(mode) || string.IsNullOrEmpty(pairs)) return null;
+            var socd = _slotButtonSocd[padIndex] ??= new SlotButtonSocd();
+            socd.Configure(mode, pairs, extendedIndices);
+            return socd.IsActive ? socd : null;
+        }
+
+        /// <summary>
+        /// The dedicated slot-scoped feedback lane (issue #236): once per
+        /// poll tick, per slot, evaluate the four fixed voice bindings
+        /// (inbound pack masked by per-voice enables) and publish the
+        /// result to RumbleAudioService. Runs INSIDE the non-idle poll
+        /// loop only, so idle entry / engine stop must (and do) publish
+        /// their own explicit silence edges. Deliberately NOT part of the
+        /// per-device mapping pipeline: rumble is slot-global, points the
+        /// opposite direction (game → VC, not device → VC), and must keep
+        /// publishing zeros for unconfigured slots so a just-disabled
+        /// config self-heals within one tick. Layer-independent in v1 (a
+        /// shift layer must not silently kill shaker routing). Mapping
+        /// math, four voice masks, one volatile store per slot; no
+        /// allocations, no syscalls.
+        /// </summary>
+        private void UpdateRumbleAudioLane()
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null) return;
+            int n = System.Math.Min(sets.Length, MaxPads);
+            for (int slot = 0; slot < n; slot++)
+            {
+                int gen = RumbleAudioService.GetGeneration(slot);
+                long pack = 0L;
+                var cfg = sets[slot]?.RumbleAudio;
+                if (cfg != null && cfg.Enabled)
+                {
+                    pack = GetInboundRumblePack(slot);
+                    // The preview's test rumble buttons write
+                    // VibrationStates directly and never cross the VC's
+                    // inbound callback, so the pack alone leaves the
+                    // shakers silent during a test while the physical pad
+                    // shakes. Per-voice max of the slot's live vibration
+                    // state closes that: test rumble becomes audible, and
+                    // game rumble (which fills both sides with the same
+                    // values) merges to itself.
+                    var vibe = VibrationStates[slot];
+                    if (vibe != null)
+                    {
+                        pack = Engine.Common.LfeOutputState.MaxMerge(pack,
+                            vibe.LeftMotorSpeed, vibe.RightMotorSpeed,
+                            vibe.LeftTriggerMotorSpeed, vibe.RightTriggerMotorSpeed);
+                    }
+                    if (pack != 0)
+                    {
+                        // Per-voice enable masks (the four fixed unipolar
+                        // evals). Gain and carrier are render-side DSP.
+                        var voices = cfg.Voices;
+                        if (voices != null && voices.Count > 0)
+                        {
+                            for (int v = 0; v < voices.Count; v++)
+                            {
+                                var voice = voices[v];
+                                if (voice == null || voice.Enabled) continue;
+                                int idx = System.Array.IndexOf(
+                                    Engine.Data.RumbleAudioConfig.SourceOrder, voice.Source);
+                                if (idx >= 0)
+                                    pack &= ~(0xFFFFL << (idx * 16));
+                            }
+                        }
+                    }
+                }
+                RumbleAudioService.PublishIfCurrent(slot, gen, pack);
+            }
+        }
+
         /// <summary>
         /// Configured virtual controller category per slot (Xbox / PlayStation /
         /// Extended / MIDI / KBM). The UI writes this via InputService at 30Hz;
@@ -159,7 +261,7 @@ namespace PadForge.Common.Input
         /// preset gamepad pipeline (Xbox / PlayStation category) that maps
         /// through the Gamepad struct.
         /// </summary>
-        internal bool[] SlotExtendedIsCustom { get; } = new bool[MaxPads];
+        internal bool[] SlotRawHidSurface { get; } = new bool[MaxPads];
 
         /// <summary>
         /// Per-slot flag: true if the user has toggled the Customize master
@@ -434,16 +536,44 @@ namespace PadForge.Common.Input
         private readonly UserEffectsDispatcher[] _nonHmDispatchers
             = new UserEffectsDispatcher[MaxPads];
 
-        /// <summary>Fires <see cref="UserEffectsDispatcher.ApplyOnce"/>
-        /// on every live non-HM dispatcher. Called from InputService's
-        /// DevicesUpdated handler so a Sony pad reconnecting on a KBM /
-        /// MIDI slot gets its lightbar / triggers / mic LED re-pushed,
-        /// matching the HM-side <see cref="HMaestroVirtualController.
-        /// ReApplyUserEffects"/> behavior.</summary>
+        /// <summary>Non-HM mirror of
+        /// <see cref="HMaestroVirtualController.AttachDeviceConfig"/>.
+        /// Rebinds the slot's parallel dispatcher to
+        /// <paramref name="config"/> so it follows the slot's DeviceConfig
+        /// anchor when that anchor is REPLACED (device-selection switch,
+        /// profile apply). The dispatcher holds a direct PropertyChanged
+        /// subscription to the instance it was built with, so without this
+        /// it stays wired to the orphaned config and every later lighting /
+        /// trigger edit on a KBM / MIDI slot is silently dropped.
+        /// Never constructs: a null entry means the slot is HM-backed (the
+        /// HM VC owns that dispatcher) or has no VC at all, and building one
+        /// here would give an HM slot a second writer.</summary>
+        public void AttachNonHmDeviceConfig(int padIndex, DeviceSlotConfig config)
+        {
+            if (config == null) return;
+            if (padIndex < 0 || padIndex >= _nonHmDispatchers.Length) return;
+            _nonHmDispatchers[padIndex]?.Rebind(config);   // Rebind runs ApplyOnce internally
+        }
+
+        /// <summary>Re-binds each live non-HM dispatcher to its slot's
+        /// current config anchor and fires an apply pass. Called from
+        /// InputService's DevicesUpdated handler so a Sony pad reconnecting
+        /// on a KBM / MIDI slot gets its lightbar / triggers / mic LED
+        /// re-pushed, matching the HM-side AttachDeviceConfig +
+        /// <see cref="HMaestroVirtualController.ReApplyUserEffects"/> pair.
+        /// The rebind leg matters when the anchor was replaced while the
+        /// pad was away. An ApplyOnce alone would re-push from the stale
+        /// config.</summary>
         public void ReApplyNonHmUserEffects()
         {
             for (int i = 0; i < _nonHmDispatchers.Length; i++)
-                _nonHmDispatchers[i]?.ApplyOnce();
+            {
+                var d = _nonHmDispatchers[i];
+                if (d == null) continue;
+                var cfg = _deviceSlotConfigs[i];
+                if (cfg != null) d.Rebind(cfg);   // Rebind runs ApplyOnce internally
+                else d.ApplyOnce();
+            }
         }
 
         /// <summary>
@@ -453,6 +583,12 @@ namespace PadForge.Common.Input
         /// destroying/recreating controllers (which kills vibration feedback).
         /// </summary>
         private readonly int[] _slotInactiveCounter = new int[MaxPads];
+
+        /// <summary>Wall-clock stamp of each slot's grace start. The
+        /// inactivity timeout measures real elapsed milliseconds so a
+        /// polling-rate change mid-grace cannot rescale a pending teardown
+        /// (audit 2026-07-24).</summary>
+        private readonly long[] _slotInactiveSinceMs = new long[MaxPads];
 
         // The former non-HM short grace (SlotDestroyGraceCycles, 10 s) is
         // retired: every VC type now rides the same HmInactivityTimeoutSeconds
@@ -472,6 +608,34 @@ namespace PadForge.Common.Input
         // (WaitForHidChild 10s, WaitForDeviceStarted 5s, WaitForXInputSlotClaim
         // 15s) and a failure is a real failure, not a timing flake.
         private readonly bool[] _createFailed = new bool[MaxPads];
+
+        /// <summary>What configuration the createFailed latch was set FOR:
+        /// the slot's type and profile at failure time. A failed slot has a
+        /// null VC, so the vc-based type/profile change branches in Pass 1
+        /// never ran for it and the latch could survive a reconfigure
+        /// forever (owner repro 2026-07-23: MIDI-unavailable failure left
+        /// the slot yellow through a switch back to Xbox). Pass 1 clears
+        /// the latch whenever the current configuration no longer matches
+        /// this key.</summary>
+        private readonly VirtualControllerType[] _createFailedType = new VirtualControllerType[MaxPads];
+        private readonly string[] _createFailedProfile = new string[MaxPads];
+
+        private void LatchCreateFailed(int padIndex)
+            => LatchCreateFailed(padIndex, SlotControllerTypes[padIndex], SlotProfileIds[padIndex]);
+
+        /// <summary>The async overload records the configuration the create
+        /// was STARTED for, not the slot's current one: a retype during the
+        /// create window (the MIDI probe alone can run 10 s) would otherwise
+        /// stamp the failure onto the NEW type and permanently block it
+        /// (owner race, 2026-07-23).</summary>
+        private void LatchCreateFailed(int padIndex, VirtualControllerType failedType, string failedProfile)
+        {
+            _createFailedType[padIndex] = failedType;
+            _createFailedProfile[padIndex] = failedProfile;
+            _createFailed[padIndex] = true;
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"VCTRACE slot={padIndex} createFailed LATCH type={failedType} profile={failedProfile ?? "<null>"}");
+        }
 
         /// <summary>
         /// Per-slot async-dispose tracker. When a user-initiated swap/move
@@ -499,6 +663,45 @@ namespace PadForge.Common.Input
         /// that on our side keeps kernel-slot allocation predictable).
         /// </summary>
         private readonly System.Threading.Tasks.Task[] _pendingConnectTask = new System.Threading.Tasks.Task[MaxPads];
+        private long _disposeGateSinceTick;
+        private bool _disposeGateLogged;
+
+        // Connect-gate watchdog, the sibling of the dispose pair above. A
+        // single connect task that never completes holds anyConnectPending
+        // true forever and blocks the create of EVERY slot, not just its
+        // own. The dispose half has had a watchdog since it was written and
+        // this half never got one, so that freeze was invisible.
+        private long _connectGateSinceTick;
+        private bool _connectGateLogged;
+
+        // Visual-order wait bound. A single HM create runs 3-11 s, and a
+        // legitimate queue of several slots serializes those, so the window
+        // must clear a real queue comfortably. It only ever trips when ONE
+        // slot blocks continuously for the whole window, because a changing
+        // blocker resets the timer.
+        private const long OrderWaitMaxMs = 45_000;
+        private readonly int[] _orderWaitBlocker = new int[MaxPads];
+        private readonly long[] _orderWaitSinceTick = new long[MaxPads];
+
+        /// <summary>True when the visual-order wait has run its full window
+        /// against ONE unchanged blocker, so the waiting slot should create
+        /// out of order rather than stay dead. Split out from the poll loop
+        /// so the timing rule is testable without an InputManager: the
+        /// deadlock it guards was found on hardware and cannot be
+        /// reproduced on demand, which makes an unlockable fix
+        /// unacceptable. A zero tick means "not waiting yet" and never
+        /// expires.</summary>
+        internal static bool OrderWaitExpired(long waitSinceTick, long nowTick)
+            => waitSinceTick != 0 && nowTick - waitSinceTick >= OrderWaitMaxMs;
+
+        // Gate heartbeat. Writes the create-gate inputs on a cadence
+        // WHENEVER a slot wants a VC and has not got one, so a stuck gate
+        // is visible instead of silent. The 2026-07-26 investigation lost
+        // hours to exactly that ambiguity: the diagnostics channel went
+        // quiet and the quiet was read as "nothing is happening" when it
+        // meant "the thing that logs is not running". A heartbeat makes
+        // silence mean one thing only.
+        private long _vcGateHeartbeatTick;
 
         /// <summary>Per-slot latch: HM inactivity timeout already fired for
         /// this slot in the current offline window.  Prevents the polling
@@ -514,11 +717,17 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly bool[] _slotInitializing = new bool[MaxPads];
 
-        // Minimum wall-clock time the initializing flag must remain true after
-        // being set, so the UI overlay's "Initializing → Active" animation is
-        // visible even when HIDMaestro creates a controller synchronously in
-        // <10ms. Without this guard the flag flips in one poll cycle and the
-        // overlay never gets to render the initializing stage.
+        // Raises the initializing flag. NOTE: this used to be prefaced by a
+        // comment describing a minimum wall-clock hold, so the overlay's
+        // "Initializing → Active" animation would still be visible when
+        // HIDMaestro creates a controller synchronously in under 10 ms. No such
+        // hold is implemented here or at any of the four sites that clear the
+        // flag, and there is no timestamp anywhere to implement it from. The
+        // comment described an intention, and reading it as a guarantee would
+        // mean debugging a missed animation by looking everywhere except the
+        // place that is supposed to cause it. Left unimplemented rather than
+        // invented: adding a hold changes how long the overlay sits on screen,
+        // which is an owner-visible timing decision.
         private void BeginInitializing(int padIndex)
         {
             _slotInitializing[padIndex] = true;
@@ -547,6 +756,19 @@ namespace PadForge.Common.Input
         {
             if (padIndex < 0 || padIndex >= MaxPads) return false;
             return _slotInitializing[padIndex];
+        }
+
+        /// <summary>
+        /// True while the slot's latest virtual-controller create attempt
+        /// has failed for the currently configured type and profile (the
+        /// createFailed latch; Pass 1 clears it on any reconfigure). The
+        /// UI must present this as its own state: a failed slot with
+        /// online devices is neither forging nor awaiting devices.
+        /// </summary>
+        public bool IsVirtualControllerCreateFailed(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return false;
+            return _createFailed[padIndex];
         }
 
 
@@ -594,6 +816,20 @@ namespace PadForge.Common.Input
 
                 var vc = _virtualControllers[padIndex];
 
+                // A failed slot has no VC, so the vc-based change detection
+                // below cannot clear its latch. Clear it here the moment
+                // the slot is reconfigured away from the combination that
+                // failed (type or profile), so the new configuration gets
+                // its create attempt.
+                if (_createFailed[padIndex]
+                    && (_createFailedType[padIndex] != SlotControllerTypes[padIndex]
+                        || !string.Equals(_createFailedProfile[padIndex], SlotProfileIds[padIndex], StringComparison.Ordinal)))
+                {
+                    _createFailed[padIndex] = false;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"VCTRACE slot={padIndex} createFailed CLEAR (reconfigured to {SlotControllerTypes[padIndex]})");
+                }
+
                 // Detect controller type change — destroy old if type differs.
                 if (vc != null && vc.Type != SlotControllerTypes[padIndex])
                 {
@@ -605,7 +841,10 @@ namespace PadForge.Common.Input
                     // same poll cycle as Pass 1 sets it.
                     if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
                     else _slotInitializing[padIndex] = false;
-                    DestroyVirtualController(padIndex, asyncDispose: vc is HMaestroVirtualController);
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"VCTRACE slot={padIndex} type-change destroy {vc.Type} -> {SlotControllerTypes[padIndex]}");
+                    DestroyVirtualController(padIndex,
+                        asyncDispose: vc is HMaestroVirtualController or MidiVirtualController);
                     _virtualControllers[padIndex] = null;
                     _createFailed[padIndex] = false; // Type change — allow retry
                     // The old profile slug belongs to the old category and is
@@ -678,27 +917,91 @@ namespace PadForge.Common.Input
                 // (slot still created + enabled, but physical device offline).
                 if (vc != null && (!SettingsManager.SlotCreated[padIndex] || !SettingsManager.SlotEnabled[padIndex]))
                 {
-                    DestroyVirtualController(padIndex, asyncDispose: vc is HMaestroVirtualController);
+                    bool wasHmHere = vc is HMaestroVirtualController;
+                    DestroyVirtualController(padIndex,
+                        asyncDispose: wasHmHere || vc is MidiVirtualController);
                     _virtualControllers[padIndex] = null;
                     _slotInactiveCounter[padIndex] = 0;
                     _slotInitializing[padIndex] = false;
-                    _createFailed[padIndex] = false; // Slot toggle — allow retry
+                    _createFailed[padIndex] = false; // Slot toggle. Allow retry.
                     VibrationStates[padIndex].LeftMotorSpeed = 0;
                     VibrationStates[padIndex].RightMotorSpeed = 0;
+                    // Round 33, C2: this branch consumed the SIDEBAR-DISABLE
+                    // reason before the documented cascade branch below could
+                    // see it, so surviving HM VCs at higher positions in the
+                    // same subgroup never compacted and an XInput game bound
+                    // to player 1 saw no controller. Fire the non-active
+                    // cascade here. Deletes are safe to fire too: the UI
+                    // handler no-ops when SlotCreated is already false, and
+                    // the delete path runs its own cascade.
+                    if (wasHmHere)
+                        HmVcWentNonActive?.Invoke(this, padIndex);
                     continue;
+                }
+
+                // Slot deleted or disabled with NO live VC: the destroy
+                // path above never runs (vc is null), but the
+                // Initializing/create-failed latches may still be armed
+                // (failed create, or the slot went away mid-create).
+                // Left set, the flag paints an eternal flashing
+                // "Initializing" on the dead card, and CreateSlot's
+                // pad-index reuse hands both latches to the next slot
+                // born at this index.
+                if (vc == null
+                    && (!SettingsManager.SlotCreated[padIndex]
+                        || !SettingsManager.SlotEnabled[padIndex]))
+                {
+                    _slotInitializing[padIndex] = false;
+                    _createFailed[padIndex] = false;
                 }
 
                 bool slotActive = IsSlotActive(padIndex);
 
                 if (slotActive)
                 {
+                    if (_slotInactiveCounter[padIndex] > 0)
+                    {
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"VCTRACE slot={padIndex} devices ONLINE (grace ends after {_slotInactiveCounter[padIndex]} cycles)");
+                        // A genuine device arrival is a meaningful state
+                        // change per the latch's own contract (audit
+                        // 2026-07-25, C1): a create that failed while the
+                        // devices were absent deserves a retry now that
+                        // they are back. A genuinely broken config retries
+                        // once per offline->online edge, which is the old
+                        // cooldown's cadence, not a hammer loop.
+                        if (_createFailed[padIndex])
+                        {
+                            _createFailed[padIndex] = false;
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"VCTRACE slot={padIndex} createFailed CLEAR (devices returned)");
+                        }
+                    }
                     _slotInactiveCounter[padIndex] = 0;
-                    _hmInactivityFired[padIndex] = false;
+                    // Volatile: this clear is the STALENESS HANDSHAKE read by
+                    // the UI-thread inactivity teardown (see
+                    // InactivityFireStillValid). A device arriving between
+                    // the poll-thread fire and the marshaled destroy must
+                    // veto the destroy, not lose the race to a torn read.
+                    System.Threading.Volatile.Write(ref _hmInactivityFired[padIndex], false);
 
                     if (vc == null)
                     {
-                        anyNeedsCreate = true;
-                        if (!_slotInitializing[padIndex]) BeginInitializing(padIndex);
+                        if (_createFailed[padIndex])
+                        {
+                            // Creation is latched off after a failed HM
+                            // create; Pass 2 will not retry until a
+                            // user-driven change clears the latch.
+                            // Re-arming Initializing here painted an
+                            // eternal flashing "Initializing" for a VC
+                            // that will never arrive. Show rest instead.
+                            _slotInitializing[padIndex] = false;
+                        }
+                        else
+                        {
+                            anyNeedsCreate = true;
+                            if (!_slotInitializing[padIndex]) BeginInitializing(padIndex);
+                        }
                     }
                 }
                 else if (vc != null
@@ -737,15 +1040,48 @@ namespace PadForge.Common.Input
                 {
                     // Device(s) mapped but offline — transient disconnect.
                     // Grace period preserves rumble feedback through USB hiccups.
-                    _slotInactiveCounter[padIndex]++;
+                    if (_slotInactiveCounter[padIndex] == 0)
+                    {
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"VCTRACE slot={padIndex} devices OFFLINE (grace begins, vc={(vc == null ? "null" : vc.GetType().Name)})");
+                        // Stamp the wall clock at the grace's first tick
+                        // (audit 2026-07-24). The counter below stays for
+                        // the trace and for the "grace ended" report, but
+                        // the TIMEOUT is measured in milliseconds: the
+                        // thresholds used to convert seconds into cycles
+                        // with the LIVE PollingIntervalMs, so changing the
+                        // polling rate mid-grace rescaled a pending
+                        // timeout (60 s at 1 ms became ~4 s after a switch
+                        // to 16 ms, and the reverse stretched it).
+                        _slotInactiveSinceMs[padIndex] = Environment.TickCount64;
+                    }
+                    // Saturate rather than wrap. Only the zero/non-zero
+                    // distinction is read (Pass 2's eligibility test), and an
+                    // unbounded increment passes back through 0 after 2^32
+                    // ticks, roughly 49.7 days at 1 kHz on a tool people
+                    // leave running. Elapsed time comes from
+                    // _slotInactiveSinceMs, so clamping loses nothing.
+                    if (_slotInactiveCounter[padIndex] < int.MaxValue)
+                        _slotInactiveCounter[padIndex]++;
+                    long inactiveMs = Environment.TickCount64 - _slotInactiveSinceMs[padIndex];
+
+                    // No create can proceed while every mapped device is
+                    // offline (Pass 2 skips inactive slots), so a stale
+                    // Initializing latch from a type-change destroy would
+                    // paint "Forging" forever over what is honestly
+                    // "Awaiting devices" (owner repro: the three-stage
+                    // type switchover with the pad idle-disconnected
+                    // mid-fiddle). Clear it; the active branch re-arms it
+                    // the moment a device returns and a create is due.
+                    if (vc == null && _slotInitializing[padIndex])
+                        _slotInitializing[padIndex] = false;
 
                     bool isHMaestro = vc is HMaestroVirtualController;
 
                     if (!isHMaestro
                         && vc != null
                         && HmInactivityTimeoutSeconds > 0
-                        && _slotInactiveCounter[padIndex]
-                            >= (HmInactivityTimeoutSeconds * 1000) / System.Math.Max(1, PollingIntervalMs))
+                        && inactiveMs >= HmInactivityTimeoutSeconds * 1000L)
                     {
                         // Non-HM (MIDI, KeyboardMouse) teardown is cheap and
                         // has no kernel-slot ordering concern, but the
@@ -787,11 +1123,9 @@ namespace PadForge.Common.Input
                         // text "VC torn down due to inactivity") still get
                         // it, while the unified non-active cascade entry
                         // point also runs.
-                        int hmThresholdCycles =
-                            (HmInactivityTimeoutSeconds * 1000) / System.Math.Max(1, PollingIntervalMs);
-                        if (_slotInactiveCounter[padIndex] >= hmThresholdCycles)
+                        if (inactiveMs >= HmInactivityTimeoutSeconds * 1000L)
                         {
-                            _hmInactivityFired[padIndex] = true;
+                            System.Threading.Volatile.Write(ref _hmInactivityFired[padIndex], true);
                             VibrationStates[padIndex].LeftMotorSpeed = 0;
                             VibrationStates[padIndex].RightMotorSpeed = 0;
                             HmVcInactivityDestroyed?.Invoke(this, padIndex);
@@ -841,6 +1175,19 @@ namespace PadForge.Common.Input
                     _pendingDisposeTask[i] = null;
                 }
             }
+            // Visibility watchdog: a dispose that outlives every documented
+            // bound is a defect worth naming, not a silent creation freeze.
+            if (anyDisposePending)
+            {
+                if (_disposeGateSinceTick == 0) _disposeGateSinceTick = Environment.TickCount64;
+                else if (!_disposeGateLogged && Environment.TickCount64 - _disposeGateSinceTick > 60_000)
+                {
+                    _disposeGateLogged = true;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        "VCTRACE dispose gate held Pass 2 for 60+ s; a teardown task is stuck past its bound");
+                }
+            }
+            else { _disposeGateSinceTick = 0; _disposeGateLogged = false; }
             // Gate on async-connect tasks too: Pass 2 hands HM creates to
             // the thread pool so the polling thread stays free to feed
             // every other live VC during the ~3-11s HIDMaestro driver
@@ -859,6 +1206,43 @@ namespace PadForge.Common.Input
                     _pendingConnectTask[i] = null;
                 }
             }
+            // Connect-gate watchdog: mirror of the dispose watchdog above.
+            if (anyConnectPending)
+            {
+                if (_connectGateSinceTick == 0) _connectGateSinceTick = Environment.TickCount64;
+                else if (!_connectGateLogged && Environment.TickCount64 - _connectGateSinceTick > 60_000)
+                {
+                    _connectGateLogged = true;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        "VCTRACE connect gate held Pass 2 for 60+ s; a create task is stuck and is blocking EVERY slot");
+                }
+            }
+            else { _connectGateSinceTick = 0; _connectGateLogged = false; }
+
+            // Gate heartbeat: while any slot wants a VC and lacks one, write
+            // the gate inputs every 5 s. This answers "why did no create
+            // fire" directly, instead of leaving an absence of KICK lines to
+            // be interpreted.
+            if (anyNeedsCreate && Environment.TickCount64 - _vcGateHeartbeatTick > 5_000)
+            {
+                _vcGateHeartbeatTick = Environment.TickCount64;
+                var hb = new System.Text.StringBuilder(160);
+                hb.Append("VCGATE needCreate=1")
+                  .Append(" disposePend=").Append(anyDisposePending ? '1' : '0')
+                  .Append(" connectPend=").Append(anyConnectPending ? '1' : '0');
+                for (int i = 0; i < MaxPads; i++)
+                {
+                    if (!SettingsManager.SlotCreated[i] || !SettingsManager.SlotEnabled[i]) continue;
+                    if (_virtualControllers[i] != null) continue;
+                    hb.Append(" | s").Append(i)
+                      .Append(" type=").Append(SlotControllerTypes[i])
+                      .Append(" inactCtr=").Append(_slotInactiveCounter[i])
+                      .Append(" active=").Append(IsSlotActive(i) ? '1' : '0')
+                      .Append(" failed=").Append(_createFailed[i] ? '1' : '0');
+                }
+                PadForge.Engine.SdlDiagLog.WriteLine(hb.ToString());
+            }
+
             if (anyNeedsCreate && !anyDisposePending && !anyConnectPending)
             {
                 for (int padIndex = 0; padIndex < MaxPads; padIndex++)
@@ -866,6 +1250,24 @@ namespace PadForge.Common.Input
                     if (_virtualControllers[padIndex] == null &&
                         _slotInactiveCounter[padIndex] == 0)
                     {
+                        // Never build a VC for a slot the user deleted or
+                        // switched off. Pass 1's disable branch destroys the
+                        // VC, zeroes the inactive counter, clears the failure
+                        // latch and continues, which left the slot matching
+                        // the two conditions above in the SAME tick. For a
+                        // KeyboardMouse slot that produced a livelock: Pass 2
+                        // walks ascending, so a disabled low slot was rebuilt
+                        // and broke the loop before the slot actually waiting
+                        // on a create ever got one, and Pass 1 tore it down
+                        // again next tick, forever. The type gate below only
+                        // covers the HIDMaestro types, so nothing else caught
+                        // it. It also closes the counter-wrap window, where a
+                        // disabled MIDI or KBM slot passed the counter test
+                        // for one tick after ~49.7 days of uptime.
+                        if (!SettingsManager.SlotCreated[padIndex]
+                            || !SettingsManager.SlotEnabled[padIndex])
+                            continue;
+
                         // All HIDMaestro-backed slots (Xbox / PlayStation / Extended)
                         // only get a VC when at least one assigned device is
                         // online. Unlike v2 ViGEm — which was cheap enough to
@@ -878,6 +1280,7 @@ namespace PadForge.Common.Input
                         var slotType = SlotControllerTypes[padIndex];
                         if ((slotType == VirtualControllerType.Xbox
                              || slotType == VirtualControllerType.PlayStation
+                             || slotType == VirtualControllerType.Nintendo
                              || slotType == VirtualControllerType.Extended)
                             && !IsSlotActive(padIndex))
                             continue;
@@ -904,9 +1307,18 @@ namespace PadForge.Common.Input
 
                         bool isHmSlot = slotType == VirtualControllerType.Xbox
                                      || slotType == VirtualControllerType.PlayStation
+                                     || slotType == VirtualControllerType.Nintendo
                                      || slotType == VirtualControllerType.Extended;
 
-                        if (isHmSlot)
+                        // MIDI rides the same async chain: its Connect()
+                        // drives Windows MIDI Services over WinRT RPC
+                        // (session + virtual device + endpoint open), which
+                        // can block for seconds or hang outright when the
+                        // service is slow or missing. Inline on the polling
+                        // thread it wedged the engine and the close path
+                        // (owner repro 2026-07-23). Only KeyboardMouse is
+                        // genuinely cheap enough to build inline.
+                        if (isHmSlot || slotType == VirtualControllerType.Midi)
                         {
                             // Visual-order gate: only kick off the create for
                             // the visually-highest eligible HM slot in this
@@ -931,6 +1343,7 @@ namespace PadForge.Common.Input
                             var orderList = SettingsManager.SlotOrders.GetOrderSnapshotFor(slotType);
                             int myVisualPos = System.Array.IndexOf(orderList, padIndex);
                             bool higherStillNeeds = false;
+                            int blockerIndex = -1;
                             for (int p = 0; p < myVisualPos; p++)
                             {
                                 int pi = orderList[p];
@@ -941,9 +1354,53 @@ namespace PadForge.Common.Input
                                 if (_createFailed[pi]) continue;
                                 if (!IsSlotActive(pi)) continue;
                                 higherStillNeeds = true;
+                                blockerIndex = pi;
                                 break;
                             }
-                            if (higherStillNeeds) continue;
+                            // BOUND THE WAIT. The gate above is an ORDERING
+                            // PREFERENCE (kernel slot allocation matching the
+                            // user's visual order), and it used to be
+                            // unbounded, so a preference could outrank
+                            // functioning entirely.
+                            //
+                            // The deadlock, owner-reported 2026-07-26 and
+                            // reproduced from the diag log: a device flap
+                            // aborts a higher slot's create, and the abort
+                            // path deliberately does NOT latch _createFailed
+                            // so a later arrival can retry. That leaves the
+                            // higher slot in precisely the blocking state
+                            // (Created + Enabled + Active + not-failed +
+                            // vc == null), and every visually-lower slot in
+                            // the same type group then waits on it forever.
+                            // The owner's workaround was switching a lower
+                            // slot's TYPE, which moves it into a different
+                            // order group and out from behind the blocker.
+                            //
+                            // A changing blocker means the queue is
+                            // progressing, so the timer resets on a new
+                            // blocker and only a single slot stuck for the
+                            // whole window trips the escape.
+                            if (higherStillNeeds)
+                            {
+                                long nowTick = Environment.TickCount64;
+                                if (_orderWaitBlocker[padIndex] != blockerIndex)
+                                {
+                                    _orderWaitBlocker[padIndex] = blockerIndex;
+                                    _orderWaitSinceTick[padIndex] = nowTick;
+                                    continue;
+                                }
+                                if (!OrderWaitExpired(_orderWaitSinceTick[padIndex], nowTick))
+                                    continue;
+                                PadForge.Engine.SdlDiagLog.WriteLine(
+                                    $"VCTRACE slot={padIndex} visual-order wait exceeded {OrderWaitMaxMs}ms behind slot={blockerIndex}; creating OUT OF ORDER rather than staying dead");
+                                _orderWaitBlocker[padIndex] = -1;
+                                _orderWaitSinceTick[padIndex] = 0;
+                            }
+                            else
+                            {
+                                _orderWaitBlocker[padIndex] = -1;
+                                _orderWaitSinceTick[padIndex] = 0;
+                            }
 
                             // Hand the CreateController + Connect chain to the
                             // thread pool.  HIDMaestro driver bring-up takes
@@ -962,20 +1419,107 @@ namespace PadForge.Common.Input
                             // inline at the tail of the same task so it sees
                             // the just-bound controller.
                             int capturedIndex = padIndex;
+                            var capturedType = slotType;
+                            var capturedProfile = SlotProfileIds[padIndex];
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"VCTRACE slot={padIndex} async create KICK type={slotType}");
                             _pendingConnectTask[padIndex] = System.Threading.Tasks.Task.Run(() =>
                             {
                                 try
                                 {
                                     var vcAsync = CreateVirtualController(capturedIndex);
+                                    PadForge.Engine.SdlDiagLog.WriteLine(
+                                        $"VCTRACE slot={capturedIndex} async create RESULT vc={(vcAsync == null ? "null" : vcAsync.GetType().Name)} connected={vcAsync?.IsConnected ?? false}");
                                     if (vcAsync != null && vcAsync.IsConnected)
                                     {
-                                        _virtualControllers[capturedIndex] = vcAsync;
-                                        try { _hmaestroContext?.FinalizeNames(); }
-                                        catch { /* best effort */ }
+                                        // Claim the slot only if it is still
+                                        // empty. HM bring-up takes seconds
+                                        // (see the retry note above), and the
+                                        // UI-thread slot reorder can install a
+                                        // reused VC at this index while we were
+                                        // connecting. A blind assign overwrote
+                                        // that pointer, and since the array was
+                                        // its only handle, the reused kernel
+                                        // controller leaked: still live, still
+                                        // holding its kernel slot, never
+                                        // reached by DestroyVirtualController.
+                                        // Losing the race means WE are the
+                                        // spare, so dispose ourselves. This
+                                        // also covers the poll thread starting
+                                        // a spurious create in the reorder's
+                                        // clear-to-repopulate gap: that VC now
+                                        // loses the swap and tears itself down
+                                        // instead of displacing the real one.
+                                        var prior = System.Threading.Interlocked.CompareExchange(
+                                            ref _virtualControllers[capturedIndex], vcAsync, null);
+                                        if (prior != null)
+                                        {
+                                            try { vcAsync.Dispose(); }
+                                            catch { /* best effort */ }
+
+                                            // The spare we just tore down owned
+                                            // a UserEffectsDispatcher, and it
+                                            // registered that dispatcher under
+                                            // this pad's key while it was
+                                            // connecting. If it registered
+                                            // AFTER the winner did, it replaced
+                                            // the winner in the static registry
+                                            // and its Dispose just removed the
+                                            // key (its own instance being the
+                                            // registered one, the "don't yank a
+                                            // fresh dispatcher's key" guard
+                                            // does not fire). The winner is
+                                            // then live but unreachable from
+                                            // the registry, so battery /
+                                            // sound-routing pokes for this slot
+                                            // silently stop. Re-attach it to
+                                            // re-claim the key. Idempotent when
+                                            // the key already points at the
+                                            // winner.
+                                            if (prior is HMaestroVirtualController priorHm)
+                                            {
+                                                var cfg = _deviceSlotConfigs[capturedIndex];
+                                                if (cfg != null)
+                                                {
+                                                    try { priorHm.AttachDeviceConfig(cfg); }
+                                                    catch { /* best effort */ }
+                                                }
+                                            }
+                                        }
+                                        else if (vcAsync is HMaestroVirtualController)
+                                        {
+                                            try { _hmaestroContext?.FinalizeNames(); }
+                                            catch { /* best effort */ }
+                                        }
                                     }
                                     else if (vcAsync == null)
                                     {
-                                        _createFailed[capturedIndex] = true;
+                                        // Latch only REAL failures (audit 2026-07-25, C1).
+                                        // CreateVirtualController re-reads live slot state,
+                                        // so a slot that lost its devices, its enabled bit,
+                                        // or its type between the KICK and the task body
+                                        // returns null as an ABORT, not a driver failure.
+                                        // The live diag log showed a one-tick device flap at
+                                        // launch arming the latch 4/4 launches, and no
+                                        // clear path fires on a later genuine device
+                                        // arrival, so the abort latched the slot dead until
+                                        // a manual reconfigure.
+                                        // Own buffer: this runs on the async
+                                        // task thread, and the parameterless
+                                        // IsSlotActive would race the poll
+                                        // thread's shared scratch (round 33,
+                                        // C20). Rare path; the allocation is
+                                        // irrelevant.
+                                        bool stillEligible =
+                                            SettingsManager.SlotCreated[capturedIndex]
+                                            && SettingsManager.SlotEnabled[capturedIndex]
+                                            && SlotControllerTypes[capturedIndex] == capturedType
+                                            && IsSlotActive(capturedIndex, new Engine.Data.UserSetting[64]);
+                                        if (stillEligible)
+                                            LatchCreateFailed(capturedIndex, capturedType, capturedProfile);
+                                        else
+                                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                                $"VCTRACE slot={capturedIndex} async create ABANDONED (slot no longer eligible, no latch)");
                                     }
                                     else
                                     {
@@ -987,17 +1531,21 @@ namespace PadForge.Common.Input
                                         // as eligible-but-unbuilt and kicks off another
                                         // connect, accumulating leaked VCs.
                                         try { vcAsync.Dispose(); } catch { /* best effort */ }
-                                        _createFailed[capturedIndex] = true;
+                                        LatchCreateFailed(capturedIndex, capturedType, capturedProfile);
                                     }
                                 }
                                 catch (Exception ex)
                                 {
+                                    PadForge.Engine.SdlDiagLog.WriteLine(
+                                        $"VCTRACE slot={capturedIndex} async create THREW {ex.GetType().Name}: {ex.Message}");
                                     RaiseError($"Failed to create virtual controller for pad {capturedIndex}", ex);
-                                    _createFailed[capturedIndex] = true;
+                                    LatchCreateFailed(capturedIndex, capturedType, capturedProfile);
                                 }
                                 finally
                                 {
                                     _slotInitializing[capturedIndex] = false;
+                                    PadForge.Engine.SdlDiagLog.WriteLine(
+                                        $"VCTRACE slot={capturedIndex} async create DONE");
                                 }
                             });
                             // One HM connect kicked off per polling cycle.
@@ -1009,8 +1557,8 @@ namespace PadForge.Common.Input
                         }
                         else
                         {
-                            // MIDI / KeyboardMouse — cheap construction, fine
-                            // to run inline.  No HIDMaestro driver bring-up.
+                            // KeyboardMouse only. Genuinely cheap, no
+                            // driver or service bring-up.
                             var vc = CreateVirtualController(padIndex);
                             _virtualControllers[padIndex] = vc;
 
@@ -1021,7 +1569,7 @@ namespace PadForge.Common.Input
                             }
                             else if (vc == null)
                             {
-                                _createFailed[padIndex] = true;
+                                LatchCreateFailed(padIndex);
                                 _slotInitializing[padIndex] = false;
                             }
                             else
@@ -1030,7 +1578,7 @@ namespace PadForge.Common.Input
                                 // failure so we don't loop on the next cycle.
                                 try { vc.Dispose(); } catch { /* best effort */ }
                                 _virtualControllers[padIndex] = null;
-                                _createFailed[padIndex] = true;
+                                LatchCreateFailed(padIndex);
                                 _slotInitializing[padIndex] = false;
                             }
                         }
@@ -1072,7 +1620,7 @@ namespace PadForge.Common.Input
                     if (vc != null && _slotInactiveCounter[padIndex] == 1)
                     {
                         CombinedOutputStates[padIndex].Clear();
-                        CombinedExtendedRawStates[padIndex].Clear();
+                        CombinedRawHidStates[padIndex].Clear();
                         CombinedMidiRawStates[padIndex].Clear();
                         CombinedKbmRawStates[padIndex].Clear();
                         CombinedTouchpadStates[padIndex] = default;
@@ -1103,23 +1651,35 @@ namespace PadForge.Common.Input
                             // releases anything held) instead of its mapped state.
                             kbmVc.SubmitKbmState(IsSlotRestricted(padIndex) ? default : CombinedKbmRawStates[padIndex]);
                         }
-                        else if (SlotControllerTypes[padIndex] == VirtualControllerType.Extended
-                                 && SlotExtendedIsCustom[padIndex]
+                        else if (SlotControllerTypes[padIndex] is VirtualControllerType.Extended
+                                     or VirtualControllerType.Nintendo
+                                 && SlotRawHidSurface[padIndex]
                                  && vc is HMaestroVirtualController hmExt)
                         {
                             // Extended with dynamic profile layout: mappings live
-                            // in ExtendedRawState (ExtendedAxis{N}/ExtendedBtn{N}/
-                            // ExtendedPov{N} target keys populated by Step 3/4)
+                            // in RawHidState (RawAxis{N}/RawBtn{N}/
+                            // RawPov{N} target keys populated by Step 3/4)
                             // not the standard Gamepad. Submit the raw state
                             // directly to HIDMaestro so we cover the full
                             // HMGamepadState surface — 6 axes, 13 buttons, and
                             // hat — without the lossy 11-button XInput Gamepad
                             // bitmap intermediate.
                             var layout = SlotCustomLayouts[padIndex];
-                            hmExt.SubmitExtendedRawState(
-                                CombinedExtendedRawStates[padIndex],
+                            // Button SOCD (#240): clean the final combined
+                            // raw buttons right before submit, flat-index
+                            // grammar on the word array.
+                            var socdExt = ResolveSlotSocd(padIndex, extendedIndices: true);
+                            if (socdExt != null)
+                                socdExt.ApplyExtended(CombinedRawHidStates[padIndex].Buttons);
+                            hmExt.SubmitRawHidState(
+                                CombinedRawHidStates[padIndex],
                                 layout.Sticks,
-                                layout.Triggers);
+                                layout.Triggers,
+                                // IMU channel (HM v1.3.18): the slot's
+                                // aggregated motion snapshot rides beside
+                                // the raw surface. HasMotion=false (no
+                                // motion rows mapped) submits zeroes.
+                                MotionSnapshots[padIndex]);
                         }
                         else
                         {
@@ -1142,6 +1702,15 @@ namespace PadForge.Common.Input
                                 gpOut.Buttons |= Gamepad.TOUCHPAD;
                             }
 
+                            // Button SOCD (#240): clean the final combined
+                            // bitmask right before submit, so physical,
+                            // mapped, and macro contributions are treated
+                            // uniformly and the winner's release re-presses
+                            // the held partner the same frame.
+                            var socdGp = ResolveSlotSocd(padIndex, extendedIndices: false);
+                            if (socdGp != null)
+                                gpOut.Buttons = socdGp.ApplyGamepad(gpOut.Buttons);
+
                             // PlayStation slots backed by an HM virtual go
                             // through the extended SubmitGamepadState overload
                             // so HMGamepadState's touchpad / IMU / battery
@@ -1160,12 +1729,24 @@ namespace PadForge.Common.Input
                             if (SlotControllerTypes[padIndex] == VirtualControllerType.PlayStation
                                 && vc is HMaestroVirtualController hmExtState)
                             {
-                                hmExtState.SubmitGamepadState(
-                                    gpOut,
-                                    CombinedTouchpadStates[padIndex],
-                                    MotionSnapshots[padIndex],
-                                    pctByte,
-                                    BatteryCharging[padIndex]);
+                                // USB Sony (a raw packer exists): skip this
+                                // leg. The raw report below is the
+                                // authoritative full-layout frame, the
+                                // driver's worker consumes only the LATEST
+                                // frame per event wake (driver.c
+                                // SharedInputWorkerProc), and the extended
+                                // frame's touchpad/IMU fields are consumed
+                                // only by armed-BT codecs USB profiles never
+                                // arm. Publishing both was two seqlock
+                                // writes + two kernel SetEvents per tick.
+                                // SubmitRawReport ticks FFB itself now.
+                                if (SonyReportPackers.ForProfile(hmExtState.ProfileId) == null)
+                                    hmExtState.SubmitGamepadState(
+                                        gpOut,
+                                        CombinedTouchpadStates[padIndex],
+                                        MotionSnapshots[padIndex],
+                                        pctByte,
+                                        BatteryCharging[padIndex]);
                             }
                             else
                             {
@@ -1185,8 +1766,13 @@ namespace PadForge.Common.Input
                                     // does not retain a reference.
                                     int pct = BatteryPercents[padIndex];
                                     byte battery = pct < 0 ? (byte)100 : (byte)Math.Clamp(pct, 0, 100);
+                                    // gpOut, not CombinedOutputStates: the
+                                    // raw frame must carry the same touch-
+                                    // click OR and button-SOCD cleaning the
+                                    // extended leg applied, since it is the
+                                    // sole submission on USB Sony slots.
                                     packer(
-                                        CombinedOutputStates[padIndex],
+                                        gpOut,
                                         CombinedTouchpadStates[padIndex],
                                         MotionSnapshots[padIndex],
                                         battery,
@@ -1290,7 +1876,29 @@ namespace PadForge.Common.Input
         //  Slot activity check
         // ─────────────────────────────────────────────
 
-        private bool IsSlotActive(int padIndex)
+        /// <summary>UI-thread staleness guard for the marshaled inactivity
+        /// teardown. The poll thread SETS the fired latch when the countdown
+        /// expires and CLEARS it the moment the slot goes active again
+        /// (devices online). A teardown that arrives on the UI thread after
+        /// the clear is stale: a new controller was assigned/came online in
+        /// the BeginInvoke gap, and destroying now would kill the live VC of
+        /// an active slot (owner repro 2026-07-27: assign a new controller
+        /// while the slot's other devices sit offline, moments before the
+        /// timeout expires -- the VC vanishes). Latch-only on purpose: the
+        /// poll thread owns slot-activity evaluation, and IsSlotActive's
+        /// shared buffer must not be raced from the UI thread.</summary>
+        public bool InactivityFireStillValid(int padIndex)
+            => padIndex >= 0 && padIndex < MaxPads
+               && System.Threading.Volatile.Read(ref _hmInactivityFired[padIndex]);
+
+        private bool IsSlotActive(int padIndex) => IsSlotActive(padIndex, _padIndexBuffer);
+
+        /// <summary>Buffer-explicit form. The parameterless overload uses
+        /// the poll thread's preallocated scratch; any OTHER thread (the
+        /// async create-failure validation, round 33 C20) must pass its
+        /// own buffer, or its read races the poll thread's reuse of the
+        /// shared scratch and misclassifies eligibility.</summary>
+        private bool IsSlotActive(int padIndex, Engine.Data.UserSetting[] buffer)
         {
             // Slot must be explicitly created AND enabled.
             if (!SettingsManager.SlotCreated[padIndex] || !SettingsManager.SlotEnabled[padIndex])
@@ -1299,14 +1907,13 @@ namespace PadForge.Common.Input
             var settings = SettingsManager.UserSettings;
             if (settings == null) return false;
 
-            // Use non-allocating overload with pre-allocated buffer.
-            int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
+            int slotCount = settings.FindByPadIndex(padIndex, buffer);
             if (slotCount == 0)
                 return false;
 
             for (int i = 0; i < slotCount; i++)
             {
-                var us = _padIndexBuffer[i];
+                var us = buffer[i];
                 if (us == null) continue;
                 var ud = FindOnlineDeviceByInstanceGuid(us.InstanceGuid);
                 if (ud != null && ud.IsOnline)
@@ -1353,7 +1960,10 @@ namespace PadForge.Common.Input
         // VID/PID/ProductString/layout from scratch. Previous catalog-
         // inheritance default (logitech-f710) would have new users pick
         // up Logitech VID/PID surprise-unexpectedly.
-        public const string DefaultExtendedProfileId = HMaestroProfileCatalog.CustomProfileId;
+        public const string DefaultRawProfileId = HMaestroProfileCatalog.CustomProfileId;
+        /// <summary>The Nintendo category's only profile for now (owner
+        /// call 2026-07-18). Matches HMaestroProfileCatalog.IsNintendoProfile.</summary>
+        public const string DefaultNintendoProfileId = "switch-pro";
 
         /// <summary>
         /// Returns the default HIDMaestro profile slug for a given VC category,
@@ -1367,7 +1977,8 @@ namespace PadForge.Common.Input
         {
             VirtualControllerType.Xbox => DefaultXboxProfileId,
             VirtualControllerType.PlayStation => DefaultPlayStationProfileId,
-            VirtualControllerType.Extended => DefaultExtendedProfileId,
+            VirtualControllerType.Extended => DefaultRawProfileId,
+            VirtualControllerType.Nintendo => DefaultNintendoProfileId,
             _ => null
         };
 
@@ -1376,9 +1987,10 @@ namespace PadForge.Common.Input
             var controllerType = SlotControllerTypes[padIndex];
 
             // MIDI and KeyboardMouse stay on their dedicated implementations.
-            // Xbox / PlayStation / Extended now route through HIDMaestro.
+            // Xbox / PlayStation / Nintendo / Extended route through HIDMaestro.
             if (controllerType == VirtualControllerType.Xbox
                 || controllerType == VirtualControllerType.PlayStation
+                || controllerType == VirtualControllerType.Nintendo
                 || controllerType == VirtualControllerType.Extended)
             {
                 EnsureHMaestroContext();
@@ -1403,6 +2015,7 @@ namespace PadForge.Common.Input
                     VirtualControllerType.Xbox => CreateHMaestroController(VirtualControllerType.Xbox, profileId, padIndex),
                     VirtualControllerType.PlayStation => CreateHMaestroController(VirtualControllerType.PlayStation, profileId, padIndex),
                     VirtualControllerType.Extended => CreateHMaestroController(VirtualControllerType.Extended, profileId, padIndex),
+                    VirtualControllerType.Nintendo => CreateHMaestroController(VirtualControllerType.Nintendo, profileId, padIndex),
                     VirtualControllerType.Midi => CreateMidiController(padIndex),
                     VirtualControllerType.KeyboardMouse => new KeyboardMouseVirtualController(padIndex),
                     _ => null
@@ -1770,6 +2383,7 @@ namespace PadForge.Common.Input
         {
             if (groupType != VirtualControllerType.Xbox
                 && groupType != VirtualControllerType.PlayStation
+                && groupType != VirtualControllerType.Nintendo
                 && groupType != VirtualControllerType.Extended)
                 return;
 
@@ -1782,6 +2396,13 @@ namespace PadForge.Common.Input
             // kernel slot, or destroy it. Snapshot the per-VC state at
             // the same time so we can move it with the VC.
             var reuseAtPosition = new IVirtualController[n];
+            // This method runs on the UI thread. IsSlotActive's parameterless
+            // overload reads through _padIndexBuffer, the POLL thread's
+            // preallocated scratch, and the buffer-explicit overload's own doc
+            // states the rule: any other thread must pass its own buffer or its
+            // read races the poll thread's reuse and misclassifies eligibility.
+            // One allocation per reorder, which is a user action, not a tick.
+            var slotScanBuffer = new Engine.Data.UserSetting[64];
             var stateExtendedAppliedProductString = new string[n];
             var stateExtendedAppliedLayout = new CustomControllerLayout[n];
             var stateExtendedAppliedFfbEnabled = new bool[n];
@@ -1811,7 +2432,7 @@ namespace PadForge.Common.Input
                 // oldPad's VC just because the profile slug on an inactive
                 // neighbor differs. The visual order changes, but the kernel
                 // VC stays at oldPad's pad index.
-                if (_virtualControllers[newPad] == null && !IsSlotActive(newPad))
+                if (_virtualControllers[newPad] == null && !IsSlotActive(newPad, slotScanBuffer))
                     continue;
 
                 string oldProfile = (oldVC is HMaestroVirtualController hmOld) ? hmOld.ProfileId : null;
@@ -1883,8 +2504,14 @@ namespace PadForge.Common.Input
                 _oemOverrideClaimedVidPid[newPad] = stateOemOverrideClaimedVidPid[V];
                 _lastAppliedOemLabel[newPad] = stateLastAppliedOemLabel[V];
 
+                // Re-point the VC's effect dispatchers too, not just its
+                // feedback index. They capture their pad in a readonly field
+                // and resolve physical targets from it, so a moved VC kept
+                // driving the OLD pad's controllers. _deviceSlotConfigs is
+                // keyed by pad index, which is data identity and does not move
+                // in a reorder, so newPad's entry is already the right config.
                 if (vc is HMaestroVirtualController hm)
-                    hm.FeedbackPadIndex = newPad;
+                    hm.RetargetToPad(newPad, _deviceSlotConfigs[newPad]);
             }
         }
 
@@ -1917,17 +2544,40 @@ namespace PadForge.Common.Input
         /// complete before starting a new creation, so the preempted slots'
         /// kernel resources are fully released before any rebuild kicks off.
         /// </summary>
+        private static readonly VirtualControllerType[] s_hmSubgroups =
+        {
+            VirtualControllerType.Xbox,
+            VirtualControllerType.PlayStation,
+            VirtualControllerType.Nintendo,
+            VirtualControllerType.Extended,
+        };
+
         private bool ApplyAscendingIndexPreemption()
         {
             bool displacedAny = false;
-            var hmSubgroups = new[]
-            {
-                VirtualControllerType.Xbox,
-                VirtualControllerType.PlayStation,
-                VirtualControllerType.Extended,
-            };
 
-            foreach (var subgroup in hmSubgroups)
+            // Lock-free pre-gate: the per-subgroup order snapshots below
+            // clone under OrderSync every call, and this runs every poll
+            // tick. A VC-less created+enabled un-latched slot is a
+            // necessary condition for any preemption decision, so the
+            // steady state (every slot settled) skips the snapshots
+            // entirely. Decisions are unchanged: the full walk still
+            // applies IsSlotActive and ordering when the gate passes.
+            bool anyCandidate = false;
+            for (int i = 0; i < MaxPads; i++)
+            {
+                if (_virtualControllers[i] == null
+                    && SettingsManager.SlotCreated[i]
+                    && SettingsManager.SlotEnabled[i]
+                    && !_createFailed[i])
+                {
+                    anyCandidate = true;
+                    break;
+                }
+            }
+            if (!anyCandidate) return false;
+
+            foreach (var subgroup in s_hmSubgroups)
             {
                 var orderList = SettingsManager.SlotOrders.GetOrderSnapshotFor(subgroup);
 
@@ -1988,6 +2638,62 @@ namespace PadForge.Common.Input
             var vc = _virtualControllers[padIndex];
             if (vc == null) return;
 
+            // #236: VC destruction is an explicit silence edge for ALL
+            // FOUR voices (the legacy lifecycle zeroing below touches only
+            // the two body motors of VibrationStates). The vacated route
+            // resolves to zero before the async disposal below can run,
+            // and the generation bump discards any racing lane publish.
+            RumbleAudioService.SilenceSlot(padIndex);
+
+            // 2026-07-25 audit: make VibrationStates itself honor that
+            // edge, all four motors. The per-site clears zero only the
+            // body pair (and the recreate-transition sites clear nothing),
+            // so stale Left/RightTriggerMotorSpeed survived destruction
+            // with no remaining writer. The LFE lane MaxMerges
+            // VibrationStates every tick, latching a trigger shaker voice
+            // on until the next game write. A destroyed VC has no game
+            // feedback by definition; the successor VC starts from zero.
+            // 2026-07-25 audit (C38): detach the driver-side feedback
+            // callbacks SYNCHRONOUSLY before zeroing. The async dispose
+            // below can take seconds (xinputhid ~11 s worst case) and the
+            // OutputDecoded/OutputReceived handlers die only when the
+            // controller disposes, so a late game write between the zero
+            // and the driver-side close repopulated the motors for a slot
+            // that no longer owns them. FeedbackPadIndex = -1 makes every
+            // late callback no-op at its own guard.
+            if (vc is HMaestroVirtualController hmFb)
+                hmFb.UnregisterFeedback();
+
+            var vib = VibrationStates[padIndex];
+            if (vib != null)
+            {
+                vib.LeftMotorSpeed = 0;
+                vib.RightMotorSpeed = 0;
+                vib.LeftTriggerMotorSpeed = 0;
+                vib.RightTriggerMotorSpeed = 0;
+                // 2026-07-25 audit (C33): the PID directional/condition
+                // projection latches too. Step 2 selects on these flags
+                // with no VC-existence check, and the only writer that
+                // clears them (HMaestroFfbDecoder.Apply via TickFfb) dies
+                // with the VC, so a destroyed slot kept issuing the last
+                // constant/spring force to a physical wheel forever, and
+                // the stale HasDirectionalData also suppressed the user's
+                // own Constant Force feature.
+                vib.HasDirectionalData = false;
+                vib.HasConditionData = false;
+                vib.EffectType = 0;
+                vib.SignedMagnitude = 0;
+                vib.Direction = 0;
+                vib.Period = 0;
+                vib.ConditionAxisCount = 0;
+                vib.DeviceGain = 255;
+            }
+
+            // #240: forget SOCD winner state with the VC. Without this a
+            // recreate with identical config strings no-ops Configure and
+            // a stale Winner mis-suppresses the first press.
+            _slotButtonSocd[padIndex]?.Reset();
+
             // Non-HM dispatcher (KBM / MIDI) lives outside the VC, so the
             // VC's Disconnect doesn't dispose it. Tear down explicitly here.
             // HM-owned dispatchers are disposed inside HM VC.Disconnect; this
@@ -2014,17 +2720,49 @@ namespace PadForge.Common.Input
             _extendedAppliedVendorId[padIndex] = 0;
             _extendedAppliedProductId[padIndex] = 0;
 
+            // MIDI teardown ordering: our own input scanner may hold an
+            // open loopback client connection to this endpoint, and the
+            // service wedges when a virtual endpoint is torn down under a
+            // live client from the same process (deterministic on the
+            // bench, 2026-07-23). Demote the endpoint claim so the scanner
+            // cannot reopen it, close the loopback, give the disconnect
+            // RPC a beat to land, THEN tear down the device side.
+            var midiVc = vc as MidiVirtualController;
+            midiVc?.MarkClosing();
+
+            // MIDI always goes async, whatever the caller asked for. The
+            // teardown talks to Windows MIDI Services over WinRT, and an
+            // inline MIDI service call on the 1 kHz polling thread wedged
+            // both the engine and the close path (owner repro 2026-07-23);
+            // the 250 ms beat below is also what keeps the same-process
+            // service wedge from firing. Every deliberate MIDI call site
+            // already passes true, including shutdown, whose own comment
+            // says a hung service must not hang Stop. Two paths reached
+            // here with false anyway: the all-devices-unassigned destroy,
+            // which only asked for async when the VC was HM, and the
+            // inactivity timeout, which uses the parameterless overload.
+            if (midiVc != null) asyncDispose = true;
+
             if (asyncDispose)
             {
                 // Null the pointer so Step 5 / Dashboard see the slot as empty
                 // immediately. The captured `vc` is disposed in the background.
                 // Track the task so Pass 2 can skip creation until every
-                // pending dispose has finished — this preserves ascending-
+                // pending dispose has finished. This preserves ascending-
                 // slot-order kernel allocation.
                 _virtualControllers[padIndex] = null;
                 _pendingDisposeTask[padIndex] = System.Threading.Tasks.Task.Run(() =>
                 {
-                    try { vc.Disconnect(); vc.Dispose(); }
+                    try
+                    {
+                        if (midiVc != null)
+                        {
+                            CloseMidiInputsForEndpoint(midiVc.UniqueEndpointId);
+                            System.Threading.Thread.Sleep(250);
+                        }
+                        vc.Disconnect();
+                        vc.Dispose();
+                    }
                     catch { /* best effort */ }
                 });
             }
@@ -2032,6 +2770,8 @@ namespace PadForge.Common.Input
             {
                 try
                 {
+                    // MIDI never reaches here (forced async above), so this
+                    // branch is the HM / KBM / stub path only.
                     vc.Disconnect();
                     vc.Dispose();
                 }
@@ -2071,7 +2811,11 @@ namespace PadForge.Common.Input
         {
             for (int i = 0; i < MaxPads; i++)
             {
-                DestroyVirtualController(i);
+                // MIDI teardown talks to Windows MIDI Services (WinRT); a
+                // hung service must not hang Stop. HM teardown stays
+                // synchronous and ordered (kernel-slot semantics).
+                DestroyVirtualController(i,
+                    asyncDispose: _virtualControllers[i] is MidiVirtualController);
                 _virtualControllers[i] = null;
             }
         }

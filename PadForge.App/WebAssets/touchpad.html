@@ -217,14 +217,30 @@
                 send({ type: 'touchpad', finger: finger, x: 0, y: 0, down: false });
                 updateDot(finger === 0 ? dot0 : dot1, null, false);
 
-                // Double-tap detection for click — momentary press; the
-                // engine sees a single down without a matching up for the
-                // double-tap path (the dedicated click button below handles
-                // the held-press flow).
+                // Double-tap detection for click. This sent the press and no
+                // release, and called that momentary. Nothing made it
+                // momentary: the server's UpdateButton assigns
+                // Buttons[16] = pressed and holds it, and no path clears the
+                // state per frame, so a double tap latched the touchpad click
+                // ON until the user happened to press AND release the
+                // dedicated click button below. Release it on a timer, the
+                // same shape the stick-click uses in controller_client.js.
                 if (finger === 0) {
                     var now = Date.now();
                     if (now - lastTap < 300) {
                         send({ type: 'input', kind: 'button', code: 16, value: 1 });
+                        setTimeout(function () {
+                            // Code 16 has TWO producers on this page and the
+                            // server's UpdateButton is last-write-wins with no
+                            // refcount, so this timer must not release a click
+                            // the dedicated button is currently holding. Both
+                            // the touch and mouse paths maintain the 'active'
+                            // class, which makes it the reliable test; a
+                            // clearTimeout on the touch id would miss the
+                            // mouse path entirely.
+                            if (clickButton.classList.contains('active')) return;
+                            send({ type: 'input', kind: 'button', code: 16, value: 0 });
+                        }, 100);
                         lastTap = 0;
                     } else {
                         lastTap = now;

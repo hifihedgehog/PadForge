@@ -195,6 +195,16 @@ namespace PadForge.Engine.RemoteLink
 
                 if (status == IdentityUnprotect.Empty || status == IdentityUnprotect.Corrupt)
                 {
+                    // Ask for the password instead of throwing for it. Protect
+                    // raises ArgumentException when portable-password mode gets
+                    // no password, so minting in that state escaped this method
+                    // as an exception even though NeedsPassword is exactly the
+                    // status the caller already knows how to handle, and does
+                    // handle on the unprotect path a few lines above.
+                    if (mintMode == IdentityProtectionMode.PortablePassword
+                        && string.IsNullOrEmpty(mintPassword))
+                        return IdentityUnprotect.NeedsPassword;
+
                     identity = PeerIdentity.Generate();
                     byte[] fresh = identity.ExportPrivateKey();
                     try { persistProtectedPrivate = Protect(fresh, mintMode, mintPassword); }

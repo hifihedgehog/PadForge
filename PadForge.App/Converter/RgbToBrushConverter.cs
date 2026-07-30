@@ -18,7 +18,9 @@ namespace PadForge.Converters
             byte r = ToByte(values, 0);
             byte g = ToByte(values, 1);
             byte b = ToByte(values, 2);
-            return new SolidColorBrush(Color.FromRgb(r, g, b));
+            var brush = new SolidColorBrush(Color.FromRgb(r, g, b));
+            brush.Freeze(); // render-thread-friendly, no dispatcher affinity
+            return brush;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => null;

@@ -93,9 +93,12 @@ namespace PadForge.Engine
             return true;
         }
 
+        // Pooled per-tick state (poll thread is the sole caller).
+        private PooledInputStatePair _statePool;
+
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
-            var state = new CustomInputState();
+            var state = _statePool.Next();
             RawInputListener.GetConsumerState(_rawInputHandle, state.Buttons, state.Buttons.Length);
             return state;
         }

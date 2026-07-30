@@ -1,0 +1,249 @@
+name: RCT3 Weno V0.1
+description: Track pad radial menu don't fully works
+slots: xbox kbm
+gyroRatchet: Gamepad Paddle4
+xbox rows: 0
+xbox activators: 4
+  Toggle Layer_3456927474_1 | Gamepad RightShoulder | inherit | name=Deactivate trackpad
+  Toggle Layer_3456927474_1 | Menu 1 Item 1 | inherit | name=Deactivate trackpad
+  Toggle Layer_3456927474_1 | Menu 2 Item 1 | inherit | name=Deactivate trackpad
+  Toggle Layer_3456927474_2 | Gamepad Paddle3 | inherit | name=Menu save
+kbm rows: 19
+  Base | KbmKey08
+    <- Gamepad DPadLeft
+  Base | KbmKey09
+    <- Gamepad ButtonBack
+  Base | KbmKey1B
+    <- Gamepad ButtonStart
+  Base | KbmKey41
+    <- Gamepad LeftStickX [lower-half]
+  Base | KbmKey44
+    <- Gamepad LeftStickX [upper-half]
+  Base | KbmKey45
+    <- Gamepad ButtonX
+  Base | KbmKey46
+    <- Gamepad ButtonY
+  Base | KbmKey53
+    <- Gamepad LeftStickY [upper-half]
+  Base | KbmKey57
+    <- Gamepad LeftStickY [lower-half]
+  Base | KbmKeyA0
+    <- Gamepad DPadDown
+  Base | KbmKeyA2
+    <- Gamepad DPadRight
+  Base | KbmKeyA4
+    <- Gamepad DPadUp
+  Base | KbmMBtn0
+    <- Gamepad ButtonA
+    <- Menu 1 Item 2
+    <- Menu 1 Item 3
+    <- Menu 1 Item 5
+    <- Menu 1 Item 8
+    <- Menu 1 Item 9
+    <- Menu 1 Item 10
+    <- Menu 1 Item 12
+    <- Touchpad 1 Click
+    <- Gamepad Paddle2
+    <- Gamepad LeftShoulder
+  Base | KbmMBtn1
+    <- Gamepad ButtonB
+    <- Gamepad Paddle1
+  Base | KbmMBtn2
+    <- Gamepad RightStickRing [lower-half] dz=100
+  Base | KbmMouseX | Sum
+    <- Gyro Yaw
+    <- Gamepad RightStickX sens=1.25
+    <- Touchpad 1 Pointer X ptrExtent=1.2
+  Base | KbmMouseY | Sum
+    <- Gyro Pitch
+    <- Gamepad RightStickY sens=1.25
+    <- Touchpad 1 Pointer Y ptrCenter=0.44 ptrExtent=0.7
+  Layer_3456927474_1 | KbmMBtn1
+    <- Gamepad LeftShoulder
+    <- Gamepad RightShoulder
+  Layer_3456927474_2 | KbmMBtn0
+    <- Menu 2 Item 2
+    <- Menu 2 Item 3
+    <- Menu 2 Item 5
+    <- Menu 2 Item 8
+    <- Menu 2 Item 9
+    <- Menu 2 Item 10
+    <- Menu 2 Item 12
+kbm activators: 4
+  Toggle Layer_3456927474_1 | Gamepad RightShoulder | inherit | name=Deactivate trackpad
+  Toggle Layer_3456927474_1 | Menu 1 Item 1 | inherit | name=Deactivate trackpad
+  Toggle Layer_3456927474_1 | Menu 2 Item 1 | inherit | name=Deactivate trackpad
+  Toggle Layer_3456927474_2 | Gamepad Paddle3 | inherit | name=Menu save
+macros: 67
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 1 Item 1) | btns=0x0000 in=[Menu 1 Item 1] layer=Base norm=(10667,1473)
+  macro HoldMouseButton OnPress | Hold mouse Left (Menu 1 Item 1) | btns=0x0000 in=[Menu 1 Item 1] layer=Base mbtn=0 delayStart=1ms
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 1 Item 2) | btns=0x0000 in=[Menu 1 Item 2] layer=Base norm=(32307,31969)
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 2) | btns=0x0000 in=[Menu 1 Item 2] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 2) | btns=0x0000 in=[Menu 1 Item 2] layer=Base strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 1 Item 3) | btns=0x0000 in=[Menu 1 Item 3] layer=Base norm=(691,8713)
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 3) | btns=0x0000 in=[Menu 1 Item 3] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 3) | btns=0x0000 in=[Menu 1 Item 3] layer=Base strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 1 Item 5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base norm=(10667,1473)
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 1 Item 5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base norm=(27741,30558) delayStart=50ms
+  macro HoldMouseButton OnPress | Hold mouse Left (Menu 1 Item 5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base mbtn=0 delayStart=300ms
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 1 Item 5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base norm=(21602,30558) delayStart=400ms
+  macro HoldMouseButton OnPress | Hold mouse Left (Menu 1 Item 5) | btns=0x0000 in=[Menu 1 Item 5] layer=Base mbtn=0 delayStart=800ms
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 1 Item 8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base norm=(691,19267)
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 8) | btns=0x0000 in=[Menu 1 Item 8] layer=Base strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 1 Item 9) | btns=0x0000 in=[Menu 1 Item 9] layer=Base norm=(691,20924)
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 9) | btns=0x0000 in=[Menu 1 Item 9] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 9) | btns=0x0000 in=[Menu 1 Item 9] layer=Base strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 1 Item 10) | btns=0x0000 in=[Menu 1 Item 10] layer=Base norm=(729,22581)
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 10) | btns=0x0000 in=[Menu 1 Item 10] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 10) | btns=0x0000 in=[Menu 1 Item 10] layer=Base strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 1 Item 12) | btns=0x0000 in=[Menu 1 Item 12] layer=Base norm=(269,32031)
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 12) | btns=0x0000 in=[Menu 1 Item 12] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 1 Item 12) | btns=0x0000 in=[Menu 1 Item 12] layer=Base strength=66%
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (LeftTrigger) | btns=0x0000 axis=LeftTrigger@75% layer=Base ticks=-1 interval=125ms
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (LeftTrigger) | btns=0x0000 axis=LeftTrigger@15% layer=Base ticks=-1 interval=250ms
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro HoldMouseButton OnPress | Hold mouse Left (RightStick) | btns=0x0080 layer=Base mbtn=0 delayStart=25ms
+  macro RumblePulse OnPress | Haptic pulse (RightStick) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=33% delayStart=25ms
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base strength=33%
+  macro MouseNudge OnPress | Nudge cursor (Touchpad 1 Finger 0 Down) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] layer=Base delta=(100,0)
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Finger 0 Down) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] layer=Base strength=33%
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (RightTrigger) | btns=0x0000 axis=RightTrigger@75% layer=Base ticks=1 interval=125ms
+  macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (RightTrigger) | btns=0x0000 axis=RightTrigger@15% layer=Base ticks=1 interval=250ms
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Paddle2) | btns=0x0000 in=[Gamepad Paddle2] layer=Base norm=(16384,16384)
+  macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
+  macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Layer_3456927474_1 vk=0x2C
+  macro MouseButtonTap OnRelease | Click mouse Right (RightShoulder) | btns=0x0200 layer=Layer_3456927474_1 mbtn=1
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 2 Item 1) | btns=0x0000 in=[Menu 2 Item 1] layer=Layer_3456927474_2 norm=(10667,1473)
+  macro HoldMouseButton OnPress | Hold mouse Left (Menu 2 Item 1) | btns=0x0000 in=[Menu 2 Item 1] layer=Layer_3456927474_2 mbtn=0 delayStart=1ms
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 2 Item 2) | btns=0x0000 in=[Menu 2 Item 2] layer=Layer_3456927474_2 norm=(32307,31969)
+  macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 2) | btns=0x0000 in=[Menu 2 Item 2] layer=Layer_3456927474_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 2) | btns=0x0000 in=[Menu 2 Item 2] layer=Layer_3456927474_2 strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 2 Item 3) | btns=0x0000 in=[Menu 2 Item 3] layer=Layer_3456927474_2 norm=(691,8713)
+  macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 3) | btns=0x0000 in=[Menu 2 Item 3] layer=Layer_3456927474_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 3) | btns=0x0000 in=[Menu 2 Item 3] layer=Layer_3456927474_2 strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 2 Item 5) | btns=0x0000 in=[Menu 2 Item 5] layer=Layer_3456927474_2 norm=(10667,1473)
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 2 Item 5) | btns=0x0000 in=[Menu 2 Item 5] layer=Layer_3456927474_2 norm=(27741,30558) delayStart=50ms
+  macro HoldMouseButton OnPress | Hold mouse Left (Menu 2 Item 5) | btns=0x0000 in=[Menu 2 Item 5] layer=Layer_3456927474_2 mbtn=0 delayStart=300ms
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 2 Item 5) | btns=0x0000 in=[Menu 2 Item 5] layer=Layer_3456927474_2 norm=(21602,30558) delayStart=400ms
+  macro HoldMouseButton OnPress | Hold mouse Left (Menu 2 Item 5) | btns=0x0000 in=[Menu 2 Item 5] layer=Layer_3456927474_2 mbtn=0 delayStart=800ms
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 2 Item 8) | btns=0x0000 in=[Menu 2 Item 8] layer=Layer_3456927474_2 norm=(691,19267)
+  macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 8) | btns=0x0000 in=[Menu 2 Item 8] layer=Layer_3456927474_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 8) | btns=0x0000 in=[Menu 2 Item 8] layer=Layer_3456927474_2 strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 2 Item 9) | btns=0x0000 in=[Menu 2 Item 9] layer=Layer_3456927474_2 norm=(691,20924)
+  macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 9) | btns=0x0000 in=[Menu 2 Item 9] layer=Layer_3456927474_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 9) | btns=0x0000 in=[Menu 2 Item 9] layer=Layer_3456927474_2 strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 2 Item 10) | btns=0x0000 in=[Menu 2 Item 10] layer=Layer_3456927474_2 norm=(729,22581)
+  macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 10) | btns=0x0000 in=[Menu 2 Item 10] layer=Layer_3456927474_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 10) | btns=0x0000 in=[Menu 2 Item 10] layer=Layer_3456927474_2 strength=66%
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (Menu 2 Item 12) | btns=0x0000 in=[Menu 2 Item 12] layer=Layer_3456927474_2 norm=(269,32031)
+  macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 12) | btns=0x0000 in=[Menu 2 Item 12] layer=Layer_3456927474_2 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Menu 2 Item 12) | btns=0x0000 in=[Menu 2 Item 12] layer=Layer_3456927474_2 strength=66%
+  macro KeyTap OnRelease | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Layer_3456927474_2 vk=0x2C
+menus: 2
+  menu 1 Radial | Touchpad 0 | Base | fire=Click cells=12 | name=Menu
+    [1] Turn on a shift layer icon=ghost_050_menu_0302.png
+    [2] Warp cursor icon=ghost_050_menu_0306.png
+    [3] Warp cursor icon=ghost_040_act_0324.png
+    [5] Warp cursor icon=ghost_070_setting_0030.png
+    [8] Warp cursor icon=ghost_040_act_0320.png
+    [9] Warp cursor icon=ghost_040_act_0327.png
+    [10] Warp cursor icon=ghost_040_act_0307.png
+    [12] Warp cursor icon=ghost_050_menu_0306.png
+  menu 2 Radial | Touchpad 0 | Layer_3456927474_2 | fire=Click cells=12 | name=Menu (Menu save)
+    [1] Turn on a shift layer icon=ghost_050_menu_0302.png
+    [2] Warp cursor icon=ghost_050_menu_0306.png
+    [3] Warp cursor icon=ghost_040_act_0324.png
+    [5] Warp cursor icon=ghost_070_setting_0030.png
+    [8] Warp cursor icon=ghost_040_act_0320.png
+    [9] Warp cursor icon=ghost_040_act_0327.png
+    [10] Warp cursor icon=ghost_040_act_0307.png
+    [12] Warp cursor icon=ghost_050_menu_0306.png
+report: v26 rows:x0+k19 macros:67 menus:2 layers:8 clean:81 partial:4 skipped:0 errors:0
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey46 <- Gamepad ButtonY
+  Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_east/Full_Press => KbmKeyA2 <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press => KbmKeyA4 <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => KbmKeyA0 <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_west/Full_Press => KbmKey08 <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseX <- Gyro Yaw
+  Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseY <- Gyro Pitch
+  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_east/Full_Press => KbmKey44 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)
+  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
+  Clean MenuEmitted(8) @ Default/left_trackpad/group 16 (radial_menu) => Radial menu 1: 8 bound cells <- Touchpad 0
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_1/Full_Press => Warp cursor <- Menu 1 Item 1
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_1/Full_Press => Hold mouse Left <- Menu 1 Item 1
+  Partial RemoveLayerApproximated @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_1/release :: controller_action remove_layer 2 1 1, , 
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_2/Full_Press => Warp cursor <- Menu 1 Item 2
+  Clean RowEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_2/Full_Press => KbmMBtn0 <- Menu 1 Item 2
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_3/Full_Press => Warp cursor <- Menu 1 Item 3
+  Clean RowEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_3/Full_Press => KbmMBtn0 <- Menu 1 Item 3
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press => Warp cursor <- Menu 1 Item 5
+  Clean RowEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press => KbmMBtn0 <- Menu 1 Item 5
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press => Warp cursor <- Menu 1 Item 5
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press => Hold mouse Left <- Menu 1 Item 5
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press => Warp cursor <- Menu 1 Item 5
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press => Hold mouse Left <- Menu 1 Item 5
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_8/Full_Press => Warp cursor <- Menu 1 Item 8
+  Clean RowEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_8/Full_Press => KbmMBtn0 <- Menu 1 Item 8
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_9/Full_Press => Warp cursor <- Menu 1 Item 9
+  Clean RowEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_9/Full_Press => KbmMBtn0 <- Menu 1 Item 9
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_10/Full_Press => Warp cursor <- Menu 1 Item 10
+  Clean RowEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_10/Full_Press => KbmMBtn0 <- Menu 1 Item 10
+  Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_12/Full_Press => Warp cursor <- Menu 1 Item 12
+  Clean RowEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_12/Full_Press => KbmMBtn0 <- Menu 1 Item 12
+  Clean MacroEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => Turbo wheel <- Gamepad LeftTrigger
+  Clean MacroEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => Turbo wheel <- Gamepad LeftTrigger
+  Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean MacroEmitted @ Default/right_joystick/group 10 (joystick_mouse)/click/Full_Press => Hold mouse Left <- Gamepad RightStick
+  Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse)/edge/Full_Press => KbmMBtn2 <- Gamepad RightStickRing (lower half)
+  Clean RowEmitted @ Default/right_trackpad/group 12 (mouse_region) => KbmMouseX <- Touchpad 1 Pointer X
+  Clean RowEmitted @ Default/right_trackpad/group 12 (mouse_region) => KbmMouseY <- Touchpad 1 Pointer Y
+  Clean RowEmitted @ Default/right_trackpad/group 12 (mouse_region)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
+  Clean MacroEmitted @ Default/right_trackpad/group 12 (mouse_region)/edge/Full_Press => Nudge cursor <- Touchpad 1 Finger 0 Down
+  Clean MacroEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => Turbo wheel <- Gamepad RightTrigger
+  Clean MacroEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => Turbo wheel <- Gamepad RightTrigger
+  Partial RemoveLayerApproximated @ Default/switch/group 8 (switches)/button_back_left/Full_Press :: controller_action remove_layer 3 1 1, , 
+  Clean MacroEmitted @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press => Warp cursor <- Gamepad Paddle2
+  Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press => KbmMBtn0 <- Gamepad Paddle2
+  Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_right_upper/Full_Press => KbmMBtn1 <- Gamepad Paddle1
+  Clean RowEmitted @ Default/switch/group 8 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/switch/group 8 (switches)/button_menu/Full_Press => KbmKey09 <- Gamepad ButtonBack
+  Clean RowEmitted @ Default/switch/group 8 (switches)/left_bumper/Full_Press => KbmMBtn0 <- Gamepad LeftShoulder
+  Clean RowEmitted @ Deactivate trackpad/switch/group 22 (switches)/left_bumper/Full_Press => KbmMBtn1 <- Gamepad LeftShoulder
+  Clean RowEmitted @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/Start_Press => KbmMBtn1 <- Gamepad RightShoulder
+  Clean ShiftLayerEmitted(Deactivate trackpad) @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/release => Deactivate trackpad <- Gamepad RightShoulder
+  Clean MacroEmitted @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/release => Click mouse Right <- Gamepad RightShoulder
+  Clean MenuEmitted(8) @ Menu save/left_trackpad/group 30 (radial_menu) => Radial menu 2: 8 bound cells <- Touchpad 0
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_1/Full_Press => Warp cursor <- Menu 2 Item 1
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_1/Full_Press => Hold mouse Left <- Menu 2 Item 1
+  Partial RemoveLayerApproximated @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_1/release :: controller_action remove_layer 2 1 1, , 
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_2/Full_Press => Warp cursor <- Menu 2 Item 2
+  Clean RowEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_2/Full_Press => KbmMBtn0 <- Menu 2 Item 2
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_3/Full_Press => Warp cursor <- Menu 2 Item 3
+  Clean RowEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_3/Full_Press => KbmMBtn0 <- Menu 2 Item 3
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press => Warp cursor <- Menu 2 Item 5
+  Clean RowEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press => KbmMBtn0 <- Menu 2 Item 5
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press => Warp cursor <- Menu 2 Item 5
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press => Hold mouse Left <- Menu 2 Item 5
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press => Warp cursor <- Menu 2 Item 5
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press => Hold mouse Left <- Menu 2 Item 5
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_8/Full_Press => Warp cursor <- Menu 2 Item 8
+  Clean RowEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_8/Full_Press => KbmMBtn0 <- Menu 2 Item 8
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_9/Full_Press => Warp cursor <- Menu 2 Item 9
+  Clean RowEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_9/Full_Press => KbmMBtn0 <- Menu 2 Item 9
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_10/Full_Press => Warp cursor <- Menu 2 Item 10
+  Clean RowEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_10/Full_Press => KbmMBtn0 <- Menu 2 Item 10
+  Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_12/Full_Press => Warp cursor <- Menu 2 Item 12
+  Clean RowEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_12/Full_Press => KbmMBtn0 <- Menu 2 Item 12
+  Clean ShiftLayerEmitted(Deactivate trackpad) @ Default/switch/group 8 (switches)/right_bumper/Start_Press => Toggle Deactivate trackpad <- Gamepad RightShoulder
+  Clean ShiftLayerEmitted(Deactivate trackpad) @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_1/Full_Press => Toggle Deactivate trackpad <- Menu 1 Item 1
+  Clean ShiftLayerEmitted(Deactivate trackpad) @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_1/Full_Press => Toggle Deactivate trackpad <- Menu 2 Item 1
+  Clean ShiftLayerEmitted(Menu save) @ Default/switch/group 8 (switches)/button_back_right/Full_Press => Toggle Menu save <- Gamepad Paddle3

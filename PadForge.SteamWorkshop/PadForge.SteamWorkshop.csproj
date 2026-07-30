@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>PadForge.SteamWorkshop</RootNamespace>
+    <AssemblyName>PadForge.SteamWorkshop</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Linking ..\SharedVersion.cs provides AssemblyVersion + AssemblyFileVersion,
+         so the SDK must not also emit them. Mirrors PadForge.Engine. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+    <!-- Windows-only by design (same platform floor as the rest of the solution).
+         The Steam clients touch the registry (legacy local-cache discovery lands
+         in a later phase) and the cache lives under %LOCALAPPDATA%. -->
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+    <Product>PadForge</Product>
+    <Company>PadForge</Company>
+    <Copyright>Copyright © PadForge Contributors</Copyright>
+    <Description>PadForge Steam Workshop client. SteamKit2 anonymous CM session, direct Steam HTTPS clients, Steam Input VDF parser, typed config model, and file-system cache.</Description>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Steam protocol client (LGPL-2.1-only). Pinned exactly: Valve adjusts the
+         Steam protocol periodically and SteamKit2 catches up in point releases;
+         an unpinned range would silently drift the wire contract. -->
+    <PackageReference Include="SteamKit2" Version="3.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PadForge.Engine\PadForge.Engine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Shared AssemblyVersion + AssemblyFileVersion. Single source of truth
+         across PadForge.App, PadForge.Engine, and PadForge.SteamWorkshop. -->
+    <Compile Include="..\SharedVersion.cs" Link="Properties\SharedVersion.cs" />
+  </ItemGroup>
+
+</Project>

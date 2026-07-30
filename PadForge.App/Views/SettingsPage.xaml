@@ -356,11 +356,12 @@
                             <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding InstallMidiServicesCommand}"
                                     Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
+                                    ToolTipService.ShowOnDisabled="True"
                                     Margin="0,0,8,0">
                                 <Button.Style>
                                     <Style TargetType="Button" BasedOn="{StaticResource EmberAccentButton}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMidiOsSupported}" Value="False">
+                                            <DataTrigger Binding="{Binding MidiOsSupported}" Value="False">
                                                 <Setter Property="ToolTip" Value="{Binding Settings_MidiOsRequired, Source={x:Static strings:Strings.Instance}}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -373,6 +374,41 @@
                                     Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══ Community Configs (Steam Workshop, #9) ═══ -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding Settings_CommunityConfigs, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Settings_CommunityConfigsDesc, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Settings_EnableCommunityConfigs, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding EnableCommunityConfigLookup}" Margin="0,0,0,8"/>
+                    <!-- Dependent options follow the HidHide card's Visibility
+                         gating: they appear once the master opt-in is on. -->
+                    <CheckBox Content="{Binding Settings_ShowLegacyConfigs, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding ShowLegacyWorkshopConfigs}"
+                              ToolTip="{Binding Settings_ShowLegacyConfigsTooltip, Source={x:Static strings:Strings.Instance}}"
+                              Visibility="{Binding EnableCommunityConfigLookup, Converter={StaticResource BoolToVisibilityConverter}}"
+                              Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <Button Content="{Binding Settings_ClearWorkshopCache, Source={x:Static strings:Strings.Instance}}"
+                                Command="{Binding ClearWorkshopCacheCommand}"
+                                Margin="0,0,8,0"/>
+                        <!-- Update detection (#9 Phase D). Stays visible with
+                             the opt-in off, like Clear Cached Configs: the
+                             handler answers with a status message instead of
+                             touching the network. -->
+                        <Button Content="{Binding Settings_CheckWorkshopUpdates, Source={x:Static strings:Strings.Instance}}"
+                                Command="{Binding CheckWorkshopUpdatesCommand}"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

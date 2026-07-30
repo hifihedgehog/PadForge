@@ -15,6 +15,7 @@ namespace PadForge.Tests
     /// MotionScale (2048 per count over the 0..65535 axis range) so the
     /// sensor and a real mouse feel identical through the grid.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class JoyCon2MouseSourceTests
     {
         private static MappingSource Src(string axis = "X", int deadZone = 0, bool invert = false) => new()

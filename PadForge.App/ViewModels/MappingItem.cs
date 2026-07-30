@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -207,7 +207,7 @@ namespace PadForge.ViewModels
             {
                 var t = TargetSettingName ?? "";
                 if (t.Contains("ThumbAxis", StringComparison.Ordinal)
-                    || t.StartsWith("ExtendedAxis", StringComparison.Ordinal)
+                    || t.StartsWith("RawAxis", StringComparison.Ordinal)
                     || t.StartsWith("KbmMouse", StringComparison.Ordinal)
                     || t.StartsWith("KbmScroll", StringComparison.Ordinal)
                     || t.StartsWith("MidiCC", StringComparison.Ordinal))
@@ -304,8 +304,25 @@ namespace PadForge.ViewModels
         /// the last contributing secondary goes away while the primary is InvertOnHold,
         /// the primary would be inert, so revert it to Direct. Re-fires the options so
         /// the dropdown updates.</summary>
+        /// <summary>Set while a reload is repopulating this row. The gate
+        /// below reads ExtraSources, and a reload empties that collection
+        /// before refilling it, so every firing point saw "no contributing
+        /// secondary" mid-load and reverted a perfectly valid stored
+        /// InvertOnHold primary to Direct. The loader brackets the row and
+        /// runs the gate once at the end, against the finished state.</summary>
+        private bool _suppressPrimaryKindGate;
+
+        internal void BeginLoadRow() => _suppressPrimaryKindGate = true;
+
+        internal void EndLoadRow()
+        {
+            _suppressPrimaryKindGate = false;
+            EnforcePrimaryKindGate();
+        }
+
         private void EnforcePrimaryKindGate()
         {
+            if (_suppressPrimaryKindGate) return;
             if (!HasContributingExtraSource
                 && string.Equals(PrimaryKindSource?.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal))
             {
@@ -444,6 +461,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(IsMouseMotionSource));
+                    OnPropertyChanged(nameof(IsGenericSensitivitySource));
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
                     // Toggling the primary source flips the row's
                     // effective source count, which can change whether
@@ -451,6 +469,20 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsCombineExpressionWarning));
                     OnPropertyChanged(nameof(IsTrivialDirect));
                     RefreshVariableAliases();
+                    // Re-resolve the picker selection against the descriptor
+                    // that just arrived. PopulateAvailableInputs syncs once,
+                    // right after it fills AvailableInputs, which is correct
+                    // only when the descriptors are already loaded. On a
+                    // profile switch the picker was filled first and the sync
+                    // saw an empty descriptor, took its early return, and left
+                    // SelectedInput null: an imported row rendered with a
+                    // blank picker even though its "(Any device)" entry was
+                    // sitting in the list. Re-syncing here makes the order
+                    // stop mattering. The sync is a scan of AvailableInputs
+                    // and runs under _suppressSelectionSync, so it cannot
+                    // recurse back into this setter.
+                    if (!_suppressSelectionSync && AvailableInputs != null && AvailableInputs.Count > 0)
+                        SyncSelectedInputFromDescriptor();
                 }
             }
         }
@@ -586,6 +618,13 @@ namespace PadForge.ViewModels
         {
             OnPropertyChanged(nameof(SourceDisplayText));
             OnPropertyChanged(nameof(RecordButtonText));
+            // The Kind pickers' option labels are localized. The list getter
+            // is culture-aware (LCID-keyed cache), but nothing re-read it on
+            // a live language switch, so the dropdowns kept the old language
+            // (owner report 2026-07-16, found alongside the Menus-tab twin).
+            OnPropertyChanged(nameof(PrimaryKindOptions));
+            foreach (var src in ExtraSources)
+                src.RefreshCulture();
         }
 
         // ─────────────────────────────────────────────
@@ -657,6 +696,8 @@ namespace PadForge.ViewModels
                         if (!string.IsNullOrEmpty(value.DeviceLabel))
                             PrimarySourceDeviceLabel = value.DeviceLabel;
                         LoadDescriptor(value.Descriptor);
+                        // E7 authoring default: see the shared helper.
+                        ApplyScrollUpAuthoringDefault(value.Descriptor);
                         InputSelectedFromDropdown?.Invoke(this, EventArgs.Empty);
                     }
                 }
@@ -670,6 +711,58 @@ namespace PadForge.ViewModels
         /// "Button 0" on the DualSense and a "Button 0" on a keyboard
         /// (which auto-mapping might have stamped) don't get confused.
         /// </summary>
+        /// <summary>Replaces the picker's item list and re-resolves the
+        /// selection, with the SelectedInput setter suppressed across BOTH
+        /// steps.
+        ///
+        /// <para>The clear-then-refill has to be inside the suppression, not
+        /// merely followed by it. A live ComboBox bound TwoWay to
+        /// SelectedInput reacts to its ItemsSource emptying and refilling by
+        /// driving SelectedItem, and that write lands in the setter, which
+        /// stamps the chosen entry's DeviceGuid onto PrimarySourceDeviceGuid
+        /// and runs LoadDescriptor. On a Workshop-imported row, whose stored
+        /// source is device-free, that silently rebinds the row to whichever
+        /// concrete device the picker happened to settle on, and the next
+        /// save writes the rebound row into the slot's MappingSet. The old
+        /// shape suppressed only SyncSelectedInputFromDescriptor, so the two
+        /// list mutations ran wide open. No test caught it because the
+        /// provocation needs a real ComboBox: with no visual tree nothing
+        /// ever writes back.</para></summary>
+        internal void ReplaceAvailableInputs(System.Collections.Generic.IEnumerable<InputChoice> choices)
+        {
+            _suppressSelectionSync = true;
+            try
+            {
+                AvailableInputs.Clear();
+                if (choices != null)
+                    foreach (var c in choices) AvailableInputs.Add(c);
+            }
+            finally { _suppressSelectionSync = false; }
+
+            // Resolve the selection from the row's OWN stored descriptor and
+            // GUID, which is the only authority for what this row points at.
+            SyncSelectedInputFromDescriptor();
+        }
+
+        /// <summary>Test seam: runs <paramref name="duringRebuild"/> at the
+        /// exact point a live ComboBox would write its SelectedItem back,
+        /// so the suppression can be asserted without a visual tree.</summary>
+        internal void ReplaceAvailableInputsForTest(
+            System.Collections.Generic.IEnumerable<InputChoice> choices,
+            System.Action duringRebuild)
+        {
+            _suppressSelectionSync = true;
+            try
+            {
+                AvailableInputs.Clear();
+                if (choices != null)
+                    foreach (var c in choices) AvailableInputs.Add(c);
+                duringRebuild?.Invoke();
+            }
+            finally { _suppressSelectionSync = false; }
+            SyncSelectedInputFromDescriptor();
+        }
+
         public void SyncSelectedInputFromDescriptor()
         {
             _suppressSelectionSync = true;
@@ -700,8 +793,13 @@ namespace PadForge.ViewModels
                     if (!string.Equals(choice.Descriptor, clean, StringComparison.OrdinalIgnoreCase))
                         continue;
                     if (descriptorOnlyMatch == null) descriptorOnlyMatch = choice;
-                    if (!string.IsNullOrEmpty(wantGuid)
-                        && string.Equals(choice.DeviceGuid ?? "", wantGuid, StringComparison.OrdinalIgnoreCase))
+                    // Straight guid equality, INCLUDING the empty guid: an
+                    // empty-guid ("any device") source genuinely matches
+                    // the picker's empty-guid "(Any device)" entry, so a
+                    // device-agnostic mapping resolves into that group
+                    // instead of borrowing the first concrete device's
+                    // entry and rendering under its header.
+                    if (string.Equals(choice.DeviceGuid ?? "", wantGuid, StringComparison.OrdinalIgnoreCase))
                     {
                         match = choice;
                         break;
@@ -860,9 +958,53 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(IsInverted));
             _isHalfAxis = half;
             OnPropertyChanged(nameof(IsHalfAxis));
+            OnPropertyChanged(nameof(IsInvertOutputApplicable));
 
             // Then set the descriptor string.
             SourceDescriptor = d;
+        }
+
+        /// <summary>E7 authoring default (2026-07-14 audit, closed
+        /// 2026-07-18), the ONE seam shared by the dropdown pick and the
+        /// recorder: the wire contract makes an un-inverted press on the
+        /// vertical scroll target read DOWN (Step 3's documented negation,
+        /// which the Workshop translator compensates for with SCROLL_UP =>
+        /// Invert). A user attaching a plain press expects scroll UP, so
+        /// direction-free press-class sources (buttons, POV directions,
+        /// touchpad clicks / finger downs) get Invert stamped as the
+        /// authoring default. Hydration and existing rows are untouched
+        /// (no migration), the user can uncheck for scroll down, and
+        /// KbmScrollNeg (the explicit down leg) plus horizontal scroll
+        /// are never stamped.</summary>
+        public void ApplyScrollUpAuthoringDefault(string descriptor)
+        {
+            if (!string.Equals(TargetSettingName, "KbmScroll", StringComparison.Ordinal)) return;
+            var cls = PadForge.Engine.Common.Mapping.SourceCoercion.ClassifyDescriptor(descriptor ?? "");
+            if (cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.Button
+                || cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.PovDirection
+                || cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.TouchpadButton
+                || cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.NfcTag)
+                IsInverted = true;
+        }
+
+        /// <summary>The primary descriptor with any legacy I/H invert/half
+        /// prefix removed (same parse as <see cref="LoadDescriptor"/> and
+        /// <see cref="RebuildDescriptor"/>). The primary KEEPS the encoded
+        /// form ("IAxis 2") while the flags are set, so every family
+        /// predicate below must test grammar on this body; testing the raw
+        /// string made the matching slider/checkbox vanish the moment the
+        /// user checked Invert or Half.</summary>
+        private static string StripLegacyPrefix(string descriptor)
+        {
+            string d = descriptor ?? string.Empty;
+            if (d.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+                return d.Substring(2);
+            if (d.StartsWith("I", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1])
+                && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(d))
+                return d.Substring(1);
+            if (d.StartsWith("H", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1]))
+                return d.Substring(1);
+            return d;
         }
 
         /// <summary>
@@ -917,7 +1059,17 @@ namespace PadForge.ViewModels
                 if (string.Equals(existing.Descriptor ?? "", clean, StringComparison.OrdinalIgnoreCase)
                     && string.Equals(existing.DeviceGuid ?? "", deviceGuid, StringComparison.OrdinalIgnoreCase)
                     && existing.Invert == effectiveInvert)
+                {
+                    // Clear on this path too. The equivalent clear below exists
+                    // so the save path doesn't double-emit the Neg, once from
+                    // NegSourceDescriptor and once from ExtraSources, and the
+                    // load path clears NegSourceDescriptor then rebuilds
+                    // ExtraSources from Sources[1..]. Returning early here on an
+                    // already-present source skipped it, so a re-add of an
+                    // existing Neg left both carriers populated.
+                    NegSourceDescriptor = string.Empty;
                     return;
+                }
             }
 
             ExtraSources.Insert(0, new MappingSourceItem
@@ -965,9 +1117,63 @@ namespace PadForge.ViewModels
                 {
                     RebuildDescriptor();
                     OnPropertyChanged(nameof(IsTrivialDirect));
+                    OnPropertyChanged(nameof(IsInvertApplicable));
+                    OnPropertyChanged(nameof(IsInvertOutputApplicable));
                 }
             }
         }
+
+        /// <summary>Whether the Invert checkbox actually does anything in
+        /// the current combination (round eight, R15): with Half + Either
+        /// both on, the engine reads absolute deflection and Invert is
+        /// documented inert, yet the checkbox was offered ungated while
+        /// both its neighbours carry applicability gates. Drives the
+        /// checkbox's IsEnabled so an inert option is visibly inert.</summary>
+        public bool IsInvertApplicable => !(_isHalfAxis && _isBidirectional);
+
+        private double _paramAccel;
+
+        /// <summary>The primary source's rate-dependent gain
+        /// (MappingSource.ParamAccel), the twin of the ExtraSources chip's
+        /// control. Hydrated from the row's primary and written back by the
+        /// save rebuild; 0 = off; 0..5 covers the translator's maximum.</summary>
+        public double ParamAccel
+        {
+            get => _paramAccel;
+            set => SetProperty(ref _paramAccel, Math.Clamp(value, 0.0, 5.0));
+        }
+
+        private RelayCommand _resetParamAccelCommand;
+        public RelayCommand ResetParamAccelCommand =>
+            _resetParamAccelCommand ??= new RelayCommand(() => ParamAccel = 0.0);
+
+        private bool _invertOutput;
+
+        /// <summary><para>Output flip for a primary whose Invert flag is
+        /// spoken for: on a half-axis read of a centered axis the engine
+        /// consumes Invert inside the read as the half selector, and the
+        /// output flip rides this field (MappingSource.InvertOutput).</para>
+        /// <para>Hydrated from the row's primary source and written back by
+        /// the save rebuild, exactly like IsBidirectional, the previous
+        /// boolean to outgrow the legacy I/H descriptor prefixes.</para></summary>
+        public bool InvertOutput
+        {
+            get => _invertOutput;
+            set => SetProperty(ref _invertOutput, value);
+        }
+
+        /// <summary>True when the engine would actually read
+        /// <see cref="InvertOutput"/> for the current primary. Delegates to
+        /// the engine's own predicate (the ONE definition of "Invert is
+        /// spoken for"), probing with the prefix-stripped descriptor body
+        /// because the raw primary keeps its legacy I/H encoding.</summary>
+        public bool IsInvertOutputApplicable =>
+            PadForge.Engine.Common.Mapping.SourceCoercion.InvertConsumedByHalfAxisRead(
+                new PadForge.Engine.Data.MappingSource
+                {
+                    Descriptor = StripLegacyPrefix(SourceDescriptor),
+                    HalfAxis = _isHalfAxis,
+                });
 
         private bool _isBidirectional;
 
@@ -985,7 +1191,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _isBidirectional, value))
+                {
                     OnPropertyChanged(nameof(IsTrivialDirect));
+                    OnPropertyChanged(nameof(IsInvertApplicable));
+                }
             }
         }
 
@@ -1028,17 +1237,28 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _irPointerSensitivity, Math.Clamp(value, 0.1, 5.0));
         }
 
+        private double _sensitivity = 1.0;
+        /// <summary>Generic per-source sensitivity for the primary source
+        /// (issue #9). Mirrors <see cref="MappingSourceItem.Sensitivity"/>;
+        /// applied only when the primary descriptor is a plain analog source
+        /// (see <see cref="IsGenericSensitivitySource"/>). 1.0 = unchanged.</summary>
+        public double Sensitivity
+        {
+            get => _sensitivity;
+            set => SetProperty(ref _sensitivity, Math.Clamp(value, 0.1, 5.0));
+        }
+
         /// <summary>True when the primary source descriptor is an absolute cursor
         /// axis ("Mouse Position X/Y"). Mirrors
         /// <see cref="MappingSourceItem.IsMouseCursorSource"/>.</summary>
         public bool IsMouseCursorSource => !string.IsNullOrEmpty(_sourceDescriptor)
-            && _sourceDescriptor.StartsWith("Mouse Position ", StringComparison.Ordinal);
+            && StripLegacyPrefix(_sourceDescriptor).StartsWith("Mouse Position ", StringComparison.Ordinal);
 
         /// <summary>True when the primary source descriptor is a Wii IR pointer axis
         /// ("IR Pointer X/Y", issue #146). Mirrors
         /// <see cref="MappingSourceItem.IsIrPointerSource"/>.</summary>
         public bool IsIrPointerSource => !string.IsNullOrEmpty(_sourceDescriptor)
-            && _sourceDescriptor.StartsWith("IR Pointer ", StringComparison.Ordinal);
+            && StripLegacyPrefix(_sourceDescriptor).StartsWith("IR Pointer ", StringComparison.Ordinal);
 
         /// <summary>True for a "Mouse Motion X/Y" primary source (#154).
         /// Mirrors <see cref="MappingSourceItem.IsMouseMotionSource"/> so the
@@ -1046,7 +1266,7 @@ namespace PadForge.ViewModels
         /// legacy-row template too (a missing property leaves the failed
         /// binding at Visibility's default, which is Visible on EVERY row).</summary>
         public bool IsMouseMotionSource => !string.IsNullOrEmpty(_sourceDescriptor)
-            && _sourceDescriptor.StartsWith("Mouse Motion ", StringComparison.Ordinal);
+            && StripLegacyPrefix(_sourceDescriptor).StartsWith("Mouse Motion ", StringComparison.Ordinal);
 
         /// <summary>Per-source gyro sensitivity multiplier for the primary
         /// source. Mirrors <see cref="MappingSourceItem.GyroSensitivity"/>;
@@ -1064,7 +1284,17 @@ namespace PadForge.ViewModels
         /// Mirrors <see cref="MappingSourceItem.IsGyroSource"/> so the
         /// primary's gyro-sensitivity slider can be gated identically.</summary>
         public bool IsGyroSource => !string.IsNullOrEmpty(_sourceDescriptor)
-            && _sourceDescriptor.StartsWith("Gyro ", StringComparison.Ordinal);
+            && StripLegacyPrefix(_sourceDescriptor).StartsWith("Gyro ", StringComparison.Ordinal);
+
+        /// <summary>True when the primary source carries the generic per-source
+        /// Sensitivity knob (issue #9): a plain "Axis N" / "Slider N" read or an
+        /// abstract Gamepad stick / trigger that canonicalizes to one. Mirrors
+        /// <see cref="MappingSourceItem.IsGenericSensitivitySource"/> so the
+        /// primary's slider is gated identically, mutually exclusive with the
+        /// specialized-family predicates above.</summary>
+        public bool IsGenericSensitivitySource =>
+            PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(
+                StripLegacyPrefix(_sourceDescriptor));
 
         /// <summary>
         /// True when the deadzone column is applicable for this row:
@@ -1075,8 +1305,9 @@ namespace PadForge.ViewModels
         {
             get
             {
-                // Check source is axis/slider.
-                var desc = _sourceDescriptor;
+                // Check source is axis/slider, on the prefix-stripped body
+                // (the primary keeps the legacy I/H encoding).
+                var desc = StripLegacyPrefix(_sourceDescriptor);
                 if (string.IsNullOrEmpty(desc)) return false;
 
                 // Engine-owned continuous families whose button-thresholding
@@ -1086,20 +1317,37 @@ namespace PadForge.ViewModels
                     desc.StartsWith("Mouse Motion ", StringComparison.Ordinal)
                     || desc.StartsWith("IR Pointer ", StringComparison.Ordinal)
                     || desc.StartsWith("IR Brightness", StringComparison.Ordinal)
-                    || desc.StartsWith("Balance ", StringComparison.Ordinal);
+                    || desc.StartsWith("Balance ", StringComparison.Ordinal)
+                    // Absolute pointer (#9 B-15): continuous position whose
+                    // button coercion thresholds on the per-source DeadZone
+                    // like the IR pointer (same set the grid's
+                    // MappingSourceItem.IsDeadZoneApplicable exposes), so it
+                    // joins the family list ahead of the blanket Touchpad
+                    // exclusion below.
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPointerDescriptor(desc)
+                    // Pressure (#239): the bool coercion thresholds on the
+                    // per-source DeadZone (whole pad or zone-windowed), so
+                    // it joins the family ahead of the blanket exclusion.
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPressureDescriptor(desc);
                 if (!engineFamily)
                 {
-                    int start = 0;
-                    if (start < desc.Length && desc[start] == 'I') start++;
-                    if (start < desc.Length && desc[start] == 'H') start++;
-                    var body = desc.AsSpan(start);
-                    if (!body.StartsWith("Axis") && !body.StartsWith("Slider"))
+                    // Touchpad finger X/Y joined the generic Sensitivity
+                    // family (#9 B-13) but have no axis-to-button threshold
+                    // read (ReadAsBool's touchpad branch reads Click /
+                    // "Finger M Down" / Ring / Pressure only, and Pressure
+                    // is family-listed above), so the remaining touchpad
+                    // descriptors keep the pre-widening hidden column.
+                    if (desc.StartsWith("Touchpad ", StringComparison.Ordinal))
+                        return false;
+                    // Covers "Axis N" / "Slider N" plus the abstract Gamepad
+                    // sticks / triggers that canonicalize to one (#9).
+                    if (!PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(desc))
                         return false;
                 }
 
                 // Check target is a discrete (button-type) output, not an axis.
                 var t = TargetSettingName;
-                if (t.Contains("ThumbAxis") || t.StartsWith("ExtendedAxis")
+                if (t.Contains("ThumbAxis") || t.StartsWith("RawAxis")
                     || t.StartsWith("KbmMouse") || t.StartsWith("KbmScroll")
                     || t.StartsWith("MidiCC"))
                     return false;
@@ -1122,7 +1370,11 @@ namespace PadForge.ViewModels
         {
             get
             {
-                var desc = _sourceDescriptor;
+                // Evaluate on the prefix-stripped body: the primary keeps
+                // the legacy I/H encoding while the flags are set, which
+                // otherwise hid the checkbox for every family below the
+                // moment Invert was checked.
+                var desc = StripLegacyPrefix(_sourceDescriptor);
                 if (string.IsNullOrEmpty(desc)) return false;
 
                 // Gyro is always axis-like.
@@ -1135,21 +1387,21 @@ namespace PadForge.ViewModels
                 if (desc.StartsWith("Mouse Motion ", StringComparison.Ordinal))
                     return true;
 
-                // Touchpad: X / Y / Pressure are continuous; Click and
-                // Finger Down are discrete.
+                // Touchpad: X / Y / Pressure (whole-pad or the #9 B-1
+                // half-windowed X/Y variants) are continuous; Click and
+                // Finger Down (windowed included) are discrete. The finger
+                // predicate covers the axis spellings, halves included,
+                // and never matches the bool forms.
                 if (desc.StartsWith("Touchpad ", StringComparison.Ordinal))
                 {
-                    return desc.EndsWith(" X", StringComparison.Ordinal)
-                        || desc.EndsWith(" Y", StringComparison.Ordinal)
+                    return PadForge.Engine.Common.Mapping.SourceCoercion
+                            .IsTouchpadFingerAxisDescriptor(desc)
                         || desc.EndsWith(" Pressure", StringComparison.Ordinal);
                 }
 
-                // Strip leading I / H prefix flags before checking the type token.
-                int start = 0;
-                if (start < desc.Length && desc[start] == 'I') start++;
-                if (start < desc.Length && desc[start] == 'H') start++;
-                var body = desc.AsSpan(start);
-                return body.StartsWith("Axis") || body.StartsWith("Slider");
+                // "Axis N" / "Slider N" plus the abstract Gamepad sticks /
+                // triggers that canonicalize to one (#9).
+                return PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(desc);
             }
         }
 
@@ -1275,6 +1527,11 @@ namespace PadForge.ViewModels
         public RelayCommand ResetGyroSensitivityCommand =>
             _resetGyroSensitivityCommand ??= new RelayCommand(() => GyroSensitivity = 1.0);
 
+        private RelayCommand _resetSensitivityCommand;
+        /// <summary>Resets the primary source's generic sensitivity to 1.0 (#9).</summary>
+        public RelayCommand ResetSensitivityCommand =>
+            _resetSensitivityCommand ??= new RelayCommand(() => Sensitivity = 1.0);
+
         /// <summary>Raised when the user clicks Record on this row.</summary>
         public event EventHandler StartRecordingRequested;
 
@@ -1338,7 +1595,10 @@ namespace PadForge.ViewModels
 
                 // Primary descriptor must be button-class (button / POV /
                 // touchpad). An axis source is bidirectional on its own.
+                // Abstract Gamepad button/D-pad aliases (#9) fold to their
+                // canonical "Button N" / "POV 0 Dir" form first.
                 var d = _sourceDescriptor.Trim();
+                d = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
                 if (d.StartsWith("Button ", StringComparison.Ordinal)) return true;
                 if (d.StartsWith("POV ", StringComparison.Ordinal)) return true;
                 if (d.StartsWith("Touchpad ", StringComparison.Ordinal)) return true;
@@ -1364,9 +1624,19 @@ namespace PadForge.ViewModels
         }
 
         private string _primarySourceDeviceLabel = "";
-        /// <summary>Human-friendly device name for the primary source.
-        /// Resolved by the InputService load path against the user's
-        /// known UserDevices.</summary>
+        /// <summary>Human-friendly device name for the primary source,
+        /// STORED and stamped by the load path from the row's GUID.
+        ///
+        /// <para>Deriving it live from PrimarySourceDeviceGuid was tried on
+        /// 2026-07-28 and reverted the same night. It is a faithful
+        /// projection, which is the problem: any path that clobbers the GUID
+        /// after the load immediately shows the wrong controller in the row
+        /// subtitle. The owner hit that switching between two same-type
+        /// profiles, where the subtitle named the other profile's pad while
+        /// the picker still listed this one's. The GUID clobber is a real
+        /// separate defect and is still open; surfacing it through the
+        /// subtitle traded one wrong display for another and regressed a
+        /// case that had been correct.</para></summary>
         public string PrimarySourceDeviceLabel
         {
             get => _primarySourceDeviceLabel;
@@ -1459,7 +1729,7 @@ namespace PadForge.ViewModels
         public bool IsTriggerTarget =>
             string.Equals(TargetSettingName, "LeftTrigger", StringComparison.Ordinal)
          || string.Equals(TargetSettingName, "RightTrigger", StringComparison.Ordinal)
-         || ((TargetSettingName?.StartsWith("ExtendedAxis", StringComparison.Ordinal) ?? false)
+         || ((TargetSettingName?.StartsWith("RawAxis", StringComparison.Ordinal) ?? false)
              && Category == MappingCategory.Triggers);
 
         /// <summary>Gates the Stick Trim settings strip (#155), same
@@ -1610,11 +1880,10 @@ namespace PadForge.ViewModels
                 if (c.MaxIndexedRef >= 0)
                     refsBit += (refsBit.Length == 0 ? " · " + s.Pad_Formula_Status_RefsLabel + ": " : ", ") + "s[" + c.MaxIndexedRef + "]";
 
-                // Effective source count = primary (a) + ExtraSources.
-                // Bipolar Neg-pair is merged into a, so it doesn't add
-                // a slot. ExtraSources.Count covers b..z directly.
-                int sourceCount = (string.IsNullOrEmpty(_sourceDescriptor) ? 0 : 1)
-                                + (ExtraSources?.Count ?? 0);
+                // Effective source count: exactly the slots the engine
+                // builds, which is NOT primary + ExtraSources.Count once a
+                // Neg pair or an InvertOnHold modifier is on the row.
+                int sourceCount = PositionalSourceCount;
 
                 var outOfRange = new System.Collections.Generic.List<char>();
                 foreach (char letter in refs)
@@ -1685,21 +1954,108 @@ namespace PadForge.ViewModels
                 ? positionLabel + " — " + PadForge.Resources.Strings.Strings.Instance.Pad_Formula_Var_NotYetMapped
                 : positionLabel + " · " + alias;
 
+        /// <summary>Walks the sources that occupy a Custom formula's
+        /// positional slots, mirroring what the engine's contribution builder
+        /// does. Two classes are skipped there with NO placeholder, so they
+        /// shift every later letter:
+        ///
+        /// <para>the bipolar Neg pair, which is Sources[1] carrying the same
+        /// device as the primary with Invert flipped on a bipolar-axis
+        /// target, because it merges into the primary's own slot; and any
+        /// InvertOnHold source, which is a row modifier and never enters the
+        /// combine. Null and postpone-suppressed sources DO get a 0f
+        /// placeholder there, precisely to keep the letters stable, so they
+        /// still count here.</para>
+        ///
+        /// <para>The UI used to count the primary plus ExtraSources.Count
+        /// flat. Since the load path materializes Sources[1..] as visible
+        /// ExtraSources rows, including the promoted Neg pair, that count ran
+        /// ahead of the engine's: a formula referencing the last letter
+        /// validated green in the editor and silently read nothing at
+        /// runtime, and the chip aliases named the wrong physical input.</para>
+        ///
+        /// <para>Allocation-free: this walks and either counts
+        /// (<paramref name="wanted"/> below zero) or returns the source at
+        /// that slot. Both entry points below are UI getters that re-fire on
+        /// every source change, so materializing a list per read was pure
+        /// churn.</para></summary>
+        private MappingSourceItem WalkPositionalSlots(int wanted, out int count)
+        {
+            count = 0;
+            MappingSourceItem hit = null;
+            bool primaryIsModifier = string.Equals(
+                PrimaryKindSource?.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal);
+            bool primaryExists = !string.IsNullOrEmpty(_sourceDescriptor) || primaryIsModifier;
+            if (primaryExists && !primaryIsModifier)
+            {
+                if (count == wanted) hit = null;   // slot 0 IS the primary
+                count++;
+            }
+
+            if (ExtraSources == null) return hit;
+
+            // The engine's neg-pair test, on the same two facts: Sources[1]
+            // shares the primary's device and its Invert is flipped.
+            int negPairIdx = -1;
+            if (IsBipolarAxisTarget && primaryExists && ExtraSources.Count > 0)
+            {
+                PadForge.Engine.Common.Mapping.SourceCoercion.StripLegacyPrefix(
+                    _sourceDescriptor, out bool primaryInvert, out _);
+                var first = ExtraSources[0];
+                if (first != null
+                    && string.Equals(first.DeviceGuid ?? "", PrimarySourceDeviceGuid ?? "",
+                        StringComparison.OrdinalIgnoreCase)
+                    && first.Invert != primaryInvert)
+                    negPairIdx = 0;
+            }
+
+            for (int i = 0; i < ExtraSources.Count; i++)
+            {
+                if (i == negPairIdx) continue;
+                var extra = ExtraSources[i];
+                if (extra != null && string.Equals(extra.Kind ?? "Direct", "InvertOnHold",
+                        StringComparison.Ordinal))
+                    continue;
+                if (count == wanted) hit = extra;
+                count++;
+            }
+            return hit;
+        }
+
+        /// <summary>How many letters a Custom formula may reference on this
+        /// row. See <see cref="WalkPositionalSlots"/> for why this is not
+        /// simply the primary plus ExtraSources.Count.</summary>
+        internal int PositionalSourceCount
+        {
+            get { WalkPositionalSlots(-1, out int n); return n; }
+        }
+
         /// <summary>Returns "DeviceLabel · InputName" for the source
         /// at the given position (0 = primary, 1+ = ExtraSources in
         /// UI order). Empty if no source occupies that slot.</summary>
         private string GetVariableAlias(int index)
         {
-            if (index == 0)
+            // Slot 0 is the primary ONLY when the primary actually occupies a
+            // positional slot. WalkPositionalSlots already encodes when it does
+            // not: an empty descriptor, or an InvertOnHold primary, which is a
+            // modifier rather than a source. In those cases slot 0 belongs to
+            // the first eligible ExtraSource, and returning early here handed
+            // the formula editor an empty alias for a letter that does refer to
+            // something. PositionalSourceCount counts that slot, so the letter
+            // was offered and then could not be named.
+            bool primaryIsModifier = string.Equals(
+                PrimaryKindSource?.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal);
+            bool primaryOwnsSlotZero = !string.IsNullOrEmpty(_sourceDescriptor) && !primaryIsModifier;
+
+            if (index == 0 && primaryOwnsSlotZero)
             {
-                if (string.IsNullOrEmpty(_sourceDescriptor)) return "";
                 string name = _selectedInput?.DisplayName ?? _resolvedSourceText ?? _sourceDescriptor;
                 return string.IsNullOrEmpty(_primarySourceDeviceLabel)
                     ? name : _primarySourceDeviceLabel + " · " + name;
             }
-            int extraIdx = index - 1;
-            if (ExtraSources == null || extraIdx < 0 || extraIdx >= ExtraSources.Count) return "";
-            var extra = ExtraSources[extraIdx];
+            if (index < 0) return "";
+            var extra = WalkPositionalSlots(index, out int slotCount);
+            if (index >= slotCount || extra == null) return "";
             if (extra == null || string.IsNullOrEmpty(extra.Descriptor)) return "";
             string ename = extra.SelectedInput?.DisplayName ?? extra.Descriptor;
             return string.IsNullOrEmpty(extra.DeviceLabel)
@@ -1730,8 +2086,7 @@ namespace PadForge.ViewModels
                 if (string.IsNullOrWhiteSpace(_combineExpression)) return false;
                 var c = Engine.Common.Mapping.MappingExpression.Compile(_combineExpression);
                 if (!c.IsValid) return false;
-                int sourceCount = (string.IsNullOrEmpty(_sourceDescriptor) ? 0 : 1)
-                                + (ExtraSources?.Count ?? 0);
+                int sourceCount = PositionalSourceCount;
                 foreach (char letter in c.ReferencedSingleLetterVars ?? "")
                 {
                     int idx = letter - 'a';
@@ -1768,7 +2123,7 @@ namespace PadForge.ViewModels
             bool isAxis =
                    t.Contains("ThumbAxis", StringComparison.Ordinal)
                 || t == "LeftTrigger" || t == "RightTrigger"
-                || t.StartsWith("ExtendedAxis", StringComparison.Ordinal)
+                || t.StartsWith("RawAxis", StringComparison.Ordinal)
                 || t.StartsWith("KbmMouse", StringComparison.Ordinal)
                 || t.StartsWith("KbmScroll", StringComparison.Ordinal)
                 || t.StartsWith("MidiCC", StringComparison.Ordinal)

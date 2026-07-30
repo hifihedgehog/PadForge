@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Text;
@@ -179,6 +179,23 @@ namespace PadForge.Engine.RemoteLink
         // button counts, never the already-decoded v1 metadata.
         private const byte DeviceListExtV2Magic = 0xE3;
 
+        // Third extension tail, same shape and same guarantees: one packed
+        // capability byte per device for the flags that arrived after the v1
+        // caps byte was exhausted at bit 128 (issue #199's HasAccelAux). The
+        // wire-format extension that byte's own comment demanded, rather
+        // than a second overloaded bit. Bit 1 = HasNfcReader (#241): without
+        // it a remote Switch controller's NFC sources were undiscoverable,
+        // and the consumer had to infer the reader from VID/PID, which is a
+        // guess the owner already knows the answer to.
+        private const byte DeviceListExtV3Magic = 0xE4;
+
+        // Fourth extension tail, same shape and same guarantees: one clamped
+        // byte per device for RawAxisCount, the axis twin of the v2 tail's
+        // RawButtonCount. The local side has tracked both since #193; only the
+        // button half ever crossed the wire, so a remote fight stick's or
+        // DS3's extra analog axes stayed undiscoverable on the consumer.
+        private const byte DeviceListExtV4Magic = 0xE5;
+
         // Shared by the handshake exchange AND the post-connect DeviceList sync (#138).
         // Each entry leads with the owner's STABLE slot, and caps now carry HasHaptic +
         // Online so a remote wheel's FFB pipeline runs and active/inactive propagates.
@@ -263,6 +280,28 @@ namespace PadForge.Engine.RemoteLink
             buf.Add(DeviceListExtV2Magic);
             for (int i = 0; i < count; i++)
                 buf.Add((byte)Math.Clamp(devices[i].RawButtonCount, 0, 255));
+
+            // v3 tail: the post-exhaustion capability byte (one per device).
+            buf.Add(DeviceListExtV3Magic);
+            for (int i = 0; i < count; i++)
+            {
+                byte caps2 = 0;
+                if (devices[i].HasNfcReader) caps2 |= 1;
+                // Bit 1 (issue #252): the aux gyro. Without it a remote
+                // Joy-Con pair's left-half gyro sources stay hidden, the
+                // same discoverability hole bit 0 closed for the reader.
+                if (devices[i].HasGyroAux) caps2 |= 2;
+                // Bit 2 (#193 over the wire): the generic-extra-axes flag. Its
+                // count rides the v4 tail; this is the half a consumer cannot
+                // compute, since the flag excludes sensor-surfaced extras.
+                if (devices[i].HasExtraGenericAxes) caps2 |= 4;
+                buf.Add(caps2);
+            }
+
+            // v4 tail: raw HID axis count per device. Twin of the v2 tail.
+            buf.Add(DeviceListExtV4Magic);
+            for (int i = 0; i < count; i++)
+                buf.Add((byte)Math.Clamp(devices[i].RawAxisCount, 0, 255));
             return buf.ToArray();
         }
 
@@ -378,6 +417,63 @@ namespace PadForge.Engine.RemoteLink
                 {
                     foreach (var info in list)
                         info.RawButtonCount = 0;
+                    v1ExtOk = false;   // cursor unreliable: do not read v3
+                }
+            }
+
+            // v3 tail (post-exhaustion capability byte). Same gating as v2:
+            // only after a clean v1 (and v2) parse, own try/catch, and an old
+            // peer that stops earlier simply leaves these flags false.
+            if (v1ExtOk)
+            {
+                try
+                {
+                    if (o < data.Length && data[o] == DeviceListExtV3Magic)
+                    {
+                        o++;
+                        for (int i = 0; i < count; i++)
+                        {
+                            byte caps2 = data[o++];
+                            list[i].HasNfcReader = (caps2 & 1) != 0;
+                            list[i].HasGyroAux = (caps2 & 2) != 0;
+                            list[i].HasExtraGenericAxes = (caps2 & 4) != 0;
+                        }
+                    }
+                }
+                catch
+                {
+                    foreach (var info in list)
+                    {
+                        info.HasNfcReader = false;
+                        info.HasGyroAux = false;
+                        info.HasExtraGenericAxes = false;
+                    }
+                    // Cursor unreliable: do not read v4. The v2 catch has
+                    // always done this; v3's did not need to until a tail was
+                    // appended after it.
+                    v1ExtOk = false;
+                }
+            }
+
+            // v4 tail (raw axis counts). Same gating and same guarantees as
+            // v2: only after a clean parse of everything before it, its own
+            // try/catch, and an old peer that stops earlier simply leaves the
+            // counts at 0, which the field documents as "same as NumAxes".
+            if (v1ExtOk)
+            {
+                try
+                {
+                    if (o < data.Length && data[o] == DeviceListExtV4Magic)
+                    {
+                        o++;
+                        for (int i = 0; i < count; i++)
+                            list[i].RawAxisCount = data[o++];
+                    }
+                }
+                catch
+                {
+                    foreach (var info in list)
+                        info.RawAxisCount = 0;
                 }
             }
             return list;

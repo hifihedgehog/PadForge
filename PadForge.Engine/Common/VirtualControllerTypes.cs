@@ -33,11 +33,19 @@ namespace PadForge.Engine
         /// <summary>MIDI controller (Windows MIDI Services).</summary>
         Midi = 3,
         /// <summary>Keyboard + Mouse output (built-in, no driver).</summary>
-        KeyboardMouse = 4
+        KeyboardMouse = 4,
+        /// <summary>Nintendo category. Switch Pro Controller for now.
+        /// Console-family face like Xbox / PlayStation (own bucket, icon,
+        /// fixed catalog profile) riding the Extended raw-HID data path
+        /// (profile-driven layout, raw button indices, Nintendo lettering).
+        /// No Customize surface: the slot always deploys the catalog
+        /// profile as-is. Appended after KeyboardMouse; numeric values are
+        /// persisted, never reorder.</summary>
+        Nintendo = 5
     }
 
     /// <summary>
-    /// The five user-facing VC type groups in fixed visual order.
+    /// The six user-facing VC type groups in fixed visual order.
     /// Each group is independent: operations on one MUST NOT affect any
     /// other. The group order matches the sidebar / dashboard rendering
     /// order and is not user-reorderable.
@@ -48,6 +56,7 @@ namespace PadForge.Engine
         {
             VirtualControllerType.Xbox,
             VirtualControllerType.PlayStation,
+            VirtualControllerType.Nintendo,
             VirtualControllerType.Extended,
             VirtualControllerType.KeyboardMouse,
             VirtualControllerType.Midi,

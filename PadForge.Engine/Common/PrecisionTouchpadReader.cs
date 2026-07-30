@@ -336,6 +336,12 @@ namespace PadForge.Engine
             // observe all fingers down at once.
             public int FrameExpected;
             public int FrameSeen;
+            /// <summary>Contacts in this frame that reported tip-switch = 0.
+            /// They are deliberately NOT buffered as live fingers, but the
+            /// frame's declared contactCount still counts them, so they must
+            /// count toward completion or a lift frame can never satisfy
+            /// FrameSeen >= FrameExpected.</summary>
+            public int FrameLifted;
             public readonly float[] FrameBufX = new float[PtpMaxFingers];
             public readonly float[] FrameBufY = new float[PtpMaxFingers];
             public readonly int[]   FrameBufId = new int[PtpMaxFingers];
@@ -438,6 +444,7 @@ namespace PadForge.Engine
                 // shouldn't carry into the next touch session.
                 ds.FrameExpected = 0;
                 ds.FrameSeen = 0;
+                ds.FrameLifted = 0;
             }
 
             // PTP exposes a single touchpad surface with up to
@@ -626,6 +633,19 @@ namespace PadForge.Engine
                     }
                     _valueCapsCache.Remove(removed);
                     _rangeCache.Remove(removed);
+                    // And the device state itself. Dropping only the three
+                    // caches left the _deviceStates entry behind, and that
+                    // dictionary is what GetDevices enumerates, so an
+                    // unplugged precision touchpad stayed enumerated and
+                    // reported Online for the rest of the session. Step 1's
+                    // disconnect branch keys on the device vanishing from that
+                    // enumeration, so it was unreachable for touchpads.
+                    // _stateLock, the same monitor every other _deviceStates
+                    // access takes. The three caches above are message-loop
+                    // only, but this dictionary is read from other threads
+                    // (GetDevices, the per-device readers).
+                    lock (_stateLock)
+                        _deviceStates.Remove(removed);
                 }
                 return IntPtr.Zero;
             }
@@ -763,10 +783,15 @@ namespace PadForge.Engine
         /// per-call ushort[8] stack scratch is plenty: a digitizer
         /// link collection's button page typically holds tip-switch +
         /// in-range + confidence at most.</summary>
+        // Reused scratch: ReadTipSwitch runs per contact per report on
+        // the single raw-input message thread (~125-250 Hz x contacts
+        // while a finger is down), so the per-call array was steady churn.
+        private static readonly ushort[] s_tipUsageScratch = new ushort[8];
+
         private static bool ReadTipSwitch(IntPtr preparsed, IntPtr report,
             uint reportLength, ushort linkCollection)
         {
-            var usageList = new ushort[8];
+            var usageList = s_tipUsageScratch;
             uint length = (uint)usageList.Length;
             uint hr = HidP_GetUsages(HidP_Input, HID_USAGE_PAGE_DIGITIZER,
                 linkCollection, usageList, ref length, preparsed, report, reportLength);
@@ -775,6 +800,10 @@ namespace PadForge.Engine
                 if (usageList[i] == HID_USAGE_DIGITIZER_TIP_SWITCH) return true;
             return false;
         }
+
+        // Reused per-report contact scratch (single raw-input thread;
+        // fully consumed into FrameBuf* before return).
+        private readonly List<(float x, float y, int id)> _fingersScratch = new();
 
         private void ParseTouchpadReport(IntPtr hDevice, IntPtr preparsed, IntPtr report, uint reportLength,
             HIDP_VALUE_CAPS[] valueCaps, (int logMinX, int logMaxX, int logMinY, int logMaxY) ranges)
@@ -794,7 +823,12 @@ namespace PadForge.Engine
             // hardware caps a single report at 2 contacts; we read up
             // to PtpMaxFingers defensively in case a parallel-mode
             // device packs all fingers into one report.
-            var fingers = new List<(float x, float y, int id)>();
+            var fingers = _fingersScratch;
+            fingers.Clear();
+            // Contacts in THIS report that reported tip-switch = 0. They are
+            // not buffered as live fingers, but the frame's declared
+            // contactCount counts them, so they must count toward completion.
+            int liftedThisReport = 0;
 
             foreach (var vc in valueCaps)
             {
@@ -820,7 +854,16 @@ namespace PadForge.Engine
                     // taps every lift report contributes one phantom
                     // contact — fingerCount overshoots, no tap fires.
                     if (!ReadTipSwitch(preparsed, report, reportLength, linkCollection))
+                    {
+                        // Counted, not buffered. The frame's contactCount
+                        // includes this lifted contact, so skipping it
+                        // silently left FrameSeen permanently short of
+                        // FrameExpected and the frame never completed: the
+                        // release was deferred to the 100 ms staleness timer,
+                        // or swallowed outright by the next tap.
+                        liftedThisReport++;
                         continue;
+                    }
 
                     if (HidP_GetUsageValue(HidP_Input, HID_USAGE_PAGE_GENERIC, linkCollection,
                             HID_USAGE_GENERIC_X, out uint rawX, preparsed, report, reportLength)
@@ -883,6 +926,7 @@ namespace PadForge.Engine
                         // Partial prior frame mismatches new total →
                         // truncated. Discard.
                         ds.FrameSeen = 0;
+                        ds.FrameLifted = 0;
                     }
                     ds.FrameExpected = System.Math.Min((int)contactCount, PtpMaxFingers);
                 }
@@ -906,8 +950,10 @@ namespace PadForge.Engine
                     ds.FrameSeen++;
                 }
 
+                ds.FrameLifted += liftedThisReport;
+
                 bool frameComplete =
-                    (ds.FrameExpected > 0 && ds.FrameSeen >= ds.FrameExpected)
+                    (ds.FrameExpected > 0 && ds.FrameSeen + ds.FrameLifted >= ds.FrameExpected)
                     || (ds.FrameExpected == 0);
 
                 if (!frameComplete) return;
@@ -973,6 +1019,14 @@ namespace PadForge.Engine
                 }
                 ds.FrameExpected = 0;
                 ds.FrameSeen = 0;
+                // The lift tally is part of the frame counter, so it resets with
+                // it. Leaving it set here let a lift from the frame just
+                // committed count toward the NEXT frame's completion test
+                // (FrameSeen + FrameLifted >= FrameExpected), which fired that
+                // frame early: on a pad that carries two contacts per report, a
+                // three-finger frame completed on its first report with two
+                // fingers and the third committed as a frame of its own.
+                ds.FrameLifted = 0;
             }
         }
 

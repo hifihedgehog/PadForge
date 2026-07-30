@@ -141,12 +141,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PadForge.Engine\PadForge.Engine.csproj" />
+    <!-- Steam Workshop community-config import (#9): anonymous Steam clients,
+         VDF parser, typed Steam Input model, translator, cache. -->
+    <ProjectReference Include="..\PadForge.SteamWorkshop\PadForge.SteamWorkshop.csproj" />
     <!-- HIDMaestro SDK, pre-built release DLL, NOT a ProjectReference.
          Using a ProjectReference would build from source and pick up
          unstable in-progress work from the HIDMaestro repo. Update by
          copying the Release build of HIDMaestro.Core.dll from the
          HIDMaestro repo into Resources\HIDMaestro\ after tagging a
-         release there. Current: v1.3.17. -->
+         release there. Current: v1.3.22 (worker survives foreign stop signals, HM#38). -->
     <Reference Include="HIDMaestro.Core">
       <HintPath>Resources\HIDMaestro\HIDMaestro.Core.dll</HintPath>
     </Reference>

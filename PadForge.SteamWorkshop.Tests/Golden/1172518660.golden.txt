@@ -1,0 +1,66 @@
+name: Team Fortress 2 Defaults
+description: Recommended controls for Team Fortress 2
+slots: kbm
+xbox rows: 0
+kbm rows: 11
+  Base | KbmMouseX | Sum
+    <- Gyro Yaw gyroSens=1.12
+    <- Touchpad 1 Finger 0 X sens=2.92
+  Base | KbmMouseY | Sum
+    <- Gyro Pitch gyroSens=1.12
+    <- Touchpad 1 Finger 0 Y sens=2.92
+  Layer_1172518660_1 | KbmMBtn0
+    <- Touchpad 1 Click
+    <- Gamepad RightShoulder
+    <- Gamepad RightTrigger [upper-half] dz=75
+  Layer_1172518660_1 | KbmMBtn1
+    <- Gamepad LeftTrigger [upper-half] dz=75
+  Layer_1172518660_1 | KbmMBtn2
+    <- Gamepad LeftShoulder
+  Layer_1172518660_1 | KbmMouseX
+    <- Touchpad 1 Finger 0 X sens=1.86
+  Layer_1172518660_1 | KbmMouseY
+    <- Touchpad 1 Finger 0 Y sens=1.86
+  Layer_1172518660_3 | KbmMouseX
+    <- Touchpad 1 Finger 0 X
+  Layer_1172518660_3 | KbmMouseY
+    <- Touchpad 1 Finger 0 Y
+  Layer_1172518660_5 | KbmMouseX
+    <- Touchpad 1 Finger 0 X
+  Layer_1172518660_5 | KbmMouseY
+    <- Touchpad 1 Finger 0 Y
+macros: 11
+  macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=35 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Layer_1172518660_1 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Layer_1172518660_3 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Layer_1172518660_5 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 1 Click) | btns=0x0000 in=[Touchpad 1 Click] layer=Layer_1172518660_5 strength=33%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Layer_1172518660_5 strength=66%
+report: v26 rows:x0+k11 macros:11 menus:0 layers:0 clean:15 partial:3 skipped:4 errors:0
+  Clean RowEmitted @ In-Game/gyro/group 48 (absolute_mouse) => KbmMouseX <- Gyro Yaw
+  Clean RowEmitted @ In-Game/gyro/group 48 (absolute_mouse) => KbmMouseY <- Gyro Pitch
+  Clean RowEmitted @ In-Game/right_trackpad/group 15 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ In-Game/right_trackpad/group 15 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Skipped GameActionsNotSupported(25) @ In-Game
+  Clean RowEmitted @ Menus/right_trackpad/group 6 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Menus/right_trackpad/group 6 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ Menus/right_trackpad/group 6 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
+  Clean RowEmitted @ Menus/switch/group 50 (switches)/left_bumper/Full_Press => KbmMBtn2 <- Gamepad LeftShoulder
+  Clean RowEmitted @ Menus/switch/group 50 (switches)/left_trigger/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ Menus/switch/group 50 (switches)/right_bumper/Full_Press => KbmMBtn0 <- Gamepad RightShoulder
+  Clean RowEmitted @ Menus/switch/group 50 (switches)/right_trigger/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Skipped GameActionsNotSupported(12) @ Menus
+  Clean RowEmitted @ Spectator Controls/right_trackpad/group 47 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Spectator Controls/right_trackpad/group 47 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Skipped GameActionsNotSupported(13) @ Spectator Controls
+  Clean RowEmitted @ In-Game during Popup/right_trackpad/group 37 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ In-Game during Popup/right_trackpad/group 37 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Skipped GameActionsNotSupported(19) @ In-Game during Popup
+  Partial PresetHasNoActivator(Menus) @ Menus
+  Partial PresetHasNoActivator(Spectator Controls) @ Spectator Controls
+  Partial PresetHasNoActivator(In-Game during Popup) @ In-Game during Popup

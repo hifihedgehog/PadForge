@@ -1,0 +1,149 @@
+name: City Skylines - Thank me later
+description: Your modified layout for this game.
+slots: kbm
+xbox rows: 0
+kbm rows: 33
+  Base | KbmKey1B
+    <- Gamepad ButtonStart
+  Base | KbmKey21
+    <- Gamepad LeftShoulder
+  Base | KbmKey22
+    <- Gamepad RightShoulder
+  Base | KbmKey41
+    <- Gamepad LeftStickX [lower-half]
+  Base | KbmKey42
+    <- Gamepad ButtonX
+  Base | KbmKey44
+    <- Gamepad LeftStickX [upper-half]
+  Base | KbmKey45
+    <- Gamepad DPadLeft
+  Base | KbmKey46
+    <- Gamepad DPadDown
+  Base | KbmKey49
+    <- Gamepad ButtonY
+  Base | KbmKey51
+    <- Gamepad DPadRight
+  Base | KbmKey52
+    <- Gamepad DPadUp
+  Base | KbmKey53
+    <- Gamepad LeftStickY [upper-half]
+  Base | KbmKey57
+    <- Gamepad LeftStickY [lower-half]
+  Base | KbmKey58
+    <- Gamepad LeftStick
+    <- Gamepad LeftTrigger [upper-half] dz=75
+  Base | KbmKey5A
+    <- Gamepad RightStick
+    <- Gamepad RightTrigger [upper-half] dz=75
+  Base | KbmKey7B
+    <- Gamepad ButtonBack
+  Base | KbmMBtn0
+    <- Gamepad ButtonA
+  Base | KbmMBtn1
+    <- Gamepad ButtonB
+  Base | KbmMBtn2 | Custom | s[0] || (s[1] && s[2]) || (s[3] && s[4])
+    <- Touchpad 0 Click
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchLeft
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchRight
+  Base | KbmMouseX | Sum
+    <- Touchpad 0 Finger 0 X
+    <- Gamepad RightStickX sens=1.238
+    <- Touchpad 0 Finger 0 X Right sens=1.98
+  Base | KbmMouseY | Sum
+    <- Touchpad 0 Finger 0 Y
+    <- Gamepad RightStickY sens=1.238
+    <- Touchpad 0 Finger 0 Y Right sens=1.98
+  Layer_2948704083_0_MS_dpad_18 | KbmKey20
+    <- Gamepad DPadDown
+  Layer_2948704083_0_MS_dpad_18 | KbmKey31
+    <- Gamepad DPadLeft
+  Layer_2948704083_0_MS_dpad_18 | KbmKey32
+    <- Gamepad DPadUp
+  Layer_2948704083_0_MS_dpad_18 | KbmKey33
+    <- Gamepad DPadRight
+  Layer_2948704083_0_MS_left_trackpad_14 | KbmKey70
+    <- Menu 1 Item 0
+  Layer_2948704083_0_MS_left_trackpad_14 | KbmKey73
+    <- Menu 1 Item 1
+  Layer_2948704083_0_MS_right_joystick_20 | KbmMouseX
+    <- Gamepad RightStickX
+  Layer_2948704083_0_MS_right_joystick_20 | KbmMouseY
+    <- Gamepad RightStickY
+  Layer_2948704083_0_MS_right_trackpad_15 | KbmKey42
+    <- Menu 2 Item 2
+  Layer_2948704083_0_MS_right_trackpad_15 | KbmKey49
+    <- Menu 2 Item 0
+  Layer_2948704083_0_MS_right_trackpad_15 | KbmKey55
+    <- Menu 2 Item 3
+  Layer_2948704083_0_MS_right_trackpad_15 | KbmKey59
+    <- Menu 2 Item 1
+kbm activators: 3
+  Hold Layer_2948704083_0_MS_left_trackpad_14 | Gamepad Paddle1 | inherit | name=Left Trackpad shift
+  Hold Layer_2948704083_0_MS_right_joystick_20 | Gamepad Paddle1 | inherit | name=Right Stick shift
+  Hold Layer_2948704083_0_MS_right_trackpad_15 | Gamepad Paddle1 | inherit | name=Right Trackpad shift
+macros: 6
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Click) | btns=0x0000 in=[Touchpad 0 Click] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightStick) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Click) | btns=0x0000 in=[Touchpad 0 Click; Touchpad 0 TouchRight] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro KeyTap OnPress | Screenshot key (Button 11) | btns=0x0000 in=[Button 11] layer=Base vk=0x2C
+menus: 2
+  menu 1 Grid | Touchpad 0 [left half] | Layer_2948704083_0_MS_left_trackpad_14 | fire=Click cells=2 pos=(2%,78%) | name=Touch Menu 1
+    [0] Quicksave icon=ghost_075_utility_020.png
+    [1] Quickload icon=ghost_075_utility_010.png
+  menu 2 Grid | Touchpad 0 [right half] | Layer_2948704083_0_MS_right_trackpad_15 | fire=Click cells=4 pos=(97%,50%) | name=Touch Menu 2
+    [0] Info Views icon=ghost_050_menu_0080.png
+    [1] Game Areas icon=ghost_050_menu_0030.png
+    [2] Bulldoze icon=ghost_010_wpn_0320.png
+    [3] Unlocking Panel icon=ghost_110_social_0070.png
+report: v26 rows:x0+k33 macros:6 menus:2 layers:3 clean:46 partial:1 skipped:0 errors:0
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey42 <- Gamepad ButtonX
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey49 <- Gamepad ButtonY
+  Clean RowEmitted @ Default/center_trackpad/group 22 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
+  Clean RowEmitted @ Default/center_trackpad/group 22 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
+  Clean RowEmitted @ Default/center_trackpad/group 22 (absolute_mouse)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
+  Clean RowEmitted @ Default/dpad/group 17 (dpad)/dpad_east/Full_Press => KbmKey51 <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 17 (dpad)/dpad_north/Full_Press => KbmKey52 <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 17 (dpad)/dpad_south/Full_Press => KbmKey46 <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 17 (dpad)/dpad_west/Full_Press => KbmKey45 <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/dpad/group 18 (dpad)/dpad_east/Full_Press => KbmKey33 <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 18 (dpad)/dpad_north/Full_Press => KbmKey32 <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 18 (dpad)/dpad_south/Full_Press => KbmKey20 <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 18 (dpad)/dpad_west/Full_Press => KbmKey31 <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/click/Full_Press => KbmKey58 <- Gamepad LeftStick
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_east/Full_Press => KbmKey44 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
+  Clean RowEmitted @ Default/left_trackpad/group 12 (scrollwheel)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
+  Clean MenuEmitted(2) @ Default/left_trackpad/group 14 (touch_menu) => Grid menu 1: 2 bound cells <- Touchpad 0
+  Clean RowEmitted @ Default/left_trackpad/group 14 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey70 <- Menu 1 Item 0
+  Clean RowEmitted @ Default/left_trackpad/group 14 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey73 <- Menu 1 Item 1
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmKey58 <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ Default/right_joystick/group 19 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ Default/right_joystick/group 19 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean RowEmitted @ Default/right_joystick/group 19 (joystick_mouse)/click/Full_Press => KbmKey5A <- Gamepad RightStick
+  Clean RowEmitted @ Default/right_joystick/group 20 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ Default/right_joystick/group 20 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X Right
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y Right
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
+  Clean MenuEmitted(4) @ Default/right_trackpad/group 15 (touch_menu) => Grid menu 2: 4 bound cells <- Touchpad 0
+  Clean RowEmitted @ Default/right_trackpad/group 15 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey49 <- Menu 2 Item 0
+  Clean RowEmitted @ Default/right_trackpad/group 15 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey59 <- Menu 2 Item 1
+  Clean RowEmitted @ Default/right_trackpad/group 15 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey42 <- Menu 2 Item 2
+  Clean RowEmitted @ Default/right_trackpad/group 15 (touch_menu)/touch_menu_button_3/Full_Press => KbmKey55 <- Menu 2 Item 3
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmKey5A <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Default/switch/group 16 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/switch/group 16 (switches)/button_menu/Full_Press => KbmKey7B <- Gamepad ButtonBack
+  Clean RowEmitted @ Default/switch/group 16 (switches)/left_bumper/Full_Press => KbmKey21 <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default/switch/group 16 (switches)/right_bumper/Full_Press => KbmKey22 <- Gamepad RightShoulder
+  Partial ShiftLayerEmpty(Left Stick shift) @ Default/switch/group 16 (switches)/left_click/Full_Press
+  Clean ShiftLayerEmitted(Left Trackpad shift) @ Default/switch/group 16 (switches)/button_back_right/Full_Press => Hold Left Trackpad shift <- Gamepad Paddle1
+  Clean ShiftLayerEmitted(Right Stick shift) @ Default/switch/group 16 (switches)/button_back_right/Full_Press => Hold Right Stick shift <- Gamepad Paddle1
+  Clean ShiftLayerEmitted(Right Trackpad shift) @ Default/switch/group 16 (switches)/button_back_right/Full_Press => Hold Right Trackpad shift <- Gamepad Paddle1

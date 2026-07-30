@@ -19,21 +19,34 @@ namespace PadForge.Views
 
         private PadViewModel _vm;
         private bool _dirty;
+
+        /// <summary>Last state actually painted, so the preview can repaint on
+        /// its OWN data changing.
+        ///
+        /// <para>PadViewModel.KbmOutputSnapshot is a plain auto-property that
+        /// InputService assigns every poll. Assigning it raises nothing, so
+        /// _dirty never went true for it and this view only ever repainted
+        /// when some UNRELATED view-model property happened to change. A
+        /// mapped button engaging is precisely the case where nothing else
+        /// changes, which is why the preview sat dead while the mapping
+        /// worked.</para></summary>
+        private KbmRawState _painted;
+        private bool _paintedValid;
         private bool _layoutBuilt;
 
         private readonly List<KbmKeyWidget> _keyWidgets = new();
 
         // Mouse elements
-        private Path _lmbPath;
-        private Path _rmbPath;
-        private Rectangle _scrollWheelPill;
+        private Shape _lmbPath;
+        private Shape _rmbPath;
+        private Shape _scrollWheelPill;
         private Polygon _scrollUpArrow;
         private Polygon _scrollDownArrow;
         private Ellipse _movementDot;
         private Ellipse _moveCircle;
         private Polygon _moveArrow;
-        private Rectangle _x1Rect;
-        private Rectangle _x2Rect;
+        private Shape _x1Rect;
+        private Shape _x2Rect;
         private Canvas _moveArrowCanvas;
 
         // Colors — pre-cached dark/light variants (zero per-frame allocation)
@@ -44,17 +57,13 @@ namespace PadForge.Views
         private static SolidColorBrush FA(byte a, byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromArgb(a, r, g, b)); br.Freeze(); return br; }
 
         private static readonly Brush _dimD = F(0x40,0x40,0x40), _dimL = F(0xB0,0xB0,0xB0);
-        private static readonly Brush _bodyD = F(0x50,0x50,0x50), _bodyL = F(0xC0,0xC0,0xC0);
         private static readonly Brush _btnD = F(0x60,0x60,0x60), _btnL = F(0xD0,0xD0,0xD0);
-        private static readonly Brush _mmbD = F(0x55,0x55,0x55), _mmbL = F(0xC8,0xC8,0xC8);
         private static readonly Brush _swD = F(0x38,0x38,0x38), _swL = F(0xA8,0xA8,0xA8);
         private static readonly Brush _dotD = F(0x88,0x88,0x88), _dotL = F(0x70,0x70,0x70);
         private static readonly Brush _knD = FA(0x28,0x88,0x88,0x88), _knL = FA(0x30,0x40,0x40,0x40);
 
         private static Brush DimBrush => IsDarkTheme ? _dimD : _dimL;
-        private static Brush MouseBodyBrush => IsDarkTheme ? _bodyD : _bodyL;
         private static Brush MouseButtonBrush => IsDarkTheme ? _btnD : _btnL;
-        private static Brush MmbBrush => IsDarkTheme ? _mmbD : _mmbL;
         private static Brush ScrollWheelBrush => IsDarkTheme ? _swD : _swL;
         // Ember (#175): this preview shows what the virtual keyboard and
         // mouse emit, so pressed states light ember, not the old blue.
@@ -92,22 +101,32 @@ namespace PadForge.Views
         }
 
         // Layout constants
-        private const double MC = 80;       // mouse center X
-        private const double MoveSize = 55; // movement circle diameter
+        private const double MC = MouseGlyph.CenterX;       // mouse center X
+        private const double MoveSize = MouseGlyph.MoveSize;
 
         // Button area (used by both build and render)
-        private const double BtnBottom = 58;
-        private const double MoveTop = 86;  // top of movement circle
+        private const double MoveTop = MouseGlyph.MoveTop;
 
         private System.Windows.Threading.DispatcherTimer _flashTimer;
         private string _flashTarget;
+        private MouseGlyph.Parts _parts;
         private bool _flashOn;
         private Wpf.Ui.Appearance.ApplicationTheme? _lastTheme;
 
         public KBMPreviewView()
         {
             InitializeComponent();
-            CompositionTarget.Rendering += OnRendering;
+            // Rendering rides tree presence, matching MousePreviewControl. A
+            // ctor-lifetime subscription to the STATIC CompositionTarget.Rendering
+            // roots the view forever and keeps its per-frame callback
+            // invalidating layout even when the hosting page is swapped out.
+            // See the note in ControllerSchematicView for the measurement.
+            Loaded += (s, e) =>
+            {
+                CompositionTarget.Rendering -= OnRendering;
+                CompositionTarget.Rendering += OnRendering;
+            };
+            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
         }
 
         public void Bind(PadViewModel vm)
@@ -126,6 +145,12 @@ namespace PadForge.Views
         public void Unbind()
         {
             CompositionTarget.Rendering -= OnRendering;
+            // Stop the recording flash FIRST. UpdateFlashTarget(null) is the
+            // only path that stops _flashTimer and clears _flashTarget, and
+            // it is reached only through the subscription torn down below, so
+            // unbinding mid-recording used to strand an armed timer that kept
+            // a control blinking and suppressed hover across the preview.
+            UpdateFlashTarget(null);
             if (_vm != null) _vm.PropertyChanged -= OnVmPropertyChanged;
             _vm = null;
             _layoutBuilt = false;
@@ -196,139 +221,16 @@ namespace PadForge.Views
         {
             MouseCanvas.Children.Clear();
 
-            const double mW = 100;              // mouse body width
-            double mL = MC - mW / 2;            // 30
-            double mR = MC + mW / 2;            // 130
-            const double mH = 185;              // mouse body height (taller)
-
-            // Scroll wheel dimensions (longer + slightly wider per request)
-            const double swW = 14, swH = 36;
-            double swL = MC - swW / 2;          // 73
-            double swR = MC + swW / 2;          // 87
-            const double swTop = 13;
-            const double swBot = swTop + swH;   // 49
-
-            // Button gap edges (1px margin outside scroll wheel)
-            double gapL = swL - 1;              // 72
-            double gapR = swR + 1;              // 88
-
-            // ── Mouse body outline ──
-            var mouseBody = new Path
-            {
-                Data = Geometry.Parse(
-                    $"M {mL},18 C {mL},6 {mL + 14},0 {MC},0 C {mR - 14},0 {mR},6 {mR},18" +
-                    $" L {mR},{mH - 18} C {mR},{mH - 4} {mR - 14},{mH} {MC},{mH}" +
-                    $" C {mL + 14},{mH} {mL},{mH - 4} {mL},{mH - 18} Z"),
-                Fill = MouseBodyBrush, Stroke = DimBrush, StrokeThickness = 2
-            };
-            MouseCanvas.Children.Add(mouseBody);
-
-            // ── LMB — contours around scroll wheel ──
-            // Path: top near center → curves outward to gap edge → down → across to body edge → up along body → curves back
-            _lmbPath = new Path
-            {
-                Data = Geometry.Parse(
-                    $"M {MC - 2},2 " +
-                    $"Q {gapL},{swTop - 4} {gapL},{swTop + 4} " +
-                    $"L {gapL},{BtnBottom} " +
-                    $"L {mL + 2},{BtnBottom} " +
-                    $"L {mL + 2},18 " +
-                    $"C {mL + 2},8 {mL + 14},2 {MC - 2},2 Z"),
-                Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1, Cursor = Cursors.Hand
-            };
-            MouseCanvas.Children.Add(_lmbPath);
-            _lmbPath.ToolTip = MappingLabel("KbmMBtn0");
-            AddButtonHandlers(_lmbPath, "KbmMBtn0");
-
-            // ── RMB — mirror of LMB ──
-            _rmbPath = new Path
-            {
-                Data = Geometry.Parse(
-                    $"M {MC + 2},2 " +
-                    $"Q {gapR},{swTop - 4} {gapR},{swTop + 4} " +
-                    $"L {gapR},{BtnBottom} " +
-                    $"L {mR - 2},{BtnBottom} " +
-                    $"L {mR - 2},18 " +
-                    $"C {mR - 2},8 {mR - 14},2 {MC + 2},2 Z"),
-                Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1, Cursor = Cursors.Hand
-            };
-            MouseCanvas.Children.Add(_rmbPath);
-            _rmbPath.ToolTip = MappingLabel("KbmMBtn1");
-            AddButtonHandlers(_rmbPath, "KbmMBtn1");
-
-            // ── MMB channel background (between buttons) ──
-            MouseCanvas.Children.Add(new Rectangle
-            {
-                Width = gapR - gapL, Height = BtnBottom - 2,
-                Fill = MmbBrush, RadiusX = 3, RadiusY = 3, IsHitTestVisible = false
-            });
-            Canvas.SetLeft(MouseCanvas.Children[^1], gapL);
-            Canvas.SetTop(MouseCanvas.Children[^1], 2);
-
-            // ── Scroll wheel pill (MMB click target) ──
-            _scrollWheelPill = new Rectangle
-            {
-                Width = swW, Height = swH,
-                RadiusX = swW / 2, RadiusY = swW / 2,
-                Fill = ScrollWheelBrush, Stroke = DimBrush, StrokeThickness = 1,
-                Cursor = Cursors.Hand
-            };
-            Canvas.SetLeft(_scrollWheelPill, swL);
-            Canvas.SetTop(_scrollWheelPill, swTop);
-            MouseCanvas.Children.Add(_scrollWheelPill);
-            _scrollWheelPill.ToolTip = MappingLabel("KbmMBtn2");
-            _scrollWheelPill.MouseEnter += (s, e) => { if (_flashTarget == null) { _scrollWheelPill.Stroke = HoverBrush; _scrollWheelPill.StrokeThickness = 2; } };
-            _scrollWheelPill.MouseLeave += (s, e) => { if (_flashTarget == null) { _scrollWheelPill.Stroke = DimBrush; _scrollWheelPill.StrokeThickness = 1; } };
-            _scrollWheelPill.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn2"); e.Handled = true; };
-
-            // ── Scroll direction arrows (on the scroll wheel) ──
-            _scrollUpArrow = new Polygon
-            {
-                Points = new PointCollection { new Point(MC, swTop + 4), new Point(MC - 4, swTop + 10), new Point(MC + 4, swTop + 10) },
-                Fill = DimBrush, Cursor = Cursors.Hand
-            };
-            MouseCanvas.Children.Add(_scrollUpArrow);
-            _scrollUpArrow.ToolTip = MappingLabel("KbmScroll") + " " + Strings.Instance.Pad_ScrollUp;
-            _scrollUpArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = HoverBrush; };
-            _scrollUpArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = DimBrush; };
-            _scrollUpArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScroll"); e.Handled = true; };
-
-            _scrollDownArrow = new Polygon
-            {
-                Points = new PointCollection { new Point(MC, swBot - 4), new Point(MC - 4, swBot - 10), new Point(MC + 4, swBot - 10) },
-                Fill = DimBrush, Cursor = Cursors.Hand
-            };
-            MouseCanvas.Children.Add(_scrollDownArrow);
-            _scrollDownArrow.ToolTip = MappingLabel("KbmScroll") + " " + Strings.Instance.Pad_ScrollDown;
-            _scrollDownArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = HoverBrush; };
-            _scrollDownArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = DimBrush; };
-            _scrollDownArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScrollNeg"); e.Handled = true; };
-
-            // ── Separator between buttons and movement area ──
-            MouseCanvas.Children.Add(new Line
-            {
-                X1 = mL + 8, Y1 = BtnBottom + 6, X2 = mR - 8, Y2 = BtnBottom + 6,
-                Stroke = DimBrush, StrokeThickness = 0.5
-            });
-
-            // ── Movement circle — embedded in the body ──
-            double moveX = MC - MoveSize / 2;
-
-            _moveCircle = new Ellipse
-            {
-                Width = MoveSize, Height = MoveSize,
-                Fill = new SolidColorBrush(Color.FromArgb(0x18, 0x88, 0x88, 0x88)),
-                Stroke = DimBrush, StrokeThickness = 1.5, Cursor = Cursors.Hand,
-                ToolTip = Strings.Instance.Pad_MouseMovement
-            };
-            Canvas.SetLeft(_moveCircle, moveX);
-            Canvas.SetTop(_moveCircle, MoveTop);
-            MouseCanvas.Children.Add(_moveCircle);
-
-            _movementDot = new Ellipse { Width = 10, Height = 10, Fill = DotBrush, IsHitTestVisible = false };
-            Canvas.SetLeft(_movementDot, moveX + MoveSize / 2 - 5);
-            Canvas.SetTop(_movementDot, MoveTop + MoveSize / 2 - 5);
-            MouseCanvas.Children.Add(_movementDot);
+            var parts = MouseGlyph.Build(MouseCanvas, IsDarkTheme, DimBrush,
+                MouseButtonBrush, ScrollWheelBrush, DotBrush);
+            _lmbPath = parts.Lmb; _rmbPath = parts.Rmb;
+            _x1Rect = parts.X1;   _x2Rect = parts.X2;
+            _scrollWheelPill = parts.Wheel;
+            _scrollUpArrow = parts.ScrollUp; _scrollDownArrow = parts.ScrollDown;
+            _moveCircle = parts.MoveCircle;  _movementDot = parts.MoveDot;
+            _parts = parts;
+            _moveCircle.Cursor = Cursors.Hand;
+            _moveCircle.ToolTip = Strings.Instance.Pad_MouseMovement;
 
             // Direction arrow (hidden until hover/flash)
             double arrowLen = MoveSize * 0.35, arrowBase = 6;
@@ -344,11 +246,36 @@ namespace PadForge.Views
             };
             _moveArrowCanvas = new Canvas { Width = MoveSize, Height = MoveSize, IsHitTestVisible = false };
             _moveArrowCanvas.Children.Add(_moveArrow);
-            Canvas.SetLeft(_moveArrowCanvas, moveX);
+            Canvas.SetLeft(_moveArrowCanvas, parts.MoveX);
             Canvas.SetTop(_moveArrowCanvas, MoveTop);
             MouseCanvas.Children.Add(_moveArrowCanvas);
 
-            // Hover: directional arrow in quadrant
+            MouseGlyph.AddOutline(MouseCanvas, DimBrush);
+
+            // Only the scroll arrows carry their own handlers (below); the
+            // five masked art layers are IsHitTestVisible=false with
+            // dedicated hit Paths, so a Cursor on them is inert (round 33).
+            _scrollUpArrow.Cursor = Cursors.Hand;
+            _scrollDownArrow.Cursor = Cursors.Hand;
+
+            // Engine descriptors, not visual order: LMB is Btn0, RMB is
+            // Btn1, the wheel is Btn2.
+            AddMouseControlHandlers(_parts.LmbHit,   _parts.LmbHover,   "KbmMBtn0");
+            AddMouseControlHandlers(_parts.RmbHit,   _parts.RmbHover,   "KbmMBtn1");
+            AddMouseControlHandlers(_parts.WheelHit, _parts.WheelHover, "KbmMBtn2");
+            AddMouseControlHandlers(_parts.X1Hit,    _parts.X1Hover,    "KbmMBtn3");
+            AddMouseControlHandlers(_parts.X2Hit,    _parts.X2Hover,    "KbmMBtn4");
+
+            _scrollUpArrow.ToolTip = MappingLabel("KbmScroll") + " " + Strings.Instance.Pad_ScrollUp;
+            _scrollUpArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = HoverBrush; };
+            _scrollUpArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = DimBrush; };
+            _scrollUpArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScroll"); e.Handled = true; };
+
+            _scrollDownArrow.ToolTip = MappingLabel("KbmScroll") + " " + Strings.Instance.Pad_ScrollDown;
+            _scrollDownArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = HoverBrush; };
+            _scrollDownArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = DimBrush; };
+            _scrollDownArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScrollNeg"); e.Handled = true; };
+
             _moveCircle.MouseMove += (s, e) =>
             {
                 if (_flashTarget != null) return;
@@ -377,44 +304,63 @@ namespace PadForge.Views
                 e.Handled = true;
             };
 
-            // Side buttons (X1, X2) — small areas on the left side of the body
-            _x1Rect = new Rectangle
-            {
-                Width = 8, Height = 14, RadiusX = 2, RadiusY = 2,
-                Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1, Cursor = Cursors.Hand
-            };
-            Canvas.SetLeft(_x1Rect, mL - 4); Canvas.SetTop(_x1Rect, 70);
-            MouseCanvas.Children.Add(_x1Rect);
-            _x1Rect.ToolTip = MappingLabel("KbmMBtn3");
-            _x1Rect.MouseEnter += (s, e) => { if (_flashTarget == null) { _x1Rect.Stroke = HoverBrush; _x1Rect.StrokeThickness = 2; } };
-            _x1Rect.MouseLeave += (s, e) => { if (_flashTarget == null) { _x1Rect.Stroke = DimBrush; _x1Rect.StrokeThickness = 1; } };
-            _x1Rect.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn3"); e.Handled = true; };
-
-            _x2Rect = new Rectangle
-            {
-                Width = 8, Height = 14, RadiusX = 2, RadiusY = 2,
-                Fill = MouseButtonBrush, Stroke = DimBrush, StrokeThickness = 1, Cursor = Cursors.Hand
-            };
-            Canvas.SetLeft(_x2Rect, mL - 4); Canvas.SetTop(_x2Rect, 88);
-            MouseCanvas.Children.Add(_x2Rect);
-            _x2Rect.ToolTip = MappingLabel("KbmMBtn4");
-            _x2Rect.MouseEnter += (s, e) => { if (_flashTarget == null) { _x2Rect.Stroke = HoverBrush; _x2Rect.StrokeThickness = 2; } };
-            _x2Rect.MouseLeave += (s, e) => { if (_flashTarget == null) { _x2Rect.Stroke = DimBrush; _x2Rect.StrokeThickness = 1; } };
-            _x2Rect.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmMBtn4"); e.Handled = true; };
-
-            MouseCanvas.Height = mH + 6;
+            MouseCanvas.Height = MouseGlyph.BodyH + 6;
         }
 
         // ─────────────────────────────────────────────
         //  Helpers
         // ─────────────────────────────────────────────
 
-        private void AddButtonHandlers(Path path, string target)
+        /// <summary>Wires one mouse control for recording.
+        ///
+        /// <para>Input rides a dedicated HIT shape, not the visual: the visual
+        /// is a full-canvas rectangle carrying an alpha mask, and WPF hit-tests
+        /// such a rectangle over its whole rect rather than its mask, so every
+        /// control would otherwise answer for the entire pad. Hover shows a
+        /// separate wash layer rather than stroking anything, because the
+        /// visual's Fill is owned by the render loop and the flash
+        /// animation.</para></summary>
+        private void AddMouseControlHandlers(Shape hit, Shape hover, string target)
         {
-            path.MouseEnter += (s, e) => { if (_flashTarget == null) { path.Stroke = HoverBrush; path.StrokeThickness = 2; } };
-            path.MouseLeave += (s, e) => { if (_flashTarget == null) { path.Stroke = DimBrush; path.StrokeThickness = 1; } };
-            path.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, target); e.Handled = true; };
+            if (hit == null) return;
+            hit.Cursor = Cursors.Hand;
+            hit.ToolTip = MappingLabel(target);
+            hit.MouseEnter += (s, e) =>
+            {
+                if (_flashTarget == null && hover != null) hover.Visibility = Visibility.Visible;
+            };
+            hit.MouseLeave += (s, e) =>
+            {
+                if (hover != null) hover.Visibility = Visibility.Collapsed;
+            };
+            hit.MouseLeftButtonDown += (s, e) =>
+            {
+                ControllerElementRecordRequested?.Invoke(this, target);
+                e.Handled = true;
+            };
         }
+
+        /// <summary>Only the fields this preview actually draws. Comparing
+        /// the whole struct would repaint on values nothing here shows.</summary>
+        /// <summary>Change gate for the preview repaint. It has to name EVERY
+        /// lane that can move the cursor, or motion arriving only on an
+        /// unlisted lane repaints nothing and the preview reports a still
+        /// cursor while the real one moves. Gyro and touchpad stopped writing
+        /// MouseDeltaX/Y when they moved to their own exact-counts lanes, so
+        /// listing only that pair left the preview blind to both; flick stick
+        /// had been invisible here since it got its lane.</summary>
+        internal static bool SamePreviewState(in KbmRawState a, in KbmRawState b)
+            => a.Keys0 == b.Keys0 && a.Keys1 == b.Keys1
+            && a.Keys2 == b.Keys2 && a.Keys3 == b.Keys3
+            && a.MouseButtons == b.MouseButtons
+            && a.ScrollDelta == b.ScrollDelta
+            && a.MouseDeltaX == b.MouseDeltaX
+            && a.MouseDeltaY == b.MouseDeltaY
+            && a.MouseGyroX == b.MouseGyroX
+            && a.MouseGyroY == b.MouseGyroY
+            && a.MouseTouchX == b.MouseTouchX
+            && a.MouseTouchY == b.MouseTouchY
+            && a.MouseFlickX == b.MouseFlickX;
 
         private string MappingLabel(string targetSettingName)
             => _vm?.Mappings?.FirstOrDefault(m => m.TargetSettingName == targetSettingName)?.TargetLabel ?? targetSettingName;
@@ -427,6 +373,13 @@ namespace PadForge.Views
         {
             if (_flashTimer != null) { _flashTimer.Stop(); _flashTimer = null; }
             ApplyFlashState(false);
+            // ApplyFlashState(false) repaints the widget to its NEUTRAL brush,
+            // which is not necessarily its live value. Drop the change latch
+            // so the next frame repaints from the snapshot; without this, an
+            // idle pad leaves the control stuck neutral because nothing in
+            // the snapshot changed.
+            _paintedValid = false;
+            _dirty = true;
             _flashTarget = target;
             if (string.IsNullOrEmpty(target)) return;
             _flashOn = true;
@@ -446,8 +399,10 @@ namespace PadForge.Views
             if (_flashTarget == "KbmMBtn0") { _lmbPath.Fill = highlight ? FlashBrush : MouseButtonBrush; return; }
             if (_flashTarget == "KbmMBtn1") { _rmbPath.Fill = highlight ? FlashBrush : MouseButtonBrush; return; }
             if (_flashTarget == "KbmMBtn2") { _scrollWheelPill.Fill = highlight ? FlashBrush : ScrollWheelBrush; return; }
-            if (_flashTarget == "KbmMBtn3") { _x1Rect.Stroke = highlight ? FlashBrush : DimBrush; _x1Rect.StrokeThickness = highlight ? 2 : 1; return; }
-            if (_flashTarget == "KbmMBtn4") { _x2Rect.Stroke = highlight ? FlashBrush : DimBrush; _x2Rect.StrokeThickness = highlight ? 2 : 1; return; }
+            // Fill, not Stroke: these are masked full-canvas rectangles now,
+            // so stroking one draws a border around the whole pad.
+            if (_flashTarget == "KbmMBtn3") { _x1Rect.Fill = highlight ? FlashBrush : MouseButtonBrush; return; }
+            if (_flashTarget == "KbmMBtn4") { _x2Rect.Fill = highlight ? FlashBrush : MouseButtonBrush; return; }
 
             if (_flashTarget.StartsWith("KbmMouse"))
             {
@@ -467,15 +422,27 @@ namespace PadForge.Views
             if (_flashTarget == "KbmScroll")
             {
                 _scrollUpArrow.Fill = highlight ? FlashBrush : DimBrush;
-                _scrollWheelPill.Stroke = highlight ? FlashBrush : DimBrush;
-                _scrollWheelPill.StrokeThickness = highlight ? 2 : 1;
+                // Fill, not Stroke: the wheel is a masked full-canvas
+                // rectangle, so stroking it borders the whole pad.
+                _scrollWheelPill.Fill = highlight ? FlashBrush : ScrollWheelBrush;
                 return;
             }
             if (_flashTarget == "KbmScrollNeg")
             {
                 _scrollDownArrow.Fill = highlight ? FlashBrush : DimBrush;
-                _scrollWheelPill.Stroke = highlight ? FlashBrush : DimBrush;
-                _scrollWheelPill.StrokeThickness = highlight ? 2 : 1;
+                // Fill, not Stroke: the wheel is a masked full-canvas
+                // rectangle, so stroking it borders the whole pad.
+                _scrollWheelPill.Fill = highlight ? FlashBrush : ScrollWheelBrush;
+                return;
+            }
+            // The horizontal pair had no branch at all, so a source mapped to
+            // horizontal scroll flashed nothing and the preview looked dead.
+            // The pad draws no left/right arrows, so the wheel itself is the
+            // whole surface, which is what the two vertical branches light in
+            // addition to their arrow.
+            if (_flashTarget == "KbmScrollH" || _flashTarget == "KbmScrollHNeg")
+            {
+                _scrollWheelPill.Fill = highlight ? FlashBrush : ScrollWheelBrush;
                 return;
             }
         }
@@ -486,13 +453,23 @@ namespace PadForge.Views
 
         private void OnRendering(object sender, EventArgs e)
         {
+            // Retained-page guard (see ControllerModelView.OnRendering): skip
+            // all per-frame work while hidden, including the theme check.
+            // Iconic gate: IsVisible stays TRUE while minimized.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             // Rebuild on theme change.
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_layoutBuilt && _lastTheme != currentTheme) { _lastTheme = currentTheme; RebuildLayout(); }
 
-            if (!_dirty || _vm == null || !_layoutBuilt) return;
-            _dirty = false;
+            if (_vm == null || !_layoutBuilt) return;
             var kbm = _vm.KbmOutputSnapshot;
+            // Repaint when OUR data moved, not only when the view model
+            // happened to raise something. See _painted.
+            bool moved = !_paintedValid || !SamePreviewState(kbm, _painted);
+            if (!_dirty && !moved) return;
+            _dirty = false;
+            _painted = kbm;
+            _paintedValid = true;
 
             // Keyboard keys
             foreach (var w in _keyWidgets)
@@ -508,31 +485,32 @@ namespace PadForge.Views
             {
                 bool p = kbm.GetMouseButton(0);
                 _lmbPath.Fill = p ? AccentBrush : MouseButtonBrush;
-                SetGlow(_lmbPath, p ? EmberGlow : null);
             }
             if (_flashTarget != "KbmMBtn1" || !_flashOn)
             {
                 bool p = kbm.GetMouseButton(1);
                 _rmbPath.Fill = p ? AccentBrush : MouseButtonBrush;
-                SetGlow(_rmbPath, p ? EmberGlow : null);
             }
-            if (_flashTarget != "KbmMBtn2" || !_flashOn)
+            // The wheel Fill is ALSO the recording flash surface for the
+            // scroll targets (ApplyFlashState), not just KbmMBtn2; a guard
+            // that only knew the button let this repaint stomp the scroll
+            // flash every frame (round 33, C4).
+            if ((_flashTarget != "KbmMBtn2"
+                 && _flashTarget != "KbmScroll"
+                 && _flashTarget != "KbmScrollNeg") || !_flashOn)
             {
                 bool p = kbm.GetMouseButton(2);
                 _scrollWheelPill.Fill = p ? AccentBrush : ScrollWheelBrush;
-                SetGlow(_scrollWheelPill, p ? EmberGlow : null);
             }
             if (_flashTarget != "KbmMBtn3" || !_flashOn)
             {
                 bool p = kbm.GetMouseButton(3);
                 _x1Rect.Fill = p ? AccentBrush : MouseButtonBrush;
-                SetGlow(_x1Rect, p ? EmberGlowSmall : null);
             }
             if (_flashTarget != "KbmMBtn4" || !_flashOn)
             {
                 bool p = kbm.GetMouseButton(4);
                 _x2Rect.Fill = p ? AccentBrush : MouseButtonBrush;
-                SetGlow(_x2Rect, p ? EmberGlowSmall : null);
             }
 
             // Movement dot — map output values directly (deadzone already applied in Step 3)
@@ -542,10 +520,31 @@ namespace PadForge.Views
                 double centerX = moveX + MoveSize / 2 - 5;
                 double centerY = MoveTop + MoveSize / 2 - 5;
                 double maxDeflect = MoveSize / 2 - 8;
-                short mx = kbm.MouseDeltaX, my = kbm.MouseDeltaY;
+                // Every lane that moves the cursor, not just the deflection
+                // one. The rate lanes (gyro, touchpad, flick) report mouse
+                // COUNTS rather than a [-1..+1] deflection, so they are
+                // normalised by the counts one full deflection is worth
+                // (KeyboardMouseVirtualController's per-poll spend) before
+                // being summed in. Sign matches what the VC sends: those
+                // lanes negate into screen space there, and screen-Y is
+                // positive-down while this dot's Y is positive-up.
+                // Signs derived per lane from what the VC actually sends, not
+                // assumed. This dot is positive-RIGHT and positive-UP, while
+                // the screen is positive-right and positive-DOWN.
+                //   deflection: dx = +DeltaX, dy = -DeltaY  -> +X, +Y here
+                //   gyro:       dx = -GyroX,  dy = -GyroY   -> -X, +Y here
+                //   touchpad:   dx = +TouchX, dy = +TouchY  -> +X, -Y here
+                //   flick:      dx = +FlickX                -> +X
+                const double RateCountsFullScale = 15.0;
+                double mx = kbm.MouseDeltaX / 32767.0
+                            + (-kbm.MouseGyroX + kbm.MouseTouchX + kbm.MouseFlickX) / RateCountsFullScale;
+                double my = kbm.MouseDeltaY / 32767.0
+                            + (kbm.MouseGyroY - kbm.MouseTouchY) / RateCountsFullScale;
+                mx = Math.Clamp(mx, -1.0, 1.0);
+                my = Math.Clamp(my, -1.0, 1.0);
 
-                double dotX = centerX + mx / 32767.0 * maxDeflect;
-                double dotY = centerY - my / 32767.0 * maxDeflect;
+                double dotX = centerX + mx * maxDeflect;
+                double dotY = centerY - my * maxDeflect;
 
                 Canvas.SetLeft(_movementDot, dotX);
                 Canvas.SetTop(_movementDot, dotY);

@@ -306,6 +306,13 @@ namespace PadForge.Engine
 
         /// <summary>Per-keyboard key state arrays, keyed by hDevice.</summary>
         private static readonly ConcurrentDictionary<IntPtr, bool[]> _keyboardStates = new();
+        /// <summary>Values snapshot for the per-poll aggregate merge:
+        /// ConcurrentDictionary's enumerator is a class, so the foreach in
+        /// GetKeyboardState allocated one per poll per aggregate reader
+        /// (~200 KB/s in the allocation trace). Rebuilt on device add
+        /// (GetOrAdd miss); device removal never shrinks these maps at
+        /// runtime, matching the dictionary's own lifetime.</summary>
+        private static volatile bool[][] _keyboardStatesValues = Array.Empty<bool[]>();
 
         /// <summary>Per-mouse state, keyed by hDevice.</summary>
         private static readonly ConcurrentDictionary<IntPtr, MouseDeviceState> _mouseStates = new();
@@ -329,6 +336,11 @@ namespace PadForge.Engine
         /// edges), so each report rebuilds the device's array from scratch.
         /// Getting this wrong latches every press forever.</summary>
         private static readonly ConcurrentDictionary<IntPtr, bool[]> _consumerStates = new();
+        /// <summary>Same aggregate-merge snapshot as _keyboardStatesValues.</summary>
+        private static volatile bool[][] _consumerStatesValues = Array.Empty<bool[]>();
+
+        /// <summary>Same aggregate-merge snapshot, for the mouse button OR.</summary>
+        private static volatile MouseDeviceState[] _mouseStatesValues = Array.Empty<MouseDeviceState>();
 
         /// <summary>Per-handle preparsed HID data for HidP_GetUsages, fetched
         /// once on first report (mirrors PrecisionTouchpadReader's cache).
@@ -394,8 +406,11 @@ namespace PadForge.Engine
             _thread = null;
 
             _keyboardStates.Clear();
+            _keyboardStatesValues = Array.Empty<bool[]>();
             _mouseStates.Clear();
+            _mouseStatesValues = Array.Empty<MouseDeviceState>();
             _consumerStates.Clear();
+            _consumerStatesValues = Array.Empty<bool[]>();
             _consumerMaxUsages.Clear();
             _isConsumerHandle.Clear();
             // Free the preparsed buffers ONLY when the pump thread confirmed
@@ -452,6 +467,41 @@ namespace PadForge.Engine
         public static DeviceInfo[] EnumerateMice()
         {
             var devices = EnumerateDevicesByType(RIM_TYPEMOUSE);
+
+            // Release buttons still held by mice that are GONE. Raw Input
+            // synthesizes no button-up when a device disappears mid-click, and
+            // nothing shrinks _mouseStates at runtime (only RIDEV_INPUTSINK is
+            // registered, so no WM_INPUT_DEVICE_CHANGE ever arrives). The
+            // merged handle ORs every entry, so one dead entry pins the mapped
+            // output ON for the process lifetime. This used to self-heal by
+            // accident: the aggregate was a copy of a last-writer-wins bitmask,
+            // so the next click on any surviving mouse cleared it. Reading it
+            // as an OR removed that, which is why the sweep has to be explicit.
+            //
+            // Clear in place rather than removing the entry: the snapshot array
+            // holds the same MouseDeviceState references, so the latch dies
+            // whether or not that array has been rebuilt, and no Length/Count
+            // staleness race is introduced. IntPtr.Zero is skipped because it
+            // is the synthetic injected-input key, which never enumerates.
+            // Length 0 means "I don't know", NOT "no mice present":
+            // EnumerateDevicesByType returns an empty array on a failed
+            // GetRawInputDeviceList as well as on a genuine zero, and those are
+            // indistinguishable here. Sweeping on an empty list would treat
+            // every live mouse as absent and release a button the user is
+            // holding. If there really are no mice there is nothing to release
+            // anyway, so skipping costs nothing and the failure case is the
+            // only one that differs.
+            if (devices != null && devices.Length > 0 && !_mouseStates.IsEmpty)
+            {
+                var present = new HashSet<IntPtr>();
+                for (int i = 0; i < devices.Length; i++) present.Add(devices[i].Handle);
+                foreach (var kv in _mouseStates)
+                {
+                    if (kv.Key == IntPtr.Zero || present.Contains(kv.Key)) continue;
+                    var buttons = kv.Value?.Buttons;
+                    if (buttons != null) Array.Clear(buttons, 0, buttons.Length);
+                }
+            }
 
             // Always prepend the aggregate device.
             var result = new DeviceInfo[devices.Length + 1];
@@ -960,9 +1010,10 @@ namespace PadForge.Engine
 
             if (hDevice == AggregateConsumerHandle)
             {
-                foreach (var kvp in _consumerStates)
+                var states = _consumerStatesValues;
+                for (int k = 0; k < states.Length; k++)
                 {
-                    bool[] state = kvp.Value;
+                    bool[] state = states[k];
                     int m = Math.Min(n, state.Length);
                     for (int i = 0; i < m; i++)
                     {
@@ -989,9 +1040,10 @@ namespace PadForge.Engine
             if (hDevice == AggregateKeyboardHandle)
             {
                 // Merge all keyboard states: any key down on any device → true.
-                foreach (var kvp in _keyboardStates)
+                var states = _keyboardStatesValues;
+                for (int k = 0; k < states.Length; k++)
                 {
-                    bool[] state = kvp.Value;
+                    bool[] state = states[k];
                     for (int i = 0; i < n; i++)
                     {
                         if (state[i])
@@ -1076,7 +1128,28 @@ namespace PadForge.Engine
 
             if (hDevice == AggregateMouseHandle)
             {
-                Array.Copy(_aggregateMouseState.Buttons, dest, n);
+                // Merge at READ time over the live per-device states, the way
+                // the keyboard aggregate does. The packet-time bitmask this
+                // used to copy was last-writer-wins, not the OR this method
+                // documents: one mouse's button-up cleared the shared bit while
+                // another mouse was still holding that button. It also had no
+                // way back down after an unplug, so a device that vanished
+                // mid-press left the bit asserted with nothing left to clear it.
+                // Clear first. The branch below overwrites dest wholesale via
+                // Array.Copy, and the sole caller reuses one field buffer
+                // across polls without clearing it, so an OR that merely adds
+                // trues would latch a released button forever.
+                Array.Clear(dest, 0, n);
+                var states = _mouseStatesValues;
+                for (int k = 0; k < states.Length; k++)
+                {
+                    bool[] buttons = states[k].Buttons;
+                    for (int i = 0; i < n; i++)
+                    {
+                        if (buttons[i])
+                            dest[i] = true;
+                    }
+                }
                 return;
             }
 
@@ -1234,6 +1307,8 @@ namespace PadForge.Engine
                         bool isDown = (kb.Flags & RI_KEY_BREAK) == 0;
                         bool isE0 = (kb.Flags & RI_KEY_E0) != 0;
                         bool[] state = _keyboardStates.GetOrAdd(hDevice, _ => new bool[256]);
+                        if (_keyboardStatesValues.Length != _keyboardStates.Count)
+                            _keyboardStatesValues = System.Linq.Enumerable.ToArray(_keyboardStates.Values);
 
                         // Translate generic modifier VKeys to left/right specific
                         // codes using hardcoded scan code + E0 flag lookup.
@@ -1270,19 +1345,32 @@ namespace PadForge.Engine
                     // 0..65535 jump as a delta produces wild spurious
                     // motion. Match SDL3 / XInput behaviour and
                     // ignore these events.
-                    if ((mouse.usFlags & 1) != 0) return;
+                    // Skip only the DELTA, not the whole packet. This used to
+                    // `return` outright, which also threw away the button and
+                    // wheel state carried in the SAME report, so an
+                    // absolute-mode pointer (RDP's virtual mouse, a VM's guest
+                    // additions, a tablet, some KVMs) lost its clicks and its
+                    // scroll entirely rather than just its bogus jump. The
+                    // reasoning above applies to lLastX/lLastY and to nothing
+                    // else in this structure.
+                    bool absoluteMove = (mouse.usFlags & 1) != 0;
 
                     MouseDeviceState state = _mouseStates.GetOrAdd(hDevice, _ => new MouseDeviceState());
+                    if (_mouseStatesValues.Length != _mouseStates.Count)
+                        _mouseStatesValues = System.Linq.Enumerable.ToArray(_mouseStates.Values);
 
-                    if (mouse.lLastX != 0)
+                    if (!absoluteMove)
                     {
-                        Interlocked.Add(ref state.DeltaX, mouse.lLastX);
-                        Interlocked.Add(ref _aggregateMouseState.DeltaX, mouse.lLastX);
-                    }
-                    if (mouse.lLastY != 0)
-                    {
-                        Interlocked.Add(ref state.DeltaY, mouse.lLastY);
-                        Interlocked.Add(ref _aggregateMouseState.DeltaY, mouse.lLastY);
+                        if (mouse.lLastX != 0)
+                        {
+                            Interlocked.Add(ref state.DeltaX, mouse.lLastX);
+                            Interlocked.Add(ref _aggregateMouseState.DeltaX, mouse.lLastX);
+                        }
+                        if (mouse.lLastY != 0)
+                        {
+                            Interlocked.Add(ref state.DeltaY, mouse.lLastY);
+                            Interlocked.Add(ref _aggregateMouseState.DeltaY, mouse.lLastY);
+                        }
                     }
 
                     ushort flags = mouse.usButtonFlags;
@@ -1351,6 +1439,8 @@ namespace PadForge.Engine
 
             bool[] state = _consumerStates.GetOrAdd(
                 hDevice, _ => new bool[ConsumerUsageTable.TotalSlots]);
+            if (_consumerStatesValues.Length != _consumerStates.Count)
+                _consumerStatesValues = System.Linq.Enumerable.ToArray(_consumerStates.Values);
 
             // Size the scratch buffer to what HidP says this collection can
             // report at once (min 64), so an oversized frame is parsed, not

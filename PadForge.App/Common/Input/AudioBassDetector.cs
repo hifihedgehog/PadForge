@@ -142,7 +142,17 @@ namespace PadForge.Common.Input
                     _enumerator.RegisterEndpointNotificationCallback(this);
 
                     if (!StartCapture())
+                    {
+                        // The endpoint notification callback is already
+                        // registered by this point, so bailing straight out
+                        // left it attached to an enumerator this object then
+                        // dropped. Every failed start leaked one registration,
+                        // and the callbacks kept arriving. Stop() is the path
+                        // that unregisters, and it is safe before _running is
+                        // set.
+                        Stop();
                         return false;
+                    }
 
                     _running = true;
                     return true;

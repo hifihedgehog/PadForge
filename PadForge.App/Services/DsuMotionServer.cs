@@ -68,6 +68,14 @@ namespace PadForge.Services
         /// Client subscriptions: (endpoint, slot) → last-seen timestamp.
         /// Protected by lock(_subscriptions).
         /// </summary>
+        // Lock-free mirror of _subscriptions.Count + _allSlotSubscriptions.Count,
+        // maintained under lock (_subscriptions) via RecountSubscribers. Exists
+        // so BroadcastMotion, which the 1 kHz poll thread calls once per DSU
+        // slot, can early-out on "no clients" without allocating a List + a
+        // HashSet and taking the subscription lock 4,000 times a second to
+        // discover there is nobody to send to.
+        private volatile int _subCount;
+
         private readonly Dictionary<(EndPoint, int), long> _subscriptions = new();
 
         /// <summary>
@@ -182,6 +190,22 @@ namespace PadForge.Services
 
             _slotConnected[slot] = connected;
             _slotHasMotion[slot] = snapshot.HasMotion;
+
+            // Cheap early-out BEFORE GetSubscribers, which takes the
+            // subscription lock on every call (its collections are reused
+            // scratch since the 2026-07 perf passes, but the lock and the
+            // expiry scan remain). The state writes above must stay
+            // unconditional: they feed the ControllerInfo replies a client
+            // reads BEFORE it subscribes.
+            if (_subCount == 0)
+                return;
+
+            // Slot-mask early-out: with one client subscribed to one slot,
+            // the other 15 per-tick GetSubscribers calls were pure lock +
+            // dictionary walks.
+            if (!_anyAllSlotSubs
+                && (System.Threading.Volatile.Read(ref _slotSubMask) & (1 << slot)) == 0)
+                return;
 
             // Only broadcast if there are subscribers.
             var endpoints = GetSubscribers(slot);
@@ -349,8 +373,33 @@ namespace PadForge.Services
                         _allSlotSubscriptions[sender] = now;
                     }
                 }
+                RecountSubscribers();
             }
         }
+
+        /// <summary>Refreshes the lock-free subscriber count BroadcastMotion
+        /// early-outs on. MUST be called inside <c>lock (_subscriptions)</c>
+        /// after any mutation of either subscription dictionary.</summary>
+        private void RecountSubscribers()
+        {
+            _subCount = _subscriptions.Count + _allSlotSubscriptions.Count;
+            // Per-slot mask, same consistency contract as _subCount (both
+            // recomputed at every mutation under the subscription lock).
+            // A stale-high bit self-heals: the slot's next GetSubscribers
+            // prunes and recounts. A bit is never stale-low for a live
+            // subscriber because subscribe recounts before the next tick.
+            int mask = 0;
+            foreach (var kvp in _subscriptions)
+            {
+                int slot = kvp.Key.Item2;
+                if (slot >= 0 && slot < 32) mask |= 1 << slot;
+            }
+            _anyAllSlotSubs = _allSlotSubscriptions.Count > 0;
+            System.Threading.Volatile.Write(ref _slotSubMask, mask);
+        }
+
+        private int _slotSubMask;
+        private volatile bool _anyAllSlotSubs;
 
         private void SendControllerInfo(int slot, EndPoint sender)
         {
@@ -385,6 +434,8 @@ namespace PadForge.Services
         //  Pad data packet building
         // ─────────────────────────────────────────────
 
+        private byte[] _padPacketScratch;
+
         private byte[] BuildPadDataPacket(int slot, MotionSnapshot snapshot, bool connected)
         {
             // Pad data payload layout (offsets relative to start of payload, after msg type):
@@ -418,7 +469,13 @@ namespace PadForge.Services
             // Total payload: 4 (msg type) + 80 = 84 bytes
 
             const int payloadSize = 84;
-            byte[] packet = new byte[HeaderSize + payloadSize];
+            // Reused scratch: BroadcastMotion is poll-thread-only and the
+            // SendTo below completes before the next call, so one buffer
+            // serves every slot. Every byte is (re)written per call:
+            // WriteHeader + the fixed-layout payload stores below, and the
+            // final Array.Clear covers reserved tail bytes.
+            byte[] packet = _padPacketScratch ??= new byte[HeaderSize + payloadSize];
+            System.Array.Clear(packet, 0, packet.Length);
             WriteHeader(packet, payloadSize, MsgTypePadData);
 
             int o = HeaderSize + 4; // offset after message type
@@ -487,10 +544,19 @@ namespace PadForge.Services
         //  Subscription management
         // ─────────────────────────────────────────────
 
+        // Poll-thread-only scratch (single caller by contract, see
+        // BroadcastMotion): reused across calls so the steady state with a
+        // client attached allocates nothing. The returned list is valid
+        // until the next GetSubscribers call.
+        private readonly List<EndPoint> _subScratch = new();
+        private readonly HashSet<EndPoint> _subSeenScratch = new();
+
         private List<EndPoint> GetSubscribers(int slot)
         {
-            var result = new List<EndPoint>();
-            var seen = new HashSet<EndPoint>();
+            var result = _subScratch;
+            result.Clear();
+            var seen = _subSeenScratch;
+            seen.Clear();
             long now = Stopwatch.GetTimestamp();
             long timeoutTicks = Stopwatch.Frequency * ClientTimeoutMs / 1000;
             List<(EndPoint, int)> expired = null;
@@ -539,6 +605,15 @@ namespace PadForge.Services
                 if (expiredAll != null)
                     foreach (var key in expiredAll)
                         _allSlotSubscriptions.Remove(key);
+
+                // The other mutation site, so it owes the same recount as the
+                // subscribe path. Skipping it here would leave _subCount high
+                // after the last client timed out (a harmless miss: the
+                // endpoints.Count check below still guards the send), but a
+                // count left LOW would silence a live server, so keep the
+                // mirror exact rather than reasoning about which way it drifts.
+                if (expired != null || expiredAll != null)
+                    RecountSubscribers();
             }
 
             return result;

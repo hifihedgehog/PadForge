@@ -1,0 +1,115 @@
+name: Ps4
+description: Official Configuration for DOOM.
+slots: xbox kbm
+dzShape: right=2
+xbox rows: 22
+  Base | ButtonA
+    <- Gamepad Paddle2
+    <- Gamepad ButtonA
+  Base | ButtonB
+    <- Gamepad ButtonB
+  Base | ButtonBack
+    <- Gamepad ButtonBack
+  Base | ButtonStart
+    <- Gamepad ButtonStart
+  Base | ButtonX
+    <- Gamepad Paddle1
+    <- Gamepad ButtonX
+  Base | ButtonY
+    <- Gamepad ButtonY
+  Base | DPadDown
+    <- Gamepad DPadDown
+  Base | DPadLeft
+    <- Gamepad DPadLeft
+  Base | DPadRight
+    <- Gamepad DPadRight
+  Base | DPadUp
+    <- Gamepad DPadUp
+  Base | LeftShoulder
+    <- Gamepad LeftShoulder
+  Base | LeftThumbAxisX
+    <- Gamepad LeftStickX
+  Base | LeftThumbAxisY
+    <- Gamepad LeftStickY
+  Base | LeftThumbButton
+    <- Gamepad LeftStick
+  Base | LeftTrigger
+    <- Gamepad LeftTrigger
+    <- Gamepad LeftTrigger [upper-half] dz=75
+  Base | RightShoulder
+    <- Gamepad RightShoulder
+  Base | RightThumbButton | Custom | (s[0] && s[1]) || s[2]
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchRight
+    <- Gamepad RightStick
+  Base | RightTrigger
+    <- Gamepad RightTrigger
+    <- Gamepad RightTrigger [upper-half] dz=75
+  Layer_1150803559_0_MS_right_joystick_14 | RightThumbAxisX
+    <- Gamepad RightStickX rangeOuter=0.317 dzShape=radial
+  Layer_1150803559_0_MS_right_joystick_14 | RightThumbAxisY
+    <- Gamepad RightStickY rangeOuter=0.317 dzShape=radial
+  Layer_1150803559_0_MS_right_trackpad_9 | LeftThumbAxisX
+    <- Touchpad 0 Finger 0 X Right rangeOuter=0.317
+  Layer_1150803559_0_MS_right_trackpad_9 | LeftThumbAxisY
+    <- Touchpad 0 Finger 0 Y Right rangeOuter=0.317
+xbox activators: 2
+  Hold Layer_1150803559_0_MS_right_joystick_14 | Gamepad RightShoulder | inherit | name=Right Stick shift
+  Hold Layer_1150803559_0_MS_right_trackpad_9 | Gamepad RightShoulder | delay=224ms | inherit | name=Right Trackpad shift
+kbm rows: 2
+  Base | KbmMouseX | Sum
+    <- Gyro Yaw gyroSens=2.56
+    <- Gamepad RightStickX sens=3.725
+    <- Touchpad 0 Finger 0 X Right sens=5.96
+  Base | KbmMouseY | Sum
+    <- Gyro Pitch gyroSens=2.56
+    <- Gamepad RightStickY sens=3.725
+    <- Touchpad 0 Finger 0 Y Right sens=5.96
+macros: 10
+  macro RumblePulse OnPress | Haptic pulse (DPadRight) | btns=0x0000 in=[Gamepad DPadRight] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadUp) | btns=0x0000 in=[Gamepad DPadUp] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadDown) | btns=0x0000 in=[Gamepad DPadDown] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (DPadLeft) | btns=0x0000 in=[Gamepad DPadLeft] layer=Base strength=33%
+  macro RumblePulse OnPress | Haptic pulse (LeftStick) | btns=0x0000 in=[Gamepad LeftStick] layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (LeftTrigger) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse OnPress | Haptic pulse (RightStick) | btns=0x0000 in=[Gamepad RightStick] layer=Base strength=100%
+  macro RumblePulse OnPress | Haptic pulse (Touchpad 0 Click) | btns=0x0000 in=[Touchpad 0 Click; Touchpad 0 TouchRight] layer=Base strength=100%
+  macro RumblePulse OnPress | Haptic pulse (RightTrigger) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 layer=Base strength=66%
+  macro RumblePulse HoldForMs | Haptic pulse (RightShoulder) | btns=0x0000 in=[Gamepad RightShoulder] hold=224ms layer=Base strength=33%
+report: v26 rows:x22+k2 macros:10 menus:0 layers:2 clean:35 partial:1 skipped:0 errors:0
+  Clean RowEmitted @ Default/gyro/group 8 (absolute_mouse) => KbmMouseX <- Gyro Yaw
+  Clean RowEmitted @ Default/gyro/group 8 (absolute_mouse) => KbmMouseY <- Gyro Pitch
+  Clean RowEmitted @ Default/right_joystick/group 12 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ Default/right_joystick/group 12 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean RowEmitted @ Default/right_trackpad/group 6 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X Right
+  Clean RowEmitted @ Default/right_trackpad/group 6 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y Right
+  Clean RowEmitted @ Default/right_trackpad/group 6 (absolute_mouse)/click/Full_Press => RightThumbButton <- Touchpad 0 Click
+  Partial DeadZoneRadialResidual(deadzone_outer_radius) @ Default/right_trackpad/group 9 (joystick_move)
+  Clean RowEmitted @ Default/right_trackpad/group 9 (joystick_move) => LeftThumbAxisX <- Touchpad 0 Finger 0 X Right
+  Clean RowEmitted @ Default/right_trackpad/group 9 (joystick_move) => LeftThumbAxisY <- Touchpad 0 Finger 0 Y Right
+  Clean RowEmitted @ Default/switch/group 10 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
+  Clean RowEmitted @ Default/switch/group 10 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
+  Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
+  Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger) => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Default/right_joystick/group 14 (joystick_move) => RightThumbAxisX <- Gamepad RightStickX
+  Clean RowEmitted @ Default/right_joystick/group 14 (joystick_move) => RightThumbAxisY <- Gamepad RightStickY
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger) => RightTrigger <- Gamepad RightTrigger
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_A/Full_Press => ButtonA <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_B/Full_Press => ButtonB <- Gamepad ButtonB
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_X/Full_Press => ButtonX <- Gamepad ButtonX
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_Y/Full_Press => ButtonY <- Gamepad ButtonY
+  Clean RowEmitted @ Default/dpad/group 1 (dpad)/dpad_east/Full_Press => DPadRight <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 1 (dpad)/dpad_north/Full_Press => DPadUp <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 1 (dpad)/dpad_south/Full_Press => DPadDown <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 1 (dpad)/dpad_west/Full_Press => DPadLeft <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/joystick/group 3 (joystick_move)/click/Full_Press => LeftThumbButton <- Gamepad LeftStick
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Default/right_joystick/group 12 (joystick_mouse)/click/Full_Press => RightThumbButton <- Gamepad RightStick
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => RightTrigger <- Gamepad RightTrigger
+  Clean RowEmitted @ Default/switch/group 10 (switches)/button_escape/Full_Press => ButtonStart <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/switch/group 10 (switches)/button_menu/Full_Press => ButtonBack <- Gamepad ButtonBack
+  Clean RowEmitted @ Default/switch/group 10 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default/switch/group 10 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
+  Clean ShiftLayerEmitted(Right Stick shift) @ Default/switch/group 10 (switches)/right_bumper/Full_Press => Hold Right Stick shift <- Gamepad RightShoulder
+  Clean ShiftLayerEmitted(Right Trackpad shift) @ Default/switch/group 10 (switches)/right_bumper/Long_Press => Hold Right Trackpad shift <- Gamepad RightShoulder

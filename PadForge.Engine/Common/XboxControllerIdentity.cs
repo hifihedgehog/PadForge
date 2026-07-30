@@ -32,6 +32,12 @@ namespace PadForge.Engine
             0x0B05, // Xbox Elite Series 2 (Bluetooth)
             0x0B12, // Xbox Series X|S (Wireless via Xbox Wireless Adapter)
             0x0B13, // Xbox Series X|S (Bluetooth)
+            // The BLE re-enumerations, present in the SDL3 fork's
+            // controller_list.h and missing here, so these two pads lost the
+            // HasRumbleTriggers force-enable and the raw-HID impulse writer
+            // whenever they came up on the newer firmware's product id.
+            0x0B20, // Xbox One S (Bluetooth, BLE re-enumeration)
+            0x0B22, // Xbox Elite Series 2 (Bluetooth, BLE re-enumeration)
         };
 
         public static bool IsImpulseTriggerDevice(ushort vid, ushort pid)

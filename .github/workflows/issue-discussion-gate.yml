@@ -115,16 +115,36 @@ jobs:
           OWNER=$(printf '%s' "$REPO" | cut -d/ -f1)
           NAME=$(printf '%s' "$REPO" | cut -d/ -f2)
           QUERY='query($owner:String!,$name:String!,$num:Int!){repository(owner:$owner,name:$name){discussion(number:$num){id number}}}'
+          # A FAILED call and a "no such discussion" answer are different
+          # facts, and the difference decides whether a real bug report gets
+          # closed. Swallowing the exit code with `|| true` conflated them: a
+          # rate limit, a network blip, or a token-scope change made every
+          # correctly-linked report look like a bad link, and the next step
+          # closed it telling the author their discussion does not exist.
+          #
+          # Capture the status separately. Only an answer that actually came
+          # back without a discussion counts as a bad link. Anything else
+          # leaves the issue open for a human, which is the safe direction:
+          # a missed gate costs a triage glance, a wrong close costs a report.
+          set +e
           RESP=$(gh api graphql \
             -f query="$QUERY" \
             -F owner="$OWNER" \
             -F name="$NAME" \
-            -F num="$DISCUSSION_NUMBER" \
-            2>/dev/null || true)
+            -F num="$DISCUSSION_NUMBER" 2>&1)
+          RC=$?
+          set -e
+
           if printf '%s' "$RESP" | grep -q '"number"'; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
-          else
+          elif printf '%s' "$RESP" | grep -q 'Could not resolve to a Discussion'; then
+            # The API answered: this discussion number is not in the repo.
             echo "exists=false" >> "$GITHUB_OUTPUT"
+          else
+            # No usable answer. Do not act on a non-answer.
+            echo "GraphQL check gave no usable answer (rc=$RC). Leaving open for manual triage." >&2
+            printf '%s\n' "$RESP" >&2
+            echo "exists=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Close with bad-link comment

@@ -24,24 +24,50 @@ namespace PadForge.Converters
         {
             if (value is double v && parameter is string paramStr)
             {
-                var parts = paramStr.Split(',');
-                if (parts.Length >= 1 &&
-                    double.TryParse(parts[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out double dim))
+                // Parameter memo (the sibling NormToCanvasConverter shape):
+                // XAML uses a handful of literal parameter strings.
+                if (!s_paramCache.TryGetValue(paramStr, out var prm))
                 {
-                    double dotSize = 14;
-                    if (parts.Length >= 2 &&
-                        double.TryParse(parts[1].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out double ds))
-                        dotSize = ds;
+                    prm = ParseParam(paramStr);
+                    if (s_paramCache.Count < 64) s_paramCache[paramStr] = prm;
+                }
+                if (prm.valid)
+                {
+                    double dim = prm.dimension;
+                    double dotSize = prm.dotSize;
 
                     if (v < -1) v = -1;
                     if (v > 1) v = 1;
                     double halfDot = dotSize / 2.0;
                     double pos = (v + 1.0) * 0.5 * dim - halfDot;
-                    double max = dim - dotSize;
+                    // Asymmetric clamp. The lower bound is -halfDot, which puts
+                    // the dot's CENTRE on 0, so the upper bound must be the
+                    // mirror of that (centre on dim), not a full dot-width in.
+                    // At dim - dotSize the dot stopped half its width short of
+                    // the right edge while reaching the left one exactly, so a
+                    // full-scale axis never rendered as full-scale.
+                    double max = dim - halfDot;
                     return Math.Clamp(pos, -halfDot, max);
                 }
             }
             return 0.0;
+        }
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, (bool valid, double dimension, double dotSize)> s_paramCache = new();
+
+        private static (bool valid, double dimension, double dotSize) ParseParam(string paramStr)
+        {
+            var parts = paramStr.Split(',');
+            if (parts.Length >= 1 &&
+                double.TryParse(parts[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out double dim))
+            {
+                double dotSize = 14;
+                if (parts.Length >= 2 &&
+                    double.TryParse(parts[1].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out double ds))
+                    dotSize = ds;
+                return (true, dim, dotSize);
+            }
+            return (false, 0, 0);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

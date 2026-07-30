@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using PadForge.Common;
 using PadForge.Resources.Strings;
@@ -93,6 +93,14 @@ namespace PadForge.Services
             // Auto-create the virtual controller slot if it doesn't exist yet.
             if (!SettingsManager.SlotCreated[slotIndex])
             {
+                // Seed the category default, the same reason the create path in
+                // CreateSlotsForDevices documents: the engine falls back to this
+                // default silently when SlotProfileIds is null, so without the
+                // seed the profile dropdown shows NO selection on a slot that is
+                // in fact running the default. All three auto-create blocks in
+                // this file missed it.
+                _mainVm.Pads[slotIndex].ProfileId =
+                    InputManager.GetDefaultProfileId(_mainVm.Pads[slotIndex].OutputType);
                 SettingsManager.SlotCreated[slotIndex] = true;
                 SettingsManager.SlotEnabled[slotIndex] = true;
                 SettingsManager.SlotOrders.Add(slotIndex, _mainVm.Pads[slotIndex].OutputType);
@@ -138,6 +146,15 @@ namespace PadForge.Services
                 // auto-map they expect on first assign.
                 FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType);
             }
+
+            // A Workshop import parks its device tuning on the slot because it
+            // runs before any device exists. Now that one does, fold those
+            // stamps into the device's OWN settings. This is the SIBLING of
+            // the call in AssignDeviceToSlot: the runtime overlays it replaced
+            // applied on every assignment path by construction, so covering
+            // one entry point and not the other silently drops the tuning for
+            // whichever path the user happens to take.
+            WorkshopTuningApplier.ApplyToAssignedDevice(slotIndex, us.GetPadSetting(), us.InstanceGuid.ToString());
 
             // Update the row display.
             selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
@@ -185,6 +202,14 @@ namespace PadForge.Services
             // Auto-create the virtual controller slot if it doesn't exist yet.
             if (!SettingsManager.SlotCreated[slotIndex])
             {
+                // Seed the category default, the same reason the create path in
+                // CreateSlotsForDevices documents: the engine falls back to this
+                // default silently when SlotProfileIds is null, so without the
+                // seed the profile dropdown shows NO selection on a slot that is
+                // in fact running the default. All three auto-create blocks in
+                // this file missed it.
+                _mainVm.Pads[slotIndex].ProfileId =
+                    InputManager.GetDefaultProfileId(_mainVm.Pads[slotIndex].OutputType);
                 SettingsManager.SlotCreated[slotIndex] = true;
                 SettingsManager.SlotEnabled[slotIndex] = true;
                 SettingsManager.SlotOrders.Add(slotIndex, _mainVm.Pads[slotIndex].OutputType);
@@ -210,6 +235,13 @@ namespace PadForge.Services
             {
                 FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType);
             }
+
+            // A Workshop import parks its device tuning on the slot
+            // because it runs before any device exists. Now that one
+            // does, fold those stamps into the device's OWN settings so
+            // the existing cards show and edit them, and the engine has
+            // one place to read instead of an invisible override.
+            WorkshopTuningApplier.ApplyToAssignedDevice(slotIndex, us.GetPadSetting(), us.InstanceGuid.ToString());
 
             row.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
 
@@ -241,6 +273,14 @@ namespace PadForge.Services
             // Auto-create the virtual controller slot if it doesn't exist yet.
             if (!SettingsManager.SlotCreated[slotIndex])
             {
+                // Seed the category default, the same reason the create path in
+                // CreateSlotsForDevices documents: the engine falls back to this
+                // default silently when SlotProfileIds is null, so without the
+                // seed the profile dropdown shows NO selection on a slot that is
+                // in fact running the default. All three auto-create blocks in
+                // this file missed it.
+                _mainVm.Pads[slotIndex].ProfileId =
+                    InputManager.GetDefaultProfileId(_mainVm.Pads[slotIndex].OutputType);
                 SettingsManager.SlotCreated[slotIndex] = true;
                 SettingsManager.SlotEnabled[slotIndex] = true;
                 SettingsManager.SlotOrders.Add(slotIndex, _mainVm.Pads[slotIndex].OutputType);
@@ -330,12 +370,6 @@ namespace PadForge.Services
                 ud.IsHidden = true;
             }
 
-            // Also update the ViewModel row.
-            var row = _mainVm.Devices.FindByGuid(instanceGuid);
-            if (row != null)
-            {
-                row.IsHidden = true;
-            }
 
             _settingsService.MarkDirty();
             _mainVm.StatusText = Strings.Instance.Status_DeviceHidden;
@@ -482,6 +516,13 @@ namespace PadForge.Services
             // bubble-down cascade in InputService.OnSlotDeleted.
             var deletedType = _mainVm.Pads[slotIndex].OutputType;
             int oldPosition = SettingsManager.SlotOrders.GetOrderFor(deletedType).IndexOf(slotIndex);
+            // The toast's slot number belongs in this same capture. It was the
+            // one status message in this file using the raw slotIndex + 1 while
+            // its three siblings resolve the DISPLAY number, so a reordered
+            // slot was announced as deleted under a number the user never saw.
+            // Resolving it after the removal below would not work either: the
+            // slot is gone from the order by then.
+            int displayNo = ResolveDisplaySlotNumber(slotIndex);
 
             SettingsManager.SlotCreated[slotIndex] = false;
             SettingsManager.SlotEnabled[slotIndex] = true; // Reset to default.
@@ -521,7 +562,7 @@ namespace PadForge.Services
             }
 
             _settingsService.MarkDirty();
-            _mainVm.StatusText = string.Format(Strings.Instance.Status_VCDeleted_Format, slotIndex + 1);
+            _mainVm.StatusText = string.Format(Strings.Instance.Status_VCDeleted_Format, displayNo);
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
             return new SlotDeletionInfo(deletedType, oldPosition);
         }
@@ -581,9 +622,64 @@ namespace PadForge.Services
             UserDevice ud, Engine.VirtualControllerType outputType)
         {
             if (existingPs == null || ud == null) return;
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"FILLAUTO guid={ud.InstanceGuid.ToString().Substring(0, 8)} type={outputType}"
+                // All three dictionary siblings (lens 1r): the merge below
+                // handles Raw, Midi, and Kbm, so the pre-count must too.
+                + $" preRows={(existingPs.RawMappingEntries?.Length ?? 0)
+                    + (existingPs.MidiMappingEntries?.Length ?? 0)
+                    + (existingPs.KbmMappingEntries?.Length ?? 0)}");
 
             var freshPs = SettingsManager.CreateDefaultPadSetting(ud, outputType);
             if (freshPs == null) return;
+
+            // Raw-surface automap (Nintendo): the positional defaults live
+            // in the Extended mapping dictionary, which the string-property
+            // reflection walk below cannot see. Merge missing keys first,
+            // same fill-empty semantics: user-authored entries win.
+            var freshExt = freshPs.RawMappingEntries;
+            if (freshExt != null)
+            {
+                bool extChanged = false;
+                foreach (var entry in freshExt)
+                {
+                    if (entry == null || string.IsNullOrEmpty(entry.Key)) continue;
+                    if (!string.IsNullOrEmpty(existingPs.GetRawMapping(entry.Key))) continue;
+                    existingPs.SetRawMapping(entry.Key, entry.Value);
+                    extChanged = true;
+                }
+                if (extChanged) existingPs.FlushRawMappings();
+            }
+
+            // MIDI and KBM automap surfaces are dictionary siblings of the
+            // raw surface and equally invisible to the reflection walk.
+            // Same fill-empty semantics.
+            var freshMidi = freshPs.MidiMappingEntries;
+            if (freshMidi != null)
+            {
+                bool midiChanged = false;
+                foreach (var entry in freshMidi)
+                {
+                    if (entry == null || string.IsNullOrEmpty(entry.Key)) continue;
+                    if (!string.IsNullOrEmpty(existingPs.GetMidiMapping(entry.Key))) continue;
+                    existingPs.SetMidiMapping(entry.Key, entry.Value);
+                    midiChanged = true;
+                }
+                if (midiChanged) existingPs.FlushMidiMappings();
+            }
+            var freshKbm = freshPs.KbmMappingEntries;
+            if (freshKbm != null)
+            {
+                bool kbmChanged = false;
+                foreach (var entry in freshKbm)
+                {
+                    if (entry == null || string.IsNullOrEmpty(entry.Key)) continue;
+                    if (!string.IsNullOrEmpty(existingPs.GetKbmMapping(entry.Key))) continue;
+                    existingPs.SetKbmMapping(entry.Key, entry.Value);
+                    kbmChanged = true;
+                }
+                if (kbmChanged) existingPs.FlushKbmMappings();
+            }
 
             // Walk every copyable string mapping property and fill empty
             // ones on existingPs from freshPs. Reflection here mirrors the

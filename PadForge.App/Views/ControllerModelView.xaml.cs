@@ -101,7 +101,17 @@ namespace PadForge.Views
         public ControllerModelView()
         {
             InitializeComponent();
-            CompositionTarget.Rendering += OnRendering;
+            // Rendering rides tree presence, matching MousePreviewControl. A
+            // ctor-lifetime subscription to the STATIC CompositionTarget.Rendering
+            // roots the view forever and keeps its per-frame callback
+            // invalidating layout even when the hosting page is swapped out.
+            // See the note in ControllerSchematicView for the measurement.
+            Loaded += (s, e) =>
+            {
+                CompositionTarget.Rendering -= OnRendering;
+                CompositionTarget.Rendering += OnRendering;
+            };
+            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
 
             // Order matters: scale first so it applies in the model's local
             // frame, then yaw/pitch rotate the scaled model around its
@@ -186,7 +196,22 @@ namespace PadForge.Views
                 return;
             }
 
-            // Any controller state property — mark dirty for next render frame
+            // High-churn readout properties the 3D render never consumes
+            // (gyro noise re-armed the full refresh every tick while the
+            // preview was visible with a motion pad at rest).
+            switch (e.PropertyName)
+            {
+                case nameof(PadViewModel.GyroLiveRatePitch):
+                case nameof(PadViewModel.GyroLiveRateYaw):
+                case nameof(PadViewModel.GyroLiveRateRoll):
+                case nameof(PadViewModel.AccelLiveX):
+                case nameof(PadViewModel.AccelLiveY):
+                case nameof(PadViewModel.AccelLiveZ):
+                    return;
+            }
+
+            // Any other controller state property marks dirty for the
+            // next render frame.
             _dirty = true;
         }
 
@@ -212,6 +237,19 @@ namespace PadForge.Views
 
             if (_currentModel?.ModelName == needed && _currentModelShareEnabled == wantShare)
                 return;
+
+            // Model rebuild: drop retained per-thumb transform entries.
+            // They key on the OUTGOING model's Model3DGroups, so without
+            // this every profile/output switch leaked the old model's
+            // transform graphs for the view's lifetime.
+            _stickTransforms3D.Clear();
+            // The retained trigger angles key on the OUTGOING model the same
+            // way, and they are passed by ref as the running state of the
+            // smoothing. Left set, a switch carried the old model's pull angles
+            // into the new one and the triggers rendered part-pressed at rest
+            // until the next real input moved them.
+            _triggerAngleLeft = 0f;
+            _triggerAngleRight = 0f;
 
             // Clear arrow from old model before switching
             RemoveArrow();
@@ -394,6 +432,16 @@ namespace PadForge.Views
 
         private void OnRendering(object sender, EventArgs e)
         {
+            // Retained-page guard: pages are eagerly instantiated and
+            // visibility-toggled, so Loaded fires at startup even for hidden
+            // pages and Unloaded never fires. Without this, a connected
+            // device's 30Hz VM updates kept _dirty set and this handler
+            // rebuilt the WHOLE WPF3D transform/material graph every frame
+            // while completely invisible, burning the render thread on every
+            // page of the app. _dirty stays set; the first visible frame
+            // catches up.
+            // Iconic gate: IsVisible stays TRUE while minimized.
+            if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
             if (!_dirty || _vm == null || _currentModel == null)
                 return;
             _dirty = false;
@@ -522,7 +570,7 @@ namespace PadForge.Views
                           && _currentModel.HighlightMaterials.TryGetValue(thumbRing, out var hlMat))
                 {
                     float factor = Math.Max(Math.Abs(normX), Math.Abs(normY));
-                    geo.Material = GradientHighlight(defMat, hlMat, factor);
+                    geo.Material = GradientHighlight(geo, defMat, hlMat, factor);
                 }
                 else if (_currentModel.DefaultMaterials.TryGetValue(thumbRing, out var def))
                 {
@@ -534,20 +582,40 @@ namespace PadForge.Views
             float angleX = maxAngleDeg * normX;
             float angleY = -maxAngleDeg * normY;
 
-            var rotX = new RotateTransform3D(
-                new AxisAngleRotation3D(new Vector3D(0, 0, 1), angleX),
-                new Point3D(rotationPoint.X, rotationPoint.Y, rotationPoint.Z));
-            var rotY = new RotateTransform3D(
-                new AxisAngleRotation3D(new Vector3D(1, 0, 0), angleY),
-                new Point3D(rotationPoint.X, rotationPoint.Y, rotationPoint.Z));
-
-            var group = new Transform3DGroup();
-            group.Children.Add(rotX);
-            group.Children.Add(rotY);
-
-            thumbRing.Transform = group;
-            if (thumb != null) thumb.Transform = group;
+            // Retained per-stick transform: allocating the 5-object
+            // transform graph per dirty frame was pure churn. Mutate the
+            // two angles instead; skip when unchanged.
+            if (!_stickTransforms3D.TryGetValue(thumbRing, out var st))
+            {
+                var ax = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 0);
+                var ay = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 0);
+                var group = new Transform3DGroup();
+                group.Children.Add(new RotateTransform3D(ax,
+                    new Point3D(rotationPoint.X, rotationPoint.Y, rotationPoint.Z)));
+                group.Children.Add(new RotateTransform3D(ay,
+                    new Point3D(rotationPoint.X, rotationPoint.Y, rotationPoint.Z)));
+                st = (group, ax, ay, float.NaN, float.NaN);
+                _stickTransforms3D[thumbRing] = st;
+                thumbRing.Transform = group;
+                if (thumb != null) thumb.Transform = group;
+            }
+            if (st.lastX != angleX || st.lastY != angleY)
+            {
+                st.ax.Angle = angleX;
+                st.ay.Angle = angleY;
+                _stickTransforms3D[thumbRing] = (st.group, st.ax, st.ay, angleX, angleY);
+                // Reassert in case the model was rebuilt around the cache.
+                if (!ReferenceEquals(thumbRing.Transform, st.group))
+                {
+                    thumbRing.Transform = st.group;
+                    if (thumb != null) thumb.Transform = st.group;
+                }
+            }
         }
+
+        private readonly System.Collections.Generic.Dictionary<Model3DGroup,
+            (Transform3DGroup group, AxisAngleRotation3D ax, AxisAngleRotation3D ay, float lastX, float lastY)>
+            _stickTransforms3D = new();
 
         // ─────────────────────────────────────────────
         //  Trigger rotation + gradient (adapted from HC UpdateShoulderButtons)
@@ -573,7 +641,7 @@ namespace PadForge.Views
                 if (value > 0 && _currentModel.DefaultMaterials.TryGetValue(triggerModel, out var defMat)
                               && _currentModel.HighlightMaterials.TryGetValue(triggerModel, out var hlMat))
                 {
-                    geo.Material = GradientHighlight(defMat, hlMat, value);
+                    geo.Material = GradientHighlight(geo, defMat, hlMat, value);
                 }
                 else if (_currentModel.DefaultMaterials.TryGetValue(triggerModel, out var def))
                 {
@@ -596,7 +664,17 @@ namespace PadForge.Views
         //  Gradient color interpolation (from HC)
         // ─────────────────────────────────────────────
 
-        private static DiffuseMaterial GradientHighlight(Material defaultMaterial, Material highlightMaterial, float factor)
+        // Per-element retained highlight material (keyed weakly on the
+        // GeometryModel3D so rebuilt models collect): the per-frame
+        // DiffuseMaterial + SolidColorBrush pair was allocated for every
+        // deflected stick / pulled trigger every dirty frame. The brush we
+        // own is never frozen, so mutating its Color is the supported
+        // dependent-animation shape.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
+            s_highlightMaterials = new();
+
+        private static DiffuseMaterial GradientHighlight(GeometryModel3D owner,
+            Material defaultMaterial, Material highlightMaterial, float factor)
         {
             factor = Math.Clamp(factor, 0f, 1f);
             // Cast-proof (#175 regression fix): a themed material may carry a
@@ -610,7 +688,10 @@ namespace PadForge.Views
             byte g = (byte)(startColor.G * (1 - factor) + endColor.G * factor);
             byte b = (byte)(startColor.B * (1 - factor) + endColor.B * factor);
 
-            return new DiffuseMaterial(new SolidColorBrush(Color.FromArgb(a, r, g, b)));
+            var mat = s_highlightMaterials.GetValue(owner,
+                _ => new DiffuseMaterial(new SolidColorBrush()));
+            ((SolidColorBrush)mat.Brush).Color = Color.FromArgb(a, r, g, b);
+            return mat;
         }
 
         private static Color BrushColor(Brush brush) => brush switch
@@ -980,6 +1061,14 @@ namespace PadForge.Views
                 Mouse.Capture(null);
                 SetAnnotationsDragHidden(false);
             }
+            // End the left gesture outright. Leaving this set meant that
+            // re-entering with the button still held re-promoted to dragging
+            // against the ORIGINAL press point, which is always past the
+            // threshold, and then rotated by p - _rightDragLast, a stale
+            // position from the moment of exit. The model snapped by the
+            // whole exit-to-re-entry cursor distance. Capture is already
+            // released above, so the gesture really is over.
+            _leftMouseActive = false;
             ClearHover();
         }
 
@@ -1673,6 +1762,7 @@ namespace PadForge.Views
             TeardownAnnotations();
             _currentModel?.Dispose();
             _currentModel = null;
+            _stickTransforms3D.Clear();
             _vm = null;
         }
     }

@@ -160,6 +160,12 @@ namespace PadForge.ViewModels
         public RelayCommand ResetSocdCommand =>
             _resetSocdCommand ??= new RelayCommand(ResetToDefaults);
 
+        private RelayCommand _resetSocdModeCommand;
+        /// <summary>Mode-only reset for the card's mode row. The card's
+        /// Reset All (ResetSocdCommand) resets the pairs too.</summary>
+        public RelayCommand ResetSocdModeCommand =>
+            _resetSocdModeCommand ??= new RelayCommand(() => SocdMode = "Off");
+
         /// <summary>Resets every field to its fresh-install default IN
         /// PLACE, preserving the instance (external PropertyChanged
         /// subscribers survive; same invariant as MidiSlotConfig).</summary>

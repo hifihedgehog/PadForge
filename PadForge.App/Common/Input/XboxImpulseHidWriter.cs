@@ -65,10 +65,6 @@ namespace PadForge.Common.Input
             if (!XboxControllerIdentity.IsImpulseTriggerDevice(ud.VendorId, ud.ProdId))
                 return false;
 
-            string interfacePath = ResolveInterfacePath(ud);
-            if (string.IsNullOrEmpty(interfacePath))
-                return false;
-
             // SDL3 HIDAPI scales 16-bit → 0..100 via `/ 655`. Match that.
             byte lt = (byte)Math.Min(100, leftTrigger16 / 655);
             byte rt = (byte)Math.Min(100, rightTrigger16 / 655);
@@ -81,11 +77,109 @@ namespace PadForge.Common.Input
             // its OWN bus-bypassing HIDAPI path, but that requires Steam
             // Xbox Extended Feature Driver and is not what we are doing
             // here. Stock XUSB driver accepts the 9-byte shape on the
-            // XUSB interface — verified by X1nput.
-            byte[] buf = new byte[] { 0x03, 0x0F, lt, rt, lm, rm, 0xFF, 0x00, 0xEB };
+            // XUSB interface (verified by X1nput). Scratch is PER-THREAD:
+            // the poll thread is NOT the sole caller, see the note on
+            // s_targets below.
+            var buf = BuildReport(lt, rt, lm, rm);
 
-            (bool ok, _) = WriteRawDiag(interfacePath, buf);
-            return ok;
+            // Cached resolved path + persistent handle: the per-change
+            // ResolveInterfacePath ran a full SetupDi interface sweep plus
+            // probe opens, and WriteRawDiag re-opened the device, at game
+            // rumble-update rate on the poll thread. FALLBACK-SAFE: any
+            // cached-handle write failure drops the cache and re-runs the
+            // exact legacy resolve+open+write for this same call.
+            if (s_targets.TryGetValue(ud.DevicePath, out var cached))
+            {
+                if (cached.Handle != null && !cached.Handle.IsInvalid && !cached.Handle.IsClosed
+                    && WriteFile(cached.Handle, buf, (uint)buf.Length, out _, IntPtr.Zero))
+                    return true;
+                cached.Handle?.Dispose();
+                s_targets.TryRemove(ud.DevicePath, out _);
+            }
+
+            string interfacePath = ResolveInterfacePath(ud);
+            if (string.IsNullOrEmpty(interfacePath))
+                return false;
+
+            var handle = CreateFileSafe(
+                interfacePath,
+                GENERIC_READ | GENERIC_WRITE,
+                FILE_SHARE_READ | FILE_SHARE_WRITE,
+                0); // synchronous open, matching X1nput
+            if (handle.IsInvalid)
+                return false;
+
+            bool ok = WriteFile(handle, buf, (uint)buf.Length, out _, IntPtr.Zero);
+            if (ok)
+            {
+                // TryAdd, not the indexer: if the other caller cached this
+                // same device between our miss and here, its handle is as
+                // good as ours, so drop ours rather than orphan it under an
+                // overwritten entry. The write above already succeeded
+                // either way, so the result is true regardless of who won.
+                if (!s_targets.TryAdd(ud.DevicePath,
+                        new CachedTarget { InterfacePath = interfacePath, Handle = handle }))
+                    handle.Dispose();
+                return true;
+            }
+            handle.Dispose();
+            return false;
+        }
+
+        private sealed class CachedTarget
+        {
+            public string InterfacePath;
+            public Microsoft.Win32.SafeHandles.SafeFileHandle Handle;
+        }
+        // The poll thread is NOT the sole caller, though a comment here
+        // claimed it was. The Remote Link output path (#138) reaches
+        // Write from the network receive thread whenever a remote peer
+        // drives an Xbox One+ pad (InputService's effect apply, the
+        // impulse-trigger branch). A plain Dictionary mutated from two
+        // threads with no lock can corrupt its buckets, and a corrupt
+        // Dictionary sends TryGetValue into an INFINITE LOOP, which on the
+        // 1 kHz poll thread is a hung input pipeline rather than a wrong
+        // value. Concurrent now.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, CachedTarget> s_targets =
+            new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Drops every cached handle. Called on any confirmed device
+        /// disconnect, because the cache key is <c>ud.DevicePath</c>, which for
+        /// these pads is SDL's SLOT-derived synthetic "XInput#N" string rather
+        /// than a stable hardware path.
+        ///
+        /// <para>The lookup already self-heals when a cached handle has gone
+        /// bad: the write fails, the entry is dropped and the resolve re-runs.
+        /// The case that does NOT self-heal is a reshuffle in which the cached
+        /// handle is still VALID. Unplug the pad on XInput#0 and the pad that
+        /// was on #1 can re-enumerate as #0, at which point the stale #0 entry
+        /// writes a perfectly successful report to the wrong physical
+        /// controller, and nothing ever invalidates it.</para></summary>
+        internal static void InvalidateCachedTargets()
+        {
+            foreach (var kv in s_targets)
+            {
+                try { kv.Value?.Handle?.Dispose(); } catch { /* best effort */ }
+            }
+            s_targets.Clear();
+        }
+
+        // Same two-caller reason: per-thread, so a local write and a remote
+        // write cannot interleave their motor bytes into a blend neither
+        // side asked for. Keeps the allocation-free property the shared
+        // buffer existed for, with no lock on the hot path.
+        [ThreadStatic] private static byte[] t_reportScratch;
+
+        /// <summary>Fills this thread's 9-byte GIP report. Bytes 0/1 and
+        /// 6/7/8 are the fixed X1nput command frame, 2..5 are LT / RT /
+        /// large / small. Internal so the per-thread isolation is
+        /// testable.</summary>
+        internal static byte[] BuildReport(byte lt, byte rt, byte lm, byte rm)
+        {
+            var buf = t_reportScratch ??=
+                new byte[] { 0x03, 0x0F, 0, 0, 0, 0, 0xFF, 0x00, 0xEB };
+            buf[2] = lt; buf[3] = rt; buf[4] = lm; buf[5] = rm;
+            return buf;
         }
 
         // ─────────────────────────────────────────────
@@ -224,21 +318,6 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
         //  HID write (synchronous, no overlapped — matches X1nput)
         // ─────────────────────────────────────────────
-
-        private static (bool ok, int err) WriteRawDiag(string devicePath, byte[] buf)
-        {
-            using var handle = CreateFileSafe(
-                devicePath,
-                GENERIC_READ | GENERIC_WRITE,
-                FILE_SHARE_READ | FILE_SHARE_WRITE,
-                0); // synchronous open — matches X1nput
-
-            if (handle.IsInvalid)
-                return (false, Marshal.GetLastWin32Error());
-
-            bool ok = WriteFile(handle, buf, (uint)buf.Length, out _, IntPtr.Zero);
-            return (ok, ok ? 0 : Marshal.GetLastWin32Error());
-        }
 
         private static SafeFileHandle CreateFileSafe(
             string path, uint access, uint share, uint flags)

@@ -85,8 +85,16 @@ namespace PadForge.Services
 
         // Virtual-key constants, named so the tables below read as bindings
         // rather than as hex. Values are the Windows VK_* codes.
-        private const byte VkTab = 0x09, VkReturn = 0x0D, VkShift = 0x10;
-        private const byte VkControl = 0x11, VkMenu = 0x12, VkEscape = 0x1B, VkSpace = 0x20;
+        // NOTE the modifier codes. The KbM row engine's key set is CLOSED and
+        // carries only the SIDED modifiers (0xA0..0xA5). The unsided
+        // VK_SHIFT 0x10 / VK_CONTROL 0x11 / VK_MENU 0x12 are NOT in it, and a
+        // row authored against one is silently dead. VK_LWIN 0x5B is absent
+        // too, so the Windows key is not reachable as a row target at all.
+        private const byte VkTab = 0x09, VkReturn = 0x0D, VkEscape = 0x1B, VkSpace = 0x20;
+        private const byte VkBackspace = 0x08, VkDelete = 0x2E;
+        private const byte VkShift = 0xA0;    // VK_LSHIFT
+        private const byte VkControl = 0xA2;  // VK_LCONTROL
+        private const byte VkMenu = 0xA4;     // VK_LMENU (Alt)
         private const byte VkLeft = 0x25, VkUp = 0x26, VkRight = 0x27, VkDown = 0x28;
         private const byte Vk0 = 0x30, Vk1 = 0x31, Vk2 = 0x32, Vk3 = 0x33, Vk4 = 0x34;
         private const byte Vk5 = 0x35, Vk6 = 0x36, Vk7 = 0x37, Vk8 = 0x38, Vk9 = 0x39;
@@ -94,7 +102,6 @@ namespace PadForge.Services
         private const byte VkG = 0x47, VkI = 0x49, VkM = 0x4D, VkQ = 0x51, VkR = 0x52;
         private const byte VkS = 0x53, VkV = 0x56, VkW = 0x57;
         private const byte VkF1 = 0x70, VkF2 = 0x71, VkF3 = 0x72, VkF4 = 0x73;
-        private const byte VkLWin = 0x5B;
         private const byte VkOemMinus = 0xBD, VkOemPlus = 0xBB;
 
         // Abstract pad descriptors. Every one of these is a member of
@@ -169,7 +176,7 @@ namespace PadForge.Services
                 Row(Key(VkReturn), Src(PadA)),
                 Row(Key(VkEscape), Src(PadB)),
                 Row(Key(VkSpace), Src(PadY)),
-                Row(Key(VkLWin), Src(PadX)),
+                Row(Key(VkBackspace), Src(PadX)),
 
                 Row(Key(VkUp), Src(PadUp)),
                 Row(Key(VkDown), Src(PadDown)),

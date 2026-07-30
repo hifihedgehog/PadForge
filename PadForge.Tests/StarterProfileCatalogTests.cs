@@ -762,6 +762,46 @@ namespace PadForge.Tests
             Assert.Equal(firstCellCount, set.Menus[0].CellCount);
         }
 
+        /// <summary>
+        /// Macro triggers must carry the ABSTRACT descriptor, not a folded raw
+        /// button index.
+        ///
+        /// <para>The owner spotted this in the UI: the macro editor listed
+        /// "Button 0, Button 1, Button 2" while every mapping-row dropdown
+        /// showed "Gamepad A". The cause was routing through
+        /// TryBuildTriggerEntry, which deliberately folds an abstract alias to
+        /// its canonical "Button N" so picker entries convert like raw ones.
+        /// It still fired on a gamepad, since index 0 is A in the normalized
+        /// array, but it discarded the abstraction: a force-raw or non-gamepad
+        /// device would read ITS index 0 instead.</para>
+        ///
+        /// <para>The spec grammar is the assertion: "sd:" is a descriptor
+        /// entry and "btn:" is a raw index. A starter macro must never emit
+        /// the latter.</para></summary>
+        [Fact]
+        public void MacroTriggers_CarryTheAbstractDescriptor_NotARawButtonIndex()
+        {
+            int checkedMacros = 0;
+            foreach (var (info, p) in Built())
+            {
+                foreach (var m in p.Macros)
+                {
+                    checkedMacros++;
+                    foreach (var spec in m.TriggerInputs.Split('|', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        Assert.DoesNotContain(":btn:", spec, StringComparison.Ordinal);
+                        Assert.Contains(":sd:", spec, StringComparison.Ordinal);
+                        // And the descriptor it carries is an abstract alias,
+                        // resolvable exactly like a mapping row's source.
+                        string descriptor = spec.Substring(spec.IndexOf(":sd:", StringComparison.Ordinal) + 4);
+                        Assert.StartsWith("Gamepad ", descriptor, StringComparison.Ordinal);
+                    }
+                }
+            }
+            Assert.True(checkedMacros >= 12,
+                $"only {checkedMacros} macros checked; the sweep is not covering the catalog");
+        }
+
         /// <summary>Names and descriptions must be real localized strings, not
         /// missing-resource placeholders, in every shipped language.</summary>
         [Theory]

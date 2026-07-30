@@ -2917,4 +2917,21 @@
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 오디오 프로토콜 문서: SBC 매개변수와 패킷 레이아웃. 작성: khallmark. MIT.</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>데스크톱</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>소파에서 Windows를 조작합니다. 커서, 스크롤, 트리거 클릭.</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD와 마우스</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>키보드·마우스 게임을 패드로 플레이합니다. 슈터와 액션 게임.</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>단축 바</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>트리거 두 개에 32개의 기술. MMO와 기술이 많은 게임용.</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>에뮬레이션</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch와 프런트엔드. Back을 누른 채 저장, 불러오기, 배속.</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>격투 게임</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>6버튼 배치와 양축 토너먼트 규격 SOCD 정리.</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>키보드 + 마우스</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>게임패드</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>시작 프로필 찾아보기</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>시작 프로필</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>장르 전체를 위한 완성된 프로필입니다. 하나를 고르고 아무 컨트롤러나 할당하면 바로 사용할 수 있습니다. 저장하면 편집 가능한 일반 프로필이 추가됩니다.</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>프로필 저장</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>시작 프로필 “{0}”을(를) 추가했습니다.</value></data>
 </root>

@@ -1,0 +1,114 @@
+<ui:FluentWindow x:Class="PadForge.Views.StarterProfilesDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        Title="{Binding Starter_DialogTitle, Source={x:Static strings:Strings.Instance}}"
+        Height="620" Width="700"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize" MinHeight="480" MinWidth="560">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Dialog head, same grammar as the other FluentWindow dialogs:
+             ExtendsContentIntoTitleBar strips the system bar, so the ember
+             tick plus display-face title stands in for it, and the X stands
+             in for the caption close button WindowChrome no longer draws. -->
+        <Border Padding="14"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
+                           Fill="{DynamicResource EmberBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           FontFamily="{StaticResource DisplayFontFamily}"
+                           FontWeight="SemiBold" FontSize="15"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           TextTrimming="CharacterEllipsis"/>
+                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
+                           VerticalAlignment="Center" Click="HeaderClose_Click"
+                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
+                    <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </ui:Button>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{Binding Starter_Intro, Source={x:Static strings:Strings.Instance}}"
+                       TextWrapping="Wrap" Margin="0,0,0,12"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+
+            <!-- One row per archetype: name, an output-type chip so the
+                 keyboard-and-mouse entries are distinguishable from the
+                 gamepad ones at a glance, then the one-line pitch. Double
+                 click saves, matching the profile list's own gesture. -->
+            <ListBox Grid.Row="1" x:Name="StarterList"
+                     SelectionMode="Single"
+                     HorizontalContentAlignment="Stretch"
+                     ItemContainerStyle="{StaticResource EmberSelectListItem}"
+                     MouseDoubleClick="StarterList_MouseDoubleClick">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="4,7">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{Binding Name}"
+                                       FontWeight="SemiBold" FontSize="14"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis"/>
+
+                            <Border Grid.Column="1" Style="{StaticResource ChipGhost}"
+                                    Padding="7,2" VerticalAlignment="Center" Margin="8,0,0,0">
+                                <TextBlock Text="{Binding OutputLabel}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                           FontSize="10"/>
+                            </Border>
+
+                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2"
+                                       Text="{Binding Description}"
+                                       TextWrapping="Wrap" Margin="0,3,0,0"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <DockPanel Grid.Row="2" Margin="0,18,0,0" LastChildFill="False">
+                <Button x:Name="SaveButton" DockPanel.Dock="Right"
+                        Content="{Binding Starter_Save, Source={x:Static strings:Strings.Instance}}"
+                        Style="{StaticResource EmberAccentButton}"
+                        MinWidth="120" Click="Save_Click"/>
+                <Button DockPanel.Dock="Right"
+                        Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="100" Margin="0,0,8,0" Click="Cancel_Click"/>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

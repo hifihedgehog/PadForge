@@ -2939,4 +2939,21 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Documentazione del protocollo audio del DualShock 4: parametri SBC e layout dei pacchetti, di khallmark. MIT.</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>Desktop</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>Usa Windows dal divano. Cursore, scorrimento e clic sui grilletti.</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD e mouse</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>Gioca un titolo da tastiera e mouse con il pad. Sparatutto e giochi d’azione.</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>Barra delle azioni</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>Trentadue abilità dietro due grilletti, per MMO e giochi ricchi di abilità.</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>Emulazione</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch e le sue interfacce. Tieni premuto Indietro per salvataggi rapidi e velocità.</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>Picchiaduro</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>Disposizione a sei tasti con pulizia SOCD da torneo su entrambi gli assi.</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Tastiera + mouse</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Sfoglia i profili iniziali</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>Profili iniziali</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>Profili pronti per un intero genere. Scegline uno, assegna qualsiasi controller e gioca. Il salvataggio crea un normale profilo modificabile.</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>Salva profilo</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>Profilo iniziale «{0}» aggiunto.</value></data>
 </root>

@@ -2972,4 +2972,21 @@ You can retry later from Settings.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 audio protocol documentation: SBC parameters and packet layouts, by khallmark. MIT.</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>Desktop</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>Run Windows from the couch. Cursor, scroll, and clicks on the triggers.</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD and Mouse</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>Play a keyboard-and-mouse game with a pad. Shooters and action games.</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>Hotbar</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>Thirty-two abilities behind two triggers, for MMOs and ability-heavy games.</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>Emulation</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch and its frontends. Hold Back for save states, loading, and speed.</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>Fighting Games</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>Six-button layout with tournament-legal SOCD cleaning on both axes.</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Keyboard + Mouse</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Browse Starter Profiles</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>Starter Profiles</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>Ready-made profiles for a whole genre. Pick one, assign any controller, and play. Saving adds an ordinary profile you can edit.</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>Save Profile</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>Added starter profile "{0}".</value></data>
 </root>

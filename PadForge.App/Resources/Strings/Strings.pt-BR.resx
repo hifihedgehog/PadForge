@@ -2917,4 +2917,21 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Documentação do protocolo de áudio do DualShock 4: parâmetros SBC e layouts de pacotes, por khallmark. MIT.</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>Área de trabalho</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>Use o Windows do sofá. Cursor, rolagem e cliques nos gatilhos.</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD e mouse</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>Jogue um título de teclado e mouse com o controle. Tiro e ação.</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>Barra de ações</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>Trinta e duas habilidades atrás de dois gatilhos, para MMOs e jogos com muitas habilidades.</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>Emulação</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch e seus frontends. Segure Voltar para estados salvos, carregamento e velocidade.</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>Jogos de luta</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>Layout de seis botões com limpeza SOCD válida em torneios nos dois eixos.</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Teclado + mouse</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>Controle</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Procurar perfis iniciais</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>Perfis iniciais</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>Perfis prontos para um gênero inteiro. Escolha um, atribua qualquer controle e jogue. Salvar adiciona um perfil comum que você pode editar.</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>Salvar perfil</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>Perfil inicial “{0}” adicionado.</value></data>
 </root>

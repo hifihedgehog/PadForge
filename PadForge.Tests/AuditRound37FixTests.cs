@@ -15,6 +15,7 @@ namespace PadForge.Tests
     /// CONTROL so a window that stops matching fails loudly instead of
     /// asserting nothing.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class AuditRound37FixTests
     {
         private static string RepoRoot()

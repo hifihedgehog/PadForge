@@ -670,13 +670,7 @@ namespace PadForge.Services
                 // interactables shares the camera's arrow rows above, and
                 // jump shares A's Space row, so neither duplicates a target.
                 Row(Key(VkV), Src(PadDown)),       // examine
-
-                // Quicksave stays OFF Start. Holding Start for 600 ms is the
-                // quiet-layer gesture, and the button's Base binding is live
-                // for those 600 ms, so a quicksave here would fire every time
-                // the user reached for silence. Back is unbound in this
-                // profile, so moving it costs nothing.
-                Row(Key(VkF5), Src(PadBack)),      // quicksave
+                Row(Key(VkF5), Src(PadStart)),     // quicksave
             });
 
             // Larian's two wheels, on the triggers exactly as Divinity ships
@@ -1362,16 +1356,41 @@ namespace PadForge.Services
         /// profiles both reserve a deliberately blank set. The layer NAME
         /// says so out loud, because an empty layer is otherwise
         /// indistinguishable from an unfinished one.</para></summary>
+        /// <summary><para>THE GESTURE IS A CHORD, and that is not a stylistic
+        /// choice. An activator with PostponeMapping false (the default)
+        /// CONSUMES its own input: the suppression set is built from the raw
+        /// pre-delay read, and every row evaluator skips a source that is in
+        /// it. A single-button activator therefore kills that button's
+        /// ordinary binding on EVERY press, not just the long one that engages
+        /// the layer.</para>
+        ///
+        /// <para>On Start alone this made Start a dead button in all thirteen
+        /// profiles: Escape never fired on WASD or Twin-Stick, and ButtonStart
+        /// never reached the game on any of the five gamepad profiles. Nothing
+        /// in the layer machinery can fix that, because the consume is the
+        /// point of the machinery. The input has to stop being a lone
+        /// activator.</para>
+        ///
+        /// <para>Guide plus Start. A chord only suppresses while BOTH are
+        /// held, so each button keeps its own binding, and no game binds the
+        /// pair. Guide is a real input here: PadForge cloaks the physical pad
+        /// through HidHide, so Windows does not eat it.</para></summary>
         private static void AddQuietLayer(MappingSet set)
         {
             set.ShiftActivators.Add(new ShiftActivator
             {
                 DeviceGuid = "",
-                Descriptor = PadStart,
+                Kind = "Chord",
+                Descriptor = PadGuide,
+                ChordSecondDeviceGuid = "",
+                ChordSecondDescriptor = PadStart,
                 Mode = "Toggle",
                 LayerMask = "Quiet",
                 LayerName = Strings.Instance.Starter_QuietLayerName,
                 InheritUnmapped = false,
+                // The hold stays. The chord stops the gesture from stealing a
+                // button; the delay stops a fumbled simultaneous press from
+                // muting the pad. They guard different mistakes, so both.
                 DelayMs = 600,
             });
         }

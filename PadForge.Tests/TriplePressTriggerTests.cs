@@ -13,6 +13,7 @@ namespace PadForge.Tests
     /// re-arm; the chain is consumed on fire. Runs through the REAL slot
     /// evaluator like the DoublePress suite.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class TriplePressTriggerTests
     {
         private static MacroItem TriplePressMacro(int windowMs = 3000)

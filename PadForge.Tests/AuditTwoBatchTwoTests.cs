@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using PadForge.Common.Input;
 using PadForge.Engine;
@@ -16,6 +16,7 @@ namespace PadForge.Tests
     /// (M8/M9), the widened sdh spec gate (G3), the editor exposure of
     /// MacroActionType 43-46 (M1), the hold-pair latch lowering (M4), and
     /// the hold-pair stale-release cancel (M6).</summary>
+    [Collection("SettingsManagerStatics")]
     public class AuditTwoBatchTwoTests
     {
         private static TranslatedProfile XboxProfile()

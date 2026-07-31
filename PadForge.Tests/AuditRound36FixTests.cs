@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,6 +17,7 @@ namespace PadForge.Tests
     /// instead of asserting nothing. Round 35 shipped two source tests whose
     /// windows had slid off their target and were silently green.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class AuditRound36FixTests
     {
         private static string RepoRoot()

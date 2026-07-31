@@ -829,11 +829,11 @@ namespace PadForge.Services
 
                 // No curve on either pedal: the feel that matters is the
                 // game's own trigger response, and a second shaping layer here
-                // would fight it. The inside guard is the one exception, and it
-                // is asymmetric on purpose, and it is the one genuinely
-                // transferable trigger convention in the research: Forza
-                // ships throttle at 0 inside and brake at 2 inside, the 2
-                // being a deliberate guard for a finger resting on the brake.
+                // would fight it. The inside guard is the one exception, and
+                // it is the only genuinely transferable trigger convention in
+                // the research. Forza ships throttle at 0 inside and brake at
+                // 2, the 2 being a deliberate guard for a finger resting on
+                // the brake, so this is asymmetric on purpose.
                 Row("RightTrigger", Src(PadRT)),
                 Row("LeftTrigger", BrakeTrigger(PadLT)),
 

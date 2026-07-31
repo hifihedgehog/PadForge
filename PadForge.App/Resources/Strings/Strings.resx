@@ -3006,5 +3006,13 @@ You can retry later from Settings.</value></data>
   <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Precision (fine control)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Gyro Aim</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Motion for fine aim, on the left trigger, with the stick still live.</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>Cross Hotbar (Left)</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>Cross Hotbar (Right)</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>Double Cross (Left)</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>Double Cross (Right)</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>Hotkeys</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>Hotbar</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>Party</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Shortcuts</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Quiet (nothing sends)</value></data>
 </root>

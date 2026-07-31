@@ -2581,6 +2581,14 @@ public class Strings : INotifyPropertyChanged
     public string Status_WorkshopCacheCleared => Get("Status_WorkshopCacheCleared");
     public string Profiles_BrowseCommunity => Get("Profiles_BrowseCommunity");
     public string Starter_Desktop_Name => Get("Starter_Desktop_Name");
+    public string Starter_Layer_CrossHotbarL => Get("Starter_Layer_CrossHotbarL");
+    public string Starter_Layer_CrossHotbarR => Get("Starter_Layer_CrossHotbarR");
+    public string Starter_Layer_DoubleCrossL => Get("Starter_Layer_DoubleCrossL");
+    public string Starter_Layer_DoubleCrossR => Get("Starter_Layer_DoubleCrossR");
+    public string Starter_Layer_Hotkeys => Get("Starter_Layer_Hotkeys");
+    public string Starter_Layer_Hotbar => Get("Starter_Layer_Hotbar");
+    public string Starter_Layer_Party => Get("Starter_Layer_Party");
+    public string Starter_Layer_Shortcuts => Get("Starter_Layer_Shortcuts");
     public string Starter_QuietLayerName => Get("Starter_QuietLayerName");
     public string Starter_Racing_Name => Get("Starter_Racing_Name");
     public string Starter_Racing_Description => Get("Starter_Racing_Description");

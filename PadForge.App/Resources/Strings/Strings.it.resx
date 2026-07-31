@@ -2973,5 +2973,13 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Precisione (controllo fine)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Mira giroscopica</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Movimento per la mira fine sul grilletto sinistro, con la levetta attiva.</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>Barra incrociata (sinistra)</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>Barra incrociata (destra)</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>Doppia croce (sinistra)</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>Doppia croce (destra)</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>Scorciatoie</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>Barra azioni</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>Gruppo</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Collegamenti</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silenzio (non invia nulla)</value></data>
 </root>

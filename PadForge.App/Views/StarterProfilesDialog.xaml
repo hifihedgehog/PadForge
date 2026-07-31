@@ -101,7 +101,7 @@
             </ListBox>
 
             <DockPanel Grid.Row="2" Margin="0,18,0,0" LastChildFill="False">
-                <Button x:Name="SaveButton" DockPanel.Dock="Right"
+                <Button DockPanel.Dock="Right"
                         Content="{Binding Starter_Save, Source={x:Static strings:Strings.Instance}}"
                         Style="{StaticResource EmberAccentButton}"
                         MinWidth="120" Click="Save_Click"/>

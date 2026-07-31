@@ -840,5 +840,153 @@ namespace PadForge.Tests
                 System.Globalization.CultureInfo.CurrentUICulture = previous;
             }
         }
+
+        // ── Artifact conformance ────────────────────────────────────────
+        // The specification these profiles were commissioned against names
+        // each binding individually. One test per promise, because "the
+        // profile exists and loads" was already true of every binding these
+        // caught as wrong.
+
+        private static MappingSet SetOf(string key)
+            => StarterProfileCatalog.Find(key).Build().SlotMappingSets.First(s => s != null);
+
+        private static MappingRow RowOf(string key, string target)
+            => SetOf(key).Rows.Single(r => r.Target == target
+                && (r.LayerMask ?? "Base") == "Base");
+
+        private static string[] DescriptorsOf(string key, string target)
+            => RowOf(key, target).Sources.Select(s => s.Descriptor).ToArray();
+
+        /// <summary>WASD follows Valve's own wasd.vdf: LEFT click sits on the
+        /// right-stick CLICK beside the trigger, never middle click, and the
+        /// weapon swap is the scroll wheel rather than letter keys, which is
+        /// what makes it work in games that number their slots
+        /// differently.</summary>
+        [Fact]
+        public void Wasd_PutsLeftClickOnTheStickClick_AndSwapsWeaponsOnTheWheel()
+        {
+            // "Gamepad RightStick" is the CLICK: GamepadAliasTable maps it to
+            // Button 9. The axes are spelled RightStickX / RightStickY.
+            Assert.Contains("Gamepad RightStick", DescriptorsOf("wasd", "KbmMBtn0"));  // LMB
+            // True whether middle click is bound elsewhere or not bound at all.
+            Assert.DoesNotContain(SetOf("wasd").Rows, r => r.Target == "KbmMBtn2"      // MMB
+                && r.Sources.Any(s => s.Descriptor == "Gamepad RightStick"));
+            Assert.Contains("Gamepad LeftShoulder", DescriptorsOf("wasd", "KbmScrollNeg"));
+            Assert.Contains("Gamepad RightShoulder", DescriptorsOf("wasd", "KbmScroll"));
+        }
+
+        /// <summary>The cursor-driven genres host the cursor on the LEFT
+        /// stick and keep the right stick for the camera. Getting this
+        /// backwards makes both unusable at once, since the hand steering the
+        /// pointer is also the hand panning the view.</summary>
+        [Theory]
+        [InlineData("pointclick")]
+        [InlineData("isometric")]
+        public void CursorGenres_DriveTheCursorFromTheLeftStick(string key)
+        {
+            Assert.Contains("Gamepad LeftStickX", DescriptorsOf(key, "KbmMouseX"));
+            Assert.Contains("Gamepad LeftStickY", DescriptorsOf(key, "KbmMouseY"));
+            Assert.DoesNotContain("Gamepad RightStickX", DescriptorsOf(key, "KbmMouseX"));
+        }
+
+        /// <summary>Isometric's camera pan rides the stick the cursor does
+        /// NOT use, so the two never fight for the same thumb.</summary>
+        [Fact]
+        public void Isometric_PansTheCameraWithTheRightStick()
+        {
+            foreach (var (target, axis) in new[]
+                     { ("KbmKey26", "Gamepad RightStickY"), ("KbmKey28", "Gamepad RightStickY"),
+                       ("KbmKey25", "Gamepad RightStickX"), ("KbmKey27", "Gamepad RightStickX") })
+                Assert.Contains(axis, DescriptorsOf("isometric", target));
+        }
+
+        /// <summary>Point and Click: Y skips dialogue (Space), and hotspots
+        /// cycle FORWARD on LB with the backward chord on RB. The chord
+        /// cannot be a row, since no single row target is a chord.</summary>
+        [Fact]
+        public void PointClick_SkipsOnY_AndCyclesHotspotsInTheRightOrder()
+        {
+            Assert.Contains("Gamepad ButtonY", DescriptorsOf("pointclick", "KbmKey20"));       // Space
+            Assert.Contains("Gamepad LeftShoulder", DescriptorsOf("pointclick", "KbmKey09"));  // Tab
+            Assert.DoesNotContain("Gamepad RightShoulder", DescriptorsOf("pointclick", "KbmKey09"));
+
+            var p = StarterProfileCatalog.Find("pointclick").Build();
+            var back = p.Macros.Single(m => m.Actions.Any(a => a.KeyCode == 0xA0));   // Shift+Tab
+            Assert.Contains("RightShoulder", back.TriggerInputs);
+            Assert.Contains(back.Actions, a => a.Type == MacroActionType.KeyPress && a.KeyCode == 0x09);
+        }
+
+        /// <summary>Strategy reaches Pause/Break. It is outside the KbM row
+        /// engine's closed VK set, so it MUST ride the macro lane: a row
+        /// would be silently dead.</summary>
+        [Fact]
+        public void Strategy_ReachesPauseBreak_ThroughTheMacroLane()
+        {
+            var p = StarterProfileCatalog.Find("strategy").Build();
+            Assert.Contains(0x13, MacroKeys(p));
+            Assert.DoesNotContain(SetOf("strategy").Rows, r => r.Target == "KbmKey13");
+        }
+
+        /// <summary>Fighting Games reads both triggers DIGITALLY: a partial
+        /// pull is a full press. A partial pull that registers as a partial
+        /// input is a dropped move.</summary>
+        [Fact]
+        public void Fighting_ReadsBothTriggersAsButtons()
+        {
+            foreach (var target in new[] { "LeftTrigger", "RightTrigger" })
+            {
+                var src = RowOf("fighting", target).Sources.Single();
+                Assert.InRange(src.ParamRangeOuter, 0.01, 0.5);
+                // Live on the trigger read itself: ReadAsUnipolar's tail calls
+                // ApplyCurveRangeShaping, whose outer leg needs shape 0.
+                Assert.Equal(0, src.ParamStickDeadZoneShape);
+            }
+        }
+
+        /// <summary>Racing's trigger deadzones are ASYMMETRIC on purpose:
+        /// throttle at 0 inside, brake guarded so a resting finger does not
+        /// drag it. The shape must be nonzero or the assignment-time fold
+        /// never moves the radius onto the device's Dead Zone card.</summary>
+        [Fact]
+        public void Racing_GuardsTheBrakeButNotTheThrottle()
+        {
+            var brake = RowOf("racing", "LeftTrigger").Sources.Single();
+            Assert.InRange(brake.ParamStickDeadZoneInner, 0.005, 0.1);
+            Assert.NotEqual(0, brake.ParamStickDeadZoneShape);
+
+            var throttle = RowOf("racing", "RightTrigger").Sources.Single();
+            Assert.Equal(0.0, throttle.ParamStickDeadZoneInner);
+        }
+
+        /// <summary>Gyro Aim ramps sensitivity 1 to 2 with rate. The ramp is
+        /// ParamAccel; GyroSensitivity is a FLAT multiplier folded into the
+        /// rate, so setting it instead would double slow movement too and lose
+        /// the entire point of a ramp.</summary>
+        [Fact]
+        public void GyroAim_RampsWithRate_RatherThanMultiplyingFlat()
+        {
+            foreach (var target in new[] { "RightThumbAxisX", "RightThumbAxisY" })
+            {
+                var gyro = RowOf("gyroaim", target).Sources
+                    .Single(s => s.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal));
+                Assert.Equal(1.0, gyro.ParamAccel);          // gain 1 at rest, 2 at full scale
+                Assert.Equal(1.0, gyro.GyroSensitivity);     // the flat lane stays at unity
+            }
+        }
+
+        /// <summary>Gyro Aim carries a calibrate button. Drifted gyro is
+        /// unusable, and a recenter reachable only by opening the app is not a
+        /// recenter. It must be a real GyroRecenter action: a shift layer with
+        /// no rows recenters nothing.</summary>
+        [Fact]
+        public void GyroAim_CarriesARealCalibrateBinding()
+        {
+            var p = StarterProfileCatalog.Find("gyroaim").Build();
+            var cal = p.Macros.Single(m =>
+                m.Actions.Any(a => a.Type == MacroActionType.GyroRecenter));
+            Assert.False(string.IsNullOrEmpty(cal.TriggerInputs));
+            Assert.False(cal.ConsumeTriggerButtons);   // Back keeps its ordinary press
+            Assert.Equal(MacroTriggerMode.HoldForMs, cal.TriggerMode);
+        }
     }
 }

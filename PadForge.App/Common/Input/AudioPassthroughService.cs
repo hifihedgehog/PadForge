@@ -1232,9 +1232,37 @@ namespace PadForge.Common.Input
             feed.BtMicStop = true;
             var h = feed.BtMicHandle;
             feed.BtMicHandle = IntPtr.Zero;
-            // Closing the handle aborts the blocking ReadFile; the loop
-            // observes the stop flag and exits.
-            if (h != IntPtr.Zero) NativeMethods.CloseHandle(h);
+            // Send the mic CLOSE on the reader's own handle BEFORE closing
+            // it. The BT tick's close path needs a live sink, and a slot
+            // switched to a non-composite profile tears the sink down
+            // before a tick can run, leaving the pad's mic session latched
+            // open (observed 2026-07-31: a slot switch orphaned the
+            // session and wedged the pad until power-cycle). The reader's
+            // handle is still valid here and a synchronous WriteFile of
+            // the 142-byte close report needs nothing from the sink.
+            if (h != IntPtr.Zero)
+            {
+                try
+                {
+                    var close = new byte[Ds5HapticBtReportSize];
+                    close[0] = 0x32;
+                    close[2] = 0x11 | 0x80;
+                    close[3] = 7;
+                    close[4] = 0xFE;   // close
+                    close[9] = 0xFF;
+                    close[11] = 0x12 | 0x80;
+                    close[12] = 64;
+                    uint crc = Crc32(close, Ds5HapticBtReportSize - 4);
+                    close[Ds5HapticBtReportSize - 4] = (byte)(crc & 0xFF);
+                    close[Ds5HapticBtReportSize - 3] = (byte)((crc >> 8) & 0xFF);
+                    close[Ds5HapticBtReportSize - 2] = (byte)((crc >> 16) & 0xFF);
+                    close[Ds5HapticBtReportSize - 1] = (byte)(crc >> 24);
+                    NativeMethods.WriteFileSyncBestEffort(h, close, Ds5HapticBtReportSize);
+                    Engine.SdlDiagLog.WriteLine("PERSONA mic CLOSE sent (reader handle, stop path)");
+                }
+                catch { }
+                NativeMethods.CloseHandle(h);
+            }
             feed.BtMicThread = null;
             feed.BtMicPadGuid = Guid.Empty;
         }
@@ -2680,6 +2708,16 @@ namespace PadForge.Common.Input
                 if (h == IntPtr.Zero) return false;
                 try { return ReadFile(h, buf, n, out read, IntPtr.Zero); }
                 catch { return false; }
+            }
+
+            [DllImport("kernel32.dll", SetLastError = true)]
+            private static extern bool WriteFile(IntPtr h, byte[] buf, int n, out int written, IntPtr overlapped);
+
+            /// <summary>One synchronous write on the mic reader's handle,
+            /// best effort: the stop path must never throw.</summary>
+            public static void WriteFileSyncBestEffort(IntPtr h, byte[] buf, int n)
+            {
+                try { WriteFile(h, buf, n, out _, IntPtr.Zero); } catch { }
             }
 
             /// <summary>OpenHid without FILE_FLAG_OVERLAPPED, for the

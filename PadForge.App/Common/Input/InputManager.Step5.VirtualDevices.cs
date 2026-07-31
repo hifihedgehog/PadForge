@@ -2053,6 +2053,18 @@ namespace PadForge.Common.Input
                     var psCfg = _deviceSlotConfigs[padIndex];
                     if (psCfg != null)
                         hmVc.AttachDeviceConfig(psCfg);
+
+                    // Composite persona (HM v1.4.0): route the virtual
+                    // pad's game-rendered audio to the slot's physical
+                    // pads. Null UsbAudio on every UMDF2 profile makes
+                    // this a no-op for them.
+                    var usbAudio = hmVc.UsbAudio;
+                    if (usbAudio != null)
+                    {
+                        AudioPassthroughService.AttachPersonaFeed(padIndex, usbAudio);
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"VCTRACE slot={padIndex} persona audio feed attached profile={hmVc.ProfileId} ch={usbAudio.Output.Channels}@{usbAudio.Output.SampleRateHz}");
+                    }
                 }
                 else
                 {
@@ -2637,6 +2649,13 @@ namespace PadForge.Common.Input
         {
             var vc = _virtualControllers[padIndex];
             if (vc == null) return;
+
+            // Composite persona (HM v1.4.0): detach the audio feed
+            // synchronously before disposal, same rationale as the C38
+            // feedback-callback detach below. Unsubscribes the pacing-
+            // thread handlers and stops the mic capture; a no-op for
+            // slots that never had one.
+            AudioPassthroughService.DetachPersonaFeed(padIndex);
 
             // #236: VC destruction is an explicit silence edge for ALL
             // FOUR voices (the legacy lifecycle zeroing below touches only

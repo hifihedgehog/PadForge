@@ -78,6 +78,12 @@ namespace PadForge.Common.Input
         public ushort ProfileVendorId => _profile.VendorId;
         public ushort ProfileProductId => _profile.ProductId;
 
+        /// <summary>The composite persona's audio surfaces (HM v1.4.0,
+        /// HM#39): game-rendered speaker+haptic PCM out, microphone in,
+        /// UAC volume/mute control writes. Null on every UMDF2 profile
+        /// and until <see cref="Connect"/> has bound the controller.</summary>
+        public HIDMaestro.HMUsbAudio UsbAudio => _controller?.UsbAudio;
+
         // Cached HMAxis keys for the active profile's first two sticks +
         // first two triggers, resolved once at construction so the 1 kHz
         // SubmitGamepadState hot path doesn't repeatedly walk

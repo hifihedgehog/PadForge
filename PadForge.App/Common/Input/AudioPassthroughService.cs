@@ -151,6 +151,12 @@ namespace PadForge.Common.Input
             /// 0x32 stream idles after 2 s of silence like the speaker lane,
             /// instead of interleaving zero-payload reports forever.</summary>
             public long Ds5HapticAudibleTicks;
+            /// <summary>BT mic session state for the persona feed: 0 closed,
+            /// 1 open-requested. The open/close toggle report rides this
+            /// sink's 0x32 stream (BT thread only).</summary>
+            public int Ds5MicOpen;
+            public long Ds5MicOpenSentTicks;
+            public int Ds5MicOpenTries;
 
             // ── DualShock 4 BT lane (SBC over report 0x17) — BT thread only.
             /// <summary>Clean-room SBC encoder (32 kHz JS/SNR/bitpool 48).</summary>
@@ -923,6 +929,14 @@ namespace PadForge.Common.Input
             public WasapiCapture Mic;
             public Guid MicPadGuid;
             public byte[] MicScratch = Array.Empty<byte>();
+            // BT mic reader (DS5 only): parallel sync HID handle; Windows
+            // HIDClass queues input reports per file object, so this never
+            // steals reports from SDL's reader.
+            public System.Threading.Thread BtMicThread;
+            public volatile bool BtMicStop;
+            public IntPtr BtMicHandle;
+            public Guid BtMicPadGuid;
+            public long BtMicRxFrames;
         }
 
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, PersonaFeed> _personaFeeds = new();
@@ -1031,6 +1045,7 @@ namespace PadForge.Common.Input
             }
             catch { }
             StopPersonaMic(feed);
+            StopBtMic(feed);
             foreach (var g in feed.Targets)
             {
                 _personaSpeakerRings.TryRemove(g, out _);
@@ -1088,7 +1103,7 @@ namespace PadForge.Common.Input
         /// the slot's current Sony pad GUIDs, so the pacing-thread
         /// callback never walks settings. Also starts/moves the mic
         /// capture to the first USB pad in the set.</summary>
-        private static void RefreshPersonaTargets(int slot, List<(Guid Guid, string Path, bool IsBt)> pads)
+        private static void RefreshPersonaTargets(int slot, List<(Guid Guid, string Path, bool IsBt, bool IsDs4)> pads)
         {
             if (!_personaFeeds.TryGetValue(slot, out var feed)) return;
             var guids = new Guid[pads.Count];
@@ -1100,8 +1115,10 @@ namespace PadForge.Common.Input
                     $"PERSONA targets slot={slot} count={guids.Length}"
                     + (guids.Length > 0 ? $" first={guids[0].ToString("N").Substring(0, 8)}" : ""));
 
-            // Microphone: the first USB-connected pad with a capture
-            // endpoint feeds the virtual mic. BT pads expose none.
+            // Microphone source, in preference order: a USB-connected pad's
+            // real capture endpoint (WASAPI, container-matched), else a BT
+            // DualSense via the 0x31 HasMic Opus stream (TechAntohere
+            // protocol dump). The DS4 has no BT mic lane here.
             Guid micPad = Guid.Empty; string micPath = null;
             foreach (var p in pads)
                 if (!p.IsBt) { micPad = p.Guid; micPath = p.Path; break; }
@@ -1110,6 +1127,115 @@ namespace PadForge.Common.Input
                 StopPersonaMic(feed);
                 if (micPad != Guid.Empty) StartPersonaMic(feed, micPad, micPath);
             }
+
+            Guid btMicPad = Guid.Empty; string btMicPath = null;
+            if (micPad == Guid.Empty)
+                foreach (var p in pads)
+                    if (p.IsBt && !p.IsDs4) { btMicPad = p.Guid; btMicPath = p.Path; break; }
+            if (btMicPad != feed.BtMicPadGuid)
+            {
+                StopBtMic(feed);
+                if (btMicPad != Guid.Empty) StartBtMic(feed, btMicPad, btMicPath);
+            }
+        }
+
+        /// <summary>Start the BT DualSense mic reader: a second synchronous
+        /// HID handle on the pad, filtering input report 0x31 for the
+        /// HasMic bit and Opus-decoding the fixed 71-byte mono packet at
+        /// [3..73] (48 kHz, 480 samples, 10 ms). The composite's capture
+        /// endpoint is stereo, so the mono decode is duplicated. The mic
+        /// OPEN command itself is sent by the BT tick (ManageDs5MicOpen)
+        /// through the sink's writer, keeping one write lane.</summary>
+        private static void StartBtMic(PersonaFeed feed, Guid padGuid, string hidPath)
+        {
+            feed.BtMicStop = false;
+            feed.BtMicRxFrames = 0;
+            feed.BtMicPadGuid = padGuid;
+            var th = new System.Threading.Thread(() => BtMicLoop(feed, hidPath))
+            {
+                IsBackground = true,
+                Name = "PersonaBtMic",
+                Priority = System.Threading.ThreadPriority.AboveNormal,
+            };
+            feed.BtMicThread = th;
+            th.Start();
+            Engine.SdlDiagLog.WriteLine("PERSONA mic bt-reader start pad=" + padGuid.ToString("N").Substring(0, 8));
+        }
+
+        private static void StopBtMic(PersonaFeed feed)
+        {
+            if (feed.BtMicThread == null) { feed.BtMicPadGuid = Guid.Empty; return; }
+            feed.BtMicStop = true;
+            var h = feed.BtMicHandle;
+            feed.BtMicHandle = IntPtr.Zero;
+            // Closing the handle aborts the blocking ReadFile; the loop
+            // observes the stop flag and exits.
+            if (h != IntPtr.Zero) NativeMethods.CloseHandle(h);
+            feed.BtMicThread = null;
+            feed.BtMicPadGuid = Guid.Empty;
+        }
+
+        private static void BtMicLoop(PersonaFeed feed, string hidPath)
+        {
+            IntPtr h = NativeMethods.OpenHidSync(hidPath);
+            if (h == IntPtr.Zero || h == new IntPtr(-1))
+            {
+                Engine.SdlDiagLog.WriteLine("PERSONA mic bt-reader open FAILED");
+                return;
+            }
+            feed.BtMicHandle = h;
+            var dec = OpusCodecFactory.CreateDecoder(Rate, 1);
+            var report = new byte[547]; // BT DS5 input caps length; 0x31 arrives in the first 78
+            var mono = new short[480];
+            var outBuf = new byte[480 * 2 * 2];
+            long lastLog = 0;
+            while (!feed.BtMicStop)
+            {
+                if (!NativeMethods.ReadFileSync(feed.BtMicHandle, report, report.Length, out int got) || got < 78)
+                {
+                    if (feed.BtMicStop) break;
+                    System.Threading.Thread.Sleep(50);
+                    continue;
+                }
+                if (report[0] != 0x31 || (report[1] & 0x02) == 0) continue;
+                int n;
+                try { n = dec.Decode(report.AsSpan(3, 71), mono.AsSpan(), 480, false); }
+                catch { continue; }
+                if (n <= 0) continue;
+                feed.BtMicRxFrames++;
+                var mic = feed.Audio.Microphone;
+                float gain = feed.MicMuted ? 0f : feed.MicGain;
+                int outCh = Math.Max(1, mic.Channels);
+                for (int i = 0; i < n; i++)
+                {
+                    short s16 = (short)Math.Clamp(mono[i] * gain, short.MinValue, short.MaxValue);
+                    for (int c = 0; c < outCh; c++)
+                    {
+                        int o = (i * outCh + c) * 2;
+                        outBuf[o] = (byte)s16;
+                        outBuf[o + 1] = (byte)(s16 >> 8);
+                    }
+                }
+                mic.Submit(outBuf.AsSpan(0, n * outCh * 2));
+                long now2 = Environment.TickCount64;
+                if (now2 - lastLog >= 2000)
+                {
+                    lastLog = now2;
+                    Engine.SdlDiagLog.WriteLine("PERSONA mic rxFrames=" + feed.BtMicRxFrames + " buffered=" + mic.BufferedBytes);
+                }
+            }
+            var hh = feed.BtMicHandle;
+            feed.BtMicHandle = IntPtr.Zero;
+            if (hh != IntPtr.Zero) NativeMethods.CloseHandle(hh);
+        }
+
+        /// <summary>Find the feed whose BT mic source is this pad. Sinks are
+        /// few and this runs once per 10.667 ms tick; a scan is fine.</summary>
+        private static PersonaFeed FindFeedForBtMicPad(Guid padGuid)
+        {
+            foreach (var kv in _personaFeeds)
+                if (kv.Value.BtMicPadGuid == padGuid) return kv.Value;
+            return null;
         }
 
         private static void StartPersonaMic(PersonaFeed feed, Guid padGuid, string hidPath)
@@ -1249,7 +1375,7 @@ namespace PadForge.Common.Input
                 // walk refreshes the feed's target list so the pacing-
                 // thread callback never touches settings.
                 bool personaDemand = _personaFeeds.ContainsKey(slot);
-                var personaPads = personaDemand ? new List<(Guid Guid, string Path, bool IsBt)>() : null;
+                var personaPads = personaDemand ? new List<(Guid Guid, string Path, bool IsBt, bool IsDs4)>() : null;
                 foreach (var (guid, ud) in EnumerateAssignedSonyPads(slot))
                 {
                     var (ptOn, mirrorSrc) = ReadPassthroughConfig(slot, guid);
@@ -1267,7 +1393,8 @@ namespace PadForge.Common.Input
                         // persona speaker mix (SinkSource reads the ring),
                         // shipped over the peer lane. Marked BT-shaped so
                         // the mic capture never binds to it.
-                        personaPads?.Add((guid, ud.DevicePath, true));
+                        // Peer pads are excluded from every mic role.
+                        personaPads?.Add((guid, ud.DevicePath, true, true));
                         desired.Add((slot, guid, ud.DevicePath, false, false, ptOn, mirrorSrc, false, true));
                         continue;
                     }
@@ -1286,7 +1413,7 @@ namespace PadForge.Common.Input
                     // Pads using none get no transport and no firmware
                     // speaker-path assertion.
                     if (!ptOn && !demand && !personaDemand) continue;
-                    personaPads?.Add((guid, ud.DevicePath, isBt));
+                    personaPads?.Add((guid, ud.DevicePath, isBt, isDs4));
                     desired.Add((slot, guid, ud.DevicePath, isBt, isDs4, ptOn, mirrorSrc, false, false));
                 }
                 if (personaDemand) RefreshPersonaTargets(slot, personaPads);
@@ -1839,7 +1966,11 @@ namespace PadForge.Common.Input
                             // actuators while the speaker mix is silent. A
                             // no-op when the slot has no composite persona
                             // or the ring lacks a whole tick.
-                            if (!s.IsDs4) SendDs5BtHapticFrame(s, hapticPcm, hapticReport);
+                            if (!s.IsDs4)
+                            {
+                                ManageDs5MicOpen(s, hapticReport);
+                                SendDs5BtHapticFrame(s, hapticPcm, hapticReport);
+                            }
 
                             // Idle gate: after 2 s of silence stop sending so the
                             // pad's radio and our CPU rest; the read above keeps
@@ -2086,6 +2217,65 @@ namespace PadForge.Common.Input
 
         private static long _personaHapticSends, _personaHapticLastLog, _personaSpkSends;
         private static volatile bool _personaLastAudible;
+
+        /// <summary>BT mic session state machine, one pass per tick. Sends
+        /// the mic OPEN toggle when this pad is the persona feed's BT mic
+        /// source, retries every 2 s (5 tries) until decoded frames arrive,
+        /// and sends CLOSE when the role goes away. Report layout from the
+        /// TechAntohere protocol dump: our 0x32 stream with the 0x11
+        /// packet's first payload byte 0xFF (open) / 0xFE (close), a zero
+        /// 0x12 haptic packet, CRC32. Hypothesis-under-test: whether the
+        /// steady-state 0xFE in the audio reports re-closes an opened mic
+        /// is unknown; the dump's own working stream carries 0xFE, which
+        /// suggests open is latched.</summary>
+        private static void ManageDs5MicOpen(Sink s, byte[] report)
+        {
+            var feed = FindFeedForBtMicPad(s.DeviceGuid);
+            bool want = feed != null;
+            long now = Environment.TickCount64;
+            if (want && s.Ds5MicOpen == 0)
+            {
+                SendDs5BtMicToggle(s, report, open: true);
+                s.Ds5MicOpen = 1;
+                s.Ds5MicOpenSentTicks = now;
+                s.Ds5MicOpenTries = 1;
+                Engine.SdlDiagLog.WriteLine("PERSONA mic OPEN sent");
+            }
+            else if (want && s.Ds5MicOpen == 1 && feed.BtMicRxFrames == 0
+                     && now - s.Ds5MicOpenSentTicks >= 2000 && s.Ds5MicOpenTries < 5)
+            {
+                SendDs5BtMicToggle(s, report, open: true);
+                s.Ds5MicOpenSentTicks = now;
+                s.Ds5MicOpenTries++;
+                Engine.SdlDiagLog.WriteLine("PERSONA mic OPEN retry " + s.Ds5MicOpenTries);
+            }
+            else if (!want && s.Ds5MicOpen == 1)
+            {
+                SendDs5BtMicToggle(s, report, open: false);
+                s.Ds5MicOpen = 0;
+                Engine.SdlDiagLog.WriteLine("PERSONA mic CLOSE sent");
+            }
+        }
+
+        private static void SendDs5BtMicToggle(Sink s, byte[] report, bool open)
+        {
+            Array.Clear(report, 0, Ds5HapticBtReportSize);
+            report[0] = 0x32;
+            report[1] = 0x00;                       // per the dump, not a seq nibble
+            report[2] = 0x11 | 0x80;
+            report[3] = 7;
+            report[4] = open ? (byte)0xFF : (byte)0xFE;
+            report[9] = 0xFF;
+            report[10] = s.Ds5HapticPktCounter++;
+            report[11] = 0x12 | 0x80;
+            report[12] = 64;                        // 64 zero haptic bytes follow
+            uint crc = Crc32(report, Ds5HapticBtReportSize - 4);
+            report[Ds5HapticBtReportSize - 4] = (byte)(crc & 0xFF);
+            report[Ds5HapticBtReportSize - 3] = (byte)((crc >> 8) & 0xFF);
+            report[Ds5HapticBtReportSize - 2] = (byte)((crc >> 16) & 0xFF);
+            report[Ds5HapticBtReportSize - 1] = (byte)(crc >> 24);
+            if (s.Tx != null) s.Tx.TrySend(s.BtHandle, report, out _);
+        }
 
         /// <summary>One DS4 tick: resample the tick's 48 kHz pull to 32 kHz
         /// s16 (persistent-phase linear, exact 3:2 so pitch is exact; the
@@ -2374,6 +2564,30 @@ namespace PadForge.Common.Input
 
             [DllImport("kernel32.dll")]
             public static extern uint WaitForSingleObject(IntPtr h, uint ms);
+
+            [DllImport("kernel32.dll", SetLastError = true)]
+            private static extern bool ReadFile(IntPtr h, byte[] buf, int n, out int read, IntPtr overlapped);
+
+            /// <summary>Blocking read on a synchronous HID handle. Aborted
+            /// by closing the handle from another thread (the BT mic
+            /// reader's stop path).</summary>
+            public static bool ReadFileSync(IntPtr h, byte[] buf, int n, out int read)
+            {
+                read = 0;
+                if (h == IntPtr.Zero) return false;
+                try { return ReadFile(h, buf, n, out read, IntPtr.Zero); }
+                catch { return false; }
+            }
+
+            /// <summary>OpenHid without FILE_FLAG_OVERLAPPED, for the
+            /// blocking-read mic loop.</summary>
+            public static IntPtr OpenHidSync(string path)
+            {
+                return CreateFileW(path,
+                    0x40000000u | 0x80000000u,
+                    0x1u | 0x2u,
+                    IntPtr.Zero, 3u, 0u, IntPtr.Zero);
+            }
 
             public static IntPtr OpenHid(string path)
             {

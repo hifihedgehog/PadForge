@@ -974,6 +974,90 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary><para>The silence gesture must not also fire something
+        /// destructive. A shift activator is evaluated independently of the
+        /// mapping rows and suppresses nothing, so for the 600 ms of the hold
+        /// the button's Base binding is still live. Isometric shipped quicksave
+        /// on Start, which is the quiet-layer button, so reaching for silence
+        /// saved the game every time.</para>
+        /// <para>Blocking the target on the Quiet layer does NOT fix this and
+        /// must not be mistaken for a fix: InheritUnmapped=false already blocks
+        /// everything, and the emission happens before the layer engages. The
+        /// only fix is to keep such a binding off the activator's button.</para>
+        /// </summary>
+        [Fact]
+        public void TheSilenceButton_CarriesNoDestructiveBaseBinding()
+        {
+            // F5 is the quicksave convention and the one that shipped wrong.
+            const string Quicksave = "KbmKey74";
+            int checkedSets = 0;
+
+            foreach (var (key, set) in Sets())
+            {
+                var quiet = set.ShiftActivators.FirstOrDefault(a => a.LayerMask == "Quiet");
+                if (quiet == null) continue;
+                checkedSets++;
+
+                foreach (var row in set.Rows.Where(r => (r.LayerMask ?? "Base") == "Base"
+                             && r.Sources.Any(s => s.Descriptor == quiet.Descriptor)))
+                {
+                    Assert.False(row.Target == Quicksave,
+                        $"starter '{key}' binds quicksave to '{quiet.Descriptor}', which is the " +
+                        "quiet-layer button, so silencing the pad would fire it");
+                }
+            }
+            Assert.True(checkedSets >= 13, $"only {checkedSets} quiet layers checked");
+        }
+
+        /// <summary>Layer names are rendered verbatim by the shift-layer flyout
+        /// (InputService resolves the engaged activator's LayerName into
+        /// ShiftLayerFlyout's LayerNameText), so they are user-facing strings
+        /// and must be localized. Four ability banks shipped announcing
+        /// themselves as "Bank1" through "Bank4": an internal identifier, in
+        /// English, on screen.</summary>
+        [Fact]
+        public void EveryShiftLayerName_IsLocalized_NotAnInternalIdentifier()
+        {
+            var previous = System.Globalization.CultureInfo.CurrentUICulture;
+            try
+            {
+                var english = new List<string>();
+                foreach (var (key, set) in Sets())
+                {
+                    foreach (var act in set.ShiftActivators)
+                    {
+                        Assert.False(string.IsNullOrWhiteSpace(act.LayerName),
+                            $"starter '{key}' has a nameless layer '{act.LayerMask}'");
+                        // An internal id on screen. Not "equals the mask":
+                        // Strategy's localized English name legitimately IS
+                        // "Hotbar", same as its mask.
+                        Assert.False(
+                            System.Text.RegularExpressions.Regex.IsMatch(act.LayerName, @"^Bank\d+$"),
+                            $"starter '{key}' shows the internal layer id '{act.LayerName}' " +
+                            "to the user instead of a localized name");
+                        english.Add(act.LayerName);
+                    }
+                }
+                Assert.NotEmpty(english);
+
+                // Resource-backed, not a hardcoded literal that merely differs
+                // from the mask: the same names must move under another locale.
+                System.Globalization.CultureInfo.CurrentUICulture =
+                    System.Globalization.CultureInfo.GetCultureInfo("ja");
+                var japanese = Sets()
+                    .SelectMany(t => t.Set.ShiftActivators.Select(a => a.LayerName))
+                    .ToList();
+                Assert.Equal(english.Count, japanese.Count);
+                Assert.True(english.Where((e, i) => e != japanese[i]).Count() >= 6,
+                    "layer names did not change under a Japanese locale, so they are " +
+                    "hardcoded English rather than resource-backed");
+            }
+            finally
+            {
+                System.Globalization.CultureInfo.CurrentUICulture = previous;
+            }
+        }
+
         /// <summary>THE ROSTER. The proposal specifies thirteen archetypes by
         /// name, and this shipped twelve for a full release cycle because
         /// nothing compared the list to the list. A missing profile is not a

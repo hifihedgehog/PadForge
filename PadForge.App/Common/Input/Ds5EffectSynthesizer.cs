@@ -52,6 +52,14 @@ namespace PadForge.Common.Input
 
         // EnableBits2 (high byte; HM field "validFlag1").
         private const ushort EnableMicLight         = 0x0100;
+        // validFlag1 bit 1 = AllowAudioMute, "Enable setting MuteControl
+        // section" (duaLib dataStructures.h /*1.1*/). The MuteControl byte
+        // itself (duaLib output offset 9: MicMute 0x10, SpeakerMute 0x20,
+        // HeadphoneMute 0x40, HapticMute 0x80, plus four power-save bits)
+        // is NOT declared by any Sony profile's extendedOutputReport, so
+        // HM zero-fills it — which reads as "nothing muted, no power
+        // save". Asserting this enable bit is therefore a pure unmute.
+        private const ushort EnableAudioMuteControl = 0x0200;
         private const ushort EnableLightbar         = 0x0400;
         private const ushort EnablePlayerIndicator  = 0x1000;
 
@@ -351,6 +359,23 @@ namespace PadForge.Common.Input
                 muteLed = cfg != null ? (byte)cfg.MicLedMode : (byte)0;
             }
             enableBits |= EnableMicLight;
+
+            // Keep the pad's microphone unmuted, always (owner ruling
+            // 2026-07-31). On PC the HOST owns DualSense mute state: the
+            // mute button is momentary and the firmware does not
+            // self-toggle, so a pad muted by any earlier owner (Steam, a
+            // prior session, a console) stays muted forever unless
+            // something writes the unmute. PadForge wrote only the mute
+            // LED, so a hardware-muted mic went unnoticed AND uncorrected
+            // — confirmed live, input status byte 0x14 with MicMuted set,
+            // every captured Opus frame decoding to pure silence while the
+            // LED sat dark because we force it from MicLedMode.
+            //
+            // Asserting AllowAudioMute over the zero-filled MuteControl
+            // byte unmutes the mic, speaker, headphones and haptics, and
+            // clears every power-save bit. It costs one bit in a report
+            // already sent every tick.
+            enableBits |= EnableAudioMuteControl;
 
             // Triggers — 11 bytes per trigger (mode + 10 param bytes). The
             // simple modes (Feedback / Weapon / Vibration) use scalar

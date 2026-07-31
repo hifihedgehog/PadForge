@@ -1289,7 +1289,18 @@ namespace PadForge.Common.Input
                     System.Threading.Thread.Sleep(50);
                     continue;
                 }
-                if (report[0] != 0x31 || (report[1] & 0x02) == 0) continue;
+                if (report[0] != 0x31) continue;
+                if ((report[1] & 0x02) == 0)
+                {
+                    // A plain state report (no mic payload). Sample the
+                    // pad's audio status byte while we have it: duaLib
+                    // dataStructures.h /*53.0*/ PluggedHeadphones,
+                    // /*53.1*/ PluggedMic, /*53.2*/ MicMuted ("muted by
+                    // powersave/mute command"). Packet starts at data[2]
+                    // on BT, so packet 53 is report[55].
+                    if (got >= 56) _btMicPadStatus = report[55];
+                    continue;
+                }
                 int n;
                 try { n = dec.Decode(report.AsSpan(3, 71), mono.AsSpan(), 480, false); }
                 catch { continue; }
@@ -1316,6 +1327,11 @@ namespace PadForge.Common.Input
                 if (now2 - lastLog >= 2000)
                 {
                     lastLog = now2;
+                    byte st = _btMicPadStatus;
+                    Engine.SdlDiagLog.WriteLine("PERSONA mic padMuted=" + ((st & 0x04) != 0)
+                        + " padMicPlugged=" + ((st & 0x02) != 0)
+                        + " padHeadphones=" + ((st & 0x01) != 0)
+                        + " statusByte=0x" + st.ToString("X2"));
                     Engine.SdlDiagLog.WriteLine("PERSONA mic rxFrames=" + feed.BtMicRxFrames
                         + " buffered=" + mic.BufferedBytes
                         + " hostStreaming=" + mic.IsStreaming
@@ -1349,6 +1365,9 @@ namespace PadForge.Common.Input
         private const bool EnableBtMic = true;
 
         private static int _btMicPeak;
+        /// <summary>Last audio-status byte seen on a plain state report
+        /// from the BT mic pad (duaLib input offset 53).</summary>
+        private static volatile byte _btMicPadStatus;
 
         private static PersonaFeed FindFeedForBtMicPad(Guid padGuid)
         {

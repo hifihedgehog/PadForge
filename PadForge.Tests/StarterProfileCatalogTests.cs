@@ -1022,10 +1022,12 @@ namespace PadForge.Tests
             try
             {
                 var english = new List<string>();
+                var owner = new List<string>();
                 foreach (var (key, set) in Sets())
                 {
                     foreach (var act in set.ShiftActivators)
                     {
+                        owner.Add($"{key}/{act.LayerMask}");
                         Assert.False(string.IsNullOrWhiteSpace(act.LayerName),
                             $"starter '{key}' has a nameless layer '{act.LayerMask}'");
                         // An internal id on screen. Not "equals the mask":
@@ -1048,9 +1050,16 @@ namespace PadForge.Tests
                     .SelectMany(t => t.Set.ShiftActivators.Select(a => a.LayerName))
                     .ToList();
                 Assert.Equal(english.Count, japanese.Count);
-                Assert.True(english.Where((e, i) => e != japanese[i]).Count() >= 6,
-                    "layer names did not change under a Japanese locale, so they are " +
-                    "hardcoded English rather than resource-backed");
+                // EVERY name, not a threshold. A count-based bar let a single
+                // reverted name survive mutation testing, which is the
+                // "tests that cannot fail" trap in miniature.
+                for (int i = 0; i < english.Count; i++)
+                {
+                    Assert.False(english[i] == japanese[i],
+                        $"layer name '{english[i]}' ({owner[i]}) is identical under a " +
+                        "Japanese locale, so it is a hardcoded English literal rather " +
+                        "than resource-backed");
+                }
             }
             finally
             {

@@ -23,6 +23,11 @@ namespace PadForge.Tests
     /// grammar it is checking, which is the failure mode that makes a green
     /// suite meaningless.</para>
     /// </summary>
+    // Serialized against the other classes that drive InputManager's per-slot
+    // statics. HoldingOneChordLeg drives the real layer resolver, which writes
+    // the slot-0 suppression set, and those are process-global: run in parallel
+    // with the macro tests it perturbs their exact-equality asserts.
+    [Collection("SettingsManagerStatics")]
     public class StarterProfileCatalogTests
     {
         private static IEnumerable<(StarterProfileInfo Info, ProfileData Profile)> Built()
@@ -974,39 +979,68 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary><para>The silence gesture must not also fire something
-        /// destructive. A shift activator is evaluated independently of the
-        /// mapping rows and suppresses nothing, so for the 600 ms of the hold
-        /// the button's Base binding is still live. Isometric shipped quicksave
-        /// on Start, which is the quiet-layer button, so reaching for silence
-        /// saved the game every time.</para>
-        /// <para>Blocking the target on the Quiet layer does NOT fix this and
-        /// must not be mistaken for a fix: InheritUnmapped=false already blocks
-        /// everything, and the emission happens before the layer engages. The
-        /// only fix is to keep such a binding off the activator's button.</para>
-        /// </summary>
+        /// <summary><para>THE OVERLAP CONTRACT. A shift activator with
+        /// PostponeMapping false (the default) CONSUMES its own input: the
+        /// suppression set is built from the raw, pre-delay read
+        /// (WasDown = inputDown, before delayMet is applied), and the row
+        /// evaluators skip any source in it. So a single-button activator
+        /// kills that button's ordinary binding on EVERY press, not only on
+        /// the long one that engages the layer.</para>
+        /// <para>The quiet layer used to sit on Start alone, which meant Start
+        /// was a dead button in all thirteen profiles: Escape never fired on
+        /// WASD or Twin-Stick, and ButtonStart never reached the game on any of
+        /// the five gamepad profiles. The fix is a CHORD, so suppression only
+        /// applies while both buttons are held and neither is disturbed
+        /// alone.</para></summary>
         [Fact]
-        public void TheSilenceButton_CarriesNoDestructiveBaseBinding()
+        public void TheSilenceGesture_DoesNotEatAnyButtonsOrdinaryBinding()
         {
-            // F5 is the quicksave convention and the one that shipped wrong.
-            const string Quicksave = "KbmKey74";
-            int checkedSets = 0;
-
             foreach (var (key, set) in Sets())
             {
                 var quiet = set.ShiftActivators.FirstOrDefault(a => a.LayerMask == "Quiet");
                 if (quiet == null) continue;
-                checkedSets++;
 
-                foreach (var row in set.Rows.Where(r => (r.LayerMask ?? "Base") == "Base"
-                             && r.Sources.Any(s => s.Descriptor == quiet.Descriptor)))
+                Assert.Equal("Chord", quiet.Kind);
+                Assert.False(string.IsNullOrEmpty(quiet.ChordSecondDescriptor),
+                    $"starter '{key}' declares a chord with no second button");
+
+                // Neither leg may be a lone activator elsewhere in the set,
+                // which would re-introduce the single-button consume.
+                foreach (var other in set.ShiftActivators.Where(a => a != quiet))
                 {
-                    Assert.False(row.Target == Quicksave,
-                        $"starter '{key}' binds quicksave to '{quiet.Descriptor}', which is the " +
-                        "quiet-layer button, so silencing the pad would fire it");
+                    Assert.False(other.Kind != "Chord" && other.Descriptor == quiet.Descriptor,
+                        $"starter '{key}' also uses '{quiet.Descriptor}' as a lone activator");
                 }
             }
-            Assert.True(checkedSets >= 13, $"only {checkedSets} quiet layers checked");
+        }
+
+        /// <summary>The mechanism above, driven through the REAL resolver
+        /// rather than asserted: hold one leg of the chord and the other
+        /// button's binding must survive. A same-window positive control
+        /// proves the harness can see suppression at all, so a green result
+        /// is not vacuous.</summary>
+        [Fact]
+        public void HoldingOneChordLeg_LeavesTheOtherButtonsBindingAlive()
+        {
+            var ProbeGuid = new Guid("13ea3b23-bb17-802d-f268-c194414535f8");
+            var set = SetOf("wasd");
+            var quiet = set.ShiftActivators.Single(a => a.LayerMask == "Quiet");
+
+            var state = new PadForge.Engine.CustomInputState();
+            // Start alone: the gesture's second leg, held by itself.
+            state.Buttons[7] = true;   // Gamepad ButtonStart -> Button 7
+            InputManager.ResolveActiveLayerMask(0, set, state, ProbeGuid.ToString());
+            Assert.False(
+                InputManager.IsSourceSuppressedPostpone(0, "", "Gamepad ButtonStart"),
+                "Start alone is swallowed, so its ordinary binding is dead");
+
+            // Positive control, same window: both legs held IS the gesture,
+            // and then the engine does consume them.
+            state.Buttons[10] = true;  // Gamepad ButtonGuide -> Button 10
+            InputManager.ResolveActiveLayerMask(0, set, state, ProbeGuid.ToString());
+            Assert.True(
+                InputManager.IsSourceSuppressedPostpone(0, "", quiet.Descriptor),
+                "the harness cannot observe suppression at all, so the check above proves nothing");
         }
 
         /// <summary>Layer names are rendered verbatim by the shift-layer flyout

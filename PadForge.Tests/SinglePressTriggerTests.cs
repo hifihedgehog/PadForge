@@ -13,6 +13,7 @@ namespace PadForge.Tests
     /// when its window expires; a fast chain fires nothing; a Single and
     /// a Double macro share one button cleanly.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class SinglePressTriggerTests
     {
         private static MacroItem Macro(MacroTriggerMode mode, short value, int windowMs = 800)

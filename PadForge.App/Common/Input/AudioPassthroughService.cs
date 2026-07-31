@@ -522,6 +522,13 @@ namespace PadForge.Common.Input
                 }
                 else LoopbackLagFrames = -1;
 
+                // Composite persona speaker mix (HM#39): the PCM the game
+                // rendered into the virtual pad's endpoint, additive like
+                // the branches above. Gain was applied at ring write from
+                // the endpoint's UAC volume/mute, so this is a plain sum.
+                if (_personaSpeakerRings.TryGetValue(_sink.DeviceGuid, out var persona))
+                    persona.ReadFloatAdd(buffer, offset, count);
+
                 // Activity stamp for the BT idle gate: any non-silent sample
                 // keeps the stream sending; 2 s of silence pauses it.
                 for (int i = 0; i < count; i++)
@@ -551,14 +558,17 @@ namespace PadForge.Common.Input
             private float[] _pull = new float[4096];
             private float[] _frames = new float[8192];
 
-            public UsbFrameProvider(ISampleProvider src, WaveFormat endpointFormat)
+            public UsbFrameProvider(ISampleProvider src, WaveFormat endpointFormat, Guid deviceGuid = default)
             {
                 _src = src;
                 WaveFormat = endpointFormat;
                 _outChannels = endpointFormat.Channels;
+                _deviceGuid = deviceGuid;
             }
 
             public WaveFormat WaveFormat { get; }
+            private readonly Guid _deviceGuid;
+            private short[] _haptic = Array.Empty<short>();
 
             public int Read(byte[] buffer, int offset, int count)
             {
@@ -567,13 +577,36 @@ namespace PadForge.Common.Input
                 if (_pull.Length < need) _pull = new float[need];
                 if (_frames.Length < frames * _outChannels) _frames = new float[frames * _outChannels];
                 _src.Read(_pull, 0, need);
+
+                // Authored haptics (HM#39): the real pad's UAC channels
+                // 2/3 are its voice-coil actuators, zeroed until a
+                // composite persona feeds them. Same 48 kHz s16 stereo on
+                // both sides, so this is a pass-through, no resample.
+                bool haveHaptics = _outChannels >= 4
+                    && _deviceGuid != default
+                    && _personaHapticRings.TryGetValue(_deviceGuid, out var hring);
+                if (haveHaptics)
+                {
+                    if (_haptic.Length < frames * 2) _haptic = new short[frames * 2];
+                    _personaHapticRings[_deviceGuid].ReadFrames(_haptic, frames);
+                }
+
                 for (int f = 0; f < frames; f++)
                 {
                     float mono = Math.Clamp((_pull[f * 2] + _pull[f * 2 + 1]) * 0.5f, -1f, 1f);
                     int o = f * _outChannels;
                     _frames[o] = 0f;
                     _frames[o + 1] = mono;
-                    for (int c = 2; c < _outChannels; c++) _frames[o + c] = 0f;
+                    if (haveHaptics)
+                    {
+                        _frames[o + 2] = _haptic[f * 2] / 32768f;
+                        _frames[o + 3] = _haptic[f * 2 + 1] / 32768f;
+                        for (int c = 4; c < _outChannels; c++) _frames[o + c] = 0f;
+                    }
+                    else
+                    {
+                        for (int c = 2; c < _outChannels; c++) _frames[o + c] = 0f;
+                    }
                 }
                 Buffer.BlockCopy(_frames, 0, buffer, offset, frames * _outChannels * 4);
                 return frames * _outChannels * 4;
@@ -775,6 +808,45 @@ namespace PadForge.Common.Input
                 }
             }
 
+            /// <summary>Persona-feed writer: extract one stereo pair per
+            /// <paramref name="strideBytes"/>-sized frame of a wider
+            /// interleave (the composite's 4-channel window), scale, and
+            /// append. Same whole-pairs discipline as WriteS16.</summary>
+            public void WriteS16PairsScaled(ReadOnlySpan<byte> src, int strideBytes, int offL, int offR, float gain)
+            {
+                lock (_g)
+                {
+                    for (int i = 0; i + strideBytes <= src.Length; i += strideBytes)
+                    {
+                        short l = (short)(src[i + offL] | (src[i + offL + 1] << 8));
+                        short r = (short)(src[i + offR] | (src[i + offR + 1] << 8));
+                        _ring[_write % _ring.Length] = l / 32768f * gain;
+                        _ring[(_write + 1) % _ring.Length] = r / 32768f * gain;
+                        _write += 2;
+                    }
+                }
+            }
+
+            /// <summary>Additive variant of <see cref="ReadFloat"/> for the
+            /// persona speaker mix: sums into the caller's buffer instead
+            /// of overwriting, and never zero-fills, so it composes with
+            /// the macro and passthrough branches around it.</summary>
+            public void ReadFloatAdd(float[] buffer, int offset, int count)
+            {
+                lock (_g)
+                {
+                    const int Cushion = 1920;
+                    const int Catastrophe = 24000;
+                    long avail = _write;
+                    if (_read < 0 || _read > avail || avail - _read > Catastrophe)
+                        _read = Math.Max(0, avail - Cushion);
+                    int canRead = (int)Math.Min(count, avail - _read);
+                    for (int i = 0; i < canRead; i++)
+                        buffer[offset + i] += _ring[(_read + i) % _ring.Length];
+                    _read += canRead;
+                }
+            }
+
             /// <summary>Fill `count` interleaved-stereo floats from the ring. Keeps a
             /// ~20 ms cushion behind the write edge; underruns emit silence.</summary>
             public void ReadFloat(float[] buffer, int offset, int count)
@@ -796,9 +868,285 @@ namespace PadForge.Common.Input
             }
         }
 
+        // ─────────────────────────────────────────────
+        //  Composite-persona feed (HM v1.4.0, HM#39 / #255)
+        // ─────────────────────────────────────────────
+        //
+        // A slot whose VC is a composite USB persona has a REAL Windows
+        // audio endpoint the game renders into. HM delivers that PCM as
+        // 4-channel windows (ChannelRoles: speakerLeft/Right,
+        // hapticLeft/Right) on its pacing thread. This feed routes it to
+        // the slot's physical Sony pads:
+        //   speaker ch  → additive mix into each pad Sink's render path
+        //                 (SinkSource.Read), so it rides the existing BT
+        //                 Opus / USB shared-mode transports beside macros
+        //                 and system passthrough;
+        //   haptic ch   → DS5 BT: its own report 0x32 (packets 0x11+0x12,
+        //                 the SAxense/dualsense-bt-haptics proven shape,
+        //                 never combined into the 0x35 speaker report);
+        //                 DS5 USB: channels 2/3 of the real pad's UAC
+        //                 endpoint (UsbFrameProvider), which the shaper
+        //                 zeroed until now;
+        //   microphone  ← the physical pad's own capture endpoint
+        //                 (container-matched, USB pads only; BT pads have
+        //                 no Windows mic and HM feeds silence when dry);
+        //   ControlChanged → per-feed speaker/mic gain. A UAC endpoint's
+        //                 volume is hardware volume: Windows sends
+        //                 SET_CUR and does NOT attenuate the stream, so
+        //                 honoring the mixer slider is our job.
+        // The feed's presence is itself sink demand (like the remote-audio
+        // demand): a composite slot with passthrough off and no macros
+        // still builds its pads' transports.
+
+        private sealed class PersonaFeed
+        {
+            public HIDMaestro.HMUsbAudio Audio;
+            public volatile Guid[] Targets = Array.Empty<Guid>();
+            public float SpeakerGain = 1f, MicGain = 1f;
+            public bool SpeakerMuted, MicMuted;
+            public int SpkL, SpkR, HapL, HapR;   // interleave indices from ChannelRoles
+            public Action<HIDMaestro.HMAudioOutput, ReadOnlyMemory<byte>> FramesHandler;
+            public EventHandler<HIDMaestro.HMAudioControlChangedEventArgs> ControlHandler;
+            public WasapiCapture Mic;
+            public Guid MicPadGuid;
+            public byte[] MicScratch = Array.Empty<byte>();
+        }
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, PersonaFeed> _personaFeeds = new();
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, RemoteAudioRing> _personaSpeakerRings = new();
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, PersonaHapticRing> _personaHapticRings = new();
+
+        /// <summary>s16 stereo 48 kHz ring for the haptic lanes. Writer is
+        /// HM's pacing thread; readers are the BT tick (which decimates
+        /// 16:1 to the pad's 3 kHz voice-coil format) and the USB shaper
+        /// (which passes 48 kHz through to UAC channels 2/3).</summary>
+        internal sealed class PersonaHapticRing
+        {
+            private readonly short[] _ring = new short[Rate]; // 0.5 s stereo
+            private long _write;
+            private long _read = -1;
+            private readonly object _g = new();
+
+            public void WriteS16Pairs(ReadOnlySpan<byte> src, int strideBytes, int offL, int offR)
+            {
+                lock (_g)
+                {
+                    for (int i = 0; i + strideBytes <= src.Length; i += strideBytes)
+                    {
+                        _ring[_write % _ring.Length] = (short)(src[i + offL] | (src[i + offL + 1] << 8));
+                        _ring[(_write + 1) % _ring.Length] = (short)(src[i + offR] | (src[i + offR + 1] << 8));
+                        _write += 2;
+                    }
+                }
+            }
+
+            public int FramesAvailable { get { lock (_g) return (int)((_write - Math.Max(_read, 0)) / 2); } }
+
+            /// <summary>Drain up to <paramref name="frames"/> stereo frames.
+            /// Returns frames actually read; the rest of the caller's
+            /// buffer is zero-filled. Same cushion/catastrophe policy as
+            /// the speaker rings.</summary>
+            public int ReadFrames(short[] dst, int frames)
+            {
+                lock (_g)
+                {
+                    const int Cushion = 1920;      // 20 ms stereo samples
+                    const int Catastrophe = 24000; // 250 ms
+                    long avail = _write;
+                    if (_read < 0 || _read > avail || avail - _read > Catastrophe)
+                        _read = Math.Max(0, avail - Cushion);
+                    int canRead = (int)Math.Min(frames * 2, avail - _read);
+                    canRead -= canRead & 1;
+                    for (int i = 0; i < canRead; i++)
+                        dst[i] = _ring[(_read + i) % _ring.Length];
+                    for (int i = canRead; i < frames * 2; i++) dst[i] = 0;
+                    _read += canRead;
+                    return canRead / 2;
+                }
+            }
+        }
+
+        /// <summary>Attach the composite persona's audio surfaces for a
+        /// slot. Called by Step 5 after Connect; idempotent per slot.</summary>
+        public static void AttachPersonaFeed(int slot, HIDMaestro.HMUsbAudio audio)
+        {
+            if (audio == null) return;
+            DetachPersonaFeed(slot);
+
+            var feed = new PersonaFeed { Audio = audio };
+            var roles = audio.Output.ChannelRoles;
+            feed.SpkL = IndexOfRole(roles, "speakerLeft", 0);
+            feed.SpkR = IndexOfRole(roles, "speakerRight", 1);
+            feed.HapL = IndexOfRole(roles, "hapticLeft", -1);
+            feed.HapR = IndexOfRole(roles, "hapticRight", -1);
+
+            feed.FramesHandler = (output, pcm) => OnPersonaFrames(feed, output, pcm);
+            feed.ControlHandler = (_, e) =>
+            {
+                // UAC1 s16 dB → linear. Mute and volume are separate
+                // controls on the same feature unit, both honored.
+                if (e.Function == "speaker")
+                {
+                    if (e.IsMute) feed.SpeakerMuted = e.MuteValue;
+                    else feed.SpeakerGain = (float)Math.Pow(10.0, e.VolumeDb / 20.0);
+                }
+                else if (e.Function == "microphone")
+                {
+                    if (e.IsMute) feed.MicMuted = e.MuteValue;
+                    else feed.MicGain = (float)Math.Pow(10.0, e.VolumeDb / 20.0);
+                }
+            };
+            audio.Output.FramesReceived += feed.FramesHandler;
+            audio.ControlChanged += feed.ControlHandler;
+
+            _personaFeeds[slot] = feed;
+            Reconcile();
+        }
+
+        /// <summary>Detach and stop a slot's persona feed. Safe when none
+        /// is attached. Rings persist until sink teardown, matching the
+        /// remote-audio ring lifecycle.</summary>
+        public static void DetachPersonaFeed(int slot)
+        {
+            if (!_personaFeeds.TryRemove(slot, out var feed)) return;
+            try
+            {
+                if (feed.FramesHandler != null) feed.Audio.Output.FramesReceived -= feed.FramesHandler;
+                if (feed.ControlHandler != null) feed.Audio.ControlChanged -= feed.ControlHandler;
+            }
+            catch { }
+            StopPersonaMic(feed);
+            foreach (var g in feed.Targets)
+            {
+                _personaSpeakerRings.TryRemove(g, out _);
+                _personaHapticRings.TryRemove(g, out _);
+            }
+            Reconcile();
+        }
+
+        private static int IndexOfRole(System.Collections.Generic.IReadOnlyList<string> roles, string role, int fallback)
+        {
+            for (int i = 0; i < roles.Count; i++)
+                if (string.Equals(roles[i], role, StringComparison.OrdinalIgnoreCase)) return i;
+            return fallback;
+        }
+
+        /// <summary>HM pacing-thread callback: split one interleaved s16
+        /// window into the per-pad speaker and haptic rings. No
+        /// allocations in steady state.</summary>
+        private static void OnPersonaFrames(PersonaFeed feed, HIDMaestro.HMAudioOutput output, ReadOnlyMemory<byte> pcm)
+        {
+            var targets = feed.Targets;
+            if (targets.Length == 0) return;
+            int ch = output.Channels;
+            if (ch < 2) return;
+            int stride = ch * 2;
+            var span = pcm.Span;
+            float spkGain = feed.SpeakerMuted ? 0f : feed.SpeakerGain;
+
+            foreach (var guid in targets)
+            {
+                var sring = _personaSpeakerRings.GetOrAdd(guid, _ => new RemoteAudioRing());
+                sring.WriteS16PairsScaled(span, stride, feed.SpkL * 2, feed.SpkR * 2, spkGain);
+                if (feed.HapL >= 0 && feed.HapR >= 0 && ch > Math.Max(feed.HapL, feed.HapR))
+                {
+                    var hring = _personaHapticRings.GetOrAdd(guid, _ => new PersonaHapticRing());
+                    hring.WriteS16Pairs(span, stride, feed.HapL * 2, feed.HapR * 2);
+                }
+            }
+        }
+
+        /// <summary>Called from the reconcile's desired-state pass with
+        /// the slot's current Sony pad GUIDs, so the pacing-thread
+        /// callback never walks settings. Also starts/moves the mic
+        /// capture to the first USB pad in the set.</summary>
+        private static void RefreshPersonaTargets(int slot, List<(Guid Guid, string Path, bool IsBt)> pads)
+        {
+            if (!_personaFeeds.TryGetValue(slot, out var feed)) return;
+            var guids = new Guid[pads.Count];
+            for (int i = 0; i < pads.Count; i++) guids[i] = pads[i].Guid;
+            feed.Targets = guids;
+
+            // Microphone: the first USB-connected pad with a capture
+            // endpoint feeds the virtual mic. BT pads expose none.
+            Guid micPad = Guid.Empty; string micPath = null;
+            foreach (var p in pads)
+                if (!p.IsBt) { micPad = p.Guid; micPath = p.Path; break; }
+            if (micPad != feed.MicPadGuid)
+            {
+                StopPersonaMic(feed);
+                if (micPad != Guid.Empty) StartPersonaMic(feed, micPad, micPath);
+            }
+        }
+
+        private static void StartPersonaMic(PersonaFeed feed, Guid padGuid, string hidPath)
+        {
+            try
+            {
+                Guid container = NativeMethods.GetContainerIdForDevicePath(hidPath);
+                if (container == Guid.Empty) return;
+                using var en = new MMDeviceEnumerator();
+                MMDevice match = null;
+                foreach (var dev in en.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active))
+                    if (GetEndpointContainerId(dev) == container) { match = dev; break; }
+                if (match == null) return;
+
+                var cap = new WasapiCapture(match);
+                cap.DataAvailable += (_, a) =>
+                {
+                    var mic = feed.Audio.Microphone;
+                    // Endpoint shared-mode float or s16 → the persona's
+                    // declared s16 format. Rates match on the DualSense
+                    // (48 kHz both sides); a mismatched pad is skipped
+                    // rather than pitch-shifted.
+                    if (cap.WaveFormat.SampleRate != mic.SampleRateHz) return;
+                    float gain = feed.MicMuted ? 0f : feed.MicGain;
+                    int inCh = cap.WaveFormat.Channels, outCh = mic.Channels;
+                    // Shared-mode capture is the endpoint mix format:
+                    // IeeeFloat directly, or Extensible wrapping the float
+                    // subformat GUID (KSDATAFORMAT_SUBTYPE_IEEE_FLOAT).
+                    bool isFloat = cap.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat
+                        || (cap.WaveFormat is WaveFormatExtensible wfx
+                            && wfx.SubFormat == new Guid("00000003-0000-0010-8000-00aa00389b71"));
+                    int inStride = inCh * (isFloat ? 4 : 2);
+                    int frames = a.BytesRecorded / inStride;
+                    int need = frames * outCh * 2;
+                    if (feed.MicScratch.Length < need) feed.MicScratch = new byte[need];
+                    for (int f = 0; f < frames; f++)
+                    {
+                        for (int c = 0; c < outCh; c++)
+                        {
+                            int ic = Math.Min(c, inCh - 1);
+                            float v;
+                            if (isFloat) v = BitConverter.ToSingle(a.Buffer, f * inStride + ic * 4);
+                            else v = BitConverter.ToInt16(a.Buffer, f * inStride + ic * 2) / 32768f;
+                            short s = (short)Math.Clamp(v * gain * 32767f, short.MinValue, short.MaxValue);
+                            int o = (f * outCh + c) * 2;
+                            feed.MicScratch[o] = (byte)s;
+                            feed.MicScratch[o + 1] = (byte)(s >> 8);
+                        }
+                    }
+                    mic.Submit(feed.MicScratch.AsSpan(0, need));
+                };
+                cap.StartRecording();
+                feed.Mic = cap;
+                feed.MicPadGuid = padGuid;
+            }
+            catch { StopPersonaMic(feed); }
+        }
+
+        private static void StopPersonaMic(PersonaFeed feed)
+        {
+            var cap = feed.Mic;
+            feed.Mic = null;
+            feed.MicPadGuid = Guid.Empty;
+            if (cap == null) return;
+            try { cap.StopRecording(); cap.Dispose(); } catch { }
+        }
+
         /// <summary>Requests a sink reconcile and returns immediately. Call
-        /// on device assignment changes and passthrough toggle changes —
-        /// safe from the UI thread: the worker does all device I/O. The
+        /// on device assignment changes and passthrough toggle changes.
+        /// Safe from the UI thread: the worker does all device I/O. The
         /// worker also self-wakes every 5 s (DSY-v2's Validate cadence) to
         /// ride out hot-plugs and default-device changes.</summary>
         public static void Reconcile()
@@ -862,6 +1210,13 @@ namespace PadForge.Common.Input
             {
                 bool demand;
                 lock (_lock) demand = _macroDemand.Contains(slot);
+                // Persona demand: a composite VC on the slot builds its
+                // pads' transports even with passthrough off and no
+                // macros, exactly like the remote-audio demand. The same
+                // walk refreshes the feed's target list so the pacing-
+                // thread callback never touches settings.
+                bool personaDemand = _personaFeeds.ContainsKey(slot);
+                var personaPads = personaDemand ? new List<(Guid Guid, string Path, bool IsBt)>() : null;
                 foreach (var (guid, ud) in EnumerateAssignedSonyPads(slot))
                 {
                     var (ptOn, mirrorSrc) = ReadPassthroughConfig(slot, guid);
@@ -874,7 +1229,12 @@ namespace PadForge.Common.Input
                     // identically to a local pad: passthrough on OR the slot's macros demand.
                     if ((ud.DevicePath ?? "").StartsWith("peer://", StringComparison.Ordinal))
                     {
-                        if (!ptOn && !demand) continue;
+                        if (!ptOn && !demand && !personaDemand) continue;
+                        // A peer pad on a composite slot still receives the
+                        // persona speaker mix (SinkSource reads the ring),
+                        // shipped over the peer lane. Marked BT-shaped so
+                        // the mic capture never binds to it.
+                        personaPads?.Add((guid, ud.DevicePath, true));
                         desired.Add((slot, guid, ud.DevicePath, false, false, ptOn, mirrorSrc, false, true));
                         continue;
                     }
@@ -887,13 +1247,16 @@ namespace PadForge.Common.Input
                     // adaptor (PID 0x0BA0) tunnels the radio link and exposes
                     // real UAC endpoints, so it keeps the USB container path.
                     if (isDs4 && !isBt && (ushort)ud.ProdId != 0x0BA0) continue;
-                    // A sink exists while the device's mirror toggle is on or
-                    // the slot's macros have asked for controller routing.
-                    // Pads using neither get no transport and no firmware
+                    // A sink exists while the device's mirror toggle is on,
+                    // the slot's macros have asked for controller routing,
+                    // or the slot's VC is a composite persona feeding audio.
+                    // Pads using none get no transport and no firmware
                     // speaker-path assertion.
-                    if (!ptOn && !demand) continue;
+                    if (!ptOn && !demand && !personaDemand) continue;
+                    personaPads?.Add((guid, ud.DevicePath, isBt));
                     desired.Add((slot, guid, ud.DevicePath, isBt, isDs4, ptOn, mirrorSrc, false, false));
                 }
+                if (personaDemand) RefreshPersonaTargets(slot, personaPads);
             }
 
             // Owner: a paired peer is streaming speaker audio for one of OUR physical
@@ -1184,7 +1547,7 @@ namespace PadForge.Common.Input
                                 && wfe.SubFormat == new Guid("00000003-0000-0010-8000-00aa00389b71"))); // KSDATAFORMAT_SUBTYPE_IEEE_FLOAT
                     var feedFormat = nativeOk ? mix : WaveFormat.CreateIeeeFloatWaveFormat(Rate, 2);
                     int channels = feedFormat.Channels;
-                    var feed = new UsbFrameProvider(s.Source, feedFormat);
+                    var feed = new UsbFrameProvider(s.Source, feedFormat, s.DeviceGuid);
                     // 30 ms event-driven buffer — on USB this buffer sits in
                     // BOTH the macro and mirror paths, so halving it from 60
                     // tightens everything the pad plays.
@@ -1384,6 +1747,8 @@ namespace PadForge.Common.Input
                 var frame = new float[Ds5OpusFrameSamples * 2];
                 var opus = new byte[Ds5OpusBytes + 16];
                 var report = new byte[Ds5BtReportSize];
+                var hapticPcm = new short[Ds5HapticFramesPerTick * 2];
+                var hapticReport = new byte[Ds5HapticBtReportSize];
                 const double CadenceMs = 10.0 + 2.0 / 3.0;
                 // 20 ms cushion: just enough to absorb WASAPI loopback's
                 // ~10 ms bursty delivery, bringing the mirror within ~15 ms
@@ -1435,6 +1800,13 @@ namespace PadForge.Common.Input
                             }
 
                             s.Source.Read(pull, 0, inFrames * 2);
+
+                            // Authored haptics (HM#39): shipped ahead of the
+                            // speaker idle gate, since a game can drive the
+                            // actuators while the speaker mix is silent. A
+                            // no-op when the slot has no composite persona
+                            // or the ring lacks a whole tick.
+                            if (!s.IsDs4) SendDs5BtHapticFrame(s, hapticPcm, hapticReport);
 
                             // Idle gate: after 2 s of silence stop sending so the
                             // pad's radio and our CPU rest; the read above keeps
@@ -1601,6 +1973,58 @@ namespace PadForge.Common.Input
                 // handles a catch-up burst.
                 return;
             }
+        }
+
+        private const int Ds5HapticFramesPerTick = 512;  // 48 kHz frames per 10.667 ms tick
+        private const int Ds5HapticBtReportSize = 142;   // report 0x32 wire size (Sony BT: 0x31=78, +64 per ID)
+
+        /// <summary>Ship one tick of authored haptics as its own report
+        /// 0x32 carrying packets 0x11 + 0x12, the exact shape SAxense and
+        /// dualsense-bt-haptics proved on hardware. Deliberately NOT
+        /// folded into the 0x35 speaker report: no reference emits 0x12
+        /// and 0x13 together, so that combination stays unused. 48 kHz
+        /// stereo s16 → 3 kHz stereo s8 by 16-sample block mean then high
+        /// byte, matching the references' resample-then-high-byte
+        /// pipeline (dualsense-bt-haptics Program.cs:208, SAxense's
+        /// ffmpeg -ar 3000 -f s8). Shares the sink's rolling seq and
+        /// packet counter with the speaker report so the multiplexed
+        /// transport sees one monotonic sequence.</summary>
+        private static void SendDs5BtHapticFrame(Sink s, short[] pcm, byte[] report)
+        {
+            if (!_personaHapticRings.TryGetValue(s.DeviceGuid, out var ring)) return;
+            if (ring.FramesAvailable < Ds5HapticFramesPerTick) return; // whole ticks only
+            ring.ReadFrames(pcm, Ds5HapticFramesPerTick);
+
+            Array.Clear(report, 0, Ds5HapticBtReportSize);
+            report[0] = 0x32;
+            report[1] = (byte)((s.Ds5Seq & 0x0F) << 4);
+            s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
+            // packet 0x11: session header, byte-identical to the speaker
+            // report's (SAxense default, no handshake).
+            report[2] = 0x11 | 0x80;
+            report[3] = 7;
+            report[4] = 0xFE;
+            report[9] = 0xFF;
+            report[10] = s.Ds5PktCounter++;
+            // packet 0x12: 64 bytes of s8 stereo 3 kHz actuator PCM.
+            report[11] = 0x12 | 0x80;
+            report[12] = 64;
+            for (int o = 0; o < 32; o++)
+            {
+                int accL = 0, accR = 0;
+                int b = o * 16 * 2;
+                for (int k = 0; k < 16; k++) { accL += pcm[b + k * 2]; accR += pcm[b + k * 2 + 1]; }
+                report[13 + o * 2] = unchecked((byte)Math.Clamp((accL / 16) >> 8, -128, 127));
+                report[14 + o * 2] = unchecked((byte)Math.Clamp((accR / 16) >> 8, -128, 127));
+            }
+            uint crc = Crc32(report, Ds5HapticBtReportSize - 4);
+            report[Ds5HapticBtReportSize - 4] = (byte)(crc & 0xFF);
+            report[Ds5HapticBtReportSize - 3] = (byte)((crc >> 8) & 0xFF);
+            report[Ds5HapticBtReportSize - 2] = (byte)((crc >> 16) & 0xFF);
+            report[Ds5HapticBtReportSize - 1] = (byte)(crc >> 24);
+
+            if (s.Tx != null && !s.Tx.TrySend(s.BtHandle, report, out bool hardFail) && hardFail)
+                s.TransportFailed = true;
         }
 
         /// <summary>One DS4 tick: resample the tick's 48 kHz pull to 32 kHz

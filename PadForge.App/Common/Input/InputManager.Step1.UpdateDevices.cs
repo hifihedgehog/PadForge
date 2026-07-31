@@ -161,7 +161,12 @@ namespace PadForge.Common.Input
                         (wrapper.SerialNumber != null
                          && wrapper.SerialNumber.StartsWith("HM-CTL-", StringComparison.Ordinal))
                         || (wrapper.DevicePath != null
-                            && wrapper.DevicePath.IndexOf("HIDMAESTRO", StringComparison.OrdinalIgnoreCase) >= 0);
+                            && wrapper.DevicePath.IndexOf("HIDMAESTRO", StringComparison.OrdinalIgnoreCase) >= 0)
+                        // Composite personas (HM v1.4.0) ride the real USB
+                        // stack and carry neither marker. Their one
+                        // discriminator is usbip2_ude ancestry. Sony VID
+                        // only, the sole composite vendor today.
+                        || (wrapper.VendorId == 0x054C && IsOnUsbipVhci(wrapper.DevicePath));
                     if (selfVirtual)
                     {
                         Engine.SdlDiagLog.WriteLine(

@@ -1258,8 +1258,13 @@ namespace PadForge.Common.Input
         /// whole decode chain below is hardware-proven (OPEN ack 45 ms,
         /// 100 frames/s, real audio) and comes back when the fork skips
         /// HasMic reports. Until then the tick scrubs any latched mic-open
-        /// state instead.</summary>
-        private const bool EnableBtMic = false;
+        /// state instead.
+        ///
+        /// RE-ENABLED 2026-07-31: the SDL fork filters HasMic 0x31 reports
+        /// out of state parsing (hifihedgehog/SDL#20, fork cec3689a12),
+        /// so the mic session no longer corrupts input. The close scrub
+        /// stays as hygiene for pads left open by older builds.</summary>
+        private const bool EnableBtMic = true;
 
         private static int _btMicPeak;
 

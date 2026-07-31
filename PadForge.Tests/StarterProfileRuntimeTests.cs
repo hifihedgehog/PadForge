@@ -272,8 +272,12 @@ namespace PadForge.Tests
                 foreach (var p in row.Sources.Where(s => SourceCoercion.IsTouchpadPointerDescriptor(s.Descriptor)))
                     Assert.Equal(0f, SourceCoercion.EvaluateForBipolarAxisTarget(state, p, 0, false, DevGuid.ToString()));
 
+                // Which stick backs the touchpad up is per profile: the
+                // cursor-driven genres put it on the LEFT and keep the right
+                // for the camera. Deflect the one the row actually names.
                 var stick = row.Sources.First(s => s.Descriptor.StartsWith("Gamepad ", StringComparison.Ordinal));
-                state.Axis[3] = 65535;   // right stick X hard over
+                int stickAxis = stick.Descriptor.Contains("LeftStick") ? 0 : 3;
+                state.Axis[stickAxis] = 65535;   // that stick's X hard over
                 float v = SourceCoercion.EvaluateForBipolarAxisTarget(state, stick, 0, false, DevGuid.ToString());
                 Assert.True(v > 0.5f, $"starter '{info.Key}' cursor did not follow the stick (got {v})");
             }

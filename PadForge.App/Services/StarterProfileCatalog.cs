@@ -100,6 +100,7 @@ namespace PadForge.Services
         private const byte VkMenu = 0xA4;     // VK_LMENU (Alt)
         private const byte VkLeft = 0x25, VkUp = 0x26, VkRight = 0x27, VkDown = 0x28;
         private const byte VkPageUp = 0x21, VkPageDown = 0x22;
+        private const byte VkPause = 0x13;   // VK_PAUSE / Break
         private const byte Vk0 = 0x30, Vk1 = 0x31, Vk2 = 0x32, Vk3 = 0x33, Vk4 = 0x34;
         private const byte Vk5 = 0x35, Vk6 = 0x36, Vk7 = 0x37, Vk8 = 0x38, Vk9 = 0x39;
         private const byte VkA = 0x41, VkC = 0x43, VkD = 0x44, VkE = 0x45, VkF = 0x46;
@@ -156,6 +157,7 @@ namespace PadForge.Services
         // Keyboard + mouse targets.
         private const string MouseX = "KbmMouseX", MouseY = "KbmMouseY";
         private const string Scroll = "KbmScroll", ScrollH = "KbmScrollH";
+        private const string ScrollNeg = "KbmScrollNeg";
         private const string MLeft = "KbmMBtn0", MRight = "KbmMBtn1", MMiddle = "KbmMBtn2";
 
         /// <summary>The cursor pair every mouse-driving starter profile
@@ -163,7 +165,8 @@ namespace PadForge.Services
         /// alongside as a rate cursor. While no finger is down the pointer
         /// contributes nothing and the stick drives; the moment a finger
         /// lands the row routes absolute.</summary>
-        private static IEnumerable<MappingRow> CursorRows(double stickSensitivity = 1.0)
+        private static IEnumerable<MappingRow> CursorRows(double stickSensitivity = 1.0,
+            bool leftStick = false)
         {
             MappingSource Stick(string d)
             {
@@ -171,10 +174,16 @@ namespace PadForge.Services
                 if (stickSensitivity != 1.0) src.MouseCursorSensitivity = stickSensitivity;
                 return src;
             }
+            // The touchpad is always the primary pointer. WHICH STICK backs it
+            // up is per profile: the cursor-driven genres (Gilbert's classic
+            // point-and-click mode, Larian's CRPG layout) put the cursor on
+            // the LEFT stick and keep the right for the camera.
+            string sx = leftStick ? PadLX : PadRX;
+            string sy = leftStick ? PadLY : PadRY;
             return new[]
             {
-                Row(MouseX, Src(Pad1PtrX), Src(Pad0PtrX), Stick(PadRX)),
-                Row(MouseY, Src(Pad1PtrY), Src(Pad0PtrY), Stick(PadRY)),
+                Row(MouseX, Src(Pad1PtrX), Src(Pad0PtrX), Stick(sx)),
+                Row(MouseY, Src(Pad1PtrY), Src(Pad0PtrY), Stick(sy)),
             };
         }
 
@@ -265,9 +274,9 @@ namespace PadForge.Services
                 Row(Key(VkA), Left(PadLX)),
                 Row(Key(VkD), Right(PadLX)),
 
-                Row(MLeft, Src(PadRT)),
                 Row(MRight, Src(PadLT)),
-                Row(MMiddle, Src(PadRS)),
+                // Valve puts LEFT click on the right-stick click, not middle.
+                Row(MLeft, Src(PadRT), Src(PadRS)),
 
                 // Valve's Xbox Elite variant mirrors these same four actions
                 // onto the paddles, which is the whole point of a paddle: the
@@ -277,8 +286,11 @@ namespace PadForge.Services
                 Row(Key(VkE), Src(PadB), Src("Gamepad Paddle3")),       // Use
                 Row(Key(VkR), Src(PadX), Src("Gamepad Paddle1")),       // Reload
                 Row(Key(VkF), Src(PadY), Src("Gamepad Paddle2")),       // Flashlight
-                Row(Key(VkQ), Src(PadLB)),
-                Row(Key(VkG), Src(PadRB)),
+                // Valve labels these Previous / Next Weapon and binds them to
+                // the wheel rather than letter keys, which is what makes them
+                // work in games that number their slots differently.
+                Row(ScrollNeg, Src(PadLB)),
+                Row(Scroll, Src(PadRB)),
                 Row(Key(VkShift), Src(PadLS)),  // Sprint
 
                 Row(Key(Vk1), Src(PadUp)),
@@ -490,10 +502,10 @@ namespace PadForge.Services
                 Row("RightShoulder", Src(PadRB)),
                 Row("ButtonA", Src(PadA)),
                 Row("ButtonB", Src(PadB)),
-                Row("RightTrigger", Src(PadRT)),
+                Row("RightTrigger", DigitalTrigger(PadRT)),
 
                 Row("LeftShoulder", Src(PadLB)),
-                Row("LeftTrigger", Src(PadLT)),
+                Row("LeftTrigger", DigitalTrigger(PadLT)),
                 Row("ButtonBack", Src(PadBack)),
                 Row("ButtonStart", Src(PadStart)),
                 Row("ButtonGuide", Src(PadGuide)),
@@ -525,7 +537,7 @@ namespace PadForge.Services
             var set = NewKbmSet();
             // Hotspots are small and static, so the stick trades speed for
             // precision. The touchpad pointer is absolute and unaffected.
-            set.Rows.AddRange(CursorRows(stickSensitivity: 0.6));
+            set.Rows.AddRange(CursorRows(stickSensitivity: 0.6, leftStick: true));
             set.Rows.AddRange(new[]
             {
                 Row(MLeft, Src(PadRT), Src(PadA)),
@@ -538,8 +550,11 @@ namespace PadForge.Services
                 // Tab here, Space on Back for the skip-dialogue half.
                 // Tab both highlights hotspots (held) and cycles to the next
                 // one (tapped), so Y and RB share the row.
-                Row(Key(VkTab), Src(PadY), Src(PadRB)),
-                Row(Key(VkSpace), Src(PadBack)),
+                // Gilbert's Y skips dialogue. Cycling hotspots FORWARD is Tab
+                // on LB; backward is the Shift+Tab chord on RB, in the macro
+                // lane because no single row target is a chord.
+                Row(Key(VkSpace), Src(PadY), Src(PadBack)),
+                Row(Key(VkTab), Src(PadLB)),
 
 
                 Row(Key(VkUp), Src(PadUp)),
@@ -555,7 +570,7 @@ namespace PadForge.Services
         /// Shift+Tab, which no single row target can express.</summary>
         private static IEnumerable<MacroData> PointAndClickMacros() => new[]
         {
-            Tap("Previous Hotspot", PadLB, VkShift, VkTab),
+            Tap("Previous Hotspot", PadRB, VkShift, VkTab),
         };
 
         /// <summary>Strategy: RTS, 4X, grand strategy, city builders.
@@ -567,6 +582,15 @@ namespace PadForge.Services
         /// the camera on a directional surface. Clicks stay on the triggers so
         /// the pointing device and the click button are physically
         /// independent, which is the only way box-select works.</para></summary>
+        /// <summary>Strategy's macros. Pause/Break is the pause key several
+        /// strategy games bind, and it is outside the KbM row engine's closed
+        /// VK set, so it rides the macro lane like the Windows key does.
+        /// Nothing else in the profile claims Back.</summary>
+        private static IEnumerable<MacroData> StrategyMacros() => new[]
+        {
+            Tap("Pause", PadBack, VkPause),
+        };
+
         private static MappingSet BuildStrategy()
         {
             var set = NewKbmSet();
@@ -595,6 +619,7 @@ namespace PadForge.Services
                 // references put camera verbs.
                 Row(Key(VkOemMinus), Src(PadDown)),
                 Row(Key(VkOemPlus), Src(PadUp)),
+
             });
             // Ten number keys on a held modifier is the difference between the
             // genre being playable on a pad and not: hold RB, flick the right
@@ -615,15 +640,16 @@ namespace PadForge.Services
         private static MappingSet BuildIsometricRpg()
         {
             var set = NewKbmSet();
-            set.Rows.AddRange(CursorRows());
+            set.Rows.AddRange(CursorRows(leftStick: true));
             set.Rows.AddRange(new[]
             {
                 // Camera pan on the left stick; the cursor is always live
                 // because this drives a mouse-only game.
-                Row(Key(VkUp), Up(PadLY)),
-                Row(Key(VkDown), Down(PadLY)),
-                Row(Key(VkLeft), Left(PadLX), Src(PadLeft)),
-                Row(Key(VkRight), Right(PadLX), Src(PadRight)),
+                // Camera pan on the RIGHT stick; the left drives the cursor.
+                Row(Key(VkUp), Up(PadRY)),
+                Row(Key(VkDown), Down(PadRY)),
+                Row(Key(VkLeft), Left(PadRX), Src(PadLeft)),
+                Row(Key(VkRight), Right(PadRX), Src(PadRight)),
 
                 Row(MLeft, Src(PadRT)),
                 Row(MRight, Src(PadLT)),
@@ -794,8 +820,12 @@ namespace PadForge.Services
                 // Throttle and brake pass straight through. The pedal feel
                 // that matters is the game's own trigger curve, and a second
                 // shaping layer here would fight it.
+                // Asymmetric on purpose, and it is the one genuinely
+                // transferable trigger convention in the research: Forza
+                // ships throttle at 0 inside and brake at 2 inside, the 2
+                // being a deliberate guard for a finger resting on the brake.
                 Row("RightTrigger", Src(PadRT)),
-                Row("LeftTrigger", Src(PadLT)),
+                Row("LeftTrigger", BrakeTrigger(PadLT)),
 
                 Row("ButtonA", Src(PadA)),
                 Row("ButtonB", Src(PadB)),
@@ -825,6 +855,12 @@ namespace PadForge.Services
         /// configs ship gyro OFF and switch it on deliberately, because
         /// always-on motion reads as drift during normal play, and aiming is
         /// exactly when you want it.</para></summary>
+        /// <summary>Gyro Aim's macros: the calibrate button.</summary>
+        private static IEnumerable<MacroData> GyroAimMacros() => new[]
+        {
+            RecenterMacro("Recenter Gyro", PadBack, 800),
+        };
+
         private static MappingSet BuildGyroAim()
         {
             var set = NewPadSet();
@@ -835,8 +871,8 @@ namespace PadForge.Services
 
                 // Gyro and stick on the same axis row. Yaw is the horizontal
                 // sweep, pitch the vertical.
-                Row("RightThumbAxisX", Src(GyroYaw), Src(PadRX)),
-                Row("RightThumbAxisY", Src(GyroPitch), Src(PadRY)),
+                Row("RightThumbAxisX", GyroSource(GyroYaw), Src(PadRX)),
+                Row("RightThumbAxisY", GyroSource(GyroPitch), Src(PadRY)),
 
                 Row("RightTrigger", Src(PadRT)),
                 Row("LeftTrigger", Src(PadLT)),
@@ -859,7 +895,59 @@ namespace PadForge.Services
             // Slot-level engage gate: motion only steers while the left
             // trigger is held.
             set.WorkshopGyroEngageDescriptor = PadLT;
+
+
             return set;
+        }
+
+        /// <summary>A trigger read as a BUTTON: floor and ceiling pulled in so
+        /// a partial pull reads as a full press. Fighting games treat the
+        /// shoulder triggers as digital buttons, and a partial pull that
+        /// registers as a partial input is a dropped move.</summary>
+        private static MappingSource DigitalTrigger(string descriptor)
+        {
+            var src = Src(descriptor);
+            src.ParamRangeOuter = 0.35;   // full output by a third of the pull
+            return src;
+        }
+
+        /// <summary><para>The brake trigger's inside guard. Forza ships the
+        /// brake at 2 percent inside and the throttle at 0, so a finger
+        /// resting on the brake does not drag it.</para>
+        /// <para>The shape must be nonzero or the value never moves:
+        /// WorkshopTuningApplier.FoldSourceShaping routes an inner radius
+        /// through FoldStickGeometry ONLY when a shape is stamped, and the
+        /// trigger's own read (SourceCoercion.ReadAsUnipolar) never calls
+        /// ApplyStickDeadZoneShape at all. With the shape set, assignment
+        /// folds this onto the device's own Dead Zone card
+        /// (ShapingCardFor("LeftTrigger") has a live SetDeadZone, and a null
+        /// SetShape it skips), which is where a trigger deadzone belongs and
+        /// where the user can see and edit it.</para></summary>
+        private static MappingSource BrakeTrigger(string descriptor)
+        {
+            var src = Src(descriptor);
+            src.ParamStickDeadZoneShape = 1;   // axial: required for the fold
+            src.ParamStickDeadZoneInner = 0.02;
+            return src;
+        }
+
+        /// <summary><para>Jibb Smart's canonical pair: sensitivity ramps from
+        /// 1 to 2, starting at a threshold of zero.</para>
+        /// <para>The ramp is ParamAccel, not GyroSensitivity. GyroSensitivity
+        /// is a FLAT multiplier folded into the rate itself
+        /// (SourceCoercion.ReadTunedGyroRate), so 2.0 there would double slow
+        /// movements too and lose the whole point. ApplyPerSourceAccel
+        /// computes v * (1 + accel * |v|), so accel 1.0 is a gain of exactly
+        /// 1 at rest rising to exactly 2 at full scale, and both gyro legs
+        /// (bipolar and trigger) apply it. The ramp begins immediately, which
+        /// is the lower threshold of zero; the upper end saturates at the
+        /// lane's full scale rather than at a stated degrees-per-second, and
+        /// that is the honest limit of the per-source channel.</para></summary>
+        private static MappingSource GyroSource(string descriptor)
+        {
+            var src = Src(descriptor);
+            src.ParamAccel = 1.0;
+            return src;
         }
 
         // ── Radial menus ────────────────────────────────────────────────
@@ -993,6 +1081,33 @@ namespace PadForge.Services
         }
 
         /// <summary>A plain tap: fires the moment the button goes down.</summary>
+        /// <summary><para>A gyro recenter bound to a held button. "Always have
+        /// a calibrate button": drifted gyro is unusable, and a recenter you
+        /// can only reach by opening the app is not a recenter.</para>
+        /// <para>Held rather than tapped, and non-consuming, so the button
+        /// keeps its ordinary press. GyroRecenter zeroes every accumulated
+        /// aim reference the slot holds, which is exactly what a calibrate
+        /// button is for.</para></summary>
+        private static MacroData RecenterMacro(string name, string descriptor, int holdMs)
+        {
+            var entry = new MacroItem.TriggerInputEntry
+            {
+                DeviceGuid = Guid.Empty,
+                SourceDescriptor = descriptor,
+            };
+            string spec = entry.Spec;
+            if (string.IsNullOrEmpty(spec)) return null;
+            return new MacroData
+            {
+                PadIndex = 0, Name = name, IsEnabled = true,
+                TriggerSource = MacroTriggerSource.InputDevice,
+                TriggerInputs = spec, TriggerButtons = 0, TriggerAxisTargets = null,
+                ConsumeTriggerButtons = false,
+                TriggerMode = MacroTriggerMode.HoldForMs, TriggerHoldMs = holdMs,
+                Actions = new[] { new ActionData { Type = MacroActionType.GyroRecenter } },
+            };
+        }
+
         private static MacroData Tap(string name, string descriptor, params byte[] keys)
             => KeyMacro(name, descriptor, MacroTriggerMode.OnPress, keys);
 
@@ -1221,7 +1336,7 @@ namespace PadForge.Services
 
             new("strategy", VirtualControllerType.KeyboardMouse,
                 () => Wrap(Strings.Instance.Starter_Strategy_Name,
-                    VirtualControllerType.KeyboardMouse, BuildStrategy()),
+                    VirtualControllerType.KeyboardMouse, BuildStrategy(), StrategyMacros()),
                 s => s.Starter_Strategy_Name, s => s.Starter_Strategy_Description),
 
             new("isometric", VirtualControllerType.KeyboardMouse,
@@ -1257,7 +1372,7 @@ namespace PadForge.Services
 
             new("gyroaim", VirtualControllerType.Xbox,
                 () => Wrap(Strings.Instance.Starter_GyroAim_Name,
-                    VirtualControllerType.Xbox, BuildGyroAim()),
+                    VirtualControllerType.Xbox, BuildGyroAim(), GyroAimMacros()),
                 s => s.Starter_GyroAim_Name, s => s.Starter_GyroAim_Description),
         };
 

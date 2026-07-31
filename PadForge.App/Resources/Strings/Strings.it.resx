@@ -2968,6 +2968,9 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>Riproduzione, ricerca e un cursore per il divano.</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Corse</value></data>
   <data name="Starter_Racing_Description" xml:space="preserve"><value>Sterzo più calmo e controllo fine vicino al centro, su qualsiasi pad.</value></data>
+  <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>Simulazione spaziale</value></data>
+  <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>Sei gradi di libertà su due levette, con modalità di precisione per l'attracco.</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Precisione (controllo fine)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Mira giroscopica</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Movimento per la mira fine sul grilletto sinistro, con la levetta attiva.</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silenzio (non invia nulla)</value></data>

@@ -2966,6 +2966,9 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>Afspelen, zoeken en een cursor voor op de bank.</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Racen</value></data>
   <data name="Starter_Racing_Description" xml:space="preserve"><value>Rustiger sturen en fijnere controle rond het midden, op elke controller.</value></data>
+  <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>Ruimtesimulatie</value></data>
+  <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>Zes vrijheidsgraden op twee sticks, met een precisiestand om aan te meren.</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Precisie (fijne besturing)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Gyro-richten</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Beweging voor fijn richten op de linkertrigger, met de stick nog actief.</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Stil (stuurt niets)</value></data>

@@ -2946,6 +2946,9 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>Reprodução, avanço e um cursor para o sofá.</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Corrida</value></data>
   <data name="Starter_Racing_Description" xml:space="preserve"><value>Direção mais calma e controle fino perto do centro, em qualquer controle.</value></data>
+  <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>Simulação espacial</value></data>
+  <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>Seis graus de liberdade em dois analógicos, com modo de precisão para acoplagem.</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Precisão (controle fino)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Mira por giroscópio</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Movimento para mira fina no gatilho esquerdo, com o analógico ativo.</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silencioso (não envia nada)</value></data>

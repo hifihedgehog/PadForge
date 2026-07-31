@@ -2946,6 +2946,9 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>Wiedergabe, Spulen und ein Zeiger für die Couch.</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Rennen</value></data>
   <data name="Starter_Racing_Description" xml:space="preserve"><value>Ruhigeres Lenken und feinere Kontrolle um die Mitte, auf jedem Pad.</value></data>
+  <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>Weltraumsimulation</value></data>
+  <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>Sechs Freiheitsgrade auf zwei Sticks, mit Präzisionsmodus zum Andocken.</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Präzision (Feinsteuerung)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Gyro-Zielen</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Bewegungssteuerung auf dem linken Trigger, der Stick bleibt aktiv.</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Stumm (sendet nichts)</value></data>

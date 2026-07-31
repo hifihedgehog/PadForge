@@ -1075,6 +1075,9 @@ namespace PadForge.Common.Input
         /// window into the per-pad speaker and haptic rings. No
         /// allocations in steady state.</summary>
         private static long _personaCbCount, _personaCbBytes, _personaCbLastLog;
+        private static int _sniffHapPeak, _sniffSpkPeak, _sniffDistinct;
+        private static bool _sniffActive;
+        private static long _sniffLastSignalTicks, _sniffSummaryTicks;
 
         private static void OnPersonaFrames(PersonaFeed feed, HIDMaestro.HMAudioOutput output, ReadOnlyMemory<byte> pcm)
         {
@@ -1096,6 +1099,57 @@ namespace PadForge.Common.Input
             int stride = ch * 2;
             var span = pcm.Span;
             float spkGain = feed.SpeakerMuted ? 0f : feed.SpeakerGain;
+
+            // ── Authored-haptics sniffer ──
+            // Confirmed empirically 2026-07-31: Windows does NOT upmix
+            // ordinary stereo into channels 3/4 (a full music-playback
+            // window produced zero haptic signal), so ANY signal here is
+            // a deliberate 4-channel render. `distinct` separates an
+            // authored track from an app copying the speaker mix into
+            // the rears: a copy differs by ~0 per sample.
+            if (feed.HapL >= 0 && feed.HapR >= 0 && ch > Math.Max(feed.HapL, feed.HapR))
+            {
+                int hapPeak = 0, spkPeak = 0, distinct = 0;
+                for (int i = 0; i + stride <= span.Length; i += stride)
+                {
+                    int sl = (short)(span[i + feed.SpkL * 2] | (span[i + feed.SpkL * 2 + 1] << 8));
+                    int hl = (short)(span[i + feed.HapL * 2] | (span[i + feed.HapL * 2 + 1] << 8));
+                    int hr = (short)(span[i + feed.HapR * 2] | (span[i + feed.HapR * 2 + 1] << 8));
+                    int ah = Math.Max(Math.Abs(hl), Math.Abs(hr));
+                    if (ah > hapPeak) hapPeak = ah;
+                    int asp = Math.Abs(sl);
+                    if (asp > spkPeak) spkPeak = asp;
+                    int d = Math.Abs(hl - sl);
+                    if (d > distinct) distinct = d;
+                }
+                if (hapPeak > _sniffHapPeak) _sniffHapPeak = hapPeak;
+                if (spkPeak > _sniffSpkPeak) _sniffSpkPeak = spkPeak;
+                if (distinct > _sniffDistinct) _sniffDistinct = distinct;
+
+                long snow = Environment.TickCount64;
+                bool signal = hapPeak > 256;   // ~0.8% FS: above ambient dither
+                if (signal) _sniffLastSignalTicks = snow;
+                if (signal && !_sniffActive)
+                {
+                    _sniffActive = true;
+                    Engine.SdlDiagLog.WriteLine(
+                        $"PERSONA haptics ONSET hapPeak={hapPeak} spkPeak={spkPeak} distinct={distinct}");
+                }
+                else if (_sniffActive && snow - _sniffLastSignalTicks > 2000)
+                {
+                    _sniffActive = false;
+                    Engine.SdlDiagLog.WriteLine(
+                        $"PERSONA haptics OFFSET maxHapPeak={_sniffHapPeak} maxSpkPeak={_sniffSpkPeak} maxDistinct={_sniffDistinct}");
+                    _sniffHapPeak = _sniffSpkPeak = _sniffDistinct = 0;
+                }
+                else if (_sniffActive && snow - _sniffSummaryTicks >= 5000)
+                {
+                    _sniffSummaryTicks = snow;
+                    Engine.SdlDiagLog.WriteLine(
+                        $"PERSONA haptics LIVE maxHapPeak={_sniffHapPeak} maxSpkPeak={_sniffSpkPeak} maxDistinct={_sniffDistinct}");
+                    _sniffHapPeak = _sniffSpkPeak = _sniffDistinct = 0;
+                }
+            }
 
             foreach (var guid in targets)
             {

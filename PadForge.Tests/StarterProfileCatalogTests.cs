@@ -1129,17 +1129,33 @@ namespace PadForge.Tests
             var idle = new PadForge.Engine.CustomInputState();
             InputManager.ResolveActiveLayerMask(0, set, idle, probe);
 
-            // The gesture: both legs, held past the delay.
             var chord = new PadForge.Engine.CustomInputState();
             chord.Buttons[7] = true;                       // Start
             chord.Buttons[10] = true;                      // Guide
-            InputManager.ResolveActiveLayerMask(0, set, chord, probe);
-            System.Threading.Thread.Sleep(holdMs);
-            Assert.Equal("Quiet", InputManager.ResolveActiveLayerMask(0, set, chord, probe));
+            try
+            {
+                // The gesture: both legs, held past the delay.
+                InputManager.ResolveActiveLayerMask(0, set, chord, probe);
+                System.Threading.Thread.Sleep(holdMs);
+                Assert.Equal("Quiet", InputManager.ResolveActiveLayerMask(0, set, chord, probe));
 
-            // It is a TOGGLE: the layer outlives the release.
-            InputManager.ResolveActiveLayerMask(0, set, idle, probe);
-            Assert.Equal("Quiet", InputManager.ResolveActiveLayerMask(0, set, idle, probe));
+                // It is a TOGGLE: the layer outlives the release.
+                InputManager.ResolveActiveLayerMask(0, set, idle, probe);
+                Assert.Equal("Quiet", InputManager.ResolveActiveLayerMask(0, set, idle, probe));
+            }
+            finally
+            {
+                // Toggle OFF again, or slot 0 stays latched on Quiet for every
+                // test that runs after this one. The activator runtime and the
+                // published per-slot mask are process-global, so a test that
+                // engages a layer owns putting it back.
+                InputManager.ResolveActiveLayerMask(0, set, chord, probe);
+                System.Threading.Thread.Sleep(holdMs);
+                InputManager.ResolveActiveLayerMask(0, set, chord, probe);
+                InputManager.ResolveActiveLayerMask(0, set, idle, probe);
+                // And drop the slot's published sets entirely.
+                InputManager.ResolveActiveLayerMask(0, new MappingSet(), idle, probe);
+            }
         }
 
         /// <summary>THE ROSTER. The proposal specifies thirteen archetypes by

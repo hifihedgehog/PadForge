@@ -974,6 +974,95 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>THE ROSTER. The proposal specifies thirteen archetypes by
+        /// name, and this shipped twelve for a full release cycle because
+        /// nothing compared the list to the list. A missing profile is not a
+        /// binding defect any other test in this file can see.</summary>
+        [Fact]
+        public void Roster_CarriesEveryArchetypeTheProposalNames()
+        {
+            string[] expected =
+            {
+                "desktop", "wasd", "pointclick", "strategy", "isometric",
+                "twinstick", "media", "hotbar",
+                "fighting", "emulation", "racing", "spacesim", "gyroaim",
+            };
+            var shipped = StarterProfileCatalog.All.Select(p => p.Key).ToList();
+            foreach (var key in expected)
+                Assert.Contains(key, shipped);
+            Assert.Equal(13, shipped.Count);
+        }
+
+        /// <summary>Every profile can be silenced without unassigning the pad,
+        /// which the proposal asks for on ALL of them and not only on the
+        /// keyboard ones. Steam ships empty.vdf for the same reason.</summary>
+        [Fact]
+        public void EveryProfile_CanBeSilenced()
+        {
+            foreach (var (info, profile) in Built())
+            {
+                var sets = profile.SlotMappingSets.Where(s => s != null).ToList();
+                Assert.True(
+                    sets.Any(s => s.ShiftActivators.Any(a => a.LayerMask == "Quiet")),
+                    $"starter '{info.Key}' has no quiet layer, so the pad cannot be silenced");
+            }
+        }
+
+        /// <summary>Space Sim's axes are Frontier's, read from the shipped
+        /// Elite Dangerous presets: roll on left X, pitch on left Y, vertical
+        /// thrust on right Y, yaw on right X. Those three are unanimous across
+        /// every stock gamepad preset, and right-stick X is the only one the
+        /// set disagrees on.</summary>
+        [Fact]
+        public void SpaceSim_UsesFrontiersAxisAssignment()
+        {
+            Assert.Contains("Gamepad LeftStickX", DescriptorsOf("spacesim", "LeftThumbAxisX"));
+            Assert.Contains("Gamepad LeftStickY", DescriptorsOf("spacesim", "LeftThumbAxisY"));
+            Assert.Contains("Gamepad RightStickX", DescriptorsOf("spacesim", "RightThumbAxisX"));
+            Assert.Contains("Gamepad RightStickY", DescriptorsOf("spacesim", "RightThumbAxisY"));
+
+            // Pitch ships Inverted="0", so the raw read is already
+            // pull-back-to-climb and an inversion here would break it.
+            Assert.All(RowOf("spacesim", "LeftThumbAxisY").Sources, s => Assert.False(s.Invert));
+
+            // Throttle on the bumpers, guns on the triggers. Frontier never
+            // puts an absolute throttle on a self-centering stick.
+            Assert.Contains("Gamepad LeftShoulder", DescriptorsOf("spacesim", "LeftShoulder"));
+            Assert.Contains("Gamepad RightShoulder", DescriptorsOf("spacesim", "RightShoulder"));
+            Assert.Contains("Gamepad RightTrigger", DescriptorsOf("spacesim", "RightTrigger"));
+        }
+
+        /// <summary>Space Sim's flight axes are shaped, which is the whole
+        /// reason the profile beats a bare pad: docking happens in the first
+        /// tenth of stick travel. The Precision layer softens them further and
+        /// must not leave the stick click double-firing.</summary>
+        [Fact]
+        public void SpaceSim_ShapesTheFlightAxes_AndHasAPrecisionLayer()
+        {
+            foreach (var target in new[] { "LeftThumbAxisX", "LeftThumbAxisY",
+                                           "RightThumbAxisX", "RightThumbAxisY" })
+            {
+                var src = RowOf("spacesim", target).Sources.Single();
+                Assert.True(src.ParamCurveExponent > 1.0,
+                    $"spacesim '{target}' is unshaped, so it flies like a bare pad");
+            }
+
+            var set = SetOf("spacesim");
+            var act = set.ShiftActivators.Single(a => a.LayerMask == "Precision");
+            Assert.Equal("Gamepad RightStick", act.Descriptor);
+            Assert.Equal("Toggle", act.Mode);
+
+            var fine = set.Rows.Where(r => r.LayerMask == "Precision" && r.Sources.Count > 0).ToList();
+            Assert.Equal(4, fine.Count);
+            Assert.All(fine, r => Assert.True(
+                r.Sources.Single().ParamCurveExponent
+                    > RowOf("spacesim", r.Target).Sources.Single().ParamCurveExponent,
+                $"Precision '{r.Target}' is not softer than Base, so the layer does nothing"));
+
+            Assert.Contains(set.Rows, r => r.LayerMask == "Precision"
+                && r.Target == "RightThumbButton" && r.NoInherit);
+        }
+
         /// <summary>Gyro Aim carries a calibrate button. Drifted gyro is
         /// unusable, and a recenter reachable only by opening the app is not a
         /// recenter. It must be a real GyroRecenter action: a shift layer with

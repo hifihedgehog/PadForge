@@ -129,7 +129,7 @@ The Nintendo slot type creates a virtual Switch Pro Controller through HIDMaestr
 
 ### Twelve profiles that work on whatever pad you plug in.
 
-Pick a starter profile, assign any controller, and play. They cover a kind of game rather than a single title: Desktop, WASD and Mouse, Point and Click, Strategy, Isometric RPG, Twin-Stick, Media Remote, Hotbar, Fighting Games, Emulation, Racing, and Gyro Aim. Nothing is locked, so saving one adds an ordinary profile you can edit.
+Pick a starter profile, assign any controller, and play. They cover a kind of game rather than a single title: Desktop, WASD and Mouse, Point and Click, Strategy, Isometric RPG, Twin-Stick, Media Remote, Hotbar, Fighting Games, Emulation, Racing, Space Sim, and Gyro Aim. Nothing is locked, so saving one adds an ordinary profile you can edit.
 
 They never name hardware, which is why one profile drives a DualSense, an Xbox pad, and a Switch Pro Controller the same way. Every profile that moves a cursor offers the touchpad and the stick at once: the stick moves it as a rate, and the moment a finger lands on the pad the cursor goes where the finger is. Hotbar puts thirty-two abilities behind two triggers, eight per trigger with sixteen more on a double tap. Fighting Games ships SOCD cleaning set to Neutral on both axes and binds exactly one directional surface, which is what tournament rules require. Emulation puts save states, rewind, and fast-forward behind a held Back, the way RetroArch's own hotkey modifier works, and mirrors the left stick onto the D-pad for cores that have no analog sticks at all.
 

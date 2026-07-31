@@ -425,6 +425,7 @@ namespace PadForge.Services
             BlockInheritedTargets(set, "Hotkey", hotkeyButtons);
 
             set.ShiftActivators.Add(HotkeyActivator());
+            AddQuietLayer(set);
             return set;
         }
 
@@ -520,6 +521,7 @@ namespace PadForge.Services
             set.SocdMode = "Neutral";
             // Gamepad slots pair mapping TARGET names.
             set.SocdPairs = "DPadLeft:DPadRight|DPadUp:DPadDown";
+            AddQuietLayer(set);
             return set;
         }
 
@@ -843,6 +845,118 @@ namespace PadForge.Services
                 Row("DPadLeft", Src(PadLeft)),
                 Row("DPadRight", Src(PadRight)),
             });
+            AddQuietLayer(set);
+            return set;
+        }
+
+        /// <summary><para>Space Sim: six degrees of freedom on two sticks.</para>
+        ///
+        /// <para>Read out of Frontier's shipped Elite Dangerous presets
+        /// (references/edrefcard2, "Defaults 3.5"). Roll on left-stick X,
+        /// pitch on left-stick Y and vertical thrust on right-stick Y are
+        /// unanimous across ConsoleX360, ConsoleX360Classic and
+        /// AdvancedControlPad. Right-stick X is the ONLY axis the set
+        /// disagrees on: ConsoleX360 binds YawAxisRaw to it, ConsoleX360Classic
+        /// binds LateralThrustRaw. Pitch ships Inverted="0", so pull-back-to-
+        /// climb is the raw reading and this profile adds no inversion.</para>
+        ///
+        /// <para>The bumpers are the throttle (BackwardKey on LB, ForwardKey
+        /// on RB) and the triggers are the guns (SecondaryFire on LT,
+        /// PrimaryFire on RT). Frontier never puts an absolute throttle on a
+        /// thumbstick in any gamepad preset, because a self-centering stick
+        /// cannot hold a setting; the absolute binding appears only on their
+        /// HOTAS presets. So the throttle stays where they put it and the
+        /// profile does not invent an axis for it.</para>
+        ///
+        /// <para>What this profile adds over a bare pad is the response
+        /// shape. Docking and formation flying happen in the first tenth of
+        /// stick travel, so every flight axis gets a softened curve and a
+        /// small floor, and the Precision layer on right-stick click softens
+        /// it much further for close work.</para></summary>
+        private static MappingSet BuildSpaceSim()
+        {
+            var set = NewPadSet();
+
+            // Flight axes: soft near centre, full authority at the rim.
+            MappingSource Fly(string descriptor, double exponent)
+            {
+                var src = Src(descriptor);
+                src.ParamCurveExponent = exponent;
+                src.ParamAntiDeadzone = 0.02;   // the first degree of input registers
+                return src;
+            }
+
+            set.Rows.AddRange(new[]
+            {
+                // Roll and pitch, unanimous across every shipped preset.
+                Row("LeftThumbAxisX", Fly(PadLX, 1.6)),
+                Row("LeftThumbAxisY", Fly(PadLY, 1.6)),
+
+                // Yaw and vertical thrust. Yaw is the twitchier of the two,
+                // so it gets the softer curve.
+                Row("RightThumbAxisX", Fly(PadRX, 1.8)),
+                Row("RightThumbAxisY", Fly(PadRY, 1.6)),
+
+                // Guns, unshaped: a fire button is a fire button.
+                Row("RightTrigger", Src(PadRT)),
+                Row("LeftTrigger", Src(PadLT)),
+
+                // Throttle down / up, where Frontier puts it.
+                Row("LeftShoulder", Src(PadLB)),
+                Row("RightShoulder", Src(PadRB)),
+
+                Row("ButtonA", Src(PadA)),
+                Row("ButtonB", Src(PadB)),
+                Row("ButtonX", Src(PadX)),
+                Row("ButtonY", Src(PadY)),
+                Row("ButtonBack", Src(PadBack)),
+                Row("ButtonStart", Src(PadStart)),
+                Row("ButtonGuide", Src(PadGuide)),
+                Row("LeftThumbButton", Src(PadLS)),
+                Row("RightThumbButton", Src(PadRS)),
+                Row("DPadUp", Src(PadUp)),
+                Row("DPadDown", Src(PadDown)),
+                Row("DPadLeft", Src(PadLeft)),
+                Row("DPadRight", Src(PadRight)),
+            });
+
+            // Precision layer, toggled on right-stick click. Same axes, much
+            // softer, for docking and station approach. It replaces the four
+            // flight rows and inherits everything else.
+            //
+            // This is NOT the yaw-versus-lateral-thrust swap the proposal
+            // asked for on this button, and that swap is not implementable
+            // here: Frontier ships both variants on the SAME physical output
+            // and the difference lives in Elite's own binding file, which a
+            // virtual pad cannot reach. Shipping a toggle that moved the axis
+            // to some other output would need the pilot to re-bind Elite,
+            // which is the opposite of "assign a controller and play".
+            foreach (var (target, descriptor) in new[]
+                     { ("LeftThumbAxisX", PadLX), ("LeftThumbAxisY", PadLY),
+                       ("RightThumbAxisX", PadRX), ("RightThumbAxisY", PadRY) })
+            {
+                var fine = Fly(descriptor, 2.6);
+                fine.Sensitivity = 0.5;
+                var row = Row(target, fine);
+                row.LayerMask = "Precision";
+                set.Rows.Add(row);
+            }
+            set.ShiftActivators.Add(new ShiftActivator
+            {
+                DeviceGuid = "",
+                Descriptor = PadRS,
+                Mode = "Toggle",
+                LayerMask = "Precision",
+                LayerName = Strings.Instance.Starter_SpaceSim_PrecisionLayerName,
+                InheritUnmapped = true,
+            });
+            // R3 is the activator AND a Base binding, so without this the
+            // click double-fires while Precision is up. Same closure every
+            // other bank in the catalog uses.
+            BlockInheritedTargets(set, "Precision",
+                new HashSet<string>(StringComparer.Ordinal) { PadRS });
+
+            AddQuietLayer(set);
             return set;
         }
 
@@ -897,6 +1011,7 @@ namespace PadForge.Services
             set.WorkshopGyroEngageDescriptor = PadLT;
 
 
+            AddQuietLayer(set);
             return set;
         }
 
@@ -1369,6 +1484,11 @@ namespace PadForge.Services
                 () => Wrap(Strings.Instance.Starter_Racing_Name,
                     VirtualControllerType.Xbox, BuildRacing()),
                 s => s.Starter_Racing_Name, s => s.Starter_Racing_Description),
+
+            new("spacesim", VirtualControllerType.Xbox,
+                () => Wrap(Strings.Instance.Starter_SpaceSim_Name,
+                    VirtualControllerType.Xbox, BuildSpaceSim()),
+                s => s.Starter_SpaceSim_Name, s => s.Starter_SpaceSim_Description),
 
             new("gyroaim", VirtualControllerType.Xbox,
                 () => Wrap(Strings.Instance.Starter_GyroAim_Name,

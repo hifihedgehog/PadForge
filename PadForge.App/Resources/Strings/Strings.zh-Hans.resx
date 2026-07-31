@@ -2946,6 +2946,9 @@
   <data name="Starter_Media_Description" xml:space="preserve"><value>播放、快进，以及一个适合沙发的光标。</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>赛车</value></data>
   <data name="Starter_Racing_Description" xml:space="preserve"><value>在任何手柄上都能获得更平稳的转向和中心附近的精细控制。</value></data>
+  <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>太空模拟</value></data>
+  <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>用两个摇杆控制六个自由度，并提供对接用的精密模式。</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>精密（精细控制）</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>陀螺仪矄准</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>左扳机键启用体感矄准，摇杆仍然可用。</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>静默（不发送任何输入）</value></data>

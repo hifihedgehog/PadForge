@@ -2946,6 +2946,9 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>Reproducción, búsqueda y un cursor para el sofá.</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Carreras</value></data>
   <data name="Starter_Racing_Description" xml:space="preserve"><value>Dirección más calmada y control fino cerca del centro, en cualquier mando.</value></data>
+  <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>Simulación espacial</value></data>
+  <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>Seis grados de libertad en dos joysticks, con modo de precisión para atracar.</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Precisión (control fino)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Apuntado por giroscopio</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Movimiento para apuntar fino en el gatillo izquierdo, con el stick activo.</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silencio (no envía nada)</value></data>

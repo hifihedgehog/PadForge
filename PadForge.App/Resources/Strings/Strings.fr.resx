@@ -2946,6 +2946,9 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>Lecture, navigation et un curseur pour le canapé.</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Course</value></data>
   <data name="Starter_Racing_Description" xml:space="preserve"><value>Direction plus calme et contrôle fin près du centre, sur n’importe quelle manette.</value></data>
+  <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>Simulation spatiale</value></data>
+  <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>Six degrés de liberté sur deux sticks, avec un mode précision pour l'amarrage.</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Précision (contrôle fin)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Visée gyroscopique</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Le mouvement pour la visée fine, sur la gâchette gauche, stick toujours actif.</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silence (rien n’est envoyé)</value></data>

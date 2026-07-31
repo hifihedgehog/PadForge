@@ -2584,6 +2584,9 @@ public class Strings : INotifyPropertyChanged
     public string Starter_QuietLayerName => Get("Starter_QuietLayerName");
     public string Starter_Racing_Name => Get("Starter_Racing_Name");
     public string Starter_Racing_Description => Get("Starter_Racing_Description");
+    public string Starter_SpaceSim_Name => Get("Starter_SpaceSim_Name");
+    public string Starter_SpaceSim_Description => Get("Starter_SpaceSim_Description");
+    public string Starter_SpaceSim_PrecisionLayerName => Get("Starter_SpaceSim_PrecisionLayerName");
     public string Starter_GyroAim_Name => Get("Starter_GyroAim_Name");
     public string Starter_GyroAim_Description => Get("Starter_GyroAim_Description");
     public string Starter_PointClick_Name => Get("Starter_PointClick_Name");

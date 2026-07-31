@@ -2951,5 +2951,13 @@
   <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>정밀(미세 조정)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>자이로 조준</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>왼쪽 트리거로 모션 조준. 스틱도 그대로 사용합니다.</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>크로스 핫바(왼쪽)</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>크로스 핫바(오른쪽)</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>더블 크로스(왼쪽)</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>더블 크로스(오른쪽)</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>단축키</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>핫바</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>파티</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>바로 가기</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>무음 (아무것도 보내지 않음)</value></data>
 </root>

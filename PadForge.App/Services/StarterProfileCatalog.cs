@@ -94,7 +94,6 @@ namespace PadForge.Services
         // row authored against one is silently dead. VK_LWIN 0x5B is absent
         // too, so the Windows key is not reachable as a row target at all.
         private const byte VkTab = 0x09, VkReturn = 0x0D, VkEscape = 0x1B, VkSpace = 0x20;
-        private const byte VkBackspace = 0x08, VkDelete = 0x2E;
         private const byte VkShift = 0xA0;    // VK_LSHIFT
         private const byte VkControl = 0xA2;  // VK_LCONTROL
         private const byte VkMenu = 0xA4;     // VK_LMENU (Alt)
@@ -243,15 +242,16 @@ namespace PadForge.Services
         /// <summary>Desktop's two system keys, both unreachable as rows.
         /// X opens the on-screen keyboard the way Windows does it
         /// (Win+Ctrl+O), matching the Show Keyboard that Valve's desktop
-        /// scheme puts on X. Start taps the Windows key.
+        /// scheme puts on X.
         ///
-        /// <para>Start is a SHORT press on purpose: the quiet layer sits on a
-        /// long press of the same button, so a plain OnPress macro would fire
-        /// the Start menu every time the user reached for silence.</para>
+        /// <para>The Windows key sits on Paddle 1, which is Valve's own Deck
+        /// assignment. It stays off Start deliberately: the quiet layer is a
+        /// long press of Start, and a macro there would open the Start menu
+        /// every time the user reached for silence.</para>
         /// </summary>
         private static IEnumerable<MacroData> DesktopMacros() => new[]
         {
-            Tap("Show Keyboard", PadX, VkLWin, VkCtrlChord, VkO),
+            Tap("Show Keyboard", PadX, VkLWin, VkControl, VkO),
             Tap("Windows Key", "Gamepad Paddle1", VkLWin),
         };
 
@@ -342,9 +342,11 @@ namespace PadForge.Services
             set.SocdPairs = SocdKeyPairs(VkA, VkD, VkW, VkS);
 
             // Hold LT for eight slots, hold RT for a different eight.
-            AddBank(set, "Bank1", PadLT, doublePressMs: 0,
+            AddBank(set, "Bank1", Strings.Instance.Starter_Layer_CrossHotbarL,
+                PadLT, doublePressMs: 0,
                 new[] { Vk1, Vk2, Vk3, Vk4, Vk5, Vk6, Vk7, Vk8 });
-            AddBank(set, "Bank2", PadRT, doublePressMs: 0,
+            AddBank(set, "Bank2", Strings.Instance.Starter_Layer_CrossHotbarR,
+                PadRT, doublePressMs: 0,
                 new[] { Vk9, Vk0, VkOemMinus, VkOemPlus, VkF1, VkF2, VkF3, VkF4 });
 
             // Double-tap-and-hold either trigger for sixteen more. This is the
@@ -354,9 +356,11 @@ namespace PadForge.Services
             // second press until its release. Both tiers can be engaged at
             // once during the second press; last-engaged wins, which is the
             // double-tap bank, so the plain bank does not shadow it.
-            AddBank(set, "Bank3", PadLT, doublePressMs: DoubleTapMs,
+            AddBank(set, "Bank3", Strings.Instance.Starter_Layer_DoubleCrossL,
+                PadLT, doublePressMs: DoubleTapMs,
                 new[] { VkF5, VkF6, VkF7, VkF8, VkF9, VkF10, VkF11, VkF12 });
-            AddBank(set, "Bank4", PadRT, doublePressMs: DoubleTapMs,
+            AddBank(set, "Bank4", Strings.Instance.Starter_Layer_DoubleCrossR,
+                PadRT, doublePressMs: DoubleTapMs,
                 new[] { VkNum1, VkNum2, VkNum3, VkNum4, VkNum5, VkNum6, VkNum7, VkNum8 });
 
             AddQuietLayer(set);
@@ -469,7 +473,7 @@ namespace PadForge.Services
             Descriptor = PadBack,
             Mode = "Hold",
             LayerMask = "Hotkey",
-            LayerName = "Hotkey",
+            LayerName = Strings.Instance.Starter_Layer_Hotkeys,
             InheritUnmapped = true,
         };
 
@@ -547,17 +551,14 @@ namespace PadForge.Services
 
                 Row(Key(VkEscape), Src(PadB), Src(PadStart)),
                 Row(Key(VkI), Src(PadX)),
-                // Hold-to-reveal-hotspots is widespread but never
-                // standardised; implementations split between Tab and Space.
-                // Tab here, Space on Back for the skip-dialogue half.
-                // Tab both highlights hotspots (held) and cycles to the next
-                // one (tapped), so Y and RB share the row.
-                // Gilbert's Y skips dialogue. Cycling hotspots FORWARD is Tab
-                // on LB; backward is the Shift+Tab chord on RB, in the macro
-                // lane because no single row target is a chord.
+                // Gilbert's Y skips dialogue, and Back shares that row.
+                // Cycling hotspots FORWARD is Tab on LB; backward is the
+                // Shift+Tab chord on RB, which rides the macro lane because no
+                // single row target is a chord. Hold-to-reveal-hotspots is
+                // widespread but never standardised, and Tab is the half of
+                // that split this profile picks.
                 Row(Key(VkSpace), Src(PadY), Src(PadBack)),
                 Row(Key(VkTab), Src(PadLB)),
-
 
                 Row(Key(VkUp), Src(PadUp)),
                 Row(Key(VkDown), Src(PadDown)),
@@ -621,12 +622,11 @@ namespace PadForge.Services
                 // references put camera verbs.
                 Row(Key(VkOemMinus), Src(PadDown)),
                 Row(Key(VkOemPlus), Src(PadUp)),
-
             });
             // Ten number keys on a held modifier is the difference between the
             // genre being playable on a pad and not: hold RB, flick the right
             // stick, release on the cell.
-            AddRadial(set, 1, "Hotbar", PadRB, PadRS, "Hotbar",
+            AddRadial(set, 1, "Hotbar", PadRB, PadRS, Strings.Instance.Starter_Layer_Hotbar,
                 ("1", Vk1), ("2", Vk2), ("3", Vk3), ("4", Vk4), ("5", Vk5),
                 ("6", Vk6), ("7", Vk7), ("8", Vk8), ("9", Vk9), ("0", Vk0));
             AddQuietLayer(set);
@@ -645,9 +645,8 @@ namespace PadForge.Services
             set.Rows.AddRange(CursorRows(leftStick: true));
             set.Rows.AddRange(new[]
             {
-                // Camera pan on the left stick; the cursor is always live
-                // because this drives a mouse-only game.
-                // Camera pan on the RIGHT stick; the left drives the cursor.
+                // Camera pan on the RIGHT stick; the left drives the cursor,
+                // which is always live because this drives a mouse-only game.
                 Row(Key(VkUp), Up(PadRY)),
                 Row(Key(VkDown), Down(PadRY)),
                 Row(Key(VkLeft), Left(PadRX), Src(PadLeft)),
@@ -668,19 +667,25 @@ namespace PadForge.Services
                 Row(Key(VkOemPlus), Src(PadRB)),
 
                 // Larian's D-pad examines and toggles stealth. Cycling
-                // interactables shares the camera's arrow rows below, and
+                // interactables shares the camera's arrow rows above, and
                 // jump shares A's Space row, so neither duplicates a target.
                 Row(Key(VkV), Src(PadDown)),       // examine
-                Row(Key(VkF5), Src(PadStart)),   // quicksave
+
+                // Quicksave stays OFF Start. Holding Start for 600 ms is the
+                // quiet-layer gesture, and the button's Base binding is live
+                // for those 600 ms, so a quicksave here would fire every time
+                // the user reached for silence. Back is unbound in this
+                // profile, so moving it costs nothing.
+                Row(Key(VkF5), Src(PadBack)),      // quicksave
             });
 
             // Larian's two wheels, on the triggers exactly as Divinity ships
             // them: "radial menus (accessed with the triggers) give you all
             // your skills, items, and actions without needing a hotbar".
-            AddRadial(set, 1, "Party", PadLT, PadRS, "Party",
+            AddRadial(set, 1, "Party", PadLT, PadRS, Strings.Instance.Starter_Layer_Party,
                 ("Next", VkTab), ("Char", VkC), ("Journal", VkJ),
                 ("Map", VkM), ("Rest", VkR), ("Group", VkG));
-            AddRadial(set, 2, "Shortcuts", PadRT, PadRS, "Shortcuts",
+            AddRadial(set, 2, "Shortcuts", PadRT, PadRS, Strings.Instance.Starter_Layer_Shortcuts,
                 ("1", Vk1), ("2", Vk2), ("3", Vk3), ("4", Vk4),
                 ("5", Vk5), ("6", Vk6), ("7", Vk7), ("8", Vk8));
             AddQuietLayer(set);
@@ -770,10 +775,13 @@ namespace PadForge.Services
             return set;
         }
 
-        /// <summary>Media Remote's transport. Every one of these is a system
-        /// media key, so it reaches the player whether or not it has focus,
-        /// which is the whole difference between a media remote and a desktop
-        /// profile that happens to press Space.</summary>
+        /// <summary>Media Remote's transport. Play/pause, stop, mute, the
+        /// volume pair, track skip and browser back are all SYSTEM keys, so
+        /// they reach the player whether or not it has focus, which is the
+        /// whole difference between a media remote and a desktop profile that
+        /// happens to press Space. Seek is the exception: there is no system
+        /// seek key, so those two send plain arrows and ride the macro lane
+        /// only to keep the whole transport in one place.</summary>
         private static IEnumerable<MacroData> MediaRemoteMacros() => new[]
         {
             Tap("Play / Pause", PadA, VkMediaPlayPause),
@@ -819,10 +827,10 @@ namespace PadForge.Services
                 Row("RightThumbAxisX", Src(PadRX)),
                 Row("RightThumbAxisY", Src(PadRY)),
 
-                // Throttle and brake pass straight through. The pedal feel
-                // that matters is the game's own trigger curve, and a second
-                // shaping layer here would fight it.
-                // Asymmetric on purpose, and it is the one genuinely
+                // No curve on either pedal: the feel that matters is the
+                // game's own trigger response, and a second shaping layer here
+                // would fight it. The inside guard is the one exception, and it
+                // is asymmetric on purpose, and it is the one genuinely
                 // transferable trigger convention in the research: Forza
                 // ships throttle at 0 inside and brake at 2 inside, the 2
                 // being a deliberate guard for a finger resting on the brake.
@@ -1010,7 +1018,6 @@ namespace PadForge.Services
             // trigger is held.
             set.WorkshopGyroEngageDescriptor = PadLT;
 
-
             AddQuietLayer(set);
             return set;
         }
@@ -1077,13 +1084,14 @@ namespace PadForge.Services
         /// button's own Base binding is blocked while it is held, the same
         /// way a bank blocks what it consumes.</para></summary>
         private static void AddRadial(MappingSet set, int menuId, string layer,
-            string opener, string host, string name, params (string Label, byte Vk)[] cells)
+            string opener, string host, string displayName,
+            params (string Label, byte Vk)[] cells)
         {
             var menu = new MenuDefinitionEntry
             {
                 DeviceGuid = "",
                 MenuId = menuId,
-                Name = name,
+                Name = displayName,
                 Kind = MenuKind.Radial,
                 HostDescriptor = host,
                 LayerMask = layer,
@@ -1113,7 +1121,7 @@ namespace PadForge.Services
                 Descriptor = opener,
                 Mode = "Hold",
                 LayerMask = layer,
-                LayerName = name,
+                LayerName = displayName,
                 InheritUnmapped = true,
             });
             // The opener must not also fire its Base binding while held.
@@ -1136,9 +1144,10 @@ namespace PadForge.Services
         /// <para>The trigger is DEVICE-FREE, the same way the rows are: the
         /// descriptor is an abstract <c>Gamepad *</c> alias and the choice's
         /// DeviceGuid is empty, so it resolves onto whichever pad is assigned.
-        /// The spec is built by <see cref="MacroItem.TryBuildTriggerEntry"/>
-        /// rather than hand-forged, so this cannot drift from the engine's own
-        /// grammar.</para>
+        /// The spec comes from <c>TriggerInputEntry.Spec</c> on a DESCRIPTOR
+        /// entry rather than being hand-forged, so it cannot drift from the
+        /// engine's own grammar. The comment in the body says why the
+        /// raw-button builder is the wrong one here.</para>
         ///
         /// <para>Returns null when the descriptor cannot be resolved, and the
         /// caller drops it. A macro that cannot bind is never shipped.</para>
@@ -1195,7 +1204,6 @@ namespace PadForge.Services
             };
         }
 
-        /// <summary>A plain tap: fires the moment the button goes down.</summary>
         /// <summary><para>A gyro recenter bound to a held button. "Always have
         /// a calibrate button": drifted gyro is unusable, and a recenter you
         /// can only reach by opening the app is not a recenter.</para>
@@ -1223,13 +1231,9 @@ namespace PadForge.Services
             };
         }
 
+        /// <summary>A plain tap: fires the moment the button goes down.</summary>
         private static MacroData Tap(string name, string descriptor, params byte[] keys)
             => KeyMacro(name, descriptor, MacroTriggerMode.OnPress, keys);
-
-        /// <summary>A tap that does NOT fire on a long press, so the same
-        /// button can carry a hold-activated shift layer underneath it.</summary>
-        private static MacroData ShortTap(string name, string descriptor, params byte[] keys)
-            => KeyMacro(name, descriptor, MacroTriggerMode.ShortPress, keys);
 
         // Media transport, volume, browser and system keys. Every one of these
         // is OUTSIDE the KbM row engine's closed VK set, which is exactly why
@@ -1238,7 +1242,7 @@ namespace PadForge.Services
         private const byte VkMediaNextTrack = 0xB0, VkMediaPrevTrack = 0xB1;
         private const byte VkVolumeMute = 0xAD, VkVolumeDown = 0xAE, VkVolumeUp = 0xAF;
         private const byte VkBrowserBack = 0xA6;
-        private const byte VkLWin = 0x5B, VkCtrlChord = 0xA2, VkO = 0x4F;
+        private const byte VkLWin = 0x5B, VkO = 0x4F;
 
         // ── Shared structure ────────────────────────────────────────────
 
@@ -1310,8 +1314,8 @@ namespace PadForge.Services
         /// <para>The block set is COMPUTED from the set's own Base rows rather
         /// than hand-listed per profile, so a profile that later rebinds a face
         /// button cannot drift out of sync with its bank.</para></summary>
-        private static void AddBank(MappingSet set, string layer, string activator,
-            int doublePressMs, byte[] keys)
+        private static void AddBank(MappingSet set, string layer, string displayName,
+            string activator, int doublePressMs, byte[] keys)
         {
             string[] buttons = { PadUp, PadDown, PadLeft, PadRight, PadA, PadB, PadX, PadY };
             int n = Math.Min(buttons.Length, keys.Length);
@@ -1333,14 +1337,18 @@ namespace PadForge.Services
                 Descriptor = activator,
                 Mode = "Hold",
                 LayerMask = layer,
-                LayerName = layer,
+                // The MASK is the internal id; the NAME is what the shift-layer
+                // flyout renders (InputService resolves it into
+                // ShiftLayerFlyout's LayerNameText), so it is localized like
+                // every other string the user reads.
+                LayerName = displayName,
                 InheritUnmapped = true,
                 DoublePressMs = doublePressMs,
             });
         }
 
-        /// <summary>Every keyboard-and-mouse starter carries a silent layer on a
-        /// long-press of Start, so the pad can be muted without unassigning it.
+        /// <summary>Every starter carries a silent layer on a long-press of
+        /// Start, so the pad can be muted without unassigning it.
         ///
         /// <para><b>THE LAYER IS EMPTY ON PURPOSE. The emptiness IS the
         /// mechanism.</b> With <see cref="ShiftActivator.InheritUnmapped"/>

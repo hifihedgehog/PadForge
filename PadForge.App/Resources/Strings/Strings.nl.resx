@@ -2971,5 +2971,13 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Precisie (fijne besturing)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Gyro-richten</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Beweging voor fijn richten op de linkertrigger, met de stick nog actief.</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>Kruisbalk (links)</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>Kruisbalk (rechts)</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>Dubbelkruis (links)</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>Dubbelkruis (rechts)</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>Sneltoetsen</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>Actiebalk</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>Groep</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Snelkoppelingen</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Stil (stuurt niets)</value></data>
 </root>

@@ -2951,5 +2951,13 @@
   <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>精密（精细控制）</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>陀螺仪矄准</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>左扳机键启用体感矄准，摇杆仍然可用。</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>交叉热键栏（左）</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>交叉热键栏（右）</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>双重交叉（左）</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>双重交叉（右）</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>快捷键</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>热键栏</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>队伍</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>快捷方式</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>静默（不发送任何输入）</value></data>
 </root>

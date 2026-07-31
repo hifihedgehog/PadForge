@@ -2951,5 +2951,13 @@
   <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>精密（微調整）</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>ジャイロエイム</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>左トリガーでモーション照準。スティックもそのまま使えます。</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>クロスホットバー（左）</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>クロスホットバー（右）</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>ダブルクロス（左）</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>ダブルクロス（右）</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>ホットキー</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>ホットバー</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>パーティ</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>ショートカット</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>サイレント（何も送信しません）</value></data>
 </root>

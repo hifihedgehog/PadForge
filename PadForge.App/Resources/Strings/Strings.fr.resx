@@ -2951,5 +2951,13 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Précision (contrôle fin)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Visée gyroscopique</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Le mouvement pour la visée fine, sur la gâchette gauche, stick toujours actif.</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>Barre croisée (gauche)</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>Barre croisée (droite)</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>Double croix (gauche)</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>Double croix (droite)</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>Raccourcis</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>Barre d'action</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>Groupe</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Raccourcis rapides</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silence (rien n’est envoyé)</value></data>
 </root>

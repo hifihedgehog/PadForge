@@ -2951,5 +2951,13 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Präzision (Feinsteuerung)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Gyro-Zielen</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Bewegungssteuerung auf dem linken Trigger, der Stick bleibt aktiv.</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>Quer-Hotbar (links)</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>Quer-Hotbar (rechts)</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>Doppelquer (links)</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>Doppelquer (rechts)</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>Tastenkürzel</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>Hotbar</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>Gruppe</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Schnellzugriff</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Stumm (sendet nichts)</value></data>
 </root>

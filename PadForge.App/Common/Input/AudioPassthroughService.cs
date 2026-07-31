@@ -139,6 +139,19 @@ namespace PadForge.Common.Input
             public int Ds5Seq;
             public byte Ds5PktCounter;
 
+            /// <summary>Persona haptic stream (report 0x32) counters, SEPARATE
+            /// from the 0x35 speaker pair above by the same rule that created
+            /// that pair: the firmware tracks sequence per stream, and a shared
+            /// counter makes each stream see jumps of two and garble. The
+            /// references agree (dualsense-bt-haptics runs an independent
+            /// reportSeqCounter for its 0x32s beside outputSeq for 0x31).</summary>
+            public int Ds5HapticSeq;
+            public byte Ds5HapticPktCounter;
+            /// <summary>Last tick the decimated haptic block held signal; the
+            /// 0x32 stream idles after 2 s of silence like the speaker lane,
+            /// instead of interleaving zero-payload reports forever.</summary>
+            public long Ds5HapticAudibleTicks;
+
             // ── DualShock 4 BT lane (SBC over report 0x17) — BT thread only.
             /// <summary>Clean-room SBC encoder (32 kHz JS/SNR/bitpool 48).</summary>
             public Ds4SbcEncoder Ds4Sbc;
@@ -983,6 +996,8 @@ namespace PadForge.Common.Input
             feed.FramesHandler = (output, pcm) => OnPersonaFrames(feed, output, pcm);
             feed.ControlHandler = (_, e) =>
             {
+                Engine.SdlDiagLog.WriteLine(
+                    $"PERSONA ctrl fn={e.Function} mute={e.IsMute}/{e.MuteValue} dB={e.VolumeDb:F1} raw={e.RawValue}");
                 // UAC1 s16 dB → linear. Mute and volume are separate
                 // controls on the same feature unit, both honored.
                 if (e.Function == "speaker")
@@ -1034,8 +1049,21 @@ namespace PadForge.Common.Input
         /// <summary>HM pacing-thread callback: split one interleaved s16
         /// window into the per-pad speaker and haptic rings. No
         /// allocations in steady state.</summary>
+        private static long _personaCbCount, _personaCbBytes, _personaCbLastLog;
+
         private static void OnPersonaFrames(PersonaFeed feed, HIDMaestro.HMAudioOutput output, ReadOnlyMemory<byte> pcm)
         {
+            // Reception-layer heartbeat: proves host PCM reaches us at all,
+            // independent of any decode or routing beyond this point.
+            _personaCbCount++;
+            _personaCbBytes += pcm.Length;
+            long now = Environment.TickCount64;
+            if (now - _personaCbLastLog >= 2000)
+            {
+                _personaCbLastLog = now;
+                Engine.SdlDiagLog.WriteLine(
+                    $"PERSONA rx cb={_personaCbCount} bytes={_personaCbBytes} targets={feed.Targets.Length} streaming={output.IsStreaming} spkGain={(feed.SpeakerMuted ? 0f : feed.SpeakerGain):F4} spkSends={_personaSpkSends} audible={_personaLastAudible}");
+            }
             var targets = feed.Targets;
             if (targets.Length == 0) return;
             int ch = output.Channels;
@@ -1065,7 +1093,12 @@ namespace PadForge.Common.Input
             if (!_personaFeeds.TryGetValue(slot, out var feed)) return;
             var guids = new Guid[pads.Count];
             for (int i = 0; i < pads.Count; i++) guids[i] = pads[i].Guid;
+            var prior = feed.Targets;
             feed.Targets = guids;
+            if (prior.Length != guids.Length)
+                Engine.SdlDiagLog.WriteLine(
+                    $"PERSONA targets slot={slot} count={guids.Length}"
+                    + (guids.Length > 0 ? $" first={guids[0].ToString("N").Substring(0, 8)}" : ""));
 
             // Microphone: the first USB-connected pad with a capture
             // endpoint feeds the virtual mic. BT pads expose none.
@@ -1812,6 +1845,7 @@ namespace PadForge.Common.Input
                             // pad's radio and our CPU rest; the read above keeps
                             // the ring cursor live and the activity stamp fresh.
                             bool audible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
+                            _personaLastAudible = audible;
                             if (!audible) continue;
 
                             if (s.IsDs4)
@@ -1832,6 +1866,7 @@ namespace PadForge.Common.Input
                                 frame[o * 2 + 1] = (float)(pull[i0 * 2 + 1] * (1 - t) + pull[i1 * 2 + 1] * t);
                             }
                             SendDs5BtFrame(s, frame, opus, report);
+                            _personaSpkSends++;
                         }
                         catch
                         {
@@ -1997,35 +2032,60 @@ namespace PadForge.Common.Input
 
             Array.Clear(report, 0, Ds5HapticBtReportSize);
             report[0] = 0x32;
-            report[1] = (byte)((s.Ds5Seq & 0x0F) << 4);
-            s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
+            report[1] = (byte)((s.Ds5HapticSeq & 0x0F) << 4);
             // packet 0x11: session header, byte-identical to the speaker
-            // report's (SAxense default, no handshake).
+            // report's (SAxense default, no handshake). Counter is this
+            // stream's own, see the Sink field note.
             report[2] = 0x11 | 0x80;
             report[3] = 7;
             report[4] = 0xFE;
             report[9] = 0xFF;
-            report[10] = s.Ds5PktCounter++;
+            report[10] = s.Ds5HapticPktCounter;
             // packet 0x12: 64 bytes of s8 stereo 3 kHz actuator PCM.
             report[11] = 0x12 | 0x80;
             report[12] = 64;
+            bool signal = false;
             for (int o = 0; o < 32; o++)
             {
                 int accL = 0, accR = 0;
                 int b = o * 16 * 2;
                 for (int k = 0; k < 16; k++) { accL += pcm[b + k * 2]; accR += pcm[b + k * 2 + 1]; }
-                report[13 + o * 2] = unchecked((byte)Math.Clamp((accL / 16) >> 8, -128, 127));
-                report[14 + o * 2] = unchecked((byte)Math.Clamp((accR / 16) >> 8, -128, 127));
+                byte l = unchecked((byte)Math.Clamp((accL / 16) >> 8, -128, 127));
+                byte r = unchecked((byte)Math.Clamp((accR / 16) >> 8, -128, 127));
+                report[13 + o * 2] = l;
+                report[14 + o * 2] = r;
+                if (l != 0 || r != 0) signal = true;
             }
+
+            // Silence gate, mirror of the speaker lane's: keep a 2 s
+            // hangover so short gaps stay continuous, then stop sending
+            // entirely. The ring was already drained above, so silence
+            // costs no radio and never interleaves with the 0x35 stream.
+            long nowTicks = Environment.TickCount64;
+            if (signal) s.Ds5HapticAudibleTicks = nowTicks;
+            else if (nowTicks - s.Ds5HapticAudibleTicks > 2000) return;
+            s.Ds5HapticSeq = (s.Ds5HapticSeq + 1) & 0x0F;
+            s.Ds5HapticPktCounter++;
             uint crc = Crc32(report, Ds5HapticBtReportSize - 4);
             report[Ds5HapticBtReportSize - 4] = (byte)(crc & 0xFF);
             report[Ds5HapticBtReportSize - 3] = (byte)((crc >> 8) & 0xFF);
             report[Ds5HapticBtReportSize - 2] = (byte)((crc >> 16) & 0xFF);
             report[Ds5HapticBtReportSize - 1] = (byte)(crc >> 24);
 
-            if (s.Tx != null && !s.Tx.TrySend(s.BtHandle, report, out bool hardFail) && hardFail)
-                s.TransportFailed = true;
+            bool hardFail = false;
+            bool sent = s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out hardFail);
+            if (!sent && hardFail) s.TransportFailed = true;
+            _personaHapticSends++;
+            long hnow = Environment.TickCount64;
+            if (hnow - _personaHapticLastLog >= 2000)
+            {
+                _personaHapticLastLog = hnow;
+                Engine.SdlDiagLog.WriteLine($"PERSONA bt-haptic sends={_personaHapticSends} lastSent={sent}");
+            }
         }
+
+        private static long _personaHapticSends, _personaHapticLastLog, _personaSpkSends;
+        private static volatile bool _personaLastAudible;
 
         /// <summary>One DS4 tick: resample the tick's 48 kHz pull to 32 kHz
         /// s16 (persistent-phase linear, exact 3:2 so pitch is exact; the

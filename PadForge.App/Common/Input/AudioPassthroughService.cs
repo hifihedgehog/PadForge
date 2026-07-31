@@ -157,6 +157,7 @@ namespace PadForge.Common.Input
             public int Ds5MicOpen;
             public long Ds5MicOpenSentTicks;
             public int Ds5MicOpenTries;
+            public bool Ds5MicCloseScrubbed;
 
             // ── DualShock 4 BT lane (SBC over report 0x17) — BT thread only.
             /// <summary>Clean-room SBC encoder (32 kHz JS/SNR/bitpool 48).</summary>
@@ -1138,7 +1139,7 @@ namespace PadForge.Common.Input
             }
 
             Guid btMicPad = Guid.Empty; string btMicPath = null;
-            if (micPad == Guid.Empty)
+            if (EnableBtMic && micPad == Guid.Empty)
                 foreach (var p in pads)
                     if (p.IsBt && !p.IsDs4) { btMicPad = p.Guid; btMicPath = p.Path; break; }
             if (btMicPad != feed.BtMicPadGuid)
@@ -1248,6 +1249,18 @@ namespace PadForge.Common.Input
 
         /// <summary>Find the feed whose BT mic source is this pad. Sinks are
         /// few and this runs once per 10.667 ms tick; a scan is fine.</summary>
+        /// <summary>BT DualSense mic: DISABLED until the SDL fork filters
+        /// non-HID 0x31 reports. Opening the mic makes the pad interleave
+        /// 0x31 reports whose payload is a 71-byte Opus packet in place of
+        /// controller state (header bit0 = HasHID, bit1 = HasMic), and
+        /// SDL's DS5 driver parses those bytes as sticks/buttons: erratic
+        /// input on the physical pad, observed on hardware 2026-07-31. The
+        /// whole decode chain below is hardware-proven (OPEN ack 45 ms,
+        /// 100 frames/s, real audio) and comes back when the fork skips
+        /// HasMic reports. Until then the tick scrubs any latched mic-open
+        /// state instead.</summary>
+        private const bool EnableBtMic = false;
+
         private static int _btMicPeak;
 
         private static PersonaFeed FindFeedForBtMicPad(Guid padGuid)
@@ -2250,8 +2263,20 @@ namespace PadForge.Common.Input
         private static void ManageDs5MicOpen(Sink s, byte[] report)
         {
             var feed = FindFeedForBtMicPad(s.DeviceGuid);
-            bool want = feed != null;
+            bool want = EnableBtMic && feed != null;
             long now = Environment.TickCount64;
+            // Scrub: mic-open is LATCHED on the pad across app restarts,
+            // and a latched mic corrupts SDL's input parsing (see
+            // EnableBtMic). One unconditional CLOSE per sink lifetime
+            // restores the pure-HID 0x31 stream; harmless when the mic
+            // was never opened.
+            if (!want && s.Ds5MicOpen == 0 && !s.Ds5MicCloseScrubbed)
+            {
+                SendDs5BtMicToggle(s, report, open: false);
+                s.Ds5MicCloseScrubbed = true;
+                Engine.SdlDiagLog.WriteLine("PERSONA mic CLOSE scrub sent");
+                return;
+            }
             if (want && s.Ds5MicOpen == 0)
             {
                 SendDs5BtMicToggle(s, report, open: true);

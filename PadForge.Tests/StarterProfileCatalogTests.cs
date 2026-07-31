@@ -1004,14 +1004,65 @@ namespace PadForge.Tests
                 Assert.False(string.IsNullOrEmpty(quiet.ChordSecondDescriptor),
                     $"starter '{key}' declares a chord with no second button");
 
-                // Neither leg may be a lone activator elsewhere in the set,
-                // which would re-introduce the single-button consume.
-                foreach (var other in set.ShiftActivators.Where(a => a != quiet))
+                // BOTH legs, against BOTH lanes. The first draft of this test
+                // checked only the primary leg against other ACTIVATORS, and
+                // that blind spot is exactly what let Media Remote ship a
+                // plain-tap Stop macro on the chord's Guide leg.
+                foreach (var leg in new[] { quiet.Descriptor, quiet.ChordSecondDescriptor })
                 {
-                    Assert.False(other.Kind != "Chord" && other.Descriptor == quiet.Descriptor,
-                        $"starter '{key}' also uses '{quiet.Descriptor}' as a lone activator");
+                    foreach (var other in set.ShiftActivators.Where(a => a != quiet))
+                    {
+                        Assert.False(other.Kind != "Chord" && other.Descriptor == leg,
+                            $"starter '{key}' also uses '{leg}' as a lone activator");
+                    }
                 }
             }
+        }
+
+        /// <summary>The macro lane is NOT covered by an activator's postpone
+        /// suppression: Step4b carries no IsSourceSuppressedPostpone call at
+        /// all, while the row evaluator has ten. So a macro sitting on either
+        /// leg of the silence chord fires when the user reaches for silence,
+        /// and a macro is a discrete ACTION (stop playback, recenter) rather
+        /// than a transient key. Any such macro must be a ShortPress, which
+        /// fires on the falling edge only under TriggerHoldMs.</summary>
+        [Fact]
+        public void NoMacroOnTheSilenceLegs_FiresOnAPlainPress()
+        {
+            int checkedProfiles = 0;
+            foreach (var (info, profile) in Built())
+            {
+                var quiet = profile.SlotMappingSets.Where(s => s != null)
+                    .SelectMany(s => s.ShiftActivators)
+                    .FirstOrDefault(a => a.LayerMask == "Quiet");
+                if (quiet == null) continue;
+                checkedProfiles++;
+
+                var legs = new HashSet<string>(StringComparer.Ordinal)
+                    { quiet.Descriptor, quiet.ChordSecondDescriptor };
+
+                foreach (var m in profile.Macros)
+                {
+                    foreach (var spec in m.TriggerInputs.Split('|', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        int i = spec.IndexOf(":sd:", StringComparison.Ordinal);
+                        if (i < 0) continue;
+                        string descriptor = spec.Substring(i + 4);
+                        if (!legs.Contains(descriptor)) continue;
+
+                        Assert.True(m.TriggerMode == MacroTriggerMode.ShortPress,
+                            $"starter '{info.Key}' macro '{m.Name}' sits on the silence leg " +
+                            $"'{descriptor}' with mode {m.TriggerMode}, so it fires every time " +
+                            "the user reaches for silence");
+                        // And the short-press window must stay UNDER the hold
+                        // that engages the layer, or the gesture fires it anyway.
+                        Assert.True(m.TriggerHoldMs < quiet.DelayMs,
+                            $"starter '{info.Key}' macro '{m.Name}' has TriggerHoldMs " +
+                            $"{m.TriggerHoldMs} >= the quiet delay {quiet.DelayMs}");
+                    }
+                }
+            }
+            Assert.True(checkedProfiles >= 13, $"only {checkedProfiles} profiles checked");
         }
 
         /// <summary>The mechanism above, driven through the REAL resolver

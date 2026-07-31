@@ -188,12 +188,18 @@ namespace PadForge.Services
 
         // ── Profile bodies ──────────────────────────────────────────────
 
-        /// <summary>Desktop: run Windows from the couch. Valve ships one
-        /// desktop scheme for every standard gamepad (desktop_xboxone.vdf and
-        /// desktop_ps4.vdf are byte-identical apart from the controller type),
-        /// and this follows it: cursor on the right stick, arrows on the
-        /// D-pad, Ctrl and Alt held on the bumpers so Alt+Tab and Ctrl+C are
-        /// reachable without dedicated bindings.</summary>
+        /// <summary><para>Desktop: run Windows from the couch. Valve ships
+        /// one desktop scheme for every standard gamepad, and this follows it:
+        /// arrows on the D-pad, Ctrl and Alt held on the bumpers so Alt+Tab and
+        /// Ctrl+C are reachable without dedicated bindings, cursor on the right
+        /// stick.</para>
+        /// <para>Read from the shipped templates, not from memory.
+        /// desktop_xboxone.vdf and desktop_ps4.vdf differ in exactly one line,
+        /// the controller_type value. That file binds left_bumper to
+        /// LEFT_CONTROL, right_bumper to LEFT_ALT, the four dpad directions to
+        /// the arrow keys, button_a to ENTER, and carries a SHOW_KEYBOARD
+        /// action. The paddle set is desktop_neptune.vdf's:
+        /// LEFT_WINDOWS, LEFT_SHIFT, PAGE_DOWN, PAGE_UP.</para></summary>
         private static MappingSet BuildDesktop()
         {
             var set = NewKbmSet();
@@ -213,6 +219,10 @@ namespace PadForge.Services
                 Row(MRight, Src(PadLT)),
                 Row(MMiddle, Src(PadLS)),
 
+                // A is Valve's: desktop_xboxone.vdf binds button_a to
+                // ENTER. B is NOT. That file carries no button_b binding
+                // at all, so Escape on B is this profile's own choice,
+                // taken because B reads as back or cancel everywhere.
                 Row(Key(VkReturn), Src(PadA)),
                 Row(Key(VkEscape), Src(PadB), Src(PadStart)),
                 Row(Key(VkSpace), Src(PadY)),
@@ -755,9 +765,11 @@ namespace PadForge.Services
                 Row(Key(VkF), Src(PadY)),
                 Row(Key(VkSpace), Src(PadLS)),
 
-                // Rewind and fast-forward. J and L are what YouTube, VLC and
-                // mpv all bind seeking to, and Valve puts skip on the
-                // triggers in videoplayer.vdf.
+                // Rewind and fast-forward. J and L are what YouTube, VLC
+                // and mpv all bind seeking to. Valve's videoplayer.vdf is NOT
+                // the source here despite the shape looking similar: that file
+                // is a stub that maps the face buttons to their own letters and
+                // the D-pad to arrows, and binds no trigger at all.
                 Row(Key(VkJ), Src(PadLT)),
                 Row(Key(VkL), Src(PadRT)),
 
@@ -1022,10 +1034,16 @@ namespace PadForge.Services
             return set;
         }
 
-        /// <summary>A trigger read as a BUTTON: floor and ceiling pulled in so
-        /// a partial pull reads as a full press. Fighting games treat the
-        /// shoulder triggers as digital buttons, and a partial pull that
-        /// registers as a partial input is a dropped move.</summary>
+        /// <summary><para>A trigger read as a BUTTON. Fighting games treat the
+        /// shoulder triggers as digital, and a partial pull that registers as a
+        /// partial input is a dropped move.</para>
+        /// <para>The CEILING is pulled in, and only the ceiling. ParamRangeOuter
+        /// 0.35 makes ApplyCurveRangeShaping compute min(1, mag / 0.35), so the
+        /// pull saturates at about a third of travel. There is deliberately no
+        /// floor: a 2 percent brush emits 14/255, which is under XInput's 30/255
+        /// pressed threshold, so it is already ignored downstream. The press
+        /// lands at roughly 4 percent of travel, which is the hair trigger this
+        /// is for.</para></summary>
         private static MappingSource DigitalTrigger(string descriptor)
         {
             var src = Src(descriptor);

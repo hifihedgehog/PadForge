@@ -1022,11 +1022,20 @@ namespace PadForge.Common.Input
                 else if (e.Function == "microphone")
                 {
                     if (e.IsMute) feed.MicMuted = e.MuteValue;
-                    else feed.MicGain = (float)Math.Pow(10.0, e.VolumeDb / 20.0);
+                    // The DualSense mic feature unit spans 0..+48 dB, the
+                    // pad's hardware BOOST range, with unity at the top:
+                    // the reference emulation attenuates from max, never
+                    // amplifies (hbashton audio_control.go, "attenuates
+                    // the virtual microphone by exactly 48 dB"). A literal
+                    // linear mapping made Windows' default +48 dB a x251
+                    // multiplier and clipped every sample.
+                    else feed.MicGain = (float)Math.Min(1.0, Math.Pow(10.0, (e.VolumeDb - 48.0) / 20.0));
                 }
             };
             audio.Output.FramesReceived += feed.FramesHandler;
             audio.ControlChanged += feed.ControlHandler;
+            audio.Microphone.StreamingChanged += (_, on) =>
+                Engine.SdlDiagLog.WriteLine("PERSONA mic host capture pin " + (on ? "OPEN" : "CLOSED"));
 
             _personaFeeds[slot] = feed;
             Reconcile();
@@ -1203,6 +1212,9 @@ namespace PadForge.Common.Input
                 catch { continue; }
                 if (n <= 0) continue;
                 feed.BtMicRxFrames++;
+                int peak = 0;
+                for (int i = 0; i < n; i++) { int a = mono[i]; if (a < 0) a = -a; if (a > peak) peak = a; }
+                if (peak > _btMicPeak) _btMicPeak = peak;
                 var mic = feed.Audio.Microphone;
                 float gain = feed.MicMuted ? 0f : feed.MicGain;
                 int outCh = Math.Max(1, mic.Channels);
@@ -1221,7 +1233,12 @@ namespace PadForge.Common.Input
                 if (now2 - lastLog >= 2000)
                 {
                     lastLog = now2;
-                    Engine.SdlDiagLog.WriteLine("PERSONA mic rxFrames=" + feed.BtMicRxFrames + " buffered=" + mic.BufferedBytes);
+                    Engine.SdlDiagLog.WriteLine("PERSONA mic rxFrames=" + feed.BtMicRxFrames
+                        + " buffered=" + mic.BufferedBytes
+                        + " hostStreaming=" + mic.IsStreaming
+                        + " peak=" + _btMicPeak
+                        + " gain=" + (feed.MicMuted ? 0f : feed.MicGain).ToString("F2"));
+                    _btMicPeak = 0;
                 }
             }
             var hh = feed.BtMicHandle;
@@ -1231,6 +1248,8 @@ namespace PadForge.Common.Input
 
         /// <summary>Find the feed whose BT mic source is this pad. Sinks are
         /// few and this runs once per 10.667 ms tick; a scan is fine.</summary>
+        private static int _btMicPeak;
+
         private static PersonaFeed FindFeedForBtMicPad(Guid padGuid)
         {
             foreach (var kv in _personaFeeds)

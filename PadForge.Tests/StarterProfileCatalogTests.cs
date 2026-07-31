@@ -1101,6 +1101,47 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary><para>The gesture actually SILENCES. Suppression and
+        /// engagement are different code paths, and Chord + DelayMs + Toggle
+        /// is a combination nothing else in the catalog uses, so proving the
+        /// chord consumes correctly proves nothing about whether it fires.
+        /// </para>
+        /// <para>Drives the real resolver over a real 600 ms hold. Negative
+        /// control first: one leg held for the same duration must NOT engage,
+        /// or "it engaged" would just mean "any press engages".</para>
+        /// </summary>
+        [Fact]
+        public void TheSilenceGesture_EngagesTheQuietLayer_AndOneLegAlone_DoesNot()
+        {
+            var probe = new Guid("13ea3b23-bb17-802d-f268-c194414535f8").ToString();
+            var set = SetOf("wasd");
+            var quiet = set.ShiftActivators.Single(a => a.LayerMask == "Quiet");
+            int holdMs = quiet.DelayMs + 250;
+
+            // Negative control: Start alone, held past the delay.
+            var lone = new PadForge.Engine.CustomInputState();
+            lone.Buttons[7] = true;                        // Start
+            InputManager.ResolveActiveLayerMask(0, set, lone, probe);
+            System.Threading.Thread.Sleep(holdMs);
+            Assert.Equal("Base", InputManager.ResolveActiveLayerMask(0, set, lone, probe));
+
+            // Release, so the toggle sees a clean rising edge for the chord.
+            var idle = new PadForge.Engine.CustomInputState();
+            InputManager.ResolveActiveLayerMask(0, set, idle, probe);
+
+            // The gesture: both legs, held past the delay.
+            var chord = new PadForge.Engine.CustomInputState();
+            chord.Buttons[7] = true;                       // Start
+            chord.Buttons[10] = true;                      // Guide
+            InputManager.ResolveActiveLayerMask(0, set, chord, probe);
+            System.Threading.Thread.Sleep(holdMs);
+            Assert.Equal("Quiet", InputManager.ResolveActiveLayerMask(0, set, chord, probe));
+
+            // It is a TOGGLE: the layer outlives the release.
+            InputManager.ResolveActiveLayerMask(0, set, idle, probe);
+            Assert.Equal("Quiet", InputManager.ResolveActiveLayerMask(0, set, idle, probe));
+        }
+
         /// <summary>THE ROSTER. The proposal specifies thirteen archetypes by
         /// name, and this shipped twelve for a full release cycle because
         /// nothing compared the list to the list. A missing profile is not a

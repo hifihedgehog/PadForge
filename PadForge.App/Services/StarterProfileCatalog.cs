@@ -775,7 +775,13 @@ namespace PadForge.Services
         /// whole difference between a media remote and a desktop profile that
         /// happens to press Space. Seek is the exception: there is no system
         /// seek key, so those two send plain arrows and ride the macro lane
-        /// only to keep the whole transport in one place.</summary>
+        /// only to keep the whole transport in one place.
+        ///
+        /// <para>Stop is a SHORT press because Guide is also the silence
+        /// gesture's leading button, and the macro lane is not covered by an
+        /// activator's postpone suppression the way rows are. On a plain tap
+        /// it would stop playback every time the user reached for
+        /// silence.</para></summary>
         private static IEnumerable<MacroData> MediaRemoteMacros() => new[]
         {
             Tap("Play / Pause", PadA, VkMediaPlayPause),
@@ -787,7 +793,7 @@ namespace PadForge.Services
             Tap("Volume Down", PadDown, VkVolumeDown),
             Tap("Seek Back", PadLeft, VkLeft),
             Tap("Seek Forward", PadRight, VkRight),
-            Tap("Stop", PadGuide, VkMediaStop),
+            ShortTap("Stop", PadGuide, VkMediaStop),
         };
 
         /// <summary>Racing: finer throttle and brake, calmer steering, on any
@@ -1228,6 +1234,14 @@ namespace PadForge.Services
         /// <summary>A plain tap: fires the moment the button goes down.</summary>
         private static MacroData Tap(string name, string descriptor, params byte[] keys)
             => KeyMacro(name, descriptor, MacroTriggerMode.OnPress, keys);
+
+        /// <summary>A tap that does NOT fire on a long press, so the same
+        /// button can carry a hold-activated gesture underneath it. Fires on
+        /// the falling edge only when the hold stayed under the macro's
+        /// TriggerHoldMs (500 ms by default), which is comfortably under the
+        /// quiet layer's 600 ms.</summary>
+        private static MacroData ShortTap(string name, string descriptor, params byte[] keys)
+            => KeyMacro(name, descriptor, MacroTriggerMode.ShortPress, keys);
 
         // Media transport, volume, browser and system keys. Every one of these
         // is OUTSIDE the KbM row engine's closed VK set, which is exactly why

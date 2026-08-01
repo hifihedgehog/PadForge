@@ -576,6 +576,41 @@ namespace PadForge.Common.Input
         /// Wired by InputService; null / throw resolves 0.</summary>
         internal static Func<Guid, int> DeviceAudioOutputPathProvider;
 
+        // Last observed headphone-jack state per pad, written by the BT
+        // raw reader from the input status byte (duaLib /*53.0*/
+        // PluggedHeadphones). Absent = never observed (USB pads, or no
+        // persona lane running). Retained after the reader stops: a
+        // stale reading beats flapping the route to Default mid-song.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, bool> s_padJackState = new();
+
+        internal static void NoteHeadphoneJack(Guid pad, bool plugged)
+        {
+            if (pad != Guid.Empty) s_padJackState[pad] = plugged;
+        }
+
+        internal static bool? TryGetHeadphoneJack(Guid pad)
+            => s_padJackState.TryGetValue(pad, out var v) ? v : (bool?)null;
+
+        /// <summary>Resolves a configured AudioOutputPath to the
+        /// EFFECTIVE path this frame. FollowHeadphoneJack (5) becomes
+        /// StereoHeadset while the jack reads plugged, SpeakerOnly while
+        /// it reads unplugged, and Default when no reading exists, so an
+        /// unobservable jack degrades to stock behaviour instead of
+        /// guessing. Every consumer of the path (the dispatcher's
+        /// register write, the BT lane pid, the USB channel shaper) MUST
+        /// route through this so a plug/unplug switches all three
+        /// coherently; the dispatcher's change gating then turns the
+        /// transition into the one-shot route re-arm, exactly
+        /// DS5_Bridge's bt_rearm_speaker_output_route.</summary>
+        internal static int ResolveOutputPath(int configured, Guid device)
+        {
+            if (configured != 5) return configured;
+            bool? jack = TryGetHeadphoneJack(device);
+            if (jack == true) return 1;    // StereoHeadset
+            if (jack == false) return 4;   // SpeakerOnly
+            return 0;                       // unknown: Default
+        }
+
         /// <summary>Maps one stereo source frame onto the pad's UAC
         /// channels 0/1 for the configured output path.
         ///
@@ -1348,7 +1383,14 @@ namespace PadForge.Common.Input
                     // /*53.1*/ PluggedMic, /*53.2*/ MicMuted ("muted by
                     // powersave/mute command"). Packet starts at data[2]
                     // on BT, so packet 53 is report[55].
-                    if (got >= 56) _btMicPadStatus = report[55];
+                    if (got >= 56)
+                    {
+                        _btMicPadStatus = report[55];
+                        // Feed the Follow Headphone Jack route (bit 0 =
+                        // PluggedHeadphones). The resolver + the
+                        // dispatcher's change gating do the re-arm.
+                        NoteHeadphoneJack(feed.BtMicPadGuid, (report[55] & 0x01) != 0);
+                    }
                     continue;
                 }
                 // Idle skip. With no consumer draining the capture

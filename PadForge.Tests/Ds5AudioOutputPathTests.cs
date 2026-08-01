@@ -186,6 +186,57 @@ namespace PadForge.Tests
             Assert.Equal(frame[2], frame[3]);
         }
 
+        // ── Follow Headphone Jack (DS5_Bridge's set_headset pattern) ──
+        //
+        // The configured value resolves to an EFFECTIVE path per frame:
+        // headphones while the pad's PluggedHeadphones bit reads true,
+        // speaker while it reads false, Default while no reading exists
+        // (USB, or no persona lane), so an unobservable jack degrades to
+        // stock behaviour instead of guessing. The dispatcher's change
+        // gating turns each plug/unplug into the one-shot route re-arm.
+
+        [Fact]
+        public void FollowJack_ResolvesByJackState()
+        {
+            var pad = System.Guid.NewGuid();
+            const int follow = (int)AudioOutputPath.FollowHeadphoneJack;
+
+            // Never observed: Default.
+            Assert.Equal(0, AudioPassthroughService.ResolveOutputPath(follow, pad));
+
+            AudioPassthroughService.NoteHeadphoneJack(pad, plugged: true);
+            Assert.Equal((int)AudioOutputPath.StereoHeadset,
+                AudioPassthroughService.ResolveOutputPath(follow, pad));
+
+            AudioPassthroughService.NoteHeadphoneJack(pad, plugged: false);
+            Assert.Equal((int)AudioOutputPath.SpeakerOnly,
+                AudioPassthroughService.ResolveOutputPath(follow, pad));
+        }
+
+        [Fact]
+        public void Resolve_IsIdentityForEveryExplicitPath()
+        {
+            // Only the follow mode consults the jack; an explicit user
+            // choice must never be second-guessed by plug state.
+            var pad = System.Guid.NewGuid();
+            AudioPassthroughService.NoteHeadphoneJack(pad, plugged: true);
+            foreach (AudioOutputPath p in System.Enum.GetValues<AudioOutputPath>())
+            {
+                if (p == AudioOutputPath.FollowHeadphoneJack) continue;
+                Assert.Equal((int)p, AudioPassthroughService.ResolveOutputPath((int)p, pad));
+            }
+        }
+
+        [Fact]
+        public void JackState_IsPerPad()
+        {
+            var a = System.Guid.NewGuid();
+            var b = System.Guid.NewGuid();
+            AudioPassthroughService.NoteHeadphoneJack(a, plugged: true);
+            Assert.True(AudioPassthroughService.TryGetHeadphoneJack(a));
+            Assert.Null(AudioPassthroughService.TryGetHeadphoneJack(b));
+        }
+
         [Fact]
         public void EnumOrdinals_ArePinned_TheyPersistNumerically()
         {
@@ -196,6 +247,7 @@ namespace PadForge.Tests
             Assert.Equal(2, (int)AudioOutputPath.MonoHeadset);
             Assert.Equal(3, (int)AudioOutputPath.HeadsetAndSpeaker);
             Assert.Equal(4, (int)AudioOutputPath.SpeakerOnly);
+            Assert.Equal(5, (int)AudioOutputPath.FollowHeadphoneJack);
         }
     }
 }

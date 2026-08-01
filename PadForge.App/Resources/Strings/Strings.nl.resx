@@ -2988,11 +2988,12 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Verhoogt het volume van de headsetaansluiting van de controller met 10%.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Verlaagt het volume van de headsetaansluiting van de controller met 10%.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Uitvoerpad</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Waar de controller zijn audio afspeelt. Standaard behoudt de routering van de firmware en speelt PadForge-geluiden via de luidspreker. Koptelefoon + Luidspreker speelt mono af aan de headsetkant, een firmwarelimiet. Via Bluetooth speelt deze modus alleen via de koptelefoon.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Waar de controller zijn audio afspeelt. Standaard behoudt de routering van de firmware en speelt PadForge-geluiden via de luidspreker. Koptelefoon + Luidspreker speelt mono af aan de headsetkant, een firmwarelimiet. Via Bluetooth speelt deze modus alleen via de koptelefoon. Koptelefoonaansluiting volgen schakelt naar de koptelefoon zodra er iets wordt aangesloten en terug naar de luidspreker bij loskoppelen; vereist Bluetooth, anders gedraagt het zich als Standaard.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Standaard</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Koptelefoon (stereo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Koptelefoon (mono)</value></data>
   <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>Koptelefoon + Luidspreker</value></data>
   <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Alleen luidspreker</value></data>
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Uitvoerpad resetten</value></data>
+  <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Koptelefoonaansluiting volgen</value></data>
 </root>

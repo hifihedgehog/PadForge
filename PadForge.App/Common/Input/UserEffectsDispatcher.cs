@@ -1830,7 +1830,8 @@ namespace PadForge.Common.Input
 
                     // Output path: only a non-Automatic choice is ever
                     // authored, asserted on the claim burst or a change.
-                    int pathVal = devCfg != null ? (int)devCfg.AudioOutputPath : 0;
+                    int pathVal = AudioPassthroughService.ResolveOutputPath(
+                        devCfg != null ? (int)devCfg.AudioOutputPath : 0, ud.InstanceGuid);
                     bool pathChanged = !_prevAudioOutputPath.TryGetValue(ud.InstanceGuid, out var prevPath)
                         || prevPath != pathVal;
                     _prevAudioOutputPath[ud.InstanceGuid] = pathVal;

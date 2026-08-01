@@ -11342,6 +11342,7 @@
                                         <ComboBoxItem Content="{Binding Pad_Audio_OutputPath_Mono, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Audio_OutputPath_Both, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Audio_OutputPath_SpeakerOnly, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Audio_OutputPath_FollowJack, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                     <ui:Button Command="{Binding DeviceConfig.ResetAudioOutputPathCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetOutputPath, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>

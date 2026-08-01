@@ -2987,4 +2987,12 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Koptelefoonvolume verlagen</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Verhoogt het volume van de headsetaansluiting van de controller met 10%.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Verlaagt het volume van de headsetaansluiting van de controller met 10%.</value></data>
+  <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Uitvoerpad</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Waar de controller zijn audio afspeelt. Automatisch laat de firmware beslissen en stuurt PadForge-geluiden naar de luidspreker. Koptelefoon + Luidspreker speelt mono af aan de headsetkant, een firmwarelimiet.</value></data>
+  <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Automatisch</value></data>
+  <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Koptelefoon (stereo)</value></data>
+  <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Koptelefoon (mono)</value></data>
+  <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>Koptelefoon + Luidspreker</value></data>
+  <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Alleen luidspreker</value></data>
+  <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Uitvoerpad resetten</value></data>
 </root>

@@ -53,6 +53,10 @@ namespace PadForge.Common.Input
         // VolumeHeadphones" (duaLib dataStructures.h /*0.4*/). Gates
         // byte 4 the same way bit 6 gates the mic byte.
         private const ushort EnableHeadphoneVolume  = 0x0010;
+        // validFlag0 bit 7 = AllowAudioControl, "Enable setting
+        // AudioControl section" (duaLib /*0.7*/). Gates byte 7, whose
+        // bits 4-5 are OutputPathSelect.
+        private const ushort EnableAudioControl     = 0x0080;
         // validFlag0 bit 6 = AllowMicVolume, "Enable setting VolumeMic"
         // (duaLib dataStructures.h /*0.6*/). Gates byte 6.
         private const ushort EnableMicVolume        = 0x0040;
@@ -186,7 +190,9 @@ namespace PadForge.Common.Input
             bool assertAudioHardwareClaim = true,
             bool assertPlayerIndicatorEnable = true,
             int headphoneVolumePercent = 100,
-            bool assertHeadphoneVolume = false)
+            bool assertHeadphoneVolume = false,
+            int audioOutputPath = 0,
+            bool assertAudioControl = false)
         {
             ushort enableBits = 0;
 
@@ -479,6 +485,21 @@ namespace PadForge.Common.Input
             // micVolume, so a stray enable bit can never apply HM's
             // zero-fill; the ENABLE bit rides the claim burst or a
             // config change, per the retain-on-idle rule.
+            // User-selected output path (byte 7 bits 4-5). Enum values
+            // 1-4 map to firmware paths 0-3 (duaLib SCE_PAD_AUDIO_PATH_*:
+            // stereo headset, mono headset, mono headset + speaker,
+            // speaker only). Automatic (0) authors nothing: the byte
+            // ships as 0 with the enable bit clear, and the dispatcher's
+            // #83 macro-speaker block stays the byte's owner. The enable
+            // bit is change/claim-gated by the caller, duaLib's own
+            // discipline (duaLib.cpp:597).
+            byte audioControlFlags = 0;
+            if (audioOutputPath > 0)
+            {
+                audioControlFlags = (byte)(Math.Clamp(audioOutputPath - 1, 0, 3) << 4);
+                if (assertAudioControl) enableBits |= EnableAudioControl;
+            }
+
             byte headphoneByte = headphoneVolumePercent <= 0
                 ? (byte)0
                 : (byte)(0x40 + Math.Clamp(headphoneVolumePercent, 0, 100) * (0x7F - 0x40) / 100);
@@ -574,6 +595,7 @@ namespace PadForge.Common.Input
                 { "leftTriggerEffect",  leftTrig  },
                 { "micVolume",        MicVolumeMax },
                 { "headphoneVolume",  headphoneByte },
+                { "audioControlFlags", audioControlFlags },
                 { "validFlag2",       validFlag2 },
                 { "lightbarSetup",    overrides.LightbarSetup ?? (byte)0x00 },
                 { "ledBrightness",    ledBrightness },

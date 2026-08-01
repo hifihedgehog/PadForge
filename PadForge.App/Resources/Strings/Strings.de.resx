@@ -2967,4 +2967,12 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Kopfhörerlautstärke verringern</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Erhöht die Lautstärke der Headset-Buchse des Controllers um 10 %.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Verringert die Lautstärke der Headset-Buchse des Controllers um 10 %.</value></data>
+  <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Ausgabepfad</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Wo der Controller seinen Ton ausgibt. Automatisch überlässt die Wahl der Firmware und leitet PadForge-Sounds an den Lautsprecher. Kopfhörer + Lautsprecher gibt auf der Headset-Seite mono aus, eine Firmware-Grenze.</value></data>
+  <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Automatisch</value></data>
+  <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Kopfhörer (Stereo)</value></data>
+  <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Kopfhörer (Mono)</value></data>
+  <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>Kopfhörer + Lautsprecher</value></data>
+  <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Nur Lautsprecher</value></data>
+  <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Ausgabepfad zurücksetzen</value></data>
 </root>

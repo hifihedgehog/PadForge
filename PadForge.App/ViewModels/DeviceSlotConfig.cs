@@ -494,6 +494,20 @@ namespace PadForge.ViewModels
         // HeadphoneVolumeUp/Down macro actions.
         private int _headphoneVolume = 100;
 
+        // Output path (byte 7 bits 4-5). Automatic = never authored.
+        private AudioOutputPath _audioOutputPath = AudioOutputPath.Automatic;
+
+        public AudioOutputPath AudioOutputPath
+        {
+            get => _audioOutputPath;
+            set
+            {
+                if (_audioOutputPath == value) return;
+                _audioOutputPath = value;
+                OnPropertyChanged(nameof(AudioOutputPath));
+            }
+        }
+
         public int HeadphoneVolume
         {
             get => _headphoneVolume;
@@ -1446,6 +1460,10 @@ namespace PadForge.ViewModels
             _resetHeadphoneVolume ??= new RelayCommand(() => HeadphoneVolume = 100);
         private RelayCommand _resetHeadphoneVolume;
 
+        public RelayCommand ResetAudioOutputPathCommand =>
+            _resetAudioOutputPath ??= new RelayCommand(() => AudioOutputPath = AudioOutputPath.Automatic);
+        private RelayCommand _resetAudioOutputPath;
+
         /// <summary>Section-level reset for the Guide Button LED card on
         /// the Lighting tab (#209). Mirrors the indicator-LEDs card's
         /// Reset All shape.</summary>
@@ -1561,6 +1579,22 @@ namespace PadForge.ViewModels
     /// <c>MicLedFollowDeviceId</c> — muted endpoint -> Solid (1),
     /// unmuted -> Off (0). Unknown / disconnected device falls back to
     /// Off so a stale config doesn't strand the LED in a wrong state.</summary>
+    /// <summary>Where the DualSense plays its audio (output report
+    /// byte 7 bits 4-5, OutputPathSelect). Values 1-4 map to firmware
+    /// paths 0-3, the four Sony names in duaLib's scePad surface
+    /// (SCE_PAD_AUDIO_PATH_*). Automatic writes nothing and preserves
+    /// the #83 behaviour: firmware routing, with PadForge forcing the
+    /// speaker only while it plays sounds there. Persisted numerically,
+    /// so values are APPEND-ONLY.</summary>
+    public enum AudioOutputPath
+    {
+        Automatic = 0,
+        StereoHeadset = 1,      // firmware path 0, L_R_X
+        MonoHeadset = 2,        // path 1, L_L_X (left channel, both ears)
+        HeadsetAndSpeaker = 3,  // path 2, L_L_R (headset side is MONO)
+        SpeakerOnly = 4,        // path 3, X_X_R
+    }
+
     public enum MicLedMode
     {
         Off = 0,
@@ -1821,6 +1855,7 @@ namespace PadForge.ViewModels
         // attribute on legacy XML keeps the initializer, so old configs
         // load as full volume, the pre-feature effective behaviour.
         [XmlAttribute] public int HeadphoneVolume { get; set; } = 100;
+        [XmlAttribute] public AudioOutputPath AudioOutputPath { get; set; } = AudioOutputPath.Automatic;
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
         [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;
         [XmlAttribute] public PlayerLedMode PlayerLedMode { get; set; } = PlayerLedMode.Off;

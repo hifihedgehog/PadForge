@@ -318,6 +318,10 @@ namespace PadForge.Common.Input
         // packet; only the enable bit is gated on this.
         private readonly Dictionary<Guid, int> _prevHeadphoneVolume = new();
 
+        // Last output path written per device, same duaLib change gating
+        // as the headphone volume (duaLib.cpp:597).
+        private readonly Dictionary<Guid, int> _prevAudioOutputPath = new();
+
         // Devices this dispatcher wrote on its previous dispatch as their
         // OWNER (single-writer ownership, owner facts 2026-07-20). On the
         // first owned dispatch of a device the prev-state maps above are
@@ -498,6 +502,7 @@ namespace PadForge.Common.Input
                     _prevPadForgeWantsPips.Remove(g);
                     _audioMuteBurstLeft.Remove(g);
                     _prevHeadphoneVolume.Remove(g);
+                    _prevAudioOutputPath.Remove(g);
                 }
             }
 
@@ -1568,6 +1573,7 @@ namespace PadForge.Common.Input
                         _audioMuteBurstLeft[ud.InstanceGuid] = AudioMuteBurstFrames;
                         // Force one headphone-volume write on a fresh claim.
                         _prevHeadphoneVolume.Remove(ud.InstanceGuid);
+                        _prevAudioOutputPath.Remove(ud.InstanceGuid);
                     }
 
                     // Identity precedence: a pad shared across virtual
@@ -1821,6 +1827,14 @@ namespace PadForge.Common.Input
                         || prevHp != hpVol;
                     _prevHeadphoneVolume[ud.InstanceGuid] = hpVol;
                     bool assertHeadphone = assertAudioMute || hpChanged;
+
+                    // Output path: only a non-Automatic choice is ever
+                    // authored, asserted on the claim burst or a change.
+                    int pathVal = devCfg != null ? (int)devCfg.AudioOutputPath : 0;
+                    bool pathChanged = !_prevAudioOutputPath.TryGetValue(ud.InstanceGuid, out var prevPath)
+                        || prevPath != pathVal;
+                    _prevAudioOutputPath[ud.InstanceGuid] = pathVal;
+                    bool assertAudioCtl = pathVal > 0 && (assertAudioMute || pathChanged);
                     // Track whether THIS tick wrote a trigger effect for
                     // either source — PadForge cfg OR a dispatcher-injected
                     // override (external mirror, impulse-trigger → AT
@@ -1885,7 +1899,8 @@ namespace PadForge.Common.Input
                                 rR, rL, assertRumbleEnable,
                                 assertRightTrig, assertLeftTrig, devOverrides, pctByte,
                                 devPlayerNumber, assertMicLed, assertAudioMute,
-                                assertPips, hpVol, assertHeadphone)
+                                assertPips, hpVol, assertHeadphone,
+                                pathVal, assertAudioCtl)
                             : Ds4EffectSynthesizer.BuildFields(
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
@@ -1919,24 +1934,38 @@ namespace PadForge.Common.Input
                         Guid speakerCleared = Guid.Empty;
                         if (isDs5)
                         {
+                            // An explicit user Output Path owns byte 7 and its
+                            // enable bit; the #83 macro-speaker block keeps only
+                            // its speaker-VOLUME half. Automatic preserves the
+                            // old behaviour byte for byte.
+                            bool userPathForced = pathVal > 0;
                             if (AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid))
                             {
                                 int master = SoundMacroService.GetSlotVolume(_padIndex);
                                 byte spkVol = master <= 0
                                     ? (byte)0
                                     : (byte)(0x3D + master * (0x64 - 0x3D) / 100);
-                                fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0xA0);
+                                fields["validFlag0"] = (byte)((byte)fields["validFlag0"]
+                                    | (userPathForced ? 0x20 : 0xA0));
                                 fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
                                 fields["speakerVolume"] = spkVol;
-                                fields["audioControlFlags"] = (byte)(3 << 4);
+                                if (!userPathForced)
+                                    fields["audioControlFlags"] = (byte)(3 << 4);
                                 fields["audioControl2"] = (byte)3;
                             }
                             else if (AudioPassthroughService.PeekSpeakerPathCleared(ud.InstanceGuid))
                             {
-                                fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0x80);
-                                fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
-                                fields["audioControlFlags"] = (byte)0;
-                                fields["audioControl2"] = (byte)0;
+                                // Consume the one-shot either way so it cannot
+                                // fire a stale headphone restore later; with a
+                                // forced path there is nothing to restore, the
+                                // firmware already holds the user's choice.
+                                if (!userPathForced)
+                                {
+                                    fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0x80);
+                                    fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
+                                    fields["audioControlFlags"] = (byte)0;
+                                    fields["audioControl2"] = (byte)0;
+                                }
                                 speakerCleared = ud.InstanceGuid;
                             }
                         }

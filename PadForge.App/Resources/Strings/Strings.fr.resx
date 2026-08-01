@@ -2967,4 +2967,12 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Réduire le volume du casque</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Augmente de 10 % le volume de la prise casque de la manette.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Réduit de 10 % le volume de la prise casque de la manette.</value></data>
+  <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Chemin de sortie</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Où la manette joue son audio. Automatique laisse le firmware décider et envoie les sons PadForge au haut-parleur. Casque + Haut-parleur joue en mono côté casque, une limite du firmware.</value></data>
+  <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Automatique</value></data>
+  <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Casque (stéréo)</value></data>
+  <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Casque (mono)</value></data>
+  <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>Casque + Haut-parleur</value></data>
+  <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Haut-parleur uniquement</value></data>
+  <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Réinitialiser le chemin de sortie</value></data>
 </root>

@@ -2512,10 +2512,51 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>The BT audio lane a path plays through. Over Bluetooth
+        /// the sink is addressed by PACKET ID, not by OutputPathSelect:
+        /// 0x13 is the internal speaker, 0x16 the headset jack
+        /// (dualsense-bt-haptics HeadsetPlayMusic Program.cs:55, "Speaker:
+        /// 0x13 Headset: 0x16"; that reference sends no path register at
+        /// all, so the pid alone routes). PadForge hardcoded 0x13, which is
+        /// why every headphone path was speaker-only over BT.
+        /// Owner-reported 2026-08-01.</summary>
+        internal static byte Ds5BtAudioLanePid(int outputPath) => outputPath switch
+        {
+            1 => 0x16,   // StereoHeadset
+            2 => 0x16,   // MonoHeadset
+            3 => 0x16,   // HeadsetAndSpeaker: headset lane, speaker lane added below
+            _ => 0x13,   // Default / SpeakerOnly
+        };
+
+        /// <summary>Headset + Speaker needs the SAME frame on both lanes:
+        /// two 0x35 reports per tick, each with its own seq step. The
+        /// write pool's backpressure handling covers the doubled rate.</summary>
+        internal static bool Ds5BtWantsBothLanes(int outputPath) => outputPath == 3;
+
+        /// <summary>Folds a stereo frame to mono in place, for the mono
+        /// paths (both ears the same, and the split path's speaker copy).</summary>
+        internal static void FoldFrameToMono(float[] frame)
+        {
+            for (int i = 0; i + 1 < frame.Length; i += 2)
+            {
+                float m = Math.Clamp((frame[i] + frame[i + 1]) * 0.5f, -1f, 1f);
+                frame[i] = m;
+                frame[i + 1] = m;
+            }
+        }
+
         /// <summary>Encode one 10 ms frame from <paramref name="pull"/> and
-        /// send it as a 0x35 report on the sink's 0x13 speaker lane.</summary>
+        /// send it as a 0x35 report on the lane the device's output path
+        /// selects (speaker, headset, or both).</summary>
         private static void SendDs5BtFrame(Sink s, float[] pull, byte[] opus, byte[] report)
         {
+            int outPath = 0;
+            try { outPath = DeviceAudioOutputPathProvider?.Invoke(s.DeviceGuid) ?? 0; }
+            catch { }
+            // Mono headset plays both ears the same; the split path keeps
+            // headset and speaker coherent by sharing one mono frame.
+            if (outPath == 2 || outPath == 3) FoldFrameToMono(pull);
+
             s.Ds5OpusEncoder ??= CreateDs5OpusEncoder();
             int n;
             try { n = s.Ds5OpusEncoder.Encode(pull.AsSpan(), Ds5OpusFrameSamples, opus.AsSpan(), Ds5OpusBytes); }
@@ -2539,9 +2580,9 @@ namespace PadForge.Common.Input
             report[4] = Ds5MicSessionByte(s.Ds5MicOpen == 1);
             report[9] = 0xFF;
             report[10] = s.Ds5PktCounter++;
-            // packet 0x13: speaker audio lane (0x16 = headset jack), one
-            // Opus frame filling the slot
-            report[11] = 0x13 | 0x80;
+            // Audio lane packet: 0x13 speaker / 0x16 headset, one Opus
+            // frame filling the slot.
+            report[11] = (byte)(Ds5BtAudioLanePid(outPath) | 0x80);
             report[12] = (byte)Ds5OpusBytes;
             Array.Copy(opus, 0, report, 13, Math.Min(n, Ds5OpusBytes));
             uint crc = Crc32(report, Ds5BtReportSize - 4);
@@ -2564,6 +2605,24 @@ namespace PadForge.Common.Input
                 // the pad conceals one missing frame far better than it
                 // handles a catch-up burst.
                 return;
+            }
+
+            // Headset + Speaker: the same Opus frame again on the speaker
+            // lane, its own report with the next seq/counter step so the
+            // multiplexed transport still sees one monotonic sequence.
+            if (Ds5BtWantsBothLanes(outPath))
+            {
+                report[1] = (byte)((s.Ds5Seq & 0x0F) << 4);
+                s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
+                report[10] = s.Ds5PktCounter++;
+                report[11] = 0x13 | 0x80;
+                uint crc2 = Crc32(report, Ds5BtReportSize - 4);
+                report[Ds5BtReportSize - 4] = (byte)(crc2 & 0xFF);
+                report[Ds5BtReportSize - 3] = (byte)((crc2 >> 8) & 0xFF);
+                report[Ds5BtReportSize - 2] = (byte)((crc2 >> 16) & 0xFF);
+                report[Ds5BtReportSize - 1] = (byte)(crc2 >> 24);
+                if (s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out bool hardFail2) == false && hardFail2)
+                    s.TransportFailed = true;
             }
         }
 

@@ -11115,22 +11115,6 @@
                                     <ui:Button Command="{Binding ResetAudioMirrorCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetAudioMirror, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
-                                <!-- Headphone jack hardware volume (DualSense / Edge only:
-                                     DS4 declares split L/R bytes and is not wired). The value
-                                     is written into the pad's firmware register, so it holds
-                                     with no app in the loop. HeadphoneVolumeUp/Down macro
-                                     actions step this same setting. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
-                                            Visibility="{Binding SelectedDeviceHasHeadphoneJack, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <TextBlock Text="{Binding Pad_Audio_HeadphoneVolume, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
-                                               ToolTip="{Binding Pad_Audio_HeadphoneVolume_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Slider Value="{Binding DeviceConfig.HeadphoneVolume, Mode=TwoWay}"
-                                            Style="{StaticResource DzSlider}"
-                                            Minimum="0" Maximum="100" TickFrequency="1"/>
-                                    <TextBox Text="{Binding DeviceConfig.HeadphoneVolume, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                             Style="{StaticResource DzValueEdit}"/>
-                                    <ui:Button Command="{Binding DeviceConfig.ResetHeadphoneVolumeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetHeadphoneVolume, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
                                 <!-- Mirror SOURCE: which playback device feeds the mirror.
                                      "" = system default. Lets games that send specific
                                      sounds to a separate playback device target the pad. -->
@@ -11323,6 +11307,24 @@
                                     <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                     <ui:Button Command="{Binding ResetSoundMasterVolumeCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_Audio_Reset_MasterVolume, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <!-- Headphone jack hardware volume (DualSense / Edge only:
+                                     DS4 declares split L/R bytes and is not wired). Sits
+                                     directly under Master Volume as its hardware sibling.
+                                     The value is written into the pad's firmware register,
+                                     so it holds with no app in the loop. HeadphoneVolumeUp/
+                                     Down macro actions step this same setting. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                            Visibility="{Binding SelectedDeviceHasHeadphoneJack, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Pad_Audio_HeadphoneVolume, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_Audio_HeadphoneVolume_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding DeviceConfig.HeadphoneVolume, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}"
+                                            Minimum="0" Maximum="100" TickFrequency="1"/>
+                                    <TextBox Text="{Binding DeviceConfig.HeadphoneVolume, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding DeviceConfig.ResetHeadphoneVolumeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetHeadphoneVolume, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Button Content="{Binding Pad_Audio_Test, Source={x:Static strings:Strings.Instance}}"

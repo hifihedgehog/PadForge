@@ -2968,7 +2968,7 @@
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>将手柄耳机接口的音量提高 10%。</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>将手柄耳机接口的音量降低 10%。</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>输出路径</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>手柄音频的播放位置。默认保持固件自身的路由，并将 PadForge 声音在扬声器播放。耳机+扬声器时耳机侧为单声道（固件限制）。蓝牙连接时，此模式仅通过耳机播放。跟随耳机接口：插入耳机时切换到耳机，拔出时切回扬声器；需要蓝牙连接，否则与默认相同。</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>手柄音频的播放位置。默认保持固件自身的路由，并将 PadForge 声音在扬声器播放。耳机+扬声器时耳机侧为单声道（固件限制）。蓝牙连接时，此模式仅通过耳机播放。跟随耳机接口：插入耳机时切换到耳机，拔出时切回扬声器；无法读取接口状态时与默认相同。</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>默认</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>耳机（立体声）</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>耳机（单声道）</value></data>

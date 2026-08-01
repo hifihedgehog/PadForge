@@ -344,18 +344,6 @@ namespace PadForge.Common.Input
         // returns to PadForge for that subsystem.
         private const long ExternalSubsystemGraceMs = 1500;
 
-        /// <summary>validFlag1 bits that carry player identity rather than a
-        /// lightbar claim: mic LED (0x01), lightbar RGB (0x04), reset lights
-        /// (0x08) and player indicator (0x10). A write confined to these,
-        /// with an empty validFlag0, is an identity assignment.</summary>
-        internal const byte IdentityOnlyVf1Mask = 0x1D;
-
-        /// <summary>True when an external effect write only assigns player
-        /// identity, and therefore must NOT stand the player-identity floor
-        /// down for the session.</summary>
-        internal static bool IsIdentityOnlyLightbarWrite(byte validFlag0, byte validFlag1)
-            => validFlag0 == 0 && (validFlag1 & ~IdentityOnlyVf1Mask) == 0;
-
         private struct ExternalSubsystemState
         {
             public long RumbleTick;
@@ -372,10 +360,6 @@ namespace PadForge.Common.Input
             public byte MicLed;
 
             public long LightbarTick;
-            /// <summary>Set only when an external write CLAIMS the lightbar,
-            /// as opposed to assigning player identity. Drives the
-            /// session-long floor stand-down.</summary>
-            public long LightbarClaimTick;
             public byte LightbarR, LightbarG, LightbarB;
 
             public long PlayerIndTick;
@@ -500,21 +484,6 @@ namespace PadForge.Common.Input
                     st.LightbarR = effectPayload[44];
                     st.LightbarG = effectPayload[45];
                     st.LightbarB = effectPayload[46];
-
-                    // Only a real CLAIM stands the player-identity floor down
-                    // for the session. An identity-only write, meaning nothing
-                    // in validFlag0 and nothing in validFlag1 beyond the
-                    // identity LEDs, is a host assigning a player colour when
-                    // it opens the pad, not a game taking the bar. Latching
-                    // the stand-down on one of those darkens the floor
-                    // permanently and the colour never returns. Observed once
-                    // the composite persona became the PlayStation default and
-                    // the virtual pad began enumerating as a real USB device:
-                    // a single rgb=64,0,0 vf0=0x00 vf1=0x14 write at
-                    // enumeration killed the Lighting tab's Player Number mode
-                    // for the whole session.
-                    if (!IsIdentityOnlyLightbarWrite((byte)vf0, (byte)vf1))
-                        st.LightbarClaimTick = now;
                 }
                 // validFlag1 bit 4: player indicator. Single byte at payload[43].
                 if ((vf1 & 0x10) != 0)
@@ -575,7 +544,7 @@ namespace PadForge.Common.Input
                     ov.MuteLed = st.MicLed;
                 if (now - st.LightbarTick < ExternalSubsystemGraceMs)
                     ov.LightbarRgb = new byte[] { st.LightbarR, st.LightbarG, st.LightbarB };
-                ov.LightbarEverExternal = st.LightbarClaimTick != 0;
+                ov.LightbarEverExternal = st.LightbarTick != 0;
                 if (now - st.PlayerIndTick < ExternalSubsystemGraceMs)
                     ov.PlayerIndicator = st.PlayerInd;
                 if (now - st.LightbarSetupTick < ExternalSubsystemGraceMs)

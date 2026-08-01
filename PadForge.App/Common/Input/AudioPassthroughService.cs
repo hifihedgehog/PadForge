@@ -1011,6 +1011,16 @@ namespace PadForge.Common.Input
             // HIDClass queues input reports per file object, so this never
             // steals reports from SDL's reader.
             public System.Threading.Thread BtMicThread;
+
+            // USB jack-state reader (Follow Headphone Jack on USB): a
+            // second synchronous HID handle on the pad, reading input
+            // report 0x01 for the PluggedHeadphones bit. Same
+            // multi-handle coexistence the BT mic reader proves: every
+            // HID open gets its own input queue beside SDL's.
+            public System.Threading.Thread UsbJackThread;
+            public volatile bool UsbJackStop;
+            public Guid UsbJackPadGuid;
+            public IntPtr UsbJackHandle;
             public volatile bool BtMicStop;
             public IntPtr BtMicHandle;
             public Guid BtMicPadGuid;
@@ -1133,6 +1143,7 @@ namespace PadForge.Common.Input
             catch { }
             StopPersonaMic(feed);
             StopBtMic(feed);
+            StopUsbJack(feed);
             foreach (var g in feed.Targets)
             {
                 _personaSpeakerRings.TryRemove(g, out _);
@@ -1273,6 +1284,21 @@ namespace PadForge.Common.Input
             if (EnableBtMic && micPad == Guid.Empty)
                 foreach (var p in pads)
                     if (p.IsBt && !p.IsDs4) { btMicPad = p.Guid; btMicPath = p.Path; break; }
+            // USB jack reader for Follow Headphone Jack: the status byte
+            // never reaches us through SDL, so read it ourselves from the
+            // first USB DS5 pad. Runs whenever the persona feed does,
+            // symmetric with the BT reader.
+            Guid usbJackPad = Guid.Empty; string usbJackPath = null;
+            foreach (var p in pads)
+                if (!p.IsBt && !p.IsDs4
+                    && !(p.Path ?? "").StartsWith("peer://", StringComparison.Ordinal))
+                { usbJackPad = p.Guid; usbJackPath = p.Path; break; }
+            if (usbJackPad != feed.UsbJackPadGuid)
+            {
+                StopUsbJack(feed);
+                if (usbJackPad != Guid.Empty) StartUsbJack(feed, usbJackPad, usbJackPath);
+            }
+
             if (btMicPad != feed.BtMicPadGuid)
             {
                 StopBtMic(feed);
@@ -1301,6 +1327,66 @@ namespace PadForge.Common.Input
             feed.BtMicThread = th;
             th.Start();
             Engine.SdlDiagLog.WriteLine("PERSONA mic bt-reader start pad=" + padGuid.ToString("N").Substring(0, 8));
+        }
+
+        private static void StartUsbJack(PersonaFeed feed, Guid padGuid, string hidPath)
+        {
+            feed.UsbJackStop = false;
+            feed.UsbJackPadGuid = padGuid;
+            var th = new System.Threading.Thread(() => UsbJackLoop(feed, hidPath))
+            { IsBackground = true, Name = "PadForge.PersonaUsbJack" };
+            feed.UsbJackThread = th;
+            th.Start();
+            Engine.SdlDiagLog.WriteLine("PERSONA jack usb-reader start pad=" + padGuid.ToString("N").Substring(0, 8));
+        }
+
+        private static void StopUsbJack(PersonaFeed feed)
+        {
+            if (feed.UsbJackThread == null) { feed.UsbJackPadGuid = Guid.Empty; return; }
+            feed.UsbJackStop = true;
+            var h = feed.UsbJackHandle;
+            feed.UsbJackHandle = IntPtr.Zero;
+            if (h != IntPtr.Zero) NativeMethods.CloseHandle(h);   // aborts the blocking read
+            feed.UsbJackThread = null;
+            feed.UsbJackPadGuid = Guid.Empty;
+        }
+
+        /// <summary>Reads the USB DS5 input report 0x01 and notes the
+        /// PluggedHeadphones bit (struct offset 53 bit 0, raw byte 54)
+        /// for the Follow Headphone Jack route. Read-only: this handle
+        /// never writes, so it cannot collide with the effect writer's
+        /// single-writer contract.</summary>
+        private static void UsbJackLoop(PersonaFeed feed, string hidPath)
+        {
+            IntPtr h = NativeMethods.OpenHidSync(hidPath);
+            if (h == IntPtr.Zero || h == new IntPtr(-1))
+            {
+                Engine.SdlDiagLog.WriteLine("PERSONA jack usb-reader open FAILED");
+                return;
+            }
+            feed.UsbJackHandle = h;
+            var report = new byte[64];
+            bool haveLast = false; bool last = false;
+            while (!feed.UsbJackStop)
+            {
+                if (!NativeMethods.ReadFileSync(feed.UsbJackHandle, report, report.Length, out int got) || got < 55)
+                {
+                    if (feed.UsbJackStop) break;
+                    System.Threading.Thread.Sleep(50);
+                    continue;
+                }
+                if (report[0] != 0x01) continue;
+                bool plugged = (report[54] & 0x01) != 0;
+                if (!haveLast || plugged != last)
+                {
+                    haveLast = true; last = plugged;
+                    NoteHeadphoneJack(feed.UsbJackPadGuid, plugged);
+                    Engine.SdlDiagLog.WriteLine("PERSONA jack usb plugged=" + plugged);
+                }
+            }
+            var hh = feed.UsbJackHandle;
+            feed.UsbJackHandle = IntPtr.Zero;
+            if (hh != IntPtr.Zero) NativeMethods.CloseHandle(hh);
         }
 
         private static void StopBtMic(PersonaFeed feed)

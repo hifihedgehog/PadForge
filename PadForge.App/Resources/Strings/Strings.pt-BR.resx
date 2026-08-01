@@ -2968,7 +2968,7 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Aumenta em 10% o volume do conector de fone do controle.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Diminui em 10% o volume do conector de fone do controle.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Caminho de saída</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Onde o controle reproduz o áudio. Padrão mantém o roteamento do firmware e reproduz os sons do PadForge no alto-falante. Fones + Alto-falante reproduz em mono no lado do fone, um limite do firmware. Por Bluetooth este modo reproduz apenas nos fones. Seguir o conector muda para os fones quando algo é conectado ao controle e volta ao alto-falante ao desconectar; requer Bluetooth, caso contrário age como Padrão.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Onde o controle reproduz o áudio. Padrão mantém o roteamento do firmware e reproduz os sons do PadForge no alto-falante. Fones + Alto-falante reproduz em mono no lado do fone, um limite do firmware. Por Bluetooth este modo reproduz apenas nos fones. Seguir o conector muda para os fones quando algo é conectado ao controle e volta ao alto-falante ao desconectar; sem leitura do conector, age como Padrão.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Padrão</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Fones (estéreo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Fones (mono)</value></data>

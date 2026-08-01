@@ -60,6 +60,8 @@ namespace PadForge.Common.Input
         // HM zero-fills it — which reads as "nothing muted, no power
         // save". Asserting this enable bit is therefore a pure unmute.
         private const ushort EnableAudioMuteControl = 0x0200;
+
+        private static long _lbLastLog;
         private const ushort EnableLightbar         = 0x0400;
         private const ushort EnablePlayerIndicator  = 0x1000;
 
@@ -258,6 +260,20 @@ namespace PadForge.Common.Input
             //     PS5 driver also ORs this bit in SetLightsForPlayerIndex.
             byte ledR = 0, ledG = 0, ledB = 0;
             bool lightbarExternal = overrides.LightbarRgb != null && overrides.LightbarRgb.Length >= 3;
+
+            // Lightbar decision trace (PADFORGE_DIAG): the player-identity
+            // floor has three independent gates and a dark bar looks the
+            // same whichever one is closed, so log them together.
+            long lbNow = Environment.TickCount64;
+            if (lbNow - _lbLastLog >= 3000)
+            {
+                _lbLastLog = lbNow;
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"LIGHTBAR player={playerNumber} floorArmed={floorArmed}"
+                    + $" everExternal={overrides.LightbarEverExternal}"
+                    + $" mode={(cfg != null ? cfg.LightbarMode.ToString() : "nullcfg")}"
+                    + $" configured={lightbarConfigured} externalNow={lightbarExternal}");
+            }
             if (lightbarExternal)
             {
                 // External writer owns the lightbar this frame: mirror their

@@ -289,6 +289,24 @@ namespace PadForge.Common.Input
         private readonly Dictionary<Guid, bool> _prevPadForgeWantsRightTrig = new();
         private readonly Dictionary<Guid, bool> _prevPadForgeWantsLeftTrig = new();
 
+        // Same shape again for the mic LED. Held every tick, the mic-light
+        // enable bit republishes our MicLedMode over whatever an external
+        // program set, 1.5 s after their grace window closes.
+        private readonly Dictionary<Guid, bool> _prevPadForgeWantsMicLed = new();
+
+        // Bounded unmute burst per device claim. Asserting AllowAudioMute
+        // over the zero-filled MuteControl byte is a correction for a pad
+        // an earlier owner left hardware-muted, and it has to run when we
+        // first take the pad. Held forever it also reverses any deliberate
+        // external mute within one dispatch frame, so it runs as a short
+        // burst and then stops. 60 frames is ~2 s at the 30 Hz dispatch
+        // cadence, which survives a dropped write during enumeration
+        // without becoming a standing order. Re-arms on a new InstanceGuid
+        // and on a fresh ownership claim, matching duaLib's
+        // one-shot-at-letGo usage (duaLib.cpp:180).
+        private const int AudioMuteBurstFrames = 60;
+        private readonly Dictionary<Guid, int> _audioMuteBurstLeft = new();
+
         // Devices this dispatcher wrote on its previous dispatch as their
         // OWNER (single-writer ownership, owner facts 2026-07-20). On the
         // first owned dispatch of a device the prev-state maps above are
@@ -1418,6 +1436,11 @@ namespace PadForge.Common.Input
                         _prevHadRumble[ud.InstanceGuid] = true;
                         _prevPadForgeWantsLeftTrig[ud.InstanceGuid] = true;
                         _prevPadForgeWantsRightTrig[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsMicLed[ud.InstanceGuid] = true;
+                        // Same reasoning for the mic: a prior owner may
+                        // have left the pad hardware-muted, so a fresh
+                        // claim re-arms the bounded unmute burst.
+                        _audioMuteBurstLeft[ud.InstanceGuid] = AudioMuteBurstFrames;
                     }
 
                     // Identity precedence: a pad shared across virtual
@@ -1626,6 +1649,25 @@ namespace PadForge.Common.Input
                     bool assertLeftTrig  = padForgeWantsLeftAt
                         || devOverrides.LeftTriggerEffect != null
                         || prevPadForgeWantsLeftAt;
+
+                    // Mic LED, same rule as the triggers. FollowDeviceMute
+                    // counts as a deliberate intent: it resolves to Off or
+                    // Solid per frame and PadForge must author either.
+                    bool padForgeWantsMicLed = devCfg != null && devCfg.MicLedMode != MicLedMode.Off;
+                    bool prevWantsMicLed = _prevPadForgeWantsMicLed.TryGetValue(ud.InstanceGuid, out var pm) && pm;
+                    bool assertMicLed = padForgeWantsMicLed
+                        || devOverrides.MuteLed.HasValue
+                        || prevWantsMicLed;
+                    _prevPadForgeWantsMicLed[ud.InstanceGuid] = padForgeWantsMicLed
+                        || devOverrides.MuteLed.HasValue;
+
+                    // Bounded unmute burst. Counts down per dispatch and
+                    // then stops, so an external program's deliberate mute
+                    // survives instead of being reversed the next frame.
+                    int muteBurst = _audioMuteBurstLeft.TryGetValue(ud.InstanceGuid, out var mb)
+                        ? mb : AudioMuteBurstFrames;
+                    bool assertAudioMute = muteBurst > 0;
+                    _audioMuteBurstLeft[ud.InstanceGuid] = muteBurst > 0 ? muteBurst - 1 : 0;
                     // Track whether THIS tick wrote a trigger effect for
                     // either source — PadForge cfg OR a dispatcher-injected
                     // override (external mirror, impulse-trigger → AT
@@ -1691,7 +1733,7 @@ namespace PadForge.Common.Input
                                 _randomColor, devPulseColor, devPulseIntensity,
                                 rR, rL, assertRumbleEnable,
                                 assertRightTrig, assertLeftTrig, devOverrides, pctByte,
-                                devPlayerNumber)
+                                devPlayerNumber, assertMicLed, assertAudioMute)
                             : Ds4EffectSynthesizer.BuildFields(
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,

@@ -274,6 +274,125 @@ namespace PadForge.Tests
             Assert.Equal(EnableAudioMuteControl, Vf1(fields) & EnableAudioMuteControl);
         }
 
+        // ── Player indicator: the pips are a mirrored subsystem too ──
+        //
+        // validFlag1 bit 4 gates byte 43. Held every tick it republished
+        // our pips over an external writer's once their grace window
+        // closed, which is what made a ds.daidr.me player-number change
+        // snap back. SDL3 writes this row for any game that calls
+        // SDL_SetGamepadPlayerIndex, and Steam Input assigns it too, so
+        // the passthrough is a real case and not a curiosity.
+
+        private const byte EnablePlayerIndicator = 0x10;
+
+        [Fact]
+        public void PlayerIndicator_IsAssertedWhenTheCallerWantsIt()
+        {
+            var fields = Ds5EffectSynthesizer.BuildFields(
+                IdleConfig(), playerNumber: 3, assertPlayerIndicatorEnable: true);
+            Assert.Equal(EnablePlayerIndicator, Vf1(fields) & EnablePlayerIndicator);
+        }
+
+        [Fact]
+        public void PlayerIndicator_ReleasesWhenTheCallerStandsDown()
+        {
+            var fields = Ds5EffectSynthesizer.BuildFields(
+                IdleConfig(), playerNumber: 3, assertPlayerIndicatorEnable: false);
+            Assert.Equal(0, Vf1(fields) & EnablePlayerIndicator);
+        }
+
+        [Fact]
+        public void PlayerIndicator_StillMirrorsAnExternalValueVerbatim()
+        {
+            var ov = new UserEffectsDispatcher.ExternalSubsystemOverrides
+            {
+                PlayerIndicator = 0x20 | 0x1F,
+                PlayerIndicatorEverExternal = true,
+            };
+            var fields = Ds5EffectSynthesizer.BuildFields(
+                IdleConfig(), overrides: ov, playerNumber: 3,
+                assertPlayerIndicatorEnable: true);
+            Assert.Equal((byte)(0x20 | 0x1F), (byte)fields["playerIndicator"]);
+        }
+
+        // ── The gate that decides all four mirrored subsystems ──
+
+        [Fact]
+        public void Gate_AssertsWhilePadForgeAuthors()
+        {
+            var g = UserEffectsDispatcher.GateMirroredSubsystem(
+                padForgeWants: true, externalMirroring: false, prevPadForgeWanted: false);
+            Assert.True(g.Assert);
+            Assert.True(g.NextPrev);
+        }
+
+        [Fact]
+        public void Gate_AssertsWhileMirroringSoTheirBytesLand()
+        {
+            var g = UserEffectsDispatcher.GateMirroredSubsystem(
+                padForgeWants: false, externalMirroring: true, prevPadForgeWanted: false);
+            Assert.True(g.Assert);
+        }
+
+        [Fact]
+        public void Gate_FiresExactlyOneTransitionFrameWhenPadForgeStopsWanting()
+        {
+            // User flips MicLedMode Solid to Off, or an AT mode to Off.
+            var frame1 = UserEffectsDispatcher.GateMirroredSubsystem(
+                padForgeWants: false, externalMirroring: false, prevPadForgeWanted: true);
+            Assert.True(frame1.Assert);      // the disengage packet
+            Assert.False(frame1.NextPrev);
+
+            var frame2 = UserEffectsDispatcher.GateMirroredSubsystem(
+                padForgeWants: false, externalMirroring: false, prevPadForgeWanted: frame1.NextPrev);
+            Assert.False(frame2.Assert);     // and then silence
+        }
+
+        [Fact]
+        public void Gate_NeverFiresATransitionFrameWhenOnlyTheMirrorEnded()
+        {
+            // THE defect. prev was fed `padForgeWants || externalMirroring`,
+            // so the first frame after an external writer's grace window
+            // expired looked like a PadForge transition and shipped a
+            // packet carrying OUR value over the one they had just set.
+            // The mic LED went dark and an external AT engagement was
+            // released, both ~1.5 s after the writer stopped refreshing.
+            bool prev = false;
+
+            // Three frames of mirroring: PadForge wants nothing of its own.
+            for (int i = 0; i < 3; i++)
+            {
+                var g = UserEffectsDispatcher.GateMirroredSubsystem(
+                    padForgeWants: false, externalMirroring: true, prevPadForgeWanted: prev);
+                Assert.True(g.Assert);
+                prev = g.NextPrev;
+            }
+
+            // Their grace window closes. Every frame from here must stay
+            // silent so the firmware retains what they set.
+            for (int i = 0; i < 10; i++)
+            {
+                var g = UserEffectsDispatcher.GateMirroredSubsystem(
+                    padForgeWants: false, externalMirroring: false, prevPadForgeWanted: prev);
+                Assert.False(g.Assert, $"frame {i} after the mirror ended re-claimed the subsystem");
+                prev = g.NextPrev;
+            }
+        }
+
+        [Fact]
+        public void Gate_OwnershipClaimSeedSendsExactlyOneStopFrame()
+        {
+            // A fresh claim seeds prev TRUE so a prior owner's latched
+            // rumble / AT / LED state gets a mandatory stop packet. That
+            // must not become a standing claim.
+            var frame1 = UserEffectsDispatcher.GateMirroredSubsystem(
+                padForgeWants: false, externalMirroring: false, prevPadForgeWanted: true);
+            Assert.True(frame1.Assert);
+            var frame2 = UserEffectsDispatcher.GateMirroredSubsystem(
+                padForgeWants: false, externalMirroring: false, prevPadForgeWanted: frame1.NextPrev);
+            Assert.False(frame2.Assert);
+        }
+
         [Fact]
         public void AudioMuteControl_ReleasesAfterTheBurst()
         {

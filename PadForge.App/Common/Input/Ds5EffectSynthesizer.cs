@@ -170,7 +170,8 @@ namespace PadForge.Common.Input
             byte batteryPercent = 100,
             int playerNumber = 0,
             bool assertMicLightEnable = true,
-            bool assertAudioMuteControl = true)
+            bool assertAudioMuteControl = true,
+            bool assertPlayerIndicatorEnable = true)
         {
             ushort enableBits = 0;
 
@@ -222,17 +223,25 @@ namespace PadForge.Common.Input
                 || macroOverrideActive
                 || inputReactiveActive);
 
-            // Always assert the player-indicator update bit and write the
-            // playerIndicator byte, even when PlayerLedMode == Off. Without
-            // setting validFlag1 bit 4 the firmware ignores the byte
-            // entirely, so a transition from a pattern (say, Player1) back
-            // to Off would leave the row stuck on the previous pattern.
-            // PlayerLedBits[Off] is 0, so the byte degenerates to
-            // PlayerIndicatorNoFade alone (0x20) — no LED bits set, no-fade
-            // asserted — which cleanly extinguishes the row.
-            // Mirror the external writer's value when they own this
-            // subsystem.
-            enableBits |= EnablePlayerIndicator;
+            // The player-indicator update bit (validFlag1 bit 4) gates the
+            // playerIndicator byte: without it the firmware ignores the
+            // byte entirely, so a transition from a pattern (say, Player1)
+            // back to Off needs the bit set to land. PlayerLedBits[Off] is
+            // 0, so the byte degenerates to PlayerIndicatorNoFade alone
+            // (0x20), no LED bits set, no-fade asserted, which cleanly
+            // extinguishes the row.
+            //
+            // That does NOT license holding the bit every tick. Held, it
+            // republishes our pips over an external writer's 1.5 s after
+            // their grace window closes. SDL3's PS5 driver writes this row
+            // event-driven only, from SDL_SetJoystickPlayerIndex and its
+            // player-LED hint (SDL_hidapi_ps5.c SetLightsForPlayerIndex,
+            // reached via HIDAPI_DriverPS5_SetDevicePlayerIndex), so it
+            // sets the pips once and expects the firmware to keep them.
+            // The caller gates this the same way the lightbar's identity
+            // floor (#191) already stands down: assert while PadForge is
+            // authoring, while mirroring, or for one transition frame.
+            if (assertPlayerIndicatorEnable) enableBits |= EnablePlayerIndicator;
             byte playerIndicator;
             if (overrides.PlayerIndicator.HasValue)
             {

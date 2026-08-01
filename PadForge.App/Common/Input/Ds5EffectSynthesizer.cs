@@ -49,6 +49,15 @@ namespace PadForge.Common.Input
         private const ushort EnableRumbleEmulation  = 0x0003;  // bits 0 + 1
         private const ushort EnableRightTrigger     = 0x0004;
         private const ushort EnableLeftTrigger      = 0x0008;
+        // validFlag0 bit 6 = AllowMicVolume, "Enable setting VolumeMic"
+        // (duaLib dataStructures.h /*0.6*/). Gates byte 6.
+        private const ushort EnableMicVolume        = 0x0040;
+
+        // VolumeMic (byte 6). duaLib: "not linier, seems to max at 64,
+        // 0 is not fully muted". 64 is therefore the ceiling worth
+        // writing, and the "not fully muted" note is why a pad left at
+        // 0 by a previous owner reads as QUIET rather than silent.
+        private const byte MicVolumeMax = 0x40;
 
         // EnableBits2 (high byte; HM field "validFlag1").
         private const ushort EnableMicLight         = 0x0100;
@@ -170,7 +179,7 @@ namespace PadForge.Common.Input
             byte batteryPercent = 100,
             int playerNumber = 0,
             bool assertMicLightEnable = true,
-            bool assertAudioMuteControl = true,
+            bool assertAudioHardwareClaim = true,
             bool assertPlayerIndicatorEnable = true)
         {
             ushort enableBits = 0;
@@ -439,7 +448,21 @@ namespace PadForge.Common.Input
             // asserts AllowAudioMute in letGo alone (duaLib.cpp:180) and
             // never in its steady loop. The caller runs it as a bounded
             // burst per device claim.
-            if (assertAudioMuteControl) enableBits |= EnableAudioMuteControl;
+            //
+            // Mic VOLUME is the same story one byte over, and was the
+            // missing half. PadForge declared micVolume in every Sony
+            // profile but never wrote it and never asserted bit 6, so the
+            // pad kept whatever gain its last owner left and nothing here
+            // could raise it. A controller power cycle was the only cure,
+            // which is exactly how the owner found it. duaLib asserts
+            // AllowMicVolume on a change or a reconnect and clears it
+            // otherwise (duaLib.cpp:613); our claim burst is that event.
+            //
+            // Owner ruling 2026-08-01: the HARDWARE mic volume stays at
+            // maximum. Attenuation belongs to Windows and to our own gain
+            // stage, not to a firmware register no PC UI exposes.
+            if (assertAudioHardwareClaim)
+                enableBits |= EnableAudioMuteControl | EnableMicVolume;
 
             // Triggers — 11 bytes per trigger (mode + 10 param bytes). The
             // simple modes (Feedback / Weapon / Vibration) use scalar
@@ -529,6 +552,7 @@ namespace PadForge.Common.Input
                 { "muteLed",          muteLed },
                 { "rightTriggerEffect", rightTrig },
                 { "leftTriggerEffect",  leftTrig  },
+                { "micVolume",        MicVolumeMax },
                 { "validFlag2",       validFlag2 },
                 { "lightbarSetup",    overrides.LightbarSetup ?? (byte)0x00 },
                 { "ledBrightness",    ledBrightness },

@@ -294,6 +294,11 @@ namespace PadForge.Common.Input
         // program set, 1.5 s after their grace window closes.
         private readonly Dictionary<Guid, bool> _prevPadForgeWantsMicLed = new();
 
+        // And again for the player-indicator row. Held every tick, the
+        // player-indicator enable bit republishes our pips over an
+        // external writer's once their grace window closes.
+        private readonly Dictionary<Guid, bool> _prevPadForgeWantsPips = new();
+
         // Bounded unmute burst per device claim. Asserting AllowAudioMute
         // over the zero-filled MuteControl byte is a correction for a pad
         // an earlier owner left hardware-muted, and it has to run when we
@@ -400,6 +405,30 @@ namespace PadForge.Common.Input
             public byte LedBrightness;
         }
 
+        /// <summary>Decides whether this dispatch asserts a mirrored
+        /// subsystem's enable bit, and what the per-device "PadForge wanted
+        /// this last frame" flag becomes.
+        ///
+        /// <para>Assert when PadForge is authoring the subsystem, when an
+        /// external writer is currently being mirrored (their bytes need
+        /// the gate open to land), or for one transition frame after
+        /// PadForge stopped wanting it (so a user's Solid-to-Off or
+        /// AT-to-Off change actually reaches the firmware instead of
+        /// leaving the previous state latched).</para>
+        ///
+        /// <para>NextPrev tracks PadForge's OWN intent and nothing else.
+        /// Folding <paramref name="externalMirroring"/> into it makes the
+        /// frame after their grace window expires look like a PadForge
+        /// transition, which fires a "disengage" packet carrying OUR value
+        /// over the one they just set. That defeats the entire point of the
+        /// mirror: every one of these subsystems is supposed to let an
+        /// external writer's state persist in firmware once we stand down.
+        /// Cost the mic LED and the adaptive triggers exactly that,
+        /// reported on hardware 2026-08-01.</para></summary>
+        internal static (bool Assert, bool NextPrev) GateMirroredSubsystem(
+            bool padForgeWants, bool externalMirroring, bool prevPadForgeWanted)
+            => (padForgeWants || externalMirroring || prevPadForgeWanted, padForgeWants);
+
         private static readonly Dictionary<int, ExternalSubsystemState> s_externalState = new();
         private static readonly object s_externalStateLock = new();
 
@@ -430,6 +459,15 @@ namespace PadForge.Common.Input
             /// floor that reclaims the bar 1.5 s after a one-shot game
             /// write would stomp exactly those games.</summary>
             public bool LightbarEverExternal;
+
+            /// <summary>True once ANY external write has touched this
+            /// slot's player-indicator row this process lifetime, even
+            /// outside the grace window. Same stand-down semantic as
+            /// <see cref="LightbarEverExternal"/>: PadForge's identity
+            /// floor owns the pips until something else claims them, and
+            /// then yields for the session so the claimant's row persists
+            /// in firmware instead of being overwritten 1.5 s later.</summary>
+            public bool PlayerIndicatorEverExternal;
             /// <summary>The last RGB an external writer set, RETAINED past
             /// the grace window (unlike <see cref="LightbarRgb"/>, which is
             /// grace-gated and means "they own the bar right now"). When
@@ -578,6 +616,7 @@ namespace PadForge.Common.Input
                     ov.LastLightbarRgb = new[] { st.LightbarR, st.LightbarG, st.LightbarB };
                 if (now - st.PlayerIndTick < ExternalSubsystemGraceMs)
                     ov.PlayerIndicator = st.PlayerInd;
+                ov.PlayerIndicatorEverExternal = st.PlayerIndTick != 0;
                 if (now - st.LightbarSetupTick < ExternalSubsystemGraceMs)
                     ov.LightbarSetup = st.LightbarSetup;
                 if (now - st.LedBrightnessTick < ExternalSubsystemGraceMs)
@@ -1437,6 +1476,7 @@ namespace PadForge.Common.Input
                         _prevPadForgeWantsLeftTrig[ud.InstanceGuid] = true;
                         _prevPadForgeWantsRightTrig[ud.InstanceGuid] = true;
                         _prevPadForgeWantsMicLed[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsPips[ud.InstanceGuid] = true;
                         // Same reasoning for the mic: a prior owner may
                         // have left the pad hardware-muted, so a fresh
                         // claim re-arms the bounded unmute burst.
@@ -1643,23 +1683,39 @@ namespace PadForge.Common.Input
                     // to 100 ("full") when the provider isn't wired so a
                     // misconfigured slot doesn't paint empty-battery red.
                     byte pctByte = SlotBatteryPercentProvider?.Invoke(_padIndex, ud.InstanceGuid) ?? (byte)100;
-                    bool assertRightTrig = padForgeWantsRightAt
-                        || devOverrides.RightTriggerEffect != null
-                        || prevPadForgeWantsRightAt;
-                    bool assertLeftTrig  = padForgeWantsLeftAt
-                        || devOverrides.LeftTriggerEffect != null
-                        || prevPadForgeWantsLeftAt;
+                    var rightTrigGate = GateMirroredSubsystem(
+                        padForgeWantsRightAt, devOverrides.RightTriggerEffect != null, prevPadForgeWantsRightAt);
+                    var leftTrigGate = GateMirroredSubsystem(
+                        padForgeWantsLeftAt, devOverrides.LeftTriggerEffect != null, prevPadForgeWantsLeftAt);
+                    bool assertRightTrig = rightTrigGate.Assert;
+                    bool assertLeftTrig  = leftTrigGate.Assert;
 
                     // Mic LED, same rule as the triggers. FollowDeviceMute
                     // counts as a deliberate intent: it resolves to Off or
                     // Solid per frame and PadForge must author either.
                     bool padForgeWantsMicLed = devCfg != null && devCfg.MicLedMode != MicLedMode.Off;
                     bool prevWantsMicLed = _prevPadForgeWantsMicLed.TryGetValue(ud.InstanceGuid, out var pm) && pm;
-                    bool assertMicLed = padForgeWantsMicLed
-                        || devOverrides.MuteLed.HasValue
-                        || prevWantsMicLed;
-                    _prevPadForgeWantsMicLed[ud.InstanceGuid] = padForgeWantsMicLed
-                        || devOverrides.MuteLed.HasValue;
+                    var micLedGate = GateMirroredSubsystem(
+                        padForgeWantsMicLed, devOverrides.MuteLed.HasValue, prevWantsMicLed);
+                    bool assertMicLed = micLedGate.Assert;
+                    _prevPadForgeWantsMicLed[ud.InstanceGuid] = micLedGate.NextPrev;
+
+                    // Player indicator, same rule. PadForge authors the row
+                    // when the user picked a deliberate PlayerLedMode, or
+                    // while the #191 identity floor is still armed because
+                    // nothing external has ever claimed the pips. Once
+                    // something has, the floor yields for the session
+                    // exactly as the lightbar's does, so an SDL or Steam
+                    // Input player-index assignment persists in firmware
+                    // instead of being overwritten 1.5 s later.
+                    bool padForgeWantsPips = devCfg == null
+                        || devCfg.PlayerLedMode != PlayerLedMode.PlayerNumber
+                        || !devOverrides.PlayerIndicatorEverExternal;
+                    bool prevWantsPips = _prevPadForgeWantsPips.TryGetValue(ud.InstanceGuid, out var pp) && pp;
+                    var pipsGate = GateMirroredSubsystem(
+                        padForgeWantsPips, devOverrides.PlayerIndicator.HasValue, prevWantsPips);
+                    bool assertPips = pipsGate.Assert;
+                    _prevPadForgeWantsPips[ud.InstanceGuid] = pipsGate.NextPrev;
 
                     // Bounded unmute burst. Counts down per dispatch and
                     // then stops, so an external program's deliberate mute
@@ -1678,10 +1734,8 @@ namespace PadForge.Common.Input
                     // Without this, the DS5 firmware latches whatever
                     // trigger effect was last asserted (Vibration with
                     // impulse-trigger amplitude) and never disengages.
-                    _prevPadForgeWantsRightTrig[ud.InstanceGuid] = padForgeWantsRightAt
-                        || devOverrides.RightTriggerEffect != null;
-                    _prevPadForgeWantsLeftTrig[ud.InstanceGuid]  = padForgeWantsLeftAt
-                        || devOverrides.LeftTriggerEffect != null;
+                    _prevPadForgeWantsRightTrig[ud.InstanceGuid] = rightTrigGate.NextPrev;
+                    _prevPadForgeWantsLeftTrig[ud.InstanceGuid]  = leftTrigGate.NextPrev;
 
                     try
                     {
@@ -1733,7 +1787,8 @@ namespace PadForge.Common.Input
                                 _randomColor, devPulseColor, devPulseIntensity,
                                 rR, rL, assertRumbleEnable,
                                 assertRightTrig, assertLeftTrig, devOverrides, pctByte,
-                                devPlayerNumber, assertMicLed, assertAudioMute)
+                                devPlayerNumber, assertMicLed, assertAudioMute,
+                                assertPips)
                             : Ds4EffectSynthesizer.BuildFields(
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,

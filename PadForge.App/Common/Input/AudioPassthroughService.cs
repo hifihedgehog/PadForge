@@ -2528,10 +2528,17 @@ namespace PadForge.Common.Input
             _ => 0x13,   // Default / SpeakerOnly
         };
 
-        /// <summary>Headset + Speaker needs the SAME frame on both lanes:
-        /// two 0x35 reports per tick, each with its own seq step. The
-        /// write pool's backpressure handling covers the doubled rate.</summary>
-        internal static bool Ds5BtWantsBothLanes(int outputPath) => outputPath == 3;
+        /// <summary>Headset + Speaker over BT rides the HEADSET lane only,
+        /// plus the OutputPathSelect register (path 2, L_L_R) the dispatcher
+        /// already writes. The first cut sent the same frame on BOTH lanes,
+        /// two 0x35 reports per tick sharing one seq counter, so each
+        /// lane's stream saw +2 sequence jumps every tick. That is the
+        /// documented warble signature from the 2026-07-31 bring-up ("the
+        /// firmware drops/garbles on seq jumps, and a discontinuous Opus
+        /// stream decodes as WARBLE"), and the owner heard exactly that:
+        /// "garbled with headphone+speaker". Same mistake, one level down.
+        /// One report id gets ONE stream, full stop.</summary>
+        internal static bool Ds5BtWantsBothLanes(int outputPath) => false;
 
         /// <summary>Folds a stereo frame to mono in place, for the mono
         /// paths (both ears the same, and the split path's speaker copy).</summary>
@@ -2607,23 +2614,6 @@ namespace PadForge.Common.Input
                 return;
             }
 
-            // Headset + Speaker: the same Opus frame again on the speaker
-            // lane, its own report with the next seq/counter step so the
-            // multiplexed transport still sees one monotonic sequence.
-            if (Ds5BtWantsBothLanes(outPath))
-            {
-                report[1] = (byte)((s.Ds5Seq & 0x0F) << 4);
-                s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
-                report[10] = s.Ds5PktCounter++;
-                report[11] = 0x13 | 0x80;
-                uint crc2 = Crc32(report, Ds5BtReportSize - 4);
-                report[Ds5BtReportSize - 4] = (byte)(crc2 & 0xFF);
-                report[Ds5BtReportSize - 3] = (byte)((crc2 >> 8) & 0xFF);
-                report[Ds5BtReportSize - 2] = (byte)((crc2 >> 16) & 0xFF);
-                report[Ds5BtReportSize - 1] = (byte)(crc2 >> 24);
-                if (s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out bool hardFail2) == false && hardFail2)
-                    s.TransportFailed = true;
-            }
         }
 
         private const int Ds5HapticFramesPerTick = 512;  // 48 kHz frames per 10.667 ms tick

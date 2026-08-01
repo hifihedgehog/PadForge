@@ -1444,8 +1444,21 @@ namespace PadForge.Common.Input
         /// <summary>Last audio-status byte seen on a plain state report
         /// from the BT mic pad (duaLib input offset 53).</summary>
         private static volatile byte _btMicPadStatus;
-        /// <summary>DualSense BT mic frame shape, read off the wire: one
-        /// 71-byte Opus packet per input report, CELT 10 ms, STEREO.</summary>
+        /// <summary>DualSense BT mic frame shape: one 71-byte Opus packet
+        /// per input report, CELT 10 ms.
+        ///
+        /// MONO, and do not "fix" this to stereo. The Opus TOC on every
+        /// frame is 0xD4, whose stereo bit IS set, and reading that byte
+        /// as authority is exactly the mistake made on 2026-07-31: the
+        /// decoder was switched to stereo and Windows received full-scale
+        /// noise. A mono decoder decoding a stereo-flagged packet is legal
+        /// and yields a correct downmix, which is what this stream needs.
+        /// Measured at the consumer (WASAPI probe on the composite's
+        /// capture endpoint), same pad, same session:
+        ///   stereo -> peak 1.0000, rms 0.5118, 6.5% near full scale
+        ///   mono   -> peak 0.2207, rms 0.0208, 0% near full scale
+        /// Change this constant only with a consumer-side measurement in
+        /// hand, never from the TOC.</summary>
         private const int BtMicChannels = 1;
         private const int BtMicFrameSamples = 480;   // 10 ms at 48 kHz
         private const int BtMicPayloadBytes = 71;

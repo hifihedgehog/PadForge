@@ -344,6 +344,9 @@ namespace PadForge.Common.Input
         // returns to PadForge for that subsystem.
         private const long ExternalSubsystemGraceMs = 1500;
 
+        private static long _lbFieldsLastLog;
+        private static string _lbLastSig;
+
         private struct ExternalSubsystemState
         {
             public long RumbleTick;
@@ -409,6 +412,14 @@ namespace PadForge.Common.Input
             /// floor that reclaims the bar 1.5 s after a one-shot game
             /// write would stomp exactly those games.</summary>
             public bool LightbarEverExternal;
+            /// <summary>The last RGB an external writer set, RETAINED past
+            /// the grace window (unlike <see cref="LightbarRgb"/>, which is
+            /// grace-gated and means "they own the bar right now"). When
+            /// PadForge is deliberately not authoring the bar it carries
+            /// these bytes instead of zeros, so a firmware that honours the
+            /// RGB regardless of the enable bit re-applies the same colour
+            /// rather than blanking it.</summary>
+            public byte[] LastLightbarRgb;
         }
 
         /// <summary>Called by <c>HMaestroVirtualController.OutputDecoded</c>
@@ -545,6 +556,8 @@ namespace PadForge.Common.Input
                 if (now - st.LightbarTick < ExternalSubsystemGraceMs)
                     ov.LightbarRgb = new byte[] { st.LightbarR, st.LightbarG, st.LightbarB };
                 ov.LightbarEverExternal = st.LightbarTick != 0;
+                if (st.LightbarTick != 0)
+                    ov.LastLightbarRgb = new[] { st.LightbarR, st.LightbarG, st.LightbarB };
                 if (now - st.PlayerIndTick < ExternalSubsystemGraceMs)
                     ov.PlayerIndicator = st.PlayerInd;
                 if (now - st.LightbarSetupTick < ExternalSubsystemGraceMs)
@@ -1731,6 +1744,29 @@ namespace PadForge.Common.Input
                                 fields["audioControlFlags"] = (byte)0;
                                 fields["audioControl2"] = (byte)0;
                                 speakerCleared = ud.InstanceGuid;
+                            }
+                        }
+
+                        // Final lightbar bytes as they go to the pad. The bar
+                        // has to survive the synthesizer, the speaker-path
+                        // merge and the drop-frame gate, and a dark bar looks
+                        // identical at every stage. Logs on CHANGE plus a slow
+                        // heartbeat, so a blanking write is visible as an
+                        // event rather than buried in a steady stream.
+                        {
+                            byte tvf1 = (byte)fields["validFlag1"];
+                            var trgb = fields.TryGetValue("lightbar", out var tv) ? tv as byte[] : null;
+                            string sig = $"{tvf1:X2}/{(trgb != null ? $"{trgb[0]},{trgb[1]},{trgb[2]}" : "none")}";
+                            long tnow = Environment.TickCount64;
+                            if (sig != _lbLastSig || tnow - _lbFieldsLastLog >= 5000)
+                            {
+                                _lbLastSig = sig;
+                                _lbFieldsLastLog = tnow;
+                                PadForge.Engine.SdlDiagLog.WriteLine(
+                                    $"LIGHTBAR out vf1=0x{tvf1:X2} ledBit={((tvf1 & 0x04) != 0)}"
+                                    + $" rgb={(trgb != null ? $"{trgb[0]},{trgb[1]},{trgb[2]}" : "none")}"
+                                    + $" vf2=0x{(fields.TryGetValue("validFlag2", out var t2) ? (byte)t2 : (byte)0):X2}"
+                                    + $" setup=0x{(fields.TryGetValue("lightbarSetup", out var ts) ? (byte)ts : (byte)0):X2}");
                             }
                         }
 

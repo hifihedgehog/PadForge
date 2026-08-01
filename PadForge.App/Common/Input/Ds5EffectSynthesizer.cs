@@ -337,6 +337,21 @@ namespace PadForge.Common.Input
                 enableBits |= EnableLightbar;
                 (ledR, ledG, ledB) = PlayerIdentityDefaults.ColorFor(playerNumber);
             }
+            else if (overrides.LastLightbarRgb != null && overrides.LastLightbarRgb.Length >= 3)
+            {
+                // Standing down: an external writer owns the bar and its
+                // grace window has expired, so the enable bit deliberately
+                // stays CLEAR and PadForge claims nothing. Carry their last
+                // colour in the RGB bytes anyway instead of zeros. The
+                // report still ships validFlag2 0xFF and lightbarSetup 0x02
+                // every tick, and with those present the firmware acts on
+                // the RGB even with the enable bit clear, so zeros blank the
+                // bar roughly 1.5 s after any external write. Observed as a
+                // colour set in ds.daidr.me going dark almost immediately.
+                ledR = overrides.LastLightbarRgb[0];
+                ledG = overrides.LastLightbarRgb[1];
+                ledB = overrides.LastLightbarRgb[2];
+            }
 
             // Mic LED mode: 0 = off, 1 = solid, 2 = pulse. Values 0-2
             // map directly from MicLedMode enum. FollowDeviceMute (3) is

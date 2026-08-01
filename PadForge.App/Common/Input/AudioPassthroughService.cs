@@ -1356,6 +1356,26 @@ namespace PadForge.Common.Input
                         outBuf[i * 2 + 1] = (byte)(s16 >> 8);
                     }
                 }
+                // Bisect probe (PADFORGE_MICTONE=1): replace the decoded
+                // capture with a known 440 Hz half-scale sine. If Windows
+                // then receives a clean tone, our submit path and HM are
+                // sound and the fault is upstream in the decode. If it
+                // still receives noise, the corruption is below Submit.
+                if (_micToneProbe)
+                {
+                    for (int i = 0; i < n; i++)
+                    {
+                        short s16 = (short)(Math.Sin(_micTonePhase) * 16000);
+                        _micTonePhase += 2 * Math.PI * 440.0 / Rate;
+                        if (_micTonePhase > 2 * Math.PI) _micTonePhase -= 2 * Math.PI;
+                        for (int c = 0; c < outCh; c++)
+                        {
+                            int o = (i * outCh + c) * 2;
+                            outBuf[o] = (byte)s16;
+                            outBuf[o + 1] = (byte)(s16 >> 8);
+                        }
+                    }
+                }
                 mic.Submit(outBuf.AsSpan(0, n * outCh * 2));
                 long now2 = Environment.TickCount64;
                 if (now2 - lastLog >= 2000)
@@ -1401,8 +1421,24 @@ namespace PadForge.Common.Input
         /// RE-ENABLED 2026-07-31: the SDL fork filters HasMic 0x31 reports
         /// out of state parsing (hifihedgehog/SDL#20, fork cec3689a12),
         /// so the mic session no longer corrupts input. The close scrub
-        /// stays as hygiene for pads left open by older builds.</summary>
-        private const bool EnableBtMic = true;
+        /// stays as hygiene for pads left open by older builds.
+        ///
+        /// GATED AGAIN 2026-07-31 (same evening): Windows receives
+        /// FULL-SCALE NOISE from the composite's capture endpoint. Proven
+        /// to be below this code with a known-tone bisect: a clean 440 Hz
+        /// half-scale sine submitted to HMMicrophoneInput.Submit arrives
+        /// at WASAPI as peak 0.998 / rms 0.590 / 11.8% near full scale.
+        /// Our decode is not implicated. Located in HM's ISO IN reply
+        /// (UsbipServer.SendRetSubmitIso): the IN payload is packed
+        /// COMPACTED at perPacketActual stride while each returned
+        /// descriptor echoes the host's ORIGINAL offset (i * 196 for this
+        /// endpoint's wMaxPacketSize), so for any URB with more than one
+        /// packet the client reads the tail packets out of buffer regions
+        /// that were never written. Left off until that contract is
+        /// resolved: a dead mic beats one that blasts noise into a call.
+        /// The decode path below is otherwise hardware-proven and flips
+        /// back on with this one const.</summary>
+        private const bool EnableBtMic = false;
 
         private static int _btMicPeak;
         /// <summary>Last audio-status byte seen on a plain state report
@@ -1413,6 +1449,10 @@ namespace PadForge.Common.Input
         private const int BtMicChannels = 2;
         private const int BtMicFrameSamples = 480;   // 10 ms at 48 kHz
         private const int BtMicPayloadBytes = 71;
+
+        private static readonly bool _micToneProbe =
+            Environment.GetEnvironmentVariable("PADFORGE_MICTONE") == "1";
+        private static double _micTonePhase;
 
         private static byte _btMicToc;
         private static int _btMicTocFirst = 0xFFFF, _btMicTocVary;

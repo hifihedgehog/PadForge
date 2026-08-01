@@ -2980,4 +2980,11 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Starter_Layer_Party" xml:space="preserve"><value>Groep</value></data>
   <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Snelkoppelingen</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Stil (stuurt niets)</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>Koptelefoonvolume</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>Hardwarevolume van de headsetaansluiting van de controller. Wordt naar de pad geschreven en blijft dus zonder app behouden.</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>Koptelefoonvolume resetten</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>Koptelefoonvolume verhogen</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Koptelefoonvolume verlagen</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Verhoogt het volume van de headsetaansluiting van de controller met 10%.</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Verlaagt het volume van de headsetaansluiting van de controller met 10%.</value></data>
 </root>

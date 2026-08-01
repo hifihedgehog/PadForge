@@ -3015,4 +3015,11 @@ You can retry later from Settings.</value></data>
   <data name="Starter_Layer_Party" xml:space="preserve"><value>Party</value></data>
   <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Shortcuts</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Quiet (nothing sends)</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>Headphone Volume</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>Hardware volume of the controller's headset jack. Written to the pad, so it holds with no app in the loop.</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>Reset Headphone Volume</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>Raise Headphone Volume</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Lower Headphone Volume</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Raises the controller's headset jack volume by 10%.</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Lowers the controller's headset jack volume by 10%.</value></data>
 </root>

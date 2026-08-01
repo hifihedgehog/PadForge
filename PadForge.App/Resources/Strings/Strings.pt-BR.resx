@@ -2960,4 +2960,11 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Starter_Layer_Party" xml:space="preserve"><value>Grupo</value></data>
   <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Atalhos rápidos</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silencioso (não envia nada)</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>Volume dos fones</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>Volume de hardware do conector de fone do controle. Gravado no controle, portanto se mantém sem o aplicativo.</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>Redefinir volume dos fones</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>Aumentar volume dos fones</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Diminuir volume dos fones</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Aumenta em 10% o volume do conector de fone do controle.</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Diminui em 10% o volume do conector de fone do controle.</value></data>
 </root>

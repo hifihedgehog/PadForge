@@ -819,6 +819,7 @@ namespace PadForge.ViewModels
                     if (value != null) value.PropertyChanged += OnSelectedDevicePropertyChanged;
                     OnPropertyChanged(nameof(HasSelectedDevice));
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
+                    OnPropertyChanged(nameof(SelectedDeviceHasHeadphoneJack));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
                     OnPropertyChanged(nameof(SelectedDeviceHasTouchpadPulse));
@@ -4698,6 +4699,23 @@ namespace PadForge.ViewModels
         /// speaker (DualSense / Edge / DualShock 4). The Audio tab is per
         /// assigned device by convention — this gates the mirror toggle and
         /// the routing notes.</summary>
+        /// <summary>True when the SELECTED assigned device has a 3.5 mm
+        /// headset jack PadForge can drive the hardware volume of:
+        /// DualSense (0x0CE6) and DualSense Edge (0x0DF2). DS4 declares
+        /// split headphoneVolumeLeft/Right bytes and is not wired yet.</summary>
+        public bool SelectedDeviceHasHeadphoneJack
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                if (ud == null) return false;
+                return ud.VendorId == 0x054C
+                    && ((ushort)ud.ProdId == 0x0CE6 || (ushort)ud.ProdId == 0x0DF2);
+            }
+        }
+
         public bool SelectedDeviceHasSpeaker
         {
             get
@@ -5140,6 +5158,7 @@ namespace PadForge.ViewModels
                     DeviceConfig.AudioMirrorEngageReleaseMs = 500;
                     DeviceConfig.AudioToneFilterMode = "Off";
                     DeviceConfig.AudioToneLimitHz = 800;
+                    DeviceConfig.HeadphoneVolume = 100;
                     OnPropertyChanged(nameof(MirrorEngageSelectedInput));
                 }
             });
@@ -6117,6 +6136,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SoundMacros));
                     OnPropertyChanged(nameof(HasNoSoundMacros));
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
+                    OnPropertyChanged(nameof(SelectedDeviceHasHeadphoneJack));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
                     OnPropertyChanged(nameof(MirrorEngageSelectedInput));

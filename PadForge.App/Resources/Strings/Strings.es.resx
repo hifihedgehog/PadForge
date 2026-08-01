@@ -2960,4 +2960,11 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Starter_Layer_Party" xml:space="preserve"><value>Grupo</value></data>
   <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Accesos directos</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silencio (no envía nada)</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>Volumen de auriculares</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>Volumen por hardware del conector de auriculares del mando. Se escribe en el mando, por lo que se mantiene sin la aplicación.</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>Restablecer volumen de auriculares</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>Subir volumen de auriculares</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Bajar volumen de auriculares</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Sube un 10 % el volumen del conector de auriculares del mando.</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Baja un 10 % el volumen del conector de auriculares del mando.</value></data>
 </root>

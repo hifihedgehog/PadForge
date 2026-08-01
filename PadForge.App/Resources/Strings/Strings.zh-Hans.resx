@@ -2960,4 +2960,11 @@
   <data name="Starter_Layer_Party" xml:space="preserve"><value>队伍</value></data>
   <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>快捷方式</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>静默（不发送任何输入）</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>耳机音量</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>手柄耳机接口的硬件音量。写入手柄后，无需应用也能保持。</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>重置耳机音量</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>调高耳机音量</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>调低耳机音量</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>将手柄耳机接口的音量提高 10%。</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>将手柄耳机接口的音量降低 10%。</value></data>
 </root>

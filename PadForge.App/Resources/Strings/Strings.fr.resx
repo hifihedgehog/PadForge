@@ -2960,4 +2960,11 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Starter_Layer_Party" xml:space="preserve"><value>Groupe</value></data>
   <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Raccourcis rapides</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silence (rien n’est envoyé)</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>Volume du casque</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>Volume matériel de la prise casque de la manette. Écrit dans la manette, il persiste donc sans application active.</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>Réinitialiser le volume du casque</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>Augmenter le volume du casque</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Réduire le volume du casque</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Augmente de 10 % le volume de la prise casque de la manette.</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Réduit de 10 % le volume de la prise casque de la manette.</value></data>
 </root>

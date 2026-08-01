@@ -1968,6 +1968,12 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_AxisScale, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.AxisScale}"
                                                           ToolTip="{Binding MacroAction_AxisScale_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_HeadphoneVolumeUp, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.HeadphoneVolumeUp}"
+                                                          ToolTip="{Binding MacroAction_HeadphoneVolumeUp_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_HeadphoneVolumeDown, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.HeadphoneVolumeDown}"
+                                                          ToolTip="{Binding MacroAction_HeadphoneVolumeDown_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_AxisSetLatched, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.AxisSetLatched}"
                                                           ToolTip="{Binding MacroAction_AxisSetLatched_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -11108,6 +11114,22 @@
                                               VerticalAlignment="Center"/>
                                     <ui:Button Command="{Binding ResetAudioMirrorCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetAudioMirror, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <!-- Headphone jack hardware volume (DualSense / Edge only:
+                                     DS4 declares split L/R bytes and is not wired). The value
+                                     is written into the pad's firmware register, so it holds
+                                     with no app in the loop. HeadphoneVolumeUp/Down macro
+                                     actions step this same setting. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                            Visibility="{Binding SelectedDeviceHasHeadphoneJack, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Pad_Audio_HeadphoneVolume, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_Audio_HeadphoneVolume_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding DeviceConfig.HeadphoneVolume, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}"
+                                            Minimum="0" Maximum="100" TickFrequency="1"/>
+                                    <TextBox Text="{Binding DeviceConfig.HeadphoneVolume, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <ui:Button Command="{Binding DeviceConfig.ResetHeadphoneVolumeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetHeadphoneVolume, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <!-- Mirror SOURCE: which playback device feeds the mirror.
                                      "" = system default. Lets games that send specific

@@ -2960,4 +2960,11 @@
   <data name="Starter_Layer_Party" xml:space="preserve"><value>파티</value></data>
   <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>바로 가기</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>무음 (아무것도 보내지 않음)</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>헤드폰 볼륨</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>컨트롤러 헤드셋 단자의 하드웨어 볼륨입니다. 패드에 기록되므로 앱 없이도 유지됩니다.</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>헤드폰 볼륨 초기화</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>헤드폰 볼륨 높이기</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>헤드폰 볼륨 낮추기</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>컨트롤러 헤드셋 단자의 볼륨을 10% 높입니다.</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>컨트롤러 헤드셋 단자의 볼륨을 10% 낮추니다.</value></data>
 </root>

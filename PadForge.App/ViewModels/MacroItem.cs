@@ -5177,6 +5177,8 @@ namespace PadForge.ViewModels
                                        : Strings.Instance.MacroAction_PlaySound_Format,
                             SoundFileName, _soundVolume),
                     MacroActionType.SoundStop => Strings.Instance.MacroAction_Type_SoundStop,
+                    MacroActionType.HeadphoneVolumeUp => Strings.Instance.MacroAction_Type_HeadphoneVolumeUp,
+                    MacroActionType.HeadphoneVolumeDown => Strings.Instance.MacroAction_Type_HeadphoneVolumeDown,
                     MacroActionType.SetGyroEngaged => string.Format(
                         Strings.Instance.MacroAction_SetGyroEngaged_Format,
                         SetGyroEngagedModeDisplayName(_setGyroEngagedMode)),
@@ -6030,7 +6032,16 @@ namespace PadForge.ViewModels
         /// walk), +50% amplifies half again, clamped to full scale. No
         /// yield gate, because proportional composes with the physical
         /// input by construction. At the tail; ordinal pinned.</summary>
-        AxisScale = 51
+        AxisScale = 51,
+
+        /// <summary>Raises the slot's headphone jack hardware volume
+        /// (DeviceSlotConfig.HeadphoneVolume) by 10%, clamped at 100.
+        /// Persists like any other Audio-tab edit.</summary>
+        HeadphoneVolumeUp = 52,
+
+        /// <summary>Lowers the slot's headphone jack hardware volume
+        /// by 10%, clamped at 0.</summary>
+        HeadphoneVolumeDown = 53
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

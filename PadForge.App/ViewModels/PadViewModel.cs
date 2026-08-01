@@ -571,6 +571,15 @@ namespace PadForge.ViewModels
             return _perDeviceSlotConfigs.GetOrAdd(deviceGuid, _ => new DeviceSlotConfig());
         }
 
+        /// <summary>Non-creating read of a device's config. For provider
+        /// lambdas that run on audio/worker threads: a miss means "not
+        /// this slot", and materializing a default entry from a reader
+        /// would race EnsureDeviceSlotConfigsForMappedDevices.</summary>
+        public DeviceSlotConfig PeekDeviceConfig(Guid deviceGuid)
+            => deviceGuid != Guid.Empty
+               && _perDeviceSlotConfigs.TryGetValue(deviceGuid, out var cfg)
+                ? cfg : null;
+
         /// <summary>Snapshot of every per-device config on the slot. Used
         /// by macro fan-out so a slot-level lightbar action writes to
         /// each device's config in turn.</summary>

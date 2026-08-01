@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Xml.Serialization;
 using PadForge.Common.Input;
 using PadForge.ViewModels;
@@ -85,6 +85,62 @@ namespace PadForge.Tests
                 "<DeviceSlotConfigData SlotIndex=\"0\" />");
             var dto = (DeviceSlotConfigData)ser.Deserialize(rd);
             Assert.Equal(AudioOutputPath.Automatic, dto.AudioOutputPath);
+        }
+
+        // ── The USB mirror's channel shaper ──
+        //
+        // The pad's UAC ch0/ch1 change ROLES with the path: headphone L/R
+        // under stereo, mono-ears/speaker under the split paths, x/speaker
+        // under speaker-only. The shaper hardcoded the speaker shape
+        // (0, mono), so Headphones (Stereo) played silence in the left ear
+        // and a mono downmix in the right. Owner-reported 2026-08-01.
+
+        [Fact]
+        public void Stereo_PassesLeftAndRightThrough()
+        {
+            AudioPassthroughService.MapMirrorChannels(
+                (int)AudioOutputPath.StereoHeadset, 0.5f, -0.25f, out var c0, out var c1);
+            Assert.Equal(0.5f, c0);      // headphone LEFT gets L
+            Assert.Equal(-0.25f, c1);    // headphone RIGHT gets R
+        }
+
+        [Fact]
+        public void MonoHeadset_PutsTheDownmixOnCh0Only()
+        {
+            AudioPassthroughService.MapMirrorChannels(
+                (int)AudioOutputPath.MonoHeadset, 0.5f, -0.25f, out var c0, out var c1);
+            Assert.Equal(0.125f, c0, 3); // (L+R)/2, ch0 feeds both ears
+            Assert.Equal(0f, c1);
+        }
+
+        [Fact]
+        public void HeadsetAndSpeaker_FeedsBothChannelsTheDownmix()
+        {
+            AudioPassthroughService.MapMirrorChannels(
+                (int)AudioOutputPath.HeadsetAndSpeaker, 0.5f, -0.25f, out var c0, out var c1);
+            Assert.Equal(0.125f, c0, 3);
+            Assert.Equal(c0, c1);
+        }
+
+        [Theory]
+        [InlineData((int)AudioOutputPath.Automatic)]
+        [InlineData((int)AudioOutputPath.SpeakerOnly)]
+        public void SpeakerShapes_KeepTheOriginalLayout(int path)
+        {
+            // ch0 silent, downmix on ch1 (the channel the speaker plays).
+            // This is the pre-picker behaviour and must never drift: it is
+            // what the internal speaker and the #83 macro routing consume.
+            AudioPassthroughService.MapMirrorChannels(path, 0.5f, -0.25f, out var c0, out var c1);
+            Assert.Equal(0f, c0);
+            Assert.Equal(0.125f, c1, 3);
+        }
+
+        [Fact]
+        public void Downmix_ClampsInsteadOfClipping()
+        {
+            AudioPassthroughService.MapMirrorChannels(
+                (int)AudioOutputPath.MonoHeadset, 1f, 1.5f, out var c0, out _);
+            Assert.Equal(1f, c0);
         }
 
         [Fact]

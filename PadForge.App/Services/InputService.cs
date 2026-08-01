@@ -1013,6 +1013,20 @@ namespace PadForge.Services
             // Reads the engine's MacroSnapshots (atomically swapped by
             // SyncMacroSnapshots below), so the audio worker never touches
             // the live ViewModel collections.
+            // Device output path for the USB mirror's channel shaper.
+            // Walks the pads' per-device configs on the calling thread;
+            // DeviceSlotConfig property reads are plain fields.
+            AudioPassthroughService.DeviceAudioOutputPathProvider = deviceGuid =>
+            {
+                if (deviceGuid == Guid.Empty) return 0;
+                foreach (var padVm in _mainVm.Pads)
+                {
+                    var cfg = padVm.PeekDeviceConfig(deviceGuid);
+                    if (cfg != null) return (int)cfg.AudioOutputPath;
+                }
+                return 0;
+            };
+
             AudioPassthroughService.SlotWantsMacroAudioProvider = slot =>
             {
                 var im = _inputManager;

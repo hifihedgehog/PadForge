@@ -571,6 +571,46 @@ namespace PadForge.Common.Input
         /// (E_INVALIDARG — the DS5 endpoint is extensible float 48k 4ch),
         /// and NAudio's ISampleProvider Init path refuses extensible-float,
         /// so the float→byte hop happens here.</summary>
+        /// <summary>Device's configured AudioOutputPath as an int
+        /// (DeviceSlotConfig enum: 0 Automatic .. 4 SpeakerOnly).
+        /// Wired by InputService; null / throw resolves 0.</summary>
+        internal static Func<Guid, int> DeviceAudioOutputPathProvider;
+
+        /// <summary>Maps one stereo source frame onto the pad's UAC
+        /// channels 0/1 for the configured output path.
+        ///
+        /// <para>The pad's UAC channel roles depend on OutputPathSelect:
+        /// under path 0 (stereo headset) ch0/ch1 are headphone L/R;
+        /// under path 1/2 ch0 feeds both ears (mono headset) and ch1
+        /// feeds the speaker (path 2) or nothing (path 1); under path 3
+        /// the speaker plays ch1. The original hardcoded (0, mono)
+        /// shape was correct ONLY for the speaker paths, so selecting
+        /// Headphones (Stereo) played silence in the left ear and a
+        /// mono downmix in the right. Owner-reported 2026-08-01.</para></summary>
+        internal static void MapMirrorChannels(int path, float l, float r,
+            out float ch0, out float ch1)
+        {
+            switch (path)
+            {
+                case 1:   // StereoHeadset (firmware 0, L_R_X)
+                    ch0 = l;
+                    ch1 = r;
+                    break;
+                case 2:   // MonoHeadset (firmware 1, L_L_X): ch0 to both ears
+                    ch0 = Math.Clamp((l + r) * 0.5f, -1f, 1f);
+                    ch1 = 0f;
+                    break;
+                case 3:   // HeadsetAndSpeaker (firmware 2, L_L_R)
+                    ch0 = Math.Clamp((l + r) * 0.5f, -1f, 1f);
+                    ch1 = ch0;
+                    break;
+                default:  // Automatic / SpeakerOnly: the speaker plays ch1
+                    ch0 = 0f;
+                    ch1 = Math.Clamp((l + r) * 0.5f, -1f, 1f);
+                    break;
+            }
+        }
+
         private sealed class UsbFrameProvider : IWaveProvider
         {
             private readonly ISampleProvider _src;
@@ -611,12 +651,17 @@ namespace PadForge.Common.Input
                     _personaHapticRings[_deviceGuid].ReadFrames(_haptic, frames);
                 }
 
+                // Resolve the device's output path once per Read (the
+                // provider walks a small config map; ~100 calls/s).
+                int outPath = 0;
+                try { outPath = DeviceAudioOutputPathProvider?.Invoke(_deviceGuid) ?? 0; }
+                catch { }
+
                 for (int f = 0; f < frames; f++)
                 {
-                    float mono = Math.Clamp((_pull[f * 2] + _pull[f * 2 + 1]) * 0.5f, -1f, 1f);
                     int o = f * _outChannels;
-                    _frames[o] = 0f;
-                    _frames[o + 1] = mono;
+                    MapMirrorChannels(outPath, _pull[f * 2], _pull[f * 2 + 1],
+                        out _frames[o], out _frames[o + 1]);
                     if (haveHaptics)
                     {
                         _frames[o + 2] = _haptic[f * 2] / 32768f;

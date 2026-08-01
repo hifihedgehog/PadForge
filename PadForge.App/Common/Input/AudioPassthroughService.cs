@@ -1404,7 +1404,13 @@ namespace PadForge.Common.Input
                 // delta (57 units) promoted by 256. Dropping a whole block
                 // costs 10 ms of capture and keeps the stream aligned;
                 // letting it truncate costs every sample thereafter.
-                if (MicSubmitFits(mic.BufferedBytes, subBytes))
+                // HM v1.4.1 (HM#41) fixed the ring-side truncation, so this
+                // guard is redundant against that build and later. Kept as
+                // defense in depth: it costs one comparison per 10 ms block
+                // and it protects against an older SDK being dropped in.
+                // PADFORGE_MICNOGUARD=1 disables it, which is how HM's fix
+                // was verified here rather than merely assumed.
+                if (_micGuardDisabled || MicSubmitFits(mic.BufferedBytes, subBytes))
                 {
                     mic.Submit(outBuf.AsSpan(0, subBytes));
                 }
@@ -1518,6 +1524,8 @@ namespace PadForge.Common.Input
         private static long _btMicRmsAcc; private static int _btMicRmsCount;
         private static long _subRmsAcc; private static int _subRmsCount, _subPeak;
         private static long _micBlocksDropped;
+        private static readonly bool _micGuardDisabled =
+            Environment.GetEnvironmentVariable("PADFORGE_MICNOGUARD") == "1";
         /// <summary>HM's microphone ring capacity: UsbAudioEngine sizes it
         /// micBytesPerInterval * 256, and the DualSense interval is
         /// 48 samples * 2 ch * 2 bytes = 192.</summary>

@@ -149,7 +149,9 @@
          unstable in-progress work from the HIDMaestro repo. Update by
          copying the Release build of HIDMaestro.Core.dll from the
          HIDMaestro repo into Resources\HIDMaestro\ after tagging a
-         release there. Current: v1.3.22 (worker survives foreign stop signals, HM#38). -->
+         release there. Current: v1.4.1 (composite USB personas with embedded
+         usbip-win2 and the HMController.UsbAudio surface, HM#39, plus the
+         microphone ring frame-alignment fix, HM#41). -->
     <Reference Include="HIDMaestro.Core">
       <HintPath>Resources\HIDMaestro\HIDMaestro.Core.dll</HintPath>
     </Reference>

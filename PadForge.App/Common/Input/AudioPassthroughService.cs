@@ -667,9 +667,6 @@ namespace PadForge.Common.Input
             lock (_lock)
             {
                 EnsureThreads_NoLock();
-                // Sticky: this slot's macros want controller routing; the
-                // worker builds (and keeps) its sinks from now on.
-                _macroDemand.Add(slot);
                 live = _sinks.Values
                     .Where(s => s.Slot == slot && SinkAlive(s)
                                 && (deviceFilter == null || s.DeviceGuid == deviceFilter.Value))
@@ -1713,9 +1710,19 @@ namespace PadForge.Common.Input
         // network shipper (its mix is pulled by the stream thread's peer lane).
         private static bool SinkAlive(Sink s) => s.Player != null || s.BtHandle != new IntPtr(-1) || s.IsPeer;
 
-        // Slots whose macro sounds have requested controller routing; sticky
-        // so sinks persist across reconnects like the mirror toggle does.
-        private static readonly HashSet<int> _macroDemand = new();
+        /// <summary>Whether a slot's CURRENT macro configuration contains
+        /// any PlaySound action. Wired by InputService to read the
+        /// engine's MacroSnapshots (atomically swapped, safe from this
+        /// worker). Demand is derived from this on every reconcile pass
+        /// instead of latched at play time: the old HashSet latch was
+        /// add-only, so one macro sound put the slot's transport into a
+        /// keep-alive set for the rest of the process, surviving the
+        /// macro's deletion and the device's unassignment. Config-derived
+        /// demand keeps the property the latch was protecting (sinks
+        /// persist across reconnects while a sound macro EXISTS) and adds
+        /// the teardown it was missing, plus pre-building the transport so
+        /// the first trigger doesn't fall into the pendingActivation drop.</summary>
+        internal static Func<int, bool> SlotWantsMacroAudioProvider;
 
         /// <summary>Worker-only reconcile pass. The phases keep all device
         /// I/O outside <see cref="_lock"/> — a BT CreateFile on a sleeping
@@ -1731,8 +1738,10 @@ namespace PadForge.Common.Input
             var desired = new List<(int Slot, Guid Guid, string Path, bool IsBt, bool IsDs4, bool PtOn, string MirrorSrc, bool RemoteFed, bool IsPeer)>();
             for (int slot = 0; slot < MaxPads; slot++)
             {
-                bool demand;
-                lock (_lock) demand = _macroDemand.Contains(slot);
+                // Demand for macro audio is config-derived, never latched:
+                // read outside _lock (the provider walks the engine's own
+                // snapshot and takes no locks of ours).
+                bool demand = SlotWantsMacroAudioProvider?.Invoke(slot) ?? false;
                 // Persona demand: a composite VC on the slot builds its
                 // pads' transports even with passthrough off and no
                 // macros, exactly like the remote-audio demand. The same

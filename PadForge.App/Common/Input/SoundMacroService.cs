@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -295,6 +295,34 @@ namespace PadForge.Common.Input
             // renderer's lifecycle is the ENGINE's: InputManager.Stop owns
             // its StopAll, and the poll lane plus the silence edges keep
             // it correct across profile transitions.
+        }
+
+        /// <summary>True when a macro snapshot contains any PlaySound
+        /// action. This is THE demand signal for controller-routed macro
+        /// audio: AudioPassthroughService derives sink demand from it on
+        /// every reconcile pass (desired state, computed from current
+        /// config), replacing a play-time latch that could only ever
+        /// grow. Deleting the macro or switching profiles now tears the
+        /// transport down on the next pass, and a configured sound
+        /// macro pre-builds it before the first trigger. Pure and
+        /// allocation-free; callers pass the engine's atomically-swapped
+        /// MacroSnapshots entry. Element reads follow the engine's own
+        /// contract for these snapshots (simple fields, no locking).</summary>
+        internal static bool SnapshotWantsControllerAudio(PadForge.ViewModels.MacroItem[] macros)
+        {
+            if (macros == null) return false;
+            for (int i = 0; i < macros.Length; i++)
+            {
+                var acts = macros[i]?.Actions;
+                if (acts == null) continue;
+                for (int j = 0; j < acts.Count; j++)
+                {
+                    var a = acts[j];
+                    if (a != null && a.Type == PadForge.ViewModels.MacroActionType.PlaySound)
+                        return true;
+                }
+            }
+            return false;
         }
 
         // ─────────────────────────────────────────────

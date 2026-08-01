@@ -1009,6 +1009,17 @@ namespace PadForge.Services
             // slot param is kept on the signature only for call-site symmetry
             // with the other (slot, device) providers; do not add a per-slot
             // lookup expecting it to matter.
+            // Config-derived demand for controller-routed macro audio.
+            // Reads the engine's MacroSnapshots (atomically swapped by
+            // SyncMacroSnapshots below), so the audio worker never touches
+            // the live ViewModel collections.
+            AudioPassthroughService.SlotWantsMacroAudioProvider = slot =>
+            {
+                var im = _inputManager;
+                if (im == null || (uint)slot >= InputManager.MaxPads) return false;
+                return SoundMacroService.SnapshotWantsControllerAudio(im.MacroSnapshots[slot]);
+            };
+
             UserEffectsDispatcher.SlotBatteryPercentProvider = (padIndex, deviceGuid) =>
             {
                 var ud = FindUserDevice(deviceGuid);
@@ -7414,29 +7425,43 @@ namespace PadForge.Services
         /// MacroSnapshots array. The engine reads these atomically each cycle.
         /// Called at 30Hz on the UI thread.
         /// </summary>
+        // Last observed "slot has a PlaySound macro" per slot, so the
+        // audio reconcile is nudged exactly on transitions (add the first
+        // sound macro -> transport pre-builds; remove the last one ->
+        // transport tears down) instead of polling or latching.
+        private readonly bool[] _lastSlotWantsMacroAudio = new bool[InputManager.MaxPads];
+
         private void SyncMacroSnapshots()
         {
             if (_inputManager == null)
                 return;
 
+            bool macroAudioDemandChanged = false;
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
-                if (padVm.Macros.Count == 0)
+                MacroItem[] snapshot = null;
+                if (padVm.Macros.Count != 0)
                 {
-                    _inputManager.MacroSnapshots[i] = null;
-                }
-                else
-                {
-                    // Create a snapshot array. The MacroItem objects are shared references —
-                    // runtime state (IsExecuting, CurrentActionIndex, etc.) is read/written
-                    // by the engine thread, but the properties themselves are simple fields
-                    // that don't need locking for this use case.
-                    var snapshot = new MacroItem[padVm.Macros.Count];
+                    // Create a snapshot array. The MacroItem objects are shared
+                    // references. Runtime state (IsExecuting, CurrentActionIndex,
+                    // etc.) is read/written by the engine thread, but the
+                    // properties themselves are simple fields that don't need
+                    // locking for this use case.
+                    snapshot = new MacroItem[padVm.Macros.Count];
                     padVm.Macros.CopyTo(snapshot, 0);
-                    _inputManager.MacroSnapshots[i] = snapshot;
+                }
+                _inputManager.MacroSnapshots[i] = snapshot;
+
+                bool wants = SoundMacroService.SnapshotWantsControllerAudio(snapshot);
+                if (wants != _lastSlotWantsMacroAudio[i])
+                {
+                    _lastSlotWantsMacroAudio[i] = wants;
+                    macroAudioDemandChanged = true;
                 }
             }
+            if (macroAudioDemandChanged)
+                AudioPassthroughService.Reconcile();
         }
 
         // ─────────────────────────────────────────────

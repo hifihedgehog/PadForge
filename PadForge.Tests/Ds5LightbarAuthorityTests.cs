@@ -447,6 +447,44 @@ namespace PadForge.Tests
             Assert.Equal(EnableMicVolume, (byte)f["validFlag0"] & EnableMicVolume);
         }
 
+        // ── The sibling hazard the micVolume burn exposed ──
+        //
+        // A DECLARED profile field PadForge never writes is NOT inert: HM
+        // fills it with zeros, and zero is meaningful for these registers.
+        // That is exactly how micVolume hid. Sweeping the composite profile's
+        // declared output semantics against what BuildFields supplies leaves
+        // exactly one more: headphoneVolume (byte 4, AllowHeadphoneVolume is
+        // validFlag0 bit 4).
+        //
+        // It is safe TODAY only because the enable bit is never asserted, so
+        // the zero never applies. Unlike the mic it must NOT be forced to
+        // maximum: that byte drives audio into someone's ears, so the correct
+        // behaviour is to leave the user's firmware setting alone. This pins
+        // the invariant that keeps it safe.
+
+        private const byte EnableHeadphoneVolume = 0x10;   // validFlag0 bit 4
+
+        [Fact]
+        public void HeadphoneVolume_EnableIsNeverAsserted_BecauseWeSupplyNoValue()
+        {
+            // If a future change starts asserting this bit, it MUST also
+            // supply headphoneVolume, or it silently mutes the pad's
+            // headphone output by writing HM's zero-fill.
+            foreach (bool claim in new[] { true, false })
+            foreach (int pn in new[] { 0, 1, 3 })
+            {
+                var f = Ds5EffectSynthesizer.BuildFields(
+                    IdleConfig(), playerNumber: pn, assertAudioHardwareClaim: claim);
+                bool asserted = ((byte)f["validFlag0"] & EnableHeadphoneVolume) != 0;
+                if (asserted)
+                {
+                    Assert.True(f.ContainsKey("headphoneVolume"),
+                        "AllowHeadphoneVolume asserted without supplying headphoneVolume: "
+                        + "HM zero-fills the field and the pad's headphones go silent.");
+                }
+            }
+        }
+
         [Fact]
         public void AudioMuteControl_ReleasesAfterTheBurst()
         {

@@ -1,0 +1,445 @@
+<Project>
+  <PropertyGroup>
+    <AssemblyName>PadForge</AssemblyName>
+    <IntermediateOutputPath>obj\Debug\</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\</MSBuildProjectExtensionsPath>
+    <_TargetAssemblyProjectName>PadForge.App</_TargetAssemblyProjectName>
+    <RootNamespace>PadForge</RootNamespace>
+  </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <WindowsSdkPackageVersion>10.0.26100.57</WindowsSdkPackageVersion>
+    <RootNamespace>PadForge</RootNamespace>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!--
+      CA1416: emitted by the auto-generated WPF temp project (*_wpftmp.csproj)
+      because that intermediate doesn't inherit TargetPlatformVersion from
+      this csproj. The main project already targets net10.0-windows10.0.26100.0
+      which satisfies the API platform requirements.
+
+      WFO0003: WinForms migration recommendation to move HighDPI from the
+      manifest to <ApplicationHighDpiMode> / Application.SetHighDpiMode. This
+      app is WPF-primary with WinForms enabled only for NotifyIcon; WPF reads
+      DPI awareness from the manifest, so the manifest is the right place.
+    -->
+    <NoWarn>$(NoWarn);CA1416;WFO0003</NoWarn>
+    <Product>PadForge</Product>
+    <Company>PadForge</Company>
+    <Copyright>Copyright © PadForge Contributors</Copyright>
+    <Description>PadForge — Modern controller mapping application.</Description>
+    <ApplicationIcon>Resources\PadForge.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <!-- Single-file portable publish: dotnet publish -c Release -->
+  <PropertyGroup>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <!-- MUST stay true: bundles WPF's native libs (wpfgfx_cor3, PresentationNative_cor3,
+         PenImc_cor3, D3DCompiler_47_cor3, vcruntime140_cor3) INTO the single exe. Setting
+         false scatters them as loose files next to the exe, breaking the portable-single-
+         exe model and the "copy only PadForge.exe" deploy. -->
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+  <!-- Remove WinForms implicit usings to avoid ambiguity with WPF types. -->
+  <ItemGroup>
+    <Using Remove="System.Drawing" />
+    <Using Remove="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <!--
+      SDL3.dll: Link="SDL3.dll" ensures the file is copied to the OUTPUT ROOT
+      (next to PadForge.exe) rather than preserving the Resources\SDL3\x64\ subdirectory.
+      Download x64 SDL3.dll from https://github.com/libsdl-org/SDL/releases.
+      Condition checks for existence so the build succeeds before the DLL is placed.
+    -->
+    <Content Include="Resources\SDL3\x64\SDL3.dll" Link="SDL3.dll" Condition="Exists('Resources\SDL3\x64\SDL3.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\SDL3\x64\libusb-1.0.dll" Link="libusb-1.0.dll" Condition="Exists('Resources\SDL3\x64\libusb-1.0.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <!--
+      OpenXInput-derived xinput1_4.dll replaces the system one via DLL search order
+      (application directory before System32 for non-KnownDLLs).  When SDL3 calls
+      LoadLibrary("xinput1_4.dll"), this local copy resolves first and SDL's XInput
+      backend uses it instead of Microsoft's.  Forked from Nemirtingas/OpenXInput
+      with a HIDMaestro classifier added to the enumeration step so HM virtuals
+      are skipped during slot assignment.
+
+      Do NOT also bundle devobj.dll here.  OpenXInput's source tree contains a
+      stub devobj.dll (every export returns 0xCDCDCDCD) to satisfy xinput1_4's
+      static-link import at compile time.  If we ship that stub alongside,
+      SetDllDirectory pre-empts C:\Windows\System32\devobj.dll for the whole
+      process — including system setupapi.dll's own DevObj* imports — and
+      setupapi crashes during HID class enumeration on systems where the
+      hijack succeeds.  See PadForge #69 and memory/openxinput-devobj-stub-hijack-bug.md.
+      xinput1_4.dll's devobj.dll import resolves from System32 unaided.
+    -->
+    <Content Include="Resources\OpenXInput\x64\xinput1_4.dll" Link="xinput1_4.dll" Condition="Exists('Resources\OpenXInput\x64\xinput1_4.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="gamecontrollerdb_padforge.txt" />
+    <EmbeddedResource Include="Resources\HidHide_1.5.230_x64.exe" />
+    <!-- 3D controller model assets (adapted from Handheld Companion, CC BY-NC-SA 4.0) -->
+    <EmbeddedResource Include="3DModels\**\*.obj" />
+    <!-- 2D controller model assets (Gamepad-Asset-Pack by AL2009man, MIT license) -->
+    <!-- Web controller frontend assets (embedded, served by WebControllerServer) -->
+    <EmbeddedResource Include="WebAssets\**\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="WPF-UI" Version="4.3.0" />
+    <PackageReference Include="HelixToolkit.Core.Wpf" Version="2.27.3" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Microsoft.Windows.Devices.Midi2" Version="1.0.16-rc.3.7" />
+    <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
+    <!-- Opus encoder (pure C#) for the DualSense Bluetooth speaker stream -->
+    <PackageReference Include="Concentus" Version="2.2.2" />
+    <!-- Driver-store install, class filters, and USB CyclePort for the BthPS3
+         DualShock 3 Bluetooth stack (nefarius, same lib BthPS3's own installer uses) -->
+    <PackageReference Include="Nefarius.Utilities.DeviceManagement" Version="5.2.0" />
+  </ItemGroup>
+  <!-- Microsoft-signed BthPS3 + BthPS3PSM drivers (nefarius release) and the DS3
+       WinUSB INF, embedded so the single-file app can drop them to a temp dir and
+       install them at pairing time. No MSI, no external installer. -->
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BthPS3\**\*.*">
+      <LogicalName>BthPS3.%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Shared AssemblyVersion + AssemblyFileVersion — single source of truth
+         across PadForge.App and PadForge.Engine. -->
+    <Compile Include="..\SharedVersion.cs" Link="Properties\SharedVersion.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PadForge.Engine\PadForge.Engine.csproj" />
+    <!-- Steam Workshop community-config import (#9): anonymous Steam clients,
+         VDF parser, typed Steam Input model, translator, cache. -->
+    <ProjectReference Include="..\PadForge.SteamWorkshop\PadForge.SteamWorkshop.csproj" />
+    <!-- HIDMaestro SDK, pre-built release DLL, NOT a ProjectReference.
+         Using a ProjectReference would build from source and pick up
+         unstable in-progress work from the HIDMaestro repo. Update by
+         copying the Release build of HIDMaestro.Core.dll from the
+         HIDMaestro repo into Resources\HIDMaestro\ after tagging a
+         release there. Current: v1.4.3 (composite USB personas with embedded
+         usbip-win2 and the HMController.UsbAudio surface, HM#39, the
+         microphone ring frame-alignment fix, HM#41, and the ROOT\HIDMAESTRO_UDE
+         hardware-id token on the emulated host controller, HM#42, which is what
+         lets a devnode filter tell a composite persona from a real USB pad). -->
+  </ItemGroup>
+  <ItemGroup>
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\Accessibility.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\bouncycastle.cryptography\2.6.2\lib\net6.0\BouncyCastle.Cryptography.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\communitytoolkit.mvvm\8.2.2\lib\net6.0\CommunityToolkit.Mvvm.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\concentus\2.2.2\lib\net8.0\Concentus.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\helixtoolkit.core.wpf\2.27.3\lib\netcoreapp3.1\HelixToolkit.Core.Wpf.dll" />
+    <ReferencePath Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\Resources\HIDMaestro\HIDMaestro.Core.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\Microsoft.CSharp.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\Microsoft.VisualBasic.Core.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\Microsoft.VisualBasic.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\Microsoft.VisualBasic.Forms.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\Microsoft.Win32.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\Microsoft.Win32.Registry.AccessControl.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\Microsoft.Win32.Registry.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\Microsoft.Win32.SystemEvents.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\microsoft.windows.devices.midi2\1.0.16-rc.3.7\ref\net10.0\Microsoft.Windows.Devices.Midi2.NetProjection.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\microsoft.windows.sdk.net.ref\10.0.26100.57\lib\net8.0\Microsoft.Windows.SDK.NET.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\mscorlib.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\naudio.core\2.2.1\lib\netstandard2.0\NAudio.Core.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\naudio.wasapi\2.2.1\lib\netstandard2.0\NAudio.Wasapi.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\nefarius.utilities.devicemanagement\5.2.0\lib\net9.0\Nefarius.Utilities.DeviceManagement.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\netstandard.dll" />
+    <ReferencePath Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.Engine\bin\Debug\net10.0-windows\PadForge.Engine.dll" />
+    <ReferencePath Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.SteamWorkshop\bin\Debug\net10.0-windows\PadForge.SteamWorkshop.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\PresentationCore.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\PresentationFramework.Aero.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\PresentationFramework.Aero2.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\PresentationFramework.AeroLite.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\PresentationFramework.Classic.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\PresentationFramework.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\PresentationFramework.Luna.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\PresentationFramework.Royale.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\PresentationUI.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\protobuf-net.core\3.2.56\lib\net8.0\protobuf-net.Core.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\protobuf-net\3.2.56\lib\net8.0\protobuf-net.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\ReachFramework.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\steamkit2\3.4.0\lib\net10.0\SteamKit2.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.AppContext.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Buffers.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.CodeDom.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Collections.Concurrent.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Collections.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Collections.Immutable.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Collections.NonGeneric.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Collections.Specialized.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.ComponentModel.Annotations.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.ComponentModel.DataAnnotations.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.ComponentModel.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.ComponentModel.EventBasedAsync.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.ComponentModel.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.ComponentModel.TypeConverter.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Configuration.ConfigurationManager.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Configuration.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Console.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Core.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Data.Common.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Data.DataSetExtensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Data.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Design.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Diagnostics.Contracts.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Diagnostics.Debug.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Diagnostics.DiagnosticSource.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Diagnostics.EventLog.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Diagnostics.FileVersionInfo.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Diagnostics.PerformanceCounter.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Diagnostics.Process.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Diagnostics.StackTrace.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Diagnostics.TextWriterTraceListener.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Diagnostics.Tools.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Diagnostics.TraceSource.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Diagnostics.Tracing.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.DirectoryServices.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Drawing.Common.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Drawing.Design.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Drawing.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Drawing.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Dynamic.Runtime.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Formats.Asn1.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Formats.Nrbf.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Formats.Tar.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Globalization.Calendars.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Globalization.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Globalization.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.Compression.Brotli.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.Compression.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.Compression.FileSystem.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.Compression.ZipFile.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.FileSystem.AccessControl.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.FileSystem.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.FileSystem.DriveInfo.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.FileSystem.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.FileSystem.Watcher.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\system.io.hashing\10.0.1\lib\net10.0\System.IO.Hashing.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.IsolatedStorage.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.MemoryMappedFiles.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.IO.Packaging.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.Pipelines.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.Pipes.AccessControl.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.Pipes.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.IO.UnmanagedMemoryStream.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Linq.AsyncEnumerable.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Linq.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Linq.Expressions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Linq.Parallel.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Linq.Queryable.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Memory.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.Http.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.Http.Json.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.HttpListener.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.Mail.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.NameResolution.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.NetworkInformation.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.Ping.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.Quic.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.Requests.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.Security.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.ServerSentEvents.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.ServicePoint.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.Sockets.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.WebClient.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.WebHeaderCollection.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.WebProxy.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.WebSockets.Client.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Net.WebSockets.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Numerics.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Numerics.Vectors.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.ObjectModel.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Printing.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Private.Windows.Core.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Private.Windows.GdiPlus.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Reflection.DispatchProxy.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Reflection.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Reflection.Emit.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Reflection.Emit.ILGeneration.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Reflection.Emit.Lightweight.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Reflection.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Reflection.Metadata.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Reflection.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Reflection.TypeExtensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Resources.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Resources.Reader.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Resources.ResourceManager.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Resources.Writer.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.CompilerServices.Unsafe.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.CompilerServices.VisualC.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.Handles.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.InteropServices.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.InteropServices.JavaScript.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.InteropServices.RuntimeInformation.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.Intrinsics.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.Loader.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.Numerics.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.Serialization.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.Serialization.Formatters.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.Serialization.Json.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.Serialization.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Runtime.Serialization.Xml.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.AccessControl.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.Claims.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.Cryptography.Algorithms.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.Cryptography.Cng.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.Cryptography.Csp.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.Cryptography.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.Cryptography.Encoding.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.Cryptography.OpenSsl.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Security.Cryptography.Pkcs.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.Cryptography.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Security.Cryptography.ProtectedData.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.Cryptography.X509Certificates.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Security.Cryptography.Xml.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Security.Permissions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.Principal.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.Principal.Windows.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Security.SecureString.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.ServiceModel.Web.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.ServiceProcess.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Text.Encoding.CodePages.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Text.Encoding.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Text.Encoding.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Text.Encodings.Web.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Text.Json.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Text.RegularExpressions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Threading.AccessControl.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Threading.Channels.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Threading.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Threading.Overlapped.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Threading.Tasks.Dataflow.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Threading.Tasks.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Threading.Tasks.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Threading.Tasks.Parallel.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Threading.Thread.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Threading.ThreadPool.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Threading.Timer.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Transactions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Transactions.Local.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.ValueTuple.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Web.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Web.HttpUtility.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Windows.Controls.Ribbon.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Windows.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Windows.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Windows.Forms.Design.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Windows.Forms.Design.Editors.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Windows.Forms.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Windows.Forms.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Windows.Input.Manipulations.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Windows.Presentation.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Windows.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\System.Xaml.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Xml.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Xml.Linq.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Xml.ReaderWriter.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Xml.Serialization.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Xml.XDocument.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Xml.XmlDocument.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Xml.XmlSerializer.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Xml.XPath.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\ref\net10.0\System.Xml.XPath.XDocument.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\UIAutomationClient.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\UIAutomationClientSideProviders.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\UIAutomationProvider.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\UIAutomationTypes.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\WindowsBase.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\ref\net10.0\WindowsFormsIntegration.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\microsoft.windows.sdk.net.ref\10.0.26100.57\lib\net8.0\WinRT.Runtime.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\wpf-ui.abstractions\4.3.0\lib\net10.0\Wpf.Ui.Abstractions.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\wpf-ui\4.3.0\lib\net10.0-windows7.0\Wpf.Ui.dll" />
+    <ReferencePath Include="C:\Users\sonic\.nuget\packages\zstdsharp.port\0.8.7\lib\net9.0\ZstdSharp.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Controls\CurveEditor.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Controls\TriggerTravelArc.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\MainWindow.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\AboutPage.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\ColorPickerControl.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\ConfirmDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\ControllerModel2DView.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\ControllerModelView.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\ControllerSchematicView.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\Controls\LabeledShapeIcon.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\Controls\ProfilePill.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\Controls\TriggerEffectGraph.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\CopyFromDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\DashboardPage.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\DevicesPage.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\KBMPreviewView.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\ManageProfilesDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\MenuOverlayWindow.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\MidiPreviewView.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\MousePreviewControl.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\PadPage.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\PairDeviceDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\PickSoundDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\ProfileDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\ProfilesPage.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\ProfileSwitchOverlay.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\RegisterNfcTagDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\RemoteLinkPairDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\RemoteLinkPasswordDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\SettingsPage.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\ShiftActivatorDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\ShiftLayerFlyout.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\StarterProfilesDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\TouchpadGestureRecorderDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\TouchpadOverlay.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\WorkshopBrowseDialog.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\Views\WorkshopControllerPreview.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\App.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\PadForge_Content.g.cs" />
+    <Compile Include="C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\obj\Debug\net10.0-windows10.0.26100.0\win-x64\GeneratedInternalTypeHelper.g.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="C:\Program Files\dotnet\sdk\10.0.201\Sdks\Microsoft.NET.Sdk\targets\..\analyzers\Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\sdk\10.0.201\Sdks\Microsoft.NET.Sdk\targets\..\analyzers\Microsoft.CodeAnalysis.NetAnalyzers.dll" />
+    <Analyzer Include="C:\Users\sonic\.nuget\packages\communitytoolkit.mvvm\8.2.2\analyzers\dotnet\roslyn4.3\cs\CommunityToolkit.Mvvm.CodeFixers.dll" />
+    <Analyzer Include="C:\Users\sonic\.nuget\packages\communitytoolkit.mvvm\8.2.2\analyzers\dotnet\roslyn4.3\cs\CommunityToolkit.Mvvm.SourceGenerators.dll" />
+    <Analyzer Include="C:\Users\sonic\.nuget\packages\microsoft.net.illink.tasks\10.0.5\analyzers\dotnet\cs\ILLink.CodeFixProvider.dll" />
+    <Analyzer Include="C:\Users\sonic\.nuget\packages\microsoft.net.illink.tasks\10.0.5\analyzers\dotnet\cs\ILLink.RoslynAnalyzer.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\analyzers/dotnet/cs/Microsoft.Interop.ComInterfaceGenerator.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\analyzers/dotnet/cs/Microsoft.Interop.JavaScript.JSImportGenerator.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\analyzers/dotnet/cs/Microsoft.Interop.LibraryImportGenerator.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\analyzers/dotnet/cs/Microsoft.Interop.SourceGeneration.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\analyzers/dotnet/cs/System.Text.Json.SourceGeneration.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.5\analyzers/dotnet/cs/System.Text.RegularExpressions.Generator.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\analyzers/dotnet/System.Windows.Forms.Analyzers.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\analyzers/dotnet/cs/System.Windows.Forms.Analyzers.CSharp.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\10.0.5\analyzers/dotnet/cs/System.Windows.Forms.Analyzers.CodeFixes.CSharp.dll" />
+    <Analyzer Include="C:\Users\sonic\.nuget\packages\microsoft.windows.sdk.net.ref\10.0.26100.57\analyzers/dotnet/cs/WinRT.SourceGenerator.dll" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+</Project>

@@ -1954,7 +1954,20 @@ namespace PadForge.Common.Input
         // browser "Vibration, infinite" tests. xbox-series-xs-bt uses the
         // HID output path that browsers drive reliably.
         public const string DefaultXboxProfileId = "xbox-series-xs-bt";
-        public const string DefaultPlayStationProfileId = "dualshock-4-v2";
+        // dualsense-composite rather than dualshock-4-v2: it is the most
+        // capable PlayStation persona, the only one carrying the speaker,
+        // the microphone and the channel 3/4 voice-coil haptics lane, so a
+        // DualSense-aware game gets its native features on a new slot with
+        // no configuration. HM v1.4.2 renamed it "DualSense (PS5) - Full",
+        // so the picker's most-capable entry and the default now agree,
+        // which they did not when it read "(composite USB)".
+        //
+        // One first-run cost this carries that dualshock-4-v2 did not: the
+        // first composite create triggers HM's one-time embedded
+        // usbip-win2 deploy, and installing that filter restarts the USB
+        // root hubs, so every USB device blinks once. It is a one-time
+        // event per machine, not per slot.
+        public const string DefaultPlayStationProfileId = "dualsense-composite";
         // The synthetic "Custom" entry anchors Extended — new slots start
         // there with Customize auto-enabled and the user fills in the
         // VID/PID/ProductString/layout from scratch. Previous catalog-

@@ -1276,10 +1276,18 @@ namespace PadForge.Common.Input
                 return;
             }
             feed.BtMicHandle = h;
-            var dec = OpusCodecFactory.CreateDecoder(Rate, 1);
+            // STEREO, per the wire, not the protocol dump. Every mic frame
+            // carries Opus TOC 0xD4: config 26 (CELT super-wideband, 10 ms),
+            // stereo bit SET, one frame per packet. Observed stable across
+            // thousands of frames (tocVary=0). TechAntohere's dump calls the
+            // mic "48 kHz mono"; the DualSense actually encodes stereo, and
+            // a mono decoder fed a stereo packet yields noise. This hid
+            // until the pad was unmuted because silence decodes to zeros
+            // through either decoder.
+            var dec = OpusCodecFactory.CreateDecoder(Rate, BtMicChannels);
             var report = new byte[547]; // BT DS5 input caps length; 0x31 arrives in the first 78
-            var mono = new short[480];
-            var outBuf = new byte[480 * 2 * 2];
+            var pcm = new short[BtMicFrameSamples * BtMicChannels];
+            var outBuf = new byte[BtMicFrameSamples * 4];
             long lastLog = 0;
             while (!feed.BtMicStop)
             {
@@ -1302,24 +1310,50 @@ namespace PadForge.Common.Input
                     continue;
                 }
                 int n;
-                try { n = dec.Decode(report.AsSpan(3, 71), mono.AsSpan(), 480, false); }
+                try { n = dec.Decode(report.AsSpan(3, BtMicPayloadBytes), pcm.AsSpan(), BtMicFrameSamples, false); }
                 catch { continue; }
                 if (n <= 0) continue;
                 feed.BtMicRxFrames++;
-                int peak = 0;
-                for (int i = 0; i < n; i++) { int a = mono[i]; if (a < 0) a = -a; if (a > peak) peak = a; }
+                int samples = n * BtMicChannels;
+                int peak = 0; long sumSq = 0;
+                for (int i = 0; i < samples; i++) { int a = pcm[i]; if (a < 0) a = -a; if (a > peak) peak = a; sumSq += (long)pcm[i] * pcm[i]; }
                 if (peak > _btMicPeak) _btMicPeak = peak;
+                // Decode-correctness probe: the Opus TOC (first payload
+                // byte) encodes config/stereo/frame-count and is near
+                // constant for a fixed-format stream. A stable TOC means
+                // the 71-byte frame is being read at the right offset; a
+                // scattered TOC means we are feeding the decoder bytes
+                // that are not the start of an Opus packet, which decodes
+                // as noise while silence frames still decode to zeros.
+                _btMicToc = report[3];
+                if (report[3] != _btMicTocFirst) { if (_btMicTocFirst == 0xFFFF) _btMicTocFirst = report[3]; else _btMicTocVary++; }
+                _btMicRmsAcc += sumSq / Math.Max(1, samples);
+                _btMicRmsCount++;
                 var mic = feed.Audio.Microphone;
                 float gain = feed.MicMuted ? 0f : feed.MicGain;
+                // The composite's capture endpoint is 2 ch / 48 kHz, the
+                // same shape the pad encodes, so stereo passes straight
+                // through. A mono endpoint gets the channel average.
                 int outCh = Math.Max(1, mic.Channels);
                 for (int i = 0; i < n; i++)
                 {
-                    short s16 = (short)Math.Clamp(mono[i] * gain, short.MinValue, short.MaxValue);
-                    for (int c = 0; c < outCh; c++)
+                    if (outCh >= BtMicChannels)
                     {
-                        int o = (i * outCh + c) * 2;
-                        outBuf[o] = (byte)s16;
-                        outBuf[o + 1] = (byte)(s16 >> 8);
+                        for (int c = 0; c < outCh; c++)
+                        {
+                            int src = i * BtMicChannels + Math.Min(c, BtMicChannels - 1);
+                            short s16 = (short)Math.Clamp(pcm[src] * gain, short.MinValue, short.MaxValue);
+                            int o = (i * outCh + c) * 2;
+                            outBuf[o] = (byte)s16;
+                            outBuf[o + 1] = (byte)(s16 >> 8);
+                        }
+                    }
+                    else
+                    {
+                        int mix = (pcm[i * BtMicChannels] + pcm[i * BtMicChannels + 1]) / 2;
+                        short s16 = (short)Math.Clamp(mix * gain, short.MinValue, short.MaxValue);
+                        outBuf[i * 2] = (byte)s16;
+                        outBuf[i * 2 + 1] = (byte)(s16 >> 8);
                     }
                 }
                 mic.Submit(outBuf.AsSpan(0, n * outCh * 2));
@@ -1327,6 +1361,12 @@ namespace PadForge.Common.Input
                 if (now2 - lastLog >= 2000)
                 {
                     lastLog = now2;
+                    int rms = _btMicRmsCount > 0 ? (int)Math.Sqrt(_btMicRmsAcc / _btMicRmsCount) : 0;
+                    _btMicRmsAcc = 0; _btMicRmsCount = 0;
+                    Engine.SdlDiagLog.WriteLine("PERSONA mic rms=" + rms + " peak=" + _btMicPeak
+                        + " toc=0x" + _btMicToc.ToString("X2")
+                        + " tocFirst=0x" + (_btMicTocFirst == 0xFFFF ? 0 : _btMicTocFirst).ToString("X2")
+                        + " tocVary=" + _btMicTocVary);
                     byte st = _btMicPadStatus;
                     Engine.SdlDiagLog.WriteLine("PERSONA mic padMuted=" + ((st & 0x04) != 0)
                         + " padMicPlugged=" + ((st & 0x02) != 0)
@@ -1368,6 +1408,15 @@ namespace PadForge.Common.Input
         /// <summary>Last audio-status byte seen on a plain state report
         /// from the BT mic pad (duaLib input offset 53).</summary>
         private static volatile byte _btMicPadStatus;
+        /// <summary>DualSense BT mic frame shape, read off the wire: one
+        /// 71-byte Opus packet per input report, CELT 10 ms, STEREO.</summary>
+        private const int BtMicChannels = 2;
+        private const int BtMicFrameSamples = 480;   // 10 ms at 48 kHz
+        private const int BtMicPayloadBytes = 71;
+
+        private static byte _btMicToc;
+        private static int _btMicTocFirst = 0xFFFF, _btMicTocVary;
+        private static long _btMicRmsAcc; private static int _btMicRmsCount;
 
         private static PersonaFeed FindFeedForBtMicPad(Guid padGuid)
         {

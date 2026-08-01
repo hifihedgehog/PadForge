@@ -163,18 +163,16 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void BtBothLanes_OnlyForHeadsetAndSpeaker()
+        public void BtNeverDualSends_OneReportIdIsOneStream()
         {
-            // Doubling the report rate is a real bandwidth cost; it must
-            // never leak onto the single-sink paths.
-            Assert.True(AudioPassthroughService.Ds5BtWantsBothLanes(
-                (int)AudioOutputPath.HeadsetAndSpeaker));
-            Assert.False(AudioPassthroughService.Ds5BtWantsBothLanes(
-                (int)AudioOutputPath.Automatic));
-            Assert.False(AudioPassthroughService.Ds5BtWantsBothLanes(
-                (int)AudioOutputPath.StereoHeadset));
-            Assert.False(AudioPassthroughService.Ds5BtWantsBothLanes(
-                (int)AudioOutputPath.SpeakerOnly));
+            // The first cut sent Headset + Speaker on both lanes, two 0x35
+            // reports per tick on one seq counter: each lane's stream saw
+            // +2 sequence jumps and the firmware garbled it, the documented
+            // 2026-07-31 warble signature, heard again by the owner on
+            // hardware. One report id carries ONE stream. The split path
+            // rides the headset lane plus the OutputPathSelect register.
+            foreach (AudioOutputPath p in System.Enum.GetValues<AudioOutputPath>())
+                Assert.False(AudioPassthroughService.Ds5BtWantsBothLanes((int)p));
         }
 
         [Fact]

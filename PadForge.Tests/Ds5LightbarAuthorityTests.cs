@@ -1,4 +1,4 @@
-using PadForge.Common.Input;
+﻿using PadForge.Common.Input;
 using PadForge.ViewModels;
 using Xunit;
 
@@ -245,6 +245,8 @@ namespace PadForge.Tests
 
         private const byte EnableMicLight = 0x01;
         private const byte EnableAudioMuteControl = 0x02;
+        private const byte EnableMicVolume = 0x40;        // validFlag0 bit 6
+        private const byte MicVolumeMax = 0x40;
 
         [Fact]
         public void MicLight_IsAssertedWhenTheCallerWantsIt()
@@ -270,7 +272,7 @@ namespace PadForge.Tests
         public void AudioMuteControl_IsAssertedDuringTheClaimBurst()
         {
             var fields = Ds5EffectSynthesizer.BuildFields(
-                IdleConfig(), playerNumber: 3, assertAudioMuteControl: true);
+                IdleConfig(), playerNumber: 3, assertAudioHardwareClaim: true);
             Assert.Equal(EnableAudioMuteControl, Vf1(fields) & EnableAudioMuteControl);
         }
 
@@ -393,6 +395,58 @@ namespace PadForge.Tests
             Assert.False(frame2.Assert);
         }
 
+        // ── Mic hardware volume (byte 6), the missing half ──
+        //
+        // Owner report 2026-08-01: the pad's mic was quiet, recovered on a
+        // controller power cycle, and no PadForge change explained it. Every
+        // Sony profile DECLARES micVolume, but PadForge never wrote it and
+        // never asserted validFlag0 bit 6, so the pad kept whatever gain its
+        // last owner left and nothing here could raise it. duaLib documents
+        // the byte as "not linier, seems to max at 64, 0 is not fully muted",
+        // which is why a zeroed register reads as QUIET rather than silent.
+        //
+        // Owner ruling: the hardware register stays at maximum. Attenuation
+        // belongs to Windows and our own gain stage.
+
+        [Fact]
+        public void MicVolume_IsAlwaysCarriedAtMaximum()
+        {
+            // Written on EVERY packet, claim or not, so a stray enable bit
+            // can never apply a zero from an undeclared field.
+            foreach (bool claim in new[] { true, false })
+            {
+                var f = Ds5EffectSynthesizer.BuildFields(
+                    IdleConfig(), playerNumber: 3, assertAudioHardwareClaim: claim);
+                Assert.Equal(MicVolumeMax, (byte)f["micVolume"]);
+            }
+        }
+
+        [Fact]
+        public void MicVolume_EnableRidesTheClaim_NotEveryTick()
+        {
+            // Same retain-on-idle rule as every other authority bit. duaLib
+            // asserts AllowMicVolume on a change or a reconnect and clears it
+            // otherwise (duaLib.cpp:613).
+            var claimed = Ds5EffectSynthesizer.BuildFields(
+                IdleConfig(), playerNumber: 3, assertAudioHardwareClaim: true);
+            var idle = Ds5EffectSynthesizer.BuildFields(
+                IdleConfig(), playerNumber: 3, assertAudioHardwareClaim: false);
+
+            Assert.Equal(EnableMicVolume, (byte)claimed["validFlag0"] & EnableMicVolume);
+            Assert.Equal(0, (byte)idle["validFlag0"] & EnableMicVolume);
+        }
+
+        [Fact]
+        public void MicVolume_AndUnmute_RideTheSameClaim()
+        {
+            // Both are 'put this pad's audio hardware into a known-good state
+            // when we take it'. They must not drift apart.
+            var f = Ds5EffectSynthesizer.BuildFields(
+                IdleConfig(), playerNumber: 3, assertAudioHardwareClaim: true);
+            Assert.Equal(EnableAudioMuteControl, Vf1(f) & EnableAudioMuteControl);
+            Assert.Equal(EnableMicVolume, (byte)f["validFlag0"] & EnableMicVolume);
+        }
+
         [Fact]
         public void AudioMuteControl_ReleasesAfterTheBurst()
         {
@@ -401,7 +455,7 @@ namespace PadForge.Tests
             // external mute within one dispatch frame. duaLib asserts it
             // in letGo alone (duaLib.cpp:180), never in its steady loop.
             var fields = Ds5EffectSynthesizer.BuildFields(
-                IdleConfig(), playerNumber: 3, assertAudioMuteControl: false);
+                IdleConfig(), playerNumber: 3, assertAudioHardwareClaim: false);
             Assert.Equal(0, Vf1(fields) & EnableAudioMuteControl);
         }
     }

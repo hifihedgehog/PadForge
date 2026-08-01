@@ -1593,6 +1593,14 @@ namespace PadForge.ViewModels
         MonoHeadset = 2,        // path 1, L_L_X (left channel, both ears)
         HeadsetAndSpeaker = 3,  // path 2, L_L_R (headset side is MONO)
         SpeakerOnly = 4,        // path 3, X_X_R
+
+        /// <summary>DS5_Bridge's pattern (set_headset /
+        /// bt_rearm_speaker_output_route): follow the pad's own jack
+        /// detect, headphones while plugged, speaker while not. Jack
+        /// state arrives on the Bluetooth raw lane
+        /// (PluggedHeadphones, input status byte bit 0); with no
+        /// reading (USB, or no persona lane) it resolves to Default.</summary>
+        FollowHeadphoneJack = 5,
     }
 
     public enum MicLedMode

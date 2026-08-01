@@ -1098,6 +1098,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_OutputPath_Mono => Get("Pad_Audio_OutputPath_Mono");
     public string Pad_Audio_OutputPath_Both => Get("Pad_Audio_OutputPath_Both");
     public string Pad_Audio_OutputPath_SpeakerOnly => Get("Pad_Audio_OutputPath_SpeakerOnly");
+    public string Pad_Audio_OutputPath_FollowJack => Get("Pad_Audio_OutputPath_FollowJack");
     public string Pad_ResetOutputPath => Get("Pad_ResetOutputPath");
     public string MacroAction_Type_HeadphoneVolumeUp => Get("MacroAction_Type_HeadphoneVolumeUp");
     public string MacroAction_Type_HeadphoneVolumeDown => Get("MacroAction_Type_HeadphoneVolumeDown");

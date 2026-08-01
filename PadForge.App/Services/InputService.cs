@@ -1022,7 +1022,9 @@ namespace PadForge.Services
                 foreach (var padVm in _mainVm.Pads)
                 {
                     var cfg = padVm.PeekDeviceConfig(deviceGuid);
-                    if (cfg != null) return (int)cfg.AudioOutputPath;
+                    if (cfg != null)
+                        return AudioPassthroughService.ResolveOutputPath(
+                            (int)cfg.AudioOutputPath, deviceGuid);
                 }
                 return 0;
             };

@@ -2968,11 +2968,12 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Erhöht die Lautstärke der Headset-Buchse des Controllers um 10 %.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Verringert die Lautstärke der Headset-Buchse des Controllers um 10 %.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Ausgabepfad</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Wo der Controller seinen Ton ausgibt. Standard behält das Routing der Firmware bei und gibt PadForge-Sounds über den Lautsprecher aus. Kopfhörer + Lautsprecher gibt auf der Headset-Seite mono aus, eine Firmware-Grenze. Über Bluetooth spielt dieser Modus nur über die Kopfhörer.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Wo der Controller seinen Ton ausgibt. Standard behält das Routing der Firmware bei und gibt PadForge-Sounds über den Lautsprecher aus. Kopfhörer + Lautsprecher gibt auf der Headset-Seite mono aus, eine Firmware-Grenze. Über Bluetooth spielt dieser Modus nur über die Kopfhörer. Kopfhörerbuchse folgen wechselt zu Kopfhörern, sobald etwas eingesteckt wird, und zurück zum Lautsprecher beim Abziehen; erfordert Bluetooth, sonst wie Standard.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Standard</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Kopfhörer (Stereo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Kopfhörer (Mono)</value></data>
   <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>Kopfhörer + Lautsprecher</value></data>
   <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Nur Lautsprecher</value></data>
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Ausgabepfad zurücksetzen</value></data>
+  <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Kopfhörerbuchse folgen</value></data>
 </root>

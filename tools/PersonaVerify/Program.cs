@@ -60,8 +60,16 @@ internal static class Program
 
         long logStart = LogLength(diagPath);
 
-        if (render != null) RenderPhases(render, diagPath, logStart);
+        // Capture FIRST, in a quiet window. The pad's microphone sits
+        // centimetres from its speaker, so measuring capture right after
+        // rendering a test tone reads the tone back acoustically: on
+        // 2026-07-31 that produced rms 0.5751 at crest 1.7x, which is the
+        // signature of a sine (1.41x), not of noise (3-4x), and tripped
+        // the noise heuristic. The coupling is real and is itself weak
+        // evidence both lanes work, but it must not contaminate the
+        // capture verdict.
         if (capture != null) CaptureCheck(capture);
+        if (render != null) RenderPhases(render, diagPath, logStart);
 
         Console.WriteLine("\n──────── RESULTS ────────");
         foreach (var (name, pass, detail) in Results)
@@ -156,6 +164,10 @@ internal static class Program
         // (~4x), because randomized samples fill the range uniformly. Real
         // capture keeps a high crest factor even when quiet. Silence is a
         // dead lane (muted pad, or nothing feeding it).
+        // Crest factor is the discriminator: randomized samples fill the
+        // range uniformly (3-4x), real capture stays peaky even when
+        // quiet (>6x). A loud PURE TONE also sits low (~1.41x), so this
+        // check only runs in the quiet window before any render.
         bool silence = rms < 0.0005;
         bool noise = rms > 0.25 && crest < 6.0;
         Check("capture is not silence", !silence, $"rms={rms:F4}");

@@ -1365,7 +1365,7 @@ namespace PadForge.Common.Input
                 {
                     for (int i = 0; i < n; i++)
                     {
-                        short s16 = (short)(Math.Sin(_micTonePhase) * 16000);
+                        short s16 = (short)(Math.Sin(_micTonePhase) * _micToneAmp);
                         _micTonePhase += 2 * Math.PI * 440.0 / Rate;
                         if (_micTonePhase > 2 * Math.PI) _micTonePhase -= 2 * Math.PI;
                         for (int c = 0; c < outCh; c++)
@@ -1376,11 +1376,52 @@ namespace PadForge.Common.Input
                         }
                     }
                 }
-                mic.Submit(outBuf.AsSpan(0, n * outCh * 2));
+                // Measure EXACTLY what leaves us, post-gain and post-
+                // interleave, so the submitted bytes can be compared with
+                // a consumer-side capture without inference.
+                int subBytes = n * outCh * 2;
+                long subSq = 0; int subPeak = 0;
+                for (int i = 0; i + 1 < subBytes; i += 2)
+                {
+                    short v = (short)(outBuf[i] | (outBuf[i + 1] << 8));
+                    int a = v < 0 ? -v : v;
+                    if (a > subPeak) subPeak = a;
+                    subSq += (long)v * v;
+                }
+                _subRmsAcc += subSq / Math.Max(1, subBytes / 2);
+                _subRmsCount++;
+                if (subPeak > _subPeak) _subPeak = subPeak;
+                // Submit WHOLE blocks only. HM's mic ring truncates a submit
+                // to its free byte count, and that count is computed as
+                // (capacity - 1 - buffered), so it can be ODD. A partial
+                // copy ending mid-frame misaligns the ring permanently:
+                // every later sample is then read one byte off, the low
+                // byte becomes the high byte, and quiet audio arrives as a
+                // full-scale sawtooth. Diagnosed 2026-07-31 by submitting a
+                // known 440 Hz sine at amplitude 1000 and reading the
+                // captured samples back: a ramp stepping +0.445 per sample
+                // and wrapping at +/-1, which is exactly our per-sample
+                // delta (57 units) promoted by 256. Dropping a whole block
+                // costs 10 ms of capture and keeps the stream aligned;
+                // letting it truncate costs every sample thereafter.
+                if (MicSubmitFits(mic.BufferedBytes, subBytes))
+                {
+                    mic.Submit(outBuf.AsSpan(0, subBytes));
+                }
+                else
+                {
+                    _micBlocksDropped++;
+                }
                 long now2 = Environment.TickCount64;
                 if (now2 - lastLog >= 2000)
                 {
                     lastLog = now2;
+                    int subRms = _subRmsCount > 0 ? (int)Math.Sqrt(_subRmsAcc / _subRmsCount) : 0;
+                    Engine.SdlDiagLog.WriteLine("PERSONA mic blocksDropped=" + _micBlocksDropped
+                        + " buffered=" + mic.BufferedBytes + "/" + HmMicRingBytes);
+                    Engine.SdlDiagLog.WriteLine("PERSONA mic SUBMITTED rms=" + subRms
+                        + " peak=" + _subPeak + "  (normalized rms=" + (subRms / 32768.0).ToString("F4") + ")");
+                    _subRmsAcc = 0; _subRmsCount = 0; _subPeak = 0;
                     int rms = _btMicRmsCount > 0 ? (int)Math.Sqrt(_btMicRmsAcc / _btMicRmsCount) : 0;
                     _btMicRmsAcc = 0; _btMicRmsCount = 0;
                     Engine.SdlDiagLog.WriteLine("PERSONA mic rms=" + rms + " peak=" + _btMicPeak
@@ -1459,17 +1500,38 @@ namespace PadForge.Common.Input
         ///   mono   -> peak 0.2207, rms 0.0208, 0% near full scale
         /// Change this constant only with a consumer-side measurement in
         /// hand, never from the TOC.</summary>
-        private const int BtMicChannels = 1;
+        internal const int BtMicChannels = 1;
         private const int BtMicFrameSamples = 480;   // 10 ms at 48 kHz
         private const int BtMicPayloadBytes = 71;
 
         private static readonly bool _micToneProbe =
-            Environment.GetEnvironmentVariable("PADFORGE_MICTONE") == "1";
+            !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PADFORGE_MICTONE"));
         private static double _micTonePhase;
+        /// <summary>PADFORGE_MICTONE carries the amplitude, so transparency
+        /// can be probed at the LEVEL real speech actually arrives at, not
+        /// only at a loud one.</summary>
+        private static readonly int _micToneAmp =
+            int.TryParse(Environment.GetEnvironmentVariable("PADFORGE_MICTONE"), out var a) && a > 1 ? a : 16000;
 
         private static byte _btMicToc;
         private static int _btMicTocFirst = 0xFFFF, _btMicTocVary;
         private static long _btMicRmsAcc; private static int _btMicRmsCount;
+        private static long _subRmsAcc; private static int _subRmsCount, _subPeak;
+        private static long _micBlocksDropped;
+        /// <summary>HM's microphone ring capacity: UsbAudioEngine sizes it
+        /// micBytesPerInterval * 256, and the DualSense interval is
+        /// 48 samples * 2 ch * 2 bytes = 192.</summary>
+        internal const int HmMicRingBytes = 192 * 256;
+
+        /// <summary>True when a whole block fits HM's mic ring, so the
+        /// submit cannot be truncated mid-frame. HM computes its free
+        /// space as (capacity - 1 - buffered) and silently copies only
+        /// that many bytes, and the -1 makes the figure ODD, so a
+        /// truncated submit ends mid-sample and misaligns the ring for
+        /// good. Dropping a whole 10 ms block instead keeps every later
+        /// sample aligned.</summary>
+        internal static bool MicSubmitFits(int bufferedBytes, int blockBytes)
+            => HmMicRingBytes - 1 - bufferedBytes >= blockBytes;
 
         private static PersonaFeed FindFeedForBtMicPad(Guid padGuid)
         {
@@ -2358,7 +2420,7 @@ namespace PadForge.Common.Input
             // answer is that open is NOT latched.
             report[2] = 0x11 | 0x80;
             report[3] = 7;
-            report[4] = s.Ds5MicOpen == 1 ? (byte)0xFF : (byte)0xFE;
+            report[4] = Ds5MicSessionByte(s.Ds5MicOpen == 1);
             report[9] = 0xFF;
             report[10] = s.Ds5PktCounter++;
             // packet 0x13: speaker audio lane (0x16 = headset jack), one
@@ -2390,7 +2452,7 @@ namespace PadForge.Common.Input
         }
 
         private const int Ds5HapticFramesPerTick = 512;  // 48 kHz frames per 10.667 ms tick
-        private const int Ds5HapticBtReportSize = 142;   // report 0x32 wire size (Sony BT: 0x31=78, +64 per ID)
+        internal const int Ds5HapticBtReportSize = 142;   // report 0x32 wire size (Sony BT: 0x31=78, +64 per ID)
 
         /// <summary>Ship one tick of authored haptics as its own report
         /// 0x32 carrying packets 0x11 + 0x12, the exact shape SAxense and
@@ -2403,24 +2465,36 @@ namespace PadForge.Common.Input
         /// ffmpeg -ar 3000 -f s8). Shares the sink's rolling seq and
         /// packet counter with the speaker report so the multiplexed
         /// transport sees one monotonic sequence.</summary>
-        private static void SendDs5BtHapticFrame(Sink s, short[] pcm, byte[] report)
-        {
-            if (!_personaHapticRings.TryGetValue(s.DeviceGuid, out var ring)) return;
-            if (ring.FramesAvailable < Ds5HapticFramesPerTick) return; // whole ticks only
-            ring.ReadFrames(pcm, Ds5HapticFramesPerTick);
+        /// <summary>Mic session command carried in every audio report's
+        /// packet 0x11 header (payload byte 0). 0xFF opens, 0xFE closes.
+        /// It MUST follow the live session: mic-open is NOT latched, so a
+        /// steady 0xFE in the speaker/haptic streams re-closes a mic the
+        /// persona just opened. Found by PersonaVerify 2026-07-31, capture
+        /// rms fell 0.0556 to 0.0000 the moment rendering started.</summary>
+        internal static byte Ds5MicSessionByte(bool micOpen) => micOpen ? (byte)0xFF : (byte)0xFE;
 
+        /// <summary>Pure builder for the report 0x32 haptics frame
+        /// (packets 0x11 + 0x12), CRC included. Returns true when the
+        /// decimated block carries signal. Extracted as a test seam so the
+        /// wire format is pinned by PadForge.Tests: the per-stream
+        /// sequence, the mic-session byte, the 16-block-mean s8
+        /// decimation, and the CRC placement have each regressed once.
+        /// Deterministic: no clock, no I/O, no shared state.</summary>
+        internal static bool BuildDs5BtHapticReport(byte[] report, int seq, byte pktCounter,
+                                                    bool micOpen, ReadOnlySpan<short> pcm)
+        {
             Array.Clear(report, 0, Ds5HapticBtReportSize);
             report[0] = 0x32;
-            report[1] = (byte)((s.Ds5HapticSeq & 0x0F) << 4);
-            // packet 0x11: session header, byte-identical to the speaker
-            // report's (SAxense default, no handshake). Counter is this
-            // stream's own, see the Sink field note.
+            report[1] = (byte)((seq & 0x0F) << 4);
+            // packet 0x11: session header (SAxense default, no handshake).
+            // This stream carries its OWN counter, never the speaker's.
             report[2] = 0x11 | 0x80;
             report[3] = 7;
-            report[4] = s.Ds5MicOpen == 1 ? (byte)0xFF : (byte)0xFE;  // keep the mic session alive
+            report[4] = Ds5MicSessionByte(micOpen);
             report[9] = 0xFF;
-            report[10] = s.Ds5HapticPktCounter;
-            // packet 0x12: 64 bytes of s8 stereo 3 kHz actuator PCM.
+            report[10] = pktCounter;
+            // packet 0x12: 64 bytes of s8 stereo 3 kHz actuator PCM,
+            // decimated 16:1 from the 48 kHz tick by block mean.
             report[11] = 0x12 | 0x80;
             report[12] = 64;
             bool signal = false;
@@ -2435,6 +2509,32 @@ namespace PadForge.Common.Input
                 report[14 + o * 2] = r;
                 if (l != 0 || r != 0) signal = true;
             }
+            uint c = Crc32(report, Ds5HapticBtReportSize - 4);
+            report[Ds5HapticBtReportSize - 4] = (byte)(c & 0xFF);
+            report[Ds5HapticBtReportSize - 3] = (byte)((c >> 8) & 0xFF);
+            report[Ds5HapticBtReportSize - 2] = (byte)((c >> 16) & 0xFF);
+            report[Ds5HapticBtReportSize - 1] = (byte)(c >> 24);
+            return signal;
+        }
+
+        /// <summary>Classifies a consumer-side capture measurement. Full
+        /// scale noise shows a HIGH rms with a LOW crest factor, because
+        /// randomized samples fill the range uniformly, whereas real
+        /// capture stays peaky even when quiet. Shared shape with
+        /// tools/PersonaVerify.</summary>
+        internal static string ClassifyCapture(double rms, double crest)
+            => rms < 0.0005 ? "silence"
+             : (rms > 0.25 && crest < 6.0) ? "noise"
+             : "audio";
+
+        private static void SendDs5BtHapticFrame(Sink s, short[] pcm, byte[] report)
+        {
+            if (!_personaHapticRings.TryGetValue(s.DeviceGuid, out var ring)) return;
+            if (ring.FramesAvailable < Ds5HapticFramesPerTick) return; // whole ticks only
+            ring.ReadFrames(pcm, Ds5HapticFramesPerTick);
+
+            bool signal = BuildDs5BtHapticReport(report, s.Ds5HapticSeq, s.Ds5HapticPktCounter,
+                                                 s.Ds5MicOpen == 1, pcm);
 
             // Silence gate, mirror of the speaker lane's: keep a 2 s
             // hangover so short gaps stay continuous, then stop sending
@@ -2443,13 +2543,9 @@ namespace PadForge.Common.Input
             long nowTicks = Environment.TickCount64;
             if (signal) s.Ds5HapticAudibleTicks = nowTicks;
             else if (nowTicks - s.Ds5HapticAudibleTicks > 2000) return;
+            // The builder already stamped the CRC over the final bytes.
             s.Ds5HapticSeq = (s.Ds5HapticSeq + 1) & 0x0F;
             s.Ds5HapticPktCounter++;
-            uint crc = Crc32(report, Ds5HapticBtReportSize - 4);
-            report[Ds5HapticBtReportSize - 4] = (byte)(crc & 0xFF);
-            report[Ds5HapticBtReportSize - 3] = (byte)((crc >> 8) & 0xFF);
-            report[Ds5HapticBtReportSize - 2] = (byte)((crc >> 16) & 0xFF);
-            report[Ds5HapticBtReportSize - 1] = (byte)(crc >> 24);
 
             bool hardFail = false;
             bool sent = s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out hardFail);

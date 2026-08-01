@@ -5159,6 +5159,7 @@ namespace PadForge.ViewModels
                     DeviceConfig.AudioToneFilterMode = "Off";
                     DeviceConfig.AudioToneLimitHz = 800;
                     DeviceConfig.HeadphoneVolume = 100;
+                    DeviceConfig.AudioOutputPath = AudioOutputPath.Automatic;
                     OnPropertyChanged(nameof(MirrorEngageSelectedInput));
                 }
             });

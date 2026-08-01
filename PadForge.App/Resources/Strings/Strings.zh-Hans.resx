@@ -2967,4 +2967,12 @@
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>调低耳机音量</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>将手柄耳机接口的音量提高 10%。</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>将手柄耳机接口的音量降低 10%。</value></data>
+  <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>输出路径</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>手柄音频的播放位置。自动由固件决定，并将 PadForge 声音发往扬声器。耳机+扬声器时耳机侧为单声道（固件限制）。</value></data>
+  <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>自动</value></data>
+  <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>耳机（立体声）</value></data>
+  <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>耳机（单声道）</value></data>
+  <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>耳机 + 扬声器</value></data>
+  <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>仅扬声器</value></data>
+  <data name="Pad_ResetOutputPath" xml:space="preserve"><value>重置输出路径</value></data>
 </root>

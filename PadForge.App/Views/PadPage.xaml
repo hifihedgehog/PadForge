@@ -11326,6 +11326,25 @@
                                     <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                     <ui:Button Command="{Binding DeviceConfig.ResetHeadphoneVolumeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetHeadphoneVolume, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+                                <!-- Output path (byte 7 bits 4-5, OutputPathSelect). Enum
+                                     values 1-4 map to firmware paths 0-3; Automatic writes
+                                     nothing and keeps the #83 macro-speaker behaviour. An
+                                     explicit choice here OWNS the byte: the macro-speaker
+                                     block yields its path half and keeps volume only. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                            Visibility="{Binding SelectedDeviceHasHeadphoneJack, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Pad_Audio_OutputPath, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedIndex="{Binding DeviceConfig.AudioOutputPath, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                              Width="340" VerticalAlignment="Center"
+                                              ToolTip="{Binding Pad_Audio_OutputPath_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding Pad_Audio_OutputPath_Auto, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Audio_OutputPath_Stereo, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Audio_OutputPath_Mono, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Audio_OutputPath_Both, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Audio_OutputPath_SpeakerOnly, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                    <ui:Button Command="{Binding DeviceConfig.ResetAudioOutputPathCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetOutputPath, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Button Content="{Binding Pad_Audio_Test, Source={x:Static strings:Strings.Instance}}"
                                             Command="{Binding SoundTestCommand}" Padding="10,4" VerticalAlignment="Center"

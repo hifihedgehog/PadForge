@@ -2967,4 +2967,12 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Diminuir volume dos fones</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Aumenta em 10% o volume do conector de fone do controle.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Diminui em 10% o volume do conector de fone do controle.</value></data>
+  <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Caminho de saída</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Onde o controle reproduz o áudio. Automático deixa o firmware decidir e envia os sons do PadForge ao alto-falante. Fones + Alto-falante reproduz em mono no lado do fone, um limite do firmware.</value></data>
+  <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Automático</value></data>
+  <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Fones (estéreo)</value></data>
+  <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Fones (mono)</value></data>
+  <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>Fones + Alto-falante</value></data>
+  <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Somente alto-falante</value></data>
+  <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Redefinir caminho de saída</value></data>
 </root>

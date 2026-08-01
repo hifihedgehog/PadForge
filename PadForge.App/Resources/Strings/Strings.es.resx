@@ -2967,4 +2967,12 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Bajar volumen de auriculares</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Sube un 10 % el volumen del conector de auriculares del mando.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Baja un 10 % el volumen del conector de auriculares del mando.</value></data>
+  <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Ruta de salida</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Dónde reproduce el mando su audio. Automático deja decidir al firmware y envía los sonidos de PadForge al altavoz. Auriculares + Altavoz reproduce en mono en los auriculares, un límite del firmware.</value></data>
+  <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Automático</value></data>
+  <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Auriculares (estéreo)</value></data>
+  <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Auriculares (mono)</value></data>
+  <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>Auriculares + Altavoz</value></data>
+  <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Solo altavoz</value></data>
+  <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Restablecer ruta de salida</value></data>
 </root>

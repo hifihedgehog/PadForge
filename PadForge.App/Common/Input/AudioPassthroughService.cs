@@ -2347,10 +2347,18 @@ namespace PadForge.Common.Input
             report[0] = 0x35;
             report[1] = (byte)((s.Ds5Seq & 0x0F) << 4);
             s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
-            // packet 0x11: session header (SAxense default — no handshake)
+            // packet 0x11: session header (SAxense default, no handshake).
+            // Byte 4 is the mic session command: 0xFE closes, 0xFF opens.
+            // It MUST track the live mic session, because every audio
+            // report carries this header and a steady 0xFE re-closes a mic
+            // the persona just opened. Proven by PersonaVerify on
+            // 2026-07-31: rendering audio silenced the capture endpoint
+            // (rms 0.0556 -> 0.0000) until this followed Ds5MicOpen. The
+            // TechAntohere dump left this as an open question and the
+            // answer is that open is NOT latched.
             report[2] = 0x11 | 0x80;
             report[3] = 7;
-            report[4] = 0xFE;
+            report[4] = s.Ds5MicOpen == 1 ? (byte)0xFF : (byte)0xFE;
             report[9] = 0xFF;
             report[10] = s.Ds5PktCounter++;
             // packet 0x13: speaker audio lane (0x16 = headset jack), one
@@ -2409,7 +2417,7 @@ namespace PadForge.Common.Input
             // stream's own, see the Sink field note.
             report[2] = 0x11 | 0x80;
             report[3] = 7;
-            report[4] = 0xFE;
+            report[4] = s.Ds5MicOpen == 1 ? (byte)0xFF : (byte)0xFE;  // keep the mic session alive
             report[9] = 0xFF;
             report[10] = s.Ds5HapticPktCounter;
             // packet 0x12: 64 bytes of s8 stereo 3 kHz actuator PCM.

@@ -312,6 +312,12 @@ namespace PadForge.Common.Input
         private const int AudioMuteBurstFrames = 60;
         private readonly Dictionary<Guid, int> _audioMuteBurstLeft = new();
 
+        // Last headphone volume written per device, duaLib-style change
+        // gating (duaLib.cpp:617 asserts AllowHeadphoneVolume on change
+        // or reconnect and clears it otherwise). The VALUE ships every
+        // packet; only the enable bit is gated on this.
+        private readonly Dictionary<Guid, int> _prevHeadphoneVolume = new();
+
         // Devices this dispatcher wrote on its previous dispatch as their
         // OWNER (single-writer ownership, owner facts 2026-07-20). On the
         // first owned dispatch of a device the prev-state maps above are
@@ -491,6 +497,7 @@ namespace PadForge.Common.Input
                     _prevPadForgeWantsMicLed.Remove(g);
                     _prevPadForgeWantsPips.Remove(g);
                     _audioMuteBurstLeft.Remove(g);
+                    _prevHeadphoneVolume.Remove(g);
                 }
             }
 
@@ -1559,6 +1566,8 @@ namespace PadForge.Common.Input
                         // have left the pad hardware-muted, so a fresh
                         // claim re-arms the bounded unmute burst.
                         _audioMuteBurstLeft[ud.InstanceGuid] = AudioMuteBurstFrames;
+                        // Force one headphone-volume write on a fresh claim.
+                        _prevHeadphoneVolume.Remove(ud.InstanceGuid);
                     }
 
                     // Identity precedence: a pad shared across virtual
@@ -1802,6 +1811,16 @@ namespace PadForge.Common.Input
                         ? mb : AudioMuteBurstFrames;
                     bool assertAudioMute = muteBurst > 0;
                     _audioMuteBurstLeft[ud.InstanceGuid] = muteBurst > 0 ? muteBurst - 1 : 0;
+
+                    // Headphone volume: assert the enable bit while the
+                    // audio-hardware claim burst runs or when the configured
+                    // value changed (slider, macro, profile apply). Idle,
+                    // the bit stays clear and the firmware retains state.
+                    int hpVol = devCfg?.HeadphoneVolume ?? 100;
+                    bool hpChanged = !_prevHeadphoneVolume.TryGetValue(ud.InstanceGuid, out var prevHp)
+                        || prevHp != hpVol;
+                    _prevHeadphoneVolume[ud.InstanceGuid] = hpVol;
+                    bool assertHeadphone = assertAudioMute || hpChanged;
                     // Track whether THIS tick wrote a trigger effect for
                     // either source — PadForge cfg OR a dispatcher-injected
                     // override (external mirror, impulse-trigger → AT
@@ -1866,7 +1885,7 @@ namespace PadForge.Common.Input
                                 rR, rL, assertRumbleEnable,
                                 assertRightTrig, assertLeftTrig, devOverrides, pctByte,
                                 devPlayerNumber, assertMicLed, assertAudioMute,
-                                assertPips)
+                                assertPips, hpVol, assertHeadphone)
                             : Ds4EffectSynthesizer.BuildFields(
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,

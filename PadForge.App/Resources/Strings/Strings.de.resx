@@ -2960,4 +2960,11 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Starter_Layer_Party" xml:space="preserve"><value>Gruppe</value></data>
   <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Schnellzugriff</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Stumm (sendet nichts)</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>Kopfhörerlautstärke</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>Hardware-Lautstärke der Headset-Buchse des Controllers. Wird auf das Pad geschrieben und bleibt daher ohne laufende App erhalten.</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>Kopfhörerlautstärke zurücksetzen</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>Kopfhörerlautstärke erhöhen</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Kopfhörerlautstärke verringern</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Erhöht die Lautstärke der Headset-Buchse des Controllers um 10 %.</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Verringert die Lautstärke der Headset-Buchse des Controllers um 10 %.</value></data>
 </root>

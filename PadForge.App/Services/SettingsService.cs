@@ -2182,6 +2182,7 @@ namespace PadForge.Services
                 || c.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.MicLedMode != ViewModels.MicLedMode.Off
+                || c.HeadphoneVolume != 100
                 || c.PlayerLedMode != (c.LightingRev >= 1
                     ? ViewModels.PlayerLedMode.PlayerNumber : ViewModels.PlayerLedMode.Off)
                 // #209: a chosen Guide LED mode is a deliberate,
@@ -2211,6 +2212,7 @@ namespace PadForge.Services
                 || c.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.MicLedMode != ViewModels.MicLedMode.Off
+                || c.HeadphoneVolume != 100
                 || c.PlayerLedMode != ViewModels.PlayerLedMode.PlayerNumber
                 || c.GuideLedMode != ViewModels.GuideLedMode.DeviceDefault
                 || c.AudioPassthroughEnabled
@@ -2557,6 +2559,7 @@ namespace PadForge.Services
                     else
                         cfg.MicLightOn = cfgData.MicLightOn;
                     cfg.MicLedFollowDeviceId = cfgData.MicLedFollowDeviceId ?? string.Empty;
+                    cfg.HeadphoneVolume = cfgData.HeadphoneVolume;
                     cfg.PlayerLedMode = cfgData.PlayerLedMode;
                     cfg.PlayerLedBrightness = cfgData.PlayerLedBrightness;
                     cfg.GuideLedMode = cfgData.GuideLedMode;
@@ -4011,6 +4014,7 @@ namespace PadForge.Services
                 AudioMirrorEngageReleaseMs = cfg.AudioMirrorEngageReleaseMs,
                 AudioToneFilterMode = cfg.AudioToneFilterMode ?? "Off",
                 AudioToneLimitHz = cfg.AudioToneLimitHz,
+                HeadphoneVolume = cfg.HeadphoneVolume,
                 MicLedMode = cfg.MicLedMode,
                 MicLedFollowDeviceId = cfg.MicLedFollowDeviceId ?? string.Empty,
                 MicLightOn = cfg.MicLightOn,

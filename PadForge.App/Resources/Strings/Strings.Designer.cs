@@ -1088,6 +1088,13 @@ public class Strings : INotifyPropertyChanged
     public string Pad_CopyFrom => Get("Pad_CopyFrom");
     public string Pad_CopyFromTooltip => Get("Pad_CopyFromTooltip");
     public string Pad_ResetAll => Get("Pad_ResetAll");
+    public string Pad_Audio_HeadphoneVolume => Get("Pad_Audio_HeadphoneVolume");
+    public string Pad_Audio_HeadphoneVolume_Tooltip => Get("Pad_Audio_HeadphoneVolume_Tooltip");
+    public string Pad_ResetHeadphoneVolume => Get("Pad_ResetHeadphoneVolume");
+    public string MacroAction_Type_HeadphoneVolumeUp => Get("MacroAction_Type_HeadphoneVolumeUp");
+    public string MacroAction_Type_HeadphoneVolumeDown => Get("MacroAction_Type_HeadphoneVolumeDown");
+    public string MacroAction_HeadphoneVolumeUp_Tooltip => Get("MacroAction_HeadphoneVolumeUp_Tooltip");
+    public string MacroAction_HeadphoneVolumeDown_Tooltip => Get("MacroAction_HeadphoneVolumeDown_Tooltip");
     public string Pad_ClearAll => Get("Pad_ClearAll");
     public string Pad_HeaderOutput => Get("Pad_HeaderOutput");
     public string Pad_HeaderSource => Get("Pad_HeaderSource");

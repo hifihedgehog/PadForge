@@ -2960,4 +2960,11 @@
   <data name="Starter_Layer_Party" xml:space="preserve"><value>パーティ</value></data>
   <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>ショートカット</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>サイレント（何も送信しません）</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>ヘッドホン音量</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>コントローラーのヘッドセット端子のハードウェア音量。パッドに書き込まれるため、アプリなしでも保持されます。</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>ヘッドホン音量をリセット</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>ヘッドホン音量を上げる</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>ヘッドホン音量を下げる</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>コントローラーのヘッドセット端子の音量を10%上げます。</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>コントローラーのヘッドセット端子の音量を10%下げます。</value></data>
 </root>

@@ -2982,4 +2982,11 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Starter_Layer_Party" xml:space="preserve"><value>Gruppo</value></data>
   <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Collegamenti</value></data>
   <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silenzio (non invia nulla)</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>Volume cuffie</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>Volume hardware del jack cuffie del controller. Scritto nel controller, quindi resta attivo anche senza l'app.</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>Ripristina volume cuffie</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>Aumenta volume cuffie</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Riduci volume cuffie</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Aumenta del 10% il volume del jack cuffie del controller.</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Riduce del 10% il volume del jack cuffie del controller.</value></data>
 </root>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -485,6 +485,26 @@ namespace PadForge.ViewModels
         // ────────────────────────────────────────────────
         //  Mic LED mode (DualSense only) — mute LED state on the front edge
         // ────────────────────────────────────────────────
+
+        // Headphone jack hardware volume, 0-100%. Maps onto the DS5
+        // output report's VolumeHeadphones byte using Sony's own scePad
+        // window (duaLib maps headsetVolume + 64, so the PS5-used range
+        // is 0x40..0x7F; the struct comment agrees: "max 0x7f").
+        // 0% writes 0x00. Owned by the Audio-tab card and the
+        // HeadphoneVolumeUp/Down macro actions.
+        private int _headphoneVolume = 100;
+
+        public int HeadphoneVolume
+        {
+            get => _headphoneVolume;
+            set
+            {
+                int v = Math.Clamp(value, 0, 100);
+                if (_headphoneVolume == v) return;
+                _headphoneVolume = v;
+                OnPropertyChanged(nameof(HeadphoneVolume));
+            }
+        }
 
         private MicLedMode _micLedMode;
         /// <summary>Mic mute LED state. The DS5 firmware exposes three
@@ -1422,6 +1442,10 @@ namespace PadForge.ViewModels
             _resetMicLedMode ??= new RelayCommand(() => MicLedMode = MicLedMode.Off);
         private RelayCommand _resetMicLedMode;
 
+        public RelayCommand ResetHeadphoneVolumeCommand =>
+            _resetHeadphoneVolume ??= new RelayCommand(() => HeadphoneVolume = 100);
+        private RelayCommand _resetHeadphoneVolume;
+
         /// <summary>Section-level reset for the Guide Button LED card on
         /// the Lighting tab (#209). Mirrors the indicator-LEDs card's
         /// Reset All shape.</summary>
@@ -1793,6 +1817,10 @@ namespace PadForge.ViewModels
         // High-tone filter (#202). Defaults match the VM: Off / 800 Hz.
         [XmlAttribute] public string AudioToneFilterMode { get; set; } = "Off";
         [XmlAttribute] public int AudioToneLimitHz { get; set; } = 800;
+        // Headphone jack hardware volume (0-100, default 100). Missing
+        // attribute on legacy XML keeps the initializer, so old configs
+        // load as full volume, the pre-feature effective behaviour.
+        [XmlAttribute] public int HeadphoneVolume { get; set; } = 100;
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
         [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;
         [XmlAttribute] public PlayerLedMode PlayerLedMode { get; set; } = PlayerLedMode.Off;

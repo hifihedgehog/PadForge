@@ -509,7 +509,9 @@ namespace PadForge.Tests
             Assert.Equal(50, (int)MacroActionType.AxisLatchRelease);
             Assert.Equal(51, (int)MacroActionType.AxisScale);
             var values = Enum.GetValues<MacroActionType>();
-            Assert.Equal(MacroActionType.AxisScale, values[^1]);
+            // #251 members are no longer the tail (52/53 appended
+            // 2026-08-01); the pins above are what this test protects.
+            Assert.Equal(MacroActionType.AxisScale, values[^3]);
         }
     }
 

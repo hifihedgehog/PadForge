@@ -49,6 +49,10 @@ namespace PadForge.Common.Input
         private const ushort EnableRumbleEmulation  = 0x0003;  // bits 0 + 1
         private const ushort EnableRightTrigger     = 0x0004;
         private const ushort EnableLeftTrigger      = 0x0008;
+        // validFlag0 bit 4 = AllowHeadphoneVolume, "Enable setting
+        // VolumeHeadphones" (duaLib dataStructures.h /*0.4*/). Gates
+        // byte 4 the same way bit 6 gates the mic byte.
+        private const ushort EnableHeadphoneVolume  = 0x0010;
         // validFlag0 bit 6 = AllowMicVolume, "Enable setting VolumeMic"
         // (duaLib dataStructures.h /*0.6*/). Gates byte 6.
         private const ushort EnableMicVolume        = 0x0040;
@@ -180,7 +184,9 @@ namespace PadForge.Common.Input
             int playerNumber = 0,
             bool assertMicLightEnable = true,
             bool assertAudioHardwareClaim = true,
-            bool assertPlayerIndicatorEnable = true)
+            bool assertPlayerIndicatorEnable = true,
+            int headphoneVolumePercent = 100,
+            bool assertHeadphoneVolume = false)
         {
             ushort enableBits = 0;
 
@@ -464,6 +470,20 @@ namespace PadForge.Common.Input
             if (assertAudioHardwareClaim)
                 enableBits |= EnableAudioMuteControl | EnableMicVolume;
 
+            // Headphone jack hardware volume (byte 4). Percent maps onto
+            // Sony's own scePad window: duaLib writes headsetVolume + 64,
+            // so the PS5-used range is 0x40..0x7F and the struct's
+            // "max 0x7f" agrees. DS4Windows-hbashton's 0x4F cap sits
+            // inside that window and was rejected as needlessly low.
+            // 0% writes 0x00. The VALUE ships on every packet, like
+            // micVolume, so a stray enable bit can never apply HM's
+            // zero-fill; the ENABLE bit rides the claim burst or a
+            // config change, per the retain-on-idle rule.
+            byte headphoneByte = headphoneVolumePercent <= 0
+                ? (byte)0
+                : (byte)(0x40 + Math.Clamp(headphoneVolumePercent, 0, 100) * (0x7F - 0x40) / 100);
+            if (assertHeadphoneVolume) enableBits |= EnableHeadphoneVolume;
+
             // Triggers — 11 bytes per trigger (mode + 10 param bytes). The
             // simple modes (Feedback / Weapon / Vibration) use scalar
             // opcodes 0x01/0x02/0x06; multi-position modes (MultiplePosition*,
@@ -553,6 +573,7 @@ namespace PadForge.Common.Input
                 { "rightTriggerEffect", rightTrig },
                 { "leftTriggerEffect",  leftTrig  },
                 { "micVolume",        MicVolumeMax },
+                { "headphoneVolume",  headphoneByte },
                 { "validFlag2",       validFlag2 },
                 { "lightbarSetup",    overrides.LightbarSetup ?? (byte)0x00 },
                 { "ledBrightness",    ledBrightness },

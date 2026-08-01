@@ -143,6 +143,51 @@ namespace PadForge.Tests
             Assert.Equal(1f, c0);
         }
 
+        // ── The Bluetooth audio lane ──
+        //
+        // Over BT the sink is addressed by PACKET ID, not the path
+        // register: 0x13 = internal speaker, 0x16 = headset jack
+        // (dualsense-bt-haptics HeadsetPlayMusic Program.cs:55). PadForge
+        // hardcoded 0x13, so every headphone path was speaker-only over
+        // Bluetooth. Owner-reported 2026-08-01.
+
+        [Theory]
+        [InlineData((int)AudioOutputPath.Automatic, 0x13)]
+        [InlineData((int)AudioOutputPath.StereoHeadset, 0x16)]
+        [InlineData((int)AudioOutputPath.MonoHeadset, 0x16)]
+        [InlineData((int)AudioOutputPath.HeadsetAndSpeaker, 0x16)]
+        [InlineData((int)AudioOutputPath.SpeakerOnly, 0x13)]
+        public void BtLanePid_FollowsThePath(int path, byte pid)
+        {
+            Assert.Equal(pid, AudioPassthroughService.Ds5BtAudioLanePid(path));
+        }
+
+        [Fact]
+        public void BtBothLanes_OnlyForHeadsetAndSpeaker()
+        {
+            // Doubling the report rate is a real bandwidth cost; it must
+            // never leak onto the single-sink paths.
+            Assert.True(AudioPassthroughService.Ds5BtWantsBothLanes(
+                (int)AudioOutputPath.HeadsetAndSpeaker));
+            Assert.False(AudioPassthroughService.Ds5BtWantsBothLanes(
+                (int)AudioOutputPath.Automatic));
+            Assert.False(AudioPassthroughService.Ds5BtWantsBothLanes(
+                (int)AudioOutputPath.StereoHeadset));
+            Assert.False(AudioPassthroughService.Ds5BtWantsBothLanes(
+                (int)AudioOutputPath.SpeakerOnly));
+        }
+
+        [Fact]
+        public void BtMonoFold_AveragesPairsInPlaceAndClamps()
+        {
+            var frame = new float[] { 0.5f, -0.25f, 1f, 1.5f };
+            AudioPassthroughService.FoldFrameToMono(frame);
+            Assert.Equal(0.125f, frame[0], 3);
+            Assert.Equal(frame[0], frame[1]);
+            Assert.Equal(1f, frame[2]);      // clamped, not wrapped
+            Assert.Equal(frame[2], frame[3]);
+        }
+
         [Fact]
         public void EnumOrdinals_ArePinned_TheyPersistNumerically()
         {

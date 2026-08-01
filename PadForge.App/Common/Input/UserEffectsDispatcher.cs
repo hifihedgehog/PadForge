@@ -429,6 +429,83 @@ namespace PadForge.Common.Input
             bool padForgeWants, bool externalMirroring, bool prevPadForgeWanted)
             => (padForgeWants || externalMirroring || prevPadForgeWanted, padForgeWants);
 
+        // Devices assigned to this slot on the previous dispatch. A
+        // change here means the user re-assigned the slot, which is a
+        // deliberate identity claim and has to re-arm state that is
+        // otherwise latched for the life of the process.
+        private readonly HashSet<Guid> _lastAssignedGuids = new();
+
+        /// <summary>Reacts to this slot's assigned-device set changing.
+        ///
+        /// <para>Two latches survive an unassign and would otherwise make
+        /// a re-assigned pad behave as though it had never left, until the
+        /// app is restarted. Reported 2026-08-01: unassign a DualSense,
+        /// re-assign it, and it never picks up its slot's identity colour.</para>
+        ///
+        /// <para>The first is <see cref="ExternalSubsystemState"/>. It is
+        /// static, keyed by pad index, and deliberately never reset so a
+        /// game's lightbar write survives VC recreates on the slot (#191).
+        /// That makes <c>LightbarEverExternal</c> true forever once anything
+        /// writes the bar, which permanently disarms the identity floor:
+        /// <c>floorArmed = playerNumber &gt; 0 &amp;&amp; !LightbarEverExternal</c>.
+        /// Surviving a VC recreate is right. Surviving the device leaving
+        /// the slot is not, because the next assignment is a fresh claim.</para>
+        ///
+        /// <para>The second is <see cref="_ownedLastDispatch"/>. An unassigned
+        /// device is skipped by the guid filter rather than removed, so its
+        /// entry lingers and the re-add returns false, silently skipping the
+        /// seed block that emits the mandatory stop/disengage frame.</para></summary>
+        /// <summary>True when this slot's assigned-device set differs from
+        /// the previous dispatch. Order does not matter and duplicates cannot
+        /// occur, so a count comparison plus a membership sweep is exact.</summary>
+        internal static bool AssignmentSetChanged(
+            System.Collections.Generic.IReadOnlyList<Guid> current,
+            System.Collections.Generic.HashSet<Guid> previous)
+        {
+            if (current == null || previous == null) return false;
+            if (current.Count != previous.Count) return true;
+            for (int i = 0; i < current.Count; i++)
+            {
+                if (!previous.Contains(current[i])) return true;
+            }
+            return false;
+        }
+        private void OnAssignmentSetObserved(System.Collections.Generic.List<Guid> guids, DeviceCollection devices)
+        {
+            if (!AssignmentSetChanged(guids, _lastAssignedGuids)) return;
+
+            // Devices that left keep no ownership seed, so a later
+            // re-assignment reseeds and emits its stop frame. These maps
+            // are documented as devices.SyncRoot-only, and DispatchSnapshot
+            // is NOT serialized per instance (static callers reach it via
+            // inst.DispatchSnapshot), so the lock is load-bearing here.
+            lock (devices.SyncRoot)
+            {
+                foreach (var g in _lastAssignedGuids)
+                {
+                    if (guids.Contains(g)) continue;
+                    _ownedLastDispatch.Remove(g);
+                    _prevHadRumble.Remove(g);
+                    _prevPadForgeWantsRightTrig.Remove(g);
+                    _prevPadForgeWantsLeftTrig.Remove(g);
+                    _prevPadForgeWantsMicLed.Remove(g);
+                    _prevPadForgeWantsPips.Remove(g);
+                    _audioMuteBurstLeft.Remove(g);
+                }
+            }
+
+            // Re-arm the identity floor for this slot. Dropping the whole
+            // per-slot record is the point: LightbarEverExternal and
+            // PlayerIndicatorEverExternal are both derived from ticks in it,
+            // and both should start clean for a newly assigned device.
+            lock (s_externalStateLock)
+            {
+                s_externalState.Remove(_padIndex);
+            }
+
+            _lastAssignedGuids.Clear();
+            foreach (var g in guids) _lastAssignedGuids.Add(g);
+        }
         private static readonly Dictionary<int, ExternalSubsystemState> s_externalState = new();
         private static readonly object s_externalStateLock = new();
 
@@ -1418,6 +1495,7 @@ namespace PadForge.Common.Input
                         owners, ref groupMask);
             }
             _groupSlotsMask = groupMask;
+            OnAssignmentSetObserved(guids, devices);
             if (guids.Count == 0) return;
 
             // Payloads are built under the device lock and written after it.

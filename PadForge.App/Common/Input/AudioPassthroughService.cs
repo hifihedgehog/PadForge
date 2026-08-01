@@ -1929,8 +1929,25 @@ namespace PadForge.Common.Input
                         sink.Source = new SinkSource(sink);
                         _sinks[d.Guid] = sink;
                     }
+                    // Transport-shape change (BT <-> USB reconnect of the SAME
+                    // device identity, or a new HID path after re-pair). IsBt
+                    // was only ever set at CREATION, so a pad that moved from
+                    // Bluetooth to USB kept IsBt=true and the rebuild opened a
+                    // BT write lane against a USB HID path: 0x35 reports at an
+                    // interface that wants WASAPI, no audio until an app
+                    // restart cleared the static sink map. Same latch family
+                    // as the slot-reassign identity bug (9abc1467): state
+                    // scoped "for the sink's life" with no answer for the
+                    // device's transport changing under it. Owner-reported
+                    // 2026-08-01 ("had to close and reopen PadForge for the
+                    // DualSense to work over USB after Bluetooth").
+                    bool transportShapeChanged = !d.IsPeer
+                        && (sink.IsBt != d.IsBt
+                            || !string.Equals(sink.HidPath, d.Path, StringComparison.OrdinalIgnoreCase));
                     sink.Slot = d.Slot;
                     sink.HidPath = d.Path;
+                    sink.IsBt = d.IsBt;
+                    sink.IsDs4 = d.IsDs4;
                     sink.PassthroughOn = d.PtOn;
                     sink.MirrorSourceId = d.MirrorSrc ?? "";
                     sink.RemoteFed = d.RemoteFed;
@@ -1938,8 +1955,10 @@ namespace PadForge.Common.Input
                     // Set before the SinkAlive check below: a peer sink is "alive" with no
                     // transport, so it's never queued for a BT/USB build (toBuild).
                     sink.IsPeer = d.IsPeer;
-                    if (sink.TransportFailed)
+                    if (sink.TransportFailed || (transportShapeChanged && SinkAlive(sink) && !sink.IsPeer))
                     {
+                        // Detach clears the transport, so the SinkAlive check
+                        // below queues the rebuild on the NEW shape this pass.
                         toDispose.Add(DetachTransport_NoLock(sink));
                         sink.TransportFailed = false;
                     }

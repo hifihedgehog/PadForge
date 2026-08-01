@@ -61,6 +61,16 @@ namespace PadForge.Common.Input
                 { "dualshock-4-v2",      PackDs4UsbReport01 },
                 { "dualsense",           PackDualSenseUsbReport01 },
                 { "dualsense-edge",      PackDualSenseUsbReport01 },
+                // Composite USB personas (HM#39). Each carries a HID
+                // interface byte-identical to its base profile: same
+                // report 0x01, same 64-byte size, same descriptor. Without
+                // these entries the lookup falls through to plain
+                // SubmitState and the pad silently loses touchpad, gyro,
+                // accel and battery, which is what a user sees as "the
+                // touchpad does not work at all" on the Full profile.
+                { "dualsense-composite",      PackDualSenseUsbReport01 },
+                { "dualsense-edge-composite", PackDualSenseUsbReport01 },
+                { "dualshock-4-v2-composite", PackDs4UsbReport01 },
             };
 
         /// <summary>Lookup helper. Returns null if no packer is registered for

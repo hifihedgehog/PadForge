@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -1309,6 +1309,61 @@ namespace PadForge.Common.Input
                     if (got >= 56) _btMicPadStatus = report[55];
                     continue;
                 }
+                // Idle skip. With no consumer draining the capture
+                // endpoint the HM ring saturates, and every frame we
+                // decode is then thrown away by the whole-block guard
+                // further down. Measured idling on hardware:
+                // blocksDropped=13846 of ~15000 received, so ~92% of
+                // the Opus decodes plus their gain, interleave and RMS
+                // passes were pure waste at 100 frames/s. That is free
+                // on a desktop and is not free on the Atom x5-Z8350
+                // floor this app supports.
+                //
+                // Deliberately NOT gated on IsStreaming alone. If the
+                // ring has room we decode, so a consumer that opens the
+                // endpoint mid-stream is served immediately rather than
+                // waiting for the next status poll. And if IsStreaming
+                // were ever wrong, a real drain empties the ring and
+                // MicSubmitFits goes true, so the skip self-corrects
+                // instead of silencing the lane.
+                //
+                // The reader loop itself keeps running either way: the
+                // session stays open and the pad's audio status byte
+                // above stays fresh. Only the decode is skipped.
+                var mic = feed.Audio.Microphone;
+                int outCh = Math.Max(1, mic.Channels);
+                if (!mic.IsStreaming
+                    && !_micGuardDisabled
+                    && !MicSubmitFits(mic.BufferedBytes, BtMicFrameSamples * outCh * 2))
+                {
+                    // Count the frame anyway. It arrived, we simply chose
+                    // not to decode it, and rxFrames is how a reader tells
+                    // a live lane from a dead one.
+                    feed.BtMicRxFrames++;
+                    _micBlocksDropped++;
+                    _micDecoderStale = true;
+                    // The periodic report below sits after the decode, so
+                    // skipping it would take the whole mic lane dark in the
+                    // log for as long as no consumer is listening. Emit the
+                    // idle heartbeat on the same cadence instead.
+                    long nowIdle = Environment.TickCount64;
+                    if (nowIdle - lastLog >= 2000)
+                    {
+                        lastLog = nowIdle;
+                        Engine.SdlDiagLog.WriteLine("PERSONA mic IDLE decode skipped (no consumer)"
+                            + " rxFrames=" + feed.BtMicRxFrames
+                            + " blocksDropped=" + _micBlocksDropped
+                            + " buffered=" + mic.BufferedBytes + "/" + HmMicRingBytes
+                            + " padMuted=" + ((_btMicPadStatus & 0x04) != 0));
+                    }
+                    continue;
+                }
+
+                // Opus carries state across packets, so resuming after a
+                // skipped run must not feed the decoder a stream with a
+                // hole in it. Reset once on resume and start clean.
+                if (_micDecoderStale) { dec.ResetState(); _micDecoderStale = false; }
+
                 int n;
                 try { n = dec.Decode(report.AsSpan(3, BtMicPayloadBytes), pcm.AsSpan(), BtMicFrameSamples, false); }
                 catch { continue; }
@@ -1329,12 +1384,10 @@ namespace PadForge.Common.Input
                 if (report[3] != _btMicTocFirst) { if (_btMicTocFirst == 0xFFFF) _btMicTocFirst = report[3]; else _btMicTocVary++; }
                 _btMicRmsAcc += sumSq / Math.Max(1, samples);
                 _btMicRmsCount++;
-                var mic = feed.Audio.Microphone;
                 float gain = feed.MicMuted ? 0f : feed.MicGain;
                 // The composite's capture endpoint is 2 ch / 48 kHz, the
                 // same shape the pad encodes, so stereo passes straight
                 // through. A mono endpoint gets the channel average.
-                int outCh = Math.Max(1, mic.Channels);
                 for (int i = 0; i < n; i++)
                 {
                     if (outCh >= BtMicChannels)
@@ -1524,6 +1577,7 @@ namespace PadForge.Common.Input
         private static long _btMicRmsAcc; private static int _btMicRmsCount;
         private static long _subRmsAcc; private static int _subRmsCount, _subPeak;
         private static long _micBlocksDropped;
+        private static bool _micDecoderStale;
         private static readonly bool _micGuardDisabled =
             Environment.GetEnvironmentVariable("PADFORGE_MICNOGUARD") == "1";
         /// <summary>HM's microphone ring capacity: UsbAudioEngine sizes it

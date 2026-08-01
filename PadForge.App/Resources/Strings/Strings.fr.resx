@@ -2968,7 +2968,7 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Augmente de 10 % le volume de la prise casque de la manette.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Réduit de 10 % le volume de la prise casque de la manette.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Chemin de sortie</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Où la manette joue son audio. Par défaut conserve le routage du firmware et joue les sons PadForge sur le haut-parleur. Casque + Haut-parleur joue en mono côté casque, une limite du firmware.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Où la manette joue son audio. Par défaut conserve le routage du firmware et joue les sons PadForge sur le haut-parleur. Casque + Haut-parleur joue en mono côté casque, une limite du firmware. En Bluetooth, ce mode ne joue que dans le casque.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Par défaut</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Casque (stéréo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Casque (mono)</value></data>

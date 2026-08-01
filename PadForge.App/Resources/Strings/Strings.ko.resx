@@ -2968,7 +2968,7 @@
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>컨트롤러 헤드셋 단자의 볼륨을 10% 높입니다.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>컨트롤러 헤드셋 단자의 볼륨을 10% 낮추니다.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>출력 경로</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>컨트롤러가 오디오를 재생하는 위치입니다. 기본값은 펌웨어 라우팅을 유지하며 PadForge 사운드는 스피커로 재생합니다. 헤드폰+스피커는 헤드셋 쪽이 모노로 재생됩니다(펌웨어 제한).</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>컨트롤러가 오디오를 재생하는 위치입니다. 기본값은 펌웨어 라우팅을 유지하며 PadForge 사운드는 스피커로 재생합니다. 헤드폰+스피커는 헤드셋 쪽이 모노로 재생됩니다(펌웨어 제한). Bluetooth에서는 이 모드가 헤드폰으로만 재생됩니다.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>기본값</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>헤드폰(스테레오)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>헤드폰(모노)</value></data>

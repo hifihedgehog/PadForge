@@ -2968,7 +2968,7 @@
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>コントローラーのヘッドセット端子の音量を10%上げます。</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>コントローラーのヘッドセット端子の音量を10%下げます。</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>出力パス</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>コントローラーが音声をどこで再生するか。既定はファームウェアのルーティングを維持し、PadForgeのサウンドはスピーカーで再生します。ヘッドホン＋スピーカーはヘッドセット側がモノラルになります（ファームウェアの制限）。</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>コントローラーが音声をどこで再生するか。既定はファームウェアのルーティングを維持し、PadForgeのサウンドはスピーカーで再生します。ヘッドホン＋スピーカーはヘッドセット側がモノラルになります（ファームウェアの制限）。Bluetooth接続時、このモードはヘッドホンのみで再生されます。</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>既定</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>ヘッドホン（ステレオ）</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>ヘッドホン（モノラル）</value></data>

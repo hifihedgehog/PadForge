@@ -2990,7 +2990,7 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Aumenta del 10% il volume del jack cuffie del controller.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Riduce del 10% il volume del jack cuffie del controller.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Percorso di uscita</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Dove il controller riproduce l'audio. Predefinito mantiene il routing del firmware e riproduce i suoni di PadForge sull'altoparlante. Cuffie + Altoparlante riproduce in mono sul lato cuffie, un limite del firmware.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Dove il controller riproduce l'audio. Predefinito mantiene il routing del firmware e riproduce i suoni di PadForge sull'altoparlante. Cuffie + Altoparlante riproduce in mono sul lato cuffie, un limite del firmware. Via Bluetooth questa modalità riproduce solo nelle cuffie.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Predefinito</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Cuffie (stereo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Cuffie (mono)</value></data>

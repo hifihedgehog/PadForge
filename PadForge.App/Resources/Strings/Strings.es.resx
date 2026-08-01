@@ -2968,7 +2968,7 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Sube un 10 % el volumen del conector de auriculares del mando.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Baja un 10 % el volumen del conector de auriculares del mando.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Ruta de salida</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Dónde reproduce el mando su audio. Predeterminado conserva el enrutamiento del firmware y reproduce los sonidos de PadForge por el altavoz. Auriculares + Altavoz reproduce en mono en los auriculares, un límite del firmware.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Dónde reproduce el mando su audio. Predeterminado conserva el enrutamiento del firmware y reproduce los sonidos de PadForge por el altavoz. Auriculares + Altavoz reproduce en mono en los auriculares, un límite del firmware. Por Bluetooth este modo solo reproduce por los auriculares.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Predeterminado</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Auriculares (estéreo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Auriculares (mono)</value></data>

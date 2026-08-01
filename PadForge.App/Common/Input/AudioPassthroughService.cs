@@ -1438,7 +1438,7 @@ namespace PadForge.Common.Input
         /// resolved: a dead mic beats one that blasts noise into a call.
         /// The decode path below is otherwise hardware-proven and flips
         /// back on with this one const.</summary>
-        private const bool EnableBtMic = false;
+        private const bool EnableBtMic = true;
 
         private static int _btMicPeak;
         /// <summary>Last audio-status byte seen on a plain state report
@@ -1446,7 +1446,7 @@ namespace PadForge.Common.Input
         private static volatile byte _btMicPadStatus;
         /// <summary>DualSense BT mic frame shape, read off the wire: one
         /// 71-byte Opus packet per input report, CELT 10 ms, STEREO.</summary>
-        private const int BtMicChannels = 2;
+        private const int BtMicChannels = 1;
         private const int BtMicFrameSamples = 480;   // 10 ms at 48 kHz
         private const int BtMicPayloadBytes = 71;
 

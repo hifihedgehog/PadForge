@@ -374,6 +374,17 @@ namespace PadForge.Services
                 if (data.AppSettings != null)
                     LoadAppSettings(data.AppSettings);
 
+                // Ghost-mapping guard: saves written before DeleteSlot
+                // dropped the slot's MappingSet can carry authored sets for
+                // slots that no longer exist. Loading one parks it in
+                // memory where the next same-index CreateSlot resurrects
+                // the deleted VC's bindings. Runs here because SlotCreated
+                // is only populated by LoadAppSettings above. Phase 2A
+                // (LoadOrMigrateSlotMappingSets) is too early to know
+                // which slots are real. Same shape as the lighting-config
+                // skip for uncreated slots in ApplyDeviceSlotConfigs.
+                MaskMappingSetsForUncreatedSlots();
+
                 // Publish user-imported HIDMaestro profiles to the catalog
                 // so they appear in the Extended dropdown alongside the
                 // built-in entries. _userProfiles is the in-memory mirror
@@ -538,6 +549,28 @@ namespace PadForge.Services
         /// <summary>Test seam for the startup load path.</summary>
         internal static void LoadOrMigrateSlotMappingSetsForTest(MappingSet[] persisted)
             => LoadOrMigrateSlotMappingSets(persisted);
+
+        /// <summary>Replaces any authored MappingSet sitting at an
+        /// UNCREATED slot index with a fresh empty one. A slot's set dies
+        /// with the slot (PadViewModel.ResetAllSettings swaps it out at
+        /// delete time), but saves written before that fix still carry
+        /// the deleted VC's set, and a loaded ghost resurrects the moment
+        /// the same type is created at the same index. Reference swap,
+        /// never in-place mutation: the poll thread may be walking the
+        /// stale set. Internal for the delete-then-recreate pins.</summary>
+        internal static void MaskMappingSetsForUncreatedSlots()
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null) return;
+            int n = Math.Min(sets.Length, SettingsManager.SlotCreated.Length);
+            for (int slot = 0; slot < n; slot++)
+            {
+                if (SettingsManager.SlotCreated[slot]) continue;
+                if (sets[slot] == null || !sets[slot].HasAuthoredContent) continue;
+                sets[slot] = new MappingSet();
+                Common.Input.InputManager.ResetSourceKindRuntimeForSlot(slot);
+            }
+        }
 
         private static void LoadOrMigrateSlotMappingSets(MappingSet[] persisted)
         {
@@ -3077,6 +3110,16 @@ namespace PadForge.Services
             foreach (var md in macros)
             {
                 if (md.PadIndex < 0 || md.PadIndex >= _mainVm.Pads.Count)
+                    continue;
+
+                // Ghost guard, sibling of MaskMappingSetsForUncreatedSlots:
+                // a save from before delete-time macro clearing can carry a
+                // deleted slot's macros, and loading them parks them on the
+                // pad VM for the next same-index VC to inherit. Both call
+                // sites (startup load, profile apply) run after SlotCreated
+                // reflects the incoming state, so the gate is current.
+                if (md.PadIndex < SettingsManager.SlotCreated.Length
+                    && !SettingsManager.SlotCreated[md.PadIndex])
                     continue;
 
                 var padVm = _mainVm.Pads[md.PadIndex];

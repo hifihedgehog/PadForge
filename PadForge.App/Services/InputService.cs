@@ -5956,17 +5956,24 @@ namespace PadForge.Services
         private void OnInputSelectedFromDropdown(object sender, EventArgs e)
         {
             if (sender is not MappingItem mapping) return;
-            // Find the device for this mapping's pad slot.
-            foreach (var padVm in _mainVm.Pads)
-            {
-                if (!padVm.Mappings.Contains(mapping)) continue;
-                var selected = padVm.SelectedMappedDevice;
-                if (selected == null || selected.InstanceGuid == Guid.Empty) break;
-                var ud = FindUserDevice(selected.InstanceGuid);
-                MappingDisplayResolver.ResolveDisplayText(mapping, ud);
-                mapping.SyncSelectedInputFromDescriptor();
-                break;
-            }
+            // Resolve against the device the row NOW points at: the pick
+            // just stamped PrimarySourceDeviceGuid from the chosen entry.
+            // The previous shape read the Device dropdown's selection
+            // instead, which is a different axis entirely, and bailed
+            // when it was empty. An "(Any device)" pick then never
+            // re-resolved: the descriptor setter had already nulled
+            // _resolvedSourceText, so the row line rendered the raw
+            // 0-based descriptor ("Touchpad 0 Finger 0 X") while the
+            // picker itself showed the localized 1-based entry. With a
+            // null device, ResolveDisplayText's device-independent family
+            // block produces the same 1-based any-device naming the
+            // picker offers.
+            UserDevice ud = null;
+            if (Guid.TryParse(mapping.PrimarySourceDeviceGuid, out var rowGuid)
+                && rowGuid != Guid.Empty)
+                ud = FindUserDevice(rowGuid);
+            MappingDisplayResolver.ResolveDisplayText(mapping, ud);
+            mapping.SyncSelectedInputFromDescriptor();
         }
 
         /// <summary>

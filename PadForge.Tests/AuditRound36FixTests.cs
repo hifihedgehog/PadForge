@@ -74,19 +74,32 @@ namespace PadForge.Tests
         /// ResetAllSettings BEFORE unassigning the slot's devices, so the poll
         /// thread is still walking that very list. A tick inside the foreach
         /// throws "collection was modified" and costs the device its whole
-        /// mapping pass for that frame.</summary>
+        /// mapping pass for that frame.
+        ///
+        /// <para>2026-08-02: the per-field scrub this originally pinned is
+        /// gone. It trailed the structure five separate times (menus,
+        /// rumble-audio, SOCD, shift layers, and finally the mapping rows,
+        /// the ghost-mapping bug), so the reset now swaps the slot's ENTIRE
+        /// MappingSet for a fresh one. That is the same reference-swap
+        /// discipline this test exists for, applied one level up, so the
+        /// pin follows: the whole-set swap must exist, and no in-place
+        /// Clear() may touch the outgoing set's poll-walked lists.</para>
+        /// </summary>
         [Fact]
-        public void SlotDeleteReset_SwapsShiftActivators_NeverClearsInPlace()
+        public void SlotDeleteReset_SwapsTheWholeMappingSet_NeverClearsInPlace()
         {
             string src = Src("PadForge.App/ViewModels/PadViewModel.cs");
 
-            // Positive control: the reset block must still exist.
-            Assert.Contains("delSet.BaseLayerName", src);
-
-            Assert.DoesNotMatch(
-                new Regex(@"delSet\.ShiftActivators\s*\?\?\s*\.\s*Clear\s*\(|delSet\.ShiftActivators\s*\?\.\s*Clear\s*\(|delSet\.ShiftActivators\.Clear\s*\("),
+            // Positive control: the whole-set swap must exist in the reset.
+            Assert.Matches(
+                new Regex(@"allSets\[PadIndex\]\s*=\s*new\s+Engine\.Data\.MappingSet\s*\("),
                 src);
-            Assert.Matches(new Regex(@"delSet\.ShiftActivators\s*=\s*new\b"), src);
+
+            // No resurrected per-field scrub mutating the live set in place.
+            Assert.DoesNotMatch(
+                new Regex(@"delSet\.(ShiftActivators|Menus|Rows)\s*\??\.?\s*Clear\s*\("),
+                src);
+            Assert.DoesNotContain("delSet.BaseLayerName", src);
         }
 
         // ── Test pulses: motors are per-lane, the target filter is shared ──

@@ -3774,54 +3774,36 @@ namespace PadForge.ViewModels
             PadForge.Common.Input.SoundMacroService.StopSlot(PadIndex);
             Macros.Clear();
 
-            // Menus (#9 B-17) are slot-scoped like macros: a slot deletion
-            // or Reset to Defaults must drop them, or the next VC at this
-            // index inherits the deleted slot's on-screen menus. The
-            // definitions live on the slot's MappingSet, so clear the live
-            // list too (Reset to Defaults already replaced the whole set;
-            // DeleteSlot reaches only through here).
+            // The slot's entire MappingSet is slot-scoped state and dies
+            // with the slot. This used to scrub it one field at a time
+            // (menus #9 B-17, rumble-audio #236, SOCD #240, shift layers +
+            // Base trio), and every one of those was its own resurrection
+            // bug because the scrub list trailed the structure: the fifth
+            // missed member was the mapping ROWS themselves, so deleting a
+            // VC and creating the same type at this index brought its
+            // bindings back from the dead (the Any-Device rows visibly,
+            // since they need no assigned device to hydrate or fire).
+            // Swap the whole set for a fresh one so every field, including
+            // the next one added, is covered by construction.
+            //
+            // Swap the reference, never mutate in place. The poll thread
+            // walks the live set every frame without our lock
+            // (ResolveActiveLayerMask, ApplyMappingSetToGamepad), and
+            // DeleteSlot runs this BEFORE unassigning the slot's devices,
+            // so it is still walking this very set. A single reference
+            // write is the same discipline the row-paste path uses when it
+            // replaces a slot's set wholesale.
             {
-                var menuSets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
-                if (menuSets != null && PadIndex >= 0 && PadIndex < menuSets.Length)
+                var allSets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+                if (allSets != null && PadIndex >= 0 && PadIndex < allSets.Length)
                 {
-                    menuSets[PadIndex]?.Menus?.Clear();
-                    // Rumble-audio config (#236) is slot-scoped the same
-                    // way: clear it AND publish synchronous silence, so
-                    // the shaker tone dies with the slot instead of
-                    // holding its last value until the poll lane's next
-                    // tick (or forever, if the engine is stopped).
-                    var delSet = menuSets[PadIndex];
-                    if (delSet != null)
-                    {
-                        delSet.RumbleAudio = null;
-                        // SOCD config (#240) is slot-scoped the same way:
-                        // the next VC at this index must not inherit the
-                        // deleted slot's pair cleaning.
-                        delSet.SocdMode = "";
-                        delSet.SocdPairs = "";
-                        // Shift layers are slot-scoped for exactly the same
-                        // reason as the three above, and were the one member
-                        // of that family this reset missed: the next VC at
-                        // this pad index inherited the deleted slot's
-                        // activators, so its rows evaluated against layers the
-                        // user never authored on it. The Base appearance trio
-                        // rides the same structure and is cleared with it.
-                        //
-                        // Swap the reference, never Clear() in place. The poll
-                        // thread enumerates ShiftActivators every frame without
-                        // our lock (ResolveActiveLayerMask,
-                        // ApplyMappingSetToGamepad), so mutating the live list
-                        // throws "collection was modified" inside its foreach
-                        // and costs that device its whole mapping pass. Deleting
-                        // a slot runs ResetAllSettings BEFORE unassigning its
-                        // devices, so the poll thread is still walking this very
-                        // set. Same discipline as the add/remove paths in
-                        // PadPage and ApplyShiftLayerSnapshot.
-                        delSet.ShiftActivators = new List<Engine.Data.ShiftActivator>();
-                        delSet.BaseLayerName = "";
-                        delSet.BaseColor = "";
-                        delSet.BaseIcon = "";
-                    }
+                    allSets[PadIndex] = new Engine.Data.MappingSet();
+                    // Wholesale set replacement is the structural change
+                    // SourceKindRuntime.ResetForSlot exists for (same call
+                    // the paste path makes): without it a winding
+                    // accumulator or steering lock keyed (slot, target,
+                    // srcIdx) survives into the next VC created here.
+                    PadForge.Common.Input.InputManager.ResetSourceKindRuntimeForSlot(PadIndex);
                 }
             }
             PadForge.Common.Input.RumbleAudioService.SilenceSlot(PadIndex);

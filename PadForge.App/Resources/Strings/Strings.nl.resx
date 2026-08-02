@@ -2996,4 +2996,8 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Alleen luidspreker</value></data>
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Uitvoerpad resetten</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Koptelefoonaansluiting volgen</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense-uitvoerrapport-bytemap en Sony's scePad-semantiek door WujekFoliarz, basis van PadForges effect- en audioschrijvers. MIT.</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Patroon voor audio-routering op aansluitdetectie door SundayMoments, de referentie achter Koptelefoonaansluiting volgen. Als documentatie gelezen; AGPL-3.0.</value></data>
 </root>

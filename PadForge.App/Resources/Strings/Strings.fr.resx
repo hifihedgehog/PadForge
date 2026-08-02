@@ -2976,4 +2976,8 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Haut-parleur uniquement</value></data>
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Réinitialiser le chemin de sortie</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Suivre la prise casque</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>Carte des octets du rapport de sortie DualSense et sémantique scePad de Sony par WujekFoliarz, socle des écrivains d'effets et d'audio de PadForge. MIT.</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Modèle de routage audio par détection de prise par SundayMoments, référence de Suivre la prise casque. Lu comme documentation ; AGPL-3.0.</value></data>
 </root>

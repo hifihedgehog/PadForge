@@ -2976,4 +2976,8 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Solo altavoz</value></data>
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Restablecer ruta de salida</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Seguir el conector de auriculares</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>Mapa de bytes del informe de salida del DualSense y semántica scePad de Sony por WujekFoliarz, base de los escritores de efectos y audio de PadForge. MIT.</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Patrón de enrutamiento de audio por conector de SundayMoments, la referencia de Seguir el conector de auriculares. Leído como documentación; AGPL-3.0.</value></data>
 </root>

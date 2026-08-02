@@ -2976,4 +2976,8 @@
   <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>仅扬声器</value></data>
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>重置输出路径</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>跟随耳机接口</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz 的 DualSense 输出报告字节表与 Sony scePad 语义，PadForge 效果与音频写入的基础。MIT。</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments 的接口检测音频路由模式，跟随耳机接口功能的参考。仅作文档阅读；AGPL-3.0。</value></data>
 </root>

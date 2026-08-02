@@ -3031,4 +3031,8 @@ You can retry later from Settings.</value></data>
   <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Speaker Only</value></data>
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Reset Output Path</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Follow Headphone Jack</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense output-report byte map and Sony scePad semantics by WujekFoliarz, grounding PadForge's effect and audio writers. MIT.</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Jack-detect audio routing pattern by SundayMoments, the reference behind Follow Headphone Jack. Read as documentation; AGPL-3.0.</value></data>
 </root>

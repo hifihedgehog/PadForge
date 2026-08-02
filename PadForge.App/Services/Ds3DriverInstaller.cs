@@ -124,8 +124,49 @@ namespace PadForge.Services
         // cycle either.
         private static readonly object _cycleLock = new object();
 
-        // GUID_DEVCLASS_USB: the setup class every USB function device enumerates under.
-        private static readonly Guid UsbDeviceClass = new Guid("36FC9E60-C465-11CF-8056-444553540000");
+        /// <summary><para>Every setup class a docked DS3 can occupy. A device node's
+        /// class comes from the INF that OWNS it, not from the bus it hangs off, so
+        /// the pad moves between these as its driver changes. Searching one class
+        /// misses the pad in every state but that one.</para>
+        ///
+        /// <para>This list was a single entry, GUID_DEVCLASS_USB, and that is the one
+        /// class a DS3 is never in (#265). GUID_DEVCLASS_USB holds host controllers,
+        /// root hubs, hubs and composite parents. A USB function device bound to the
+        /// inbox HidUsb sits in HIDCLASS, because HidUsb is installed by input.inf
+        /// with Class=HIDClass. So the gate returned false for exactly the state it
+        /// exists to detect, and the background auto-bind was unreachable from
+        /// 4.0.1 through 4.1.0.</para>
+        ///
+        /// <para>Completeness here is safe because it does not decide anything. The
+        /// SERVICE allowlist below is the gate, and it is unchanged: only an empty
+        /// service or HidUsb is ever bound. Widening the search only lets the
+        /// allowlist see a device it was always meant to judge.</para></summary>
+        internal static readonly Guid[] Ds3HostClasses =
+        {
+            new Guid("745A17A0-74D3-11D0-B6FE-00A0C90F57DA"), // HIDCLASS: on inbox HidUsb
+            new Guid("4D36E97E-E325-11CE-BFC1-08002BE10318"), // UNKNOWN: no driver bound
+            new Guid("88BAE032-5A81-49F0-BC3D-A4FF138216D6"), // USBDEVICE: a WinUSB-class INF
+            new Guid("36FC9E60-C465-11CF-8056-444553540000"), // USB: composite parents
+        };
+
+        /// <summary>Instance IDs of every present DS3 USB node, across every class it
+        /// can be in. Duplicates are impossible (a node has exactly one class) so the
+        /// union needs no de-duplication.</summary>
+        private static IEnumerable<string> FindDs3UsbNodes()
+        {
+            foreach (var cls in Ds3HostClasses)
+            {
+                IEnumerable<string> ids = null;
+                try
+                {
+                    if (!Devcon.FindInDeviceClassByHardwareId(cls, @"USB\VID_054C&PID_0268", out ids))
+                        continue;
+                }
+                catch { continue; }
+                if (ids == null) continue;
+                foreach (var id in ids) yield return id;
+            }
+        }
 
         /// <summary>True only when a USB DualShock 3 (VID_054C&amp;PID_0268) is present AND
         /// still on the inbox HID driver (or no driver), meaning nothing is driving it and
@@ -147,16 +188,16 @@ namespace PadForge.Services
         {
             try
             {
-                if (!Devcon.FindInDeviceClassByHardwareId(UsbDeviceClass, @"USB\VID_054C&PID_0268", out var ids))
-                    return false;
-                foreach (var id in ids)
+                foreach (var id in FindDs3UsbNodes())
                 {
                     try
                     {
                         var dev = PnPDevice.GetDeviceByInstanceId(id, DeviceLocationFlags.Normal);
                         string svc = dev.GetProperty<string>(DevicePropertyKey.Device_Service) ?? string.Empty;
                         // Allowlist: bind ONLY on the inbox HID driver or no driver. Every
-                        // other service (WINUSB, WUDFRd/DsHidMini, ...) is left alone.
+                        // other service (WINUSB, WUDFRd/DsHidMini, usbccgp on a composite
+                        // parent, ...) is left alone. This is the real gate; the class
+                        // sweep above only decides what gets shown to it.
                         if (svc.Length == 0 || svc.Equals("HidUsb", StringComparison.OrdinalIgnoreCase))
                             return true;
                     }

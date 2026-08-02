@@ -109,9 +109,13 @@ namespace PadForge.Services
         /// record, so the narrow reading disarms patching on a machine whose
         /// DS3 connects over BthPS3 daily. See Ds3DriverInstaller.MachineHasDs3.
         /// </para></summary>
+        /// <remarks>The OR lives HERE, not at the call site. It was in the
+        /// caller, where no test could reach it, and a mutation that narrowed
+        /// it back to paired-only survived the suite untouched. A decision the
+        /// tests cannot observe is a decision nothing is guarding.</remarks>
         internal static (bool TakeOwnership, bool Patching) PsmPatchPolicy(
-            bool dsHidMiniInstalled, bool machineHasDs3)
-            => dsHidMiniInstalled ? (false, true) : (true, machineHasDs3);
+            bool dsHidMiniInstalled, bool anyDs3Paired, bool machineHasDs3Node)
+            => dsHidMiniInstalled ? (false, true) : (true, anyDs3Paired || machineHasDs3Node);
 
         /// <summary>Drives BthPS3 PSM patching to the policy state (see
         /// <see cref="PsmPatchPolicy"/>). No-op when BthPS3 isn't installed.
@@ -131,14 +135,14 @@ namespace PadForge.Services
                 // silently stops connecting, so the durable devnode marker counts
                 // too.
                 bool paired = AnyDs3Paired();
-                bool hasPad = paired || Ds3DriverInstaller.MachineHasDs3();
-                var (takeOwnership, wantPatching) = PsmPatchPolicy(dshm, hasPad);
+                bool hasNode = Ds3DriverInstaller.MachineHasDs3();
+                var (takeOwnership, wantPatching) = PsmPatchPolicy(dshm, paired, hasNode);
                 if (takeOwnership)
                     Ds3DriverInstaller.EnsurePadForgeOwnsPsmPatch();
                 else
                     Ds3DriverInstaller.RestoreBthPs3AutoArm();
                 LogLine($"PSM patch reconcile ({reason}): dshidmini={dshm} "
-                        + $"paired={paired} hasPad={hasPad} patching={wantPatching}.");
+                        + $"paired={paired} node={hasNode} patching={wantPatching}.");
                 Ds3DriverInstaller.SetPsmPatching(wantPatching, LogLine);
             }
             catch (Exception ex) { LogLine("PSM patch reconcile failed: " + ex.Message); }

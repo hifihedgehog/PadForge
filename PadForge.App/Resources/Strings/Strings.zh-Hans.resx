@@ -2281,7 +2281,8 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>槽位</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>冷却</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>选择一个设备以查看其原始输入。</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>配对未完成。详情请查看日志。</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>没有可用的蓝牙适配器。请开启蓝牙后重试。配对仅用于无线连接，使用数据线时无需配对。</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>配对未完成。失败的步骤显示在上方。</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>无法安装 PlayStation 控制器的蓝牙驱动。</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>用 USB 线连接 DualShock 3，然后点击“配对”。PadForge 会将本 PC 写入控制器并进行注册。完成后，拔下控制器并按下 PS 键即可通过蓝牙连接。</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>未在 USB 上找到 DualShock 3。请用 USB 线连接后重试。</value></data>

@@ -2281,7 +2281,8 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>Ranura</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Fría</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>Selecciona un dispositivo para inspeccionar su entrada sin procesar.</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>El emparejamiento no se completó. Consulta el registro para más detalles.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>No hay ningún adaptador Bluetooth disponible. Activa el Bluetooth e inténtalo de nuevo. El emparejamiento solo es necesario para el juego inalámbrico; con cable el mando funciona sin él.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>El emparejamiento no se completó. El paso que falló se muestra arriba.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>No se pudo instalar el controlador Bluetooth para los mandos de PlayStation.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Conecta el DualShock 3 con un cable USB y luego haz clic en Emparejar. PadForge escribe este PC en el mando y lo registra. Cuando termine, desconecta el mando y pulsa el botón PS para conectar por Bluetooth.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>No se encontró ningún DualShock 3 por USB. Conéctalo con un cable USB e inténtalo de nuevo.</value></data>

@@ -2043,6 +2043,9 @@ namespace PadForge.Common.Input
                     sink.IsPeer = d.IsPeer;
                     if (sink.TransportFailed || (transportShapeChanged && SinkAlive(sink) && !sink.IsPeer))
                     {
+                        Engine.SdlDiagLog.WriteLine("SINK detach guid=" + d.Guid.ToString("N").Substring(0, 8)
+                            + (sink.TransportFailed ? " reason=failed" : " reason=shape")
+                            + " nowBt=" + d.IsBt);
                         // Detach clears the transport, so the SinkAlive check
                         // below queues the rebuild on the NEW shape this pass.
                         toDispose.Add(DetachTransport_NoLock(sink));
@@ -2052,6 +2055,7 @@ namespace PadForge.Common.Input
                 }
                 foreach (var kv in _sinks.ToList())
                 {
+                    // (dispose tracing added below at the decision sites)
                     if (wanted.Contains(kv.Key)) continue;
                     toDispose.Add(DetachTransport_NoLock(kv.Value));
                     _sinks.Remove(kv.Key);
@@ -2144,12 +2148,16 @@ namespace PadForge.Common.Input
         /// orphan.</summary>
         private static void BuildTransportOnWorker(Sink s)
         {
+            Engine.SdlDiagLog.WriteLine("SINK build guid=" + s.DeviceGuid.ToString("N").Substring(0, 8)
+                + " isBt=" + s.IsBt + " isPeer=" + s.IsPeer
+                + " path=" + (s.HidPath != null && s.HidPath.Length > 30 ? s.HidPath.Substring(0, 30) : s.HidPath));
             if (s.IsBt)
             {
                 // Persistent raw HID handle for the ~100 Hz audio frame stream.
                 IntPtr h = NativeMethods.OpenHid(s.HidPath);
                 if (h == new IntPtr(-1))
                 {
+                    Engine.SdlDiagLog.WriteLine("SINK build BT open FAILED guid=" + s.DeviceGuid.ToString("N").Substring(0, 8));
                     return;
                 }
                 var tx = new BtWritePool(s.IsDs4 ? Ds4BtReportSize : Ds5BtReportSize);
@@ -2254,6 +2262,10 @@ namespace PadForge.Common.Input
                 }
                 if (match == null)
                 {
+                    Engine.SdlDiagLog.WriteLine("SINK build USB endpoint MISS guid="
+                        + s.DeviceGuid.ToString("N").Substring(0, 8)
+                        + " container=" + container.ToString("N").Substring(0, 8)
+                        + " (worker retries on its 5 s cadence)");
                     return;
                 }
                 using (match)
@@ -2272,6 +2284,8 @@ namespace PadForge.Common.Input
                                 && wfe.SubFormat == new Guid("00000003-0000-0010-8000-00aa00389b71"))); // KSDATAFORMAT_SUBTYPE_IEEE_FLOAT
                     var feedFormat = nativeOk ? mix : WaveFormat.CreateIeeeFloatWaveFormat(Rate, 2);
                     int channels = feedFormat.Channels;
+                    Engine.SdlDiagLog.WriteLine("SINK build USB endpoint OK guid=" + s.DeviceGuid.ToString("N").Substring(0, 8)
+                        + " ch=" + channels);
                     var feed = new UsbFrameProvider(s.Source, feedFormat, s.DeviceGuid);
                     // 30 ms event-driven buffer — on USB this buffer sits in
                     // BOTH the macro and mirror paths, so halving it from 60

@@ -322,6 +322,12 @@ namespace PadForge.Common.Input
         // as the headphone volume (duaLib.cpp:597).
         private readonly Dictionary<Guid, int> _prevAudioOutputPath = new();
 
+        // Devices seen offline since their last dispatch, so the return
+        // re-arms every change-gated authority write (the duaLib
+        // wasDisconnected pattern). Accessed only inside devices.SyncRoot
+        // during DispatchSnapshot, like the prev maps above.
+        private readonly HashSet<Guid> _deviceWasOffline = new();
+
         // Devices this dispatcher wrote on its previous dispatch as their
         // OWNER (single-writer ownership, owner facts 2026-07-20). On the
         // first owned dispatch of a device the prev-state maps above are
@@ -1539,7 +1545,38 @@ namespace PadForge.Common.Input
                     bool isPs = isDs5 || isDs4;
 
                     if (!guids.Contains(ud.InstanceGuid)) continue;
-                    if (!ud.IsOnline) continue;
+                    if (!ud.IsOnline)
+                    {
+                        // Remember the outage so the return re-arms below.
+                        _deviceWasOffline.Add(ud.InstanceGuid);
+                        continue;
+                    }
+                    if (_deviceWasOffline.Remove(ud.InstanceGuid))
+                    {
+                        // The device came back. A USB re-enumeration (and a BT
+                        // re-pair) FACTORY-RESETS the pad's audio state: output
+                        // path back to headphones, volumes back to defaults,
+                        // mute state cleared. Every change-gated authority
+                        // write in this dispatcher believed its value was
+                        // already applied, so nothing re-armed and the pad sat
+                        // on a silent headphone path until an app restart
+                        // happened to re-claim it. duaLib carries a
+                        // wasDisconnected flag for exactly this and ORs it
+                        // into every gate (duaLib.cpp:576/613/617). This is
+                        // that flag. Traced live 2026-08-01: replug left the
+                        // speaker silent on both endpoints while every sink
+                        // rebuilt cleanly.
+                        _prevHadRumble[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsLeftTrig[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsRightTrig[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsMicLed[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsPips[ud.InstanceGuid] = true;
+                        _audioMuteBurstLeft[ud.InstanceGuid] = AudioMuteBurstFrames;
+                        _prevHeadphoneVolume.Remove(ud.InstanceGuid);
+                        _prevAudioOutputPath.Remove(ud.InstanceGuid);
+                        Engine.SdlDiagLog.WriteLine("DISPATCH re-arm (device returned) guid="
+                            + ud.InstanceGuid.ToString("N").Substring(0, 8));
+                    }
                     if (!isPs) continue;
 
                     // Single-writer ownership (owner facts, 2026-07-20):

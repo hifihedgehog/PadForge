@@ -10156,7 +10156,10 @@ namespace PadForge.Services
             // passthrough (SDL#9, hardware-confirmed #162), both invisible
             // to SDL's shared-handle rumble flag (user report 2026-07-05:
             // Steam Controller and Switch 2 Pro dossiers showed no rumble
-            // chip despite hardware-confirmed rumble).
+            // chip despite hardware-confirmed rumble). Since fork
+            // b46ae33238 (#267) the 2015 Steam Controller also reports
+            // SDL_JOYSTICK_CAP_RUMBLE itself, so for that one family this
+            // override is redundant but harmless.
             bool sonyLightbarPad = ud.VendorId == 0x054C
                 && ud.ProdId is 0x0CE6 or 0x0DF2 or 0x05C4 or 0x09CC or 0x0BA0;
             bool switch2Pad = ud.VendorId == 0x057E

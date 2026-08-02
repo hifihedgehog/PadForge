@@ -29,9 +29,15 @@ namespace PadForge.Common.Input
     ///
     /// Why raw HID (SDL is amplitude-only): the bundled SDL fork's Switch and
     /// Steam drivers hard-code the rumble carrier and vary only amplitude
-    /// (SDL_hidapi_switch.c ActuallyRumble, SDL_hidapi_steam.c RumbleJoystick
-    /// returns SDL_Unsupported). Tone playback needs the raw-HID writer pattern
+    /// (SDL_hidapi_switch.c ActuallyRumble; SDL_hidapi_steam.c RumbleJoystick
+    /// since fork b46ae33238 synthesizes fixed-carrier 0x8F pulse trains for
+    /// #267 rumble emulation, intensity as duty cycle, still not tone
+    /// playback). Tone playback needs the raw-HID writer pattern
     /// PadForge already built for the Wii speaker and the Sony speaker.
+    /// Coexistence rule with that rumble emulation: both lanes end as 0x8F
+    /// commands and the firmware plays ONE command per actuator, last write
+    /// wins, so a tone cue supersedes an active rumble train on that
+    /// actuator until the core's 2-second rumble keep-alive re-sends it.
     ///
     /// Switch 2 is deliberately NOT here: no reference plays an audible tone on a
     /// Switch 2 actuator (controller.py defines en_tone/lf_freq/hf_freq but never

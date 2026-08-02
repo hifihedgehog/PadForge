@@ -80,7 +80,7 @@ namespace PadForge.Tests
             bool dsHidMini, bool anyPaired, bool expectOwnership, bool expectPatching)
         {
             var (takeOwnership, patching) =
-                PadForge.Services.Ds3PairingService.PsmPatchPolicy(dsHidMini, anyPaired);
+                PadForge.Services.Ds3PairingService.PsmPatchPolicy(dsHidMini, anyPaired, false);
             Assert.Equal(expectOwnership, takeOwnership);
             Assert.Equal(expectPatching, patching);
         }
@@ -109,9 +109,9 @@ namespace PadForge.Tests
         public void PsmPatchPolicy_ArmsForAnExternallyPairedPad(
             bool dsHidMini, bool anyPaired, bool machineHasDs3, bool expectPatching)
         {
-            bool hasPad = anyPaired || machineHasDs3;
             var (_, patching) =
-                PadForge.Services.Ds3PairingService.PsmPatchPolicy(dsHidMini, hasPad);
+                PadForge.Services.Ds3PairingService.PsmPatchPolicy(
+                    dsHidMini, anyPaired, machineHasDs3);
             Assert.Equal(expectPatching, patching);
         }
 

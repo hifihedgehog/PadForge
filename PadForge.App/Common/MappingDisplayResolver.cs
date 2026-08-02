@@ -514,6 +514,7 @@ namespace PadForge.Common
                     if (auxAxis.Equals("Pitch", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroAuxPitch;
                     if (auxAxis.Equals("Yaw",   System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroAuxYaw;
                     if (auxAxis.Equals("Roll",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroAuxRoll;
+                    if (auxAxis.Equals("Horizontal", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroAuxHorizontal;
                     return null;
                 }
                 if (axis.Equals("Pitch",      System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroPitch;
@@ -1680,6 +1681,7 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroAuxPitchDescriptor, DisplayName = si.Mapping_GyroAuxPitch });
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroAuxYawDescriptor,   DisplayName = si.Mapping_GyroAuxYaw });
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroAuxRollDescriptor,  DisplayName = si.Mapping_GyroAuxRoll });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroAuxHorizontalDescriptor, DisplayName = si.Mapping_GyroAuxHorizontal });
             }
 
             // Bundled motion-passthrough sources. Marker descriptors that

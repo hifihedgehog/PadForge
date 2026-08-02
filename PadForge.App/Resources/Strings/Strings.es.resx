@@ -1169,6 +1169,7 @@
   <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>Cabeceo del giroscopio del Joy-Con izquierdo</value></data>
   <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>Guiñada del giroscopio del Joy-Con izquierdo</value></data>
   <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>Alabeo del giroscopio del Joy-Con izquierdo</value></data>
+  <data name="Mapping_GyroAuxHorizontal" xml:space="preserve"><value>Giroscopio horizontal del Joy-Con izquierdo (Yaw + Roll)</value></data>
   <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>Giroscopio de movimiento del Joy-Con izquierdo</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscopio guiñada</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscopio alabeo</value></data>

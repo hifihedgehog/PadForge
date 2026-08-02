@@ -1189,6 +1189,7 @@
   <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>Beccheggio giroscopio Joy-Con sinistro</value></data>
   <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>Imbardata giroscopio Joy-Con sinistro</value></data>
   <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>Rollio giroscopio Joy-Con sinistro</value></data>
+  <data name="Mapping_GyroAuxHorizontal" xml:space="preserve"><value>Giroscopio orizzontale Joy-Con sinistro (Yaw + Roll)</value></data>
   <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>Giroscopio movimento Joy-Con sinistro</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscopio imbardata</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscopio rollio</value></data>

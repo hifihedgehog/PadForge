@@ -2303,7 +2303,8 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Freddo</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>Seleziona un dispositivo per esaminarne l'input grezzo.</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>Associazione non completata. Consulta il log per i dettagli.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nessun adattatore Bluetooth disponibile. Attiva il Bluetooth e riprova. L'associazione serve solo per il gioco wireless, via cavo il controller funziona comunque.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>Associazione non completata. Il passaggio non riuscito è indicato sopra.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Impossibile installare il driver Bluetooth per i controller PlayStation.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Collega il DualShock 3 con un cavo USB, poi fai clic su Associa. PadForge scrive questo PC nel controller e lo registra. Al termine, scollega il controller e premi il pulsante PS per connetterti tramite Bluetooth.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Nessun DualShock 3 trovato su USB. Collegalo con un cavo USB e riprova.</value></data>

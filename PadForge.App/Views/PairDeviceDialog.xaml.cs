@@ -104,10 +104,18 @@ namespace PadForge.Views
             }
             else
             {
+                // Every code that has something actionable to say gets its own
+                // message. The catch-all used to send people to a log file
+                // PadForge does not write (#265): pairing narration goes to the
+                // in-memory diagnostics ring, which only reaches disk when
+                // PADFORGE_DIAG is set. "no-radio" in particular is just
+                // Bluetooth being switched off, and it is checked BEFORE the
+                // WinUSB bind, so the user never reaches the USB step.
                 string msg = result?.Error switch
                 {
                     "no-ds3-usb" or "winusb-bind-failed" => Strings.Instance.Ds3Pair_NoUsb,
                     "install-failed" => Strings.Instance.Ds3Pair_InstallFailed,
+                    "no-radio" => Strings.Instance.Ds3Pair_NoRadio,
                     _ => Strings.Instance.Ds3Pair_Failed,
                 };
                 SetStatus(msg, error: true);

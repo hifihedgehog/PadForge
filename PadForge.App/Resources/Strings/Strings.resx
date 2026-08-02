@@ -2514,7 +2514,8 @@
   <data name="Ds3Pair_Success" xml:space="preserve"><value>Ready. Unplug the controller and press the PS button. It will appear in your device list.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>No DualShock 3 found on USB. Connect it with a USB cable and try again.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>The Bluetooth driver for PlayStation controllers could not be installed.</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>Pairing did not complete. See the log for details.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>No Bluetooth radio is available. Turn Bluetooth on and try again. Pairing is only needed for wireless play; a cable-connected controller works without it.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>Pairing did not complete. The step that failed is shown above.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Close</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC Tags</value></data>
   <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Register a Tag</value></data>

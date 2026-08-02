@@ -2281,7 +2281,8 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Frio</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>Selecione um dispositivo para inspecionar sua entrada bruta.</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>O pareamento não foi concluído. Consulte o log para detalhes.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nenhum adaptador Bluetooth disponível. Ative o Bluetooth e tente novamente. O emparelhamento só é necessário para jogar sem fio; com cabo o controle funciona sem ele.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>O emparelhamento não foi concluído. A etapa que falhou aparece acima.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Não foi possível instalar o driver Bluetooth para controles PlayStation.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Conecte o DualShock 3 com um cabo USB e clique em Parear. O PadForge grava este PC no controle e o registra. Ao terminar, desconecte o controle e pressione o botão PS para conectar via Bluetooth.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Nenhum DualShock 3 encontrado via USB. Conecte-o com um cabo USB e tente novamente.</value></data>

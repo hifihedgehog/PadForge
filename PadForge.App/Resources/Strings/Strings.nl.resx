@@ -2301,7 +2301,8 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Koud</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>Selecteer een apparaat om de ruwe invoer te bekijken.</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>Koppelen is niet voltooid. Zie het logboek voor details.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Geen Bluetooth-adapter beschikbaar. Schakel Bluetooth in en probeer het opnieuw. Koppelen is alleen nodig voor draadloos spelen, met een kabel werkt de controller ook zo.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>Koppelen is niet voltooid. De mislukte stap staat hierboven.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Het Bluetooth-stuurprogramma voor PlayStation-controllers kon niet worden geïnstalleerd.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Sluit de DualShock 3 aan met een USB-kabel en klik op Koppelen. PadForge schrijft deze PC naar de controller en registreert hem. Koppel na afloop de controller los en druk op de PS-knop om via Bluetooth te verbinden.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Geen DualShock 3 gevonden via USB. Sluit hem aan met een USB-kabel en probeer het opnieuw.</value></data>

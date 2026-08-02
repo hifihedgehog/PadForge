@@ -2281,7 +2281,8 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>スロット</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>停止中</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>デバイスを選択すると、その生入力を確認できます。</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>ペアリングが完了しませんでした。詳細はログを確認してください。</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>利用できる Bluetooth アダプターがありません。Bluetooth をオンにしてやり直してください。ペアリングはワイヤレス接続にのみ必要で、ケーブル接続なら不要です。</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>ペアリングは完了しませんでした。失敗した手順は上に表示されています。</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation コントローラー用の Bluetooth ドライバーをインストールできませんでした。</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>DualShock 3 を USB ケーブルで接続し、「ペアリング」をクリックします。PadForge がこの PC をコントローラーに書き込み、登録します。完了したらケーブルを抜き、PS ボタンを押して Bluetooth で接続してください。</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>USB 上に DualShock 3 が見つかりません。USB ケーブルで接続して、もう一度お試しください。</value></data>

@@ -2281,7 +2281,8 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>Emplacement</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Froid</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>Sélectionnez un appareil pour inspecter son entrée brute.</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>L'appairage ne s'est pas terminé. Consultez le journal pour plus de détails.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Aucun adaptateur Bluetooth disponible. Activez le Bluetooth et réessayez. L'association ne sert qu'au sans-fil, une manette branchée en USB fonctionne sans cela.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>L'association ne s'est pas terminée. L'étape qui a échoué est indiquée ci-dessus.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Le pilote Bluetooth pour les manettes PlayStation n'a pas pu être installé.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Connectez la DualShock 3 avec un câble USB, puis cliquez sur Appairer. PadForge inscrit ce PC dans la manette et l'enregistre. Une fois terminé, débranchez la manette et appuyez sur le bouton PS pour vous connecter via Bluetooth.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Aucune DualShock 3 détectée en USB. Connectez-la avec un câble USB et réessayez.</value></data>

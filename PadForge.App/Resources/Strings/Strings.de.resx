@@ -2976,4 +2976,8 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Nur Lautsprecher</value></data>
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Ausgabepfad zurücksetzen</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Kopfhörerbuchse folgen</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense-Ausgabereport-Bytebelegung und Sonys scePad-Semantik von WujekFoliarz, Grundlage der Effekt- und Audio-Writer von PadForge. MIT.</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Muster für buchsengesteuertes Audio-Routing von SundayMoments, die Referenz hinter Kopfhörerbuchse folgen. Als Dokumentation gelesen; AGPL-3.0.</value></data>
 </root>

@@ -1100,6 +1100,10 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_OutputPath_SpeakerOnly => Get("Pad_Audio_OutputPath_SpeakerOnly");
     public string Pad_Audio_OutputPath_FollowJack => Get("Pad_Audio_OutputPath_FollowJack");
     public string Pad_ResetOutputPath => Get("Pad_ResetOutputPath");
+    public string About_DuaLib => Get("About_DuaLib");
+    public string About_DuaLibDesc => Get("About_DuaLibDesc");
+    public string About_Ds5Bridge => Get("About_Ds5Bridge");
+    public string About_Ds5BridgeDesc => Get("About_Ds5BridgeDesc");
     public string MacroAction_Type_HeadphoneVolumeUp => Get("MacroAction_Type_HeadphoneVolumeUp");
     public string MacroAction_Type_HeadphoneVolumeDown => Get("MacroAction_Type_HeadphoneVolumeDown");
     public string MacroAction_HeadphoneVolumeUp_Tooltip => Get("MacroAction_HeadphoneVolumeUp_Tooltip");

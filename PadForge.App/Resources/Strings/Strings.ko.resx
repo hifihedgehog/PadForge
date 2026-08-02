@@ -2976,4 +2976,8 @@
   <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>스피커만</value></data>
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>출력 경로 초기화</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>헤드폰 단자 따라가기</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz의 DualSense 출력 리포트 바이트 맵과 Sony scePad 의미체계. PadForge 이펙트/오디오 로직의 기반. MIT.</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments의 잭 감지 오디오 라우팅 패턴. 헤드폰 단자 따라가기의 참조 구현. 문서로만 참고; AGPL-3.0.</value></data>
 </root>

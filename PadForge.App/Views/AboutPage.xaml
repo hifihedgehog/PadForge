@@ -1,4 +1,4 @@
-<UserControl x:Class="PadForge.Views.AboutPage"
+﻿<UserControl x:Class="PadForge.Views.AboutPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -270,7 +270,13 @@
 
                     <TextBlock Grid.Row="44" Text="{Binding About_Ds4Mac, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
                     <TextBlock Grid.Row="44" Grid.Column="1"
-                               Text="{Binding About_Ds4MacDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>                </Grid>
+                               Text="{Binding About_Ds4MacDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="45" Text="{Binding About_DuaLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="45" Grid.Column="1"
+                               Text="{Binding About_DuaLibDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="46" Text="{Binding About_Ds5Bridge, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="46" Grid.Column="1"
+                               Text="{Binding About_Ds5BridgeDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>                </Grid>
             </Border>
 
             <!-- License -->

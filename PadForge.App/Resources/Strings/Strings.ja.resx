@@ -2976,4 +2976,8 @@
   <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>スピーカーのみ</value></data>
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>出力パスをリセット</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>ヘッドホン端子に追従</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarzによるDualSense出力レポートのバイトマップとSony scePadセマンティクス。PadForgeのエフェクト・オーディオ処理の基礎。MIT。</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMomentsによるジャック検出オーディオルーティングのパターン。ヘッドホン端子に追従の参照元。ドキュメントとして参照；AGPL-3.0。</value></data>
 </root>

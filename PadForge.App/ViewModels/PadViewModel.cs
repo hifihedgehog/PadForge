@@ -3810,6 +3810,14 @@ namespace PadForge.ViewModels
             ReloadMenus();
             ReloadRumbleAudio();
             ReloadSocd();
+            // Page navigation state is per-VC too. Without these, the next
+            // VC created at this index opened straight onto the deleted
+            // VC's tab (owner re-report 2026-08-02: "takes me to the
+            // mapping tab to the exact scrolled location"), and the stale
+            // MappingsViewLoaded let the grid-to-domain writer treat the
+            // dead grid as a source of truth inside the delete window.
+            SelectedConfigTab = 0;
+            MappingsViewLoaded = false;
             // The ViewModel half of the shift-layer clear above. Menus,
             // rumble-audio and SOCD each get their reload here; layers had
             // none, so the tab strip kept showing the deleted slot's layers

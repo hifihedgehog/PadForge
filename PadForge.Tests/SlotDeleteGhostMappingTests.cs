@@ -160,6 +160,96 @@ namespace PadForge.Tests
                 "an uncreated slot's persisted set is a ghost and must be masked at load");
         }
 
+        /// <summary>The lane the first fix missed (owner re-report, same
+        /// day): OnSlotDeleted → RefreshAfterSlotReorder runs
+        /// UpdatePadDeviceInfo BEFORE it rebuilds the grids, and that can
+        /// fire OnSelectedDeviceChanged → PushUiExtraSourcesIntoSlotMappingSets
+        /// (the documented fifth push path). At that instant the deleted
+        /// pad's grid still holds the deleted VC's rows and
+        /// MappingsViewLoaded is still true, so the push writes the ghost
+        /// straight back into the set DeleteSlot just emptied. The writer
+        /// must skip uncreated slots ITSELF (the domain-swap tattoo:
+        /// guard the writer, not the callers).</summary>
+        [Fact]
+        public void PushMidDeleteWindow_CannotResurrectTheDeletedSlotsRows()
+        {
+            var (vm, ss, dev) = Arrange();
+            SettingsManager.SlotCreated[0] = true;
+            SettingsManager.SlotEnabled[0] = true;
+            SettingsManager.KeyboardMouseSlotOrder.Add(0);
+            var padVm = vm.Pads[0];
+            padVm.OutputType = PadForge.Engine.VirtualControllerType.KeyboardMouse;
+            SettingsManager.SlotMappingSets[0] = AuthoredSet();
+
+            // Hydrate the grid the way the open Mappings tab has it: rows
+            // built for the type, one carrying the Any-Device descriptor.
+            padVm.RebuildMappings();
+            padVm.MappingsViewLoaded = true;
+            var row = padVm.Mappings.FirstOrDefault(m => !string.IsNullOrEmpty(m.TargetSettingName));
+            Assert.NotNull(row);
+            row.PrimarySourceDeviceGuid = "";
+            row.LoadDescriptor("Touchpad 0 Finger 0 X");
+
+            dev.DeleteSlot(0);
+
+            // The production interleave: a push lands between DeleteSlot's
+            // swap and the grid rebuild at the end of OnSlotDeleted.
+            ss.PushUiExtraSourcesIntoSlotMappingSets();
+
+            Assert.False(SettingsManager.SlotMappingSets[0].HasAuthoredContent,
+                "a push in the delete window resurrected the deleted slot's rows; " +
+                "the grid-to-domain writer must skip uncreated slots");
+        }
+
+        /// <summary>The writer's own gate, pinned independently of the
+        /// delete flow's MappingsViewLoaded reset (which also closes the
+        /// window and would otherwise mask a regression here): even with
+        /// a hydrated grid claiming to be a source of truth, an uncreated
+        /// slot's set must not be written.</summary>
+        [Fact]
+        public void Push_SkipsUncreatedSlots_EvenWithAHydratedGrid()
+        {
+            var (vm, ss, _) = Arrange();
+            var padVm = vm.Pads[0];
+            padVm.OutputType = PadForge.Engine.VirtualControllerType.KeyboardMouse;
+            padVm.RebuildMappings();
+            padVm.MappingsViewLoaded = true;
+            var row = padVm.Mappings.FirstOrDefault(m => !string.IsNullOrEmpty(m.TargetSettingName));
+            Assert.NotNull(row);
+            row.PrimarySourceDeviceGuid = "";
+            row.LoadDescriptor("Touchpad 0 Finger 0 X");
+
+            SettingsManager.SlotCreated[0] = false;
+            SettingsManager.SlotMappingSets[0] = new MappingSet();
+
+            ss.PushUiExtraSourcesIntoSlotMappingSets();
+
+            Assert.False(SettingsManager.SlotMappingSets[0].HasAuthoredContent,
+                "the grid-to-domain writer wrote rows for an uncreated slot");
+        }
+
+        /// <summary>Delete resets the pad's page-navigation state: the next
+        /// VC at this index must not open on the deleted VC's tab, and the
+        /// dead grid must not read as hydrated (that flag is one of the two
+        /// gates keeping the delete-window push from resurrecting rows).</summary>
+        [Fact]
+        public void DeleteSlot_ResetsTabSelectionAndGridHydration()
+        {
+            var (vm, _, dev) = Arrange();
+            SettingsManager.SlotCreated[0] = true;
+            SettingsManager.SlotEnabled[0] = true;
+            SettingsManager.KeyboardMouseSlotOrder.Add(0);
+            var padVm = vm.Pads[0];
+            padVm.OutputType = PadForge.Engine.VirtualControllerType.KeyboardMouse;
+            padVm.SelectedConfigTab = 2;   // Mappings
+            padVm.MappingsViewLoaded = true;
+
+            dev.DeleteSlot(0);
+
+            Assert.Equal(0, padVm.SelectedConfigTab);
+            Assert.False(padVm.MappingsViewLoaded);
+        }
+
         [Fact]
         public void LoadMacros_SkipsMacrosForUncreatedSlots()
         {

@@ -763,6 +763,24 @@ namespace PadForge.Services
                 var padVm = pads[slot];
                 if (padVm == null) continue;
 
+                // An UNCREATED slot has no VC for the grid to describe, so
+                // its grid is never a source of truth. Concretely: in the
+                // delete flow, RefreshAfterSlotReorder runs
+                // UpdatePadDeviceInfo BEFORE it rebuilds the grids, and
+                // that can raise OnSelectedDeviceChanged, which lands here
+                // while the deleted pad's grid still holds the deleted
+                // VC's rows and MappingsViewLoaded is still true. Without
+                // this gate the push wrote those rows straight back into
+                // the set DeleteSlot had just emptied, resurrecting the
+                // deleted VC's mappings for the next same-index create
+                // (owner re-report 2026-08-02, after the delete-time swap
+                // alone proved insufficient). Same self-guarding rule as
+                // the stale-flag check above: the writer gates itself, so
+                // every present and future caller inherits it.
+                if (slot < SettingsManager.SlotCreated.Length
+                    && !SettingsManager.SlotCreated[slot])
+                    continue;
+
                 // A pad whose grid has not been hydrated yet is NOT a
                 // source of truth (round eleven). MappingsViewLoaded is
                 // false across a device assignment and every output-type

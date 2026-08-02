@@ -71,6 +71,10 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="ui:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+            <!-- PadUiButtonTemplate: the App.xaml pressed-foreground fix.
+                 Page-local implicits replace the app implicit, so the
+                 Template setter rides along here too. -->
+            <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
             <Style.Triggers>
                 <!-- Neutral first; the Primary accent rides the ember ramp,
                      so its MultiTrigger sits later and wins on hover. -->

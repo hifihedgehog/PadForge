@@ -1169,6 +1169,7 @@
   <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>왼쪽 Joy-Con 자이로 피치</value></data>
   <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>왼쪽 Joy-Con 자이로 요</value></data>
   <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>왼쪽 Joy-Con 자이로 롤</value></data>
+  <data name="Mapping_GyroAuxHorizontal" xml:space="preserve"><value>왼쪽 Joy-Con 자이로 수평 (Yaw + Roll)</value></data>
   <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>왼쪽 Joy-Con 모션 자이로</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>자이로 요</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>자이로 롤</value></data>

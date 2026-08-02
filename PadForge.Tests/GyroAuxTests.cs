@@ -48,6 +48,7 @@ namespace PadForge.Tests
             Assert.True(SourceCoercion.IsGyroAuxDescriptor("Gyro L Pitch"));
             Assert.True(SourceCoercion.IsGyroAuxDescriptor(" gyro l yaw "));
             Assert.True(SourceCoercion.IsGyroAuxDescriptor("Gyro L Roll"));
+            Assert.True(SourceCoercion.IsGyroAuxDescriptor("Gyro L Horizontal"));   // #268
             Assert.False(SourceCoercion.IsGyroAuxDescriptor("Gyro Pitch"));
             Assert.False(SourceCoercion.IsGyroAuxDescriptor("Gyro Lean X"));
             Assert.False(SourceCoercion.IsGyroAuxDescriptor("Gyro Horizontal"));
@@ -165,6 +166,64 @@ namespace PadForge.Tests
 
                 Assert.True(Math.Abs(primary2) > 0.01f, $"primary should move, got {primary2}");
                 Assert.True(Math.Abs(aux2) < 0.001f, $"aux should be still, got {aux2}");
+            }
+            finally
+            {
+                SourceCoercion.GyroTuningProvider = oldTuning;
+                SourceCoercion.GyroBiasProvider = oldBias;
+                SourceCoercion.GyroAuxBiasProvider = oldAuxBias;
+                SourceCoercion.AimEngageStateProvider = oldEngage;
+            }
+        }
+
+        /// <summary>The Horizontal blend's aux twin (#268, discussion #258).
+        /// Three properties in one evaluation set: the blend reads the AUX
+        /// sensor only (primary motion must not move it), a roll-only aux
+        /// twist drives it while the plain aux Yaw row stays silent (the
+        /// property that makes Horizontal a blend rather than an alias),
+        /// and the primary's own Horizontal never leaks aux motion.</summary>
+        [Fact]
+        public void AuxHorizontal_BlendsAuxYawAndRoll_NeverThePrimarySensor()
+        {
+            var oldTuning = SourceCoercion.GyroTuningProvider;
+            var oldBias = SourceCoercion.GyroBiasProvider;
+            var oldAuxBias = SourceCoercion.GyroAuxBiasProvider;
+            var oldEngage = SourceCoercion.AimEngageStateProvider;
+            try
+            {
+                SourceCoercion.GyroTuningProvider = null;
+                SourceCoercion.GyroBiasProvider = null;
+                SourceCoercion.GyroAuxBiasProvider = null;
+                SourceCoercion.AimEngageStateProvider = null;
+
+                // Left half rolling hard, everything else still.
+                var auxRoll = StateWith(0f, 0f, 0f, 0f, 0f, 2.0f);
+                float auxHorizontal = SourceCoercion.EvaluateForBipolarAxisTarget(
+                    auxRoll, Src("Gyro L Horizontal"), 0, false, Dev);
+                float auxYawRow = SourceCoercion.EvaluateForBipolarAxisTarget(
+                    auxRoll, Src("Gyro L Yaw"), 0, false, Dev);
+                Assert.True(Math.Abs(auxHorizontal) > 0.01f,
+                    $"aux Horizontal should blend in aux roll, got {auxHorizontal}");
+                Assert.True(Math.Abs(auxYawRow) < 0.001f,
+                    $"aux Yaw must ignore roll, got {auxYawRow}");
+
+                // Primary rolling and yawing hard, left half still: the aux
+                // blend must not move, and the primary blend must.
+                var primaryOnly = StateWith(0f, 2.0f, 2.0f, 0f, 0f, 0f);
+                float auxOnPrimaryMotion = SourceCoercion.EvaluateForBipolarAxisTarget(
+                    primaryOnly, Src("Gyro L Horizontal"), 0, false, Dev);
+                float primaryHorizontal = SourceCoercion.EvaluateForBipolarAxisTarget(
+                    primaryOnly, Src("Gyro Horizontal"), 0, false, Dev);
+                Assert.True(Math.Abs(auxOnPrimaryMotion) < 0.001f,
+                    $"aux Horizontal read the PRIMARY sensor, got {auxOnPrimaryMotion}");
+                Assert.True(Math.Abs(primaryHorizontal) > 0.01f,
+                    $"primary Horizontal should move, got {primaryHorizontal}");
+
+                // And the mirror: aux motion must not leak into the primary blend.
+                float primaryOnAuxMotion = SourceCoercion.EvaluateForBipolarAxisTarget(
+                    auxRoll, Src("Gyro Horizontal"), 0, false, Dev);
+                Assert.True(Math.Abs(primaryOnAuxMotion) < 0.001f,
+                    $"primary Horizontal read the AUX sensor, got {primaryOnAuxMotion}");
             }
             finally
             {

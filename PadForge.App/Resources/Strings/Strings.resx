@@ -1514,6 +1514,7 @@
   <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>Left Joy-Con Gyro Pitch</value></data>
   <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>Left Joy-Con Gyro Yaw</value></data>
   <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>Left Joy-Con Gyro Roll</value></data>
+  <data name="Mapping_GyroAuxHorizontal" xml:space="preserve"><value>Left Joy-Con Gyro Horizontal (Yaw + Roll)</value></data>
   <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>Left Joy-Con Motion Gyro</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>

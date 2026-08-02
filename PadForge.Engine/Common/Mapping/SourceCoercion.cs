@@ -1606,7 +1606,15 @@ namespace PadForge.Engine.Common.Mapping
         {
             string s = (descriptor ?? "").Trim();
             if (!s.StartsWith("Gyro ", StringComparison.Ordinal)) return false;
-            return s.Substring(5).Trim().Equals("Horizontal", StringComparison.OrdinalIgnoreCase);
+            string axis = s.Substring(5).Trim();
+            // Aux family (#268): "Gyro L Horizontal" blends the LEFT
+            // sensor. The strip is gated on the SAME classifier predicate
+            // as ParseGyroAxisIndex's (the C45 discipline): a lenient bare
+            // "L " strip would accept spellings the classifier rejects,
+            // and those must keep failing closed here too.
+            if (IsGyroAuxDescriptor(s))
+                axis = axis.Substring(2).Trim();
+            return axis.Equals("Horizontal", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>True when a gyro rate descriptor names the PITCH axis,
@@ -2180,6 +2188,12 @@ namespace PadForge.Engine.Common.Mapping
         public const string GyroAuxPitchDescriptor = "Gyro L Pitch";
         public const string GyroAuxYawDescriptor   = "Gyro L Yaw";
         public const string GyroAuxRollDescriptor  = "Gyro L Roll";
+        // The yaw+roll blend, #268 (@eVenent, discussion #258): the aux twin
+        // of "Gyro Horizontal". ReadTunedGyroRate's aux and isHorizontal
+        // flags are independent and the blend consumes aux-selected
+        // components, so the whole chain works once the two predicates
+        // accept the spelling.
+        public const string GyroAuxHorizontalDescriptor = "Gyro L Horizontal";
 
         /// <summary>True for any "Gyro L ..." aux rate descriptor. Checked
         /// BEFORE the generic "Gyro " family everywhere, since the aux
@@ -2203,7 +2217,8 @@ namespace PadForge.Engine.Common.Mapping
             string s = descriptor.Trim();
             return string.Equals(s, GyroAuxPitchDescriptor, StringComparison.OrdinalIgnoreCase)
                 || string.Equals(s, GyroAuxYawDescriptor,   StringComparison.OrdinalIgnoreCase)
-                || string.Equals(s, GyroAuxRollDescriptor,  StringComparison.OrdinalIgnoreCase);
+                || string.Equals(s, GyroAuxRollDescriptor,  StringComparison.OrdinalIgnoreCase)
+                || string.Equals(s, GyroAuxHorizontalDescriptor, StringComparison.OrdinalIgnoreCase);
         }
 
         public const string GyroLeanXDescriptor = "Gyro Lean X";

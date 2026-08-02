@@ -2092,6 +2092,7 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_GyroAuxPitch => Get("Mapping_GyroAuxPitch");
     public string Mapping_GyroAuxYaw => Get("Mapping_GyroAuxYaw");
     public string Mapping_GyroAuxRoll => Get("Mapping_GyroAuxRoll");
+    public string Mapping_GyroAuxHorizontal => Get("Mapping_GyroAuxHorizontal");
     public string Mapping_MotionGyroAux => Get("Mapping_MotionGyroAux");
     public string Mapping_CapSenseLeftStickTouch => Get("Mapping_CapSenseLeftStickTouch");
     public string Mapping_CapSenseRightStickTouch => Get("Mapping_CapSenseRightStickTouch");

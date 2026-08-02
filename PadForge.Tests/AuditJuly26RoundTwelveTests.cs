@@ -33,12 +33,14 @@ namespace PadForge.Tests
         private readonly SettingsCollection _savedSettings;
         private readonly DeviceCollection _savedDevices;
         private readonly MappingSet[] _savedMappingSets;
+        private readonly bool[] _savedCreated;
 
         public AuditJuly26RoundTwelveTests()
         {
             _savedSettings = SettingsManager.UserSettings;
             _savedDevices = SettingsManager.UserDevices;
             _savedMappingSets = SettingsManager.SlotMappingSets;
+            _savedCreated = (bool[])SettingsManager.SlotCreated.Clone();
         }
 
         public void Dispose()
@@ -46,6 +48,7 @@ namespace PadForge.Tests
             SettingsManager.UserSettings = _savedSettings;
             SettingsManager.UserDevices = _savedDevices;
             SettingsManager.SlotMappingSets = _savedMappingSets;
+            Array.Copy(_savedCreated, SettingsManager.SlotCreated, _savedCreated.Length);
         }
 
         /// <summary>A slot whose MappingSet carries one authored row that
@@ -55,6 +58,11 @@ namespace PadForge.Tests
             SettingsManager.UserDevices = new DeviceCollection();
             SettingsManager.UserSettings = new SettingsCollection();
             SettingsManager.SlotMappingSets = new MappingSet[InputManager.MaxPads];
+            // The slot must exist: since the 2026-08-02 ghost-mapping fix
+            // the push skips uncreated slots outright, and this class is
+            // about the hydration gate, not that one.
+            Array.Clear(SettingsManager.SlotCreated, 0, SettingsManager.SlotCreated.Length);
+            SettingsManager.SlotCreated[0] = true;
 
             var ms = new MappingSet
             {

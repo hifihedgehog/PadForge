@@ -215,6 +215,289 @@
             </Style>
 
             <!--
+                PadUiButtonTemplate: byte-for-byte copy of Wpf.Ui 4.3.0's
+                DefaultUiButtonStyle ControlTemplate (Controls/Button/
+                Button.xaml:240-483) with ONE trigger corrected. Upstream's
+                pressed MultiTrigger sets Foreground with no TargetName, so
+                its TemplatedParent binding is evaluated against the
+                ui:Button itself and climbs to the BUTTON'S templated
+                parent. Any ui:Button instantiated from a DataTemplate (the
+                mapping-row Record/Clear buttons, the palette color chips)
+                therefore resolves against a ContentPresenter, which has no
+                PressedForeground: a BindingExpression path error on every
+                press, and the pressed text color never applies anywhere
+                (outside a template the parent is null). Upstream's own
+                sibling controls do this swap correctly with targeted
+                setters (DropDownButton.xaml:95-96, SplitButton.xaml:177-178),
+                which is the pattern the fix applies. Still broken at
+                upstream main (ffebacd6), so the copy stays until a
+                release carries the fix; on any WPF-UI package bump, re-diff
+                this template against the new Button.xaml. One literal
+                inlined: ControlIcon's Margin 0,0,8,0 is upstream's
+                ButtonIconMargin (Button.xaml:18), whose key lives in the
+                package dictionary the XamlResourceKeyTests guard cannot
+                scan.
+            -->
+            <ControlTemplate x:Key="PadUiButtonTemplate" TargetType="{x:Type uictrl:Button}">
+                <Border
+                    x:Name="ContentBorder"
+                    Width="{TemplateBinding Width}"
+                    Height="{TemplateBinding Height}"
+                    MinWidth="{TemplateBinding MinWidth}"
+                    MinHeight="{TemplateBinding MinHeight}"
+                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="0"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                    <!--  The inset border is only used for appearances other than Secondary  -->
+                    <Border
+                        x:Name="InsetBorder"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        BorderBrush="{Binding ElementName=ContentBorder, Path=BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <ContentPresenter
+                                x:Name="ControlIcon"
+                                Grid.Column="0"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Icon}"
+                                Focusable="False"
+                                TextElement.FontSize="{TemplateBinding FontSize}"
+                                TextElement.Foreground="{TemplateBinding Foreground}" />
+
+                            <ContentPresenter
+                                x:Name="ContentPresenter"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                RecognizesAccessKey="True"
+                                TextElement.Foreground="{TemplateBinding Foreground}" />
+                        </Grid>
+                    </Border>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <!--  TRANSPARENT  -->
+                    <Trigger Property="Appearance" Value="Transparent">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Trigger>
+
+                    <!--  PRIMARY  -->
+                    <Trigger Property="Appearance" Value="Primary">
+                        <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}" />
+                        <Setter Property="MouseOverBackground" Value="{DynamicResource AccentButtonBackgroundPointerOver}" />
+                        <Setter Property="PressedBackground" Value="{DynamicResource AccentButtonBackgroundPressed}" />
+                        <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}" />
+                        <Setter Property="PressedForeground" Value="{DynamicResource AccentButtonForegroundPointerOver}" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                        <Setter Property="MouseOverBorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                        <Setter Property="PressedBorderBrush" Value="{DynamicResource ControlFillColorTransparentBrush}" />
+                    </Trigger>
+
+                    <!--  SECONDARY  -->
+                    <Trigger Property="Appearance" Value="Secondary">
+                        <Setter TargetName="InsetBorder" Property="BorderThickness" Value="0" />
+                        <Setter TargetName="ContentBorder" Property="BorderThickness" Value="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </Trigger>
+
+                    <!--  DARK  -->
+                    <Trigger Property="Appearance" Value="Dark">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{DynamicResource ControlStrongFillColorDark}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="MouseOverBackground">
+                            <Setter.Value>
+                                <SolidColorBrush Color="#62000000" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="PressedBackground">
+                            <Setter.Value>
+                                <SolidColorBrush Color="#52000000" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="PressedBorderBrush" Value="Transparent" />
+                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorLightPrimaryBrush}" />
+                        <Setter Property="PressedForeground" Value="{DynamicResource TextFillColorLightSecondaryBrush}" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                        <Setter Property="MouseOverBorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                    </Trigger>
+
+                    <!--  LIGHT  -->
+                    <Trigger Property="Appearance" Value="Light">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{DynamicResource ControlStrongFillColorLight}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="MouseOverBackground">
+                            <Setter.Value>
+                                <SolidColorBrush Color="#D3FFFFFF" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="PressedBackground">
+                            <Setter.Value>
+                                <SolidColorBrush Color="#F3FFFFFF" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorDarkPrimaryBrush}" />
+                        <Setter Property="PressedForeground" Value="{DynamicResource TextFillColorDarkSecondaryBrush}" />
+                    </Trigger>
+
+                    <!--  INFO  -->
+                    <Trigger Property="Appearance" Value="Info">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{DynamicResource PaletteLightBlueColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="MouseOverBackground">
+                            <Setter.Value>
+                                <SolidColorBrush Opacity="0.9" Color="{DynamicResource PaletteLightBlueColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="PressedBackground">
+                            <Setter.Value>
+                                <SolidColorBrush Opacity="0.7" Color="{DynamicResource PaletteLightBlueColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorLightPrimaryBrush}" />
+                        <Setter Property="PressedBorderBrush" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                        <Setter Property="MouseOverBorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                    </Trigger>
+
+                    <!--  DANGER  -->
+                    <Trigger Property="Appearance" Value="Danger">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{DynamicResource PaletteRedColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="MouseOverBackground">
+                            <Setter.Value>
+                                <SolidColorBrush Opacity="0.9" Color="{DynamicResource PaletteRedColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="PressedBackground">
+                            <Setter.Value>
+                                <SolidColorBrush Opacity="0.7" Color="{DynamicResource PaletteRedColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="PressedBorderBrush" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                        <Setter Property="MouseOverBorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                    </Trigger>
+
+                    <!--  SUCCESS  -->
+                    <Trigger Property="Appearance" Value="Success">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{DynamicResource PaletteGreenColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="MouseOverBackground">
+                            <Setter.Value>
+                                <SolidColorBrush Opacity="0.9" Color="{DynamicResource PaletteGreenColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="PressedBackground">
+                            <Setter.Value>
+                                <SolidColorBrush Opacity="0.7" Color="{DynamicResource PaletteGreenColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="PressedBorderBrush" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                        <Setter Property="MouseOverBorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                    </Trigger>
+
+                    <!--  CAUTION  -->
+                    <Trigger Property="Appearance" Value="Caution">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{DynamicResource PaletteOrangeColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="MouseOverBackground">
+                            <Setter.Value>
+                                <SolidColorBrush Opacity="0.9" Color="{DynamicResource PaletteOrangeColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="PressedBackground">
+                            <Setter.Value>
+                                <SolidColorBrush Opacity="0.7" Color="{DynamicResource PaletteOrangeColor}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="PressedBorderBrush" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                        <Setter Property="MouseOverBorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                    </Trigger>
+
+                    <!--  SHARED TRIGGERS  -->
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsMouseOver" Value="True" />
+                            <Condition Property="IsPressed" Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter TargetName="ContentBorder" Property="Background" Value="{Binding MouseOverBackground, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{Binding MouseOverBorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </MultiTrigger>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsMouseOver" Value="True" />
+                            <Condition Property="IsPressed" Value="True" />
+                        </MultiTrigger.Conditions>
+                        <Setter TargetName="ContentBorder" Property="Background" Value="{Binding PressedBackground, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{Binding PressedBorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <!-- FIX (see the comment on PadUiButtonTemplate): TargetName added,
+                             matching upstream's own DropDownButton.xaml:95-96 pattern. -->
+                        <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding PressedForeground, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Setter TargetName="ControlIcon" Property="TextElement.Foreground" Value="{Binding PressedForeground, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </MultiTrigger>
+
+                    <Trigger Property="Content" Value="{x:Null}">
+                        <Setter TargetName="ControlIcon" Property="Margin" Value="0" />
+                    </Trigger>
+                    <Trigger Property="Content" Value="">
+                        <Setter TargetName="ControlIcon" Property="Margin" Value="0" />
+                    </Trigger>
+                    <Trigger Property="Icon" Value="{x:Null}">
+                        <Setter TargetName="ControlIcon" Property="Margin" Value="0" />
+                        <Setter TargetName="ControlIcon" Property="Visibility" Value="Collapsed" />
+                    </Trigger>
+
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter TargetName="ContentBorder" Property="Background" Value="{DynamicResource ButtonBackgroundDisabled}" />
+                        <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushDisabled}" />
+                        <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+
+            <!--
+                Applies the corrected template to every unstyled ui:Button.
+                Named styles based on DefaultUiButtonStyle bypass this
+                implicit style, so each of them repeats the Template setter
+                (EmberIconButton, EmberPrimaryButton, DashboardPage's page
+                implicit, PadPage's MapAllPillButton).
+            -->
+            <Style TargetType="uictrl:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
+            </Style>
+
+            <!--
                 Icon micro-buttons (#175 control spec §3): 28x28 hit target,
                 radius 6, transparent rest fill with a 1px ghost stroke so
                 they read as targets at rest. Hover fills raised steel and
@@ -227,6 +510,7 @@
                 PressedBackground as settable properties.
             -->
             <Style x:Key="EmberIconButton" TargetType="uictrl:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
                 <Setter Property="Width" Value="28"/>
                 <Setter Property="Height" Value="28"/>
                 <Setter Property="Padding" Value="0"/>
@@ -316,6 +600,7 @@
                 </Style.Triggers>
             </Style>
             <Style x:Key="EmberPrimaryButton" TargetType="uictrl:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
                 <Setter Property="MinHeight" Value="32"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
                 <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>

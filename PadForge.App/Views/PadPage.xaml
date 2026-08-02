@@ -254,6 +254,9 @@
         <!-- Map All pill (Controller tab): hover swaps transparent fill to
              raised steel. -->
         <Style x:Key="MapAllPillButton" TargetType="ui:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+            <!-- PadUiButtonTemplate: the App.xaml pressed-foreground fix.
+                 BasedOn skips the app implicit style, so repeat it. -->
+            <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
@@ -4704,7 +4707,7 @@
                                                                      VerticalContentAlignment="Center"/>
                                                             <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <ui:Button Command="{Binding ResetGyroSensitivityCommand}" Style="{StaticResource ResetButton}"/>
-                                                        </StackPanel>
+                                                        </StackPanel>
                                                         <!-- Per-source acceleration: rate-dependent gain the
                                                              engine applies at the shared bipolar/unipolar seam.
                                                              Continuous sources only (the same family gate as
@@ -5499,7 +5502,7 @@
                                                          VerticalContentAlignment="Center"/>
                                                 <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <ui:Button Command="{Binding ResetGyroSensitivityCommand}" Style="{StaticResource ResetButton}"/>
-                                            </StackPanel>
+                                            </StackPanel>
                                             <!-- Primary-source acceleration, the twin of the
                                                  ExtraSources chip's control; same continuous-family
                                                  gate. -->

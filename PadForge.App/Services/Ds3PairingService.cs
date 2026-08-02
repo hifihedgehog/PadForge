@@ -97,14 +97,21 @@ namespace PadForge.Services
         /// repairs any earlier ownership grab.</para>
         ///
         /// <para>Without DsHidMini, the crash-safety policy stands: PadForge
-        /// owns arming, on only while a DS3 is actually paired. Patching off
-        /// makes BthPS3's use-after-free-on-disconnect path (upstream
+        /// owns arming, on only while this machine actually has a DS3. Patching
+        /// off makes BthPS3's use-after-free-on-disconnect path (upstream
         /// nefarius/BthPS3 #48, unfixed at the bundled v2.10.470.0)
         /// unreachable, which is what turned a stray Wii Remote connect
-        /// into a 0x50 bugcheck on 2026-07-10.</para></summary>
+        /// into a 0x50 bugcheck on 2026-07-10.</para>
+        ///
+        /// <para>The second argument is "does a DS3 live here", NOT "did
+        /// PadForge pair one" (#265). Those differ, and the difference is a
+        /// silent breakage: a pad paired outside our ceremony has no BTHPORT
+        /// record, so the narrow reading disarms patching on a machine whose
+        /// DS3 connects over BthPS3 daily. See Ds3DriverInstaller.MachineHasDs3.
+        /// </para></summary>
         internal static (bool TakeOwnership, bool Patching) PsmPatchPolicy(
-            bool dsHidMiniInstalled, bool anyDs3Paired)
-            => dsHidMiniInstalled ? (false, true) : (true, anyDs3Paired);
+            bool dsHidMiniInstalled, bool machineHasDs3)
+            => dsHidMiniInstalled ? (false, true) : (true, machineHasDs3);
 
         /// <summary>Drives BthPS3 PSM patching to the policy state (see
         /// <see cref="PsmPatchPolicy"/>). No-op when BthPS3 isn't installed.
@@ -116,12 +123,22 @@ namespace PadForge.Services
             {
                 if (!Ds3DriverInstaller.IsBthPs3Installed()) return;
                 bool dshm = Ds3DriverInstaller.IsDsHidMiniInstalled();
-                var (takeOwnership, wantPatching) = PsmPatchPolicy(dshm, AnyDs3Paired());
+                // "Is there a DS3 here" is NOT the same question as "did PadForge
+                // pair one" (#265). A pad paired outside our ceremony leaves no
+                // BTHPORT record at all, because BthPS3 identifies by remote name
+                // and the pairing lives inside the controller. Asking only
+                // AnyDs3Paired disarms patching on those machines and the pad
+                // silently stops connecting, so the durable devnode marker counts
+                // too.
+                bool paired = AnyDs3Paired();
+                bool hasPad = paired || Ds3DriverInstaller.MachineHasDs3();
+                var (takeOwnership, wantPatching) = PsmPatchPolicy(dshm, hasPad);
                 if (takeOwnership)
                     Ds3DriverInstaller.EnsurePadForgeOwnsPsmPatch();
                 else
                     Ds3DriverInstaller.RestoreBthPs3AutoArm();
-                LogLine($"PSM patch reconcile ({reason}): dshidmini={dshm} patching={wantPatching}.");
+                LogLine($"PSM patch reconcile ({reason}): dshidmini={dshm} "
+                        + $"paired={paired} hasPad={hasPad} patching={wantPatching}.");
                 Ds3DriverInstaller.SetPsmPatching(wantPatching, LogLine);
             }
             catch (Exception ex) { LogLine("PSM patch reconcile failed: " + ex.Message); }

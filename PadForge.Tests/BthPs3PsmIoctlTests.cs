@@ -84,5 +84,67 @@ namespace PadForge.Tests
             Assert.Equal(expectOwnership, takeOwnership);
             Assert.Equal(expectPatching, patching);
         }
+
+        /// <summary><para>THE #265 REGRESSION, in the one configuration that
+        /// actually shipped broken. A DS3 paired outside PadForge's ceremony
+        /// leaves NO BTHPORT VID/PID record: BthPS3 identifies pads by remote
+        /// name and the pairing itself lives inside the controller, which
+        /// stores the host radio's MAC. So the narrow "did PadForge pair one"
+        /// probe reads false on a machine whose DS3 connects over BthPS3
+        /// daily.</para>
+        ///
+        /// <para>That machine was only still working because a leftover
+        /// %ProgramData%\DsHidMini folder made the DsHidMini probe read true,
+        /// which forced always-armed. Fixing that probe alone would have
+        /// disarmed patching and silently killed the pad, which is why the
+        /// policy input had to widen in the same change.</para>
+        ///
+        /// <para>The guard is stated as the composition the caller performs:
+        /// paired-OR-present, never paired alone.</para></summary>
+        [Theory]
+        // no DsHidMini, no BTHPORT record, but a DS3 devnode exists: STAY ARMED.
+        [InlineData(false, false, true, true)]
+        // and with neither signal there is genuinely no pad: disarm.
+        [InlineData(false, false, false, false)]
+        public void PsmPatchPolicy_ArmsForAnExternallyPairedPad(
+            bool dsHidMini, bool anyPaired, bool machineHasDs3, bool expectPatching)
+        {
+            bool hasPad = anyPaired || machineHasDs3;
+            var (_, patching) =
+                PadForge.Services.Ds3PairingService.PsmPatchPolicy(dsHidMini, hasPad);
+            Assert.Equal(expectPatching, patching);
+        }
+
+        /// <summary>The DsHidMini probe must not accept a leftover config
+        /// folder as proof. %ProgramData%\DsHidMini is the driver's settings
+        /// root and survives uninstall the way application config normally
+        /// does, so on its own it says the driver WAS here, not that it is.
+        /// Accepting it disabled the #204 crash-safety mitigation on machines
+        /// that had removed DsHidMini.</summary>
+        [Fact]
+        public void DsHidMiniProbe_DoesNotTrustTheLeftoverConfigFolder()
+        {
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                RepoRoot(), "PadForge.App", "Services", "Ds3DriverInstaller.cs"));
+            int probe = src.IndexOf("public static bool IsDsHidMiniInstalled",
+                System.StringComparison.Ordinal);
+            Assert.True(probe > 0, "IsDsHidMiniInstalled not found");
+            int end = src.IndexOf("\n        }", probe, System.StringComparison.Ordinal);
+            string body = src.Substring(probe, end - probe);
+
+            Assert.False(body.Contains("CommonApplicationData"),
+                "IsDsHidMiniInstalled is trusting %ProgramData% again. That folder " +
+                "survives uninstall, so it proves the driver WAS installed, not that " +
+                "it is (#265).");
+        }
+
+        private static string RepoRoot()
+        {
+            var d = new System.IO.DirectoryInfo(System.AppContext.BaseDirectory);
+            while (d != null && !System.IO.Directory.Exists(System.IO.Path.Combine(d.FullName, "PadForge.App")))
+                d = d.Parent;
+            Assert.NotNull(d);
+            return d.FullName;
+        }
     }
 }

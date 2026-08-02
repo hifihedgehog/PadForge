@@ -152,20 +152,44 @@ namespace PadForge.Services
         /// <summary>Instance IDs of every present DS3 USB node, across every class it
         /// can be in. Duplicates are impossible (a node has exactly one class) so the
         /// union needs no de-duplication.</summary>
-        private static IEnumerable<string> FindDs3UsbNodes()
+        private static IEnumerable<string> FindDs3UsbNodes(bool presentOnly = true)
         {
             foreach (var cls in Ds3HostClasses)
             {
                 IEnumerable<string> ids = null;
                 try
                 {
-                    if (!Devcon.FindInDeviceClassByHardwareId(cls, @"USB\VID_054C&PID_0268", out ids))
+                    if (!Devcon.FindInDeviceClassByHardwareId(
+                            cls, @"USB\VID_054C&PID_0268", out ids, presentOnly, false))
                         continue;
                 }
                 catch { continue; }
                 if (ids == null) continue;
                 foreach (var id in ids) yield return id;
             }
+        }
+
+        /// <summary><para>True when this machine has EVER had a DualShock 3 docked.
+        /// A device node survives unplugging: Windows keeps it as a non-present
+        /// devnode, which is why Device Manager has a "show hidden devices" mode.
+        /// So this is a durable "a DS3 lives here" marker that needs no new
+        /// persisted state of our own.</para>
+        ///
+        /// <para>It exists because AnyDs3Paired cannot answer the question the
+        /// PSM-patch policy actually asks. That probe finds pads PADFORGE paired,
+        /// by the BTHPORT VID/PID record its ceremony writes. A DS3 paired any
+        /// other way has no such record at all: BthPS3 identifies pads by remote
+        /// NAME and the pairing itself lives inside the controller, which stores
+        /// the host radio's MAC. Measured on a machine whose DS3 connects over
+        /// BthPS3 daily and has no BTHPORT record of any kind (#265 audit).</para>
+        ///
+        /// <para>Getting this wrong disarms PSM patching on exactly the machines
+        /// that need it, so the pad silently stops connecting over Bluetooth.</para>
+        /// </summary>
+        public static bool MachineHasDs3()
+        {
+            try { return FindDs3UsbNodes(presentOnly: false).Any(); }
+            catch { return false; }
         }
 
         /// <summary>True only when a USB DualShock 3 (VID_054C&amp;PID_0268) is present AND
@@ -425,20 +449,32 @@ namespace PadForge.Services
         /// SCM query; the crash-safety reconcile no-ops when this is false.</summary>
         public static bool IsBthPs3Installed() => IsServiceInstalled("BthPS3");
 
-        /// <summary>True when Nefarius DsHidMini is installed. DsHidMini is a
-        /// UMDF driver (its INF's AddService entries are the generic WUDFRd /
+        /// <summary><para>True when Nefarius DsHidMini is installed. DsHidMini is
+        /// a UMDF driver (its INF's AddService entries are the generic WUDFRd /
         /// mshidumdf reflector, dshidmini.inf), so there is no "dshidmini"
-        /// service key to probe; the stable footprints are the installed
-        /// driver package (DriverDatabase\DriverPackages\dshidmini.inf_*) and
-        /// the driver's own config root (%ProgramData%\DsHidMini,
-        /// DsHidMini Configuration.c:680-716). Either marker counts. Gates
-        /// the PSM-patch crash policy: a DsHidMini system's DS3s connect
-        /// through BthPS3 patching, so PadForge must never disarm it there
-        /// (the 2026-07-24 coexistence audit: the startup disarm was breaking
-        /// foreign DsHidMini setups whose pads leave no BTHPORT VID/PID
-        /// record for AnyDs3Paired to find).</summary>
+        /// service key to probe. Gates the PSM-patch crash policy: a DsHidMini
+        /// system's DS3s connect through BthPS3 patching, so PadForge must never
+        /// disarm it there (the 2026-07-24 coexistence audit: the startup disarm
+        /// was breaking foreign DsHidMini setups whose pads leave no BTHPORT
+        /// VID/PID record for AnyDs3Paired to find).</para>
+        ///
+        /// <para>What is NOT a marker, and used to be: the driver's config root
+        /// at %ProgramData%\DsHidMini. That directory is created by the driver
+        /// for its settings and SURVIVES uninstall, the way application config
+        /// normally does, so on its own it is a leftover rather than evidence.
+        /// Accepting it meant a machine that had removed DsHidMini still read as
+        /// having it, which flipped PsmPatchPolicy to never-own / always-armed
+        /// and silently disabled the #204 crash-safety mitigation. Confirmed on
+        /// a machine with the folder present, no driver package, and no service
+        /// (#265 audit).</para>
+        ///
+        /// <para>Both markers below are evidence the driver is actually THERE,
+        /// not that it once was.</para></summary>
         public static bool IsDsHidMiniInstalled()
         {
+            // 1. The driver package in the store. Authoritative both ways:
+            //    DsHidMini installs by INF so the key exists while it does, and
+            //    an uninstall (pnputil /delete-driver) removes it.
             try
             {
                 using var pkgs = Registry.LocalMachine.OpenSubKey(
@@ -450,15 +486,27 @@ namespace PadForge.Services
                             return true;
                 }
             }
-            catch { /* fall through to the config-folder marker */ }
+            catch { /* fall through to the live-device probe */ }
+
+            // 2. A pad this machine is driving with it RIGHT NOW. DsHidMini's INF
+            //    binds the UMDF reflector, so such a node's service reads WUDFRd.
+            //    Belt and braces for a store read that failed above.
             try
             {
-                string pd = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-                if (!string.IsNullOrEmpty(pd)
-                    && System.IO.Directory.Exists(System.IO.Path.Combine(pd, "DsHidMini")))
-                    return true;
+                foreach (var id in FindDs3UsbNodes())
+                {
+                    try
+                    {
+                        var dev = PnPDevice.GetDeviceByInstanceId(id, DeviceLocationFlags.Normal);
+                        string svc = dev.GetProperty<string>(DevicePropertyKey.Device_Service) ?? string.Empty;
+                        if (svc.Equals("WUDFRd", StringComparison.OrdinalIgnoreCase))
+                            return true;
+                    }
+                    catch { }
+                }
             }
             catch { }
+
             return false;
         }
 

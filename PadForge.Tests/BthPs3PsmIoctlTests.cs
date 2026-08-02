@@ -138,6 +138,34 @@ namespace PadForge.Tests
                 "it is (#265).");
         }
 
+        /// <summary><para>MachineHasDs3 must enumerate NON-PRESENT device nodes.
+        /// That is the entire point of it: Windows keeps a devnode after the
+        /// device is unplugged, which is what makes "a DS3 lives here" survive
+        /// the pad being in a drawer. Query present-only and the answer becomes
+        /// "a DS3 is plugged in right this second", so PSM patching would
+        /// disarm the moment the pad is unplugged and the pad could then never
+        /// connect over Bluetooth again.</para>
+        ///
+        /// <para>Asserted at the source because no runtime probe can tell the
+        /// two apart without physically unplugging a DS3 mid-suite: with the
+        /// pad attached both flags return true, and on a machine with no DS3
+        /// both return false. A mutation flipping the flag survived every
+        /// behavioural test for exactly that reason.</para></summary>
+        [Fact]
+        public void MachineHasDs3_EnumeratesNonPresentDevnodes()
+        {
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                RepoRoot(), "PadForge.App", "Services", "Ds3DriverInstaller.cs"));
+            int probe = src.IndexOf("public static bool MachineHasDs3",
+                System.StringComparison.Ordinal);
+            Assert.True(probe > 0, "MachineHasDs3 not found");
+            int end = src.IndexOf("\n        }", probe, System.StringComparison.Ordinal);
+            string body = src.Substring(probe, end - probe);
+
+            Assert.Contains("presentOnly: false", body);
+            Assert.DoesNotContain("presentOnly: true", body);
+        }
+
         private static string RepoRoot()
         {
             var d = new System.IO.DirectoryInfo(System.AppContext.BaseDirectory);

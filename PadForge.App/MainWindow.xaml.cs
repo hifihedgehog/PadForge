@@ -1257,6 +1257,7 @@ namespace PadForge
                         nameof(PadViewModel.ImpulseOverallGain) or
                         nameof(PadViewModel.ImpulseLeftStrength) or nameof(PadViewModel.ImpulseRightStrength) or
                         nameof(PadViewModel.ImpulseSwapTriggers) or
+                        nameof(PadViewModel.AtVibrationToImpulse) or
                         nameof(PadViewModel.AudioRumbleEnabled) or nameof(PadViewModel.AudioRumbleSensitivity) or
                         nameof(PadViewModel.AudioRumbleCutoffHz) or nameof(PadViewModel.AudioRumbleLeftMotor) or
                         nameof(PadViewModel.AudioRumbleRightMotor) or

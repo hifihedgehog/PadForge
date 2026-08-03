@@ -596,6 +596,10 @@ namespace PadForge.Common.Input
             ushort combinedLT = 0, combinedRT = 0;
             Vibration directionalSource = null;
             PadSetting firstPadSetting = null;
+            // #271 item 3 scratch, hoisted out of the loop (stackalloc in
+            // a loop accumulates stack per iteration).
+            Span<byte> atLeftBlock = stackalloc byte[11];
+            Span<byte> atRightBlock = stackalloc byte[11];
             for (int i = 0; i < slotCount; i++)
             {
                 var us = _instanceGuidBuffer[i];
@@ -676,6 +680,36 @@ namespace PadForge.Common.Input
                     ushort stv = (ushort)System.Math.Clamp((int)System.Math.Round(steerTrigVib * 65535f), 0, 65535);
                     if (stv > combinedLT) combinedLT = stv;
                     if (stv > combinedRT) combinedRT = stv;
+                }
+
+                // #271 item 3: selective adaptive-trigger translation. A
+                // game driving this slot's virtual DualSense latches
+                // 11-byte trigger programs (UserEffectsDispatcher's
+                // external-subsystem mirror); when THIS physical device
+                // carries impulse-trigger motors, the vibration-class
+                // programs render on them. Resistance-class programs
+                // translate to NOTHING, deliberately: a position-dependent
+                // resistance has no impulse equivalent. Position-honest via
+                // the slot's output trigger axes, scaled through the same
+                // per-device impulse chain as game trigger rumble, then
+                // max-combined like every other trigger source.
+                if (ud.Device != null && ud.Device.HasRumbleTriggers
+                    && devicePs != null && devicePs.AtVibrationToImpulseEnabled == "1"
+                    && UserEffectsDispatcher.TryGetInboundTriggerEffects(padIndex, atLeftBlock, atRightBlock))
+                {
+                    var outState = CombinedOutputStates[padIndex];
+                    long atNowMs = Environment.TickCount64;
+                    ushort rawAtL = AtToImpulseTranslator.Evaluate(
+                        atLeftBlock, (byte)System.Math.Min(outState.LeftTrigger, (ushort)255), atNowMs);
+                    ushort rawAtR = AtToImpulseTranslator.Evaluate(
+                        atRightBlock, (byte)System.Math.Min(outState.RightTrigger, (ushort)255), atNowMs);
+                    if (rawAtL != 0 || rawAtR != 0)
+                    {
+                        ScaleTriggerRumbleForDevice(rawAtL, rawAtR, devicePs,
+                            out ushort atLT, out ushort atRT);
+                        if (atLT > combinedLT) combinedLT = atLT;
+                        if (atRT > combinedRT) combinedRT = atRT;
+                    }
                 }
 
                 // COPY, never alias. `effective` is usually one of the

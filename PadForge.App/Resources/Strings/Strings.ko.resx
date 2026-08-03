@@ -1536,6 +1536,8 @@
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>왼쪽 트리거</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>오른쪽 트리거</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>왼쪽과 오른쪽 트리거 모터 교체</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>적응형 트리거 진동 변환</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>게임이 이 슬롯을 가상 DualSense로 구동할 때 진동형 적응형 트리거 효과를 이 컨트롤러의 임펄스 트리거 모터로 재생합니다. 저항형 효과는 진동으로 대응할 수 없어 무시됩니다.</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>왼쪽 트리거 테스트</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>오른쪽 트리거 테스트</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>트리거 모터 작동</value></data>

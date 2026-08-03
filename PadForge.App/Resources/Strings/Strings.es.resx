@@ -1536,6 +1536,8 @@
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gatillo izquierdo</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gatillo derecho</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Intercambiar motores de gatillo izquierdo y derecho</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>Traducir las vibraciones de los gatillos adaptativos</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>Cuando un juego controla esta ranura como un DualSense virtual, sus efectos de gatillo adaptativo de tipo vibración se reproducen en los motores de gatillo de impulso de este mando. Los efectos de tipo resistencia no tienen equivalente en vibración y se ignoran.</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Probar gatillo izquierdo</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Probar gatillo derecho</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Actividad del motor de gatillo</value></data>

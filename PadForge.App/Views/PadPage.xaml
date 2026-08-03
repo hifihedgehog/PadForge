@@ -9798,6 +9798,12 @@
                                           IsChecked="{Binding ImpulseSwapTriggers, Mode=TwoWay}"
                                           Margin="0,0,0,12"/>
 
+                                <!-- Selective adaptive-trigger translation (#271 item 3) -->
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_ImpulseTriggers_AtTranslate, Source={x:Static strings:Strings.Instance}}"
+                                          ToolTip="{Binding Pad_ImpulseTriggers_AtTranslate_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding AtVibrationToImpulse, Mode=TwoWay}"
+                                          Margin="0,0,0,12"/>
+
                                 <!-- Test trigger buttons -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                     <Button Content="{Binding Pad_ImpulseTriggers_TestLeftTrigger, Source={x:Static strings:Strings.Instance}}"
@@ -12268,308 +12274,308 @@
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
-                        <!-- Simultaneous Opposite Cardinal Directions (SOCD)
-                             card, discussion #240. Slot-tier: configures the
-                             slot's virtual controller OUTPUT (MappingSet.SocdMode
-                             / SocdPairs, applied by Step 5 right before submit),
-                             never a device. Hidden on KeyboardMouse (the
-                             KbmConfig twin card below) and MIDI slots. Gamepad
-                             slots pick from the 15 named targets; Extended slots
-                             enter raw button indices 0-127. -->
-                        <Border Style="{StaticResource CardBorder}"
-                                Visibility="{Binding SocdCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xE8AB;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Pad_Socd_Card_Header, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"/>
-                                    <ui:Button Command="{Binding ResetSocdCardCommand}" Style="{StaticResource ResetAllButton}"
-                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
-                                               ToolTip="{Binding Pad_Socd_ResetCard_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                                <TextBlock Text="{Binding Pad_Socd_Card_Desc, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardDescription}"/>
-
-                                <!-- Mode row -->
-                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Pad_Socd_Mode_Label, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
-                                               ToolTip="{Binding Pad_Socd_Mode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <ComboBox ItemsSource="{Binding AvailableSlotSocdModes}"
-                                              SelectedValue="{Binding SocdMode, Mode=TwoWay}"
-                                              SelectedValuePath="Value"
-                                              MinWidth="170" VerticalAlignment="Center" Padding="4,2"
-                                              ToolTip="{Binding Pad_Socd_Mode_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Vertical" Margin="0,2,0,2">
-                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
-                                                    <TextBlock Text="{Binding Description}"
-                                                               FontSize="10"
-                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                               TextWrapping="Wrap" MaxWidth="260"
-                                                               Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Converter={StaticResource NullToCollapsedConverter}, FallbackValue=Collapsed}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
-                                    <ui:Button Command="{Binding ResetSocdModeCommand}" Style="{StaticResource ResetButton}"
-                                               VerticalAlignment="Center" Margin="8,0,0,0"
-                                               ToolTip="{Binding Pad_Socd_ResetMode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-
-                                <!-- Pair rows: named pickers on Xbox / PlayStation
-                                     slots, raw index boxes on Extended slots.
-                                     Never a raw text box for a pickable target. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                                    <TextBlock Text="{Binding Pad_Socd_Pairs_Label, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Top" Margin="0,4,0,0"
-                                               ToolTip="{Binding Pad_Socd_Pairs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <StackPanel Orientation="Vertical">
-                                        <ItemsControl ItemsSource="{Binding SocdPairItems}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <WrapPanel Orientation="Horizontal"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,8,6">
-                                                        <!-- Gamepad variant: two named pickers -->
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <StackPanel.Style>
-                                                                <Style TargetType="StackPanel">
-                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding IsExtended}" Value="True">
-                                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </StackPanel.Style>
-                                                            <ComboBox ItemsSource="{Binding ButtonOptions}"
-                                                                      SelectedValue="{Binding TargetA, Mode=TwoWay}"
-                                                                      SelectedValuePath="Value" DisplayMemberPath="Display"
-                                                                      MinWidth="72" VerticalAlignment="Center" Padding="4,2"
-                                                                      ToolTip="{Binding Pad_Socd_ButtonA_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                            <TextBlock Text="/" VerticalAlignment="Center" Margin="3,0"
-                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                                            <ComboBox ItemsSource="{Binding ButtonOptions}"
-                                                                      SelectedValue="{Binding TargetB, Mode=TwoWay}"
-                                                                      SelectedValuePath="Value" DisplayMemberPath="Display"
-                                                                      MinWidth="72" VerticalAlignment="Center" Padding="4,2"
-                                                                      ToolTip="{Binding Pad_Socd_ButtonB_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                        </StackPanel>
-                                                        <!-- Extended variant: two raw index boxes (0-127) -->
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <StackPanel.Style>
-                                                                <Style TargetType="StackPanel">
-                                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding IsExtended}" Value="True">
-                                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </StackPanel.Style>
-                                                            <TextBox Text="{Binding IndexA, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="48"
-                                                                     VerticalContentAlignment="Center" Padding="2,1"
-                                                                     ToolTip="{Binding Pad_Socd_IndexA_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                            <TextBlock Text="/" VerticalAlignment="Center" Margin="3,0"
-                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                                            <TextBox Text="{Binding IndexB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="48"
-                                                                     VerticalContentAlignment="Center" Padding="2,1"
-                                                                     ToolTip="{Binding Pad_Socd_IndexB_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                        </StackPanel>
-                                                        <ui:Button Style="{StaticResource EmberIconButtonHot}"
-                                                                   VerticalAlignment="Center" Margin="2,0,0,0"
-                                                                   Command="{Binding DataContext.RemoveSocdPairCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                                   CommandParameter="{Binding}">
-                                                            <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"
-                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                                            <ui:Button.ToolTip>
-                                                                <TextBlock Text="{Binding Pad_Socd_RemovePair_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                            </ui:Button.ToolTip>
-                                                        </ui:Button>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                        <Button Command="{Binding AddSocdPairCommand}" HorizontalAlignment="Left" Padding="10,4"
-                                                ToolTip="{Binding Pad_Socd_AddPair_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                                <TextBlock Text="{Binding Pad_Socd_AddPair, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
-                                            </StackPanel>
-                                        </Button>
-                                    </StackPanel>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-
-                        <!-- KBM twin of the SOCD card, discussion #205: the
-                             same card face, bound to the slot's KbmConfig
-                             (opposing key pairs on the virtual keyboard
-                             output, Snap Tap style). Replaced the config bar
-                             that used to sit under the preview. Mutually
-                             exclusive with the gamepad card above. -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0,8,0,0"
-                                Visibility="{Binding KbmSocdCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xE8AB;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Pad_Socd_Card_Header, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"/>
-                                    <ui:Button Command="{Binding KbmConfig.ResetSocdCommand}" Style="{StaticResource ResetAllButton}"
-                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
-                                               ToolTip="{Binding Pad_Socd_ResetCard_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                                <TextBlock Text="{Binding Pad_Kbm_Socd_Card_Desc, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardDescription}"/>
-
-                                <!-- Mode row -->
-                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Pad_Socd_Mode_Label, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
-                                               ToolTip="{Binding Pad_Kbm_Socd_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <ComboBox ItemsSource="{Binding KbmConfig.AvailableSocdModes}"
-                                              SelectedValue="{Binding KbmConfig.SocdMode, Mode=TwoWay}"
-                                              SelectedValuePath="Value"
-                                              MinWidth="170" VerticalAlignment="Center" Padding="4,2"
-                                              ToolTip="{Binding Pad_Kbm_Socd_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Vertical" Margin="0,2,0,2">
-                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
-                                                    <TextBlock Text="{Binding Description}"
-                                                               FontSize="10"
-                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                               TextWrapping="Wrap" MaxWidth="260"
-                                                               Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Converter={StaticResource NullToCollapsedConverter}, FallbackValue=Collapsed}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
-                                    <ui:Button Command="{Binding KbmConfig.ResetSocdModeCommand}" Style="{StaticResource ResetButton}"
-                                               VerticalAlignment="Center" Margin="8,0,0,0"
-                                               ToolTip="{Binding Pad_Socd_ResetMode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-
-                                <!-- Pair rows: two key pickers per pair, sourced
-                                     from the same key set as the KBM mapping
-                                     targets. Never a raw text box. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                                    <TextBlock Text="{Binding Pad_Kbm_Socd_Pairs_Label, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Top" Margin="0,4,0,0"
-                                               ToolTip="{Binding Pad_Kbm_Socd_Pairs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <StackPanel Orientation="Vertical">
-                                        <ItemsControl ItemsSource="{Binding KbmConfig.SocdPairItems}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <WrapPanel Orientation="Horizontal"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,8,6">
-                                                        <ComboBox ItemsSource="{Binding KeyOptions}"
-                                                                  SelectedValue="{Binding VkA, Mode=TwoWay}"
-                                                                  SelectedValuePath="Vk" DisplayMemberPath="Label"
-                                                                  MinWidth="72" VerticalAlignment="Center" Padding="4,2"
-                                                                  ToolTip="{Binding Pad_Kbm_Socd_KeyA_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                        <TextBlock Text="/" VerticalAlignment="Center" Margin="3,0"
-                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                                        <ComboBox ItemsSource="{Binding KeyOptions}"
-                                                                  SelectedValue="{Binding VkB, Mode=TwoWay}"
-                                                                  SelectedValuePath="Vk" DisplayMemberPath="Label"
-                                                                  MinWidth="72" VerticalAlignment="Center" Padding="4,2"
-                                                                  ToolTip="{Binding Pad_Kbm_Socd_KeyB_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                        <ui:Button Style="{StaticResource EmberIconButtonHot}"
-                                                                   VerticalAlignment="Center" Margin="2,0,0,0"
-                                                                   Command="{Binding DataContext.KbmConfig.RemoveSocdPairCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                                   CommandParameter="{Binding}">
-                                                            <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"
-                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                                            <ui:Button.ToolTip>
-                                                                <TextBlock Text="{Binding Pad_Kbm_Socd_RemovePair_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                            </ui:Button.ToolTip>
-                                                        </ui:Button>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                        <Button Command="{Binding KbmConfig.AddSocdPairCommand}" HorizontalAlignment="Left" Padding="10,4"
-                                                ToolTip="{Binding Pad_Kbm_Socd_AddPair_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                                <TextBlock Text="{Binding Pad_Kbm_Socd_AddPair, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
-                                            </StackPanel>
-                                        </Button>
-                                    </StackPanel>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-
-                        <!-- Keep Controller Awake (#270, discussion #263).
-                             Slot-tier like the SOCD card above: holds a small
-                             idle deflection on one axis of the slot's virtual
-                             controller OUTPUT (MappingSet.KeepAwake*, applied
-                             by Step 5 right before submit) so games that cut
-                             vibration and switch prompts on mouse/keyboard
-                             input keep treating the controller as active. Real
-                             output at or above the held level passes through
-                             unchanged. Gamepad-output slots only: the
-                             injection lives in the gpOut submit branch, so
-                             raw-surface, KBM, and MIDI slots hide it. -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0,8,0,0"
-                                Visibility="{Binding KeepAwakeCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xE706;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Pad_KeepAwake_Card_Header, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"/>
-                                    <ui:Button Command="{Binding ResetKeepAwakeCardCommand}" Style="{StaticResource ResetAllButton}"
-                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
-                                               ToolTip="{Binding Pad_KeepAwake_ResetCard_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                                <TextBlock Text="{Binding Pad_KeepAwake_Card_Desc, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardDescription}"/>
-
-                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0"
-                                          IsChecked="{Binding KeepAwakeEnabled, Mode=TwoWay}"
-                                          Content="{Binding Pad_KeepAwake_Enable, Source={x:Static strings:Strings.Instance}}"/>
-
-                                <!-- Held axis row -->
-                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Pad_KeepAwake_Axis_Label, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
-                                               ToolTip="{Binding Pad_KeepAwake_Axis_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <ComboBox ItemsSource="{Binding AvailableKeepAwakeAxes}"
-                                              SelectedValue="{Binding KeepAwakeAxis, Mode=TwoWay}"
-                                              SelectedValuePath="Value" DisplayMemberPath="Display"
-                                              MinWidth="170" VerticalAlignment="Center" Padding="4,2"
-                                              ToolTip="{Binding Pad_KeepAwake_Axis_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <ui:Button Command="{Binding ResetKeepAwakeAxisCommand}" Style="{StaticResource ResetButton}"
-                                               VerticalAlignment="Center" Margin="8,0,0,0"/>
-                                </StackPanel>
-
-                                <!-- Deflection row -->
-                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Pad_KeepAwake_Deflection_Label, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
-                                               ToolTip="{Binding Pad_KeepAwake_Deflection_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Slider Style="{StaticResource DzSlider}" Width="160" Minimum="1" Maximum="90"
-                                            Value="{Binding KeepAwakeDeflection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            TickFrequency="1"/>
-                                    <TextBox Text="{Binding KeepAwakeDeflection, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                             Style="{StaticResource DzValueEdit}"/>
-                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                    <ui:Button Command="{Binding ResetKeepAwakeDeflectionCommand}" Style="{StaticResource ResetButton}"/>
-                                </StackPanel>
-                            </StackPanel>
+                        <!-- Simultaneous Opposite Cardinal Directions (SOCD)
+                             card, discussion #240. Slot-tier: configures the
+                             slot's virtual controller OUTPUT (MappingSet.SocdMode
+                             / SocdPairs, applied by Step 5 right before submit),
+                             never a device. Hidden on KeyboardMouse (the
+                             KbmConfig twin card below) and MIDI slots. Gamepad
+                             slots pick from the 15 named targets; Extended slots
+                             enter raw button indices 0-127. -->
+                        <Border Style="{StaticResource CardBorder}"
+                                Visibility="{Binding SocdCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE8AB;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Socd_Card_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding ResetSocdCardCommand}" Style="{StaticResource ResetAllButton}"
+                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                               ToolTip="{Binding Pad_Socd_ResetCard_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Socd_Card_Desc, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+
+                                <!-- Mode row -->
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding Pad_Socd_Mode_Label, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Pad_Socd_Mode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBox ItemsSource="{Binding AvailableSlotSocdModes}"
+                                              SelectedValue="{Binding SocdMode, Mode=TwoWay}"
+                                              SelectedValuePath="Value"
+                                              MinWidth="170" VerticalAlignment="Center" Padding="4,2"
+                                              ToolTip="{Binding Pad_Socd_Mode_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                                                    <TextBlock Text="{Binding Description}"
+                                                               FontSize="10"
+                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                               TextWrapping="Wrap" MaxWidth="260"
+                                                               Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Converter={StaticResource NullToCollapsedConverter}, FallbackValue=Collapsed}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <ui:Button Command="{Binding ResetSocdModeCommand}" Style="{StaticResource ResetButton}"
+                                               VerticalAlignment="Center" Margin="8,0,0,0"
+                                               ToolTip="{Binding Pad_Socd_ResetMode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- Pair rows: named pickers on Xbox / PlayStation
+                                     slots, raw index boxes on Extended slots.
+                                     Never a raw text box for a pickable target. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <TextBlock Text="{Binding Pad_Socd_Pairs_Label, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Top" Margin="0,4,0,0"
+                                               ToolTip="{Binding Pad_Socd_Pairs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <StackPanel Orientation="Vertical">
+                                        <ItemsControl ItemsSource="{Binding SocdPairItems}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,8,6">
+                                                        <!-- Gamepad variant: two named pickers -->
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <StackPanel.Style>
+                                                                <Style TargetType="StackPanel">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsExtended}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </StackPanel.Style>
+                                                            <ComboBox ItemsSource="{Binding ButtonOptions}"
+                                                                      SelectedValue="{Binding TargetA, Mode=TwoWay}"
+                                                                      SelectedValuePath="Value" DisplayMemberPath="Display"
+                                                                      MinWidth="72" VerticalAlignment="Center" Padding="4,2"
+                                                                      ToolTip="{Binding Pad_Socd_ButtonA_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <TextBlock Text="/" VerticalAlignment="Center" Margin="3,0"
+                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                            <ComboBox ItemsSource="{Binding ButtonOptions}"
+                                                                      SelectedValue="{Binding TargetB, Mode=TwoWay}"
+                                                                      SelectedValuePath="Value" DisplayMemberPath="Display"
+                                                                      MinWidth="72" VerticalAlignment="Center" Padding="4,2"
+                                                                      ToolTip="{Binding Pad_Socd_ButtonB_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </StackPanel>
+                                                        <!-- Extended variant: two raw index boxes (0-127) -->
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <StackPanel.Style>
+                                                                <Style TargetType="StackPanel">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsExtended}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </StackPanel.Style>
+                                                            <TextBox Text="{Binding IndexA, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="48"
+                                                                     VerticalContentAlignment="Center" Padding="2,1"
+                                                                     ToolTip="{Binding Pad_Socd_IndexA_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <TextBlock Text="/" VerticalAlignment="Center" Margin="3,0"
+                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                            <TextBox Text="{Binding IndexB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="48"
+                                                                     VerticalContentAlignment="Center" Padding="2,1"
+                                                                     ToolTip="{Binding Pad_Socd_IndexB_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </StackPanel>
+                                                        <ui:Button Style="{StaticResource EmberIconButtonHot}"
+                                                                   VerticalAlignment="Center" Margin="2,0,0,0"
+                                                                   Command="{Binding DataContext.RemoveSocdPairCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                   CommandParameter="{Binding}">
+                                                            <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"
+                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                            <ui:Button.ToolTip>
+                                                                <TextBlock Text="{Binding Pad_Socd_RemovePair_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            </ui:Button.ToolTip>
+                                                        </ui:Button>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <Button Command="{Binding AddSocdPairCommand}" HorizontalAlignment="Left" Padding="10,4"
+                                                ToolTip="{Binding Pad_Socd_AddPair_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Pad_Socd_AddPair, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- KBM twin of the SOCD card, discussion #205: the
+                             same card face, bound to the slot's KbmConfig
+                             (opposing key pairs on the virtual keyboard
+                             output, Snap Tap style). Replaced the config bar
+                             that used to sit under the preview. Mutually
+                             exclusive with the gamepad card above. -->
+                        <Border Style="{StaticResource CardBorder}" Margin="0,8,0,0"
+                                Visibility="{Binding KbmSocdCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE8AB;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Socd_Card_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding KbmConfig.ResetSocdCommand}" Style="{StaticResource ResetAllButton}"
+                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                               ToolTip="{Binding Pad_Socd_ResetCard_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Kbm_Socd_Card_Desc, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+
+                                <!-- Mode row -->
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding Pad_Socd_Mode_Label, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Pad_Kbm_Socd_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBox ItemsSource="{Binding KbmConfig.AvailableSocdModes}"
+                                              SelectedValue="{Binding KbmConfig.SocdMode, Mode=TwoWay}"
+                                              SelectedValuePath="Value"
+                                              MinWidth="170" VerticalAlignment="Center" Padding="4,2"
+                                              ToolTip="{Binding Pad_Kbm_Socd_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                                                    <TextBlock Text="{Binding Description}"
+                                                               FontSize="10"
+                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                               TextWrapping="Wrap" MaxWidth="260"
+                                                               Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Converter={StaticResource NullToCollapsedConverter}, FallbackValue=Collapsed}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <ui:Button Command="{Binding KbmConfig.ResetSocdModeCommand}" Style="{StaticResource ResetButton}"
+                                               VerticalAlignment="Center" Margin="8,0,0,0"
+                                               ToolTip="{Binding Pad_Socd_ResetMode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- Pair rows: two key pickers per pair, sourced
+                                     from the same key set as the KBM mapping
+                                     targets. Never a raw text box. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <TextBlock Text="{Binding Pad_Kbm_Socd_Pairs_Label, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Top" Margin="0,4,0,0"
+                                               ToolTip="{Binding Pad_Kbm_Socd_Pairs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <StackPanel Orientation="Vertical">
+                                        <ItemsControl ItemsSource="{Binding KbmConfig.SocdPairItems}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,8,6">
+                                                        <ComboBox ItemsSource="{Binding KeyOptions}"
+                                                                  SelectedValue="{Binding VkA, Mode=TwoWay}"
+                                                                  SelectedValuePath="Vk" DisplayMemberPath="Label"
+                                                                  MinWidth="72" VerticalAlignment="Center" Padding="4,2"
+                                                                  ToolTip="{Binding Pad_Kbm_Socd_KeyA_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                        <TextBlock Text="/" VerticalAlignment="Center" Margin="3,0"
+                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                        <ComboBox ItemsSource="{Binding KeyOptions}"
+                                                                  SelectedValue="{Binding VkB, Mode=TwoWay}"
+                                                                  SelectedValuePath="Vk" DisplayMemberPath="Label"
+                                                                  MinWidth="72" VerticalAlignment="Center" Padding="4,2"
+                                                                  ToolTip="{Binding Pad_Kbm_Socd_KeyB_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                        <ui:Button Style="{StaticResource EmberIconButtonHot}"
+                                                                   VerticalAlignment="Center" Margin="2,0,0,0"
+                                                                   Command="{Binding DataContext.KbmConfig.RemoveSocdPairCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                   CommandParameter="{Binding}">
+                                                            <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"
+                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                            <ui:Button.ToolTip>
+                                                                <TextBlock Text="{Binding Pad_Kbm_Socd_RemovePair_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            </ui:Button.ToolTip>
+                                                        </ui:Button>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <Button Command="{Binding KbmConfig.AddSocdPairCommand}" HorizontalAlignment="Left" Padding="10,4"
+                                                ToolTip="{Binding Pad_Kbm_Socd_AddPair_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Pad_Kbm_Socd_AddPair, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Keep Controller Awake (#270, discussion #263).
+                             Slot-tier like the SOCD card above: holds a small
+                             idle deflection on one axis of the slot's virtual
+                             controller OUTPUT (MappingSet.KeepAwake*, applied
+                             by Step 5 right before submit) so games that cut
+                             vibration and switch prompts on mouse/keyboard
+                             input keep treating the controller as active. Real
+                             output at or above the held level passes through
+                             unchanged. Gamepad-output slots only: the
+                             injection lives in the gpOut submit branch, so
+                             raw-surface, KBM, and MIDI slots hide it. -->
+                        <Border Style="{StaticResource CardBorder}" Margin="0,8,0,0"
+                                Visibility="{Binding KeepAwakeCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE706;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_KeepAwake_Card_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding ResetKeepAwakeCardCommand}" Style="{StaticResource ResetAllButton}"
+                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                               ToolTip="{Binding Pad_KeepAwake_ResetCard_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_KeepAwake_Card_Desc, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0"
+                                          IsChecked="{Binding KeepAwakeEnabled, Mode=TwoWay}"
+                                          Content="{Binding Pad_KeepAwake_Enable, Source={x:Static strings:Strings.Instance}}"/>
+
+                                <!-- Held axis row -->
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding Pad_KeepAwake_Axis_Label, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Pad_KeepAwake_Axis_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBox ItemsSource="{Binding AvailableKeepAwakeAxes}"
+                                              SelectedValue="{Binding KeepAwakeAxis, Mode=TwoWay}"
+                                              SelectedValuePath="Value" DisplayMemberPath="Display"
+                                              MinWidth="170" VerticalAlignment="Center" Padding="4,2"
+                                              ToolTip="{Binding Pad_KeepAwake_Axis_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Command="{Binding ResetKeepAwakeAxisCommand}" Style="{StaticResource ResetButton}"
+                                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                </StackPanel>
+
+                                <!-- Deflection row -->
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding Pad_KeepAwake_Deflection_Label, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Pad_KeepAwake_Deflection_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Style="{StaticResource DzSlider}" Width="160" Minimum="1" Maximum="90"
+                                            Value="{Binding KeepAwakeDeflection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            TickFrequency="1"/>
+                                    <TextBox Text="{Binding KeepAwakeDeflection, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetKeepAwakeDeflectionCommand}" Style="{StaticResource ResetButton}"/>
+                                </StackPanel>
+                            </StackPanel>
                         </Border>
                     </StackPanel>
                 </ScrollViewer>

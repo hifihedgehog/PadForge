@@ -1556,6 +1556,8 @@
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Grilletto sinistro</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Grilletto destro</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Scambia motori dei grilletti sinistro e destro</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>Traduci le vibrazioni dei grilletti adattivi</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>Quando un gioco pilota questo slot come DualSense virtuale, i suoi effetti dei grilletti adattivi di tipo vibrazione vengono riprodotti sui motori dei grilletti a impulsi di questo controller. Gli effetti di tipo resistenza non hanno un equivalente in vibrazione e vengono ignorati.</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Prova grilletto sinistro</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Prova grilletto destro</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Attività del motore dei grilletti</value></data>

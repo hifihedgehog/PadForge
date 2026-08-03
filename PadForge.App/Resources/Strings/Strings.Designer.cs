@@ -708,6 +708,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ImpulseTriggers_LeftTrigger => Get("Pad_ImpulseTriggers_LeftTrigger");
     public string Pad_ImpulseTriggers_RightTrigger => Get("Pad_ImpulseTriggers_RightTrigger");
     public string Pad_ImpulseTriggers_SwapTriggers => Get("Pad_ImpulseTriggers_SwapTriggers");
+    public string Pad_ImpulseTriggers_AtTranslate => Get("Pad_ImpulseTriggers_AtTranslate");
+    public string Pad_ImpulseTriggers_AtTranslate_Tooltip => Get("Pad_ImpulseTriggers_AtTranslate_Tooltip");
     public string Pad_ImpulseTriggers_TestLeftTrigger => Get("Pad_ImpulseTriggers_TestLeftTrigger");
     public string Pad_ImpulseTriggers_TestRightTrigger => Get("Pad_ImpulseTriggers_TestRightTrigger");
     public string Pad_ImpulseTriggers_MotorActivity => Get("Pad_ImpulseTriggers_MotorActivity");

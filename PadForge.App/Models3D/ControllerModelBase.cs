@@ -48,6 +48,13 @@ namespace PadForge.Models3D
         public Model3DGroup model3DGroup = new();
         public string ModelName;
 
+        /// <summary>Stable family identity for model selection. Equals
+        /// ModelName by default; appearance-variant models set ModelName
+        /// to "{family}.{appearance}" (the embedded-resource folder) and
+        /// keep the family here so EnsureModel's identity check doesn't
+        /// rebuild every tick.</summary>
+        public string ModelFamily;
+
         /// <summary>Uniform scale to apply at the host ModelVisual3D level
         /// (the parent of model3DGroup AND the sibling finger-sphere
         /// visuals) so the model and its overlay visuals scale together.
@@ -136,6 +143,8 @@ namespace PadForge.Models3D
         protected ControllerModelBase(string modelName)
         {
             ModelName = modelName;
+            int dot = modelName.IndexOf('.');
+            ModelFamily = dot > 0 ? modelName.Substring(0, dot) : modelName;
 
             // Load common geometry.
             MainBody = LoadModel("MainBody.obj");
@@ -237,6 +246,80 @@ namespace PadForge.Models3D
                 throw new FileNotFoundException(
                     $"Embedded 3D model not found: {ModelName}/{filename}");
             return group;
+        }
+
+        /// <summary>Loads an embedded texture by suffix (same digit-prefix
+        /// mangling workaround as TryLoadModel) and wraps it in a frozen
+        /// DiffuseMaterial. ViewportUnits MUST be Absolute for 3D meshes:
+        /// the default RelativeToBoundingBox remaps the image onto each
+        /// mesh's texcoord bounding box, so every part would render the
+        /// whole atlas squeezed onto its own UV island. Decode from a
+        /// MemoryStream that outlives BeginInit/EndInit. keepAlpha is for
+        /// decal overlays; body atlases ship opaque. Falls back to flat
+        /// grey if the resource is missing so the model still renders.</summary>
+        protected Material LoadTexturedMaterial(string filename, double opacity = 1.0)
+        {
+            return TryLoadTexturedMaterial(filename, opacity)
+                ?? new DiffuseMaterial(new SolidColorBrush(
+                       (Color)ColorConverter.ConvertFromString("#5C5D60")));
+        }
+
+        /// <summary>As LoadTexturedMaterial, but returns null when the
+        /// embedded resource does not exist (appearance folders may omit
+        /// an atlas, e.g. a colorway whose trim merged into the body).</summary>
+        protected Material TryLoadTexturedMaterial(string filename, double opacity = 1.0)
+        {
+            try
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                string suffix = $".{ModelName}.{filename}";
+                foreach (var name in assembly.GetManifestResourceNames())
+                {
+                    if (!name.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    using var stream = assembly.GetManifestResourceStream(name);
+                    if (stream == null) break;
+                    var ms = new MemoryStream();
+                    stream.CopyTo(ms);
+                    ms.Position = 0;
+                    var bmp = new System.Windows.Media.Imaging.BitmapImage();
+                    bmp.BeginInit();
+                    bmp.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
+                    bmp.StreamSource = ms;
+                    bmp.EndInit();
+                    bmp.Freeze();
+                    var brush = new ImageBrush(bmp)
+                    {
+                        TileMode = TileMode.None,
+                        Stretch = Stretch.Fill,
+                        ViewportUnits = BrushMappingMode.Absolute,
+                        Viewport = new Rect(0, 0, 1, 1),
+                        Opacity = opacity,
+                    };
+                    brush.Freeze();
+                    var mat = new DiffuseMaterial(brush);
+                    mat.Freeze();
+                    return mat;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"[{GetType().Name}] Texture load failed for {filename}: {ex.Message}");
+            }
+            return null;
+        }
+
+        /// <summary>Applies a material to every GeometryModel3D in the
+        /// group (front and back faces).</summary>
+        protected static void ApplyMaterial(Model3DGroup group, Material material)
+        {
+            foreach (var child in group.Children)
+                if (child is GeometryModel3D geo)
+                {
+                    geo.Material = material;
+                    geo.BackMaterial = material;
+                }
         }
 
         protected Model3DGroup TryLoadModel(string filename)

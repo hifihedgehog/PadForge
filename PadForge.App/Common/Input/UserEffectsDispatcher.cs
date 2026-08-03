@@ -678,6 +678,33 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Copies the last game-written 11-byte trigger-effect
+        /// blocks for the slot into the caller's buffers, for the
+        /// AT-to-impulse translation (#271 item 3). Unlike the
+        /// grace-gated DS5 mirror in <see cref="GetActiveOverrides"/>,
+        /// the blocks are handed out for as long as they stay latched:
+        /// adaptive-trigger programs are stateful on real firmware (set
+        /// once, held until overwritten), so the translation holds them
+        /// the same way. A side the game never wrote comes back zeroed
+        /// (mode 0x00 = off). Returns false when the slot has never seen
+        /// a trigger-effect write at all. Copies, never aliases: the
+        /// backing arrays are rewritten in place under the lock on every
+        /// external effect packet.</summary>
+        public static bool TryGetInboundTriggerEffects(int padIndex, Span<byte> left, Span<byte> right)
+        {
+            if (left.Length < 11 || right.Length < 11) return false;
+            lock (s_externalStateLock)
+            {
+                if (!s_externalState.TryGetValue(padIndex, out var st)) return false;
+                if (st.LeftTrig == null && st.RightTrig == null) return false;
+                left.Slice(0, 11).Clear();
+                right.Slice(0, 11).Clear();
+                if (st.LeftTrig != null) st.LeftTrig.AsSpan(0, 11).CopyTo(left);
+                if (st.RightTrig != null) st.RightTrig.AsSpan(0, 11).CopyTo(right);
+                return true;
+            }
+        }
+
         private static ExternalSubsystemOverrides GetActiveOverrides(int padIndex)
         {
             var ov = default(ExternalSubsystemOverrides);

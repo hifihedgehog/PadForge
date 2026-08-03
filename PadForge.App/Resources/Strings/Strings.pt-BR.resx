@@ -1536,6 +1536,8 @@
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gatilho Esquerdo</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gatilho Direito</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Trocar motores dos gatilhos esquerdo e direito</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>Traduzir as vibrações dos gatilhos adaptáveis</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>Quando um jogo controla este slot como um DualSense virtual, seus efeitos de gatilho adaptável do tipo vibração são reproduzidos nos motores de gatilho de impulso deste controle. Efeitos do tipo resistência não têm equivalente em vibração e são ignorados.</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Testar Gatilho Esquerdo</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Testar Gatilho Direito</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Atividade do motor de gatilho</value></data>

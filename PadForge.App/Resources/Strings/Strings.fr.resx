@@ -1536,6 +1536,8 @@
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gâchette gauche</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gâchette droite</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Inverser les moteurs des gâchettes gauche et droite</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>Traduire les vibrations des gâchettes adaptatives</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>Quand un jeu pilote cet emplacement comme une DualSense virtuelle, ses effets de gâchette adaptative de type vibration sont joués sur les moteurs de gâchette à impulsion de cette manette. Les effets de type résistance n'ont pas d'équivalent en vibration et sont ignorés.</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Tester la gâchette gauche</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Tester la gâchette droite</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Activité du moteur de gâchette</value></data>

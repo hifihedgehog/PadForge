@@ -1536,6 +1536,8 @@
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Linker Trigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Rechter Trigger</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Linken und rechten Trigger-Motor tauschen</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>Adaptive-Trigger-Vibrationen übersetzen</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>Wenn ein Spiel diesen Slot als virtuellen DualSense ansteuert, werden seine vibrationsartigen Adaptive-Trigger-Effekte auf den Impulstrigger-Motoren dieses Controllers wiedergegeben. Widerstandsartige Effekte haben kein Vibrationsäquivalent und werden ignoriert.</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Linken Trigger testen</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Rechten Trigger testen</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Trigger-Motoraktivität</value></data>

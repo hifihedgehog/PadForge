@@ -3258,6 +3258,12 @@ namespace PadForge.ViewModels
         private bool _impulseSwapTriggers;
         public bool ImpulseSwapTriggers { get => _impulseSwapTriggers; set => SetProperty(ref _impulseSwapTriggers, value); }
 
+        private bool _atVibrationToImpulse;
+        /// <summary>Selective adaptive-trigger translation (#271 item 3):
+        /// vibration-class DS5 trigger programs rendered on the impulse
+        /// motors; resistance-class programs deliberately ignored.</summary>
+        public bool AtVibrationToImpulse { get => _atVibrationToImpulse; set => SetProperty(ref _atVibrationToImpulse, value); }
+
         // ── Constant Trigger Force (Xbox One+ trigger-motor analogue of
         //    Constant Force). Two independent 0..1 magnitudes that the
         //    Engine ConstantTriggerForceEvaluator applies when game/macro
@@ -3343,6 +3349,7 @@ namespace PadForge.ViewModels
             ImpulseLeftStrength = 100;
             ImpulseRightStrength = 100;
             ImpulseSwapTriggers = false;
+            AtVibrationToImpulse = false;
             ConstantTriggerForceEnabled = false;
             ConstantTriggerForceLeft = 0;
             ConstantTriggerForceRight = 0;
@@ -3766,6 +3773,7 @@ namespace PadForge.ViewModels
             ImpulseLeftStrength = 100;
             ImpulseRightStrength = 100;
             ImpulseSwapTriggers = false;
+            AtVibrationToImpulse = false;
             ConstantTriggerForceEnabled = false;
             ConstantTriggerForceLeft = 0;
             ConstantTriggerForceRight = 0;

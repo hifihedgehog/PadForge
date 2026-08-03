@@ -365,6 +365,14 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlElement] public string ImpulseSwapTriggers { get; set; } = "0";
 
+        /// <summary>
+        /// Selective adaptive-trigger translation (#271 item 3): render a
+        /// game's vibration-class DS5 trigger programs on this device's
+        /// impulse-trigger motors. Resistance-class programs translate to
+        /// nothing. "0" = off, "1" = on.
+        /// </summary>
+        [XmlElement] public string AtVibrationToImpulseEnabled { get; set; } = "0";
+
         /// <summary>Enable constant-trigger-force override (Xbox One+).
         /// "0" = off (default), "1" = on. Mirrors
         /// <see cref="ConstantForceEnabled"/> for impulse-trigger
@@ -1365,6 +1373,7 @@ namespace PadForge.Engine.Data
             sb.Append(ImpulseLeftStrength).Append('|');
             sb.Append(ImpulseRightStrength).Append('|');
             sb.Append(ImpulseSwapTriggers).Append('|');
+            sb.Append(AtVibrationToImpulseEnabled).Append('|');
             sb.Append(ConstantTriggerForceEnabled).Append('|');
             sb.Append(ConstantTriggerForceLeft).Append('|');
             sb.Append(ConstantTriggerForceRight).Append('|');
@@ -1959,6 +1968,7 @@ namespace PadForge.Engine.Data
             nameof(ImpulseOverallGain),
             nameof(ImpulseLeftStrength), nameof(ImpulseRightStrength),
             nameof(ImpulseSwapTriggers),
+            nameof(AtVibrationToImpulseEnabled),
             nameof(ConstantTriggerForceEnabled),
             nameof(ConstantTriggerForceLeft), nameof(ConstantTriggerForceRight),
             nameof(AudioRumbleTriggersEnabled),

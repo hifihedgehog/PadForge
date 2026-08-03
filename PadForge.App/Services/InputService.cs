@@ -5092,6 +5092,7 @@ namespace PadForge.Services
             ps.ImpulseLeftStrength = padVm.ImpulseLeftStrength.ToString();
             ps.ImpulseRightStrength = padVm.ImpulseRightStrength.ToString();
             ps.ImpulseSwapTriggers = padVm.ImpulseSwapTriggers ? "1" : "0";
+            ps.AtVibrationToImpulseEnabled = padVm.AtVibrationToImpulse ? "1" : "0";
             ps.ConstantTriggerForceEnabled = padVm.ConstantTriggerForceEnabled ? "1" : "0";
             ps.ConstantTriggerForceLeft = padVm.ConstantTriggerForceLeft.ToString("F4", ic);
             ps.ConstantTriggerForceRight = padVm.ConstantTriggerForceRight.ToString("F4", ic);
@@ -5517,6 +5518,7 @@ namespace PadForge.Services
             padVm.ImpulseRightStrength = TryParseInt(ps.ImpulseRightStrength, 100);
             padVm.ImpulseSwapTriggers = ps.ImpulseSwapTriggers == "1" ||
                 (ps.ImpulseSwapTriggers ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+            padVm.AtVibrationToImpulse = ps.AtVibrationToImpulseEnabled == "1";
             padVm.ConstantTriggerForceEnabled = ps.ConstantTriggerForceEnabled == "1";
             padVm.ConstantTriggerForceLeft = TryParseDouble(ps.ConstantTriggerForceLeft, 0.0);
             padVm.ConstantTriggerForceRight = TryParseDouble(ps.ConstantTriggerForceRight, 0.0);

@@ -1535,6 +1535,8 @@
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>左扳机</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>右扳机</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>交换左右扳机马达</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>转换自适应扳机震动</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>当游戏将此槽位作为虚拟 DualSense 驱动时，其振动类自适应扳机效果将通过此控制器的脉冲扳机马达播放。阻力类效果没有振动等价物，将被忽略。</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>测试左扳机</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>测试右扳机</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>扳机马达活动</value></data>

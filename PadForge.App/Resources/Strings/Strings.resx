@@ -1572,6 +1572,13 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>How gyro motion is interpreted. Local uses the raw controller axes. Player projects horizontal motion onto the real-world vertical (gravity) so the same wrist twist always turns the camera, regardless of how you hold the pad. World additionally re-projects vertical motion onto world axes.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Invert Pitch (Y)</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Flips the pitch axis. Applies after the gyro space projection, independently of any per-source invert flags on the mapping table.</value></data>
+  <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Compass</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>This controller carries a magnetometer. Anchoring the yaw to magnetic north removes slow horizontal drift from gyro aiming. Calibrate first: press Calibrate, rotate the controller through all orientations in a figure-8 for a few seconds, then press again.</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Anchor yaw to compass</value></data>
+  <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Adds a small corrective rate that pulls the horizontal aim toward the magnetic heading, so drift cannot accumulate. Requires a stored magnetometer calibration. Samples disturbed by nearby metal or magnets are rejected automatically.</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Reset to default (off)</value></data>
+  <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Calibrate Magnetometer</value></data>
+  <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Finish Calibration</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>Invert Yaw / Roll (X)</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>Flips the yaw axis. Also covers the roll and horizontal-blend gyro sources.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Real-World Calibration</value></data>

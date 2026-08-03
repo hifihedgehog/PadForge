@@ -1207,6 +1207,7 @@ namespace PadForge.Services
                     InvertPitch = TryParseBoolPs(ps.GyroInvertPitch, false),
                     InvertYawRoll = TryParseBoolPs(ps.GyroInvertYawRoll, false),
                     ApplyToPassthrough = TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false),
+                    CompassYaw = TryParseBoolPs(ps.GyroCompassYaw, false),
                 };
             });
             PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = (deviceGuid, slotIndex) =>
@@ -1289,6 +1290,16 @@ namespace PadForge.Services
                 var ud = FindUserDevice(g);
                 return ud != null && ud.HasGyroAux;
             };
+
+            // Compass yaw-correction rate (#271 item 5), published by
+            // UpdateCompassEstimates on the same tick as the gravity EMA.
+            PadForge.Engine.Common.Mapping.SourceCoercion.CompassYawCorrectionProvider = deviceGuid =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return null;
+                lock (_gravityStateLock)
+                    return _compassCorr.TryGetValue(g, out float c) ? c : (float?)null;
+            };
+            PadForge.ViewModels.PadViewModel.MagCalibrationToggle = ToggleMagCalibration;
 
             // Aim Engage button gate — reads the named device's
             // current button state via SourceCoercion's existing bool
@@ -2250,6 +2261,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProviderAux = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.HasGyroAuxProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.CompassYawCorrectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceTareKgProvider = null;
@@ -5214,6 +5226,7 @@ namespace PadForge.Services
             ps.RightTriggerSensitivityCurve = padVm.RightTriggerSensitivityCurve;
 
             ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
+            ps.GyroCompassYaw = padVm.GyroCompassYaw ? "1" : "0";
             ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
             ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
 
@@ -5613,6 +5626,7 @@ namespace PadForge.Services
             padVm.LeftTriggerRouteActivatorMode = string.IsNullOrEmpty(ps.LeftTriggerRouteActivatorMode) ? "Hold" : ps.LeftTriggerRouteActivatorMode;
             padVm.RightTriggerRouteActivatorMode = string.IsNullOrEmpty(ps.RightTriggerRouteActivatorMode) ? "Hold" : ps.RightTriggerRouteActivatorMode;
             padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
+            padVm.GyroCompassYaw = ps.GyroCompassYaw == "1";
             padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
             padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
 
@@ -10396,6 +10410,13 @@ namespace PadForge.Services
         private void UpdateGravityEstimates()
         {
             const float a = 0.02f;
+            // Real tick delta for the compass integrator (#271 item 5):
+            // the UI tick is nominally 60 Hz but not guaranteed.
+            long nowTickMs = Environment.TickCount64;
+            float dt = _lastGravityTickMs == 0
+                ? 0.016f
+                : Math.Clamp((nowTickMs - _lastGravityTickMs) / 1000f, 0.001f, 0.25f);
+            _lastGravityTickMs = nowTickMs;
             var devs = SettingsManager.UserDevices?.Items;
             if (devs == null) return;
             lock (SettingsManager.UserDevices.SyncRoot)
@@ -10440,7 +10461,195 @@ namespace PadForge.Services
                                 prevAux.gz * (1f - a) + st.AccelAux[2] * a);
                         }
                     }
+
+                    UpdateCompassEstimate(d, st, dt);
                 }
+            }
+        }
+
+        // ── #271 item 5: compass-anchored yaw ──
+        // Per-device integrated-yaw estimate + published correction rate.
+        // All under _gravityStateLock (written here on the UI tick, read
+        // by the provider from the poll thread).
+        private long _lastGravityTickMs;
+        private readonly Dictionary<Guid, (float integYaw, bool seeded)> _compassState = new();
+
+        // Figure-8 magnetometer calibration capture (#271 item 5): the
+        // user rotates the controller through all orientations, bias =
+        // per-axis min/max midpoints (the windows10-gyro reference's
+        // method, controller.py:464-476), field norm = the median
+        // debiased magnitude over the captured samples. All state under
+        // _gravityStateLock with the rest of the compass machinery.
+        private Guid _magCalGuid;
+        private float _magCalMinX, _magCalMaxX, _magCalMinY, _magCalMaxY, _magCalMinZ, _magCalMaxZ;
+        private readonly List<(float x, float y, float z)> _magCalSamples = new();
+
+        /// <summary>Starts or finishes the magnetometer calibration for
+        /// the device. Returns true when a capture is now RUNNING. On
+        /// finish, writes the bias triple + field norm to every
+        /// assignment row's PadSetting for the device and marks dirty.</summary>
+        public bool ToggleMagCalibration(Guid deviceGuid)
+        {
+            lock (_gravityStateLock)
+            {
+                if (_magCalGuid != deviceGuid)
+                {
+                    _magCalGuid = deviceGuid;
+                    _magCalMinX = _magCalMinY = _magCalMinZ = float.MaxValue;
+                    _magCalMaxX = _magCalMaxY = _magCalMaxZ = float.MinValue;
+                    _magCalSamples.Clear();
+                    return true;
+                }
+
+                _magCalGuid = Guid.Empty;
+                if (_magCalSamples.Count < 16 || _magCalMinX > _magCalMaxX)
+                    return false; // too little rotation captured; keep the old calibration
+
+                float bx = (_magCalMinX + _magCalMaxX) * 0.5f;
+                float by = (_magCalMinY + _magCalMaxY) * 0.5f;
+                float bz = (_magCalMinZ + _magCalMaxZ) * 0.5f;
+                var mags = new List<float>(_magCalSamples.Count);
+                foreach (var s in _magCalSamples)
+                {
+                    float dx = s.x - bx, dy = s.y - by, dz = s.z - bz;
+                    mags.Add((float)Math.Sqrt(dx * dx + dy * dy + dz * dz));
+                }
+                mags.Sort();
+                float norm = mags[mags.Count / 2];
+                _magCalSamples.Clear();
+                if (norm <= 0f) return false;
+
+                var settings = SettingsManager.UserSettings;
+                if (settings != null)
+                {
+                    var inv = System.Globalization.CultureInfo.InvariantCulture;
+                    lock (settings.SyncRoot)
+                    {
+                        foreach (var us in settings.Items)
+                        {
+                            if (us == null || us.InstanceGuid != deviceGuid || us.MapTo < 0) continue;
+                            var ps = us.GetPadSetting();
+                            if (ps == null) continue;
+                            ps.MagBiasX = bx.ToString(inv);
+                            ps.MagBiasY = by.ToString(inv);
+                            ps.MagBiasZ = bz.ToString(inv);
+                            ps.MagFieldNorm = norm.ToString(inv);
+                        }
+                    }
+                }
+                _compassCalCache.Remove(deviceGuid);
+                _compassState.Remove(deviceGuid);
+                _settingsService?.MarkDirty();
+                return false;
+            }
+        }
+
+        public bool IsMagCalibrating(Guid deviceGuid)
+        {
+            lock (_gravityStateLock) return _magCalGuid == deviceGuid;
+        }
+        private readonly Dictionary<Guid, float> _compassCorr = new();
+        private readonly Dictionary<Guid, (float bx, float by, float bz, float norm, long readMs)> _compassCalCache = new();
+
+        /// <summary>One device's compass step, inside the gravity walk's
+        /// locks (UserDevices before UserSettings is the canonical order,
+        /// and the 250 ms calibration re-read below takes UserSettings).
+        /// Uncalibrated (field norm 0) or interference-rejected samples
+        /// publish NOTHING, so the evaluator's correction is null and the
+        /// yaw lane is byte-identical to pre-compass behavior.</summary>
+        private void UpdateCompassEstimate(PadForge.Engine.Data.UserDevice d, PadForge.Engine.CustomInputState st, float dt)
+        {
+            if (!(d.Device is PadForge.Engine.SdlDeviceWrapper w) || !w.HasSwitch2Magnetometer)
+                return;
+            var guid = d.InstanceGuid;
+            float yawRate = (st.Gyro != null && st.Gyro.Length >= 3) ? st.Gyro[1] : 0f;
+
+            // 250 ms calibration cache: bias + field norm from the FIRST
+            // assignment row's PadSetting (the firstPadSetting convention).
+            long nowMs = Environment.TickCount64;
+            if (!_compassCalCache.TryGetValue(guid, out var cal) || nowMs - cal.readMs >= 250)
+            {
+                float bx = 0f, by = 0f, bz = 0f, norm = 0f;
+                var settings = SettingsManager.UserSettings;
+                if (settings != null)
+                {
+                    PadForge.Engine.Data.PadSetting ps = null;
+                    lock (settings.SyncRoot)
+                    {
+                        foreach (var us in settings.Items)
+                        {
+                            if (us == null || us.InstanceGuid != guid || us.MapTo < 0) continue;
+                            ps = us.GetPadSetting();
+                            break;
+                        }
+                    }
+                    if (ps != null)
+                    {
+                        bx = TryParseFloatPs(ps.MagBiasX, 0f);
+                        by = TryParseFloatPs(ps.MagBiasY, 0f);
+                        bz = TryParseFloatPs(ps.MagBiasZ, 0f);
+                        norm = TryParseFloatPs(ps.MagFieldNorm, 0f);
+                    }
+                }
+                cal = (bx, by, bz, norm, nowMs);
+                _compassCalCache[guid] = cal;
+            }
+
+            // Calibration capture rides the same tick.
+            if (_magCalGuid == guid && w.Switch2MagActive)
+            {
+                float rx = w.Switch2MagX, ry = w.Switch2MagY, rz = w.Switch2MagZ;
+                if (rx < _magCalMinX) _magCalMinX = rx;
+                if (rx > _magCalMaxX) _magCalMaxX = rx;
+                if (ry < _magCalMinY) _magCalMinY = ry;
+                if (ry > _magCalMaxY) _magCalMaxY = ry;
+                if (rz < _magCalMinZ) _magCalMinZ = rz;
+                if (rz > _magCalMaxZ) _magCalMaxZ = rz;
+                if (_magCalSamples.Count < 2048) _magCalSamples.Add((rx, ry, rz));
+            }
+
+            float? heading = null;
+            if (w.Switch2MagActive && cal.norm > 0f)
+            {
+                float mx = w.Switch2MagX - cal.bx;
+                float my = w.Switch2MagY - cal.by;
+                float mz = w.Switch2MagZ - cal.bz;
+                // Interference rejection (the FusionAhrs magnetic-rejection
+                // concept): a debiased sample whose magnitude strays more
+                // than 30% from the calibrated earth-field norm is not the
+                // earth field and must not steer the aim.
+                float mag = (float)Math.Sqrt(mx * mx + my * my + mz * mz);
+                if (mag > cal.norm * 0.7f && mag < cal.norm * 1.3f
+                    && _gravityState.TryGetValue(guid, out var grav))
+                {
+                    heading = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .ComputeTiltCompensatedHeading(grav.gx, grav.gy, grav.gz, mx, my, mz);
+                }
+            }
+
+            _compassState.TryGetValue(guid, out var cs);
+            if (heading.HasValue)
+            {
+                if (!cs.seeded) { cs = (heading.Value, true); }
+                float corr = PadForge.Engine.Common.Mapping.SourceCoercion
+                    .ComputeCompassCorrection(heading.Value, cs.integYaw);
+                cs.integYaw = PadForge.Engine.Common.Mapping.SourceCoercion
+                    .WrapToPi(cs.integYaw + (yawRate + corr) * dt);
+                _compassState[guid] = cs;
+                _compassCorr[guid] = corr;
+            }
+            else
+            {
+                // No heading this tick: dead-reckon the integral so a
+                // brief rejection window does not desync it, publish no
+                // correction.
+                if (cs.seeded)
+                {
+                    cs.integYaw = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .WrapToPi(cs.integYaw + yawRate * dt);
+                    _compassState[guid] = cs;
+                }
+                _compassCorr.Remove(guid);
             }
         }
 

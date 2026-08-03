@@ -616,6 +616,25 @@ namespace PadForge.Engine.Data
         /// triple above. Sampled by the same calibration pass.</summary>
         [XmlElement] public string GyroAuxBiasPitch { get; set; } = "0";
 
+        /// <summary>Compass-anchored yaw toggle (#271 item 5, Switch 2
+        /// magnetometer devices). "0" = off (default), "1" = the yaw lane
+        /// carries the drift-free compass correction.</summary>
+        [XmlElement] public string GyroCompassYaw { get; set; } = "0";
+
+        /// <summary>Magnetometer hard-iron bias, raw wire units, captured
+        /// by the figure-8 calibration (per-axis min/max midpoints, the
+        /// windows10-gyro reference's method). "0" = uncalibrated; the
+        /// compass stays inert until a calibration stores a field norm.</summary>
+        [XmlElement] public string MagBiasX { get; set; } = "0";
+        [XmlElement] public string MagBiasY { get; set; } = "0";
+        [XmlElement] public string MagBiasZ { get; set; } = "0";
+
+        /// <summary>Calibrated field magnitude, raw wire units, from the
+        /// same capture. Gates interference rejection: samples whose
+        /// debiased magnitude strays far from this norm are ignored.
+        /// "0" = uncalibrated, compass off.</summary>
+        [XmlElement] public string MagFieldNorm { get; set; } = "0";
+
         /// <summary>At-rest bias for the AUX gyro's Yaw axis (rad/s).</summary>
         [XmlElement] public string GyroAuxBiasYaw { get; set; } = "0";
 
@@ -1418,6 +1437,11 @@ namespace PadForge.Engine.Data
             sb.Append(GyroBiasYaw); sb.Append('|');
             sb.Append(GyroBiasRoll); sb.Append('|');
             sb.Append(GyroAuxBiasPitch); sb.Append('|');
+            sb.Append(GyroCompassYaw); sb.Append('|');
+            sb.Append(MagBiasX); sb.Append('|');
+            sb.Append(MagBiasY); sb.Append('|');
+            sb.Append(MagBiasZ); sb.Append('|');
+            sb.Append(MagFieldNorm); sb.Append('|');
             sb.Append(GyroAuxBiasYaw); sb.Append('|');
             sb.Append(GyroAuxBiasRoll); sb.Append('|');
             sb.Append(GyroCalibratedAtUtc); sb.Append('|');
@@ -2002,6 +2026,8 @@ namespace PadForge.Engine.Data
             nameof(PointerMode), nameof(PointerFpsSpeed),
             nameof(GyroBiasPitch), nameof(GyroBiasYaw), nameof(GyroBiasRoll),
             nameof(GyroAuxBiasPitch), nameof(GyroAuxBiasYaw), nameof(GyroAuxBiasRoll),
+            nameof(GyroCompassYaw),
+            nameof(MagBiasX), nameof(MagBiasY), nameof(MagBiasZ), nameof(MagFieldNorm),
             nameof(GyroCalibratedAtUtc),
             nameof(GyroSpace), nameof(GyroPlayerSpaceYawRelaxFactor),
             nameof(GyroWorldSpaceSideReductionThreshold),

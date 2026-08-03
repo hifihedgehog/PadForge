@@ -1219,6 +1219,13 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = コントローラー素のローカル軸。Player = ヨーを現実の鉛直 (重力) 軸に投影、ピッチはローカルのまま。Jibb Smart 推奨の既定。傾けてもナチュラル。World = ヨーもピッチもワールド軸に投影。</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>ピッチ (Y) 反転</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>ピッチ軸の全体反転。Player/World 投影の後に適用。マッピング表のソース単位 Invert とは独立。</value></data>
+  <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>コンパス</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>このコントローラーには磁力計が搭載されています。ヨーを磁北に固定すると、ジャイロ照準のゆっくりとした水平ドリフトがなくなります。まずキャリブレーションしてください。「キャリブレーション」を押し、コントローラーを数秒間8の字にあらゆる向きへ回してから、もう一度押します。</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>ヨーをコンパスに固定</value></data>
+  <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>水平照準を磁方位へ引き戻す小さな補正レートを加え、ドリフトが蓄積しないようにします。保存済みの磁力計キャリブレーションが必要です。近くの金属や磁石で乱れたサンプルは自動的に除外されます。</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>既定に戻す (オフ)</value></data>
+  <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>磁力計をキャリブレーション</value></data>
+  <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>キャリブレーションを完了</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>ヨー / ロール (X) 反転</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>ヨー軸の全体反転。Roll と Gyro Horizontal ソースにも適用。</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>実世界キャリブレーション</value></data>

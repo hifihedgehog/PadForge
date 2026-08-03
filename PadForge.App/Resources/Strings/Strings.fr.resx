@@ -1219,6 +1219,13 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = axes bruts du contrôleur. Player = le lacet est projeté sur la verticale réelle (gravité), le tangage reste local. Défaut recommandé par Jibb Smart pour un ressenti naturel quelle que soit l'inclinaison. World = lacet et tangage projetés sur les axes du monde.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Inverser le tangage (Y)</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversion globale du tangage. S'applique après la projection Player/World, indépendante des indicateurs Invert par source dans la table d'affectations.</value></data>
+  <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Boussole</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Cette manette embarque un magnétomètre. Ancrer le lacet au nord magnétique supprime la dérive horizontale lente de la visée gyroscopique. Calibrez d'abord : appuyez sur Calibrer, faites tourner la manette en huit dans toutes les orientations pendant quelques secondes, puis appuyez de nouveau.</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ancrer le lacet à la boussole</value></data>
+  <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Ajoute un petit taux correctif qui ramène la visée horizontale vers le cap magnétique, de sorte que la dérive ne peut pas s'accumuler. Nécessite une calibration du magnétomètre enregistrée. Les échantillons perturbés par du métal ou des aimants proches sont rejetés automatiquement.</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Réinitialiser par défaut (désactivé)</value></data>
+  <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Calibrer le magnétomètre</value></data>
+  <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Terminer la calibration</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>Inverser le lacet / roulis (X)</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>Inversion globale du lacet. Couvre également les sources Roll et Gyro Horizontal.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Étalonnage réel</value></data>

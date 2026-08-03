@@ -2954,6 +2954,7 @@ namespace PadForge.Services
                 padVm.GyroAimEngageDeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
                 padVm.GyroAimEngageMode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
                 padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
+                padVm.GyroCompassYaw = ps.GyroCompassYaw == "1";
                 padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
                 padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
 
@@ -4488,6 +4489,7 @@ namespace PadForge.Services
                     ps.GyroAimEngageDeviceGuid = padVm.GyroAimEngageDeviceGuid ?? "";
                     ps.GyroAimEngageMode = string.IsNullOrEmpty(padVm.GyroAimEngageMode) ? "Hold" : padVm.GyroAimEngageMode;
                     ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
+                    ps.GyroCompassYaw = padVm.GyroCompassYaw ? "1" : "0";
                     ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
                     ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
 

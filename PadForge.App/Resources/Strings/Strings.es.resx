@@ -1219,6 +1219,13 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = ejes en bruto del mando. Player = el yaw se proyecta sobre la vertical real (gravedad), el pitch permanece local. Predeterminado recomendado por Jibb Smart para una sensación natural en cualquier inclinación. World = yaw y pitch proyectados sobre ejes del mundo.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Invertir Pitch (Y)</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversión global del eje pitch. Se aplica después de la proyección Player/World, independiente de los flags Invert por fuente en la tabla de asignaciones.</value></data>
+  <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Brújula</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Este mando lleva un magnetómetro. Anclar la guiñada al norte magnético elimina la deriva horizontal lenta del apuntado con giroscopio. Calibre primero: pulse Calibrar, gire el mando en forma de ocho por todas las orientaciones durante unos segundos y pulse de nuevo.</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Anclar la guiñada a la brújula</value></data>
+  <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Añade una pequeña tasa correctiva que atrae el apuntado horizontal hacia el rumbo magnético, de modo que la deriva no puede acumularse. Requiere una calibración del magnetómetro guardada. Las muestras alteradas por metal o imanes cercanos se rechazan automáticamente.</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Restablecer al valor predeterminado (desactivado)</value></data>
+  <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Calibrar magnetómetro</value></data>
+  <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Finalizar calibración</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>Invertir Yaw / Roll (X)</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>Inversión global del eje yaw. También cubre fuentes Roll y Gyro Horizontal.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Calibración real</value></data>

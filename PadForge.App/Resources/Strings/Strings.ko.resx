@@ -1219,6 +1219,13 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 컨트롤러 로컬 축. Player = 요(yaw)를 실제 수직축(중력)에 투영, 피치는 로컬 유지. Jibb Smart 권장 기본값. 어떤 기울기에서도 자연스러움. World = 요와 피치 모두 월드 축에 투영.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>피치(Y) 반전</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>피치 축의 전역 반전. Player/World 투영 후에 적용. 매핑 표의 소스별 Invert 플래그와 독립.</value></data>
+  <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>나침반</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>이 컨트롤러에는 자력계가 있습니다. 요를 자북에 고정하면 자이로 조준의 느린 수평 드리프트가 사라집니다. 먼저 보정하세요. 보정을 누르고 몇 초간 컨트롤러를 8자로 모든 방향으로 돌린 뒤 다시 누릅니다.</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>요를 나침반에 고정</value></data>
+  <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>수평 조준을 자기 방위로 끌어당기는 작은 보정률을 더해 드리프트가 누적되지 않게 합니다. 저장된 자력계 보정이 필요합니다. 주변 금속이나 자석으로 왜곡된 샘플은 자동으로 제외됩니다.</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>기본값으로 재설정 (끄기)</value></data>
+  <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>자력계 보정</value></data>
+  <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>보정 완료</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>요 / 롤 (X) 반전</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>요 축의 전역 반전. Roll, Gyro Horizontal 소스에도 적용.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>실세계 보정</value></data>

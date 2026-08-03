@@ -517,6 +517,16 @@ namespace PadForge.Common
                     if (auxAxis.Equals("Horizontal", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroAuxHorizontal;
                     return null;
                 }
+                // Explicit right-half family (#271 item 6), the L block's twin.
+                if (axis.StartsWith("R ", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    string rAxis = axis.Substring(2).Trim();
+                    if (rAxis.Equals("Pitch", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroRPitch;
+                    if (rAxis.Equals("Yaw",   System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroRYaw;
+                    if (rAxis.Equals("Roll",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroRRoll;
+                    if (rAxis.Equals("Horizontal", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroRHorizontal;
+                    return null;
+                }
                 if (axis.Equals("Pitch",      System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroPitch;
                 if (axis.Equals("Yaw",        System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroYaw;
                 if (axis.Equals("Roll",       System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroRoll;
@@ -1682,6 +1692,16 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroAuxYawDescriptor,   DisplayName = si.Mapping_GyroAuxYaw });
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroAuxRollDescriptor,  DisplayName = si.Mapping_GyroAuxRoll });
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroAuxHorizontalDescriptor, DisplayName = si.Mapping_GyroAuxHorizontal });
+
+                // Explicit right-half family (#271 item 6). Offered only on
+                // a pair, because that is where it differs from the bare
+                // names: the bare "Gyro ..." sources on a pair read the
+                // FUSED stream, so the raw right half gets its own rows,
+                // symmetric with the left ones above.
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroRPitchDescriptor, DisplayName = si.Mapping_GyroRPitch });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroRYawDescriptor,   DisplayName = si.Mapping_GyroRYaw });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroRRollDescriptor,  DisplayName = si.Mapping_GyroRRoll });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroRHorizontalDescriptor, DisplayName = si.Mapping_GyroRHorizontal });
             }
 
             // Bundled motion-passthrough sources. Marker descriptors that

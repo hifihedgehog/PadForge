@@ -722,6 +722,26 @@ namespace PadForge.Common.Input
                 // deltas for the "Mouse Motion X/Y" sources.
                 SDL_SetHint(SDL_HINT_JOYSTICK_BLE_SWITCH2_MOUSE, "1");
 
+                // Enable the fork's frequency-shaped Switch rumble (#271
+                // item 4, hifihedgehog/SDL#25, fork commit cfcdeb26e0).
+                // Upstream SDL drives the Switch LRAs at two fixed carrier
+                // frequencies with amplitude-only tables; with the hint on,
+                // each motor's intensity also sweeps its frequency band
+                // (low motor ~41-160 Hz, high 160-320 Hz, per dekuNukem's
+                // rumble_data_table.md) with attack/decay transients, which
+                // is where the native HD-rumble texture lives. Classic LRA
+                // packet only; the fork leaves Switch 2 encoding untouched.
+                SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_SWITCH_SHAPED_RUMBLE, "1");
+
+                // Enable the fork's Switch 2 BLE magnetometer channel (#271
+                // item 5, same fork commit). Three raw int16 axes after the
+                // mouse counters; availability rides the raw axis count
+                // (9 = magnetometer, 11 = mouse + magnetometer), the mouse
+                // precedent. PadForge does not consume them yet; the
+                // compass-fusion half of #271 item 5 is a follow-up arc,
+                // and enabling here keeps the axes observable on a bench.
+                SDL_SetHint(SDL_HINT_JOYSTICK_BLE_SWITCH2_MAGNETOMETER, "1");
+
                 // Enable SDL's Sony-sixaxis PS3 driver (discussion #194). It
                 // claims a DualShock 3 running DsHidMini's SixaxisCompatible
                 // (SXS) mode, the only DsHidMini mode that serves the DS3's

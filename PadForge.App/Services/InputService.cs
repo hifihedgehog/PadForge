@@ -1279,6 +1279,17 @@ namespace PadForge.Services
                 }
             };
 
+            // Aux-gyro capability gate for the fused bare-family read
+            // (#271 item 6): CustomInputState.GyroAux is always allocated,
+            // so the fusion must ask the DEVICE whether a left-half gyro
+            // really exists before averaging against it.
+            PadForge.Engine.Common.Mapping.SourceCoercion.HasGyroAuxProvider = deviceGuid =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return false;
+                var ud = FindUserDevice(g);
+                return ud != null && ud.HasGyroAux;
+            };
+
             // Aim Engage button gate — reads the named device's
             // current button state via SourceCoercion's existing bool
             // reader. The synthetic MappingSource carries just the
@@ -2224,6 +2235,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.SlotStickDeflectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProviderAux = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.HasGyroAuxProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceTareKgProvider = null;

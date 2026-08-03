@@ -402,6 +402,43 @@ namespace PadForge.Engine.Common.Mapping
         /// gravity would reference the wrong controller entirely.</summary>
         public static Func<string, (float gx, float gy, float gz)> GravityProviderAux { get; set; }
 
+        /// <summary>Compass heading for the device (by GUID), radians in
+        /// [-pi, pi], or null while the magnetometer stream is inactive,
+        /// uncalibrated, or rejected for interference (#271 item 5). Fed
+        /// by the App layer from the Switch 2 magnetometer at the gravity
+        /// cadence; consumed by the compass-yaw correction in
+        /// <see cref="ReadTunedGyroRate"/>.</summary>
+        public static Func<string, float?> MagHeadingProvider { get; set; }
+
+        /// <summary>Tilt-compensated magnetic heading (#271 item 5),
+        /// ported concept-for-concept from the cloned x-io Fusion
+        /// reference (FusionCompass.c:24-29, NWU convention): west =
+        /// normalize(cross(accel, mag)), north = normalize(cross(west,
+        /// accel)), heading = atan2(west.x, north.x). Radians rather than
+        /// the reference's degrees. Returns null when either vector is
+        /// too short to normalize (free-fall accel or a zero mag sample),
+        /// the reference's degenerate case. Pure; internal-visible for
+        /// the unit tests via the public surface.</summary>
+        public static float? ComputeTiltCompensatedHeading(
+            float ax, float ay, float az, float mx, float my, float mz)
+        {
+            // west = cross(accel, mag)
+            float wx = ay * mz - az * my;
+            float wy = az * mx - ax * mz;
+            float wz = ax * my - ay * mx;
+            float wLen = (float)Math.Sqrt(wx * wx + wy * wy + wz * wz);
+            if (wLen < 1e-6f) return null;
+            wx /= wLen; wy /= wLen; wz /= wLen;
+            // north = cross(west, accel)
+            float nx = wy * az - wz * ay;
+            float ny = wz * ax - wx * az;
+            float nz = wx * ay - wy * ax;
+            float nLen = (float)Math.Sqrt(nx * nx + ny * ny + nz * nz);
+            if (nLen < 1e-6f) return null;
+            nx /= nLen;
+            return (float)Math.Atan2(wx, nx);
+        }
+
         /// <summary>Whether the device (by GUID) carries the aux (left
         /// Joy-Con) gyro. Gates the fused bare-family read (#271 item 6):
         /// CustomInputState.GyroAux is ALWAYS allocated, so a zeroed aux

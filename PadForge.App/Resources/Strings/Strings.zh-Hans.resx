@@ -1922,6 +1922,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>切除</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>按八度下折</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>音调上限</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>在此控制器上播放 DualSense 触觉反馈</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>当游戏将此槽位作为虚拟 DualSense 驱动并输出创作的触觉音频时，该音轨将以音调形式在此控制器的执行器上播放。由音频推导而来，因此是对设计手感的近似而非精确还原。</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>触觉增益</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>重置为默认值（关闭）</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>重置为默认值（100%）</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>超过此频率的音调将被切除或下折。默认 800 Hz 可保留引擎与冲击震动，只捕捉刺耳的蜂鸣音。</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>重置高音</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>重置音调上限</value></data>

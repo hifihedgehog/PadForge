@@ -1817,6 +1817,20 @@ namespace PadForge.Services
                 return (0, 800);
             };
 
+            // #271 item 1: per-(slot, device) persona-haptics render on the
+            // actuator devices. Same low-cadence provider shape as the tone
+            // filter above (each sink re-reads at ~4 Hz).
+            PadForge.Common.Input.HapticToneService.PersonaHapticsProvider = (slotIndex, deviceGuid) =>
+            {
+                if (slotIndex >= 0 && slotIndex < _mainVm.Pads.Count
+                    && _mainVm.Pads[slotIndex].PerDeviceSlotConfigs.TryGetValue(deviceGuid, out var c)
+                    && c != null)
+                {
+                    return (c.AudioPersonaHapticsEnabled, c.AudioPersonaHapticsGain);
+                }
+                return (false, 100);
+            };
+
             // Discussion #223: motor-side audio routing for the combined
             // Joy-Con pair's dual-coil tone sink. Reads the per-slot merged
             // rumble snapshot the dashboard meter uses (FinalVibrationStates:

@@ -2073,6 +2073,11 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_ToneFilter_Cut => Get("Pad_Audio_ToneFilter_Cut");
     public string Pad_Audio_ToneFilter_Fold => Get("Pad_Audio_ToneFilter_Fold");
     public string Pad_Audio_ToneLimit_Label => Get("Pad_Audio_ToneLimit_Label");
+    public string Pad_Audio_PersonaHaptics_Label => Get("Pad_Audio_PersonaHaptics_Label");
+    public string Pad_Audio_PersonaHaptics_Tooltip => Get("Pad_Audio_PersonaHaptics_Tooltip");
+    public string Pad_Audio_PersonaHapticsGain_Label => Get("Pad_Audio_PersonaHapticsGain_Label");
+    public string Pad_ResetPersonaHaptics => Get("Pad_ResetPersonaHaptics");
+    public string Pad_ResetPersonaHapticsGain => Get("Pad_ResetPersonaHapticsGain");
     public string Pad_Audio_ToneLimit_Tooltip => Get("Pad_Audio_ToneLimit_Tooltip");
     public string Pad_ResetToneFilterMode => Get("Pad_ResetToneFilterMode");
     public string Pad_ResetToneLimit => Get("Pad_ResetToneLimit");

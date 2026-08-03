@@ -1934,6 +1934,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Abschneiden</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Oktavweise nach unten falten</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tongrenze</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense-Haptik auf diesem Controller wiedergeben</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Wenn ein Spiel diesen Slot als virtuellen DualSense mit gestalteter haptischer Audiospur ansteuert, wird diese Spur als Töne auf den Aktuatoren dieses Controllers wiedergegeben. Aus dem Audio abgeleitet, daher eine Annäherung an das gestaltete Gefühl, keine exakte Reproduktion.</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptik-Verstärkung</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Auf Standard zurücksetzen (aus)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Auf Standard zurücksetzen (100 %)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Töne oberhalb dieser Frequenz werden abgeschnitten oder gefaltet. Die Vorgabe von 800 Hz erhält Motor- und Aufprallvibration und fängt hohe Pieptöne ab.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Hohe Töne zurücksetzen</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Tongrenze zurücksetzen</value></data>

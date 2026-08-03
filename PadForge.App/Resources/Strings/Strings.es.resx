@@ -1934,6 +1934,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Cortarlos</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Plegarlos una octava hacia abajo</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Límite de tono</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Reproducir la háptica del DualSense en este mando</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Cuando un juego controla esta ranura como un DualSense virtual con audio háptico de autor, esa pista se reproduce como tonos en los actuadores de este mando. Derivado del audio, así que aproxima la sensación diseñada en lugar de reproducirla exactamente.</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Ganancia háptica</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Restablecer al valor predeterminado (desactivado)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Restablecer al valor predeterminado (100 %)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Los tonos por encima de esta frecuencia se cortan o se pliegan. El valor predeterminado de 800 Hz conserva la vibración de motor e impactos y captura los pitidos agudos.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Restablecer tonos agudos</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Restablecer límite de tono</value></data>

@@ -1954,6 +1954,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Wegknippen</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Per octaaf omlaag vouwen</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Toonlimiet</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense-haptiek op deze controller afspelen</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Wanneer een game dit slot als virtuele DualSense aanstuurt met een geautoreerd haptisch audiospoor, wordt dat spoor als tonen op de actuatoren van deze controller afgespeeld. Afgeleid van de audio, dus een benadering van het ontworpen gevoel, geen exacte reproductie.</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptiekversterking</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Standaard herstellen (uit)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Standaard herstellen (100%)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tonen boven deze frequentie worden weggeknipt of gevouwen. De standaard 800 Hz behoudt motor- en impacttrillingen en vangt hoge pieptonen af.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Hoge tonen resetten</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Toonlimiet resetten</value></data>

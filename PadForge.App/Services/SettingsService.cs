@@ -2254,6 +2254,7 @@ namespace PadForge.Services
                 // #202: same keep-alive rule. A chosen tone filter is a
                 // deliberate, copy-worthy configuration.
                 || (c.AudioToneFilterMode != null && c.AudioToneFilterMode != "Off")
+                || c.AudioPersonaHapticsEnabled || c.AudioPersonaHapticsGain != 100
                 // #239: enabled synthetic pressure is copy-worthy, and a
                 // changed touch level keeps the config alive while the
                 // toggle is momentarily off (the #185/#202 keep-alive rule).
@@ -2278,6 +2279,7 @@ namespace PadForge.Services
                 || c.AudioMirrorEngageMode != "Always"
                 || !string.IsNullOrEmpty(c.AudioMirrorEngageButton)
                 || c.AudioToneFilterMode != "Off"
+                || c.AudioPersonaHapticsEnabled || c.AudioPersonaHapticsGain != 100
                 || c.TouchpadSyntheticPressure
                 || c.TouchpadSyntheticTouchPercent != 50);
 
@@ -2609,6 +2611,8 @@ namespace PadForge.Services
                     cfg.AudioMirrorEngageReleaseMs = cfgData.AudioMirrorEngageReleaseMs;
                     cfg.AudioToneFilterMode = cfgData.AudioToneFilterMode ?? "Off";
                     cfg.AudioToneLimitHz = cfgData.AudioToneLimitHz;
+                    cfg.AudioPersonaHapticsEnabled = cfgData.AudioPersonaHapticsEnabled;
+                    cfg.AudioPersonaHapticsGain = cfgData.AudioPersonaHapticsGain;
                     // Migrate legacy MicLightOn to the new MicLedMode if
                     // the new field hasn't been set explicitly.
                     if (cfgData.MicLedMode != ViewModels.MicLedMode.Off)
@@ -4084,6 +4088,8 @@ namespace PadForge.Services
                 AudioMirrorEngageReleaseMs = cfg.AudioMirrorEngageReleaseMs,
                 AudioToneFilterMode = cfg.AudioToneFilterMode ?? "Off",
                 AudioToneLimitHz = cfg.AudioToneLimitHz,
+                AudioPersonaHapticsEnabled = cfg.AudioPersonaHapticsEnabled,
+                AudioPersonaHapticsGain = cfg.AudioPersonaHapticsGain,
                 HeadphoneVolume = cfg.HeadphoneVolume,
                 AudioOutputPath = cfg.AudioOutputPath,
                 MicLedMode = cfg.MicLedMode,

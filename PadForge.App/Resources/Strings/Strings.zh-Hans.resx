@@ -2850,6 +2850,7 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>无法识别菜单单元格图标（{0}），该单元格保留其文本标签</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>低音振动器</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>输出</value></data>
+  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>在发送给游戏之前对该槽位虚拟控制器输出进行整形的设置：SOCD 清理用于处理同时按下的相反方向，保持控制器活跃用于应对一检测到鼠标或键盘输入就放弃控制器的游戏。</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音振动器</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>将此虚拟手柄收到的游戏振动和力反馈转换为低频音，输出到音频设备，用于低音振动器和低音炮。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振动转音频</value></data>

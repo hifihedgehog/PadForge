@@ -2850,6 +2850,7 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>メニューセルのアイコンを認識できません ({0})。このセルはテキストラベルを表示します</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>バスシェイカー</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>出力</value></data>
+  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>このスロットの仮想コントローラー出力をゲームへ送る直前に整える設定です。同時に押された反対方向を処理する SOCD クリーニングと、マウスやキーボード入力を検出するとコントローラーを切り替えてしまうゲーム向けのアクティブ保持があります。</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>バスシェイカー</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>この仮想コントローラーが受け取るゲームの振動とフォースフィードバックを、バスシェイカーやサブウーファー向けの低周波トーンとしてオーディオ出力へ送ります。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振動をオーディオへ</value></data>

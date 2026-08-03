@@ -12513,7 +12513,7 @@
                                 Visibility="{Binding KeepAwakeCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                    <TextBlock Text="&#xE706;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_KeepAwake_Card_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>

@@ -2870,6 +2870,7 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menucel-pictogram niet herkend ({0}), de cel behoudt daarom zijn tekstlabel</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Uitvoer</value></data>
+  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Instellingen die de uitvoer van de virtuele controller van dit slot vormgeven vlak voordat deze naar games gaat: SOCD-opschoning voor tegengestelde richtingen die tegelijk worden ingedrukt, en controller actief houden voor games die de controller loslaten zodra ze muis- of toetsenbordinvoer zien.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Stuurt de speltrilling en force feedback die deze virtuele controller ontvangt als laagfrequente tonen naar een audio-uitgang voor bass shakers en subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Trilling naar audio</value></data>

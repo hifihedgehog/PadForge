@@ -144,6 +144,15 @@ namespace PadForge.Engine
         //  Stop
         // ─────────────────────────────────────────────
 
+        /// <summary>Max-folds the trigger-motor channels into their side's
+        /// body motor (#271 item 2). Pure; internal for the unit tests.</summary>
+        internal static void FoldTriggersIntoMains(Vibration v, ref ushort left, ref ushort right)
+        {
+            if (v == null) return;
+            if (v.LeftTriggerMotorSpeed > left) left = v.LeftTriggerMotorSpeed;
+            if (v.RightTriggerMotorSpeed > right) right = v.RightTriggerMotorSpeed;
+        }
+
         /// <summary>
         /// Stops all rumble on the device and resets cached state.
         /// </summary>
@@ -353,6 +362,16 @@ namespace PadForge.Engine
             // scaling — that's intentional and stays.
             ushort finalLeft = v.LeftMotorSpeed;
             ushort finalRight = v.RightMotorSpeed;
+
+            // Trigger fold (#271 item 2, the Trigger Routing inverse): a
+            // device without trigger motors drops the game's LT/RT
+            // channels entirely. Opt-in per device, each trigger channel
+            // max-folds into its side's body motor. The trigger values in
+            // v are scaled by the same upstream chain as the mains, and
+            // devices WITH trigger motors keep their dedicated write, so
+            // the fold never double-renders.
+            if (!device.HasRumbleTriggers && TryParseBool(ps.TriggerRumbleFold))
+                FoldTriggersIntoMains(v, ref finalLeft, ref finalRight);
 
             // Main rumble — only send to hardware when values change.
             if (finalLeft != _cachedLeftMotorSpeed || finalRight != _cachedRightMotorSpeed)

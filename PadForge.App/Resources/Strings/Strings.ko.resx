@@ -903,6 +903,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>왼쪽 모터</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>오른쪽 모터</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>왼쪽과 오른쪽 모터 교체</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>트리거 진동을 메인 모터로 합치기</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>이 컨트롤러에는 트리거 모터가 없어 Xbox 임펄스 트리거를 사용하는 게임의 진동을 느낄 수 없습니다. 대신 각 트리거 채널을 같은 쪽 메인 모터로 합칩니다.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>진동 테스트</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>모터 활동</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>상시 포스</value></data>

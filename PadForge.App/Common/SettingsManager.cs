@@ -785,6 +785,7 @@ namespace PadForge.Common.Input
                 ps.LeftMotorStrength = "100";
                 ps.RightMotorStrength = "100";
                 ps.ForceSwapMotor = "0";
+                ps.TriggerRumbleFold = "0";
 
                 // Touchpad auto-mapping for PlayStation output + touchpad-capable device.
                 // This branch is the CapType == Gamepad path — every gamepad

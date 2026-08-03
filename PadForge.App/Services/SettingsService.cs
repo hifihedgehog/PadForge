@@ -2903,6 +2903,7 @@ namespace PadForge.Services
                 padVm.RightMotorStrength = TryParseInt(ps.RightMotorStrength, 100);
                 padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                     (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+                padVm.TriggerRumbleFold = ps.TriggerRumbleFold == "1";
 
                 // Load impulse trigger settings (Xbox One+).
                 padVm.ImpulseOverallGain = TryParseInt(ps.ImpulseOverallGain, 100);
@@ -4428,6 +4429,7 @@ namespace PadForge.Services
                     ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
                     ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
                     ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
+                    ps.TriggerRumbleFold = padVm.TriggerRumbleFold ? "1" : "0";
 
                     // Write impulse trigger settings.
                     ps.ImpulseOverallGain = padVm.ImpulseOverallGain.ToString();

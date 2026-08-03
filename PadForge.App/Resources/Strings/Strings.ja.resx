@@ -903,6 +903,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左モーター</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>右モーター</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>左右モーターを入れ替える</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>トリガー振動をメインモーターに合流</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>このコントローラーにはトリガーモーターがないため、Xbox インパルストリガーを使うゲームの振動は感じられません。代わりに各トリガーチャンネルを同じ側のメインモーターに合流させます。</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>振動テスト</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>モーター動作</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>定常フォース</value></data>

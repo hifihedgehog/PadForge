@@ -1796,6 +1796,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Left Motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Right Motor</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Swap left and right motors</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>Fold trigger rumble into main motors</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>This controller has no trigger motors, so games that use Xbox impulse triggers would go unfelt. Fold each trigger channel into the main motor on the same side instead.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Test Rumble</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motor Activity</value></data>
 

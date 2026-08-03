@@ -903,6 +903,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Linker Motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Rechter Motor</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Linken und rechten Motor tauschen</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>Trigger-Vibration in Hauptmotoren einmischen</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Dieser Controller hat keine Trigger-Motoren, daher wären Spiele mit Xbox-Impulstriggern nicht spürbar. Stattdessen wird jeder Trigger-Kanal in den Hauptmotor derselben Seite eingemischt.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Vibration testen</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivität</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Konstante Kraft</value></data>

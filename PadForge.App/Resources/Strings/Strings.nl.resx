@@ -897,6 +897,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Linkermotor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Rechtermotor</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Linker- en rechtermotor verwisselen</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>Triggertrilling samenvoegen in hoofdmotoren</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Deze controller heeft geen triggermotoren, dus games die Xbox-impulstriggers gebruiken zouden niet voelbaar zijn. In plaats daarvan wordt elk triggerkanaal samengevoegd met de hoofdmotor aan dezelfde kant.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Trillen testen</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoractiviteit</value></data>
 

@@ -325,6 +325,14 @@ namespace PadForge.Engine.Data
         [XmlElement] public string ForceSwapMotor { get; set; } = "0";
 
         /// <summary>
+        /// Fold the game's trigger-motor channels into the body motors on
+        /// devices without trigger motors (#271 item 2, the Trigger
+        /// Routing inverse). "0" = off, "1" = each trigger channel
+        /// max-folds into its side's main motor at the scalar write.
+        /// </summary>
+        [XmlElement] public string TriggerRumbleFold { get; set; } = "0";
+
+        /// <summary>
         /// Left (low-frequency) motor strength (0–100%).
         /// </summary>
         [XmlElement] public string LeftMotorStrength { get; set; } = "100";
@@ -1350,6 +1358,7 @@ namespace PadForge.Engine.Data
             sb.Append(SteeringLockLightbarHoldMs); sb.Append('|');
             sb.Append(SteeringLockLightbarFadeMs); sb.Append('|');
             sb.Append(ForceSwapMotor); sb.Append('|');
+            sb.Append(TriggerRumbleFold); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
             sb.Append(RightMotorStrength); sb.Append('|');
             sb.Append(ImpulseOverallGain).Append('|');
@@ -1937,6 +1946,7 @@ namespace PadForge.Engine.Data
             nameof(LeftThumbBoundaryMap), nameof(RightThumbBoundaryMap),
             // Force feedback
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
+            nameof(TriggerRumbleFold),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),
             nameof(RotationRange), nameof(AutoCenterStrength), nameof(WheelRpmLeds),
             // Steering at-lock feedback (#94)

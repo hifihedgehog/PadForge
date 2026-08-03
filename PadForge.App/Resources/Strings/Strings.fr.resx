@@ -903,6 +903,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Moteur gauche </value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Moteur droit </value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Inverser les moteurs gauche et droit</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>Replier la vibration des gâchettes dans les moteurs principaux</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Cette manette n'a pas de moteurs dans les gâchettes, donc les jeux utilisant les gâchettes à impulsion Xbox ne seraient pas ressentis. Chaque canal de gâchette est replié dans le moteur principal du même côté.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Tester la vibration</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Activité moteur</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Force constante</value></data>

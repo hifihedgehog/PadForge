@@ -269,6 +269,7 @@ namespace PadForge.Views
                     "DS4" => new ControllerModelDS4(),
                     "DualSense" => new ControllerModelDualSense(),
                     "XBOXONE" => new ControllerModelXboxOne(enableShare: wantShare),
+                    "Switch2Pro" => new ControllerModelSwitch2Pro(),
                     _ => new ControllerModelXbox360()
                 };
                 _currentModelShareEnabled = wantShare;
@@ -1611,6 +1612,16 @@ namespace PadForge.Views
 
             if (string.IsNullOrEmpty(target))
                 return;
+
+            // A Nintendo slot's CurrentRecordingTarget is a raw grid name
+            // (RawBtn1, RawAxis0Neg); the flash machinery below speaks the
+            // preview element grammar. Translate back before resolving,
+            // mirroring ControllerModel2DView.UpdateFlashTarget.
+            if (target.StartsWith("Raw", StringComparison.Ordinal))
+            {
+                target = Models2D.NintendoPreviewMap.ToPreview(target);
+                if (string.IsNullOrEmpty(target)) return;
+            }
 
             _flashTarget = target;
             _flashOn = false;

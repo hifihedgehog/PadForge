@@ -264,18 +264,6 @@ namespace PadForge.Views
                 KBMPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
-            else if (DataContext is PadViewModel nvm
-                     && nvm.OutputType == Engine.VirtualControllerType.Nintendo)
-            {
-                // Nintendo: SWITCHPRO 2D set only (no 3D mesh yet), so the
-                // 2D view is fixed and the 2D/3D toggle hides.
-                ControllerSchematic.Visibility = Visibility.Collapsed;
-                MidiPreview.Visibility = Visibility.Collapsed;
-                KBMPreview.Visibility = Visibility.Collapsed;
-                ControllerModel3D.Visibility = Visibility.Collapsed;
-                ControllerModel2D.Visibility = Visibility.Visible;
-                ViewModeToggle.Visibility = Visibility.Collapsed;
-            }
             else
             {
                 // Gamepad preset: standard 2D/3D toggle
@@ -648,12 +636,7 @@ namespace PadForge.Views
             bool isMidi = IsMidi();
             bool isKBM = IsKBM();
             bool isSchematic = IsExtended();
-            // Nintendo has a full SWITCHPRO 2D asset set but no 3D mesh
-            // yet, so it always takes the 2D view regardless of the
-            // Use2DControllerView setting.
-            bool isNintendo = DataContext is PadViewModel pv
-                && pv.OutputType == Engine.VirtualControllerType.Nintendo;
-            bool is2D = isNintendo || (GetSettingsVm()?.Use2DControllerView ?? false);
+            bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
             // Unbind all first
             ControllerModel3D.Unbind();

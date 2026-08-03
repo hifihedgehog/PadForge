@@ -265,9 +265,17 @@ namespace PadForge.Engine.Common.Mapping
             // When true, this whole tuning chain is applied to the
             // virtual controller's motion passthrough (Sony report
             // packer + DSU broadcast), not only to gyro-as-mapping-
-            // source reads. Default false — fresh profiles relay the
+            // source reads. Default false. Fresh profiles relay the
             // raw sensor reading. See GetPassthroughGyro.
             public bool ApplyToPassthrough;
+
+            // Compass-anchored yaw (#271 item 5, Switch 2 magnetometer
+            // only). When true and MagHeadingProvider has a live heading
+            // for the device, the emitted yaw rate carries a small
+            // corrective term pulling the integrated yaw toward the
+            // magnetic heading, so downstream integration is drift-free.
+            // Default false.
+            public bool CompassYaw;
         }
 
         /// <summary>Looks up the per-(device, slot) gyro tuning bundle
@@ -402,13 +410,16 @@ namespace PadForge.Engine.Common.Mapping
         /// gravity would reference the wrong controller entirely.</summary>
         public static Func<string, (float gx, float gy, float gz)> GravityProviderAux { get; set; }
 
-        /// <summary>Compass heading for the device (by GUID), radians in
-        /// [-pi, pi], or null while the magnetometer stream is inactive,
-        /// uncalibrated, or rejected for interference (#271 item 5). Fed
-        /// by the App layer from the Switch 2 magnetometer at the gravity
-        /// cadence; consumed by the compass-yaw correction in
-        /// <see cref="ReadTunedGyroRate"/>.</summary>
-        public static Func<string, float?> MagHeadingProvider { get; set; }
+        /// <summary>Compass yaw-correction RATE for the device (by GUID),
+        /// rad/s, or null while the magnetometer stream is inactive,
+        /// uncalibrated, or rejected for interference (#271 item 5). The
+        /// App layer owns the timing: it integrates the device's raw yaw
+        /// rate on its own tick (where dt is real), compares against the
+        /// tilt-compensated heading, and publishes the small corrective
+        /// rate that pulls the integral to the compass. This evaluator
+        /// just ADDS it to the yaw lane when the tuning enables
+        /// CompassYaw, so every consumer stays dt-free.</summary>
+        public static Func<string, float?> CompassYawCorrectionProvider { get; set; }
 
         /// <summary>Tilt-compensated magnetic heading (#271 item 5),
         /// ported concept-for-concept from the cloned x-io Fusion
@@ -438,6 +449,24 @@ namespace PadForge.Engine.Common.Mapping
             nx /= nLen;
             return (float)Math.Atan2(wx, nx);
         }
+
+        /// <summary>Wraps an angle to [-pi, pi]. Public for the compass
+        /// correction's callers and tests.</summary>
+        public static float WrapToPi(float a)
+        {
+            while (a > (float)Math.PI) a -= 2f * (float)Math.PI;
+            while (a < -(float)Math.PI) a += 2f * (float)Math.PI;
+            return a;
+        }
+
+        /// <summary>The compass correction rate (#271 item 5): a
+        /// proportional pull of the integrated yaw toward the magnetic
+        /// heading, rad/s. Gain 0.5 1/s follows the x-io Fusion default
+        /// AHRS gain (FusionAhrs.c settings default 0.5): strong enough
+        /// to hold drift at zero, weak enough that a transient heading
+        /// glitch cannot yank the aim. Pure; tested directly.</summary>
+        public static float ComputeCompassCorrection(float headingRad, float integratedYawRad, float gain = 0.5f)
+            => gain * WrapToPi(headingRad - integratedYawRad);
 
         /// <summary>Whether the device (by GUID) carries the aux (left
         /// Joy-Con) gyro. Gates the fused bare-family read (#271 item 6):
@@ -2725,6 +2754,17 @@ namespace PadForge.Engine.Common.Mapping
                     yaw = -gRoll;
                 else
                     yaw = gYaw;
+            }
+
+            // ─── Compass-anchored yaw (#271 item 5) ───
+            // Yaw-aim lanes only: a Roll row's yaw variable carries roll,
+            // and a Pitch row never consumes yaw. Applied before
+            // smoothing/sensitivity so the correction rides the same
+            // shaping as the signal it corrects.
+            if (tuning.CompassYaw && !isRollSource && !isPitchSource)
+            {
+                float? compassCorr = CompassYawCorrectionProvider?.Invoke(deviceGuid);
+                if (compassCorr.HasValue) yaw += compassCorr.Value;
             }
 
             // ─── Smoothing (dual-threshold supersedes legacy EMA) ───

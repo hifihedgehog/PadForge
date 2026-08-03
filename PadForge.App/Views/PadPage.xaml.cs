@@ -359,6 +359,7 @@ namespace PadForge.Views
             bool hasMouse = false;
             bool hasIrPointer = false; // #146 Wii Remote IR camera -> Pointer tab
             bool hasImpulseTriggers = false;
+            bool hasS2Mag = false;
             bool hasRumble = false;
             bool hasTouchpad = false;
             bool hasWheel = false;
@@ -392,6 +393,7 @@ namespace PadForge.Views
                         hasMouse = ud.IsMouse;
                         hasIrPointer = ud.HasIrCamera;
                         hasImpulseTriggers = ud.HasRumbleTriggers;
+                        hasS2Mag = ud.HasJoyCon2Mouse;
                         hasTouchpad = ud.HasTouchpad;
                         hasGuideLed =
                             PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud)
@@ -534,6 +536,11 @@ namespace PadForge.Views
             if (FfbTriggerFoldChk != null)
                 FfbTriggerFoldChk.Visibility = (hasRumble && !hasImpulseTriggers)
                     ? Visibility.Visible : Visibility.Collapsed;
+            // Compass-anchored yaw (#271 item 5): the magnetometer ships on
+            // the Switch 2 Joy-Cons, the same identity set as the optical
+            // mouse, so the mouse capability doubles as the gate.
+            if (CompassYawCard != null)
+                CompassYawCard.Visibility = hasS2Mag ? Visibility.Visible : Visibility.Collapsed;
 
             // Family-correct preview (#175): same PID split as the
             // capability gates above. Rebuild the art scene only when the

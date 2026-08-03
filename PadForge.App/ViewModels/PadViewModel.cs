@@ -2653,6 +2653,40 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroInvertPitch, value);
         }
 
+        private bool _gyroCompassYaw;
+        /// <summary>Compass-anchored yaw (#271 item 5, Switch 2
+        /// magnetometer devices). Requires a stored magnetometer
+        /// calibration to take effect.</summary>
+        public bool GyroCompassYaw
+        {
+            get => _gyroCompassYaw;
+            set => SetProperty(ref _gyroCompassYaw, value);
+        }
+
+        private bool _magCalibrating;
+        /// <summary>True while the figure-8 magnetometer capture runs
+        /// (drives the Calibrate button's label swap).</summary>
+        public bool MagCalibrating
+        {
+            get => _magCalibrating;
+            set => SetProperty(ref _magCalibrating, value);
+        }
+
+        /// <summary>Wired by InputService: toggles the magnetometer
+        /// calibration capture for a device GUID, returns true while
+        /// capturing.</summary>
+        public static Func<Guid, bool> MagCalibrationToggle { get; set; }
+
+        private RelayCommand _magCalibrateCommand;
+        public RelayCommand MagCalibrateCommand =>
+            _magCalibrateCommand ??= new RelayCommand(() =>
+            {
+                var dev = SelectedMappedDevice;
+                var toggle = MagCalibrationToggle;
+                if (dev == null || dev.InstanceGuid == Guid.Empty || toggle == null) return;
+                MagCalibrating = toggle(dev.InstanceGuid);
+            });
+
         private bool _gyroInvertYawRoll;
         public bool GyroInvertYawRoll
         {
@@ -2762,6 +2796,10 @@ namespace PadForge.ViewModels
         private RelayCommand _resetGyroInvertPitchCommand;
         public RelayCommand ResetGyroInvertPitchCommand =>
             _resetGyroInvertPitchCommand ??= new RelayCommand(() => GyroInvertPitch = false);
+
+        private RelayCommand _resetGyroCompassYawCommand;
+        public RelayCommand ResetGyroCompassYawCommand =>
+            _resetGyroCompassYawCommand ??= new RelayCommand(() => GyroCompassYaw = false);
 
         private RelayCommand _resetGyroInvertYawRollCommand;
         public RelayCommand ResetGyroInvertYawRollCommand =>

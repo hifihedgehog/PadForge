@@ -1219,6 +1219,13 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 手柄原始本地轴。Player = 把偏航投影到真实垂直轴（重力），俯仰保持本地。Jibb Smart 推荐的默认值，在任意倾斜角度都自然。World = 偏航与俯仰均投影到世界坐标轴。</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>反转俯仰（Y）</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>俯仰轴的全局反转。在 Player/World 投影之后应用。与映射表中各源的 Invert 标志互相独立。</value></data>
+  <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>指南针</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>此控制器带有磁力计。将偏航锚定到磁北可消除陀螺仪瞄准的缓慢水平漂移。请先校准：按下校准，将控制器以 8 字形转动几秒经过所有朝向，然后再按一次。</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>将偏航锚定到指南针</value></data>
+  <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>添加一个小的校正速率，将水平瞄准拉向磁航向，使漂移无法累积。需要已保存的磁力计校准。受附近金属或磁铁干扰的采样会被自动剔除。</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>重置为默认值（关闭）</value></data>
+  <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>校准磁力计</value></data>
+  <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>完成校准</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>反转偏航 / 滚转（X）</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>偏航轴的全局反转。同样作用于 Roll 与 Gyro Horizontal 源。</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>真实世界校准</value></data>

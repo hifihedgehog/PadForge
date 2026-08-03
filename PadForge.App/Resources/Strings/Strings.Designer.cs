@@ -2154,6 +2154,13 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GyroSpace_Tooltip => Get("Settings_GyroSpace_Tooltip");
     public string Settings_GyroInvertPitch => Get("Settings_GyroInvertPitch");
     public string Settings_GyroInvertPitch_Tooltip => Get("Settings_GyroInvertPitch_Tooltip");
+    public string Pad_Gyro_Compass_Header => Get("Pad_Gyro_Compass_Header");
+    public string Pad_Gyro_Compass_Description => Get("Pad_Gyro_Compass_Description");
+    public string Settings_GyroCompassYaw => Get("Settings_GyroCompassYaw");
+    public string Settings_GyroCompassYaw_Tooltip => Get("Settings_GyroCompassYaw_Tooltip");
+    public string Pad_ResetGyroCompassYaw => Get("Pad_ResetGyroCompassYaw");
+    public string Pad_Gyro_MagCalibrate => Get("Pad_Gyro_MagCalibrate");
+    public string Pad_Gyro_MagCalibrate_Stop => Get("Pad_Gyro_MagCalibrate_Stop");
     public string Settings_GyroInvertYawRoll => Get("Settings_GyroInvertYawRoll");
     public string Settings_GyroInvertYawRoll_Tooltip => Get("Settings_GyroInvertYawRoll_Tooltip");
     public string Settings_GyroRealWorldCalibration => Get("Settings_GyroRealWorldCalibration");

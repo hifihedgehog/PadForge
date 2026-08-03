@@ -1239,6 +1239,13 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = ruwe controller-assen. Player = yaw geprojecteerd op de echte verticale as (zwaartekracht), pitch blijft lokaal. Door Jibb Smart aanbevolen standaard voor natuurlijk gevoel bij elke kanteling. World = yaw én pitch geprojecteerd op wereldassen.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pitch (Y) omkeren</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Globale pitch-omkering. Wordt na de Player/World-projectie toegepast, onafhankelijk van de Invert-vlaggen per bron in de toewijzingstabel.</value></data>
+  <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kompas</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Deze controller heeft een magnetometer. De yaw verankeren aan het magnetische noorden verwijdert langzame horizontale drift bij gyro-richten. Eerst kalibreren: druk op Kalibreren, draai de controller enkele seconden in een acht door alle standen en druk nogmaals.</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Yaw verankeren aan kompas</value></data>
+  <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Voegt een kleine correctiesnelheid toe die het horizontale richten naar de magnetische koers trekt, zodat drift zich niet kan opstapelen. Vereist een opgeslagen magnetometerkalibratie. Metingen die door metaal of magneten zijn verstoord, worden automatisch verworpen.</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Standaard herstellen (uit)</value></data>
+  <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Magnetometer kalibreren</value></data>
+  <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Kalibratie voltooien</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>Yaw / Roll (X) omkeren</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>Globale yaw-omkering. Geldt ook voor Roll- en Gyro-Horizontal-bronnen.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Realistische kalibratie</value></data>

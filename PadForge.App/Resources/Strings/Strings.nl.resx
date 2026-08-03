@@ -1192,6 +1192,10 @@
   <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>Gyro-yaw linker Joy-Con</value></data>
   <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>Gyro-roll linker Joy-Con</value></data>
   <data name="Mapping_GyroAuxHorizontal" xml:space="preserve"><value>Gyro Horizontaal linker Joy-Con (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroRPitch" xml:space="preserve"><value>Gyro-pitch rechter Joy-Con</value></data>
+  <data name="Mapping_GyroRYaw" xml:space="preserve"><value>Gyro-yaw rechter Joy-Con</value></data>
+  <data name="Mapping_GyroRRoll" xml:space="preserve"><value>Gyro-roll rechter Joy-Con</value></data>
+  <data name="Mapping_GyroRHorizontal" xml:space="preserve"><value>Gyro Horizontaal rechter Joy-Con (Yaw + Roll)</value></data>
   <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>Bewegingsgyro linker Joy-Con</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>

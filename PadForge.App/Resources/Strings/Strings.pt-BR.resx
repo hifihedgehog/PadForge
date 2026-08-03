@@ -1172,6 +1172,10 @@
   <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>Guinada do giroscópio do Joy-Con esquerdo</value></data>
   <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>Rolagem do giroscópio do Joy-Con esquerdo</value></data>
   <data name="Mapping_GyroAuxHorizontal" xml:space="preserve"><value>Giroscópio horizontal do Joy-Con esquerdo (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroRPitch" xml:space="preserve"><value>Arfagem do giroscópio do Joy-Con direito</value></data>
+  <data name="Mapping_GyroRYaw" xml:space="preserve"><value>Guinada do giroscópio do Joy-Con direito</value></data>
+  <data name="Mapping_GyroRRoll" xml:space="preserve"><value>Rolagem do giroscópio do Joy-Con direito</value></data>
+  <data name="Mapping_GyroRHorizontal" xml:space="preserve"><value>Giroscópio horizontal do Joy-Con direito (Yaw + Roll)</value></data>
   <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>Giroscópio de movimento do Joy-Con esquerdo</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscópio Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscópio Roll</value></data>

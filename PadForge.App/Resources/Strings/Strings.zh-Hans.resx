@@ -1172,6 +1172,10 @@
   <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>左Joy-Con 陀螺仪偏航</value></data>
   <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>左Joy-Con 陀螺仪横滚</value></data>
   <data name="Mapping_GyroAuxHorizontal" xml:space="preserve"><value>左Joy-Con 陀螺仪水平 (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroRPitch" xml:space="preserve"><value>右Joy-Con 陀螺仪俯仰</value></data>
+  <data name="Mapping_GyroRYaw" xml:space="preserve"><value>右Joy-Con 陀螺仪偏航</value></data>
+  <data name="Mapping_GyroRRoll" xml:space="preserve"><value>右Joy-Con 陀螺仪滚转</value></data>
+  <data name="Mapping_GyroRHorizontal" xml:space="preserve"><value>右Joy-Con 陀螺仪水平 (Yaw + Roll)</value></data>
   <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>左Joy-Con 体感陀螺仪</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>陀螺仪 偏航</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>陀螺仪 翻滚</value></data>

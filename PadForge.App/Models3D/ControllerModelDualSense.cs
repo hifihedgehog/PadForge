@@ -83,22 +83,54 @@ namespace PadForge.Models3D
                     }
             }
 
+            // Generated donut rings (the stick-direction click regions)
+            // have synthetic UVs; flat dark trim matches the center shell.
+            var MaterialRing = new DiffuseMaterial(new SolidColorBrush(
+                (Color)ColorConverter.ConvertFromString("#26282E")));
+
             foreach (Model3DGroup child in model3DGroup.Children)
             {
                 if (DefaultMaterials.ContainsKey(child)) continue;
-                Material mat = child == TransparentTrim ? MaterialTransparent : MaterialBody;
+                Material mat = child == TransparentTrim ? MaterialTransparent
+                    : (child == LeftThumbRing || child == RightThumbRing) ? MaterialRing
+                    : MaterialBody;
                 ApplyMaterial(child, mat);
                 DefaultMaterials[child] = mat;
             }
 
             DrawAccentHighlights();
 
-            // Decal overlay last: its atlas alpha carries the glyphs and
-            // labels, and WPF renders transparency in scene order.
+            // Rider decals: the L2/R2 label faces are carved out of the
+            // static overlay and appended INTO the trigger groups (after
+            // the body material pass) so the labels rotate with a pulled
+            // trigger instead of floating in place.
+            AttachRiderDecal(LeftShoulderTrigger, "Decal-Shoulder-Left-Trigger.obj", MaterialDecal);
+            AttachRiderDecal(RightShoulderTrigger, "Decal-Shoulder-Right-Trigger.obj", MaterialDecal);
+
+            // Static decal overlay last: its atlas alpha carries the rest
+            // of the glyphs and labels, and WPF renders transparency in
+            // scene order.
             DecalOverlay = LoadModel("Decal.obj");
             ApplyMaterial(DecalOverlay, MaterialDecal);
             DefaultMaterials[DecalOverlay] = MaterialDecal;
             model3DGroup.Children.Add(DecalOverlay);
+        }
+
+        private void AttachRiderDecal(Model3DGroup host, string filename, Material material)
+        {
+            var rider = TryLoadModel(filename);
+            if (rider == null) return;
+            var geos = new System.Collections.Generic.List<GeometryModel3D>();
+            foreach (var child in rider.Children)
+                if (child is GeometryModel3D geo)
+                    geos.Add(geo);
+            rider.Children.Clear();
+            foreach (var geo in geos)
+            {
+                geo.Material = material;
+                geo.BackMaterial = material;
+                host.Children.Add(geo);
+            }
         }
 
         /// <summary>The hado mesh is real-world scale (MainBody width

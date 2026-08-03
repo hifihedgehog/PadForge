@@ -33,6 +33,7 @@ namespace PadForge.Models3D
         private readonly Model3DGroup GL, GR;
         private readonly Model3DGroup LED1, LED2, LED3, LED4;
         private readonly Model3DGroup WellFill;
+        private readonly Model3DGroup InnerLiner;
 
         public ControllerModelSwitch2Pro() : base("Switch2Pro")
         {
@@ -47,8 +48,12 @@ namespace PadForge.Models3D
 
             var ColorStick  = (Color)ColorConverter.ConvertFromString("#3A3B3D");
             var ColorLEDOff = (Color)ColorConverter.ConvertFromString("#2E2F31");
+            var ColorSeam   = (Color)ColorConverter.ConvertFromString("#26272A");
             var MaterialStick  = new DiffuseMaterial(new SolidColorBrush(ColorStick));
             var MaterialLEDOff = new DiffuseMaterial(new SolidColorBrush(ColorLEDOff));
+            // Near-black for the seam plugs: whatever shows through a slit
+            // gap should read as seam shadow, not as a lit surface.
+            var MaterialSeam = new DiffuseMaterial(new SolidColorBrush(ColorSeam));
 
             // Player-1 LED uses the app accent brush, like DualSense.
             Brush accentBrush;
@@ -98,6 +103,15 @@ namespace PadForge.Models3D
             WellFill = LoadModel("WellFill.obj");
             model3DGroup.Children.Add(WellFill);
 
+            // MainBody displaced 1.2 mm inward along vertex normals. The
+            // source parts meet with genuine slit gaps (faceplate-to-shell
+            // seams, the paddle cutouts) that expose the dark interior as
+            // spurious-looking triangles. The liner sits behind every seam
+            // and, since WPF lights ignore occlusion, renders at surface
+            // brightness, so slits read as seams instead of holes.
+            InnerLiner = LoadModel("InnerLiner.obj");
+            model3DGroup.Children.Add(InnerLiner);
+
             LED1 = LoadModel("LED1.obj");
             LED2 = LoadModel("LED2.obj");
             LED3 = LoadModel("LED3.obj");
@@ -140,9 +154,14 @@ namespace PadForge.Models3D
                 }
 
                 // Generated meshes with synthetic UVs stay flat.
+                if (child == WellFill || child == InnerLiner)
+                {
+                    SetMaterial(child, MaterialSeam);
+                    DefaultMaterials[child] = MaterialSeam;
+                    continue;
+                }
                 if (child == LeftThumbRing || child == RightThumbRing
-                    || child == LeftMotor || child == RightMotor
-                    || child == WellFill)
+                    || child == LeftMotor || child == RightMotor)
                 {
                     SetMaterial(child, MaterialStick);
                     DefaultMaterials[child] = MaterialStick;

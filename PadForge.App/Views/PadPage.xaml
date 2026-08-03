@@ -6899,6 +6899,10 @@
                         </StackPanel>
 
                         <!-- Swap motors -->
+                        <CheckBox x:Name="FfbTriggerFoldChk" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  Content="{Binding Pad_TriggerRumbleFold, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Pad_TriggerRumbleFold_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                  IsChecked="{Binding TriggerRumbleFold, Mode=TwoWay}"/>
                         <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_SwapMotors, Source={x:Static strings:Strings.Instance}}"
                                   IsChecked="{Binding SwapMotors, Mode=TwoWay}"
                                   Margin="0,0,0,12"/>

@@ -3179,6 +3179,11 @@ namespace PadForge.ViewModels
         private bool _swapMotors;
         public bool SwapMotors { get => _swapMotors; set => SetProperty(ref _swapMotors, value); }
 
+        private bool _triggerRumbleFold;
+        /// <summary>Fold the game's trigger-motor channels into the body
+        /// motors on devices without trigger motors (#271 item 2).</summary>
+        public bool TriggerRumbleFold { get => _triggerRumbleFold; set => SetProperty(ref _triggerRumbleFold, value); }
+
         private int _wheelRotationRange = 900;
         /// <summary>Native-FFB wheel hardware rotation range (40–1080°). Persisted
         /// in PadSetting.RotationRange; applied via the vendor HID writer in Step 2.</summary>
@@ -3222,6 +3227,7 @@ namespace PadForge.ViewModels
             LeftMotorStrength = 100;
             RightMotorStrength = 100;
             SwapMotors = false;
+            TriggerRumbleFold = false;
             AudioRumbleEnabled = false;
             AudioRumbleSensitivity = 4.0;
             AudioRumbleCutoffHz = 80.0;

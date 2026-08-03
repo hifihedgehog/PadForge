@@ -897,6 +897,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motore sinistro</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motore destro</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Scambia motori sinistro e destro</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>Ripiega la vibrazione dei grilletti nei motori principali</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Questo controller non ha motori nei grilletti, quindi i giochi che usano i grilletti a impulsi Xbox non si sentirebbero. Ogni canale del grilletto viene invece ripiegato nel motore principale dello stesso lato.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Prova vibrazione</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Attività motori</value></data>
 

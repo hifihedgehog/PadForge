@@ -527,6 +527,13 @@ namespace PadForge.Views
                 LockPulseSection.Visibility = (hasRumble || hasTriggerVib) ? Visibility.Visible : Visibility.Collapsed;
             if (LockLightbarSection != null)
                 LockLightbarSection.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+            // Trigger fold (#271 item 2): only meaningful on a device with
+            // body rumble but no trigger motors. Those are the devices
+            // whose sink drops the game's LT/RT channels. Xbox One+ pads
+            // render the triggers natively, so the row hides there.
+            if (FfbTriggerFoldChk != null)
+                FfbTriggerFoldChk.Visibility = (hasRumble && !hasImpulseTriggers)
+                    ? Visibility.Visible : Visibility.Collapsed;
 
             // Family-correct preview (#175): same PID split as the
             // capability gates above. Rebuild the art scene only when the

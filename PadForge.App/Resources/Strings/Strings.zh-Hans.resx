@@ -903,6 +903,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左马达</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>右马达</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>交换左右马达</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>将扳机震动并入主马达</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>此控制器没有扳机马达，使用 Xbox 脉冲扳机的游戏将感觉不到震动。改为将每个扳机通道并入同侧的主马达。</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>测试振动</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>马达活动</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>恒力</value></data>

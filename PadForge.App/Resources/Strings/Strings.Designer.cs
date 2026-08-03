@@ -1318,6 +1318,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_LeftMotorLabel => Get("Pad_LeftMotorLabel");
     public string Pad_RightMotorLabel => Get("Pad_RightMotorLabel");
     public string Pad_SwapMotors => Get("Pad_SwapMotors");
+    public string Pad_TriggerRumbleFold => Get("Pad_TriggerRumbleFold");
+    public string Pad_TriggerRumbleFold_Tooltip => Get("Pad_TriggerRumbleFold_Tooltip");
     public string Pad_TestRumble => Get("Pad_TestRumble");
     public string Pad_MotorActivity => Get("Pad_MotorActivity");
     public string Pad_ConstantForce_Header => Get("Pad_ConstantForce_Header");

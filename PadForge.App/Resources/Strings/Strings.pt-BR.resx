@@ -903,6 +903,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor Esquerdo</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor Direito</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Trocar motores esquerdo e direito</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>Combinar a vibração dos gatilhos nos motores principais</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Este controle não tem motores nos gatilhos, então jogos que usam gatilhos de impulso do Xbox não seriam sentidos. Em vez disso, cada canal de gatilho é combinado com o motor principal do mesmo lado.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Testar Vibração</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Atividade do Motor</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Força Constante</value></data>

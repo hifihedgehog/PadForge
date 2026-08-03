@@ -848,6 +848,31 @@ namespace PadForge.Services
                             TouchpadPulseService.MixIntoMotors(ref rowL, ref rowR,
                                 TouchpadPulseService.CurrentLevel(slot, deviceGuid));
 
+                            // Trigger fold (#271 item 2): a Sony pad has no
+                            // trigger motors, so the game's LT/RT channels
+                            // die at this sink unless folded. Opt-in per row:
+                            // resolve + scale the trigger channels through
+                            // the exact chain SlotImpulseTriggerForDevice-
+                            // Provider uses, then max-fold each side into
+                            // its body motor (mirrors the SDL-path fold in
+                            // ForceFeedbackState.FoldTriggersIntoMains).
+                            if (rowPs != null && rowPs.TriggerRumbleFold == "1")
+                            {
+                                if (_constantTriggerForceScratchSony == null)
+                                    _constantTriggerForceScratchSony = new Vibration();
+                                if (_routeMainScratchSony == null) _routeMainScratchSony = new Vibration();
+                                if (_routeCfScratchSony == null) _routeCfScratchSony = new Vibration();
+                                var trigEff = ConstantTriggerForceEvaluator.Resolve(
+                                    slotRaw, rowPs, _constantTriggerForceScratchSony);
+                                _inputManager.ScaleTriggerRumbleForDevice(
+                                    trigEff.LeftTriggerMotorSpeed, trigEff.RightTriggerMotorSpeed,
+                                    rowPs, out ushort foldL, out ushort foldR);
+                                _inputManager.ApplyTriggerRoutingForSony(slot, rowPs, slotRaw,
+                                    _routeMainScratchSony, _routeCfScratchSony, ref foldL, ref foldR);
+                                if (foldL > rowL) rowL = foldL;
+                                if (foldR > rowR) rowR = foldR;
+                            }
+
                             if (rowL > maxL) maxL = rowL;
                             if (rowR > maxR) maxR = rowR;
                             anyRow = true;
@@ -5060,6 +5085,7 @@ namespace PadForge.Services
             ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
             ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
             ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
+            ps.TriggerRumbleFold = padVm.TriggerRumbleFold ? "1" : "0";
 
             // Impulse triggers (Xbox One+).
             ps.ImpulseOverallGain = padVm.ImpulseOverallGain.ToString();
@@ -5483,6 +5509,7 @@ namespace PadForge.Services
             padVm.RightMotorStrength = TryParseInt(ps.RightMotorStrength, 100);
             padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                 (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+            padVm.TriggerRumbleFold = ps.TriggerRumbleFold == "1";
 
             // Impulse triggers (Xbox One+).
             padVm.ImpulseOverallGain = TryParseInt(ps.ImpulseOverallGain, 100);

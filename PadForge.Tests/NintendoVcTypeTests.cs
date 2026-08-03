@@ -58,12 +58,20 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AssetFolders_SwitchProGets2DSetAndNo3DMesh()
+        public void AssetFolders_SwitchProGets2DSetAndSwitch2ProMesh()
         {
+            // Both Switch Pro generations share the Switch2Pro mesh, the
+            // same arrangement as Xbox Series profiles riding the Xbox
+            // One mesh.
             var (name2D, name3D) = HMaestroProfileCatalog.ResolveAssetFolders(
                 "switch-pro", VirtualControllerType.Nintendo);
             Assert.Equal("SWITCHPRO", name2D);
-            Assert.Null(name3D);
+            Assert.Equal("Switch2Pro", name3D);
+
+            (name2D, name3D) = HMaestroProfileCatalog.ResolveAssetFolders(
+                "switch2-pro-controller", VirtualControllerType.Nintendo);
+            Assert.Equal("SWITCHPRO", name2D);
+            Assert.Equal("Switch2Pro", name3D);
         }
 
         // ── Lettering (#215) rides the type via the Numbered style ──

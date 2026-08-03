@@ -344,13 +344,15 @@ namespace PadForge.Common.Input
             if (profileId.StartsWith("xbox-360", StringComparison.OrdinalIgnoreCase))
                 return ("XBOX360", "XBOX360");
 
-            // Nintendo Switch Pro family. 2D set from the asset pack;
-            // no dedicated 3D mesh yet (sourcing tracked with the owner),
-            // so Nintendo slots render the schematic view like Extended
-            // and the 3D name is never consulted.
+            // Nintendo Switch Pro family. Both profile generations share
+            // the Switch 2 Pro mesh (purchased hado model, split per-part),
+            // the same arrangement as Series profiles riding the Xbox One
+            // mesh. On an original Switch Pro the S2-only cosmetic parts
+            // (C button, GL/GR, four player LEDs) render anyway; they are
+            // inert meshes, so nothing maps or flashes wrong.
             if (profileId.StartsWith("switch-pro", StringComparison.OrdinalIgnoreCase)
                 || profileId.StartsWith("switch2-pro", StringComparison.OrdinalIgnoreCase))
-                return ("SWITCHPRO", null);
+                return ("SWITCHPRO", "Switch2Pro");
 
             // Fallback per slot type — preserves existing behavior for
             // Custom / Extended / unrecognized profiles.

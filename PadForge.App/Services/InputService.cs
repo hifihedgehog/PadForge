@@ -3007,7 +3007,7 @@ namespace PadForge.Services
             // re-latches.
             bool irWanted = irReq != 0 && nowTick - irReq < McuDemandWindowMs
                 && !PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive
-                && AnyStandaloneRightJoyConOnline();
+                && AnyIrJoyConOnline();
             if (irWanted != _joyConIrHintOn)
             {
                 if (SDL3.SDL.SDL_SetHint(SDL3.SDL.SDL_HINT_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR,
@@ -3017,9 +3017,12 @@ namespace PadForge.Services
                     PadForge.Common.Input.NfcTagRegistry.JoyConIrHintOn = irWanted;
                     PadForge.Engine.SdlDiagLog.WriteLine($"JoyCon IR hint -> {(irWanted ? "ON" : "off")}");
                     // The fork applies the hint only at the sensors-enable
-                    // edge, so drive every open standalone right Joy-Con
-                    // through that edge now: camera starts on ON, stops on
-                    // OFF (freeing the MCU for NFC) without a reconnect.
+                    // edge, so drive every open IR-capable Joy-Con
+                    // (standalone right, or a combined pair whose right
+                    // half runs the camera, #275) through that edge now:
+                    // camera starts on ON, stops on OFF (freeing the MCU
+                    // for NFC) without a reconnect. The combined driver
+                    // forwards the sensors toggle to each child.
                     // Collected under the lock, bounced OUTSIDE it on a
                     // worker (#248 audit round 3): the fork's IR bring-up
                     // is synchronous MCU work that can run for seconds and
@@ -3032,7 +3035,7 @@ namespace PadForge.Services
                         {
                             foreach (var ud in devs.Items)
                                 if (ud != null && ud.IsOnline && ud.VendorId == 0x057E
-                                    && ud.ProdId == 0x2007
+                                    && (ud.ProdId == 0x2007 || ud.ProdId == 0x2008)
                                     && ud.Device is PadForge.Engine.SdlDeviceWrapper w)
                                     (toBounce ??= new()).Add(w);
                         }
@@ -3059,14 +3062,17 @@ namespace PadForge.Services
         /// "IR Brightness" and the other to NFC, both cameras start and
         /// the fork suppresses NFC on both (camera-first arbitration).
         /// Splitting per-device needs a fork-side per-device property.</summary>
-        private bool AnyStandaloneRightJoyConOnline()
+        private bool AnyIrJoyConOnline()
         {
+            // 0x2007 standalone right, 0x2008 combined gen-1 pair (#275,
+            // SDL#26: the pair's right half runs the same camera machine).
             var devices = SettingsManager.UserDevices;
             if (devices == null) return false;
             lock (devices.SyncRoot)
             {
                 foreach (var ud in devices.Items)
-                    if (ud != null && ud.IsOnline && ud.VendorId == 0x057E && ud.ProdId == 0x2007)
+                    if (ud != null && ud.IsOnline && ud.VendorId == 0x057E
+                        && (ud.ProdId == 0x2007 || ud.ProdId == 0x2008))
                         return true;
             }
             return false;

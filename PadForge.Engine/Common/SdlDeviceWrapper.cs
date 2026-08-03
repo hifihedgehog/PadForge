@@ -474,7 +474,16 @@ namespace PadForge.Engine
             // average-intensity byte there once the camera powers (hint + sensors
             // enabled). Same detection idiom as the Wii IR axes above: the raw
             // joystick axis count is the stable signal the SDL contract defines.
-            HasJoyConIr = VendorId == 0x057E && ProductId == 0x2007
+            // PID 0x2007 = standalone right Joy-Con; 0x2008 = combined gen-1
+            // pair, whose right half runs the same camera machine and posts
+            // on the shared joystick's axis 6 since SDL#26 (#275). The
+            // naxes >= 7 contract keeps a pre-#26 DLL and the gen-2 pair
+            // (PID 0x2068, mouse sensor, 6 axes) excluded either way, and
+            // this gate doubles as the HasExtraGenericAxes exclusion below,
+            // so without it a pair's IR axis would leak into the generic
+            // "Axis 7" source and poison the input-activity detectors.
+            HasJoyConIr = VendorId == 0x057E
+                && (ProductId == 0x2007 || ProductId == 0x2008)
                 && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 7;
 
             // Joy-Con 2 optical mouse sensor (issue #154). The fork's BLE Switch 2

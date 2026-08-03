@@ -32,6 +32,7 @@ namespace PadForge.Models3D
         private readonly Model3DGroup CButton;
         private readonly Model3DGroup GL, GR;
         private readonly Model3DGroup LED1, LED2, LED3, LED4;
+        private readonly Model3DGroup WellFill;
 
         public ControllerModelSwitch2Pro() : base("Switch2Pro")
         {
@@ -91,6 +92,12 @@ namespace PadForge.Models3D
             model3DGroup.Children.Add(GL);
             model3DGroup.Children.Add(GR);
 
+            // Hidden dark strip inside the top rail: the single-skin source
+            // mesh has no interior, so elevated rear angles otherwise see
+            // straight through the bumper/trigger seams to the background.
+            WellFill = LoadModel("WellFill.obj");
+            model3DGroup.Children.Add(WellFill);
+
             LED1 = LoadModel("LED1.obj");
             LED2 = LoadModel("LED2.obj");
             LED3 = LoadModel("LED3.obj");
@@ -134,7 +141,8 @@ namespace PadForge.Models3D
 
                 // Generated meshes with synthetic UVs stay flat.
                 if (child == LeftThumbRing || child == RightThumbRing
-                    || child == LeftMotor || child == RightMotor)
+                    || child == LeftMotor || child == RightMotor
+                    || child == WellFill)
                 {
                     SetMaterial(child, MaterialStick);
                     DefaultMaterials[child] = MaterialStick;

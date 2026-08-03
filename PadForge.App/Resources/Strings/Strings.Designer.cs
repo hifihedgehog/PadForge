@@ -1056,6 +1056,14 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Kbm_Socd_KeyA_Tooltip => Get("Pad_Kbm_Socd_KeyA_Tooltip");
     public string Pad_Kbm_Socd_KeyB_Tooltip => Get("Pad_Kbm_Socd_KeyB_Tooltip");
     public string Pad_Socd_Card_Header => Get("Pad_Socd_Card_Header");
+    public string Pad_KeepAwake_Card_Header => Get("Pad_KeepAwake_Card_Header");
+    public string Pad_KeepAwake_Card_Desc => Get("Pad_KeepAwake_Card_Desc");
+    public string Pad_KeepAwake_Enable => Get("Pad_KeepAwake_Enable");
+    public string Pad_KeepAwake_Axis_Label => Get("Pad_KeepAwake_Axis_Label");
+    public string Pad_KeepAwake_Axis_Tooltip => Get("Pad_KeepAwake_Axis_Tooltip");
+    public string Pad_KeepAwake_Deflection_Label => Get("Pad_KeepAwake_Deflection_Label");
+    public string Pad_KeepAwake_Deflection_Tooltip => Get("Pad_KeepAwake_Deflection_Tooltip");
+    public string Pad_KeepAwake_ResetCard_Tooltip => Get("Pad_KeepAwake_ResetCard_Tooltip");
     public string Pad_Socd_Card_Desc => Get("Pad_Socd_Card_Desc");
     public string Pad_Socd_ResetCard_Tooltip => Get("Pad_Socd_ResetCard_Tooltip");
     public string Pad_Socd_Mode_Label => Get("Pad_Socd_Mode_Label");

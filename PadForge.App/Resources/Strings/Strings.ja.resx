@@ -2388,6 +2388,14 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>オフ</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>このキーペアを削除します。</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同時反対方向入力 (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>コントローラーをアクティブに保つ</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>一部のゲームはマウスやキーボードの入力を検出すると振動を止め、ボタン表示を切り替えます。スティックをわずかに倒した状態を保持すると、ゲームはこのコントローラーをアクティブなデバイスとして扱い続けます。保持レベル以上の実際の入力はそのまま通過します。ゲーム内で何も動かないよう、保持量はゲーム側のデッドゾーンより小さくしてください。</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>アクティブ保持を有効化</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>保持する軸</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>どの出力軸で偏移を保持するか。カメラではなく移動として読まれる軸を選ぶと、デッドゾーン未満の値は見えないままになります。</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>保持量</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>スティック全ストロークに対する保持量（%）。25% ならほとんどのゲームで移動デッドゾーン未満のままアクティブを維持できます。それでも切り替わる場合は上げ、キャラクターが動いてしまう場合は下げてください。</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>アクティブ保持をオフにし、既定の軸と保持量に戻します</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>このスロットの仮想コントローラー出力で、同時に押されたボタンペアを解決します。ペアの両方が押されているとき、選んだルールがゲームに見せる入力を決めます。</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>同時反対方向入力をリセット</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>モード</value></data>

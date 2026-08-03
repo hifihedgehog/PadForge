@@ -2388,6 +2388,14 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Desactivado</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Quita este par de teclas.</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Direcciones cardinales opuestas simultáneas (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Mantener el mando activo</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Algunos juegos detienen la vibración y cambian los iconos de botones en cuanto detectan entrada de ratón o teclado. Mantener una pequeña desviación del stick hace que el juego siga tratando este mando como el dispositivo activo. La entrada real igual o superior al nivel mantenido pasa sin cambios. Mantén la desviación por debajo de la zona muerta del juego para que nada se mueva.</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Activar mantener activo</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Eje mantenido</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>Qué eje de salida mantiene la desviación. Elige uno que el juego lea como movimiento y no como cámara, para que un valor bajo la zona muerta sea invisible.</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Desviación</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Nivel mantenido como porcentaje del recorrido total del stick. 25% mantiene activos la mayoría de los juegos sin superar su zona muerta de movimiento. Súbelo si el juego sigue cambiando, bájalo si el personaje deriva.</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Desactivar mantener activo y restaurar el eje y la desviación predeterminados</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resuelve pares de botones mantenidos a la vez en la salida del mando virtual de esta ranura. Cuando ambos botones de un par están pulsados, la regla elegida decide qué pulsación ve el juego.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Restablecer direcciones cardinales opuestas simultáneas</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modo</value></data>

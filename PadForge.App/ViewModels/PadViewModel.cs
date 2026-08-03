@@ -1946,6 +1946,7 @@ namespace PadForge.ViewModels
             // The SOCD card (#240) lives on the same slot MappingSet and
             // re-seeds on the same paths.
             ReloadSocd();
+            ReloadKeepAwake();
 
             MappingsRebuilt?.Invoke(this, EventArgs.Empty);
         }
@@ -3810,6 +3811,7 @@ namespace PadForge.ViewModels
             ReloadMenus();
             ReloadRumbleAudio();
             ReloadSocd();
+            ReloadKeepAwake();
             // Page navigation state is per-VC too. Without these, the next
             // VC created at this index opened straight onto the deleted
             // VC's tab (owner re-report 2026-08-02: "takes me to the
@@ -5658,6 +5660,121 @@ namespace PadForge.ViewModels
         public bool SocdUsesRawIndices =>
             _outputType is VirtualControllerType.Extended
                 or VirtualControllerType.Nintendo;
+
+        // ── Keep Controller Awake (#270, discussion #263) ──
+        //  Card over MappingSet.KeepAwake* (applied by Step 5 right before
+        //  submit, the SOCD precedent). Games cut vibration and prompts on
+        //  mouse/keyboard input; a held idle deflection keeps them treating
+        //  the controller as active without touching the mapping pipeline.
+
+        /// <summary>Gamepad-output slots only: the injection lives in the
+        /// gpOut submit branch, so raw-surface (Extended / Nintendo), KBM,
+        /// and MIDI slots hide the card.</summary>
+        public bool KeepAwakeCardVisible =>
+            _outputType is VirtualControllerType.Xbox
+            or VirtualControllerType.PlayStation;
+
+        public bool KeepAwakeEnabled
+        {
+            get => SlotMenuSet?.KeepAwakeEnabled ?? false;
+            set
+            {
+                var set = SlotMenuSet;
+                if (set == null || set.KeepAwakeEnabled == value) return;
+                set.KeepAwakeEnabled = value;
+                OnPropertyChanged(nameof(KeepAwakeEnabled));
+                ConfigItemDirtyCallback?.Invoke();
+            }
+        }
+
+        /// <summary>Held axis, locale-stable: "" or "LX" (default), "LY",
+        /// "RX", "RY".</summary>
+        public string KeepAwakeAxis
+        {
+            get
+            {
+                string a = SlotMenuSet?.KeepAwakeAxis;
+                return string.IsNullOrEmpty(a) ? "LX" : a;
+            }
+            set
+            {
+                if (value == null) return;
+                var set = SlotMenuSet;
+                if (set == null) return;
+                string stored = value == "LX" ? "" : value;
+                if (string.Equals(set.KeepAwakeAxis ?? "", stored, StringComparison.Ordinal)) return;
+                set.KeepAwakeAxis = stored;
+                OnPropertyChanged(nameof(KeepAwakeAxis));
+                ConfigItemDirtyCallback?.Invoke();
+            }
+        }
+
+        /// <summary>Axis picker options. Reuses the stick-axis strings the
+        /// mapping grid already localizes.</summary>
+        public System.Collections.Generic.IReadOnlyList<GyroLabeledOption> AvailableKeepAwakeAxes =>
+            new[]
+            {
+                new GyroLabeledOption(() => Strings.Instance.Btn_LeftStickX,  "LX"),
+                new GyroLabeledOption(() => Strings.Instance.Btn_LeftStickY,  "LY"),
+                new GyroLabeledOption(() => Strings.Instance.Btn_RightStickX, "RX"),
+                new GyroLabeledOption(() => Strings.Instance.Btn_RightStickY, "RY"),
+            };
+
+        /// <summary>Held deflection percent. The persisted 0 means unset
+        /// and reads as the engine's default 25 (the reporter-proven
+        /// value), so the card always shows the effective number.</summary>
+        public int KeepAwakeDeflection
+        {
+            get
+            {
+                int v = SlotMenuSet?.KeepAwakeDeflection ?? 0;
+                return v <= 0 ? 25 : Math.Clamp(v, 1, 90);
+            }
+            set
+            {
+                var set = SlotMenuSet;
+                if (set == null) return;
+                int clamped = Math.Clamp(value, 1, 90);
+                if (set.KeepAwakeDeflection == clamped) return;
+                set.KeepAwakeDeflection = clamped;
+                OnPropertyChanged(nameof(KeepAwakeDeflection));
+                ConfigItemDirtyCallback?.Invoke();
+            }
+        }
+
+        private RelayCommand _resetKeepAwakeDeflectionCommand;
+        public RelayCommand ResetKeepAwakeDeflectionCommand =>
+            _resetKeepAwakeDeflectionCommand ??= new RelayCommand(() => KeepAwakeDeflection = 25);
+
+        private RelayCommand _resetKeepAwakeAxisCommand;
+        public RelayCommand ResetKeepAwakeAxisCommand =>
+            _resetKeepAwakeAxisCommand ??= new RelayCommand(() => KeepAwakeAxis = "LX");
+
+        private RelayCommand _resetKeepAwakeCardCommand;
+        /// <summary>Card-level Reset All: disabled, axis and deflection
+        /// back to the unset defaults.</summary>
+        public RelayCommand ResetKeepAwakeCardCommand =>
+            _resetKeepAwakeCardCommand ??= new RelayCommand(() =>
+            {
+                var set = SlotMenuSet;
+                if (set == null) return;
+                set.KeepAwakeEnabled = false;
+                set.KeepAwakeAxis = "";
+                set.KeepAwakeDeflection = 0;
+                ReloadKeepAwake();
+                ConfigItemDirtyCallback?.Invoke();
+            });
+
+        /// <summary>Re-raises the card's bindings after the slot's set is
+        /// swapped or reloaded (profile apply, reset, type switch).</summary>
+        public void ReloadKeepAwake()
+        {
+            OnPropertyChanged(nameof(KeepAwakeCardVisible));
+            OnPropertyChanged(nameof(KeepAwakeEnabled));
+            OnPropertyChanged(nameof(KeepAwakeAxis));
+            OnPropertyChanged(nameof(AvailableKeepAwakeAxes));
+            OnPropertyChanged(nameof(KeepAwakeDeflection));
+        }
 
         /// <summary>SOCD mode, locale-stable: "" (off), "LastWins",
         /// "Neutral", "FirstWins". Stored on the slot's MappingSet so it

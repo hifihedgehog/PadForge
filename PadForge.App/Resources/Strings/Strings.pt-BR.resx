@@ -2388,6 +2388,14 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Desativado</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Remove este par de teclas.</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Direções Cardeais Opostas Simultâneas (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Manter o controle ativo</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Alguns jogos param a vibração e trocam os ícones de botões assim que detectam mouse ou teclado. Manter uma pequena deflexão do analógico faz o jogo continuar tratando este controle como o dispositivo ativo. A entrada real no nível mantido ou acima passa sem alterações. Mantenha a deflexão abaixo da zona morta do jogo para que nada se mova.</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Ativar manter ativo</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Eixo mantido</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>Qual eixo de saída mantém a deflexão. Escolha um que o jogo leia como movimento em vez de câmera, para que um valor abaixo da zona morta fique invisível.</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Deflexão</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Nível mantido como porcentagem do curso total do analógico. 25% mantém a maioria dos jogos engajados ficando abaixo da zona morta de movimento. Aumente se o jogo ainda alternar, diminua se o personagem derivar.</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Desativar manter ativo e restaurar o eixo e a deflexão padrão</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resolve pares de botões mantidos ao mesmo tempo na saída do controle virtual deste slot. Quando os dois botões de um par estão pressionados, a regra escolhida decide qual pressão o jogo vê.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Redefinir Direções Cardeais Opostas Simultâneas</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modo</value></data>

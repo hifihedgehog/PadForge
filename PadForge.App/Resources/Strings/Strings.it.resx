@@ -2410,6 +2410,14 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Disattivato</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Rimuove questa coppia di tasti.</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Direzioni cardinali opposte simultanee (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Mantieni il controller attivo</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Alcuni giochi interrompono la vibrazione e cambiano le icone dei tasti appena rilevano mouse o tastiera. Mantenere una piccola deflessione dello stick fa sì che il gioco continui a trattare questo controller come dispositivo attivo. L'input reale pari o superiore al livello mantenuto passa invariato. Tieni la deflessione sotto la zona morta del gioco così non si muove nulla.</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Abilita mantieni attivo</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Asse mantenuto</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>Quale asse di uscita mantiene la deflessione. Scegline uno che il gioco legge come movimento e non come telecamera, così un valore sotto la zona morta resta invisibile.</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Deflessione</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Livello mantenuto in percentuale della corsa totale dello stick. Il 25% tiene attivi la maggior parte dei giochi restando sotto la loro zona morta di movimento. Aumenta se il gioco continua a cambiare, riduci se il personaggio deriva.</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Disattiva mantieni attivo e ripristina asse e deflessione predefiniti</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Risolve le coppie di pulsanti tenute premute insieme sull&apos;uscita del controller virtuale di questo slot. Quando entrambi i pulsanti di una coppia sono premuti, la regola scelta decide quale pressione vede il gioco.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Reimposta direzioni cardinali opposte simultanee</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modalità</value></data>

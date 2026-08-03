@@ -775,6 +775,14 @@
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>First key of the opposing pair.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Second key of the opposing pair.</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Simultaneous Opposite Cardinal Directions (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Keep Controller Awake</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Some games stop vibration and switch their button prompts the moment they see mouse or keyboard input. Holding a small stick deflection keeps the game treating this controller as the active device. Real input at or above the held level passes through unchanged. Keep the deflection below the game's own dead zone so nothing moves in-game.</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Enable Keep Awake</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Held Axis</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>Which output axis holds the deflection. Pick one the game reads as movement rather than camera, so a value under the game's dead zone stays invisible.</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Deflection</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Held level as a percent of full stick travel. 25% keeps most games engaged while sitting under their movement dead zone. Raise it if the game still switches away, lower it if the character drifts.</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Turn Keep Awake off and restore the default axis and deflection</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resolves paired buttons held at the same time on this slot&apos;s virtual controller output. When both buttons of a pair are down, the chosen rule decides which press the game sees.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Reset Simultaneous Opposite Cardinal Directions</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Mode</value></data>

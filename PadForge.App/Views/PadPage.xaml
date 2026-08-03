@@ -3129,6 +3129,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <!-- Toolbar -->
@@ -5843,6 +5844,66 @@
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Keep Controller Awake (#270, discussion #263).
+                         Slot-tier like the SOCD card above: holds a small
+                         idle deflection on one axis of the slot's virtual
+                         controller OUTPUT (MappingSet.KeepAwake*, applied
+                         by Step 5 right before submit) so games that cut
+                         vibration and switch prompts on mouse/keyboard
+                         input keep treating the controller as active. Real
+                         output at or above the held level passes through
+                         unchanged. Gamepad-output slots only: the
+                         injection lives in the gpOut submit branch, so
+                         raw-surface, KBM, and MIDI slots hide it. -->
+                    <Border Grid.Row="5" Style="{StaticResource CardBorder}" Margin="0,8,0,0"
+                            Visibility="{Binding KeepAwakeCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="{Binding Pad_KeepAwake_Card_Header, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardTitle}"/>
+                                <ui:Button Command="{Binding ResetKeepAwakeCardCommand}" Style="{StaticResource ResetAllButton}"
+                                           Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                           ToolTip="{Binding Pad_KeepAwake_ResetCard_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding Pad_KeepAwake_Card_Desc, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource CardDescription}"/>
+
+                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0"
+                                      IsChecked="{Binding KeepAwakeEnabled, Mode=TwoWay}"
+                                      Content="{Binding Pad_KeepAwake_Enable, Source={x:Static strings:Strings.Instance}}"/>
+
+                            <!-- Held axis row -->
+                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                <TextBlock Text="{Binding Pad_KeepAwake_Axis_Label, Source={x:Static strings:Strings.Instance}}"
+                                           Width="140" VerticalAlignment="Center"
+                                           ToolTip="{Binding Pad_KeepAwake_Axis_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <ComboBox ItemsSource="{Binding AvailableKeepAwakeAxes}"
+                                          SelectedValue="{Binding KeepAwakeAxis, Mode=TwoWay}"
+                                          SelectedValuePath="Value" DisplayMemberPath="Display"
+                                          MinWidth="170" VerticalAlignment="Center" Padding="4,2"
+                                          ToolTip="{Binding Pad_KeepAwake_Axis_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:Button Command="{Binding ResetKeepAwakeAxisCommand}" Style="{StaticResource ResetButton}"
+                                           VerticalAlignment="Center" Margin="8,0,0,0"/>
+                            </StackPanel>
+
+                            <!-- Deflection row -->
+                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                <TextBlock Text="{Binding Pad_KeepAwake_Deflection_Label, Source={x:Static strings:Strings.Instance}}"
+                                           Width="140" VerticalAlignment="Center"
+                                           ToolTip="{Binding Pad_KeepAwake_Deflection_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <Slider Style="{StaticResource DzSlider}" Width="160" Minimum="1" Maximum="90"
+                                        Value="{Binding KeepAwakeDeflection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        TickFrequency="1"/>
+                                <TextBox Text="{Binding KeepAwakeDeflection, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         Style="{StaticResource DzValueEdit}"/>
+                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                <ui:Button Command="{Binding ResetKeepAwakeDeflectionCommand}" Style="{StaticResource ResetButton}"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>

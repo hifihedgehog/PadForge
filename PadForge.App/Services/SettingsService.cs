@@ -1741,6 +1741,10 @@ namespace PadForge.Services
                 // SOCD authoring (#240), same family.
                 merged.SocdMode = current.SocdMode ?? "";
                 merged.SocdPairs = current.SocdPairs ?? "";
+                // Keep Awake (#270), same family.
+                merged.KeepAwakeEnabled = current.KeepAwakeEnabled;
+                merged.KeepAwakeAxis = current.KeepAwakeAxis ?? "";
+                merged.KeepAwakeDeflection = current.KeepAwakeDeflection;
                 var consumedRebuilt = new HashSet<(string, string)>();
 
                 foreach (var er in current.Rows)

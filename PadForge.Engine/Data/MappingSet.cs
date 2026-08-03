@@ -95,6 +95,29 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlAttribute] public string SocdPairs { get; set; } = "";
 
+        // ── Keep Controller Awake (#270, discussion #263) ──
+        // Games cut vibration and switch prompts when they see mouse or
+        // keyboard input, resuming only on controller activity. Holding a
+        // small constant deflection on one output axis keeps the game
+        // treating the controller as active: the reporter proved the
+        // mechanism with a 25% anti-deadzone (above the game's device
+        // detection threshold, below its movement deadzone). These fields
+        // do it at the OUTPUT layer instead, applied by Step 5 right
+        // before submit like SocdMode, so the mapping pipeline's curves
+        // and deadzones stay untouched and real input at or above the
+        // held level passes through unchanged.
+
+        /// <summary>Enables the idle output deflection for this slot.</summary>
+        [XmlAttribute] public bool KeepAwakeEnabled { get; set; } = false;
+
+        /// <summary>Which axis holds the deflection: "LX" (default when
+        /// empty), "LY", "RX", or "RY".</summary>
+        [XmlAttribute] public string KeepAwakeAxis { get; set; } = "";
+
+        /// <summary>Held deflection as a percent of full axis travel.
+        /// 0 = unset, treated as the default 25 at apply time.</summary>
+        [XmlAttribute] public int KeepAwakeDeflection { get; set; } = 0;
+
         /// <summary>
         /// True when this set carries anything worth persisting or loading:
         /// rows, shift activators (layers), menus, authoritative ownership,
@@ -121,7 +144,13 @@ namespace PadForge.Engine.Data
             // cold load.
             || !string.IsNullOrEmpty(BaseLayerName)
             || !string.IsNullOrEmpty(BaseColor)
-            || !string.IsNullOrEmpty(BaseIcon);
+            || !string.IsNullOrEmpty(BaseIcon)
+            // Keep Awake (#270): the gate's own append rule. A slot whose
+            // only authoring is the keep-awake config must survive cold
+            // load like every structure before it.
+            || KeepAwakeEnabled
+            || !string.IsNullOrEmpty(KeepAwakeAxis)
+            || KeepAwakeDeflection != 0;
 
         /// <summary>
         /// An authoritative set owns its slot's mappings completely: the

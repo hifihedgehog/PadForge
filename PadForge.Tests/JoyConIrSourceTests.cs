@@ -87,16 +87,33 @@ namespace PadForge.Tests
         public void HasJoyConIr_GatesOnRightJoyConIdentity()
         {
             // Standalone right Joy-Con has the camera (SDL names it exactly
-            // "Nintendo Switch Joy-Con (R)"); the left Joy-Con and the combined
-            // pair ("(L/R)") do not, and neither does a non-Nintendo VID. The
-            // Switch 2 right Joy-Con shares the Nintendo VID and ends with the
-            // same "Joy-Con (R)" (SDL_ble_switch2joystick.c:1331) but carries a
-            // mouse sensor, not an IR camera, so the gate must be exact.
+            // "Nintendo Switch Joy-Con (R)"). The left Joy-Con does not, and
+            // neither does a non-Nintendo VID. The Switch 2 right Joy-Con
+            // shares the Nintendo VID and ends with the same "Joy-Con (R)"
+            // (SDL_ble_switch2joystick.c:1331) but carries a mouse sensor,
+            // not an IR camera, so the gate must be exact.
             Assert.True(new UserDevice { VendorId = 0x057E, ProductName = "Nintendo Switch Joy-Con (R)" }.HasJoyConIr);
             Assert.False(new UserDevice { VendorId = 0x057E, ProductName = "Nintendo Switch Joy-Con (L)" }.HasJoyConIr);
-            Assert.False(new UserDevice { VendorId = 0x057E, ProductName = "Nintendo Switch Joy-Con (L/R)" }.HasJoyConIr);
             Assert.False(new UserDevice { VendorId = 0x057E, ProductName = "Nintendo Switch 2 Joy-Con (R)" }.HasJoyConIr);
             Assert.False(new UserDevice { VendorId = 0x045E, ProductName = "Nintendo Switch Joy-Con (R)" }.HasJoyConIr);
+        }
+
+        [Fact]
+        public void HasJoyConIr_CombinedPair_KeysOnThePidNotTheName()
+        {
+            // #275 / SDL#26: the gen-1 pair's right half runs the camera, so
+            // the pair identity (PID 0x2008) is included. The name CANNOT
+            // discriminate here: SDL's combined synthesis gives the gen-1 and
+            // gen-2 pairs the identical "Switch Joy-Con (L/R)" product string
+            // (SDL_hidapijoystick.c:1123), and the gen-2 pair (PID 0x2068)
+            // carries mouse sensors, not a camera.
+            Assert.True(new UserDevice { VendorId = 0x057E, ProdId = 0x2008, ProductName = "Nintendo Switch Joy-Con (L/R)" }.HasJoyConIr);
+            // Same name, gen-2 PID: excluded.
+            Assert.False(new UserDevice { VendorId = 0x057E, ProdId = 0x2068, ProductName = "Nintendo Switch Joy-Con (L/R)" }.HasJoyConIr);
+            // Pair name with no PID recorded: excluded (fails closed).
+            Assert.False(new UserDevice { VendorId = 0x057E, ProductName = "Nintendo Switch Joy-Con (L/R)" }.HasJoyConIr);
+            // Wrong VID with the pair PID: excluded.
+            Assert.False(new UserDevice { VendorId = 0x045E, ProdId = 0x2008, ProductName = "Nintendo Switch Joy-Con (L/R)" }.HasJoyConIr);
         }
     }
 }

@@ -9,7 +9,10 @@
 // loose-part separation. Part positions verified against the physical
 // Switch 2 Pro layout; palette sampled from the model's base-color texture.
 
+using System;
+using System.Reflection;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 
 namespace PadForge.Models3D
@@ -32,17 +35,17 @@ namespace PadForge.Models3D
 
         public ControllerModelSwitch2Pro() : base("Switch2Pro")
         {
-            // ── Colors (sampled from the purchased BC texture: body grey
-            //    #5C5D60 dominates 82 % of texels; darker tones derived
-            //    from it for pressable surfaces so they read as distinct
-            //    under flat WPF shading) ──────────────────
-            var ColorBody      = (Color)ColorConverter.ConvertFromString("#5C5D60");
-            var ColorButton    = (Color)ColorConverter.ConvertFromString("#46474A");
-            var ColorStick     = (Color)ColorConverter.ConvertFromString("#3A3B3D");
-            var ColorLEDOff    = (Color)ColorConverter.ConvertFromString("#2E2F31");
+            // ── Textured material ───────────────────────
+            // The split parts keep their UVs into the model's single
+            // texture atlas, so one baked diffuse (base color × ambient
+            // occlusion, since WPF 3D has no PBR) serves every source
+            // part: glyphs, d-pad arrows, and panel lines all come from
+            // the texture. Generated parts (stick rings, motors) and the
+            // LEDs have synthetic UVs and keep flat materials.
+            var MaterialTextured = LoadTexturedMaterial("Switch2Pro_Diffuse.png");
 
-            var MaterialBody   = new DiffuseMaterial(new SolidColorBrush(ColorBody));
-            var MaterialButton = new DiffuseMaterial(new SolidColorBrush(ColorButton));
+            var ColorStick  = (Color)ColorConverter.ConvertFromString("#3A3B3D");
+            var ColorLEDOff = (Color)ColorConverter.ConvertFromString("#2E2F31");
             var MaterialStick  = new DiffuseMaterial(new SolidColorBrush(ColorStick));
             var MaterialLEDOff = new DiffuseMaterial(new SolidColorBrush(ColorLEDOff));
 
@@ -98,17 +101,15 @@ namespace PadForge.Models3D
             model3DGroup.Children.Add(LED4);
 
             // ── Per-button materials ────────────────────
-            // Stick caps darker than the flat buttons; everything
-            // pressable darker than the body shell.
+            // Every source part is textured, including the stick caps
+            // (their rubber ring detail lives in the atlas).
             foreach (var (target, _) in ButtonMap)
             {
-                Material mat = (target == "LeftThumbButton" || target == "RightThumbButton")
-                    ? MaterialStick : MaterialButton;
                 if (ButtonMap.TryGetValue(target, out var list))
                     foreach (var grp in list)
                     {
-                        SetMaterial(grp, mat);
-                        DefaultMaterials[grp] = mat;
+                        SetMaterial(grp, MaterialTextured);
+                        DefaultMaterials[grp] = MaterialTextured;
                     }
             }
 
@@ -131,19 +132,19 @@ namespace PadForge.Models3D
                     continue;
                 }
 
+                // Generated meshes with synthetic UVs stay flat.
                 if (child == LeftThumbRing || child == RightThumbRing
-                    || child == CButton
-                    || child == LeftShoulderTrigger || child == RightShoulderTrigger)
+                    || child == LeftMotor || child == RightMotor)
                 {
                     SetMaterial(child, MaterialStick);
                     DefaultMaterials[child] = MaterialStick;
                     continue;
                 }
 
-                // Body shell, GL/GR (part of the back shell visually),
-                // motors (occluded inside the grips).
-                SetMaterial(child, MaterialBody);
-                DefaultMaterials[child] = MaterialBody;
+                // Everything else split from the source mesh (body shell,
+                // triggers, C button, GL/GR) reads from the atlas.
+                SetMaterial(child, MaterialTextured);
+                DefaultMaterials[child] = MaterialTextured;
             }
 
             DrawAccentHighlights();
@@ -153,6 +154,62 @@ namespace PadForge.Models3D
         /// 148.0 mm). The shared viewport camera is sized for DS4-class
         /// meshes (165.7 mm), so scale up to match the framing.</summary>
         public override double ModelScale => 165.7 / 148.0;
+
+        /// <summary>Loads an embedded texture by suffix (same digit-prefix
+        /// mangling workaround as TryLoadModel) and wraps it in a frozen
+        /// DiffuseMaterial. Falls back to flat body grey if the resource
+        /// is missing so the model still renders.</summary>
+        private Material LoadTexturedMaterial(string filename)
+        {
+            try
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                string suffix = $".{ModelName}.{filename}";
+                foreach (var name in assembly.GetManifestResourceNames())
+                {
+                    if (!name.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    using var stream = assembly.GetManifestResourceStream(name);
+                    if (stream == null) break;
+                    // Decode from a memory stream that outlives BeginInit /
+                    // EndInit: WPF defers parts of the decode, and a stream
+                    // disposed before render leaves the brush blank (the
+                    // material then renders invisible, showing the internal
+                    // geometry behind it).
+                    var ms = new System.IO.MemoryStream();
+                    stream.CopyTo(ms);
+                    ms.Position = 0;
+                    var bmp = new BitmapImage();
+                    bmp.BeginInit();
+                    bmp.CacheOption = BitmapCacheOption.OnLoad;
+                    bmp.StreamSource = ms;
+                    bmp.EndInit();
+                    bmp.Freeze();
+                    // ViewportUnits MUST be Absolute for 3D meshes: the
+                    // default RelativeToBoundingBox remaps the image onto
+                    // each mesh's texcoord bounding box, so every part
+                    // shows the whole atlas squeezed onto its own island.
+                    var brush = new ImageBrush(bmp)
+                    {
+                        TileMode = TileMode.None,
+                        Stretch = Stretch.Fill,
+                        ViewportUnits = BrushMappingMode.Absolute,
+                        Viewport = new System.Windows.Rect(0, 0, 1, 1),
+                    };
+                    brush.Freeze();
+                    var mat = new DiffuseMaterial(brush);
+                    mat.Freeze();
+                    return mat;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"[ControllerModelSwitch2Pro] Texture load failed: {ex.Message}");
+            }
+            return new DiffuseMaterial(new SolidColorBrush(
+                (Color)ColorConverter.ConvertFromString("#5C5D60")));
+        }
 
         private static void SetMaterial(Model3DGroup group, Material material)
         {

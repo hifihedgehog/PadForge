@@ -2408,6 +2408,14 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Uit</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Verwijdert dit toetsenpaar.</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Gelijktijdige tegengestelde hoofdrichtingen (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Controller actief houden</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Sommige games stoppen de trilling en wisselen de knopweergave zodra ze muis- of toetsenbordinvoer zien. Een kleine vastgehouden stickuitslag zorgt dat de game deze controller als actief apparaat blijft behandelen. Echte invoer op of boven het vastgehouden niveau gaat ongewijzigd door. Houd de uitslag onder de dode zone van de game zodat er niets beweegt.</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Actief houden inschakelen</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Vastgehouden as</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>Welke uitvoeras de uitslag vasthoudt. Kies er een die de game als beweging leest in plaats van camera, zodat een waarde onder de dode zone onzichtbaar blijft.</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Uitslag</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Vastgehouden niveau als percentage van de volledige stickuitslag. 25% houdt de meeste games actief en blijft onder hun bewegingsdode zone. Verhoog als de game blijft wisselen, verlaag als het personage drift.</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Actief houden uitschakelen en de standaardas en -uitslag herstellen</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Lost knoppenparen op die tegelijk worden vastgehouden op de virtuele-controlleruitvoer van dit slot. Wanneer beide knoppen van een paar zijn ingedrukt, bepaalt de gekozen regel welke druk het spel ziet.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gelijktijdige tegengestelde hoofdrichtingen herstellen</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modus</value></data>

@@ -2388,6 +2388,14 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Aus</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Entfernt dieses Tastenpaar.</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Gleichzeitige entgegengesetzte Kardinalrichtungen (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Controller aktiv halten</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Manche Spiele stoppen die Vibration und wechseln die Tastenanzeigen, sobald sie Maus- oder Tastatureingaben sehen. Eine kleine gehaltene Stick-Auslenkung sorgt dafür, dass das Spiel diesen Controller weiter als aktives Gerät behandelt. Echte Eingaben ab der gehaltenen Stärke werden unverändert durchgereicht. Die Auslenkung unter der Deadzone des Spiels halten, damit sich im Spiel nichts bewegt.</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Aktivhaltung aktivieren</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Gehaltene Achse</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>Welche Ausgabeachse die Auslenkung hält. Eine Achse wählen, die das Spiel als Bewegung statt Kamera liest, damit ein Wert unter der Deadzone unsichtbar bleibt.</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Auslenkung</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Gehaltene Stärke in Prozent des vollen Stick-Wegs. 25 % hält die meisten Spiele aktiv und bleibt unter deren Bewegungs-Deadzone. Erhöhen, wenn das Spiel weiter umschaltet, verringern, wenn die Figur driftet.</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Aktivhaltung ausschalten und Standard-Achse und -Auslenkung wiederherstellen</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Löst gleichzeitig gehaltene Tastenpaare auf der virtuellen Controller-Ausgabe dieses Slots auf. Sind beide Tasten eines Paars gedrückt, entscheidet die gewählte Regel, welchen Druck das Spiel sieht.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gleichzeitige entgegengesetzte Kardinalrichtungen zurücksetzen</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modus</value></data>

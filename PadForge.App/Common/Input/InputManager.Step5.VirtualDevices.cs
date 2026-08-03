@@ -148,6 +148,38 @@ namespace PadForge.Common.Input
         // per-tick refresh costs two string compares).
         private readonly SlotButtonSocd[] _slotButtonSocd = new SlotButtonSocd[MaxPads];
 
+        /// <summary>Keep Controller Awake (#270): holds the configured idle
+        /// deflection on one axis of the final combined gamepad output.
+        /// Pure over its inputs (internal for the unit tests): when
+        /// enabled, the chosen axis is raised to the held level ONLY while
+        /// its real magnitude sits below that level, so genuine input
+        /// passes through byte-identical and the hold resumes at rest.
+        /// Deflection 0 (unset) applies the default 25%; the axis string
+        /// falls back to LX. Values are clamped to 1-90%.</summary>
+        internal static void ApplyKeepAwake(Engine.Data.MappingSet ms, ref Gamepad gp)
+        {
+            if (ms == null || !ms.KeepAwakeEnabled) return;
+            int pct = ms.KeepAwakeDeflection;
+            if (pct <= 0) pct = 25;
+            pct = Math.Clamp(pct, 1, 90);
+            short level = (short)(32767 * pct / 100);
+            switch (ms.KeepAwakeAxis)
+            {
+                case "LY":
+                    if (Math.Abs((int)gp.ThumbLY) < level) gp.ThumbLY = level;
+                    break;
+                case "RX":
+                    if (Math.Abs((int)gp.ThumbRX) < level) gp.ThumbRX = level;
+                    break;
+                case "RY":
+                    if (Math.Abs((int)gp.ThumbRY) < level) gp.ThumbRY = level;
+                    break;
+                default: // "" and "LX"
+                    if (Math.Abs((int)gp.ThumbLX) < level) gp.ThumbLX = level;
+                    break;
+            }
+        }
+
         /// <summary>Returns the slot's configured button-SOCD cleaner, or
         /// null when the slot authors no active SOCD. Poll thread only.</summary>
         private SlotButtonSocd ResolveSlotSocd(int padIndex, bool extendedIndices)
@@ -1700,6 +1732,24 @@ namespace PadForge.Common.Input
                                 && CombinedTouchpadStates[padIndex].Click)
                             {
                                 gpOut.Buttons |= Gamepad.TOUCHPAD;
+                            }
+
+                            // Keep Controller Awake (#270): hold the
+                            // configured idle deflection on the chosen axis
+                            // of the FINAL combined output, so games that
+                            // cut vibration on mouse/keyboard input keep
+                            // treating this controller as active. Applied
+                            // to the local copy right before submit (the
+                            // SOCD precedent): the mapping pipeline's
+                            // curves and deadzones never see it, and real
+                            // output at or above the held level passes
+                            // through unchanged.
+                            {
+                                var kaSets = SettingsManager.SlotMappingSets;
+                                var kaMs = (kaSets != null && padIndex < kaSets.Length)
+                                    ? kaSets[padIndex] : null;
+                                if (kaMs != null)
+                                    ApplyKeepAwake(kaMs, ref gpOut);
                             }
 
                             // Button SOCD (#240): clean the final combined

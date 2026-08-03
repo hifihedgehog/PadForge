@@ -6712,6 +6712,10 @@ namespace PadForge.Services
             // SOCD authoring (#240) rides the same not-Rows family.
             copy.SocdMode = src.SocdMode ?? "";
             copy.SocdPairs = src.SocdPairs ?? "";
+            // Keep Awake (#270), same not-Rows family.
+            copy.KeepAwakeEnabled = src.KeepAwakeEnabled;
+            copy.KeepAwakeAxis = src.KeepAwakeAxis ?? "";
+            copy.KeepAwakeDeflection = src.KeepAwakeDeflection;
             // Menus (#9 B-17) travel with the set like the shift authoring:
             // without this leg a profile apply would silently drop every
             // imported / authored menu.
@@ -7005,6 +7009,11 @@ namespace PadForge.Services
                 // paste for the same reason its rumble-audio config does.
                 SocdMode = SettingsManager.SlotMappingSets[padIndex]?.SocdMode ?? "",
                 SocdPairs = SettingsManager.SlotMappingSets[padIndex]?.SocdPairs ?? "",
+                // Keep Awake (#270): destination's config survives a row
+                // paste for the same reason its SOCD authoring does.
+                KeepAwakeEnabled = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeEnabled ?? false,
+                KeepAwakeAxis = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeAxis ?? "",
+                KeepAwakeDeflection = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeDeflection ?? 0,
             };
             foreach (var r in rows)
             {
@@ -7178,6 +7187,10 @@ namespace PadForge.Services
             // grammar parses to zero pairs rather than misfiring.
             copy.SocdMode = src.SocdMode ?? "";
             copy.SocdPairs = src.SocdPairs ?? "";
+            // Keep Awake (#270) copies whole-slot too, same family.
+            copy.KeepAwakeEnabled = src.KeepAwakeEnabled;
+            copy.KeepAwakeAxis = src.KeepAwakeAxis ?? "";
+            copy.KeepAwakeDeflection = src.KeepAwakeDeflection;
             // Menus (#9 B-17) travel with the set exactly like the shift
             // authoring above (the same leg CloneMappingSetDeep carries).
             // Without it, Copy From Slot dropped the source's menus and the

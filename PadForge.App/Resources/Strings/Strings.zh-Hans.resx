@@ -2388,6 +2388,14 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>关闭</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>移除此键对。</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同时反向输入 (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>保持控制器活跃</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>有些游戏一旦检测到鼠标或键盘输入就会停止震动并切换按键提示。保持摇杆的轻微偏移可让游戏继续将此控制器视为活跃设备。达到或超过保持量的真实输入将原样通过。请将偏移量设为低于游戏自身的死区，以免游戏内产生移动。</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>启用保持活跃</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>保持的轴</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>由哪个输出轴保持偏移。选择游戏读取为移动而非视角的轴，这样低于死区的值就不会产生可见影响。</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>偏移量</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>保持量占摇杆全行程的百分比。25% 可让大多数游戏保持活跃，同时低于其移动死区。若游戏仍会切换请调高，若角色发生漂移请调低。</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>关闭保持活跃并恢复默认轴和偏移量</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>解决此插槽虚拟控制器输出上同时按住的按钮对。当一对按钮同时按下时，所选规则决定游戏看到哪个输入。</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>重置同时反向输入</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>模式</value></data>

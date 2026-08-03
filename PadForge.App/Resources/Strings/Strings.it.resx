@@ -2871,6 +2871,7 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>superficie host del menu non supportata ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>icona della cella del menu non riconosciuta ({0}), quindi la cella mantiene la sua etichetta di testo</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shaker</value></data>
+  <data name="Pad_Tab_Output" xml:space="preserve"><value>Uscita</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Instrada la vibrazione e il force feedback di gioco ricevuti da questo controller virtuale verso un'uscita audio come toni a bassa frequenza per bass shaker e subwoofer.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrazione in audio</value></data>

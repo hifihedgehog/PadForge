@@ -2904,6 +2904,7 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu host surface not supported ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menu cell icon not recognized ({0}), so the cell keeps its text label</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass Shakers</value></data>
+  <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Routes the game rumble and force feedback this virtual controller receives to an audio output as low-frequency tones for bass shakers and subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble to Audio</value></data>

@@ -623,6 +623,9 @@ namespace PadForge.Views
                 else if (vm.SelectedConfigTab == PadViewModel.BassShakersTabIndex
                          && !vm.RumbleAudioTabVisible) // 16 = Bass Shakers (#236)
                     vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == PadViewModel.OutputTabIndex
+                         && !vm.OutputTabVisible) // 17 = Output (#270 follow-up)
+                    vm.SelectedConfigTab = 0;
             }
         }
 
@@ -843,7 +846,7 @@ namespace PadForge.Views
             // IsMouseOver triggers when unchecked). Navigation rides Click
             // (not Checked), so re-clicking a still-checked tab still
             // switches back.
-            bool slotTier = selected <= 2 || selected == 15 || selected == 16;
+            bool slotTier = selected <= 2 || selected == 15 || selected == 16 || selected == 17;
             foreach (var rb in FindVisualChildren<RadioButton>(this))
             {
                 if (!TryGetTagIndex(rb, out int idx)) continue;

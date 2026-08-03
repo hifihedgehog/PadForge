@@ -2841,6 +2841,7 @@ public class Strings : INotifyPropertyChanged
 
     // Bass Shakers tab (issue #236, rumble to audio)
     public string Pad_Tab_BassShakers => Get("Pad_Tab_BassShakers");
+    public string Pad_Tab_Output => Get("Pad_Tab_Output");
     public string Pad_RumbleAudio_Header => Get("Pad_RumbleAudio_Header");
     public string Pad_RumbleAudio_Subtitle => Get("Pad_RumbleAudio_Subtitle");
     public string Pad_RumbleAudio_Card_Header => Get("Pad_RumbleAudio_Card_Header");

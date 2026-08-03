@@ -217,6 +217,9 @@ namespace PadForge.ViewModels
                     // Bass Shakers tab (#236): slot-type gate follows the
                     // output type, never a physical-device capability.
                     OnPropertyChanged(nameof(RumbleAudioTabVisible));
+                    OnPropertyChanged(nameof(OutputTabVisible));
+                    if (!OutputTabVisible && SelectedConfigTab == OutputTabIndex)
+                        SelectedConfigTab = 0;
 
                     // Category change invalidates the previous HIDMaestro
                     // profile slug. Assign the new category's default so the
@@ -5323,6 +5326,16 @@ namespace PadForge.ViewModels
 
         /// <summary>Tab-strip index of the Bass Shakers tab (#236).</summary>
         public const int BassShakersTabIndex = 16;
+
+        /// <summary>Tab-strip index of the Output tab (#270 follow-up:
+        /// SOCD + Keep Controller Awake moved off the Mappings tab).</summary>
+        public const int OutputTabIndex = 17;
+
+        /// <summary>Slot-type gate for the Output tab. SOCD covers the
+        /// gamepad and raw-surface types, its KBM twin covers
+        /// KeyboardMouse, and Keep Awake covers the gamepad types, so
+        /// only MIDI has no output-behavior surface at all.</summary>
+        public bool OutputTabVisible => _outputType != VirtualControllerType.Midi;
 
         /// <summary>Slot-type gate for the Bass Shakers tab. The feature
         /// decodes the game feedback the virtual controller RECEIVES,

@@ -11075,6 +11075,29 @@
                                         <ui:Button Command="{Binding ResetToneLimitHzCommand}" Style="{StaticResource ResetButton}"
                                                 ToolTip="{Binding Pad_ResetToneLimit, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
+                                    <!-- Persona haptics on the actuators (#271 item 1):
+                                         when a game drives this slot's virtual DualSense
+                                         with authored haptic audio, render it here through
+                                         the tone chain. -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,8,0,4">
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                  Content="{Binding Pad_Audio_PersonaHaptics_Label, Source={x:Static strings:Strings.Instance}}"
+                                                  ToolTip="{Binding Pad_Audio_PersonaHaptics_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding DeviceConfig.AudioPersonaHapticsEnabled, Mode=TwoWay}"/>
+                                        <ui:Button Command="{Binding ResetPersonaHapticsCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetPersonaHaptics, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal"
+                                                Visibility="{Binding DeviceConfig.AudioPersonaHapticsEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Pad_Audio_PersonaHapticsGain_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding DeviceConfig.AudioPersonaHapticsGain, Mode=TwoWay}" Minimum="25" Maximum="300"
+                                                Style="{StaticResource DzSlider}"/>
+                                        <TextBox Text="{Binding DeviceConfig.AudioPersonaHapticsGain, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetPersonaHapticsGainCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetPersonaHapticsGain, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Audio_NoSpeaker, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"

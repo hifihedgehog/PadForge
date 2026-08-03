@@ -2321,6 +2321,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Cut them off</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Fold them down an octave</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tone limit</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Play DualSense haptics on this controller</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>When a game drives this slot as a virtual DualSense with authored haptic audio, play that track on this controller's actuators as tones. Derived from the audio, so it approximates the designer's feel rather than reproducing it exactly.</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptics Gain</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reset to default (off)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reset to default (100%)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tones above this frequency are cut or folded. The default 800 Hz keeps engine and impact rumble while catching high-pitched beeps.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Reset High Tones</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Reset Tone Limit</value></data>

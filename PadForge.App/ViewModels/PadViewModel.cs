@@ -4908,6 +4908,20 @@ namespace PadForge.ViewModels
                 if (DeviceConfig != null) DeviceConfig.AudioToneFilterMode = "Off";
             });
 
+        private RelayCommand _resetPersonaHapticsCommand;
+        public RelayCommand ResetPersonaHapticsCommand =>
+            _resetPersonaHapticsCommand ??= new RelayCommand(() =>
+            {
+                if (DeviceConfig != null) DeviceConfig.AudioPersonaHapticsEnabled = false;
+            });
+
+        private RelayCommand _resetPersonaHapticsGainCommand;
+        public RelayCommand ResetPersonaHapticsGainCommand =>
+            _resetPersonaHapticsGainCommand ??= new RelayCommand(() =>
+            {
+                if (DeviceConfig != null) DeviceConfig.AudioPersonaHapticsGain = 100;
+            });
+
         private RelayCommand _resetToneLimitHzCommand;
         public RelayCommand ResetToneLimitHzCommand =>
             _resetToneLimitHzCommand ??= new RelayCommand(() =>

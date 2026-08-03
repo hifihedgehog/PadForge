@@ -998,6 +998,7 @@ namespace PadForge.Common.Input
         private sealed class PersonaFeed
         {
             public HIDMaestro.HMUsbAudio Audio;
+            public int Slot;   // #271 item 1: keys the actuator-sink submit
             public volatile Guid[] Targets = Array.Empty<Guid>();
             public float SpeakerGain = 1f, MicGain = 1f;
             public bool SpeakerMuted, MicMuted;
@@ -1088,7 +1089,7 @@ namespace PadForge.Common.Input
             if (audio == null) return;
             DetachPersonaFeed(slot);
 
-            var feed = new PersonaFeed { Audio = audio };
+            var feed = new PersonaFeed { Audio = audio, Slot = slot };
             var roles = audio.Output.ChannelRoles;
             feed.SpkL = IndexOfRole(roles, "speakerLeft", 0);
             feed.SpkR = IndexOfRole(roles, "speakerRight", 1);
@@ -1249,6 +1250,13 @@ namespace PadForge.Common.Input
                     hring.WriteS16Pairs(span, stride, feed.HapL * 2, feed.HapR * 2);
                 }
             }
+
+            // #271 item 1: mirror the haptic channels into the slot's
+            // persona-enabled actuator sinks (Switch HD Rumble / Steam
+            // Controller tones). One volatile read when the feature is off.
+            if (feed.HapL >= 0 && feed.HapR >= 0 && ch > Math.Max(feed.HapL, feed.HapR))
+                HapticToneService.SubmitPersonaHaptics(
+                    feed.Slot, span, stride, feed.HapL * 2, feed.HapR * 2);
         }
 
         /// <summary>Called from the reconcile's desired-state pass with

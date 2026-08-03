@@ -357,6 +357,28 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _audioToneLimitHz, value);
         }
 
+        private bool _audioPersonaHapticsEnabled;
+        /// <summary>#271 item 1: render the virtual DualSense's authored
+        /// haptic audio (persona UAC channels 3/4) on this device's
+        /// actuators through the haptic-tone chain. Off by default: the
+        /// derived tones approximate the designer's track, and the toggle
+        /// must be the user's choice per device.</summary>
+        public bool AudioPersonaHapticsEnabled
+        {
+            get => _audioPersonaHapticsEnabled;
+            set => SetProperty(ref _audioPersonaHapticsEnabled, value);
+        }
+
+        private int _audioPersonaHapticsGain = 100;
+        /// <summary>Input gain for the persona-haptics render, percent
+        /// (25-300, default 100). Applied before the tone reducer so a
+        /// quiet authored track can still reach the actuators.</summary>
+        public int AudioPersonaHapticsGain
+        {
+            get => _audioPersonaHapticsGain;
+            set => SetProperty(ref _audioPersonaHapticsGain, value);
+        }
+
         // ────────────────────────────────────────────────
         //  Lightbar: macro-driven override (#63)
         // ────────────────────────────────────────────────
@@ -1859,6 +1881,10 @@ namespace PadForge.ViewModels
         // High-tone filter (#202). Defaults match the VM: Off / 800 Hz.
         [XmlAttribute] public string AudioToneFilterMode { get; set; } = "Off";
         [XmlAttribute] public int AudioToneLimitHz { get; set; } = 800;
+        // Persona haptics on the actuators (#271 item 1). Defaults match
+        // the VM: off / 100%.
+        [XmlAttribute] public bool AudioPersonaHapticsEnabled { get; set; }
+        [XmlAttribute] public int AudioPersonaHapticsGain { get; set; } = 100;
         // Headphone jack hardware volume (0-100, default 100). Missing
         // attribute on legacy XML keeps the initializer, so old configs
         // load as full volume, the pre-feature effective behaviour.

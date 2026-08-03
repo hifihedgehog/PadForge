@@ -1934,6 +1934,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Cortá-los</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Dobrá-los uma oitava para baixo</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limite de tom</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Reproduzir a háptica do DualSense neste controle</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Quando um jogo controla este slot como um DualSense virtual com áudio háptico de autor, essa trilha é reproduzida como tons nos atuadores deste controle. Derivado do áudio, então aproxima a sensação projetada em vez de reproduzi-la exatamente.</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Ganho háptico</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Redefinir para o padrão (desligado)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Redefinir para o padrão (100%)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tons acima desta frequência são cortados ou dobrados. O padrão de 800 Hz preserva a vibração de motor e impactos e captura os bipes agudos.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Restaurar Tons Agudos</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Restaurar Limite de Tom</value></data>

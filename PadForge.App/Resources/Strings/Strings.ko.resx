@@ -1934,6 +1934,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>잘라내기</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>한 옥타브씩 아래로 접기</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>톤 한도</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense 햅틱을 이 컨트롤러로 재생</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>게임이 이 슬롯을 가상 DualSense로 구동하며 제작된 햅틱 오디오를 출력할 때 해당 트랙을 이 컨트롤러의 액추에이터에서 톤으로 재생합니다. 오디오에서 파생되므로 설계된 느낌을 정확히 재현하기보다는 근사합니다.</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>햅틱 게인</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>기본값으로 재설정 (끄기)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>기본값으로 재설정 (100%)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>이 주파수를 넘는 음은 잘리거나 접힙니다. 기본값 800 Hz는 엔진과 타격 진동을 유지하면서 날카로운 비프음만 잡아냅니다.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>고음 재설정</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>톤 한도 재설정</value></data>

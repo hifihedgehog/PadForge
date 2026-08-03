@@ -1956,6 +1956,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Tagliarli</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Ripiegarli un'ottava più in basso</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limite di tono</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Riproduci l'aptica DualSense su questo controller</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Quando un gioco pilota questo slot come DualSense virtuale con audio aptico d'autore, quella traccia viene riprodotta come toni sugli attuatori di questo controller. Derivata dall'audio, quindi approssima la sensazione progettata invece di riprodurla esattamente.</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Guadagno aptico</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Ripristina il valore predefinito (disattivato)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Ripristina il valore predefinito (100%)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>I toni sopra questa frequenza vengono tagliati o ripiegati. Il valore predefinito di 800 Hz mantiene le vibrazioni di motore e impatti catturando i bip acuti.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Ripristina toni acuti</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ripristina limite di tono</value></data>

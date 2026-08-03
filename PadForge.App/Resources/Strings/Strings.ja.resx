@@ -1934,6 +1934,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>カットする</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>1オクターブずつ折り下げる</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>トーン上限</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense ハプティクスをこのコントローラーで再生</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ゲームがこのスロットを仮想 DualSense として駆動し、オーサリングされたハプティクスオーディオを出力する場合、そのトラックをこのコントローラーのアクチュエーターでトーンとして再生します。オーディオから導出するため、デザイナーの意図した感触の近似であり、完全な再現ではありません。</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ハプティクス ゲイン</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>既定に戻す (オフ)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>既定に戻す (100%)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>この周波数を超える音はカットまたはフォールドされます。既定の 800 Hz ならエンジン音や衝撃の振動は残り、甲高いビープ音だけを捕捉します。</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>高音をリセット</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>トーン上限をリセット</value></data>

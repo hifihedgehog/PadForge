@@ -182,62 +182,6 @@ namespace PadForge.Models3D
         /// meshes (165.7 mm), so scale up to match the framing.</summary>
         public override double ModelScale => 165.7 / 148.0;
 
-        /// <summary>Loads an embedded texture by suffix (same digit-prefix
-        /// mangling workaround as TryLoadModel) and wraps it in a frozen
-        /// DiffuseMaterial. Falls back to flat body grey if the resource
-        /// is missing so the model still renders.</summary>
-        private Material LoadTexturedMaterial(string filename)
-        {
-            try
-            {
-                var assembly = Assembly.GetExecutingAssembly();
-                string suffix = $".{ModelName}.{filename}";
-                foreach (var name in assembly.GetManifestResourceNames())
-                {
-                    if (!name.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
-                        continue;
-                    using var stream = assembly.GetManifestResourceStream(name);
-                    if (stream == null) break;
-                    // Decode from a memory stream that outlives BeginInit /
-                    // EndInit: WPF defers parts of the decode, and a stream
-                    // disposed before render leaves the brush blank (the
-                    // material then renders invisible, showing the internal
-                    // geometry behind it).
-                    var ms = new System.IO.MemoryStream();
-                    stream.CopyTo(ms);
-                    ms.Position = 0;
-                    var bmp = new BitmapImage();
-                    bmp.BeginInit();
-                    bmp.CacheOption = BitmapCacheOption.OnLoad;
-                    bmp.StreamSource = ms;
-                    bmp.EndInit();
-                    bmp.Freeze();
-                    // ViewportUnits MUST be Absolute for 3D meshes: the
-                    // default RelativeToBoundingBox remaps the image onto
-                    // each mesh's texcoord bounding box, so every part
-                    // shows the whole atlas squeezed onto its own island.
-                    var brush = new ImageBrush(bmp)
-                    {
-                        TileMode = TileMode.None,
-                        Stretch = Stretch.Fill,
-                        ViewportUnits = BrushMappingMode.Absolute,
-                        Viewport = new System.Windows.Rect(0, 0, 1, 1),
-                    };
-                    brush.Freeze();
-                    var mat = new DiffuseMaterial(brush);
-                    mat.Freeze();
-                    return mat;
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(
-                    $"[ControllerModelSwitch2Pro] Texture load failed: {ex.Message}");
-            }
-            return new DiffuseMaterial(new SolidColorBrush(
-                (Color)ColorConverter.ConvertFromString("#5C5D60")));
-        }
-
         private static void SetMaterial(Model3DGroup group, Material material)
         {
             if (group.Children.Count > 0 && group.Children[0] is GeometryModel3D geo)

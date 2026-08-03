@@ -235,7 +235,7 @@ namespace PadForge.Views
                 _vm.ProfileId != null &&
                 _vm.ProfileId.StartsWith("xbox-series-", System.StringComparison.OrdinalIgnoreCase);
 
-            if (_currentModel?.ModelName == needed && _currentModelShareEnabled == wantShare)
+            if (_currentModel?.ModelFamily == needed && _currentModelShareEnabled == wantShare)
                 return;
 
             // Model rebuild: drop retained per-thumb transform entries.

@@ -563,19 +563,22 @@ namespace PadForge.Views
             float normX = rawX / (float)short.MaxValue;
             float normY = rawY / (float)short.MaxValue;
 
-            // Gradient highlight on stick ring
-            if (thumbRing.Children.Count > 0 && thumbRing.Children[0] is GeometryModel3D geo)
+            // Gradient highlight on the whole cap head: every geometry in
+            // the ring group (the cap AND its knurl decal riders) grades
+            // with deflection so the head glows as one piece.
             {
                 bool moved = normX != 0f || normY != 0f;
-                if (moved && _currentModel.DefaultMaterials.TryGetValue(thumbRing, out var defMat)
-                          && _currentModel.HighlightMaterials.TryGetValue(thumbRing, out var hlMat))
+                float factor = Math.Max(Math.Abs(normX), Math.Abs(normY));
+                _currentModel.DefaultMaterials.TryGetValue(thumbRing, out var defMat);
+                _currentModel.HighlightMaterials.TryGetValue(thumbRing, out var hlMat);
+                foreach (var child in thumbRing.Children)
                 {
-                    float factor = Math.Max(Math.Abs(normX), Math.Abs(normY));
-                    geo.Material = GradientHighlight(geo, defMat, hlMat, factor);
-                }
-                else if (_currentModel.DefaultMaterials.TryGetValue(thumbRing, out var def))
-                {
-                    geo.Material = def;
+                    if (child is not GeometryModel3D g2) continue;
+                    if (moved && defMat != null && hlMat != null)
+                        g2.Material = GradientHighlight(g2,
+                            s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, factor);
+                    else if (s_riderDefaults.TryGetValue(g2, out var d0))
+                        g2.Material = d0;
                 }
             }
 
@@ -636,17 +639,19 @@ namespace PadForge.Views
 
             float value = (float)triggerNorm;
 
-            // Gradient color
-            if (triggerModel.Children.Count > 0 && triggerModel.Children[0] is GeometryModel3D geo)
+            // Gradient color across the whole trigger (its geometry and
+            // the label decal riders) so the pull glow covers the part.
             {
-                if (value > 0 && _currentModel.DefaultMaterials.TryGetValue(triggerModel, out var defMat)
-                              && _currentModel.HighlightMaterials.TryGetValue(triggerModel, out var hlMat))
+                _currentModel.DefaultMaterials.TryGetValue(triggerModel, out var defMat);
+                _currentModel.HighlightMaterials.TryGetValue(triggerModel, out var hlMat);
+                foreach (var child in triggerModel.Children)
                 {
-                    geo.Material = GradientHighlight(geo, defMat, hlMat, value);
-                }
-                else if (_currentModel.DefaultMaterials.TryGetValue(triggerModel, out var def))
-                {
-                    geo.Material = def;
+                    if (child is not GeometryModel3D g2) continue;
+                    if (value > 0 && defMat != null && hlMat != null)
+                        g2.Material = GradientHighlight(g2,
+                            s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, value);
+                    else if (s_riderDefaults.TryGetValue(g2, out var d0))
+                        g2.Material = d0;
                 }
             }
 
@@ -682,6 +687,12 @@ namespace PadForge.Views
         // visible underneath.
         private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, MaterialGroup>
             s_texturedHighlightGroups = new();
+
+        // Per-geometry rest material for graded groups: riders inside a
+        // ring/trigger group carry their own decal material, so restoring
+        // the group default would repaint them wrongly.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, Material>
+            s_riderDefaults = new();
 
         private static Material GradientHighlight(GeometryModel3D owner,
             Material defaultMaterial, Material highlightMaterial, float factor)

@@ -712,7 +712,7 @@ namespace PadForge.Views
                 var accent = BrushColor((highlightMaterial as DiffuseMaterial)?.Brush);
                 var overlay = (DiffuseMaterial)grp.Children[grp.Children.Count - 1];
                 ((SolidColorBrush)overlay.Brush).Color =
-                    Color.FromArgb((byte)(factor * 170), accent.R, accent.G, accent.B);
+                    Color.FromArgb((byte)(factor * 255), accent.R, accent.G, accent.B);
                 return grp;
             }
             // Cast-proof (#175 regression fix): a themed material may carry a
@@ -1374,6 +1374,14 @@ namespace PadForge.Views
 
             if (_currentModel == null || string.IsNullOrEmpty(target))
                 return;
+
+            // Nintendo slots record raw grid names; translate like the
+            // flash path so the stick-axis checks below can match.
+            if (target.StartsWith("Raw", StringComparison.Ordinal))
+            {
+                target = Models2D.NintendoPreviewMap.ToPreview(target);
+                if (string.IsNullOrEmpty(target)) return;
+            }
 
             // Check if this is a stick axis target (with or without Neg suffix)
             bool isNeg = target.EndsWith("Neg", StringComparison.Ordinal);

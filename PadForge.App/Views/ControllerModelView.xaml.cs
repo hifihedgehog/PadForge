@@ -746,45 +746,32 @@ namespace PadForge.Views
             {
                 var grp = s_texturedHighlightGroups.GetValue(owner, _ =>
                 {
-                    // Three layers: the art, a dim layer that fades the art
-                    // toward black as the factor rises, and an EMISSIVE
-                    // accent layer. Emissive is light-independent, so the
-                    // glow is the exact accent color at factor 1 instead of
-                    // the milky wash a lit diffuse overlay produced on
-                    // camera-facing surfaces (over-lit channels clamp pale;
-                    // owner: "faded milky orange"). Rider layers stay
-                    // masked by the rider's alpha (a solid layer would
-                    // paint the transparent plate as a filled rectangle);
-                    // the accent mask is a white twin of the rider brush so
-                    // dark art (the XS carbon knurl) glows at full
-                    // strength too.
+                    // Two layers: the art, and a LIT accent overlay whose
+                    // AmbientColor is BLACK. Lit diffuse keeps the shading
+                    // (shape and direction stay readable, unlike a flat
+                    // emissive layer), and blacking AmbientColor removes
+                    // the milky wash: AmbientColor filters the RAW brush
+                    // independently of Color, so left white it added a
+                    // flat grey ambient term over the accent. Rider
+                    // overlays stay masked by the rider's alpha through a
+                    // WHITE twin of the rider brush, so dark art (the XS
+                    // carbon knurl) glows at full accent strength too.
                     var mg = new MaterialGroup();
                     mg.Children.Add(defaultMaterial);
-                    if (riderDecal && (defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush rb)
-                    {
-                        // AmbientColor filters the RAW brush independently
-                        // of Color: left white, ambient light leaks the
-                        // art's texels over the glow. Black kills it.
-                        mg.Children.Add(new DiffuseMaterial(rb) { AmbientColor = Colors.Black });
-                        mg.Children.Add(new EmissiveMaterial(WhiteMaskBrush(rb)));
-                    }
-                    else
-                    {
-                        mg.Children.Add(new DiffuseMaterial(new SolidColorBrush()));
-                        mg.Children.Add(new EmissiveMaterial(new SolidColorBrush()));
-                    }
+                    mg.Children.Add(riderDecal && (defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush rb
+                        ? new DiffuseMaterial(WhiteMaskBrush(rb)) { AmbientColor = Colors.Black }
+                        : new DiffuseMaterial(new SolidColorBrush()) { AmbientColor = Colors.Black });
                     return mg;
                 });
                 if (!ReferenceEquals(grp.Children[0], defaultMaterial))
                     grp.Children[0] = defaultMaterial;
                 var accent = BrushColor((highlightMaterial as DiffuseMaterial)?.Brush);
-                byte fa = (byte)(factor * 255);
-                var dimC = Color.FromArgb(fa, 0, 0, 0);
-                var accC = Color.FromArgb(fa, accent.R, accent.G, accent.B);
-                var dim = (DiffuseMaterial)grp.Children[1];
-                var emis = (EmissiveMaterial)grp.Children[2];
-                if (dim.Brush is SolidColorBrush ds) ds.Color = dimC; else dim.Color = dimC;
-                if (emis.Brush is SolidColorBrush es) es.Color = accC; else emis.Color = accC;
+                var overlay = (DiffuseMaterial)grp.Children[1];
+                var tint = Color.FromArgb((byte)(factor * 255), accent.R, accent.G, accent.B);
+                if (overlay.Brush is SolidColorBrush solid)
+                    solid.Color = tint;
+                else
+                    overlay.Color = tint;   // white mask texels take the accent, alpha included
                 return grp;
             }
             // Cast-proof (#175 regression fix): a themed material may carry a
@@ -1875,7 +1862,7 @@ namespace PadForge.Views
         // duration and the host takes the solid accent like any other
         // element. Returns true when a covering rider carried the
         // highlight (callers must then leave the host material alone).
-        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, MaterialGroup>
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
             s_riderTints = new();
 
         private bool SetGroupHighlight(Model3DGroup group, GeometryModel3D primary, Material hlMat)
@@ -1905,24 +1892,15 @@ namespace PadForge.Views
                 if (_currentModel.CoveringRiderDecals.Contains(g2)
                     && (rest as DiffuseMaterial)?.Brush is ImageBrush rb)
                 {
-                    // Black diffuse base + EMISSIVE accent through the
-                    // art's own texels: the white art renders the exact
-                    // SOLID accent (light-independent; the lit multiply
-                    // tint washed milky on the camera-facing plate) and
-                    // the dark logo cutout stays dark.
+                    // Lit accent through the art's own texels with the
+                    // ambient term BLACKED: the white art renders rich
+                    // shaded accent (the ambient leak was the milky wash),
+                    // the dark logo cutout stays dark, and the lighting
+                    // keeps the button's shape readable.
                     var accent = BrushColor((hlMat as DiffuseMaterial)?.Brush);
-                    var tint = s_riderTints.GetValue(g2, _ =>
-                    {
-                        var mg = new MaterialGroup();
-                        // AmbientColor black too, or ambient light leaks
-                        // the raw white art over the emissive accent.
-                        mg.Children.Add(new DiffuseMaterial(rb)
-                        { Color = Colors.Black, AmbientColor = Colors.Black });
-                        mg.Children.Add(new EmissiveMaterial(rb));
-                        return mg;
-                    });
-                    ((EmissiveMaterial)tint.Children[1]).Color =
-                        Color.FromArgb(255, accent.R, accent.G, accent.B);
+                    var tint = s_riderTints.GetValue(g2,
+                        _ => new DiffuseMaterial(rb) { AmbientColor = Colors.Black });
+                    tint.Color = Color.FromArgb(255, accent.R, accent.G, accent.B);
                     g2.Material = tint;
                     g2.BackMaterial = tint;
                     covering = true;

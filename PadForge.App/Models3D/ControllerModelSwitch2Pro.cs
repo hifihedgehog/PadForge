@@ -71,7 +71,9 @@ namespace PadForge.Models3D
 
             ShoulderTriggerRotationPointCenterLeftMillimeter  = new Vector3D(-42.8f, 0.0f, 50.0f);
             ShoulderTriggerRotationPointCenterRightMillimeter = new Vector3D( 42.8f, 0.0f, 50.0f);
-            TriggerMaxAngleDeg = 16.0f;
+            // ZL/ZR are short-travel digital paddles that snap to full
+            // pull; the DualSense's 16 deg drove them through the rail.
+            TriggerMaxAngleDeg = 8.0f;
 
             UpwardVisibilityRotationAxisLeft  = new Vector3D(1, 0, 0);
             UpwardVisibilityRotationAxisRight = new Vector3D(1, 0, 0);

@@ -334,6 +334,14 @@ namespace PadForge.Models3D
         /// hide during highlight instead.</summary>
         public readonly System.Collections.Generic.HashSet<GeometryModel3D> CoveringRiderDecals = new();
 
+        /// <summary>Extra groups that must deflect WITH a stick while
+        /// keeping their own material (the DualSense Edge's collar rings
+        /// around the caps are body-atlas geometry, so they cannot simply
+        /// be merged into the stick-module ring group). The view applies
+        /// the stick transform to these alongside the ring and click.</summary>
+        public readonly System.Collections.Generic.List<Model3DGroup> LeftStickExtras = new();
+        public readonly System.Collections.Generic.List<Model3DGroup> RightStickExtras = new();
+
         /// <summary>Loads a decal mesh and appends its geometry INTO the
         /// host group so it moves with the host (trigger labels, stick-cap
         /// knurl art). Call after the host's material pass; the rider keeps

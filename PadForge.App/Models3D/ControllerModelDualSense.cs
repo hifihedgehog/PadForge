@@ -30,13 +30,13 @@ namespace PadForge.Models3D
         {
             "White", "Midnight", "CosmicRed", "GrayCamo", "NovaPink",
             "DeepEarthCobalt", "DeepEarthSterling", "DeepEarthVolcanic",
-            "FFXVI", "SpiderMan2", "Edge",
+            "FFXVI", "SpiderMan2",
         };
         public static readonly string[] AppearanceNames =
         {
             "White", "Midnight Black", "Cosmic Red", "Gray Camouflage", "Nova Pink",
             "Deep Earth Cobalt Blue", "Deep Earth Sterling Silver", "Deep Earth Volcanic Red",
-            "Final Fantasy XVI", "Spider-Man 2", "DualSense Edge",
+            "Final Fantasy XVI", "Spider-Man 2",
         };
 
         private readonly Model3DGroup DecalOverlay;
@@ -46,7 +46,13 @@ namespace PadForge.Models3D
             => System.Array.IndexOf(AppearanceIds, appearance) >= 0 ? appearance : AppearanceIds[0];
 
         public ControllerModelDualSense(string appearance = "White")
-            : base($"DualSense.{Validate(appearance)}")
+            : this(Validate(appearance), "DualSense") { }
+
+        /// <summary>Family-scoped constructor. The DualSense Edge is
+        /// its OWN family (its profiles must always get the Edge mesh,
+        /// never a plain DualSense), and reuses this body wholesale.</summary>
+        protected ControllerModelDualSense(string appearance, string family)
+            : base($"{family}.{appearance}")
         {
             var MaterialBody = LoadTexturedMaterial("Body.png");
             // The Transparent part is the clear plastic: the face-button
@@ -108,6 +114,22 @@ namespace PadForge.Models3D
             // The Edge's stick modules include a FIXED housing that must
             // not swing with deflection, so it ships as its own static
             // part carrying the module atlas.
+            // Collar rings around the caps: body-atlas geometry that must
+            // deflect with the stick, so they stay their own groups with
+            // the body material and register as stick extras.
+            foreach (var (file, extras) in new[]
+            {
+                ("StickCollarL.obj", LeftStickExtras), ("StickCollarR.obj", RightStickExtras),
+            })
+            {
+                var cg = TryLoadModel(file);
+                if (cg == null) continue;
+                ApplyMaterial(cg, MaterialBody);
+                DefaultMaterials[cg] = MaterialBody;
+                model3DGroup.Children.Add(cg);
+                extras.Add(cg);
+            }
+
             foreach (var housing in new[] { "StickHousingL.obj", "StickHousingR.obj" })
             {
                 var hg = TryLoadModel(housing);

@@ -94,6 +94,11 @@ namespace PadForge.Models3D
                 AttachRiderDecal(lbList[0], "Decal-L1.obj", MaterialDecal);
             if (ButtonMap.TryGetValue("RightShoulder", out var rbList) && rbList.Count > 0)
                 AttachRiderDecal(rbList[0], "Decal-R1.obj", MaterialDecal);
+            // The Xbox emblem covers nearly the whole guide button, so it
+            // rides the guide group: the flash tints the emblem itself
+            // instead of blinking an invisible face underneath it.
+            if (ButtonMap.TryGetValue("ButtonGuide", out var guideList) && guideList.Count > 0)
+                AttachRiderDecal(guideList[0], "Decal-Special.obj", MaterialDecal);
 
             // Static decal overlay after the opaque parts (puffed 0.22 mm
             // at export): guide logo, View/Menu/Share glyphs, top-rail

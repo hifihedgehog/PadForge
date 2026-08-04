@@ -1753,11 +1753,50 @@ namespace PadForge.Views
                 {
                     geo.Material = hlMat;
                     geo.BackMaterial = hlMat;
+                    SetRiderFlash(group, geo, hlMat);
                 }
                 else if (_currentModel.DefaultMaterials.TryGetValue(group, out var defMat))
                 {
                     geo.Material = defMat;
                     geo.BackMaterial = defMat;
+                    RestoreRiderFlash(group, geo);
+                }
+            }
+        }
+
+        // Flash tint for rider decals inside a flashed group (e.g. the
+        // Xbox emblem riding the guide button): a rider covers its host,
+        // so the accent must tint the rider's own texels or the flash
+        // stays hidden underneath it.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
+            s_flashRiderTints = new();
+
+        private void SetRiderFlash(Model3DGroup group, GeometryModel3D primary, Material hlMat)
+        {
+            foreach (var child in group.Children)
+            {
+                if (child is not GeometryModel3D g2 || ReferenceEquals(g2, primary)) continue;
+                if (!_currentModel.RiderDecals.Contains(g2)) continue;
+                var rest = s_riderDefaults.GetValue(g2, _ => g2.Material);
+                if ((rest as DiffuseMaterial)?.Brush is not ImageBrush rb) continue;
+                var accent = BrushColor((hlMat as DiffuseMaterial)?.Brush);
+                var tint = s_flashRiderTints.GetValue(g2, _ => new DiffuseMaterial(rb));
+                tint.Color = Color.FromArgb(255, accent.R, accent.G, accent.B);
+                g2.Material = tint;
+                g2.BackMaterial = tint;
+            }
+        }
+
+        private void RestoreRiderFlash(Model3DGroup group, GeometryModel3D primary)
+        {
+            foreach (var child in group.Children)
+            {
+                if (child is not GeometryModel3D g2 || ReferenceEquals(g2, primary)) continue;
+                if (!_currentModel.RiderDecals.Contains(g2)) continue;
+                if (s_riderDefaults.TryGetValue(g2, out var rest))
+                {
+                    g2.Material = rest;
+                    g2.BackMaterial = rest;
                 }
             }
         }
@@ -1786,6 +1825,7 @@ namespace PadForge.Views
                             geo.Material = defMat;
                             geo.BackMaterial = defMat;
                         }
+                        RestoreRiderFlash(group, geo);
                     }
                 }
             }

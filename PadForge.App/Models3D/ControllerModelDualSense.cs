@@ -129,23 +129,6 @@ namespace PadForge.Models3D
             model3DGroup.Children.Add(TransparentTrim);
         }
 
-        private void AttachRiderDecal(Model3DGroup host, string filename, Material material)
-        {
-            var rider = TryLoadModel(filename);
-            if (rider == null) return;
-            var geos = new System.Collections.Generic.List<GeometryModel3D>();
-            foreach (var child in rider.Children)
-                if (child is GeometryModel3D geo)
-                    geos.Add(geo);
-            rider.Children.Clear();
-            foreach (var geo in geos)
-            {
-                geo.Material = material;
-                geo.BackMaterial = material;
-                host.Children.Add(geo);
-            }
-        }
-
         /// <summary>The hado mesh is real-world scale (MainBody width
         /// 160.6 mm); the shared camera is framed for DS4-class meshes
         /// (165.7 mm).</summary>

@@ -310,6 +310,28 @@ namespace PadForge.Models3D
             return null;
         }
 
+        /// <summary>Loads a decal mesh and appends its geometry INTO the
+        /// host group so it moves with the host (trigger labels, stick-cap
+        /// knurl art). Call after the host's material pass; the rider keeps
+        /// its own decal material. Missing file is a no-op so colorways
+        /// without a given rider stay valid.</summary>
+        protected void AttachRiderDecal(Model3DGroup host, string filename, Material material)
+        {
+            var rider = TryLoadModel(filename);
+            if (rider == null) return;
+            var geos = new System.Collections.Generic.List<GeometryModel3D>();
+            foreach (var child in rider.Children)
+                if (child is GeometryModel3D geo)
+                    geos.Add(geo);
+            rider.Children.Clear();
+            foreach (var geo in geos)
+            {
+                geo.Material = material;
+                geo.BackMaterial = material;
+                host.Children.Add(geo);
+            }
+        }
+
         /// <summary>Applies a material to every GeometryModel3D in the
         /// group (front and back faces).</summary>
         protected static void ApplyMaterial(Model3DGroup group, Material material)

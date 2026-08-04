@@ -83,8 +83,21 @@ namespace PadForge.Models3D
 
             DrawAccentHighlights();
 
-            // Decal overlay after the opaque parts (puffed 0.22 mm at
-            // export), then the transparent trim last.
+            // Rider decals move with their hosts: the stick caps' knurl
+            // rings ride the cap-head ring groups, the dotted grip panels
+            // ride the triggers and bumpers they are printed on.
+            AttachRiderDecal(LeftThumbRing, "Decal-Joystick-Left-Ring.obj", MaterialDecal);
+            AttachRiderDecal(RightThumbRing, "Decal-Joystick-Right-Ring.obj", MaterialDecal);
+            AttachRiderDecal(LeftShoulderTrigger, "Decal-Shoulder-Left-Trigger.obj", MaterialDecal);
+            AttachRiderDecal(RightShoulderTrigger, "Decal-Shoulder-Right-Trigger.obj", MaterialDecal);
+            if (ButtonMap.TryGetValue("LeftShoulder", out var lbList) && lbList.Count > 0)
+                AttachRiderDecal(lbList[0], "Decal-L1.obj", MaterialDecal);
+            if (ButtonMap.TryGetValue("RightShoulder", out var rbList) && rbList.Count > 0)
+                AttachRiderDecal(rbList[0], "Decal-R1.obj", MaterialDecal);
+
+            // Static decal overlay after the opaque parts (puffed 0.22 mm
+            // at export): guide logo, View/Menu/Share glyphs, top-rail
+            // marks. Then the clear ABXY domes last.
             DecalOverlay = LoadModel("Decal.obj");
             ApplyMaterial(DecalOverlay, MaterialDecal);
             DefaultMaterials[DecalOverlay] = MaterialDecal;

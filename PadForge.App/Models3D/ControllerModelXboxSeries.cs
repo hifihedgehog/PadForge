@@ -118,10 +118,15 @@ namespace PadForge.Models3D
             DefaultMaterials[DecalOverlay] = MaterialDecal;
             model3DGroup.Children.Add(DecalOverlay);
 
-            TransparentTrim = LoadModel("Transparent.obj");
-            ApplyMaterial(TransparentTrim, MaterialTransparent);
-            DefaultMaterials[TransparentTrim] = MaterialTransparent;
-            model3DGroup.Children.Add(TransparentTrim);
+            // Variant-A colorways (Electric Volt group) author the ABXY
+            // domes into the body shell and ship no Transparent set.
+            TransparentTrim = TryLoadModel("Transparent.obj");
+            if (TransparentTrim != null)
+            {
+                ApplyMaterial(TransparentTrim, MaterialTransparent);
+                DefaultMaterials[TransparentTrim] = MaterialTransparent;
+                model3DGroup.Children.Add(TransparentTrim);
+            }
         }
 
         /// <summary>Real-world scale mesh (155.3 mm body width); 1.0

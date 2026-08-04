@@ -22,8 +22,18 @@ namespace PadForge.Models3D
     /// </summary>
     public class ControllerModelXboxSeries : ControllerModelBase
     {
-        public static readonly string[] AppearanceIds = { "Carbon", "Robot" };
-        public static readonly string[] AppearanceNames = { "Carbon Black", "Robot White" };
+        public static readonly string[] AppearanceIds =
+        {
+            "Carbon", "Robot", "ElectricVolt", "DaystrikeCamo", "HaloInfinite",
+            "Starfield", "StellarShift", "DeepPink", "Porsche75th",
+            "VelocityGreen", "PulseRed", "ShockBlue",
+        };
+        public static readonly string[] AppearanceNames =
+        {
+            "Carbon Black", "Robot White", "Electric Volt", "Daystrike Camo", "Halo Infinite",
+            "Starfield", "Stellar Shift", "Deep Pink", "Porsche 75th Anniversary",
+            "Velocity Green", "Pulse Red", "Shock Blue",
+        };
 
         private readonly Model3DGroup ShareButton;
         private readonly Model3DGroup DecalOverlay;

@@ -310,6 +310,12 @@ namespace PadForge.Models3D
             return null;
         }
 
+        /// <summary>Rider decal geometries appended into moving groups.
+        /// The view's graded glow masks its accent overlay by the rider's
+        /// own texture alpha for these (a solid accent layer would paint
+        /// the whole invisible plate as a filled rectangle).</summary>
+        public readonly System.Collections.Generic.HashSet<GeometryModel3D> RiderDecals = new();
+
         /// <summary>Loads a decal mesh and appends its geometry INTO the
         /// host group so it moves with the host (trigger labels, stick-cap
         /// knurl art). Call after the host's material pass; the rider keeps
@@ -329,6 +335,7 @@ namespace PadForge.Models3D
                 geo.Material = material;
                 geo.BackMaterial = material;
                 host.Children.Add(geo);
+                RiderDecals.Add(geo);
             }
         }
 

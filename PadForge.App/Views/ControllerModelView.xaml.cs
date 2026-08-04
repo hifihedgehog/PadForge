@@ -577,7 +577,8 @@ namespace PadForge.Views
                     if (child is not GeometryModel3D g2) continue;
                     if (moved && defMat != null && hlMat != null)
                         g2.Material = GradientHighlight(g2,
-                            s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, factor);
+                            s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, factor,
+                            _currentModel.RiderDecals.Contains(g2));
                     else if (s_riderDefaults.TryGetValue(g2, out var d0))
                         g2.Material = d0;
                 }
@@ -650,7 +651,8 @@ namespace PadForge.Views
                     if (child is not GeometryModel3D g2) continue;
                     if (value > 0 && defMat != null && hlMat != null)
                         g2.Material = GradientHighlight(g2,
-                            s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, value);
+                            s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, value,
+                            _currentModel.RiderDecals.Contains(g2));
                     else if (s_riderDefaults.TryGetValue(g2, out var d0))
                         g2.Material = d0;
                 }
@@ -696,7 +698,8 @@ namespace PadForge.Views
             s_riderDefaults = new();
 
         private static Material GradientHighlight(GeometryModel3D owner,
-            Material defaultMaterial, Material highlightMaterial, float factor)
+            Material defaultMaterial, Material highlightMaterial, float factor,
+            bool riderDecal = false)
         {
             factor = Math.Clamp(factor, 0f, 1f);
             if ((defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush || defaultMaterial is MaterialGroup)
@@ -705,15 +708,26 @@ namespace PadForge.Views
                 {
                     var mg = new MaterialGroup();
                     mg.Children.Add(defaultMaterial);
-                    mg.Children.Add(new DiffuseMaterial(new SolidColorBrush()));
+                    // Rider decal plates are mostly-transparent textures: a
+                    // solid accent layer would paint the whole plate as a
+                    // filled rectangle. Reuse the rider's own brush and tint
+                    // it via the material Color filter instead, so only the
+                    // glyph texels glow. Opaque textured parts keep the
+                    // solid translucent accent layer.
+                    mg.Children.Add(riderDecal && (defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush rb
+                        ? new DiffuseMaterial(rb)
+                        : new DiffuseMaterial(new SolidColorBrush()));
                     return mg;
                 });
                 if (!ReferenceEquals(grp.Children[0], defaultMaterial))
                     grp.Children[0] = defaultMaterial;
                 var accent = BrushColor((highlightMaterial as DiffuseMaterial)?.Brush);
                 var overlay = (DiffuseMaterial)grp.Children[grp.Children.Count - 1];
-                ((SolidColorBrush)overlay.Brush).Color =
-                    Color.FromArgb((byte)(factor * 255), accent.R, accent.G, accent.B);
+                var tint = Color.FromArgb((byte)(factor * 255), accent.R, accent.G, accent.B);
+                if (overlay.Brush is SolidColorBrush solid)
+                    solid.Color = tint;
+                else
+                    overlay.Color = tint;   // filters the image brush, alpha included
                 return grp;
             }
             // Cast-proof (#175 regression fix): a themed material may carry a

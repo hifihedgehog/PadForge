@@ -105,6 +105,17 @@ namespace PadForge.Models3D
                 ApplyMaterial(sg, MaterialStick);
                 DefaultMaterials[sg] = MaterialStick;
             }
+            // The Edge's stick modules include a FIXED housing that must
+            // not swing with deflection, so it ships as its own static
+            // part carrying the module atlas.
+            foreach (var housing in new[] { "StickHousingL.obj", "StickHousingR.obj" })
+            {
+                var hg = TryLoadModel(housing);
+                if (hg == null) continue;
+                ApplyMaterial(hg, MaterialStick);
+                DefaultMaterials[hg] = MaterialStick;
+                model3DGroup.Children.Add(hg);
+            }
 
             // The ring group IS the stick cap head (XBOXONE reference:
             // ring = whole cap, stick = stem+base, zero overlap), so it

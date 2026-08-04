@@ -65,27 +65,12 @@ namespace PadForge.Models3D
             AuxPort = LoadModel("Aux-Port.obj");
             Triangle = LoadModel("Triangle.obj");
 
-            // Face-button symbols ride their buttons so they highlight and
-            // press as one piece (they are separate meshes on this model).
-            foreach (var (file, padSetting) in new[]
-            {
-                ("B1-Symbol.obj", "ButtonA"), ("B2-Symbol.obj", "ButtonB"),
-                ("B3-Symbol.obj", "ButtonX"), ("B4-Symbol.obj", "ButtonY"),
-            })
-            {
-                if (ButtonMap.TryGetValue(padSetting, out var list) && list.Count > 0)
-                    AttachRiderDecal(list[0], file, MaterialBody);
-            }
-            // D-pad arrows likewise ride their quarters.
-            foreach (var (file, padSetting) in new[]
-            {
-                ("DPadUpArrow.obj", "DPadUp"), ("DPadDownArrow.obj", "DPadDown"),
-                ("DPadLeftArrow.obj", "DPadLeft"), ("DPadRightArrow.obj", "DPadRight"),
-            })
-            {
-                if (ButtonMap.TryGetValue(padSetting, out var list) && list.Count > 0)
-                    AttachRiderDecal(list[0], file, MaterialBody);
-            }
+            // Face-button symbols and d-pad arrows are DECAL art (their
+            // UVs address the decal atlas, not the body atlas: giving
+            // them MaterialBody skinned the buttons with whatever the
+            // body atlas holds at those coordinates). They ride their
+            // buttons so they press and highlight as one piece. Attached
+            // after DrawAccentHighlights, below, with MaterialDecal.
 
             model3DGroup.Children.Add(LeftShoulderMiddle);
             model3DGroup.Children.Add(RightShoulderMiddle);
@@ -112,6 +97,18 @@ namespace PadForge.Models3D
             }
 
             DrawAccentHighlights();
+
+            foreach (var (file, padSetting) in new[]
+            {
+                ("B1-Symbol.obj", "ButtonA"), ("B2-Symbol.obj", "ButtonB"),
+                ("B3-Symbol.obj", "ButtonX"), ("B4-Symbol.obj", "ButtonY"),
+                ("DPadUpArrow.obj", "DPadUp"), ("DPadDownArrow.obj", "DPadDown"),
+                ("DPadLeftArrow.obj", "DPadLeft"), ("DPadRightArrow.obj", "DPadRight"),
+            })
+            {
+                if (ButtonMap.TryGetValue(padSetting, out var symList) && symList.Count > 0)
+                    AttachRiderDecal(symList[0], file, MaterialDecal);
+            }
 
             AttachRiderDecal(LeftShoulderTrigger, "Decal-Shoulder-Left-Trigger.obj", MaterialDecal);
             AttachRiderDecal(RightShoulderTrigger, "Decal-Shoulder-Right-Trigger.obj", MaterialDecal);

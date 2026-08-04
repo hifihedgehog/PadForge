@@ -226,6 +226,7 @@ namespace PadForge.Views
         {
             "XboxSeries" => (ControllerModelXboxSeries.AppearanceIds, ControllerModelXboxSeries.AppearanceNames),
             "DualSense" => (ControllerModelDualSense.AppearanceIds, ControllerModelDualSense.AppearanceNames),
+            "DS4" => (ControllerModelDS4.AppearanceIds, ControllerModelDS4.AppearanceNames),
             _ => (null, null),
         };
 
@@ -320,7 +321,7 @@ namespace PadForge.Views
                 // wire it into the click-to-record + highlight maps.
                 _currentModel = needed switch
                 {
-                    "DS4" => new ControllerModelDS4(),
+                    "DS4" => new ControllerModelDS4(appearance ?? "JetBlack"),
                     "DualSense" => new ControllerModelDualSense(appearance ?? "White"),
                     "XBOXONE" => new ControllerModelXboxOne(enableShare: wantShare),
                     "Switch2Pro" => new ControllerModelSwitch2Pro(),

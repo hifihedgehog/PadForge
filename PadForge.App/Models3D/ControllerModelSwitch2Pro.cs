@@ -184,7 +184,7 @@ namespace PadForge.Models3D
         /// <summary>The split mesh is real-world scale (MainBody width
         /// 148.0 mm). The shared viewport camera is sized for DS4-class
         /// meshes (165.7 mm), so scale up to match the framing.</summary>
-        public override double ModelScale => 165.7 / 148.0;
+        public override double ModelScale => 1.02;
 
         private static void SetMaterial(Model3DGroup group, Material material)
         {

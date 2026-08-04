@@ -100,6 +100,12 @@ namespace PadForge.Models3D
             AttachRiderDecal(RightThumbRing, "Decal-Joystick-Right-Ring.obj", MaterialDecal);
             AttachRiderDecal(LeftShoulderTrigger, "Decal-Shoulder-Left-Trigger.obj", MaterialDecal);
             AttachRiderDecal(RightShoulderTrigger, "Decal-Shoulder-Right-Trigger.obj", MaterialDecal);
+            // Starfield's triggers carry CLEAR shells: they must rotate
+            // with the trigger, so they ride the trigger groups instead of
+            // sitting in the static Transparent trim (missing on every
+            // other colorway, which makes these calls no-ops there).
+            AttachRiderDecal(LeftShoulderTrigger, "Transparent-Shoulder-Left-Trigger.obj", MaterialTransparent);
+            AttachRiderDecal(RightShoulderTrigger, "Transparent-Shoulder-Right-Trigger.obj", MaterialTransparent);
             if (ButtonMap.TryGetValue("LeftShoulder", out var lbList) && lbList.Count > 0)
                 AttachRiderDecal(lbList[0], "Decal-L1.obj", MaterialDecal);
             if (ButtonMap.TryGetValue("RightShoulder", out var rbList) && rbList.Count > 0)

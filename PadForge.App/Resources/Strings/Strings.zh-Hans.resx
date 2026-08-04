@@ -943,6 +943,7 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>重置总增益</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>重置左马达</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>重置右马达</value></data>
+  <data name="Pad_Colorway" xml:space="preserve"><value>配色</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>重置视图</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>按下按钮或移动轴/扳机以录制。轴偏转超过 50% 时被检测到。</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>从列表添加</value></data>

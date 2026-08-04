@@ -176,9 +176,10 @@ namespace PadForge.Views
 
         private void OnVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // Model type change
+            // Model type change (or the pad's colorway selection)
             if (e.PropertyName == nameof(PadViewModel.OutputType)
-                || e.PropertyName == nameof(PadViewModel.ProfileId))
+                || e.PropertyName == nameof(PadViewModel.ProfileId)
+                || e.PropertyName == nameof(PadViewModel.Model3DAppearances))
             {
                 Dispatcher.Invoke(EnsureModel);
                 return;
@@ -219,6 +220,57 @@ namespace PadForge.Views
         //  Model lifecycle
         // ─────────────────────────────────────────────
 
+        // Model families that ship multiple appearance (colorway) atlas
+        // sets. Ids/names come from the model classes' registries.
+        private static (string[] ids, string[] names) AppearanceRegistry(string family) => family switch
+        {
+            "XboxSeries" => (ControllerModelXboxSeries.AppearanceIds, ControllerModelXboxSeries.AppearanceNames),
+            "DualSense" => (ControllerModelDualSense.AppearanceIds, ControllerModelDualSense.AppearanceNames),
+            _ => (null, null),
+        };
+
+        private string _currentModelAppearance;
+        private bool _appearancePickerSyncing;
+
+        /// <summary>The pad's chosen appearance for a family, validated
+        /// against the registry (fallback: the family default).</summary>
+        private string ResolveAppearance(string family)
+        {
+            var (ids, _) = AppearanceRegistry(family);
+            if (ids == null || ids.Length == 0) return null;
+            string chosen = _vm?.GetModelAppearance(family);
+            return chosen != null && System.Array.IndexOf(ids, chosen) >= 0 ? chosen : ids[0];
+        }
+
+        private void UpdateAppearancePicker(string family)
+        {
+            var (ids, names) = AppearanceRegistry(family);
+            if (ids == null || ids.Length < 2)
+            {
+                AppearancePicker.Visibility = Visibility.Collapsed;
+                return;
+            }
+            _appearancePickerSyncing = true;
+            try
+            {
+                AppearancePicker.ItemsSource = names;
+                AppearancePicker.SelectedIndex = System.Array.IndexOf(ids, _currentModelAppearance ?? ids[0]);
+                AppearancePicker.Visibility = Visibility.Visible;
+            }
+            finally { _appearancePickerSyncing = false; }
+        }
+
+        private void AppearancePicker_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (_appearancePickerSyncing || _vm == null || _currentModel == null) return;
+            var (ids, _) = AppearanceRegistry(_currentModel.ModelFamily);
+            int i = AppearancePicker.SelectedIndex;
+            if (ids == null || i < 0 || i >= ids.Length) return;
+            // Writes the pad's Model3DAppearances, whose PropertyChanged
+            // re-enters EnsureModel and rebuilds with the new atlas set.
+            _vm.SetModelAppearance(_currentModel.ModelFamily, ids[i]);
+        }
+
         private void EnsureModel()
         {
             if (_vm == null) return;
@@ -235,7 +287,9 @@ namespace PadForge.Views
                 _vm.ProfileId != null &&
                 _vm.ProfileId.StartsWith("xbox-series-", System.StringComparison.OrdinalIgnoreCase);
 
-            if (_currentModel?.ModelFamily == needed && _currentModelShareEnabled == wantShare)
+            string appearance = ResolveAppearance(needed);
+            if (_currentModel?.ModelFamily == needed && _currentModelShareEnabled == wantShare
+                && _currentModelAppearance == appearance)
                 return;
 
             // Model rebuild: drop retained per-thumb transform entries.
@@ -267,13 +321,15 @@ namespace PadForge.Views
                 _currentModel = needed switch
                 {
                     "DS4" => new ControllerModelDS4(),
-                    "DualSense" => new ControllerModelDualSense(),
+                    "DualSense" => new ControllerModelDualSense(appearance ?? "White"),
                     "XBOXONE" => new ControllerModelXboxOne(enableShare: wantShare),
                     "Switch2Pro" => new ControllerModelSwitch2Pro(),
-                    "XboxSeries" => new ControllerModelXboxSeries(),
+                    "XboxSeries" => new ControllerModelXboxSeries(appearance ?? "Carbon"),
                     _ => new ControllerModelXbox360()
                 };
                 _currentModelShareEnabled = wantShare;
+                _currentModelAppearance = appearance;
+                UpdateAppearancePicker(needed);
 
                 ModelVisual3D.Content = _currentModel.model3DGroup;
                 // Update the per-model uniform scale on the existing

@@ -943,6 +943,7 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Restablecer ganancia total</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Restablecer motor izquierdo</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Restablecer motor derecho</value></data>
+  <data name="Pad_Colorway" xml:space="preserve"><value>Combinación de colores</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Restablecer vista</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>Presione botones o mueva un eje/gatillo para grabar. Los ejes se detectan cuando se desvían más del 50 %.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Añadir desde lista</value></data>

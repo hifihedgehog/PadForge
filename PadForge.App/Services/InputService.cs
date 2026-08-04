@@ -5176,6 +5176,7 @@ namespace PadForge.Services
             ps.IrSmoothing = (padVm.IrSmoothingPercent / 100.0).ToString(System.Globalization.CultureInfo.InvariantCulture);
             ps.PointerMode = string.IsNullOrEmpty(padVm.PointerMode) ? "Mouse" : padVm.PointerMode;
             ps.PointerFpsSpeed = padVm.PointerFpsSpeed.ToString(ic);
+            ps.Model3DAppearances = padVm.Model3DAppearances ?? "";
             // JoyShockMapper-canon extensions.
             ps.GyroSpace = padVm.GyroSpace ?? "Local";
             ps.GyroPlayerSpaceYawRelaxFactor = padVm.GyroPlayerSpaceYawRelaxFactor.ToString("F2", ic);
@@ -5599,6 +5600,7 @@ namespace PadForge.Services
             padVm.IrSensorBarCompPercent = (int)Math.Round(TryParseFloatPs(ps.IrSensorBarComp, 0f) * 100f);
             padVm.IrSmoothingPercent = (int)Math.Round(TryParseFloatPs(ps.IrSmoothing, 0f) * 100f);
             padVm.PointerMode = string.IsNullOrEmpty(ps.PointerMode) ? "Mouse" : ps.PointerMode;
+            padVm.Model3DAppearances = ps.Model3DAppearances ?? "";
             padVm.PointerFpsSpeed = (int)TryParseFloatPs(ps.PointerFpsSpeed, 35f);
             // JoyShockMapper-canon extensions.
             padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;

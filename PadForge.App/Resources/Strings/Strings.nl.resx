@@ -967,6 +967,7 @@
   <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Negatief</value></data>
 
   <!--═══ 3D View ═══ -->
+  <data name="Pad_Colorway" xml:space="preserve"><value>Kleurstelling</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Weergave herstellen</value></data>
 
   <!-- ═══ Gamepad Button Labels ═══ -->

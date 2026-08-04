@@ -943,6 +943,7 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Redefinir Ganho Geral</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Redefinir Motor Esquerdo</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Redefinir Motor Direito</value></data>
+  <data name="Pad_Colorway" xml:space="preserve"><value>Esquema de cores</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Redefinir Visualização</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>Pressione botões ou mova um eixo/gatilho para gravar. Os eixos são detectados quando movidos além de 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Adicionar da lista</value></data>

@@ -943,6 +943,7 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>전체 게인 초기화</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>왼쪽 모터 초기화</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>오른쪽 모터 초기화</value></data>
+  <data name="Pad_Colorway" xml:space="preserve"><value>색상 배리에이션</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>뷰 초기화</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>버튼을 누르거나 축/트리거를 움직여 기록하십시오. 축은 50% 이상 기울어졌을 때 감지됩니다.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>목록에서 추가</value></data>

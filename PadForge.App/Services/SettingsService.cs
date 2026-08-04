@@ -2940,6 +2940,7 @@ namespace PadForge.Services
                 padVm.IrSensorBarCompPercent = (int)Math.Round(TryParseDouble(ps.IrSensorBarComp, 0) * 100.0);
                 padVm.IrSmoothingPercent = (int)Math.Round(TryParseDouble(ps.IrSmoothing, 0) * 100.0);
                 padVm.PointerMode = string.IsNullOrEmpty(ps.PointerMode) ? "Mouse" : ps.PointerMode;
+                padVm.Model3DAppearances = ps.Model3DAppearances ?? "";
                 padVm.PointerFpsSpeed = TryParseInt(ps.PointerFpsSpeed, 35);
 
                 // Load JoyShockMapper-canongyro extensions.
@@ -4475,6 +4476,7 @@ namespace PadForge.Services
                     ps.IrSensorBarComp = (padVm.IrSensorBarCompPercent / 100.0).ToString(ic);
                     ps.IrSmoothing = (padVm.IrSmoothingPercent / 100.0).ToString(ic);
                     ps.PointerMode = string.IsNullOrEmpty(padVm.PointerMode) ? "Mouse" : padVm.PointerMode;
+                    ps.Model3DAppearances = padVm.Model3DAppearances ?? "";
                     ps.PointerFpsSpeed = padVm.PointerFpsSpeed.ToString(ic);
 
                     // Write JoyShockMapper-canongyro extensions.

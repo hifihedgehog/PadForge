@@ -52,6 +52,17 @@
              puts labels on the model (#175 item 6). -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                     VerticalAlignment="Top" Margin="0,8,8,0">
+            <!-- Colorway picker: shown only when the current model family
+                 ships more than one appearance. Per virtual controller
+                 (persisted on the pad's PadSetting), so two VCs of the
+                 same family can wear different colorways. -->
+            <ComboBox x:Name="AppearancePicker"
+                      AutomationProperties.AutomationId="AppearancePicker"
+                      MinWidth="130"
+                      Margin="0,0,8,0"
+                      Visibility="Collapsed"
+                      ToolTip="{Binding Pad_Colorway, Source={x:Static strings:Strings.Instance}}"
+                      SelectionChanged="AppearancePicker_SelectionChanged" />
             <ui:Button x:Name="AnnotationToggleButton"
                        AutomationProperties.AutomationId="AnnotationToggle"
                        Style="{StaticResource EmberIconButton}"

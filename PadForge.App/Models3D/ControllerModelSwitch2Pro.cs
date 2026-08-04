@@ -160,8 +160,10 @@ namespace PadForge.Models3D
                     DefaultMaterials[child] = MaterialSeam;
                     continue;
                 }
-                if (child == LeftThumbRing || child == RightThumbRing
-                    || child == LeftMotor || child == RightMotor)
+                // Motors stay flat. The stick rings are the textured cap
+                // heads (XBOXONE reference: ring = whole cap, stick =
+                // stem+base) and fall through to the atlas material.
+                if (child == LeftMotor || child == RightMotor)
                 {
                     SetMaterial(child, MaterialStick);
                     DefaultMaterials[child] = MaterialStick;

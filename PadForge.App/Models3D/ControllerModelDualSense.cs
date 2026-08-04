@@ -83,17 +83,13 @@ namespace PadForge.Models3D
                     }
             }
 
-            // Generated donut rings (the stick-direction click regions)
-            // have synthetic UVs; flat dark trim matches the center shell.
-            var MaterialRing = new DiffuseMaterial(new SolidColorBrush(
-                (Color)ColorConverter.ConvertFromString("#26282E")));
-
+            // The ring group IS the stick cap head (XBOXONE reference:
+            // ring = whole cap, stick = stem+base, zero overlap), so it
+            // shares the body atlas and is invisible as a split at rest.
             foreach (Model3DGroup child in model3DGroup.Children)
             {
                 if (DefaultMaterials.ContainsKey(child)) continue;
-                Material mat = child == TransparentTrim ? MaterialTransparent
-                    : (child == LeftThumbRing || child == RightThumbRing) ? MaterialRing
-                    : MaterialBody;
+                Material mat = child == TransparentTrim ? MaterialTransparent : MaterialBody;
                 ApplyMaterial(child, mat);
                 DefaultMaterials[child] = mat;
             }

@@ -114,22 +114,6 @@ namespace PadForge.Models3D
             // The Edge's stick modules include a FIXED housing that must
             // not swing with deflection, so it ships as its own static
             // part carrying the module atlas.
-            // Collar rings around the caps: body-atlas geometry that must
-            // deflect with the stick, so they stay their own groups with
-            // the body material and register as stick extras.
-            foreach (var (file, extras) in new[]
-            {
-                ("StickCollarL.obj", LeftStickExtras), ("StickCollarR.obj", RightStickExtras),
-            })
-            {
-                var cg = TryLoadModel(file);
-                if (cg == null) continue;
-                ApplyMaterial(cg, MaterialBody);
-                DefaultMaterials[cg] = MaterialBody;
-                model3DGroup.Children.Add(cg);
-                extras.Add(cg);
-            }
-
             foreach (var housing in new[] { "StickHousingL.obj", "StickHousingR.obj" })
             {
                 var hg = TryLoadModel(housing);

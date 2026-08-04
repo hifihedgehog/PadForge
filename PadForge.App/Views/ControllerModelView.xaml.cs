@@ -315,8 +315,11 @@ namespace PadForge.Views
             if (_currentModel?.Touchpad == null) return;
 
             var accent = ResolveAccentColor();
+            // Fully opaque: the HC-era 0xC0 alpha let the interior geometry
+            // (motors, shell backs) show through the pressed pad on the
+            // hado meshes. Solid accent matches every other pressed button.
             _touchpadHighlightMaterial = new DiffuseMaterial(
-                new SolidColorBrush(Color.FromArgb(0xC0, accent.R, accent.G, accent.B)));
+                new SolidColorBrush(Color.FromArgb(0xFF, accent.R, accent.G, accent.B)));
 
             (_touchpadFinger0Visual, _touchpadFinger0Transform) = CreateFingerSphere(
                 Color.FromArgb(0xE6, 0xFF, 0x66, 0x00));   // orange — matches the 2D dot

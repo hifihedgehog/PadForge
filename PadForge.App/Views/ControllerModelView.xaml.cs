@@ -270,6 +270,7 @@ namespace PadForge.Views
                     "DualSense" => new ControllerModelDualSense(),
                     "XBOXONE" => new ControllerModelXboxOne(enableShare: wantShare),
                     "Switch2Pro" => new ControllerModelSwitch2Pro(),
+                    "XboxSeries" => new ControllerModelXboxSeries(),
                     _ => new ControllerModelXbox360()
                 };
                 _currentModelShareEnabled = wantShare;

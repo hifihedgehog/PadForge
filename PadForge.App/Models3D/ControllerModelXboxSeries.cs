@@ -1,0 +1,103 @@
+// 3D controller model system adapted from Handheld Companion
+// https://github.com/Valkirie/HandheldCompanion
+// Copyright (c) CasperH2O, Lesueur Benjamin, trippyone
+// Licensed under CC BY-NC-SA 4.0
+//
+// Xbox Series X|S controller mesh: purchased hado CGTrader model,
+// split per-part (33 shells classified, hybrid d-pad disc bisected
+// into four wedges, sticks neck-split into cap-head ring groups and
+// stem/base click groups). Colorway atlas sets: Carbon Black and
+// Robot White, with more variants sharing this mesh.
+
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
+
+namespace PadForge.Models3D
+{
+    /// <summary>
+    /// Xbox Series controller model. Replaces the Xbox One stand-in for
+    /// Series profiles and carries a real Share button (RegisterButton
+    /// "ButtonShare"). Decal overlay draws after the opaque parts and
+    /// the transparent trim last, per the layering contract.
+    /// </summary>
+    public class ControllerModelXboxSeries : ControllerModelBase
+    {
+        public static readonly string[] AppearanceIds = { "Carbon", "Robot" };
+        public static readonly string[] AppearanceNames = { "Carbon Black", "Robot White" };
+
+        private readonly Model3DGroup ShareButton;
+        private readonly Model3DGroup DecalOverlay;
+        private readonly Model3DGroup TransparentTrim;
+
+        private static string Validate(string appearance)
+            => System.Array.IndexOf(AppearanceIds, appearance) >= 0 ? appearance : AppearanceIds[0];
+
+        public ControllerModelXboxSeries(string appearance = "Carbon")
+            : base($"XboxSeries.{Validate(appearance)}")
+        {
+            var MaterialBody = LoadTexturedMaterial("Body.png");
+            var MaterialTransparent = TryLoadTexturedMaterial("Transparent.png")
+                ?? LoadTexturedMaterial("Body.png", 0.30);
+            var MaterialDecal = LoadTexturedMaterial("Decal.png");
+
+            // ── Rotation points (from part bounds: stick caps
+            //    c=(−39.6/−30.3/21.4) and (20.0/−30.3/−3.0); triggers
+            //    c=(±43.9, 1.1, 42.6), hinge at their top edge) ──
+            JoystickRotationPointCenterLeftMillimeter  = new Vector3D(-39.6f, -18.0f, 21.4f);
+            JoystickRotationPointCenterRightMillimeter = new Vector3D( 20.0f, -18.0f, -3.0f);
+            JoystickMaxAngleDeg = 14.0f;
+
+            ShoulderTriggerRotationPointCenterLeftMillimeter  = new Vector3D(-43.9f, -5.0f, 50.0f);
+            ShoulderTriggerRotationPointCenterRightMillimeter = new Vector3D( 43.9f, -5.0f, 50.0f);
+            // Analog triggers with real travel; fitted so the tip stays
+            // clear of the shell at full pull.
+            TriggerMaxAngleDeg = 12.0f;
+
+            UpwardVisibilityRotationAxisLeft  = new Vector3D(1, 0, 0);
+            UpwardVisibilityRotationAxisRight = new Vector3D(1, 0, 0);
+            UpwardVisibilityRotationPointLeft  = new Vector3D(-37.4f, -15.0f, 48.0f);
+            UpwardVisibilityRotationPointRight = new Vector3D( 37.4f, -15.0f, 48.0f);
+
+            // ── Series-specific meshes ──────────────────
+            ShareButton = LoadModel("Share.obj");
+            RegisterButton("ButtonShare", ShareButton);
+            model3DGroup.Children.Add(ShareButton);
+
+            // ── Materials ───────────────────────────────
+            foreach (var (target, _) in ButtonMap)
+            {
+                if (ButtonMap.TryGetValue(target, out var list))
+                    foreach (var grp in list)
+                    {
+                        ApplyMaterial(grp, MaterialBody);
+                        DefaultMaterials[grp] = MaterialBody;
+                    }
+            }
+
+            foreach (Model3DGroup child in model3DGroup.Children)
+            {
+                if (DefaultMaterials.ContainsKey(child)) continue;
+                ApplyMaterial(child, MaterialBody);
+                DefaultMaterials[child] = MaterialBody;
+            }
+
+            DrawAccentHighlights();
+
+            // Decal overlay after the opaque parts (puffed 0.22 mm at
+            // export), then the transparent trim last.
+            DecalOverlay = LoadModel("Decal.obj");
+            ApplyMaterial(DecalOverlay, MaterialDecal);
+            DefaultMaterials[DecalOverlay] = MaterialDecal;
+            model3DGroup.Children.Add(DecalOverlay);
+
+            TransparentTrim = LoadModel("Transparent.obj");
+            ApplyMaterial(TransparentTrim, MaterialTransparent);
+            DefaultMaterials[TransparentTrim] = MaterialTransparent;
+            model3DGroup.Children.Add(TransparentTrim);
+        }
+
+        /// <summary>Real-world scale mesh (155.3 mm body width); 1.0
+        /// keeps the tall bumper fins inside the shared framing.</summary>
+        public override double ModelScale => 1.0;
+    }
+}

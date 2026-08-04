@@ -5025,6 +5025,49 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _pointerFpsSpeed, Math.Clamp(value, 5, 100));
         }
 
+        private string _model3DAppearances = "";
+        /// <summary>3D preview colorway per model family, comma-joined
+        /// "Family=AppearanceId" pairs on <see cref="PadSetting"/>, so each
+        /// virtual controller keeps its own appearance per family. Cosmetic
+        /// only.</summary>
+        public string Model3DAppearances
+        {
+            get => _model3DAppearances;
+            set => SetProperty(ref _model3DAppearances, value ?? "");
+        }
+
+        /// <summary>Selected appearance id for a model family, or null when
+        /// unset (the model's default applies).</summary>
+        public string GetModelAppearance(string family)
+        {
+            foreach (var pair in _model3DAppearances.Split(',', StringSplitOptions.RemoveEmptyEntries))
+            {
+                int eq = pair.IndexOf('=');
+                if (eq > 0 && pair.AsSpan(0, eq).Trim().SequenceEqual(family))
+                    return pair.Substring(eq + 1).Trim();
+            }
+            return null;
+        }
+
+        public void SetModelAppearance(string family, string appearanceId)
+        {
+            var pairs = new List<string>();
+            bool replaced = false;
+            foreach (var pair in _model3DAppearances.Split(',', StringSplitOptions.RemoveEmptyEntries))
+            {
+                int eq = pair.IndexOf('=');
+                if (eq > 0 && pair.AsSpan(0, eq).Trim().SequenceEqual(family))
+                {
+                    pairs.Add($"{family}={appearanceId}");
+                    replaced = true;
+                }
+                else pairs.Add(pair);
+            }
+            if (!replaced)
+                pairs.Add($"{family}={appearanceId}");
+            Model3DAppearances = string.Join(",", pairs);
+        }
+
         private RelayCommand _resetPointerModeCommand;
         public RelayCommand ResetPointerModeCommand =>
             _resetPointerModeCommand ??= new RelayCommand(() => PointerMode = "Mouse");

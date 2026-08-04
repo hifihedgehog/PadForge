@@ -943,6 +943,7 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Réinitialiser le gain global</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Réinitialiser le moteur gauche</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Réinitialiser le moteur droit</value></data>
+  <data name="Pad_Colorway" xml:space="preserve"><value>Coloris</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Réinitialiser la vue</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>Appuyez sur des boutons ou bougez un axe/gâchette pour enregistrer. Les axes sont détectés lorsqu'ils dépassent 50 % de déviation.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Ajouter depuis la liste</value></data>

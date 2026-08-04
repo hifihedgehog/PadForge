@@ -1915,6 +1915,7 @@
   <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Negative</value></data>
 
   <!-- ═══ 3D View ═══ -->
+  <data name="Pad_Colorway" xml:space="preserve"><value>Colorway</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Reset View</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Mapping Annotations</value></data>
 

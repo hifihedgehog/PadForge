@@ -1297,6 +1297,7 @@ namespace PadForge
                         nameof(PadViewModel.IrSensorBarPos) or nameof(PadViewModel.IrSensorBarCompPercent) or
                         nameof(PadViewModel.IrSmoothingPercent) or
                         nameof(PadViewModel.PointerMode) or nameof(PadViewModel.PointerFpsSpeed) or
+                        nameof(PadViewModel.Model3DAppearances) or
                         nameof(PadViewModel.GyroInvertPitch) or nameof(PadViewModel.GyroInvertYawRoll) or
                         nameof(PadViewModel.GyroCompassYaw) or
                         nameof(PadViewModel.GyroApplyTuningToPassthrough) or

@@ -1380,6 +1380,7 @@ public class Strings : INotifyPropertyChanged
     public string Macro_SysVolumeHint => Get("Macro_SysVolumeHint");
     public string Macro_AppVolumeHint => Get("Macro_AppVolumeHint");
     public string Macro_MouseMoveHint => Get("Macro_MouseMoveHint");
+    public string Pad_Colorway => Get("Pad_Colorway");
     public string Pad_ResetView => Get("Pad_ResetView");
     public string Pad_ToggleAnnotations => Get("Pad_ToggleAnnotations");
     public string Macro_Name => Get("Macro_Name");

@@ -943,6 +943,7 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Gesamtverstärkung zurücksetzen</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Linken Motor zurücksetzen</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Rechten Motor zurücksetzen</value></data>
+  <data name="Pad_Colorway" xml:space="preserve"><value>Farbvariante</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Ansicht zurücksetzen</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>Tasten drücken oder Achse/Trigger bewegen zum Aufnehmen. Achsen werden erkannt, wenn sie über 50 % ausgelenkt sind.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Aus Liste hinzufügen</value></data>

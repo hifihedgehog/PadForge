@@ -595,6 +595,12 @@ namespace PadForge.Engine.Data
         /// default.</summary>
         [XmlElement] public string PointerFpsSpeed { get; set; } = "35";
 
+        /// <summary>3D preview colorway per model family, so each virtual
+        /// controller keeps its own appearance ("XboxSeries=PulseRed,
+        /// DualSense=Midnight"). Families absent from the list use their
+        /// default. Cosmetic only; never read by the engine.</summary>
+        [XmlElement] public string Model3DAppearances { get; set; } = "";
+
         /// <summary>At-rest bias for Pitch axis (rad/s), subtracted from
         /// the raw SDL3 gyro reading at the source-coercion read point.
         /// Per-(device, slot) — re-running calibration on slot A doesn't
@@ -1433,6 +1439,7 @@ namespace PadForge.Engine.Data
             sb.Append(IrSmoothing); sb.Append('|');
             sb.Append(PointerMode); sb.Append('|');
             sb.Append(PointerFpsSpeed); sb.Append('|');
+            sb.Append(Model3DAppearances); sb.Append('|');
             sb.Append(GyroBiasPitch); sb.Append('|');
             sb.Append(GyroBiasYaw); sb.Append('|');
             sb.Append(GyroBiasRoll); sb.Append('|');

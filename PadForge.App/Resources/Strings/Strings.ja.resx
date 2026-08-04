@@ -943,6 +943,7 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>全体ゲインをリセット</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>左モーターをリセット</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>右モーターをリセット</value></data>
+  <data name="Pad_Colorway" xml:space="preserve"><value>カラーバリエーション</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>ビューをリセット</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>ボタンを押すか軸/トリガーを動かして記録します。軸は 50% 以上の偏向で検出されます。</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>リストから追加</value></data>

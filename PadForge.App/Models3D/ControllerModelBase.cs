@@ -176,6 +176,17 @@ namespace PadForge.Models3D
                     RightThumb = group;
             }
 
+            // The stick-button highlight covers the WHOLE stick: the ring
+            // (cap + knurl riders) joins the thumb-button group list so
+            // press/hover/flash glow it with the click mesh (owner ruling:
+            // the cap texture glows just like the rest of the stick). Not
+            // via RegisterButton: the ring stays a quadrant/axis click
+            // target, never a ButtonMap ClickMap entry.
+            if (ButtonMap.TryGetValue("LeftThumbButton", out var ltList) && LeftThumbRing != null)
+                ltList.Add(LeftThumbRing);
+            if (ButtonMap.TryGetValue("RightThumbButton", out var rtList) && RightThumbRing != null)
+                rtList.Add(RightThumbRing);
+
             // Add non-button parts to scene.
             model3DGroup.Children.Add(MainBody);
             model3DGroup.Children.Add(LeftThumbRing);

@@ -492,22 +492,29 @@ namespace PadForge.Views
 
         private void HighlightButtons()
         {
+            // The hovered TARGET is owned by the hover highlight while the
+            // cursor sits on it (all of its groups, not just the hit one:
+            // the stick ring glows with the hovered click mesh).
+            string hoverTarget = _hoverGroup != null
+                && _currentModel.ClickMap.TryGetValue(_hoverGroup, out var ht) ? ht : null;
+
             foreach (var prop in ButtonProperties)
             {
                 if (!_currentModel.ButtonMap.TryGetValue(prop, out var groups))
                     continue;
 
                 bool pressed = GetButtonState(prop);
+                if (prop == hoverTarget)
+                    continue;
 
                 foreach (var group in groups)
                 {
                     if (group.Children.Count == 0 || group.Children[0] is not GeometryModel3D geo)
                         continue;
-                    if (geo.Material is not DiffuseMaterial)
+                    bool isRing = ReferenceEquals(group, _currentModel.LeftThumbRing)
+                        || ReferenceEquals(group, _currentModel.RightThumbRing);
+                    if (!isRing && geo.Material is not DiffuseMaterial)
                         continue;
-                    // The hovered group is owned by the hover highlight while
-                    // the cursor sits on it; without this skip the per-frame
-                    // reset stomps the hover material after a single frame.
                     if (group == _hoverGroup)
                         continue;
 
@@ -567,6 +574,17 @@ namespace PadForge.Views
             // Gradient highlight on the whole cap head: every geometry in
             // the ring group (the cap AND its knurl decal riders) grades
             // with deflection so the head glows as one piece.
+            // The stick BUTTON's highlight owns the ring while pressed,
+            // hovered, or flashing (whole-stick glow at factor 1); this
+            // per-frame pass must not stomp it back to rest.
+            string btnProp = ReferenceEquals(thumbRing, _currentModel.LeftThumbRing)
+                ? "LeftThumbButton" : "RightThumbButton";
+            bool buttonOwned = GetButtonState(btnProp)
+                || (_hoverGroup != null
+                    && _currentModel.ClickMap.TryGetValue(_hoverGroup, out var hovT)
+                    && hovT == btnProp)
+                || _flashTarget == btnProp;
+            if (!buttonOwned)
             {
                 // Visual deadzone: real sticks rarely report exactly zero,
                 // and a drifting stick otherwise keeps its ring permanently
@@ -1136,11 +1154,25 @@ namespace PadForge.Views
         private void ApplyHoverHighlight(Model3DGroup group)
         {
             if (_currentModel == null) return;
-            if (group.Children.Count == 0 || group.Children[0] is not GeometryModel3D geo)
-                return;
+            foreach (var g in ResolveTargetGroups(group))
+            {
+                if (g.Children.Count == 0 || g.Children[0] is not GeometryModel3D geo)
+                    continue;
+                if (_currentModel.HighlightMaterials.TryGetValue(g, out var hlMat))
+                    SetGroupHighlight(g, geo, hlMat);
+            }
+        }
 
-            if (_currentModel.HighlightMaterials.TryGetValue(group, out var hlMat))
-                SetGroupHighlight(group, geo, hlMat);
+        /// <summary>All groups that light up with the given group's click
+        /// target (multi-mesh buttons, the stick click + its ring). Falls
+        /// back to just the group itself.</summary>
+        private List<Model3DGroup> ResolveTargetGroups(Model3DGroup group)
+        {
+            if (_currentModel.ClickMap.TryGetValue(group, out var target)
+                && _currentModel.ButtonMap.TryGetValue(target, out var list)
+                && list.Contains(group))
+                return list;
+            return new List<Model3DGroup> { group };
         }
 
         private void RestoreHoverGroup(Model3DGroup group)
@@ -1153,23 +1185,27 @@ namespace PadForge.Views
             // this guard. Treat "no current model" as "nothing to restore."
             if (_currentModel == null) return;
             if (group == null) return;
-            if (group.Children.Count == 0 || group.Children[0] is not GeometryModel3D geo)
-                return;
 
-            // Don't restore if this group is currently being flash-animated
-            if (_flashTarget != null)
+            foreach (var g in ResolveTargetGroups(group))
             {
-                var flashGroups = ResolveFlashGroups(_flashTarget);
-                if (flashGroups != null && flashGroups.Contains(group))
-                    return;
-            }
+                if (g.Children.Count == 0 || g.Children[0] is not GeometryModel3D geo)
+                    continue;
 
-            if (_currentModel.DefaultMaterials.TryGetValue(group, out var defMat))
-            {
-                geo.Material = defMat;
-                geo.BackMaterial = defMat;
+                // Don't restore if this group is currently being flash-animated
+                if (_flashTarget != null)
+                {
+                    var flashGroups = ResolveFlashGroups(_flashTarget);
+                    if (flashGroups != null && flashGroups.Contains(g))
+                        continue;
+                }
+
+                if (_currentModel.DefaultMaterials.TryGetValue(g, out var defMat))
+                {
+                    geo.Material = defMat;
+                    geo.BackMaterial = defMat;
+                }
+                RestoreRiderFlash(g, geo);
             }
-            RestoreRiderFlash(group, geo);
         }
 
         private void ShowHoverQuadrant(string target)
@@ -1781,6 +1817,22 @@ namespace PadForge.Views
 
         private bool SetGroupHighlight(Model3DGroup group, GeometryModel3D primary, Material hlMat)
         {
+            // Thumb rings glow as a WHOLE at full strength: host takes the
+            // accent and the knurl riders tint through their own texels
+            // (the graded-glow shape at factor 1), so the cap texture
+            // glows just like the rest of the stick (owner ruling).
+            if (ReferenceEquals(group, _currentModel.LeftThumbRing)
+                || ReferenceEquals(group, _currentModel.RightThumbRing))
+            {
+                foreach (var child in group.Children)
+                {
+                    if (child is not GeometryModel3D g2) continue;
+                    g2.Material = GradientHighlight(g2,
+                        s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, 1f,
+                        _currentModel.RiderDecals.Contains(g2));
+                }
+                return true;
+            }
             bool covering = false;
             foreach (var child in group.Children)
             {

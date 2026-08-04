@@ -316,12 +316,19 @@ namespace PadForge.Models3D
         /// the whole invisible plate as a filled rectangle).</summary>
         public readonly System.Collections.Generic.HashSet<GeometryModel3D> RiderDecals = new();
 
+        /// <summary>Riders whose art fully covers their host's face (the
+        /// Xbox guide emblem). The view highlights these by tinting the
+        /// rider's own texels accent while the host keeps its default
+        /// material, so only the glyph art glows. Non-covering riders
+        /// hide during highlight instead.</summary>
+        public readonly System.Collections.Generic.HashSet<GeometryModel3D> CoveringRiderDecals = new();
+
         /// <summary>Loads a decal mesh and appends its geometry INTO the
         /// host group so it moves with the host (trigger labels, stick-cap
         /// knurl art). Call after the host's material pass; the rider keeps
         /// its own decal material. Missing file is a no-op so colorways
         /// without a given rider stay valid.</summary>
-        protected void AttachRiderDecal(Model3DGroup host, string filename, Material material)
+        protected void AttachRiderDecal(Model3DGroup host, string filename, Material material, bool covering = false)
         {
             var rider = TryLoadModel(filename);
             if (rider == null) return;
@@ -336,6 +343,8 @@ namespace PadForge.Models3D
                 geo.BackMaterial = material;
                 host.Children.Add(geo);
                 RiderDecals.Add(geo);
+                if (covering)
+                    CoveringRiderDecals.Add(geo);
             }
         }
 

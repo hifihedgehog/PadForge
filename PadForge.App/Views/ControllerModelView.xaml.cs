@@ -513,13 +513,13 @@ namespace PadForge.Views
 
                     if (pressed && _currentModel.HighlightMaterials.TryGetValue(group, out var hlMat))
                     {
-                        geo.Material = hlMat;
-                        geo.BackMaterial = hlMat;
+                        SetGroupHighlight(group, geo, hlMat);
                     }
                     else if (_currentModel.DefaultMaterials.TryGetValue(group, out var defMat))
                     {
                         geo.Material = defMat;
                         geo.BackMaterial = defMat;
+                        RestoreRiderFlash(group, geo);
                     }
                 }
             }
@@ -1140,13 +1140,7 @@ namespace PadForge.Views
                 return;
 
             if (_currentModel.HighlightMaterials.TryGetValue(group, out var hlMat))
-            {
-                geo.Material = hlMat;
-                geo.BackMaterial = hlMat;
-                // A rider decal covering its host (the guide emblem) would
-                // otherwise hide the hover accent entirely.
-                SetRiderFlash(group, geo, hlMat);
-            }
+                SetGroupHighlight(group, geo, hlMat);
         }
 
         private void RestoreHoverGroup(Model3DGroup group)
@@ -1763,9 +1757,7 @@ namespace PadForge.Views
 
                 if (_flashOn && _currentModel.HighlightMaterials.TryGetValue(group, out var hlMat))
                 {
-                    geo.Material = hlMat;
-                    geo.BackMaterial = hlMat;
-                    SetRiderFlash(group, geo, hlMat);
+                    SetGroupHighlight(group, geo, hlMat);
                 }
                 else if (_currentModel.DefaultMaterials.TryGetValue(group, out var defMat))
                 {
@@ -1776,24 +1768,47 @@ namespace PadForge.Views
             }
         }
 
-        // Rider decals inside a flashed/hovered group (e.g. the Xbox
-        // emblem riding the guide button) hide for the duration: a rider
-        // covers its host, so the host's accent would stay buried, and
-        // tinting the rider's texels can't match either. The plate is
-        // flat and camera-facing, so it catches maximum head-light and
-        // reads brighter than the curved surfaces every other highlighted
-        // element shows. Hiding lets the host's own geometry shade the
-        // accent, matching models whose glyphs live in the button atlas.
-        private void SetRiderFlash(Model3DGroup group, GeometryModel3D primary, Material hlMat)
+        // Highlight for a group that may carry rider decals. A COVERING
+        // rider (the Xbox guide emblem) gets its own texels tinted accent
+        // through DiffuseMaterial.Color while the host keeps its default
+        // material, so only the glyph art glows (owner-specified look).
+        // Non-covering riders (trigger labels, knurl bands) hide for the
+        // duration and the host takes the solid accent like any other
+        // element. Returns true when a covering rider carried the
+        // highlight (callers must then leave the host material alone).
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
+            s_riderTints = new();
+
+        private bool SetGroupHighlight(Model3DGroup group, GeometryModel3D primary, Material hlMat)
         {
+            bool covering = false;
             foreach (var child in group.Children)
             {
                 if (child is not GeometryModel3D g2 || ReferenceEquals(g2, primary)) continue;
                 if (!_currentModel.RiderDecals.Contains(g2)) continue;
-                s_riderDefaults.GetValue(g2, _ => g2.Material);
-                g2.Material = null;
-                g2.BackMaterial = null;
+                var rest = s_riderDefaults.GetValue(g2, _ => g2.Material);
+                if (_currentModel.CoveringRiderDecals.Contains(g2)
+                    && (rest as DiffuseMaterial)?.Brush is ImageBrush rb)
+                {
+                    var accent = BrushColor((hlMat as DiffuseMaterial)?.Brush);
+                    var tint = s_riderTints.GetValue(g2, _ => new DiffuseMaterial(rb));
+                    tint.Color = Color.FromArgb(255, accent.R, accent.G, accent.B);
+                    g2.Material = tint;
+                    g2.BackMaterial = tint;
+                    covering = true;
+                }
+                else
+                {
+                    g2.Material = null;
+                    g2.BackMaterial = null;
+                }
             }
+            if (!covering)
+            {
+                primary.Material = hlMat;
+                primary.BackMaterial = hlMat;
+            }
+            return covering;
         }
 
         private void RestoreRiderFlash(Model3DGroup group, GeometryModel3D primary)

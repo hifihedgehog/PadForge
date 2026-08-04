@@ -511,9 +511,14 @@ namespace PadForge.Views
                 {
                     if (group.Children.Count == 0 || group.Children[0] is not GeometryModel3D geo)
                         continue;
-                    bool isRing = ReferenceEquals(group, _currentModel.LeftThumbRing)
-                        || ReferenceEquals(group, _currentModel.RightThumbRing);
-                    if (!isRing && geo.Material is not DiffuseMaterial)
+                    // Stick parts bypass the material-type guard: mid-
+                    // deflection their material is the graded MaterialGroup
+                    // and the press/restore pass must still own them.
+                    bool isStick = ReferenceEquals(group, _currentModel.LeftThumbRing)
+                        || ReferenceEquals(group, _currentModel.RightThumbRing)
+                        || ReferenceEquals(group, _currentModel.LeftThumb)
+                        || ReferenceEquals(group, _currentModel.RightThumb);
+                    if (!isStick && geo.Material is not DiffuseMaterial)
                         continue;
                     if (group == _hoverGroup)
                         continue;
@@ -594,18 +599,27 @@ namespace PadForge.Views
                 // preview glow.
                 bool moved = Math.Abs(normX) > 0.05f || Math.Abs(normY) > 0.05f;
                 float factor = Math.Max(Math.Abs(normX), Math.Abs(normY));
-                _currentModel.DefaultMaterials.TryGetValue(thumbRing, out var defMat);
-                _currentModel.HighlightMaterials.TryGetValue(thumbRing, out var hlMat);
-                foreach (var child in thumbRing.Children)
+                void Grade(Model3DGroup grp)
                 {
-                    if (child is not GeometryModel3D g2) continue;
-                    if (moved && defMat != null && hlMat != null)
-                        g2.Material = GradientHighlight(g2,
-                            s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, factor,
-                            _currentModel.RiderDecals.Contains(g2));
-                    else if (s_riderDefaults.TryGetValue(g2, out var d0))
-                        g2.Material = d0;
+                    _currentModel.DefaultMaterials.TryGetValue(grp, out var defMat);
+                    _currentModel.HighlightMaterials.TryGetValue(grp, out var hlMat);
+                    foreach (var child in grp.Children)
+                    {
+                        if (child is not GeometryModel3D g2) continue;
+                        if (moved && defMat != null && hlMat != null)
+                            g2.Material = GradientHighlight(g2,
+                                s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, factor,
+                                _currentModel.RiderDecals.Contains(g2));
+                        else if (s_riderDefaults.TryGetValue(g2, out var d0))
+                            g2.Material = d0;
+                    }
                 }
+                Grade(thumbRing);
+                // Deflection glow covers the WHOLE stick, same as the
+                // button glow: the click mesh (stem/base/cap flank)
+                // grades with the ring (owner follow-up to 740db508).
+                if (thumb is Model3DGroup thumbGroup)
+                    Grade(thumbGroup);
             }
 
             // Rotation
@@ -732,31 +746,45 @@ namespace PadForge.Views
             {
                 var grp = s_texturedHighlightGroups.GetValue(owner, _ =>
                 {
+                    // Three layers: the art, a dim layer that fades the art
+                    // toward black as the factor rises, and an EMISSIVE
+                    // accent layer. Emissive is light-independent, so the
+                    // glow is the exact accent color at factor 1 instead of
+                    // the milky wash a lit diffuse overlay produced on
+                    // camera-facing surfaces (over-lit channels clamp pale;
+                    // owner: "faded milky orange"). Rider layers stay
+                    // masked by the rider's alpha (a solid layer would
+                    // paint the transparent plate as a filled rectangle);
+                    // the accent mask is a white twin of the rider brush so
+                    // dark art (the XS carbon knurl) glows at full
+                    // strength too.
                     var mg = new MaterialGroup();
                     mg.Children.Add(defaultMaterial);
-                    // Rider decal plates are mostly-transparent textures: a
-                    // solid accent layer would paint the whole plate as a
-                    // filled rectangle. The overlay is a WHITE-MASKED copy
-                    // of the rider's brush (RGB white, alpha kept): accent
-                    // renders at full strength wherever art exists, dark
-                    // art included. Tinting the rider's own texels instead
-                    // multiplies accent into the art, and near-black art
-                    // (the XS carbon knurl band) never visibly glowed.
-                    // Opaque textured parts keep the solid accent layer.
-                    mg.Children.Add(riderDecal && (defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush rb
-                        ? new DiffuseMaterial(WhiteMaskBrush(rb))
-                        : new DiffuseMaterial(new SolidColorBrush()));
+                    if (riderDecal && (defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush rb)
+                    {
+                        // AmbientColor filters the RAW brush independently
+                        // of Color: left white, ambient light leaks the
+                        // art's texels over the glow. Black kills it.
+                        mg.Children.Add(new DiffuseMaterial(rb) { AmbientColor = Colors.Black });
+                        mg.Children.Add(new EmissiveMaterial(WhiteMaskBrush(rb)));
+                    }
+                    else
+                    {
+                        mg.Children.Add(new DiffuseMaterial(new SolidColorBrush()));
+                        mg.Children.Add(new EmissiveMaterial(new SolidColorBrush()));
+                    }
                     return mg;
                 });
                 if (!ReferenceEquals(grp.Children[0], defaultMaterial))
                     grp.Children[0] = defaultMaterial;
                 var accent = BrushColor((highlightMaterial as DiffuseMaterial)?.Brush);
-                var overlay = (DiffuseMaterial)grp.Children[grp.Children.Count - 1];
-                var tint = Color.FromArgb((byte)(factor * 255), accent.R, accent.G, accent.B);
-                if (overlay.Brush is SolidColorBrush solid)
-                    solid.Color = tint;
-                else
-                    overlay.Color = tint;   // filters the image brush, alpha included
+                byte fa = (byte)(factor * 255);
+                var dimC = Color.FromArgb(fa, 0, 0, 0);
+                var accC = Color.FromArgb(fa, accent.R, accent.G, accent.B);
+                var dim = (DiffuseMaterial)grp.Children[1];
+                var emis = (EmissiveMaterial)grp.Children[2];
+                if (dim.Brush is SolidColorBrush ds) ds.Color = dimC; else dim.Color = dimC;
+                if (emis.Brush is SolidColorBrush es) es.Color = accC; else emis.Color = accC;
                 return grp;
             }
             // Cast-proof (#175 regression fix): a themed material may carry a
@@ -1847,7 +1875,7 @@ namespace PadForge.Views
         // duration and the host takes the solid accent like any other
         // element. Returns true when a covering rider carried the
         // highlight (callers must then leave the host material alone).
-        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, MaterialGroup>
             s_riderTints = new();
 
         private bool SetGroupHighlight(Model3DGroup group, GeometryModel3D primary, Material hlMat)
@@ -1877,9 +1905,24 @@ namespace PadForge.Views
                 if (_currentModel.CoveringRiderDecals.Contains(g2)
                     && (rest as DiffuseMaterial)?.Brush is ImageBrush rb)
                 {
+                    // Black diffuse base + EMISSIVE accent through the
+                    // art's own texels: the white art renders the exact
+                    // SOLID accent (light-independent; the lit multiply
+                    // tint washed milky on the camera-facing plate) and
+                    // the dark logo cutout stays dark.
                     var accent = BrushColor((hlMat as DiffuseMaterial)?.Brush);
-                    var tint = s_riderTints.GetValue(g2, _ => new DiffuseMaterial(rb));
-                    tint.Color = Color.FromArgb(255, accent.R, accent.G, accent.B);
+                    var tint = s_riderTints.GetValue(g2, _ =>
+                    {
+                        var mg = new MaterialGroup();
+                        // AmbientColor black too, or ambient light leaks
+                        // the raw white art over the emissive accent.
+                        mg.Children.Add(new DiffuseMaterial(rb)
+                        { Color = Colors.Black, AmbientColor = Colors.Black });
+                        mg.Children.Add(new EmissiveMaterial(rb));
+                        return mg;
+                    });
+                    ((EmissiveMaterial)tint.Children[1]).Color =
+                        Color.FromArgb(255, accent.R, accent.G, accent.B);
                     g2.Material = tint;
                     g2.BackMaterial = tint;
                     covering = true;

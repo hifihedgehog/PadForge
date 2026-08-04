@@ -2031,6 +2031,11 @@ namespace PadForge.Engine.Data
             nameof(GyroEngageStickSide), nameof(GyroEngageStickDirection),
             nameof(IrSensorBarPos), nameof(IrSensorBarComp), nameof(IrSmoothing),
             nameof(PointerMode), nameof(PointerFpsSpeed),
+            // 3D preview colorway per virtual controller. Omitted here it
+            // survives the XmlSerializer but CloneDeep drops it on load, so
+            // the picked skin reverts on restart (the same failure the notes
+            // above describe for the Gyro and Trigger Routing fields).
+            nameof(Model3DAppearances),
             nameof(GyroBiasPitch), nameof(GyroBiasYaw), nameof(GyroBiasRoll),
             nameof(GyroAuxBiasPitch), nameof(GyroAuxBiasYaw), nameof(GyroAuxBiasRoll),
             nameof(GyroCompassYaw),

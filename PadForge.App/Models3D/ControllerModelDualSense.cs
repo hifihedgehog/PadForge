@@ -103,6 +103,12 @@ namespace PadForge.Models3D
             AttachRiderDecal(LeftShoulderTrigger, "Decal-Shoulder-Left-Trigger.obj", MaterialDecal);
             AttachRiderDecal(RightShoulderTrigger, "Decal-Shoulder-Right-Trigger.obj", MaterialDecal);
 
+            // The stick caps' knurl-ring artwork is decal too; it rides
+            // the ring groups (the moving cap heads) so it deflects with
+            // the stick instead of floating at the rest position.
+            AttachRiderDecal(LeftThumbRing, "Decal-Joystick-Left-Ring.obj", MaterialDecal);
+            AttachRiderDecal(RightThumbRing, "Decal-Joystick-Right-Ring.obj", MaterialDecal);
+
             // Static decal overlay last: its atlas alpha carries the rest
             // of the glyphs and labels, and WPF renders transparency in
             // scene order.

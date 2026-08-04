@@ -736,12 +736,15 @@ namespace PadForge.Views
                     mg.Children.Add(defaultMaterial);
                     // Rider decal plates are mostly-transparent textures: a
                     // solid accent layer would paint the whole plate as a
-                    // filled rectangle. Reuse the rider's own brush and tint
-                    // it via the material Color filter instead, so only the
-                    // glyph texels glow. Opaque textured parts keep the
-                    // solid translucent accent layer.
+                    // filled rectangle. The overlay is a WHITE-MASKED copy
+                    // of the rider's brush (RGB white, alpha kept): accent
+                    // renders at full strength wherever art exists, dark
+                    // art included. Tinting the rider's own texels instead
+                    // multiplies accent into the art, and near-black art
+                    // (the XS carbon knurl band) never visibly glowed.
+                    // Opaque textured parts keep the solid accent layer.
                     mg.Children.Add(riderDecal && (defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush rb
-                        ? new DiffuseMaterial(rb)
+                        ? new DiffuseMaterial(WhiteMaskBrush(rb))
                         : new DiffuseMaterial(new SolidColorBrush()));
                     return mg;
                 });
@@ -779,6 +782,38 @@ namespace PadForge.Views
             GradientBrush g when g.GradientStops.Count > 0 => g.GradientStops[0].Color,
             _ => Color.FromRgb(0xFF, 0x6B, 0x2C),
         };
+
+        // White-masked twins of rider atlas brushes (RGB forced white,
+        // alpha preserved, viewport settings cloned): the rider glow
+        // overlay multiplies its Color by these, giving full-strength
+        // accent wherever art exists regardless of the art's darkness.
+        // Keyed on the source brush so riders sharing one atlas share
+        // one 16 MB conversion.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<ImageBrush, ImageBrush>
+            s_whiteMaskBrushes = new();
+
+        private static ImageBrush WhiteMaskBrush(ImageBrush rb)
+        {
+            return s_whiteMaskBrushes.GetValue(rb, src =>
+            {
+                if (src.ImageSource is not System.Windows.Media.Imaging.BitmapSource bmp)
+                    return src;
+                var conv = new System.Windows.Media.Imaging.FormatConvertedBitmap(
+                    bmp, PixelFormats.Bgra32, null, 0);
+                int w = conv.PixelWidth, h = conv.PixelHeight, stride = w * 4;
+                var px = new byte[h * stride];
+                conv.CopyPixels(px, stride, 0);
+                for (int i = 0; i < px.Length; i += 4)
+                    px[i] = px[i + 1] = px[i + 2] = 255;
+                var mask = System.Windows.Media.Imaging.BitmapSource.Create(
+                    w, h, conv.DpiX, conv.DpiY, PixelFormats.Bgra32, null, px, stride);
+                mask.Freeze();
+                var brush = src.Clone();
+                brush.ImageSource = mask;
+                brush.Freeze();
+                return brush;
+            });
+        }
 
         // ─────────────────────────────────────────────
         //  Click-to-record hit testing

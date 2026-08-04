@@ -334,7 +334,7 @@ namespace PadForge.Common.Input
             // 3D mesh (HC ships no Series-specific 3D). 2D layouts diverge:
             // Series profiles get their own white asset set.
             if (profileId.StartsWith("xbox-series-", StringComparison.OrdinalIgnoreCase))
-                return ("XBOXSERIES", "XBOXONE");
+                return ("XBOXSERIES", "XboxSeries");
             if (profileId.StartsWith("xbox-one-", StringComparison.OrdinalIgnoreCase)
                 || profileId.StartsWith("xbox-elite-", StringComparison.OrdinalIgnoreCase)
                 || profileId.Equals("xbox-adaptive", StringComparison.OrdinalIgnoreCase))

@@ -26,13 +26,13 @@ namespace PadForge.Models3D
         {
             "Carbon", "Robot", "ElectricVolt", "DaystrikeCamo", "HaloInfinite",
             "Starfield", "StellarShift", "DeepPink", "Porsche75th",
-            "VelocityGreen", "PulseRed", "ShockBlue",
+            "VelocityGreen", "PulseRed", "ShockBlue", "Remix",
         };
         public static readonly string[] AppearanceNames =
         {
             "Carbon Black", "Robot White", "Electric Volt", "Daystrike Camo", "Halo Infinite",
             "Starfield", "Stellar Shift", "Deep Pink", "Porsche 75th Anniversary",
-            "Velocity Green", "Pulse Red", "Shock Blue",
+            "Velocity Green", "Pulse Red", "Shock Blue", "Remix Special Edition",
         };
 
         private readonly Model3DGroup ShareButton;

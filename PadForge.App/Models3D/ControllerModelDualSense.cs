@@ -26,8 +26,18 @@ namespace PadForge.Models3D
     {
         /// <summary>Colorway atlas sets available for this mesh; each
         /// entry maps to embedded {name}_Body/_Transparent/_Decal.png.</summary>
-        public static readonly string[] AppearanceIds = { "White", "Midnight" };
-        public static readonly string[] AppearanceNames = { "White", "Midnight Black" };
+        public static readonly string[] AppearanceIds =
+        {
+            "White", "Midnight", "CosmicRed", "GrayCamo", "NovaPink",
+            "DeepEarthCobalt", "DeepEarthSterling", "DeepEarthVolcanic",
+            "FFXVI", "SpiderMan2",
+        };
+        public static readonly string[] AppearanceNames =
+        {
+            "White", "Midnight Black", "Cosmic Red", "Gray Camouflage", "Nova Pink",
+            "Deep Earth Cobalt Blue", "Deep Earth Sterling Silver", "Deep Earth Volcanic Red",
+            "Final Fantasy XVI", "Spider-Man 2",
+        };
 
         private readonly Model3DGroup DecalOverlay;
         private readonly Model3DGroup TransparentTrim;

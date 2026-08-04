@@ -568,7 +568,13 @@ namespace PadForge.Views
             // the ring group (the cap AND its knurl decal riders) grades
             // with deflection so the head glows as one piece.
             {
-                bool moved = normX != 0f || normY != 0f;
+                // Visual deadzone: real sticks rarely report exactly zero,
+                // and a drifting stick otherwise keeps its ring permanently
+                // accent-tinted (owner saw the RIGHT cap "off hue" while the
+                // left was fine; atlases were identical, this glow was the
+                // difference). Mapping is unaffected, this gates only the
+                // preview glow.
+                bool moved = Math.Abs(normX) > 0.05f || Math.Abs(normY) > 0.05f;
                 float factor = Math.Max(Math.Abs(normX), Math.Abs(normY));
                 _currentModel.DefaultMaterials.TryGetValue(thumbRing, out var defMat);
                 _currentModel.HighlightMaterials.TryGetValue(thumbRing, out var hlMat);
@@ -649,7 +655,9 @@ namespace PadForge.Views
                 foreach (var child in triggerModel.Children)
                 {
                     if (child is not GeometryModel3D g2) continue;
-                    if (value > 0 && defMat != null && hlMat != null)
+                    // Same visual deadzone as the sticks: trigger sensor
+                    // noise must not keep the pull glow lit at rest.
+                    if (value > 0.03f && defMat != null && hlMat != null)
                         g2.Material = GradientHighlight(g2,
                             s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, value,
                             _currentModel.RiderDecals.Contains(g2));
@@ -1135,6 +1143,9 @@ namespace PadForge.Views
             {
                 geo.Material = hlMat;
                 geo.BackMaterial = hlMat;
+                // A rider decal covering its host (the guide emblem) would
+                // otherwise hide the hover accent entirely.
+                SetRiderFlash(group, geo, hlMat);
             }
         }
 
@@ -1164,6 +1175,7 @@ namespace PadForge.Views
                 geo.Material = defMat;
                 geo.BackMaterial = defMat;
             }
+            RestoreRiderFlash(group, geo);
         }
 
         private void ShowHoverQuadrant(string target)

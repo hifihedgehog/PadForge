@@ -674,10 +674,36 @@ namespace PadForge.Views
         private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
             s_highlightMaterials = new();
 
-        private static DiffuseMaterial GradientHighlight(GeometryModel3D owner,
+        // Textured defaults (ImageBrush atlases) cannot express the lerp
+        // as a solid color: BrushColor's fallback made any deflection show
+        // the FULL accent. Overlay a per-owner translucent accent layer on
+        // top of the texture instead, alpha scaled by the factor, so the
+        // glow grades with stick/trigger intensity while the texture stays
+        // visible underneath.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, MaterialGroup>
+            s_texturedHighlightGroups = new();
+
+        private static Material GradientHighlight(GeometryModel3D owner,
             Material defaultMaterial, Material highlightMaterial, float factor)
         {
             factor = Math.Clamp(factor, 0f, 1f);
+            if ((defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush || defaultMaterial is MaterialGroup)
+            {
+                var grp = s_texturedHighlightGroups.GetValue(owner, _ =>
+                {
+                    var mg = new MaterialGroup();
+                    mg.Children.Add(defaultMaterial);
+                    mg.Children.Add(new DiffuseMaterial(new SolidColorBrush()));
+                    return mg;
+                });
+                if (!ReferenceEquals(grp.Children[0], defaultMaterial))
+                    grp.Children[0] = defaultMaterial;
+                var accent = BrushColor((highlightMaterial as DiffuseMaterial)?.Brush);
+                var overlay = (DiffuseMaterial)grp.Children[grp.Children.Count - 1];
+                ((SolidColorBrush)overlay.Brush).Color =
+                    Color.FromArgb((byte)(factor * 170), accent.R, accent.G, accent.B);
+                return grp;
+            }
             // Cast-proof (#175 regression fix): a themed material may carry a
             // gradient brush; lerp from its first stop instead of crashing
             // the render loop with an invalid cast.

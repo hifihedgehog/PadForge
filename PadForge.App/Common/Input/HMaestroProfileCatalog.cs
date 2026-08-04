@@ -325,6 +325,10 @@ namespace PadForge.Common.Input
             profileId ??= string.Empty;
 
             // PlayStation
+            // Edge first: its profiles start with "dualsense" too, and they
+            // must always get the Edge mesh, never a plain DualSense.
+            if (profileId.StartsWith("dualsense-edge", StringComparison.OrdinalIgnoreCase))
+                return ("DualSense", "DualSenseEdge");
             if (profileId.StartsWith("dualsense", StringComparison.OrdinalIgnoreCase))
                 return ("DualSense", "DualSense");
             if (profileId.StartsWith("dualshock", StringComparison.OrdinalIgnoreCase))

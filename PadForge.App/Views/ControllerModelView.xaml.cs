@@ -227,6 +227,7 @@ namespace PadForge.Views
             "XboxSeries" => (ControllerModelXboxSeries.AppearanceIds, ControllerModelXboxSeries.AppearanceNames),
             "DualSense" => (ControllerModelDualSense.AppearanceIds, ControllerModelDualSense.AppearanceNames),
             "DS4" => (ControllerModelDS4.AppearanceIds, ControllerModelDS4.AppearanceNames),
+            "DualSenseEdge" => (ControllerModelDualSenseEdge.AppearanceIds, ControllerModelDualSenseEdge.AppearanceNames),
             _ => (null, null),
         };
 
@@ -323,6 +324,7 @@ namespace PadForge.Views
                 {
                     "DS4" => new ControllerModelDS4(appearance ?? "JetBlack"),
                     "DualSense" => new ControllerModelDualSense(appearance ?? "White"),
+                    "DualSenseEdge" => new ControllerModelDualSenseEdge(),
                     "XBOXONE" => new ControllerModelXboxOne(enableShare: wantShare),
                     "Switch2Pro" => new ControllerModelSwitch2Pro(),
                     "XboxSeries" => new ControllerModelXboxSeries(appearance ?? "Carbon"),
@@ -702,6 +704,8 @@ namespace PadForge.Views
                 _stickTransforms3D[thumbRing] = st;
                 thumbRing.Transform = group;
                 if (thumb != null) thumb.Transform = group;
+                foreach (var extra in StickExtrasFor(thumbRing))
+                    extra.Transform = group;
             }
             if (st.lastX != angleX || st.lastY != angleY)
             {
@@ -713,6 +717,8 @@ namespace PadForge.Views
                 {
                     thumbRing.Transform = st.group;
                     if (thumb != null) thumb.Transform = st.group;
+                    foreach (var extra in StickExtrasFor(thumbRing))
+                        extra.Transform = st.group;
                 }
             }
         }
@@ -720,6 +726,14 @@ namespace PadForge.Views
         private readonly System.Collections.Generic.Dictionary<Model3DGroup,
             (Transform3DGroup group, AxisAngleRotation3D ax, AxisAngleRotation3D ay, float lastX, float lastY)>
             _stickTransforms3D = new();
+
+        /// <summary>Groups that deflect with a stick but keep their own
+        /// material (Edge cap collars). Empty on every other model.</summary>
+        private List<Model3DGroup> StickExtrasFor(Model3DGroup thumbRing)
+            => _currentModel == null ? new List<Model3DGroup>()
+             : ReferenceEquals(thumbRing, _currentModel.LeftThumbRing) ? _currentModel.LeftStickExtras
+             : ReferenceEquals(thumbRing, _currentModel.RightThumbRing) ? _currentModel.RightStickExtras
+             : new List<Model3DGroup>();
 
         // ─────────────────────────────────────────────
         //  Trigger rotation + gradient (adapted from HC UpdateShoulderButtons)

@@ -746,21 +746,25 @@ namespace PadForge.Views
             {
                 var grp = s_texturedHighlightGroups.GetValue(owner, _ =>
                 {
-                    // Two layers: the art, and a LIT accent overlay whose
-                    // AmbientColor is BLACK. Lit diffuse keeps the shading
-                    // (shape and direction stay readable, unlike a flat
-                    // emissive layer), and blacking AmbientColor removes
-                    // the milky wash: AmbientColor filters the RAW brush
-                    // independently of Color, so left white it added a
-                    // flat grey ambient term over the accent. Rider
-                    // overlays stay masked by the rider's alpha through a
-                    // WHITE twin of the rider brush, so dark art (the XS
-                    // carbon knurl) glows at full accent strength too.
+                    // Two layers: the art, and a LIT accent overlay. Lit
+                    // diffuse keeps the shading so shape and direction
+                    // read. The overlay must render EXACTLY like a plain
+                    // accent button (accent-colored brush under the same
+                    // rig): for the white-masked rider brush that means
+                    // AmbientColor = accent too. AmbientColor filters the
+                    // RAW brush independently of Color, so left white the
+                    // ambient term is grey (milky wash) and forced black
+                    // it vanishes (dim, harsh shading). Accent-colored,
+                    // every lighting term is accent-proportional: soft
+                    // fill, exact hue, shaded. Rider overlays stay masked
+                    // by the rider's alpha through a WHITE twin of the
+                    // rider brush, so dark art (the XS carbon knurl)
+                    // glows at full accent strength too.
                     var mg = new MaterialGroup();
                     mg.Children.Add(defaultMaterial);
                     mg.Children.Add(riderDecal && (defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush rb
-                        ? new DiffuseMaterial(WhiteMaskBrush(rb)) { AmbientColor = Colors.Black }
-                        : new DiffuseMaterial(new SolidColorBrush()) { AmbientColor = Colors.Black });
+                        ? new DiffuseMaterial(WhiteMaskBrush(rb))
+                        : new DiffuseMaterial(new SolidColorBrush()));
                     return mg;
                 });
                 if (!ReferenceEquals(grp.Children[0], defaultMaterial))
@@ -769,9 +773,16 @@ namespace PadForge.Views
                 var overlay = (DiffuseMaterial)grp.Children[1];
                 var tint = Color.FromArgb((byte)(factor * 255), accent.R, accent.G, accent.B);
                 if (overlay.Brush is SolidColorBrush solid)
+                {
+                    // accent-colored brush: its ambient term is already
+                    // accent-tinted, same as a plain accent button
                     solid.Color = tint;
+                }
                 else
-                    overlay.Color = tint;   // white mask texels take the accent, alpha included
+                {
+                    overlay.Color = tint;          // diffuse term, alpha included
+                    overlay.AmbientColor = tint;   // ambient term matches the hue
+                }
                 return grp;
             }
             // Cast-proof (#175 regression fix): a themed material may carry a
@@ -1893,14 +1904,15 @@ namespace PadForge.Views
                     && (rest as DiffuseMaterial)?.Brush is ImageBrush rb)
                 {
                     // Lit accent through the art's own texels with the
-                    // ambient term BLACKED: the white art renders rich
-                    // shaded accent (the ambient leak was the milky wash),
-                    // the dark logo cutout stays dark, and the lighting
-                    // keeps the button's shape readable.
+                    // ambient term ACCENT-COLORED (white ambient = milky
+                    // wash, black ambient = dim with harsh shading): the
+                    // white art renders like a plain accent button, the
+                    // dark logo cutout stays dark, and the lighting keeps
+                    // the button's shape readable.
                     var accent = BrushColor((hlMat as DiffuseMaterial)?.Brush);
-                    var tint = s_riderTints.GetValue(g2,
-                        _ => new DiffuseMaterial(rb) { AmbientColor = Colors.Black });
+                    var tint = s_riderTints.GetValue(g2, _ => new DiffuseMaterial(rb));
                     tint.Color = Color.FromArgb(255, accent.R, accent.G, accent.B);
+                    tint.AmbientColor = tint.Color;
                     g2.Material = tint;
                     g2.BackMaterial = tint;
                     covering = true;

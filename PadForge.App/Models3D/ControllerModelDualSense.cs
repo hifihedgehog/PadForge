@@ -30,13 +30,13 @@ namespace PadForge.Models3D
         {
             "White", "Midnight", "CosmicRed", "GrayCamo", "NovaPink",
             "DeepEarthCobalt", "DeepEarthSterling", "DeepEarthVolcanic",
-            "FFXVI", "SpiderMan2",
+            "FFXVI", "SpiderMan2", "Edge",
         };
         public static readonly string[] AppearanceNames =
         {
             "White", "Midnight Black", "Cosmic Red", "Gray Camouflage", "Nova Pink",
             "Deep Earth Cobalt Blue", "Deep Earth Sterling Silver", "Deep Earth Volcanic Red",
-            "Final Fantasy XVI", "Spider-Man 2",
+            "Final Fantasy XVI", "Spider-Man 2", "DualSense Edge",
         };
 
         private readonly Model3DGroup DecalOverlay;
@@ -93,6 +93,17 @@ namespace PadForge.Models3D
                         ApplyMaterial(grp, MaterialBody);
                         DefaultMaterials[grp] = MaterialBody;
                     }
+            }
+
+            // The Edge's sticks are removable modules with their OWN
+            // atlas; every other colorway UVs them into the body atlas,
+            // so a missing StickModule.png just falls back to the body.
+            var MaterialStick = TryLoadTexturedMaterial("StickModule.png") ?? MaterialBody;
+            foreach (var stickGroup in new[] { LeftThumb, RightThumb, LeftThumbRing, RightThumbRing })
+            {
+                if (stickGroup is not Model3DGroup sg) continue;
+                ApplyMaterial(sg, MaterialStick);
+                DefaultMaterials[sg] = MaterialStick;
             }
 
             // The ring group IS the stick cap head (XBOXONE reference:

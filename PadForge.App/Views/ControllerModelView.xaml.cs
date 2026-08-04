@@ -1776,26 +1776,23 @@ namespace PadForge.Views
             }
         }
 
-        // Flash tint for rider decals inside a flashed group (e.g. the
-        // Xbox emblem riding the guide button): a rider covers its host,
-        // so the accent must tint the rider's own texels or the flash
-        // stays hidden underneath it.
-        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
-            s_flashRiderTints = new();
-
+        // Rider decals inside a flashed/hovered group (e.g. the Xbox
+        // emblem riding the guide button) hide for the duration: a rider
+        // covers its host, so the host's accent would stay buried, and
+        // tinting the rider's texels can't match either. The plate is
+        // flat and camera-facing, so it catches maximum head-light and
+        // reads brighter than the curved surfaces every other highlighted
+        // element shows. Hiding lets the host's own geometry shade the
+        // accent, matching models whose glyphs live in the button atlas.
         private void SetRiderFlash(Model3DGroup group, GeometryModel3D primary, Material hlMat)
         {
             foreach (var child in group.Children)
             {
                 if (child is not GeometryModel3D g2 || ReferenceEquals(g2, primary)) continue;
                 if (!_currentModel.RiderDecals.Contains(g2)) continue;
-                var rest = s_riderDefaults.GetValue(g2, _ => g2.Material);
-                if ((rest as DiffuseMaterial)?.Brush is not ImageBrush rb) continue;
-                var accent = BrushColor((hlMat as DiffuseMaterial)?.Brush);
-                var tint = s_flashRiderTints.GetValue(g2, _ => new DiffuseMaterial(rb));
-                tint.Color = Color.FromArgb(255, accent.R, accent.G, accent.B);
-                g2.Material = tint;
-                g2.BackMaterial = tint;
+                s_riderDefaults.GetValue(g2, _ => g2.Material);
+                g2.Material = null;
+                g2.BackMaterial = null;
             }
         }
 

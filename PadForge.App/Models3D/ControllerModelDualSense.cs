@@ -69,8 +69,10 @@ namespace PadForge.Models3D
             ClickMap[Touchpad] = "TouchpadClick";
             model3DGroup.Children.Add(Touchpad);
 
+            // Added to the scene AFTER the decal overlay (see below):
+            // the clear domes must draw after the glyph plates beneath
+            // them, or their depth writes reject the later-drawn plates.
             TransparentTrim = LoadModel("Transparent.obj");
-            model3DGroup.Children.Add(TransparentTrim);
 
             // ── Materials ───────────────────────────────
             foreach (var (target, _) in ButtonMap)
@@ -116,6 +118,15 @@ namespace PadForge.Models3D
             ApplyMaterial(DecalOverlay, MaterialDecal);
             DefaultMaterials[DecalOverlay] = MaterialDecal;
             model3DGroup.Children.Add(DecalOverlay);
+
+            // Clear plastic last: lightbar, mic bar, and the button domes
+            // over their glyph plates. Material applied here because the
+            // generic loop above ran before this group joined the scene.
+            ApplyMaterial(TransparentTrim, MaterialTransparent);
+            DefaultMaterials[TransparentTrim] = MaterialTransparent;
+            HighlightMaterials[TransparentTrim] = HighlightMaterials.ContainsKey(Touchpad)
+                ? HighlightMaterials[Touchpad] : MaterialTransparent;
+            model3DGroup.Children.Add(TransparentTrim);
         }
 
         private void AttachRiderDecal(Model3DGroup host, string filename, Material material)

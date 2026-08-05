@@ -46,8 +46,16 @@ namespace PadForge.Models3D
             JoystickRotationPointCenterRightMillimeter = new Vector3D(25.5f, -5.086f, -21.582f);
             JoystickMaxAngleDeg = 19.0f;
 
-            ShoulderTriggerRotationPointCenterLeftMillimeter = new Vector3D(-38.061f, 3.09f, 26.842f);
-            ShoulderTriggerRotationPointCenterRightMillimeter = new Vector3D(38.061f, 3.09f, 26.842f);
+            // Same rule as the rest of the fleet: a third of the way up
+            // the trigger, by the Xbox One model's fraction of the part
+            // bounds, instead of at the top edge. The collision check is
+            // inconclusive here -- the DS4's L2 nests under L1, so the
+            // two meshes already interpenetrate 5.3 mm at rest and the
+            // measure cannot separate hinge travel from that overlap.
+            // The hinge was in the same wrong place as the others (0.81
+            // of the z span), so it is placed by the same rule.
+            ShoulderTriggerRotationPointCenterLeftMillimeter = new Vector3D(-38.061f, -0.34f, 18.59f);
+            ShoulderTriggerRotationPointCenterRightMillimeter = new Vector3D(38.061f, -0.34f, 18.59f);
             TriggerMaxAngleDeg = 16.0f;
 
             UpwardVisibilityRotationAxisLeft = new Vector3D(1, 0, 0);

@@ -66,13 +66,19 @@ namespace PadForge.Models3D
 
             // ── Rotation points (from the exported part bounds: stick
             //    caps c=(±25.7, −25.0, −0.1); triggers c=(±49.4, 8.5,
-            //    43.2), hinge at their top edge) ─────────
+            //    43.2), hinge a third of the way up them) ─────────
             JoystickRotationPointCenterLeftMillimeter  = new Vector3D(-25.7f, -15.0f, -0.1f);
             JoystickRotationPointCenterRightMillimeter = new Vector3D( 25.7f, -15.0f, -0.1f);
             JoystickMaxAngleDeg = 14.0f;
 
-            ShoulderTriggerRotationPointCenterLeftMillimeter  = new Vector3D(-49.4f, 0.0f, 50.0f);
-            ShoulderTriggerRotationPointCenterRightMillimeter = new Vector3D( 49.4f, 0.0f, 50.0f);
+            // At the top edge the paddle drove 53 of 400 sampled
+            // vertices 2.11 mm inside the bumper at full pull; here it
+            // clears by 0.56 mm. Placed by the Xbox One model's own
+            // fraction of the trigger bounds -- that model has always
+            // deflected correctly. The Edge overrides this: its trigger
+            // mesh sits higher.
+            ShoulderTriggerRotationPointCenterLeftMillimeter  = new Vector3D(-49.4f, 4.99f, 41.0f);
+            ShoulderTriggerRotationPointCenterRightMillimeter = new Vector3D( 49.4f, 4.99f, 41.0f);
             TriggerMaxAngleDeg = 16.0f;
 
             UpwardVisibilityRotationAxisLeft  = new Vector3D(1, 0, 0);

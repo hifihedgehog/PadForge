@@ -42,7 +42,11 @@ namespace PadForge.Models3D
         private static string Validate(string appearance)
             => System.Array.IndexOf(AppearanceIds, appearance) >= 0 ? appearance : AppearanceIds[0];
 
-        public ControllerModelXboxSeries(string appearance = "Carbon")
+        /// <param name="enableShare">Wire the Share mesh into the click
+        /// and highlight maps. Only Series profiles have that button;
+        /// Xbox One, Elite and Adaptive profiles render this same mesh,
+        /// so for them Share stays present but inert.</param>
+        public ControllerModelXboxSeries(string appearance = "Carbon", bool enableShare = true)
             : base($"XboxSeries.{Validate(appearance)}")
         {
             var MaterialBody = LoadTexturedMaterial("Body.png");
@@ -82,7 +86,8 @@ namespace PadForge.Models3D
 
             // ── Series-specific meshes ──────────────────
             ShareButton = LoadModel("Share.obj");
-            RegisterButton("ButtonShare", ShareButton);
+            if (enableShare)
+                RegisterButton("ButtonShare", ShareButton);
             model3DGroup.Children.Add(ShareButton);
 
             // ── Materials ───────────────────────────────

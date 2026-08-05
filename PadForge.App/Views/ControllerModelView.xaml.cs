@@ -277,15 +277,14 @@ namespace PadForge.Views
         {
             if (_vm == null) return;
 
-            // Per-profile asset selection — DualSense profiles get the
-            // DualSense mesh, Xbox One/Elite/Series/Adaptive profiles get
-            // the Xbox One mesh (HC has no Series-specific 3D), DualShock
-            // and Xbox 360 fall through unchanged.
+            // Per-profile asset selection. DualSense profiles get the
+            // DualSense mesh, the whole Xbox One/Elite/Series/Adaptive
+            // family gets the Series mesh, DualShock and Xbox 360 fall
+            // through unchanged.
             var (_, needed) = PadForge.Common.Input.HMaestroProfileCatalog.ResolveAssetFolders(
                 _vm.ProfileId, _vm.OutputType);
 
             bool wantShare =
-                needed == "XBOXONE" &&
                 _vm.ProfileId != null &&
                 _vm.ProfileId.StartsWith("xbox-series-", System.StringComparison.OrdinalIgnoreCase);
 
@@ -315,19 +314,19 @@ namespace PadForge.Views
 
             try
             {
-                // Xbox One mesh is shared with Xbox Series profiles, but
-                // only Series profiles actually expose Share. Pass the
-                // flag so non-Series profiles get an inert Share mesh
-                // (no hover / click / highlight) while Series profiles
-                // wire it into the click-to-record + highlight maps.
+                // Xbox One, Elite and Adaptive profiles render the Series
+                // mesh too, but only Series profiles actually expose
+                // Share. Pass the flag so the others get an inert Share
+                // mesh (no hover / click / highlight) while Series
+                // profiles wire it into the click-to-record + highlight
+                // maps.
                 _currentModel = needed switch
                 {
                     "DS4" => new ControllerModelDS4(appearance ?? "JetBlack"),
                     "DualSense" => new ControllerModelDualSense(appearance ?? "White"),
                     "DualSenseEdge" => new ControllerModelDualSenseEdge(),
-                    "XBOXONE" => new ControllerModelXboxOne(enableShare: wantShare),
                     "Switch2Pro" => new ControllerModelSwitch2Pro(),
-                    "XboxSeries" => new ControllerModelXboxSeries(appearance ?? "Carbon"),
+                    "XboxSeries" => new ControllerModelXboxSeries(appearance ?? "Carbon", wantShare),
                     _ => new ControllerModelXbox360()
                 };
                 _currentModelShareEnabled = wantShare;

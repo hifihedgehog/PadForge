@@ -334,15 +334,20 @@ namespace PadForge.Common.Input
             if (profileId.StartsWith("dualshock", StringComparison.OrdinalIgnoreCase))
                 return ("DS4", "DS4");
 
-            // Xbox One / Elite / Series / Adaptive — all share the Xbox One
-            // 3D mesh (HC ships no Series-specific 3D). 2D layouts diverge:
-            // Series profiles get their own white asset set.
+            // Xbox One / Elite / Series / Adaptive all render the Series
+            // 3D mesh now. It is the better model (per-part split, the
+            // hado atlases and colorways) and the Xbox One controller is
+            // close enough in shape that the old lower-detail mesh has
+            // nothing left to offer. Only Series profiles expose Share,
+            // which the model gates on. 2D layouts still diverge: these
+            // profiles keep the Xbox One asset set, Series its own white
+            // one, which is why the two halves of this tuple differ.
             if (profileId.StartsWith("xbox-series-", StringComparison.OrdinalIgnoreCase))
                 return ("XBOXSERIES", "XboxSeries");
             if (profileId.StartsWith("xbox-one-", StringComparison.OrdinalIgnoreCase)
                 || profileId.StartsWith("xbox-elite-", StringComparison.OrdinalIgnoreCase)
                 || profileId.Equals("xbox-adaptive", StringComparison.OrdinalIgnoreCase))
-                return ("XBOXONE", "XBOXONE");
+                return ("XBOXONE", "XboxSeries");
 
             // Xbox 360 family + arcade-stick / dance-pad / wheel siblings.
             if (profileId.StartsWith("xbox-360", StringComparison.OrdinalIgnoreCase))

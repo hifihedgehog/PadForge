@@ -122,6 +122,12 @@ namespace PadForge.Models3D
             AttachRiderDecal(RightShoulderTrigger, "Decal-Shoulder-Right-Trigger.obj", MaterialDecal);
             AttachRiderDecal(LeftThumbRing, "Decal-Joystick-Left-Ring.obj", MaterialDecal);
             AttachRiderDecal(RightThumbRing, "Decal-Joystick-Right-Ring.obj", MaterialDecal);
+            // As on the DualSense: the L1/R1 lettering sat in the static
+            // Decal overlay, so it could not glow with a bumper press.
+            if (ButtonMap.TryGetValue("LeftShoulder", out var lbList) && lbList.Count > 0)
+                AttachRiderDecal(lbList[0], "Decal-L1.obj", MaterialDecal);
+            if (ButtonMap.TryGetValue("RightShoulder", out var rbList) && rbList.Count > 0)
+                AttachRiderDecal(rbList[0], "Decal-R1.obj", MaterialDecal);
 
             DecalOverlay = TryLoadModel("Decal.obj");
             if (DecalOverlay != null)

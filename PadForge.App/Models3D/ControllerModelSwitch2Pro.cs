@@ -64,13 +64,18 @@ namespace PadForge.Models3D
             // ── Rotation points (derived from the exported part bounds:
             //    stick caps center (−39.6, −21.2, 19.7) / (17.7, −19.7,
             //    −1.2), pivot set at the cap base plane inside the well;
-            //    triggers c=(±42.8, 7.1, 44.4), hinge at their top edge) ──
+            //    triggers c=(±42.8, 7.1, 44.4), hinge a third up them) ──
             JoystickRotationPointCenterLeftMillimeter  = new Vector3D(-39.6f, -10.0f, 19.7f);
             JoystickRotationPointCenterRightMillimeter = new Vector3D( 17.7f, -10.0f, -1.2f);
             JoystickMaxAngleDeg = 14.0f;
 
-            ShoulderTriggerRotationPointCenterLeftMillimeter  = new Vector3D(-42.8f, 0.0f, 50.0f);
-            ShoulderTriggerRotationPointCenterRightMillimeter = new Vector3D( 42.8f, 0.0f, 50.0f);
+            // ZL/ZR never actually reached the bumper at 8 deg, so this
+            // was not a collision here -- but the hinge sat at 0.88 of
+            // the trigger's height like the rest of the fleet, and the
+            // paddle pivoted from its top edge rather than swinging.
+            // Same rule, its own bounds; clearance goes 2.48 -> 3.56 mm.
+            ShoulderTriggerRotationPointCenterLeftMillimeter  = new Vector3D(-42.8f, 3.91f, 42.45f);
+            ShoulderTriggerRotationPointCenterRightMillimeter = new Vector3D( 42.8f, 3.91f, 42.45f);
             // ZL/ZR are short-travel digital paddles that snap to full
             // pull; the DualSense's 16 deg drove them through the rail.
             TriggerMaxAngleDeg = 8.0f;

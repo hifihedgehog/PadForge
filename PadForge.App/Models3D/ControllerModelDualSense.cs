@@ -154,6 +154,14 @@ namespace PadForge.Models3D
             // the stick instead of floating at the rest position.
             AttachRiderDecal(LeftThumbRing, "Decal-Joystick-Left-Ring.obj", MaterialDecal);
             AttachRiderDecal(RightThumbRing, "Decal-Joystick-Right-Ring.obj", MaterialDecal);
+            // The L1/R1 lettering sat in the static Decal overlay, so a
+            // bumper press lit the button while its label stayed grey --
+            // L2/R2 glowed because the trigger path grades its riders.
+            // Ride them on the bumpers, as the Series model does.
+            if (ButtonMap.TryGetValue("LeftShoulder", out var lbList) && lbList.Count > 0)
+                AttachRiderDecal(lbList[0], "Decal-L1.obj", MaterialDecal);
+            if (ButtonMap.TryGetValue("RightShoulder", out var rbList) && rbList.Count > 0)
+                AttachRiderDecal(rbList[0], "Decal-R1.obj", MaterialDecal);
 
             // Static decal overlay last: its atlas alpha carries the rest
             // of the glyphs and labels, and WPF renders transparency in

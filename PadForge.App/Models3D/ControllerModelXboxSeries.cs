@@ -46,8 +46,13 @@ namespace PadForge.Models3D
             : base($"XboxSeries.{Validate(appearance)}")
         {
             var MaterialBody = LoadTexturedMaterial("Body.png");
-            var MaterialTransparent = TryLoadTexturedMaterial("Transparent.png")
-                ?? LoadTexturedMaterial("Body.png", 0.30);
+            // The clear ABXY shells and the Starfield trigger covers are
+            // the same moulded plastic. Flat diffuse alone left them
+            // barely there; the highlight is what reads as a shell over
+            // the lettering rather than lettering printed on the button.
+            var MaterialTransparent = AddGloss(
+                TryLoadTexturedMaterial("Transparent.png")
+                    ?? LoadTexturedMaterial("Body.png", 0.30), 0.60, 40.0);
             var MaterialDecal = LoadTexturedMaterial("Decal.png");
 
             // ── Rotation points (from part bounds: stick caps

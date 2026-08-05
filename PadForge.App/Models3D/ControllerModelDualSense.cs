@@ -60,8 +60,13 @@ namespace PadForge.Models3D
             // White ships a dedicated translucent atlas (alpha from the
             // source opacity map); a colorway whose trim merged into the
             // body mesh samples the body atlas at 30% opacity instead.
-            var MaterialTransparent = TryLoadTexturedMaterial("Transparent.png")
+            // Clear plastic needs a highlight to read as clear plastic:
+            // flat diffuse alone left the d-pad and face-button domes
+            // barely there. Keep the ungloss'd material for the highlight
+            // fallback below, which reads a DiffuseMaterial brush.
+            var MaterialTransparentFlat = TryLoadTexturedMaterial("Transparent.png")
                 ?? LoadTexturedMaterial("Body.png", 0.30);
+            var MaterialTransparent = AddGloss(MaterialTransparentFlat, 0.60, 40.0);
             var MaterialDecal = LoadTexturedMaterial("Decal.png");
 
             // ── Rotation points (from the exported part bounds: stick
@@ -177,7 +182,7 @@ namespace PadForge.Models3D
             ApplyMaterial(TransparentTrim, MaterialTransparent);
             DefaultMaterials[TransparentTrim] = MaterialTransparent;
             HighlightMaterials[TransparentTrim] = HighlightMaterials.ContainsKey(Touchpad)
-                ? HighlightMaterials[Touchpad] : MaterialTransparent;
+                ? HighlightMaterials[Touchpad] : MaterialTransparentFlat;
             model3DGroup.Children.Add(TransparentTrim);
         }
 

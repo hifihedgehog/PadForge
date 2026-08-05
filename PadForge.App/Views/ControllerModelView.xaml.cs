@@ -575,11 +575,14 @@ namespace PadForge.Views
                         continue;
                     // Stick parts bypass the material-type guard: mid-
                     // deflection their material is the graded MaterialGroup
-                    // and the press/restore pass must still own them.
+                    // and the press/restore pass must still own them. The
+                    // bumpers now glow the same way, so a pressed one is a
+                    // MaterialGroup too and would never be restored.
                     bool isStick = ReferenceEquals(group, _currentModel.LeftThumbRing)
                         || ReferenceEquals(group, _currentModel.RightThumbRing)
                         || ReferenceEquals(group, _currentModel.LeftThumb)
-                        || ReferenceEquals(group, _currentModel.RightThumb);
+                        || ReferenceEquals(group, _currentModel.RightThumb)
+                        || IsShoulderButtonGroup(group);
                     if (!isStick && geo.Material is not DiffuseMaterial)
                         continue;
                     if (group == _hoverGroup)
@@ -1938,14 +1941,30 @@ namespace PadForge.Views
         private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
             s_riderTints = new();
 
+        /// <summary>The L1/R1 (LB/RB) button groups, which carry their
+        /// lettering as a rider decal.</summary>
+        private bool IsShoulderButtonGroup(Model3DGroup group)
+        {
+            foreach (var key in new[] { "LeftShoulder", "RightShoulder" })
+                if (_currentModel.ButtonMap.TryGetValue(key, out var list)
+                    && list.Count > 0 && ReferenceEquals(group, list[0]))
+                    return true;
+            return false;
+        }
+
         private bool SetGroupHighlight(Model3DGroup group, GeometryModel3D primary, Material hlMat)
         {
             // Thumb rings glow as a WHOLE at full strength: host takes the
             // accent and the knurl riders tint through their own texels
             // (the graded-glow shape at factor 1), so the cap texture
             // glows just like the rest of the stick (owner ruling).
+            // Bumpers take the same shape, so their L1/R1 lettering
+            // glows on press exactly as L2/R2's does under the trigger's
+            // graded path. Hiding the rider instead (the default branch
+            // below) left the label grey while the button lit up.
             if (ReferenceEquals(group, _currentModel.LeftThumbRing)
-                || ReferenceEquals(group, _currentModel.RightThumbRing))
+                || ReferenceEquals(group, _currentModel.RightThumbRing)
+                || IsShoulderButtonGroup(group))
             {
                 foreach (var child in group.Children)
                 {

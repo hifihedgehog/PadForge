@@ -35,7 +35,13 @@ namespace PadForge.Models3D
         private readonly Model3DGroup WellFill;
         private readonly Model3DGroup InnerLiner;
 
-        public ControllerModelSwitch2Pro() : base("Switch2Pro")
+        /// <param name="enableSwitch2Controls">Wire the C / GL / GR meshes
+        /// into the click-to-record + highlight maps. False on an original
+        /// Switch Pro profile, which renders this mesh but has no wire for
+        /// those three, so they draw and never respond. Same arrangement as
+        /// Xbox One / Elite / Adaptive borrowing the Series mesh and getting
+        /// an inert Share button.</param>
+        public ControllerModelSwitch2Pro(bool enableSwitch2Controls = true) : base("Switch2Pro")
         {
             // ── Textured material ───────────────────────
             // The split parts keep their UVs into the model's single
@@ -94,18 +100,20 @@ namespace PadForge.Models3D
             model3DGroup.Children.Add(Capture);
 
             // C, GL and GR are real inputs on the switch2-pro wire (buttons
-            // 20, 19 and 18 of its report 0x09 masks), so they register like
-            // any other button and get click-to-record plus press accent.
-            // On an ORIGINAL switch-pro profile the wire ends at button 13
-            // and NintendoPreviewMap's table has no entry for them, so
-            // nothing ever addresses these three and they stay inert
-            // cosmetic meshes, which is the same posture as before.
+            // 20, 19 and 18 of its report 0x09 masks). On an ORIGINAL switch
+            // -pro profile the wire has no entry for them, so registering
+            // them there would make three dead meshes hoverable and
+            // clickable: a click-to-record target that can never record.
+            // The mesh still draws either way.
             CButton = LoadModel("CButton.obj");
-            RegisterButton("ButtonC", CButton);
             GL      = LoadModel("GL.obj");
-            RegisterButton("LeftPaddle", GL);
             GR      = LoadModel("GR.obj");
-            RegisterButton("RightPaddle", GR);
+            if (enableSwitch2Controls)
+            {
+                RegisterButton("ButtonC", CButton);
+                RegisterButton("LeftPaddle", GL);
+                RegisterButton("RightPaddle", GR);
+            }
             model3DGroup.Children.Add(CButton);
             model3DGroup.Children.Add(GL);
             model3DGroup.Children.Add(GR);

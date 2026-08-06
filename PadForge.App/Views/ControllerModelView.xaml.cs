@@ -42,7 +42,7 @@ namespace PadForge.Views
         // Profile switches within the same asset folder (Xbox One ↔
         // Xbox Series) need to force a rebuild when this flag would
         // change so the Share mesh transitions between inert and live.
-        private bool _currentModelShareEnabled;
+        private bool _currentModelExtraControlsEnabled;
         private bool _dirty;
 
         // Trigger animation state (from HC OverlayModel)
@@ -284,12 +284,25 @@ namespace PadForge.Views
             var (_, needed) = PadForge.Common.Input.HMaestroProfileCatalog.ResolveAssetFolders(
                 _vm.ProfileId, _vm.OutputType);
 
-            bool wantShare =
-                _vm.ProfileId != null &&
-                _vm.ProfileId.StartsWith("xbox-series-", System.StringComparison.OrdinalIgnoreCase);
+            // Two meshes are shared by profiles that do not all have every
+            // control on them: the Series mesh serves Xbox One / Elite /
+            // Adaptive, and the Switch 2 Pro mesh serves both Switch
+            // generations. Wire the borrowed-but-absent controls into the
+            // hover / click-to-record / highlight maps ONLY for the profile
+            // that actually has them. The meshes draw either way.
+            bool wantExtraControls = needed switch
+            {
+                "XboxSeries" => _vm.ProfileId != null && _vm.ProfileId.StartsWith(
+                    "xbox-series-", System.StringComparison.OrdinalIgnoreCase),
+                // Asked of the canonical wire table rather than matched on
+                // the profile id: the mesh is interactive exactly when the
+                // pad has the control, so the two cannot drift apart.
+                "Switch2Pro" => Models2D.NintendoPreviewMap.IndexOf(_vm.ProfileId, "ButtonC") >= 0,
+                _ => false,
+            };
 
             string appearance = ResolveAppearance(needed);
-            if (_currentModel?.ModelFamily == needed && _currentModelShareEnabled == wantShare
+            if (_currentModel?.ModelFamily == needed && _currentModelExtraControlsEnabled == wantExtraControls
                 && _currentModelAppearance == appearance)
                 return;
 
@@ -314,22 +327,20 @@ namespace PadForge.Views
 
             try
             {
-                // Xbox One, Elite and Adaptive profiles render the Series
-                // mesh too, but only Series profiles actually expose
-                // Share. Pass the flag so the others get an inert Share
-                // mesh (no hover / click / highlight) while Series
-                // profiles wire it into the click-to-record + highlight
-                // maps.
+                // Pass the flag so a borrowing profile gets inert meshes
+                // (no hover / click / highlight) for controls it does not
+                // have, while the owning profile wires them into the
+                // click-to-record + highlight maps.
                 _currentModel = needed switch
                 {
                     "DS4" => new ControllerModelDS4(appearance ?? "JetBlack"),
                     "DualSense" => new ControllerModelDualSense(appearance ?? "White"),
                     "DualSenseEdge" => new ControllerModelDualSenseEdge(),
-                    "Switch2Pro" => new ControllerModelSwitch2Pro(),
-                    "XboxSeries" => new ControllerModelXboxSeries(appearance ?? "Carbon", wantShare),
+                    "Switch2Pro" => new ControllerModelSwitch2Pro(wantExtraControls),
+                    "XboxSeries" => new ControllerModelXboxSeries(appearance ?? "Carbon", wantExtraControls),
                     _ => new ControllerModelXbox360()
                 };
-                _currentModelShareEnabled = wantShare;
+                _currentModelExtraControlsEnabled = wantExtraControls;
                 _currentModelAppearance = appearance;
                 UpdateAppearancePicker(needed);
 

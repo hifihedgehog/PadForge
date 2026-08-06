@@ -1,4 +1,4 @@
-// 3D controller model view adapted from Handheld Companion
+﻿// 3D controller model view adapted from Handheld Companion
 // https://github.com/Valkirie/HandheldCompanion
 // Copyright (c) CasperH2O, Lesueur Benjamin, trippyone
 // Licensed under CC BY-NC-SA 4.0
@@ -547,6 +547,9 @@ namespace PadForge.Views
             "LeftShoulder", "RightShoulder",
             "ButtonBack", "ButtonStart", "ButtonGuide",
             "ButtonShare",
+            "ButtonC",
+            "LeftPaddle",
+            "RightPaddle",
             "DPadUp", "DPadDown", "DPadLeft", "DPadRight",
             "LeftThumbButton", "RightThumbButton"
         };
@@ -616,6 +619,9 @@ namespace PadForge.Views
                 "ButtonStart" => _vm.ButtonStart,
                 "ButtonGuide" => _vm.ButtonGuide,
                 "ButtonShare" => _vm.ButtonShare,
+                "ButtonC" => _vm.ButtonC,
+                "LeftPaddle" => _vm.LeftPaddle,
+                "RightPaddle" => _vm.RightPaddle,
                 "DPadUp" => _vm.DPadUp,
                 "DPadDown" => _vm.DPadDown,
                 "DPadLeft" => _vm.DPadLeft,
@@ -1561,7 +1567,7 @@ namespace PadForge.Views
             // flash path so the stick-axis checks below can match.
             if (target.StartsWith("Raw", StringComparison.Ordinal))
             {
-                target = Models2D.NintendoPreviewMap.ToPreview(target);
+                target = Models2D.NintendoPreviewMap.ToPreview(target, _vm?.ProfileId);
                 if (string.IsNullOrEmpty(target)) return;
             }
 
@@ -1846,7 +1852,7 @@ namespace PadForge.Views
             // mirroring ControllerModel2DView.UpdateFlashTarget.
             if (target.StartsWith("Raw", StringComparison.Ordinal))
             {
-                target = Models2D.NintendoPreviewMap.ToPreview(target);
+                target = Models2D.NintendoPreviewMap.ToPreview(target, _vm?.ProfileId);
                 if (string.IsNullOrEmpty(target)) return;
             }
 

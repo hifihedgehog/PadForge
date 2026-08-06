@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HIDMaestro;
@@ -298,15 +298,15 @@ namespace PadForge.Common.Input
              || ContainsToken(p.Id, "dualshock") || ContainsToken(p.Id, "dualsense"));
 
         /// <summary>
-        /// True for the profiles the Nintendo category offers. Deliberately
-        /// the single switch-pro profile for now (owner call 2026-07-18:
-        /// "for now the only type be Switch Pro"). Switch 2 Pro, Joy-Cons,
+        /// True for the profiles the Nintendo category offers: the original
+        /// Switch Pro Controller and the Switch 2 Pro Controller. Joy-Cons,
         /// the NSO retro pads, and the GameCube adapter stay in Extended
-        /// until the category is widened. Widening is an id-list edit here,
-        /// nothing else.
+        /// until the category is widened further. Widening is an id-list
+        /// edit here, nothing else.
         /// </summary>
         private static bool IsNintendoProfile(HMProfile p) =>
-            string.Equals(p.Id, "switch-pro", StringComparison.OrdinalIgnoreCase);
+            string.Equals(p.Id, "switch-pro", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(p.Id, "switch2-pro-controller", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
         /// Resolve a profile id to the 2D + 3D asset folders PadForge should

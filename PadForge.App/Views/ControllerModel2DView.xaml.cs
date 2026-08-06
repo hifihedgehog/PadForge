@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -518,6 +518,9 @@ namespace PadForge.Views
             SetOverlayVisible("ButtonStart", _vm.ButtonStart);
             SetOverlayVisible("ButtonGuide", _vm.ButtonGuide);
             SetOverlayVisible("ButtonShare", _vm.ButtonShare);
+            SetOverlayVisible("ButtonC", _vm.ButtonC);
+            SetOverlayVisible("LeftPaddle", _vm.LeftPaddle);
+            SetOverlayVisible("RightPaddle", _vm.RightPaddle);
             SetOverlayVisible("LeftThumbButton", _vm.LeftThumbButton);
             SetOverlayVisible("RightThumbButton", _vm.RightThumbButton);
         }
@@ -749,7 +752,7 @@ namespace PadForge.Views
             // preview element grammar. Translate back before resolving.
             if (target.StartsWith("Raw", StringComparison.Ordinal))
             {
-                target = NintendoPreviewMap.ToPreview(target);
+                target = NintendoPreviewMap.ToPreview(target, _vm?.ProfileId);
                 if (string.IsNullOrEmpty(target)) return;
             }
 

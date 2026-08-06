@@ -699,7 +699,7 @@ namespace PadForge.Views
             if (DataContext is PadViewModel vm
                 && vm.OutputType == Engine.VirtualControllerType.Nintendo)
             {
-                targetName = Models2D.NintendoPreviewMap.ToRaw(targetName);
+                targetName = Models2D.NintendoPreviewMap.ToRaw(targetName, vm.ProfileId);
                 if (targetName == null) return;
             }
             ControllerElementRecordRequested?.Invoke(this, targetName);

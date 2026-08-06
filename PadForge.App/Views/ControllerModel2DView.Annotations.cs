@@ -1,4 +1,4 @@
-// Annotation overlay for the 2D controller preview (#175).
+﻿// Annotation overlay for the 2D controller preview (#175).
 //
 // Same design contract as ControllerModelView.Annotations.cs (the 3D
 // implementation): one steel chip per mapped row at the canvas edge, 1px
@@ -177,7 +177,7 @@ namespace PadForge.Views
             // uses the schematic view, never this canvas).
             if (targetSettingName.StartsWith("Raw", System.StringComparison.Ordinal))
             {
-                targetSettingName = NintendoPreviewMap.ToPreview(targetSettingName);
+                targetSettingName = NintendoPreviewMap.ToPreview(targetSettingName, _vm?.ProfileId);
                 if (targetSettingName == null)
                     return null;
             }
@@ -928,7 +928,7 @@ namespace PadForge.Views
             // on the ONLY slot type that feeds raw names to this canvas.
             if (prop != null && prop.StartsWith("Raw", System.StringComparison.Ordinal))
             {
-                prop = Models2D.NintendoPreviewMap.ToPreview(prop);
+                prop = Models2D.NintendoPreviewMap.ToPreview(prop, _vm?.ProfileId);
                 if (prop == null) return false;
             }
             return prop switch
@@ -943,6 +943,9 @@ namespace PadForge.Views
                 "ButtonStart" => _vm.ButtonStart,
                 "ButtonGuide" => _vm.ButtonGuide,
                 "ButtonShare" => _vm.ButtonShare,
+                "ButtonC" => _vm.ButtonC,
+                "LeftPaddle" => _vm.LeftPaddle,
+                "RightPaddle" => _vm.RightPaddle,
                 "DPadUp" => _vm.DPadUp,
                 "DPadDown" => _vm.DPadDown,
                 "DPadLeft" => _vm.DPadLeft,

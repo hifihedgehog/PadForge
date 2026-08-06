@@ -989,13 +989,15 @@ def process_dualsense_edge():
     pad does not have (the rear back buttons and the front Fn pair) as
     floating tiles.
 
-    ALL FOUR are tiles, including the front Fn pair, because the front
-    position is not derivable from anything on disk. The Edge mesh carries no
-    Fn parts, and fitting dualsense-tester's near-top-down Edge SVG onto this
-    3/4 render lands the face buttons and D-pad within ~10 px while the
-    STICKS come out 51 px off, with the residual growing downward; the Fn
-    prediction falls at y=723 on a body whose column ends at y=696. See
-    tools/gen_dualsense_edge_art.py for the full measurement."""
+    ALL FOUR are tiles, including the front Fn pair, because none of the four
+    is visible in this render. The Edge mesh pins the Fn caps to the housing
+    UNDERSIDE, below the pack render's front silhouette, and fitting
+    dualsense-tester's near-top-down Edge SVG onto this 3/4 render lands the
+    face buttons and D-pad within ~10 px while the STICKS come out 51 px off,
+    with the residual growing downward; the Fn prediction falls at y=723 on a
+    body whose column ends at y=696. The 3D view sites all four on their real
+    meshes instead. See tools/gen_dualsense_edge_art.py for the full
+    measurement."""
     return _process_dualsense_family("DUALSENSEEDGE", margin=DS_MARGIN, edge=True)
 
 

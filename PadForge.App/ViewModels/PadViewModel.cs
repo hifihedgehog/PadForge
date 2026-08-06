@@ -2216,20 +2216,53 @@ namespace PadForge.ViewModels
                 // stick axes with the same labels the gamepad grids use.
                 void AddBtn(int i) => Mappings.Add(new MappingItem(
                     MacroButtonNames.RawButtonLabel(ProfileId, i + 1), $"RawBtn{i}", MappingCategory.Buttons));
+                void AddDPad(string label, string target) =>
+                    Mappings.Add(new MappingItem(label, target, MappingCategory.DPad));
+
+                // The ARRANGEMENT below is the same for both generations.
+                // The INDICES are not: they are wire positions, and the two
+                // wires agree only on the face diamond. Reading the original's
+                // indices on a Switch 2 Pro printed "Minus"/"Plus" over its
+                // D-pad Down/Right, "Home"/"Capture" over L/ZL, and stopped
+                // at 13, so Minus, LS, Home, Capture, GR, GL and C had no row
+                // at all. Everything past the face buttons has to be looked
+                // up per profile.
+                bool s2 = MacroButtonNames.IsSwitch2LetteredProfile(ProfileId);
+
+                //                                   switch-pro   switch2-pro
+                int bL = s2 ? 12 : 4,  bR = s2 ?  4 : 5;   // L / R
+                int minus = s2 ? 14 : 8, plus = s2 ? 6 : 9;
+                int home = s2 ? 16 : 12, capture = s2 ? 17 : 13;
+                int lStick = s2 ? 15 : 10, rStick = s2 ? 7 : 11;
+                int zl = s2 ? 13 : 6,  zr = s2 ? 5 : 7;
 
                 AddBtn(0); AddBtn(1); AddBtn(2); AddBtn(3);   // B A Y X
-                AddBtn(4); AddBtn(5);                          // L R
-                AddBtn(8); AddBtn(9);                          // Minus Plus
-                AddBtn(12);                                    // Home
-                AddBtn(13);                                    // Capture
-                AddBtn(10); AddBtn(11);                        // stick clicks
+                AddBtn(bL); AddBtn(bR);                        // L R
+                AddBtn(minus); AddBtn(plus);                   // Minus Plus
+                AddBtn(home);                                  // Home
+                AddBtn(capture);                               // Capture
+                if (s2) AddBtn(20);                            // C, beside Capture
+                AddBtn(lStick); AddBtn(rStick);                // stick clicks
+                if (s2) { AddBtn(19); AddBtn(18); }            // GL GR, the rear pair
 
-                Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadUp, "RawPov0Up", MappingCategory.DPad));
-                Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadDown, "RawPov0Down", MappingCategory.DPad));
-                Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadLeft, "RawPov0Left", MappingCategory.DPad));
-                Mappings.Add(new MappingItem(Strings.Instance.Btn_DPadRight, "RawPov0Right", MappingCategory.DPad));
+                if (s2)
+                {
+                    // Real buttons, not a hat: this pad has a D-pad like any
+                    // other, it just reports each direction as its own button.
+                    AddDPad(Strings.Instance.Btn_DPadUp, "RawBtn11");
+                    AddDPad(Strings.Instance.Btn_DPadDown, "RawBtn8");
+                    AddDPad(Strings.Instance.Btn_DPadLeft, "RawBtn10");
+                    AddDPad(Strings.Instance.Btn_DPadRight, "RawBtn9");
+                }
+                else
+                {
+                    AddDPad(Strings.Instance.Btn_DPadUp, "RawPov0Up");
+                    AddDPad(Strings.Instance.Btn_DPadDown, "RawPov0Down");
+                    AddDPad(Strings.Instance.Btn_DPadLeft, "RawPov0Left");
+                    AddDPad(Strings.Instance.Btn_DPadRight, "RawPov0Right");
+                }
 
-                AddBtn(6); AddBtn(7);                          // ZL ZR
+                AddBtn(zl); AddBtn(zr);                        // ZL ZR
 
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickX, "RawAxis0", MappingCategory.LeftStick, "RawAxis0Neg"));
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickY, "RawAxis1", MappingCategory.LeftStick, "RawAxis1Neg"));

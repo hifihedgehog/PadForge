@@ -327,8 +327,13 @@ namespace PadForge.Common.Input
             // PlayStation
             // Edge first: its profiles start with "dualsense" too, and they
             // must always get the Edge mesh, never a plain DualSense.
+            // The Edge has its OWN 2D set: the same pack sprites over a base
+            // widened for the four floating tiles that carry its back buttons
+            // and Fn pair. A plain DualSense must not render four controls it
+            // has no wire for, the same rule that split SWITCH2PRO off from
+            // SWITCHPRO.
             if (profileId.StartsWith("dualsense-edge", StringComparison.OrdinalIgnoreCase))
-                return ("DualSense", "DualSenseEdge");
+                return ("DUALSENSEEDGE", "DualSenseEdge");
             if (profileId.StartsWith("dualsense", StringComparison.OrdinalIgnoreCase))
                 return ("DualSense", "DualSense");
             if (profileId.StartsWith("dualshock", StringComparison.OrdinalIgnoreCase))

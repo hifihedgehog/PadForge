@@ -1016,11 +1016,11 @@
   <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
   <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
-  <data name="Btn_MicMute" xml:space="preserve"><value>Mute</value></data>
-  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Left Back Button</value></data>
-  <data name="Btn_RightPaddle" xml:space="preserve"><value>Right Back Button</value></data>
-  <data name="Btn_LeftFn" xml:space="preserve"><value>Left Fn</value></data>
-  <data name="Btn_RightFn" xml:space="preserve"><value>Right Fn</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>Muet</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Bouton arrière gauche</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>Bouton arrière droit</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>Fn gauche</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>Fn droit</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Bouton gauche de la souris</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>Bouton droit de la souris</value></data>
@@ -2316,6 +2316,7 @@
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Le pilote Bluetooth pour les manettes PlayStation n'a pas pu être installé.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Connectez la DualShock 3 avec un câble USB, puis cliquez sur Appairer. PadForge inscrit ce PC dans la manette et l'enregistre. Une fois terminé, débranchez la manette et appuyez sur le bouton PS pour vous connecter via Bluetooth.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Aucune DualShock 3 détectée en USB. Connectez-la avec un câble USB et réessayez.</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows n'installera pas le pilote USB de PadForge pour la DualShock 3, car son certificat de signature n'est pas approuvé sur ce PC.</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>Prêt. Débranchez la manette et appuyez sur le bouton PS. Elle apparaîtra dans votre liste d'appareils.</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>Configuration de la manette en cours. Gardez-la connectée en USB.</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>En forge</value></data>

@@ -1020,11 +1020,11 @@
   <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
   <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
-  <data name="Btn_MicMute" xml:space="preserve"><value>Mute</value></data>
-  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Left Back Button</value></data>
-  <data name="Btn_RightPaddle" xml:space="preserve"><value>Right Back Button</value></data>
-  <data name="Btn_LeftFn" xml:space="preserve"><value>Left Fn</value></data>
-  <data name="Btn_RightFn" xml:space="preserve"><value>Right Fn</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>Dempen</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Linkerachterknop</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>Rechterachterknop</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>Fn links</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>Fn rechts</value></data>
 
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Linkermuisknop</value></data>
@@ -2336,6 +2336,7 @@
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Het Bluetooth-stuurprogramma voor PlayStation-controllers kon niet worden geïnstalleerd.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Sluit de DualShock 3 aan met een USB-kabel en klik op Koppelen. PadForge schrijft deze PC naar de controller en registreert hem. Koppel na afloop de controller los en druk op de PS-knop om via Bluetooth te verbinden.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Geen DualShock 3 gevonden via USB. Sluit hem aan met een USB-kabel en probeer het opnieuw.</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows installeert het USB-stuurprogramma van PadForge voor de DualShock 3 niet, omdat het ondertekeningscertificaat op deze pc niet wordt vertrouwd.</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>Klaar. Koppel de controller los en druk op de PS-knop. Hij verschijnt dan in je apparatenlijst.</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>De controller wordt ingesteld. Houd hem via USB aangesloten.</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Smeden</value></data>

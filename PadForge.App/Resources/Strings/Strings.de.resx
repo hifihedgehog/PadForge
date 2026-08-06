@@ -1016,11 +1016,11 @@
   <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
   <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
-  <data name="Btn_MicMute" xml:space="preserve"><value>Mute</value></data>
-  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Left Back Button</value></data>
-  <data name="Btn_RightPaddle" xml:space="preserve"><value>Right Back Button</value></data>
-  <data name="Btn_LeftFn" xml:space="preserve"><value>Left Fn</value></data>
-  <data name="Btn_RightFn" xml:space="preserve"><value>Right Fn</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>Stumm</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Linke Rücktaste</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>Rechte Rücktaste</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>Fn links</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>Fn rechts</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Linke Maustaste</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>Rechte Maustaste</value></data>
@@ -2316,6 +2316,7 @@
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Der Bluetooth-Treiber für PlayStation-Controller konnte nicht installiert werden.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Verbinden Sie den DualShock 3 mit einem USB-Kabel und klicken Sie dann auf Koppeln. PadForge schreibt diesen PC in den Controller und registriert ihn. Trennen Sie danach den Controller und drücken Sie die PS-Taste, um sich über Bluetooth zu verbinden.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Kein DualShock 3 über USB gefunden. Verbinden Sie ihn mit einem USB-Kabel und versuchen Sie es erneut.</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows installiert den USB-Treiber von PadForge für den DualShock 3 nicht, da dessen Signaturzertifikat auf diesem PC nicht vertrauenswürdig ist.</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>Bereit. Trennen Sie den Controller und drücken Sie die PS-Taste. Er erscheint dann in Ihrer Geräteliste.</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>Controller wird eingerichtet. Lassen Sie ihn über USB verbunden.</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Schmieden</value></data>

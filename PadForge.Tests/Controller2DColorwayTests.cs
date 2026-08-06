@@ -95,9 +95,29 @@ namespace PadForge.Tests
         [Fact]
         public void XboxSeriesIds_AreASubsetOfThe3DAppearanceIds()
         {
-            var (_, set) = Controller2DColorways.For("XBOXSERIES");
-            foreach (var c in set)
-                Assert.Contains(c.Id, Models3D.ControllerModelXboxSeries.AppearanceIds);
+            foreach (var folder in new[] { "XBOXSERIES", "XBOXONE" })
+            {
+                var (famKey, set) = Controller2DColorways.For(folder);
+                // Xbox One / Elite / Adaptive profiles render the XBOXONE 2D
+                // art and the SERIES mesh in 3D, so both folders answer to the
+                // one family key with the one id vocabulary. A key of its own
+                // would make a pad's colorway invisible across the views.
+                Assert.Equal("XboxSeries", famKey);
+                foreach (var c in set)
+                    Assert.Contains(c.Id, Models3D.ControllerModelXboxSeries.AppearanceIds);
+            }
+        }
+
+        /// <summary>Both Xbox 2D folders resolve through the same appearance
+        /// family, so an id chosen on one is renderable on the other where the
+        /// physical colorway exists in both.</summary>
+        [Fact]
+        public void XboxFolders_ShareTheirIdVocabulary()
+        {
+            var (_, series) = Controller2DColorways.For("XBOXSERIES");
+            var (_, one) = Controller2DColorways.For("XBOXONE");
+            foreach (var c in one)
+                Assert.Contains(c.Id, series.Select(s => s.Id));
         }
 
         [Fact]

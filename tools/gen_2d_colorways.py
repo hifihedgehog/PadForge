@@ -140,27 +140,34 @@ FAMILIES = [
     },
     {
         "folder": "XBOXONE",
-        "family": "XboxOne",
+        "family": "XboxSeries",
         "base": "XB1_S_base.png",
         "packdir": "Xbox Wireless Controller Images/Default Theme/Template/Xbox One S Controller",
+        # The family key and the ids are the SERIES ones on purpose. Xbox
+        # One / Elite / Adaptive profiles render the XBOXONE 2D art but the
+        # Series MESH in 3D (HMaestroProfileCatalog.ResolveAssetFolders
+        # returns ("XBOXONE", "XboxSeries")), so a per-family key of its own
+        # would split one pad's colorway across the two views and the
+        # registry's own "one selection drives both" contract would be false.
+        # Display names stay the One S's own; only the ids are shared.
         "colorways": [
-            ("White", "White", "White"),
-            ("Black", "Black", "Black"),
-            ("Blue", "Blue", "Blue"),
-            ("Red", "Red", "Red"),
+            ("Robot", "White", "White"),
+            ("Carbon", "Black", "Black"),
+            ("ShockBlue", "Blue", "Blue"),
+            ("PulseRed", "Red", "Red"),
         ],
         # Black shares the stock sprites (the One S wears black sticks and
         # triggers in both shells; the pack ships no Black variants).
         "pack_sprites_dir": "Xbox Wireless Controller Images/Default Theme/Theme Assets/Xbox One Active Presses/Color",
         "pack_sprites": {
-            "Black": {},
-            "Blue": {
+            "Carbon": {},
+            "ShockBlue": {
                 "XB1_LeftTrigger.png": "XB1_LeftTrigger_Blue.png",
                 "XB1_RightTrigger.png": "XB1_RightTrigger_Blue.png",
                 "XB1_LeftStick.png": "XB1_LeftStick_Blue.png",
                 "XB1_RightStick.png": "XB1_RightStick_Blue.png",
             },
-            "Red": {
+            "PulseRed": {
                 "XB1_LeftTrigger.png": "XB1_LeftTrigger_Red.png",
                 "XB1_RightTrigger.png": "XB1_RightTrigger_Red.png",
                 "XB1_LeftStick.png": "XB1_LeftStick_Red.png",

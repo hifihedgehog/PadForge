@@ -207,8 +207,19 @@ namespace PadForge.Services
             _log($"Bluetooth radio: {Hex(radio, ':')}");
 
             // 2. Ensure the docked DS3 is bound to WinUSB so we can send its magic reports.
+            //    Distinguish "no pad plugged in" from "Windows will not accept
+            //    our driver package": the second is not something plugging the
+            //    cable in fixes, and telling the user to check the cable sent
+            //    discussion #283 chasing the wrong thing.
             if (!EnsureWinUsbBound(ct))
             {
+                if (!Ds3DriverInstaller.IsWinUsbPackageTrusted(out string signer))
+                {
+                    _log($"Windows will not install PadForge's USB driver for the DS3: its "
+                         + $"signing certificate ({signer ?? "unknown"}) is not trusted on this PC.");
+                    r.Error = "driver-untrusted";
+                    return r;
+                }
                 _log("Could not bind the DS3 to WinUSB. Is it connected by USB cable?");
                 r.Error = "winusb-bind-failed";
                 return r;

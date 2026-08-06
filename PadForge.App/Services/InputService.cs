@@ -721,19 +721,25 @@ namespace PadForge.Services
 
             // Expose per-slot button activity to the user-effects dispatcher so the
             // InputReactive lightbar can detect rising edges. The 16-bit Gamepad.Buttons
-            // mask is full (DPAD..Y), so two presses that live outside it would otherwise
-            // never flash: the Share / Create button (its own bool field, where a Mic /
-            // Misc1 mapping lands) and the touchpad click. Fold both into the wider uint
-            // mask on spare bits. Bound to the manager via a captured field so .NET keeps
-            // the delegate alive for the manager's lifetime.
+            // mask is full (DPAD..Y), so every press that lives outside it would
+            // otherwise never flash: Share / Create, the touchpad click, and the
+            // DualSense mute plus the Edge's back and Fn pair, each its own bool
+            // field. Fold them all into the wider uint mask on spare bits. Bound to
+            // the manager via a captured field so .NET keeps the delegate alive for
+            // the manager's lifetime.
             UserEffectsDispatcher.SlotButtonsProvider = padIndex =>
             {
                 if (_inputManager == null) return 0u;
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return 0u;
                 var gp = _inputManager.CombinedOutputStates[padIndex];
                 uint mask = gp.Buttons;
-                if (gp.Share) mask |= 0x10000u;                                  // Share / Create / Mic
+                if (gp.Share) mask |= 0x10000u;                                  // Share / Create
                 if (_inputManager.SlotRawTouchpadClick[padIndex]) mask |= 0x20000u; // raw touchpad click
+                if (gp.MicMute) mask |= 0x40000u;                                // DualSense mute
+                if (gp.LeftPaddle) mask |= 0x80000u;                             // Edge back buttons
+                if (gp.RightPaddle) mask |= 0x100000u;
+                if (gp.LeftFunction) mask |= 0x200000u;                          // Edge Fn buttons
+                if (gp.RightFunction) mask |= 0x400000u;
                 return mask;
             };
 
@@ -4599,6 +4605,14 @@ namespace PadForge.Services
                     "ButtonStart"      => (gp.Buttons & Gamepad.START) != 0 ? 1 : 0,
                     "ButtonGuide"      => (gp.Buttons & Gamepad.GUIDE) != 0 ? 1 : 0,
                     "ButtonShare"      => gp.Share ? 1 : 0,
+                    // Sony's own extras: each is its own bool beside the
+                    // 16-bit mask, so each needs its own arm or the grid's
+                    // value column reads zero while the output is live.
+                    "ButtonMute"       => gp.MicMute ? 1 : 0,
+                    "LeftPaddle"       => gp.LeftPaddle ? 1 : 0,
+                    "RightPaddle"      => gp.RightPaddle ? 1 : 0,
+                    "LeftFunction"     => gp.LeftFunction ? 1 : 0,
+                    "RightFunction"    => gp.RightFunction ? 1 : 0,
                     "LeftThumbButton"  => (gp.Buttons & Gamepad.LEFT_THUMB) != 0 ? 1 : 0,
                     "RightThumbButton" => (gp.Buttons & Gamepad.RIGHT_THUMB) != 0 ? 1 : 0,
                     "DPadUp"           => (gp.Buttons & Gamepad.DPAD_UP) != 0 ? 1 : 0,

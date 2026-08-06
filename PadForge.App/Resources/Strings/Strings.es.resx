@@ -1016,11 +1016,11 @@
   <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
   <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
-  <data name="Btn_MicMute" xml:space="preserve"><value>Mute</value></data>
-  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Left Back Button</value></data>
-  <data name="Btn_RightPaddle" xml:space="preserve"><value>Right Back Button</value></data>
-  <data name="Btn_LeftFn" xml:space="preserve"><value>Left Fn</value></data>
-  <data name="Btn_RightFn" xml:space="preserve"><value>Right Fn</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>Silencio</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Botón trasero izquierdo</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>Botón trasero derecho</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>Fn izquierdo</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>Fn derecho</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Botón izquierdo del ratón</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>Botón derecho del ratón</value></data>
@@ -2316,6 +2316,7 @@
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>No se pudo instalar el controlador Bluetooth para los mandos de PlayStation.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Conecta el DualShock 3 con un cable USB y luego haz clic en Emparejar. PadForge escribe este PC en el mando y lo registra. Cuando termine, desconecta el mando y pulsa el botón PS para conectar por Bluetooth.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>No se encontró ningún DualShock 3 por USB. Conéctalo con un cable USB e inténtalo de nuevo.</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows no instalará el controlador USB de PadForge para el DualShock 3, porque su certificado de firma no es de confianza en este PC.</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>Listo. Desconecta el mando y pulsa el botón PS. Aparecerá en tu lista de dispositivos.</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>Configurando el mando. Mantenlo conectado por USB.</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forjando</value></data>

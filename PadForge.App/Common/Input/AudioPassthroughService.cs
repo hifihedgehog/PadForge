@@ -905,6 +905,23 @@ namespace PadForge.Common.Input
                 }
             }
 
+            /// <summary>Appends already-converted interleaved stereo
+            /// float frames (the resampled persona path). Same whole-pairs
+            /// discipline as WriteS16.</summary>
+            public void WriteFloatPairs(float[] interleaved, int frames)
+            {
+                int samples = frames * 2;
+                if (samples > interleaved.Length) samples = interleaved.Length / 2 * 2;
+                lock (_g)
+                {
+                    for (int i = 0; i < samples; i++)
+                    {
+                        _ring[_write % _ring.Length] = interleaved[i];
+                        _write++;
+                    }
+                }
+            }
+
             /// <summary>Persona-feed writer: extract one stereo pair per
             /// <paramref name="strideBytes"/>-sized frame of a wider
             /// interleave (the composite's 4-channel window), scale, and
@@ -1003,6 +1020,17 @@ namespace PadForge.Common.Input
             public float SpeakerGain = 1f, MicGain = 1f;
             public bool SpeakerMuted, MicMuted;
             public int SpkL, SpkR, HapL, HapR;   // interleave indices from ChannelRoles
+            public int SrcRate = Rate;           // persona OUT stream rate (DS5 48k, DS4 32k)
+            // Speaker-out resampler state + scratch (pacing thread only).
+            public double SpkPhase;
+            public readonly float[] SpkCarry = new float[2];
+            public float[] SpkFloatSrc = Array.Empty<float>();
+            public float[] SpkFloatDst = Array.Empty<float>();
+            // Mic-in resampler state + scratch (capture thread only).
+            public double MicPhase;
+            public float[] MicCarry = Array.Empty<float>();
+            public float[] MicFloatSrc = Array.Empty<float>();
+            public float[] MicFloatDst = Array.Empty<float>();
             public Action<HIDMaestro.HMAudioOutput, ReadOnlyMemory<byte>> FramesHandler;
             public EventHandler<HIDMaestro.HMAudioControlChangedEventArgs> ControlHandler;
             public WasapiCapture Mic;
@@ -1090,6 +1118,11 @@ namespace PadForge.Common.Input
             DetachPersonaFeed(slot);
 
             var feed = new PersonaFeed { Audio = audio, Slot = slot };
+            // The DS5 persona streams 48 kHz and matches the sink domain
+            // 1:1; the DS4 persona streams 32 kHz (the real pad's UAC
+            // rate), and pushing those samples into the 48 kHz sink
+            // unresampled played everything 1.5x fast and a fifth sharp.
+            feed.SrcRate = audio.Output.SampleRateHz > 0 ? audio.Output.SampleRateHz : Rate;
             var roles = audio.Output.ChannelRoles;
             feed.SpkL = IndexOfRole(roles, "speakerLeft", 0);
             feed.SpkR = IndexOfRole(roles, "speakerRight", 1);
@@ -1168,6 +1201,46 @@ namespace PadForge.Common.Input
         private static bool _sniffActive;
         private static long _sniffLastSignalTicks, _sniffSummaryTicks;
 
+        /// <summary>Linear interleaved resampler with cross-call
+        /// continuity: <paramref name="carry"/> holds the previous call's
+        /// last frame (one float per channel) and <paramref name="phase"/>
+        /// the fractional read position within [0,1) ahead of it, so a
+        /// stream split across arbitrary callback windows resamples
+        /// identically to one contiguous buffer. step = srcRate/dstRate.
+        /// Returns frames written to <paramref name="dst"/> (interleaved,
+        /// same channel count). Pure over its ref state; internal for the
+        /// unit tests.</summary>
+        internal static int LinearResampleInterleaved(
+            ReadOnlySpan<float> src, int srcFrames, int channels,
+            float[] dst, double step, ref double phase, float[] carry)
+        {
+            if (srcFrames <= 0 || channels <= 0 || step <= 0) return 0;
+            int written = 0;
+            // Positions run over a virtual stream [carry, src0, src1, ...]:
+            // pos in [0,1) interpolates carry->src0, [1,2) src0->src1, etc.
+            double pos = phase;
+            double end = srcFrames;   // carry + srcFrames frames available
+            while (pos < end)
+            {
+                int i = (int)pos;                 // 0 = carry->src0 segment
+                float frac = (float)(pos - i);
+                for (int c = 0; c < channels; c++)
+                {
+                    float a = i == 0 ? carry[c] : src[(i - 1) * channels + c];
+                    float b = src[i * channels + c];
+                    int o = written * channels + c;
+                    if (o >= dst.Length) return written;
+                    dst[o] = a + (b - a) * frac;
+                }
+                written++;
+                pos += step;
+            }
+            phase = pos - end;
+            for (int c = 0; c < channels; c++)
+                carry[c] = src[(srcFrames - 1) * channels + c];
+            return written;
+        }
+
         private static void OnPersonaFrames(PersonaFeed feed, HIDMaestro.HMAudioOutput output, ReadOnlyMemory<byte> pcm)
         {
             // Reception-layer heartbeat: proves host PCM reaches us at all,
@@ -1240,10 +1313,41 @@ namespace PadForge.Common.Input
                 }
             }
 
+            // Rate-convert the speaker pairs once per callback when the
+            // persona's rate differs from the 48 kHz sink domain, then fan
+            // the SAME resampled window out to every target ring.
+            int rsFrames = -1;
+            if (feed.SrcRate != Rate)
+            {
+                int srcFrames = span.Length / stride;
+                if (feed.SpkFloatSrc.Length < srcFrames * 2)
+                    feed.SpkFloatSrc = new float[srcFrames * 2];
+                int lOff = feed.SpkL * 2, rOff = feed.SpkR * 2;
+                for (int i = 0, f = 0; i + stride <= span.Length; i += stride, f++)
+                {
+                    short l = (short)(span[i + lOff] | (span[i + lOff + 1] << 8));
+                    short r = (short)(span[i + rOff] | (span[i + rOff + 1] << 8));
+                    feed.SpkFloatSrc[f * 2] = l / 32768f * spkGain;
+                    feed.SpkFloatSrc[f * 2 + 1] = r / 32768f * spkGain;
+                }
+                int cap = (int)(srcFrames * (double)Rate / feed.SrcRate) + 4;
+                if (feed.SpkFloatDst.Length < cap * 2)
+                    feed.SpkFloatDst = new float[cap * 2];
+                double step = feed.SrcRate / (double)Rate;
+                double ph = feed.SpkPhase;
+                rsFrames = LinearResampleInterleaved(
+                    feed.SpkFloatSrc.AsSpan(0, srcFrames * 2), srcFrames, 2,
+                    feed.SpkFloatDst, step, ref ph, feed.SpkCarry);
+                feed.SpkPhase = ph;
+            }
+
             foreach (var guid in targets)
             {
                 var sring = _personaSpeakerRings.GetOrAdd(guid, _ => new RemoteAudioRing());
-                sring.WriteS16PairsScaled(span, stride, feed.SpkL * 2, feed.SpkR * 2, spkGain);
+                if (rsFrames >= 0)
+                    sring.WriteFloatPairs(feed.SpkFloatDst, rsFrames);
+                else
+                    sring.WriteS16PairsScaled(span, stride, feed.SpkL * 2, feed.SpkR * 2, spkGain);
                 if (feed.HapL >= 0 && feed.HapR >= 0 && ch > Math.Max(feed.HapL, feed.HapR))
                 {
                     var hring = _personaHapticRings.GetOrAdd(guid, _ => new PersonaHapticRing());
@@ -1796,11 +1900,6 @@ namespace PadForge.Common.Input
                 cap.DataAvailable += (_, a) =>
                 {
                     var mic = feed.Audio.Microphone;
-                    // Endpoint shared-mode float or s16 → the persona's
-                    // declared s16 format. Rates match on the DualSense
-                    // (48 kHz both sides); a mismatched pad is skipped
-                    // rather than pitch-shifted.
-                    if (cap.WaveFormat.SampleRate != mic.SampleRateHz) return;
                     float gain = feed.MicMuted ? 0f : feed.MicGain;
                     int inCh = cap.WaveFormat.Channels, outCh = mic.Channels;
                     // Shared-mode capture is the endpoint mix format:
@@ -1811,8 +1910,13 @@ namespace PadForge.Common.Input
                             && wfx.SubFormat == new Guid("00000003-0000-0010-8000-00aa00389b71"));
                     int inStride = inCh * (isFloat ? 4 : 2);
                     int frames = a.BytesRecorded / inStride;
-                    int need = frames * outCh * 2;
-                    if (feed.MicScratch.Length < need) feed.MicScratch = new byte[need];
+                    if (frames <= 0) return;
+
+                    // Endpoint frames → float at the persona's channel
+                    // count, gain applied here so the resampler below is
+                    // pure signal.
+                    if (feed.MicFloatSrc.Length < frames * outCh)
+                        feed.MicFloatSrc = new float[frames * outCh];
                     for (int f = 0; f < frames; f++)
                     {
                         for (int c = 0; c < outCh; c++)
@@ -1821,11 +1925,44 @@ namespace PadForge.Common.Input
                             float v;
                             if (isFloat) v = BitConverter.ToSingle(a.Buffer, f * inStride + ic * 4);
                             else v = BitConverter.ToInt16(a.Buffer, f * inStride + ic * 2) / 32768f;
-                            short s = (short)Math.Clamp(v * gain * 32767f, short.MinValue, short.MaxValue);
-                            int o = (f * outCh + c) * 2;
-                            feed.MicScratch[o] = (byte)s;
-                            feed.MicScratch[o + 1] = (byte)(s >> 8);
+                            feed.MicFloatSrc[f * outCh + c] = v * gain;
                         }
+                    }
+
+                    // Rate-convert to the persona's declared mic rate. The
+                    // DualSense matches the endpoint (48 kHz both sides,
+                    // 1:1); the DS4 persona declares 16 kHz mono, and the
+                    // old equality bail simply dropped every frame there,
+                    // which is a silently dead virtual mic.
+                    float[] outFloat = feed.MicFloatSrc;
+                    int outFrames = frames;
+                    if (cap.WaveFormat.SampleRate != mic.SampleRateHz)
+                    {
+                        if (feed.MicCarry.Length != outCh)
+                        {
+                            feed.MicCarry = new float[outCh];
+                            feed.MicPhase = 0;
+                        }
+                        int capOut = (int)(frames * (double)mic.SampleRateHz / cap.WaveFormat.SampleRate) + 4;
+                        if (feed.MicFloatDst.Length < capOut * outCh)
+                            feed.MicFloatDst = new float[capOut * outCh];
+                        double step = cap.WaveFormat.SampleRate / (double)mic.SampleRateHz;
+                        double ph = feed.MicPhase;
+                        outFrames = LinearResampleInterleaved(
+                            feed.MicFloatSrc.AsSpan(0, frames * outCh), frames, outCh,
+                            feed.MicFloatDst, step, ref ph, feed.MicCarry);
+                        feed.MicPhase = ph;
+                        outFloat = feed.MicFloatDst;
+                        if (outFrames <= 0) return;
+                    }
+
+                    int need = outFrames * outCh * 2;
+                    if (feed.MicScratch.Length < need) feed.MicScratch = new byte[need];
+                    for (int i = 0; i < outFrames * outCh; i++)
+                    {
+                        short sVal = (short)Math.Clamp(outFloat[i] * 32767f, short.MinValue, short.MaxValue);
+                        feed.MicScratch[i * 2] = (byte)sVal;
+                        feed.MicScratch[i * 2 + 1] = (byte)(sVal >> 8);
                     }
                     mic.Submit(feed.MicScratch.AsSpan(0, need));
                 };

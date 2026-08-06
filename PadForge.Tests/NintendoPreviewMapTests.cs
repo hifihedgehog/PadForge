@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using PadForge.Models2D;
 using Xunit;
@@ -16,7 +16,9 @@ namespace PadForge.Tests
     ///   switch-pro   B A Y X, L R, ZL ZR, Minus Plus, LS RS, Home, Capture
     ///                = raw 0..13, D-pad on hat 0.
     ///   switch2-pro  B A Y X, R ZR, Plus RS, D-pad(4), L ZL, Minus LS,
-    ///                Home Capture, GR GL, C = raw 0..20, no hat.
+    ///                Home Capture, GR GL, C = raw 0..20. It has a D-pad
+    ///                like any pad; it reports it as four discrete
+    ///                buttons rather than as a HID hat switch.
     /// </summary>
     public class NintendoPreviewMapTests
     {
@@ -87,10 +89,11 @@ namespace PadForge.Tests
             Assert.Equal(preview, NintendoPreviewMap.ToPreview(raw, S2));
         }
 
-        /// <summary>The Switch 2 Pro spends four real buttons on the D-pad
-        /// and declares no hat, so a POV target must never be produced for
-        /// it. Emitting one would map input onto wire the descriptor does
-        /// not have.</summary>
+        /// <summary>The Switch 2 Pro has a D-pad, but reports it as four
+        /// discrete buttons rather than as a HID hat switch: its descriptor
+        /// declares USAGE_MIN 1 / USAGE_MAX 21 on the Button page and no hat
+        /// usage at all. So a POV target must never be produced for it, or
+        /// the D-pad would map onto wire the descriptor does not have.</summary>
         [Theory]
         [InlineData("DPadUp")]
         [InlineData("DPadDown")]
@@ -103,10 +106,9 @@ namespace PadForge.Tests
             Assert.DoesNotContain("Pov", raw);
         }
 
-        /// <summary>C / GL / GR are drawn on the shared Switch Pro art but
-        /// exist only on the Switch 2 wire. On an original Pro Controller
-        /// they must resolve to nothing, the same posture their 3D meshes
-        /// have had since the mesh was adopted: rendered, never addressed.</summary>
+        /// <summary>C / GL / GR exist only on the Switch 2 wire. The original
+        /// Pro Controller has no art for them either (its asset set is the
+        /// pack's own, untouched), so the map must refuse them for it.</summary>
         [Theory]
         [InlineData("ButtonC")]
         [InlineData("LeftPaddle")]
@@ -170,9 +172,8 @@ namespace PadForge.Tests
             Assert.Null(NintendoPreviewMap.ToRaw("ButtonC", profileId));
         }
 
-        /// <summary>Every clickable overlay on the shared art resolves to a
-        /// well-formed, distinct raw target under the Switch 2 Pro profile,
-        /// which is the one whose wire covers the whole drawing. StickRings
+        /// <summary>Every clickable overlay in the Switch 2 Pro's OWN asset
+        /// set resolves to a well-formed, distinct raw target. StickRings
         /// are exempt (clicks route through the quadrant emitter) and
         /// TriggerBases are rest art.</summary>
         [Fact]
@@ -180,7 +181,7 @@ namespace PadForge.Tests
         {
             var grammar = new Regex(@"^(RawBtn(\d+)|RawAxis[0-3](Neg)?)$");
             var seen = new HashSet<string>();
-            foreach (var ov in SwitchProLayout.Overlays)
+            foreach (var ov in Switch2ProLayout.Overlays)
             {
                 if (ov.ElementType is OverlayElementType.TriggerBase
                     or OverlayElementType.StickRing)
@@ -197,8 +198,9 @@ namespace PadForge.Tests
                 Assert.Contains($"RawBtn{i}", (IEnumerable<string>)seen);
         }
 
-        /// <summary>The original Pro Controller reaches its own 14 the same
-        /// way, over the hat rather than four D-pad buttons.</summary>
+        /// <summary>The original Pro Controller's asset set carries none of
+        /// the Switch 2 controls, so every one of ITS overlays resolves, and
+        /// its D-pad goes over the hat rather than four buttons.</summary>
         [Fact]
         public void EveryClickableOverlay_ResolvesToDistinctRawTarget_OnSwitchPro()
         {
@@ -211,7 +213,8 @@ namespace PadForge.Tests
                     or OverlayElementType.StickRing)
                     continue;
                 string raw = NintendoPreviewMap.ToRaw(ov.TargetName, S1);
-                if (raw == null) continue;   // the three Switch 2-only controls
+                Assert.True(raw != null,
+                    $"overlay '{ov.TargetName}' has no raw counterpart");
                 Assert.Matches(grammar, raw);
                 Assert.True(seen.Add(raw),
                     $"raw target '{raw}' claimed by two overlays");

@@ -1,7 +1,11 @@
 """Extend the Switch Pro 2D asset set to Switch 2 Pro.
 
-Runs before tools/overlay_positions.py, which reads the base this writes
-and emits SwitchProLayout against it. Rerunning is idempotent: the input
+Writes into 2DModels/SWITCH2PRO, which is the Switch 2 Pro's OWN asset
+set. It is a copy of the original Pro Controller's sprites over a base
+widened by a side gutter, not a shared file: a switch-pro slot must not
+render a C button and two grip tiles it has no wire for. Runs before
+tools/overlay_positions.py, which reads the base this writes and emits
+Switch2ProLayout against it. Rerunning is idempotent: the input
 is always the pack's own untouched template, never the shipped base.
 
 Adds the three controls the Switch 2 Pro has and the original does not:
@@ -28,7 +32,7 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(ROOT, "PadForge.App", "2DModels", "SWITCHPRO")
+SRC = os.path.join(ROOT, "PadForge.App", "2DModels", "SWITCH2PRO")
 PACK = os.path.join(os.path.dirname(ROOT), "Gamepad-Asset-Pack", "Controller Asset Pack",
                     "Nintendo Switch Controller Images", "Switch Pro Controller",
                     "Default Theme", "Templates", "NSwitchPro_base.png")

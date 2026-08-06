@@ -95,8 +95,17 @@
                 <ui:ProgressRing x:Name="ScanRing" Grid.Column="0" Width="20" Height="20"
                                  IsIndeterminate="True" Visibility="Collapsed"
                                  Margin="0,0,10,0" VerticalAlignment="Center"/>
-                <TextBlock x:Name="StatusText" Grid.Column="1" TextWrapping="Wrap"
-                           VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <!-- The last narration line survives the verdict. The
+                         failure text says the failing step is shown above,
+                         and it was not: one TextBlock carried both, so the
+                         error erased the only clue a bug report could
+                         carry (discussion #283 arrived with none). -->
+                    <TextBlock x:Name="LastStepText" TextWrapping="Wrap"
+                               Visibility="Collapsed" Margin="0,0,0,2"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock x:Name="StatusText" TextWrapping="Wrap"/>
+                </StackPanel>
             </Grid>
 
             <!-- Found-controller list -->

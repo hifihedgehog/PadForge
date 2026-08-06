@@ -41,6 +41,7 @@ namespace PadForge.Models3D
 
         private readonly Model3DGroup DecalOverlay;
         private readonly Model3DGroup TransparentTrim;
+        private readonly Model3DGroup MuteButton;
 
         private static string Validate(string appearance)
             => System.Array.IndexOf(AppearanceIds, appearance) >= 0 ? appearance : AppearanceIds[0];
@@ -100,6 +101,14 @@ namespace PadForge.Models3D
             // the clear domes must draw after the glyph plates beneath
             // them, or their depth writes reject the later-drawn plates.
             TransparentTrim = LoadModel("Transparent.obj");
+
+            // The mic-mute button, re-filed out of that same clear-plastic
+            // mesh: on the real pad it is a translucent capsule over an
+            // LED, so it was welded in with the domes and had no group of
+            // its own to register. It joins the scene beside
+            // TransparentTrim below, keeping the transparency draw order.
+            MuteButton = LoadModel("MuteButton.obj");
+            RegisterButton("ButtonMute", MuteButton);
 
             // ── DualSense Edge extras ───────────────────
             // The Edge's back buttons and Fn buttons are their own
@@ -219,11 +228,19 @@ namespace PadForge.Models3D
             // Clear plastic last: lightbar, mic bar, and the button domes
             // over their glyph plates. Material applied here because the
             // generic loop above ran before this group joined the scene.
-            ApplyMaterial(TransparentTrim, MaterialTransparent);
-            DefaultMaterials[TransparentTrim] = MaterialTransparent;
-            HighlightMaterials[TransparentTrim] = HighlightMaterials.ContainsKey(Touchpad)
+            // The mute button is the same plastic and joins here for the
+            // same reason; both also need their highlight material set by
+            // hand, because DrawAccentHighlights walked the scene while
+            // neither was in it.
+            Material transparentHighlight = HighlightMaterials.ContainsKey(Touchpad)
                 ? HighlightMaterials[Touchpad] : MaterialTransparentFlat;
-            model3DGroup.Children.Add(TransparentTrim);
+            foreach (var clear in new[] { TransparentTrim, MuteButton })
+            {
+                ApplyMaterial(clear, MaterialTransparent);
+                DefaultMaterials[clear] = MaterialTransparent;
+                HighlightMaterials[clear] = transparentHighlight;
+                model3DGroup.Children.Add(clear);
+            }
         }
 
         /// <summary>The hado mesh is real-world scale (MainBody width

@@ -80,14 +80,14 @@ namespace PadForge.Models2D
 
         private static readonly Colorway2D[] Set_XBOXONE =
         {
-            new("White", "White", "XB1_S_base.png",
+            new("Robot", "White", "XB1_S_base.png",
                 None),
-            new("Black", "Black", "XB1_S_base_Black.png",
+            new("Carbon", "Black", "XB1_S_base_Carbon.png",
                 None),
-            new("Blue", "Blue", "XB1_S_base_Blue.png",
-                new Dictionary<string, string> { { "XB1_LeftStick.png", "XB1_LeftStick_Blue.png" }, { "XB1_LeftTrigger.png", "XB1_LeftTrigger_Blue.png" }, { "XB1_RightStick.png", "XB1_RightStick_Blue.png" }, { "XB1_RightTrigger.png", "XB1_RightTrigger_Blue.png" } }),
-            new("Red", "Red", "XB1_S_base_Red.png",
-                new Dictionary<string, string> { { "XB1_LeftStick.png", "XB1_LeftStick_Red.png" }, { "XB1_LeftTrigger.png", "XB1_LeftTrigger_Red.png" }, { "XB1_RightStick.png", "XB1_RightStick_Red.png" }, { "XB1_RightTrigger.png", "XB1_RightTrigger_Red.png" } }),
+            new("ShockBlue", "Blue", "XB1_S_base_ShockBlue.png",
+                new Dictionary<string, string> { { "XB1_LeftStick.png", "XB1_LeftStick_ShockBlue.png" }, { "XB1_LeftTrigger.png", "XB1_LeftTrigger_ShockBlue.png" }, { "XB1_RightStick.png", "XB1_RightStick_ShockBlue.png" }, { "XB1_RightTrigger.png", "XB1_RightTrigger_ShockBlue.png" } }),
+            new("PulseRed", "Red", "XB1_S_base_PulseRed.png",
+                new Dictionary<string, string> { { "XB1_LeftStick.png", "XB1_LeftStick_PulseRed.png" }, { "XB1_LeftTrigger.png", "XB1_LeftTrigger_PulseRed.png" }, { "XB1_RightStick.png", "XB1_RightStick_PulseRed.png" }, { "XB1_RightTrigger.png", "XB1_RightTrigger_PulseRed.png" } }),
         };
 
         private static readonly Colorway2D[] Set_XBOX360 =
@@ -122,7 +122,7 @@ namespace PadForge.Models2D
             "DualSense" => ("DualSense", Set_DualSense),
             "DS4" => ("DS4", Set_DS4),
             "XBOXSERIES" => ("XboxSeries", Set_XBOXSERIES),
-            "XBOXONE" => ("XboxOne", Set_XBOXONE),
+            "XBOXONE" => ("XboxSeries", Set_XBOXONE),
             "XBOX360" => ("Xbox360", Set_XBOX360),
             "DUALSENSEEDGE" => ("DualSenseEdge", Set_DUALSENSEEDGE),
             _ => (null, null),

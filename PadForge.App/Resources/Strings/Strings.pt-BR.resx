@@ -1016,11 +1016,11 @@
   <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
   <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
-  <data name="Btn_MicMute" xml:space="preserve"><value>Mute</value></data>
-  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Left Back Button</value></data>
-  <data name="Btn_RightPaddle" xml:space="preserve"><value>Right Back Button</value></data>
-  <data name="Btn_LeftFn" xml:space="preserve"><value>Left Fn</value></data>
-  <data name="Btn_RightFn" xml:space="preserve"><value>Right Fn</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>Mudo</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Botão traseiro esquerdo</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>Botão traseiro direito</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>Fn esquerdo</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>Fn direito</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Botão Esquerdo do Mouse</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>Botão Direito do Mouse</value></data>
@@ -2316,6 +2316,7 @@
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Não foi possível instalar o driver Bluetooth para controles PlayStation.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Conecte o DualShock 3 com um cabo USB e clique em Parear. O PadForge grava este PC no controle e o registra. Ao terminar, desconecte o controle e pressione o botão PS para conectar via Bluetooth.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Nenhum DualShock 3 encontrado via USB. Conecte-o com um cabo USB e tente novamente.</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>O Windows não instalará o driver USB do PadForge para o DualShock 3, porque seu certificado de assinatura não é confiável neste PC.</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>Pronto. Desconecte o controle e pressione o botão PS. Ele aparecerá na sua lista de dispositivos.</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>Configurando o controle. Mantenha-o conectado via USB.</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forjando</value></data>

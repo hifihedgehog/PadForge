@@ -1070,6 +1070,10 @@ def _process_dualsense_family(folder, margin, edge):
     add("Create Button", "DualSense_Create_Button.png", "ButtonBack", "Button")
     add("Option Button", "DualSense_Option_Button.png", "ButtonStart", "Button")
     add("PS Button", "DualSense_Home_Button.png", "ButtonGuide", "Button")
+    # Mic mute. Anchored on "Mute With LED", the capsule itself: the "Mute"
+    # group also encloses the mic-slash icon printed below the button, which
+    # would fit the press sprite to a box twice the button's height.
+    add("Mute With LED", "DualSense_Mute_Button.png", "ButtonMute", "Button")
 
     # Sticks (rings) and stick clicks share the same SVG bbox.
     add("Left Stick", "DualSense_LeftAnalogStick.png", "LeftThumbRing", "StickRing")

@@ -325,7 +325,8 @@ namespace PadForge.Common.Input
                 // else owns it, defer: don't fight over the device. Throttled so a repeated
                 // bind failure doesn't spin pnputil.
                 long now = Environment.TickCount64;
-                if (now - _lastUsbBindAttempt >= 15000 && PadForge.Services.Ds3DriverInstaller.IsUsbDs3NeedingWinUsb())
+                if (now - _lastUsbBindAttempt >= 15000
+                    && PadForge.Services.Ds3DriverInstaller.IsUsbDs3NeedingWinUsb(m => _log("DS3(USB): " + m)))
                 {
                     _lastUsbBindAttempt = now;
                     _log("DS3(USB): unclaimed DS3 on USB, binding WinUSB...");

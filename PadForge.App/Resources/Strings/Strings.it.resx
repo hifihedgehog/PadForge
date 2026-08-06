@@ -1020,11 +1020,11 @@
   <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
   <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
-  <data name="Btn_MicMute" xml:space="preserve"><value>Mute</value></data>
-  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Left Back Button</value></data>
-  <data name="Btn_RightPaddle" xml:space="preserve"><value>Right Back Button</value></data>
-  <data name="Btn_LeftFn" xml:space="preserve"><value>Left Fn</value></data>
-  <data name="Btn_RightFn" xml:space="preserve"><value>Right Fn</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>Muto</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Tasto posteriore sinistro</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>Tasto posteriore destro</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>Fn sinistro</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>Fn destro</value></data>
 
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Pulsante sinistro del mouse</value></data>
@@ -2338,6 +2338,7 @@
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Impossibile installare il driver Bluetooth per i controller PlayStation.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Collega il DualShock 3 con un cavo USB, poi fai clic su Associa. PadForge scrive questo PC nel controller e lo registra. Al termine, scollega il controller e premi il pulsante PS per connetterti tramite Bluetooth.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Nessun DualShock 3 trovato su USB. Collegalo con un cavo USB e riprova.</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows non installerà il driver USB di PadForge per il DualShock 3, perché il suo certificato di firma non è attendibile su questo PC.</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>Pronto. Scollega il controller e premi il pulsante PS. Comparirà nel tuo elenco dispositivi.</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>Configurazione del controller in corso. Mantienilo collegato tramite USB.</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forgiatura</value></data>

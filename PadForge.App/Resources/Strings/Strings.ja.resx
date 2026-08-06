@@ -1016,11 +1016,11 @@
   <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
   <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
-  <data name="Btn_MicMute" xml:space="preserve"><value>Mute</value></data>
-  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Left Back Button</value></data>
-  <data name="Btn_RightPaddle" xml:space="preserve"><value>Right Back Button</value></data>
-  <data name="Btn_LeftFn" xml:space="preserve"><value>Left Fn</value></data>
-  <data name="Btn_RightFn" xml:space="preserve"><value>Right Fn</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>ミュート</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>左バックボタン</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>右バックボタン</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>左Fn</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>右Fn</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>マウス左ボタン</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>マウス右ボタン</value></data>
@@ -2316,6 +2316,7 @@
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation コントローラー用の Bluetooth ドライバーをインストールできませんでした。</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>DualShock 3 を USB ケーブルで接続し、「ペアリング」をクリックします。PadForge がこの PC をコントローラーに書き込み、登録します。完了したらケーブルを抜き、PS ボタンを押して Bluetooth で接続してください。</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>USB 上に DualShock 3 が見つかりません。USB ケーブルで接続して、もう一度お試しください。</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>この PC では署名証明書が信頼されていないため、Windows は DualShock 3 用の PadForge USB ドライバーをインストールしません。</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>準備完了です。ケーブルを抜き、PS ボタンを押してください。デバイス一覧に表示されます。</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>コントローラーを設定中です。USB 接続のままにしてください。</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>鍛造中</value></data>

@@ -648,6 +648,7 @@ public class Strings : INotifyPropertyChanged
     public string Ds3Pair_Working => Get("Ds3Pair_Working");
     public string Ds3Pair_Success => Get("Ds3Pair_Success");
     public string Ds3Pair_NoUsb => Get("Ds3Pair_NoUsb");
+    public string Ds3Pair_DriverUntrusted => Get("Ds3Pair_DriverUntrusted");
     public string Ds3Pair_InstallFailed => Get("Ds3Pair_InstallFailed");
     public string Ds3Pair_NoRadio => Get("Ds3Pair_NoRadio");
     public string Ds3Pair_Failed => Get("Ds3Pair_Failed");

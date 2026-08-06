@@ -1016,11 +1016,11 @@
   <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
   <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
-  <data name="Btn_MicMute" xml:space="preserve"><value>Mute</value></data>
-  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Left Back Button</value></data>
-  <data name="Btn_RightPaddle" xml:space="preserve"><value>Right Back Button</value></data>
-  <data name="Btn_LeftFn" xml:space="preserve"><value>Left Fn</value></data>
-  <data name="Btn_RightFn" xml:space="preserve"><value>Right Fn</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>음소거</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>왼쪽 back 버튼</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>오른쪽 back 버튼</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>왼쪽 Fn</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>오른쪽 Fn</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>마우스 왼쪽 버튼</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>마우스 오른쪽 버튼</value></data>
@@ -2316,6 +2316,7 @@
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation 컨트롤러용 Bluetooth 드라이버를 설치할 수 없습니다.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>DualShock 3를 USB 케이블로 연결한 다음 페어링을 클릭하세요. PadForge가 이 PC 정보를 컨트롤러에 기록하고 등록합니다. 완료되면 컨트롤러를 분리하고 PS 버튼을 눌러 Bluetooth로 연결하세요.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>USB에서 DualShock 3를 찾을 수 없습니다. USB 케이블로 연결한 후 다시 시도하세요.</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>이 PC에서 서명 인증서를 신뢰하지 않으므로 Windows가 DualShock 3용 PadForge USB 드라이버를 설치하지 않습니다.</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>준비되었습니다. 컨트롤러를 분리하고 PS 버튼을 누르세요. 장치 목록에 나타납니다.</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>컨트롤러를 설정하는 중입니다. USB 연결을 유지하세요.</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>벼리는 중</value></data>

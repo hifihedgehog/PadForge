@@ -1017,8 +1017,13 @@ namespace PadForge.Common.Input
             public HIDMaestro.HMUsbAudio Audio;
             public int Slot;   // #271 item 1: keys the actuator-sink submit
             public volatile Guid[] Targets = Array.Empty<Guid>();
-            public float SpeakerGain = 1f, MicGain = 1f;
-            public bool SpeakerMuted, MicMuted;
+            // Written by HID control callbacks, read by the audio pump and
+            // the WASAPI capture callback, all different threads. Volatile
+            // so a host mute or volume write cannot sit unobserved in a
+            // register while audio keeps flowing at the old setting.
+            public volatile float SpeakerGain = 1f, MicGain = 1f;
+            public volatile bool SpeakerMuted, MicMuted;
+            public double MicUnity = 48.0;   // set at attach, never mutated
             public int SpkL, SpkR, HapL, HapR;   // interleave indices from ChannelRoles
             public int SrcRate = Rate;           // persona OUT stream rate (DS5 48k, DS4 32k)
             // Speaker-out resampler state + scratch (pacing thread only).
@@ -1112,12 +1117,24 @@ namespace PadForge.Common.Input
 
         /// <summary>Attach the composite persona's audio surfaces for a
         /// slot. Called by Step 5 after Connect; idempotent per slot.</summary>
-        public static void AttachPersonaFeed(int slot, HIDMaestro.HMUsbAudio audio)
+        /// <summary>The dB at which a persona's mic feature unit sits at
+        /// unity. It is the unit's own declared maximum (volumeMaxRaw / 256
+        /// in the persona descriptor), because the reference emulation
+        /// attenuates from the top and never amplifies. The DualSense family
+        /// declares 12288 (+48 dB); the DualShock 4 declares 6144 (+24 dB),
+        /// so a shared 48 left the DS4's virtual mic 24 dB down at its own
+        /// maximum and inaudible at its default.</summary>
+        internal static double MicUnityDb(string profileId)
+            => profileId != null
+               && profileId.StartsWith("dualshock-4", StringComparison.OrdinalIgnoreCase)
+                ? 24.0 : 48.0;
+
+        public static void AttachPersonaFeed(int slot, HIDMaestro.HMUsbAudio audio, string profileId = null)
         {
             if (audio == null) return;
             DetachPersonaFeed(slot);
 
-            var feed = new PersonaFeed { Audio = audio, Slot = slot };
+            var feed = new PersonaFeed { Audio = audio, Slot = slot, MicUnity = MicUnityDb(profileId) };
             // The DS5 persona streams 48 kHz and matches the sink domain
             // 1:1; the DS4 persona streams 32 kHz (the real pad's UAC
             // rate), and pushing those samples into the 48 kHz sink
@@ -1153,14 +1170,16 @@ namespace PadForge.Common.Input
                 else if (e.Function == "microphone")
                 {
                     if (e.IsMute) feed.MicMuted = e.MuteValue;
-                    // The DualSense mic feature unit spans 0..+48 dB, the
-                    // pad's hardware BOOST range, with unity at the top:
-                    // the reference emulation attenuates from max, never
-                    // amplifies (hbashton audio_control.go, "attenuates
-                    // the virtual microphone by exactly 48 dB"). A literal
-                    // linear mapping made Windows' default +48 dB a x251
-                    // multiplier and clipped every sample.
-                    else feed.MicGain = (float)Math.Min(1.0, Math.Pow(10.0, (e.VolumeDb - 48.0) / 20.0));
+                    // The mic feature unit's range is the pad's hardware
+                    // BOOST range with unity at the TOP: the reference
+                    // emulation attenuates from max, never amplifies
+                    // (hbashton audio_control.go, "attenuates the virtual
+                    // microphone by exactly 48 dB"). A literal linear
+                    // mapping made Windows' default a x251 multiplier and
+                    // clipped every sample. The ceiling is per persona, not
+                    // a constant: see MicUnityDb.
+                    else feed.MicGain = (float)Math.Min(1.0,
+                        Math.Pow(10.0, (e.VolumeDb - feed.MicUnity) / 20.0));
                 }
             };
             audio.Output.FramesReceived += feed.FramesHandler;
@@ -1934,16 +1953,26 @@ namespace PadForge.Common.Input
                     // pure signal.
                     if (feed.MicFloatSrc.Length < frames * outCh)
                         feed.MicFloatSrc = new float[frames * outCh];
+                    float Sample(int f, int c)
+                        => isFloat
+                            ? BitConverter.ToSingle(a.Buffer, f * inStride + c * 4)
+                            : BitConverter.ToInt16(a.Buffer, f * inStride + c * 2) / 32768f;
                     for (int f = 0; f < frames; f++)
                     {
-                        for (int c = 0; c < outCh; c++)
+                        if (outCh == 1 && inCh > 1)
                         {
-                            int ic = Math.Min(c, inCh - 1);
-                            float v;
-                            if (isFloat) v = BitConverter.ToSingle(a.Buffer, f * inStride + ic * 4);
-                            else v = BitConverter.ToInt16(a.Buffer, f * inStride + ic * 2) / 32768f;
-                            feed.MicFloatSrc[f * outCh + c] = v * gain;
+                            // Downmix, don't truncate. Taking channel 0 alone
+                            // loses everything the endpoint put on the right,
+                            // and a headset whose capture sits on one side
+                            // came through silent. The Bluetooth mic path has
+                            // averaged since it shipped; this is its twin.
+                            float sum = 0f;
+                            for (int c = 0; c < inCh; c++) sum += Sample(f, c);
+                            feed.MicFloatSrc[f] = sum / inCh * gain;
+                            continue;
                         }
+                        for (int c = 0; c < outCh; c++)
+                            feed.MicFloatSrc[f * outCh + c] = Sample(f, Math.Min(c, inCh - 1)) * gain;
                     }
 
                     // Rate-convert to the persona's declared mic rate. The

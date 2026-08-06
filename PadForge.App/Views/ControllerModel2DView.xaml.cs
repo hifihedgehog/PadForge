@@ -390,13 +390,15 @@ namespace PadForge.Views
             // Touchpad preview: a full-zone blue highlight (shown when
             // TouchpadClick is held) plus two finger dots positioned by the
             // VM's TouchpadFingerN(X,Y,Down) properties. Mirrors the DS4 web
-            // controller's preview shape. DualSense uses the same surface,
-            // so build the preview for both PlayStation 2D layouts.
+            // controller's preview shape. Built for every layout that
+            // declares a Touchpad element and ships the click art: the gate
+            // used to name the two folders that had it when it was written,
+            // which silently excluded the Edge the day it got its own folder.
             _touchpadClickHighlight = null;
             _touchpadFinger0Dot = null;
             _touchpadFinger1Dot = null;
             _touchpadOverlay = default;
-            if (modelName == "DS4" || modelName == "DualSense")
+            if (TouchpadClickSprite(modelName) != null)
             {
                 OverlayElement touchpad = default, click = default;
                 foreach (var ov in overlays)
@@ -438,15 +440,32 @@ namespace PadForge.Views
             QueueAnnotationRebuild();
         }
 
+        /// <summary>The touchpad-click sprite each 2D asset folder ships, or
+        /// null for a folder with no single-touchpad preview art. Keyed on the
+        /// folder because the art family and the folder name diverge (the
+        /// DualSense Edge folder carries the DualSense sprites).</summary>
+        internal static string TouchpadClickSprite(string folder) => folder switch
+        {
+            "DS4" => "DS4_Touchpad_Click.png",
+            "DualSense" or "DUALSENSEEDGE" => "DualSense_Touchpad_Click.png",
+            _ => null,
+        };
+
         private void BuildTouchpadPreview(OverlayElement ov, string modelName)
         {
             // Full-zone touchpad-click highlight, hidden by default. Shown when
             // the TouchpadClick button is held, on hover (lower opacity), and
             // during the Map All flash. Uses the asset pack's touchpad-click
-            // PNG (DS4_Touchpad_Click.png / DualSense_Touchpad_Click.png) at
-            // the layout-defined Touchpad rectangle so it lines up with the
-            // visible touchpad surface on the rendered controller body.
-            string clickPng = $"2DModels/{modelName}/{modelName}_Touchpad_Click.png";
+            // PNG at the layout-defined Touchpad rectangle so it lines up with
+            // the visible touchpad surface on the rendered controller body.
+            //
+            // The sprite's stem is the ART family, not the folder: the Edge
+            // has its own folder but ships the DualSense sprites, so
+            // interpolating the folder name asked for a file that does not
+            // exist and the preview never built.
+            string stem = TouchpadClickSprite(modelName);
+            if (stem == null) return;
+            string clickPng = $"2DModels/{modelName}/{stem}";
             _touchpadClickHighlight = CreateImage(clickPng, ov.X, ov.Y, ov.Width, ov.Height);
             _touchpadClickHighlight.IsHitTestVisible = false;
             _touchpadClickHighlight.Visibility = Visibility.Collapsed;

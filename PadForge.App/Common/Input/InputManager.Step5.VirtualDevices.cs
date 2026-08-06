@@ -2124,7 +2124,7 @@ namespace PadForge.Common.Input
                     var usbAudio = hmVc.UsbAudio;
                     if (usbAudio != null)
                     {
-                        AudioPassthroughService.AttachPersonaFeed(padIndex, usbAudio);
+                        AudioPassthroughService.AttachPersonaFeed(padIndex, usbAudio, hmVc.ProfileId);
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"VCTRACE slot={padIndex} persona audio feed attached profile={hmVc.ProfileId} ch={usbAudio.Output.Channels}@{usbAudio.Output.SampleRateHz}");
                     }

@@ -1265,15 +1265,19 @@ namespace PadForge.Common.Input
             // so this set is safe to do unconditionally.
             if (gp.Share) b |= HMButton.Share;
             // DualSense mic mute rides Misc1, SDL's own role for it
-            // (misc1:b12 in the PS5 mapping string), and the Edge back
-            // paddles ride HM's side-named paddle pair. The Edge Fn pair
-            // (SDL LEFT_PADDLE2 / RIGHT_PADDLE2) has no HMButton yet, so
-            // on plain UMDF2 profiles Fn stays composite-persona-only
-            // until HM grows LeftPaddle2 / RightPaddle2; the raw packers
-            // carry all five today.
+            // (misc1:b12 in the PS5 mapping string), the Edge back
+            // paddles ride HM's side-named paddle pair, and the Edge Fn
+            // pair rides the second pair HM v1.5.1 added for it (HM#48),
+            // SDL's LEFT_PADDLE2 / RIGHT_PADDLE2. All five are safe to
+            // set unconditionally: since v1.5.1 the buttonMaps carry an
+            // explicit -1 for bits a profile does not declare, which is
+            // also what ended the identity fallthrough that had Share
+            // pressing PS on every Sony pad.
             if (gp.MicMute) b |= HMButton.Misc1;
             if (gp.LeftPaddle) b |= HMButton.LeftPaddle;
             if (gp.RightPaddle) b |= HMButton.RightPaddle;
+            if (gp.LeftFunction) b |= HMButton.LeftPaddle2;
+            if (gp.RightFunction) b |= HMButton.RightPaddle2;
             return b;
         }
 

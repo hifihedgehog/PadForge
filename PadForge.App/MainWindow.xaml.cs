@@ -2035,7 +2035,8 @@ namespace PadForge
                 // the merged truth and regenerated the SELECTED device's
                 // PadSetting raw-less. Multi-controller Nintendo
                 // switches lost their automaps exactly this way.
-                SettingsManager.ReAutoMapSlot(args.SlotIndex, args.Type);
+                SettingsManager.ReAutoMapSlot(args.SlotIndex, args.Type,
+                    _viewModel.Pads[args.SlotIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
                 _inputService.MoveSlotToGroupTail(args.SlotIndex);
@@ -4071,7 +4072,8 @@ namespace PadForge
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox);
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox,
+                    _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4094,7 +4096,8 @@ namespace PadForge
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation);
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation,
+                    _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4113,7 +4116,8 @@ namespace PadForge
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended);
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended,
+                    _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4132,7 +4136,8 @@ namespace PadForge
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Nintendo);
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Nintendo,
+                    _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Nintendo;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4151,7 +4156,8 @@ namespace PadForge
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse);
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse,
+                    _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4171,7 +4177,8 @@ namespace PadForge
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi);
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi,
+                    _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
                 _inputService.MoveSlotToGroupTail(padIndex);

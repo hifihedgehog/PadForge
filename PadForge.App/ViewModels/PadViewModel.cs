@@ -255,8 +255,18 @@ namespace PadForge.ViewModels
             get => _profileId;
             set
             {
+                string previousProfileId = _profileId;
                 if (SetProperty(ref _profileId, value))
                 {
+                    // Nintendo raw targets are WIRE-RELATIVE, and the two
+                    // Switch families share almost no indices. Move the
+                    // existing bindings by role before anything rebuilds
+                    // against the new wire, or every one of them keeps its
+                    // index and silently changes meaning.
+                    if (_outputType == VirtualControllerType.Nintendo)
+                        SettingsManager.TranslateNintendoRawMappings(
+                            PadIndex, previousProfileId, value);
+
                     // For Extended slots, the profile defines the VC's layout.
                     // Sync ExtendedConfig's stick/trigger/POV/button counts from
                     // the newly-selected profile's HID descriptor metadata,
@@ -2214,55 +2224,49 @@ namespace PadForge.ViewModels
                 // clicks, D-pad, then ZL/ZR in the trigger rows'
                 // position (digital buttons on this wire), then the
                 // stick axes with the same labels the gamepad grids use.
-                void AddBtn(int i) => Mappings.Add(new MappingItem(
-                    MacroButtonNames.RawButtonLabel(ProfileId, i + 1), $"RawBtn{i}", MappingCategory.Buttons));
+                // Rows are authored by ROLE; the wire index behind each one
+                // is resolved through the canonical table. This method holds
+                // an ARRANGEMENT and no wire order. Writing indices here is
+                // what broke the Switch 2 Pro grid: it inherited the
+                // original's order, printed Minus/Plus over the D-pad and
+                // Home/Capture over L/ZL, and stopped seven buttons short.
+                void AddRole(string role)
+                {
+                    int i = Models2D.NintendoPreviewMap.IndexOf(ProfileId, role);
+                    if (i < 0) return;   // this pad has no such control
+                    Mappings.Add(new MappingItem(
+                        MacroButtonNames.RawButtonLabel(ProfileId, i + 1),
+                        $"RawBtn{i}", MappingCategory.Buttons));
+                }
                 void AddDPad(string label, string target) =>
                     Mappings.Add(new MappingItem(label, target, MappingCategory.DPad));
 
-                // The ARRANGEMENT below is the same for both generations.
-                // The INDICES are not: they are wire positions, and the two
-                // wires agree only on the face diamond. Reading the original's
-                // indices on a Switch 2 Pro printed "Minus"/"Plus" over its
-                // D-pad Down/Right, "Home"/"Capture" over L/ZL, and stopped
-                // at 13, so Minus, LS, Home, Capture, GR, GL and C had no row
-                // at all. Everything past the face buttons has to be looked
-                // up per profile.
-                bool s2 = MacroButtonNames.IsSwitch2LetteredProfile(ProfileId);
+                AddRole("ButtonB"); AddRole("ButtonA");
+                AddRole("ButtonY"); AddRole("ButtonX");
+                AddRole("LeftShoulder"); AddRole("RightShoulder");
+                AddRole("ButtonBack"); AddRole("ButtonStart");     // Minus Plus
+                AddRole("ButtonGuide");                             // Home
+                AddRole("ButtonShare");                             // Capture
+                AddRole("ButtonC");                                 // Switch 2 only
+                AddRole("LeftThumbButton"); AddRole("RightThumbButton");
+                AddRole("LeftPaddle"); AddRole("RightPaddle");      // Switch 2 only
 
-                //                                   switch-pro   switch2-pro
-                int bL = s2 ? 12 : 4,  bR = s2 ?  4 : 5;   // L / R
-                int minus = s2 ? 14 : 8, plus = s2 ? 6 : 9;
-                int home = s2 ? 16 : 12, capture = s2 ? 17 : 13;
-                int lStick = s2 ? 15 : 10, rStick = s2 ? 7 : 11;
-                int zl = s2 ? 13 : 6,  zr = s2 ? 5 : 7;
-
-                AddBtn(0); AddBtn(1); AddBtn(2); AddBtn(3);   // B A Y X
-                AddBtn(bL); AddBtn(bR);                        // L R
-                AddBtn(minus); AddBtn(plus);                   // Minus Plus
-                AddBtn(home);                                  // Home
-                AddBtn(capture);                               // Capture
-                if (s2) AddBtn(20);                            // C, beside Capture
-                AddBtn(lStick); AddBtn(rStick);                // stick clicks
-                if (s2) { AddBtn(19); AddBtn(18); }            // GL GR, the rear pair
-
-                if (s2)
+                // Both pads have a D-pad. The original reports it as a hat,
+                // the Switch 2 Pro as four discrete buttons, so the group
+                // binds whichever encoding its descriptor declares.
+                foreach (var (label, role, pov) in new[]
                 {
-                    // Real buttons, not a hat: this pad has a D-pad like any
-                    // other, it just reports each direction as its own button.
-                    AddDPad(Strings.Instance.Btn_DPadUp, "RawBtn11");
-                    AddDPad(Strings.Instance.Btn_DPadDown, "RawBtn8");
-                    AddDPad(Strings.Instance.Btn_DPadLeft, "RawBtn10");
-                    AddDPad(Strings.Instance.Btn_DPadRight, "RawBtn9");
-                }
-                else
+                    (Strings.Instance.Btn_DPadUp,    "DPadUp",    "RawPov0Up"),
+                    (Strings.Instance.Btn_DPadDown,  "DPadDown",  "RawPov0Down"),
+                    (Strings.Instance.Btn_DPadLeft,  "DPadLeft",  "RawPov0Left"),
+                    (Strings.Instance.Btn_DPadRight, "DPadRight", "RawPov0Right"),
+                })
                 {
-                    AddDPad(Strings.Instance.Btn_DPadUp, "RawPov0Up");
-                    AddDPad(Strings.Instance.Btn_DPadDown, "RawPov0Down");
-                    AddDPad(Strings.Instance.Btn_DPadLeft, "RawPov0Left");
-                    AddDPad(Strings.Instance.Btn_DPadRight, "RawPov0Right");
+                    int i = Models2D.NintendoPreviewMap.IndexOf(ProfileId, role);
+                    AddDPad(label, i >= 0 ? $"RawBtn{i}" : pov);
                 }
 
-                AddBtn(zl); AddBtn(zr);                        // ZL ZR
+                AddRole("LeftTrigger"); AddRole("RightTrigger");    // ZL ZR
 
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickX, "RawAxis0", MappingCategory.LeftStick, "RawAxis0Neg"));
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickY, "RawAxis1", MappingCategory.LeftStick, "RawAxis1Neg"));

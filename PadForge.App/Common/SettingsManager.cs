@@ -939,6 +939,31 @@ namespace PadForge.Common.Input
                 ps.UpdateChecksum();
                 us.PadSettingChecksum = ps.PadSettingChecksum;
             }
+
+            // The grid does NOT read PadSetting raw entries. It reads the
+            // slot's MappingSet rows, which are keyed by the same raw target
+            // names, so translating only the PadSetting left every moved
+            // binding without a row: the four roles that land past the
+            // original's 14-button wire (Minus, LS, Home, Capture at 14-17)
+            // rendered empty, and the rows still keyed to the old indices
+            // kept their sources while now naming different buttons.
+            var set = SlotMappingSets != null && padIndex < SlotMappingSets.Length
+                ? SlotMappingSets[padIndex] : null;
+            if (set?.Rows != null)
+            {
+                var kept = new List<Engine.Data.MappingRow>(set.Rows.Count);
+                foreach (var row in set.Rows)
+                {
+                    if (row == null || string.IsNullOrEmpty(row.Target)) continue;
+                    string dst = Models2D.NintendoPreviewMap.TranslateRawTarget(
+                        row.Target, fromProfileId, toProfileId);
+                    if (dst == null) continue;   // role absent on the target pad
+                    row.Target = dst;
+                    kept.Add(row);
+                }
+                set.Rows.Clear();
+                set.Rows.AddRange(kept);
+            }
         }
 
         public static void ReAutoMapSlot(int padIndex, Engine.VirtualControllerType outputType,

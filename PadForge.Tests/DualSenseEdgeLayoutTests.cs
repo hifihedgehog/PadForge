@@ -116,6 +116,33 @@ namespace PadForge.Tests
                       < tiles.First(t => t.TargetName == "RightFunction").Y);
         }
 
+        /// <summary>FULL parity: every target the plain DualSense layout
+        /// carries exists in the Edge layout at the margin-shifted position
+        /// with the same size and element type. This is the lock the first
+        /// Edge cut lacked: the generator builds TriggerBase entries in a
+        /// post-pass driven by an explicit list of layouts, the Edge was
+        /// missing from that list, and its triggers shipped with no rest
+        /// art, which erases them from the view entirely. A five-control
+        /// sample could not catch that; the full set does.</summary>
+        [Fact]
+        public void EveryPlainTarget_ExistsShiftedInTheEdgeLayout()
+        {
+            int margin = (DualSenseEdgeLayout.BaseWidth - DualSenseLayout.BaseWidth) / 2;
+            foreach (var plain in DualSenseLayout.Overlays)
+            {
+                var match = DualSenseEdgeLayout.Overlays.FirstOrDefault(o =>
+                    o.TargetName == plain.TargetName
+                    && o.ElementType == plain.ElementType
+                    && o.ImageFile == plain.ImageFile);
+                Assert.True(match != null,
+                    $"plain target {plain.TargetName} ({plain.ElementType}) is missing from the Edge layout");
+                Assert.Equal(plain.X + margin, match.X);
+                Assert.Equal(plain.Y, match.Y);
+                Assert.Equal(plain.Width, match.Width);
+                Assert.Equal(plain.Height, match.Height);
+            }
+        }
+
         /// <summary>Every Edge overlay stays inside its canvas.</summary>
         [Fact]
         public void EveryOverlay_IsInBounds()

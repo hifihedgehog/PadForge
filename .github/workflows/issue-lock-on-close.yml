@@ -1,0 +1,83 @@
+# Lock every issue when it is closed, and unlock it if it is reopened.
+#
+# Closing an issue does not stop comments. A closed but unlocked thread
+# still accepts them from anyone, and malware accounts harvest exactly
+# those: throwaway users post fake `fix.zip` attachments on quiet closed
+# threads (caught on #163). The house rule has always been "lock on
+# close", but the lock half was a manual step and got missed (#280).
+#
+# Auth: locks with ISSUE_BOT_TOKEN, not GITHUB_TOKEN, on purpose. Events
+# raised by GITHUB_TOKEN do not trigger further workflow runs, so a
+# GITHUB_TOKEN lock would never fire issue-lock-form-response.yml and the
+# standard locked-thread notice would stop appearing. A PAT-driven lock
+# does trigger it, which keeps that notice text in one file.
+#
+# Lock reason is `resolved` for every close, including `not planned`.
+# That is the reason issue-lock-form-response.yml keys on, and the notice
+# it posts is correct for a declined report as well as a fixed one.
+#
+# device-mapping-auto-reject.yml closes and locks its own rejections. Its
+# lock uses GITHUB_TOKEN and lands a moment after its close, so this
+# workflow waits and re-checks before acting rather than racing it into a
+# second notice.
+
+name: Issue lock on close
+
+on:
+  issues:
+    types: [closed, reopened]
+
+permissions:
+  issues: read
+  contents: read
+
+jobs:
+  lock:
+    if: ${{ github.event.action == 'closed' }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.ISSUE_BOT_TOKEN }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      REPO: ${{ github.repository }}
+    steps:
+      - name: Lock as resolved unless something already locked it
+        run: |
+          set -euo pipefail
+
+          # Give device-mapping-auto-reject's own close+lock time to finish.
+          sleep 20
+
+          LOCKED=$(gh api "repos/$REPO/issues/$ISSUE_NUMBER" --jq '.locked')
+          if [ "$LOCKED" = "true" ]; then
+            REASON=$(gh api "repos/$REPO/issues/$ISSUE_NUMBER" --jq '.active_lock_reason // "none"')
+            echo "Issue #$ISSUE_NUMBER is already locked (reason: $REASON). Nothing to do."
+            exit 0
+          fi
+
+          gh api -X PUT "repos/$REPO/issues/$ISSUE_NUMBER/lock" \
+            -f lock_reason=resolved
+          echo "Locked #$ISSUE_NUMBER as resolved."
+
+  unlock:
+    if: ${{ github.event.action == 'reopened' }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.ISSUE_BOT_TOKEN }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      REPO: ${{ github.repository }}
+    steps:
+      - name: Unlock a reopened issue
+        run: |
+          set -euo pipefail
+
+          LOCKED=$(gh api "repos/$REPO/issues/$ISSUE_NUMBER" --jq '.locked')
+          if [ "$LOCKED" != "true" ]; then
+            echo "Issue #$ISSUE_NUMBER is not locked. Nothing to do."
+            exit 0
+          fi
+
+          # A reopened issue needs to accept replies again. Leaving the
+          # close-time lock in place makes it look open while silently
+          # refusing every comment.
+          gh api -X DELETE "repos/$REPO/issues/$ISSUE_NUMBER/lock"
+          echo "Unlocked #$ISSUE_NUMBER."

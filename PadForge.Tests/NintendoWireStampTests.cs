@@ -127,6 +127,29 @@ namespace PadForge.Tests
             Assert.Equal("Button 6", raw["RawBtn14"]);               // Minus moved 8 -> 14
         }
 
+        /// <summary>THE launch-corruption scenario: an S2-persisted slot
+        /// restoring with no stamp yet. Adopt must win over any guessed
+        /// "from": reading this data under the S1 table would prune
+        /// RawBtn14-20 as orphans and move RawBtn8 onto RawBtn14,
+        /// which is exactly what every launch did before the stamp.</summary>
+        [Fact]
+        public void UnknownStamp_AdoptsSwitch2DataUntouched()
+        {
+            var (ps, _) = Arrange(null,
+                ("RawBtn8", "POV 0 Down"),     // S2 D-pad Down
+                ("RawBtn14", "Button 6"),      // S2 Minus
+                ("RawBtn20", "Button 17"));    // S2 C
+
+            SettingsManager.TranslateNintendoRawMappings(Pad, S2);
+
+            var raw = RawOf(ps);
+            Assert.Equal("POV 0 Down", raw["RawBtn8"]);
+            Assert.Equal("Button 6", raw["RawBtn14"]);
+            Assert.Equal("Button 17", raw["RawBtn20"]);
+            var ms = SettingsManager.SlotMappingSets[Pad];
+            Assert.Equal(3, ms.Rows.Count);
+        }
+
         /// <summary>The live user change: stamp holds the outgoing wire, so
         /// the four owner-reported carry-overs move to their S2 indices in
         /// both stores, and the D-pad crosses from the hat to buttons.</summary>

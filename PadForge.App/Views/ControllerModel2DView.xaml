@@ -23,16 +23,28 @@
         <!-- Annotation toggle: per-view chrome, same top-right position as
              the 3D host's toggle (PadPage's 2D/3D switch owns top-left).
              Tag glyph (E8EC) to match the 3D twin (#175 item 6). -->
-        <ui:Button x:Name="AnnotationToggleButton"
-                   AutomationProperties.AutomationId="AnnotationToggle2D"
-                   Style="{StaticResource EmberIconButton}"
-                   HorizontalAlignment="Right" VerticalAlignment="Top"
-                   Margin="0,8,8,0"
-                   ToolTip="{Binding Pad_ToggleAnnotations, Source={x:Static strings:Strings.Instance}}"
-                   Click="AnnotationToggle_Click">
-            <TextBlock x:Name="AnnotationToggleGlyph" FontFamily="Segoe MDL2 Assets"
-                       FontSize="14" Text="&#xE8EC;"/>
-        </ui:Button>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                    VerticalAlignment="Top" Margin="0,8,8,0">
+            <!-- Colorway picker: the 2D twin of the 3D view's. Shown only
+                 when the current asset folder ships more than one colorway;
+                 reads and writes the SAME per-pad appearance store the 3D
+                 picker uses, so one selection drives both views. -->
+            <ComboBox x:Name="AppearancePicker"
+                      AutomationProperties.AutomationId="AppearancePicker2D"
+                      MinWidth="130"
+                      Margin="0,0,8,0"
+                      Visibility="Collapsed"
+                      ToolTip="{Binding Pad_Colorway, Source={x:Static strings:Strings.Instance}}"
+                      SelectionChanged="AppearancePicker_SelectionChanged" />
+            <ui:Button x:Name="AnnotationToggleButton"
+                       AutomationProperties.AutomationId="AnnotationToggle2D"
+                       Style="{StaticResource EmberIconButton}"
+                       ToolTip="{Binding Pad_ToggleAnnotations, Source={x:Static strings:Strings.Instance}}"
+                       Click="AnnotationToggle_Click">
+                <TextBlock x:Name="AnnotationToggleGlyph" FontFamily="Segoe MDL2 Assets"
+                           FontSize="14" Text="&#xE8EC;"/>
+            </ui:Button>
+        </StackPanel>
     </Grid>
 
 </UserControl>

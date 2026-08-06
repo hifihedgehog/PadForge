@@ -105,6 +105,32 @@ def make_tile_sprite(path):
     print("  wrote %s %dx%d" % (os.path.basename(path), TILE, TILE))
 
 
+def widen_with_tiles(src):
+    """The Edge base construction: the plain-body render over a canvas
+    widened by MARGIN each side, with the four labelled tiles in the
+    gutter. Shared with tools/gen_2d_colorways.py, which derives the
+    Edge's colorway bases from the DualSense colorway bases through this
+    exact function so tile placement can never drift between them."""
+    if src.size != (1467, 816):
+        raise SystemExit("unexpected DualSense base size %s" % (src.size,))
+    out = Image.new("RGBA", (src.width + 2 * MARGIN, src.height), (0, 0, 0, 0))
+    out.alpha_composite(src, (MARGIN, 0))
+    body_top, body_bottom = 85, 815
+    block = TILE * 2 + GAP
+    top = (body_top + body_bottom) // 2 - block // 2
+    tile_x = (MARGIN - TILE) // 2
+    right_x = out.width - tile_x - TILE
+    placements = [
+        ("LeftBack", tile_x, top, "L Back"),
+        ("LeftFn", tile_x, top + TILE + GAP, "L Fn"),
+        ("RightBack", right_x, top, "R Back"),
+        ("RightFn", right_x, top + TILE + GAP, "R Fn"),
+    ]
+    for _, x, y, label in placements:
+        draw_tile(out, x, y, label)
+    return out, placements
+
+
 def main():
     os.makedirs(DST_DIR, exist_ok=True)
 
@@ -119,27 +145,10 @@ def main():
     print("  copied %d sprites" % n)
 
     src = Image.open(os.path.join(SRC_DIR, "DualSense_base.png")).convert("RGBA")
-    if src.size != (1467, 816):
-        raise SystemExit("unexpected DualSense base size %s" % (src.size,))
-
-    out = Image.new("RGBA", (src.width + 2 * MARGIN, src.height), (0, 0, 0, 0))
-    out.alpha_composite(src, (MARGIN, 0))
 
     # Two tiles per side, stacked and vertically centred on the body. Back
     # above Fn, matching the mapping grid's own row order.
-    body_top, body_bottom = 85, 815
-    block = TILE * 2 + GAP
-    top = (body_top + body_bottom) // 2 - block // 2
-    tile_x = (MARGIN - TILE) // 2
-    right_x = out.width - tile_x - TILE
-    placements = [
-        ("LeftBack", tile_x, top, "L Back"),
-        ("LeftFn", tile_x, top + TILE + GAP, "L Fn"),
-        ("RightBack", right_x, top, "R Back"),
-        ("RightFn", right_x, top + TILE + GAP, "R Fn"),
-    ]
-    for _, x, y, label in placements:
-        draw_tile(out, x, y, label)
+    out, placements = widen_with_tiles(src)
 
     dst = os.path.join(DST_DIR, "DualSense_base.png")
     out.save(dst)
@@ -154,4 +163,5 @@ def main():
     print("  X shift for every existing element = +%d" % MARGIN)
 
 
-main()
+if __name__ == "__main__":
+    main()

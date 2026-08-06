@@ -13377,6 +13377,10 @@ namespace PadForge.Services
                         && profile.SlotProfileIds != null
                         && i < profile.SlotProfileIds.Length)
                     {
+                        // Same stamp-before-assign as the SettingsService
+                        // apply lane: the incoming profile's data is already
+                        // on this wire, so the setter must not translate.
+                        SettingsManager.StampNintendoWire(i, profile.SlotProfileIds[i]);
                         _mainVm.Pads[i].ProfileId = profile.SlotProfileIds[i];
                     }
                 }

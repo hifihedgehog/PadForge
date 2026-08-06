@@ -1979,7 +1979,16 @@ namespace PadForge.Services
                 for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotProfileIds.Length; i++)
                 {
                     if (SettingsManager.SlotCreated[i])
+                    {
+                        // The persisted profile and the persisted mapping
+                        // data were saved together, so they are already on
+                        // one wire. Stamp before the VM assignment or the
+                        // ProfileId setter's Nintendo wire translation
+                        // reads a stale previous value and mistranslates
+                        // consistent data on every launch.
+                        SettingsManager.StampNintendoWire(i, appSettings.SlotProfileIds[i]);
                         _mainVm.Pads[i].ProfileId = appSettings.SlotProfileIds[i];
+                    }
                 }
             }
 
@@ -3449,7 +3458,15 @@ namespace PadForge.Services
                     for (int i = 0; i < _mainVm.Pads.Count && i < active.SlotProfileIds.Length; i++)
                     {
                         if (SettingsManager.SlotCreated[i])
+                        {
+                            // The apply already installed this profile's
+                            // mapping sets; stamp their wire before the VM
+                            // assignment so the setter's translation stands
+                            // down instead of treating the incoming data as
+                            // the OUTGOING profile's (see StampNintendoWire).
+                            SettingsManager.StampNintendoWire(i, active.SlotProfileIds[i]);
                             _mainVm.Pads[i].ProfileId = active.SlotProfileIds[i];
+                        }
                     }
                 }
 
@@ -4802,6 +4819,10 @@ namespace PadForge.Services
                 padVm.ExtendedConfig.ResetToDefaults();
                 padVm.MidiConfig.ResetToDefaults();
                 padVm.KbmConfig.ResetToDefaults();
+                // The reset replaced the slot's whole raw surface, so no
+                // wire owns it any more; clear the stamp and let the next
+                // Nintendo profile adopt (translate nothing).
+                SettingsManager.StampNintendoWire(padVm.PadIndex, null);
                 padVm.OutputType = Engine.VirtualControllerType.Xbox;
                 padVm.ProfileId = Common.Input.InputManager.GetDefaultProfileId(padVm.OutputType);
                 padVm.ActiveLayerMask = "Base";

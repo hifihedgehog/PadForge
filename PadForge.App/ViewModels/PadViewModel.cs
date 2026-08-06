@@ -255,17 +255,19 @@ namespace PadForge.ViewModels
             get => _profileId;
             set
             {
-                string previousProfileId = _profileId;
                 if (SetProperty(ref _profileId, value))
                 {
                     // Nintendo raw targets are WIRE-RELATIVE, and the two
                     // Switch families share almost no indices. Move the
                     // existing bindings by role before anything rebuilds
                     // against the new wire, or every one of them keeps its
-                    // index and silently changes meaning.
+                    // index and silently changes meaning. The translation
+                    // keys on SettingsManager's wire stamp, NOT on this
+                    // setter's previous value: restore/apply/import paths
+                    // stamp the incoming wire first and this call no-ops
+                    // for them, so only a live user change translates.
                     if (_outputType == VirtualControllerType.Nintendo)
-                        SettingsManager.TranslateNintendoRawMappings(
-                            PadIndex, previousProfileId, value);
+                        SettingsManager.TranslateNintendoRawMappings(PadIndex, value);
 
                     // For Extended slots, the profile defines the VC's layout.
                     // Sync ExtendedConfig's stick/trigger/POV/button counts from

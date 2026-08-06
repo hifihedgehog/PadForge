@@ -22,6 +22,22 @@
         /// it as <c>HMButton.Share</c> (bit 12) on Xbox Series profiles.</summary>
         public bool Share;
 
+        /// <summary>DualSense mic mute button (wire bit 0x04 of the third
+        /// buttons byte). SDL's role space calls this misc1 on PS5 pads,
+        /// the same cross-vendor slot as Xbox Share and Switch Capture,
+        /// and HM carries it as <c>HMButton.Misc1</c>.</summary>
+        public bool MicMute;
+
+        /// <summary>DualSense Edge extras, side-named like HM's and SDL's
+        /// paddle roles. The BACK paddles are the first pair (wire bits
+        /// 0x40 left / 0x80 right); the front Fn buttons are the second
+        /// (0x10 left / 0x20 right), which SDL exposes as
+        /// LEFT_PADDLE2 / RIGHT_PADDLE2.</summary>
+        public bool LeftPaddle;
+        public bool RightPaddle;
+        public bool LeftFunction;
+        public bool RightFunction;
+
         // Button flag constants
         public const ushort DPAD_UP = 0x0001;
         public const ushort DPAD_DOWN = 0x0002;
@@ -63,6 +79,11 @@
             ThumbRX = 0;
             ThumbRY = 0;
             Share = false;
+            MicMute = false;
+            LeftPaddle = false;
+            RightPaddle = false;
+            LeftFunction = false;
+            RightFunction = false;
         }
     }
 

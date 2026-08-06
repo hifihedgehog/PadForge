@@ -36,6 +36,7 @@ namespace PadForge.Engine.Data
             "ButtonA", "ButtonB", "ButtonX", "ButtonY",
             "LeftShoulder", "RightShoulder",
             "ButtonBack", "ButtonStart", "ButtonGuide", "ButtonShare",
+            "ButtonMute", "LeftPaddle", "RightPaddle", "LeftFunction", "RightFunction",
             "LeftThumbButton", "RightThumbButton",
             "DPadUp", "DPadDown", "DPadLeft", "DPadRight",
         };

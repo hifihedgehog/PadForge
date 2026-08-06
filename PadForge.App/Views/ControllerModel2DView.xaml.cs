@@ -523,6 +523,11 @@ namespace PadForge.Views
             SetOverlayVisible("ButtonStart", _vm.ButtonStart);
             SetOverlayVisible("ButtonGuide", _vm.ButtonGuide);
             SetOverlayVisible("ButtonShare", _vm.ButtonShare);
+            SetOverlayVisible("ButtonMute", _vm.ButtonMute);
+            SetOverlayVisible("LeftPaddle", _vm.LeftPaddle);
+            SetOverlayVisible("RightPaddle", _vm.RightPaddle);
+            SetOverlayVisible("LeftFunction", _vm.LeftFunction);
+            SetOverlayVisible("RightFunction", _vm.RightFunction);
             SetOverlayVisible("ButtonC", _vm.ButtonC);
             SetOverlayVisible("LeftPaddle", _vm.LeftPaddle);
             SetOverlayVisible("RightPaddle", _vm.RightPaddle);

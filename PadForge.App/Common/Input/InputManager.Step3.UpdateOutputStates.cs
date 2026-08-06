@@ -272,6 +272,21 @@ namespace PadForge.Common.Input
             if (MapToButtonPressed(state, ps.ButtonShare, deviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone("ButtonShare"), 0), gt, ps.GetMappingBidirectional("ButtonShare") == "1"))
                 gp.Share = true;
 
+            // DualSense mic mute + Edge paddles / Fn, same posture as
+            // Share: outside the 16-bit mask, mapped unconditionally
+            // because the packers only raise wire bits that exist on the
+            // active profile's report and HM drops undeclared bits.
+            if (MapToButtonPressed(state, ps.ButtonMute, deviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone("ButtonMute"), 0), gt, ps.GetMappingBidirectional("ButtonMute") == "1"))
+                gp.MicMute = true;
+            if (MapToButtonPressed(state, ps.LeftPaddle, deviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone("LeftPaddle"), 0), gt, ps.GetMappingBidirectional("LeftPaddle") == "1"))
+                gp.LeftPaddle = true;
+            if (MapToButtonPressed(state, ps.RightPaddle, deviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone("RightPaddle"), 0), gt, ps.GetMappingBidirectional("RightPaddle") == "1"))
+                gp.RightPaddle = true;
+            if (MapToButtonPressed(state, ps.LeftFunction, deviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone("LeftFunction"), 0), gt, ps.GetMappingBidirectional("LeftFunction") == "1"))
+                gp.LeftFunction = true;
+            if (MapToButtonPressed(state, ps.RightFunction, deviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone("RightFunction"), 0), gt, ps.GetMappingBidirectional("RightFunction") == "1"))
+                gp.RightFunction = true;
+
             // ── D-Pad ──
             // Individual direction mappings take priority. Only fall back to
             // the combined DPad descriptor if no individual directions are set.

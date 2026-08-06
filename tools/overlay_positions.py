@@ -970,7 +970,36 @@ def _ds4_post_pass(results, base_w, base_h):
     return out
 
 
+DS_BODY_W = 1467     # the pack render's own width, what the SVG maps onto
+DS_MARGIN = 175      # Edge only: gutter each side for the four floating tiles
+DS_TILE = 145        # tile edge
+DS_GAP = 26          # vertical gap between a side's two tiles
+
+
 def process_dualsense():
+    """Plain DualSense. No gutter and none of the Edge controls: this set is
+    exactly the pack's own art, because a DualSense slot must not render four
+    controls it has no wire for."""
+    return _process_dualsense_family("DualSense", margin=0, edge=False)
+
+
+def process_dualsense_edge():
+    """DualSense Edge. Its own asset folder: a copy of the same pack sprites
+    over a base widened by a side gutter, carrying the four extras the plain
+    pad does not have (the rear back buttons and the front Fn pair) as
+    floating tiles.
+
+    ALL FOUR are tiles, including the front Fn pair, because the front
+    position is not derivable from anything on disk. The Edge mesh carries no
+    Fn parts, and fitting dualsense-tester's near-top-down Edge SVG onto this
+    3/4 render lands the face buttons and D-pad within ~10 px while the
+    STICKS come out 51 px off, with the residual growing downward; the Fn
+    prediction falls at y=723 on a body whose column ends at y=696. See
+    tools/gen_dualsense_edge_art.py for the full measurement."""
+    return _process_dualsense_family("DUALSENSEEDGE", margin=DS_MARGIN, edge=True)
+
+
+def _process_dualsense_family(folder, margin, edge):
     """Extract DualSense overlay positions. SVG units = mm; default theme PNG
     is 1467x816 → scale ≈ 2.6932 px/mm. Touchpad-click and touchpad zones are
     injected manually since the SVG doesn't label them."""
@@ -981,13 +1010,19 @@ def process_dualsense():
     tree = etree.parse(svg_path)
     root = tree.getroot()
 
-    base = cv2.imread(os.path.join(MODELS_DIR, "DualSense", "DualSense_base.png"), cv2.IMREAD_UNCHANGED)
+    base = cv2.imread(os.path.join(MODELS_DIR, folder, "DualSense_base.png"), cv2.IMREAD_UNCHANGED)
     base_w, base_h = base.shape[1], base.shape[0]
+    if base_w != DS_BODY_W + 2 * margin:
+        raise SystemExit(f"{folder} base is {base_w}px wide; expected "
+                         f"{DS_BODY_W} + 2x{margin} gutter")
 
-    # SVG declares 544.7066 mm width; PNG is 1467 px → 2.6932 px/mm.
-    scale = base_w / 544.7066
+    # SVG declares 544.7066 mm width; the pack render's own body is 1467 px →
+    # 2.6932 px/mm. NOT base_w: the Edge base carries a gutter the SVG knows
+    # nothing about, so scaling by the full canvas would stretch every label
+    # bbox by the gutter ratio.
+    scale = DS_BODY_W / 544.7066
 
-    ov_dir = os.path.join(MODELS_DIR, "DualSense")
+    ov_dir = os.path.join(MODELS_DIR, folder)
     results = []
 
     def add(svg_label, filename, target, elem_type, fit_scale=1.0):
@@ -1051,6 +1086,10 @@ def process_dualsense():
     # Refine Create/Option/PS via base alpha template — same situation as
     # Xbox 360's Start/Back: the SVG labels sit on text or icon centroids
     # that are slightly offset from the visible button silhouette.
+    # Always the PLAIN base: its body art is identical and sits at the
+    # origin, so the template match stays in body coordinates like every
+    # other result here. Matching against the guttered Edge base would
+    # shift every refined button by the margin.
     base_path = os.path.join(MODELS_DIR, "DualSense", "DualSense_base.png")
     print("Refining DualSense small-button positions via base alpha template...")
     results = refine_via_base_template(base_path, results, ov_dir,
@@ -1059,16 +1098,44 @@ def process_dualsense():
     # TouchpadClick = click highlight PNG bounds (621x322 native).
     # Touchpad = the actual touchpad surface for finger-dot mapping
     # (smaller area, original v3 layout).
-    click_x = round((base_w - 621) / 2)
+    # Body width, not canvas width: on the Edge the gutter would inflate
+    # the touchpad zone by the margin ratio and push its finger mapping off
+    # the pad. The margin shift below moves these with everything else.
+    click_x = round((DS_BODY_W - 621) / 2)
     results.append(("", "TouchpadClick", "Button",   click_x, 160, 621, 322))
-    tp_w_inner = round(base_w * 0.34)
+    tp_w_inner = round(DS_BODY_W * 0.34)
     tp_h_inner = round(base_h * 0.27)
-    tp_x_inner = round((base_w - tp_w_inner) / 2)
+    tp_x_inner = round((DS_BODY_W - tp_w_inner) / 2)
     tp_y_inner = round(base_h * 0.27)
     results.append(("", "Touchpad", "Touchpad",
                     tp_x_inner, tp_y_inner, tp_w_inner, tp_h_inner))
     print(f"  TouchpadClick        (PNG visual)          -> ({click_x}, 160) 621x322")
     print(f"  Touchpad             (finger zone)         -> ({tp_x_inner}, {tp_y_inner}) {tp_w_inner}x{tp_h_inner}")
+
+    # Shift the body-frame results into the widened canvas. Everything above
+    # is expressed against the pack render's origin. A zero margin is a no-op.
+    if margin:
+        results = [(fn, t, ty, x + margin, y, w, h)
+                   for (fn, t, ty, x, y, w, h) in results]
+
+    if edge:
+        # The floating tiles live in the gutter, so they are authored in the
+        # widened frame directly and take no shift. Back above Fn, matching
+        # the mapping grid's own row order. Vertically centred on the body
+        # (opaque rows 85..815 in the pack render).
+        block = DS_TILE * 2 + DS_GAP
+        top = (85 + 815) // 2 - block // 2
+        tile_x = (margin - DS_TILE) // 2
+        right_x = base_w - tile_x - DS_TILE
+        for target, x, y, label in (
+                ("LeftPaddle", tile_x, top, "L Back"),
+                ("LeftFunction", tile_x, top + DS_TILE + DS_GAP, "L Fn"),
+                ("RightPaddle", right_x, top, "R Back"),
+                ("RightFunction", right_x, top + DS_TILE + DS_GAP, "R Fn")):
+            results.append(("DualSense_EdgeTile.png", target, "Button",
+                            x, y, DS_TILE, DS_TILE))
+            print(f"  {target:20s} ({label + ', floating tile':20s}) -> "
+                  f"({x:4d}, {y:4d}) {DS_TILE:4d}x{DS_TILE:3d}")
 
     return {"base_width": base_w, "base_height": base_h, "results": results}
 
@@ -1973,6 +2040,8 @@ def main():
 
     print("\n=== DualSense Controller ===")
     dualsense_data = process_dualsense()
+    print("\n=== DualSense Edge ===")
+    dsedge_data = process_dualsense_edge()
     print(f"\n  Total DualSense overlays: {len(dualsense_data['results'])}")
 
     print("\n=== Xbox One S Controller ===")
@@ -2047,6 +2116,7 @@ def main():
         ("Xbox360Layout",       xbox_data,      "2DModels/XBOX360/XB360_base.png",         30),
         ("DS4Layout",           ds4_data,       "2DModels/DS4/DS4_V2_base.png",            25),
         ("DualSenseLayout",     dualsense_data, "2DModels/DualSense/DualSense_base.png",   25),
+        ("DualSenseEdgeLayout", dsedge_data,    "2DModels/DUALSENSEEDGE/DualSense_base.png", 25),
         ("XboxOneSLayout",      xbone_data,     "2DModels/XBOXONE/XB1_S_base.png",         30),
         ("XboxSeriesXLayout",   xbseries_data,  "2DModels/XBOXSERIES/XBSeries_base.png",   30),
         ("SwitchProLayout",     swpro_data,     "2DModels/SWITCHPRO/NSwitchPro_base.png",  25),

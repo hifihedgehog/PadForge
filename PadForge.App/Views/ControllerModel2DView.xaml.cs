@@ -172,6 +172,11 @@ namespace PadForge.Views
                     basePath = DualSenseLayout.BasePath; overlays = DualSenseLayout.Overlays;
                     _stickMaxTravel = DualSenseLayout.StickMaxTravel;
                     break;
+                case "DUALSENSEEDGE":
+                    baseW = DualSenseEdgeLayout.BaseWidth; baseH = DualSenseEdgeLayout.BaseHeight;
+                    basePath = DualSenseEdgeLayout.BasePath; overlays = DualSenseEdgeLayout.Overlays;
+                    _stickMaxTravel = DualSenseEdgeLayout.StickMaxTravel;
+                    break;
                 case "XBOXONE":
                     baseW = XboxOneSLayout.BaseWidth; baseH = XboxOneSLayout.BaseHeight;
                     basePath = XboxOneSLayout.BasePath; overlays = XboxOneSLayout.Overlays;

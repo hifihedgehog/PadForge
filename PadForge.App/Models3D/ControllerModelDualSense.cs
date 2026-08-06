@@ -101,6 +101,27 @@ namespace PadForge.Models3D
             // them, or their depth writes reject the later-drawn plates.
             TransparentTrim = LoadModel("Transparent.obj");
 
+            // ── DualSense Edge extras ───────────────────
+            // The Edge's back buttons and Fn buttons are their own
+            // shells, re-filed out of MainBody (back pair) and the
+            // stick housings (Fn pair). Only the Edge asset folder
+            // carries these files, so TryLoadModel gates them off the
+            // plain colorways, the same way the stick housings gate
+            // themselves. Targets are the PadSetting field names.
+            foreach (var (file, target) in new[]
+            {
+                ("LeftBackButton.obj", "LeftPaddle"),
+                ("RightBackButton.obj", "RightPaddle"),
+                ("LeftFnButton.obj", "LeftFunction"),
+                ("RightFnButton.obj", "RightFunction"),
+            })
+            {
+                var extra = TryLoadModel(file);
+                if (extra == null) continue;
+                RegisterButton(target, extra);
+                model3DGroup.Children.Add(extra);
+            }
+
             // ── Materials ───────────────────────────────
             foreach (var (target, _) in ButtonMap)
             {
@@ -132,6 +153,18 @@ namespace PadForge.Models3D
                 ApplyMaterial(hg, MaterialStick);
                 DefaultMaterials[hg] = MaterialStick;
                 model3DGroup.Children.Add(hg);
+            }
+            // The Fn buttons came out of the stick housings, so their
+            // UVs live in the module atlas, not the body's. The button
+            // material pass above gave them the body atlas; re-point.
+            foreach (var fnTarget in new[] { "LeftFunction", "RightFunction" })
+            {
+                if (!ButtonMap.TryGetValue(fnTarget, out var fnList)) continue;
+                foreach (var grp in fnList)
+                {
+                    ApplyMaterial(grp, MaterialStick);
+                    DefaultMaterials[grp] = MaterialStick;
+                }
             }
 
             // The ring group IS the stick cap head (XBOXONE reference:
@@ -167,6 +200,13 @@ namespace PadForge.Models3D
                 AttachRiderDecal(lbList[0], "Decal-L1.obj", MaterialDecal);
             if (ButtonMap.TryGetValue("RightShoulder", out var rbList) && rbList.Count > 0)
                 AttachRiderDecal(rbList[0], "Decal-R1.obj", MaterialDecal);
+            // The Edge's Fn labels ride their buttons for the same
+            // reason: a static-overlay label stays grey while the
+            // button under it lights.
+            if (ButtonMap.TryGetValue("LeftFunction", out var lfnList) && lfnList.Count > 0)
+                AttachRiderDecal(lfnList[0], "Decal-Fn-Left.obj", MaterialDecal);
+            if (ButtonMap.TryGetValue("RightFunction", out var rfnList) && rfnList.Count > 0)
+                AttachRiderDecal(rfnList[0], "Decal-Fn-Right.obj", MaterialDecal);
 
             // Static decal overlay last: its atlas alpha carries the rest
             // of the glyphs and labels, and WPF renders transparency in

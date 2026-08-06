@@ -11,8 +11,11 @@ The back buttons are on the rear, so no front-facing position exists for them
 at all. The Fn buttons DO sit on the front face, below each stick, and the
 first attempt was to draw them there. It does not survive measurement:
 
-  * The Edge 3D mesh carries no Fn or back-button parts, so the route used for
-    the Switch 2 Pro's C button (project the mesh centroid) is unavailable.
+  * The Edge 3D mesh pins the Fn caps to the HOUSING UNDERSIDE (they face
+    down-forward at z=-19, below the pack render's front silhouette), so
+    projecting the mesh centroid, the route used for the Switch 2 Pro's C
+    button, lands them off this render's body. The 3D view registers the
+    real meshes instead; only this 2D render needs tiles.
   * dualsense-tester's Edge front SVG does carry them (LFnPattern /
     RFnPattern, directly below each stick). Fitting that drawing onto this one
     with a per-axis linear fit over thirteen shared controls lands the face

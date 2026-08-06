@@ -11,11 +11,13 @@ namespace PadForge.Tests
     /// The DualSense Edge's own 2D asset set. Its four extras (the rear back
     /// buttons and the front Fn pair) are floating tiles in a side gutter,
     /// the Steam Deck L4/L5/R4/R5 treatment the Switch 2 Pro's GL/GR already
-    /// follow, because none of the four has a front position this render can
-    /// site: the back pair is on the rear, and the Fn pair's front position
-    /// is not derivable (the Edge mesh has no Fn parts, and the only
-    /// reference drawing that carries them is a different projection whose
-    /// fit puts them off the body).
+    /// follow, because none of the four is visible in this render: the back
+    /// pair is on the rear shell, and the Fn caps face down-forward under
+    /// the body's front lip, below the pack render's silhouette (the mesh
+    /// pins them at z=-19 on the housing underside; the one reference
+    /// drawing that shows them front-on is a different projection whose fit
+    /// puts them off the body). The 3D view sites all four on their real
+    /// meshes instead; see DualSenseEdge3DExtrasTests.
     ///
     /// The set is SEPARATE from the plain DualSense's for the same reason
     /// SWITCH2PRO is separate from SWITCHPRO: a pad must never render

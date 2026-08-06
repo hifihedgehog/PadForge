@@ -1136,7 +1136,16 @@ namespace PadForge.Common.Input
                     $"PERSONA ctrl fn={e.Function} mute={e.IsMute}/{e.MuteValue} dB={e.VolumeDb:F1} raw={e.RawValue}");
                 // UAC1 s16 dB → linear. Mute and volume are separate
                 // controls on the same feature unit, both honored.
-                if (e.Function == "speaker")
+                //
+                // The output unit's NAME follows the persona's real
+                // hardware: the DualSense family declares "speaker"
+                // (audioControls in dualsense-composite.json), the
+                // DualShock 4 declares "headset" (its UAC out is the
+                // headset path, dualshock-4-v2-composite.json). Matching
+                // "speaker" alone dropped every Windows volume write on
+                // the DS4 endpoint, so its device volume did nothing
+                // while the DualSense's worked.
+                if (IsOutputVolumeFunction(e.Function))
                 {
                     if (e.IsMute) feed.SpeakerMuted = e.MuteValue;
                     else feed.SpeakerGain = (float)Math.Pow(10.0, e.VolumeDb / 20.0);
@@ -1185,6 +1194,14 @@ namespace PadForge.Common.Input
             }
             Reconcile();
         }
+
+        /// <summary>True for the persona feature-unit names that carry the
+        /// OUTPUT volume/mute: "speaker" (DualSense family) and "headset"
+        /// (DualShock 4). "microphone" is the input unit on every persona.
+        /// An unmatched future name still logs through the PERSONA ctrl
+        /// diag line, so it cannot go silently missing again.</summary>
+        internal static bool IsOutputVolumeFunction(string fn) =>
+            fn == "speaker" || fn == "headset";
 
         private static int IndexOfRole(System.Collections.Generic.IReadOnlyList<string> roles, string role, int fallback)
         {

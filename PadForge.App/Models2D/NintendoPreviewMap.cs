@@ -59,6 +59,12 @@ public static class NintendoPreviewMap
         !string.IsNullOrEmpty(profileId)
         && profileId.StartsWith("switch2-pro", System.StringComparison.OrdinalIgnoreCase);
 
+    /// <summary>True when the two profiles share a wire: every raw button
+    /// index means the same control on both, so existing raw targets need
+    /// no translation between them.</summary>
+    public static bool SameWireFamily(string profileIdA, string profileIdB) =>
+        IsSwitch2(profileIdA) == IsSwitch2(profileIdB);
+
     /// <summary>The wire table for a profile. Switch 2 Pro gets its own;
     /// everything else falls back to the original Pro Controller's, which is
     /// also the safe answer for a null or unrecognised id.
@@ -150,7 +156,17 @@ public static class NintendoPreviewMap
 
         string role = ToPreview(rawName, fromProfileId);
         if (role == null)
-            return rawName;   // an index this pad does not use; leave it be
+        {
+            // A button index the OUTGOING wire does not role-map cannot
+            // have been authored by its grid: it is an orphan from an
+            // earlier translation bug or hand-edited XML. Preserving it
+            // would carry it forever and can mint DUPLICATE targets (an
+            // orphan RawBtn14 beside the real RawBtn8 -> RawBtn14 move),
+            // so a cross-family translation prunes it. Hat targets have a
+            // fixed meaning and fall through to the D-pad handling below,
+            // which never returns null for them.
+            return null;
+        }
 
         int i = IndexOf(toProfileId, role);
         if (i >= 0) return $"RawBtn{i}";

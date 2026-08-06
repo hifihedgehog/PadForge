@@ -3391,6 +3391,10 @@ namespace PadForge.Views
                 // Extended dropdown has the new id before this assignment
                 // hits the binding. Dialog returns false on plain close
                 // (no import); in that path we don't touch the slot.
+                // The import installed rows authored for the imported
+                // profile's wire; stamp it so the setter adopts instead of
+                // translating them as if they were the previous profile's.
+                Common.Input.SettingsManager.StampNintendoWire(vm.PadIndex, dialog.ImportedProfileId);
                 vm.ProfileId = dialog.ImportedProfileId;
             }
         }

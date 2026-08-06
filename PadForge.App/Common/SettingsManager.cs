@@ -900,11 +900,41 @@ namespace PadForge.Common.Input
         /// Minus (RawBtn8 on the original) would start pressing the Switch 2
         /// Pro's D-pad Down. Bindings whose role the target pad does not have
         /// are dropped rather than left pointing at wire that is not there.
+        ///
+        /// The "from" side is the WIRE STAMP, never a caller-supplied
+        /// previous value. A slot's ProfileId property changes for two
+        /// reasons that need opposite handling: the user re-targeting the
+        /// SAME data to a new wire (translate), and the system re-describing
+        /// the VM to match data that is ALREADY on the new wire (launch
+        /// restore, profile apply, workshop import: do nothing). The setter
+        /// cannot tell them apart, and keying on its previous value
+        /// mistranslated consistent data on every one of those paths. The
+        /// stamp tracks the data itself: restore/apply/import stamp the
+        /// incoming wire BEFORE the VM assignment, so the setter's call
+        /// finds from == to and no-ops; only a live user change leaves the
+        /// stamp behind the new value, which is exactly the translate case.
         /// </summary>
-        public static void TranslateNintendoRawMappings(
-            int padIndex, string fromProfileId, string toProfileId)
+        public static void TranslateNintendoRawMappings(int padIndex, string toProfileId)
         {
+            if (padIndex < 0 || padIndex >= _nintendoWireStamp.Length) return;
+            string fromProfileId = _nintendoWireStamp[padIndex];
+
+            // Unknown stamp: ADOPT, never guess. The data was persisted
+            // together with the profile now being applied to the VM, so
+            // they are already consistent; translating from a guessed
+            // wire is the corruption this stamp exists to prevent.
+            if (string.IsNullOrEmpty(fromProfileId))
+            {
+                _nintendoWireStamp[padIndex] = toProfileId;
+                return;
+            }
             if (string.Equals(fromProfileId, toProfileId, StringComparison.OrdinalIgnoreCase))
+                return;
+            _nintendoWireStamp[padIndex] = toProfileId;
+
+            // Same wire FAMILY on both sides means every index keeps its
+            // meaning and there is nothing to move.
+            if (Models2D.NintendoPreviewMap.SameWireFamily(fromProfileId, toProfileId))
                 return;
 
             foreach (var us in GetSettingsForSlot(padIndex))
@@ -951,19 +981,45 @@ namespace PadForge.Common.Input
                 ? SlotMappingSets[padIndex] : null;
             if (set?.Rows != null)
             {
-                var kept = new List<Engine.Data.MappingRow>(set.Rows.Count);
-                foreach (var row in set.Rows)
+                // Build the new list and assign the REFERENCE. The poll
+                // thread enumerates set.Rows concurrently, and an in-place
+                // Clear + AddRange tears that enumeration; a reference swap
+                // costs one stale tick, the same trade every other set
+                // replacement in this codebase makes.
+                var rows = set.Rows;
+                var kept = new List<Engine.Data.MappingRow>(rows.Count);
+                foreach (var row in rows)
                 {
                     if (row == null || string.IsNullOrEmpty(row.Target)) continue;
                     string dst = Models2D.NintendoPreviewMap.TranslateRawTarget(
                         row.Target, fromProfileId, toProfileId);
-                    if (dst == null) continue;   // role absent on the target pad
+                    if (dst == null) continue;   // role absent on the target pad, or an orphan
                     row.Target = dst;
                     kept.Add(row);
                 }
-                set.Rows.Clear();
-                set.Rows.AddRange(kept);
+                set.Rows = kept;
             }
+        }
+
+        /// <summary>Which wire each Nintendo slot's raw mapping data is
+        /// currently authored under, by profile id. See
+        /// <see cref="TranslateNintendoRawMappings"/> for why this exists.
+        /// Null/empty = unknown, which the translation treats as "adopt the
+        /// next profile applied, translate nothing".</summary>
+        private static readonly string[] _nintendoWireStamp =
+            new string[Common.Input.InputManager.MaxPads];
+
+        /// <summary>Records that the slot's raw mapping data belongs to
+        /// <paramref name="profileId"/>'s wire WITHOUT translating anything.
+        /// Every path that installs mapping data and profile id together
+        /// (launch restore, profile apply, workshop import) calls this
+        /// before assigning the VM's ProfileId, so the setter's translation
+        /// sees from == to and stands down. Slot delete / type switch call
+        /// it with the new surface's profile for the same reason.</summary>
+        public static void StampNintendoWire(int padIndex, string profileId)
+        {
+            if (padIndex < 0 || padIndex >= _nintendoWireStamp.Length) return;
+            _nintendoWireStamp[padIndex] = profileId;
         }
 
         public static void ReAutoMapSlot(int padIndex, Engine.VirtualControllerType outputType,
@@ -988,6 +1044,12 @@ namespace PadForge.Common.Input
                     if (us.MapTo == padIndex) slotSettings.Add(us);
                 }
             }
+
+            // The automap below authors every device's raw surface under
+            // profileId's wire, so that becomes the slot's wire stamp
+            // regardless of what the surface carried before.
+            if (outputType == Engine.VirtualControllerType.Nintendo)
+                StampNintendoWire(padIndex, profileId);
 
             foreach (var us in slotSettings)
             {

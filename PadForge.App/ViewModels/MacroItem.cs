@@ -6930,10 +6930,13 @@ namespace PadForge.ViewModels
             5 => Strings.Instance.Btn_ZR,
             6 => Strings.Instance.Btn_Plus,
             7 => Strings.Instance.Btn_RightStickButton,
-            8 => Strings.Instance.Btn_Down,
-            9 => Strings.Instance.Btn_Right,
-            10 => Strings.Instance.Btn_Left,
-            11 => Strings.Instance.Btn_Up,
+            // D-pad directions are real buttons on this wire. Label them
+            // as D-pad, or a macro / SOCD picker shows a bare "Down" with
+            // nothing saying what it belongs to.
+            8 => Strings.Instance.Btn_DPadDown,
+            9 => Strings.Instance.Btn_DPadRight,
+            10 => Strings.Instance.Btn_DPadLeft,
+            11 => Strings.Instance.Btn_DPadUp,
             12 => Strings.Instance.Btn_L,
             13 => Strings.Instance.Btn_ZL,
             14 => Strings.Instance.Btn_Minus,

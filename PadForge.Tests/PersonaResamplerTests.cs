@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Common.Input;
 using Xunit;
 
@@ -114,6 +114,20 @@ namespace PadForge.Tests
             Assert.InRange(written, 15998, 16002);
             double hz = ZeroCrossings(dst, written, 1) / (written / 16000.0) / 2.0;
             Assert.InRange(hz, 296, 304);
+        }
+
+        /// <summary>Windows volume writes arrive tagged with the persona's
+        /// own feature-unit name: "speaker" on the DualSense family,
+        /// "headset" on the DualShock 4. Both are output volume; matching
+        /// only "speaker" is how the DS4's device volume did nothing.</summary>
+        [Theory]
+        [InlineData("speaker", true)]
+        [InlineData("headset", true)]
+        [InlineData("microphone", false)]
+        [InlineData("unit7", false)]
+        public void OutputVolumeFunction_CoversBothPersonaNames(string fn, bool expected)
+        {
+            Assert.Equal(expected, AudioPassthroughService.IsOutputVolumeFunction(fn));
         }
 
         /// <summary>Identity step is byte-faithful apart from the one-frame

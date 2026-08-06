@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -36,6 +36,14 @@ namespace PadForge.Tests
             return File.ReadAllText(path);
         }
 
+        /// <summary>Drops whole-line comments. A source-shape assertion that
+        /// matches raw substrings passes on a commented-out line, which is
+        /// exactly how the code would be disabled: mutation-testing these
+        /// guards by commenting a line was the thing that showed it.</summary>
+        private static string Live(string body)
+            => string.Join("\n", body.Split('\n')
+                .Where(l => !l.TrimStart().StartsWith("//", StringComparison.Ordinal)));
+
         /// <summary>The 2D annotation chip's output ember. Without an arm the
         /// chip renders, its controller sprite lights on press, and the ember
         /// beside it stays dark.</summary>
@@ -45,7 +53,7 @@ namespace PadForge.Tests
             string src = Read("PadForge.App/Views/ControllerModel2DView.Annotations.cs");
             int at = src.IndexOf("GetAnnotationButtonState", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = src.Substring(at);
+            string body = Live(src.Substring(at));
             foreach (var t in ExtraOutputs)
                 Assert.Contains($"\"{t}\" => _vm.", body, StringComparison.Ordinal);
         }
@@ -60,7 +68,7 @@ namespace PadForge.Tests
             string src = Read("PadForge.App/Services/InputService.cs");
             int at = src.IndexOf("private int? ReadCombinedOutputValue", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = src.Substring(at, 6000);
+            string body = Live(src.Substring(at, 6000));
             foreach (var t in ExtraOutputs)
                 Assert.Contains($"\"{t}\"", body, StringComparison.Ordinal);
         }
@@ -74,7 +82,7 @@ namespace PadForge.Tests
             string src = Read("PadForge.App/Services/InputService.cs");
             int at = src.IndexOf("UserEffectsDispatcher.SlotButtonsProvider", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = src.Substring(at, 1800);
+            string body = Live(src.Substring(at, 1800));
             foreach (var f in ExtraFields)
                 Assert.Contains($"gp.{f}", body, StringComparison.Ordinal);
 
@@ -98,7 +106,7 @@ namespace PadForge.Tests
             // Anchor on the DEFINITION: the call site appears first.
             int at = src.IndexOf("private static void StartPersonaMic", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = src.Substring(at, 4000);
+            string body = Live(src.Substring(at, 4000));
             Assert.Contains("outCh == 1 && inCh > 1", body, StringComparison.Ordinal);
             Assert.Contains("sum / inCh", body, StringComparison.Ordinal);
         }
@@ -115,7 +123,7 @@ namespace PadForge.Tests
             string src = Read("PadForge.App/Services/Ds3DriverInstaller.cs");
             int at = src.IndexOf("public static bool EnsureInstalled", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = src.Substring(at, 1800);
+            string body = Live(src.Substring(at, 1800));
             Assert.Contains("IsPsmFilterPresent()", body, StringComparison.Ordinal);
             Assert.Contains("RepairPsmFilter", body, StringComparison.Ordinal);
         }
@@ -130,7 +138,7 @@ namespace PadForge.Tests
             string src = Read("PadForge.App/Services/Ds3DriverInstaller.cs");
             int at = src.IndexOf("public static bool EnsureWinUsbBound", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = src.Substring(at, 1500);
+            string body = Live(src.Substring(at, 1500));
             Assert.Contains("IsWinUsbPackageTrusted", body, StringComparison.Ordinal);
 
             string pair = Read("PadForge.App/Services/Ds3PairingService.cs");

@@ -3504,6 +3504,11 @@ namespace PadForge.Common.Input
                 case "RightThumbButton":if (value) gp.SetButton(Gamepad.RIGHT_THUMB, true); break;
                 case "ButtonGuide":     if (value) gp.SetButton(Gamepad.GUIDE, true); break;
                 case "ButtonShare":     if (value) gp.Share = true; break;
+                case "ButtonMute":      if (value) gp.MicMute = true; break;
+                case "LeftPaddle":      if (value) gp.LeftPaddle = true; break;
+                case "RightPaddle":     if (value) gp.RightPaddle = true; break;
+                case "LeftFunction":    if (value) gp.LeftFunction = true; break;
+                case "RightFunction":   if (value) gp.RightFunction = true; break;
                 case "DPadUp":          if (value) gp.SetButton(Gamepad.DPAD_UP,    true); break;
                 case "DPadDown":        if (value) gp.SetButton(Gamepad.DPAD_DOWN,  true); break;
                 case "DPadLeft":        if (value) gp.SetButton(Gamepad.DPAD_LEFT,  true); break;

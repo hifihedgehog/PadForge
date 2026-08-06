@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using PadForge.Engine;
 using PadForge.Services;
@@ -285,10 +285,19 @@ namespace PadForge.Common.Input
             // nothing on a virtual DualSense.
             if (gp.IsButtonPressed(Gamepad.TOUCHPAD)) b9 |= 0x02;
             if (tp.Click)                             b9 |= 0x02; // Touchpad click
-            // bit 0x04 = Mute (mic), bits 0x10-0x80 = DualSense Edge function /
-            // paddle buttons. Left at 0 — wiring MISC1 / paddles into the
-            // virtual output requires plumbing state.Buttons[11..15] into the
-            // packer, which is a separate task.
+            // bit 0x04 = Mute (mic), bits 0x10-0x80 = the DualSense Edge
+            // function / paddle buttons, per SDL_hidapi_ps5.c's parser
+            // (LEFT_FUNCTION 0x10, RIGHT_FUNCTION 0x20, LEFT_PADDLE 0x40,
+            // RIGHT_PADDLE 0x80). Packed unconditionally: the bits are
+            // only ever set when a mapping targets them, plain-DS5
+            // parsers read the Edge bits solely on Edge PIDs, and the
+            // mute bit is a declared button (USAGE_MAX 15) on every DS5
+            // descriptor.
+            if (gp.MicMute)       b9 |= 0x04;
+            if (gp.LeftFunction)  b9 |= 0x10;
+            if (gp.RightFunction) b9 |= 0x20;
+            if (gp.LeftPaddle)    b9 |= 0x40;
+            if (gp.RightPaddle)   b9 |= 0x80;
             dest[9] = b9;
 
             // byte 10 stays zero (reserved / future button bits).

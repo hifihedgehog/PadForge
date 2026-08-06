@@ -803,6 +803,30 @@ namespace PadForge.Common.Input
                 if (outputType == Engine.VirtualControllerType.Xbox && hasMisc1)
                     ps.ButtonShare = "Button 11";
 
+                // PlayStation mirror of the same idea: the physical mic
+                // button (SDL misc1, source position 11) lands on the
+                // virtual DualSense's mic mute, and an Edge source's
+                // paddles / Fn land on the virtual Edge's same-role
+                // outputs (positions 12-15 per SDL's paddle order:
+                // RP1, LP1, RP2=right Fn, LP2=left Fn).
+                bool ButtonAt(int idx) => ud.DeviceObjects != null
+                    && ud.DeviceObjects.Any(o => o != null
+                        && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
+                        && o.InputIndex == idx);
+                if (outputType == Engine.VirtualControllerType.PlayStation
+                    && !string.IsNullOrEmpty(profileId)
+                    && profileId.StartsWith("dualsense", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (hasMisc1) ps.ButtonMute = "Button 11";
+                    if (profileId.StartsWith("dualsense-edge", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (ButtonAt(12)) ps.RightPaddle = "Button 12";
+                        if (ButtonAt(13)) ps.LeftPaddle = "Button 13";
+                        if (ButtonAt(14)) ps.RightFunction = "Button 14";
+                        if (ButtonAt(15)) ps.LeftFunction = "Button 15";
+                    }
+                }
+
                 // Default deadzones and gains.
                 ps.LeftThumbDeadZoneX = "0";
                 ps.LeftThumbDeadZoneY = "0";

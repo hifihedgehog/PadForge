@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PadForge.Engine.Data
 {
@@ -66,6 +66,11 @@ namespace PadForge.Engine.Data
             ["RightThumbButton"]  = new(ControlCategory.Button, 9),
             ["ButtonGuide"]       = new(ControlCategory.Button, 10),
             ["ButtonShare"]       = new(ControlCategory.Button, 11),
+            ["ButtonMute"]        = new(ControlCategory.Button, 12),
+            ["LeftPaddle"]        = new(ControlCategory.Button, 13),
+            ["RightPaddle"]       = new(ControlCategory.Button, 14),
+            ["LeftFunction"]      = new(ControlCategory.Button, 15),
+            ["RightFunction"]     = new(ControlCategory.Button, 16),
             // Axes
             ["LeftThumbAxisX"]    = new(ControlCategory.Axis, 0),
             ["LeftThumbAxisY"]    = new(ControlCategory.Axis, 1),

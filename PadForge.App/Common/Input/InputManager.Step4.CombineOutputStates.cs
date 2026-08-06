@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 
@@ -272,6 +272,11 @@ namespace PadForge.Common.Input
             // Share lives outside the 16-bit Buttons mask but combines
             // with the same OR semantics.
             dest.Share |= src.Share;
+            dest.MicMute |= src.MicMute;
+            dest.LeftPaddle |= src.LeftPaddle;
+            dest.RightPaddle |= src.RightPaddle;
+            dest.LeftFunction |= src.LeftFunction;
+            dest.RightFunction |= src.RightFunction;
 
             // Triggers: take the higher value.
             if (src.LeftTrigger > dest.LeftTrigger)

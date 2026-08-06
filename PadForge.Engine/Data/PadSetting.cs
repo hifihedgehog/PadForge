@@ -54,6 +54,20 @@ namespace PadForge.Engine.Data
         /// descriptor doesn't declare button 13.</summary>
         [XmlElement] public string ButtonShare { get; set; } = "";
 
+        /// <summary>DualSense mic mute button. Only surfaced on DualSense /
+        /// Edge virtual-controller profiles; the packers set wire bit 0x04
+        /// of the third buttons byte, and HM carries it as Misc1.</summary>
+        [XmlElement] public string ButtonMute { get; set; } = "";
+
+        /// <summary>DualSense Edge rear paddles and front Fn buttons,
+        /// side-named to match HM's HMButton and SDL's paddle roles (the
+        /// Fn pair is SDL's LEFT_PADDLE2 / RIGHT_PADDLE2). Only surfaced
+        /// on Edge profiles.</summary>
+        [XmlElement] public string LeftPaddle { get; set; } = "";
+        [XmlElement] public string RightPaddle { get; set; } = "";
+        [XmlElement] public string LeftFunction { get; set; } = "";
+        [XmlElement] public string RightFunction { get; set; } = "";
+
         [XmlElement] public string LeftThumbButton { get; set; } = "";
         [XmlElement] public string RightThumbButton { get; set; } = "";
 
@@ -1296,6 +1310,11 @@ namespace PadForge.Engine.Data
             sb.Append(LeftThumbButton); sb.Append('|');
             sb.Append(RightThumbButton); sb.Append('|');
             sb.Append(ButtonShare); sb.Append('|');
+            sb.Append(ButtonMute); sb.Append('|');
+            sb.Append(LeftPaddle); sb.Append('|');
+            sb.Append(RightPaddle); sb.Append('|');
+            sb.Append(LeftFunction); sb.Append('|');
+            sb.Append(RightFunction); sb.Append('|');
 
             // D-Pad
             sb.Append(DPad); sb.Append('|');
@@ -1699,6 +1718,11 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(LeftThumbButton) ||
             !string.IsNullOrEmpty(RightThumbButton) ||
             !string.IsNullOrEmpty(ButtonShare) ||
+            !string.IsNullOrEmpty(ButtonMute) ||
+            !string.IsNullOrEmpty(LeftPaddle) ||
+            !string.IsNullOrEmpty(RightPaddle) ||
+            !string.IsNullOrEmpty(LeftFunction) ||
+            !string.IsNullOrEmpty(RightFunction) ||
             !string.IsNullOrEmpty(DPad) ||
             !string.IsNullOrEmpty(DPadUp) ||
             !string.IsNullOrEmpty(DPadDown) ||
@@ -1766,6 +1790,11 @@ namespace PadForge.Engine.Data
             LeftThumbButton = V(nameof(LeftThumbButton));
             RightThumbButton = V(nameof(RightThumbButton));
             ButtonShare = V(nameof(ButtonShare));
+            ButtonMute = V(nameof(ButtonMute));
+            LeftPaddle = V(nameof(LeftPaddle));
+            RightPaddle = V(nameof(RightPaddle));
+            LeftFunction = V(nameof(LeftFunction));
+            RightFunction = V(nameof(RightFunction));
             DPad = V(nameof(DPad));
             DPadUp = V(nameof(DPadUp));
             DPadDown = V(nameof(DPadDown));
@@ -1871,6 +1900,8 @@ namespace PadForge.Engine.Data
             Add(ButtonBack); Add(ButtonStart); Add(ButtonGuide);
             Add(LeftThumbButton); Add(RightThumbButton);
             Add(ButtonShare);
+            Add(ButtonMute); Add(LeftPaddle); Add(RightPaddle);
+            Add(LeftFunction); Add(RightFunction);
 
             // D-Pad
             Add(DPad); Add(DPadUp); Add(DPadDown); Add(DPadLeft); Add(DPadRight);
@@ -1947,6 +1978,8 @@ namespace PadForge.Engine.Data
             nameof(LeftShoulder), nameof(RightShoulder),
             nameof(ButtonBack), nameof(ButtonStart), nameof(ButtonGuide),
             nameof(ButtonShare),
+            nameof(ButtonMute), nameof(LeftPaddle), nameof(RightPaddle),
+            nameof(LeftFunction), nameof(RightFunction),
             nameof(LeftThumbButton), nameof(RightThumbButton),
             // D-Pad
             nameof(DPad), nameof(DPadUp), nameof(DPadDown), nameof(DPadLeft), nameof(DPadRight),
@@ -2449,6 +2482,8 @@ namespace PadForge.Engine.Data
             nameof(LeftShoulder), nameof(RightShoulder),
             nameof(ButtonBack), nameof(ButtonStart), nameof(ButtonGuide),
             nameof(ButtonShare),
+            nameof(ButtonMute), nameof(LeftPaddle), nameof(RightPaddle),
+            nameof(LeftFunction), nameof(RightFunction),
             nameof(LeftThumbButton), nameof(RightThumbButton),
             nameof(DPad), nameof(DPadUp), nameof(DPadDown), nameof(DPadLeft), nameof(DPadRight),
             nameof(LeftTrigger), nameof(RightTrigger),

@@ -1016,6 +1016,11 @@
   <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
   <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>Mic Mute</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Left Paddle</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>Right Paddle</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>Left Fn</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>Right Fn</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Bouton gauche de la souris</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>Bouton droit de la souris</value></data>

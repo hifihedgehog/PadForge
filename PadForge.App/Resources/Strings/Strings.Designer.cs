@@ -2400,6 +2400,11 @@ public class Strings : INotifyPropertyChanged
     public string Btn_GL => Get("Btn_GL");
     public string Btn_GR => Get("Btn_GR");
     public string Btn_C => Get("Btn_C");
+    public string Btn_MicMute => Get("Btn_MicMute");
+    public string Btn_LeftPaddle => Get("Btn_LeftPaddle");
+    public string Btn_RightPaddle => Get("Btn_RightPaddle");
+    public string Btn_LeftFn => Get("Btn_LeftFn");
+    public string Btn_RightFn => Get("Btn_RightFn");
     // Mouse VK buttons
     public string Key_LButton => Get("Key_LButton");
     public string Key_RButton => Get("Key_RButton");

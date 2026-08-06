@@ -300,12 +300,17 @@ namespace PadForge.ViewModels
                         // follows the newly-picked profile's descriptor.
                         RefreshRumbleAudioTabGate();
                     }
-                    else if (_outputType == VirtualControllerType.Xbox)
+                    else if (_outputType is VirtualControllerType.Xbox
+                             or VirtualControllerType.PlayStation)
                     {
-                        // Xbox Series profiles add a Share row that other
-                        // Xbox profiles (360 / One / Wireless) don't expose,
-                        // so the Mappings list must rebuild when the profile
-                        // selection changes (xbox-series-* ↔ anything else).
+                        // Profile-gated rows exist inside both fixed
+                        // layouts now: Xbox Series adds Share, the
+                        // DualSense family adds Mic Mute, and the Edge
+                        // adds its paddle / Fn pairs. A profile change
+                        // within the category must rebuild the list or
+                        // the previous profile's rows go stale (the
+                        // dualsense-default slot would keep a Mic Mute
+                        // row after switching to a DualShock 4).
                         RebuildMappings();
                     }
                     ConfigItemDirtyCallback?.Invoke();
@@ -985,6 +990,21 @@ namespace PadForge.ViewModels
         /// <see cref="Gamepad.Share"/> in <c>UpdateFromGamepad</c>; drives
         /// 2D overlay + 3D mesh accent on press.</summary>
         public bool ButtonShare { get => _buttonShare; set => SetProperty(ref _buttonShare, value); }
+
+        private bool _buttonMute;
+        /// <summary>DualSense mic mute button live state.</summary>
+        public bool ButtonMute { get => _buttonMute; set => SetProperty(ref _buttonMute, value); }
+
+        // LeftPaddle / RightPaddle live-state properties already exist
+        // (the Switch 2 Pro raw bridge added them); UpdateFromGamepad now
+        // writes them for PlayStation slots too, so both surfaces share
+        // the pair.
+
+        private bool _leftFunction;
+        public bool LeftFunction { get => _leftFunction; set => SetProperty(ref _leftFunction, value); }
+
+        private bool _rightFunction;
+        public bool RightFunction { get => _rightFunction; set => SetProperty(ref _rightFunction, value); }
 
         private bool _buttonC;
         /// <summary>Switch 2 Pro C Button live state. Written by the raw
@@ -2014,6 +2034,34 @@ namespace PadForge.ViewModels
                 Mappings.Add(new MappingItem("PS", "ButtonGuide", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("L3", "LeftThumbButton", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem("R3", "RightThumbButton", MappingCategory.Buttons));
+
+                // Mic mute: DualSense family only (the DualShock 4 has no
+                // mic button and its report has no bit for one). Same
+                // gating rationale as the Xbox Series Share row: never
+                // surface a slot the active profile's wire cannot carry.
+                if (!string.IsNullOrEmpty(ProfileId) &&
+                    ProfileId.StartsWith("dualsense", StringComparison.OrdinalIgnoreCase))
+                {
+                    Mappings.Add(new MappingItem(Strings.Instance.Btn_MicMute, "ButtonMute",
+                        MappingCategory.Buttons, includeInMapAll: false));
+                }
+
+                // Edge extras: the rear paddle pair and the front Fn pair,
+                // side-named to match the physical sources ("Left Paddle 1"
+                // etc.) so mapping a real Edge onto a virtual one reads
+                // one-to-one.
+                if (!string.IsNullOrEmpty(ProfileId) &&
+                    ProfileId.StartsWith("dualsense-edge", StringComparison.OrdinalIgnoreCase))
+                {
+                    Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftPaddle, "LeftPaddle",
+                        MappingCategory.Buttons, includeInMapAll: false));
+                    Mappings.Add(new MappingItem(Strings.Instance.Btn_RightPaddle, "RightPaddle",
+                        MappingCategory.Buttons, includeInMapAll: false));
+                    Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftFn, "LeftFunction",
+                        MappingCategory.Buttons, includeInMapAll: false));
+                    Mappings.Add(new MappingItem(Strings.Instance.Btn_RightFn, "RightFunction",
+                        MappingCategory.Buttons, includeInMapAll: false));
+                }
             }
             else
             {
@@ -6859,6 +6907,11 @@ namespace PadForge.ViewModels
             RightThumbButton = gp.IsButtonPressed(Gamepad.RIGHT_THUMB);
             ButtonGuide = gp.IsButtonPressed(Gamepad.GUIDE);
             ButtonShare = gp.Share;
+            ButtonMute = gp.MicMute;
+            LeftPaddle = gp.LeftPaddle;
+            RightPaddle = gp.RightPaddle;
+            LeftFunction = gp.LeftFunction;
+            RightFunction = gp.RightFunction;
             DPadUp = gp.IsButtonPressed(Gamepad.DPAD_UP);
             DPadDown = gp.IsButtonPressed(Gamepad.DPAD_DOWN);
             DPadLeft = gp.IsButtonPressed(Gamepad.DPAD_LEFT);

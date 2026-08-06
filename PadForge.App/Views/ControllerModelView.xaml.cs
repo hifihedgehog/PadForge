@@ -98,6 +98,17 @@ namespace PadForge.Views
         // the rotation children and break left-drag camera rotation.
         private readonly ScaleTransform3D _modelScaleTransform = new(1, 1, 1);
 
+        // Vertical recenter, computed ONCE per model load from the mesh's
+        // static bounds (never live bounds: trigger pulls change the group's
+        // bounds a little, and a live binding would make the whole model bob
+        // with them). The camera frames the ORIGIN and yaw/pitch pivot
+        // there, so a family authored off-center hangs off-center and
+        // rotates about the wrong point. The DS4 meshes are authored with
+        // their vertical center 21.9 mm below origin (every other family is
+        // within 6 mm), which is why it sat low and clipped its handles at
+        // the bottom when pitched front-facing.
+        private readonly TranslateTransform3D _modelRecenter = new();
+
         public ControllerModelView()
         {
             InitializeComponent();
@@ -118,6 +129,10 @@ namespace PadForge.Views
             // (post-scale) center. With rotation first the rotated controller
             // would scale around its rotated bounding-box center, which
             // shifts when yaw isn't zero.
+            // Recenter runs FIRST, in model units, so the scale and the
+            // yaw/pitch rotations all see a model whose visual center is
+            // the origin: framing and the rotation pivot fix together.
+            _modelRotation.Children.Add(_modelRecenter);
             _modelRotation.Children.Add(_modelScaleTransform);
             _modelRotation.Children.Add(new RotateTransform3D(_yawRotation));
             _modelRotation.Children.Add(new RotateTransform3D(_pitchRotation));
@@ -355,6 +370,12 @@ namespace PadForge.Views
                 _modelScaleTransform.ScaleX = s;
                 _modelScaleTransform.ScaleY = s;
                 _modelScaleTransform.ScaleZ = s;
+
+                // Vertical recenter from the freshly-loaded static bounds
+                // (see the field note). Z only: X centers are ~0 on every
+                // family, and Y (depth) only shifts apparent zoom.
+                var mb = _currentModel.model3DGroup.Bounds;
+                _modelRecenter.OffsetZ = mb.IsEmpty ? 0 : -(mb.Z + mb.SizeZ / 2.0);
                 BuildTouchpadFingerVisuals();
                 _dirty = true;
                 RebuildAnnotations();

@@ -1,4 +1,4 @@
-// Hand-written. Lives in its OWN file on purpose: it used to sit at the tail
+﻿// Hand-written. Lives in its OWN file on purpose: it used to sit at the tail
 // of ControllerOverlayLayout.cs, which tools/overlay_positions.py OVERWRITES
 // wholesale, so every regeneration silently deleted this class.
 namespace PadForge.Models2D;
@@ -14,11 +14,11 @@ namespace PadForge.Models2D;
 ///
 /// The button table FORKS BY PROFILE, and not merely by length. The two
 /// Nintendo families disagree about almost everything past the face buttons:
-/// the original Pro Controller puts its D-pad on a hat and ends at Capture
-/// (index 13), while the Switch 2 Pro spends four buttons on the D-pad, puts
-/// the right-hand controls before the left-hand ones, and carries GR / GL / C
-/// past Capture. Feeding a Switch 2 Pro through the original's table lit the
-/// wrong art for eleven of its twenty-one buttons.
+/// the original Pro Controller reports its D-pad as a HID hat switch and ends
+/// at Capture (index 13), while the Switch 2 Pro reports its D-pad as four
+/// discrete buttons, puts the right-hand controls before the left-hand ones,
+/// and carries GR / GL / C past Capture. Feeding a Switch 2 Pro through the
+/// original's table lit the wrong art for eleven of its twenty-one buttons.
 /// </summary>
 public static class NintendoPreviewMap
 {
@@ -41,7 +41,7 @@ public static class NintendoPreviewMap
         "ButtonB", "ButtonA", "ButtonY", "ButtonX",            // 0-3
         "RightShoulder", "RightTrigger",                        // 4-5  R ZR
         "ButtonStart", "RightThumbButton",                      // 6-7  Plus RS
-        "DPadDown", "DPadRight", "DPadLeft", "DPadUp",          // 8-11 D-pad as BUTTONS
+        "DPadDown", "DPadRight", "DPadLeft", "DPadUp",          // 8-11 D-pad, as discrete buttons
         "LeftShoulder", "LeftTrigger",                          // 12-13 L ZL
         "ButtonBack", "LeftThumbButton",                        // 14-15 Minus LS
         "ButtonGuide", "ButtonShare",                           // 16-17 Home Capture
@@ -85,10 +85,10 @@ public static class NintendoPreviewMap
             if (name == table[i])
                 return $"RawBtn{i}";
 
-        // Only the original Pro Controller carries a hat. On the Switch 2
-        // Pro the D-pad is four buttons, which the table above already
-        // resolved, so falling through to a POV row here would invent a
-        // control the descriptor does not declare.
+        // Only the original Pro Controller reports its D-pad as a hat. The
+        // Switch 2 Pro has a D-pad too, but as four discrete buttons, which
+        // the table above already resolved, so falling through to a POV row
+        // here would invent a control its descriptor does not declare.
         if (!IsSwitch2(profileId)
             && name.StartsWith("DPad", System.StringComparison.Ordinal))
             return "RawPov0" + name.Substring(4);

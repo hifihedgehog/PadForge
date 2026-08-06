@@ -344,8 +344,16 @@ namespace PadForge.ViewModels
             // clamping it to the original's 14 put Home, Capture, GR, GL
             // and C past the end of every raw surface, so they could not
             // be mapped at all.
+            // AUTHORITATIVE, not a Min against profile.ButtonCount. The
+            // lettered count is what the profile's descriptor actually
+            // role-maps, verified against it: switch-pro declares 18 button
+            // bits of which 4 are dead Joy-Con rail SL/SR, and switch2-pro
+            // declares USAGE_MIN 1 / USAGE_MAX 21 / REPORT_COUNT 21 with
+            // every one role-mapped. Taking a Min let a low SDK-reported
+            // count silently truncate the surface, which is how Capture,
+            // GR, GL and C went missing from the Switch 2 Pro grid.
             if (MacroButtonNames.IsNintendoLetteredProfile(profile.Id))
-                buttons = System.Math.Min(buttons, MacroButtonNames.NintendoLetteredCountFor(profile.Id));
+                buttons = MacroButtonNames.NintendoLetteredCountFor(profile.Id);
             _extendedConfig.ButtonCount = buttons;
         }
 
@@ -7408,7 +7416,9 @@ namespace PadForge.ViewModels
             // lights both cardinals, matching how the gamepad path
             // renders D-pad combinations. Skipped when the profile spends
             // real buttons on the D-pad (Switch 2 Pro), where the loop
-            // above already owns those four and no hat is declared.
+            // above already owns those four and the descriptor declares
+            // no HID hat switch. The pad still HAS a D-pad, it just
+            // reports it as four discrete buttons.
             if (!dpadOnButtons)
             {
                 int pov = raw.Povs is { Length: > 0 } ? raw.Povs[0] : -1;

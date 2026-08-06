@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Extract overlay positions from Gamepad-Asset-Pack SVG files.
 
@@ -1367,12 +1367,28 @@ def process_xbox_series():
 
 
 SWPRO_BODY_W = 1485    # the pack render's own width, what the SVG maps onto
-SWPRO_MARGIN = 160     # gutter added each side for the GL / GR floating tiles
+SWPRO_MARGIN = 160     # Switch 2 Pro only: gutter each side for the GL / GR tiles
 SWPRO_TILE = 130       # GL / GR tile edge
 SWPRO_TILE_Y = 735     # tile top, level with the grips
 
 
 def process_switchpro():
+    """Original Nintendo Switch Pro Controller. No gutter and none of the
+    Switch 2 controls: this set is exactly the pack's own art, because a
+    switch-pro slot must not render a C button or grip tiles it has no
+    wire for."""
+    return _process_switchpro_family("SWITCHPRO", margin=0, switch2=False)
+
+
+def process_switch2pro():
+    """Nintendo Switch 2 Pro Controller. Its OWN asset folder: a copy of
+    the same pack sprites over a base widened by a side gutter, carrying
+    the three controls the original does not have (C on the face, GL / GR
+    as floating tiles)."""
+    return _process_switchpro_family("SWITCH2PRO", margin=SWPRO_MARGIN, switch2=True)
+
+
+def _process_switchpro_family(folder, margin, switch2):
     """Extract Nintendo Switch Pro Controller overlay positions.
 
     This pack's press overlays are authored ~1.55x oversized relative to
@@ -1384,14 +1400,6 @@ def process_switchpro():
     typing (the digital preview bridge drives the fill 0/1, so a press
     shows the full highlight); their rest art lives in the base render,
     so no TriggerBase pair is needed.
-
-    The set covers the Switch 2 Pro as well, the same arrangement the
-    Series profiles have riding the Xbox One mesh. Three controls the
-    original does not have are appended by hand because the pack's SVG
-    is the original's and cannot label them: the C Button, and the GL /
-    GR rear buttons drawn as floating tiles in a side gutter (the Steam
-    Deck L4/L5/R4/R5 treatment for a control with no front position).
-    Sources for those three are in SWITCHPRO_EXTRAS below.
     """
     svg_path = os.path.join(ASSET_PACK,
         "Nintendo Switch Controller Images", "Switch Pro Controller",
@@ -1400,21 +1408,21 @@ def process_switchpro():
     tree = etree.parse(svg_path)
     root = tree.getroot()
 
-    base = cv2.imread(os.path.join(MODELS_DIR, "SWITCHPRO", "NSwitchPro_base.png"), cv2.IMREAD_UNCHANGED)
+    base = cv2.imread(os.path.join(MODELS_DIR, folder, "NSwitchPro_base.png"), cv2.IMREAD_UNCHANGED)
     base_w, base_h = base.shape[1], base.shape[0]
-    if base_w != SWPRO_BODY_W + 2 * SWPRO_MARGIN:
-        raise SystemExit(f"SWITCHPRO base is {base_w}px wide; expected "
-                         f"{SWPRO_BODY_W} + 2x{SWPRO_MARGIN} gutter")
+    if base_w != SWPRO_BODY_W + 2 * margin:
+        raise SystemExit(f"{folder} base is {base_w}px wide; expected "
+                         f"{SWPRO_BODY_W} + 2x{margin} gutter")
 
     # SVG is authored in mm (viewBox 0 0 419.127 304.546); px-per-mm from
     # the width ratio against the pack render's own 1485x1079 body. NOT
-    # against base_w: the shipped base carries a gutter on each side that
-    # the SVG knows nothing about, so scaling by the full canvas width
-    # would stretch every label bbox by the gutter ratio.
+    # against base_w: the Switch 2 base carries a gutter the SVG knows
+    # nothing about, so scaling by the full canvas width would stretch
+    # every label bbox by the gutter ratio.
     vb = [float(v) for v in root.get("viewBox").split()]
     scale = SWPRO_BODY_W / vb[2]
 
-    ov_dir = os.path.join(MODELS_DIR, "SWITCHPRO")
+    ov_dir = os.path.join(MODELS_DIR, folder)
     results = []
 
     def add(svg_label, filename, target, elem_type, fit_scale=1.0):
@@ -1499,46 +1507,46 @@ def process_switchpro():
             results.append(("NSwitchPro_AnalogStickClick.png", target, "StickClick", pos[0], pos[1], pos[2], pos[3]))
             print(f"  {target:20s} ({lbl:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
 
-    # ── Switch 2 Pro extras ────────────────────────────────────────────
-    # No SVG labels exist for these: the pack's theme SVG is the original
-    # Pro Controller's. Derived instead from the purchased hado Switch 2
-    # Pro mesh in 3DModels/Switch2Pro, mapped into this frame by a linear
-    # fit over the controls both carry, which agrees to a few px on the
-    # right half and ~1 px at the D-pad.
-    #
-    # C Button: mesh centroid x=0.00 (dead centre) z=-12.08 (below both
-    # the D-pad and the right stick) -> (742.5, 656) body-frame, and
-    # Nintendo's own controller diagram places it "on the front face
-    # between the D-pad and right stick area". It reuses the Capture
-    # press sprite because the mesh gives the two an identical 6.28mm
-    # footprint and the same rounded-square corner profile (top-face
-    # radius spread 1.35 vs 1.32; the round face buttons measure 1.00).
-    # Fixed rect, no fit pass: fit_overlay_to_bbox rewrites the PNG on
-    # disk, and this sprite is already sized by its own Capture entry.
-    #
-    # Target names come from the fork's own mapping string for
-    # USB_PRODUCT_NINTENDO_SWITCH2_PRO in SDL_gamepad.c:
-    # Target names are the preview grammar the 2D/3D art and the raw
-    # bridge share, not SDL role names: NintendoPreviewMap maps the
-    # switch2-pro wire (GR b18, GL b19, C b20) onto exactly these.
-    results.append(("NSwitchPro_CaptureButton.png", "ButtonC", "Button", 712, 624, 62, 63))
-    print(f"  {'ButtonC':20s} ({'C, from S2 mesh':20s}) -> ( 712,  624)   62x 63")
+    if switch2:
+        # No SVG labels exist for these: the pack's theme SVG is the
+        # ORIGINAL Pro Controller's. Derived instead from the purchased
+        # hado Switch 2 Pro mesh in 3DModels/Switch2Pro, mapped into this
+        # frame by a linear fit over the controls both pads carry, which
+        # agrees to a few px on the right half and ~1 px at the D-pad.
+        #
+        # C Button: mesh centroid x=0.00 (dead centre) z=-12.08 (below both
+        # the D-pad and the right stick) -> (742.5, 656) body-frame, and
+        # Nintendo's own controller diagram places it "on the front face
+        # between the D-pad and right stick area". It reuses the Capture
+        # press sprite because the mesh gives the two an identical 6.28mm
+        # footprint and the same rounded-square corner profile (top-face
+        # radius spread 1.35 vs 1.32; the round face buttons measure 1.00).
+        # Fixed rect, no fit pass: fit_overlay_to_bbox rewrites the PNG on
+        # disk, and this sprite is already sized by its own Capture entry.
+        #
+        # Target names are the preview grammar the 2D/3D art and the raw
+        # bridge share. NintendoPreviewMap maps the switch2-pro wire onto
+        # exactly these: GR b18, GL b19, C b20.
+        results.append(("NSwitchPro_CaptureButton.png", "ButtonC", "Button", 712, 624, 62, 63))
+        print(f"  {'ButtonC':20s} ({'C, from S2 mesh':20s}) -> ( 712,  624)   62x 63")
 
     # Shift the body-frame results into the widened canvas. Everything
     # above, including the two hardcoded TriggerBase rects, is expressed
-    # against the pack render's origin.
-    results = [(fn, t, ty, x + SWPRO_MARGIN, y, w, h)
-               for (fn, t, ty, x, y, w, h) in results]
+    # against the pack render's origin. A zero margin leaves them alone.
+    if margin:
+        results = [(fn, t, ty, x + margin, y, w, h)
+                   for (fn, t, ty, x, y, w, h) in results]
 
-    # The floating tiles live in the gutter, so they are authored in the
-    # widened frame directly and take no shift.
-    tile_x = (SWPRO_MARGIN - SWPRO_TILE) // 2
-    for target, x, label in (("LeftPaddle", tile_x, "GL"),
-                             ("RightPaddle", base_w - tile_x - SWPRO_TILE, "GR")):
-        results.append(("NSwitchPro_GripTile.png", target, "Button",
-                        x, SWPRO_TILE_Y, SWPRO_TILE, SWPRO_TILE))
-        print(f"  {target:20s} ({label + ', floating tile':20s}) -> "
-              f"({x:4d}, {SWPRO_TILE_Y:4d}) {SWPRO_TILE:4d}x{SWPRO_TILE:3d}")
+    if switch2:
+        # The floating tiles live in the gutter, so they are authored in
+        # the widened frame directly and take no shift.
+        tile_x = (margin - SWPRO_TILE) // 2
+        for target, x, label in (("LeftPaddle", tile_x, "GL"),
+                                 ("RightPaddle", base_w - tile_x - SWPRO_TILE, "GR")):
+            results.append(("NSwitchPro_GripTile.png", target, "Button",
+                            x, SWPRO_TILE_Y, SWPRO_TILE, SWPRO_TILE))
+            print(f"  {target:20s} ({label + ', floating tile':20s}) -> "
+                  f"({x:4d}, {SWPRO_TILE_Y:4d}) {SWPRO_TILE:4d}x{SWPRO_TILE:3d}")
 
     return {"base_width": base_w, "base_height": base_h, "results": results}
 
@@ -1979,6 +1987,10 @@ def main():
     swpro_data = process_switchpro()
     print(f"\n  Total Switch Pro overlays: {len(swpro_data['results'])}")
 
+    print("\n=== Switch 2 Pro Controller ===")
+    swpro2_data = process_switch2pro()
+    print(f"\n  Total Switch 2 Pro overlays: {len(swpro2_data['results'])}")
+
     print("\n=== Steam Deck ===")
     deck_data = process_steamdeck()
     print(f"\n  Total Steam Deck overlays: {len(deck_data['results'])}")
@@ -1995,7 +2007,8 @@ def main():
     # shipped base renders already draw the triggers at rest (unlike the
     # Switch Pro base, which is the pack's trigger-LESS variant), and the
     # Steam packs ship no rest-state trigger PNG for the pass to point at.
-    for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data]:
+    for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data,
+                 swpro2_data]:
         data["results"] = _add_trigger_base_entries(data["results"])
 
     # Hit-test precedence: the view's hover/click rectangles resolve to
@@ -2007,7 +2020,7 @@ def main():
     # measured on all six layouts). Stable-move Trigger + TriggerBase
     # entries to the front so bumpers win the shared band; visual
     # stacking is unaffected (Z-indices are explicit in the view).
-    for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data,
+    for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data, swpro2_data,
                  deck_data, steamc_data]:
         rs = data["results"]
         trig = [r for r in rs if r[2] in ("Trigger", "TriggerBase")]
@@ -2020,6 +2033,7 @@ def main():
                        ("Xbox One S", xbone_data),
                        ("Xbox Series X", xbseries_data),
                        ("Switch Pro", swpro_data),
+                       ("Switch 2 Pro", swpro2_data),
                        ("Steam Deck", deck_data),
                        ("Steam Controller", steamc_data)]:
         bw, bh = data["base_width"], data["base_height"]
@@ -2036,6 +2050,7 @@ def main():
         ("XboxOneSLayout",      xbone_data,     "2DModels/XBOXONE/XB1_S_base.png",         30),
         ("XboxSeriesXLayout",   xbseries_data,  "2DModels/XBOXSERIES/XBSeries_base.png",   30),
         ("SwitchProLayout",     swpro_data,     "2DModels/SWITCHPRO/NSwitchPro_base.png",  25),
+        ("Switch2ProLayout",    swpro2_data,    "2DModels/SWITCH2PRO/NSwitchPro_base.png", 25),
         ("SteamDeckLayout",      deck_data,      "2DModels/STEAMDECK/SD_base.png",          22),
         ("SteamControllerLayout", steamc_data,   "2DModels/STEAMCONTROLLER/SC_base.png",    28),
     ]

@@ -359,8 +359,14 @@ namespace PadForge.Common.Input
             // mesh. On an original Switch Pro the S2-only cosmetic parts
             // (C button, GL/GR, four player LEDs) render anyway; they are
             // inert meshes, so nothing maps or flashes wrong.
-            if (profileId.StartsWith("switch-pro", StringComparison.OrdinalIgnoreCase)
-                || profileId.StartsWith("switch2-pro", StringComparison.OrdinalIgnoreCase))
+            // The 3D mesh is shared (the Switch 2 Pro model serves both, the
+            // same arrangement as Series profiles riding the Xbox One mesh),
+            // but the 2D sets are NOT. Switch 2 Pro art carries a C button and
+            // the GL / GR grip tiles; drawing those on an original Pro
+            // Controller would show three controls it does not have.
+            if (profileId.StartsWith("switch2-pro", StringComparison.OrdinalIgnoreCase))
+                return ("SWITCH2PRO", "Switch2Pro");
+            if (profileId.StartsWith("switch-pro", StringComparison.OrdinalIgnoreCase))
                 return ("SWITCHPRO", "Switch2Pro");
 
             // Fallback per slot type — preserves existing behavior for

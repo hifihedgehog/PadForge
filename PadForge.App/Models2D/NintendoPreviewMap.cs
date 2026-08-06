@@ -61,9 +61,38 @@ public static class NintendoPreviewMap
 
     /// <summary>The wire table for a profile. Switch 2 Pro gets its own;
     /// everything else falls back to the original Pro Controller's, which is
-    /// also the safe answer for a null or unrecognised id.</summary>
+    /// also the safe answer for a null or unrecognised id.
+    ///
+    /// THIS TABLE IS THE ONLY PLACE A NINTENDO WIRE ORDER IS WRITTEN DOWN.
+    /// It was copied into five consumers once (grid rows, raw labels, the
+    /// state bridge, the automap defaults, and this map), each copy silently
+    /// went stale for the Switch 2 Pro, and each one produced its own
+    /// separate visible bug. Add a profile here and nowhere else.</summary>
     public static string[] ButtonTable(string profileId) =>
         IsSwitch2(profileId) ? PreviewBySwitch2ProBtn : PreviewBySwitchProBtn;
+
+    /// <summary>Number of role-mapped buttons on a profile's wire. Sizes
+    /// every raw surface: grid rows, SOCD bounds, macro pickers.</summary>
+    public static int ButtonCount(string profileId) => ButtonTable(profileId).Length;
+
+    /// <summary>Wire index of a preview role, or -1 when the pad has no such
+    /// control. Callers author against ROLES and let this resolve the index,
+    /// which is what keeps a second wire order from being written down.</summary>
+    public static int IndexOf(string profileId, string previewName)
+    {
+        if (string.IsNullOrEmpty(previewName)) return -1;
+        var table = ButtonTable(profileId);
+        for (int i = 0; i < table.Length; i++)
+            if (table[i] == previewName) return i;
+        return -1;
+    }
+
+    /// <summary>True when the profile reports its D-pad as a HID hat switch
+    /// (the original Pro Controller) rather than as four discrete buttons
+    /// (the Switch 2 Pro). Both pads have a D-pad; they encode it
+    /// differently, and a target that binds the wrong one binds nothing.</summary>
+    public static bool DPadIsHat(string profileId) =>
+        IndexOf(profileId, "DPadUp") < 0;
 
     /// <summary>Preview element name (optionally with a "Neg" suffix on a
     /// stick axis) to the raw grid target. Null when the element has no
@@ -93,6 +122,44 @@ public static class NintendoPreviewMap
             && name.StartsWith("DPad", System.StringComparison.Ordinal))
             return "RawPov0" + name.Substring(4);
         return null;
+    }
+
+    /// <summary>Rewrite a raw grid target from one profile's wire to
+    /// another's, preserving the ROLE. Raw indices are wire-relative, so
+    /// without this every existing binding silently changes meaning when the
+    /// profile changes: RawBtn8 is Minus on the original Pro Controller and
+    /// the D-pad's Down button on the Switch 2 Pro.
+    ///
+    /// Returns the new target, the input unchanged when the wires agree, or
+    /// null when the target pad has no such control (the caller drops the
+    /// binding rather than pointing it at wire that is not there). Axis and
+    /// tuning keys are wire-independent and pass through untouched.</summary>
+    public static string TranslateRawTarget(string rawName, string fromProfileId, string toProfileId)
+    {
+        if (string.IsNullOrEmpty(rawName)) return rawName;
+        if (IsSwitch2(fromProfileId) == IsSwitch2(toProfileId)) return rawName;
+
+        // Only BUTTON and HAT targets are wire-relative. Axis targets,
+        // deadzones and every other tuning key are addressed the same way on
+        // both pads, and running them through the button table resolved them
+        // to roles it does not contain, which dropped every stick binding on
+        // a profile change.
+        bool isButton = rawName.StartsWith("RawBtn", System.StringComparison.Ordinal);
+        bool isHat = rawName.StartsWith("RawPov", System.StringComparison.Ordinal);
+        if (!isButton && !isHat) return rawName;
+
+        string role = ToPreview(rawName, fromProfileId);
+        if (role == null)
+            return rawName;   // an index this pad does not use; leave it be
+
+        int i = IndexOf(toProfileId, role);
+        if (i >= 0) return $"RawBtn{i}";
+
+        // The target reports this role on its hat instead of a button.
+        if (role.StartsWith("DPad", System.StringComparison.Ordinal))
+            return "RawPov0" + role.Substring(4);
+
+        return null;   // the target pad genuinely has no such control
     }
 
     /// <summary>Raw grid target back to the preview element name (Neg

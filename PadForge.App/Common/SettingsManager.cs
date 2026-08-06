@@ -622,8 +622,13 @@ namespace PadForge.Common.Input
         /// </summary>
         /// <param name="ud">The device to create defaults for.</param>
         /// <returns>A PadSetting with sensible default mappings.</returns>
+        /// <param name="profileId">HIDMaestro profile the SLOT will use.
+        /// Nintendo automaps are wire-relative and the two Switch families
+        /// share almost no indices, so this decides which wire the defaults
+        /// bind. Null falls back to the original Pro Controller's.</param>
         public static PadSetting CreateDefaultPadSetting(UserDevice ud,
-            Engine.VirtualControllerType outputType = Engine.VirtualControllerType.Xbox)
+            Engine.VirtualControllerType outputType = Engine.VirtualControllerType.Xbox,
+            string profileId = null)
         {
             var ps = new PadSetting();
 
@@ -694,34 +699,60 @@ namespace PadForge.Common.Input
                     if (HasAxis(3)) ps.SetRawMapping("RawAxis2", "Axis 3");
                     if (HasAxis(4)) ps.SetRawMapping("RawAxis3", "Axis 4");
 
-                    if (HasButton(0)) ps.SetRawMapping("RawBtn0", "Button 0");   // south → B
-                    if (HasButton(1)) ps.SetRawMapping("RawBtn1", "Button 1");   // east  → A
-                    if (HasButton(2)) ps.SetRawMapping("RawBtn2", "Button 2");   // west  → Y
-                    if (HasButton(3)) ps.SetRawMapping("RawBtn3", "Button 3");   // north → X
-                    if (HasButton(4)) ps.SetRawMapping("RawBtn4", "Button 4");   // LB → L
-                    if (HasButton(5)) ps.SetRawMapping("RawBtn5", "Button 5");   // RB → R
-                    if (HasAxis(2)) ps.SetRawMapping("RawBtn6", "Axis 2");       // LT pull → ZL
-                    if (HasAxis(5)) ps.SetRawMapping("RawBtn7", "Axis 5");       // RT pull → ZR
-                    if (HasButton(6)) ps.SetRawMapping("RawBtn8", "Button 6");   // Back → Minus
-                    if (HasButton(7)) ps.SetRawMapping("RawBtn9", "Button 7");   // Start → Plus
-                    if (HasButton(8)) ps.SetRawMapping("RawBtn10", "Button 8");  // LS click
-                    if (HasButton(9)) ps.SetRawMapping("RawBtn11", "Button 9");  // RS click
-                    if (HasButton(10)) ps.SetRawMapping("RawBtn12", "Button 10"); // Guide → Home
-                    // Misc1 (Xbox Share / DualSense Mic / Switch Capture,
-                    // SDL index 11) → Capture, gated on the device
-                    // actually exposing it like the Xbox Share automap.
-                    bool hasCaptureSource = ud.DeviceObjects != null
+                    // Every binding names a ROLE and lets the canonical wire
+                    // table resolve the index. The hardcoded index list this
+                    // replaced was the original Pro Controller's, so on a
+                    // Switch 2 Pro it sent Back to the D-pad's Down button,
+                    // Start to Right, the stick clicks to Left and Up, Guide
+                    // to L, Capture to ZL, and the hat to a POV that pad does
+                    // not declare, leaving its D-pad unmapped entirely.
+                    void MapRole(string role, string source)
+                    {
+                        int i = Models2D.NintendoPreviewMap.IndexOf(profileId, role);
+                        if (i >= 0) ps.SetRawMapping($"RawBtn{i}", source);
+                    }
+                    bool HasSourceButton(int sdlIndex) => ud.DeviceObjects != null
                         && ud.DeviceObjects.Any(o => o != null
                             && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
-                            && o.InputIndex == 11);
-                    if (hasCaptureSource) ps.SetRawMapping("RawBtn13", "Button 11");
+                            && o.InputIndex == sdlIndex);
 
+                    if (HasButton(0)) MapRole("ButtonB", "Button 0");   // south
+                    if (HasButton(1)) MapRole("ButtonA", "Button 1");   // east
+                    if (HasButton(2)) MapRole("ButtonY", "Button 2");   // west
+                    if (HasButton(3)) MapRole("ButtonX", "Button 3");   // north
+                    if (HasButton(4)) MapRole("LeftShoulder", "Button 4");
+                    if (HasButton(5)) MapRole("RightShoulder", "Button 5");
+                    if (HasAxis(2)) MapRole("LeftTrigger", "Axis 2");   // LT pull → ZL
+                    if (HasAxis(5)) MapRole("RightTrigger", "Axis 5");  // RT pull → ZR
+                    if (HasButton(6)) MapRole("ButtonBack", "Button 6");    // → Minus
+                    if (HasButton(7)) MapRole("ButtonStart", "Button 7");   // → Plus
+                    if (HasButton(8)) MapRole("LeftThumbButton", "Button 8");
+                    if (HasButton(9)) MapRole("RightThumbButton", "Button 9");
+                    if (HasButton(10)) MapRole("ButtonGuide", "Button 10"); // → Home
+
+                    // Source-side extras, each gated on the pad actually
+                    // exposing that button so a plain gamepad carries no dead
+                    // bindings: Misc1 (Xbox Share / DualSense Mic / Switch
+                    // Capture) at 11, the first paddle pair at 12/13, Misc2
+                    // at 17. The last three land on roles only the Switch 2
+                    // Pro has, so MapRole drops them on the original.
+                    if (HasSourceButton(11)) MapRole("ButtonShare", "Button 11");
+                    if (HasSourceButton(12)) MapRole("RightPaddle", "Button 12");
+                    if (HasSourceButton(13)) MapRole("LeftPaddle", "Button 13");
+                    if (HasSourceButton(17)) MapRole("ButtonC", "Button 17");
+
+                    // D-pad: bind whichever encoding the TARGET declares. A
+                    // hat source still has to reach a pad that spends four
+                    // discrete buttons on its D-pad.
                     if (HasHat())
                     {
-                        ps.SetRawMapping("RawPov0Up", "POV 0 Up");
-                        ps.SetRawMapping("RawPov0Down", "POV 0 Down");
-                        ps.SetRawMapping("RawPov0Left", "POV 0 Left");
-                        ps.SetRawMapping("RawPov0Right", "POV 0 Right");
+                        foreach (var role in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })
+                        {
+                            string source = "POV 0 " + role.Substring(4);
+                            int i = Models2D.NintendoPreviewMap.IndexOf(profileId, role);
+                            if (i >= 0) ps.SetRawMapping($"RawBtn{i}", source);
+                            else ps.SetRawMapping("RawPov0" + role.Substring(4), source);
+                        }
                     }
                     ps.FlushRawMappings();
                 }
@@ -859,7 +890,59 @@ namespace PadForge.Common.Input
         /// Re-automaps all devices assigned to a slot for the given output type.
         /// Called when switching virtual controller type so mappings match the new type.
         /// </summary>
-        public static void ReAutoMapSlot(int padIndex, Engine.VirtualControllerType outputType)
+        /// <summary>
+        /// Move a Nintendo slot's raw mappings from one profile's wire to
+        /// another's, preserving the ROLE each binding names.
+        ///
+        /// Raw targets are wire-relative and the two Switch families share
+        /// almost no indices, so without this every existing binding silently
+        /// changes meaning the moment the profile changes: a source bound to
+        /// Minus (RawBtn8 on the original) would start pressing the Switch 2
+        /// Pro's D-pad Down. Bindings whose role the target pad does not have
+        /// are dropped rather than left pointing at wire that is not there.
+        /// </summary>
+        public static void TranslateNintendoRawMappings(
+            int padIndex, string fromProfileId, string toProfileId)
+        {
+            if (string.Equals(fromProfileId, toProfileId, StringComparison.OrdinalIgnoreCase))
+                return;
+
+            foreach (var us in GetSettingsForSlot(padIndex))
+            {
+                var ps = us?.GetPadSetting();
+                var entries = ps?.RawMappingEntries;
+                if (entries == null || entries.Length == 0) continue;
+
+                // Build the whole new set before writing any of it: two old
+                // targets can translate onto one new one only if the tables
+                // disagree, and a half-applied rewrite would be worse than
+                // either outcome.
+                var moved = new List<(string Key, string Value)>();
+                bool changed = false;
+                foreach (var e in entries)
+                {
+                    if (e == null || string.IsNullOrEmpty(e.Key)) continue;
+                    string dst = Models2D.NintendoPreviewMap.TranslateRawTarget(
+                        e.Key, fromProfileId, toProfileId);
+                    if (dst == null) { changed = true; continue; }   // role absent on the target
+                    if (!string.Equals(dst, e.Key, StringComparison.Ordinal)) changed = true;
+                    moved.Add((dst, e.Value));
+                }
+                if (!changed) continue;
+
+                foreach (var e in entries)
+                    if (e != null && !string.IsNullOrEmpty(e.Key))
+                        ps.SetRawMapping(e.Key, null);
+                foreach (var (k, v) in moved)
+                    ps.SetRawMapping(k, v);
+                ps.FlushRawMappings();
+                ps.UpdateChecksum();
+                us.PadSettingChecksum = ps.PadSettingChecksum;
+            }
+        }
+
+        public static void ReAutoMapSlot(int padIndex, Engine.VirtualControllerType outputType,
+            string profileId = null)
         {
             var settings = UserSettings;
             if (settings == null) return;
@@ -884,7 +967,7 @@ namespace PadForge.Common.Input
             foreach (var us in slotSettings)
             {
                 var ud = FindDeviceByInstanceGuid(us.InstanceGuid);
-                var ps = CreateDefaultPadSetting(ud, outputType);
+                var ps = CreateDefaultPadSetting(ud, outputType, profileId);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
                 // Permanent automap-decision diagnostics (2026-07-22): a

@@ -6873,87 +6873,66 @@ namespace PadForge.ViewModels
         /// dead wire on the virtual pad.</summary>
         public const int NintendoLetteredButtonCount = 14;
 
-        /// <summary>Same count for the Switch 2 Pro: indices 0-20, every one
-        /// role-mapped in the profile's report 0x09 field list (three
-        /// button-mask bytes of 8 + 8 + 5). Clamping this family at 14 hid
-        /// Home, Capture, GR, GL and C behind the end of the grid, so they
-        /// could not be mapped at all.</summary>
-        public const int Switch2LetteredButtonCount = 21;
-
         /// <summary>Lettered button count for whichever Nintendo profile is
-        /// active. Callers that size a raw-index surface must use this, not
-        /// either constant directly.</summary>
+        /// active: the length of its canonical wire table. Callers that size
+        /// a raw-index surface (grid rows, SOCD bounds, macro and gyro
+        /// pickers) must use this, never a constant. The Switch 2 Pro has
+        /// 21, verified against its descriptor (USAGE_MIN 1 / USAGE_MAX 21 /
+        /// REPORT_COUNT 21 on the Button page).</summary>
         public static int NintendoLetteredCountFor(string profileId) =>
-            IsSwitch2LetteredProfile(profileId)
-                ? Switch2LetteredButtonCount
-                : NintendoLetteredButtonCount;
+            PadForge.Models2D.NintendoPreviewMap.ButtonCount(profileId);
 
         /// <summary>Nintendo name for a 0-based raw button index on the
         /// ORIGINAL Switch Pro profile, or null past the lettered range
-        /// (callers fall back to the numbered format). Index order matches
-        /// the switch-pro HID descriptor: face 0-3, bumpers 4-5, ZL/ZR 6-7,
-        /// Minus/Plus 8-9, stick clicks 10-11, Home 12, Capture 13.</summary>
-        public static string NintendoExtendedLabel(int index) => index switch
+        /// (callers fall back to the numbered format). Kept as the
+        /// single-profile entry point older callers and tests use; it now
+        /// resolves through the same canonical wire table as everything
+        /// else rather than repeating the order.</summary>
+        public static string NintendoExtendedLabel(int index) =>
+            NintendoLetteredLabel("switch-pro", index);
+
+        /// <summary>Label for a wire ROLE. This is the only Nintendo naming
+        /// table left: the wire ORDER lives in NintendoPreviewMap, and this
+        /// turns whatever role sits at an index into words. Splitting the
+        /// two is what stops a second wire order being written down.</summary>
+        private static string NintendoRoleLabel(string role) => role switch
         {
-            0 => "B",
-            1 => "A",
-            2 => "Y",
-            3 => "X",
-            4 => Strings.Instance.Btn_L,
-            5 => Strings.Instance.Btn_R,
-            6 => Strings.Instance.Btn_ZL,
-            7 => Strings.Instance.Btn_ZR,
-            8 => Strings.Instance.Btn_Minus,
-            9 => Strings.Instance.Btn_Plus,
-            10 => Strings.Instance.Btn_LeftStickButton,
-            11 => Strings.Instance.Btn_RightStickButton,
-            12 => Strings.Instance.Btn_Home,
-            13 => Strings.Instance.Btn_Capture,
+            "ButtonB" => "B",
+            "ButtonA" => "A",
+            "ButtonY" => "Y",
+            "ButtonX" => "X",
+            "LeftShoulder" => Strings.Instance.Btn_L,
+            "RightShoulder" => Strings.Instance.Btn_R,
+            "LeftTrigger" => Strings.Instance.Btn_ZL,
+            "RightTrigger" => Strings.Instance.Btn_ZR,
+            "ButtonBack" => Strings.Instance.Btn_Minus,
+            "ButtonStart" => Strings.Instance.Btn_Plus,
+            "LeftThumbButton" => Strings.Instance.Btn_LeftStickButton,
+            "RightThumbButton" => Strings.Instance.Btn_RightStickButton,
+            "ButtonGuide" => Strings.Instance.Btn_Home,
+            "ButtonShare" => Strings.Instance.Btn_Capture,
+            // D-pad directions are real buttons on the Switch 2 wire, so
+            // they can reach a picker. Say D-pad, or the row reads as a
+            // bare "Down" with nothing saying what it belongs to.
+            "DPadUp" => Strings.Instance.Btn_DPadUp,
+            "DPadDown" => Strings.Instance.Btn_DPadDown,
+            "DPadLeft" => Strings.Instance.Btn_DPadLeft,
+            "DPadRight" => Strings.Instance.Btn_DPadRight,
+            "ButtonC" => Strings.Instance.Btn_C,
+            "LeftPaddle" => Strings.Instance.Btn_GL,
+            "RightPaddle" => Strings.Instance.Btn_GR,
             _ => null,
         };
 
-        /// <summary>Same, for the Switch 2 Pro. Order is the field list of
-        /// the profile's report 0x09 button masks, byte 3 then 4 then 5:
-        ///   3: B A Y X, R, ZR, Plus, RS
-        ///   4: Down Right Left Up, L, ZL, Minus, LS
-        ///   5: Home, Capture, GR, GL, C
-        /// It shares almost nothing with the original's order beyond the
-        /// four face buttons, which is why the label table has to fork by
-        /// profile rather than extend.</summary>
-        public static string Switch2ExtendedLabel(int index) => index switch
+        /// <summary>Lettered label for whichever Nintendo profile is active.
+        /// Index -> role comes from the canonical wire table, role -> words
+        /// from NintendoRoleLabel. Neither step knows a wire order.</summary>
+        public static string NintendoLetteredLabel(string profileId, int index)
         {
-            0 => "B",
-            1 => "A",
-            2 => "Y",
-            3 => "X",
-            4 => Strings.Instance.Btn_R,
-            5 => Strings.Instance.Btn_ZR,
-            6 => Strings.Instance.Btn_Plus,
-            7 => Strings.Instance.Btn_RightStickButton,
-            // D-pad directions are real buttons on this wire. Label them
-            // as D-pad, or a macro / SOCD picker shows a bare "Down" with
-            // nothing saying what it belongs to.
-            8 => Strings.Instance.Btn_DPadDown,
-            9 => Strings.Instance.Btn_DPadRight,
-            10 => Strings.Instance.Btn_DPadLeft,
-            11 => Strings.Instance.Btn_DPadUp,
-            12 => Strings.Instance.Btn_L,
-            13 => Strings.Instance.Btn_ZL,
-            14 => Strings.Instance.Btn_Minus,
-            15 => Strings.Instance.Btn_LeftStickButton,
-            16 => Strings.Instance.Btn_Home,
-            17 => Strings.Instance.Btn_Capture,
-            18 => Strings.Instance.Btn_GR,
-            19 => Strings.Instance.Btn_GL,
-            20 => Strings.Instance.Btn_C,
-            _ => null,
-        };
-
-        /// <summary>Lettered label for whichever Nintendo profile is active.</summary>
-        public static string NintendoLetteredLabel(string profileId, int index) =>
-            IsSwitch2LetteredProfile(profileId)
-                ? Switch2ExtendedLabel(index)
-                : NintendoExtendedLabel(index);
+            var table = PadForge.Models2D.NintendoPreviewMap.ButtonTable(profileId);
+            if (index < 0 || index >= table.Length) return null;
+            return NintendoRoleLabel(table[index]);
+        }
 
         /// <summary>Label for the 1-based Extended button N under the given
         /// profile: Nintendo lettering on Switch Pro profiles, the "Button

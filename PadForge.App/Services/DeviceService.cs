@@ -128,11 +128,12 @@ namespace PadForge.Services
             // so only the genuinely empty Share button gets filled.
             var existingPs = us.GetPadSetting();
             var outputType = _mainVm.Pads[slotIndex].OutputType;
-            if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType))
+            var slotProfileId = _mainVm.Pads[slotIndex].ProfileId;
+            if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType, slotProfileId))
             {
                 if (existingPs != null)
                     SettingsService.StripDeviceFromAllSlots(instanceGuid);
-                var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType);
+                var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType, slotProfileId);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
             }
@@ -144,7 +145,7 @@ namespace PadForge.Services
                 // Fill empty touchpad mappings when assigning a Touchpad-type
                 // device to a PlayStation slot so the user gets the
                 // auto-map they expect on first assign.
-                FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType);
+                FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType, slotProfileId);
             }
 
             // A Workshop import parks its device tuning on the slot because it
@@ -223,17 +224,18 @@ namespace PadForge.Services
 
             var existingPs = us.GetPadSetting();
             var outputType = _mainVm.Pads[slotIndex].OutputType;
-            if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType))
+            var slotProfileId = _mainVm.Pads[slotIndex].ProfileId;
+            if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType, slotProfileId))
             {
                 if (existingPs != null)
                     SettingsService.StripDeviceFromAllSlots(instanceGuid);
-                var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType);
+                var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType, slotProfileId);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
             }
             else
             {
-                FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType);
+                FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType, slotProfileId);
             }
 
             // A Workshop import parks its device tuning on the slot
@@ -299,17 +301,18 @@ namespace PadForge.Services
                 // Create PadSetting for the new assignment.
                 var existingPs = us.GetPadSetting();
                 var outputType = _mainVm.Pads[slotIndex].OutputType;
-                if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType))
+                var slotProfileId = _mainVm.Pads[slotIndex].ProfileId;
+                if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType, slotProfileId))
                 {
                     if (existingPs != null)
                         SettingsService.StripDeviceFromAllSlots(instanceGuid);
-                    var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType);
+                    var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType, slotProfileId);
                     us.SetPadSetting(ps);
                     us.PadSettingChecksum = ps.PadSettingChecksum;
                 }
                 else
                 {
-                    FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType);
+                    FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType, slotProfileId);
                 }
 
                 // Auto-enable input hiding defaults for newly assigned devices.
@@ -619,7 +622,7 @@ namespace PadForge.Services
         /// inherited the touchpad-only PadSetting" came from exactly this
         /// path.</para></summary>
         private static void FillEmptyAutoMappingsIfApplicable(PadSetting existingPs,
-            UserDevice ud, Engine.VirtualControllerType outputType)
+            UserDevice ud, Engine.VirtualControllerType outputType, string profileId = null)
         {
             if (existingPs == null || ud == null) return;
             PadForge.Engine.SdlDiagLog.WriteLine(
@@ -630,7 +633,7 @@ namespace PadForge.Services
                     + (existingPs.MidiMappingEntries?.Length ?? 0)
                     + (existingPs.KbmMappingEntries?.Length ?? 0)}");
 
-            var freshPs = SettingsManager.CreateDefaultPadSetting(ud, outputType);
+            var freshPs = SettingsManager.CreateDefaultPadSetting(ud, outputType, profileId);
             if (freshPs == null) return;
 
             // Raw-surface automap (Nintendo): the positional defaults live
@@ -719,7 +722,7 @@ namespace PadForge.Services
         /// near the device's reported counts.</para>
         /// </summary>
         private static bool IsForeignPadSetting(PadSetting existingPs, UserDevice ud,
-            Engine.VirtualControllerType outputType)
+            Engine.VirtualControllerType outputType, string profileId = null)
         {
             if (existingPs == null || ud == null) return false;
             if (ud.CapType != InputDeviceType.Gamepad) return false;
@@ -729,7 +732,7 @@ namespace PadForge.Services
             int povs = ud.CapPovCount;
             if (buttons <= 0 && axes <= 0 && povs <= 0) return false; // unknown inventory — don't guess
 
-            var fresh = SettingsManager.CreateDefaultPadSetting(ud, outputType);
+            var fresh = SettingsManager.CreateDefaultPadSetting(ud, outputType, profileId);
             var freshSet = new System.Collections.Generic.HashSet<string>(
                 fresh != null ? fresh.GetAllMappingDescriptors() : new System.Collections.Generic.List<string>(),
                 StringComparer.OrdinalIgnoreCase);

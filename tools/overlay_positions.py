@@ -2076,8 +2076,8 @@ def main():
     # shipped base renders already draw the triggers at rest (unlike the
     # Switch Pro base, which is the pack's trigger-LESS variant), and the
     # Steam packs ship no rest-state trigger PNG for the pass to point at.
-    for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data,
-                 swpro2_data]:
+    for data in [xbox_data, ds4_data, dualsense_data, dsedge_data,
+                 xbone_data, xbseries_data, swpro_data, swpro2_data]:
         data["results"] = _add_trigger_base_entries(data["results"])
 
     # Hit-test precedence: the view's hover/click rectangles resolve to
@@ -2089,7 +2089,8 @@ def main():
     # measured on all six layouts). Stable-move Trigger + TriggerBase
     # entries to the front so bumpers win the shared band; visual
     # stacking is unaffected (Z-indices are explicit in the view).
-    for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data, swpro2_data,
+    for data in [xbox_data, ds4_data, dualsense_data, dsedge_data,
+                 xbone_data, xbseries_data, swpro_data, swpro2_data,
                  deck_data, steamc_data]:
         rs = data["results"]
         trig = [r for r in rs if r[2] in ("Trigger", "TriggerBase")]
@@ -2099,6 +2100,7 @@ def main():
     # Sanity checks
     for name, data in [("Xbox 360", xbox_data), ("DS4", ds4_data),
                        ("DualSense", dualsense_data),
+                       ("DualSense Edge", dsedge_data),
                        ("Xbox One S", xbone_data),
                        ("Xbox Series X", xbseries_data),
                        ("Switch Pro", swpro_data),

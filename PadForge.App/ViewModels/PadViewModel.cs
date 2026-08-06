@@ -336,11 +336,16 @@ namespace PadForge.ViewModels
             // switch-pro descriptors declare 18 buttons, but 15-18 are
             // the Joy-Con rail SL/SR bits with no role in the profile
             // layout, and the SDK packer only emits role-mapped buttons.
-            // Rows past the lettered 14 would map input onto dead wire,
+            // Rows past the lettered count would map input onto dead wire,
             // so the whole surface (grid, SOCD, macros, Step 3 bounds)
             // clamps here at the sync seam.
+            //
+            // The count is PER PROFILE. Switch 2 Pro role-maps 21, and
+            // clamping it to the original's 14 put Home, Capture, GR, GL
+            // and C past the end of every raw surface, so they could not
+            // be mapped at all.
             if (MacroButtonNames.IsNintendoLetteredProfile(profile.Id))
-                buttons = System.Math.Min(buttons, MacroButtonNames.NintendoLetteredButtonCount);
+                buttons = System.Math.Min(buttons, MacroButtonNames.NintendoLetteredCountFor(profile.Id));
             _extendedConfig.ButtonCount = buttons;
         }
 
@@ -960,6 +965,19 @@ namespace PadForge.ViewModels
         /// <see cref="Gamepad.Share"/> in <c>UpdateFromGamepad</c>; drives
         /// 2D overlay + 3D mesh accent on press.</summary>
         public bool ButtonShare { get => _buttonShare; set => SetProperty(ref _buttonShare, value); }
+
+        private bool _buttonC;
+        /// <summary>Switch 2 Pro C Button live state. Written by the raw
+        /// bridge (wire index 20); drives 2D overlay + 3D mesh accent.</summary>
+        public bool ButtonC { get => _buttonC; set => SetProperty(ref _buttonC, value); }
+
+        private bool _leftPaddle;
+        /// <summary>Switch 2 Pro GL, wire index 19.</summary>
+        public bool LeftPaddle { get => _leftPaddle; set => SetProperty(ref _leftPaddle, value); }
+
+        private bool _rightPaddle;
+        /// <summary>Switch 2 Pro GR, wire index 18.</summary>
+        public bool RightPaddle { get => _rightPaddle; set => SetProperty(ref _rightPaddle, value); }
 
         private bool _dpadUp;
         public bool DPadUp { get => _dpadUp; set => SetProperty(ref _dpadUp, value); }
@@ -5949,7 +5967,7 @@ namespace PadForge.ViewModels
                     // engine parses "6:7"): Value is the index STRING so
                     // Serialize's name branch emits the raw pair intact,
                     // Display is the same lettering the mapping grid uses.
-                    var opts = new GyroLabeledOption[MacroButtonNames.NintendoLetteredButtonCount];
+                    var opts = new GyroLabeledOption[MacroButtonNames.NintendoLetteredCountFor(ProfileId)];
                     for (int i = 0; i < opts.Length; i++)
                     {
                         int idx = i;
@@ -6047,8 +6065,8 @@ namespace PadForge.ViewModels
                                 || ia is < 0 or > 127 || ib is < 0 or > 127)
                             { _socdPreservedTokens.Add(token); continue; }
                             if (_outputType == VirtualControllerType.Nintendo
-                                && ia < MacroButtonNames.NintendoLetteredButtonCount
-                                && ib < MacroButtonNames.NintendoLetteredButtonCount)
+                                && ia < MacroButtonNames.NintendoLetteredCountFor(ProfileId)
+                                && ib < MacroButtonNames.NintendoLetteredCountFor(ProfileId))
                             {
                                 // Lettered picker row over the same raw
                                 // grammar; indices past the lettered range
@@ -7348,30 +7366,57 @@ namespace PadForge.ViewModels
 
         private void UpdateNintendoPreviewFromRaw(RawHidState raw)
         {
-            ButtonB = raw.IsButtonPressed(0);
-            ButtonA = raw.IsButtonPressed(1);
-            ButtonY = raw.IsButtonPressed(2);
-            ButtonX = raw.IsButtonPressed(3);
-            LeftShoulder = raw.IsButtonPressed(4);
-            RightShoulder = raw.IsButtonPressed(5);
-            // ZL / ZR are digital on the hardware; render as a full pull.
-            LeftTrigger = raw.IsButtonPressed(6) ? 1.0 : 0.0;
-            RightTrigger = raw.IsButtonPressed(7) ? 1.0 : 0.0;
-            ButtonBack = raw.IsButtonPressed(8);
-            ButtonStart = raw.IsButtonPressed(9);
-            LeftThumbButton = raw.IsButtonPressed(10);
-            RightThumbButton = raw.IsButtonPressed(11);
-            ButtonGuide = raw.IsButtonPressed(12);
-            ButtonShare = raw.IsButtonPressed(13);
+            // Table-driven off the SAME wire table the mapping grid and the
+            // click-to-record path use, so a profile whose order differs
+            // cannot disagree with itself across the two directions. The
+            // hardcoded index list this replaced was the original Pro
+            // Controller's, and it lit the wrong art for eleven of the
+            // Switch 2 Pro's twenty-one buttons.
+            var table = Models2D.NintendoPreviewMap.ButtonTable(ProfileId);
+            bool dpadOnButtons = false;
+            for (int i = 0; i < table.Length; i++)
+            {
+                bool down = raw.IsButtonPressed(i);
+                switch (table[i])
+                {
+                    case "ButtonA": ButtonA = down; break;
+                    case "ButtonB": ButtonB = down; break;
+                    case "ButtonX": ButtonX = down; break;
+                    case "ButtonY": ButtonY = down; break;
+                    case "LeftShoulder": LeftShoulder = down; break;
+                    case "RightShoulder": RightShoulder = down; break;
+                    // ZL / ZR are digital on the hardware; render a full pull.
+                    case "LeftTrigger": LeftTrigger = down ? 1.0 : 0.0; break;
+                    case "RightTrigger": RightTrigger = down ? 1.0 : 0.0; break;
+                    case "ButtonBack": ButtonBack = down; break;
+                    case "ButtonStart": ButtonStart = down; break;
+                    case "LeftThumbButton": LeftThumbButton = down; break;
+                    case "RightThumbButton": RightThumbButton = down; break;
+                    case "ButtonGuide": ButtonGuide = down; break;
+                    case "ButtonShare": ButtonShare = down; break;
+                    case "ButtonC": ButtonC = down; break;
+                    case "LeftPaddle": LeftPaddle = down; break;
+                    case "RightPaddle": RightPaddle = down; break;
+                    case "DPadUp": DPadUp = down; dpadOnButtons = true; break;
+                    case "DPadDown": DPadDown = down; dpadOnButtons = true; break;
+                    case "DPadLeft": DPadLeft = down; dpadOnButtons = true; break;
+                    case "DPadRight": DPadRight = down; dpadOnButtons = true; break;
+                }
+            }
 
             // Hat 0 in hundredths of degrees, -1 centered. A diagonal
             // lights both cardinals, matching how the gamepad path
-            // renders D-pad combinations.
-            int pov = raw.Povs is { Length: > 0 } ? raw.Povs[0] : -1;
-            DPadUp = pov >= 0 && (pov > 27000 || pov < 9000);
-            DPadRight = pov > 0 && pov < 18000;
-            DPadDown = pov > 9000 && pov < 27000;
-            DPadLeft = pov > 18000 && pov < 36000;
+            // renders D-pad combinations. Skipped when the profile spends
+            // real buttons on the D-pad (Switch 2 Pro), where the loop
+            // above already owns those four and no hat is declared.
+            if (!dpadOnButtons)
+            {
+                int pov = raw.Povs is { Length: > 0 } ? raw.Povs[0] : -1;
+                DPadUp = pov >= 0 && (pov > 27000 || pov < 9000);
+                DPadRight = pov > 0 && pov < 18000;
+                DPadDown = pov > 9000 && pov < 27000;
+                DPadLeft = pov > 18000 && pov < 36000;
+            }
 
             // Raw axes are HID convention (positive = down); the preview's
             // Gamepad convention is positive = up on Y. Negate with the
@@ -7392,8 +7437,8 @@ namespace PadForge.ViewModels
             ThumbLY = 1.0 - NormAx(FlipY(Ax(1)));
             ThumbRX = NormAx(Ax(2));
             ThumbRY = 1.0 - NormAx(FlipY(Ax(3)));
-            RawLeftTrigger = (ushort)(raw.IsButtonPressed(6) ? 65535 : 0);
-            RawRightTrigger = (ushort)(raw.IsButtonPressed(7) ? 65535 : 0);
+            RawLeftTrigger = (ushort)(LeftTrigger > 0.5 ? 65535 : 0);
+            RawRightTrigger = (ushort)(RightTrigger > 0.5 ? 65535 : 0);
         }
 
         /// <summary>

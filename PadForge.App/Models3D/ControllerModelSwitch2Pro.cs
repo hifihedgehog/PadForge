@@ -1,4 +1,4 @@
-// 3D controller model system adapted from Handheld Companion
+﻿// 3D controller model system adapted from Handheld Companion
 // https://github.com/Valkirie/HandheldCompanion
 // Copyright (c) CasperH2O, Lesueur Benjamin, trippyone
 // Licensed under CC BY-NC-SA 4.0
@@ -93,13 +93,19 @@ namespace PadForge.Models3D
             RegisterButton("ButtonShare", Capture);
             model3DGroup.Children.Add(Capture);
 
-            // C button, GL, and GR exist on the physical Switch 2 Pro but
-            // have no rows on the virtual Switch Pro raw surface (wire
-            // order ends at button 13), so they render as inert cosmetic
-            // meshes: no click-to-record, no flash registration.
+            // C, GL and GR are real inputs on the switch2-pro wire (buttons
+            // 20, 19 and 18 of its report 0x09 masks), so they register like
+            // any other button and get click-to-record plus press accent.
+            // On an ORIGINAL switch-pro profile the wire ends at button 13
+            // and NintendoPreviewMap's table has no entry for them, so
+            // nothing ever addresses these three and they stay inert
+            // cosmetic meshes, which is the same posture as before.
             CButton = LoadModel("CButton.obj");
+            RegisterButton("ButtonC", CButton);
             GL      = LoadModel("GL.obj");
+            RegisterButton("LeftPaddle", GL);
             GR      = LoadModel("GR.obj");
+            RegisterButton("RightPaddle", GR);
             model3DGroup.Children.Add(CButton);
             model3DGroup.Children.Add(GL);
             model3DGroup.Children.Add(GR);

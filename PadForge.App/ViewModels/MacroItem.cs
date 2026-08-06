@@ -6857,17 +6857,41 @@ namespace PadForge.ViewModels
             && (string.Equals(profileId, "switch-pro", StringComparison.OrdinalIgnoreCase)
                 || profileId.StartsWith("switch2-pro", StringComparison.OrdinalIgnoreCase));
 
-        /// <summary>Count of role-mapped (lettered) buttons on the
-        /// switch-pro profile family: indices 0-13. The descriptor
-        /// declares 18 (the last four are the Joy-Con rail SL/SR bits),
-        /// but the SDK packer only emits role-mapped buttons, so
-        /// anything past this count is dead wire on the virtual pad.</summary>
+        /// <summary>True for the Switch 2 Pro family specifically. Its wire
+        /// order is NOT the original Pro Controller's: the D-pad rides four
+        /// buttons instead of a hat, the left-hand controls sit above the
+        /// right-hand ones, and it carries five extra buttons the original
+        /// has no wire for.</summary>
+        public static bool IsSwitch2LetteredProfile(string profileId) =>
+            !string.IsNullOrEmpty(profileId)
+            && profileId.StartsWith("switch2-pro", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>Count of role-mapped (lettered) buttons on the ORIGINAL
+        /// switch-pro profile: indices 0-13. The descriptor declares 18 (the
+        /// last four are the Joy-Con rail SL/SR bits), but the SDK packer
+        /// only emits role-mapped buttons, so anything past this count is
+        /// dead wire on the virtual pad.</summary>
         public const int NintendoLetteredButtonCount = 14;
 
-        /// <summary>Nintendo name for a 0-based raw button index on
-        /// a Switch Pro profile, or null past the lettered range (callers
-        /// fall back to the numbered format). Index order matches the
-        /// switch-pro HID descriptor: face 0-3, bumpers 4-5, ZL/ZR 6-7,
+        /// <summary>Same count for the Switch 2 Pro: indices 0-20, every one
+        /// role-mapped in the profile's report 0x09 field list (three
+        /// button-mask bytes of 8 + 8 + 5). Clamping this family at 14 hid
+        /// Home, Capture, GR, GL and C behind the end of the grid, so they
+        /// could not be mapped at all.</summary>
+        public const int Switch2LetteredButtonCount = 21;
+
+        /// <summary>Lettered button count for whichever Nintendo profile is
+        /// active. Callers that size a raw-index surface must use this, not
+        /// either constant directly.</summary>
+        public static int NintendoLetteredCountFor(string profileId) =>
+            IsSwitch2LetteredProfile(profileId)
+                ? Switch2LetteredButtonCount
+                : NintendoLetteredButtonCount;
+
+        /// <summary>Nintendo name for a 0-based raw button index on the
+        /// ORIGINAL Switch Pro profile, or null past the lettered range
+        /// (callers fall back to the numbered format). Index order matches
+        /// the switch-pro HID descriptor: face 0-3, bumpers 4-5, ZL/ZR 6-7,
         /// Minus/Plus 8-9, stick clicks 10-11, Home 12, Capture 13.</summary>
         public static string NintendoExtendedLabel(int index) => index switch
         {
@@ -6888,20 +6912,60 @@ namespace PadForge.ViewModels
             _ => null,
         };
 
+        /// <summary>Same, for the Switch 2 Pro. Order is the field list of
+        /// the profile's report 0x09 button masks, byte 3 then 4 then 5:
+        ///   3: B A Y X, R, ZR, Plus, RS
+        ///   4: Down Right Left Up, L, ZL, Minus, LS
+        ///   5: Home, Capture, GR, GL, C
+        /// It shares almost nothing with the original's order beyond the
+        /// four face buttons, which is why the label table has to fork by
+        /// profile rather than extend.</summary>
+        public static string Switch2ExtendedLabel(int index) => index switch
+        {
+            0 => "B",
+            1 => "A",
+            2 => "Y",
+            3 => "X",
+            4 => Strings.Instance.Btn_R,
+            5 => Strings.Instance.Btn_ZR,
+            6 => Strings.Instance.Btn_Plus,
+            7 => Strings.Instance.Btn_RightStickButton,
+            8 => Strings.Instance.Btn_Down,
+            9 => Strings.Instance.Btn_Right,
+            10 => Strings.Instance.Btn_Left,
+            11 => Strings.Instance.Btn_Up,
+            12 => Strings.Instance.Btn_L,
+            13 => Strings.Instance.Btn_ZL,
+            14 => Strings.Instance.Btn_Minus,
+            15 => Strings.Instance.Btn_LeftStickButton,
+            16 => Strings.Instance.Btn_Home,
+            17 => Strings.Instance.Btn_Capture,
+            18 => Strings.Instance.Btn_GR,
+            19 => Strings.Instance.Btn_GL,
+            20 => Strings.Instance.Btn_C,
+            _ => null,
+        };
+
+        /// <summary>Lettered label for whichever Nintendo profile is active.</summary>
+        public static string NintendoLetteredLabel(string profileId, int index) =>
+            IsSwitch2LetteredProfile(profileId)
+                ? Switch2ExtendedLabel(index)
+                : NintendoExtendedLabel(index);
+
         /// <summary>Label for the 1-based Extended button N under the given
         /// profile: Nintendo lettering on Switch Pro profiles, the "Button
         /// {N}" format otherwise. The long-form twin of
         /// <see cref="RawButtonShortLabel"/> (mapping grid, menu cell
         /// picker, output-channel dropdown).</summary>
         public static string RawButtonLabel(string profileId, int number) =>
-            (IsNintendoLetteredProfile(profileId) ? NintendoExtendedLabel(number - 1) : null)
+            (IsNintendoLetteredProfile(profileId) ? NintendoLetteredLabel(profileId, number - 1) : null)
             ?? string.Format(Strings.Instance.Extended_Button_Format, number);
 
         /// <summary>Compact-label twin of <see cref="RawButtonLabel"/>
         /// ("Btn {N}" fallback) for the macro trigger chips and button
         /// checkbox grid.</summary>
         public static string RawButtonShortLabel(string profileId, int number) =>
-            (IsNintendoLetteredProfile(profileId) ? NintendoExtendedLabel(number - 1) : null)
+            (IsNintendoLetteredProfile(profileId) ? NintendoLetteredLabel(profileId, number - 1) : null)
             ?? string.Format(Strings.Instance.Macro_Btn_Format, number);
 
         private static (string Label, ushort Flag)[] BuildXboxDefs() => new (string, ushort)[]

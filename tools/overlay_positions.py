@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Extract overlay positions from Gamepad-Asset-Pack SVG files.
 
@@ -1518,10 +1518,11 @@ def process_switchpro():
     #
     # Target names come from the fork's own mapping string for
     # USB_PRODUCT_NINTENDO_SWITCH2_PRO in SDL_gamepad.c:
-    #   misc1:b11 (Capture)  misc2:b12 (C)
-    #   paddle1:b13 (GR, right)  paddle2:b14 (GL, left)
-    results.append(("NSwitchPro_CaptureButton.png", "Misc2", "Button", 712, 624, 62, 63))
-    print(f"  {'Misc2':20s} ({'C, from S2 mesh':20s}) -> ( 712,  624)   62x 63")
+    # Target names are the preview grammar the 2D/3D art and the raw
+    # bridge share, not SDL role names: NintendoPreviewMap maps the
+    # switch2-pro wire (GR b18, GL b19, C b20) onto exactly these.
+    results.append(("NSwitchPro_CaptureButton.png", "ButtonC", "Button", 712, 624, 62, 63))
+    print(f"  {'ButtonC':20s} ({'C, from S2 mesh':20s}) -> ( 712,  624)   62x 63")
 
     # Shift the body-frame results into the widened canvas. Everything
     # above, including the two hardcoded TriggerBase rects, is expressed
@@ -1532,8 +1533,8 @@ def process_switchpro():
     # The floating tiles live in the gutter, so they are authored in the
     # widened frame directly and take no shift.
     tile_x = (SWPRO_MARGIN - SWPRO_TILE) // 2
-    for target, x, label in (("Paddle2", tile_x, "GL"),
-                             ("Paddle1", base_w - tile_x - SWPRO_TILE, "GR")):
+    for target, x, label in (("LeftPaddle", tile_x, "GL"),
+                             ("RightPaddle", base_w - tile_x - SWPRO_TILE, "GR")):
         results.append(("NSwitchPro_GripTile.png", target, "Button",
                         x, SWPRO_TILE_Y, SWPRO_TILE, SWPRO_TILE))
         print(f"  {target:20s} ({label + ', floating tile':20s}) -> "

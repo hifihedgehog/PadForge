@@ -3022,4 +3022,14 @@
   <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz 的 DualSense 输出报告字节表与 Sony scePad 语义，PadForge 效果与音频写入的基础。MIT。</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments 的接口检测音频路由模式，跟随耳机接口功能的参考。仅作文档阅读；AGPL-3.0。</value></data>
+  <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>耳机追踪器</value></data>
+  <data name="Devices_RepairHeadsetTracker" xml:space="preserve"><value>修复耳机追踪器</value></data>
+  <data name="Devices_RepairHeadsetTrackerTooltip" xml:space="preserve"><value>当 Windows 已配对耳机但运动传感器从未出现或卡住时，重新创建传感器连接。</value></data>
+  <data name="Status_HeadsetRepairRunning" xml:space="preserve"><value>正在修复耳机追踪器…</value></data>
+  <data name="Status_HeadsetRepairServiceRequested" xml:space="preserve"><value>已请求耳机追踪器服务。传感器应在几秒钟内出现。</value></data>
+  <data name="Status_HeadsetRepairRebound" xml:space="preserve"><value>已重新绑定耳机追踪器驱动程序。传感器应在几秒钟内出现。</value></data>
+  <data name="Status_HeadsetRepairNothing" xml:space="preserve"><value>此端无需修复。如果传感器仍未出现，请将耳机关机再开机。</value></data>
+  <data name="Status_HeadsetRepairNotFound" xml:space="preserve"><value>没有已配对的蓝牙设备与此耳机匹配。</value></data>
+  <data name="Status_HeadsetRepairFailed" xml:space="preserve"><value>耳机追踪器修复失败。请查看诊断日志。</value></data>
+  <data name="Status_HeadsetRepairFailedFormat" xml:space="preserve"><value>耳机追踪器修复失败：{0}</value></data>
 </root>

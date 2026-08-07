@@ -3022,4 +3022,14 @@
   <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz의 DualSense 출력 리포트 바이트 맵과 Sony scePad 의미체계. PadForge 이펙트/오디오 로직의 기반. MIT.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments의 잭 감지 오디오 라우팅 패턴. 헤드폰 단자 따라가기의 참조 구현. 문서로만 참고; AGPL-3.0.</value></data>
+  <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>헤드셋 트래커</value></data>
+  <data name="Devices_RepairHeadsetTracker" xml:space="preserve"><value>헤드셋 트래커 복구</value></data>
+  <data name="Devices_RepairHeadsetTrackerTooltip" xml:space="preserve"><value>Windows가 헤드셋을 페어링했지만 모션 센서가 나타나지 않거나 멈춘 경우 센서 연결을 다시 만듭니다.</value></data>
+  <data name="Status_HeadsetRepairRunning" xml:space="preserve"><value>헤드셋 트래커 복구 중…</value></data>
+  <data name="Status_HeadsetRepairServiceRequested" xml:space="preserve"><value>헤드셋 트래커 서비스를 요청했습니다. 몇 초 안에 센서가 나타납니다.</value></data>
+  <data name="Status_HeadsetRepairRebound" xml:space="preserve"><value>헤드셋 트래커 드라이버를 다시 바인딩했습니다. 몇 초 안에 센서가 나타납니다.</value></data>
+  <data name="Status_HeadsetRepairNothing" xml:space="preserve"><value>여기서 복구할 항목이 없습니다. 센서가 계속 나타나지 않으면 헤드셋을 껌다가 다시 켜세요.</value></data>
+  <data name="Status_HeadsetRepairNotFound" xml:space="preserve"><value>이 헤드셋과 일치하는 페어링된 Bluetooth 장치가 없습니다.</value></data>
+  <data name="Status_HeadsetRepairFailed" xml:space="preserve"><value>헤드셋 트래커 복구에 실패했습니다. 진단 로그를 확인하세요.</value></data>
+  <data name="Status_HeadsetRepairFailedFormat" xml:space="preserve"><value>헤드셋 트래커 복구 실패: {0}</value></data>
 </root>

@@ -26,6 +26,7 @@ namespace PadForge.Common
             InputDeviceType.Midi => "\uE8D6",            // MIDI badge glyph
             InputDeviceType.Nfc => "\uE9A1",             // TapAndSend
             InputDeviceType.ConsumerControl => "\uEA69", // Media (media-key strips)
+            InputDeviceType.HeadsetMotion => "\uE7F6",   // Headphone (verified in live segmdl2.ttf)
             _ => "\uE7FC"                                // Game
         };
     }

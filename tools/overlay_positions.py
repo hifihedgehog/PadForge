@@ -176,6 +176,28 @@ def center_overlay_on_bbox(bbox, overlay_path):
     return (round(cx - ov_w / 2), round(cy - ov_h / 2), ov_w, ov_h)
 
 
+def stretch_overlay_to_bbox(bbox, overlay_path):
+    """Resize the overlay PNG to the bbox EXACTLY, aspect not preserved.
+
+    For a control the 3/4 render foreshortens, the press sprite's own
+    proportions are the flat-on ones and the bbox is the drawn ones, so
+    preserving aspect shrinks the sprite to fit the squashed dimension and
+    it no longer covers its button. The DualSense mute capsule is 81 x 13
+    as drawn and its sprite is 75 x 16 flat: an aspect fit gave 61 x 13,
+    twenty pixels narrower than the button it highlights.
+    """
+    if bbox is None or not os.path.exists(overlay_path):
+        return bbox
+    ov = cv2.imread(overlay_path, cv2.IMREAD_UNCHANGED)
+    if ov is None:
+        return bbox
+    bx, by, bw, bh = bbox
+    if (ov.shape[1], ov.shape[0]) != (bw, bh):
+        cv2.imwrite(overlay_path,
+                    cv2.resize(ov, (bw, bh), interpolation=cv2.INTER_LANCZOS4))
+    return (bx, by, bw, bh)
+
+
 def fit_overlay_to_bbox(bbox, overlay_path, scale=1.0):
     """Resize the overlay PNG to fit the SVG bbox (preserving the asset's
     aspect ratio) and center it on the bbox center. Returns (x, y, w, h)
@@ -1070,10 +1092,26 @@ def _process_dualsense_family(folder, margin, edge):
     add("Create Button", "DualSense_Create_Button.png", "ButtonBack", "Button")
     add("Option Button", "DualSense_Option_Button.png", "ButtonStart", "Button")
     add("PS Button", "DualSense_Home_Button.png", "ButtonGuide", "Button")
-    # Mic mute. Anchored on "Mute With LED", the capsule itself: the "Mute"
-    # group also encloses the mic-slash icon printed below the button, which
-    # would fit the press sprite to a box twice the button's height.
-    add("Mute With LED", "DualSense_Mute_Button.png", "ButtonMute", "Button")
+    # Mic mute. Its rect comes from BOTH labels, because neither alone is
+    # the button: "Mute" is the group, whose width is the capsule's (81 px,
+    # confirmed against the base render's own silhouette at 82) but whose
+    # height also swallows the mic-slash icon printed below it, while "Mute
+    # With LED" gives the capsule's own 13-px band and a width 10 px short.
+    # Stretched, not aspect-fitted: the render foreshortens this face, so
+    # the flat 75x16 sprite fitted by aspect came out 61 px wide and left
+    # the button's ends uncovered when pressed or hovered.
+    mute_group = get_element_pixel_bbox(root, "Mute", scale)
+    mute_band = get_element_pixel_bbox(root, "Mute With LED", scale)
+    if mute_group and mute_band:
+        rect = (mute_group[0], mute_band[1], mute_group[2], mute_band[3])
+        pos = stretch_overlay_to_bbox(
+            rect, os.path.join(ov_dir, "DualSense_Mute_Button.png"))
+        results.append(("DualSense_Mute_Button.png", "ButtonMute", "Button",
+                        pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {'ButtonMute':20s} ({'Mute + Mute With LED':20s}) -> "
+              f"({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+    else:
+        print("  MISS: Mute / Mute With LED")
 
     # Sticks (rings) and stick clicks share the same SVG bbox.
     add("Left Stick", "DualSense_LeftAnalogStick.png", "LeftThumbRing", "StickRing")

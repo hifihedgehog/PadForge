@@ -3022,4 +3022,14 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="About_DuaLibDesc" xml:space="preserve"><value>Mapa de bytes del informe de salida del DualSense y semántica scePad de Sony por WujekFoliarz, base de los escritores de efectos y audio de PadForge. MIT.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Patrón de enrutamiento de audio por conector de SundayMoments, la referencia de Seguir el conector de auriculares. Leído como documentación; AGPL-3.0.</value></data>
+  <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Rastreador de auriculares</value></data>
+  <data name="Devices_RepairHeadsetTracker" xml:space="preserve"><value>Reparar rastreador de auriculares</value></data>
+  <data name="Devices_RepairHeadsetTrackerTooltip" xml:space="preserve"><value>Recrea la conexión del sensor de movimiento cuando Windows emparejó los auriculares pero el sensor nunca apareció o está bloqueado.</value></data>
+  <data name="Status_HeadsetRepairRunning" xml:space="preserve"><value>Reparando el rastreador de auriculares…</value></data>
+  <data name="Status_HeadsetRepairServiceRequested" xml:space="preserve"><value>Servicio del rastreador solicitado. El sensor debería aparecer en unos segundos.</value></data>
+  <data name="Status_HeadsetRepairRebound" xml:space="preserve"><value>Controlador del rastreador reenlazado. El sensor debería aparecer en unos segundos.</value></data>
+  <data name="Status_HeadsetRepairNothing" xml:space="preserve"><value>Nada que reparar desde aquí. Si el sensor sigue sin aparecer, apague y encienda los auriculares.</value></data>
+  <data name="Status_HeadsetRepairNotFound" xml:space="preserve"><value>Ningún dispositivo Bluetooth emparejado coincide con estos auriculares.</value></data>
+  <data name="Status_HeadsetRepairFailed" xml:space="preserve"><value>Error al reparar el rastreador de auriculares. Consulte el registro de diagnóstico.</value></data>
+  <data name="Status_HeadsetRepairFailedFormat" xml:space="preserve"><value>Error al reparar el rastreador de auriculares: {0}</value></data>
 </root>

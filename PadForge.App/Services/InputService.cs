@@ -10364,6 +10364,7 @@ namespace PadForge.Services
                 InputDeviceType.Midi => "Midi",
                 InputDeviceType.Nfc => "Nfc",
                 InputDeviceType.ConsumerControl => "ConsumerControl",
+                InputDeviceType.HeadsetMotion => "HeadsetMotion",
                 _ => "Device"
             };
 

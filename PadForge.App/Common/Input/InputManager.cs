@@ -2975,6 +2975,10 @@ namespace PadForge.Common.Input
             // a use-after-dispose whose swallowed throw would skip the actual
             // NfcReaderService teardown (#150, round-4 finding).
             ShutdownNfcReaders();
+            // Headset trackers ride the same teardown window: after Stop()
+            // so the suppress latch holds, before ShutdownSdl() tears down
+            // the device list the retire path walks.
+            ShutdownHeadsetMotionInputs();
             ShutdownSdl();
             _disposed = true;
 

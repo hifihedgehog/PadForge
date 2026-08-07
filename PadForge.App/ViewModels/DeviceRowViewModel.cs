@@ -231,6 +231,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMidiDevice));
                     OnPropertyChanged(nameof(ShowTouchpadCapability));
                     OnPropertyChanged(nameof(HasCapabilityIcons));
+                    OnPropertyChanged(nameof(ShowRepairHeadsetTracker));
                 }
             }
         }
@@ -250,8 +251,17 @@ namespace PadForge.ViewModels
             "Midi" => Strings.Instance.DeviceType_Midi,
             "Nfc" => Strings.Instance.DeviceType_Nfc,
             "ConsumerControl" => Strings.Instance.DeviceType_ConsumerControl,
+            "HeadsetMotion" => Strings.Instance.DeviceType_HeadsetMotion,
             _ => Strings.Instance.DeviceType_Device
         };
+
+        /// <summary>Whether the row offers the Repair Headset Tracker
+        /// action (#188): headset head-tracker rows only, online or not.
+        /// The offline row is the whole point, since the reference
+        /// documents a cold boot leaving the headset paired without its
+        /// head-tracker HID node, which is exactly when the row shows
+        /// offline and the repair recreates the node.</summary>
+        public bool ShowRepairHeadsetTracker => DeviceTypeKey == "HeadsetMotion";
 
         private bool _hasRumble;
 

@@ -411,6 +411,9 @@ namespace PadForge.Common.Input
             // --- Phase 1f: NFC PC/SC readers (issue #150) ---
             changed |= UpdateNfcReaderDevices();
 
+            // --- Phase 1g: Sony headset head trackers (issue #188) ---
+            changed |= UpdateHeadsetMotionDevices();
+
             // --- Phase 2: Detect disconnected SDL devices (debounced) ---
             //
             // Signals that indicate the device might be gone:
@@ -1262,6 +1265,30 @@ namespace PadForge.Common.Input
         private volatile bool _nfcInputsSuppressed;
         private const int _nfcStartRetryMs = 5000;
 
+        // Sony headset head trackers (Phase 1g, issue #188). Discovery,
+        // qualification (Bluetooth feature-report reads) and the enable
+        // sequence are all blocking device I/O, so the worker does the
+        // whole open and the poll thread only registers finished devices
+        // and retires vanished ones.
+        private readonly Dictionary<string, SonyHeadsetMotionDevice> _openedHeadsets =
+            new Dictionary<string, SonyHeadsetMotionDevice>(StringComparer.OrdinalIgnoreCase);
+        private readonly List<SonyHeadsetMotionDevice> _headsetPendingRegister =
+            new List<SonyHeadsetMotionDevice>();
+        private readonly object _headsetLock = new object();
+        private volatile bool _headsetSweepRunning;
+        private volatile bool _headsetInputsSuppressed;
+        // Latest sweep's present qualified paths; null until the first
+        // sweep completes so nothing is retired on a cold cache.
+        private volatile HashSet<string> _headsetPresentPaths;
+        private long _headsetNextSweepTicks;
+        private readonly Dictionary<string, long> _headsetOpenFailedAt =
+            new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
+        // Wall-clock cadence like the NFC retry throttle: the sweep opens
+        // handles across the HID tree, so it runs well below the ~2 s
+        // device-sweep rate.
+        private const int _headsetSweepIntervalMs = 3000;
+        private const int _headsetOpenRetryMs = 60000;
+
         /// <summary>
         /// Tears down every open MIDI input connection and the shared input
         /// session, and suppresses Phase 1e until app restart. Called before
@@ -1608,6 +1635,182 @@ namespace PadForge.Common.Input
             }
 
             return changed;
+        }
+
+        /// <summary>
+        /// Phase 1g: registers Sony headset head trackers (issue #188),
+        /// mirroring the MIDI sweep shape. Discovery, the marker probe and
+        /// the enable-sequence feature writes are Bluetooth I/O, so a
+        /// worker performs the entire enumerate-and-open; this poll-thread
+        /// phase only registers finished devices and retires ones whose
+        /// HID node vanished or whose reader thread died.
+        /// </summary>
+        private bool UpdateHeadsetMotionDevices()
+        {
+            if (_headsetInputsSuppressed)
+                return false;
+
+            long now = Environment.TickCount64;
+            if (!_headsetSweepRunning && now >= _headsetNextSweepTicks)
+            {
+                _headsetSweepRunning = true;
+                _headsetNextSweepTicks = now + _headsetSweepIntervalMs;
+                Task.Run(() =>
+                {
+                    try { HeadsetMotionSweep(); }
+                    catch { }
+                    finally { _headsetSweepRunning = false; }
+                });
+            }
+
+            bool changed = false;
+            var present = _headsetPresentPaths;
+            lock (_headsetLock)
+            {
+                // Re-check under the lock: shutdown may have latched while
+                // the worker was finishing (the MIDI suppress pattern).
+                if (_headsetInputsSuppressed)
+                    return false;
+
+                // Register devices the worker finished opening.
+                for (int i = 0; i < _headsetPendingRegister.Count; i++)
+                {
+                    var dev = _headsetPendingRegister[i];
+                    try
+                    {
+                        UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
+                        ud.LoadFromExternalDevice(dev);
+                        ud.IsOnline = true;
+                        _openedHeadsets[dev.DevicePath] = dev;
+                        changed = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        dev.Dispose();
+                        RaiseError($"Error registering headset tracker '{dev.Name}'", ex);
+                    }
+                }
+                _headsetPendingRegister.Clear();
+
+                // Retire vanished nodes, dead readers, and rows the user
+                // removed from the Devices page (the MIDI recreate pattern:
+                // dropping the tracking entry lets the next sweep re-open).
+                List<string> gone = null;
+                foreach (var kvp in _openedHeadsets)
+                {
+                    bool vanished = present != null && !present.Contains(kvp.Key);
+                    bool dead = !kvp.Value.IsAttached;
+                    bool removedByUser = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid) == null;
+                    if (vanished || dead || removedByUser)
+                        (gone ??= new List<string>()).Add(kvp.Key);
+                }
+                if (gone != null)
+                {
+                    foreach (var path in gone)
+                    {
+                        var dev = _openedHeadsets[path];
+                        var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
+                        if (ud != null)
+                        {
+                            ud.IsOnline = false;
+                            ud.Device = null;
+                            // Same neutralize the MIDI/NFC retire paths
+                            // perform: a gyro deflection held at vanish time
+                            // would stay stamped on the slot's output.
+                            NeutralizeMappedOutputsFor(ud);
+                        }
+                        dev.Dispose();
+                        _openedHeadsets.Remove(path);
+                        changed = true;
+                    }
+                }
+
+                // Forget open-failure cooldowns for vanished paths so a
+                // re-created node starts fresh.
+                if (present != null && _headsetOpenFailedAt.Count > 0)
+                {
+                    List<string> stale = null;
+                    foreach (var key in _headsetOpenFailedAt.Keys)
+                        if (!present.Contains(key)) (stale ??= new List<string>()).Add(key);
+                    if (stale != null) foreach (var key in stale) _headsetOpenFailedAt.Remove(key);
+                }
+            }
+            return changed;
+        }
+
+        /// <summary>Worker half of Phase 1g: enumerate qualified trackers,
+        /// open and configure the new ones, queue them for poll-thread
+        /// registration. All blocking I/O lives here.</summary>
+        private void HeadsetMotionSweep()
+        {
+            var candidates = SonyHeadsetMotionRuntime.Enumerate();
+            if (candidates == null)
+                return; // enumeration failed; keep the previous snapshot
+            var present = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var c in candidates) present.Add(c.Path);
+            _headsetPresentPaths = present;
+
+            long now = Environment.TickCount64;
+            foreach (var candidate in candidates)
+            {
+                lock (_headsetLock)
+                {
+                    if (_headsetInputsSuppressed) return;
+                    if (_openedHeadsets.ContainsKey(candidate.Path)) continue;
+                    bool pending = false;
+                    for (int i = 0; i < _headsetPendingRegister.Count; i++)
+                        if (string.Equals(_headsetPendingRegister[i].DevicePath, candidate.Path,
+                                StringComparison.OrdinalIgnoreCase)) { pending = true; break; }
+                    if (pending) continue;
+                    if (_headsetOpenFailedAt.TryGetValue(candidate.Path, out long failedAt)
+                        && now - failedAt < _headsetOpenRetryMs)
+                        continue;
+                }
+
+                var dev = new SonyHeadsetMotionDevice(candidate);
+                bool ok = false;
+                try { ok = dev.Open(); }
+                catch { }
+                lock (_headsetLock)
+                {
+                    if (_headsetInputsSuppressed) { dev.Dispose(); return; }
+                    if (!ok)
+                    {
+                        dev.Dispose();
+                        _headsetOpenFailedAt[candidate.Path] = now;
+                        continue;
+                    }
+                    _headsetOpenFailedAt.Remove(candidate.Path);
+                    _headsetPendingRegister.Add(dev);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tears down every open headset tracker and suppresses Phase 1g.
+        /// Called on app shutdown alongside ShutdownNfcReaders.
+        /// </summary>
+        public void ShutdownHeadsetMotionInputs()
+        {
+            _headsetInputsSuppressed = true;
+            lock (_headsetLock)
+            {
+                foreach (var kvp in _openedHeadsets)
+                {
+                    var ud = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid);
+                    if (ud != null)
+                    {
+                        ud.IsOnline = false;
+                        ud.Device = null;
+                        NeutralizeMappedOutputsFor(ud);
+                    }
+                    kvp.Value.Dispose();
+                }
+                _openedHeadsets.Clear();
+                foreach (var dev in _headsetPendingRegister)
+                    dev.Dispose();
+                _headsetPendingRegister.Clear();
+            }
         }
 
         /// <summary>

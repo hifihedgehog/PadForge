@@ -3022,4 +3022,14 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="About_DuaLibDesc" xml:space="preserve"><value>Mapa de bytes do relatório de saída do DualSense e semântica scePad da Sony por WujekFoliarz, base dos escritores de efeitos e áudio do PadForge. MIT.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Padrão de roteamento de áudio por detecção de conector de SundayMoments, a referência de Seguir o conector de fone. Lido como documentação; AGPL-3.0.</value></data>
+  <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Rastreador do headset</value></data>
+  <data name="Devices_RepairHeadsetTracker" xml:space="preserve"><value>Reparar rastreador do headset</value></data>
+  <data name="Devices_RepairHeadsetTrackerTooltip" xml:space="preserve"><value>Recria a conexão do sensor de movimento quando o Windows pareou o headset, mas o sensor nunca apareceu ou está travado.</value></data>
+  <data name="Status_HeadsetRepairRunning" xml:space="preserve"><value>Reparando o rastreador do headset…</value></data>
+  <data name="Status_HeadsetRepairServiceRequested" xml:space="preserve"><value>Serviço do rastreador solicitado. O sensor deve aparecer em alguns segundos.</value></data>
+  <data name="Status_HeadsetRepairRebound" xml:space="preserve"><value>Driver do rastreador revinculado. O sensor deve aparecer em alguns segundos.</value></data>
+  <data name="Status_HeadsetRepairNothing" xml:space="preserve"><value>Nada a reparar deste lado. Se o sensor ainda não aparecer, desligue e ligue o headset.</value></data>
+  <data name="Status_HeadsetRepairNotFound" xml:space="preserve"><value>Nenhum dispositivo Bluetooth pareado corresponde a este headset.</value></data>
+  <data name="Status_HeadsetRepairFailed" xml:space="preserve"><value>Falha ao reparar o rastreador do headset. Consulte o log de diagnóstico.</value></data>
+  <data name="Status_HeadsetRepairFailedFormat" xml:space="preserve"><value>Falha ao reparar o rastreador do headset: {0}</value></data>
 </root>

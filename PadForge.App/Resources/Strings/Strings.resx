@@ -398,6 +398,7 @@
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC Reader</value></data>
 
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Consumer Control</value></data>
+  <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Headset Tracker</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>Disconnect Controller</value></data>
   <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>Drops the controller's Bluetooth link so it goes to sleep. Bluetooth connections only.</value></data>
   <data name="MacroAction_DisconnectController_Format" xml:space="preserve"><value>Disconnect Controller: {0}</value></data>
@@ -476,6 +477,15 @@
   <data name="Devices_DragAssignHint" xml:space="preserve"><value>Drag a device onto a sidebar controller card to assign it.</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>Product: </value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Submit Device Mapping</value></data>
+  <data name="Devices_RepairHeadsetTracker" xml:space="preserve"><value>Repair Headset Tracker</value></data>
+  <data name="Devices_RepairHeadsetTrackerTooltip" xml:space="preserve"><value>Recreate the headset's motion-sensor connection when Windows paired the headset but the sensor never appeared or is stuck.</value></data>
+  <data name="Status_HeadsetRepairRunning" xml:space="preserve"><value>Repairing headset tracker…</value></data>
+  <data name="Status_HeadsetRepairServiceRequested" xml:space="preserve"><value>Headset tracker service requested. The sensor should appear within a few seconds.</value></data>
+  <data name="Status_HeadsetRepairRebound" xml:space="preserve"><value>Headset tracker driver rebound. The sensor should appear within a few seconds.</value></data>
+  <data name="Status_HeadsetRepairNothing" xml:space="preserve"><value>Nothing to repair from this side. If the sensor still does not appear, turn the headset off and on.</value></data>
+  <data name="Status_HeadsetRepairNotFound" xml:space="preserve"><value>No paired Bluetooth device matches this headset.</value></data>
+  <data name="Status_HeadsetRepairFailed" xml:space="preserve"><value>Headset tracker repair failed. See the diagnostics log.</value></data>
+  <data name="Status_HeadsetRepairFailedFormat" xml:space="preserve"><value>Headset tracker repair failed: {0}</value></data>
   <data name="Devices_VCAssignment" xml:space="preserve"><value>Virtual Controller Assignment</value></data>
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Toggle assignment</value></data>
   <data name="Devices_NoSlotsHint" xml:space="preserve"><value>No virtual controller slots yet. Create one on the Dashboard to assign this device.</value></data>

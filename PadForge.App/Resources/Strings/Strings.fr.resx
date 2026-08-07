@@ -3022,4 +3022,14 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="About_DuaLibDesc" xml:space="preserve"><value>Carte des octets du rapport de sortie DualSense et sémantique scePad de Sony par WujekFoliarz, socle des écrivains d'effets et d'audio de PadForge. MIT.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Modèle de routage audio par détection de prise par SundayMoments, référence de Suivre la prise casque. Lu comme documentation ; AGPL-3.0.</value></data>
+  <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Suivi de casque</value></data>
+  <data name="Devices_RepairHeadsetTracker" xml:space="preserve"><value>Réparer le suivi du casque</value></data>
+  <data name="Devices_RepairHeadsetTrackerTooltip" xml:space="preserve"><value>Recrée la connexion du capteur de mouvement lorsque Windows a appairé le casque mais que le capteur n'est jamais apparu ou est bloqué.</value></data>
+  <data name="Status_HeadsetRepairRunning" xml:space="preserve"><value>Réparation du suivi du casque…</value></data>
+  <data name="Status_HeadsetRepairServiceRequested" xml:space="preserve"><value>Service du suivi du casque demandé. Le capteur devrait apparaître dans quelques secondes.</value></data>
+  <data name="Status_HeadsetRepairRebound" xml:space="preserve"><value>Pilote du suivi du casque relié à nouveau. Le capteur devrait apparaître dans quelques secondes.</value></data>
+  <data name="Status_HeadsetRepairNothing" xml:space="preserve"><value>Rien à réparer de ce côté. Si le capteur n'apparaît toujours pas, éteignez puis rallumez le casque.</value></data>
+  <data name="Status_HeadsetRepairNotFound" xml:space="preserve"><value>Aucun appareil Bluetooth appairé ne correspond à ce casque.</value></data>
+  <data name="Status_HeadsetRepairFailed" xml:space="preserve"><value>Échec de la réparation du suivi du casque. Consultez le journal de diagnostic.</value></data>
+  <data name="Status_HeadsetRepairFailedFormat" xml:space="preserve"><value>Échec de la réparation du suivi du casque : {0}</value></data>
 </root>

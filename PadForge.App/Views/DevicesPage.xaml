@@ -843,6 +843,18 @@
                             </Button.Style>
                         </Button>
 
+                        <!-- Repair the headset's head-tracker HID node (headset trackers only, issue #188) -->
+                        <Button x:Name="RepairHeadsetTrackerButton"
+                                Content="{Binding Devices_RepairHeadsetTracker, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="RepairHeadsetTracker_Click"
+                                ToolTip="{Binding Devices_RepairHeadsetTrackerTooltip, Source={x:Static strings:Strings.Instance}}"
+                                Visibility="{Binding SelectedDevice.ShowRepairHeadsetTracker, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+
                         <Separator Margin="0,2,0,6"/>
 
                         <!-- Assign to slot -->

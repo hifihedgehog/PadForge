@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Microsoft.Win32;
@@ -113,6 +113,11 @@ namespace PadForge.Tests
 
         // ── wiring the behavioural tests cannot reach ────────────────────
 
+        private static string PairSrc([CallerFilePath] string me = null)
+            => File.ReadAllText(Path.Combine(
+                Path.GetFullPath(Path.Combine(Path.GetDirectoryName(me), "..")),
+                "PadForge.App", "Services", "Ds3PairingService.cs"));
+
         private static string Src([CallerFilePath] string me = null)
             => File.ReadAllText(Path.Combine(
                 Path.GetFullPath(Path.Combine(Path.GetDirectoryName(me), "..")),
@@ -165,6 +170,39 @@ namespace PadForge.Tests
             // An immediately-true probe returns without sleeping at all.
             Assert.True(Ds3DriverInstaller.WaitForCondition(
                 () => true, timeoutMs: 0, pollMs: 1000));
+        }
+
+        /// <summary>Arming PSM patching is what routes the pad's reserved
+        /// PSM to BthPS3, and every arm site sits immediately after an install
+        /// or a radio cycle, which is exactly when the filter is detached and
+        /// its control device absent. An arm with no wait therefore no-ops in
+        /// silence. That is the first-pairing failure observed on the
+        /// 2026-08-06 arcade-PC rehearsal: the pad was refused and flashed,
+        /// and only a SECOND ceremony worked, because by then patching had
+        /// been armed once and the filter restores its per-radio state across
+        /// cycles.</summary>
+        [Fact]
+        public void PsmArming_WaitsForTheFilterAndIsCheckedForEffect()
+        {
+            string src = Src();
+            // The arm helper waits rather than probing once.
+            Assert.Contains("SetPsmPatching(true, log, 20000)", src, StringComparison.Ordinal);
+            // The toggle reports how many radios took it, so zero is failure
+            // rather than silence.
+            Assert.Contains("public static int SetPsmPatching(", src, StringComparison.Ordinal);
+            Assert.Contains("return count;", src, StringComparison.Ordinal);
+            // The install verdict requires patching to have taken.
+            Assert.Contains("if (EnsurePsmPatch(log) == 0)", src, StringComparison.Ordinal);
+
+            string pair = PairSrc();
+            // The ceremony does not invite the PS press until the filter is
+            // back from the pairing radio cycle.
+            int cycle = pair.IndexOf("CycleRadio();", StringComparison.Ordinal);
+            int wait = pair.IndexOf("WaitForPsmControlDevice(20000)", cycle, StringComparison.Ordinal);
+            int prompt = pair.IndexOf("Unplug the DS3 and press the PS button", cycle, StringComparison.Ordinal);
+            Assert.True(wait > cycle, "no filter wait after the pairing radio cycle");
+            Assert.True(prompt > wait, "the PS-button prompt must come AFTER the filter is back");
+            Assert.Contains("wantPatching ? 20000 : 0", pair, StringComparison.Ordinal);
         }
 
         /// <summary>The install's verdict is polled, not one-shot: PnP creates

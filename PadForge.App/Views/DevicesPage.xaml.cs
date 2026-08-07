@@ -431,56 +431,6 @@ namespace PadForge.Views
             dlg.ShowDialog();
         }
 
-        /// <summary>
-        /// Runs the two-pass head-tracker repair (issue #188) for the
-        /// selected headset row on a worker, reporting the outcome through
-        /// the status bar (the dossier-copy shape). The passes are
-        /// Bluetooth service and SetupAPI calls that block for seconds, so
-        /// the button disables while one is in flight.
-        /// </summary>
-        private async void RepairHeadsetTracker_Click(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is not ViewModels.DevicesViewModel vm || vm.SelectedDevice is not { } dev)
-                return;
-            var mainVm = Application.Current.MainWindow?.DataContext as ViewModels.MainViewModel;
-            string deviceName = dev.DeviceName;
-
-            RepairHeadsetTrackerButton.IsEnabled = false;
-            if (mainVm != null)
-                mainVm.StatusText = Strings.Instance.Status_HeadsetRepairRunning;
-            try
-            {
-                var outcome = await System.Threading.Tasks.Task.Run(() =>
-                    Services.HeadsetTrackerRepair.Run(deviceName,
-                        line => Engine.SdlDiagLog.WriteLine("HeadsetRepair: " + line)));
-                if (mainVm != null)
-                {
-                    string text = outcome switch
-                    {
-                        Services.HeadsetTrackerRepair.Outcome.ServiceRequested
-                            => Strings.Instance.Status_HeadsetRepairServiceRequested,
-                        Services.HeadsetTrackerRepair.Outcome.DriverRebound
-                            => Strings.Instance.Status_HeadsetRepairRebound,
-                        Services.HeadsetTrackerRepair.Outcome.NothingToRepair
-                            => Strings.Instance.Status_HeadsetRepairNothing,
-                        Services.HeadsetTrackerRepair.Outcome.DeviceNotFound
-                            => Strings.Instance.Status_HeadsetRepairNotFound,
-                        _ => Strings.Instance.Status_HeadsetRepairFailed
-                    };
-                    mainVm.SetStatus(text, persist: true);
-                }
-            }
-            catch (Exception ex)
-            {
-                if (mainVm != null)
-                    mainVm.SetStatus(string.Format(Strings.Instance.Status_HeadsetRepairFailedFormat, ex.Message), persist: true);
-            }
-            finally
-            {
-                RepairHeadsetTrackerButton.IsEnabled = true;
-            }
-        }
-
         // ── Device dossier copy (#175 competitor item 7) ──
 
         /// <summary>

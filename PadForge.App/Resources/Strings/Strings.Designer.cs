@@ -560,15 +560,6 @@ public class Strings : INotifyPropertyChanged
     public string DeviceType_Nfc => Get("DeviceType_Nfc");
     public string DeviceType_ConsumerControl => Get("DeviceType_ConsumerControl");
     public string DeviceType_HeadsetMotion => Get("DeviceType_HeadsetMotion");
-    public string Devices_RepairHeadsetTracker => Get("Devices_RepairHeadsetTracker");
-    public string Devices_RepairHeadsetTrackerTooltip => Get("Devices_RepairHeadsetTrackerTooltip");
-    public string Status_HeadsetRepairRunning => Get("Status_HeadsetRepairRunning");
-    public string Status_HeadsetRepairServiceRequested => Get("Status_HeadsetRepairServiceRequested");
-    public string Status_HeadsetRepairRebound => Get("Status_HeadsetRepairRebound");
-    public string Status_HeadsetRepairNothing => Get("Status_HeadsetRepairNothing");
-    public string Status_HeadsetRepairNotFound => Get("Status_HeadsetRepairNotFound");
-    public string Status_HeadsetRepairFailed => Get("Status_HeadsetRepairFailed");
-    public string Status_HeadsetRepairFailedFormat => Get("Status_HeadsetRepairFailedFormat");
     public string MacroAction_Type_DisconnectController => Get("MacroAction_Type_DisconnectController");
     public string MacroAction_DisconnectController_Tooltip => Get("MacroAction_DisconnectController_Tooltip");
     public string MacroAction_DisconnectController_Format => Get("MacroAction_DisconnectController_Format");

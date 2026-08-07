@@ -3045,13 +3045,4 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Schema di instradamento audio dal jack di SundayMoments, il riferimento dietro Segui il jack cuffie. Letto come documentazione; AGPL-3.0.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Tracker delle cuffie</value></data>
-  <data name="Devices_RepairHeadsetTracker" xml:space="preserve"><value>Ripara tracker delle cuffie</value></data>
-  <data name="Devices_RepairHeadsetTrackerTooltip" xml:space="preserve"><value>Ricrea la connessione del sensore di movimento quando Windows ha associato le cuffie ma il sensore non è mai apparso o è bloccato.</value></data>
-  <data name="Status_HeadsetRepairRunning" xml:space="preserve"><value>Riparazione del tracker delle cuffie…</value></data>
-  <data name="Status_HeadsetRepairServiceRequested" xml:space="preserve"><value>Servizio del tracker richiesto. Il sensore dovrebbe apparire entro pochi secondi.</value></data>
-  <data name="Status_HeadsetRepairRebound" xml:space="preserve"><value>Driver del tracker riassociato. Il sensore dovrebbe apparire entro pochi secondi.</value></data>
-  <data name="Status_HeadsetRepairNothing" xml:space="preserve"><value>Niente da riparare da questo lato. Se il sensore continua a non apparire, spegnere e riaccendere le cuffie.</value></data>
-  <data name="Status_HeadsetRepairNotFound" xml:space="preserve"><value>Nessun dispositivo Bluetooth associato corrisponde a queste cuffie.</value></data>
-  <data name="Status_HeadsetRepairFailed" xml:space="preserve"><value>Riparazione del tracker delle cuffie non riuscita. Vedere il registro di diagnostica.</value></data>
-  <data name="Status_HeadsetRepairFailedFormat" xml:space="preserve"><value>Riparazione del tracker delle cuffie non riuscita: {0}</value></data>
 </root>

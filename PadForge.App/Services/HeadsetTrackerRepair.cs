@@ -14,25 +14,25 @@ namespace PadForge.Services
     /// and ships two fixes, both ported here to run in-process since
     /// PadForge is always elevated:
     ///
-    ///  1. rebindBluetoothHid: for the paired Classic device matching the
-    ///     row's name, request the HID service (GUID 0x1124). When the
-    ///     Bluetooth database says the service is enabled but no live HID
-    ///     child node exists, that stale state is cycled
-    ///     (disable, 1.5 s, enable). A live HID service is never toggled.
+    ///  1. rebindBluetoothHid: request the HID service (GUID 0x1124) for
+    ///     the paired device by address. When the Bluetooth database says
+    ///     the service is enabled but no live HID child node exists, that
+    ///     stale state is cycled (disable, 1.5 s, enable). A live HID
+    ///     service is never toggled.
     ///  2. useGenericHidDriver: a node parked at CM_PROB_FAILED_START
     ///     under a BTHENUM parent whose hardware ID carries
     ///     UP:0020_U:00E1 gets the inbox input.inf generic HID driver
     ///     rebound. Applied only when exactly one such node exists.
     ///
-    /// The row button runs both passes. Pass 2 additionally runs
-    /// UNATTENDED from the enumeration sweep (<see cref="TryAutoRebind"/>),
-    /// because the first hardware encounter proved the failed-start state
-    /// is the entry condition, not an edge case: with the node parked at
-    /// Code 10 there is no device row, so a button-only repair is
-    /// unreachable exactly when it is needed. The reference reaches the
-    /// same conclusion ("Repair Tracker is the recommended first step
-    /// when you open the app"). The service cycle of pass 1 stays
-    /// button-only, since it can bounce a live Bluetooth HID service.
+    /// Both passes run UNATTENDED from the enumeration sweep. The first
+    /// hardware encounter proved the failed-start state is the entry
+    /// condition, not an edge case: with the node parked at Code 10 there
+    /// is no device row, so any button-gated repair is unreachable exactly
+    /// when it is needed. The reference reaches the same conclusion
+    /// ("Repair Tracker is the recommended first step when you open the
+    /// app"). Pass 1 is address-keyed to trackers that qualified before
+    /// (session or persisted), so it never touches a device that has not
+    /// proven itself an Android Head Tracker.
     /// </summary>
     internal static class HeadsetTrackerRepair
     {
@@ -40,155 +40,13 @@ namespace PadForge.Services
         {
             /// <summary>The HID service was requested; PnP enumeration follows.</summary>
             ServiceRequested,
-            /// <summary>The service was already live and a failed-start node was rebound.</summary>
-            DriverRebound,
-            /// <summary>Service already enabled with a live node; nothing to repair.</summary>
+            /// <summary>Nothing needed doing (live node, or device not connected).</summary>
             NothingToRepair,
-            /// <summary>No paired Bluetooth device matched the row's name.</summary>
+            /// <summary>No paired Bluetooth device carried the address.</summary>
             DeviceNotFound,
-            /// <summary>Both passes ran and neither could change anything.</summary>
+            /// <summary>The request ran and could not change anything.</summary>
             Failed
         }
-
-        /// <summary>
-        /// Runs both repair passes for the paired device matching
-        /// <paramref name="deviceName"/> (case-insensitive contains, the
-        /// reference's --name path). Blocking Bluetooth and SetupAPI work:
-        /// call from a worker thread.
-        /// </summary>
-        internal static Outcome Run(string deviceName, Action<string> log)
-        {
-            log ??= _ => { };
-            // An empty name would "contain-match" every paired device and
-            // cycle the HID service on unrelated mice and keyboards. The
-            // reference's service cycle is likewise never run unfiltered
-            // against devices that did not qualify via SDP.
-            if (string.IsNullOrWhiteSpace(deviceName))
-                return Outcome.DeviceNotFound;
-            bool serviceRequested = false;
-            bool matched = false;
-
-            var radioParams = new BLUETOOTH_FIND_RADIO_PARAMS
-            {
-                dwSize = (uint)Marshal.SizeOf<BLUETOOTH_FIND_RADIO_PARAMS>()
-            };
-            IntPtr findRadio = BluetoothFindFirstRadio(ref radioParams, out IntPtr radio);
-            if (findRadio == IntPtr.Zero)
-            {
-                log("No Bluetooth radio is available.");
-                return Outcome.Failed;
-            }
-            try
-            {
-                do
-                {
-                    try
-                    {
-                        var search = new BLUETOOTH_DEVICE_SEARCH_PARAMS
-                        {
-                            dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_SEARCH_PARAMS>(),
-                            fReturnAuthenticated = 1,
-                            fReturnRemembered = 1,
-                            fReturnConnected = 1,
-                            hRadio = radio
-                        };
-                        var device = new BLUETOOTH_DEVICE_INFO
-                        {
-                            dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_INFO>()
-                        };
-                        IntPtr find = BluetoothFindFirstDevice(ref search, ref device);
-                        if (find == IntPtr.Zero) continue;
-                        try
-                        {
-                            do
-                            {
-                                if (string.IsNullOrEmpty(device.szName)
-                                    || device.szName.IndexOf(deviceName ?? "", StringComparison.OrdinalIgnoreCase) < 0
-                                    && (deviceName ?? "").IndexOf(device.szName, StringComparison.OrdinalIgnoreCase) < 0)
-                                {
-                                    device = new BLUETOOTH_DEVICE_INFO
-                                    { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_INFO>() };
-                                    continue;
-                                }
-                                matched = true;
-                                bool liveNode = HasPresentBluetoothHidChild(device.Address);
-                                var hidService = HidServiceGuid;
-                                uint enable = BluetoothSetServiceState(radio, ref device, ref hidService, BLUETOOTH_SERVICE_ENABLE);
-                                log($"HID service enable for '{device.szName}': rc={enable}, live child={liveNode}");
-                                if (enable == ERROR_SUCCESS)
-                                {
-                                    serviceRequested = true;
-                                }
-                                else if (!liveNode && (enable == ERROR_INVALID_PARAMETER || enable == E_INVALIDARG))
-                                {
-                                    // Stale enabled state and no node: cycle
-                                    // only the absent service (reference gate).
-                                    uint disable = BluetoothSetServiceState(radio, ref device, ref hidService, BLUETOOTH_SERVICE_DISABLE);
-                                    log($"Stale service state; disable rc={disable}");
-                                    if (disable == ERROR_SUCCESS || disable == ERROR_INVALID_PARAMETER || disable == E_INVALIDARG)
-                                    {
-                                        Thread.Sleep(1500);
-                                        uint recover = BluetoothSetServiceState(radio, ref device, ref hidService, BLUETOOTH_SERVICE_ENABLE);
-                                        log($"Recovery enable rc={recover}");
-                                        if (recover == ERROR_SUCCESS) serviceRequested = true;
-                                    }
-                                }
-                                else if (liveNode && (enable == ERROR_INVALID_PARAMETER || enable == E_INVALIDARG))
-                                {
-                                    // Already enabled with a live node: the
-                                    // failed-start rebind below is the only
-                                    // remaining repair.
-                                }
-                                device = new BLUETOOTH_DEVICE_INFO
-                                { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_INFO>() };
-                            } while (BluetoothFindNextDevice(find, ref device));
-                        }
-                        finally { BluetoothFindDeviceClose(find); }
-                        if (matched) break;
-                    }
-                    finally
-                    {
-                        if (radio != IntPtr.Zero) { CloseHandle(radio); radio = IntPtr.Zero; }
-                    }
-                } while (BluetoothFindNextRadio(findRadio, out radio));
-            }
-            finally
-            {
-                if (radio != IntPtr.Zero) CloseHandle(radio);
-                BluetoothFindRadioClose(findRadio);
-            }
-
-            if (!matched)
-            {
-                log($"No paired Bluetooth device matched '{deviceName}'.");
-                return Outcome.DeviceNotFound;
-            }
-            if (serviceRequested)
-            {
-                // PnP enumeration follows the service request (reference
-                // waits 5 s before rechecking).
-                Thread.Sleep(5000);
-                PadForge.Common.Input.SonyHeadsetMotionRuntime.InvalidateCache();
-                return Outcome.ServiceRequested;
-            }
-
-            // Pass 2: rebind a failed-start head-tracker node to the inbox
-            // generic HID driver.
-            var rebind = RebindFailedStartNode(log);
-            if (rebind == Outcome.DriverRebound)
-                PadForge.Common.Input.SonyHeadsetMotionRuntime.InvalidateCache();
-            return rebind;
-        }
-
-        /// <summary>
-        /// Sweep-callable half of the repair: only the precisely-targeted
-        /// generic-HID rebind of a CM_PROB_FAILED_START head-tracker node.
-        /// Safe unattended because it requires exactly one matching node
-        /// and touches nothing else. Returns DriverRebound when it changed
-        /// the binding, NothingToRepair when no failed node exists.
-        /// </summary>
-        internal static Outcome TryAutoRebind(Action<string> log)
-            => RebindFailedStartNode(log ?? (_ => { }));
 
         /// <summary>
         /// Re-requests the HID service for the paired device with this
@@ -238,11 +96,11 @@ namespace PadForge.Services
                                     { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_INFO>() };
                                     continue;
                                 }
+                                // A powered-off headset is never paged; the
+                                // skip is silent because it repeats every
+                                // cycle for as long as the headset is off.
                                 if (device.fConnected == 0)
-                                {
-                                    log($"'{device.szName}' is not connected; not re-requesting its tracker service");
                                     return Outcome.NothingToRepair;
-                                }
                                 bool liveNode = HasPresentBluetoothHidChild(device.Address);
                                 if (liveNode)
                                     return Outcome.NothingToRepair;
@@ -460,18 +318,23 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>Reference useGenericHidDriver: find the unique present
-        /// node at CM_PROB_FAILED_START under a BTHENUM parent whose
-        /// hardware ID carries UP:0020_U:00E1, and bind the inbox
-        /// input.inf generic HID driver to it.</summary>
-        private static Outcome RebindFailedStartNode(Action<string> log)
+        /// <summary>
+        /// Detection half of the reference's useGenericHidDriver: scan for
+        /// present nodes at CM_PROB_FAILED_START under a BTHENUM parent
+        /// whose hardware ID carries UP:0020_U:00E1. Cheap enough to run
+        /// every sweep (one SetupDi pass), so a node that appears right
+        /// after a Bluetooth connect is caught within one sweep interval
+        /// instead of waiting out a blanket cooldown. Returns the match
+        /// count; instance and hardware ID are those of the last match.
+        /// </summary>
+        internal static int FindFailedStartNode(out string instanceId, out string hardwareId)
         {
+            instanceId = null;
+            hardwareId = null;
             IntPtr set = SetupDiGetClassDevs(IntPtr.Zero, null, IntPtr.Zero,
                 DIGCF_ALLCLASSES | DIGCF_PRESENT);
-            if (set == IntPtr.Zero || set == new IntPtr(-1)) return Outcome.Failed;
+            if (set == IntPtr.Zero || set == new IntPtr(-1)) return 0;
             int matches = 0;
-            string selectedHardwareId = null;
-            string selectedInstance = null;
             try
             {
                 var dev = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
@@ -497,37 +360,34 @@ namespace PadForge.Services
                     var id = new StringBuilder(MAX_DEVICE_ID_LEN);
                     if (!SetupDiGetDeviceInstanceId(set, ref dev, id, id.Capacity, out _)) continue;
                     matches++;
-                    selectedHardwareId = hardwareIds[0];
-                    selectedInstance = id.ToString();
+                    hardwareId = hardwareIds[0];
+                    instanceId = id.ToString();
                 }
             }
             finally
             {
                 SetupDiDestroyDeviceInfoList(set);
             }
+            return matches;
+        }
 
-            if (matches == 0)
-            {
-                log("No failed-start head-tracker node found; nothing to repair.");
-                return Outcome.NothingToRepair;
-            }
-            if (matches != 1)
-            {
-                log($"Expected exactly one failed head-tracker node; found {matches}. No binding changed.");
-                return Outcome.Failed;
-            }
-
+        /// <summary>Action half: bind the inbox input.inf generic HID
+        /// driver to the failed node's hardware ID. The caller enforces
+        /// the exactly-one-match rule (the reference's own gate) and the
+        /// per-node retry backoff.</summary>
+        internal static bool RebindNode(string hardwareId, Action<string> log)
+        {
+            log ??= _ => { };
             string inputInf = System.IO.Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.Windows), "INF", "input.inf");
-            log($"Binding {selectedInstance} (hardware ID {selectedHardwareId}) to {inputInf}");
-            if (!UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, selectedHardwareId, inputInf,
+            if (!UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, hardwareId, inputInf,
                     INSTALLFLAG_FORCE | INSTALLFLAG_NONINTERACTIVE, out _))
             {
                 log($"Generic HID binding failed: {Marshal.GetLastWin32Error()}");
-                return Outcome.Failed;
+                return false;
             }
             log("Generic HID binding succeeded.");
-            return Outcome.DriverRebound;
+            return true;
         }
 
         private static string[] GetMultiSzProperty(IntPtr set, ref SP_DEVINFO_DATA dev, uint property)

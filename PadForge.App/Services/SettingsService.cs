@@ -1868,6 +1868,11 @@ namespace PadForge.Services
                 appSettings.SoundPackages?.Select(p => (p.Name, p.Path)));
             PadForge.Common.Input.NfcTagRegistry.LoadRegistry(
                 appSettings.NfcTags?.Select(t => (t.Uid, t.Name, t.Button)));
+            // Headset trackers (#188): addresses that ever qualified, so
+            // the sweep's HID-service re-request survives an app restart
+            // while the sensor node is absent.
+            PadForge.Common.Input.SonyHeadsetMotionRuntime.LoadPersistedAddresses(
+                appSettings.HeadsetTrackerAddresses);
 
             // Remote Link (issue #138): carry the stored identity + trust list into
             // the runtime holder. No minting here — the identity is created lazily
@@ -3924,6 +3929,7 @@ namespace PadForge.Services
             {
                 SoundPackages = soundPackages,
                 NfcTags = nfcTags,
+                HeadsetTrackerAddresses = PadForge.Common.Input.SonyHeadsetMotionRuntime.SavePersistedAddresses(),
                 // Remote Link (issue #138): persist the identity + trust list from
                 // the runtime holder (set on load / updated on pairing + revocation).
                 RemoteLinkIdentityPrivate = RemoteLink?.ProtectedPrivateBase64 ?? "",
@@ -5267,6 +5273,13 @@ namespace PadForge.Services
         [XmlArray("NfcTags")]
         [XmlArrayItem("Tag")]
         public NfcTagData[] NfcTags { get; set; }
+
+        /// <summary>Bluetooth addresses (12-hex, comma-joined) of headsets
+        /// that ever qualified as Android Head Trackers (#188). Lets the
+        /// sweep re-request a dropped tracker's HID service after an app
+        /// restart, when no live node exists to re-qualify from.</summary>
+        [XmlElement]
+        public string HeadsetTrackerAddresses { get; set; } = "";
 
         // ── Remote Link (issue #138) — global (per-machine), not per-profile ──
         /// <summary>This instance's static identity private key, DPAPI-protected

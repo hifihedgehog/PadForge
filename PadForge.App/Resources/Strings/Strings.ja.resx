@@ -3023,13 +3023,4 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMomentsによるジャック検出オーディオルーティングのパターン。ヘッドホン端子に追従の参照元。ドキュメントとして参照；AGPL-3.0。</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>ヘッドセットトラッカー</value></data>
-  <data name="Devices_RepairHeadsetTracker" xml:space="preserve"><value>ヘッドセットトラッカーを修復</value></data>
-  <data name="Devices_RepairHeadsetTrackerTooltip" xml:space="preserve"><value>Windows がヘッドセットをペアリングしたのにモーションセンサーが表示されない、または動かない場合に、センサー接続を再作成します。</value></data>
-  <data name="Status_HeadsetRepairRunning" xml:space="preserve"><value>ヘッドセットトラッカーを修復しています…</value></data>
-  <data name="Status_HeadsetRepairServiceRequested" xml:space="preserve"><value>ヘッドセットトラッカーのサービスを要求しました。数秒以内にセンサーが表示されるはずです。</value></data>
-  <data name="Status_HeadsetRepairRebound" xml:space="preserve"><value>ヘッドセットトラッカーのドライバーを再バインドしました。数秒以内にセンサーが表示されるはずです。</value></data>
-  <data name="Status_HeadsetRepairNothing" xml:space="preserve"><value>こちら側で修復するものはありません。センサーが表示されない場合は、ヘッドセットの電源を入れ直してください。</value></data>
-  <data name="Status_HeadsetRepairNotFound" xml:space="preserve"><value>このヘッドセットに一致するペアリング済み Bluetooth デバイスがありません。</value></data>
-  <data name="Status_HeadsetRepairFailed" xml:space="preserve"><value>ヘッドセットトラッカーの修復に失敗しました。診断ログを確認してください。</value></data>
-  <data name="Status_HeadsetRepairFailedFormat" xml:space="preserve"><value>ヘッドセットトラッカーの修復に失敗しました: {0}</value></data>
 </root>

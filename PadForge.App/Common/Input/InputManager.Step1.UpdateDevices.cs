@@ -1289,13 +1289,15 @@ namespace PadForge.Common.Input
         private const int _headsetSweepIntervalMs = 3000;
         private const int _headsetOpenRetryMs = 60000;
         // Unattended rebind of a failed-start head-tracker node (worker
-        // thread). Cooldown-gated so a node that refuses to start even
-        // under the inbox driver is not fought in a loop. 30 s: the drop
-        // recovery is a chain (service re-request recreates the node at
-        // failed-start, the rebind then starts it; hardware-validated
-        // 2026-08-07), so the rebind must follow the re-request promptly.
-        private long _headsetAutoRepairNextTicks;
-        private const int _headsetAutoRepairIntervalMs = 30000;
+        // thread). Detection runs EVERY sweep (one cheap SetupDi pass), so
+        // a node that appears right after a Bluetooth connect is fixed
+        // within one sweep interval; the backoff is per node instance, so
+        // only a node that refuses to start under the inbox driver is
+        // left alone between retries. A blanket 30 s cooldown here was
+        // the owner-reported 10-20 s connect-to-row latency.
+        private string _headsetLastRebindInstance;
+        private long _headsetLastRebindTicks;
+        private const int _headsetRebindRetryMs = 60000;
         // Trackers that qualified this session, by paired-device address.
         // When one's HID node vanishes (the XM5 drops the sensor channel
         // spontaneously; hardware-observed Win32 1167 + node removal,
@@ -1763,28 +1765,34 @@ namespace PadForge.Common.Input
             // Self-heal BEFORE enumerating: Windows routinely parks the
             // head-tracker child at CM_PROB_FAILED_START under its sensor
             // class driver (hardware-confirmed 2026-08-07 on a WH-1000XM5),
-            // and a failed node never qualifies, so no row and no repair
-            // button exist exactly when the repair is needed. The rebind is
-            // precisely targeted (single failed node carrying the
-            // UP:0020_U:00E1 signature) and safe to run unattended.
+            // and a failed node never qualifies, so no row exists exactly
+            // when the repair is needed. Detection runs every sweep; the
+            // rebind acts only on exactly one matching node (the
+            // reference's own gate) with a per-node retry backoff.
             long repairTick = Environment.TickCount64;
-            if (repairTick >= _headsetAutoRepairNextTicks)
+            try
             {
-                _headsetAutoRepairNextTicks = repairTick + _headsetAutoRepairIntervalMs;
-                try
+                int matches = PadForge.Services.HeadsetTrackerRepair.FindFailedStartNode(
+                    out string failedInstance, out string failedHardwareId);
+                if (matches == 1
+                    && (!string.Equals(failedInstance, _headsetLastRebindInstance, StringComparison.OrdinalIgnoreCase)
+                        || repairTick - _headsetLastRebindTicks > _headsetRebindRetryMs))
                 {
-                    var lines = new List<string>();
-                    var outcome = PadForge.Services.HeadsetTrackerRepair.TryAutoRebind(lines.Add);
-                    if (outcome != PadForge.Services.HeadsetTrackerRepair.Outcome.NothingToRepair)
-                    {
-                        foreach (var line in lines)
-                            PadForge.Engine.SdlDiagLog.WriteLine("Headset auto-repair: " + line);
-                    }
-                    if (outcome == PadForge.Services.HeadsetTrackerRepair.Outcome.DriverRebound)
+                    _headsetLastRebindInstance = failedInstance;
+                    _headsetLastRebindTicks = repairTick;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"Headset auto-repair: binding {failedInstance} to inbox input.inf");
+                    if (PadForge.Services.HeadsetTrackerRepair.RebindNode(failedHardwareId,
+                            line => PadForge.Engine.SdlDiagLog.WriteLine("Headset auto-repair: " + line)))
                         SonyHeadsetMotionRuntime.InvalidateCache();
                 }
-                catch { }
+                else if (matches > 1)
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"Headset auto-repair: {matches} failed head-tracker nodes; not rebinding");
+                }
             }
+            catch { }
 
             var candidates = SonyHeadsetMotionRuntime.Enumerate();
             if (candidates == null)
@@ -1793,14 +1801,18 @@ namespace PadForge.Common.Input
             foreach (var c in candidates) present.Add(c.Path);
             _headsetPresentPaths = present;
 
-            // Session-known trackers whose node vanished: re-request the
-            // HID service so the stream comes back without a button press.
+            // Known trackers (this session or persisted from earlier runs)
+            // whose node is absent: re-request the HID service so the
+            // stream comes back on its own. The rebind above then starts
+            // the recreated node, which routinely returns at failed-start.
             long svcTick = Environment.TickCount64;
             if (svcTick >= _headsetServiceRequestNextTicks)
             {
                 List<ulong> absent = null;
                 lock (_headsetLock)
                 {
+                    foreach (ulong persisted in SonyHeadsetMotionRuntime.GetPersistedAddresses())
+                        _headsetKnownAddresses.Add(persisted);
                     foreach (ulong address in _headsetKnownAddresses)
                     {
                         bool covered = false;
@@ -1819,14 +1831,7 @@ namespace PadForge.Common.Input
                             var outcome = PadForge.Services.HeadsetTrackerRepair.RequestHidServiceByAddress(
                                 address, line => PadForge.Engine.SdlDiagLog.WriteLine("Headset service: " + line));
                             if (outcome == PadForge.Services.HeadsetTrackerRepair.Outcome.ServiceRequested)
-                            {
                                 SonyHeadsetMotionRuntime.InvalidateCache();
-                                // The node routinely comes back at
-                                // failed-start; let the next sweep's rebind
-                                // run immediately instead of riding out its
-                                // cooldown.
-                                _headsetAutoRepairNextTicks = 0;
-                            }
                         }
                         catch { }
                     }
@@ -1869,7 +1874,13 @@ namespace PadForge.Common.Input
                     _headsetOpenFailedAt.Remove(candidate.Path);
                     _headsetPendingRegister.Add(dev);
                     if (candidate.BluetoothAddress != 0)
+                    {
                         _headsetKnownAddresses.Add(candidate.BluetoothAddress);
+                        // Persisted through AppSettings so an app restart
+                        // with the node absent can still re-request the
+                        // tracker's HID service.
+                        SonyHeadsetMotionRuntime.RememberAddress(candidate.BluetoothAddress);
+                    }
                 }
             }
         }

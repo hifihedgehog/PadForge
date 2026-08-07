@@ -191,7 +191,10 @@ namespace PadForge.Tests
             Assert.Contains("WaitForCondition(() => IsServiceInstalled(\"BthPS3\")", body,
                 StringComparison.Ordinal);
             int firstWait = body.IndexOf("WaitForCondition", StringComparison.Ordinal);
-            int cycle = body.IndexOf("CycleBluetoothRadio(log)", StringComparison.Ordinal);
+            // From the first wait onward: step 3 of the install is also a
+            // radio cycle and sits before the waits, so an unanchored search
+            // finds that one and misreads the order.
+            int cycle = body.IndexOf("CycleBluetoothRadio(log)", firstWait, StringComparison.Ordinal);
             Assert.True(cycle > firstWait, "no radio-cycle retry after the first wait");
             int secondWait = body.IndexOf("WaitForCondition", cycle, StringComparison.Ordinal);
             Assert.True(secondWait > cycle, "no second wait after the radio cycle");

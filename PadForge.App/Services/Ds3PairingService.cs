@@ -432,8 +432,16 @@ namespace PadForge.Services
 
         /// <summary>The local radio's MAC in the byte order the DS3 expects (human /
         /// big-endian, i.e. rgBytes reversed - DsHidMini Ds3.c:364-368).</summary>
+        /// <summary>Reads the local radio's address. Waits for the radio
+        /// first: this is step 1 of the ceremony and it runs immediately after
+        /// the driver install, whose last act is a radio re-enumeration. A
+        /// straight read there returned null 300 ms after the install reported
+        /// success, so the FIRST Pair click failed with "No Bluetooth radio
+        /// found" and only a second click, seconds later, got through
+        /// (arcade-PC log, 00:09:11.807 then 00:09:24.294).</summary>
         public byte[] ReadRadioMac()
         {
+            Ds3DriverInstaller.WaitForBluetoothRadio(20000);
             var fp = new BLUETOOTH_FIND_RADIO_PARAMS { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_FIND_RADIO_PARAMS>() };
             IntPtr hFind = BluetoothFindFirstRadio(ref fp, out IntPtr hRadio);
             if (hFind == IntPtr.Zero) return null;

@@ -182,14 +182,19 @@ namespace PadForge.Tests
             string src = Src();
             int at = src.IndexOf("public static bool EnsureInstalled", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = src.Substring(at, 4200);
+            // To the end of the method's happy path, not a guessed length: the
+            // fixed window this replaced went stale the first time the method
+            // grew and threw instead of failing with a message.
+            int end = src.IndexOf("Bluetooth drivers installed.", at, StringComparison.Ordinal);
+            Assert.True(end > at, "EnsureInstalled's verdict line not found");
+            string body = src.Substring(at, end - at);
             Assert.Contains("WaitForCondition(() => IsServiceInstalled(\"BthPS3\")", body,
                 StringComparison.Ordinal);
             int firstWait = body.IndexOf("WaitForCondition", StringComparison.Ordinal);
-            int cycle = body.IndexOf("CycleBluetoothRadio(log)", firstWait, StringComparison.Ordinal);
+            int cycle = body.IndexOf("CycleBluetoothRadio(log)", StringComparison.Ordinal);
+            Assert.True(cycle > firstWait, "no radio-cycle retry after the first wait");
             int secondWait = body.IndexOf("WaitForCondition", cycle, StringComparison.Ordinal);
-            Assert.True(cycle > firstWait && secondWait > cycle,
-                "the retry must be wait -> radio cycle -> wait");
+            Assert.True(secondWait > cycle, "no second wait after the radio cycle");
 
             int cyc = src.IndexOf("public static void CycleBluetoothRadio", StringComparison.Ordinal);
             Assert.True(cyc > 0);

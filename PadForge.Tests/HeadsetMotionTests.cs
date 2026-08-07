@@ -313,6 +313,20 @@ namespace PadForge.Tests
             Assert.Equal(-6f, state.Accel[2], 5);
         }
 
+        // ── Native layout guards ──
+
+        [Fact]
+        public void BluetoothStructs_MarshalToNativeSizes()
+        {
+            // BLUETOOTH_DEVICE_INFO is 560 bytes native (dwSize 4 + pad 4 +
+            // 8-aligned address union + ...). A 2-aligned address struct
+            // shrank it to 556, BluetoothFindFirstDevice rejected dwSize
+            // with ERROR_REVISION_MISMATCH (1306), and every repair path
+            // read "no paired devices" (hardware-diagnosed 2026-08-07).
+            Assert.Equal(560, PadForge.Services.HeadsetTrackerRepair.DeviceInfoMarshalSize);
+            Assert.Equal(40, PadForge.Services.HeadsetTrackerRepair.SearchParamsMarshalSize);
+        }
+
         // ── BTHENUM address extraction (repair name resolution) ──
 
         [Fact]

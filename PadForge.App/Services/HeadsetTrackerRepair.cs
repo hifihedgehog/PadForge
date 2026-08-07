@@ -142,14 +142,19 @@ namespace PadForge.Services
 
         /// <summary>Walks the PnP parent chain of a head-tracker HID node
         /// to its BTHENUM ancestor and extracts the 48-bit Bluetooth
-        /// address. False when the chain or the parse fails.</summary>
+        /// address. Falls back to a PHANTOM locate, because the node this
+        /// is most needed for is one Windows removed when the headset
+        /// dropped its sensor channel. False when the chain or the parse
+        /// fails.</summary>
         internal static bool TryResolveAddress(string hidInstanceId, out ulong address)
         {
             address = 0;
             if (string.IsNullOrEmpty(hidInstanceId)) return false;
             try
             {
-                if (CM_Locate_DevNode(out uint node, hidInstanceId, 0) != CR_SUCCESS) return false;
+                if (CM_Locate_DevNode(out uint node, hidInstanceId, 0) != CR_SUCCESS
+                    && CM_Locate_DevNode(out node, hidInstanceId, CM_LOCATE_DEVNODE_PHANTOM) != CR_SUCCESS)
+                    return false;
                 for (int depth = 0; depth < 6; depth++)
                 {
                     if (CM_Get_Parent(out uint parent, node, 0) != CR_SUCCESS) return false;
@@ -371,6 +376,46 @@ namespace PadForge.Services
             return matches;
         }
 
+        /// <summary>
+        /// Recovers tracker identities from the PnP tree itself: any node,
+        /// PRESENT OR PHANTOM, whose hardware ID carries the head-tracker
+        /// signature resolves to its paired device's address through the
+        /// phantom-capable parent walk. The phantom node Windows leaves
+        /// behind after the headset drops its sensor channel is a durable
+        /// record that survives app restarts and force-kills, unlike
+        /// session memory or a settings save that never ran.
+        /// </summary>
+        internal static System.Collections.Generic.List<ulong> FindKnownTrackerAddresses()
+        {
+            var result = new System.Collections.Generic.List<ulong>();
+            IntPtr set = SetupDiGetClassDevs(IntPtr.Zero, null, IntPtr.Zero, DIGCF_ALLCLASSES);
+            if (set == IntPtr.Zero || set == new IntPtr(-1)) return result;
+            try
+            {
+                var dev = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                for (uint index = 0; SetupDiEnumDeviceInfo(set, index, ref dev); index++)
+                {
+                    string[] hardwareIds = GetMultiSzProperty(set, ref dev, SPDRP_HARDWAREID);
+                    if (hardwareIds == null) continue;
+                    bool headTracker = false;
+                    foreach (var hw in hardwareIds)
+                        if (hw.IndexOf("UP:0020_U:00E1", StringComparison.OrdinalIgnoreCase) >= 0)
+                        { headTracker = true; break; }
+                    if (!headTracker) continue;
+
+                    var id = new StringBuilder(MAX_DEVICE_ID_LEN);
+                    if (!SetupDiGetDeviceInstanceId(set, ref dev, id, id.Capacity, out _)) continue;
+                    if (TryResolveAddress(id.ToString(), out ulong address) && !result.Contains(address))
+                        result.Add(address);
+                }
+            }
+            finally
+            {
+                SetupDiDestroyDeviceInfoList(set);
+            }
+            return result;
+        }
+
         /// <summary>Action half: bind the inbox input.inf generic HID
         /// driver to the failed node's hardware ID. The caller enforces
         /// the exactly-one-match rule (the reference's own gate) and the
@@ -415,6 +460,7 @@ namespace PadForge.Services
         private const uint SPDRP_HARDWAREID = 0x01;
         private const uint CM_PROB_FAILED_START = 10;
         private const uint CR_SUCCESS = 0;
+        private const uint CM_LOCATE_DEVNODE_PHANTOM = 4;
         private const int MAX_DEVICE_ID_LEN = 200;
         private const uint INSTALLFLAG_FORCE = 0x01;
         private const uint INSTALLFLAG_NONINTERACTIVE = 0x04;

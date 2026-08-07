@@ -146,5 +146,57 @@ namespace PadForge.Tests
             Assert.True(guard < install, "the heal must run BEFORE the install it unblocks");
             Assert.Contains("DeleteSubKeyTree(", src, StringComparison.Ordinal);
         }
+
+        // ── the install verdict waits for asynchronous PnP ───────────────
+
+        /// <summary>The poll helper honours its timeout and its success path.
+        /// Behavioural, since the helper is pure arithmetic over a probe.</summary>
+        [Fact]
+        public void WaitForCondition_PollsToSuccessAndToTimeout()
+        {
+            int calls = 0;
+            Assert.True(Ds3DriverInstaller.WaitForCondition(
+                () => ++calls >= 3, timeoutMs: 5000, pollMs: 1));
+            Assert.Equal(3, calls);
+
+            Assert.False(Ds3DriverInstaller.WaitForCondition(
+                () => false, timeoutMs: 30, pollMs: 5));
+
+            // An immediately-true probe returns without sleeping at all.
+            Assert.True(Ds3DriverInstaller.WaitForCondition(
+                () => true, timeoutMs: 0, pollMs: 1000));
+        }
+
+        /// <summary>The install's verdict is polled, not one-shot: PnP creates
+        /// the BthPS3 service asynchronously after the advertisement, so a
+        /// synchronous check raced it and declared failure on installs that
+        /// were seconds from succeeding (arcade-PC rehearsal, 2026-08-06). On
+        /// timeout it re-enumerates the radio and waits again, because on
+        /// hardware whose port cycle was refused the PDO never spawns without
+        /// it: the same rehearsal only succeeded after a manual adapter
+        /// toggle, which is the fallback CycleBluetoothRadio now performs
+        /// itself (Disable/Enable when CyclePort throws).</summary>
+        [Fact]
+        public void InstallVerdict_WaitsAndRetriesThroughARadioCycle()
+        {
+            string src = Src();
+            int at = src.IndexOf("public static bool EnsureInstalled", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            string body = src.Substring(at, 4200);
+            Assert.Contains("WaitForCondition(() => IsServiceInstalled(\"BthPS3\")", body,
+                StringComparison.Ordinal);
+            int firstWait = body.IndexOf("WaitForCondition", StringComparison.Ordinal);
+            int cycle = body.IndexOf("CycleBluetoothRadio(log)", firstWait, StringComparison.Ordinal);
+            int secondWait = body.IndexOf("WaitForCondition", cycle, StringComparison.Ordinal);
+            Assert.True(cycle > firstWait && secondWait > cycle,
+                "the retry must be wait -> radio cycle -> wait");
+
+            int cyc = src.IndexOf("public static void CycleBluetoothRadio", StringComparison.Ordinal);
+            Assert.True(cyc > 0);
+            string cbody = src.Substring(cyc, 2200);
+            Assert.Contains("CyclePort()", cbody, StringComparison.Ordinal);
+            Assert.Contains("radio.Disable()", cbody, StringComparison.Ordinal);
+            Assert.Contains("radio.Enable()", cbody, StringComparison.Ordinal);
+        }
     }
 }

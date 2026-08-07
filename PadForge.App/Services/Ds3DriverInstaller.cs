@@ -126,7 +126,23 @@ namespace PadForge.Services
                 // 8. arm the PSM patch (belt-and-suspenders; AutoEnableFilter also does it)
                 EnsurePsmPatch(log);
 
-                bool ok = IsServiceInstalled("BthPS3");
+                // The BthPS3 SERVICE is created by PnP matching bthps3.inf to
+                // the PDO the advertisement spawns, and that is ASYNCHRONOUS:
+                // checking synchronously raced it and declared failure on an
+                // install that was seconds from succeeding. Wait, and when the
+                // PDO does not materialize at all, cycle the radio and wait
+                // again, because on hardware whose port cycle was refused the
+                // radio has not re-enumerated since the filter registration
+                // and the advertisement (the arcade-PC MT7925 case: a manual
+                // adapter toggle was what let the service appear).
+                bool ok = WaitForCondition(() => IsServiceInstalled("BthPS3"), 10000, 500);
+                if (!ok)
+                {
+                    log("Profile driver has not attached yet; re-enumerating the radio.");
+                    CycleBluetoothRadio(log);
+                    ok = WaitForCondition(() => IsServiceInstalled("BthPS3"), 15000, 500);
+                }
+                if (ok) EnsurePsmPatch(log);   // the first arm ran before the filter's radio re-attach
                 log(ok ? "Bluetooth drivers installed." : "Driver install did not register the service.");
                 return ok;
             }
@@ -556,7 +572,15 @@ namespace PadForge.Services
 
         private static string _lastUsbVerdict;
 
-        /// <summary>Reboot-free radio re-enumeration (IOCTL_USB_HUB_CYCLE_PORT).</summary>
+        /// <summary><para>Reboot-free radio re-enumeration. CyclePort
+        /// (IOCTL_USB_HUB_CYCLE_PORT) first, and when the hub refuses it, a
+        /// devnode disable/enable of the radio itself. The fallback exists
+        /// because the refusal is real hardware behavior: on a MediaTek
+        /// MT7925 the port cycle failed, the filter never attached, the
+        /// advertised service PDO never re-enumerated, and the install
+        /// reported failure until the user toggled the adapter by hand in
+        /// Device Manager, which is exactly the disable/enable this now does
+        /// itself (observed on the 2026-08-06 arcade-PC rehearsal).</para></summary>
         public static void CycleBluetoothRadio(Action<string> log)
         {
             try
@@ -568,9 +592,21 @@ namespace PadForge.Services
                         log("No USB Bluetooth radio to cycle.");
                         return;
                     }
-                    radio.ToUsbPnPDevice().CyclePort();
+                    try
+                    {
+                        radio.ToUsbPnPDevice().CyclePort();
+                        log("Bluetooth radio re-enumerated.");
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        log("Radio port cycle refused (" + ex.Message + "); toggling the adapter instead.");
+                    }
+                    radio.Disable();
+                    Thread.Sleep(500);
+                    radio.Enable();
                 }
-                log("Bluetooth radio re-enumerated.");
+                log("Bluetooth radio toggled off and on.");
             }
             catch (Exception ex) { log("Radio cycle failed: " + ex.Message); }
         }
@@ -1032,6 +1068,20 @@ namespace PadForge.Services
         }
 
         private const string ServicesRoot = @"SYSTEM\CurrentControlSet\Services";
+
+        /// <summary>Polls a condition to completion or timeout. Exists because
+        /// PnP driver installation is asynchronous and a one-shot probe races
+        /// it; internal so the poll arithmetic is testable.</summary>
+        internal static bool WaitForCondition(Func<bool> probe, int timeoutMs, int pollMs)
+        {
+            long deadline = Environment.TickCount64 + timeoutMs;
+            while (true)
+            {
+                if (probe()) return true;
+                if (Environment.TickCount64 >= deadline) return false;
+                Thread.Sleep(pollMs);
+            }
+        }
 
         /// <summary>The predicate itself, against any services root, so the
         /// contract is testable without writing to HKLM.</summary>

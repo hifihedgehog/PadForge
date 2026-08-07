@@ -1771,6 +1771,9 @@ namespace PadForge.Common.Input
                 bool ok = false;
                 try { ok = dev.Open(); }
                 catch { }
+                PadForge.Engine.SdlDiagLog.WriteLine(ok
+                    ? $"Headset: opened '{candidate.Name}' (accel={candidate.HasAccel})"
+                    : $"Headset: open/enable failed for '{candidate.Name}', retry in {_headsetOpenRetryMs / 1000} s");
                 lock (_headsetLock)
                 {
                     if (_headsetInputsSuppressed) { dev.Dispose(); return; }

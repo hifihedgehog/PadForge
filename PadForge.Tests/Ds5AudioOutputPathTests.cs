@@ -186,6 +186,25 @@ namespace PadForge.Tests
             Assert.Equal(frame[2], frame[3]);
         }
 
+        // Hardware-observed 2026-08-07: an unfolded stereo stream on the
+        // 0x13 speaker lane played only the RIGHT channel through the
+        // pad's mono speaker (left-only content inaudible). The mono
+        // speaker taps ONE channel rather than downmixing, the same
+        // convention the USB shaper always encoded (DSY-v2: the mono mix
+        // goes INTO the tap channel). Every path except Headphones
+        // (Stereo) therefore ends at a mono sink and must fold.
+
+        [Theory]
+        [InlineData((int)AudioOutputPath.Automatic, true)]
+        [InlineData((int)AudioOutputPath.StereoHeadset, false)]
+        [InlineData((int)AudioOutputPath.MonoHeadset, true)]
+        [InlineData((int)AudioOutputPath.HeadsetAndSpeaker, true)]
+        [InlineData((int)AudioOutputPath.SpeakerOnly, true)]
+        public void BtMonoFold_EveryPathButStereoHeadsetFolds(int path, bool folds)
+        {
+            Assert.Equal(folds, AudioPassthroughService.Ds5BtFrameNeedsMonoFold(path));
+        }
+
         // ── Follow Headphone Jack (DS5_Bridge's set_headset pattern) ──
         //
         // The configured value resolves to an EFFECTIVE path per frame:

@@ -828,8 +828,26 @@ namespace PadForge.Services
                 // it meant an unpair that silently left the device record in
                 // place reported success, and the next pair attempt then hit a
                 // stale record with nothing in the log to explain it.
-                int rcDel = RegDeleteKey(HKLM, BthPortDevicesKey + deviceMacHex);
-                if (rcDel != 0) log($"Removing the device record failed (rc={rcDel}).");
+                // RegDeleteKey does NOT recurse, and bthport's device record
+                // carries subkeys, so it answered ERROR_ACCESS_DENIED no matter
+                // how the permissions were fixed: rc=5 kept appearing after the
+                // ownership AND the DACL grant were both in place. Delete the
+                // tree instead, and fall back to the flat call so a record with
+                // no children still goes if the managed path is refused.
+                int rcDel = 0;
+                try
+                {
+                    Registry.LocalMachine.DeleteSubKeyTree(
+                        BthPortDevicesKey + deviceMacHex, throwOnMissingSubKey: false);
+                }
+                catch (Exception ex)
+                {
+                    rcDel = RegDeleteKey(HKLM, BthPortDevicesKey + deviceMacHex);
+                    if (rcDel != 0)
+                        log($"Removing the device record failed (rc={rcDel}; {ex.Message}).");
+                }
+                if (rcDel == 0 && Registry.LocalMachine.OpenSubKey(BthPortDevicesKey + deviceMacHex) != null)
+                    log("Removing the device record left it in place.");
             }
             catch (Exception ex) { log("Removing the device record failed: " + ex.Message); }
             DeleteLinkKeyAnchor(radioMacBigEndian, deviceMacHex, log);

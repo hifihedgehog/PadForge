@@ -257,12 +257,18 @@ namespace PadForge.Tests
             string src = Src();
             int at = src.IndexOf("public static void DeleteRememberedDeviceRecord", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = src.Substring(at, 2000);
+            string body = src.Substring(at, 3000);
             int grant = body.IndexOf("GrantAdministratorsFullControl(", StringComparison.Ordinal);
-            int del = body.IndexOf("RegDeleteKey(HKLM, BthPortDevicesKey", StringComparison.Ordinal);
+            // The delete is a TREE delete: bthport's record carries subkeys and
+            // RegDeleteKey does not recurse, so it answered ERROR_ACCESS_DENIED
+            // (rc=5) even with ownership and the DACL grant both in place.
+            int del = body.IndexOf("DeleteSubKeyTree(", StringComparison.Ordinal);
             Assert.True(grant > 0, "no DACL grant before the delete");
             Assert.True(del > grant, "the grant must precede the delete it enables");
             Assert.Contains("BuiltinAdministratorsSid", src, StringComparison.Ordinal);
+            // And the outcome is verified rather than assumed from a return code.
+            Assert.Contains("Removing the device record left it in place.", src,
+                StringComparison.Ordinal);
         }
 
         /// <summary>Arming PSM patching is what routes the pad's reserved

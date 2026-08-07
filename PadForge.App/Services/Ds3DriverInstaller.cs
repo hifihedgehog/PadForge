@@ -169,6 +169,14 @@ namespace PadForge.Services
         private const string Ds3CertSubject = "CN=PadForge DS3 WinUSB";
         private const string Ds3CertFriendlyName = "PadForge DS3 WinUSB";
 
+        /// <summary>Why the last <see cref="EnsureWinUsbBound"/> failed, so
+        /// the pairing dialog reports the actual cause. Re-deriving it from
+        /// IsWinUsbPackageTrusted blamed the certificate for every failure,
+        /// including a missing tool or a rejected INF, which is the same
+        /// class of wrong-cause reporting that made #283 undiagnosable.</summary>
+        internal static string LastWinUsbFailure => _lastWinUsbFailure;
+        private static volatile string _lastWinUsbFailure;
+
         /// <summary>Ensures a PadForge code-signing certificate exists in
         /// LocalMachine\My and is trusted in Root + TrustedPublisher, and
         /// returns its thumbprint. Ten-year validity, generated once per
@@ -219,11 +227,24 @@ namespace PadForge.Services
             return persisted.Thumbprint;
         }
 
+        // Signing writes into one shared staging directory, and two callers
+        // can reach it at once: the DS3 monitor thread's auto-bind and the
+        // pairing dialog's ceremony. The dialog suppresses the reader first,
+        // but a monitor call already inside the bind keeps running, and
+        // signing takes about a second. Unserialized, each run deletes the
+        // other's catalog mid-sign.
+        private static readonly object _signLock = new object();
+
         /// <summary>Generates and signs ds3_winusb.cat for the staged INF with
-        /// this machine's certificate. Regenerated rather than re-signed so
-        /// the catalog's hashes can never drift from the INF beside it.</summary>
+        /// this machine's certificate. ALWAYS regenerates: a catalog left in
+        /// the staging directory by an earlier run is validly signed and still
+        /// chains, so trusting its presence would skip regeneration after the
+        /// INF changed and hand pnputil a package whose hashes no longer match
+        /// it. That is the same shape as the shipped-catalog bug this replaced,
+        /// one layer in.</summary>
         internal static bool SignWinUsbPackage(string dir, Action<string> log)
         {
+            lock (_signLock)
             try
             {
                 string thumb = EnsureSigningCertificate();
@@ -251,11 +272,24 @@ namespace PadForge.Services
                 var (rc2, out2) = RunTool(signtool,
                     $"sign /sm /s My /sha1 {thumb} /fd SHA256 \"{cat}\"", dir);
                 if (rc2 != 0) { log("Catalog signing failed: " + out2); return false; }
+                // Say so on SUCCESS too. This path's whole history is silent
+                // failure, and a log that only speaks when something breaks
+                // cannot distinguish "it worked" from "it never ran".
+                log($"USB driver package signed with this PC's certificate ({thumb[..8]}).");
                 return true;
             }
             catch (Exception ex) { log("Preparing the USB driver failed: " + ex.Message); return false; }
         }
 
+        /// <summary>Runs a build tool and returns its exit code plus merged
+        /// output. Async-drain, because a synchronous ReadToEnd on one stream
+        /// before WaitForExit deadlocks the moment the child fills the OTHER
+        /// stream's 4 KB pipe buffer: the child blocks writing stderr while we
+        /// wait for a stdout EOF that only arrives at exit. signtool and
+        /// inf2cat both write warnings to stderr as a matter of course. Same
+        /// shape as HIDMaestro's DriverBuilder.Run, which documents the same
+        /// trap. A timed-out child is killed rather than orphaned, or it keeps
+        /// a handle on the catalog and fails the NEXT attempt's delete.</summary>
         private static (int Code, string Output) RunTool(string exe, string args, string workingDir)
         {
             var psi = new System.Diagnostics.ProcessStartInfo(exe, args)
@@ -267,10 +301,20 @@ namespace PadForge.Services
                 RedirectStandardError = true,
             };
             using var p = System.Diagnostics.Process.Start(psi);
-            string so = p.StandardOutput.ReadToEnd();
-            string se = p.StandardError.ReadToEnd();
-            p.WaitForExit(120000);
-            return (p.HasExited ? p.ExitCode : -1, (so + se).Trim());
+            var sb = new System.Text.StringBuilder();
+            p.OutputDataReceived += (_, e) => { if (e.Data != null) lock (sb) sb.AppendLine(e.Data); };
+            p.ErrorDataReceived += (_, e) => { if (e.Data != null) lock (sb) sb.AppendLine(e.Data); };
+            p.BeginOutputReadLine();
+            p.BeginErrorReadLine();
+            if (!p.WaitForExit(120000))
+            {
+                try { p.Kill(entireProcessTree: true); } catch { }
+                lock (sb) return (-1, (sb + "\n(timed out after 120 s)").Trim());
+            }
+            // The overload with no timeout flushes the async readers, so the
+            // buffer is complete before it is read.
+            p.WaitForExit();
+            lock (sb) return (p.ExitCode, sb.ToString().Trim());
         }
 
         /// <summary>True when the WinUSB package's catalog chains to a root
@@ -288,11 +332,13 @@ namespace PadForge.Services
                 // X509CertificateLoader, the SYSLIB0057 replacement, loads a
                 // certificate FILE. Reading the signer out of a signed file
                 // is what this needs and CreateFromSignedFile is still the
-                // only managed API that does it.
+                // only managed API that does it. Both handles are disposed:
+                // the inner one is its own X509Certificate, and this runs up
+                // to twice per bind attempt.
 #pragma warning disable SYSLIB0057
-                using var cert = new X509Certificate2(
-                    X509Certificate2.CreateFromSignedFile(cat));
+                using var signed = X509Certificate2.CreateFromSignedFile(cat);
 #pragma warning restore SYSLIB0057
+                using var cert = new X509Certificate2(signed);
                 signer = cert.Subject;
                 using var chain = new X509Chain();
                 chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
@@ -316,15 +362,23 @@ namespace PadForge.Services
 
                 // Sign the package with this machine's own certificate before
                 // installing it. No signed artifact ships, so this is not a
-                // fallback: it is how the package comes to exist.
-                if (!IsWinUsbPackageTrusted(out _) && !SignWinUsbPackage(winusb, log))
+                // fallback: it is how the package comes to exist. Run
+                // unconditionally rather than trusting a catalog an earlier
+                // run left in the staging directory, which would still chain
+                // happily while covering a previous version of the INF.
+                if (!SignWinUsbPackage(winusb, log))
+                {
+                    _lastWinUsbFailure = "sign-failed";
                     return false;
+                }
                 if (!IsWinUsbPackageTrusted(out string signer))
                 {
                     log($"WinUSB driver package is still untrusted (signer: {signer ?? "unknown"}); "
                         + "Windows would refuse the install, so the DS3 stays on the inbox HID driver.");
+                    _lastWinUsbFailure = "driver-untrusted";
                     return false;
                 }
+                _lastWinUsbFailure = null;
                 InstallInf(Path.Combine(winusb, "ds3_winusb.inf"), log);
 
                 // The bind takes a moment to re-enumerate the USB node.

@@ -69,6 +69,11 @@ namespace PadForge.Common.Input
         private double[] _prevRotation;
         private long _prevRotationTicks;
 
+        // Reader diagnostics: sparse, so a silent stream is diagnosable
+        // from the DIAG ring without flooding it at packet rate.
+        private long _packetsPublished;
+        private long _packetsSkipped;
+
         public SonyHeadsetMotionDevice(SonyHeadsetMotionRuntime.Candidate candidate,
             Func<long> nowTicksProvider = null)
         {
@@ -80,6 +85,7 @@ namespace PadForge.Common.Input
             VendorId = candidate.VendorId;
             ProductId = candidate.ProductId;
             HasAccel = candidate.HasAccel;
+            BluetoothAddress = candidate.BluetoothAddress;
             // The HID interface path is stable for the same BTHENUM child
             // across reboots, so it anchors slot assignments and profiles
             // (ConsumerControlWrapper's identity pattern).
@@ -118,6 +124,10 @@ namespace PadForge.Common.Input
         public uint HapticFeatures => 0;
         public int NumHapticAxes => 0;
         public bool IsAttached => _attached && !_disposed;
+        /// <summary>Owning paired device's 48-bit Bluetooth address
+        /// (0 when unresolved). The sweep keys the automatic HID-service
+        /// re-request on it after the sensor channel drops.</summary>
+        internal ulong BluetoothAddress { get; }
         public ushort VendorId { get; }
         public ushort ProductId { get; }
         public Guid InstanceGuid { get; }
@@ -276,8 +286,13 @@ namespace PadForge.Common.Input
                 if (!SonyHeadsetHid.ReadFile(_handle, reportPtr,
                         (uint)report.Length, out uint bytes, overlappedPtr))
                 {
-                    if (Marshal.GetLastWin32Error() != SonyHeadsetHid.ERROR_IO_PENDING)
+                    int readError = Marshal.GetLastWin32Error();
+                    if (readError != SonyHeadsetHid.ERROR_IO_PENDING)
+                    {
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"Headset: ReadFile failed (Win32 {readError}); reader exiting");
                         break;
+                    }
                     ioPending = true;
                 }
                 // Bounded waits so teardown is never stranded behind a
@@ -293,6 +308,8 @@ namespace PadForge.Common.Input
                 }
                 if (!SonyHeadsetHid.GetOverlappedResult(_handle, overlappedPtr, out bytes, false))
                 {
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"Headset: read completion failed (Win32 {Marshal.GetLastWin32Error()}); reader exiting");
                     DrainPendingRead(overlappedPtr, ref ioPending);
                     break;
                 }
@@ -335,7 +352,16 @@ namespace PadForge.Common.Input
                 if (!gotGyro && _synthesizeGyro && gotRotation)
                     gotGyro = SynthesizeGyroFromRotation(r0, r1, r2, now, gyro);
 
-                if (!gotGyro && !gotAccel) continue;
+                if (!gotGyro && !gotAccel)
+                {
+                    // Packets arriving but nothing decodable is its own
+                    // failure mode; make it visible without packet-rate spam.
+                    _packetsSkipped++;
+                    if (_packetsSkipped == 1 || (_packetsSkipped & 1023) == 0)
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"Headset: packet #{_packetsSkipped} carried no decodable motion (reportId={report[0]}, {bytes} bytes, rotation={gotRotation})");
+                    continue;
+                }
 
                 lock (_stateLock)
                 {
@@ -348,6 +374,10 @@ namespace PadForge.Common.Input
                     _lastSampleTicks = now;
                     _everReceived = true;
                 }
+                _packetsPublished++;
+                if (_packetsPublished == 1 || (_packetsPublished & 1023) == 0)
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"Headset: sample #{_packetsPublished} sensor gyro=({gyro[0]:F3},{gyro[1]:F3},{gyro[2]:F3}) accel={gotAccel} synth={_synthesizeGyro}");
             }
         }
 

@@ -3891,9 +3891,10 @@ namespace PadForge.Services
                 bool isTouchpad = ud.CapType == InputDeviceType.Touchpad;
                 bool isMidi = ud.CapType == InputDeviceType.Midi;
                 bool isNfc = ud.CapType == InputDeviceType.Nfc;
+                bool isHeadset = ud.CapType == InputDeviceType.HeadsetMotion;
                 int[] btnIndices = ResolveButtonIndices(ud);
                 devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi, isNfc,
-                    consumerButtons: BuildConsumerPreviewItems(ud));
+                    consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -4192,9 +4193,10 @@ namespace PadForge.Services
                 bool isTouchpad2 = ud.CapType == InputDeviceType.Touchpad;
                 bool isMidi2 = ud.CapType == InputDeviceType.Midi;
                 bool isNfc2 = ud.CapType == InputDeviceType.Nfc;
+                bool isHeadset2 = ud.CapType == InputDeviceType.HeadsetMotion;
                 int[] btnIndices = ResolveButtonIndices(ud);
                 devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2, isNfc2,
-                    consumerButtons: BuildConsumerPreviewItems(ud));
+                    consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset2);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;

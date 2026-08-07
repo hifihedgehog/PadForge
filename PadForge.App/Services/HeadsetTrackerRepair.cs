@@ -24,10 +24,15 @@ namespace PadForge.Services
     ///     UP:0020_U:00E1 gets the inbox input.inf generic HID driver
     ///     rebound. Applied only when exactly one such node exists.
     ///
-    /// The action is surfaced on the headset's device row, so it covers
-    /// every machine that has enumerated the tracker at least once. A
-    /// first-ever cold boot with no row (and so no repair button) is the
-    /// stated gap; reconnecting the headset normally creates the node.
+    /// The row button runs both passes. Pass 2 additionally runs
+    /// UNATTENDED from the enumeration sweep (<see cref="TryAutoRebind"/>),
+    /// because the first hardware encounter proved the failed-start state
+    /// is the entry condition, not an edge case: with the node parked at
+    /// Code 10 there is no device row, so a button-only repair is
+    /// unreachable exactly when it is needed. The reference reaches the
+    /// same conclusion ("Repair Tracker is the recommended first step
+    /// when you open the app"). The service cycle of pass 1 stays
+    /// button-only, since it can bounce a live Bluetooth HID service.
     /// </summary>
     internal static class HeadsetTrackerRepair
     {
@@ -174,6 +179,250 @@ namespace PadForge.Services
                 PadForge.Common.Input.SonyHeadsetMotionRuntime.InvalidateCache();
             return rebind;
         }
+
+        /// <summary>
+        /// Sweep-callable half of the repair: only the precisely-targeted
+        /// generic-HID rebind of a CM_PROB_FAILED_START head-tracker node.
+        /// Safe unattended because it requires exactly one matching node
+        /// and touches nothing else. Returns DriverRebound when it changed
+        /// the binding, NothingToRepair when no failed node exists.
+        /// </summary>
+        internal static Outcome TryAutoRebind(Action<string> log)
+            => RebindFailedStartNode(log ?? (_ => { }));
+
+        /// <summary>
+        /// Re-requests the HID service for the paired device with this
+        /// address, when that device is currently CONNECTED. This is the
+        /// recovery for the observed drop cycle (hardware, 2026-08-07): the
+        /// XM5 closes the sensor L2CAP channel spontaneously, Windows
+        /// removes the HID child, and nothing recreates it while the
+        /// headset stays connected for audio. Address-keyed so it never
+        /// touches a device that did not already qualify as a tracker this
+        /// session, and connection-gated so a powered-off headset is never
+        /// paged on a loop.
+        /// </summary>
+        internal static Outcome RequestHidServiceByAddress(ulong address, Action<string> log)
+        {
+            log ??= _ => { };
+            var radioParams = new BLUETOOTH_FIND_RADIO_PARAMS
+            {
+                dwSize = (uint)Marshal.SizeOf<BLUETOOTH_FIND_RADIO_PARAMS>()
+            };
+            IntPtr findRadio = BluetoothFindFirstRadio(ref radioParams, out IntPtr radio);
+            if (findRadio == IntPtr.Zero) return Outcome.Failed;
+            try
+            {
+                do
+                {
+                    try
+                    {
+                        var search = new BLUETOOTH_DEVICE_SEARCH_PARAMS
+                        {
+                            dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_SEARCH_PARAMS>(),
+                            fReturnAuthenticated = 1,
+                            fReturnRemembered = 1,
+                            fReturnConnected = 1,
+                            hRadio = radio
+                        };
+                        var device = new BLUETOOTH_DEVICE_INFO
+                        { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_INFO>() };
+                        IntPtr find = BluetoothFindFirstDevice(ref search, ref device);
+                        if (find == IntPtr.Zero) continue;
+                        try
+                        {
+                            do
+                            {
+                                if (AddressToUlong(device.Address) != address)
+                                {
+                                    device = new BLUETOOTH_DEVICE_INFO
+                                    { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_INFO>() };
+                                    continue;
+                                }
+                                if (device.fConnected == 0)
+                                {
+                                    log($"'{device.szName}' is not connected; not re-requesting its tracker service");
+                                    return Outcome.NothingToRepair;
+                                }
+                                bool liveNode = HasPresentBluetoothHidChild(device.Address);
+                                if (liveNode)
+                                    return Outcome.NothingToRepair;
+                                var hidService = HidServiceGuid;
+                                uint enable = BluetoothSetServiceState(radio, ref device, ref hidService, BLUETOOTH_SERVICE_ENABLE);
+                                log($"HID service re-request for '{device.szName}': rc={enable}");
+                                if (enable == ERROR_SUCCESS) return Outcome.ServiceRequested;
+                                if (enable == ERROR_INVALID_PARAMETER || enable == E_INVALIDARG)
+                                {
+                                    // Stale enabled state with no node (the
+                                    // reference gate): cycle it.
+                                    uint disable = BluetoothSetServiceState(radio, ref device, ref hidService, BLUETOOTH_SERVICE_DISABLE);
+                                    if (disable == ERROR_SUCCESS || disable == ERROR_INVALID_PARAMETER || disable == E_INVALIDARG)
+                                    {
+                                        Thread.Sleep(1500);
+                                        uint recover = BluetoothSetServiceState(radio, ref device, ref hidService, BLUETOOTH_SERVICE_ENABLE);
+                                        log($"Stale state cycled; recovery enable rc={recover}");
+                                        if (recover == ERROR_SUCCESS) return Outcome.ServiceRequested;
+                                    }
+                                }
+                                return Outcome.Failed;
+                            } while (BluetoothFindNextDevice(find, ref device));
+                        }
+                        finally { BluetoothFindDeviceClose(find); }
+                    }
+                    finally
+                    {
+                        if (radio != IntPtr.Zero) { CloseHandle(radio); radio = IntPtr.Zero; }
+                    }
+                } while (BluetoothFindNextRadio(findRadio, out radio));
+            }
+            finally
+            {
+                if (radio != IntPtr.Zero) CloseHandle(radio);
+                BluetoothFindRadioClose(findRadio);
+            }
+            return Outcome.DeviceNotFound;
+        }
+
+        /// <summary>Walks the PnP parent chain of a head-tracker HID node
+        /// to its BTHENUM ancestor and extracts the 48-bit Bluetooth
+        /// address. False when the chain or the parse fails.</summary>
+        internal static bool TryResolveAddress(string hidInstanceId, out ulong address)
+        {
+            address = 0;
+            if (string.IsNullOrEmpty(hidInstanceId)) return false;
+            try
+            {
+                if (CM_Locate_DevNode(out uint node, hidInstanceId, 0) != CR_SUCCESS) return false;
+                for (int depth = 0; depth < 6; depth++)
+                {
+                    if (CM_Get_Parent(out uint parent, node, 0) != CR_SUCCESS) return false;
+                    node = parent;
+                    var id = new StringBuilder(MAX_DEVICE_ID_LEN);
+                    if (CM_Get_Device_ID(node, id, id.Capacity, 0) != CR_SUCCESS) continue;
+                    string text = id.ToString();
+                    if (!text.StartsWith("BTHENUM\\", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (TryParseBthenumAddress(text, out address)) return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Resolves the paired Bluetooth device name owning a head-tracker
+        /// HID node (reference bluetoothNameForHidInstance): walk the PnP
+        /// parent chain to the BTHENUM node, extract the 48-bit address,
+        /// and match it against the paired-device list. Null when any step
+        /// fails, so callers keep their fallback name.
+        /// </summary>
+        internal static string ResolvePairedName(string hidInstanceId)
+        {
+            if (string.IsNullOrEmpty(hidInstanceId)) return null;
+            try
+            {
+                uint rc = CM_Locate_DevNode(out uint node, hidInstanceId, 0);
+                if (rc != CR_SUCCESS)
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"Headset: name resolve, CM_Locate_DevNode rc={rc} for '{hidInstanceId}'");
+                    return null;
+                }
+                ulong address = 0;
+                bool resolved = false;
+                for (int depth = 0; depth < 6 && !resolved; depth++)
+                {
+                    if (CM_Get_Parent(out uint parent, node, 0) != CR_SUCCESS) break;
+                    node = parent;
+                    var id = new StringBuilder(MAX_DEVICE_ID_LEN);
+                    if (CM_Get_Device_ID(node, id, id.Capacity, 0) != CR_SUCCESS) continue;
+                    string text = id.ToString();
+                    if (!text.StartsWith("BTHENUM\\", StringComparison.OrdinalIgnoreCase)) continue;
+                    resolved = TryParseBthenumAddress(text, out address);
+                }
+                if (!resolved)
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        "Headset: name resolve, no BTHENUM ancestor carried a parseable address");
+                    return null;
+                }
+
+                var search = new BLUETOOTH_DEVICE_SEARCH_PARAMS
+                {
+                    dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_SEARCH_PARAMS>(),
+                    fReturnAuthenticated = 1,
+                    fReturnRemembered = 1,
+                    fReturnConnected = 1
+                };
+                var device = new BLUETOOTH_DEVICE_INFO
+                { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_INFO>() };
+                IntPtr find = BluetoothFindFirstDevice(ref search, ref device);
+                if (find == IntPtr.Zero) return null;
+                try
+                {
+                    do
+                    {
+                        if (AddressToUlong(device.Address) == address
+                            && !string.IsNullOrWhiteSpace(device.szName))
+                            return device.szName;
+                        device = new BLUETOOTH_DEVICE_INFO
+                        { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_INFO>() };
+                    } while (BluetoothFindNextDevice(find, ref device));
+                }
+                finally { BluetoothFindDeviceClose(find); }
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"Headset: name resolve, no paired device matched address {address:X12}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine("Headset: name resolve threw: " + ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Extracts the 48-bit Bluetooth address embedded in a BTHENUM PnP
+        /// instance ID (reference addressFromBthenumId). Device nodes look
+        /// like BTHENUM\Dev_F8DF15AABBCC\...; service children end with
+        /// ...&amp;0&amp;F8DF15AABBCC_C00000000. Service GUIDs also contain
+        /// 12-hex-digit runs, so the match anchors on a "DEV_" prefix or a
+        /// '&amp;' delimiter, requires a non-hex follower, and rejects zero.
+        /// </summary>
+        internal static bool TryParseBthenumAddress(string instanceId, out ulong address)
+        {
+            address = 0;
+            if (string.IsNullOrEmpty(instanceId)) return false;
+            string text = instanceId.ToUpperInvariant();
+            static bool IsHex(char c) => (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F');
+            bool TryParse(int pos, out ulong value)
+            {
+                value = 0;
+                if (pos < 0 || pos + 12 > text.Length) return false;
+                for (int i = 0; i < 12; i++) if (!IsHex(text[pos + i])) return false;
+                if (pos + 12 < text.Length && IsHex(text[pos + 12])) return false;
+                for (int i = 0; i < 12; i++)
+                {
+                    char c = text[pos + i];
+                    value = (value << 4) | (ulong)(c <= '9' ? c - '0' : c - 'A' + 10);
+                }
+                return value != 0;
+            }
+            int dev = text.IndexOf("DEV_", StringComparison.Ordinal);
+            if (dev >= 0 && TryParse(dev + 4, out address)) return true;
+            for (int pos = text.IndexOf('&'); pos >= 0; pos = text.IndexOf('&', pos + 1))
+                if (TryParse(pos + 1, out address)) return true;
+            return false;
+        }
+
+        private static ulong AddressToUlong(BLUETOOTH_ADDRESS address)
+            => address.rgBytes0
+               | ((ulong)address.rgBytes1 << 8)
+               | ((ulong)address.rgBytes2 << 16)
+               | ((ulong)address.rgBytes3 << 24)
+               | ((ulong)address.rgBytes4 << 32)
+               | ((ulong)address.rgBytes5 << 40);
 
         /// <summary>Reference hasPresentBluetoothHidChild: a present HID\*
         /// node whose parent is the BTHENUM HID-service node carrying the
@@ -420,6 +669,9 @@ namespace PadForge.Services
 
         [DllImport("cfgmgr32.dll")]
         private static extern uint CM_Get_Parent(out uint parent, uint devInst, uint flags);
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode, EntryPoint = "CM_Locate_DevNodeW")]
+        private static extern uint CM_Locate_DevNode(out uint devInst, string deviceId, uint flags);
 
         [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
         private static extern uint CM_Get_Device_ID(uint devInst, StringBuilder buffer, int bufferLen, uint flags);

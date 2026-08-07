@@ -313,6 +313,36 @@ namespace PadForge.Tests
             Assert.Equal(-6f, state.Accel[2], 5);
         }
 
+        // ── BTHENUM address extraction (repair name resolution) ──
+
+        [Fact]
+        public void BthenumAddress_DevPrefix()
+        {
+            Assert.True(PadForge.Services.HeadsetTrackerRepair.TryParseBthenumAddress(
+                @"BTHENUM\DEV_581862893796\9&1479B2EE&0&BLUETOOTHDEVICE_581862893796", out ulong a));
+            Assert.Equal(0x581862893796UL, a);
+        }
+
+        [Fact]
+        public void BthenumAddress_ServiceChildDelimiter()
+        {
+            // Service children end with ...&0&<address>_C00000000; the GUID's
+            // own 12-hex runs must not be mistaken for the address.
+            Assert.True(PadForge.Services.HeadsetTrackerRepair.TryParseBthenumAddress(
+                @"BTHENUM\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0DF0\9&1479B2EE&0&581862893796_C00000000", out ulong a));
+            Assert.Equal(0x581862893796UL, a);
+        }
+
+        [Fact]
+        public void BthenumAddress_RejectsZeroAndNonBthenumRuns()
+        {
+            // All-zero address (an unpaired service child) is not an identity.
+            Assert.False(PadForge.Services.HeadsetTrackerRepair.TryParseBthenumAddress(
+                @"BTHENUM\{1CB831EA-79CD-4508-B0FC-85F7C85AE8E0}_LOCALMFG&0000\9&3F90950&0&000000000000_00000002", out _));
+            Assert.False(PadForge.Services.HeadsetTrackerRepair.TryParseBthenumAddress("", out _));
+            Assert.False(PadForge.Services.HeadsetTrackerRepair.TryParseBthenumAddress(null, out _));
+        }
+
         // ── Field classification ──
 
         [Fact]

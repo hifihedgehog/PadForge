@@ -3023,13 +3023,4 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Muster für buchsengesteuertes Audio-Routing von SundayMoments, die Referenz hinter Kopfhörerbuchse folgen. Als Dokumentation gelesen; AGPL-3.0.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Headset-Tracker</value></data>
-  <data name="Devices_RepairHeadsetTracker" xml:space="preserve"><value>Headset-Tracker reparieren</value></data>
-  <data name="Devices_RepairHeadsetTrackerTooltip" xml:space="preserve"><value>Stellt die Bewegungssensor-Verbindung des Headsets wieder her, wenn Windows das Headset gekoppelt hat, der Sensor aber nie erschienen ist oder feststeckt.</value></data>
-  <data name="Status_HeadsetRepairRunning" xml:space="preserve"><value>Headset-Tracker wird repariert…</value></data>
-  <data name="Status_HeadsetRepairServiceRequested" xml:space="preserve"><value>Headset-Tracker-Dienst angefordert. Der Sensor sollte in wenigen Sekunden erscheinen.</value></data>
-  <data name="Status_HeadsetRepairRebound" xml:space="preserve"><value>Headset-Tracker-Treiber neu gebunden. Der Sensor sollte in wenigen Sekunden erscheinen.</value></data>
-  <data name="Status_HeadsetRepairNothing" xml:space="preserve"><value>Von dieser Seite aus ist nichts zu reparieren. Wenn der Sensor weiterhin nicht erscheint, schalten Sie das Headset aus und wieder ein.</value></data>
-  <data name="Status_HeadsetRepairNotFound" xml:space="preserve"><value>Kein gekoppeltes Bluetooth-Gerät passt zu diesem Headset.</value></data>
-  <data name="Status_HeadsetRepairFailed" xml:space="preserve"><value>Headset-Tracker-Reparatur fehlgeschlagen. Siehe Diagnoseprotokoll.</value></data>
-  <data name="Status_HeadsetRepairFailedFormat" xml:space="preserve"><value>Headset-Tracker-Reparatur fehlgeschlagen: {0}</value></data>
 </root>

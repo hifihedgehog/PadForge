@@ -3043,13 +3043,4 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Patroon voor audio-routering op aansluitdetectie door SundayMoments, de referentie achter Koptelefoonaansluiting volgen. Als documentatie gelezen; AGPL-3.0.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Headset-tracker</value></data>
-  <data name="Devices_RepairHeadsetTracker" xml:space="preserve"><value>Headset-tracker repareren</value></data>
-  <data name="Devices_RepairHeadsetTrackerTooltip" xml:space="preserve"><value>Maakt de bewegingssensorverbinding opnieuw wanneer Windows de headset heeft gekoppeld maar de sensor nooit is verschenen of vastzit.</value></data>
-  <data name="Status_HeadsetRepairRunning" xml:space="preserve"><value>Headset-tracker wordt gerepareerd…</value></data>
-  <data name="Status_HeadsetRepairServiceRequested" xml:space="preserve"><value>Headset-trackerservice aangevraagd. De sensor zou binnen enkele seconden moeten verschijnen.</value></data>
-  <data name="Status_HeadsetRepairRebound" xml:space="preserve"><value>Headset-trackerstuurprogramma opnieuw gebonden. De sensor zou binnen enkele seconden moeten verschijnen.</value></data>
-  <data name="Status_HeadsetRepairNothing" xml:space="preserve"><value>Niets te repareren vanaf deze kant. Als de sensor nog steeds niet verschijnt, zet de headset dan uit en weer aan.</value></data>
-  <data name="Status_HeadsetRepairNotFound" xml:space="preserve"><value>Geen gekoppeld Bluetooth-apparaat komt overeen met deze headset.</value></data>
-  <data name="Status_HeadsetRepairFailed" xml:space="preserve"><value>Reparatie van de headset-tracker is mislukt. Zie het diagnoselogboek.</value></data>
-  <data name="Status_HeadsetRepairFailedFormat" xml:space="preserve"><value>Reparatie van de headset-tracker is mislukt: {0}</value></data>
 </root>

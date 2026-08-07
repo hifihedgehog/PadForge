@@ -593,6 +593,63 @@ namespace PadForge.Common.Input
             lock (_verdicts) _verdicts.Clear();
         }
 
+        // ─────────────────────────────────────────────
+        //  Persisted tracker addresses (settings-backed)
+        // ─────────────────────────────────────────────
+        // Bluetooth addresses of devices that ever qualified as trackers,
+        // persisted through AppSettings so the drop recovery (HID-service
+        // re-request) covers an app restart while the node is absent. The
+        // only alternative discovery for an absent node is an SDP walk,
+        // which the reference reserves for its CLI tooling.
+
+        private static readonly HashSet<ulong> _persistedAddresses = new();
+
+        /// <summary>Loads the settings-carried address list ("A1B2C3D4E5F6"
+        /// tokens, comma-joined). Unparseable tokens are dropped.</summary>
+        internal static void LoadPersistedAddresses(string joined)
+        {
+            lock (_persistedAddresses)
+            {
+                _persistedAddresses.Clear();
+                if (string.IsNullOrWhiteSpace(joined)) return;
+                foreach (var token in joined.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                    if (ulong.TryParse(token, System.Globalization.NumberStyles.HexNumber, null, out ulong a) && a != 0)
+                        _persistedAddresses.Add(a);
+            }
+        }
+
+        /// <summary>Serializes the known addresses for AppSettings.</summary>
+        internal static string SavePersistedAddresses()
+        {
+            lock (_persistedAddresses)
+            {
+                if (_persistedAddresses.Count == 0) return "";
+                var parts = new List<string>(_persistedAddresses.Count);
+                foreach (ulong a in _persistedAddresses) parts.Add(a.ToString("X12"));
+                parts.Sort();
+                return string.Join(",", parts);
+            }
+        }
+
+        /// <summary>Records a qualified tracker's address. Rides the next
+        /// normal settings save.</summary>
+        internal static void RememberAddress(ulong address)
+        {
+            if (address == 0) return;
+            lock (_persistedAddresses) _persistedAddresses.Add(address);
+        }
+
+        /// <summary>Snapshot of all known tracker addresses.</summary>
+        internal static ulong[] GetPersistedAddresses()
+        {
+            lock (_persistedAddresses)
+            {
+                var result = new ulong[_persistedAddresses.Count];
+                _persistedAddresses.CopyTo(result);
+                return result;
+            }
+        }
+
         /// <summary>Returns the present, qualified head-tracker collections,
         /// or null when the enumeration itself failed. Null and "no devices"
         /// must stay distinct: an empty list retires every opened headset

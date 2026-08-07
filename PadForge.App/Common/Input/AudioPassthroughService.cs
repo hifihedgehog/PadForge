@@ -2892,6 +2892,18 @@ namespace PadForge.Common.Input
         /// One report id gets ONE stream, full stop.</summary>
         internal static bool Ds5BtWantsBothLanes(int outputPath) => false;
 
+        /// <summary>Whether the BT frame must be folded to mono before
+        /// encoding. Every path except Headphones (Stereo) ends at a mono
+        /// sink: paths 2/3 by their own firmware register semantics, and
+        /// the 0x13 speaker lane (Automatic / SpeakerOnly) because the
+        /// pad's MONO speaker taps ONE channel of the stereo stream
+        /// rather than downmixing it. Hardware-observed 2026-08-07: an
+        /// unfolded stereo stream on 0x13 played only the RIGHT channel
+        /// through the speaker, and left-only content was inaudible. The
+        /// USB shaper has always encoded the same convention (DSY-v2:
+        /// the mono program mix goes INTO the tap channel).</summary>
+        internal static bool Ds5BtFrameNeedsMonoFold(int outputPath) => outputPath != 1;
+
         /// <summary>Folds a stereo frame to mono in place, for the mono
         /// paths (both ears the same, and the split path's speaker copy).</summary>
         internal static void FoldFrameToMono(float[] frame)
@@ -2912,9 +2924,10 @@ namespace PadForge.Common.Input
             int outPath = 0;
             try { outPath = DeviceAudioOutputPathProvider?.Invoke(s.DeviceGuid) ?? 0; }
             catch { }
-            // Mono headset plays both ears the same; the split path keeps
-            // headset and speaker coherent by sharing one mono frame.
-            if (outPath == 2 || outPath == 3) FoldFrameToMono(pull);
+            // Mono sinks get a mono frame (see Ds5BtFrameNeedsMonoFold):
+            // the split/mono headset paths by register semantics, and the
+            // 0x13 speaker lane because the mono speaker taps one channel.
+            if (Ds5BtFrameNeedsMonoFold(outPath)) FoldFrameToMono(pull);
 
             s.Ds5OpusEncoder ??= CreateDs5OpusEncoder();
             int n;
@@ -3165,6 +3178,16 @@ namespace PadForge.Common.Input
         private static void Ds4BtTick(Sink s, float[] pull, int inFrames)
         {
             if (s.Ds4Sbc == null || s.Ds4Pending == null || s.Ds4Frames == null) return;
+
+            // The DS4 lane routes to the INTERNAL SPEAKER (report byte 5 =
+            // 0x02 below), which is mono, and a mono Sony speaker taps one
+            // channel of a stereo stream rather than downmixing (the DS5
+            // hardware observation of 2026-08-07; same firmware family).
+            // Fold in place before resampling. pull is refilled per sink,
+            // so the in-place fold cannot leak into another sink's tick.
+            // If headset routing (0x24) is ever added here, this fold must
+            // become conditional on the route, like the DS5 lane's.
+            FoldFrameToMono(pull);
 
             // 48 → 32 kHz, continuous across ticks: the virtual input is
             // [carry] + pull[0..inFrames-1] with position 0 at the carry

@@ -1298,6 +1298,8 @@ namespace PadForge.Common.Input
         private string _headsetLastRebindInstance;
         private long _headsetLastRebindTicks;
         private const int _headsetRebindRetryMs = 60000;
+        // One-shot PnP-tree identity mining (see the sweep comment).
+        private volatile bool _headsetMinedPnpTree;
         // Trackers that qualified this session, by paired-device address.
         // When one's HID node vanishes (the XM5 drops the sensor channel
         // spontaneously; hardware-observed Win32 1167 + node removal,
@@ -1808,6 +1810,39 @@ namespace PadForge.Common.Input
             long svcTick = Environment.TickCount64;
             if (svcTick >= _headsetServiceRequestNextTicks)
             {
+                // With no candidates and no remembered addresses (fresh
+                // process after a force-kill, settings never saved), the
+                // PnP tree itself still records every tracker this machine
+                // has seen: the phantom node left behind by a channel drop
+                // resolves to its paired address (hardware-observed
+                // 2026-08-07, the exact state that stranded a connected
+                // headset with no recovery path).
+                if (candidates.Count == 0 && !_headsetMinedPnpTree)
+                {
+                    bool haveAny;
+                    lock (_headsetLock)
+                        haveAny = _headsetKnownAddresses.Count > 0
+                            || SonyHeadsetMotionRuntime.GetPersistedAddresses().Length > 0;
+                    if (!haveAny)
+                    {
+                        // Once per process: the scan walks every node's
+                        // hardware IDs, and its only job is recovering PAST
+                        // identity. A first-ever tracker arrives as a live
+                        // candidate through normal enumeration instead.
+                        _headsetMinedPnpTree = true;
+                        try
+                        {
+                            foreach (ulong mined in PadForge.Services.HeadsetTrackerRepair.FindKnownTrackerAddresses())
+                            {
+                                PadForge.Engine.SdlDiagLog.WriteLine(
+                                    $"Headset: recovered tracker address {mined:X12} from a PnP node record");
+                                SonyHeadsetMotionRuntime.RememberAddress(mined);
+                            }
+                        }
+                        catch { }
+                    }
+                }
+
                 List<ulong> absent = null;
                 lock (_headsetLock)
                 {

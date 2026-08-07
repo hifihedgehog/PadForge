@@ -80,6 +80,24 @@ namespace PadForge.Services
                     return true;
                 }
 
+                // Heal the shell an older build could leave behind: a
+                // Services\BthPS3 key with no ImagePath, created as a side
+                // effect of writing Parameters before the driver existed.
+                // Machines already in that state cannot recover on their own,
+                // because nothing else ever removes it and the install below
+                // is what would have replaced it. Gated on the exact damaged
+                // shape, so a real installed service is never touched.
+                if (HasOrphanedBthPs3Key())
+                {
+                    log("Clearing an incomplete PlayStation Bluetooth registration.");
+                    try
+                    {
+                        Registry.LocalMachine.DeleteSubKeyTree(
+                            @"SYSTEM\CurrentControlSet\Services\BthPS3", throwOnMissingSubKey: false);
+                    }
+                    catch (Exception ex) { log("Could not clear it: " + ex.Message); }
+                }
+
                 log("Installing PlayStation Bluetooth drivers (one time)...");
                 string dir = ExtractDrivers();
 
@@ -97,6 +115,14 @@ namespace PadForge.Services
                 EnsureConsumerParams();
                 // 7. advertise the profile service -> spawns the PDO, loads BthPS3.sys
                 EnableBthPs3Service(log);
+                // Params again, now that the service certainly exists. Step 6
+                // lands them on this machine (proof: the INF's own defaults are
+                // RawPDO 0 / ExclusivePDO 1 and a healthy install reads 1 / 0,
+                // so our write came after the INF's AddReg), but that depends
+                // on step 4 having created the service, and the raw-PDO reader
+                // is dead if the override is ever missed. Idempotent, and now
+                // gated on the service being real, so it cannot fabricate a key.
+                EnsureConsumerParams();
                 // 8. arm the PSM patch (belt-and-suspenders; AutoEnableFilter also does it)
                 EnsurePsmPatch(log);
 
@@ -712,8 +738,25 @@ namespace PadForge.Services
             if (reboot) log("(a reboot was requested by " + Path.GetFileName(infPath) + ")");
         }
 
+        /// <summary><para>Writes BthPS3's consumer parameters. Opens the key,
+        /// never creates it: BthPS3 reads these at load, so writing them
+        /// against a driver that is not installed cannot take effect, and the
+        /// write itself would MANUFACTURE a Services\BthPS3 key with no
+        /// ImagePath. That shell then reads as an installed service to any
+        /// existence check and permanently blocks the install that would make
+        /// the values meaningful. Its twin EnsurePadForgeOwnsPsmPatch has
+        /// always opened rather than created, and said so; this one did not,
+        /// and that divergence is what shipped the 2026-08-06 dead
+        /// stack.</para>
+        ///
+        /// <para>The service check comes FIRST, then CreateSubKey: BthPS3.inf
+        /// writes Parameters itself (RawPDO 0 / ExclusivePDO 1, the defaults
+        /// these lines override), so on a healthy install the subkey is
+        /// already there, and creating it under a REAL service is safe
+        /// either way. What must never happen is creating the parent.</para></summary>
         private static void EnsureConsumerParams()
         {
+            if (!IsServiceInstalled("BthPS3")) return;
             using var key = Registry.LocalMachine.CreateSubKey(BthPs3ParamsKey, writable: true);
             key?.SetValue("RawPDO", 1, RegistryValueKind.DWord);       // enumerate with no function driver
             key?.SetValue("ExclusivePDO", 0, RegistryValueKind.DWord); // allow our shared open
@@ -965,10 +1008,57 @@ namespace PadForge.Services
         /// A registry probe avoids a dependency on System.ServiceProcess and is the
         /// right "is it installed" question - running state is handled by the profile
         /// service advertisement + AutoEnableFilter.</summary>
+        /// <summary><para>True when a kernel service is REALLY installed, which
+        /// means its key carries an ImagePath. The key's mere existence is not
+        /// the same question: any write under
+        /// Services\&lt;name&gt;\&lt;anything&gt; creates the parent on the way
+        /// down, so a settings write against a driver that is not installed
+        /// yet leaves a key that looks exactly like an installed service to a
+        /// null check.</para>
+        ///
+        /// <para>That is not hypothetical. On a fresh machine (2026-08-06)
+        /// Services\BthPS3 held nothing but the Parameters subkey PadForge
+        /// itself had written, with no ImagePath, no Start and no Type. The
+        /// old check returned true, EnsureInstalled short-circuited its whole
+        /// eight-step install forever, the profile service was never
+        /// advertised, no PDO ever spawned, PSM patching could never arm, and
+        /// the DualShock 3 sat flashing because the inbox HID stack refused
+        /// its L2CAP connection. Get-Service reported NOT INSTALLED the entire
+        /// time.</para></summary>
         private static bool IsServiceInstalled(string name)
         {
-            using var k = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\" + name);
-            return k != null;
+            using var services = Registry.LocalMachine.OpenSubKey(ServicesRoot);
+            return IsServiceInstalled(services, name);
+        }
+
+        private const string ServicesRoot = @"SYSTEM\CurrentControlSet\Services";
+
+        /// <summary>The predicate itself, against any services root, so the
+        /// contract is testable without writing to HKLM.</summary>
+        internal static bool IsServiceInstalled(RegistryKey servicesRoot, string name)
+        {
+            using var k = servicesRoot?.OpenSubKey(name);
+            return k?.GetValue("ImagePath") != null;
+        }
+
+        /// <summary>True for the damaged shape above: a BthPS3 key with no
+        /// ImagePath. Distinct from "absent", because absent is the normal
+        /// first-run state and needs no repair, while this one blocks the
+        /// install that would fix it.</summary>
+        private static bool HasOrphanedBthPs3Key()
+        {
+            using var services = Registry.LocalMachine.OpenSubKey(ServicesRoot);
+            return HasOrphanedServiceKey(services, "BthPS3");
+        }
+
+        /// <summary>Present but not a service. Deliberately NOT the negation of
+        /// IsServiceInstalled: absent is the normal first-run state and needs
+        /// no repair, while present-without-ImagePath blocks the install that
+        /// would fix it.</summary>
+        internal static bool HasOrphanedServiceKey(RegistryKey servicesRoot, string name)
+        {
+            using var k = servicesRoot?.OpenSubKey(name);
+            return k != null && k.GetValue("ImagePath") == null;
         }
 
         // ── P/Invoke ──────────────────────────────────────────────────────────────

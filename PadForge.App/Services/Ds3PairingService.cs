@@ -213,10 +213,16 @@ namespace PadForge.Services
             //    discussion #283 chasing the wrong thing.
             if (!EnsureWinUsbBound(ct))
             {
-                if (!Ds3DriverInstaller.IsWinUsbPackageTrusted(out string signer))
+                // The installer reports WHICH step failed. Asking
+                // IsWinUsbPackageTrusted here instead blamed the certificate
+                // for a missing signing tool or a rejected INF just as
+                // readily, and a wrong cause is what left #283 with nothing
+                // to act on.
+                string why = Ds3DriverInstaller.LastWinUsbFailure;
+                if (why == "sign-failed" || why == "driver-untrusted")
                 {
-                    _log($"Windows will not install PadForge's USB driver for the DS3: its "
-                         + $"signing certificate ({signer ?? "unknown"}) is not trusted on this PC.");
+                    _log("Windows will not install PadForge's USB driver for the DS3. "
+                         + "The diagnostics log records which step failed.");
                     r.Error = "driver-untrusted";
                     return r;
                 }

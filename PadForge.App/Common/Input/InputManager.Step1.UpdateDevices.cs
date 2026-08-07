@@ -1290,9 +1290,12 @@ namespace PadForge.Common.Input
         private const int _headsetOpenRetryMs = 60000;
         // Unattended rebind of a failed-start head-tracker node (worker
         // thread). Cooldown-gated so a node that refuses to start even
-        // under the inbox driver is not fought in a loop.
+        // under the inbox driver is not fought in a loop. 30 s: the drop
+        // recovery is a chain (service re-request recreates the node at
+        // failed-start, the rebind then starts it; hardware-validated
+        // 2026-08-07), so the rebind must follow the re-request promptly.
         private long _headsetAutoRepairNextTicks;
-        private const int _headsetAutoRepairIntervalMs = 300000;
+        private const int _headsetAutoRepairIntervalMs = 30000;
         // Trackers that qualified this session, by paired-device address.
         // When one's HID node vanishes (the XM5 drops the sensor channel
         // spontaneously; hardware-observed Win32 1167 + node removal,
@@ -1816,7 +1819,14 @@ namespace PadForge.Common.Input
                             var outcome = PadForge.Services.HeadsetTrackerRepair.RequestHidServiceByAddress(
                                 address, line => PadForge.Engine.SdlDiagLog.WriteLine("Headset service: " + line));
                             if (outcome == PadForge.Services.HeadsetTrackerRepair.Outcome.ServiceRequested)
+                            {
                                 SonyHeadsetMotionRuntime.InvalidateCache();
+                                // The node routinely comes back at
+                                // failed-start; let the next sweep's rebind
+                                // run immediately instead of riding out its
+                                // cooldown.
+                                _headsetAutoRepairNextTicks = 0;
+                            }
                         }
                         catch { }
                     }

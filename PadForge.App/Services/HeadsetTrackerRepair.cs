@@ -358,7 +358,12 @@ namespace PadForge.Services
                 var device = new BLUETOOTH_DEVICE_INFO
                 { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_INFO>() };
                 IntPtr find = BluetoothFindFirstDevice(ref search, ref device);
-                if (find == IntPtr.Zero) return null;
+                if (find == IntPtr.Zero)
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"Headset: name resolve, BluetoothFindFirstDevice returned null (Win32 {Marshal.GetLastWin32Error()})");
+                    return null;
+                }
                 try
                 {
                     do
@@ -417,22 +422,14 @@ namespace PadForge.Services
         }
 
         private static ulong AddressToUlong(BLUETOOTH_ADDRESS address)
-            => address.rgBytes0
-               | ((ulong)address.rgBytes1 << 8)
-               | ((ulong)address.rgBytes2 << 16)
-               | ((ulong)address.rgBytes3 << 24)
-               | ((ulong)address.rgBytes4 << 32)
-               | ((ulong)address.rgBytes5 << 40);
+            => address.ullLong & 0xFFFF_FFFF_FFFFUL;
 
         /// <summary>Reference hasPresentBluetoothHidChild: a present HID\*
         /// node whose parent is the BTHENUM HID-service node carrying the
         /// device's compact address.</summary>
         private static bool HasPresentBluetoothHidChild(BLUETOOTH_ADDRESS address)
         {
-            string compact = string.Concat(
-                address.rgBytes5.ToString("X2"), address.rgBytes4.ToString("X2"),
-                address.rgBytes3.ToString("X2"), address.rgBytes2.ToString("X2"),
-                address.rgBytes1.ToString("X2"), address.rgBytes0.ToString("X2"));
+            string compact = AddressToUlong(address).ToString("X12");
             IntPtr set = SetupDiGetClassDevs(IntPtr.Zero, null, IntPtr.Zero,
                 DIGCF_ALLCLASSES | DIGCF_PRESENT);
             if (set == IntPtr.Zero || set == new IntPtr(-1)) return false;
@@ -565,14 +562,28 @@ namespace PadForge.Services
         private static Guid HidServiceGuid =>
             new Guid(0x00001124, 0x0000, 0x1000, 0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB);
 
+        /// <summary>Test seams locking the marshaled struct sizes to the
+        /// native ones. BluetoothFindFirstDevice validates dwSize and
+        /// answers a mismatch with ERROR_REVISION_MISMATCH (1306), which
+        /// reads as "no devices" at every call site.</summary>
+        internal static int DeviceInfoMarshalSize => Marshal.SizeOf<BLUETOOTH_DEVICE_INFO>();
+        internal static int SearchParamsMarshalSize => Marshal.SizeOf<BLUETOOTH_DEVICE_SEARCH_PARAMS>();
+
         [StructLayout(LayoutKind.Sequential)]
         private struct BLUETOOTH_FIND_RADIO_PARAMS { public uint dwSize; }
 
+        // WiiPairingService's proven layout: the native type is a union
+        // with a ULONGLONG, so the managed struct must be the ulong (8-byte
+        // alignment). A byte-wise 6+2 layout aligns to 2, undersizes every
+        // containing struct by 4 (BLUETOOTH_DEVICE_INFO 556 vs native 560),
+        // and the API rejects dwSize with ERROR_REVISION_MISMATCH (1306).
+        // That exact defect shipped here first and silently broke every
+        // Bluetooth enumeration in this file (hardware-diagnosed
+        // 2026-08-07). rgBytes[0] is the least significant byte.
         [StructLayout(LayoutKind.Sequential)]
         private struct BLUETOOTH_ADDRESS
         {
-            public byte rgBytes0, rgBytes1, rgBytes2, rgBytes3, rgBytes4, rgBytes5;
-            private ushort _pad;
+            public ulong ullLong;
         }
 
         [StructLayout(LayoutKind.Sequential)]

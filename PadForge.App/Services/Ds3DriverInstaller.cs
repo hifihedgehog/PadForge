@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Microsoft.Win32;
@@ -141,18 +142,142 @@ namespace PadForge.Services
             catch (Exception ex) { log("PSM filter repair failed: " + ex.Message); }
         }
 
-        /// <summary><para>True when the WinUSB package's catalog chains to a
-        /// root this machine trusts. Windows refuses to install a driver
-        /// package whose catalog does not, and the refusal surfaces as a
-        /// generic install error, so an unchecked bind reports nothing a user
-        /// can act on.</para>
-        ///
-        /// <para>This matters because ds3_winusb.cat is self-signed
-        /// (CN=PadForge DS3 WinUSB POC) rather than attested like the three
-        /// BthPS3 packages beside it. It installs only where that certificate
-        /// is already trusted, which in practice is the machine that created
-        /// it. Discussion #283 is exactly this: the pad stays on HidUsb, the
-        /// bind fails, and nothing says why.</para></summary>
+        // ── WinUSB package signing (local machine, like HIDMaestro) ──────────
+        //
+        // The DS3's magic reports (0xF4 enable, 0xF2/0xF5 sixpair) are not in
+        // its HID descriptor, so the inbox HID stack rejects them and the pad
+        // has to be bound to inbox winusb.sys through an INF of ours. Windows
+        // will not install a driver package whose catalog does not chain to a
+        // root the machine trusts, and PadForge cannot buy or earn a code
+        // signing certificate.
+        //
+        // So the package is signed ON THE MACHINE THAT INSTALLS IT, which is
+        // exactly what HIDMaestro already does for its own drivers
+        // (HIDMaestro.Internal.DriverBuilder.EnsureTestCertificate +
+        // GenerateCatalogs). We own our own certificate rather than borrowing
+        // HIDMaestro's, because its subject is that SDK's internal detail,
+        // and we borrow only its extracted toolchain (Inf2Cat.exe,
+        // signtool.exe), which is stable.
+        //
+        // Shipping a pre-signed catalog is what broke: the one in the repo
+        // was signed by a prototype certificate that existed on exactly one
+        // developer machine, so USB DualShock 3 and the whole pairing
+        // ceremony had never worked for anybody else (discussion #283). The
+        // catalog is now generated here, per machine, and no signed artifact
+        // ships at all.
+
+        private const string Ds3CertSubject = "CN=PadForge DS3 WinUSB";
+        private const string Ds3CertFriendlyName = "PadForge DS3 WinUSB";
+
+        /// <summary>Ensures a PadForge code-signing certificate exists in
+        /// LocalMachine\My and is trusted in Root + TrustedPublisher, and
+        /// returns its thumbprint. Ten-year validity, generated once per
+        /// machine, private key never leaves it.</summary>
+        internal static string EnsureSigningCertificate()
+        {
+            using (var my = new X509Store(StoreName.My, StoreLocation.LocalMachine))
+            {
+                my.Open(OpenFlags.ReadOnly);
+                foreach (var c in my.Certificates.Find(
+                             X509FindType.FindBySubjectDistinguishedName, Ds3CertSubject, false))
+                    if (c.NotAfter > DateTime.Now.AddDays(30) && c.HasPrivateKey)
+                        return c.Thumbprint;
+            }
+
+            using var rsa = RSA.Create(2048);
+            var req = new CertificateRequest(Ds3CertSubject, rsa,
+                HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            req.CertificateExtensions.Add(new X509KeyUsageExtension(
+                X509KeyUsageFlags.DigitalSignature, critical: false));
+            // Code Signing EKU: without it signtool will not use the cert and
+            // Windows will not accept the catalog.
+            req.CertificateExtensions.Add(new X509EnhancedKeyUsageExtension(
+                new OidCollection { new Oid("1.3.6.1.5.5.7.3.3") }, critical: false));
+            req.CertificateExtensions.Add(new X509SubjectKeyIdentifierExtension(
+                req.PublicKey, critical: false));
+
+            using var fresh = req.CreateSelfSigned(
+                DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow.AddYears(10));
+            fresh.FriendlyName = Ds3CertFriendlyName;
+
+            // Re-import with PersistKeySet + MachineKeySet so the private key
+            // lands in the machine key store, which is where signtool reads it
+            // from. A cert added straight from CreateSelfSigned has an
+            // ephemeral key and signtool cannot use it.
+            using var persisted = X509CertificateLoader.LoadPkcs12(
+                fresh.Export(X509ContentType.Pfx, ""), "",
+                X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet
+                | X509KeyStorageFlags.Exportable);
+            persisted.FriendlyName = Ds3CertFriendlyName;
+
+            foreach (var name in new[] { StoreName.My, StoreName.Root, StoreName.TrustedPublisher })
+            {
+                using var store = new X509Store(name, StoreLocation.LocalMachine);
+                store.Open(OpenFlags.ReadWrite);
+                store.Add(persisted);
+            }
+            return persisted.Thumbprint;
+        }
+
+        /// <summary>Generates and signs ds3_winusb.cat for the staged INF with
+        /// this machine's certificate. Regenerated rather than re-signed so
+        /// the catalog's hashes can never drift from the INF beside it.</summary>
+        internal static bool SignWinUsbPackage(string dir, Action<string> log)
+        {
+            try
+            {
+                string thumb = EnsureSigningCertificate();
+                string tools = HIDMaestro.Internal.DriverBuilder.EnsureExtracted();
+                string inf2cat = Path.Combine(tools, "Inf2Cat.exe");
+                string signtool = Path.Combine(tools, "signtool.exe");
+                if (!File.Exists(inf2cat) || !File.Exists(signtool))
+                {
+                    log("Driver signing tools are unavailable; cannot prepare the USB driver.");
+                    return false;
+                }
+
+                foreach (string stale in Directory.GetFiles(dir, "*.cat"))
+                    try { File.Delete(stale); } catch { }
+
+                var (rc, output) = RunTool(inf2cat, $"/driver:\"{dir}\" /os:10_X64", dir);
+                if (rc != 0) { log("Catalog generation failed: " + output); return false; }
+
+                string cat = Path.Combine(dir, "ds3_winusb.cat");
+                if (!File.Exists(cat)) { log("Catalog generation produced no ds3_winusb.cat."); return false; }
+
+                // /sha1 rather than /n: the thumbprint names exactly the cert
+                // we just ensured, on a machine that may hold several
+                // code-signing certs.
+                var (rc2, out2) = RunTool(signtool,
+                    $"sign /sm /s My /sha1 {thumb} /fd SHA256 \"{cat}\"", dir);
+                if (rc2 != 0) { log("Catalog signing failed: " + out2); return false; }
+                return true;
+            }
+            catch (Exception ex) { log("Preparing the USB driver failed: " + ex.Message); return false; }
+        }
+
+        private static (int Code, string Output) RunTool(string exe, string args, string workingDir)
+        {
+            var psi = new System.Diagnostics.ProcessStartInfo(exe, args)
+            {
+                WorkingDirectory = workingDir,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+            };
+            using var p = System.Diagnostics.Process.Start(psi);
+            string so = p.StandardOutput.ReadToEnd();
+            string se = p.StandardError.ReadToEnd();
+            p.WaitForExit(120000);
+            return (p.HasExited ? p.ExitCode : -1, (so + se).Trim());
+        }
+
+        /// <summary>True when the WinUSB package's catalog chains to a root
+        /// this machine trusts. Windows refuses a package whose catalog does
+        /// not, and the refusal surfaces as a generic install error, so an
+        /// unchecked bind reports nothing a user can act on. Checked after
+        /// signing as the proof the signing worked.</summary>
         public static bool IsWinUsbPackageTrusted(out string signer)
         {
             signer = null;
@@ -186,14 +311,21 @@ namespace PadForge.Services
                     return true;   // already bound
 
                 string dir = ExtractDrivers();
+                string winusb = Path.Combine(dir, "WinUSB");
+                log("Preparing the controller over USB...");
+
+                // Sign the package with this machine's own certificate before
+                // installing it. No signed artifact ships, so this is not a
+                // fallback: it is how the package comes to exist.
+                if (!IsWinUsbPackageTrusted(out _) && !SignWinUsbPackage(winusb, log))
+                    return false;
                 if (!IsWinUsbPackageTrusted(out string signer))
                 {
-                    log($"WinUSB driver package is not trusted on this PC (signer: {signer ?? "unknown"}); "
-                        + "Windows will refuse the install, so the DS3 stays on the inbox HID driver.");
+                    log($"WinUSB driver package is still untrusted (signer: {signer ?? "unknown"}); "
+                        + "Windows would refuse the install, so the DS3 stays on the inbox HID driver.");
                     return false;
                 }
-                log("Preparing the controller over USB...");
-                InstallInf(Path.Combine(dir, "WinUSB", "ds3_winusb.inf"), log);
+                InstallInf(Path.Combine(winusb, "ds3_winusb.inf"), log);
 
                 // The bind takes a moment to re-enumerate the USB node.
                 for (int i = 0; i < 20 && !ct.IsCancellationRequested; i++)
@@ -754,7 +886,7 @@ namespace PadForge.Services
         // ── embedded driver extraction ─────────────────────────────────────────────
 
         private static string _extractedDir;
-        private static string ExtractDrivers()
+        internal static string ExtractDrivers()
         {
             if (_extractedDir != null && Directory.Exists(_extractedDir)) return _extractedDir;
             string root = Path.Combine(Path.GetTempPath(), "PadForge", "BthPS3Drivers");

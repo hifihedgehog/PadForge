@@ -172,6 +172,51 @@ namespace PadForge.Tests
                 () => true, timeoutMs: 0, pollMs: 1000));
         }
 
+        /// <summary>Everything after a radio cycle needs the radio BACK, and
+        /// a cycle returns before that. The arcade-PC log caught the cost: 0.7 s
+        /// after the install's cycle, advertising the profile service read the
+        /// absent radio as "no radio exists", skipped the advertisement, and the
+        /// install carried on reporting success. No advertisement means no PDO,
+        /// no BthPS3.sys, and a pad whose connection reaches nothing.</summary>
+        [Fact]
+        public void RadioCycle_WaitsForTheRadioAndTheAdvertisementIsChecked()
+        {
+            string src = Src();
+            int cyc = src.IndexOf("public static void CycleBluetoothRadio", StringComparison.Ordinal);
+            Assert.True(cyc > 0);
+            string cbody = src.Substring(cyc, 2600);
+            // The wait lives INSIDE the cycle, so every caller inherits it
+            // rather than each one remembering to wait.
+            Assert.Contains("WaitForBluetoothRadio(20000)", cbody, StringComparison.Ordinal);
+            Assert.Contains("finally", cbody, StringComparison.Ordinal);
+
+            // Advertising reports whether it happened, and the install acts on it.
+            Assert.Contains("private static bool EnableBthPs3Service", src, StringComparison.Ordinal);
+            Assert.Contains("bool advertised = EnableBthPs3Service(log);", src, StringComparison.Ordinal);
+            int adv = src.IndexOf("bool advertised = EnableBthPs3Service(log);", StringComparison.Ordinal);
+            int retry = src.IndexOf("advertised = EnableBthPs3Service(log);", adv + 10, StringComparison.Ordinal);
+            Assert.True(retry > adv, "a failed advertisement must be retried after a fresh cycle");
+        }
+
+        /// <summary>Taking ownership of a SYSTEM-owned key grants only the right
+        /// to rewrite its DACL, not access to it. Without the grant the delete
+        /// returned ERROR_ACCESS_DENIED (rc=5 in the arcade-PC log), so unpair
+        /// left the pairing record behind and the user had to remove it by hand
+        /// before a second pairing would take.</summary>
+        [Fact]
+        public void UnpairGrantsItselfAccessBeforeDeletingTheRecord()
+        {
+            string src = Src();
+            int at = src.IndexOf("public static void DeleteRememberedDeviceRecord", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            string body = src.Substring(at, 2000);
+            int grant = body.IndexOf("GrantAdministratorsFullControl(", StringComparison.Ordinal);
+            int del = body.IndexOf("RegDeleteKey(HKLM, BthPortDevicesKey", StringComparison.Ordinal);
+            Assert.True(grant > 0, "no DACL grant before the delete");
+            Assert.True(del > grant, "the grant must precede the delete it enables");
+            Assert.Contains("BuiltinAdministratorsSid", src, StringComparison.Ordinal);
+        }
+
         /// <summary>Arming PSM patching is what routes the pad's reserved
         /// PSM to BthPS3, and every arm site sits immediately after an install
         /// or a radio cycle, which is exactly when the filter is detached and

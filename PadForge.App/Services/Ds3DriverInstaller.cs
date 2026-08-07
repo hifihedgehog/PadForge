@@ -114,7 +114,15 @@ namespace PadForge.Services
                 // 6. consumer registry (raw, shared)
                 EnsureConsumerParams();
                 // 7. advertise the profile service -> spawns the PDO, loads BthPS3.sys
-                EnableBthPs3Service(log);
+                bool advertised = EnableBthPs3Service(log);
+                if (!advertised)
+                {
+                    // One retry after a fresh cycle: the advertisement is the
+                    // step that creates the profile driver's PDO, so skipping
+                    // it silently leaves an install that can never carry a pad.
+                    CycleBluetoothRadio(log);
+                    advertised = EnableBthPs3Service(log);
+                }
                 // Params again, now that the service certainly exists. Step 6
                 // lands them on this machine (proof: the INF's own defaults are
                 // RawPDO 0 / ExclusivePDO 1 and a healthy install reads 1 / 0,
@@ -144,7 +152,10 @@ namespace PadForge.Services
                 }
                 if (!ok)
                 {
-                    log("Driver install did not register the service.");
+                    log(advertised
+                        ? "Driver install did not register the service."
+                        : "The profile service could not be advertised, so no PlayStation "
+                          + "Bluetooth driver was created and the pad cannot connect.");
                     return false;
                 }
                 // The service key is not readiness. Patching is what routes
@@ -621,7 +632,35 @@ namespace PadForge.Services
                 log("Bluetooth radio toggled off and on.");
             }
             catch (Exception ex) { log("Radio cycle failed: " + ex.Message); }
+            finally
+            {
+                // A cycle returns before the radio is BACK, and everything the
+                // install does next needs it: advertising the profile service
+                // needs a radio handle, and arming PSM patching needs the
+                // filter re-attached to it. Returning early made the very next
+                // step log "No radio to advertise the service on" and carry on
+                // as though the install had worked, so BthPS3Service was never
+                // advertised and the pad had nothing to connect to (observed
+                // in the arcade-PC log, 0.7 s after this call returned).
+                if (!WaitForBluetoothRadio(20000))
+                    log("WARNING: the Bluetooth radio did not come back after the cycle.");
+            }
         }
+
+        /// <summary>Waits for a Bluetooth radio handle to be obtainable. This
+        /// is the readiness signal for anything that talks to the radio, and
+        /// it is NOT the same as the devnode existing.</summary>
+        public static bool WaitForBluetoothRadio(int timeoutMs) =>
+            WaitForCondition(() =>
+            {
+                var p = new BLUETOOTH_FIND_RADIO_PARAMS
+                { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_FIND_RADIO_PARAMS>() };
+                IntPtr find = BluetoothFindFirstRadio(ref p, out IntPtr radio);
+                if (find == IntPtr.Zero) return false;
+                CloseHandle(radio);
+                BluetoothFindRadioClose(find);
+                return true;
+            }, timeoutMs, 500);
 
         // NOTE: there is deliberately no "remove the BthPS3 PDO node" helper. Forcibly
         // removing the raw PDO with PnP (dev.Remove()) frees BthPS3's per-connection
@@ -712,6 +751,31 @@ namespace PadForge.Services
         /// <summary>Deletes the DS3's remembered-device record + link key for a clean
         /// unpair. The Devices subkey is SYSTEM-owned, so ownership is taken back to
         /// Administrators first (SeTakeOwnership/SeRestore) before the delete.</summary>
+        /// <summary>Grants BUILTIN\Administrators full control of an HKLM key
+        /// whose ownership we have just taken. Ownership alone confers only
+        /// WRITE_DAC, so without this step every subsequent operation on a
+        /// SYSTEM-owned key still fails with ERROR_ACCESS_DENIED.</summary>
+        private static void GrantAdministratorsFullControl(string subKey, Action<string> log)
+        {
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(subKey,
+                    RegistryKeyPermissionCheck.ReadWriteSubTree,
+                    System.Security.AccessControl.RegistryRights.ChangePermissions);
+                if (key == null) return;
+                var sec = key.GetAccessControl();
+                sec.AddAccessRule(new System.Security.AccessControl.RegistryAccessRule(
+                    new System.Security.Principal.SecurityIdentifier(
+                        System.Security.Principal.WellKnownSidType.BuiltinAdministratorsSid, null),
+                    System.Security.AccessControl.RegistryRights.FullControl,
+                    System.Security.AccessControl.InheritanceFlags.ContainerInherit,
+                    System.Security.AccessControl.PropagationFlags.None,
+                    System.Security.AccessControl.AccessControlType.Allow));
+                key.SetAccessControl(sec);
+            }
+            catch (Exception ex) { log?.Invoke("Granting access to the record failed: " + ex.Message); }
+        }
+
         public static void DeleteRememberedDeviceRecord(byte[] radioMacBigEndian, string deviceMacHex, Action<string> log)
         {
             try
@@ -727,6 +791,15 @@ namespace PadForge.Services
                     }
                     finally { LocalFree(admins); }
                 }
+                // Taking OWNERSHIP does not grant access. The record is written
+                // SYSTEM-owned so bthport keeps it, and becoming its owner only
+                // earns the RIGHT to rewrite its DACL: the delete still fails
+                // with ERROR_ACCESS_DENIED until Administrators is actually
+                // granted control. That is the rc=5 in the arcade-PC log, and
+                // it is why an unpair left the record behind and the user had
+                // to delete it by hand before a second pairing would take.
+                GrantAdministratorsFullControl(BthPortDevicesKey + deviceMacHex, log);
+
                 // Log a nonzero rc the way WriteLinkKeyAnchor does. Discarding
                 // it meant an unpair that silently left the device record in
                 // place reported success, and the next pair attempt then hit a
@@ -1027,17 +1100,31 @@ namespace PadForge.Services
 
         // ── native BluetoothSetLocalServiceInfo (the one Bluetooth-specific call) ──
 
-        private static void EnableBthPs3Service(Action<string> log)
+        /// <summary>Advertises the BthPS3 profile service, which is what makes
+        /// BTHENUM spawn the PDO that loads BthPS3.sys. Returns false when the
+        /// advertisement did not happen: without it there is no profile
+        /// driver, so the pad's connection reaches nothing and it flashes
+        /// forever.</summary>
+        private static bool EnableBthPs3Service(Action<string> log)
         {
+            // Wait for the radio rather than reading its absence as "no radio
+            // exists". This ran 0.7 s after a radio cycle and took the early
+            // exit, silently skipping the advertisement.
+            if (!WaitForBluetoothRadio(20000))
+            {
+                log("No radio to advertise the service on.");
+                return false;
+            }
             var fp = new BLUETOOTH_FIND_RADIO_PARAMS { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_FIND_RADIO_PARAMS>() };
             IntPtr hFind = BluetoothFindFirstRadio(ref fp, out IntPtr hRadio);
-            if (hFind == IntPtr.Zero) { log("No radio to advertise the service on."); return; }
+            if (hFind == IntPtr.Zero) { log("No radio to advertise the service on."); return false; }
             try
             {
                 EnablePrivilege("SeLoadDriverPrivilege");
                 var info = new BLUETOOTH_LOCAL_SERVICE_INFO { Enabled = 1, szName = BthPs3ServiceName };
                 uint rc = BluetoothSetLocalServiceInfo(hRadio, ref BthPs3ServiceGuidLocal, 0, ref info);
                 log(rc == 0 ? "Profile service advertised." : $"Advertise service rc={rc}.");
+                return rc == 0;
             }
             finally { CloseHandle(hRadio); BluetoothFindRadioClose(hFind); }
         }

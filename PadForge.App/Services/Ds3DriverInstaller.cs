@@ -142,9 +142,21 @@ namespace PadForge.Services
                     CycleBluetoothRadio(log);
                     ok = WaitForCondition(() => IsServiceInstalled("BthPS3"), 15000, 500);
                 }
-                if (ok) EnsurePsmPatch(log);   // the first arm ran before the filter's radio re-attach
-                log(ok ? "Bluetooth drivers installed." : "Driver install did not register the service.");
-                return ok;
+                if (!ok)
+                {
+                    log("Driver install did not register the service.");
+                    return false;
+                }
+                // The service key is not readiness. Patching is what routes
+                // the pad's PSM to BthPS3, and it can only be armed once the
+                // filter has re-attached after the install's own radio cycle.
+                if (EnsurePsmPatch(log) == 0)
+                {
+                    log("PSM patching could not be armed, so the pad would be refused over Bluetooth.");
+                    return false;
+                }
+                log("Bluetooth drivers installed.");
+                return true;
             }
             catch (Exception ex) { log("Driver install failed: " + ex.Message); return false; }
         }
@@ -819,7 +831,12 @@ namespace PadForge.Services
                 key?.SetValue("AutoEnableFilter", 0, RegistryValueKind.DWord);
         }
 
-        private static void EnsurePsmPatch(Action<string> log) => SetPsmPatching(true, log);
+        /// <summary>Arms PSM patching, waiting up to 20 s for the filter
+        /// to attach. Every arm site follows either an install or a radio
+        /// cycle, and the control device is absent while the filter
+        /// re-attaches, so an arm with no wait is an arm that may do
+        /// nothing. Returns the number of radios patched; 0 is failure.</summary>
+        private static int EnsurePsmPatch(Action<string> log) => SetPsmPatching(true, log, 20000);
 
         /// <summary>True when the BthPS3 profile driver service is installed
         /// (the stack that carries the DS3 over Bluetooth). Cheap registry-free
@@ -943,14 +960,37 @@ namespace PadForge.Services
         /// returns). Enumerates radios by DeviceIndex 0..N via GET until
         /// ERROR_NO_SUCH_DEVICE rather than assuming a single radio at index
         /// 0.</para></summary>
-        public static void SetPsmPatching(bool enable, Action<string> log)
+        /// <summary><para>Waits for the PSM filter's control device to be
+        /// open-able. A radio cycle detaches and re-attaches the filter, and
+        /// the device is absent for the seconds in between, so anything that
+        /// arms patching straight after a cycle must wait or it silently
+        /// no-ops.</para>
+        ///
+        /// <para>This is the readiness signal that matters. The BthPS3
+        /// SERVICE key existing does not imply the filter is attached, and
+        /// waiting on the key alone left the first pairing on a clean machine
+        /// arming patching into a closed window: the DS3 was then refused and
+        /// flashed forever, and only a SECOND run of the ceremony worked,
+        /// because by then patching had been armed once and the filter
+        /// restores its per-radio state across cycles (observed end to end on
+        /// the 2026-08-06 arcade-PC rehearsal).</para></summary>
+        public static bool WaitForPsmControlDevice(int timeoutMs) =>
+            WaitForCondition(IsPsmFilterPresent, timeoutMs, 500);
+
+        /// <summary>Enables or disables PSM patching, returning how many
+        /// radios accepted the toggle. Zero means it did NOT take, which the
+        /// caller must treat as failure rather than silence.</summary>
+        public static int SetPsmPatching(bool enable, Action<string> log, int waitForFilterMs = 0)
         {
+            if (waitForFilterMs > 0 && !IsPsmFilterPresent())
+                WaitForPsmControlDevice(waitForFilterMs);
+
             IntPtr h = CreateFile(PsmControlPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW,
                 IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH, IntPtr.Zero);
             if (h == INVALID_HANDLE)
             {
                 log?.Invoke($"PSM control device not present; cannot {(enable ? "enable" : "disable")} patching.");
-                return;
+                return 0;
             }
             try
             {
@@ -980,6 +1020,7 @@ namespace PadForge.Services
                     if (Marshal.GetLastWin32Error() == ERROR_NO_SUCH_DEVICE) break;
                 }
                 log?.Invoke($"PSM patching {(enable ? "enabled" : "disabled")} on {count} radio(s).");
+                return count;
             }
             finally { CloseHandle(h); }
         }

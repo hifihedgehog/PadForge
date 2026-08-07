@@ -143,7 +143,16 @@ namespace PadForge.Services
                     Ds3DriverInstaller.RestoreBthPs3AutoArm();
                 LogLine($"PSM patch reconcile ({reason}): dshidmini={dshm} "
                         + $"paired={paired} node={hasNode} patching={wantPatching}.");
-                Ds3DriverInstaller.SetPsmPatching(wantPatching, LogLine);
+                // Wait for the filter when ARMING. This reconcile runs right
+                // after the ceremony's radio cycle, and the control device is
+                // absent while the filter re-attaches, so the arm used to
+                // no-op and leave the pad to be refused on the very first
+                // pairing of a clean machine. Disarming needs no wait: a
+                // filter that is not attached is already not patching.
+                int patched = Ds3DriverInstaller.SetPsmPatching(
+                    wantPatching, LogLine, wantPatching ? 20000 : 0);
+                if (wantPatching && patched == 0)
+                    LogLine("WARNING: PSM patching is not armed; the pad will be refused over Bluetooth.");
             }
             catch (Exception ex) { LogLine("PSM patch reconcile failed: " + ex.Message); }
         }
@@ -309,6 +318,17 @@ namespace PadForge.Services
                 // 6. Cycle the radio so the drivers pick up the new record.
                 CycleRadio();
             }
+
+            // 7. The cycle just detached the filter. Do not tell the user to
+            // press PS until it is back AND patching is armed on it, because
+            // in that window nothing rewrites the pad's reserved PSM and the
+            // inbox HID stack refuses the connection: the pad then flashes
+            // forever and the only recovery the user finds is deleting the
+            // record and running the whole ceremony again.
+            if (!Ds3DriverInstaller.WaitForPsmControlDevice(20000))
+                _log("WARNING: the PSM filter did not re-attach after the radio cycle.");
+            ReconcilePsmPatchForCrashSafety("ds3-pair-armed");
+
             _log("Bluetooth radio cycled. Unplug the DS3 and press the PS button.");
 
             r.Success = true;

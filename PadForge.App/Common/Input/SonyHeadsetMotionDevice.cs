@@ -69,6 +69,15 @@ namespace PadForge.Common.Input
         private double[] _prevRotation;
         private long _prevRotationTicks;
 
+        // A gyro usage can exist in the descriptor while the firmware
+        // streams zeros in it (WH-1000XM5, hardware-observed 2026-08-07:
+        // thousands of packets, gyro pinned at exactly zero through
+        // motion). The reference drives head tracking from the rotation
+        // vector, so angular velocity is synthesized from rotation until
+        // the device's own gyro field ever produces a nonzero value; from
+        // then on the device values win.
+        private bool _gyroFieldLive;
+
         // Reader diagnostics: sparse, so a silent stream is diagnosable
         // from the DIAG ring without flooding it at packet rate.
         private long _packetsPublished;
@@ -351,6 +360,21 @@ namespace PadForge.Common.Input
                 long now = _nowTicks();
                 if (!gotGyro && _synthesizeGyro && gotRotation)
                     gotGyro = SynthesizeGyroFromRotation(r0, r1, r2, now, gyro);
+                else if (gotGyro && !_gyroFieldLive)
+                {
+                    if (Math.Abs(gyro[0]) > 1e-9 || Math.Abs(gyro[1]) > 1e-9 || Math.Abs(gyro[2]) > 1e-9)
+                    {
+                        _gyroFieldLive = true;
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            "Headset: gyro field is live; using device angular velocity");
+                    }
+                    else if (gotRotation)
+                    {
+                        // Field present but silent so far: the rotation
+                        // vector is the authoritative motion source.
+                        gotGyro = SynthesizeGyroFromRotation(r0, r1, r2, now, gyro);
+                    }
+                }
 
                 if (!gotGyro && !gotAccel)
                 {
@@ -375,9 +399,13 @@ namespace PadForge.Common.Input
                     _everReceived = true;
                 }
                 _packetsPublished++;
-                if (_packetsPublished == 1 || (_packetsPublished & 1023) == 0)
+                // Dense at the start (powers of two to 64), sparse after,
+                // so a short manual test window is fully visible in the
+                // DIAG ring.
+                long n = _packetsPublished;
+                if ((n <= 64 && (n & (n - 1)) == 0) || (n & 1023) == 0)
                     PadForge.Engine.SdlDiagLog.WriteLine(
-                        $"Headset: sample #{_packetsPublished} sensor gyro=({gyro[0]:F3},{gyro[1]:F3},{gyro[2]:F3}) accel={gotAccel} synth={_synthesizeGyro}");
+                        $"Headset: sample #{n} gyro=({gyro[0]:F3},{gyro[1]:F3},{gyro[2]:F3}) rot=({r0:F3},{r1:F3},{r2:F3}) live={_gyroFieldLive} synthUsage={_synthesizeGyro}");
             }
         }
 

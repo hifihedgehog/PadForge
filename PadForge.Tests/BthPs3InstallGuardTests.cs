@@ -131,10 +131,19 @@ namespace PadForge.Tests
         public void ConsumerParams_NeverFabricatesTheServiceKey()
         {
             string src = Src();
-            int at = src.IndexOf("private static void EnsureConsumerParams", StringComparison.Ordinal);
-            Assert.True(at > 0);
-            string body = src.Substring(at, 1200);
-            Assert.Contains("if (!IsServiceInstalled(\"BthPS3\")) return;", body, StringComparison.Ordinal);
+            // Anchored on the guard itself rather than on the signature: the
+            // writer became bool so the caller can tell whether it changed
+            // anything, and an anchor on "private static void" went stale the
+            // moment it did.
+            Assert.Contains("if (!IsServiceInstalled(\"BthPS3\")) return false;", src,
+                StringComparison.Ordinal);
+            // The guard must come BEFORE the key is opened, or the open
+            // fabricates the very key the guard exists to protect.
+            int guard = src.IndexOf("if (!IsServiceInstalled(\"BthPS3\")) return false;",
+                StringComparison.Ordinal);
+            int create = src.IndexOf("Registry.LocalMachine.CreateSubKey(BthPs3ParamsKey",
+                StringComparison.Ordinal);
+            Assert.True(create > guard, "the params key is opened before the guard runs");
         }
 
         /// <summary>The install heals the shell before installing, or a
@@ -170,6 +179,45 @@ namespace PadForge.Tests
             // An immediately-true probe returns without sleeping at all.
             Assert.True(Ds3DriverInstaller.WaitForCondition(
                 () => true, timeoutMs: 0, pollMs: 1000));
+        }
+
+        /// <summary>The raw-PDO override must be written AFTER the service
+        /// is confirmed, not before. bthps3.inf ships RawPDO=0, and the writer
+        /// is guarded on the service existing (so it can never fabricate the
+        /// key). On a clean machine PnP creates that key asynchronously, after
+        /// the advertisement, so every write attempted earlier no-ops and the
+        /// INF default stands. A non-raw child PDO then wants a function
+        /// driver, and the only candidate INF matches the bare BTHPS3BUS GUID
+        /// while the child reports ...&amp;Dev&amp;VID_054C&amp;PID_0268 with no
+        /// compatible ID: nothing matches, the child dies at
+        /// CM_PROB_FAILED_INSTALL (measured on the arcade PC, code 28), no
+        /// device interface appears, and the pad flashes forever. The second
+        /// pairing worked only because the service existed by then.</summary>
+        [Fact]
+        public void ConsumerParams_AreWrittenAfterTheServiceIsConfirmed()
+        {
+            string src = Src();
+            int at = src.IndexOf("public static bool EnsureInstalled", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            int verdict = src.IndexOf("Bluetooth drivers installed.", at, StringComparison.Ordinal);
+            string body = src.Substring(at, verdict - at);
+
+            // The confirmation of the service, then the params, then the arm.
+            int confirmed = body.IndexOf("WaitForCondition(() => IsServiceInstalled(\"BthPS3\")",
+                StringComparison.Ordinal);
+            int paramsAfter = body.IndexOf("bool paramsChanged = EnsureConsumerParams();",
+                StringComparison.Ordinal);
+            Assert.True(confirmed > 0, "no service confirmation");
+            Assert.True(paramsAfter > confirmed,
+                "the raw-PDO override must be written AFTER the service is confirmed");
+
+            // A fresh write is followed by a re-enumeration, because BthPS3
+            // reads RawPDO when it builds the child.
+            int cycle = body.IndexOf("CycleBluetoothRadio(log);", paramsAfter, StringComparison.Ordinal);
+            Assert.True(cycle > paramsAfter, "a changed override must be followed by a radio cycle");
+
+            // And the writer reports whether it changed anything at all.
+            Assert.Contains("private static bool EnsureConsumerParams()", src, StringComparison.Ordinal);
         }
 
         /// <summary>Everything after a radio cycle needs the radio BACK, and

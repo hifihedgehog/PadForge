@@ -158,6 +158,30 @@ namespace PadForge.Services
                           + "Bluetooth driver was created and the pad cannot connect.");
                     return false;
                 }
+                // NOW write the consumer params, and not before. This is the
+                // first moment the service key genuinely exists: PnP creates it
+                // when the advertised PDO matches the INF, which is
+                // asynchronous, so both earlier calls hit the "service is not
+                // installed" guard and wrote NOTHING on a clean machine. The
+                // INF's own default is RawPDO=0, which means the child PDO
+                // wants a function driver; the only INF that could serve it
+                // matches the bare BTHPS3BUS GUID while the child reports
+                // ...&Dev&VID_054C&PID_0268 with no compatible ID, so nothing
+                // matches and the child dies at CM_PROB_FAILED_INSTALL. No
+                // device interface, nothing for the reader to open, and the pad
+                // flashes forever. A SECOND pairing worked only because by then
+                // the service existed and this write finally landed.
+                bool paramsChanged = EnsureConsumerParams();
+                if (paramsChanged)
+                {
+                    // BthPS3 reads these when it builds the child, so the pad
+                    // must arrive AFTER the override is in place. Re-enumerate
+                    // so the running driver picks it up rather than carrying
+                    // the INF defaults until something else cycles the radio.
+                    log("Applying raw-PDO settings; re-enumerating the radio.");
+                    CycleBluetoothRadio(log);
+                }
+
                 // The service key is not readiness. Patching is what routes
                 // the pad's PSM to BthPS3, and it can only be armed once the
                 // filter has re-attached after the install's own radio cycle.
@@ -875,12 +899,21 @@ namespace PadForge.Services
         /// these lines override), so on a healthy install the subkey is
         /// already there, and creating it under a REAL service is safe
         /// either way. What must never happen is creating the parent.</para></summary>
-        private static void EnsureConsumerParams()
+        /// <summary>Writes the consumer overrides, returning true when it
+        /// actually CHANGED something. The caller needs that answer: BthPS3
+        /// reads RawPDO when it builds the child PDO, so a fresh write has to
+        /// be followed by a re-enumeration or the running driver keeps serving
+        /// the INF's defaults (RawPDO=0), and a non-raw child is a child that
+        /// needs a function driver no INF here can supply.</summary>
+        private static bool EnsureConsumerParams()
         {
-            if (!IsServiceInstalled("BthPS3")) return;
+            if (!IsServiceInstalled("BthPS3")) return false;
             using var key = Registry.LocalMachine.CreateSubKey(BthPs3ParamsKey, writable: true);
-            key?.SetValue("RawPDO", 1, RegistryValueKind.DWord);       // enumerate with no function driver
-            key?.SetValue("ExclusivePDO", 0, RegistryValueKind.DWord); // allow our shared open
+            if (key == null) return false;
+            bool changed = !(key.GetValue("RawPDO") is int raw && raw == 1)
+                        || !(key.GetValue("ExclusivePDO") is int excl && excl == 0);
+            key.SetValue("RawPDO", 1, RegistryValueKind.DWord);       // enumerate with no function driver
+            key.SetValue("ExclusivePDO", 0, RegistryValueKind.DWord); // allow our shared open
             // AutoEnableFilter=0 hands PadForge sole ownership of PSM patching
             // (issue #199 crash mitigation). BthPS3's default (1) auto-arms
             // patching at radio power-up AND re-arms it ~10 s after it denies a
@@ -901,7 +934,8 @@ namespace PadForge.Services
             // outlives PadForge. The install/pair path is the one caller
             // that reached this line without consulting the policy.
             if (!IsDsHidMiniInstalled())
-                key?.SetValue("AutoEnableFilter", 0, RegistryValueKind.DWord);
+                key.SetValue("AutoEnableFilter", 0, RegistryValueKind.DWord);
+            return changed;
         }
 
         /// <summary>Arms PSM patching, waiting up to 20 s for the filter

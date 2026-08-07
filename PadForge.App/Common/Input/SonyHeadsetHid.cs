@@ -516,6 +516,19 @@ namespace PadForge.Common.Input
             ref SP_DEVICE_INTERFACE_DATA deviceInterfaceData, IntPtr deviceInterfaceDetailData,
             uint deviceInterfaceDetailDataSize, out uint requiredSize, IntPtr deviceInfoData);
 
+        // Overload that also returns the owning devinfo, so the caller can
+        // resolve the PnP instance ID for the interface (reference
+        // enumerate: CM_Get_Device_IDW on the SP_DEVINFO_DATA).
+        [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        internal static extern bool SetupDiGetDeviceInterfaceDetail(IntPtr deviceInfoSet,
+            ref SP_DEVICE_INTERFACE_DATA deviceInterfaceData, IntPtr deviceInterfaceDetailData,
+            uint deviceInterfaceDetailDataSize, out uint requiredSize, ref SP_DEVINFO_DATA deviceInfoData);
+
+        [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        internal static extern bool SetupDiGetDeviceInstanceId(IntPtr deviceInfoSet,
+            ref SP_DEVINFO_DATA deviceInfoData, System.Text.StringBuilder deviceInstanceId,
+            int deviceInstanceIdSize, out int requiredSize);
+
         [DllImport("setupapi.dll", SetLastError = true)]
         internal static extern bool SetupDiDestroyDeviceInfoList(IntPtr deviceInfoSet);
 
@@ -525,6 +538,15 @@ namespace PadForge.Common.Input
             public int cbSize;
             public Guid InterfaceClassGuid;
             public uint Flags;
+            public IntPtr Reserved;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct SP_DEVINFO_DATA
+        {
+            public int cbSize;
+            public Guid ClassGuid;
+            public uint DevInst;
             public IntPtr Reserved;
         }
 
@@ -552,6 +574,10 @@ namespace PadForge.Common.Input
             public ushort VendorId;
             public ushort ProductId;
             public bool HasAccel;
+            /// <summary>48-bit Bluetooth address of the owning paired
+            /// device (0 when unresolved). Keys the automatic HID-service
+            /// re-request after the headset drops the sensor channel.</summary>
+            public ulong BluetoothAddress;
         }
 
         // path (ordinal-insensitive) → qualified candidate, or null for a
@@ -589,7 +615,7 @@ namespace PadForge.Common.Input
                 for (uint index = 0; SonyHeadsetHid.SetupDiEnumDeviceInterfaces(set, IntPtr.Zero,
                         ref hidGuid, index, ref iface); index++)
                 {
-                    string path = GetInterfacePath(set, ref iface);
+                    var (path, instanceId) = GetInterfacePath(set, ref iface);
                     if (string.IsNullOrEmpty(path)) continue;
                     present.Add(path);
 
@@ -598,7 +624,7 @@ namespace PadForge.Common.Input
                     lock (_verdicts) known = _verdicts.TryGetValue(path, out verdict);
                     if (!known)
                     {
-                        verdict = Probe(path);
+                        verdict = Probe(path, instanceId);
                         lock (_verdicts) _verdicts[path] = verdict;
                     }
                     if (verdict != null) result.Add(verdict);
@@ -620,19 +646,29 @@ namespace PadForge.Common.Input
             return result;
         }
 
-        private static string GetInterfacePath(IntPtr set, ref SonyHeadsetHid.SP_DEVICE_INTERFACE_DATA iface)
+        private static (string Path, string InstanceId) GetInterfacePath(
+            IntPtr set, ref SonyHeadsetHid.SP_DEVICE_INTERFACE_DATA iface)
         {
             SonyHeadsetHid.SetupDiGetDeviceInterfaceDetail(set, ref iface, IntPtr.Zero, 0, out uint needed, IntPtr.Zero);
-            if (needed == 0 || needed > 4096) return null;
+            if (needed == 0 || needed > 4096) return (null, null);
             IntPtr detail = Marshal.AllocHGlobal((int)needed);
             try
             {
                 // cbSize is the FIXED part of SP_DEVICE_INTERFACE_DETAIL_DATA_W:
                 // 4-byte cbSize + one wchar, padded (8 on x64).
                 Marshal.WriteInt32(detail, IntPtr.Size == 8 ? 8 : 6);
-                if (!SonyHeadsetHid.SetupDiGetDeviceInterfaceDetail(set, ref iface, detail, needed, out _, IntPtr.Zero))
-                    return null;
-                return Marshal.PtrToStringUni(detail + 4);
+                var dev = new SonyHeadsetHid.SP_DEVINFO_DATA
+                {
+                    cbSize = Marshal.SizeOf<SonyHeadsetHid.SP_DEVINFO_DATA>()
+                };
+                if (!SonyHeadsetHid.SetupDiGetDeviceInterfaceDetail(set, ref iface, detail, needed, out _, ref dev))
+                    return (null, null);
+                string path = Marshal.PtrToStringUni(detail + 4);
+                string instanceId = null;
+                var id = new System.Text.StringBuilder(512);
+                if (SonyHeadsetHid.SetupDiGetDeviceInstanceId(set, ref dev, id, id.Capacity, out _))
+                    instanceId = id.ToString();
+                return (path, instanceId);
             }
             finally
             {
@@ -646,7 +682,7 @@ namespace PadForge.Common.Input
         /// require sensor page 0x20 / usage 0xE1; verify the description
         /// marker. Returns null for a non-candidate.
         /// </summary>
-        private static Candidate Probe(string path)
+        private static Candidate Probe(string path, string instanceId)
         {
             var handle = SonyHeadsetHid.CreateFile(path,
                 SonyHeadsetHid.GENERIC_READ | SonyHeadsetHid.GENERIC_WRITE,
@@ -686,7 +722,7 @@ namespace PadForge.Common.Input
                     SonyHeadsetHid.HidP_Feature, preparsed, caps.NumberFeatureValueCaps);
                 string description = SonyHeadsetHid.ExtractDescription(handle, preparsed, in caps, featureValues);
                 PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"Headset: sensor candidate '{path}', description='{description}'");
+                    $"Headset: sensor candidate '{path}', instance='{instanceId ?? "(null)"}', description='{description}'");
                 if (!description.StartsWith(HeadTrackerHid.Marker, StringComparison.Ordinal))
                     return null;
 
@@ -696,7 +732,13 @@ namespace PadForge.Common.Input
                 };
                 SonyHeadsetHid.HidD_GetAttributes(handle, ref attributes);
 
-                string name = ReadProductString(handle);
+                // Name preference mirrors the reference: the paired
+                // Bluetooth device name (resolved through the PnP parent
+                // chain) beats the HID product string, which on a rebound
+                // generic node is often empty or generic. The row should
+                // say "WH-1000XM5", not "Sony Headset Tracker".
+                string name = PadForge.Services.HeadsetTrackerRepair.ResolvePairedName(instanceId);
+                if (string.IsNullOrWhiteSpace(name)) name = ReadProductString(handle);
                 if (string.IsNullOrWhiteSpace(name)) name = "Sony Headset Tracker";
 
                 // Accelerometer is optional in the protocol; advertise it
@@ -713,13 +755,15 @@ namespace PadForge.Common.Input
                     { hasAccel = true; break; }
                 }
 
+                PadForge.Services.HeadsetTrackerRepair.TryResolveAddress(instanceId, out ulong address);
                 return new Candidate
                 {
                     Path = path,
                     Name = name,
                     VendorId = attributes.VendorID,
                     ProductId = attributes.ProductID,
-                    HasAccel = hasAccel
+                    HasAccel = hasAccel,
+                    BluetoothAddress = address
                 };
             }
             catch

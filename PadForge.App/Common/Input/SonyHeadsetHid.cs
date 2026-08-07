@@ -677,9 +677,16 @@ namespace PadForge.Common.Input
                 if (caps.UsagePage != HeadTrackerHid.SensorPage || caps.Usage != HeadTrackerHid.OtherCustom)
                     return null;
 
+                // Sensor-page candidates are rare (one per tracker-capable
+                // headset), and each path is probed once per appearance, so
+                // logging here is quiet and makes a "not listed" report
+                // diagnosable from the DIAG ring (reference logs the same
+                // candidate line).
                 var featureValues = SonyHeadsetHid.GetValueCaps(
                     SonyHeadsetHid.HidP_Feature, preparsed, caps.NumberFeatureValueCaps);
                 string description = SonyHeadsetHid.ExtractDescription(handle, preparsed, in caps, featureValues);
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"Headset: sensor candidate '{path}', description='{description}'");
                 if (!description.StartsWith(HeadTrackerHid.Marker, StringComparison.Ordinal))
                     return null;
 

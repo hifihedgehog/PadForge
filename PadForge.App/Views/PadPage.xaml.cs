@@ -400,7 +400,18 @@ namespace PadForge.Views
                         hasMouse = ud.IsMouse;
                         hasIrPointer = ud.HasIrCamera;
                         hasImpulseTriggers = ud.HasRumbleTriggers;
-                        hasS2Mag = ud.HasJoyCon2Mouse;
+                        // Gate on the SAME capability the engine consumes.
+                        // HasJoyCon2Mouse is naxes >= 8; the compass lane
+                        // (UpdateCompassEstimate, the calibration sweep,
+                        // and CompassYawCorrectionProvider) all require
+                        // HasSwitch2Magnetometer, which needs the wider
+                        // axis set an older SDL fork DLL does not report.
+                        // Gating the card on the looser flag offered the
+                        // whole feature (including a figure-8 calibration
+                        // that silently kept nothing) on hardware where it
+                        // could never run.
+                        hasS2Mag = ud.Device is PadForge.Engine.SdlDeviceWrapper s2w
+                                && s2w.HasSwitch2Magnetometer;
                         hasTouchpad = ud.HasTouchpad;
                         hasGuideLed =
                             PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud)

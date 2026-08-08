@@ -848,7 +848,14 @@
                                         <Button Click="XboxType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
-                                                    <Setter Property="Padding" Value="7,3"/>
+                                                    <!-- 5px sides (#49 seven-tile fit, all seven type
+                                                         buttons): the VR tile pushed the seg + "#N"
+                                                         label past the card's 228px inner width at
+                                                         7px (≈251px) and the right-aligned label
+                                                         clipped. 5px lands the seven tiles at 27px
+                                                         each (13px glyph untouched) and the row at
+                                                         ≈223px. -->
+                                                    <Setter Property="Padding" Value="5,3"/>
                                                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
@@ -882,7 +889,7 @@
                                                 Click="DS4Type_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
-                                                    <Setter Property="Padding" Value="7,3"/>
+                                                    <Setter Property="Padding" Value="5,3"/>
                                                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_PlayStation, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
@@ -916,7 +923,7 @@
                                                 Click="NintendoType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
-                                                    <Setter Property="Padding" Value="7,3"/>
+                                                    <Setter Property="Padding" Value="5,3"/>
                                                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_Nintendo, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
@@ -950,7 +957,7 @@
                                                 Click="ExtendedType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
-                                                    <Setter Property="Padding" Value="7,3"/>
+                                                    <Setter Property="Padding" Value="5,3"/>
                                                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_Extended, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
@@ -984,7 +991,7 @@
                                                 Click="KeyboardMouseType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
-                                                    <Setter Property="Padding" Value="7,3"/>
+                                                    <Setter Property="Padding" Value="5,3"/>
                                                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_KeyboardMouse, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
@@ -1018,7 +1025,7 @@
                                                 Click="MidiType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
-                                                    <Setter Property="Padding" Value="7,3"/>
+                                                    <Setter Property="Padding" Value="5,3"/>
                                                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_MIDI, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
@@ -1056,7 +1063,7 @@
                                                 Click="VrType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
-                                                    <Setter Property="Padding" Value="7,3"/>
+                                                    <Setter Property="Padding" Value="5,3"/>
                                                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_VR, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
@@ -1891,6 +1898,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal">
@@ -1911,6 +1919,19 @@
                     </StackPanel>
                     <TextBlock Grid.Row="1" Grid.Column="1"
                                Text="{Binding MidiServicesStatusText}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Margin="0,8,0,0"/>
+
+                    <!-- SteamVR (VR controllers, #49): same status treatment
+                         as its dependency siblings above. -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Text="&#xF119;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBlock Text="SteamVR" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </StackPanel>
+                    <TextBlock Grid.Row="2" Grid.Column="1"
+                               Text="{Binding SteamVrStatusText}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                Margin="0,8,0,0"/>
 
                 </Grid>

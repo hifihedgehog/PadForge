@@ -147,6 +147,9 @@
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Uninstalling Windows MIDI Services…</value></data>
   <data name="Status_OperationCancelled" xml:space="preserve"><value>Operation cancelled by user.</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services install failed: {0}</value></data>
+  <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>Downloading SteamVR…</value></data>
+  <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Downloading and installing SteamVR from Valve's servers… This is several GB and can take a while.</value></data>
+  <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>SteamVR install failed: {0}</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>Device list refreshed.</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>Recorded "{0}" ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>Now map: {0} {1}</value></data>
@@ -325,6 +328,8 @@
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>User-mode virtual HID controller engine. Embedded in PadForge.App. Installed automatically on first virtual controller creation. Replaces ViGEmBus and vJoy in v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>SDK runtime for virtual MIDI device output. Downloaded from GitHub (~210 MB).</value></data>
+  <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
+  <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR runtime for virtual VR controllers. Installs from Valve's servers with no Steam account or Steam client needed (several GB).</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Requires Windows 11 24H2 (build 26100) or later</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>Settings File</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>Save, reload, or reset your configuration.</value></data>

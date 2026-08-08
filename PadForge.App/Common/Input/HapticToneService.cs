@@ -954,9 +954,14 @@ namespace PadForge.Common.Input
         /// common all-off case.</summary>
         private static int _personaSlotMask;
 
-        /// <summary>Scratch for the pair extraction. Single writer by
-        /// contract: only the HM pacing thread calls SubmitPersonaHaptics
-        /// (one persona feed handler process-wide per tick).</summary>
+        /// <summary>Scratch for the pair extraction, PER THREAD. HIDMaestro
+        /// runs one pacing thread per emulated device (UsbAudioEngine's
+        /// per-persona pump), so a machine with two composite-persona slots
+        /// has two concurrent SubmitPersonaHaptics callers. A single static
+        /// buffer let them interleave their extraction writes and hand each
+        /// other's samples to both sinks; the lock below is taken only for
+        /// the sink walk and never covered the extraction.</summary>
+        [ThreadStatic]
         private static byte[] _personaScratch;
 
         private static void RecomputePersonaMask()
@@ -1012,11 +1017,14 @@ namespace PadForge.Common.Input
             if ((Volatile.Read(ref _personaSlotMask) & (1 << slot)) == 0) return;
             int pairs = ExtractStereoPairs(pcm, stride, lOff, rOff, ref _personaScratch);
             if (pairs == 0) return;
+            // Local alias: the field is [ThreadStatic], so this thread owns
+            // the buffer for the whole call.
+            var scratch = _personaScratch;
             lock (_lock)
             {
                 foreach (var s in _sinks)
                     if (s.Slot == slot && s.PersonaOn && s.PersonaBuf != null)
-                        try { s.PersonaBuf.AddSamples(_personaScratch, 0, pairs * 4); } catch { }
+                        try { s.PersonaBuf.AddSamples(scratch, 0, pairs * 4); } catch { }
             }
         }
 

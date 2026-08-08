@@ -144,6 +144,9 @@
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services wird deinstalliert…</value></data>
   <data name="Status_OperationCancelled" xml:space="preserve"><value>Vorgang vom Benutzer abgebrochen.</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services-Installation fehlgeschlagen: {0}</value></data>
+  <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR wird heruntergeladen…</value></data>
+  <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>SteamVR wird von Valve-Servern heruntergeladen und installiert… Mehrere GB, das kann dauern.</value></data>
+  <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>SteamVR-Installation fehlgeschlagen: {0}</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>Geräteliste aktualisiert.</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>Aufgenommen „{0}" ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>Jetzt zuordnen: {0} {1}</value></data>
@@ -267,6 +270,8 @@
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Virtuelle HID-Controller-Engine im Benutzermodus. In PadForge.App eingebettet. Wird beim ersten Erstellen eines virtuellen Controllers automatisch installiert. Ersetzt ViGEmBus und vJoy in v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>SDK-Laufzeit für virtuelle MIDI-Geräteausgabe. Wird von GitHub heruntergeladen (~210 MB).</value></data>
+  <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
+  <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR-Laufzeitumgebung für virtuelle VR-Controller. Installation direkt von Valve-Servern, ohne Steam-Konto und ohne Steam-Client (mehrere GB).</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Erfordert Windows 11 24H2 (Build 26100) oder höher</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>Einstellungsdatei</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>Konfiguration speichern, neu laden oder zurücksetzen.</value></data>

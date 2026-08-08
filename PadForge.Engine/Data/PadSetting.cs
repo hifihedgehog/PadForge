@@ -1619,6 +1619,22 @@ namespace PadForge.Engine.Data
                 }
             }
 
+            // VR custom mappings (sorted for deterministic checksum). The
+            // save pipeline dedups PadSettings BY CHECKSUM, so a lane
+            // missing here lets two devices whose settings differ only in
+            // that lane collapse into one stored object and the loser
+            // silently adopts the survivor's rows on reload.
+            EnsureVrDict();
+            if (_vrMappingDict.Count > 0)
+            {
+                var vrKeys = new List<string>(_vrMappingDict.Keys);
+                vrKeys.Sort(StringComparer.Ordinal);
+                foreach (var key in vrKeys)
+                {
+                    sb.Append(key); sb.Append('='); sb.Append(_vrMappingDict[key]); sb.Append('|');
+                }
+            }
+
             // Per-mapping deadzones (sorted for deterministic checksum)
             EnsureMappingDeadZoneDict();
             // Under the dict's lock like every other access: this walks the
@@ -2276,6 +2292,7 @@ namespace PadForge.Engine.Data
             FlushRawMappings();
             FlushMidiMappings();
             FlushKbmMappings();
+            FlushVrMappings();
             FlushMappingDeadZones();
             FlushMappingBidirectional();
 
@@ -2293,7 +2310,7 @@ namespace PadForge.Engine.Data
                     dict[name] = prop.GetValue(this) as string ?? "";
             }
 
-            // Include Extended/MIDI/KBM mapping arrays if present.
+            // Include Extended/MIDI/KBM/VR mapping arrays if present.
             if (RawMappingEntries != null && RawMappingEntries.Length > 0)
             {
                 var extendedList = new List<Dictionary<string, string>>();
@@ -2314,6 +2331,13 @@ namespace PadForge.Engine.Data
                 foreach (var e in KbmMappingEntries)
                     kbmList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
                 dict["__KbmMappings"] = JsonSerializer.Serialize(kbmList);
+            }
+            if (VrMappingEntries != null && VrMappingEntries.Length > 0)
+            {
+                var vrList = new List<Dictionary<string, string>>();
+                foreach (var e in VrMappingEntries)
+                    vrList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
+                dict["__VrMappings"] = JsonSerializer.Serialize(vrList);
             }
             if (MappingDeadZoneEntries != null && MappingDeadZoneEntries.Length > 0)
             {
@@ -2449,6 +2473,8 @@ namespace PadForge.Engine.Data
                             ps.MidiMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__KbmMappings")
                             ps.KbmMappingEntries = DeserializeMappingArray(kvp.Value);
+                        else if (kvp.Key == "__VrMappings")
+                            ps.VrMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__MappingDeadZones")
                             ps.MappingDeadZoneEntries = NormalizeRawKeys(DeserializeMappingArray(kvp.Value));
                         else if (kvp.Key == "__MultiSourceRows")
@@ -2599,6 +2625,7 @@ namespace PadForge.Engine.Data
             source.FlushRawMappings();
             source.FlushMidiMappings();
             source.FlushKbmMappings();
+            source.FlushVrMappings();
 
             // Step 1: Copy non-mapping settings directly (deadzones, sensitivity, FFB, etc.)
             // These use the same property names regardless of output layout.
@@ -2786,6 +2813,7 @@ namespace PadForge.Engine.Data
             source.FlushRawMappings();
             source.FlushMidiMappings();
             source.FlushKbmMappings();
+            source.FlushVrMappings();
             source.FlushMappingDeadZones();
             source.FlushMappingBidirectional();
 
@@ -2796,6 +2824,8 @@ namespace PadForge.Engine.Data
             _midiMappingDict = null;
             KbmMappingEntries = DeepCopyMappings(source.KbmMappingEntries);
             _kbmMappingDict = null;
+            VrMappingEntries = DeepCopyMappings(source.VrMappingEntries);
+            _vrMappingDict = null;
             MappingDeadZoneEntries = DeepCopyMappings(source.MappingDeadZoneEntries);
             _mappingDeadZoneDict = null;
             MappingBidirectionalEntries = DeepCopyMappings(source.MappingBidirectionalEntries);

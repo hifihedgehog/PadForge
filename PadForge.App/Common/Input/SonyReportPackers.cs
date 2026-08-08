@@ -97,9 +97,15 @@ namespace PadForge.Common.Input
             // Sticks (bytes 0-3): center 0x80. XInput Y is +up; DS4 firmware
             // is +down (HID convention) so Y axes are inverted.
             dest[0] = ToDs4Axis(gp.ThumbLX);
-            dest[1] = ToDs4Axis((short)-gp.ThumbLY);
+            // No (short) re-narrowing on the negation: -(-32768) is 32768,
+            // which wraps back to -32768 in a short and packs full-DOWN as
+            // 0x00 (full up). ToDs4Axis takes an int and clamps, so the
+            // widened value lands at 255 the way every other deflection
+            // does. Reachable whenever a source saturates an axis to
+            // short.MinValue (an AxisAdd macro on top of a deflected stick).
+            dest[1] = ToDs4Axis(-gp.ThumbLY);
             dest[2] = ToDs4Axis(gp.ThumbRX);
-            dest[3] = ToDs4Axis((short)-gp.ThumbRY);
+            dest[3] = ToDs4Axis(-gp.ThumbRY);
 
             // Buttons + hat (bytes 4-6).
             // byte 4: bits 0-3 = D-pad as 0..7 / 0x8=neutral; bits 4-7 = face buttons.
@@ -241,9 +247,15 @@ namespace PadForge.Common.Input
 
             // Sticks + triggers inline (bytes 0-5). Y inverted vs XInput.
             dest[0] = ToDs4Axis(gp.ThumbLX);
-            dest[1] = ToDs4Axis((short)-gp.ThumbLY);
+            // No (short) re-narrowing on the negation: -(-32768) is 32768,
+            // which wraps back to -32768 in a short and packs full-DOWN as
+            // 0x00 (full up). ToDs4Axis takes an int and clamps, so the
+            // widened value lands at 255 the way every other deflection
+            // does. Reachable whenever a source saturates an axis to
+            // short.MinValue (an AxisAdd macro on top of a deflected stick).
+            dest[1] = ToDs4Axis(-gp.ThumbLY);
             dest[2] = ToDs4Axis(gp.ThumbRX);
-            dest[3] = ToDs4Axis((short)-gp.ThumbRY);
+            dest[3] = ToDs4Axis(-gp.ThumbRY);
             dest[4] = (byte)(gp.LeftTrigger  >> 8);
             dest[5] = (byte)(gp.RightTrigger >> 8);
 

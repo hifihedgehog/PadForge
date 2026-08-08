@@ -473,6 +473,13 @@ namespace PadForge.Services
         /// </summary>
         public int CreateSlot(VirtualControllerType controllerType = VirtualControllerType.Xbox)
         {
+            // Per-type capacity (VR is capped at one, see
+            // SettingsManager.CanSlotTakeType). Guarding here means every
+            // present and future caller inherits it.
+            if (!SettingsManager.CanSlotTakeType(controllerType,
+                    pi => _mainVm.Pads[pi].OutputType))
+                return -1;
+
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
                 if (!SettingsManager.SlotCreated[i])

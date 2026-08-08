@@ -148,6 +148,9 @@ namespace PadForge.Views
         {
             if (sender is Button btn && btn.Tag is int slotIndex)
             {
+                // The capacity check lives in the shared handler
+                // (SettingsManager.CanSlotTakeType); this tile only gates
+                // on the SteamVR dependency.
                 if (!PadForge.Common.Input.HMaestroVRController.IsAvailable()) return;
                 SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Vr));
             }

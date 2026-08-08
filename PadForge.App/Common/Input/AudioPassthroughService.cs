@@ -677,13 +677,20 @@ namespace PadForge.Common.Input
                 // 2/3 are its voice-coil actuators, zeroed until a
                 // composite persona feeds them. Same 48 kHz s16 stereo on
                 // both sides, so this is a pass-through, no resample.
+                PersonaHapticRing hring = null;
                 bool haveHaptics = _outChannels >= 4
                     && _deviceGuid != default
-                    && _personaHapticRings.TryGetValue(_deviceGuid, out var hring);
+                    && _personaHapticRings.TryGetValue(_deviceGuid, out hring);
                 if (haveHaptics)
                 {
                     if (_haptic.Length < frames * 2) _haptic = new short[frames * 2];
-                    _personaHapticRings[_deviceGuid].ReadFrames(_haptic, frames);
+                    // Read through the CAPTURED ring, never re-index. This
+                    // runs on NAudio's WASAPI render thread while
+                    // DetachPersonaFeed can TryRemove the same key; the
+                    // indexer's KeyNotFoundException would kill the render
+                    // thread outright, and SinkAlive treats a non-null
+                    // Player as healthy, so the reconcile never rebuilt it.
+                    hring.ReadFrames(_haptic, frames);
                 }
 
                 // Resolve the device's output path once per Read (the
@@ -1059,6 +1066,21 @@ namespace PadForge.Common.Input
             public IntPtr BtMicHandle;
             public Guid BtMicPadGuid;
             public long BtMicRxFrames;
+
+            // Per-lane reader GENERATION. The stop bools alone could not
+            // retire a reader: RefreshPersonaTargets does Stop-then-Start
+            // with no join, so an old loop blocked inside ReadFileSync
+            // returns AFTER Start has reset the bool, never exits, and
+            // then reads (and on exit closes) the NEW thread's handle. Two
+            // synchronous readers on one HID handle split the report
+            // stream. Each loop captures its generation at launch and
+            // retires the moment the field moves past it.
+            public volatile int UsbJackGen;
+            public volatile int BtMicGen;
+            // Interlocked.Increment cannot take a volatile field by ref, so
+            // the counter and the published value are separate.
+            public int UsbJackGenBox;
+            public int BtMicGenBox;
         }
 
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, PersonaFeed> _personaFeeds = new();
@@ -1466,7 +1488,9 @@ namespace PadForge.Common.Input
             feed.BtMicStop = false;
             feed.BtMicRxFrames = 0;
             feed.BtMicPadGuid = padGuid;
-            var th = new System.Threading.Thread(() => BtMicLoop(feed, hidPath))
+            int gen = System.Threading.Interlocked.Increment(ref feed.BtMicGenBox);
+            feed.BtMicGen = gen;
+            var th = new System.Threading.Thread(() => BtMicLoop(feed, hidPath, gen))
             {
                 IsBackground = true,
                 Name = "PersonaBtMic",
@@ -1481,7 +1505,9 @@ namespace PadForge.Common.Input
         {
             feed.UsbJackStop = false;
             feed.UsbJackPadGuid = padGuid;
-            var th = new System.Threading.Thread(() => UsbJackLoop(feed, hidPath))
+            int gen = System.Threading.Interlocked.Increment(ref feed.UsbJackGenBox);
+            feed.UsbJackGen = gen;
+            var th = new System.Threading.Thread(() => UsbJackLoop(feed, hidPath, gen))
             { IsBackground = true, Name = "PadForge.PersonaUsbJack" };
             feed.UsbJackThread = th;
             th.Start();
@@ -1491,6 +1517,10 @@ namespace PadForge.Common.Input
         private static void StopUsbJack(PersonaFeed feed)
         {
             if (feed.UsbJackThread == null) { feed.UsbJackPadGuid = Guid.Empty; return; }
+            // Retire the generation FIRST: a Start racing this Stop resets
+            // UsbJackStop, and only the generation can still tell the old
+            // loop that it no longer owns the lane.
+            feed.UsbJackGen = 0;
             feed.UsbJackStop = true;
             var h = feed.UsbJackHandle;
             feed.UsbJackHandle = IntPtr.Zero;
@@ -1504,7 +1534,7 @@ namespace PadForge.Common.Input
         /// for the Follow Headphone Jack route. Read-only: this handle
         /// never writes, so it cannot collide with the effect writer's
         /// single-writer contract.</summary>
-        private static void UsbJackLoop(PersonaFeed feed, string hidPath)
+        private static void UsbJackLoop(PersonaFeed feed, string hidPath, int gen)
         {
             IntPtr h = NativeMethods.OpenHidSync(hidPath);
             if (h == IntPtr.Zero || h == new IntPtr(-1))
@@ -1512,14 +1542,20 @@ namespace PadForge.Common.Input
                 Engine.SdlDiagLog.WriteLine("PERSONA jack usb-reader open FAILED");
                 return;
             }
+            // A slow open can complete after this lane was retired (or
+            // restarted). Publishing the handle then would hand it to a
+            // newer reader; close our own and leave instead.
+            if (feed.UsbJackGen != gen) { NativeMethods.CloseHandle(h); return; }
             feed.UsbJackHandle = h;
             var report = new byte[64];
             bool haveLast = false; bool last = false;
-            while (!feed.UsbJackStop)
+            // Read through the LOCAL handle throughout: the shared field
+            // belongs to whichever generation currently owns the lane.
+            while (!feed.UsbJackStop && feed.UsbJackGen == gen)
             {
-                if (!NativeMethods.ReadFileSync(feed.UsbJackHandle, report, report.Length, out int got) || got < 55)
+                if (!NativeMethods.ReadFileSync(h, report, report.Length, out int got) || got < 55)
                 {
-                    if (feed.UsbJackStop) break;
+                    if (feed.UsbJackStop || feed.UsbJackGen != gen) break;
                     System.Threading.Thread.Sleep(50);
                     continue;
                 }
@@ -1532,14 +1568,19 @@ namespace PadForge.Common.Input
                     Engine.SdlDiagLog.WriteLine("PERSONA jack usb plugged=" + plugged);
                 }
             }
-            var hh = feed.UsbJackHandle;
-            feed.UsbJackHandle = IntPtr.Zero;
-            if (hh != IntPtr.Zero) NativeMethods.CloseHandle(hh);
+            // Close OUR handle, and clear the shared field only if it is
+            // still ours. Stop already closed it in the normal path; the
+            // duplicate close is harmless and the ownership check is what
+            // keeps a retired loop from closing the live reader's handle.
+            if (feed.UsbJackGen == gen) feed.UsbJackHandle = IntPtr.Zero;
+            NativeMethods.CloseHandle(h);
         }
 
         private static void StopBtMic(PersonaFeed feed)
         {
             if (feed.BtMicThread == null) { feed.BtMicPadGuid = Guid.Empty; return; }
+            // Retire the generation first (see StopUsbJack).
+            feed.BtMicGen = 0;
             feed.BtMicStop = true;
             var h = feed.BtMicHandle;
             feed.BtMicHandle = IntPtr.Zero;
@@ -1578,7 +1619,7 @@ namespace PadForge.Common.Input
             feed.BtMicPadGuid = Guid.Empty;
         }
 
-        private static void BtMicLoop(PersonaFeed feed, string hidPath)
+        private static void BtMicLoop(PersonaFeed feed, string hidPath, int gen)
         {
             IntPtr h = NativeMethods.OpenHidSync(hidPath);
             if (h == IntPtr.Zero || h == new IntPtr(-1))
@@ -1586,25 +1627,25 @@ namespace PadForge.Common.Input
                 Engine.SdlDiagLog.WriteLine("PERSONA mic bt-reader open FAILED");
                 return;
             }
+            // Retired (or restarted) while our open was in flight: close
+            // our own handle rather than publishing it over the live
+            // reader's. See UsbJackLoop.
+            if (feed.BtMicGen != gen) { NativeMethods.CloseHandle(h); return; }
             feed.BtMicHandle = h;
-            // STEREO, per the wire, not the protocol dump. Every mic frame
-            // carries Opus TOC 0xD4: config 26 (CELT super-wideband, 10 ms),
-            // stereo bit SET, one frame per packet. Observed stable across
-            // thousands of frames (tocVary=0). TechAntohere's dump calls the
-            // mic "48 kHz mono"; the DualSense actually encodes stereo, and
-            // a mono decoder fed a stereo packet yields noise. This hid
-            // until the pad was unmuted because silence decodes to zeros
-            // through either decoder.
+            // Channel count is BtMicChannels, whose own doc block below
+            // records the wire evidence. The decoder is built from that
+            // constant so the two can never disagree.
             var dec = OpusCodecFactory.CreateDecoder(Rate, BtMicChannels);
             var report = new byte[547]; // BT DS5 input caps length; 0x31 arrives in the first 78
             var pcm = new short[BtMicFrameSamples * BtMicChannels];
             var outBuf = new byte[BtMicFrameSamples * 4];
             long lastLog = 0;
-            while (!feed.BtMicStop)
+            // Local handle + generation, exactly as UsbJackLoop documents.
+            while (!feed.BtMicStop && feed.BtMicGen == gen)
             {
-                if (!NativeMethods.ReadFileSync(feed.BtMicHandle, report, report.Length, out int got) || got < 78)
+                if (!NativeMethods.ReadFileSync(h, report, report.Length, out int got) || got < 78)
                 {
-                    if (feed.BtMicStop) break;
+                    if (feed.BtMicStop || feed.BtMicGen != gen) break;
                     System.Threading.Thread.Sleep(50);
                     continue;
                 }
@@ -1818,9 +1859,8 @@ namespace PadForge.Common.Input
                     _btMicPeak = 0;
                 }
             }
-            var hh = feed.BtMicHandle;
-            feed.BtMicHandle = IntPtr.Zero;
-            if (hh != IntPtr.Zero) NativeMethods.CloseHandle(hh);
+            if (feed.BtMicGen == gen) feed.BtMicHandle = IntPtr.Zero;
+            NativeMethods.CloseHandle(h);
         }
 
         /// <summary>Find the feed whose BT mic source is this pad. Sinks are

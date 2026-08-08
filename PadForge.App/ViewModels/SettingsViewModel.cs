@@ -478,6 +478,41 @@ namespace PadForge.ViewModels
         public event EventHandler UninstallMidiServicesRequested;
 
         // ─────────────────────────────────────────────
+        //  SteamVR (VR controllers, issue #49)
+        // ─────────────────────────────────────────────
+
+        private bool _isSteamVrInstalled;
+
+        /// <summary>Whether a SteamVR install (either shape: Steam client
+        /// or the Steam-free steamcmd one) is present.</summary>
+        public bool IsSteamVrInstalled
+        {
+            get => _isSteamVrInstalled;
+            set
+            {
+                if (SetProperty(ref _isSteamVrInstalled, value))
+                {
+                    OnPropertyChanged(nameof(SteamVrStatusText));
+                    _installSteamVrCommand?.NotifyCanExecuteChanged();
+                }
+            }
+        }
+
+        /// <summary>SteamVR status display text.</summary>
+        public string SteamVrStatusText => _isSteamVrInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
+
+        private RelayCommand _installSteamVrCommand;
+
+        /// <summary>Command to install SteamVR Steam-free via steamcmd.</summary>
+        public RelayCommand InstallSteamVrCommand =>
+            _installSteamVrCommand ??= new RelayCommand(
+                () => InstallSteamVrRequested?.Invoke(this, EventArgs.Empty),
+                () => !_isSteamVrInstalled);
+
+        /// <summary>Raised when the user requests the Steam-free SteamVR install.</summary>
+        public event EventHandler InstallSteamVrRequested;
+
+        // ─────────────────────────────────────────────
         //  Driver uninstall guards
         // ─────────────────────────────────────────────
 

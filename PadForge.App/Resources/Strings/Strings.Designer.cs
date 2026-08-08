@@ -207,6 +207,11 @@ public class Strings : INotifyPropertyChanged
     public string Main_MIDI_Max_Format => Get("Main_MIDI_Max_Format");
     public string Main_VR_RequiresSteamVR => Get("Main_VR_RequiresSteamVR");
     public string Main_VR_Max_Format => Get("Main_VR_Max_Format");
+    public string Settings_SteamVR => Get("Settings_SteamVR");
+    public string Settings_SteamVRDesc => Get("Settings_SteamVRDesc");
+    public string Status_DownloadingSteamVR => Get("Status_DownloadingSteamVR");
+    public string Status_DownloadingInstallingSteamVR => Get("Status_DownloadingInstallingSteamVR");
+    public string Status_SteamVRInstallFailed_Format => Get("Status_SteamVRInstallFailed_Format");
     public string Status_InstallingHidHide => Get("Status_InstallingHidHide");
     public string Status_UninstallingHidHide => Get("Status_UninstallingHidHide");
     public string Status_DownloadingMidi => Get("Status_DownloadingMidi");

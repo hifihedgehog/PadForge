@@ -84,6 +84,32 @@ namespace PadForge.Common.Input
         /// same two devices.</summary>
         public const int MaxVrSlots = 1;
 
+        /// <summary>True when another slot may take
+        /// <paramref name="type"/>. Only VR is capped below the global slot
+        /// count today, and the cap must be enforced HERE rather than at
+        /// each UI entry point: the add-popup checked it, the sidebar
+        /// segment, the dashboard tile, and the shared type-change handler
+        /// did not, so a type SWITCH could mint a second VR slot. Two VR
+        /// slots do not fail loudly. HIDMaestro's shared-memory owner check
+        /// accepts a second consumer from the SAME process, so both submit
+        /// into one channel (latest writer wins), both read the haptic
+        /// stream, and disposing either clears the shared owner.
+        /// <paramref name="excludingSlot"/> is the slot being converted, so
+        /// a slot that is ALREADY this type never blocks itself.</summary>
+        public static bool CanSlotTakeType(Engine.VirtualControllerType type,
+            System.Func<int, Engine.VirtualControllerType> slotType, int excludingSlot = -1)
+        {
+            if (type != Engine.VirtualControllerType.Vr) return true;
+            if (slotType == null) return true;
+            int count = 0;
+            for (int i = 0; i < InputManager.MaxPads; i++)
+            {
+                if (i == excludingSlot) continue;
+                if (SlotCreated[i] && slotType(i) == type) count++;
+            }
+            return count < MaxVrSlots;
+        }
+
         /// <summary>Whether each slot has been explicitly created. Persisted to settings.</summary>
         public static bool[] SlotCreated { get; set; } = new bool[InputManager.MaxPads];
 

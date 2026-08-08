@@ -144,6 +144,9 @@
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services 제거 중…</value></data>
   <data name="Status_OperationCancelled" xml:space="preserve"><value>사용자가 작업을 취소했습니다.</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services 설치 실패: {0}</value></data>
+  <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR 다운로드 중…</value></data>
+  <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Valve 서버에서 SteamVR을 다운로드하여 설치하는 중… 수 GB라 시간이 걸릴 수 있습니다.</value></data>
+  <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>SteamVR 설치 실패: {0}</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>장치 목록을 새로고침했습니다.</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>"{0}" 기록됨 ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>매핑할 항목: {0} {1}</value></data>
@@ -267,6 +270,8 @@
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>사용자 모드 가상 HID 컨트롤러 엔진. PadForge.App에 내장되어 있으며 첫 가상 컨트롤러 생성 시 자동으로 설치됩니다. v3에서 ViGEmBus와 vJoy를 대체합니다.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>가상 MIDI 장치 출력을 위한 SDK 런타임입니다. GitHub에서 다운로드됩니다 (~210 MB).</value></data>
+  <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
+  <data name="Settings_SteamVRDesc" xml:space="preserve"><value>가상 VR 컨트롤러용 VR 런타임입니다. Steam 계정이나 Steam 클라이언트 없이 Valve 서버에서 설치됩니다(수 GB).</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Windows 11 24H2 (빌드 26100) 이상이 필요합니다</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>설정 파일</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>구성을 저장, 다시 로드하거나 초기화합니다.</value></data>

@@ -40,7 +40,7 @@ namespace PadForge.Views
         public event EventHandler<string> ControllerElementRecordRequested;
 
         // Base art size; every element position below is in these pixels.
-        private const double ArtW = 974, ArtH = 725;
+        private const double ArtW = 975, ArtH = 726;
 
         private static readonly Brush LitBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x2C));
         private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA2, 0x4D));
@@ -53,18 +53,18 @@ namespace PadForge.Views
 
         private static readonly Elem[] Elements =
         {
-            new("VRController_L_Stick",   232, 108, 60,  60,  "VrLStick"),
-            new("VRController_L_A",       120, 182, 57,  57,  "VrLA"),
-            new("VRController_L_B",       100,  78, 58,  58,  "VrLB"),
-            new("VRController_L_System",  201, 247, 39,  40,  "VrLSystem"),
-            new("VRController_L_Trigger", 298, 343, 75, 102,  "VrLTrigger"),
-            new("VRController_L_Grip",    417, 397, 46, 227,  "VrLGrip"),
-            new("VRController_R_Stick",   681, 108, 60,  60,  "VrRStick"),
-            new("VRController_R_A",       797, 182, 57,  57,  "VrRA"),
-            new("VRController_R_B",       815,  78, 58,  58,  "VrRB"),
-            new("VRController_R_System",  734, 247, 38,  40,  "VrRSystem"),
-            new("VRController_R_Trigger", 604, 343, 71, 102,  "VrRTrigger"),
-            new("VRController_R_Grip",    511, 397, 46, 226,  "VrRGrip"),
+            new("VRController_L_Stick",   233, 109, 60,  60,  "VrLStick"),
+            new("VRController_L_A",       121, 183, 57,  57,  "VrLA"),
+            new("VRController_L_B",       101,  79, 58,  58,  "VrLB"),
+            new("VRController_L_System",  202, 248, 39,  40,  "VrLSystem"),
+            new("VRController_L_Trigger", 299, 344, 75, 102,  "VrLTrigger"),
+            new("VRController_L_Grip",    418, 398, 46, 227,  "VrLGrip"),
+            new("VRController_R_Stick",   682, 109, 60,  60,  "VrRStick"),
+            new("VRController_R_A",       798, 183, 57,  57,  "VrRA"),
+            new("VRController_R_B",       816,  79, 58,  58,  "VrRB"),
+            new("VRController_R_System",  735, 248, 38,  40,  "VrRSystem"),
+            new("VRController_R_Trigger", 605, 344, 71, 102,  "VrRTrigger"),
+            new("VRController_R_Grip",    512, 398, 46, 226,  "VrRGrip"),
         };
 
         private PadViewModel _vm;
@@ -145,8 +145,8 @@ namespace PadForge.Views
             foreach (var el in Elements)
                 AddElement(el, DisplayName(el.Target, st));
 
-            _lArrowHost = AddStickArrow(232, 108, 60, out _lArrow);
-            _rArrowHost = AddStickArrow(681, 108, 60, out _rArrow);
+            _lArrowHost = AddStickArrow(233, 109, 60, out _lArrow);
+            _rArrowHost = AddStickArrow(682, 109, 60, out _rArrow);
 
             _built = true;
         }

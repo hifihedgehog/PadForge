@@ -382,7 +382,13 @@ namespace PadForge.Services
             // "BthPS3 built a child PnP could not start". Comparing this
             // line against the same probe after a connection attempt is
             // what separates them.
-            Ds3DriverInstaller.LogBthPs3ChildState(_log);
+            //
+            // DIAG ring ONLY (LogLine), never the dialog narration: at
+            // this instant the pad has not attempted a connection yet, so
+            // "NONE present" is the EXPECTED baseline, and surfacing it in
+            // the Pair dialog read as an error to the user (owner report
+            // 2026-08-08, screenshot).
+            Ds3DriverInstaller.LogBthPs3ChildState(LogLine);
 
             r.Success = true;
             r.Error = "ok";

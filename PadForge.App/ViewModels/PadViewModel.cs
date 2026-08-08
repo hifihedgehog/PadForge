@@ -422,6 +422,7 @@ namespace PadForge.ViewModels
             VirtualControllerType.Extended => Strings.Instance.ControllerType_Extended,
             VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
             VirtualControllerType.Midi => Strings.Instance.ControllerType_MIDI,
+            VirtualControllerType.Vr => Strings.Instance.ControllerType_VR,
             _ => string.Empty
         };
 
@@ -1990,6 +1991,8 @@ namespace PadForge.ViewModels
                 InitializeKeyboardMouseMappings();
             else if (OutputType == VirtualControllerType.Midi)
                 InitializeMidiMappings();
+            else if (OutputType == VirtualControllerType.Vr)
+                InitializeVrMappings();
             else if (OutputType is VirtualControllerType.Extended
                      or VirtualControllerType.Nintendo)
                 InitializeRawSurfaceMappings();
@@ -2154,7 +2157,49 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Keyboard + Mouse mappings — full keyboard keys, mouse buttons, and mouse axes.
+        /// VR mappings (issue #49): both SteamVR hands on one grid. Targets
+        /// use the VrLayout key vocabulary ("VrL..."/"VrR...") stored in the
+        /// PadSetting Vr dictionary lane. Left hand rides the LeftStick
+        /// category and right hand the RightStick category for the stick
+        /// axes; pulls sit under Triggers; everything else is a button.
+        /// </summary>
+        private void InitializeVrMappings()
+        {
+            // Left hand
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrLeftA, "VrLA", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrLeftB, "VrLB", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrLeftATouch, "VrLATouch", MappingCategory.Buttons, includeInMapAll: false));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrLeftBTouch, "VrLBTouch", MappingCategory.Buttons, includeInMapAll: false));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrLeftSystem, "VrLSystem", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrLeftGripClick, "VrLGripClick", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrLeftTriggerClick, "VrLTriggerClick", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickButton, "VrLStickClick", MappingCategory.Buttons));
+
+            // Right hand
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrRightA, "VrRA", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrRightB, "VrRB", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrRightATouch, "VrRATouch", MappingCategory.Buttons, includeInMapAll: false));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrRightBTouch, "VrRBTouch", MappingCategory.Buttons, includeInMapAll: false));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrRightSystem, "VrRSystem", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrRightGripClick, "VrRGripClick", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrRightTriggerClick, "VrRTriggerClick", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickButton, "VrRStickClick", MappingCategory.Buttons));
+
+            // Pulls
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftTrigger, "VrLTrigger", MappingCategory.Triggers));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_RightTrigger, "VrRTrigger", MappingCategory.Triggers));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrLeftGrip, "VrLGrip", MappingCategory.Triggers));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_VrRightGrip, "VrRGrip", MappingCategory.Triggers));
+
+            // Stick axes
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickX, "VrLStickX", MappingCategory.LeftStick, "VrLStickXNeg"));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickY, "VrLStickY", MappingCategory.LeftStick, "VrLStickYNeg"));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickX, "VrRStickX", MappingCategory.RightStick, "VrRStickXNeg"));
+            Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickY, "VrRStickY", MappingCategory.RightStick, "VrRStickYNeg"));
+        }
+
+        /// <summary>
+        /// Keyboard + Mouse mappings: full keyboard keys, mouse buttons, and mouse axes.
         /// Targets use "Kbm" prefix for dictionary-based PadSetting storage.
         /// Key targets: "KbmKey{vk}" where vk is the Windows virtual-key code (hex).
         /// Mouse buttons: "KbmMBtn{0-4}" (LMB, RMB, MMB, X1, X2).
@@ -4218,6 +4263,11 @@ namespace PadForge.ViewModels
                 item.PropertyChanged -= OnStickConfigPropertyChanged;
             StickConfigs.Clear();
 
+            // VR: the Vr mapper reads no stick-tuning keys, so there is no
+            // stick config surface to show.
+            if (OutputType == VirtualControllerType.Vr)
+                return;
+
             bool isKbm = OutputType == VirtualControllerType.KeyboardMouse;
             if (isKbm)
             {
@@ -4284,8 +4334,12 @@ namespace PadForge.ViewModels
                 item.PropertyChanged -= OnTriggerConfigPropertyChanged;
             TriggerConfigs.Clear();
 
-            // KBM has no triggers — scroll is on Right Stick Y.
+            // KBM has no triggers. Scroll is on Right Stick Y.
             if (OutputType == VirtualControllerType.KeyboardMouse)
+                return;
+
+            // VR: the Vr mapper reads no trigger-tuning keys.
+            if (OutputType == VirtualControllerType.Vr)
                 return;
 
             // Xbox / PlayStation use a fixed 2-trigger gamepad grid;
@@ -5556,8 +5610,8 @@ namespace PadForge.ViewModels
         /// <summary>Slot-type gate for the Output tab. SOCD covers the
         /// gamepad and raw-surface types, its KBM twin covers
         /// KeyboardMouse, and Keep Awake covers the gamepad types, so
-        /// only MIDI has no output-behavior surface at all.</summary>
-        public bool OutputTabVisible => _outputType != VirtualControllerType.Midi;
+        /// only MIDI and VR have no output-behavior surface at all.</summary>
+        public bool OutputTabVisible => _outputType is not (VirtualControllerType.Midi or VirtualControllerType.Vr);
 
         /// <summary>Slot-type gate for the Bass Shakers tab. The feature
         /// decodes the game feedback the virtual controller RECEIVES,

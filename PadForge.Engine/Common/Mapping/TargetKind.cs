@@ -34,6 +34,22 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (string.IsNullOrEmpty(target)) return TargetKind.Button;
 
+            // VR targets (issue #49): stick axes are bipolar, trigger and
+            // grip pulls are unipolar; every other Vr name (clicks,
+            // touches, System) is a button via the default arm. The
+            // "...Click" names end past the axis suffixes, so the
+            // suffix checks below cannot misfire on them.
+            if (target.StartsWith("Vr", System.StringComparison.Ordinal))
+            {
+                if (target.EndsWith("StickX", System.StringComparison.Ordinal)
+                    || target.EndsWith("StickY", System.StringComparison.Ordinal))
+                    return TargetKind.BipolarAxis;
+                if (target.EndsWith("Trigger", System.StringComparison.Ordinal)
+                    || target.EndsWith("Grip", System.StringComparison.Ordinal))
+                    return TargetKind.Trigger;
+                return TargetKind.Button;
+            }
+
             switch (target)
             {
                 case "LeftTrigger":

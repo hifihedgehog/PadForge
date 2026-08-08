@@ -3291,7 +3291,7 @@ namespace PadForge.Services
                     : Strings.Instance.Common_Idle;
             }
 
-            int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, globalCount = 0;
+            int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, vrCount = 0, globalCount = 0;
             foreach (var slot in dash.SlotSummaries)
             {
                 globalCount++;
@@ -3318,6 +3318,10 @@ namespace PadForge.Services
                     case VirtualControllerType.Nintendo:
                         nintendoCount++;
                         slot.TypeInstanceLabel = LiveValueString(nintendoCount);
+                        break;
+                    case VirtualControllerType.Vr:
+                        vrCount++;
+                        slot.TypeInstanceLabel = LiveValueString(vrCount);
                         break;
                     default:
                         xboxCount++;
@@ -3415,8 +3419,9 @@ namespace PadForge.Services
             // device so an empty slot's ledger stays empty.
             bool isMidi = padVm.OutputType == VirtualControllerType.Midi;
             bool isKbm = padVm.OutputType == VirtualControllerType.KeyboardMouse;
-            bool capSticks = !isMidi && bindings.Count > 0;
-            bool capTriggers = !isMidi && !isKbm && bindings.Count > 0;
+            bool isVrSlot = padVm.OutputType == VirtualControllerType.Vr;
+            bool capSticks = !isMidi && !isVrSlot && bindings.Count > 0;
+            bool capTriggers = !isMidi && !isKbm && !isVrSlot && bindings.Count > 0;
 
             // One readout line per device per stage (user report
             // 2026-07-06: the flat cross-device union hid which device
@@ -4716,6 +4721,34 @@ namespace PadForge.Services
                 return null;
             }
 
+            // VR: hand buttons (VrLayout bit vocabulary), stick axes
+            // (bipolar short), trigger/grip pulls (0..32767).
+            if (outputType == VirtualControllerType.Vr)
+            {
+                var vr = _inputManager.CombinedVrRawStates[padIndex];
+                string t = target;
+                if (t.EndsWith("Neg", StringComparison.Ordinal))
+                    t = t.Substring(0, t.Length - 3);
+                switch (t)
+                {
+                    case "VrLStickX": return vr.Left.StickX;
+                    case "VrLStickY": return vr.Left.StickY;
+                    case "VrRStickX": return vr.Right.StickX;
+                    case "VrRStickY": return vr.Right.StickY;
+                    case "VrLTrigger": return vr.Left.Trigger;
+                    case "VrLGrip": return vr.Left.Grip;
+                    case "VrRTrigger": return vr.Right.Trigger;
+                    case "VrRGrip": return vr.Right.Grip;
+                }
+                for (int b = 0; b < VrLayout.LeftButtonKeys.Length; b++)
+                    if (t == VrLayout.LeftButtonKeys[b])
+                        return (vr.Left.Buttons & (1 << b)) != 0 ? 1 : 0;
+                for (int b = 0; b < VrLayout.RightButtonKeys.Length; b++)
+                    if (t == VrLayout.RightButtonKeys[b])
+                        return (vr.Right.Buttons & (1 << b)) != 0 ? 1 : 0;
+                return null;
+            }
+
             return null;
         }
 
@@ -5412,6 +5445,12 @@ namespace PadForge.Services
                         owningPs.SetKbmMapping(target, mapping.SourceDescriptor ?? string.Empty);
                         if (mapping.NegSettingName != null)
                             owningPs.SetKbmMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
+                    }
+                    else if (target.StartsWith("Vr", StringComparison.Ordinal))
+                    {
+                        owningPs.SetVrMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                        if (mapping.NegSettingName != null)
+                            owningPs.SetVrMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
                     }
                     else
                     {
@@ -12763,6 +12802,7 @@ namespace PadForge.Services
                 ExtendedSlotOrder      = SettingsManager.ExtendedSlotOrder.ToArray(),
                 KeyboardMouseSlotOrder = SettingsManager.KeyboardMouseSlotOrder.ToArray(),
                 MidiSlotOrder          = SettingsManager.MidiSlotOrder.ToArray(),
+                VrSlotOrder            = SettingsManager.VrSlotOrder.ToArray(),
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
@@ -13038,6 +13078,7 @@ namespace PadForge.Services
             RemapSlotOrder(p.ExtendedSlotOrder, oldToNew);
             RemapSlotOrder(p.KeyboardMouseSlotOrder, oldToNew);
             RemapSlotOrder(p.MidiSlotOrder, oldToNew);
+            RemapSlotOrder(p.VrSlotOrder, oldToNew);
         }
 
         /// <summary>
@@ -13565,7 +13606,8 @@ namespace PadForge.Services
                 profile.ExtendedSlotOrder,
                 profile.KeyboardMouseSlotOrder,
                 profile.MidiSlotOrder,
-                profile.NintendoSlotOrder);
+                profile.NintendoSlotOrder,
+                profile.VrSlotOrder);
 
             // ── Apply Extended/MIDI configurations ──
             if (profile.ExtendedConfigs != null)
@@ -13966,6 +14008,7 @@ namespace PadForge.Services
                     profile.ExtendedSlotOrder      = snapshot.ExtendedSlotOrder;
                     profile.KeyboardMouseSlotOrder = snapshot.KeyboardMouseSlotOrder;
                     profile.MidiSlotOrder          = snapshot.MidiSlotOrder;
+                    profile.VrSlotOrder            = snapshot.VrSlotOrder;
                     profile.EnableDsuMotionServer = snapshot.EnableDsuMotionServer;
                     profile.DsuMotionServerPort = snapshot.DsuMotionServerPort;
                     profile.EnableWebController = snapshot.EnableWebController;

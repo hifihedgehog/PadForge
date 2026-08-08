@@ -177,6 +177,15 @@ namespace PadForge.Engine.Data
         public KbmRawState KbmRawOutputState { get; set; }
 
         /// <summary>
+        /// The mapped VR raw output state computed in Step 3 for Vr slots.
+        /// All-value struct, so assignment publishes atomically enough for
+        /// the Step 4 reader (the KBM discipline).
+        /// Written by the background thread, read by Step 4.
+        /// </summary>
+        [XmlIgnore]
+        public VrRawState VrRawOutputState { get; set; }
+
+        /// <summary>
         /// PlayStation touchpad output state for this device.
         /// Written by the background thread, read by Step 4.
         /// </summary>

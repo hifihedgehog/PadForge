@@ -29,6 +29,8 @@ namespace PadForge.Engine.Data
                 return GetMidiPosition(propertyName);
             if (type == VirtualControllerType.KeyboardMouse)
                 return GetKbmPosition(propertyName);
+            if (type == VirtualControllerType.Vr)
+                return GetVrPosition(propertyName);
             // Xbox / PlayStation / Extended gamepad preset
             return GetGamepadPosition(propertyName);
         }
@@ -44,6 +46,8 @@ namespace PadForge.Engine.Data
                 return GetMidiPropertyName(slot);
             if (type == VirtualControllerType.KeyboardMouse)
                 return GetKbmPropertyName(slot);
+            if (type == VirtualControllerType.Vr)
+                return GetVrPropertyName(slot);
             return GetGamepadPropertyName(slot);
         }
 
@@ -286,6 +290,70 @@ namespace PadForge.Engine.Data
         };
 
         // ─────────────────────────────────────────────
+        //  VR (issue #49): one slot = the left+right hand pair
+        // ─────────────────────────────────────────────
+
+        // Button positions chosen so a gamepad slot translates naturally:
+        // A/B land on the RIGHT hand, X/Y on the LEFT (the standard VR
+        // face-button split), shoulders on grips, Back/Start on System,
+        // stick clicks on stick clicks. Touch and trigger-click targets
+        // take the tail positions so paddle-heavy gamepad configs still
+        // land somewhere meaningful. Axis positions mirror the gamepad
+        // axis order exactly (LX0 LY1 LT2 RX3 RY4 RT5), with the grips as
+        // the two extra analog lanes.
+        private static readonly Dictionary<string, MappingSlot> _vrMap = new()
+        {
+            // Buttons
+            ["VrRA"]            = new(ControlCategory.Button, 0),
+            ["VrRB"]            = new(ControlCategory.Button, 1),
+            ["VrLA"]            = new(ControlCategory.Button, 2),
+            ["VrLB"]            = new(ControlCategory.Button, 3),
+            ["VrLGripClick"]    = new(ControlCategory.Button, 4),
+            ["VrRGripClick"]    = new(ControlCategory.Button, 5),
+            ["VrLSystem"]       = new(ControlCategory.Button, 6),
+            ["VrRSystem"]       = new(ControlCategory.Button, 7),
+            ["VrLStickClick"]   = new(ControlCategory.Button, 8),
+            ["VrRStickClick"]   = new(ControlCategory.Button, 9),
+            ["VrLTriggerClick"] = new(ControlCategory.Button, 10),
+            ["VrRTriggerClick"] = new(ControlCategory.Button, 11),
+            ["VrLATouch"]       = new(ControlCategory.Button, 12),
+            ["VrRATouch"]       = new(ControlCategory.Button, 13),
+            ["VrLBTouch"]       = new(ControlCategory.Button, 14),
+            ["VrRBTouch"]       = new(ControlCategory.Button, 15),
+            // Axes
+            ["VrLStickX"]  = new(ControlCategory.Axis, 0),
+            ["VrLStickY"]  = new(ControlCategory.Axis, 1),
+            ["VrLTrigger"] = new(ControlCategory.Axis, 2),
+            ["VrRStickX"]  = new(ControlCategory.Axis, 3),
+            ["VrRStickY"]  = new(ControlCategory.Axis, 4),
+            ["VrRTrigger"] = new(ControlCategory.Axis, 5),
+            ["VrLGrip"]    = new(ControlCategory.Axis, 6),
+            ["VrRGrip"]    = new(ControlCategory.Axis, 7),
+            // Axis negatives (stick axes only; triggers/grips are one-sided)
+            ["VrLStickXNeg"] = new(ControlCategory.AxisNeg, 0),
+            ["VrLStickYNeg"] = new(ControlCategory.AxisNeg, 1),
+            ["VrRStickXNeg"] = new(ControlCategory.AxisNeg, 3),
+            ["VrRStickYNeg"] = new(ControlCategory.AxisNeg, 4),
+            // No D-Pad: VR controllers have none (like MIDI).
+        };
+
+        private static readonly Dictionary<MappingSlot, string> _vrReverse = BuildVrReverse();
+
+        private static Dictionary<MappingSlot, string> BuildVrReverse()
+        {
+            var reverse = new Dictionary<MappingSlot, string>();
+            foreach (var kvp in _vrMap)
+                reverse[kvp.Value] = kvp.Key;
+            return reverse;
+        }
+
+        private static MappingSlot GetVrPosition(string name)
+            => name != null && _vrMap.TryGetValue(name, out var slot) ? slot : null;
+
+        private static string GetVrPropertyName(MappingSlot slot)
+            => _vrReverse.TryGetValue(slot, out var name) ? name : null;
+
+        // ─────────────────────────────────────────────
         //  Layout detection helper
         // ─────────────────────────────────────────────
 
@@ -303,7 +371,7 @@ namespace PadForge.Engine.Data
             return srcLayout == tgtLayout;
         }
 
-        private enum LayoutKind { Gamepad, Extended, Midi, Kbm }
+        private enum LayoutKind { Gamepad, Extended, Midi, Kbm, Vr }
 
         private static LayoutKind GetLayoutKind(VirtualControllerType type, bool isExtended)
         {
@@ -313,6 +381,8 @@ namespace PadForge.Engine.Data
                 return LayoutKind.Midi;
             if (type == VirtualControllerType.KeyboardMouse)
                 return LayoutKind.Kbm;
+            if (type == VirtualControllerType.Vr)
+                return LayoutKind.Vr;
             return LayoutKind.Gamepad; // Xbox, PlayStation, Extended gamepad preset
         }
 
@@ -327,6 +397,7 @@ namespace PadForge.Engine.Data
                     ? "Nintendo" : "Extended",
                 LayoutKind.Midi       => "MIDI",
                 LayoutKind.Kbm        => "KB+M",
+                LayoutKind.Vr         => "VR",
                 _ => type switch
                 {
                     VirtualControllerType.Xbox    => "Xbox",

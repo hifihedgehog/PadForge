@@ -106,6 +106,7 @@
   <data name="ControllerType_Extended" xml:space="preserve"><value>Esteso</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Tastiera + Mouse</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
+  <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Chiusura di PadForge...</value></data>
@@ -132,6 +133,8 @@
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Tastiera + Mouse (max {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (richiede Windows MIDI Services)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (max {0})</value></data>
+  <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (richiede SteamVR)</value></data>
+  <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (max {0})</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>Installazione di HidHide in corso…</value></data>
@@ -1025,6 +1028,22 @@
   <data name="Btn_RightPaddle" xml:space="preserve"><value>Tasto posteriore destro</value></data>
   <data name="Btn_LeftFn" xml:space="preserve"><value>Fn sinistro</value></data>
   <data name="Btn_RightFn" xml:space="preserve"><value>Fn destro</value></data>
+  <data name="Btn_VrLeftA" xml:space="preserve"><value>A sinistro</value></data>
+  <data name="Btn_VrLeftB" xml:space="preserve"><value>B sinistro</value></data>
+  <data name="Btn_VrLeftATouch" xml:space="preserve"><value>A sinistro (tocco)</value></data>
+  <data name="Btn_VrLeftBTouch" xml:space="preserve"><value>B sinistro (tocco)</value></data>
+  <data name="Btn_VrLeftSystem" xml:space="preserve"><value>Sistema sinistro</value></data>
+  <data name="Btn_VrLeftGrip" xml:space="preserve"><value>Grip sinistro</value></data>
+  <data name="Btn_VrLeftGripClick" xml:space="preserve"><value>Clic grip sinistro</value></data>
+  <data name="Btn_VrLeftTriggerClick" xml:space="preserve"><value>Clic grilletto sinistro</value></data>
+  <data name="Btn_VrRightA" xml:space="preserve"><value>A destro</value></data>
+  <data name="Btn_VrRightB" xml:space="preserve"><value>B destro</value></data>
+  <data name="Btn_VrRightATouch" xml:space="preserve"><value>A destro (tocco)</value></data>
+  <data name="Btn_VrRightBTouch" xml:space="preserve"><value>B destro (tocco)</value></data>
+  <data name="Btn_VrRightSystem" xml:space="preserve"><value>Sistema destro</value></data>
+  <data name="Btn_VrRightGrip" xml:space="preserve"><value>Grip destro</value></data>
+  <data name="Btn_VrRightGripClick" xml:space="preserve"><value>Clic grip destro</value></data>
+  <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>Clic grilletto destro</value></data>
 
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Pulsante sinistro del mouse</value></data>

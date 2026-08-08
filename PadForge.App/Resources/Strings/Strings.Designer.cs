@@ -180,6 +180,7 @@ public class Strings : INotifyPropertyChanged
     public string ControllerType_Extended => Get("ControllerType_Extended");
     public string ControllerType_KeyboardMouse => Get("ControllerType_KeyboardMouse");
     public string ControllerType_MIDI => Get("ControllerType_MIDI");
+    public string ControllerType_VR => Get("ControllerType_VR");
     public string Main_ShuttingDown => Get("Main_ShuttingDown");
     public string Main_StartingUp => Get("Main_StartingUp");
     public string Main_CleaningPreviousSession => Get("Main_CleaningPreviousSession");
@@ -204,6 +205,8 @@ public class Strings : INotifyPropertyChanged
     public string Main_KBM_Max_Format => Get("Main_KBM_Max_Format");
     public string Main_MIDI_RequiresMidiServices => Get("Main_MIDI_RequiresMidiServices");
     public string Main_MIDI_Max_Format => Get("Main_MIDI_Max_Format");
+    public string Main_VR_RequiresSteamVR => Get("Main_VR_RequiresSteamVR");
+    public string Main_VR_Max_Format => Get("Main_VR_Max_Format");
     public string Status_InstallingHidHide => Get("Status_InstallingHidHide");
     public string Status_UninstallingHidHide => Get("Status_UninstallingHidHide");
     public string Status_DownloadingMidi => Get("Status_DownloadingMidi");
@@ -2407,6 +2410,22 @@ public class Strings : INotifyPropertyChanged
     public string Btn_RightPaddle => Get("Btn_RightPaddle");
     public string Btn_LeftFn => Get("Btn_LeftFn");
     public string Btn_RightFn => Get("Btn_RightFn");
+    public string Btn_VrLeftA => Get("Btn_VrLeftA");
+    public string Btn_VrLeftB => Get("Btn_VrLeftB");
+    public string Btn_VrLeftATouch => Get("Btn_VrLeftATouch");
+    public string Btn_VrLeftBTouch => Get("Btn_VrLeftBTouch");
+    public string Btn_VrLeftSystem => Get("Btn_VrLeftSystem");
+    public string Btn_VrLeftGrip => Get("Btn_VrLeftGrip");
+    public string Btn_VrLeftGripClick => Get("Btn_VrLeftGripClick");
+    public string Btn_VrLeftTriggerClick => Get("Btn_VrLeftTriggerClick");
+    public string Btn_VrRightA => Get("Btn_VrRightA");
+    public string Btn_VrRightB => Get("Btn_VrRightB");
+    public string Btn_VrRightATouch => Get("Btn_VrRightATouch");
+    public string Btn_VrRightBTouch => Get("Btn_VrRightBTouch");
+    public string Btn_VrRightSystem => Get("Btn_VrRightSystem");
+    public string Btn_VrRightGrip => Get("Btn_VrRightGrip");
+    public string Btn_VrRightGripClick => Get("Btn_VrRightGripClick");
+    public string Btn_VrRightTriggerClick => Get("Btn_VrRightTriggerClick");
     // Mouse VK buttons
     public string Key_LButton => Get("Key_LButton");
     public string Key_RButton => Get("Key_RButton");

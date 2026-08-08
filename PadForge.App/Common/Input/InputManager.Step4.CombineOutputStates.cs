@@ -52,6 +52,7 @@ namespace PadForge.Common.Input
                                      && SlotRawHidSurface[padIndex];
                     bool isMidi = SlotControllerTypes[padIndex] == VirtualControllerType.Midi;
                     bool isKbm = SlotControllerTypes[padIndex] == VirtualControllerType.KeyboardMouse;
+                    bool isVr = SlotControllerTypes[padIndex] == VirtualControllerType.Vr;
                     bool isDs4 = SlotControllerTypes[padIndex] == VirtualControllerType.PlayStation;
 
                     if (slotCount == 0)
@@ -60,6 +61,7 @@ namespace PadForge.Common.Input
                         if (isExtended) CombinedRawHidStates[padIndex].Clear();
                         if (isMidi) CombinedMidiRawStates[padIndex].Clear();
                         if (isKbm) CombinedKbmRawStates[padIndex].Clear();
+                        if (isVr) CombinedVrRawStates[padIndex].Clear();
                         if (isDs4) CombinedTouchpadStates[padIndex] = default;
                         continue;
                     }
@@ -96,6 +98,9 @@ namespace PadForge.Common.Input
                             CopyMidiInto(ref CombinedMidiRawStates[padIndex], ref singleMidi);
                         }
                         if (isKbm) CombinedKbmRawStates[padIndex] = _padIndexBuffer[0].KbmRawOutputState;
+                        // All value fields, so the struct assign copies (the
+                        // KBM discipline). No alias hazard.
+                        if (isVr) CombinedVrRawStates[padIndex] = _padIndexBuffer[0].VrRawOutputState;
                         if (isDs4)
                         {
                             CombinedTouchpadStates[padIndex] = _padIndexBuffer[0].TouchpadOutputState;
@@ -125,6 +130,8 @@ namespace PadForge.Common.Input
                     bool firstMidi = true;
                     KbmRawState combinedKbm = default;
                     bool firstKbm = true;
+                    VrRawState combinedVr = default;
+                    bool firstVr = true;
 
                     for (int si = 0; si < slotCount; si++)
                     {
@@ -203,6 +210,19 @@ namespace PadForge.Common.Input
                                 combinedKbm = KbmRawState.Combine(combinedKbm, us.KbmRawOutputState);
                             }
                         }
+
+                        if (isVr)
+                        {
+                            if (firstVr)
+                            {
+                                combinedVr = us.VrRawOutputState;
+                                firstVr = false;
+                            }
+                            else
+                            {
+                                combinedVr.Merge(us.VrRawOutputState);
+                            }
+                        }
                     }
 
                     CombinedOutputStates[padIndex] = combined;
@@ -221,6 +241,7 @@ namespace PadForge.Common.Input
                     // the empty-slot Clear() writes through.
                     if (isMidi) CopyMidiInto(ref CombinedMidiRawStates[padIndex], ref combinedMidi);
                     if (isKbm) CombinedKbmRawStates[padIndex] = combinedKbm;
+                    if (isVr) CombinedVrRawStates[padIndex] = combinedVr;
 
                     // Touchpad: first device with active finger wins (single-source).
                     if (isDs4)

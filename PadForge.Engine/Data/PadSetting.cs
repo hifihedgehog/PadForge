@@ -1008,6 +1008,79 @@ namespace PadForge.Engine.Data
         }
 
         // ─────────────────────────────────────────────
+        //  VR mappings (dictionary-based, issue #49)
+        //  Keys: the VrLayout vocabulary ("VrLTrigger", "VrRStickXNeg",
+        //  "VrLA", ...). Values: mapping descriptors, same format as the
+        //  MIDI/KBM lanes this mirrors, including the lock discipline
+        //  (poll thread reads while the UI edits).
+        // ─────────────────────────────────────────────
+
+        [XmlArray("VrMappings")]
+        [XmlArrayItem("Map")]
+        public RawMappingEntry[] VrMappingEntries { get; set; }
+
+        [XmlIgnore]
+        private Dictionary<string, string> _vrMappingDict;
+
+        public string GetVrMapping(string key)
+        {
+            EnsureVrDict();
+            lock (_vrDictLock)
+                return _vrMappingDict.TryGetValue(key, out var val) ? val : "";
+        }
+
+        public void SetVrMapping(string key, string value)
+        {
+            EnsureVrDict();
+            lock (_vrDictLock)
+            {
+                if (string.IsNullOrEmpty(value))
+                    _vrMappingDict.Remove(key);
+                else
+                    _vrMappingDict[key] = value;
+            }
+        }
+
+        public void FlushVrMappings()
+        {
+            if (_vrMappingDict == null) return; // Not initialized. Array is canonical.
+            lock (_vrDictLock)
+            {
+                if (_vrMappingDict.Count == 0)
+                {
+                    VrMappingEntries = null;
+                    return;
+                }
+                var entries = new RawMappingEntry[_vrMappingDict.Count];
+                int i = 0;
+                foreach (var kvp in _vrMappingDict)
+                    entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                VrMappingEntries = entries;
+            }
+        }
+
+        private readonly object _vrDictLock = new();
+
+        private void EnsureVrDict()
+        {
+            if (_vrMappingDict != null) return;
+            lock (_vrDictLock)
+            {
+                if (_vrMappingDict != null) return;
+                var dict = new Dictionary<string, string>(StringComparer.Ordinal);
+                if (VrMappingEntries != null)
+                {
+                    foreach (var e in VrMappingEntries)
+                    {
+                        if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
+                            dict[e.Key] = e.Value;
+                    }
+                }
+                _vrMappingDict = dict;
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  KBM mappings (dictionary-based)
         //  Used for KeyboardMouse output with keyboard key + mouse targets.
         //  Keys: "KbmKey41" (VK_A), "KbmMouseX", "KbmMouseXNeg", "KbmMBtn0", etc.
@@ -1750,7 +1823,9 @@ namespace PadForge.Engine.Data
             (MidiMappingEntries != null && MidiMappingEntries.Length > 0) ||
             (_midiMappingDict != null && _midiMappingDict.Count > 0) ||
             (KbmMappingEntries != null && KbmMappingEntries.Length > 0) ||
-            (_kbmMappingDict != null && _kbmMappingDict.Count > 0);
+            (_kbmMappingDict != null && _kbmMappingDict.Count > 0) ||
+            (VrMappingEntries != null && VrMappingEntries.Length > 0) ||
+            (_vrMappingDict != null && _vrMappingDict.Count > 0);
 
         /// <summary>
         /// Clears all mapping descriptors (standard, Extended, MIDI, and KBM) plus the
@@ -1837,11 +1912,13 @@ namespace PadForge.Engine.Data
             }
             RawMappingEntries = null; // re-flushed from the dict on save
 
-            // MIDI/KBM mapping dictionaries and arrays (no tuning shares these).
+            // MIDI/KBM/VR mapping dictionaries and arrays (no tuning shares these).
             MidiMappingEntries = null;
             _midiMappingDict = null;
             KbmMappingEntries = null;
             _kbmMappingDict = null;
+            VrMappingEntries = null;
+            _vrMappingDict = null;
 
             // Per-mapping deadzone/bidirectional companions are keyed by the target
             // names cleared above: entries for a previous layout would otherwise
@@ -1939,6 +2016,13 @@ namespace PadForge.Engine.Data
             if (KbmMappingEntries != null)
             {
                 foreach (var e in KbmMappingEntries)
+                    Add(e.Value);
+            }
+
+            // VR custom mappings
+            if (VrMappingEntries != null)
+            {
+                foreach (var e in VrMappingEntries)
                     Add(e.Value);
             }
 
@@ -2547,6 +2631,7 @@ namespace PadForge.Engine.Data
             // Read from gamepad properties (Xbox / PlayStation / Extended gamepad preset source)
             if (sourceType != VirtualControllerType.Midi &&
                 sourceType != VirtualControllerType.KeyboardMouse &&
+                sourceType != VirtualControllerType.Vr &&
                 !(sourceType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
                   && sourceIsExtended))
             {
@@ -2601,6 +2686,18 @@ namespace PadForge.Engine.Data
                 }
             }
 
+            // Read from VR dictionary (Vr source)
+            if (sourceType == VirtualControllerType.Vr && source.VrMappingEntries != null)
+            {
+                foreach (var e in source.VrMappingEntries)
+                {
+                    if (string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
+                    var slot = MappingTranslation.GetPosition(e.Key, sourceType, false);
+                    if (slot != null)
+                        translated[slot] = e.Value;
+                }
+            }
+
             // Step 3: Write translated positions to target layout.
 
             // Clear existing target mappings first.
@@ -2619,6 +2716,11 @@ namespace PadForge.Engine.Data
             {
                 KbmMappingEntries = null;
                 _kbmMappingDict = null;
+            }
+            else if (targetType == VirtualControllerType.Vr)
+            {
+                VrMappingEntries = null;
+                _vrMappingDict = null;
             }
             else
             {
@@ -2644,6 +2746,8 @@ namespace PadForge.Engine.Data
                     SetMidiMapping(targetKey, kvp.Value);
                 else if (targetType == VirtualControllerType.KeyboardMouse)
                     SetKbmMapping(targetKey, kvp.Value);
+                else if (targetType == VirtualControllerType.Vr)
+                    SetVrMapping(targetKey, kvp.Value);
                 else
                 {
                     // Gamepad target: write to standard property.
@@ -2657,6 +2761,7 @@ namespace PadForge.Engine.Data
             FlushRawMappings();
             FlushMidiMappings();
             FlushKbmMappings();
+            FlushVrMappings();
             FlushMappingDeadZones();
             FlushMappingBidirectional();
         }

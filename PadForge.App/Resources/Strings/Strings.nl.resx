@@ -106,6 +106,7 @@
   <data name="ControllerType_Extended" xml:space="preserve"><value>Uitgebreid</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Toetsenbord + Muis</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
+  <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge wordt afgesloten...</value></data>
@@ -132,6 +133,8 @@
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Toetsenbord + Muis (max {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (vereist Windows MIDI Services)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (max {0})</value></data>
+  <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (vereist SteamVR)</value></data>
+  <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (max {0})</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide wordt geïnstalleerd…</value></data>
@@ -1025,6 +1028,22 @@
   <data name="Btn_RightPaddle" xml:space="preserve"><value>Rechterachterknop</value></data>
   <data name="Btn_LeftFn" xml:space="preserve"><value>Fn links</value></data>
   <data name="Btn_RightFn" xml:space="preserve"><value>Fn rechts</value></data>
+  <data name="Btn_VrLeftA" xml:space="preserve"><value>Linker A</value></data>
+  <data name="Btn_VrLeftB" xml:space="preserve"><value>Linker B</value></data>
+  <data name="Btn_VrLeftATouch" xml:space="preserve"><value>Linker A (aanraken)</value></data>
+  <data name="Btn_VrLeftBTouch" xml:space="preserve"><value>Linker B (aanraken)</value></data>
+  <data name="Btn_VrLeftSystem" xml:space="preserve"><value>Linker systeem</value></data>
+  <data name="Btn_VrLeftGrip" xml:space="preserve"><value>Linker grip</value></data>
+  <data name="Btn_VrLeftGripClick" xml:space="preserve"><value>Linker grip-klik</value></data>
+  <data name="Btn_VrLeftTriggerClick" xml:space="preserve"><value>Linker trigger-klik</value></data>
+  <data name="Btn_VrRightA" xml:space="preserve"><value>Rechter A</value></data>
+  <data name="Btn_VrRightB" xml:space="preserve"><value>Rechter B</value></data>
+  <data name="Btn_VrRightATouch" xml:space="preserve"><value>Rechter A (aanraken)</value></data>
+  <data name="Btn_VrRightBTouch" xml:space="preserve"><value>Rechter B (aanraken)</value></data>
+  <data name="Btn_VrRightSystem" xml:space="preserve"><value>Rechter systeem</value></data>
+  <data name="Btn_VrRightGrip" xml:space="preserve"><value>Rechter grip</value></data>
+  <data name="Btn_VrRightGripClick" xml:space="preserve"><value>Rechter grip-klik</value></data>
+  <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>Rechter trigger-klik</value></data>
 
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Linkermuisknop</value></data>

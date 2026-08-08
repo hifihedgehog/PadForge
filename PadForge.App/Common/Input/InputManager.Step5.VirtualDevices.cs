@@ -1655,6 +1655,7 @@ namespace PadForge.Common.Input
                         CombinedRawHidStates[padIndex].Clear();
                         CombinedMidiRawStates[padIndex].Clear();
                         CombinedKbmRawStates[padIndex].Clear();
+                        CombinedVrRawStates[padIndex].Clear();
                         CombinedTouchpadStates[padIndex] = default;
                     }
 
@@ -1682,6 +1683,13 @@ namespace PadForge.Common.Input
                             // reach the OS via the KBM controller: submit neutral (which
                             // releases anything held) instead of its mapped state.
                             kbmVc.SubmitKbmState(IsSlotRestricted(padIndex) ? default : CombinedKbmRawStates[padIndex]);
+                        }
+                        else if (vc is HMaestroVRController vrVc)
+                        {
+                            // Same restricted-peer rule as KBM: a
+                            // gamepad-only-restricted peer feeding this slot
+                            // must not reach SteamVR, so submit neutral.
+                            vrVc.SubmitVrState(IsSlotRestricted(padIndex) ? default : CombinedVrRawStates[padIndex]);
                         }
                         else if (SlotControllerTypes[padIndex] is VirtualControllerType.Extended
                                      or VirtualControllerType.Nintendo
@@ -2081,6 +2089,7 @@ namespace PadForge.Common.Input
                     VirtualControllerType.Nintendo => CreateHMaestroController(VirtualControllerType.Nintendo, profileId, padIndex),
                     VirtualControllerType.Midi => CreateMidiController(padIndex),
                     VirtualControllerType.KeyboardMouse => new KeyboardMouseVirtualController(padIndex),
+                    VirtualControllerType.Vr => new HMaestroVRController(),
                     _ => null
                 };
 

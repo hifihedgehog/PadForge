@@ -109,6 +109,7 @@
   <data name="ControllerType_Extended" xml:space="preserve"><value>Extended</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Keyboard + Mouse</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
+  <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Closing PadForge...</value></data>
@@ -135,6 +136,8 @@
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Keyboard + Mouse (max {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (requires Windows MIDI Services)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (max {0})</value></data>
+  <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (requires SteamVR)</value></data>
+  <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (max {0})</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>Installing HidHide…</value></data>
@@ -1975,6 +1978,22 @@
   <data name="Btn_RightPaddle" xml:space="preserve"><value>Right Back Button</value></data>
   <data name="Btn_LeftFn" xml:space="preserve"><value>Left Fn</value></data>
   <data name="Btn_RightFn" xml:space="preserve"><value>Right Fn</value></data>
+  <data name="Btn_VrLeftA" xml:space="preserve"><value>Left A</value></data>
+  <data name="Btn_VrLeftB" xml:space="preserve"><value>Left B</value></data>
+  <data name="Btn_VrLeftATouch" xml:space="preserve"><value>Left A (Touch)</value></data>
+  <data name="Btn_VrLeftBTouch" xml:space="preserve"><value>Left B (Touch)</value></data>
+  <data name="Btn_VrLeftSystem" xml:space="preserve"><value>Left System</value></data>
+  <data name="Btn_VrLeftGrip" xml:space="preserve"><value>Left Grip</value></data>
+  <data name="Btn_VrLeftGripClick" xml:space="preserve"><value>Left Grip Click</value></data>
+  <data name="Btn_VrLeftTriggerClick" xml:space="preserve"><value>Left Trigger Click</value></data>
+  <data name="Btn_VrRightA" xml:space="preserve"><value>Right A</value></data>
+  <data name="Btn_VrRightB" xml:space="preserve"><value>Right B</value></data>
+  <data name="Btn_VrRightATouch" xml:space="preserve"><value>Right A (Touch)</value></data>
+  <data name="Btn_VrRightBTouch" xml:space="preserve"><value>Right B (Touch)</value></data>
+  <data name="Btn_VrRightSystem" xml:space="preserve"><value>Right System</value></data>
+  <data name="Btn_VrRightGrip" xml:space="preserve"><value>Right Grip</value></data>
+  <data name="Btn_VrRightGripClick" xml:space="preserve"><value>Right Grip Click</value></data>
+  <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>Right Trigger Click</value></data>
 
   <!-- ═══ Keyboard Key Labels ═══ -->
   <!-- Mouse VK buttons -->

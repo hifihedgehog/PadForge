@@ -240,6 +240,9 @@ namespace PadForge.Engine.Data
             AppendDictionarySurfaceRows(ms, devicesAndPadSettings,
                 KbmTargetKey, KbmAxisTargetPrefixes, ps => ps?.KbmMappingEntries,
                 (ps, key) => ps?.GetKbmMapping(key));
+            AppendDictionarySurfaceRows(ms, devicesAndPadSettings,
+                VrTargetKey, VrAxisTargetPrefixes, ps => ps?.VrMappingEntries,
+                (ps, key) => ps?.GetVrMapping(key));
 
             return ms;
         }
@@ -272,6 +275,22 @@ namespace PadForge.Engine.Data
         // KbmScroll is a prefix of KbmScrollH, so the existing entry already
         // classifies both as axis-like; listed explicitly for the reader.
         private static readonly string[] KbmAxisTargetPrefixes = { "KbmMouseX", "KbmMouseY", "KbmScroll" };
+
+        // VR surface grammar (HMaestroVRController targets, issue #49):
+        // stick axes fold Neg legs like the gamepad thumb axes; trigger
+        // and grip pulls read a Neg leg in the Step 3 legacy fallback,
+        // so they classify axis-like too. "VrLTrigger" is a prefix of
+        // "VrLTriggerClick", which merely makes the click's (nonexistent)
+        // Neg lookup a no-op. The Neg legs strip their suffix before
+        // matching, per the shared dictionary-lane rule above.
+        private static readonly System.Text.RegularExpressions.Regex VrTargetKey =
+            new(@"^Vr[LR](System|A|ATouch|B|BTouch|TriggerClick|GripClick|StickClick|StickX|StickY|Trigger|Grip)$",
+                System.Text.RegularExpressions.RegexOptions.Compiled);
+        private static readonly string[] VrAxisTargetPrefixes =
+        {
+            "VrLStickX", "VrLStickY", "VrRStickX", "VrRStickY",
+            "VrLTrigger", "VrRTrigger", "VrLGrip", "VrRGrip",
+        };
 
         /// <summary>Rewrites legacy raw-surface tokens (the pre-2026-07-19
         /// "Extended*" spellings) to the current "Raw*" grammar. Applies to

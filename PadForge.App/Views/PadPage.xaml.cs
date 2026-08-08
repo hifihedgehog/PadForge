@@ -225,6 +225,11 @@ namespace PadForge.Views
             return DataContext is PadViewModel vm && vm.OutputType == Engine.VirtualControllerType.KeyboardMouse;
         }
 
+        private bool IsVr()
+        {
+            return DataContext is PadViewModel vm && vm.OutputType == Engine.VirtualControllerType.Vr;
+        }
+
         private void ApplyViewMode()
         {
             if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null || MidiPreview == null || KBMPreview == null) return;
@@ -264,6 +269,18 @@ namespace PadForge.Views
                 KBMPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
+            else if (IsVr())
+            {
+                // VR (v1): no preview surface yet, hide every preview and
+                // the 2D/3D toggle. The mapping grid below is the whole
+                // editing surface.
+                ControllerModel3D.Visibility = Visibility.Collapsed;
+                ControllerModel2D.Visibility = Visibility.Collapsed;
+                ControllerSchematic.Visibility = Visibility.Collapsed;
+                MidiPreview.Visibility = Visibility.Collapsed;
+                KBMPreview.Visibility = Visibility.Collapsed;
+                ViewModeToggle.Visibility = Visibility.Collapsed;
+            }
             else
             {
                 // Gamepad preset: standard 2D/3D toggle
@@ -290,10 +307,12 @@ namespace PadForge.Views
 
             bool isKbm = IsKBM();
             bool isMidi = IsMidi();
+            bool isVrSlot = IsVr();
             // KBM shows Sticks (Mouse X/Y + Scroll) but hides Triggers; MIDI
             // hides both Sticks and Triggers because its mapping surface is
-            // CC + note, not stick/trigger.
-            TabSticks.Visibility = isMidi ? Visibility.Collapsed : Visibility.Visible;
+            // CC + note, not stick/trigger. VR hides both too: the Vr lane
+            // reads none of the stick/trigger tuning keys those tabs edit.
+            TabSticks.Visibility = (isMidi || isVrSlot) ? Visibility.Collapsed : Visibility.Visible;
             // Raw-surface slots whose profile declares no analog triggers
             // (the Switch Pro's ZL/ZR are digital buttons) have nothing
             // for the Triggers tab to show; hide it like the other
@@ -302,7 +321,7 @@ namespace PadForge.Views
                 && tvm.OutputType is Engine.VirtualControllerType.Extended
                     or Engine.VirtualControllerType.Nintendo
                 && (tvm.ExtendedConfig?.TriggerCount ?? 0) == 0;
-            TabTriggers.Visibility = (isMidi || isKbm || rawNoTriggers)
+            TabTriggers.Visibility = (isMidi || isKbm || isVrSlot || rawNoTriggers)
                 ? Visibility.Collapsed : Visibility.Visible;
 
             // Flick Stick tuning card (#225): keyboard/mouse slots only.

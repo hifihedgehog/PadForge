@@ -49,8 +49,18 @@ namespace PadForge.Engine
             m.Buttons = (byte)(a.Buttons | b.Buttons);
             m.Trigger = a.Trigger >= b.Trigger ? a.Trigger : b.Trigger;
             m.Grip = a.Grip >= b.Grip ? a.Grip : b.Grip;
-            m.StickX = System.Math.Abs(a.StickX) >= System.Math.Abs(b.StickX) ? a.StickX : b.StickX;
-            m.StickY = System.Math.Abs(a.StickY) >= System.Math.Abs(b.StickY) ? a.StickY : b.StickY;
+            // WIDEN TO INT BEFORE Math.Abs. The short overload throws
+            // OverflowException at short.MinValue, because +32768 is not a
+            // short, and -32768 is exactly what a fully deflected axis (or
+            // any digital source mapped to an axis-negative) produces. Two
+            // devices on a VR slot plus one full deflection therefore threw
+            // out of Step 4 every poll, and the slot's whole combined
+            // output was cleared ~1000x/s (owner report 2026-08-08).
+            // MergeGamepad and MergeRawHid in the combine path already
+            // widen for this exact reason; this lane is the one that
+            // shipped without it.
+            m.StickX = System.Math.Abs((int)a.StickX) >= System.Math.Abs((int)b.StickX) ? a.StickX : b.StickX;
+            m.StickY = System.Math.Abs((int)a.StickY) >= System.Math.Abs((int)b.StickY) ? a.StickY : b.StickY;
             return m;
         }
     }

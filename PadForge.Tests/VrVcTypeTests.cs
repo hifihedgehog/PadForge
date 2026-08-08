@@ -53,6 +53,38 @@ namespace PadForge.Tests
             Assert.Equal(-12000, a.Right.StickY);
         }
 
+        /// <summary>A fully deflected axis is exactly short.MinValue, and
+        /// Math.Abs's short overload THROWS there. The merge used it, so a
+        /// two-device VR slot threw OverflowException out of Step 4 on
+        /// every poll the moment any source drove a stick fully negative,
+        /// and the catch cleared the slot's whole combined output ~1000x/s
+        /// (owner report 2026-08-08, named from the DIAG ring). Both the
+        /// no-throw and the magnitude verdict are pinned: short.MinValue
+        /// has the LARGEST magnitude of any short, so it must win.</summary>
+        [Theory]
+        [InlineData(short.MinValue, (short)0)]
+        [InlineData((short)0, short.MinValue)]
+        [InlineData(short.MinValue, short.MaxValue)]
+        [InlineData(short.MinValue, short.MinValue)]
+        public void Merge_FullNegativeDeflection_DoesNotOverflow(short ax, short bx)
+        {
+            var a = new VrRawState();
+            a.Left.StickX = ax;
+            a.Left.StickY = ax;
+            a.Right.StickX = bx;
+
+            var b = new VrRawState();
+            b.Left.StickX = bx;
+            b.Left.StickY = bx;
+            b.Right.StickX = ax;
+
+            a.Merge(in b);   // threw OverflowException before the int widening
+
+            short expected = Math.Abs((int)ax) >= Math.Abs((int)bx) ? ax : bx;
+            Assert.Equal(expected, a.Left.StickX);
+            Assert.Equal(expected, a.Left.StickY);
+        }
+
         [Fact]
         public void ButtonKeys_IndexTheHmvrButtonBitPositions()
         {

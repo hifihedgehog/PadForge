@@ -21,6 +21,10 @@ namespace PadForge.Tests
     /// "from" side is now SettingsManager's per-slot wire stamp, which those
     /// paths set before assigning the VM.
     /// </summary>
+    // Mutates SettingsManager statics, which are process-global; xunit
+    // runs collections in parallel, so it must serialize with every other
+    // class that touches them.
+    [Collection("SettingsManagerStatics")]
     public class NintendoWireStampTests : IDisposable
     {
         private const string S1 = "switch-pro";

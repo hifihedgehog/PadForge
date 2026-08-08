@@ -2535,6 +2535,10 @@ namespace PadForge.Services
                 if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.KeyboardMouse)
                     padVm.KbmOutputSnapshot = _inputManager.CombinedKbmRawStates[i];
 
+                // For Vr slots, push the combined VrRawState to the preview.
+                if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.Vr)
+                    padVm.VrOutputSnapshot = _inputManager.CombinedVrRawStates[i];
+
                 // Per-device state for stick/trigger tab previews.
                 // Pad-page gate: these transforms and the gyro readouts
                 // below feed ONLY the Pad page's tabs; when no Pad page is

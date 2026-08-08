@@ -962,6 +962,7 @@
                         <views:ControllerSchematicView x:Name="ControllerSchematic" Visibility="Collapsed" />
                         <views:MidiPreviewView x:Name="MidiPreview" Visibility="Collapsed" />
                         <views:KBMPreviewView x:Name="KBMPreview" Visibility="Collapsed" />
+                        <views:VRPreviewView x:Name="VRPreview" Visibility="Collapsed" />
 
                         <!-- 2D/3D toggle button (top-left to avoid overlap with 3D Reset View) -->
                         <Button x:Name="ViewModeToggle"

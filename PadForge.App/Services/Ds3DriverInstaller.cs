@@ -442,8 +442,46 @@ namespace PadForge.Services
         {
             try
             {
-                if (Devcon.FindByInterfaceGuid(new Guid("B35924D6-3E16-4A9E-9782-5524A4B79BAC"), out _))
-                    return true;   // already bound
+                // The DOCKED PAD decides, never the interface registry. The
+                // old fast path ("an interface with our GUID exists, so we
+                // are bound") lied two ways at once (#285): the DS3 carries
+                // no USB serial, so EVERY port is its own devnode, and a
+                // registration living on a different node (a second pad
+                // left charging, an old port) kept the GUID present while
+                // the live pad sat on HidUsb. And the install below was
+                // non-forced DiInstallDriver, which loses the driver
+                // ranking contest to inbox WHQL HidUsb on machines with
+                // strict signature ranking, since this package is
+                // Authenticode-only by design. Both together produced the
+                // reporter's state: pad on HidUsb forever, ceremony talking
+                // to a stale interface within 3 ms and failing err=31.
+                var nodes = ListDs3UsbNodes();
+                foreach (var n in nodes)
+                    log($"DS3 USB node: {n.InstanceId} on {(n.Service.Length == 0 ? "(no driver)" : n.Service)}");
+                if (nodes.Count == 0)
+                {
+                    log("No USB DS3 node is present.");
+                    _lastWinUsbFailure = null;
+                    return false;
+                }
+
+                // Coexistence: a pad owned by a real third-party function
+                // driver (DsHidMini's WUDFRd, ...) is never stolen, even by
+                // the explicit ceremony. Inbox HidUsb, driverless, and
+                // generic WINUSB states are ours to (re)bind.
+                var foreign = nodes.Where(n => n.Service.Length != 0
+                    && !n.Service.Equals("HidUsb", StringComparison.OrdinalIgnoreCase)
+                    && !n.Service.Equals("WINUSB", StringComparison.OrdinalIgnoreCase)).ToList();
+                if (foreign.Count > 0)
+                {
+                    log($"A DS3 is owned by another driver ({foreign[0].Service}); not rebinding it.");
+                    _lastWinUsbFailure = null;
+                    return false;
+                }
+
+                if (nodes.All(n => n.Service.Equals("WINUSB", StringComparison.OrdinalIgnoreCase))
+                    && HasActiveDs3WinUsbInterface())
+                    return true;   // the live pad really is ours
 
                 string dir = ExtractDrivers();
                 string winusb = Path.Combine(dir, "WinUSB");
@@ -468,19 +506,114 @@ namespace PadForge.Services
                     return false;
                 }
                 _lastWinUsbFailure = null;
-                InstallInf(Path.Combine(winusb, "ds3_winusb.inf"), log);
+                string infPath = Path.Combine(winusb, "ds3_winusb.inf");
+                InstallInf(infPath, log);
 
-                // The bind takes a moment to re-enumerate the USB node.
+                // Bind the LIVE pad by force. DiInstallDriver above only
+                // stocks the store and applies by ranking, and ranking
+                // prefers inbox WHQL over an Authenticode package, so on a
+                // strict-ranking machine it silently applies nothing. The
+                // targeted forced update is the DsHidMini/ScpToolkit
+                // pattern and is deterministic everywhere.
+                if (!UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, @"USB\VID_054C&PID_0268",
+                        infPath, INSTALLFLAG_FORCE | INSTALLFLAG_NONINTERACTIVE, out _))
+                {
+                    int err = Marshal.GetLastWin32Error();
+                    // ERROR_NO_SUCH_DEVINST: the pad vanished mid-ceremony.
+                    // Anything else still gets the poll below, since the
+                    // non-forced install may have landed on lenient-ranking
+                    // machines.
+                    log($"Forced WinUSB bind returned err={err}.");
+                }
+
+                // The bind takes a moment to re-enumerate the USB node. Done
+                // means the LIVE node(s) report the WINUSB service and our
+                // interface is ACTIVE, not merely that a GUID is registered
+                // somewhere.
                 for (int i = 0; i < 20 && !ct.IsCancellationRequested; i++)
                 {
-                    if (Devcon.FindByInterfaceGuid(new Guid("B35924D6-3E16-4A9E-9782-5524A4B79BAC"), out _))
+                    var now = ListDs3UsbNodes();
+                    if (now.Count > 0
+                        && now.All(n => n.Service.Equals("WINUSB", StringComparison.OrdinalIgnoreCase))
+                        && HasActiveDs3WinUsbInterface())
+                    {
+                        log("DS3 bound to WinUSB.");
                         return true;
+                    }
                     Thread.Sleep(250);
                 }
-                return Devcon.FindByInterfaceGuid(new Guid("B35924D6-3E16-4A9E-9782-5524A4B79BAC"), out _);
+                var final = ListDs3UsbNodes();
+                log("WinUSB bind did not land: "
+                    + (final.Count == 0 ? "no DS3 node present"
+                        : string.Join(", ", final.Select(n => $"{n.InstanceId} on {(n.Service.Length == 0 ? "(no driver)" : n.Service)}"))));
+                return false;
             }
             catch (Exception ex) { log("WinUSB bind failed: " + ex.Message); return false; }
         }
+
+        /// <summary>Present USB DS3 nodes with their bound service, the
+        /// ground truth EnsureWinUsbBound decides on.</summary>
+        internal static List<(string InstanceId, string Service)> ListDs3UsbNodes()
+        {
+            var result = new List<(string, string)>();
+            foreach (var id in FindDs3UsbNodes())
+            {
+                try
+                {
+                    var dev = PnPDevice.GetDeviceByInstanceId(id, DeviceLocationFlags.Normal);
+                    result.Add((id, dev.GetProperty<string>(DevicePropertyKey.Device_Service) ?? string.Empty));
+                }
+                catch { }
+            }
+            return result;
+        }
+
+        /// <summary>True when our DS3 WinUSB interface GUID has an ACTIVE
+        /// registration (SPINT_ACTIVE), meaning a live winusb.sys stack is
+        /// serving it right now. Registration alone persists in the
+        /// registry across driver changes and proves nothing (#285).</summary>
+        internal static bool HasActiveDs3WinUsbInterface()
+        {
+            var guid = new Guid("B35924D6-3E16-4A9E-9782-5524A4B79BAC");
+            IntPtr set = SetupDiGetClassDevs(ref guid, IntPtr.Zero, IntPtr.Zero,
+                DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+            if (set == IntPtr.Zero || set == new IntPtr(-1)) return false;
+            try
+            {
+                var did = new SP_DEVICE_INTERFACE_DATA
+                { cbSize = Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
+                for (int i = 0; SetupDiEnumDeviceInterfaces(set, IntPtr.Zero, ref guid, i, ref did); i++)
+                    if ((did.Flags & SPINT_ACTIVE) != 0)
+                        return true;
+                return false;
+            }
+            finally { SetupDiDestroyDeviceInfoList(set); }
+        }
+
+        private const int SPINT_ACTIVE = 0x1;
+        private const int DIGCF_PRESENT = 0x2;
+        private const int DIGCF_DEVICEINTERFACE = 0x10;
+        private const uint INSTALLFLAG_FORCE = 0x1;
+        private const uint INSTALLFLAG_NONINTERACTIVE = 0x4;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct SP_DEVICE_INTERFACE_DATA
+        {
+            public int cbSize;
+            public Guid InterfaceClassGuid;
+            public int Flags;
+            public IntPtr Reserved;
+        }
+
+        [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern IntPtr SetupDiGetClassDevs(ref Guid g, IntPtr e, IntPtr w, int f);
+        [DllImport("setupapi.dll", SetLastError = true)]
+        private static extern bool SetupDiEnumDeviceInterfaces(IntPtr s, IntPtr d, ref Guid g, int i, ref SP_DEVICE_INTERFACE_DATA data);
+        [DllImport("setupapi.dll")]
+        private static extern bool SetupDiDestroyDeviceInfoList(IntPtr s);
+        [DllImport("newdev.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern bool UpdateDriverForPlugAndPlayDevices(
+            IntPtr hwndParent, string hardwareId, string fullInfPath, uint installFlags, out bool rebootRequired);
 
         // Two radio cycles overlapping is a path into the BthPS3 freed-context BSOD
         // (0xD1, 2026-07-09). Ds3PairingService._radioGate serializes the pair/unpair

@@ -247,6 +247,7 @@ namespace PadForge.Services
 
             string path = FindWinUsbDs3();
             if (path == null) { _log("DS3 not found on USB."); r.Error = "no-ds3-usb"; return r; }
+            _log($"DS3 WinUSB interface: {path}");
 
             // WinUsb_Initialize requires the device handle opened FILE_FLAG_OVERLAPPED
             // (WinUSB contract; proven prototype ds3winusb Program.cs:153).
@@ -260,7 +261,27 @@ namespace PadForge.Services
                 {
                     // 3. Read the pad's own MAC (0xF2 bytes 4-9) - the registry key name.
                     byte[] f2 = new byte[17];
-                    if (!GetFeature(ifh, 0xF2, f2)) { _log($"Reading the DS3 MAC failed (err={Marshal.GetLastWin32Error()})."); r.Error = "sixpair-failed"; return r; }
+                    if (!GetFeature(ifh, 0xF2, f2))
+                    {
+                        int reportErr = Marshal.GetLastWin32Error();
+                        // Split the failure at the transfer layer before
+                        // giving up: a standard descriptor read through the
+                        // SAME handle separates "the pad refuses the class
+                        // request" from "this handle reaches nothing". A
+                        // stale interface path opens and initializes but
+                        // dies exactly here with ERROR_GEN_FAILURE (#285).
+                        var dd = new byte[18];
+                        bool ddOk = WinUsb_GetDescriptor(ifh, 0x01, 0, 0, dd, (uint)dd.Length, out uint ddLen);
+                        _log(ddOk && ddLen >= 12
+                            ? $"GET_REPORT 0xF2 failed (err={reportErr}); descriptor reads OK "
+                              + $"(VID={dd[9]:X2}{dd[8]:X2} PID={dd[11]:X2}{dd[10]:X2}): the pad is refusing the request."
+                            : $"GET_REPORT 0xF2 failed (err={reportErr}) and the descriptor read failed too "
+                              + $"(err={(ddOk ? 0 : Marshal.GetLastWin32Error())}): this WinUSB handle reaches no live pad.");
+                        System.Threading.Thread.Sleep(300);
+                        if (!GetFeature(ifh, 0xF2, f2))
+                        { _log($"Reading the DS3 MAC failed (err={Marshal.GetLastWin32Error()})."); r.Error = "sixpair-failed"; return r; }
+                        _log("GET_REPORT 0xF2 succeeded on retry.");
+                    }
                     byte[] ds3mac = new byte[6];
                     Array.Copy(f2, 4, ds3mac, 0, 6);
                     r.Ds3Mac = Hex(ds3mac, null).ToLowerInvariant();
@@ -511,6 +532,13 @@ namespace PadForge.Services
             {
                 for (int i = 0; SetupDiEnumDeviceInterfaces(set, IntPtr.Zero, ref ifGuid, i, ref did); i++)
                 {
+                    // ACTIVE only: a registration persists in the registry
+                    // after the driver changes, and DIGCF_PRESENT filters by
+                    // DEVICE presence, not by interface state. A stale
+                    // registration on a pad now riding HidUsb enumerates
+                    // here and hands back a path whose transfers die with
+                    // ERROR_GEN_FAILURE (#285).
+                    if ((did.Flags & SPINT_ACTIVE) == 0) continue;
                     int req = 0;
                     SetupDiGetDeviceInterfaceDetail(set, ref did, IntPtr.Zero, 0, ref req, IntPtr.Zero);
                     IntPtr det = Marshal.AllocHGlobal(req);
@@ -531,7 +559,7 @@ namespace PadForge.Services
 
         private static readonly IntPtr INVALID_HANDLE = new IntPtr(-1);
         private const uint GENERIC_READ = 0x80000000, GENERIC_WRITE = 0x40000000, FILE_SHARE_RW = 3, OPEN_EXISTING = 3, FILE_FLAG_OVERLAPPED = 0x40000000;
-        private const int DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10;
+        private const int DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10, SPINT_ACTIVE = 0x1;
 
         [StructLayout(LayoutKind.Sequential)] private struct BLUETOOTH_FIND_RADIO_PARAMS { public uint dwSize; }
         [StructLayout(LayoutKind.Sequential)] private struct BLUETOOTH_ADDRESS { public ulong ullLong; }
@@ -552,6 +580,8 @@ namespace PadForge.Services
         [DllImport("winusb.dll", SetLastError = true)] private static extern bool WinUsb_Free(IntPtr ifh);
         [DllImport("winusb.dll", SetLastError = true)]
         private static extern bool WinUsb_ControlTransfer(IntPtr ifh, WINUSB_SETUP_PACKET setup, byte[] buf, uint len, out uint moved, IntPtr ov);
+        [DllImport("winusb.dll", SetLastError = true)]
+        private static extern bool WinUsb_GetDescriptor(IntPtr ifh, byte type, byte index, ushort langId, byte[] buf, uint len, out uint transferred);
 
         [StructLayout(LayoutKind.Sequential)] private struct SP_DEVICE_INTERFACE_DATA { public int cbSize; public Guid InterfaceClassGuid; public int Flags; public IntPtr Reserved; }
         [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr SetupDiGetClassDevs(ref Guid g, IntPtr e, IntPtr w, int f);

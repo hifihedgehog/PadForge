@@ -138,7 +138,12 @@ namespace PadForge.Tests
             string src = Read("PadForge.App/Services/Ds3DriverInstaller.cs");
             int at = src.IndexOf("public static bool EnsureWinUsbBound", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = Live(src.Substring(at, 1500));
+            // Semantic window (method start through the install call), not a
+            // fixed length: a fixed slice broke when the bind grew its
+            // live-node preamble (#285).
+            int end = src.IndexOf("InstallInf(infPath", at, StringComparison.Ordinal);
+            Assert.True(end > at);
+            string body = Live(src.Substring(at, end - at));
             Assert.Contains("IsWinUsbPackageTrusted", body, StringComparison.Ordinal);
 
             string pair = Read("PadForge.App/Services/Ds3PairingService.cs");

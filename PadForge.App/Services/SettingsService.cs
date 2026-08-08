@@ -2017,7 +2017,8 @@ namespace PadForge.Services
                 appSettings.ExtendedSlotOrder,
                 appSettings.KeyboardMouseSlotOrder,
                 appSettings.MidiSlotOrder,
-                appSettings.NintendoSlotOrder);
+                appSettings.NintendoSlotOrder,
+                appSettings.VrSlotOrder);
 
             ApplyExtendedConfigs(appSettings.ExtendedConfigs);
             ApplyDeviceSlotConfigs(appSettings.DeviceSlotConfigs);
@@ -3485,7 +3486,8 @@ namespace PadForge.Services
                     active.ExtendedSlotOrder,
                     active.KeyboardMouseSlotOrder,
                     active.MidiSlotOrder,
-                    active.NintendoSlotOrder);
+                    active.NintendoSlotOrder,
+                    active.VrSlotOrder);
 
                 // Now that SlotCreated and OutputType are restored, apply Extended/MIDI/device
                 // configs from the profile's own snapshot.
@@ -3604,6 +3606,7 @@ namespace PadForge.Services
             profile.ExtendedSlotOrder      = SettingsManager.ExtendedSlotOrder.ToArray();
             profile.KeyboardMouseSlotOrder = SettingsManager.KeyboardMouseSlotOrder.ToArray();
             profile.MidiSlotOrder          = SettingsManager.MidiSlotOrder.ToArray();
+            profile.VrSlotOrder            = SettingsManager.VrSlotOrder.ToArray();
             profile.EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer;
             profile.DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort;
             profile.EnableWebController = _mainVm.Dashboard.EnableWebController;
@@ -3735,6 +3738,7 @@ namespace PadForge.Services
                             ps.FlushRawMappings();
                             ps.FlushMidiMappings();
                             ps.FlushKbmMappings();
+                            ps.FlushVrMappings();
                             ps.FlushMappingDeadZones();
                             ps.FlushMappingBidirectional();
                             ps.UpdateChecksum();
@@ -4009,6 +4013,7 @@ namespace PadForge.Services
                 ExtendedSlotOrder      = isDefault ? SettingsManager.ExtendedSlotOrder.ToArray()      : defaultSnap.ExtendedSlotOrder,
                 KeyboardMouseSlotOrder = isDefault ? SettingsManager.KeyboardMouseSlotOrder.ToArray() : defaultSnap.KeyboardMouseSlotOrder,
                 MidiSlotOrder          = isDefault ? SettingsManager.MidiSlotOrder.ToArray()          : defaultSnap.MidiSlotOrder,
+                VrSlotOrder            = isDefault ? SettingsManager.VrSlotOrder.ToArray()            : defaultSnap.VrSlotOrder,
                 DefaultProfileSnapshot = isDefault ? null : defaultSnap
             };
         }
@@ -5140,6 +5145,13 @@ namespace PadForge.Services
                 return;
             }
 
+            // VR mappings use dictionary-based storage
+            if (propertyName.StartsWith("Vr", StringComparison.Ordinal))
+            {
+                ps.SetVrMapping(propertyName, value ?? string.Empty);
+                return;
+            }
+
             var prop = typeof(PadSetting).GetProperty(propertyName);
             if (prop == null || prop.PropertyType != typeof(string) || !prop.CanWrite)
                 return;
@@ -5442,6 +5454,10 @@ namespace PadForge.Services
         [XmlArray("MidiSlotOrder")]
         [XmlArrayItem("PadIndex")]
         public int[] MidiSlotOrder { get; set; }
+
+        [XmlArray("VrSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] VrSlotOrder { get; set; }
 
         [XmlElement]
         public bool EnableDsuMotionServer { get; set; }
@@ -6225,6 +6241,10 @@ namespace PadForge.Services
         [XmlArray("ProfileMidiSlotOrder")]
         [XmlArrayItem("PadIndex")]
         public int[] MidiSlotOrder { get; set; }
+
+        [XmlArray("ProfileVrSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] VrSlotOrder { get; set; }
 
         /// <summary>Per-slot MIDI configurations saved with this profile.</summary>
         [XmlArray("ProfileMidiConfigs")]

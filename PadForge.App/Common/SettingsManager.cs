@@ -78,6 +78,12 @@ namespace PadForge.Common.Input
         /// <summary>Maximum number of Keyboard+Mouse virtual controllers.</summary>
         public const int MaxKeyboardMouseSlots = InputManager.MaxPads;
 
+        /// <summary>Maximum number of VR virtual controllers. One: a single
+        /// slot already drives both SteamVR hands, and SteamVR tracks one
+        /// left+right pair, so a second slot would fight the first over the
+        /// same two devices.</summary>
+        public const int MaxVrSlots = 1;
+
         /// <summary>Whether each slot has been explicitly created. Persisted to settings.</summary>
         public static bool[] SlotCreated { get; set; } = new bool[InputManager.MaxPads];
 
@@ -109,6 +115,7 @@ namespace PadForge.Common.Input
         public static List<int> ExtendedSlotOrder { get; set; } = new();
         public static List<int> KeyboardMouseSlotOrder { get; set; } = new();
         public static List<int> MidiSlotOrder { get; set; } = new();
+        public static List<int> VrSlotOrder { get; set; } = new();
 
         /// <summary>
         /// Per-group order helpers. All slot-membership / ordering operations
@@ -214,6 +221,7 @@ namespace PadForge.Common.Input
                 Engine.VirtualControllerType.Extended      => ExtendedSlotOrder,
                 Engine.VirtualControllerType.KeyboardMouse => KeyboardMouseSlotOrder,
                 Engine.VirtualControllerType.Midi          => MidiSlotOrder,
+                Engine.VirtualControllerType.Vr            => VrSlotOrder,
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, null),
             };
 
@@ -307,7 +315,8 @@ namespace PadForge.Common.Input
                 int[] persistedExtended = null,
                 int[] persistedKbm = null,
                 int[] persistedMidi = null,
-                int[] persistedNintendo = null)
+                int[] persistedNintendo = null,
+                int[] persistedVr = null)
             {
                 Reconcile(XboxSlotOrder,          persistedXbox,        slotType, Engine.VirtualControllerType.Xbox);
                 Reconcile(PlayStationSlotOrder,   persistedPlayStation, slotType, Engine.VirtualControllerType.PlayStation);
@@ -315,6 +324,7 @@ namespace PadForge.Common.Input
                 Reconcile(ExtendedSlotOrder,      persistedExtended,    slotType, Engine.VirtualControllerType.Extended);
                 Reconcile(KeyboardMouseSlotOrder, persistedKbm,         slotType, Engine.VirtualControllerType.KeyboardMouse);
                 Reconcile(MidiSlotOrder,          persistedMidi,        slotType, Engine.VirtualControllerType.Midi);
+                Reconcile(VrSlotOrder,            persistedVr,          slotType, Engine.VirtualControllerType.Vr);
             }
 
             private static void Reconcile(List<int> target, int[] persisted,
@@ -674,6 +684,54 @@ namespace PadForge.Common.Input
                     for (int i = 0; i < 11; i++)
                         if (HasButton(i)) ps.SetMidiMapping($"MidiNote{i}", $"Button {i}");
                     ps.FlushMidiMappings();
+
+                    ps.UpdateChecksum();
+                    return ps;
+                }
+
+                if (outputType == Engine.VirtualControllerType.Vr)
+                {
+                    // VR auto-mapping (issue #49): one gamepad drives both VR
+                    // hands. Sticks and triggers land on the same-side hand;
+                    // the right hand carries the A/B pair, the left hand gets
+                    // its pair from X/Y (the touch-controller convention).
+                    // Bumpers press grip click and drive the grip value,
+                    // Back/Start press the System buttons. Trigger CLICK
+                    // rides the same physical axis as the trigger pull via
+                    // the standard axis-as-button coercion.
+                    if (HasAxis(0)) ps.SetVrMapping(Engine.VrLayout.LStickX, "Axis 0");
+                    if (HasAxis(1)) ps.SetVrMapping(Engine.VrLayout.LStickY, "Axis 1");
+                    if (HasAxis(3)) ps.SetVrMapping(Engine.VrLayout.RStickX, "Axis 3");
+                    if (HasAxis(4)) ps.SetVrMapping(Engine.VrLayout.RStickY, "Axis 4");
+                    if (HasAxis(2))
+                    {
+                        ps.SetVrMapping(Engine.VrLayout.LTrigger, "Axis 2");
+                        ps.SetVrMapping("VrLTriggerClick", "Axis 2");
+                    }
+                    if (HasAxis(5))
+                    {
+                        ps.SetVrMapping(Engine.VrLayout.RTrigger, "Axis 5");
+                        ps.SetVrMapping("VrRTriggerClick", "Axis 5");
+                    }
+                    if (HasButton(0)) ps.SetVrMapping("VrRA", "Button 0");
+                    if (HasButton(1)) ps.SetVrMapping("VrRB", "Button 1");
+                    if (HasButton(2)) ps.SetVrMapping("VrLA", "Button 2");
+                    if (HasButton(3)) ps.SetVrMapping("VrLB", "Button 3");
+                    if (HasButton(4))
+                    {
+                        ps.SetVrMapping("VrLGripClick", "Button 4");
+                        ps.SetVrMapping(Engine.VrLayout.LGrip, "Button 4");
+                    }
+                    if (HasButton(5))
+                    {
+                        ps.SetVrMapping("VrRGripClick", "Button 5");
+                        ps.SetVrMapping(Engine.VrLayout.RGrip, "Button 5");
+                    }
+                    if (HasButton(6)) ps.SetVrMapping("VrLSystem", "Button 6");
+                    if (HasButton(7)) ps.SetVrMapping("VrRSystem", "Button 7");
+                    if (HasButton(8)) ps.SetVrMapping("VrLStickClick", "Button 8");
+                    if (HasButton(9)) ps.SetVrMapping("VrRStickClick", "Button 9");
+                    ps.FlushVrMappings();
 
                     ps.UpdateChecksum();
                     return ps;
@@ -1091,7 +1149,8 @@ namespace PadForge.Common.Input
                 // lens 1r).
                 int rawCount = (ps.RawMappingEntries?.Length ?? 0)
                     + (ps.MidiMappingEntries?.Length ?? 0)
-                    + (ps.KbmMappingEntries?.Length ?? 0);
+                    + (ps.KbmMappingEntries?.Length ?? 0)
+                    + (ps.VrMappingEntries?.Length ?? 0);
                 Engine.SdlDiagLog.WriteLine(
                     $"AUTOMAP slot={padIndex} type={outputType} guid={us.InstanceGuid.ToString().Substring(0, 8)}"
                     + (ud == null

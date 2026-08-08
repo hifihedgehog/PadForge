@@ -157,6 +157,7 @@ namespace PadForge.Common.Input
         /// Written by Step 4 (background thread), read by Step 5.
         /// </summary>
         public KbmRawState[] CombinedKbmRawStates { get; } = new KbmRawState[MaxPads];
+        public VrRawState[] CombinedVrRawStates { get; } = new VrRawState[MaxPads];
 
         /// <summary>
         /// Combined touchpad states for PlayStation slots.
@@ -2808,6 +2809,7 @@ namespace PadForge.Common.Input
                 CombinedOutputStates[i] = default;
                 CombinedRawHidStates[i].Clear();
                 CombinedKbmRawStates[i] = default;
+                CombinedVrRawStates[i] = default;
                 CombinedTouchpadStates[i] = default;
                 // Motion rides beside the raw surface on every Step 5 submit
                 // (HasMotion=false submits zeroes), so leaving it out froze

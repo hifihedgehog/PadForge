@@ -1050,6 +1050,44 @@
                                             </Button.Style>
                                             <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="2,0"/>
                                         </Button>
+
+                                        <!-- VR type button -->
+                                        <Button Margin="1,0,0,0"
+                                                Click="VrType_Click" Tag="{Binding PadIndex}">
+                                            <Button.Style>
+                                                <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
+                                                    <Setter Property="Padding" Value="7,3"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_VR, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding OutputType}" Value="Vr">
+                                                            <Setter Property="Foreground" Value="#FFFFF3E8"/>
+                                                            <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="10" ShadowDepth="0" Opacity="0.4"/>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                        <!-- Cold card (0 mapped): active tile falls back to steel. -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding OutputType}" Value="Vr"/>
+                                                                <Condition Binding="{Binding HasMappedDevices}" Value="False"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                                            <Setter Property="Effect" Value="{x:Null}"/>
+                                                        </MultiDataTrigger>
+                                                        <DataTrigger Binding="{Binding DataContext.IsSteamVrInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
+                                                            <Setter Property="Cursor" Value="No"/>
+                                                            <Setter Property="ToolTip" Value="{Binding Main_VR_RequiresSteamVR, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            <TextBlock Text="&#xF119;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="2,0"/>
+                                        </Button>
                                         <TextBlock Text="{Binding TypeInstanceLabel, StringFormat={}#{0}}"
                                                    FontFamily="{StaticResource TelemetryFontFamily}"
                                                    FontSize="10" FontWeight="SemiBold"

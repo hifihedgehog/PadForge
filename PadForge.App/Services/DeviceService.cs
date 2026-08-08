@@ -683,6 +683,19 @@ namespace PadForge.Services
                 }
                 if (kbmChanged) existingPs.FlushKbmMappings();
             }
+            var freshVr = freshPs.VrMappingEntries;
+            if (freshVr != null)
+            {
+                bool vrChanged = false;
+                foreach (var entry in freshVr)
+                {
+                    if (entry == null || string.IsNullOrEmpty(entry.Key)) continue;
+                    if (!string.IsNullOrEmpty(existingPs.GetVrMapping(entry.Key))) continue;
+                    existingPs.SetVrMapping(entry.Key, entry.Value);
+                    vrChanged = true;
+                }
+                if (vrChanged) existingPs.FlushVrMappings();
+            }
 
             // Walk every copyable string mapping property and fill empty
             // ones on existingPs from freshPs. Reflection here mirrors the

@@ -223,6 +223,17 @@ namespace PadForge.ViewModels
         /// <summary>Display text for MIDI Services status.</summary>
         public string MidiServicesStatusText => IsMidiServicesInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
+        private bool _isSteamVrInstalled;
+
+        /// <summary>Whether SteamVR is installed (gates the VR slot type,
+        /// issue #49). Kept current by MainWindow's periodic status refresh
+        /// alongside the MIDI Services flag.</summary>
+        public bool IsSteamVrInstalled
+        {
+            get => _isSteamVrInstalled;
+            set => SetProperty(ref _isSteamVrInstalled, value);
+        }
+
         // ─────────────────────────────────────────────
         //  DSU Motion Server
         // ─────────────────────────────────────────────

@@ -2884,6 +2884,7 @@ namespace PadForge
             bool isExtended = iconKey == "ExtendedControllerIcon";
             bool isMidi = iconKey == "MidiControllerIcon";
             bool isKbm = iconKey == "KeyboardMouseControllerIcon";
+            bool isVr = iconKey == "VrControllerIcon";
 
             var row = new System.Windows.Controls.DockPanel();
 
@@ -3134,6 +3135,8 @@ namespace PadForge
             segRow.Children.Add(MakeTypeButton(TypeLogo(ExtendedSvgPath, isExtended), isExtended, OnSidebarTypeExtended, Strings.Instance.ControllerType_Extended, true));
             segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE961", isKbm), isKbm, OnSidebarTypeKeyboardMouse, Strings.Instance.ControllerType_KeyboardMouse, true));
             segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE8D6", isMidi), isMidi, OnSidebarTypeMidi, hasMidi ? Strings.Instance.ControllerType_MIDI : Strings.Instance.Main_MIDI_RequiresMidiServices, hasMidi || isMidi));
+            bool hasSteamVr = PadForge.Common.Input.HMaestroVRController.IsAvailable();
+            segRow.Children.Add(MakeTypeButton(TypeGlyph("\uF119", isVr), isVr, OnSidebarTypeVr, hasSteamVr ? Strings.Instance.ControllerType_VR : Strings.Instance.Main_VR_RequiresSteamVR, hasSteamVr || isVr));
             var instanceLabel = new System.Windows.Controls.TextBlock
             {
                 // "#{n}" to match the slot card seg (#175 iter 71); guard in
@@ -4006,7 +4009,8 @@ namespace PadForge
             }
             else
             {
-                string glyph = iconKey == "MidiControllerIcon" ? "\uE8D6" : "\uE961";
+                string glyph = iconKey == "MidiControllerIcon" ? "\uE8D6"
+                    : iconKey == "VrControllerIcon" ? "\uF119" : "\uE961";
                 row2.Children.Add(new System.Windows.Controls.TextBlock
                 {
                     Text = glyph,
@@ -4181,6 +4185,27 @@ namespace PadForge
                     _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
+                _inputService.MoveSlotToGroupTail(padIndex);
+                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar VR type button click.</summary>
+        private void OnSidebarTypeVr(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (!PadForge.Common.Input.HMaestroVRController.IsAvailable()) return;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Vr,
+                    _viewModel.Pads[padIndex].ProfileId);
+                SettingsService.RefreshMappingSetsFromLegacy();
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Vr;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 // Stale-guard the Mappings view (see OnSidebarTypeXbox).
                 _viewModel.Pads[padIndex].MappingsViewLoaded = false;
@@ -4930,7 +4955,7 @@ namespace PadForge
             // across all six groups). When the global total is at the cap
             // every "Add" button disables uniformly. Per-type counts are
             // kept for the at-capacity tooltip text.
-            int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
+            int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, kbmCount = 0, vrCount = 0;
             int totalActive = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
@@ -4944,6 +4969,7 @@ namespace PadForge
                     case VirtualControllerType.Extended: extendedCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
                     case VirtualControllerType.KeyboardMouse: kbmCount++; break;
+                    case VirtualControllerType.Vr: vrCount++; break;
                 }
             }
             bool globalAtCapacity = totalActive >= InputManager.MaxPads;
@@ -5183,6 +5209,47 @@ namespace PadForge
                 }
             };
             stack.Children.Add(midiBtn);
+
+            // VR button. Theme-aware icon fill.
+            var vrPopupIcon = new System.Windows.Controls.TextBlock
+            {
+                Text = "",
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 28,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            vrPopupIcon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
+            bool vrAvailable = PadForge.Common.Input.HMaestroVRController.IsAvailable();
+            bool vrAtCapacity = vrCount >= SettingsManager.MaxVrSlots;
+            bool vrDisabled = !vrAvailable || globalAtCapacity || vrAtCapacity;
+            if (vrDisabled) vrPopupIcon.Opacity = 0.35;
+            string vrTooltip = !vrAvailable ? Strings.Instance.Main_VR_RequiresSteamVR
+                             : vrAtCapacity ? string.Format(Strings.Instance.Main_VR_Max_Format, SettingsManager.MaxVrSlots)
+                             : Strings.Instance.ControllerType_VR;
+            var vrBtn = new System.Windows.Controls.Button
+            {
+                Content = vrPopupIcon,
+                ToolTip = vrTooltip,
+                Background = System.Windows.Media.Brushes.Transparent,
+                BorderThickness = new Thickness(0),
+                Padding = new Thickness(8),
+                MinWidth = 0,
+                Cursor = vrDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
+            };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(vrBtn, "AddVrBtn");
+            vrBtn.Click += (s, e) =>
+            {
+                if (vrDisabled) return;
+                popup.IsOpen = false;
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Vr);
+                if (newSlot >= 0)
+                {
+                    int nav = FindLastSlotOfType(VirtualControllerType.Vr);
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
+                }
+            };
+            stack.Children.Add(vrBtn);
 
             border.Child = stack;
             popup.Child = container;
@@ -7300,6 +7367,7 @@ namespace PadForge
             VirtualControllerType.Extended      => Strings.Instance.ControllerType_Extended,
             VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
             VirtualControllerType.Midi          => Strings.Instance.ControllerType_MIDI,
+            VirtualControllerType.Vr            => Strings.Instance.ControllerType_VR,
             _ => t.ToString(),
         };
 
@@ -7705,6 +7773,11 @@ namespace PadForge
                 _viewModel.Settings.IsMidiServicesInstalled = false;
                 _viewModel.Dashboard.IsMidiServicesInstalled = false;
             }
+
+            // SteamVR presence rides the same refresh cadence (VR slot
+            // type gate, issue #49). The probe caches internally.
+            _viewModel.Dashboard.IsSteamVrInstalled =
+                PadForge.Common.Input.HMaestroVRController.IsAvailable();
 
             // The drawer pills reflect MIDI availability only through the MIDI
             // type tile's enabled state. RefreshControllerNavItemsInPlace tears

@@ -24,8 +24,11 @@ namespace PadForge.Tests
         {
             // The numeric value is persisted in PadForge.xml; never reorder.
             Assert.Equal(5, (int)VirtualControllerType.Nintendo);
+            // Vr (#49) appended after Nintendo; the tail moves with each
+            // appended category, the pinned values never do.
+            Assert.Equal(6, (int)VirtualControllerType.Vr);
             var values = (VirtualControllerType[])Enum.GetValues(typeof(VirtualControllerType));
-            Assert.Equal(VirtualControllerType.Nintendo, values[^1]);
+            Assert.Equal(VirtualControllerType.Vr, values[^1]);
         }
 
         [Fact]

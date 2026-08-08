@@ -766,6 +766,7 @@ namespace PadForge.ViewModels
             Engine.VirtualControllerType.Extended => ExtendedGeometry,
             Engine.VirtualControllerType.Midi => null,
             Engine.VirtualControllerType.KeyboardMouse => null,
+            Engine.VirtualControllerType.Vr => null,
             _ => XboxGeometry
         };
 
@@ -774,6 +775,7 @@ namespace PadForge.ViewModels
         {
             Engine.VirtualControllerType.Midi => "\uE8D6",
             Engine.VirtualControllerType.KeyboardMouse => "\uE961",
+            Engine.VirtualControllerType.Vr => "\uF119",
             _ => string.Empty
         };
     }

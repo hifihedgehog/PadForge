@@ -430,6 +430,25 @@ namespace PadForge.Services
         /// </summary>
         public int UnpairAllDs3()
         {
+          // Suppression contract: the CALLER holds one SuppressAndRelease
+          // claim when this method starts (DevicesPage sets it before the
+          // Task.Run so the live pad detaches synchronously with the row
+          // removal), and this method ADOPTS that claim and releases it,
+          // exactly once, whatever happens. It does not acquire a second
+          // claim of its own. Suppression became refcounted in the round-41
+          // audit (two overlapping flows could un-suppress each other), and
+          // the previous shape here, acquire again + release once, was
+          // written for the old boolean: under a refcount it leaked one
+          // claim per unpair and the monitor never re-grabbed a pad until
+          // the app restarted (owner repro 2026-08-08: delete the
+          // controller and USB never reconnects).
+          //
+          // The try covers the WHOLE body, ReadRadioMac and the registry
+          // sweep included. The old placement started it after the sweep,
+          // so a throw in that stretch stranded the claim forever, the
+          // exact latch the release exists to prevent.
+          try
+          {
           lock (_radioGate)
           {
             byte[] radio = ReadRadioMac();
@@ -455,30 +474,23 @@ namespace PadForge.Services
             }
             catch (Exception ex) { _log("Enumerating DS3 records failed: " + ex.Message); }
 
-            // Detach the live pad and stop the reader re-grabbing it, so deleting the
-            // records + cycling the radio doesn't flash a ghost joystick back into the
-            // list mid-unpair. AllowReconnect ALWAYS runs (even on the no-records early
-            // return), else the caller's earlier SuppressAndRelease strands the pad.
-            PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
-            try
-            {
-                if (macs.Count == 0) return 0;
-                if (radio != null)
-                    foreach (string mac in macs)
-                        Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, mac, _log);
-                // No forced PDO node removal: dev.Remove() frees BthPS3's per-connection
-                // context, and the cycle's HCI disconnect then faults on it (BSOD 0xD1,
-                // 2026-07-09). The cycle alone disconnects the live pad through BthPS3's
-                // normal path against a VALID context.
-                CycleRadio();
-                _log($"Unpaired {macs.Count} DualShock 3 controller(s).");
-                // With these records gone, reconcile PSM patching: disarm it if
-                // no DS3 remains paired (issue #199 crash mitigation).
-                ReconcilePsmPatchForCrashSafety("ds3-unpair-all");
-                return macs.Count;
-            }
-            finally { PadForge.Common.Input.Ds3DirectService.AllowReconnect(); }
+            if (macs.Count == 0) return 0;
+            if (radio != null)
+                foreach (string mac in macs)
+                    Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, mac, _log);
+            // No forced PDO node removal: dev.Remove() frees BthPS3's per-connection
+            // context, and the cycle's HCI disconnect then faults on it (BSOD 0xD1,
+            // 2026-07-09). The cycle alone disconnects the live pad through BthPS3's
+            // normal path against a VALID context.
+            CycleRadio();
+            _log($"Unpaired {macs.Count} DualShock 3 controller(s).");
+            // With these records gone, reconcile PSM patching: disarm it if
+            // no DS3 remains paired (issue #199 crash mitigation).
+            ReconcilePsmPatchForCrashSafety("ds3-unpair-all");
+            return macs.Count;
           }
+          }
+          finally { PadForge.Common.Input.Ds3DirectService.AllowReconnect(); }
         }
 
         // ── local Bluetooth radio address (human/big-endian order per DsHidMini) ─

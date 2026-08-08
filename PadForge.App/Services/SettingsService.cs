@@ -953,11 +953,16 @@ namespace PadForge.Services
                                 Invert = !ninv,
                                 HalfAxis = nhalf,
                                 Bidirectional = mapping.IsBidirectional,
-                                InvertOutput = mapping.InvertOutput,
                                 // Same row, same ramp: the primary leg
                                 // above carries ParamAccel and this one
                                 // did not, so acceleration applied to one
                                 // direction of a bipolar axis only.
+                                // InvertOutput is deliberately NOT copied
+                                // here: the migrator's neg-leg convention
+                                // FLIPS it for half-axis sources rather
+                                // than copying it, and this path has never
+                                // stamped it. Aligning the two is its own
+                                // adjudication, not a rider on ParamAccel.
                                 ParamAccel = mapping.ParamAccel,
                                 DeadZone = mapping.MappingDeadZone,
                                 GyroSensitivity = mapping.GyroSensitivity > 0 ? mapping.GyroSensitivity : 1.0,

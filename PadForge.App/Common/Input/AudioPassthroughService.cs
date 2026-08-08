@@ -1568,12 +1568,19 @@ namespace PadForge.Common.Input
                     Engine.SdlDiagLog.WriteLine("PERSONA jack usb plugged=" + plugged);
                 }
             }
-            // Close OUR handle, and clear the shared field only if it is
-            // still ours. Stop already closed it in the normal path; the
-            // duplicate close is harmless and the ownership check is what
-            // keeps a retired loop from closing the live reader's handle.
-            if (feed.UsbJackGen == gen) feed.UsbJackHandle = IntPtr.Zero;
-            NativeMethods.CloseHandle(h);
+            // Close ONLY when this loop still owns the lane, meaning it
+            // exited on its own (device died, read failed) and nobody else
+            // has touched the handle. On the Stop path the generation was
+            // retired and Stop ALREADY closed this handle, so a second
+            // CloseHandle here would land on a handle VALUE the OS may
+            // have re-issued to any other thread in the meantime. A
+            // duplicate close is never harmless; it is the handle-recycle
+            // defect class.
+            if (feed.UsbJackGen == gen)
+            {
+                feed.UsbJackHandle = IntPtr.Zero;
+                NativeMethods.CloseHandle(h);
+            }
         }
 
         private static void StopBtMic(PersonaFeed feed)
@@ -1859,8 +1866,13 @@ namespace PadForge.Common.Input
                     _btMicPeak = 0;
                 }
             }
-            if (feed.BtMicGen == gen) feed.BtMicHandle = IntPtr.Zero;
-            NativeMethods.CloseHandle(h);
+            // Ownership-gated close, exactly as UsbJackLoop's epilogue
+            // documents: Stop owns the close on the retirement path.
+            if (feed.BtMicGen == gen)
+            {
+                feed.BtMicHandle = IntPtr.Zero;
+                NativeMethods.CloseHandle(h);
+            }
         }
 
         /// <summary>Find the feed whose BT mic source is this pad. Sinks are

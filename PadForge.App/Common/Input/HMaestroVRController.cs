@@ -51,23 +51,37 @@ namespace PadForge.Common.Input
         public static bool IsAvailable()
         {
             long now = Environment.TickCount64;
-            if (now - s_availCheckedTick < AvailabilityTtlMs) return s_availCached;
+            if (s_availHasValue && now - s_availCheckedTick < AvailabilityTtlMs)
+                return s_availCached;
             bool avail;
             try { avail = HMVR.IsSteamVRInstalled; }
             catch { avail = false; }
             s_availCached = avail;
             s_availCheckedTick = now;
+            s_availHasValue = true;
             return avail;
         }
 
         private const int AvailabilityTtlMs = 5_000;
-        private static long s_availCheckedTick = long.MinValue;
+        private static long s_availCheckedTick;
         private static bool s_availCached;
+
+        /// <summary>Whether the cache holds a real answer. An explicit flag,
+        /// NOT a sentinel timestamp: seeding the tick with long.MinValue
+        /// made `now - s_availCheckedTick` overflow to a large NEGATIVE
+        /// value, which is always below the TTL, so the very first call
+        /// returned the default `false` without probing and never stamped
+        /// the tick. SteamVR then read as absent forever: the type gates
+        /// stayed closed, the Settings card stayed "Not installed", and
+        /// clicking Install found the payload already present, skipped its
+        /// retry loop, and returned in milliseconds so the overlay merely
+        /// flashed (owner report 2026-08-08).</summary>
+        private static bool s_availHasValue;
 
         /// <summary>Drops the availability cache so the next
         /// <see cref="IsAvailable"/> re-probes. Call after installing
         /// SteamVR so the UI gates lift without waiting out the TTL.</summary>
-        public static void ResetAvailability() => s_availCheckedTick = long.MinValue;
+        public static void ResetAvailability() => s_availHasValue = false;
 
         public void Connect()
         {

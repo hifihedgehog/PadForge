@@ -594,8 +594,82 @@ namespace PadForge.Services
             finally { SetupDiDestroyDeviceInfoList(set); }
         }
 
+        /// <summary>Reports what BthPS3 did with the pad's inbound
+        /// connection, for the one failure this arc cannot currently tell
+        /// apart from the log: the ceremony reports full success, the pad
+        /// then flashes forever, and nothing downstream says why.
+        ///
+        /// <para>Three states, three different causes, and they are
+        /// distinguishable only here. NO CHILD at all means the L2CAP
+        /// connection never reached BthPS3, so the PSM patch or the radio
+        /// is the suspect. A child with a PROBLEM CODE means BthPS3 built
+        /// it and PnP could not start it: problem 28 (FAILED_INSTALL) is
+        /// the RawPDO=0 case this file's step-7 comment describes, where
+        /// the child wants a function driver no INF matches, which is
+        /// exactly the "pad flashes forever" signature. A child with NO
+        /// raw interface means it started but published nothing the reader
+        /// can open.</para>
+        ///
+        /// <para>Read-only and best-effort: it never changes state and any
+        /// failure degrades to a log line, because its whole job is to
+        /// make a silent state speak.</para></summary>
+        internal static void LogBthPs3ChildState(Action<string> log)
+        {
+            try
+            {
+                // The raw PDO's interface (GUID_DEVINTERFACE_BTHPS3). An
+                // ACTIVE registration is the reader's open target, so it
+                // is the success state.
+                var rawIf = new Guid("968E1849-73B1-4876-B80A-ED6DD171489B");
+                bool activeIface = false;
+                IntPtr ifSet = SetupDiGetClassDevs(ref rawIf, IntPtr.Zero, IntPtr.Zero,
+                    DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+                if (ifSet != IntPtr.Zero && ifSet != new IntPtr(-1))
+                {
+                    try
+                    {
+                        var did = new SP_DEVICE_INTERFACE_DATA
+                        { cbSize = Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
+                        for (int i = 0; SetupDiEnumDeviceInterfaces(ifSet, IntPtr.Zero, ref rawIf, i, ref did); i++)
+                            if ((did.Flags & SPINT_ACTIVE) != 0) { activeIface = true; break; }
+                    }
+                    finally { SetupDiDestroyDeviceInfoList(ifSet); }
+                }
+
+                // Every present devnode whose instance id is a BthPS3 bus
+                // child, with its PnP problem code.
+                int children = 0;
+                var sb = new System.Text.StringBuilder();
+                Guid none = Guid.Empty;
+                IntPtr set = SetupDiGetClassDevsEnum(ref none, "BTHPS3BUS", IntPtr.Zero,
+                    DIGCF_PRESENT | DIGCF_ALLCLASSES);
+                if (set != IntPtr.Zero && set != new IntPtr(-1))
+                {
+                    try
+                    {
+                        var dev = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                        for (int i = 0; SetupDiEnumDeviceInfo(set, i, ref dev); i++)
+                        {
+                            children++;
+                            uint status = 0, problem = 0;
+                            int cr = CM_Get_DevNode_Status(out status, out problem, dev.DevInst, 0);
+                            sb.Append(sb.Length > 0 ? ", " : "")
+                              .Append(cr == 0 ? $"problem={problem}" : $"status-query-failed(cr={cr})");
+                        }
+                    }
+                    finally { SetupDiDestroyDeviceInfoList(set); }
+                }
+
+                log(children == 0
+                    ? "BthPS3 child: NONE present (the pad's connection did not reach BthPS3)."
+                    : $"BthPS3 child: {children} present [{sb}], raw interface active={activeIface}.");
+            }
+            catch (Exception ex) { log("BthPS3 child probe failed: " + ex.Message); }
+        }
+
         private const int SPINT_ACTIVE = 0x1;
         private const int DIGCF_PRESENT = 0x2;
+        private const int DIGCF_ALLCLASSES = 0x4;
         private const int DIGCF_DEVICEINTERFACE = 0x10;
         private const uint INSTALLFLAG_FORCE = 0x1;
         private const uint INSTALLFLAG_NONINTERACTIVE = 0x4;
@@ -609,8 +683,26 @@ namespace PadForge.Services
             public IntPtr Reserved;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        private struct SP_DEVINFO_DATA
+        {
+            public int cbSize;
+            public Guid ClassGuid;
+            public uint DevInst;
+            public IntPtr Reserved;
+        }
+
         [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern IntPtr SetupDiGetClassDevs(ref Guid g, IntPtr e, IntPtr w, int f);
+        // Enumerator overload: the second parameter is the PnP enumerator
+        // string ("BTHPS3BUS"), which the interface-GUID overload above
+        // passes as IntPtr.Zero.
+        [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true, EntryPoint = "SetupDiGetClassDevsW")]
+        private static extern IntPtr SetupDiGetClassDevsEnum(ref Guid g, string enumerator, IntPtr w, int f);
+        [DllImport("setupapi.dll", SetLastError = true)]
+        private static extern bool SetupDiEnumDeviceInfo(IntPtr s, int i, ref SP_DEVINFO_DATA data);
+        [DllImport("cfgmgr32.dll")]
+        private static extern int CM_Get_DevNode_Status(out uint status, out uint problem, uint devInst, int flags);
         [DllImport("setupapi.dll", SetLastError = true)]
         private static extern bool SetupDiEnumDeviceInterfaces(IntPtr s, IntPtr d, ref Guid g, int i, ref SP_DEVICE_INTERFACE_DATA data);
         [DllImport("setupapi.dll")]

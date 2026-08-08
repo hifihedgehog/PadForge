@@ -88,6 +88,16 @@ namespace PadForge.Views
         // more than one target, so every one of them gets a highlight.
         private readonly Dictionary<string, Image> _regionHighlights = new(StringComparer.Ordinal);
 
+        // Stick caps translate with deflection like every branded preview's
+        // stick ring (ControllerModel2DView: always-visible image + a
+        // TranslateTransform driven from the raw axes). The cap art is the
+        // stick's pixels cut from the base (the base keeps an inpainted
+        // socket underneath), and the stick's cyan overlay + region
+        // highlight share the same transform so they ride the cap.
+        // 14 px ~= the branded 25-per-~100px-ring travel ratio at 64 px.
+        private const double StickTravel = 14;
+        private TranslateTransform _lStickT, _rStickT;
+
         public VRPreviewView()
         {
             InitializeComponent();
@@ -147,11 +157,32 @@ namespace PadForge.Views
                 VrCanvas.Children.Add(img);
             }
 
+            _lStickT = AddStickCap("L", 231, 107, 64, 64);
+            _rStickT = AddStickCap("R", 680, 107, 64, 64);
+
             var st = Strings.Instance;
             foreach (var el in Elements)
                 AddElement(el, DisplayName(el.Target, st));
 
             _built = true;
+        }
+
+        /// <summary>The movable stick-cap layer: above the base (and its
+        /// socket), below the element overlays added afterwards.</summary>
+        private TranslateTransform AddStickCap(string side, double x, double y, double w, double h)
+        {
+            var t = new TranslateTransform();
+            var art = EmbeddedBitmaps.Load($"2DModels/VRCONTROLLER/VRController_{side}_StickCap.png");
+            if (art == null) return t;
+            var img = new Image
+            {
+                Source = art, Width = w, Height = h,
+                Stretch = Stretch.Fill, IsHitTestVisible = false,
+                RenderTransform = t,
+            };
+            Canvas.SetLeft(img, x); Canvas.SetTop(img, y);
+            VrCanvas.Children.Add(img);
+            return t;
         }
 
         private void AddElement(Elem el, string displayName)
@@ -174,6 +205,10 @@ namespace PadForge.Views
             _overlays[el.Target] = overlay;
 
             bool isMulti = !el.Target.EndsWith("System", StringComparison.Ordinal);
+            bool isStick = el.Target.EndsWith("Stick", StringComparison.Ordinal);
+            if (isStick)
+                overlay.RenderTransform =
+                    el.Target.StartsWith("VrL", StringComparison.Ordinal) ? _lStickT : _rStickT;
 
             if (isMulti)
             {
@@ -190,6 +225,9 @@ namespace PadForge.Views
                 };
                 if (art != null) highlight.Source = art;
                 Canvas.SetLeft(highlight, el.X); Canvas.SetTop(highlight, el.Y);
+                if (isStick)
+                    highlight.RenderTransform =
+                        el.Target.StartsWith("VrL", StringComparison.Ordinal) ? _lStickT : _rStickT;
                 VrCanvas.Children.Add(highlight);
                 _regionHighlights[el.Target] = highlight;
             }
@@ -440,6 +478,20 @@ namespace PadForge.Views
 
             PaintHand(in vr.Left, "VrL", flashElem);
             PaintHand(in vr.Right, "VrR", flashElem);
+
+            // Stick caps ride the raw axes. VrRawState keeps the SDL screen
+            // frame (positive Y = down; the OpenVR Y-up flip happens at
+            // PackHand), so unlike the XInput previews no negation here.
+            if (_lStickT != null)
+            {
+                _lStickT.X = vr.Left.StickX / 32767.0 * StickTravel;
+                _lStickT.Y = vr.Left.StickY / 32767.0 * StickTravel;
+            }
+            if (_rStickT != null)
+            {
+                _rStickT.X = vr.Right.StickX / 32767.0 * StickTravel;
+                _rStickT.Y = vr.Right.StickY / 32767.0 * StickTravel;
+            }
 
             foreach (var key in _regionHighlights.Keys)
                 PaintRegionFlash(key);

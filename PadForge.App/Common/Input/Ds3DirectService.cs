@@ -128,19 +128,40 @@ namespace PadForge.Common.Input
         // it. The App-layer unpair flow sets this (and cancels the current read)
         // before deleting a DS3's Bluetooth records + cycling the radio, so a still-
         // connected pad can't re-attach a ghost virtual joystick mid-unpair.
-        private static volatile bool _suppressReconnect;
+        // REFCOUNTED, not a bool. Two independent flows suppress this: the
+        // pairing ceremony (RunPairing's finally) and the remove-device
+        // unpair (UnpairAllDs3's finally, armed even earlier by the Devices
+        // page). They overlap, since the ceremony holds the radio gate only
+        // for its sixpair steps and both are launched fire-and-forget. A
+        // plain bool let whichever finished FIRST re-enable the monitor
+        // under the other, which then re-grabbed the pad mid-ceremony.
+        private static int _suppressDepth;
+        private static bool _suppressReconnect => System.Threading.Volatile.Read(ref _suppressDepth) > 0;
         private static volatile Ds3DirectService _current;
 
-        /// <summary>Detach any live DS3 now and block reconnect until
-        /// <see cref="AllowReconnect"/>. Call before removing the pad's BT records.</summary>
+        /// <summary>Detach any live DS3 now and block reconnect until the
+        /// matching <see cref="AllowReconnect"/>. Nests: every call must be
+        /// paired, and the monitor resumes only when the last one releases.
+        /// Call before removing the pad's BT records.</summary>
         public static void SuppressAndRelease()
         {
-            _suppressReconnect = true;
+            System.Threading.Interlocked.Increment(ref _suppressDepth);
             _current?.CancelCurrentRead();
         }
 
-        /// <summary>Re-allow the monitor loop to grab a DS3 again.</summary>
-        public static void AllowReconnect() => _suppressReconnect = false;
+        /// <summary>Release one suppression claim (see
+        /// <see cref="SuppressAndRelease"/>). Never drops below zero, so an
+        /// unbalanced extra release cannot strand the monitor suppressed or
+        /// un-suppress a claim it does not own.</summary>
+        public static void AllowReconnect()
+        {
+            while (true)
+            {
+                int cur = System.Threading.Volatile.Read(ref _suppressDepth);
+                if (cur <= 0) return;
+                if (System.Threading.Interlocked.CompareExchange(ref _suppressDepth, cur - 1, cur) == cur) return;
+            }
+        }
 
         private void CancelCurrentRead()
         {
@@ -390,6 +411,29 @@ namespace PadForge.Common.Input
                     _log($"DS3({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input yet - re-kick #{kicks + 1}");
                     Kick(); kicks++; lastKick = now;
                     continue;
+                }
+
+                // The five kicks ran and the pad never spoke. Detach so the
+                // monitor can rebuild the whole transport instead of
+                // sitting attached-but-silent forever: WinUsb_ReadPipe
+                // answers ERROR_SEM_TIMEOUT indefinitely on a pad that
+                // never enabled, which is not an error path, so nothing
+                // else in this object ever reconsiders. Reported
+                // 2026-08-08 (discussion #285) as "wired stops working
+                // after a pairing attempt until PadForge is restarted":
+                // the ceremony's cycle re-opens the device, the F4 enable
+                // lands on a pad still settling, and the lane wedges with
+                // a virtual joystick attached and no input behind it.
+                if (!_everGotInput && kicks >= 5 && now - lastKick >= 3000)
+                {
+                    _log($"DS3({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input after {kicks} kicks - detaching for a clean re-open");
+                    // Cancel the read, NOT the service. The read loop then
+                    // returns, the monitor tears down and re-opens on its
+                    // next pass, and the enable is retried on a fresh
+                    // handle. Setting _running here would kill DS3 support
+                    // for the whole session.
+                    CancelCurrentRead();
+                    break;
                 }
 
                 bool doWrite;

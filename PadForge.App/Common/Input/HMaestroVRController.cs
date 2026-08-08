@@ -64,6 +64,11 @@ namespace PadForge.Common.Input
         private static long s_availCheckedTick = long.MinValue;
         private static bool s_availCached;
 
+        /// <summary>Drops the availability cache so the next
+        /// <see cref="IsAvailable"/> re-probes. Call after installing
+        /// SteamVR so the UI gates lift without waiting out the TTL.</summary>
+        public static void ResetAvailability() => s_availCheckedTick = long.MinValue;
+
         public void Connect()
         {
             if (_connected) return;
@@ -162,9 +167,6 @@ namespace PadForge.Common.Input
 
         private void OnHapticReceived(object sender, HMVRHapticEventArgs e)
         {
-            // An event mid-flight across Disconnect must not re-latch a
-            // motor after ZeroHapticLanes ran.
-            if (!_connected) return;
             var states = _fbVibrationStates;
             int idx = FeedbackPadIndex;
             if (states == null || idx < 0 || idx >= states.Length) return;
@@ -176,6 +178,13 @@ namespace PadForge.Common.Input
 
             lock (_hapticLock)
             {
+                // Re-check INSIDE the lock. Disconnect flips _connected and
+                // only then takes this lock to zero the lanes and dispose
+                // the timer, so a check outside it can pass, block here,
+                // and resume after teardown: the motor re-latches on a slot
+                // the VC no longer drives and ScheduleExpiryLocked builds a
+                // fresh timer nothing will ever dispose.
+                if (!_connected) return;
                 long endTick = Environment.TickCount64 + durationMs;
                 if (e.Hand == HMVRHand.Left)
                 {

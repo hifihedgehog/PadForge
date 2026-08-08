@@ -507,6 +507,13 @@ namespace PadForge.Services
 
         private static string FindWinUsbDs3() => FindInterfacePath(DS3_WINUSB_IF);
 
+        /// <summary>GET_REPORT(FEATURE). A control-IN transfer may SHORT
+        /// COMPLETE: WinUsb_ControlTransfer returns TRUE having moved fewer
+        /// bytes than asked. Ignoring the transferred count let a truncated
+        /// 0xF2 reply leave the zero-filled buffer's MAC bytes untouched,
+        /// so the ceremony read the pad's address as 00:00:00:00:00:00,
+        /// wrote the remembered-device record and the link key under that
+        /// name, and reported success. The whole buffer must arrive.</summary>
         private static bool GetFeature(IntPtr ifh, byte reportId, byte[] buf)
         {
             var s = new WINUSB_SETUP_PACKET
@@ -514,7 +521,9 @@ namespace PadForge.Services
                 RequestType = 0xA1, Request = 0x01,
                 Value = (ushort)((0x03 << 8) | reportId), Index = 0, Length = (ushort)buf.Length
             };
-            return WinUsb_ControlTransfer(ifh, s, buf, (uint)buf.Length, out _, IntPtr.Zero);
+            if (!WinUsb_ControlTransfer(ifh, s, buf, (uint)buf.Length, out uint moved, IntPtr.Zero))
+                return false;
+            return moved == (uint)buf.Length;
         }
 
         private static bool SetFeature(IntPtr ifh, byte reportId, byte[] buf)
@@ -524,7 +533,9 @@ namespace PadForge.Services
                 RequestType = 0x21, Request = 0x09,
                 Value = (ushort)((0x03 << 8) | reportId), Index = 0, Length = (ushort)buf.Length
             };
-            return WinUsb_ControlTransfer(ifh, s, buf, (uint)buf.Length, out _, IntPtr.Zero);
+            if (!WinUsb_ControlTransfer(ifh, s, buf, (uint)buf.Length, out uint moved, IntPtr.Zero))
+                return false;
+            return moved == (uint)buf.Length;
         }
 
         // ── driver install + radio cycle + node removal (filled from grounding) ──

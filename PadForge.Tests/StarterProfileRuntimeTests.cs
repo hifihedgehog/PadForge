@@ -28,6 +28,14 @@ namespace PadForge.Tests
     /// a change in the engine's own coercion breaks these rather than
     /// silently passing.</para>
     /// </summary>
+    // Arrange REPLACES SettingsManager.UserDevices / UserSettings, which are
+    // process-global. xunit runs separate collections in parallel, so a class
+    // that touches them and does not join this collection races every other
+    // one that does. It was the only such class left, and it produced a
+    // suite-only intermittent (a macro test in a different class reading a
+    // swapped-out device collection mid-evaluation) that never reproduced
+    // when either class ran alone.
+    [Collection("SettingsManagerStatics")]
     public class StarterProfileRuntimeTests
     {
         private static readonly Guid DevGuid = new("11111111-2222-3333-4444-555555555555");

@@ -571,6 +571,109 @@ namespace PadForge.Common
         }
 
         // ─────────────────────────────────────────────
+        //  SteamVR (Steam-free install, issue #49)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Where the Steam-free SteamVR install lands. HIDMaestro's
+        /// discovery checks this conventional folder last, and the explicit
+        /// path hint below makes it authoritative regardless.</summary>
+        public const string SteamVrInstallDir = @"C:\SteamVR";
+
+        /// <summary>Valve's own steamcmd bootstrap. Needs no Steam client
+        /// and no account: SteamVR (app 250820) is anonymous-licensed, the
+        /// path HIDMaestro verified during v1.6.0 development.</summary>
+        private const string SteamCmdZipUrl =
+            "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip";
+
+        private static string GetSteamVrTempDir()
+            => Path.Combine(Path.GetTempPath(), "PadForge_SteamCmd");
+
+        /// <summary>
+        /// Installs SteamVR without Steam: downloads Valve's steamcmd,
+        /// runs the anonymous app_update for app 250820 into
+        /// <see cref="SteamVrInstallDir"/>, then records the path hint so
+        /// HIDMaestro's discovery (which reads no Steam registry keys for
+        /// this shape) finds it from now on. The payload is several GB, so
+        /// this can run for many minutes on slow links; steamcmd prints
+        /// progress to its own console which stays hidden here.
+        /// </summary>
+        public static async Task InstallSteamVRAsync()
+        {
+            var tempDir = GetSteamVrTempDir();
+            Directory.CreateDirectory(tempDir);
+            try
+            {
+                var zipPath = Path.Combine(tempDir, "steamcmd.zip");
+                using (var http = new HttpClient())
+                {
+                    http.DefaultRequestHeaders.UserAgent.ParseAdd("PadForge");
+                    http.Timeout = TimeSpan.FromMinutes(10);
+                    using var response = await http.GetAsync(SteamCmdZipUrl,
+                        HttpCompletionOption.ResponseHeadersRead);
+                    response.EnsureSuccessStatusCode();
+                    using var stream = await response.Content.ReadAsStreamAsync();
+                    using var fs = new FileStream(zipPath, FileMode.Create, FileAccess.Write);
+                    await stream.CopyToAsync(fs);
+                }
+                System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, tempDir, overwriteFiles: true);
+
+                // force_install_dir BEFORE login, per Valve's steamcmd
+                // contract; +quit so the process exits when done. Two quirks
+                // this loop absorbs, both reproduced on this machine
+                // (2026-08-08): the FIRST run self-updates, prints "Update
+                // complete, launching..." and EXITS with code 7 without ever
+                // executing the + commands (the relaunch detaches), so the
+                // command line must be run again; and exit codes are not
+                // trustworthy in general. Presence of vrpathreg.exe is the
+                // only install verdict.
+                string vrpathreg = Path.Combine(SteamVrInstallDir, "bin", "win64", "vrpathreg.exe");
+                string lastTail = "";
+                for (int attempt = 1; attempt <= 3 && !File.Exists(vrpathreg); attempt++)
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = Path.Combine(tempDir, "steamcmd.exe"),
+                        Arguments = $"+force_install_dir {SteamVrInstallDir} +login anonymous +app_update 250820 validate +quit",
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        RedirectStandardOutput = true,
+                        WorkingDirectory = tempDir
+                    };
+                    using var proc = Process.Start(psi);
+                    if (proc == null) continue;
+                    var stdoutTask = proc.StandardOutput.ReadToEndAsync();
+                    using var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(60));
+                    try
+                    {
+                        await proc.WaitForExitAsync(cts.Token);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        try { proc.Kill(entireProcessTree: true); } catch { }
+                        throw new TimeoutException("steamcmd did not finish within 60 minutes.");
+                    }
+                    string outText = await stdoutTask;
+                    lastTail = outText.Length > 400 ? outText[^400..] : outText;
+                }
+
+                if (!File.Exists(vrpathreg))
+                    throw new InvalidOperationException(
+                        "steamcmd ran but SteamVR did not land in " + SteamVrInstallDir
+                        + ". steamcmd said: ..." + lastTail);
+
+                // Steam-free installs write no registry keys of their own;
+                // the hint makes discovery unconditional. Requires admin,
+                // which PadForge always has.
+                HIDMaestro.HMVR.SetSteamVRPathHint(SteamVrInstallDir);
+                HMaestroVRController.ResetAvailability();
+            }
+            finally
+            {
+                CleanupTempDir(tempDir);
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  ViGEmBus detection
         // ─────────────────────────────────────────────
 

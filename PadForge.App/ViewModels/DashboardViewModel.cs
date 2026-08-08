@@ -231,8 +231,16 @@ namespace PadForge.ViewModels
         public bool IsSteamVrInstalled
         {
             get => _isSteamVrInstalled;
-            set => SetProperty(ref _isSteamVrInstalled, value);
+            set
+            {
+                if (SetProperty(ref _isSteamVrInstalled, value))
+                    OnPropertyChanged(nameof(SteamVrStatusText));
+            }
         }
+
+        /// <summary>Display text for the SteamVR row in the driver-status
+        /// card.</summary>
+        public string SteamVrStatusText => IsSteamVrInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         // ─────────────────────────────────────────────
         //  DSU Motion Server

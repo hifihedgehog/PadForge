@@ -144,6 +144,9 @@
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services wordt verwijderd…</value></data>
   <data name="Status_OperationCancelled" xml:space="preserve"><value>Bewerking geannuleerd door gebruiker.</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>Installatie van MIDI Services mislukt: {0}</value></data>
+  <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR downloaden…</value></data>
+  <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>SteamVR wordt gedownload en geïnstalleerd vanaf de servers van Valve… Meerdere GB, dit kan even duren.</value></data>
+  <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>Installatie van SteamVR mislukt: {0}</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>Apparatenlijst vernieuwd.</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>Opgenomen "{0}" ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>Nu toewijzen: {0} {1}</value></data>
@@ -267,6 +270,8 @@
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Virtuele HID-controllerengine in gebruikersmodus. Ingebed in PadForge.App. Wordt automatisch geïnstalleerd bij het eerste aanmaken van een virtuele controller. Vervangt ViGEmBus en vJoy in v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>SDK-runtime voor virtuele MIDI-apparaatuitvoer. Gedownload van GitHub (~210 MB).</value></data>
+  <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
+  <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR-runtime voor virtuele VR-controllers. Wordt vanaf de servers van Valve geïnstalleerd, zonder Steam-account of Steam-client (meerdere GB).</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Vereist Windows 11 24H2 (build 26100) of hoger</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>Instellingenbestand</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>Configuratie opslaan, opnieuw laden of herstellen.</value></data>

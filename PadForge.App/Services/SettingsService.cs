@@ -953,6 +953,12 @@ namespace PadForge.Services
                                 Invert = !ninv,
                                 HalfAxis = nhalf,
                                 Bidirectional = mapping.IsBidirectional,
+                                InvertOutput = mapping.InvertOutput,
+                                // Same row, same ramp: the primary leg
+                                // above carries ParamAccel and this one
+                                // did not, so acceleration applied to one
+                                // direction of a bipolar axis only.
+                                ParamAccel = mapping.ParamAccel,
                                 DeadZone = mapping.MappingDeadZone,
                                 GyroSensitivity = mapping.GyroSensitivity > 0 ? mapping.GyroSensitivity : 1.0,
                                 MouseCursorSensitivity = mapping.MouseCursorSensitivity > 0 ? mapping.MouseCursorSensitivity : 1.0,

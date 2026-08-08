@@ -226,7 +226,11 @@ namespace PadForge.Services
                 CycleBluetoothRadio(log);
                 log(IsPsmFilterPresent()
                     ? "PSM filter repaired."
-                    : "PSM filter still absent after repair; a reboot may be required.");
+                    // Retraction (4e1ce387): the filter cannot wedge
+                    // permanently, so never prescribe a reboot here. The
+                    // ceremony's own filter-absent message is the correct
+                    // guidance and this is now its twin.
+                    : "PSM filter still absent after repair. Toggle Bluetooth off and on, then try again.");
             }
             catch (Exception ex) { log("PSM filter repair failed: " + ex.Message); }
         }
@@ -1074,10 +1078,26 @@ namespace PadForge.Services
             if (!IsServiceInstalled("BthPS3")) return false;
             using var key = Registry.LocalMachine.CreateSubKey(BthPs3ParamsKey, writable: true);
             if (key == null) return false;
-            bool changed = !(key.GetValue("RawPDO") is int raw && raw == 1)
-                        || !(key.GetValue("ExclusivePDO") is int excl && excl == 0);
-            key.SetValue("RawPDO", 1, RegistryValueKind.DWord);       // enumerate with no function driver
-            key.SetValue("ExclusivePDO", 0, RegistryValueKind.DWord); // allow our shared open
+            // The RAW-PDO pair is subject to the SAME coexistence policy as
+            // AutoEnableFilter below, and used not to be (audit 2026-08-08,
+            // lens 1v: a guard applied to one value of a set the policy
+            // owns). RawPDO=1 makes BthPS3 enumerate its DS3 children with
+            // NO function driver (BthPS3 BusLogic.c reads the value per
+            // child and marks the PDO raw), which is exactly what PadForge
+            // needs and exactly what DsHidMini cannot live with: its INF
+            // binds a UMDF stack to that same normal
+            // BTHPS3BUS\...&Dev&VID_054C&PID_0268 child. Writing it on a
+            // DsHidMini machine would silently kill their Bluetooth DS3s at
+            // the next re-enumeration.
+            bool dsHidMini = IsDsHidMiniInstalled();
+            bool changed = false;
+            if (!dsHidMini)
+            {
+                changed = !(key.GetValue("RawPDO") is int raw && raw == 1)
+                       || !(key.GetValue("ExclusivePDO") is int excl && excl == 0);
+                key.SetValue("RawPDO", 1, RegistryValueKind.DWord);       // enumerate with no function driver
+                key.SetValue("ExclusivePDO", 0, RegistryValueKind.DWord); // allow our shared open
+            }
             // AutoEnableFilter=0 hands PadForge sole ownership of PSM patching
             // (issue #199 crash mitigation). BthPS3's default (1) auto-arms
             // patching at radio power-up AND re-arms it ~10 s after it denies a
@@ -1097,7 +1117,7 @@ namespace PadForge.Services
             // ReconcilePsmPatchForCrashSafety just repaired, and it
             // outlives PadForge. The install/pair path is the one caller
             // that reached this line without consulting the policy.
-            if (!IsDsHidMiniInstalled())
+            if (!dsHidMini)
                 key.SetValue("AutoEnableFilter", 0, RegistryValueKind.DWord);
             return changed;
         }

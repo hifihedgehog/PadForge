@@ -699,10 +699,17 @@ namespace PadForge.Common.Input
                 {
                     var outState = CombinedOutputStates[padIndex];
                     long atNowMs = Environment.TickCount64;
+                    // SCALE to the translator's domain, never clamp. Gamepad
+                    // triggers are 0..65535 and Evaluate documents 0..255,
+                    // deriving both the zone index (pos * 10 / 256) and the
+                    // startPos gate from it. A Min() clamp pinned every pull
+                    // above 255/65535 (0.4% travel) at zone 9, so start
+                    // positions always passed and zone-limited Vibration
+                    // programs rendered at the wrong strength.
                     ushort rawAtL = AtToImpulseTranslator.Evaluate(
-                        atLeftBlock, (byte)System.Math.Min(outState.LeftTrigger, (ushort)255), atNowMs);
+                        atLeftBlock, (byte)(outState.LeftTrigger >> 8), atNowMs);
                     ushort rawAtR = AtToImpulseTranslator.Evaluate(
-                        atRightBlock, (byte)System.Math.Min(outState.RightTrigger, (ushort)255), atNowMs);
+                        atRightBlock, (byte)(outState.RightTrigger >> 8), atNowMs);
                     if (rawAtL != 0 || rawAtR != 0)
                     {
                         ScaleTriggerRumbleForDevice(rawAtL, rawAtR, devicePs,

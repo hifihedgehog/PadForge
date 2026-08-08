@@ -623,6 +623,31 @@ namespace PadForge
                     RefreshMidiServicesStatus();
                 }
             };
+            // Wire the Steam-free SteamVR install (#49): steamcmd anonymous
+            // app_update 250820 into C:\SteamVR + HIDMaestro path hint. Same
+            // overlay treatment as the MIDI install; the payload is several
+            // GB, so the overlay text warns about the wait.
+            _viewModel.Settings.InstallSteamVrRequested += async (s, e) =>
+            {
+                _viewModel.SetStatus(Strings.Instance.Status_DownloadingSteamVR, persist: true);
+                DriverOverlayText.Text = Strings.Instance.Status_DownloadingInstallingSteamVR;
+                DriverOverlay.Visibility = Visibility.Visible;
+                try
+                {
+                    await DriverInstaller.InstallSteamVRAsync();
+                    _viewModel.StatusText = Strings.Instance.Common_Ready;
+                }
+                catch (Exception ex)
+                {
+                    _viewModel.SetStatus(string.Format(Strings.Instance.Status_SteamVRInstallFailed_Format, ex.Message), persist: true);
+                }
+                finally
+                {
+                    DriverOverlay.Visibility = Visibility.Collapsed;
+                    RefreshMidiServicesStatus();
+                }
+            };
+
             _viewModel.Settings.UninstallMidiServicesRequested += async (s, e) =>
             {
                 // The uninstall guard prevents this when MIDI slots are active, but
@@ -2022,6 +2047,11 @@ namespace PadForge
 
             DashboardPageView.SlotTypeChangeRequested += (s, args) =>
             {
+                // Per-type capacity belongs to the operation, not to each
+                // tile that can start it (SettingsManager.CanSlotTakeType).
+                if (!SettingsManager.CanSlotTakeType(args.Type,
+                        pi => _viewModel.Pads[pi].OutputType, args.SlotIndex))
+                    return;
                 // Order is load-bearing (2026-07-22 automap-loss root
                 // cause): ReAutoMapSlot authors the per-device legacy
                 // PadSettings, and the MERGE must fold them into the
@@ -3072,13 +3102,15 @@ namespace PadForge
                 var b = new System.Windows.Controls.Button
                 {
                     Content = content,
-                    // 3px sides (#175 two-digit fit): at 4px the worst case
-                    // (slot "16" plus "#16") ran the row to 195.3 vs the
-                    // ~193 budget and the right-aligned segment shaved the
-                    // Xbox button's left edge again. 3px lands the five
-                    // tiles at 19px each (11px glyph untouched, still above
-                    // the 17px legibility floor) and the row at 185.3.
-                    Padding = new Thickness(3, 2, 3, 2),
+                    // 2px sides (#49 seven-tile fit; was 3px since the #175
+                    // two-digit fit): the VR tile pushed the worst case
+                    // (slot "16" plus "#16") to ≈223 vs the 211px the 233
+                    // card leaves the row, and the right-aligned segment
+                    // shaved the Xbox button's left edge again. 2px lands
+                    // the seven tiles at 17px each (11px glyph untouched,
+                    // exactly the 17px legibility floor) and the row at
+                    // ≈209.3, inside 211 without widening the card.
+                    Padding = new Thickness(2, 2, 2, 2),
                     MinWidth = 0,
                     MinHeight = 0,
                     BorderThickness = new Thickness(0),
@@ -3180,6 +3212,9 @@ namespace PadForge
                 // type segment, Nintendo added 2026-07-19; iteration 107
                 // math + 19) + 20 padding + 2 border + 6.7 headroom,
                 // inside the 236 outer cap the widened 244 pane allows.
+                // The SEVEN-tile segment (#49 VR) still fits 233: tile
+                // side-padding dropped 3px → 2px in MakeTypeButton, so the
+                // worst case is ≈209.3 against the 211 the card leaves.
                 Width = 233,
                 Child = row,
                 Tag = navItem.PadIndex,
@@ -4199,6 +4234,9 @@ namespace PadForge
             if (!PadForge.Common.Input.HMaestroVRController.IsAvailable()) return;
             if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
             {
+                if (!SettingsManager.CanSlotTakeType(VirtualControllerType.Vr,
+                        pi => _viewModel.Pads[pi].OutputType, padIndex))
+                    return;
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
@@ -7757,6 +7795,10 @@ namespace PadForge
         // null until the first status sweep records the baseline.
         private bool? _lastMidiInstalledForNav;
 
+        // SteamVR twin of the above: the VR type tile's enabled state is
+        // baked at card build, so an install/uninstall must rebuild once.
+        private bool? _lastSteamVrInstalledForNav;
+
         private void RefreshMidiServicesStatus()
         {
             bool installed = false;
@@ -7776,8 +7818,9 @@ namespace PadForge
 
             // SteamVR presence rides the same refresh cadence (VR slot
             // type gate, issue #49). The probe caches internally.
-            _viewModel.Dashboard.IsSteamVrInstalled =
-                PadForge.Common.Input.HMaestroVRController.IsAvailable();
+            bool steamVr = PadForge.Common.Input.HMaestroVRController.IsAvailable();
+            _viewModel.Dashboard.IsSteamVrInstalled = steamVr;
+            _viewModel.Settings.IsSteamVrInstalled = steamVr;
 
             // The drawer pills reflect MIDI availability only through the MIDI
             // type tile's enabled state. RefreshControllerNavItemsInPlace tears
@@ -7791,6 +7834,14 @@ namespace PadForge
             {
                 bool firstSweep = _lastMidiInstalledForNav == null;
                 _lastMidiInstalledForNav = installed;
+                if (!firstSweep) RefreshControllerNavItemsInPlace();
+            }
+
+            // Same flip-only rebuild for the VR tile's SteamVR gate.
+            if (_navDashboard != null && _lastSteamVrInstalledForNav != steamVr)
+            {
+                bool firstSweep = _lastSteamVrInstalledForNav == null;
+                _lastSteamVrInstalledForNav = steamVr;
                 if (!firstSweep) RefreshControllerNavItemsInPlace();
             }
         }

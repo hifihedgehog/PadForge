@@ -78,6 +78,17 @@ namespace PadForge.Common.Input
         // then on the device values win.
         private bool _gyroFieldLive;
 
+        /// <summary>Consecutive all-zero gyro samples seen while the field
+        /// was believed live. At the threshold the belief is revoked and
+        /// rotation-derived synthesis resumes.</summary>
+        private int _gyroZeroRun;
+
+        /// <summary>~2 s at the family's ~25 Hz report rate: long enough
+        /// that a genuinely live gyro resting perfectly still does not lose
+        /// the lane on a brief idle, short enough that a glitch cannot cost
+        /// the user their head tracking for the session.</summary>
+        private const int GyroZeroRunToRevoke = 50;
+
         // Reader diagnostics: sparse, so a silent stream is diagnosable
         // from the DIAG ring without flooding it at packet rate.
         private long _packetsPublished;
@@ -360,19 +371,41 @@ namespace PadForge.Common.Input
                 long now = _nowTicks();
                 if (!gotGyro && _synthesizeGyro && gotRotation)
                     gotGyro = SynthesizeGyroFromRotation(r0, r1, r2, now, gyro);
-                else if (gotGyro && !_gyroFieldLive)
+                else if (gotGyro)
                 {
-                    if (Math.Abs(gyro[0]) > 1e-9 || Math.Abs(gyro[1]) > 1e-9 || Math.Abs(gyro[2]) > 1e-9)
+                    bool nonZero = Math.Abs(gyro[0]) > 1e-9 || Math.Abs(gyro[1]) > 1e-9 || Math.Abs(gyro[2]) > 1e-9;
+                    if (nonZero)
                     {
-                        _gyroFieldLive = true;
-                        PadForge.Engine.SdlDiagLog.WriteLine(
-                            "Headset: gyro field is live; using device angular velocity");
+                        _gyroZeroRun = 0;
+                        if (!_gyroFieldLive)
+                        {
+                            _gyroFieldLive = true;
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                "Headset: gyro field is live; using device angular velocity");
+                        }
                     }
                     else if (gotRotation)
                     {
-                        // Field present but silent so far: the rotation
-                        // vector is the authoritative motion source.
-                        gotGyro = SynthesizeGyroFromRotation(r0, r1, r2, now, gyro);
+                        // Field present but silent. The rotation vector is
+                        // the authoritative motion source, so synthesize.
+                        //
+                        // REVOCABLE, not a one-way latch (audit 2026-08-08,
+                        // lens 1t). This family streams an all-zero gyro
+                        // word while rotation carries the real motion, so a
+                        // single nonzero sample (a startup artifact, one
+                        // glitched decode) used to disable synthesis for
+                        // the life of the device object with no exit but a
+                        // reopen. A sustained zero run now hands the lane
+                        // back to rotation.
+                        if (_gyroFieldLive && ++_gyroZeroRun >= GyroZeroRunToRevoke)
+                        {
+                            _gyroFieldLive = false;
+                            _gyroZeroRun = 0;
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                "Headset: gyro field went silent; falling back to rotation-derived rate");
+                        }
+                        if (!_gyroFieldLive)
+                            gotGyro = SynthesizeGyroFromRotation(r0, r1, r2, now, gyro);
                     }
                 }
 

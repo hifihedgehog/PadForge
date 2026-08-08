@@ -7416,6 +7416,13 @@ namespace PadForge.Services
             if (ms.RumbleAudio != null) return true;
             // SOCD authoring (#240), same rationale.
             if (!string.IsNullOrEmpty(ms.SocdMode) || !string.IsNullOrEmpty(ms.SocdPairs)) return true;
+            // Keep Controller Awake, same rationale. MappingSet's own
+            // HasAuthoredContent and both copy lanes gained these legs;
+            // this parallel predicate did not, so a keep-awake-only slot
+            // survived a cold load but was never offered as a Copy From
+            // donor.
+            if (ms.KeepAwakeEnabled || !string.IsNullOrEmpty(ms.KeepAwakeAxis)
+                || ms.KeepAwakeDeflection != 0) return true;
             return false;
         }
 

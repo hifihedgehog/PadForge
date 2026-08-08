@@ -1081,6 +1081,19 @@ namespace PadForge.Common.Input
             // the counter and the published value are separate.
             public int UsbJackGenBox;
             public int BtMicGenBox;
+
+            // Serializes the two HID reader lanes' start/stop/publish/close.
+            // The generation gate alone decides OWNERSHIP but cannot make the
+            // handle steal atomic: two concurrent Stop callers (reconcile
+            // pass vs DetachPersonaFeed at shutdown) could both snapshot the
+            // same handle before either zeroed the field and close it twice,
+            // the handle-recycle defect class. No Stop joins a reader thread,
+            // so nothing can deadlock on this. Blocking reads stay OUTSIDE.
+            public readonly object HidLaneLock = new object();
+            // Set by DetachPersonaFeed before its Stops: a reconcile pass
+            // holding this feed from before the removal must not Start a new
+            // reader on it (nobody would ever stop that orphan).
+            public volatile bool Retired;
         }
 
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, PersonaFeed> _personaFeeds = new();
@@ -1219,6 +1232,11 @@ namespace PadForge.Common.Input
         public static void DetachPersonaFeed(int slot)
         {
             if (!_personaFeeds.TryRemove(slot, out var feed)) return;
+            // Retire BEFORE stopping: a reconcile pass that grabbed this feed
+            // before the TryRemove could otherwise re-Start a reader lane on
+            // it after the Stops below, and no later pass would ever see the
+            // feed again to stop that orphan.
+            feed.Retired = true;
             try
             {
                 if (feed.FramesHandler != null) feed.Audio.Output.FramesReceived -= feed.FramesHandler;
@@ -1485,6 +1503,9 @@ namespace PadForge.Common.Input
         /// through the sink's writer, keeping one write lane.</summary>
         private static void StartBtMic(PersonaFeed feed, Guid padGuid, string hidPath)
         {
+          lock (feed.HidLaneLock)
+          {
+            if (feed.Retired) return;
             feed.BtMicStop = false;
             feed.BtMicRxFrames = 0;
             feed.BtMicPadGuid = padGuid;
@@ -1498,35 +1519,43 @@ namespace PadForge.Common.Input
             };
             feed.BtMicThread = th;
             th.Start();
+          }
             Engine.SdlDiagLog.WriteLine("PERSONA mic bt-reader start pad=" + padGuid.ToString("N").Substring(0, 8));
         }
 
         private static void StartUsbJack(PersonaFeed feed, Guid padGuid, string hidPath)
         {
-            feed.UsbJackStop = false;
-            feed.UsbJackPadGuid = padGuid;
-            int gen = System.Threading.Interlocked.Increment(ref feed.UsbJackGenBox);
-            feed.UsbJackGen = gen;
-            var th = new System.Threading.Thread(() => UsbJackLoop(feed, hidPath, gen))
-            { IsBackground = true, Name = "PadForge.PersonaUsbJack" };
-            feed.UsbJackThread = th;
-            th.Start();
+            lock (feed.HidLaneLock)
+            {
+                if (feed.Retired) return;
+                feed.UsbJackStop = false;
+                feed.UsbJackPadGuid = padGuid;
+                int gen = System.Threading.Interlocked.Increment(ref feed.UsbJackGenBox);
+                feed.UsbJackGen = gen;
+                var th = new System.Threading.Thread(() => UsbJackLoop(feed, hidPath, gen))
+                { IsBackground = true, Name = "PadForge.PersonaUsbJack" };
+                feed.UsbJackThread = th;
+                th.Start();
+            }
             Engine.SdlDiagLog.WriteLine("PERSONA jack usb-reader start pad=" + padGuid.ToString("N").Substring(0, 8));
         }
 
         private static void StopUsbJack(PersonaFeed feed)
         {
-            if (feed.UsbJackThread == null) { feed.UsbJackPadGuid = Guid.Empty; return; }
-            // Retire the generation FIRST: a Start racing this Stop resets
-            // UsbJackStop, and only the generation can still tell the old
-            // loop that it no longer owns the lane.
-            feed.UsbJackGen = 0;
-            feed.UsbJackStop = true;
-            var h = feed.UsbJackHandle;
-            feed.UsbJackHandle = IntPtr.Zero;
-            if (h != IntPtr.Zero) NativeMethods.CloseHandle(h);   // aborts the blocking read
-            feed.UsbJackThread = null;
-            feed.UsbJackPadGuid = Guid.Empty;
+            lock (feed.HidLaneLock)
+            {
+                if (feed.UsbJackThread == null) { feed.UsbJackPadGuid = Guid.Empty; return; }
+                // Retire the generation FIRST: a Start racing this Stop resets
+                // UsbJackStop, and only the generation can still tell the old
+                // loop that it no longer owns the lane.
+                feed.UsbJackGen = 0;
+                feed.UsbJackStop = true;
+                var h = feed.UsbJackHandle;
+                feed.UsbJackHandle = IntPtr.Zero;
+                if (h != IntPtr.Zero) NativeMethods.CloseHandle(h);   // aborts the blocking read
+                feed.UsbJackThread = null;
+                feed.UsbJackPadGuid = Guid.Empty;
+            }
         }
 
         /// <summary>Reads the USB DS5 input report 0x01 and notes the
@@ -1544,9 +1573,14 @@ namespace PadForge.Common.Input
             }
             // A slow open can complete after this lane was retired (or
             // restarted). Publishing the handle then would hand it to a
-            // newer reader; close our own and leave instead.
-            if (feed.UsbJackGen != gen) { NativeMethods.CloseHandle(h); return; }
-            feed.UsbJackHandle = h;
+            // newer reader; close our own and leave instead. Check-then-
+            // publish is atomic under the lane lock, so a Stop can no longer
+            // slip between the check and the publish and miss this handle.
+            lock (feed.HidLaneLock)
+            {
+                if (feed.UsbJackGen != gen) { NativeMethods.CloseHandle(h); return; }
+                feed.UsbJackHandle = h;
+            }
             var report = new byte[64];
             bool haveLast = false; bool last = false;
             // Read through the LOCAL handle throughout: the shared field
@@ -1576,15 +1610,20 @@ namespace PadForge.Common.Input
             // have re-issued to any other thread in the meantime. A
             // duplicate close is never harmless; it is the handle-recycle
             // defect class.
-            if (feed.UsbJackGen == gen)
+            lock (feed.HidLaneLock)
             {
-                feed.UsbJackHandle = IntPtr.Zero;
-                NativeMethods.CloseHandle(h);
+                if (feed.UsbJackGen == gen)
+                {
+                    feed.UsbJackHandle = IntPtr.Zero;
+                    NativeMethods.CloseHandle(h);
+                }
             }
         }
 
         private static void StopBtMic(PersonaFeed feed)
         {
+          lock (feed.HidLaneLock)
+          {
             if (feed.BtMicThread == null) { feed.BtMicPadGuid = Guid.Empty; return; }
             // Retire the generation first (see StopUsbJack).
             feed.BtMicGen = 0;
@@ -1624,6 +1663,7 @@ namespace PadForge.Common.Input
             }
             feed.BtMicThread = null;
             feed.BtMicPadGuid = Guid.Empty;
+          }
         }
 
         private static void BtMicLoop(PersonaFeed feed, string hidPath, int gen)
@@ -1636,9 +1676,13 @@ namespace PadForge.Common.Input
             }
             // Retired (or restarted) while our open was in flight: close
             // our own handle rather than publishing it over the live
-            // reader's. See UsbJackLoop.
-            if (feed.BtMicGen != gen) { NativeMethods.CloseHandle(h); return; }
-            feed.BtMicHandle = h;
+            // reader's. See UsbJackLoop; atomic under the lane lock there
+            // and here for the same reason.
+            lock (feed.HidLaneLock)
+            {
+                if (feed.BtMicGen != gen) { NativeMethods.CloseHandle(h); return; }
+                feed.BtMicHandle = h;
+            }
             // Channel count is BtMicChannels, whose own doc block below
             // records the wire evidence. The decoder is built from that
             // constant so the two can never disagree.
@@ -1868,10 +1912,13 @@ namespace PadForge.Common.Input
             }
             // Ownership-gated close, exactly as UsbJackLoop's epilogue
             // documents: Stop owns the close on the retirement path.
-            if (feed.BtMicGen == gen)
+            lock (feed.HidLaneLock)
             {
-                feed.BtMicHandle = IntPtr.Zero;
-                NativeMethods.CloseHandle(h);
+                if (feed.BtMicGen == gen)
+                {
+                    feed.BtMicHandle = IntPtr.Zero;
+                    NativeMethods.CloseHandle(h);
+                }
             }
         }
 

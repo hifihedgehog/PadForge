@@ -207,9 +207,25 @@ namespace PadForge
             // returns immediately; InputManager.UpdateDevices awaits this
             // task before the first enumeration so stale HM HIDs are gone
             // by the time PadForge looks at its device list.
+            //
+            // preserveInstall: TRUE. This is a launch sweep, and HM's own
+            // doc names that as the case for it. Devices and orphans are
+            // still evicted (the preserve flag guards only package removal
+            // and the HKLM\SOFTWARE\HIDMaestro delete), which is the whole
+            // reason this sweep exists. The uninstall-grade overload was
+            // the only one that existed when this was written (2026-04-20);
+            // HM added the preserving one in its 2026-07-21 perf audit and
+            // moved its own call site over. Staying on the nuking overload
+            // cost three things every single launch: the ~3 s full deploy
+            // pipeline (the same-version fast path could never fire), the
+            // SteamVRPath hint that lets a steamcmd SteamVR be found, and
+            // the VR driver's registration gate. Losing that gate made
+            // every launch re-extract driver_hidmaestro.dll into a running
+            // vrserver.exe and fail the VR slot with a sharing violation
+            // (owner report 2026-08-08).
             OrphanSweepTask = System.Threading.Tasks.Task.Run(() =>
             {
-                try { HIDMaestro.HMContext.RemoveAllVirtualControllers(); }
+                try { HIDMaestro.HMContext.RemoveAllVirtualControllers(preserveInstall: true); }
                 catch { /* best effort — continue without sweep */ }
                 // HM#38 consumer-side ordering hygiene: RemoveAll returns when
                 // the CALL completes, not when PnP removal completes, and a

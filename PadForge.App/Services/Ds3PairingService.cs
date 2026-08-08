@@ -354,18 +354,21 @@ namespace PadForge.Services
             // "successful" ceremony).
             if (!Ds3DriverInstaller.WaitForPsmControlDevice(20000))
             {
-                // The filter is registered but its control device is gone:
-                // the known BthPS3PSM wedge after an overlapped radio cycle
-                // (its control device can only be re-created when its filter
-                // collection is briefly empty, and a leaked name blocks every
-                // retry until the driver reloads). Nothing PadForge can do
-                // in-process recovers it, so say the truth instead of
-                // reporting success into a pad that can only flash.
-                _log("The Bluetooth PSM filter is wedged (known driver limitation "
-                     + "after a fast radio restart). Restart the PC, then press the "
-                     + "PS button; the pairing itself is already written.");
-                ReconcilePsmPatchForCrashSafety("ds3-pair-wedged");
-                r.Error = "psm-wedged";
+                // Post-horizon absence means the filter genuinely did not
+                // re-attach to the recycled radio (the arcade MediaTek
+                // showed this state). The pairing itself is already written,
+                // so a radio toggle or a retry finishes the job; failing
+                // honestly beats reporting success into a pad that can only
+                // flash. NOTE the probe layer: this check runs elevated
+                // (PadForge always is). An UNELEVATED open of this control
+                // device returns FILE_NOT_FOUND, not ACCESS_DENIED, and
+                // that lie once built a whole false reboot-required theory
+                // on the bench (2026-08-07).
+                _log("The Bluetooth PSM filter did not return after the radio "
+                     + "cycle. Toggle Bluetooth off and on (or click Pair again); "
+                     + "the pairing itself is already written.");
+                ReconcilePsmPatchForCrashSafety("ds3-pair-filter-missing");
+                r.Error = "psm-filter-missing";
                 return r;
             }
             ReconcilePsmPatchForCrashSafety("ds3-pair-armed");

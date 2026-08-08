@@ -29,14 +29,15 @@ namespace PadForge.Views
     /// second "-Active" bitmap per element.</para>
     ///
     /// <para>Interaction matches the branded 2D previews: hover warms an
-    /// element, clicking records it, the element under record flashes, and
-    /// sticks use the drawn-view QUADRANT convention
-    /// (ControllerModel2DView.StickHitArea_MouseMove /
-    /// GetStickQuadrantClip): the stick's own highlight art, clipped to the
-    /// half-disc under the pointer for an axis direction or to the center
-    /// ellipse for the stick click, both on hover and while recording.
-    /// No arrows; arrows are the schematic view's grammar, not the drawn
-    /// packs'.</para>
+    /// element, clicking records it, and the element under record flashes.
+    /// Elements that carry MORE THAN ONE mapping target use the drawn-view
+    /// REGION convention (ControllerModel2DView's stick quadrants and
+    /// touchpad click strip): the element's own highlight art clipped to
+    /// the region under the pointer, both on hover and while recording.
+    /// Sticks split center (click) from direction half-discs, A/B split an
+    /// inner press disc from the outer touch ring, trigger and grip split
+    /// the body (axis) from a tip band (click). No arrows; arrows are the
+    /// schematic view's grammar, not the drawn packs'.</para>
     /// </summary>
     public partial class VRPreviewView : UserControl
     {
@@ -79,12 +80,13 @@ namespace PadForge.Views
 
         // target -> the tint layer that colours it.
         private readonly Dictionary<string, Image> _overlays = new(StringComparer.Ordinal);
-        // Stick element key -> the quadrant highlight: a second copy of the
-        // stick's cyan overlay at the drawn packs' 0.4 hover opacity, shown
-        // clipped to a direction half-disc or the click center ellipse
-        // (ControllerModel2DView._stickHighlights, opacity and z-order
-        // measured there).
-        private readonly Dictionary<string, Image> _stickHighlights = new(StringComparer.Ordinal);
+        // Multi-target element key -> the region highlight: a second copy
+        // of the element's cyan overlay at the drawn packs' 0.4 hover
+        // opacity, shown clipped to the region under the pointer or under
+        // record (ControllerModel2DView._stickHighlights, opacity and
+        // z-order measured there). Every element except System carries
+        // more than one target, so every one of them gets a highlight.
+        private readonly Dictionary<string, Image> _regionHighlights = new(StringComparer.Ordinal);
 
         public VRPreviewView()
         {
@@ -171,11 +173,11 @@ namespace PadForge.Views
             VrCanvas.Children.Add(overlay);
             _overlays[el.Target] = overlay;
 
-            bool isStick = el.Target.EndsWith("Stick", StringComparison.Ordinal);
+            bool isMulti = !el.Target.EndsWith("System", StringComparison.Ordinal);
 
-            if (isStick)
+            if (isMulti)
             {
-                // Second copy of the same art: the quadrant highlight. Added
+                // Second copy of the same art: the region highlight. Added
                 // after the overlay so it composites above it, matching the
                 // reference's ZIndex ordering.
                 var highlight = new Image
@@ -189,7 +191,7 @@ namespace PadForge.Views
                 if (art != null) highlight.Source = art;
                 Canvas.SetLeft(highlight, el.X); Canvas.SetTop(highlight, el.Y);
                 VrCanvas.Children.Add(highlight);
-                _stickHighlights[el.Target] = highlight;
+                _regionHighlights[el.Target] = highlight;
             }
 
             var hit = new Rectangle
@@ -205,34 +207,27 @@ namespace PadForge.Views
             hit.MouseMove += (s, e) =>
             {
                 _paintedValid = false;
-                if (!isStick) { _hoverTarget = el.Target; return; }
-                // Sticks skip the whole-element hover warm: the quadrant
-                // highlight IS the hover affordance ("Sticks are always
-                // visible - skip hover ghost" in the reference).
-                var p = e.GetPosition(hit);
-                string target = StickTargetAt(el.Target, p, el.W, el.H);
-                bool left = el.Target.StartsWith("VrL", StringComparison.Ordinal);
-                var stn = Strings.Instance;
-                hit.ToolTip = target.EndsWith("Click", StringComparison.Ordinal)
-                    ? (left ? stn.Btn_LeftStickButton : stn.Btn_RightStickButton)
-                    : target.Contains("StickX")
-                        ? (left ? stn.Btn_LeftStickX : stn.Btn_RightStickX)
-                        : (left ? stn.Btn_LeftStickY : stn.Btn_RightStickY);
-                // While the flash owns this stick's highlight, hover must not
-                // fight it for the clip (the reference re-applies the flash
-                // clip every tick for the same reason).
-                if (FlashOwnsStick(el.Target)) return;
-                if (_stickHighlights.TryGetValue(el.Target, out var hl))
+                if (!isMulti) { _hoverTarget = el.Target; return; }
+                // Multi-target elements skip the whole-element hover warm:
+                // the region highlight IS the hover affordance ("Sticks are
+                // always visible - skip hover ghost" in the reference).
+                string target = RegionTargetAt(el.Target, e.GetPosition(hit), el.W, el.H);
+                hit.ToolTip = DisplayName(target, Strings.Instance);
+                // While the flash owns this element's highlight, hover must
+                // not fight it for the clip (the reference re-applies the
+                // flash clip every tick for the same reason).
+                if (FlashOwnsRegion(el.Target)) return;
+                if (_regionHighlights.TryGetValue(el.Target, out var hl))
                 {
-                    hl.Clip = StickClipFor(target, hl.Width, hl.Height);
+                    hl.Clip = RegionClipFor(target, hl.Width, hl.Height);
                     hl.Visibility = Visibility.Visible;
                 }
             };
             hit.MouseLeave += (s, e) =>
             {
                 if (_hoverTarget == el.Target) _hoverTarget = null;
-                if (isStick && !FlashOwnsStick(el.Target)
-                    && _stickHighlights.TryGetValue(el.Target, out var hl))
+                if (isMulti && !FlashOwnsRegion(el.Target)
+                    && _regionHighlights.TryGetValue(el.Target, out var hl))
                 {
                     hl.Visibility = Visibility.Collapsed;
                     hl.Clip = null;
@@ -242,60 +237,96 @@ namespace PadForge.Views
             hit.MouseLeftButtonDown += (s, e) =>
             {
                 string target = el.Target;
-                if (isStick)
-                    target = StickTargetAt(el.Target, e.GetPosition(hit), el.W, el.H);
+                if (isMulti)
+                    target = RegionTargetAt(el.Target, e.GetPosition(hit), el.W, el.H);
                 ControllerElementRecordRequested?.Invoke(this, target);
                 e.Handled = true;
             };
         }
 
-        /// <summary>The recording target for a pointer position on a stick:
-        /// the center region is the stick CLICK (reference:
-        /// DetermineAxisFromQuadrant's dist &lt; 0.3 branch), the rest is the
-        /// direction under the pointer. Down is positive Y in screen
-        /// coordinates, inverted downstream exactly as the branded views'.</summary>
-        private static string StickTargetAt(string stickKey, Point p, double w, double h)
-        {
-            double cx = w / 2, cy = h / 2;
-            double dx = p.X - cx, dy = p.Y - cy;
-            if (Math.Sqrt(dx * dx / (cx * cx) + dy * dy / (cy * cy)) < CenterR)
-                return stickKey + "Click";
-            return Math.Abs(dx) >= Math.Abs(dy)
-                ? (dx >= 0 ? stickKey + "X" : stickKey + "XNeg")
-                : (dy >= 0 ? stickKey + "Y" : stickKey + "YNeg");
-        }
-
         // Center-region fraction of the stick radius that means "the click,
         // not a direction" (measured from the reference's centerR).
         private const double CenterR = 0.3;
+        // A/B buttons: inner fraction that records the PRESS; the ring
+        // outside it records the TOUCH sensor.
+        private const double PressR = 0.6;
+        // Trigger/grip: bottom fraction of the art that records the CLICK
+        // (the end-of-travel detent lives at the tip); the body above it
+        // records the analog pull.
+        private const double ClickBand = 0.3;
 
-        /// <summary>The quadrant clip for a stick axis or click target, the
-        /// reference's GetStickQuadrantClip verbatim: click = the center
-        /// ellipse, a direction = the half-disc minus that center.</summary>
-        private static Geometry StickClipFor(string target, double w, double h)
+        /// <summary>The recording target for a pointer position on a
+        /// multi-target element. Sticks: center = click (reference:
+        /// DetermineAxisFromQuadrant's dist &lt; 0.3 branch), else the
+        /// direction under the pointer, down = positive Y in screen
+        /// coordinates inverted downstream exactly as the branded views'.
+        /// A/B: inner disc = press, outer ring = touch. Trigger/grip:
+        /// body = axis, bottom band = click.</summary>
+        private static string RegionTargetAt(string elemKey, Point p, double w, double h)
         {
-            double cx = w / 2, cy = h / 2;
-            var full = new EllipseGeometry(new Point(cx, cy), cx, cy);
-            var center = new EllipseGeometry(new Point(cx, cy), cx * CenterR, cy * CenterR);
-            if (target.EndsWith("Click", StringComparison.Ordinal)) return center;
-
-            bool neg = target.EndsWith("Neg", StringComparison.Ordinal);
-            Rect half = target.Contains("StickX")
-                ? (neg ? new Rect(0, 0, w / 2, h) : new Rect(cx, 0, w / 2, h))
-                : (neg ? new Rect(0, 0, w, h / 2) : new Rect(0, cy, w, h / 2));
-
-            var quadrant = new CombinedGeometry(GeometryCombineMode.Intersect,
-                full, new RectangleGeometry(half));
-            return new CombinedGeometry(GeometryCombineMode.Exclude, quadrant, center);
+            if (elemKey.EndsWith("Stick", StringComparison.Ordinal))
+            {
+                double cx = w / 2, cy = h / 2;
+                double dx = p.X - cx, dy = p.Y - cy;
+                if (Math.Sqrt(dx * dx / (cx * cx) + dy * dy / (cy * cy)) < CenterR)
+                    return elemKey + "Click";
+                return Math.Abs(dx) >= Math.Abs(dy)
+                    ? (dx >= 0 ? elemKey + "X" : elemKey + "XNeg")
+                    : (dy >= 0 ? elemKey + "Y" : elemKey + "YNeg");
+            }
+            if (elemKey.EndsWith("A", StringComparison.Ordinal)
+                || elemKey.EndsWith("B", StringComparison.Ordinal))
+            {
+                double cx = w / 2, cy = h / 2;
+                double dx = p.X - cx, dy = p.Y - cy;
+                return Math.Sqrt(dx * dx / (cx * cx) + dy * dy / (cy * cy)) < PressR
+                    ? elemKey : elemKey + "Touch";
+            }
+            // Trigger / grip.
+            return p.Y >= h * (1 - ClickBand) ? elemKey + "Click" : elemKey;
         }
 
-        /// <summary>True when the element under record is one of this
-        /// stick's axis directions or its click, i.e. the flash is driving
-        /// this stick's quadrant highlight.</summary>
-        private bool FlashOwnsStick(string stickKey)
-            => _flashTarget != null
-            && _flashTarget.StartsWith(stickKey, StringComparison.Ordinal)
-            && _flashTarget.Length > stickKey.Length;
+        /// <summary>The region clip for any multi-target element's target,
+        /// the reference's GetStickQuadrantClip generalized. Stick click =
+        /// center ellipse, stick direction = half-disc minus that center,
+        /// A/B press = inner disc, touch = the ring outside it, trigger/
+        /// grip axis = the body, their click = the bottom band.</summary>
+        private static Geometry RegionClipFor(string target, double w, double h)
+        {
+            double cx = w / 2, cy = h / 2;
+            if (target.Contains("Stick"))
+            {
+                var full = new EllipseGeometry(new Point(cx, cy), cx, cy);
+                var center = new EllipseGeometry(new Point(cx, cy), cx * CenterR, cy * CenterR);
+                if (target.EndsWith("Click", StringComparison.Ordinal)) return center;
+
+                bool neg = target.EndsWith("Neg", StringComparison.Ordinal);
+                Rect half = target.Contains("StickX")
+                    ? (neg ? new Rect(0, 0, w / 2, h) : new Rect(cx, 0, w / 2, h))
+                    : (neg ? new Rect(0, 0, w, h / 2) : new Rect(0, cy, w, h / 2));
+
+                var quadrant = new CombinedGeometry(GeometryCombineMode.Intersect,
+                    full, new RectangleGeometry(half));
+                return new CombinedGeometry(GeometryCombineMode.Exclude, quadrant, center);
+            }
+            if (target.EndsWith("Touch", StringComparison.Ordinal))
+                return new CombinedGeometry(GeometryCombineMode.Exclude,
+                    new EllipseGeometry(new Point(cx, cy), cx, cy),
+                    new EllipseGeometry(new Point(cx, cy), cx * PressR, cy * PressR));
+            if (target.EndsWith("A", StringComparison.Ordinal)
+                || target.EndsWith("B", StringComparison.Ordinal))
+                return new EllipseGeometry(new Point(cx, cy), cx * PressR, cy * PressR);
+            if (target.EndsWith("Click", StringComparison.Ordinal))
+                return new RectangleGeometry(new Rect(0, h * (1 - ClickBand), w, h * ClickBand));
+            // Trigger / grip axis body.
+            return new RectangleGeometry(new Rect(0, 0, w, h * (1 - ClickBand)));
+        }
+
+        /// <summary>True when the target under record belongs to this
+        /// multi-target element, i.e. the flash is driving this element's
+        /// region highlight rather than its whole-element overlay.</summary>
+        private bool FlashOwnsRegion(string elemKey)
+            => _flashTarget != null && ElementKeyFor(_flashTarget) == elemKey;
 
         private static string DisplayName(string target, Strings st) => target switch
         {
@@ -311,6 +342,22 @@ namespace PadForge.Views
             "VrRSystem" => st.Btn_VrRightSystem,
             "VrRTrigger" => st.Btn_RightTrigger,
             "VrRGrip" => st.Btn_VrRightGrip,
+            // Region targets, named with the same strings as their
+            // mapping-grid rows so the tooltip and the grid agree.
+            "VrLStickClick" => st.Btn_LeftStickButton,
+            "VrRStickClick" => st.Btn_RightStickButton,
+            "VrLStickX" or "VrLStickXNeg" => st.Btn_LeftStickX,
+            "VrLStickY" or "VrLStickYNeg" => st.Btn_LeftStickY,
+            "VrRStickX" or "VrRStickXNeg" => st.Btn_RightStickX,
+            "VrRStickY" or "VrRStickYNeg" => st.Btn_RightStickY,
+            "VrLATouch" => st.Btn_VrLeftATouch,
+            "VrLBTouch" => st.Btn_VrLeftBTouch,
+            "VrRATouch" => st.Btn_VrRightATouch,
+            "VrRBTouch" => st.Btn_VrRightBTouch,
+            "VrLTriggerClick" => st.Btn_VrLeftTriggerClick,
+            "VrRTriggerClick" => st.Btn_VrRightTriggerClick,
+            "VrLGripClick" => st.Btn_VrLeftGripClick,
+            "VrRGripClick" => st.Btn_VrRightGripClick,
             _ => target,
         };
 
@@ -328,10 +375,10 @@ namespace PadForge.Views
             }
             _flashTarget = target;
             _flashOn = false;
-            // A target change always resets the stick highlights: the old
+            // A target change always resets the region highlights: the old
             // flash may have left one visible with its clip, and hover
             // re-shows its own as soon as the pointer moves.
-            foreach (var hl in _stickHighlights.Values)
+            foreach (var hl in _regionHighlights.Values)
             {
                 hl.Visibility = Visibility.Collapsed;
                 hl.Clip = null;
@@ -383,32 +430,29 @@ namespace PadForge.Views
             _paintedValid = true;
 
             string flashElem = ElementKeyFor(_flashTarget);
-            // A stick axis/click under record flashes the QUADRANT highlight
-            // only, never the whole stick overlay (the reference's FlashTick
-            // returns after its quadrant branch for the same reason). The
-            // EndsWith guard keeps this to sticks: FlashOwnsStick's
-            // prefix-and-longer test would also match VrLTriggerClick
-            // against the VrLTrigger element and eat that flash.
-            if (flashElem != null
-                && flashElem.EndsWith("Stick", StringComparison.Ordinal)
-                && FlashOwnsStick(flashElem))
+            // A multi-target element's target under record flashes its
+            // REGION highlight only, never the whole-element overlay (the
+            // reference's FlashTick returns after its quadrant branch for
+            // the same reason): the region is what distinguishes A from
+            // ATouch and Trigger from TriggerClick.
+            if (flashElem != null && _regionHighlights.ContainsKey(flashElem))
                 flashElem = null;
 
             PaintHand(in vr.Left, "VrL", flashElem);
             PaintHand(in vr.Right, "VrR", flashElem);
 
-            PaintStickFlash("VrLStick");
-            PaintStickFlash("VrRStick");
+            foreach (var key in _regionHighlights.Keys)
+                PaintRegionFlash(key);
         }
 
-        /// <summary>Drives a stick's quadrant highlight while one of its
-        /// directions (or its click) is under record: clip from the target
-        /// name, visibility from the flash phase.</summary>
-        private void PaintStickFlash(string stickKey)
+        /// <summary>Drives an element's region highlight while one of its
+        /// targets is under record: clip from the target name, visibility
+        /// from the flash phase.</summary>
+        private void PaintRegionFlash(string elemKey)
         {
-            if (!FlashOwnsStick(stickKey)) return;
-            if (!_stickHighlights.TryGetValue(stickKey, out var hl)) return;
-            hl.Clip = StickClipFor(_flashTarget, hl.Width, hl.Height);
+            if (!FlashOwnsRegion(elemKey)) return;
+            if (!_regionHighlights.TryGetValue(elemKey, out var hl)) return;
+            hl.Clip = RegionClipFor(_flashTarget, hl.Width, hl.Height);
             hl.Visibility = _flashOn ? Visibility.Visible : Visibility.Collapsed;
         }
 

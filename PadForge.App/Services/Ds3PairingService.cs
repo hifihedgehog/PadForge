@@ -346,8 +346,28 @@ namespace PadForge.Services
             // inbox HID stack refuses the connection: the pad then flashes
             // forever and the only recovery the user finds is deleting the
             // record and running the whole ceremony again.
+            //
+            // CycleRadio now sits out the fast-cycle teardown horizon before
+            // returning, so this wait probes the POST-cycle filter instance,
+            // never the dying one it used to pass against (bench 2026-08-07:
+            // that false positive armed a corpse and the pad flashed after a
+            // "successful" ceremony).
             if (!Ds3DriverInstaller.WaitForPsmControlDevice(20000))
-                _log("WARNING: the PSM filter did not re-attach after the radio cycle.");
+            {
+                // The filter is registered but its control device is gone:
+                // the known BthPS3PSM wedge after an overlapped radio cycle
+                // (its control device can only be re-created when its filter
+                // collection is briefly empty, and a leaked name blocks every
+                // retry until the driver reloads). Nothing PadForge can do
+                // in-process recovers it, so say the truth instead of
+                // reporting success into a pad that can only flash.
+                _log("The Bluetooth PSM filter is wedged (known driver limitation "
+                     + "after a fast radio restart). Restart the PC, then press the "
+                     + "PS button; the pairing itself is already written.");
+                ReconcilePsmPatchForCrashSafety("ds3-pair-wedged");
+                r.Error = "psm-wedged";
+                return r;
+            }
             ReconcilePsmPatchForCrashSafety("ds3-pair-armed");
 
             _log("Bluetooth radio cycled. Unplug the DS3 and press the PS button.");

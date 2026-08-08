@@ -801,6 +801,19 @@ namespace PadForge.Services
                 // in the arcade-PC log, 0.7 s after this call returned).
                 if (!WaitForBluetoothRadio(20000))
                     log("WARNING: the Bluetooth radio did not come back after the cycle.");
+
+                // The MIRROR trap on FAST radios (bench-observed 2026-08-07,
+                // Intel AX211): CyclePort returns while the OLD radio and
+                // filter instances still answer, so both this radio wait and
+                // any PSM control-device probe pass instantly against the
+                // DYING instances. Everything verified in that window is a
+                // corpse: patching armed on it evaporates, and worse, the
+                // overlapped teardown/attach can strand BthPS3PSM's control
+                // device permanently (its create runs only when the filter
+                // collection count is exactly 1; a leaked name then blocks
+                // every re-create until reboot). Sit out the teardown
+                // horizon so callers only ever probe post-cycle reality.
+                Thread.Sleep(3000);
             }
         }
 

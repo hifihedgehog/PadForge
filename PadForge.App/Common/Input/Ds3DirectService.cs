@@ -895,6 +895,12 @@ namespace PadForge.Common.Input
             {
                 for (int i = 0; SetupDiEnumDeviceInterfaces(set, IntPtr.Zero, ref ifGuid, i, ref did); i++)
                 {
+                    // ACTIVE only (SPINT_ACTIVE): registrations persist in
+                    // the registry after the driver changes, and a stale
+                    // path here short-circuited the auto-bind (path came
+                    // back non-null, so the rebind never ran) while the
+                    // live pad sat on HidUsb with no input (#285).
+                    if ((did.Flags & SPINT_ACTIVE) == 0) continue;
                     int req = 0;
                     SetupDiGetDeviceInterfaceDetail(set, ref did, IntPtr.Zero, 0, ref req, IntPtr.Zero);
                     IntPtr det = Marshal.AllocHGlobal(req);
@@ -915,7 +921,7 @@ namespace PadForge.Common.Input
             return null;
         }
 
-        private const int DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10;
+        private const int DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10, SPINT_ACTIVE = 0x1;
         private const uint GENERIC_READ = 0x80000000, GENERIC_WRITE = 0x40000000, FILE_SHARE_RW = 0x3, OPEN_EXISTING = 3;
         private const uint FILE_FLAG_OVERLAPPED = 0x40000000;
         private const int ERROR_FILE_NOT_FOUND = 2, ERROR_INVALID_HANDLE = 6,

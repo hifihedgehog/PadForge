@@ -122,7 +122,12 @@ namespace PadForge.Tests
                     "PadForge.App", "Services", "Ds3DriverInstaller.cs"));
                 int at = src.IndexOf("public static bool EnsureWinUsbBound", StringComparison.Ordinal);
                 Assert.True(at > 0);
-                string body = src.Substring(at, 1600);
+                // Semantic window (method start through the install call),
+                // not a fixed length: a fixed 1600-char slice broke the
+                // moment the bind grew its live-node preamble (#285).
+                int end = src.IndexOf("InstallInf(infPath", at, StringComparison.Ordinal);
+                Assert.True(end > at);
+                string body = src.Substring(at, end - at);
                 // The bind must not gate signing on the catalog already being
                 // trusted; that is precisely the short-circuit being removed.
                 Assert.DoesNotContain("!IsWinUsbPackageTrusted(out _) &&", body, StringComparison.Ordinal);
@@ -181,6 +186,52 @@ namespace PadForge.Tests
             string pair = File.ReadAllText(Path.Combine(RepoRoot(),
                 "PadForge.App", "Services", "Ds3PairingService.cs"));
             Assert.Contains("Ds3DriverInstaller.LastWinUsbFailure", pair, StringComparison.Ordinal);
+        }
+
+        /// <summary>The #285 bind contract, source-anchored like the guards
+        /// above. The old shape failed a reporter on two machines with two
+        /// genuine pads: "an interface with our GUID exists" passed as
+        /// "already bound" while the live pad rode HidUsb (the DS3 has no
+        /// USB serial, so every port is its own devnode and a stale
+        /// registration keeps the GUID present), and the non-forced
+        /// DiInstallDriver lost the ranking contest to inbox WHQL HidUsb,
+        /// so the pad could never leave it. The bind must decide on the
+        /// LIVE nodes' bound service, force-apply the driver, and treat
+        /// only an ACTIVE interface as proof.</summary>
+        [Fact]
+        public void WinUsbBind_DecidesOnLiveNodesAndForcesTheBind()
+        {
+            string src = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Services", "Ds3DriverInstaller.cs"));
+
+            // The naked GUID-presence fast path is gone: success requires
+            // every live DS3 node on WINUSB plus an ACTIVE interface.
+            Assert.Contains("ListDs3UsbNodes()", src, StringComparison.Ordinal);
+            Assert.Contains("HasActiveDs3WinUsbInterface()", src, StringComparison.Ordinal);
+            Assert.Contains("SPINT_ACTIVE", src, StringComparison.Ordinal);
+
+            // The bind is forced and targeted, not left to driver ranking.
+            Assert.Contains("UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, @\"USB\\VID_054C&PID_0268\"",
+                src, StringComparison.Ordinal);
+            Assert.Contains("INSTALLFLAG_FORCE", src, StringComparison.Ordinal);
+
+            // Coexistence survives the force: foreign function drivers
+            // (DsHidMini's WUDFRd) are never stolen.
+            Assert.Contains("not rebinding it", src, StringComparison.Ordinal);
+
+            // Both interface-path consumers skip stale registrations.
+            string pair = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Services", "Ds3PairingService.cs"));
+            Assert.Contains("did.Flags & SPINT_ACTIVE", pair, StringComparison.Ordinal);
+            string direct = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Common", "Input", "Ds3DirectService.cs"));
+            Assert.Contains("did.Flags & SPINT_ACTIVE", direct, StringComparison.Ordinal);
+
+            // The ceremony's failure telemetry splits dead-handle from
+            // device-refusal through the same handle, so the next report
+            // like #285 is diagnosable from its DIAG alone.
+            Assert.Contains("WinUsb_GetDescriptor", pair, StringComparison.Ordinal);
+            Assert.Contains("DS3 WinUSB interface: ", pair, StringComparison.Ordinal);
         }
     }
 }

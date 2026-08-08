@@ -15,6 +15,8 @@ namespace PadForge.Tests
     /// never touching identity members, the same way profile Name survives
     /// them.
     /// </summary>
+    // Same shared-statics rule as its siblings (see NintendoWireStampTests).
+    [Collection("SettingsManagerStatics")]
     public class WorkshopProvenanceTests
     {
         private static SteamWorkshopSource SampleSource() => new SteamWorkshopSource

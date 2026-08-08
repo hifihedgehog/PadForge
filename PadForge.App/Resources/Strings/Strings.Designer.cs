@@ -2431,6 +2431,15 @@ public class Strings : INotifyPropertyChanged
     public string Btn_VrRightGrip => Get("Btn_VrRightGrip");
     public string Btn_VrRightGripClick => Get("Btn_VrRightGripClick");
     public string Btn_VrRightTriggerClick => Get("Btn_VrRightTriggerClick");
+    public string Vr_LeftHand => Get("Vr_LeftHand");
+    public string Vr_RightHand => Get("Vr_RightHand");
+    public string Vr_Sys => Get("Vr_Sys");
+    public string Vr_ATouch => Get("Vr_ATouch");
+    public string Vr_BTouch => Get("Vr_BTouch");
+    public string Vr_Trg => Get("Vr_Trg");
+    public string Vr_Grip => Get("Vr_Grip");
+    public string Vr_Stick => Get("Vr_Stick");
+    public string Vr_PreviewNote => Get("Vr_PreviewNote");
     // Mouse VK buttons
     public string Key_LButton => Get("Key_LButton");
     public string Key_RButton => Get("Key_RButton");

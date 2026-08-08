@@ -1045,6 +1045,15 @@
   <data name="Btn_VrRightGrip" xml:space="preserve"><value>Grip Direito</value></data>
   <data name="Btn_VrRightGripClick" xml:space="preserve"><value>Clique do Grip Direito</value></data>
   <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>Clique do Gatilho Direito</value></data>
+  <data name="Vr_LeftHand" xml:space="preserve"><value>Mão Esquerda</value></data>
+  <data name="Vr_RightHand" xml:space="preserve"><value>Mão Direita</value></data>
+  <data name="Vr_Sys" xml:space="preserve"><value>Sist.</value></data>
+  <data name="Vr_ATouch" xml:space="preserve"><value>A Toque</value></data>
+  <data name="Vr_BTouch" xml:space="preserve"><value>B Toque</value></data>
+  <data name="Vr_Trg" xml:space="preserve"><value>Gatilho</value></data>
+  <data name="Vr_Grip" xml:space="preserve"><value>Grip</value></data>
+  <data name="Vr_Stick" xml:space="preserve"><value>Analógico</value></data>
+  <data name="Vr_PreviewNote" xml:space="preserve"><value>Um slot de VR controla as duas mãos do SteamVR. A posição e a rotação dos controles vêm do próprio SteamVR, então não aparecem aqui.</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Botão Esquerdo do Mouse</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>Botão Direito do Mouse</value></data>

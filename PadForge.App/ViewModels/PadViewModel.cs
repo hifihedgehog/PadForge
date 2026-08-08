@@ -7425,6 +7425,13 @@ namespace PadForge.ViewModels
         public KbmRawState KbmOutputSnapshot { get; set; }
 
         /// <summary>
+        /// Latest VrRawState snapshot for the VR preview (#49). Same plain
+        /// auto-property contract as the KBM twin above: written by the
+        /// 30 Hz push, polled by the view, no change notification.
+        /// </summary>
+        public VrRawState VrOutputSnapshot { get; set; }
+
+        /// <summary>
         /// Stores the combined virtual-controller output for the Extended
         /// schematic preview. Writes <see cref="RawHidOutputSnapshot"/>
         /// only — does not touch <see cref="StickConfigs"/> or

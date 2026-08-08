@@ -232,7 +232,7 @@ namespace PadForge.Views
 
         private void ApplyViewMode()
         {
-            if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null || MidiPreview == null || KBMPreview == null) return;
+            if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null || MidiPreview == null || KBMPreview == null || VRPreview == null) return;
 
             bool isMidi = IsMidi();
             bool isKBM = IsKBM();
@@ -247,6 +247,7 @@ namespace PadForge.Views
                 ControllerSchematic.Visibility = Visibility.Collapsed;
                 MidiPreview.Visibility = Visibility.Collapsed;
                 KBMPreview.Visibility = Visibility.Visible;
+                VRPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
             else if (isMidi)
@@ -257,6 +258,7 @@ namespace PadForge.Views
                 ControllerSchematic.Visibility = Visibility.Collapsed;
                 MidiPreview.Visibility = Visibility.Visible;
                 KBMPreview.Visibility = Visibility.Collapsed;
+                VRPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
             else if (isSchematic)
@@ -267,18 +269,20 @@ namespace PadForge.Views
                 ControllerSchematic.Visibility = Visibility.Visible;
                 MidiPreview.Visibility = Visibility.Collapsed;
                 KBMPreview.Visibility = Visibility.Collapsed;
+                VRPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
             else if (IsVr())
             {
-                // VR (v1): no preview surface yet, hide every preview and
-                // the 2D/3D toggle. The mapping grid below is the whole
-                // editing surface.
+                // VR: both SteamVR hands side by side. One slot drives the
+                // pair, so there is no single controller body to draw and
+                // no 2D/3D toggle to offer.
                 ControllerModel3D.Visibility = Visibility.Collapsed;
                 ControllerModel2D.Visibility = Visibility.Collapsed;
                 ControllerSchematic.Visibility = Visibility.Collapsed;
                 MidiPreview.Visibility = Visibility.Collapsed;
                 KBMPreview.Visibility = Visibility.Collapsed;
+                VRPreview.Visibility = Visibility.Visible;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
             else
@@ -287,6 +291,7 @@ namespace PadForge.Views
                 ControllerSchematic.Visibility = Visibility.Collapsed;
                 MidiPreview.Visibility = Visibility.Collapsed;
                 KBMPreview.Visibility = Visibility.Collapsed;
+                VRPreview.Visibility = Visibility.Collapsed;
                 ControllerModel3D.Visibility = is2D ? Visibility.Collapsed : Visibility.Visible;
                 ControllerModel2D.Visibility = is2D ? Visibility.Visible : Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Visible;

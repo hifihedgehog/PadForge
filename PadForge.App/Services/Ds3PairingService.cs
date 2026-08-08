@@ -120,12 +120,17 @@ namespace PadForge.Services
         /// <summary>Drives BthPS3 PSM patching to the policy state (see
         /// <see cref="PsmPatchPolicy"/>). No-op when BthPS3 isn't installed.
         /// Idempotent; the IOCTL toggle contacts no radio and needs no
-        /// <see cref="_radioGate"/>.</summary>
-        public static void ReconcilePsmPatchForCrashSafety(string reason)
+        /// <see cref="_radioGate"/>. Returns false when the policy wanted
+        /// patching armed and it is NOT (zero radios armed, or the reconcile
+        /// threw): in that state the pad will be refused over Bluetooth, and
+        /// the pairing ceremony must fail honestly rather than report a
+        /// success that can only flash. Callers reconciling opportunistically
+        /// may ignore the return; the ceremony's post-cycle arm must not.</summary>
+        public static bool ReconcilePsmPatchForCrashSafety(string reason)
         {
             try
             {
-                if (!Ds3DriverInstaller.IsBthPs3Installed()) return;
+                if (!Ds3DriverInstaller.IsBthPs3Installed()) return true;
                 bool dshm = Ds3DriverInstaller.IsDsHidMiniInstalled();
                 // "Is there a DS3 here" is NOT the same question as "did PadForge
                 // pair one" (#265). A pad paired outside our ceremony leaves no
@@ -152,9 +157,13 @@ namespace PadForge.Services
                 int patched = Ds3DriverInstaller.SetPsmPatching(
                     wantPatching, LogLine, wantPatching ? 20000 : 0);
                 if (wantPatching && patched == 0)
+                {
                     LogLine("WARNING: PSM patching is not armed; the pad will be refused over Bluetooth.");
+                    return false;
+                }
+                return true;
             }
-            catch (Exception ex) { LogLine("PSM patch reconcile failed: " + ex.Message); }
+            catch (Exception ex) { LogLine("PSM patch reconcile failed: " + ex.Message); return false; }
         }
 
         public sealed class PairResult
@@ -165,7 +174,8 @@ namespace PadForge.Services
             public byte[] RadioMac { get; set; }
             public bool Success { get; set; }
             /// <summary>One of: no-radio, no-ds3-usb, winusb-bind-failed, sixpair-failed,
-            /// identity-inject-failed, install-failed, ok.</summary>
+            /// sixpair-not-committed, identity-inject-failed, install-failed,
+            /// driver-untrusted, psm-filter-missing, psm-arm-failed, cancelled, ok.</summary>
             public string Error { get; set; }
         }
 
@@ -294,7 +304,8 @@ namespace PadForge.Services
                     //    firmware actually committed the master (a returned-true control
                     //    transfer is not proof the pad stored it).
                     byte[] before = new byte[8];
-                    if (GetFeature(ifh, 0xF5, before))
+                    bool f5Readable = GetFeature(ifh, 0xF5, before);
+                    if (f5Readable)
                         _log($"Master before sixpair: {Hex(before[2..8], ':')}");
 
                     byte[] set = new byte[8];
@@ -312,8 +323,29 @@ namespace PadForge.Services
                             _log($"WARNING: pad did not store the radio address (wanted {Hex(radio, ':')}).");
                             r.Error = "sixpair-not-committed"; return r;
                         }
+                        _log("Sixpair written and confirmed.");
                     }
-                    _log("Sixpair written and confirmed.");
+                    else if (f5Readable)
+                    {
+                        // The pad answered this exact read moments ago, so a
+                        // failure now means it left the bus mid-ceremony, not
+                        // that it refuses the report. The write's completion
+                        // alone is not commit proof (the read-back exists
+                        // because of that premise), so registering the pairing
+                        // and reporting success here would hand the user a pad
+                        // that may still target its old master.
+                        _log($"Sixpair read-back failed after the write (err={Marshal.GetLastWin32Error()}): "
+                             + "the pad was disconnected during pairing. Plug it back in and pair again.");
+                        r.Error = "sixpair-not-committed"; return r;
+                    }
+                    else
+                    {
+                        // This pad never answered a 0xF5 read (some clones
+                        // refuse the GET while accepting the SET). Keep the
+                        // long-standing tolerant behavior, but say what was
+                        // actually proven.
+                        _log("Sixpair written (this pad does not answer the 0xF5 read-back).");
+                    }
                 }
                 finally { WinUsb_Free(ifh); }
             }
@@ -371,7 +403,20 @@ namespace PadForge.Services
                 r.Error = "psm-filter-missing";
                 return r;
             }
-            ReconcilePsmPatchForCrashSafety("ds3-pair-armed");
+            if (!ReconcilePsmPatchForCrashSafety("ds3-pair-armed"))
+            {
+                // The filter's control device is back (the wait above proved
+                // that) but arming the patch on it failed, which is the same
+                // user-visible outcome as the filter never returning: the pad's
+                // connection is refused and it can only flash. Same honest exit
+                // and same recovery as the sibling branch; the pairing itself
+                // is already written.
+                _log("The Bluetooth PSM filter came back but could not be "
+                     + "armed. Toggle Bluetooth off and on (or click Pair "
+                     + "again); the pairing itself is already written.");
+                r.Error = "psm-arm-failed";
+                return r;
+            }
 
             _log("Bluetooth radio cycled. Unplug the DS3 and press the PS button.");
 

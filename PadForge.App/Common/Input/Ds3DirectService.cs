@@ -444,6 +444,24 @@ namespace PadForge.Common.Input
                     // next pass, and the enable is retried on a fresh
                     // handle. Setting _running here would kill DS3 support
                     // for the whole session.
+                    //
+                    // The flag comes FIRST: CancelIoEx only aborts I/O that
+                    // is already pended, so a cancel that lands in the gap
+                    // between two reads is simply lost, the writer is gone,
+                    // and the read loop would sit attached-but-silent
+                    // forever (the exact wedge this detach cures). With
+                    // _writerRun down, both read loops exit at their next
+                    // loop-top check even when the cancel misses.
+                    _writerRun = false;
+                    CancelCurrentRead();
+                    // Belt over the braces: if that cancel fired in the
+                    // between-reads gap AND the pad went silent right then,
+                    // the next read is pended with nothing to complete it.
+                    // By 50 ms the reader is either parked in that read
+                    // (this second cancel lands) or completing traffic (the
+                    // loop-top _writerRun check exits) - the two miss modes
+                    // exclude each other.
+                    Thread.Sleep(50);
                     CancelCurrentRead();
                     break;
                 }
@@ -564,7 +582,11 @@ namespace PadForge.Common.Input
         {
             byte[] buf = new byte[DS3_BT_INPUT_REPORT_SIZE];
             long lastProbe = 0;
-            while (_running)
+            // _writerRun is this loop's detach signal: the writer's five-kick
+            // detach lowers it before cancelling, and a pad that streams only
+            // non-input frames (0xFF wake reports) keeps this loop cycling
+            // between reads where a bare CancelIoEx can miss.
+            while (_running && _writerRun)
             {
                 if (DeviceIoControl(h, IOCTL_HID_INTERRUPT_READ, null, 0, buf, buf.Length, out int rd, IntPtr.Zero))
                 {
@@ -608,7 +630,11 @@ namespace PadForge.Common.Input
             byte[] raw = new byte[64];
             buf[0] = 0xA1;
             long lastProbe = 0;
-            while (_running && _transport == Ds3Transport.Usb)
+            // The 100 ms pipe timeout below exists so this loop wakes to
+            // re-check these flags; _writerRun is the writer's five-kick
+            // detach signal (a bare CancelIoEx fired between two reads is
+            // lost, and ERROR_SEM_TIMEOUT loops forever otherwise).
+            while (_running && _writerRun && _transport == Ds3Transport.Usb)
             {
                 IntPtr ifh; lock (_outLock) ifh = _usbIfh;
                 if (ifh == IntPtr.Zero) break;

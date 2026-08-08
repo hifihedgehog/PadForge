@@ -58,13 +58,16 @@ namespace PadForge.Views
             new("VRController_L_A",       119, 181, 61,  61,  "VrLA"),
             new("VRController_L_B",        99,  77, 62,  62,  "VrLB"),
             new("VRController_L_System",  200, 246, 43,  44,  "VrLSystem"),
-            new("VRController_L_Trigger", 297, 342, 79, 106,  "VrLTrigger"),
+            // Trigger rects are the whole HOUSING (outer bezel outline
+            // included), not just the blade face. The first cut covered the
+            // face alone and read as "just the front edge" of the trigger.
+            new("VRController_L_Trigger", 294, 339, 101, 125, "VrLTrigger"),
             new("VRController_L_Grip",    416, 396, 50, 231,  "VrLGrip"),
             new("VRController_R_Stick",   680, 107, 64,  64,  "VrRStick"),
             new("VRController_R_A",       796, 181, 61,  61,  "VrRA"),
             new("VRController_R_B",       814,  77, 62,  62,  "VrRB"),
             new("VRController_R_System",  733, 246, 42,  44,  "VrRSystem"),
-            new("VRController_R_Trigger", 603, 342, 75, 106,  "VrRTrigger"),
+            new("VRController_R_Trigger", 581, 339, 101, 125, "VrRTrigger"),
             new("VRController_R_Grip",    510, 396, 50, 230,  "VrRGrip"),
         };
 

@@ -53,18 +53,18 @@ namespace PadForge.Views
 
         private static readonly Elem[] Elements =
         {
-            new("VRController_L_Stick",   233, 109, 60,  60,  "VrLStick"),
-            new("VRController_L_A",       121, 183, 57,  57,  "VrLA"),
-            new("VRController_L_B",       101,  79, 58,  58,  "VrLB"),
-            new("VRController_L_System",  202, 248, 39,  40,  "VrLSystem"),
-            new("VRController_L_Trigger", 299, 344, 75, 102,  "VrLTrigger"),
-            new("VRController_L_Grip",    418, 398, 46, 227,  "VrLGrip"),
-            new("VRController_R_Stick",   682, 109, 60,  60,  "VrRStick"),
-            new("VRController_R_A",       798, 183, 57,  57,  "VrRA"),
-            new("VRController_R_B",       816,  79, 58,  58,  "VrRB"),
-            new("VRController_R_System",  735, 248, 38,  40,  "VrRSystem"),
-            new("VRController_R_Trigger", 605, 344, 71, 102,  "VrRTrigger"),
-            new("VRController_R_Grip",    512, 398, 46, 226,  "VrRGrip"),
+            new("VRController_L_Stick",   231, 107, 64,  64,  "VrLStick"),
+            new("VRController_L_A",       119, 181, 61,  61,  "VrLA"),
+            new("VRController_L_B",        99,  77, 62,  62,  "VrLB"),
+            new("VRController_L_System",  200, 246, 43,  44,  "VrLSystem"),
+            new("VRController_L_Trigger", 297, 342, 79, 106,  "VrLTrigger"),
+            new("VRController_L_Grip",    416, 396, 50, 231,  "VrLGrip"),
+            new("VRController_R_Stick",   680, 107, 64,  64,  "VrRStick"),
+            new("VRController_R_A",       796, 181, 61,  61,  "VrRA"),
+            new("VRController_R_B",       814,  77, 62,  62,  "VrRB"),
+            new("VRController_R_System",  733, 246, 42,  44,  "VrRSystem"),
+            new("VRController_R_Trigger", 603, 342, 75, 106,  "VrRTrigger"),
+            new("VRController_R_Grip",    510, 396, 50, 230,  "VrRGrip"),
         };
 
         private PadViewModel _vm;
@@ -78,7 +78,7 @@ namespace PadForge.Views
         private string _hoverTarget;
 
         // target -> the tint layer that colours it.
-        private readonly Dictionary<string, Rectangle> _tints = new(StringComparer.Ordinal);
+        private readonly Dictionary<string, Image> _overlays = new(StringComparer.Ordinal);
         private Polygon _lArrow, _rArrow;
         private Canvas _lArrowHost, _rArrowHost;
 
@@ -145,31 +145,31 @@ namespace PadForge.Views
             foreach (var el in Elements)
                 AddElement(el, DisplayName(el.Target, st));
 
-            _lArrowHost = AddStickArrow(233, 109, 60, out _lArrow);
-            _rArrowHost = AddStickArrow(682, 109, 60, out _rArrow);
+            _lArrowHost = AddStickArrow(231, 107, 64, out _lArrow);
+            _rArrowHost = AddStickArrow(680, 107, 64, out _rArrow);
 
             _built = true;
         }
 
         private void AddElement(Elem el, string displayName)
         {
-            var mask = EmbeddedBitmaps.Load($"2DModels/VRCONTROLLER/{el.File}.png");
-
-            // Tint layer: the cutout's alpha is the shape, one brush is the
-            // colour. Transparent until lit / hovered / flashing.
-            var tint = new Rectangle
+            // The overlay is the pack's highlight ART (cyan fill at half
+            // alpha inside a solid cyan stroke), shown by OPACITY exactly
+            // as ControllerModel2DView shows its element overlays: 0.4 for
+            // hover, full when the element is active.
+            var art = EmbeddedBitmaps.Load($"2DModels/VRCONTROLLER/{el.File}.png");
+            var overlay = new Image
             {
                 Width = el.W, Height = el.H,
-                Fill = LitBrush, Opacity = 0,
+                Stretch = Stretch.Fill,
                 IsHitTestVisible = false,
+                Opacity = 0,
             };
-            if (mask != null)
-                tint.OpacityMask = new ImageBrush(mask) { Stretch = Stretch.Fill };
-            Canvas.SetLeft(tint, el.X); Canvas.SetTop(tint, el.Y);
-            VrCanvas.Children.Add(tint);
-            _tints[el.Target] = tint;
+            if (art != null) overlay.Source = art;
+            Canvas.SetLeft(overlay, el.X); Canvas.SetTop(overlay, el.Y);
+            VrCanvas.Children.Add(overlay);
+            _overlays[el.Target] = overlay;
 
-            // Hit layer on top, sized to the element.
             var hit = new Rectangle
             {
                 Width = el.W, Height = el.H,
@@ -185,24 +185,24 @@ namespace PadForge.Views
             hit.MouseMove += (s, e) =>
             {
                 _hoverTarget = el.Target;
-                if (!isStick) { hit.ToolTip = displayName; return; }
-                // Name and point at the quadrant under the pointer.
+                _paintedValid = false;
+                if (!isStick) return;
                 var p = e.GetPosition(hit);
                 double hx = p.X - el.W / 2, hy = p.Y - el.H / 2;
                 bool horiz = Math.Abs(hx) > Math.Abs(hy);
                 double angle = horiz ? (hx > 0 ? 90 : 270) : (hy > 0 ? 180 : 0);
-                var host = el.Target.StartsWith("VrL", StringComparison.Ordinal) ? _lArrowHost : _rArrowHost;
-                var arrow = el.Target.StartsWith("VrL", StringComparison.Ordinal) ? _lArrow : _rArrow;
+                bool left = el.Target.StartsWith("VrL", StringComparison.Ordinal);
+                var host = left ? _lArrowHost : _rArrowHost;
+                var arrow = left ? _lArrow : _rArrow;
                 if (_flashTarget == null && host != null)
                 {
-                    host.RenderTransform = new RotateTransform(angle, el.W / 2, el.H / 2);
+                    host.RenderTransform = new RotateTransform(angle, 32, 32);
                     arrow.Fill = HoverBrush;
                     arrow.Visibility = Visibility.Visible;
                 }
                 var stn = Strings.Instance;
-                hit.ToolTip = horiz
-                    ? (el.Target.StartsWith("VrL", StringComparison.Ordinal) ? stn.Btn_LeftStickX : stn.Btn_RightStickX)
-                    : (el.Target.StartsWith("VrL", StringComparison.Ordinal) ? stn.Btn_LeftStickY : stn.Btn_RightStickY);
+                hit.ToolTip = horiz ? (left ? stn.Btn_LeftStickX : stn.Btn_RightStickX)
+                                    : (left ? stn.Btn_LeftStickY : stn.Btn_RightStickY);
             };
             hit.MouseLeave += (s, e) =>
             {
@@ -357,37 +357,31 @@ namespace PadForge.Views
             bool stk = (hand.Buttons & 0x80) != 0
                      || Math.Abs((int)hand.StickX) > 3000 || Math.Abs((int)hand.StickY) > 3000;
 
-            SetTint(side + "System", sys, flashElem);
-            SetTint(side + "A", a, flashElem);
-            SetTint(side + "B", b, flashElem);
-            SetTint(side + "Stick", stk, flashElem);
+            SetOverlay(side + "System", sys, flashElem);
+            SetOverlay(side + "A", a, flashElem);
+            SetOverlay(side + "B", b, flashElem);
+            SetOverlay(side + "Stick", stk, flashElem);
             // Analog elements fade with their pull, so a half-squeeze reads
             // as half-lit rather than binary.
-            SetTint(side + "Trigger", trg, flashElem, hand.Trigger / 32767.0);
-            SetTint(side + "Grip", grp, flashElem, hand.Grip / 32767.0);
+            SetOverlay(side + "Trigger", trg, flashElem, hand.Trigger / 32767.0);
+            SetOverlay(side + "Grip", grp, flashElem, hand.Grip / 32767.0);
         }
 
-        private void SetTint(string key, bool lit, string flashElem, double analog = -1)
+        private void SetOverlay(string key, bool lit, string flashElem, double analog = -1)
         {
-            if (!_tints.TryGetValue(key, out var tint)) return;
+            if (!_overlays.TryGetValue(key, out var img)) return;
 
-            if (flashElem == key)
+            // Recording beats everything, then the live state, then hover.
+            if (flashElem == key) { img.Opacity = _flashOn ? 1.0 : 0.0; return; }
+            if (lit)
             {
-                tint.Fill = FlashBrush;
-                tint.Opacity = _flashOn ? 0.85 : 0.0;
+                // Analog elements track their pull, so a half squeeze reads
+                // as half lit instead of binary.
+                img.Opacity = analog >= 0 ? 0.4 + 0.6 * Math.Clamp(analog, 0, 1) : 1.0;
                 return;
             }
-            if (_hoverTarget == key && !lit)
-            {
-                tint.Fill = HoverBrush;
-                tint.Opacity = 0.45;
-                return;
-            }
-            tint.Fill = LitBrush;
-            if (analog >= 0 && lit)
-                tint.Opacity = 0.25 + 0.6 * Math.Clamp(analog, 0, 1);
-            else
-                tint.Opacity = lit ? 0.85 : 0.0;
+            // 0.4 is the pack's hover convention (ControllerModel2DView).
+            img.Opacity = _hoverTarget == key ? 0.4 : 0.0;
         }
 
         private void PaintStickArrow(string target, string side, Canvas host, Polygon arrow)
@@ -399,7 +393,7 @@ namespace PadForge.Views
             double angle = target.Contains("StickX")
                 ? (target.EndsWith("Neg", StringComparison.Ordinal) ? 270 : 90)
                 : (target.EndsWith("Neg", StringComparison.Ordinal) ? 0 : 180);
-            host.RenderTransform = new RotateTransform(angle, 30, 30);
+            host.RenderTransform = new RotateTransform(angle, 32, 32);
             arrow.Fill = FlashBrush;
             arrow.Visibility = _flashOn ? Visibility.Visible : Visibility.Collapsed;
         }

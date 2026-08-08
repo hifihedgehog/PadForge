@@ -149,6 +149,18 @@ namespace PadForge.Common.Input
             _current?.CancelCurrentRead();
         }
 
+        /// <summary>Test seam (InternalsVisibleTo PadForge.Tests): whether
+        /// the monitor is currently suppressed. The regression this locks:
+        /// an acquire/release imbalance across the unpair flow left the
+        /// depth stuck above zero, and no DS3 could attach again until the
+        /// app restarted (owner repro 2026-08-08).</summary>
+        internal static bool IsReconnectSuppressedForTest => _suppressReconnect;
+
+        /// <summary>Test seam: hard-reset the suppression depth so tests
+        /// cannot leak state into each other.</summary>
+        internal static void ResetSuppressionForTest()
+            => System.Threading.Interlocked.Exchange(ref _suppressDepth, 0);
+
         /// <summary>Release one suppression claim (see
         /// <see cref="SuppressAndRelease"/>). Never drops below zero, so an
         /// unbalanced extra release cannot strand the monitor suppressed or

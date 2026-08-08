@@ -94,8 +94,14 @@
                                             </Grid>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
+                                                    <!-- AncestorType, not ElementName: TrailingContent
+                                                         is applied inside the TitleBar's template, so
+                                                         an ElementName lookup crosses a template name
+                                                         scope and resolves timing-dependently. It was
+                                                         clean here and a startup BINDERR on a field
+                                                         machine (#285 reporter's log, 2026-08-08). -->
                                                     <Setter TargetName="LayoutRoot" Property="Background"
-                                                            Value="{Binding ButtonsBackground, ElementName=AppTitleBar}"/>
+                                                            Value="{Binding ButtonsBackground, RelativeSource={RelativeSource AncestorType=ui:TitleBar}}"/>
                                                     <!-- Hover glow (#175): subtle-fill lift is
                                                          neutral, so faint ember. -->
                                                     <Setter TargetName="LayoutRoot" Property="Effect"
@@ -108,7 +114,7 @@
                             </Style>
                         </Button.Style>
                         <TextBlock x:Name="FullScreenIcon" Text="&#xE740;" FontFamily="Segoe MDL2 Assets" FontSize="10"
-                                   Foreground="{Binding ButtonsForeground, ElementName=AppTitleBar}"/>
+                                   Foreground="{Binding ButtonsForeground, RelativeSource={RelativeSource AncestorType=ui:TitleBar}}"/>
                     </Button>
                 </ui:TitleBar.TrailingContent>
             </ui:TitleBar>

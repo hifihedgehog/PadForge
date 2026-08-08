@@ -28,11 +28,15 @@ namespace PadForge.Views
     /// lit / hover / flash all drive the same layer instead of needing a
     /// second "-Active" bitmap per element.</para>
     ///
-    /// <para>Interaction matches the branded and Extended previews: hover
-    /// warms an element, clicking records it, the element under record
-    /// flashes, and hovering a stick shows a DIRECTION ARROW for the
-    /// quadrant under the pointer so the axis direction being bound is
-    /// visible before the click.</para>
+    /// <para>Interaction matches the branded 2D previews: hover warms an
+    /// element, clicking records it, the element under record flashes, and
+    /// sticks use the drawn-view QUADRANT convention
+    /// (ControllerModel2DView.StickHitArea_MouseMove /
+    /// GetStickQuadrantClip): the stick's own highlight art, clipped to the
+    /// half-disc under the pointer for an axis direction or to the center
+    /// ellipse for the stick click, both on hover and while recording.
+    /// No arrows; arrows are the schematic view's grammar, not the drawn
+    /// packs'.</para>
     /// </summary>
     public partial class VRPreviewView : UserControl
     {
@@ -41,10 +45,6 @@ namespace PadForge.Views
 
         // Base art size; every element position below is in these pixels.
         private const double ArtW = 975, ArtH = 726;
-
-        private static readonly Brush LitBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x2C));
-        private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA2, 0x4D));
-        private static readonly Brush FlashBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA5, 0x00));
 
         /// <summary>One element: its art, where it sits on the base, and
         /// the mapping target it records. Sticks carry the four
@@ -79,8 +79,12 @@ namespace PadForge.Views
 
         // target -> the tint layer that colours it.
         private readonly Dictionary<string, Image> _overlays = new(StringComparer.Ordinal);
-        private Polygon _lArrow, _rArrow;
-        private Canvas _lArrowHost, _rArrowHost;
+        // Stick element key -> the quadrant highlight: a second copy of the
+        // stick's cyan overlay at the drawn packs' 0.4 hover opacity, shown
+        // clipped to a direction half-disc or the click center ellipse
+        // (ControllerModel2DView._stickHighlights, opacity and z-order
+        // measured there).
+        private readonly Dictionary<string, Image> _stickHighlights = new(StringComparer.Ordinal);
 
         public VRPreviewView()
         {
@@ -145,9 +149,6 @@ namespace PadForge.Views
             foreach (var el in Elements)
                 AddElement(el, DisplayName(el.Target, st));
 
-            _lArrowHost = AddStickArrow(231, 107, 64, out _lArrow);
-            _rArrowHost = AddStickArrow(680, 107, 64, out _rArrow);
-
             _built = true;
         }
 
@@ -170,6 +171,27 @@ namespace PadForge.Views
             VrCanvas.Children.Add(overlay);
             _overlays[el.Target] = overlay;
 
+            bool isStick = el.Target.EndsWith("Stick", StringComparison.Ordinal);
+
+            if (isStick)
+            {
+                // Second copy of the same art: the quadrant highlight. Added
+                // after the overlay so it composites above it, matching the
+                // reference's ZIndex ordering.
+                var highlight = new Image
+                {
+                    Width = el.W, Height = el.H,
+                    Stretch = Stretch.Fill,
+                    IsHitTestVisible = false,
+                    Opacity = 0.4,
+                    Visibility = Visibility.Collapsed,
+                };
+                if (art != null) highlight.Source = art;
+                Canvas.SetLeft(highlight, el.X); Canvas.SetTop(highlight, el.Y);
+                VrCanvas.Children.Add(highlight);
+                _stickHighlights[el.Target] = highlight;
+            }
+
             var hit = new Rectangle
             {
                 Width = el.W, Height = el.H,
@@ -180,37 +202,40 @@ namespace PadForge.Views
             Canvas.SetLeft(hit, el.X); Canvas.SetTop(hit, el.Y);
             VrCanvas.Children.Add(hit);
 
-            bool isStick = el.Target.EndsWith("Stick", StringComparison.Ordinal);
-
             hit.MouseMove += (s, e) =>
             {
-                _hoverTarget = el.Target;
                 _paintedValid = false;
-                if (!isStick) return;
+                if (!isStick) { _hoverTarget = el.Target; return; }
+                // Sticks skip the whole-element hover warm: the quadrant
+                // highlight IS the hover affordance ("Sticks are always
+                // visible - skip hover ghost" in the reference).
                 var p = e.GetPosition(hit);
-                double hx = p.X - el.W / 2, hy = p.Y - el.H / 2;
-                bool horiz = Math.Abs(hx) > Math.Abs(hy);
-                double angle = horiz ? (hx > 0 ? 90 : 270) : (hy > 0 ? 180 : 0);
+                string target = StickTargetAt(el.Target, p, el.W, el.H);
                 bool left = el.Target.StartsWith("VrL", StringComparison.Ordinal);
-                var host = left ? _lArrowHost : _rArrowHost;
-                var arrow = left ? _lArrow : _rArrow;
-                if (_flashTarget == null && host != null)
-                {
-                    host.RenderTransform = new RotateTransform(angle, 32, 32);
-                    arrow.Fill = HoverBrush;
-                    arrow.Visibility = Visibility.Visible;
-                }
                 var stn = Strings.Instance;
-                hit.ToolTip = horiz ? (left ? stn.Btn_LeftStickX : stn.Btn_RightStickX)
-                                    : (left ? stn.Btn_LeftStickY : stn.Btn_RightStickY);
+                hit.ToolTip = target.EndsWith("Click", StringComparison.Ordinal)
+                    ? (left ? stn.Btn_LeftStickButton : stn.Btn_RightStickButton)
+                    : target.Contains("StickX")
+                        ? (left ? stn.Btn_LeftStickX : stn.Btn_RightStickX)
+                        : (left ? stn.Btn_LeftStickY : stn.Btn_RightStickY);
+                // While the flash owns this stick's highlight, hover must not
+                // fight it for the clip (the reference re-applies the flash
+                // clip every tick for the same reason).
+                if (FlashOwnsStick(el.Target)) return;
+                if (_stickHighlights.TryGetValue(el.Target, out var hl))
+                {
+                    hl.Clip = StickClipFor(target, hl.Width, hl.Height);
+                    hl.Visibility = Visibility.Visible;
+                }
             };
             hit.MouseLeave += (s, e) =>
             {
                 if (_hoverTarget == el.Target) _hoverTarget = null;
-                if (isStick && _flashTarget == null)
+                if (isStick && !FlashOwnsStick(el.Target)
+                    && _stickHighlights.TryGetValue(el.Target, out var hl))
                 {
-                    if (el.Target.StartsWith("VrL", StringComparison.Ordinal)) _lArrow.Visibility = Visibility.Collapsed;
-                    else _rArrow.Visibility = Visibility.Collapsed;
+                    hl.Visibility = Visibility.Collapsed;
+                    hl.Clip = null;
                 }
                 _paintedValid = false;
             };
@@ -218,40 +243,59 @@ namespace PadForge.Views
             {
                 string target = el.Target;
                 if (isStick)
-                {
-                    var p = e.GetPosition(hit);
-                    double cx = p.X - el.W / 2, cy = p.Y - el.H / 2;
-                    string axis = el.Target.StartsWith("VrL", StringComparison.Ordinal) ? "VrL" : "VrR";
-                    target = Math.Abs(cx) > Math.Abs(cy)
-                        ? (cx > 0 ? axis + "StickX" : axis + "StickXNeg")
-                        : (cy > 0 ? axis + "StickY" : axis + "StickYNeg");
-                }
+                    target = StickTargetAt(el.Target, e.GetPosition(hit), el.W, el.H);
                 ControllerElementRecordRequested?.Invoke(this, target);
                 e.Handled = true;
             };
         }
 
-        private Canvas AddStickArrow(double x, double y, double size, out Polygon arrow)
+        /// <summary>The recording target for a pointer position on a stick:
+        /// the center region is the stick CLICK (reference:
+        /// DetermineAxisFromQuadrant's dist &lt; 0.3 branch), the rest is the
+        /// direction under the pointer. Down is positive Y in screen
+        /// coordinates, inverted downstream exactly as the branded views'.</summary>
+        private static string StickTargetAt(string stickKey, Point p, double w, double h)
         {
-            double len = size * 0.9, baseW = 7;
-            arrow = new Polygon
-            {
-                Points = new PointCollection
-                {
-                    new Point(size / 2, size / 2 - len),
-                    new Point(size / 2 - baseW, size / 2 - len * 0.62),
-                    new Point(size / 2 + baseW, size / 2 - len * 0.62),
-                },
-                Fill = HoverBrush,
-                IsHitTestVisible = false,
-                Visibility = Visibility.Collapsed,
-            };
-            var host = new Canvas { Width = size, Height = size, IsHitTestVisible = false };
-            host.Children.Add(arrow);
-            Canvas.SetLeft(host, x); Canvas.SetTop(host, y);
-            VrCanvas.Children.Add(host);
-            return host;
+            double cx = w / 2, cy = h / 2;
+            double dx = p.X - cx, dy = p.Y - cy;
+            if (Math.Sqrt(dx * dx / (cx * cx) + dy * dy / (cy * cy)) < CenterR)
+                return stickKey + "Click";
+            return Math.Abs(dx) >= Math.Abs(dy)
+                ? (dx >= 0 ? stickKey + "X" : stickKey + "XNeg")
+                : (dy >= 0 ? stickKey + "Y" : stickKey + "YNeg");
         }
+
+        // Center-region fraction of the stick radius that means "the click,
+        // not a direction" (measured from the reference's centerR).
+        private const double CenterR = 0.3;
+
+        /// <summary>The quadrant clip for a stick axis or click target, the
+        /// reference's GetStickQuadrantClip verbatim: click = the center
+        /// ellipse, a direction = the half-disc minus that center.</summary>
+        private static Geometry StickClipFor(string target, double w, double h)
+        {
+            double cx = w / 2, cy = h / 2;
+            var full = new EllipseGeometry(new Point(cx, cy), cx, cy);
+            var center = new EllipseGeometry(new Point(cx, cy), cx * CenterR, cy * CenterR);
+            if (target.EndsWith("Click", StringComparison.Ordinal)) return center;
+
+            bool neg = target.EndsWith("Neg", StringComparison.Ordinal);
+            Rect half = target.Contains("StickX")
+                ? (neg ? new Rect(0, 0, w / 2, h) : new Rect(cx, 0, w / 2, h))
+                : (neg ? new Rect(0, 0, w, h / 2) : new Rect(0, cy, w, h / 2));
+
+            var quadrant = new CombinedGeometry(GeometryCombineMode.Intersect,
+                full, new RectangleGeometry(half));
+            return new CombinedGeometry(GeometryCombineMode.Exclude, quadrant, center);
+        }
+
+        /// <summary>True when the element under record is one of this
+        /// stick's axis directions or its click, i.e. the flash is driving
+        /// this stick's quadrant highlight.</summary>
+        private bool FlashOwnsStick(string stickKey)
+            => _flashTarget != null
+            && _flashTarget.StartsWith(stickKey, StringComparison.Ordinal)
+            && _flashTarget.Length > stickKey.Length;
 
         private static string DisplayName(string target, Strings st) => target switch
         {
@@ -284,12 +328,15 @@ namespace PadForge.Views
             }
             _flashTarget = target;
             _flashOn = false;
-            if (string.IsNullOrEmpty(_flashTarget))
+            // A target change always resets the stick highlights: the old
+            // flash may have left one visible with its clip, and hover
+            // re-shows its own as soon as the pointer moves.
+            foreach (var hl in _stickHighlights.Values)
             {
-                _flashTimer.Stop();
-                if (_lArrow != null) _lArrow.Visibility = Visibility.Collapsed;
-                if (_rArrow != null) _rArrow.Visibility = Visibility.Collapsed;
+                hl.Visibility = Visibility.Collapsed;
+                hl.Clip = null;
             }
+            if (string.IsNullOrEmpty(_flashTarget)) _flashTimer.Stop();
             else _flashTimer.Start();
             _paintedValid = false;
         }
@@ -336,13 +383,33 @@ namespace PadForge.Views
             _paintedValid = true;
 
             string flashElem = ElementKeyFor(_flashTarget);
+            // A stick axis/click under record flashes the QUADRANT highlight
+            // only, never the whole stick overlay (the reference's FlashTick
+            // returns after its quadrant branch for the same reason). The
+            // EndsWith guard keeps this to sticks: FlashOwnsStick's
+            // prefix-and-longer test would also match VrLTriggerClick
+            // against the VrLTrigger element and eat that flash.
+            if (flashElem != null
+                && flashElem.EndsWith("Stick", StringComparison.Ordinal)
+                && FlashOwnsStick(flashElem))
+                flashElem = null;
 
             PaintHand(in vr.Left, "VrL", flashElem);
             PaintHand(in vr.Right, "VrR", flashElem);
 
-            // Stick direction arrow follows the target under record.
-            PaintStickArrow(_flashTarget, "VrL", _lArrowHost, _lArrow);
-            PaintStickArrow(_flashTarget, "VrR", _rArrowHost, _rArrow);
+            PaintStickFlash("VrLStick");
+            PaintStickFlash("VrRStick");
+        }
+
+        /// <summary>Drives a stick's quadrant highlight while one of its
+        /// directions (or its click) is under record: clip from the target
+        /// name, visibility from the flash phase.</summary>
+        private void PaintStickFlash(string stickKey)
+        {
+            if (!FlashOwnsStick(stickKey)) return;
+            if (!_stickHighlights.TryGetValue(stickKey, out var hl)) return;
+            hl.Clip = StickClipFor(_flashTarget, hl.Width, hl.Height);
+            hl.Visibility = _flashOn ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void PaintHand(in VrHandRaw hand, string side, string flashElem)
@@ -382,20 +449,6 @@ namespace PadForge.Views
             }
             // 0.4 is the pack's hover convention (ControllerModel2DView).
             img.Opacity = _hoverTarget == key ? 0.4 : 0.0;
-        }
-
-        private void PaintStickArrow(string target, string side, Canvas host, Polygon arrow)
-        {
-            if (host == null || arrow == null) return;
-            if (target == null || !target.StartsWith(side + "Stick", StringComparison.Ordinal)
-                || target.EndsWith("Click", StringComparison.Ordinal))
-                return;
-            double angle = target.Contains("StickX")
-                ? (target.EndsWith("Neg", StringComparison.Ordinal) ? 270 : 90)
-                : (target.EndsWith("Neg", StringComparison.Ordinal) ? 0 : 180);
-            host.RenderTransform = new RotateTransform(angle, 32, 32);
-            arrow.Fill = FlashBrush;
-            arrow.Visibility = _flashOn ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private static bool Same(in VrRawState a, in VrRawState b)

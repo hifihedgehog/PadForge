@@ -679,6 +679,7 @@ namespace PadForge.Views
             ControllerSchematic.Unbind();
             MidiPreview.Unbind();
             KBMPreview.Unbind();
+            VRPreview.Unbind();
 
             if (DataContext is not PadViewModel vm) return;
 
@@ -693,6 +694,12 @@ namespace PadForge.Views
                 MidiPreview.ControllerElementRecordRequested -= OnModelRecordRequested;
                 MidiPreview.ControllerElementRecordRequested += OnModelRecordRequested;
                 MidiPreview.Bind(vm);
+            }
+            else if (IsVr())
+            {
+                VRPreview.ControllerElementRecordRequested -= OnModelRecordRequested;
+                VRPreview.ControllerElementRecordRequested += OnModelRecordRequested;
+                VRPreview.Bind(vm);
             }
             else if (isSchematic)
             {

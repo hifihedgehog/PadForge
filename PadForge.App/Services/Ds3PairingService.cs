@@ -375,6 +375,15 @@ namespace PadForge.Services
 
             _log("Bluetooth radio cycled. Unplug the DS3 and press the PS button.");
 
+            // Baseline the BthPS3 child state at the moment the ceremony
+            // hands off. Every step above reports success and the pad can
+            // still flash forever afterwards (#285), and nothing we log
+            // distinguishes "the connection never reached BthPS3" from
+            // "BthPS3 built a child PnP could not start". Comparing this
+            // line against the same probe after a connection attempt is
+            // what separates them.
+            Ds3DriverInstaller.LogBthPs3ChildState(_log);
+
             r.Success = true;
             r.Error = "ok";
             return r;

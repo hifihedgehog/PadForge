@@ -116,6 +116,49 @@ namespace PadForge.Tests
             Assert.Equal("Axis 1", dst.GetVrMapping("VrLStickY"));
         }
 
+        // ── TTL cache sentinel (SteamVR availability probe) ──
+
+        /// <summary>A "never checked yet" sentinel of long.MinValue makes
+        /// the elapsed-time subtraction OVERFLOW to a large negative value,
+        /// which compares below every positive TTL. The cache then answers
+        /// from its uninitialized default forever and never probes. This
+        /// pins the arithmetic that shipped SteamVR as permanently absent.
+        /// </summary>
+        [Fact]
+        public void TtlCache_MinValueSentinelOverflowsBelowEveryTtl()
+        {
+            const int ttl = 5_000;
+            long now = 500_000;                       // a plausible uptime
+            long sentinel = long.MinValue;
+
+            unchecked
+            {
+                // The broken shape: reads as "still fresh", so no probe runs.
+                Assert.True(now - sentinel < ttl);
+            }
+
+            // The fix: an explicit has-value flag cannot overflow.
+            bool hasValue = false;
+            long stamped = 0;
+            Assert.False(hasValue && now - stamped < ttl);
+        }
+
+        /// <summary>Once stamped, the cache must behave normally in both
+        /// directions.</summary>
+        [Theory]
+        [InlineData(0, true)]        // just checked -> fresh
+        [InlineData(4_999, true)]
+        [InlineData(5_000, false)]   // TTL elapsed -> re-probe
+        [InlineData(60_000, false)]
+        public void TtlCache_StampedValueExpiresOnSchedule(long elapsed, bool expectFresh)
+        {
+            const int ttl = 5_000;
+            long stamped = 1_000_000;
+            long now = stamped + elapsed;
+            bool hasValue = true;
+            Assert.Equal(expectFresh, hasValue && now - stamped < ttl);
+        }
+
         // ── AUDIO-9: Sony packer negation wrap ──
 
         /// <summary>-(-32768) does not fit a short. Re-narrowing the

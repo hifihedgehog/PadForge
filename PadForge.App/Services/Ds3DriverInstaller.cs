@@ -807,12 +807,12 @@ namespace PadForge.Services
                 // filter instances still answer, so both this radio wait and
                 // any PSM control-device probe pass instantly against the
                 // DYING instances. Everything verified in that window is a
-                // corpse: patching armed on it evaporates, and worse, the
-                // overlapped teardown/attach can strand BthPS3PSM's control
-                // device permanently (its create runs only when the filter
-                // collection count is exactly 1; a leaked name then blocks
-                // every re-create until reboot). Sit out the teardown
-                // horizon so callers only ever probe post-cycle reality.
+                // corpse: patching armed on it evaporates with the old
+                // instance, the fresh filter attaches DISARMED
+                // (AutoEnableFilter=0 makes arming ours alone), and the pad
+                // can only flash until something re-arms. Sit out the
+                // teardown horizon so callers only ever probe and arm
+                // post-cycle reality.
                 Thread.Sleep(3000);
             }
         }

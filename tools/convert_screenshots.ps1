@@ -1,8 +1,25 @@
 ﻿Add-Type -AssemblyName System.Drawing
-$srcDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge.wiki\images"
+# The GitHub wiki was retired 2026-07-30; the live docs source is the
+# padforge.org repo, which is where capture_all.ps1 now writes.
+$srcDir = "C:\Users\sonic\OneDrive\Documents\GitHub\padforge.org\wiki\images"
 $dstDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\screenshots"
 
 $map = @{
+    'settings-steamvr'       = 'settings-steamvr'
+    'pad-vr-preview'         = 'vr-preview'
+    'colorway-dualsense-spiderman2' = 'colorway-dualsense-spiderman2'
+    'colorway-dualsense-ffxvi'      = 'colorway-dualsense-ffxvi'
+    'colorway-dualsense-cosmicred'  = 'colorway-dualsense-cosmicred'
+    'colorway-dualsense-novapink'   = 'colorway-dualsense-novapink'
+    'colorway-dualsense-cobalt'     = 'colorway-dualsense-cobalt'
+    'colorway-dualsense-volcanic'   = 'colorway-dualsense-volcanic'
+    'colorway-dualsense-graycamo'   = 'colorway-dualsense-graycamo'
+    'colorway-xbox-halo'            = 'colorway-xbox-halo'
+    'colorway-xbox-starfield'       = 'colorway-xbox-starfield'
+    'colorway-xbox-stellarshift'    = 'colorway-xbox-stellarshift'
+    'colorway-xbox-porsche'         = 'colorway-xbox-porsche'
+    'colorway-xbox-velocitygreen'   = 'colorway-xbox-velocitygreen'
+    'colorway-xbox-remix'           = 'colorway-xbox-remix'
     'profiles-starter-gallery' = 'starter-profiles'
     "dashboard"              = "dashboard"
     "pad-controller-3d"      = "controller"

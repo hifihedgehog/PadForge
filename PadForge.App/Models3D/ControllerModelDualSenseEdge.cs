@@ -12,8 +12,16 @@ namespace PadForge.Models3D
     /// DualSenseEdge asset folder.</summary>
     public sealed class ControllerModelDualSenseEdge : ControllerModelDualSense
     {
-        public static readonly string[] AppearanceIds = { "Edge" };
-        public static readonly string[] AppearanceNames = { "DualSense Edge" };
+        // `new` is deliberate, not an oversight: the Edge is its own family
+        // with its own one-entry colorway list, and these shadow the
+        // DualSense arrays rather than override them (statics cannot be
+        // virtual). Nothing resolves them through a base-typed expression:
+        // ControllerModelView's family switch names this type explicitly,
+        // and the Edge reaches the body through the protected family-scoped
+        // constructor, so the base's private Validate (which binds to the
+        // DualSense list at compile time) is never on the Edge's path.
+        public static new readonly string[] AppearanceIds = { "Edge" };
+        public static new readonly string[] AppearanceNames = { "DualSense Edge" };
 
         public ControllerModelDualSenseEdge() : base("Edge", "DualSenseEdge")
         {

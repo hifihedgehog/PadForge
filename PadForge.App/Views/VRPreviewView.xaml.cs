@@ -230,9 +230,12 @@ namespace PadForge.Views
                 };
                 if (art != null) highlight.Source = art;
                 Canvas.SetLeft(highlight, el.X); Canvas.SetTop(highlight, el.Y);
-                if (isStick)
-                    highlight.RenderTransform =
-                        el.Target.StartsWith("VrL", StringComparison.Ordinal) ? _lStickT : _rStickT;
+                // The region highlight does NOT ride the stick cap, and the
+                // reference's stick highlights carry no transform either. Its
+                // clip is computed from a pointer position measured against
+                // the STATIONARY hit rect, so translating the highlight put
+                // the lit quadrant up to StickTravel px away from the pointer
+                // that chose it whenever the stick was deflected.
                 VrCanvas.Children.Add(highlight);
                 _regionHighlights[el.Target] = highlight;
             }
@@ -417,7 +420,12 @@ namespace PadForge.Views
                 _flashTimer.Tick += (s, e) => { _flashOn = !_flashOn; _paintedValid = false; };
             }
             _flashTarget = target;
-            _flashOn = false;
+            // Start LIT, not dark. The reference fires its first tick
+            // synchronously (ControllerModel2DView drives FlashTick once
+            // before the timer starts); seeding false here left the element
+            // the user had just clicked showing nothing for a full timer
+            // interval, with its hover highlight already collapsed below.
+            _flashOn = true;
             // A target change always resets the region highlights: the old
             // flash may have left one visible with its clip, and hover
             // re-shows its own as soon as the pointer moves.
@@ -530,9 +538,16 @@ namespace PadForge.Views
             SetOverlay(side + "B", b, flashElem);
             SetOverlay(side + "Stick", stk, flashElem);
             // Analog elements fade with their pull, so a half-squeeze reads
-            // as half-lit rather than binary.
-            SetOverlay(side + "Trigger", trg, flashElem, hand.Trigger / 32767.0);
-            SetOverlay(side + "Grip", grp, flashElem, hand.Grip / 32767.0);
+            // as half-lit rather than binary. The CLICK bit pins the pull to
+            // full: a source bound to VrLTriggerClick with VrLTrigger left
+            // unmapped drives the click alone, and passing its zero analog
+            // through rendered the press at 0.4, which is exactly the hover
+            // opacity, so a real press was indistinguishable from the
+            // pointer resting on the trigger.
+            SetOverlay(side + "Trigger", trg, flashElem,
+                (hand.Buttons & 0x20) != 0 ? 1.0 : hand.Trigger / 32767.0);
+            SetOverlay(side + "Grip", grp, flashElem,
+                (hand.Buttons & 0x40) != 0 ? 1.0 : hand.Grip / 32767.0);
         }
 
         private void SetOverlay(string key, bool lit, string flashElem, double analog = -1)
@@ -541,6 +556,16 @@ namespace PadForge.Views
 
             // Recording beats everything, then the live state, then hover.
             if (flashElem == key) { img.Opacity = _flashOn ? 1.0 : 0.0; return; }
+            // A multi-target element under record shows its clipped REGION
+            // and nothing else. Without this the live-state branch below wins
+            // (flashElem is deliberately null for these, so the guard above
+            // cannot fire) and paints the WHOLE element at up to full
+            // opacity, drowning the 0.4 region the flash is drawing: record
+            // a trigger that is already mapped, pull it, and the record
+            // indication vanishes under its own live state. The reference
+            // blocks the same collision with an early return keyed on its
+            // flash target (ControllerModel2DView.SetOverlayVisible).
+            if (FlashOwnsRegion(key)) { img.Opacity = 0.0; return; }
             if (lit)
             {
                 // Analog elements track their pull, so a half squeeze reads

@@ -457,11 +457,19 @@ namespace PadForge.Common.Input
                     // Belt over the braces: if that cancel fired in the
                     // between-reads gap AND the pad went silent right then,
                     // the next read is pended with nothing to complete it.
-                    // By 50 ms the reader is either parked in that read
-                    // (this second cancel lands) or completing traffic (the
-                    // loop-top _writerRun check exits) - the two miss modes
-                    // exclude each other.
-                    Thread.Sleep(50);
+                    // By the time this second cancel runs the reader is
+                    // either parked in that read (it lands) or completing
+                    // traffic (the loop-top _writerRun check exits) - the
+                    // two miss modes exclude each other.
+                    //
+                    // 250 ms, not 50: the miss window is exactly "the reader
+                    // was descheduled between its flag check and its blocking
+                    // call", and only the BT lane can wedge on it, because
+                    // the USB pipe carries a 100 ms timeout and BT's
+                    // DeviceIoControl has no timeout at all. Teardown joins
+                    // this thread for 1000 ms, so 250 stays well inside the
+                    // budget while covering a far more realistic stall.
+                    Thread.Sleep(250);
                     CancelCurrentRead();
                     break;
                 }

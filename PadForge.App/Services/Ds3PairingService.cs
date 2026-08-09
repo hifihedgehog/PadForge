@@ -273,7 +273,7 @@ namespace PadForge.Services
                     byte[] f2 = new byte[17];
                     if (!GetFeature(ifh, 0xF2, f2))
                     {
-                        int reportErr = Marshal.GetLastWin32Error();
+                        string reportFault = LastTransferFault;
                         // Split the failure at the transfer layer before
                         // giving up: a standard descriptor read through the
                         // SAME handle separates "the pad refuses the class
@@ -283,13 +283,13 @@ namespace PadForge.Services
                         var dd = new byte[18];
                         bool ddOk = WinUsb_GetDescriptor(ifh, 0x01, 0, 0, dd, (uint)dd.Length, out uint ddLen);
                         _log(ddOk && ddLen >= 12
-                            ? $"GET_REPORT 0xF2 failed (err={reportErr}); descriptor reads OK "
+                            ? $"GET_REPORT 0xF2 failed ({reportFault}); descriptor reads OK "
                               + $"(VID={dd[9]:X2}{dd[8]:X2} PID={dd[11]:X2}{dd[10]:X2}): the pad is refusing the request."
-                            : $"GET_REPORT 0xF2 failed (err={reportErr}) and the descriptor read failed too "
+                            : $"GET_REPORT 0xF2 failed ({reportFault}) and the descriptor read failed too "
                               + $"(err={(ddOk ? 0 : Marshal.GetLastWin32Error())}): this WinUSB handle reaches no live pad.");
                         System.Threading.Thread.Sleep(300);
                         if (!GetFeature(ifh, 0xF2, f2))
-                        { _log($"Reading the DS3 MAC failed (err={Marshal.GetLastWin32Error()})."); r.Error = "sixpair-failed"; return r; }
+                        { _log($"Reading the DS3 MAC failed ({LastTransferFault})."); r.Error = "sixpair-failed"; return r; }
                         _log("GET_REPORT 0xF2 succeeded on retry.");
                     }
                     byte[] ds3mac = new byte[6];
@@ -311,7 +311,7 @@ namespace PadForge.Services
                     byte[] set = new byte[8];
                     set[0] = 0x01; set[1] = 0x00;
                     Array.Copy(radio, 0, set, 2, 6);
-                    if (!SetFeature(ifh, 0xF5, set)) { _log($"Sixpair write failed (err={Marshal.GetLastWin32Error()})."); r.Error = "sixpair-failed"; return r; }
+                    if (!SetFeature(ifh, 0xF5, set)) { _log($"Sixpair write failed ({LastTransferFault})."); r.Error = "sixpair-failed"; return r; }
 
                     byte[] after = new byte[8];
                     if (GetFeature(ifh, 0xF5, after))
@@ -334,7 +334,7 @@ namespace PadForge.Services
                         // because of that premise), so registering the pairing
                         // and reporting success here would hand the user a pad
                         // that may still target its old master.
-                        _log($"Sixpair read-back failed after the write (err={Marshal.GetLastWin32Error()}): "
+                        _log($"Sixpair read-back failed after the write ({LastTransferFault}): "
                              + "the pad was disconnected during pairing. Plug it back in and pair again.");
                         r.Error = "sixpair-not-committed"; return r;
                     }
@@ -586,6 +586,19 @@ namespace PadForge.Services
         /// so the ceremony read the pad's address as 00:00:00:00:00:00,
         /// wrote the remembered-device record and the link key under that
         /// name, and reported success. The whole buffer must arrive.</summary>
+        /// <summary>Last GetFeature/SetFeature outcome, for the log lines
+        /// that report why a transfer failed. A SHORT transfer returns
+        /// false with the underlying call having SUCCEEDED, so
+        /// Marshal.GetLastWin32Error() there is a stale value from some
+        /// unrelated earlier call, and printing it sent a bug reporter
+        /// chasing a fictitious error code. Callers print this instead.</summary>
+        private static string _lastTransferFault = "";
+
+        /// <summary>Human-readable cause of the last failed transfer:
+        /// the real Win32 error when the call failed, or the short-read
+        /// length when it succeeded without moving the whole buffer.</summary>
+        private static string LastTransferFault => _lastTransferFault;
+
         private static bool GetFeature(IntPtr ifh, byte reportId, byte[] buf)
         {
             var s = new WINUSB_SETUP_PACKET
@@ -594,8 +607,17 @@ namespace PadForge.Services
                 Value = (ushort)((0x03 << 8) | reportId), Index = 0, Length = (ushort)buf.Length
             };
             if (!WinUsb_ControlTransfer(ifh, s, buf, (uint)buf.Length, out uint moved, IntPtr.Zero))
+            {
+                _lastTransferFault = "err=" + Marshal.GetLastWin32Error();
                 return false;
-            return moved == (uint)buf.Length;
+            }
+            if (moved != (uint)buf.Length)
+            {
+                _lastTransferFault = $"short read, {moved} of {buf.Length} bytes";
+                return false;
+            }
+            _lastTransferFault = "";
+            return true;
         }
 
         private static bool SetFeature(IntPtr ifh, byte reportId, byte[] buf)
@@ -606,8 +628,17 @@ namespace PadForge.Services
                 Value = (ushort)((0x03 << 8) | reportId), Index = 0, Length = (ushort)buf.Length
             };
             if (!WinUsb_ControlTransfer(ifh, s, buf, (uint)buf.Length, out uint moved, IntPtr.Zero))
+            {
+                _lastTransferFault = "err=" + Marshal.GetLastWin32Error();
                 return false;
-            return moved == (uint)buf.Length;
+            }
+            if (moved != (uint)buf.Length)
+            {
+                _lastTransferFault = $"short write, {moved} of {buf.Length} bytes";
+                return false;
+            }
+            _lastTransferFault = "";
+            return true;
         }
 
         // ── driver install + radio cycle + node removal (filled from grounding) ──

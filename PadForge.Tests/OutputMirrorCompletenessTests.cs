@@ -166,5 +166,51 @@ namespace PadForge.Tests
             // the generic verdict one statement later.
             Assert.Contains("fault ?? result?.Error switch", cs, StringComparison.Ordinal);
         }
+
+        /// <summary>
+        /// EVERY HIDMaestro sweep call site passes preserveInstall.
+        ///
+        /// <para>The parameterless overload is uninstall-grade: it deletes
+        /// the whole HKLM\SOFTWARE\HIDMaestro tree, which carries the HID
+        /// manifest hash (the same-version fast path), the SteamVRPath hint
+        /// that locates a steamcmd SteamVR, and the VR driver's registration
+        /// gate. Losing that gate makes the next VR slot re-extract
+        /// driver_hidmaestro.dll into a running vrserver.exe, which holds it
+        /// loaded, so slot creation dies on a sharing violation. The
+        /// preserving overload still evicts devices and orphans, which is
+        /// the only thing any of these call sites actually wants.</para>
+        ///
+        /// <para>This is a COUNT, not a spot check, because the class shipped
+        /// twice from being fixed point-wise: the startup sweep was corrected
+        /// on its own while the context preflight and the process-exit hook
+        /// kept nuking the tree, so a session that mixed a conventional HM
+        /// slot with a VR slot re-armed the very bug the first fix closed.
+        /// A new call site added later fails here instead of in the field.</para>
+        /// </summary>
+        [Fact]
+        public void EveryHidMaestroSweep_PreservesTheInstall()
+        {
+            string[] files =
+            {
+                "PadForge.App/App.xaml.cs",
+                "PadForge.App/Common/Input/InputManager.Step5.VirtualDevices.cs",
+            };
+
+            int callSites = 0;
+            foreach (string f in files)
+                foreach (string line in Live(Read(f)).Split('\n'))
+                {
+                    int at = line.IndexOf("RemoveAllVirtualControllers(", StringComparison.Ordinal);
+                    if (at < 0) continue;
+                    callSites++;
+                    string args = line.Substring(at + "RemoveAllVirtualControllers(".Length);
+                    Assert.True(args.StartsWith("preserveInstall", StringComparison.Ordinal),
+                        $"{f}: sweep call site must pass preserveInstall, got: {line.Trim()}");
+                }
+
+            // A guard that finds nothing to guard is not a guard. Both known
+            // sites plus the startup one must be present.
+            Assert.Equal(3, callSites);
+        }
     }
 }

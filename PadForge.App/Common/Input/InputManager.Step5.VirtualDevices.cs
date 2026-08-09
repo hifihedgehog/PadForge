@@ -1876,9 +1876,25 @@ namespace PadForge.Common.Input
                     // from prior sessions (crash, forced kill, ungraceful exit).
                     // Without this, InstallDriver's internal RemoveOldDriverPackages
                     // step fails with "device using INF" because stale device nodes
-                    // still reference the old driver package. Matches the HIDMaestro
-                    // test app pattern (test/Program.cs:94) and SDK contract.
-                    try { HMContext.RemoveAllVirtualControllers(); }
+                    // still reference the old driver package.
+                    //
+                    // preserveInstall: TRUE, same as the startup sweep. The
+                    // stale DEVICE NODES are what block the install, and the
+                    // preserving overload still evicts every one of them; the
+                    // flag guards only package removal and the
+                    // HKLM\SOFTWARE\HIDMaestro delete. Nuking that tree here
+                    // re-armed the exact bug the startup sweep's own fix had
+                    // just closed: it holds the VR driver's registration gate
+                    // and the SteamVRPath hint, so on any session mixing a
+                    // conventional HM slot with a VR slot, creating the
+                    // conventional one sent the VR slot back to re-extracting
+                    // driver_hidmaestro.dll into a running vrserver.exe. It
+                    // also costs the ~3 s full deploy on the next launch by
+                    // discarding the manifest hash. InstallDriver runs its own
+                    // preserving sweep internally (HMContext.cs), so this
+                    // preflight only needs to be at least as thorough, never
+                    // more destructive.
+                    try { HMContext.RemoveAllVirtualControllers(preserveInstall: true); }
                     catch (Exception)
                     {
                     }
@@ -1890,15 +1906,20 @@ namespace PadForge.Common.Input
 
                     // Safety net: purge any devices we created if the process
                     // exits ungracefully without disposing HMController instances.
-                    // Matches test/Program.cs:88-91. Registered exactly once per
-                    // process since _hmaestroContext init is one-shot.
+                    // Registered exactly once per process since _hmaestroContext
+                    // init is one-shot. preserveInstall: TRUE for the same
+                    // reason as the preflight above, and HM names the exit
+                    // sweep as the other case for it: the purge is about
+                    // DEVICES, and taking the packages and the registry tree
+                    // with them only makes the NEXT launch reinstall from
+                    // scratch and re-lose the VR gate.
                     if (!_processExitHookRegistered)
                     {
                         _processExitHookRegistered = true;
                         AppDomain.CurrentDomain.ProcessExit += (_, _) =>
                         {
                             if (_cleanShutdownPerformed) return;
-                            try { HMContext.RemoveAllVirtualControllers(); } catch { }
+                            try { HMContext.RemoveAllVirtualControllers(preserveInstall: true); } catch { }
                         };
                     }
                 }

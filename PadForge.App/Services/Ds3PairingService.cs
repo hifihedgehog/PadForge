@@ -579,6 +579,21 @@ namespace PadForge.Services
 
         private static string FindWinUsbDs3() => FindInterfacePath(DS3_WINUSB_IF);
 
+        /// <summary>Why the last GetFeature/SetFeature returned false. Both
+        /// return false for TWO different reasons, and only one of them
+        /// leaves a meaningful last-error: a SHORT transfer returns false
+        /// with the underlying call having SUCCEEDED, so
+        /// Marshal.GetLastWin32Error() there is a stale value from some
+        /// unrelated earlier call. Printing it handed a bug reporter a
+        /// fictitious error code on the one path this arc depends on for
+        /// field diagnosis. Callers print this instead.</summary>
+        private static string _lastTransferFault = "";
+
+        /// <summary>Human-readable cause of the last failed transfer: the
+        /// real Win32 error when the call failed, or the short-read length
+        /// when it succeeded without moving the whole buffer.</summary>
+        private static string LastTransferFault => _lastTransferFault;
+
         /// <summary>GET_REPORT(FEATURE). A control-IN transfer may SHORT
         /// COMPLETE: WinUsb_ControlTransfer returns TRUE having moved fewer
         /// bytes than asked. Ignoring the transferred count let a truncated
@@ -586,19 +601,6 @@ namespace PadForge.Services
         /// so the ceremony read the pad's address as 00:00:00:00:00:00,
         /// wrote the remembered-device record and the link key under that
         /// name, and reported success. The whole buffer must arrive.</summary>
-        /// <summary>Last GetFeature/SetFeature outcome, for the log lines
-        /// that report why a transfer failed. A SHORT transfer returns
-        /// false with the underlying call having SUCCEEDED, so
-        /// Marshal.GetLastWin32Error() there is a stale value from some
-        /// unrelated earlier call, and printing it sent a bug reporter
-        /// chasing a fictitious error code. Callers print this instead.</summary>
-        private static string _lastTransferFault = "";
-
-        /// <summary>Human-readable cause of the last failed transfer:
-        /// the real Win32 error when the call failed, or the short-read
-        /// length when it succeeded without moving the whole buffer.</summary>
-        private static string LastTransferFault => _lastTransferFault;
-
         private static bool GetFeature(IntPtr ifh, byte reportId, byte[] buf)
         {
             var s = new WINUSB_SETUP_PACKET

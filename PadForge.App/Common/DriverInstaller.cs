@@ -615,6 +615,18 @@ namespace PadForge.Common
             && string.Equals(a.TrimEnd('\\', '/'), b.TrimEnd('\\', '/'),
                              StringComparison.OrdinalIgnoreCase);
 
+        /// <summary>True for a bare drive root ("C:\", "D:"). Both the
+        /// installer and the uninstaller refuse these: a payload at a drive
+        /// root is never a legitimate target, and the uninstall side would
+        /// otherwise be one hand-edited registry hint away from
+        /// Directory.Delete on an entire drive.</summary>
+        private static bool IsDriveRoot(string dir)
+        {
+            if (string.IsNullOrWhiteSpace(dir)) return false;
+            string t = dir.Trim().TrimEnd('\\', '/');
+            return t.Length == 2 && t[1] == ':';
+        }
+
         /// <summary>
         /// The directory of the Steam-free SteamVR install PADFORGE owns, or
         /// null. Owned means: the HIDMaestro path hint exists, the payload it
@@ -634,10 +646,19 @@ namespace PadForge.Common
                 if (!File.Exists(Path.Combine(hinted, "bin", "win64", "vrpathreg.exe")))
                     return null;
 
-                using (var k = Registry.LocalMachine.OpenSubKey(
-                    @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 250820"))
+                // Steam's 32-bit client writes its per-app uninstall entries
+                // under the WOW6432Node view; a default 64-bit read misses
+                // them entirely. Check both views so a custom-library
+                // Steam install (which the library check below cannot see)
+                // still disqualifies ownership.
+                foreach (var view in new[] { RegistryView.Registry32, RegistryView.Registry64 })
+                {
+                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
+                    using var k = baseKey.OpenSubKey(
+                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 250820");
                     if (k?.GetValue("InstallLocation") is string steamApp && SameDir(steamApp, hinted))
                         return null;
+                }
 
                 using (var steam = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Valve\Steam"))
                     if (steam?.GetValue("InstallPath") is string steamRoot
@@ -666,6 +687,12 @@ namespace PadForge.Common
                     "No PadForge-owned SteamVR install to remove.");
             if (Process.GetProcessesByName("vrserver").Length > 0)
                 throw new InvalidOperationException("SteamVR is running.");
+            // Independent of the install-side refusal: the hint is a plain
+            // registry value anyone can edit, and this is the line that
+            // recursively deletes whatever it names.
+            if (IsDriveRoot(dir))
+                throw new InvalidOperationException(
+                    "The recorded SteamVR path is a drive root; refusing to delete it.");
 
             Directory.Delete(dir, recursive: true);
 
@@ -694,6 +721,12 @@ namespace PadForge.Common
             if (!Path.IsPathRooted(targetDir))
                 throw new ArgumentException(
                     "The SteamVR install location must be a full path, e.g. C:\\SteamVR.");
+            // A drive root is never a legitimate target, and allowing one
+            // would arm the uninstall side with Directory.Delete on the
+            // whole drive. Refuse it here too, symmetrically.
+            if (IsDriveRoot(targetDir))
+                throw new ArgumentException(
+                    "The SteamVR install location cannot be a drive root; pick a folder, e.g. C:\\SteamVR.");
             var tempDir = GetSteamVrTempDir();
             Directory.CreateDirectory(tempDir);
             try

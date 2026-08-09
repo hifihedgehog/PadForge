@@ -870,6 +870,24 @@ if ($profilesNode.ChildNodes.Count -eq 0) {
 }
 
 # --- Inject test macros (so Macros tab screenshot shows content) ---
+# ELEMENT ORDER IS LOAD-BEARING. XmlSerializer reads a class's elements in the
+# order the class declares them, and an out-of-order element does not merely get
+# skipped: it aborted the whole <Macros> array. On 2026-08-09 every one of these
+# five was silently discarded because macro 1 listed TriggerAxisTargets and
+# TriggerAxisThreshold before TriggerSource (declared 19th and 21st, placed
+# 4th), and its last action listed MouseButton before DurationMs. The app wrote
+# <Macros /> straight back, the Macros tab was empty, and pad-macros.png plus
+# every macro-*.png shipped as a blank pane.
+# MacroData order:  PadIndex Name IsEnabled TriggerButtons TriggerDeviceGuid
+#   TriggerRawButtons TriggerSource TriggerMode TriggerHoldMs
+#   TriggerDoublePressMs LayerMask ConsumeTriggerButtons RepeatMode RepeatCount
+#   RepeatDelayMs PairId ReleaseLingerMs TriggerCustomButtons TriggerAxisTargets
+#   TriggerAxisDirections TriggerAxisThreshold TriggerPovs TriggerInputs
+#   TriggerExpression TriggerExpressionVariables Actions
+# ActionData order: Type(0) ButtonFlags(1) KeyCode(3) KeyString(4) DurationMs(5)
+#   AxisTarget(7) VolumeLimit(12) MouseSensitivity(13) MouseButton(14)
+#   MouseX(51) MouseY(52) IntervalMs(53) DisconnectTarget(57)
+# Adding a field means inserting it at its declared position, not appending.
 $macrosNode = $ns.SelectSingleNode("Macros")
 if (-not $macrosNode) {
     $macrosNode = $xml.CreateElement("Macros")
@@ -882,17 +900,17 @@ if ($macrosNode.ChildNodes.Count -eq 0) {
   <Name>Quick Combo</Name>
   <IsEnabled>true</IsEnabled>
   <TriggerButtons>4096</TriggerButtons>
-  <TriggerAxisTargets>LeftTrigger</TriggerAxisTargets>
-  <TriggerAxisThreshold>50</TriggerAxisThreshold>
   <TriggerSource>OutputController</TriggerSource>
   <TriggerMode>OnPress</TriggerMode>
   <ConsumeTriggerButtons>true</ConsumeTriggerButtons>
   <RepeatMode>Once</RepeatMode>
+  <TriggerAxisTargets>LeftTrigger</TriggerAxisTargets>
+  <TriggerAxisThreshold>50</TriggerAxisThreshold>
   <Actions>
     <Action><Type>ButtonPress</Type><ButtonFlags>4096</ButtonFlags><DurationMs>100</DurationMs></Action>
     <Action><Type>Delay</Type><DurationMs>200</DurationMs></Action>
     <Action><Type>KeyPress</Type><KeyCode>32</KeyCode><DurationMs>50</DurationMs></Action>
-    <Action><Type>MouseButtonPress</Type><MouseButton>Left</MouseButton><DurationMs>50</DurationMs></Action>
+    <Action><Type>MouseButtonPress</Type><DurationMs>50</DurationMs><MouseButton>Left</MouseButton></Action>
   </Actions>
 </Macro>
 '@
@@ -1042,6 +1060,13 @@ Write-Host "  Saved modified PadForge.xml" -ForegroundColor Green
 # ==============================================================================
 # STEP 1: Start PadForge
 # ==============================================================================
+# Everything from here to STEP 4 runs inside a try/finally. Twice on 2026-08-09
+# a StrictMode property read threw mid-run, STEP 4 never executed, and the
+# owner's real PadForge.xml was left replaced by the capture file complete with
+# injected dummy devices. A capture run may fail. It may not walk away holding
+# someone's settings hostage, so the restore is now in a finally and runs on
+# every exit path.
+try {
 Write-Host ""
 Write-Host "=== STEP 1: Start PadForge ===" -ForegroundColor Cyan
 Start-Process $PadForgeExe
@@ -1082,6 +1107,10 @@ Write-Host "=== STEP 2: Setup window ===" -ForegroundColor Cyan
 # top of devices.png and devices-facet-chips.png in the 4.1.0 set (both
 # shipped to the repo, the website and the docs before anyone looked).
 # Hiding it outright removes the race instead of narrowing it.
+# Default false so the macro gates below are readable even if the macro section
+# never runs. Under Set-StrictMode -Version Latest an unset variable is a
+# terminating error, and that class of mistake already cost this script two runs.
+$script:MacrosPresent = $false
 $script:consoleWnd = [Win32]::GetConsoleWindow()
 if ($script:consoleWnd -ne [IntPtr]::Zero) {
     [Win32]::ShowWindow($script:consoleWnd, 0) | Out-Null  # SW_HIDE
@@ -1751,7 +1780,30 @@ if ($slots.Count -ge 1) {
             Start-Sleep -Milliseconds 500
         }
     }
-    Cap "pad-macros"
+
+    # HARD GATE. Every macro shot on 2026-08-09 shipped as the same empty pane
+    # reading "Select a macro on the left, or press Add to create one", because
+    # this section photographs whatever is on screen and never asked whether a
+    # macro existed. If the list is empty the injection failed, and a blank
+    # frame is worse than a missing one, so say so and skip rather than ship it.
+    $macroNames = @("Quick Combo", "Volume Control", "Sleep Controller", "Center Cursor", "Rapid Fire")
+    $macroSeen = 0
+    $txtCondMk = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::Text)
+    foreach ($t in $script:uiaWin.FindAll($TD, $txtCondMk)) {
+        try { if ($macroNames -contains $t.Current.Name) { $macroSeen++ } } catch { }
+    }
+    $script:MacrosPresent = ($macroSeen -gt 0)
+    if (-not $script:MacrosPresent) {
+        Write-Host "  !! NO MACROS IN THE LIST. The injected macros did not load," -ForegroundColor Red
+        Write-Host "  !! so every macro shot would be an empty pane. SKIPPING them." -ForegroundColor Red
+        Write-Host "  !! Check element ORDER in the injected <Macro> XML first:" -ForegroundColor Red
+        Write-Host "  !! XmlSerializer drops the whole array on an out-of-order element." -ForegroundColor Red
+    } else {
+        Write-Host "  macro list populated ($macroSeen of $($macroNames.Count) names visible)" -ForegroundColor Green
+        Cap "pad-macros"
+    }
 
     # 6a. Add-from-List trigger dropdown (Macros.md): with a macro selected, the
     # Trigger panel shows an "Add from List" label followed by a ComboBox of
@@ -1780,7 +1832,7 @@ if ($slots.Count -ge 1) {
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 100
     [Win32]::ClickAt($comboX, $comboY); Start-Sleep -Milliseconds 800
-    Cap "macro-add-from-list"
+    if ($script:MacrosPresent) { Cap "macro-add-from-list" } else { Write-Host "  skipped macro-add-from-list (no macros)" -ForegroundColor Yellow }
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}"); Start-Sleep -Milliseconds 300
 
     # 7. Mappings
@@ -2024,7 +2076,7 @@ if ($slots.Count -ge 1) {
     }
     if ($targetCombo) { Write-Host "  Expanded Disconnect Target dropdown" -ForegroundColor Green }
     else { Write-Host "  Target combo not UIA-visible; capturing editor with Target field as-is" -ForegroundColor Yellow }
-    Cap "macro-disconnect"
+    if ($script:MacrosPresent) { Cap "macro-disconnect" } else { Write-Host "  skipped macro-disconnect (no macros)" -ForegroundColor Yellow }
     if ($targetCombo) { try { $targetCombo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Collapse() } catch {} }
 
     # New #9 macro editors, same terminal-macro-zone idiom and the same
@@ -2036,13 +2088,13 @@ if ($slots.Count -ge 1) {
     [Win32]::ForceFG($script:hwnd)
     [Win32]::ClickAt([int]($wrMc.Left + 0.215 * $mw), [int]($wrMc.Top + (0.241 + 3 * 0.0433) * $mh)); Start-Sleep -Milliseconds 800  # Center Cursor row
     [Win32]::ClickAt([int]($wrMc.Left + 0.383 * $mw), [int]($wrMc.Top + 0.654 * $mh)); Start-Sleep -Milliseconds 900  # its MoveMouse action chip
-    Cap "macro-move-mouse"
+    if ($script:MacrosPresent) { Cap "macro-move-mouse" } else { Write-Host "  skipped macro-move-mouse (no macros)" -ForegroundColor Yellow }
 
     Write-Host "  Macro: Repeat Key While Held editor (#9)"
     [Win32]::ForceFG($script:hwnd)
     [Win32]::ClickAt([int]($wrMc.Left + 0.215 * $mw), [int]($wrMc.Top + (0.241 + 4 * 0.0433) * $mh)); Start-Sleep -Milliseconds 800  # Rapid Fire row
     [Win32]::ClickAt([int]($wrMc.Left + 0.383 * $mw), [int]($wrMc.Top + 0.654 * $mh)); Start-Sleep -Milliseconds 900  # its RepeatKey action chip
-    Cap "macro-repeat-key"
+    if ($script:MacrosPresent) { Cap "macro-repeat-key" } else { Write-Host "  skipped macro-repeat-key (no macros)" -ForegroundColor Yellow }
 
 } else {
     Write-Host "  !! No controller slots found" -ForegroundColor Red
@@ -2640,8 +2692,15 @@ for ($ci = 0; $ci -lt $realSlots -and -not $ptrDone; $ci++) {
     # on the first slot. Every working slot section re-nav's Dashboard first.
     Nav "Dashboard"; Start-Sleep -Milliseconds 900
     $sh = Find-UIA -Aid "SlotsItemsControl"
-    $cds = if ($sh) { @($sh.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } else { @() }
-    if ($ci -ge $cds.Count) { continue }
+    # Same StrictMode trap as the rect reads: a FindAll that returns nothing
+    # usable leaves a value whose .Count read is a TERMINATING error, and this
+    # one killed the 19:46 run before STEP 4, so the owner's settings were left
+    # as the capture file. Count defensively and treat a failure as zero cards.
+    $cds = @()
+    if ($sh) { try { $cds = @($sh.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } catch { $cds = @() } }
+    $cdsCount = 0
+    try { $cdsCount = ([object[]]$cds).Length } catch { $cdsCount = 0 }
+    if ($ci -ge $cdsCount) { continue }
     Click-El $cds[$ci] -Label "slot card $ci (Pointer probe)" -Delay 1500 | Out-Null
     # Land on the Controller tab first so the PadPage realizes, then poll for
     # the Pointer tab to flip visible (Wii's HasIrCamera gate propagates a
@@ -3282,8 +3341,10 @@ try {
 }
 
 
+}
+finally {
 # ==============================================================================
-# STEP 4: Cleanup
+# STEP 4: Cleanup (ALWAYS runs, including after a mid-run terminating error)
 # ==============================================================================
 Write-Host ""
 Write-Host "=== STEP 4: Cleanup ===" -ForegroundColor Cyan
@@ -3326,4 +3387,5 @@ Write-Host "Screenshots in: $OutputDir"
 Write-Host ""
 Get-ChildItem "$OutputDir\*.png" | Sort-Object Name | ForEach-Object {
     Write-Host ("  {0} ({1}KB)" -f $_.Name, [math]::Round($_.Length / 1024))
+}
 }

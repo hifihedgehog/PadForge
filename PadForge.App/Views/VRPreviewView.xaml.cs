@@ -92,6 +92,12 @@ namespace PadForge.Views
         // z-order measured there). Every element except System carries
         // more than one target, so every one of them gets a highlight.
         private readonly Dictionary<string, Image> _regionHighlights = new(StringComparer.Ordinal);
+        // Analog element key -> the clip that reveals its overlay from the
+        // bottom up. Triggers and grips FILL like a gas tank, the branded
+        // convention (ControllerModel2DView builds a RectangleGeometry per
+        // Trigger element and drives it from SetTriggerFill). Scaling
+        // opacity instead read as a dimmer button, not a level.
+        private readonly Dictionary<string, RectangleGeometry> _fillClips = new(StringComparer.Ordinal);
 
         // Stick caps translate with deflection like every branded preview's
         // stick ring (ControllerModel2DView: always-visible image + a
@@ -211,9 +217,22 @@ namespace PadForge.Views
 
             bool isMulti = !el.Target.EndsWith("System", StringComparison.Ordinal);
             bool isStick = el.Target.EndsWith("Stick", StringComparison.Ordinal);
+            bool isAnalog = el.Target.EndsWith("Trigger", StringComparison.Ordinal)
+                         || el.Target.EndsWith("Grip", StringComparison.Ordinal);
             if (isStick)
                 overlay.RenderTransform =
                     el.Target.StartsWith("VrL", StringComparison.Ordinal) ? _lStickT : _rStickT;
+            if (isAnalog)
+                {
+                    // Always visible at full opacity; the CLIP carries the
+                    // level, empty at rest. Same build the branded view does
+                    // for its Trigger elements.
+                    overlay.Visibility = Visibility.Visible;
+                    overlay.Opacity = 1.0;
+                    var fill = new RectangleGeometry(new Rect(0, el.H, el.W, 0));
+                    overlay.Clip = fill;
+                    _fillClips[el.Target] = fill;
+                }
 
             if (isMulti)
             {
@@ -528,20 +547,22 @@ namespace PadForge.Views
             bool sys = (hand.Buttons & 0x01) != 0;
             bool a = (hand.Buttons & 0x02) != 0 || (hand.Buttons & 0x04) != 0;
             bool b = (hand.Buttons & 0x08) != 0 || (hand.Buttons & 0x10) != 0;
-            bool trg = (hand.Buttons & 0x20) != 0 || hand.Trigger > 0;
-            bool grp = (hand.Buttons & 0x40) != 0 || hand.Grip > 0;
-            bool stk = (hand.Buttons & 0x80) != 0
-                     || Math.Abs((int)hand.StickX) > 3000 || Math.Abs((int)hand.StickY) > 3000;
+            // The stick's blue is its CLICK, nothing else. Deflection is
+            // shown by the cap MOVING, exactly as the branded previews do
+            // it: their stick ring is always-visible art on a translate,
+            // and the only stick element that lights up is the click. An
+            // earlier cut lit the whole stick blue past a deflection
+            // threshold, which said the same thing twice and lit a control
+            // nobody had pressed.
+            bool stickClick = (hand.Buttons & 0x80) != 0;
 
             SetOverlay(side + "System", sys, flashElem);
             SetOverlay(side + "A", a, flashElem);
             SetOverlay(side + "B", b, flashElem);
-            SetOverlay(side + "Stick", stk, flashElem);
-            // Analog elements fade with their pull, so a half-squeeze reads
-            // as half-lit rather than binary. See PullFor for why the click
-            // bit pins it to full.
-            SetOverlay(side + "Trigger", trg, flashElem, PullFor(hand.Buttons, 0x20, hand.Trigger));
-            SetOverlay(side + "Grip", grp, flashElem, PullFor(hand.Buttons, 0x40, hand.Grip));
+            SetOverlay(side + "Stick", stickClick, flashElem);
+            // Triggers and grips FILL rather than fade. See SetFill.
+            SetFill(side + "Trigger", PullFor(hand.Buttons, 0x20, hand.Trigger), flashElem);
+            SetFill(side + "Grip", PullFor(hand.Buttons, 0x40, hand.Grip), flashElem);
         }
 
         /// <summary>How far an analog element reads as pulled, 0..1. The
@@ -555,7 +576,35 @@ namespace PadForge.Views
         internal static double PullFor(byte buttons, byte clickBit, short analog)
             => (buttons & clickBit) != 0 ? 1.0 : analog / 32767.0;
 
-        private void SetOverlay(string key, bool lit, string flashElem, double analog = -1)
+        /// <summary>Drives an analog element's gas-tank fill: the overlay
+        /// stays fully opaque and its clip reveals it from the BOTTOM up in
+        /// proportion to the pull, which is the branded convention
+        /// (ControllerModel2DView.SetTriggerFill computes the same
+        /// <c>Rect(0, h*(1-v), w, h - h*(1-v))</c>). Opacity says "how lit";
+        /// only a fill says "how far".</summary>
+        private void SetFill(string key, double pull, string flashElem)
+        {
+            if (!_fillClips.TryGetValue(key, out var clip)) return;
+            if (!_overlays.TryGetValue(key, out var img)) return;
+
+            double w = img.Width, h = img.Height;
+            // Under record the region highlight is the whole indication, so
+            // the live level must not draw over it (same reason SetOverlay
+            // blanks its element).
+            if (flashElem == key || FlashOwnsRegion(key))
+            {
+                clip.Rect = new Rect(0, h, w, 0);
+                return;
+            }
+            double v = Math.Clamp(pull, 0.0, 1.0);
+            double top = h * (1.0 - v);
+            clip.Rect = new Rect(0, top, w, h - top);
+        }
+
+        /// <summary>Digital elements: shown at full opacity while pressed,
+        /// hidden otherwise, hover at the pack's 0.4. Analog elements do not
+        /// come through here at all; they fill (see <see cref="SetFill"/>).</summary>
+        private void SetOverlay(string key, bool lit, string flashElem)
         {
             if (!_overlays.TryGetValue(key, out var img)) return;
 
@@ -571,13 +620,7 @@ namespace PadForge.Views
             // blocks the same collision with an early return keyed on its
             // flash target (ControllerModel2DView.SetOverlayVisible).
             if (FlashOwnsRegion(key)) { img.Opacity = 0.0; return; }
-            if (lit)
-            {
-                // Analog elements track their pull, so a half squeeze reads
-                // as half lit instead of binary.
-                img.Opacity = analog >= 0 ? 0.4 + 0.6 * Math.Clamp(analog, 0, 1) : 1.0;
-                return;
-            }
+            if (lit) { img.Opacity = 1.0; return; }
             // 0.4 is the pack's hover convention (ControllerModel2DView).
             img.Opacity = _hoverTarget == key ? 0.4 : 0.0;
         }

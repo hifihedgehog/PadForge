@@ -273,7 +273,12 @@ namespace PadForge.Services
                 for (int i = 0; i < 12; i++)
                 {
                     char c = text[pos + i];
-                    value = (value << 4) | (ulong)(c <= '9' ? c - '0' : c - 'A' + 10);
+                    // (uint) before (ulong): the ternary is an int, and a
+                    // direct int->ulong cast sign-extends. Every char here
+                    // passed IsHex, so the nibble is 0..15 and can never be
+                    // negative, but widening through uint states that
+                    // instead of leaving the compiler to warn about it.
+                    value = (value << 4) | (uint)(c <= '9' ? c - '0' : c - 'A' + 10);
                 }
                 return value != 0;
             }

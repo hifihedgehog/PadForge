@@ -85,21 +85,32 @@ namespace PadForge.Tests
             Assert.Equal(expected, a.Left.StickY);
         }
 
-        /// <summary>A click-only press must not render at the hover
-        /// opacity. The preview scales an analog element's brightness by its
-        /// pull (0.4 + 0.6 * pull), so a TriggerClick / GripClick source with
-        /// the analog row left unmapped passed pull = 0 and painted exactly
-        /// 0.4, which is byte-identical to the hover affordance: a real
-        /// press was indistinguishable from the pointer resting on the
-        /// control. The click bit pins the pull to full.</summary>
+        /// <summary>The trigger fills like a gas tank, so the ANALOG value
+        /// must win whenever there is one.
+        ///
+        /// <para>Two defects meet here. A click-only source (the analog row
+        /// unmapped) passed pull = 0 and painted the press at the same 0.4
+        /// the preview uses for hover, so a real press looked like the
+        /// pointer resting on the control. Pinning to full whenever the
+        /// click bit was set fixed that and broke the fill outright: automap
+        /// binds VrLTrigger AND VrLTriggerClick to the same Axis 2, so every
+        /// pull past the click threshold slammed the tank to full and the
+        /// trigger was on/off again. The click is a FALLBACK, not an
+        /// override.</para></summary>
         [Theory]
-        [InlineData((byte)0x20, (byte)0x20, (short)0, 1.0)]      // trigger click, no analog
-        [InlineData((byte)0x40, (byte)0x40, (short)0, 1.0)]      // grip click, no analog
+        [InlineData((byte)0x20, (byte)0x20, (short)0, 1.0)]      // click alone, no analog: full
+        [InlineData((byte)0x40, (byte)0x40, (short)0, 1.0)]      // grip click alone: full
         [InlineData((byte)0x00, (byte)0x20, (short)0, 0.0)]      // nothing at all
         [InlineData((byte)0x00, (byte)0x20, (short)32767, 1.0)]  // full analog, no click
         [InlineData((byte)0x00, (byte)0x40, (short)16384, 0.5)]  // half analog, no click
         [InlineData((byte)0x20, (byte)0x40, (short)0, 0.0)]      // a DIFFERENT click bit does not pin
-        public void PullFor_ClickBitPinsToFull(byte buttons, byte clickBit, short analog, double expected)
+        // The regression cases: automap drives BOTH rows off one axis, so
+        // the click bit is set for every one of these and the fill must
+        // still track the pull rather than jumping to full.
+        [InlineData((byte)0x20, (byte)0x20, (short)16384, 0.5)]
+        [InlineData((byte)0x20, (byte)0x20, (short)8192, 0.25)]
+        [InlineData((byte)0x40, (byte)0x40, (short)24575, 0.75)]
+        public void PullFor_AnalogWinsOverClick(byte buttons, byte clickBit, short analog, double expected)
         {
             Assert.Equal(expected, PadForge.Views.VRPreviewView.PullFor(buttons, clickBit, analog), 3);
         }

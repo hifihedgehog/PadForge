@@ -565,16 +565,26 @@ namespace PadForge.Views
             SetFill(side + "Grip", PullFor(hand.Buttons, 0x40, hand.Grip), flashElem);
         }
 
-        /// <summary>How far an analog element reads as pulled, 0..1. The
-        /// CLICK bit pins it to full: a source bound to VrLTriggerClick with
-        /// VrLTrigger left unmapped drives the click alone, and passing its
-        /// zero analog through rendered the press at the 0.4 that
-        /// <see cref="SetOverlay"/> also uses for hover, so a real press was
-        /// indistinguishable from the pointer resting on the trigger.
-        /// Internal for the test seam (InternalsVisibleTo PadForge.Tests):
-        /// the rest of this view has no callable surface.</summary>
+        /// <summary>How far an analog element reads as pulled, 0..1.
+        ///
+        /// <para>THE ANALOG VALUE WINS WHENEVER THERE IS ONE. The click is
+        /// only a fallback for a source that drives the click alone: with
+        /// VrLTrigger unmapped, its zero analog rendered the press at the
+        /// 0.4 <see cref="SetOverlay"/> also uses for hover, so a real press
+        /// was indistinguishable from the pointer resting on the trigger.
+        /// Pinning to full whenever the click bit was set fixed that and
+        /// broke the fill: automap binds VrLTrigger AND VrLTriggerClick to
+        /// the SAME Axis 2 (SettingsManager), so every pull past the click
+        /// threshold slammed the tank to full and the trigger read as
+        /// on/off, which is the whole thing the fill exists to avoid.</para>
+        ///
+        /// <para>Internal for the test seam (InternalsVisibleTo
+        /// PadForge.Tests): the rest of this view has no callable
+        /// surface.</para></summary>
         internal static double PullFor(byte buttons, byte clickBit, short analog)
-            => (buttons & clickBit) != 0 ? 1.0 : analog / 32767.0;
+            => analog > 0
+                ? analog / 32767.0
+                : ((buttons & clickBit) != 0 ? 1.0 : 0.0);
 
         /// <summary>Drives an analog element's gas-tank fill: the overlay
         /// stays fully opaque and its clip reveals it from the BOTTOM up in

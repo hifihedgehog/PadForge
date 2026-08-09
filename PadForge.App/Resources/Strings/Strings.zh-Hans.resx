@@ -1047,13 +1047,7 @@
   <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>右扳机按下</value></data>
   <data name="Vr_LeftHand" xml:space="preserve"><value>左手</value></data>
   <data name="Vr_RightHand" xml:space="preserve"><value>右手</value></data>
-  <data name="Vr_Sys" xml:space="preserve"><value>系统</value></data>
-  <data name="Vr_ATouch" xml:space="preserve"><value>A 触摸</value></data>
-  <data name="Vr_BTouch" xml:space="preserve"><value>B 触摸</value></data>
-  <data name="Vr_Trg" xml:space="preserve"><value>扫机</value></data>
-  <data name="Vr_Grip" xml:space="preserve"><value>握把</value></data>
   <data name="Vr_Stick" xml:space="preserve"><value>摇杆</value></data>
-  <data name="Vr_PreviewNote" xml:space="preserve"><value>一个 VR 插槽同时驱动 SteamVR 的两只手。控制器的位置和旋转由 SteamVR 自身提供，因此不在此处显示。</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>鼠标左键</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>鼠标右键</value></data>

@@ -1047,13 +1047,7 @@
   <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>右トリガークリック</value></data>
   <data name="Vr_LeftHand" xml:space="preserve"><value>左手</value></data>
   <data name="Vr_RightHand" xml:space="preserve"><value>右手</value></data>
-  <data name="Vr_Sys" xml:space="preserve"><value>システム</value></data>
-  <data name="Vr_ATouch" xml:space="preserve"><value>A タッチ</value></data>
-  <data name="Vr_BTouch" xml:space="preserve"><value>B タッチ</value></data>
-  <data name="Vr_Trg" xml:space="preserve"><value>トリガー</value></data>
-  <data name="Vr_Grip" xml:space="preserve"><value>グリップ</value></data>
   <data name="Vr_Stick" xml:space="preserve"><value>スティック</value></data>
-  <data name="Vr_PreviewNote" xml:space="preserve"><value>1 つの VR スロットが SteamVR の両手を駆動します。コントローラーの位置と回転は SteamVR 自体から得られるため、ここには表示されません。</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>マウス左ボタン</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>マウス右ボタン</value></data>

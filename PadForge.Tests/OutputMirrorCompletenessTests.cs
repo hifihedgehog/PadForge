@@ -212,5 +212,39 @@ namespace PadForge.Tests
             // sites plus the startup one must be present.
             Assert.Equal(3, callSites);
         }
+
+        /// <summary>
+        /// A persona reader lane's STOP path must cancel, never close.
+        ///
+        /// <para>The reader thread that opened the HID handle is the only
+        /// thread allowed to close it. Closing from Stop raced the reader's
+        /// own blocking read: the loop can pass its generation check, be
+        /// preempted before entering ReadFile, and resume after the close,
+        /// by which time the numeric handle value may belong to an entirely
+        /// unrelated object that the retired reader then reads. The
+        /// generation gate prevents a second CLOSE and cannot prevent that
+        /// stale I/O. CancelIoEx unblocks the pending read while leaving the
+        /// handle valid, so ownership stays with one thread.</para>
+        ///
+        /// <para>Source-shape, like the guards above, because the contract
+        /// spans two threads and a native handle with no seam a unit test
+        /// can call.</para>
+        /// </summary>
+        [Theory]
+        [InlineData("StopUsbJack")]
+        [InlineData("StopBtMic")]
+        public void PersonaLaneStop_CancelsRatherThanCloses(string method)
+        {
+            string src = Read("PadForge.App/Common/Input/AudioPassthroughService.cs");
+            int at = src.IndexOf("private static void " + method + "(", StringComparison.Ordinal);
+            Assert.True(at > 0, method + " not found");
+            // To the next method declaration: enough to cover the whole body.
+            int end = src.IndexOf("private static ", at + 20, StringComparison.Ordinal);
+            Assert.True(end > at);
+            string body = Live(src.Substring(at, end - at));
+
+            Assert.Contains("CancelIoEx", body, StringComparison.Ordinal);
+            Assert.DoesNotContain("CloseHandle", body, StringComparison.Ordinal);
+        }
     }
 }

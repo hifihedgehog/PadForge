@@ -1047,13 +1047,7 @@
   <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>Clic de gatillo derecho</value></data>
   <data name="Vr_LeftHand" xml:space="preserve"><value>Mano izquierda</value></data>
   <data name="Vr_RightHand" xml:space="preserve"><value>Mano derecha</value></data>
-  <data name="Vr_Sys" xml:space="preserve"><value>Sist.</value></data>
-  <data name="Vr_ATouch" xml:space="preserve"><value>A toque</value></data>
-  <data name="Vr_BTouch" xml:space="preserve"><value>B toque</value></data>
-  <data name="Vr_Trg" xml:space="preserve"><value>Gatillo</value></data>
-  <data name="Vr_Grip" xml:space="preserve"><value>Agarre</value></data>
   <data name="Vr_Stick" xml:space="preserve"><value>Palanca</value></data>
-  <data name="Vr_PreviewNote" xml:space="preserve"><value>Una ranura de VR controla ambas manos de SteamVR. La posición y la rotación de los mandos vienen del propio SteamVR, por lo que no se muestran aquí.</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Botón izquierdo del ratón</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>Botón derecho del ratón</value></data>

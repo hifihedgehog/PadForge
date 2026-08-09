@@ -1481,16 +1481,28 @@ namespace PadForge.Common.Input
                 if (!p.IsBt && !p.IsDs4
                     && !(p.Path ?? "").StartsWith("peer://", StringComparison.Ordinal))
                 { usbJackPad = p.Guid; usbJackPath = p.Path; break; }
-            if (usbJackPad != feed.UsbJackPadGuid)
+            // Compare, stop and start as ONE transaction per lane. Two
+            // reconcile passes overlapping could otherwise both read the old
+            // pad guid, both stop, and both start: whichever published its
+            // handle first would have it overwritten by the other, and its
+            // reader would then decline to close (the generation moved on)
+            // and run forever with nothing able to stop it, because no
+            // later pass can see a feed's superseded thread. Monitor is
+            // re-entrant, so the Stop/Start pair below re-taking this same
+            // lock is free.
+            lock (feed.HidLaneLock)
             {
-                StopUsbJack(feed);
-                if (usbJackPad != Guid.Empty) StartUsbJack(feed, usbJackPad, usbJackPath);
-            }
+                if (usbJackPad != feed.UsbJackPadGuid)
+                {
+                    StopUsbJack(feed);
+                    if (usbJackPad != Guid.Empty) StartUsbJack(feed, usbJackPad, usbJackPath);
+                }
 
-            if (btMicPad != feed.BtMicPadGuid)
-            {
-                StopBtMic(feed);
-                if (btMicPad != Guid.Empty) StartBtMic(feed, btMicPad, btMicPath);
+                if (btMicPad != feed.BtMicPadGuid)
+                {
+                    StopBtMic(feed);
+                    if (btMicPad != Guid.Empty) StartBtMic(feed, btMicPad, btMicPath);
+                }
             }
         }
 
@@ -1550,9 +1562,18 @@ namespace PadForge.Common.Input
                 // loop that it no longer owns the lane.
                 feed.UsbJackGen = 0;
                 feed.UsbJackStop = true;
+                // CANCEL, never close. THE READER OWNS ITS HANDLE. Closing
+                // here raced the reader's own blocking read: the loop can
+                // pass its generation check, be preempted before entering
+                // ReadFile, and resume after this close, at which point the
+                // numeric handle value may already belong to something else
+                // entirely and the retired reader reads THAT. The generation
+                // gate stops a second CLOSE but cannot stop stale I/O.
+                // CancelIoEx unblocks the pending read without invalidating
+                // the handle, the reader sees the retired generation and
+                // exits, and its epilogue does the one close.
                 var h = feed.UsbJackHandle;
-                feed.UsbJackHandle = IntPtr.Zero;
-                if (h != IntPtr.Zero) NativeMethods.CloseHandle(h);   // aborts the blocking read
+                if (h != IntPtr.Zero) NativeMethods.CancelIoEx(h, IntPtr.Zero);
                 feed.UsbJackThread = null;
                 feed.UsbJackPadGuid = Guid.Empty;
             }
@@ -1610,14 +1631,15 @@ namespace PadForge.Common.Input
             // have re-issued to any other thread in the meantime. A
             // duplicate close is never harmless; it is the handle-recycle
             // defect class.
+            // This thread opened the handle, so this thread closes it, always
+            // and exactly once. The generation check only decides whether the
+            // PUBLISHED field is still ours to clear; a newer generation's
+            // handle must not be wiped from under it.
             lock (feed.HidLaneLock)
             {
-                if (feed.UsbJackGen == gen)
-                {
-                    feed.UsbJackHandle = IntPtr.Zero;
-                    NativeMethods.CloseHandle(h);
-                }
+                if (feed.UsbJackGen == gen) feed.UsbJackHandle = IntPtr.Zero;
             }
+            NativeMethods.CloseHandle(h);
         }
 
         private static void StopBtMic(PersonaFeed feed)
@@ -1629,15 +1651,15 @@ namespace PadForge.Common.Input
             feed.BtMicGen = 0;
             feed.BtMicStop = true;
             var h = feed.BtMicHandle;
-            feed.BtMicHandle = IntPtr.Zero;
-            // Send the mic CLOSE on the reader's own handle BEFORE closing
-            // it. The BT tick's close path needs a live sink, and a slot
-            // switched to a non-composite profile tears the sink down
-            // before a tick can run, leaving the pad's mic session latched
-            // open (observed 2026-07-31: a slot switch orphaned the
-            // session and wedged the pad until power-cycle). The reader's
-            // handle is still valid here and a synchronous WriteFile of
-            // the 142-byte close report needs nothing from the sink.
+            // Send the mic CLOSE on the reader's own handle. The BT tick's
+            // close path needs a live sink, and a slot switched to a
+            // non-composite profile tears the sink down before a tick can
+            // run, leaving the pad's mic session latched open (observed
+            // 2026-07-31: a slot switch orphaned the session and wedged the
+            // pad until power-cycle). The handle is still valid here, and
+            // stays valid: as in StopUsbJack, this method CANCELS the
+            // pending read rather than closing, and the reader thread that
+            // opened the handle is the one that closes it.
             if (h != IntPtr.Zero)
             {
                 try
@@ -1659,7 +1681,7 @@ namespace PadForge.Common.Input
                     Engine.SdlDiagLog.WriteLine("PERSONA mic CLOSE sent (reader handle, stop path)");
                 }
                 catch { }
-                NativeMethods.CloseHandle(h);
+                NativeMethods.CancelIoEx(h, IntPtr.Zero);
             }
             feed.BtMicThread = null;
             feed.BtMicPadGuid = Guid.Empty;
@@ -1912,14 +1934,15 @@ namespace PadForge.Common.Input
             }
             // Ownership-gated close, exactly as UsbJackLoop's epilogue
             // documents: Stop owns the close on the retirement path.
+            // Reader-owns-its-handle, exactly as UsbJackLoop's epilogue
+            // documents: the generation only decides whether the published
+            // field is still ours to clear, and the close is unconditional
+            // because no other thread performs it.
             lock (feed.HidLaneLock)
             {
-                if (feed.BtMicGen == gen)
-                {
-                    feed.BtMicHandle = IntPtr.Zero;
-                    NativeMethods.CloseHandle(h);
-                }
+                if (feed.BtMicGen == gen) feed.BtMicHandle = IntPtr.Zero;
             }
+            NativeMethods.CloseHandle(h);
         }
 
         /// <summary>Find the feed whose BT mic source is this pad. Sinks are
@@ -3551,6 +3574,10 @@ namespace PadForge.Common.Input
                     WaitForSingleObject(timer, 100);
             }
             [DllImport("kernel32.dll", SetLastError = true)] public static extern bool CloseHandle(IntPtr h);
+            // Unblocks a reader parked in a synchronous ReadFile without
+            // invalidating the handle, so the thread that opened it stays
+            // the only thread that closes it (see StopUsbJack).
+            [DllImport("kernel32.dll", SetLastError = true)] public static extern bool CancelIoEx(IntPtr h, IntPtr overlapped);
             [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
             public static extern IntPtr CreateEventW(IntPtr attrs, bool manualReset, bool initial, string name);
 

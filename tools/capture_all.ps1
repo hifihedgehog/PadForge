@@ -1316,7 +1316,7 @@ function Get-DeviceListTop {
 }
 
 function Assign-DeviceToSlot {
-    param([string]$DeviceNamePart, [string]$SlotNumberLabel, [switch]$Unassign)
+    param([string]$DeviceNamePart, [string]$SlotNumberLabel, [switch]$Unassign, [switch]$Reassert)
     $searchIn = $script:uiaWin
     Reset-DeviceTypeFilter | Out-Null
     $liCond = New-Object System.Windows.Automation.PropertyCondition(
@@ -1450,10 +1450,20 @@ function Assign-DeviceToSlot {
             Write-Host "  Slot $SlotNumberLabel already unassigned from $DeviceNamePart"
             return $true
         }
-        if (-not $Unassign -and $isOn) {
+        if (-not $Unassign -and $isOn -and -not $Reassert) {
             Write-Host "  Slot $SlotNumberLabel already assigned to $DeviceNamePart"
             return $true
         }
+        # A toggle reading ON only proves the SETTINGS say assigned. For an
+        # injected dummy device it does NOT mean the device is live, because
+        # what makes it live is ToggleSlotCommand, and that runs on Click. The
+        # Xbox GIP dummy came pre-assigned, the shortcut above skipped the
+        # click, the device never appeared in the pad page's device dropdown,
+        # and pad-impulse-triggers plus pad-lighting-guide-led stayed stale
+        # while the log cheerfully reported "already assigned". Re-assert by
+        # clicking twice: off, then on. It ends in the same state, having
+        # actually run the command.
+        $reassertOff = ($Reassert -and $isOn -and -not $Unassign)
         # Bring the toggle into view first (the assign row can sit below the
         # fold on a tall detail panel), then use a real coordinate CLICK, not
         # TogglePattern.Toggle(). The toggle's IsChecked is OneWay-bound to
@@ -1464,6 +1474,9 @@ function Assign-DeviceToSlot {
         # "No device mapped" on the dashboard.
         try { $btn.GetCurrentPattern([System.Windows.Automation.ScrollItemPattern]::Pattern).ScrollIntoView(); Start-Sleep -Milliseconds 300 } catch {}
         $verb = if ($Unassign) { "Unassigned" } else { "Assigned" }
+        if ($reassertOff) {
+            Click-El $btn -Label "Slot $SlotNumberLabel toggle OFF (re-assert $DeviceNamePart)" -Delay 900 | Out-Null
+        }
         Click-El $btn -Label "Slot $SlotNumberLabel toggle ($DeviceNamePart)" -Delay 900 | Out-Null
         Write-Host "  $verb $DeviceNamePart $(if ($Unassign) { 'from' } else { 'to' }) slot $SlotNumberLabel" -ForegroundColor Green
         return $true
@@ -1480,7 +1493,7 @@ Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "2" | Out-Null
 # (alphabetically first), so the main Xbox-slot captures are unchanged; the
 # Impulse-Triggers and Wheel captures at the end of that section switch the
 # mapped-device dropdown to the Xbox pad / the wheel to surface their tabs.
-Assign-DeviceToSlot -DeviceNamePart "Xbox Series X GIP" -SlotNumberLabel "1" | Out-Null
+Assign-DeviceToSlot -DeviceNamePart "Xbox Series X GIP" -SlotNumberLabel "1" -Reassert | Out-Null
 Assign-DeviceToSlot -DeviceNamePart "Logitech G29" -SlotNumberLabel "1" | Out-Null
 # Mouse on the KBM slot (SlotNumber 4) for the #200 Mouse-gestures tab. The Mouse
 # tab gates on the SELECTED device being IsMouse (CapType == Mouse == 18); a KBM
@@ -2554,10 +2567,24 @@ function Select-DeviceByName36 {
     $txtCond36 = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
         [System.Windows.Automation.ControlType]::Text)
+    # Only ever click a row that is actually ON SCREEN. A virtualized list hands
+    # back rects for rows far below the fold, and clicking one lands nowhere:
+    # the 19:27 run clicked "All Consumer Controls (Merged)" at y=2275 on a
+    # 1550-tall window, the selection never moved, and devices-consumer shipped
+    # showing whatever had been selected before. Same rule the assignment path
+    # already uses: in view, click. Out of view, scroll toward it and re-find.
+    $listTop36 = Get-DeviceListTop
+    $winBot36 = $wr.Bottom - 40
+    $inView36 = {
+        param($el)
+        $r = Get-Rect $el
+        if ($null -eq $r) { return $false }
+        return ($r.Y -ge $listTop36 -and ($r.Y + $r.Height) -le $winBot36)
+    }
     for ($try = 0; $try -lt 16; $try++) {
         $items = $script:uiaWin.FindAll($TD, $li36)
         foreach ($it in $items) {
-            if ($it.Current.Name -like "*$NamePart*") {
+            if (($it.Current.Name -like "*$NamePart*") -and (& $inView36 $it)) {
                 Click-El $it -Label "Device '$NamePart'" -Delay 900 | Out-Null
                 return $true
             }
@@ -2567,7 +2594,7 @@ function Select-DeviceByName36 {
             foreach ($t in $it.FindAll($TD, $txtCond36)) {
                 if ($t.Current.Name -like "*$NamePart*") { $hit = $true; break }
             }
-            if ($hit) {
+            if ($hit -and (& $inView36 $it)) {
                 Click-El $it -Label "Device '$NamePart' (matched on type line)" -Delay 900 | Out-Null
                 return $true
             }
@@ -2938,6 +2965,51 @@ Close-AnyModal | Out-Null
 # in-dialog work goes through Find-DialogHwndByEnum + FromHandle and never
 # walks the (disabled) main window while the modal is up.
 # ==============================================================================
+Write-Host ""
+Write-Host "=== STEP 3c-bis: Starter profile gallery (#256) ===" -ForegroundColor Cyan
+# The gallery was never in this harness: its one shot was taken by hand on
+# 2026-07-30 and then sat there while every automated shot around it was
+# renewed. It is an ordinary modal FluentWindow, so it takes the same
+# EnumWindows route the Workshop dialog below already uses.
+Nav "Profiles"; Start-Sleep -Milliseconds 1000
+$starterBtn = Find-UIA -Name "Browse Starter Profiles" -CT ([System.Windows.Automation.ControlType]::Button)
+if (-not $starterBtn) { $starterBtn = Find-UIA -Name "Browse Starter Profiles" }
+if ($starterBtn) {
+    Click-El $starterBtn -Label "Browse Starter Profiles" -Delay 1500 | Out-Null
+    $stDlg = Find-DialogHwndByEnum -MinW 600 -MinH 400
+    if ($stDlg -eq [IntPtr]::Zero) {
+        Write-Host "  !! starter gallery HWND not found" -ForegroundColor Red
+    } else {
+        $stUia = [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$stDlg)
+        Write-Host "  starter dialog hwnd=$stDlg '$($stUia.Current.Name)'" -ForegroundColor Green
+        Start-Sleep -Milliseconds 900
+        Cap "profiles-starter-gallery"
+        # Leave without saving: a starter save would add a profile to the
+        # capture xml and change every later Profiles-page shot.
+        $stBtnCond = New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+            [System.Windows.Automation.ControlType]::Button)
+        $cancelBtn = $null
+        foreach ($b in $stUia.FindAll($TD, $stBtnCond)) {
+            if ($b.Current.Name -eq "Cancel") { $cancelBtn = $b; break }
+        }
+        # Click inline rather than through Click-DlgEl: that helper is defined
+        # further down the script and is not in scope yet at this point.
+        $cr = Get-Rect $cancelBtn
+        if ($null -ne $cr) {
+            [Win32]::SetForegroundWindow([IntPtr]$stDlg) | Out-Null
+            Start-Sleep -Milliseconds 150
+            [Win32]::ClickAt([int]($cr.X + $cr.Width / 2), [int]($cr.Y + $cr.Height / 2))
+            Write-Host "  closed the starter gallery"
+        } else {
+            Write-Host "  !! starter Cancel button has no rect; gallery may stay open" -ForegroundColor Yellow
+        }
+        Start-Sleep -Milliseconds 800
+    }
+} else {
+    Write-Host "  !! 'Browse Starter Profiles' button not found" -ForegroundColor Yellow
+}
+
 Write-Host ""
 Write-Host "=== STEP 3d: Steam Workshop (#9) ===" -ForegroundColor Cyan
 

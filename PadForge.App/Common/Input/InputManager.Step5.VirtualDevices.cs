@@ -1689,7 +1689,9 @@ namespace PadForge.Common.Input
                             // Same restricted-peer rule as KBM: a
                             // gamepad-only-restricted peer feeding this slot
                             // must not reach SteamVR, so submit neutral.
-                            vrVc.SubmitVrState(IsSlotRestricted(padIndex) ? default : CombinedVrRawStates[padIndex]);
+                            var vrOut = IsSlotRestricted(padIndex) ? default : CombinedVrRawStates[padIndex];
+                            LogVrSubmit(padIndex, in vrOut);
+                            vrVc.SubmitVrState(in vrOut);
                         }
                         else if (SlotControllerTypes[padIndex] is VirtualControllerType.Extended
                                      or VirtualControllerType.Nintendo
@@ -1969,6 +1971,43 @@ namespace PadForge.Common.Input
         public bool InactivityFireStillValid(int padIndex)
             => padIndex >= 0 && padIndex < MaxPads
                && System.Threading.Volatile.Read(ref _hmInactivityFired[padIndex]);
+
+        /// <summary>Last VR state logged per slot, so the trace below fires
+        /// on CHANGE rather than at poll rate.</summary>
+        private readonly VrRawState[] _lastVrLogged = new VrRawState[MaxPads];
+        private readonly bool[] _lastVrLoggedValid = new bool[MaxPads];
+
+        /// <summary>Records what actually goes over the VR wire, per hand.
+        /// Diagnostics-ring only, so a normal session writes nothing; it
+        /// reaches disk when PADFORGE_DIAG is set. This exists because
+        /// every static layer of the VR path reads symmetric (mappings,
+        /// Step 3 evaluation, the SDK's pack, the shared-memory stride, the
+        /// driver's per-hand routing), so a hand that shows no input in
+        /// SteamVR can only be settled by seeing the submitted bytes.</summary>
+        private void LogVrSubmit(int padIndex, in VrRawState vr)
+        {
+            if (!PadForge.Engine.SdlDiagLog.IsMirroring) return;
+            if (_lastVrLoggedValid[padIndex]
+                && _lastVrLogged[padIndex].Left.Buttons == vr.Left.Buttons
+                && _lastVrLogged[padIndex].Right.Buttons == vr.Right.Buttons
+                && _lastVrLogged[padIndex].Left.Trigger == vr.Left.Trigger
+                && _lastVrLogged[padIndex].Right.Trigger == vr.Right.Trigger
+                && _lastVrLogged[padIndex].Left.Grip == vr.Left.Grip
+                && _lastVrLogged[padIndex].Right.Grip == vr.Right.Grip
+                && _lastVrLogged[padIndex].Left.StickX == vr.Left.StickX
+                && _lastVrLogged[padIndex].Right.StickX == vr.Right.StickX
+                && _lastVrLogged[padIndex].Left.StickY == vr.Left.StickY
+                && _lastVrLogged[padIndex].Right.StickY == vr.Right.StickY)
+                return;
+            _lastVrLogged[padIndex] = vr;
+            _lastVrLoggedValid[padIndex] = true;
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"VRSUBMIT slot={padIndex} "
+                + $"L[btn=0x{vr.Left.Buttons:X2} trg={vr.Left.Trigger} grip={vr.Left.Grip} "
+                + $"x={vr.Left.StickX} y={vr.Left.StickY}] "
+                + $"R[btn=0x{vr.Right.Buttons:X2} trg={vr.Right.Trigger} grip={vr.Right.Grip} "
+                + $"x={vr.Right.StickX} y={vr.Right.StickY}]");
+        }
 
         private bool IsSlotActive(int padIndex) => IsSlotActive(padIndex, _padIndexBuffer);
 

@@ -538,12 +538,8 @@ namespace PadForge.Views
             SetOverlay(side + "B", b, flashElem);
             SetOverlay(side + "Stick", stk, flashElem);
             // Analog elements fade with their pull, so a half-squeeze reads
-            // as half-lit rather than binary. The CLICK bit pins the pull to
-            // full: a source bound to VrLTriggerClick with VrLTrigger left
-            // unmapped drives the click alone, and passing its zero analog
-            // through rendered the press at 0.4, which is exactly the hover
-            // opacity, so a real press was indistinguishable from the
-            // pointer resting on the trigger.
+            // as half-lit rather than binary. See PullFor for why the click
+            // bit pins it to full.
             SetOverlay(side + "Trigger", trg, flashElem, PullFor(hand.Buttons, 0x20, hand.Trigger));
             SetOverlay(side + "Grip", grp, flashElem, PullFor(hand.Buttons, 0x40, hand.Grip));
         }

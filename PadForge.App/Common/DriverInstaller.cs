@@ -589,6 +589,11 @@ namespace PadForge.Common
         private static string GetSteamVrTempDir()
             => Path.Combine(Path.GetTempPath(), "PadForge_SteamCmd");
 
+        /// <summary>Test seam for <see cref="InstallSteamVRAsync"/>: throw
+        /// after the argument guards, before any network or process work.
+        /// Set only by SteamVrInstallGuardTests.</summary>
+        internal static bool SteamVrInstallStopAfterGuards;
+
         /// <summary>The HKLM key HIDMaestro's <c>FindSteamVR</c> consults
         /// first. Mirrors VrDriverBuilder's constants; the value written by
         /// <c>HMVR.SetSteamVRPathHint</c> is both the discovery mechanism and
@@ -727,6 +732,14 @@ namespace PadForge.Common
             if (IsDriveRoot(targetDir))
                 throw new ArgumentException(
                     "The SteamVR install location cannot be a drive root; pick a folder, e.g. C:\\SteamVR.");
+            // Test seam. Without it, the guard tests EXECUTE the real
+            // installer whenever a guard regresses: audit round 43's
+            // mutation run launched a live steamcmd toward C:\ while
+            // proving exactly that hazard. With the seam, a regressed
+            // guard still reddens the test (wrong exception type) and
+            // touches neither the network nor a process.
+            if (SteamVrInstallStopAfterGuards)
+                throw new InvalidOperationException("Test seam: guards passed.");
             var tempDir = GetSteamVrTempDir();
             Directory.CreateDirectory(tempDir);
             try

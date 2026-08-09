@@ -209,9 +209,14 @@ public class Strings : INotifyPropertyChanged
     public string Main_VR_Max_Format => Get("Main_VR_Max_Format");
     public string Settings_SteamVR => Get("Settings_SteamVR");
     public string Settings_SteamVRDesc => Get("Settings_SteamVRDesc");
+    public string Settings_SteamVRInstallDir => Get("Settings_SteamVRInstallDir");
+    public string Settings_SteamVRUninstall_Title => Get("Settings_SteamVRUninstall_Title");
+    public string Settings_SteamVRUninstallConfirm_Message => Get("Settings_SteamVRUninstallConfirm_Message");
     public string Status_DownloadingSteamVR => Get("Status_DownloadingSteamVR");
     public string Status_DownloadingInstallingSteamVR => Get("Status_DownloadingInstallingSteamVR");
     public string Status_SteamVRInstallFailed_Format => Get("Status_SteamVRInstallFailed_Format");
+    public string Status_UninstallingSteamVR => Get("Status_UninstallingSteamVR");
+    public string Status_SteamVRRunningCloseFirst => Get("Status_SteamVRRunningCloseFirst");
     public string Status_InstallingHidHide => Get("Status_InstallingHidHide");
     public string Status_UninstallingHidHide => Get("Status_UninstallingHidHide");
     public string Status_DownloadingMidi => Get("Status_DownloadingMidi");

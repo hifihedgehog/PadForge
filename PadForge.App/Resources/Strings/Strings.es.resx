@@ -147,6 +147,8 @@
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>Descargando SteamVR…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Descargando e instalando SteamVR desde los servidores de Valve… Son varios GB y puede tardar.</value></data>
   <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>Error al instalar SteamVR: {0}</value></data>
+  <data name="Status_UninstallingSteamVR" xml:space="preserve"><value>Desinstalando SteamVR…</value></data>
+  <data name="Status_SteamVRRunningCloseFirst" xml:space="preserve"><value>SteamVR está en ejecución. Ciérralo antes de desinstalar.</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>Lista de dispositivos actualizada.</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>Grabado "{0}" ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>Asignar ahora: {0} {1}</value></data>
@@ -272,6 +274,9 @@
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Entorno de ejecución del SDK para salida de dispositivo MIDI virtual. Se descarga de GitHub (~210 MB).</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>Entorno de ejecución de VR para mandos de VR virtuales. Se instala desde los servidores de Valve sin cuenta de Steam ni cliente de Steam (varios GB).</value></data>
+  <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Ubicación de instalación</value></data>
+  <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>Desinstalar SteamVR</value></data>
+  <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Elimina la instalación de SteamVR sin Steam en {0} y libera varios GB. Los mandos virtuales de VR no funcionarán hasta que SteamVR se instale de nuevo.</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Requiere Windows 11 24H2 (compilación 26100) o posterior</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>Archivo de configuración</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>Guarde, recargue o restablezca su configuración.</value></data>

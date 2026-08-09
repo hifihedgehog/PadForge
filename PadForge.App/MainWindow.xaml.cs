@@ -634,7 +634,7 @@ namespace PadForge
                 DriverOverlay.Visibility = Visibility.Visible;
                 try
                 {
-                    await DriverInstaller.InstallSteamVRAsync();
+                    await DriverInstaller.InstallSteamVRAsync(_viewModel.Settings.SteamVrInstallDir);
                     _viewModel.StatusText = Strings.Instance.Common_Ready;
                 }
                 catch (Exception ex)
@@ -646,6 +646,32 @@ namespace PadForge
                     DriverOverlay.Visibility = Visibility.Collapsed;
                     RefreshMidiServicesStatus();
                 }
+            };
+
+            // Uninstall for the Steam-free SteamVR install PadForge itself
+            // created. Gated three ways: the button only renders for an
+            // owned install (HIDMaestro hint, not Steam's registry), a live
+            // vrserver refuses up front rather than deleting the runtime out
+            // from under itself, and the 5+ GB deletion sits behind an
+            // explicit confirm naming the exact directory.
+            _viewModel.Settings.UninstallSteamVrRequested += async (s, e) =>
+            {
+                if (System.Diagnostics.Process.GetProcessesByName("vrserver").Length > 0)
+                {
+                    _viewModel.SetStatus(Strings.Instance.Status_SteamVRRunningCloseFirst, persist: true);
+                    return;
+                }
+                string ownedDir = DriverInstaller.GetOwnedSteamVrDir();
+                if (ownedDir == null) { RefreshMidiServicesStatus(); return; }
+                bool confirmed = Views.ConfirmDialog.Show(this,
+                    Strings.Instance.Settings_SteamVRUninstall_Title,
+                    string.Format(Strings.Instance.Settings_SteamVRUninstallConfirm_Message, ownedDir),
+                    Strings.Instance.Common_Uninstall);
+                if (!confirmed) return;
+                await RunDriverOperationAsync(
+                    Strings.Instance.Status_UninstallingSteamVR,
+                    DriverInstaller.UninstallSteamVR,
+                    RefreshMidiServicesStatus);
             };
 
             _viewModel.Settings.UninstallMidiServicesRequested += async (s, e) =>
@@ -7821,6 +7847,10 @@ namespace PadForge
             bool steamVr = PadForge.Common.Input.HMaestroVRController.IsAvailable();
             _viewModel.Dashboard.IsSteamVrInstalled = steamVr;
             _viewModel.Settings.IsSteamVrInstalled = steamVr;
+            // Ownership (the Steam-free shape PadForge created) gates the
+            // uninstall button; a Steam-client install never reads as owned.
+            try { _viewModel.Settings.IsSteamVrOwned = DriverInstaller.GetOwnedSteamVrDir() != null; }
+            catch { _viewModel.Settings.IsSteamVrOwned = false; }
 
             // The drawer pills reflect MIDI availability only through the MIDI
             // type tile's enabled state. RefreshControllerNavItemsInPlace tears

@@ -292,6 +292,7 @@
   <data name="About_Subtitle" xml:space="preserve"><value>Utilidad de asignación de controles</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Bifurcación moderna de x360ce, reconstruida con SDL3, WPF y .NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge convierte cualquier dispositivo de entrada en cualquier control virtual. Los gamepads, joysticks, teclados, ratones y pantallas táctiles se asignan a controles de juego virtuales (Xbox, PlayStation, palancas de vuelo, volantes, gamepads de terceros) o a salida teclado+ratón / MIDI que los juegos tratan como hardware real, usando HIDMaestro y Windows MIDI Services. Utiliza SDL3 para entrada de controles, Windows Raw Input para teclado y ratón, HidHide para ocultar dispositivos por juego y proporciona una interfaz moderna Fluent Design para mapeo, zonas muertas, curvas de sensibilidad y force feedback.</value></data>
+  <data name="About_Overview" xml:space="preserve"><value>Descripción general</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Desarrollado con</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Entorno de ejecución y marco WPF. MIT.</value></data>

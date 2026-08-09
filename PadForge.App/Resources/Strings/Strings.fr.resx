@@ -292,6 +292,7 @@
   <data name="About_Subtitle" xml:space="preserve"><value>Utilitaire de mapping de contrôleurs</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Fork moderne de x360ce, reconstruit avec SDL3, WPF et .NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge transforme n'importe quel périphérique d'entrée en n'importe quel contrôleur virtuel. Les manettes, joysticks, claviers, souris et écrans tactiles sont mappés vers des contrôleurs de jeu virtuels (Xbox, PlayStation, manches de vol, volants, manettes tierces) ou vers une sortie clavier+souris / MIDI que les jeux considèrent comme du matériel réel. Grâce à HIDMaestro et Windows MIDI Services. Il utilise SDL3 pour l'entrée des contrôleurs, Windows Raw Input pour le clavier et la souris, HidHide pour masquer les périphériques par jeu, et propose une interface moderne Fluent Design pour le mappage, les zones mortes, les courbes de sensibilité et le retour de force.</value></data>
+  <data name="About_Overview" xml:space="preserve"><value>Vue d'ensemble</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Technologies utilisées</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime et framework WPF. MIT.</value></data>

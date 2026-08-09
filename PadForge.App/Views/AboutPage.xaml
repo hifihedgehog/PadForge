@@ -29,7 +29,27 @@
                 </StackPanel>
             </Border>
 
+            <!-- Testimony -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="&#xE734;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding About_Testimony, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
+            <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13" LineHeight="20"
+                               FontStyle="Italic"
+                               Text="{Binding About_TestimonyScripture, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13" LineHeight="20"
+                               FontStyle="Italic" Margin="0,12,0,0"
+                               Text="{Binding About_TestimonyDoxology, Source={x:Static strings:Strings.Instance}}"/>
+                </StackPanel>
+            </Border>
+
             <!-- Description -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="&#xE7C3;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding About_Overview, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" LineHeight="22" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            Text="{Binding About_Description, Source={x:Static strings:Strings.Instance}}"/>
@@ -289,22 +309,6 @@
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12" LineHeight="18"
                            Text="{Binding About_LicenseText, Source={x:Static strings:Strings.Instance}}"/>
-            </Border>
-
-            <!-- Testimony -->
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                <TextBlock Text="&#xE734;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding About_Testimony, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
-            </StackPanel>
-            <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
-                <StackPanel>
-                    <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13" LineHeight="20"
-                               FontStyle="Italic"
-                               Text="{Binding About_TestimonyScripture, Source={x:Static strings:Strings.Instance}}"/>
-                    <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13" LineHeight="20"
-                               FontStyle="Italic" Margin="0,12,0,0"
-                               Text="{Binding About_TestimonyDoxology, Source={x:Static strings:Strings.Instance}}"/>
-                </StackPanel>
             </Border>
 
         </StackPanel>

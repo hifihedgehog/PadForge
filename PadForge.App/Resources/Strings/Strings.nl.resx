@@ -292,6 +292,7 @@
   <data name="About_Subtitle" xml:space="preserve"><value>Controller-toewijzingshulpprogramma</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Moderne fork van x360ce, opnieuw gebouwd met SDL3, WPF en .NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge zet elk invoerapparaat om in elke virtuele controller. Gamepads, joysticks, toetsenborden, muizen en touchscreens worden toegewezen aan virtuele game-controllers (Xbox, PlayStation, flight sticks, stuurwielen, gamepads van derden) of aan toetsenbord+muis/MIDI-uitvoer die games als echte hardware behandelen. Mogelijk gemaakt door HIDMaestro en Windows MIDI Services. Het gebruikt SDL3 voor controller-invoer, Windows Raw Input voor toetsenbord en muis, HidHide voor apparaatmaskering per spel, en biedt een moderne Fluent Design-interface voor toewijzing, deadzones, gevoeligheidscurves en force feedback.</value></data>
+  <data name="About_Overview" xml:space="preserve"><value>Overzicht</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Gebouwd met</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime en WPF-framework. MIT.</value></data>

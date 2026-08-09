@@ -451,6 +451,7 @@ public class Strings : INotifyPropertyChanged
     public string About_Subtitle => Get("About_Subtitle");
     public string About_Tagline => Get("About_Tagline");
     public string About_Description => Get("About_Description");
+    public string About_Overview => Get("About_Overview");
     public string About_BuiltWith => Get("About_BuiltWith");
     public string About_DotNet10 => Get("About_DotNet10");
     public string About_DotNet10Desc => Get("About_DotNet10Desc");

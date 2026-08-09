@@ -11,7 +11,12 @@
 #>
 
 param(
-    [string]$OutputDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge.wiki\images",
+    # The GitHub wiki was RETIRED to pointer pages on 2026-07-30; the live
+    # documentation is Material for MkDocs in the padforge.org repo, source
+    # under wiki/ and the built site committed to docs/. Capturing into the
+    # old PadForge.wiki\images ships nothing, so this points at the docs
+    # source that is actually published.
+    [string]$OutputDir = "C:\Users\sonic\OneDrive\Documents\GitHub\padforge.org\wiki\images",
     [string]$PadForgeExe = "C:\PadForge\PadForge.exe",
     [string]$PadForgeXml = "C:\PadForge\PadForge.xml",
     # Tail mode: reuse the capture-configured PadForge.xml an aborted full
@@ -242,15 +247,33 @@ function Find-AllSlots {
     for ($attempt = 1; $attempt -le $Retries; $attempt++) {
         $menuHost = Find-UIA -Aid "MenuItemsHost"
         $searchIn = if ($menuHost) { $menuHost } else { $script:uiaWin }
-        $ct = [System.Windows.Automation.ControlType]::ListItem
-        $cond = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::ControlTypeProperty, $ct)
-        $all = $searchIn.FindAll($TD, $cond)
+        # Sidebar nav items surface as DataItem, NOT ListItem. A ListItem-only
+        # search returns an empty set, which reads exactly like "no slots
+        # exist" even when all six were just created successfully, and then
+        # every device assignment downstream silently no-ops (0 toggles ->
+        # dropdowns empty -> wheel / impulse-triggers / consumer / guide-LED /
+        # balance-source shots all stay stale). Match BOTH control types and
+        # let the ClassName filter below do the real discrimination.
+        $orCond = New-Object System.Windows.Automation.OrCondition(@(
+            (New-Object System.Windows.Automation.PropertyCondition(
+                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+                [System.Windows.Automation.ControlType]::ListItem)),
+            (New-Object System.Windows.Automation.PropertyCondition(
+                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+                [System.Windows.Automation.ControlType]::DataItem))
+        ))
+        $all = $searchIn.FindAll($TD, $orCond)
         $slots = @()
         foreach ($item in $all) {
             $n = $item.Current.Name
             $cls = $item.Current.ClassName
-            if ($cls -eq "NavigationViewItem" -and ($n -match '^Pad\d+$' -or ($n -notin $skip -and $n.Length -gt 0))) {
+            # Slot entries report ClassName 'ItemsControlItem' now, not
+            # 'NavigationViewItem'. Accept both, and drop the entries whose
+            # Name is a namespace-qualified type ('Wpf.Ui.Controls.
+            # NavigationViewItemSeparator', 'System.Windows.Controls.Grid'),
+            # which is what the class check used to filter out for free.
+            if (($cls -eq "NavigationViewItem" -or $cls -eq "ItemsControlItem") -and
+                ($n -match '^Pad\d+$' -or ($n -notin $skip -and $n.Length -gt 0 -and $n -notmatch '\.'))) {
                 Write-Host "    Slot: '$n' (class=$cls)"
                 $slots += $item
             }
@@ -1168,19 +1191,25 @@ for ($delPass = 0; $delPass -lt 16; $delPass++) {
 $remainingSlots = @(Find-AllSlots)
 Write-Host "  Slots remaining after cleanup: $($remainingSlots.Count)"
 
-# Create: Xbox, PlayStation, Nintendo, KBM, Extended, MIDI. SlotNumber and
-# dashboard-card order follow VirtualControllerGroups.InOrder regardless of
-# creation order: Xbox 1, PlayStation 2, Nintendo 3, Extended 4, KBM 5,
-# MIDI 6. AutomationIds AddXbox360Btn / AddDS4Btn are kept verbatim from v2
-# for stable automation hookup. 4.1.0 renamed the Extended button's id to
-# AddRawBtn and added the Nintendo type (virtual Switch Pro, #246).
+# Create one slot of EVERY VirtualControllerType. SlotNumber and dashboard-card
+# order follow VirtualControllerGroups.InOrder regardless of creation order:
+# Xbox 1, PlayStation 2, Nintendo 3, Extended 4, KBM 5, MIDI 6, VR 7.
+# AutomationIds AddXbox360Btn / AddDS4Btn are kept verbatim from v2 for stable
+# automation hookup. 4.1.0 renamed the Extended button's id to AddRawBtn and
+# added the Nintendo type (virtual Switch Pro, #246); 4.2.0 added VR (#49).
 $slotTypes = @(
     @{ Aid = "AddXbox360Btn"; Label = "Xbox" },
     @{ Aid = "AddDS4Btn"; Label = "PlayStation" },
     @{ Aid = "AddNintendoBtn"; Label = "Nintendo" },
     @{ Aid = "AddKeyboardMouseBtn"; Label = "Keyboard+Mouse" },
     @{ Aid = "AddRawBtn"; Label = "Extended" },
-    @{ Aid = "AddMidiBtn"; Label = "MIDI" }
+    @{ Aid = "AddMidiBtn"; Label = "MIDI" },
+    # VR (#49, 4.2.0) completes the set: every VirtualControllerType the
+    # popup can create is represented here. The popup's button DISABLES
+    # itself when SteamVR is absent (HMaestroVRController.IsAvailable), so
+    # this slot is created only on a machine that has the runtime, which is
+    # also the only machine where its preview would render anything real.
+    @{ Aid = "AddVrBtn"; Label = "VR" }
 )
 foreach ($st in $slotTypes) {
     Write-Host "  Creating $($st.Label) slot..."
@@ -1314,8 +1343,16 @@ function Assign-DeviceToSlot {
     # (the 2026-07-30 run enumerated 0 toggles on a found Wii Remote card
     # and the assignment silently failed). One re-enumerate after a wait.
     $toggles = @()
-    for ($tenum = 0; $tenum -lt 2 -and $toggles.Count -eq 0; $tenum++) {
+    for ($tenum = 0; $tenum -lt 3 -and $toggles.Count -eq 0; $tenum++) {
         if ($tenum -gt 0) { Start-Sleep -Milliseconds 1500 }
+        # Second miss means the click probably did not SELECT the card at all
+        # (it landed on the header, or the row de-realized under the pointer),
+        # so waiting longer cannot help. Re-click the card once before the
+        # final enumerate.
+        if ($tenum -eq 2) {
+            Write-Host "    0 toggles twice; re-clicking the device card"
+            Click-El $target -Label "Device card '$DeviceNamePart' (retry)" -Delay 1200 | Out-Null
+        }
         $allButtons = $searchIn.FindAll($TD, $btnCond)
         foreach ($b in $allButtons) {
             try {
@@ -1447,7 +1484,7 @@ $n = 0
 #
 # 36, not the 34 Next calls written in the source: the one inside the Gyro /
 # Audio / Touchpad loop runs three times, so it contributes 3 rather than 1.
-$total = 36
+$total = 39
 
 function Next { $script:n++; return $script:n }
 
@@ -2342,6 +2379,39 @@ if ($cards.Count -gt $midiIdx) {
     $n++
 }
 
+# ---- 17b. VR slot (#49, 4.2.0) ----
+# Card index 6 by VirtualControllerGroups.InOrder (Xbox 0 .. MIDI 5, VR 6,
+# Add card at 7). The VR slot exists only when SteamVR is installed, since
+# the popup's Add button disables itself without it, so a missing card here
+# is a machine-state fact and not a harness failure.
+Write-Host ""
+Write-Host "--- VR Slot ---" -ForegroundColor Yellow
+Nav "Dashboard"; Start-Sleep -Milliseconds 1000
+$slotsHost = Find-UIA -Aid "SlotsItemsControl"
+$cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
+$vrIdx = 6
+if ($cards.Count -gt $vrIdx) {
+    Write-Host "[$(Next)/$total] VR config bar + preview"
+    Click-El $cards[$vrIdx] -Label "VR Slot card" -Delay 1500 | Out-Null
+    $padPage = Find-UIA -Aid "PadPageView"
+    if ($padPage) {
+        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+            [System.Windows.Automation.ControlType]::RadioButton)
+        $tabs = $padPage.FindAll($TC, $rbCond)
+        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "VR Controller Tab" -Delay 1200 }
+    }
+    Cap "pad-vr-configbar"
+    # The Mappings tab shows the VR source family (both hands' sticks,
+    # triggers, grips and clicks) that the preview mirrors.
+    Tab "Mappings" | Out-Null
+    Start-Sleep -Milliseconds 800
+    Cap "pad-vr-mappings"
+} else {
+    Write-Host "  !! VR slot not found (SteamVR absent?)" -ForegroundColor Yellow
+    $n++
+}
+
 # ---- 18-20. Settings (three scroll positions) ----
 Write-Host ""
 Write-Host "--- Settings ---" -ForegroundColor Yellow
@@ -2367,8 +2437,19 @@ Cap "settings-drivers"
 Cap "driver-status-flames"
 Cap "settings-driver-cards"
 
+# 20b. SteamVR card (#49, 4.2.0). Card order on this page is Language,
+# Appearance, Input Engine, Window, HidHide, HIDMaestro, MIDI Services,
+# SteamVR, Community Configs, Settings File, Diagnostics, so SteamVR sits
+# just below the driver trio the previous shot framed. The card shows the
+# install-location row only while SteamVR is ABSENT and the Uninstall
+# button only for a PadForge-owned install, so what this captures depends
+# on the machine's state; both are honest.
+Write-Host "[$(Next)/$total] Settings - SteamVR"
+ScrollContent -Clicks -5
+Cap "settings-steamvr"
+
 # Scroll back up
-ScrollContent -Clicks 40
+ScrollContent -Clicks 45
 
 # ---- 21. About ----
 Write-Host "[$(Next)/$total] About"

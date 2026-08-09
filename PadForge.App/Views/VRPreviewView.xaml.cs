@@ -544,11 +544,20 @@ namespace PadForge.Views
             // through rendered the press at 0.4, which is exactly the hover
             // opacity, so a real press was indistinguishable from the
             // pointer resting on the trigger.
-            SetOverlay(side + "Trigger", trg, flashElem,
-                (hand.Buttons & 0x20) != 0 ? 1.0 : hand.Trigger / 32767.0);
-            SetOverlay(side + "Grip", grp, flashElem,
-                (hand.Buttons & 0x40) != 0 ? 1.0 : hand.Grip / 32767.0);
+            SetOverlay(side + "Trigger", trg, flashElem, PullFor(hand.Buttons, 0x20, hand.Trigger));
+            SetOverlay(side + "Grip", grp, flashElem, PullFor(hand.Buttons, 0x40, hand.Grip));
         }
+
+        /// <summary>How far an analog element reads as pulled, 0..1. The
+        /// CLICK bit pins it to full: a source bound to VrLTriggerClick with
+        /// VrLTrigger left unmapped drives the click alone, and passing its
+        /// zero analog through rendered the press at the 0.4 that
+        /// <see cref="SetOverlay"/> also uses for hover, so a real press was
+        /// indistinguishable from the pointer resting on the trigger.
+        /// Internal for the test seam (InternalsVisibleTo PadForge.Tests):
+        /// the rest of this view has no callable surface.</summary>
+        internal static double PullFor(byte buttons, byte clickBit, short analog)
+            => (buttons & clickBit) != 0 ? 1.0 : analog / 32767.0;
 
         private void SetOverlay(string key, bool lit, string flashElem, double analog = -1)
         {

@@ -85,6 +85,25 @@ namespace PadForge.Tests
             Assert.Equal(expected, a.Left.StickY);
         }
 
+        /// <summary>A click-only press must not render at the hover
+        /// opacity. The preview scales an analog element's brightness by its
+        /// pull (0.4 + 0.6 * pull), so a TriggerClick / GripClick source with
+        /// the analog row left unmapped passed pull = 0 and painted exactly
+        /// 0.4, which is byte-identical to the hover affordance: a real
+        /// press was indistinguishable from the pointer resting on the
+        /// control. The click bit pins the pull to full.</summary>
+        [Theory]
+        [InlineData((byte)0x20, (byte)0x20, (short)0, 1.0)]      // trigger click, no analog
+        [InlineData((byte)0x40, (byte)0x40, (short)0, 1.0)]      // grip click, no analog
+        [InlineData((byte)0x00, (byte)0x20, (short)0, 0.0)]      // nothing at all
+        [InlineData((byte)0x00, (byte)0x20, (short)32767, 1.0)]  // full analog, no click
+        [InlineData((byte)0x00, (byte)0x40, (short)16384, 0.5)]  // half analog, no click
+        [InlineData((byte)0x20, (byte)0x40, (short)0, 0.0)]      // a DIFFERENT click bit does not pin
+        public void PullFor_ClickBitPinsToFull(byte buttons, byte clickBit, short analog, double expected)
+        {
+            Assert.Equal(expected, PadForge.Views.VRPreviewView.PullFor(buttons, clickBit, analog), 3);
+        }
+
         [Fact]
         public void ButtonKeys_IndexTheHmvrButtonBitPositions()
         {

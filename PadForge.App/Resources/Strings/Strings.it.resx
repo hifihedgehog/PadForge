@@ -147,6 +147,8 @@
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>Download di SteamVR in corso…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Download e installazione di SteamVR dai server di Valve… Sono diversi GB e può richiedere tempo.</value></data>
   <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>Installazione di SteamVR non riuscita: {0}</value></data>
+  <data name="Status_UninstallingSteamVR" xml:space="preserve"><value>Disinstallazione di SteamVR…</value></data>
+  <data name="Status_SteamVRRunningCloseFirst" xml:space="preserve"><value>SteamVR è in esecuzione. Chiudilo prima di disinstallare.</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>Elenco dispositivi aggiornato.</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>Registrato "{0}" ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>Ora assegna: {0} {1}</value></data>
@@ -272,6 +274,9 @@
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Runtime SDK per output dispositivi MIDI virtuali. Scaricato da GitHub (~210 MB).</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>Runtime VR per i controller VR virtuali. Si installa dai server di Valve senza account Steam né client Steam (diversi GB).</value></data>
+  <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Percorso di installazione</value></data>
+  <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>Disinstalla SteamVR</value></data>
+  <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Rimuove l'installazione di SteamVR senza Steam in {0} e libera diversi GB. I controller virtuali VR non funzioneranno finché SteamVR non viene reinstallato.</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Richiede Windows 11 24H2 (build 26100) o successivo</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>File impostazioni</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>Salva, ricarica o ripristina la configurazione.</value></data>

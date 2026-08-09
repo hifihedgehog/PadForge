@@ -147,6 +147,8 @@
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>正在下载 SteamVR…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>正在从 Valve 服务器下载并安装 SteamVR… 共数 GB，可能需要一段时间。</value></data>
   <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>SteamVR 安装失败：{0}</value></data>
+  <data name="Status_UninstallingSteamVR" xml:space="preserve"><value>正在卸载 SteamVR…</value></data>
+  <data name="Status_SteamVRRunningCloseFirst" xml:space="preserve"><value>SteamVR 正在运行。请先关闭再卸载。</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>设备列表已刷新。</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>已录制 "{0}" ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>现在映射：{0} {1}</value></data>
@@ -272,6 +274,9 @@
   <data name="Settings_MidiDesc" xml:space="preserve"><value>用于虚拟 MIDI 设备输出的 SDK 运行时。从 GitHub 下载（约 210 MB）。</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>用于虚拟 VR 控制器的 VR 运行时。直接从 Valve 服务器安装，无需 Steam 账户或 Steam 客户端（数 GB）。</value></data>
+  <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>安装位置</value></data>
+  <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>卸载 SteamVR</value></data>
+  <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>移除位于 {0} 的免 Steam 版 SteamVR 安装并释放数 GB 空间。在重新安装 SteamVR 之前，虚拟 VR 控制器将无法工作。</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>需要 Windows 11 24H2（内部版本 26100）或更高版本</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>设置文件</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>保存、重新加载或重置您的配置。</value></data>

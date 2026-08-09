@@ -414,17 +414,38 @@
                                 </Path>
                                 <TextBlock Text="{Binding SteamVrStatusText}" FontWeight="SemiBold"/>
                             </StackPanel>
+
+                            <!-- Install-location picker: shown only before an
+                                 install exists. Not persisted by PadForge; on
+                                 success the HIDMaestro path hint becomes the
+                                 durable record of where the payload lives. -->
+                            <StackPanel Orientation="Horizontal" Margin="0,10,12,0"
+                                        Visibility="{Binding IsSteamVrInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                                <TextBlock Text="{Binding Settings_SteamVRInstallDir, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Text="{Binding SteamVrInstallDir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         MinWidth="240" VerticalContentAlignment="Center"/>
+                                <Button Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
+                                        Click="SteamVrBrowse_Click" Margin="6,0,0,0"/>
+                            </StackPanel>
                         </StackPanel>
 
-                        <!-- Install only: PadForge never uninstalls SteamVR.
-                             A Steam-client install belongs to Steam, and even
-                             the Steam-free one may serve other VR software. -->
+                        <!-- Uninstall is offered ONLY for the Steam-free
+                             install PadForge itself created (ownership =
+                             the HIDMaestro path hint, and not Steam's own
+                             registry entries). A Steam-client install
+                             belongs to Steam and shows no uninstall. -->
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
                                     VerticalAlignment="Center">
                             <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding InstallSteamVrCommand}"
                                     Style="{StaticResource EmberAccentButton}"
                                     Visibility="{Binding IsSteamVrInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                            <Button Content="{Binding Common_Uninstall, Source={x:Static strings:Strings.Instance}}"
+                                    Command="{Binding UninstallSteamVrCommand}"
+                                    Style="{StaticResource EmberDestructiveButton}"
+                                    Visibility="{Binding ShowSteamVrUninstall, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </Grid>
                 </StackPanel>

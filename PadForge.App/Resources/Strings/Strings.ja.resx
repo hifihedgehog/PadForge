@@ -147,6 +147,8 @@
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR をダウンロード中…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Valve のサーバーから SteamVR をダウンロードしてインストール中… 数 GB あるため時間がかかることがあります。</value></data>
   <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>SteamVR のインストールに失敗しました: {0}</value></data>
+  <data name="Status_UninstallingSteamVR" xml:space="preserve"><value>SteamVR をアンインストールしています…</value></data>
+  <data name="Status_SteamVRRunningCloseFirst" xml:space="preserve"><value>SteamVR が実行中です。アンインストールする前に終了してください。</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>デバイスリストを更新しました。</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>「{0}」を記録 ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>次のマッピング: {0} {1}</value></data>
@@ -272,6 +274,9 @@
   <data name="Settings_MidiDesc" xml:space="preserve"><value>仮想 MIDI デバイス出力用の SDK ランタイムです。GitHub からダウンロードされます (~210 MB)。</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>仮想 VR コントローラー用の VR ランタイム。Steam アカウントも Steam クライアントも不要で、Valve のサーバーからインストールされます（数 GB）。</value></data>
+  <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>インストール先</value></data>
+  <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>SteamVR をアンインストール</value></data>
+  <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>{0} にある Steam 不要の SteamVR インストールを削除し、数 GB を解放します。SteamVR を再インストールするまで、仮想 VR コントローラーは動作しません。</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Windows 11 24H2 (ビルド 26100) 以降が必要です</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>設定ファイル</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>設定の保存、再読み込み、またはリセットを行います。</value></data>

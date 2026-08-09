@@ -493,13 +493,48 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _isSteamVrInstalled, value))
                 {
                     OnPropertyChanged(nameof(SteamVrStatusText));
+                    OnPropertyChanged(nameof(ShowSteamVrUninstall));
                     _installSteamVrCommand?.NotifyCanExecuteChanged();
+                    _uninstallSteamVrCommand?.NotifyCanExecuteChanged();
                 }
             }
         }
 
         /// <summary>SteamVR status display text.</summary>
         public string SteamVrStatusText => _isSteamVrInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
+
+        private string _steamVrInstallDir = PadForge.Common.DriverInstaller.SteamVrInstallDir;
+
+        /// <summary>Where the Steam-free install will land. Not persisted by
+        /// PadForge: after a successful install the HIDMaestro path hint IS
+        /// the durable record, so this only needs to live until then.</summary>
+        public string SteamVrInstallDir
+        {
+            get => _steamVrInstallDir;
+            set => SetProperty(ref _steamVrInstallDir, value);
+        }
+
+        private bool _isSteamVrOwned;
+
+        /// <summary>Whether the present SteamVR install is the Steam-free one
+        /// PADFORGE created (HIDMaestro hint set, and not Steam's own
+        /// install). Gates the Uninstall button: a Steam-client install is
+        /// never PadForge's to remove.</summary>
+        public bool IsSteamVrOwned
+        {
+            get => _isSteamVrOwned;
+            set
+            {
+                if (SetProperty(ref _isSteamVrOwned, value))
+                {
+                    OnPropertyChanged(nameof(ShowSteamVrUninstall));
+                    _uninstallSteamVrCommand?.NotifyCanExecuteChanged();
+                }
+            }
+        }
+
+        /// <summary>Uninstall renders only for an installed AND owned copy.</summary>
+        public bool ShowSteamVrUninstall => _isSteamVrInstalled && _isSteamVrOwned;
 
         private RelayCommand _installSteamVrCommand;
 
@@ -509,8 +544,19 @@ namespace PadForge.ViewModels
                 () => InstallSteamVrRequested?.Invoke(this, EventArgs.Empty),
                 () => !_isSteamVrInstalled);
 
+        private RelayCommand _uninstallSteamVrCommand;
+
+        /// <summary>Command to remove the PadForge-owned Steam-free install.</summary>
+        public RelayCommand UninstallSteamVrCommand =>
+            _uninstallSteamVrCommand ??= new RelayCommand(
+                () => UninstallSteamVrRequested?.Invoke(this, EventArgs.Empty),
+                () => _isSteamVrInstalled && _isSteamVrOwned);
+
         /// <summary>Raised when the user requests the Steam-free SteamVR install.</summary>
         public event EventHandler InstallSteamVrRequested;
+
+        /// <summary>Raised when the user requests removal of the owned install.</summary>
+        public event EventHandler UninstallSteamVrRequested;
 
         // ─────────────────────────────────────────────
         //  Driver uninstall guards

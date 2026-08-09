@@ -147,6 +147,8 @@
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>Baixando o SteamVR…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Baixando e instalando o SteamVR dos servidores da Valve… São vários GB e pode demorar.</value></data>
   <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>Falha na instalação do SteamVR: {0}</value></data>
+  <data name="Status_UninstallingSteamVR" xml:space="preserve"><value>Desinstalando o SteamVR…</value></data>
+  <data name="Status_SteamVRRunningCloseFirst" xml:space="preserve"><value>O SteamVR está em execução. Feche-o antes de desinstalar.</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>Lista de dispositivos atualizada.</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>Gravado "{0}" ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>Agora mapeie: {0} {1}</value></data>
@@ -272,6 +274,9 @@
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Runtime SDK para saída de dispositivo MIDI virtual. Baixado do GitHub (~210 MB).</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>Runtime de VR para controles de VR virtuais. Instala direto dos servidores da Valve, sem conta Steam nem cliente Steam (vários GB).</value></data>
+  <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Local de instalação</value></data>
+  <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>Desinstalar o SteamVR</value></data>
+  <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Remove a instalação do SteamVR sem Steam em {0} e libera vários GB. Os controles virtuais de VR não funcionarão até que o SteamVR seja instalado novamente.</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Requer Windows 11 24H2 (build 26100) ou posterior</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>Arquivo de Configurações</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>Salve, recarregue ou redefina sua configuração.</value></data>

@@ -147,6 +147,8 @@
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR 다운로드 중…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Valve 서버에서 SteamVR을 다운로드하여 설치하는 중… 수 GB라 시간이 걸릴 수 있습니다.</value></data>
   <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>SteamVR 설치 실패: {0}</value></data>
+  <data name="Status_UninstallingSteamVR" xml:space="preserve"><value>SteamVR 제거 중…</value></data>
+  <data name="Status_SteamVRRunningCloseFirst" xml:space="preserve"><value>SteamVR이 실행 중입니다. 제거하기 전에 종료하세요.</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>장치 목록을 새로고침했습니다.</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>"{0}" 기록됨 ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>매핑할 항목: {0} {1}</value></data>
@@ -272,6 +274,9 @@
   <data name="Settings_MidiDesc" xml:space="preserve"><value>가상 MIDI 장치 출력을 위한 SDK 런타임입니다. GitHub에서 다운로드됩니다 (~210 MB).</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>가상 VR 컨트롤러용 VR 런타임입니다. Steam 계정이나 Steam 클라이언트 없이 Valve 서버에서 설치됩니다(수 GB).</value></data>
+  <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>설치 위치</value></data>
+  <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>SteamVR 제거</value></data>
+  <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>{0}에 있는 Steam 없이 설치된 SteamVR을 제거하고 수 GB를 확보합니다. SteamVR을 다시 설치할 때까지 가상 VR 컨트롤러가 작동하지 않습니다.</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Windows 11 24H2 (빌드 26100) 이상이 필요합니다</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>설정 파일</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>구성을 저장, 다시 로드하거나 초기화합니다.</value></data>

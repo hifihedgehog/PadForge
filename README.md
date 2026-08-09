@@ -51,6 +51,22 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 </p>
 
 <details>
+<summary><b>New in 4.2.0:</b> VR controllers, headset head tracking, controller audio and microphone, and starter profiles</summary>
+
+- **Virtual VR controllers.** A VR slot presents a full SteamVR left and right hand pair, driven by any controller, keyboard, or motion source you map to it. One slot serves both hands, every stick, trigger, grip and button is a mapping target, and the game's haptics come back out through the device you are actually holding. PadForge installs the SteamVR runtime itself if you do not have it, with no Steam account and no Steam client, to a folder you choose.
+- **Headset head tracking.** Sony headphones that carry a head tracker, confirmed on the WH-1000XM5 family, become a motion source over Bluetooth. Turn your head to aim, lean, or drive anything that takes gyro. Discovery is by capability rather than a model list, so any headset exposing the same sensor collection works.
+- **Controller audio and microphone.** An opt-in virtual USB persona carries the DualSense's voice-coil haptics, its speaker, and its microphone, so authored haptics and controller audio reach the pad the way a PS5 does it.
+- **Bundled starter profiles.** Thirteen general-purpose archetypes, from twin-stick to racing to space sim, ready to apply to any controller instead of starting from an empty grid.
+- **Keep Controller Awake.** Holds a small idle deflection so games stop cutting vibration the moment you touch the mouse or keyboard.
+- **Sony calibration reports.** Virtual DualSense and DS4 controllers now answer the calibration feature report that games with native PlayStation support demand, so those titles stop rejecting them.
+- **DualShock 3 first-run pairing.** Seven stacked defects in the driver install are fixed, so a clean machine pairs instead of flashing forever.
+- **Steam Controller 2015 rumble** emulated on the touchpad haptics, plus a fix for the Bluetooth swipe-haptic stall that made the touchpad mouse teleport.
+- **Left Joy-Con gyro** gains the Horizontal (Yaw + Roll) blend, and **IR Brightness** works on a combined Joy-Con pair.
+- **Controller finishes in the preview.** Ten DualSense colorways including Spider-Man 2 and Final Fantasy XVI, thirteen Xbox Series finishes, and the DualSense Edge as its own model family.
+
+</details>
+
+<details>
 <summary><b>New in 4.1.0:</b> Steam Workshop config import, DualShock 3, Wii pointer modes, and a new look</summary>
 
 - **Steam Workshop config import.** Browse the community controller configs on the Steam Workshop and translate the one you pick into a PadForge profile, over an anonymous Steam connection with no account.

@@ -2001,13 +2001,7 @@
   <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>Right Trigger Click</value></data>
   <data name="Vr_LeftHand" xml:space="preserve"><value>Left Hand</value></data>
   <data name="Vr_RightHand" xml:space="preserve"><value>Right Hand</value></data>
-  <data name="Vr_Sys" xml:space="preserve"><value>Sys</value></data>
-  <data name="Vr_ATouch" xml:space="preserve"><value>A Touch</value></data>
-  <data name="Vr_BTouch" xml:space="preserve"><value>B Touch</value></data>
-  <data name="Vr_Trg" xml:space="preserve"><value>Trigger</value></data>
-  <data name="Vr_Grip" xml:space="preserve"><value>Grip</value></data>
   <data name="Vr_Stick" xml:space="preserve"><value>Stick</value></data>
-  <data name="Vr_PreviewNote" xml:space="preserve"><value>One VR slot drives both SteamVR hands. Controller position and rotation come from SteamVR itself, so they are not shown here.</value></data>
 
   <!-- ═══ Keyboard Key Labels ═══ -->
   <!-- Mouse VK buttons -->

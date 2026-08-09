@@ -1047,13 +1047,7 @@
   <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>오른쪽 트리거 클릭</value></data>
   <data name="Vr_LeftHand" xml:space="preserve"><value>왼손</value></data>
   <data name="Vr_RightHand" xml:space="preserve"><value>오른손</value></data>
-  <data name="Vr_Sys" xml:space="preserve"><value>시스템</value></data>
-  <data name="Vr_ATouch" xml:space="preserve"><value>A 터치</value></data>
-  <data name="Vr_BTouch" xml:space="preserve"><value>B 터치</value></data>
-  <data name="Vr_Trg" xml:space="preserve"><value>트리거</value></data>
-  <data name="Vr_Grip" xml:space="preserve"><value>그립</value></data>
   <data name="Vr_Stick" xml:space="preserve"><value>스틱</value></data>
-  <data name="Vr_PreviewNote" xml:space="preserve"><value>하나의 VR 슬롯이 SteamVR의 양손을 모두 구동합니다. 컨트롤러의 위치와 회전은 SteamVR에서 오므로 여기에는 표시되지 않습니다.</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>마우스 왼쪽 버튼</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>마우스 오른쪽 버튼</value></data>

@@ -103,6 +103,18 @@ namespace PadForge.Common.Input
         // exit was _running) and reconnect stacked another one on top.
         private volatile bool _writerRun;
 
+        // The generation NUMBER behind that bool. A bool cannot distinguish
+        // "still my connection" from "a NEW connection has started", and
+        // Teardown only joins the writer for one second before abandoning
+        // it: a writer blocked longer than that in output I/O outlives its
+        // own teardown, and by the time it looks at _writerRun again the
+        // monitor may have opened the next pad and set it true. It would
+        // then keep running alongside the new generation's writer, two
+        // threads driving one pad. Each writer captures this at launch and
+        // stops the moment the field moves past it, the same shape the
+        // persona reader lanes use for their handles.
+        private int _writerGen;
+
         // Held across every DeviceIoControl on the write handle AND across that
         // handle's close in Teardown, so a write can never land on a closed (and
         // possibly recycled) handle value. The SDL callbacks never take this lock;
@@ -316,7 +328,8 @@ namespace PadForge.Common.Input
                 if (!AttachVirtual()) { Teardown(); Thread.Sleep(1000); continue; }
 
                 _writerRun = true;
-                _writeThread = new Thread(WriterLoop) { IsBackground = true, Name = "Ds3DirectWrite" };
+                int writerGen = System.Threading.Interlocked.Increment(ref _writerGen);
+                _writeThread = new Thread(() => WriterLoop(writerGen)) { IsBackground = true, Name = "Ds3DirectWrite" };
                 _writeThread.Start();
 
                 _log($"DS3({tag}): virtual joystick attached; streaming.");
@@ -399,7 +412,7 @@ namespace PadForge.Common.Input
 
         // ─── writer thread: kick, re-kick, rate-limited output flush ────────────
 
-        private void WriterLoop()
+        private void WriterLoop(int gen)
         {
             long attachedAt = Environment.TickCount64;
             long lastWrite = 0, lastKick = 0;
@@ -410,10 +423,11 @@ namespace PadForge.Common.Input
             // ordering); the bare enable alone does not start it.
             Kick(); kicks = 1; lastKick = attachedAt; lastWrite = attachedAt;
 
-            while (_running && _writerRun)
+            while (_running && _writerRun && System.Threading.Volatile.Read(ref _writerGen) == gen)
             {
                 _writeSignal.WaitOne(50);
-                if (!_running || !_writerRun) break;
+                if (!_running || !_writerRun
+                    || System.Threading.Volatile.Read(ref _writerGen) != gen) break;
 
                 long now = Environment.TickCount64;
 

@@ -163,6 +163,25 @@ function Find-UIA {
     return $Parent.FindFirst($TD, $c)
 }
 
+function Get-Rect {
+    # UIA can hand back a BoundingRectangle that is not a System.Windows.Rect:
+    # a stale element, or a virtualized row that scrolled out between the
+    # FindFirst and the read. Under Set-StrictMode -Version Latest, reading
+    # .IsEmpty off that object is a TERMINATING error, and on 2026-08-09 one
+    # stale device card killed a whole capture run at the Logitech G29, taking
+    # the last six shots AND the settings restore with it. Every rect read goes
+    # through here now. It returns $null rather than throwing, and callers
+    # treat $null as "skip this element" instead of dying.
+    param($El)
+    if (-not $El) { return $null }
+    try { $r = $El.Current.BoundingRectangle } catch { return $null }
+    if ($null -eq $r) { return $null }
+    if ($r -isnot [System.Windows.Rect]) { return $null }
+    try { if ($r.IsEmpty) { return $null } } catch { return $null }
+    if ($r.Width -le 0 -or $r.Height -le 0) { return $null }
+    return $r
+}
+
 function Click-El {
     param(
         [System.Windows.Automation.AutomationElement]$El,
@@ -170,11 +189,11 @@ function Click-El {
         [string]$Label
     )
     if (-not $El) { Write-Host "  !! NOT FOUND: $Label" -ForegroundColor Red; return $false }
-    $r = $El.Current.BoundingRectangle
-    # Height is checked alongside Width. IsEmpty does not catch a rect with
-    # width but no height, and such an element passed the guard and got clicked
-    # at its top edge, which lands on whatever is above it.
-    if ($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0) {
+    # Height is checked alongside Width inside Get-Rect. IsEmpty alone does not
+    # catch a rect with width but no height, and such an element passed the old
+    # guard and got clicked at its top edge, landing on whatever sat above it.
+    $r = Get-Rect $El
+    if ($null -eq $r) {
         Write-Host "  !! EMPTY BOUNDS: $Label" -ForegroundColor Red; return $false
     }
     $cx = [int]($r.X + $r.Width / 2); $cy = [int]($r.Y + $r.Height / 2)
@@ -387,7 +406,8 @@ function Toggle-ViewMode {
     Write-Host "  ViewModeToggle has no UIA peer (expected); measured coordinate" -ForegroundColor DarkGray
     $pp = Find-UIA -Aid "PadPageView"
     if (-not $pp) { Write-Host "  !! Toggle-ViewMode: no PadPageView" -ForegroundColor Red; return $false }
-    $pr = $pp.Current.BoundingRectangle
+    $pr = Get-Rect $pp
+    if ($null -eq $pr) { Write-Host "  !! Toggle-ViewMode: PadPageView has no rect" -ForegroundColor Red; return $false }
     [Win32]::ForceFG($script:hwnd); Start-Sleep -Milliseconds 100
     [Win32]::ClickAt([int]($pr.X + 41), [int]($pr.Y + 61))
     Start-Sleep -Milliseconds 900
@@ -1094,7 +1114,8 @@ if (-not $hamburger) {
 }
 if ($hamburger) {
     $dash = Find-UIA -Name "Dashboard"
-    if ($dash -and $dash.Current.BoundingRectangle.Width -lt 120) {
+    $dashR = Get-Rect $dash
+    if ($null -ne $dashR -and $dashR.Width -lt 120) {
         Write-Host "  Sidebar compact -- expanding..."
         Click-El $hamburger -Label "Hamburger" -Delay 500
     } else {
@@ -1257,8 +1278,8 @@ function Reset-DeviceTypeFilter {
     foreach ($el in $script:uiaWin.FindAll($TD, $txtC)) {
         try {
             if (($el.Current.Name -replace '\s', '') -ne 'ALL') { continue }
-            $r = $el.Current.BoundingRectangle
-            if ($r.IsEmpty) { continue }
+            $r = Get-Rect $el
+            if ($null -eq $r) { continue }
             # Constrain to the chip band near the page top so a stray
             # 'ALL' elsewhere can't be clicked.
             if (($r.Y - $wrF.Top) -gt 350) { continue }
@@ -1267,6 +1288,31 @@ function Reset-DeviceTypeFilter {
         } catch {}
     }
     return $false
+}
+
+function Get-DeviceListTop {
+    # The Devices page has a sticky header and a chip row above the card list.
+    # A card whose rect merely clears an arbitrary 120px still overlaps that
+    # band, and clicking its centre lands on the chips instead: that is how the
+    # G29 assignment enumerated 0 toggles on 2026-08-09 and took pad-wheel,
+    # pad-impulse-triggers, pad-lighting-guide-led and wii-balance-sources with
+    # it. Measure the real boundary off the ALL chip rather than guessing, and
+    # only fall back to a constant when the chip cannot be read.
+    $wr = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wr) | Out-Null
+    $txtC = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::Text)
+    foreach ($el in $script:uiaWin.FindAll($TD, $txtC)) {
+        try {
+            if (($el.Current.Name -replace '\s', '') -ne 'ALL') { continue }
+            $r = Get-Rect $el
+            if ($null -eq $r) { continue }
+            if (($r.Y - $wr.Top) -gt 350) { continue }
+            return [int]($r.Y + $r.Height + 18)
+        } catch { }
+    }
+    return [int]($wr.Top + 230)
 }
 
 function Assign-DeviceToSlot {
@@ -1288,6 +1334,7 @@ function Assign-DeviceToSlot {
     # nowhere, and the unassign silently no-oped). On an off-screen match,
     # scroll TOWARD it and re-find instead of clicking a phantom rect.
     $target = $null
+    $listTop = Get-DeviceListTop
     for ($stry = 0; $stry -lt 24 -and (-not $target); $stry++) {
         $found = $null
         $items = $searchIn.FindAll($TD, $liCond)
@@ -1296,18 +1343,20 @@ function Assign-DeviceToSlot {
         # Left+400 landed outside its scroll viewer, so every below-the-fold
         # device (Xbox GIP, All Mice, Wii Remote) went unreachable.
         foreach ($it in $items) {
-            $ir = $it.Current.BoundingRectangle
-            if (-not $ir.IsEmpty) { $lx = [int]($ir.X + $ir.Width / 2); break }
+            $ir = Get-Rect $it
+            if ($null -ne $ir) { $lx = [int]($ir.X + $ir.Width / 2); break }
         }
         foreach ($it in $items) {
             if ($it.Current.Name -like "*$DeviceNamePart*") { $found = $it; break }
         }
         if ($found) {
-            $fr = $found.Current.BoundingRectangle
-            if (-not $fr.IsEmpty -and $fr.Y -ge ($wrA.Top + 120) -and ($fr.Y + $fr.Height) -le ($wrA.Bottom - 40)) {
+            $fr = Get-Rect $found
+            if ($null -ne $fr -and $fr.Y -ge $listTop -and ($fr.Y + $fr.Height) -le ($wrA.Bottom - 40)) {
                 $target = $found
             } else {
-                $dir = if ($fr.IsEmpty -or $fr.Y -lt ($wrA.Top + 120)) { 3 } else { -3 }  # positive scrolls up
+                # A null rect means the row is virtualized out of view, so scroll
+                # toward it exactly as if it sat above the viewport.
+                $dir = if ($null -eq $fr -or $fr.Y -lt $listTop) { 3 } else { -3 }  # positive scrolls up
                 [Win32]::ForceFG($script:hwnd); [Win32]::ScrollAt($lx, $my, $dir); Start-Sleep -Milliseconds 350
             }
         } else {
@@ -1357,7 +1406,8 @@ function Assign-DeviceToSlot {
         foreach ($b in $allButtons) {
             try {
                 $null = $b.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern)
-                $r = $b.Current.BoundingRectangle
+                $r = Get-Rect $b
+                if ($null -eq $r) { continue }
                 $cx = $r.X + $r.Width / 2
                 if ($cx -gt $midX) { $toggles += $b }   # detail panel only, exclude sidebar
             } catch {}
@@ -1699,8 +1749,8 @@ if ($slots.Count -ge 1) {
     Write-Host "  Macro: Add from List dropdown"
     $comboX = 0; $comboY = 0
     $addListLbl = Find-UIA -Name "Add from List"
-    if ($addListLbl -and -not $addListLbl.Current.BoundingRectangle.IsEmpty -and $addListLbl.Current.BoundingRectangle.Width -gt 0) {
-        $lr = $addListLbl.Current.BoundingRectangle
+    $lr = Get-Rect $addListLbl
+    if ($null -ne $lr) {
         $comboX = [int]($lr.X + $lr.Width + 120)
         $comboY = [int]($lr.Y + $lr.Height / 2)
     } else {
@@ -2161,8 +2211,8 @@ if ($slotsHost) {
                 [System.Windows.Automation.ControlType]::Button)
             $recBtn = $null; $recByName = $null; $bestY = -1e9
             foreach ($b in $script:uiaWin.FindAll($TD, $recBtnCT)) {
-                $rb = $b.Current.BoundingRectangle
-                if ($rb.IsEmpty -or $rb.Width -le 0 -or $rb.Height -le 0) { continue }
+                $rb = Get-Rect $b
+                if ($null -eq $rb) { continue }
                 if ($b.Current.Name -match "Record New Gesture") { $recByName = $b }
                 if ($rb.X -gt ($wrTp.Left + 0.14 * $tpw) -and $rb.Y -gt ($wrTp.Top + 0.16 * $tph)) {
                     $by = $rb.Y + $rb.Height
@@ -2170,7 +2220,10 @@ if ($slotsHost) {
                 }
             }
             if ($recByName) { $recBtn = $recByName; Write-Host "  recorder: found record button by Name" }
-            elseif ($recBtn) { Write-Host ("  recorder: bottom-most content button '{0}' [{1}x{2}] at ({3},{4})" -f $recBtn.Current.Name, [int]$recBtn.Current.BoundingRectangle.Width, [int]$recBtn.Current.BoundingRectangle.Height, [int]$recBtn.Current.BoundingRectangle.X, [int]$recBtn.Current.BoundingRectangle.Y) }
+            elseif ($recBtn) {
+                $rbR = Get-Rect $recBtn
+                if ($null -ne $rbR) { Write-Host ("  recorder: bottom-most content button '{0}' [{1}x{2}] at ({3},{4})" -f $recBtn.Current.Name, [int]$rbR.Width, [int]$rbR.Height, [int]$rbR.X, [int]$rbR.Y) }
+            }
             if ($recBtn) {
                 Click-El $recBtn -Label "Record New Gesture" -Delay 1500 | Out-Null
                 # Recorder is a wpf-ui FluentWindow modal; grab its hwnd at open time.
@@ -2492,11 +2545,30 @@ function Select-DeviceByName36 {
     [Win32]::ForceFG($script:hwnd)
     for ($u = 0; $u -lt 8; $u++) { [Win32]::ScrollAt($listX, $midY, 3); Start-Sleep -Milliseconds 60 }
     Start-Sleep -Milliseconds 300
+    # Match the card's NAME first, then its child text. A device card shows the
+    # product name on line one and its TYPE on line two, and the consumer
+    # devices on this machine are named "USB Receiver" with CONSUMER CONTROL
+    # only on the type line. A name-only match therefore could never find them,
+    # which is why devices-consumer sat stale while two such devices were
+    # enumerated three rows apart.
+    $txtCond36 = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::Text)
     for ($try = 0; $try -lt 16; $try++) {
         $items = $script:uiaWin.FindAll($TD, $li36)
         foreach ($it in $items) {
             if ($it.Current.Name -like "*$NamePart*") {
                 Click-El $it -Label "Device '$NamePart'" -Delay 900 | Out-Null
+                return $true
+            }
+        }
+        foreach ($it in $items) {
+            $hit = $false
+            foreach ($t in $it.FindAll($TD, $txtCond36)) {
+                if ($t.Current.Name -like "*$NamePart*") { $hit = $true; break }
+            }
+            if ($hit) {
+                Click-El $it -Label "Device '$NamePart' (matched on type line)" -Delay 900 | Out-Null
                 return $true
             }
         }
@@ -2775,8 +2847,8 @@ for ($ptry = 0; $ptry -lt 4 -and -not $pairBtn; $ptry++) {
     $wrPH = New-Object Win32+RECT
     [Win32]::GetWindowRect($script:hwnd, [ref]$wrPH) | Out-Null
     foreach ($b in $script:uiaWin.FindAll($TD, $btn36)) {
-        $r = $b.Current.BoundingRectangle
-        if ($r.IsEmpty -or $r.Y -gt ($wrPH.Top + 160)) { continue }   # header strip only
+        $r = Get-Rect $b
+        if ($null -eq $r -or $r.Y -gt ($wrPH.Top + 160)) { continue }   # header strip only
         $nm = $b.Current.Name
         if ($nm -eq "Pair" -or ($nm -and $nm.IndexOf($glyphPair) -ge 0)) { $pairBtn = $b; break }
         # Name may be empty on some peers; match the button's child glyph TextBlock.
@@ -2872,8 +2944,8 @@ Write-Host "=== STEP 3d: Steam Workshop (#9) ===" -ForegroundColor Cyan
 function Click-DlgEl {
     param($DlgHwnd, [System.Windows.Automation.AutomationElement]$El, [int]$Delay = 700, [string]$Label)
     if (-not $El) { Write-Host "  !! ws NOT FOUND: $Label" -ForegroundColor Yellow; return $false }
-    $r = $El.Current.BoundingRectangle
-    if ($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0) { Write-Host "  !! ws EMPTY BOUNDS: $Label" -ForegroundColor Yellow; return $false }
+    $r = Get-Rect $El
+    if ($null -eq $r) { Write-Host "  !! ws EMPTY BOUNDS: $Label" -ForegroundColor Yellow; return $false }
     [Win32]::SetForegroundWindow([IntPtr]$DlgHwnd) | Out-Null
     Start-Sleep -Milliseconds 150
     [Win32]::ClickAt([int]($r.X + $r.Width / 2), [int]($r.Y + $r.Height / 2))
@@ -3097,12 +3169,36 @@ try {
         Start-Sleep -Milliseconds 500
     }
 
+    # The server has to be ANSWERING before Edge is pointed at it. Without this
+    # probe the capture happily photographs Edge's "localhost refused to
+    # connect" page and ships it: that is exactly what web-landing.png and
+    # web-controller.png were on 2026-08-09, on the site and in the README.
+    # A shot nobody verified is worse than a missing shot, because the missing
+    # one gets noticed.
+    function Wait-Web {
+        param([string]$Url, [int]$TimeoutSec = 45)
+        $deadline = (Get-Date).AddSeconds($TimeoutSec)
+        while ((Get-Date) -lt $deadline) {
+            try {
+                $resp = Invoke-WebRequest -Uri $Url -UseBasicParsing -TimeoutSec 5
+                if ($resp.StatusCode -eq 200) {
+                    Write-Host "  web server answering: $Url ($($resp.RawContentLength) bytes)" -ForegroundColor Green
+                    return $true
+                }
+            } catch { Start-Sleep -Milliseconds 1000 }
+        }
+        Write-Host "  !! web server never answered $Url -- SKIPPING web shots (kept existing)" -ForegroundColor Red
+        return $false
+    }
+
+    $webUp = Wait-Web "http://localhost:${webPort}/"
+
     # Landing page (needs a few seconds for Edge to fully render)
-    Cap-Web "http://localhost:${webPort}/" "web-landing" 6000
+    if ($webUp) { Cap-Web "http://localhost:${webPort}/" "web-landing" 6000 }
 
     # Controller page (needs WebSocket for layout images)
     Write-Host "[$(Next)/$total] Web controller - gamepad"
-    Cap-Web "http://localhost:${webPort}/controller.html?layout=xbox360" "web-controller" 6000
+    if ($webUp) { Cap-Web "http://localhost:${webPort}/controller.html?layout=xbox360" "web-controller" 6000 }
 
     # Bring PadForge back to foreground after web captures
     [Win32]::ForceFG($script:hwnd)

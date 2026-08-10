@@ -39,6 +39,26 @@ $logDir = Join-Path $env:TEMP "PadForge_Capture"
 if (-not (Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir | Out-Null }
 $logPath = Join-Path $logDir "capture_log.txt"
 $script:CaptureRunStart = Get-Date
+
+# --- Single instance ---------------------------------------------------------
+# Two capture runs at once fight over the settings file, the foreground window
+# and this transcript, and the second one silently inherits the first one's
+# half-finished state. On 2026-08-09 a run launched before a script edit was
+# still going when the next was launched, so the "fixed" run was actually the
+# old script and its log looked like the fix had failed. Refuse to start.
+$lockPath = Join-Path $logDir "capture.lock"
+if (Test-Path $lockPath) {
+    $otherPid = (Get-Content $lockPath -EA SilentlyContinue | Select-Object -First 1)
+    $alive = $false
+    if ($otherPid) { $alive = [bool](Get-Process -Id ([int]$otherPid) -EA SilentlyContinue) }
+    if ($alive) {
+        Write-Host "!! A capture is ALREADY RUNNING (pid $otherPid). Refusing to start a second." -ForegroundColor Red
+        Write-Host "!! Wait for it, or stop it, then run again." -ForegroundColor Red
+        exit 1
+    }
+    Remove-Item $lockPath -Force -EA SilentlyContinue
+}
+Set-Content -Path $lockPath -Value $PID -Encoding ascii
 Start-Transcript -Path $logPath -Force | Out-Null
 
 # --- Assemblies ---------------------------------------------------------------
@@ -171,6 +191,47 @@ function Find-UIA {
     return $Parent.FindFirst($TD, $c)
 }
 
+function Reset-PadForgeUia {
+    # The WPF UIA tree degrades over a long capture run: late FindAlls come back
+    # empty for elements that are plainly on screen. The script header has noted
+    # this since 2026-07-30 and -SkipToTail exists because of it. The KBM block
+    # sits near the end and hit exactly that, scanning 0 slot cards four times
+    # over, which cost pad-kbm-preview, pad-kbm-socd and pad-mouse-gestures.
+    # A fresh process gets a fresh tree. Settings are already on disk, so this
+    # costs a restart and nothing else.
+    param([string]$ExePath)
+    Write-Host "  restarting PadForge for a fresh UIA tree" -ForegroundColor Cyan
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
+    Start-Sleep -Seconds 3
+    Start-Process $ExePath
+    for ($i = 0; $i -lt 25; $i++) {
+        Start-Sleep -Seconds 1
+        $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+        if ($pr -and $pr.MainWindowHandle -ne 0) { break }
+    }
+    Start-Sleep -Seconds 6
+    $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+    if (-not $pr -or $pr.MainWindowHandle -eq 0) { Write-Host "  !! PadForge did not come back" -ForegroundColor Red; return $false }
+    $script:hwnd = $pr.MainWindowHandle
+    $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle($script:hwnd)
+    [Win32]::ForceFG($script:hwnd)
+    Start-Sleep -Milliseconds 800
+    return $true
+}
+
+function Get-Count {
+    # Set-StrictMode -Version Latest makes a .Count read on anything that is not
+    # a collection a TERMINATING error, and UIA hands back such values routinely.
+    # This exact trap has now killed three separate runs: at $r.IsEmpty, at
+    # $cds.Count, and at $cards.Count in the KBM block, where the "fix" for the
+    # second one was not applied to the third. Count through here, always.
+    param($Value)
+    if ($null -eq $Value) { return 0 }
+    try { return ([object[]]$Value).Length } catch { }
+    try { return $Value.Count } catch { }
+    return 0
+}
+
 function Get-Rect {
     # UIA can hand back a BoundingRectangle that is not a System.Windows.Rect:
     # a stale element, or a virtualized row that scrolled out between the
@@ -229,7 +290,15 @@ function Ensure-DeviceAssigned {
     #
     # Runs with PadForge closed and restarts it, which is the state proven to
     # load settings cleanly.
-    param([string]$DeviceNamePart, [int]$PadIndex, [string]$XmlPath, [string]$ExePath)
+    # SlotType resolves the pad index by VirtualControllerType instead of
+    # trusting a hardcoded number. Dashboard CARD order is type-group order
+    # (Xbox, PlayStation, Nintendo, Extended, KBM, MIDI, VR) while PAD INDEX is
+    # creation order, and they are not the same: on 2026-08-10 the slots came
+    # out 0,1,5,4,2,2, so the KBM slot was pad 3 while its card sat fifth. A
+    # mouse mapped to "pad 4" landed on an Extended slot and the Mouse tab
+    # never appeared. Pass the type and let the file say where it is.
+    param([string]$DeviceNamePart, [int]$PadIndex, [int]$SlotType = -1,
+          [string]$XmlPath, [string]$ExePath)
 
     Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
     Start-Sleep -Seconds 3
@@ -237,6 +306,25 @@ function Ensure-DeviceAssigned {
     try {
         [xml]$ax = Get-Content $XmlPath
         $root = $ax.PadForgeSettings
+
+        if ($SlotType -ge 0) {
+            $typesNode = $root.SelectSingleNode("SlotControllerTypes")
+            if ($typesNode) {
+                $i = 0; $resolved = -1
+                foreach ($t in $typesNode.ChildNodes) {
+                    if ("$($t.InnerText)".Trim() -eq "$SlotType") { $resolved = $i; break }
+                    $i++
+                }
+                if ($resolved -ge 0) {
+                    if ($resolved -ne $PadIndex) {
+                        Write-Host "  slot type $SlotType is pad $resolved (not $PadIndex); using $resolved" -ForegroundColor DarkGray
+                    }
+                    $PadIndex = $resolved
+                } else {
+                    Write-Host "  !! no slot of type $SlotType in SlotControllerTypes" -ForegroundColor Yellow
+                }
+            }
+        }
 
         $devsNode = $root.SelectSingleNode("Devices")
         if (-not $devsNode) { Write-Host "  !! no <Devices> node" -ForegroundColor Red; Start-Process $ExePath; return $false }
@@ -463,8 +551,8 @@ function Find-AllSlots {
                 $slots += $item
             }
         }
-        if ($slots.Count -gt 0) {
-            Write-Host "  Found $($slots.Count) slot(s) on attempt $attempt"
+        if ((Get-Count $slots) -gt 0) {
+            Write-Host "  Found $(Get-Count $slots) slot(s) on attempt $attempt"
             return $slots
         }
         # Diagnostic: list ALL NavigationViewItems
@@ -662,7 +750,7 @@ function Close-AnyModal {
                 $modals += $w
             } catch {}
         }
-        if ($modals.Count -eq 0) { break }
+        if ((Get-Count $modals) -eq 0) { break }
         foreach ($m in $modals) {
             Write-Host "  Close-AnyModal: dismissing '$($m.Current.Name)'" -ForegroundColor DarkGray
             $done = $false
@@ -1362,7 +1450,7 @@ if (-not $SkipToTail) {
 Write-Host "  Removing any existing slots..."
 for ($delPass = 0; $delPass -lt 16; $delPass++) {
     $existingSlots = @(Find-AllSlots)
-    if ($existingSlots.Count -eq 0) { break }
+    if ((Get-Count $existingSlots) -eq 0) { break }
     # Select the first slot
     Select-El $existingSlots[0] -Label "Select for delete" -Delay 500
     # Find and click the delete/close button (X) — it's a Button with the delete tooltip
@@ -1392,8 +1480,8 @@ for ($delPass = 0; $delPass -lt 16; $delPass++) {
         foreach ($b in $slotBtns) {
             if ($b.Current.Name -match "Delete|Remove|Close") { $delBtn = $b; break }
         }
-        if (-not $delBtn -and $slotBtns.Count -gt 0) {
-            $delBtn = $slotBtns[$slotBtns.Count - 1]
+        if (-not $delBtn -and (Get-Count $slotBtns) -gt 0) {
+            $delBtn = $slotBtns[(Get-Count $slotBtns) - 1]
             Write-Host "  (fallback) clicking last card button: '$($delBtn.Current.Name)'" -ForegroundColor Yellow
         }
     }
@@ -1405,7 +1493,7 @@ for ($delPass = 0; $delPass -lt 16; $delPass++) {
     }
 }
 $remainingSlots = @(Find-AllSlots)
-Write-Host "  Slots remaining after cleanup: $($remainingSlots.Count)"
+Write-Host "  Slots remaining after cleanup: $(Get-Count $remainingSlots)"
 
 # Create one slot of EVERY VirtualControllerType. SlotNumber and dashboard-card
 # order follow VirtualControllerGroups.InOrder regardless of creation order:
@@ -1440,7 +1528,7 @@ Start-Sleep -Milliseconds 3000
 
 # Verify slots appeared
 $slots = @(Find-AllSlots)
-Write-Host "  Slots after creation: $($slots.Count)"
+Write-Host "  Slots after creation: $(Get-Count $slots)"
 
 # ----------------------------------------------------------------------
 # Assign a DualSense to the Xbox + PlayStation slots so their PadPages
@@ -1587,7 +1675,7 @@ function Assign-DeviceToSlot {
     # (the 2026-07-30 run enumerated 0 toggles on a found Wii Remote card
     # and the assignment silently failed). One re-enumerate after a wait.
     $toggles = @()
-    for ($tenum = 0; $tenum -lt 3 -and $toggles.Count -eq 0; $tenum++) {
+    for ($tenum = 0; $tenum -lt 3 -and (Get-Count $toggles) -eq 0; $tenum++) {
         if ($tenum -gt 0) { Start-Sleep -Milliseconds 1500 }
         # Second miss means the click probably did not SELECT the card at all
         # (it landed on the header, or the row de-realized under the pointer),
@@ -1620,7 +1708,7 @@ function Assign-DeviceToSlot {
         } catch {}
         $slotOf[$t] = $digits
     }
-    Write-Host "    Detail-panel assignment toggles: $($toggles.Count)"
+    Write-Host "    Detail-panel assignment toggles: $(Get-Count $toggles)"
     foreach ($t in $toggles) { Write-Host "      toggle slotNumber='$($slotOf[$t])'" }
     $btn = $null
     foreach ($t in $toggles) {
@@ -1630,7 +1718,7 @@ function Assign-DeviceToSlot {
         # Fallback: positional. ActiveSlotItems is in slot order, so the Nth
         # detail-panel toggle (0-based) is SlotNumber N+1.
         $idx = [int]$SlotNumberLabel - 1
-        if ($idx -ge 0 -and $idx -lt $toggles.Count) {
+        if ($idx -ge 0 -and $idx -lt (Get-Count $toggles)) {
             $btn = $toggles[$idx]
             Write-Host "    (slot-number match missed -- using positional toggle #$idx)" -ForegroundColor DarkGray
         }
@@ -1676,7 +1764,7 @@ function Assign-DeviceToSlot {
         Write-Host "  $verb $DeviceNamePart $(if ($Unassign) { 'from' } else { 'to' }) slot $SlotNumberLabel" -ForegroundColor Green
         return $true
     }
-    Write-Host "  !! Slot $SlotNumberLabel toggle not found for $DeviceNamePart (had $($toggles.Count) toggles)" -ForegroundColor Yellow
+    Write-Host "  !! Slot $SlotNumberLabel toggle not found for $DeviceNamePart (had $(Get-Count $toggles) toggles)" -ForegroundColor Yellow
     return $false
 }
 
@@ -1732,7 +1820,16 @@ Start-Sleep -Milliseconds 2000
 # instead of clicking for it. This runs at a clean boundary, before any
 # capture, so the restart costs nothing and the full multi-slot topology the
 # rest of the gallery shows is untouched.
-Ensure-DeviceAssigned -DeviceNamePart "Xbox Series X GIP" -PadIndex 0 `
+Ensure-DeviceAssigned -DeviceNamePart "Xbox Series X GIP" -PadIndex 0 -SlotType 0 `
+    -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+
+# Same treatment for the mouse. The Mouse tab gates on the SELECTED device
+# being IsMouse, so pad-mouse-gestures needs "All Mice (Merged)" reachable in
+# the KBM slot's device dropdown. The UI toggle assigned it and the dropdown
+# still did not list it, exactly as with the Xbox GIP, and the shot has never
+# been captured as a result. KBM is pad index 4 in creation order
+# (Xbox 0, PlayStation 1, Nintendo 2, Extended 3, KBM 4).
+Ensure-DeviceAssigned -DeviceNamePart "All Mice (Merged)" -PadIndex 4 -SlotType 4 `
     -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
 
 # Macros, written AFTER the slots exist. STEP 0 clears SlotCreated to all-false
@@ -2676,10 +2773,30 @@ Write-Host ""
 Write-Host "--- KBM Slot ---" -ForegroundColor Yellow
 Nav "Dashboard"; Start-Sleep -Milliseconds 1000
 $slotsHost = Find-UIA -Aid "SlotsItemsControl"
-$cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
+# Retry the card enumeration. A single FindAll that comes back short is a UIA
+# hiccup, not a missing slot, and this block used to skip on it with NO else
+# branch: no shot, no warning, nothing in the log at all. That is how
+# pad-mouse-gestures went missing entirely while the run reported success, and
+# how screenshot-mouse-gestures.jpg stayed at its July version on the site.
 $kbmIdx = 4  # Xbox 0, PlayStation 1, Nintendo 2, Extended 3, KBM 4 (Add card at 6);
              # old Count-2 landed on the MIDI slot (pad-kbm-preview showed MIDI).
-if ($cards.Count -gt $kbmIdx) {
+$cards = @()
+for ($kbmTry = 1; $kbmTry -le 4; $kbmTry++) {
+    $slotsHost = Find-UIA -Aid "SlotsItemsControl"
+    $cards = if ($slotsHost) { @($slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } else { @() }
+    if ((Get-Count $cards) -gt $kbmIdx) { break }
+    Write-Host "  KBM card scan attempt ${kbmTry}: only $(Get-Count $cards) cards, retrying" -ForegroundColor DarkGray
+    if ($kbmTry -eq 2) {
+        # Two empty scans is not a slow tree, it is a stale one. Restart.
+        Reset-PadForgeUia -ExePath $PadForgeExe | Out-Null
+    }
+    Nav "Dashboard"; Start-Sleep -Milliseconds 1400
+}
+if ((Get-Count $cards) -le $kbmIdx) {
+    Write-Host "  !! KBM BLOCK SKIPPED: $(Get-Count $cards) slot cards, needed more than $kbmIdx." -ForegroundColor Red
+    Write-Host "  !! pad-kbm-preview, pad-kbm-socd and pad-mouse-gestures are NOT captured." -ForegroundColor Red
+}
+if ((Get-Count $cards) -gt $kbmIdx) {
     Write-Host "[$(Next)/$total] Keyboard+Mouse preview"
     Click-El $cards[$kbmIdx] -Label "KBM Slot card" -Delay 1500 | Out-Null
     # KBM defaults to Controller tab (keyboard+mouse preview) — no need to click a tab
@@ -3701,3 +3818,4 @@ Get-ChildItem "$OutputDir\*.png" | Sort-Object Name | ForEach-Object {
 # It used to stop before the audit ran, which meant the one report that says
 # whether the run actually covered everything went to the console and nowhere else.
 Stop-Transcript | Out-Null
+Remove-Item $lockPath -Force -EA SilentlyContinue

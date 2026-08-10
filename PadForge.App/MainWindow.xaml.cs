@@ -6671,7 +6671,7 @@ namespace PadForge
             };
 
             // Wire per-variable RecordRequested for the custom-expression
-            // editor — both for variables present at load time and for any
+            // editor, both for variables present at load time and for any
             // added later via the "+ Add Variable" button.
             foreach (var v in macro.TriggerExpressionVariables)
                 WireExpressionVariableRecording(v, padIndex);
@@ -6680,6 +6680,31 @@ namespace PadForge
                 if (e.NewItems != null)
                     foreach (MacroExpressionVariable v in e.NewItems)
                         WireExpressionVariableRecording(v, padIndex);
+            };
+
+            // Wire per-action device-axis source recording (the volume /
+            // mouse / pressure-turbo pickers' Record buttons), same
+            // load-time-plus-added pattern as the variables above.
+            foreach (var a in macro.Actions)
+                WireActionAxisSourceRecording(a, padIndex);
+            macro.Actions.CollectionChanged += (s, e) =>
+            {
+                if (e.NewItems != null)
+                    foreach (MacroAction a in e.NewItems)
+                        WireActionAxisSourceRecording(a, padIndex);
+            };
+        }
+
+        private void WireActionAxisSourceRecording(MacroAction action, int padIndex)
+        {
+            if (action == null) return;
+            action.RecordSourceRequested += (s, e) =>
+            {
+                if (s is not MacroAction a) return;
+                if (a.IsRecordingSource)
+                    _inputService.StartMacroActionAxisRecording(a, padIndex);
+                else
+                    _inputService.StopMacroActionAxisRecording();
             };
         }
 

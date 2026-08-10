@@ -112,6 +112,133 @@ namespace PadForge.Engine.RemoteLink
         public int DiagAudioReceived;   // speaker PCM blocks we opened+surfaced (#138)
         public string DiagLastError;
 
+        // STUN probe state (#294 step 1). The probe reuses the ONE bound UDP
+        // socket, because a NAT mapping is per socket: the mapped endpoint is
+        // only valid for the socket that asked. Responses arrive on the shared
+        // receive loop, which routes any STUN Binding success (matched by the
+        // RFC 5389 magic cookie plus a live transaction id) to the pending
+        // probe instead of trying to open it as a session.
+        private volatile TaskCompletionSource<IPEndPoint> _stunPending;
+        private volatile byte[] _stunTxId;
+        private volatile IPEndPoint _stunServer;
+        // One probe at a time: two concurrent probes interleaving their
+        // pending/txId writes could cross-wire responses between servers and
+        // misclassify the NAT (adversarial review finding 2).
+        private readonly SemaphoreSlim _stunGate = new(1, 1);
+
+        /// <summary>This socket's public endpoint from the last successful STUN
+        /// probe, or null if never probed / no server answered.</summary>
+        public IPEndPoint PublicEndpoint { get; private set; }
+
+        /// <summary>True when the last probe saw two servers report different
+        /// mapped ports for this socket: endpoint-dependent (symmetric) NAT,
+        /// where plain UDP hole punching won't work. The UI pre-warns.</summary>
+        public bool IsHardNat { get; private set; }
+
+        /// <summary>
+        /// Learns this socket's public endpoint via STUN (#294 step 1), reusing
+        /// the bound UDP socket so the mapping matches the one a punch would use.
+        /// Probes two independent servers to classify hard NAT. Sends are done
+        /// through the socket directly; responses come back through the shared
+        /// receive loop (<see cref="RouteStunResponse"/>). Safe to call while the
+        /// server is running and connections are live: STUN datagrams demux from
+        /// sealed session datagrams by the magic cookie.
+        /// </summary>
+        public async Task<StunResult> ProbePublicEndpointAsync(CancellationToken ct = default)
+        {
+            var sock = _udp;
+            if (sock == null) return null;
+
+            await _stunGate.WaitAsync(ct).ConfigureAwait(false);
+            try
+            {
+                IPEndPoint first = null;
+                bool hardNat = false;
+
+                foreach (var (host, port) in StunClient.DefaultServers)
+                {
+                    if (ct.IsCancellationRequested) break;
+                    IPAddress[] addrs;
+                    try { addrs = await Dns.GetHostAddressesAsync(host, AddressFamily.InterNetwork, ct).ConfigureAwait(false); }
+                    catch { continue; }
+                    if (addrs.Length == 0) continue;
+                    var server = new IPEndPoint(addrs[0], port);
+
+                    var ep = await OneStunProbeAsync(sock, server, ct).ConfigureAwait(false);
+                    if (ep == null) continue;
+                    if (first == null) first = ep;
+                    else
+                    {
+                        // Any differing mapping (port OR address) toward a
+                        // second destination means the mapping toward a real
+                        // peer is unpredictable: hard NAT (finding 9).
+                        if (!ep.Equals(first)) hardNat = true;
+                        break;
+                    }
+                }
+
+                if (first == null) return null;
+                // Only meaningful for the socket that asked: Stop() clears
+                // these so a restarted socket never advertises the old
+                // socket's mapping (finding 8).
+                PublicEndpoint = first;
+                IsHardNat = hardNat;
+                return new StunResult { PublicEndpoint = first, IsHardNat = hardNat };
+            }
+            finally { _stunGate.Release(); }
+        }
+
+        private async Task<IPEndPoint> OneStunProbeAsync(Socket sock, IPEndPoint server, CancellationToken ct)
+        {
+            // ONE transaction id across the retransmits (RFC 5389 §7.2.1): a
+            // fresh id per attempt rejected any response slower than one
+            // attempt window (finding 4).
+            var req = StunClient.BuildBindingRequest(out var txId);
+            var tcs = new TaskCompletionSource<IPEndPoint>(TaskCreationOptions.RunContinuationsAsynchronously);
+            _stunTxId = txId;
+            _stunServer = server;
+            _stunPending = tcs;
+            try
+            {
+                for (int attempt = 0; attempt < 3 && !ct.IsCancellationRequested; attempt++)
+                {
+                    try { await sock.SendToAsync(req, SocketFlags.None, server, ct).ConfigureAwait(false); }
+                    catch { return null; }
+
+                    using var timer = CancellationTokenSource.CreateLinkedTokenSource(ct);
+                    timer.CancelAfter(TimeSpan.FromMilliseconds(600));
+                    try { return await tcs.Task.WaitAsync(timer.Token).ConfigureAwait(false); }
+                    catch (OperationCanceledException) when (!ct.IsCancellationRequested) { /* retransmit */ }
+                    catch { return null; }
+                }
+                return null;
+            }
+            finally { _stunPending = null; _stunTxId = null; _stunServer = null; }
+        }
+
+        /// <summary>Routes an inbound datagram that is a STUN Binding response to
+        /// the pending probe. Returns true if consumed (the receive loop then
+        /// skips its session-open attempt). Matched by the SOURCE ADDRESS of the
+        /// queried server plus the magic cookie plus the live transaction id, so
+        /// neither a data datagram nor an off-path injection from another
+        /// address can complete the probe (finding 5).</summary>
+        private bool RouteStunResponse(ReadOnlySpan<byte> datagram, IPEndPoint from)
+        {
+            var pending = _stunPending;
+            var txId = _stunTxId;
+            var server = _stunServer;
+            if (pending == null || txId == null || server == null) return false;
+            if (datagram.Length < 20) return false;
+            if (!from.Address.Equals(server.Address)) return false;
+            // Cheap cookie precheck before the full parse.
+            if (datagram[4] != 0x21 || datagram[5] != 0x12 || datagram[6] != 0xA4 || datagram[7] != 0x42)
+                return false;
+            var ep = StunClient.ParseBindingResponse(datagram, txId);
+            if (ep == null) return false;
+            pending.TrySetResult(ep);
+            return true;
+        }
+
         public bool Start(int port)
         {
             if (IsRunning) return true;
@@ -160,6 +287,11 @@ namespace PadForge.Engine.RemoteLink
         {
             if (!IsRunning) return;
             IsRunning = false;
+            // The STUN-learned mapping belongs to the socket being closed; a
+            // restarted socket gets a different mapping, so never let the old
+            // one be advertised (finding 8).
+            PublicEndpoint = null;
+            IsHardNat = false;
             try { _cts.Cancel(); } catch { }
             _reaper?.Dispose(); _reaper = null;
             LinkPeerConnection[] conns;
@@ -479,6 +611,11 @@ namespace PadForge.Engine.RemoteLink
 
         private void RouteDatagram(ReadOnlySpan<byte> datagram, IPEndPoint from)
         {
+            // A STUN Binding response for our in-flight probe (#294 step 1) is
+            // consumed here, before any session-open attempt, so the probe on
+            // the shared socket doesn't fight the data plane.
+            if (RouteStunResponse(datagram, from)) return;
+
             LinkPeerConnection[] conns;
             lock (_lock) conns = _connections.ToArray();
 

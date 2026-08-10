@@ -3884,7 +3884,10 @@ namespace PadForge.Views
         /// </summary>
         private void DeviceAxisPicker_DropDownOpened(object sender, EventArgs e)
         {
-            if (sender is not ComboBox cb || _currentPadVm == null)
+            if (sender is not ComboBox cb)
+                return;
+            HookDeviceAxisPickerRefresh(cb, axisPicker: false);
+            if (_currentPadVm == null)
                 return;
 
             int slotIndex = _currentPadVm.PadIndex;
@@ -3919,7 +3922,10 @@ namespace PadForge.Views
         /// </summary>
         private void DeviceAxisIndexPicker_DropDownOpened(object sender, EventArgs e)
         {
-            if (sender is not ComboBox cb || cb.DataContext is not MacroAction action)
+            if (sender is not ComboBox cb)
+                return;
+            HookDeviceAxisPickerRefresh(cb, axisPicker: true);
+            if (cb.DataContext is not MacroAction action)
                 return;
 
             if (action.SourceDeviceGuid == Guid.Empty)
@@ -3946,6 +3952,102 @@ namespace PadForge.Views
                     axes.Add(new AxisPickerItem(obj.InputIndex, Common.MappingDisplayResolver.LocalizeObjectName(obj.Name)));
             }
             cb.ItemsSource = axes;
+        }
+
+        /// <summary>
+        /// Keeps a device/axis source picker's ItemsSource live outside the
+        /// dropdown-open path (owner bug 2026-08-10: the saved axis showed
+        /// blank at load and inconsistently after recording). DropDownOpened
+        /// and Loaded were the only population triggers, so three real flows
+        /// left the combo with a null or stale list that SelectedValue could
+        /// not display against: selecting a different action in the editor
+        /// (DataContext changes, items stay from the old action's device),
+        /// picking a different device (the axis list kept the old device's
+        /// axes until reopened), and the axis recorder writing
+        /// SourceDeviceGuid + SourceDeviceAxisIndex programmatically (no
+        /// dropdown ever opens). One hook per ComboBox instance, installed
+        /// on first Loaded/DropDownOpened, repopulates on DataContextChanged
+        /// and on the bound action's source-pair PropertyChanged, detaching
+        /// its action subscription on Unloaded so recycled template
+        /// instances never pile up handlers.
+        /// </summary>
+        private void HookDeviceAxisPickerRefresh(ComboBox cb, bool axisPicker)
+        {
+            if (cb.Tag is DeviceAxisPickerHook) return;
+            cb.Tag = new DeviceAxisPickerHook(this, cb, axisPicker);
+        }
+
+        private sealed class DeviceAxisPickerHook
+        {
+            private readonly PadPage _page;
+            private readonly ComboBox _cb;
+            private readonly bool _axisPicker;
+            private MacroAction _action;
+
+            public DeviceAxisPickerHook(PadPage page, ComboBox cb, bool axisPicker)
+            {
+                _page = page;
+                _cb = cb;
+                _axisPicker = axisPicker;
+                cb.DataContextChanged += (s, e) => { Attach(cb.DataContext as MacroAction); Repopulate(); };
+                cb.Loaded += (s, e) => { Attach(cb.DataContext as MacroAction); Repopulate(); };
+                cb.Unloaded += (s, e) => Attach(null);
+                Attach(cb.DataContext as MacroAction);
+            }
+
+            private void Attach(MacroAction action)
+            {
+                if (ReferenceEquals(_action, action)) return;
+                if (_action != null) _action.PropertyChanged -= OnActionPropertyChanged;
+                _action = action;
+                if (_action != null) _action.PropertyChanged += OnActionPropertyChanged;
+            }
+
+            private bool _repopulating;
+
+            private void OnActionPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+            {
+                if (_repopulating) return;
+                // Guid change invalidates the axis list (new device, new
+                // axes) and is also the recorder's first write. Index change
+                // matters only when the list was never built (recorded with
+                // the guid already set and the dropdown never opened).
+                if (e.PropertyName == nameof(MacroAction.SourceDeviceGuid)
+                    || (e.PropertyName == nameof(MacroAction.SourceDeviceAxisIndex) && _cb.ItemsSource == null))
+                    Repopulate();
+            }
+
+            private void Repopulate()
+            {
+                if (_repopulating) return;
+                _repopulating = true;
+                try
+                {
+                    // Swapping ItemsSource under a live TwoWay SelectedValue
+                    // binding can push a null/default back into the action
+                    // when the old selection is momentarily unresolvable (the
+                    // known null-writeback trap on picker projections). Take
+                    // the values first and re-assert them after, so the saved
+                    // pair always survives a repopulation.
+                    var action = _cb.DataContext as MacroAction ?? _action;
+                    Guid savedGuid = action?.SourceDeviceGuid ?? Guid.Empty;
+                    int savedIndex = action?.SourceDeviceAxisIndex ?? -1;
+
+                    if (_axisPicker) _page.DeviceAxisIndexPicker_DropDownOpened(_cb, EventArgs.Empty);
+                    else _page.DeviceAxisPicker_DropDownOpened(_cb, EventArgs.Empty);
+
+                    if (action != null)
+                    {
+                        if (action.SourceDeviceGuid != savedGuid) action.SourceDeviceGuid = savedGuid;
+                        if (action.SourceDeviceAxisIndex != savedIndex) action.SourceDeviceAxisIndex = savedIndex;
+                        // Re-assert the selection now that items exist: a
+                        // SelectedValue set while ItemsSource was null does
+                        // not always re-resolve on its own.
+                        _cb.SelectedValue = _axisPicker ? savedIndex : (object)savedGuid;
+                    }
+                }
+                finally { _repopulating = false; }
+            }
         }
 
         // ─────────────────────────────────────────────

@@ -4815,6 +4815,41 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _turboRateCurve, string.IsNullOrEmpty(value) ? "Linear" : value);
         }
 
+        private int _pressureStartPercent;
+        /// <summary>Pressure (percent) at which the turbo ramp leaves the
+        /// slow rate (#290 follow-up). Below it the rate stays at
+        /// <see cref="SlowIntervalMs"/>. The remap runs BEFORE the curve,
+        /// the codebase's established order for range-plus-curve shaping
+        /// (SourceCoercion's Steam curve cluster: outer range first, then
+        /// exponent). Clamped 0..99, default 0.</summary>
+        public int PressureStartPercent
+        {
+            get => _pressureStartPercent;
+            set => SetProperty(ref _pressureStartPercent, Math.Clamp(value, 0, 99));
+        }
+
+        private int _pressureEndPercent = 100;
+        /// <summary>Pressure (percent) at which the turbo ramp reaches the
+        /// full-press rate (#290 follow-up). At and above it the rate is
+        /// <see cref="IntervalMs"/>. Clamped 1..100, default 100. The engine
+        /// floors the span at one percent so a crossed pair can never divide
+        /// by zero or invert.</summary>
+        public int PressureEndPercent
+        {
+            get => _pressureEndPercent;
+            set => SetProperty(ref _pressureEndPercent, Math.Clamp(value, 1, 100));
+        }
+
+        private RelayCommand _resetPressureStartCommand;
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetPressureStartCommand =>
+            _resetPressureStartCommand ??= new RelayCommand(() => PressureStartPercent = 0);
+
+        private RelayCommand _resetPressureEndCommand;
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetPressureEndCommand =>
+            _resetPressureEndCommand ??= new RelayCommand(() => PressureEndPercent = 100);
+
         /// <summary>True when the pressure-turbo rows (slow interval, curve,
         /// pressure source pickers) apply: the shared Interval row is showing
         /// and the pressure gate is on.</summary>

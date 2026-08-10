@@ -83,6 +83,101 @@ namespace PadForge.Tests
             Assert.Equal(4.0, InputManager.PressureTurboRateHz(a, 0.5f), 3);
         }
 
+        // ── The ramp endpoints (start/end remap BEFORE the curve, the
+        //    SourceCoercion range-then-exponent order) ──
+
+        [Fact]
+        public void Endpoints_BelowStart_IsTheSlowRate()
+        {
+            var a = Turbo(fastMs: 100, slowMs: 500);
+            a.PressureStartPercent = 20;
+            a.PressureEndPercent = 80;
+            Assert.Equal(2.0, InputManager.PressureTurboRateHz(a, 0.10f), 3);
+            Assert.Equal(2.0, InputManager.PressureTurboRateHz(a, 0.20f), 3);
+        }
+
+        [Fact]
+        public void Endpoints_AtAndPastEnd_IsTheFastRate()
+        {
+            var a = Turbo(fastMs: 100, slowMs: 500);
+            a.PressureStartPercent = 20;
+            a.PressureEndPercent = 80;
+            Assert.Equal(10.0, InputManager.PressureTurboRateHz(a, 0.80f), 3);
+            Assert.Equal(10.0, InputManager.PressureTurboRateHz(a, 0.95f), 3);
+        }
+
+        [Fact]
+        public void Endpoints_RampMidpoint_IsTheRateMidpoint()
+        {
+            // 50% raw sits at the middle of the 20..80 window, so after the
+            // remap it is 0.5 and the rate is 6 Hz, exactly as an unwindowed
+            // half press would be.
+            var a = Turbo(fastMs: 100, slowMs: 500);
+            a.PressureStartPercent = 20;
+            a.PressureEndPercent = 80;
+            Assert.Equal(6.0, InputManager.PressureTurboRateHz(a, 0.50f), 3);
+        }
+
+        [Fact]
+        public void Endpoints_RemapRunsBeforeTheCurve()
+        {
+            // Aggressive (x²) on the REMAPPED value: raw 0.5 remaps to 0.5 in
+            // the 20..80 window, shapes to 0.25, rate 2 + 0.25 * 8 = 4 Hz. If
+            // the curve ran first (0.25 shaped, then remapped: (0.25-0.2)/0.6
+            // = 0.083, rate 2.67 Hz) the order would be backwards.
+            var a = Turbo(fastMs: 100, slowMs: 500, curve: "Aggressive");
+            a.PressureStartPercent = 20;
+            a.PressureEndPercent = 80;
+            Assert.Equal(4.0, InputManager.PressureTurboRateHz(a, 0.50f), 3);
+        }
+
+        [Fact]
+        public void Endpoints_CrossedPair_NeverDividesByZeroOrInverts()
+        {
+            // Property clamps keep start <= 99 and end >= 1, but a crossed
+            // pair (start 90, end 10) is still expressible. The 1% span floor
+            // makes it a step at the start point instead of a blowup.
+            var a = Turbo(fastMs: 100, slowMs: 500);
+            a.PressureStartPercent = 90;
+            a.PressureEndPercent = 10;
+            Assert.Equal(2.0, InputManager.PressureTurboRateHz(a, 0.50f), 3);   // below start: slow
+            Assert.Equal(10.0, InputManager.PressureTurboRateHz(a, 0.95f), 3);  // past start: fast
+        }
+
+        [Fact]
+        public void Endpoints_Defaults_AreTheFullRange()
+        {
+            var a = new MacroAction();
+            Assert.Equal(0, a.PressureStartPercent);
+            Assert.Equal(100, a.PressureEndPercent);
+            a.PressureStartPercent = -5;
+            Assert.Equal(0, a.PressureStartPercent);
+            a.PressureStartPercent = 250;
+            Assert.Equal(99, a.PressureStartPercent);
+            a.PressureEndPercent = 0;
+            Assert.Equal(1, a.PressureEndPercent);
+            a.PressureEndPercent = 250;
+            Assert.Equal(100, a.PressureEndPercent);
+        }
+
+        [Fact]
+        public void Endpoints_RoundTrip()
+        {
+            var m = new MacroItem { Name = "RT290e" };
+            m.Actions.Add(new MacroAction
+            {
+                Type = MacroActionType.RepeatVcButtonWhileHeld,
+                PressureScaledRate = true,
+                PressureStartPercent = 15,
+                PressureEndPercent = 85,
+            });
+            var data = SettingsService.BuildMacroDataForMacro(m, 0);
+            var clone = SettingsService.LoadMacroFromData(data, PadForge.Engine.VirtualControllerType.Xbox, null);
+            var a = Assert.Single(clone.Actions);
+            Assert.Equal(15, a.PressureStartPercent);
+            Assert.Equal(85, a.PressureEndPercent);
+        }
+
         // ── The square-wave family ──
 
         [Fact]

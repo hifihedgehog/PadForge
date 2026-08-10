@@ -1609,6 +1609,10 @@ public class Strings : INotifyPropertyChanged
     public string Macro_SlowInterval_Tooltip => Get("Macro_SlowInterval_Tooltip");
     public string Macro_TurboRateCurve_Label => Get("Macro_TurboRateCurve_Label");
     public string Macro_PressureTurboHint => Get("Macro_PressureTurboHint");
+    public string Macro_PressureStart_Label => Get("Macro_PressureStart_Label");
+    public string Macro_PressureStart_Tooltip => Get("Macro_PressureStart_Tooltip");
+    public string Macro_PressureEnd_Label => Get("Macro_PressureEnd_Label");
+    public string Macro_PressureEnd_Tooltip => Get("Macro_PressureEnd_Tooltip");
     public string MacroAction_PressureSuffix => Get("MacroAction_PressureSuffix");
     public string MacroAction_Type_AxisAdd => Get("MacroAction_Type_AxisAdd");
     public string MacroAction_AxisAdd_Tooltip => Get("MacroAction_AxisAdd_Tooltip");

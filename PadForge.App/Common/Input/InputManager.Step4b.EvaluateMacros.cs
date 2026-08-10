@@ -2177,12 +2177,20 @@ namespace PadForge.Common.Input
         /// <summary>Pressure-scaled repeat rate in Hz (#290):
         /// <see cref="MacroAction.SlowIntervalMs"/> at zero pressure,
         /// <see cref="MacroAction.IntervalMs"/> (the legacy knob, now the
-        /// FAST end) at full press, linearly in rate between, after the
-        /// action's curve shapes the pressure. Slow is floored at fast so a
-        /// misordered pair can never invert the response.</summary>
+        /// FAST end) at full press, linearly in rate between. The pressure
+        /// first remaps through the start/end endpoints (below start = slow,
+        /// at end and beyond = fast), THEN the curve shapes it, matching the
+        /// codebase's range-before-exponent order (SourceCoercion's Steam
+        /// curve cluster). Slow is floored at fast and the endpoint span at
+        /// 1% so misordered pairs can never invert or divide by zero.</summary>
         internal static double PressureTurboRateHz(MacroAction action, float pressure01)
         {
             float a = pressure01 < 0f ? 0f : (pressure01 > 1f ? 1f : pressure01);
+            float start = action.PressureStartPercent / 100f;
+            float span = action.PressureEndPercent / 100f - start;
+            if (span < 0.01f) span = 0.01f;
+            a = (a - start) / span;
+            if (a < 0f) a = 0f; else if (a > 1f) a = 1f;
             float shaped = PadForge.Engine.Common.Mapping.SourceCoercion.ApplyOutputCurve(a, action.TurboRateCurve);
             if (shaped < 0f) shaped = 0f; else if (shaped > 1f) shaped = 1f;
             double fastMs = Math.Max(action.IntervalMs, 1);

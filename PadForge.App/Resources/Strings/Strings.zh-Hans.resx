@@ -3063,4 +3063,8 @@
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>速率曲线</value></data>
   <data name="Macro_PressureTurboHint" xml:space="preserve"><value>选择速率跟随的模拟源:扳机或 DualShock 3 压感轴(轴 6-15)。</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(压感)</value></data>
+  <data name="Macro_PressureStart_Label" xml:space="preserve"><value>斜坡起点</value></data>
+  <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>斜坡开始的按压力度。低于此值时保持慢速间隔。</value></data>
+  <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>斜坡终点</value></data>
+  <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>斜坡达到最大值的按压力度。达到及超过此值时使用全力按下的间隔。</value></data>
 </root>

@@ -3303,6 +3303,8 @@ namespace PadForge.Services
                 PressureScaledRate = ad.PressureScaledRate,
                 SlowIntervalMs = ad.SlowIntervalMs,
                 TurboRateCurve = string.IsNullOrEmpty(ad.TurboRateCurve) ? "Linear" : ad.TurboRateCurve,
+                PressureStartPercent = ad.PressureStartPercent,
+                PressureEndPercent = ad.PressureEndPercent,
                 PulseWhileLatched = ad.PulseWhileLatched,
                 AxisYieldToPhysical = ad.AxisYieldToPhysical,
                 LatchDirection = ad.LatchDirection,
@@ -4406,6 +4408,8 @@ namespace PadForge.Services
                 PressureScaledRate = a.PressureScaledRate,
                 SlowIntervalMs = a.SlowIntervalMs,
                 TurboRateCurve = a.TurboRateCurve,
+                PressureStartPercent = a.PressureStartPercent,
+                PressureEndPercent = a.PressureEndPercent,
                 PulseWhileLatched = a.PulseWhileLatched,
                 AxisYieldToPhysical = a.AxisYieldToPhysical,
                 LatchDirection = a.LatchDirection,
@@ -6046,6 +6050,10 @@ namespace PadForge.Services
         /// <summary>Response curve shaping the 0..1 pressure before the rate
         /// interpolation (#290): Linear, Aggressive, Relaxed, Wide, ExtraWide.</summary>
         [XmlElement] public string TurboRateCurve { get; set; } = "Linear";
+        /// <summary>Pressure percent where the turbo ramp leaves the slow rate.</summary>
+        [XmlElement] public int PressureStartPercent { get; set; }
+        /// <summary>Pressure percent where the turbo ramp reaches the fast rate.</summary>
+        [XmlElement] public int PressureEndPercent { get; set; } = 100;
 
         /// <summary>Which axes a MouseLimitRegion action clamps (issue #110).</summary>
         [XmlElement] public ViewModels.CursorClampMode CursorClampMode { get; set; } = ViewModels.CursorClampMode.XAndY;

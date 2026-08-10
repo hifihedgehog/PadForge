@@ -3063,4 +3063,8 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Courbe de cadence</value></data>
   <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Choisissez la source analogique suivie par la cadence : une gâchette ou un axe de pression DualShock 3 (axe 6-15).</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(pression)</value></data>
+  <data name="Macro_PressureStart_Label" xml:space="preserve"><value>Début de rampe</value></data>
+  <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Pression où la rampe commence. En dessous, la cadence reste à l'intervalle lent.</value></data>
+  <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>Fin de rampe</value></data>
+  <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>Pression où la rampe atteint son maximum. Au-delà, la cadence est celle de l'intervalle d'appui complet.</value></data>
 </root>

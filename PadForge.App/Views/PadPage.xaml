@@ -2358,6 +2358,25 @@
                                                       SelectedValue="{Binding TurboRateCurve, Mode=TwoWay}"
                                                       MinWidth="150"/>
                                         </StackPanel>
+                                        <!-- Ramp endpoints: pressure range that maps to slow-to-fast.
+                                             Remapped BEFORE the curve (the Steam curve cluster's
+                                             range-then-exponent order). -->
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_PressureStart_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                       Width="80" Margin="0,0,8,0"
+                                                       ToolTip="{Binding Macro_PressureStart_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <TextBox Text="{Binding PressureStartPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"/>
+                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                            <ui:Button Command="{Binding ResetPressureStartCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_PressureEnd_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                       Width="80" Margin="0,0,8,0"
+                                                       ToolTip="{Binding Macro_PressureEnd_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <TextBox Text="{Binding PressureEndPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"/>
+                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                            <ui:Button Command="{Binding ResetPressureEndCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
+                                        </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Device, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>

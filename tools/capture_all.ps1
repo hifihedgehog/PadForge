@@ -933,14 +933,14 @@ if ($profilesNode.ChildNodes.Count -eq 0) {
 }
 
 # --- Inject test macros (so Macros tab screenshot shows content) ---
-# ELEMENT ORDER IS LOAD-BEARING. XmlSerializer reads a class's elements in the
-# order the class declares them, and an out-of-order element does not merely get
-# skipped: it aborted the whole <Macros> array. On 2026-08-09 every one of these
-# five was silently discarded because macro 1 listed TriggerAxisTargets and
-# TriggerAxisThreshold before TriggerSource (declared 19th and 21st, placed
-# 4th), and its last action listed MouseButton before DurationMs. The app wrote
-# <Macros /> straight back, the Macros tab was empty, and pad-macros.png plus
-# every macro-*.png shipped as a blank pane.
+# These are written in MacroData's declared element order. That is worth keeping
+# because XmlSerializer reads elements in declared order, but be clear about
+# what it does NOT explain: on 2026-08-09 all five macros were discarded at load
+# and every macro shot came out blank, and reordering them did not fix it. The
+# 2026-07-30 pad-macros.png shows the same five loaded correctly from the
+# ORIGINAL out-of-order XML, complete with the "Left Trigger > 50%" chip, so
+# order was never the cause. What changed between those two dates has not been
+# identified. Do not treat this ordering as the fix.
 # MacroData order:  PadIndex Name IsEnabled TriggerButtons TriggerDeviceGuid
 #   TriggerRawButtons TriggerSource TriggerMode TriggerHoldMs
 #   TriggerDoublePressMs LayerMask ConsumeTriggerButtons RepeatMode RepeatCount

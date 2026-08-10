@@ -30,7 +30,14 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$logPath = "C:\PadForge\capture_log.txt"
+# NOT beside the exe. The standing bar is that only PadForge.xml and crash.log
+# may ever sit in the deploy directory, and this transcript was breaking it on
+# every run: the 2026-08-09 release prep found six stray log files there, all
+# written by this harness and its siblings. TEMP keeps them out of the way and
+# out of the hygiene sweep.
+$logDir = Join-Path $env:TEMP "PadForge_Capture"
+if (-not (Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir | Out-Null }
+$logPath = Join-Path $logDir "capture_log.txt"
 Start-Transcript -Path $logPath -Force | Out-Null
 
 # --- Assemblies ---------------------------------------------------------------

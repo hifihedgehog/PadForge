@@ -21,7 +21,11 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
-$log = "C:\PadForge\colorway_out.txt"
+# Logs never go beside the exe. Only PadForge.xml and crash.log may live
+# in the deploy directory, and these transcripts were breaking that bar.
+$pfLogDir = Join-Path $env:TEMP "PadForge_Capture"
+if (-not (Test-Path $pfLogDir)) { New-Item -ItemType Directory -Path $pfLogDir | Out-Null }
+$log = Join-Path $pfLogDir "colorway_out.txt"
 function Note($m) {
     $line = "{0}  {1}" -f (Get-Date -Format 'HH:mm:ss'), $m
     Add-Content $log $line -Encoding utf8

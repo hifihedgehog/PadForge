@@ -3070,5 +3070,5 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Verbindung über Code…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Peer nicht direkt erreichbar. Versuchen Sie Verbindung per Adresse über ein VPN.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Code dieses PCs</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Teilen Sie diesen Code mit der Person, die sich verbindet. Sie fügt ihn in ihr Verbindungsfeld ein, um Sie über das Internet zu erreichen, ohne VPN. Er wird aktualisiert, solange Remote Link läuft.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Tauschen Sie Codes mit der anderen Person: Fügen Sie deren Code in Ihr Verbindungsfeld ein, während sie Ihren einfügt, dann klicken beide auf Verbinden. Das öffnet eine direkte Verbindung über das Internet, ohne VPN. Der Code wird aktualisiert, solange Remote Link läuft.</value></data>
 </root>

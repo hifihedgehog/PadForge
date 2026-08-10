@@ -3070,5 +3070,5 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Connexion par code…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Impossible de joindre le pair directement. Essayez Connexion par adresse via un VPN.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Code de ce PC</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Partagez ce code avec la personne qui se connecte. Elle le colle dans son champ de connexion pour vous joindre via internet, sans VPN. Il se rafraîchit tant que Remote Link fonctionne.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Échangez les codes avec l'autre personne : collez le sien dans votre champ de connexion pendant qu'elle colle le vôtre, puis cliquez tous les deux sur Connecter. Cela ouvre un chemin direct via internet, sans VPN. Le code se rafraîchit tant que Remote Link fonctionne.</value></data>
 </root>

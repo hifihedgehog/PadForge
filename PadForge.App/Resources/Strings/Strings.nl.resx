@@ -3090,5 +3090,5 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Verbinden via code…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Kon de peer niet rechtstreeks bereiken. Probeer Verbinden via adres met een VPN.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Code van deze pc</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Deel deze code met degene die verbinding maakt. Die plakt hem in het verbindingsvak om je via internet te bereiken, zonder VPN. Hij ververst terwijl Remote Link draait.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Wissel codes uit met de ander: plak die van hen in je verbindingsvak terwijl zij die van jou plakken, en klik dan allebei op Verbinden. Dat opent een directe route via internet, zonder VPN. De code ververst terwijl Remote Link draait.</value></data>
 </root>

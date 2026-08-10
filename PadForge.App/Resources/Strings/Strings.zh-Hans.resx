@@ -3070,5 +3070,5 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>正在通过代码连接…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>无法直接连接对方。请尝试通过 VPN 使用按地址连接。</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>此电脑的代码</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>把这个代码分享给要连接你的人。对方粘贴到连接框中即可通过互联网连到你，无需 VPN。它会在 Remote Link 运行时刷新。</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>与对方交换代码：把对方的代码粘贴到你的连接框，对方也粘贴你的代码，然后双方都点击连接。这会通过互联网打开一条直连通道，无需 VPN。代码会在 Remote Link 运行时刷新。</value></data>
 </root>

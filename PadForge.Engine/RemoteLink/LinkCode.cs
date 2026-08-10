@@ -35,6 +35,42 @@ namespace PadForge.Engine.RemoteLink
         // accepts a short code").
         public const int ShortCodeLength = 8;
 
+        /// <summary>The 16-byte shared punch nonce for a two-way code exchange,
+        /// derived from BOTH peers' fingerprint prefixes in sorted order so each
+        /// side (which holds its own full fingerprint and the other's 8-byte
+        /// prefix from the code) computes the identical value. Authenticates the
+        /// punch probes; the handshake still gates trust.</summary>
+        public static byte[] TwoWayPunchNonce(byte[] selfFingerprint, byte[] peerFingerprintPrefix)
+        {
+            byte[] a = selfFingerprint.Length >= 8 ? selfFingerprint[..8] : selfFingerprint;
+            byte[] b = peerFingerprintPrefix.Length >= 8 ? peerFingerprintPrefix[..8] : peerFingerprintPrefix;
+            byte[] lo, hi;
+            if (CompareBytes(a, b) <= 0) { lo = a; hi = b; } else { lo = b; hi = a; }
+            var ikm = new byte[16];
+            lo.CopyTo(ikm, 0);
+            hi.CopyTo(ikm, 8);
+            var info = System.Text.Encoding.ASCII.GetBytes("PadForge/code-punch/v1");
+            return PeerCrypto.DeriveKey(ikm, null, info, 16);
+        }
+
+        /// <summary>True when THIS peer should lead the handshake against a peer
+        /// with the given fingerprint prefix: the lexicographically smaller
+        /// fingerprint initiates, so the two sides never both lead or both
+        /// follow. Both compute it consistently.</summary>
+        public static bool IsHandshakeInitiator(byte[] selfFingerprint, byte[] peerFingerprintPrefix)
+        {
+            byte[] a = selfFingerprint.Length >= 8 ? selfFingerprint[..8] : selfFingerprint;
+            byte[] b = peerFingerprintPrefix.Length >= 8 ? peerFingerprintPrefix[..8] : peerFingerprintPrefix;
+            return CompareBytes(a, b) < 0;
+        }
+
+        private static int CompareBytes(byte[] a, byte[] b)
+        {
+            int n = Math.Min(a.Length, b.Length);
+            for (int i = 0; i < n; i++) { int d = a[i] - b[i]; if (d != 0) return d; }
+            return a.Length - b.Length;
+        }
+
         /// <summary>Mints a fresh single-use short rendezvous code
         /// (<see cref="ShortCodeLength"/> Crockford chars, ~40 bits). Random,
         /// opaque, no structure the dialer can forge into another peer's slot.</summary>

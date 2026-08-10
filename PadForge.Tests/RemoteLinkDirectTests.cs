@@ -130,6 +130,27 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void Code_TwoWayNonceAndRole_AgreeBetweenPeers()
+        {
+            // Each side holds its OWN full fingerprint and the OTHER's 8-byte
+            // prefix (from the pasted code). Both must derive the same 16-byte
+            // punch nonce and COMPLEMENTARY handshake roles.
+            var fpA = new byte[32]; for (int i = 0; i < 32; i++) fpA[i] = (byte)(i + 1);
+            var fpB = new byte[32]; for (int i = 0; i < 32; i++) fpB[i] = (byte)(200 - i);
+            var prefixA = fpA[..8];
+            var prefixB = fpB[..8];
+
+            var nonceFromA = LinkCode.TwoWayPunchNonce(fpA, prefixB);
+            var nonceFromB = LinkCode.TwoWayPunchNonce(fpB, prefixA);
+            Assert.Equal(16, nonceFromA.Length);
+            Assert.Equal(nonceFromA, nonceFromB);
+
+            bool aLeads = LinkCode.IsHandshakeInitiator(fpA, prefixB);
+            bool bLeads = LinkCode.IsHandshakeInitiator(fpB, prefixA);
+            Assert.NotEqual(aLeads, bLeads); // exactly one leads
+        }
+
+        [Fact]
         public void Code_Expiry_IsCheckable()
         {
             var fp = new byte[32];

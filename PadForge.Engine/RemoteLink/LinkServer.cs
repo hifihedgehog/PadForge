@@ -409,26 +409,24 @@ namespace PadForge.Engine.RemoteLink
             }
         }
 
-        /// <summary>Initiate an internet-lane connection to a peer by punching to
-        /// its candidate endpoints, then running the handshake over the punched
-        /// path (#294). Returns true on success (the peer is now Registered and
-        /// its devices are live). Returns false on punch failure, so the caller
-        /// can fall back to Connect by Address.</summary>
+        /// <summary>Two-way internet-lane connect (#294): BOTH peers call this
+        /// with the OTHER's candidate endpoints, a shared nonce, and complementary
+        /// handshake roles (the lower fingerprint passes handshakeAsInitiator
+        /// true). Both spray and both listen, so both NATs open even when neither
+        /// is full-cone. Returns true on success (the peer is Registered), false
+        /// on punch failure so the caller can fall back to Connect by Address.
+        /// Held open up to <paramref name="punchTimeout"/> so a human delay
+        /// between the two people clicking Connect still lands.</summary>
         public async Task<bool> ConnectByPunchAsync(
-            IReadOnlyList<IPEndPoint> candidates, byte[] sharedNonce,
-            IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, CancellationToken ct = default)
-            => await PunchConnectAsync(true, candidates, sharedNonce, exposeLocal, ct).ConfigureAwait(false);
-
-        /// <summary>Arm the responder side: answer punch probes carrying the
-        /// shared nonce and run the responder handshake over the won path
-        /// (#294). Held open until a peer punches through or the token cancels.</summary>
-        public async Task<bool> AcceptByPunchAsync(
-            byte[] sharedNonce, IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, CancellationToken ct = default)
-            => await PunchConnectAsync(false, Array.Empty<IPEndPoint>(), sharedNonce, exposeLocal, ct).ConfigureAwait(false);
+            IReadOnlyList<IPEndPoint> candidates, byte[] sharedNonce, bool handshakeAsInitiator,
+            IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, TimeSpan? punchTimeout = null,
+            CancellationToken ct = default)
+            => await PunchConnectAsync(handshakeAsInitiator, candidates, sharedNonce, exposeLocal,
+                punchTimeout ?? TimeSpan.FromSeconds(30), ct).ConfigureAwait(false);
 
         private async Task<bool> PunchConnectAsync(
             bool isInitiator, IReadOnlyList<IPEndPoint> candidates, byte[] sharedNonce,
-            IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, CancellationToken ct)
+            IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, TimeSpan punchTimeout, CancellationToken ct)
         {
             var sock = _udp;
             if (sock == null || sharedNonce == null || sharedNonce.Length != 16) return false;
@@ -438,33 +436,43 @@ namespace PadForge.Engine.RemoteLink
             var controlAdapter = new UdpControlAdapter(sock, () => peerEp);
             uint channelId = UdpControlChannel.ChannelIdFromNonce(sharedNonce);
 
+            int probesIn = 0;
             int punchKey = Interlocked.Increment(ref _punchSinkCounter);
             _punchSinks[punchKey] = (from, dg) =>
             {
                 // Learn the peer endpoint from the first punch datagram so the
                 // control adapter knows where to send once the handshake starts.
-                peerEp ??= from;
+                if (peerEp == null) { peerEp = from; SdlDiagLog.WriteLine($"PUNCH {(isInitiator ? "init" : "resp")}: first probe from {from}"); }
+                System.Threading.Interlocked.Increment(ref probesIn);
                 punchAdapter.OnDatagram?.Invoke(from, dg);
             };
             _controlSinks[channelId] = dg => controlAdapter.OnDatagram?.Invoke(dg);
+            string candStr = candidates == null ? "(none)" : string.Join(",", candidates.Select(c => c.ToString()));
+            SdlDiagLog.WriteLine($"PUNCH {(isInitiator ? "init" : "resp")}: start chan={channelId:X8} candidates=[{candStr}]");
             try
             {
-                using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(HandshakeTimeoutSeconds + 10));
+                using var timeout = new CancellationTokenSource(punchTimeout + TimeSpan.FromSeconds(HandshakeTimeoutSeconds + 5));
                 using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, _cts?.Token ?? CancellationToken.None, timeout.Token);
                 var expose = exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
 
-                var punched = isInitiator
-                    ? await PunchedConnection.ConnectInitiatorAsync(punchAdapter, controlAdapter, sharedNonce, candidates,
-                        _identity, _trust, expose, _caps, _approve, _nowUtc(), TimeSpan.FromSeconds(8), linked.Token).ConfigureAwait(false)
-                    : await PunchedConnection.ConnectResponderAsync(punchAdapter, controlAdapter, sharedNonce, candidates,
-                        _identity, _trust, expose, _caps, _approve, _nowUtc(), TimeSpan.FromSeconds(HandshakeTimeoutSeconds), linked.Token).ConfigureAwait(false);
+                // Both sides spray the peer's candidates AND listen; the role
+                // only chooses who leads the handshake once the path is open.
+                var punched = await PunchedConnection.ConnectTwoWayAsync(
+                    punchAdapter, controlAdapter, sharedNonce, candidates, isInitiator,
+                    _identity, _trust, expose, _caps, _approve, _nowUtc(), punchTimeout, linked.Token).ConfigureAwait(false);
 
-                if (punched?.Connection == null) return false;
+                if (punched?.Connection == null)
+                {
+                    SdlDiagLog.WriteLine($"PUNCH {(isInitiator ? "init" : "resp")}: FAILED, {probesIn} inbound probes seen (0 = peer's NAT dropped our probes or peer not armed)");
+                    return false;
+                }
+                SdlDiagLog.WriteLine($"PUNCH {(isInitiator ? "init" : "resp")}: connected via {punched.PeerEndpoint}");
                 Register(punched.Connection, client: null, peerUdpEndpoint: punched.PeerEndpoint, exposeLocal: expose);
                 return true;
             }
             catch (Exception ex)
             {
+                SdlDiagLog.WriteLine($"PUNCH {(isInitiator ? "init" : "resp")}: exception {ex.GetType().Name} {ex.Message}");
                 StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.ConnectFailed, message: ex.Message));
                 return false;
             }

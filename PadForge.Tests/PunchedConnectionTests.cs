@@ -87,6 +87,57 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public async Task TwoWay_BothSpray_RestrictedNat_ConnectsWithRoles()
+        {
+            // The real-NAT fix: BOTH sides spray the other's candidates (a
+            // one-way punch where only one side fired could not open a
+            // restricted-cone NAT). The handshake role is assigned by
+            // fingerprint so exactly one side leads. This drives both sides
+            // through ConnectTwoWayAsync with each other's endpoints.
+            var fabric = new SimPunchFabric();
+            var epA = new IPEndPoint(IPAddress.Parse("203.0.113.1"), 1111);
+            var epB = new IPEndPoint(IPAddress.Parse("203.0.113.2"), 2222);
+            var a = fabric.Endpoint(epA);
+            var b = fabric.Endpoint(epB);
+            var idA = PeerIdentity.Generate();
+            var idB = PeerIdentity.Generate();
+            var nonce = new byte[16]; for (int i = 0; i < 16; i++) nonce[i] = (byte)(i + 3);
+            Func<PendingPairing, PairingApproval> approve = _ => true;
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(20));
+
+            // Role by fingerprint: lower leads. Both compute it consistently.
+            bool aLeads = Compare(idA.Fingerprint, idB.Fingerprint) < 0;
+
+            var taskA = PunchedConnection.ConnectTwoWayAsync(
+                a.Punch, a.Control, nonce, new[] { epB }, aLeads,
+                idA, new PeerTrustStore(), new[] { PadInfo() }, Caps, approve, "t",
+                TimeSpan.FromSeconds(6), cts.Token);
+            var taskB = PunchedConnection.ConnectTwoWayAsync(
+                b.Punch, b.Control, nonce, new[] { epA }, !aLeads,
+                idB, new PeerTrustStore(), new[] { PadInfo() }, Caps, approve, "t",
+                TimeSpan.FromSeconds(6), cts.Token);
+
+            var rA = await taskA;
+            var rB = await taskB;
+            Assert.NotNull(rA);
+            Assert.NotNull(rB);
+            Assert.Equal(epB, rA.PeerEndpoint);
+            Assert.Equal(epA, rB.PeerEndpoint);
+            // Data keys interoperate both ways.
+            var sA = new LinkSession(rA.Connection.DataKey, rA.Connection.IsInitiator);
+            var sB = new LinkSession(rB.Connection.DataKey, rB.Connection.IsInitiator);
+            var st = CustomInputStateCodec.CreateNeutral(); st.Buttons[1] = true;
+            var dg = sA.Seal(LinkMessageType.Input, 0, 1, CustomInputStateCodec.Encode(st, new CustomInputStateCodec.Caps(false, false)));
+            Assert.True(sB.Open(dg, out _, out _, out _, out _));
+        }
+
+        private static int Compare(byte[] a, byte[] b)
+        {
+            for (int i = 0; i < Math.Min(a.Length, b.Length); i++) { int d = a[i] - b[i]; if (d != 0) return d; }
+            return a.Length - b.Length;
+        }
+
+        [Fact]
         public async Task Punch_TimesOut_WhenPeerNeverAnswers()
         {
             var fabric = new SimPunchFabric();

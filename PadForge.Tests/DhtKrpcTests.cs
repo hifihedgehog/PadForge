@@ -278,7 +278,7 @@ namespace PadForge.Tests
                 new PresenceService(selfClient), self.PublicKey, self.ExportPrivateKey(),
                 localCandidates: () => new List<PresenceRecord.Candidate>
                     { new() { Kind = 1, Endpoint = new IPEndPoint(IPAddress.Parse("198.51.100.1"), 4000) } },
-                connectByPunch: (peerKey, endpoints, nonce, ct) =>
+                connectByPunch: (peerKey, endpoints, nonce, asInitiator, ct) =>
                 {
                     punchedTo = endpoints; punchNonce = nonce; return Task.FromResult(true);
                 });

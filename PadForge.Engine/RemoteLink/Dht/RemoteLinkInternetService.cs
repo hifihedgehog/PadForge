@@ -38,18 +38,21 @@ namespace PadForge.Engine.RemoteLink.Dht
         private readonly byte[] _selfPublicKey;
         private readonly byte[] _selfPrivateKey;
         private readonly Func<IReadOnlyList<PresenceRecord.Candidate>> _localCandidates;
-        private readonly Func<byte[], IReadOnlyList<IPEndPoint>, byte[], CancellationToken, Task<bool>> _connectByPunch;
+        // (peerKey, endpoints, nonce, handshakeAsInitiator, ct) -> connected?
+        private readonly Func<byte[], IReadOnlyList<IPEndPoint>, byte[], bool, CancellationToken, Task<bool>> _connectByPunch;
+        private readonly byte[] _selfFingerprint;
         private readonly Action<string> _log;
 
         public RemoteLinkInternetService(
             PresenceService presence, byte[] selfPublicKey, byte[] selfPrivateKey,
             Func<IReadOnlyList<PresenceRecord.Candidate>> localCandidates,
-            Func<byte[], IReadOnlyList<IPEndPoint>, byte[], CancellationToken, Task<bool>> connectByPunch,
+            Func<byte[], IReadOnlyList<IPEndPoint>, byte[], bool, CancellationToken, Task<bool>> connectByPunch,
             Action<string> log = null)
         {
             _presence = presence ?? throw new ArgumentNullException(nameof(presence));
             _selfPublicKey = selfPublicKey;
             _selfPrivateKey = selfPrivateKey;
+            _selfFingerprint = selfPublicKey != null ? PeerCrypto.Fingerprint(selfPublicKey) : Array.Empty<byte>();
             _localCandidates = localCandidates ?? (() => Array.Empty<PresenceRecord.Candidate>());
             _connectByPunch = connectByPunch;
             _log = log ?? (_ => { });
@@ -83,8 +86,12 @@ namespace PadForge.Engine.RemoteLink.Dht
             var endpoints = new List<IPEndPoint>(pres.Candidates.Count);
             foreach (var c in pres.Candidates) endpoints.Add(c.Endpoint);
             var nonce = PresenceRecord.PunchNonce(peer.Capability);
+            // Both peers run this loop and both punch; the lower fingerprint
+            // leads the handshake so they never both lead.
+            var peerFp = PeerCrypto.Fingerprint(peer.PeerPublicKey);
+            bool asInitiator = CompareBytes(_selfFingerprint, peerFp) < 0;
 
-            bool ok = await _connectByPunch(peer.PeerPublicKey, endpoints, nonce, ct).ConfigureAwait(false);
+            bool ok = await _connectByPunch(peer.PeerPublicKey, endpoints, nonce, asInitiator, ct).ConfigureAwait(false);
             if (ok) { peer.IsConnected = true; _log($"internet reconnect ok for {Short(peer.PeerPublicKey)}"); }
             return ok;
         }
@@ -103,6 +110,13 @@ namespace PadForge.Engine.RemoteLink.Dht
                 try { await TryReconnectAsync(p, ct).ConfigureAwait(false); }
                 catch (Exception ex) { _log($"reconnect failed: {ex.Message}"); }
             }
+        }
+
+        private static int CompareBytes(byte[] a, byte[] b)
+        {
+            int n = Math.Min(a.Length, b.Length);
+            for (int i = 0; i < n; i++) { int d = a[i] - b[i]; if (d != 0) return d; }
+            return a.Length - b.Length;
         }
 
         private static string Short(byte[] key)

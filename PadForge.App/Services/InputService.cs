@@ -116,7 +116,6 @@ namespace PadForge.Services
         private PadForge.Engine.RemoteLink.Dht.UdpKrpcTransport _dhtTransport;
         private PadForge.Engine.RemoteLink.Dht.RemoteLinkInternetService _internetService;
         private System.Threading.CancellationTokenSource _internetCts;
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> _armedResponderNonces = new();
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, UserDevice ud, RemoteDeltaAccumulator acc, byte slot)> _remoteLinkExposed = new();
         private readonly object _remoteLinkExposedLock = new();
         // Lock-free snapshot of _remoteLinkExposed for the two hot readers
@@ -8484,21 +8483,19 @@ namespace PadForge.Services
                     var stun = await server.ProbePublicEndpointAsync(ct).ConfigureAwait(false);
                     var pub = stun?.PublicEndpoint;
                     var priv = LocalLanEndpoint(server.Port);
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"RLInternet STUN: public={(pub?.ToString() ?? "NONE (no server answered / UDP blocked)")} " +
+                        $"hardNat={stun?.IsHardNat} private={(priv?.ToString() ?? "none")}");
 
                     // 2. Mint + publish this PC's shareable self-contained code.
                     var expiry = DateTimeOffset.UtcNow.AddHours(1);
                     string code = PadForge.Engine.RemoteLink.LinkCode.EncodeSelfContained(pub, priv, identity.Fingerprint, expiry);
                     _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkMyCode = code);
 
-                    // 3. Arm the punch responder with THIS PC's nonce (prefix||prefix),
-                    // the same value a dialer derives from our code, so an inbound
-                    // punch to our code lands. Re-arm in a loop while the lane runs.
-                    var myNonce = new byte[16];
-                    Array.Copy(identity.Fingerprint, 0, myNonce, 0, 8);
-                    Array.Copy(identity.Fingerprint, 0, myNonce, 8, 8);
-                    _ = Task.Run(async () => await ArmPunchResponderLoop(myNonce, ct), ct);
+                    // (Two-way model: both people paste the other's code and
+                    // click Connect, so both actively punch. No passive arming.)
 
-                    // 4. DHT presence loop for pair-once-connect-anytime.
+                    // 3. DHT presence loop for pair-once-connect-anytime.
                     _dhtTransport = new PadForge.Engine.RemoteLink.Dht.UdpKrpcTransport();
                     var boot = await PadForge.Engine.RemoteLink.Dht.UdpKrpcTransport.ResolveBootstrapAsync(ct).ConfigureAwait(false);
                     if (boot.Count > 0)
@@ -8508,11 +8505,11 @@ namespace PadForge.Services
                         _internetService = new PadForge.Engine.RemoteLink.Dht.RemoteLinkInternetService(
                             presence, identity.PublicKey, identity.ExportPrivateKey(),
                             localCandidates: () => CurrentLocalCandidates(server.Port, pub, priv),
-                            connectByPunch: async (peerKey, endpoints, nonce, ict) =>
+                            connectByPunch: async (peerKey, endpoints, nonce, asInitiator, ict) =>
                             {
                                 var s = _linkServer;
                                 if (s == null) return false;
-                                return await s.ConnectByPunchAsync(endpoints, nonce, BuildExposedDevices(), ict).ConfigureAwait(false);
+                                return await s.ConnectByPunchAsync(endpoints, nonce, asInitiator, BuildExposedDevices(), punchTimeout: null, ict).ConfigureAwait(false);
                             },
                             log: msg => PadForge.Engine.SdlDiagLog.WriteLine("RLInternet " + msg));
 
@@ -8551,28 +8548,6 @@ namespace PadForge.Services
             if (peers.Count == 0) return;
             try { await svc.MaintainAsync(peers, _internetCts?.Token ?? System.Threading.CancellationToken.None).ConfigureAwait(false); }
             catch { }
-        }
-
-        /// <summary>Keeps a responder armed for inbound code-punches while the
-        /// lane runs. AcceptByPunchAsync returns when a peer connects or times
-        /// out; re-arm either way until the lane stops.</summary>
-        private async Task ArmPunchResponderLoop(byte[] nonce, System.Threading.CancellationToken ct)
-        {
-            string key = Convert.ToHexString(nonce);
-            if (!_armedResponderNonces.TryAdd(key, 1)) return; // already armed
-            try
-            {
-                while (!ct.IsCancellationRequested)
-                {
-                    var server = _linkServer;
-                    if (server == null) break;
-                    try { await server.AcceptByPunchAsync(nonce, BuildExposedDevices(), ct).ConfigureAwait(false); }
-                    catch { }
-                    if (!ct.IsCancellationRequested) await Task.Delay(500, ct).ConfigureAwait(false);
-                }
-            }
-            catch (OperationCanceledException) { }
-            finally { _armedResponderNonces.TryRemove(key, out _); }
         }
 
         private static System.Net.IPEndPoint LocalLanEndpoint(int port)
@@ -8698,7 +8673,6 @@ namespace PadForge.Services
             _internetService = null;
             try { _dhtTransport?.Dispose(); } catch { }
             _dhtTransport = null;
-            _armedResponderNonces.Clear();
             _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkMyCode = "");
             lock (_remoteLinkExposedLock)
             {
@@ -8867,9 +8841,12 @@ namespace PadForge.Services
 
             // #294: the same field accepts a connection CODE as well as a
             // host:port. A self-contained long code carries the peer's
-            // candidate endpoints and needs no server: punch straight to them.
-            // A short rendezvous code needs the DHT lookup, wired on the
-            // presence loop; a bare host:port stays the shipping TCP path.
+            // candidate endpoints. TWO-WAY: both people paste the OTHER's code
+            // and click Connect, so both fire and both NATs open (a one-way
+            // punch can't traverse a typical home router). The nonce and the
+            // handshake role are derived symmetrically from both fingerprint
+            // prefixes, so the two sides agree with no extra exchange. A bare
+            // host:port stays the shipping TCP path.
             if (PadForge.Engine.RemoteLink.LinkCode.LooksLikeCode(entry)
                 && PadForge.Engine.RemoteLink.LinkCode.TryParseSelfContained(entry, out var code))
             {
@@ -8881,13 +8858,11 @@ namespace PadForge.Services
                 var candidates = new List<System.Net.IPEndPoint>();
                 if (code.PublicEndpoint != null) candidates.Add(code.PublicEndpoint);
                 if (code.PrivateEndpoint != null) candidates.Add(code.PrivateEndpoint);
-                // The self-contained code's punch nonce is its fingerprint
-                // prefix expanded to 16 bytes (both peers hold the same code).
-                var nonce = new byte[16];
-                Array.Copy(code.FingerprintPrefix, nonce, Math.Min(8, code.FingerprintPrefix.Length));
-                Array.Copy(code.FingerprintPrefix, 0, nonce, 8, Math.Min(8, code.FingerprintPrefix.Length));
+                var myFp = _remoteLinkIdentity?.Fingerprint ?? Array.Empty<byte>();
+                var nonce = PadForge.Engine.RemoteLink.LinkCode.TwoWayPunchNonce(myFp, code.FingerprintPrefix);
+                bool asInitiator = PadForge.Engine.RemoteLink.LinkCode.IsHandshakeInitiator(myFp, code.FingerprintPrefix);
                 _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusConnectingCode);
-                bool ok = await server.ConnectByPunchAsync(candidates, nonce, expose);
+                bool ok = await server.ConnectByPunchAsync(candidates, nonce, asInitiator, expose);
                 if (!ok)
                     _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusPunchFailed);
                 return;

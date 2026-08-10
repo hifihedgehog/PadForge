@@ -54,6 +54,25 @@ namespace PadForge.Engine.RemoteLink
             => RunAsync(false, punchTransport, controlTransport, sharedNonce, candidates,
                 identity, trust, exposeLocal, capabilities, approve, nowUtc, punchTimeout, ct);
 
+        /// <summary>
+        /// The two-way connect (#294 real-NAT fix): BOTH peers spray the other's
+        /// candidates AND listen, so both NATs open even when neither is
+        /// full-cone (the one-way form, where the host only listened, could not
+        /// punch a typical home router). The handshake role is assigned
+        /// deterministically by the caller (lower fingerprint = initiator) so the
+        /// two sides never both try to lead. Candidates are the peer's endpoints
+        /// on both sides.
+        /// </summary>
+        public static Task<PunchedResult> ConnectTwoWayAsync(
+            IPunchTransport punchTransport, IDatagramTransport controlTransport,
+            byte[] sharedNonce, IReadOnlyList<IPEndPoint> candidates, bool handshakeAsInitiator,
+            PeerIdentity identity, PeerTrustStore trust,
+            IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] capabilities,
+            Func<PendingPairing, PairingApproval> approve, string nowUtc,
+            TimeSpan punchTimeout, CancellationToken ct)
+            => RunAsync(handshakeAsInitiator, punchTransport, controlTransport, sharedNonce, candidates,
+                identity, trust, exposeLocal, capabilities, approve, nowUtc, punchTimeout, ct);
+
         private static async Task<PunchedResult> RunAsync(
             bool isInitiator, IPunchTransport punchTransport, IDatagramTransport controlTransport,
             byte[] sharedNonce, IReadOnlyList<IPEndPoint> candidates,

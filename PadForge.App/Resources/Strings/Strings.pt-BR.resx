@@ -3067,4 +3067,6 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Pressão onde a rampa começa. Abaixo disso, a frequência fica no intervalo lento.</value></data>
   <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>Fim da rampa</value></data>
   <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>Pressão onde a rampa atinge o máximo. Daí em diante, a frequência é a do intervalo de aperto completo.</value></data>
+  <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Conectando por código…</value></data>
+  <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Não foi possível alcançar o par diretamente. Tente Conectar por endereço via VPN.</value></data>
 </root>

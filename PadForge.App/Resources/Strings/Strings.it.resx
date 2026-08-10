@@ -3089,4 +3089,6 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Pressione da cui parte la rampa. Al di sotto, la frequenza resta all'intervallo lento.</value></data>
   <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>Fine rampa</value></data>
   <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>Pressione a cui la rampa raggiunge il massimo. Da lì in su, la frequenza è quella dell'intervallo a pressione completa.</value></data>
+  <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Connessione tramite codice…</value></data>
+  <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Impossibile raggiungere il peer direttamente. Prova Connetti tramite indirizzo con una VPN.</value></data>
 </root>

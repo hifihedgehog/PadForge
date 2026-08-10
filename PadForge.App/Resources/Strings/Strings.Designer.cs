@@ -393,6 +393,8 @@ public class Strings : INotifyPropertyChanged
     public string RemoteLink_StatusStartFailed => Get("RemoteLink_StatusStartFailed");
     public string RemoteLink_StatusPeerTimedOut => Get("RemoteLink_StatusPeerTimedOut");
     public string RemoteLink_StatusConnectFailed => Get("RemoteLink_StatusConnectFailed");
+    public string RemoteLink_StatusConnectingCode => Get("RemoteLink_StatusConnectingCode");
+    public string RemoteLink_StatusPunchFailed => Get("RemoteLink_StatusPunchFailed");
     public string RemoteLink_StatusLinkRejected => Get("RemoteLink_StatusLinkRejected");
     public string RemoteLink_StatusPeerConnected => Get("RemoteLink_StatusPeerConnected");
     public string RemoteLink_AutoReconnect => Get("RemoteLink_AutoReconnect");

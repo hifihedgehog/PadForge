@@ -3056,4 +3056,11 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Patrón de enrutamiento de audio por conector de SundayMoments, la referencia de Seguir el conector de auriculares. Leído como documentación; AGPL-3.0.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Rastreador de auriculares</value></data>
+  <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Frecuencia según presión</value></data>
+  <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>La frecuencia de repetición sigue la fuerza con que se presiona la fuente analógica elegida. Una pulsación suave repite con el intervalo lento, una pulsación completa con el intervalo de arriba, con transición continua.</value></data>
+  <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Intervalo lento</value></data>
+  <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>Período de repetición con la pulsación más suave. El intervalo de arriba es el de pulsación completa.</value></data>
+  <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Curva de frecuencia</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Elige la fuente analógica que sigue la frecuencia: un gatillo o un eje de presión de DualShock 3 (Eje 6-15).</value></data>
+  <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(presión)</value></data>
 </root>

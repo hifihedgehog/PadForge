@@ -1298,13 +1298,9 @@ namespace PadForge.Common.Input
                     // row's continuous scroll as rate-limited detents.
                     if (a.WheelToggleLatched && !_currentMacroSlotRestricted)
                     {
-                        var now = DateTime.UtcNow;
                         int interval = a.IntervalMs > 0 ? a.IntervalMs : 100;
-                        if ((now - a.RepeatKeyLastFireUtc).TotalMilliseconds >= interval)
-                        {
-                            a.RepeatKeyLastFireUtc = now;
+                        if (ShouldFireOneShot(a, interval, ReadTurboPressure(a)))
                             ExecuteMouseWheelTap(a);
-                        }
                     }
                 }
             }
@@ -1313,9 +1309,10 @@ namespace PadForge.Common.Input
         /// <summary>The latch's contribution phase (v18): solid ON for a
         /// plain latch, the turbo square wave when
         /// <see cref="MacroAction.PulseWhileLatched"/> composes Steam's
-        /// toggle + hold_repeats.</summary>
-        private static bool LatchPhaseOn(MacroAction a)
-            => !a.PulseWhileLatched || TickRepeatVcButtonPhase(a);
+        /// toggle + hold_repeats. Instance since #290: the pulse rate can
+        /// follow a live pressure source.</summary>
+        private bool LatchPhaseOn(MacroAction a)
+            => !a.PulseWhileLatched || TickRepeatVcButtonPhase(a, ReadTurboPressure(a));
 
         /// <summary>Mouse buttons the enabled macros' latched
         /// ToggleMouseButton actions want held down this frame (v18).
@@ -2121,7 +2118,7 @@ namespace PadForge.Common.Input
                     // the square wave ORs the target into the combined output
                     // exactly like a ButtonPress; the OFF half writes nothing,
                     // so the button reads released (gp is rebuilt per frame).
-                    if (TickRepeatVcButtonPhase(action))
+                    if (TickRepeatVcButtonPhase(action, ReadTurboPressure(action)))
                     {
                         gp.Buttons |= action.ButtonFlags;
                         _macroPassOutputButtons |= action.ButtonFlags; // R1 overlay
@@ -2133,7 +2130,7 @@ namespace PadForge.Common.Input
                     // on the ON half. gp is rebuilt per frame, so the OFF
                     // half reads released. #237 yield gate applies like
                     // the plain hold.
-                    if (TickRepeatVcButtonPhase(action) && !AxisWriteYields(in _preMacroGp, action))
+                    if (TickRepeatVcButtonPhase(action, ReadTurboPressure(action)) && !AxisWriteYields(in _preMacroGp, action))
                         ApplyAxisHoldAction(ref gp, action);
                     break;
             }
@@ -2145,18 +2142,98 @@ namespace PadForge.Common.Input
         /// parsed key. The timing state lives on the action (default MinValue) so
         /// the first held frame fires immediately, then firing is rate-limited to
         /// one pulse per <see cref="MacroAction.IntervalMs"/>.</summary>
-        private static void ExecuteRepeatKeyWhileHeld(MacroAction action)
+        private void ExecuteRepeatKeyWhileHeld(MacroAction action)
         {
-            var now = DateTime.UtcNow;
-            if ((now - action.RepeatKeyLastFireUtc).TotalMilliseconds < action.IntervalMs)
+            if (!ShouldFireOneShot(action, action.IntervalMs, ReadTurboPressure(action)))
                 return;
             var keyCodes = action.ParsedKeyCodes;
             if (keyCodes.Length == 0) return;
-            action.RepeatKeyLastFireUtc = now;
             for (int k = 0; k < keyCodes.Length; k++)
                 SendKeyInput((ushort)keyCodes[k], keyUp: false);
             for (int k = keyCodes.Length - 1; k >= 0; k--)
                 SendKeyInput((ushort)keyCodes[k], keyUp: true);
+        }
+
+        // ─── Pressure-scaled turbo (#290) ───────────────────────────────────
+        //
+        // The rate follows a physical analog source (DS3 button pressure on
+        // Axis 6-15, any trigger) between two endpoints, interpolated in RATE
+        // space with a phase accumulator. Both references that instead divide
+        // a period by the live analog value needed repairs for it: antimicrox
+        // special-cases d == 0 (joygradientbutton.cpp:104) and credits elapsed
+        // time to hide the mid-cycle discontinuity (:108-112), and
+        // DS4MapperTest's unguarded DurationMs / ButtonDistance
+        // (ButtonAction.cs:445) free-runs at maximum rate on a zero distance
+        // because (int)+inf is int.MinValue. An accumulator has no divide and
+        // no mid-cycle period change, the same shape as DS4Windows'
+        // stick-to-wheel (Mapping.cs:5022-5051) and JoyShockMapper's scroll
+        // (Stick.cpp:15-80).
+
+        /// <summary>The action's live 0..1 pressure when its gate is on,
+        /// otherwise 0 (unused by the legacy paths).</summary>
+        private float ReadTurboPressure(MacroAction action)
+            => action.PressureScaledRate ? ReadAxisFromDevice(action) : 0f;
+
+        /// <summary>Pressure-scaled repeat rate in Hz (#290):
+        /// <see cref="MacroAction.SlowIntervalMs"/> at zero pressure,
+        /// <see cref="MacroAction.IntervalMs"/> (the legacy knob, now the
+        /// FAST end) at full press, linearly in rate between, after the
+        /// action's curve shapes the pressure. Slow is floored at fast so a
+        /// misordered pair can never invert the response.</summary>
+        internal static double PressureTurboRateHz(MacroAction action, float pressure01)
+        {
+            float a = pressure01 < 0f ? 0f : (pressure01 > 1f ? 1f : pressure01);
+            float shaped = PadForge.Engine.Common.Mapping.SourceCoercion.ApplyOutputCurve(a, action.TurboRateCurve);
+            if (shaped < 0f) shaped = 0f; else if (shaped > 1f) shaped = 1f;
+            double fastMs = Math.Max(action.IntervalMs, 1);
+            double slowMs = Math.Max(action.SlowIntervalMs, fastMs);
+            double slowHz = 1000.0 / slowMs;
+            return slowHz + shaped * (1000.0 / fastMs - slowHz);
+        }
+
+        /// <summary>Advances the pressure accumulator by the wall-clock dt at
+        /// the current rate. dt is clamped to 100 ms so a stall (window drag,
+        /// debugger, device wedge) resumes cleanly instead of dumping a burst
+        /// of accumulated cycles. MinValue stamp = fresh activation.</summary>
+        private static void AdvanceTurboPhase(MacroAction action, float pressure01, DateTime now)
+        {
+            double dt = (now - action.TurboLastTickUtc).TotalSeconds;
+            action.TurboLastTickUtc = now;
+            if (dt < 0) dt = 0; else if (dt > 0.1) dt = 0.1;
+            action.TurboPhase += PressureTurboRateHz(action, pressure01) * dt;
+        }
+
+        /// <summary>One-shot pacing shared by RepeatKeyWhileHeld and the
+        /// ToggleWheel detent latch: true when a pulse should fire this
+        /// frame. Legacy path (gate off) is the original elapsed-time check,
+        /// bit-identical. Pressure path fires once per accumulated cycle
+        /// (phase >= 1.0), immediately on a fresh activation, mirroring the
+        /// legacy MinValue contract.</summary>
+        internal static bool ShouldFireOneShot(MacroAction action, int fastIntervalMs, float pressure01)
+        {
+            var now = DateTime.UtcNow;
+            if (!action.PressureScaledRate)
+            {
+                if ((now - action.RepeatKeyLastFireUtc).TotalMilliseconds < fastIntervalMs)
+                    return false;
+                action.RepeatKeyLastFireUtc = now;
+                return true;
+            }
+            if (action.TurboLastTickUtc == DateTime.MinValue)
+            {
+                action.TurboLastTickUtc = now;
+                action.TurboPhase = 0;
+                return true;
+            }
+            AdvanceTurboPhase(action, pressure01, now);
+            if (action.TurboPhase >= 1.0)
+            {
+                action.TurboPhase -= 1.0;
+                // Stall residue past the clamp still fires at most once.
+                if (action.TurboPhase >= 1.0) action.TurboPhase = 0;
+                return true;
+            }
+            return false;
         }
 
         /// <summary>Advances the RepeatVcButtonWhileHeld square wave (issue #9
@@ -2168,13 +2245,42 @@ namespace PadForge.Common.Input
         /// poll, which is why this is a phase, not a RepeatKey-style one-shot).
         /// Timing state lives on the action like <see cref="MacroAction.RepeatKeyLastFireUtc"/>;
         /// the MinValue default flips the phase ON on the first held frame.
-        /// Internal for the PadForge.Tests dispatch pins.</summary>
+        /// Internal for the PadForge.Tests dispatch pins (the legacy overload
+        /// keeps its original signature; pressure rides the two-arg core).</summary>
         internal static bool TickRepeatVcButtonPhase(MacroAction action)
+            => TickRepeatVcButtonPhase(action, 0f);
+
+        /// <summary>The square-wave core with the pressure injected (#290).
+        /// Gate off: the original half-interval timestamp flip, bit-identical.
+        /// Gate on: the phase accumulator toggles each half cycle (0.5), so
+        /// the 50% duty survives every rate change with no re-phasing credit,
+        /// and a fresh activation flips ON immediately like the legacy
+        /// MinValue contract.</summary>
+        internal static bool TickRepeatVcButtonPhase(MacroAction action, float pressure01)
         {
             var now = DateTime.UtcNow;
-            if ((now - action.RepeatVcLastToggleUtc).TotalMilliseconds >= action.IntervalMs * 0.5)
+            if (!action.PressureScaledRate)
             {
-                action.RepeatVcLastToggleUtc = now;
+                if ((now - action.RepeatVcLastToggleUtc).TotalMilliseconds >= action.IntervalMs * 0.5)
+                {
+                    action.RepeatVcLastToggleUtc = now;
+                    action.RepeatVcPulseOn = !action.RepeatVcPulseOn;
+                }
+                return action.RepeatVcPulseOn;
+            }
+            if (action.TurboLastTickUtc == DateTime.MinValue)
+            {
+                action.TurboLastTickUtc = now;
+                action.TurboPhase = 0;
+                action.RepeatVcPulseOn = true;
+                return true;
+            }
+            AdvanceTurboPhase(action, pressure01, now);
+            if (action.TurboPhase >= 0.5)
+            {
+                action.TurboPhase -= 0.5;
+                // Stall residue past the clamp still toggles at most once.
+                if (action.TurboPhase >= 0.5) action.TurboPhase = 0;
                 action.RepeatVcPulseOn = !action.RepeatVcPulseOn;
             }
             return action.RepeatVcPulseOn;
@@ -2625,7 +2731,10 @@ namespace PadForge.Common.Input
                 case MacroActionType.ToggleWheel:
                     action.WheelToggleLatched = !action.WheelToggleLatched;
                     if (action.WheelToggleLatched)
+                    {
                         action.RepeatKeyLastFireUtc = DateTime.MinValue;
+                        ResetPressureTurboPhase(action);
+                    }
                     AdvanceAction(macro);
                     break;
 
@@ -2697,6 +2806,16 @@ namespace PadForge.Common.Input
             if (!action.PulseWhileLatched) return;
             action.RepeatVcPulseOn = false;
             action.RepeatVcLastToggleUtc = DateTime.MinValue;
+            ResetPressureTurboPhase(action);
+        }
+
+        /// <summary>Re-arms the pressure-turbo accumulator (#290) wherever
+        /// the legacy pulse state resets: MinValue marks a fresh activation,
+        /// which fires/flips ON on its first tick.</summary>
+        private static void ResetPressureTurboPhase(MacroAction action)
+        {
+            action.TurboPhase = 0;
+            action.TurboLastTickUtc = DateTime.MinValue;
         }
 
         /// <summary>True while an UntilRelease macro's pending stop sits
@@ -3350,6 +3469,7 @@ namespace PadForge.Common.Input
                 // mid-wave from the previous hold.
                 action.RepeatVcLastToggleUtc = DateTime.MinValue;
                 action.RepeatVcPulseOn = false;
+                ResetPressureTurboPhase(action);
                 // CycleTapList injection latch (v16): a run interrupted
                 // mid-hold must not swallow the next fire's one-shot
                 // parts. The cycle POSITION deliberately survives (that
@@ -4169,13 +4289,9 @@ namespace PadForge.Common.Input
                 {
                     if (a.WheelToggleLatched && !_currentMacroSlotRestricted)
                     {
-                        var now = DateTime.UtcNow;
                         int interval = a.IntervalMs > 0 ? a.IntervalMs : 100;
-                        if ((now - a.RepeatKeyLastFireUtc).TotalMilliseconds >= interval)
-                        {
-                            a.RepeatKeyLastFireUtc = now;
+                        if (ShouldFireOneShot(a, interval, ReadTurboPressure(a)))
                             ExecuteMouseWheelTap(a);
-                        }
                     }
                 }
             }
@@ -4342,7 +4458,7 @@ namespace PadForge.Common.Input
                     // Extended twin of the Gamepad-path turbo (issue #9 wave
                     // 1b): the ON half ORs the action's wide button words in,
                     // mirroring the Extended ButtonPress case.
-                    if (TickRepeatVcButtonPhase(action) && raw.Buttons != null)
+                    if (TickRepeatVcButtonPhase(action, ReadTurboPressure(action)) && raw.Buttons != null)
                     {
                         var cw = action.CustomButtonWords;
                         for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
@@ -4356,7 +4472,7 @@ namespace PadForge.Common.Input
                 case MacroActionType.RepeatVcAxisWhileHeld:
                     // Extended twin of the axis turbo (v18). #237 yield
                     // gate applies like the plain hold.
-                    if (TickRepeatVcButtonPhase(action) && raw.Axes != null)
+                    if (TickRepeatVcButtonPhase(action, ReadTurboPressure(action)) && raw.Axes != null)
                     {
                         if (!AxisWriteYieldsRawValueAt(
                                 MacroAxisTargetToRawIndex(action.AxisTarget), action))
@@ -4752,7 +4868,10 @@ namespace PadForge.Common.Input
                 case MacroActionType.ToggleWheel:
                     action.WheelToggleLatched = !action.WheelToggleLatched;
                     if (action.WheelToggleLatched)
+                    {
                         action.RepeatKeyLastFireUtc = DateTime.MinValue;
+                        ResetPressureTurboPhase(action);
+                    }
                     AdvanceAction(macro);
                     break;
 

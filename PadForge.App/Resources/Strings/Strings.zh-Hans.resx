@@ -3056,4 +3056,11 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments 的接口检测音频路由模式，跟随耳机接口功能的参考。仅作文档阅读；AGPL-3.0。</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>耳机追踪器</value></data>
+  <data name="Macro_PressureScaledRate" xml:space="preserve"><value>压感连发速率</value></data>
+  <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>连发速率跟随所选模拟源的按压力度。轻按时以慢速间隔连发,全力按下时以上方间隔连发,两者之间平滑过渡。</value></data>
+  <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>慢速间隔</value></data>
+  <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>最轻按压时的连发周期。上方的间隔为全力按下时的周期。</value></data>
+  <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>速率曲线</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>选择速率跟随的模拟源:扳机或 DualShock 3 压感轴(轴 6-15)。</value></data>
+  <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(压感)</value></data>
 </root>

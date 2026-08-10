@@ -3056,4 +3056,11 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Muster für buchsengesteuertes Audio-Routing von SundayMoments, die Referenz hinter Kopfhörerbuchse folgen. Als Dokumentation gelesen; AGPL-3.0.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Headset-Tracker</value></data>
+  <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Druckabhängige Rate</value></data>
+  <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>Die Wiederholrate folgt der Stärke des Drucks auf die gewählte analoge Quelle. Leichter Druck wiederholt im langsamen Intervall, voller Druck im obigen Intervall, dazwischen stufenlos.</value></data>
+  <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Langsames Intervall</value></data>
+  <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>Wiederholperiode bei leichtestem Druck. Das obige Intervall gilt bei vollem Druck.</value></data>
+  <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Ratenkurve</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Analoge Quelle wählen, der die Rate folgt: ein Trigger oder eine DualShock-3-Druckachse (Achse 6-15).</value></data>
+  <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(Druck)</value></data>
 </root>

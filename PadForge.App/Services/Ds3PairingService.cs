@@ -435,9 +435,66 @@ namespace PadForge.Services
             // 2026-08-08, screenshot).
             Ds3DriverInstaller.LogBthPs3ChildState(LogLine);
 
+            // The comparison probe the baseline above promises. Without it the
+            // DIAG ring goes silent at the exact moment the answer lives: the
+            // 2026-08-10 report (#285, r3102) shows a fully green ceremony,
+            // then the user unplugs, presses PS, the pad flashes for a minute,
+            // and the log records nothing at all. This watcher gives that
+            // window a voice. Child appears: log when and in what state.
+            // Ninety seconds of nothing: log THAT, which is itself the
+            // verdict (the connection never reached BthPS3, so with sixpair
+            // confirmed and the PSM filter armed, the radio is the suspect).
+            StartBthPs3ChildWatch();
+
             r.Success = true;
             r.Error = "ok";
             return r;
+        }
+
+        private static System.Threading.CancellationTokenSource _childWatchCts;
+
+        /// <summary>Watches for a BthPS3 bus child for 90 s after a pairing
+        /// ceremony, DIAG-ring only. A re-pair restarts the window. Polls the
+        /// silent probe every 3 s and logs transitions, never the polls.</summary>
+        private static void StartBthPs3ChildWatch()
+        {
+            var next = new System.Threading.CancellationTokenSource();
+            var prev = System.Threading.Interlocked.Exchange(ref _childWatchCts, next);
+            try { prev?.Cancel(); prev?.Dispose(); } catch { }
+
+            var token = next.Token;
+            _ = System.Threading.Tasks.Task.Run(async () =>
+            {
+                var sw = System.Diagnostics.Stopwatch.StartNew();
+                try
+                {
+                    while (sw.ElapsedMilliseconds < 90_000)
+                    {
+                        try { await System.Threading.Tasks.Task.Delay(3000, token); }
+                        catch (System.Threading.Tasks.TaskCanceledException) { return; }
+                        if (token.IsCancellationRequested) return;
+
+                        if (!Ds3DriverInstaller.TryProbeBthPs3Children(out int children, out bool activeIface, out string detail))
+                            continue; // probe hiccup; the next poll answers
+
+                        if (children > 0)
+                        {
+                            LogLine(activeIface
+                                ? $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony, raw interface ACTIVE. The Bluetooth connection reached BthPS3 and the pad is readable."
+                                : $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony but the raw interface is NOT active [{detail}]. BthPS3 accepted the connection and PnP could not start the child (problem 28 is the no-matching-INF case).");
+                            return;
+                        }
+                    }
+                    LogLine("No BthPS3 child within 90 s of the ceremony. The pad's "
+                        + "connection attempt never reached BthPS3. Sixpair was "
+                        + "confirmed and the PSM filter was armed, so the remaining "
+                        + "suspect is the radio itself: either it refuses the DS3's "
+                        + "legacy (pre-SSP) inbound connection or it drops under the "
+                        + "PSM filter. The radio's identity (Device Manager, "
+                        + "Bluetooth, the adapter name) is the next question.");
+                }
+                catch { /* watcher is best-effort by design */ }
+            }, token);
         }
 
         /// <summary>Clears the pad's pairing (record + link-key anchor) and cycles the

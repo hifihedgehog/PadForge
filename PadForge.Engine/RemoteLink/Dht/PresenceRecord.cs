@@ -206,6 +206,23 @@ namespace PadForge.Engine.RemoteLink.Dht
             return PeerCrypto.DeriveKey(pairingSharedSecret, transcriptHash, info, 32);
         }
 
+        /// <summary>A transcript hash both peers compute IDENTICALLY at pairing:
+        /// SHA-256 over the two fingerprints in sorted order, so the side that
+        /// sees (self=A, peer=B) and the side that sees (self=B, peer=A) derive
+        /// the same capability. Pass the session secret and this to
+        /// <see cref="DeriveCapability"/> at first-contact grant, then persist
+        /// the result with the peer's trust record.</summary>
+        public static byte[] PairingTranscript(byte[] fingerprintA, byte[] fingerprintB)
+        {
+            byte[] lo, hi;
+            if (CompareBytes(fingerprintA, fingerprintB) <= 0) { lo = fingerprintA; hi = fingerprintB; }
+            else { lo = fingerprintB; hi = fingerprintA; }
+            var buf = new byte[lo.Length + hi.Length];
+            lo.CopyTo(buf, 0);
+            hi.CopyTo(buf, lo.Length);
+            return SHA256.HashData(buf);
+        }
+
         /// <summary>Which direction a given peer publishes under, so the two
         /// sides never collide on one slot. The peer with the lexicographically
         /// smaller fingerprint is A.</summary>

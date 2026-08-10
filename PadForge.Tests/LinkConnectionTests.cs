@@ -74,6 +74,39 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public async Task Pairing_DerivesIdenticalRendezvousCapability_OnBothSides()
+        {
+            // #294: both peers must derive the SAME pairwise DHT capability at
+            // pairing (from the shared session secret + symmetric transcript),
+            // or the presence lookup targets never match and reconnect-after-move
+            // silently fails. This is the correctness the whole lane rests on.
+            var (chA, chB) = MemChannel.Pair();
+            var idA = PeerIdentity.Generate();
+            var idB = PeerIdentity.Generate();
+            var trustA = new PeerTrustStore();
+            var trustB = new PeerTrustStore();
+            Func<PendingPairing, PairingApproval> approve = _ => true;
+
+            var taskA = LinkConnection.RunResponderAsync(chA, idA, trustA, Array.Empty<RemotePeerDeviceInfo>(), Caps, approve, "t");
+            var taskB = LinkConnection.RunInitiatorAsync(chB, idB, trustB, Array.Empty<RemotePeerDeviceInfo>(), Caps, approve, "t");
+            await taskA; await taskB;
+
+            var capA = trustA.GetRendezvousCapability(idB.PublicKey); // A's record of B
+            var capB = trustB.GetRendezvousCapability(idA.PublicKey); // B's record of A
+            Assert.NotNull(capA);
+            Assert.Equal(32, capA.Length);
+            Assert.Equal(capA, capB); // identical: the two sides can find each other
+
+            // And the two publishing directions are complementary, so their
+            // slots never collide: A publishes DirA and reads B's DirB, vice versa.
+            var dirA = PadForge.Engine.RemoteLink.Dht.PresenceRecord.DirectionFor(
+                PeerCrypto.Fingerprint(idA.PublicKey), PeerCrypto.Fingerprint(idB.PublicKey));
+            var dirB = PadForge.Engine.RemoteLink.Dht.PresenceRecord.DirectionFor(
+                PeerCrypto.Fingerprint(idB.PublicKey), PeerCrypto.Fingerprint(idA.PublicKey));
+            Assert.NotEqual(dirA, dirB);
+        }
+
+        [Fact]
         public async Task FirstContactRejected_AbortsBothSides()
         {
             var (chA, chB) = MemChannel.Pair();

@@ -118,6 +118,22 @@ namespace PadForge.Engine.RemoteLink
             }
             // KnownAutoSelect / KnownManual: already pinned, the signature proved possession.
 
+            // Derive and persist the pairwise DHT rendezvous capability (#294)
+            // on the FIRST handshake that lacks one. Both peers run this in the
+            // SAME session, so both derive the identical value from the shared
+            // session secret and the symmetric (sorted-fingerprint) transcript,
+            // then store it. Later sessions find it already set and skip
+            // (SetRendezvousCapability is set-if-absent), so the value is stable
+            // for the life of the pairing even though each session's ephemeral
+            // secret differs. Legacy peers paired before the lane existed get one
+            // on their next reconnect. Never overwrites, never weakens trust.
+            if (trust.GetRendezvousCapability(result.PeerStaticPublicKey) == null)
+            {
+                var transcript = Dht.PresenceRecord.PairingTranscript(identity.Fingerprint, result.PeerFingerprint);
+                var capability = Dht.PresenceRecord.DeriveCapability(result.SessionKey, transcript);
+                trust.SetRendezvousCapability(result.PeerStaticPublicKey, capability);
+            }
+
             // ── Separate control + data keys from the one session secret ──
             byte[] controlKey = PeerCrypto.DeriveKey(result.SessionKey, salt: null, ControlInfo);
             byte[] dataKey = PeerCrypto.DeriveKey(result.SessionKey, salt: null, DataInfo);

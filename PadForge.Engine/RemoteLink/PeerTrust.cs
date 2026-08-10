@@ -35,6 +35,26 @@ namespace PadForge.Engine.RemoteLink
         /// be a trigger source for a keyboard/mouse/scroll macro action.</summary>
         [XmlAttribute] public bool GamepadOnly { get; set; }
 
+        /// <summary>Base64 of the 32-byte pairwise DHT rendezvous capability
+        /// (#294), derived once at first-contact pairing from the session secret
+        /// and stored so the internet presence lane can publish/look up this
+        /// peer's current endpoints after either side moves. Empty for peers
+        /// paired before the internet lane existed (they re-derive on the next
+        /// pairing, or fall back to codes). Append-only schema field: an old
+        /// reader ignores it, a new reader treats absence as "no capability".</summary>
+        [XmlAttribute] public string RendezvousCapabilityBase64 { get; set; } = "";
+
+        /// <summary>Decoded rendezvous capability, or null if absent/malformed.</summary>
+        [XmlIgnore]
+        public byte[] RendezvousCapability
+        {
+            get
+            {
+                try { return string.IsNullOrEmpty(RendezvousCapabilityBase64) ? null : Convert.FromBase64String(RendezvousCapabilityBase64); }
+                catch { return null; }
+            }
+        }
+
         /// <summary>Decoded public key bytes, or null if the stored value is malformed.</summary>
         [XmlIgnore]
         public byte[] PublicKey

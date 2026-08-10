@@ -102,6 +102,31 @@ namespace PadForge.Engine.RemoteLink
             }
         }
 
+        /// <summary>Stores the pairwise DHT rendezvous capability (#294) for an
+        /// already-granted peer, derived once at pairing. No-op if the peer is
+        /// unknown or the capability is already set (it is stable for the life of
+        /// the pairing). Returns true if it was newly stored (the caller then
+        /// persists). Keyed off the peer's public key.</summary>
+        public bool SetRendezvousCapability(byte[] publicKey, byte[] capability)
+        {
+            if (publicKey == null || capability == null || capability.Length != 32) return false;
+            lock (_lock)
+            {
+                var entry = _peers.FirstOrDefault(p => KeyEquals(p.PublicKey, publicKey));
+                if (entry == null) return false;
+                if (!string.IsNullOrEmpty(entry.RendezvousCapabilityBase64)) return false;
+                entry.RendezvousCapabilityBase64 = Convert.ToBase64String(capability);
+                return true;
+            }
+        }
+
+        /// <summary>The stored pairwise capability for a peer, or null.</summary>
+        public byte[] GetRendezvousCapability(byte[] publicKey)
+        {
+            lock (_lock)
+                return _peers.FirstOrDefault(p => KeyEquals(p.PublicKey, publicKey))?.RendezvousCapability;
+        }
+
         /// <summary>Remove a peer's trust. Returns true if it was present. The caller
         /// also cancels any live session and zeroizes session keys — a revoked peer's
         /// next handshake then fails closed and it must pair again.</summary>

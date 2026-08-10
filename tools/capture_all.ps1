@@ -1970,14 +1970,22 @@ if ($slots.Count -ge 1) {
     # this section photographs whatever is on screen and never asked whether a
     # macro existed. If the list is empty the injection failed, and a blank
     # frame is worse than a missing one, so say so and skip rather than ship it.
+    # ASK THE SETTINGS FILE, NOT UI AUTOMATION. The macro ListBox uses a
+    # DataTemplate, and WPF exposes NO ListItem peers for it at all: a probe with
+    # the tab open, five macros plainly visible on screen, returned ListItem
+    # count 0 and zero name matches. Every name-based lookup here is blind by
+    # construction, which is why the old gate reported an empty list and skipped
+    # five perfectly good shots, and why the selection code has always fallen
+    # through to its coordinate click. The settings file answers the only
+    # question the gate actually has, and answers it definitively.
     $macroNames = @("Quick Combo", "Volume Control", "Sleep Controller", "Center Cursor", "Rapid Fire")
     $macroSeen = 0
-    $txtCondMk = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-        [System.Windows.Automation.ControlType]::Text)
-    foreach ($t in $script:uiaWin.FindAll($TD, $txtCondMk)) {
-        try { if ($macroNames -contains $t.Current.Name) { $macroSeen++ } } catch { }
-    }
+    try {
+        [xml]$mkChk = Get-Content $PadForgeXml
+        $mkRoot = $mkChk.PadForgeSettings.SelectSingleNode("Macros")
+        if ($mkRoot) { $macroSeen = @($mkRoot.SelectNodes("Macro")).Count }
+    } catch { $macroSeen = 0 }
+    Write-Host "  macros in settings: $macroSeen"
     $script:MacrosPresent = ($macroSeen -gt 0)
 
     # Empty list: repair it rather than shrug. Write the macros with the app
@@ -1995,18 +2003,23 @@ if ($slots.Count -ge 1) {
             $mkTab = Find-UIA -Name "Macros"
             if ($mkTab) { Click-El $mkTab -Label "Tab:Macros (after repair)" -Delay 1200 | Out-Null }
             $macroSeen = 0
-            foreach ($t in $script:uiaWin.FindAll($TD, $txtCondMk)) {
-                try { if ($macroNames -contains $t.Current.Name) { $macroSeen++ } } catch { }
-            }
+            try {
+                [xml]$mkChk2 = Get-Content $PadForgeXml
+                $mkRoot2 = $mkChk2.PadForgeSettings.SelectSingleNode("Macros")
+                if ($mkRoot2) { $macroSeen = @($mkRoot2.SelectNodes("Macro")).Count }
+            } catch { $macroSeen = 0 }
             $script:MacrosPresent = ($macroSeen -gt 0)
             if ($script:MacrosPresent) {
                 Write-Host "  macro list repaired ($macroSeen names visible)" -ForegroundColor Green
-                # Select the first macro so the editor pane has content to show.
-                foreach ($t in $script:uiaWin.FindAll($TD, $txtCondMk)) {
-                    try {
-                        if ($t.Current.Name -eq "Quick Combo") { Click-El $t -Label "Quick Combo (after repair)" -Delay 700 | Out-Null; break }
-                    } catch { }
-                }
+                # Selecting by name cannot work here either, for the same reason.
+                # The list's first row sits at a stable fraction of the window,
+                # which is how the main path already selects it.
+                $wrMk2 = New-Object Win32+RECT
+                [Win32]::GetWindowRect($script:hwnd, [ref]$wrMk2) | Out-Null
+                [Win32]::ForceFG($script:hwnd); Start-Sleep -Milliseconds 150
+                [Win32]::ClickAt([int]($wrMk2.Left + 0.175 * ($wrMk2.Right - $wrMk2.Left)),
+                                 [int]($wrMk2.Top  + 0.242 * ($wrMk2.Bottom - $wrMk2.Top)))
+                Start-Sleep -Milliseconds 600
             }
         }
     }

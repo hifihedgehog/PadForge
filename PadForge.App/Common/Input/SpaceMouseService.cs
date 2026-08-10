@@ -161,11 +161,26 @@ namespace PadForge.Common.Input
                         }
                     }
 
-                    var session = TryOpen(path);
+                    var session = TryOpen(path, out bool retryable);
                     lock (_sessions)
                     {
-                        if (session != null) _sessions[path] = session;
-                        else _rejected.Add(path);
+                        if (session != null)
+                        {
+                            // Stop() may have cleared the table while this
+                            // sweep was mid-open; never insert past shutdown.
+                            if (_running) _sessions[path] = session;
+                            else session.Close();
+                        }
+                        else if (!retryable)
+                        {
+                            // Only DETERMINISTIC verdicts are cached (wrong
+                            // vendor, wrong usage): a SpaceMouse whose read-
+                            // open or SDL attach failed transiently (plug
+                            // settle, another app holding it exclusive) must
+                            // be retried on the next sweep, not written off
+                            // until unplug.
+                            _rejected.Add(path);
+                        }
                     }
                 }
             }
@@ -215,10 +230,14 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Probe one HID interface path and, when it is a SpaceMouse, return a
         /// live session (device open, virtual joystick attached, reader
-        /// running). Returns null for a non-candidate or any open failure.
+        /// running). Null with <paramref name="retryable"/> false is a
+        /// deterministic non-candidate verdict (cacheable); null with true is
+        /// a transient failure on a real candidate (retry next sweep).
         /// </summary>
-        private Session TryOpen(string path)
+        private Session TryOpen(string path, out bool retryable)
         {
+            retryable = false;
+
             // Metadata-only probe first (access 0 opens even exclusive nodes;
             // SonyHeadsetMotionRuntime.Probe's fallback chain), so the sweep
             // never takes read access on unrelated keyboards and mice.
@@ -277,6 +296,10 @@ namespace PadForge.Common.Input
                 probe.Dispose();
             }
 
+            // From here on the path IS a SpaceMouse: any failure is transient
+            // and must be retried, never cached as a rejection.
+            retryable = true;
+
             // Real open: overlapped read handle (SonyHeadsetMotionDevice:180
             // pattern; shared so 3DxWare keeps working beside us).
             var handle = SonyHeadsetHid.CreateFile(path, SonyHeadsetHid.GENERIC_READ,
@@ -286,7 +309,7 @@ namespace PadForge.Common.Input
             if (handle.IsInvalid)
             {
                 handle.Dispose();
-                _log($"probe matched {vid:X4}:{pid:X4} '{name}' but read-open failed (Win32 {Marshal.GetLastWin32Error()})");
+                _log($"probe matched {vid:X4}:{pid:X4} '{name}' but read-open failed (Win32 {Marshal.GetLastWin32Error()}); will retry");
                 return null;
             }
 

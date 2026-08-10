@@ -824,6 +824,17 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex) { Engine.SdlDiagLog.WriteLine("DS3 service start failed: " + ex.Message); }
 
+                // Surface 3Dconnexion SpaceMouse 6DoF pucks (HID usage 0x08
+                // Multi-axis Controller, invisible to SDL's raw-input backend)
+                // as virtual joysticks the same way (#288). Cheap when absent:
+                // a periodic device-interface sweep with per-path verdicts.
+                try
+                {
+                    _spaceMouse = new SpaceMouseService(msg => Engine.SdlDiagLog.WriteLine("SpaceMouse: " + msg));
+                    _spaceMouse.Start();
+                }
+                catch (Exception ex) { Engine.SdlDiagLog.WriteLine("SpaceMouse service start failed: " + ex.Message); }
+
                 return true;
             }
             catch (DllNotFoundException ex)
@@ -850,12 +861,18 @@ namespace PadForge.Common.Input
             try { _ds3Direct?.Stop(); } catch { }
             _ds3Direct = null;
 
+            try { _spaceMouse?.Stop(); } catch { }
+            _spaceMouse = null;
+
             SDL_Quit();
             _sdlInitialized = false;
         }
 
         /// <summary>Bluetooth DualShock 3 -> SDL virtual joystick bridge (BthPS3 raw PDO).</summary>
         private Ds3DirectService _ds3Direct;
+
+        /// <summary>3Dconnexion SpaceMouse -> SDL virtual joystick bridge (#288).</summary>
+        private SpaceMouseService _spaceMouse;
 
         private long _ds3PlayerNumberTick;
 

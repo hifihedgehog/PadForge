@@ -3083,4 +3083,8 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Snelheidscurve</value></data>
   <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Kies de analoge bron die de snelheid volgt: een trigger of een drukas van de DualShock 3 (as 6-15).</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(druk)</value></data>
+  <data name="Macro_PressureStart_Label" xml:space="preserve"><value>Rampbegin</value></data>
+  <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Druk waar de curve begint. Daaronder blijft de snelheid op het langzame interval.</value></data>
+  <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>Rampeinde</value></data>
+  <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>Druk waar de curve het maximum bereikt. Daarboven geldt het interval voor volledige druk.</value></data>
 </root>

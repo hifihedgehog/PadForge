@@ -3118,4 +3118,8 @@ You can retry later from Settings.</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Rate Curve</value></data>
   <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Pick the analog source the rate follows: a trigger, or a DualShock 3 pressure axis (Axis 6-15).</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(pressure)</value></data>
+  <data name="Macro_PressureStart_Label" xml:space="preserve"><value>Ramp Start</value></data>
+  <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Pressure where the ramp begins. Below this, the rate stays at the Slow Interval.</value></data>
+  <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>Ramp End</value></data>
+  <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>Pressure where the ramp tops out. At and above this, the rate is the full-press Interval.</value></data>
 </root>

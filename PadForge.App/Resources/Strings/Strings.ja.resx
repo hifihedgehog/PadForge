@@ -3063,4 +3063,8 @@
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>レートカーブ</value></data>
   <data name="Macro_PressureTurboHint" xml:space="preserve"><value>レートが追従するアナログソースを選択します。トリガーまたはDualShock 3の感圧軸(軸6-15)。</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(感圧)</value></data>
+  <data name="Macro_PressureStart_Label" xml:space="preserve"><value>ランプ開始</value></data>
+  <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>ランプが始まる押し込み量です。これ未満では低速インターバルのままです。</value></data>
+  <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>ランプ終了</value></data>
+  <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>ランプが最大に達する押し込み量です。これ以上では全押しインターバルのレートになります。</value></data>
 </root>

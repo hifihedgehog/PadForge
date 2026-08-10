@@ -3085,4 +3085,8 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Curva di frequenza</value></data>
   <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Scegli la sorgente analogica seguita dalla frequenza: un grilletto o un asse di pressione del DualShock 3 (asse 6-15).</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(pressione)</value></data>
+  <data name="Macro_PressureStart_Label" xml:space="preserve"><value>Inizio rampa</value></data>
+  <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Pressione da cui parte la rampa. Al di sotto, la frequenza resta all'intervallo lento.</value></data>
+  <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>Fine rampa</value></data>
+  <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>Pressione a cui la rampa raggiunge il massimo. Da lì in su, la frequenza è quella dell'intervallo a pressione completa.</value></data>
 </root>

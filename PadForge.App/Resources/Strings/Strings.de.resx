@@ -3063,4 +3063,8 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Ratenkurve</value></data>
   <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Analoge Quelle wählen, der die Rate folgt: ein Trigger oder eine DualShock-3-Druckachse (Achse 6-15).</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(Druck)</value></data>
+  <data name="Macro_PressureStart_Label" xml:space="preserve"><value>Rampenbeginn</value></data>
+  <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Druck, bei dem die Rampe beginnt. Darunter bleibt die Rate beim langsamen Intervall.</value></data>
+  <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>Rampenende</value></data>
+  <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>Druck, bei dem die Rampe endet. Ab hier gilt die Rate des Intervalls für vollen Druck.</value></data>
 </root>

@@ -1283,7 +1283,7 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _topologyLabel, value)) OnPropertyChanged(nameof(HasNoSlots)); }
         }
 
-        public bool HasNoSlots => XboxCount == 0 && PlayStationCount == 0 && ExtendedCount == 0 && MidiCount == 0 && KbmCount == 0 && NintendoCount == 0;
+        public bool HasNoSlots => XboxCount == 0 && PlayStationCount == 0 && ExtendedCount == 0 && MidiCount == 0 && KbmCount == 0 && NintendoCount == 0 && VrCount == 0;
 
         private int _xboxCount;
         public int XboxCount
@@ -1330,6 +1330,18 @@ namespace PadForge.ViewModels
         {
             get => _nintendoCount;
             set => SetProperty(ref _nintendoCount, value);
+        }
+
+        /// <summary>VR slot count. Third time this shape has bitten: the
+        /// topology switch enumerates VirtualControllerType by case, and a
+        /// member nobody added a case for falls to `default`, which is Xbox.
+        /// Nintendo hit it in round 34, VR hit it when the type was added, and
+        /// both showed a profile as Xbox that was nothing of the kind.</summary>
+        private int _vrCount;
+        public int VrCount
+        {
+            get => _vrCount;
+            set => SetProperty(ref _vrCount, value);
         }
     }
 }

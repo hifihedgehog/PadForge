@@ -592,6 +592,32 @@
                                                                    VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Border>
+                                                <!-- VR badge (#49). Same shape as the five
+                                                     above it. Uses the Segoe MDL2 headset
+                                                     glyph the Add Controller popup already
+                                                     uses for the VR tile, rather than a new
+                                                     Path, so the two surfaces agree. -->
+                                                <Border CornerRadius="4" Padding="5,2"
+                                                        BorderThickness="1"
+                                                        BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                                                        Background="{DynamicResource ControlFillColorDefaultBrush}">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding VrCount}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="&#xF119;" FontFamily="Segoe MDL2 Assets" FontSize="10"
+                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                   VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding VrCount}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="3,0,0,0"
+                                                                   VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
                                                 <!-- No slots fallback badge -->
                                                 <Border CornerRadius="4" Padding="5,2"
                                                         Background="{DynamicResource SubtleFillColorSecondaryBrush}">

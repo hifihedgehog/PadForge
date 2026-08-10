@@ -3122,4 +3122,6 @@ You can retry later from Settings.</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Pressure where the ramp begins. Below this, the rate stays at the Slow Interval.</value></data>
   <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>Ramp End</value></data>
   <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>Pressure where the ramp tops out. At and above this, the rate is the full-press Interval.</value></data>
+  <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Connecting by code…</value></data>
+  <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Couldn't reach the peer directly. Try Connect by Address over a VPN.</value></data>
 </root>

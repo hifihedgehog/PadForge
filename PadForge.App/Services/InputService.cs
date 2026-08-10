@@ -8692,12 +8692,42 @@ namespace PadForge.Services
             var server = _linkServer;
             if (server == null || string.IsNullOrWhiteSpace(hostPort)) return;
 
-            string host = hostPort.Trim();
+            string entry = hostPort.Trim();
+            var expose = BuildExposedDevices();
+
+            // #294: the same field accepts a connection CODE as well as a
+            // host:port. A self-contained long code carries the peer's
+            // candidate endpoints and needs no server: punch straight to them.
+            // A short rendezvous code needs the DHT lookup, wired on the
+            // presence loop; a bare host:port stays the shipping TCP path.
+            if (PadForge.Engine.RemoteLink.LinkCode.LooksLikeCode(entry)
+                && PadForge.Engine.RemoteLink.LinkCode.TryParseSelfContained(entry, out var code))
+            {
+                if (code.IsExpired(DateTimeOffset.UtcNow))
+                {
+                    _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusConnectFailed);
+                    return;
+                }
+                var candidates = new List<System.Net.IPEndPoint>();
+                if (code.PublicEndpoint != null) candidates.Add(code.PublicEndpoint);
+                if (code.PrivateEndpoint != null) candidates.Add(code.PrivateEndpoint);
+                // The self-contained code's punch nonce is its fingerprint
+                // prefix expanded to 16 bytes (both peers hold the same code).
+                var nonce = new byte[16];
+                Array.Copy(code.FingerprintPrefix, nonce, Math.Min(8, code.FingerprintPrefix.Length));
+                Array.Copy(code.FingerprintPrefix, 0, nonce, 8, Math.Min(8, code.FingerprintPrefix.Length));
+                _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusConnectingCode);
+                bool ok = await server.ConnectByPunchAsync(candidates, nonce, expose);
+                if (!ok)
+                    _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusPunchFailed);
+                return;
+            }
+
+            string host = entry;
             int port = _mainVm.Dashboard.RemoteLinkPort;
             int colon = host.LastIndexOf(':');
             if (colon > 0 && int.TryParse(host.Substring(colon + 1), out int p)) { host = host.Substring(0, colon); port = p; }
 
-            var expose = BuildExposedDevices();
             _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = string.Format(Strings.Instance.RemoteLink_StatusConnecting, host, port));
             await server.ConnectAsync(host, port, expose);
         }

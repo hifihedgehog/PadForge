@@ -206,6 +206,16 @@ namespace PadForge.Engine.RemoteLink.Dht
             return PeerCrypto.DeriveKey(pairingSharedSecret, transcriptHash, info, 32);
         }
 
+        /// <summary>The 16-byte shared punch nonce for a pairing, derived from
+        /// the capability so BOTH peers compute the identical value with no
+        /// extra exchange. Authenticates punch probes and scopes the reliable
+        /// channel id; the handshake still gates real trust.</summary>
+        public static byte[] PunchNonce(byte[] capability)
+        {
+            var info = Encoding.ASCII.GetBytes("PadForge/punch/v1");
+            return PeerCrypto.DeriveKey(capability, null, info, 16);
+        }
+
         /// <summary>A transcript hash both peers compute IDENTICALLY at pairing:
         /// SHA-256 over the two fingerprints in sorted order, so the side that
         /// sees (self=A, peer=B) and the side that sees (self=B, peer=A) derive

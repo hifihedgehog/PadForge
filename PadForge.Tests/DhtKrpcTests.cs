@@ -237,6 +237,65 @@ namespace PadForge.Tests
                          PresenceRecord.DeriveCapability(secret, tBA));
         }
 
+        [Fact]
+        public void PunchNonce_BothPeersDeriveTheSame_FromCapability()
+        {
+            var cap = RandomBytes(32, 77);
+            var n1 = PresenceRecord.PunchNonce(cap);
+            var n2 = PresenceRecord.PunchNonce(cap);
+            Assert.Equal(16, n1.Length);
+            Assert.Equal(n1, n2);
+            Assert.NotEqual(n1, PresenceRecord.PunchNonce(RandomBytes(32, 78)));
+        }
+
+        [Fact]
+        public async Task InternetService_PublishesThenReconnects_ThroughTheSimDht()
+        {
+            var dht = new SimDht(nodeCount: 40, seed: 61);
+            var self = PeerIdentity.Generate();
+            var peer = PeerIdentity.Generate();
+            var cap = RandomBytes(32, 62);
+
+            using var pubClient = dht.NewClient();   // the peer publishes its presence
+            using var selfClient = dht.NewClient();  // we look it up
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(20));
+
+            // The peer publishes its presence under DirectionB (as if it were the
+            // remote machine advertising where to reach it).
+            var peerSvc = new PresenceService(pubClient);
+            var peerSlot = new PresenceService.Slot
+            {
+                PublisherPublicKey = peer.PublicKey, PublisherPrivateKey = peer.ExportPrivateKey(),
+                Capability = cap, Direction = PresenceRecord.DirectionB,
+            };
+            await peerSvc.PublishAsync(peerSlot, new List<PresenceRecord.Candidate>
+                { new() { Kind = 1, Endpoint = new IPEndPoint(IPAddress.Parse("203.0.113.42"), 55000) } }, cts.Token);
+
+            // Our service looks the peer up and "punches" (captured endpoints).
+            IReadOnlyList<IPEndPoint> punchedTo = null;
+            byte[] punchNonce = null;
+            var svc = new RemoteLinkInternetService(
+                new PresenceService(selfClient), self.PublicKey, self.ExportPrivateKey(),
+                localCandidates: () => new List<PresenceRecord.Candidate>
+                    { new() { Kind = 1, Endpoint = new IPEndPoint(IPAddress.Parse("198.51.100.1"), 4000) } },
+                connectByPunch: (peerKey, endpoints, nonce, ct) =>
+                {
+                    punchedTo = endpoints; punchNonce = nonce; return Task.FromResult(true);
+                });
+
+            var p = new RemoteLinkInternetService.Peer
+            {
+                PeerPublicKey = peer.PublicKey, Capability = cap,
+                SelfDirection = PresenceRecord.DirectionA, PeerDirection = PresenceRecord.DirectionB,
+            };
+            await svc.MaintainAsync(new[] { p }, cts.Token);
+
+            Assert.True(p.IsConnected);
+            Assert.NotNull(punchedTo);
+            Assert.Equal(new IPEndPoint(IPAddress.Parse("203.0.113.42"), 55000), punchedTo[0]);
+            Assert.Equal(PresenceRecord.PunchNonce(cap), punchNonce); // shared nonce, no extra exchange
+        }
+
         private sealed class NullStore : IPresenceStore
         {
             public Task<PublishResult> PublishAsync(byte[] a, byte[] b, byte[] c, byte d, PresenceRecord.Presence e, long f, CancellationToken ct)

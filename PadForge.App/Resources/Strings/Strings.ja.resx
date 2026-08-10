@@ -3067,4 +3067,6 @@
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>ランプが始まる押し込み量です。これ未満では低速インターバルのままです。</value></data>
   <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>ランプ終了</value></data>
   <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>ランプが最大に達する押し込み量です。これ以上では全押しインターバルのレートになります。</value></data>
+  <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>コードで接続中…</value></data>
+  <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>相手に直接接続できませんでした。VPN経由のアドレス接続をお試しください。</value></data>
 </root>

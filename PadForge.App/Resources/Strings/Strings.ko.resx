@@ -3067,4 +3067,6 @@
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>램프가 시작되는 압력입니다. 이보다 약하면 느린 간격이 유지됩니다.</value></data>
   <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>램프 끝</value></data>
   <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>램프가 최대에 도달하는 압력입니다. 이 이상이면 완전히 눌렀을 때의 간격이 적용됩니다.</value></data>
+  <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>코드로 연결 중…</value></data>
+  <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>상대에 직접 연결하지 못했습니다. VPN을 통한 주소 연결을 시도하세요.</value></data>
 </root>

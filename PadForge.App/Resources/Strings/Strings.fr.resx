@@ -3067,4 +3067,6 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Pression où la rampe commence. En dessous, la cadence reste à l'intervalle lent.</value></data>
   <data name="Macro_PressureEnd_Label" xml:space="preserve"><value>Fin de rampe</value></data>
   <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>Pression où la rampe atteint son maximum. Au-delà, la cadence est celle de l'intervalle d'appui complet.</value></data>
+  <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Connexion par code…</value></data>
+  <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Impossible de joindre le pair directement. Essayez Connexion par adresse via un VPN.</value></data>
 </root>

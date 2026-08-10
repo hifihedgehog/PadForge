@@ -38,6 +38,16 @@ namespace PadForge.Engine.RemoteLink
         private Timer _reaper;
         private int _pendingHandshakes;
 
+        // Internet lane (#294): active punch/control sinks routed off the shared
+        // UDP socket. Additive to the LAN/TCP path: when empty (the default and
+        // whenever the internet lane is off), RouteDatagram behaves exactly as
+        // before. Punch datagrams (0xC2/0xC3) fan to every registered puncher
+        // (each rejects a wrong nonce itself); control datagrams (0xC0/0xC1)
+        // route to the channel whose id matches.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<int, Action<IPEndPoint, byte[]>> _punchSinks = new();
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<uint, Action<byte[]>> _controlSinks = new();
+        private int _punchSinkCounter;
+
         // Covers the human approval too; a slowloris (stalled handshake) still times
         // out, and the concurrency cap bounds how many can pend (and pop dialogs) at once.
         private const int HandshakeTimeoutSeconds = 180;
@@ -364,6 +374,107 @@ namespace PadForge.Engine.RemoteLink
             }
         }
 
+        // ── Internet lane: punch + handshake over the shared UDP socket (#294) ──
+        //
+        // Additive to ConnectAsync (TCP/LAN). The socket adapters send on _udp
+        // and receive via the RouteDatagram demux above; a session registers its
+        // sinks for the duration of the punch+handshake, then deregisters. On
+        // success the peer is Register()ed with the punched UDP endpoint, so the
+        // sealed data plane flows exactly as on the LAN.
+
+        private sealed class UdpPunchAdapter : IPunchTransport
+        {
+            private readonly Socket _sock;
+            public Action<IPEndPoint, byte[]> OnDatagram { get; set; }
+            public UdpPunchAdapter(Socket s) { _sock = s; }
+            public async Task SendToAsync(byte[] dg, IPEndPoint dest, CancellationToken ct)
+            {
+                try { await _sock.SendToAsync(dg, SocketFlags.None, dest, ct).ConfigureAwait(false); }
+                catch (ObjectDisposedException) { } catch (SocketException) { }
+            }
+        }
+
+        private sealed class UdpControlAdapter : IDatagramTransport
+        {
+            private readonly Socket _sock;
+            private readonly Func<IPEndPoint> _peer;
+            public Action<byte[]> OnDatagram { get; set; }
+            public UdpControlAdapter(Socket s, Func<IPEndPoint> peer) { _sock = s; _peer = peer; }
+            public async Task SendAsync(byte[] dg, CancellationToken ct)
+            {
+                var ep = _peer();
+                if (ep == null) return;
+                try { await _sock.SendToAsync(dg, SocketFlags.None, ep, ct).ConfigureAwait(false); }
+                catch (ObjectDisposedException) { } catch (SocketException) { }
+            }
+        }
+
+        /// <summary>Initiate an internet-lane connection to a peer by punching to
+        /// its candidate endpoints, then running the handshake over the punched
+        /// path (#294). Returns true on success (the peer is now Registered and
+        /// its devices are live). Returns false on punch failure, so the caller
+        /// can fall back to Connect by Address.</summary>
+        public async Task<bool> ConnectByPunchAsync(
+            IReadOnlyList<IPEndPoint> candidates, byte[] sharedNonce,
+            IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, CancellationToken ct = default)
+            => await PunchConnectAsync(true, candidates, sharedNonce, exposeLocal, ct).ConfigureAwait(false);
+
+        /// <summary>Arm the responder side: answer punch probes carrying the
+        /// shared nonce and run the responder handshake over the won path
+        /// (#294). Held open until a peer punches through or the token cancels.</summary>
+        public async Task<bool> AcceptByPunchAsync(
+            byte[] sharedNonce, IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, CancellationToken ct = default)
+            => await PunchConnectAsync(false, Array.Empty<IPEndPoint>(), sharedNonce, exposeLocal, ct).ConfigureAwait(false);
+
+        private async Task<bool> PunchConnectAsync(
+            bool isInitiator, IReadOnlyList<IPEndPoint> candidates, byte[] sharedNonce,
+            IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, CancellationToken ct)
+        {
+            var sock = _udp;
+            if (sock == null || sharedNonce == null || sharedNonce.Length != 16) return false;
+
+            var punchAdapter = new UdpPunchAdapter(sock);
+            IPEndPoint peerEp = null;
+            var controlAdapter = new UdpControlAdapter(sock, () => peerEp);
+            uint channelId = UdpControlChannel.ChannelIdFromNonce(sharedNonce);
+
+            int punchKey = Interlocked.Increment(ref _punchSinkCounter);
+            _punchSinks[punchKey] = (from, dg) =>
+            {
+                // Learn the peer endpoint from the first punch datagram so the
+                // control adapter knows where to send once the handshake starts.
+                peerEp ??= from;
+                punchAdapter.OnDatagram?.Invoke(from, dg);
+            };
+            _controlSinks[channelId] = dg => controlAdapter.OnDatagram?.Invoke(dg);
+            try
+            {
+                using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(HandshakeTimeoutSeconds + 10));
+                using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, _cts?.Token ?? CancellationToken.None, timeout.Token);
+                var expose = exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
+
+                var punched = isInitiator
+                    ? await PunchedConnection.ConnectInitiatorAsync(punchAdapter, controlAdapter, sharedNonce, candidates,
+                        _identity, _trust, expose, _caps, _approve, _nowUtc(), TimeSpan.FromSeconds(8), linked.Token).ConfigureAwait(false)
+                    : await PunchedConnection.ConnectResponderAsync(punchAdapter, controlAdapter, sharedNonce, candidates,
+                        _identity, _trust, expose, _caps, _approve, _nowUtc(), TimeSpan.FromSeconds(HandshakeTimeoutSeconds), linked.Token).ConfigureAwait(false);
+
+                if (punched?.Connection == null) return false;
+                Register(punched.Connection, client: null, peerUdpEndpoint: punched.PeerEndpoint, exposeLocal: expose);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.ConnectFailed, message: ex.Message));
+                return false;
+            }
+            finally
+            {
+                _punchSinks.TryRemove(punchKey, out _);
+                _controlSinks.TryRemove(channelId, out _);
+            }
+        }
+
         /// <summary>Fingerprints of peers with a live session right now (for UI state).</summary>
         public IReadOnlyList<string> ConnectedFingerprints()
         {
@@ -615,6 +726,27 @@ namespace PadForge.Engine.RemoteLink
             // consumed here, before any session-open attempt, so the probe on
             // the shared socket doesn't fight the data plane.
             if (RouteStunResponse(datagram, from)) return;
+
+            // Internet lane (#294): punch and reliable-control datagrams demux
+            // by their leading tag ahead of session routing. No-op unless an
+            // internet connect is active (the sink maps are empty otherwise), so
+            // the LAN/TCP data path is unchanged. A sealed LinkSession frame's
+            // first byte is (type<<4)|epoch with type 1..7, never 0xC0-0xC3.
+            if (!_punchSinks.IsEmpty || !_controlSinks.IsEmpty)
+            {
+                byte tag0 = datagram.Length > 0 ? datagram[0] : (byte)0;
+                if (tag0 == 0xC2 || tag0 == 0xC3) // punch ping/pong
+                {
+                    var dg = datagram.ToArray();
+                    foreach (var sink in _punchSinks.Values) sink(from, dg);
+                    return;
+                }
+                if ((tag0 == 0xC0 || tag0 == 0xC1) && datagram.Length >= 9) // control data/ack
+                {
+                    uint chan = System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(datagram.Slice(1));
+                    if (_controlSinks.TryGetValue(chan, out var csink)) { csink(datagram.ToArray()); return; }
+                }
+            }
 
             LinkPeerConnection[] conns;
             lock (_lock) conns = _connections.ToArray();

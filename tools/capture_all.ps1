@@ -38,6 +38,7 @@ $ErrorActionPreference = "Stop"
 $logDir = Join-Path $env:TEMP "PadForge_Capture"
 if (-not (Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir | Out-Null }
 $logPath = Join-Path $logDir "capture_log.txt"
+$script:CaptureRunStart = Get-Date
 Start-Transcript -Path $logPath -Force | Out-Null
 
 # --- Assemblies ---------------------------------------------------------------
@@ -2258,6 +2259,15 @@ if ($slots.Count -ge 1) {
         else { Write-Host "  !! Lighting tab not found for the Xbox pad" -ForegroundColor Yellow }
     }
 
+    # 13e. Bass Shakers. This tab had NO capture step at all, while
+    # features/bass-shakers.md and features/force-feedback.md both carried a
+    # <!-- SCREENSHOT: pad-bass-shakers --> placeholder that has therefore
+    # never been filled. It is a SLOT-tier tab (Xbox and PlayStation slots
+    # surface it, PadViewModel gates it), so it needs no device switch.
+    Write-Host "[$(Next)/$total] Bass Shakers"
+    if (Tab "Bass Shakers") { Start-Sleep -Milliseconds 800; Cap "pad-bass-shakers" }
+    else { Write-Host "  !! Bass Shakers tab not found" -ForegroundColor Yellow }
+
     # Return the selection to the DualSense so later navigation is predictable.
     Select-MappedDevice "DualSense" | Out-Null
 
@@ -3608,13 +3618,86 @@ Write-Host "  Toast notification settings restored"
 Start-Process $PadForgeExe
 Write-Host "  Relaunched PadForge on restored settings" -ForegroundColor Green
 
-Stop-Transcript | Out-Null
 
 Write-Host ""
 Write-Host "=== DONE ===" -ForegroundColor Cyan
+# ==============================================================================
+# COVERAGE AUDIT. Runs at the end of every capture, always.
+# ==============================================================================
+# Every wrong screenshot this project has shipped got through because nothing
+# compared what the run PRODUCED against what the docs EXPECT. A stale image,
+# a skipped step and a healthy one all look identical in a log full of green.
+# So the run ends by answering three questions out loud:
+#
+#   1. Which images does a docs page reference that do not exist?   (broken)
+#   2. Which images exist but are older than this run?              (stale)
+#   3. Which images exist that no docs page and no site asset uses?  (orphan,
+#      which in this project has always meant a page is missing its picture)
+#
+# None of these is fatal. All of them are printed. A run that ends with a
+# non-empty list is a run whose output still needs work, and saying so here is
+# the whole point.
+$auditRoot = Split-Path (Split-Path $OutputDir -Parent) -Parent   # padforge.org
+$wikiDir   = Join-Path (Split-Path $OutputDir -Parent) ""
+$mdFiles   = @(Get-ChildItem -Path (Split-Path $OutputDir -Parent) -Filter *.md -Recurse -EA SilentlyContinue)
+$imgFiles  = @(Get-ChildItem -Path $OutputDir -Filter *.png -EA SilentlyContinue)
+
+$referenced = New-Object System.Collections.Generic.HashSet[string]
+foreach ($md in $mdFiles) {
+    $txt = Get-Content $md.FullName -Raw -EA SilentlyContinue
+    if (-not $txt) { continue }
+    foreach ($m in [regex]::Matches($txt, '!\[[^\]]*\]\((?:\.\./)*images/([A-Za-z0-9._-]+)\)')) {
+        $null = $referenced.Add($m.Groups[1].Value)
+    }
+}
+
+$knownAssets = @("logo.png","icon.png","hidmaestro-logo-dark.png","hidmaestro-logo-light.png","about.png")
+$runStart = $script:CaptureRunStart
+if (-not $runStart) { $runStart = (Get-Date).AddHours(-6) }
+
+$broken = @(); $stale = @(); $orphan = @()
+foreach ($r in $referenced) {
+    if (-not (Test-Path (Join-Path $OutputDir $r))) { $broken += $r }
+}
+foreach ($f in $imgFiles) {
+    if ($knownAssets -contains $f.Name) { continue }
+    if ($f.LastWriteTime -lt $runStart) { $stale += $f.Name }
+    $base = [System.IO.Path]::GetFileNameWithoutExtension($f.Name)
+    $usedBySite = $base -like "colorway-*"
+    if (-not $usedBySite) {
+        $siteJpg = Join-Path $auditRoot ("assets\screenshot-" + $base + ".jpg")
+        if (Test-Path $siteJpg) { $usedBySite = $true }
+    }
+    if (-not $referenced.Contains($f.Name) -and -not $usedBySite) { $orphan += $f.Name }
+}
+
+Write-Host ""
+Write-Host "=== COVERAGE AUDIT ===" -ForegroundColor Cyan
+Write-Host ("  images produced/present : {0}" -f $imgFiles.Count)
+Write-Host ("  referenced by docs      : {0}" -f $referenced.Count)
+if ($broken.Count -gt 0) {
+    Write-Host ("  BROKEN (referenced, missing): {0}" -f $broken.Count) -ForegroundColor Red
+    foreach ($b in ($broken | Sort-Object)) { Write-Host "     $b" -ForegroundColor Red }
+} else { Write-Host "  broken references       : 0" -ForegroundColor Green }
+if ($stale.Count -gt 0) {
+    Write-Host ("  STALE (older than this run): {0}" -f $stale.Count) -ForegroundColor Yellow
+    foreach ($x in ($stale | Sort-Object)) { Write-Host "     $x" -ForegroundColor Yellow }
+} else { Write-Host "  stale images            : 0" -ForegroundColor Green }
+if ($orphan.Count -gt 0) {
+    Write-Host ("  ORPHAN (used by nothing): {0}" -f $orphan.Count) -ForegroundColor Yellow
+    Write-Host "     an orphan here has always meant a page is missing its picture" -ForegroundColor DarkGray
+    foreach ($o in ($orphan | Sort-Object)) { Write-Host "     $o" -ForegroundColor Yellow }
+} else { Write-Host "  orphan images           : 0" -ForegroundColor Green }
+Write-Host ""
+
 Write-Host "Screenshots in: $OutputDir"
 Write-Host ""
 Get-ChildItem "$OutputDir\*.png" | Sort-Object Name | ForEach-Object {
     Write-Host ("  {0} ({1}KB)" -f $_.Name, [math]::Round($_.Length / 1024))
 }
 }
+
+# Transcript closes LAST so the coverage audit above is recorded in the log.
+# It used to stop before the audit ran, which meant the one report that says
+# whether the run actually covered everything went to the console and nowhere else.
+Stop-Transcript | Out-Null

@@ -571,6 +571,251 @@ namespace PadForge.Common
         }
 
         // ─────────────────────────────────────────────
+        //  SteamVR (Steam-free install, issue #49)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Default landing spot for the Steam-free SteamVR install
+        /// when the user picks nothing else. HIDMaestro's
+        /// discovery checks this conventional folder last, and the explicit
+        /// path hint below makes it authoritative regardless.</summary>
+        public const string SteamVrInstallDir = @"C:\SteamVR";
+
+        /// <summary>Valve's own steamcmd bootstrap. Needs no Steam client
+        /// and no account: SteamVR (app 250820) is anonymous-licensed, the
+        /// path HIDMaestro verified during v1.6.0 development.</summary>
+        private const string SteamCmdZipUrl =
+            "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip";
+
+        private static string GetSteamVrTempDir()
+            => Path.Combine(Path.GetTempPath(), "PadForge_SteamCmd");
+
+        /// <summary>Test seam for <see cref="InstallSteamVRAsync"/>: throw
+        /// after the argument guards, before any network or process work.
+        /// Set only by SteamVrInstallGuardTests.</summary>
+        internal static bool SteamVrInstallStopAfterGuards;
+
+        /// <summary>The HKLM key HIDMaestro's <c>FindSteamVR</c> consults
+        /// first. Mirrors VrDriverBuilder's constants; the value written by
+        /// <c>HMVR.SetSteamVRPathHint</c> is both the discovery mechanism and
+        /// PadForge's ownership marker for the Steam-free shape.</summary>
+        private const string HmRegKeyPath = @"SOFTWARE\HIDMaestro";
+        private const string SteamVrPathRegValue = "SteamVRPath";
+
+        /// <summary>Normalizes a user-chosen install dir: trims, drops
+        /// trailing separators (but keeps a drive root intact), and falls
+        /// back to <see cref="SteamVrInstallDir"/> for null/blank.</summary>
+        private static string NormalizeSteamVrDir(string dir)
+        {
+            if (string.IsNullOrWhiteSpace(dir)) return SteamVrInstallDir;
+            dir = dir.Trim();
+            string trimmed = dir.TrimEnd('\\', '/');
+            // "C:\" trims to "C:", which means CWD-relative. Keep the root.
+            return trimmed.Length >= dir.Length - 1 && trimmed.EndsWith(":", StringComparison.Ordinal)
+                ? trimmed + Path.DirectorySeparatorChar
+                : trimmed;
+        }
+
+        private static bool SameDir(string a, string b) =>
+            !string.IsNullOrWhiteSpace(a) && !string.IsNullOrWhiteSpace(b)
+            && string.Equals(a.TrimEnd('\\', '/'), b.TrimEnd('\\', '/'),
+                             StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>True for a bare drive root ("C:\", "D:"). Both the
+        /// installer and the uninstaller refuse these: a payload at a drive
+        /// root is never a legitimate target, and the uninstall side would
+        /// otherwise be one hand-edited registry hint away from
+        /// Directory.Delete on an entire drive.</summary>
+        private static bool IsDriveRoot(string dir)
+        {
+            if (string.IsNullOrWhiteSpace(dir)) return false;
+            string t = dir.Trim().TrimEnd('\\', '/');
+            return t.Length == 2 && t[1] == ':';
+        }
+
+        /// <summary>
+        /// The directory of the Steam-free SteamVR install PADFORGE owns, or
+        /// null. Owned means: the HIDMaestro path hint exists, the payload it
+        /// points at is real (vrpathreg.exe present), and neither Steam's own
+        /// "Steam App 250820" uninstall entry nor the default Steam library
+        /// resolves to the same directory. A Steam-client install therefore
+        /// never reads as owned, which is what gates the Uninstall button.
+        /// </summary>
+        public static string GetOwnedSteamVrDir()
+        {
+            try
+            {
+                string hinted;
+                using (var hm = Registry.LocalMachine.OpenSubKey(HmRegKeyPath))
+                    hinted = hm?.GetValue(SteamVrPathRegValue) as string;
+                if (string.IsNullOrWhiteSpace(hinted)) return null;
+                if (!File.Exists(Path.Combine(hinted, "bin", "win64", "vrpathreg.exe")))
+                    return null;
+
+                // Steam's 32-bit client writes its per-app uninstall entries
+                // under the WOW6432Node view; a default 64-bit read misses
+                // them entirely. Check both views so a custom-library
+                // Steam install (which the library check below cannot see)
+                // still disqualifies ownership.
+                foreach (var view in new[] { RegistryView.Registry32, RegistryView.Registry64 })
+                {
+                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
+                    using var k = baseKey.OpenSubKey(
+                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 250820");
+                    if (k?.GetValue("InstallLocation") is string steamApp && SameDir(steamApp, hinted))
+                        return null;
+                }
+
+                using (var steam = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Valve\Steam"))
+                    if (steam?.GetValue("InstallPath") is string steamRoot
+                        && SameDir(Path.Combine(steamRoot, "steamapps", "common", "SteamVR"), hinted))
+                        return null;
+
+                return hinted;
+            }
+            catch { return null; }
+        }
+
+        /// <summary>
+        /// Removes the Steam-free SteamVR install PadForge owns: deletes the
+        /// payload directory, clears the HIDMaestro path hint, and resets the
+        /// availability cache so the VR slot gates drop immediately. Refuses
+        /// while vrserver runs (deleting a live runtime out from under
+        /// itself), and refuses when no owned install exists. A Steam-client
+        /// install is never touched, by design. The HM driver registration
+        /// needs no separate cleanup: vrpathreg's record lives inside the
+        /// SteamVR install's own config and dies with the directory.
+        /// </summary>
+        public static void UninstallSteamVR()
+        {
+            string dir = GetOwnedSteamVrDir()
+                ?? throw new InvalidOperationException(
+                    "No PadForge-owned SteamVR install to remove.");
+            if (Process.GetProcessesByName("vrserver").Length > 0)
+                throw new InvalidOperationException("SteamVR is running.");
+            // Independent of the install-side refusal: the hint is a plain
+            // registry value anyone can edit, and this is the line that
+            // recursively deletes whatever it names.
+            if (IsDriveRoot(dir))
+                throw new InvalidOperationException(
+                    "The recorded SteamVR path is a drive root; refusing to delete it.");
+
+            Directory.Delete(dir, recursive: true);
+
+            using (var k = Registry.LocalMachine.OpenSubKey(HmRegKeyPath, writable: true))
+                k?.DeleteValue(SteamVrPathRegValue, throwOnMissingValue: false);
+
+            HMaestroVRController.ResetAvailability();
+        }
+
+        /// <summary>
+        /// Installs SteamVR without Steam: downloads Valve's steamcmd,
+        /// runs the anonymous app_update for app 250820 into
+        /// <paramref name="installDir"/> (default
+        /// <see cref="SteamVrInstallDir"/>), then records the path hint so
+        /// HIDMaestro's discovery (which reads no Steam registry keys for
+        /// this shape) finds it from now on. The payload is several GB, so
+        /// this can run for many minutes on slow links; steamcmd prints
+        /// progress to its own console which stays hidden here.
+        /// </summary>
+        public static async Task InstallSteamVRAsync(string installDir = null)
+        {
+            string targetDir = NormalizeSteamVrDir(installDir);
+            // A relative path would land the payload relative to steamcmd's
+            // own working directory (the temp staging dir), then fail the
+            // vrpathreg verdict with a confusing message. Refuse up front.
+            if (!Path.IsPathRooted(targetDir))
+                throw new ArgumentException(
+                    "The SteamVR install location must be a full path, e.g. C:\\SteamVR.");
+            // A drive root is never a legitimate target, and allowing one
+            // would arm the uninstall side with Directory.Delete on the
+            // whole drive. Refuse it here too, symmetrically.
+            if (IsDriveRoot(targetDir))
+                throw new ArgumentException(
+                    "The SteamVR install location cannot be a drive root; pick a folder, e.g. C:\\SteamVR.");
+            // Test seam. Without it, the guard tests EXECUTE the real
+            // installer whenever a guard regresses: audit round 43's
+            // mutation run launched a live steamcmd toward C:\ while
+            // proving exactly that hazard. With the seam, a regressed
+            // guard still reddens the test (wrong exception type) and
+            // touches neither the network nor a process.
+            if (SteamVrInstallStopAfterGuards)
+                throw new InvalidOperationException("Test seam: guards passed.");
+            var tempDir = GetSteamVrTempDir();
+            Directory.CreateDirectory(tempDir);
+            try
+            {
+                var zipPath = Path.Combine(tempDir, "steamcmd.zip");
+                using (var http = new HttpClient())
+                {
+                    http.DefaultRequestHeaders.UserAgent.ParseAdd("PadForge");
+                    http.Timeout = TimeSpan.FromMinutes(10);
+                    using var response = await http.GetAsync(SteamCmdZipUrl,
+                        HttpCompletionOption.ResponseHeadersRead);
+                    response.EnsureSuccessStatusCode();
+                    using var stream = await response.Content.ReadAsStreamAsync();
+                    using var fs = new FileStream(zipPath, FileMode.Create, FileAccess.Write);
+                    await stream.CopyToAsync(fs);
+                }
+                System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, tempDir, overwriteFiles: true);
+
+                // force_install_dir BEFORE login, per Valve's steamcmd
+                // contract; +quit so the process exits when done. The dir is
+                // quoted because it is user-chosen now and may carry spaces.
+                // Two quirks this loop absorbs, both reproduced on this
+                // machine (2026-08-08): the FIRST run self-updates, prints
+                // "Update complete, launching..." and EXITS with code 7
+                // without ever executing the + commands (the relaunch
+                // detaches), so the command line must be run again; and exit
+                // codes are not trustworthy in general. Presence of
+                // vrpathreg.exe is the only install verdict.
+                string vrpathreg = Path.Combine(targetDir, "bin", "win64", "vrpathreg.exe");
+                string lastTail = "";
+                for (int attempt = 1; attempt <= 3 && !File.Exists(vrpathreg); attempt++)
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = Path.Combine(tempDir, "steamcmd.exe"),
+                        Arguments = $"+force_install_dir \"{targetDir}\" +login anonymous +app_update 250820 validate +quit",
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        RedirectStandardOutput = true,
+                        WorkingDirectory = tempDir
+                    };
+                    using var proc = Process.Start(psi);
+                    if (proc == null) continue;
+                    var stdoutTask = proc.StandardOutput.ReadToEndAsync();
+                    using var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(60));
+                    try
+                    {
+                        await proc.WaitForExitAsync(cts.Token);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        try { proc.Kill(entireProcessTree: true); } catch { }
+                        throw new TimeoutException("steamcmd did not finish within 60 minutes.");
+                    }
+                    string outText = await stdoutTask;
+                    lastTail = outText.Length > 400 ? outText[^400..] : outText;
+                }
+
+                if (!File.Exists(vrpathreg))
+                    throw new InvalidOperationException(
+                        "steamcmd ran but SteamVR did not land in " + targetDir
+                        + ". steamcmd said: ..." + lastTail);
+
+                // Steam-free installs write no registry keys of their own;
+                // the hint makes discovery unconditional. Requires admin,
+                // which PadForge always has.
+                HIDMaestro.HMVR.SetSteamVRPathHint(targetDir);
+                HMaestroVRController.ResetAvailability();
+            }
+            finally
+            {
+                CleanupTempDir(tempDir);
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  ViGEmBus detection
         // ─────────────────────────────────────────────
 

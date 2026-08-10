@@ -1,4 +1,4 @@
-using PadForge.Common.Input;
+﻿using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.ViewModels;
 using Xunit;
@@ -24,6 +24,7 @@ namespace PadForge.Tests
     /// <para>These pin the raw-HID loop specifically. Deleting either case
     /// from <c>ExecuteMacroActionsExtended</c> fails the matching test.</para>
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class MacroSlotLevelActionMirrorTests
     {
         /// <summary>One raw-button trigger on word 0, bit 0, firing once on press.</summary>

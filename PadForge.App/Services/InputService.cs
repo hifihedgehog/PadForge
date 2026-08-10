@@ -721,19 +721,25 @@ namespace PadForge.Services
 
             // Expose per-slot button activity to the user-effects dispatcher so the
             // InputReactive lightbar can detect rising edges. The 16-bit Gamepad.Buttons
-            // mask is full (DPAD..Y), so two presses that live outside it would otherwise
-            // never flash: the Share / Create button (its own bool field, where a Mic /
-            // Misc1 mapping lands) and the touchpad click. Fold both into the wider uint
-            // mask on spare bits. Bound to the manager via a captured field so .NET keeps
-            // the delegate alive for the manager's lifetime.
+            // mask is full (DPAD..Y), so every press that lives outside it would
+            // otherwise never flash: Share / Create, the touchpad click, and the
+            // DualSense mute plus the Edge's back and Fn pair, each its own bool
+            // field. Fold them all into the wider uint mask on spare bits. Bound to
+            // the manager via a captured field so .NET keeps the delegate alive for
+            // the manager's lifetime.
             UserEffectsDispatcher.SlotButtonsProvider = padIndex =>
             {
                 if (_inputManager == null) return 0u;
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return 0u;
                 var gp = _inputManager.CombinedOutputStates[padIndex];
                 uint mask = gp.Buttons;
-                if (gp.Share) mask |= 0x10000u;                                  // Share / Create / Mic
+                if (gp.Share) mask |= 0x10000u;                                  // Share / Create
                 if (_inputManager.SlotRawTouchpadClick[padIndex]) mask |= 0x20000u; // raw touchpad click
+                if (gp.MicMute) mask |= 0x40000u;                                // DualSense mute
+                if (gp.LeftPaddle) mask |= 0x80000u;                             // Edge back buttons
+                if (gp.RightPaddle) mask |= 0x100000u;
+                if (gp.LeftFunction) mask |= 0x200000u;                          // Edge Fn buttons
+                if (gp.RightFunction) mask |= 0x400000u;
                 return mask;
             };
 
@@ -847,6 +853,31 @@ namespace PadForge.Services
                             if (zMainR) rowR = 0;
                             TouchpadPulseService.MixIntoMotors(ref rowL, ref rowR,
                                 TouchpadPulseService.CurrentLevel(slot, deviceGuid));
+
+                            // Trigger fold (#271 item 2): a Sony pad has no
+                            // trigger motors, so the game's LT/RT channels
+                            // die at this sink unless folded. Opt-in per row:
+                            // resolve + scale the trigger channels through
+                            // the exact chain SlotImpulseTriggerForDevice-
+                            // Provider uses, then max-fold each side into
+                            // its body motor (mirrors the SDL-path fold in
+                            // ForceFeedbackState.FoldTriggersIntoMains).
+                            if (rowPs != null && rowPs.TriggerRumbleFold == "1")
+                            {
+                                if (_constantTriggerForceScratchSony == null)
+                                    _constantTriggerForceScratchSony = new Vibration();
+                                if (_routeMainScratchSony == null) _routeMainScratchSony = new Vibration();
+                                if (_routeCfScratchSony == null) _routeCfScratchSony = new Vibration();
+                                var trigEff = ConstantTriggerForceEvaluator.Resolve(
+                                    slotRaw, rowPs, _constantTriggerForceScratchSony);
+                                _inputManager.ScaleTriggerRumbleForDevice(
+                                    trigEff.LeftTriggerMotorSpeed, trigEff.RightTriggerMotorSpeed,
+                                    rowPs, out ushort foldL, out ushort foldR);
+                                _inputManager.ApplyTriggerRoutingForSony(slot, rowPs, slotRaw,
+                                    _routeMainScratchSony, _routeCfScratchSony, ref foldL, ref foldR);
+                                if (foldL > rowL) rowL = foldL;
+                                if (foldR > rowR) rowR = foldR;
+                            }
 
                             if (rowL > maxL) maxL = rowL;
                             if (rowR > maxR) maxR = rowR;
@@ -1009,6 +1040,33 @@ namespace PadForge.Services
             // slot param is kept on the signature only for call-site symmetry
             // with the other (slot, device) providers; do not add a per-slot
             // lookup expecting it to matter.
+            // Config-derived demand for controller-routed macro audio.
+            // Reads the engine's MacroSnapshots (atomically swapped by
+            // SyncMacroSnapshots below), so the audio worker never touches
+            // the live ViewModel collections.
+            // Device output path for the USB mirror's channel shaper.
+            // Walks the pads' per-device configs on the calling thread;
+            // DeviceSlotConfig property reads are plain fields.
+            AudioPassthroughService.DeviceAudioOutputPathProvider = deviceGuid =>
+            {
+                if (deviceGuid == Guid.Empty) return 0;
+                foreach (var padVm in _mainVm.Pads)
+                {
+                    var cfg = padVm.PeekDeviceConfig(deviceGuid);
+                    if (cfg != null)
+                        return AudioPassthroughService.ResolveOutputPath(
+                            (int)cfg.AudioOutputPath, deviceGuid);
+                }
+                return 0;
+            };
+
+            AudioPassthroughService.SlotWantsMacroAudioProvider = slot =>
+            {
+                var im = _inputManager;
+                if (im == null || (uint)slot >= InputManager.MaxPads) return false;
+                return SoundMacroService.SnapshotWantsControllerAudio(im.MacroSnapshots[slot]);
+            };
+
             UserEffectsDispatcher.SlotBatteryPercentProvider = (padIndex, deviceGuid) =>
             {
                 var ud = FindUserDevice(deviceGuid);
@@ -1155,6 +1213,7 @@ namespace PadForge.Services
                     InvertPitch = TryParseBoolPs(ps.GyroInvertPitch, false),
                     InvertYawRoll = TryParseBoolPs(ps.GyroInvertYawRoll, false),
                     ApplyToPassthrough = TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false),
+                    CompassYaw = TryParseBoolPs(ps.GyroCompassYaw, false),
                 };
             });
             PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = (deviceGuid, slotIndex) =>
@@ -1226,6 +1285,27 @@ namespace PadForge.Services
                     return _gravityStateAux.TryGetValue(g, out var v) ? v : (0f, 0f, -1f);
                 }
             };
+
+            // Aux-gyro capability gate for the fused bare-family read
+            // (#271 item 6): CustomInputState.GyroAux is always allocated,
+            // so the fusion must ask the DEVICE whether a left-half gyro
+            // really exists before averaging against it.
+            PadForge.Engine.Common.Mapping.SourceCoercion.HasGyroAuxProvider = deviceGuid =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return false;
+                var ud = FindUserDevice(g);
+                return ud != null && ud.HasGyroAux;
+            };
+
+            // Compass yaw-correction rate (#271 item 5), published by
+            // UpdateCompassEstimates on the same tick as the gravity EMA.
+            PadForge.Engine.Common.Mapping.SourceCoercion.CompassYawCorrectionProvider = deviceGuid =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return null;
+                lock (_gravityStateLock)
+                    return _compassCorr.TryGetValue(g, out float c) ? c : (float?)null;
+            };
+            PadForge.ViewModels.PadViewModel.MagCalibrationToggle = ToggleMagCalibration;
 
             // Aim Engage button gate — reads the named device's
             // current button state via SourceCoercion's existing bool
@@ -1754,6 +1834,20 @@ namespace PadForge.Services
                 return (0, 800);
             };
 
+            // #271 item 1: per-(slot, device) persona-haptics render on the
+            // actuator devices. Same low-cadence provider shape as the tone
+            // filter above (each sink re-reads at ~4 Hz).
+            PadForge.Common.Input.HapticToneService.PersonaHapticsProvider = (slotIndex, deviceGuid) =>
+            {
+                if (slotIndex >= 0 && slotIndex < _mainVm.Pads.Count
+                    && _mainVm.Pads[slotIndex].PerDeviceSlotConfigs.TryGetValue(deviceGuid, out var c)
+                    && c != null)
+                {
+                    return (c.AudioPersonaHapticsEnabled, c.AudioPersonaHapticsGain);
+                }
+                return (false, 100);
+            };
+
             // Discussion #223: motor-side audio routing for the combined
             // Joy-Con pair's dual-coil tone sink. Reads the per-slot merged
             // rumble snapshot the dashboard meter uses (FinalVibrationStates:
@@ -2172,6 +2266,8 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.SlotStickDeflectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProviderAux = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.HasGyroAuxProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.CompassYawCorrectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceTareKgProvider = null;
@@ -2438,6 +2534,10 @@ namespace PadForge.Services
                 // For KBM slots, push the combined KbmRawState.
                 if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.KeyboardMouse)
                     padVm.KbmOutputSnapshot = _inputManager.CombinedKbmRawStates[i];
+
+                // For Vr slots, push the combined VrRawState to the preview.
+                if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.Vr)
+                    padVm.VrOutputSnapshot = _inputManager.CombinedVrRawStates[i];
 
                 // Per-device state for stick/trigger tab previews.
                 // Pad-page gate: these transforms and the gyro readouts
@@ -2943,7 +3043,7 @@ namespace PadForge.Services
             // re-latches.
             bool irWanted = irReq != 0 && nowTick - irReq < McuDemandWindowMs
                 && !PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive
-                && AnyStandaloneRightJoyConOnline();
+                && AnyIrJoyConOnline();
             if (irWanted != _joyConIrHintOn)
             {
                 if (SDL3.SDL.SDL_SetHint(SDL3.SDL.SDL_HINT_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR,
@@ -2953,9 +3053,12 @@ namespace PadForge.Services
                     PadForge.Common.Input.NfcTagRegistry.JoyConIrHintOn = irWanted;
                     PadForge.Engine.SdlDiagLog.WriteLine($"JoyCon IR hint -> {(irWanted ? "ON" : "off")}");
                     // The fork applies the hint only at the sensors-enable
-                    // edge, so drive every open standalone right Joy-Con
-                    // through that edge now: camera starts on ON, stops on
-                    // OFF (freeing the MCU for NFC) without a reconnect.
+                    // edge, so drive every open IR-capable Joy-Con
+                    // (standalone right, or a combined pair whose right
+                    // half runs the camera, #275) through that edge now:
+                    // camera starts on ON, stops on OFF (freeing the MCU
+                    // for NFC) without a reconnect. The combined driver
+                    // forwards the sensors toggle to each child.
                     // Collected under the lock, bounced OUTSIDE it on a
                     // worker (#248 audit round 3): the fork's IR bring-up
                     // is synchronous MCU work that can run for seconds and
@@ -2968,7 +3071,7 @@ namespace PadForge.Services
                         {
                             foreach (var ud in devs.Items)
                                 if (ud != null && ud.IsOnline && ud.VendorId == 0x057E
-                                    && ud.ProdId == 0x2007
+                                    && (ud.ProdId == 0x2007 || ud.ProdId == 0x2008)
                                     && ud.Device is PadForge.Engine.SdlDeviceWrapper w)
                                     (toBounce ??= new()).Add(w);
                         }
@@ -2995,14 +3098,17 @@ namespace PadForge.Services
         /// "IR Brightness" and the other to NFC, both cameras start and
         /// the fork suppresses NFC on both (camera-first arbitration).
         /// Splitting per-device needs a fork-side per-device property.</summary>
-        private bool AnyStandaloneRightJoyConOnline()
+        private bool AnyIrJoyConOnline()
         {
+            // 0x2007 standalone right, 0x2008 combined gen-1 pair (#275,
+            // SDL#26: the pair's right half runs the same camera machine).
             var devices = SettingsManager.UserDevices;
             if (devices == null) return false;
             lock (devices.SyncRoot)
             {
                 foreach (var ud in devices.Items)
-                    if (ud != null && ud.IsOnline && ud.VendorId == 0x057E && ud.ProdId == 0x2007)
+                    if (ud != null && ud.IsOnline && ud.VendorId == 0x057E
+                        && (ud.ProdId == 0x2007 || ud.ProdId == 0x2008))
                         return true;
             }
             return false;
@@ -3189,7 +3295,7 @@ namespace PadForge.Services
                     : Strings.Instance.Common_Idle;
             }
 
-            int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, globalCount = 0;
+            int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, vrCount = 0, globalCount = 0;
             foreach (var slot in dash.SlotSummaries)
             {
                 globalCount++;
@@ -3216,6 +3322,10 @@ namespace PadForge.Services
                     case VirtualControllerType.Nintendo:
                         nintendoCount++;
                         slot.TypeInstanceLabel = LiveValueString(nintendoCount);
+                        break;
+                    case VirtualControllerType.Vr:
+                        vrCount++;
+                        slot.TypeInstanceLabel = LiveValueString(vrCount);
                         break;
                     default:
                         xboxCount++;
@@ -3313,8 +3423,9 @@ namespace PadForge.Services
             // device so an empty slot's ledger stays empty.
             bool isMidi = padVm.OutputType == VirtualControllerType.Midi;
             bool isKbm = padVm.OutputType == VirtualControllerType.KeyboardMouse;
-            bool capSticks = !isMidi && bindings.Count > 0;
-            bool capTriggers = !isMidi && !isKbm && bindings.Count > 0;
+            bool isVrSlot = padVm.OutputType == VirtualControllerType.Vr;
+            bool capSticks = !isMidi && !isVrSlot && bindings.Count > 0;
+            bool capTriggers = !isMidi && !isKbm && !isVrSlot && bindings.Count > 0;
 
             // One readout line per device per stage (user report
             // 2026-07-06: the flat cross-device union hid which device
@@ -3789,9 +3900,10 @@ namespace PadForge.Services
                 bool isTouchpad = ud.CapType == InputDeviceType.Touchpad;
                 bool isMidi = ud.CapType == InputDeviceType.Midi;
                 bool isNfc = ud.CapType == InputDeviceType.Nfc;
+                bool isHeadset = ud.CapType == InputDeviceType.HeadsetMotion;
                 int[] btnIndices = ResolveButtonIndices(ud);
                 devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi, isNfc,
-                    consumerButtons: BuildConsumerPreviewItems(ud));
+                    consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -4090,9 +4202,10 @@ namespace PadForge.Services
                 bool isTouchpad2 = ud.CapType == InputDeviceType.Touchpad;
                 bool isMidi2 = ud.CapType == InputDeviceType.Midi;
                 bool isNfc2 = ud.CapType == InputDeviceType.Nfc;
+                bool isHeadset2 = ud.CapType == InputDeviceType.HeadsetMotion;
                 int[] btnIndices = ResolveButtonIndices(ud);
                 devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2, isNfc2,
-                    consumerButtons: BuildConsumerPreviewItems(ud));
+                    consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset2);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -4503,6 +4616,14 @@ namespace PadForge.Services
                     "ButtonStart"      => (gp.Buttons & Gamepad.START) != 0 ? 1 : 0,
                     "ButtonGuide"      => (gp.Buttons & Gamepad.GUIDE) != 0 ? 1 : 0,
                     "ButtonShare"      => gp.Share ? 1 : 0,
+                    // Sony's own extras: each is its own bool beside the
+                    // 16-bit mask, so each needs its own arm or the grid's
+                    // value column reads zero while the output is live.
+                    "ButtonMute"       => gp.MicMute ? 1 : 0,
+                    "LeftPaddle"       => gp.LeftPaddle ? 1 : 0,
+                    "RightPaddle"      => gp.RightPaddle ? 1 : 0,
+                    "LeftFunction"     => gp.LeftFunction ? 1 : 0,
+                    "RightFunction"    => gp.RightFunction ? 1 : 0,
                     "LeftThumbButton"  => (gp.Buttons & Gamepad.LEFT_THUMB) != 0 ? 1 : 0,
                     "RightThumbButton" => (gp.Buttons & Gamepad.RIGHT_THUMB) != 0 ? 1 : 0,
                     "DPadUp"           => (gp.Buttons & Gamepad.DPAD_UP) != 0 ? 1 : 0,
@@ -4601,6 +4722,34 @@ namespace PadForge.Services
                     && int.TryParse(target.Substring("MidiNote".Length), out int note)
                     && midi.Notes != null && note >= 0 && note < midi.Notes.Length)
                     return midi.Notes[note] ? 1 : 0;
+                return null;
+            }
+
+            // VR: hand buttons (VrLayout bit vocabulary), stick axes
+            // (bipolar short), trigger/grip pulls (0..32767).
+            if (outputType == VirtualControllerType.Vr)
+            {
+                var vr = _inputManager.CombinedVrRawStates[padIndex];
+                string t = target;
+                if (t.EndsWith("Neg", StringComparison.Ordinal))
+                    t = t.Substring(0, t.Length - 3);
+                switch (t)
+                {
+                    case "VrLStickX": return vr.Left.StickX;
+                    case "VrLStickY": return vr.Left.StickY;
+                    case "VrRStickX": return vr.Right.StickX;
+                    case "VrRStickY": return vr.Right.StickY;
+                    case "VrLTrigger": return vr.Left.Trigger;
+                    case "VrLGrip": return vr.Left.Grip;
+                    case "VrRTrigger": return vr.Right.Trigger;
+                    case "VrRGrip": return vr.Right.Grip;
+                }
+                for (int b = 0; b < VrLayout.LeftButtonKeys.Length; b++)
+                    if (t == VrLayout.LeftButtonKeys[b])
+                        return (vr.Left.Buttons & (1 << b)) != 0 ? 1 : 0;
+                for (int b = 0; b < VrLayout.RightButtonKeys.Length; b++)
+                    if (t == VrLayout.RightButtonKeys[b])
+                        return (vr.Right.Buttons & (1 << b)) != 0 ? 1 : 0;
                 return null;
             }
 
@@ -5033,12 +5182,14 @@ namespace PadForge.Services
             ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
             ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
             ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
+            ps.TriggerRumbleFold = padVm.TriggerRumbleFold ? "1" : "0";
 
             // Impulse triggers (Xbox One+).
             ps.ImpulseOverallGain = padVm.ImpulseOverallGain.ToString();
             ps.ImpulseLeftStrength = padVm.ImpulseLeftStrength.ToString();
             ps.ImpulseRightStrength = padVm.ImpulseRightStrength.ToString();
             ps.ImpulseSwapTriggers = padVm.ImpulseSwapTriggers ? "1" : "0";
+            ps.AtVibrationToImpulseEnabled = padVm.AtVibrationToImpulse ? "1" : "0";
             ps.ConstantTriggerForceEnabled = padVm.ConstantTriggerForceEnabled ? "1" : "0";
             ps.ConstantTriggerForceLeft = padVm.ConstantTriggerForceLeft.ToString("F4", ic);
             ps.ConstantTriggerForceRight = padVm.ConstantTriggerForceRight.ToString("F4", ic);
@@ -5078,6 +5229,7 @@ namespace PadForge.Services
             ps.IrSmoothing = (padVm.IrSmoothingPercent / 100.0).ToString(System.Globalization.CultureInfo.InvariantCulture);
             ps.PointerMode = string.IsNullOrEmpty(padVm.PointerMode) ? "Mouse" : padVm.PointerMode;
             ps.PointerFpsSpeed = padVm.PointerFpsSpeed.ToString(ic);
+            ps.Model3DAppearances = padVm.Model3DAppearances ?? "";
             // JoyShockMapper-canon extensions.
             ps.GyroSpace = padVm.GyroSpace ?? "Local";
             ps.GyroPlayerSpaceYawRelaxFactor = padVm.GyroPlayerSpaceYawRelaxFactor.ToString("F2", ic);
@@ -5128,6 +5280,7 @@ namespace PadForge.Services
             ps.RightTriggerSensitivityCurve = padVm.RightTriggerSensitivityCurve;
 
             ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
+            ps.GyroCompassYaw = padVm.GyroCompassYaw ? "1" : "0";
             ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
             ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
 
@@ -5297,6 +5450,12 @@ namespace PadForge.Services
                         if (mapping.NegSettingName != null)
                             owningPs.SetKbmMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
                     }
+                    else if (target.StartsWith("Vr", StringComparison.Ordinal))
+                    {
+                        owningPs.SetVrMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                        if (mapping.NegSettingName != null)
+                            owningPs.SetVrMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
+                    }
                     else
                     {
                         var prop = typeof(PadSetting).GetProperty(target);
@@ -5456,6 +5615,7 @@ namespace PadForge.Services
             padVm.RightMotorStrength = TryParseInt(ps.RightMotorStrength, 100);
             padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                 (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+            padVm.TriggerRumbleFold = ps.TriggerRumbleFold == "1";
 
             // Impulse triggers (Xbox One+).
             padVm.ImpulseOverallGain = TryParseInt(ps.ImpulseOverallGain, 100);
@@ -5463,6 +5623,7 @@ namespace PadForge.Services
             padVm.ImpulseRightStrength = TryParseInt(ps.ImpulseRightStrength, 100);
             padVm.ImpulseSwapTriggers = ps.ImpulseSwapTriggers == "1" ||
                 (ps.ImpulseSwapTriggers ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+            padVm.AtVibrationToImpulse = ps.AtVibrationToImpulseEnabled == "1";
             padVm.ConstantTriggerForceEnabled = ps.ConstantTriggerForceEnabled == "1";
             padVm.ConstantTriggerForceLeft = TryParseDouble(ps.ConstantTriggerForceLeft, 0.0);
             padVm.ConstantTriggerForceRight = TryParseDouble(ps.ConstantTriggerForceRight, 0.0);
@@ -5498,6 +5659,7 @@ namespace PadForge.Services
             padVm.IrSensorBarCompPercent = (int)Math.Round(TryParseFloatPs(ps.IrSensorBarComp, 0f) * 100f);
             padVm.IrSmoothingPercent = (int)Math.Round(TryParseFloatPs(ps.IrSmoothing, 0f) * 100f);
             padVm.PointerMode = string.IsNullOrEmpty(ps.PointerMode) ? "Mouse" : ps.PointerMode;
+            padVm.Model3DAppearances = ps.Model3DAppearances ?? "";
             padVm.PointerFpsSpeed = (int)TryParseFloatPs(ps.PointerFpsSpeed, 35f);
             // JoyShockMapper-canon extensions.
             padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
@@ -5525,6 +5687,7 @@ namespace PadForge.Services
             padVm.LeftTriggerRouteActivatorMode = string.IsNullOrEmpty(ps.LeftTriggerRouteActivatorMode) ? "Hold" : ps.LeftTriggerRouteActivatorMode;
             padVm.RightTriggerRouteActivatorMode = string.IsNullOrEmpty(ps.RightTriggerRouteActivatorMode) ? "Hold" : ps.RightTriggerRouteActivatorMode;
             padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
+            padVm.GyroCompassYaw = ps.GyroCompassYaw == "1";
             padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
             padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
 
@@ -5929,17 +6092,24 @@ namespace PadForge.Services
         private void OnInputSelectedFromDropdown(object sender, EventArgs e)
         {
             if (sender is not MappingItem mapping) return;
-            // Find the device for this mapping's pad slot.
-            foreach (var padVm in _mainVm.Pads)
-            {
-                if (!padVm.Mappings.Contains(mapping)) continue;
-                var selected = padVm.SelectedMappedDevice;
-                if (selected == null || selected.InstanceGuid == Guid.Empty) break;
-                var ud = FindUserDevice(selected.InstanceGuid);
-                MappingDisplayResolver.ResolveDisplayText(mapping, ud);
-                mapping.SyncSelectedInputFromDescriptor();
-                break;
-            }
+            // Resolve against the device the row NOW points at: the pick
+            // just stamped PrimarySourceDeviceGuid from the chosen entry.
+            // The previous shape read the Device dropdown's selection
+            // instead, which is a different axis entirely, and bailed
+            // when it was empty. An "(Any device)" pick then never
+            // re-resolved: the descriptor setter had already nulled
+            // _resolvedSourceText, so the row line rendered the raw
+            // 0-based descriptor ("Touchpad 0 Finger 0 X") while the
+            // picker itself showed the localized 1-based entry. With a
+            // null device, ResolveDisplayText's device-independent family
+            // block produces the same 1-based any-device naming the
+            // picker offers.
+            UserDevice ud = null;
+            if (Guid.TryParse(mapping.PrimarySourceDeviceGuid, out var rowGuid)
+                && rowGuid != Guid.Empty)
+                ud = FindUserDevice(rowGuid);
+            MappingDisplayResolver.ResolveDisplayText(mapping, ud);
+            mapping.SyncSelectedInputFromDescriptor();
         }
 
         /// <summary>
@@ -6678,6 +6848,10 @@ namespace PadForge.Services
             // SOCD authoring (#240) rides the same not-Rows family.
             copy.SocdMode = src.SocdMode ?? "";
             copy.SocdPairs = src.SocdPairs ?? "";
+            // Keep Awake (#270), same not-Rows family.
+            copy.KeepAwakeEnabled = src.KeepAwakeEnabled;
+            copy.KeepAwakeAxis = src.KeepAwakeAxis ?? "";
+            copy.KeepAwakeDeflection = src.KeepAwakeDeflection;
             // Menus (#9 B-17) travel with the set like the shift authoring:
             // without this leg a profile apply would silently drop every
             // imported / authored menu.
@@ -6971,6 +7145,11 @@ namespace PadForge.Services
                 // paste for the same reason its rumble-audio config does.
                 SocdMode = SettingsManager.SlotMappingSets[padIndex]?.SocdMode ?? "",
                 SocdPairs = SettingsManager.SlotMappingSets[padIndex]?.SocdPairs ?? "",
+                // Keep Awake (#270): destination's config survives a row
+                // paste for the same reason its SOCD authoring does.
+                KeepAwakeEnabled = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeEnabled ?? false,
+                KeepAwakeAxis = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeAxis ?? "",
+                KeepAwakeDeflection = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeDeflection ?? 0,
             };
             foreach (var r in rows)
             {
@@ -7144,6 +7323,10 @@ namespace PadForge.Services
             // grammar parses to zero pairs rather than misfiring.
             copy.SocdMode = src.SocdMode ?? "";
             copy.SocdPairs = src.SocdPairs ?? "";
+            // Keep Awake (#270) copies whole-slot too, same family.
+            copy.KeepAwakeEnabled = src.KeepAwakeEnabled;
+            copy.KeepAwakeAxis = src.KeepAwakeAxis ?? "";
+            copy.KeepAwakeDeflection = src.KeepAwakeDeflection;
             // Menus (#9 B-17) travel with the set exactly like the shift
             // authoring above (the same leg CloneMappingSetDeep carries).
             // Without it, Copy From Slot dropped the source's menus and the
@@ -7237,6 +7420,13 @@ namespace PadForge.Services
             if (ms.RumbleAudio != null) return true;
             // SOCD authoring (#240), same rationale.
             if (!string.IsNullOrEmpty(ms.SocdMode) || !string.IsNullOrEmpty(ms.SocdPairs)) return true;
+            // Keep Controller Awake, same rationale. MappingSet's own
+            // HasAuthoredContent and both copy lanes gained these legs;
+            // this parallel predicate did not, so a keep-awake-only slot
+            // survived a cold load but was never offered as a Copy From
+            // donor.
+            if (ms.KeepAwakeEnabled || !string.IsNullOrEmpty(ms.KeepAwakeAxis)
+                || ms.KeepAwakeDeflection != 0) return true;
             return false;
         }
 
@@ -7414,29 +7604,43 @@ namespace PadForge.Services
         /// MacroSnapshots array. The engine reads these atomically each cycle.
         /// Called at 30Hz on the UI thread.
         /// </summary>
+        // Last observed "slot has a PlaySound macro" per slot, so the
+        // audio reconcile is nudged exactly on transitions (add the first
+        // sound macro -> transport pre-builds; remove the last one ->
+        // transport tears down) instead of polling or latching.
+        private readonly bool[] _lastSlotWantsMacroAudio = new bool[InputManager.MaxPads];
+
         private void SyncMacroSnapshots()
         {
             if (_inputManager == null)
                 return;
 
+            bool macroAudioDemandChanged = false;
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
-                if (padVm.Macros.Count == 0)
+                MacroItem[] snapshot = null;
+                if (padVm.Macros.Count != 0)
                 {
-                    _inputManager.MacroSnapshots[i] = null;
-                }
-                else
-                {
-                    // Create a snapshot array. The MacroItem objects are shared references —
-                    // runtime state (IsExecuting, CurrentActionIndex, etc.) is read/written
-                    // by the engine thread, but the properties themselves are simple fields
-                    // that don't need locking for this use case.
-                    var snapshot = new MacroItem[padVm.Macros.Count];
+                    // Create a snapshot array. The MacroItem objects are shared
+                    // references. Runtime state (IsExecuting, CurrentActionIndex,
+                    // etc.) is read/written by the engine thread, but the
+                    // properties themselves are simple fields that don't need
+                    // locking for this use case.
+                    snapshot = new MacroItem[padVm.Macros.Count];
                     padVm.Macros.CopyTo(snapshot, 0);
-                    _inputManager.MacroSnapshots[i] = snapshot;
+                }
+                _inputManager.MacroSnapshots[i] = snapshot;
+
+                bool wants = SoundMacroService.SnapshotWantsControllerAudio(snapshot);
+                if (wants != _lastSlotWantsMacroAudio[i])
+                {
+                    _lastSlotWantsMacroAudio[i] = wants;
+                    macroAudioDemandChanged = true;
                 }
             }
+            if (macroAudioDemandChanged)
+                AudioPassthroughService.Reconcile();
         }
 
         // ─────────────────────────────────────────────
@@ -10108,7 +10312,10 @@ namespace PadForge.Services
             // passthrough (SDL#9, hardware-confirmed #162), both invisible
             // to SDL's shared-handle rumble flag (user report 2026-07-05:
             // Steam Controller and Switch 2 Pro dossiers showed no rumble
-            // chip despite hardware-confirmed rumble).
+            // chip despite hardware-confirmed rumble). Since fork
+            // b46ae33238 (#267) the 2015 Steam Controller also reports
+            // SDL_JOYSTICK_CAP_RUMBLE itself, so for that one family this
+            // override is redundant but harmless.
             bool sonyLightbarPad = ud.VendorId == 0x054C
                 && ud.ProdId is 0x0CE6 or 0x0DF2 or 0x05C4 or 0x09CC or 0x0BA0;
             bool switch2Pad = ud.VendorId == 0x057E
@@ -10209,6 +10416,7 @@ namespace PadForge.Services
                 InputDeviceType.Midi => "Midi",
                 InputDeviceType.Nfc => "Nfc",
                 InputDeviceType.ConsumerControl => "ConsumerControl",
+                InputDeviceType.HeadsetMotion => "HeadsetMotion",
                 _ => "Device"
             };
 
@@ -10271,6 +10479,13 @@ namespace PadForge.Services
         private void UpdateGravityEstimates()
         {
             const float a = 0.02f;
+            // Real tick delta for the compass integrator (#271 item 5):
+            // the UI tick is nominally 60 Hz but not guaranteed.
+            long nowTickMs = Environment.TickCount64;
+            float dt = _lastGravityTickMs == 0
+                ? 0.016f
+                : Math.Clamp((nowTickMs - _lastGravityTickMs) / 1000f, 0.001f, 0.25f);
+            _lastGravityTickMs = nowTickMs;
             var devs = SettingsManager.UserDevices?.Items;
             if (devs == null) return;
             lock (SettingsManager.UserDevices.SyncRoot)
@@ -10315,7 +10530,195 @@ namespace PadForge.Services
                                 prevAux.gz * (1f - a) + st.AccelAux[2] * a);
                         }
                     }
+
+                    UpdateCompassEstimate(d, st, dt);
                 }
+            }
+        }
+
+        // ── #271 item 5: compass-anchored yaw ──
+        // Per-device integrated-yaw estimate + published correction rate.
+        // All under _gravityStateLock (written here on the UI tick, read
+        // by the provider from the poll thread).
+        private long _lastGravityTickMs;
+        private readonly Dictionary<Guid, (float integYaw, bool seeded)> _compassState = new();
+
+        // Figure-8 magnetometer calibration capture (#271 item 5): the
+        // user rotates the controller through all orientations, bias =
+        // per-axis min/max midpoints (the windows10-gyro reference's
+        // method, controller.py:464-476), field norm = the median
+        // debiased magnitude over the captured samples. All state under
+        // _gravityStateLock with the rest of the compass machinery.
+        private Guid _magCalGuid;
+        private float _magCalMinX, _magCalMaxX, _magCalMinY, _magCalMaxY, _magCalMinZ, _magCalMaxZ;
+        private readonly List<(float x, float y, float z)> _magCalSamples = new();
+
+        /// <summary>Starts or finishes the magnetometer calibration for
+        /// the device. Returns true when a capture is now RUNNING. On
+        /// finish, writes the bias triple + field norm to every
+        /// assignment row's PadSetting for the device and marks dirty.</summary>
+        public bool ToggleMagCalibration(Guid deviceGuid)
+        {
+            lock (_gravityStateLock)
+            {
+                if (_magCalGuid != deviceGuid)
+                {
+                    _magCalGuid = deviceGuid;
+                    _magCalMinX = _magCalMinY = _magCalMinZ = float.MaxValue;
+                    _magCalMaxX = _magCalMaxY = _magCalMaxZ = float.MinValue;
+                    _magCalSamples.Clear();
+                    return true;
+                }
+
+                _magCalGuid = Guid.Empty;
+                if (_magCalSamples.Count < 16 || _magCalMinX > _magCalMaxX)
+                    return false; // too little rotation captured; keep the old calibration
+
+                float bx = (_magCalMinX + _magCalMaxX) * 0.5f;
+                float by = (_magCalMinY + _magCalMaxY) * 0.5f;
+                float bz = (_magCalMinZ + _magCalMaxZ) * 0.5f;
+                var mags = new List<float>(_magCalSamples.Count);
+                foreach (var s in _magCalSamples)
+                {
+                    float dx = s.x - bx, dy = s.y - by, dz = s.z - bz;
+                    mags.Add((float)Math.Sqrt(dx * dx + dy * dy + dz * dz));
+                }
+                mags.Sort();
+                float norm = mags[mags.Count / 2];
+                _magCalSamples.Clear();
+                if (norm <= 0f) return false;
+
+                var settings = SettingsManager.UserSettings;
+                if (settings != null)
+                {
+                    var inv = System.Globalization.CultureInfo.InvariantCulture;
+                    lock (settings.SyncRoot)
+                    {
+                        foreach (var us in settings.Items)
+                        {
+                            if (us == null || us.InstanceGuid != deviceGuid || us.MapTo < 0) continue;
+                            var ps = us.GetPadSetting();
+                            if (ps == null) continue;
+                            ps.MagBiasX = bx.ToString(inv);
+                            ps.MagBiasY = by.ToString(inv);
+                            ps.MagBiasZ = bz.ToString(inv);
+                            ps.MagFieldNorm = norm.ToString(inv);
+                        }
+                    }
+                }
+                _compassCalCache.Remove(deviceGuid);
+                _compassState.Remove(deviceGuid);
+                _settingsService?.MarkDirty();
+                return false;
+            }
+        }
+
+        public bool IsMagCalibrating(Guid deviceGuid)
+        {
+            lock (_gravityStateLock) return _magCalGuid == deviceGuid;
+        }
+        private readonly Dictionary<Guid, float> _compassCorr = new();
+        private readonly Dictionary<Guid, (float bx, float by, float bz, float norm, long readMs)> _compassCalCache = new();
+
+        /// <summary>One device's compass step, inside the gravity walk's
+        /// locks (UserDevices before UserSettings is the canonical order,
+        /// and the 250 ms calibration re-read below takes UserSettings).
+        /// Uncalibrated (field norm 0) or interference-rejected samples
+        /// publish NOTHING, so the evaluator's correction is null and the
+        /// yaw lane is byte-identical to pre-compass behavior.</summary>
+        private void UpdateCompassEstimate(PadForge.Engine.Data.UserDevice d, PadForge.Engine.CustomInputState st, float dt)
+        {
+            if (!(d.Device is PadForge.Engine.SdlDeviceWrapper w) || !w.HasSwitch2Magnetometer)
+                return;
+            var guid = d.InstanceGuid;
+            float yawRate = (st.Gyro != null && st.Gyro.Length >= 3) ? st.Gyro[1] : 0f;
+
+            // 250 ms calibration cache: bias + field norm from the FIRST
+            // assignment row's PadSetting (the firstPadSetting convention).
+            long nowMs = Environment.TickCount64;
+            if (!_compassCalCache.TryGetValue(guid, out var cal) || nowMs - cal.readMs >= 250)
+            {
+                float bx = 0f, by = 0f, bz = 0f, norm = 0f;
+                var settings = SettingsManager.UserSettings;
+                if (settings != null)
+                {
+                    PadForge.Engine.Data.PadSetting ps = null;
+                    lock (settings.SyncRoot)
+                    {
+                        foreach (var us in settings.Items)
+                        {
+                            if (us == null || us.InstanceGuid != guid || us.MapTo < 0) continue;
+                            ps = us.GetPadSetting();
+                            break;
+                        }
+                    }
+                    if (ps != null)
+                    {
+                        bx = TryParseFloatPs(ps.MagBiasX, 0f);
+                        by = TryParseFloatPs(ps.MagBiasY, 0f);
+                        bz = TryParseFloatPs(ps.MagBiasZ, 0f);
+                        norm = TryParseFloatPs(ps.MagFieldNorm, 0f);
+                    }
+                }
+                cal = (bx, by, bz, norm, nowMs);
+                _compassCalCache[guid] = cal;
+            }
+
+            // Calibration capture rides the same tick.
+            if (_magCalGuid == guid && w.Switch2MagActive)
+            {
+                float rx = w.Switch2MagX, ry = w.Switch2MagY, rz = w.Switch2MagZ;
+                if (rx < _magCalMinX) _magCalMinX = rx;
+                if (rx > _magCalMaxX) _magCalMaxX = rx;
+                if (ry < _magCalMinY) _magCalMinY = ry;
+                if (ry > _magCalMaxY) _magCalMaxY = ry;
+                if (rz < _magCalMinZ) _magCalMinZ = rz;
+                if (rz > _magCalMaxZ) _magCalMaxZ = rz;
+                if (_magCalSamples.Count < 2048) _magCalSamples.Add((rx, ry, rz));
+            }
+
+            float? heading = null;
+            if (w.Switch2MagActive && cal.norm > 0f)
+            {
+                float mx = w.Switch2MagX - cal.bx;
+                float my = w.Switch2MagY - cal.by;
+                float mz = w.Switch2MagZ - cal.bz;
+                // Interference rejection (the FusionAhrs magnetic-rejection
+                // concept): a debiased sample whose magnitude strays more
+                // than 30% from the calibrated earth-field norm is not the
+                // earth field and must not steer the aim.
+                float mag = (float)Math.Sqrt(mx * mx + my * my + mz * mz);
+                if (mag > cal.norm * 0.7f && mag < cal.norm * 1.3f
+                    && _gravityState.TryGetValue(guid, out var grav))
+                {
+                    heading = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .ComputeTiltCompensatedHeading(grav.gx, grav.gy, grav.gz, mx, my, mz);
+                }
+            }
+
+            _compassState.TryGetValue(guid, out var cs);
+            if (heading.HasValue)
+            {
+                if (!cs.seeded) { cs = (heading.Value, true); }
+                float corr = PadForge.Engine.Common.Mapping.SourceCoercion
+                    .ComputeCompassCorrection(heading.Value, cs.integYaw);
+                cs.integYaw = PadForge.Engine.Common.Mapping.SourceCoercion
+                    .WrapToPi(cs.integYaw + (yawRate + corr) * dt);
+                _compassState[guid] = cs;
+                _compassCorr[guid] = corr;
+            }
+            else
+            {
+                // No heading this tick: dead-reckon the integral so a
+                // brief rejection window does not desync it, publish no
+                // correction.
+                if (cs.seeded)
+                {
+                    cs.integYaw = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .WrapToPi(cs.integYaw + yawRate * dt);
+                    _compassState[guid] = cs;
+                }
+                _compassCorr.Remove(guid);
             }
         }
 
@@ -12410,6 +12813,7 @@ namespace PadForge.Services
                 ExtendedSlotOrder      = SettingsManager.ExtendedSlotOrder.ToArray(),
                 KeyboardMouseSlotOrder = SettingsManager.KeyboardMouseSlotOrder.ToArray(),
                 MidiSlotOrder          = SettingsManager.MidiSlotOrder.ToArray(),
+                VrSlotOrder            = SettingsManager.VrSlotOrder.ToArray(),
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
@@ -12685,6 +13089,7 @@ namespace PadForge.Services
             RemapSlotOrder(p.ExtendedSlotOrder, oldToNew);
             RemapSlotOrder(p.KeyboardMouseSlotOrder, oldToNew);
             RemapSlotOrder(p.MidiSlotOrder, oldToNew);
+            RemapSlotOrder(p.VrSlotOrder, oldToNew);
         }
 
         /// <summary>
@@ -13041,6 +13446,10 @@ namespace PadForge.Services
                         && profile.SlotProfileIds != null
                         && i < profile.SlotProfileIds.Length)
                     {
+                        // Same stamp-before-assign as the SettingsService
+                        // apply lane: the incoming profile's data is already
+                        // on this wire, so the setter must not translate.
+                        SettingsManager.StampNintendoWire(i, profile.SlotProfileIds[i]);
                         _mainVm.Pads[i].ProfileId = profile.SlotProfileIds[i];
                     }
                 }
@@ -13208,7 +13617,8 @@ namespace PadForge.Services
                 profile.ExtendedSlotOrder,
                 profile.KeyboardMouseSlotOrder,
                 profile.MidiSlotOrder,
-                profile.NintendoSlotOrder);
+                profile.NintendoSlotOrder,
+                profile.VrSlotOrder);
 
             // ── Apply Extended/MIDI configurations ──
             if (profile.ExtendedConfigs != null)
@@ -13609,6 +14019,7 @@ namespace PadForge.Services
                     profile.ExtendedSlotOrder      = snapshot.ExtendedSlotOrder;
                     profile.KeyboardMouseSlotOrder = snapshot.KeyboardMouseSlotOrder;
                     profile.MidiSlotOrder          = snapshot.MidiSlotOrder;
+                    profile.VrSlotOrder            = snapshot.VrSlotOrder;
                     profile.EnableDsuMotionServer = snapshot.EnableDsuMotionServer;
                     profile.DsuMotionServerPort = snapshot.DsuMotionServerPort;
                     profile.EnableWebController = snapshot.EnableWebController;

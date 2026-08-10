@@ -103,6 +103,18 @@ namespace PadForge.Common.Input
         // exit was _running) and reconnect stacked another one on top.
         private volatile bool _writerRun;
 
+        // The generation NUMBER behind that bool. A bool cannot distinguish
+        // "still my connection" from "a NEW connection has started", and
+        // Teardown only joins the writer for one second before abandoning
+        // it: a writer blocked longer than that in output I/O outlives its
+        // own teardown, and by the time it looks at _writerRun again the
+        // monitor may have opened the next pad and set it true. It would
+        // then keep running alongside the new generation's writer, two
+        // threads driving one pad. Each writer captures this at launch and
+        // stops the moment the field moves past it, the same shape the
+        // persona reader lanes use for their handles.
+        private int _writerGen;
+
         // Held across every DeviceIoControl on the write handle AND across that
         // handle's close in Teardown, so a write can never land on a closed (and
         // possibly recycled) handle value. The SDL callbacks never take this lock;
@@ -128,19 +140,52 @@ namespace PadForge.Common.Input
         // it. The App-layer unpair flow sets this (and cancels the current read)
         // before deleting a DS3's Bluetooth records + cycling the radio, so a still-
         // connected pad can't re-attach a ghost virtual joystick mid-unpair.
-        private static volatile bool _suppressReconnect;
+        // REFCOUNTED, not a bool. Two independent flows suppress this: the
+        // pairing ceremony (RunPairing's finally) and the remove-device
+        // unpair (UnpairAllDs3's finally, armed even earlier by the Devices
+        // page). They overlap, since the ceremony holds the radio gate only
+        // for its sixpair steps and both are launched fire-and-forget. A
+        // plain bool let whichever finished FIRST re-enable the monitor
+        // under the other, which then re-grabbed the pad mid-ceremony.
+        private static int _suppressDepth;
+        private static bool _suppressReconnect => System.Threading.Volatile.Read(ref _suppressDepth) > 0;
         private static volatile Ds3DirectService _current;
 
-        /// <summary>Detach any live DS3 now and block reconnect until
-        /// <see cref="AllowReconnect"/>. Call before removing the pad's BT records.</summary>
+        /// <summary>Detach any live DS3 now and block reconnect until the
+        /// matching <see cref="AllowReconnect"/>. Nests: every call must be
+        /// paired, and the monitor resumes only when the last one releases.
+        /// Call before removing the pad's BT records.</summary>
         public static void SuppressAndRelease()
         {
-            _suppressReconnect = true;
+            System.Threading.Interlocked.Increment(ref _suppressDepth);
             _current?.CancelCurrentRead();
         }
 
-        /// <summary>Re-allow the monitor loop to grab a DS3 again.</summary>
-        public static void AllowReconnect() => _suppressReconnect = false;
+        /// <summary>Test seam (InternalsVisibleTo PadForge.Tests): whether
+        /// the monitor is currently suppressed. The regression this locks:
+        /// an acquire/release imbalance across the unpair flow left the
+        /// depth stuck above zero, and no DS3 could attach again until the
+        /// app restarted (owner repro 2026-08-08).</summary>
+        internal static bool IsReconnectSuppressedForTest => _suppressReconnect;
+
+        /// <summary>Test seam: hard-reset the suppression depth so tests
+        /// cannot leak state into each other.</summary>
+        internal static void ResetSuppressionForTest()
+            => System.Threading.Interlocked.Exchange(ref _suppressDepth, 0);
+
+        /// <summary>Release one suppression claim (see
+        /// <see cref="SuppressAndRelease"/>). Never drops below zero, so an
+        /// unbalanced extra release cannot strand the monitor suppressed or
+        /// un-suppress a claim it does not own.</summary>
+        public static void AllowReconnect()
+        {
+            while (true)
+            {
+                int cur = System.Threading.Volatile.Read(ref _suppressDepth);
+                if (cur <= 0) return;
+                if (System.Threading.Interlocked.CompareExchange(ref _suppressDepth, cur - 1, cur) == cur) return;
+            }
+        }
 
         private void CancelCurrentRead()
         {
@@ -283,7 +328,8 @@ namespace PadForge.Common.Input
                 if (!AttachVirtual()) { Teardown(); Thread.Sleep(1000); continue; }
 
                 _writerRun = true;
-                _writeThread = new Thread(WriterLoop) { IsBackground = true, Name = "Ds3DirectWrite" };
+                int writerGen = System.Threading.Interlocked.Increment(ref _writerGen);
+                _writeThread = new Thread(() => WriterLoop(writerGen)) { IsBackground = true, Name = "Ds3DirectWrite" };
                 _writeThread.Start();
 
                 _log($"DS3({tag}): virtual joystick attached; streaming.");
@@ -325,7 +371,8 @@ namespace PadForge.Common.Input
                 // else owns it, defer: don't fight over the device. Throttled so a repeated
                 // bind failure doesn't spin pnputil.
                 long now = Environment.TickCount64;
-                if (now - _lastUsbBindAttempt >= 15000 && PadForge.Services.Ds3DriverInstaller.IsUsbDs3NeedingWinUsb())
+                if (now - _lastUsbBindAttempt >= 15000
+                    && PadForge.Services.Ds3DriverInstaller.IsUsbDs3NeedingWinUsb(m => _log("DS3(USB): " + m)))
                 {
                     _lastUsbBindAttempt = now;
                     _log("DS3(USB): unclaimed DS3 on USB, binding WinUSB...");
@@ -365,7 +412,7 @@ namespace PadForge.Common.Input
 
         // ─── writer thread: kick, re-kick, rate-limited output flush ────────────
 
-        private void WriterLoop()
+        private void WriterLoop(int gen)
         {
             long attachedAt = Environment.TickCount64;
             long lastWrite = 0, lastKick = 0;
@@ -376,10 +423,11 @@ namespace PadForge.Common.Input
             // ordering); the bare enable alone does not start it.
             Kick(); kicks = 1; lastKick = attachedAt; lastWrite = attachedAt;
 
-            while (_running && _writerRun)
+            while (_running && _writerRun && System.Threading.Volatile.Read(ref _writerGen) == gen)
             {
                 _writeSignal.WaitOne(50);
-                if (!_running || !_writerRun) break;
+                if (!_running || !_writerRun
+                    || System.Threading.Volatile.Read(ref _writerGen) != gen) break;
 
                 long now = Environment.TickCount64;
 
@@ -389,6 +437,55 @@ namespace PadForge.Common.Input
                     _log($"DS3({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input yet - re-kick #{kicks + 1}");
                     Kick(); kicks++; lastKick = now;
                     continue;
+                }
+
+                // The five kicks ran and the pad never spoke. Detach so the
+                // monitor can rebuild the whole transport instead of
+                // sitting attached-but-silent forever: WinUsb_ReadPipe
+                // answers ERROR_SEM_TIMEOUT indefinitely on a pad that
+                // never enabled, which is not an error path, so nothing
+                // else in this object ever reconsiders. Reported
+                // 2026-08-08 (discussion #285) as "wired stops working
+                // after a pairing attempt until PadForge is restarted":
+                // the ceremony's cycle re-opens the device, the F4 enable
+                // lands on a pad still settling, and the lane wedges with
+                // a virtual joystick attached and no input behind it.
+                if (!_everGotInput && kicks >= 5 && now - lastKick >= 3000)
+                {
+                    _log($"DS3({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input after {kicks} kicks - detaching for a clean re-open");
+                    // Cancel the read, NOT the service. The read loop then
+                    // returns, the monitor tears down and re-opens on its
+                    // next pass, and the enable is retried on a fresh
+                    // handle. Setting _running here would kill DS3 support
+                    // for the whole session.
+                    //
+                    // The flag comes FIRST: CancelIoEx only aborts I/O that
+                    // is already pended, so a cancel that lands in the gap
+                    // between two reads is simply lost, the writer is gone,
+                    // and the read loop would sit attached-but-silent
+                    // forever (the exact wedge this detach cures). With
+                    // _writerRun down, both read loops exit at their next
+                    // loop-top check even when the cancel misses.
+                    _writerRun = false;
+                    CancelCurrentRead();
+                    // Belt over the braces: if that cancel fired in the
+                    // between-reads gap AND the pad went silent right then,
+                    // the next read is pended with nothing to complete it.
+                    // By the time this second cancel runs the reader is
+                    // either parked in that read (it lands) or completing
+                    // traffic (the loop-top _writerRun check exits) - the
+                    // two miss modes exclude each other.
+                    //
+                    // 250 ms, not 50: the miss window is exactly "the reader
+                    // was descheduled between its flag check and its blocking
+                    // call", and only the BT lane can wedge on it, because
+                    // the USB pipe carries a 100 ms timeout and BT's
+                    // DeviceIoControl has no timeout at all. Teardown joins
+                    // this thread for 1000 ms, so 250 stays well inside the
+                    // budget while covering a far more realistic stall.
+                    Thread.Sleep(250);
+                    CancelCurrentRead();
+                    break;
                 }
 
                 bool doWrite;
@@ -507,7 +604,11 @@ namespace PadForge.Common.Input
         {
             byte[] buf = new byte[DS3_BT_INPUT_REPORT_SIZE];
             long lastProbe = 0;
-            while (_running)
+            // _writerRun is this loop's detach signal: the writer's five-kick
+            // detach lowers it before cancelling, and a pad that streams only
+            // non-input frames (0xFF wake reports) keeps this loop cycling
+            // between reads where a bare CancelIoEx can miss.
+            while (_running && _writerRun)
             {
                 if (DeviceIoControl(h, IOCTL_HID_INTERRUPT_READ, null, 0, buf, buf.Length, out int rd, IntPtr.Zero))
                 {
@@ -551,7 +652,11 @@ namespace PadForge.Common.Input
             byte[] raw = new byte[64];
             buf[0] = 0xA1;
             long lastProbe = 0;
-            while (_running && _transport == Ds3Transport.Usb)
+            // The 100 ms pipe timeout below exists so this loop wakes to
+            // re-check these flags; _writerRun is the writer's five-kick
+            // detach signal (a bare CancelIoEx fired between two reads is
+            // lost, and ERROR_SEM_TIMEOUT loops forever otherwise).
+            while (_running && _writerRun && _transport == Ds3Transport.Usb)
             {
                 IntPtr ifh; lock (_outLock) ifh = _usbIfh;
                 if (ifh == IntPtr.Zero) break;
@@ -894,6 +999,12 @@ namespace PadForge.Common.Input
             {
                 for (int i = 0; SetupDiEnumDeviceInterfaces(set, IntPtr.Zero, ref ifGuid, i, ref did); i++)
                 {
+                    // ACTIVE only (SPINT_ACTIVE): registrations persist in
+                    // the registry after the driver changes, and a stale
+                    // path here short-circuited the auto-bind (path came
+                    // back non-null, so the rebind never ran) while the
+                    // live pad sat on HidUsb with no input (#285).
+                    if ((did.Flags & SPINT_ACTIVE) == 0) continue;
                     int req = 0;
                     SetupDiGetDeviceInterfaceDetail(set, ref did, IntPtr.Zero, 0, ref req, IntPtr.Zero);
                     IntPtr det = Marshal.AllocHGlobal(req);
@@ -914,7 +1025,7 @@ namespace PadForge.Common.Input
             return null;
         }
 
-        private const int DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10;
+        private const int DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10, SPINT_ACTIVE = 0x1;
         private const uint GENERIC_READ = 0x80000000, GENERIC_WRITE = 0x40000000, FILE_SHARE_RW = 0x3, OPEN_EXISTING = 3;
         private const uint FILE_FLAG_OVERLAPPED = 0x40000000;
         private const int ERROR_FILE_NOT_FOUND = 2, ERROR_INVALID_HANDLE = 6,

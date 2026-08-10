@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HIDMaestro;
@@ -298,15 +298,15 @@ namespace PadForge.Common.Input
              || ContainsToken(p.Id, "dualshock") || ContainsToken(p.Id, "dualsense"));
 
         /// <summary>
-        /// True for the profiles the Nintendo category offers. Deliberately
-        /// the single switch-pro profile for now (owner call 2026-07-18:
-        /// "for now the only type be Switch Pro"). Switch 2 Pro, Joy-Cons,
+        /// True for the profiles the Nintendo category offers: the original
+        /// Switch Pro Controller and the Switch 2 Pro Controller. Joy-Cons,
         /// the NSO retro pads, and the GameCube adapter stay in Extended
-        /// until the category is widened. Widening is an id-list edit here,
-        /// nothing else.
+        /// until the category is widened further. Widening is an id-list
+        /// edit here, nothing else.
         /// </summary>
         private static bool IsNintendoProfile(HMProfile p) =>
-            string.Equals(p.Id, "switch-pro", StringComparison.OrdinalIgnoreCase);
+            string.Equals(p.Id, "switch-pro", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(p.Id, "switch2-pro-controller", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
         /// Resolve a profile id to the 2D + 3D asset folders PadForge should
@@ -325,32 +325,54 @@ namespace PadForge.Common.Input
             profileId ??= string.Empty;
 
             // PlayStation
+            // Edge first: its profiles start with "dualsense" too, and they
+            // must always get the Edge mesh, never a plain DualSense.
+            // The Edge has its OWN 2D set: the same pack sprites over a base
+            // widened for the four floating tiles that carry its back buttons
+            // and Fn pair. A plain DualSense must not render four controls it
+            // has no wire for, the same rule that split SWITCH2PRO off from
+            // SWITCHPRO.
+            if (profileId.StartsWith("dualsense-edge", StringComparison.OrdinalIgnoreCase))
+                return ("DUALSENSEEDGE", "DualSenseEdge");
             if (profileId.StartsWith("dualsense", StringComparison.OrdinalIgnoreCase))
                 return ("DualSense", "DualSense");
             if (profileId.StartsWith("dualshock", StringComparison.OrdinalIgnoreCase))
                 return ("DS4", "DS4");
 
-            // Xbox One / Elite / Series / Adaptive — all share the Xbox One
-            // 3D mesh (HC ships no Series-specific 3D). 2D layouts diverge:
-            // Series profiles get their own white asset set.
+            // Xbox One / Elite / Series / Adaptive all render the Series
+            // 3D mesh now. It is the better model (per-part split, the
+            // hado atlases and colorways) and the Xbox One controller is
+            // close enough in shape that the old lower-detail mesh has
+            // nothing left to offer. Only Series profiles expose Share,
+            // which the model gates on. 2D layouts still diverge: these
+            // profiles keep the Xbox One asset set, Series its own white
+            // one, which is why the two halves of this tuple differ.
             if (profileId.StartsWith("xbox-series-", StringComparison.OrdinalIgnoreCase))
-                return ("XBOXSERIES", "XBOXONE");
+                return ("XBOXSERIES", "XboxSeries");
             if (profileId.StartsWith("xbox-one-", StringComparison.OrdinalIgnoreCase)
                 || profileId.StartsWith("xbox-elite-", StringComparison.OrdinalIgnoreCase)
                 || profileId.Equals("xbox-adaptive", StringComparison.OrdinalIgnoreCase))
-                return ("XBOXONE", "XBOXONE");
+                return ("XBOXONE", "XboxSeries");
 
             // Xbox 360 family + arcade-stick / dance-pad / wheel siblings.
             if (profileId.StartsWith("xbox-360", StringComparison.OrdinalIgnoreCase))
                 return ("XBOX360", "XBOX360");
 
-            // Nintendo Switch Pro family. 2D set from the asset pack;
-            // no dedicated 3D mesh yet (sourcing tracked with the owner),
-            // so Nintendo slots render the schematic view like Extended
-            // and the 3D name is never consulted.
-            if (profileId.StartsWith("switch-pro", StringComparison.OrdinalIgnoreCase)
-                || profileId.StartsWith("switch2-pro", StringComparison.OrdinalIgnoreCase))
-                return ("SWITCHPRO", null);
+            // Nintendo Switch Pro family. Both profile generations share
+            // the Switch 2 Pro mesh (purchased hado model, split per-part),
+            // the same arrangement as Series profiles riding the Xbox One
+            // mesh. On an original Switch Pro the S2-only cosmetic parts
+            // (C button, GL/GR, four player LEDs) render anyway; they are
+            // inert meshes, so nothing maps or flashes wrong.
+            // The 3D mesh is shared (the Switch 2 Pro model serves both, the
+            // same arrangement as Series profiles riding the Xbox One mesh),
+            // but the 2D sets are NOT. Switch 2 Pro art carries a C button and
+            // the GL / GR grip tiles; drawing those on an original Pro
+            // Controller would show three controls it does not have.
+            if (profileId.StartsWith("switch2-pro", StringComparison.OrdinalIgnoreCase))
+                return ("SWITCH2PRO", "Switch2Pro");
+            if (profileId.StartsWith("switch-pro", StringComparison.OrdinalIgnoreCase))
+                return ("SWITCHPRO", "Switch2Pro");
 
             // Fallback per slot type — preserves existing behavior for
             // Custom / Extended / unrecognized profiles.

@@ -97,34 +97,73 @@ namespace PadForge.Services
         /// repairs any earlier ownership grab.</para>
         ///
         /// <para>Without DsHidMini, the crash-safety policy stands: PadForge
-        /// owns arming, on only while a DS3 is actually paired. Patching off
-        /// makes BthPS3's use-after-free-on-disconnect path (upstream
+        /// owns arming, on only while this machine actually has a DS3. Patching
+        /// off makes BthPS3's use-after-free-on-disconnect path (upstream
         /// nefarius/BthPS3 #48, unfixed at the bundled v2.10.470.0)
         /// unreachable, which is what turned a stray Wii Remote connect
-        /// into a 0x50 bugcheck on 2026-07-10.</para></summary>
+        /// into a 0x50 bugcheck on 2026-07-10.</para>
+        ///
+        /// <para>The second argument is "does a DS3 live here", NOT "did
+        /// PadForge pair one" (#265). Those differ, and the difference is a
+        /// silent breakage: a pad paired outside our ceremony has no BTHPORT
+        /// record, so the narrow reading disarms patching on a machine whose
+        /// DS3 connects over BthPS3 daily. See Ds3DriverInstaller.MachineHasDs3.
+        /// </para></summary>
+        /// <remarks>The OR lives HERE, not at the call site. It was in the
+        /// caller, where no test could reach it, and a mutation that narrowed
+        /// it back to paired-only survived the suite untouched. A decision the
+        /// tests cannot observe is a decision nothing is guarding.</remarks>
         internal static (bool TakeOwnership, bool Patching) PsmPatchPolicy(
-            bool dsHidMiniInstalled, bool anyDs3Paired)
-            => dsHidMiniInstalled ? (false, true) : (true, anyDs3Paired);
+            bool dsHidMiniInstalled, bool anyDs3Paired, bool machineHasDs3Node)
+            => dsHidMiniInstalled ? (false, true) : (true, anyDs3Paired || machineHasDs3Node);
 
         /// <summary>Drives BthPS3 PSM patching to the policy state (see
         /// <see cref="PsmPatchPolicy"/>). No-op when BthPS3 isn't installed.
         /// Idempotent; the IOCTL toggle contacts no radio and needs no
-        /// <see cref="_radioGate"/>.</summary>
-        public static void ReconcilePsmPatchForCrashSafety(string reason)
+        /// <see cref="_radioGate"/>. Returns false when the policy wanted
+        /// patching armed and it is NOT (zero radios armed, or the reconcile
+        /// threw): in that state the pad will be refused over Bluetooth, and
+        /// the pairing ceremony must fail honestly rather than report a
+        /// success that can only flash. Callers reconciling opportunistically
+        /// may ignore the return; the ceremony's post-cycle arm must not.</summary>
+        public static bool ReconcilePsmPatchForCrashSafety(string reason)
         {
             try
             {
-                if (!Ds3DriverInstaller.IsBthPs3Installed()) return;
+                if (!Ds3DriverInstaller.IsBthPs3Installed()) return true;
                 bool dshm = Ds3DriverInstaller.IsDsHidMiniInstalled();
-                var (takeOwnership, wantPatching) = PsmPatchPolicy(dshm, AnyDs3Paired());
+                // "Is there a DS3 here" is NOT the same question as "did PadForge
+                // pair one" (#265). A pad paired outside our ceremony leaves no
+                // BTHPORT record at all, because BthPS3 identifies by remote name
+                // and the pairing lives inside the controller. Asking only
+                // AnyDs3Paired disarms patching on those machines and the pad
+                // silently stops connecting, so the durable devnode marker counts
+                // too.
+                bool paired = AnyDs3Paired();
+                bool hasNode = Ds3DriverInstaller.MachineHasDs3();
+                var (takeOwnership, wantPatching) = PsmPatchPolicy(dshm, paired, hasNode);
                 if (takeOwnership)
                     Ds3DriverInstaller.EnsurePadForgeOwnsPsmPatch();
                 else
                     Ds3DriverInstaller.RestoreBthPs3AutoArm();
-                LogLine($"PSM patch reconcile ({reason}): dshidmini={dshm} patching={wantPatching}.");
-                Ds3DriverInstaller.SetPsmPatching(wantPatching, LogLine);
+                LogLine($"PSM patch reconcile ({reason}): dshidmini={dshm} "
+                        + $"paired={paired} node={hasNode} patching={wantPatching}.");
+                // Wait for the filter when ARMING. This reconcile runs right
+                // after the ceremony's radio cycle, and the control device is
+                // absent while the filter re-attaches, so the arm used to
+                // no-op and leave the pad to be refused on the very first
+                // pairing of a clean machine. Disarming needs no wait: a
+                // filter that is not attached is already not patching.
+                int patched = Ds3DriverInstaller.SetPsmPatching(
+                    wantPatching, LogLine, wantPatching ? 20000 : 0);
+                if (wantPatching && patched == 0)
+                {
+                    LogLine("WARNING: PSM patching is not armed; the pad will be refused over Bluetooth.");
+                    return false;
+                }
+                return true;
             }
-            catch (Exception ex) { LogLine("PSM patch reconcile failed: " + ex.Message); }
+            catch (Exception ex) { LogLine("PSM patch reconcile failed: " + ex.Message); return false; }
         }
 
         public sealed class PairResult
@@ -135,7 +174,8 @@ namespace PadForge.Services
             public byte[] RadioMac { get; set; }
             public bool Success { get; set; }
             /// <summary>One of: no-radio, no-ds3-usb, winusb-bind-failed, sixpair-failed,
-            /// identity-inject-failed, install-failed, ok.</summary>
+            /// sixpair-not-committed, identity-inject-failed, install-failed,
+            /// driver-untrusted, psm-filter-missing, psm-arm-failed, cancelled, ok.</summary>
             public string Error { get; set; }
         }
 
@@ -186,8 +226,25 @@ namespace PadForge.Services
             _log($"Bluetooth radio: {Hex(radio, ':')}");
 
             // 2. Ensure the docked DS3 is bound to WinUSB so we can send its magic reports.
+            //    Distinguish "no pad plugged in" from "Windows will not accept
+            //    our driver package": the second is not something plugging the
+            //    cable in fixes, and telling the user to check the cable sent
+            //    discussion #283 chasing the wrong thing.
             if (!EnsureWinUsbBound(ct))
             {
+                // The installer reports WHICH step failed. Asking
+                // IsWinUsbPackageTrusted here instead blamed the certificate
+                // for a missing signing tool or a rejected INF just as
+                // readily, and a wrong cause is what left #283 with nothing
+                // to act on.
+                string why = Ds3DriverInstaller.LastWinUsbFailure;
+                if (why == "sign-failed" || why == "driver-untrusted")
+                {
+                    _log("Windows will not install PadForge's USB driver for the DS3. "
+                         + "The diagnostics log records which step failed.");
+                    r.Error = "driver-untrusted";
+                    return r;
+                }
                 _log("Could not bind the DS3 to WinUSB. Is it connected by USB cable?");
                 r.Error = "winusb-bind-failed";
                 return r;
@@ -200,6 +257,7 @@ namespace PadForge.Services
 
             string path = FindWinUsbDs3();
             if (path == null) { _log("DS3 not found on USB."); r.Error = "no-ds3-usb"; return r; }
+            _log($"DS3 WinUSB interface: {path}");
 
             // WinUsb_Initialize requires the device handle opened FILE_FLAG_OVERLAPPED
             // (WinUSB contract; proven prototype ds3winusb Program.cs:153).
@@ -213,7 +271,27 @@ namespace PadForge.Services
                 {
                     // 3. Read the pad's own MAC (0xF2 bytes 4-9) - the registry key name.
                     byte[] f2 = new byte[17];
-                    if (!GetFeature(ifh, 0xF2, f2)) { _log($"Reading the DS3 MAC failed (err={Marshal.GetLastWin32Error()})."); r.Error = "sixpair-failed"; return r; }
+                    if (!GetFeature(ifh, 0xF2, f2))
+                    {
+                        string reportFault = LastTransferFault;
+                        // Split the failure at the transfer layer before
+                        // giving up: a standard descriptor read through the
+                        // SAME handle separates "the pad refuses the class
+                        // request" from "this handle reaches nothing". A
+                        // stale interface path opens and initializes but
+                        // dies exactly here with ERROR_GEN_FAILURE (#285).
+                        var dd = new byte[18];
+                        bool ddOk = WinUsb_GetDescriptor(ifh, 0x01, 0, 0, dd, (uint)dd.Length, out uint ddLen);
+                        _log(ddOk && ddLen >= 12
+                            ? $"GET_REPORT 0xF2 failed ({reportFault}); descriptor reads OK "
+                              + $"(VID={dd[9]:X2}{dd[8]:X2} PID={dd[11]:X2}{dd[10]:X2}): the pad is refusing the request."
+                            : $"GET_REPORT 0xF2 failed ({reportFault}) and the descriptor read failed too "
+                              + $"(err={(ddOk ? 0 : Marshal.GetLastWin32Error())}): this WinUSB handle reaches no live pad.");
+                        System.Threading.Thread.Sleep(300);
+                        if (!GetFeature(ifh, 0xF2, f2))
+                        { _log($"Reading the DS3 MAC failed ({LastTransferFault})."); r.Error = "sixpair-failed"; return r; }
+                        _log("GET_REPORT 0xF2 succeeded on retry.");
+                    }
                     byte[] ds3mac = new byte[6];
                     Array.Copy(f2, 4, ds3mac, 0, 6);
                     r.Ds3Mac = Hex(ds3mac, null).ToLowerInvariant();
@@ -226,13 +304,14 @@ namespace PadForge.Services
                     //    firmware actually committed the master (a returned-true control
                     //    transfer is not proof the pad stored it).
                     byte[] before = new byte[8];
-                    if (GetFeature(ifh, 0xF5, before))
+                    bool f5Readable = GetFeature(ifh, 0xF5, before);
+                    if (f5Readable)
                         _log($"Master before sixpair: {Hex(before[2..8], ':')}");
 
                     byte[] set = new byte[8];
                     set[0] = 0x01; set[1] = 0x00;
                     Array.Copy(radio, 0, set, 2, 6);
-                    if (!SetFeature(ifh, 0xF5, set)) { _log($"Sixpair write failed (err={Marshal.GetLastWin32Error()})."); r.Error = "sixpair-failed"; return r; }
+                    if (!SetFeature(ifh, 0xF5, set)) { _log($"Sixpair write failed ({LastTransferFault})."); r.Error = "sixpair-failed"; return r; }
 
                     byte[] after = new byte[8];
                     if (GetFeature(ifh, 0xF5, after))
@@ -244,8 +323,29 @@ namespace PadForge.Services
                             _log($"WARNING: pad did not store the radio address (wanted {Hex(radio, ':')}).");
                             r.Error = "sixpair-not-committed"; return r;
                         }
+                        _log("Sixpair written and confirmed.");
                     }
-                    _log("Sixpair written and confirmed.");
+                    else if (f5Readable)
+                    {
+                        // The pad answered this exact read moments ago, so a
+                        // failure now means it left the bus mid-ceremony, not
+                        // that it refuses the report. The write's completion
+                        // alone is not commit proof (the read-back exists
+                        // because of that premise), so registering the pairing
+                        // and reporting success here would hand the user a pad
+                        // that may still target its old master.
+                        _log($"Sixpair read-back failed after the write ({LastTransferFault}): "
+                             + "the pad was disconnected during pairing. Plug it back in and pair again.");
+                        r.Error = "sixpair-not-committed"; return r;
+                    }
+                    else
+                    {
+                        // This pad never answered a 0xF5 read (some clones
+                        // refuse the GET while accepting the SET). Keep the
+                        // long-standing tolerant behavior, but say what was
+                        // actually proven.
+                        _log("Sixpair written (this pad does not answer the 0xF5 read-back).");
+                    }
                 }
                 finally { WinUsb_Free(ifh); }
             }
@@ -271,7 +371,69 @@ namespace PadForge.Services
                 // 6. Cycle the radio so the drivers pick up the new record.
                 CycleRadio();
             }
+
+            // 7. The cycle just detached the filter. Do not tell the user to
+            // press PS until it is back AND patching is armed on it, because
+            // in that window nothing rewrites the pad's reserved PSM and the
+            // inbox HID stack refuses the connection: the pad then flashes
+            // forever and the only recovery the user finds is deleting the
+            // record and running the whole ceremony again.
+            //
+            // CycleRadio now sits out the fast-cycle teardown horizon before
+            // returning, so this wait probes the POST-cycle filter instance,
+            // never the dying one it used to pass against (bench 2026-08-07:
+            // that false positive armed a corpse and the pad flashed after a
+            // "successful" ceremony).
+            if (!Ds3DriverInstaller.WaitForPsmControlDevice(20000))
+            {
+                // Post-horizon absence means the filter genuinely did not
+                // re-attach to the recycled radio (the arcade MediaTek
+                // showed this state). The pairing itself is already written,
+                // so a radio toggle or a retry finishes the job; failing
+                // honestly beats reporting success into a pad that can only
+                // flash. NOTE the probe layer: this check runs elevated
+                // (PadForge always is). An UNELEVATED open of this control
+                // device returns FILE_NOT_FOUND, not ACCESS_DENIED, and
+                // that lie once built a whole false reboot-required theory
+                // on the bench (2026-08-07).
+                _log("The Bluetooth PSM filter did not return after the radio "
+                     + "cycle. Toggle Bluetooth off and on (or click Pair again); "
+                     + "the pairing itself is already written.");
+                ReconcilePsmPatchForCrashSafety("ds3-pair-filter-missing");
+                r.Error = "psm-filter-missing";
+                return r;
+            }
+            if (!ReconcilePsmPatchForCrashSafety("ds3-pair-armed"))
+            {
+                // The filter's control device is back (the wait above proved
+                // that) but arming the patch on it failed, which is the same
+                // user-visible outcome as the filter never returning: the pad's
+                // connection is refused and it can only flash. Same honest exit
+                // and same recovery as the sibling branch; the pairing itself
+                // is already written.
+                _log("The Bluetooth PSM filter came back but could not be "
+                     + "armed. Toggle Bluetooth off and on (or click Pair "
+                     + "again); the pairing itself is already written.");
+                r.Error = "psm-arm-failed";
+                return r;
+            }
+
             _log("Bluetooth radio cycled. Unplug the DS3 and press the PS button.");
+
+            // Baseline the BthPS3 child state at the moment the ceremony
+            // hands off. Every step above reports success and the pad can
+            // still flash forever afterwards (#285), and nothing we log
+            // distinguishes "the connection never reached BthPS3" from
+            // "BthPS3 built a child PnP could not start". Comparing this
+            // line against the same probe after a connection attempt is
+            // what separates them.
+            //
+            // DIAG ring ONLY (LogLine), never the dialog narration: at
+            // this instant the pad has not attempted a connection yet, so
+            // "NONE present" is the EXPECTED baseline, and surfacing it in
+            // the Pair dialog read as an error to the user (owner report
+            // 2026-08-08, screenshot).
+            Ds3DriverInstaller.LogBthPs3ChildState(LogLine);
 
             r.Success = true;
             r.Error = "ok";
@@ -319,6 +481,25 @@ namespace PadForge.Services
         /// </summary>
         public int UnpairAllDs3()
         {
+          // Suppression contract: the CALLER holds one SuppressAndRelease
+          // claim when this method starts (DevicesPage sets it before the
+          // Task.Run so the live pad detaches synchronously with the row
+          // removal), and this method ADOPTS that claim and releases it,
+          // exactly once, whatever happens. It does not acquire a second
+          // claim of its own. Suppression became refcounted in the round-41
+          // audit (two overlapping flows could un-suppress each other), and
+          // the previous shape here, acquire again + release once, was
+          // written for the old boolean: under a refcount it leaked one
+          // claim per unpair and the monitor never re-grabbed a pad until
+          // the app restarted (owner repro 2026-08-08: delete the
+          // controller and USB never reconnects).
+          //
+          // The try covers the WHOLE body, ReadRadioMac and the registry
+          // sweep included. The old placement started it after the sweep,
+          // so a throw in that stretch stranded the claim forever, the
+          // exact latch the release exists to prevent.
+          try
+          {
           lock (_radioGate)
           {
             byte[] radio = ReadRadioMac();
@@ -344,38 +525,39 @@ namespace PadForge.Services
             }
             catch (Exception ex) { _log("Enumerating DS3 records failed: " + ex.Message); }
 
-            // Detach the live pad and stop the reader re-grabbing it, so deleting the
-            // records + cycling the radio doesn't flash a ghost joystick back into the
-            // list mid-unpair. AllowReconnect ALWAYS runs (even on the no-records early
-            // return), else the caller's earlier SuppressAndRelease strands the pad.
-            PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
-            try
-            {
-                if (macs.Count == 0) return 0;
-                if (radio != null)
-                    foreach (string mac in macs)
-                        Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, mac, _log);
-                // No forced PDO node removal: dev.Remove() frees BthPS3's per-connection
-                // context, and the cycle's HCI disconnect then faults on it (BSOD 0xD1,
-                // 2026-07-09). The cycle alone disconnects the live pad through BthPS3's
-                // normal path against a VALID context.
-                CycleRadio();
-                _log($"Unpaired {macs.Count} DualShock 3 controller(s).");
-                // With these records gone, reconcile PSM patching: disarm it if
-                // no DS3 remains paired (issue #199 crash mitigation).
-                ReconcilePsmPatchForCrashSafety("ds3-unpair-all");
-                return macs.Count;
-            }
-            finally { PadForge.Common.Input.Ds3DirectService.AllowReconnect(); }
+            if (macs.Count == 0) return 0;
+            if (radio != null)
+                foreach (string mac in macs)
+                    Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, mac, _log);
+            // No forced PDO node removal: dev.Remove() frees BthPS3's per-connection
+            // context, and the cycle's HCI disconnect then faults on it (BSOD 0xD1,
+            // 2026-07-09). The cycle alone disconnects the live pad through BthPS3's
+            // normal path against a VALID context.
+            CycleRadio();
+            _log($"Unpaired {macs.Count} DualShock 3 controller(s).");
+            // With these records gone, reconcile PSM patching: disarm it if
+            // no DS3 remains paired (issue #199 crash mitigation).
+            ReconcilePsmPatchForCrashSafety("ds3-unpair-all");
+            return macs.Count;
           }
+          }
+          finally { PadForge.Common.Input.Ds3DirectService.AllowReconnect(); }
         }
 
         // ── local Bluetooth radio address (human/big-endian order per DsHidMini) ─
 
         /// <summary>The local radio's MAC in the byte order the DS3 expects (human /
         /// big-endian, i.e. rgBytes reversed - DsHidMini Ds3.c:364-368).</summary>
+        /// <summary>Reads the local radio's address. Waits for the radio
+        /// first: this is step 1 of the ceremony and it runs immediately after
+        /// the driver install, whose last act is a radio re-enumeration. A
+        /// straight read there returned null 300 ms after the install reported
+        /// success, so the FIRST Pair click failed with "No Bluetooth radio
+        /// found" and only a second click, seconds later, got through
+        /// (arcade-PC log, 00:09:11.807 then 00:09:24.294).</summary>
         public byte[] ReadRadioMac()
         {
+            Ds3DriverInstaller.WaitForBluetoothRadio(20000);
             var fp = new BLUETOOTH_FIND_RADIO_PARAMS { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_FIND_RADIO_PARAMS>() };
             IntPtr hFind = BluetoothFindFirstRadio(ref fp, out IntPtr hRadio);
             if (hFind == IntPtr.Zero) return null;
@@ -397,6 +579,28 @@ namespace PadForge.Services
 
         private static string FindWinUsbDs3() => FindInterfacePath(DS3_WINUSB_IF);
 
+        /// <summary>Why the last GetFeature/SetFeature returned false. Both
+        /// return false for TWO different reasons, and only one of them
+        /// leaves a meaningful last-error: a SHORT transfer returns false
+        /// with the underlying call having SUCCEEDED, so
+        /// Marshal.GetLastWin32Error() there is a stale value from some
+        /// unrelated earlier call. Printing it handed a bug reporter a
+        /// fictitious error code on the one path this arc depends on for
+        /// field diagnosis. Callers print this instead.</summary>
+        private static string _lastTransferFault = "";
+
+        /// <summary>Human-readable cause of the last failed transfer: the
+        /// real Win32 error when the call failed, or the short-read length
+        /// when it succeeded without moving the whole buffer.</summary>
+        private static string LastTransferFault => _lastTransferFault;
+
+        /// <summary>GET_REPORT(FEATURE). A control-IN transfer may SHORT
+        /// COMPLETE: WinUsb_ControlTransfer returns TRUE having moved fewer
+        /// bytes than asked. Ignoring the transferred count let a truncated
+        /// 0xF2 reply leave the zero-filled buffer's MAC bytes untouched,
+        /// so the ceremony read the pad's address as 00:00:00:00:00:00,
+        /// wrote the remembered-device record and the link key under that
+        /// name, and reported success. The whole buffer must arrive.</summary>
         private static bool GetFeature(IntPtr ifh, byte reportId, byte[] buf)
         {
             var s = new WINUSB_SETUP_PACKET
@@ -404,7 +608,18 @@ namespace PadForge.Services
                 RequestType = 0xA1, Request = 0x01,
                 Value = (ushort)((0x03 << 8) | reportId), Index = 0, Length = (ushort)buf.Length
             };
-            return WinUsb_ControlTransfer(ifh, s, buf, (uint)buf.Length, out _, IntPtr.Zero);
+            if (!WinUsb_ControlTransfer(ifh, s, buf, (uint)buf.Length, out uint moved, IntPtr.Zero))
+            {
+                _lastTransferFault = "err=" + Marshal.GetLastWin32Error();
+                return false;
+            }
+            if (moved != (uint)buf.Length)
+            {
+                _lastTransferFault = $"short read, {moved} of {buf.Length} bytes";
+                return false;
+            }
+            _lastTransferFault = "";
+            return true;
         }
 
         private static bool SetFeature(IntPtr ifh, byte reportId, byte[] buf)
@@ -414,7 +629,18 @@ namespace PadForge.Services
                 RequestType = 0x21, Request = 0x09,
                 Value = (ushort)((0x03 << 8) | reportId), Index = 0, Length = (ushort)buf.Length
             };
-            return WinUsb_ControlTransfer(ifh, s, buf, (uint)buf.Length, out _, IntPtr.Zero);
+            if (!WinUsb_ControlTransfer(ifh, s, buf, (uint)buf.Length, out uint moved, IntPtr.Zero))
+            {
+                _lastTransferFault = "err=" + Marshal.GetLastWin32Error();
+                return false;
+            }
+            if (moved != (uint)buf.Length)
+            {
+                _lastTransferFault = $"short write, {moved} of {buf.Length} bytes";
+                return false;
+            }
+            _lastTransferFault = "";
+            return true;
         }
 
         // ── driver install + radio cycle + node removal (filled from grounding) ──
@@ -445,6 +671,13 @@ namespace PadForge.Services
             {
                 for (int i = 0; SetupDiEnumDeviceInterfaces(set, IntPtr.Zero, ref ifGuid, i, ref did); i++)
                 {
+                    // ACTIVE only: a registration persists in the registry
+                    // after the driver changes, and DIGCF_PRESENT filters by
+                    // DEVICE presence, not by interface state. A stale
+                    // registration on a pad now riding HidUsb enumerates
+                    // here and hands back a path whose transfers die with
+                    // ERROR_GEN_FAILURE (#285).
+                    if ((did.Flags & SPINT_ACTIVE) == 0) continue;
                     int req = 0;
                     SetupDiGetDeviceInterfaceDetail(set, ref did, IntPtr.Zero, 0, ref req, IntPtr.Zero);
                     IntPtr det = Marshal.AllocHGlobal(req);
@@ -465,7 +698,7 @@ namespace PadForge.Services
 
         private static readonly IntPtr INVALID_HANDLE = new IntPtr(-1);
         private const uint GENERIC_READ = 0x80000000, GENERIC_WRITE = 0x40000000, FILE_SHARE_RW = 3, OPEN_EXISTING = 3, FILE_FLAG_OVERLAPPED = 0x40000000;
-        private const int DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10;
+        private const int DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10, SPINT_ACTIVE = 0x1;
 
         [StructLayout(LayoutKind.Sequential)] private struct BLUETOOTH_FIND_RADIO_PARAMS { public uint dwSize; }
         [StructLayout(LayoutKind.Sequential)] private struct BLUETOOTH_ADDRESS { public ulong ullLong; }
@@ -486,6 +719,8 @@ namespace PadForge.Services
         [DllImport("winusb.dll", SetLastError = true)] private static extern bool WinUsb_Free(IntPtr ifh);
         [DllImport("winusb.dll", SetLastError = true)]
         private static extern bool WinUsb_ControlTransfer(IntPtr ifh, WINUSB_SETUP_PACKET setup, byte[] buf, uint len, out uint moved, IntPtr ov);
+        [DllImport("winusb.dll", SetLastError = true)]
+        private static extern bool WinUsb_GetDescriptor(IntPtr ifh, byte type, byte index, ushort langId, byte[] buf, uint len, out uint transferred);
 
         [StructLayout(LayoutKind.Sequential)] private struct SP_DEVICE_INTERFACE_DATA { public int cbSize; public Guid InterfaceClassGuid; public int Flags; public IntPtr Reserved; }
         [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr SetupDiGetClassDevs(ref Guid g, IntPtr e, IntPtr w, int f);

@@ -114,6 +114,19 @@ namespace PadForge.Engine
         /// (issue #151).</summary>
         public bool HasJoyConIr { get; private set; }
 
+        /// <summary>Switch 2 magnetometer stream (#271 item 5). Raw wire
+        /// units on wrapper-local fields rather than CustomInputState, so
+        /// the Remote Link codec (whose Block enum is full) is untouched:
+        /// the compass fusion consumes them through an App-layer provider.</summary>
+        public bool HasSwitch2Magnetometer { get; private set; }
+        public float Switch2MagX { get; private set; }
+        public float Switch2MagY { get; private set; }
+        public float Switch2MagZ { get; private set; }
+        /// <summary>False until the first nonzero sample: the stream is
+        /// inactive before the sensor warms up (the mouse reader's
+        /// all-zero idiom), and a zero triple must not feed the compass.</summary>
+        public bool Switch2MagActive { get; private set; }
+
         /// <summary>Whether this is a Joy-Con 2 (L or R) whose optical mouse
         /// sensor PadForge surfaces as "Mouse Motion X/Y" sources (issue #154).
         /// True when the fork's BLE Switch 2 driver posts the sensor counters
@@ -474,7 +487,16 @@ namespace PadForge.Engine
             // average-intensity byte there once the camera powers (hint + sensors
             // enabled). Same detection idiom as the Wii IR axes above: the raw
             // joystick axis count is the stable signal the SDL contract defines.
-            HasJoyConIr = VendorId == 0x057E && ProductId == 0x2007
+            // PID 0x2007 = standalone right Joy-Con; 0x2008 = combined gen-1
+            // pair, whose right half runs the same camera machine and posts
+            // on the shared joystick's axis 6 since SDL#26 (#275). The
+            // naxes >= 7 contract keeps a pre-#26 DLL and the gen-2 pair
+            // (PID 0x2068, mouse sensor, 6 axes) excluded either way, and
+            // this gate doubles as the HasExtraGenericAxes exclusion below,
+            // so without it a pair's IR axis would leak into the generic
+            // "Axis 7" source and poison the input-activity detectors.
+            HasJoyConIr = VendorId == 0x057E
+                && (ProductId == 0x2007 || ProductId == 0x2008)
                 && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 7;
 
             // Joy-Con 2 optical mouse sensor (issue #154). The fork's BLE Switch 2
@@ -485,6 +507,19 @@ namespace PadForge.Engine
             HasJoyCon2Mouse = VendorId == 0x057E
                 && (ProductId == 0x2066 || ProductId == 0x2067)
                 && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 8;
+
+            // Switch 2 magnetometer (#271 item 5, SDL#25 fork cfcdeb26e0).
+            // The BLE driver posts the raw int16 sample on the three axes
+            // AFTER whichever mouse axes exist; the raw axis count is the
+            // availability contract (6 neither, 8 mouse, 9 magnetometer,
+            // 11 both, SDL_ble_switch2joystick.c BLE_PostMagnetometerAxes).
+            // Joy-Con 2 decode paths only; the Pro 2 decoder is not wired
+            // (fork's own scope note), and BLE devices never combine, so
+            // the PIDs are the two singles.
+            HasSwitch2Magnetometer = VendorId == 0x057E
+                && (ProductId == 0x2066 || ProductId == 0x2067)
+                && Joystick != IntPtr.Zero
+                && SDL_GetNumJoystickAxes(Joystick) >= (HasJoyCon2Mouse ? 11 : 9);
 
             // NFC reader (issue #241/#248, SDL#15). The NFC/IR MCU lives on
             // the classic Switch right Joy-Con (PID 0x2007) and Pro
@@ -714,6 +749,13 @@ namespace PadForge.Engine
             if (HasJoyCon2Mouse && state != null)
                 ReadJoyCon2Mouse(state);
 
+            // Switch 2 magnetometer (#271 item 5): raw int16 sample on the
+            // three axes after the mouse pair, read joystick-direct into
+            // the wrapper-local fields (never CustomInputState, see the
+            // property comment).
+            if (HasSwitch2Magnetometer)
+                ReadSwitch2Magnetometer();
+
             // NFC tag reader (issue #241). Read gamepad-layer, gated on the
             // arming provider so the MCU stays off (and this stays a no-op)
             // until a slot arms an NFC trigger.
@@ -830,6 +872,30 @@ namespace PadForge.Engine
         // baseline pair), which is why these fields need no synchronization.
         private int _jc2MousePrevX, _jc2MousePrevY;
         private bool _jc2MouseHasPrev;
+
+        /// <summary>Reads the raw magnetometer triple (#271 item 5). Axis
+        /// base follows the availability contract: the mag axes sit after
+        /// whichever mouse axes exist (SDL_ble_switch2joystick.c
+        /// BLE_PostMagnetometerAxes: base = gamepad count + mouse pair).
+        /// The all-zero triple marks the stream inactive; a real sample
+        /// crossing exactly (0,0,0) costs one skipped update, not a wrong
+        /// heading, the mouse reader's trade.</summary>
+        private void ReadSwitch2Magnetometer()
+        {
+            int magBase = HasJoyCon2Mouse ? 8 : 6;
+            short mx = SDL_GetJoystickAxis(Joystick, magBase);
+            short my = SDL_GetJoystickAxis(Joystick, magBase + 1);
+            short mz = SDL_GetJoystickAxis(Joystick, magBase + 2);
+            if (mx == 0 && my == 0 && mz == 0)
+            {
+                Switch2MagActive = false;
+                return; // fields keep their last sample; Active gates use
+            }
+            Switch2MagX = mx;
+            Switch2MagY = my;
+            Switch2MagZ = mz;
+            Switch2MagActive = true;
+        }
 
         private void ReadJoyCon2Mouse(CustomInputState state)
         {

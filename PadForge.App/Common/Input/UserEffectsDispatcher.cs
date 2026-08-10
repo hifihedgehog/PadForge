@@ -289,6 +289,45 @@ namespace PadForge.Common.Input
         private readonly Dictionary<Guid, bool> _prevPadForgeWantsRightTrig = new();
         private readonly Dictionary<Guid, bool> _prevPadForgeWantsLeftTrig = new();
 
+        // Same shape again for the mic LED. Held every tick, the mic-light
+        // enable bit republishes our MicLedMode over whatever an external
+        // program set, 1.5 s after their grace window closes.
+        private readonly Dictionary<Guid, bool> _prevPadForgeWantsMicLed = new();
+
+        // And again for the player-indicator row. Held every tick, the
+        // player-indicator enable bit republishes our pips over an
+        // external writer's once their grace window closes.
+        private readonly Dictionary<Guid, bool> _prevPadForgeWantsPips = new();
+
+        // Bounded unmute burst per device claim. Asserting AllowAudioMute
+        // over the zero-filled MuteControl byte is a correction for a pad
+        // an earlier owner left hardware-muted, and it has to run when we
+        // first take the pad. Held forever it also reverses any deliberate
+        // external mute within one dispatch frame, so it runs as a short
+        // burst and then stops. 60 frames is ~2 s at the 30 Hz dispatch
+        // cadence, which survives a dropped write during enumeration
+        // without becoming a standing order. Re-arms on a new InstanceGuid
+        // and on a fresh ownership claim, matching duaLib's
+        // one-shot-at-letGo usage (duaLib.cpp:180).
+        private const int AudioMuteBurstFrames = 60;
+        private readonly Dictionary<Guid, int> _audioMuteBurstLeft = new();
+
+        // Last headphone volume written per device, duaLib-style change
+        // gating (duaLib.cpp:617 asserts AllowHeadphoneVolume on change
+        // or reconnect and clears it otherwise). The VALUE ships every
+        // packet; only the enable bit is gated on this.
+        private readonly Dictionary<Guid, int> _prevHeadphoneVolume = new();
+
+        // Last output path written per device, same duaLib change gating
+        // as the headphone volume (duaLib.cpp:597).
+        private readonly Dictionary<Guid, int> _prevAudioOutputPath = new();
+
+        // Devices seen offline since their last dispatch, so the return
+        // re-arms every change-gated authority write (the duaLib
+        // wasDisconnected pattern). Accessed only inside devices.SyncRoot
+        // during DispatchSnapshot, like the prev maps above.
+        private readonly HashSet<Guid> _deviceWasOffline = new();
+
         // Devices this dispatcher wrote on its previous dispatch as their
         // OWNER (single-writer ownership, owner facts 2026-07-20). On the
         // first owned dispatch of a device the prev-state maps above are
@@ -344,6 +383,9 @@ namespace PadForge.Common.Input
         // returns to PadForge for that subsystem.
         private const long ExternalSubsystemGraceMs = 1500;
 
+        private static long _lbFieldsLastLog;
+        private static string _lbLastSig;
+
         private struct ExternalSubsystemState
         {
             public long RumbleTick;
@@ -379,6 +421,109 @@ namespace PadForge.Common.Input
             public byte LedBrightness;
         }
 
+        /// <summary>Decides whether this dispatch asserts a mirrored
+        /// subsystem's enable bit, and what the per-device "PadForge wanted
+        /// this last frame" flag becomes.
+        ///
+        /// <para>Assert when PadForge is authoring the subsystem, when an
+        /// external writer is currently being mirrored (their bytes need
+        /// the gate open to land), or for one transition frame after
+        /// PadForge stopped wanting it (so a user's Solid-to-Off or
+        /// AT-to-Off change actually reaches the firmware instead of
+        /// leaving the previous state latched).</para>
+        ///
+        /// <para>NextPrev tracks PadForge's OWN intent and nothing else.
+        /// Folding <paramref name="externalMirroring"/> into it makes the
+        /// frame after their grace window expires look like a PadForge
+        /// transition, which fires a "disengage" packet carrying OUR value
+        /// over the one they just set. That defeats the entire point of the
+        /// mirror: every one of these subsystems is supposed to let an
+        /// external writer's state persist in firmware once we stand down.
+        /// Cost the mic LED and the adaptive triggers exactly that,
+        /// reported on hardware 2026-08-01.</para></summary>
+        internal static (bool Assert, bool NextPrev) GateMirroredSubsystem(
+            bool padForgeWants, bool externalMirroring, bool prevPadForgeWanted)
+            => (padForgeWants || externalMirroring || prevPadForgeWanted, padForgeWants);
+
+        // Devices assigned to this slot on the previous dispatch. A
+        // change here means the user re-assigned the slot, which is a
+        // deliberate identity claim and has to re-arm state that is
+        // otherwise latched for the life of the process.
+        private readonly HashSet<Guid> _lastAssignedGuids = new();
+
+        /// <summary>Reacts to this slot's assigned-device set changing.
+        ///
+        /// <para>Two latches survive an unassign and would otherwise make
+        /// a re-assigned pad behave as though it had never left, until the
+        /// app is restarted. Reported 2026-08-01: unassign a DualSense,
+        /// re-assign it, and it never picks up its slot's identity colour.</para>
+        ///
+        /// <para>The first is <see cref="ExternalSubsystemState"/>. It is
+        /// static, keyed by pad index, and deliberately never reset so a
+        /// game's lightbar write survives VC recreates on the slot (#191).
+        /// That makes <c>LightbarEverExternal</c> true forever once anything
+        /// writes the bar, which permanently disarms the identity floor:
+        /// <c>floorArmed = playerNumber &gt; 0 &amp;&amp; !LightbarEverExternal</c>.
+        /// Surviving a VC recreate is right. Surviving the device leaving
+        /// the slot is not, because the next assignment is a fresh claim.</para>
+        ///
+        /// <para>The second is <see cref="_ownedLastDispatch"/>. An unassigned
+        /// device is skipped by the guid filter rather than removed, so its
+        /// entry lingers and the re-add returns false, silently skipping the
+        /// seed block that emits the mandatory stop/disengage frame.</para></summary>
+        /// <summary>True when this slot's assigned-device set differs from
+        /// the previous dispatch. Order does not matter and duplicates cannot
+        /// occur, so a count comparison plus a membership sweep is exact.</summary>
+        internal static bool AssignmentSetChanged(
+            System.Collections.Generic.IReadOnlyList<Guid> current,
+            System.Collections.Generic.HashSet<Guid> previous)
+        {
+            if (current == null || previous == null) return false;
+            if (current.Count != previous.Count) return true;
+            for (int i = 0; i < current.Count; i++)
+            {
+                if (!previous.Contains(current[i])) return true;
+            }
+            return false;
+        }
+        private void OnAssignmentSetObserved(System.Collections.Generic.List<Guid> guids, DeviceCollection devices)
+        {
+            if (!AssignmentSetChanged(guids, _lastAssignedGuids)) return;
+
+            // Devices that left keep no ownership seed, so a later
+            // re-assignment reseeds and emits its stop frame. These maps
+            // are documented as devices.SyncRoot-only, and DispatchSnapshot
+            // is NOT serialized per instance (static callers reach it via
+            // inst.DispatchSnapshot), so the lock is load-bearing here.
+            lock (devices.SyncRoot)
+            {
+                foreach (var g in _lastAssignedGuids)
+                {
+                    if (guids.Contains(g)) continue;
+                    _ownedLastDispatch.Remove(g);
+                    _prevHadRumble.Remove(g);
+                    _prevPadForgeWantsRightTrig.Remove(g);
+                    _prevPadForgeWantsLeftTrig.Remove(g);
+                    _prevPadForgeWantsMicLed.Remove(g);
+                    _prevPadForgeWantsPips.Remove(g);
+                    _audioMuteBurstLeft.Remove(g);
+                    _prevHeadphoneVolume.Remove(g);
+                    _prevAudioOutputPath.Remove(g);
+                }
+            }
+
+            // Re-arm the identity floor for this slot. Dropping the whole
+            // per-slot record is the point: LightbarEverExternal and
+            // PlayerIndicatorEverExternal are both derived from ticks in it,
+            // and both should start clean for a newly assigned device.
+            lock (s_externalStateLock)
+            {
+                s_externalState.Remove(_padIndex);
+            }
+
+            _lastAssignedGuids.Clear();
+            foreach (var g in guids) _lastAssignedGuids.Add(g);
+        }
         private static readonly Dictionary<int, ExternalSubsystemState> s_externalState = new();
         private static readonly object s_externalStateLock = new();
 
@@ -409,6 +554,23 @@ namespace PadForge.Common.Input
             /// floor that reclaims the bar 1.5 s after a one-shot game
             /// write would stomp exactly those games.</summary>
             public bool LightbarEverExternal;
+
+            /// <summary>True once ANY external write has touched this
+            /// slot's player-indicator row this process lifetime, even
+            /// outside the grace window. Same stand-down semantic as
+            /// <see cref="LightbarEverExternal"/>: PadForge's identity
+            /// floor owns the pips until something else claims them, and
+            /// then yields for the session so the claimant's row persists
+            /// in firmware instead of being overwritten 1.5 s later.</summary>
+            public bool PlayerIndicatorEverExternal;
+            /// <summary>The last RGB an external writer set, RETAINED past
+            /// the grace window (unlike <see cref="LightbarRgb"/>, which is
+            /// grace-gated and means "they own the bar right now"). When
+            /// PadForge is deliberately not authoring the bar it carries
+            /// these bytes instead of zeros, so a firmware that honours the
+            /// RGB regardless of the enable bit re-applies the same colour
+            /// rather than blanking it.</summary>
+            public byte[] LastLightbarRgb;
         }
 
         /// <summary>Called by <c>HMaestroVirtualController.OutputDecoded</c>
@@ -516,6 +678,33 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Copies the last game-written 11-byte trigger-effect
+        /// blocks for the slot into the caller's buffers, for the
+        /// AT-to-impulse translation (#271 item 3). Unlike the
+        /// grace-gated DS5 mirror in <see cref="GetActiveOverrides"/>,
+        /// the blocks are handed out for as long as they stay latched:
+        /// adaptive-trigger programs are stateful on real firmware (set
+        /// once, held until overwritten), so the translation holds them
+        /// the same way. A side the game never wrote comes back zeroed
+        /// (mode 0x00 = off). Returns false when the slot has never seen
+        /// a trigger-effect write at all. Copies, never aliases: the
+        /// backing arrays are rewritten in place under the lock on every
+        /// external effect packet.</summary>
+        public static bool TryGetInboundTriggerEffects(int padIndex, Span<byte> left, Span<byte> right)
+        {
+            if (left.Length < 11 || right.Length < 11) return false;
+            lock (s_externalStateLock)
+            {
+                if (!s_externalState.TryGetValue(padIndex, out var st)) return false;
+                if (st.LeftTrig == null && st.RightTrig == null) return false;
+                left.Slice(0, 11).Clear();
+                right.Slice(0, 11).Clear();
+                if (st.LeftTrig != null) st.LeftTrig.AsSpan(0, 11).CopyTo(left);
+                if (st.RightTrig != null) st.RightTrig.AsSpan(0, 11).CopyTo(right);
+                return true;
+            }
+        }
+
         private static ExternalSubsystemOverrides GetActiveOverrides(int padIndex)
         {
             var ov = default(ExternalSubsystemOverrides);
@@ -545,8 +734,11 @@ namespace PadForge.Common.Input
                 if (now - st.LightbarTick < ExternalSubsystemGraceMs)
                     ov.LightbarRgb = new byte[] { st.LightbarR, st.LightbarG, st.LightbarB };
                 ov.LightbarEverExternal = st.LightbarTick != 0;
+                if (st.LightbarTick != 0)
+                    ov.LastLightbarRgb = new[] { st.LightbarR, st.LightbarG, st.LightbarB };
                 if (now - st.PlayerIndTick < ExternalSubsystemGraceMs)
                     ov.PlayerIndicator = st.PlayerInd;
+                ov.PlayerIndicatorEverExternal = st.PlayerIndTick != 0;
                 if (now - st.LightbarSetupTick < ExternalSubsystemGraceMs)
                     ov.LightbarSetup = st.LightbarSetup;
                 if (now - st.LedBrightnessTick < ExternalSubsystemGraceMs)
@@ -1348,6 +1540,7 @@ namespace PadForge.Common.Input
                         owners, ref groupMask);
             }
             _groupSlotsMask = groupMask;
+            OnAssignmentSetObserved(guids, devices);
             if (guids.Count == 0) return;
 
             // Payloads are built under the device lock and written after it.
@@ -1379,7 +1572,38 @@ namespace PadForge.Common.Input
                     bool isPs = isDs5 || isDs4;
 
                     if (!guids.Contains(ud.InstanceGuid)) continue;
-                    if (!ud.IsOnline) continue;
+                    if (!ud.IsOnline)
+                    {
+                        // Remember the outage so the return re-arms below.
+                        _deviceWasOffline.Add(ud.InstanceGuid);
+                        continue;
+                    }
+                    if (_deviceWasOffline.Remove(ud.InstanceGuid))
+                    {
+                        // The device came back. A USB re-enumeration (and a BT
+                        // re-pair) FACTORY-RESETS the pad's audio state: output
+                        // path back to headphones, volumes back to defaults,
+                        // mute state cleared. Every change-gated authority
+                        // write in this dispatcher believed its value was
+                        // already applied, so nothing re-armed and the pad sat
+                        // on a silent headphone path until an app restart
+                        // happened to re-claim it. duaLib carries a
+                        // wasDisconnected flag for exactly this and ORs it
+                        // into every gate (duaLib.cpp:576/613/617). This is
+                        // that flag. Traced live 2026-08-01: replug left the
+                        // speaker silent on both endpoints while every sink
+                        // rebuilt cleanly.
+                        _prevHadRumble[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsLeftTrig[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsRightTrig[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsMicLed[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsPips[ud.InstanceGuid] = true;
+                        _audioMuteBurstLeft[ud.InstanceGuid] = AudioMuteBurstFrames;
+                        _prevHeadphoneVolume.Remove(ud.InstanceGuid);
+                        _prevAudioOutputPath.Remove(ud.InstanceGuid);
+                        Engine.SdlDiagLog.WriteLine("DISPATCH re-arm (device returned) guid="
+                            + ud.InstanceGuid.ToString("N").Substring(0, 8));
+                    }
                     if (!isPs) continue;
 
                     // Single-writer ownership (owner facts, 2026-07-20):
@@ -1405,6 +1629,15 @@ namespace PadForge.Common.Input
                         _prevHadRumble[ud.InstanceGuid] = true;
                         _prevPadForgeWantsLeftTrig[ud.InstanceGuid] = true;
                         _prevPadForgeWantsRightTrig[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsMicLed[ud.InstanceGuid] = true;
+                        _prevPadForgeWantsPips[ud.InstanceGuid] = true;
+                        // Same reasoning for the mic: a prior owner may
+                        // have left the pad hardware-muted, so a fresh
+                        // claim re-arms the bounded unmute burst.
+                        _audioMuteBurstLeft[ud.InstanceGuid] = AudioMuteBurstFrames;
+                        // Force one headphone-volume write on a fresh claim.
+                        _prevHeadphoneVolume.Remove(ud.InstanceGuid);
+                        _prevAudioOutputPath.Remove(ud.InstanceGuid);
                     }
 
                     // Identity precedence: a pad shared across virtual
@@ -1607,12 +1840,66 @@ namespace PadForge.Common.Input
                     // to 100 ("full") when the provider isn't wired so a
                     // misconfigured slot doesn't paint empty-battery red.
                     byte pctByte = SlotBatteryPercentProvider?.Invoke(_padIndex, ud.InstanceGuid) ?? (byte)100;
-                    bool assertRightTrig = padForgeWantsRightAt
-                        || devOverrides.RightTriggerEffect != null
-                        || prevPadForgeWantsRightAt;
-                    bool assertLeftTrig  = padForgeWantsLeftAt
-                        || devOverrides.LeftTriggerEffect != null
-                        || prevPadForgeWantsLeftAt;
+                    var rightTrigGate = GateMirroredSubsystem(
+                        padForgeWantsRightAt, devOverrides.RightTriggerEffect != null, prevPadForgeWantsRightAt);
+                    var leftTrigGate = GateMirroredSubsystem(
+                        padForgeWantsLeftAt, devOverrides.LeftTriggerEffect != null, prevPadForgeWantsLeftAt);
+                    bool assertRightTrig = rightTrigGate.Assert;
+                    bool assertLeftTrig  = leftTrigGate.Assert;
+
+                    // Mic LED, same rule as the triggers. FollowDeviceMute
+                    // counts as a deliberate intent: it resolves to Off or
+                    // Solid per frame and PadForge must author either.
+                    bool padForgeWantsMicLed = devCfg != null && devCfg.MicLedMode != MicLedMode.Off;
+                    bool prevWantsMicLed = _prevPadForgeWantsMicLed.TryGetValue(ud.InstanceGuid, out var pm) && pm;
+                    var micLedGate = GateMirroredSubsystem(
+                        padForgeWantsMicLed, devOverrides.MuteLed.HasValue, prevWantsMicLed);
+                    bool assertMicLed = micLedGate.Assert;
+                    _prevPadForgeWantsMicLed[ud.InstanceGuid] = micLedGate.NextPrev;
+
+                    // Player indicator, same rule. PadForge authors the row
+                    // when the user picked a deliberate PlayerLedMode, or
+                    // while the #191 identity floor is still armed because
+                    // nothing external has ever claimed the pips. Once
+                    // something has, the floor yields for the session
+                    // exactly as the lightbar's does, so an SDL or Steam
+                    // Input player-index assignment persists in firmware
+                    // instead of being overwritten 1.5 s later.
+                    bool padForgeWantsPips = devCfg == null
+                        || devCfg.PlayerLedMode != PlayerLedMode.PlayerNumber
+                        || !devOverrides.PlayerIndicatorEverExternal;
+                    bool prevWantsPips = _prevPadForgeWantsPips.TryGetValue(ud.InstanceGuid, out var pp) && pp;
+                    var pipsGate = GateMirroredSubsystem(
+                        padForgeWantsPips, devOverrides.PlayerIndicator.HasValue, prevWantsPips);
+                    bool assertPips = pipsGate.Assert;
+                    _prevPadForgeWantsPips[ud.InstanceGuid] = pipsGate.NextPrev;
+
+                    // Bounded unmute burst. Counts down per dispatch and
+                    // then stops, so an external program's deliberate mute
+                    // survives instead of being reversed the next frame.
+                    int muteBurst = _audioMuteBurstLeft.TryGetValue(ud.InstanceGuid, out var mb)
+                        ? mb : AudioMuteBurstFrames;
+                    bool assertAudioMute = muteBurst > 0;
+                    _audioMuteBurstLeft[ud.InstanceGuid] = muteBurst > 0 ? muteBurst - 1 : 0;
+
+                    // Headphone volume: assert the enable bit while the
+                    // audio-hardware claim burst runs or when the configured
+                    // value changed (slider, macro, profile apply). Idle,
+                    // the bit stays clear and the firmware retains state.
+                    int hpVol = devCfg?.HeadphoneVolume ?? 100;
+                    bool hpChanged = !_prevHeadphoneVolume.TryGetValue(ud.InstanceGuid, out var prevHp)
+                        || prevHp != hpVol;
+                    _prevHeadphoneVolume[ud.InstanceGuid] = hpVol;
+                    bool assertHeadphone = assertAudioMute || hpChanged;
+
+                    // Output path: only a non-Automatic choice is ever
+                    // authored, asserted on the claim burst or a change.
+                    int pathVal = AudioPassthroughService.ResolveOutputPath(
+                        devCfg != null ? (int)devCfg.AudioOutputPath : 0, ud.InstanceGuid);
+                    bool pathChanged = !_prevAudioOutputPath.TryGetValue(ud.InstanceGuid, out var prevPath)
+                        || prevPath != pathVal;
+                    _prevAudioOutputPath[ud.InstanceGuid] = pathVal;
+                    bool assertAudioCtl = pathVal > 0 && (assertAudioMute || pathChanged);
                     // Track whether THIS tick wrote a trigger effect for
                     // either source — PadForge cfg OR a dispatcher-injected
                     // override (external mirror, impulse-trigger → AT
@@ -1623,10 +1910,8 @@ namespace PadForge.Common.Input
                     // Without this, the DS5 firmware latches whatever
                     // trigger effect was last asserted (Vibration with
                     // impulse-trigger amplitude) and never disengages.
-                    _prevPadForgeWantsRightTrig[ud.InstanceGuid] = padForgeWantsRightAt
-                        || devOverrides.RightTriggerEffect != null;
-                    _prevPadForgeWantsLeftTrig[ud.InstanceGuid]  = padForgeWantsLeftAt
-                        || devOverrides.LeftTriggerEffect != null;
+                    _prevPadForgeWantsRightTrig[ud.InstanceGuid] = rightTrigGate.NextPrev;
+                    _prevPadForgeWantsLeftTrig[ud.InstanceGuid]  = leftTrigGate.NextPrev;
 
                     try
                     {
@@ -1678,7 +1963,9 @@ namespace PadForge.Common.Input
                                 _randomColor, devPulseColor, devPulseIntensity,
                                 rR, rL, assertRumbleEnable,
                                 assertRightTrig, assertLeftTrig, devOverrides, pctByte,
-                                devPlayerNumber)
+                                devPlayerNumber, assertMicLed, assertAudioMute,
+                                assertPips, hpVol, assertHeadphone,
+                                pathVal, assertAudioCtl)
                             : Ds4EffectSynthesizer.BuildFields(
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
@@ -1712,25 +1999,62 @@ namespace PadForge.Common.Input
                         Guid speakerCleared = Guid.Empty;
                         if (isDs5)
                         {
+                            // An explicit user Output Path owns byte 7 and its
+                            // enable bit; the #83 macro-speaker block keeps only
+                            // its speaker-VOLUME half. Automatic preserves the
+                            // old behaviour byte for byte.
+                            bool userPathForced = pathVal > 0;
                             if (AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid))
                             {
                                 int master = SoundMacroService.GetSlotVolume(_padIndex);
                                 byte spkVol = master <= 0
                                     ? (byte)0
                                     : (byte)(0x3D + master * (0x64 - 0x3D) / 100);
-                                fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0xA0);
+                                fields["validFlag0"] = (byte)((byte)fields["validFlag0"]
+                                    | (userPathForced ? 0x20 : 0xA0));
                                 fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
                                 fields["speakerVolume"] = spkVol;
-                                fields["audioControlFlags"] = (byte)(3 << 4);
+                                if (!userPathForced)
+                                    fields["audioControlFlags"] = (byte)(3 << 4);
                                 fields["audioControl2"] = (byte)3;
                             }
                             else if (AudioPassthroughService.PeekSpeakerPathCleared(ud.InstanceGuid))
                             {
-                                fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0x80);
-                                fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
-                                fields["audioControlFlags"] = (byte)0;
-                                fields["audioControl2"] = (byte)0;
+                                // Consume the one-shot either way so it cannot
+                                // fire a stale headphone restore later; with a
+                                // forced path there is nothing to restore, the
+                                // firmware already holds the user's choice.
+                                if (!userPathForced)
+                                {
+                                    fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0x80);
+                                    fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
+                                    fields["audioControlFlags"] = (byte)0;
+                                    fields["audioControl2"] = (byte)0;
+                                }
                                 speakerCleared = ud.InstanceGuid;
+                            }
+                        }
+
+                        // Final lightbar bytes as they go to the pad. The bar
+                        // has to survive the synthesizer, the speaker-path
+                        // merge and the drop-frame gate, and a dark bar looks
+                        // identical at every stage. Logs on CHANGE plus a slow
+                        // heartbeat, so a blanking write is visible as an
+                        // event rather than buried in a steady stream.
+                        {
+                            byte tvf1 = (byte)fields["validFlag1"];
+                            var trgb = fields.TryGetValue("lightbar", out var tv) ? tv as byte[] : null;
+                            string sig = $"{tvf1:X2}/{(trgb != null ? $"{trgb[0]},{trgb[1]},{trgb[2]}" : "none")}";
+                            long tnow = Environment.TickCount64;
+                            if (sig != _lbLastSig || tnow - _lbFieldsLastLog >= 5000)
+                            {
+                                _lbLastSig = sig;
+                                _lbFieldsLastLog = tnow;
+                                PadForge.Engine.SdlDiagLog.WriteLine(
+                                    $"LIGHTBAR out vf1=0x{tvf1:X2} ledBit={((tvf1 & 0x04) != 0)}"
+                                    + $" rgb={(trgb != null ? $"{trgb[0]},{trgb[1]},{trgb[2]}" : "none")}"
+                                    + $" vf2=0x{(fields.TryGetValue("validFlag2", out var t2) ? (byte)t2 : (byte)0):X2}"
+                                    + $" setup=0x{(fields.TryGetValue("lightbarSetup", out var ts) ? (byte)ts : (byte)0):X2}");
                             }
                         }
 

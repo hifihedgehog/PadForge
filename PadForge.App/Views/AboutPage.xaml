@@ -1,4 +1,4 @@
-<UserControl x:Class="PadForge.Views.AboutPage"
+﻿<UserControl x:Class="PadForge.Views.AboutPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -29,7 +29,27 @@
                 </StackPanel>
             </Border>
 
+            <!-- Testimony -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="&#xE734;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding About_Testimony, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
+            <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13" LineHeight="20"
+                               FontStyle="Italic"
+                               Text="{Binding About_TestimonyScripture, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13" LineHeight="20"
+                               FontStyle="Italic" Margin="0,12,0,0"
+                               Text="{Binding About_TestimonyDoxology, Source={x:Static strings:Strings.Instance}}"/>
+                </StackPanel>
+            </Border>
+
             <!-- Description -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="&#xE7C3;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding About_Overview, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" LineHeight="22" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            Text="{Binding About_Description, Source={x:Static strings:Strings.Instance}}"/>
@@ -47,6 +67,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -270,7 +292,13 @@
 
                     <TextBlock Grid.Row="44" Text="{Binding About_Ds4Mac, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
                     <TextBlock Grid.Row="44" Grid.Column="1"
-                               Text="{Binding About_Ds4MacDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>                </Grid>
+                               Text="{Binding About_Ds4MacDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="45" Text="{Binding About_DuaLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="45" Grid.Column="1"
+                               Text="{Binding About_DuaLibDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="46" Text="{Binding About_Ds5Bridge, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="46" Grid.Column="1"
+                               Text="{Binding About_Ds5BridgeDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>                </Grid>
             </Border>
 
             <!-- License -->
@@ -281,22 +309,6 @@
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12" LineHeight="18"
                            Text="{Binding About_LicenseText, Source={x:Static strings:Strings.Instance}}"/>
-            </Border>
-
-            <!-- Testimony -->
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                <TextBlock Text="&#xE734;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding About_Testimony, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
-            </StackPanel>
-            <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
-                <StackPanel>
-                    <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13" LineHeight="20"
-                               FontStyle="Italic"
-                               Text="{Binding About_TestimonyScripture, Source={x:Static strings:Strings.Instance}}"/>
-                    <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13" LineHeight="20"
-                               FontStyle="Italic" Margin="0,12,0,0"
-                               Text="{Binding About_TestimonyDoxology, Source={x:Static strings:Strings.Instance}}"/>
-                </StackPanel>
             </Border>
 
         </StackPanel>

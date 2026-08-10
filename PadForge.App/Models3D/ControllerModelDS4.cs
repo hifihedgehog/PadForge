@@ -3,20 +3,29 @@
 // Copyright (c) CasperH2O, Lesueur Benjamin, trippyone
 // Licensed under CC BY-NC-SA 4.0
 //
-// Modifications for PadForge: PadSetting-based button mapping,
-// embedded resource loading, click-to-record hit testing.
+// DualShock 4: purchased hado CGTrader mesh, classified into the HC
+// part names by spatial containment against the HC stand-in (the two
+// meshes decompose differently, so shell matching cannot align them),
+// sticks split at the fleet cap cut. Colorway atlas sets per folder.
 
-using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace PadForge.Models3D
 {
     /// <summary>
-    /// DualShock 4 controller model. Adapted from Handheld Companion's ModelDS4.
+    /// DualShock 4 controller model. Textured hado mesh with per-colorway
+    /// atlas sets; the touchpad surface (Screen) doubles as the click
+    /// target and finger-sphere host, as on DualSense.
     /// </summary>
     public class ControllerModelDS4 : ControllerModelBase
     {
+        public static readonly string[] AppearanceIds = { "JetBlack", "MagmaRed" };
+        public static readonly string[] AppearanceNames = { "Jet Black", "Magma Red" };
+
+        private static string Validate(string appearance)
+            => System.Array.IndexOf(AppearanceIds, appearance) >= 0 ? appearance : AppearanceIds[0];
+
         // DS4-specific mesh groups
         private readonly Model3DGroup LeftShoulderMiddle;
         private readonly Model3DGroup RightShoulderMiddle;
@@ -24,36 +33,29 @@ namespace PadForge.Models3D
         private readonly Model3DGroup MainBodyBack;
         private readonly Model3DGroup AuxPort;
         private readonly Model3DGroup Triangle;
-        private readonly Model3DGroup DPadDownArrow;
-        private readonly Model3DGroup DPadUpArrow;
-        private readonly Model3DGroup DPadLeftArrow;
-        private readonly Model3DGroup DPadRightArrow;
+        private readonly Model3DGroup DecalOverlay;
 
-        public ControllerModelDS4() : base("DS4")
+        public ControllerModelDS4(string appearance = "JetBlack")
+            : base($"DS4.{Validate(appearance)}")
         {
-            // ── Colors ──────────────────────────────────
-            var ColorPlasticBlack = (Color)ColorConverter.ConvertFromString("#38383A");
-            var ColorPlasticWhite = (Color)ColorConverter.ConvertFromString("#E0E0E0");
-
-            var MaterialPlasticBlack = new DiffuseMaterial(new SolidColorBrush(ColorPlasticBlack));
-            var MaterialPlasticWhite = new DiffuseMaterial(new SolidColorBrush(ColorPlasticWhite));
-
-            var MaterialPlasticTriangle = new DiffuseMaterial(
-                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#66a0a4")));
-            var MaterialPlasticCross = new DiffuseMaterial(
-                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#96b2d9")));
-            var MaterialPlasticCircle = new DiffuseMaterial(
-                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#d66673")));
-            var MaterialPlasticSquare = new DiffuseMaterial(
-                new SolidColorBrush((Color)ColorConverter.ConvertFromString("#d7bee5")));
+            var MaterialBody = LoadTexturedMaterial("Body.png");
+            var MaterialDecal = LoadTexturedMaterial("Decal.png");
 
             // ── Rotation points ─────────────────────────
             JoystickRotationPointCenterLeftMillimeter = new Vector3D(-25.5f, -5.086f, -21.582f);
             JoystickRotationPointCenterRightMillimeter = new Vector3D(25.5f, -5.086f, -21.582f);
             JoystickMaxAngleDeg = 19.0f;
 
-            ShoulderTriggerRotationPointCenterLeftMillimeter = new Vector3D(-38.061f, 3.09f, 26.842f);
-            ShoulderTriggerRotationPointCenterRightMillimeter = new Vector3D(38.061f, 3.09f, 26.842f);
+            // Same rule as the rest of the fleet: a third of the way up
+            // the trigger, by the Xbox One model's fraction of the part
+            // bounds, instead of at the top edge. The collision check is
+            // inconclusive here -- the DS4's L2 nests under L1, so the
+            // two meshes already interpenetrate 5.3 mm at rest and the
+            // measure cannot separate hinge travel from that overlap.
+            // The hinge was in the same wrong place as the others (0.81
+            // of the z span), so it is placed by the same rule.
+            ShoulderTriggerRotationPointCenterLeftMillimeter = new Vector3D(-38.061f, -0.34f, 18.59f);
+            ShoulderTriggerRotationPointCenterRightMillimeter = new Vector3D(38.061f, -0.34f, 18.59f);
             TriggerMaxAngleDeg = 16.0f;
 
             UpwardVisibilityRotationAxisLeft = new Vector3D(1, 0, 0);
@@ -61,42 +63,22 @@ namespace PadForge.Models3D
             UpwardVisibilityRotationPointLeft = new Vector3D(-48.868f, -13f, 29.62f);
             UpwardVisibilityRotationPointRight = new Vector3D(48.868f, -13f, 29.62f);
 
-            // ── Load DS4-specific meshes ─────────────────
+            // ── DS4-specific meshes ─────────────────────
             LeftShoulderMiddle = LoadModel("Shoulder-Left-Middle.obj");
             RightShoulderMiddle = LoadModel("Shoulder-Right-Middle.obj");
             Screen = LoadModel("Screen.obj");
-            Touchpad = Screen; // expose to ControllerModelView for click highlight + finger spheres
-            ClickMap[Screen] = "TouchpadClick"; // make the surface a hit target for mapping
+            Touchpad = Screen;                  // click highlight + finger spheres
+            ClickMap[Screen] = "TouchpadClick"; // hit target for mapping
             MainBodyBack = LoadModel("MainBodyBack.obj");
             AuxPort = LoadModel("Aux-Port.obj");
             Triangle = LoadModel("Triangle.obj");
-            DPadDownArrow = LoadModel("DPadDownArrow.obj");
-            DPadUpArrow = LoadModel("DPadUpArrow.obj");
-            DPadLeftArrow = LoadModel("DPadLeftArrow.obj");
-            DPadRightArrow = LoadModel("DPadRightArrow.obj");
 
-            // DS4 face button symbols (B1-Symbol.obj, etc.)
-            var symbolMap = new (string file, string padSetting, Material symbolMat)[]
-            {
-                ("B1-Symbol.obj", "ButtonA", MaterialPlasticCross),
-                ("B2-Symbol.obj", "ButtonB", MaterialPlasticCircle),
-                ("B3-Symbol.obj", "ButtonX", MaterialPlasticSquare),
-                ("B4-Symbol.obj", "ButtonY", MaterialPlasticTriangle),
-            };
-
-            foreach (var (file, padSetting, symbolMat) in symbolMap)
-            {
-                var symbol = TryLoadModel(file);
-                if (symbol == null) continue;
-
-                // Add symbol to the same ButtonMap entry so it highlights together
-                if (ButtonMap.TryGetValue(padSetting, out var list))
-                    list.Add(symbol);
-
-                model3DGroup.Children.Add(symbol);
-                SetMaterial(symbol, symbolMat);
-                DefaultMaterials[symbol] = symbolMat;
-            }
+            // Face-button symbols and d-pad arrows are DECAL art (their
+            // UVs address the decal atlas, not the body atlas: giving
+            // them MaterialBody skinned the buttons with whatever the
+            // body atlas holds at those coordinates). They ride their
+            // buttons so they press and highlight as one piece. Attached
+            // after DrawAccentHighlights, below, with MaterialDecal.
 
             model3DGroup.Children.Add(LeftShoulderMiddle);
             model3DGroup.Children.Add(RightShoulderMiddle);
@@ -104,60 +86,59 @@ namespace PadForge.Models3D
             model3DGroup.Children.Add(MainBodyBack);
             model3DGroup.Children.Add(AuxPort);
             model3DGroup.Children.Add(Triangle);
-            model3DGroup.Children.Add(DPadDownArrow);
-            model3DGroup.Children.Add(DPadUpArrow);
-            model3DGroup.Children.Add(DPadLeftArrow);
-            model3DGroup.Children.Add(DPadRightArrow);
 
-            // ── Per-button colors ───────────────────────
-            // DS4 base face buttons are black; symbols get their own colors (applied above)
-            if (ButtonMap.TryGetValue("ButtonA", out var mapA))
-                foreach (var m in mapA)
-                    if (!DefaultMaterials.ContainsKey(m))
-                    { DefaultMaterials[m] = MaterialPlasticBlack; SetMaterial(m, MaterialPlasticBlack); }
-            if (ButtonMap.TryGetValue("ButtonB", out var mapB))
-                foreach (var m in mapB)
-                    if (!DefaultMaterials.ContainsKey(m))
-                    { DefaultMaterials[m] = MaterialPlasticBlack; SetMaterial(m, MaterialPlasticBlack); }
-            if (ButtonMap.TryGetValue("ButtonX", out var mapX))
-                foreach (var m in mapX)
-                    if (!DefaultMaterials.ContainsKey(m))
-                    { DefaultMaterials[m] = MaterialPlasticBlack; SetMaterial(m, MaterialPlasticBlack); }
-            if (ButtonMap.TryGetValue("ButtonY", out var mapY))
-                foreach (var m in mapY)
-                    if (!DefaultMaterials.ContainsKey(m))
-                    { DefaultMaterials[m] = MaterialPlasticBlack; SetMaterial(m, MaterialPlasticBlack); }
-
-            // ── Generic materials ───────────────────────
+            // ── Materials ───────────────────────────────
+            foreach (var (target, _) in ButtonMap)
+            {
+                if (ButtonMap.TryGetValue(target, out var list))
+                    foreach (var grp in list)
+                    {
+                        ApplyMaterial(grp, MaterialBody);
+                        DefaultMaterials[grp] = MaterialBody;
+                    }
+            }
             foreach (Model3DGroup child in model3DGroup.Children)
             {
-                if (DefaultMaterials.ContainsKey(child))
-                    continue;
-
-                // White body parts
-                if (child == MainBody || child == LeftMotor || child == RightMotor
-                    || child == Triangle)
-                {
-                    SetMaterial(child, MaterialPlasticWhite);
-                    DefaultMaterials[child] = MaterialPlasticWhite;
-                    continue;
-                }
-
-                // Default black
-                SetMaterial(child, MaterialPlasticBlack);
-                DefaultMaterials[child] = MaterialPlasticBlack;
+                if (DefaultMaterials.ContainsKey(child)) continue;
+                ApplyMaterial(child, MaterialBody);
+                DefaultMaterials[child] = MaterialBody;
             }
 
             DrawAccentHighlights();
-        }
 
-        private static void SetMaterial(Model3DGroup group, Material material)
-        {
-            if (group.Children.Count > 0 && group.Children[0] is GeometryModel3D geo)
+            foreach (var (file, padSetting) in new[]
             {
-                geo.Material = material;
-                geo.BackMaterial = material;
+                ("B1-Symbol.obj", "ButtonA"), ("B2-Symbol.obj", "ButtonB"),
+                ("B3-Symbol.obj", "ButtonX"), ("B4-Symbol.obj", "ButtonY"),
+                ("DPadUpArrow.obj", "DPadUp"), ("DPadDownArrow.obj", "DPadDown"),
+                ("DPadLeftArrow.obj", "DPadLeft"), ("DPadRightArrow.obj", "DPadRight"),
+            })
+            {
+                if (ButtonMap.TryGetValue(padSetting, out var symList) && symList.Count > 0)
+                    AttachRiderDecal(symList[0], file, MaterialDecal);
+            }
+
+            AttachRiderDecal(LeftShoulderTrigger, "Decal-Shoulder-Left-Trigger.obj", MaterialDecal);
+            AttachRiderDecal(RightShoulderTrigger, "Decal-Shoulder-Right-Trigger.obj", MaterialDecal);
+            AttachRiderDecal(LeftThumbRing, "Decal-Joystick-Left-Ring.obj", MaterialDecal);
+            AttachRiderDecal(RightThumbRing, "Decal-Joystick-Right-Ring.obj", MaterialDecal);
+            // As on the DualSense: the L1/R1 lettering sat in the static
+            // Decal overlay, so it could not glow with a bumper press.
+            if (ButtonMap.TryGetValue("LeftShoulder", out var lbList) && lbList.Count > 0)
+                AttachRiderDecal(lbList[0], "Decal-L1.obj", MaterialDecal);
+            if (ButtonMap.TryGetValue("RightShoulder", out var rbList) && rbList.Count > 0)
+                AttachRiderDecal(rbList[0], "Decal-R1.obj", MaterialDecal);
+
+            DecalOverlay = TryLoadModel("Decal.obj");
+            if (DecalOverlay != null)
+            {
+                ApplyMaterial(DecalOverlay, MaterialDecal);
+                DefaultMaterials[DecalOverlay] = MaterialDecal;
+                model3DGroup.Children.Add(DecalOverlay);
             }
         }
+
+        /// <summary>Real-world scale mesh (161 mm body width).</summary>
+        public override double ModelScale => 1.0;
     }
 }

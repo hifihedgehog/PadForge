@@ -1,4 +1,4 @@
-// 3D controller model view adapted from Handheld Companion
+﻿// 3D controller model view adapted from Handheld Companion
 // https://github.com/Valkirie/HandheldCompanion
 // Copyright (c) CasperH2O, Lesueur Benjamin, trippyone
 // Licensed under CC BY-NC-SA 4.0
@@ -42,7 +42,7 @@ namespace PadForge.Views
         // Profile switches within the same asset folder (Xbox One ↔
         // Xbox Series) need to force a rebuild when this flag would
         // change so the Share mesh transitions between inert and live.
-        private bool _currentModelShareEnabled;
+        private bool _currentModelExtraControlsEnabled;
         private bool _dirty;
 
         // Trigger animation state (from HC OverlayModel)
@@ -98,6 +98,17 @@ namespace PadForge.Views
         // the rotation children and break left-drag camera rotation.
         private readonly ScaleTransform3D _modelScaleTransform = new(1, 1, 1);
 
+        // Vertical recenter, computed ONCE per model load from the mesh's
+        // static bounds (never live bounds: trigger pulls change the group's
+        // bounds a little, and a live binding would make the whole model bob
+        // with them). The camera frames the ORIGIN and yaw/pitch pivot
+        // there, so a family authored off-center hangs off-center and
+        // rotates about the wrong point. The DS4 meshes are authored with
+        // their vertical center 21.9 mm below origin (every other family is
+        // within 6 mm), which is why it sat low and clipped its handles at
+        // the bottom when pitched front-facing.
+        private readonly TranslateTransform3D _modelRecenter = new();
+
         public ControllerModelView()
         {
             InitializeComponent();
@@ -118,6 +129,10 @@ namespace PadForge.Views
             // (post-scale) center. With rotation first the rotated controller
             // would scale around its rotated bounding-box center, which
             // shifts when yaw isn't zero.
+            // Recenter runs FIRST, in model units, so the scale and the
+            // yaw/pitch rotations all see a model whose visual center is
+            // the origin: framing and the rotation pivot fix together.
+            _modelRotation.Children.Add(_modelRecenter);
             _modelRotation.Children.Add(_modelScaleTransform);
             _modelRotation.Children.Add(new RotateTransform3D(_yawRotation));
             _modelRotation.Children.Add(new RotateTransform3D(_pitchRotation));
@@ -176,9 +191,10 @@ namespace PadForge.Views
 
         private void OnVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // Model type change
+            // Model type change (or the pad's colorway selection)
             if (e.PropertyName == nameof(PadViewModel.OutputType)
-                || e.PropertyName == nameof(PadViewModel.ProfileId))
+                || e.PropertyName == nameof(PadViewModel.ProfileId)
+                || e.PropertyName == nameof(PadViewModel.Model3DAppearances))
             {
                 Dispatcher.Invoke(EnsureModel);
                 return;
@@ -219,23 +235,90 @@ namespace PadForge.Views
         //  Model lifecycle
         // ─────────────────────────────────────────────
 
+        // Model families that ship multiple appearance (colorway) atlas
+        // sets. Ids/names come from the model classes' registries.
+        private static (string[] ids, string[] names) AppearanceRegistry(string family) => family switch
+        {
+            "XboxSeries" => (ControllerModelXboxSeries.AppearanceIds, ControllerModelXboxSeries.AppearanceNames),
+            "DualSense" => (ControllerModelDualSense.AppearanceIds, ControllerModelDualSense.AppearanceNames),
+            "DS4" => (ControllerModelDS4.AppearanceIds, ControllerModelDS4.AppearanceNames),
+            "DualSenseEdge" => (ControllerModelDualSenseEdge.AppearanceIds, ControllerModelDualSenseEdge.AppearanceNames),
+            _ => (null, null),
+        };
+
+        private string _currentModelAppearance;
+        private bool _appearancePickerSyncing;
+
+        /// <summary>The pad's chosen appearance for a family, validated
+        /// against the registry (fallback: the family default).</summary>
+        private string ResolveAppearance(string family)
+        {
+            var (ids, _) = AppearanceRegistry(family);
+            if (ids == null || ids.Length == 0) return null;
+            string chosen = _vm?.GetModelAppearance(family);
+            return chosen != null && System.Array.IndexOf(ids, chosen) >= 0 ? chosen : ids[0];
+        }
+
+        private void UpdateAppearancePicker(string family)
+        {
+            var (ids, names) = AppearanceRegistry(family);
+            if (ids == null || ids.Length < 2)
+            {
+                AppearancePicker.Visibility = Visibility.Collapsed;
+                return;
+            }
+            _appearancePickerSyncing = true;
+            try
+            {
+                AppearancePicker.ItemsSource = names;
+                AppearancePicker.SelectedIndex = System.Array.IndexOf(ids, _currentModelAppearance ?? ids[0]);
+                AppearancePicker.Visibility = Visibility.Visible;
+            }
+            finally { _appearancePickerSyncing = false; }
+        }
+
+        private void AppearancePicker_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (_appearancePickerSyncing || _vm == null || _currentModel == null) return;
+            var (ids, _) = AppearanceRegistry(_currentModel.ModelFamily);
+            int i = AppearancePicker.SelectedIndex;
+            if (ids == null || i < 0 || i >= ids.Length) return;
+            // Writes the pad's Model3DAppearances, whose PropertyChanged
+            // re-enters EnsureModel and rebuilds with the new atlas set.
+            _vm.SetModelAppearance(_currentModel.ModelFamily, ids[i]);
+        }
+
         private void EnsureModel()
         {
             if (_vm == null) return;
 
-            // Per-profile asset selection — DualSense profiles get the
-            // DualSense mesh, Xbox One/Elite/Series/Adaptive profiles get
-            // the Xbox One mesh (HC has no Series-specific 3D), DualShock
-            // and Xbox 360 fall through unchanged.
+            // Per-profile asset selection. DualSense profiles get the
+            // DualSense mesh, the whole Xbox One/Elite/Series/Adaptive
+            // family gets the Series mesh, DualShock and Xbox 360 fall
+            // through unchanged.
             var (_, needed) = PadForge.Common.Input.HMaestroProfileCatalog.ResolveAssetFolders(
                 _vm.ProfileId, _vm.OutputType);
 
-            bool wantShare =
-                needed == "XBOXONE" &&
-                _vm.ProfileId != null &&
-                _vm.ProfileId.StartsWith("xbox-series-", System.StringComparison.OrdinalIgnoreCase);
+            // Two meshes are shared by profiles that do not all have every
+            // control on them: the Series mesh serves Xbox One / Elite /
+            // Adaptive, and the Switch 2 Pro mesh serves both Switch
+            // generations. Wire the borrowed-but-absent controls into the
+            // hover / click-to-record / highlight maps ONLY for the profile
+            // that actually has them. The meshes draw either way.
+            bool wantExtraControls = needed switch
+            {
+                "XboxSeries" => _vm.ProfileId != null && _vm.ProfileId.StartsWith(
+                    "xbox-series-", System.StringComparison.OrdinalIgnoreCase),
+                // Asked of the canonical wire table rather than matched on
+                // the profile id: the mesh is interactive exactly when the
+                // pad has the control, so the two cannot drift apart.
+                "Switch2Pro" => Models2D.NintendoPreviewMap.IndexOf(_vm.ProfileId, "ButtonC") >= 0,
+                _ => false,
+            };
 
-            if (_currentModel?.ModelName == needed && _currentModelShareEnabled == wantShare)
+            string appearance = ResolveAppearance(needed);
+            if (_currentModel?.ModelFamily == needed && _currentModelExtraControlsEnabled == wantExtraControls
+                && _currentModelAppearance == appearance)
                 return;
 
             // Model rebuild: drop retained per-thumb transform entries.
@@ -259,19 +342,22 @@ namespace PadForge.Views
 
             try
             {
-                // Xbox One mesh is shared with Xbox Series profiles, but
-                // only Series profiles actually expose Share. Pass the
-                // flag so non-Series profiles get an inert Share mesh
-                // (no hover / click / highlight) while Series profiles
-                // wire it into the click-to-record + highlight maps.
+                // Pass the flag so a borrowing profile gets inert meshes
+                // (no hover / click / highlight) for controls it does not
+                // have, while the owning profile wires them into the
+                // click-to-record + highlight maps.
                 _currentModel = needed switch
                 {
-                    "DS4" => new ControllerModelDS4(),
-                    "DualSense" => new ControllerModelDualSense(),
-                    "XBOXONE" => new ControllerModelXboxOne(enableShare: wantShare),
+                    "DS4" => new ControllerModelDS4(appearance ?? "JetBlack"),
+                    "DualSense" => new ControllerModelDualSense(appearance ?? "White"),
+                    "DualSenseEdge" => new ControllerModelDualSenseEdge(),
+                    "Switch2Pro" => new ControllerModelSwitch2Pro(wantExtraControls),
+                    "XboxSeries" => new ControllerModelXboxSeries(appearance ?? "Carbon", wantExtraControls),
                     _ => new ControllerModelXbox360()
                 };
-                _currentModelShareEnabled = wantShare;
+                _currentModelExtraControlsEnabled = wantExtraControls;
+                _currentModelAppearance = appearance;
+                UpdateAppearancePicker(needed);
 
                 ModelVisual3D.Content = _currentModel.model3DGroup;
                 // Update the per-model uniform scale on the existing
@@ -284,6 +370,12 @@ namespace PadForge.Views
                 _modelScaleTransform.ScaleX = s;
                 _modelScaleTransform.ScaleY = s;
                 _modelScaleTransform.ScaleZ = s;
+
+                // Vertical recenter from the freshly-loaded static bounds
+                // (see the field note). Z only: X centers are ~0 on every
+                // family, and Y (depth) only shifts apparent zoom.
+                var mb = _currentModel.model3DGroup.Bounds;
+                _modelRecenter.OffsetZ = mb.IsEmpty ? 0 : -(mb.Z + mb.SizeZ / 2.0);
                 BuildTouchpadFingerVisuals();
                 _dirty = true;
                 RebuildAnnotations();
@@ -313,8 +405,11 @@ namespace PadForge.Views
             if (_currentModel?.Touchpad == null) return;
 
             var accent = ResolveAccentColor();
+            // Fully opaque: the HC-era 0xC0 alpha let the interior geometry
+            // (motors, shell backs) show through the pressed pad on the
+            // hado meshes. Solid accent matches every other pressed button.
             _touchpadHighlightMaterial = new DiffuseMaterial(
-                new SolidColorBrush(Color.FromArgb(0xC0, accent.R, accent.G, accent.B)));
+                new SolidColorBrush(Color.FromArgb(0xFF, accent.R, accent.G, accent.B)));
 
             (_touchpadFinger0Visual, _touchpadFinger0Transform) = CreateFingerSphere(
                 Color.FromArgb(0xE6, 0xFF, 0x66, 0x00));   // orange — matches the 2D dot
@@ -484,40 +579,61 @@ namespace PadForge.Views
             "LeftShoulder", "RightShoulder",
             "ButtonBack", "ButtonStart", "ButtonGuide",
             "ButtonShare",
+            "ButtonMute",
+            "LeftFunction",
+            "RightFunction",
+            "ButtonC",
+            "LeftPaddle",
+            "RightPaddle",
             "DPadUp", "DPadDown", "DPadLeft", "DPadRight",
             "LeftThumbButton", "RightThumbButton"
         };
 
         private void HighlightButtons()
         {
+            // The hovered TARGET is owned by the hover highlight while the
+            // cursor sits on it (all of its groups, not just the hit one:
+            // the stick ring glows with the hovered click mesh).
+            string hoverTarget = _hoverGroup != null
+                && _currentModel.ClickMap.TryGetValue(_hoverGroup, out var ht) ? ht : null;
+
             foreach (var prop in ButtonProperties)
             {
                 if (!_currentModel.ButtonMap.TryGetValue(prop, out var groups))
                     continue;
 
                 bool pressed = GetButtonState(prop);
+                if (prop == hoverTarget)
+                    continue;
 
                 foreach (var group in groups)
                 {
                     if (group.Children.Count == 0 || group.Children[0] is not GeometryModel3D geo)
                         continue;
-                    if (geo.Material is not DiffuseMaterial)
+                    // Stick parts bypass the material-type guard: mid-
+                    // deflection their material is the graded MaterialGroup
+                    // and the press/restore pass must still own them. The
+                    // bumpers now glow the same way, so a pressed one is a
+                    // MaterialGroup too and would never be restored.
+                    bool isStick = ReferenceEquals(group, _currentModel.LeftThumbRing)
+                        || ReferenceEquals(group, _currentModel.RightThumbRing)
+                        || ReferenceEquals(group, _currentModel.LeftThumb)
+                        || ReferenceEquals(group, _currentModel.RightThumb)
+                        || IsShoulderButtonGroup(group);
+                    if (!isStick && geo.Material is not DiffuseMaterial)
                         continue;
-                    // The hovered group is owned by the hover highlight while
-                    // the cursor sits on it; without this skip the per-frame
-                    // reset stomps the hover material after a single frame.
                     if (group == _hoverGroup)
                         continue;
 
                     if (pressed && _currentModel.HighlightMaterials.TryGetValue(group, out var hlMat))
                     {
-                        geo.Material = hlMat;
-                        geo.BackMaterial = hlMat;
+                        SetGroupHighlight(group, geo, hlMat);
                     }
                     else if (_currentModel.DefaultMaterials.TryGetValue(group, out var defMat))
                     {
                         geo.Material = defMat;
                         geo.BackMaterial = defMat;
+                        RestoreRiderFlash(group, geo);
                     }
                 }
             }
@@ -538,6 +654,12 @@ namespace PadForge.Views
                 "ButtonStart" => _vm.ButtonStart,
                 "ButtonGuide" => _vm.ButtonGuide,
                 "ButtonShare" => _vm.ButtonShare,
+                "ButtonMute" => _vm.ButtonMute,
+                "LeftFunction" => _vm.LeftFunction,
+                "RightFunction" => _vm.RightFunction,
+                "ButtonC" => _vm.ButtonC,
+                "LeftPaddle" => _vm.LeftPaddle,
+                "RightPaddle" => _vm.RightPaddle,
                 "DPadUp" => _vm.DPadUp,
                 "DPadDown" => _vm.DPadDown,
                 "DPadLeft" => _vm.DPadLeft,
@@ -562,20 +684,50 @@ namespace PadForge.Views
             float normX = rawX / (float)short.MaxValue;
             float normY = rawY / (float)short.MaxValue;
 
-            // Gradient highlight on stick ring
-            if (thumbRing.Children.Count > 0 && thumbRing.Children[0] is GeometryModel3D geo)
+            // Gradient highlight on the whole cap head: every geometry in
+            // the ring group (the cap AND its knurl decal riders) grades
+            // with deflection so the head glows as one piece.
+            // The stick BUTTON's highlight owns the ring while pressed,
+            // hovered, or flashing (whole-stick glow at factor 1); this
+            // per-frame pass must not stomp it back to rest.
+            string btnProp = ReferenceEquals(thumbRing, _currentModel.LeftThumbRing)
+                ? "LeftThumbButton" : "RightThumbButton";
+            bool buttonOwned = GetButtonState(btnProp)
+                || (_hoverGroup != null
+                    && _currentModel.ClickMap.TryGetValue(_hoverGroup, out var hovT)
+                    && hovT == btnProp)
+                || _flashTarget == btnProp;
+            if (!buttonOwned)
             {
-                bool moved = normX != 0f || normY != 0f;
-                if (moved && _currentModel.DefaultMaterials.TryGetValue(thumbRing, out var defMat)
-                          && _currentModel.HighlightMaterials.TryGetValue(thumbRing, out var hlMat))
+                // Visual deadzone: real sticks rarely report exactly zero,
+                // and a drifting stick otherwise keeps its ring permanently
+                // accent-tinted (owner saw the RIGHT cap "off hue" while the
+                // left was fine; atlases were identical, this glow was the
+                // difference). Mapping is unaffected, this gates only the
+                // preview glow.
+                bool moved = Math.Abs(normX) > 0.05f || Math.Abs(normY) > 0.05f;
+                float factor = Math.Max(Math.Abs(normX), Math.Abs(normY));
+                void Grade(Model3DGroup grp)
                 {
-                    float factor = Math.Max(Math.Abs(normX), Math.Abs(normY));
-                    geo.Material = GradientHighlight(geo, defMat, hlMat, factor);
+                    _currentModel.DefaultMaterials.TryGetValue(grp, out var defMat);
+                    _currentModel.HighlightMaterials.TryGetValue(grp, out var hlMat);
+                    foreach (var child in grp.Children)
+                    {
+                        if (child is not GeometryModel3D g2) continue;
+                        if (moved && defMat != null && hlMat != null)
+                            g2.Material = GradientHighlight(g2,
+                                s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, factor,
+                                _currentModel.RiderDecals.Contains(g2));
+                        else if (s_riderDefaults.TryGetValue(g2, out var d0))
+                            g2.Material = d0;
+                    }
                 }
-                else if (_currentModel.DefaultMaterials.TryGetValue(thumbRing, out var def))
-                {
-                    geo.Material = def;
-                }
+                Grade(thumbRing);
+                // Deflection glow covers the WHOLE stick, same as the
+                // button glow: the click mesh (stem/base/cap flank)
+                // grades with the ring (owner follow-up to 740db508).
+                if (thumb is Model3DGroup thumbGroup)
+                    Grade(thumbGroup);
             }
 
             // Rotation
@@ -635,17 +787,22 @@ namespace PadForge.Views
 
             float value = (float)triggerNorm;
 
-            // Gradient color
-            if (triggerModel.Children.Count > 0 && triggerModel.Children[0] is GeometryModel3D geo)
+            // Gradient color across the whole trigger (its geometry and
+            // the label decal riders) so the pull glow covers the part.
             {
-                if (value > 0 && _currentModel.DefaultMaterials.TryGetValue(triggerModel, out var defMat)
-                              && _currentModel.HighlightMaterials.TryGetValue(triggerModel, out var hlMat))
+                _currentModel.DefaultMaterials.TryGetValue(triggerModel, out var defMat);
+                _currentModel.HighlightMaterials.TryGetValue(triggerModel, out var hlMat);
+                foreach (var child in triggerModel.Children)
                 {
-                    geo.Material = GradientHighlight(geo, defMat, hlMat, value);
-                }
-                else if (_currentModel.DefaultMaterials.TryGetValue(triggerModel, out var def))
-                {
-                    geo.Material = def;
+                    if (child is not GeometryModel3D g2) continue;
+                    // Same visual deadzone as the sticks: trigger sensor
+                    // noise must not keep the pull glow lit at rest.
+                    if (value > 0.03f && defMat != null && hlMat != null)
+                        g2.Material = GradientHighlight(g2,
+                            s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, value,
+                            _currentModel.RiderDecals.Contains(g2));
+                    else if (s_riderDefaults.TryGetValue(g2, out var d0))
+                        g2.Material = d0;
                 }
             }
 
@@ -673,10 +830,69 @@ namespace PadForge.Views
         private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
             s_highlightMaterials = new();
 
-        private static DiffuseMaterial GradientHighlight(GeometryModel3D owner,
-            Material defaultMaterial, Material highlightMaterial, float factor)
+        // Textured defaults (ImageBrush atlases) cannot express the lerp
+        // as a solid color: BrushColor's fallback made any deflection show
+        // the FULL accent. Overlay a per-owner translucent accent layer on
+        // top of the texture instead, alpha scaled by the factor, so the
+        // glow grades with stick/trigger intensity while the texture stays
+        // visible underneath.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, MaterialGroup>
+            s_texturedHighlightGroups = new();
+
+        // Per-geometry rest material for graded groups: riders inside a
+        // ring/trigger group carry their own decal material, so restoring
+        // the group default would repaint them wrongly.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, Material>
+            s_riderDefaults = new();
+
+        private static Material GradientHighlight(GeometryModel3D owner,
+            Material defaultMaterial, Material highlightMaterial, float factor,
+            bool riderDecal = false)
         {
             factor = Math.Clamp(factor, 0f, 1f);
+            if ((defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush || defaultMaterial is MaterialGroup)
+            {
+                var grp = s_texturedHighlightGroups.GetValue(owner, _ =>
+                {
+                    // Two layers: the art, and a LIT accent overlay. Lit
+                    // diffuse keeps the shading so shape and direction
+                    // read. The overlay must render EXACTLY like a plain
+                    // accent button (accent-colored brush under the same
+                    // rig): for the white-masked rider brush that means
+                    // AmbientColor = accent too. AmbientColor filters the
+                    // RAW brush independently of Color, so left white the
+                    // ambient term is grey (milky wash) and forced black
+                    // it vanishes (dim, harsh shading). Accent-colored,
+                    // every lighting term is accent-proportional: soft
+                    // fill, exact hue, shaded. Rider overlays stay masked
+                    // by the rider's alpha through a WHITE twin of the
+                    // rider brush, so dark art (the XS carbon knurl)
+                    // glows at full accent strength too.
+                    var mg = new MaterialGroup();
+                    mg.Children.Add(defaultMaterial);
+                    mg.Children.Add(riderDecal && (defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush rb
+                        ? new DiffuseMaterial(WhiteMaskBrush(rb))
+                        : new DiffuseMaterial(new SolidColorBrush()));
+                    return mg;
+                });
+                if (!ReferenceEquals(grp.Children[0], defaultMaterial))
+                    grp.Children[0] = defaultMaterial;
+                var accent = BrushColor((highlightMaterial as DiffuseMaterial)?.Brush);
+                var overlay = (DiffuseMaterial)grp.Children[1];
+                var tint = Color.FromArgb((byte)(factor * 255), accent.R, accent.G, accent.B);
+                if (overlay.Brush is SolidColorBrush solid)
+                {
+                    // accent-colored brush: its ambient term is already
+                    // accent-tinted, same as a plain accent button
+                    solid.Color = tint;
+                }
+                else
+                {
+                    overlay.Color = tint;          // diffuse term, alpha included
+                    overlay.AmbientColor = tint;   // ambient term matches the hue
+                }
+                return grp;
+            }
             // Cast-proof (#175 regression fix): a themed material may carry a
             // gradient brush; lerp from its first stop instead of crashing
             // the render loop with an invalid cast.
@@ -700,6 +916,38 @@ namespace PadForge.Views
             GradientBrush g when g.GradientStops.Count > 0 => g.GradientStops[0].Color,
             _ => Color.FromRgb(0xFF, 0x6B, 0x2C),
         };
+
+        // White-masked twins of rider atlas brushes (RGB forced white,
+        // alpha preserved, viewport settings cloned): the rider glow
+        // overlay multiplies its Color by these, giving full-strength
+        // accent wherever art exists regardless of the art's darkness.
+        // Keyed on the source brush so riders sharing one atlas share
+        // one 16 MB conversion.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<ImageBrush, ImageBrush>
+            s_whiteMaskBrushes = new();
+
+        private static ImageBrush WhiteMaskBrush(ImageBrush rb)
+        {
+            return s_whiteMaskBrushes.GetValue(rb, src =>
+            {
+                if (src.ImageSource is not System.Windows.Media.Imaging.BitmapSource bmp)
+                    return src;
+                var conv = new System.Windows.Media.Imaging.FormatConvertedBitmap(
+                    bmp, PixelFormats.Bgra32, null, 0);
+                int w = conv.PixelWidth, h = conv.PixelHeight, stride = w * 4;
+                var px = new byte[h * stride];
+                conv.CopyPixels(px, stride, 0);
+                for (int i = 0; i < px.Length; i += 4)
+                    px[i] = px[i + 1] = px[i + 2] = 255;
+                var mask = System.Windows.Media.Imaging.BitmapSource.Create(
+                    w, h, conv.DpiX, conv.DpiY, PixelFormats.Bgra32, null, px, stride);
+                mask.Freeze();
+                var brush = src.Clone();
+                brush.ImageSource = mask;
+                brush.Freeze();
+                return brush;
+            });
+        }
 
         // ─────────────────────────────────────────────
         //  Click-to-record hit testing
@@ -1075,14 +1323,25 @@ namespace PadForge.Views
         private void ApplyHoverHighlight(Model3DGroup group)
         {
             if (_currentModel == null) return;
-            if (group.Children.Count == 0 || group.Children[0] is not GeometryModel3D geo)
-                return;
-
-            if (_currentModel.HighlightMaterials.TryGetValue(group, out var hlMat))
+            foreach (var g in ResolveTargetGroups(group))
             {
-                geo.Material = hlMat;
-                geo.BackMaterial = hlMat;
+                if (g.Children.Count == 0 || g.Children[0] is not GeometryModel3D geo)
+                    continue;
+                if (_currentModel.HighlightMaterials.TryGetValue(g, out var hlMat))
+                    SetGroupHighlight(g, geo, hlMat);
             }
+        }
+
+        /// <summary>All groups that light up with the given group's click
+        /// target (multi-mesh buttons, the stick click + its ring). Falls
+        /// back to just the group itself.</summary>
+        private List<Model3DGroup> ResolveTargetGroups(Model3DGroup group)
+        {
+            if (_currentModel.ClickMap.TryGetValue(group, out var target)
+                && _currentModel.ButtonMap.TryGetValue(target, out var list)
+                && list.Contains(group))
+                return list;
+            return new List<Model3DGroup> { group };
         }
 
         private void RestoreHoverGroup(Model3DGroup group)
@@ -1095,21 +1354,26 @@ namespace PadForge.Views
             // this guard. Treat "no current model" as "nothing to restore."
             if (_currentModel == null) return;
             if (group == null) return;
-            if (group.Children.Count == 0 || group.Children[0] is not GeometryModel3D geo)
-                return;
 
-            // Don't restore if this group is currently being flash-animated
-            if (_flashTarget != null)
+            foreach (var g in ResolveTargetGroups(group))
             {
-                var flashGroups = ResolveFlashGroups(_flashTarget);
-                if (flashGroups != null && flashGroups.Contains(group))
-                    return;
-            }
+                if (g.Children.Count == 0 || g.Children[0] is not GeometryModel3D geo)
+                    continue;
 
-            if (_currentModel.DefaultMaterials.TryGetValue(group, out var defMat))
-            {
-                geo.Material = defMat;
-                geo.BackMaterial = defMat;
+                // Don't restore if this group is currently being flash-animated
+                if (_flashTarget != null)
+                {
+                    var flashGroups = ResolveFlashGroups(_flashTarget);
+                    if (flashGroups != null && flashGroups.Contains(g))
+                        continue;
+                }
+
+                if (_currentModel.DefaultMaterials.TryGetValue(g, out var defMat))
+                {
+                    geo.Material = defMat;
+                    geo.BackMaterial = defMat;
+                }
+                RestoreRiderFlash(g, geo);
             }
         }
 
@@ -1336,6 +1600,14 @@ namespace PadForge.Views
 
             if (_currentModel == null || string.IsNullOrEmpty(target))
                 return;
+
+            // Nintendo slots record raw grid names; translate like the
+            // flash path so the stick-axis checks below can match.
+            if (target.StartsWith("Raw", StringComparison.Ordinal))
+            {
+                target = Models2D.NintendoPreviewMap.ToPreview(target, _vm?.ProfileId);
+                if (string.IsNullOrEmpty(target)) return;
+            }
 
             // Check if this is a stick axis target (with or without Neg suffix)
             bool isNeg = target.EndsWith("Neg", StringComparison.Ordinal);
@@ -1612,6 +1884,16 @@ namespace PadForge.Views
             if (string.IsNullOrEmpty(target))
                 return;
 
+            // A Nintendo slot's CurrentRecordingTarget is a raw grid name
+            // (RawBtn1, RawAxis0Neg); the flash machinery below speaks the
+            // preview element grammar. Translate back before resolving,
+            // mirroring ControllerModel2DView.UpdateFlashTarget.
+            if (target.StartsWith("Raw", StringComparison.Ordinal))
+            {
+                target = Models2D.NintendoPreviewMap.ToPreview(target, _vm?.ProfileId);
+                if (string.IsNullOrEmpty(target)) return;
+            }
+
             _flashTarget = target;
             _flashOn = false;
 
@@ -1680,13 +1962,109 @@ namespace PadForge.Views
 
                 if (_flashOn && _currentModel.HighlightMaterials.TryGetValue(group, out var hlMat))
                 {
-                    geo.Material = hlMat;
-                    geo.BackMaterial = hlMat;
+                    SetGroupHighlight(group, geo, hlMat);
                 }
                 else if (_currentModel.DefaultMaterials.TryGetValue(group, out var defMat))
                 {
                     geo.Material = defMat;
                     geo.BackMaterial = defMat;
+                    RestoreRiderFlash(group, geo);
+                }
+            }
+        }
+
+        // Highlight for a group that may carry rider decals. A COVERING
+        // rider (the Xbox guide emblem) gets its own texels tinted accent
+        // through DiffuseMaterial.Color while the host keeps its default
+        // material, so only the glyph art glows (owner-specified look).
+        // Non-covering riders (trigger labels, knurl bands) hide for the
+        // duration and the host takes the solid accent like any other
+        // element. Returns true when a covering rider carried the
+        // highlight (callers must then leave the host material alone).
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
+            s_riderTints = new();
+
+        /// <summary>The L1/R1 (LB/RB) button groups, which carry their
+        /// lettering as a rider decal.</summary>
+        private bool IsShoulderButtonGroup(Model3DGroup group)
+        {
+            foreach (var key in new[] { "LeftShoulder", "RightShoulder" })
+                if (_currentModel.ButtonMap.TryGetValue(key, out var list)
+                    && list.Count > 0 && ReferenceEquals(group, list[0]))
+                    return true;
+            return false;
+        }
+
+        private bool SetGroupHighlight(Model3DGroup group, GeometryModel3D primary, Material hlMat)
+        {
+            // Thumb rings glow as a WHOLE at full strength: host takes the
+            // accent and the knurl riders tint through their own texels
+            // (the graded-glow shape at factor 1), so the cap texture
+            // glows just like the rest of the stick (owner ruling).
+            // Bumpers take the same shape, so their L1/R1 lettering
+            // glows on press exactly as L2/R2's does under the trigger's
+            // graded path. Hiding the rider instead (the default branch
+            // below) left the label grey while the button lit up.
+            if (ReferenceEquals(group, _currentModel.LeftThumbRing)
+                || ReferenceEquals(group, _currentModel.RightThumbRing)
+                || IsShoulderButtonGroup(group))
+            {
+                foreach (var child in group.Children)
+                {
+                    if (child is not GeometryModel3D g2) continue;
+                    g2.Material = GradientHighlight(g2,
+                        s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, 1f,
+                        _currentModel.RiderDecals.Contains(g2));
+                }
+                return true;
+            }
+            bool covering = false;
+            foreach (var child in group.Children)
+            {
+                if (child is not GeometryModel3D g2 || ReferenceEquals(g2, primary)) continue;
+                if (!_currentModel.RiderDecals.Contains(g2)) continue;
+                var rest = s_riderDefaults.GetValue(g2, _ => g2.Material);
+                if (_currentModel.CoveringRiderDecals.Contains(g2)
+                    && (rest as DiffuseMaterial)?.Brush is ImageBrush rb)
+                {
+                    // Lit accent through the art's own texels with the
+                    // ambient term ACCENT-COLORED (white ambient = milky
+                    // wash, black ambient = dim with harsh shading): the
+                    // white art renders like a plain accent button, the
+                    // dark logo cutout stays dark, and the lighting keeps
+                    // the button's shape readable.
+                    var accent = BrushColor((hlMat as DiffuseMaterial)?.Brush);
+                    var tint = s_riderTints.GetValue(g2, _ => new DiffuseMaterial(rb));
+                    tint.Color = Color.FromArgb(255, accent.R, accent.G, accent.B);
+                    tint.AmbientColor = tint.Color;
+                    g2.Material = tint;
+                    g2.BackMaterial = tint;
+                    covering = true;
+                }
+                else
+                {
+                    g2.Material = null;
+                    g2.BackMaterial = null;
+                }
+            }
+            if (!covering)
+            {
+                primary.Material = hlMat;
+                primary.BackMaterial = hlMat;
+            }
+            return covering;
+        }
+
+        private void RestoreRiderFlash(Model3DGroup group, GeometryModel3D primary)
+        {
+            foreach (var child in group.Children)
+            {
+                if (child is not GeometryModel3D g2 || ReferenceEquals(g2, primary)) continue;
+                if (!_currentModel.RiderDecals.Contains(g2)) continue;
+                if (s_riderDefaults.TryGetValue(g2, out var rest))
+                {
+                    g2.Material = rest;
+                    g2.BackMaterial = rest;
                 }
             }
         }
@@ -1715,6 +2093,7 @@ namespace PadForge.Views
                             geo.Material = defMat;
                             geo.BackMaterial = defMat;
                         }
+                        RestoreRiderFlash(group, geo);
                     }
                 }
             }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using PadForge.Common.Input;
 using PadForge.Engine;
@@ -14,6 +14,7 @@ namespace PadForge.Tests
     /// the sequence at RepeatDelayMs while held and stops on release,
     /// regardless of the authored RepeatMode.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class ToggleTurboTriggerTests
     {
         private static MacroItem Macro(MacroTriggerMode mode, short value, int repeatDelayMs = 0)

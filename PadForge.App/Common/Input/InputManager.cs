@@ -157,6 +157,7 @@ namespace PadForge.Common.Input
         /// Written by Step 4 (background thread), read by Step 5.
         /// </summary>
         public KbmRawState[] CombinedKbmRawStates { get; } = new KbmRawState[MaxPads];
+        public VrRawState[] CombinedVrRawStates { get; } = new VrRawState[MaxPads];
 
         /// <summary>
         /// Combined touchpad states for PlayStation slots.
@@ -721,6 +722,26 @@ namespace PadForge.Common.Input
                 // availability). SdlDeviceWrapper derives per-poll wraparound
                 // deltas for the "Mouse Motion X/Y" sources.
                 SDL_SetHint(SDL_HINT_JOYSTICK_BLE_SWITCH2_MOUSE, "1");
+
+                // Enable the fork's frequency-shaped Switch rumble (#271
+                // item 4, hifihedgehog/SDL#25, fork commit cfcdeb26e0).
+                // Upstream SDL drives the Switch LRAs at two fixed carrier
+                // frequencies with amplitude-only tables; with the hint on,
+                // each motor's intensity also sweeps its frequency band
+                // (low motor ~41-160 Hz, high 160-320 Hz, per dekuNukem's
+                // rumble_data_table.md) with attack/decay transients, which
+                // is where the native HD-rumble texture lives. Classic LRA
+                // packet only; the fork leaves Switch 2 encoding untouched.
+                SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_SWITCH_SHAPED_RUMBLE, "1");
+
+                // Enable the fork's Switch 2 BLE magnetometer channel (#271
+                // item 5, same fork commit). Three raw int16 axes after the
+                // mouse counters; availability rides the raw axis count
+                // (9 = magnetometer, 11 = mouse + magnetometer), the mouse
+                // precedent. PadForge does not consume them yet; the
+                // compass-fusion half of #271 item 5 is a follow-up arc,
+                // and enabling here keeps the axes observable on a bench.
+                SDL_SetHint(SDL_HINT_JOYSTICK_BLE_SWITCH2_MAGNETOMETER, "1");
 
                 // Enable SDL's Sony-sixaxis PS3 driver (discussion #194). It
                 // claims a DualShock 3 running DsHidMini's SixaxisCompatible
@@ -2788,6 +2809,7 @@ namespace PadForge.Common.Input
                 CombinedOutputStates[i] = default;
                 CombinedRawHidStates[i].Clear();
                 CombinedKbmRawStates[i] = default;
+                CombinedVrRawStates[i] = default;
                 CombinedTouchpadStates[i] = default;
                 // Motion rides beside the raw surface on every Step 5 submit
                 // (HasMotion=false submits zeroes), so leaving it out froze
@@ -2886,6 +2908,11 @@ namespace PadForge.Common.Input
 
         private void RaiseError(string message, Exception ex)
         {
+            // The status bar shows only the headline; without this line the
+            // exception's mechanism is invisible everywhere (the VR-create
+            // failure of 2026-08-08 surfaced as a bare "Failed to create Vr
+            // virtual controller" with the sharing-violation detail dropped).
+            PadForge.Engine.SdlDiagLog.WriteLine($"ERROR {message}: {ex}");
             ErrorOccurred?.Invoke(this, new InputExceptionEventArgs(message, ex));
         }
 
@@ -2955,6 +2982,10 @@ namespace PadForge.Common.Input
             // a use-after-dispose whose swallowed throw would skip the actual
             // NfcReaderService teardown (#150, round-4 finding).
             ShutdownNfcReaders();
+            // Headset trackers ride the same teardown window: after Stop()
+            // so the suppress latch holds, before ShutdownSdl() tears down
+            // the device list the retire path walks.
+            ShutdownHeadsetMotionInputs();
             ShutdownSdl();
             _disposed = true;
 

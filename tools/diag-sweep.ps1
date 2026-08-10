@@ -17,6 +17,25 @@ $dst = 'C:\PadForge\PadForge.exe'
 $diag = 'C:\tmp\pfdiag-verify.log'
 Remove-Item $diag -Force -ErrorAction SilentlyContinue
 
+# --- Owner settings guard -----------------------------------------------
+# This sweep drives the real app through UIA, and on 2026-08-09 its page walk
+# flipped a slot from Nintendo to Xbox and rewrote that slot's profile id
+# (Type 5 to 0, switch-pro to xbox-series-xs-bt) in the owner's live
+# PadForge.xml. The harness had no backup and no restore, so the damage was
+# caught only by diffing against an external snapshot afterwards. Back the
+# file up before touching anything, and put it back on every exit path.
+$pfXml = 'C:\PadForge\PadForge.xml'
+$pfBak = Join-Path $env:TEMP 'PadForge.xml.diagsweep.bak'
+if (Test-Path $pfBak) {
+    # A leftover backup means an earlier run died before restoring, so that
+    # copy is the owner's real state. Put it back rather than overwrite it.
+    Copy-Item $pfBak $pfXml -Force
+    Note "restored a leftover settings backup from an aborted run"
+}
+if (Test-Path $pfXml) { Copy-Item $pfXml $pfBak -Force }
+
+try {
+
 # Deploy
 $copied = $false
 for ($i = 1; $i -le 5; $i++) {
@@ -253,3 +272,16 @@ Start-Sleep 3
 Remove-Item Env:PADFORGE_DIAG -ErrorAction SilentlyContinue
 Start-Process -FilePath $dst
 Note "sweep done $(Get-Date -Format o)"
+
+}
+finally {
+    # Always put the owner's settings back, including after a mid-sweep error.
+    if (Test-Path $pfBak) {
+        Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
+        Start-Sleep -Seconds 3
+        Copy-Item $pfBak $pfXml -Force
+        Remove-Item $pfBak -Force
+        Note "owner settings restored"
+        Start-Process $dst
+    }
+}

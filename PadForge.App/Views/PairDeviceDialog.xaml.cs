@@ -81,13 +81,17 @@ namespace PadForge.Views
             var token = _cts.Token;
 
             Ds3PairingService.PairResult result = null;
+            string fault = null;
             try
             {
                 result = await Task.Run(() => svc.RunPairing(token));
             }
             catch (Exception ex)
             {
-                SetStatus(ex.Message, error: true);
+                // Held, not shown: the else branch below used to overwrite
+                // this with the generic verdict, so the one message that
+                // named the real fault never survived to the screen.
+                fault = ex.Message;
             }
             finally
             {
@@ -104,10 +108,19 @@ namespace PadForge.Views
             }
             else
             {
-                string msg = result?.Error switch
+                // Every code that has something actionable to say gets its own
+                // message. The catch-all used to send people to a log file
+                // PadForge does not write (#265): pairing narration goes to the
+                // in-memory diagnostics ring, which only reaches disk when
+                // PADFORGE_DIAG is set. "no-radio" in particular is just
+                // Bluetooth being switched off, and it is checked BEFORE the
+                // WinUSB bind, so the user never reaches the USB step.
+                string msg = fault ?? result?.Error switch
                 {
                     "no-ds3-usb" or "winusb-bind-failed" => Strings.Instance.Ds3Pair_NoUsb,
                     "install-failed" => Strings.Instance.Ds3Pair_InstallFailed,
+                    "no-radio" => Strings.Instance.Ds3Pair_NoRadio,
+                    "driver-untrusted" => Strings.Instance.Ds3Pair_DriverUntrusted,
                     _ => Strings.Instance.Ds3Pair_Failed,
                 };
                 SetStatus(msg, error: true);
@@ -208,6 +221,19 @@ namespace PadForge.Views
 
         private void SetStatus(string text, bool secondary = false, bool success = false, bool error = false)
         {
+            // A verdict promotes the narration line it is replacing into the
+            // line above it, so "the step that failed is shown above" is
+            // true. Progress lines just replace each other as before.
+            if ((success || error) && !string.IsNullOrWhiteSpace(StatusText.Text)
+                && !ReferenceEquals(StatusText.Text, text))
+            {
+                LastStepText.Text = StatusText.Text;
+                LastStepText.Visibility = Visibility.Visible;
+            }
+            else if (!success && !error)
+            {
+                LastStepText.Visibility = Visibility.Collapsed;
+            }
             StatusText.Text = text;
             string brushKey = success ? "SystemFillColorSuccessBrush"
                 : error ? "SystemFillColorCriticalBrush"

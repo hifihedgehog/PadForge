@@ -148,6 +148,38 @@ namespace PadForge.Common.Input
         // per-tick refresh costs two string compares).
         private readonly SlotButtonSocd[] _slotButtonSocd = new SlotButtonSocd[MaxPads];
 
+        /// <summary>Keep Controller Awake (#270): holds the configured idle
+        /// deflection on one axis of the final combined gamepad output.
+        /// Pure over its inputs (internal for the unit tests): when
+        /// enabled, the chosen axis is raised to the held level ONLY while
+        /// its real magnitude sits below that level, so genuine input
+        /// passes through byte-identical and the hold resumes at rest.
+        /// Deflection 0 (unset) applies the default 25%; the axis string
+        /// falls back to LX. Values are clamped to 1-90%.</summary>
+        internal static void ApplyKeepAwake(Engine.Data.MappingSet ms, ref Gamepad gp)
+        {
+            if (ms == null || !ms.KeepAwakeEnabled) return;
+            int pct = ms.KeepAwakeDeflection;
+            if (pct <= 0) pct = 25;
+            pct = Math.Clamp(pct, 1, 90);
+            short level = (short)(32767 * pct / 100);
+            switch (ms.KeepAwakeAxis)
+            {
+                case "LY":
+                    if (Math.Abs((int)gp.ThumbLY) < level) gp.ThumbLY = level;
+                    break;
+                case "RX":
+                    if (Math.Abs((int)gp.ThumbRX) < level) gp.ThumbRX = level;
+                    break;
+                case "RY":
+                    if (Math.Abs((int)gp.ThumbRY) < level) gp.ThumbRY = level;
+                    break;
+                default: // "" and "LX"
+                    if (Math.Abs((int)gp.ThumbLX) < level) gp.ThumbLX = level;
+                    break;
+            }
+        }
+
         /// <summary>Returns the slot's configured button-SOCD cleaner, or
         /// null when the slot authors no active SOCD. Poll thread only.</summary>
         private SlotButtonSocd ResolveSlotSocd(int padIndex, bool extendedIndices)
@@ -1623,6 +1655,7 @@ namespace PadForge.Common.Input
                         CombinedRawHidStates[padIndex].Clear();
                         CombinedMidiRawStates[padIndex].Clear();
                         CombinedKbmRawStates[padIndex].Clear();
+                        CombinedVrRawStates[padIndex].Clear();
                         CombinedTouchpadStates[padIndex] = default;
                     }
 
@@ -1650,6 +1683,15 @@ namespace PadForge.Common.Input
                             // reach the OS via the KBM controller: submit neutral (which
                             // releases anything held) instead of its mapped state.
                             kbmVc.SubmitKbmState(IsSlotRestricted(padIndex) ? default : CombinedKbmRawStates[padIndex]);
+                        }
+                        else if (vc is HMaestroVRController vrVc)
+                        {
+                            // Same restricted-peer rule as KBM: a
+                            // gamepad-only-restricted peer feeding this slot
+                            // must not reach SteamVR, so submit neutral.
+                            var vrOut = IsSlotRestricted(padIndex) ? default : CombinedVrRawStates[padIndex];
+                            LogVrSubmit(padIndex, in vrOut);
+                            vrVc.SubmitVrState(in vrOut);
                         }
                         else if (SlotControllerTypes[padIndex] is VirtualControllerType.Extended
                                      or VirtualControllerType.Nintendo
@@ -1700,6 +1742,24 @@ namespace PadForge.Common.Input
                                 && CombinedTouchpadStates[padIndex].Click)
                             {
                                 gpOut.Buttons |= Gamepad.TOUCHPAD;
+                            }
+
+                            // Keep Controller Awake (#270): hold the
+                            // configured idle deflection on the chosen axis
+                            // of the FINAL combined output, so games that
+                            // cut vibration on mouse/keyboard input keep
+                            // treating this controller as active. Applied
+                            // to the local copy right before submit (the
+                            // SOCD precedent): the mapping pipeline's
+                            // curves and deadzones never see it, and real
+                            // output at or above the held level passes
+                            // through unchanged.
+                            {
+                                var kaSets = SettingsManager.SlotMappingSets;
+                                var kaMs = (kaSets != null && padIndex < kaSets.Length)
+                                    ? kaSets[padIndex] : null;
+                                if (kaMs != null)
+                                    ApplyKeepAwake(kaMs, ref gpOut);
                             }
 
                             // Button SOCD (#240): clean the final combined
@@ -1818,9 +1878,25 @@ namespace PadForge.Common.Input
                     // from prior sessions (crash, forced kill, ungraceful exit).
                     // Without this, InstallDriver's internal RemoveOldDriverPackages
                     // step fails with "device using INF" because stale device nodes
-                    // still reference the old driver package. Matches the HIDMaestro
-                    // test app pattern (test/Program.cs:94) and SDK contract.
-                    try { HMContext.RemoveAllVirtualControllers(); }
+                    // still reference the old driver package.
+                    //
+                    // preserveInstall: TRUE, same as the startup sweep. The
+                    // stale DEVICE NODES are what block the install, and the
+                    // preserving overload still evicts every one of them; the
+                    // flag guards only package removal and the
+                    // HKLM\SOFTWARE\HIDMaestro delete. Nuking that tree here
+                    // re-armed the exact bug the startup sweep's own fix had
+                    // just closed: it holds the VR driver's registration gate
+                    // and the SteamVRPath hint, so on any session mixing a
+                    // conventional HM slot with a VR slot, creating the
+                    // conventional one sent the VR slot back to re-extracting
+                    // driver_hidmaestro.dll into a running vrserver.exe. It
+                    // also costs the ~3 s full deploy on the next launch by
+                    // discarding the manifest hash. InstallDriver runs its own
+                    // preserving sweep internally (HMContext.cs), so this
+                    // preflight only needs to be at least as thorough, never
+                    // more destructive.
+                    try { HMContext.RemoveAllVirtualControllers(preserveInstall: true); }
                     catch (Exception)
                     {
                     }
@@ -1832,15 +1908,20 @@ namespace PadForge.Common.Input
 
                     // Safety net: purge any devices we created if the process
                     // exits ungracefully without disposing HMController instances.
-                    // Matches test/Program.cs:88-91. Registered exactly once per
-                    // process since _hmaestroContext init is one-shot.
+                    // Registered exactly once per process since _hmaestroContext
+                    // init is one-shot. preserveInstall: TRUE for the same
+                    // reason as the preflight above, and HM names the exit
+                    // sweep as the other case for it: the purge is about
+                    // DEVICES, and taking the packages and the registry tree
+                    // with them only makes the NEXT launch reinstall from
+                    // scratch and re-lose the VR gate.
                     if (!_processExitHookRegistered)
                     {
                         _processExitHookRegistered = true;
                         AppDomain.CurrentDomain.ProcessExit += (_, _) =>
                         {
                             if (_cleanShutdownPerformed) return;
-                            try { HMContext.RemoveAllVirtualControllers(); } catch { }
+                            try { HMContext.RemoveAllVirtualControllers(preserveInstall: true); } catch { }
                         };
                     }
                 }
@@ -1890,6 +1971,43 @@ namespace PadForge.Common.Input
         public bool InactivityFireStillValid(int padIndex)
             => padIndex >= 0 && padIndex < MaxPads
                && System.Threading.Volatile.Read(ref _hmInactivityFired[padIndex]);
+
+        /// <summary>Last VR state logged per slot, so the trace below fires
+        /// on CHANGE rather than at poll rate.</summary>
+        private readonly VrRawState[] _lastVrLogged = new VrRawState[MaxPads];
+        private readonly bool[] _lastVrLoggedValid = new bool[MaxPads];
+
+        /// <summary>Records what actually goes over the VR wire, per hand.
+        /// Diagnostics-ring only, so a normal session writes nothing; it
+        /// reaches disk when PADFORGE_DIAG is set. This exists because
+        /// every static layer of the VR path reads symmetric (mappings,
+        /// Step 3 evaluation, the SDK's pack, the shared-memory stride, the
+        /// driver's per-hand routing), so a hand that shows no input in
+        /// SteamVR can only be settled by seeing the submitted bytes.</summary>
+        private void LogVrSubmit(int padIndex, in VrRawState vr)
+        {
+            if (!PadForge.Engine.SdlDiagLog.IsMirroring) return;
+            if (_lastVrLoggedValid[padIndex]
+                && _lastVrLogged[padIndex].Left.Buttons == vr.Left.Buttons
+                && _lastVrLogged[padIndex].Right.Buttons == vr.Right.Buttons
+                && _lastVrLogged[padIndex].Left.Trigger == vr.Left.Trigger
+                && _lastVrLogged[padIndex].Right.Trigger == vr.Right.Trigger
+                && _lastVrLogged[padIndex].Left.Grip == vr.Left.Grip
+                && _lastVrLogged[padIndex].Right.Grip == vr.Right.Grip
+                && _lastVrLogged[padIndex].Left.StickX == vr.Left.StickX
+                && _lastVrLogged[padIndex].Right.StickX == vr.Right.StickX
+                && _lastVrLogged[padIndex].Left.StickY == vr.Left.StickY
+                && _lastVrLogged[padIndex].Right.StickY == vr.Right.StickY)
+                return;
+            _lastVrLogged[padIndex] = vr;
+            _lastVrLoggedValid[padIndex] = true;
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"VRSUBMIT slot={padIndex} "
+                + $"L[btn=0x{vr.Left.Buttons:X2} trg={vr.Left.Trigger} grip={vr.Left.Grip} "
+                + $"x={vr.Left.StickX} y={vr.Left.StickY}] "
+                + $"R[btn=0x{vr.Right.Buttons:X2} trg={vr.Right.Trigger} grip={vr.Right.Grip} "
+                + $"x={vr.Right.StickX} y={vr.Right.StickY}]");
+        }
 
         private bool IsSlotActive(int padIndex) => IsSlotActive(padIndex, _padIndexBuffer);
 
@@ -1954,7 +2072,20 @@ namespace PadForge.Common.Input
         // browser "Vibration, infinite" tests. xbox-series-xs-bt uses the
         // HID output path that browsers drive reliably.
         public const string DefaultXboxProfileId = "xbox-series-xs-bt";
-        public const string DefaultPlayStationProfileId = "dualshock-4-v2";
+        // dualsense-composite rather than dualshock-4-v2: it is the most
+        // capable PlayStation persona, the only one carrying the speaker,
+        // the microphone and the channel 3/4 voice-coil haptics lane, so a
+        // DualSense-aware game gets its native features on a new slot with
+        // no configuration. HM v1.4.2 renamed it "DualSense (PS5) - Full",
+        // so the picker's most-capable entry and the default now agree,
+        // which they did not when it read "(composite USB)".
+        //
+        // One first-run cost this carries that dualshock-4-v2 did not: the
+        // first composite create triggers HM's one-time embedded
+        // usbip-win2 deploy, and installing that filter restarts the USB
+        // root hubs, so every USB device blinks once. It is a one-time
+        // event per machine, not per slot.
+        public const string DefaultPlayStationProfileId = "dualsense-composite";
         // The synthetic "Custom" entry anchors Extended — new slots start
         // there with Customize auto-enabled and the user fills in the
         // VID/PID/ProductString/layout from scratch. Previous catalog-
@@ -2018,6 +2149,7 @@ namespace PadForge.Common.Input
                     VirtualControllerType.Nintendo => CreateHMaestroController(VirtualControllerType.Nintendo, profileId, padIndex),
                     VirtualControllerType.Midi => CreateMidiController(padIndex),
                     VirtualControllerType.KeyboardMouse => new KeyboardMouseVirtualController(padIndex),
+                    VirtualControllerType.Vr => new HMaestroVRController(),
                     _ => null
                 };
 
@@ -2053,6 +2185,18 @@ namespace PadForge.Common.Input
                     var psCfg = _deviceSlotConfigs[padIndex];
                     if (psCfg != null)
                         hmVc.AttachDeviceConfig(psCfg);
+
+                    // Composite persona (HM v1.4.0): route the virtual
+                    // pad's game-rendered audio to the slot's physical
+                    // pads. Null UsbAudio on every UMDF2 profile makes
+                    // this a no-op for them.
+                    var usbAudio = hmVc.UsbAudio;
+                    if (usbAudio != null)
+                    {
+                        AudioPassthroughService.AttachPersonaFeed(padIndex, usbAudio, hmVc.ProfileId);
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"VCTRACE slot={padIndex} persona audio feed attached profile={hmVc.ProfileId} ch={usbAudio.Output.Channels}@{usbAudio.Output.SampleRateHz}");
+                    }
                 }
                 else
                 {
@@ -2637,6 +2781,13 @@ namespace PadForge.Common.Input
         {
             var vc = _virtualControllers[padIndex];
             if (vc == null) return;
+
+            // Composite persona (HM v1.4.0): detach the audio feed
+            // synchronously before disposal, same rationale as the C38
+            // feedback-callback detach below. Unsubscribes the pacing-
+            // thread handlers and stops the mic capture; a no-op for
+            // slots that never had one.
+            AudioPassthroughService.DetachPersonaFeed(padIndex);
 
             // #236: VC destruction is an explicit silence edge for ALL
             // FOUR voices (the legacy lifecycle zeroing below touches only

@@ -377,6 +377,80 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ SteamVR (VR controllers, #49) ═══ -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="&#xF119;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding Settings_SteamVR, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Settings_SteamVRDesc, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Path Margin="0,0,8,0">
+                                    <Path.Style>
+                                        <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsSteamVrInstalled}" Value="True">
+                                                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                    <Setter Property="Stroke" Value="{x:Null}"/>
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                                <TextBlock Text="{Binding SteamVrStatusText}" FontWeight="SemiBold"/>
+                            </StackPanel>
+
+                            <!-- Install-location picker: shown only before an
+                                 install exists. Not persisted by PadForge; on
+                                 success the HIDMaestro path hint becomes the
+                                 durable record of where the payload lives. -->
+                            <StackPanel Orientation="Horizontal" Margin="0,10,12,0"
+                                        Visibility="{Binding IsSteamVrInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                                <TextBlock Text="{Binding Settings_SteamVRInstallDir, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Text="{Binding SteamVrInstallDir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         MinWidth="240" VerticalContentAlignment="Center"/>
+                                <Button Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
+                                        Click="SteamVrBrowse_Click" Margin="6,0,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Uninstall is offered ONLY for the Steam-free
+                             install PadForge itself created (ownership =
+                             the HIDMaestro path hint, and not Steam's own
+                             registry entries). A Steam-client install
+                             belongs to Steam and shows no uninstall. -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"
+                                    Command="{Binding InstallSteamVrCommand}"
+                                    Style="{StaticResource EmberAccentButton}"
+                                    Visibility="{Binding IsSteamVrInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                            <Button Content="{Binding Common_Uninstall, Source={x:Static strings:Strings.Instance}}"
+                                    Command="{Binding UninstallSteamVrCommand}"
+                                    Style="{StaticResource EmberDestructiveButton}"
+                                    Visibility="{Binding ShowSteamVrUninstall, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Community Configs (Steam Workshop, #9) ═══ -->
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>

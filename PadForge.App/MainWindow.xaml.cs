@@ -500,6 +500,7 @@ namespace PadForge
             _viewModel.Settings.LoadProfileRequested += OnLoadProfile;
             _viewModel.Settings.RevertToDefaultRequested += OnRevertToDefault;
             _viewModel.Settings.BrowseCommunityConfigsRequested += OnBrowseCommunityConfigs;
+            _viewModel.Settings.BrowseStarterProfilesRequested += OnBrowseStarterProfiles;
             _viewModel.Settings.ClearWorkshopCacheRequested += OnClearWorkshopCache;
             _viewModel.Settings.CheckWorkshopUpdatesRequested += OnCheckWorkshopUpdates;
 
@@ -622,6 +623,57 @@ namespace PadForge
                     RefreshMidiServicesStatus();
                 }
             };
+            // Wire the Steam-free SteamVR install (#49): steamcmd anonymous
+            // app_update 250820 into C:\SteamVR + HIDMaestro path hint. Same
+            // overlay treatment as the MIDI install; the payload is several
+            // GB, so the overlay text warns about the wait.
+            _viewModel.Settings.InstallSteamVrRequested += async (s, e) =>
+            {
+                _viewModel.SetStatus(Strings.Instance.Status_DownloadingSteamVR, persist: true);
+                DriverOverlayText.Text = Strings.Instance.Status_DownloadingInstallingSteamVR;
+                DriverOverlay.Visibility = Visibility.Visible;
+                try
+                {
+                    await DriverInstaller.InstallSteamVRAsync(_viewModel.Settings.SteamVrInstallDir);
+                    _viewModel.StatusText = Strings.Instance.Common_Ready;
+                }
+                catch (Exception ex)
+                {
+                    _viewModel.SetStatus(string.Format(Strings.Instance.Status_SteamVRInstallFailed_Format, ex.Message), persist: true);
+                }
+                finally
+                {
+                    DriverOverlay.Visibility = Visibility.Collapsed;
+                    RefreshMidiServicesStatus();
+                }
+            };
+
+            // Uninstall for the Steam-free SteamVR install PadForge itself
+            // created. Gated three ways: the button only renders for an
+            // owned install (HIDMaestro hint, not Steam's registry), a live
+            // vrserver refuses up front rather than deleting the runtime out
+            // from under itself, and the 5+ GB deletion sits behind an
+            // explicit confirm naming the exact directory.
+            _viewModel.Settings.UninstallSteamVrRequested += async (s, e) =>
+            {
+                if (System.Diagnostics.Process.GetProcessesByName("vrserver").Length > 0)
+                {
+                    _viewModel.SetStatus(Strings.Instance.Status_SteamVRRunningCloseFirst, persist: true);
+                    return;
+                }
+                string ownedDir = DriverInstaller.GetOwnedSteamVrDir();
+                if (ownedDir == null) { RefreshMidiServicesStatus(); return; }
+                bool confirmed = Views.ConfirmDialog.Show(this,
+                    Strings.Instance.Settings_SteamVRUninstall_Title,
+                    string.Format(Strings.Instance.Settings_SteamVRUninstallConfirm_Message, ownedDir),
+                    Strings.Instance.Common_Uninstall);
+                if (!confirmed) return;
+                await RunDriverOperationAsync(
+                    Strings.Instance.Status_UninstallingSteamVR,
+                    DriverInstaller.UninstallSteamVR,
+                    RefreshMidiServicesStatus);
+            };
+
             _viewModel.Settings.UninstallMidiServicesRequested += async (s, e) =>
             {
                 // The uninstall guard prevents this when MIDI slots are active, but
@@ -1250,11 +1302,13 @@ namespace PadForge
                         nameof(PadViewModel.LeftTriggerMaxRange) or nameof(PadViewModel.RightTriggerMaxRange) or
                         nameof(PadViewModel.ForceOverallGain) or nameof(PadViewModel.LeftMotorStrength) or
                         nameof(PadViewModel.RightMotorStrength) or nameof(PadViewModel.SwapMotors) or
+                        nameof(PadViewModel.TriggerRumbleFold) or
                         nameof(PadViewModel.WheelRotationRange) or nameof(PadViewModel.WheelAutoCenter) or
                         nameof(PadViewModel.WheelRpmLeds) or
                         nameof(PadViewModel.ImpulseOverallGain) or
                         nameof(PadViewModel.ImpulseLeftStrength) or nameof(PadViewModel.ImpulseRightStrength) or
                         nameof(PadViewModel.ImpulseSwapTriggers) or
+                        nameof(PadViewModel.AtVibrationToImpulse) or
                         nameof(PadViewModel.AudioRumbleEnabled) or nameof(PadViewModel.AudioRumbleSensitivity) or
                         nameof(PadViewModel.AudioRumbleCutoffHz) or nameof(PadViewModel.AudioRumbleLeftMotor) or
                         nameof(PadViewModel.AudioRumbleRightMotor) or
@@ -1294,7 +1348,9 @@ namespace PadForge
                         nameof(PadViewModel.IrSensorBarPos) or nameof(PadViewModel.IrSensorBarCompPercent) or
                         nameof(PadViewModel.IrSmoothingPercent) or
                         nameof(PadViewModel.PointerMode) or nameof(PadViewModel.PointerFpsSpeed) or
+                        nameof(PadViewModel.Model3DAppearances) or
                         nameof(PadViewModel.GyroInvertPitch) or nameof(PadViewModel.GyroInvertYawRoll) or
+                        nameof(PadViewModel.GyroCompassYaw) or
                         nameof(PadViewModel.GyroApplyTuningToPassthrough) or
                         // Steering at-lock feedback (#94) — per-slot toggles + tunables.
                         nameof(PadViewModel.SteeringLockRumbleEnabled) or
@@ -2017,6 +2073,11 @@ namespace PadForge
 
             DashboardPageView.SlotTypeChangeRequested += (s, args) =>
             {
+                // Per-type capacity belongs to the operation, not to each
+                // tile that can start it (SettingsManager.CanSlotTakeType).
+                if (!SettingsManager.CanSlotTakeType(args.Type,
+                        pi => _viewModel.Pads[pi].OutputType, args.SlotIndex))
+                    return;
                 // Order is load-bearing (2026-07-22 automap-loss root
                 // cause): ReAutoMapSlot authors the per-device legacy
                 // PadSettings, and the MERGE must fold them into the
@@ -2030,7 +2091,8 @@ namespace PadForge
                 // the merged truth and regenerated the SELECTED device's
                 // PadSetting raw-less. Multi-controller Nintendo
                 // switches lost their automaps exactly this way.
-                SettingsManager.ReAutoMapSlot(args.SlotIndex, args.Type);
+                SettingsManager.ReAutoMapSlot(args.SlotIndex, args.Type,
+                    _viewModel.Pads[args.SlotIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
                 _inputService.MoveSlotToGroupTail(args.SlotIndex);
@@ -2878,6 +2940,7 @@ namespace PadForge
             bool isExtended = iconKey == "ExtendedControllerIcon";
             bool isMidi = iconKey == "MidiControllerIcon";
             bool isKbm = iconKey == "KeyboardMouseControllerIcon";
+            bool isVr = iconKey == "VrControllerIcon";
 
             var row = new System.Windows.Controls.DockPanel();
 
@@ -3065,13 +3128,15 @@ namespace PadForge
                 var b = new System.Windows.Controls.Button
                 {
                     Content = content,
-                    // 3px sides (#175 two-digit fit): at 4px the worst case
-                    // (slot "16" plus "#16") ran the row to 195.3 vs the
-                    // ~193 budget and the right-aligned segment shaved the
-                    // Xbox button's left edge again. 3px lands the five
-                    // tiles at 19px each (11px glyph untouched, still above
-                    // the 17px legibility floor) and the row at 185.3.
-                    Padding = new Thickness(3, 2, 3, 2),
+                    // 2px sides (#49 seven-tile fit; was 3px since the #175
+                    // two-digit fit): the VR tile pushed the worst case
+                    // (slot "16" plus "#16") to ≈223 vs the 211px the 233
+                    // card leaves the row, and the right-aligned segment
+                    // shaved the Xbox button's left edge again. 2px lands
+                    // the seven tiles at 17px each (11px glyph untouched,
+                    // exactly the 17px legibility floor) and the row at
+                    // ≈209.3, inside 211 without widening the card.
+                    Padding = new Thickness(2, 2, 2, 2),
                     MinWidth = 0,
                     MinHeight = 0,
                     BorderThickness = new Thickness(0),
@@ -3128,6 +3193,8 @@ namespace PadForge
             segRow.Children.Add(MakeTypeButton(TypeLogo(ExtendedSvgPath, isExtended), isExtended, OnSidebarTypeExtended, Strings.Instance.ControllerType_Extended, true));
             segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE961", isKbm), isKbm, OnSidebarTypeKeyboardMouse, Strings.Instance.ControllerType_KeyboardMouse, true));
             segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE8D6", isMidi), isMidi, OnSidebarTypeMidi, hasMidi ? Strings.Instance.ControllerType_MIDI : Strings.Instance.Main_MIDI_RequiresMidiServices, hasMidi || isMidi));
+            bool hasSteamVr = PadForge.Common.Input.HMaestroVRController.IsAvailable();
+            segRow.Children.Add(MakeTypeButton(TypeGlyph("\uF119", isVr), isVr, OnSidebarTypeVr, hasSteamVr ? Strings.Instance.ControllerType_VR : Strings.Instance.Main_VR_RequiresSteamVR, hasSteamVr || isVr));
             var instanceLabel = new System.Windows.Controls.TextBlock
             {
                 // "#{n}" to match the slot card seg (#175 iter 71); guard in
@@ -3171,6 +3238,9 @@ namespace PadForge
                 // type segment, Nintendo added 2026-07-19; iteration 107
                 // math + 19) + 20 padding + 2 border + 6.7 headroom,
                 // inside the 236 outer cap the widened 244 pane allows.
+                // The SEVEN-tile segment (#49 VR) still fits 233: tile
+                // side-padding dropped 3px → 2px in MakeTypeButton, so the
+                // worst case is ≈209.3 against the 211 the card leaves.
                 Width = 233,
                 Child = row,
                 Tag = navItem.PadIndex,
@@ -4000,7 +4070,8 @@ namespace PadForge
             }
             else
             {
-                string glyph = iconKey == "MidiControllerIcon" ? "\uE8D6" : "\uE961";
+                string glyph = iconKey == "MidiControllerIcon" ? "\uE8D6"
+                    : iconKey == "VrControllerIcon" ? "\uF119" : "\uE961";
                 row2.Children.Add(new System.Windows.Controls.TextBlock
                 {
                     Text = glyph,
@@ -4066,7 +4137,8 @@ namespace PadForge
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox);
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox,
+                    _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4089,7 +4161,8 @@ namespace PadForge
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation);
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation,
+                    _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4108,7 +4181,8 @@ namespace PadForge
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended);
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended,
+                    _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4127,7 +4201,8 @@ namespace PadForge
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Nintendo);
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Nintendo,
+                    _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Nintendo;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4146,7 +4221,8 @@ namespace PadForge
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse);
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse,
+                    _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4166,9 +4242,34 @@ namespace PadForge
                 // Merge BEFORE the type set: see the dashboard
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi);
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi,
+                    _viewModel.Pads[padIndex].ProfileId);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
+                _inputService.MoveSlotToGroupTail(padIndex);
+                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar VR type button click.</summary>
+        private void OnSidebarTypeVr(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (!PadForge.Common.Input.HMaestroVRController.IsAvailable()) return;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                if (!SettingsManager.CanSlotTakeType(VirtualControllerType.Vr,
+                        pi => _viewModel.Pads[pi].OutputType, padIndex))
+                    return;
+                // Merge BEFORE the type set: see the dashboard
+                // SlotTypeChangeRequested handler for the 2026-07-22
+                // automap-loss root cause this order prevents.
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Vr,
+                    _viewModel.Pads[padIndex].ProfileId);
+                SettingsService.RefreshMappingSetsFromLegacy();
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Vr;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 // Stale-guard the Mappings view (see OnSidebarTypeXbox).
                 _viewModel.Pads[padIndex].MappingsViewLoaded = false;
@@ -4918,7 +5019,7 @@ namespace PadForge
             // across all six groups). When the global total is at the cap
             // every "Add" button disables uniformly. Per-type counts are
             // kept for the at-capacity tooltip text.
-            int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
+            int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, kbmCount = 0, vrCount = 0;
             int totalActive = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
@@ -4932,6 +5033,7 @@ namespace PadForge
                     case VirtualControllerType.Extended: extendedCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
                     case VirtualControllerType.KeyboardMouse: kbmCount++; break;
+                    case VirtualControllerType.Vr: vrCount++; break;
                 }
             }
             bool globalAtCapacity = totalActive >= InputManager.MaxPads;
@@ -5171,6 +5273,47 @@ namespace PadForge
                 }
             };
             stack.Children.Add(midiBtn);
+
+            // VR button. Theme-aware icon fill.
+            var vrPopupIcon = new System.Windows.Controls.TextBlock
+            {
+                Text = "",
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 28,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            vrPopupIcon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
+            bool vrAvailable = PadForge.Common.Input.HMaestroVRController.IsAvailable();
+            bool vrAtCapacity = vrCount >= SettingsManager.MaxVrSlots;
+            bool vrDisabled = !vrAvailable || globalAtCapacity || vrAtCapacity;
+            if (vrDisabled) vrPopupIcon.Opacity = 0.35;
+            string vrTooltip = !vrAvailable ? Strings.Instance.Main_VR_RequiresSteamVR
+                             : vrAtCapacity ? string.Format(Strings.Instance.Main_VR_Max_Format, SettingsManager.MaxVrSlots)
+                             : Strings.Instance.ControllerType_VR;
+            var vrBtn = new System.Windows.Controls.Button
+            {
+                Content = vrPopupIcon,
+                ToolTip = vrTooltip,
+                Background = System.Windows.Media.Brushes.Transparent,
+                BorderThickness = new Thickness(0),
+                Padding = new Thickness(8),
+                MinWidth = 0,
+                Cursor = vrDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
+            };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(vrBtn, "AddVrBtn");
+            vrBtn.Click += (s, e) =>
+            {
+                if (vrDisabled) return;
+                popup.IsOpen = false;
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Vr);
+                if (newSlot >= 0)
+                {
+                    int nav = FindLastSlotOfType(VirtualControllerType.Vr);
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
+                }
+            };
+            stack.Children.Add(vrBtn);
 
             border.Child = stack;
             popup.Child = container;
@@ -6017,6 +6160,23 @@ namespace PadForge
             {
                 _viewModel.StatusText = string.Format(Strings.Instance.Status_WorkshopImported_Format,
                     dlg.ImportedProfileName, dlg.ImportedClean, dlg.ImportedPartial, dlg.ImportedSkipped);
+            }
+        }
+
+        /// <summary>Opens the starter-profile gallery (#256). Saving routes
+        /// through the same sink the Workshop import uses, so a starter lands
+        /// as an ordinary editable profile through identical steps (name
+        /// dedup, registry add, list item with topology counts, MarkDirty).
+        /// Nothing about it stays special after the save.</summary>
+        private void OnBrowseStarterProfiles(object sender, EventArgs e)
+        {
+            var dlg = new Views.StarterProfilesDialog { Owner = this };
+            dlg.SaveSink = AddWorkshopProfile;
+            dlg.ShowDialog();
+            if (dlg.SavedProfileName != null)
+            {
+                _viewModel.StatusText = string.Format(
+                    Strings.Instance.Status_StarterImported_Format, dlg.SavedProfileName);
             }
         }
 
@@ -7271,6 +7431,7 @@ namespace PadForge
             VirtualControllerType.Extended      => Strings.Instance.ControllerType_Extended,
             VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
             VirtualControllerType.Midi          => Strings.Instance.ControllerType_MIDI,
+            VirtualControllerType.Vr            => Strings.Instance.ControllerType_VR,
             _ => t.ToString(),
         };
 
@@ -7660,6 +7821,10 @@ namespace PadForge
         // null until the first status sweep records the baseline.
         private bool? _lastMidiInstalledForNav;
 
+        // SteamVR twin of the above: the VR type tile's enabled state is
+        // baked at card build, so an install/uninstall must rebuild once.
+        private bool? _lastSteamVrInstalledForNav;
+
         private void RefreshMidiServicesStatus()
         {
             bool installed = false;
@@ -7677,6 +7842,16 @@ namespace PadForge
                 _viewModel.Dashboard.IsMidiServicesInstalled = false;
             }
 
+            // SteamVR presence rides the same refresh cadence (VR slot
+            // type gate, issue #49). The probe caches internally.
+            bool steamVr = PadForge.Common.Input.HMaestroVRController.IsAvailable();
+            _viewModel.Dashboard.IsSteamVrInstalled = steamVr;
+            _viewModel.Settings.IsSteamVrInstalled = steamVr;
+            // Ownership (the Steam-free shape PadForge created) gates the
+            // uninstall button; a Steam-client install never reads as owned.
+            try { _viewModel.Settings.IsSteamVrOwned = DriverInstaller.GetOwnedSteamVrDir() != null; }
+            catch { _viewModel.Settings.IsSteamVrOwned = false; }
+
             // The drawer pills reflect MIDI availability only through the MIDI
             // type tile's enabled state. RefreshControllerNavItemsInPlace tears
             // down and rebuilds every pill's whole Content subtree (restarting
@@ -7689,6 +7864,14 @@ namespace PadForge
             {
                 bool firstSweep = _lastMidiInstalledForNav == null;
                 _lastMidiInstalledForNav = installed;
+                if (!firstSweep) RefreshControllerNavItemsInPlace();
+            }
+
+            // Same flip-only rebuild for the VR tile's SteamVR gate.
+            if (_navDashboard != null && _lastSteamVrInstalledForNav != steamVr)
+            {
+                bool firstSweep = _lastSteamVrInstalledForNav == null;
+                _lastSteamVrInstalledForNav = steamVr;
                 if (!firstSweep) RefreshControllerNavItemsInPlace();
             }
         }

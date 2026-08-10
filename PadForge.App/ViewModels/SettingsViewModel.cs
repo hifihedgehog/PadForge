@@ -478,6 +478,87 @@ namespace PadForge.ViewModels
         public event EventHandler UninstallMidiServicesRequested;
 
         // ─────────────────────────────────────────────
+        //  SteamVR (VR controllers, issue #49)
+        // ─────────────────────────────────────────────
+
+        private bool _isSteamVrInstalled;
+
+        /// <summary>Whether a SteamVR install (either shape: Steam client
+        /// or the Steam-free steamcmd one) is present.</summary>
+        public bool IsSteamVrInstalled
+        {
+            get => _isSteamVrInstalled;
+            set
+            {
+                if (SetProperty(ref _isSteamVrInstalled, value))
+                {
+                    OnPropertyChanged(nameof(SteamVrStatusText));
+                    OnPropertyChanged(nameof(ShowSteamVrUninstall));
+                    _installSteamVrCommand?.NotifyCanExecuteChanged();
+                    _uninstallSteamVrCommand?.NotifyCanExecuteChanged();
+                }
+            }
+        }
+
+        /// <summary>SteamVR status display text.</summary>
+        public string SteamVrStatusText => _isSteamVrInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
+
+        private string _steamVrInstallDir = PadForge.Common.DriverInstaller.SteamVrInstallDir;
+
+        /// <summary>Where the Steam-free install will land. Not persisted by
+        /// PadForge: after a successful install the HIDMaestro path hint IS
+        /// the durable record, so this only needs to live until then.</summary>
+        public string SteamVrInstallDir
+        {
+            get => _steamVrInstallDir;
+            set => SetProperty(ref _steamVrInstallDir, value);
+        }
+
+        private bool _isSteamVrOwned;
+
+        /// <summary>Whether the present SteamVR install is the Steam-free one
+        /// PADFORGE created (HIDMaestro hint set, and not Steam's own
+        /// install). Gates the Uninstall button: a Steam-client install is
+        /// never PadForge's to remove.</summary>
+        public bool IsSteamVrOwned
+        {
+            get => _isSteamVrOwned;
+            set
+            {
+                if (SetProperty(ref _isSteamVrOwned, value))
+                {
+                    OnPropertyChanged(nameof(ShowSteamVrUninstall));
+                    _uninstallSteamVrCommand?.NotifyCanExecuteChanged();
+                }
+            }
+        }
+
+        /// <summary>Uninstall renders only for an installed AND owned copy.</summary>
+        public bool ShowSteamVrUninstall => _isSteamVrInstalled && _isSteamVrOwned;
+
+        private RelayCommand _installSteamVrCommand;
+
+        /// <summary>Command to install SteamVR Steam-free via steamcmd.</summary>
+        public RelayCommand InstallSteamVrCommand =>
+            _installSteamVrCommand ??= new RelayCommand(
+                () => InstallSteamVrRequested?.Invoke(this, EventArgs.Empty),
+                () => !_isSteamVrInstalled);
+
+        private RelayCommand _uninstallSteamVrCommand;
+
+        /// <summary>Command to remove the PadForge-owned Steam-free install.</summary>
+        public RelayCommand UninstallSteamVrCommand =>
+            _uninstallSteamVrCommand ??= new RelayCommand(
+                () => UninstallSteamVrRequested?.Invoke(this, EventArgs.Empty),
+                () => _isSteamVrInstalled && _isSteamVrOwned);
+
+        /// <summary>Raised when the user requests the Steam-free SteamVR install.</summary>
+        public event EventHandler InstallSteamVrRequested;
+
+        /// <summary>Raised when the user requests removal of the owned install.</summary>
+        public event EventHandler UninstallSteamVrRequested;
+
+        // ─────────────────────────────────────────────
         //  Driver uninstall guards
         // ─────────────────────────────────────────────
 
@@ -674,6 +755,18 @@ namespace PadForge.ViewModels
         public RelayCommand BrowseCommunityConfigsCommand =>
             _browseCommunityConfigsCommand ??= new RelayCommand(
                 () => BrowseCommunityConfigsRequested?.Invoke(this, EventArgs.Empty));
+
+        private RelayCommand _browseStarterProfilesCommand;
+
+        /// <summary>Command to open the starter-profile gallery (#256). Always
+        /// enabled: the catalog ships in the box, so there is no opt-in, no
+        /// network, and nothing to be unavailable.</summary>
+        public RelayCommand BrowseStarterProfilesCommand =>
+            _browseStarterProfilesCommand ??= new RelayCommand(
+                () => BrowseStarterProfilesRequested?.Invoke(this, EventArgs.Empty));
+
+        /// <summary>Raised when the user opens the starter-profile gallery.</summary>
+        public event EventHandler BrowseStarterProfilesRequested;
 
         /// <summary>Raised when the user asks to purge the Workshop cache.</summary>
         public event EventHandler ClearWorkshopCacheRequested;
@@ -1190,7 +1283,7 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _topologyLabel, value)) OnPropertyChanged(nameof(HasNoSlots)); }
         }
 
-        public bool HasNoSlots => XboxCount == 0 && PlayStationCount == 0 && ExtendedCount == 0 && MidiCount == 0 && KbmCount == 0 && NintendoCount == 0;
+        public bool HasNoSlots => XboxCount == 0 && PlayStationCount == 0 && ExtendedCount == 0 && MidiCount == 0 && KbmCount == 0 && NintendoCount == 0 && VrCount == 0;
 
         private int _xboxCount;
         public int XboxCount
@@ -1237,6 +1330,18 @@ namespace PadForge.ViewModels
         {
             get => _nintendoCount;
             set => SetProperty(ref _nintendoCount, value);
+        }
+
+        /// <summary>VR slot count. Third time this shape has bitten: the
+        /// topology switch enumerates VirtualControllerType by case, and a
+        /// member nobody added a case for falls to `default`, which is Xbox.
+        /// Nintendo hit it in round 34, VR hit it when the type was added, and
+        /// both showed a profile as Xbox that was nothing of the kind.</summary>
+        private int _vrCount;
+        public int VrCount
+        {
+            get => _vrCount;
+            set => SetProperty(ref _vrCount, value);
         }
     }
 }

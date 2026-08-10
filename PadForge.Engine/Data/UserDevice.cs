@@ -180,7 +180,14 @@ namespace PadForge.Engine.Data
         /// the "IR Brightness" mapping source is offered for this device.</summary>
         [XmlIgnore]
         public bool HasJoyConIr => VendorId == 0x057E
-            && string.Equals(ProductName, "Nintendo Switch Joy-Con (R)", StringComparison.OrdinalIgnoreCase);
+            && (string.Equals(ProductName, "Nintendo Switch Joy-Con (R)", StringComparison.OrdinalIgnoreCase)
+                // Combined gen-1 pair (#275, SDL#26): the right half's camera
+                // now posts on the pair. This leg keys on the PID rather than
+                // the name, because SDL's combined synthesis gives the gen-1
+                // AND gen-2 pairs the identical "Switch Joy-Con (L/R)" product
+                // string, so only the PID (gen-1 pair 0x2008, gen-2 0x2068
+                // with a mouse instead of a camera) can discriminate.
+                || ProdId == 0x2008);
 
         /// <summary>Whether the device is a Joy-Con 2 (L or R), whose optical
         /// mouse sensor drives the "Mouse Motion X/Y" sources (issue #154).

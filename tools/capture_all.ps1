@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Captures ALL PadForge screenshots for wiki and README.
 .DESCRIPTION
@@ -11,7 +11,12 @@
 #>
 
 param(
-    [string]$OutputDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge.wiki\images",
+    # The GitHub wiki was RETIRED to pointer pages on 2026-07-30; the live
+    # documentation is Material for MkDocs in the padforge.org repo, source
+    # under wiki/ and the built site committed to docs/. Capturing into the
+    # old PadForge.wiki\images ships nothing, so this points at the docs
+    # source that is actually published.
+    [string]$OutputDir = "C:\Users\sonic\OneDrive\Documents\GitHub\padforge.org\wiki\images",
     [string]$PadForgeExe = "C:\PadForge\PadForge.exe",
     [string]$PadForgeXml = "C:\PadForge\PadForge.xml",
     # Tail mode: reuse the capture-configured PadForge.xml an aborted full
@@ -25,7 +30,35 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$logPath = "C:\PadForge\capture_log.txt"
+# NOT beside the exe. The standing bar is that only PadForge.xml and crash.log
+# may ever sit in the deploy directory, and this transcript was breaking it on
+# every run: the 2026-08-09 release prep found six stray log files there, all
+# written by this harness and its siblings. TEMP keeps them out of the way and
+# out of the hygiene sweep.
+$logDir = Join-Path $env:TEMP "PadForge_Capture"
+if (-not (Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir | Out-Null }
+$logPath = Join-Path $logDir "capture_log.txt"
+$script:CaptureRunStart = Get-Date
+
+# --- Single instance ---------------------------------------------------------
+# Two capture runs at once fight over the settings file, the foreground window
+# and this transcript, and the second one silently inherits the first one's
+# half-finished state. On 2026-08-09 a run launched before a script edit was
+# still going when the next was launched, so the "fixed" run was actually the
+# old script and its log looked like the fix had failed. Refuse to start.
+$lockPath = Join-Path $logDir "capture.lock"
+if (Test-Path $lockPath) {
+    $otherPid = (Get-Content $lockPath -EA SilentlyContinue | Select-Object -First 1)
+    $alive = $false
+    if ($otherPid) { $alive = [bool](Get-Process -Id ([int]$otherPid) -EA SilentlyContinue) }
+    if ($alive) {
+        Write-Host "!! A capture is ALREADY RUNNING (pid $otherPid). Refusing to start a second." -ForegroundColor Red
+        Write-Host "!! Wait for it, or stop it, then run again." -ForegroundColor Red
+        exit 1
+    }
+    Remove-Item $lockPath -Force -EA SilentlyContinue
+}
+Set-Content -Path $lockPath -Value $PID -Encoding ascii
 Start-Transcript -Path $logPath -Force | Out-Null
 
 # --- Assemblies ---------------------------------------------------------------
@@ -45,6 +78,7 @@ public class Win32 {
     [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);
     [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr h, out RECT r);
     [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr h, int cmd);
+    [DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
     [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr h, IntPtr a, int x, int y, int cx, int cy, uint f);
     [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
     [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
@@ -157,6 +191,66 @@ function Find-UIA {
     return $Parent.FindFirst($TD, $c)
 }
 
+function Reset-PadForgeUia {
+    # The WPF UIA tree degrades over a long capture run: late FindAlls come back
+    # empty for elements that are plainly on screen. The script header has noted
+    # this since 2026-07-30 and -SkipToTail exists because of it. The KBM block
+    # sits near the end and hit exactly that, scanning 0 slot cards four times
+    # over, which cost pad-kbm-preview, pad-kbm-socd and pad-mouse-gestures.
+    # A fresh process gets a fresh tree. Settings are already on disk, so this
+    # costs a restart and nothing else.
+    param([string]$ExePath)
+    Write-Host "  restarting PadForge for a fresh UIA tree" -ForegroundColor Cyan
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
+    Start-Sleep -Seconds 3
+    Start-Process $ExePath
+    for ($i = 0; $i -lt 25; $i++) {
+        Start-Sleep -Seconds 1
+        $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+        if ($pr -and $pr.MainWindowHandle -ne 0) { break }
+    }
+    Start-Sleep -Seconds 6
+    $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+    if (-not $pr -or $pr.MainWindowHandle -eq 0) { Write-Host "  !! PadForge did not come back" -ForegroundColor Red; return $false }
+    $script:hwnd = $pr.MainWindowHandle
+    $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle($script:hwnd)
+    [Win32]::ForceFG($script:hwnd)
+    Start-Sleep -Milliseconds 800
+    return $true
+}
+
+function Get-Count {
+    # Set-StrictMode -Version Latest makes a .Count read on anything that is not
+    # a collection a TERMINATING error, and UIA hands back such values routinely.
+    # This exact trap has now killed three separate runs: at $r.IsEmpty, at
+    # $cds.Count, and at $cards.Count in the KBM block, where the "fix" for the
+    # second one was not applied to the third. Count through here, always.
+    param($Value)
+    if ($null -eq $Value) { return 0 }
+    try { return ([object[]]$Value).Length } catch { }
+    try { return $Value.Count } catch { }
+    return 0
+}
+
+function Get-Rect {
+    # UIA can hand back a BoundingRectangle that is not a System.Windows.Rect:
+    # a stale element, or a virtualized row that scrolled out between the
+    # FindFirst and the read. Under Set-StrictMode -Version Latest, reading
+    # .IsEmpty off that object is a TERMINATING error, and on 2026-08-09 one
+    # stale device card killed a whole capture run at the Logitech G29, taking
+    # the last six shots AND the settings restore with it. Every rect read goes
+    # through here now. It returns $null rather than throwing, and callers
+    # treat $null as "skip this element" instead of dying.
+    param($El)
+    if (-not $El) { return $null }
+    try { $r = $El.Current.BoundingRectangle } catch { return $null }
+    if ($null -eq $r) { return $null }
+    if ($r -isnot [System.Windows.Rect]) { return $null }
+    try { if ($r.IsEmpty) { return $null } } catch { return $null }
+    if ($r.Width -le 0 -or $r.Height -le 0) { return $null }
+    return $r
+}
+
 function Click-El {
     param(
         [System.Windows.Automation.AutomationElement]$El,
@@ -164,11 +258,11 @@ function Click-El {
         [string]$Label
     )
     if (-not $El) { Write-Host "  !! NOT FOUND: $Label" -ForegroundColor Red; return $false }
-    $r = $El.Current.BoundingRectangle
-    # Height is checked alongside Width. IsEmpty does not catch a rect with
-    # width but no height, and such an element passed the guard and got clicked
-    # at its top edge, which lands on whatever is above it.
-    if ($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0) {
+    # Height is checked alongside Width inside Get-Rect. IsEmpty alone does not
+    # catch a rect with width but no height, and such an element passed the old
+    # guard and got clicked at its top edge, landing on whatever sat above it.
+    $r = Get-Rect $El
+    if ($null -eq $r) {
         Write-Host "  !! EMPTY BOUNDS: $Label" -ForegroundColor Red; return $false
     }
     $cx = [int]($r.X + $r.Width / 2); $cy = [int]($r.Y + $r.Height / 2)
@@ -178,6 +272,191 @@ function Click-El {
     Start-Sleep -Milliseconds 100
     [Win32]::ClickAt($cx, $cy)
     Start-Sleep -Milliseconds $Delay
+    return $true
+}
+
+function Ensure-DeviceAssigned {
+    # Driving the Devices page to assign a device is the flakiest chain in this
+    # script: scroll the virtualized card list, wait for the detail pane to
+    # realize, enumerate toggles, click the right one. The Xbox GIP dummy lost
+    # that fight run after run, and pad-impulse-triggers plus
+    # pad-lighting-guide-led stayed weeks stale because the tabs they need only
+    # appear when that device is selectable in the pad page DEVICE dropdown.
+    #
+    # An assignment is nothing but UserSetting.MapTo, so write it. The comment
+    # further down this script has said to do exactly this since 2026-07-30.
+    # MapTo is the ZERO-BASED pad index (InputManager filters on
+    # `us.MapTo == slot`), not the UI slot number.
+    #
+    # Runs with PadForge closed and restarts it, which is the state proven to
+    # load settings cleanly.
+    # SlotType resolves the pad index by VirtualControllerType instead of
+    # trusting a hardcoded number. Dashboard CARD order is type-group order
+    # (Xbox, PlayStation, Nintendo, Extended, KBM, MIDI, VR) while PAD INDEX is
+    # creation order, and they are not the same: on 2026-08-10 the slots came
+    # out 0,1,5,4,2,2, so the KBM slot was pad 3 while its card sat fifth. A
+    # mouse mapped to "pad 4" landed on an Extended slot and the Mouse tab
+    # never appeared. Pass the type and let the file say where it is.
+    param([string]$DeviceNamePart, [int]$PadIndex, [int]$SlotType = -1,
+          [string]$XmlPath, [string]$ExePath)
+
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
+    Start-Sleep -Seconds 3
+
+    try {
+        [xml]$ax = Get-Content $XmlPath
+        $root = $ax.PadForgeSettings
+
+        if ($SlotType -ge 0) {
+            $typesNode = $root.SelectSingleNode("SlotControllerTypes")
+            if ($typesNode) {
+                $i = 0; $resolved = -1
+                foreach ($t in $typesNode.ChildNodes) {
+                    if ("$($t.InnerText)".Trim() -eq "$SlotType") { $resolved = $i; break }
+                    $i++
+                }
+                if ($resolved -ge 0) {
+                    if ($resolved -ne $PadIndex) {
+                        Write-Host "  slot type $SlotType is pad $resolved (not $PadIndex); using $resolved" -ForegroundColor DarkGray
+                    }
+                    $PadIndex = $resolved
+                } else {
+                    Write-Host "  !! no slot of type $SlotType in SlotControllerTypes" -ForegroundColor Yellow
+                }
+            }
+        }
+
+        $devsNode = $root.SelectSingleNode("Devices")
+        if (-not $devsNode) { Write-Host "  !! no <Devices> node" -ForegroundColor Red; Start-Process $ExePath; return $false }
+        $dev = $null
+        foreach ($d in $devsNode.ChildNodes) {
+            $nameNode = $d.SelectSingleNode("InstanceName")
+            if ($nameNode -and $nameNode.InnerText -like "*$DeviceNamePart*") { $dev = $d; break }
+        }
+        if (-not $dev) { Write-Host "  !! device '$DeviceNamePart' not in <Devices>" -ForegroundColor Red; Start-Process $ExePath; return $false }
+
+        $guid = $dev.SelectSingleNode("InstanceGuid").InnerText
+        $pguidNode = $dev.SelectSingleNode("ProductGuid")
+        $pguid = if ($pguidNode) { $pguidNode.InnerText } else { $guid }
+        $iname = $dev.SelectSingleNode("InstanceName").InnerText
+
+        $usNode = $root.SelectSingleNode("UserSettings")
+        if (-not $usNode) { $usNode = $ax.CreateElement("UserSettings"); $root.AppendChild($usNode) | Out-Null }
+
+        # Already mapped to this pad? Nothing to do.
+        foreach ($st in $usNode.ChildNodes) {
+            $g = $st.SelectSingleNode("InstanceGuid"); $mt = $st.SelectSingleNode("MapTo")
+            if ($g -and $mt -and $g.InnerText -eq $guid -and [int]$mt.InnerText -eq $PadIndex) {
+                Write-Host "  '$iname' already mapped to pad $PadIndex"
+                Start-Process $ExePath; Start-Sleep -Seconds 8
+                return $true
+            }
+        }
+
+        # Clone an existing row so every field the serializer expects is present.
+        $template = $usNode.FirstChild
+        if ($template) {
+            $row = $template.CloneNode($true)
+            foreach ($pair in @(@("InstanceGuid", $guid), @("ProductGuid", $pguid),
+                                @("InstanceName", $iname), @("ProductName", $iname),
+                                @("MapTo", "$PadIndex"))) {
+                $n = $row.SelectSingleNode($pair[0])
+                if ($n) { $n.InnerText = $pair[1] }
+            }
+        } else {
+            $row = $ax.CreateElement("Setting")
+            foreach ($pair in @(@("InstanceGuid", $guid), @("ProductGuid", $pguid),
+                                @("InstanceName", $iname), @("ProductName", $iname),
+                                @("MapTo", "$PadIndex"))) {
+                $e = $ax.CreateElement($pair[0]); $e.InnerText = $pair[1]; $row.AppendChild($e) | Out-Null
+            }
+        }
+        $usNode.AppendChild($row) | Out-Null
+        $ax.Save($XmlPath)
+        Write-Host "  mapped '$iname' to pad $PadIndex by XML" -ForegroundColor Green
+    } catch {
+        Write-Host "  !! assignment write failed: $($_.Exception.Message)" -ForegroundColor Red
+        Start-Process $ExePath
+        return $false
+    }
+
+    Start-Process $ExePath
+    $ok = $false
+    for ($i = 0; $i -lt 25; $i++) {
+        Start-Sleep -Seconds 1
+        $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+        if ($pr -and $pr.MainWindowHandle -ne 0) { $ok = $true; break }
+    }
+    if (-not $ok) { Write-Host "  !! PadForge did not come back up" -ForegroundColor Red; return $false }
+    Start-Sleep -Seconds 6
+    $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+    $script:hwnd = $pr.MainWindowHandle
+    $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle($script:hwnd)
+    [Win32]::ForceFG($script:hwnd)
+    Start-Sleep -Milliseconds 800
+    return $true
+}
+
+function Ensure-MacrosLoaded {
+    # "Injected the macros" is not the same as "the app is showing macros", and
+    # on 2026-08-09 the gap between those two shipped five blank screenshots.
+    # The macros survive a load when they are written while PadForge is CLOSED
+    # (proven: inject, launch, exit, and the file comes back re-serialized with
+    # all five and their actions). During a capture run something between
+    # startup and the Macros tab empties them. Rather than keep guessing at
+    # which step, write them again with the app closed and restart, which is
+    # the state that is known to work. Returns $true when macros are present.
+    param([string]$XmlPath, [string]$ExePath)
+
+    Write-Host "  Ensuring macros: rewriting them with PadForge closed, then restarting" -ForegroundColor Cyan
+
+    $src = Get-Content $PSCommandPath -Raw
+    $frags = [regex]::Matches($src, "(?s)<Macro PadIndex=""0"">.*?</Macro>") | ForEach-Object { $_.Value }
+    if (-not $frags -or @($frags).Count -eq 0) {
+        Write-Host "  !! no macro fragments found in this script" -ForegroundColor Red
+        return $false
+    }
+
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
+    Start-Sleep -Seconds 3
+
+    try {
+        [xml]$mx = Get-Content $XmlPath
+        $mroot = $mx.PadForgeSettings.SelectSingleNode("Macros")
+        if (-not $mroot) {
+            $mroot = $mx.CreateElement("Macros")
+            $mx.PadForgeSettings.AppendChild($mroot) | Out-Null
+        }
+        while ($mroot.HasChildNodes) { $mroot.RemoveChild($mroot.FirstChild) | Out-Null }
+        foreach ($f in $frags) {
+            $fr = $mx.CreateDocumentFragment()
+            $fr.InnerXml = $f.Trim()
+            $mroot.AppendChild($fr) | Out-Null
+        }
+        $mx.Save($XmlPath)
+        Write-Host "  wrote $(@($frags).Count) macros into the closed settings file"
+    } catch {
+        Write-Host "  !! could not write macros: $($_.Exception.Message)" -ForegroundColor Red
+        Start-Process $ExePath
+        return $false
+    }
+
+    Start-Process $ExePath
+    $ok = $false
+    for ($i = 0; $i -lt 25; $i++) {
+        Start-Sleep -Seconds 1
+        $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+        if ($pr -and $pr.MainWindowHandle -ne 0) { $ok = $true; break }
+    }
+    if (-not $ok) { Write-Host "  !! PadForge did not come back up" -ForegroundColor Red; return $false }
+
+    Start-Sleep -Seconds 6
+    $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+    $script:hwnd = $pr.MainWindowHandle
+    $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle($script:hwnd)
+    [Win32]::ForceFG($script:hwnd)
+    Start-Sleep -Milliseconds 800
+    Write-Host "  PadForge restarted for macros (HWND=$($script:hwnd))" -ForegroundColor Green
     return $true
 }
 
@@ -241,21 +520,39 @@ function Find-AllSlots {
     for ($attempt = 1; $attempt -le $Retries; $attempt++) {
         $menuHost = Find-UIA -Aid "MenuItemsHost"
         $searchIn = if ($menuHost) { $menuHost } else { $script:uiaWin }
-        $ct = [System.Windows.Automation.ControlType]::ListItem
-        $cond = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::ControlTypeProperty, $ct)
-        $all = $searchIn.FindAll($TD, $cond)
+        # Sidebar nav items surface as DataItem, NOT ListItem. A ListItem-only
+        # search returns an empty set, which reads exactly like "no slots
+        # exist" even when all six were just created successfully, and then
+        # every device assignment downstream silently no-ops (0 toggles ->
+        # dropdowns empty -> wheel / impulse-triggers / consumer / guide-LED /
+        # balance-source shots all stay stale). Match BOTH control types and
+        # let the ClassName filter below do the real discrimination.
+        $orCond = New-Object System.Windows.Automation.OrCondition(@(
+            (New-Object System.Windows.Automation.PropertyCondition(
+                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+                [System.Windows.Automation.ControlType]::ListItem)),
+            (New-Object System.Windows.Automation.PropertyCondition(
+                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+                [System.Windows.Automation.ControlType]::DataItem))
+        ))
+        $all = $searchIn.FindAll($TD, $orCond)
         $slots = @()
         foreach ($item in $all) {
             $n = $item.Current.Name
             $cls = $item.Current.ClassName
-            if ($cls -eq "NavigationViewItem" -and ($n -match '^Pad\d+$' -or ($n -notin $skip -and $n.Length -gt 0))) {
+            # Slot entries report ClassName 'ItemsControlItem' now, not
+            # 'NavigationViewItem'. Accept both, and drop the entries whose
+            # Name is a namespace-qualified type ('Wpf.Ui.Controls.
+            # NavigationViewItemSeparator', 'System.Windows.Controls.Grid'),
+            # which is what the class check used to filter out for free.
+            if (($cls -eq "NavigationViewItem" -or $cls -eq "ItemsControlItem") -and
+                ($n -match '^Pad\d+$' -or ($n -notin $skip -and $n.Length -gt 0 -and $n -notmatch '\.'))) {
                 Write-Host "    Slot: '$n' (class=$cls)"
                 $slots += $item
             }
         }
-        if ($slots.Count -gt 0) {
-            Write-Host "  Found $($slots.Count) slot(s) on attempt $attempt"
+        if ((Get-Count $slots) -gt 0) {
+            Write-Host "  Found $(Get-Count $slots) slot(s) on attempt $attempt"
             return $slots
         }
         # Diagnostic: list ALL NavigationViewItems
@@ -363,7 +660,8 @@ function Toggle-ViewMode {
     Write-Host "  ViewModeToggle has no UIA peer (expected); measured coordinate" -ForegroundColor DarkGray
     $pp = Find-UIA -Aid "PadPageView"
     if (-not $pp) { Write-Host "  !! Toggle-ViewMode: no PadPageView" -ForegroundColor Red; return $false }
-    $pr = $pp.Current.BoundingRectangle
+    $pr = Get-Rect $pp
+    if ($null -eq $pr) { Write-Host "  !! Toggle-ViewMode: PadPageView has no rect" -ForegroundColor Red; return $false }
     [Win32]::ForceFG($script:hwnd); Start-Sleep -Milliseconds 100
     [Win32]::ClickAt([int]($pr.X + 41), [int]($pr.Y + 61))
     Start-Sleep -Milliseconds 900
@@ -452,7 +750,7 @@ function Close-AnyModal {
                 $modals += $w
             } catch {}
         }
-        if ($modals.Count -eq 0) { break }
+        if ((Get-Count $modals) -eq 0) { break }
         foreach ($m in $modals) {
             Write-Host "  Close-AnyModal: dismissing '$($m.Current.Name)'" -ForegroundColor DarkGray
             $done = $false
@@ -826,6 +1124,24 @@ if ($profilesNode.ChildNodes.Count -eq 0) {
 }
 
 # --- Inject test macros (so Macros tab screenshot shows content) ---
+# These are written in MacroData's declared element order. That is worth keeping
+# because XmlSerializer reads elements in declared order, but be clear about
+# what it does NOT explain: on 2026-08-09 all five macros were discarded at load
+# and every macro shot came out blank, and reordering them did not fix it. The
+# 2026-07-30 pad-macros.png shows the same five loaded correctly from the
+# ORIGINAL out-of-order XML, complete with the "Left Trigger > 50%" chip, so
+# order was never the cause. What changed between those two dates has not been
+# identified. Do not treat this ordering as the fix.
+# MacroData order:  PadIndex Name IsEnabled TriggerButtons TriggerDeviceGuid
+#   TriggerRawButtons TriggerSource TriggerMode TriggerHoldMs
+#   TriggerDoublePressMs LayerMask ConsumeTriggerButtons RepeatMode RepeatCount
+#   RepeatDelayMs PairId ReleaseLingerMs TriggerCustomButtons TriggerAxisTargets
+#   TriggerAxisDirections TriggerAxisThreshold TriggerPovs TriggerInputs
+#   TriggerExpression TriggerExpressionVariables Actions
+# ActionData order: Type(0) ButtonFlags(1) KeyCode(3) KeyString(4) DurationMs(5)
+#   AxisTarget(7) VolumeLimit(12) MouseSensitivity(13) MouseButton(14)
+#   MouseX(51) MouseY(52) IntervalMs(53) DisconnectTarget(57)
+# Adding a field means inserting it at its declared position, not appending.
 $macrosNode = $ns.SelectSingleNode("Macros")
 if (-not $macrosNode) {
     $macrosNode = $xml.CreateElement("Macros")
@@ -838,17 +1154,17 @@ if ($macrosNode.ChildNodes.Count -eq 0) {
   <Name>Quick Combo</Name>
   <IsEnabled>true</IsEnabled>
   <TriggerButtons>4096</TriggerButtons>
-  <TriggerAxisTargets>LeftTrigger</TriggerAxisTargets>
-  <TriggerAxisThreshold>50</TriggerAxisThreshold>
   <TriggerSource>OutputController</TriggerSource>
   <TriggerMode>OnPress</TriggerMode>
   <ConsumeTriggerButtons>true</ConsumeTriggerButtons>
   <RepeatMode>Once</RepeatMode>
+  <TriggerAxisTargets>LeftTrigger</TriggerAxisTargets>
+  <TriggerAxisThreshold>50</TriggerAxisThreshold>
   <Actions>
     <Action><Type>ButtonPress</Type><ButtonFlags>4096</ButtonFlags><DurationMs>100</DurationMs></Action>
     <Action><Type>Delay</Type><DurationMs>200</DurationMs></Action>
     <Action><Type>KeyPress</Type><KeyCode>32</KeyCode><DurationMs>50</DurationMs></Action>
-    <Action><Type>MouseButtonPress</Type><MouseButton>Left</MouseButton><DurationMs>50</DurationMs></Action>
+    <Action><Type>MouseButtonPress</Type><DurationMs>50</DurationMs><MouseButton>Left</MouseButton></Action>
   </Actions>
 </Macro>
 '@
@@ -998,6 +1314,13 @@ Write-Host "  Saved modified PadForge.xml" -ForegroundColor Green
 # ==============================================================================
 # STEP 1: Start PadForge
 # ==============================================================================
+# Everything from here to STEP 4 runs inside a try/finally. Twice on 2026-08-09
+# a StrictMode property read threw mid-run, STEP 4 never executed, and the
+# owner's real PadForge.xml was left replaced by the capture file complete with
+# injected dummy devices. A capture run may fail. It may not walk away holding
+# someone's settings hostage, so the restore is now in a finally and runs on
+# every exit path.
+try {
 Write-Host ""
 Write-Host "=== STEP 1: Start PadForge ===" -ForegroundColor Cyan
 Start-Process $PadForgeExe
@@ -1032,6 +1355,22 @@ Write-Host "=== STEP 2: Setup window ===" -ForegroundColor Cyan
 ## click/Cap is the mechanism; TOPMOST pins PadForge over the user's other
 ## windows and a mid-script failure leaves it stuck there.
 [Win32]::ForceFG($hwnd)
+# The elevated console is OUR window and it must never appear in a shot.
+# Cap calls ForceFG first, but ForceFG can lose to Windows' foreground-lock
+# rules and Cap does not verify it won, so a losing race put the console on
+# top of devices.png and devices-facet-chips.png in the 4.1.0 set (both
+# shipped to the repo, the website and the docs before anyone looked).
+# Hiding it outright removes the race instead of narrowing it.
+# Default false so the macro gates below are readable even if the macro section
+# never runs. Under Set-StrictMode -Version Latest an unset variable is a
+# terminating error, and that class of mistake already cost this script two runs.
+$script:MacrosPresent = $false
+$script:consoleWnd = [Win32]::GetConsoleWindow()
+if ($script:consoleWnd -ne [IntPtr]::Zero) {
+    [Win32]::ShowWindow($script:consoleWnd, 0) | Out-Null  # SW_HIDE
+    Write-Host "Console hidden for the capture run."
+}
+
 [Win32]::ShowWindow($hwnd, 3) | Out-Null  # SW_MAXIMIZE
 Start-Sleep -Milliseconds 700
 
@@ -1058,7 +1397,8 @@ if (-not $hamburger) {
 }
 if ($hamburger) {
     $dash = Find-UIA -Name "Dashboard"
-    if ($dash -and $dash.Current.BoundingRectangle.Width -lt 120) {
+    $dashR = Get-Rect $dash
+    if ($null -ne $dashR -and $dashR.Width -lt 120) {
         Write-Host "  Sidebar compact -- expanding..."
         Click-El $hamburger -Label "Hamburger" -Delay 500
     } else {
@@ -1110,7 +1450,7 @@ if (-not $SkipToTail) {
 Write-Host "  Removing any existing slots..."
 for ($delPass = 0; $delPass -lt 16; $delPass++) {
     $existingSlots = @(Find-AllSlots)
-    if ($existingSlots.Count -eq 0) { break }
+    if ((Get-Count $existingSlots) -eq 0) { break }
     # Select the first slot
     Select-El $existingSlots[0] -Label "Select for delete" -Delay 500
     # Find and click the delete/close button (X) — it's a Button with the delete tooltip
@@ -1140,8 +1480,8 @@ for ($delPass = 0; $delPass -lt 16; $delPass++) {
         foreach ($b in $slotBtns) {
             if ($b.Current.Name -match "Delete|Remove|Close") { $delBtn = $b; break }
         }
-        if (-not $delBtn -and $slotBtns.Count -gt 0) {
-            $delBtn = $slotBtns[$slotBtns.Count - 1]
+        if (-not $delBtn -and (Get-Count $slotBtns) -gt 0) {
+            $delBtn = $slotBtns[(Get-Count $slotBtns) - 1]
             Write-Host "  (fallback) clicking last card button: '$($delBtn.Current.Name)'" -ForegroundColor Yellow
         }
     }
@@ -1153,21 +1493,27 @@ for ($delPass = 0; $delPass -lt 16; $delPass++) {
     }
 }
 $remainingSlots = @(Find-AllSlots)
-Write-Host "  Slots remaining after cleanup: $($remainingSlots.Count)"
+Write-Host "  Slots remaining after cleanup: $(Get-Count $remainingSlots)"
 
-# Create: Xbox, PlayStation, Nintendo, KBM, Extended, MIDI. SlotNumber and
-# dashboard-card order follow VirtualControllerGroups.InOrder regardless of
-# creation order: Xbox 1, PlayStation 2, Nintendo 3, Extended 4, KBM 5,
-# MIDI 6. AutomationIds AddXbox360Btn / AddDS4Btn are kept verbatim from v2
-# for stable automation hookup. 4.1.0 renamed the Extended button's id to
-# AddRawBtn and added the Nintendo type (virtual Switch Pro, #246).
+# Create one slot of EVERY VirtualControllerType. SlotNumber and dashboard-card
+# order follow VirtualControllerGroups.InOrder regardless of creation order:
+# Xbox 1, PlayStation 2, Nintendo 3, Extended 4, KBM 5, MIDI 6, VR 7.
+# AutomationIds AddXbox360Btn / AddDS4Btn are kept verbatim from v2 for stable
+# automation hookup. 4.1.0 renamed the Extended button's id to AddRawBtn and
+# added the Nintendo type (virtual Switch Pro, #246); 4.2.0 added VR (#49).
 $slotTypes = @(
     @{ Aid = "AddXbox360Btn"; Label = "Xbox" },
     @{ Aid = "AddDS4Btn"; Label = "PlayStation" },
     @{ Aid = "AddNintendoBtn"; Label = "Nintendo" },
     @{ Aid = "AddKeyboardMouseBtn"; Label = "Keyboard+Mouse" },
     @{ Aid = "AddRawBtn"; Label = "Extended" },
-    @{ Aid = "AddMidiBtn"; Label = "MIDI" }
+    @{ Aid = "AddMidiBtn"; Label = "MIDI" },
+    # VR (#49, 4.2.0) completes the set: every VirtualControllerType the
+    # popup can create is represented here. The popup's button DISABLES
+    # itself when SteamVR is absent (HMaestroVRController.IsAvailable), so
+    # this slot is created only on a machine that has the runtime, which is
+    # also the only machine where its preview would render anything real.
+    @{ Aid = "AddVrBtn"; Label = "VR" }
 )
 foreach ($st in $slotTypes) {
     Write-Host "  Creating $($st.Label) slot..."
@@ -1182,7 +1528,7 @@ Start-Sleep -Milliseconds 3000
 
 # Verify slots appeared
 $slots = @(Find-AllSlots)
-Write-Host "  Slots after creation: $($slots.Count)"
+Write-Host "  Slots after creation: $(Get-Count $slots)"
 
 # ----------------------------------------------------------------------
 # Assign a DualSense to the Xbox + PlayStation slots so their PadPages
@@ -1215,8 +1561,8 @@ function Reset-DeviceTypeFilter {
     foreach ($el in $script:uiaWin.FindAll($TD, $txtC)) {
         try {
             if (($el.Current.Name -replace '\s', '') -ne 'ALL') { continue }
-            $r = $el.Current.BoundingRectangle
-            if ($r.IsEmpty) { continue }
+            $r = Get-Rect $el
+            if ($null -eq $r) { continue }
             # Constrain to the chip band near the page top so a stray
             # 'ALL' elsewhere can't be clicked.
             if (($r.Y - $wrF.Top) -gt 350) { continue }
@@ -1227,8 +1573,33 @@ function Reset-DeviceTypeFilter {
     return $false
 }
 
+function Get-DeviceListTop {
+    # The Devices page has a sticky header and a chip row above the card list.
+    # A card whose rect merely clears an arbitrary 120px still overlaps that
+    # band, and clicking its centre lands on the chips instead: that is how the
+    # G29 assignment enumerated 0 toggles on 2026-08-09 and took pad-wheel,
+    # pad-impulse-triggers, pad-lighting-guide-led and wii-balance-sources with
+    # it. Measure the real boundary off the ALL chip rather than guessing, and
+    # only fall back to a constant when the chip cannot be read.
+    $wr = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wr) | Out-Null
+    $txtC = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::Text)
+    foreach ($el in $script:uiaWin.FindAll($TD, $txtC)) {
+        try {
+            if (($el.Current.Name -replace '\s', '') -ne 'ALL') { continue }
+            $r = Get-Rect $el
+            if ($null -eq $r) { continue }
+            if (($r.Y - $wr.Top) -gt 350) { continue }
+            return [int]($r.Y + $r.Height + 18)
+        } catch { }
+    }
+    return [int]($wr.Top + 230)
+}
+
 function Assign-DeviceToSlot {
-    param([string]$DeviceNamePart, [string]$SlotNumberLabel, [switch]$Unassign)
+    param([string]$DeviceNamePart, [string]$SlotNumberLabel, [switch]$Unassign, [switch]$Reassert)
     $searchIn = $script:uiaWin
     Reset-DeviceTypeFilter | Out-Null
     $liCond = New-Object System.Windows.Automation.PropertyCondition(
@@ -1246,6 +1617,7 @@ function Assign-DeviceToSlot {
     # nowhere, and the unassign silently no-oped). On an off-screen match,
     # scroll TOWARD it and re-find instead of clicking a phantom rect.
     $target = $null
+    $listTop = Get-DeviceListTop
     for ($stry = 0; $stry -lt 24 -and (-not $target); $stry++) {
         $found = $null
         $items = $searchIn.FindAll($TD, $liCond)
@@ -1254,18 +1626,20 @@ function Assign-DeviceToSlot {
         # Left+400 landed outside its scroll viewer, so every below-the-fold
         # device (Xbox GIP, All Mice, Wii Remote) went unreachable.
         foreach ($it in $items) {
-            $ir = $it.Current.BoundingRectangle
-            if (-not $ir.IsEmpty) { $lx = [int]($ir.X + $ir.Width / 2); break }
+            $ir = Get-Rect $it
+            if ($null -ne $ir) { $lx = [int]($ir.X + $ir.Width / 2); break }
         }
         foreach ($it in $items) {
             if ($it.Current.Name -like "*$DeviceNamePart*") { $found = $it; break }
         }
         if ($found) {
-            $fr = $found.Current.BoundingRectangle
-            if (-not $fr.IsEmpty -and $fr.Y -ge ($wrA.Top + 120) -and ($fr.Y + $fr.Height) -le ($wrA.Bottom - 40)) {
+            $fr = Get-Rect $found
+            if ($null -ne $fr -and $fr.Y -ge $listTop -and ($fr.Y + $fr.Height) -le ($wrA.Bottom - 40)) {
                 $target = $found
             } else {
-                $dir = if ($fr.IsEmpty -or $fr.Y -lt ($wrA.Top + 120)) { 3 } else { -3 }  # positive scrolls up
+                # A null rect means the row is virtualized out of view, so scroll
+                # toward it exactly as if it sat above the viewport.
+                $dir = if ($null -eq $fr -or $fr.Y -lt $listTop) { 3 } else { -3 }  # positive scrolls up
                 [Win32]::ForceFG($script:hwnd); [Win32]::ScrollAt($lx, $my, $dir); Start-Sleep -Milliseconds 350
             }
         } else {
@@ -1301,13 +1675,22 @@ function Assign-DeviceToSlot {
     # (the 2026-07-30 run enumerated 0 toggles on a found Wii Remote card
     # and the assignment silently failed). One re-enumerate after a wait.
     $toggles = @()
-    for ($tenum = 0; $tenum -lt 2 -and $toggles.Count -eq 0; $tenum++) {
+    for ($tenum = 0; $tenum -lt 3 -and (Get-Count $toggles) -eq 0; $tenum++) {
         if ($tenum -gt 0) { Start-Sleep -Milliseconds 1500 }
+        # Second miss means the click probably did not SELECT the card at all
+        # (it landed on the header, or the row de-realized under the pointer),
+        # so waiting longer cannot help. Re-click the card once before the
+        # final enumerate.
+        if ($tenum -eq 2) {
+            Write-Host "    0 toggles twice; re-clicking the device card"
+            Click-El $target -Label "Device card '$DeviceNamePart' (retry)" -Delay 1200 | Out-Null
+        }
         $allButtons = $searchIn.FindAll($TD, $btnCond)
         foreach ($b in $allButtons) {
             try {
                 $null = $b.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern)
-                $r = $b.Current.BoundingRectangle
+                $r = Get-Rect $b
+                if ($null -eq $r) { continue }
                 $cx = $r.X + $r.Width / 2
                 if ($cx -gt $midX) { $toggles += $b }   # detail panel only, exclude sidebar
             } catch {}
@@ -1325,7 +1708,7 @@ function Assign-DeviceToSlot {
         } catch {}
         $slotOf[$t] = $digits
     }
-    Write-Host "    Detail-panel assignment toggles: $($toggles.Count)"
+    Write-Host "    Detail-panel assignment toggles: $(Get-Count $toggles)"
     foreach ($t in $toggles) { Write-Host "      toggle slotNumber='$($slotOf[$t])'" }
     $btn = $null
     foreach ($t in $toggles) {
@@ -1335,7 +1718,7 @@ function Assign-DeviceToSlot {
         # Fallback: positional. ActiveSlotItems is in slot order, so the Nth
         # detail-panel toggle (0-based) is SlotNumber N+1.
         $idx = [int]$SlotNumberLabel - 1
-        if ($idx -ge 0 -and $idx -lt $toggles.Count) {
+        if ($idx -ge 0 -and $idx -lt (Get-Count $toggles)) {
             $btn = $toggles[$idx]
             Write-Host "    (slot-number match missed -- using positional toggle #$idx)" -ForegroundColor DarkGray
         }
@@ -1350,10 +1733,20 @@ function Assign-DeviceToSlot {
             Write-Host "  Slot $SlotNumberLabel already unassigned from $DeviceNamePart"
             return $true
         }
-        if (-not $Unassign -and $isOn) {
+        if (-not $Unassign -and $isOn -and -not $Reassert) {
             Write-Host "  Slot $SlotNumberLabel already assigned to $DeviceNamePart"
             return $true
         }
+        # A toggle reading ON only proves the SETTINGS say assigned. For an
+        # injected dummy device it does NOT mean the device is live, because
+        # what makes it live is ToggleSlotCommand, and that runs on Click. The
+        # Xbox GIP dummy came pre-assigned, the shortcut above skipped the
+        # click, the device never appeared in the pad page's device dropdown,
+        # and pad-impulse-triggers plus pad-lighting-guide-led stayed stale
+        # while the log cheerfully reported "already assigned". Re-assert by
+        # clicking twice: off, then on. It ends in the same state, having
+        # actually run the command.
+        $reassertOff = ($Reassert -and $isOn -and -not $Unassign)
         # Bring the toggle into view first (the assign row can sit below the
         # fold on a tall detail panel), then use a real coordinate CLICK, not
         # TogglePattern.Toggle(). The toggle's IsChecked is OneWay-bound to
@@ -1364,11 +1757,14 @@ function Assign-DeviceToSlot {
         # "No device mapped" on the dashboard.
         try { $btn.GetCurrentPattern([System.Windows.Automation.ScrollItemPattern]::Pattern).ScrollIntoView(); Start-Sleep -Milliseconds 300 } catch {}
         $verb = if ($Unassign) { "Unassigned" } else { "Assigned" }
+        if ($reassertOff) {
+            Click-El $btn -Label "Slot $SlotNumberLabel toggle OFF (re-assert $DeviceNamePart)" -Delay 900 | Out-Null
+        }
         Click-El $btn -Label "Slot $SlotNumberLabel toggle ($DeviceNamePart)" -Delay 900 | Out-Null
         Write-Host "  $verb $DeviceNamePart $(if ($Unassign) { 'from' } else { 'to' }) slot $SlotNumberLabel" -ForegroundColor Green
         return $true
     }
-    Write-Host "  !! Slot $SlotNumberLabel toggle not found for $DeviceNamePart (had $($toggles.Count) toggles)" -ForegroundColor Yellow
+    Write-Host "  !! Slot $SlotNumberLabel toggle not found for $DeviceNamePart (had $(Get-Count $toggles) toggles)" -ForegroundColor Yellow
     return $false
 }
 
@@ -1380,7 +1776,7 @@ Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "2" | Out-Null
 # (alphabetically first), so the main Xbox-slot captures are unchanged; the
 # Impulse-Triggers and Wheel captures at the end of that section switch the
 # mapped-device dropdown to the Xbox pad / the wheel to surface their tabs.
-Assign-DeviceToSlot -DeviceNamePart "Xbox Series X GIP" -SlotNumberLabel "1" | Out-Null
+Assign-DeviceToSlot -DeviceNamePart "Xbox Series X GIP" -SlotNumberLabel "1" -Reassert | Out-Null
 Assign-DeviceToSlot -DeviceNamePart "Logitech G29" -SlotNumberLabel "1" | Out-Null
 # Mouse on the KBM slot (SlotNumber 4) for the #200 Mouse-gestures tab. The Mouse
 # tab gates on the SELECTED device being IsMouse (CapType == Mouse == 18); a KBM
@@ -1418,6 +1814,34 @@ Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "4" | Out-Null
 # gating to flip on for the affected slots.
 Start-Sleep -Milliseconds 2000
 
+# The Xbox GIP dummy is the one assignment the UI chain never lands, and two
+# shots depend on it: the Impulse Triggers tab gates on HasRumbleTriggers and
+# the Guide Button LED card wants an Xbox pad selected. Write the mapping
+# instead of clicking for it. This runs at a clean boundary, before any
+# capture, so the restart costs nothing and the full multi-slot topology the
+# rest of the gallery shows is untouched.
+Ensure-DeviceAssigned -DeviceNamePart "Xbox Series X GIP" -PadIndex 0 -SlotType 0 `
+    -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+
+# Same treatment for the mouse. The Mouse tab gates on the SELECTED device
+# being IsMouse, so pad-mouse-gestures needs "All Mice (Merged)" reachable in
+# the KBM slot's device dropdown. The UI toggle assigned it and the dropdown
+# still did not list it, exactly as with the Xbox GIP, and the shot has never
+# been captured as a result. KBM is pad index 4 in creation order
+# (Xbox 0, PlayStation 1, Nintendo 2, Extended 3, KBM 4).
+Ensure-DeviceAssigned -DeviceNamePart "All Mice (Merged)" -PadIndex 4 -SlotType 4 `
+    -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+
+# Macros, written AFTER the slots exist. STEP 0 clears SlotCreated to all-false
+# and saves, and LoadMacros skips any macro whose slot is not created, so five
+# macros injected in STEP 0 are discarded the moment the app reads that file.
+# The slots are created through the UI afterwards, by which point the macros
+# are already gone from memory and the next save writes <Macros /> back. That
+# is why every macro shot came out as an empty pane while the injection step
+# cheerfully logged success. Writing them here, with the topology already
+# persisted, is the same state that loads them correctly by hand.
+Ensure-MacrosLoaded -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+
 # Web controller server is enabled via XML injection in Step 0. No UI click needed.
 }
 
@@ -1434,7 +1858,7 @@ $n = 0
 #
 # 36, not the 34 Next calls written in the source: the one inside the Gyro /
 # Audio / Touchpad loop runs three times, so it contributes 3 rather than 1.
-$total = 36
+$total = 39
 
 function Next { $script:n++; return $script:n }
 
@@ -1638,7 +2062,75 @@ if ($slots.Count -ge 1) {
             Start-Sleep -Milliseconds 500
         }
     }
-    Cap "pad-macros"
+
+    # HARD GATE. Every macro shot on 2026-08-09 shipped as the same empty pane
+    # reading "Select a macro on the left, or press Add to create one", because
+    # this section photographs whatever is on screen and never asked whether a
+    # macro existed. If the list is empty the injection failed, and a blank
+    # frame is worse than a missing one, so say so and skip rather than ship it.
+    # ASK THE SETTINGS FILE, NOT UI AUTOMATION. The macro ListBox uses a
+    # DataTemplate, and WPF exposes NO ListItem peers for it at all: a probe with
+    # the tab open, five macros plainly visible on screen, returned ListItem
+    # count 0 and zero name matches. Every name-based lookup here is blind by
+    # construction, which is why the old gate reported an empty list and skipped
+    # five perfectly good shots, and why the selection code has always fallen
+    # through to its coordinate click. The settings file answers the only
+    # question the gate actually has, and answers it definitively.
+    $macroNames = @("Quick Combo", "Volume Control", "Sleep Controller", "Center Cursor", "Rapid Fire")
+    $macroSeen = 0
+    try {
+        [xml]$mkChk = Get-Content $PadForgeXml
+        $mkRoot = $mkChk.PadForgeSettings.SelectSingleNode("Macros")
+        if ($mkRoot) { $macroSeen = @($mkRoot.SelectNodes("Macro")).Count }
+    } catch { $macroSeen = 0 }
+    Write-Host "  macros in settings: $macroSeen"
+    $script:MacrosPresent = ($macroSeen -gt 0)
+
+    # Empty list: repair it rather than shrug. Write the macros with the app
+    # closed (the state proven to load them), restart, come back to this tab and
+    # look again. Only if it is STILL empty do the macro shots get skipped.
+    if (-not $script:MacrosPresent) {
+        Write-Host "  !! macro list empty -- repairing" -ForegroundColor Yellow
+        if (Ensure-MacrosLoaded -XmlPath $PadForgeXml -ExePath $PadForgeExe) {
+            Nav "Dashboard"; Start-Sleep -Milliseconds 1200
+            $slotsMk = Find-UIA -Aid "SlotsItemsControl"
+            if ($slotsMk) {
+                $firstCard = $slotsMk.FindFirst($TC, [System.Windows.Automation.Condition]::TrueCondition)
+                if ($firstCard) { Click-El $firstCard -Label "slot 1 card (macro repair)" -Delay 1500 | Out-Null }
+            }
+            $mkTab = Find-UIA -Name "Macros"
+            if ($mkTab) { Click-El $mkTab -Label "Tab:Macros (after repair)" -Delay 1200 | Out-Null }
+            $macroSeen = 0
+            try {
+                [xml]$mkChk2 = Get-Content $PadForgeXml
+                $mkRoot2 = $mkChk2.PadForgeSettings.SelectSingleNode("Macros")
+                if ($mkRoot2) { $macroSeen = @($mkRoot2.SelectNodes("Macro")).Count }
+            } catch { $macroSeen = 0 }
+            $script:MacrosPresent = ($macroSeen -gt 0)
+            if ($script:MacrosPresent) {
+                Write-Host "  macro list repaired ($macroSeen names visible)" -ForegroundColor Green
+                # Selecting by name cannot work here either, for the same reason.
+                # The list's first row sits at a stable fraction of the window,
+                # which is how the main path already selects it.
+                $wrMk2 = New-Object Win32+RECT
+                [Win32]::GetWindowRect($script:hwnd, [ref]$wrMk2) | Out-Null
+                [Win32]::ForceFG($script:hwnd); Start-Sleep -Milliseconds 150
+                [Win32]::ClickAt([int]($wrMk2.Left + 0.175 * ($wrMk2.Right - $wrMk2.Left)),
+                                 [int]($wrMk2.Top  + 0.242 * ($wrMk2.Bottom - $wrMk2.Top)))
+                Start-Sleep -Milliseconds 600
+            }
+        }
+    }
+
+    if (-not $script:MacrosPresent) {
+        Write-Host "  !! NO MACROS IN THE LIST after repair. SKIPPING every macro shot" -ForegroundColor Red
+        Write-Host "  !! rather than shipping blank panes. Check element ORDER in the" -ForegroundColor Red
+        Write-Host "  !! injected <Macro> XML: XmlSerializer drops the whole array on" -ForegroundColor Red
+        Write-Host "  !! an out-of-order element." -ForegroundColor Red
+    } else {
+        Write-Host "  macro list populated ($macroSeen of $($macroNames.Count) names visible)" -ForegroundColor Green
+        Cap "pad-macros"
+    }
 
     # 6a. Add-from-List trigger dropdown (Macros.md): with a macro selected, the
     # Trigger panel shows an "Add from List" label followed by a ComboBox of
@@ -1649,8 +2141,8 @@ if ($slots.Count -ge 1) {
     Write-Host "  Macro: Add from List dropdown"
     $comboX = 0; $comboY = 0
     $addListLbl = Find-UIA -Name "Add from List"
-    if ($addListLbl -and -not $addListLbl.Current.BoundingRectangle.IsEmpty -and $addListLbl.Current.BoundingRectangle.Width -gt 0) {
-        $lr = $addListLbl.Current.BoundingRectangle
+    $lr = Get-Rect $addListLbl
+    if ($null -ne $lr) {
         $comboX = [int]($lr.X + $lr.Width + 120)
         $comboY = [int]($lr.Y + $lr.Height / 2)
     } else {
@@ -1667,7 +2159,7 @@ if ($slots.Count -ge 1) {
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 100
     [Win32]::ClickAt($comboX, $comboY); Start-Sleep -Milliseconds 800
-    Cap "macro-add-from-list"
+    if ($script:MacrosPresent) { Cap "macro-add-from-list" } else { Write-Host "  skipped macro-add-from-list (no macros)" -ForegroundColor Yellow }
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}"); Start-Sleep -Milliseconds 300
 
     # 7. Mappings
@@ -1864,6 +2356,15 @@ if ($slots.Count -ge 1) {
         else { Write-Host "  !! Lighting tab not found for the Xbox pad" -ForegroundColor Yellow }
     }
 
+    # 13e. Bass Shakers. This tab had NO capture step at all, while
+    # features/bass-shakers.md and features/force-feedback.md both carried a
+    # <!-- SCREENSHOT: pad-bass-shakers --> placeholder that has therefore
+    # never been filled. It is a SLOT-tier tab (Xbox and PlayStation slots
+    # surface it, PadViewModel gates it), so it needs no device switch.
+    Write-Host "[$(Next)/$total] Bass Shakers"
+    if (Tab "Bass Shakers") { Start-Sleep -Milliseconds 800; Cap "pad-bass-shakers" }
+    else { Write-Host "  !! Bass Shakers tab not found" -ForegroundColor Yellow }
+
     # Return the selection to the DualSense so later navigation is predictable.
     Select-MappedDevice "DualSense" | Out-Null
 
@@ -1911,7 +2412,7 @@ if ($slots.Count -ge 1) {
     }
     if ($targetCombo) { Write-Host "  Expanded Disconnect Target dropdown" -ForegroundColor Green }
     else { Write-Host "  Target combo not UIA-visible; capturing editor with Target field as-is" -ForegroundColor Yellow }
-    Cap "macro-disconnect"
+    if ($script:MacrosPresent) { Cap "macro-disconnect" } else { Write-Host "  skipped macro-disconnect (no macros)" -ForegroundColor Yellow }
     if ($targetCombo) { try { $targetCombo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Collapse() } catch {} }
 
     # New #9 macro editors, same terminal-macro-zone idiom and the same
@@ -1923,13 +2424,13 @@ if ($slots.Count -ge 1) {
     [Win32]::ForceFG($script:hwnd)
     [Win32]::ClickAt([int]($wrMc.Left + 0.215 * $mw), [int]($wrMc.Top + (0.241 + 3 * 0.0433) * $mh)); Start-Sleep -Milliseconds 800  # Center Cursor row
     [Win32]::ClickAt([int]($wrMc.Left + 0.383 * $mw), [int]($wrMc.Top + 0.654 * $mh)); Start-Sleep -Milliseconds 900  # its MoveMouse action chip
-    Cap "macro-move-mouse"
+    if ($script:MacrosPresent) { Cap "macro-move-mouse" } else { Write-Host "  skipped macro-move-mouse (no macros)" -ForegroundColor Yellow }
 
     Write-Host "  Macro: Repeat Key While Held editor (#9)"
     [Win32]::ForceFG($script:hwnd)
     [Win32]::ClickAt([int]($wrMc.Left + 0.215 * $mw), [int]($wrMc.Top + (0.241 + 4 * 0.0433) * $mh)); Start-Sleep -Milliseconds 800  # Rapid Fire row
     [Win32]::ClickAt([int]($wrMc.Left + 0.383 * $mw), [int]($wrMc.Top + 0.654 * $mh)); Start-Sleep -Milliseconds 900  # its RepeatKey action chip
-    Cap "macro-repeat-key"
+    if ($script:MacrosPresent) { Cap "macro-repeat-key" } else { Write-Host "  skipped macro-repeat-key (no macros)" -ForegroundColor Yellow }
 
 } else {
     Write-Host "  !! No controller slots found" -ForegroundColor Red
@@ -2111,8 +2612,8 @@ if ($slotsHost) {
                 [System.Windows.Automation.ControlType]::Button)
             $recBtn = $null; $recByName = $null; $bestY = -1e9
             foreach ($b in $script:uiaWin.FindAll($TD, $recBtnCT)) {
-                $rb = $b.Current.BoundingRectangle
-                if ($rb.IsEmpty -or $rb.Width -le 0 -or $rb.Height -le 0) { continue }
+                $rb = Get-Rect $b
+                if ($null -eq $rb) { continue }
                 if ($b.Current.Name -match "Record New Gesture") { $recByName = $b }
                 if ($rb.X -gt ($wrTp.Left + 0.14 * $tpw) -and $rb.Y -gt ($wrTp.Top + 0.16 * $tph)) {
                     $by = $rb.Y + $rb.Height
@@ -2120,7 +2621,10 @@ if ($slotsHost) {
                 }
             }
             if ($recByName) { $recBtn = $recByName; Write-Host "  recorder: found record button by Name" }
-            elseif ($recBtn) { Write-Host ("  recorder: bottom-most content button '{0}' [{1}x{2}] at ({3},{4})" -f $recBtn.Current.Name, [int]$recBtn.Current.BoundingRectangle.Width, [int]$recBtn.Current.BoundingRectangle.Height, [int]$recBtn.Current.BoundingRectangle.X, [int]$recBtn.Current.BoundingRectangle.Y) }
+            elseif ($recBtn) {
+                $rbR = Get-Rect $recBtn
+                if ($null -ne $rbR) { Write-Host ("  recorder: bottom-most content button '{0}' [{1}x{2}] at ({3},{4})" -f $recBtn.Current.Name, [int]$rbR.Width, [int]$rbR.Height, [int]$rbR.X, [int]$rbR.Y) }
+            }
             if ($recBtn) {
                 Click-El $recBtn -Label "Record New Gesture" -Delay 1500 | Out-Null
                 # Recorder is a wpf-ui FluentWindow modal; grab its hwnd at open time.
@@ -2269,10 +2773,30 @@ Write-Host ""
 Write-Host "--- KBM Slot ---" -ForegroundColor Yellow
 Nav "Dashboard"; Start-Sleep -Milliseconds 1000
 $slotsHost = Find-UIA -Aid "SlotsItemsControl"
-$cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
+# Retry the card enumeration. A single FindAll that comes back short is a UIA
+# hiccup, not a missing slot, and this block used to skip on it with NO else
+# branch: no shot, no warning, nothing in the log at all. That is how
+# pad-mouse-gestures went missing entirely while the run reported success, and
+# how screenshot-mouse-gestures.jpg stayed at its July version on the site.
 $kbmIdx = 4  # Xbox 0, PlayStation 1, Nintendo 2, Extended 3, KBM 4 (Add card at 6);
              # old Count-2 landed on the MIDI slot (pad-kbm-preview showed MIDI).
-if ($cards.Count -gt $kbmIdx) {
+$cards = @()
+for ($kbmTry = 1; $kbmTry -le 4; $kbmTry++) {
+    $slotsHost = Find-UIA -Aid "SlotsItemsControl"
+    $cards = if ($slotsHost) { @($slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } else { @() }
+    if ((Get-Count $cards) -gt $kbmIdx) { break }
+    Write-Host "  KBM card scan attempt ${kbmTry}: only $(Get-Count $cards) cards, retrying" -ForegroundColor DarkGray
+    if ($kbmTry -eq 2) {
+        # Two empty scans is not a slow tree, it is a stale one. Restart.
+        Reset-PadForgeUia -ExePath $PadForgeExe | Out-Null
+    }
+    Nav "Dashboard"; Start-Sleep -Milliseconds 1400
+}
+if ((Get-Count $cards) -le $kbmIdx) {
+    Write-Host "  !! KBM BLOCK SKIPPED: $(Get-Count $cards) slot cards, needed more than $kbmIdx." -ForegroundColor Red
+    Write-Host "  !! pad-kbm-preview, pad-kbm-socd and pad-mouse-gestures are NOT captured." -ForegroundColor Red
+}
+if ((Get-Count $cards) -gt $kbmIdx) {
     Write-Host "[$(Next)/$total] Keyboard+Mouse preview"
     Click-El $cards[$kbmIdx] -Label "KBM Slot card" -Delay 1500 | Out-Null
     # KBM defaults to Controller tab (keyboard+mouse preview) — no need to click a tab
@@ -2329,6 +2853,39 @@ if ($cards.Count -gt $midiIdx) {
     $n++
 }
 
+# ---- 17b. VR slot (#49, 4.2.0) ----
+# Card index 6 by VirtualControllerGroups.InOrder (Xbox 0 .. MIDI 5, VR 6,
+# Add card at 7). The VR slot exists only when SteamVR is installed, since
+# the popup's Add button disables itself without it, so a missing card here
+# is a machine-state fact and not a harness failure.
+Write-Host ""
+Write-Host "--- VR Slot ---" -ForegroundColor Yellow
+Nav "Dashboard"; Start-Sleep -Milliseconds 1000
+$slotsHost = Find-UIA -Aid "SlotsItemsControl"
+$cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
+$vrIdx = 6
+if ($cards.Count -gt $vrIdx) {
+    Write-Host "[$(Next)/$total] VR config bar + preview"
+    Click-El $cards[$vrIdx] -Label "VR Slot card" -Delay 1500 | Out-Null
+    $padPage = Find-UIA -Aid "PadPageView"
+    if ($padPage) {
+        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+            [System.Windows.Automation.ControlType]::RadioButton)
+        $tabs = $padPage.FindAll($TC, $rbCond)
+        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "VR Controller Tab" -Delay 1200 }
+    }
+    Cap "pad-vr-configbar"
+    # The Mappings tab shows the VR source family (both hands' sticks,
+    # triggers, grips and clicks) that the preview mirrors.
+    Tab "Mappings" | Out-Null
+    Start-Sleep -Milliseconds 800
+    Cap "pad-vr-mappings"
+} else {
+    Write-Host "  !! VR slot not found (SteamVR absent?)" -ForegroundColor Yellow
+    $n++
+}
+
 # ---- 18-20. Settings (three scroll positions) ----
 Write-Host ""
 Write-Host "--- Settings ---" -ForegroundColor Yellow
@@ -2354,8 +2911,19 @@ Cap "settings-drivers"
 Cap "driver-status-flames"
 Cap "settings-driver-cards"
 
+# 20b. SteamVR card (#49, 4.2.0). Card order on this page is Language,
+# Appearance, Input Engine, Window, HidHide, HIDMaestro, MIDI Services,
+# SteamVR, Community Configs, Settings File, Diagnostics, so SteamVR sits
+# just below the driver trio the previous shot framed. The card shows the
+# install-location row only while SteamVR is ABSENT and the Uninstall
+# button only for a PadForge-owned install, so what this captures depends
+# on the machine's state; both are honest.
+Write-Host "[$(Next)/$total] Settings - SteamVR"
+ScrollContent -Clicks -5
+Cap "settings-steamvr"
+
 # Scroll back up
-ScrollContent -Clicks 40
+ScrollContent -Clicks 45
 
 # ---- 21. About ----
 Write-Host "[$(Next)/$total] About"
@@ -2398,11 +2966,44 @@ function Select-DeviceByName36 {
     [Win32]::ForceFG($script:hwnd)
     for ($u = 0; $u -lt 8; $u++) { [Win32]::ScrollAt($listX, $midY, 3); Start-Sleep -Milliseconds 60 }
     Start-Sleep -Milliseconds 300
+    # Match the card's NAME first, then its child text. A device card shows the
+    # product name on line one and its TYPE on line two, and the consumer
+    # devices on this machine are named "USB Receiver" with CONSUMER CONTROL
+    # only on the type line. A name-only match therefore could never find them,
+    # which is why devices-consumer sat stale while two such devices were
+    # enumerated three rows apart.
+    $txtCond36 = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::Text)
+    # Only ever click a row that is actually ON SCREEN. A virtualized list hands
+    # back rects for rows far below the fold, and clicking one lands nowhere:
+    # the 19:27 run clicked "All Consumer Controls (Merged)" at y=2275 on a
+    # 1550-tall window, the selection never moved, and devices-consumer shipped
+    # showing whatever had been selected before. Same rule the assignment path
+    # already uses: in view, click. Out of view, scroll toward it and re-find.
+    $listTop36 = Get-DeviceListTop
+    $winBot36 = $wr.Bottom - 40
+    $inView36 = {
+        param($el)
+        $r = Get-Rect $el
+        if ($null -eq $r) { return $false }
+        return ($r.Y -ge $listTop36 -and ($r.Y + $r.Height) -le $winBot36)
+    }
     for ($try = 0; $try -lt 16; $try++) {
         $items = $script:uiaWin.FindAll($TD, $li36)
         foreach ($it in $items) {
-            if ($it.Current.Name -like "*$NamePart*") {
+            if (($it.Current.Name -like "*$NamePart*") -and (& $inView36 $it)) {
                 Click-El $it -Label "Device '$NamePart'" -Delay 900 | Out-Null
+                return $true
+            }
+        }
+        foreach ($it in $items) {
+            $hit = $false
+            foreach ($t in $it.FindAll($TD, $txtCond36)) {
+                if ($t.Current.Name -like "*$NamePart*") { $hit = $true; break }
+            }
+            if ($hit -and (& $inView36 $it)) {
+                Click-El $it -Label "Device '$NamePart' (matched on type line)" -Delay 900 | Out-Null
                 return $true
             }
         }
@@ -2447,8 +3048,15 @@ for ($ci = 0; $ci -lt $realSlots -and -not $ptrDone; $ci++) {
     # on the first slot. Every working slot section re-nav's Dashboard first.
     Nav "Dashboard"; Start-Sleep -Milliseconds 900
     $sh = Find-UIA -Aid "SlotsItemsControl"
-    $cds = if ($sh) { @($sh.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } else { @() }
-    if ($ci -ge $cds.Count) { continue }
+    # Same StrictMode trap as the rect reads: a FindAll that returns nothing
+    # usable leaves a value whose .Count read is a TERMINATING error, and this
+    # one killed the 19:46 run before STEP 4, so the owner's settings were left
+    # as the capture file. Count defensively and treat a failure as zero cards.
+    $cds = @()
+    if ($sh) { try { $cds = @($sh.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } catch { $cds = @() } }
+    $cdsCount = 0
+    try { $cdsCount = ([object[]]$cds).Length } catch { $cdsCount = 0 }
+    if ($ci -ge $cdsCount) { continue }
     Click-El $cds[$ci] -Label "slot card $ci (Pointer probe)" -Delay 1500 | Out-Null
     # Land on the Controller tab first so the PadPage realizes, then poll for
     # the Pointer tab to flip visible (Wii's HasIrCamera gate propagates a
@@ -2681,8 +3289,8 @@ for ($ptry = 0; $ptry -lt 4 -and -not $pairBtn; $ptry++) {
     $wrPH = New-Object Win32+RECT
     [Win32]::GetWindowRect($script:hwnd, [ref]$wrPH) | Out-Null
     foreach ($b in $script:uiaWin.FindAll($TD, $btn36)) {
-        $r = $b.Current.BoundingRectangle
-        if ($r.IsEmpty -or $r.Y -gt ($wrPH.Top + 160)) { continue }   # header strip only
+        $r = Get-Rect $b
+        if ($null -eq $r -or $r.Y -gt ($wrPH.Top + 160)) { continue }   # header strip only
         $nm = $b.Current.Name
         if ($nm -eq "Pair" -or ($nm -and $nm.IndexOf($glyphPair) -ge 0)) { $pairBtn = $b; break }
         # Name may be empty on some peers; match the button's child glyph TextBlock.
@@ -2773,13 +3381,58 @@ Close-AnyModal | Out-Null
 # walks the (disabled) main window while the modal is up.
 # ==============================================================================
 Write-Host ""
+Write-Host "=== STEP 3c-bis: Starter profile gallery (#256) ===" -ForegroundColor Cyan
+# The gallery was never in this harness: its one shot was taken by hand on
+# 2026-07-30 and then sat there while every automated shot around it was
+# renewed. It is an ordinary modal FluentWindow, so it takes the same
+# EnumWindows route the Workshop dialog below already uses.
+Nav "Profiles"; Start-Sleep -Milliseconds 1000
+$starterBtn = Find-UIA -Name "Browse Starter Profiles" -CT ([System.Windows.Automation.ControlType]::Button)
+if (-not $starterBtn) { $starterBtn = Find-UIA -Name "Browse Starter Profiles" }
+if ($starterBtn) {
+    Click-El $starterBtn -Label "Browse Starter Profiles" -Delay 1500 | Out-Null
+    $stDlg = Find-DialogHwndByEnum -MinW 600 -MinH 400
+    if ($stDlg -eq [IntPtr]::Zero) {
+        Write-Host "  !! starter gallery HWND not found" -ForegroundColor Red
+    } else {
+        $stUia = [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$stDlg)
+        Write-Host "  starter dialog hwnd=$stDlg '$($stUia.Current.Name)'" -ForegroundColor Green
+        Start-Sleep -Milliseconds 900
+        Cap "profiles-starter-gallery"
+        # Leave without saving: a starter save would add a profile to the
+        # capture xml and change every later Profiles-page shot.
+        $stBtnCond = New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+            [System.Windows.Automation.ControlType]::Button)
+        $cancelBtn = $null
+        foreach ($b in $stUia.FindAll($TD, $stBtnCond)) {
+            if ($b.Current.Name -eq "Cancel") { $cancelBtn = $b; break }
+        }
+        # Click inline rather than through Click-DlgEl: that helper is defined
+        # further down the script and is not in scope yet at this point.
+        $cr = Get-Rect $cancelBtn
+        if ($null -ne $cr) {
+            [Win32]::SetForegroundWindow([IntPtr]$stDlg) | Out-Null
+            Start-Sleep -Milliseconds 150
+            [Win32]::ClickAt([int]($cr.X + $cr.Width / 2), [int]($cr.Y + $cr.Height / 2))
+            Write-Host "  closed the starter gallery"
+        } else {
+            Write-Host "  !! starter Cancel button has no rect; gallery may stay open" -ForegroundColor Yellow
+        }
+        Start-Sleep -Milliseconds 800
+    }
+} else {
+    Write-Host "  !! 'Browse Starter Profiles' button not found" -ForegroundColor Yellow
+}
+
+Write-Host ""
 Write-Host "=== STEP 3d: Steam Workshop (#9) ===" -ForegroundColor Cyan
 
 function Click-DlgEl {
     param($DlgHwnd, [System.Windows.Automation.AutomationElement]$El, [int]$Delay = 700, [string]$Label)
     if (-not $El) { Write-Host "  !! ws NOT FOUND: $Label" -ForegroundColor Yellow; return $false }
-    $r = $El.Current.BoundingRectangle
-    if ($r.IsEmpty -or $r.Width -le 0 -or $r.Height -le 0) { Write-Host "  !! ws EMPTY BOUNDS: $Label" -ForegroundColor Yellow; return $false }
+    $r = Get-Rect $El
+    if ($null -eq $r) { Write-Host "  !! ws EMPTY BOUNDS: $Label" -ForegroundColor Yellow; return $false }
     [Win32]::SetForegroundWindow([IntPtr]$DlgHwnd) | Out-Null
     Start-Sleep -Milliseconds 150
     [Win32]::ClickAt([int]($r.X + $r.Width / 2), [int]($r.Y + $r.Height / 2))
@@ -2915,6 +3568,9 @@ ScrollContent -Clicks 60
 # ---- 23-24. Web controller ----
 Write-Host "[$(Next)/$total] Web controller screenshots"
 # Minimize PadForge so it doesn't cover Edge (never TOPMOST anywhere)
+if ($script:consoleWnd -and $script:consoleWnd -ne [IntPtr]::Zero) {
+    [Win32]::ShowWindow($script:consoleWnd, 5) | Out-Null  # SW_SHOW
+}
 [Win32]::ShowWindow($hwnd, 6) | Out-Null  # SW_MINIMIZE
 Start-Sleep -Milliseconds 500
 $webPort = 8080
@@ -3000,12 +3656,36 @@ try {
         Start-Sleep -Milliseconds 500
     }
 
+    # The server has to be ANSWERING before Edge is pointed at it. Without this
+    # probe the capture happily photographs Edge's "localhost refused to
+    # connect" page and ships it: that is exactly what web-landing.png and
+    # web-controller.png were on 2026-08-09, on the site and in the README.
+    # A shot nobody verified is worse than a missing shot, because the missing
+    # one gets noticed.
+    function Wait-Web {
+        param([string]$Url, [int]$TimeoutSec = 45)
+        $deadline = (Get-Date).AddSeconds($TimeoutSec)
+        while ((Get-Date) -lt $deadline) {
+            try {
+                $resp = Invoke-WebRequest -Uri $Url -UseBasicParsing -TimeoutSec 5
+                if ($resp.StatusCode -eq 200) {
+                    Write-Host "  web server answering: $Url ($($resp.RawContentLength) bytes)" -ForegroundColor Green
+                    return $true
+                }
+            } catch { Start-Sleep -Milliseconds 1000 }
+        }
+        Write-Host "  !! web server never answered $Url -- SKIPPING web shots (kept existing)" -ForegroundColor Red
+        return $false
+    }
+
+    $webUp = Wait-Web "http://localhost:${webPort}/"
+
     # Landing page (needs a few seconds for Edge to fully render)
-    Cap-Web "http://localhost:${webPort}/" "web-landing" 6000
+    if ($webUp) { Cap-Web "http://localhost:${webPort}/" "web-landing" 6000 }
 
     # Controller page (needs WebSocket for layout images)
     Write-Host "[$(Next)/$total] Web controller - gamepad"
-    Cap-Web "http://localhost:${webPort}/controller.html?layout=xbox360" "web-controller" 6000
+    if ($webUp) { Cap-Web "http://localhost:${webPort}/controller.html?layout=xbox360" "web-controller" 6000 }
 
     # Bring PadForge back to foreground after web captures
     [Win32]::ForceFG($script:hwnd)
@@ -3017,8 +3697,10 @@ try {
 }
 
 
+}
+finally {
 # ==============================================================================
-# STEP 4: Cleanup
+# STEP 4: Cleanup (ALWAYS runs, including after a mid-run terminating error)
 # ==============================================================================
 Write-Host ""
 Write-Host "=== STEP 4: Cleanup ===" -ForegroundColor Cyan
@@ -3053,12 +3735,87 @@ Write-Host "  Toast notification settings restored"
 Start-Process $PadForgeExe
 Write-Host "  Relaunched PadForge on restored settings" -ForegroundColor Green
 
-Stop-Transcript | Out-Null
 
 Write-Host ""
 Write-Host "=== DONE ===" -ForegroundColor Cyan
+# ==============================================================================
+# COVERAGE AUDIT. Runs at the end of every capture, always.
+# ==============================================================================
+# Every wrong screenshot this project has shipped got through because nothing
+# compared what the run PRODUCED against what the docs EXPECT. A stale image,
+# a skipped step and a healthy one all look identical in a log full of green.
+# So the run ends by answering three questions out loud:
+#
+#   1. Which images does a docs page reference that do not exist?   (broken)
+#   2. Which images exist but are older than this run?              (stale)
+#   3. Which images exist that no docs page and no site asset uses?  (orphan,
+#      which in this project has always meant a page is missing its picture)
+#
+# None of these is fatal. All of them are printed. A run that ends with a
+# non-empty list is a run whose output still needs work, and saying so here is
+# the whole point.
+$auditRoot = Split-Path (Split-Path $OutputDir -Parent) -Parent   # padforge.org
+$wikiDir   = Join-Path (Split-Path $OutputDir -Parent) ""
+$mdFiles   = @(Get-ChildItem -Path (Split-Path $OutputDir -Parent) -Filter *.md -Recurse -EA SilentlyContinue)
+$imgFiles  = @(Get-ChildItem -Path $OutputDir -Filter *.png -EA SilentlyContinue)
+
+$referenced = New-Object System.Collections.Generic.HashSet[string]
+foreach ($md in $mdFiles) {
+    $txt = Get-Content $md.FullName -Raw -EA SilentlyContinue
+    if (-not $txt) { continue }
+    foreach ($m in [regex]::Matches($txt, '!\[[^\]]*\]\((?:\.\./)*images/([A-Za-z0-9._-]+)\)')) {
+        $null = $referenced.Add($m.Groups[1].Value)
+    }
+}
+
+$knownAssets = @("logo.png","icon.png","hidmaestro-logo-dark.png","hidmaestro-logo-light.png","about.png")
+$runStart = $script:CaptureRunStart
+if (-not $runStart) { $runStart = (Get-Date).AddHours(-6) }
+
+$broken = @(); $stale = @(); $orphan = @()
+foreach ($r in $referenced) {
+    if (-not (Test-Path (Join-Path $OutputDir $r))) { $broken += $r }
+}
+foreach ($f in $imgFiles) {
+    if ($knownAssets -contains $f.Name) { continue }
+    if ($f.LastWriteTime -lt $runStart) { $stale += $f.Name }
+    $base = [System.IO.Path]::GetFileNameWithoutExtension($f.Name)
+    $usedBySite = $base -like "colorway-*"
+    if (-not $usedBySite) {
+        $siteJpg = Join-Path $auditRoot ("assets\screenshot-" + $base + ".jpg")
+        if (Test-Path $siteJpg) { $usedBySite = $true }
+    }
+    if (-not $referenced.Contains($f.Name) -and -not $usedBySite) { $orphan += $f.Name }
+}
+
+Write-Host ""
+Write-Host "=== COVERAGE AUDIT ===" -ForegroundColor Cyan
+Write-Host ("  images produced/present : {0}" -f $imgFiles.Count)
+Write-Host ("  referenced by docs      : {0}" -f $referenced.Count)
+if ($broken.Count -gt 0) {
+    Write-Host ("  BROKEN (referenced, missing): {0}" -f $broken.Count) -ForegroundColor Red
+    foreach ($b in ($broken | Sort-Object)) { Write-Host "     $b" -ForegroundColor Red }
+} else { Write-Host "  broken references       : 0" -ForegroundColor Green }
+if ($stale.Count -gt 0) {
+    Write-Host ("  STALE (older than this run): {0}" -f $stale.Count) -ForegroundColor Yellow
+    foreach ($x in ($stale | Sort-Object)) { Write-Host "     $x" -ForegroundColor Yellow }
+} else { Write-Host "  stale images            : 0" -ForegroundColor Green }
+if ($orphan.Count -gt 0) {
+    Write-Host ("  ORPHAN (used by nothing): {0}" -f $orphan.Count) -ForegroundColor Yellow
+    Write-Host "     an orphan here has always meant a page is missing its picture" -ForegroundColor DarkGray
+    foreach ($o in ($orphan | Sort-Object)) { Write-Host "     $o" -ForegroundColor Yellow }
+} else { Write-Host "  orphan images           : 0" -ForegroundColor Green }
+Write-Host ""
+
 Write-Host "Screenshots in: $OutputDir"
 Write-Host ""
 Get-ChildItem "$OutputDir\*.png" | Sort-Object Name | ForEach-Object {
     Write-Host ("  {0} ({1}KB)" -f $_.Name, [math]::Round($_.Length / 1024))
 }
+}
+
+# Transcript closes LAST so the coverage audit above is recorded in the log.
+# It used to stop before the audit ran, which meant the one report that says
+# whether the run actually covered everything went to the console and nowhere else.
+Stop-Transcript | Out-Null
+Remove-Item $lockPath -Force -EA SilentlyContinue

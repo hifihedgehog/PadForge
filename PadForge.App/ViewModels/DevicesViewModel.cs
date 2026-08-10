@@ -253,6 +253,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isConsumerDevice, value);
         }
 
+        private bool _isHeadsetMotionDevice;
+        /// <summary>Whether the selected device is a Sony headset head
+        /// tracker (issue #188): collapses the raw Axes/Buttons sections,
+        /// since a motion-only source has neither and the gyro readout is
+        /// its whole preview.</summary>
+        public bool IsHeadsetMotionDevice
+        {
+            get => _isHeadsetMotionDevice;
+            set => SetProperty(ref _isHeadsetMotionDevice, value);
+        }
+
         /// <summary>Named button chips for the Consumer Control preview
         /// (issue #168): the canonical table's localized names, plus any
         /// session-dynamic usages the device has reported.</summary>
@@ -433,9 +444,10 @@ namespace PadForge.ViewModels
         /// are stored verbatim and used by the InputService update loop
         /// to read the matching <c>state.Buttons[Index]</c>.
         /// </summary>
-        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null)
+        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false)
         {
             IsNfcDevice = isNfc;
+            IsHeadsetMotionDevice = isHeadsetMotion;
             if (isNfc) RebuildNfcTags(); else NfcTags.Clear();
 
             // Consumer Control (issue #168): named chips replace both the
@@ -522,6 +534,7 @@ namespace PadForge.ViewModels
             IsNfcDevice = false;
             NfcTags.Clear();
             IsConsumerDevice = false;
+            IsHeadsetMotionDevice = false;
             ConsumerButtons.Clear();
             LiveMidi = null;
             HasRawData = false;

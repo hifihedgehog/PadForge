@@ -106,6 +106,7 @@
   <data name="ControllerType_Extended" xml:space="preserve"><value>Extended</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>키보드 + 마우스</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
+  <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge를 종료하는 중...</value></data>
@@ -132,6 +133,8 @@
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>키보드 + 마우스 (최대 {0}개)</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (Windows MIDI Services 필요)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (최대 {0}개)</value></data>
+  <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (SteamVR 필요)</value></data>
+  <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (최대 {0}개)</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide 설치 중…</value></data>
@@ -141,6 +144,11 @@
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services 제거 중…</value></data>
   <data name="Status_OperationCancelled" xml:space="preserve"><value>사용자가 작업을 취소했습니다.</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services 설치 실패: {0}</value></data>
+  <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR 다운로드 중…</value></data>
+  <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Valve 서버에서 SteamVR을 다운로드하여 설치하는 중… 수 GB라 시간이 걸릴 수 있습니다.</value></data>
+  <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>SteamVR 설치 실패: {0}</value></data>
+  <data name="Status_UninstallingSteamVR" xml:space="preserve"><value>SteamVR 제거 중…</value></data>
+  <data name="Status_SteamVRRunningCloseFirst" xml:space="preserve"><value>SteamVR이 실행 중입니다. 제거하기 전에 종료하세요.</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>장치 목록을 새로고침했습니다.</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>"{0}" 기록됨 ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>매핑할 항목: {0} {1}</value></data>
@@ -264,6 +272,11 @@
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>사용자 모드 가상 HID 컨트롤러 엔진. PadForge.App에 내장되어 있으며 첫 가상 컨트롤러 생성 시 자동으로 설치됩니다. v3에서 ViGEmBus와 vJoy를 대체합니다.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>가상 MIDI 장치 출력을 위한 SDK 런타임입니다. GitHub에서 다운로드됩니다 (~210 MB).</value></data>
+  <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
+  <data name="Settings_SteamVRDesc" xml:space="preserve"><value>가상 VR 컨트롤러용 VR 런타임입니다. Steam 계정이나 Steam 클라이언트 없이 Valve 서버에서 설치됩니다(수 GB).</value></data>
+  <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>설치 위치</value></data>
+  <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>SteamVR 제거</value></data>
+  <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>{0}에 있는 Steam 없이 설치된 SteamVR을 제거하고 수 GB를 확보합니다. SteamVR을 다시 설치할 때까지 가상 VR 컨트롤러가 작동하지 않습니다.</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Windows 11 24H2 (빌드 26100) 이상이 필요합니다</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>설정 파일</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>구성을 저장, 다시 로드하거나 초기화합니다.</value></data>
@@ -284,6 +297,7 @@
   <data name="About_Subtitle" xml:space="preserve"><value>컨트롤러 매핑 유틸리티</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce의 현대적 포크. SDL3, WPF, .NET 10으로 재구축</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge는 모든 입력 장치를 모든 가상 컨트롤러로 변환합니다. 게임패드, 조이스틱, 키보드, 마우스, 터치스크린을 가상 게임 컨트롤러(Xbox, PlayStation, 플라이트 스틱, 휠, 서드파티 게임패드) 또는 키보드+마우스/MIDI 출력으로 매핑하여 게임이 실제 하드웨어로 인식하게 합니다. HIDMaestro와 Windows MIDI Services로 구동됩니다. 컨트롤러 입력에는 SDL3, 키보드와 마우스 입력에는 Windows Raw Input, 게임별 장치 숨김에는 HidHide를 사용하며, 매핑, 데드존, 감도 곡선, 포스 피드백을 위한 Fluent Design 인터페이스를 제공합니다.</value></data>
+  <data name="About_Overview" xml:space="preserve"><value>개요</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>사용 기술</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>런타임 및 WPF 프레임워크. MIT.</value></data>
@@ -903,6 +917,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>왼쪽 모터</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>오른쪽 모터</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>왼쪽과 오른쪽 모터 교체</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>트리거 진동을 메인 모터로 합치기</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>이 컨트롤러에는 트리거 모터가 없어 Xbox 임펄스 트리거를 사용하는 게임의 진동을 느낄 수 없습니다. 대신 각 트리거 채널을 같은 쪽 메인 모터로 합칩니다.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>진동 테스트</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>모터 활동</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>상시 포스</value></data>
@@ -941,6 +957,7 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>전체 게인 초기화</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>왼쪽 모터 초기화</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>오른쪽 모터 초기화</value></data>
+  <data name="Pad_Colorway" xml:space="preserve"><value>색상 배리에이션</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>뷰 초기화</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>버튼을 누르거나 축/트리거를 움직여 기록하십시오. 축은 50% 이상 기울어졌을 때 감지됩니다.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>목록에서 추가</value></data>
@@ -1010,6 +1027,33 @@
   <data name="Btn_Plus" xml:space="preserve"><value>플러스</value></data>
   <data name="Btn_Home" xml:space="preserve"><value>HOME</value></data>
   <data name="Btn_Capture" xml:space="preserve"><value>캡처</value></data>
+  <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
+  <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
+  <data name="Btn_C" xml:space="preserve"><value>C</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>음소거</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>왼쪽 back 버튼</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>오른쪽 back 버튼</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>왼쪽 Fn</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>오른쪽 Fn</value></data>
+  <data name="Btn_VrLeftA" xml:space="preserve"><value>왼쪽 A</value></data>
+  <data name="Btn_VrLeftB" xml:space="preserve"><value>왼쪽 B</value></data>
+  <data name="Btn_VrLeftATouch" xml:space="preserve"><value>왼쪽 A (터치)</value></data>
+  <data name="Btn_VrLeftBTouch" xml:space="preserve"><value>왼쪽 B (터치)</value></data>
+  <data name="Btn_VrLeftSystem" xml:space="preserve"><value>왼쪽 시스템</value></data>
+  <data name="Btn_VrLeftGrip" xml:space="preserve"><value>왼쪽 그립</value></data>
+  <data name="Btn_VrLeftGripClick" xml:space="preserve"><value>왼쪽 그립 클릭</value></data>
+  <data name="Btn_VrLeftTriggerClick" xml:space="preserve"><value>왼쪽 트리거 클릭</value></data>
+  <data name="Btn_VrRightA" xml:space="preserve"><value>오른쪽 A</value></data>
+  <data name="Btn_VrRightB" xml:space="preserve"><value>오른쪽 B</value></data>
+  <data name="Btn_VrRightATouch" xml:space="preserve"><value>오른쪽 A (터치)</value></data>
+  <data name="Btn_VrRightBTouch" xml:space="preserve"><value>오른쪽 B (터치)</value></data>
+  <data name="Btn_VrRightSystem" xml:space="preserve"><value>오른쪽 시스템</value></data>
+  <data name="Btn_VrRightGrip" xml:space="preserve"><value>오른쪽 그립</value></data>
+  <data name="Btn_VrRightGripClick" xml:space="preserve"><value>오른쪽 그립 클릭</value></data>
+  <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>오른쪽 트리거 클릭</value></data>
+  <data name="Vr_LeftHand" xml:space="preserve"><value>왼손</value></data>
+  <data name="Vr_RightHand" xml:space="preserve"><value>오른손</value></data>
+  <data name="Vr_Stick" xml:space="preserve"><value>스틱</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>마우스 왼쪽 버튼</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>마우스 오른쪽 버튼</value></data>
@@ -1169,6 +1213,11 @@
   <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>왼쪽 Joy-Con 자이로 피치</value></data>
   <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>왼쪽 Joy-Con 자이로 요</value></data>
   <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>왼쪽 Joy-Con 자이로 롤</value></data>
+  <data name="Mapping_GyroAuxHorizontal" xml:space="preserve"><value>왼쪽 Joy-Con 자이로 수평 (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroRPitch" xml:space="preserve"><value>오른쪽 Joy-Con 자이로 피치</value></data>
+  <data name="Mapping_GyroRYaw" xml:space="preserve"><value>오른쪽 Joy-Con 자이로 요</value></data>
+  <data name="Mapping_GyroRRoll" xml:space="preserve"><value>오른쪽 Joy-Con 자이로 롤</value></data>
+  <data name="Mapping_GyroRHorizontal" xml:space="preserve"><value>오른쪽 Joy-Con 자이로 수평 (Yaw + Roll)</value></data>
   <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>왼쪽 Joy-Con 모션 자이로</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>자이로 요</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>자이로 롤</value></data>
@@ -1212,6 +1261,13 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 컨트롤러 로컬 축. Player = 요(yaw)를 실제 수직축(중력)에 투영, 피치는 로컬 유지. Jibb Smart 권장 기본값. 어떤 기울기에서도 자연스러움. World = 요와 피치 모두 월드 축에 투영.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>피치(Y) 반전</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>피치 축의 전역 반전. Player/World 투영 후에 적용. 매핑 표의 소스별 Invert 플래그와 독립.</value></data>
+  <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>나침반</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>이 컨트롤러에는 자력계가 있습니다. 요를 자북에 고정하면 자이로 조준의 느린 수평 드리프트가 사라집니다. 먼저 보정하세요. 보정을 누르고 몇 초간 컨트롤러를 8자로 모든 방향으로 돌린 뒤 다시 누릅니다.</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>요를 나침반에 고정</value></data>
+  <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>수평 조준을 자기 방위로 끌어당기는 작은 보정률을 더해 드리프트가 누적되지 않게 합니다. 저장된 자력계 보정이 필요합니다. 주변 금속이나 자석으로 왜곡된 샘플은 자동으로 제외됩니다.</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>기본값으로 재설정 (끄기)</value></data>
+  <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>자력계 보정</value></data>
+  <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>보정 완료</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>요 / 롤 (X) 반전</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>요 축의 전역 반전. Roll, Gyro Horizontal 소스에도 적용.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>실세계 보정</value></data>
@@ -1533,6 +1589,8 @@
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>왼쪽 트리거</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>오른쪽 트리거</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>왼쪽과 오른쪽 트리거 모터 교체</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>적응형 트리거 진동 변환</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>게임이 이 슬롯을 가상 DualSense로 구동할 때 진동형 적응형 트리거 효과를 이 컨트롤러의 임펄스 트리거 모터로 재생합니다. 저항형 효과는 진동으로 대응할 수 없어 무시됩니다.</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>왼쪽 트리거 테스트</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>오른쪽 트리거 테스트</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>트리거 모터 작동</value></data>
@@ -1925,6 +1983,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>잘라내기</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>한 옥타브씩 아래로 접기</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>톤 한도</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense 햅틱을 이 컨트롤러로 재생</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>게임이 이 슬롯을 가상 DualSense로 구동하며 제작된 햅틱 오디오를 출력할 때 해당 트랙을 이 컨트롤러의 액추에이터에서 톤으로 재생합니다. 오디오에서 파생되므로 설계된 느낌을 정확히 재현하기보다는 근사합니다.</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>햅틱 게인</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>기본값으로 재설정 (끄기)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>기본값으로 재설정 (100%)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>이 주파수를 넘는 음은 잘리거나 접힙니다. 기본값 800 Hz는 엔진과 타격 진동을 유지하면서 날카로운 비프음만 잡아냅니다.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>고음 재설정</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>톤 한도 재설정</value></data>
@@ -2281,10 +2344,12 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>슬롯</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>꺼짐</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>장치를 선택하면 원시 입력을 확인할 수 있습니다.</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>페어링이 완료되지 않았습니다. 자세한 내용은 로그를 확인하세요.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>사용 가능한 블루투스 어댑터가 없습니다. 블루투스를 켜고 다시 시도하세요. 페어링은 무선 연결에만 필요하며, 케이블로 연결하면 없어도 작동합니다.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>페어링이 완료되지 않았습니다. 실패한 단계는 위에 표시됩니다.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation 컨트롤러용 Bluetooth 드라이버를 설치할 수 없습니다.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>DualShock 3를 USB 케이블로 연결한 다음 페어링을 클릭하세요. PadForge가 이 PC 정보를 컨트롤러에 기록하고 등록합니다. 완료되면 컨트롤러를 분리하고 PS 버튼을 눌러 Bluetooth로 연결하세요.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>USB에서 DualShock 3를 찾을 수 없습니다. USB 케이블로 연결한 후 다시 시도하세요.</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>이 PC에서 서명 인증서를 신뢰하지 않으므로 Windows가 DualShock 3용 PadForge USB 드라이버를 설치하지 않습니다.</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>준비되었습니다. 컨트롤러를 분리하고 PS 버튼을 누르세요. 장치 목록에 나타납니다.</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>컨트롤러를 설정하는 중입니다. USB 연결을 유지하세요.</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>벼리는 중</value></data>
@@ -2386,6 +2451,14 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>끔</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>이 키 쌍을 제거합니다.</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>동시 반대 방향 입력 (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>컨트롤러 활성 유지</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>일부 게임은 마우스나 키보드 입력을 감지하면 진동을 멈추고 버튼 표시를 전환합니다. 스틱을 약간 기울인 상태를 유지하면 게임이 이 컨트롤러를 활성 장치로 계속 인식합니다. 유지 수준 이상의 실제 입력은 그대로 전달됩니다. 게임에서 아무것도 움직이지 않도록 유지량을 게임의 데드존보다 낮게 설정하세요.</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>활성 유지 사용</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>유지 축</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>어느 출력 축이 편향을 유지할지 선택합니다. 카메라가 아닌 이동으로 읽히는 축을 선택하면 데드존 미만 값이 보이지 않습니다.</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>유지량</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>스틱 전체 이동량 대비 유지 수준(%)입니다. 25%는 대부분 게임의 이동 데드존 아래에 있으면서 활성 상태를 유지합니다. 게임이 계속 전환되면 올리고, 캐릭터가 흐르면 낮추세요.</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>활성 유지를 끄고 기본 축과 유지량으로 되돌립니다</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>이 슬롯의 가상 컨트롤러 출력에서 동시에 눌린 버튼 쌍을 해결합니다. 쌍의 두 버튼이 모두 눌려 있으면 선택한 규칙이 게임에 보일 입력을 결정합니다.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>동시 반대 방향 입력 재설정</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>모드</value></data>
@@ -2839,6 +2912,8 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>메뉴 호스트 표면 미지원({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>메뉴 셀 아이콘을 인식할 수 없음({0}), 해당 셀은 텍스트 레이블을 유지합니다</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>베이스 셰이커</value></data>
+  <data name="Pad_Tab_Output" xml:space="preserve"><value>출력</value></data>
+  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>이 슬롯의 가상 컨트롤러 출력을 게임으로 보내기 직전에 다듬는 설정입니다. 동시에 눌린 반대 방향을 정리하는 SOCD 클리닝과, 마우스나 키보드 입력을 보면 컨트롤러를 놓아 버리는 게임을 위한 컨트롤러 활성 유지가 있습니다.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>베이스 셰이커</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>이 가상 컨트롤러가 받는 게임 진동과 포스 피드백을 저주파 톤으로 바꿔 베이스 셰이커와 서브우퍼용 오디오 출력으로 보냅니다.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>진동을 오디오로</value></data>
@@ -2917,4 +2992,68 @@
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 오디오 프로토콜 문서: SBC 매개변수와 패킷 레이아웃. 작성: khallmark. MIT.</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>데스크톱</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>소파에서 Windows를 조작합니다. 커서, 스크롤, 트리거 클릭.</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD와 마우스</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>키보드·마우스 게임을 패드로 플레이합니다. 슈터와 액션 게임.</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>단축 바</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>트리거 두 개에 32개의 기술. MMO와 기술이 많은 게임용.</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>에뮬레이션</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch와 프런트엔드. Back을 누른 채 저장, 불러오기, 배속.</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>격투 게임</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>6버튼 배치와 양축 토너먼트 규격 SOCD 정리.</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>키보드 + 마우스</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>게임패드</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>시작 프로필 찾아보기</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>시작 프로필</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>장르 전체를 위한 완성된 프로필입니다. 하나를 고르고 아무 컨트롤러나 할당하면 바로 사용할 수 있습니다. 저장하면 편집 가능한 일반 프로필이 추가됩니다.</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>프로필 저장</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>시작 프로필 “{0}”을(를) 추가했습니다.</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>포인트 앤 클릭</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>어드벤처 게임과 커서와 두 가지 동작으로 진행하는 게임용.</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>전략</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>RTS, 4X, 도시 건설. 한쪽 스틱은 카메라, 반대쪽은 커서.</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>쿠오터뷰 RPG</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>파티 RPG와 턴제 전술. 일시정지, 소지품, 단축 바.</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>트윈 스틱</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>탑다운 슈팅. 왼쪽으로 이동하고 오른쪽으로 조준.</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>미디어 리모컨</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>재생, 탐색, 그리고 소파용 커서.</value></data>
+  <data name="Starter_Racing_Name" xml:space="preserve"><value>레이싱</value></data>
+  <data name="Starter_Racing_Description" xml:space="preserve"><value>어떤 패드에서도 차분한 조향과 중앙 근처의 정밀한 제어.</value></data>
+  <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>우주 시뮬레이션</value></data>
+  <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>스틱 두 개로 6자유도를 제어하며, 도킹용 정밀 모드를 지원합니다.</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>정밀(미세 조정)</value></data>
+  <data name="Starter_GyroAim_Name" xml:space="preserve"><value>자이로 조준</value></data>
+  <data name="Starter_GyroAim_Description" xml:space="preserve"><value>왼쪽 트리거로 모션 조준. 스틱도 그대로 사용합니다.</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>크로스 핫바(왼쪽)</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>크로스 핫바(오른쪽)</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>더블 크로스(왼쪽)</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>더블 크로스(오른쪽)</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>단축키</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>핫바</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>파티</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>바로 가기</value></data>
+  <data name="Starter_QuietLayerName" xml:space="preserve"><value>무음 (아무것도 보내지 않음)</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>헤드폰 볼륨</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>컨트롤러 헤드셋 단자의 하드웨어 볼륨입니다. 패드에 기록되므로 앱 없이도 유지됩니다.</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>헤드폰 볼륨 초기화</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>헤드폰 볼륨 높이기</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>헤드폰 볼륨 낮추기</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>컨트롤러 헤드셋 단자의 볼륨을 10% 높입니다.</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>컨트롤러 헤드셋 단자의 볼륨을 10% 낮추니다.</value></data>
+  <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>출력 경로</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>컨트롤러가 오디오를 재생하는 위치입니다. 기본값은 펌웨어 라우팅을 유지하며 PadForge 사운드는 스피커로 재생합니다. 헤드폰+스피커는 헤드셋 쪽이 모노로 재생됩니다(펌웨어 제한). Bluetooth에서는 이 모드가 헤드폰으로만 재생됩니다. 헤드폰 단자 따라가기는 컨트롤러에 꽂으면 헤드폰으로, 뽑으면 스피커로 전환됩니다. 단자 상태를 읽을 수 없으면 기본값처럼 동작합니다.</value></data>
+  <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>기본값</value></data>
+  <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>헤드폰(스테레오)</value></data>
+  <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>헤드폰(모노)</value></data>
+  <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>헤드폰 + 스피커</value></data>
+  <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>스피커만</value></data>
+  <data name="Pad_ResetOutputPath" xml:space="preserve"><value>출력 경로 초기화</value></data>
+  <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>헤드폰 단자 따라가기</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz의 DualSense 출력 리포트 바이트 맵과 Sony scePad 의미체계. PadForge 이펙트/오디오 로직의 기반. MIT.</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments의 잭 감지 오디오 라우팅 패턴. 헤드폰 단자 따라가기의 참조 구현. 문서로만 참고; AGPL-3.0.</value></data>
+  <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>헤드셋 트래커</value></data>
 </root>

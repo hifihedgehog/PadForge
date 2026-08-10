@@ -176,6 +176,28 @@ def center_overlay_on_bbox(bbox, overlay_path):
     return (round(cx - ov_w / 2), round(cy - ov_h / 2), ov_w, ov_h)
 
 
+def stretch_overlay_to_bbox(bbox, overlay_path):
+    """Resize the overlay PNG to the bbox EXACTLY, aspect not preserved.
+
+    For a control the 3/4 render foreshortens, the press sprite's own
+    proportions are the flat-on ones and the bbox is the drawn ones, so
+    preserving aspect shrinks the sprite to fit the squashed dimension and
+    it no longer covers its button. The DualSense mute capsule is 81 x 13
+    as drawn and its sprite is 75 x 16 flat: an aspect fit gave 61 x 13,
+    twenty pixels narrower than the button it highlights.
+    """
+    if bbox is None or not os.path.exists(overlay_path):
+        return bbox
+    ov = cv2.imread(overlay_path, cv2.IMREAD_UNCHANGED)
+    if ov is None:
+        return bbox
+    bx, by, bw, bh = bbox
+    if (ov.shape[1], ov.shape[0]) != (bw, bh):
+        cv2.imwrite(overlay_path,
+                    cv2.resize(ov, (bw, bh), interpolation=cv2.INTER_LANCZOS4))
+    return (bx, by, bw, bh)
+
+
 def fit_overlay_to_bbox(bbox, overlay_path, scale=1.0):
     """Resize the overlay PNG to fit the SVG bbox (preserving the asset's
     aspect ratio) and center it on the bbox center. Returns (x, y, w, h)
@@ -970,7 +992,38 @@ def _ds4_post_pass(results, base_w, base_h):
     return out
 
 
+DS_BODY_W = 1467     # the pack render's own width, what the SVG maps onto
+DS_MARGIN = 175      # Edge only: gutter each side for the four floating tiles
+DS_TILE = 145        # tile edge
+DS_GAP = 26          # vertical gap between a side's two tiles
+
+
 def process_dualsense():
+    """Plain DualSense. No gutter and none of the Edge controls: this set is
+    exactly the pack's own art, because a DualSense slot must not render four
+    controls it has no wire for."""
+    return _process_dualsense_family("DualSense", margin=0, edge=False)
+
+
+def process_dualsense_edge():
+    """DualSense Edge. Its own asset folder: a copy of the same pack sprites
+    over a base widened by a side gutter, carrying the four extras the plain
+    pad does not have (the rear back buttons and the front Fn pair) as
+    floating tiles.
+
+    ALL FOUR are tiles, including the front Fn pair, because none of the four
+    is visible in this render. The Edge mesh pins the Fn caps to the housing
+    UNDERSIDE, below the pack render's front silhouette, and fitting
+    dualsense-tester's near-top-down Edge SVG onto this 3/4 render lands the
+    face buttons and D-pad within ~10 px while the STICKS come out 51 px off,
+    with the residual growing downward; the Fn prediction falls at y=723 on a
+    body whose column ends at y=696. The 3D view sites all four on their real
+    meshes instead. See tools/gen_dualsense_edge_art.py for the full
+    measurement."""
+    return _process_dualsense_family("DUALSENSEEDGE", margin=DS_MARGIN, edge=True)
+
+
+def _process_dualsense_family(folder, margin, edge):
     """Extract DualSense overlay positions. SVG units = mm; default theme PNG
     is 1467x816 → scale ≈ 2.6932 px/mm. Touchpad-click and touchpad zones are
     injected manually since the SVG doesn't label them."""
@@ -981,13 +1034,19 @@ def process_dualsense():
     tree = etree.parse(svg_path)
     root = tree.getroot()
 
-    base = cv2.imread(os.path.join(MODELS_DIR, "DualSense", "DualSense_base.png"), cv2.IMREAD_UNCHANGED)
+    base = cv2.imread(os.path.join(MODELS_DIR, folder, "DualSense_base.png"), cv2.IMREAD_UNCHANGED)
     base_w, base_h = base.shape[1], base.shape[0]
+    if base_w != DS_BODY_W + 2 * margin:
+        raise SystemExit(f"{folder} base is {base_w}px wide; expected "
+                         f"{DS_BODY_W} + 2x{margin} gutter")
 
-    # SVG declares 544.7066 mm width; PNG is 1467 px → 2.6932 px/mm.
-    scale = base_w / 544.7066
+    # SVG declares 544.7066 mm width; the pack render's own body is 1467 px →
+    # 2.6932 px/mm. NOT base_w: the Edge base carries a gutter the SVG knows
+    # nothing about, so scaling by the full canvas would stretch every label
+    # bbox by the gutter ratio.
+    scale = DS_BODY_W / 544.7066
 
-    ov_dir = os.path.join(MODELS_DIR, "DualSense")
+    ov_dir = os.path.join(MODELS_DIR, folder)
     results = []
 
     def add(svg_label, filename, target, elem_type, fit_scale=1.0):
@@ -1033,6 +1092,26 @@ def process_dualsense():
     add("Create Button", "DualSense_Create_Button.png", "ButtonBack", "Button")
     add("Option Button", "DualSense_Option_Button.png", "ButtonStart", "Button")
     add("PS Button", "DualSense_Home_Button.png", "ButtonGuide", "Button")
+    # Mic mute. Its rect comes from BOTH labels, because neither alone is
+    # the button: "Mute" is the group, whose width is the capsule's (81 px,
+    # confirmed against the base render's own silhouette at 82) but whose
+    # height also swallows the mic-slash icon printed below it, while "Mute
+    # With LED" gives the capsule's own 13-px band and a width 10 px short.
+    # Stretched, not aspect-fitted: the render foreshortens this face, so
+    # the flat 75x16 sprite fitted by aspect came out 61 px wide and left
+    # the button's ends uncovered when pressed or hovered.
+    mute_group = get_element_pixel_bbox(root, "Mute", scale)
+    mute_band = get_element_pixel_bbox(root, "Mute With LED", scale)
+    if mute_group and mute_band:
+        rect = (mute_group[0], mute_band[1], mute_group[2], mute_band[3])
+        pos = stretch_overlay_to_bbox(
+            rect, os.path.join(ov_dir, "DualSense_Mute_Button.png"))
+        results.append(("DualSense_Mute_Button.png", "ButtonMute", "Button",
+                        pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {'ButtonMute':20s} ({'Mute + Mute With LED':20s}) -> "
+              f"({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+    else:
+        print("  MISS: Mute / Mute With LED")
 
     # Sticks (rings) and stick clicks share the same SVG bbox.
     add("Left Stick", "DualSense_LeftAnalogStick.png", "LeftThumbRing", "StickRing")
@@ -1051,6 +1130,10 @@ def process_dualsense():
     # Refine Create/Option/PS via base alpha template — same situation as
     # Xbox 360's Start/Back: the SVG labels sit on text or icon centroids
     # that are slightly offset from the visible button silhouette.
+    # Always the PLAIN base: its body art is identical and sits at the
+    # origin, so the template match stays in body coordinates like every
+    # other result here. Matching against the guttered Edge base would
+    # shift every refined button by the margin.
     base_path = os.path.join(MODELS_DIR, "DualSense", "DualSense_base.png")
     print("Refining DualSense small-button positions via base alpha template...")
     results = refine_via_base_template(base_path, results, ov_dir,
@@ -1059,16 +1142,44 @@ def process_dualsense():
     # TouchpadClick = click highlight PNG bounds (621x322 native).
     # Touchpad = the actual touchpad surface for finger-dot mapping
     # (smaller area, original v3 layout).
-    click_x = round((base_w - 621) / 2)
+    # Body width, not canvas width: on the Edge the gutter would inflate
+    # the touchpad zone by the margin ratio and push its finger mapping off
+    # the pad. The margin shift below moves these with everything else.
+    click_x = round((DS_BODY_W - 621) / 2)
     results.append(("", "TouchpadClick", "Button",   click_x, 160, 621, 322))
-    tp_w_inner = round(base_w * 0.34)
+    tp_w_inner = round(DS_BODY_W * 0.34)
     tp_h_inner = round(base_h * 0.27)
-    tp_x_inner = round((base_w - tp_w_inner) / 2)
+    tp_x_inner = round((DS_BODY_W - tp_w_inner) / 2)
     tp_y_inner = round(base_h * 0.27)
     results.append(("", "Touchpad", "Touchpad",
                     tp_x_inner, tp_y_inner, tp_w_inner, tp_h_inner))
     print(f"  TouchpadClick        (PNG visual)          -> ({click_x}, 160) 621x322")
     print(f"  Touchpad             (finger zone)         -> ({tp_x_inner}, {tp_y_inner}) {tp_w_inner}x{tp_h_inner}")
+
+    # Shift the body-frame results into the widened canvas. Everything above
+    # is expressed against the pack render's origin. A zero margin is a no-op.
+    if margin:
+        results = [(fn, t, ty, x + margin, y, w, h)
+                   for (fn, t, ty, x, y, w, h) in results]
+
+    if edge:
+        # The floating tiles live in the gutter, so they are authored in the
+        # widened frame directly and take no shift. Back above Fn, matching
+        # the mapping grid's own row order. Vertically centred on the body
+        # (opaque rows 85..815 in the pack render).
+        block = DS_TILE * 2 + DS_GAP
+        top = (85 + 815) // 2 - block // 2
+        tile_x = (margin - DS_TILE) // 2
+        right_x = base_w - tile_x - DS_TILE
+        for target, x, y, label in (
+                ("LeftPaddle", tile_x, top, "L Back"),
+                ("LeftFunction", tile_x, top + DS_TILE + DS_GAP, "L Fn"),
+                ("RightPaddle", right_x, top, "R Back"),
+                ("RightFunction", right_x, top + DS_TILE + DS_GAP, "R Fn")):
+            results.append(("DualSense_EdgeTile.png", target, "Button",
+                            x, y, DS_TILE, DS_TILE))
+            print(f"  {target:20s} ({label + ', floating tile':20s}) -> "
+                  f"({x:4d}, {y:4d}) {DS_TILE:4d}x{DS_TILE:3d}")
 
     return {"base_width": base_w, "base_height": base_h, "results": results}
 
@@ -1366,7 +1477,29 @@ def process_xbox_series():
     return data
 
 
+SWPRO_BODY_W = 1485    # the pack render's own width, what the SVG maps onto
+SWPRO_MARGIN = 160     # Switch 2 Pro only: gutter each side for the GL / GR tiles
+SWPRO_TILE = 130       # GL / GR tile edge
+SWPRO_TILE_Y = 735     # tile top, level with the grips
+
+
 def process_switchpro():
+    """Original Nintendo Switch Pro Controller. No gutter and none of the
+    Switch 2 controls: this set is exactly the pack's own art, because a
+    switch-pro slot must not render a C button or grip tiles it has no
+    wire for."""
+    return _process_switchpro_family("SWITCHPRO", margin=0, switch2=False)
+
+
+def process_switch2pro():
+    """Nintendo Switch 2 Pro Controller. Its OWN asset folder: a copy of
+    the same pack sprites over a base widened by a side gutter, carrying
+    the three controls the original does not have (C on the face, GL / GR
+    as floating tiles)."""
+    return _process_switchpro_family("SWITCH2PRO", margin=SWPRO_MARGIN, switch2=True)
+
+
+def _process_switchpro_family(folder, margin, switch2):
     """Extract Nintendo Switch Pro Controller overlay positions.
 
     This pack's press overlays are authored ~1.55x oversized relative to
@@ -1386,15 +1519,21 @@ def process_switchpro():
     tree = etree.parse(svg_path)
     root = tree.getroot()
 
-    base = cv2.imread(os.path.join(MODELS_DIR, "SWITCHPRO", "NSwitchPro_base.png"), cv2.IMREAD_UNCHANGED)
+    base = cv2.imread(os.path.join(MODELS_DIR, folder, "NSwitchPro_base.png"), cv2.IMREAD_UNCHANGED)
     base_w, base_h = base.shape[1], base.shape[0]
+    if base_w != SWPRO_BODY_W + 2 * margin:
+        raise SystemExit(f"{folder} base is {base_w}px wide; expected "
+                         f"{SWPRO_BODY_W} + 2x{margin} gutter")
 
     # SVG is authored in mm (viewBox 0 0 419.127 304.546); px-per-mm from
-    # the width ratio against the 1485x1079 base.
+    # the width ratio against the pack render's own 1485x1079 body. NOT
+    # against base_w: the Switch 2 base carries a gutter the SVG knows
+    # nothing about, so scaling by the full canvas width would stretch
+    # every label bbox by the gutter ratio.
     vb = [float(v) for v in root.get("viewBox").split()]
-    scale = base_w / vb[2]
+    scale = SWPRO_BODY_W / vb[2]
 
-    ov_dir = os.path.join(MODELS_DIR, "SWITCHPRO")
+    ov_dir = os.path.join(MODELS_DIR, folder)
     results = []
 
     def add(svg_label, filename, target, elem_type, fit_scale=1.0):
@@ -1478,6 +1617,47 @@ def process_switchpro():
             pos = fit_overlay_to_bbox(bbox, os.path.join(ov_dir, "NSwitchPro_AnalogStickClick.png"))
             results.append(("NSwitchPro_AnalogStickClick.png", target, "StickClick", pos[0], pos[1], pos[2], pos[3]))
             print(f"  {target:20s} ({lbl:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+
+    if switch2:
+        # No SVG labels exist for these: the pack's theme SVG is the
+        # ORIGINAL Pro Controller's. Derived instead from the purchased
+        # hado Switch 2 Pro mesh in 3DModels/Switch2Pro, mapped into this
+        # frame by a linear fit over the controls both pads carry, which
+        # agrees to a few px on the right half and ~1 px at the D-pad.
+        #
+        # C Button: mesh centroid x=0.00 (dead centre) z=-12.08 (below both
+        # the D-pad and the right stick) -> (742.5, 656) body-frame, and
+        # Nintendo's own controller diagram places it "on the front face
+        # between the D-pad and right stick area". It reuses the Capture
+        # press sprite because the mesh gives the two an identical 6.28mm
+        # footprint and the same rounded-square corner profile (top-face
+        # radius spread 1.35 vs 1.32; the round face buttons measure 1.00).
+        # Fixed rect, no fit pass: fit_overlay_to_bbox rewrites the PNG on
+        # disk, and this sprite is already sized by its own Capture entry.
+        #
+        # Target names are the preview grammar the 2D/3D art and the raw
+        # bridge share. NintendoPreviewMap maps the switch2-pro wire onto
+        # exactly these: GR b18, GL b19, C b20.
+        results.append(("NSwitchPro_CaptureButton.png", "ButtonC", "Button", 712, 624, 62, 63))
+        print(f"  {'ButtonC':20s} ({'C, from S2 mesh':20s}) -> ( 712,  624)   62x 63")
+
+    # Shift the body-frame results into the widened canvas. Everything
+    # above, including the two hardcoded TriggerBase rects, is expressed
+    # against the pack render's origin. A zero margin leaves them alone.
+    if margin:
+        results = [(fn, t, ty, x + margin, y, w, h)
+                   for (fn, t, ty, x, y, w, h) in results]
+
+    if switch2:
+        # The floating tiles live in the gutter, so they are authored in
+        # the widened frame directly and take no shift.
+        tile_x = (margin - SWPRO_TILE) // 2
+        for target, x, label in (("LeftPaddle", tile_x, "GL"),
+                                 ("RightPaddle", base_w - tile_x - SWPRO_TILE, "GR")):
+            results.append(("NSwitchPro_GripTile.png", target, "Button",
+                            x, SWPRO_TILE_Y, SWPRO_TILE, SWPRO_TILE))
+            print(f"  {target:20s} ({label + ', floating tile':20s}) -> "
+                  f"({x:4d}, {SWPRO_TILE_Y:4d}) {SWPRO_TILE:4d}x{SWPRO_TILE:3d}")
 
     return {"base_width": base_w, "base_height": base_h, "results": results}
 
@@ -1904,6 +2084,8 @@ def main():
 
     print("\n=== DualSense Controller ===")
     dualsense_data = process_dualsense()
+    print("\n=== DualSense Edge ===")
+    dsedge_data = process_dualsense_edge()
     print(f"\n  Total DualSense overlays: {len(dualsense_data['results'])}")
 
     print("\n=== Xbox One S Controller ===")
@@ -1917,6 +2099,10 @@ def main():
     print("\n=== Switch Pro Controller ===")
     swpro_data = process_switchpro()
     print(f"\n  Total Switch Pro overlays: {len(swpro_data['results'])}")
+
+    print("\n=== Switch 2 Pro Controller ===")
+    swpro2_data = process_switch2pro()
+    print(f"\n  Total Switch 2 Pro overlays: {len(swpro2_data['results'])}")
 
     print("\n=== Steam Deck ===")
     deck_data = process_steamdeck()
@@ -1934,7 +2120,8 @@ def main():
     # shipped base renders already draw the triggers at rest (unlike the
     # Switch Pro base, which is the pack's trigger-LESS variant), and the
     # Steam packs ship no rest-state trigger PNG for the pass to point at.
-    for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data]:
+    for data in [xbox_data, ds4_data, dualsense_data, dsedge_data,
+                 xbone_data, xbseries_data, swpro_data, swpro2_data]:
         data["results"] = _add_trigger_base_entries(data["results"])
 
     # Hit-test precedence: the view's hover/click rectangles resolve to
@@ -1946,7 +2133,8 @@ def main():
     # measured on all six layouts). Stable-move Trigger + TriggerBase
     # entries to the front so bumpers win the shared band; visual
     # stacking is unaffected (Z-indices are explicit in the view).
-    for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data, swpro_data,
+    for data in [xbox_data, ds4_data, dualsense_data, dsedge_data,
+                 xbone_data, xbseries_data, swpro_data, swpro2_data,
                  deck_data, steamc_data]:
         rs = data["results"]
         trig = [r for r in rs if r[2] in ("Trigger", "TriggerBase")]
@@ -1956,9 +2144,11 @@ def main():
     # Sanity checks
     for name, data in [("Xbox 360", xbox_data), ("DS4", ds4_data),
                        ("DualSense", dualsense_data),
+                       ("DualSense Edge", dsedge_data),
                        ("Xbox One S", xbone_data),
                        ("Xbox Series X", xbseries_data),
                        ("Switch Pro", swpro_data),
+                       ("Switch 2 Pro", swpro2_data),
                        ("Steam Deck", deck_data),
                        ("Steam Controller", steamc_data)]:
         bw, bh = data["base_width"], data["base_height"]
@@ -1972,9 +2162,11 @@ def main():
         ("Xbox360Layout",       xbox_data,      "2DModels/XBOX360/XB360_base.png",         30),
         ("DS4Layout",           ds4_data,       "2DModels/DS4/DS4_V2_base.png",            25),
         ("DualSenseLayout",     dualsense_data, "2DModels/DualSense/DualSense_base.png",   25),
+        ("DualSenseEdgeLayout", dsedge_data,    "2DModels/DUALSENSEEDGE/DualSense_base.png", 25),
         ("XboxOneSLayout",      xbone_data,     "2DModels/XBOXONE/XB1_S_base.png",         30),
         ("XboxSeriesXLayout",   xbseries_data,  "2DModels/XBOXSERIES/XBSeries_base.png",   30),
         ("SwitchProLayout",     swpro_data,     "2DModels/SWITCHPRO/NSwitchPro_base.png",  25),
+        ("Switch2ProLayout",    swpro2_data,    "2DModels/SWITCH2PRO/NSwitchPro_base.png", 25),
         ("SteamDeckLayout",      deck_data,      "2DModels/STEAMDECK/SD_base.png",          22),
         ("SteamControllerLayout", steamc_data,   "2DModels/STEAMCONTROLLER/SC_base.png",    28),
     ]

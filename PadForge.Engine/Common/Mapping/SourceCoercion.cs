@@ -265,9 +265,17 @@ namespace PadForge.Engine.Common.Mapping
             // When true, this whole tuning chain is applied to the
             // virtual controller's motion passthrough (Sony report
             // packer + DSU broadcast), not only to gyro-as-mapping-
-            // source reads. Default false — fresh profiles relay the
+            // source reads. Default false. Fresh profiles relay the
             // raw sensor reading. See GetPassthroughGyro.
             public bool ApplyToPassthrough;
+
+            // Compass-anchored yaw (#271 item 5, Switch 2 magnetometer
+            // only). When true and MagHeadingProvider has a live heading
+            // for the device, the emitted yaw rate carries a small
+            // corrective term pulling the integrated yaw toward the
+            // magnetic heading, so downstream integration is drift-free.
+            // Default false.
+            public bool CompassYaw;
         }
 
         /// <summary>Looks up the per-(device, slot) gyro tuning bundle
@@ -401,6 +409,72 @@ namespace PadForge.Engine.Common.Mapping
         /// RIGHT body, so projecting the LEFT half's gyro against primary
         /// gravity would reference the wrong controller entirely.</summary>
         public static Func<string, (float gx, float gy, float gz)> GravityProviderAux { get; set; }
+
+        /// <summary>Compass yaw-correction RATE for the device (by GUID),
+        /// rad/s, or null while the magnetometer stream is inactive,
+        /// uncalibrated, or rejected for interference (#271 item 5). The
+        /// App layer owns the timing: it integrates the device's raw yaw
+        /// rate on its own tick (where dt is real), compares against the
+        /// tilt-compensated heading, and publishes the small corrective
+        /// rate that pulls the integral to the compass. This evaluator
+        /// just ADDS it to the yaw lane when the tuning enables
+        /// CompassYaw, so every consumer stays dt-free.</summary>
+        public static Func<string, float?> CompassYawCorrectionProvider { get; set; }
+
+        /// <summary>Tilt-compensated magnetic heading (#271 item 5),
+        /// ported concept-for-concept from the cloned x-io Fusion
+        /// reference (FusionCompass.c:24-29, NWU convention): west =
+        /// normalize(cross(accel, mag)), north = normalize(cross(west,
+        /// accel)), heading = atan2(west.x, north.x). Radians rather than
+        /// the reference's degrees. Returns null when either vector is
+        /// too short to normalize (free-fall accel or a zero mag sample),
+        /// the reference's degenerate case. Pure; internal-visible for
+        /// the unit tests via the public surface.</summary>
+        public static float? ComputeTiltCompensatedHeading(
+            float ax, float ay, float az, float mx, float my, float mz)
+        {
+            // west = cross(accel, mag)
+            float wx = ay * mz - az * my;
+            float wy = az * mx - ax * mz;
+            float wz = ax * my - ay * mx;
+            float wLen = (float)Math.Sqrt(wx * wx + wy * wy + wz * wz);
+            if (wLen < 1e-6f) return null;
+            wx /= wLen; wy /= wLen; wz /= wLen;
+            // north = cross(west, accel)
+            float nx = wy * az - wz * ay;
+            float ny = wz * ax - wx * az;
+            float nz = wx * ay - wy * ax;
+            float nLen = (float)Math.Sqrt(nx * nx + ny * ny + nz * nz);
+            if (nLen < 1e-6f) return null;
+            nx /= nLen;
+            return (float)Math.Atan2(wx, nx);
+        }
+
+        /// <summary>Wraps an angle to [-pi, pi]. Public for the compass
+        /// correction's callers and tests.</summary>
+        public static float WrapToPi(float a)
+        {
+            while (a > (float)Math.PI) a -= 2f * (float)Math.PI;
+            while (a < -(float)Math.PI) a += 2f * (float)Math.PI;
+            return a;
+        }
+
+        /// <summary>The compass correction rate (#271 item 5): a
+        /// proportional pull of the integrated yaw toward the magnetic
+        /// heading, rad/s. Gain 0.5 1/s follows the x-io Fusion default
+        /// AHRS gain (FusionAhrs.c settings default 0.5): strong enough
+        /// to hold drift at zero, weak enough that a transient heading
+        /// glitch cannot yank the aim. Pure; tested directly.</summary>
+        public static float ComputeCompassCorrection(float headingRad, float integratedYawRad, float gain = 0.5f)
+            => gain * WrapToPi(headingRad - integratedYawRad);
+
+        /// <summary>Whether the device (by GUID) carries the aux (left
+        /// Joy-Con) gyro. Gates the fused bare-family read (#271 item 6):
+        /// CustomInputState.GyroAux is ALWAYS allocated, so a zeroed aux
+        /// array cannot signal capability, and averaging against zeros
+        /// would silently halve a non-pair's rates. Wired by the App
+        /// layer from UserDevice.HasGyroAux.</summary>
+        public static Func<string, bool> HasGyroAuxProvider { get; set; }
 
         /// <summary>— reads whether the given (deviceGuid,
         /// descriptor) is currently pressed on the named slot. Used
@@ -1097,6 +1171,9 @@ namespace PadForge.Engine.Common.Mapping
             // source array changes.
             if (IsGyroAuxDescriptor(s))
                 return SourceType.Gyro;
+            // Explicit right-half family (#271 item 6), same contract.
+            if (IsGyroRDescriptor(s))
+                return SourceType.Gyro;
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
                 return SourceType.Gyro;
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
@@ -1590,6 +1667,8 @@ namespace PadForge.Engine.Common.Mapping
             // resolved false and silently read the PRIMARY sensor.
             if (IsGyroAuxDescriptor(s))
                 axis = axis.Substring(2).Trim();
+            else if (IsGyroRDescriptor(s))
+                axis = axis.Substring(2).Trim();
             if (axis.Equals("Pitch",      StringComparison.OrdinalIgnoreCase)) return 0;
             if (axis.Equals("Yaw",        StringComparison.OrdinalIgnoreCase)) return 1;
             if (axis.Equals("Roll",       StringComparison.OrdinalIgnoreCase)) return 2;
@@ -1606,7 +1685,17 @@ namespace PadForge.Engine.Common.Mapping
         {
             string s = (descriptor ?? "").Trim();
             if (!s.StartsWith("Gyro ", StringComparison.Ordinal)) return false;
-            return s.Substring(5).Trim().Equals("Horizontal", StringComparison.OrdinalIgnoreCase);
+            string axis = s.Substring(5).Trim();
+            // Aux family (#268): "Gyro L Horizontal" blends the LEFT
+            // sensor. The strip is gated on the SAME classifier predicate
+            // as ParseGyroAxisIndex's (the C45 discipline): a lenient bare
+            // "L " strip would accept spellings the classifier rejects,
+            // and those must keep failing closed here too.
+            if (IsGyroAuxDescriptor(s))
+                axis = axis.Substring(2).Trim();
+            else if (IsGyroRDescriptor(s))
+                axis = axis.Substring(2).Trim();
+            return axis.Equals("Horizontal", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>True when a gyro rate descriptor names the PITCH axis,
@@ -2180,6 +2269,12 @@ namespace PadForge.Engine.Common.Mapping
         public const string GyroAuxPitchDescriptor = "Gyro L Pitch";
         public const string GyroAuxYawDescriptor   = "Gyro L Yaw";
         public const string GyroAuxRollDescriptor  = "Gyro L Roll";
+        // The yaw+roll blend, #268 (@eVenent, discussion #258): the aux twin
+        // of "Gyro Horizontal". ReadTunedGyroRate's aux and isHorizontal
+        // flags are independent and the blend consumes aux-selected
+        // components, so the whole chain works once the two predicates
+        // accept the spelling.
+        public const string GyroAuxHorizontalDescriptor = "Gyro L Horizontal";
 
         /// <summary>True for any "Gyro L ..." aux rate descriptor. Checked
         /// BEFORE the generic "Gyro " family everywhere, since the aux
@@ -2203,8 +2298,39 @@ namespace PadForge.Engine.Common.Mapping
             string s = descriptor.Trim();
             return string.Equals(s, GyroAuxPitchDescriptor, StringComparison.OrdinalIgnoreCase)
                 || string.Equals(s, GyroAuxYawDescriptor,   StringComparison.OrdinalIgnoreCase)
-                || string.Equals(s, GyroAuxRollDescriptor,  StringComparison.OrdinalIgnoreCase);
+                || string.Equals(s, GyroAuxRollDescriptor,  StringComparison.OrdinalIgnoreCase)
+                || string.Equals(s, GyroAuxHorizontalDescriptor, StringComparison.OrdinalIgnoreCase);
         }
+
+        // Explicit RIGHT-half rate family (#271 item 6). On a combined
+        // Joy-Con pair SDL's PRIMARY gyro IS the right half, so these
+        // read the primary sensor raw with the primary bias and gravity.
+        // They exist because the bare "Gyro ..." names on a pair now read
+        // the FUSED stream (both halves averaged), and the raw right half
+        // must stay reachable, mirroring how "Gyro L ..." keeps the raw
+        // left reachable.
+        public const string GyroRPitchDescriptor = "Gyro R Pitch";
+        public const string GyroRYawDescriptor   = "Gyro R Yaw";
+        public const string GyroRRollDescriptor  = "Gyro R Roll";
+        public const string GyroRHorizontalDescriptor = "Gyro R Horizontal";
+
+        /// <summary>True for any "Gyro R ..." rate descriptor. Checked
+        /// BEFORE the generic "Gyro " family everywhere, the same
+        /// precedence contract as <see cref="IsGyroAuxDescriptor"/>.</summary>
+        public static bool IsGyroRDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = descriptor.Trim();
+            return string.Equals(s, GyroRPitchDescriptor, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(s, GyroRYawDescriptor,   StringComparison.OrdinalIgnoreCase)
+                || string.Equals(s, GyroRRollDescriptor,  StringComparison.OrdinalIgnoreCase)
+                || string.Equals(s, GyroRHorizontalDescriptor, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>Which physical sensor (or blend) a gyro rate
+        /// descriptor reads (#271 item 6). Fused is the bare family:
+        /// both halves averaged on a pair, the primary alone elsewhere.</summary>
+        internal enum GyroSide { Fused = 0, Left = 1, Right = 2 }
 
         public const string GyroLeanXDescriptor = "Gyro Lean X";
         public const string GyroLeanYDescriptor = "Gyro Lean Y";
@@ -2545,7 +2671,14 @@ namespace PadForge.Engine.Common.Mapping
 
             tuning = GetGyroTuning(srcDeviceGuid, slotIndex);
 
-            bool aux = IsGyroAuxDescriptor(src.Descriptor);
+            GyroSide side = IsGyroAuxDescriptor(src.Descriptor) ? GyroSide.Left
+                : IsGyroRDescriptor(src.Descriptor) ? GyroSide.Right
+                : GyroSide.Fused;
+            // Left keeps the aux gravity + aux smoothing keys. Right and
+            // Fused both ride the primary gravity (the fused stream has no
+            // gravity vector of its own, and the right half is the
+            // historical bare behavior).
+            bool aux = side == GyroSide.Left;
             int descAxis = ParseGyroAxisIndex(src.Descriptor);
             bool isHorizontal = IsHorizontalBlendDescriptor(src.Descriptor);
             bool isPitchSource = descAxis == 0;
@@ -2575,9 +2708,9 @@ namespace PadForge.Engine.Common.Mapping
 
             // ─── Bias-subtracted gyro components ─────────────────
             string deviceGuid = srcDeviceGuid;
-            float gPitch = ReadCalibratedGyroRate(state, 0, deviceGuid, slotIndex, aux);
-            float gYaw   = ReadCalibratedGyroRate(state, 1, deviceGuid, slotIndex, aux);
-            float gRoll  = ReadCalibratedGyroRate(state, 2, deviceGuid, slotIndex, aux);
+            float gPitch = ReadCalibratedGyroRate(state, 0, deviceGuid, slotIndex, side);
+            float gYaw   = ReadCalibratedGyroRate(state, 1, deviceGuid, slotIndex, side);
+            float gRoll  = ReadCalibratedGyroRate(state, 2, deviceGuid, slotIndex, side);
 
             // ─── Space projection ────────────────────────────────
             float yaw, pitch;
@@ -2623,13 +2756,28 @@ namespace PadForge.Engine.Common.Mapping
                     yaw = gYaw;
             }
 
+            // ─── Compass-anchored yaw (#271 item 5) ───
+            // Yaw-aim lanes only: a Roll row's yaw variable carries roll,
+            // and a Pitch row never consumes yaw. Applied before
+            // smoothing/sensitivity so the correction rides the same
+            // shaping as the signal it corrects.
+            if (tuning.CompassYaw && !isRollSource && !isPitchSource)
+            {
+                float? compassCorr = CompassYawCorrectionProvider?.Invoke(deviceGuid);
+                if (compassCorr.HasValue) yaw += compassCorr.Value;
+            }
+
             // ─── Smoothing (dual-threshold supersedes legacy EMA) ───
             bool useDualThreshold =
                 tuning.TighteningRadPerSec > 0f || tuning.SmoothingThresholdRadPerSec > 0f;
             if (useDualThreshold)
             {
+                // Channel 3 gives the R family its own ring: channel 0 is
+                // the fused bare family (the passthrough uses 1/2), and
+                // the key tuple is (guid, slot, aux, channel).
                 (yaw, pitch) = ApplyDualThresholdSmoothing(
-                    deviceGuid, slotIndex, yaw, pitch, tuning, aux);
+                    deviceGuid, slotIndex, yaw, pitch, tuning, aux,
+                    channel: side == GyroSide.Right ? 3 : 0);
             }
             else if (tuning.SmoothingAlpha > 0f)
             {
@@ -2645,7 +2793,10 @@ namespace PadForge.Engine.Common.Mapping
                 // to replace a yaw row, not coexist with one.
                 // Lanes 0/1/2 primary, 3/4/5 aux (#252): the two sensors share a
                 // device GUID, so a shared lane hands one the other's value.
-                int laneBase = aux ? 3 : 0;
+                // Lanes 0/1/2 fused bare, 3/4/5 aux (#252), 6/7/8 the
+                // explicit right family (#271 item 6): three families on
+                // one device GUID, each with its own filter state.
+                int laneBase = side == GyroSide.Left ? 3 : side == GyroSide.Right ? 6 : 0;
                 yaw   = ApplyGyroSmoothing(deviceGuid, slotIndex, laneBase + (isRollSource ? 2 : 1), yaw, tuning.SmoothingAlpha);
                 pitch = ApplyGyroSmoothing(deviceGuid, slotIndex, laneBase + 0, pitch, tuning.SmoothingAlpha);
             }
@@ -2864,8 +3015,33 @@ namespace PadForge.Engine.Common.Mapping
         /// raw reading minus zero, which is the right default for
         /// "uncalibrated yet, just connected." Defensive against null
         /// state.Gyro[].</summary>
+        /// <summary>Bool-aux compatibility entry (the passthrough and
+        /// pre-#271 callers): aux picks the left sensor, otherwise the
+        /// primary RAW. Deliberately never Fused: the motion passthrough
+        /// must stay a real single-sensor stream (native-frame contract),
+        /// so fusion is selected only by the mapping path's descriptor
+        /// classification.</summary>
         private static float ReadCalibratedGyroRate(CustomInputState state, int gyroAxis, string deviceGuid, int slotIndex, bool aux = false)
+            => ReadCalibratedGyroRate(state, gyroAxis, deviceGuid, slotIndex, aux ? GyroSide.Left : GyroSide.Right);
+
+        private static float ReadCalibratedGyroRate(CustomInputState state, int gyroAxis, string deviceGuid, int slotIndex, GyroSide side)
         {
+            // Fused (#271 item 6): both halves debiased by their OWN bias,
+            // then averaged. Only when the device really carries the aux
+            // sensor: GyroAux is always allocated, so the capability comes
+            // from the provider, and without it the bare family reads the
+            // primary byte-identically to the pre-fusion behavior.
+            if (side == GyroSide.Fused)
+            {
+                float fusedRight = ReadCalibratedGyroRate(state, gyroAxis, deviceGuid, slotIndex, GyroSide.Right);
+                if (HasGyroAuxProvider?.Invoke(deviceGuid) == true)
+                {
+                    float fusedLeft = ReadCalibratedGyroRate(state, gyroAxis, deviceGuid, slotIndex, GyroSide.Left);
+                    return 0.5f * (fusedRight + fusedLeft);
+                }
+                return fusedRight;
+            }
+            bool aux = side == GyroSide.Left;
             float[] srcArr = aux ? state?.GyroAux : state?.Gyro;
             if (srcArr == null) return 0f;
             if (gyroAxis < 0 || gyroAxis >= srcArr.Length) return 0f;

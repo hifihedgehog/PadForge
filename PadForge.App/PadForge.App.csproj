@@ -103,8 +103,10 @@
     </Content>
     <EmbeddedResource Include="gamecontrollerdb_padforge.txt" />
     <EmbeddedResource Include="Resources\HidHide_1.5.230_x64.exe" />
-    <!-- 3D controller model assets (adapted from Handheld Companion, CC BY-NC-SA 4.0) -->
+    <!-- 3D controller model assets (adapted from Handheld Companion, CC BY-NC-SA 4.0;
+         Switch2Pro set split from the purchased hado CGTrader model) -->
     <EmbeddedResource Include="3DModels\**\*.obj" />
+    <EmbeddedResource Include="3DModels\**\*.png" />
     <!-- 2D controller model assets (Gamepad-Asset-Pack by AL2009man, MIT license) -->
     <Resource Include="2DModels\**\*.png" />
     <!-- Web controller frontend assets (embedded, served by WebControllerServer) -->
@@ -149,7 +151,11 @@
          unstable in-progress work from the HIDMaestro repo. Update by
          copying the Release build of HIDMaestro.Core.dll from the
          HIDMaestro repo into Resources\HIDMaestro\ after tagging a
-         release there. Current: v1.3.22 (worker survives foreign stop signals, HM#38). -->
+         release there. Current: v1.4.3 (composite USB personas with embedded
+         usbip-win2 and the HMController.UsbAudio surface, HM#39, the
+         microphone ring frame-alignment fix, HM#41, and the ROOT\HIDMAESTRO_UDE
+         hardware-id token on the emulated host controller, HM#42, which is what
+         lets a devnode filter tell a composite persona from a real USB pad). -->
     <Reference Include="HIDMaestro.Core">
       <HintPath>Resources\HIDMaestro\HIDMaestro.Core.dll</HintPath>
     </Reference>

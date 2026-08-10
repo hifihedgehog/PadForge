@@ -54,6 +54,20 @@ namespace PadForge.Engine.Data
         /// descriptor doesn't declare button 13.</summary>
         [XmlElement] public string ButtonShare { get; set; } = "";
 
+        /// <summary>DualSense mic mute button. Only surfaced on DualSense /
+        /// Edge virtual-controller profiles; the packers set wire bit 0x04
+        /// of the third buttons byte, and HM carries it as Misc1.</summary>
+        [XmlElement] public string ButtonMute { get; set; } = "";
+
+        /// <summary>DualSense Edge rear paddles and front Fn buttons,
+        /// side-named to match HM's HMButton and SDL's paddle roles (the
+        /// Fn pair is SDL's LEFT_PADDLE2 / RIGHT_PADDLE2). Only surfaced
+        /// on Edge profiles.</summary>
+        [XmlElement] public string LeftPaddle { get; set; } = "";
+        [XmlElement] public string RightPaddle { get; set; } = "";
+        [XmlElement] public string LeftFunction { get; set; } = "";
+        [XmlElement] public string RightFunction { get; set; } = "";
+
         [XmlElement] public string LeftThumbButton { get; set; } = "";
         [XmlElement] public string RightThumbButton { get; set; } = "";
 
@@ -325,6 +339,14 @@ namespace PadForge.Engine.Data
         [XmlElement] public string ForceSwapMotor { get; set; } = "0";
 
         /// <summary>
+        /// Fold the game's trigger-motor channels into the body motors on
+        /// devices without trigger motors (#271 item 2, the Trigger
+        /// Routing inverse). "0" = off, "1" = each trigger channel
+        /// max-folds into its side's main motor at the scalar write.
+        /// </summary>
+        [XmlElement] public string TriggerRumbleFold { get; set; } = "0";
+
+        /// <summary>
         /// Left (low-frequency) motor strength (0–100%).
         /// </summary>
         [XmlElement] public string LeftMotorStrength { get; set; } = "100";
@@ -356,6 +378,14 @@ namespace PadForge.Engine.Data
         /// "0" = no swap, "1" = swap.
         /// </summary>
         [XmlElement] public string ImpulseSwapTriggers { get; set; } = "0";
+
+        /// <summary>
+        /// Selective adaptive-trigger translation (#271 item 3): render a
+        /// game's vibration-class DS5 trigger programs on this device's
+        /// impulse-trigger motors. Resistance-class programs translate to
+        /// nothing. "0" = off, "1" = on.
+        /// </summary>
+        [XmlElement] public string AtVibrationToImpulseEnabled { get; set; } = "0";
 
         /// <summary>Enable constant-trigger-force override (Xbox One+).
         /// "0" = off (default), "1" = on. Mirrors
@@ -579,6 +609,12 @@ namespace PadForge.Engine.Data
         /// default.</summary>
         [XmlElement] public string PointerFpsSpeed { get; set; } = "35";
 
+        /// <summary>3D preview colorway per model family, so each virtual
+        /// controller keeps its own appearance ("XboxSeries=PulseRed,
+        /// DualSense=Midnight"). Families absent from the list use their
+        /// default. Cosmetic only; never read by the engine.</summary>
+        [XmlElement] public string Model3DAppearances { get; set; } = "";
+
         /// <summary>At-rest bias for Pitch axis (rad/s), subtracted from
         /// the raw SDL3 gyro reading at the source-coercion read point.
         /// Per-(device, slot) — re-running calibration on slot A doesn't
@@ -599,6 +635,25 @@ namespace PadForge.Engine.Data
         /// sensor with its own drift, so it never shares the primary's
         /// triple above. Sampled by the same calibration pass.</summary>
         [XmlElement] public string GyroAuxBiasPitch { get; set; } = "0";
+
+        /// <summary>Compass-anchored yaw toggle (#271 item 5, Switch 2
+        /// magnetometer devices). "0" = off (default), "1" = the yaw lane
+        /// carries the drift-free compass correction.</summary>
+        [XmlElement] public string GyroCompassYaw { get; set; } = "0";
+
+        /// <summary>Magnetometer hard-iron bias, raw wire units, captured
+        /// by the figure-8 calibration (per-axis min/max midpoints, the
+        /// windows10-gyro reference's method). "0" = uncalibrated; the
+        /// compass stays inert until a calibration stores a field norm.</summary>
+        [XmlElement] public string MagBiasX { get; set; } = "0";
+        [XmlElement] public string MagBiasY { get; set; } = "0";
+        [XmlElement] public string MagBiasZ { get; set; } = "0";
+
+        /// <summary>Calibrated field magnitude, raw wire units, from the
+        /// same capture. Gates interference rejection: samples whose
+        /// debiased magnitude strays far from this norm are ignored.
+        /// "0" = uncalibrated, compass off.</summary>
+        [XmlElement] public string MagFieldNorm { get; set; } = "0";
 
         /// <summary>At-rest bias for the AUX gyro's Yaw axis (rad/s).</summary>
         [XmlElement] public string GyroAuxBiasYaw { get; set; } = "0";
@@ -953,6 +1008,79 @@ namespace PadForge.Engine.Data
         }
 
         // ─────────────────────────────────────────────
+        //  VR mappings (dictionary-based, issue #49)
+        //  Keys: the VrLayout vocabulary ("VrLTrigger", "VrRStickXNeg",
+        //  "VrLA", ...). Values: mapping descriptors, same format as the
+        //  MIDI/KBM lanes this mirrors, including the lock discipline
+        //  (poll thread reads while the UI edits).
+        // ─────────────────────────────────────────────
+
+        [XmlArray("VrMappings")]
+        [XmlArrayItem("Map")]
+        public RawMappingEntry[] VrMappingEntries { get; set; }
+
+        [XmlIgnore]
+        private Dictionary<string, string> _vrMappingDict;
+
+        public string GetVrMapping(string key)
+        {
+            EnsureVrDict();
+            lock (_vrDictLock)
+                return _vrMappingDict.TryGetValue(key, out var val) ? val : "";
+        }
+
+        public void SetVrMapping(string key, string value)
+        {
+            EnsureVrDict();
+            lock (_vrDictLock)
+            {
+                if (string.IsNullOrEmpty(value))
+                    _vrMappingDict.Remove(key);
+                else
+                    _vrMappingDict[key] = value;
+            }
+        }
+
+        public void FlushVrMappings()
+        {
+            if (_vrMappingDict == null) return; // Not initialized. Array is canonical.
+            lock (_vrDictLock)
+            {
+                if (_vrMappingDict.Count == 0)
+                {
+                    VrMappingEntries = null;
+                    return;
+                }
+                var entries = new RawMappingEntry[_vrMappingDict.Count];
+                int i = 0;
+                foreach (var kvp in _vrMappingDict)
+                    entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                VrMappingEntries = entries;
+            }
+        }
+
+        private readonly object _vrDictLock = new();
+
+        private void EnsureVrDict()
+        {
+            if (_vrMappingDict != null) return;
+            lock (_vrDictLock)
+            {
+                if (_vrMappingDict != null) return;
+                var dict = new Dictionary<string, string>(StringComparer.Ordinal);
+                if (VrMappingEntries != null)
+                {
+                    foreach (var e in VrMappingEntries)
+                    {
+                        if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
+                            dict[e.Key] = e.Value;
+                    }
+                }
+                _vrMappingDict = dict;
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  KBM mappings (dictionary-based)
         //  Used for KeyboardMouse output with keyboard key + mouse targets.
         //  Keys: "KbmKey41" (VK_A), "KbmMouseX", "KbmMouseXNeg", "KbmMBtn0", etc.
@@ -1255,6 +1383,11 @@ namespace PadForge.Engine.Data
             sb.Append(LeftThumbButton); sb.Append('|');
             sb.Append(RightThumbButton); sb.Append('|');
             sb.Append(ButtonShare); sb.Append('|');
+            sb.Append(ButtonMute); sb.Append('|');
+            sb.Append(LeftPaddle); sb.Append('|');
+            sb.Append(RightPaddle); sb.Append('|');
+            sb.Append(LeftFunction); sb.Append('|');
+            sb.Append(RightFunction); sb.Append('|');
 
             // D-Pad
             sb.Append(DPad); sb.Append('|');
@@ -1350,12 +1483,14 @@ namespace PadForge.Engine.Data
             sb.Append(SteeringLockLightbarHoldMs); sb.Append('|');
             sb.Append(SteeringLockLightbarFadeMs); sb.Append('|');
             sb.Append(ForceSwapMotor); sb.Append('|');
+            sb.Append(TriggerRumbleFold); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
             sb.Append(RightMotorStrength); sb.Append('|');
             sb.Append(ImpulseOverallGain).Append('|');
             sb.Append(ImpulseLeftStrength).Append('|');
             sb.Append(ImpulseRightStrength).Append('|');
             sb.Append(ImpulseSwapTriggers).Append('|');
+            sb.Append(AtVibrationToImpulseEnabled).Append('|');
             sb.Append(ConstantTriggerForceEnabled).Append('|');
             sb.Append(ConstantTriggerForceLeft).Append('|');
             sb.Append(ConstantTriggerForceRight).Append('|');
@@ -1396,10 +1531,16 @@ namespace PadForge.Engine.Data
             sb.Append(IrSmoothing); sb.Append('|');
             sb.Append(PointerMode); sb.Append('|');
             sb.Append(PointerFpsSpeed); sb.Append('|');
+            sb.Append(Model3DAppearances); sb.Append('|');
             sb.Append(GyroBiasPitch); sb.Append('|');
             sb.Append(GyroBiasYaw); sb.Append('|');
             sb.Append(GyroBiasRoll); sb.Append('|');
             sb.Append(GyroAuxBiasPitch); sb.Append('|');
+            sb.Append(GyroCompassYaw); sb.Append('|');
+            sb.Append(MagBiasX); sb.Append('|');
+            sb.Append(MagBiasY); sb.Append('|');
+            sb.Append(MagBiasZ); sb.Append('|');
+            sb.Append(MagFieldNorm); sb.Append('|');
             sb.Append(GyroAuxBiasYaw); sb.Append('|');
             sb.Append(GyroAuxBiasRoll); sb.Append('|');
             sb.Append(GyroCalibratedAtUtc); sb.Append('|');
@@ -1475,6 +1616,22 @@ namespace PadForge.Engine.Data
                 foreach (var key in kbmKeys)
                 {
                     sb.Append(key); sb.Append('='); sb.Append(_kbmMappingDict[key]); sb.Append('|');
+                }
+            }
+
+            // VR custom mappings (sorted for deterministic checksum). The
+            // save pipeline dedups PadSettings BY CHECKSUM, so a lane
+            // missing here lets two devices whose settings differ only in
+            // that lane collapse into one stored object and the loser
+            // silently adopts the survivor's rows on reload.
+            EnsureVrDict();
+            if (_vrMappingDict.Count > 0)
+            {
+                var vrKeys = new List<string>(_vrMappingDict.Keys);
+                vrKeys.Sort(StringComparer.Ordinal);
+                foreach (var key in vrKeys)
+                {
+                    sb.Append(key); sb.Append('='); sb.Append(_vrMappingDict[key]); sb.Append('|');
                 }
             }
 
@@ -1650,6 +1807,11 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(LeftThumbButton) ||
             !string.IsNullOrEmpty(RightThumbButton) ||
             !string.IsNullOrEmpty(ButtonShare) ||
+            !string.IsNullOrEmpty(ButtonMute) ||
+            !string.IsNullOrEmpty(LeftPaddle) ||
+            !string.IsNullOrEmpty(RightPaddle) ||
+            !string.IsNullOrEmpty(LeftFunction) ||
+            !string.IsNullOrEmpty(RightFunction) ||
             !string.IsNullOrEmpty(DPad) ||
             !string.IsNullOrEmpty(DPadUp) ||
             !string.IsNullOrEmpty(DPadDown) ||
@@ -1677,7 +1839,9 @@ namespace PadForge.Engine.Data
             (MidiMappingEntries != null && MidiMappingEntries.Length > 0) ||
             (_midiMappingDict != null && _midiMappingDict.Count > 0) ||
             (KbmMappingEntries != null && KbmMappingEntries.Length > 0) ||
-            (_kbmMappingDict != null && _kbmMappingDict.Count > 0);
+            (_kbmMappingDict != null && _kbmMappingDict.Count > 0) ||
+            (VrMappingEntries != null && VrMappingEntries.Length > 0) ||
+            (_vrMappingDict != null && _vrMappingDict.Count > 0);
 
         /// <summary>
         /// Clears all mapping descriptors (standard, Extended, MIDI, and KBM) plus the
@@ -1717,6 +1881,11 @@ namespace PadForge.Engine.Data
             LeftThumbButton = V(nameof(LeftThumbButton));
             RightThumbButton = V(nameof(RightThumbButton));
             ButtonShare = V(nameof(ButtonShare));
+            ButtonMute = V(nameof(ButtonMute));
+            LeftPaddle = V(nameof(LeftPaddle));
+            RightPaddle = V(nameof(RightPaddle));
+            LeftFunction = V(nameof(LeftFunction));
+            RightFunction = V(nameof(RightFunction));
             DPad = V(nameof(DPad));
             DPadUp = V(nameof(DPadUp));
             DPadDown = V(nameof(DPadDown));
@@ -1759,11 +1928,13 @@ namespace PadForge.Engine.Data
             }
             RawMappingEntries = null; // re-flushed from the dict on save
 
-            // MIDI/KBM mapping dictionaries and arrays (no tuning shares these).
+            // MIDI/KBM/VR mapping dictionaries and arrays (no tuning shares these).
             MidiMappingEntries = null;
             _midiMappingDict = null;
             KbmMappingEntries = null;
             _kbmMappingDict = null;
+            VrMappingEntries = null;
+            _vrMappingDict = null;
 
             // Per-mapping deadzone/bidirectional companions are keyed by the target
             // names cleared above: entries for a previous layout would otherwise
@@ -1822,6 +1993,8 @@ namespace PadForge.Engine.Data
             Add(ButtonBack); Add(ButtonStart); Add(ButtonGuide);
             Add(LeftThumbButton); Add(RightThumbButton);
             Add(ButtonShare);
+            Add(ButtonMute); Add(LeftPaddle); Add(RightPaddle);
+            Add(LeftFunction); Add(RightFunction);
 
             // D-Pad
             Add(DPad); Add(DPadUp); Add(DPadDown); Add(DPadLeft); Add(DPadRight);
@@ -1862,6 +2035,13 @@ namespace PadForge.Engine.Data
                     Add(e.Value);
             }
 
+            // VR custom mappings
+            if (VrMappingEntries != null)
+            {
+                foreach (var e in VrMappingEntries)
+                    Add(e.Value);
+            }
+
             return result;
         }
 
@@ -1898,6 +2078,8 @@ namespace PadForge.Engine.Data
             nameof(LeftShoulder), nameof(RightShoulder),
             nameof(ButtonBack), nameof(ButtonStart), nameof(ButtonGuide),
             nameof(ButtonShare),
+            nameof(ButtonMute), nameof(LeftPaddle), nameof(RightPaddle),
+            nameof(LeftFunction), nameof(RightFunction),
             nameof(LeftThumbButton), nameof(RightThumbButton),
             // D-Pad
             nameof(DPad), nameof(DPadUp), nameof(DPadDown), nameof(DPadLeft), nameof(DPadRight),
@@ -1937,6 +2119,7 @@ namespace PadForge.Engine.Data
             nameof(LeftThumbBoundaryMap), nameof(RightThumbBoundaryMap),
             // Force feedback
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
+            nameof(TriggerRumbleFold),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),
             nameof(RotationRange), nameof(AutoCenterStrength), nameof(WheelRpmLeds),
             // Steering at-lock feedback (#94)
@@ -1949,6 +2132,7 @@ namespace PadForge.Engine.Data
             nameof(ImpulseOverallGain),
             nameof(ImpulseLeftStrength), nameof(ImpulseRightStrength),
             nameof(ImpulseSwapTriggers),
+            nameof(AtVibrationToImpulseEnabled),
             nameof(ConstantTriggerForceEnabled),
             nameof(ConstantTriggerForceLeft), nameof(ConstantTriggerForceRight),
             nameof(AudioRumbleTriggersEnabled),
@@ -1980,8 +2164,15 @@ namespace PadForge.Engine.Data
             nameof(GyroEngageStickSide), nameof(GyroEngageStickDirection),
             nameof(IrSensorBarPos), nameof(IrSensorBarComp), nameof(IrSmoothing),
             nameof(PointerMode), nameof(PointerFpsSpeed),
+            // 3D preview colorway per virtual controller. Omitted here it
+            // survives the XmlSerializer but CloneDeep drops it on load, so
+            // the picked skin reverts on restart (the same failure the notes
+            // above describe for the Gyro and Trigger Routing fields).
+            nameof(Model3DAppearances),
             nameof(GyroBiasPitch), nameof(GyroBiasYaw), nameof(GyroBiasRoll),
             nameof(GyroAuxBiasPitch), nameof(GyroAuxBiasYaw), nameof(GyroAuxBiasRoll),
+            nameof(GyroCompassYaw),
+            nameof(MagBiasX), nameof(MagBiasY), nameof(MagBiasZ), nameof(MagFieldNorm),
             nameof(GyroCalibratedAtUtc),
             nameof(GyroSpace), nameof(GyroPlayerSpaceYawRelaxFactor),
             nameof(GyroWorldSpaceSideReductionThreshold),
@@ -2101,6 +2292,7 @@ namespace PadForge.Engine.Data
             FlushRawMappings();
             FlushMidiMappings();
             FlushKbmMappings();
+            FlushVrMappings();
             FlushMappingDeadZones();
             FlushMappingBidirectional();
 
@@ -2118,7 +2310,7 @@ namespace PadForge.Engine.Data
                     dict[name] = prop.GetValue(this) as string ?? "";
             }
 
-            // Include Extended/MIDI/KBM mapping arrays if present.
+            // Include Extended/MIDI/KBM/VR mapping arrays if present.
             if (RawMappingEntries != null && RawMappingEntries.Length > 0)
             {
                 var extendedList = new List<Dictionary<string, string>>();
@@ -2139,6 +2331,13 @@ namespace PadForge.Engine.Data
                 foreach (var e in KbmMappingEntries)
                     kbmList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
                 dict["__KbmMappings"] = JsonSerializer.Serialize(kbmList);
+            }
+            if (VrMappingEntries != null && VrMappingEntries.Length > 0)
+            {
+                var vrList = new List<Dictionary<string, string>>();
+                foreach (var e in VrMappingEntries)
+                    vrList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
+                dict["__VrMappings"] = JsonSerializer.Serialize(vrList);
             }
             if (MappingDeadZoneEntries != null && MappingDeadZoneEntries.Length > 0)
             {
@@ -2274,6 +2473,8 @@ namespace PadForge.Engine.Data
                             ps.MidiMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__KbmMappings")
                             ps.KbmMappingEntries = DeserializeMappingArray(kvp.Value);
+                        else if (kvp.Key == "__VrMappings")
+                            ps.VrMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__MappingDeadZones")
                             ps.MappingDeadZoneEntries = NormalizeRawKeys(DeserializeMappingArray(kvp.Value));
                         else if (kvp.Key == "__MultiSourceRows")
@@ -2391,6 +2592,8 @@ namespace PadForge.Engine.Data
             nameof(LeftShoulder), nameof(RightShoulder),
             nameof(ButtonBack), nameof(ButtonStart), nameof(ButtonGuide),
             nameof(ButtonShare),
+            nameof(ButtonMute), nameof(LeftPaddle), nameof(RightPaddle),
+            nameof(LeftFunction), nameof(RightFunction),
             nameof(LeftThumbButton), nameof(RightThumbButton),
             nameof(DPad), nameof(DPadUp), nameof(DPadDown), nameof(DPadLeft), nameof(DPadRight),
             nameof(LeftTrigger), nameof(RightTrigger),
@@ -2422,6 +2625,7 @@ namespace PadForge.Engine.Data
             source.FlushRawMappings();
             source.FlushMidiMappings();
             source.FlushKbmMappings();
+            source.FlushVrMappings();
 
             // Step 1: Copy non-mapping settings directly (deadzones, sensitivity, FFB, etc.)
             // These use the same property names regardless of output layout.
@@ -2454,6 +2658,7 @@ namespace PadForge.Engine.Data
             // Read from gamepad properties (Xbox / PlayStation / Extended gamepad preset source)
             if (sourceType != VirtualControllerType.Midi &&
                 sourceType != VirtualControllerType.KeyboardMouse &&
+                sourceType != VirtualControllerType.Vr &&
                 !(sourceType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
                   && sourceIsExtended))
             {
@@ -2508,6 +2713,18 @@ namespace PadForge.Engine.Data
                 }
             }
 
+            // Read from VR dictionary (Vr source)
+            if (sourceType == VirtualControllerType.Vr && source.VrMappingEntries != null)
+            {
+                foreach (var e in source.VrMappingEntries)
+                {
+                    if (string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
+                    var slot = MappingTranslation.GetPosition(e.Key, sourceType, false);
+                    if (slot != null)
+                        translated[slot] = e.Value;
+                }
+            }
+
             // Step 3: Write translated positions to target layout.
 
             // Clear existing target mappings first.
@@ -2526,6 +2743,11 @@ namespace PadForge.Engine.Data
             {
                 KbmMappingEntries = null;
                 _kbmMappingDict = null;
+            }
+            else if (targetType == VirtualControllerType.Vr)
+            {
+                VrMappingEntries = null;
+                _vrMappingDict = null;
             }
             else
             {
@@ -2551,6 +2773,8 @@ namespace PadForge.Engine.Data
                     SetMidiMapping(targetKey, kvp.Value);
                 else if (targetType == VirtualControllerType.KeyboardMouse)
                     SetKbmMapping(targetKey, kvp.Value);
+                else if (targetType == VirtualControllerType.Vr)
+                    SetVrMapping(targetKey, kvp.Value);
                 else
                 {
                     // Gamepad target: write to standard property.
@@ -2564,6 +2788,7 @@ namespace PadForge.Engine.Data
             FlushRawMappings();
             FlushMidiMappings();
             FlushKbmMappings();
+            FlushVrMappings();
             FlushMappingDeadZones();
             FlushMappingBidirectional();
         }
@@ -2588,6 +2813,7 @@ namespace PadForge.Engine.Data
             source.FlushRawMappings();
             source.FlushMidiMappings();
             source.FlushKbmMappings();
+            source.FlushVrMappings();
             source.FlushMappingDeadZones();
             source.FlushMappingBidirectional();
 
@@ -2598,6 +2824,8 @@ namespace PadForge.Engine.Data
             _midiMappingDict = null;
             KbmMappingEntries = DeepCopyMappings(source.KbmMappingEntries);
             _kbmMappingDict = null;
+            VrMappingEntries = DeepCopyMappings(source.VrMappingEntries);
+            _vrMappingDict = null;
             MappingDeadZoneEntries = DeepCopyMappings(source.MappingDeadZoneEntries);
             _mappingDeadZoneDict = null;
             MappingBidirectionalEntries = DeepCopyMappings(source.MappingBidirectionalEntries);

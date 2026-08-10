@@ -1,8 +1,10 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Microsoft.Win32;
 using Nefarius.Utilities.DeviceManagement.Extensions;
@@ -51,9 +53,20 @@ namespace PadForge.Services
 
         // ── public entry points used by Ds3PairingService ────────────────────────
 
-        /// <summary>Installs + arms the BthPS3 stack if it isn't already present.
-        /// Idempotent: when the service already runs it only reconciles the two
-        /// consumer registry values. Returns true when the stack is operable.</summary>
+        /// <summary><para>Installs + arms the BthPS3 stack if it isn't already
+        /// present. Idempotent: when the service already runs it only
+        /// reconciles the two consumer registry values. Returns true when the
+        /// stack is operable.</para>
+        ///
+        /// <para>The stack is TWO drivers and the guard asks about both. It
+        /// used to ask only whether the BthPS3 profile service existed, so a
+        /// machine that got the profile driver and not the PSM filter stayed
+        /// that way permanently: every later call short-circuited on the half
+        /// that was present. That state is not hypothetical, it is what
+        /// discussion #283's log shows, `patching=True` immediately followed
+        /// by `PSM control device not present`. Without the filter nothing
+        /// rewrites the DS3's reserved PSMs, so the pad can never reach the
+        /// profile driver and Bluetooth silently never works.</para></summary>
         public static bool EnsureInstalled(Action<string> log)
         {
             try
@@ -61,8 +74,28 @@ namespace PadForge.Services
                 if (IsServiceInstalled("BthPS3"))
                 {
                     EnsureConsumerParams();       // keep RawPDO=1/ExclusivePDO=0 if a prior install set them wrong
+                    if (!IsPsmFilterPresent())
+                        RepairPsmFilter(log);
                     EnsurePsmPatch(log);
                     return true;
+                }
+
+                // Heal the shell an older build could leave behind: a
+                // Services\BthPS3 key with no ImagePath, created as a side
+                // effect of writing Parameters before the driver existed.
+                // Machines already in that state cannot recover on their own,
+                // because nothing else ever removes it and the install below
+                // is what would have replaced it. Gated on the exact damaged
+                // shape, so a real installed service is never touched.
+                if (HasOrphanedBthPs3Key())
+                {
+                    log("Clearing an incomplete PlayStation Bluetooth registration.");
+                    try
+                    {
+                        Registry.LocalMachine.DeleteSubKeyTree(
+                            @"SYSTEM\CurrentControlSet\Services\BthPS3", throwOnMissingSubKey: false);
+                    }
+                    catch (Exception ex) { log("Could not clear it: " + ex.Message); }
                 }
 
                 log("Installing PlayStation Bluetooth drivers (one time)...");
@@ -81,15 +114,330 @@ namespace PadForge.Services
                 // 6. consumer registry (raw, shared)
                 EnsureConsumerParams();
                 // 7. advertise the profile service -> spawns the PDO, loads BthPS3.sys
-                EnableBthPs3Service(log);
+                bool advertised = EnableBthPs3Service(log);
+                if (!advertised)
+                {
+                    // One retry after a fresh cycle: the advertisement is the
+                    // step that creates the profile driver's PDO, so skipping
+                    // it silently leaves an install that can never carry a pad.
+                    CycleBluetoothRadio(log);
+                    advertised = EnableBthPs3Service(log);
+                }
+                // Params again, now that the service certainly exists. Step 6
+                // lands them on this machine (proof: the INF's own defaults are
+                // RawPDO 0 / ExclusivePDO 1 and a healthy install reads 1 / 0,
+                // so our write came after the INF's AddReg), but that depends
+                // on step 4 having created the service, and the raw-PDO reader
+                // is dead if the override is ever missed. Idempotent, and now
+                // gated on the service being real, so it cannot fabricate a key.
+                EnsureConsumerParams();
                 // 8. arm the PSM patch (belt-and-suspenders; AutoEnableFilter also does it)
                 EnsurePsmPatch(log);
 
-                bool ok = IsServiceInstalled("BthPS3");
-                log(ok ? "Bluetooth drivers installed." : "Driver install did not register the service.");
-                return ok;
+                // The BthPS3 SERVICE is created by PnP matching bthps3.inf to
+                // the PDO the advertisement spawns, and that is ASYNCHRONOUS:
+                // checking synchronously raced it and declared failure on an
+                // install that was seconds from succeeding. Wait, and when the
+                // PDO does not materialize at all, cycle the radio and wait
+                // again, because on hardware whose port cycle was refused the
+                // radio has not re-enumerated since the filter registration
+                // and the advertisement (the arcade-PC MT7925 case: a manual
+                // adapter toggle was what let the service appear).
+                bool ok = WaitForCondition(() => IsServiceInstalled("BthPS3"), 10000, 500);
+                if (!ok)
+                {
+                    log("Profile driver has not attached yet; re-enumerating the radio.");
+                    CycleBluetoothRadio(log);
+                    ok = WaitForCondition(() => IsServiceInstalled("BthPS3"), 15000, 500);
+                }
+                if (!ok)
+                {
+                    log(advertised
+                        ? "Driver install did not register the service."
+                        : "The profile service could not be advertised, so no PlayStation "
+                          + "Bluetooth driver was created and the pad cannot connect.");
+                    return false;
+                }
+                // NOW write the consumer params, and not before. This is the
+                // first moment the service key genuinely exists: PnP creates it
+                // when the advertised PDO matches the INF, which is
+                // asynchronous, so both earlier calls hit the "service is not
+                // installed" guard and wrote NOTHING on a clean machine. The
+                // INF's own default is RawPDO=0, which means the child PDO
+                // wants a function driver; the only INF that could serve it
+                // matches the bare BTHPS3BUS GUID while the child reports
+                // ...&Dev&VID_054C&PID_0268 with no compatible ID, so nothing
+                // matches and the child dies at CM_PROB_FAILED_INSTALL. No
+                // device interface, nothing for the reader to open, and the pad
+                // flashes forever. A SECOND pairing worked only because by then
+                // the service existed and this write finally landed.
+                bool paramsChanged = EnsureConsumerParams();
+                if (paramsChanged)
+                {
+                    // BthPS3 reads these when it builds the child, so the pad
+                    // must arrive AFTER the override is in place. Re-enumerate
+                    // so the running driver picks it up rather than carrying
+                    // the INF defaults until something else cycles the radio.
+                    log("Applying raw-PDO settings; re-enumerating the radio.");
+                    CycleBluetoothRadio(log);
+                }
+
+                // The service key is not readiness. Patching is what routes
+                // the pad's PSM to BthPS3, and it can only be armed once the
+                // filter has re-attached after the install's own radio cycle.
+                if (EnsurePsmPatch(log) == 0)
+                {
+                    log("PSM patching could not be armed, so the pad would be refused over Bluetooth.");
+                    return false;
+                }
+                log("Bluetooth drivers installed.");
+                return true;
             }
             catch (Exception ex) { log("Driver install failed: " + ex.Message); return false; }
+        }
+
+        /// <summary>True when the PSM filter's control device is open-able,
+        /// which is the only proof that BthPS3PSM is both installed AND
+        /// attached to a radio. The service key alone is not: the filter can
+        /// be registered and still not loaded, and it is the loaded filter
+        /// that rewrites the DS3's PSMs.</summary>
+        public static bool IsPsmFilterPresent()
+        {
+            IntPtr h = CreateFile(PsmControlPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW,
+                IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH, IntPtr.Zero);
+            if (h == INVALID_HANDLE) return false;
+            CloseHandle(h);
+            return true;
+        }
+
+        /// <summary><para>Re-runs the filter half of the install: driver
+        /// package, class lower-filter registration, and the radio
+        /// re-enumeration that makes it attach. Called only when the control
+        /// device is absent, because the radio cycle drops every live
+        /// Bluetooth device and must never run on a healthy machine.</para></summary>
+        private static void RepairPsmFilter(Action<string> log)
+        {
+            log("PSM filter is missing from a half-installed stack; repairing.");
+            try
+            {
+                string dir = ExtractDrivers();
+                InstallInf(Path.Combine(dir, "BthPS3PSM_x64", "BthPS3PSM.inf"), log);
+                DeviceClassFilters.AddLower(BluetoothClass, "BthPS3PSM");
+                CycleBluetoothRadio(log);
+                log(IsPsmFilterPresent()
+                    ? "PSM filter repaired."
+                    // Retraction (4e1ce387): the filter cannot wedge
+                    // permanently, so never prescribe a reboot here. The
+                    // ceremony's own filter-absent message is the correct
+                    // guidance and this is now its twin.
+                    : "PSM filter still absent after repair. Toggle Bluetooth off and on, then try again.");
+            }
+            catch (Exception ex) { log("PSM filter repair failed: " + ex.Message); }
+        }
+
+        // ── WinUSB package signing (local machine, like HIDMaestro) ──────────
+        //
+        // The DS3's magic reports (0xF4 enable, 0xF2/0xF5 sixpair) are not in
+        // its HID descriptor, so the inbox HID stack rejects them and the pad
+        // has to be bound to inbox winusb.sys through an INF of ours. Windows
+        // will not install a driver package whose catalog does not chain to a
+        // root the machine trusts, and PadForge cannot buy or earn a code
+        // signing certificate.
+        //
+        // So the package is signed ON THE MACHINE THAT INSTALLS IT, which is
+        // exactly what HIDMaestro already does for its own drivers
+        // (HIDMaestro.Internal.DriverBuilder.EnsureTestCertificate +
+        // GenerateCatalogs). We own our own certificate rather than borrowing
+        // HIDMaestro's, because its subject is that SDK's internal detail,
+        // and we borrow only its extracted toolchain (Inf2Cat.exe,
+        // signtool.exe), which is stable.
+        //
+        // Shipping a pre-signed catalog is what broke: the one in the repo
+        // was signed by a prototype certificate that existed on exactly one
+        // developer machine, so USB DualShock 3 and the whole pairing
+        // ceremony had never worked for anybody else (discussion #283). The
+        // catalog is now generated here, per machine, and no signed artifact
+        // ships at all.
+
+        private const string Ds3CertSubject = "CN=PadForge DS3 WinUSB";
+        private const string Ds3CertFriendlyName = "PadForge DS3 WinUSB";
+
+        /// <summary>Why the last <see cref="EnsureWinUsbBound"/> failed, so
+        /// the pairing dialog reports the actual cause. Re-deriving it from
+        /// IsWinUsbPackageTrusted blamed the certificate for every failure,
+        /// including a missing tool or a rejected INF, which is the same
+        /// class of wrong-cause reporting that made #283 undiagnosable.</summary>
+        internal static string LastWinUsbFailure => _lastWinUsbFailure;
+        private static volatile string _lastWinUsbFailure;
+
+        /// <summary>Ensures a PadForge code-signing certificate exists in
+        /// LocalMachine\My and is trusted in Root + TrustedPublisher, and
+        /// returns its thumbprint. Ten-year validity, generated once per
+        /// machine, private key never leaves it.</summary>
+        internal static string EnsureSigningCertificate()
+        {
+            using (var my = new X509Store(StoreName.My, StoreLocation.LocalMachine))
+            {
+                my.Open(OpenFlags.ReadOnly);
+                foreach (var c in my.Certificates.Find(
+                             X509FindType.FindBySubjectDistinguishedName, Ds3CertSubject, false))
+                    if (c.NotAfter > DateTime.Now.AddDays(30) && c.HasPrivateKey)
+                        return c.Thumbprint;
+            }
+
+            using var rsa = RSA.Create(2048);
+            var req = new CertificateRequest(Ds3CertSubject, rsa,
+                HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            req.CertificateExtensions.Add(new X509KeyUsageExtension(
+                X509KeyUsageFlags.DigitalSignature, critical: false));
+            // Code Signing EKU: without it signtool will not use the cert and
+            // Windows will not accept the catalog.
+            req.CertificateExtensions.Add(new X509EnhancedKeyUsageExtension(
+                new OidCollection { new Oid("1.3.6.1.5.5.7.3.3") }, critical: false));
+            req.CertificateExtensions.Add(new X509SubjectKeyIdentifierExtension(
+                req.PublicKey, critical: false));
+
+            using var fresh = req.CreateSelfSigned(
+                DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow.AddYears(10));
+            fresh.FriendlyName = Ds3CertFriendlyName;
+
+            // Re-import with PersistKeySet + MachineKeySet so the private key
+            // lands in the machine key store, which is where signtool reads it
+            // from. A cert added straight from CreateSelfSigned has an
+            // ephemeral key and signtool cannot use it.
+            using var persisted = X509CertificateLoader.LoadPkcs12(
+                fresh.Export(X509ContentType.Pfx, ""), "",
+                X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet
+                | X509KeyStorageFlags.Exportable);
+            persisted.FriendlyName = Ds3CertFriendlyName;
+
+            foreach (var name in new[] { StoreName.My, StoreName.Root, StoreName.TrustedPublisher })
+            {
+                using var store = new X509Store(name, StoreLocation.LocalMachine);
+                store.Open(OpenFlags.ReadWrite);
+                store.Add(persisted);
+            }
+            return persisted.Thumbprint;
+        }
+
+        // Signing writes into one shared staging directory, and two callers
+        // can reach it at once: the DS3 monitor thread's auto-bind and the
+        // pairing dialog's ceremony. The dialog suppresses the reader first,
+        // but a monitor call already inside the bind keeps running, and
+        // signing takes about a second. Unserialized, each run deletes the
+        // other's catalog mid-sign.
+        private static readonly object _signLock = new object();
+
+        /// <summary>Generates and signs ds3_winusb.cat for the staged INF with
+        /// this machine's certificate. ALWAYS regenerates: a catalog left in
+        /// the staging directory by an earlier run is validly signed and still
+        /// chains, so trusting its presence would skip regeneration after the
+        /// INF changed and hand pnputil a package whose hashes no longer match
+        /// it. That is the same shape as the shipped-catalog bug this replaced,
+        /// one layer in.</summary>
+        internal static bool SignWinUsbPackage(string dir, Action<string> log)
+        {
+            lock (_signLock)
+            try
+            {
+                string thumb = EnsureSigningCertificate();
+                string tools = HIDMaestro.Internal.DriverBuilder.EnsureExtracted();
+                string inf2cat = Path.Combine(tools, "Inf2Cat.exe");
+                string signtool = Path.Combine(tools, "signtool.exe");
+                if (!File.Exists(inf2cat) || !File.Exists(signtool))
+                {
+                    log("Driver signing tools are unavailable; cannot prepare the USB driver.");
+                    return false;
+                }
+
+                foreach (string stale in Directory.GetFiles(dir, "*.cat"))
+                    try { File.Delete(stale); } catch { }
+
+                var (rc, output) = RunTool(inf2cat, $"/driver:\"{dir}\" /os:10_X64", dir);
+                if (rc != 0) { log("Catalog generation failed: " + output); return false; }
+
+                string cat = Path.Combine(dir, "ds3_winusb.cat");
+                if (!File.Exists(cat)) { log("Catalog generation produced no ds3_winusb.cat."); return false; }
+
+                // /sha1 rather than /n: the thumbprint names exactly the cert
+                // we just ensured, on a machine that may hold several
+                // code-signing certs.
+                var (rc2, out2) = RunTool(signtool,
+                    $"sign /sm /s My /sha1 {thumb} /fd SHA256 \"{cat}\"", dir);
+                if (rc2 != 0) { log("Catalog signing failed: " + out2); return false; }
+                // Say so on SUCCESS too. This path's whole history is silent
+                // failure, and a log that only speaks when something breaks
+                // cannot distinguish "it worked" from "it never ran".
+                log($"USB driver package signed with this PC's certificate ({thumb[..8]}).");
+                return true;
+            }
+            catch (Exception ex) { log("Preparing the USB driver failed: " + ex.Message); return false; }
+        }
+
+        /// <summary>Runs a build tool and returns its exit code plus merged
+        /// output. Async-drain, because a synchronous ReadToEnd on one stream
+        /// before WaitForExit deadlocks the moment the child fills the OTHER
+        /// stream's 4 KB pipe buffer: the child blocks writing stderr while we
+        /// wait for a stdout EOF that only arrives at exit. signtool and
+        /// inf2cat both write warnings to stderr as a matter of course. Same
+        /// shape as HIDMaestro's DriverBuilder.Run, which documents the same
+        /// trap. A timed-out child is killed rather than orphaned, or it keeps
+        /// a handle on the catalog and fails the NEXT attempt's delete.</summary>
+        private static (int Code, string Output) RunTool(string exe, string args, string workingDir)
+        {
+            var psi = new System.Diagnostics.ProcessStartInfo(exe, args)
+            {
+                WorkingDirectory = workingDir,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+            };
+            using var p = System.Diagnostics.Process.Start(psi);
+            var sb = new System.Text.StringBuilder();
+            p.OutputDataReceived += (_, e) => { if (e.Data != null) lock (sb) sb.AppendLine(e.Data); };
+            p.ErrorDataReceived += (_, e) => { if (e.Data != null) lock (sb) sb.AppendLine(e.Data); };
+            p.BeginOutputReadLine();
+            p.BeginErrorReadLine();
+            if (!p.WaitForExit(120000))
+            {
+                try { p.Kill(entireProcessTree: true); } catch { }
+                lock (sb) return (-1, (sb + "\n(timed out after 120 s)").Trim());
+            }
+            // The overload with no timeout flushes the async readers, so the
+            // buffer is complete before it is read.
+            p.WaitForExit();
+            lock (sb) return (p.ExitCode, sb.ToString().Trim());
+        }
+
+        /// <summary>True when the WinUSB package's catalog chains to a root
+        /// this machine trusts. Windows refuses a package whose catalog does
+        /// not, and the refusal surfaces as a generic install error, so an
+        /// unchecked bind reports nothing a user can act on. Checked after
+        /// signing as the proof the signing worked.</summary>
+        public static bool IsWinUsbPackageTrusted(out string signer)
+        {
+            signer = null;
+            try
+            {
+                string cat = Path.Combine(ExtractDrivers(), "WinUSB", "ds3_winusb.cat");
+                if (!File.Exists(cat)) return false;
+                // X509CertificateLoader, the SYSLIB0057 replacement, loads a
+                // certificate FILE. Reading the signer out of a signed file
+                // is what this needs and CreateFromSignedFile is still the
+                // only managed API that does it. Both handles are disposed:
+                // the inner one is its own X509Certificate, and this runs up
+                // to twice per bind attempt.
+#pragma warning disable SYSLIB0057
+                using var signed = X509Certificate2.CreateFromSignedFile(cat);
+#pragma warning restore SYSLIB0057
+                using var cert = new X509Certificate2(signed);
+                signer = cert.Subject;
+                using var chain = new X509Chain();
+                chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
+                return chain.Build(cert);
+            }
+            catch { return false; }
         }
 
         /// <summary>Binds the docked DS3 to inbox WinUSB so its magic reports can be
@@ -98,24 +446,270 @@ namespace PadForge.Services
         {
             try
             {
-                if (Devcon.FindByInterfaceGuid(new Guid("B35924D6-3E16-4A9E-9782-5524A4B79BAC"), out _))
-                    return true;   // already bound
+                // The DOCKED PAD decides, never the interface registry. The
+                // old fast path ("an interface with our GUID exists, so we
+                // are bound") lied two ways at once (#285): the DS3 carries
+                // no USB serial, so EVERY port is its own devnode, and a
+                // registration living on a different node (a second pad
+                // left charging, an old port) kept the GUID present while
+                // the live pad sat on HidUsb. And the install below was
+                // non-forced DiInstallDriver, which loses the driver
+                // ranking contest to inbox WHQL HidUsb on machines with
+                // strict signature ranking, since this package is
+                // Authenticode-only by design. Both together produced the
+                // reporter's state: pad on HidUsb forever, ceremony talking
+                // to a stale interface within 3 ms and failing err=31.
+                var nodes = ListDs3UsbNodes();
+                foreach (var n in nodes)
+                    log($"DS3 USB node: {n.InstanceId} on {(n.Service.Length == 0 ? "(no driver)" : n.Service)}");
+                if (nodes.Count == 0)
+                {
+                    log("No USB DS3 node is present.");
+                    _lastWinUsbFailure = null;
+                    return false;
+                }
+
+                // Coexistence: a pad owned by a real third-party function
+                // driver (DsHidMini's WUDFRd, ...) is never stolen, even by
+                // the explicit ceremony. Inbox HidUsb, driverless, and
+                // generic WINUSB states are ours to (re)bind.
+                var foreign = nodes.Where(n => n.Service.Length != 0
+                    && !n.Service.Equals("HidUsb", StringComparison.OrdinalIgnoreCase)
+                    && !n.Service.Equals("WINUSB", StringComparison.OrdinalIgnoreCase)).ToList();
+                if (foreign.Count > 0)
+                {
+                    log($"A DS3 is owned by another driver ({foreign[0].Service}); not rebinding it.");
+                    _lastWinUsbFailure = null;
+                    return false;
+                }
+
+                if (nodes.All(n => n.Service.Equals("WINUSB", StringComparison.OrdinalIgnoreCase))
+                    && HasActiveDs3WinUsbInterface())
+                    return true;   // the live pad really is ours
 
                 string dir = ExtractDrivers();
+                string winusb = Path.Combine(dir, "WinUSB");
                 log("Preparing the controller over USB...");
-                InstallInf(Path.Combine(dir, "WinUSB", "ds3_winusb.inf"), log);
 
-                // The bind takes a moment to re-enumerate the USB node.
+                // Sign the package with this machine's own certificate before
+                // installing it. No signed artifact ships, so this is not a
+                // fallback: it is how the package comes to exist. Run
+                // unconditionally rather than trusting a catalog an earlier
+                // run left in the staging directory, which would still chain
+                // happily while covering a previous version of the INF.
+                if (!SignWinUsbPackage(winusb, log))
+                {
+                    _lastWinUsbFailure = "sign-failed";
+                    return false;
+                }
+                if (!IsWinUsbPackageTrusted(out string signer))
+                {
+                    log($"WinUSB driver package is still untrusted (signer: {signer ?? "unknown"}); "
+                        + "Windows would refuse the install, so the DS3 stays on the inbox HID driver.");
+                    _lastWinUsbFailure = "driver-untrusted";
+                    return false;
+                }
+                _lastWinUsbFailure = null;
+                string infPath = Path.Combine(winusb, "ds3_winusb.inf");
+                InstallInf(infPath, log);
+
+                // Bind the LIVE pad by force. DiInstallDriver above only
+                // stocks the store and applies by ranking, and ranking
+                // prefers inbox WHQL over an Authenticode package, so on a
+                // strict-ranking machine it silently applies nothing. The
+                // targeted forced update is the DsHidMini/ScpToolkit
+                // pattern and is deterministic everywhere.
+                if (!UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, @"USB\VID_054C&PID_0268",
+                        infPath, INSTALLFLAG_FORCE | INSTALLFLAG_NONINTERACTIVE, out _))
+                {
+                    int err = Marshal.GetLastWin32Error();
+                    // ERROR_NO_SUCH_DEVINST: the pad vanished mid-ceremony.
+                    // Anything else still gets the poll below, since the
+                    // non-forced install may have landed on lenient-ranking
+                    // machines.
+                    log($"Forced WinUSB bind returned err={err}.");
+                }
+
+                // The bind takes a moment to re-enumerate the USB node. Done
+                // means the LIVE node(s) report the WINUSB service and our
+                // interface is ACTIVE, not merely that a GUID is registered
+                // somewhere.
                 for (int i = 0; i < 20 && !ct.IsCancellationRequested; i++)
                 {
-                    if (Devcon.FindByInterfaceGuid(new Guid("B35924D6-3E16-4A9E-9782-5524A4B79BAC"), out _))
+                    var now = ListDs3UsbNodes();
+                    if (now.Count > 0
+                        && now.All(n => n.Service.Equals("WINUSB", StringComparison.OrdinalIgnoreCase))
+                        && HasActiveDs3WinUsbInterface())
+                    {
+                        log("DS3 bound to WinUSB.");
                         return true;
+                    }
                     Thread.Sleep(250);
                 }
-                return Devcon.FindByInterfaceGuid(new Guid("B35924D6-3E16-4A9E-9782-5524A4B79BAC"), out _);
+                var final = ListDs3UsbNodes();
+                log("WinUSB bind did not land: "
+                    + (final.Count == 0 ? "no DS3 node present"
+                        : string.Join(", ", final.Select(n => $"{n.InstanceId} on {(n.Service.Length == 0 ? "(no driver)" : n.Service)}"))));
+                return false;
             }
             catch (Exception ex) { log("WinUSB bind failed: " + ex.Message); return false; }
         }
+
+        /// <summary>Present USB DS3 nodes with their bound service, the
+        /// ground truth EnsureWinUsbBound decides on.</summary>
+        internal static List<(string InstanceId, string Service)> ListDs3UsbNodes()
+        {
+            var result = new List<(string, string)>();
+            foreach (var id in FindDs3UsbNodes())
+            {
+                try
+                {
+                    var dev = PnPDevice.GetDeviceByInstanceId(id, DeviceLocationFlags.Normal);
+                    result.Add((id, dev.GetProperty<string>(DevicePropertyKey.Device_Service) ?? string.Empty));
+                }
+                catch { }
+            }
+            return result;
+        }
+
+        /// <summary>True when our DS3 WinUSB interface GUID has an ACTIVE
+        /// registration (SPINT_ACTIVE), meaning a live winusb.sys stack is
+        /// serving it right now. Registration alone persists in the
+        /// registry across driver changes and proves nothing (#285).</summary>
+        internal static bool HasActiveDs3WinUsbInterface()
+        {
+            var guid = new Guid("B35924D6-3E16-4A9E-9782-5524A4B79BAC");
+            IntPtr set = SetupDiGetClassDevs(ref guid, IntPtr.Zero, IntPtr.Zero,
+                DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+            if (set == IntPtr.Zero || set == new IntPtr(-1)) return false;
+            try
+            {
+                var did = new SP_DEVICE_INTERFACE_DATA
+                { cbSize = Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
+                for (int i = 0; SetupDiEnumDeviceInterfaces(set, IntPtr.Zero, ref guid, i, ref did); i++)
+                    if ((did.Flags & SPINT_ACTIVE) != 0)
+                        return true;
+                return false;
+            }
+            finally { SetupDiDestroyDeviceInfoList(set); }
+        }
+
+        /// <summary>Reports what BthPS3 did with the pad's inbound
+        /// connection, for the one failure this arc cannot currently tell
+        /// apart from the log: the ceremony reports full success, the pad
+        /// then flashes forever, and nothing downstream says why.
+        ///
+        /// <para>Three states, three different causes, and they are
+        /// distinguishable only here. NO CHILD at all means the L2CAP
+        /// connection never reached BthPS3, so the PSM patch or the radio
+        /// is the suspect. A child with a PROBLEM CODE means BthPS3 built
+        /// it and PnP could not start it: problem 28 (FAILED_INSTALL) is
+        /// the RawPDO=0 case this file's step-7 comment describes, where
+        /// the child wants a function driver no INF matches, which is
+        /// exactly the "pad flashes forever" signature. A child with NO
+        /// raw interface means it started but published nothing the reader
+        /// can open.</para>
+        ///
+        /// <para>Read-only and best-effort: it never changes state and any
+        /// failure degrades to a log line, because its whole job is to
+        /// make a silent state speak.</para></summary>
+        internal static void LogBthPs3ChildState(Action<string> log)
+        {
+            try
+            {
+                // The raw PDO's interface (GUID_DEVINTERFACE_BTHPS3). An
+                // ACTIVE registration is the reader's open target, so it
+                // is the success state.
+                var rawIf = new Guid("968E1849-73B1-4876-B80A-ED6DD171489B");
+                bool activeIface = false;
+                IntPtr ifSet = SetupDiGetClassDevs(ref rawIf, IntPtr.Zero, IntPtr.Zero,
+                    DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+                if (ifSet != IntPtr.Zero && ifSet != new IntPtr(-1))
+                {
+                    try
+                    {
+                        var did = new SP_DEVICE_INTERFACE_DATA
+                        { cbSize = Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
+                        for (int i = 0; SetupDiEnumDeviceInterfaces(ifSet, IntPtr.Zero, ref rawIf, i, ref did); i++)
+                            if ((did.Flags & SPINT_ACTIVE) != 0) { activeIface = true; break; }
+                    }
+                    finally { SetupDiDestroyDeviceInfoList(ifSet); }
+                }
+
+                // Every present devnode whose instance id is a BthPS3 bus
+                // child, with its PnP problem code.
+                int children = 0;
+                var sb = new System.Text.StringBuilder();
+                Guid none = Guid.Empty;
+                IntPtr set = SetupDiGetClassDevsEnum(ref none, "BTHPS3BUS", IntPtr.Zero,
+                    DIGCF_PRESENT | DIGCF_ALLCLASSES);
+                if (set != IntPtr.Zero && set != new IntPtr(-1))
+                {
+                    try
+                    {
+                        var dev = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                        for (int i = 0; SetupDiEnumDeviceInfo(set, i, ref dev); i++)
+                        {
+                            children++;
+                            uint status = 0, problem = 0;
+                            int cr = CM_Get_DevNode_Status(out status, out problem, dev.DevInst, 0);
+                            sb.Append(sb.Length > 0 ? ", " : "")
+                              .Append(cr == 0 ? $"problem={problem}" : $"status-query-failed(cr={cr})");
+                        }
+                    }
+                    finally { SetupDiDestroyDeviceInfoList(set); }
+                }
+
+                log(children == 0
+                    ? "BthPS3 child: NONE present (the pad's connection did not reach BthPS3)."
+                    : $"BthPS3 child: {children} present [{sb}], raw interface active={activeIface}.");
+            }
+            catch (Exception ex) { log("BthPS3 child probe failed: " + ex.Message); }
+        }
+
+        private const int SPINT_ACTIVE = 0x1;
+        private const int DIGCF_PRESENT = 0x2;
+        private const int DIGCF_ALLCLASSES = 0x4;
+        private const int DIGCF_DEVICEINTERFACE = 0x10;
+        private const uint INSTALLFLAG_FORCE = 0x1;
+        private const uint INSTALLFLAG_NONINTERACTIVE = 0x4;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct SP_DEVICE_INTERFACE_DATA
+        {
+            public int cbSize;
+            public Guid InterfaceClassGuid;
+            public int Flags;
+            public IntPtr Reserved;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct SP_DEVINFO_DATA
+        {
+            public int cbSize;
+            public Guid ClassGuid;
+            public uint DevInst;
+            public IntPtr Reserved;
+        }
+
+        [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern IntPtr SetupDiGetClassDevs(ref Guid g, IntPtr e, IntPtr w, int f);
+        // Enumerator overload: the second parameter is the PnP enumerator
+        // string ("BTHPS3BUS"), which the interface-GUID overload above
+        // passes as IntPtr.Zero.
+        [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true, EntryPoint = "SetupDiGetClassDevsW")]
+        private static extern IntPtr SetupDiGetClassDevsEnum(ref Guid g, string enumerator, IntPtr w, int f);
+        [DllImport("setupapi.dll", SetLastError = true)]
+        private static extern bool SetupDiEnumDeviceInfo(IntPtr s, int i, ref SP_DEVINFO_DATA data);
+        [DllImport("cfgmgr32.dll")]
+        private static extern int CM_Get_DevNode_Status(out uint status, out uint problem, uint devInst, int flags);
+        [DllImport("setupapi.dll", SetLastError = true)]
+        private static extern bool SetupDiEnumDeviceInterfaces(IntPtr s, IntPtr d, ref Guid g, int i, ref SP_DEVICE_INTERFACE_DATA data);
+        [DllImport("setupapi.dll")]
+        private static extern bool SetupDiDestroyDeviceInfoList(IntPtr s);
+        [DllImport("newdev.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern bool UpdateDriverForPlugAndPlayDevices(
+            IntPtr hwndParent, string hardwareId, string fullInfPath, uint installFlags, out bool rebootRequired);
 
         // Two radio cycles overlapping is a path into the BthPS3 freed-context BSOD
         // (0xD1, 2026-07-09). Ds3PairingService._radioGate serializes the pair/unpair
@@ -124,8 +718,73 @@ namespace PadForge.Services
         // cycle either.
         private static readonly object _cycleLock = new object();
 
-        // GUID_DEVCLASS_USB: the setup class every USB function device enumerates under.
-        private static readonly Guid UsbDeviceClass = new Guid("36FC9E60-C465-11CF-8056-444553540000");
+        /// <summary><para>Every setup class a docked DS3 can occupy. A device node's
+        /// class comes from the INF that OWNS it, not from the bus it hangs off, so
+        /// the pad moves between these as its driver changes. Searching one class
+        /// misses the pad in every state but that one.</para>
+        ///
+        /// <para>This list was a single entry, GUID_DEVCLASS_USB, and that is the one
+        /// class a DS3 is never in (#265). GUID_DEVCLASS_USB holds host controllers,
+        /// root hubs, hubs and composite parents. A USB function device bound to the
+        /// inbox HidUsb sits in HIDCLASS, because HidUsb is installed by input.inf
+        /// with Class=HIDClass. So the gate returned false for exactly the state it
+        /// exists to detect, and the background auto-bind was unreachable from
+        /// 4.0.1 through 4.1.0.</para>
+        ///
+        /// <para>Completeness here is safe because it does not decide anything. The
+        /// SERVICE allowlist below is the gate, and it is unchanged: only an empty
+        /// service or HidUsb is ever bound. Widening the search only lets the
+        /// allowlist see a device it was always meant to judge.</para></summary>
+        internal static readonly Guid[] Ds3HostClasses =
+        {
+            new Guid("745A17A0-74D3-11D0-B6FE-00A0C90F57DA"), // HIDCLASS: on inbox HidUsb
+            new Guid("4D36E97E-E325-11CE-BFC1-08002BE10318"), // UNKNOWN: no driver bound
+            new Guid("88BAE032-5A81-49F0-BC3D-A4FF138216D6"), // USBDEVICE: a WinUSB-class INF
+            new Guid("36FC9E60-C465-11CF-8056-444553540000"), // USB: composite parents
+        };
+
+        /// <summary>Instance IDs of every present DS3 USB node, across every class it
+        /// can be in. Duplicates are impossible (a node has exactly one class) so the
+        /// union needs no de-duplication.</summary>
+        private static IEnumerable<string> FindDs3UsbNodes(bool presentOnly = true)
+        {
+            foreach (var cls in Ds3HostClasses)
+            {
+                IEnumerable<string> ids = null;
+                try
+                {
+                    if (!Devcon.FindInDeviceClassByHardwareId(
+                            cls, @"USB\VID_054C&PID_0268", out ids, presentOnly, false))
+                        continue;
+                }
+                catch { continue; }
+                if (ids == null) continue;
+                foreach (var id in ids) yield return id;
+            }
+        }
+
+        /// <summary><para>True when this machine has EVER had a DualShock 3 docked.
+        /// A device node survives unplugging: Windows keeps it as a non-present
+        /// devnode, which is why Device Manager has a "show hidden devices" mode.
+        /// So this is a durable "a DS3 lives here" marker that needs no new
+        /// persisted state of our own.</para>
+        ///
+        /// <para>It exists because AnyDs3Paired cannot answer the question the
+        /// PSM-patch policy actually asks. That probe finds pads PADFORGE paired,
+        /// by the BTHPORT VID/PID record its ceremony writes. A DS3 paired any
+        /// other way has no such record at all: BthPS3 identifies pads by remote
+        /// NAME and the pairing itself lives inside the controller, which stores
+        /// the host radio's MAC. Measured on a machine whose DS3 connects over
+        /// BthPS3 daily and has no BTHPORT record of any kind (#265 audit).</para>
+        ///
+        /// <para>Getting this wrong disarms PSM patching on exactly the machines
+        /// that need it, so the pad silently stops connecting over Bluetooth.</para>
+        /// </summary>
+        public static bool MachineHasDs3()
+        {
+            try { return FindDs3UsbNodes(presentOnly: false).Any(); }
+            catch { return false; }
+        }
 
         /// <summary>True only when a USB DualShock 3 (VID_054C&amp;PID_0268) is present AND
         /// still on the inbox HID driver (or no driver), meaning nothing is driving it and
@@ -143,31 +802,61 @@ namespace PadForge.Services
         /// whose UMDF2 service reads WUDFRd; ScpToolkit; a stray WinUSB binding with a
         /// different GUID) is left strictly alone. The explicit pairing dialog is the only
         /// path that force-rebinds (via <see cref="EnsureWinUsbBound"/>).</para></summary>
-        public static bool IsUsbDs3NeedingWinUsb()
+        public static bool IsUsbDs3NeedingWinUsb() => IsUsbDs3NeedingWinUsb(null);
+
+        /// <summary>As above, narrating what it found. The decision was
+        /// entirely silent, so a machine where the bind never fires produced
+        /// no evidence of why (discussion #283 arrived with a DIAG that could
+        /// not distinguish "no DS3 node" from "a node we declined to touch").
+        /// The log fires only when the verdict CHANGES, so a 500 ms poll loop
+        /// cannot flood the ring.</summary>
+        public static bool IsUsbDs3NeedingWinUsb(Action<string> log)
         {
             try
             {
-                if (!Devcon.FindInDeviceClassByHardwareId(UsbDeviceClass, @"USB\VID_054C&PID_0268", out var ids))
-                    return false;
-                foreach (var id in ids)
+                var seen = new List<string>();
+                bool needs = false;
+                foreach (var id in FindDs3UsbNodes())
                 {
+                    string svc;
                     try
                     {
                         var dev = PnPDevice.GetDeviceByInstanceId(id, DeviceLocationFlags.Normal);
-                        string svc = dev.GetProperty<string>(DevicePropertyKey.Device_Service) ?? string.Empty;
-                        // Allowlist: bind ONLY on the inbox HID driver or no driver. Every
-                        // other service (WINUSB, WUDFRd/DsHidMini, ...) is left alone.
-                        if (svc.Length == 0 || svc.Equals("HidUsb", StringComparison.OrdinalIgnoreCase))
-                            return true;
+                        svc = dev.GetProperty<string>(DevicePropertyKey.Device_Service) ?? string.Empty;
                     }
-                    catch { }
+                    catch { continue; }
+                    seen.Add(svc.Length == 0 ? "(no driver)" : svc);
+                    // Allowlist: bind ONLY on the inbox HID driver or no driver. Every
+                    // other service (WINUSB, WUDFRd/DsHidMini, usbccgp on a composite
+                    // parent, ...) is left alone. This is the real gate; the class
+                    // sweep above only decides what gets shown to it.
+                    if (svc.Length == 0 || svc.Equals("HidUsb", StringComparison.OrdinalIgnoreCase))
+                        needs = true;
                 }
-                return false;
+                if (log != null)
+                {
+                    string verdict = seen.Count == 0
+                        ? "no DS3 USB node present"
+                        : $"DS3 USB node(s) on service {string.Join(", ", seen)} -> "
+                          + (needs ? "needs the WinUSB bind" : "left alone");
+                    if (verdict != _lastUsbVerdict) { _lastUsbVerdict = verdict; log(verdict); }
+                }
+                return needs;
             }
             catch { return false; }
         }
 
-        /// <summary>Reboot-free radio re-enumeration (IOCTL_USB_HUB_CYCLE_PORT).</summary>
+        private static string _lastUsbVerdict;
+
+        /// <summary><para>Reboot-free radio re-enumeration. CyclePort
+        /// (IOCTL_USB_HUB_CYCLE_PORT) first, and when the hub refuses it, a
+        /// devnode disable/enable of the radio itself. The fallback exists
+        /// because the refusal is real hardware behavior: on a MediaTek
+        /// MT7925 the port cycle failed, the filter never attached, the
+        /// advertised service PDO never re-enumerated, and the install
+        /// reported failure until the user toggled the adapter by hand in
+        /// Device Manager, which is exactly the disable/enable this now does
+        /// itself (observed on the 2026-08-06 arcade-PC rehearsal).</para></summary>
         public static void CycleBluetoothRadio(Action<string> log)
         {
             try
@@ -179,12 +868,65 @@ namespace PadForge.Services
                         log("No USB Bluetooth radio to cycle.");
                         return;
                     }
-                    radio.ToUsbPnPDevice().CyclePort();
+                    try
+                    {
+                        radio.ToUsbPnPDevice().CyclePort();
+                        log("Bluetooth radio re-enumerated.");
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        log("Radio port cycle refused (" + ex.Message + "); toggling the adapter instead.");
+                    }
+                    radio.Disable();
+                    Thread.Sleep(500);
+                    radio.Enable();
                 }
-                log("Bluetooth radio re-enumerated.");
+                log("Bluetooth radio toggled off and on.");
             }
             catch (Exception ex) { log("Radio cycle failed: " + ex.Message); }
+            finally
+            {
+                // A cycle returns before the radio is BACK, and everything the
+                // install does next needs it: advertising the profile service
+                // needs a radio handle, and arming PSM patching needs the
+                // filter re-attached to it. Returning early made the very next
+                // step log "No radio to advertise the service on" and carry on
+                // as though the install had worked, so BthPS3Service was never
+                // advertised and the pad had nothing to connect to (observed
+                // in the arcade-PC log, 0.7 s after this call returned).
+                if (!WaitForBluetoothRadio(20000))
+                    log("WARNING: the Bluetooth radio did not come back after the cycle.");
+
+                // The MIRROR trap on FAST radios (bench-observed 2026-08-07,
+                // Intel AX211): CyclePort returns while the OLD radio and
+                // filter instances still answer, so both this radio wait and
+                // any PSM control-device probe pass instantly against the
+                // DYING instances. Everything verified in that window is a
+                // corpse: patching armed on it evaporates with the old
+                // instance, the fresh filter attaches DISARMED
+                // (AutoEnableFilter=0 makes arming ours alone), and the pad
+                // can only flash until something re-arms. Sit out the
+                // teardown horizon so callers only ever probe and arm
+                // post-cycle reality.
+                Thread.Sleep(3000);
+            }
         }
+
+        /// <summary>Waits for a Bluetooth radio handle to be obtainable. This
+        /// is the readiness signal for anything that talks to the radio, and
+        /// it is NOT the same as the devnode existing.</summary>
+        public static bool WaitForBluetoothRadio(int timeoutMs) =>
+            WaitForCondition(() =>
+            {
+                var p = new BLUETOOTH_FIND_RADIO_PARAMS
+                { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_FIND_RADIO_PARAMS>() };
+                IntPtr find = BluetoothFindFirstRadio(ref p, out IntPtr radio);
+                if (find == IntPtr.Zero) return false;
+                CloseHandle(radio);
+                BluetoothFindRadioClose(find);
+                return true;
+            }, timeoutMs, 500);
 
         // NOTE: there is deliberately no "remove the BthPS3 PDO node" helper. Forcibly
         // removing the raw PDO with PnP (dev.Remove()) frees BthPS3's per-connection
@@ -275,6 +1017,31 @@ namespace PadForge.Services
         /// <summary>Deletes the DS3's remembered-device record + link key for a clean
         /// unpair. The Devices subkey is SYSTEM-owned, so ownership is taken back to
         /// Administrators first (SeTakeOwnership/SeRestore) before the delete.</summary>
+        /// <summary>Grants BUILTIN\Administrators full control of an HKLM key
+        /// whose ownership we have just taken. Ownership alone confers only
+        /// WRITE_DAC, so without this step every subsequent operation on a
+        /// SYSTEM-owned key still fails with ERROR_ACCESS_DENIED.</summary>
+        private static void GrantAdministratorsFullControl(string subKey, Action<string> log)
+        {
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(subKey,
+                    RegistryKeyPermissionCheck.ReadWriteSubTree,
+                    System.Security.AccessControl.RegistryRights.ChangePermissions);
+                if (key == null) return;
+                var sec = key.GetAccessControl();
+                sec.AddAccessRule(new System.Security.AccessControl.RegistryAccessRule(
+                    new System.Security.Principal.SecurityIdentifier(
+                        System.Security.Principal.WellKnownSidType.BuiltinAdministratorsSid, null),
+                    System.Security.AccessControl.RegistryRights.FullControl,
+                    System.Security.AccessControl.InheritanceFlags.ContainerInherit,
+                    System.Security.AccessControl.PropagationFlags.None,
+                    System.Security.AccessControl.AccessControlType.Allow));
+                key.SetAccessControl(sec);
+            }
+            catch (Exception ex) { log?.Invoke("Granting access to the record failed: " + ex.Message); }
+        }
+
         public static void DeleteRememberedDeviceRecord(byte[] radioMacBigEndian, string deviceMacHex, Action<string> log)
         {
             try
@@ -290,12 +1057,39 @@ namespace PadForge.Services
                     }
                     finally { LocalFree(admins); }
                 }
+                // Taking OWNERSHIP does not grant access. The record is written
+                // SYSTEM-owned so bthport keeps it, and becoming its owner only
+                // earns the RIGHT to rewrite its DACL: the delete still fails
+                // with ERROR_ACCESS_DENIED until Administrators is actually
+                // granted control. That is the rc=5 in the arcade-PC log, and
+                // it is why an unpair left the record behind and the user had
+                // to delete it by hand before a second pairing would take.
+                GrantAdministratorsFullControl(BthPortDevicesKey + deviceMacHex, log);
+
                 // Log a nonzero rc the way WriteLinkKeyAnchor does. Discarding
                 // it meant an unpair that silently left the device record in
                 // place reported success, and the next pair attempt then hit a
                 // stale record with nothing in the log to explain it.
-                int rcDel = RegDeleteKey(HKLM, BthPortDevicesKey + deviceMacHex);
-                if (rcDel != 0) log($"Removing the device record failed (rc={rcDel}).");
+                // RegDeleteKey does NOT recurse, and bthport's device record
+                // carries subkeys, so it answered ERROR_ACCESS_DENIED no matter
+                // how the permissions were fixed: rc=5 kept appearing after the
+                // ownership AND the DACL grant were both in place. Delete the
+                // tree instead, and fall back to the flat call so a record with
+                // no children still goes if the managed path is refused.
+                int rcDel = 0;
+                try
+                {
+                    Registry.LocalMachine.DeleteSubKeyTree(
+                        BthPortDevicesKey + deviceMacHex, throwOnMissingSubKey: false);
+                }
+                catch (Exception ex)
+                {
+                    rcDel = RegDeleteKey(HKLM, BthPortDevicesKey + deviceMacHex);
+                    if (rcDel != 0)
+                        log($"Removing the device record failed (rc={rcDel}; {ex.Message}).");
+                }
+                if (rcDel == 0 && Registry.LocalMachine.OpenSubKey(BthPortDevicesKey + deviceMacHex) != null)
+                    log("Removing the device record left it in place.");
             }
             catch (Exception ex) { log("Removing the device record failed: " + ex.Message); }
             DeleteLinkKeyAnchor(radioMacBigEndian, deviceMacHex, log);
@@ -349,11 +1143,53 @@ namespace PadForge.Services
             if (reboot) log("(a reboot was requested by " + Path.GetFileName(infPath) + ")");
         }
 
-        private static void EnsureConsumerParams()
+        /// <summary><para>Writes BthPS3's consumer parameters. Opens the key,
+        /// never creates it: BthPS3 reads these at load, so writing them
+        /// against a driver that is not installed cannot take effect, and the
+        /// write itself would MANUFACTURE a Services\BthPS3 key with no
+        /// ImagePath. That shell then reads as an installed service to any
+        /// existence check and permanently blocks the install that would make
+        /// the values meaningful. Its twin EnsurePadForgeOwnsPsmPatch has
+        /// always opened rather than created, and said so; this one did not,
+        /// and that divergence is what shipped the 2026-08-06 dead
+        /// stack.</para>
+        ///
+        /// <para>The service check comes FIRST, then CreateSubKey: BthPS3.inf
+        /// writes Parameters itself (RawPDO 0 / ExclusivePDO 1, the defaults
+        /// these lines override), so on a healthy install the subkey is
+        /// already there, and creating it under a REAL service is safe
+        /// either way. What must never happen is creating the parent.</para></summary>
+        /// <summary>Writes the consumer overrides, returning true when it
+        /// actually CHANGED something. The caller needs that answer: BthPS3
+        /// reads RawPDO when it builds the child PDO, so a fresh write has to
+        /// be followed by a re-enumeration or the running driver keeps serving
+        /// the INF's defaults (RawPDO=0), and a non-raw child is a child that
+        /// needs a function driver no INF here can supply.</summary>
+        private static bool EnsureConsumerParams()
         {
+            if (!IsServiceInstalled("BthPS3")) return false;
             using var key = Registry.LocalMachine.CreateSubKey(BthPs3ParamsKey, writable: true);
-            key?.SetValue("RawPDO", 1, RegistryValueKind.DWord);       // enumerate with no function driver
-            key?.SetValue("ExclusivePDO", 0, RegistryValueKind.DWord); // allow our shared open
+            if (key == null) return false;
+            // The RAW-PDO pair is subject to the SAME coexistence policy as
+            // AutoEnableFilter below, and used not to be (audit 2026-08-08,
+            // lens 1v: a guard applied to one value of a set the policy
+            // owns). RawPDO=1 makes BthPS3 enumerate its DS3 children with
+            // NO function driver (BthPS3 BusLogic.c reads the value per
+            // child and marks the PDO raw), which is exactly what PadForge
+            // needs and exactly what DsHidMini cannot live with: its INF
+            // binds a UMDF stack to that same normal
+            // BTHPS3BUS\...&Dev&VID_054C&PID_0268 child. Writing it on a
+            // DsHidMini machine would silently kill their Bluetooth DS3s at
+            // the next re-enumeration.
+            bool dsHidMini = IsDsHidMiniInstalled();
+            bool changed = false;
+            if (!dsHidMini)
+            {
+                changed = !(key.GetValue("RawPDO") is int raw && raw == 1)
+                       || !(key.GetValue("ExclusivePDO") is int excl && excl == 0);
+                key.SetValue("RawPDO", 1, RegistryValueKind.DWord);       // enumerate with no function driver
+                key.SetValue("ExclusivePDO", 0, RegistryValueKind.DWord); // allow our shared open
+            }
             // AutoEnableFilter=0 hands PadForge sole ownership of PSM patching
             // (issue #199 crash mitigation). BthPS3's default (1) auto-arms
             // patching at radio power-up AND re-arms it ~10 s after it denies a
@@ -373,31 +1209,49 @@ namespace PadForge.Services
             // ReconcilePsmPatchForCrashSafety just repaired, and it
             // outlives PadForge. The install/pair path is the one caller
             // that reached this line without consulting the policy.
-            if (!IsDsHidMiniInstalled())
-                key?.SetValue("AutoEnableFilter", 0, RegistryValueKind.DWord);
+            if (!dsHidMini)
+                key.SetValue("AutoEnableFilter", 0, RegistryValueKind.DWord);
+            return changed;
         }
 
-        private static void EnsurePsmPatch(Action<string> log) => SetPsmPatching(true, log);
+        /// <summary>Arms PSM patching, waiting up to 20 s for the filter
+        /// to attach. Every arm site follows either an install or a radio
+        /// cycle, and the control device is absent while the filter
+        /// re-attaches, so an arm with no wait is an arm that may do
+        /// nothing. Returns the number of radios patched; 0 is failure.</summary>
+        private static int EnsurePsmPatch(Action<string> log) => SetPsmPatching(true, log, 20000);
 
         /// <summary>True when the BthPS3 profile driver service is installed
         /// (the stack that carries the DS3 over Bluetooth). Cheap registry-free
         /// SCM query; the crash-safety reconcile no-ops when this is false.</summary>
         public static bool IsBthPs3Installed() => IsServiceInstalled("BthPS3");
 
-        /// <summary>True when Nefarius DsHidMini is installed. DsHidMini is a
-        /// UMDF driver (its INF's AddService entries are the generic WUDFRd /
+        /// <summary><para>True when Nefarius DsHidMini is installed. DsHidMini is
+        /// a UMDF driver (its INF's AddService entries are the generic WUDFRd /
         /// mshidumdf reflector, dshidmini.inf), so there is no "dshidmini"
-        /// service key to probe; the stable footprints are the installed
-        /// driver package (DriverDatabase\DriverPackages\dshidmini.inf_*) and
-        /// the driver's own config root (%ProgramData%\DsHidMini,
-        /// DsHidMini Configuration.c:680-716). Either marker counts. Gates
-        /// the PSM-patch crash policy: a DsHidMini system's DS3s connect
-        /// through BthPS3 patching, so PadForge must never disarm it there
-        /// (the 2026-07-24 coexistence audit: the startup disarm was breaking
-        /// foreign DsHidMini setups whose pads leave no BTHPORT VID/PID
-        /// record for AnyDs3Paired to find).</summary>
+        /// service key to probe. Gates the PSM-patch crash policy: a DsHidMini
+        /// system's DS3s connect through BthPS3 patching, so PadForge must never
+        /// disarm it there (the 2026-07-24 coexistence audit: the startup disarm
+        /// was breaking foreign DsHidMini setups whose pads leave no BTHPORT
+        /// VID/PID record for AnyDs3Paired to find).</para>
+        ///
+        /// <para>What is NOT a marker, and used to be: the driver's config root
+        /// at %ProgramData%\DsHidMini. That directory is created by the driver
+        /// for its settings and SURVIVES uninstall, the way application config
+        /// normally does, so on its own it is a leftover rather than evidence.
+        /// Accepting it meant a machine that had removed DsHidMini still read as
+        /// having it, which flipped PsmPatchPolicy to never-own / always-armed
+        /// and silently disabled the #204 crash-safety mitigation. Confirmed on
+        /// a machine with the folder present, no driver package, and no service
+        /// (#265 audit).</para>
+        ///
+        /// <para>Both markers below are evidence the driver is actually THERE,
+        /// not that it once was.</para></summary>
         public static bool IsDsHidMiniInstalled()
         {
+            // 1. The driver package in the store. Authoritative both ways:
+            //    DsHidMini installs by INF so the key exists while it does, and
+            //    an uninstall (pnputil /delete-driver) removes it.
             try
             {
                 using var pkgs = Registry.LocalMachine.OpenSubKey(
@@ -409,15 +1263,27 @@ namespace PadForge.Services
                             return true;
                 }
             }
-            catch { /* fall through to the config-folder marker */ }
+            catch { /* fall through to the live-device probe */ }
+
+            // 2. A pad this machine is driving with it RIGHT NOW. DsHidMini's INF
+            //    binds the UMDF reflector, so such a node's service reads WUDFRd.
+            //    Belt and braces for a store read that failed above.
             try
             {
-                string pd = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-                if (!string.IsNullOrEmpty(pd)
-                    && System.IO.Directory.Exists(System.IO.Path.Combine(pd, "DsHidMini")))
-                    return true;
+                foreach (var id in FindDs3UsbNodes())
+                {
+                    try
+                    {
+                        var dev = PnPDevice.GetDeviceByInstanceId(id, DeviceLocationFlags.Normal);
+                        string svc = dev.GetProperty<string>(DevicePropertyKey.Device_Service) ?? string.Empty;
+                        if (svc.Equals("WUDFRd", StringComparison.OrdinalIgnoreCase))
+                            return true;
+                    }
+                    catch { }
+                }
             }
             catch { }
+
             return false;
         }
 
@@ -477,14 +1343,37 @@ namespace PadForge.Services
         /// returns). Enumerates radios by DeviceIndex 0..N via GET until
         /// ERROR_NO_SUCH_DEVICE rather than assuming a single radio at index
         /// 0.</para></summary>
-        public static void SetPsmPatching(bool enable, Action<string> log)
+        /// <summary><para>Waits for the PSM filter's control device to be
+        /// open-able. A radio cycle detaches and re-attaches the filter, and
+        /// the device is absent for the seconds in between, so anything that
+        /// arms patching straight after a cycle must wait or it silently
+        /// no-ops.</para>
+        ///
+        /// <para>This is the readiness signal that matters. The BthPS3
+        /// SERVICE key existing does not imply the filter is attached, and
+        /// waiting on the key alone left the first pairing on a clean machine
+        /// arming patching into a closed window: the DS3 was then refused and
+        /// flashed forever, and only a SECOND run of the ceremony worked,
+        /// because by then patching had been armed once and the filter
+        /// restores its per-radio state across cycles (observed end to end on
+        /// the 2026-08-06 arcade-PC rehearsal).</para></summary>
+        public static bool WaitForPsmControlDevice(int timeoutMs) =>
+            WaitForCondition(IsPsmFilterPresent, timeoutMs, 500);
+
+        /// <summary>Enables or disables PSM patching, returning how many
+        /// radios accepted the toggle. Zero means it did NOT take, which the
+        /// caller must treat as failure rather than silence.</summary>
+        public static int SetPsmPatching(bool enable, Action<string> log, int waitForFilterMs = 0)
         {
+            if (waitForFilterMs > 0 && !IsPsmFilterPresent())
+                WaitForPsmControlDevice(waitForFilterMs);
+
             IntPtr h = CreateFile(PsmControlPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW,
                 IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH, IntPtr.Zero);
             if (h == INVALID_HANDLE)
             {
                 log?.Invoke($"PSM control device not present; cannot {(enable ? "enable" : "disable")} patching.");
-                return;
+                return 0;
             }
             try
             {
@@ -514,23 +1403,38 @@ namespace PadForge.Services
                     if (Marshal.GetLastWin32Error() == ERROR_NO_SUCH_DEVICE) break;
                 }
                 log?.Invoke($"PSM patching {(enable ? "enabled" : "disabled")} on {count} radio(s).");
+                return count;
             }
             finally { CloseHandle(h); }
         }
 
         // ── native BluetoothSetLocalServiceInfo (the one Bluetooth-specific call) ──
 
-        private static void EnableBthPs3Service(Action<string> log)
+        /// <summary>Advertises the BthPS3 profile service, which is what makes
+        /// BTHENUM spawn the PDO that loads BthPS3.sys. Returns false when the
+        /// advertisement did not happen: without it there is no profile
+        /// driver, so the pad's connection reaches nothing and it flashes
+        /// forever.</summary>
+        private static bool EnableBthPs3Service(Action<string> log)
         {
+            // Wait for the radio rather than reading its absence as "no radio
+            // exists". This ran 0.7 s after a radio cycle and took the early
+            // exit, silently skipping the advertisement.
+            if (!WaitForBluetoothRadio(20000))
+            {
+                log("No radio to advertise the service on.");
+                return false;
+            }
             var fp = new BLUETOOTH_FIND_RADIO_PARAMS { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_FIND_RADIO_PARAMS>() };
             IntPtr hFind = BluetoothFindFirstRadio(ref fp, out IntPtr hRadio);
-            if (hFind == IntPtr.Zero) { log("No radio to advertise the service on."); return; }
+            if (hFind == IntPtr.Zero) { log("No radio to advertise the service on."); return false; }
             try
             {
                 EnablePrivilege("SeLoadDriverPrivilege");
                 var info = new BLUETOOTH_LOCAL_SERVICE_INFO { Enabled = 1, szName = BthPs3ServiceName };
                 uint rc = BluetoothSetLocalServiceInfo(hRadio, ref BthPs3ServiceGuidLocal, 0, ref info);
                 log(rc == 0 ? "Profile service advertised." : $"Advertise service rc={rc}.");
+                return rc == 0;
             }
             finally { CloseHandle(hRadio); BluetoothFindRadioClose(hFind); }
         }
@@ -553,7 +1457,7 @@ namespace PadForge.Services
         // ── embedded driver extraction ─────────────────────────────────────────────
 
         private static string _extractedDir;
-        private static string ExtractDrivers()
+        internal static string ExtractDrivers()
         {
             if (_extractedDir != null && Directory.Exists(_extractedDir)) return _extractedDir;
             string root = Path.Combine(Path.GetTempPath(), "PadForge", "BthPS3Drivers");
@@ -578,10 +1482,71 @@ namespace PadForge.Services
         /// A registry probe avoids a dependency on System.ServiceProcess and is the
         /// right "is it installed" question - running state is handled by the profile
         /// service advertisement + AutoEnableFilter.</summary>
+        /// <summary><para>True when a kernel service is REALLY installed, which
+        /// means its key carries an ImagePath. The key's mere existence is not
+        /// the same question: any write under
+        /// Services\&lt;name&gt;\&lt;anything&gt; creates the parent on the way
+        /// down, so a settings write against a driver that is not installed
+        /// yet leaves a key that looks exactly like an installed service to a
+        /// null check.</para>
+        ///
+        /// <para>That is not hypothetical. On a fresh machine (2026-08-06)
+        /// Services\BthPS3 held nothing but the Parameters subkey PadForge
+        /// itself had written, with no ImagePath, no Start and no Type. The
+        /// old check returned true, EnsureInstalled short-circuited its whole
+        /// eight-step install forever, the profile service was never
+        /// advertised, no PDO ever spawned, PSM patching could never arm, and
+        /// the DualShock 3 sat flashing because the inbox HID stack refused
+        /// its L2CAP connection. Get-Service reported NOT INSTALLED the entire
+        /// time.</para></summary>
         private static bool IsServiceInstalled(string name)
         {
-            using var k = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\" + name);
-            return k != null;
+            using var services = Registry.LocalMachine.OpenSubKey(ServicesRoot);
+            return IsServiceInstalled(services, name);
+        }
+
+        private const string ServicesRoot = @"SYSTEM\CurrentControlSet\Services";
+
+        /// <summary>Polls a condition to completion or timeout. Exists because
+        /// PnP driver installation is asynchronous and a one-shot probe races
+        /// it; internal so the poll arithmetic is testable.</summary>
+        internal static bool WaitForCondition(Func<bool> probe, int timeoutMs, int pollMs)
+        {
+            long deadline = Environment.TickCount64 + timeoutMs;
+            while (true)
+            {
+                if (probe()) return true;
+                if (Environment.TickCount64 >= deadline) return false;
+                Thread.Sleep(pollMs);
+            }
+        }
+
+        /// <summary>The predicate itself, against any services root, so the
+        /// contract is testable without writing to HKLM.</summary>
+        internal static bool IsServiceInstalled(RegistryKey servicesRoot, string name)
+        {
+            using var k = servicesRoot?.OpenSubKey(name);
+            return k?.GetValue("ImagePath") != null;
+        }
+
+        /// <summary>True for the damaged shape above: a BthPS3 key with no
+        /// ImagePath. Distinct from "absent", because absent is the normal
+        /// first-run state and needs no repair, while this one blocks the
+        /// install that would fix it.</summary>
+        private static bool HasOrphanedBthPs3Key()
+        {
+            using var services = Registry.LocalMachine.OpenSubKey(ServicesRoot);
+            return HasOrphanedServiceKey(services, "BthPS3");
+        }
+
+        /// <summary>Present but not a service. Deliberately NOT the negation of
+        /// IsServiceInstalled: absent is the normal first-run state and needs
+        /// no repair, while present-without-ImagePath blocks the install that
+        /// would fix it.</summary>
+        internal static bool HasOrphanedServiceKey(RegistryKey servicesRoot, string name)
+        {
+            using var k = servicesRoot?.OpenSubKey(name);
+            return k != null && k.GetValue("ImagePath") == null;
         }
 
         // ── P/Invoke ──────────────────────────────────────────────────────────────

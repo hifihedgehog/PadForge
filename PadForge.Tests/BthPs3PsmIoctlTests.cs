@@ -80,9 +80,99 @@ namespace PadForge.Tests
             bool dsHidMini, bool anyPaired, bool expectOwnership, bool expectPatching)
         {
             var (takeOwnership, patching) =
-                PadForge.Services.Ds3PairingService.PsmPatchPolicy(dsHidMini, anyPaired);
+                PadForge.Services.Ds3PairingService.PsmPatchPolicy(dsHidMini, anyPaired, false);
             Assert.Equal(expectOwnership, takeOwnership);
             Assert.Equal(expectPatching, patching);
+        }
+
+        /// <summary><para>THE #265 REGRESSION, in the one configuration that
+        /// actually shipped broken. A DS3 paired outside PadForge's ceremony
+        /// leaves NO BTHPORT VID/PID record: BthPS3 identifies pads by remote
+        /// name and the pairing itself lives inside the controller, which
+        /// stores the host radio's MAC. So the narrow "did PadForge pair one"
+        /// probe reads false on a machine whose DS3 connects over BthPS3
+        /// daily.</para>
+        ///
+        /// <para>That machine was only still working because a leftover
+        /// %ProgramData%\DsHidMini folder made the DsHidMini probe read true,
+        /// which forced always-armed. Fixing that probe alone would have
+        /// disarmed patching and silently killed the pad, which is why the
+        /// policy input had to widen in the same change.</para>
+        ///
+        /// <para>The guard is stated as the composition the caller performs:
+        /// paired-OR-present, never paired alone.</para></summary>
+        [Theory]
+        // no DsHidMini, no BTHPORT record, but a DS3 devnode exists: STAY ARMED.
+        [InlineData(false, false, true, true)]
+        // and with neither signal there is genuinely no pad: disarm.
+        [InlineData(false, false, false, false)]
+        public void PsmPatchPolicy_ArmsForAnExternallyPairedPad(
+            bool dsHidMini, bool anyPaired, bool machineHasDs3, bool expectPatching)
+        {
+            var (_, patching) =
+                PadForge.Services.Ds3PairingService.PsmPatchPolicy(
+                    dsHidMini, anyPaired, machineHasDs3);
+            Assert.Equal(expectPatching, patching);
+        }
+
+        /// <summary>The DsHidMini probe must not accept a leftover config
+        /// folder as proof. %ProgramData%\DsHidMini is the driver's settings
+        /// root and survives uninstall the way application config normally
+        /// does, so on its own it says the driver WAS here, not that it is.
+        /// Accepting it disabled the #204 crash-safety mitigation on machines
+        /// that had removed DsHidMini.</summary>
+        [Fact]
+        public void DsHidMiniProbe_DoesNotTrustTheLeftoverConfigFolder()
+        {
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                RepoRoot(), "PadForge.App", "Services", "Ds3DriverInstaller.cs"));
+            int probe = src.IndexOf("public static bool IsDsHidMiniInstalled",
+                System.StringComparison.Ordinal);
+            Assert.True(probe > 0, "IsDsHidMiniInstalled not found");
+            int end = src.IndexOf("\n        }", probe, System.StringComparison.Ordinal);
+            string body = src.Substring(probe, end - probe);
+
+            Assert.False(body.Contains("CommonApplicationData"),
+                "IsDsHidMiniInstalled is trusting %ProgramData% again. That folder " +
+                "survives uninstall, so it proves the driver WAS installed, not that " +
+                "it is (#265).");
+        }
+
+        /// <summary><para>MachineHasDs3 must enumerate NON-PRESENT device nodes.
+        /// That is the entire point of it: Windows keeps a devnode after the
+        /// device is unplugged, which is what makes "a DS3 lives here" survive
+        /// the pad being in a drawer. Query present-only and the answer becomes
+        /// "a DS3 is plugged in right this second", so PSM patching would
+        /// disarm the moment the pad is unplugged and the pad could then never
+        /// connect over Bluetooth again.</para>
+        ///
+        /// <para>Asserted at the source because no runtime probe can tell the
+        /// two apart without physically unplugging a DS3 mid-suite: with the
+        /// pad attached both flags return true, and on a machine with no DS3
+        /// both return false. A mutation flipping the flag survived every
+        /// behavioural test for exactly that reason.</para></summary>
+        [Fact]
+        public void MachineHasDs3_EnumeratesNonPresentDevnodes()
+        {
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                RepoRoot(), "PadForge.App", "Services", "Ds3DriverInstaller.cs"));
+            int probe = src.IndexOf("public static bool MachineHasDs3",
+                System.StringComparison.Ordinal);
+            Assert.True(probe > 0, "MachineHasDs3 not found");
+            int end = src.IndexOf("\n        }", probe, System.StringComparison.Ordinal);
+            string body = src.Substring(probe, end - probe);
+
+            Assert.Contains("presentOnly: false", body);
+            Assert.DoesNotContain("presentOnly: true", body);
+        }
+
+        private static string RepoRoot()
+        {
+            var d = new System.IO.DirectoryInfo(System.AppContext.BaseDirectory);
+            while (d != null && !System.IO.Directory.Exists(System.IO.Path.Combine(d.FullName, "PadForge.App")))
+                d = d.Parent;
+            Assert.NotNull(d);
+            return d.FullName;
         }
     }
 }

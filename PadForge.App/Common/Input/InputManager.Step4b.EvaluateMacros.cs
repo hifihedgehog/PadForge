@@ -237,6 +237,9 @@ namespace PadForge.Common.Input
         /// </summary>
         public MacroItem[][] MacroSnapshots { get; } = new MacroItem[MaxPads][];
 
+        // One HeadphoneVolumeUp/Down macro step, percent points.
+        private const int HeadphoneVolumeMacroStep = 10;
+
         // True while evaluating a slot fed by a gamepad-only-restricted peer (issue
         // #138). The keyboard/mouse/scroll macro emission helpers consult this and
         // suppress those actions, so a restricted peer can never inject keystrokes.
@@ -2446,6 +2449,26 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.HeadphoneVolumeUp:
+                case MacroActionType.HeadphoneVolumeDown:
+                {
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                    {
+                        // Slot-level fan-out, the LightbarModeSet pattern:
+                        // step every device's configured jack volume. The
+                        // dispatcher's change gating turns the edit into a
+                        // one-shot AllowHeadphoneVolume write.
+                        int delta = action.Type == MacroActionType.HeadphoneVolumeUp
+                            ? HeadphoneVolumeMacroStep : -HeadphoneVolumeMacroStep;
+                        foreach (var devCfg in EnumerateSlotDeviceConfigs(slotIndex))
+                            devCfg.HeadphoneVolume = Math.Clamp(devCfg.HeadphoneVolume + delta, 0, 100);
+                    }
+                    AdvanceAction(macro);
+                    break;
+                }
+
+
                 case MacroActionType.LightbarModeCycle:
                 {
                     ApplyLightbarModeCycleAction(macro, action);
@@ -4639,6 +4662,26 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
                 }
+
+                case MacroActionType.HeadphoneVolumeUp:
+                case MacroActionType.HeadphoneVolumeDown:
+                {
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                    {
+                        // Slot-level fan-out, the LightbarModeSet pattern:
+                        // step every device's configured jack volume. The
+                        // dispatcher's change gating turns the edit into a
+                        // one-shot AllowHeadphoneVolume write.
+                        int delta = action.Type == MacroActionType.HeadphoneVolumeUp
+                            ? HeadphoneVolumeMacroStep : -HeadphoneVolumeMacroStep;
+                        foreach (var devCfg in EnumerateSlotDeviceConfigs(slotIndex))
+                            devCfg.HeadphoneVolume = Math.Clamp(devCfg.HeadphoneVolume + delta, 0, 100);
+                    }
+                    AdvanceAction(macro);
+                    break;
+                }
+
 
                 case MacroActionType.LightbarModeCycle:
                     ApplyLightbarModeCycleAction(macro, action);

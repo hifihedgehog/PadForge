@@ -87,6 +87,10 @@ namespace PadForge.Engine
         // headset strips, keyboard media rows. APPEND-ONLY here (CapType
         // serializes as an int in PadForge.xml).
         public const int ConsumerControl = 29;
+        // Sony headset head-tracker IMU over Bluetooth Classic HID
+        // (issue #188): WH-1000XM5 family exposing the Android Head
+        // Tracker sensor collection as a gyro/accel motion source.
+        public const int HeadsetMotion = 30;
     }
 
     // ─────────────────────────────────────────────────────────────────

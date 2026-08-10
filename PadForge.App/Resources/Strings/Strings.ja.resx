@@ -106,6 +106,7 @@
   <data name="ControllerType_Extended" xml:space="preserve"><value>Extended</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>キーボード + マウス</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
+  <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge を終了しています...</value></data>
@@ -132,6 +133,8 @@
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>キーボード + マウス (最大 {0} 台)</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (Windows MIDI Services が必要です)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (最大 {0} 台)</value></data>
+  <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (SteamVR が必要)</value></data>
+  <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (最大 {0} 台)</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide をインストールしています…</value></data>
@@ -141,6 +144,11 @@
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services をアンインストールしています…</value></data>
   <data name="Status_OperationCancelled" xml:space="preserve"><value>操作がユーザーによりキャンセルされました。</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services のインストールに失敗しました: {0}</value></data>
+  <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR をダウンロード中…</value></data>
+  <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Valve のサーバーから SteamVR をダウンロードしてインストール中… 数 GB あるため時間がかかることがあります。</value></data>
+  <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>SteamVR のインストールに失敗しました: {0}</value></data>
+  <data name="Status_UninstallingSteamVR" xml:space="preserve"><value>SteamVR をアンインストールしています…</value></data>
+  <data name="Status_SteamVRRunningCloseFirst" xml:space="preserve"><value>SteamVR が実行中です。アンインストールする前に終了してください。</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>デバイスリストを更新しました。</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>「{0}」を記録 ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>次のマッピング: {0} {1}</value></data>
@@ -264,6 +272,11 @@
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>ユーザーモード仮想 HID コントローラーエンジン。PadForge.App に組み込まれており、最初の仮想コントローラー作成時に自動的にインストールされます。v3 で ViGEmBus と vJoy を置き換えます。</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>仮想 MIDI デバイス出力用の SDK ランタイムです。GitHub からダウンロードされます (~210 MB)。</value></data>
+  <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
+  <data name="Settings_SteamVRDesc" xml:space="preserve"><value>仮想 VR コントローラー用の VR ランタイム。Steam アカウントも Steam クライアントも不要で、Valve のサーバーからインストールされます（数 GB）。</value></data>
+  <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>インストール先</value></data>
+  <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>SteamVR をアンインストール</value></data>
+  <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>{0} にある Steam 不要の SteamVR インストールを削除し、数 GB を解放します。SteamVR を再インストールするまで、仮想 VR コントローラーは動作しません。</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Windows 11 24H2 (ビルド 26100) 以降が必要です</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>設定ファイル</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>設定の保存、再読み込み、またはリセットを行います。</value></data>
@@ -284,6 +297,7 @@
   <data name="About_Subtitle" xml:space="preserve"><value>コントローラーマッピングユーティリティ</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce のモダンフォーク。SDL3、WPF、.NET 10 で再構築</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge は、あらゆる入力デバイスをあらゆる仮想コントローラーに変換します。ゲームパッド、ジョイスティック、キーボード、マウス、タッチスクリーンを、仮想ゲームコントローラー (Xbox、PlayStation、フライトスティック、ステアリングホイール、サードパーティ製ゲームパッド) またはキーボード + マウス / MIDI 出力にマッピングし、HIDMaestro と Windows MIDI Services によってゲームから実際のハードウェアとして認識させます。コントローラー入力には SDL3、キーボードとマウスには Windows Raw Input、ゲームごとのデバイス非表示には HidHide を使用し、マッピング、デッドゾーン、感度カーブ、フォースフィードバック用のモダンな Fluent Design インターフェースを提供します。</value></data>
+  <data name="About_Overview" xml:space="preserve"><value>概要</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>使用技術</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>ランタイムおよび WPF フレームワーク。MIT。</value></data>
@@ -903,6 +917,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左モーター</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>右モーター</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>左右モーターを入れ替える</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>トリガー振動をメインモーターに合流</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>このコントローラーにはトリガーモーターがないため、Xbox インパルストリガーを使うゲームの振動は感じられません。代わりに各トリガーチャンネルを同じ側のメインモーターに合流させます。</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>振動テスト</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>モーター動作</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>定常フォース</value></data>
@@ -941,6 +957,7 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>全体ゲインをリセット</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>左モーターをリセット</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>右モーターをリセット</value></data>
+  <data name="Pad_Colorway" xml:space="preserve"><value>カラーバリエーション</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>ビューをリセット</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>ボタンを押すか軸/トリガーを動かして記録します。軸は 50% 以上の偏向で検出されます。</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>リストから追加</value></data>
@@ -1010,6 +1027,33 @@
   <data name="Btn_Plus" xml:space="preserve"><value>プラス</value></data>
   <data name="Btn_Home" xml:space="preserve"><value>HOME</value></data>
   <data name="Btn_Capture" xml:space="preserve"><value>キャプチャー</value></data>
+  <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
+  <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
+  <data name="Btn_C" xml:space="preserve"><value>C</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>ミュート</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>左バックボタン</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>右バックボタン</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>左Fn</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>右Fn</value></data>
+  <data name="Btn_VrLeftA" xml:space="preserve"><value>左 A</value></data>
+  <data name="Btn_VrLeftB" xml:space="preserve"><value>左 B</value></data>
+  <data name="Btn_VrLeftATouch" xml:space="preserve"><value>左 A（タッチ）</value></data>
+  <data name="Btn_VrLeftBTouch" xml:space="preserve"><value>左 B（タッチ）</value></data>
+  <data name="Btn_VrLeftSystem" xml:space="preserve"><value>左システム</value></data>
+  <data name="Btn_VrLeftGrip" xml:space="preserve"><value>左グリップ</value></data>
+  <data name="Btn_VrLeftGripClick" xml:space="preserve"><value>左グリップクリック</value></data>
+  <data name="Btn_VrLeftTriggerClick" xml:space="preserve"><value>左トリガークリック</value></data>
+  <data name="Btn_VrRightA" xml:space="preserve"><value>右 A</value></data>
+  <data name="Btn_VrRightB" xml:space="preserve"><value>右 B</value></data>
+  <data name="Btn_VrRightATouch" xml:space="preserve"><value>右 A（タッチ）</value></data>
+  <data name="Btn_VrRightBTouch" xml:space="preserve"><value>右 B（タッチ）</value></data>
+  <data name="Btn_VrRightSystem" xml:space="preserve"><value>右システム</value></data>
+  <data name="Btn_VrRightGrip" xml:space="preserve"><value>右グリップ</value></data>
+  <data name="Btn_VrRightGripClick" xml:space="preserve"><value>右グリップクリック</value></data>
+  <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>右トリガークリック</value></data>
+  <data name="Vr_LeftHand" xml:space="preserve"><value>左手</value></data>
+  <data name="Vr_RightHand" xml:space="preserve"><value>右手</value></data>
+  <data name="Vr_Stick" xml:space="preserve"><value>スティック</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>マウス左ボタン</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>マウス右ボタン</value></data>
@@ -1169,6 +1213,11 @@
   <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>左Joy-Con ジャイロ ピッチ</value></data>
   <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>左Joy-Con ジャイロ ヨー</value></data>
   <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>左Joy-Con ジャイロ ロール</value></data>
+  <data name="Mapping_GyroAuxHorizontal" xml:space="preserve"><value>左Joy-Con ジャイロ水平 (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroRPitch" xml:space="preserve"><value>右Joy-Con ジャイロ ピッチ</value></data>
+  <data name="Mapping_GyroRYaw" xml:space="preserve"><value>右Joy-Con ジャイロ ヨー</value></data>
+  <data name="Mapping_GyroRRoll" xml:space="preserve"><value>右Joy-Con ジャイロ ロール</value></data>
+  <data name="Mapping_GyroRHorizontal" xml:space="preserve"><value>右Joy-Con ジャイロ水平 (Yaw + Roll)</value></data>
   <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>左Joy-Con モーションジャイロ</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>ジャイロ ヨー</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>ジャイロ ロール</value></data>
@@ -1212,6 +1261,13 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = コントローラー素のローカル軸。Player = ヨーを現実の鉛直 (重力) 軸に投影、ピッチはローカルのまま。Jibb Smart 推奨の既定。傾けてもナチュラル。World = ヨーもピッチもワールド軸に投影。</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>ピッチ (Y) 反転</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>ピッチ軸の全体反転。Player/World 投影の後に適用。マッピング表のソース単位 Invert とは独立。</value></data>
+  <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>コンパス</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>このコントローラーには磁力計が搭載されています。ヨーを磁北に固定すると、ジャイロ照準のゆっくりとした水平ドリフトがなくなります。まずキャリブレーションしてください。「キャリブレーション」を押し、コントローラーを数秒間8の字にあらゆる向きへ回してから、もう一度押します。</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>ヨーをコンパスに固定</value></data>
+  <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>水平照準を磁方位へ引き戻す小さな補正レートを加え、ドリフトが蓄積しないようにします。保存済みの磁力計キャリブレーションが必要です。近くの金属や磁石で乱れたサンプルは自動的に除外されます。</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>既定に戻す (オフ)</value></data>
+  <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>磁力計をキャリブレーション</value></data>
+  <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>キャリブレーションを完了</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>ヨー / ロール (X) 反転</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>ヨー軸の全体反転。Roll と Gyro Horizontal ソースにも適用。</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>実世界キャリブレーション</value></data>
@@ -1533,6 +1589,8 @@
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>左トリガー</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>右トリガー</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>左右のトリガーモーターを入れ替える</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>アダプティブトリガーの振動を変換</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>ゲームがこのスロットを仮想 DualSense として駆動する場合、振動系のアダプティブトリガーエフェクトをこのコントローラーのインパルストリガーモーターで再生します。抵抗系のエフェクトは振動に相当するものがないため無視されます。</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>左トリガーをテスト</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>右トリガーをテスト</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>トリガーモーターの動作</value></data>
@@ -1925,6 +1983,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>カットする</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>1オクターブずつ折り下げる</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>トーン上限</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense ハプティクスをこのコントローラーで再生</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ゲームがこのスロットを仮想 DualSense として駆動し、オーサリングされたハプティクスオーディオを出力する場合、そのトラックをこのコントローラーのアクチュエーターでトーンとして再生します。オーディオから導出するため、デザイナーの意図した感触の近似であり、完全な再現ではありません。</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ハプティクス ゲイン</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>既定に戻す (オフ)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>既定に戻す (100%)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>この周波数を超える音はカットまたはフォールドされます。既定の 800 Hz ならエンジン音や衝撃の振動は残り、甲高いビープ音だけを捕捉します。</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>高音をリセット</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>トーン上限をリセット</value></data>
@@ -2281,10 +2344,12 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>スロット</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>停止中</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>デバイスを選択すると、その生入力を確認できます。</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>ペアリングが完了しませんでした。詳細はログを確認してください。</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>利用できる Bluetooth アダプターがありません。Bluetooth をオンにしてやり直してください。ペアリングはワイヤレス接続にのみ必要で、ケーブル接続なら不要です。</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>ペアリングは完了しませんでした。失敗した手順は上に表示されています。</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation コントローラー用の Bluetooth ドライバーをインストールできませんでした。</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>DualShock 3 を USB ケーブルで接続し、「ペアリング」をクリックします。PadForge がこの PC をコントローラーに書き込み、登録します。完了したらケーブルを抜き、PS ボタンを押して Bluetooth で接続してください。</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>USB 上に DualShock 3 が見つかりません。USB ケーブルで接続して、もう一度お試しください。</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>この PC では署名証明書が信頼されていないため、Windows は DualShock 3 用の PadForge USB ドライバーをインストールしません。</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>準備完了です。ケーブルを抜き、PS ボタンを押してください。デバイス一覧に表示されます。</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>コントローラーを設定中です。USB 接続のままにしてください。</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>鍛造中</value></data>
@@ -2386,6 +2451,14 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>オフ</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>このキーペアを削除します。</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同時反対方向入力 (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>コントローラーをアクティブに保つ</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>一部のゲームはマウスやキーボードの入力を検出すると振動を止め、ボタン表示を切り替えます。スティックをわずかに倒した状態を保持すると、ゲームはこのコントローラーをアクティブなデバイスとして扱い続けます。保持レベル以上の実際の入力はそのまま通過します。ゲーム内で何も動かないよう、保持量はゲーム側のデッドゾーンより小さくしてください。</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>アクティブ保持を有効化</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>保持する軸</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>どの出力軸で偏移を保持するか。カメラではなく移動として読まれる軸を選ぶと、デッドゾーン未満の値は見えないままになります。</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>保持量</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>スティック全ストロークに対する保持量（%）。25% ならほとんどのゲームで移動デッドゾーン未満のままアクティブを維持できます。それでも切り替わる場合は上げ、キャラクターが動いてしまう場合は下げてください。</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>アクティブ保持をオフにし、既定の軸と保持量に戻します</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>このスロットの仮想コントローラー出力で、同時に押されたボタンペアを解決します。ペアの両方が押されているとき、選んだルールがゲームに見せる入力を決めます。</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>同時反対方向入力をリセット</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>モード</value></data>
@@ -2839,6 +2912,8 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>メニューのホストサーフェスは未対応 ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>メニューセルのアイコンを認識できません ({0})。このセルはテキストラベルを表示します</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>バスシェイカー</value></data>
+  <data name="Pad_Tab_Output" xml:space="preserve"><value>出力</value></data>
+  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>このスロットの仮想コントローラー出力をゲームへ送る直前に整える設定です。同時に押された反対方向を処理する SOCD クリーニングと、マウスやキーボード入力を検出するとコントローラーを切り替えてしまうゲーム向けのアクティブ保持があります。</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>バスシェイカー</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>この仮想コントローラーが受け取るゲームの振動とフォースフィードバックを、バスシェイカーやサブウーファー向けの低周波トーンとしてオーディオ出力へ送ります。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振動をオーディオへ</value></data>
@@ -2917,4 +2992,68 @@
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 オーディオプロトコルの資料。SBC パラメーターとパケットレイアウト。作者: khallmark。MIT。</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>デスクトップ</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>ソファから Windows を操作します。カーソル、スクロール、トリガーでのクリック。</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD とマウス</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>キーボードとマウスのゲームをパッドで。シューターやアクションゲーム向け。</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>ホットバー</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>2 つのトリガーに 32 のアクション。MMO やスキルの多いゲーム向け。</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>エミュレーション</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch とそのフロントエンド。Back を押しながらセーブ、ロード、早送り。</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>格闘ゲーム</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>6 ボタン配置と、両軸でトーナメント準拠の SOCD クリーニング。</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>キーボード + マウス</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>ゲームパッド</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>スタータープロファイルを見る</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>スタータープロファイル</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>ジャンルまるごとに対応する既製プロファイルです。1 つ選んで任意のコントローラーを割り当てれば使えます。保存すると編集可能な通常のプロファイルが追加されます。</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>プロファイルを保存</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>スタータープロファイル「{0}」を追加しました。</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>ポイントアンドクリック</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>アドベンチャーと、カーソルと 2 つの操作で進むゲーム向け。</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>ストラテジー</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>RTS、4X、都市建設。片方のスティックでカメラ、もう片方でカーソル。</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>クォータービュー RPG</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>パーティ RPG とターン制タクティクス。ポーズ、所持品、ホットバー。</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>ツインスティック</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>見下ろしシューティング。左で移動し、右で照準。</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>メディアリモコン</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>再生、シーク、そしてソファ向けのカーソル。</value></data>
+  <data name="Starter_Racing_Name" xml:space="preserve"><value>レース</value></data>
+  <data name="Starter_Racing_Description" xml:space="preserve"><value>どのパッドでも、落ち着いたステアリングと中心付近の精密な操作。</value></data>
+  <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>宇宙シミュレーター</value></data>
+  <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>2本のスティックで 6 自由度。ドッキング用の精密モード付き。</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>精密（微調整）</value></data>
+  <data name="Starter_GyroAim_Name" xml:space="preserve"><value>ジャイロエイム</value></data>
+  <data name="Starter_GyroAim_Description" xml:space="preserve"><value>左トリガーでモーション照準。スティックもそのまま使えます。</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>クロスホットバー（左）</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>クロスホットバー（右）</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>ダブルクロス（左）</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>ダブルクロス（右）</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>ホットキー</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>ホットバー</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>パーティ</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>ショートカット</value></data>
+  <data name="Starter_QuietLayerName" xml:space="preserve"><value>サイレント（何も送信しません）</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>ヘッドホン音量</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>コントローラーのヘッドセット端子のハードウェア音量。パッドに書き込まれるため、アプリなしでも保持されます。</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>ヘッドホン音量をリセット</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>ヘッドホン音量を上げる</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>ヘッドホン音量を下げる</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>コントローラーのヘッドセット端子の音量を10%上げます。</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>コントローラーのヘッドセット端子の音量を10%下げます。</value></data>
+  <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>出力パス</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>コントローラーが音声をどこで再生するか。既定はファームウェアのルーティングを維持し、PadForgeのサウンドはスピーカーで再生します。ヘッドホン＋スピーカーはヘッドセット側がモノラルになります（ファームウェアの制限）。Bluetooth接続時、このモードはヘッドホンのみで再生されます。ヘッドホン端子に追従は、コントローラーに接続されるとヘッドホンに、外すとスピーカーに切り替わります。端子の状態を取得できない場合は既定と同じ動作になります。</value></data>
+  <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>既定</value></data>
+  <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>ヘッドホン（ステレオ）</value></data>
+  <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>ヘッドホン（モノラル）</value></data>
+  <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>ヘッドホン＋スピーカー</value></data>
+  <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>スピーカーのみ</value></data>
+  <data name="Pad_ResetOutputPath" xml:space="preserve"><value>出力パスをリセット</value></data>
+  <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>ヘッドホン端子に追従</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarzによるDualSense出力レポートのバイトマップとSony scePadセマンティクス。PadForgeのエフェクト・オーディオ処理の基礎。MIT。</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMomentsによるジャック検出オーディオルーティングのパターン。ヘッドホン端子に追従の参照元。ドキュメントとして参照；AGPL-3.0。</value></data>
+  <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>ヘッドセットトラッカー</value></data>
 </root>

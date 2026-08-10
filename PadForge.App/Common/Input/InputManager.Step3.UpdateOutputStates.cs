@@ -189,6 +189,14 @@ namespace PadForge.Common.Input
                             ud.InputState, ps, ms, deviceGuidStr, slot);
                     }
 
+                    // For Vr slots, produce the raw VR output state.
+                    if (slot >= 0 && slot < MaxPads &&
+                        SlotControllerTypes[slot] == VirtualControllerType.Vr)
+                    {
+                        us.VrRawOutputState = MapInputToVrRaw(
+                            ud.InputState, ps, ms, deviceGuidStr, slot);
+                    }
+
                     // For PlayStation slots, produce touchpad state from input device.
                     if (slot >= 0 && slot < MaxPads &&
                         SlotControllerTypes[slot] == VirtualControllerType.PlayStation)
@@ -271,6 +279,21 @@ namespace PadForge.Common.Input
             // active profile isn't Xbox Series.
             if (MapToButtonPressed(state, ps.ButtonShare, deviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone("ButtonShare"), 0), gt, ps.GetMappingBidirectional("ButtonShare") == "1"))
                 gp.Share = true;
+
+            // DualSense mic mute + Edge paddles / Fn, same posture as
+            // Share: outside the 16-bit mask, mapped unconditionally
+            // because the packers only raise wire bits that exist on the
+            // active profile's report and HM drops undeclared bits.
+            if (MapToButtonPressed(state, ps.ButtonMute, deviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone("ButtonMute"), 0), gt, ps.GetMappingBidirectional("ButtonMute") == "1"))
+                gp.MicMute = true;
+            if (MapToButtonPressed(state, ps.LeftPaddle, deviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone("LeftPaddle"), 0), gt, ps.GetMappingBidirectional("LeftPaddle") == "1"))
+                gp.LeftPaddle = true;
+            if (MapToButtonPressed(state, ps.RightPaddle, deviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone("RightPaddle"), 0), gt, ps.GetMappingBidirectional("RightPaddle") == "1"))
+                gp.RightPaddle = true;
+            if (MapToButtonPressed(state, ps.LeftFunction, deviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone("LeftFunction"), 0), gt, ps.GetMappingBidirectional("LeftFunction") == "1"))
+                gp.LeftFunction = true;
+            if (MapToButtonPressed(state, ps.RightFunction, deviceGuid, slotIndex, TryParseIntStatic(ps.GetMappingDeadZone("RightFunction"), 0), gt, ps.GetMappingBidirectional("RightFunction") == "1"))
+                gp.RightFunction = true;
 
             // ── D-Pad ──
             // Individual direction mappings take priority. Only fall back to
@@ -2482,6 +2505,100 @@ namespace PadForge.Common.Input
                 raw.Notes[i] = pressed;
             }
 
+        }
+
+        // ─────────────────────────────────────────────
+        //  VR raw state mapping (issue #49)
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Maps a CustomInputState to a VrRawState using the Vr
+        /// dictionary-based mappings. Sticks are bipolar shorts, triggers
+        /// and grips one-sided 0..32767, buttons the HMVRButton bit
+        /// vocabulary from <see cref="VrLayout"/>.
+        /// </summary>
+        private static VrRawState MapInputToVrRaw(CustomInputState state, PadSetting ps,
+            MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
+        {
+            var raw = new VrRawState();
+            int vgt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
+
+            raw.Left.Buttons = EvalVrButtons(state, ps, mappingSet, thisDeviceGuid,
+                slotIndex, VrLayout.LeftButtonKeys, vgt);
+            raw.Right.Buttons = EvalVrButtons(state, ps, mappingSet, thisDeviceGuid,
+                slotIndex, VrLayout.RightButtonKeys, vgt);
+
+            raw.Left.StickX = EvalVrBipolar(state, ps, mappingSet, thisDeviceGuid,
+                slotIndex, VrLayout.LStickX, "VrLStickXNeg");
+            raw.Left.StickY = EvalVrBipolar(state, ps, mappingSet, thisDeviceGuid,
+                slotIndex, VrLayout.LStickY, "VrLStickYNeg");
+            raw.Right.StickX = EvalVrBipolar(state, ps, mappingSet, thisDeviceGuid,
+                slotIndex, VrLayout.RStickX, "VrRStickXNeg");
+            raw.Right.StickY = EvalVrBipolar(state, ps, mappingSet, thisDeviceGuid,
+                slotIndex, VrLayout.RStickY, "VrRStickYNeg");
+
+            raw.Left.Trigger = EvalVrTrigger(state, ps, mappingSet, thisDeviceGuid,
+                slotIndex, VrLayout.LTrigger, "VrLTriggerNeg");
+            raw.Left.Grip = EvalVrTrigger(state, ps, mappingSet, thisDeviceGuid,
+                slotIndex, VrLayout.LGrip, "VrLGripNeg");
+            raw.Right.Trigger = EvalVrTrigger(state, ps, mappingSet, thisDeviceGuid,
+                slotIndex, VrLayout.RTrigger, "VrRTriggerNeg");
+            raw.Right.Grip = EvalVrTrigger(state, ps, mappingSet, thisDeviceGuid,
+                slotIndex, VrLayout.RGrip, "VrRGripNeg");
+
+            return raw;
+        }
+
+        /// <summary>Evaluates one hand's button byte. Index i is HMVRButton
+        /// bit position 1&lt;&lt;i; bit 5 (TriggerClick) fires at press
+        /// DETECTION like the Extended trigger-click roles, not at the
+        /// generic 50% axis-to-button midpoint.</summary>
+        private static byte EvalVrButtons(CustomInputState state, PadSetting ps,
+            MappingSet mappingSet, string thisDeviceGuid, int slotIndex,
+            string[] keys, int vgt)
+        {
+            byte bits = 0;
+            for (int i = 0; i < keys.Length; i++)
+            {
+                string key = keys[i];
+                int tgt = i == 5 ? TriggerClickActivationPercent : vgt;
+                bool pressed;
+                if (!TryEvaluateMappingSetButton(state, mappingSet, thisDeviceGuid,
+                        slotIndex, key, tgt, out pressed))
+                {
+                    string desc = ps.GetVrMapping(key);
+                    pressed = MapToButtonPressed(state, desc, thisDeviceGuid, slotIndex,
+                        TryParseIntStatic(ps.GetMappingDeadZone(key), 0), tgt,
+                        ps.GetMappingBidirectional(key) == "1");
+                }
+                if (pressed) bits |= (byte)(1 << i);
+            }
+            return bits;
+        }
+
+        private static short EvalVrBipolar(CustomInputState state, PadSetting ps,
+            MappingSet mappingSet, string thisDeviceGuid, int slotIndex,
+            string key, string negKey)
+        {
+            if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                    slotIndex, key, out short v))
+                return v;
+            return MapToThumbAxisWithNeg(state, ps.GetVrMapping(key),
+                ps.GetVrMapping(negKey), thisDeviceGuid, slotIndex);
+        }
+
+        private static short EvalVrTrigger(CustomInputState state, PadSetting ps,
+            MappingSet mappingSet, string thisDeviceGuid, int slotIndex,
+            string key, string negKey)
+        {
+            short v;
+            if (!TryEvaluateMappingSetRawTrigger(state, mappingSet, thisDeviceGuid,
+                    slotIndex, key, out v))
+                v = MapToRawTriggerAxis(state, ps.GetVrMapping(key),
+                    ps.GetVrMapping(negKey), thisDeviceGuid, slotIndex);
+            // Signed trigger domain (short.MinValue = released) → the
+            // VrHandRaw one-sided 0..32767 domain.
+            return (short)((v + 32768) >> 1);
         }
 
         // ─────────────────────────────────────────────

@@ -1,4 +1,4 @@
-// Annotation overlay for the 3D controller preview (#175 roadmap 1).
+﻿// Annotation overlay for the 3D controller preview (#175 roadmap 1).
 //
 // A 2D Canvas sibling of the HelixViewport3D carries one chip per mapped
 // ButtonMap-backed row (steel chip at the canvas edge, 1px cold leader
@@ -300,6 +300,15 @@ namespace PadForge.Views
         /// 2026-07-04).</summary>
         private Model3DGroup ResolveAnnotationAnchor(string targetSettingName)
         {
+            // Nintendo rows are raw grid names (RawBtn0, RawAxis1); the
+            // model's ButtonMap is keyed by the preview element grammar.
+            // Translate first, mirroring the 2D ResolveAnnotationAnchor.
+            if (targetSettingName.StartsWith("Raw", System.StringComparison.Ordinal))
+            {
+                targetSettingName = Models2D.NintendoPreviewMap.ToPreview(targetSettingName, _vm?.ProfileId);
+                if (targetSettingName == null)
+                    return null;
+            }
             if (_currentModel.ButtonMap.TryGetValue(targetSettingName, out var groups)
                 && groups != null && groups.Count > 0)
                 return groups[0];

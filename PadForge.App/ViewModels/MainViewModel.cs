@@ -228,6 +228,7 @@ namespace PadForge.ViewModels
             int extendedCount = 0;
             int midiCount = 0;
             int kbmCount = 0;
+            int vrCount = 0;
             int globalCount = 0;
 
             foreach (var nav in NavControllerItems)
@@ -265,6 +266,11 @@ namespace PadForge.ViewModels
                         kbmCount++;
                         instanceNum = kbmCount;
                         iconKey = "KeyboardMouseControllerIcon";
+                        break;
+                    case VirtualControllerType.Vr:
+                        vrCount++;
+                        instanceNum = vrCount;
+                        iconKey = "VrControllerIcon";
                         break;
                     default:
                         xboxCount++;

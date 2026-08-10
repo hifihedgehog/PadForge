@@ -26,6 +26,12 @@ namespace PadForge.Engine
         /// re-enabled log is that it stays free of errors.</summary>
         private static readonly string _mirrorPath = ReadMirrorPath();
 
+        /// <summary>True only when PADFORGE_DIAG armed a file mirror. Hot
+        /// paths that would otherwise format a string on every change test
+        /// this first, so a normal session pays nothing for a bench trace.
+        /// The ring itself stays cheap; the string interpolation is not.</summary>
+        public static bool IsMirroring => _mirrorPath != null;
+
         private static string ReadMirrorPath()
         {
             try

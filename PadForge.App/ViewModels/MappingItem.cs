@@ -210,7 +210,8 @@ namespace PadForge.ViewModels
                     || t.StartsWith("RawAxis", StringComparison.Ordinal)
                     || t.StartsWith("KbmMouse", StringComparison.Ordinal)
                     || t.StartsWith("KbmScroll", StringComparison.Ordinal)
-                    || t.StartsWith("MidiCC", StringComparison.Ordinal))
+                    || t.StartsWith("MidiCC", StringComparison.Ordinal)
+                    || IsVrAxisTarget(t))
                     return false;
                 if (t == "LeftTrigger" || t == "RightTrigger") return false;
                 return true;
@@ -1349,7 +1350,7 @@ namespace PadForge.ViewModels
                 var t = TargetSettingName;
                 if (t.Contains("ThumbAxis") || t.StartsWith("RawAxis")
                     || t.StartsWith("KbmMouse") || t.StartsWith("KbmScroll")
-                    || t.StartsWith("MidiCC"))
+                    || t.StartsWith("MidiCC") || IsVrAxisTarget(t))
                     return false;
                 if (t == "LeftTrigger" || t == "RightTrigger")
                     return false;
@@ -2127,8 +2128,21 @@ namespace PadForge.ViewModels
                 || t.StartsWith("KbmMouse", StringComparison.Ordinal)
                 || t.StartsWith("KbmScroll", StringComparison.Ordinal)
                 || t.StartsWith("MidiCC", StringComparison.Ordinal)
-                || t.StartsWith("Touchpad", StringComparison.Ordinal);
+                || t.StartsWith("Touchpad", StringComparison.Ordinal)
+                || IsVrAxisTarget(t);
             CombineMode = isAxis ? "MaxAbs" : "OR";
+        }
+
+        /// <summary>True for the VR axis-class targets (stick axes,
+        /// trigger and grip pulls). The "...Click" button names end past
+        /// these suffixes, so they classify as discrete.</summary>
+        internal static bool IsVrAxisTarget(string t)
+        {
+            if (t == null || !t.StartsWith("Vr", StringComparison.Ordinal)) return false;
+            return t.EndsWith("StickX", StringComparison.Ordinal)
+                || t.EndsWith("StickY", StringComparison.Ordinal)
+                || t.EndsWith("Trigger", StringComparison.Ordinal)
+                || t.EndsWith("Grip", StringComparison.Ordinal);
         }
 
         private RelayCommand<MappingSourceItem> _removeExtraSourceCommand;

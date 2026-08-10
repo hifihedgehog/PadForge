@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -357,6 +357,28 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _audioToneLimitHz, value);
         }
 
+        private bool _audioPersonaHapticsEnabled;
+        /// <summary>#271 item 1: render the virtual DualSense's authored
+        /// haptic audio (persona UAC channels 3/4) on this device's
+        /// actuators through the haptic-tone chain. Off by default: the
+        /// derived tones approximate the designer's track, and the toggle
+        /// must be the user's choice per device.</summary>
+        public bool AudioPersonaHapticsEnabled
+        {
+            get => _audioPersonaHapticsEnabled;
+            set => SetProperty(ref _audioPersonaHapticsEnabled, value);
+        }
+
+        private int _audioPersonaHapticsGain = 100;
+        /// <summary>Input gain for the persona-haptics render, percent
+        /// (25-300, default 100). Applied before the tone reducer so a
+        /// quiet authored track can still reach the actuators.</summary>
+        public int AudioPersonaHapticsGain
+        {
+            get => _audioPersonaHapticsGain;
+            set => SetProperty(ref _audioPersonaHapticsGain, value);
+        }
+
         // ────────────────────────────────────────────────
         //  Lightbar: macro-driven override (#63)
         // ────────────────────────────────────────────────
@@ -485,6 +507,40 @@ namespace PadForge.ViewModels
         // ────────────────────────────────────────────────
         //  Mic LED mode (DualSense only) — mute LED state on the front edge
         // ────────────────────────────────────────────────
+
+        // Headphone jack hardware volume, 0-100%. Maps onto the DS5
+        // output report's VolumeHeadphones byte using Sony's own scePad
+        // window (duaLib maps headsetVolume + 64, so the PS5-used range
+        // is 0x40..0x7F; the struct comment agrees: "max 0x7f").
+        // 0% writes 0x00. Owned by the Audio-tab card and the
+        // HeadphoneVolumeUp/Down macro actions.
+        private int _headphoneVolume = 100;
+
+        // Output path (byte 7 bits 4-5). Automatic = never authored.
+        private AudioOutputPath _audioOutputPath = AudioOutputPath.Automatic;
+
+        public AudioOutputPath AudioOutputPath
+        {
+            get => _audioOutputPath;
+            set
+            {
+                if (_audioOutputPath == value) return;
+                _audioOutputPath = value;
+                OnPropertyChanged(nameof(AudioOutputPath));
+            }
+        }
+
+        public int HeadphoneVolume
+        {
+            get => _headphoneVolume;
+            set
+            {
+                int v = Math.Clamp(value, 0, 100);
+                if (_headphoneVolume == v) return;
+                _headphoneVolume = v;
+                OnPropertyChanged(nameof(HeadphoneVolume));
+            }
+        }
 
         private MicLedMode _micLedMode;
         /// <summary>Mic mute LED state. The DS5 firmware exposes three
@@ -1422,6 +1478,14 @@ namespace PadForge.ViewModels
             _resetMicLedMode ??= new RelayCommand(() => MicLedMode = MicLedMode.Off);
         private RelayCommand _resetMicLedMode;
 
+        public RelayCommand ResetHeadphoneVolumeCommand =>
+            _resetHeadphoneVolume ??= new RelayCommand(() => HeadphoneVolume = 100);
+        private RelayCommand _resetHeadphoneVolume;
+
+        public RelayCommand ResetAudioOutputPathCommand =>
+            _resetAudioOutputPath ??= new RelayCommand(() => AudioOutputPath = AudioOutputPath.Automatic);
+        private RelayCommand _resetAudioOutputPath;
+
         /// <summary>Section-level reset for the Guide Button LED card on
         /// the Lighting tab (#209). Mirrors the indicator-LEDs card's
         /// Reset All shape.</summary>
@@ -1537,6 +1601,30 @@ namespace PadForge.ViewModels
     /// <c>MicLedFollowDeviceId</c> — muted endpoint -> Solid (1),
     /// unmuted -> Off (0). Unknown / disconnected device falls back to
     /// Off so a stale config doesn't strand the LED in a wrong state.</summary>
+    /// <summary>Where the DualSense plays its audio (output report
+    /// byte 7 bits 4-5, OutputPathSelect). Values 1-4 map to firmware
+    /// paths 0-3, the four Sony names in duaLib's scePad surface
+    /// (SCE_PAD_AUDIO_PATH_*). Automatic writes nothing and preserves
+    /// the #83 behaviour: firmware routing, with PadForge forcing the
+    /// speaker only while it plays sounds there. Persisted numerically,
+    /// so values are APPEND-ONLY.</summary>
+    public enum AudioOutputPath
+    {
+        Automatic = 0,
+        StereoHeadset = 1,      // firmware path 0, L_R_X
+        MonoHeadset = 2,        // path 1, L_L_X (left channel, both ears)
+        HeadsetAndSpeaker = 3,  // path 2, L_L_R (headset side is MONO)
+        SpeakerOnly = 4,        // path 3, X_X_R
+
+        /// <summary>DS5_Bridge's pattern (set_headset /
+        /// bt_rearm_speaker_output_route): follow the pad's own jack
+        /// detect, headphones while plugged, speaker while not. Jack
+        /// state arrives on the Bluetooth raw lane
+        /// (PluggedHeadphones, input status byte bit 0); with no
+        /// reading (USB, or no persona lane) it resolves to Default.</summary>
+        FollowHeadphoneJack = 5,
+    }
+
     public enum MicLedMode
     {
         Off = 0,
@@ -1793,6 +1881,15 @@ namespace PadForge.ViewModels
         // High-tone filter (#202). Defaults match the VM: Off / 800 Hz.
         [XmlAttribute] public string AudioToneFilterMode { get; set; } = "Off";
         [XmlAttribute] public int AudioToneLimitHz { get; set; } = 800;
+        // Persona haptics on the actuators (#271 item 1). Defaults match
+        // the VM: off / 100%.
+        [XmlAttribute] public bool AudioPersonaHapticsEnabled { get; set; }
+        [XmlAttribute] public int AudioPersonaHapticsGain { get; set; } = 100;
+        // Headphone jack hardware volume (0-100, default 100). Missing
+        // attribute on legacy XML keeps the initializer, so old configs
+        // load as full volume, the pre-feature effective behaviour.
+        [XmlAttribute] public int HeadphoneVolume { get; set; } = 100;
+        [XmlAttribute] public AudioOutputPath AudioOutputPath { get; set; } = AudioOutputPath.Automatic;
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
         [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;
         [XmlAttribute] public PlayerLedMode PlayerLedMode { get; set; } = PlayerLedMode.Off;

@@ -34,6 +34,7 @@ namespace PadForge.Tests
         [InlineData(SourceCoercion.GyroAuxPitchDescriptor)]
         [InlineData(SourceCoercion.GyroAuxYawDescriptor)]
         [InlineData(SourceCoercion.GyroAuxRollDescriptor)]
+        [InlineData(SourceCoercion.GyroAuxHorizontalDescriptor)]
         public void GyroAuxRateDescriptors_SurviveBuildFromLegacy_ByteIdentical(string descriptor)
         {
             var ps = new PadSetting { LeftThumbAxisX = descriptor };
@@ -57,6 +58,7 @@ namespace PadForge.Tests
         [InlineData(SourceCoercion.GyroAuxPitchDescriptor)]
         [InlineData(SourceCoercion.GyroAuxYawDescriptor)]
         [InlineData(SourceCoercion.GyroAuxRollDescriptor)]
+        [InlineData(SourceCoercion.GyroAuxHorizontalDescriptor)]
         [InlineData(MappingSetMigrator.MotionGyroAuxSourceDescriptor)]
         [InlineData(MappingSetMigrator.MotionAccelAuxSourceDescriptor)]
         public void AuxDescriptors_SurviveTheMappingSetXmlRoundTrip_ByteIdentical(string descriptor)

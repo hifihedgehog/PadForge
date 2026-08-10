@@ -161,7 +161,12 @@ namespace PadForge.Common.Input
                         (wrapper.SerialNumber != null
                          && wrapper.SerialNumber.StartsWith("HM-CTL-", StringComparison.Ordinal))
                         || (wrapper.DevicePath != null
-                            && wrapper.DevicePath.IndexOf("HIDMAESTRO", StringComparison.OrdinalIgnoreCase) >= 0);
+                            && wrapper.DevicePath.IndexOf("HIDMAESTRO", StringComparison.OrdinalIgnoreCase) >= 0)
+                        // Composite personas (HM v1.4.0) ride the real USB
+                        // stack and carry neither marker. Their one
+                        // discriminator is usbip2_ude ancestry. Sony VID
+                        // only, the sole composite vendor today.
+                        || (wrapper.VendorId == 0x054C && IsOnUsbipVhci(wrapper.DevicePath));
                     if (selfVirtual)
                     {
                         Engine.SdlDiagLog.WriteLine(
@@ -405,6 +410,9 @@ namespace PadForge.Common.Input
 
             // --- Phase 1f: NFC PC/SC readers (issue #150) ---
             changed |= UpdateNfcReaderDevices();
+
+            // --- Phase 1g: Sony headset head trackers (issue #188) ---
+            changed |= UpdateHeadsetMotionDevices();
 
             // --- Phase 2: Detect disconnected SDL devices (debounced) ---
             //
@@ -1257,6 +1265,54 @@ namespace PadForge.Common.Input
         private volatile bool _nfcInputsSuppressed;
         private const int _nfcStartRetryMs = 5000;
 
+        // Sony headset head trackers (Phase 1g, issue #188). Discovery,
+        // qualification (Bluetooth feature-report reads) and the enable
+        // sequence are all blocking device I/O, so the worker does the
+        // whole open and the poll thread only registers finished devices
+        // and retires vanished ones.
+        private readonly Dictionary<string, SonyHeadsetMotionDevice> _openedHeadsets =
+            new Dictionary<string, SonyHeadsetMotionDevice>(StringComparer.OrdinalIgnoreCase);
+        private readonly List<SonyHeadsetMotionDevice> _headsetPendingRegister =
+            new List<SonyHeadsetMotionDevice>();
+        private readonly object _headsetLock = new object();
+        private volatile bool _headsetSweepRunning;
+        private volatile bool _headsetInputsSuppressed;
+        // Latest sweep's present qualified paths; null until the first
+        // sweep completes so nothing is retired on a cold cache.
+        private volatile HashSet<string> _headsetPresentPaths;
+        private long _headsetNextSweepTicks;
+        private readonly Dictionary<string, long> _headsetOpenFailedAt =
+            new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
+        // Wall-clock cadence like the NFC retry throttle: the sweep opens
+        // handles across the HID tree, so it runs well below the ~2 s
+        // device-sweep rate.
+        private const int _headsetSweepIntervalMs = 3000;
+        private const int _headsetOpenRetryMs = 60000;
+        // Unattended rebind of a failed-start head-tracker node (worker
+        // thread). Detection runs EVERY sweep (one cheap SetupDi pass), so
+        // a node that appears right after a Bluetooth connect is fixed
+        // within one sweep interval; the backoff is per node instance, so
+        // only a node that refuses to start under the inbox driver is
+        // left alone between retries. A blanket 30 s cooldown here was
+        // the owner-reported 10-20 s connect-to-row latency.
+        private string _headsetLastRebindInstance;
+        private long _headsetLastRebindTicks;
+        private const int _headsetRebindRetryMs = 60000;
+        // One-shot PnP-tree identity mining (see the sweep comment).
+        private volatile bool _headsetMinedPnpTree;
+        // Trackers that qualified this session, by paired-device address.
+        // When one's HID node vanishes (the XM5 drops the sensor channel
+        // spontaneously; hardware-observed Win32 1167 + node removal,
+        // 2026-08-07) the sweep re-requests its HID service. The absence
+        // check and the connection probe are cheap cached reads, so they
+        // run EVERY sweep; only an ISSUED service request carries a
+        // per-address cooldown. A blanket 20 s gate here made a headset
+        // that reconnected right after an attempt wait out the window
+        // (owner-measured 25-30 s to reappear).
+        private readonly HashSet<ulong> _headsetKnownAddresses = new HashSet<ulong>();
+        private readonly Dictionary<ulong, long> _headsetServiceRequestAt = new Dictionary<ulong, long>();
+        private const int _headsetServiceRequestIntervalMs = 20000;
+
         /// <summary>
         /// Tears down every open MIDI input connection and the shared input
         /// session, and suppresses Phase 1e until app restart. Called before
@@ -1603,6 +1659,307 @@ namespace PadForge.Common.Input
             }
 
             return changed;
+        }
+
+        /// <summary>
+        /// Phase 1g: registers Sony headset head trackers (issue #188),
+        /// mirroring the MIDI sweep shape. Discovery, the marker probe and
+        /// the enable-sequence feature writes are Bluetooth I/O, so a
+        /// worker performs the entire enumerate-and-open; this poll-thread
+        /// phase only registers finished devices and retires ones whose
+        /// HID node vanished or whose reader thread died.
+        /// </summary>
+        private bool UpdateHeadsetMotionDevices()
+        {
+            if (_headsetInputsSuppressed)
+                return false;
+
+            long now = Environment.TickCount64;
+            if (!_headsetSweepRunning && now >= _headsetNextSweepTicks)
+            {
+                _headsetSweepRunning = true;
+                _headsetNextSweepTicks = now + _headsetSweepIntervalMs;
+                Task.Run(() =>
+                {
+                    try { HeadsetMotionSweep(); }
+                    catch { }
+                    finally { _headsetSweepRunning = false; }
+                });
+            }
+
+            bool changed = false;
+            var present = _headsetPresentPaths;
+            lock (_headsetLock)
+            {
+                // Re-check under the lock: shutdown may have latched while
+                // the worker was finishing (the MIDI suppress pattern).
+                if (_headsetInputsSuppressed)
+                    return false;
+
+                // Register devices the worker finished opening.
+                for (int i = 0; i < _headsetPendingRegister.Count; i++)
+                {
+                    var dev = _headsetPendingRegister[i];
+                    try
+                    {
+                        UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
+                        ud.LoadFromExternalDevice(dev);
+                        ud.IsOnline = true;
+                        _openedHeadsets[dev.DevicePath] = dev;
+                        changed = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        dev.Dispose();
+                        RaiseError($"Error registering headset tracker '{dev.Name}'", ex);
+                    }
+                }
+                _headsetPendingRegister.Clear();
+
+                // Retire vanished nodes, dead readers, and rows the user
+                // removed from the Devices page (the MIDI recreate pattern:
+                // dropping the tracking entry lets the next sweep re-open).
+                List<string> gone = null;
+                foreach (var kvp in _openedHeadsets)
+                {
+                    bool vanished = present != null && !present.Contains(kvp.Key);
+                    bool dead = !kvp.Value.IsAttached;
+                    bool removedByUser = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid) == null;
+                    if (vanished || dead || removedByUser)
+                        (gone ??= new List<string>()).Add(kvp.Key);
+                }
+                if (gone != null)
+                {
+                    foreach (var path in gone)
+                    {
+                        var dev = _openedHeadsets[path];
+                        var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
+                        if (ud != null)
+                        {
+                            ud.IsOnline = false;
+                            ud.Device = null;
+                            // Same neutralize the MIDI/NFC retire paths
+                            // perform: a gyro deflection held at vanish time
+                            // would stay stamped on the slot's output.
+                            NeutralizeMappedOutputsFor(ud);
+                        }
+                        dev.Dispose();
+                        _openedHeadsets.Remove(path);
+                        changed = true;
+                    }
+                }
+
+                // Forget open-failure cooldowns for vanished paths so a
+                // re-created node starts fresh.
+                if (present != null && _headsetOpenFailedAt.Count > 0)
+                {
+                    List<string> stale = null;
+                    foreach (var key in _headsetOpenFailedAt.Keys)
+                        if (!present.Contains(key)) (stale ??= new List<string>()).Add(key);
+                    if (stale != null) foreach (var key in stale) _headsetOpenFailedAt.Remove(key);
+                }
+            }
+            return changed;
+        }
+
+        /// <summary>Worker half of Phase 1g: enumerate qualified trackers,
+        /// open and configure the new ones, queue them for poll-thread
+        /// registration. All blocking I/O lives here.</summary>
+        private void HeadsetMotionSweep()
+        {
+            // Self-heal BEFORE enumerating: Windows routinely parks the
+            // head-tracker child at CM_PROB_FAILED_START under its sensor
+            // class driver (hardware-confirmed 2026-08-07 on a WH-1000XM5),
+            // and a failed node never qualifies, so no row exists exactly
+            // when the repair is needed. Detection runs every sweep; the
+            // rebind acts only on exactly one matching node (the
+            // reference's own gate) with a per-node retry backoff.
+            long repairTick = Environment.TickCount64;
+            try
+            {
+                int matches = PadForge.Services.HeadsetTrackerRepair.FindFailedStartNode(
+                    out string failedInstance, out string failedHardwareId);
+                if (matches == 1
+                    && (!string.Equals(failedInstance, _headsetLastRebindInstance, StringComparison.OrdinalIgnoreCase)
+                        || repairTick - _headsetLastRebindTicks > _headsetRebindRetryMs))
+                {
+                    _headsetLastRebindInstance = failedInstance;
+                    _headsetLastRebindTicks = repairTick;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"Headset auto-repair: binding {failedInstance} to inbox input.inf");
+                    if (PadForge.Services.HeadsetTrackerRepair.RebindNode(failedHardwareId,
+                            line => PadForge.Engine.SdlDiagLog.WriteLine("Headset auto-repair: " + line)))
+                        SonyHeadsetMotionRuntime.InvalidateCache();
+                }
+                else if (matches > 1)
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"Headset auto-repair: {matches} failed head-tracker nodes; not rebinding");
+                }
+            }
+            catch { }
+
+            var candidates = SonyHeadsetMotionRuntime.Enumerate();
+            if (candidates == null)
+                return; // enumeration failed; keep the previous snapshot
+            var present = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var c in candidates) present.Add(c.Path);
+            _headsetPresentPaths = present;
+
+            // Known trackers (this session or persisted from earlier runs)
+            // whose node is absent: re-request the HID service so the
+            // stream comes back on its own. The rebind above then starts
+            // the recreated node, which routinely returns at failed-start.
+            long svcTick = Environment.TickCount64;
+
+            // With no candidates and no remembered addresses (fresh
+            // process after a force-kill, settings never saved), the
+            // PnP tree itself still records every tracker this machine
+            // has seen: the phantom node left behind by a channel drop
+            // resolves to its paired address (hardware-observed
+            // 2026-08-07, the exact state that stranded a connected
+            // headset with no recovery path).
+            if (candidates.Count == 0 && !_headsetMinedPnpTree)
+            {
+                bool haveAny;
+                lock (_headsetLock)
+                    haveAny = _headsetKnownAddresses.Count > 0
+                        || SonyHeadsetMotionRuntime.GetPersistedAddresses().Length > 0;
+                if (!haveAny)
+                {
+                    // Once per process: the scan walks every node's
+                    // hardware IDs, and its only job is recovering PAST
+                    // identity. A first-ever tracker arrives as a live
+                    // candidate through normal enumeration instead.
+                    _headsetMinedPnpTree = true;
+                    try
+                    {
+                        foreach (ulong mined in PadForge.Services.HeadsetTrackerRepair.FindKnownTrackerAddresses())
+                        {
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"Headset: recovered tracker address {mined:X12} from a PnP node record");
+                            SonyHeadsetMotionRuntime.RememberAddress(mined);
+                        }
+                    }
+                    catch { }
+                }
+            }
+
+            List<ulong> absent = null;
+            lock (_headsetLock)
+            {
+                foreach (ulong persisted in SonyHeadsetMotionRuntime.GetPersistedAddresses())
+                    _headsetKnownAddresses.Add(persisted);
+                foreach (ulong address in _headsetKnownAddresses)
+                {
+                    bool covered = false;
+                    foreach (var c in candidates)
+                        if (c.BluetoothAddress == address) { covered = true; break; }
+                    if (covered) continue;
+                    // The per-address cooldown applies to ISSUED requests
+                    // only; a disconnected headset is probed again next
+                    // sweep so a reconnect is caught within ~3 s.
+                    if (_headsetServiceRequestAt.TryGetValue(address, out long at)
+                        && svcTick - at < _headsetServiceRequestIntervalMs)
+                        continue;
+                    (absent ??= new List<ulong>()).Add(address);
+                }
+            }
+            if (absent != null)
+            {
+                foreach (ulong address in absent)
+                {
+                    try
+                    {
+                        var outcome = PadForge.Services.HeadsetTrackerRepair.RequestHidServiceByAddress(
+                            address, line => PadForge.Engine.SdlDiagLog.WriteLine("Headset service: " + line));
+                        if (outcome == PadForge.Services.HeadsetTrackerRepair.Outcome.ServiceRequested
+                            || outcome == PadForge.Services.HeadsetTrackerRepair.Outcome.Failed)
+                        {
+                            // Both outcomes touched BluetoothSetServiceState;
+                            // pace further attempts for this address.
+                            lock (_headsetLock)
+                                _headsetServiceRequestAt[address] = svcTick;
+                        }
+                        if (outcome == PadForge.Services.HeadsetTrackerRepair.Outcome.ServiceRequested)
+                            SonyHeadsetMotionRuntime.InvalidateCache();
+                    }
+                    catch { }
+                }
+            }
+
+            long now = Environment.TickCount64;
+            foreach (var candidate in candidates)
+            {
+                lock (_headsetLock)
+                {
+                    if (_headsetInputsSuppressed) return;
+                    if (_openedHeadsets.ContainsKey(candidate.Path)) continue;
+                    bool pending = false;
+                    for (int i = 0; i < _headsetPendingRegister.Count; i++)
+                        if (string.Equals(_headsetPendingRegister[i].DevicePath, candidate.Path,
+                                StringComparison.OrdinalIgnoreCase)) { pending = true; break; }
+                    if (pending) continue;
+                    if (_headsetOpenFailedAt.TryGetValue(candidate.Path, out long failedAt)
+                        && now - failedAt < _headsetOpenRetryMs)
+                        continue;
+                }
+
+                var dev = new SonyHeadsetMotionDevice(candidate);
+                bool ok = false;
+                try { ok = dev.Open(); }
+                catch { }
+                PadForge.Engine.SdlDiagLog.WriteLine(ok
+                    ? $"Headset: opened '{candidate.Name}' (accel={candidate.HasAccel})"
+                    : $"Headset: open/enable failed for '{candidate.Name}', retry in {_headsetOpenRetryMs / 1000} s");
+                lock (_headsetLock)
+                {
+                    if (_headsetInputsSuppressed) { dev.Dispose(); return; }
+                    if (!ok)
+                    {
+                        dev.Dispose();
+                        _headsetOpenFailedAt[candidate.Path] = now;
+                        continue;
+                    }
+                    _headsetOpenFailedAt.Remove(candidate.Path);
+                    _headsetPendingRegister.Add(dev);
+                    if (candidate.BluetoothAddress != 0)
+                    {
+                        _headsetKnownAddresses.Add(candidate.BluetoothAddress);
+                        // Persisted through AppSettings so an app restart
+                        // with the node absent can still re-request the
+                        // tracker's HID service.
+                        SonyHeadsetMotionRuntime.RememberAddress(candidate.BluetoothAddress);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tears down every open headset tracker and suppresses Phase 1g.
+        /// Called on app shutdown alongside ShutdownNfcReaders.
+        /// </summary>
+        public void ShutdownHeadsetMotionInputs()
+        {
+            _headsetInputsSuppressed = true;
+            lock (_headsetLock)
+            {
+                foreach (var kvp in _openedHeadsets)
+                {
+                    var ud = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid);
+                    if (ud != null)
+                    {
+                        ud.IsOnline = false;
+                        ud.Device = null;
+                        NeutralizeMappedOutputsFor(ud);
+                    }
+                    kvp.Value.Dispose();
+                }
+                _openedHeadsets.Clear();
+                foreach (var dev in _headsetPendingRegister)
+                    dev.Dispose();
+                _headsetPendingRegister.Clear();
+            }
         }
 
         /// <summary>

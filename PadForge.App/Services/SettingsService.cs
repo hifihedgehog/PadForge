@@ -374,6 +374,17 @@ namespace PadForge.Services
                 if (data.AppSettings != null)
                     LoadAppSettings(data.AppSettings);
 
+                // Ghost-mapping guard: saves written before DeleteSlot
+                // dropped the slot's MappingSet can carry authored sets for
+                // slots that no longer exist. Loading one parks it in
+                // memory where the next same-index CreateSlot resurrects
+                // the deleted VC's bindings. Runs here because SlotCreated
+                // is only populated by LoadAppSettings above. Phase 2A
+                // (LoadOrMigrateSlotMappingSets) is too early to know
+                // which slots are real. Same shape as the lighting-config
+                // skip for uncreated slots in ApplyDeviceSlotConfigs.
+                MaskMappingSetsForUncreatedSlots();
+
                 // Publish user-imported HIDMaestro profiles to the catalog
                 // so they appear in the Extended dropdown alongside the
                 // built-in entries. _userProfiles is the in-memory mirror
@@ -538,6 +549,28 @@ namespace PadForge.Services
         /// <summary>Test seam for the startup load path.</summary>
         internal static void LoadOrMigrateSlotMappingSetsForTest(MappingSet[] persisted)
             => LoadOrMigrateSlotMappingSets(persisted);
+
+        /// <summary>Replaces any authored MappingSet sitting at an
+        /// UNCREATED slot index with a fresh empty one. A slot's set dies
+        /// with the slot (PadViewModel.ResetAllSettings swaps it out at
+        /// delete time), but saves written before that fix still carry
+        /// the deleted VC's set, and a loaded ghost resurrects the moment
+        /// the same type is created at the same index. Reference swap,
+        /// never in-place mutation: the poll thread may be walking the
+        /// stale set. Internal for the delete-then-recreate pins.</summary>
+        internal static void MaskMappingSetsForUncreatedSlots()
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null) return;
+            int n = Math.Min(sets.Length, SettingsManager.SlotCreated.Length);
+            for (int slot = 0; slot < n; slot++)
+            {
+                if (SettingsManager.SlotCreated[slot]) continue;
+                if (sets[slot] == null || !sets[slot].HasAuthoredContent) continue;
+                sets[slot] = new MappingSet();
+                Common.Input.InputManager.ResetSourceKindRuntimeForSlot(slot);
+            }
+        }
 
         private static void LoadOrMigrateSlotMappingSets(MappingSet[] persisted)
         {
@@ -730,6 +763,24 @@ namespace PadForge.Services
                 var padVm = pads[slot];
                 if (padVm == null) continue;
 
+                // An UNCREATED slot has no VC for the grid to describe, so
+                // its grid is never a source of truth. Concretely: in the
+                // delete flow, RefreshAfterSlotReorder runs
+                // UpdatePadDeviceInfo BEFORE it rebuilds the grids, and
+                // that can raise OnSelectedDeviceChanged, which lands here
+                // while the deleted pad's grid still holds the deleted
+                // VC's rows and MappingsViewLoaded is still true. Without
+                // this gate the push wrote those rows straight back into
+                // the set DeleteSlot had just emptied, resurrecting the
+                // deleted VC's mappings for the next same-index create
+                // (owner re-report 2026-08-02, after the delete-time swap
+                // alone proved insufficient). Same self-guarding rule as
+                // the stale-flag check above: the writer gates itself, so
+                // every present and future caller inherits it.
+                if (slot < SettingsManager.SlotCreated.Length
+                    && !SettingsManager.SlotCreated[slot])
+                    continue;
+
                 // A pad whose grid has not been hydrated yet is NOT a
                 // source of truth (round eleven). MappingsViewLoaded is
                 // false across a device assignment and every output-type
@@ -902,6 +953,17 @@ namespace PadForge.Services
                                 Invert = !ninv,
                                 HalfAxis = nhalf,
                                 Bidirectional = mapping.IsBidirectional,
+                                // Same row, same ramp: the primary leg
+                                // above carries ParamAccel and this one
+                                // did not, so acceleration applied to one
+                                // direction of a bipolar axis only.
+                                // InvertOutput is deliberately NOT copied
+                                // here: the migrator's neg-leg convention
+                                // FLIPS it for half-axis sources rather
+                                // than copying it, and this path has never
+                                // stamped it. Aligning the two is its own
+                                // adjudication, not a rider on ParamAccel.
+                                ParamAccel = mapping.ParamAccel,
                                 DeadZone = mapping.MappingDeadZone,
                                 GyroSensitivity = mapping.GyroSensitivity > 0 ? mapping.GyroSensitivity : 1.0,
                                 MouseCursorSensitivity = mapping.MouseCursorSensitivity > 0 ? mapping.MouseCursorSensitivity : 1.0,
@@ -1690,6 +1752,10 @@ namespace PadForge.Services
                 // SOCD authoring (#240), same family.
                 merged.SocdMode = current.SocdMode ?? "";
                 merged.SocdPairs = current.SocdPairs ?? "";
+                // Keep Awake (#270), same family.
+                merged.KeepAwakeEnabled = current.KeepAwakeEnabled;
+                merged.KeepAwakeAxis = current.KeepAwakeAxis ?? "";
+                merged.KeepAwakeDeflection = current.KeepAwakeDeflection;
                 var consumedRebuilt = new HashSet<(string, string)>();
 
                 foreach (var er in current.Rows)
@@ -1813,6 +1879,11 @@ namespace PadForge.Services
                 appSettings.SoundPackages?.Select(p => (p.Name, p.Path)));
             PadForge.Common.Input.NfcTagRegistry.LoadRegistry(
                 appSettings.NfcTags?.Select(t => (t.Uid, t.Name, t.Button)));
+            // Headset trackers (#188): addresses that ever qualified, so
+            // the sweep's HID-service re-request survives an app restart
+            // while the sensor node is absent.
+            PadForge.Common.Input.SonyHeadsetMotionRuntime.LoadPersistedAddresses(
+                appSettings.HeadsetTrackerAddresses);
 
             // Remote Link (issue #138): carry the stored identity + trust list into
             // the runtime holder. No minting here — the identity is created lazily
@@ -1924,7 +1995,16 @@ namespace PadForge.Services
                 for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotProfileIds.Length; i++)
                 {
                     if (SettingsManager.SlotCreated[i])
+                    {
+                        // The persisted profile and the persisted mapping
+                        // data were saved together, so they are already on
+                        // one wire. Stamp before the VM assignment or the
+                        // ProfileId setter's Nintendo wire translation
+                        // reads a stale previous value and mistranslates
+                        // consistent data on every launch.
+                        SettingsManager.StampNintendoWire(i, appSettings.SlotProfileIds[i]);
                         _mainVm.Pads[i].ProfileId = appSettings.SlotProfileIds[i];
+                    }
                 }
             }
 
@@ -1948,7 +2028,8 @@ namespace PadForge.Services
                 appSettings.ExtendedSlotOrder,
                 appSettings.KeyboardMouseSlotOrder,
                 appSettings.MidiSlotOrder,
-                appSettings.NintendoSlotOrder);
+                appSettings.NintendoSlotOrder,
+                appSettings.VrSlotOrder);
 
             ApplyExtendedConfigs(appSettings.ExtendedConfigs);
             ApplyDeviceSlotConfigs(appSettings.DeviceSlotConfigs);
@@ -2182,6 +2263,8 @@ namespace PadForge.Services
                 || c.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.MicLedMode != ViewModels.MicLedMode.Off
+                || c.HeadphoneVolume != 100
+                || c.AudioOutputPath != ViewModels.AudioOutputPath.Automatic
                 || c.PlayerLedMode != (c.LightingRev >= 1
                     ? ViewModels.PlayerLedMode.PlayerNumber : ViewModels.PlayerLedMode.Off)
                 // #209: a chosen Guide LED mode is a deliberate,
@@ -2197,6 +2280,7 @@ namespace PadForge.Services
                 // #202: same keep-alive rule. A chosen tone filter is a
                 // deliberate, copy-worthy configuration.
                 || (c.AudioToneFilterMode != null && c.AudioToneFilterMode != "Off")
+                || c.AudioPersonaHapticsEnabled || c.AudioPersonaHapticsGain != 100
                 // #239: enabled synthetic pressure is copy-worthy, and a
                 // changed touch level keeps the config alive while the
                 // toggle is momentarily off (the #185/#202 keep-alive rule).
@@ -2211,6 +2295,8 @@ namespace PadForge.Services
                 || c.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.MicLedMode != ViewModels.MicLedMode.Off
+                || c.HeadphoneVolume != 100
+                || c.AudioOutputPath != ViewModels.AudioOutputPath.Automatic
                 || c.PlayerLedMode != ViewModels.PlayerLedMode.PlayerNumber
                 || c.GuideLedMode != ViewModels.GuideLedMode.DeviceDefault
                 || c.AudioPassthroughEnabled
@@ -2219,6 +2305,7 @@ namespace PadForge.Services
                 || c.AudioMirrorEngageMode != "Always"
                 || !string.IsNullOrEmpty(c.AudioMirrorEngageButton)
                 || c.AudioToneFilterMode != "Off"
+                || c.AudioPersonaHapticsEnabled || c.AudioPersonaHapticsGain != 100
                 || c.TouchpadSyntheticPressure
                 || c.TouchpadSyntheticTouchPercent != 50);
 
@@ -2550,6 +2637,8 @@ namespace PadForge.Services
                     cfg.AudioMirrorEngageReleaseMs = cfgData.AudioMirrorEngageReleaseMs;
                     cfg.AudioToneFilterMode = cfgData.AudioToneFilterMode ?? "Off";
                     cfg.AudioToneLimitHz = cfgData.AudioToneLimitHz;
+                    cfg.AudioPersonaHapticsEnabled = cfgData.AudioPersonaHapticsEnabled;
+                    cfg.AudioPersonaHapticsGain = cfgData.AudioPersonaHapticsGain;
                     // Migrate legacy MicLightOn to the new MicLedMode if
                     // the new field hasn't been set explicitly.
                     if (cfgData.MicLedMode != ViewModels.MicLedMode.Off)
@@ -2557,6 +2646,8 @@ namespace PadForge.Services
                     else
                         cfg.MicLightOn = cfgData.MicLightOn;
                     cfg.MicLedFollowDeviceId = cfgData.MicLedFollowDeviceId ?? string.Empty;
+                    cfg.HeadphoneVolume = cfgData.HeadphoneVolume;
+                    cfg.AudioOutputPath = cfgData.AudioOutputPath;
                     cfg.PlayerLedMode = cfgData.PlayerLedMode;
                     cfg.PlayerLedBrightness = cfgData.PlayerLedBrightness;
                     cfg.GuideLedMode = cfgData.GuideLedMode;
@@ -2842,6 +2933,7 @@ namespace PadForge.Services
                 padVm.RightMotorStrength = TryParseInt(ps.RightMotorStrength, 100);
                 padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                     (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+                padVm.TriggerRumbleFold = ps.TriggerRumbleFold == "1";
 
                 // Load impulse trigger settings (Xbox One+).
                 padVm.ImpulseOverallGain = TryParseInt(ps.ImpulseOverallGain, 100);
@@ -2849,6 +2941,7 @@ namespace PadForge.Services
                 padVm.ImpulseRightStrength = TryParseInt(ps.ImpulseRightStrength, 100);
                 padVm.ImpulseSwapTriggers = ps.ImpulseSwapTriggers == "1" ||
                     (ps.ImpulseSwapTriggers ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+                padVm.AtVibrationToImpulse = ps.AtVibrationToImpulseEnabled == "1";
                 padVm.ConstantTriggerForceEnabled = ps.ConstantTriggerForceEnabled == "1";
                 padVm.ConstantTriggerForceLeft = TryParseDouble(ps.ConstantTriggerForceLeft, 0.0);
                 padVm.ConstantTriggerForceRight = TryParseDouble(ps.ConstantTriggerForceRight, 0.0);
@@ -2873,6 +2966,7 @@ namespace PadForge.Services
                 padVm.IrSensorBarCompPercent = (int)Math.Round(TryParseDouble(ps.IrSensorBarComp, 0) * 100.0);
                 padVm.IrSmoothingPercent = (int)Math.Round(TryParseDouble(ps.IrSmoothing, 0) * 100.0);
                 padVm.PointerMode = string.IsNullOrEmpty(ps.PointerMode) ? "Mouse" : ps.PointerMode;
+                padVm.Model3DAppearances = ps.Model3DAppearances ?? "";
                 padVm.PointerFpsSpeed = TryParseInt(ps.PointerFpsSpeed, 35);
 
                 // Load JoyShockMapper-canongyro extensions.
@@ -2887,6 +2981,7 @@ namespace PadForge.Services
                 padVm.GyroAimEngageDeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
                 padVm.GyroAimEngageMode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
                 padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
+                padVm.GyroCompassYaw = ps.GyroCompassYaw == "1";
                 padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
                 padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
 
@@ -3071,6 +3166,16 @@ namespace PadForge.Services
             foreach (var md in macros)
             {
                 if (md.PadIndex < 0 || md.PadIndex >= _mainVm.Pads.Count)
+                    continue;
+
+                // Ghost guard, sibling of MaskMappingSetsForUncreatedSlots:
+                // a save from before delete-time macro clearing can carry a
+                // deleted slot's macros, and loading them parks them on the
+                // pad VM for the next same-index VC to inherit. Both call
+                // sites (startup load, profile apply) run after SlotCreated
+                // reflects the incoming state, so the gate is current.
+                if (md.PadIndex < SettingsManager.SlotCreated.Length
+                    && !SettingsManager.SlotCreated[md.PadIndex])
                     continue;
 
                 var padVm = _mainVm.Pads[md.PadIndex];
@@ -3370,7 +3475,15 @@ namespace PadForge.Services
                     for (int i = 0; i < _mainVm.Pads.Count && i < active.SlotProfileIds.Length; i++)
                     {
                         if (SettingsManager.SlotCreated[i])
+                        {
+                            // The apply already installed this profile's
+                            // mapping sets; stamp their wire before the VM
+                            // assignment so the setter's translation stands
+                            // down instead of treating the incoming data as
+                            // the OUTGOING profile's (see StampNintendoWire).
+                            SettingsManager.StampNintendoWire(i, active.SlotProfileIds[i]);
                             _mainVm.Pads[i].ProfileId = active.SlotProfileIds[i];
+                        }
                     }
                 }
 
@@ -3384,7 +3497,8 @@ namespace PadForge.Services
                     active.ExtendedSlotOrder,
                     active.KeyboardMouseSlotOrder,
                     active.MidiSlotOrder,
-                    active.NintendoSlotOrder);
+                    active.NintendoSlotOrder,
+                    active.VrSlotOrder);
 
                 // Now that SlotCreated and OutputType are restored, apply Extended/MIDI/device
                 // configs from the profile's own snapshot.
@@ -3503,6 +3617,7 @@ namespace PadForge.Services
             profile.ExtendedSlotOrder      = SettingsManager.ExtendedSlotOrder.ToArray();
             profile.KeyboardMouseSlotOrder = SettingsManager.KeyboardMouseSlotOrder.ToArray();
             profile.MidiSlotOrder          = SettingsManager.MidiSlotOrder.ToArray();
+            profile.VrSlotOrder            = SettingsManager.VrSlotOrder.ToArray();
             profile.EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer;
             profile.DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort;
             profile.EnableWebController = _mainVm.Dashboard.EnableWebController;
@@ -3538,7 +3653,7 @@ namespace PadForge.Services
         /// </summary>
         internal static string FormatTopologyLabel(bool[] slotCreated, int[] slotControllerTypes)
         {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm, out int nintendo);
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm, out int nintendo, out int vr);
             var parts = new System.Collections.Generic.List<string>();
             if (xbox > 0) parts.Add($"{xbox}x Xbox");
             if (playstation > 0) parts.Add($"{playstation}x PlayStation");
@@ -3546,27 +3661,29 @@ namespace PadForge.Services
             if (extendedCount > 0) parts.Add($"{extendedCount}x Extended");
             if (midi > 0) parts.Add($"{midi}x MIDI");
             if (kbm > 0) parts.Add($"{kbm}x KB+M");
+            if (vr > 0) parts.Add($"{vr}x VR");
             return parts.Count > 0 ? string.Join(", ", parts) : Strings.Instance.Profiles_NoSlots;
         }
 
         internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,
             bool[] slotCreated, int[] slotControllerTypes)
         {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm, out int nintendo);
+            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm, out int nintendo, out int vr);
             item.XboxCount = xbox;
             item.PlayStationCount = playstation;
             item.ExtendedCount = extendedCount;
             item.MidiCount = midi;
             item.KbmCount = kbm;
             item.NintendoCount = nintendo;
+            item.VrCount = vr;
             item.TopologyLabel = FormatTopologyLabel(slotCreated, slotControllerTypes);
         }
 
         private static void CountTopology(bool[] slotCreated, int[] slotControllerTypes,
             out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm,
-            out int nintendo)
+            out int nintendo, out int vr)
         {
-            xbox = 0; playstation = 0; extendedCount = 0; midi = 0; kbm = 0; nintendo = 0;
+            xbox = 0; playstation = 0; extendedCount = 0; midi = 0; kbm = 0; nintendo = 0; vr = 0;
             if (slotCreated == null) return;
             for (int i = 0; i < slotCreated.Length; i++)
             {
@@ -3584,6 +3701,12 @@ namespace PadForge.Services
                     // a Switch Pro slot showed up as "1x Xbox" in the profile
                     // topology label and count (round 34).
                     case 5: nintendo++; break;
+                    // VR is VirtualControllerType 6, and it repeated the exact
+                    // mistake the Nintendo comment above describes: no case, so
+                    // it fell to default and a VR profile read "1x Xbox".
+                    // Anything added to VirtualControllerType needs a case HERE,
+                    // a count property, a label part, and a badge. Four places.
+                    case 6: vr++; break;
                     default: xbox++; break;
                 }
             }
@@ -3634,6 +3757,7 @@ namespace PadForge.Services
                             ps.FlushRawMappings();
                             ps.FlushMidiMappings();
                             ps.FlushKbmMappings();
+                            ps.FlushVrMappings();
                             ps.FlushMappingDeadZones();
                             ps.FlushMappingBidirectional();
                             ps.UpdateChecksum();
@@ -3828,6 +3952,7 @@ namespace PadForge.Services
             {
                 SoundPackages = soundPackages,
                 NfcTags = nfcTags,
+                HeadsetTrackerAddresses = PadForge.Common.Input.SonyHeadsetMotionRuntime.SavePersistedAddresses(),
                 // Remote Link (issue #138): persist the identity + trust list from
                 // the runtime holder (set on load / updated on pairing + revocation).
                 RemoteLinkIdentityPrivate = RemoteLink?.ProtectedPrivateBase64 ?? "",
@@ -3907,6 +4032,7 @@ namespace PadForge.Services
                 ExtendedSlotOrder      = isDefault ? SettingsManager.ExtendedSlotOrder.ToArray()      : defaultSnap.ExtendedSlotOrder,
                 KeyboardMouseSlotOrder = isDefault ? SettingsManager.KeyboardMouseSlotOrder.ToArray() : defaultSnap.KeyboardMouseSlotOrder,
                 MidiSlotOrder          = isDefault ? SettingsManager.MidiSlotOrder.ToArray()          : defaultSnap.MidiSlotOrder,
+                VrSlotOrder            = isDefault ? SettingsManager.VrSlotOrder.ToArray()            : defaultSnap.VrSlotOrder,
                 DefaultProfileSnapshot = isDefault ? null : defaultSnap
             };
         }
@@ -4011,6 +4137,10 @@ namespace PadForge.Services
                 AudioMirrorEngageReleaseMs = cfg.AudioMirrorEngageReleaseMs,
                 AudioToneFilterMode = cfg.AudioToneFilterMode ?? "Off",
                 AudioToneLimitHz = cfg.AudioToneLimitHz,
+                AudioPersonaHapticsEnabled = cfg.AudioPersonaHapticsEnabled,
+                AudioPersonaHapticsGain = cfg.AudioPersonaHapticsGain,
+                HeadphoneVolume = cfg.HeadphoneVolume,
+                AudioOutputPath = cfg.AudioOutputPath,
                 MicLedMode = cfg.MicLedMode,
                 MicLedFollowDeviceId = cfg.MicLedFollowDeviceId ?? string.Empty,
                 MicLightOn = cfg.MicLightOn,
@@ -4355,12 +4485,14 @@ namespace PadForge.Services
                     ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
                     ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
                     ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
+                    ps.TriggerRumbleFold = padVm.TriggerRumbleFold ? "1" : "0";
 
                     // Write impulse trigger settings.
                     ps.ImpulseOverallGain = padVm.ImpulseOverallGain.ToString();
                     ps.ImpulseLeftStrength = padVm.ImpulseLeftStrength.ToString();
                     ps.ImpulseRightStrength = padVm.ImpulseRightStrength.ToString();
                     ps.ImpulseSwapTriggers = padVm.ImpulseSwapTriggers ? "1" : "0";
+                    ps.AtVibrationToImpulseEnabled = padVm.AtVibrationToImpulse ? "1" : "0";
                     ps.ConstantTriggerForceEnabled = padVm.ConstantTriggerForceEnabled ? "1" : "0";
                     ps.AudioRumbleTriggersEnabled = padVm.AudioRumbleTriggersEnabled ? "1" : "0";
                     ps.AudioRumbleLeftTrigger = padVm.AudioRumbleLeftTrigger.ToString();
@@ -4391,6 +4523,7 @@ namespace PadForge.Services
                     ps.IrSensorBarComp = (padVm.IrSensorBarCompPercent / 100.0).ToString(ic);
                     ps.IrSmoothing = (padVm.IrSmoothingPercent / 100.0).ToString(ic);
                     ps.PointerMode = string.IsNullOrEmpty(padVm.PointerMode) ? "Mouse" : padVm.PointerMode;
+                    ps.Model3DAppearances = padVm.Model3DAppearances ?? "";
                     ps.PointerFpsSpeed = padVm.PointerFpsSpeed.ToString(ic);
 
                     // Write JoyShockMapper-canongyro extensions.
@@ -4405,6 +4538,7 @@ namespace PadForge.Services
                     ps.GyroAimEngageDeviceGuid = padVm.GyroAimEngageDeviceGuid ?? "";
                     ps.GyroAimEngageMode = string.IsNullOrEmpty(padVm.GyroAimEngageMode) ? "Hold" : padVm.GyroAimEngageMode;
                     ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
+                    ps.GyroCompassYaw = padVm.GyroCompassYaw ? "1" : "0";
                     ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
                     ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
 
@@ -4715,6 +4849,10 @@ namespace PadForge.Services
                 padVm.ExtendedConfig.ResetToDefaults();
                 padVm.MidiConfig.ResetToDefaults();
                 padVm.KbmConfig.ResetToDefaults();
+                // The reset replaced the slot's whole raw surface, so no
+                // wire owns it any more; clear the stamp and let the next
+                // Nintendo profile adopt (translate nothing).
+                SettingsManager.StampNintendoWire(padVm.PadIndex, null);
                 padVm.OutputType = Engine.VirtualControllerType.Xbox;
                 padVm.ProfileId = Common.Input.InputManager.GetDefaultProfileId(padVm.OutputType);
                 padVm.ActiveLayerMask = "Base";
@@ -5026,6 +5164,13 @@ namespace PadForge.Services
                 return;
             }
 
+            // VR mappings use dictionary-based storage
+            if (propertyName.StartsWith("Vr", StringComparison.Ordinal))
+            {
+                ps.SetVrMapping(propertyName, value ?? string.Empty);
+                return;
+            }
+
             var prop = typeof(PadSetting).GetProperty(propertyName);
             if (prop == null || prop.PropertyType != typeof(string) || !prop.CanWrite)
                 return;
@@ -5159,6 +5304,13 @@ namespace PadForge.Services
         [XmlArray("NfcTags")]
         [XmlArrayItem("Tag")]
         public NfcTagData[] NfcTags { get; set; }
+
+        /// <summary>Bluetooth addresses (12-hex, comma-joined) of headsets
+        /// that ever qualified as Android Head Trackers (#188). Lets the
+        /// sweep re-request a dropped tracker's HID service after an app
+        /// restart, when no live node exists to re-qualify from.</summary>
+        [XmlElement]
+        public string HeadsetTrackerAddresses { get; set; } = "";
 
         // ── Remote Link (issue #138) — global (per-machine), not per-profile ──
         /// <summary>This instance's static identity private key, DPAPI-protected
@@ -5321,6 +5473,10 @@ namespace PadForge.Services
         [XmlArray("MidiSlotOrder")]
         [XmlArrayItem("PadIndex")]
         public int[] MidiSlotOrder { get; set; }
+
+        [XmlArray("VrSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] VrSlotOrder { get; set; }
 
         [XmlElement]
         public bool EnableDsuMotionServer { get; set; }
@@ -6104,6 +6260,10 @@ namespace PadForge.Services
         [XmlArray("ProfileMidiSlotOrder")]
         [XmlArrayItem("PadIndex")]
         public int[] MidiSlotOrder { get; set; }
+
+        [XmlArray("ProfileVrSlotOrder")]
+        [XmlArrayItem("PadIndex")]
+        public int[] VrSlotOrder { get; set; }
 
         /// <summary>Per-slot MIDI configurations saved with this profile.</summary>
         [XmlArray("ProfileMidiConfigs")]

@@ -106,6 +106,7 @@
   <data name="ControllerType_Extended" xml:space="preserve"><value>Uitgebreid</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Toetsenbord + Muis</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
+  <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge wordt afgesloten...</value></data>
@@ -132,6 +133,8 @@
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Toetsenbord + Muis (max {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (vereist Windows MIDI Services)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (max {0})</value></data>
+  <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (vereist SteamVR)</value></data>
+  <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (max {0})</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>HidHide wordt geïnstalleerd…</value></data>
@@ -141,6 +144,11 @@
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services wordt verwijderd…</value></data>
   <data name="Status_OperationCancelled" xml:space="preserve"><value>Bewerking geannuleerd door gebruiker.</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>Installatie van MIDI Services mislukt: {0}</value></data>
+  <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR downloaden…</value></data>
+  <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>SteamVR wordt gedownload en geïnstalleerd vanaf de servers van Valve… Meerdere GB, dit kan even duren.</value></data>
+  <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>Installatie van SteamVR mislukt: {0}</value></data>
+  <data name="Status_UninstallingSteamVR" xml:space="preserve"><value>SteamVR wordt verwijderd…</value></data>
+  <data name="Status_SteamVRRunningCloseFirst" xml:space="preserve"><value>SteamVR is actief. Sluit het voordat je de installatie verwijdert.</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>Apparatenlijst vernieuwd.</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>Opgenomen "{0}" ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>Nu toewijzen: {0} {1}</value></data>
@@ -264,6 +272,11 @@
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Virtuele HID-controllerengine in gebruikersmodus. Ingebed in PadForge.App. Wordt automatisch geïnstalleerd bij het eerste aanmaken van een virtuele controller. Vervangt ViGEmBus en vJoy in v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>SDK-runtime voor virtuele MIDI-apparaatuitvoer. Gedownload van GitHub (~210 MB).</value></data>
+  <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
+  <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR-runtime voor virtuele VR-controllers. Wordt vanaf de servers van Valve geïnstalleerd, zonder Steam-account of Steam-client (meerdere GB).</value></data>
+  <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Installatielocatie</value></data>
+  <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>SteamVR verwijderen</value></data>
+  <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Verwijdert de Steam-vrije SteamVR-installatie in {0} en maakt meerdere GB vrij. Virtuele VR-controllers werken pas weer wanneer SteamVR opnieuw is geïnstalleerd.</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Vereist Windows 11 24H2 (build 26100) of hoger</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>Instellingenbestand</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>Configuratie opslaan, opnieuw laden of herstellen.</value></data>
@@ -284,6 +297,7 @@
   <data name="About_Subtitle" xml:space="preserve"><value>Controller-toewijzingshulpprogramma</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Moderne fork van x360ce, opnieuw gebouwd met SDL3, WPF en .NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge zet elk invoerapparaat om in elke virtuele controller. Gamepads, joysticks, toetsenborden, muizen en touchscreens worden toegewezen aan virtuele game-controllers (Xbox, PlayStation, flight sticks, stuurwielen, gamepads van derden) of aan toetsenbord+muis/MIDI-uitvoer die games als echte hardware behandelen. Mogelijk gemaakt door HIDMaestro en Windows MIDI Services. Het gebruikt SDL3 voor controller-invoer, Windows Raw Input voor toetsenbord en muis, HidHide voor apparaatmaskering per spel, en biedt een moderne Fluent Design-interface voor toewijzing, deadzones, gevoeligheidscurves en force feedback.</value></data>
+  <data name="About_Overview" xml:space="preserve"><value>Overzicht</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Gebouwd met</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime en WPF-framework. MIT.</value></data>
@@ -897,6 +911,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Linkermotor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Rechtermotor</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Linker- en rechtermotor verwisselen</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>Triggertrilling samenvoegen in hoofdmotoren</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Deze controller heeft geen triggermotoren, dus games die Xbox-impulstriggers gebruiken zouden niet voelbaar zijn. In plaats daarvan wordt elk triggerkanaal samengevoegd met de hoofdmotor aan dezelfde kant.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Trillen testen</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoractiviteit</value></data>
 
@@ -965,6 +981,7 @@
   <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Negatief</value></data>
 
   <!--═══ 3D View ═══ -->
+  <data name="Pad_Colorway" xml:space="preserve"><value>Kleurstelling</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Weergave herstellen</value></data>
 
   <!-- ═══ Gamepad Button Labels ═══ -->
@@ -1014,6 +1031,33 @@
   <data name="Btn_Plus" xml:space="preserve"><value>Plus</value></data>
   <data name="Btn_Home" xml:space="preserve"><value>Home</value></data>
   <data name="Btn_Capture" xml:space="preserve"><value>Opname</value></data>
+  <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
+  <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
+  <data name="Btn_C" xml:space="preserve"><value>C</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>Dempen</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Linkerachterknop</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>Rechterachterknop</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>Fn links</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>Fn rechts</value></data>
+  <data name="Btn_VrLeftA" xml:space="preserve"><value>Linker A</value></data>
+  <data name="Btn_VrLeftB" xml:space="preserve"><value>Linker B</value></data>
+  <data name="Btn_VrLeftATouch" xml:space="preserve"><value>Linker A (aanraken)</value></data>
+  <data name="Btn_VrLeftBTouch" xml:space="preserve"><value>Linker B (aanraken)</value></data>
+  <data name="Btn_VrLeftSystem" xml:space="preserve"><value>Linker systeem</value></data>
+  <data name="Btn_VrLeftGrip" xml:space="preserve"><value>Linker grip</value></data>
+  <data name="Btn_VrLeftGripClick" xml:space="preserve"><value>Linker grip-klik</value></data>
+  <data name="Btn_VrLeftTriggerClick" xml:space="preserve"><value>Linker trigger-klik</value></data>
+  <data name="Btn_VrRightA" xml:space="preserve"><value>Rechter A</value></data>
+  <data name="Btn_VrRightB" xml:space="preserve"><value>Rechter B</value></data>
+  <data name="Btn_VrRightATouch" xml:space="preserve"><value>Rechter A (aanraken)</value></data>
+  <data name="Btn_VrRightBTouch" xml:space="preserve"><value>Rechter B (aanraken)</value></data>
+  <data name="Btn_VrRightSystem" xml:space="preserve"><value>Rechter systeem</value></data>
+  <data name="Btn_VrRightGrip" xml:space="preserve"><value>Rechter grip</value></data>
+  <data name="Btn_VrRightGripClick" xml:space="preserve"><value>Rechter grip-klik</value></data>
+  <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>Rechter trigger-klik</value></data>
+  <data name="Vr_LeftHand" xml:space="preserve"><value>Linkerhand</value></data>
+  <data name="Vr_RightHand" xml:space="preserve"><value>Rechterhand</value></data>
+  <data name="Vr_Stick" xml:space="preserve"><value>Stick</value></data>
 
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Linkermuisknop</value></data>
@@ -1189,6 +1233,11 @@
   <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>Gyro-pitch linker Joy-Con</value></data>
   <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>Gyro-yaw linker Joy-Con</value></data>
   <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>Gyro-roll linker Joy-Con</value></data>
+  <data name="Mapping_GyroAuxHorizontal" xml:space="preserve"><value>Gyro Horizontaal linker Joy-Con (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroRPitch" xml:space="preserve"><value>Gyro-pitch rechter Joy-Con</value></data>
+  <data name="Mapping_GyroRYaw" xml:space="preserve"><value>Gyro-yaw rechter Joy-Con</value></data>
+  <data name="Mapping_GyroRRoll" xml:space="preserve"><value>Gyro-roll rechter Joy-Con</value></data>
+  <data name="Mapping_GyroRHorizontal" xml:space="preserve"><value>Gyro Horizontaal rechter Joy-Con (Yaw + Roll)</value></data>
   <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>Bewegingsgyro linker Joy-Con</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>
@@ -1232,6 +1281,13 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = ruwe controller-assen. Player = yaw geprojecteerd op de echte verticale as (zwaartekracht), pitch blijft lokaal. Door Jibb Smart aanbevolen standaard voor natuurlijk gevoel bij elke kanteling. World = yaw én pitch geprojecteerd op wereldassen.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pitch (Y) omkeren</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Globale pitch-omkering. Wordt na de Player/World-projectie toegepast, onafhankelijk van de Invert-vlaggen per bron in de toewijzingstabel.</value></data>
+  <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kompas</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Deze controller heeft een magnetometer. De yaw verankeren aan het magnetische noorden verwijdert langzame horizontale drift bij gyro-richten. Eerst kalibreren: druk op Kalibreren, draai de controller enkele seconden in een acht door alle standen en druk nogmaals.</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Yaw verankeren aan kompas</value></data>
+  <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Voegt een kleine correctiesnelheid toe die het horizontale richten naar de magnetische koers trekt, zodat drift zich niet kan opstapelen. Vereist een opgeslagen magnetometerkalibratie. Metingen die door metaal of magneten zijn verstoord, worden automatisch verworpen.</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Standaard herstellen (uit)</value></data>
+  <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Magnetometer kalibreren</value></data>
+  <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Kalibratie voltooien</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>Yaw / Roll (X) omkeren</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>Globale yaw-omkering. Geldt ook voor Roll- en Gyro-Horizontal-bronnen.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Realistische kalibratie</value></data>
@@ -1553,6 +1609,8 @@
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Linkertrigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Rechtertrigger</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Linker- en rechtertriggermotor verwisselen</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>Adaptieve-triggertrillingen vertalen</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>Wanneer een game dit slot als virtuele DualSense aanstuurt, worden de trillingsachtige adaptieve-triggereffecten afgespeeld op de impulstriggermotoren van deze controller. Weerstandsachtige effecten hebben geen trillingsequivalent en worden genegeerd.</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Linkertrigger testen</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Rechtertrigger testen</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Triggermotor-activiteit</value></data>
@@ -1945,6 +2003,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Wegknippen</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Per octaaf omlaag vouwen</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Toonlimiet</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense-haptiek op deze controller afspelen</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Wanneer een game dit slot als virtuele DualSense aanstuurt met een geautoreerd haptisch audiospoor, wordt dat spoor als tonen op de actuatoren van deze controller afgespeeld. Afgeleid van de audio, dus een benadering van het ontworpen gevoel, geen exacte reproductie.</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptiekversterking</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Standaard herstellen (uit)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Standaard herstellen (100%)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tonen boven deze frequentie worden weggeknipt of gevouwen. De standaard 800 Hz behoudt motor- en impacttrillingen en vangt hoge pieptonen af.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Hoge tonen resetten</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Toonlimiet resetten</value></data>
@@ -2301,10 +2364,12 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Koud</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>Selecteer een apparaat om de ruwe invoer te bekijken.</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>Koppelen is niet voltooid. Zie het logboek voor details.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Geen Bluetooth-adapter beschikbaar. Schakel Bluetooth in en probeer het opnieuw. Koppelen is alleen nodig voor draadloos spelen, met een kabel werkt de controller ook zo.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>Koppelen is niet voltooid. De mislukte stap staat hierboven.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Het Bluetooth-stuurprogramma voor PlayStation-controllers kon niet worden geïnstalleerd.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Sluit de DualShock 3 aan met een USB-kabel en klik op Koppelen. PadForge schrijft deze PC naar de controller en registreert hem. Koppel na afloop de controller los en druk op de PS-knop om via Bluetooth te verbinden.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Geen DualShock 3 gevonden via USB. Sluit hem aan met een USB-kabel en probeer het opnieuw.</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows installeert het USB-stuurprogramma van PadForge voor de DualShock 3 niet, omdat het ondertekeningscertificaat op deze pc niet wordt vertrouwd.</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>Klaar. Koppel de controller los en druk op de PS-knop. Hij verschijnt dan in je apparatenlijst.</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>De controller wordt ingesteld. Houd hem via USB aangesloten.</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Smeden</value></data>
@@ -2406,6 +2471,14 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Uit</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Verwijdert dit toetsenpaar.</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Gelijktijdige tegengestelde hoofdrichtingen (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Controller actief houden</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Sommige games stoppen de trilling en wisselen de knopweergave zodra ze muis- of toetsenbordinvoer zien. Een kleine vastgehouden stickuitslag zorgt dat de game deze controller als actief apparaat blijft behandelen. Echte invoer op of boven het vastgehouden niveau gaat ongewijzigd door. Houd de uitslag onder de dode zone van de game zodat er niets beweegt.</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Actief houden inschakelen</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Vastgehouden as</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>Welke uitvoeras de uitslag vasthoudt. Kies er een die de game als beweging leest in plaats van camera, zodat een waarde onder de dode zone onzichtbaar blijft.</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Uitslag</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Vastgehouden niveau als percentage van de volledige stickuitslag. 25% houdt de meeste games actief en blijft onder hun bewegingsdode zone. Verhoog als de game blijft wisselen, verlaag als het personage drift.</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Actief houden uitschakelen en de standaardas en -uitslag herstellen</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Lost knoppenparen op die tegelijk worden vastgehouden op de virtuele-controlleruitvoer van dit slot. Wanneer beide knoppen van een paar zijn ingedrukt, bepaalt de gekozen regel welke druk het spel ziet.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gelijktijdige tegengestelde hoofdrichtingen herstellen</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modus</value></data>
@@ -2859,6 +2932,8 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu-hostoppervlak niet ondersteund ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menucel-pictogram niet herkend ({0}), de cel behoudt daarom zijn tekstlabel</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
+  <data name="Pad_Tab_Output" xml:space="preserve"><value>Uitvoer</value></data>
+  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Instellingen die de uitvoer van de virtuele controller van dit slot vormgeven vlak voordat deze naar games gaat: SOCD-opschoning voor tegengestelde richtingen die tegelijk worden ingedrukt, en controller actief houden voor games die de controller loslaten zodra ze muis- of toetsenbordinvoer zien.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Stuurt de speltrilling en force feedback die deze virtuele controller ontvangt als laagfrequente tonen naar een audio-uitgang voor bass shakers en subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Trilling naar audio</value></data>
@@ -2937,4 +3012,68 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Documentatie van het DualShock 4-audioprotocol: SBC-parameters en pakketindelingen, door khallmark. MIT.</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>Bureaublad</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>Bedien Windows vanaf de bank. Cursor, scrollen en klikken op de triggers.</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD en muis</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>Speel een toetsenbord-en-muisgame met een controller. Shooters en actiegames.</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>Actiebalk</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>Tweeëndertig vaardigheden achter twee triggers, voor MMO’s en vaardigheidsrijke games.</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>Emulatie</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch en zijn frontends. Houd Terug ingedrukt voor savestates, laden en snelheid.</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>Vechtspellen</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>Zesknopsindeling met toernooiwaardige SOCD-opschoning op beide assen.</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Toetsenbord + muis</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Startprofielen bekijken</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>Startprofielen</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>Kant-en-klare profielen voor een heel genre. Kies er een, wijs een willekeurige controller toe en speel. Opslaan voegt een gewoon, bewerkbaar profiel toe.</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>Profiel opslaan</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>Startprofiel “{0}” toegevoegd.</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>Wijzen en klikken</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>Avonturengames en alles wat draait om een cursor en twee werkwoorden.</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>Strategie</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>RTS, 4X en city builders. Camera op de ene stick, cursor op de andere.</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>Isometrische RPG</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>Party-RPG’s en turn-based tactiek. Pauze, inventaris en actiebalk.</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>Twin-stick</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Shooters van bovenaf. Bewegen met links, richten met rechts.</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>Mediaknoppen</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>Afspelen, zoeken en een cursor voor op de bank.</value></data>
+  <data name="Starter_Racing_Name" xml:space="preserve"><value>Racen</value></data>
+  <data name="Starter_Racing_Description" xml:space="preserve"><value>Rustiger sturen en fijnere controle rond het midden, op elke controller.</value></data>
+  <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>Ruimtesimulatie</value></data>
+  <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>Zes vrijheidsgraden op twee sticks, met een precisiestand om aan te meren.</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Precisie (fijne besturing)</value></data>
+  <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Gyro-richten</value></data>
+  <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Beweging voor fijn richten op de linkertrigger, met de stick nog actief.</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>Kruisbalk (links)</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>Kruisbalk (rechts)</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>Dubbelkruis (links)</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>Dubbelkruis (rechts)</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>Sneltoetsen</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>Actiebalk</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>Groep</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Snelkoppelingen</value></data>
+  <data name="Starter_QuietLayerName" xml:space="preserve"><value>Stil (stuurt niets)</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>Koptelefoonvolume</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>Hardwarevolume van de headsetaansluiting van de controller. Wordt naar de pad geschreven en blijft dus zonder app behouden.</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>Koptelefoonvolume resetten</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>Koptelefoonvolume verhogen</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Koptelefoonvolume verlagen</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Verhoogt het volume van de headsetaansluiting van de controller met 10%.</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Verlaagt het volume van de headsetaansluiting van de controller met 10%.</value></data>
+  <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Uitvoerpad</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Waar de controller zijn audio afspeelt. Standaard behoudt de routering van de firmware en speelt PadForge-geluiden via de luidspreker. Koptelefoon + Luidspreker speelt mono af aan de headsetkant, een firmwarelimiet. Via Bluetooth speelt deze modus alleen via de koptelefoon. Koptelefoonaansluiting volgen schakelt naar de koptelefoon zodra er iets wordt aangesloten en terug naar de luidspreker bij loskoppelen; zonder aansluitingsstatus gedraagt het zich als Standaard.</value></data>
+  <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Standaard</value></data>
+  <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Koptelefoon (stereo)</value></data>
+  <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Koptelefoon (mono)</value></data>
+  <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>Koptelefoon + Luidspreker</value></data>
+  <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Alleen luidspreker</value></data>
+  <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Uitvoerpad resetten</value></data>
+  <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Koptelefoonaansluiting volgen</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense-uitvoerrapport-bytemap en Sony's scePad-semantiek door WujekFoliarz, basis van PadForges effect- en audioschrijvers. MIT.</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Patroon voor audio-routering op aansluitdetectie door SundayMoments, de referentie achter Koptelefoonaansluiting volgen. Als documentatie gelezen; AGPL-3.0.</value></data>
+  <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Headset-tracker</value></data>
 </root>

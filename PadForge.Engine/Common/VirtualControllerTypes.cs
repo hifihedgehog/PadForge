@@ -41,11 +41,20 @@ namespace PadForge.Engine
         /// No Customize surface: the slot always deploys the catalog
         /// profile as-is. Appended after KeyboardMouse; numeric values are
         /// persisted, never reorder.</summary>
-        Nintendo = 5
+        Nintendo = 5,
+        /// <summary>Virtual VR controllers (issue #49): a SteamVR left+right
+        /// hand pair served by HIDMaestro's native OpenVR driver (HM#32,
+        /// v1.6.0). One slot drives BOTH hands through one HMVRController;
+        /// the driver registers devices only while a consumer is live, so
+        /// an idle machine shows no phantom controllers. No per-slot config
+        /// in v1: the driver ships one honest identity and haptics fan out
+        /// like game rumble. Appended after Nintendo; numeric values are
+        /// persisted, never reorder.</summary>
+        Vr = 6
     }
 
     /// <summary>
-    /// The six user-facing VC type groups in fixed visual order.
+    /// The seven user-facing VC type groups in fixed visual order.
     /// Each group is independent: operations on one MUST NOT affect any
     /// other. The group order matches the sidebar / dashboard rendering
     /// order and is not user-reorderable.
@@ -60,6 +69,7 @@ namespace PadForge.Engine
             VirtualControllerType.Extended,
             VirtualControllerType.KeyboardMouse,
             VirtualControllerType.Midi,
+            VirtualControllerType.Vr,
         };
     }
 

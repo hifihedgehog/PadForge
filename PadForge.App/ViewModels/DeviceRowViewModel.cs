@@ -229,8 +229,10 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowInputModeSection));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
                     OnPropertyChanged(nameof(IsMidiDevice));
+                    OnPropertyChanged(nameof(IsHeadsetMotionDevice));
                     OnPropertyChanged(nameof(ShowTouchpadCapability));
                     OnPropertyChanged(nameof(HasCapabilityIcons));
+                    OnPropertyChanged(nameof(ShowSubmitMapping));
                 }
             }
         }
@@ -250,6 +252,7 @@ namespace PadForge.ViewModels
             "Midi" => Strings.Instance.DeviceType_Midi,
             "Nfc" => Strings.Instance.DeviceType_Nfc,
             "ConsumerControl" => Strings.Instance.DeviceType_ConsumerControl,
+            "HeadsetMotion" => Strings.Instance.DeviceType_HeadsetMotion,
             _ => Strings.Instance.DeviceType_Device
         };
 
@@ -504,9 +507,14 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isHidHideAvailable, value);
         }
 
-        /// <summary>True for MIDI input devices — drives the live piano /
+        /// <summary>True for MIDI input devices. Drives the live piano /
         /// CC preview on the Devices page (issue #128).</summary>
         public bool IsMidiDevice => DeviceTypeKey == "Midi";
+
+        /// <summary>True for Sony headset head trackers (issue #188).
+        /// Collapses the raw Axes/Buttons preview (a motion-only source
+        /// has neither) and gates the repair action.</summary>
+        public bool IsHeadsetMotionDevice => DeviceTypeKey == "HeadsetMotion";
 
         /// <summary>Whether to show the "Consume mapped inputs" toggle (real
         /// keyboards and mice only). Consumption works by suppressing the
@@ -624,7 +632,7 @@ namespace PadForge.ViewModels
         public bool IsGamepad => DeviceTypeKey == "Gamepad";
 
         /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
-        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion";
 
         /// <summary>True for an NFC reader (issue #150): shows the "Register/Manage
         /// NFC Tags" button, which opens the tap-to-name registration flow.
@@ -758,6 +766,7 @@ namespace PadForge.ViewModels
             Engine.VirtualControllerType.Extended => ExtendedGeometry,
             Engine.VirtualControllerType.Midi => null,
             Engine.VirtualControllerType.KeyboardMouse => null,
+            Engine.VirtualControllerType.Vr => null,
             _ => XboxGeometry
         };
 
@@ -766,6 +775,7 @@ namespace PadForge.ViewModels
         {
             Engine.VirtualControllerType.Midi => "\uE8D6",
             Engine.VirtualControllerType.KeyboardMouse => "\uE961",
+            Engine.VirtualControllerType.Vr => "\uF119",
             _ => string.Empty
         };
     }

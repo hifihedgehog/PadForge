@@ -51,6 +51,8 @@ namespace SDL3
         public const string SDL_HINT_JOYSTICK_BLE_SWITCH2 = "SDL_JOYSTICK_BLE_SWITCH2";
         public const string SDL_HINT_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR = "SDL_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR";
         public const string SDL_HINT_JOYSTICK_BLE_SWITCH2_MOUSE = "SDL_JOYSTICK_BLE_SWITCH2_MOUSE";
+        public const string SDL_HINT_JOYSTICK_HIDAPI_SWITCH_SHAPED_RUMBLE = "SDL_JOYSTICK_HIDAPI_SWITCH_SHAPED_RUMBLE";
+        public const string SDL_HINT_JOYSTICK_BLE_SWITCH2_MAGNETOMETER = "SDL_JOYSTICK_BLE_SWITCH2_MAGNETOMETER";
         // Fork addition (SDL#15): drive the right Joy-Con / Pro Controller
         // NFC MCU and surface tag UIDs via SDL_GetGamepadNfcTagUid. Opt-in
         // (MCU costs battery + changes report cadence); runtime-toggleable.

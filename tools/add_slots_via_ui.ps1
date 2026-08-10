@@ -1,5 +1,9 @@
 ﻿# Restore PadForge.xml backup, then add 4 more slot types via UI automation.
-$logFile = "C:\PadForge\add_slots_log.txt"
+# Logs never go beside the exe. Only PadForge.xml and crash.log may live
+# in the deploy directory, and these transcripts were breaking that bar.
+$pfLogDir = Join-Path $env:TEMP "PadForge_Capture"
+if (-not (Test-Path $pfLogDir)) { New-Item -ItemType Directory -Path $pfLogDir | Out-Null }
+$logFile = Join-Path $pfLogDir "add_slots_log.txt"
 "START $(Get-Date -Format HH:mm:ss)" | Out-File $logFile -Encoding ascii
 try {
     Add-Type -AssemblyName UIAutomationClient

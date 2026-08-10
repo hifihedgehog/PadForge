@@ -225,9 +225,14 @@ namespace PadForge.Views
             return DataContext is PadViewModel vm && vm.OutputType == Engine.VirtualControllerType.KeyboardMouse;
         }
 
+        private bool IsVr()
+        {
+            return DataContext is PadViewModel vm && vm.OutputType == Engine.VirtualControllerType.Vr;
+        }
+
         private void ApplyViewMode()
         {
-            if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null || MidiPreview == null || KBMPreview == null) return;
+            if (ControllerModel3D == null || ControllerModel2D == null || ControllerSchematic == null || MidiPreview == null || KBMPreview == null || VRPreview == null) return;
 
             bool isMidi = IsMidi();
             bool isKBM = IsKBM();
@@ -242,6 +247,7 @@ namespace PadForge.Views
                 ControllerSchematic.Visibility = Visibility.Collapsed;
                 MidiPreview.Visibility = Visibility.Collapsed;
                 KBMPreview.Visibility = Visibility.Visible;
+                VRPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
             else if (isMidi)
@@ -252,6 +258,7 @@ namespace PadForge.Views
                 ControllerSchematic.Visibility = Visibility.Collapsed;
                 MidiPreview.Visibility = Visibility.Visible;
                 KBMPreview.Visibility = Visibility.Collapsed;
+                VRPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
             else if (isSchematic)
@@ -262,18 +269,20 @@ namespace PadForge.Views
                 ControllerSchematic.Visibility = Visibility.Visible;
                 MidiPreview.Visibility = Visibility.Collapsed;
                 KBMPreview.Visibility = Visibility.Collapsed;
+                VRPreview.Visibility = Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
-            else if (DataContext is PadViewModel nvm
-                     && nvm.OutputType == Engine.VirtualControllerType.Nintendo)
+            else if (IsVr())
             {
-                // Nintendo: SWITCHPRO 2D set only (no 3D mesh yet), so the
-                // 2D view is fixed and the 2D/3D toggle hides.
+                // VR: both SteamVR hands side by side. One slot drives the
+                // pair, so there is no single controller body to draw and
+                // no 2D/3D toggle to offer.
+                ControllerModel3D.Visibility = Visibility.Collapsed;
+                ControllerModel2D.Visibility = Visibility.Collapsed;
                 ControllerSchematic.Visibility = Visibility.Collapsed;
                 MidiPreview.Visibility = Visibility.Collapsed;
                 KBMPreview.Visibility = Visibility.Collapsed;
-                ControllerModel3D.Visibility = Visibility.Collapsed;
-                ControllerModel2D.Visibility = Visibility.Visible;
+                VRPreview.Visibility = Visibility.Visible;
                 ViewModeToggle.Visibility = Visibility.Collapsed;
             }
             else
@@ -282,6 +291,7 @@ namespace PadForge.Views
                 ControllerSchematic.Visibility = Visibility.Collapsed;
                 MidiPreview.Visibility = Visibility.Collapsed;
                 KBMPreview.Visibility = Visibility.Collapsed;
+                VRPreview.Visibility = Visibility.Collapsed;
                 ControllerModel3D.Visibility = is2D ? Visibility.Collapsed : Visibility.Visible;
                 ControllerModel2D.Visibility = is2D ? Visibility.Visible : Visibility.Collapsed;
                 ViewModeToggle.Visibility = Visibility.Visible;
@@ -302,10 +312,12 @@ namespace PadForge.Views
 
             bool isKbm = IsKBM();
             bool isMidi = IsMidi();
+            bool isVrSlot = IsVr();
             // KBM shows Sticks (Mouse X/Y + Scroll) but hides Triggers; MIDI
             // hides both Sticks and Triggers because its mapping surface is
-            // CC + note, not stick/trigger.
-            TabSticks.Visibility = isMidi ? Visibility.Collapsed : Visibility.Visible;
+            // CC + note, not stick/trigger. VR hides both too: the Vr lane
+            // reads none of the stick/trigger tuning keys those tabs edit.
+            TabSticks.Visibility = (isMidi || isVrSlot) ? Visibility.Collapsed : Visibility.Visible;
             // Raw-surface slots whose profile declares no analog triggers
             // (the Switch Pro's ZL/ZR are digital buttons) have nothing
             // for the Triggers tab to show; hide it like the other
@@ -314,7 +326,7 @@ namespace PadForge.Views
                 && tvm.OutputType is Engine.VirtualControllerType.Extended
                     or Engine.VirtualControllerType.Nintendo
                 && (tvm.ExtendedConfig?.TriggerCount ?? 0) == 0;
-            TabTriggers.Visibility = (isMidi || isKbm || rawNoTriggers)
+            TabTriggers.Visibility = (isMidi || isKbm || isVrSlot || rawNoTriggers)
                 ? Visibility.Collapsed : Visibility.Visible;
 
             // Flick Stick tuning card (#225): keyboard/mouse slots only.
@@ -359,6 +371,7 @@ namespace PadForge.Views
             bool hasMouse = false;
             bool hasIrPointer = false; // #146 Wii Remote IR camera -> Pointer tab
             bool hasImpulseTriggers = false;
+            bool hasS2Mag = false;
             bool hasRumble = false;
             bool hasTouchpad = false;
             bool hasWheel = false;
@@ -392,6 +405,18 @@ namespace PadForge.Views
                         hasMouse = ud.IsMouse;
                         hasIrPointer = ud.HasIrCamera;
                         hasImpulseTriggers = ud.HasRumbleTriggers;
+                        // Gate on the SAME capability the engine consumes.
+                        // HasJoyCon2Mouse is naxes >= 8; the compass lane
+                        // (UpdateCompassEstimate, the calibration sweep,
+                        // and CompassYawCorrectionProvider) all require
+                        // HasSwitch2Magnetometer, which needs the wider
+                        // axis set an older SDL fork DLL does not report.
+                        // Gating the card on the looser flag offered the
+                        // whole feature (including a figure-8 calibration
+                        // that silently kept nothing) on hardware where it
+                        // could never run.
+                        hasS2Mag = ud.Device is PadForge.Engine.SdlDeviceWrapper s2w
+                                && s2w.HasSwitch2Magnetometer;
                         hasTouchpad = ud.HasTouchpad;
                         hasGuideLed =
                             PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud)
@@ -527,6 +552,18 @@ namespace PadForge.Views
                 LockPulseSection.Visibility = (hasRumble || hasTriggerVib) ? Visibility.Visible : Visibility.Collapsed;
             if (LockLightbarSection != null)
                 LockLightbarSection.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+            // Trigger fold (#271 item 2): only meaningful on a device with
+            // body rumble but no trigger motors. Those are the devices
+            // whose sink drops the game's LT/RT channels. Xbox One+ pads
+            // render the triggers natively, so the row hides there.
+            if (FfbTriggerFoldChk != null)
+                FfbTriggerFoldChk.Visibility = (hasRumble && !hasImpulseTriggers)
+                    ? Visibility.Visible : Visibility.Collapsed;
+            // Compass-anchored yaw (#271 item 5): the magnetometer ships on
+            // the Switch 2 Joy-Cons, the same identity set as the optical
+            // mouse, so the mouse capability doubles as the gate.
+            if (CompassYawCard != null)
+                CompassYawCard.Visibility = hasS2Mag ? Visibility.Visible : Visibility.Collapsed;
 
             // Family-correct preview (#175): same PID split as the
             // capability gates above. Rebuild the art scene only when the
@@ -623,6 +660,9 @@ namespace PadForge.Views
                 else if (vm.SelectedConfigTab == PadViewModel.BassShakersTabIndex
                          && !vm.RumbleAudioTabVisible) // 16 = Bass Shakers (#236)
                     vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == PadViewModel.OutputTabIndex
+                         && !vm.OutputTabVisible) // 17 = Output (#270 follow-up)
+                    vm.SelectedConfigTab = 0;
             }
         }
 
@@ -631,12 +671,7 @@ namespace PadForge.Views
             bool isMidi = IsMidi();
             bool isKBM = IsKBM();
             bool isSchematic = IsExtended();
-            // Nintendo has a full SWITCHPRO 2D asset set but no 3D mesh
-            // yet, so it always takes the 2D view regardless of the
-            // Use2DControllerView setting.
-            bool isNintendo = DataContext is PadViewModel pv
-                && pv.OutputType == Engine.VirtualControllerType.Nintendo;
-            bool is2D = isNintendo || (GetSettingsVm()?.Use2DControllerView ?? false);
+            bool is2D = GetSettingsVm()?.Use2DControllerView ?? false;
 
             // Unbind all first
             ControllerModel3D.Unbind();
@@ -644,6 +679,7 @@ namespace PadForge.Views
             ControllerSchematic.Unbind();
             MidiPreview.Unbind();
             KBMPreview.Unbind();
+            VRPreview.Unbind();
 
             if (DataContext is not PadViewModel vm) return;
 
@@ -658,6 +694,12 @@ namespace PadForge.Views
                 MidiPreview.ControllerElementRecordRequested -= OnModelRecordRequested;
                 MidiPreview.ControllerElementRecordRequested += OnModelRecordRequested;
                 MidiPreview.Bind(vm);
+            }
+            else if (IsVr())
+            {
+                VRPreview.ControllerElementRecordRequested -= OnModelRecordRequested;
+                VRPreview.ControllerElementRecordRequested += OnModelRecordRequested;
+                VRPreview.Bind(vm);
             }
             else if (isSchematic)
             {
@@ -699,7 +741,7 @@ namespace PadForge.Views
             if (DataContext is PadViewModel vm
                 && vm.OutputType == Engine.VirtualControllerType.Nintendo)
             {
-                targetName = Models2D.NintendoPreviewMap.ToRaw(targetName);
+                targetName = Models2D.NintendoPreviewMap.ToRaw(targetName, vm.ProfileId);
                 if (targetName == null) return;
             }
             ControllerElementRecordRequested?.Invoke(this, targetName);
@@ -843,7 +885,7 @@ namespace PadForge.Views
             // IsMouseOver triggers when unchecked). Navigation rides Click
             // (not Checked), so re-clicking a still-checked tab still
             // switches back.
-            bool slotTier = selected <= 2 || selected == 15 || selected == 16;
+            bool slotTier = selected <= 2 || selected == 15 || selected == 16 || selected == 17;
             foreach (var rb in FindVisualChildren<RadioButton>(this))
             {
                 if (!TryGetTagIndex(rb, out int idx)) continue;
@@ -3391,6 +3433,10 @@ namespace PadForge.Views
                 // Extended dropdown has the new id before this assignment
                 // hits the binding. Dialog returns false on plain close
                 // (no import); in that path we don't touch the slot.
+                // The import installed rows authored for the imported
+                // profile's wire; stamp it so the setter adopts instead of
+                // translating them as if they were the previous profile's.
+                Common.Input.SettingsManager.StampNintendoWire(vm.PadIndex, dialog.ImportedProfileId);
                 vm.ProfileId = dialog.ImportedProfileId;
             }
         }

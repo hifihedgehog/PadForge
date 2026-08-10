@@ -29,9 +29,15 @@ namespace PadForge.Common.Input
     ///
     /// Why raw HID (SDL is amplitude-only): the bundled SDL fork's Switch and
     /// Steam drivers hard-code the rumble carrier and vary only amplitude
-    /// (SDL_hidapi_switch.c ActuallyRumble, SDL_hidapi_steam.c RumbleJoystick
-    /// returns SDL_Unsupported). Tone playback needs the raw-HID writer pattern
+    /// (SDL_hidapi_switch.c ActuallyRumble; SDL_hidapi_steam.c RumbleJoystick
+    /// since fork b46ae33238 synthesizes fixed-carrier 0x8F pulse trains for
+    /// #267 rumble emulation, intensity as duty cycle, still not tone
+    /// playback). Tone playback needs the raw-HID writer pattern
     /// PadForge already built for the Wii speaker and the Sony speaker.
+    /// Coexistence rule with that rumble emulation: both lanes end as 0x8F
+    /// commands and the firmware plays ONE command per actuator, last write
+    /// wins, so a tone cue supersedes an active rumble train on that
+    /// actuator until the core's 2-second rumble keep-alive re-sends it.
     ///
     /// Switch 2 is deliberately NOT here: no reference plays an audible tone on a
     /// Switch 2 actuator (controller.py defines en_tone/lf_freq/hf_freq but never
@@ -129,6 +135,13 @@ namespace PadForge.Common.Input
         internal const int ToneFilterCut = 1;
         internal const int ToneFilterFold = 2;
         public static Func<int, Guid, (int Mode, int LimitHz)> ToneFilterProvider { get; set; }
+
+        /// <summary>#271 item 1: per-(slot, device) persona-haptics render.
+        /// (Enabled, GainPct). When enabled, the slot's virtual-DualSense
+        /// authored haptic audio (persona UAC channels 3/4) feeds this
+        /// sink's mixer and renders through the tone chain. Read at the
+        /// sink's ~4 Hz config cadence, like the tone filter above.</summary>
+        public static Func<int, Guid, (bool Enabled, int GainPct)> PersonaHapticsProvider { get; set; }
 
         // ── Combined-pair motor-side audio routing (discussion #223) ─────
         // The reporter holds one Joy-Con per hand and wants the HD-haptic
@@ -665,6 +678,16 @@ namespace PadForge.Common.Input
             public WasapiLoopbackCapture MirrorCapture;
             public ISampleProvider MirrorInput;
 
+            // ── #271 item 1: persona authored-haptics input ──
+            // Pushed by AudioPassthroughService.OnPersonaFrames (HM pacing
+            // thread) via SubmitPersonaHaptics, drained by this sink's
+            // MacroMixer read on the stream thread, the mirror's
+            // BufferedWaveProvider shape. Attach/detach happens on the
+            // stream thread at the 250 ms config cadence.
+            public bool PersonaOn;
+            public BufferedWaveProvider PersonaBuf;
+            public VolumeSampleProvider PersonaVolume;
+
             // ── #219 touchpad swipe-haptic ticks ──
             // One-shot per-side pulses queued from the polling thread and
             // drained by the stream thread, the TestHz idiom. Sides is an
@@ -922,6 +945,87 @@ namespace PadForge.Common.Input
                 }
             }
             return list;
+        }
+
+        // ── #271 item 1: persona authored-haptics feed ──
+
+        /// <summary>Bit per slot with at least one persona-enabled sink, so
+        /// the HM pacing thread's submit can bail without a lock in the
+        /// common all-off case.</summary>
+        private static int _personaSlotMask;
+
+        /// <summary>Scratch for the pair extraction, PER THREAD. HIDMaestro
+        /// runs one pacing thread per emulated device (UsbAudioEngine's
+        /// per-persona pump), so a machine with two composite-persona slots
+        /// has two concurrent SubmitPersonaHaptics callers. A single static
+        /// buffer let them interleave their extraction writes and hand each
+        /// other's samples to both sinks; the lock below is taken only for
+        /// the sink walk and never covered the extraction.</summary>
+        [ThreadStatic]
+        private static byte[] _personaScratch;
+
+        private static void RecomputePersonaMask()
+        {
+            int mask = 0;
+            lock (_lock)
+                foreach (var s in _sinks)
+                    if (s.PersonaOn && s.Slot >= 0 && s.Slot < 32)
+                        mask |= 1 << s.Slot;
+            Volatile.Write(ref _personaSlotMask, mask);
+        }
+
+        private static void DetachPersonaInput(Sink s)
+        {
+            try { if (s.PersonaVolume != null && s.MacroMixer != null) s.MacroMixer.RemoveMixerInput(s.PersonaVolume); } catch { }
+            s.PersonaVolume = null;
+            s.PersonaBuf = null;
+            s.PersonaOn = false;
+            RecomputePersonaMask();
+        }
+
+        /// <summary>Extracts the (left, right) s16 sample pairs at the given
+        /// byte offsets from one interleaved multi-channel window into
+        /// <paramref name="scratch"/> as interleaved stereo s16. Returns the
+        /// pair count. Pure; internal for the unit tests.</summary>
+        internal static int ExtractStereoPairs(ReadOnlySpan<byte> pcm, int stride, int lOff, int rOff, ref byte[] scratch)
+        {
+            if (stride <= 0 || lOff < 0 || rOff < 0) return 0;
+            int need = Math.Max(lOff, rOff) + 2;
+            if (need > stride) return 0;
+            int cap = pcm.Length / stride;
+            if (cap == 0) return 0;
+            if (scratch == null || scratch.Length < cap * 4) scratch = new byte[cap * 4];
+            int pairs = 0;
+            for (int i = 0; i + stride <= pcm.Length; i += stride)
+            {
+                scratch[pairs * 4 + 0] = pcm[i + lOff];
+                scratch[pairs * 4 + 1] = pcm[i + lOff + 1];
+                scratch[pairs * 4 + 2] = pcm[i + rOff];
+                scratch[pairs * 4 + 3] = pcm[i + rOff + 1];
+                pairs++;
+            }
+            return pairs;
+        }
+
+        /// <summary>HM pacing-thread entry (#271 item 1): pushes one persona
+        /// window's haptic channel pairs into every persona-enabled sink on
+        /// the slot. The mask check makes the all-off case one volatile
+        /// read.</summary>
+        public static void SubmitPersonaHaptics(int slot, ReadOnlySpan<byte> pcm, int stride, int lOff, int rOff)
+        {
+            if (slot < 0 || slot >= 32) return;
+            if ((Volatile.Read(ref _personaSlotMask) & (1 << slot)) == 0) return;
+            int pairs = ExtractStereoPairs(pcm, stride, lOff, rOff, ref _personaScratch);
+            if (pairs == 0) return;
+            // Local alias: the field is [ThreadStatic], so this thread owns
+            // the buffer for the whole call.
+            var scratch = _personaScratch;
+            lock (_lock)
+            {
+                foreach (var s in _sinks)
+                    if (s.Slot == slot && s.PersonaOn && s.PersonaBuf != null)
+                        try { s.PersonaBuf.AddSamples(scratch, 0, pairs * 4); } catch { }
+            }
         }
 
         /// <summary>Rebuilds the sink set from the current slot assignments.
@@ -1486,6 +1590,7 @@ namespace PadForge.Common.Input
         private static void TeardownSink(Sink s)
         {
             try { StopMirror(s); } catch { }
+            try { DetachPersonaInput(s); } catch { }
             s.Running = false;
             // The note-off and handle close run UNCONDITIONALLY. The old
             // gate skipped both when the stream thread failed to join
@@ -1927,6 +2032,36 @@ namespace PadForge.Common.Input
                                 ? tf(s.Slot, s.DeviceGuid) : (ToneFilterOff, 800);
                         }
                         catch { s.ToneFilterMode = ToneFilterOff; }
+
+                        // #271 item 1: persona-haptics attach/detach, on THIS
+                        // thread so the mixer input set only mutates from its
+                        // own reader side (the mirror discipline).
+                        try
+                        {
+                            var php = PersonaHapticsProvider;
+                            (bool pOn, int pGain) = php != null
+                                ? php(s.Slot, s.DeviceGuid) : (false, 100);
+                            if (pOn && !s.PersonaOn && s.MacroMixer != null)
+                            {
+                                s.PersonaBuf = new BufferedWaveProvider(new WaveFormat(MixRate, 16, 2))
+                                {
+                                    BufferDuration = TimeSpan.FromMilliseconds(250),
+                                    DiscardOnBufferOverflow = true,
+                                    ReadFully = true,
+                                };
+                                s.PersonaVolume = new VolumeSampleProvider(s.PersonaBuf.ToSampleProvider());
+                                s.MacroMixer.AddMixerInput(s.PersonaVolume);
+                                s.PersonaOn = true;
+                                RecomputePersonaMask();
+                            }
+                            else if (!pOn && s.PersonaOn)
+                            {
+                                DetachPersonaInput(s);
+                            }
+                            if (s.PersonaVolume != null)
+                                s.PersonaVolume.Volume = Math.Clamp(pGain, 25, 300) / 100f;
+                        }
+                        catch { }
                     }
 
                     float toneHz, amp;

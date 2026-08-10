@@ -106,6 +106,7 @@
   <data name="ControllerType_Extended" xml:space="preserve"><value>扩展</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>键盘 + 鼠标</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
+  <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>正在关闭 PadForge...</value></data>
@@ -132,6 +133,8 @@
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>键盘 + 鼠标（最多 {0} 台）</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI（需要 Windows MIDI Services）</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI（最多 {0} 台）</value></data>
+  <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR（需要 SteamVR）</value></data>
+  <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR（最多 {0} 台）</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>正在安装 HidHide…</value></data>
@@ -141,6 +144,11 @@
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>正在卸载 Windows MIDI Services…</value></data>
   <data name="Status_OperationCancelled" xml:space="preserve"><value>操作已被用户取消。</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services 安装失败：{0}</value></data>
+  <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>正在下载 SteamVR…</value></data>
+  <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>正在从 Valve 服务器下载并安装 SteamVR… 共数 GB，可能需要一段时间。</value></data>
+  <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>SteamVR 安装失败：{0}</value></data>
+  <data name="Status_UninstallingSteamVR" xml:space="preserve"><value>正在卸载 SteamVR…</value></data>
+  <data name="Status_SteamVRRunningCloseFirst" xml:space="preserve"><value>SteamVR 正在运行。请先关闭再卸载。</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>设备列表已刷新。</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>已录制 "{0}" ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>现在映射：{0} {1}</value></data>
@@ -264,6 +272,11 @@
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>用户模式虚拟 HID 控制器引擎。嵌入到 PadForge.App 中，在首次创建虚拟控制器时自动安装。在 v3 中替代 ViGEmBus 和 vJoy。</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>用于虚拟 MIDI 设备输出的 SDK 运行时。从 GitHub 下载（约 210 MB）。</value></data>
+  <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
+  <data name="Settings_SteamVRDesc" xml:space="preserve"><value>用于虚拟 VR 控制器的 VR 运行时。直接从 Valve 服务器安装，无需 Steam 账户或 Steam 客户端（数 GB）。</value></data>
+  <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>安装位置</value></data>
+  <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>卸载 SteamVR</value></data>
+  <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>移除位于 {0} 的免 Steam 版 SteamVR 安装并释放数 GB 空间。在重新安装 SteamVR 之前，虚拟 VR 控制器将无法工作。</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>需要 Windows 11 24H2（内部版本 26100）或更高版本</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>设置文件</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>保存、重新加载或重置您的配置。</value></data>
@@ -284,6 +297,7 @@
   <data name="About_Subtitle" xml:space="preserve"><value>控制器映射工具</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce 的现代分支。使用 SDL3、WPF 和 .NET 10 重新构建</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge 可将任何输入设备转换为任何虚拟控制器。游戏手柄、摇杆、键盘、鼠标和触摸屏可映射为虚拟游戏控制器（Xbox、PlayStation、飞行摇杆、方向盘、第三方手柄）或键盘+鼠标 / MIDI 输出，让游戏将其识别为真实硬件，由 HIDMaestro 和 Windows MIDI Services 提供支持。它使用 SDL3 处理控制器输入，使用 Windows Raw Input 处理键盘和鼠标输入，使用 HidHide 按游戏隐藏设备，并提供现代 Fluent Design 界面用于映射、死区、灵敏度曲线和力反馈配置。</value></data>
+  <data name="About_Overview" xml:space="preserve"><value>概述</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>构建技术</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>运行时和 WPF 框架。MIT。</value></data>
@@ -903,6 +917,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>左马达</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>右马达</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>交换左右马达</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>将扳机震动并入主马达</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>此控制器没有扳机马达，使用 Xbox 脉冲扳机的游戏将感觉不到震动。改为将每个扳机通道并入同侧的主马达。</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>测试振动</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>马达活动</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>恒力</value></data>
@@ -941,6 +957,7 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>重置总增益</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>重置左马达</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>重置右马达</value></data>
+  <data name="Pad_Colorway" xml:space="preserve"><value>配色</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>重置视图</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>按下按钮或移动轴/扳机以录制。轴偏转超过 50% 时被检测到。</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>从列表添加</value></data>
@@ -1010,6 +1027,33 @@
   <data name="Btn_Plus" xml:space="preserve"><value>加号</value></data>
   <data name="Btn_Home" xml:space="preserve"><value>HOME</value></data>
   <data name="Btn_Capture" xml:space="preserve"><value>截图</value></data>
+  <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
+  <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
+  <data name="Btn_C" xml:space="preserve"><value>C</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>静音</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>左背键</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>右背键</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>左 Fn</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>右 Fn</value></data>
+  <data name="Btn_VrLeftA" xml:space="preserve"><value>左 A</value></data>
+  <data name="Btn_VrLeftB" xml:space="preserve"><value>左 B</value></data>
+  <data name="Btn_VrLeftATouch" xml:space="preserve"><value>左 A（触摸）</value></data>
+  <data name="Btn_VrLeftBTouch" xml:space="preserve"><value>左 B（触摸）</value></data>
+  <data name="Btn_VrLeftSystem" xml:space="preserve"><value>左系统键</value></data>
+  <data name="Btn_VrLeftGrip" xml:space="preserve"><value>左握把</value></data>
+  <data name="Btn_VrLeftGripClick" xml:space="preserve"><value>左握把按下</value></data>
+  <data name="Btn_VrLeftTriggerClick" xml:space="preserve"><value>左扳机按下</value></data>
+  <data name="Btn_VrRightA" xml:space="preserve"><value>右 A</value></data>
+  <data name="Btn_VrRightB" xml:space="preserve"><value>右 B</value></data>
+  <data name="Btn_VrRightATouch" xml:space="preserve"><value>右 A（触摸）</value></data>
+  <data name="Btn_VrRightBTouch" xml:space="preserve"><value>右 B（触摸）</value></data>
+  <data name="Btn_VrRightSystem" xml:space="preserve"><value>右系统键</value></data>
+  <data name="Btn_VrRightGrip" xml:space="preserve"><value>右握把</value></data>
+  <data name="Btn_VrRightGripClick" xml:space="preserve"><value>右握把按下</value></data>
+  <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>右扳机按下</value></data>
+  <data name="Vr_LeftHand" xml:space="preserve"><value>左手</value></data>
+  <data name="Vr_RightHand" xml:space="preserve"><value>右手</value></data>
+  <data name="Vr_Stick" xml:space="preserve"><value>摇杆</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>鼠标左键</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>鼠标右键</value></data>
@@ -1169,6 +1213,11 @@
   <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>左Joy-Con 陀螺仪俯仰</value></data>
   <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>左Joy-Con 陀螺仪偏航</value></data>
   <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>左Joy-Con 陀螺仪横滚</value></data>
+  <data name="Mapping_GyroAuxHorizontal" xml:space="preserve"><value>左Joy-Con 陀螺仪水平 (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroRPitch" xml:space="preserve"><value>右Joy-Con 陀螺仪俯仰</value></data>
+  <data name="Mapping_GyroRYaw" xml:space="preserve"><value>右Joy-Con 陀螺仪偏航</value></data>
+  <data name="Mapping_GyroRRoll" xml:space="preserve"><value>右Joy-Con 陀螺仪滚转</value></data>
+  <data name="Mapping_GyroRHorizontal" xml:space="preserve"><value>右Joy-Con 陀螺仪水平 (Yaw + Roll)</value></data>
   <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>左Joy-Con 体感陀螺仪</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>陀螺仪 偏航</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>陀螺仪 翻滚</value></data>
@@ -1212,6 +1261,13 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 手柄原始本地轴。Player = 把偏航投影到真实垂直轴（重力），俯仰保持本地。Jibb Smart 推荐的默认值，在任意倾斜角度都自然。World = 偏航与俯仰均投影到世界坐标轴。</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>反转俯仰（Y）</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>俯仰轴的全局反转。在 Player/World 投影之后应用。与映射表中各源的 Invert 标志互相独立。</value></data>
+  <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>指南针</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>此控制器带有磁力计。将偏航锚定到磁北可消除陀螺仪瞄准的缓慢水平漂移。请先校准：按下校准，将控制器以 8 字形转动几秒经过所有朝向，然后再按一次。</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>将偏航锚定到指南针</value></data>
+  <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>添加一个小的校正速率，将水平瞄准拉向磁航向，使漂移无法累积。需要已保存的磁力计校准。受附近金属或磁铁干扰的采样会被自动剔除。</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>重置为默认值（关闭）</value></data>
+  <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>校准磁力计</value></data>
+  <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>完成校准</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>反转偏航 / 滚转（X）</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>偏航轴的全局反转。同样作用于 Roll 与 Gyro Horizontal 源。</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>真实世界校准</value></data>
@@ -1532,6 +1588,8 @@
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>左扳机</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>右扳机</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>交换左右扳机马达</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>转换自适应扳机震动</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>当游戏将此槽位作为虚拟 DualSense 驱动时，其振动类自适应扳机效果将通过此控制器的脉冲扳机马达播放。阻力类效果没有振动等价物，将被忽略。</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>测试左扳机</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>测试右扳机</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>扳机马达活动</value></data>
@@ -1913,6 +1971,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>切除</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>按八度下折</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>音调上限</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>在此控制器上播放 DualSense 触觉反馈</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>当游戏将此槽位作为虚拟 DualSense 驱动并输出创作的触觉音频时，该音轨将以音调形式在此控制器的执行器上播放。由音频推导而来，因此是对设计手感的近似而非精确还原。</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>触觉增益</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>重置为默认值（关闭）</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>重置为默认值（100%）</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>超过此频率的音调将被切除或下折。默认 800 Hz 可保留引擎与冲击震动，只捕捉刺耳的蜂鸣音。</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>重置高音</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>重置音调上限</value></data>
@@ -2281,10 +2344,12 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>槽位</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>冷却</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>选择一个设备以查看其原始输入。</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>配对未完成。详情请查看日志。</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>没有可用的蓝牙适配器。请开启蓝牙后重试。配对仅用于无线连接，使用数据线时无需配对。</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>配对未完成。失败的步骤显示在上方。</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>无法安装 PlayStation 控制器的蓝牙驱动。</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>用 USB 线连接 DualShock 3，然后点击“配对”。PadForge 会将本 PC 写入控制器并进行注册。完成后，拔下控制器并按下 PS 键即可通过蓝牙连接。</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>未在 USB 上找到 DualShock 3。请用 USB 线连接后重试。</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>此电脑不信任 PadForge USB 驱动程序的签名证书，因此 Windows 不会为 DualShock 3 安装该驱动程序。</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>就绪。拔下控制器并按下 PS 键，它会出现在你的设备列表中。</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>正在设置控制器。请保持 USB 连接。</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>锻造中</value></data>
@@ -2386,6 +2451,14 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>关闭</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>移除此键对。</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同时反向输入 (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>保持控制器活跃</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>有些游戏一旦检测到鼠标或键盘输入就会停止震动并切换按键提示。保持摇杆的轻微偏移可让游戏继续将此控制器视为活跃设备。达到或超过保持量的真实输入将原样通过。请将偏移量设为低于游戏自身的死区，以免游戏内产生移动。</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>启用保持活跃</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>保持的轴</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>由哪个输出轴保持偏移。选择游戏读取为移动而非视角的轴，这样低于死区的值就不会产生可见影响。</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>偏移量</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>保持量占摇杆全行程的百分比。25% 可让大多数游戏保持活跃，同时低于其移动死区。若游戏仍会切换请调高，若角色发生漂移请调低。</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>关闭保持活跃并恢复默认轴和偏移量</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>解决此插槽虚拟控制器输出上同时按住的按钮对。当一对按钮同时按下时，所选规则决定游戏看到哪个输入。</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>重置同时反向输入</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>模式</value></data>
@@ -2839,6 +2912,8 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>不支持菜单宿主表面（{0}）</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>无法识别菜单单元格图标（{0}），该单元格保留其文本标签</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>低音振动器</value></data>
+  <data name="Pad_Tab_Output" xml:space="preserve"><value>输出</value></data>
+  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>在发送给游戏之前对该槽位虚拟控制器输出进行整形的设置：SOCD 清理用于处理同时按下的相反方向，保持控制器活跃用于应对一检测到鼠标或键盘输入就放弃控制器的游戏。</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音振动器</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>将此虚拟手柄收到的游戏振动和力反馈转换为低频音，输出到音频设备，用于低音振动器和低音炮。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振动转音频</value></data>
@@ -2917,4 +2992,68 @@
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>DualShock 4 音频协议文档：SBC 参数与数据包布局，作者 khallmark。MIT。</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>桌面</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>在沙发上操作 Windows。光标、滚动，扳机键点击。</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD 与鼠标</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>用手柄玩键鼠游戏。射击与动作游戏。</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>快捷栏</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>两个扳机键后面藏着三十二个技能，适合 MMO 和技能繁多的游戏。</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>模拟器</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch 及其前端。按住 Back 使用即时存档、读档和倍速。</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>格斗游戏</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>六键布局，双轴均采用符合赛事规则的 SOCD 清理。</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>键盘 + 鼠标</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>手柄</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>浏览入门配置</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>入门配置</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>面向整个游戏类型的现成配置。选择一个，分配任意手柄即可使用。保存后会添加一个可编辑的普通配置。</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>保存配置</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>已添加入门配置“{0}”。</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>指向点击</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>冒险游戏，以及一切靠光标和两个动作推进的游戏。</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>策略</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>即时策略、4X 和城市建设。一个摇杆控镜头，另一个控光标。</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>等距视角 RPG</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>队伍 RPG 和回合制战术。暂停、背包和快捷栏。</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>双摇杆</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>俯视角射击。左杆移动，右杆矄准。</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>媒体遥控</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>播放、快进，以及一个适合沙发的光标。</value></data>
+  <data name="Starter_Racing_Name" xml:space="preserve"><value>赛车</value></data>
+  <data name="Starter_Racing_Description" xml:space="preserve"><value>在任何手柄上都能获得更平稳的转向和中心附近的精细控制。</value></data>
+  <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>太空模拟</value></data>
+  <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>用两个摇杆控制六个自由度，并提供对接用的精密模式。</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>精密（精细控制）</value></data>
+  <data name="Starter_GyroAim_Name" xml:space="preserve"><value>陀螺仪矄准</value></data>
+  <data name="Starter_GyroAim_Description" xml:space="preserve"><value>左扳机键启用体感矄准，摇杆仍然可用。</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>交叉热键栏（左）</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>交叉热键栏（右）</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>双重交叉（左）</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>双重交叉（右）</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>快捷键</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>热键栏</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>队伍</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>快捷方式</value></data>
+  <data name="Starter_QuietLayerName" xml:space="preserve"><value>静默（不发送任何输入）</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>耳机音量</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>手柄耳机接口的硬件音量。写入手柄后，无需应用也能保持。</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>重置耳机音量</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>调高耳机音量</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>调低耳机音量</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>将手柄耳机接口的音量提高 10%。</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>将手柄耳机接口的音量降低 10%。</value></data>
+  <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>输出路径</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>手柄音频的播放位置。默认保持固件自身的路由，并将 PadForge 声音在扬声器播放。耳机+扬声器时耳机侧为单声道（固件限制）。蓝牙连接时，此模式仅通过耳机播放。跟随耳机接口：插入耳机时切换到耳机，拔出时切回扬声器；无法读取接口状态时与默认相同。</value></data>
+  <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>默认</value></data>
+  <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>耳机（立体声）</value></data>
+  <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>耳机（单声道）</value></data>
+  <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>耳机 + 扬声器</value></data>
+  <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>仅扬声器</value></data>
+  <data name="Pad_ResetOutputPath" xml:space="preserve"><value>重置输出路径</value></data>
+  <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>跟随耳机接口</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz 的 DualSense 输出报告字节表与 Sony scePad 语义，PadForge 效果与音频写入的基础。MIT。</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments 的接口检测音频路由模式，跟随耳机接口功能的参考。仅作文档阅读；AGPL-3.0。</value></data>
+  <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>耳机追踪器</value></data>
 </root>

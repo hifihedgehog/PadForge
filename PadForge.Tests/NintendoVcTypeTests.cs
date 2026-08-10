@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using PadForge.Common;
 using PadForge.Common.Input;
@@ -24,8 +24,11 @@ namespace PadForge.Tests
         {
             // The numeric value is persisted in PadForge.xml; never reorder.
             Assert.Equal(5, (int)VirtualControllerType.Nintendo);
+            // Vr (#49) appended after Nintendo; the tail moves with each
+            // appended category, the pinned values never do.
+            Assert.Equal(6, (int)VirtualControllerType.Vr);
             var values = (VirtualControllerType[])Enum.GetValues(typeof(VirtualControllerType));
-            Assert.Equal(VirtualControllerType.Nintendo, values[^1]);
+            Assert.Equal(VirtualControllerType.Vr, values[^1]);
         }
 
         [Fact]
@@ -58,12 +61,23 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AssetFolders_SwitchProGets2DSetAndNo3DMesh()
+        public void AssetFolders_SwitchProGets2DSetAndSwitch2ProMesh()
         {
+            // Both Switch Pro generations share the Switch2Pro MESH, the
+            // same arrangement as Xbox Series profiles riding the Xbox
+            // One mesh. Their 2D sets do NOT merge: the Switch 2 art
+            // carries a C button and the GL / GR grip tiles, and drawing
+            // those on an original Pro Controller would show it three
+            // controls it does not have.
             var (name2D, name3D) = HMaestroProfileCatalog.ResolveAssetFolders(
                 "switch-pro", VirtualControllerType.Nintendo);
             Assert.Equal("SWITCHPRO", name2D);
-            Assert.Null(name3D);
+            Assert.Equal("Switch2Pro", name3D);
+
+            (name2D, name3D) = HMaestroProfileCatalog.ResolveAssetFolders(
+                "switch2-pro-controller", VirtualControllerType.Nintendo);
+            Assert.Equal("SWITCH2PRO", name2D);
+            Assert.Equal("Switch2Pro", name3D);
         }
 
         // ── Lettering (#215) rides the type via the Numbered style ──

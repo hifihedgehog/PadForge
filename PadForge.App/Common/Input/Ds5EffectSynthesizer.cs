@@ -49,11 +49,51 @@ namespace PadForge.Common.Input
         private const ushort EnableRumbleEmulation  = 0x0003;  // bits 0 + 1
         private const ushort EnableRightTrigger     = 0x0004;
         private const ushort EnableLeftTrigger      = 0x0008;
+        // validFlag0 bit 4 = AllowHeadphoneVolume, "Enable setting
+        // VolumeHeadphones" (duaLib dataStructures.h /*0.4*/). Gates
+        // byte 4 the same way bit 6 gates the mic byte.
+        private const ushort EnableHeadphoneVolume  = 0x0010;
+        // validFlag0 bit 7 = AllowAudioControl, "Enable setting
+        // AudioControl section" (duaLib /*0.7*/). Gates byte 7, whose
+        // bits 4-5 are OutputPathSelect.
+        private const ushort EnableAudioControl     = 0x0080;
+        // validFlag0 bit 6 = AllowMicVolume, "Enable setting VolumeMic"
+        // (duaLib dataStructures.h /*0.6*/). Gates byte 6.
+        private const ushort EnableMicVolume        = 0x0040;
+
+        // VolumeMic (byte 6). duaLib: "not linier, seems to max at 64,
+        // 0 is not fully muted". 64 is therefore the ceiling worth
+        // writing, and the "not fully muted" note is why a pad left at
+        // 0 by a previous owner reads as QUIET rather than silent.
+        private const byte MicVolumeMax = 0x40;
 
         // EnableBits2 (high byte; HM field "validFlag1").
         private const ushort EnableMicLight         = 0x0100;
+        // validFlag1 bit 1 = AllowAudioMute, "Enable setting MuteControl
+        // section" (duaLib dataStructures.h /*1.1*/). The MuteControl byte
+        // itself (duaLib output offset 9: MicMute 0x10, SpeakerMute 0x20,
+        // HeadphoneMute 0x40, HapticMute 0x80, plus four power-save bits)
+        // is NOT declared by any Sony profile's extendedOutputReport, so
+        // HM zero-fills it — which reads as "nothing muted, no power
+        // save". Asserting this enable bit is therefore a pure unmute.
+        private const ushort EnableAudioMuteControl = 0x0200;
         private const ushort EnableLightbar         = 0x0400;
         private const ushort EnablePlayerIndicator  = 0x1000;
+
+        // validFlag2 (byte 38) defines only three bits. duaLib
+        // dataStructures.h names them at /*38.0*/../*38.2*/ and declares
+        // the rest "UNKBITC : 5; // unused":
+        //   bit 0 AllowLightBrightnessChange   gates lightBrightness  (byte 42)
+        //   bit 1 AllowColorLightFadeAnimation gates lightFadeAnimation (byte 41)
+        //   bit 2 EnableImprovedRumbleEmulation
+        //
+        // PadForge shipped a flat 0xFF here, which asserts all three on
+        // every packet. Two of them are authority claims, and reasserting
+        // them 30 Hz is what made external brightness impossible to hold
+        // and drove the bar to black (see the lightbarSetup comment).
+        private const byte AllowLightBrightnessChange    = 0x01;
+        private const byte AllowColorLightFadeAnimation  = 0x02;
+        private const byte EnableImprovedRumbleEmulation = 0x04;
 
         // BT DS5 framing tag — byte 1 of Report 0x31. Real Sony DS5 BT
         // firmware infers header length from byte 1's low nibble:
@@ -145,7 +185,14 @@ namespace PadForge.Common.Input
             bool assertLeftTriggerEnable = true,
             UserEffectsDispatcher.ExternalSubsystemOverrides overrides = default,
             byte batteryPercent = 100,
-            int playerNumber = 0)
+            int playerNumber = 0,
+            bool assertMicLightEnable = true,
+            bool assertAudioHardwareClaim = true,
+            bool assertPlayerIndicatorEnable = true,
+            int headphoneVolumePercent = 100,
+            bool assertHeadphoneVolume = false,
+            int audioOutputPath = 0,
+            bool assertAudioControl = false)
         {
             ushort enableBits = 0;
 
@@ -197,17 +244,25 @@ namespace PadForge.Common.Input
                 || macroOverrideActive
                 || inputReactiveActive);
 
-            // Always assert the player-indicator update bit and write the
-            // playerIndicator byte, even when PlayerLedMode == Off. Without
-            // setting validFlag1 bit 4 the firmware ignores the byte
-            // entirely, so a transition from a pattern (say, Player1) back
-            // to Off would leave the row stuck on the previous pattern.
-            // PlayerLedBits[Off] is 0, so the byte degenerates to
-            // PlayerIndicatorNoFade alone (0x20) — no LED bits set, no-fade
-            // asserted — which cleanly extinguishes the row.
-            // Mirror the external writer's value when they own this
-            // subsystem.
-            enableBits |= EnablePlayerIndicator;
+            // The player-indicator update bit (validFlag1 bit 4) gates the
+            // playerIndicator byte: without it the firmware ignores the
+            // byte entirely, so a transition from a pattern (say, Player1)
+            // back to Off needs the bit set to land. PlayerLedBits[Off] is
+            // 0, so the byte degenerates to PlayerIndicatorNoFade alone
+            // (0x20), no LED bits set, no-fade asserted, which cleanly
+            // extinguishes the row.
+            //
+            // That does NOT license holding the bit every tick. Held, it
+            // republishes our pips over an external writer's 1.5 s after
+            // their grace window closes. SDL3's PS5 driver writes this row
+            // event-driven only, from SDL_SetJoystickPlayerIndex and its
+            // player-LED hint (SDL_hidapi_ps5.c SetLightsForPlayerIndex,
+            // reached via HIDAPI_DriverPS5_SetDevicePlayerIndex), so it
+            // sets the pips once and expects the firmware to keep them.
+            // The caller gates this the same way the lightbar's identity
+            // floor (#191) already stands down: assert while PadForge is
+            // authoring, while mirroring, or for one transition frame.
+            if (assertPlayerIndicatorEnable) enableBits |= EnablePlayerIndicator;
             byte playerIndicator;
             if (overrides.PlayerIndicator.HasValue)
             {
@@ -241,12 +296,27 @@ namespace PadForge.Common.Input
             // OutputPanel.vue. The firmware needs ALL of:
             //   - validFlag1 bit 2 (lightbar enable) — gate for the RGB bytes
             //   - validFlag1 bit 4 (player indicator) — already set above
-            //   - validFlag2 = 0xFF — without higher bits set, hot-plug
-            //     locks the lightbar even though SDL_SendGamepadEffect
-            //     succeeds. Matched OpenRGB exactly to fix this.
-            //   - lightbarSetup = 0x02 — bypass BT default blue
-            //   - playerIndicator bit 0x20 (PlayerIndicatorNoFade) —
-            //     releases the in-progress connection animation. SDL3's
+            //   - validFlag2 bit 0 (AllowLightBrightnessChange). Without
+            //     it, hot-plug locks the lightbar even though
+            //     SDL_SendGamepadEffect succeeds. Assert it only while
+            //     PadForge is authoring, the way duaLib does (it sets the
+            //     bit on a brightness change or a reconnect and clears it
+            //     on every other tick, duaLib.cpp:576).
+            //   - lightbarSetup (byte 41) is LightFadeAnimation, NOT a
+            //     generic "setup" byte: 0 Nothing, 1 FadeIn (black to
+            //     blue), 2 FadeOut (blue to BLACK). It defaulted to 2 here
+            //     under the label "bypass BT default blue", which is what
+            //     a ONE-SHOT 2 does. Sent every tick with bit 1 asserted
+            //     it is a standing fade-to-black order, and the bar
+            //     devolved to black exactly as commanded. Both references
+            //     send FadeOut once at connect and only over Bluetooth:
+            //     duaLib at enumeration (duaLib.cpp:915) and never in its
+            //     steady loop, OpenRGB in its BT branch alone
+            //     (SonyDualSenseController.cpp:69, absent from the USB
+            //     branch). Default to Nothing; carry an external writer's
+            //     value when they ask for a fade themselves.
+            //   - playerIndicator bit 0x20 (PlayerIndicatorNoFade).
+            //     Releases the in-progress connection animation. SDL3's
             //     PS5 driver also ORs this bit in SetLightsForPlayerIndex.
             byte ledR = 0, ledG = 0, ledB = 0;
             bool lightbarExternal = overrides.LightbarRgb != null && overrides.LightbarRgb.Length >= 3;
@@ -329,6 +399,18 @@ namespace PadForge.Common.Input
                 enableBits |= EnableLightbar;
                 (ledR, ledG, ledB) = PlayerIdentityDefaults.ColorFor(playerNumber);
             }
+            else if (overrides.LastLightbarRgb != null && overrides.LastLightbarRgb.Length >= 3)
+            {
+                // Standing down: an external writer owns the bar and its
+                // grace window has expired, so the enable bit deliberately
+                // stays CLEAR and PadForge claims nothing. Carry their last
+                // colour in the RGB bytes anyway instead of zeros, so a
+                // firmware that acts on the RGB regardless of the enable
+                // bit re-applies the same colour rather than blanking it.
+                ledR = overrides.LastLightbarRgb[0];
+                ledG = overrides.LastLightbarRgb[1];
+                ledB = overrides.LastLightbarRgb[2];
+            }
 
             // Mic LED mode: 0 = off, 1 = solid, 2 = pulse. Values 0-2
             // map directly from MicLedMode enum. FollowDeviceMute (3) is
@@ -350,7 +432,78 @@ namespace PadForge.Common.Input
             {
                 muteLed = cfg != null ? (byte)cfg.MicLedMode : (byte)0;
             }
-            enableBits |= EnableMicLight;
+            // Same retain-on-idle rule the triggers use below. Asserting
+            // the mic-light enable every tick republishes our MicLedMode
+            // over whatever an external writer set, 1.5 s after their
+            // grace window closes. The caller gates this on PadForge
+            // having a deliberate mic-LED intent, external currently
+            // mirroring, or a one-shot frame to carry an Off transition.
+            if (assertMicLightEnable) enableBits |= EnableMicLight;
+
+            // Keep the pad's microphone unmuted (owner ruling 2026-07-31).
+            // On PC the HOST owns DualSense mute state: the mute button is
+            // momentary and the firmware does not self-toggle, so a pad
+            // muted by any earlier owner (Steam, a prior session, a
+            // console) stays muted forever unless something writes the
+            // unmute. PadForge wrote only the mute LED, so a hardware-muted
+            // mic went unnoticed AND uncorrected. Confirmed live, input
+            // status byte 0x14 with MicMuted set, every captured Opus frame
+            // decoding to pure silence while the LED sat dark because we
+            // force it from MicLedMode.
+            //
+            // Asserting AllowAudioMute over the zero-filled MuteControl
+            // byte unmutes the mic, speaker, headphones and haptics, and
+            // clears every power-save bit. That is a correction to make
+            // ONCE when we claim a pad, not a standing order: held every
+            // tick it also un-mutes anything an external program
+            // deliberately muted, within one dispatch frame. duaLib
+            // asserts AllowAudioMute in letGo alone (duaLib.cpp:180) and
+            // never in its steady loop. The caller runs it as a bounded
+            // burst per device claim.
+            //
+            // Mic VOLUME is the same story one byte over, and was the
+            // missing half. PadForge declared micVolume in every Sony
+            // profile but never wrote it and never asserted bit 6, so the
+            // pad kept whatever gain its last owner left and nothing here
+            // could raise it. A controller power cycle was the only cure,
+            // which is exactly how the owner found it. duaLib asserts
+            // AllowMicVolume on a change or a reconnect and clears it
+            // otherwise (duaLib.cpp:613); our claim burst is that event.
+            //
+            // Owner ruling 2026-08-01: the HARDWARE mic volume stays at
+            // maximum. Attenuation belongs to Windows and to our own gain
+            // stage, not to a firmware register no PC UI exposes.
+            if (assertAudioHardwareClaim)
+                enableBits |= EnableAudioMuteControl | EnableMicVolume;
+
+            // Headphone jack hardware volume (byte 4). Percent maps onto
+            // Sony's own scePad window: duaLib writes headsetVolume + 64,
+            // so the PS5-used range is 0x40..0x7F and the struct's
+            // "max 0x7f" agrees. DS4Windows-hbashton's 0x4F cap sits
+            // inside that window and was rejected as needlessly low.
+            // 0% writes 0x00. The VALUE ships on every packet, like
+            // micVolume, so a stray enable bit can never apply HM's
+            // zero-fill; the ENABLE bit rides the claim burst or a
+            // config change, per the retain-on-idle rule.
+            // User-selected output path (byte 7 bits 4-5). Enum values
+            // 1-4 map to firmware paths 0-3 (duaLib SCE_PAD_AUDIO_PATH_*:
+            // stereo headset, mono headset, mono headset + speaker,
+            // speaker only). Automatic (0) authors nothing: the byte
+            // ships as 0 with the enable bit clear, and the dispatcher's
+            // #83 macro-speaker block stays the byte's owner. The enable
+            // bit is change/claim-gated by the caller, duaLib's own
+            // discipline (duaLib.cpp:597).
+            byte audioControlFlags = 0;
+            if (audioOutputPath > 0)
+            {
+                audioControlFlags = (byte)(Math.Clamp(audioOutputPath - 1, 0, 3) << 4);
+                if (assertAudioControl) enableBits |= EnableAudioControl;
+            }
+
+            byte headphoneByte = headphoneVolumePercent <= 0
+                ? (byte)0
+                : (byte)(0x40 + Math.Clamp(headphoneVolumePercent, 0, 100) * (0x7F - 0x40) / 100);
+            if (assertHeadphoneVolume) enableBits |= EnableHeadphoneVolume;
 
             // Triggers — 11 bytes per trigger (mode + 10 param bytes). The
             // simple modes (Feedback / Weapon / Vibration) use scalar
@@ -406,6 +559,28 @@ namespace PadForge.Common.Input
             if (assertRightTriggerEnable) enableBits |= EnableRightTrigger;
             if (assertLeftTriggerEnable)  enableBits |= EnableLeftTrigger;
 
+            // validFlag2, composed per-bit rather than blanket 0xFF.
+            //
+            // Brightness control is an authority claim over byte 42, so it
+            // rides with the lightbar: assert while PadForge is authoring
+            // the bar (which also covers the hot-plug case the flat 0xFF
+            // was added for, since a fresh claim authors), or while we are
+            // mirroring an external writer's own brightness. Idle, it stays
+            // clear and the firmware retains what they set.
+            //
+            // The fade-animation bit gates byte 41. PadForge never runs a
+            // fade of its own, so assert it only when an external writer
+            // explicitly asked for one.
+            //
+            // The improved-rumble bit was already set by the old 0xFF and
+            // stays unconditional. Rumble behaviour is not in scope here.
+            bool lightbarAuthored = (enableBits & EnableLightbar) != 0;
+            byte validFlag2 = EnableImprovedRumbleEmulation;
+            if (lightbarAuthored || overrides.LedBrightness.HasValue)
+                validFlag2 |= AllowLightBrightnessChange;
+            if (overrides.LightbarSetup.HasValue)
+                validFlag2 |= AllowColorLightFadeAnimation;
+
             // BT DS5 spec adds "btTag" at byte 1 (USB spec ignores it).
             // The encoder writes only the fields its profile declares.
             return new Dictionary<string, object>
@@ -418,8 +593,11 @@ namespace PadForge.Common.Input
                 { "muteLed",          muteLed },
                 { "rightTriggerEffect", rightTrig },
                 { "leftTriggerEffect",  leftTrig  },
-                { "validFlag2",       (byte)0xFF },
-                { "lightbarSetup",    overrides.LightbarSetup ?? (byte)0x02 },
+                { "micVolume",        MicVolumeMax },
+                { "headphoneVolume",  headphoneByte },
+                { "audioControlFlags", audioControlFlags },
+                { "validFlag2",       validFlag2 },
+                { "lightbarSetup",    overrides.LightbarSetup ?? (byte)0x00 },
                 { "ledBrightness",    ledBrightness },
                 { "playerIndicator",  playerIndicator },
                 { "lightbar",         new byte[] { ledR, ledG, ledB } },

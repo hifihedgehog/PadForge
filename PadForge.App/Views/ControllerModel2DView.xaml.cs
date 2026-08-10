@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -28,6 +28,15 @@ namespace PadForge.Views
         private PadViewModel _vm;
         private string _loadedModel; // "XBOX360" or "DS4"
         private bool _dirty;
+
+        // 2D colorway state: the resolved id for the loaded model (null when
+        // the folder ships a single colorway), the appearance-store family
+        // key, and the folder's set, kept for the picker's handler. The
+        // store is PadSetting.Model3DAppearances, shared with the 3D picker.
+        private string _loadedColorway;
+        private string _colorwayFamilyKey;
+        private Colorway2D[] _colorwaySet;
+        private bool _pickerUpdating;
 
         // Visual overlay elements
         private Image _baseImage;
@@ -111,7 +120,8 @@ namespace PadForge.Views
         private void OnVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(PadViewModel.OutputType)
-                || e.PropertyName == nameof(PadViewModel.ProfileId))
+                || e.PropertyName == nameof(PadViewModel.ProfileId)
+                || e.PropertyName == nameof(PadViewModel.Model3DAppearances))
             {
                 Dispatcher.Invoke(EnsureModel);
                 return;
@@ -139,11 +149,66 @@ namespace PadForge.Views
             var (needed, _) = PadForge.Common.Input.HMaestroProfileCatalog.ResolveAssetFolders(
                 _vm.ProfileId, _vm.OutputType);
 
-            if (_loadedModel == needed) return;
+            // Colorway rides the same guard: a change in the pad's stored
+            // appearance rebuilds the canvas on the recolored assets.
+            var (famKey, set) = Controller2DColorways.For(needed);
+            string colorway = null;
+            if (set != null)
+            {
+                colorway = set[0].Id;
+                string chosen = _vm.GetModelAppearance(famKey);
+                foreach (var c in set)
+                    if (c.Id == chosen) { colorway = c.Id; break; }
+            }
+
+            if (_loadedModel == needed && _loadedColorway == colorway) return;
             _loadedModel = needed;
+            _loadedColorway = colorway;
 
             BuildCanvas(needed);
             _dirty = true;
+        }
+
+        /// <summary>The 2D colorway picker, twin of the 3D view's: hidden
+        /// unless the folder ships more than one colorway, listing only what
+        /// this view can render.</summary>
+        private void UpdateAppearancePicker(Colorway2D[] set, Colorway2D chosen)
+        {
+            _pickerUpdating = true;
+            try
+            {
+                if (set == null || set.Length < 2)
+                {
+                    AppearancePicker.ItemsSource = null;
+                    AppearancePicker.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                var names = new string[set.Length];
+                int sel = 0;
+                for (int i = 0; i < set.Length; i++)
+                {
+                    names[i] = set[i].Name;
+                    if (chosen != null && set[i].Id == chosen.Id) sel = i;
+                }
+                AppearancePicker.ItemsSource = names;
+                AppearancePicker.SelectedIndex = sel;
+                AppearancePicker.Visibility = Visibility.Visible;
+            }
+            finally
+            {
+                _pickerUpdating = false;
+            }
+        }
+
+        private void AppearancePicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_pickerUpdating || _vm == null || _colorwaySet == null) return;
+            int i = AppearancePicker.SelectedIndex;
+            if (i < 0 || i >= _colorwaySet.Length) return;
+
+            // Writes the pad's shared appearance store; its PropertyChanged
+            // re-enters EnsureModel, which rebuilds on the new colorway.
+            _vm.SetModelAppearance(_colorwayFamilyKey, _colorwaySet[i].Id);
         }
 
         private void BuildCanvas(string modelName)
@@ -172,6 +237,11 @@ namespace PadForge.Views
                     basePath = DualSenseLayout.BasePath; overlays = DualSenseLayout.Overlays;
                     _stickMaxTravel = DualSenseLayout.StickMaxTravel;
                     break;
+                case "DUALSENSEEDGE":
+                    baseW = DualSenseEdgeLayout.BaseWidth; baseH = DualSenseEdgeLayout.BaseHeight;
+                    basePath = DualSenseEdgeLayout.BasePath; overlays = DualSenseEdgeLayout.Overlays;
+                    _stickMaxTravel = DualSenseEdgeLayout.StickMaxTravel;
+                    break;
                 case "XBOXONE":
                     baseW = XboxOneSLayout.BaseWidth; baseH = XboxOneSLayout.BaseHeight;
                     basePath = XboxOneSLayout.BasePath; overlays = XboxOneSLayout.Overlays;
@@ -187,6 +257,11 @@ namespace PadForge.Views
                     basePath = SwitchProLayout.BasePath; overlays = SwitchProLayout.Overlays;
                     _stickMaxTravel = SwitchProLayout.StickMaxTravel;
                     break;
+                case "SWITCH2PRO":
+                    baseW = Switch2ProLayout.BaseWidth; baseH = Switch2ProLayout.BaseHeight;
+                    basePath = Switch2ProLayout.BasePath; overlays = Switch2ProLayout.Overlays;
+                    _stickMaxTravel = Switch2ProLayout.StickMaxTravel;
+                    break;
                 default:
                     baseW = Xbox360Layout.BaseWidth; baseH = Xbox360Layout.BaseHeight;
                     basePath = Xbox360Layout.BasePath; overlays = Xbox360Layout.Overlays;
@@ -194,6 +269,24 @@ namespace PadForge.Views
                     break;
             }
             string folder = modelName;
+
+            // Colorway resolution: swap the base render and any rest-art
+            // sprite the chosen colorway recolors (trigger silhouettes,
+            // stick rings); press-highlight art is shared across colorways.
+            var (famKey, set) = Controller2DColorways.For(modelName);
+            _colorwayFamilyKey = famKey;
+            _colorwaySet = set;
+            Colorway2D chosen = null;
+            if (set != null)
+            {
+                chosen = set[0];
+                foreach (var c in set)
+                    if (c.Id == _loadedColorway) { chosen = c; break; }
+                basePath = $"2DModels/{folder}/{chosen.BaseFile}";
+            }
+            UpdateAppearancePicker(set, chosen);
+            string Resolve(string file)
+                => chosen != null && chosen.Overrides.TryGetValue(file, out var v) ? v : file;
 
             // Annotation overlay (#175): the layout table is also the anchor
             // position source, so the chips point at exactly what the model
@@ -214,7 +307,7 @@ namespace PadForge.Views
             // Overlay images (Z=1) + hit-test rectangles (Z=10)
             foreach (var ov in overlays)
             {
-                string imgPath = $"2DModels/{folder}/{ov.ImageFile}";
+                string imgPath = $"2DModels/{folder}/{Resolve(ov.ImageFile)}";
                 var img = CreateImage(imgPath, ov.X, ov.Y, ov.Width, ov.Height);
                 img.IsHitTestVisible = false; // Hit rect handles clicks
                 _elementTypes[ov.TargetName] = ov.ElementType;
@@ -297,13 +390,15 @@ namespace PadForge.Views
             // Touchpad preview: a full-zone blue highlight (shown when
             // TouchpadClick is held) plus two finger dots positioned by the
             // VM's TouchpadFingerN(X,Y,Down) properties. Mirrors the DS4 web
-            // controller's preview shape. DualSense uses the same surface,
-            // so build the preview for both PlayStation 2D layouts.
+            // controller's preview shape. Built for every layout that
+            // declares a Touchpad element and ships the click art: the gate
+            // used to name the two folders that had it when it was written,
+            // which silently excluded the Edge the day it got its own folder.
             _touchpadClickHighlight = null;
             _touchpadFinger0Dot = null;
             _touchpadFinger1Dot = null;
             _touchpadOverlay = default;
-            if (modelName == "DS4" || modelName == "DualSense")
+            if (TouchpadClickSprite(modelName) != null)
             {
                 OverlayElement touchpad = default, click = default;
                 foreach (var ov in overlays)
@@ -329,7 +424,7 @@ namespace PadForge.Views
                 // Map stick click target to its ring target
                 string ringTarget = ov.TargetName == "LeftThumbButton" ? "LeftThumbRing" : "RightThumbRing";
 
-                string clickImgPath = $"2DModels/{folder}/{ov.ImageFile}";
+                string clickImgPath = $"2DModels/{folder}/{Resolve(ov.ImageFile)}";
                 var highlight = CreateImage(clickImgPath, ov.X, ov.Y, ov.Width, ov.Height);
                 highlight.IsHitTestVisible = false;
                 highlight.Opacity = 0.4;
@@ -345,15 +440,32 @@ namespace PadForge.Views
             QueueAnnotationRebuild();
         }
 
+        /// <summary>The touchpad-click sprite each 2D asset folder ships, or
+        /// null for a folder with no single-touchpad preview art. Keyed on the
+        /// folder because the art family and the folder name diverge (the
+        /// DualSense Edge folder carries the DualSense sprites).</summary>
+        internal static string TouchpadClickSprite(string folder) => folder switch
+        {
+            "DS4" => "DS4_Touchpad_Click.png",
+            "DualSense" or "DUALSENSEEDGE" => "DualSense_Touchpad_Click.png",
+            _ => null,
+        };
+
         private void BuildTouchpadPreview(OverlayElement ov, string modelName)
         {
             // Full-zone touchpad-click highlight, hidden by default. Shown when
             // the TouchpadClick button is held, on hover (lower opacity), and
             // during the Map All flash. Uses the asset pack's touchpad-click
-            // PNG (DS4_Touchpad_Click.png / DualSense_Touchpad_Click.png) at
-            // the layout-defined Touchpad rectangle so it lines up with the
-            // visible touchpad surface on the rendered controller body.
-            string clickPng = $"2DModels/{modelName}/{modelName}_Touchpad_Click.png";
+            // PNG at the layout-defined Touchpad rectangle so it lines up with
+            // the visible touchpad surface on the rendered controller body.
+            //
+            // The sprite's stem is the ART family, not the folder: the Edge
+            // has its own folder but ships the DualSense sprites, so
+            // interpolating the folder name asked for a file that does not
+            // exist and the preview never built.
+            string stem = TouchpadClickSprite(modelName);
+            if (stem == null) return;
+            string clickPng = $"2DModels/{modelName}/{stem}";
             _touchpadClickHighlight = CreateImage(clickPng, ov.X, ov.Y, ov.Width, ov.Height);
             _touchpadClickHighlight.IsHitTestVisible = false;
             _touchpadClickHighlight.Visibility = Visibility.Collapsed;
@@ -518,6 +630,14 @@ namespace PadForge.Views
             SetOverlayVisible("ButtonStart", _vm.ButtonStart);
             SetOverlayVisible("ButtonGuide", _vm.ButtonGuide);
             SetOverlayVisible("ButtonShare", _vm.ButtonShare);
+            SetOverlayVisible("ButtonMute", _vm.ButtonMute);
+            SetOverlayVisible("LeftPaddle", _vm.LeftPaddle);
+            SetOverlayVisible("RightPaddle", _vm.RightPaddle);
+            SetOverlayVisible("LeftFunction", _vm.LeftFunction);
+            SetOverlayVisible("RightFunction", _vm.RightFunction);
+            SetOverlayVisible("ButtonC", _vm.ButtonC);
+            SetOverlayVisible("LeftPaddle", _vm.LeftPaddle);
+            SetOverlayVisible("RightPaddle", _vm.RightPaddle);
             SetOverlayVisible("LeftThumbButton", _vm.LeftThumbButton);
             SetOverlayVisible("RightThumbButton", _vm.RightThumbButton);
         }
@@ -749,7 +869,7 @@ namespace PadForge.Views
             // preview element grammar. Translate back before resolving.
             if (target.StartsWith("Raw", StringComparison.Ordinal))
             {
-                target = NintendoPreviewMap.ToPreview(target);
+                target = NintendoPreviewMap.ToPreview(target, _vm?.ProfileId);
                 if (string.IsNullOrEmpty(target)) return;
             }
 

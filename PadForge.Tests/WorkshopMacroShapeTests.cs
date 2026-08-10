@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Services;
@@ -19,6 +19,7 @@ namespace PadForge.Tests
     /// Only VC-button actions are driven (key actions would SendInput real
     /// keystrokes into the test host).
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class WorkshopMacroShapeTests
     {
         private static MacroItem Load(TranslatedMacro translated)

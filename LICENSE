@@ -1,4 +1,4 @@
-Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+﻿Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
 
 "And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ,
 and we write according to our prophecies, that our children may know to what source they
@@ -148,6 +148,24 @@ DualSenseY-v2
   By WujekFoliarz. Behavioral reference for USB controller audio
   passthrough and adaptive trigger effects. No license published.
   PadForge's implementation is original C#.
+
+duaLib
+  https://github.com/WujekFoliarz/duaLib
+  By WujekFoliarz. The DualSense output-report byte map and Sony's
+  scePad semantics (LightFadeAnimation, validFlag bit roles, the
+  volume windows, audio output paths, and the reconnect re-arm
+  discipline) that ground PadForge's DualSense effect and audio
+  writers. PadForge's implementation is original C#.
+  Licensed under MIT License
+
+DS5_Bridge
+  https://github.com/SundayMoments/DS5_Bridge
+  By SundayMoments. Behavioral reference for jack-detect audio
+  routing (the Follow Headphone Jack mode's switch-on-plug pattern)
+  and for one-sink-at-a-time Bluetooth audio routing. Read as
+  documentation only; PadForge's implementation is original C# and
+  contains no AGPL code.
+  Licensed under AGPL-3.0
 
 dualsense-tester
   https://github.com/daidr/dualsense-tester (https://ds.daidr.me/)
@@ -313,6 +331,14 @@ Protocol documentation references (no code from these projects ships)
   joycon-singer (https://github.com/Sergey004/joycon-singer, no license
   published): Joy-Con HD-rumble wire format, cross-checked against
   dekuNukem's research.
+  chiaki-ng (https://github.com/streetpea/chiaki-ng, AGPL-3.0): the
+  PS5 haptic PCM format (signed 16-bit at 3 kHz), settling the
+  signed-8-bit Bluetooth haptics encoding.
+  DS4Windows, hbashton fork (https://github.com/hbashton/DS4Windows,
+  GPL-3.0): DualSense audio volume ranges, signed-8 haptic sample
+  corroboration, and the combined Bluetooth transport layout.
+  OpenRGB (https://gitlab.com/CalcProgrammer1/OpenRGB, GPL-2.0):
+  DualSense lightbar output-report byte usage.
   PadForge's implementations are original C# and contain no code from
   these projects.
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using PadForge.Common.Input;
 using PadForge.Engine;
@@ -13,6 +13,7 @@ namespace PadForge.Tests
     /// transient resets, the raw yield boundary, cross-macro yield
     /// isolation, and the window tooltip mode-following.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class FullRepoAuditFixTests
     {
         private static MacroItem Macro(MacroTriggerMode mode, MacroRepeatMode repeat,

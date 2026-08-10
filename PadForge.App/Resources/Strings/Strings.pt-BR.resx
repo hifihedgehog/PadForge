@@ -106,6 +106,7 @@
   <data name="ControllerType_Extended" xml:space="preserve"><value>Estendido</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>Teclado + Mouse</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
+  <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Fechando PadForge...</value></data>
@@ -132,6 +133,8 @@
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Teclado + Mouse (máx. {0})</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI (requer Windows MIDI Services)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (máx. {0})</value></data>
+  <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (requer SteamVR)</value></data>
+  <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (máx. {0})</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_InstallingHidHide" xml:space="preserve"><value>Instalando HidHide…</value></data>
@@ -141,6 +144,11 @@
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Desinstalando Windows MIDI Services…</value></data>
   <data name="Status_OperationCancelled" xml:space="preserve"><value>Operação cancelada pelo usuário.</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>Falha na instalação do MIDI Services: {0}</value></data>
+  <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>Baixando o SteamVR…</value></data>
+  <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Baixando e instalando o SteamVR dos servidores da Valve… São vários GB e pode demorar.</value></data>
+  <data name="Status_SteamVRInstallFailed_Format" xml:space="preserve"><value>Falha na instalação do SteamVR: {0}</value></data>
+  <data name="Status_UninstallingSteamVR" xml:space="preserve"><value>Desinstalando o SteamVR…</value></data>
+  <data name="Status_SteamVRRunningCloseFirst" xml:space="preserve"><value>O SteamVR está em execução. Feche-o antes de desinstalar.</value></data>
   <data name="Status_DeviceListRefreshed" xml:space="preserve"><value>Lista de dispositivos atualizada.</value></data>
   <data name="Status_Recorded_Format" xml:space="preserve"><value>Gravado "{0}" ← {1}</value></data>
   <data name="Status_NowMap_Format" xml:space="preserve"><value>Agora mapeie: {0} {1}</value></data>
@@ -264,6 +272,11 @@
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Motor de controle HID virtual em modo usuário. Integrado ao PadForge.App. Instalado automaticamente na primeira criação de um controle virtual. Substitui ViGEmBus e vJoy na v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Runtime SDK para saída de dispositivo MIDI virtual. Baixado do GitHub (~210 MB).</value></data>
+  <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
+  <data name="Settings_SteamVRDesc" xml:space="preserve"><value>Runtime de VR para controles de VR virtuais. Instala direto dos servidores da Valve, sem conta Steam nem cliente Steam (vários GB).</value></data>
+  <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Local de instalação</value></data>
+  <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>Desinstalar o SteamVR</value></data>
+  <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Remove a instalação do SteamVR sem Steam em {0} e libera vários GB. Os controles virtuais de VR não funcionarão até que o SteamVR seja instalado novamente.</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Requer Windows 11 24H2 (build 26100) ou posterior</value></data>
   <data name="Settings_SettingsFile" xml:space="preserve"><value>Arquivo de Configurações</value></data>
   <data name="Settings_SettingsFileDesc" xml:space="preserve"><value>Salve, recarregue ou redefina sua configuração.</value></data>
@@ -284,6 +297,7 @@
   <data name="About_Subtitle" xml:space="preserve"><value>Utilitário de Mapeamento de Controles</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Fork moderno do x360ce. Reconstruído com SDL3, WPF e .NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge converte qualquer dispositivo de entrada em qualquer controle virtual. Gamepads, joysticks, teclados, mouses e telas sensíveis ao toque são mapeados para controles de jogo virtuais (Xbox, PlayStation, manches de voo, volantes, gamepads de terceiros) ou para saída teclado+mouse / MIDI que os jogos tratam como hardware real, usando HIDMaestro e Windows MIDI Services. Utiliza SDL3 para entrada de controles, Windows Raw Input para teclado e mouse, HidHide para ocultação de dispositivos por jogo, e fornece uma interface moderna Fluent Design para mapeamento, zonas mortas, curvas de sensibilidade e force feedback.</value></data>
+  <data name="About_Overview" xml:space="preserve"><value>Visão geral</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Desenvolvido com</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime e framework WPF. MIT.</value></data>
@@ -903,6 +917,8 @@
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor Esquerdo</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor Direito</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Trocar motores esquerdo e direito</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>Combinar a vibração dos gatilhos nos motores principais</value></data>
+  <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Este controle não tem motores nos gatilhos, então jogos que usam gatilhos de impulso do Xbox não seriam sentidos. Em vez disso, cada canal de gatilho é combinado com o motor principal do mesmo lado.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Testar Vibração</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Atividade do Motor</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Força Constante</value></data>
@@ -941,6 +957,7 @@
   <data name="Pad_ResetOverallGain" xml:space="preserve"><value>Redefinir Ganho Geral</value></data>
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Redefinir Motor Esquerdo</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Redefinir Motor Direito</value></data>
+  <data name="Pad_Colorway" xml:space="preserve"><value>Esquema de cores</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Redefinir Visualização</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>Pressione botões ou mova um eixo/gatilho para gravar. Os eixos são detectados quando movidos além de 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Adicionar da lista</value></data>
@@ -1010,6 +1027,33 @@
   <data name="Btn_Plus" xml:space="preserve"><value>Mais</value></data>
   <data name="Btn_Home" xml:space="preserve"><value>Home</value></data>
   <data name="Btn_Capture" xml:space="preserve"><value>Captura</value></data>
+  <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
+  <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
+  <data name="Btn_C" xml:space="preserve"><value>C</value></data>
+  <data name="Btn_MicMute" xml:space="preserve"><value>Mudo</value></data>
+  <data name="Btn_LeftPaddle" xml:space="preserve"><value>Botão traseiro esquerdo</value></data>
+  <data name="Btn_RightPaddle" xml:space="preserve"><value>Botão traseiro direito</value></data>
+  <data name="Btn_LeftFn" xml:space="preserve"><value>Fn esquerdo</value></data>
+  <data name="Btn_RightFn" xml:space="preserve"><value>Fn direito</value></data>
+  <data name="Btn_VrLeftA" xml:space="preserve"><value>A Esquerdo</value></data>
+  <data name="Btn_VrLeftB" xml:space="preserve"><value>B Esquerdo</value></data>
+  <data name="Btn_VrLeftATouch" xml:space="preserve"><value>A Esquerdo (Toque)</value></data>
+  <data name="Btn_VrLeftBTouch" xml:space="preserve"><value>B Esquerdo (Toque)</value></data>
+  <data name="Btn_VrLeftSystem" xml:space="preserve"><value>Sistema Esquerdo</value></data>
+  <data name="Btn_VrLeftGrip" xml:space="preserve"><value>Grip Esquerdo</value></data>
+  <data name="Btn_VrLeftGripClick" xml:space="preserve"><value>Clique do Grip Esquerdo</value></data>
+  <data name="Btn_VrLeftTriggerClick" xml:space="preserve"><value>Clique do Gatilho Esquerdo</value></data>
+  <data name="Btn_VrRightA" xml:space="preserve"><value>A Direito</value></data>
+  <data name="Btn_VrRightB" xml:space="preserve"><value>B Direito</value></data>
+  <data name="Btn_VrRightATouch" xml:space="preserve"><value>A Direito (Toque)</value></data>
+  <data name="Btn_VrRightBTouch" xml:space="preserve"><value>B Direito (Toque)</value></data>
+  <data name="Btn_VrRightSystem" xml:space="preserve"><value>Sistema Direito</value></data>
+  <data name="Btn_VrRightGrip" xml:space="preserve"><value>Grip Direito</value></data>
+  <data name="Btn_VrRightGripClick" xml:space="preserve"><value>Clique do Grip Direito</value></data>
+  <data name="Btn_VrRightTriggerClick" xml:space="preserve"><value>Clique do Gatilho Direito</value></data>
+  <data name="Vr_LeftHand" xml:space="preserve"><value>Mão Esquerda</value></data>
+  <data name="Vr_RightHand" xml:space="preserve"><value>Mão Direita</value></data>
+  <data name="Vr_Stick" xml:space="preserve"><value>Analógico</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Botão Esquerdo do Mouse</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>Botão Direito do Mouse</value></data>
@@ -1169,6 +1213,11 @@
   <data name="Mapping_GyroAuxPitch" xml:space="preserve"><value>Arfagem do giroscópio do Joy-Con esquerdo</value></data>
   <data name="Mapping_GyroAuxYaw" xml:space="preserve"><value>Guinada do giroscópio do Joy-Con esquerdo</value></data>
   <data name="Mapping_GyroAuxRoll" xml:space="preserve"><value>Rolagem do giroscópio do Joy-Con esquerdo</value></data>
+  <data name="Mapping_GyroAuxHorizontal" xml:space="preserve"><value>Giroscópio horizontal do Joy-Con esquerdo (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroRPitch" xml:space="preserve"><value>Arfagem do giroscópio do Joy-Con direito</value></data>
+  <data name="Mapping_GyroRYaw" xml:space="preserve"><value>Guinada do giroscópio do Joy-Con direito</value></data>
+  <data name="Mapping_GyroRRoll" xml:space="preserve"><value>Rolagem do giroscópio do Joy-Con direito</value></data>
+  <data name="Mapping_GyroRHorizontal" xml:space="preserve"><value>Giroscópio horizontal do Joy-Con direito (Yaw + Roll)</value></data>
   <data name="Mapping_MotionGyroAux" xml:space="preserve"><value>Giroscópio de movimento do Joy-Con esquerdo</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscópio Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscópio Roll</value></data>
@@ -1212,6 +1261,13 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = eixos brutos do controle. Player = o yaw é projetado na vertical real (gravidade). O pitch permanece local. Padrão recomendado por Jibb Smart para uma sensação natural em qualquer inclinação. World = yaw e pitch projetados nos eixos do mundo.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Inverter Pitch (Y)</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversão global do pitch. Aplicada após a projeção Player/World. Independente das flags Invert por fonte na tabela de mapeamentos.</value></data>
+  <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Bússola</value></data>
+  <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Este controle traz um magnetômetro. Ancorar a guinada ao norte magnético remove a deriva horizontal lenta da mira por giroscópio. Calibre primeiro: pressione Calibrar, gire o controle em forma de oito por todas as orientações por alguns segundos e pressione novamente.</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ancorar a guinada à bússola</value></data>
+  <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Adiciona uma pequena taxa corretiva que puxa a mira horizontal para o rumo magnético, impedindo o acúmulo de deriva. Requer uma calibração do magnetômetro salva. Amostras perturbadas por metal ou ímãs próximos são rejeitadas automaticamente.</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Redefinir para o padrão (desligado)</value></data>
+  <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Calibrar magnetômetro</value></data>
+  <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Concluir calibração</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>Inverter Yaw / Roll (X)</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>Inversão global do yaw. Também afeta fontes Roll e Gyro Horizontal.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Calibração Real</value></data>
@@ -1533,6 +1589,8 @@
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gatilho Esquerdo</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gatilho Direito</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Trocar motores dos gatilhos esquerdo e direito</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>Traduzir as vibrações dos gatilhos adaptáveis</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>Quando um jogo controla este slot como um DualSense virtual, seus efeitos de gatilho adaptável do tipo vibração são reproduzidos nos motores de gatilho de impulso deste controle. Efeitos do tipo resistência não têm equivalente em vibração e são ignorados.</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Testar Gatilho Esquerdo</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Testar Gatilho Direito</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Atividade do motor de gatilho</value></data>
@@ -1925,6 +1983,11 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Cortá-los</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Dobrá-los uma oitava para baixo</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limite de tom</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Reproduzir a háptica do DualSense neste controle</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Quando um jogo controla este slot como um DualSense virtual com áudio háptico de autor, essa trilha é reproduzida como tons nos atuadores deste controle. Derivado do áudio, então aproxima a sensação projetada em vez de reproduzi-la exatamente.</value></data>
+  <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Ganho háptico</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Redefinir para o padrão (desligado)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Redefinir para o padrão (100%)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tons acima desta frequência são cortados ou dobrados. O padrão de 800 Hz preserva a vibração de motor e impactos e captura os bipes agudos.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Restaurar Tons Agudos</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Restaurar Limite de Tom</value></data>
@@ -2281,10 +2344,12 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Frio</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>Selecione um dispositivo para inspecionar sua entrada bruta.</value></data>
-  <data name="Ds3Pair_Failed" xml:space="preserve"><value>O pareamento não foi concluído. Consulte o log para detalhes.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nenhum adaptador Bluetooth disponível. Ative o Bluetooth e tente novamente. O emparelhamento só é necessário para jogar sem fio; com cabo o controle funciona sem ele.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>O emparelhamento não foi concluído. A etapa que falhou aparece acima.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Não foi possível instalar o driver Bluetooth para controles PlayStation.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Conecte o DualShock 3 com um cabo USB e clique em Parear. O PadForge grava este PC no controle e o registra. Ao terminar, desconecte o controle e pressione o botão PS para conectar via Bluetooth.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Nenhum DualShock 3 encontrado via USB. Conecte-o com um cabo USB e tente novamente.</value></data>
+  <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>O Windows não instalará o driver USB do PadForge para o DualShock 3, porque seu certificado de assinatura não é confiável neste PC.</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>Pronto. Desconecte o controle e pressione o botão PS. Ele aparecerá na sua lista de dispositivos.</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>Configurando o controle. Mantenha-o conectado via USB.</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forjando</value></data>
@@ -2386,6 +2451,14 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Desativado</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Remove este par de teclas.</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Direções Cardeais Opostas Simultâneas (SOCD)</value></data>
+  <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Manter o controle ativo</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Alguns jogos param a vibração e trocam os ícones de botões assim que detectam mouse ou teclado. Manter uma pequena deflexão do analógico faz o jogo continuar tratando este controle como o dispositivo ativo. A entrada real no nível mantido ou acima passa sem alterações. Mantenha a deflexão abaixo da zona morta do jogo para que nada se mova.</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Ativar manter ativo</value></data>
+  <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Eixo mantido</value></data>
+  <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>Qual eixo de saída mantém a deflexão. Escolha um que o jogo leia como movimento em vez de câmera, para que um valor abaixo da zona morta fique invisível.</value></data>
+  <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Deflexão</value></data>
+  <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Nível mantido como porcentagem do curso total do analógico. 25% mantém a maioria dos jogos engajados ficando abaixo da zona morta de movimento. Aumente se o jogo ainda alternar, diminua se o personagem derivar.</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Desativar manter ativo e restaurar o eixo e a deflexão padrão</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resolve pares de botões mantidos ao mesmo tempo na saída do controle virtual deste slot. Quando os dois botões de um par estão pressionados, a regra escolhida decide qual pressão o jogo vê.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Redefinir Direções Cardeais Opostas Simultâneas</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modo</value></data>
@@ -2839,6 +2912,8 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>superfície host do menu não suportada ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ícone da célula do menu não reconhecido ({0}), então a célula mantém seu rótulo de texto</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass Shakers</value></data>
+  <data name="Pad_Tab_Output" xml:space="preserve"><value>Saída</value></data>
+  <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Configurações que moldam a saída do controle virtual deste slot logo antes de ser enviada aos jogos: limpeza SOCD para direções opostas pressionadas juntas e manter o controle ativo para jogos que largam o controle assim que detectam mouse ou teclado.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Encaminha a vibração e o force feedback de jogo que este controle virtual recebe para uma saída de áudio como tons de baixa frequência para bass shakers e subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibração para Áudio</value></data>
@@ -2917,4 +2992,68 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
     <value>Documentação do protocolo de áudio do DualShock 4: parâmetros SBC e layouts de pacotes, por khallmark. MIT.</value>
   </data>
+  <data name="Starter_Desktop_Name" xml:space="preserve"><value>Área de trabalho</value></data>
+  <data name="Starter_Desktop_Description" xml:space="preserve"><value>Use o Windows do sofá. Cursor, rolagem e cliques nos gatilhos.</value></data>
+  <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD e mouse</value></data>
+  <data name="Starter_Wasd_Description" xml:space="preserve"><value>Jogue um título de teclado e mouse com o controle. Tiro e ação.</value></data>
+  <data name="Starter_Hotbar_Name" xml:space="preserve"><value>Barra de ações</value></data>
+  <data name="Starter_Hotbar_Description" xml:space="preserve"><value>Trinta e duas habilidades atrás de dois gatilhos, para MMOs e jogos com muitas habilidades.</value></data>
+  <data name="Starter_Emulation_Name" xml:space="preserve"><value>Emulação</value></data>
+  <data name="Starter_Emulation_Description" xml:space="preserve"><value>RetroArch e seus frontends. Segure Voltar para estados salvos, carregamento e velocidade.</value></data>
+  <data name="Starter_Fighting_Name" xml:space="preserve"><value>Jogos de luta</value></data>
+  <data name="Starter_Fighting_Description" xml:space="preserve"><value>Layout de seis botões com limpeza SOCD válida em torneios nos dois eixos.</value></data>
+  <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Teclado + mouse</value></data>
+  <data name="Starter_OutputGamepad" xml:space="preserve"><value>Controle</value></data>
+  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Procurar perfis iniciais</value></data>
+  <data name="Starter_DialogTitle" xml:space="preserve"><value>Perfis iniciais</value></data>
+  <data name="Starter_Intro" xml:space="preserve"><value>Perfis prontos para um gênero inteiro. Escolha um, atribua qualquer controle e jogue. Salvar adiciona um perfil comum que você pode editar.</value></data>
+  <data name="Starter_Save" xml:space="preserve"><value>Salvar perfil</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>Perfil inicial “{0}” adicionado.</value></data>
+  <data name="Starter_PointClick_Name" xml:space="preserve"><value>Apontar e clicar</value></data>
+  <data name="Starter_PointClick_Description" xml:space="preserve"><value>Jogos de aventura e tudo que se joga com um cursor e dois verbos.</value></data>
+  <data name="Starter_Strategy_Name" xml:space="preserve"><value>Estratégia</value></data>
+  <data name="Starter_Strategy_Description" xml:space="preserve"><value>RTS, 4X e construtores de cidades. Câmera em um analógico, cursor no outro.</value></data>
+  <data name="Starter_Isometric_Name" xml:space="preserve"><value>RPG isométrico</value></data>
+  <data name="Starter_Isometric_Description" xml:space="preserve"><value>RPGs de grupo e tática por turnos. Pausa, inventário e barra de ações.</value></data>
+  <data name="Starter_TwinStick_Name" xml:space="preserve"><value>Twin-stick</value></data>
+  <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Tiro com visão superior. Mova com o esquerdo, mire com o direito.</value></data>
+  <data name="Starter_Media_Name" xml:space="preserve"><value>Controle de mídia</value></data>
+  <data name="Starter_Media_Description" xml:space="preserve"><value>Reprodução, avanço e um cursor para o sofá.</value></data>
+  <data name="Starter_Racing_Name" xml:space="preserve"><value>Corrida</value></data>
+  <data name="Starter_Racing_Description" xml:space="preserve"><value>Direção mais calma e controle fino perto do centro, em qualquer controle.</value></data>
+  <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>Simulação espacial</value></data>
+  <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>Seis graus de liberdade em dois analógicos, com modo de precisão para acoplagem.</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Precisão (controle fino)</value></data>
+  <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Mira por giroscópio</value></data>
+  <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Movimento para mira fina no gatilho esquerdo, com o analógico ativo.</value></data>
+  <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>Barra cruzada (esquerda)</value></data>
+  <data name="Starter_Layer_CrossHotbarR" xml:space="preserve"><value>Barra cruzada (direita)</value></data>
+  <data name="Starter_Layer_DoubleCrossL" xml:space="preserve"><value>Cruz dupla (esquerda)</value></data>
+  <data name="Starter_Layer_DoubleCrossR" xml:space="preserve"><value>Cruz dupla (direita)</value></data>
+  <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>Atalhos</value></data>
+  <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>Barra de ações</value></data>
+  <data name="Starter_Layer_Party" xml:space="preserve"><value>Grupo</value></data>
+  <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Atalhos rápidos</value></data>
+  <data name="Starter_QuietLayerName" xml:space="preserve"><value>Silencioso (não envia nada)</value></data>
+  <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>Volume dos fones</value></data>
+  <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>Volume de hardware do conector de fone do controle. Gravado no controle, portanto se mantém sem o aplicativo.</value></data>
+  <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>Redefinir volume dos fones</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeUp" xml:space="preserve"><value>Aumentar volume dos fones</value></data>
+  <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Diminuir volume dos fones</value></data>
+  <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Aumenta em 10% o volume do conector de fone do controle.</value></data>
+  <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Diminui em 10% o volume do conector de fone do controle.</value></data>
+  <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Caminho de saída</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Onde o controle reproduz o áudio. Padrão mantém o roteamento do firmware e reproduz os sons do PadForge no alto-falante. Fones + Alto-falante reproduz em mono no lado do fone, um limite do firmware. Por Bluetooth este modo reproduz apenas nos fones. Seguir o conector muda para os fones quando algo é conectado ao controle e volta ao alto-falante ao desconectar; sem leitura do conector, age como Padrão.</value></data>
+  <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Padrão</value></data>
+  <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Fones (estéreo)</value></data>
+  <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Fones (mono)</value></data>
+  <data name="Pad_Audio_OutputPath_Both" xml:space="preserve"><value>Fones + Alto-falante</value></data>
+  <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Somente alto-falante</value></data>
+  <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Redefinir caminho de saída</value></data>
+  <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Seguir o conector de fone</value></data>
+  <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>Mapa de bytes do relatório de saída do DualSense e semântica scePad da Sony por WujekFoliarz, base dos escritores de efeitos e áudio do PadForge. MIT.</value></data>
+  <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Padrão de roteamento de áudio por detecção de conector de SundayMoments, a referência de Seguir o conector de fone. Lido como documentação; AGPL-3.0.</value></data>
+  <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Rastreador do headset</value></data>
 </root>

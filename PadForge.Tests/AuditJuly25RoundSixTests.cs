@@ -64,7 +64,18 @@ namespace PadForge.Tests
                         _started.Set();
                         Thread.Sleep(1);
                     }
-                }) { IsBackground = true };
+                })
+                {
+                    IsBackground = true,
+                    // The three tests using this assert the pad really did
+                    // move during a 250 ms window (FlipCount > 10). At
+                    // default priority this thread is starved on a loaded
+                    // machine and the guard trips -- reproduced by running
+                    // the suite with 26 busy loops on 32 cores. It stands
+                    // in for the poll thread, which the product also runs
+                    // AboveNormal, so match that.
+                    Priority = ThreadPriority.AboveNormal,
+                };
                 _thread.Start();
                 _started.Wait(5000);
             }

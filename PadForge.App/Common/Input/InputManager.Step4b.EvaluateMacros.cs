@@ -779,7 +779,18 @@ namespace PadForge.Common.Input
                     // triggerActive is the latch, so this fires on unlatch.
                     (macro.RepeatMode == MacroRepeatMode.UntilRelease
                      || macro.TriggerMode == MacroTriggerMode.Toggle
-                     || macro.TriggerMode == MacroTriggerMode.Turbo) &&
+                     || macro.TriggerMode == MacroTriggerMode.Turbo
+                     // An ALL-CONTINUOUS run (Repeat While Held turbos, mouse
+                     // moves, volume follows) has no sequence completion to end
+                     // it, so it carries until-release semantics regardless of
+                     // the authored RepeatMode. Without this, WhileHeld +
+                     // FixedCount + a turbo action started on a trigger pull
+                     // and never stopped: the run outlived the release forever
+                     // (owner report 2026-08-10, AxisTriggerReleaseReproTests).
+                     // The executor's own comment promised "a held run ...
+                     // stops on release"; this makes that true for every
+                     // RepeatMode, not just UntilRelease.
+                     || AllActionsContinuous(macro)) &&
                     !triggerActive
                     && !macro.RunReleasedFireToCompletion
                     && !WithinReleaseLinger(macro))
@@ -1968,6 +1979,19 @@ namespace PadForge.Common.Input
                  or MacroActionType.RepeatKeyWhileHeld
                  or MacroActionType.RepeatVcButtonWhileHeld
                  or MacroActionType.RepeatVcAxisWhileHeld;
+
+        /// <summary>True when every action in the macro is continuous, i.e.
+        /// the run can never complete a sequence pass and only a release can
+        /// end it. Used by both stop blocks to give such runs until-release
+        /// semantics regardless of the authored RepeatMode.</summary>
+        private static bool AllActionsContinuous(MacroItem macro)
+        {
+            var acts = macro.Actions;
+            if (acts.Count == 0) return false;
+            for (int i = 0; i < acts.Count; i++)
+                if (!IsContinuousAction(acts[i].Type)) return false;
+            return true;
+        }
 
         /// <summary>
         /// Advances and executes the macro's action sequence.
@@ -4180,7 +4204,18 @@ namespace PadForge.Common.Input
                     // triggerActive is the latch, so this fires on unlatch.
                     (macro.RepeatMode == MacroRepeatMode.UntilRelease
                      || macro.TriggerMode == MacroTriggerMode.Toggle
-                     || macro.TriggerMode == MacroTriggerMode.Turbo) &&
+                     || macro.TriggerMode == MacroTriggerMode.Turbo
+                     // An ALL-CONTINUOUS run (Repeat While Held turbos, mouse
+                     // moves, volume follows) has no sequence completion to end
+                     // it, so it carries until-release semantics regardless of
+                     // the authored RepeatMode. Without this, WhileHeld +
+                     // FixedCount + a turbo action started on a trigger pull
+                     // and never stopped: the run outlived the release forever
+                     // (owner report 2026-08-10, AxisTriggerReleaseReproTests).
+                     // The executor's own comment promised "a held run ...
+                     // stops on release"; this makes that true for every
+                     // RepeatMode, not just UntilRelease.
+                     || AllActionsContinuous(macro)) &&
                     !triggerActive
                     && !macro.RunReleasedFireToCompletion
                     && !WithinReleaseLinger(macro))

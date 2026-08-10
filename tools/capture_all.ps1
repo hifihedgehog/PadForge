@@ -1734,6 +1734,16 @@ Start-Sleep -Milliseconds 2000
 Ensure-DeviceAssigned -DeviceNamePart "Xbox Series X GIP" -PadIndex 0 `
     -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
 
+# Macros, written AFTER the slots exist. STEP 0 clears SlotCreated to all-false
+# and saves, and LoadMacros skips any macro whose slot is not created, so five
+# macros injected in STEP 0 are discarded the moment the app reads that file.
+# The slots are created through the UI afterwards, by which point the macros
+# are already gone from memory and the next save writes <Macros /> back. That
+# is why every macro shot came out as an empty pane while the injection step
+# cheerfully logged success. Writing them here, with the topology already
+# persisted, is the same state that loads them correctly by hand.
+Ensure-MacrosLoaded -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+
 # Web controller server is enabled via XML injection in Step 0. No UI click needed.
 }
 

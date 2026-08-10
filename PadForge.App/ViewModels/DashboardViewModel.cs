@@ -427,6 +427,37 @@ namespace PadForge.ViewModels
                     ConnectToPeerRequested?.Invoke(_remoteLinkConnectHost.Trim());
             });
 
+        private string _remoteLinkMyCode = "";
+
+        /// <summary>This PC's current connection code (#294): a self-contained
+        /// code embedding our public + private endpoints, minted while Remote
+        /// Link runs. Empty until it is available (needs the STUN probe). The
+        /// other person types this into their Connect field to reach us with no
+        /// VPN. Set by InputService.</summary>
+        public string RemoteLinkMyCode
+        {
+            get => _remoteLinkMyCode;
+            set
+            {
+                if (SetProperty(ref _remoteLinkMyCode, value ?? ""))
+                    OnPropertyChanged(nameof(HasRemoteLinkMyCode));
+            }
+        }
+
+        /// <summary>True when a shareable code is available to show/copy.</summary>
+        public bool HasRemoteLinkMyCode => !string.IsNullOrEmpty(_remoteLinkMyCode);
+
+        private RelayCommand _copyRemoteLinkCodeCommand;
+        /// <summary>Copies this PC's connection code to the clipboard.</summary>
+        public RelayCommand CopyRemoteLinkCodeCommand =>
+            _copyRemoteLinkCodeCommand ??= new RelayCommand(() =>
+            {
+                if (!string.IsNullOrEmpty(_remoteLinkMyCode))
+                {
+                    try { System.Windows.Clipboard.SetText(_remoteLinkMyCode); } catch { }
+                }
+            });
+
         // ─────────────────────────────────────────────
         //  Touchpad Overlay
         // ─────────────────────────────────────────────

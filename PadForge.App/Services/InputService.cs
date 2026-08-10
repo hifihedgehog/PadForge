@@ -110,6 +110,13 @@ namespace PadForge.Services
         private bool _remoteLinkConnectWired;
         private System.Threading.Timer _remoteLinkStreamTimer;
         private System.Threading.Timer _remoteLinkSyncTimer;
+        // #294 internet lane: presence loop + arming state. All null/inert when
+        // the lane never starts (STUN unanswered, DHT blocked).
+        private System.Threading.Timer _remoteLinkInternetTimer;
+        private PadForge.Engine.RemoteLink.Dht.UdpKrpcTransport _dhtTransport;
+        private PadForge.Engine.RemoteLink.Dht.RemoteLinkInternetService _internetService;
+        private System.Threading.CancellationTokenSource _internetCts;
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> _armedResponderNonces = new();
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, UserDevice ud, RemoteDeltaAccumulator acc, byte slot)> _remoteLinkExposed = new();
         private readonly object _remoteLinkExposedLock = new();
         // Lock-free snapshot of _remoteLinkExposed for the two hot readers
@@ -8445,6 +8452,157 @@ namespace PadForge.Services
                 var fps = s.ConnectedFingerprints();
                 _dispatcher.BeginInvoke(() => _mainVm.Settings.UpdatePeerOnlineStatus(fps));
             }, null, 2000, 2000);
+
+            // #294 internet reach: STUN-probe our public endpoint, publish this
+            // PC's shareable connection code, arm the responder so a peer can
+            // punch to us with no VPN, and start the DHT presence loop so paired
+            // peers auto-reconnect after either side moves. All best-effort and
+            // off the hot path; failures (DHT blocked, no STUN answer) degrade
+            // to the LAN + Connect-by-Address paths.
+            StartRemoteLinkInternetLane(identity);
+        }
+
+        /// <summary>#294: mint + show this PC's connection code, arm the punch
+        /// responder, and start the DHT presence loop so paired peers auto-find
+        /// us after a move. Best-effort and fully background: any failure leaves
+        /// the LAN + Connect-by-Address paths working.</summary>
+        private void StartRemoteLinkInternetLane(PeerIdentity identity)
+        {
+            _remoteLinkIdentity = identity;
+            _internetCts?.Cancel();
+            _internetCts = new System.Threading.CancellationTokenSource();
+            var ct = _internetCts.Token;
+
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    var server = _linkServer;
+                    if (server == null) return;
+
+                    // 1. Learn our public endpoint (reuses the bound UDP socket).
+                    var stun = await server.ProbePublicEndpointAsync(ct).ConfigureAwait(false);
+                    var pub = stun?.PublicEndpoint;
+                    var priv = LocalLanEndpoint(server.Port);
+
+                    // 2. Mint + publish this PC's shareable self-contained code.
+                    var expiry = DateTimeOffset.UtcNow.AddHours(1);
+                    string code = PadForge.Engine.RemoteLink.LinkCode.EncodeSelfContained(pub, priv, identity.Fingerprint, expiry);
+                    _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkMyCode = code);
+
+                    // 3. Arm the punch responder with THIS PC's nonce (prefix||prefix),
+                    // the same value a dialer derives from our code, so an inbound
+                    // punch to our code lands. Re-arm in a loop while the lane runs.
+                    var myNonce = new byte[16];
+                    Array.Copy(identity.Fingerprint, 0, myNonce, 0, 8);
+                    Array.Copy(identity.Fingerprint, 0, myNonce, 8, 8);
+                    _ = Task.Run(async () => await ArmPunchResponderLoop(myNonce, ct), ct);
+
+                    // 4. DHT presence loop for pair-once-connect-anytime.
+                    _dhtTransport = new PadForge.Engine.RemoteLink.Dht.UdpKrpcTransport();
+                    var boot = await PadForge.Engine.RemoteLink.Dht.UdpKrpcTransport.ResolveBootstrapAsync(ct).ConfigureAwait(false);
+                    if (boot.Count > 0)
+                    {
+                        var store = new PadForge.Engine.RemoteLink.Dht.DhtPresenceStore(_dhtTransport, boot);
+                        var presence = new PadForge.Engine.RemoteLink.Dht.PresenceService(store);
+                        _internetService = new PadForge.Engine.RemoteLink.Dht.RemoteLinkInternetService(
+                            presence, identity.PublicKey, identity.ExportPrivateKey(),
+                            localCandidates: () => CurrentLocalCandidates(server.Port, pub, priv),
+                            connectByPunch: async (peerKey, endpoints, nonce, ict) =>
+                            {
+                                var s = _linkServer;
+                                if (s == null) return false;
+                                return await s.ConnectByPunchAsync(endpoints, nonce, BuildExposedDevices(), ict).ConfigureAwait(false);
+                            },
+                            log: msg => PadForge.Engine.SdlDiagLog.WriteLine("RLInternet " + msg));
+
+                        _remoteLinkInternetTimer?.Dispose();
+                        _remoteLinkInternetTimer = new System.Threading.Timer(_ => _ = InternetMaintainTick(), null, 3000, 60_000);
+                    }
+                }
+                catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("RLInternet start failed: " + ex.Message); }
+            }, ct);
+        }
+
+        private async Task InternetMaintainTick()
+        {
+            var svc = _internetService;
+            var server = _linkServer;
+            if (svc == null || server == null) return;
+            var trust = _settingsService?.RemoteLink?.Trust;
+            if (trust == null || _remoteLinkIdentity == null) return;
+
+            var connected = new HashSet<string>(server.ConnectedFingerprints(), StringComparer.OrdinalIgnoreCase);
+            var peers = new List<PadForge.Engine.RemoteLink.Dht.RemoteLinkInternetService.Peer>();
+            foreach (var t in trust.Peers ?? Enumerable.Empty<PeerTrust>())
+            {
+                var cap = t.RendezvousCapability;
+                var peerKey = t.PublicKey;
+                if (cap == null || peerKey == null) continue; // paired before the lane, or malformed
+                byte selfDir = PadForge.Engine.RemoteLink.Dht.PresenceRecord.DirectionFor(_remoteLinkIdentity.Fingerprint, PeerCrypto.Fingerprint(peerKey));
+                byte peerDir = selfDir == 0 ? (byte)1 : (byte)0;
+                peers.Add(new PadForge.Engine.RemoteLink.Dht.RemoteLinkInternetService.Peer
+                {
+                    PeerPublicKey = peerKey, Capability = cap,
+                    SelfDirection = selfDir, PeerDirection = peerDir,
+                    IsConnected = connected.Contains(t.FingerprintHex),
+                });
+            }
+            if (peers.Count == 0) return;
+            try { await svc.MaintainAsync(peers, _internetCts?.Token ?? System.Threading.CancellationToken.None).ConfigureAwait(false); }
+            catch { }
+        }
+
+        /// <summary>Keeps a responder armed for inbound code-punches while the
+        /// lane runs. AcceptByPunchAsync returns when a peer connects or times
+        /// out; re-arm either way until the lane stops.</summary>
+        private async Task ArmPunchResponderLoop(byte[] nonce, System.Threading.CancellationToken ct)
+        {
+            string key = Convert.ToHexString(nonce);
+            if (!_armedResponderNonces.TryAdd(key, 1)) return; // already armed
+            try
+            {
+                while (!ct.IsCancellationRequested)
+                {
+                    var server = _linkServer;
+                    if (server == null) break;
+                    try { await server.AcceptByPunchAsync(nonce, BuildExposedDevices(), ct).ConfigureAwait(false); }
+                    catch { }
+                    if (!ct.IsCancellationRequested) await Task.Delay(500, ct).ConfigureAwait(false);
+                }
+            }
+            catch (OperationCanceledException) { }
+            finally { _armedResponderNonces.TryRemove(key, out _); }
+        }
+
+        private static System.Net.IPEndPoint LocalLanEndpoint(int port)
+        {
+            try
+            {
+                foreach (var ni in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
+                {
+                    if (ni.OperationalStatus != System.Net.NetworkInformation.OperationalStatus.Up) continue;
+                    if (ni.NetworkInterfaceType == System.Net.NetworkInformation.NetworkInterfaceType.Loopback) continue;
+                    foreach (var ua in ni.GetIPProperties().UnicastAddresses)
+                    {
+                        if (ua.Address.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork) continue;
+                        if (System.Net.IPAddress.IsLoopback(ua.Address)) continue;
+                        return new System.Net.IPEndPoint(ua.Address, port);
+                    }
+                }
+            }
+            catch { }
+            return null;
+        }
+
+        private static IReadOnlyList<PadForge.Engine.RemoteLink.Dht.PresenceRecord.Candidate> CurrentLocalCandidates(
+            int port, System.Net.IPEndPoint pub, System.Net.IPEndPoint priv)
+        {
+            var list = new List<PadForge.Engine.RemoteLink.Dht.PresenceRecord.Candidate>();
+            if (pub != null) list.Add(new() { Kind = PadForge.Engine.RemoteLink.Dht.PresenceRecord.Candidate.KindPublicV4, Endpoint = pub });
+            var lan = priv ?? LocalLanEndpoint(port);
+            if (lan != null) list.Add(new() { Kind = PadForge.Engine.RemoteLink.Dht.PresenceRecord.Candidate.KindPrivateV4, Endpoint = lan });
+            return list;
         }
 
         private void OnLinkPeersChanged()
@@ -8530,6 +8688,18 @@ namespace PadForge.Services
             _remoteLinkStreamTimer = null;
             _remoteLinkSyncTimer?.Dispose();
             _remoteLinkSyncTimer = null;
+            // #294 internet lane teardown: stop the presence loop, the armed
+            // responders, and the DHT socket. Order: cancel first so the arming
+            // loop and maintain tick exit, then dispose.
+            try { _internetCts?.Cancel(); } catch { }
+            _remoteLinkInternetTimer?.Dispose();
+            _remoteLinkInternetTimer = null;
+            try { _internetService?.Dispose(); } catch { }
+            _internetService = null;
+            try { _dhtTransport?.Dispose(); } catch { }
+            _dhtTransport = null;
+            _armedResponderNonces.Clear();
+            _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkMyCode = "");
             lock (_remoteLinkExposedLock)
             {
                 _remoteLinkExposed.Clear();

@@ -1759,7 +1759,25 @@
 
                     <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14"/>
 
-                    <!-- Connect by address (fallback when discovery can't see the PC) -->
+                    <!-- This PC's connection code (#294): share it so someone on
+                         another network reaches you with no VPN. Shown only once
+                         it is minted (needs the public-address probe). -->
+                    <StackPanel Visibility="{Binding HasRemoteLinkMyCode, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Margin="0,0,0,12">
+                        <TextBlock Text="{Binding Dashboard_RemoteLinkMyCode, Source={x:Static strings:Strings.Instance}}"
+                                   Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                        <StackPanel Orientation="Horizontal">
+                            <ui:TextBox Text="{Binding RemoteLinkMyCode, Mode=OneWay}" IsReadOnly="True"
+                                        FontFamily="{StaticResource TelemetryFontFamily}"
+                                        Width="300" VerticalAlignment="Center"/>
+                            <ui:Button Command="{Binding CopyRemoteLinkCodeCommand}" Margin="8,0,0,0"
+                                       Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Dashboard_RemoteLinkMyCode_Hint, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <!-- Connect by address OR code (fallback when discovery can't see the PC) -->
                     <TextBlock Text="{Binding Dashboard_RemoteLinkConnect, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
                     <StackPanel Orientation="Horizontal">

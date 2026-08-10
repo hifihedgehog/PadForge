@@ -3089,4 +3089,6 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>Druk waar de curve het maximum bereikt. Daarboven geldt het interval voor volledige druk.</value></data>
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Verbinden via code…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Kon de peer niet rechtstreeks bereiken. Probeer Verbinden via adres met een VPN.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Code van deze pc</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Deel deze code met degene die verbinding maakt. Die plakt hem in het verbindingsvak om je via internet te bereiken, zonder VPN. Hij ververst terwijl Remote Link draait.</value></data>
 </root>

@@ -613,6 +613,56 @@ namespace PadForge.Services
         /// <para>Read-only and best-effort: it never changes state and any
         /// failure degrades to a log line, because its whole job is to
         /// make a silent state speak.</para></summary>
+        /// <summary>Silent form of <see cref="LogBthPs3ChildState"/> for the
+        /// post-ceremony watcher: same read-only enumeration, no logging, so a
+        /// poll loop can call it every few seconds without flooding the DIAG
+        /// ring. Returns false only when the probe itself failed.</summary>
+        internal static bool TryProbeBthPs3Children(out int children, out bool activeIface, out string detail)
+        {
+            children = 0; activeIface = false; detail = "";
+            try
+            {
+                var rawIf = new Guid("968E1849-73B1-4876-B80A-ED6DD171489B");
+                IntPtr ifSet = SetupDiGetClassDevs(ref rawIf, IntPtr.Zero, IntPtr.Zero,
+                    DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+                if (ifSet != IntPtr.Zero && ifSet != new IntPtr(-1))
+                {
+                    try
+                    {
+                        var did = new SP_DEVICE_INTERFACE_DATA
+                        { cbSize = Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
+                        for (int i = 0; SetupDiEnumDeviceInterfaces(ifSet, IntPtr.Zero, ref rawIf, i, ref did); i++)
+                            if ((did.Flags & SPINT_ACTIVE) != 0) { activeIface = true; break; }
+                    }
+                    finally { SetupDiDestroyDeviceInfoList(ifSet); }
+                }
+
+                var sb = new System.Text.StringBuilder();
+                Guid none = Guid.Empty;
+                IntPtr set = SetupDiGetClassDevsEnum(ref none, "BTHPS3BUS", IntPtr.Zero,
+                    DIGCF_PRESENT | DIGCF_ALLCLASSES);
+                if (set != IntPtr.Zero && set != new IntPtr(-1))
+                {
+                    try
+                    {
+                        var dev = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                        for (int i = 0; SetupDiEnumDeviceInfo(set, i, ref dev); i++)
+                        {
+                            children++;
+                            uint status = 0, problem = 0;
+                            int cr = CM_Get_DevNode_Status(out status, out problem, dev.DevInst, 0);
+                            sb.Append(sb.Length > 0 ? ", " : "")
+                              .Append(cr == 0 ? $"problem={problem}" : $"status-query-failed(cr={cr})");
+                        }
+                    }
+                    finally { SetupDiDestroyDeviceInfoList(set); }
+                }
+                detail = sb.ToString();
+                return true;
+            }
+            catch { return false; }
+        }
+
         internal static void LogBthPs3ChildState(Action<string> log)
         {
             try

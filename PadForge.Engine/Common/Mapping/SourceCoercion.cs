@@ -901,7 +901,11 @@ namespace PadForge.Engine.Common.Mapping
             return axisValue * (shaped / mag);
         }
 
-        private static float ApplyOutputCurve(float normalized, string curveName)
+        // Public (was private) for the App layer's pressure-scaled turbo
+        // (#290), which shapes a 0..1 pressure with the same curve vocabulary
+        // instead of duplicating these switch arms. (Engine has no
+        // InternalsVisibleTo for the App assembly.)
+        public static float ApplyOutputCurve(float normalized, string curveName)
         {
             // normalized is in [-1..+1] before the caller's clamp.
             // Curves preserve sign and map |x| → |y| in [0..1].

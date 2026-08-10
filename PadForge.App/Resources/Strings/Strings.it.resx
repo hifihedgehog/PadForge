@@ -3078,4 +3078,11 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Schema di instradamento audio dal jack di SundayMoments, il riferimento dietro Segui il jack cuffie. Letto come documentazione; AGPL-3.0.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Tracker delle cuffie</value></data>
+  <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Frequenza in base alla pressione</value></data>
+  <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>La frequenza di ripetizione segue la forza con cui si preme la sorgente analogica scelta. Una pressione leggera ripete con l'intervallo lento, una pressione completa con l'intervallo qui sopra, con transizione continua.</value></data>
+  <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Intervallo lento</value></data>
+  <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>Periodo di ripetizione alla pressione più leggera. L'intervallo qui sopra vale a pressione completa.</value></data>
+  <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Curva di frequenza</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Scegli la sorgente analogica seguita dalla frequenza: un grilletto o un asse di pressione del DualShock 3 (asse 6-15).</value></data>
+  <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(pressione)</value></data>
 </root>

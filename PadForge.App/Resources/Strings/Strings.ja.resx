@@ -3056,4 +3056,11 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMomentsによるジャック検出オーディオルーティングのパターン。ヘッドホン端子に追従の参照元。ドキュメントとして参照；AGPL-3.0。</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>ヘッドセットトラッカー</value></data>
+  <data name="Macro_PressureScaledRate" xml:space="preserve"><value>感圧レート</value></data>
+  <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>選択したアナログソースの押し込みの強さに連射レートが追従します。軽く押すと低速インターバル、深く押すと上のインターバルで連射し、その間は連続的に変化します。</value></data>
+  <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>低速インターバル</value></data>
+  <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>最も軽く押したときの連射周期です。上のインターバルは全押し時の周期です。</value></data>
+  <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>レートカーブ</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>レートが追従するアナログソースを選択します。トリガーまたはDualShock 3の感圧軸(軸6-15)。</value></data>
+  <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(感圧)</value></data>
 </root>

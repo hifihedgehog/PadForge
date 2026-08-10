@@ -3056,4 +3056,11 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Padrão de roteamento de áudio por detecção de conector de SundayMoments, a referência de Seguir o conector de fone. Lido como documentação; AGPL-3.0.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Rastreador do headset</value></data>
+  <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Frequência por pressão</value></data>
+  <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>A frequência de repetição acompanha a força com que a fonte analógica escolhida é pressionada. Um toque leve repete no intervalo lento, um aperto completo no intervalo acima, com transição contínua.</value></data>
+  <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Intervalo lento</value></data>
+  <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>Período de repetição no toque mais leve. O intervalo acima vale para o aperto completo.</value></data>
+  <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Curva de frequência</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Escolha a fonte analógica que a frequência acompanha: um gatilho ou um eixo de pressão do DualShock 3 (Eixo 6-15).</value></data>
+  <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(pressão)</value></data>
 </root>

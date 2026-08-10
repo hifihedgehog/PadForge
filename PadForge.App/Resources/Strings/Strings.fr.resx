@@ -3056,4 +3056,11 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Modèle de routage audio par détection de prise par SundayMoments, référence de Suivre la prise casque. Lu comme documentation ; AGPL-3.0.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Suivi de casque</value></data>
+  <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Cadence selon la pression</value></data>
+  <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>La cadence de répétition suit la force d'appui sur la source analogique choisie. Un appui léger répète à l'intervalle lent, un appui complet à l'intervalle ci-dessus, avec une transition continue.</value></data>
+  <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Intervalle lent</value></data>
+  <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>Période de répétition à l'appui le plus léger. L'intervalle ci-dessus s'applique à l'appui complet.</value></data>
+  <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Courbe de cadence</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Choisissez la source analogique suivie par la cadence : une gâchette ou un axe de pression DualShock 3 (axe 6-15).</value></data>
+  <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(pression)</value></data>
 </root>

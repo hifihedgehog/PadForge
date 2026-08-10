@@ -3056,4 +3056,11 @@
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments의 잭 감지 오디오 라우팅 패턴. 헤드폰 단자 따라가기의 참조 구현. 문서로만 참고; AGPL-3.0.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>헤드셋 트래커</value></data>
+  <data name="Macro_PressureScaledRate" xml:space="preserve"><value>압력 비례 연사 속도</value></data>
+  <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>선택한 아날로그 소스를 누르는 세기에 따라 연사 속도가 달라집니다. 살짝 누르면 느린 간격으로, 끝까지 누르면 위의 간격으로 반복하며 그 사이는 연속적으로 변합니다.</value></data>
+  <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>느린 간격</value></data>
+  <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>가장 살짝 눌렀을 때의 반복 주기입니다. 위의 간격은 완전히 눌렀을 때 적용됩니다.</value></data>
+  <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>속도 곡선</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>속도가 따라갈 아날로그 소스를 선택하세요. 트리거 또는 DualShock 3 압력 축(축 6-15).</value></data>
+  <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(압력)</value></data>
 </root>

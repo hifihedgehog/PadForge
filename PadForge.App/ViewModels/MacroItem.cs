@@ -2765,6 +2765,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsPulseCapableType));
                     OnPropertyChanged(nameof(IsAnyVcButtonType));
                     OnPropertyChanged(nameof(IsRepeatIntervalType));
+                    OnPropertyChanged(nameof(ShowsPressureTurboRows));
                     OnPropertyChanged(nameof(IsDisconnectControllerType));
                     OnPropertyChanged(nameof(IsDisconnectSpecificDevice));
                     OnPropertyChanged(nameof(DisconnectDeviceOptions));
@@ -4731,8 +4732,10 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _pulseWhileLatched, value))
                 {
-                    // The Interval row shows for a pulsing latch (v19, M1).
+                    // The Interval row shows for a pulsing latch (v19, M1),
+                    // and the pressure-turbo rows follow it (#290).
                     OnPropertyChanged(nameof(IsRepeatIntervalType));
+                    OnPropertyChanged(nameof(ShowsPressureTurboRows));
                     OnPropertyChanged(nameof(DisplayText));
                 }
             }
@@ -4760,6 +4763,100 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public RelayCommand ResetIntervalMsCommand =>
             _resetIntervalMsCommand ??= new RelayCommand(() => IntervalMs = 100);
+
+        // ── Pressure-scaled turbo (#290) ──
+
+        private bool _pressureScaledRate;
+        /// <summary>Master gate for the pressure-scaled turbo (#290): while
+        /// on, the action's repeat rate follows a physical analog source
+        /// (DS3 button pressure, any trigger) instead of the fixed
+        /// <see cref="IntervalMs"/>. <see cref="IntervalMs"/> becomes the
+        /// FAST end (full press) and <see cref="SlowIntervalMs"/> the slow
+        /// end (light press), interpolated in RATE space so light press is a
+        /// defined slow rate, never antimicrox's zero-or-infinity endpoints.
+        /// Off by default: every existing macro keeps the legacy fixed-rate
+        /// code path untouched.</summary>
+        public bool PressureScaledRate
+        {
+            get => _pressureScaledRate;
+            set
+            {
+                if (SetProperty(ref _pressureScaledRate, value))
+                {
+                    OnPropertyChanged(nameof(ShowsPressureTurboRows));
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
+        private int _slowIntervalMs = 500;
+        /// <summary>Light-press period in milliseconds for the
+        /// pressure-scaled turbo (#290). Clamped 10..2000 here; the engine
+        /// additionally floors it at <see cref="IntervalMs"/> at evaluation
+        /// time so slow can never be faster than fast.</summary>
+        public int SlowIntervalMs
+        {
+            get => _slowIntervalMs;
+            set
+            {
+                if (SetProperty(ref _slowIntervalMs, Math.Clamp(value, 10, 2000)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private string _turboRateCurve = "Linear";
+        /// <summary>Response curve applied to the 0..1 pressure before the
+        /// rate interpolation (#290). Same vocabulary as the mapping rows'
+        /// output curves (SourceCoercion.ApplyOutputCurve): Linear,
+        /// Aggressive, Relaxed, Wide, ExtraWide.</summary>
+        public string TurboRateCurve
+        {
+            get => _turboRateCurve;
+            set => SetProperty(ref _turboRateCurve, string.IsNullOrEmpty(value) ? "Linear" : value);
+        }
+
+        /// <summary>True when the pressure-turbo rows (slow interval, curve,
+        /// pressure source pickers) apply: the shared Interval row is showing
+        /// and the pressure gate is on.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ShowsPressureTurboRows => IsRepeatIntervalType && _pressureScaledRate;
+
+        /// <summary>Pressure-turbo phase accumulator (#290): cycles advanced
+        /// at the pressure-scaled rate. The square-wave family toggles each
+        /// 0.5, the one-shot family fires each 1.0. Runtime state, never
+        /// serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal double TurboPhase { get; set; }
+
+        /// <summary>UTC stamp of the last pressure-turbo accumulator tick,
+        /// giving the dt the rate integrates over. MinValue marks a fresh
+        /// activation, which fires/flips ON immediately, mirroring the
+        /// legacy <see cref="RepeatVcLastToggleUtc"/> contract. Never
+        /// serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal DateTime TurboLastTickUtc { get; set; } = DateTime.MinValue;
+
+        private RelayCommand _resetSlowIntervalMsCommand;
+        /// <summary>Resets the light-press period to its 500 ms default
+        /// (#290), pairing the row with the standard reset glyph.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetSlowIntervalMsCommand =>
+            _resetSlowIntervalMsCommand ??= new RelayCommand(() => SlowIntervalMs = 500);
+
+        private static readonly GyroLabeledOption[] _turboRateCurveOptions =
+        {
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_Linear,     "Linear"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_Aggressive, "Aggressive"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_Relaxed,    "Relaxed"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_Wide,       "Wide"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_ExtraWide,  "ExtraWide"),
+        };
+
+        /// <summary>Curve choices for the pressure-turbo rate (#290): the
+        /// same live-language option shape and vocabulary as the gyro output
+        /// curve (SourceCoercion.ApplyOutputCurve's switch arms).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public System.Collections.Generic.IReadOnlyList<GyroLabeledOption> TurboRateCurveOptions => _turboRateCurveOptions;
 
         private System.Windows.Threading.DispatcherTimer _mousePickTimer;
         private int _mousePickCountdown;
@@ -5124,6 +5221,11 @@ namespace PadForge.ViewModels
                 string yieldMark = _axisYieldToPhysical
                     ? " " + Strings.Instance.MacroAction_YieldSuffix
                     : string.Empty;
+                // Pressure marker for the turbo family (#290): flags a rate
+                // that follows the analog source instead of the fixed interval.
+                string pressureMark = _pressureScaledRate
+                    ? " " + Strings.Instance.MacroAction_PressureSuffix
+                    : string.Empty;
                 return _type switch
                 {
                     MacroActionType.ButtonPress => string.Format(Strings.Instance.MacroAction_Press_Format, btnText, _durationMs),
@@ -5196,10 +5298,10 @@ namespace PadForge.ViewModels
                         _mouseX, _mouseY),
                     MacroActionType.RepeatKeyWhileHeld => string.Format(
                         Strings.Instance.MacroAction_RepeatKeyWhileHeld_Format,
-                        keyDisplay, _intervalMs),
+                        keyDisplay, _intervalMs) + pressureMark,
                     MacroActionType.RepeatVcButtonWhileHeld => string.Format(
                         Strings.Instance.MacroAction_RepeatVcButtonWhileHeld_Format,
-                        btnText, _intervalMs),
+                        btnText, _intervalMs) + pressureMark,
                     MacroActionType.ToggleVcButton => string.Format(
                         Strings.Instance.MacroAction_ToggleVcButton_Format,
                         btnText),
@@ -5227,10 +5329,10 @@ namespace PadForge.ViewModels
                         _axisTarget.DisplayName(), _axisValue) + yieldMark,
                     MacroActionType.RepeatVcAxisWhileHeld => string.Format(
                         Strings.Instance.MacroAction_RepeatVcAxisWhileHeld_Format,
-                        _axisTarget.DisplayName(), _axisValue, _intervalMs) + yieldMark,
+                        _axisTarget.DisplayName(), _axisValue, _intervalMs) + yieldMark + pressureMark,
                     MacroActionType.ToggleWheel => string.Format(
                         Strings.Instance.MacroAction_ToggleWheel_Format,
-                        _axisValue, _intervalMs),
+                        _axisValue, _intervalMs) + pressureMark,
                     // Discussion #237: the relative add renders its signed
                     // percent of the pull scale, the combo break its type
                     // label (it carries no parameters).

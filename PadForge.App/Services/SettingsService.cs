@@ -3300,6 +3300,9 @@ namespace PadForge.Services
                 CycleStepsCsv = ad.CycleStepsCsv ?? "",
                 CycleWrap = ad.CycleWrap,
                 IntervalMs = ad.IntervalMs,
+                PressureScaledRate = ad.PressureScaledRate,
+                SlowIntervalMs = ad.SlowIntervalMs,
+                TurboRateCurve = string.IsNullOrEmpty(ad.TurboRateCurve) ? "Linear" : ad.TurboRateCurve,
                 PulseWhileLatched = ad.PulseWhileLatched,
                 AxisYieldToPhysical = ad.AxisYieldToPhysical,
                 LatchDirection = ad.LatchDirection,
@@ -4400,6 +4403,9 @@ namespace PadForge.Services
                 CycleStepsCsv = string.IsNullOrEmpty(a.CycleStepsCsv) ? null : a.CycleStepsCsv,
                 CycleWrap = a.CycleWrap,
                 IntervalMs = a.IntervalMs,
+                PressureScaledRate = a.PressureScaledRate,
+                SlowIntervalMs = a.SlowIntervalMs,
+                TurboRateCurve = a.TurboRateCurve,
                 PulseWhileLatched = a.PulseWhileLatched,
                 AxisYieldToPhysical = a.AxisYieldToPhysical,
                 LatchDirection = a.LatchDirection,
@@ -6029,6 +6035,17 @@ namespace PadForge.Services
         /// addressing pair) and ToggleKey targets via KeyCode / KeyString,
         /// so this element plus those carry the whole family.</summary>
         [XmlElement] public int IntervalMs { get; set; } = 100;
+
+        /// <summary>Pressure-scaled turbo master gate (#290): while on, the
+        /// repeat rate follows the action's analog source between
+        /// SlowIntervalMs (light press) and IntervalMs (full press).</summary>
+        [XmlElement] public bool PressureScaledRate { get; set; }
+        /// <summary>Light-press period in milliseconds for the pressure-scaled
+        /// turbo (#290).</summary>
+        [XmlElement] public int SlowIntervalMs { get; set; } = 500;
+        /// <summary>Response curve shaping the 0..1 pressure before the rate
+        /// interpolation (#290): Linear, Aggressive, Relaxed, Wide, ExtraWide.</summary>
+        [XmlElement] public string TurboRateCurve { get; set; } = "Linear";
 
         /// <summary>Which axes a MouseLimitRegion action clamps (issue #110).</summary>
         [XmlElement] public ViewModels.CursorClampMode CursorClampMode { get; set; } = ViewModels.CursorClampMode.XAndY;

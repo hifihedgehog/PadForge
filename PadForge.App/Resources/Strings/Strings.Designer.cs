@@ -1603,6 +1603,13 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_ToggleWheel_Format => Get("MacroAction_ToggleWheel_Format");
     public string Macro_PulseWhileLatched => Get("Macro_PulseWhileLatched");
     public string Macro_PulseWhileLatched_Tooltip => Get("Macro_PulseWhileLatched_Tooltip");
+    public string Macro_PressureScaledRate => Get("Macro_PressureScaledRate");
+    public string Macro_PressureScaledRate_Tooltip => Get("Macro_PressureScaledRate_Tooltip");
+    public string Macro_SlowInterval_Label => Get("Macro_SlowInterval_Label");
+    public string Macro_SlowInterval_Tooltip => Get("Macro_SlowInterval_Tooltip");
+    public string Macro_TurboRateCurve_Label => Get("Macro_TurboRateCurve_Label");
+    public string Macro_PressureTurboHint => Get("Macro_PressureTurboHint");
+    public string MacroAction_PressureSuffix => Get("MacroAction_PressureSuffix");
     public string MacroAction_Type_AxisAdd => Get("MacroAction_Type_AxisAdd");
     public string MacroAction_AxisAdd_Tooltip => Get("MacroAction_AxisAdd_Tooltip");
     public string MacroAction_Type_AxisSetLatched => Get("MacroAction_Type_AxisSetLatched");

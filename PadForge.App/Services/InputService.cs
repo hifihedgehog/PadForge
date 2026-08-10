@@ -2773,6 +2773,9 @@ namespace PadForge.Services
             // ── Macro custom-expression per-variable recording (single input) ──
             UpdateExpressionVariableRecording();
 
+            // ── Macro-action device-axis source recording (single axis) ──
+            UpdateMacroActionAxisRecording();
+
             // ── Push ViewModel settings to PadSetting objects (runtime sync) ──
             SyncViewModelToPadSettings();
 
@@ -11812,6 +11815,96 @@ namespace PadForge.Services
         private bool _recordingVariableOutputBaselineSet;
         private const float ExpressionVariableAxisDeflectionThreshold = 0.30f;
         private const double ExpressionVariableRecordTimeoutSeconds = 5;
+
+        // ── Macro-action device-axis source recording (owner canon: pickable
+        //    inputs always allow recording and clearing). Same session shape
+        //    as the expression-variable recorder below, but axis-only and it
+        //    captures the RAW axis index (so DS3 pressure axes 6-15 record
+        //    directly), writing SourceDeviceGuid + SourceDeviceAxisIndex. ──
+
+        private ViewModels.MacroAction _recordingAxisSourceAction;
+        private int _recordingAxisSourcePadIndex;
+        private DateTime _recordingAxisSourceStart;
+        private Dictionary<Guid, int[]> _recordingAxisSourceBaseline;
+
+        /// <summary>Starts capturing the next axis deflection on any device
+        /// assigned to the slot into the action's device-axis source pair.</summary>
+        public void StartMacroActionAxisRecording(ViewModels.MacroAction action, int padIndex)
+        {
+            if (action == null) return;
+            if (_recordingAxisSourceAction != null && _recordingAxisSourceAction != action)
+                StopMacroActionAxisRecording();
+
+            _recordingAxisSourceAction = action;
+            _recordingAxisSourcePadIndex = padIndex;
+            _recordingAxisSourceStart = DateTime.UtcNow;
+            _recordingAxisSourceBaseline = new Dictionary<Guid, int[]>();
+            action.IsRecordingSource = true;
+
+            var slotSettings = SettingsManager.GetSettingsForSlot(padIndex);
+            if (slotSettings != null)
+            {
+                for (int i = 0; i < slotSettings.Count; i++)
+                {
+                    var ud = FindUserDevice(slotSettings[i].InstanceGuid);
+                    if (ud?.InputState?.Axis != null)
+                        _recordingAxisSourceBaseline[ud.InstanceGuid] = (int[])ud.InputState.Axis.Clone();
+                }
+            }
+        }
+
+        /// <summary>Stops an axis-source recording session without writing.</summary>
+        public void StopMacroActionAxisRecording()
+        {
+            if (_recordingAxisSourceAction == null) return;
+            _recordingAxisSourceAction.IsRecordingSource = false;
+            _recordingAxisSourceAction = null;
+            _recordingAxisSourceBaseline = null;
+        }
+
+        /// <summary>Per-UI-tick poll for the axis-source recorder: the first
+        /// axis moved past the deflection threshold on an assigned device is
+        /// written to the action, then the session stops. Same threshold and
+        /// timeout as the expression-variable recorder.</summary>
+        private void UpdateMacroActionAxisRecording()
+        {
+            if (_recordingAxisSourceAction == null) return;
+            if ((DateTime.UtcNow - _recordingAxisSourceStart).TotalSeconds >= ExpressionVariableRecordTimeoutSeconds)
+            {
+                StopMacroActionAxisRecording();
+                return;
+            }
+            int padIndex = _recordingAxisSourcePadIndex;
+            if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
+
+            var slotSettings = SettingsManager.GetSettingsForSlot(padIndex);
+            if (slotSettings == null) return;
+
+            for (int sIdx = 0; sIdx < slotSettings.Count; sIdx++)
+            {
+                var ud = FindUserDevice(slotSettings[sIdx].InstanceGuid);
+                var axes = ud?.InputState?.Axis;
+                if (axes == null) continue;
+                if (!_recordingAxisSourceBaseline.TryGetValue(ud.InstanceGuid, out var baseAxes)) continue;
+
+                int detected = -1;
+                float bestDelta = 0f;
+                int limit = Math.Min(axes.Length, baseAxes.Length);
+                for (int a = 0; a < limit; a++)
+                {
+                    float deltaNorm = Math.Abs(axes[a] - baseAxes[a]) / 65535f;
+                    if (deltaNorm > bestDelta) { bestDelta = deltaNorm; detected = a; }
+                }
+                if (detected >= 0 && bestDelta >= ExpressionVariableAxisDeflectionThreshold)
+                {
+                    var action = _recordingAxisSourceAction;
+                    action.SourceDeviceGuid = ud.InstanceGuid;
+                    action.SourceDeviceAxisIndex = detected;
+                    StopMacroActionAxisRecording();
+                    return;
+                }
+            }
+        }
 
         /// <summary>Starts recording a single input binding for one variable in
         /// a macro's custom-expression trigger. The first detected button press,

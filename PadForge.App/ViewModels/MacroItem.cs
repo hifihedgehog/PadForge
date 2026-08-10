@@ -4858,6 +4858,63 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public System.Collections.Generic.IReadOnlyList<GyroLabeledOption> TurboRateCurveOptions => _turboRateCurveOptions;
 
+        // ── Device-axis source record / clear (owner canon: pickable inputs
+        //    always allow recording and clearing) ──
+
+        private bool _isRecordingSource;
+        /// <summary>True while a record session is capturing the next axis
+        /// deflection into <see cref="SourceDeviceGuid"/> +
+        /// <see cref="SourceDeviceAxisIndex"/>. Set by
+        /// InputService.StartMacroActionAxisRecording / Stop.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRecordingSource
+        {
+            get => _isRecordingSource;
+            set
+            {
+                if (SetProperty(ref _isRecordingSource, value))
+                {
+                    OnPropertyChanged(nameof(SourceRecordIcon));
+                    OnPropertyChanged(nameof(SourceRecordTooltip));
+                }
+            }
+        }
+
+        [System.Xml.Serialization.XmlIgnore]
+        public string SourceRecordIcon => _isRecordingSource ? "" : ""; // Stop : Record
+
+        [System.Xml.Serialization.XmlIgnore]
+        public string SourceRecordTooltip => _isRecordingSource
+            ? Strings.Instance.Common_Stop
+            : Strings.Instance.Macro_RecordTrigger;
+
+        private RelayCommand _recordSourceCommand;
+        /// <summary>Toggles a device-axis record session (the
+        /// MacroExpressionVariable.RecordCommand pattern): the host wires
+        /// <see cref="RecordSourceRequested"/> to
+        /// InputService.StartMacroActionAxisRecording / Stop.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand RecordSourceCommand =>
+            _recordSourceCommand ??= new RelayCommand(() =>
+            {
+                IsRecordingSource = !IsRecordingSource;
+                RecordSourceRequested?.Invoke(this, EventArgs.Empty);
+            });
+
+        private RelayCommand _clearSourceCommand;
+        /// <summary>Clears the device-axis source pair so the pickers read
+        /// empty again.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ClearSourceCommand =>
+            _clearSourceCommand ??= new RelayCommand(() =>
+            {
+                SourceDeviceGuid = Guid.Empty;
+                SourceDeviceAxisIndex = -1;
+            });
+
+        /// <summary>Raised when the user toggles the source Record button.</summary>
+        public event EventHandler RecordSourceRequested;
+
         private System.Windows.Threading.DispatcherTimer _mousePickTimer;
         private int _mousePickCountdown;
 

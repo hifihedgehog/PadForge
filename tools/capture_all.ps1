@@ -213,6 +213,101 @@ function Click-El {
     return $true
 }
 
+function Ensure-DeviceAssigned {
+    # Driving the Devices page to assign a device is the flakiest chain in this
+    # script: scroll the virtualized card list, wait for the detail pane to
+    # realize, enumerate toggles, click the right one. The Xbox GIP dummy lost
+    # that fight run after run, and pad-impulse-triggers plus
+    # pad-lighting-guide-led stayed weeks stale because the tabs they need only
+    # appear when that device is selectable in the pad page DEVICE dropdown.
+    #
+    # An assignment is nothing but UserSetting.MapTo, so write it. The comment
+    # further down this script has said to do exactly this since 2026-07-30.
+    # MapTo is the ZERO-BASED pad index (InputManager filters on
+    # `us.MapTo == slot`), not the UI slot number.
+    #
+    # Runs with PadForge closed and restarts it, which is the state proven to
+    # load settings cleanly.
+    param([string]$DeviceNamePart, [int]$PadIndex, [string]$XmlPath, [string]$ExePath)
+
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
+    Start-Sleep -Seconds 3
+
+    try {
+        [xml]$ax = Get-Content $XmlPath
+        $root = $ax.PadForgeSettings
+
+        $devsNode = $root.SelectSingleNode("Devices")
+        if (-not $devsNode) { Write-Host "  !! no <Devices> node" -ForegroundColor Red; Start-Process $ExePath; return $false }
+        $dev = $null
+        foreach ($d in $devsNode.ChildNodes) {
+            $nameNode = $d.SelectSingleNode("InstanceName")
+            if ($nameNode -and $nameNode.InnerText -like "*$DeviceNamePart*") { $dev = $d; break }
+        }
+        if (-not $dev) { Write-Host "  !! device '$DeviceNamePart' not in <Devices>" -ForegroundColor Red; Start-Process $ExePath; return $false }
+
+        $guid = $dev.SelectSingleNode("InstanceGuid").InnerText
+        $pguidNode = $dev.SelectSingleNode("ProductGuid")
+        $pguid = if ($pguidNode) { $pguidNode.InnerText } else { $guid }
+        $iname = $dev.SelectSingleNode("InstanceName").InnerText
+
+        $usNode = $root.SelectSingleNode("UserSettings")
+        if (-not $usNode) { $usNode = $ax.CreateElement("UserSettings"); $root.AppendChild($usNode) | Out-Null }
+
+        # Already mapped to this pad? Nothing to do.
+        foreach ($st in $usNode.ChildNodes) {
+            $g = $st.SelectSingleNode("InstanceGuid"); $mt = $st.SelectSingleNode("MapTo")
+            if ($g -and $mt -and $g.InnerText -eq $guid -and [int]$mt.InnerText -eq $PadIndex) {
+                Write-Host "  '$iname' already mapped to pad $PadIndex"
+                Start-Process $ExePath; Start-Sleep -Seconds 8
+                return $true
+            }
+        }
+
+        # Clone an existing row so every field the serializer expects is present.
+        $template = $usNode.FirstChild
+        if ($template) {
+            $row = $template.CloneNode($true)
+            foreach ($pair in @(@("InstanceGuid", $guid), @("ProductGuid", $pguid),
+                                @("InstanceName", $iname), @("ProductName", $iname),
+                                @("MapTo", "$PadIndex"))) {
+                $n = $row.SelectSingleNode($pair[0])
+                if ($n) { $n.InnerText = $pair[1] }
+            }
+        } else {
+            $row = $ax.CreateElement("Setting")
+            foreach ($pair in @(@("InstanceGuid", $guid), @("ProductGuid", $pguid),
+                                @("InstanceName", $iname), @("ProductName", $iname),
+                                @("MapTo", "$PadIndex"))) {
+                $e = $ax.CreateElement($pair[0]); $e.InnerText = $pair[1]; $row.AppendChild($e) | Out-Null
+            }
+        }
+        $usNode.AppendChild($row) | Out-Null
+        $ax.Save($XmlPath)
+        Write-Host "  mapped '$iname' to pad $PadIndex by XML" -ForegroundColor Green
+    } catch {
+        Write-Host "  !! assignment write failed: $($_.Exception.Message)" -ForegroundColor Red
+        Start-Process $ExePath
+        return $false
+    }
+
+    Start-Process $ExePath
+    $ok = $false
+    for ($i = 0; $i -lt 25; $i++) {
+        Start-Sleep -Seconds 1
+        $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+        if ($pr -and $pr.MainWindowHandle -ne 0) { $ok = $true; break }
+    }
+    if (-not $ok) { Write-Host "  !! PadForge did not come back up" -ForegroundColor Red; return $false }
+    Start-Sleep -Seconds 6
+    $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+    $script:hwnd = $pr.MainWindowHandle
+    $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle($script:hwnd)
+    [Win32]::ForceFG($script:hwnd)
+    Start-Sleep -Milliseconds 800
+    return $true
+}
+
 function Ensure-MacrosLoaded {
     # "Injected the macros" is not the same as "the app is showing macros", and
     # on 2026-08-09 the gap between those two shipped five blank screenshots.
@@ -1629,6 +1724,15 @@ Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "4" | Out-Null
 # for the PadPage's hasForceFeedback / hasAdaptiveTriggers / hasLightbar
 # gating to flip on for the affected slots.
 Start-Sleep -Milliseconds 2000
+
+# The Xbox GIP dummy is the one assignment the UI chain never lands, and two
+# shots depend on it: the Impulse Triggers tab gates on HasRumbleTriggers and
+# the Guide Button LED card wants an Xbox pad selected. Write the mapping
+# instead of clicking for it. This runs at a clean boundary, before any
+# capture, so the restart costs nothing and the full multi-slot topology the
+# rest of the gallery shows is untouched.
+Ensure-DeviceAssigned -DeviceNamePart "Xbox Series X GIP" -PadIndex 0 `
+    -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
 
 # Web controller server is enabled via XML injection in Step 0. No UI click needed.
 }

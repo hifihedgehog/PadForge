@@ -429,16 +429,20 @@ namespace PadForge.Views
                          || PadForge.Common.Input.FanatecRawHidWriter.IsFanatecWheel(ud.VendorId, ud.ProdId)
                          || PadForge.Common.Input.ThrustmasterRawHidWriter.IsThrustmasterWheel(ud.VendorId, ud.ProdId);
                         // Generic (non-vendor) FFB wheel routed through SDL: no native range
-                        // or RPM-LED support, but a single-axis spring-capable haptic still
-                        // self-centers from the Auto Centering slider (TryApplyAutoCenterSpring).
-                        // Show the Wheel tab with only the auto-center row in that case.
+                        // or RPM-LED support, but a spring-capable haptic still self-centers
+                        // from the Auto Centering slider (TryApplyAutoCenterSpring). Show the
+                        // Wheel tab with only the auto-center row in that case.
+                        //
+                        // The haptic half of the gate is the ENGINE's predicate, shared with
+                        // the spring itself, so the tab and the spring cannot drift apart
+                        // (#282). The old inline copy also required NumHapticAxes <= 1, which
+                        // hid the tab for wheelbase-plus-pedals composites reporting two axes
+                        // (Moza). CapType == Driving stays as the belt on the persisted row.
                         hasGenericWheel =
                             !hasWheel
                          && ud.CapType == InputDeviceType.Driving
                          && ud.Device != null
-                         && ud.Device.HasHaptic
-                         && ud.Device.NumHapticAxes <= 1
-                         && (ud.Device.HapticFeatures & SDL3.SDL.SDL_HAPTIC_SPRING) != 0;
+                         && PadForge.Engine.ForceFeedbackState.IsGenericWheelSpringCapable(ud.Device);
                         // Pad count drives the Touchpad tab's per-pad
                         // pivot. Most devices = 1; Steam Controller 2026
                         // = 2 (Triton); original Steam Controller = 3.

@@ -638,9 +638,17 @@ namespace PadForge.Engine
             if (Joystick == IntPtr.Zero)
                 return;
 
+            // Every exit below logs one HAPTICDIAG line. The #282 support
+            // thread promised the wheel's three deciding facts (PID, haptic
+            // axis count, spring support) would surface from inside PadForge,
+            // and this is the only place all three are in hand. The early
+            // exits matter as much as success: each was previously silent,
+            // and a wheel that dies in one of them is indistinguishable in
+            // the ring from a wheel that never opened at all.
             IntPtr h = SDL_OpenHapticFromJoystick(Joystick);
             if (h == IntPtr.Zero)
             {
+                SdlDiagLog.WriteLine($"HAPTICDIAG open {VendorId:X4}:{ProductId:X4} FAILED (no haptic interface)");
                 return;
             }
 
@@ -648,6 +656,7 @@ namespace PadForge.Engine
 
             if (features == 0)
             {
+                SdlDiagLog.WriteLine($"HAPTICDIAG open {VendorId:X4}:{ProductId:X4} zero feature mask, closing");
                 SDL_CloseHaptic(h);
                 return;
             }
@@ -658,6 +667,7 @@ namespace PadForge.Engine
             if (HasRumble && (features & SDL_HAPTIC_LEFTRIGHT) != 0)
             {
                 // Gamepad with LeftRight haptic — simple rumble works fine, skip haptic.
+                SdlDiagLog.WriteLine($"HAPTICDIAG open {VendorId:X4}:{ProductId:X4} skipped (gamepad LeftRight rumble path), features=0x{features:X}");
                 SDL_CloseHaptic(h);
                 return;
             }
@@ -665,6 +675,10 @@ namespace PadForge.Engine
             Haptic = h;
             HapticFeatures = features;
             NumHapticAxes = SDL_GetNumHapticAxes(h);
+            SdlDiagLog.WriteLine(
+                $"HAPTICDIAG open {VendorId:X4}:{ProductId:X4} axes={NumHapticAxes}"
+                + $" features=0x{features:X} spring={((features & SDL_HAPTIC_SPRING) != 0 ? 1 : 0)}"
+                + $" constant={((features & SDL_HAPTIC_CONSTANT) != 0 ? 1 : 0)}");
 
             // Pick the best strategy for translating dual-motor rumble into haptic effects.
             if ((features & SDL_HAPTIC_LEFTRIGHT) != 0)
@@ -676,6 +690,7 @@ namespace PadForge.Engine
             else
             {
                 // Device has haptic support but no usable effect types.
+                SdlDiagLog.WriteLine($"HAPTICDIAG open {VendorId:X4}:{ProductId:X4} no usable effect type in 0x{features:X}, closing");
                 SDL_CloseHaptic(h);
                 Haptic = IntPtr.Zero;
                 HapticFeatures = 0;

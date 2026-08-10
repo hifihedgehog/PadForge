@@ -716,11 +716,36 @@ namespace PadForge.Engine
         /// fires for them. Returns false (leaving the rumble path to run) when the
         /// device isn't a spring-capable single-axis wheel or the slider is at 0.
         /// </summary>
+        /// <summary>The one predicate for "this device may hold the software
+        /// auto-center spring", shared verbatim by the Wheel tab's
+        /// hasGenericWheel gate (PadPage.SyncTabVisibility) so the tab and the
+        /// spring can never disagree (#282: the tab appeared or the slider
+        /// worked, never reliably both, when the two sites drifted).
+        ///
+        /// <para>The old clause here was NumHapticAxes &lt;= 1. That hid the
+        /// tab for a wheelbase-plus-pedals composite that reports two haptic
+        /// axes despite a perfectly good spring (#282, Moza). What actually
+        /// keeps gamepads out is the DEVICE TYPE: SDL types wheels
+        /// SDL_JOYSTICK_TYPE_WHEEL and SdlDeviceWrapper maps that to
+        /// InputDeviceType.Driving, the same source the Wheel tab's CapType
+        /// check uses. Axis count is a shape detail, not an identity.</para></summary>
+        public static bool IsGenericWheelSpringCapable(bool hasHaptic, uint hapticFeatures, int inputDeviceType)
+        {
+            return hasHaptic
+                && (hapticFeatures & SDL_HAPTIC_SPRING) != 0
+                && inputDeviceType == InputDeviceType.Driving;
+        }
+
+        /// <summary>Overload for a live device.</summary>
+        public static bool IsGenericWheelSpringCapable(ISdlInputDevice device)
+        {
+            return device != null
+                && IsGenericWheelSpringCapable(device.HasHaptic, device.HapticFeatures, device.GetInputDeviceType());
+        }
+
         private bool TryApplyAutoCenterSpring(ISdlInputDevice device, PadSetting ps)
         {
-            if (device == null || !device.HasHaptic || device.NumHapticAxes > 1)
-                return false;
-            if ((device.HapticFeatures & SDL_HAPTIC_SPRING) == 0)
+            if (!IsGenericWheelSpringCapable(device))
                 return false;
 
             int strength = Math.Clamp(TryParseInt(ps.AutoCenterStrength, 0), 0, 100);
@@ -742,7 +767,21 @@ namespace PadForge.Engine
 
             var effect = new SDL_HapticEffect();
             effect.condition.type = (ushort)SDL_HAPTIC_SPRING;
-            effect.condition.direction.type = SDL_HAPTIC_STEERING_AXIS;
+            // CARTESIAN +X, not STEERING_AXIS. SDL encodes STEERING_AXIS as
+            // DIEFF_CARTESIAN with a ZERO direction vector
+            // (SDL_dinputhaptic.c:567-570), and Moza is the vendor Linux had
+            // to special-case for exactly that on CONDITION effects:
+            // HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION (hid-pidff.h:18-19)
+            // discards the caller's direction and forces the fixed +X wheel
+            // direction 0x4000 (hid-pidff.c:411-413, :152-157). Constant and
+            // periodic keep their real direction, which is why the two
+            // STEERING_AXIS uses above this method stay as they are. This
+            // also ends a disagreement inside this file: the game-driven
+            // condition path (SetConditionHapticForces) has always sent
+            // CARTESIAN dir0=1, so the auto-center spring was the lone
+            // condition effect still sending the zero vector.
+            effect.condition.direction.type = SDL_HAPTIC_CARTESIAN;
+            effect.condition.direction.dir0 = 1;
             effect.condition.length = SDL_HAPTIC_INFINITY;
             // Symmetric spring centered at 0 on the steering axis: the wheel pulls
             // back toward center with force proportional to displacement.

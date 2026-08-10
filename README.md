@@ -54,7 +54,7 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 <summary><b>New in 4.2.0:</b> VR controllers, headset head tracking, controller audio and microphone, and starter profiles</summary>
 
 - **Virtual VR controllers.** A VR slot presents a full SteamVR left and right hand pair, driven by any controller, keyboard, or motion source you map to it. One slot serves both hands, every stick, trigger, grip and button is a mapping target, and the game's haptics come back out through the device you are actually holding. PadForge installs the SteamVR runtime itself if you do not have it, with no Steam account and no Steam client, to a folder you choose.
-- **Headset head tracking.** Sony headphones that carry a head tracker, confirmed on the WH-1000XM5 family, become a motion source over Bluetooth. Turn your head to aim, lean, or drive anything that takes gyro. Discovery is by capability rather than a model list, so any headset exposing the same sensor collection works.
+- **Headset head tracking.** Sony headphones that carry a head tracker, confirmed on the WH-1000XM5 family, become a motion source. Turn your head to aim, lean, or drive anything that takes gyro. Discovery is by capability rather than a model list, so any headset exposing the same sensor collection works.
 - **Controller audio and microphone.** An opt-in virtual USB persona carries the DualSense's voice-coil haptics, its speaker, and its microphone, so authored haptics and controller audio reach the pad the way a PS5 does it.
 - **Bundled starter profiles.** Thirteen general-purpose archetypes, from twin-stick to racing to space sim, ready to apply to any controller instead of starting from an empty grid.
 - **Keep Controller Awake.** Holds a small idle deflection so games stop cutting vibration the moment you touch the mouse or keyboard.
@@ -143,7 +143,17 @@ The Nintendo slot type creates a virtual Switch Pro Controller through HIDMaestr
 
 ![Nintendo virtual controller with the Switch Pro preset](screenshots/nintendo.jpg)
 
-### Twelve profiles that work on whatever pad you plug in.
+### A SteamVR hand pair, driven by whatever you already own.
+
+The VR slot type presents a left and a right hand to SteamVR, so a gamepad, a flight stick, a keyboard, or a phone over Wi-Fi can drive them. One slot serves both hands, so there is no left slot and right slot to keep in sync. Every stick, trigger, grip and button is a mapping target, and triggers and grips stay genuinely analog rather than collapsing to on and off. When a game buzzes a hand, that pulse comes back out through the physical device driving the slot.
+
+PadForge installs the SteamVR runtime itself if you do not have it, with no Steam account and no Steam client, to a folder you pick.
+
+Stated plainly, because it decides whether this is useful to you: PadForge does not fabricate positional tracking. The driver parks both hands a fixed distance in front of the headset, so they follow where you look. What you get is the controls. One VR slot is the ceiling, and SteamVR's own Test Controller is not a reliable way to check one.
+
+![The VR slot preview showing both hands](screenshots/vr-preview.jpg)
+
+### Thirteen profiles that work on whatever pad you plug in.
 
 Pick a starter profile, assign any controller, and play. They cover a kind of game rather than a single title: Desktop, WASD and Mouse, Point and Click, Strategy, Isometric RPG, Twin-Stick, Media Remote, Hotbar, Fighting Games, Emulation, Racing, Space Sim, and Gyro Aim. Nothing is locked, so saving one adds an ordinary profile you can edit.
 
@@ -247,6 +257,12 @@ Flick the right stick to its edge and the camera snaps to that direction, then r
 The Wii Remote's IR camera drives an on-screen pointer, mapped to the mouse or a stick. FPS Mouse mode turns it into relative mouse-look for shooters. Border modes correct for your screen's aspect ratio so the edges line up. When the sensor bar leaves the camera's view the pointer freezes where it was instead of snapping to a corner, and you can cycle modes on the fly or bind Set Pointer Mode to a macro.
 
 ![Wii pointer modes](screenshots/pointer.jpg)
+
+### Turn your head to aim.
+
+Sony headphones that carry a head tracker become a motion source, confirmed on the WH-1000XM5 family. The whole gyro pipeline takes it: gyro-to-stick, gyro-to-mouse, aim engage, calibration, and the DSU motion server. Discovery is by capability rather than a model list, so any headset exposing the same sensor collection is a candidate, whatever its name.
+
+Worth knowing because it explains the behaviour: on these headsets the raw gyro channel streams zeros while the rotation vector carries the real motion, so PadForge synthesises an ordinary gyro rate from consecutive rotation samples. It reports rotation, never position, so leaning closer to the screen changes nothing. Pair it with Aim Engage, because head tracking that is always live is disorienting in most games.
 
 ### Gyro into Cemu, Dolphin, Yuzu, and Ryujinx.
 

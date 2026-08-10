@@ -87,7 +87,10 @@ namespace PadForge.Engine.RemoteLink
         public async Task<IPEndPoint> PunchAsync(
             IReadOnlyList<IPEndPoint> candidates, CancellationToken ct)
         {
-            if (candidates == null || candidates.Count == 0) return null;
+            // An empty candidate list is the RESPONDER mode: it sprays nothing
+            // but still listens, settling on the first valid probe's source
+            // (the initiator's learned endpoint). Only a null list is a no-op.
+            if (candidates == null) return null;
 
             var winTcs = new TaskCompletionSource<IPEndPoint>(TaskCreationOptions.RunContinuationsAsynchronously);
             lock (_lock)

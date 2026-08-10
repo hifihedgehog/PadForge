@@ -3069,4 +3069,6 @@
   <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>ランプが最大に達する押し込み量です。これ以上では全押しインターバルのレートになります。</value></data>
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>コードで接続中…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>相手に直接接続できませんでした。VPN経由のアドレス接続をお試しください。</value></data>
+  <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>このPCのコード</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>接続してくる相手にこのコードを共有してください。相手が接続欄に貼り付けると、VPNなしでインターネット越しにあなたへ接続できます。Remote Linkの実行中に更新されます。</value></data>
 </root>

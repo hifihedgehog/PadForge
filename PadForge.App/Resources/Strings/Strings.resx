@@ -3124,4 +3124,6 @@ You can retry later from Settings.</value></data>
   <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>Pressure where the ramp tops out. At and above this, the rate is the full-press Interval.</value></data>
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Connecting by code…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Couldn't reach the peer directly. Try Connect by Address over a VPN.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>This PC's Code</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Share this code with the person connecting to you. They paste it into their Connect box to reach you across the internet, no VPN needed. It refreshes while Remote Link runs.</value></data>
 </root>

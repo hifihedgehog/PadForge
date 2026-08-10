@@ -346,6 +346,8 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_RemoteLinkFooter => Get("Dashboard_RemoteLinkFooter");
     public string Dashboard_RemoteLinkConnect => Get("Dashboard_RemoteLinkConnect");
     public string Dashboard_RemoteLinkConnectButton => Get("Dashboard_RemoteLinkConnectButton");
+    public string Dashboard_RemoteLinkMyCode => Get("Dashboard_RemoteLinkMyCode");
+    public string Dashboard_RemoteLinkMyCode_Hint => Get("Dashboard_RemoteLinkMyCode_Hint");
     public string Dashboard_RemoteLinkPairButton => Get("Dashboard_RemoteLinkPairButton");
     public string RemoteLink_Connect => Get("RemoteLink_Connect");
     public string RemoteLink_Connected => Get("RemoteLink_Connected");

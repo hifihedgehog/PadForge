@@ -3069,4 +3069,6 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>Pressão onde a rampa atinge o máximo. Daí em diante, a frequência é a do intervalo de aperto completo.</value></data>
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Conectando por código…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Não foi possível alcançar o par diretamente. Tente Conectar por endereço via VPN.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Código deste PC</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Compartilhe este código com quem se conecta a você. A pessoa o cola no campo de conexão para alcançá-lo pela internet, sem VPN. Ele é atualizado enquanto o Remote Link está ativo.</value></data>
 </root>

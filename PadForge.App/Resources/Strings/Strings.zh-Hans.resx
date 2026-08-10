@@ -3069,4 +3069,6 @@
   <data name="Macro_PressureEnd_Tooltip" xml:space="preserve"><value>斜坡达到最大值的按压力度。达到及超过此值时使用全力按下的间隔。</value></data>
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>正在通过代码连接…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>无法直接连接对方。请尝试通过 VPN 使用按地址连接。</value></data>
+  <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>此电脑的代码</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>把这个代码分享给要连接你的人。对方粘贴到连接框中即可通过互联网连到你，无需 VPN。它会在 Remote Link 运行时刷新。</value></data>
 </root>

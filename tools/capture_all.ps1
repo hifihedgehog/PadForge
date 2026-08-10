@@ -206,6 +206,69 @@ function Click-El {
     return $true
 }
 
+function Ensure-MacrosLoaded {
+    # "Injected the macros" is not the same as "the app is showing macros", and
+    # on 2026-08-09 the gap between those two shipped five blank screenshots.
+    # The macros survive a load when they are written while PadForge is CLOSED
+    # (proven: inject, launch, exit, and the file comes back re-serialized with
+    # all five and their actions). During a capture run something between
+    # startup and the Macros tab empties them. Rather than keep guessing at
+    # which step, write them again with the app closed and restart, which is
+    # the state that is known to work. Returns $true when macros are present.
+    param([string]$XmlPath, [string]$ExePath)
+
+    Write-Host "  Ensuring macros: rewriting them with PadForge closed, then restarting" -ForegroundColor Cyan
+
+    $src = Get-Content $PSCommandPath -Raw
+    $frags = [regex]::Matches($src, "(?s)<Macro PadIndex=""0"">.*?</Macro>") | ForEach-Object { $_.Value }
+    if (-not $frags -or @($frags).Count -eq 0) {
+        Write-Host "  !! no macro fragments found in this script" -ForegroundColor Red
+        return $false
+    }
+
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
+    Start-Sleep -Seconds 3
+
+    try {
+        [xml]$mx = Get-Content $XmlPath
+        $mroot = $mx.PadForgeSettings.SelectSingleNode("Macros")
+        if (-not $mroot) {
+            $mroot = $mx.CreateElement("Macros")
+            $mx.PadForgeSettings.AppendChild($mroot) | Out-Null
+        }
+        while ($mroot.HasChildNodes) { $mroot.RemoveChild($mroot.FirstChild) | Out-Null }
+        foreach ($f in $frags) {
+            $fr = $mx.CreateDocumentFragment()
+            $fr.InnerXml = $f.Trim()
+            $mroot.AppendChild($fr) | Out-Null
+        }
+        $mx.Save($XmlPath)
+        Write-Host "  wrote $(@($frags).Count) macros into the closed settings file"
+    } catch {
+        Write-Host "  !! could not write macros: $($_.Exception.Message)" -ForegroundColor Red
+        Start-Process $ExePath
+        return $false
+    }
+
+    Start-Process $ExePath
+    $ok = $false
+    for ($i = 0; $i -lt 25; $i++) {
+        Start-Sleep -Seconds 1
+        $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+        if ($pr -and $pr.MainWindowHandle -ne 0) { $ok = $true; break }
+    }
+    if (-not $ok) { Write-Host "  !! PadForge did not come back up" -ForegroundColor Red; return $false }
+
+    Start-Sleep -Seconds 6
+    $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+    $script:hwnd = $pr.MainWindowHandle
+    $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle($script:hwnd)
+    [Win32]::ForceFG($script:hwnd)
+    Start-Sleep -Milliseconds 800
+    Write-Host "  PadForge restarted for macros (HWND=$($script:hwnd))" -ForegroundColor Green
+    return $true
+}
+
 function Cap {
     param([string]$Name)
     [Win32]::ForceFG($script:hwnd)
@@ -1795,11 +1858,43 @@ if ($slots.Count -ge 1) {
         try { if ($macroNames -contains $t.Current.Name) { $macroSeen++ } } catch { }
     }
     $script:MacrosPresent = ($macroSeen -gt 0)
+
+    # Empty list: repair it rather than shrug. Write the macros with the app
+    # closed (the state proven to load them), restart, come back to this tab and
+    # look again. Only if it is STILL empty do the macro shots get skipped.
     if (-not $script:MacrosPresent) {
-        Write-Host "  !! NO MACROS IN THE LIST. The injected macros did not load," -ForegroundColor Red
-        Write-Host "  !! so every macro shot would be an empty pane. SKIPPING them." -ForegroundColor Red
-        Write-Host "  !! Check element ORDER in the injected <Macro> XML first:" -ForegroundColor Red
-        Write-Host "  !! XmlSerializer drops the whole array on an out-of-order element." -ForegroundColor Red
+        Write-Host "  !! macro list empty -- repairing" -ForegroundColor Yellow
+        if (Ensure-MacrosLoaded -XmlPath $PadForgeXml -ExePath $PadForgeExe) {
+            Nav "Dashboard"; Start-Sleep -Milliseconds 1200
+            $slotsMk = Find-UIA -Aid "SlotsItemsControl"
+            if ($slotsMk) {
+                $firstCard = $slotsMk.FindFirst($TC, [System.Windows.Automation.Condition]::TrueCondition)
+                if ($firstCard) { Click-El $firstCard -Label "slot 1 card (macro repair)" -Delay 1500 | Out-Null }
+            }
+            $mkTab = Find-UIA -Name "Macros"
+            if ($mkTab) { Click-El $mkTab -Label "Tab:Macros (after repair)" -Delay 1200 | Out-Null }
+            $macroSeen = 0
+            foreach ($t in $script:uiaWin.FindAll($TD, $txtCondMk)) {
+                try { if ($macroNames -contains $t.Current.Name) { $macroSeen++ } } catch { }
+            }
+            $script:MacrosPresent = ($macroSeen -gt 0)
+            if ($script:MacrosPresent) {
+                Write-Host "  macro list repaired ($macroSeen names visible)" -ForegroundColor Green
+                # Select the first macro so the editor pane has content to show.
+                foreach ($t in $script:uiaWin.FindAll($TD, $txtCondMk)) {
+                    try {
+                        if ($t.Current.Name -eq "Quick Combo") { Click-El $t -Label "Quick Combo (after repair)" -Delay 700 | Out-Null; break }
+                    } catch { }
+                }
+            }
+        }
+    }
+
+    if (-not $script:MacrosPresent) {
+        Write-Host "  !! NO MACROS IN THE LIST after repair. SKIPPING every macro shot" -ForegroundColor Red
+        Write-Host "  !! rather than shipping blank panes. Check element ORDER in the" -ForegroundColor Red
+        Write-Host "  !! injected <Macro> XML: XmlSerializer drops the whole array on" -ForegroundColor Red
+        Write-Host "  !! an out-of-order element." -ForegroundColor Red
     } else {
         Write-Host "  macro list populated ($macroSeen of $($macroNames.Count) names visible)" -ForegroundColor Green
         Cap "pad-macros"

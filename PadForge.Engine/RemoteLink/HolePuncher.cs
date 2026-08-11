@@ -44,19 +44,46 @@ namespace PadForge.Engine.RemoteLink
         private readonly IPunchTransport _transport;
         private readonly byte[] _nonce;
         private readonly TimeSpan _sprayInterval;
+        private readonly HashSet<string> _selfEndpoints = new(StringComparer.Ordinal);
 
         private readonly object _lock = new();
         private IPEndPoint _won;
         private TaskCompletionSource<IPEndPoint> _winTcs;
 
-        public HolePuncher(IPunchTransport transport, byte[] sharedNonce, TimeSpan? sprayInterval = null)
+        /// <param name="selfEndpoints">This peer's OWN endpoints (public from
+        /// STUN, private LAN). Never sprayed at and never accepted as a peer.
+        /// Two machines behind the SAME router share a public IP, so "the
+        /// peer's public endpoint" can resolve to US: a hairpinning router then
+        /// delivers our own probe back, it carries the shared nonce, and the
+        /// punch settles on ourselves and handshakes into a dead end. This set
+        /// is what makes that impossible.</param>
+        public HolePuncher(IPunchTransport transport, byte[] sharedNonce, TimeSpan? sprayInterval = null,
+            IEnumerable<IPEndPoint> selfEndpoints = null)
         {
             _transport = transport ?? throw new ArgumentNullException(nameof(transport));
             if (sharedNonce == null || sharedNonce.Length != NonceLen)
                 throw new ArgumentException($"Punch nonce must be {NonceLen} bytes.", nameof(sharedNonce));
             _nonce = (byte[])sharedNonce.Clone();
             _sprayInterval = sprayInterval ?? TimeSpan.FromMilliseconds(200);
+            if (selfEndpoints != null)
+                foreach (var ep in selfEndpoints)
+                    if (ep != null) _selfEndpoints.Add(ep.ToString());
             _transport.OnDatagram = OnDatagram;
+        }
+
+        private bool IsSelf(IPEndPoint ep) => ep != null && _selfEndpoints.Contains(ep.ToString());
+
+        /// <summary>True for an RFC 1918 / link-local address. A peer on the
+        /// same LAN is reached directly there with no NAT at all, so those
+        /// candidates are sprayed FIRST.</summary>
+        public static bool IsPrivateAddress(IPAddress a)
+        {
+            if (a == null || a.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork) return false;
+            var b = a.GetAddressBytes();
+            return b[0] == 10
+                || (b[0] == 172 && b[1] >= 16 && b[1] <= 31)
+                || (b[0] == 192 && b[1] == 168)
+                || (b[0] == 169 && b[1] == 254);
         }
 
         /// <summary>Orders raw candidate endpoints into punch priority:
@@ -99,6 +126,14 @@ namespace PadForge.Engine.RemoteLink
                 _winTcs = winTcs;
             }
 
+            // Drop our own endpoints (a shared-router peer's "public" address is
+            // ours) and try LAN addresses first: two machines on one network
+            // connect directly with no NAT and no hairpin ambiguity.
+            var ordered = new List<IPEndPoint>();
+            foreach (var ep in candidates) if (!IsSelf(ep) && IsPrivateAddress(ep.Address)) ordered.Add(ep);
+            foreach (var ep in candidates) if (!IsSelf(ep) && !IsPrivateAddress(ep.Address)) ordered.Add(ep);
+            candidates = ordered;
+
             var ping = new byte[1 + NonceLen];
             ping[0] = TagPing;
             _nonce.CopyTo(ping, 1);
@@ -130,6 +165,10 @@ namespace PadForge.Engine.RemoteLink
         private void OnDatagram(IPEndPoint from, byte[] dg)
         {
             if (dg == null || dg.Length != 1 + NonceLen) return;
+            // Our own probe hairpinned back by the router. It carries the right
+            // nonce, so without this it would "win" the punch and we would
+            // handshake with ourselves.
+            if (IsSelf(from)) return;
             byte tag = dg[0];
             if (tag != TagPing && tag != TagPong) return;
             // Constant-time nonce compare so a probe with the wrong nonce (a

@@ -426,6 +426,64 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public async Task Punch_NeverConnectsToItself_WhenPeerSharesOurPublicIp()
+        {
+            // FIELD CASE: two machines behind ONE router share a public IP, and
+            // both codes can name the same public endpoint. Spraying at "the
+            // peer's public address" then targets OUR OWN mapping; a hairpinning
+            // router delivers our probe back to us with the shared nonce, and
+            // without the self guard the punch settles on ourselves and the
+            // handshake dies. The guard must make that impossible.
+            var nat = new SimNat();
+            var mine = new IPEndPoint(IPAddress.Parse("68.34.77.35"), 27500);
+            var a = nat.Endpoint(mine);   // hairpin: our own public endpoint IS us
+            var nonce = RandomBytes(16, 71);
+            var puncher = new HolePuncher(a, nonce, TimeSpan.FromMilliseconds(10),
+                selfEndpoints: new[] { mine });
+            using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(400));
+
+            // The only candidate is our own public endpoint (the shared-router case).
+            var won = await puncher.PunchAsync(new[] { mine }, cts.Token);
+            Assert.Null(won); // never settles on self
+        }
+
+        [Fact]
+        public async Task Punch_PrefersLanCandidate_OverSharedPublicAddress()
+        {
+            // Same-LAN peers must connect over the private address, which needs
+            // no NAT and no hairpin. The LAN candidate is sprayed first.
+            var nat = new SimNat();
+            var myPublic = new IPEndPoint(IPAddress.Parse("68.34.77.35"), 27500);
+            var myLan = new IPEndPoint(IPAddress.Parse("10.19.90.40"), 27500);
+            var peerLan = new IPEndPoint(IPAddress.Parse("10.19.90.55"), 27500);
+
+            var a = nat.Endpoint(myLan);
+            var b = nat.Endpoint(peerLan);
+            var nonce = RandomBytes(16, 72);
+            var pa = new HolePuncher(a, nonce, TimeSpan.FromMilliseconds(10), selfEndpoints: new[] { myPublic, myLan });
+            var pb = new HolePuncher(b, nonce, TimeSpan.FromMilliseconds(10), selfEndpoints: new[] { myPublic, peerLan });
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+
+            // A's candidate list names the shared public endpoint FIRST (as the
+            // code does) plus the peer's LAN address. The LAN path must win.
+            var wa = pa.PunchAsync(new[] { myPublic, peerLan }, cts.Token);
+            var wb = pb.PunchAsync(new[] { myPublic, myLan }, cts.Token);
+            Assert.Equal(peerLan, await wa);
+            Assert.Equal(myLan, await wb);
+        }
+
+        [Fact]
+        public void Punch_IsPrivateAddress_ClassifiesRfc1918()
+        {
+            Assert.True(HolePuncher.IsPrivateAddress(IPAddress.Parse("10.19.90.40")));
+            Assert.True(HolePuncher.IsPrivateAddress(IPAddress.Parse("192.168.1.5")));
+            Assert.True(HolePuncher.IsPrivateAddress(IPAddress.Parse("172.31.176.1")));
+            Assert.True(HolePuncher.IsPrivateAddress(IPAddress.Parse("169.254.1.1")));
+            Assert.False(HolePuncher.IsPrivateAddress(IPAddress.Parse("68.34.77.35")));
+            Assert.False(HolePuncher.IsPrivateAddress(IPAddress.Parse("174.235.248.62")));
+        }
+
+        [Fact]
         public async Task Punch_RejectsWrongNonce()
         {
             var nat = new SimNat();

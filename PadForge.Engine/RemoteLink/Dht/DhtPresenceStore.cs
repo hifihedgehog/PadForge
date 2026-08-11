@@ -194,6 +194,51 @@ namespace PadForge.Engine.RemoteLink.Dht
             return new PublishResult { AckCount = results.Count(ok => ok) };
         }
 
+        /// <summary>Publishes an arbitrary signed value at an explicit
+        /// (keypair, salt) slot. Used by the code rendezvous (#294): the slot
+        /// is derived from the connection code rather than a peer identity,
+        /// because at FIRST contact the two sides share nothing else.</summary>
+        public async Task<PublishResult> PublishRawAsync(
+            byte[] publicKey, byte[] privateKey, byte[] salt, byte[] value, long seq, CancellationToken ct)
+        {
+            var target = Bep44Record.ComputeTarget(publicKey, salt);
+            var sig = Bep44Record.Sign(privateKey, value, seq, salt);
+            var closest = await LookupAsync(target, ct).ConfigureAwait(false);
+            var puts = closest.Where(c => c.Token != null).Select(async c =>
+            {
+                var txn = NextTxn();
+                var dg = Krpc.PutMutable(_nodeId, publicKey, value, seq, sig, c.Token, salt, txn);
+                var resp = await RpcAsync(dg, txn, c.Node.Endpoint, ct).ConfigureAwait(false);
+                return resp is { IsResponse: true, IsError: false };
+            }).ToList();
+            var results = await Task.WhenAll(puts).ConfigureAwait(false);
+            return new PublishResult { AckCount = results.Count(ok => ok) };
+        }
+
+        /// <summary>Fetches the highest-sequence signed value at a (publicKey,
+        /// salt) slot, or (null, 0). Verifies the key hashes to the requested
+        /// target and that the signature covers the value, so a hostile node
+        /// cannot substitute content.</summary>
+        public async Task<(byte[] Value, long Seq)> FetchRawAsync(
+            byte[] publicKey, byte[] salt, CancellationToken ct)
+        {
+            var target = Bep44Record.ComputeTarget(publicKey, salt);
+            var closest = await LookupAsync(target, ct).ConfigureAwait(false);
+            byte[] best = null; long bestSeq = 0;
+            foreach (var c in closest)
+            {
+                var item = c.Stored;
+                if (item?.Value == null || item.PublicKey == null || item.Signature == null || !item.HasSeq) continue;
+                if (!item.PublicKey.AsSpan().SequenceEqual(publicKey)) continue;
+                var itemTarget = Bep44Record.ComputeTarget(item.PublicKey, salt);
+                if (!itemTarget.AsSpan().SequenceEqual(target)) continue;
+                if (!Bep44Record.Verify(item.PublicKey, item.Value, item.Seq, item.Signature, salt)) continue;
+                if (best != null && item.Seq <= bestSeq) continue;
+                best = item.Value; bestSeq = item.Seq;
+            }
+            return (best, bestSeq);
+        }
+
         public async Task<PresenceRecord.Presence> LookupAsync(
             byte[] peerPublicKey, byte[] capability, byte peerDirection, CancellationToken ct)
         {

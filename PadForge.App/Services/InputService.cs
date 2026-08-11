@@ -116,6 +116,13 @@ namespace PadForge.Services
         private PadForge.Engine.RemoteLink.Dht.UdpKrpcTransport _dhtTransport;
         private PadForge.Engine.RemoteLink.Dht.RemoteLinkInternetService _internetService;
         private System.Threading.CancellationTokenSource _internetCts;
+        // #294 code rendezvous: this PC's current code (the host polls the DHT
+        // slot it addresses) and the last call it acted on, so one caller does
+        // not trigger a punch on every poll.
+        private PadForge.Engine.RemoteLink.Dht.DhtPresenceStore _dhtStore;
+        private System.Threading.Timer _rdvPollTimer;
+        private volatile string _myCodeForRendezvous;
+        private string _lastHandledCall;
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, UserDevice ud, RemoteDeltaAccumulator acc, byte slot)> _remoteLinkExposed = new();
         private readonly object _remoteLinkExposedLock = new();
         // Lock-free snapshot of _remoteLinkExposed for the two hot readers
@@ -8522,15 +8529,26 @@ namespace PadForge.Services
                     };
                     server.StartNatKeepalive();
 
+                    // Host half of the code rendezvous: poll OUR OWN code slot
+                    // so a caller's announcement reaches us and we punch back.
+                    _myCodeForRendezvous = code;
+
                     // (Two-way model: both people paste the other's code and
                     // click Connect, so both actively punch. No passive arming.)
 
                     // 3. DHT presence loop for pair-once-connect-anytime.
                     _dhtTransport = new PadForge.Engine.RemoteLink.Dht.UdpKrpcTransport();
                     var boot = await PadForge.Engine.RemoteLink.Dht.UdpKrpcTransport.ResolveBootstrapAsync(ct).ConfigureAwait(false);
+                    PadForge.Engine.SdlDiagLog.WriteLine($"RLInternet DHT: {boot.Count} bootstrap nodes resolved");
                     if (boot.Count > 0)
                     {
                         var store = new PadForge.Engine.RemoteLink.Dht.DhtPresenceStore(_dhtTransport, boot);
+                        _dhtStore = store;
+                        // Host half of the code rendezvous: poll every 5 s so a
+                        // caller is answered promptly.
+                        _rdvPollTimer?.Dispose();
+                        _rdvPollTimer = new System.Threading.Timer(
+                            _ => _ = PollCodeRendezvousAsync(), null, 4000, 5000);
                         var presence = new PadForge.Engine.RemoteLink.Dht.PresenceService(store);
                         _internetService = new PadForge.Engine.RemoteLink.Dht.RemoteLinkInternetService(
                             presence, identity.PublicKey, identity.ExportPrivateKey(),
@@ -8592,6 +8610,83 @@ namespace PadForge.Services
         /// this wrong twice in the field: it chose a Hyper-V/WSL switch, then a
         /// Hamachi VPN adapter, because the REAL Wi-Fi had only an IPv6
         /// link-local gateway and an IPv4-gateway test rejected it.</summary>
+        /// <summary>Caller half of the code rendezvous (#294): announce our own
+        /// endpoints at the DHT slot the HOST'S code addresses, so the host
+        /// learns where to punch back. Best-effort: a DHT failure just leaves
+        /// the punch one-sided, which is what it already was.</summary>
+        private async Task PublishCodeCallRequestAsync(string hostCode, LinkServer server)
+        {
+            try
+            {
+                var store = _dhtStore;
+                var identity = _remoteLinkIdentity;
+                if (store == null || identity == null || server == null) return;
+                var slot = PadForge.Engine.RemoteLink.Dht.CodeRendezvous.DeriveSlot(hostCode);
+                if (slot == null) return;
+
+                var mine = new List<System.Net.IPEndPoint>();
+                if (server.PublicEndpoint != null) mine.Add(server.PublicEndpoint);
+                var lan = LocalLanEndpoint(server.Port);
+                if (lan != null) mine.Add(lan);
+                if (mine.Count == 0) return;
+
+                var now = DateTimeOffset.UtcNow;
+                long seq = PadForge.Engine.RemoteLink.Dht.CodeRendezvous.SequenceFor(now);
+                var value = PadForge.Engine.RemoteLink.Dht.CodeRendezvous.EncodeRequest(
+                    slot, identity.Fingerprint, mine, now, seq);
+                using var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(20));
+                var res = await store.PublishRawAsync(slot.PublicKey, slot.PrivateKey, slot.Salt, value, seq, cts.Token)
+                                     .ConfigureAwait(false);
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"RDV call published: acks={res.AckCount} endpoints=[{string.Join(",", mine)}]");
+            }
+            catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("RDV publish failed: " + ex.Message); }
+        }
+
+        /// <summary>Host half of the code rendezvous (#294): poll the slot OUR
+        /// OWN code addresses. A fresh call from someone other than us means a
+        /// peer is dialling, so punch at the endpoints they published. This is
+        /// what breaks the internet deadlock, since the caller's probes alone
+        /// can never open our router.</summary>
+        private async Task PollCodeRendezvousAsync()
+        {
+            try
+            {
+                var store = _dhtStore;
+                var server = _linkServer;
+                var identity = _remoteLinkIdentity;
+                string myCode = _myCodeForRendezvous;
+                if (store == null || server == null || identity == null || string.IsNullOrEmpty(myCode)) return;
+
+                var slot = PadForge.Engine.RemoteLink.Dht.CodeRendezvous.DeriveSlot(myCode);
+                if (slot == null) return;
+                using var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(15));
+                var (value, seq) = await store.FetchRawAsync(slot.PublicKey, slot.Salt, cts.Token).ConfigureAwait(false);
+                if (value == null) return;
+                if (!PadForge.Engine.RemoteLink.Dht.CodeRendezvous.TryDecodeRequest(slot, value, seq, out var call)) return;
+                if (!call.IsFresh(DateTimeOffset.UtcNow, TimeSpan.FromMinutes(3))) return;
+
+                // Our own announcement (we may also be a caller): ignore.
+                var myPrefix = identity.Fingerprint.AsSpan(0, 8).ToArray();
+                if (call.CallerFingerprintPrefix.AsSpan().SequenceEqual(myPrefix)) return;
+
+                string callKey = Convert.ToHexString(call.CallerFingerprintPrefix) + ":" + seq;
+                if (string.Equals(_lastHandledCall, callKey, StringComparison.Ordinal)) return;
+                _lastHandledCall = callKey;
+
+                var nonce = PadForge.Engine.RemoteLink.LinkCode.TwoWayPunchNonce(identity.Fingerprint, call.CallerFingerprintPrefix);
+                bool asInitiator = PadForge.Engine.RemoteLink.LinkCode.IsHandshakeInitiator(identity.Fingerprint, call.CallerFingerprintPrefix);
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"RDV call RECEIVED from {Convert.ToHexString(call.CallerFingerprintPrefix)} " +
+                    $"endpoints=[{string.Join(",", call.Candidates)}] -> punching back");
+
+                var expose = BuildExposedDevices();
+                await server.ConnectByPunchAsync(call.Candidates, nonce, asInitiator, expose,
+                    punchTimeout: TimeSpan.FromSeconds(45)).ConfigureAwait(false);
+            }
+            catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("RDV poll failed: " + ex.Message); }
+        }
+
         private static System.Net.IPEndPoint LocalLanEndpoint(int port)
         {
             try
@@ -8709,6 +8804,11 @@ namespace PadForge.Services
             try { _internetCts?.Cancel(); } catch { }
             _remoteLinkInternetTimer?.Dispose();
             _remoteLinkInternetTimer = null;
+            _rdvPollTimer?.Dispose();
+            _rdvPollTimer = null;
+            _dhtStore = null;
+            _myCodeForRendezvous = null;
+            _lastHandledCall = null;
             try { _internetService?.Dispose(); } catch { }
             _internetService = null;
             try { _dhtTransport?.Dispose(); } catch { }
@@ -8912,7 +9012,17 @@ namespace PadForge.Services
                 var nonce = PadForge.Engine.RemoteLink.LinkCode.TwoWayPunchNonce(myFp, code.FingerprintPrefix);
                 bool asInitiator = PadForge.Engine.RemoteLink.LinkCode.IsHandshakeInitiator(myFp, code.FingerprintPrefix);
                 _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusConnectingCode);
-                bool ok = await server.ConnectByPunchAsync(candidates, nonce, asInitiator, expose);
+
+                // SIGNAL FIRST (#294). A hole punch needs BOTH sides sending:
+                // an idle host cannot answer probes its own router silently
+                // drops, so it must be TOLD where we are. Publish our endpoints
+                // to the DHT slot derived from the host's code; the host polls
+                // that slot and punches back. Without this the internet path
+                // deadlocks (LAN worked only because there is no filtering).
+                await PublishCodeCallRequestAsync(entry, server);
+
+                bool ok = await server.ConnectByPunchAsync(candidates, nonce, asInitiator, expose,
+                    punchTimeout: TimeSpan.FromSeconds(60));
                 if (!ok)
                     _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusPunchFailed);
                 return;

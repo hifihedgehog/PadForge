@@ -8497,9 +8497,11 @@ namespace PadForge.Services
                         : "";
                     _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkNatWarning = natWarning);
 
-                    // 2. Mint + publish this PC's shareable self-contained code.
+                    // 2. Mint + publish this PC's shareable self-contained code,
+                    // carrying our NAT profile so a peer knows to predict ports
+                    // if we are behind a symmetric CGNAT.
                     var expiry = DateTimeOffset.UtcNow.AddHours(1);
-                    string code = PadForge.Engine.RemoteLink.LinkCode.EncodeSelfContained(pub, priv, identity.Fingerprint, expiry);
+                    string code = PadForge.Engine.RemoteLink.LinkCode.EncodeSelfContained(pub, priv, identity.Fingerprint, expiry, server.Nat);
                     _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkMyCode = code);
 
                     // (Two-way model: both people paste the other's code and
@@ -8521,6 +8523,7 @@ namespace PadForge.Services
                                 if (s == null) return false;
                                 return await s.ConnectByPunchAsync(endpoints, nonce, asInitiator, BuildExposedDevices(), punchTimeout: null, ict).ConfigureAwait(false);
                             },
+                            localNat: () => _linkServer?.Nat,
                             log: msg => PadForge.Engine.SdlDiagLog.WriteLine("RLInternet " + msg));
 
                         _remoteLinkInternetTimer?.Dispose();
@@ -8869,9 +8872,15 @@ namespace PadForge.Services
                     _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusConnectFailed);
                     return;
                 }
-                var candidates = new List<System.Net.IPEndPoint>();
-                if (code.PublicEndpoint != null) candidates.Add(code.PublicEndpoint);
-                if (code.PrivateEndpoint != null) candidates.Add(code.PrivateEndpoint);
+                var raw = new List<System.Net.IPEndPoint>();
+                if (code.PublicEndpoint != null) raw.Add(code.PublicEndpoint);
+                if (code.PrivateEndpoint != null) raw.Add(code.PrivateEndpoint);
+                // If the peer is behind a sequential-symmetric CGNAT (Verizon /
+                // T-Mobile home internet), expand its endpoint into a predicted
+                // port range so one of our probes hits the port its NAT actually
+                // allocates. Cone peers just keep their single endpoint.
+                var candidates = PadForge.Engine.RemoteLink.PortPredictor.BuildSprayTargets(
+                    code.PublicEndpoint?.Address, code.Nat, raw);
                 var myFp = _remoteLinkIdentity?.Fingerprint ?? Array.Empty<byte>();
                 var nonce = PadForge.Engine.RemoteLink.LinkCode.TwoWayPunchNonce(myFp, code.FingerprintPrefix);
                 bool asInitiator = PadForge.Engine.RemoteLink.LinkCode.IsHandshakeInitiator(myFp, code.FingerprintPrefix);

@@ -154,6 +154,10 @@ namespace PadForge.Engine.RemoteLink
         /// server is running and connections are live: STUN datagrams demux from
         /// sealed session datagrams by the magic cookie.
         /// </summary>
+        /// <summary>This socket's classified NAT behaviour from the last probe
+        /// (#294), used to decide punch strategy. Null until probed.</summary>
+        public NatProfile Nat { get; private set; }
+
         public async Task<StunResult> ProbePublicEndpointAsync(CancellationToken ct = default)
         {
             var sock = _udp;
@@ -162,8 +166,13 @@ namespace PadForge.Engine.RemoteLink
             await _stunGate.WaitAsync(ct).ConfigureAwait(false);
             try
             {
+                // Probe ALL servers (not just two) IN ORDER so the mapping's
+                // per-destination behaviour is classifiable: equal ports = cone,
+                // stepped ports = sequential-symmetric (predictable, punchable),
+                // erratic = random-symmetric (needs a relay).
                 IPEndPoint first = null;
-                bool hardNat = false;
+                var observedPorts = new List<int>();
+                IPAddress addr = null;
 
                 foreach (var (host, port) in StunClient.DefaultServers)
                 {
@@ -176,23 +185,22 @@ namespace PadForge.Engine.RemoteLink
 
                     var ep = await OneStunProbeAsync(sock, server, ct).ConfigureAwait(false);
                     if (ep == null) continue;
-                    if (first == null) first = ep;
-                    else
-                    {
-                        // Any differing mapping (port OR address) toward a
-                        // second destination means the mapping toward a real
-                        // peer is unpredictable: hard NAT (finding 9).
-                        if (!ep.Equals(first)) hardNat = true;
-                        break;
-                    }
+                    first ??= ep;
+                    addr ??= ep.Address;
+                    observedPorts.Add(ep.Port);
                 }
 
                 if (first == null) return null;
-                // Only meaningful for the socket that asked: Stop() clears
-                // these so a restarted socket never advertises the old
-                // socket's mapping (finding 8).
+
+                var profile = NatProfile.Classify(addr, observedPorts);
+                bool hardNat = profile.Kind == NatKind.SymmetricRandom; // only random symmetric is truly un-punchable
+
+                // Only meaningful for the socket that asked: Stop() clears these
+                // so a restarted socket never advertises the old mapping.
                 PublicEndpoint = first;
                 IsHardNat = hardNat;
+                Nat = profile;
+                SdlDiagLog.WriteLine($"STUN profile: kind={profile.Kind} public={first} delta={profile.Delta} ports=[{string.Join(",", observedPorts)}]");
                 return new StunResult { PublicEndpoint = first, IsHardNat = hardNat };
             }
             finally { _stunGate.Release(); }
@@ -302,6 +310,7 @@ namespace PadForge.Engine.RemoteLink
             // one be advertised (finding 8).
             PublicEndpoint = null;
             IsHardNat = false;
+            Nat = null;
             try { _cts.Cancel(); } catch { }
             _reaper?.Dispose(); _reaper = null;
             LinkPeerConnection[] conns;

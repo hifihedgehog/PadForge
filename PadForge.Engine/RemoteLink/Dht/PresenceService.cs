@@ -55,10 +55,15 @@ namespace PadForge.Engine.RemoteLink.Dht
         /// sequence only when the candidate set changed since the last publish,
         /// so an idle republish keeps the same seq (which storage nodes accept
         /// only for identical values). Returns the publish health.</summary>
-        public async Task<PublishResult> PublishAsync(
+        public Task<PublishResult> PublishAsync(
             Slot slot, IReadOnlyList<PresenceRecord.Candidate> candidates, CancellationToken ct)
+            => PublishAsync(slot, candidates, NatKind.Unknown, 0, ct);
+
+        public async Task<PublishResult> PublishAsync(
+            Slot slot, IReadOnlyList<PresenceRecord.Candidate> candidates,
+            NatKind natKind, int natDelta, CancellationToken ct)
         {
-            string fp = FingerprintCandidates(candidates);
+            string fp = FingerprintCandidates(candidates) + "|" + natKind + "|" + natDelta;
             if (fp != slot.LastCandidatesFingerprint)
             {
                 slot.Sequence++;
@@ -70,6 +75,8 @@ namespace PadForge.Engine.RemoteLink.Dht
                 Candidates = candidates,
                 IssuedAt = now,
                 Expiry = now + PresenceTtl,
+                NatKind = natKind,
+                NatDelta = natDelta,
             };
             return await _store.PublishAsync(
                 slot.PublisherPublicKey, slot.PublisherPrivateKey,

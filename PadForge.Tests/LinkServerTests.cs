@@ -120,7 +120,7 @@ namespace PadForge.Tests
             Assert.True(connected);
 
             Assert.True(await WaitUntil(() => received != null, 5000), "host never saw the remote device");
-            Assert.Equal("A Pad", received.Name);
+            Assert.StartsWith("A Pad", received.Name);
             Assert.StartsWith("peer://", received.DevicePath);
 
             // The holder streams its device's input over real UDP (a few frames —

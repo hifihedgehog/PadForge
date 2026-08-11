@@ -69,7 +69,10 @@ namespace PadForge.Tests
             Assert.True(trustA.IsTrusted(idB.PublicKey));
             Assert.True(trustB.IsTrusted(idA.PublicKey));
             Assert.Single(rA.Connection.RemoteDevices); // B exposed a pad
-            Assert.Equal("Punch Pad", rA.Connection.RemoteDevices[0].Name);
+            // Peer devices carry the owning machine's name so a consumer can
+            // tell them from local ones (regression fixed 2026-08-11).
+            Assert.StartsWith("Punch Pad", rA.Connection.RemoteDevices[0].Name);
+            Assert.Contains($"({LinkConnection.SafeMachineName()})", rA.Connection.RemoteDevices[0].Name);
 
             var sA = new LinkSession(rA.Connection.DataKey, rA.Connection.IsInitiator);
             var sB = new LinkSession(rB.Connection.DataKey, rB.Connection.IsInitiator);

@@ -120,6 +120,24 @@ namespace PadForge.Engine.RemoteLink
             }
         }
 
+        /// <summary>Records the peer's self-reported machine name, learned in
+        /// the handshake, so its devices are labelled "(Their PC)" even when LAN
+        /// discovery never ran. The punch / code path has no discovery, which is
+        /// why remote devices arrived unlabelled there. Never overwrites a
+        /// user-set Name; only fills the HostName the label falls back to.</summary>
+        public bool SetHostName(byte[] publicKey, string hostName)
+        {
+            if (publicKey == null || string.IsNullOrWhiteSpace(hostName)) return false;
+            lock (_lock)
+            {
+                var e = _peers.FirstOrDefault(p => KeyEquals(p.PublicKey, publicKey));
+                if (e == null) return false;
+                if (string.Equals(e.HostName, hostName, StringComparison.Ordinal)) return false;
+                e.HostName = hostName;
+                return true;
+            }
+        }
+
         /// <summary>The stored pairwise capability for a peer, or null.</summary>
         public byte[] GetRendezvousCapability(byte[] publicKey)
         {

@@ -8585,34 +8585,26 @@ namespace PadForge.Services
         /// candidate. Only interfaces with a DEFAULT GATEWAY qualify: Hyper-V
         /// and WSL virtual switches have none, and picking one advertised an
         /// unreachable private address (observed in the field: 172.25.80.1).</summary>
+        /// <summary>This PC's real LAN address for the same-network punch
+        /// candidate. Asks the OS which interface it would actually use to
+        /// reach the internet (a connected UDP socket picks the routed source
+        /// address without sending anything). Enumerating adapters by hand got
+        /// this wrong twice in the field: it chose a Hyper-V/WSL switch, then a
+        /// Hamachi VPN adapter, because the REAL Wi-Fi had only an IPv6
+        /// link-local gateway and an IPv4-gateway test rejected it.</summary>
         private static System.Net.IPEndPoint LocalLanEndpoint(int port)
         {
             try
             {
-                foreach (var ni in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
-                {
-                    if (ni.OperationalStatus != System.Net.NetworkInformation.OperationalStatus.Up) continue;
-                    var type = ni.NetworkInterfaceType;
-                    if (type == System.Net.NetworkInformation.NetworkInterfaceType.Loopback
-                        || type == System.Net.NetworkInformation.NetworkInterfaceType.Tunnel) continue;
-
-                    var props = ni.GetIPProperties();
-                    bool hasGateway = false;
-                    foreach (var g in props.GatewayAddresses)
-                    {
-                        var ga = g?.Address;
-                        if (ga != null && ga.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork
-                            && !ga.Equals(System.Net.IPAddress.Any)) { hasGateway = true; break; }
-                    }
-                    if (!hasGateway) continue;
-
-                    foreach (var ua in props.UnicastAddresses)
-                    {
-                        if (ua.Address.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork) continue;
-                        if (System.Net.IPAddress.IsLoopback(ua.Address)) continue;
-                        return new System.Net.IPEndPoint(ua.Address, port);
-                    }
-                }
+                using var probe = new System.Net.Sockets.Socket(
+                    System.Net.Sockets.AddressFamily.InterNetwork,
+                    System.Net.Sockets.SocketType.Dgram,
+                    System.Net.Sockets.ProtocolType.Udp);
+                probe.Connect(new System.Net.IPEndPoint(System.Net.IPAddress.Parse("8.8.8.8"), 65530));
+                if (probe.LocalEndPoint is System.Net.IPEndPoint le
+                    && !System.Net.IPAddress.IsLoopback(le.Address)
+                    && !le.Address.Equals(System.Net.IPAddress.Any))
+                    return new System.Net.IPEndPoint(le.Address, port);
             }
             catch { }
             return null;

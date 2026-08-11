@@ -211,7 +211,7 @@ namespace PadForge.Tests
                 InputDeviceType = InputDeviceType.Gamepad,
                 HasNfcReader = true, HasGyroAux = true,
             };
-            var full = LinkConnection.EncodeDeviceList(new[] { a, b });
+            var full = LinkConnection.EncodeDeviceList(new[] { a, b }, "");
 
             // Cut into the V3 tail. It is no longer the last section: the v4
             // tail (#193 raw axis counts) now follows it as
@@ -220,7 +220,8 @@ namespace PadForge.Tests
             // record B's caps byte, which is the condition under test: the
             // magic survives, A's caps parses, and B's read throws into the
             // catch.
-            var truncated = new byte[full.Length - 4];
+            // (+3 for the v5 tail, [magic][nameLen=0], now the last section.)
+            var truncated = new byte[full.Length - 7];
             Array.Copy(full, truncated, truncated.Length);
 
             var list = LinkConnection.DecodeDeviceList(truncated);

@@ -142,22 +142,25 @@ namespace PadForge.Tests
         public void MalformedExtension_FallsBackToV1()
         {
             var info = ConsumerInfo();
-            var good = LinkConnection.EncodeDeviceList(new[] { info });
+            // Empty machine name keeps the v5 tail a fixed 3 bytes so the
+            // offset arithmetic below stays deterministic.
+            var good = LinkConnection.EncodeDeviceList(new[] { info }, "");
 
             // Locate the extension start by encoding the same record without
             // metadata: the v1 section is byte-identical, so its length is the
             // extension offset in the full payload.
             info.SerialNumber = ""; info.NumTouchpads = 0;
             info.TouchpadFingerCounts = null; info.DeviceObjects = null;
-            var bare = LinkConnection.EncodeDeviceList(new[] { info });
+            var bare = LinkConnection.EncodeDeviceList(new[] { info }, "");
 
             // The bare payload's tail is a fixed 12 bytes: the v1 ext
             // [magic][serial len=0 (2B)][pads=0][objCount=0 (2B)] = 6, the
             // v2 ext [magic][rawButtonCount=0] = 2, the v3 ext
-            // [magic][caps2=0] = 2 (#241 NFC capability), and the v4 ext
-            // [magic][rawAxisCount=0] = 2 (#193 over the wire). The v1
+            // [magic][caps2=0] = 2 (#241 NFC capability), the v4 ext
+            // [magic][rawAxisCount=0] = 2 (#193 over the wire), and the v5 ext
+            // [magic][nameLen=0 (2B)] = 3 (the peer machine name). The v1
             // section length falls out of it.
-            int v1Len = bare.Length - 12;
+            int v1Len = bare.Length - 15;
             Assert.Equal(0xE2, bare[v1Len]);
 
             var corrupt = new byte[v1Len + 3];

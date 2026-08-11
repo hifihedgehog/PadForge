@@ -53,7 +53,12 @@ namespace PadForge.Tests
 
             // B received A's exposed device, salted by A's authenticated identity.
             Assert.Single(rB.RemoteDevices);
-            Assert.Equal("A Pad", rB.RemoteDevices[0].Name);
+            // Peer devices are suffixed with the owning machine's name so they
+            // are distinguishable from local ones. This assertion used to
+            // expect the bare "A Pad", which was the unlabelled behaviour the
+            // 2026-08-11 regression report was about.
+            Assert.StartsWith("A Pad", rB.RemoteDevices[0].Name);
+            Assert.Contains($"({LinkConnection.SafeMachineName()})", rB.RemoteDevices[0].Name);
             Assert.StartsWith("peer://", rB.RemoteDevices[0].DevicePath);
             Assert.Empty(rA.RemoteDevices); // B exposed nothing
 
@@ -104,6 +109,43 @@ namespace PadForge.Tests
             var dirB = PadForge.Engine.RemoteLink.Dht.PresenceRecord.DirectionFor(
                 PeerCrypto.Fingerprint(idB.PublicKey), PeerCrypto.Fingerprint(idA.PublicKey));
             Assert.NotEqual(dirA, dirB);
+        }
+
+        [Fact]
+        public async Task Pairing_LabelsPeerDevicesWithTheirMachineName_WithoutLanDiscovery()
+        {
+            // REGRESSION (owner report 2026-08-11): a peer's shared devices must
+            // read "<device> (Their PC)" so they are distinguishable from local
+            // ones. The name used to arrive ONLY from LAN discovery, so the
+            // punch / code path left every remote device unlabelled and the list
+            // was one undifferentiated pile. The handshake now carries the
+            // sender's machine name, so labelling no longer depends on HOW the
+            // peer was found. This test uses the in-memory channel: no
+            // discovery, no sockets, exactly the punch-path condition.
+            var (chA, chB) = MemChannel.Pair();
+            var idA = PeerIdentity.Generate();
+            var idB = PeerIdentity.Generate();
+            var trustA = new PeerTrustStore();
+            var trustB = new PeerTrustStore();
+            Func<PendingPairing, PairingApproval> approve = _ => true;
+
+            var taskA = LinkConnection.RunResponderAsync(chA, idA, trustA, new[] { PadInfo() }, Caps, approve, "t");
+            var taskB = LinkConnection.RunInitiatorAsync(chB, idB, trustB, Array.Empty<RemotePeerDeviceInfo>(), Caps, approve, "t");
+            await taskA;
+            var rB = await taskB;
+
+            // B consumed A's pad and must see it labelled with A's machine name.
+            var dev = Assert.Single(rB.RemoteDevices);
+            string expected = LinkConnection.SafeMachineName();
+            Assert.False(string.IsNullOrWhiteSpace(expected));
+            Assert.Contains($"({expected})", dev.Name);
+            Assert.StartsWith("A Pad", dev.Name);
+
+            // And the name is persisted on the trust record, so every later
+            // surface (peer manager, hot-plug reconcile) labels it too.
+            var entry = trustB.Find(idA.PublicKey);
+            Assert.Equal(expected, entry.HostName);
+            Assert.Equal(expected, trustB.ResolvePeerLabel(Convert.ToHexString(PeerCrypto.Fingerprint(idA.PublicKey))));
         }
 
         [Fact]

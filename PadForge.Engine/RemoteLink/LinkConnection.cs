@@ -152,8 +152,14 @@ namespace PadForge.Engine.RemoteLink
 
             string peerFpHex = Convert.ToHexString(result.PeerFingerprint);
             List<RemotePeerDeviceInfo> peerInfos;
-            try { peerInfos = DecodeDeviceList(peerListPayload); }
+            string peerMachineName = null;
+            try { peerInfos = DecodeDeviceList(peerListPayload, out peerMachineName); }
             catch { throw new LinkConnectionException("Malformed device-list payload."); }
+            // Persist the peer's machine name so every later surface (device
+            // rows, the peer manager, the hot-plug reconcile) labels it too.
+            if (!string.IsNullOrWhiteSpace(peerMachineName))
+                trust?.SetHostName(result.PeerStaticPublicKey, peerMachineName);
+
             var remoteDevices = new List<RemotePeerDevice>();
             foreach (var info in peerInfos)
             {
@@ -163,6 +169,10 @@ namespace PadForge.Engine.RemoteLink
                 // already shared when the link comes up (the common case) carried no peer label,
                 // because only ReconcileRemoteDevices did the suffixing.
                 string peerLabel = trust?.ResolvePeerLabel(peerFpHex);
+                // Handshake-carried name is the authoritative fallback: the
+                // punch / code path never runs LAN discovery, so without it the
+                // peer's devices would show unlabelled.
+                if (string.IsNullOrWhiteSpace(peerLabel)) peerLabel = peerMachineName;
                 if (!string.IsNullOrWhiteSpace(peerLabel))
                     info.Name = $"{info.Name} ({peerLabel})";
                 remoteDevices.Add(new RemotePeerDevice(info));
@@ -212,10 +222,21 @@ namespace PadForge.Engine.RemoteLink
         // DS3's extra analog axes stayed undiscoverable on the consumer.
         private const byte DeviceListExtV4Magic = 0xE5;
 
+        // Fifth extension tail: the SENDER'S machine name, once (not per
+        // device). Device rows are suffixed with the owning peer's name so a
+        // consumer can tell "DualSense (Living Room PC)" from its own pad. That
+        // name used to arrive ONLY via LAN discovery, so the punch / code path
+        // (no discovery) left every remote device unlabelled and the list read
+        // as one undifferentiated pile (owner report 2026-08-11). Carrying it
+        // in the handshake makes labelling independent of how the peer was
+        // found. Same append-only guarantees: an old peer stops before it.
+        private const byte DeviceListExtV5Magic = 0xE6;
+
         // Shared by the handshake exchange AND the post-connect DeviceList sync (#138).
         // Each entry leads with the owner's STABLE slot, and caps now carry HasHaptic +
         // Online so a remote wheel's FFB pipeline runs and active/inactive propagates.
-        internal static byte[] EncodeDeviceList(IReadOnlyList<RemotePeerDeviceInfo> devices)
+        internal static byte[] EncodeDeviceList(IReadOnlyList<RemotePeerDeviceInfo> devices,
+            string localMachineName = null)
         {
             var buf = new List<byte> { (byte)Math.Min(devices.Count, 255) };
             int count = Math.Min(devices.Count, 255);
@@ -318,11 +339,26 @@ namespace PadForge.Engine.RemoteLink
             buf.Add(DeviceListExtV4Magic);
             for (int i = 0; i < count; i++)
                 buf.Add((byte)Math.Clamp(devices[i].RawAxisCount, 0, 255));
+
+            // v5 tail: this machine's name, so the peer can label our devices
+            // no matter how it found us.
+            buf.Add(DeviceListExtV5Magic);
+            WriteString(buf, localMachineName ?? SafeMachineName());
             return buf.ToArray();
         }
 
         internal static List<RemotePeerDeviceInfo> DecodeDeviceList(byte[] data)
+            => DecodeDeviceList(data, out _);
+
+        /// <summary>This PC's name for the v5 tail. Never throws.</summary>
+        internal static string SafeMachineName()
         {
+            try { return Environment.MachineName ?? ""; } catch { return ""; }
+        }
+
+        internal static List<RemotePeerDeviceInfo> DecodeDeviceList(byte[] data, out string peerMachineName)
+        {
+            peerMachineName = null;
             var list = new List<RemotePeerDeviceInfo>();
             int o = 0;
             int count = data[o++];
@@ -490,7 +526,25 @@ namespace PadForge.Engine.RemoteLink
                 {
                     foreach (var info in list)
                         info.RawAxisCount = 0;
+                    v1ExtOk = false; // cursor unreliable: do not read v5
                 }
+            }
+
+            // v5 tail: the sender's machine name. Its own guard; absence just
+            // means an older peer and the label falls back to whatever LAN
+            // discovery may have recorded.
+            if (v1ExtOk)
+            {
+                try
+                {
+                    if (o < data.Length && data[o] == DeviceListExtV5Magic)
+                    {
+                        o++;
+                        var nm = ReadString(data, ref o);
+                        if (!string.IsNullOrWhiteSpace(nm)) peerMachineName = nm.Trim();
+                    }
+                }
+                catch { peerMachineName = null; }
             }
             return list;
         }

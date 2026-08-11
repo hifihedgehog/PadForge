@@ -447,6 +447,25 @@ namespace PadForge.ViewModels
         /// <summary>True when a shareable code is available to show/copy.</summary>
         public bool HasRemoteLinkMyCode => !string.IsNullOrEmpty(_remoteLinkMyCode);
 
+        private string _remoteLinkNatWarning = "";
+
+        /// <summary>Actionable network warning (#294): set when the STUN probe
+        /// found no public address (UDP blocked) or an endpoint-dependent
+        /// (symmetric / carrier-grade) NAT that direct connections cannot
+        /// traverse. A mobile hotspot is the classic case. Empty when the
+        /// network looks punchable. Set by InputService.</summary>
+        public string RemoteLinkNatWarning
+        {
+            get => _remoteLinkNatWarning;
+            set
+            {
+                if (SetProperty(ref _remoteLinkNatWarning, value ?? ""))
+                    OnPropertyChanged(nameof(HasRemoteLinkNatWarning));
+            }
+        }
+
+        public bool HasRemoteLinkNatWarning => !string.IsNullOrEmpty(_remoteLinkNatWarning);
+
         private RelayCommand _copyRemoteLinkCodeCommand;
         /// <summary>Copies this PC's connection code to the clipboard.</summary>
         public RelayCommand CopyRemoteLinkCodeCommand =>

@@ -3071,4 +3071,6 @@
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>相手に直接接続できませんでした。VPN経由のアドレス接続をお試しください。</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>このPCのコード</value></data>
   <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>相手とコードを交換します。相手のコードを自分の接続欄に貼り付け、相手もあなたのコードを貼り付けたら、両者が接続をクリックします。これでVPNなしにインターネット越しの直接経路が開きます。コードはRemote Linkの実行中に更新されます。</value></data>
+  <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>このネットワークは直接接続に対応していません（モバイルホットスポットまたはキャリアグレードNATのようです）。Tailscaleなどの VPN を使うか、自宅の固定回線から接続してください。</value></data>
+  <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>このPCの公開アドレスが見つかりませんでした（必要な通信がブロックされている可能性があります）。ここでは直接接続はできません。VPN を使うか、同じネットワーク内でアドレス接続を使ってください。</value></data>
 </root>

@@ -8487,6 +8487,16 @@ namespace PadForge.Services
                         $"RLInternet STUN: public={(pub?.ToString() ?? "NONE (no server answered / UDP blocked)")} " +
                         $"hardNat={stun?.IsHardNat} private={(priv?.ToString() ?? "none")}");
 
+                    // Surface an actionable network verdict. A mobile hotspot /
+                    // CGNAT is endpoint-dependent (symmetric) NAT: no direct
+                    // punch can traverse it, so say so plainly instead of
+                    // letting a connect attempt fail generically later.
+                    string natWarning =
+                        pub == null ? Strings.Instance.RemoteLink_NatNoPublic
+                        : (stun != null && stun.IsHardNat) ? Strings.Instance.RemoteLink_NatSymmetric
+                        : "";
+                    _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkNatWarning = natWarning);
+
                     // 2. Mint + publish this PC's shareable self-contained code.
                     var expiry = DateTimeOffset.UtcNow.AddHours(1);
                     string code = PadForge.Engine.RemoteLink.LinkCode.EncodeSelfContained(pub, priv, identity.Fingerprint, expiry);
@@ -8673,7 +8683,11 @@ namespace PadForge.Services
             _internetService = null;
             try { _dhtTransport?.Dispose(); } catch { }
             _dhtTransport = null;
-            _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkMyCode = "");
+            _dispatcher.BeginInvoke(() =>
+            {
+                _mainVm.Dashboard.RemoteLinkMyCode = "";
+                _mainVm.Dashboard.RemoteLinkNatWarning = "";
+            });
             lock (_remoteLinkExposedLock)
             {
                 _remoteLinkExposed.Clear();

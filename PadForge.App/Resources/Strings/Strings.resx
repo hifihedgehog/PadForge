@@ -3126,4 +3126,6 @@ You can retry later from Settings.</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Couldn't reach the peer directly. Try Connect by Address over a VPN.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>This PC's Code</value></data>
   <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Swap codes with the other person: paste theirs into your Connect box while they paste yours, then you both click Connect. That opens a direct path across the internet, no VPN needed. The code refreshes while Remote Link runs.</value></data>
+  <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>This network can't make direct connections (it looks like a mobile hotspot or carrier-grade NAT). Use a VPN like Tailscale, or connect from home broadband.</value></data>
+  <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Couldn't find this PC's public address (the network may block the needed traffic). Direct connections won't work here. Use a VPN, or Connect by Address on the same network.</value></data>
 </root>

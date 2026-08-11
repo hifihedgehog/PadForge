@@ -473,7 +473,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Punch_ProbeCarriesSenderPrefix_SoAColdPeerCanDeriveTheNonce()
+        public async Task Punch_ProbeCarriesSenderPrefix_SoAColdPeerCanDeriveTheNonce()
         {
             // FIELD FAILURE 2026-08-11: our probes reached a peer that was
             // pingable at 5 ms, and it never answered, because it only responded
@@ -495,7 +495,7 @@ namespace PadForge.Tests
             var pa = new HolePuncher(tA, nonce, TimeSpan.FromMilliseconds(10),
                 selfEndpoints: new[] { epA }, selfFingerprint: fpA);
             using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(300));
-            pa.PunchAsync(new[] { epB }, cts.Token).GetAwaiter().GetResult();
+            await pa.PunchAsync(new[] { epB }, cts.Token);
 
             Assert.NotNull(captured);
             Assert.True(HolePuncher.TryParseProbe(captured, out byte tag, out var senderPrefix, out var gotNonce));

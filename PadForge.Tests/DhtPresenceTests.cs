@@ -139,6 +139,101 @@ namespace PadForge.Tests
             Assert.False(Bep44Record.Verify(id.PublicKey, value, 7, sig, Encoding.ASCII.GetBytes("slot")));
         }
 
+        // ── code rendezvous: first-contact signalling (#294) ──
+
+        [Fact]
+        public void CodeRendezvous_BothSidesDeriveTheIdenticalSlotFromTheCode()
+        {
+            // The host and the caller share only the code, so every DHT
+            // coordinate must fall out of it deterministically. Grouping dashes
+            // and confusable glyphs in a retyped code must not move the slot.
+            var code = LinkCode.EncodeSelfContained(
+                new IPEndPoint(IPAddress.Parse("203.0.113.7"), 27500), null,
+                new byte[32], DateTimeOffset.FromUnixTimeSeconds(1_800_000_000));
+
+            var host = CodeRendezvous.DeriveSlot(code);
+            var caller = CodeRendezvous.DeriveSlot(code.ToLowerInvariant().Replace("-", " "));
+            Assert.NotNull(host);
+            Assert.Equal(host.Target, caller.Target);
+            Assert.Equal(host.PublicKey, caller.PublicKey);
+            Assert.Equal(host.AeadKey, caller.AeadKey);
+            Assert.Equal(20, host.Target.Length);
+            // The signer must actually match the published key (BEP 44 nodes
+            // verify sig against k, and k must hash to the target).
+            Assert.Equal(PeerCrypto.DeriveEd25519PublicKey(host.PrivateKey), host.PublicKey);
+        }
+
+        [Fact]
+        public void CodeRendezvous_DifferentCodes_LandOnDifferentSlots()
+        {
+            var a = CodeRendezvous.DeriveSlot(LinkCode.MintShortCode());
+            var b = CodeRendezvous.DeriveSlot(LinkCode.MintShortCode());
+            Assert.NotEqual(a.Target, b.Target);
+            Assert.NotEqual(a.AeadKey, b.AeadKey);
+        }
+
+        [Fact]
+        public void CodeRendezvous_CallRequest_RoundTripsThroughTheSlot()
+        {
+            // This is the payload that breaks the internet deadlock: the host
+            // cannot answer probes its router drops, so the caller has to
+            // publish where it can be reached.
+            var code = LinkCode.MintShortCode();
+            var slot = CodeRendezvous.DeriveSlot(code);
+            var callerFp = new byte[32]; for (int i = 0; i < 32; i++) callerFp[i] = (byte)(i + 5);
+            var eps = new[]
+            {
+                new IPEndPoint(IPAddress.Parse("174.235.248.62"), 63332), // CGNAT public
+                new IPEndPoint(IPAddress.Parse("10.19.90.40"), 27500),    // LAN
+            };
+            var now = DateTimeOffset.FromUnixTimeSeconds(1_800_000_000);
+            long seq = CodeRendezvous.SequenceFor(now);
+
+            var value = CodeRendezvous.EncodeRequest(slot, callerFp, eps, now, seq);
+            Assert.True(value.Length <= Bep44Record.MaxValueBytes);
+            Assert.True(CodeRendezvous.TryDecodeRequest(slot, value, seq, out var call));
+            Assert.Equal(callerFp.AsSpan(0, 8).ToArray(), call.CallerFingerprintPrefix);
+            Assert.Equal(eps, call.Candidates);
+            Assert.Equal(now.ToUnixTimeSeconds(), call.IssuedAt.ToUnixTimeSeconds());
+            Assert.True(call.IsFresh(now.AddSeconds(30), TimeSpan.FromMinutes(3)));
+            Assert.False(call.IsFresh(now.AddMinutes(10), TimeSpan.FromMinutes(3))); // stale ignored
+        }
+
+        [Fact]
+        public void CodeRendezvous_AnotherCode_CannotReadTheRequest()
+        {
+            // The record is encrypted under the code, so DHT nodes (and anyone
+            // without the invitation) never see the endpoints.
+            var slot = CodeRendezvous.DeriveSlot(LinkCode.MintShortCode());
+            var other = CodeRendezvous.DeriveSlot(LinkCode.MintShortCode());
+            var now = DateTimeOffset.FromUnixTimeSeconds(1_800_000_000);
+            long seq = CodeRendezvous.SequenceFor(now);
+            var value = CodeRendezvous.EncodeRequest(slot, new byte[32],
+                new[] { new IPEndPoint(IPAddress.Loopback, 1) }, now, seq);
+
+            Assert.False(CodeRendezvous.TryDecodeRequest(other, value, seq, out _));
+            Assert.False(CodeRendezvous.TryDecodeRequest(slot, value, seq + 1, out _)); // seq bound
+            value[value.Length - 1] ^= 0xFF;
+            Assert.False(CodeRendezvous.TryDecodeRequest(slot, value, seq, out _));     // tamper
+        }
+
+        [Fact]
+        public void CodeRendezvous_RequestIsSignableAndVerifiableAtTheSlot()
+        {
+            // Real DHT nodes verify the BEP 44 signature against the published
+            // key and reject a mismatch, so the slot's derived keypair must sign
+            // its own value correctly.
+            var slot = CodeRendezvous.DeriveSlot(LinkCode.MintShortCode());
+            var now = DateTimeOffset.FromUnixTimeSeconds(1_800_000_000);
+            long seq = CodeRendezvous.SequenceFor(now);
+            var value = CodeRendezvous.EncodeRequest(slot, new byte[32],
+                new[] { new IPEndPoint(IPAddress.Parse("203.0.113.1"), 5000) }, now, seq);
+
+            var sig = Bep44Record.Sign(slot.PrivateKey, value, seq, slot.Salt);
+            Assert.True(Bep44Record.Verify(slot.PublicKey, value, seq, sig, slot.Salt));
+            Assert.Equal(Bep44Record.ComputeTarget(slot.PublicKey, slot.Salt), slot.Target);
+        }
+
         // ── pairwise-capability presence crypto ──
 
         private static PresenceRecord.Presence SamplePresence() => new()

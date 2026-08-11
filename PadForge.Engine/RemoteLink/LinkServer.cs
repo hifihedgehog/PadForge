@@ -158,6 +158,90 @@ namespace PadForge.Engine.RemoteLink
         /// (#294), used to decide punch strategy. Null until probed.</summary>
         public NatProfile Nat { get; private set; }
 
+        private Timer _natKeepalive;
+        private IPEndPoint _stunKeepaliveServer;
+        private int _keepaliveTicks;
+
+        /// <summary>Raised when the STUN keepalive observes a DIFFERENT public
+        /// endpoint, so the host can re-mint and re-show this PC's connection
+        /// code (a stale code points at a dead port and can never be punched).</summary>
+        public event Action<IPEndPoint> PublicEndpointChanged;
+
+        /// <summary>
+        /// Keeps this socket's NAT mapping alive and its external port STABLE
+        /// while Remote Link runs (#294).
+        ///
+        /// MEASURED on a real Verizon CGNAT (2026-08-10): an idle UDP mapping
+        /// survives 20 s but is GONE by 40 s. Without this, the public endpoint
+        /// baked into a shared code dies within a minute of minting: the peer
+        /// sprays a closed port, and our probes reach them from a new port their
+        /// port-restricted filter drops, so both directions fail with zero
+        /// inbound probes. That was the observed field failure.
+        ///
+        /// A refresh also PINS the port: re-probing the same socket returns the
+        /// same mapping, so a code shared minutes ago still works.
+        /// </summary>
+        public void StartNatKeepalive(TimeSpan? interval = null)
+        {
+            // 15 s sits comfortably under the measured 20 s floor, with room
+            // for a lost datagram before the mapping could lapse.
+            var period = interval ?? TimeSpan.FromSeconds(15);
+            _natKeepalive?.Dispose();
+            _keepaliveTicks = 0;
+            SdlDiagLog.WriteLine($"STUN keepalive: armed every {period.TotalSeconds:0}s (measured CGNAT expiry: alive@20s, gone@40s)");
+            _natKeepalive = new Timer(_ => { _ = NatKeepaliveTickAsync(); }, null, period, period);
+        }
+
+        private async Task NatKeepaliveTickAsync()
+        {
+            try
+            {
+                var sock = _udp;
+                if (sock == null) return;
+                // Never fight a full classification probe; skip this tick.
+                if (!await _stunGate.WaitAsync(0).ConfigureAwait(false)) return;
+                try
+                {
+                    var server = _stunKeepaliveServer;
+                    if (server == null)
+                    {
+                        foreach (var (host, port) in StunClient.DefaultServers)
+                        {
+                            try
+                            {
+                                var addrs = await Dns.GetHostAddressesAsync(host, AddressFamily.InterNetwork).ConfigureAwait(false);
+                                if (addrs.Length > 0) { server = new IPEndPoint(addrs[0], port); break; }
+                            }
+                            catch { }
+                        }
+                        _stunKeepaliveServer = server;
+                    }
+                    if (server == null) return;
+
+                    var ep = await OneStunProbeAsync(sock, server, CancellationToken.None).ConfigureAwait(false);
+                    int tick = Interlocked.Increment(ref _keepaliveTicks);
+                    if (ep == null)
+                    {
+                        SdlDiagLog.WriteLine($"STUN keepalive tick {tick}: no response (mapping may lapse)");
+                        return;
+                    }
+                    var prev = PublicEndpoint;
+                    PublicEndpoint = ep;
+                    if (prev != null && !prev.Equals(ep))
+                    {
+                        SdlDiagLog.WriteLine($"STUN keepalive: public endpoint MOVED {prev} -> {ep} (re-minting code)");
+                        PublicEndpointChanged?.Invoke(ep);
+                    }
+                    // Liveness heartbeat once a minute: proves the mapping is
+                    // being held (and at which port) without flooding the ring.
+                    else if (tick % 4 == 1)
+                        SdlDiagLog.WriteLine($"STUN keepalive tick {tick}: mapping held at {ep}");
+                }
+                finally { _stunGate.Release(); }
+            }
+            catch { /* keepalive must never take the link down */ }
+        }
+
         public async Task<StunResult> ProbePublicEndpointAsync(CancellationToken ct = default)
         {
             var sock = _udp;
@@ -311,6 +395,9 @@ namespace PadForge.Engine.RemoteLink
             PublicEndpoint = null;
             IsHardNat = false;
             Nat = null;
+            try { _natKeepalive?.Dispose(); } catch { }
+            _natKeepalive = null;
+            _stunKeepaliveServer = null;
             try { _cts.Cancel(); } catch { }
             _reaper?.Dispose(); _reaper = null;
             LinkPeerConnection[] conns;

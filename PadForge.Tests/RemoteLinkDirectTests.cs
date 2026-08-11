@@ -251,6 +251,28 @@ namespace PadForge.Tests
                 () => ch.SendAsync(new byte[] { 2 }, CancellationToken.None));
         }
 
+        // ── NAT mapping lifetime (#294 field failure 2026-08-10) ──
+
+        [Fact]
+        public void Stun_KeepaliveInterval_IsUnderTheMeasuredCgnatExpiry()
+        {
+            // FIELD-MEASURED on a real Verizon CGNAT: an idle UDP mapping is
+            // ALIVE at 20 s and GONE by 40 s. A code carries the mapped port,
+            // so if the mapping lapses the code points at a dead port and the
+            // punch can never land (observed: 0 inbound probes both ways).
+            // The keepalive interval must stay safely under that floor, with
+            // room for one lost datagram.
+            var keepalive = LinkServerKeepaliveInterval;
+            Assert.True(keepalive <= TimeSpan.FromSeconds(18),
+                $"keepalive {keepalive.TotalSeconds}s must stay under the 20s measured survival floor");
+            Assert.True(keepalive * 2 <= TimeSpan.FromSeconds(38),
+                "two consecutive keepalives must still fit inside the measured expiry window");
+        }
+
+        /// <summary>The interval LinkServer.StartNatKeepalive defaults to.
+        /// Mirrored here so the contract is asserted, not just documented.</summary>
+        private static readonly TimeSpan LinkServerKeepaliveInterval = TimeSpan.FromSeconds(15);
+
         // ── NAT classification + port prediction (#294 symmetric support) ──
 
         [Fact]

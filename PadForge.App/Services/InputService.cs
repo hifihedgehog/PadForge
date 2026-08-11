@@ -8504,6 +8504,24 @@ namespace PadForge.Services
                     string code = PadForge.Engine.RemoteLink.LinkCode.EncodeSelfContained(pub, priv, identity.Fingerprint, expiry, server.Nat);
                     _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkMyCode = code);
 
+                    // 2b. Hold the NAT mapping open so the port in that code
+                    // stays valid. MEASURED: a Verizon CGNAT mapping is gone
+                    // after 40 s idle, so a code minted at startup was dead
+                    // before anyone could paste it. Re-mint if it ever moves.
+                    server.PublicEndpointChanged += moved =>
+                    {
+                        try
+                        {
+                            var freshPriv = LocalLanEndpoint(server.Port);
+                            string fresh = PadForge.Engine.RemoteLink.LinkCode.EncodeSelfContained(
+                                moved, freshPriv, identity.Fingerprint,
+                                DateTimeOffset.UtcNow.AddHours(1), server.Nat);
+                            _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkMyCode = fresh);
+                        }
+                        catch { }
+                    };
+                    server.StartNatKeepalive();
+
                     // (Two-way model: both people paste the other's code and
                     // click Connect, so both actively punch. No passive arming.)
 
@@ -8563,6 +8581,10 @@ namespace PadForge.Services
             catch { }
         }
 
+        /// <summary>This PC's real LAN address for the same-network punch
+        /// candidate. Only interfaces with a DEFAULT GATEWAY qualify: Hyper-V
+        /// and WSL virtual switches have none, and picking one advertised an
+        /// unreachable private address (observed in the field: 172.25.80.1).</summary>
         private static System.Net.IPEndPoint LocalLanEndpoint(int port)
         {
             try
@@ -8570,8 +8592,21 @@ namespace PadForge.Services
                 foreach (var ni in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
                 {
                     if (ni.OperationalStatus != System.Net.NetworkInformation.OperationalStatus.Up) continue;
-                    if (ni.NetworkInterfaceType == System.Net.NetworkInformation.NetworkInterfaceType.Loopback) continue;
-                    foreach (var ua in ni.GetIPProperties().UnicastAddresses)
+                    var type = ni.NetworkInterfaceType;
+                    if (type == System.Net.NetworkInformation.NetworkInterfaceType.Loopback
+                        || type == System.Net.NetworkInformation.NetworkInterfaceType.Tunnel) continue;
+
+                    var props = ni.GetIPProperties();
+                    bool hasGateway = false;
+                    foreach (var g in props.GatewayAddresses)
+                    {
+                        var ga = g?.Address;
+                        if (ga != null && ga.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork
+                            && !ga.Equals(System.Net.IPAddress.Any)) { hasGateway = true; break; }
+                    }
+                    if (!hasGateway) continue;
+
+                    foreach (var ua in props.UnicastAddresses)
                     {
                         if (ua.Address.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork) continue;
                         if (System.Net.IPAddress.IsLoopback(ua.Address)) continue;

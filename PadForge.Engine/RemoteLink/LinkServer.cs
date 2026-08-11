@@ -520,6 +520,25 @@ namespace PadForge.Engine.RemoteLink
             => await PunchConnectAsync(handshakeAsInitiator, candidates, sharedNonce, exposeLocal,
                 punchTimeout ?? TimeSpan.FromSeconds(30), ct).ConfigureAwait(false);
 
+        /// <summary>Every local IPv4 this machine holds, so the punch can
+        /// recognise its own endpoints (self-connect guard).</summary>
+        private static IEnumerable<IPAddress> LocalAddresses()
+        {
+            List<IPAddress> list = new();
+            try
+            {
+                foreach (var ni in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
+                {
+                    if (ni.OperationalStatus != System.Net.NetworkInformation.OperationalStatus.Up) continue;
+                    foreach (var ua in ni.GetIPProperties().UnicastAddresses)
+                        if (ua.Address.AddressFamily == AddressFamily.InterNetwork)
+                            list.Add(ua.Address);
+                }
+            }
+            catch { }
+            return list;
+        }
+
         private async Task<bool> PunchConnectAsync(
             bool isInitiator, IReadOnlyList<IPEndPoint> candidates, byte[] sharedNonce,
             IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, TimeSpan punchTimeout, CancellationToken ct)
@@ -551,11 +570,21 @@ namespace PadForge.Engine.RemoteLink
                 using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, _cts?.Token ?? CancellationToken.None, timeout.Token);
                 var expose = exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
 
+                // Our own endpoints, so the punch can never target or accept
+                // itself. Two machines behind ONE router share a public IP, so
+                // the peer's "public" candidate can be our own mapping; a
+                // hairpinning router would then deliver our probe back to us
+                // carrying the shared nonce and the punch would settle on self.
+                var self = new List<IPEndPoint>();
+                if (PublicEndpoint != null) self.Add(PublicEndpoint);
+                foreach (var lan in LocalAddresses()) self.Add(new IPEndPoint(lan, _port));
+
                 // Both sides spray the peer's candidates AND listen; the role
                 // only chooses who leads the handshake once the path is open.
                 var punched = await PunchedConnection.ConnectTwoWayAsync(
                     punchAdapter, controlAdapter, sharedNonce, candidates, isInitiator,
-                    _identity, _trust, expose, _caps, _approve, _nowUtc(), punchTimeout, linked.Token).ConfigureAwait(false);
+                    _identity, _trust, expose, _caps, _approve, _nowUtc(), punchTimeout, linked.Token,
+                    selfEndpoints: self).ConfigureAwait(false);
 
                 if (punched?.Connection == null)
                 {

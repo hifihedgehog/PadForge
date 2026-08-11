@@ -69,9 +69,10 @@ namespace PadForge.Engine.RemoteLink
             PeerIdentity identity, PeerTrustStore trust,
             IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] capabilities,
             Func<PendingPairing, PairingApproval> approve, string nowUtc,
-            TimeSpan punchTimeout, CancellationToken ct)
+            TimeSpan punchTimeout, CancellationToken ct,
+            IEnumerable<IPEndPoint> selfEndpoints = null)
             => RunAsync(handshakeAsInitiator, punchTransport, controlTransport, sharedNonce, candidates,
-                identity, trust, exposeLocal, capabilities, approve, nowUtc, punchTimeout, ct);
+                identity, trust, exposeLocal, capabilities, approve, nowUtc, punchTimeout, ct, selfEndpoints);
 
         private static async Task<PunchedResult> RunAsync(
             bool isInitiator, IPunchTransport punchTransport, IDatagramTransport controlTransport,
@@ -79,9 +80,10 @@ namespace PadForge.Engine.RemoteLink
             PeerIdentity identity, PeerTrustStore trust,
             IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] capabilities,
             Func<PendingPairing, PairingApproval> approve, string nowUtc,
-            TimeSpan punchTimeout, CancellationToken ct)
+            TimeSpan punchTimeout, CancellationToken ct,
+            IEnumerable<IPEndPoint> selfEndpoints = null)
         {
-            var puncher = new HolePuncher(punchTransport, sharedNonce);
+            var puncher = new HolePuncher(punchTransport, sharedNonce, sprayInterval: null, selfEndpoints: selfEndpoints);
             using var punchCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
             punchCts.CancelAfter(punchTimeout);
 

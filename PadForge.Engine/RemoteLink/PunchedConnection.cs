@@ -98,6 +98,26 @@ namespace PadForge.Engine.RemoteLink
             catch (OperationCanceledException) { return null; }
         }
 
+        /// <summary>Relay handshake on an EXPLICIT channel id (#294 code lane).
+        /// The code-derived lane fixes the channel from the code itself, so a
+        /// listening host can demux a call before it knows the caller.</summary>
+        public static async Task<LinkConnectionResult> ConnectRelayOnChannelAsync(
+            IDatagramTransport controlTransport, uint channelId, bool isInitiator,
+            PeerIdentity identity, PeerTrustStore trust,
+            IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] capabilities,
+            Func<PendingPairing, PairingApproval> approve, string nowUtc,
+            CancellationToken ct)
+        {
+            using var channel = new UdpControlChannel(controlTransport, channelId: channelId);
+            try
+            {
+                return isInitiator
+                    ? await LinkConnection.RunInitiatorAsync(channel, identity, trust, exposeLocal, capabilities, approve, nowUtc, ct).ConfigureAwait(false)
+                    : await LinkConnection.RunResponderAsync(channel, identity, trust, exposeLocal, capabilities, approve, nowUtc, ct).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) { return null; }
+        }
+
         private static async Task<PunchedResult> RunAsync(
             bool isInitiator, IPunchTransport punchTransport, IDatagramTransport controlTransport,
             byte[] sharedNonce, IReadOnlyList<IPEndPoint> candidates,

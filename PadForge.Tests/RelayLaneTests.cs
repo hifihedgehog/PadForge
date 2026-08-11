@@ -146,6 +146,61 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void CodeRelay_BothSidesDeriveTheSameRendezvous_FromTheCodeAlone()
+        {
+            // THE reliability fix (#294). Carrying the caller's relay key over
+            // the DHT meant the host had to FIND that record, and two machines
+            // on different ISPs query different DHT regions and need not
+            // converge. Deriving the rendezvous from the shared code removes
+            // the lookup entirely: same code in, same relay identity, host, and
+            // channel out, on both machines, every time.
+            const string code = "PF1-TEST-CODE-9999";
+            var host = CodeRendezvous.DeriveRelay(code);
+            var caller = CodeRendezvous.DeriveRelay(code);
+
+            Assert.NotNull(host);
+            Assert.Equal(host.PublicKey, caller.PublicKey);
+            Assert.Equal(host.Host, caller.Host);
+            Assert.Equal(host.Channel, caller.Channel);
+            Assert.Equal(32, host.PublicKey.Length);
+            Assert.Contains(host.Host, IrohRelayClient.DefaultRelays);
+            // The public key really is the one the private seed authenticates
+            // as, so the host can LISTEN at the address callers compute.
+            Assert.Equal(host.PublicKey, PeerCrypto.DeriveEd25519PublicKey(host.PrivateKey));
+        }
+
+        [Fact]
+        public void CodeRelay_NormalisesLikeTheDhtSlot()
+        {
+            // A retyped code with grouping dashes and different case must land
+            // on the identical rendezvous, exactly as DeriveSlot promises.
+            var a = CodeRendezvous.DeriveRelay("pf1testcode9999");
+            var b = CodeRendezvous.DeriveRelay("PF1-TEST-CODE-9999");
+            Assert.Equal(a.PublicKey, b.PublicKey);
+            Assert.Equal(a.Channel, b.Channel);
+            Assert.Equal(a.Host, b.Host);
+        }
+
+        [Fact]
+        public void CodeRelay_DifferentCodes_GetDifferentRendezvous()
+        {
+            var a = CodeRendezvous.DeriveRelay("PF1-AAAA-AAAA-AAAA");
+            var b = CodeRendezvous.DeriveRelay("PF1-BBBB-BBBB-BBBB");
+            Assert.NotEqual(Convert.ToHexString(a.PublicKey), Convert.ToHexString(b.PublicKey));
+            Assert.NotEqual(a.Channel, b.Channel);
+        }
+
+        [Fact]
+        public void CodeRelay_SeededClient_AuthenticatesAsTheDerivedIdentity()
+        {
+            // The host's relay client must present the code-derived key, or
+            // callers would address an identity nobody is listening on.
+            var rdv = CodeRendezvous.DeriveRelay("PF1-SEED-CHEK-0001");
+            using var client = new IrohRelayClient(rdv.PrivateKey);
+            Assert.Equal(rdv.PublicKey, client.PublicKey);
+        }
+
+        [Fact]
         public void Blake3DeriveKey_MatchesOfficialVector()
         {
             // Official BLAKE3 test vector (BLAKE3-team/BLAKE3

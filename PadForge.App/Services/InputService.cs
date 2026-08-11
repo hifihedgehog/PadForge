@@ -125,6 +125,7 @@ namespace PadForge.Services
         // fires every 5 s, so overlapping polls would pile up.
         private int _rdvPolling;
         private volatile string _myCodeForRendezvous;
+        private System.Threading.CancellationTokenSource _codeRelayCts;
         private string _lastHandledCall;
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, UserDevice ud, RemoteDeltaAccumulator acc, byte slot)> _remoteLinkExposed = new();
         private readonly object _remoteLinkExposedLock = new();
@@ -8527,6 +8528,10 @@ namespace PadForge.Services
                                 moved, freshPriv, identity.Fingerprint,
                                 DateTimeOffset.UtcNow.AddHours(1), server.Nat);
                             _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkMyCode = fresh);
+                            // The code changed, so the derived relay identity
+                            // changed: listen on the new one.
+                            _myCodeForRendezvous = fresh;
+                            StartCodeRelayListener(fresh, server);
                         }
                         catch { }
                     };
@@ -8535,6 +8540,15 @@ namespace PadForge.Services
                     // Host half of the code rendezvous: poll OUR OWN code slot
                     // so a caller's announcement reaches us and we punch back.
                     _myCodeForRendezvous = code;
+
+                    // Host half of the CODE-DERIVED RELAY lane (#294). Listen on
+                    // the relay as the identity our own code addresses, so a
+                    // caller reaches us with NO lookup at all. This is what makes
+                    // the internet path deterministic: the DHT-assisted lane
+                    // needed the two machines' DHT views to converge, and across
+                    // different ISPs they need not, which is why the punch-then-
+                    // relay attempt still failed in the field.
+                    StartCodeRelayListener(code, server);
 
                     // (Two-way model: both people paste the other's code and
                     // click Connect, so both actively punch. No passive arming.)
@@ -8647,6 +8661,37 @@ namespace PadForge.Services
                     $"RDV call published: acks={res.AckCount} endpoints=[{string.Join(",", mine)}]");
             }
             catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("RDV publish failed: " + ex.Message); }
+        }
+
+        /// <summary>Arms the code-derived relay listener (#294). The host
+        /// connects to the relay AS the identity its connection code addresses
+        /// and waits there. A caller derives the same key from the code it
+        /// dialled, so no lookup, no DHT convergence, and no NAT traversal is
+        /// involved on this lane. Restarted whenever the code changes.</summary>
+        private void StartCodeRelayListener(string code, LinkServer server)
+        {
+            try
+            {
+                var rdv = PadForge.Engine.RemoteLink.Dht.CodeRendezvous.DeriveRelay(code);
+                if (rdv == null || server == null) return;
+                try { _codeRelayCts?.Cancel(); _codeRelayCts?.Dispose(); } catch { }
+                var cts = new System.Threading.CancellationTokenSource();
+                _codeRelayCts = cts;
+                _ = Task.Run(async () =>
+                {
+                    // Reconnect if the relay drops, so a host left running all
+                    // day is still dialable.
+                    while (!cts.IsCancellationRequested)
+                    {
+                        try { await server.ListenOnCodeRelayAsync(rdv, cts.Token).ConfigureAwait(false); }
+                        catch (OperationCanceledException) { break; }
+                        catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("RELAY listen restart: " + ex.Message); }
+                        if (cts.IsCancellationRequested) break;
+                        try { await Task.Delay(5000, cts.Token).ConfigureAwait(false); } catch { break; }
+                    }
+                });
+            }
+            catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("RELAY listen arm failed: " + ex.Message); }
         }
 
         /// <summary>Host half of the code rendezvous (#294): poll the slot OUR
@@ -8825,6 +8870,8 @@ namespace PadForge.Services
             _rdvPollTimer = null;
             _dhtStore = null;
             _myCodeForRendezvous = null;
+            try { _codeRelayCts?.Cancel(); _codeRelayCts?.Dispose(); } catch { }
+            _codeRelayCts = null;
             _lastHandledCall = null;
             try { _internetService?.Dispose(); } catch { }
             _internetService = null;
@@ -9048,13 +9095,16 @@ namespace PadForge.Services
 
                 bool ok = await server.ConnectByPunchAsync(candidates, nonce, asInitiator, expose,
                     punchTimeout: TimeSpan.FromSeconds(20));
-                if (!ok && relayHost != null)
+                if (!ok)
                 {
-                    // Punch window closed with no path: wait on our relay for
-                    // the host's HELLO (it reads our key from the rendezvous
-                    // record) and handshake through the relay.
-                    ok = await server.ConnectByRelayAsync(relayHost, null, nonce, asInitiator, expose,
-                        timeout: TimeSpan.FromSeconds(60));
+                    // No direct path. Dial the relay identity the HOST'S CODE
+                    // derives. Deterministic: both sides compute it from the
+                    // same code, so nothing has to be discovered, published, or
+                    // converged on. This is the lane that makes the internet
+                    // case work regardless of ISP or NAT type.
+                    var rdv = PadForge.Engine.RemoteLink.Dht.CodeRendezvous.DeriveRelay(entry);
+                    if (rdv != null)
+                        ok = await server.ConnectByCodeRelayAsync(rdv, expose, TimeSpan.FromSeconds(45));
                 }
                 if (!ok)
                     _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusPunchFailed);

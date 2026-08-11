@@ -45,6 +45,55 @@ namespace PadForge.Engine.RemoteLink.Dht
         private static readonly byte[] SeedInfo = Encoding.ASCII.GetBytes("PadForge/code-rdv/seed/v1");
         private static readonly byte[] SaltInfo = Encoding.ASCII.GetBytes("PadForge/code-rdv/salt/v1");
         private static readonly byte[] AeadInfo = Encoding.ASCII.GetBytes("PadForge/code-rdv/aead/v1");
+        private static readonly byte[] RelaySeedInfo = Encoding.ASCII.GetBytes("PadForge/code-rdv/relay-seed/v1");
+        private static readonly byte[] RelayHostInfo = Encoding.ASCII.GetBytes("PadForge/code-rdv/relay-host/v1");
+        private static readonly byte[] RelayChanInfo = Encoding.ASCII.GetBytes("PadForge/code-rdv/relay-chan/v1");
+
+        /// <summary>The relay rendezvous a code addresses, derived with NO
+        /// distributed lookup (#294). This is the reliability fix: carrying the
+        /// caller's relay key over the DHT meant the host had to FIND that
+        /// record, and two machines on different networks (Verizon vs Comcast)
+        /// query different DHT regions and need not converge. Deriving the
+        /// rendezvous straight from the shared code removes the lookup: the
+        /// host listens on the relay at <see cref="PublicKey"/>, and the caller
+        /// computes the SAME key from the code it dialled and connects to it.
+        /// Both pick the same relay host and control channel the same way, so
+        /// the relay lane works whenever the relay itself is reachable.</summary>
+        public sealed class RelayRendezvous
+        {
+            /// <summary>Ed25519 identity the HOST authenticates to the relay as,
+            /// and the CALLER addresses. Derived from the code, so both agree.</summary>
+            public byte[] PublicKey { get; init; }
+            public byte[] PrivateKey { get; init; }
+            /// <summary>The relay host both peers connect to (chosen from the
+            /// code so they land on the same server).</summary>
+            public string Host { get; init; }
+            /// <summary>The reliable-channel id the handshake ARQ rides. Fixed
+            /// per code (not per punch nonce) so the listening host can demux
+            /// it before it knows who is calling.</summary>
+            public uint Channel { get; init; }
+        }
+
+        /// <summary>Derives the relay rendezvous both peers compute from the
+        /// same code. Same normalisation as <see cref="DeriveSlot"/>.</summary>
+        public static RelayRendezvous DeriveRelay(string code)
+        {
+            string norm = LinkCode.Normalize(code);
+            if (string.IsNullOrEmpty(norm)) return null;
+            var ikm = Encoding.ASCII.GetBytes(norm);
+            var seed = PeerCrypto.DeriveKey(ikm, salt: null, RelaySeedInfo, 32);
+            var hostSel = PeerCrypto.DeriveKey(ikm, salt: null, RelayHostInfo, 4);
+            var chanBytes = PeerCrypto.DeriveKey(ikm, salt: null, RelayChanInfo, 4);
+            uint hostIdx = BinaryPrimitives.ReadUInt32BigEndian(hostSel)
+                           % (uint)IrohRelayClient.DefaultRelays.Length;
+            return new RelayRendezvous
+            {
+                PrivateKey = seed,
+                PublicKey = PeerCrypto.DeriveEd25519PublicKey(seed),
+                Host = IrohRelayClient.DefaultRelays[hostIdx],
+                Channel = BinaryPrimitives.ReadUInt32BigEndian(chanBytes),
+            };
+        }
 
         private const byte Version = 1;
         private const int NonceLen = 12;

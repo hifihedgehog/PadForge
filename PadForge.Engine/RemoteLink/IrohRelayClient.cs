@@ -97,11 +97,24 @@ namespace PadForge.Engine.RemoteLink
         /// <summary>Raised when the relay connection drops.</summary>
         public event Action Disconnected;
 
+        /// <summary>Random ephemeral relay identity (the caller side, which
+        /// only needs to be addressable for the life of one call).</summary>
         public IrohRelayClient()
         {
             var kp = PeerCrypto.GenerateEd25519KeyPair();
             PublicKey = kp.PublicKey;
             _privateKey = kp.PrivateKey;
+        }
+
+        /// <summary>Relay identity derived from a 32-byte seed, so a HOST can
+        /// listen at the key its connection code addresses (#294). The caller
+        /// derives the same public key from the code and reaches the host with
+        /// no lookup of any kind.</summary>
+        public IrohRelayClient(byte[] seed)
+        {
+            if (seed is not { Length: 32 }) throw new ArgumentException("seed must be 32 bytes", nameof(seed));
+            _privateKey = (byte[])seed.Clone();
+            PublicKey = PeerCrypto.DeriveEd25519PublicKey(_privateKey);
         }
 
         /// <summary>blake3::derive_key per the iroh handshake. Verified against

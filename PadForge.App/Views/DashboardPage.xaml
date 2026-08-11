@@ -1777,6 +1777,19 @@
                                    FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
 
+                    <!-- Network verdict (#294): a mobile hotspot / CGNAT can't be
+                         punched, so say so plainly instead of a late generic failure. -->
+                    <Border Visibility="{Binding HasRemoteLinkNatWarning, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Background="{DynamicResource SystemFillColorCautionBackgroundBrush}"
+                            CornerRadius="6" Padding="10,8" Margin="0,0,0,12">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Top"
+                                       Foreground="{DynamicResource SystemFillColorCautionBrush}" Margin="0,1,8,0"/>
+                            <TextBlock Text="{Binding RemoteLinkNatWarning}" TextWrapping="Wrap"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" MaxWidth="360"/>
+                        </StackPanel>
+                    </Border>
+
                     <!-- Connect by address OR code (fallback when discovery can't see the PC) -->
                     <TextBlock Text="{Binding Dashboard_RemoteLinkConnect, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>

@@ -3071,4 +3071,6 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Não foi possível alcançar o par diretamente. Tente Conectar por endereço via VPN.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Código deste PC</value></data>
   <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Troque códigos com a outra pessoa: cole o dela no seu campo de conexão enquanto ela cola o seu, então ambos clicam em Conectar. Isso abre um caminho direto pela internet, sem VPN. O código é atualizado enquanto o Remote Link está ativo.</value></data>
+  <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Esta rede não permite conexões diretas (parece um ponto de acesso móvel ou NAT de operadora). Use uma VPN como o Tailscale, ou conecte-se por banda larga doméstica.</value></data>
+  <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Não foi possível encontrar o endereço público deste PC (a rede pode bloquear o tráfego necessário). Conexões diretas não funcionam aqui. Use uma VPN, ou Conectar por endereço na mesma rede.</value></data>
 </root>

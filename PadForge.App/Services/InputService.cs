@@ -121,6 +121,9 @@ namespace PadForge.Services
         // not trigger a punch on every poll.
         private PadForge.Engine.RemoteLink.Dht.DhtPresenceStore _dhtStore;
         private System.Threading.Timer _rdvPollTimer;
+        // A rendezvous poll takes ~14 s against the live DHT while the timer
+        // fires every 5 s, so overlapping polls would pile up.
+        private int _rdvPolling;
         private volatile string _myCodeForRendezvous;
         private string _lastHandledCall;
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, UserDevice ud, RemoteDeltaAccumulator acc, byte slot)> _remoteLinkExposed = new();
@@ -8650,6 +8653,7 @@ namespace PadForge.Services
         /// can never open our router.</summary>
         private async Task PollCodeRendezvousAsync()
         {
+            if (System.Threading.Interlocked.Exchange(ref _rdvPolling, 1) != 0) return;
             try
             {
                 var store = _dhtStore;
@@ -8685,6 +8689,7 @@ namespace PadForge.Services
                     punchTimeout: TimeSpan.FromSeconds(45)).ConfigureAwait(false);
             }
             catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("RDV poll failed: " + ex.Message); }
+            finally { System.Threading.Interlocked.Exchange(ref _rdvPolling, 0); }
         }
 
         private static System.Net.IPEndPoint LocalLanEndpoint(int port)

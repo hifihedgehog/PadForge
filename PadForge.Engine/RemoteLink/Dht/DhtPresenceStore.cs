@@ -39,9 +39,9 @@ namespace PadForge.Engine.RemoteLink.Dht
     public sealed class DhtPresenceStore : IPresenceStore, IDisposable
     {
         private const int K = 8;              // closest-node set size (Kademlia)
-        private const int Alpha = 3;          // lookup parallelism
-        private const int MaxRounds = 12;     // lookup convergence bound
-        private static readonly TimeSpan RpcTimeout = TimeSpan.FromSeconds(2);
+        private const int Alpha = 8;          // lookup parallelism
+        private const int MaxRounds = 20;     // lookup convergence bound
+        private static readonly TimeSpan RpcTimeout = TimeSpan.FromSeconds(3);
 
         private readonly IKrpcTransport _transport;
         private readonly IReadOnlyList<IPEndPoint> _bootstrap;
@@ -115,48 +115,120 @@ namespace PadForge.Engine.RemoteLink.Dht
             public byte[] Token;
             public bool Queried;
             public Krpc.Response Stored; // the get response, if it carried an item
+            /// <summary>A bootstrap router: a springboard with an UNKNOWN id,
+            /// not a storage candidate. Measured behaviour that forced this
+            /// distinction: of four routers, two never answer and one returns
+            /// the SAME node eight times, so treating them as ordinary contacts
+            /// starved the lookup before it reached any node that stores
+            /// (publish acks were 0 against the live network).</summary>
+            public bool IsSeed;
         }
 
         /// <summary>Iterative Kademlia lookup toward <paramref name="target"/>
         /// using <c>get</c> (so we collect tokens and any stored value along the
         /// way). Returns the K closest responders.</summary>
+        /// <summary>Iterative lookup with retry. The FIRST lookup after start-up
+        /// routinely converges on nothing (empty routing table, dead bootstrap
+        /// routers) and the retry gets through once the frontier warms.
+        /// Centralised here so publish, fetch, and both presence paths are
+        /// robust without each repeating the loop. Returns as soon as a lookup
+        /// reaches real, token-bearing nodes (or one carrying a stored value).</summary>
         private async Task<List<Contact>> LookupAsync(byte[] target, CancellationToken ct)
         {
+            List<Contact> best = new();
+            for (int attempt = 0; attempt < 3 && !ct.IsCancellationRequested; attempt++)
+            {
+                var result = await LookupOnceAsync(target, ct).ConfigureAwait(false);
+                if (result.Count > best.Count) best = result;
+                bool healthy = result.Any(c => c.Token != null) || result.Any(c => c.Stored != null);
+                if (healthy) return result;
+            }
+            return best;
+        }
+
+        private async Task<List<Contact>> LookupOnceAsync(byte[] target, CancellationToken ct)
+        {
             var shortlist = new List<Contact>();
-            var seen = new HashSet<string>();
+            var seen = new HashSet<string>(StringComparer.Ordinal);
             var gate = new object();
 
-            void Consider(DhtNode n)
+            void Consider(DhtNode n, bool isSeed = false)
             {
-                if (n?.Id == null || n.Id.Length != 20) return;
+                if (n?.Endpoint == null) return;
+                if (!isSeed && (n.Id == null || n.Id.Length != 20)) return;
                 string key = n.Endpoint.ToString();
-                // The Alpha parallel queries each feed newly-learned nodes here,
-                // so the shared shortlist/seen must be mutated under a lock.
+                // The parallel queries each feed newly-learned nodes here, so
+                // the shared shortlist/seen must be mutated under a lock.
                 lock (gate)
                 {
                     if (!seen.Add(key)) return;
-                    shortlist.Add(new Contact { Node = n });
+                    shortlist.Add(new Contact { Node = n, IsSeed = isSeed });
                 }
             }
 
-            // Seed from bootstrap (unknown ids: use a random id so distance
-            // sorting still functions; they're only a springboard).
+            // Seed from bootstrap. Their ids are UNKNOWN, so they are ordered
+            // LAST rather than pretending a random id is a real distance: a
+            // fake id can otherwise sort a non-storing router ahead of genuine
+            // near-target nodes.
             foreach (var ep in _bootstrap)
-                Consider(new DhtNode { Id = RandomNodeId(), Endpoint = ep });
+                Consider(new DhtNode { Id = RandomNodeId(), Endpoint = ep }, isSeed: true);
+
+            int Order(Contact a, Contact b)
+            {
+                if (a.IsSeed != b.IsSeed) return a.IsSeed ? 1 : -1;
+                if (a.IsSeed) return 0;
+                return Krpc.XorCompare(a.Node.Id, b.Node.Id, target);
+            }
 
             for (int round = 0; round < MaxRounds && !ct.IsCancellationRequested; round++)
             {
-                shortlist.Sort((a, b) => Krpc.XorCompare(a.Node.Id, b.Node.Id, target));
-                var batch = shortlist.Where(c => !c.Queried).Take(Alpha).ToList();
-                if (batch.Count == 0) break;
+                List<Contact> batch;
+                lock (gate)
+                {
+                    shortlist.Sort(Order);
+                    if (round == 0)
+                    {
+                        // Round 0 queries EVERY seed, never an Alpha-sized
+                        // slice. Bootstrap routers are routinely dead
+                        // (measured: 2 of 4), so sampling three of them can
+                        // return nothing and the lookup dies with an empty
+                        // frontier.
+                        batch = shortlist.Where(c => !c.Queried).ToList();
+                    }
+                    else
+                    {
+                        // Converge like Kademlia: keep querying the unqueried
+                        // members of the K CLOSEST known nodes until they are
+                        // all queried. Stopping merely because we hold enough
+                        // write tokens (the earlier shape) published to
+                        // whatever answered first rather than to the nodes
+                        // nearest the target, so a reader converging correctly
+                        // looked somewhere else and found nothing. Measured:
+                        // publish reported 8 acks and the fetch still returned
+                        // NULL.
+                        var kClosest = shortlist.Where(c => !c.IsSeed).Take(K).ToList();
+                        batch = kClosest.Where(c => !c.Queried).Take(Alpha).ToList();
+                    }
+                }
+                if (batch.Count == 0) break; // converged
+                foreach (var c in batch) c.Queried = true;
 
                 var tasks = batch.Select(async c =>
                 {
-                    c.Queried = true;
                     var txn = NextTxn();
                     var resp = await RpcAsync(Krpc.Get(_nodeId, target, txn), txn, c.Node.Endpoint, ct).ConfigureAwait(false);
                     if (resp is { IsResponse: true })
                     {
+                        // A seed answered, so its REAL id is now known: promote
+                        // it to an ordinary contact instead of discarding it.
+                        // Excluding seeds outright would drop any bootstrap
+                        // node that genuinely stores (and in a small network
+                        // the seeds are the only nodes there are).
+                        if (c.IsSeed && resp.NodeId is { Length: 20 })
+                        {
+                            c.Node = new DhtNode { Id = resp.NodeId, Endpoint = c.Node.Endpoint };
+                            c.IsSeed = false;
+                        }
                         c.Token = resp.Token;
                         if (resp.Value != null && resp.PublicKey != null) c.Stored = resp;
                         if (resp.Nodes != null) foreach (var n in resp.Nodes) Consider(n);
@@ -165,8 +237,16 @@ namespace PadForge.Engine.RemoteLink.Dht
                 await Task.WhenAll(tasks).ConfigureAwait(false);
             }
 
-            shortlist.Sort((a, b) => Krpc.XorCompare(a.Node.Id, b.Node.Id, target));
-            return shortlist.Where(c => c.Queried).Take(K).ToList();
+            lock (gate)
+            {
+                shortlist.Sort(Order);
+                // The converged neighbourhood: the closest nodes we actually
+                // reached, nearest first. Publish writes to the token holders
+                // among them and a reader scans the same set, so both sides
+                // agree on WHERE the value lives. Anything still flagged a seed
+                // never answered, so it is dead weight and is dropped.
+                return shortlist.Where(c => c.Queried && !c.IsSeed).ToList();
+            }
         }
 
         public async Task<PublishResult> PublishAsync(
@@ -182,7 +262,7 @@ namespace PadForge.Engine.RemoteLink.Dht
             var closest = await LookupAsync(target, ct).ConfigureAwait(false);
 
             // PUT to every closest node that gave us a token.
-            var puts = closest.Where(c => c.Token != null).Select(async c =>
+            var puts = closest.Where(c => c.Token != null).Take(K).Select(async c =>
             {
                 var txn = NextTxn();
                 var dg = Krpc.PutMutable(_nodeId, publisherPublicKey, value, seq, sig, c.Token, salt, txn);
@@ -203,8 +283,11 @@ namespace PadForge.Engine.RemoteLink.Dht
         {
             var target = Bep44Record.ComputeTarget(publicKey, salt);
             var sig = Bep44Record.Sign(privateKey, value, seq, salt);
+
+            // The lookup retries internally past a cold start, so one pass over
+            // the K closest token holders is enough.
             var closest = await LookupAsync(target, ct).ConfigureAwait(false);
-            var puts = closest.Where(c => c.Token != null).Select(async c =>
+            var puts = closest.Where(c => c.Token != null).Take(K).Select(async c =>
             {
                 var txn = NextTxn();
                 var dg = Krpc.PutMutable(_nodeId, publicKey, value, seq, sig, c.Token, salt, txn);
@@ -223,8 +306,8 @@ namespace PadForge.Engine.RemoteLink.Dht
             byte[] publicKey, byte[] salt, CancellationToken ct)
         {
             var target = Bep44Record.ComputeTarget(publicKey, salt);
-            var closest = await LookupAsync(target, ct).ConfigureAwait(false);
             byte[] best = null; long bestSeq = 0;
+            var closest = await LookupAsync(target, ct).ConfigureAwait(false);
             foreach (var c in closest)
             {
                 var item = c.Stored;

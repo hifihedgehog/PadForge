@@ -473,6 +473,42 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void Punch_ProbeCarriesSenderPrefix_SoAColdPeerCanDeriveTheNonce()
+        {
+            // FIELD FAILURE 2026-08-11: our probes reached a peer that was
+            // pingable at 5 ms, and it never answered, because it only responded
+            // while ITSELF punching. The probe now carries the dialer's
+            // fingerprint prefix, which is exactly what an idle host needs to
+            // derive the shared nonce and answer unprompted.
+            var fpA = new byte[32]; for (int i = 0; i < 32; i++) fpA[i] = (byte)(i + 1);
+            var fpB = new byte[32]; for (int i = 0; i < 32; i++) fpB[i] = (byte)(90 - i);
+            var nonce = LinkCode.TwoWayPunchNonce(fpA, fpB[..8]);
+
+            var nat = new SimNat();
+            var epA = new IPEndPoint(IPAddress.Parse("10.19.90.40"), 27500);
+            var epB = new IPEndPoint(IPAddress.Parse("10.19.90.46"), 27500);
+            byte[] captured = null;
+            var tA = nat.Endpoint(epA);
+            var tB = nat.Endpoint(epB);
+            tB.OnDatagram = (from, dg) => captured ??= dg;
+
+            var pa = new HolePuncher(tA, nonce, TimeSpan.FromMilliseconds(10),
+                selfEndpoints: new[] { epA }, selfFingerprint: fpA);
+            using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(300));
+            pa.PunchAsync(new[] { epB }, cts.Token).GetAwaiter().GetResult();
+
+            Assert.NotNull(captured);
+            Assert.True(HolePuncher.TryParseProbe(captured, out byte tag, out var senderPrefix, out var gotNonce));
+            Assert.Equal(HolePuncher.TagPing, tag);
+            Assert.Equal(fpA[..8], senderPrefix);      // the dialer identified itself
+            // A cold receiver derives the same nonce from its own fingerprint
+            // plus that prefix, with nothing else known in advance.
+            Assert.Equal(LinkCode.TwoWayPunchNonce(fpB, senderPrefix), gotNonce);
+            Assert.True(LinkCode.IsHandshakeInitiator(fpA, fpB[..8])
+                     != LinkCode.IsHandshakeInitiator(fpB, fpA[..8])); // complementary roles
+        }
+
+        [Fact]
         public void Punch_IsPrivateAddress_ClassifiesRfc1918()
         {
             Assert.True(HolePuncher.IsPrivateAddress(IPAddress.Parse("10.19.90.40")));

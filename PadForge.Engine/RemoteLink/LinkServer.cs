@@ -520,6 +520,65 @@ namespace PadForge.Engine.RemoteLink
             => await PunchConnectAsync(handshakeAsInitiator, candidates, sharedNonce, exposeLocal,
                 punchTimeout ?? TimeSpan.FromSeconds(30), ct).ConfigureAwait(false);
 
+        // Nonces we are already auto-responding to, so a spray (many probes per
+        // second) starts exactly one responder session.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> _autoResponding = new();
+
+        /// <summary>Capability-derived nonces for paired peers, so an unsolicited
+        /// DHT-lane dial is recognised too. Set by the host each maintenance
+        /// pass; empty is fine (the code lane needs no registration).</summary>
+        public void SetKnownPunchNonces(IEnumerable<byte[]> nonces)
+        {
+            _knownNonces.Clear();
+            if (nonces == null) return;
+            foreach (var n in nonces)
+                if (n != null && n.Length == HolePuncher.NonceLen)
+                    _knownNonces[Convert.ToHexString(n)] = 0;
+        }
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> _knownNonces = new();
+
+        /// <summary>
+        /// Answers an unsolicited punch probe (#294). The probe carries the
+        /// DIALER's fingerprint prefix, so we can derive the very nonce the two
+        /// of us would share and verify it. On a match we start a responder
+        /// punch/handshake aimed at the probe's SOURCE endpoint, which is
+        /// authoritative (better than any advertised candidate). This is what
+        /// makes the flow one-sided: the host just leaves Remote Link running.
+        /// </summary>
+        private void TryAutoRespondToPunch(IPEndPoint from, byte[] dg)
+        {
+            try
+            {
+                if (!HolePuncher.TryParseProbe(dg, out _, out var senderPrefix, out var nonce)) return;
+                if (_identity?.Fingerprint == null) return;
+
+                // Either the nonce two peers derive from each other's codes, or
+                // a paired peer's capability nonce (the DHT lane).
+                var expected = LinkCode.TwoWayPunchNonce(_identity.Fingerprint, senderPrefix);
+                bool match = System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(expected, nonce)
+                             || _knownNonces.ContainsKey(Convert.ToHexString(nonce));
+                if (!match) return;
+
+                string key = Convert.ToHexString(nonce);
+                if (!_autoResponding.TryAdd(key, 0)) return; // one session per nonce
+
+                bool asInitiator = LinkCode.IsHandshakeInitiator(_identity.Fingerprint, senderPrefix);
+                SdlDiagLog.WriteLine($"PUNCH auto-respond: dial from {from}, role={(asInitiator ? "init" : "resp")}");
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        var expose = ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
+                        await PunchConnectAsync(asInitiator, new[] { from }, nonce, expose,
+                            TimeSpan.FromSeconds(20), _cts?.Token ?? CancellationToken.None).ConfigureAwait(false);
+                    }
+                    catch { }
+                    finally { _autoResponding.TryRemove(key, out _); }
+                });
+            }
+            catch { }
+        }
+
         /// <summary>Every local IPv4 this machine holds, so the punch can
         /// recognise its own endpoints (self-connect guard).</summary>
         private static IEnumerable<IPAddress> LocalAddresses()
@@ -865,15 +924,26 @@ namespace PadForge.Engine.RemoteLink
             // internet connect is active (the sink maps are empty otherwise), so
             // the LAN/TCP data path is unchanged. A sealed LinkSession frame's
             // first byte is (type<<4)|epoch with type 1..7, never 0xC0-0xC3.
-            if (!_punchSinks.IsEmpty || !_controlSinks.IsEmpty)
             {
                 byte tag0 = datagram.Length > 0 ? datagram[0] : (byte)0;
                 if (tag0 == 0xC2 || tag0 == 0xC3) // punch ping/pong
                 {
                     var dg = datagram.ToArray();
                     foreach (var sink in _punchSinks.Values) sink(from, dg);
+                    // ALWAYS-ON RESPONDER: a ping addressed to us with a nonce
+                    // we can derive is a peer dialing our code. Answer it even
+                    // with no punch in flight, so only the joiner has to click
+                    // Connect. Without this the host had to click at the same
+                    // moment or every probe was silently dropped (field failure
+                    // 2026-08-11: probes reached a reachable peer that never
+                    // replied because it was not punching).
+                    if (tag0 == 0xC2) TryAutoRespondToPunch(from, dg);
                     return;
                 }
+            }
+            if (!_punchSinks.IsEmpty || !_controlSinks.IsEmpty)
+            {
+                byte tag0 = datagram.Length > 0 ? datagram[0] : (byte)0;
                 if ((tag0 == 0xC0 || tag0 == 0xC1) && datagram.Length >= 9) // control data/ack
                 {
                     uint chan = System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(datagram.Slice(1));

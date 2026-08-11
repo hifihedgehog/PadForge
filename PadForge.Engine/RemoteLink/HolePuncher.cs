@@ -37,14 +37,22 @@ namespace PadForge.Engine.RemoteLink
     /// </summary>
     public sealed class HolePuncher
     {
-        private const byte TagPing = 0xC2;
-        private const byte TagPong = 0xC3;
-        private const int NonceLen = 16;
+        public const byte TagPing = 0xC2;
+        public const byte TagPong = 0xC3;
+        public const int NonceLen = 16;
+        /// <summary>Bytes of the sender's fingerprint carried in every probe so
+        /// an UNSOLICITED receiver can derive the shared nonce and answer. This
+        /// is what lets the host auto-respond without the user clicking
+        /// Connect: the dialer's identity prefix is in the packet.</summary>
+        public const int PrefixLen = 8;
+        /// <summary>tag + sender prefix + nonce.</summary>
+        public const int ProbeLen = 1 + PrefixLen + NonceLen;
 
         private readonly IPunchTransport _transport;
         private readonly byte[] _nonce;
         private readonly TimeSpan _sprayInterval;
         private readonly HashSet<string> _selfEndpoints = new(StringComparer.Ordinal);
+        private readonly byte[] _selfPrefix = new byte[PrefixLen];
 
         private readonly object _lock = new();
         private IPEndPoint _won;
@@ -58,7 +66,7 @@ namespace PadForge.Engine.RemoteLink
         /// punch settles on ourselves and handshakes into a dead end. This set
         /// is what makes that impossible.</param>
         public HolePuncher(IPunchTransport transport, byte[] sharedNonce, TimeSpan? sprayInterval = null,
-            IEnumerable<IPEndPoint> selfEndpoints = null)
+            IEnumerable<IPEndPoint> selfEndpoints = null, byte[] selfFingerprint = null)
         {
             _transport = transport ?? throw new ArgumentNullException(nameof(transport));
             if (sharedNonce == null || sharedNonce.Length != NonceLen)
@@ -68,6 +76,8 @@ namespace PadForge.Engine.RemoteLink
             if (selfEndpoints != null)
                 foreach (var ep in selfEndpoints)
                     if (ep != null) _selfEndpoints.Add(ep.ToString());
+            if (selfFingerprint != null)
+                Array.Copy(selfFingerprint, 0, _selfPrefix, 0, Math.Min(PrefixLen, selfFingerprint.Length));
             _transport.OnDatagram = OnDatagram;
         }
 
@@ -134,9 +144,7 @@ namespace PadForge.Engine.RemoteLink
             foreach (var ep in candidates) if (!IsSelf(ep) && !IsPrivateAddress(ep.Address)) ordered.Add(ep);
             candidates = ordered;
 
-            var ping = new byte[1 + NonceLen];
-            ping[0] = TagPing;
-            _nonce.CopyTo(ping, 1);
+            var ping = BuildProbe(TagPing);
 
             using var reg = ct.Register(() => winTcs.TrySetResult(null));
             var sprayer = Task.Run(async () =>
@@ -162,9 +170,32 @@ namespace PadForge.Engine.RemoteLink
             return winner;
         }
 
+        private byte[] BuildProbe(byte tag)
+        {
+            var p = new byte[ProbeLen];
+            p[0] = tag;
+            _selfPrefix.CopyTo(p, 1);
+            _nonce.CopyTo(p, 1 + PrefixLen);
+            return p;
+        }
+
+        /// <summary>Splits a probe datagram into (tag, sender fingerprint
+        /// prefix, nonce). False when it is not a well-formed probe. Used by the
+        /// always-on responder to identify an unsolicited dial.</summary>
+        public static bool TryParseProbe(byte[] dg, out byte tag, out byte[] senderPrefix, out byte[] nonce)
+        {
+            tag = 0; senderPrefix = null; nonce = null;
+            if (dg == null || dg.Length != ProbeLen) return false;
+            if (dg[0] != TagPing && dg[0] != TagPong) return false;
+            tag = dg[0];
+            senderPrefix = dg.AsSpan(1, PrefixLen).ToArray();
+            nonce = dg.AsSpan(1 + PrefixLen, NonceLen).ToArray();
+            return true;
+        }
+
         private void OnDatagram(IPEndPoint from, byte[] dg)
         {
-            if (dg == null || dg.Length != 1 + NonceLen) return;
+            if (dg == null || dg.Length != ProbeLen) return;
             // Our own probe hairpinned back by the router. It carries the right
             // nonce, so without this it would "win" the punch and we would
             // handshake with ourselves.
@@ -174,15 +205,13 @@ namespace PadForge.Engine.RemoteLink
             // Constant-time nonce compare so a probe with the wrong nonce (a
             // stray or a different pairing racing on the same socket) is
             // rejected before it can settle the punch.
-            if (!CryptographicOperations.FixedTimeEquals(dg.AsSpan(1, NonceLen), _nonce)) return;
+            if (!CryptographicOperations.FixedTimeEquals(dg.AsSpan(1 + PrefixLen, NonceLen), _nonce)) return;
 
             if (tag == TagPing)
             {
                 // Answer every valid ping with a pong to its source, so the peer
                 // learns the path from its side too. Fire-and-forget.
-                var pong = new byte[1 + NonceLen];
-                pong[0] = TagPong;
-                _nonce.CopyTo(pong, 1);
+                var pong = BuildProbe(TagPong);
                 _ = _transport.SendToAsync(pong, from, CancellationToken.None);
             }
 

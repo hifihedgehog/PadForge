@@ -83,7 +83,10 @@ namespace PadForge.Engine.RemoteLink
             TimeSpan punchTimeout, CancellationToken ct,
             IEnumerable<IPEndPoint> selfEndpoints = null)
         {
-            var puncher = new HolePuncher(punchTransport, sharedNonce, sprayInterval: null, selfEndpoints: selfEndpoints);
+            // Probes carry OUR fingerprint prefix so an unsolicited peer can
+            // derive the shared nonce and auto-answer without clicking Connect.
+            var puncher = new HolePuncher(punchTransport, sharedNonce, sprayInterval: null,
+                selfEndpoints: selfEndpoints, selfFingerprint: identity?.Fingerprint);
             using var punchCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
             punchCts.CancelAfter(punchTimeout);
 

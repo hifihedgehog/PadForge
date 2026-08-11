@@ -62,6 +62,11 @@ namespace PadForge.Engine.RemoteLink.Dht
             public IReadOnlyList<Candidate> Candidates { get; init; }
             public DateTimeOffset IssuedAt { get; init; }
             public DateTimeOffset Expiry { get; init; }
+            /// <summary>The publisher's NAT kind, so a reconnecting peer knows
+            /// whether to predict ports for a symmetric CGNAT.</summary>
+            public NatKind NatKind { get; init; }
+            /// <summary>Sequential-symmetric port step (0 otherwise).</summary>
+            public int NatDelta { get; init; }
             public bool IsExpired(DateTimeOffset now) => now > Expiry;
         }
 
@@ -148,6 +153,8 @@ namespace PadForge.Engine.RemoteLink.Dht
             ms.WriteByte(Version);
             var issued = new byte[8]; BinaryPrimitives.WriteInt64BigEndian(issued, p.IssuedAt.ToUnixTimeSeconds()); ms.Write(issued);
             var exp = new byte[8]; BinaryPrimitives.WriteInt64BigEndian(exp, p.Expiry.ToUnixTimeSeconds()); ms.Write(exp);
+            ms.WriteByte((byte)p.NatKind);
+            ms.WriteByte((byte)Math.Clamp(p.NatDelta, 0, 255));
             byte count = (byte)Math.Min(p.Candidates?.Count ?? 0, 255);
             ms.WriteByte(count);
             for (int i = 0; i < count; i++)
@@ -168,9 +175,11 @@ namespace PadForge.Engine.RemoteLink.Dht
             try
             {
                 int pos = 0;
-                if (data.Length < 1 + 8 + 8 + 1 || data[pos++] != Version) return false;
+                if (data.Length < 1 + 8 + 8 + 2 + 1 || data[pos++] != Version) return false;
                 long issued = BinaryPrimitives.ReadInt64BigEndian(data.AsSpan(pos)); pos += 8;
                 long expiry = BinaryPrimitives.ReadInt64BigEndian(data.AsSpan(pos)); pos += 8;
+                var natKind = (NatKind)data[pos++];
+                int natDelta = data[pos++];
                 int count = data[pos++];
                 var list = new List<Candidate>(count);
                 for (int i = 0; i < count; i++)
@@ -188,6 +197,8 @@ namespace PadForge.Engine.RemoteLink.Dht
                     Candidates = list,
                     IssuedAt = DateTimeOffset.FromUnixTimeSeconds(issued),
                     Expiry = DateTimeOffset.FromUnixTimeSeconds(expiry),
+                    NatKind = natKind,
+                    NatDelta = natDelta,
                 };
                 return true;
             }

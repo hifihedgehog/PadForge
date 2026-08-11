@@ -38,6 +38,7 @@ namespace PadForge.Engine.RemoteLink.Dht
         private readonly byte[] _selfPublicKey;
         private readonly byte[] _selfPrivateKey;
         private readonly Func<IReadOnlyList<PresenceRecord.Candidate>> _localCandidates;
+        private readonly Func<NatProfile> _localNat;
         // (peerKey, endpoints, nonce, handshakeAsInitiator, ct) -> connected?
         private readonly Func<byte[], IReadOnlyList<IPEndPoint>, byte[], bool, CancellationToken, Task<bool>> _connectByPunch;
         private readonly byte[] _selfFingerprint;
@@ -47,6 +48,7 @@ namespace PadForge.Engine.RemoteLink.Dht
             PresenceService presence, byte[] selfPublicKey, byte[] selfPrivateKey,
             Func<IReadOnlyList<PresenceRecord.Candidate>> localCandidates,
             Func<byte[], IReadOnlyList<IPEndPoint>, byte[], bool, CancellationToken, Task<bool>> connectByPunch,
+            Func<NatProfile> localNat = null,
             Action<string> log = null)
         {
             _presence = presence ?? throw new ArgumentNullException(nameof(presence));
@@ -54,6 +56,7 @@ namespace PadForge.Engine.RemoteLink.Dht
             _selfPrivateKey = selfPrivateKey;
             _selfFingerprint = selfPublicKey != null ? PeerCrypto.Fingerprint(selfPublicKey) : Array.Empty<byte>();
             _localCandidates = localCandidates ?? (() => Array.Empty<PresenceRecord.Candidate>());
+            _localNat = localNat ?? (() => null);
             _connectByPunch = connectByPunch;
             _log = log ?? (_ => { });
         }
@@ -71,7 +74,11 @@ namespace PadForge.Engine.RemoteLink.Dht
         /// startup, on every republish tick, and immediately on an endpoint
         /// change.</summary>
         public Task<PublishResult> PublishAsync(Peer peer, CancellationToken ct)
-            => _presence.PublishAsync(SlotFor(peer), _localCandidates(), ct);
+        {
+            var nat = _localNat();
+            return _presence.PublishAsync(SlotFor(peer), _localCandidates(),
+                nat?.Kind ?? NatKind.Unknown, nat?.Delta ?? 0, ct);
+        }
 
         /// <summary>Look up a peer's current endpoints and, if found and we are
         /// not already connected, punch to them. Returns true if a connection was
@@ -83,8 +90,26 @@ namespace PadForge.Engine.RemoteLink.Dht
             var pres = await _presence.LookupAsync(peer.PeerPublicKey, peer.Capability, peer.PeerDirection, ct).ConfigureAwait(false);
             if (pres?.Candidates == null || pres.Candidates.Count == 0) return false;
 
-            var endpoints = new List<IPEndPoint>(pres.Candidates.Count);
-            foreach (var c in pres.Candidates) endpoints.Add(c.Endpoint);
+            var raw = new List<IPEndPoint>(pres.Candidates.Count);
+            IPEndPoint peerPublic = null;
+            foreach (var c in pres.Candidates)
+            {
+                raw.Add(c.Endpoint);
+                if (c.Kind == PresenceRecord.Candidate.KindPublicV4) peerPublic = c.Endpoint;
+            }
+            // Predict ports if the peer is behind a sequential-symmetric CGNAT.
+            IReadOnlyList<IPEndPoint> endpoints = raw;
+            if (pres.NatKind == NatKind.SymmetricSequential && peerPublic != null)
+            {
+                var peerNat = new NatProfile
+                {
+                    Kind = NatKind.SymmetricSequential,
+                    PublicAddress = peerPublic.Address,
+                    LastPort = peerPublic.Port,
+                    Delta = pres.NatDelta,
+                };
+                endpoints = PortPredictor.BuildSprayTargets(peerPublic.Address, peerNat, raw);
+            }
             var nonce = PresenceRecord.PunchNonce(peer.Capability);
             // Both peers run this loop and both punch; the lower fingerprint
             // leads the handshake so they never both lead.

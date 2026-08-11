@@ -251,6 +251,81 @@ namespace PadForge.Tests
                 () => ch.SendAsync(new byte[] { 2 }, CancellationToken.None));
         }
 
+        // ── NAT classification + port prediction (#294 symmetric support) ──
+
+        [Fact]
+        public void Nat_Cone_WhenAllServersSeeTheSamePort()
+        {
+            var p = NatProfile.Classify(IPAddress.Parse("203.0.113.5"), new[] { 40000, 40000, 40000 });
+            Assert.Equal(NatKind.Cone, p.Kind);
+            Assert.True(p.IsPunchable);
+            Assert.Equal(0, p.Delta);
+        }
+
+        [Fact]
+        public void Nat_SequentialSymmetric_MatchesRealVerizonTrace()
+        {
+            // The exact ports measured from the reporter's Verizon hotspot:
+            // same IP, +2 per destination. Must classify as predictable.
+            var p = NatProfile.Classify(IPAddress.Parse("174.235.248.62"), new[] { 63280, 63282, 63284 });
+            Assert.Equal(NatKind.SymmetricSequential, p.Kind);
+            Assert.True(p.IsPunchable);       // the whole point: this IS punchable
+            Assert.Equal(2, p.Delta);
+            Assert.Equal(63284, p.LastPort);
+        }
+
+        [Fact]
+        public void Nat_Random_WhenPortsJumpErratically()
+        {
+            var p = NatProfile.Classify(IPAddress.Parse("100.64.0.1"), new[] { 1000, 53127, 8, 61999 });
+            Assert.Equal(NatKind.SymmetricRandom, p.Kind);
+            Assert.False(p.IsPunchable);      // the honest residual: needs a relay
+        }
+
+        [Fact]
+        public void Predictor_SequentialPeer_SpraysForwardWindowAroundPredictedPorts()
+        {
+            var peer = new NatProfile
+            {
+                Kind = NatKind.SymmetricSequential,
+                PublicAddress = IPAddress.Parse("174.235.248.62"),
+                LastPort = 63284,
+                Delta = 2,
+            };
+            var targets = PortPredictor.BuildSprayTargets(peer.PublicAddress, peer,
+                rawCandidates: new[] { new IPEndPoint(peer.PublicAddress, 63284) },
+                windowSteps: 8, neighbourhood: 1);
+
+            Assert.Equal(new IPEndPoint(peer.PublicAddress, 63284), targets[0]);
+            Assert.Contains(new IPEndPoint(peer.PublicAddress, 63286), targets);
+            Assert.Contains(new IPEndPoint(peer.PublicAddress, 63285), targets);
+            Assert.Contains(new IPEndPoint(peer.PublicAddress, 63287), targets);
+            Assert.Contains(new IPEndPoint(peer.PublicAddress, 63300), targets);
+            Assert.Equal(targets.Count, new HashSet<IPEndPoint>(targets).Count);
+        }
+
+        [Fact]
+        public void Predictor_ConePeer_KeepsSingleEndpoint_NoSpray()
+        {
+            var cone = new NatProfile { Kind = NatKind.Cone, PublicAddress = IPAddress.Parse("203.0.113.9"), LastPort = 5000 };
+            var targets = PortPredictor.BuildSprayTargets(cone.PublicAddress, cone,
+                rawCandidates: new[] { new IPEndPoint(cone.PublicAddress, 5000) });
+            Assert.Single(targets);
+        }
+
+        [Fact]
+        public void Code_CarriesNatProfile_RoundTrip()
+        {
+            var pub = new IPEndPoint(IPAddress.Parse("174.235.248.62"), 63284);
+            var nat = new NatProfile { Kind = NatKind.SymmetricSequential, PublicAddress = pub.Address, LastPort = 63284, Delta = 2 };
+            var code = LinkCode.EncodeSelfContained(pub, null, new byte[32], DateTimeOffset.FromUnixTimeSeconds(1_800_000_000), nat);
+            Assert.True(LinkCode.TryParseSelfContained(code, out var parsed));
+            Assert.NotNull(parsed.Nat);
+            Assert.Equal(NatKind.SymmetricSequential, parsed.Nat.Kind);
+            Assert.Equal(2, parsed.Nat.Delta);
+            Assert.Equal(63284, parsed.Nat.LastPort);
+        }
+
         // ── HolePuncher ──
 
         [Fact]
@@ -292,6 +367,39 @@ namespace PadForge.Tests
             var wb = pb.PunchAsync(candB, cts.Token);
 
             Assert.Equal(epB, await wa);
+            Assert.Equal(epA, await wb);
+        }
+
+        [Fact]
+        public async Task Punch_PortPrediction_ReachesSymmetricPeer_ThroughItsAllocatedPort()
+        {
+            // The symmetric peer B advertised STUN port 40000 (its last probe),
+            // but its NAT allocates a DIFFERENT port when it talks to A: 40006.
+            // A aiming only at 40000 fails; A spraying the predicted forward
+            // window (40000 + k*2) hits 40006 and connects. This models exactly
+            // the Verizon-CGNAT-to-cone case.
+            var nat = new SimNat();
+            var epA = new IPEndPoint(IPAddress.Parse("203.0.113.1"), 1111);      // cone A
+            var epB_actual = new IPEndPoint(IPAddress.Parse("174.235.248.62"), 40006); // B's real allocated port
+            var epB_stun = new IPEndPoint(IPAddress.Parse("174.235.248.62"), 40000);   // B's advertised (stale) port
+
+            var ta = nat.Endpoint(epA);
+            var tb = nat.Endpoint(epB_actual); // B actually listens on its allocated port
+            var nonce = RandomBytes(16, 55);
+            var pa = new HolePuncher(ta, nonce, TimeSpan.FromMilliseconds(10));
+            var pb = new HolePuncher(tb, nonce, TimeSpan.FromMilliseconds(10));
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+
+            // A builds a predicted spray range for B (sequential, delta 2) from
+            // B's advertised endpoint. B punches back at A's single endpoint.
+            var bProfile = new NatProfile { Kind = NatKind.SymmetricSequential, PublicAddress = epB_stun.Address, LastPort = 40000, Delta = 2 };
+            var aCandidates = PortPredictor.BuildSprayTargets(epB_stun.Address, bProfile, new[] { epB_stun }, windowSteps: 64, neighbourhood: 1);
+            Assert.Contains(epB_actual, aCandidates); // the real port is in the predicted set
+
+            var wa = pa.PunchAsync(aCandidates, cts.Token);
+            var wb = pb.PunchAsync(HolePuncher.OrderCandidates(null, epA), cts.Token);
+
+            Assert.Equal(epB_actual, await wa); // A found B via a predicted port
             Assert.Equal(epA, await wb);
         }
 

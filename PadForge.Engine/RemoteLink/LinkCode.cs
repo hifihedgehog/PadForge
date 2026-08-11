@@ -106,17 +106,19 @@ namespace PadForge.Engine.RemoteLink
         /// Encodes a self-contained code from the receiver's candidates.
         /// Payload (little-endian, then base32): version(1) | flags(1) |
         /// publicIp(4) publicPort(2) | privateIp(4) privatePort(2) |
-        /// fingerprintPrefix(8) | expiryUnixMinutes(4). 26 bytes -> 42 base32
-        /// chars, grouped in fives with dashes for readability.
+        /// fingerprintPrefix(8) | expiryUnixMinutes(4) | natKind(1) | natDelta(1).
+        /// 28 bytes -> 45 base32 chars, grouped in fives. The NAT kind + delta
+        /// let a peer know whether to PREDICT ports for a symmetric CGNAT
+        /// (Verizon/T-Mobile home internet) instead of aiming at a fixed port.
         /// </summary>
         public static string EncodeSelfContained(
             IPEndPoint publicEndpoint, IPEndPoint privateEndpoint,
-            byte[] fingerprint, DateTimeOffset expiry)
+            byte[] fingerprint, DateTimeOffset expiry, NatProfile nat = null)
         {
             if (fingerprint == null || fingerprint.Length < 8)
                 throw new ArgumentException("Fingerprint must be at least 8 bytes.", nameof(fingerprint));
 
-            var buf = new byte[26];
+            var buf = new byte[28];
             buf[0] = Version;
             byte flags = 0;
             if (publicEndpoint != null) flags |= 0x01;
@@ -127,6 +129,8 @@ namespace PadForge.Engine.RemoteLink
             fingerprint.AsSpan(0, 8).CopyTo(buf.AsSpan(14));
             long minutes = expiry.ToUnixTimeSeconds() / 60;
             BinaryPrimitives.WriteUInt32LittleEndian(buf.AsSpan(22), (uint)minutes);
+            buf[26] = (byte)(nat?.Kind ?? NatKind.Unknown);
+            buf[27] = (byte)Math.Clamp(nat?.Delta ?? 0, 0, 255);
 
             return Group(EncodeBase32(buf));
         }
@@ -140,29 +144,48 @@ namespace PadForge.Engine.RemoteLink
             /// proves identity.</summary>
             public byte[] FingerprintPrefix { get; init; }
             public DateTimeOffset Expiry { get; init; }
+            /// <summary>The receiver's NAT behaviour, so the dialer knows whether
+            /// to predict ports (symmetric CGNAT) or aim at the fixed public
+            /// port (cone). Reconstructed with the public port as LastPort.</summary>
+            public NatProfile Nat { get; init; }
             public bool IsExpired(DateTimeOffset now) => now > Expiry;
         }
 
         /// <summary>Parses a self-contained long code. Returns false for a short
-        /// rendezvous key, a malformed code, or a version mismatch.</summary>
+        /// rendezvous key, a malformed code, or a version mismatch. Accepts both
+        /// the 26-byte v1 (no NAT profile) and 28-byte v1 (with profile) shapes.</summary>
         public static bool TryParseSelfContained(string code, out SelfContainedCode parsed)
         {
             parsed = null;
             if (string.IsNullOrWhiteSpace(code)) return false;
             if (!TryDecodeBase32(Ungroup(code), out var buf)) return false;
-            if (buf.Length != 26 || buf[0] != Version) return false;
+            if ((buf.Length != 26 && buf.Length != 28) || buf[0] != Version) return false;
 
             byte flags = buf[1];
             var pub = (flags & 0x01) != 0 ? ReadEndpoint(buf.AsSpan(2)) : null;
             var priv = (flags & 0x02) != 0 ? ReadEndpoint(buf.AsSpan(8)) : null;
             var fpPrefix = buf.AsSpan(14, 8).ToArray();
             uint minutes = BinaryPrimitives.ReadUInt32LittleEndian(buf.AsSpan(22));
+
+            NatProfile nat = null;
+            if (buf.Length == 28 && pub != null)
+            {
+                var kind = (NatKind)buf[26];
+                nat = new NatProfile
+                {
+                    Kind = kind,
+                    PublicAddress = pub.Address,
+                    LastPort = pub.Port,
+                    Delta = buf[27],
+                };
+            }
             parsed = new SelfContainedCode
             {
                 PublicEndpoint = pub,
                 PrivateEndpoint = priv,
                 FingerprintPrefix = fpPrefix,
                 Expiry = DateTimeOffset.FromUnixTimeSeconds((long)minutes * 60),
+                Nat = nat,
             };
             return true;
         }

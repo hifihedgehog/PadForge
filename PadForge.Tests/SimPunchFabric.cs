@@ -81,10 +81,6 @@ namespace PadForge.Tests
                 private readonly SimEndpoint _e;
                 public Action<byte[]> OnDatagram { get => Inbound; set => Inbound = value; }
                 public Action<byte[]> Inbound;
-                // The control channel learns the peer endpoint from the punch;
-                // in-process we just send to whoever the endpoint is paired with,
-                // which the fabric resolves as "the other end that punched us".
-                public IPEndPoint PeerEndpoint;
                 public ControlFacade(SimEndpoint e) { _e = e; }
                 public Task SendAsync(byte[] datagram, CancellationToken ct)
                 {

@@ -101,6 +101,34 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public async Task Dht_ColdStart_RetryRecoversTheFirstMissedPublishAndLookup()
+        {
+            // FIELD-MEASURED (2026-08-11): against the live mainline DHT the
+            // FIRST publish after start-up landed zero replicas (1 failure in
+            // 6, always the cold one) because the routing table is empty and
+            // two of four bootstrap routers are dead. A single-shot publish
+            // then announces to nobody, indistinguishable from "no peer
+            // calling". Here every node drops its first query, so only a client
+            // that retries the whole publish AND lookup gets through.
+            var dht = new SimDht(nodeCount: 40, seed: 7, dropFirstQuery: true);
+            var publisher = PeerIdentity.Generate();
+            var cap = RandomBytes(32, 99);
+            var presence = Presence("203.0.113.44", 55000, "192.168.1.10", 55000);
+
+            using var pub = dht.NewClient();
+            using var look = dht.NewClient();
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+
+            var result = await pub.PublishAsync(publisher.PublicKey, publisher.ExportPrivateKey(),
+                cap, PresenceRecord.DirectionA, presence, seq: 1, cts.Token);
+            Assert.True(result.AckCount > 0, "publish must recover via retry despite the cold-start drop");
+
+            var found = await look.LookupAsync(publisher.PublicKey, cap, PresenceRecord.DirectionA, cts.Token);
+            Assert.NotNull(found);
+            Assert.Equal(new IPEndPoint(IPAddress.Parse("203.0.113.44"), 55000), found.Candidates[0].Endpoint);
+        }
+
+        [Fact]
         public async Task Dht_Lookup_TakesHighestSequence_NotFirstReply()
         {
             var dht = new SimDht(nodeCount: 40, seed: 11);

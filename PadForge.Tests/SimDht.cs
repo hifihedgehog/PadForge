@@ -22,10 +22,44 @@ namespace PadForge.Tests
     {
         private readonly List<SimNode> _nodes = new();
         private readonly bool _requireToken;
+        // When set, every node silently drops the FIRST query it ever sees,
+        // reproducing the cold-start miss measured live (an empty routing
+        // table plus dead bootstrap routers landing zero replicas on attempt
+        // one). Only a client that RETRIES the whole publish/lookup recovers.
+        // Models the cold-start miss: the opening BURST of queries (while the
+        // routing table is empty and bootstrap is slow) is lost, so the first
+        // publish/lookup lands nothing. A retry issues fresh queries after the
+        // burst budget is spent and gets through. Faithful to the field
+        // measurement (1 of 6 first-publishes landed zero replicas), unlike a
+        // per-node-forever drop which no amount of retry could recover.
+        private readonly bool _dropFirstQuery;
+        private readonly HashSet<string> _bootstrapEps = new();
+        private readonly HashSet<string> _bootstrapDropped = new();
+        internal void MarkBootstrap(IEnumerable<IPEndPoint> eps)
+        {
+            lock (_bootstrapEps) foreach (var e in eps) _bootstrapEps.Add(e.ToString());
+        }
+        internal bool ConsumeFirstDrop(IPEndPoint node)
+        {
+            if (!_dropFirstQuery) return false;
+            string key = node.ToString();
+            lock (_bootstrapEps)
+            {
+                // Only the bootstrap routers are unreachable on the very first
+                // shot (cold routing), and only once each. A retry finds them
+                // warm. Non-bootstrap nodes always answer, so a starved lookup
+                // that never reaches them still recovers on retry.
+                if (!_bootstrapEps.Contains(key)) return false;
+                return _bootstrapDropped.Add(key);
+            }
+        }
 
-        public SimDht(int nodeCount, int seed, bool requireToken = false)
+        public SimDht(int nodeCount, int seed, bool requireToken = false, bool dropFirstQuery = false)
         {
             _requireToken = requireToken;
+            // Enough to starve a single lookup's opening rounds (bootstrap +
+            // first expansion) but be exhausted before a retry.
+            _dropFirstQuery = dropFirstQuery;
             var rng = new Random(seed);
             for (int i = 0; i < nodeCount; i++)
             {
@@ -42,6 +76,7 @@ namespace PadForge.Tests
             var transport = new SimTransport(this);
             // Bootstrap against the first few nodes.
             var boot = _nodes.Take(4).Select(n => n.Endpoint).ToList();
+            MarkBootstrap(boot);
             return new DhtPresenceStore(transport, boot);
         }
 
@@ -78,6 +113,8 @@ namespace PadForge.Tests
 
             public byte[] Handle(IPEndPoint from, byte[] datagram)
             {
+                // Cold-start: this node ignores the very first query it receives.
+                if (_dht.ConsumeFirstDrop(Endpoint)) return null;
                 object decoded;
                 try { decoded = Bencode.Decode(datagram); }
                 catch { return null; }

@@ -8631,12 +8631,15 @@ namespace PadForge.Services
                 if (server.PublicEndpoint != null) mine.Add(server.PublicEndpoint);
                 var lan = LocalLanEndpoint(server.Port);
                 if (lan != null) mine.Add(lan);
-                if (mine.Count == 0) return;
+                // With the relay lane armed, an endpoint-less record is still
+                // dialable (the host reaches us through the relay).
+                if (mine.Count == 0 && server.RelayPublicKey == null) return;
 
                 var now = DateTimeOffset.UtcNow;
                 long seq = PadForge.Engine.RemoteLink.Dht.CodeRendezvous.SequenceFor(now);
                 var value = PadForge.Engine.RemoteLink.Dht.CodeRendezvous.EncodeRequest(
-                    slot, identity.Fingerprint, mine, now, seq);
+                    slot, identity.Fingerprint, mine, now, seq,
+                    server.RelayPublicKey, server.RelayHostName);
                 using var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(20));
                 var res = await store.PublishRawAsync(slot.PublicKey, slot.PrivateKey, slot.Salt, value, seq, cts.Token)
                                      .ConfigureAwait(false);
@@ -8685,8 +8688,17 @@ namespace PadForge.Services
                     $"endpoints=[{string.Join(",", call.Candidates)}] -> punching back");
 
                 var expose = BuildExposedDevices();
-                await server.ConnectByPunchAsync(call.Candidates, nonce, asInitiator, expose,
-                    punchTimeout: TimeSpan.FromSeconds(45)).ConfigureAwait(false);
+                bool punched = await server.ConnectByPunchAsync(call.Candidates, nonce, asInitiator, expose,
+                    punchTimeout: TimeSpan.FromSeconds(15)).ConfigureAwait(false);
+                if (!punched && call.RelayKey != null)
+                {
+                    // No direct path (CGNAT on either side). The caller armed
+                    // the relay lane and published its relay key, so join its
+                    // relay, announce ourselves, and handshake through it.
+                    PadForge.Engine.SdlDiagLog.WriteLine("RDV punch failed -> relay lane via " + (call.RelayHost ?? "(default)"));
+                    await server.ConnectByRelayAsync(call.RelayHost, call.RelayKey, nonce, asInitiator, expose,
+                        timeout: TimeSpan.FromSeconds(60)).ConfigureAwait(false);
+                }
             }
             catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("RDV poll failed: " + ex.Message); }
             finally { System.Threading.Interlocked.Exchange(ref _rdvPolling, 0); }
@@ -9024,10 +9036,26 @@ namespace PadForge.Services
                 // to the DHT slot derived from the host's code; the host polls
                 // that slot and punches back. Without this the internet path
                 // deadlocks (LAN worked only because there is no filtering).
+                // Arm the relay fallback BEFORE publishing so the record can
+                // carry our relay key: where no punch can land (both sides
+                // behind CGNAT/symmetric NAT), the host reaches us through the
+                // relay instead. Best-effort; without it the punch is all we
+                // have, which is exactly the old behavior.
+                string relayHost = null;
+                try { relayHost = await server.EnsureRelayAsync(null, System.Threading.CancellationToken.None); } catch { }
+
                 await PublishCodeCallRequestAsync(entry, server);
 
                 bool ok = await server.ConnectByPunchAsync(candidates, nonce, asInitiator, expose,
-                    punchTimeout: TimeSpan.FromSeconds(60));
+                    punchTimeout: TimeSpan.FromSeconds(20));
+                if (!ok && relayHost != null)
+                {
+                    // Punch window closed with no path: wait on our relay for
+                    // the host's HELLO (it reads our key from the rendezvous
+                    // record) and handshake through the relay.
+                    ok = await server.ConnectByRelayAsync(relayHost, null, nonce, asInitiator, expose,
+                        timeout: TimeSpan.FromSeconds(60));
+                }
                 if (!ok)
                     _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusPunchFailed);
                 return;

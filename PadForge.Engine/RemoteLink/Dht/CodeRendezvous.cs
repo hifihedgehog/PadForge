@@ -86,6 +86,11 @@ namespace PadForge.Engine.RemoteLink.Dht
             public byte[] CallerFingerprintPrefix { get; init; }
             public IReadOnlyList<IPEndPoint> Candidates { get; init; }
             public DateTimeOffset IssuedAt { get; init; }
+            /// <summary>The caller's 32-byte iroh relay key, when it armed the
+            /// relay fallback lane (#294). Null on records from older builds.</summary>
+            public byte[] RelayKey { get; init; }
+            /// <summary>The relay host the caller is connected to.</summary>
+            public string RelayHost { get; init; }
             /// <summary>Stale requests are ignored so an old record cannot make
             /// a host punch at an address nobody is listening on.</summary>
             public bool IsFresh(DateTimeOffset now, TimeSpan window)
@@ -96,7 +101,8 @@ namespace PadForge.Engine.RemoteLink.Dht
         /// bound as associated data, so a record cannot be replayed under a
         /// different seq.</summary>
         public static byte[] EncodeRequest(Slot slot, byte[] callerFingerprint,
-            IReadOnlyList<IPEndPoint> candidates, DateTimeOffset issuedAt, long seq)
+            IReadOnlyList<IPEndPoint> candidates, DateTimeOffset issuedAt, long seq,
+            byte[] relayKey = null, string relayHost = null)
         {
             var plain = new List<byte> { Version };
             var stamp = new byte[8];
@@ -116,6 +122,20 @@ namespace PadForge.Engine.RemoteLink.Dht
                 var port = new byte[2];
                 BinaryPrimitives.WriteUInt16BigEndian(port, (ushort)list[i].Port);
                 plain.AddRange(port);
+            }
+
+            // Optional relay tail (#294): lets the host reach a caller no
+            // punch can reach, via the caller's iroh relay. Old decoders read
+            // exactly the endpoint list and ignore trailing bytes, so the
+            // tail is compatible in both directions.
+            if (relayKey is { Length: 32 } && !string.IsNullOrEmpty(relayHost))
+            {
+                plain.Add(0xE0);
+                plain.AddRange(relayKey);
+                var hostBytes = System.Text.Encoding.ASCII.GetBytes(relayHost);
+                if (hostBytes.Length > 255) hostBytes = hostBytes.AsSpan(0, 255).ToArray();
+                plain.Add((byte)hostBytes.Length);
+                plain.AddRange(hostBytes);
             }
 
             var nonce = new byte[NonceLen];
@@ -155,11 +175,24 @@ namespace PadForge.Engine.RemoteLink.Dht
                     ushort port = BinaryPrimitives.ReadUInt16BigEndian(plain.AsSpan(o)); o += 2;
                     eps.Add(new IPEndPoint(ip, port));
                 }
+                byte[] relayKey = null; string relayHost = null;
+                if (o < plain.Length && plain[o] == 0xE0 && o + 1 + 32 + 1 <= plain.Length)
+                {
+                    o++;
+                    relayKey = plain.AsSpan(o, 32).ToArray(); o += 32;
+                    int hlen = plain[o++];
+                    if (hlen > 0 && o + hlen <= plain.Length)
+                        relayHost = System.Text.Encoding.ASCII.GetString(plain, o, hlen);
+                    else
+                        relayKey = null;
+                }
                 request = new CallRequest
                 {
                     CallerFingerprintPrefix = prefix,
                     Candidates = eps,
                     IssuedAt = DateTimeOffset.FromUnixTimeSeconds(stamp),
+                    RelayKey = relayKey,
+                    RelayHost = relayHost,
                 };
                 return true;
             }

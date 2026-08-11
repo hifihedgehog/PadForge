@@ -46,6 +46,22 @@ namespace PadForge.Engine.RemoteLink
         // route to the channel whose id matches.
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, Action<IPEndPoint, byte[]>> _punchSinks = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<uint, Action<byte[]>> _controlSinks = new();
+
+        // Relay lane (#294): iroh relay fallback when no punch can land. Both
+        // peers behind CGNAT/symmetric NAT have NO direct path; the only route
+        // is a third box both can reach outbound. FlexInput gets this from
+        // iroh's hosted relays; PadForge speaks the same open protocol to the
+        // same free relays (IrohRelayClient). Control datagrams demux by
+        // channel id, HELLOs by nonce, sealed session datagrams by AEAD trial
+        // open, mirroring the UDP loop.
+        private IrohRelayClient _relay;
+        private readonly SemaphoreSlim _relayGate = new(1, 1);
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<uint, Action<byte[], byte[]>> _relayControlSinks = new();
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Action<byte[]>> _relayHelloWaiters = new();
+        /// <summary>First byte of a relay HELLO (peer key announcement). The
+        /// 0xC0-0xC3 space belongs to control/punch; sealed frames start
+        /// (type&lt;&lt;4)|epoch with type 1..7, so 0xC4 is unclaimed.</summary>
+        public const byte TagRelayHello = 0xC4;
         private int _punchSinkCounter;
 
         // Covers the human approval too; a slowloris (stalled handshake) still times
@@ -405,6 +421,8 @@ namespace PadForge.Engine.RemoteLink
             foreach (var c in conns) DropConnection(c);
             try { _tcp?.Stop(); } catch { }
             try { _udp?.Close(); } catch { }
+            try { _relay?.Dispose(); } catch { }
+            _relay = null;
             _cts?.Dispose();
             // Null like the failed-Start path: ConnectAsync reads _cts?.Token, and
             // a disposed-but-non-null CTS throws ObjectDisposedException there.
@@ -418,9 +436,7 @@ namespace PadForge.Engine.RemoteLink
             lock (_lock) conns = _connections.ToArray();
             foreach (var c in conns)
             {
-                var ep = c.PeerUdpEndpoint;
-                if (ep == null) continue; // responder hasn't learned the peer's address yet
-                try { _udp.SendTo(c.DataSession.Seal(LinkMessageType.Keepalive, 0, 0, Array.Empty<byte>()), ep); }
+                try { SendSealed(c, c.DataSession.Seal(LinkMessageType.Keepalive, 0, 0, Array.Empty<byte>())); }
                 catch { }
             }
         }
@@ -667,6 +683,195 @@ namespace PadForge.Engine.RemoteLink
             }
         }
 
+        /// <summary>Our relay identity, published in the rendezvous record so
+        /// the host can reach us when no punch lands. Null until
+        /// <see cref="EnsureRelayAsync"/> succeeds.</summary>
+        public byte[] RelayPublicKey => _relay?.PublicKey;
+        /// <summary>The relay host we are connected to, or null.</summary>
+        public string RelayHostName => _relay?.RelayHost;
+
+        /// <summary>Ensures a live authenticated connection to an iroh relay
+        /// (#294). Pass null to take the first reachable default relay.
+        /// Returns the connected host, or null when none answered.</summary>
+        public async Task<string> EnsureRelayAsync(string relayHost, CancellationToken ct)
+        {
+            await _relayGate.WaitAsync(ct).ConfigureAwait(false);
+            try
+            {
+                var live = _relay;
+                if (live is { IsConnected: true }
+                    && (relayHost == null || string.Equals(live.RelayHost, relayHost, StringComparison.OrdinalIgnoreCase)))
+                    return live.RelayHost;
+                try { live?.Dispose(); } catch { }
+                _relay = null;
+                var client = new IrohRelayClient();
+                client.DatagramReceived += OnRelayDatagram;
+                var host = await client.ConnectAsync(relayHost, ct).ConfigureAwait(false);
+                if (host == null) { client.Dispose(); return null; }
+                _relay = client;
+                SdlDiagLog.WriteLine($"RELAY connected: {host} key={Convert.ToHexString(client.PublicKey).Substring(0, 16)}");
+                return host;
+            }
+            catch { return null; }
+            finally { _relayGate.Release(); }
+        }
+
+        /// <summary>Relay-lane connect (#294): the UNMODIFIED authenticated
+        /// handshake over an iroh relay, for when no direct path can be
+        /// punched. The side that read the caller's relay key from the
+        /// rendezvous record passes it and announces itself with HELLOs; the
+        /// other side passes null and learns the key from the first HELLO's
+        /// source. Everything downstream (device lists, sealed data plane,
+        /// trust) is identical to the punched path.</summary>
+        public async Task<bool> ConnectByRelayAsync(
+            string relayHost, byte[] peerRelayKey, byte[] sharedNonce, bool handshakeAsInitiator,
+            IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, TimeSpan? timeout = null, CancellationToken ct = default)
+        {
+            if (sharedNonce is not { Length: 16 }) return false;
+            var host = await EnsureRelayAsync(relayHost, ct).ConfigureAwait(false);
+            var relay = _relay;
+            if (host == null || relay == null) return false;
+
+            uint channelId = UdpControlChannel.ChannelIdFromNonce(sharedNonce);
+            string nonceHex = Convert.ToHexString(sharedNonce);
+            using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, _cts?.Token ?? CancellationToken.None);
+            linked.CancelAfter(timeout ?? TimeSpan.FromSeconds(45));
+            SdlDiagLog.WriteLine($"RELAY connect: start via {host} role={(handshakeAsInitiator ? "init" : "resp")} peerKey={(peerRelayKey == null ? "(await hello)" : Convert.ToHexString(peerRelayKey).Substring(0, 16))}");
+
+            byte[] peerKey = peerRelayKey;
+            System.Threading.CancellationTokenSource helloCts = null;
+            try
+            {
+                if (peerKey == null)
+                {
+                    // Wait for the peer's HELLO to learn its relay key.
+                    var tcs = new TaskCompletionSource<byte[]>(TaskCreationOptions.RunContinuationsAsynchronously);
+                    _relayHelloWaiters[nonceHex] = k => tcs.TrySetResult(k);
+                    try { peerKey = await tcs.Task.WaitAsync(linked.Token).ConfigureAwait(false); }
+                    catch (OperationCanceledException) { SdlDiagLog.WriteLine("RELAY connect: no HELLO within the window"); return false; }
+                    finally { _relayHelloWaiters.TryRemove(nonceHex, out _); }
+                    SdlDiagLog.WriteLine($"RELAY connect: HELLO from {Convert.ToHexString(peerKey).Substring(0, 16)}");
+                }
+                else
+                {
+                    // Announce ourselves until the handshake completes: the
+                    // waiter side may still be inside its own punch window.
+                    helloCts = CancellationTokenSource.CreateLinkedTokenSource(linked.Token);
+                    var hello = new byte[1 + sharedNonce.Length];
+                    hello[0] = TagRelayHello;
+                    sharedNonce.CopyTo(hello, 1);
+                    var hct = helloCts.Token;
+                    var helloKey = peerKey;
+                    _ = Task.Run(async () =>
+                    {
+                        while (!hct.IsCancellationRequested)
+                        {
+                            await relay.SendAsync(helloKey, hello, hct).ConfigureAwait(false);
+                            try { await Task.Delay(1000, hct).ConfigureAwait(false); } catch { break; }
+                        }
+                    });
+                }
+
+                var adapter = new RelayControlAdapter(relay, peerKey);
+                string peerKeyHex = Convert.ToHexString(peerKey);
+                _relayControlSinks[channelId] = (src, dg) =>
+                {
+                    if (Convert.ToHexString(src) == peerKeyHex) adapter.OnDatagram?.Invoke(dg);
+                };
+
+                var expose = exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
+                var result = await PunchedConnection.ConnectRelayAsync(
+                    adapter, sharedNonce, handshakeAsInitiator,
+                    _identity, _trust, expose, _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
+                if (result == null)
+                {
+                    SdlDiagLog.WriteLine("RELAY connect: handshake did not complete");
+                    return false;
+                }
+                SdlDiagLog.WriteLine($"RELAY connect: handshake complete via {host}");
+                Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose, relayPeerKey: peerKey);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                SdlDiagLog.WriteLine($"RELAY connect: exception {ex.GetType().Name} {ex.Message}");
+                StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.ConnectFailed, message: ex.Message));
+                return false;
+            }
+            finally
+            {
+                try { helloCts?.Cancel(); } catch { }
+                helloCts?.Dispose();
+                _relayControlSinks.TryRemove(channelId, out _);
+            }
+        }
+
+        /// <summary>Everything the relay forwards to us: HELLOs (peer key
+        /// announcements), control datagrams for an in-flight handshake, and
+        /// sealed session datagrams for a registered connection. Mirrors
+        /// RouteDatagram's demux for the relay lane.</summary>
+        private void OnRelayDatagram(byte[] src, byte[] dg)
+        {
+            try
+            {
+                if (dg == null || dg.Length == 0 || src is not { Length: 32 }) return;
+                byte tag = dg[0];
+                if (tag == TagRelayHello && dg.Length >= 17)
+                {
+                    string key = Convert.ToHexString(dg, 1, 16);
+                    if (_relayHelloWaiters.TryGetValue(key, out var waiter)) waiter(src);
+                    return;
+                }
+                if ((tag == UdpControlChannel.TagData || tag == UdpControlChannel.TagAck) && dg.Length >= 9)
+                {
+                    uint chan = System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(dg.AsSpan(1));
+                    if (_relayControlSinks.TryGetValue(chan, out var sink)) sink(src, dg);
+                    return;
+                }
+                // Sealed session datagram over the relay lane. No endpoint to
+                // learn: relayed arrivals never teach a UDP address.
+                LinkPeerConnection[] conns;
+                lock (_lock) conns = _connections.ToArray();
+                foreach (var c in conns)
+                    if (TryDispatchSession(c, dg, from: null)) return;
+            }
+            catch (Exception ex) { DiagLastError = "relay-recv: " + ex.Message; }
+        }
+
+        /// <summary>IDatagramTransport over the relay lane: control datagrams
+        /// to one peer key. Inbound is fed by OnRelayDatagram via the
+        /// channel-id sink, filtered to the expected source key.</summary>
+        private sealed class RelayControlAdapter : IDatagramTransport
+        {
+            private readonly IrohRelayClient _relay;
+            private readonly byte[] _peerKey;
+            public RelayControlAdapter(IrohRelayClient relay, byte[] peerKey) { _relay = relay; _peerKey = peerKey; }
+            public Action<byte[]> OnDatagram { get; set; }
+            public async Task SendAsync(byte[] datagram, CancellationToken ct)
+                => await _relay.SendAsync(_peerKey, datagram, ct).ConfigureAwait(false);
+        }
+
+        /// <summary>Sends one sealed datagram over whichever transport the
+        /// connection rides: the punched/LAN UDP path when the peer's endpoint
+        /// is known, else the relay lane. False when neither is usable yet.</summary>
+        private bool SendSealed(LinkPeerConnection c, byte[] dg)
+        {
+            var ep = c.PeerUdpEndpoint;
+            if (ep != null)
+            {
+                _udp.SendTo(dg, ep);
+                return true;
+            }
+            var relay = _relay;
+            var key = c.RelayPeerKey;
+            if (relay != null && key != null)
+            {
+                _ = relay.SendAsync(key, dg, CancellationToken.None);
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>Fingerprints of peers with a live session right now (for UI state).</summary>
         public IReadOnlyList<string> ConnectedFingerprints()
         {
@@ -700,12 +905,10 @@ namespace PadForge.Engine.RemoteLink
             byte[] payload = CustomInputStateCodec.Encode(state, caps);
             foreach (var c in conns)
             {
-                var ep = c.PeerUdpEndpoint;
-                if (ep == null) { DiagLastError = "push: peer endpoint not learned yet"; continue; }
                 try
                 {
                     byte[] dg = c.DataSession.Seal(LinkMessageType.Input, slot, timestampUs, payload);
-                    _udp.SendTo(dg, ep);
+                    if (!SendSealed(c, dg)) { DiagLastError = "push: peer transport not learned yet"; continue; }
                     System.Threading.Interlocked.Increment(ref DiagDatagramsSent);
                 }
                 catch (Exception ex) { DiagLastError = "push: " + ex.Message; }
@@ -732,11 +935,9 @@ namespace PadForge.Engine.RemoteLink
             {
                 if (!string.Equals(c.PeerFingerprintHex, peerFingerprint, StringComparison.OrdinalIgnoreCase)) continue;
                 matched = true;
-                var ep = c.PeerUdpEndpoint;
-                if (ep == null) continue;
                 try
                 {
-                    _udp.SendTo(c.DataSession.Seal(LinkMessageType.Output, slot, ts, payload), ep);
+                    if (!SendSealed(c, c.DataSession.Seal(LinkMessageType.Output, slot, ts, payload))) continue;
                     System.Threading.Interlocked.Increment(ref DiagDatagramsSent);
                     System.Threading.Interlocked.Increment(ref DiagOutputSent);
                 }
@@ -761,14 +962,13 @@ namespace PadForge.Engine.RemoteLink
             foreach (var c in conns)
             {
                 if (!string.Equals(c.PeerFingerprintHex, peerFingerprint, StringComparison.OrdinalIgnoreCase)) continue;
-                var ep = c.PeerUdpEndpoint;
-                // Same diag trailer as the PushOutputEffect twin (audit
-                // 2026-07-25, C32): a demand dropped for an unlearned
-                // endpoint was invisible in diagnostics.
-                if (ep == null) { DiagLastError = "demand: peer endpoint not learned yet"; continue; }
                 try
                 {
-                    _udp.SendTo(c.DataSession.Seal(LinkMessageType.SourceDemand, slot, ts, payload), ep);
+                    // Same diag trailer as the PushOutputEffect twin (audit
+                    // 2026-07-25, C32): a demand dropped for an unlearned
+                    // transport was invisible in diagnostics.
+                    if (!SendSealed(c, c.DataSession.Seal(LinkMessageType.SourceDemand, slot, ts, payload)))
+                    { DiagLastError = "demand: peer transport not learned yet"; continue; }
                     System.Threading.Interlocked.Increment(ref DiagDatagramsSent);
                     System.Threading.Interlocked.Increment(ref DiagDemandSent);
                 }
@@ -789,11 +989,9 @@ namespace PadForge.Engine.RemoteLink
             foreach (var c in conns)
             {
                 if (!string.Equals(c.PeerFingerprintHex, peerFingerprint, StringComparison.OrdinalIgnoreCase)) continue;
-                var ep = c.PeerUdpEndpoint;
-                if (ep == null) continue;
                 try
                 {
-                    _udp.SendTo(c.DataSession.Seal(LinkMessageType.Audio, slot, ts, payload), ep);
+                    if (!SendSealed(c, c.DataSession.Seal(LinkMessageType.Audio, slot, ts, payload))) continue;
                     System.Threading.Interlocked.Increment(ref DiagDatagramsSent);
                 }
                 catch (Exception ex) { DiagLastError = "audio: " + ex.Message; }
@@ -845,7 +1043,7 @@ namespace PadForge.Engine.RemoteLink
             finally { System.Threading.Interlocked.Decrement(ref _pendingHandshakes); }
         }
 
-        private void Register(LinkConnectionResult result, TcpClient client, IPEndPoint peerUdpEndpoint, IReadOnlyList<RemotePeerDeviceInfo> exposeLocal)
+        private void Register(LinkConnectionResult result, TcpClient client, IPEndPoint peerUdpEndpoint, IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] relayPeerKey = null)
         {
             // Dedup: a reconnecting peer replaces its prior connection instead of
             // stacking a second one (and leaking the old socket/devices).
@@ -862,6 +1060,7 @@ namespace PadForge.Engine.RemoteLink
                 DataSession = new LinkSession(result.DataKey, result.IsInitiator),
                 RemoteDevices = new System.Collections.Concurrent.ConcurrentDictionary<byte, RemotePeerDevice>(),
                 PeerUdpEndpoint = peerUdpEndpoint,
+                RelayPeerKey = relayPeerKey,
                 Tcp = client,
                 PeerFingerprintHex = result.PeerFingerprintHex,
                 LastActivityTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
@@ -954,17 +1153,26 @@ namespace PadForge.Engine.RemoteLink
             LinkPeerConnection[] conns;
             lock (_lock) conns = _connections.ToArray();
 
-            // The AEAD tag identifies the owning session — only the right session
-            // opens it. A failed open never advances a replay window.
+            // The AEAD tag identifies the owning session. Only the right
+            // session opens it, and a failed open never advances a replay window.
             foreach (var c in conns)
+                if (TryDispatchSession(c, datagram, from)) return;
+        }
+
+        /// <summary>Trial-opens one sealed datagram against a connection's
+        /// session and dispatches it. Shared by the UDP loop and the relay
+        /// lane (#294); <paramref name="from"/> is null for relayed arrivals,
+        /// which never teach a UDP endpoint.</summary>
+        private bool TryDispatchSession(LinkPeerConnection c, ReadOnlySpan<byte> datagram, IPEndPoint from)
+        {
             {
                 if (!c.DataSession.Open(datagram, out var type, out byte slot, out ulong ts, out byte[] payload))
-                    continue;
+                    return false;
 
                 System.Threading.Interlocked.Increment(ref DiagDatagramsOpened);
                 System.Threading.Interlocked.Exchange(ref c.LastActivityTicks, System.Diagnostics.Stopwatch.GetTimestamp());
                 // Learn the peer's UDP endpoint on first verified datagram (responder side).
-                if (c.PeerUdpEndpoint == null) c.PeerUdpEndpoint = from;
+                if (from != null && c.PeerUdpEndpoint == null) c.PeerUdpEndpoint = from;
 
                 if (type == LinkMessageType.Input)
                 {
@@ -1002,7 +1210,7 @@ namespace PadForge.Engine.RemoteLink
                     try { ReconcileRemoteDevices(c, LinkConnection.DecodeDeviceList(payload)); }
                     catch (Exception ex) { DiagLastError = "devlist-recv: " + ex.Message; }
                 }
-                return;
+                return true;
             }
         }
 
@@ -1120,9 +1328,10 @@ namespace PadForge.Engine.RemoteLink
             ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
             foreach (var c in conns)
             {
-                var ep = c.PeerUdpEndpoint;
-                if (ep == null) continue;
-                try { _udp.SendTo(c.DataSession.Seal(LinkMessageType.DeviceList, 0, ts, payload), ep); }
+                try
+                {
+                    if (!SendSealed(c, c.DataSession.Seal(LinkMessageType.DeviceList, 0, ts, payload))) continue;
+                }
                 catch (Exception ex) { DiagLastError = "devlist: " + ex.Message; }
             }
         }
@@ -1150,6 +1359,10 @@ namespace PadForge.Engine.RemoteLink
             /// iterates it on drop.</summary>
             public System.Collections.Concurrent.ConcurrentDictionary<byte, RemotePeerDevice> RemoteDevices;
             public volatile IPEndPoint PeerUdpEndpoint;
+            /// <summary>Set when this connection rides the relay lane: the
+            /// peer's 32-byte relay public key. Sends address it, receives
+            /// demux by AEAD exactly like UDP.</summary>
+            public byte[] RelayPeerKey;
             public TcpClient Tcp;
             public string PeerFingerprintHex;
             public long LastActivityTicks; // QPC; updated on each verified datagram, read by the reaper

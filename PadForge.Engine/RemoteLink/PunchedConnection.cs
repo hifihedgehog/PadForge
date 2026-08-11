@@ -74,6 +74,30 @@ namespace PadForge.Engine.RemoteLink
             => RunAsync(handshakeAsInitiator, punchTransport, controlTransport, sharedNonce, candidates,
                 identity, trust, exposeLocal, capabilities, approve, nowUtc, punchTimeout, ct, selfEndpoints);
 
+        /// <summary>The relay-lane composition (#294): the same UNMODIFIED
+        /// handshake as the punched path, minus the punch, because the
+        /// transport is already a working path through an iroh relay. Used
+        /// when no direct path can be punched (both peers behind CGNAT or
+        /// symmetric NAT). Returns null on timeout/cancel like the punched
+        /// forms so the caller surfaces a clean failure.</summary>
+        public static async Task<LinkConnectionResult> ConnectRelayAsync(
+            IDatagramTransport controlTransport, byte[] sharedNonce, bool isInitiator,
+            PeerIdentity identity, PeerTrustStore trust,
+            IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] capabilities,
+            Func<PendingPairing, PairingApproval> approve, string nowUtc,
+            CancellationToken ct)
+        {
+            uint channelId = UdpControlChannel.ChannelIdFromNonce(sharedNonce);
+            using var channel = new UdpControlChannel(controlTransport, channelId: channelId);
+            try
+            {
+                return isInitiator
+                    ? await LinkConnection.RunInitiatorAsync(channel, identity, trust, exposeLocal, capabilities, approve, nowUtc, ct).ConfigureAwait(false)
+                    : await LinkConnection.RunResponderAsync(channel, identity, trust, exposeLocal, capabilities, approve, nowUtc, ct).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) { return null; }
+        }
+
         private static async Task<PunchedResult> RunAsync(
             bool isInitiator, IPunchTransport punchTransport, IDatagramTransport controlTransport,
             byte[] sharedNonce, IReadOnlyList<IPEndPoint> candidates,

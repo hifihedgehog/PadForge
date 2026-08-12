@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PadForge - Custom Controller</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="mobile-web-app-capable" content="yes">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-user-select: none; user-select: none; }
+        html, body { width: 100%; height: 100%; overflow: hidden; background: #101020; color: #eee;
+                     font-family: 'Segoe UI', Tahoma, sans-serif; touch-action: none; }
+        #canvas { position: absolute; inset: 0; }
+
+        .widget { position: absolute; touch-action: none; }
+        .w-button { border-radius: 50%; background: rgba(60,70,110,0.55); border: 2px solid #4a5a8a;
+                    display: flex; align-items: center; justify-content: center;
+                    font-weight: 700; font-size: 16px; color: #cfd6ff; }
+        .w-button.pressed { background: rgba(233,69,96,0.75); border-color: #e94560; }
+        .w-stick { border-radius: 50%; background: rgba(40,48,80,0.45); border: 2px solid #3a486e; }
+        .w-stick .knob { position: absolute; width: 44%; height: 44%; left: 28%; top: 28%;
+                         border-radius: 50%; background: #5a6aa0; }
+        .w-slider { border-radius: 10px; background: rgba(40,48,80,0.45); border: 2px solid #3a486e;
+                    overflow: hidden; }
+        .w-slider .fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0%;
+                          background: rgba(233,69,96,0.6); }
+        .w-slider .tag { position: absolute; top: 4px; width: 100%; text-align: center;
+                         font-size: 11px; color: #8aa; }
+        .w-dpad { background: rgba(40,48,80,0.35); border: 2px solid #3a486e; border-radius: 14px; }
+        .w-dpad:after { content: "\271B"; position: absolute; inset: 0; display: flex;
+                        align-items: center; justify-content: center; font-size: 34px; color: #4a5a8a; }
+        .w-touch { background: rgba(30,60,50,0.35); border: 2px dashed #2a8a6a; border-radius: 10px; }
+        .w-touch .tag { position: absolute; top: 4px; width: 100%; text-align: center;
+                        font-size: 11px; color: #6a9; }
+
+        .selected { outline: 3px solid #e94560; }
+        .handle { position: absolute; right: -10px; bottom: -10px; width: 22px; height: 22px;
+                  border-radius: 50%; background: #e94560; display: none; z-index: 5; }
+        .selected .handle { display: block; }
+
+        #toolbar { position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: none;
+                   background: rgba(16,20,40,0.95); border-bottom: 1px solid #0f3460;
+                   padding: 6px 8px; gap: 6px; align-items: center; flex-wrap: wrap; }
+        #toolbar.on { display: flex; }
+        #toolbar select, #toolbar input, #toolbar button {
+            background: #16213e; color: #dde; border: 1px solid #0f3460; border-radius: 6px;
+            padding: 5px 8px; font-size: 13px; }
+        #toolbar button:active { background: #e94560; }
+        #editBtn { position: fixed; bottom: 10px; left: 10px; z-index: 55;
+                   background: #16213e; color: #9aa; border: 1px solid #0f3460; border-radius: 8px;
+                   padding: 6px 12px; font: 600 12px 'Segoe UI', sans-serif; opacity: 0.85; }
+        #editBtn.on { color: #e94560; border-color: #e94560; }
+        #statusBar { position: fixed; bottom: 10px; right: 10px; z-index: 40;
+                     font-size: 11px; color: #667; pointer-events: none; }
+        #disconnect-message { display: none; position: fixed; inset: 0; z-index: 60;
+                              background: rgba(10,10,20,0.9); color: #eee; text-align: center;
+                              padding-top: 40vh; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div id="toolbar">
+        <select id="palette">
+            <option value="">+ Add widget</option>
+            <optgroup label="Buttons">
+                <option value="b0">A</option><option value="b1">B</option>
+                <option value="b2">X</option><option value="b3">Y</option>
+                <option value="b4">LB</option><option value="b5">RB</option>
+                <option value="b6">Back</option><option value="b7">Start</option>
+                <option value="b8">LS Click</option><option value="b9">RS Click</option>
+                <option value="b10">Guide</option><option value="b11">Misc 1</option>
+                <option value="b12">R Paddle 1</option><option value="b13">L Paddle 1</option>
+                <option value="b14">R Paddle 2</option><option value="b15">L Paddle 2</option>
+                <option value="b17">Misc 2</option><option value="b18">Misc 3</option>
+            </optgroup>
+            <optgroup label="Analog">
+                <option value="s0">Left Stick</option>
+                <option value="s3">Right Stick</option>
+                <option value="t2">LT Slider</option>
+                <option value="t5">RT Slider</option>
+            </optgroup>
+            <optgroup label="Surfaces">
+                <option value="dpad">D-Pad</option>
+                <option value="touch">Touch Area</option>
+            </optgroup>
+        </select>
+        <button id="delWidget">Remove</button>
+        <label style="font-size:12px;color:#9ab"><input type="checkbox" id="snap" checked> Grid</label>
+        <input id="padName" placeholder="Pad name" maxlength="40" style="width:130px">
+        <button id="saveBtn">Save</button>
+        <button id="deleteLayoutBtn" style="color:#e77">Delete pad</button>
+    </div>
+    <div id="canvas"></div>
+    <button id="editBtn">&#9998; Edit</button>
+    <div id="statusBar"></div>
+    <div id="disconnect-message">Disconnected. Tap to reconnect.</div>
+    <script src="/js/custom_client.js"></script>
+</body>
+</html>

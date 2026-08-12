@@ -2042,6 +2042,7 @@ namespace PadForge.Services
                 ? appSettings.DsuMotionServerPort : 26760;
 
             // Load web controller server settings.
+            PadForge.Services.WebCustomLayoutStore.LoadFrom(appSettings.WebCustomLayoutsJson);
             _mainVm.Dashboard.EnableWebController = appSettings.EnableWebController;
             _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
                 ? appSettings.WebControllerPort : 8080;
@@ -3991,6 +3992,7 @@ namespace PadForge.Services
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
+                WebCustomLayoutsJson = PadForge.Services.WebCustomLayoutStore.Json,
                 EnableRemoteLink = _mainVm.Dashboard.EnableRemoteLink,
                 RemoteLinkAutoReconnect = _mainVm.Dashboard.AutoReconnect,
                 RemoteLinkPort = _mainVm.Dashboard.RemoteLinkPort,
@@ -5499,6 +5501,12 @@ namespace PadForge.Services
 
         [XmlElement]
         public int WebControllerPort { get; set; } = 8080;
+
+        /// <summary>Custom web-controller layouts built in the browser (#296
+        /// phase 4), as a JSON array. Machine-scoped by design (a custom pad
+        /// is this machine's hardware definition, not profile content).</summary>
+        [XmlElement]
+        public string WebCustomLayoutsJson { get; set; } = "[]";
 
         [XmlElement]
         public bool EnableTouchpadOverlay { get; set; }

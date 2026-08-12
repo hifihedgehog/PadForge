@@ -251,6 +251,12 @@ namespace PadForge.Services
                 if (path == "/") path = "/index.html";
 
                 // Layout API endpoint.
+                if (path == "/api/custom-layouts")
+                {
+                    ServeCustomLayoutsApi(ctx);
+                    return;
+                }
+
                 if (path == "/api/layout")
                 {
                     ServeLayoutApi(ctx);
@@ -298,6 +304,57 @@ namespace PadForge.Services
                 ctx.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
                 ctx.Response.Headers["Pragma"] = "no-cache";
                 ctx.Response.OutputStream.Write(body, 0, body.Length);
+                ctx.Response.Close();
+            }
+            catch
+            {
+                try { ctx.Response.Close(); } catch { }
+            }
+        }
+
+        /// <summary>The custom-layouts API (#296 phase 4). GET lists the
+        /// stored layouts; POST upserts one (returns its id); DELETE ?id=
+        /// removes one. All storage rides WebCustomLayoutStore, which
+        /// whitelists the schema, so the browser's payload is never stored
+        /// verbatim.</summary>
+        private void ServeCustomLayoutsApi(HttpListenerContext ctx)
+        {
+            try
+            {
+                switch (ctx.Request.HttpMethod)
+                {
+                    case "GET":
+                    {
+                        var bytes = Encoding.UTF8.GetBytes(WebCustomLayoutStore.Json);
+                        ctx.Response.ContentType = "application/json; charset=utf-8";
+                        ctx.Response.ContentLength64 = bytes.Length;
+                        ctx.Response.OutputStream.Write(bytes, 0, bytes.Length);
+                        break;
+                    }
+                    case "POST":
+                    {
+                        string body;
+                        using (var reader = new StreamReader(ctx.Request.InputStream, Encoding.UTF8))
+                            body = reader.ReadToEnd();
+                        if (body.Length > 64 * 1024) { ctx.Response.StatusCode = 413; break; }
+                        var id = WebCustomLayoutStore.Upsert(body);
+                        if (id == null) { ctx.Response.StatusCode = 400; break; }
+                        var ok = Encoding.UTF8.GetBytes($"{{\"id\":\"{id}\"}}");
+                        ctx.Response.ContentType = "application/json; charset=utf-8";
+                        ctx.Response.ContentLength64 = ok.Length;
+                        ctx.Response.OutputStream.Write(ok, 0, ok.Length);
+                        break;
+                    }
+                    case "DELETE":
+                    {
+                        var id = ctx.Request.QueryString["id"];
+                        ctx.Response.StatusCode = WebCustomLayoutStore.Delete(id) ? 200 : 404;
+                        break;
+                    }
+                    default:
+                        ctx.Response.StatusCode = 405;
+                        break;
+                }
                 ctx.Response.Close();
             }
             catch
@@ -387,8 +444,28 @@ namespace PadForge.Services
                 var padId = _clientPadIds.GetOrAdd(compositeKey,
                     _ => _typePadCounters.AddOrUpdate(typeKey, 1, (_, v) => v + 1));
                 string name;
+                string customLayoutJson = null;
                 if (isTouchpadClient)
                     name = $"Web Touchpad {padId}";
+                else if (typeKey.StartsWith("custom:", StringComparison.Ordinal))
+                {
+                    // A builder pad (#296 phase 4): its own typeKey per layout
+                    // id, so the ProductGuid hash gives it a distinct product
+                    // identity like every stock layout.
+                    customLayoutJson = WebCustomLayoutStore.Find(typeKey.Substring(7));
+                    string customName = "Custom Pad";
+                    if (customLayoutJson != null)
+                    {
+                        try
+                        {
+                            using var cdoc = JsonDocument.Parse(customLayoutJson);
+                            if (cdoc.RootElement.TryGetProperty("name", out var np))
+                                customName = np.GetString();
+                        }
+                        catch { }
+                    }
+                    name = $"{customName} {padId}";
+                }
                 else
                     name = $"{ResolveLayout(typeKey).NameStem} Web Controller {padId}";
                 // Pass typeKey explicitly so each layout (xbox360 / ds4 /
@@ -403,7 +480,30 @@ namespace PadForge.Services
                 var device = new WebControllerDevice(compositeKey, name, isTouchpadClient, typeKey);
                 if (hasTouchpad && !isTouchpadClient)
                     device.HasTouchpad = true; // gamepad layout with a touchpad zone
-                if (!isTouchpadClient)
+                if (!isTouchpadClient && customLayoutJson != null)
+                {
+                    // A custom pad's shape comes from its widgets: extended
+                    // button slots from button codes past the standard 11, a
+                    // touchpad surface when a touch area exists.
+                    try
+                    {
+                        var ext = new List<int>();
+                        using var cdoc = JsonDocument.Parse(customLayoutJson);
+                        foreach (var w in cdoc.RootElement.GetProperty("widgets").EnumerateArray())
+                        {
+                            string kind = w.GetProperty("kind").GetString();
+                            if (kind == "touch") device.HasTouchpad = true;
+                            if (kind == "button" && w.TryGetProperty("code", out var cp))
+                            {
+                                int c = cp.GetInt32();
+                                if (c > 10 && c != 16 && c < 22 && !ext.Contains(c)) ext.Add(c);
+                            }
+                        }
+                        if (ext.Count > 0) device.SetExtendedButtons(ext.ToArray());
+                    }
+                    catch { }
+                }
+                else if (!isTouchpadClient)
                 {
                     // Declare the extended slots (paddles / Misc) this layout's
                     // surface offers, so they surface in the picker with

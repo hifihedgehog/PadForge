@@ -192,6 +192,43 @@
                 <div class="desc">Multi-touch surface only</div>
             </a>
         </div>
+        <div class="card">
+            <a class="face" href="/custom.html?id=new">
+                <div class="icon"><svg viewBox="0 0 32 32" fill="none" stroke="#7CFC00" stroke-width="2"><rect x="4" y="7" width="24" height="18" rx="4"/><line x1="16" y1="12" x2="16" y2="20"/><line x1="12" y1="16" x2="20" y2="16"/></svg></div>
+                <div class="label">Build Your Own</div>
+                <div class="desc">Drag widgets onto a blank pad</div>
+            </a>
+        </div>
     </div>
+    <div class="cards" id="customCards" style="margin-top:20px"></div>
+    <script>
+    // Custom pads built on this server (#296 phase 4), listed beside the
+    // stock cards.
+    (function () {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/api/custom-layouts", true);
+        xhr.onload = function () {
+            if (xhr.status !== 200) return;
+            var list;
+            try { list = JSON.parse(xhr.responseText); } catch (e) { return; }
+            if (!list.length) return;
+            var host = document.getElementById("customCards");
+            list.forEach(function (l) {
+                var card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML =
+                    '<a class="face" href="/custom.html?id=' + encodeURIComponent(l.id) + '">' +
+                    '<div class="icon"><svg viewBox="0 0 32 32" fill="none" stroke="#7CFC00" stroke-width="2">' +
+                    '<rect x="4" y="7" width="24" height="18" rx="4"/><circle cx="22" cy="14" r="2" fill="#7CFC00"/>' +
+                    '<circle cx="10" cy="18" r="3"/></svg></div>' +
+                    '<div class="label"></div>' +
+                    '<div class="desc">Custom pad (' + (l.widgets ? l.widgets.length : 0) + ' widgets)</div></a>';
+                card.querySelector(".label").textContent = l.name || "Custom Pad";
+                host.appendChild(card);
+            });
+        };
+        xhr.send();
+    })();
+    </script>
 </body>
 </html>

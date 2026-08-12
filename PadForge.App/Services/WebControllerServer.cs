@@ -511,7 +511,7 @@ namespace PadForge.Services
                     var extDef = ResolveLayout(typeKey);
                     var ext = new List<int>();
                     foreach (var ov in extDef.Overlays)
-                        if (_targetInputMap.TryGetValue(ov.TargetName, out var im)
+                        if (ResolveInput(typeKey, ov.TargetName, out var im)
                             && im.kind == "button" && im.code > 10 && im.code != 16
                             && !ext.Contains(im.code))
                             ext.Add(im.code);
@@ -887,6 +887,49 @@ namespace PadForge.Services
             ["RightTouchpadClick"] = ("button", 16),
         };
 
+        /// <summary>Per-layout input overrides, for targets that mean different
+        /// things on different devices. The 2015 Steam Controller has NO
+        /// physical right thumbstick: its RIGHT TRACKPAD acts as the right
+        /// stick, and SDL routes the right-pad click to
+        /// SDL_GAMEPAD_BUTTON_RIGHT_STICK (slot 9), not the touchpad-click
+        /// slot. Without this the layout mapped BOTH trackpad clicks to slot
+        /// 16, so the two pads were the same input and read as "the touchpad
+        /// twice" (owner report 2026-08-12). The Steam Deck keeps the default:
+        /// it has a real right stick at slot 9 already, so its right-pad click
+        /// stays on the touchpad-click slot.</summary>
+        private static readonly Dictionary<string, Dictionary<string, (string kind, int code)>> _layoutInputOverrides = new()
+        {
+            ["steamcontroller"] = new()
+            {
+                // SDL_hidapi_steam.c: the left pad is "normally mapped to
+                // D-Pad" and the right pad drives RIGHTX/RIGHTY with its
+                // click on RIGHT_STICK. The surfaces carry inputKind so the
+                // client binds them as a D-pad zone and a right-stick zone
+                // instead of generic touch surfaces.
+                ["LeftTouchpad"] = ("pov", 0),           // left pad = D-pad surface
+                ["RightTouchpad"] = ("stick", 3),        // right pad = right stick surface
+                // On glass there is no touch-vs-click distinction, so the pad
+                // CLICK zones would sit on top of the surfaces and steal every
+                // touch. They yield: kind "none" tells the client to build no
+                // zone for them. The physical click semantics (dpad press /
+                // right-stick click) are carried by the surfaces themselves.
+                ["LeftTouchpadClick"] = ("none", 0),
+                ["RightTouchpadClick"] = ("none", 0),
+                ["LeftThumbButton"] = ("button", 8),     // the single physical stick is the LEFT stick
+            },
+        };
+
+        /// <summary>Resolves an overlay target to its (kind, code), honoring the
+        /// per-layout overrides before the shared default map.</summary>
+        private static bool ResolveInput(string typeKey, string target, out (string kind, int code) input)
+        {
+            if (typeKey != null
+                && _layoutInputOverrides.TryGetValue(typeKey, out var ov)
+                && ov.TryGetValue(target, out input))
+                return true;
+            return _targetInputMap.TryGetValue(target, out input);
+        }
+
         /// <summary>"path/Stem.png" + "Carbon" -> "path/Stem_Carbon.png".</summary>
         private static string WithFinish(string path, string finish)
         {
@@ -957,7 +1000,7 @@ namespace PadForge.Services
                       .Append(",\"w\":").Append(ov.Width)
                       .Append(",\"h\":").Append(ov.Height);
 
-                    if (_targetInputMap.TryGetValue(ov.TargetName, out var input))
+                    if (ResolveInput(def.TypeKey, ov.TargetName, out var input))
                     {
                         sb.Append(",\"inputKind\":\"").Append(input.kind).Append('"')
                           .Append(",\"inputCode\":").Append(input.code);

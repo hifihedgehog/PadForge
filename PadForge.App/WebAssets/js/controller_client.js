@@ -551,9 +551,35 @@
         var px = ref.x + (ref.w - pw) / 2;
         var gap = layout.baseHeight * 0.012;
         var py = ref.y - ph - gap;
-        // Keep it on-canvas: if there is no room above, sit it at the very top
-        // of the surface instead of clipping off the top edge.
-        if (py < 2) py = ref.y + gap;
+
+        // The strip above the pad is NOT guaranteed free: Create/Options
+        // flank the DualSense pad and the Deck packs controls beside its
+        // trackpads, and a blind pill covered them (owner report). Test the
+        // candidate against every other overlay, and when it collides with
+        // anything (or falls off-canvas), dock the pill INSIDE the surface
+        // along its top edge instead: within the pad nothing else can be, and
+        // it reads like a laptop trackpad's click strip.
+        function collides(cx, cy, cw, ch) {
+            for (var k = 0; k < layout.overlays.length; k++) {
+                var o = layout.overlays[k];
+                if (o === ov || o.target === surfaceTarget) continue;
+                if (o.target === ov.target) continue;
+                // Inflate by the 20% fat-finger padding button zones get, so
+                // the pill clears the TOUCH TARGETS, not just the art.
+                var padX = o.w * 0.2, padY = o.h * 0.2;
+                if (cx < o.x + o.w + padX && cx + cw > o.x - padX
+                    && cy < o.y + o.h + padY && cy + ch > o.y - padY)
+                    return true;
+            }
+            return false;
+        }
+        if (py < 2 || collides(px, py, pw, ph)) {
+            // Inside-top docking: full pad width minus margins, slim.
+            ph = Math.min(ph, ref.h * 0.22);
+            pw = ref.w * 0.86;
+            px = ref.x + (ref.w - pw) / 2;
+            py = ref.y + ref.h * 0.03;
+        }
 
         var pill = document.createElement("div");
         pill.className = "touch-zone touchpad-click-pill";

@@ -1070,9 +1070,11 @@ namespace PadForge.Tests
             };
             var full = PadForge.Engine.RemoteLink.LinkConnection.EncodeDeviceList(new[] { info }, "");
 
-            // Chop the v5 tail ([magic][nameLen=0] = 3, the peer machine name)
-            // and then the v4 tail ([magic][count] for one device = 2).
-            var withoutV4 = new byte[full.Length - 5];
+            // Chop the v6 tail ([magic][maskLen=0] for one device = 2, the
+            // supported-button masks), the v5 tail ([magic][nameLen=0] = 3,
+            // the peer machine name), and then the v4 tail ([magic][count]
+            // for one device = 2).
+            var withoutV4 = new byte[full.Length - 7];
             Array.Copy(full, withoutV4, withoutV4.Length);
 
             var round = PadForge.Engine.RemoteLink.LinkConnection.DecodeDeviceList(withoutV4);

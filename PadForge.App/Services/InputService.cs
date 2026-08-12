@@ -9191,6 +9191,11 @@ namespace PadForge.Services
                                 NumAxes = dev.NumAxes,
                                 NumButtons = dev.NumButtons,
                                 RawButtonCount = dev.RawButtonCount,
+                                // The REAL usable set. NumButtons is the
+                                // standardized 22-slot space for every SDL
+                                // gamepad, so without this the consumer listed
+                                // slots the pad does not physically have.
+                                SupportedButtonIndices = dev.SupportedButtonIndices,
                                 RawAxisCount = dev.RawAxisCount,
                                 HasExtraGenericAxes = dev.HasExtraGenericAxes,
                                 NumHats = dev.NumHats,

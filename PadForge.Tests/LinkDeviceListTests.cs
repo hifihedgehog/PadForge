@@ -139,6 +139,97 @@ namespace PadForge.Tests
         /// <summary>A corrupt extension tail must never cost the v1 records:
         /// the decoder falls back to the v1 result with no objects.</summary>
         [Fact]
+        public void SupportedButtonSet_CrossesTheWire_SoAPeerListsOnlyRealButtons()
+        {
+            // OWNER REPORT 2026-08-12: a 2026 Steam Controller shared over
+            // Remote Link listed 22 buttons on the consumer when the pad has
+            // 18. NumButtons is the standardized 22-slot space for EVERY SDL
+            // gamepad, and the owner narrows it by asking SDL_GamepadHasButton
+            // for slots 11-21. That set never crossed the wire, so the
+            // consumer synthesized a dense range and invented four buttons.
+            var sc2026 = new RemotePeerDeviceInfo
+            {
+                PeerLocalDeviceId = "sc2026", Name = "Steam Controller",
+                InputDeviceType = InputDeviceType.Gamepad,
+                NumAxes = 6, NumButtons = 22, RawButtonCount = 22, NumHats = 1,
+                // 0-10 standard (11), plus paddles 12-15, touchpad 16,
+                // and misc 17 and 19 = 18 real. 11, 18, 20 and 21 are the
+                // slots the pad does not have.
+                SupportedButtonIndices = new[] { 0,1,2,3,4,5,6,7,8,9,10, 12,13,14,15, 16, 17, 19 },
+            };
+
+            var round = LinkConnection.DecodeDeviceList(
+                LinkConnection.EncodeDeviceList(new[] { sc2026 }, ""));
+
+            Assert.Single(round);
+            Assert.Equal(sc2026.SupportedButtonIndices, round[0].SupportedButtonIndices);
+
+            // The consumer's device must expose exactly those, and its picker
+            // must list 18 buttons, not 22.
+            var dev = new RemotePeerDevice(round[0]);
+            Assert.Equal(18, dev.SupportedButtonIndices.Length);
+            Assert.Equal(sc2026.SupportedButtonIndices, dev.SupportedButtonIndices);
+
+            var buttons = dev.GetDeviceObjects().Where(o => o.IsButton).ToList();
+            Assert.Equal(18, buttons.Count);
+            // The phantom slots are gone...
+            Assert.DoesNotContain(buttons, b => b.InputIndex == 11);
+            Assert.DoesNotContain(buttons, b => b.InputIndex == 18);
+            // ...and the real ones are named the way the owner names them.
+            Assert.Equal("A", buttons.First(b => b.InputIndex == 0).Name);
+            Assert.Equal("Touchpad", buttons.First(b => b.InputIndex == 16).Name);
+        }
+
+        [Fact]
+        public void DenseButtonSet_StaysDense_AndCostsOneByte()
+        {
+            // Keyboards, mice and raw joysticks have no gating, so the mask is
+            // written as a single 0 byte and the consumer keeps its fallback.
+            // A 256-key keyboard must not spend 32 bytes per device list.
+            var kb = new RemotePeerDeviceInfo
+            {
+                PeerLocalDeviceId = "kb", Name = "Keyboard",
+                InputDeviceType = InputDeviceType.Keyboard,
+                NumButtons = 256, RawButtonCount = 256,
+                SupportedButtonIndices = Enumerable.Range(0, 256).ToArray(),
+            };
+            var encoded = LinkConnection.EncodeDeviceList(new[] { kb }, "");
+            var round = LinkConnection.DecodeDeviceList(encoded);
+            Assert.Single(round);
+            // Dense is signalled by absence, and the consumer rebuilds it.
+            Assert.Null(round[0].SupportedButtonIndices);
+            var dev = new RemotePeerDevice(round[0]);
+            // 255, not 256: the v2 tail carries RawButtonCount as ONE clamped
+            // byte, so a full 256-key keyboard loses its last index over the
+            // wire. Pre-existing and unrelated to the mask, recorded here so
+            // the clamp is a documented fact rather than a surprise.
+            Assert.Equal(255, dev.SupportedButtonIndices.Length);
+        }
+
+        [Fact]
+        public void PeerWithoutTheV6Tail_FallsBackToDense()
+        {
+            // An older peer stops before the v6 tail. The consumer must not
+            // end up with an empty button list.
+            var info = new RemotePeerDeviceInfo
+            {
+                PeerLocalDeviceId = "old", Name = "Old Pad",
+                InputDeviceType = InputDeviceType.Gamepad,
+                NumAxes = 6, NumButtons = 22, RawButtonCount = 22,
+            };
+            var full = LinkConnection.EncodeDeviceList(new[] { info }, "");
+            // Chop the v6 tail ([magic][maskLen=0] = 2).
+            var older = new byte[full.Length - 2];
+            Array.Copy(full, older, older.Length);
+
+            var round = LinkConnection.DecodeDeviceList(older);
+            Assert.Single(round);
+            Assert.Null(round[0].SupportedButtonIndices);
+            var dev = new RemotePeerDevice(round[0]);
+            Assert.Equal(22, dev.SupportedButtonIndices.Length);
+        }
+
+        [Fact]
         public void MalformedExtension_FallsBackToV1()
         {
             var info = ConsumerInfo();
@@ -157,10 +248,11 @@ namespace PadForge.Tests
             // [magic][serial len=0 (2B)][pads=0][objCount=0 (2B)] = 6, the
             // v2 ext [magic][rawButtonCount=0] = 2, the v3 ext
             // [magic][caps2=0] = 2 (#241 NFC capability), the v4 ext
-            // [magic][rawAxisCount=0] = 2 (#193 over the wire), and the v5 ext
-            // [magic][nameLen=0 (2B)] = 3 (the peer machine name). The v1
-            // section length falls out of it.
-            int v1Len = bare.Length - 15;
+            // [magic][rawAxisCount=0] = 2 (#193 over the wire), the v5 ext
+            // [magic][nameLen=0 (2B)] = 3 (the peer machine name), and the v6
+            // ext [magic][maskLen=0] = 2 (the supported-button mask, dense for
+            // this record). The v1 section length falls out of it.
+            int v1Len = bare.Length - 17;
             Assert.Equal(0xE2, bare[v1Len]);
 
             var corrupt = new byte[v1Len + 3];

@@ -663,7 +663,7 @@ namespace PadForge.Services
                     // on first arrival, mirroring the touchpad pattern, so the
                     // Devices page and the gyro pipeline discover the source
                     // the moment it streams.
-                    if (!device.HasGyro) { device.HasGyro = true; device.HasAccel = true; }
+                    if (!device.HasGyro) device.EnableMotionCaps();
                     float gx = root.TryGetProperty("gx", out var gxp) ? (float)gxp.GetDouble() : 0f;
                     float gy = root.TryGetProperty("gy", out var gyp) ? (float)gyp.GetDouble() : 0f;
                     float gz = root.TryGetProperty("gz", out var gzp) ? (float)gzp.GetDouble() : 0f;

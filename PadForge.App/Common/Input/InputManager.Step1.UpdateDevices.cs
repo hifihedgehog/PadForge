@@ -2078,6 +2078,28 @@ namespace PadForge.Common.Input
             ud.LoadFromWebDevice(device);
             ud.IsOnline = true;
 
+            // A web pad's motion caps flip on the first motion message, AFTER
+            // this connect-time snapshot, so re-sync the UserDevice and refresh
+            // the UI when they do. Idempotent handler, unsubscribed on
+            // unregister below so a reconnect does not stack subscriptions.
+            device.CapabilitiesChanged -= OnWebDeviceCapabilitiesChanged;
+            device.CapabilitiesChanged += OnWebDeviceCapabilitiesChanged;
+
+            DevicesUpdated?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnWebDeviceCapabilitiesChanged()
+        {
+            // Fired on the WS receive thread. Re-load every web UserDevice's
+            // caps from its live device (cheap, a handful of pads) and raise
+            // DevicesUpdated; the App layer marshals the UI refresh.
+            try
+            {
+                foreach (var ud in SettingsManager.UserDevices.Items)
+                    if (ud?.Device is WebControllerDevice web)
+                        ud.LoadFromWebDevice(web);
+            }
+            catch { }
             DevicesUpdated?.Invoke(this, EventArgs.Empty);
         }
 
@@ -2181,6 +2203,14 @@ namespace PadForge.Common.Input
         /// </summary>
         public void UnregisterExternalDevice(Guid instanceGuid)
         {
+            // Drop the motion-cap subscription if this was a web pad.
+            try
+            {
+                var udev = SettingsManager.UserDevices.Items.FirstOrDefault(u => u.InstanceGuid == instanceGuid);
+                if (udev?.Device is WebControllerDevice web)
+                    web.CapabilitiesChanged -= OnWebDeviceCapabilitiesChanged;
+            }
+            catch { }
             var devices = SettingsManager.UserDevices;
             if (devices == null) return;
 

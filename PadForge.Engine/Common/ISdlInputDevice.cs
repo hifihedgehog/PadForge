@@ -38,6 +38,13 @@ namespace PadForge.Engine
         /// </summary>
         int[] SupportedButtonIndices { get; }
 
+        /// <summary>The axis positions this device actually has, sparse. Null
+        /// means "dense": every index below the axis count is real. Mirrors
+        /// <see cref="SupportedButtonIndices"/>, and exists because NumAxes is
+        /// the standardized 6-slot gamepad space rather than a count of the
+        /// pad's physical axes.</summary>
+        int[] SupportedAxisIndices => null;
+
         /// <summary>
         /// Native SDL_Gamepad pointer for this device, or
         /// <see cref="IntPtr.Zero"/> if the device wasn't opened as a

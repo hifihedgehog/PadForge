@@ -93,6 +93,12 @@ namespace PadForge.Engine
         /// </summary>
         public int[] SupportedButtonIndices { get; private set; } = Array.Empty<int>();
 
+        /// <summary>The axis twin of <see cref="SupportedButtonIndices"/>: the
+        /// standard slots this pad physically has (SDL_GamepadHasAxis) plus the
+        /// real extras. Shipped to Remote Link consumers via the v7 tail so a
+        /// stickless pad never advertises phantom stick axes remotely.</summary>
+        public int[] SupportedAxisIndices { get; private set; }
+
         /// <summary>Native SDL_Gamepad pointer when opened as a Gamepad
         /// (i.e. <see cref="GameController"/> is non-zero).  Returns
         /// IntPtr.Zero for devices opened as raw joysticks only.  Used by
@@ -369,6 +375,7 @@ namespace PadForge.Engine
             }
 
             SupportedButtonIndices = ComputeSupportedButtonIndices();
+            SupportedAxisIndices = ComputeSupportedAxisIndices();
 
             // SDL3 may return a raw VID/PID string (e.g., "0x16c0/0x05e1") for devices
             // not in its internal database. Fall back to the Windows HID product string.
@@ -2100,18 +2107,7 @@ namespace PadForge.Engine
         /// Order matches PadForge internal mapping: LX, LY, LT, RX, RY, RT.
         /// </summary>
         private static string GetGamepadAxisName(int axisIndex)
-        {
-            return axisIndex switch
-            {
-                0 => "Left Stick X",
-                1 => "Left Stick Y",
-                2 => "Left Trigger",
-                3 => "Right Stick X",
-                4 => "Right Stick Y",
-                5 => "Right Trigger",
-                _ => $"Axis {axisIndex}"
-            };
-        }
+            => GamepadObjectNames.Axis(axisIndex);
 
         /// <summary>
         /// Returns a gamepad-friendly button name for the standardized gamepad
@@ -2122,34 +2118,7 @@ namespace PadForge.Engine
         /// device-object enumeration on <see cref="SDL_GamepadHasButton"/>.
         /// </summary>
         private static string GetGamepadButtonName(int buttonIndex)
-        {
-            return buttonIndex switch
-            {
-                0 => "A",
-                1 => "B",
-                2 => "X",
-                3 => "Y",
-                4 => "Left Shoulder",
-                5 => "Right Shoulder",
-                6 => "Back",
-                7 => "Start",
-                8 => "Left Stick Button",
-                9 => "Right Stick Button",
-                10 => "Guide",
-                11 => "Misc 1",
-                12 => "Right Paddle 1",
-                13 => "Left Paddle 1",
-                14 => "Right Paddle 2",
-                15 => "Left Paddle 2",
-                16 => "Touchpad Click",
-                17 => "Misc 2",
-                18 => "Misc 3",
-                19 => "Misc 4",
-                20 => "Misc 5",
-                21 => "Misc 6",
-                _ => $"Button {buttonIndex}"
-            };
-        }
+            => GamepadObjectNames.Button(buttonIndex);
 
         /// <summary>
         /// Maps a PadForge button position (0-21) to the SDL gamepad button
@@ -2175,6 +2144,33 @@ namespace PadForge.Engine
         /// <summary>Open-time presence of extended positions 11-21 (from
         /// the SDL_GamepadHasButton probe); null before the probe runs.</summary>
         private bool[] _extButtonPresent;
+
+        /// <summary>The axis twin of <see cref="ComputeSupportedButtonIndices"/>.
+        /// NumAxes is pinned to 6 for EVERY SDL-recognized gamepad, so it says
+        /// nothing about which sticks and triggers the pad physically has. The
+        /// object enumeration already asks SDL_GamepadHasAxis before emitting a
+        /// standard slot; this records the same answer so a consumer sharing
+        /// this device over Remote Link can apply it too.</summary>
+        private int[] ComputeSupportedAxisIndices()
+        {
+            var list = new System.Collections.Generic.List<int>(NumAxes);
+            int standard = Math.Min(NumAxes, 6);
+            for (int i = 0; i < standard; i++)
+            {
+                if (GameController != IntPtr.Zero)
+                {
+                    int sdlAxis = GamepadAxisForPosition(i);
+                    if (sdlAxis < 0 || !SDL_GamepadHasAxis(GameController, sdlAxis)) continue;
+                }
+                list.Add(i);
+            }
+            // Extra generic axes past the standardized block are always real.
+            int top = HasExtraGenericAxes
+                ? Math.Min(RawAxisCount, CustomInputState.MaxAxis)
+                : NumAxes;
+            for (int i = 6; i < top; i++) list.Add(i);
+            return list.ToArray();
+        }
 
         private int[] ComputeSupportedButtonIndices()
         {

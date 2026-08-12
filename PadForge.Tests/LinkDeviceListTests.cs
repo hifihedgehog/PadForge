@@ -177,7 +177,9 @@ namespace PadForge.Tests
             Assert.DoesNotContain(buttons, b => b.InputIndex == 18);
             // ...and the real ones are named the way the owner names them.
             Assert.Equal("A", buttons.First(b => b.InputIndex == 0).Name);
-            Assert.Equal("Touchpad", buttons.First(b => b.InputIndex == 16).Name);
+            // The owner's exact string ("Touchpad Click", not the consumer's
+            // old near-miss "Touchpad"), so LocalizeObjectName's switch hits.
+            Assert.Equal("Touchpad Click", buttons.First(b => b.InputIndex == 16).Name);
         }
 
         [Fact]
@@ -230,6 +232,90 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void SupportedAxisSet_AndSdlGuid_CrossTheWire()
+        {
+            // The axis twin of the button-set fix, same audit (2026-08-12). A
+            // stickless gamepad (NumAxes pinned to 6 like every SDL gamepad)
+            // must not offer Left/Right Stick axes on the consumer: the
+            // default profile auto-binds on that list. And the SDL GUID rides
+            // along so a mapping report for a peer's pad is complete.
+            var wiimote = new RemotePeerDeviceInfo
+            {
+                PeerLocalDeviceId = "wii", Name = "Wii Remote",
+                InputDeviceType = InputDeviceType.Gamepad,
+                NumAxes = 6, NumButtons = 22, RawButtonCount = 22, NumHats = 1,
+                SupportedAxisIndices = new[] { 2, 5 }, // triggers only
+                SdlGuid = "050082790d000000000000006800000",
+            };
+            var round = LinkConnection.DecodeDeviceList(
+                LinkConnection.EncodeDeviceList(new[] { wiimote }, ""));
+
+            Assert.Single(round);
+            Assert.Equal(new[] { 2, 5 }, round[0].SupportedAxisIndices);
+            Assert.Equal(wiimote.SdlGuid, round[0].SdlGuid);
+
+            var dev = new RemotePeerDevice(round[0]);
+            Assert.Equal(new[] { 2, 5 }, dev.SupportedAxisIndices);
+            Assert.Equal(wiimote.SdlGuid, dev.SdlGuid);
+
+            var axes = dev.GetDeviceObjects()
+                .Where(o => (o.ObjectType & DeviceObjectTypeFlags.AbsoluteAxis) != 0).ToList();
+            Assert.Equal(2, axes.Count);
+            // No phantom sticks, and the owner's exact axis names.
+            Assert.DoesNotContain(axes, a => a.Name == "Left Stick X");
+            Assert.Equal("Left Trigger", axes.First(a => a.InputIndex == 2).Name);
+            Assert.Equal("Right Trigger", axes.First(a => a.InputIndex == 5).Name);
+        }
+
+        [Fact]
+        public void RawAxisInventory_ReachesTheConsumerDevice()
+        {
+            // v3/v4 carried RawAxisCount + HasExtraGenericAxes for a year and
+            // NOBODY read them on the consumer: RemotePeerDevice inherited the
+            // interface defaults (RawAxisCount => NumAxes, extras => false),
+            // so a shared 16-axis device was capped at 6 pickable axes while
+            // the frame codec shipped all of them. The audit's top finding.
+            var ds3 = new RemotePeerDeviceInfo
+            {
+                PeerLocalDeviceId = "ds3", Name = "DS3 SDF",
+                InputDeviceType = InputDeviceType.Gamepad,
+                NumAxes = 6, RawAxisCount = 16, HasExtraGenericAxes = true,
+                NumButtons = 22, RawButtonCount = 22,
+            };
+            var round = LinkConnection.DecodeDeviceList(
+                LinkConnection.EncodeDeviceList(new[] { ds3 }, ""));
+            var dev = new RemotePeerDevice(round[0]);
+            Assert.Equal(16, dev.RawAxisCount);
+            Assert.True(dev.HasExtraGenericAxes);
+            var axes = dev.GetDeviceObjects()
+                .Where(o => (o.ObjectType & DeviceObjectTypeFlags.AbsoluteAxis) != 0).ToList();
+            Assert.Equal(16, axes.Count); // all 16, not 6
+        }
+
+        [Fact]
+        public void RemoteButtonAndAxisNames_MatchTheOwnersExactStrings()
+        {
+            // LocalizeObjectName is a literal-string switch keyed on the
+            // owner's names. "Left Bumper" (the consumer's old near-miss for
+            // "Left Shoulder") missed every case arm, so a shared pad showed
+            // raw English in localized UIs. Both sides now read one table.
+            var pad = new RemotePeerDeviceInfo
+            {
+                PeerLocalDeviceId = "p", Name = "Pad",
+                InputDeviceType = InputDeviceType.Gamepad,
+                NumAxes = 6, NumButtons = 22, RawButtonCount = 22,
+            };
+            var dev = new RemotePeerDevice(pad);
+            var objs = dev.GetDeviceObjects();
+            Assert.Contains(objs, o => o.Name == "Left Shoulder");
+            Assert.Contains(objs, o => o.Name == "Left Stick Button");
+            Assert.Contains(objs, o => o.Name == "Touchpad Click");
+            Assert.Contains(objs, o => o.Name == "Left Stick X");
+            Assert.DoesNotContain(objs, o => o.Name == "Left Bumper");
+            Assert.DoesNotContain(objs, o => o.Name == "Left X");
+        }
+
+        [Fact]
         public void MalformedExtension_FallsBackToV1()
         {
             var info = ConsumerInfo();
@@ -251,8 +337,10 @@ namespace PadForge.Tests
             // [magic][rawAxisCount=0] = 2 (#193 over the wire), the v5 ext
             // [magic][nameLen=0 (2B)] = 3 (the peer machine name), and the v6
             // ext [magic][maskLen=0] = 2 (the supported-button mask, dense for
-            // this record). The v1 section length falls out of it.
-            int v1Len = bare.Length - 17;
+            // this record), and the v7 ext [magic][axisMask=0][guidLen=0 (2B)]
+            // = 4 (supported axes + SDL GUID). The v1 section length falls
+            // out of it.
+            int v1Len = bare.Length - 21;
             Assert.Equal(0xE2, bare[v1Len]);
 
             var corrupt = new byte[v1Len + 3];

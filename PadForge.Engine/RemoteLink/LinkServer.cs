@@ -54,8 +54,19 @@ namespace PadForge.Engine.RemoteLink
         // same free relays (IrohRelayClient). Control datagrams demux by
         // channel id, HELLOs by nonce, sealed session datagrams by AEAD trial
         // open, mirroring the UDP loop.
-        private IrohRelayClient _relay;
-        private readonly SemaphoreSlim _relayGate = new(1, 1);
+        // TWO relay clients, never one. Every running instance is BOTH a host
+        // (listening on the identity its own code derives) and potentially a
+        // caller (dialling someone else's code, on whatever relay THAT code
+        // names). A single shared client made those two roles destroy each
+        // other: the dial disposed the listener's connection, and the
+        // listener's restart loop disposed the dial's a few seconds later, so
+        // a real two-machine connect could never survive. They are separate
+        // connections with separate identities, and each live connection
+        // remembers which one carries it.
+        private IrohRelayClient _relayListen;   // host identity, from the code
+        private IrohRelayClient _relayDial;     // ephemeral, for outgoing calls
+        private readonly SemaphoreSlim _relayListenGate = new(1, 1);
+        private readonly SemaphoreSlim _relayDialGate = new(1, 1);
         private readonly System.Collections.Concurrent.ConcurrentDictionary<uint, Action<byte[], byte[]>> _relayControlSinks = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Action<byte[]>> _relayHelloWaiters = new();
         /// <summary>First byte of a relay HELLO (peer key announcement). The
@@ -66,6 +77,14 @@ namespace PadForge.Engine.RemoteLink
         /// is listening on the code before it starts the handshake.</summary>
         public const byte TagRelayHelloAck = 0xC5;
         private readonly System.Collections.Concurrent.ConcurrentDictionary<uint, Action> _relayAckWaiters = new();
+        /// <summary>Listen-side control sinks keyed by the CALLER's relay key.
+        /// The code-derived channel is fixed, so keying the listen side by
+        /// channel would make two simultaneous callers overwrite each other.
+        /// Source keys are unique per caller, so this is collision-free.</summary>
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Action<byte[]>> _relayListenSinks = new();
+        /// <summary>Callers whose handshake is already running, so the repeated
+        /// HELLOs a caller sends while waiting never start a second one.</summary>
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> _relayInFlight = new();
         private int _punchSinkCounter;
 
         // Covers the human approval too; a slowloris (stalled handshake) still times
@@ -425,8 +444,10 @@ namespace PadForge.Engine.RemoteLink
             foreach (var c in conns) DropConnection(c);
             try { _tcp?.Stop(); } catch { }
             try { _udp?.Close(); } catch { }
-            try { _relay?.Dispose(); } catch { }
-            _relay = null;
+            try { _relayListen?.Dispose(); } catch { }
+            try { _relayDial?.Dispose(); } catch { }
+            _relayListen = null;
+            _relayDial = null;
             _cts?.Dispose();
             // Null like the failed-Start path: ConnectAsync reads _cts?.Token, and
             // a disposed-but-non-null CTS throws ObjectDisposedException there.
@@ -687,42 +708,67 @@ namespace PadForge.Engine.RemoteLink
             }
         }
 
-        /// <summary>Our relay identity, published in the rendezvous record so
-        /// the host can reach us when no punch lands. Null until
-        /// <see cref="EnsureRelayAsync"/> succeeds.</summary>
-        public byte[] RelayPublicKey => _relay?.PublicKey;
-        /// <summary>The relay host we are connected to, or null.</summary>
-        public string RelayHostName => _relay?.RelayHost;
+        /// <summary>Our OUTGOING relay identity, published in the rendezvous
+        /// record so a host can reach us when no punch lands. Null until
+        /// <see cref="EnsureDialRelayAsync"/> succeeds.</summary>
+        public byte[] RelayPublicKey => _relayDial?.PublicKey;
+        /// <summary>The relay host our outgoing client is connected to.</summary>
+        public string RelayHostName => _relayDial?.RelayHost;
 
-        /// <summary>Ensures a live authenticated connection to an iroh relay
-        /// (#294). Pass null to take the first reachable default relay. When
-        /// <paramref name="identitySeed"/> is given, the relay identity is
-        /// derived from it (the host's code-derived listening key) instead of
-        /// being random.  Returns the connected host, or null when none
-        /// answered.</summary>
-        public async Task<string> EnsureRelayAsync(string relayHost, CancellationToken ct, byte[] identitySeed = null)
+        /// <summary>Ensures the LISTENING relay connection: authenticated as
+        /// the identity derived from this host's own connection code, so
+        /// callers who know the code can address us with no lookup. Independent
+        /// of the outgoing client, so dialling a peer never tears this down.</summary>
+        public async Task<string> EnsureListenRelayAsync(string relayHost, byte[] identitySeed, CancellationToken ct)
         {
-            await _relayGate.WaitAsync(ct).ConfigureAwait(false);
+            if (identitySeed is not { Length: 32 }) return null;
+            await _relayListenGate.WaitAsync(ct).ConfigureAwait(false);
             try
             {
-                var live = _relay;
-                bool seedMatches = identitySeed == null
-                    || (live != null && live.PublicKey.AsSpan().SequenceEqual(PeerCrypto.DeriveEd25519PublicKey(identitySeed)));
-                if (live is { IsConnected: true } && seedMatches
+                var wantKey = PeerCrypto.DeriveEd25519PublicKey(identitySeed);
+                var live = _relayListen;
+                if (live is { IsConnected: true }
+                    && live.PublicKey.AsSpan().SequenceEqual(wantKey)
                     && (relayHost == null || string.Equals(live.RelayHost, relayHost, StringComparison.OrdinalIgnoreCase)))
                     return live.RelayHost;
                 try { live?.Dispose(); } catch { }
-                _relay = null;
-                var client = identitySeed != null ? new IrohRelayClient(identitySeed) : new IrohRelayClient();
+                _relayListen = null;
+                var client = new IrohRelayClient(identitySeed);
                 client.DatagramReceived += OnRelayDatagram;
                 var host = await client.ConnectAsync(relayHost, ct).ConfigureAwait(false);
                 if (host == null) { client.Dispose(); return null; }
-                _relay = client;
-                SdlDiagLog.WriteLine($"RELAY connected: {host} key={Convert.ToHexString(client.PublicKey).Substring(0, 16)}");
+                _relayListen = client;
+                SdlDiagLog.WriteLine($"RELAY listen-connected: {host} as {Convert.ToHexString(client.PublicKey).Substring(0, 16)}");
                 return host;
             }
             catch { return null; }
-            finally { _relayGate.Release(); }
+            finally { _relayListenGate.Release(); }
+        }
+
+        /// <summary>Ensures the OUTGOING relay connection (ephemeral identity),
+        /// used to dial a peer. Independent of the listening client, so an
+        /// incoming call is never disturbed by an outgoing one.</summary>
+        public async Task<string> EnsureDialRelayAsync(string relayHost, CancellationToken ct)
+        {
+            await _relayDialGate.WaitAsync(ct).ConfigureAwait(false);
+            try
+            {
+                var live = _relayDial;
+                if (live is { IsConnected: true }
+                    && (relayHost == null || string.Equals(live.RelayHost, relayHost, StringComparison.OrdinalIgnoreCase)))
+                    return live.RelayHost;
+                try { live?.Dispose(); } catch { }
+                _relayDial = null;
+                var client = new IrohRelayClient();
+                client.DatagramReceived += OnRelayDatagram;
+                var host = await client.ConnectAsync(relayHost, ct).ConfigureAwait(false);
+                if (host == null) { client.Dispose(); return null; }
+                _relayDial = client;
+                SdlDiagLog.WriteLine($"RELAY dial-connected: {host} as {Convert.ToHexString(client.PublicKey).Substring(0, 16)}");
+                return host;
+            }
+            catch { return null; }
+            finally { _relayDialGate.Release(); }
         }
 
         /// <summary>
@@ -740,10 +786,10 @@ namespace PadForge.Engine.RemoteLink
         public async Task ListenOnCodeRelayAsync(Dht.CodeRendezvous.RelayRendezvous rdv, CancellationToken ct)
         {
             if (rdv == null) return;
-            var host = await EnsureRelayAsync(rdv.Host, ct, rdv.PrivateKey).ConfigureAwait(false);
-            var relay = _relay;
+            var host = await EnsureListenRelayAsync(rdv.Host, rdv.PrivateKey, ct).ConfigureAwait(false);
+            var relay = _relayListen;
             if (host == null || relay == null) return;
-            SdlDiagLog.WriteLine($"RELAY listen: on {host} as {Convert.ToHexString(rdv.PublicKey).Substring(0, 16)} chan={rdv.Channel:X8}");
+            SdlDiagLog.WriteLine($"RELAY listen: on {host} as {Convert.ToHexString(rdv.PublicKey)} chan={rdv.Channel:X8}");
 
             while (!ct.IsCancellationRequested)
             {
@@ -756,19 +802,27 @@ namespace PadForge.Engine.RemoteLink
                 catch (OperationCanceledException) { break; }
                 finally { _relayHelloWaiters.TryRemove(waitKey, out _); }
 
-                SdlDiagLog.WriteLine($"RELAY listen: caller {Convert.ToHexString(callerKey).Substring(0, 16)}");
-                try
+                // Handle the call on its own task and go straight back to
+                // waiting. Awaiting it here meant one pending call held the
+                // whole listener: a first-contact pairing prompt waits on a
+                // human, and until they answered the host could accept nobody
+                // else (observed live, 2026-08-11).
+                string callerHex = Convert.ToHexString(callerKey);
+                if (!_relayInFlight.TryAdd(callerHex, 0)) continue; // retransmitted HELLO
+                SdlDiagLog.WriteLine($"RELAY listen: caller {callerHex.Substring(0, 16)}");
+                _ = Task.Run(async () =>
                 {
-                    await AcceptCodeRelayCallAsync(rdv, callerKey, ct).ConfigureAwait(false);
-                }
-                catch (Exception ex) { SdlDiagLog.WriteLine($"RELAY listen: call failed {ex.GetType().Name} {ex.Message}"); }
+                    try { await AcceptCodeRelayCallAsync(rdv, callerKey, ct).ConfigureAwait(false); }
+                    catch (Exception ex) { SdlDiagLog.WriteLine($"RELAY listen: call failed {ex.GetType().Name} {ex.Message}"); }
+                    finally { _relayInFlight.TryRemove(callerHex, out _); }
+                }, ct);
             }
         }
 
         private async Task AcceptCodeRelayCallAsync(
             Dht.CodeRendezvous.RelayRendezvous rdv, byte[] callerKey, CancellationToken ct)
         {
-            var relay = _relay;
+            var relay = _relayListen;
             if (relay == null) return;
 
             // The host answers the HELLO so the caller knows it is present,
@@ -783,23 +837,24 @@ namespace PadForge.Engine.RemoteLink
             bool asInitiator = CompareKeys(rdv.PublicKey, callerKey) < 0;
             var adapter = new RelayControlAdapter(relay, callerKey);
             string callerHex = Convert.ToHexString(callerKey);
-            _relayControlSinks[rdv.Channel] = (src, dg) =>
-            {
-                if (Convert.ToHexString(src) == callerHex) adapter.OnDatagram?.Invoke(dg);
-            };
+            _relayListenSinks[callerHex] = dg => adapter.OnDatagram?.Invoke(dg);
             try
             {
                 using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
-                timeout.CancelAfter(TimeSpan.FromSeconds(30));
+                // Generous: first contact shows a pairing prompt and waits on a
+                // person. The accept loop is no longer blocked meanwhile, so a
+                // long wait here costs nothing.
+                timeout.CancelAfter(TimeSpan.FromMinutes(3));
                 var expose = ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
                 var result = await PunchedConnection.ConnectRelayOnChannelAsync(
                     adapter, rdv.Channel, asInitiator,
                     _identity, _trust, expose, _caps, _approve, _nowUtc(), timeout.Token).ConfigureAwait(false);
                 if (result == null) { SdlDiagLog.WriteLine("RELAY listen: handshake did not complete"); return; }
                 SdlDiagLog.WriteLine("RELAY listen: handshake complete");
-                Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose, relayPeerKey: callerKey);
+                Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
+                    relayPeerKey: callerKey, relayClient: relay);
             }
-            finally { _relayControlSinks.TryRemove(rdv.Channel, out _); }
+            finally { _relayListenSinks.TryRemove(callerHex, out _); }
         }
 
         /// <summary>
@@ -815,8 +870,8 @@ namespace PadForge.Engine.RemoteLink
             if (rdv == null) return false;
             // The caller keeps its own ephemeral identity (only the host needs
             // the derived one), so two callers never collide on the relay.
-            var host = await EnsureRelayAsync(rdv.Host, ct).ConfigureAwait(false);
-            var relay = _relay;
+            var host = await EnsureDialRelayAsync(rdv.Host, ct).ConfigureAwait(false);
+            var relay = _relayDial;
             if (host == null || relay == null) return false;
 
             using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, _cts?.Token ?? CancellationToken.None);
@@ -862,7 +917,8 @@ namespace PadForge.Engine.RemoteLink
                         _identity, _trust, expose, _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
                     if (result == null) { SdlDiagLog.WriteLine("RELAY dial: handshake did not complete"); return false; }
                     SdlDiagLog.WriteLine("RELAY dial: handshake complete");
-                    Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose, relayPeerKey: rdv.PublicKey);
+                    Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
+                        relayPeerKey: rdv.PublicKey, relayClient: relay);
                     return true;
                 }
                 finally { _relayControlSinks.TryRemove(rdv.Channel, out _); }
@@ -896,8 +952,8 @@ namespace PadForge.Engine.RemoteLink
             IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, TimeSpan? timeout = null, CancellationToken ct = default)
         {
             if (sharedNonce is not { Length: 16 }) return false;
-            var host = await EnsureRelayAsync(relayHost, ct).ConfigureAwait(false);
-            var relay = _relay;
+            var host = await EnsureDialRelayAsync(relayHost, ct).ConfigureAwait(false);
+            var relay = _relayDial;
             if (host == null || relay == null) return false;
 
             uint channelId = UdpControlChannel.ChannelIdFromNonce(sharedNonce);
@@ -957,7 +1013,8 @@ namespace PadForge.Engine.RemoteLink
                     return false;
                 }
                 SdlDiagLog.WriteLine($"RELAY connect: handshake complete via {host}");
-                Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose, relayPeerKey: peerKey);
+                Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
+                    relayPeerKey: peerKey, relayClient: relay);
                 return true;
             }
             catch (Exception ex)
@@ -1007,6 +1064,9 @@ namespace PadForge.Engine.RemoteLink
                 }
                 if ((tag == UdpControlChannel.TagData || tag == UdpControlChannel.TagAck) && dg.Length >= 9)
                 {
+                    // Listen side first: keyed by the caller's own key, so it is
+                    // unambiguous even with several callers on the one channel.
+                    if (_relayListenSinks.TryGetValue(Convert.ToHexString(src), out var lsink)) { lsink(dg); return; }
                     uint chan = System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(dg.AsSpan(1));
                     if (_relayControlSinks.TryGetValue(chan, out var sink)) sink(src, dg);
                     return;
@@ -1045,7 +1105,7 @@ namespace PadForge.Engine.RemoteLink
                 _udp.SendTo(dg, ep);
                 return true;
             }
-            var relay = _relay;
+            var relay = c.RelayClient ?? _relayDial ?? _relayListen;
             var key = c.RelayPeerKey;
             if (relay != null && key != null)
             {
@@ -1226,7 +1286,7 @@ namespace PadForge.Engine.RemoteLink
             finally { System.Threading.Interlocked.Decrement(ref _pendingHandshakes); }
         }
 
-        private void Register(LinkConnectionResult result, TcpClient client, IPEndPoint peerUdpEndpoint, IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] relayPeerKey = null)
+        private void Register(LinkConnectionResult result, TcpClient client, IPEndPoint peerUdpEndpoint, IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] relayPeerKey = null, IrohRelayClient relayClient = null)
         {
             // Dedup: a reconnecting peer replaces its prior connection instead of
             // stacking a second one (and leaking the old socket/devices).
@@ -1244,6 +1304,7 @@ namespace PadForge.Engine.RemoteLink
                 RemoteDevices = new System.Collections.Concurrent.ConcurrentDictionary<byte, RemotePeerDevice>(),
                 PeerUdpEndpoint = peerUdpEndpoint,
                 RelayPeerKey = relayPeerKey,
+                RelayClient = relayClient,
                 Tcp = client,
                 PeerFingerprintHex = result.PeerFingerprintHex,
                 LastActivityTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
@@ -1546,6 +1607,10 @@ namespace PadForge.Engine.RemoteLink
             /// peer's 32-byte relay public key. Sends address it, receives
             /// demux by AEAD exactly like UDP.</summary>
             public byte[] RelayPeerKey;
+            /// <summary>WHICH relay connection carries this session. A session
+            /// established on the listening client must keep using it even
+            /// while an outgoing dial runs on the other one.</summary>
+            public IrohRelayClient RelayClient;
             public TcpClient Tcp;
             public string PeerFingerprintHex;
             public long LastActivityTicks; // QPC; updated on each verified datagram, read by the reaper

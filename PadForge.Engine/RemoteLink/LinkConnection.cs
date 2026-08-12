@@ -246,6 +246,18 @@ namespace PadForge.Engine.RemoteLink
         // raw joysticks and keeps them at one byte instead of 32.
         private const byte DeviceListExtV6Magic = 0xE7;
 
+        // Seventh extension tail: the axis twin of v6, plus the SDL GUID.
+        //  - SupportedAxisIndices, same bitmask shape as v6. NumAxes is pinned
+        //    to 6 for every SDL gamepad, so a stickless or triggerless pad
+        //    advertised phantom Left/Right Stick axes on the consumer, and the
+        //    default profile auto-bound both virtual sticks to axes that do
+        //    not exist (SettingsManager's HasAxis() trusts this list).
+        //  - SdlGuid, so a peer's controller can be reported upstream with a
+        //    complete dossier. The Devices page hides the row and drops the
+        //    sdl_guid query parameter when it is empty, so a mapping report
+        //    filed for a peer's pad was silently incomplete.
+        private const byte DeviceListExtV7Magic = 0xE8;
+
         // Shared by the handshake exchange AND the post-connect DeviceList sync (#138).
         // Each entry leads with the owner's STABLE slot, and caps now carry HasHaptic +
         // Online so a remote wheel's FFB pipeline runs and active/inactive propagates.
@@ -363,6 +375,15 @@ namespace PadForge.Engine.RemoteLink
             buf.Add(DeviceListExtV6Magic);
             for (int i = 0; i < count; i++)
                 WriteButtonMask(buf, devices[i]);
+
+            // v7 tail: supported axes + SDL GUID.
+            buf.Add(DeviceListExtV7Magic);
+            for (int i = 0; i < count; i++)
+            {
+                WriteIndexMask(buf, devices[i].SupportedAxisIndices,
+                    Math.Max(devices[i].RawAxisCount, devices[i].NumAxes));
+                WriteString(buf, devices[i].SdlGuid ?? "");
+            }
             return buf.ToArray();
         }
 
@@ -583,6 +604,33 @@ namespace PadForge.Engine.RemoteLink
                 catch
                 {
                     foreach (var info in list) info.SupportedButtonIndices = null;
+                    v1ExtOk = false; // cursor unreliable: do not read v7
+                }
+            }
+
+            // v7 tail: supported axes + SDL GUID. Its own guard, same as every
+            // tail before it; an older peer leaves both at their defaults.
+            if (v1ExtOk)
+            {
+                try
+                {
+                    if (o < data.Length && data[o] == DeviceListExtV7Magic)
+                    {
+                        o++;
+                        for (int i = 0; i < count; i++)
+                        {
+                            list[i].SupportedAxisIndices = ReadIndexMask(data, ref o);
+                            list[i].SdlGuid = ReadString(data, ref o);
+                        }
+                    }
+                }
+                catch
+                {
+                    foreach (var info in list)
+                    {
+                        info.SupportedAxisIndices = null;
+                        info.SdlGuid = null;
+                    }
                 }
             }
             return list;
@@ -592,9 +640,14 @@ namespace PadForge.Engine.RemoteLink
         /// bitmask, or a single 0 byte when the set is dense (which is the
         /// common case for everything that is not an SDL gamepad).</summary>
         private static void WriteButtonMask(List<byte> buf, RemotePeerDeviceInfo d)
+            => WriteIndexMask(buf, d.SupportedButtonIndices, Math.Max(d.RawButtonCount, d.NumButtons));
+
+        /// <summary>Writes a sparse index set as a compact bitmask, or a single
+        /// 0 byte when the set is dense (the common case for anything that is
+        /// not an SDL gamepad, which keeps a 256-key keyboard at one byte
+        /// instead of thirty-two).</summary>
+        private static void WriteIndexMask(List<byte> buf, int[] idx, int dense)
         {
-            var idx = d.SupportedButtonIndices;
-            int dense = Math.Max(d.RawButtonCount, d.NumButtons);
             if (idx == null || idx.Length == 0 || idx.Length == dense)
             {
                 buf.Add(0); // dense
@@ -612,6 +665,8 @@ namespace PadForge.Engine.RemoteLink
             buf.Add((byte)maskLen);
             buf.AddRange(mask);
         }
+
+        private static int[] ReadIndexMask(byte[] data, ref int o) => ReadButtonMask(data, ref o);
 
         private static int[] ReadButtonMask(byte[] data, ref int o)
         {

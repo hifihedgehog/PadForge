@@ -220,9 +220,11 @@ namespace PadForge.Tests
             // record B's caps byte, which is the condition under test: the
             // magic survives, A's caps parses, and B's read throws into the
             // catch.
-            // (+3 for the v5 tail, [magic][nameLen=0], and +3 for the v6
-            // tail, [magic][maskA][maskB], now the last section.)
-            var truncated = new byte[full.Length - 10];
+            // (+3 for the v5 tail, [magic][nameLen=0], +3 for the v6 tail,
+            // [magic][maskA][maskB], and +7 for the v7 tail,
+            // [magic][axisMaskA][guidLenA(2B)][axisMaskB][guidLenB(2B)],
+            // now the last section.)
+            var truncated = new byte[full.Length - 17];
             Array.Copy(full, truncated, truncated.Length);
 
             var list = LinkConnection.DecodeDeviceList(truncated);

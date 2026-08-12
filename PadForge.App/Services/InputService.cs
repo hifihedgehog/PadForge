@@ -9196,6 +9196,8 @@ namespace PadForge.Services
                                 // gamepad, so without this the consumer listed
                                 // slots the pad does not physically have.
                                 SupportedButtonIndices = dev.SupportedButtonIndices,
+                                SupportedAxisIndices = dev.SupportedAxisIndices,
+                                SdlGuid = dev.SdlGuid,
                                 RawAxisCount = dev.RawAxisCount,
                                 HasExtraGenericAxes = dev.HasExtraGenericAxes,
                                 NumHats = dev.NumHats,

@@ -402,20 +402,17 @@
             var zone = document.createElement("div");
             zone.className = "touch-zone";
 
-            // Touchpad click: exact positioning, invisible until pressed.
-            if (ov.target === "TouchpadClick") {
-                zone.style.left = (ov.x / layout.baseWidth * 100) + "%";
-                zone.style.top = (ov.y / layout.baseHeight * 100) + "%";
-                zone.style.width = (ov.w / layout.baseWidth * 100) + "%";
-                zone.style.height = (ov.h / layout.baseHeight * 100) + "%";
-                zone.style.zIndex = "15";
-                zone.style.borderRadius = "8px";
-                zone.style.border = "3px solid #00c8e8";
-                zone.style.background = "rgba(152,174,184,0.7)";
-                zone.style.opacity = "0";
-                zone.style.transition = "opacity 0.05s";
-                bindTouchpadClickZone(zone, ov);
-                touchLayer.appendChild(zone);
+            // Touchpad CLICK: a visible labelled pill sitting just above the
+            // touch surface, so the user has an obvious place to tap for the
+            // click that is distinct from the touch-drag surface. The DS4
+            // already read well because its click zone extended above the
+            // touchpad; this makes that same affordance explicit and gives
+            // the DualSense and Steam Deck (whose click and touch areas fully
+            // overlap) the same obvious target (owner report 2026-08-12).
+            if (ov.target === "TouchpadClick"
+                || ov.target === "LeftTouchpadClick"
+                || ov.target === "RightTouchpadClick") {
+                setupTouchpadClickPill(ov);
                 continue;
             }
 
@@ -536,22 +533,63 @@
         img.style.clipPath = "inset(" + topClip + "% 0 0 0)";
     }
 
+    // A visible "click" pill above the touch surface. Its position is derived
+    // from the paired surface so it lands in the exposed strip above the pad
+    // (or straddling the pad's top edge when the click and touch rects fully
+    // coincide, as on the Steam Deck).
+    function setupTouchpadClickPill(ov) {
+        var surfaceTarget = ov.target.replace("Click", "");
+        var surface = null;
+        for (var s = 0; s < layout.overlays.length; s++)
+            if (layout.overlays[s].target === surfaceTarget) { surface = layout.overlays[s]; break; }
+        var ref = surface || ov;
+
+        // Pill geometry in base units: a compact bar centered horizontally on
+        // the surface, its bottom edge just above the surface's top edge.
+        var pw = Math.min(ref.w * 0.6, layout.baseWidth * 0.16);
+        var ph = layout.baseHeight * 0.06;
+        var px = ref.x + (ref.w - pw) / 2;
+        var gap = layout.baseHeight * 0.012;
+        var py = ref.y - ph - gap;
+        // Keep it on-canvas: if there is no room above, sit it at the very top
+        // of the surface instead of clipping off the top edge.
+        if (py < 2) py = ref.y + gap;
+
+        var pill = document.createElement("div");
+        pill.className = "touch-zone touchpad-click-pill";
+        pill.style.left = (px / layout.baseWidth * 100) + "%";
+        pill.style.top = (py / layout.baseHeight * 100) + "%";
+        pill.style.width = (pw / layout.baseWidth * 100) + "%";
+        pill.style.height = (ph / layout.baseHeight * 100) + "%";
+        pill.style.zIndex = "16"; // above the touch surface (15)
+        pill.textContent = clickPillLabel(ov.target);
+        bindTouchpadClickZone(pill, ov);
+        touchLayer.appendChild(pill);
+    }
+
+    function clickPillLabel(target) {
+        if (target === "LeftTouchpadClick") return "\u25C9 L Click";
+        if (target === "RightTouchpadClick") return "\u25C9 R Click";
+        return "\u25C9 Click";
+    }
+
     function bindTouchpadClickZone(zone, ov) {
         // Touchpad click rides Buttons[16] on the server side
         // (SDL_GAMEPAD_BUTTON_TOUCHPAD's canonical slot — between paddles
         // and Misc2-Misc6 per SDL's enum order). Sent as a standard
         // button-press, same shape as every other web-controller button —
         // no bespoke {type:"touchpad", click:bool} wire format anymore.
+        var code = (ov && typeof ov.inputCode === "number") ? ov.inputCode : 16;
         function down(e) {
             e.preventDefault();
-            zone.style.opacity = "1";
-            send({ type: "input", kind: "button", code: 16, value: 1 });
+            zone.classList.add("pressed");
+            send({ type: "input", kind: "button", code: code, value: 1 });
             haptic();
         }
         function up(e) {
             e.preventDefault();
-            zone.style.opacity = "0";
-            send({ type: "input", kind: "button", code: 16, value: 0 });
+            zone.classList.remove("pressed");
+            send({ type: "input", kind: "button", code: code, value: 0 });
         }
         zone.addEventListener("touchstart", down, { passive: false });
         zone.addEventListener("touchend", up, { passive: false });

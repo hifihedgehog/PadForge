@@ -201,6 +201,47 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void PathOffer_CandidatesRoundTrip()
+        {
+            // The relay-to-direct upgrade (#294) ships the sender's candidate
+            // endpoints over the relayed session. A malformed or truncated
+            // list must decode to nothing rather than throw on the receive
+            // path, which runs on the datagram loop.
+            var eps = new[]
+            {
+                new IPEndPoint(IPAddress.Parse("203.0.113.7"), 27500),
+                new IPEndPoint(IPAddress.Parse("192.168.1.44"), 61000),
+            };
+            var encoded = LinkServer.EncodeCandidates(eps);
+            var back = LinkServer.DecodeCandidates(encoded);
+            Assert.Equal(2, back.Count);
+            Assert.Equal(eps[0], back[0]);
+            Assert.Equal(eps[1], back[1]);
+
+            Assert.Empty(LinkServer.DecodeCandidates(Array.Empty<byte>()));
+            Assert.Empty(LinkServer.DecodeCandidates(null));
+            // Truncated mid-candidate: decode what is whole, never throw.
+            var truncated = encoded.AsSpan(0, encoded.Length - 3).ToArray();
+            var partial = LinkServer.DecodeCandidates(truncated);
+            Assert.Single(partial);
+        }
+
+        [Fact]
+        public void PathOffer_IsDistinctFromEveryOtherMessageType()
+        {
+            // PathOffer was appended as type 8. The first byte of a sealed
+            // frame is (type<<4)|epoch, and the relay/punch lanes claim
+            // 0xC0-0xC5, so type 8 (0x8_) must not collide with them.
+            Assert.Equal(8, (byte)LinkMessageType.PathOffer);
+            for (int epoch = 0; epoch < 16; epoch++)
+            {
+                byte first = (byte)(((byte)LinkMessageType.PathOffer << 4) | epoch);
+                Assert.InRange(first, (byte)0x80, (byte)0x8F);
+                Assert.True(first < 0xC0 || first > 0xC5);
+            }
+        }
+
+        [Fact]
         public void Blake3DeriveKey_MatchesOfficialVector()
         {
             // Official BLAKE3 test vector (BLAKE3-team/BLAKE3

@@ -20,6 +20,7 @@
     // ── Config ──
     var params = new URLSearchParams(location.search);
     var layoutType = params.get("layout") || "xbox360";
+    var finish = params.get("finish") || "";
 
     // ── Client identity (per-tab AND per-layout-type so switching pages doesn't collide) ──
     var clientIdKey = "padforge_client_id_" + layoutType;
@@ -69,6 +70,12 @@
                     var intensity = Math.max(msg.left, msg.right) / 65535;
                     vibrate.call(navigator, Math.round(intensity * 200));
                 }
+            } else if (msg.type === "led") {
+                // Lightbar feedback (#296): the strip glows in the color the
+                // slot drives, exactly like a DualShock's bar.
+                setLedColor(msg.r | 0, msg.g | 0, msg.b | 0);
+            } else if (msg.type === "player") {
+                setPlayerPips(msg.index | 0);
             }
         };
 
@@ -108,12 +115,52 @@
             location.reload();
         });
 
+        // Lightbar strip (#296): a slim glow across the top edge, driven by
+        // the slot's LED color. Hidden until the first led message arrives so
+        // layouts with no lightbar identity show nothing.
+        ledStrip = document.createElement("div");
+        ledStrip.style.cssText = "position:fixed;top:0;left:0;right:0;height:6px;z-index:40;" +
+            "display:none;transition:background 0.15s;pointer-events:none;" +
+            "box-shadow:0 0 14px 2px rgba(0,0,0,0)";
+        document.body.appendChild(ledStrip);
+
+        // Player pips: little dots by the status bar, Xbox-ring style.
+        pipsEl = document.createElement("div");
+        pipsEl.style.cssText = "position:fixed;top:10px;right:10px;z-index:40;display:none;" +
+            "gap:5px;pointer-events:none";
+        document.body.appendChild(pipsEl);
+
         fetchLayoutAndBuild();
     });
 
+    var ledStrip = null, pipsEl = null;
+    function setLedColor(r, g, b) {
+        if (!ledStrip) return;
+        var c = "rgb(" + r + "," + g + "," + b + ")";
+        ledStrip.style.display = "block";
+        ledStrip.style.background = c;
+        ledStrip.style.boxShadow = "0 0 14px 2px " + c;
+    }
+    function setPlayerPips(index) {
+        if (!pipsEl) return;
+        pipsEl.style.display = "flex";
+        var html = "";
+        for (var i = 1; i <= 4; i++) {
+            var on = i === index;
+            html += "<div style='width:8px;height:8px;border-radius:50%;" +
+                "background:" + (on ? "#7CFC00" : "#333") + ";" +
+                (on ? "box-shadow:0 0 6px #7CFC00;" : "") + "'></div>";
+        }
+        if (index > 4) html = "<div style='color:#7CFC00;font:600 12px sans-serif'>P" + index + "</div>";
+        pipsEl.innerHTML = html;
+        pipsEl.style.gap = "5px";
+    }
+
     function fetchLayoutAndBuild() {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/api/layout?type=" + encodeURIComponent(layoutType), true);
+        var layoutUrl = "/api/layout?type=" + encodeURIComponent(layoutType);
+        if (finish) layoutUrl += "&finish=" + encodeURIComponent(finish);
+        xhr.open("GET", layoutUrl, true);
         xhr.onload = function () {
             if (xhr.status !== 200) {
                 setStatus("Failed to load layout");
@@ -299,22 +346,55 @@
         var axisCode = ov.inputCode;
         var target = ov.target;
 
+        // Analog trigger slider (#296, requested by eVenent, in the spirit of
+        // reWASD's mobile slider): a tap is still a full pull, but KEEPING the
+        // finger down and dragging vertically feathers the pull like a racing
+        // throttle. Drag down from the touch point to ease off, slide back up
+        // for full. The overlay art fills to the live value, so partial pulls
+        // are visible.
+        var startY = null, engaged = false, lastSent = -1, lastTs = 0;
+        var RANGE = 140; // css px of drag = the full analog range
+
+        function sendValue(frac) {
+            var v = Math.max(0, Math.min(1, frac));
+            var raw = Math.round(v * 65535);
+            var now = (window.performance && performance.now) ? performance.now() : Date.now();
+            if (raw === lastSent) return;
+            // Rate-limit mid-range updates; endpoints always go out.
+            if (now - lastTs < 16 && raw !== 0 && raw !== 65535) return;
+            lastSent = raw; lastTs = now;
+            setTriggerFill(target, v);
+            send({ type: "input", kind: "axis", code: axisCode, value: raw });
+        }
+        function pointY(e) {
+            return e.touches && e.touches.length ? e.touches[0].clientY : e.clientY;
+        }
         function down(e) {
             e.preventDefault();
-            setTriggerFill(target, 1.0);
-            send({ type: "input", kind: "axis", code: axisCode, value: 65535 });
+            engaged = true;
+            startY = pointY(e);
+            sendValue(1.0);
             haptic();
+        }
+        function move(e) {
+            if (!engaged) return;
+            e.preventDefault();
+            sendValue(1.0 - Math.max(0, pointY(e) - startY) / RANGE);
         }
         function up(e) {
             e.preventDefault();
+            if (!engaged) return;
+            engaged = false; startY = null; lastSent = -1;
             setTriggerFill(target, 0.0);
             send({ type: "input", kind: "axis", code: axisCode, value: 0 });
         }
 
         zone.addEventListener("touchstart", down, { passive: false });
+        zone.addEventListener("touchmove", move, { passive: false });
         zone.addEventListener("touchend", up, { passive: false });
         zone.addEventListener("touchcancel", up, { passive: false });
         zone.addEventListener("mousedown", down);
+        zone.addEventListener("mousemove", move);
         zone.addEventListener("mouseup", up);
         zone.addEventListener("mouseleave", up);
     }

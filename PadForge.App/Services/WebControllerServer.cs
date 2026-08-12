@@ -332,10 +332,8 @@ namespace PadForge.Services
                 string name;
                 if (isTouchpadClient)
                     name = $"Web Touchpad {padId}";
-                else if (typeKey == "ds4")
-                    name = $"DualShock 4 Web Controller {padId}";
                 else
-                    name = $"Xbox 360 Web Controller {padId}";
+                    name = $"{ResolveLayout(typeKey).NameStem} Web Controller {padId}";
                 // Pass typeKey explicitly so each layout (xbox360 / ds4 /
                 // touchpad) carries a distinct ProductGuid. Without this,
                 // FindOrCreateUserDevice's BT-reconnect fallback would
@@ -347,7 +345,21 @@ namespace PadForge.Services
                 // the Devices list.
                 var device = new WebControllerDevice(compositeKey, name, isTouchpadClient, typeKey);
                 if (hasTouchpad && !isTouchpadClient)
-                    device.HasTouchpad = true; // DS4 gamepad with touchpad zone
+                    device.HasTouchpad = true; // gamepad layout with a touchpad zone
+                if (!isTouchpadClient)
+                {
+                    // Declare the extended slots (paddles / Misc) this layout's
+                    // surface offers, so they surface in the picker with
+                    // canonical names instead of arriving as unmapped codes.
+                    var extDef = ResolveLayout(typeKey);
+                    var ext = new List<int>();
+                    foreach (var ov in extDef.Overlays)
+                        if (_targetInputMap.TryGetValue(ov.TargetName, out var im)
+                            && im.kind == "button" && im.code > 10 && im.code != 16
+                            && !ext.Contains(im.code))
+                            ext.Add(im.code);
+                    if (ext.Count > 0) device.SetExtendedButtons(ext.ToArray());
+                }
                 device.SetConnected(true);
 
                 var cts = new CancellationTokenSource();
@@ -358,6 +370,19 @@ namespace PadForge.Services
                 {
                     if (cts.IsCancellationRequested || ws.State != WebSocketState.Open) return;
                     _ = SendJsonAsync(ws, new { type = "rumble", left = (int)low, right = (int)high }, cts.Token, session.SendGate);
+                };
+                // Lightbar + player identity (#296): the phone renders the
+                // slot's LED color and player pips. Driven by the same
+                // identity pass that lights physical pads.
+                device.LedChanged += (r, g, b) =>
+                {
+                    if (cts.IsCancellationRequested || ws.State != WebSocketState.Open) return;
+                    _ = SendJsonAsync(ws, new { type = "led", r = (int)r, g = (int)g, b = (int)b }, cts.Token, session.SendGate);
+                };
+                device.PlayerIndexChanged += idx =>
+                {
+                    if (cts.IsCancellationRequested || ws.State != WebSocketState.Open) return;
+                    _ = SendJsonAsync(ws, new { type = "player", index = idx }, cts.Token, session.SendGate);
                 };
 
                 _clients[compositeKey] = session;
@@ -375,6 +400,9 @@ namespace PadForge.Services
 
                     // Send connection confirmation.
                     await SendJsonAsync(ws, new { type = "connected", padId, name }, cts.Token, session.SendGate);
+                    // A reconnecting client missed any LED/player push that
+                    // happened while it was away; replay the current state.
+                    device.ResendIdentity();
 
                     // Receive loop.
                     var buffer = new byte[1024];
@@ -549,13 +577,98 @@ namespace PadForge.Services
                         Load($"2DModels/{folder}/{ov.ImageFile}");
             }
 
-            LoadAll("XBOX360",    Xbox360Layout.BasePath,     Xbox360Layout.Overlays);
-            LoadAll("DS4",        DS4Layout.BasePath,         DS4Layout.Overlays);
-            LoadAll("DualSense",  DualSenseLayout.BasePath,   DualSenseLayout.Overlays);
-            LoadAll("XBOXONE",    XboxOneSLayout.BasePath,    XboxOneSLayout.Overlays);
-            LoadAll("XBOXSERIES", XboxSeriesXLayout.BasePath, XboxSeriesXLayout.Overlays);
+            foreach (var def in LayoutDefs)
+            {
+                LoadAll(def.Folder, def.BasePath, def.Overlays);
+                // Colorway variants: the finish-suffixed base art, plus any
+                // finish-suffixed overlay art (Xbox Series ships per-colorway
+                // stick and trigger PNGs). Missing files just don't cache,
+                // and the API only redirects to variants that did.
+                foreach (var finish in def.Finishes)
+                {
+                    Load(WithFinish(def.BasePath, finish));
+                    foreach (var ov in def.Overlays)
+                        if (!string.IsNullOrEmpty(ov.ImageFile))
+                            Load(WithFinish($"2DModels/{def.Folder}/{ov.ImageFile}", finish));
+                }
+            }
 
             return cache;
+        }
+
+        /// <summary>One row per servable layout: the 2D model class values,
+        /// the art folder, the device display-name stem, and the colorway
+        /// finishes whose base art ships. Adding a layout is one row; the
+        /// ProductGuid distinctness rule is upheld automatically because the
+        /// typeKey feeds WebControllerDevice's per-layout product hash.</summary>
+        private sealed class LayoutDef
+        {
+            public string TypeKey;
+            public string Folder;
+            public string NameStem;
+            public int BaseWidth, BaseHeight;
+            public string BasePath;
+            public double StickMaxTravel;
+            public OverlayElement[] Overlays;
+            public string[] Finishes;
+        }
+
+        private static readonly LayoutDef[] LayoutDefs =
+        {
+            new() { TypeKey = "xbox360", Folder = "XBOX360", NameStem = "Xbox 360",
+                    BaseWidth = Xbox360Layout.BaseWidth, BaseHeight = Xbox360Layout.BaseHeight,
+                    BasePath = Xbox360Layout.BasePath, StickMaxTravel = Xbox360Layout.StickMaxTravel,
+                    Overlays = Xbox360Layout.Overlays, Finishes = Array.Empty<string>() },
+            new() { TypeKey = "ds4", Folder = "DS4", NameStem = "DualShock 4",
+                    BaseWidth = DS4Layout.BaseWidth, BaseHeight = DS4Layout.BaseHeight,
+                    BasePath = DS4Layout.BasePath, StickMaxTravel = DS4Layout.StickMaxTravel,
+                    Overlays = DS4Layout.Overlays,
+                    Finishes = new[] { "GlacierWhite", "Gold", "MagmaRed", "MidnightBlue" } },
+            new() { TypeKey = "dualsense", Folder = "DualSense", NameStem = "DualSense",
+                    BaseWidth = DualSenseLayout.BaseWidth, BaseHeight = DualSenseLayout.BaseHeight,
+                    BasePath = DualSenseLayout.BasePath, StickMaxTravel = DualSenseLayout.StickMaxTravel,
+                    Overlays = DualSenseLayout.Overlays,
+                    Finishes = new[] { "CosmicRed", "GalacticPurple", "Midnight", "NovaPink", "StarlightBlue" } },
+            new() { TypeKey = "xboxone", Folder = "XBOXONE", NameStem = "Xbox One",
+                    BaseWidth = XboxOneSLayout.BaseWidth, BaseHeight = XboxOneSLayout.BaseHeight,
+                    BasePath = XboxOneSLayout.BasePath, StickMaxTravel = XboxOneSLayout.StickMaxTravel,
+                    Overlays = XboxOneSLayout.Overlays, Finishes = Array.Empty<string>() },
+            new() { TypeKey = "xboxseries", Folder = "XBOXSERIES", NameStem = "Xbox Series",
+                    BaseWidth = XboxSeriesXLayout.BaseWidth, BaseHeight = XboxSeriesXLayout.BaseHeight,
+                    BasePath = XboxSeriesXLayout.BasePath, StickMaxTravel = XboxSeriesXLayout.StickMaxTravel,
+                    Overlays = XboxSeriesXLayout.Overlays,
+                    Finishes = new[] { "Carbon", "DeepPink", "ElectricVolt", "PulseRed", "ShockBlue" } },
+            new() { TypeKey = "switchpro", Folder = "SWITCHPRO", NameStem = "Switch Pro",
+                    BaseWidth = SwitchProLayout.BaseWidth, BaseHeight = SwitchProLayout.BaseHeight,
+                    BasePath = SwitchProLayout.BasePath, StickMaxTravel = SwitchProLayout.StickMaxTravel,
+                    Overlays = SwitchProLayout.Overlays, Finishes = Array.Empty<string>() },
+            new() { TypeKey = "switch2pro", Folder = "SWITCH2PRO", NameStem = "Switch 2 Pro",
+                    BaseWidth = Switch2ProLayout.BaseWidth, BaseHeight = Switch2ProLayout.BaseHeight,
+                    BasePath = Switch2ProLayout.BasePath, StickMaxTravel = Switch2ProLayout.StickMaxTravel,
+                    Overlays = Switch2ProLayout.Overlays, Finishes = Array.Empty<string>() },
+            new() { TypeKey = "dualsenseedge", Folder = "DUALSENSEEDGE", NameStem = "DualSense Edge",
+                    BaseWidth = DualSenseEdgeLayout.BaseWidth, BaseHeight = DualSenseEdgeLayout.BaseHeight,
+                    BasePath = DualSenseEdgeLayout.BasePath, StickMaxTravel = DualSenseEdgeLayout.StickMaxTravel,
+                    Overlays = DualSenseEdgeLayout.Overlays, Finishes = Array.Empty<string>() },
+            new() { TypeKey = "steamdeck", Folder = "STEAMDECK", NameStem = "Steam Deck",
+                    BaseWidth = SteamDeckLayout.BaseWidth, BaseHeight = SteamDeckLayout.BaseHeight,
+                    BasePath = SteamDeckLayout.BasePath, StickMaxTravel = SteamDeckLayout.StickMaxTravel,
+                    Overlays = SteamDeckLayout.Overlays, Finishes = Array.Empty<string>() },
+            new() { TypeKey = "steamcontroller", Folder = "STEAMCONTROLLER", NameStem = "Steam Controller",
+                    BaseWidth = SteamControllerLayout.BaseWidth, BaseHeight = SteamControllerLayout.BaseHeight,
+                    BasePath = SteamControllerLayout.BasePath, StickMaxTravel = SteamControllerLayout.StickMaxTravel,
+                    Overlays = SteamControllerLayout.Overlays, Finishes = Array.Empty<string>() },
+        };
+
+        /// <summary>Resolves a layout request key (query value, any case,
+        /// legacy aliases included) to its registry row, defaulting to
+        /// xbox360 exactly as the old if-chain did.</summary>
+        private static LayoutDef ResolveLayout(string type)
+        {
+            string k = (type ?? "xbox360").Trim().ToLowerInvariant();
+            foreach (var d in LayoutDefs)
+                if (d.TypeKey == k) return d;
+            return LayoutDefs[0];
         }
 
         private static readonly Dictionary<string, (string kind, int code)> _targetInputMap = new()
@@ -580,7 +693,33 @@ namespace PadForge.Services
             ["LeftThumbRing"] = ("stick", 0),   // axes 0,1
             ["RightThumbRing"] = ("stick", 3),  // axes 3,4
             ["TouchpadClick"] = ("button", 16), // SDL_GAMEPAD_BUTTON_TOUCHPAD slot
+            // Extended standardized slots (SDL_gamepad.h): Misc1=11 is the
+            // Share/Mute/Capture/QAM family, paddles are 12-15 in R1/L1/R2/L2
+            // order, Misc2+=17.. carry per-device extras.
+            ["ButtonShare"] = ("button", 11),
+            ["ButtonMute"] = ("button", 11),
+            ["ButtonQuickAccess"] = ("button", 11),
+            ["ButtonC"] = ("button", 17),
+            ["RightPaddle"] = ("button", 12),
+            ["LeftPaddle"] = ("button", 13),
+            ["Paddle1"] = ("button", 12), // Deck grips, SDL order R1,L1,R2,L2
+            ["Paddle2"] = ("button", 13),
+            ["Paddle3"] = ("button", 14),
+            ["Paddle4"] = ("button", 15),
+            ["LeftFunction"] = ("button", 17),  // DualSense Edge Fn pair
+            ["RightFunction"] = ("button", 18),
+            ["LeftGrip"] = ("button", 13),
+            ["RightGrip"] = ("button", 12),
+            ["LeftTouchpadClick"] = ("button", 16),
+            ["RightTouchpadClick"] = ("button", 16),
         };
+
+        /// <summary>"path/Stem.png" + "Carbon" -> "path/Stem_Carbon.png".</summary>
+        private static string WithFinish(string path, string finish)
+        {
+            int dot = path.LastIndexOf('.');
+            return dot < 0 ? path : path.Substring(0, dot) + "_" + finish + path.Substring(dot);
+        }
 
         private void ServeLayoutApi(HttpListenerContext ctx)
         {
@@ -590,39 +729,22 @@ namespace PadForge.Services
                 // can request "?type=DualSense" or "?type=XBOXSERIES" directly.
                 // Legacy "ds4" / "xbox360" still work for older clients.
                 var type = ctx.Request.QueryString["type"] ?? "xbox360";
-                int baseWidth, baseHeight;
-                string basePath, folder;
-                double stickMaxTravel;
-                OverlayElement[] overlays;
-                if (type.Equals("ds4", StringComparison.OrdinalIgnoreCase) || type.Equals("DS4", StringComparison.OrdinalIgnoreCase))
+                var def = ResolveLayout(type);
+                int baseWidth = def.BaseWidth, baseHeight = def.BaseHeight;
+                string basePath = def.BasePath, folder = def.Folder;
+                double stickMaxTravel = def.StickMaxTravel;
+                OverlayElement[] overlays = def.Overlays;
+
+                // Colorway: swap in the finish-suffixed base art when it
+                // shipped. Overlay art swaps per-element below the same way.
+                var finish = ctx.Request.QueryString["finish"];
+                bool hasFinish = !string.IsNullOrEmpty(finish)
+                    && Array.FindIndex(def.Finishes, f => f.Equals(finish, StringComparison.OrdinalIgnoreCase)) >= 0;
+                if (hasFinish)
                 {
-                    baseWidth = DS4Layout.BaseWidth; baseHeight = DS4Layout.BaseHeight;
-                    basePath = DS4Layout.BasePath; overlays = DS4Layout.Overlays;
-                    stickMaxTravel = DS4Layout.StickMaxTravel; folder = "DS4";
-                }
-                else if (type.Equals("DualSense", StringComparison.OrdinalIgnoreCase))
-                {
-                    baseWidth = DualSenseLayout.BaseWidth; baseHeight = DualSenseLayout.BaseHeight;
-                    basePath = DualSenseLayout.BasePath; overlays = DualSenseLayout.Overlays;
-                    stickMaxTravel = DualSenseLayout.StickMaxTravel; folder = "DualSense";
-                }
-                else if (type.Equals("XBOXONE", StringComparison.OrdinalIgnoreCase))
-                {
-                    baseWidth = XboxOneSLayout.BaseWidth; baseHeight = XboxOneSLayout.BaseHeight;
-                    basePath = XboxOneSLayout.BasePath; overlays = XboxOneSLayout.Overlays;
-                    stickMaxTravel = XboxOneSLayout.StickMaxTravel; folder = "XBOXONE";
-                }
-                else if (type.Equals("XBOXSERIES", StringComparison.OrdinalIgnoreCase))
-                {
-                    baseWidth = XboxSeriesXLayout.BaseWidth; baseHeight = XboxSeriesXLayout.BaseHeight;
-                    basePath = XboxSeriesXLayout.BasePath; overlays = XboxSeriesXLayout.Overlays;
-                    stickMaxTravel = XboxSeriesXLayout.StickMaxTravel; folder = "XBOXSERIES";
-                }
-                else
-                {
-                    baseWidth = Xbox360Layout.BaseWidth; baseHeight = Xbox360Layout.BaseHeight;
-                    basePath = Xbox360Layout.BasePath; overlays = Xbox360Layout.Overlays;
-                    stickMaxTravel = Xbox360Layout.StickMaxTravel; folder = "XBOX360";
+                    finish = def.Finishes[Array.FindIndex(def.Finishes, f => f.Equals(finish, StringComparison.OrdinalIgnoreCase))];
+                    var variant = WithFinish(def.BasePath, finish);
+                    if (_imageCache != null && _imageCache.ContainsKey(variant)) basePath = variant;
                 }
 
                 var sb = new StringBuilder(4096);
@@ -648,7 +770,13 @@ namespace PadForge.Services
                         _ => "button"
                     };
 
-                    sb.Append("{\"image\":\"2DModels/").Append(folder).Append('/').Append(ov.ImageFile).Append('"')
+                    string ovPath = $"2DModels/{folder}/{ov.ImageFile}";
+                    if (hasFinish)
+                    {
+                        var ovVariant = WithFinish(ovPath, finish);
+                        if (_imageCache != null && _imageCache.ContainsKey(ovVariant)) ovPath = ovVariant;
+                    }
+                    sb.Append("{\"image\":\"").Append(ovPath).Append('"')
                       .Append(",\"target\":\"").Append(ov.TargetName).Append('"')
                       .Append(",\"type\":\"").Append(elementType).Append('"')
                       .Append(",\"x\":").Append(ov.X)
@@ -665,6 +793,12 @@ namespace PadForge.Services
                     sb.Append('}');
                 }
 
+                sb.Append("],\"finishes\":[");
+                for (int i = 0; i < def.Finishes.Length; i++)
+                {
+                    if (i > 0) sb.Append(',');
+                    sb.Append('"').Append(def.Finishes[i]).Append('"');
+                }
                 sb.Append("]}");
 
                 var json = sb.ToString();

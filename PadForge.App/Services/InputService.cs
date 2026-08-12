@@ -126,6 +126,7 @@ namespace PadForge.Services
         private int _rdvPolling;
         private volatile string _myCodeForRendezvous;
         private System.Threading.CancellationTokenSource _codeRelayCts;
+        private System.Threading.CancellationTokenSource _identityRelayCts;
         private string _lastHandledCall;
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, UserDevice ud, RemoteDeltaAccumulator acc, byte slot)> _remoteLinkExposed = new();
         private readonly object _remoteLinkExposedLock = new();
@@ -8550,6 +8551,13 @@ namespace PadForge.Services
                     // relay attempt still failed in the field.
                     StartCodeRelayListener(code, server);
 
+                    // STABLE identity listener: where a PAIRED peer reconnects
+                    // to after either side restarts. The code listener moves
+                    // whenever the code is re-minted, so it can never serve
+                    // reconnect; this address is derived from our long-term
+                    // key and never changes.
+                    StartIdentityRelayListener(identity, server);
+
                     // (Two-way model: both people paste the other's code and
                     // click Connect, so both actively punch. No passive arming.)
 
@@ -8577,7 +8585,14 @@ namespace PadForge.Services
                                 return await s.ConnectByPunchAsync(endpoints, nonce, asInitiator, BuildExposedDevices(), punchTimeout: null, ict).ConfigureAwait(false);
                             },
                             localNat: () => _linkServer?.Nat,
-                            log: msg => PadForge.Engine.SdlDiagLog.WriteLine("RLInternet " + msg));
+                            log: msg => PadForge.Engine.SdlDiagLog.WriteLine("RLInternet " + msg),
+                            connectByIdentityRelay: async (peerKey, cap, ict) =>
+                            {
+                                var s = _linkServer;
+                                if (s == null) return false;
+                                return await s.ConnectByIdentityRelayAsync(peerKey, cap, BuildExposedDevices(),
+                                    timeout: TimeSpan.FromSeconds(25), ct: ict).ConfigureAwait(false);
+                            });
 
                         _remoteLinkInternetTimer?.Dispose();
                         _remoteLinkInternetTimer = new System.Threading.Timer(_ => _ = InternetMaintainTick(), null, 3000, 60_000);
@@ -8668,6 +8683,34 @@ namespace PadForge.Services
         /// and waits there. A caller derives the same key from the code it
         /// dialled, so no lookup, no DHT convergence, and no NAT traversal is
         /// involved on this lane. Restarted whenever the code changes.</summary>
+        /// <summary>Arms the STABLE identity relay listener: the address a
+        /// paired peer reconnects to after a restart. Derived from our own
+        /// long-term identity key, so unlike the code listener it survives
+        /// re-minting, relaunching, and moving networks.</summary>
+        private void StartIdentityRelayListener(PeerIdentity identity, LinkServer server)
+        {
+            try
+            {
+                var rdv = PadForge.Engine.RemoteLink.Dht.CodeRendezvous.DeriveIdentityRelay(identity?.PublicKey);
+                if (rdv == null || server == null) return;
+                try { _identityRelayCts?.Cancel(); _identityRelayCts?.Dispose(); } catch { }
+                var cts = new System.Threading.CancellationTokenSource();
+                _identityRelayCts = cts;
+                _ = Task.Run(async () =>
+                {
+                    while (!cts.IsCancellationRequested)
+                    {
+                        try { await server.ListenOnIdentityRelayAsync(rdv, cts.Token).ConfigureAwait(false); }
+                        catch (OperationCanceledException) { break; }
+                        catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("RELAY identity listen restart: " + ex.Message); }
+                        if (cts.IsCancellationRequested) break;
+                        try { await Task.Delay(5000, cts.Token).ConfigureAwait(false); } catch { break; }
+                    }
+                });
+            }
+            catch (Exception ex) { PadForge.Engine.SdlDiagLog.WriteLine("RELAY identity listen arm failed: " + ex.Message); }
+        }
+
         private void StartCodeRelayListener(string code, LinkServer server)
         {
             try
@@ -8872,6 +8915,8 @@ namespace PadForge.Services
             _myCodeForRendezvous = null;
             try { _codeRelayCts?.Cancel(); _codeRelayCts?.Dispose(); } catch { }
             _codeRelayCts = null;
+            try { _identityRelayCts?.Cancel(); _identityRelayCts?.Dispose(); } catch { }
+            _identityRelayCts = null;
             _lastHandledCall = null;
             try { _internetService?.Dispose(); } catch { }
             _internetService = null;

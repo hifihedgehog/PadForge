@@ -340,6 +340,7 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_WebDescription => Get("Dashboard_WebDescription");
     public string Dashboard_EnableWeb => Get("Dashboard_EnableWeb");
     public string Dashboard_WebFooter => Get("Dashboard_WebFooter");
+    public string Dashboard_WebScanToOpen => Get("Dashboard_WebScanToOpen");
     public string Dashboard_RemoteLink => Get("Dashboard_RemoteLink");
     public string Dashboard_RemoteLinkDescription => Get("Dashboard_RemoteLinkDescription");
     public string Dashboard_EnableRemoteLink => Get("Dashboard_EnableRemoteLink");

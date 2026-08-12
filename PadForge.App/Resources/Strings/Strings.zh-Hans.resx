@@ -3073,4 +3073,5 @@
   <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>与对方交换代码：把对方的代码粘贴到你的连接框，对方也粘贴你的代码，然后双方都点击连接。这会通过互联网打开一条直连通道，无需 VPN。代码会在 Remote Link 运行时刷新。</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>此网络无法建立直接连接（看起来是移动热点或运营商级 NAT）。请使用 Tailscale 等 VPN，或改用家庭宽带连接。</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>找不到此电脑的公网地址（网络可能屏蔽了所需流量）。此处无法直接连接。请使用 VPN，或在同一网络内按地址连接。</value></data>
+  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>用手机相机扫描，或在浏览器中打开此地址：</value></data>
 </root>

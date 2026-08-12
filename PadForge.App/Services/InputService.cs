@@ -8376,12 +8376,24 @@ namespace PadForge.Services
 
         private void OnWebServerStatusChanged(object sender, string status)
         {
+            var url = _webServer?.Url;
             _dispatcher.BeginInvoke(() =>
             {
                 _mainVm.Dashboard.WebControllerStatus = status;
                 _mainVm.Dashboard.WebControllerClientCount = _webServer?.ClientCount ?? 0;
                 // Flame truth (#175 phase 2 item 2): lifecycle, not checkbox.
                 _mainVm.Dashboard.IsWebControllerRunning = _webServer != null;
+
+                // URL + QR for the card (#296): the phone types or scans to
+                // reach the controller. Rebuild the QR only when the URL
+                // changes, since building it is not free.
+                if (_mainVm.Dashboard.WebControllerUrl != url)
+                {
+                    _mainVm.Dashboard.WebControllerUrl = url;
+                    var qr = string.IsNullOrEmpty(url) ? null : WebControllerServer.RenderQr(url);
+                    _mainVm.Dashboard.WebControllerQr = qr;
+                    _mainVm.Dashboard.HasWebControllerQr = qr != null;
+                }
             });
         }
 

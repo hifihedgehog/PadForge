@@ -3095,4 +3095,5 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Scambia i codici con l'altra persona: incolla il suo nel tuo campo di connessione mentre lei incolla il tuo, poi cliccate entrambi su Connetti. Questo apre un percorso diretto via internet, senza VPN. Il codice si aggiorna mentre Remote Link è attivo.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Questa rete non consente connessioni dirette (sembra un hotspot mobile o un NAT dell'operatore). Usa una VPN come Tailscale, oppure connettiti da una rete fissa domestica.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Impossibile trovare l'indirizzo pubblico di questo PC (la rete potrebbe bloccare il traffico necessario). Le connessioni dirette non funzionano qui. Usa una VPN, oppure Connetti tramite indirizzo sulla stessa rete.</value></data>
+  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Inquadra con la fotocamera del telefono oppure apri questo indirizzo nel browser:</value></data>
 </root>

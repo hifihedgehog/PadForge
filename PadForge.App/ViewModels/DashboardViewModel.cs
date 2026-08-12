@@ -344,6 +344,36 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _webControllerClientCount, value);
         }
 
+        private string _webControllerUrl;
+
+        /// <summary>The live server URL (https:// when the secure lane bound),
+        /// shown on the card so a phone can type it. Empty when stopped.</summary>
+        public string WebControllerUrl
+        {
+            get => _webControllerUrl;
+            set => SetProperty(ref _webControllerUrl, value);
+        }
+
+        private System.Windows.Media.ImageSource _webControllerQr;
+
+        /// <summary>A QR of <see cref="WebControllerUrl"/>, so the phone opens
+        /// the controller by scanning instead of typing (#296). Null when
+        /// stopped, which hides the image on the card.</summary>
+        public System.Windows.Media.ImageSource WebControllerQr
+        {
+            get => _webControllerQr;
+            set => SetProperty(ref _webControllerQr, value);
+        }
+
+        private bool _hasWebControllerQr;
+
+        /// <summary>True when a QR is available (drives its visibility).</summary>
+        public bool HasWebControllerQr
+        {
+            get => _hasWebControllerQr;
+            set => SetProperty(ref _hasWebControllerQr, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Remote Link (issue #138)
         // ─────────────────────────────────────────────

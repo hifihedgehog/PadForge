@@ -3093,4 +3093,5 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Wissel codes uit met de ander: plak die van hen in je verbindingsvak terwijl zij die van jou plakken, en klik dan allebei op Verbinden. Dat opent een directe route via internet, zonder VPN. De code ververst terwijl Remote Link draait.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Dit netwerk kan geen directe verbindingen maken (het lijkt op een mobiele hotspot of carrier-grade NAT). Gebruik een VPN zoals Tailscale, of verbind vanaf thuisbreedband.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Kon het openbare adres van deze pc niet vinden (het netwerk blokkeert mogelijk het benodigde verkeer). Directe verbindingen werken hier niet. Gebruik een VPN, of Verbinden via adres op hetzelfde netwerk.</value></data>
+  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Scan met de camera van je telefoon of open dit adres in de browser:</value></data>
 </root>

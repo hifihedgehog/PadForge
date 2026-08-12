@@ -1589,6 +1589,24 @@
                                    FontFamily="{StaticResource TelemetryFontFamily}"
                                    Foreground="{DynamicResource ColdBrush}"/>
                     </StackPanel>
+
+                    <!-- URL + QR (#296): scan or type to open the controller.
+                         Only shown while the server is running. -->
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0"
+                                Visibility="{Binding HasWebControllerQr, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Border Background="White" CornerRadius="6" Padding="6" VerticalAlignment="Top">
+                            <Image Source="{Binding WebControllerQr}" Width="132" Height="132"
+                                   RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                   RenderOptions.EdgeMode="Aliased"/>
+                        </Border>
+                        <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Dashboard_WebScanToOpen, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,4"/>
+                            <ui:TextBox Text="{Binding WebControllerUrl, Mode=OneWay}" IsReadOnly="True"
+                                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Width="260"/>
+                        </StackPanel>
+                    </StackPanel>
+
                     <TextBlock Text="{Binding Dashboard_WebFooter, Source={x:Static strings:Strings.Instance}}"
                                FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                 </StackPanel>

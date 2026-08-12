@@ -3073,4 +3073,5 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Échangez les codes avec l'autre personne : collez le sien dans votre champ de connexion pendant qu'elle colle le vôtre, puis cliquez tous les deux sur Connecter. Cela ouvre un chemin direct via internet, sans VPN. Le code se rafraîchit tant que Remote Link fonctionne.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Ce réseau ne permet pas les connexions directes (cela ressemble à un point d'accès mobile ou à un NAT opérateur). Utilisez un VPN comme Tailscale, ou connectez-vous depuis une box internet.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Impossible de trouver l'adresse publique de ce PC (le réseau bloque peut-être le trafic nécessaire). Les connexions directes ne fonctionnent pas ici. Utilisez un VPN, ou Connexion par adresse sur le même réseau.</value></data>
+  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Scannez avec l'appareil photo du téléphone ou ouvrez cette adresse dans son navigateur :</value></data>
 </root>

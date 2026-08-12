@@ -35,6 +35,7 @@ namespace PadForge.Services
         private volatile bool _running;
         private int _port;
         private string _localIp;
+        private bool _https;
         private readonly ConcurrentDictionary<string, int> _typePadCounters = new();
         private readonly ConcurrentDictionary<string, int> _clientPadIds = new();
         private bool _disposed;
@@ -55,7 +56,11 @@ namespace PadForge.Services
         public int ClientCount => _clients.Count;
 
         /// <summary>The URL the server is listening on.</summary>
-        public string Url => _localIp != null ? $"http://{_localIp}:{_port}" : null;
+        public string Url => _localIp != null ? $"{(_https ? "https" : "http")}://{_localIp}:{_port}" : null;
+
+        /// <summary>True when serving HTTPS (a secure context, required for the
+        /// phone motion sensors, #296 phase 0).</summary>
+        public bool IsHttps => _https;
 
         // ─────────────────────────────────────────────
         //  Lifecycle
@@ -89,9 +94,28 @@ namespace PadForge.Services
                 // blocked thread.
                 System.Threading.Tasks.Task.Run(() => EnsureFirewallRule(port));
 
+                // Secure lane (#296 phase 0). DeviceMotionEvent only fires in
+                // a secure context, so bind a self-signed cert and serve
+                // https:// when the binding succeeds. Any failure (not
+                // elevated, netsh unavailable) falls back to plain http, and
+                // everything except the phone sensors still works.
+                _https = WebControllerTls.EnsureHttpsBinding(port) != null;
+
                 _listener = new HttpListener();
-                _listener.Prefixes.Add($"http://+:{port}/");
-                _listener.Start();
+                _listener.Prefixes.Add($"{(_https ? "https" : "http")}://+:{port}/");
+                try { _listener.Start(); }
+                catch when (_https)
+                {
+                    // The https prefix can fail even after a good sslcert bind
+                    // (namespace ACL, a stale binding). Retry as plain http so
+                    // the controller still serves.
+                    PadForge.Engine.SdlDiagLog.WriteLine("WEBTLS https listen failed, falling back to http");
+                    try { _listener.Close(); } catch { }
+                    _https = false;
+                    _listener = new HttpListener();
+                    _listener.Prefixes.Add($"http://+:{port}/");
+                    _listener.Start();
+                }
                 _running = true;
 
                 _acceptThread = new Thread(AcceptLoop)
@@ -101,8 +125,7 @@ namespace PadForge.Services
                 };
                 _acceptThread.Start();
 
-                var url = $"http://{_localIp}:{port}";
-                StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_RunningOn_Format, url));
+                StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_RunningOn_Format, Url));
                 return true;
             }
             catch (HttpListenerException ex)
@@ -281,6 +304,40 @@ namespace PadForge.Services
             {
                 try { ctx.Response.Close(); } catch { }
             }
+        }
+
+        /// <summary>Renders a URL to a QR image for the Dashboard card (#296),
+        /// so the phone scans instead of typing. Returns a frozen ImageSource,
+        /// or null if the URL will not encode.</summary>
+        public static System.Windows.Media.ImageSource RenderQr(string url)
+        {
+            try
+            {
+                var mods = QrCode.Encode(url);
+                if (mods == null) return null;
+                int size = mods.GetLength(0);
+                const int scale = 6, quiet = 3;
+                int dim = (size + quiet * 2) * scale;
+
+                var pixels = new byte[dim * dim]; // 8bpp grayscale, 0=black, 255=white
+                for (int i = 0; i < pixels.Length; i++) pixels[i] = 255;
+                for (int y = 0; y < size; y++)
+                    for (int x = 0; x < size; x++)
+                        if (mods[x, y])
+                            for (int dy = 0; dy < scale; dy++)
+                                for (int dx = 0; dx < scale; dx++)
+                                {
+                                    int px = (x + quiet) * scale + dx;
+                                    int py = (y + quiet) * scale + dy;
+                                    pixels[py * dim + px] = 0;
+                                }
+
+                var bmp = System.Windows.Media.Imaging.BitmapSource.Create(
+                    dim, dim, 96, 96, System.Windows.Media.PixelFormats.Gray8, null, pixels, dim);
+                bmp.Freeze();
+                return bmp;
+            }
+            catch { return null; }
         }
 
         private static string GetContentType(string path)

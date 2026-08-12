@@ -76,6 +76,7 @@ namespace PadForge.Engine
         // "Touchpad 0 Click" descriptor as the single source-of-truth.
         public int NumButtons =>
             _isTouchpadDevice ? 17
+            : _extendedMax >= 0 ? Math.Max(_extendedMax + 1, HasTouchpad ? 17 : 0)
             : HasTouchpad ? 17
             : NumGamepadButtons;
         public int RawButtonCount => NumButtons;
@@ -86,17 +87,39 @@ namespace PadForge.Engine
             {
                 if (_isTouchpadDevice)
                     return _touchpadOnlyButtons;
-                if (HasTouchpad)
-                {
-                    var a = new int[NumGamepadButtons + 1];
-                    for (int i = 0; i < NumGamepadButtons; i++) a[i] = i;
-                    a[NumGamepadButtons] = 16;
-                    return a;
-                }
-                var dense = new int[NumGamepadButtons];
-                for (int i = 0; i < NumGamepadButtons; i++) dense[i] = i;
-                return dense;
+                var list = new System.Collections.Generic.List<int>(NumGamepadButtons + 8);
+                for (int i = 0; i < NumGamepadButtons; i++) list.Add(i);
+                // Extended slots this layout's surface actually offers
+                // (paddles, Misc, per-layout extras), in canonical order.
+                foreach (int c in _extendedButtons)
+                    if (c != 16) list.Add(c);
+                if (HasTouchpad) list.Add(16);
+                list.Sort();
+                return list.ToArray();
             }
+        }
+
+        // Extended standardized slots (11-21) the ACTIVE LAYOUT offers:
+        // Misc 1 for Share/Mute/Capture/QAM, paddles 12-15, Misc 2+ for
+        // per-device extras. Set once by the server from the layout's
+        // overlay targets, so a Switch Pro web pad exposes its Capture
+        // button and a Steam Deck its four grips, while the plain Xbox 360
+        // layout stays at the standard 11.
+        private int[] _extendedButtons = Array.Empty<int>();
+        private int _extendedMax = -1;
+
+        /// <summary>Declares the extended button slots (11-21) present on the
+        /// active layout. Idempotent; slot 16 is carried by
+        /// <see cref="HasTouchpad"/> instead.</summary>
+        public void SetExtendedButtons(int[] codes)
+        {
+            var set = new System.Collections.Generic.SortedSet<int>();
+            if (codes != null)
+                foreach (int c in codes)
+                    if (c > 10 && c < 22 && c != 16) set.Add(c);
+            _extendedButtons = new int[set.Count];
+            set.CopyTo(_extendedButtons);
+            _extendedMax = _extendedButtons.Length > 0 ? _extendedButtons[_extendedButtons.Length - 1] : -1;
         }
         private static readonly int[] _touchpadOnlyButtons = { 16 };
         public IntPtr GamepadHandle => IntPtr.Zero;
@@ -125,6 +148,44 @@ namespace PadForge.Engine
         /// Parameters: (lowFrequency, highFrequency) in 0-65535 range.
         /// </summary>
         public event Action<ushort, ushort> RumbleRequested;
+
+        /// <summary>Lightbar feedback for the browser (#296): the phone
+        /// renders a glowing strip in this color, like a DualShock's bar.
+        /// Change-detected here so the identity pass can push every tick
+        /// without spamming the WebSocket.</summary>
+        public event Action<byte, byte, byte> LedChanged;
+
+        /// <summary>Player-number feedback for the browser (#296): the phone
+        /// shows Xbox-ring-style pips for the slot's displayed number.</summary>
+        public event Action<int> PlayerIndexChanged;
+
+        private int _lastLed = -1;
+        private int _lastPlayer = -1;
+
+        /// <summary>Sets the lightbar color shown on the browser client.</summary>
+        public void SetLed(byte r, byte g, byte b)
+        {
+            int packed = (r << 16) | (g << 8) | b;
+            if (packed == _lastLed) return;
+            _lastLed = packed;
+            LedChanged?.Invoke(r, g, b);
+        }
+
+        /// <summary>Sets the 1-based player number shown on the browser client.</summary>
+        public void SetPlayerNumber(int number)
+        {
+            if (number == _lastPlayer) return;
+            _lastPlayer = number;
+            PlayerIndexChanged?.Invoke(number);
+        }
+
+        /// <summary>Re-emits the current LED + player state, for a client that
+        /// reconnected after the last change was pushed.</summary>
+        public void ResendIdentity()
+        {
+            if (_lastPlayer > 0) PlayerIndexChanged?.Invoke(_lastPlayer);
+            if (_lastLed >= 0) LedChanged?.Invoke((byte)(_lastLed >> 16), (byte)(_lastLed >> 8), (byte)_lastLed);
+        }
 
         /// <summary>
         /// Creates a new web controller device.
@@ -262,7 +323,8 @@ namespace PadForge.Engine
             if (_isTouchpadDevice)
                 return Array.Empty<DeviceObjectItem>();
 
-            // Gamepad-shaped surface (6 axes + 11 buttons + 1 POV).
+            // Gamepad-shaped surface (6 axes + 11 buttons + extended
+            // layout buttons + 1 POV).
             // Touchpad finger axes and the touchpad click button do NOT
             // belong here — finger data lives in CustomInputState.Touchpad*
             // and the click bit lives at Buttons[16]. Adding them here
@@ -272,7 +334,7 @@ namespace PadForge.Engine
             // for any HasTouchpad device, so the same inputs appeared
             // twice. The touchpad descriptors are the right source for
             // mappings; this surface stays gamepad-shaped.
-            var items = new DeviceObjectItem[NumGamepadAxes + NumGamepadButtons + NumGamepadPovs];
+            var items = new DeviceObjectItem[NumGamepadAxes + NumGamepadButtons + _extendedButtons.Length + NumGamepadPovs];
             int idx = 0;
 
             // Axes.
@@ -301,6 +363,20 @@ namespace PadForge.Engine
                 };
             }
 
+            // Extended layout buttons (paddles / Misc), named canonically so
+            // the picker reads "Right Paddle 1", not "Button 12".
+            foreach (int c in _extendedButtons)
+            {
+                items[idx++] = new DeviceObjectItem
+                {
+                    InputIndex = c,
+                    ObjectTypeGuid = ObjectGuid.Button,
+                    Name = GamepadObjectNames.Button(c),
+                    ObjectType = DeviceObjectTypeFlags.PushButton,
+                    Offset = (NumGamepadAxes + c) * 4
+                };
+            }
+
             // POV.
             items[idx++] = new DeviceObjectItem
             {
@@ -308,7 +384,7 @@ namespace PadForge.Engine
                 ObjectTypeGuid = ObjectGuid.PovController,
                 Name = "D-Pad",
                 ObjectType = DeviceObjectTypeFlags.PointOfViewController,
-                Offset = (NumGamepadAxes + NumGamepadButtons) * 4
+                Offset = (NumGamepadAxes + NumGamepadButtons + _extendedButtons.Length) * 4
             };
 
             return items;

@@ -13,7 +13,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
             padding: 20px;
         }
@@ -25,71 +24,174 @@
         p.subtitle {
             font-size: 14px;
             color: #888;
-            margin-bottom: 40px;
+            margin-bottom: 28px;
         }
         .cards {
             display: flex;
-            gap: 24px;
+            gap: 20px;
             flex-wrap: wrap;
             justify-content: center;
+            max-width: 1240px;
         }
-        a.card {
+        .card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            width: 260px;
-            height: 200px;
+            width: 280px;
             background: #16213e;
             border: 2px solid #0f3460;
             border-radius: 16px;
-            text-decoration: none;
+            padding: 14px 12px 12px;
             color: #eee;
             transition: transform 0.15s, border-color 0.15s;
         }
-        a.card:hover, a.card:active {
-            transform: scale(1.05);
-            border-color: #e94560;
+        .card:hover { transform: scale(1.03); border-color: #e94560; }
+        .card a.face {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #eee;
+            width: 100%;
+        }
+        .card img.preview {
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            pointer-events: none;
         }
         .card .icon {
-            width: 64px;
-            height: 64px;
-            margin-bottom: 16px;
-        }
-        .card .icon svg {
             width: 100%;
-            height: 100%;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
         }
-        .card .label {
-            font-size: 20px;
-            font-weight: 600;
+        .card .icon svg { width: 64px; height: 64px; }
+        .card .label { font-size: 18px; font-weight: 600; }
+        .card .desc { font-size: 12px; color: #888; margin-top: 3px; }
+        .swatches {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
         }
-        .card .desc {
-            font-size: 12px;
-            color: #888;
-            margin-top: 4px;
+        .swatches a {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #444;
+            display: block;
         }
+        .swatches a:hover { border-color: #fff; transform: scale(1.15); }
+        .swatches a.default { background: linear-gradient(135deg, #666 50%, #333 50%); }
     </style>
 </head>
 <body>
     <h1>PadForge</h1>
-    <p class="subtitle">Choose a controller layout</p>
+    <p class="subtitle">Choose a controller layout. Tap a color to pick a finish.</p>
     <div class="cards">
-        <a class="card" href="/controller.html?layout=xbox360">
-            <div class="icon"><svg viewBox="0 0 32 32" fill="#107C10"><path d="M16 5.425c-1.888-1.125-4.106-1.922-6.473-2.249l-0.092-0.010c-0.070-0.005-0.152-0.008-0.234-0.008-0.613 0-1.188 0.16-1.687 0.441l0.017-0.009c2.357-1.634 5.277-2.61 8.426-2.61 0.008 0 0.016 0 0.024 0h0.019c0.005 0 0.011 0 0.018 0 3.157 0 6.086 0.976 8.501 2.642l-0.050-0.033c-0.478-0.272-1.051-0.433-1.662-0.433-0.085 0-0.169 0.003-0.252 0.009l0.011-0.001c-2.459 0.336-4.677 1.13-6.648 2.297l0.082-0.045zM5.554 5.268c-0.041 0.014-0.077 0.032-0.11 0.054l0.002-0.001c-2.758 2.723-4.466 6.504-4.466 10.684 0 3.584 1.256 6.875 3.353 9.457l-0.022-0.028c-1.754-3.261 4.48-12.455 7.61-16.159-3.53-3.521-5.277-4.062-6.015-4.062-0.010-0-0.021-0.001-0.032-0.001-0.115 0-0.225 0.021-0.326 0.060l0.006-0.002zM20.083 9.275c3.129 3.706 9.367 12.908 7.605 16.161 2.075-2.554 3.332-5.845 3.332-9.43 0-4.181-1.709-7.962-4.467-10.684l-0.002-0.002c-0.029-0.021-0.063-0.039-0.1-0.052l-0.003-0.001c-0.1-0.036-0.216-0.056-0.336-0.056-0.005 0-0.011 0-0.016 0h0.001c-0.741-0-2.485 0.543-6.014 4.063zM6.114 27.306c2.627 2.306 6.093 3.714 9.888 3.714s7.261-1.407 9.905-3.728l-0.017 0.015c2.349-2.393-5.402-10.901-9.89-14.29-4.483 3.39-12.24 11.897-9.886 14.29z"/></svg></div>
-            <div class="label">Xbox 360</div>
-            <div class="desc">Full controller with dual analog sticks</div>
-        </a>
-        <a class="card" href="/controller.html?layout=ds4">
-            <div class="icon"><svg viewBox="0 0 32 32" fill="#006FCD"><path d="M3.262 24.248c-2.374-0.681-2.767-2.084-1.69-2.899 0.776-0.51 1.668-0.954 2.612-1.288l0.087-0.027 7.017-2.516v2.89l-5.030 1.839c-0.881 0.339-1.031 0.79-0.299 1.032 0.365 0.093 0.783 0.147 1.214 0.147 0.615 0 1.204-0.109 1.749-0.308l-0.035 0.011 2.422-0.882v2.592c-0.15 0.037-0.32 0.055-0.487 0.091-0.775 0.136-1.667 0.214-2.577 0.214-1.778 0-3.486-0.298-5.078-0.846l0.110 0.033zM18.049 24.544l7.868-2.843c0.893-0.322 1.032-0.781 0.307-1.022-0.363-0.089-0.779-0.14-1.208-0.14-0.622 0-1.22 0.108-1.774 0.305l0.037-0.011-5.255 1.874v-2.983l0.3-0.106c1.050-0.349 2.284-0.62 3.557-0.761l0.083-0.008c0.468-0.050 1.010-0.078 1.559-0.078 1.877 0 3.677 0.331 5.343 0.939l-0.108-0.035c2.309 0.751 2.549 1.839 1.969 2.589-0.559 0.557-1.235 0.998-1.988 1.282l-0.039 0.013-10.677 3.883v-2.869zM12.231 4.248v21.927l4.892 1.576v-18.39c0-0.862 0.38-1.438 0.992-1.238 0.795 0.225 0.95 1.017 0.95 1.881v7.342c3.050 1.491 5.451-0.003 5.451-3.939 0-4.045-1.407-5.842-5.546-7.282-1.785-0.648-4.040-1.294-6.347-1.805l-0.389-0.072z"/></svg></div>
-            <div class="label">DualShock 4</div>
-            <div class="desc">Full controller with dual analog sticks</div>
-        </a>
-        <a class="card" href="/touchpad.html">
-            <div class="icon"><svg viewBox="0 0 32 32" fill="#e94560"><rect x="3" y="8" width="26" height="16" rx="3" ry="3" fill="none" stroke="#e94560" stroke-width="2"/><circle cx="12" cy="16" r="2" fill="#e94560" opacity="0.5"/><circle cx="20" cy="16" r="2" fill="#e94560" opacity="0.5"/></svg></div>
-            <div class="label">Touchpad</div>
-            <div class="desc">Multi-touch surface for DS4 touchpad</div>
-        </a>
+        <div class="card">
+            <a class="face" href="/controller.html?layout=xbox360">
+                <img class="preview" src="/img/2DModels/XBOX360/XB360_base.png" alt="">
+                <div class="label">Xbox 360</div>
+                <div class="desc">Classic layout, dual analog sticks</div>
+            </a>
+        </div>
+        <div class="card">
+            <a class="face" href="/controller.html?layout=xboxone">
+                <img class="preview" src="/img/2DModels/XBOXONE/XB1_S_base.png" alt="">
+                <div class="label">Xbox One</div>
+                <div class="desc">Xbox One S layout</div>
+            </a>
+        </div>
+        <div class="card">
+            <a class="face" href="/controller.html?layout=xboxseries">
+                <img class="preview" src="/img/2DModels/XBOXSERIES/XBSeries_base.png" alt="">
+                <div class="label">Xbox Series X|S</div>
+                <div class="desc">Share button, hybrid D-pad</div>
+            </a>
+            <div class="swatches">
+                <a class="default" href="/controller.html?layout=xboxseries" title="Robot White"></a>
+                <a style="background:#2d2d2d" href="/controller.html?layout=xboxseries&finish=Carbon" title="Carbon Black"></a>
+                <a style="background:#e75480" href="/controller.html?layout=xboxseries&finish=DeepPink" title="Deep Pink"></a>
+                <a style="background:#cddc39" href="/controller.html?layout=xboxseries&finish=ElectricVolt" title="Electric Volt"></a>
+                <a style="background:#d32f2f" href="/controller.html?layout=xboxseries&finish=PulseRed" title="Pulse Red"></a>
+                <a style="background:#1976d2" href="/controller.html?layout=xboxseries&finish=ShockBlue" title="Shock Blue"></a>
+            </div>
+        </div>
+        <div class="card">
+            <a class="face" href="/controller.html?layout=ds4">
+                <img class="preview" src="/img/2DModels/DS4/DS4_V2_base.png" alt="">
+                <div class="label">DualShock 4</div>
+                <div class="desc">Touchpad and lightbar</div>
+            </a>
+            <div class="swatches">
+                <a class="default" href="/controller.html?layout=ds4" title="Jet Black"></a>
+                <a style="background:#e8e8e8" href="/controller.html?layout=ds4&finish=GlacierWhite" title="Glacier White"></a>
+                <a style="background:#c9a227" href="/controller.html?layout=ds4&finish=Gold" title="Gold"></a>
+                <a style="background:#c0392b" href="/controller.html?layout=ds4&finish=MagmaRed" title="Magma Red"></a>
+                <a style="background:#1f3a93" href="/controller.html?layout=ds4&finish=MidnightBlue" title="Midnight Blue"></a>
+            </div>
+        </div>
+        <div class="card">
+            <a class="face" href="/controller.html?layout=dualsense">
+                <img class="preview" src="/img/2DModels/DualSense/DualSense_base.png" alt="">
+                <div class="label">DualSense</div>
+                <div class="desc">PS5 layout with mute button</div>
+            </a>
+            <div class="swatches">
+                <a class="default" href="/controller.html?layout=dualsense" title="White"></a>
+                <a style="background:#b0233a" href="/controller.html?layout=dualsense&finish=CosmicRed" title="Cosmic Red"></a>
+                <a style="background:#7b6bb7" href="/controller.html?layout=dualsense&finish=GalacticPurple" title="Galactic Purple"></a>
+                <a style="background:#23272f" href="/controller.html?layout=dualsense&finish=Midnight" title="Midnight Black"></a>
+                <a style="background:#f7a8c4" href="/controller.html?layout=dualsense&finish=NovaPink" title="Nova Pink"></a>
+                <a style="background:#7fb2d9" href="/controller.html?layout=dualsense&finish=StarlightBlue" title="Starlight Blue"></a>
+            </div>
+        </div>
+        <div class="card">
+            <a class="face" href="/controller.html?layout=dualsenseedge">
+                <img class="preview" src="/img/2DModels/DUALSENSEEDGE/DualSense_base.png" alt="">
+                <div class="label">DualSense Edge</div>
+                <div class="desc">Fn buttons and back paddles</div>
+            </a>
+        </div>
+        <div class="card">
+            <a class="face" href="/controller.html?layout=switchpro">
+                <img class="preview" src="/img/2DModels/SWITCHPRO/NSwitchPro_base.png" alt="">
+                <div class="label">Switch Pro</div>
+                <div class="desc">Nintendo layout with Capture</div>
+            </a>
+        </div>
+        <div class="card">
+            <a class="face" href="/controller.html?layout=switch2pro">
+                <img class="preview" src="/img/2DModels/SWITCH2PRO/NSwitchPro_base.png" alt="">
+                <div class="label">Switch 2 Pro</div>
+                <div class="desc">C button and back paddles</div>
+            </a>
+        </div>
+        <div class="card">
+            <a class="face" href="/controller.html?layout=steamdeck">
+                <img class="preview" src="/img/2DModels/STEAMDECK/SD_base.png" alt="">
+                <div class="label">Steam Deck</div>
+                <div class="desc">Dual trackpads and four grips</div>
+            </a>
+        </div>
+        <div class="card">
+            <a class="face" href="/controller.html?layout=steamcontroller">
+                <img class="preview" src="/img/2DModels/STEAMCONTROLLER/SC_base.png" alt="">
+                <div class="label">Steam Controller</div>
+                <div class="desc">Dual trackpads and paddles</div>
+            </a>
+        </div>
+        <div class="card">
+            <a class="face" href="/touchpad.html">
+                <div class="icon"><svg viewBox="0 0 32 32" fill="#e94560"><rect x="3" y="8" width="26" height="16" rx="3" ry="3" fill="none" stroke="#e94560" stroke-width="2"/><circle cx="12" cy="16" r="2" fill="#e94560" opacity="0.5"/><circle cx="20" cy="16" r="2" fill="#e94560" opacity="0.5"/></svg></div>
+                <div class="label">Touchpad</div>
+                <div class="desc">Multi-touch surface only</div>
+            </a>
+        </div>
     </div>
 </body>
 </html>

@@ -4033,6 +4033,32 @@ namespace PadForge.Services
         /// is cheap.</summary>
         private string _lastGuideLedApplySummary;
 
+        /// <summary>The Sony player colors (blue/red/green/pink), used for
+        /// the web lightbar when no explicit Lighting color is configured.</summary>
+        private static readonly (byte r, byte g, byte b)[] _webPlayerColors =
+        {
+            (0x00, 0x40, 0xFF), (0xFF, 0x00, 0x40), (0x00, 0xFF, 0x40), (0xFF, 0x00, 0xFF),
+        };
+
+        private (byte r, byte g, byte b) ResolveWebLightbar(ViewModels.PadViewModel padVm, Guid instanceGuid, int playerNumber)
+        {
+            try
+            {
+                if (padVm.PerDeviceSlotConfigs.TryGetValue(instanceGuid, out var cfg) && cfg != null)
+                {
+                    if (cfg.LightbarMode == ViewModels.LightbarMode.Off)
+                        return (0, 0, 0);
+                    if (cfg.LightbarMode != ViewModels.LightbarMode.PlayerNumber)
+                        // Static honors the picked color exactly; animated
+                        // modes show their base color on this surface (the
+                        // full animation engine stays with physical pads).
+                        return (cfg.LightbarRed, cfg.LightbarGreen, cfg.LightbarBlue);
+                }
+            }
+            catch { }
+            return _webPlayerColors[Math.Clamp(playerNumber - 1, 0, _webPlayerColors.Length - 1)];
+        }
+
         internal void ApplyGuideLeds()
         {
             try
@@ -4056,6 +4082,26 @@ namespace PadForge.Services
                     foreach (var dev in padVm.MappedDevices)
                     {
                         if (dev == null || dev.InstanceGuid == Guid.Empty) continue;
+
+                        // Web controller identity (#296, eVenent's ask): the
+                        // phone renders a lightbar and player pips. Player
+                        // number is the slot's displayed number; the bar
+                        // follows the device's Lighting config when one is
+                        // set (Static color honored, animated modes fall back
+                        // to their base color on this surface), else the Sony
+                        // player-color convention.
+                        {
+                            var wud = FindUserDevice(dev.InstanceGuid);
+                            if (wud?.Device is PadForge.Engine.WebControllerDevice web && wud.IsOnline)
+                            {
+                                int wn = SettingsManager.SlotOrders.GetGlobalSlotNumber(padVm.PadIndex);
+                                if (wn <= 0) wn = padVm.PadIndex + 1;
+                                web.SetPlayerNumber(wn);
+                                var (wr, wg, wb) = ResolveWebLightbar(padVm, dev.InstanceGuid, wn);
+                                web.SetLed(wr, wg, wb);
+                            }
+                        }
+
                         if (!padVm.PerDeviceSlotConfigs.TryGetValue(dev.InstanceGuid, out var cfg)
                             || cfg == null) continue;
                         if (cfg.GuideLedMode == ViewModels.GuideLedMode.DeviceDefault) continue;

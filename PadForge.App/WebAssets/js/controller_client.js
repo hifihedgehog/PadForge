@@ -273,10 +273,38 @@
         baseImg.src = "/img/" + layout.basePath;
         baseImg.onload = onResize;
 
+        // Layouts that ship only ACTIVE trigger art (Steam Deck, Steam
+        // Controller) have no TriggerBase element, and a trigger whose only
+        // image is clipped to the live pull is INVISIBLE at rest (owner
+        // report 2026-08-12). Note which triggers have a real base so a rest
+        // silhouette can be synthesized for the ones that do not.
+        var baseFor = {};
+        for (var b = 0; b < layout.overlays.length; b++) {
+            var bo = layout.overlays[b];
+            if (bo.type === "triggerBase")
+                baseFor[bo.target.replace("TriggerBase", "Trigger")] = true;
+        }
+
         for (var i = 0; i < layout.overlays.length; i++) {
             var ov = layout.overlays[i];
             if (ov.type === "touchpad") continue; // no image — handled by setupTouchpadZone
             if (!ov.image || ov.image.endsWith("/")) continue; // no image — touch-zone only
+
+            if (ov.type === "trigger" && !baseFor[ov.target]) {
+                // Synthetic rest state: the same art, dimmed, unclipped, and
+                // behind the live copy, exactly the role a TriggerBase plays.
+                var rest = document.createElement("img");
+                rest.src = "/img/" + ov.image;
+                rest.className = "overlay trigger-base";
+                rest.style.opacity = "0.45";
+                rest.style.zIndex = "1";
+                rest.style.left = (ov.x / layout.baseWidth * 100) + "%";
+                rest.style.top = (ov.y / layout.baseHeight * 100) + "%";
+                rest.style.width = (ov.w / layout.baseWidth * 100) + "%";
+                rest.style.height = (ov.h / layout.baseHeight * 100) + "%";
+                container.appendChild(rest);
+            }
+
             var img = document.createElement("img");
             img.src = "/img/" + ov.image;
             img.dataset.target = ov.target;

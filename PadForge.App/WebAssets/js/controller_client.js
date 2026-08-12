@@ -47,7 +47,12 @@
 
     function connect() {
         var proto = location.protocol === "https:" ? "wss:" : "ws:";
-        var hasTouchpad = layout && layout.overlays && layout.overlays.some(function(o) { return o.type === "touchpad"; });
+        var hasTouchpad = layout && layout.overlays && layout.overlays.some(function(o) {
+            // Only generic touch surfaces make this a touchpad device. A
+            // surface with an inputKind is repurposed (Steam Controller: the
+            // left pad IS the d-pad, the right pad IS the right stick).
+            return o.type === "touchpad" && !o.inputKind;
+        });
         var wsUrl = proto + "//" + location.host + "/ws?id=" + encodeURIComponent(clientId) + "&layout=" + encodeURIComponent(layoutType);
         if (hasTouchpad) wsUrl += "&touchpad=1";
         ws = new WebSocket(wsUrl);
@@ -372,10 +377,19 @@
             var ov = layout.overlays[i];
 
             if (ov.type === "stickRing" || ov.type === "stickClick") continue;
+            // Explicitly disabled for this layout (e.g. the Steam Controller's
+            // trackpad click zones, which would steal touches from the
+            // repurposed pad surfaces underneath).
+            if (ov.inputKind === "none") continue;
 
-            // Touchpad zone: multi-touch surface for DS4 touchpad emulation.
+            // Touchpad zone. A surface with an inputKind is repurposed:
+            // the 2015 Steam Controller's left pad acts as the D-PAD and its
+            // right pad as the RIGHT STICK (that is how SDL maps the real
+            // hardware). Everything else is the generic multi-touch surface.
             if (ov.type === "touchpad") {
-                setupTouchpadZone(ov, layout);
+                if (ov.inputKind === "pov") bindDpadSurface(ov);
+                else if (ov.inputKind === "stick") bindStickSurface(ov);
+                else setupTouchpadZone(ov, layout);
                 continue;
             }
 
@@ -543,6 +557,95 @@
         zone.addEventListener("touchend", up, { passive: false });
         zone.addEventListener("touchcancel", up, { passive: false });
         zone.addEventListener("mousedown", down);
+        zone.addEventListener("mouseup", up);
+        zone.addEventListener("mouseleave", up);
+    }
+
+    // ── Repurposed touch surfaces (Steam Controller 2015) ──
+
+    function makeSurfaceZone(ov) {
+        var zone = document.createElement("div");
+        zone.className = "touch-zone";
+        zone.style.left = (ov.x / layout.baseWidth * 100) + "%";
+        zone.style.top = (ov.y / layout.baseHeight * 100) + "%";
+        zone.style.width = (ov.w / layout.baseWidth * 100) + "%";
+        zone.style.height = (ov.h / layout.baseHeight * 100) + "%";
+        zone.style.zIndex = "10";
+        touchLayer.appendChild(zone);
+        return zone;
+    }
+
+    function surfacePoint(zone, e) {
+        var t = e.touches && e.touches.length ? e.touches[0] : e;
+        var r = zone.getBoundingClientRect();
+        return {
+            x: ((t.clientX - r.left) / r.width - 0.5) * 2,
+            y: ((t.clientY - r.top) / r.height - 0.5) * 2
+        };
+    }
+
+    // The left pad as an 8-way D-pad: touch position picks the direction,
+    // release centers the hat.
+    function bindDpadSurface(ov) {
+        var zone = makeSurfaceZone(ov);
+        var active = false;
+        function update(e) {
+            var p = surfacePoint(zone, e);
+            if (Math.sqrt(p.x * p.x + p.y * p.y) < 0.22) {
+                send({ type: "input", kind: "pov", code: 0, value: -1 });
+                return;
+            }
+            var deg = Math.atan2(p.x, -p.y) * 180 / Math.PI;
+            if (deg < 0) deg += 360;
+            send({ type: "input", kind: "pov", code: 0, value: (Math.round(deg / 45) % 8) * 4500 });
+        }
+        function down(e) { e.preventDefault(); active = true; update(e); haptic(); }
+        function move(e) { if (active) { e.preventDefault(); update(e); } }
+        function up(e) {
+            if (!active) return;
+            e.preventDefault(); active = false;
+            send({ type: "input", kind: "pov", code: 0, value: -1 });
+        }
+        zone.addEventListener("touchstart", down, { passive: false });
+        zone.addEventListener("touchmove", move, { passive: false });
+        zone.addEventListener("touchend", up, { passive: false });
+        zone.addEventListener("touchcancel", up, { passive: false });
+        zone.addEventListener("mousedown", down);
+        zone.addEventListener("mousemove", move);
+        zone.addEventListener("mouseup", up);
+        zone.addEventListener("mouseleave", up);
+    }
+
+    // The right pad as a stick: absolute touch position is the deflection,
+    // release recenters. ov.inputCode is the base axis (3 = RX/RY).
+    function bindStickSurface(ov) {
+        var zone = makeSurfaceZone(ov);
+        var baseAxis = ov.inputCode || 3;
+        var active = false, lastTs = 0;
+        function update(e) {
+            var now = (window.performance && performance.now) ? performance.now() : Date.now();
+            if (now - lastTs < 16) return;
+            lastTs = now;
+            var p = surfacePoint(zone, e);
+            var mag = Math.sqrt(p.x * p.x + p.y * p.y);
+            if (mag > 1) { p.x /= mag; p.y /= mag; }
+            send({ type: "input", kind: "axis", code: baseAxis, value: Math.round((p.x * 0.5 + 0.5) * 65535) });
+            send({ type: "input", kind: "axis", code: baseAxis + 1, value: Math.round((p.y * 0.5 + 0.5) * 65535) });
+        }
+        function down(e) { e.preventDefault(); active = true; lastTs = 0; update(e); }
+        function move(e) { if (active) { e.preventDefault(); update(e); } }
+        function up(e) {
+            if (!active) return;
+            e.preventDefault(); active = false;
+            send({ type: "input", kind: "axis", code: baseAxis, value: 32767 });
+            send({ type: "input", kind: "axis", code: baseAxis + 1, value: 32767 });
+        }
+        zone.addEventListener("touchstart", down, { passive: false });
+        zone.addEventListener("touchmove", move, { passive: false });
+        zone.addEventListener("touchend", up, { passive: false });
+        zone.addEventListener("touchcancel", up, { passive: false });
+        zone.addEventListener("mousedown", down);
+        zone.addEventListener("mousemove", move);
         zone.addEventListener("mouseup", up);
         zone.addEventListener("mouseleave", up);
     }

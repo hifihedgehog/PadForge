@@ -232,6 +232,20 @@ namespace PadForge.Engine.RemoteLink
         // found. Same append-only guarantees: an old peer stops before it.
         private const byte DeviceListExtV5Magic = 0xE6;
 
+        // Sixth extension tail: the owner's REAL supported-button set, per
+        // device. NumButtons is the standardized 22-slot space for every SDL
+        // gamepad, not a count of what the pad physically has: the owner gates
+        // slots 11-21 on SDL_GamepadHasButton, so a 2026 Steam Controller
+        // supports 18 of the 22. Only the owner can know that, and it never
+        // crossed the wire, so the consumer synthesized a dense range and
+        // listed four buttons that do not exist (owner report 2026-08-12).
+        //
+        // Encoding, per device: [maskLen][maskLen bytes], LSB-first bitmask
+        // over button indices. maskLen 0 means "dense" (every index below the
+        // raw count is supported), which is the truth for keyboards, mice and
+        // raw joysticks and keeps them at one byte instead of 32.
+        private const byte DeviceListExtV6Magic = 0xE7;
+
         // Shared by the handshake exchange AND the post-connect DeviceList sync (#138).
         // Each entry leads with the owner's STABLE slot, and caps now carry HasHaptic +
         // Online so a remote wheel's FFB pipeline runs and active/inactive propagates.
@@ -344,6 +358,11 @@ namespace PadForge.Engine.RemoteLink
             // no matter how it found us.
             buf.Add(DeviceListExtV5Magic);
             WriteString(buf, localMachineName ?? SafeMachineName());
+
+            // v6 tail: the real supported-button set per device.
+            buf.Add(DeviceListExtV6Magic);
+            for (int i = 0; i < count; i++)
+                WriteButtonMask(buf, devices[i]);
             return buf.ToArray();
         }
 
@@ -544,9 +563,68 @@ namespace PadForge.Engine.RemoteLink
                         if (!string.IsNullOrWhiteSpace(nm)) peerMachineName = nm.Trim();
                     }
                 }
-                catch { peerMachineName = null; }
+                catch { peerMachineName = null; v1ExtOk = false; }
+            }
+
+            // v6 tail: the owner's real supported-button set. Its own guard.
+            // Absence (an older peer) leaves the field null and the consumer
+            // falls back to the dense range it always used.
+            if (v1ExtOk)
+            {
+                try
+                {
+                    if (o < data.Length && data[o] == DeviceListExtV6Magic)
+                    {
+                        o++;
+                        for (int i = 0; i < count; i++)
+                            list[i].SupportedButtonIndices = ReadButtonMask(data, ref o);
+                    }
+                }
+                catch
+                {
+                    foreach (var info in list) info.SupportedButtonIndices = null;
+                }
             }
             return list;
+        }
+
+        /// <summary>Writes a device's supported-button set as a compact
+        /// bitmask, or a single 0 byte when the set is dense (which is the
+        /// common case for everything that is not an SDL gamepad).</summary>
+        private static void WriteButtonMask(List<byte> buf, RemotePeerDeviceInfo d)
+        {
+            var idx = d.SupportedButtonIndices;
+            int dense = Math.Max(d.RawButtonCount, d.NumButtons);
+            if (idx == null || idx.Length == 0 || idx.Length == dense)
+            {
+                buf.Add(0); // dense
+                return;
+            }
+            int highest = 0;
+            foreach (int i in idx) if (i > highest) highest = i;
+            int maskLen = Math.Min((highest / 8) + 1, 255);
+            var mask = new byte[maskLen];
+            foreach (int i in idx)
+            {
+                int by = i / 8;
+                if (by < maskLen) mask[by] |= (byte)(1 << (i % 8));
+            }
+            buf.Add((byte)maskLen);
+            buf.AddRange(mask);
+        }
+
+        private static int[] ReadButtonMask(byte[] data, ref int o)
+        {
+            int maskLen = data[o++];
+            if (maskLen == 0) return null; // dense: consumer keeps its fallback
+            var list = new List<int>();
+            for (int by = 0; by < maskLen; by++)
+            {
+                byte m = data[o++];
+                for (int bit = 0; bit < 8; bit++)
+                    if ((m & (1 << bit)) != 0) list.Add(by * 8 + bit);
+            }
+            return list.ToArray();
         }
 
         private static void WriteString(List<byte> buf, string s)

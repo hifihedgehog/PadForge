@@ -95,6 +95,16 @@ namespace PadForge.Engine.RemoteLink
         /// <summary>The mappable inputs forwarded from the peer device's own
         /// GetDeviceObjects(). When null/empty, a gamepad shape is synthesized.</summary>
         public DeviceObjectItem[] DeviceObjects { get; set; }
+
+        /// <summary>The owner's REAL set of usable button indices, sparse.
+        /// A gamepad reports 22 standardized slots but physically has only
+        /// some of them: the owner gates slots 11-21 on SDL_GamepadHasButton,
+        /// so a 2026 Steam Controller supports 18 of the 22. The consumer used
+        /// to synthesize a dense 0..RawButtonCount-1 range and therefore
+        /// listed buttons the device does not have (owner report: 22 shown,
+        /// 18 real). Null means the peer predates the v6 tail, in which case
+        /// the dense fallback is all we can do.</summary>
+        public int[] SupportedButtonIndices { get; set; }
     }
 
     /// <summary>
@@ -167,8 +177,17 @@ namespace PadForge.Engine.RemoteLink
 
             // The full raw button set is mappable, so support every index the
             // extras reach, not just the standardized 22.
-            _supportedButtonIndices = new int[Math.Max(0, _rawButtonCount)];
-            for (int i = 0; i < _supportedButtonIndices.Length; i++) _supportedButtonIndices[i] = i;
+            // Prefer the OWNER's real sparse set. Synthesizing a dense range
+            // here listed buttons the physical device does not have.
+            if (info.SupportedButtonIndices is { Length: > 0 })
+            {
+                _supportedButtonIndices = (int[])info.SupportedButtonIndices.Clone();
+            }
+            else
+            {
+                _supportedButtonIndices = new int[Math.Max(0, _rawButtonCount)];
+                for (int i = 0; i < _supportedButtonIndices.Length; i++) _supportedButtonIndices[i] = i;
+            }
 
             // Start centered (codec neutral) and live, so registration doesn't blip
             // offline before the first frame; the stale window then governs liveness.
@@ -306,8 +325,15 @@ namespace PadForge.Engine.RemoteLink
             // standardized gamepad slots. Falls back to NumButtons for old
             // peers (RawButtonCount is maxed with it in the ctor).
             int buttons = Math.Max(RawButtonCount, 0);
+            // Only the buttons the owner actually has, named the way the owner
+            // names them. Emitting 0..RawButtonCount-1 with generic labels put
+            // phantom entries in the consumer's picker and hid A/B/X/Y behind
+            // "Button 1..N".
+            var supported = _supportedButtonIndices;
+            bool sparse = supported != null && supported.Length > 0 && supported.Length != buttons;
             int povs = Math.Max(NumHats, 0);
-            var items = new DeviceObjectItem[axes + buttons + povs];
+            int buttonSlots = sparse ? supported.Length : buttons;
+            var items = new DeviceObjectItem[axes + buttonSlots + povs];
             int idx = 0, offset = 0;
             for (int i = 0; i < axes; i++)
             {
@@ -344,15 +370,18 @@ namespace PadForge.Engine.RemoteLink
                 }
                 items[idx++] = item;
             }
-            for (int i = 0; i < buttons; i++)
+            for (int b = 0; b < buttonSlots; b++)
+            {
+                int i = sparse ? supported[b] : b;
                 items[idx++] = new DeviceObjectItem
                 {
                     InputIndex = i,
                     ObjectTypeGuid = ObjectGuid.Button,
-                    Name = $"Button {i + 1}",
+                    Name = GamepadButtonLabel(i, NumButtons),
                     ObjectType = DeviceObjectTypeFlags.PushButton,
                     Offset = (offset++) * 4
                 };
+            }
             for (int i = 0; i < povs; i++)
                 items[idx++] = new DeviceObjectItem
                 {
@@ -363,6 +392,41 @@ namespace PadForge.Engine.RemoteLink
                     Offset = (offset++) * 4
                 };
             return items;
+        }
+
+        /// <summary>Names a standardized gamepad slot the way the OWNER names
+        /// it (SdlDeviceWrapper.GetGamepadButtonName), so a remote pad's picker
+        /// reads "A" / "Left Bumper" / "Right Paddle 1" instead of "Button 1".
+        /// Raw extras past the standardized block keep the flat numbering.</summary>
+        private static string GamepadButtonLabel(int i, int numButtons)
+        {
+            if (i >= numButtons) return $"Button {i}";
+            switch (i)
+            {
+                case 0: return "A";
+                case 1: return "B";
+                case 2: return "X";
+                case 3: return "Y";
+                case 4: return "Left Bumper";
+                case 5: return "Right Bumper";
+                case 6: return "Back";
+                case 7: return "Start";
+                case 8: return "Left Stick";
+                case 9: return "Right Stick";
+                case 10: return "Guide";
+                case 11: return "Misc 1";
+                case 12: return "Right Paddle 1";
+                case 13: return "Left Paddle 1";
+                case 14: return "Right Paddle 2";
+                case 15: return "Left Paddle 2";
+                case 16: return "Touchpad";
+                case 17: return "Misc 2";
+                case 18: return "Misc 3";
+                case 19: return "Misc 4";
+                case 20: return "Misc 5";
+                case 21: return "Misc 6";
+                default: return $"Button {i}";
+            }
         }
 
         // ── Feedback return path ────────────────────────────────────────────

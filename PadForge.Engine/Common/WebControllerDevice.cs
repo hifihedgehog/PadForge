@@ -126,8 +126,12 @@ namespace PadForge.Engine
         public bool HasRumble => true;
         public bool HasRumbleTriggers => false;
         public bool HasHaptic => false;
-        public bool HasGyro => false;
-        public bool HasAccel => false;
+        // Motion caps flip on the first motion message, the same pattern
+        // HasTouchpad uses for the first touch message (#296 phase 1). The
+        // phone's DeviceMotionEvent supplies both rates and gravity+linear
+        // acceleration, so both flip together.
+        public bool HasGyro { get; set; }
+        public bool HasAccel { get; set; }
         public bool HasTouchpad { get; set; }
         public HapticEffectStrategy HapticStrategy => HapticEffectStrategy.None;
         public IntPtr HapticHandle => IntPtr.Zero;
@@ -294,6 +298,23 @@ namespace PadForge.Engine
         // Monotonic contact-ID counter for the web phone-controller's
         // virtual touchpad surface. Increments on each finger rising edge.
         private int _webContactIdNext = 1;
+
+        /// <summary>Latest phone motion sample (#296 phase 1): gyro rad/s,
+        /// accel m/s², already rotated into the SDL controller frame by the
+        /// client. Stored copy-on-write like every other mutator so
+        /// GetCurrentState's lock-free copy stays valid.</summary>
+        public void UpdateMotion(float gx, float gy, float gz, float ax, float ay, float az)
+        {
+            lock (_stateLock)
+            {
+                var s = _currentState.Clone();
+                if (s.Gyro == null || s.Gyro.Length < 3) s.Gyro = new float[3];
+                if (s.Accel == null || s.Accel.Length < 3) s.Accel = new float[3];
+                s.Gyro[0] = gx; s.Gyro[1] = gy; s.Gyro[2] = gz;
+                s.Accel[0] = ax; s.Accel[1] = ay; s.Accel[2] = az;
+                _currentState = s;
+            }
+        }
 
         /// <summary>Sets the connection state.</summary>
         public void SetConnected(bool connected) => _connected = connected;

@@ -22,6 +22,14 @@ namespace PadForge.Engine.RemoteLink
                        // consumer's NFC binding could never arm the owner's reader
                        // without this lane and silently never fired (#241, audit
                        // 2026-07-24). Payload: [0] = demand kind (1 = NFC reader).
+        PathOffer = 8, // either side -> peer, over a RELAYED session only: "here are
+                       // my current candidate endpoints, punch me". A session that
+                       // started on the relay would otherwise stay on it forever,
+                       // even once both peers land on the same LAN (#294). The
+                       // relay is the ideal signal for this: both peers are already
+                       // reachable and authenticated there, so the punch both sides
+                       // must perform simultaneously is trivially synchronised.
+                       // Payload: [0] count, then per candidate: [len][addr][port BE].
     }
 
     /// <summary>

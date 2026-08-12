@@ -394,6 +394,11 @@ namespace PadForge.Engine.RemoteLink
                 _udp = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 try { _udp.IOControl(SIO_UDP_CONNRESET, new byte[4], null); } catch { /* non-Windows */ }
                 _udp.Bind(new IPEndPoint(IPAddress.Any, port));
+                // Report the port actually bound. With port 0 (ephemeral) the
+                // requested value is meaningless, and every candidate we
+                // advertise is built from Port, so a peer would be told to
+                // punch ":0".
+                if (_udp.LocalEndPoint is IPEndPoint bound) _port = bound.Port;
             }
             catch (Exception ex)
             {
@@ -419,7 +424,7 @@ namespace PadForge.Engine.RemoteLink
             // 3s tick: keepalive (so a quiet-but-live connection isn't reaped, and the
             // responder learns the initiator's endpoint even with no input flowing),
             // then reap genuinely dead ones.
-            _reaper = new Timer(_ => { try { SendKeepalives(); ReapDeadConnections(); } catch { } }, null, 3000, 3000);
+            _reaper = new Timer(_ => { try { SendKeepalives(); ReapDeadConnections(); MaintainPaths(); } catch { } }, null, 3000, 3000);
             StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.Listening, port: port));
             return true;
         }
@@ -453,6 +458,158 @@ namespace PadForge.Engine.RemoteLink
             // a disposed-but-non-null CTS throws ObjectDisposedException there.
             _cts = null;
             StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.Stopped));
+        }
+
+        // ── Relay-to-direct upgrade (#294) ──────────────────────────────────
+        // A session that established over the relay keeps working, but pays an
+        // extra hop for every frame. Once a direct path becomes possible (the
+        // peers move onto one LAN, or a NAT relaxes) the session should take
+        // it. iroh does exactly this; without it a relayed link stays relayed
+        // even with the two machines side by side. The relay carries the
+        // signalling, so the simultaneity a punch needs is free.
+
+        /// <summary>Our current candidate endpoints for a peer to punch.</summary>
+        private List<IPEndPoint> PathCandidates()
+        {
+            var list = new List<IPEndPoint>();
+            var pub = PublicEndpoint;
+            if (pub != null) list.Add(pub);
+            foreach (var lan in LocalAddresses())
+            {
+                var ep = new IPEndPoint(lan, _port);
+                if (!list.Contains(ep)) list.Add(ep);
+            }
+            return list;
+        }
+
+        internal static byte[] EncodeCandidates(IReadOnlyList<IPEndPoint> eps)
+        {
+            var buf = new List<byte>();
+            byte n = (byte)Math.Min(eps.Count, 16);
+            buf.Add(n);
+            for (int i = 0; i < n; i++)
+            {
+                var ip = eps[i].Address.GetAddressBytes();
+                buf.Add((byte)ip.Length);
+                buf.AddRange(ip);
+                var port = new byte[2];
+                System.Buffers.Binary.BinaryPrimitives.WriteUInt16BigEndian(port, (ushort)eps[i].Port);
+                buf.AddRange(port);
+            }
+            return buf.ToArray();
+        }
+
+        internal static List<IPEndPoint> DecodeCandidates(byte[] payload)
+        {
+            var eps = new List<IPEndPoint>();
+            if (payload == null || payload.Length < 1) return eps;
+            int o = 0, n = payload[o++];
+            for (int i = 0; i < n; i++)
+            {
+                if (o >= payload.Length) break;
+                int len = payload[o++];
+                if (len != 4 && len != 16) break;
+                if (o + len + 2 > payload.Length) break;
+                var ip = new IPAddress(payload.AsSpan(o, len).ToArray()); o += len;
+                ushort port = System.Buffers.Binary.BinaryPrimitives.ReadUInt16BigEndian(payload.AsSpan(o)); o += 2;
+                eps.Add(new IPEndPoint(ip, port));
+            }
+            return eps;
+        }
+
+        private void SendPathOffer(LinkPeerConnection c)
+        {
+            try
+            {
+                var cands = PathCandidates();
+                if (cands.Count == 0) return;
+                ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
+                System.Threading.Interlocked.Exchange(ref c.LastOfferTicks, System.Diagnostics.Stopwatch.GetTimestamp());
+                SendSealed(c, c.DataSession.Seal(LinkMessageType.PathOffer, 0, ts, EncodeCandidates(cands)));
+            }
+            catch (Exception ex) { DiagLastError = "pathoffer-send: " + ex.Message; }
+        }
+
+        private void OnPathOffer(LinkPeerConnection c, byte[] payload)
+        {
+            var peerCands = DecodeCandidates(payload);
+            if (peerCands.Count == 0) return;
+
+            // Answer with our own candidates unless we just offered, so the
+            // peer punches at the same time without an offer ping-pong.
+            long since = System.Diagnostics.Stopwatch.GetTimestamp() - System.Threading.Interlocked.Read(ref c.LastOfferTicks);
+            if (since > System.Diagnostics.Stopwatch.Frequency * 3) SendPathOffer(c);
+
+            if (System.Threading.Interlocked.Exchange(ref c.UpgradeRunning, 1) != 0) return;
+            _ = Task.Run(async () =>
+            {
+                try { await TryUpgradeAsync(c, peerCands).ConfigureAwait(false); }
+                catch (Exception ex) { DiagLastError = "pathupgrade: " + ex.Message; }
+                finally { System.Threading.Interlocked.Exchange(ref c.UpgradeRunning, 0); }
+            });
+        }
+
+        private async Task TryUpgradeAsync(LinkPeerConnection c, IReadOnlyList<IPEndPoint> peerCandidates)
+        {
+            var sock = _udp;
+            if (sock == null || c.PathNonce == null || c.PeerUdpEndpoint != null) return;
+
+            var adapter = new UdpPunchAdapter(sock);
+            int key = Interlocked.Increment(ref _punchSinkCounter);
+            _punchSinks[key] = (from, dg) => adapter.OnDatagram?.Invoke(from, dg);
+            try
+            {
+                var self = new List<IPEndPoint>();
+                if (PublicEndpoint != null) self.Add(PublicEndpoint);
+                foreach (var lan in LocalAddresses()) self.Add(new IPEndPoint(lan, _port));
+
+                var puncher = new HolePuncher(adapter, c.PathNonce, sprayInterval: null,
+                    selfEndpoints: self, selfFingerprint: _identity?.Fingerprint);
+                using var cts = CancellationTokenSource.CreateLinkedTokenSource(_cts?.Token ?? CancellationToken.None);
+                cts.CancelAfter(TimeSpan.FromSeconds(8));
+                IPEndPoint won;
+                try { won = await puncher.PunchAsync(peerCandidates, cts.Token).ConfigureAwait(false); }
+                catch (OperationCanceledException) { won = null; }
+                if (won == null) return;
+
+                // Take the direct path. The relay client stays on the
+                // connection, so a direct path that later dies falls back.
+                System.Threading.Interlocked.Exchange(ref c.LastDirectTicks, System.Diagnostics.Stopwatch.GetTimestamp());
+                c.PeerUdpEndpoint = won;
+                SdlDiagLog.WriteLine($"PATH upgraded: relay -> direct {won} for peer {Short(c.PeerFingerprintHex)}");
+            }
+            finally { _punchSinks.TryRemove(key, out _); }
+        }
+
+        /// <summary>Runs on the reaper tick: offer a path on relayed sessions,
+        /// and drop back to the relay when an upgraded direct path goes quiet.</summary>
+        private void MaintainPaths()
+        {
+            LinkPeerConnection[] conns;
+            lock (_lock) conns = _connections.ToArray();
+            long now = System.Diagnostics.Stopwatch.GetTimestamp();
+            long freq = System.Diagnostics.Stopwatch.Frequency;
+            foreach (var c in conns)
+            {
+                if (c.RelayClient == null || c.RelayPeerKey == null) continue; // not a relayed session
+                if (c.PeerUdpEndpoint == null)
+                {
+                    // Still on the relay: offer a path every ~15 s.
+                    if (now - System.Threading.Interlocked.Read(ref c.LastOfferTicks) > freq * 15)
+                        SendPathOffer(c);
+                }
+                else
+                {
+                    // Upgraded: if the direct path has been silent, fall back.
+                    long last = System.Threading.Interlocked.Read(ref c.LastDirectTicks);
+                    if (last != 0 && now - last > freq * 6)
+                    {
+                        c.PeerUdpEndpoint = null;
+                        System.Threading.Interlocked.Exchange(ref c.LastOfferTicks, 0);
+                        SdlDiagLog.WriteLine($"PATH downgraded: direct went quiet, back to relay for peer {Short(c.PeerFingerprintHex)}");
+                    }
+                }
+            }
         }
 
         private void SendKeepalives()
@@ -1305,6 +1462,8 @@ namespace PadForge.Engine.RemoteLink
                 PeerUdpEndpoint = peerUdpEndpoint,
                 RelayPeerKey = relayPeerKey,
                 RelayClient = relayClient,
+                PathNonce = PeerCrypto.DeriveKey(result.DataKey, salt: null,
+                    System.Text.Encoding.ASCII.GetBytes("PadForge/path-upgrade/v1"), HolePuncher.NonceLen),
                 Tcp = client,
                 PeerFingerprintHex = result.PeerFingerprintHex,
                 LastActivityTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
@@ -1366,7 +1525,7 @@ namespace PadForge.Engine.RemoteLink
             // by their leading tag ahead of session routing. No-op unless an
             // internet connect is active (the sink maps are empty otherwise), so
             // the LAN/TCP data path is unchanged. A sealed LinkSession frame's
-            // first byte is (type<<4)|epoch with type 1..7, never 0xC0-0xC3.
+            // first byte is (type<<4)|epoch with type 1..8, never 0xC0-0xC5.
             {
                 byte tag0 = datagram.Length > 0 ? datagram[0] : (byte)0;
                 if (tag0 == 0xC2 || tag0 == 0xC3) // punch ping/pong
@@ -1417,6 +1576,9 @@ namespace PadForge.Engine.RemoteLink
                 System.Threading.Interlocked.Exchange(ref c.LastActivityTicks, System.Diagnostics.Stopwatch.GetTimestamp());
                 // Learn the peer's UDP endpoint on first verified datagram (responder side).
                 if (from != null && c.PeerUdpEndpoint == null) c.PeerUdpEndpoint = from;
+                // Direct-path liveness, so an upgraded session that loses its
+                // direct route can fall back to the relay.
+                if (from != null) System.Threading.Interlocked.Exchange(ref c.LastDirectTicks, System.Diagnostics.Stopwatch.GetTimestamp());
 
                 if (type == LinkMessageType.Input)
                 {
@@ -1446,6 +1608,14 @@ namespace PadForge.Engine.RemoteLink
                 {
                     System.Threading.Interlocked.Increment(ref DiagAudioReceived);
                     AudioReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
+                }
+                else if (type == LinkMessageType.PathOffer)
+                {
+                    // The peer published its candidate endpoints over the relay.
+                    // Punch them, and answer with our own so the peer punches
+                    // too: both sides must fire for a NAT to open.
+                    try { OnPathOffer(c, payload); }
+                    catch (Exception ex) { DiagLastError = "pathoffer: " + ex.Message; }
                 }
                 else if (type == LinkMessageType.DeviceList)
                 {
@@ -1611,6 +1781,19 @@ namespace PadForge.Engine.RemoteLink
             /// established on the listening client must keep using it even
             /// while an outgoing dial runs on the other one.</summary>
             public IrohRelayClient RelayClient;
+            /// <summary>Shared punch nonce for the relay-to-direct upgrade,
+            /// derived from the session data key so BOTH peers compute it with
+            /// no extra exchange.</summary>
+            public byte[] PathNonce;
+            /// <summary>QPC of the last datagram that arrived over the DIRECT
+            /// path. An upgraded session whose direct path goes quiet falls
+            /// back to the relay instead of going dark.</summary>
+            public long LastDirectTicks;
+            /// <summary>QPC of our last PathOffer, so an offer exchange cannot
+            /// ping-pong.</summary>
+            public long LastOfferTicks;
+            /// <summary>Set while an upgrade punch is in flight.</summary>
+            public int UpgradeRunning;
             public TcpClient Tcp;
             public string PeerFingerprintHex;
             public long LastActivityTicks; // QPC; updated on each verified datagram, read by the reaper

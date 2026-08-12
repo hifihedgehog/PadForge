@@ -153,6 +153,13 @@ namespace PadForge.Engine
         /// </summary>
         public event Action<ushort, ushort> RumbleRequested;
 
+        /// <summary>Raised the first time a capability flips on after connect
+        /// (currently gyro/accel on the first motion message). The device's
+        /// UserDevice snapshot was taken at connect, before the phone streamed
+        /// motion, so the Devices page and mapping picker need a re-sync to
+        /// show the motion sources (owner report 2026-08-12).</summary>
+        public event Action CapabilitiesChanged;
+
         /// <summary>Lightbar feedback for the browser (#296): the phone
         /// renders a glowing strip in this color, like a DualShock's bar.
         /// Change-detected here so the identity pass can push every tick
@@ -314,6 +321,16 @@ namespace PadForge.Engine
                 s.Accel[0] = ax; s.Accel[1] = ay; s.Accel[2] = az;
                 _currentState = s;
             }
+        }
+
+        /// <summary>Flips the motion caps on the first sample and notifies once,
+        /// so the UserDevice snapshot taken at connect gets re-synced.</summary>
+        public void EnableMotionCaps()
+        {
+            if (HasGyro && HasAccel) return;
+            HasGyro = true;
+            HasAccel = true;
+            CapabilitiesChanged?.Invoke();
         }
 
         /// <summary>Sets the connection state.</summary>

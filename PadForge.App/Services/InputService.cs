@@ -9089,7 +9089,7 @@ namespace PadForge.Services
                 // relay instead. Best-effort; without it the punch is all we
                 // have, which is exactly the old behavior.
                 string relayHost = null;
-                try { relayHost = await server.EnsureRelayAsync(null, System.Threading.CancellationToken.None); } catch { }
+                try { relayHost = await server.EnsureDialRelayAsync(null, System.Threading.CancellationToken.None); } catch { }
 
                 await PublishCodeCallRequestAsync(entry, server);
 

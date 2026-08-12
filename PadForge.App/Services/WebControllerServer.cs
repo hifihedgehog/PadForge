@@ -556,6 +556,22 @@ namespace PadForge.Services
                     else if (kind == "pov")
                         device.UpdatePov(value);
                 }
+                else if (type == "motion")
+                {
+                    // Phone motion (#296 phase 1): gyro rad/s + accel m/s²,
+                    // already rotated into the SDL frame client-side. Caps flip
+                    // on first arrival, mirroring the touchpad pattern, so the
+                    // Devices page and the gyro pipeline discover the source
+                    // the moment it streams.
+                    if (!device.HasGyro) { device.HasGyro = true; device.HasAccel = true; }
+                    float gx = root.TryGetProperty("gx", out var gxp) ? (float)gxp.GetDouble() : 0f;
+                    float gy = root.TryGetProperty("gy", out var gyp) ? (float)gyp.GetDouble() : 0f;
+                    float gz = root.TryGetProperty("gz", out var gzp) ? (float)gzp.GetDouble() : 0f;
+                    float ax = root.TryGetProperty("ax", out var axp) ? (float)axp.GetDouble() : 0f;
+                    float ay = root.TryGetProperty("ay", out var ayp) ? (float)ayp.GetDouble() : 0f;
+                    float az = root.TryGetProperty("az", out var azp) ? (float)azp.GetDouble() : 0f;
+                    device.UpdateMotion(gx, gy, gz, ax, ay, az);
+                }
                 else if (type == "touchpad")
                 {
                     // DS4 controller page sends touchpad-finger messages from

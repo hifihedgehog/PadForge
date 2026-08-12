@@ -130,8 +130,96 @@
             "gap:5px;pointer-events:none";
         document.body.appendChild(pipsEl);
 
+        setupMotionButton();
         fetchLayoutAndBuild();
     });
+
+    // ── Phone motion (#296 phase 1) ──
+    // DeviceMotionEvent exists only in a secure context (the HTTPS lane), and
+    // iOS additionally gates it behind requestPermission() from a user
+    // gesture. The button is that gesture. Samples stream as
+    // {type:"motion"}: gyro rad/s + accel m/s², rotated from the DEVICE frame
+    // into the current screen frame (devicemotion axes do not follow screen
+    // rotation) and delivered in the SDL controller-frame convention the
+    // whole gyro pipeline expects (X right, Y up, Z toward the player).
+    var motionOn = false, motionBtn = null;
+    var D2R = Math.PI / 180;
+
+    function setupMotionButton() {
+        var isTouchpadPage = !!document.getElementById("touchpad-zone-page");
+        if (isTouchpadPage) return;
+        if (!window.isSecureContext || typeof DeviceMotionEvent === "undefined") return;
+        motionBtn = document.createElement("button");
+        motionBtn.textContent = "⟳ Motion";
+        motionBtn.style.cssText = "position:fixed;bottom:10px;right:10px;z-index:45;" +
+            "background:#16213e;color:#9aa;border:1px solid #0f3460;border-radius:8px;" +
+            "padding:6px 12px;font:600 12px 'Segoe UI',sans-serif;opacity:0.85";
+        motionBtn.addEventListener("click", toggleMotion);
+        document.body.appendChild(motionBtn);
+    }
+
+    function toggleMotion() {
+        if (motionOn) {
+            window.removeEventListener("devicemotion", onMotion);
+            motionOn = false;
+            motionBtn.style.color = "#9aa";
+            motionBtn.style.borderColor = "#0f3460";
+            return;
+        }
+        // iOS 13+: permission prompt, must run inside this click.
+        if (typeof DeviceMotionEvent.requestPermission === "function") {
+            DeviceMotionEvent.requestPermission().then(function (res) {
+                if (res === "granted") armMotion();
+            }).catch(function () { });
+        } else {
+            armMotion();
+        }
+    }
+
+    function armMotion() {
+        window.addEventListener("devicemotion", onMotion);
+        motionOn = true;
+        motionBtn.style.color = "#7CFC00";
+        motionBtn.style.borderColor = "#7CFC00";
+        haptic();
+    }
+
+    var lastMotionTs = 0;
+    function onMotion(e) {
+        // ~60 Hz cap: browsers may fire faster on some Androids.
+        var now = (window.performance && performance.now) ? performance.now() : Date.now();
+        if (now - lastMotionTs < 15) return;
+        lastMotionTs = now;
+
+        var rr = e.rotationRate || {};
+        var ag = e.accelerationIncludingGravity || {};
+        // Device frame: beta = about device X, gamma = about device Y,
+        // alpha = about device Z. Same axes for the accelerometer.
+        var gx = rr.beta || 0, gy = rr.gamma || 0, gz = rr.alpha || 0;
+        var ax = ag.x || 0, ay = ag.y || 0, az = ag.z || 0;
+
+        // Rotate device X/Y into the current screen frame. Z is the rotation
+        // axis, unchanged. Angle is how far the SCREEN is rotated from the
+        // device's natural orientation.
+        var angle = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
+        var g = rotateToScreen(gx, gy, angle);
+        var a = rotateToScreen(ax, ay, angle);
+
+        send({
+            type: "motion",
+            gx: g.x * D2R, gy: g.y * D2R, gz: gz * D2R,
+            ax: a.x, ay: a.y, az: az
+        });
+    }
+
+    function rotateToScreen(x, y, angle) {
+        switch (((angle % 360) + 360) % 360) {
+            case 90:  return { x: y,  y: -x };
+            case 180: return { x: -x, y: -y };
+            case 270: return { x: -y, y: x };
+            default:  return { x: x,  y: y };
+        }
+    }
 
     var ledStrip = null, pipsEl = null;
     function setLedColor(r, g, b) {
